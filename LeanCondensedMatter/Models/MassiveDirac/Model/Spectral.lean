@@ -94,9 +94,8 @@ private theorem bandProjector_eq_normalizedHamiltonian
 algebraic `E = 0` value of the definition. -/
 theorem sum_bandProjector_eq_one (v m px py : ℝ) :
     ∑ band : Band, bandProjector band v m px py = 1 := by
-  simp only [sum_band]
-  rw [bandProjector_eq_normalizedHamiltonian, bandProjector_eq_normalizedHamiltonian]
-  simp only [bandSign_lower, bandSign_upper]
+  simp only [sum_band, bandProjector_eq_normalizedHamiltonian,
+    bandSign_lower, bandSign_upper]
   push_cast
   module
 
@@ -115,17 +114,12 @@ theorem bandProjector_add_oppositeBand (band : Band) (v m px py : ℝ) :
 theorem bandEnergy_injective (v m px py : ℝ) (hE : energy v m px py ≠ 0) :
     Function.Injective (fun band : Band => bandEnergy band v m px py) := by
   intro a b hab
-  cases a <;> cases b
-  · rfl
-  · exfalso
-    simp [bandEnergy] at hab
+  cases a <;> cases b <;> try rfl
+  all_goals
+    exfalso
     apply hE
-    linarith
-  · exfalso
     simp [bandEnergy] at hab
-    apply hE
     linarith
-  · rfl
 
 /-- Away from the band degeneracy, `H₀ P_s = E_s P_s`. -/
 theorem hamiltonian_mul_bandProjector (band : Band) (v m px py : ℝ)
@@ -142,14 +136,12 @@ theorem hamiltonian_mul_bandProjector (band : Band) (v m px py : ℝ)
   have hH :
       hamiltonian v m px py = (((energy v m px py : ℝ) : ℂ)) • Q := by
     simpa [Q] using hamiltonian_eq_energy_smul_normalizedHamiltonian v m px py hE
-  have hP :
-      bandProjector band v m px py = (1 / 2 : ℂ) • ((1 : Matrix2) + s • Q) := by
-    simpa [Q, s] using bandProjector_eq_normalizedHamiltonian band v m px py
   have hbandEnergy :
       (((bandEnergy band v m px py : ℝ) : ℂ)) =
         s * (((energy v m px py : ℝ) : ℂ)) := by
     simp [bandEnergy, s]
-  rw [hH, hP, hbandEnergy]
+  simp only [bandProjector_eq_normalizedHamiltonian]
+  rw [hH, hbandEnergy]
   rw [smul_mul_assoc, mul_smul_comm, smul_smul,
     InternalSpace.involution_mul_one_add Q hQ s hs, smul_smul]
   module
@@ -166,16 +158,14 @@ theorem bandProjector_completeOrthogonalIdempotents
     exact InternalSpace.involution_projector_mul_self
       (normalizedHamiltonian v m px py) (normalizedHamiltonian_mul_self v m px py hE)
       (((bandSign Band.lower : ℝ) : ℂ)) (by norm_num [bandSign])
-  have hsum := sum_bandProjector_eq_one v m px py
-  rw [sum_band] at hsum
   have hUpper : bandProjector .upper v m px py =
-      1 - bandProjector .lower v m px py := eq_sub_of_add_eq' hsum
+      1 - bandProjector .lower v m px py :=
+    eq_sub_of_add_eq' (by simpa only [sum_band] using sum_bandProjector_eq_one v m px py)
   refine CompleteOrthogonalIdempotents.iff_ortho_complete.mpr
     ⟨?_, sum_bandProjector_eq_one v m px py⟩
   intro i j hij
-  cases i <;> cases j <;> try exact (hij rfl).elim
-  · rw [hUpper, mul_sub, mul_one, hLower.eq, sub_self]
-  · rw [hUpper, sub_mul, one_mul, hLower.eq, sub_self]
+  cases i <;> cases j <;>
+    simp_all [hUpper, mul_sub, sub_mul, hLower.eq]
 
 end
 
