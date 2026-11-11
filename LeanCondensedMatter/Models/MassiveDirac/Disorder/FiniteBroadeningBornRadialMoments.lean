@@ -121,13 +121,15 @@ theorem finiteCutoffContinuumBornDysonRadial_ra_weighted_moment_mul_center_gap
         side v m p 0 probeEnergy broadening disorderStrength hbar pMax
         hbroadening hdisorder hpMax
     have hspectral :=
-      massiveDiracRadialDenominator_inv_product_mul_center_gap
-        v p energyR massR energyA massA (hnonzero .retarded) (hnonzero .advanced)
+      massiveDiracRadialCenter_inv_product_mul_center_gap
+        v p (energyR ^ 2 - massR ^ 2) (energyA ^ 2 - massA ^ 2)
+        (by simpa only [massiveDiracRadialDenominator] using hnonzero .retarded)
+        (by simpa only [massiveDiracRadialDenominator] using hnonzero .advanced)
     dsimp only [energyR, energyA, massR, massA] at hspectral
-    simpa only [massiveDiracRetardedAdvancedRadialDenominatorProduct,
-      finiteCutoffContinuumBornDysonDenominator_eq_radial,
-      ← finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct_eq_mul]
-      using hspectral
+    simpa only [finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct,
+      massiveDiracRetardedAdvancedRadialDenominatorProduct,
+      ← finiteCutoffContinuumBornDysonDenominator_eq_radial,
+      massiveDiracRadialDenominator] using hspectral
   dsimp only
   rw [← intervalIntegral.integral_const_mul]
   apply intervalIntegral.integral_congr
