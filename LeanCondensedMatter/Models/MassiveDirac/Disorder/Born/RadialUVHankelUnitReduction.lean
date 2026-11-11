@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVUnitVelocity
+import LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVHankelReduction
 import Mathlib.Analysis.SpecialFunctions.Complex.Log
 import Mathlib.Analysis.RCLike.Sqrt
 
@@ -110,6 +111,7 @@ theorem massiveDiracUpperHalfPlaneHankelTransform_of_unitVelocity
     (v : ℝ) (hv : v ≠ 0)
     (hunit : MassiveDiracUpperHalfPlaneHankelTransform 1) :
     MassiveDiracUpperHalfPlaneHankelTransform v := by
+  refine ⟨hv, ?_⟩
   intro radius center hr him
   have hcenter : center ≠ 0 := by
     intro heq
@@ -129,7 +131,7 @@ theorem massiveDiracUpperHalfPlaneHankelTransform_of_unitVelocity
     _ = ((v : ℂ) ^ 2)⁻¹ *
           massiveDiracRadialOutgoingHankelCandidate 1 radius
             (center / (v : ℂ) ^ 2) := by
-      rw [hunit radius (center / (v : ℂ) ^ 2) hr hnormalized]
+      rw [hunit.2 radius (center / (v : ℂ) ^ 2) hr hnormalized]
     _ = massiveDiracRadialOutgoingHankelCandidate v radius center :=
       (massiveDiracRadialOutgoingHankelCandidate_scale_velocity
         v radius center hv hcenter).symm
