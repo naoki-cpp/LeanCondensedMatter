@@ -48,7 +48,7 @@ theorem besselFormalJ0_derivative_coeff_eq_regularizedHGFun (n : ℕ) :
     exact_mod_cast Nat.factorial_ne_zero n
   rw [Nat.factorial_succ]
   push_cast
-  field_simp [hn, hf] <;> ring
+  field_simp [hn, hf]
 
 /-- Formal J₀ coefficients have an everywhere convergent complex
 power-series evaluation, by the known entire hypergeometric series. -/
@@ -98,7 +98,9 @@ theorem besselJOne_eq_regularizedHGTsum (z : ℂ) :
   calc
     Complex.besselJ 1 z =
         (z / 2) * Complex.regularizedHGFun 0 {(2 : ℂ)} (-(z / 2) ^ 2) := by
-      simp [Complex.besselJ_def]
+      simp only [Complex.besselJ_def, Complex.cpow_one]
+      congr 1
+      norm_num
     _ = (z / 2) * (∑' n : ℕ,
           Complex.regularizedHGFunCoeff 0 {(2 : ℂ)} n *
             (-(z / 2) ^ 2) ^ n) := by

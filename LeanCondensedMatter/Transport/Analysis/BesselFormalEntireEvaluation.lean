@@ -149,7 +149,7 @@ theorem summable_besselEntireCoefficientEval_X_mul (f : ℂ⟦X⟧) (x : ℂ)
     funext n
     rw [PowerSeries.coeff_succ_X_mul, pow_succ]
     ring
-  apply (summable_nat_add_iff 1).2
+  apply (summable_nat_add_iff 1).1
   simpa only [Nat.add_one] using htail
 
 /-- The formal product by X is compatible with coefficientwise evaluation

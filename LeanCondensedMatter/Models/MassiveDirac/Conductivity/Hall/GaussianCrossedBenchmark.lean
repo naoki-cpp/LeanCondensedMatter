@@ -1,5 +1,6 @@
 import LeanCondensedMatter.QuantumTheory.PlanckConstant
 import LeanCondensedMatter.Transport.Analysis.BesselCrossedXMoment
+import LeanCondensedMatter.Transport.Analysis.BesselYAnalyticWronskian
 import LeanCondensedMatter.Models.MassiveDirac.Conductivity.Hall.NonCrossingMechanismClassification
 import Mathlib.Tactic.FieldSimp
 import Mathlib.Tactic.Linarith
@@ -196,6 +197,55 @@ theorem adoCrossedXBesselReference_tendsto_benchmark
             Complex.besselJ 0 (r : ℂ) * Y1 r)))
     Filter.atTop (nhds factor)
   simpa only [hfactor] using hlimit
+
+
+/-- The finite-radius Ado X **reference** Bessel integral for the
+concrete, everywhere-convergent DLMF Y₀/Y₁ series has the closed
+endpoint expression, with no abstract Wronskian premise.
+
+This is a reference moment theorem. It makes no claim about the
+finite-cutoff physical Born-Dyson Green/current blocks. -/
+theorem adoCrossedXConcreteBesselReference_integral_eq_endpoints (R : ℝ) :
+    (∫ r in (0 : ℝ)..R,
+      Complex.besselJ 1 (r : ℂ) ^ 2 *
+        (Complex.besselJ 1 (r : ℂ) * besselY0Series (r : ℂ) -
+          Complex.besselJ 0 (r : ℂ) * besselY1Series (r : ℂ))) =
+      (((2 / Real.pi : ℝ) : ℂ)) *
+        ((1 - (Complex.besselJ 0 (R : ℂ) ^ 2 +
+            Complex.besselJ 1 (R : ℂ) ^ 2)) / 2) := by
+  exact integral_crossedXBesselIntegrand_eq_endpoints
+    (fun r : ℝ => besselY0Series (r : ℂ))
+    (fun r : ℝ => besselY1Series (r : ℂ))
+    crossedXBesselWronskian_concreteSeries R
+
+/-- The Ado crossed-X **reference** Eq. (17) benchmark for Mathlib J
+and the *concrete* convergent Y₀/Y₁ series, now unconditional.
+The Y Wronskian is discharged by the analytic formal-to-entire bridge.
+
+This is not yet a limit of
+`finiteCutoffContinuumBornDysonGaussianCrossedOrderedXYConductivity .x`:
+the physical Born-Dyson current block, the UV/real-space cutoffs and
+the broadening/disorder limits remain separate obligations. -/
+theorem adoCrossedXConcreteBesselReference_tendsto_benchmark
+    (e hbar m probeEnergy : ℝ) :
+    Filter.Tendsto
+      (fun R : ℝ =>
+        (((Real.pi : ℝ) : ℂ)) *
+          (((4 * e ^ 2 / planckConstantFromReduced hbar) *
+            (probeEnergy * m * (probeEnergy ^ 2 - m ^ 2) /
+              (probeEnergy ^ 2 + 3 * m ^ 2) ^ 2) : ℝ) : ℂ) *
+          (∫ r in (0 : ℝ)..R,
+            Complex.besselJ 1 (r : ℂ) ^ 2 *
+              (Complex.besselJ 1 (r : ℂ) * besselY0Series (r : ℂ) -
+                Complex.besselJ 0 (r : ℂ) * besselY1Series (r : ℂ))))
+      Filter.atTop (nhds
+        ((((4 * e ^ 2 / planckConstantFromReduced hbar) *
+            (probeEnergy * m * (probeEnergy ^ 2 - m ^ 2) /
+              (probeEnergy ^ 2 + 3 * m ^ 2) ^ 2) : ℝ) : ℂ))) := by
+  exact adoCrossedXBesselReference_tendsto_benchmark
+    (fun r : ℝ => besselY0Series (r : ℂ))
+    (fun r : ℝ => besselY1Series (r : ℂ))
+    crossedXBesselWronskian_concreteSeries e hbar m probeEnergy
 
 end
 

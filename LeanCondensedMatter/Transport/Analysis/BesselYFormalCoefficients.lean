@@ -57,7 +57,7 @@ theorem besselFormalJ0_coeff_succ (n : ℕ) :
     exact_mod_cast Nat.factorial_ne_zero n
   rw [Nat.factorial_succ]
   push_cast
-  field_simp [hn, hf] <;> ring
+  field_simp [hn, hf]
 
 /-- The harmonic-number recurrence produces the inhomogeneous
 Frobenius equation for the Y₀ entire correction. -/
@@ -79,7 +79,7 @@ theorem besselFormalH0_coeff_succ (n : ℕ) :
     rfl
   rw [hH, Nat.factorial_succ]
   push_cast
-  field_simp [hn, hf] <;> ring
+  field_simp [hn, hf]
 
 /-- The concrete factorial series solves the homogeneous
 order-zero Frobenius equation in the formal power-series ring. -/
@@ -94,7 +94,9 @@ theorem besselFormalJ0_frobenius :
     PowerSeries.coeff_derivative]
   calc
     _ = ((n + 1 : ℕ) : ℂ) ^ 2 *
-          PowerSeries.coeff (n + 1) besselFormalJ0 := by ring
+          PowerSeries.coeff (n + 1) besselFormalJ0 := by
+      simp only [Nat.cast_add, Nat.cast_one]
+      ring
     _ = _ := besselFormalJ0_coeff_succ n
 
 /-- The concrete harmonic series solves the inhomogeneous
@@ -111,13 +113,16 @@ theorem besselFormalH0_frobenius :
   have h := besselFormalH0_coeff_succ n
   calc
     _ = ((n + 1 : ℕ) : ℂ) ^ 2 *
-        PowerSeries.coeff (n + 1) besselFormalH0 := by ring
+        PowerSeries.coeff (n + 1) besselFormalH0 := by
+      simp only [Nat.cast_add, Nat.cast_one]
+      ring
     _ = PowerSeries.coeff n besselFormalH0 +
         ((n + 1 : ℕ) : ℂ) *
           PowerSeries.coeff (n + 1) besselFormalJ0 := h
     _ = PowerSeries.coeff n
         (besselFormalH0 + PowerSeries.derivative besselFormalJ0) := by
       simp only [map_add, PowerSeries.coeff_derivative]
+      simp only [Nat.cast_add, Nat.cast_one]
       ring
 
 /-- Formal Bessel J₀ and the harmonic correction have exactly
@@ -138,10 +143,10 @@ theorem besselFormalJ0H0_wronskian :
     besselFormalWronskianInvariant besselFormalJ0 besselFormalH0 = 1 := by
   apply besselFormalWronskianInvariant_eq_one
   · simpa only [Derivation.leibniz,
-      PowerSeries.derivative_X, mul_one, one_mul, add_comm] using
+      PowerSeries.derivative_X, smul_eq_mul, mul_one, one_mul, add_comm] using
         besselFormalJ0_frobenius
   · simpa only [Derivation.leibniz,
-      PowerSeries.derivative_X, mul_one, one_mul, add_comm] using
+      PowerSeries.derivative_X, smul_eq_mul, mul_one, one_mul, add_comm] using
         besselFormalH0_frobenius
   · exact besselFormalJ0_constantCoeff
 

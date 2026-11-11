@@ -1,4 +1,5 @@
 import Mathlib.RingTheory.PowerSeries.Derivative
+import Mathlib.Analysis.Complex.Basic
 import Mathlib.Tactic.Ring
 import Mathlib.Tactic.LinearCombination
 
@@ -65,7 +66,7 @@ theorem besselFormalWronskianInvariant_eq_one
       PowerSeries.derivative (besselFormalWronskianInvariant A B) = 0 := by
     unfold besselFormalWronskianInvariant
     simp only [map_add, map_sub, Derivation.leibniz,
-      PowerSeries.derivative_X, one_mul, smul_eq_mul]
+      PowerSeries.derivative_X, smul_eq_mul]
     linear_combination
       (2 * B) * hA - (2 * A) * hB
   have hconst :

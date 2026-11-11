@@ -48,8 +48,11 @@ theorem harmonic_real_nonneg_le (n : ℕ) :
   | succ n ih =>
       have hfrac : (0 : ℝ) ≤ ((n + 1 : ℕ) : ℝ)⁻¹ := by positivity
       have hfrac_le : (((n + 1 : ℕ) : ℝ)⁻¹) ≤ 1 := by
-        apply inv_le_one_of_one_le
-        exact_mod_cast Nat.succ_pos n
+        have hp : (0 : ℝ) < ((n + 1 : ℕ) : ℝ) := by positivity
+        have hn : (1 : ℝ) ≤ ((n + 1 : ℕ) : ℝ) := by
+          exact_mod_cast Nat.succ_le_succ (Nat.zero_le n)
+        rw [← one_div]
+        exact (div_le_iff₀ hp).2 (by simpa only [one_mul] using hn)
       have hcast : (harmonic (n + 1) : ℝ) =
           (harmonic n : ℝ) + (((n + 1 : ℕ) : ℝ)⁻¹) := by
         rw [harmonic_succ]
@@ -58,8 +61,8 @@ theorem harmonic_real_nonneg_le (n : ℕ) :
       rw [hcast]
       constructor
       · exact add_nonneg ih.1 hfrac
-      · push_cast
-        linarith [ih.2]
+      · simpa only [Nat.cast_add, Nat.cast_one] using
+          (add_le_add ih.2 hfrac_le)
 
 /-- Every harmonic number is bounded by the factorial of its index.
 This is the basic domination needed for entire summability. -/
@@ -93,7 +96,6 @@ theorem norm_besselY0HarmonicTerm_le_expTerm (z : ℂ) (n : ℕ) :
         norm_pow, norm_neg, Complex.norm_real,
         Complex.norm_natCast, Real.norm_eq_abs,
         abs_of_nonneg hH.1]
-      ring
     _ ≤ (n.factorial : ℝ) * (‖z / 2‖ ^ 2) ^ n /
           (n.factorial : ℝ) ^ 2 := by
       gcongr
