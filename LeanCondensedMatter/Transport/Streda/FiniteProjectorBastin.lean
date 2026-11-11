@@ -116,27 +116,18 @@ theorem regularizedBastinTraceIntegrand_eq_projectorSum
         (advancedSpectralParameter probeEnergy broadening) (eigenvalue i) • P i
       finiteDimensionalOperatorTrace (H := H)
         ((J * r ^ 2 * K - K * a ^ 2 * J) * (r - a)) := by
-  have hretarded :
-      retardedResolvent hamiltonian probeEnergy broadening =
+  have hside (side : SpectralSide) :
+      spectralResolvent side hamiltonian probeEnergy broadening =
         ∑ i, scalarResolventCoefficient
-          (retardedSpectralParameter probeEnergy broadening) (eigenvalue i) • P i := by
-    simpa only [retardedResolvent, retardedSpectralParameter,
-      spectralResolvent_retarded_ofRegulator, spectralParameter_retarded_ofRegulator] using
-      resolvent_spectralParameterOfRegulator_eq_sum
+          (spectralParameter side probeEnergy broadening) (eigenvalue i) • P i := by
+    simpa only [spectralResolvent, spectralParameter] using
+      (resolvent_spectralParameterOfRegulator_eq_sum
         hamiltonian hself P eigenvalue hcomplete haction
-        probeEnergy broadening hbroadening
-  have hadvanced :
-      advancedResolvent hamiltonian probeEnergy broadening =
-        ∑ i, scalarResolventCoefficient
-          (advancedSpectralParameter probeEnergy broadening) (eigenvalue i) • P i := by
-    simpa only [advancedResolvent, advancedSpectralParameter,
-      spectralResolvent_advanced_ofRegulator, spectralParameter_advanced_ofRegulator] using
-      resolvent_spectralParameterOfRegulator_eq_sum
-        hamiltonian hself P eigenvalue hcomplete haction
-        probeEnergy (-broadening) (neg_ne_zero.mpr hbroadening)
+        probeEnergy (side.regulator broadening) (side.regulator_ne_zero hbroadening))
   unfold regularizedBastinTraceIntegrand regularizedBastinOperatorIntegrand
-    retardedAdvancedResolventDifference
-  rw [hretarded, hadvanced]
+    retardedAdvancedResolventDifference retardedResolvent advancedResolvent
+    retardedSpectralParameter advancedSpectralParameter
+  rw [hside .retarded, hside .advanced]
   congr 1
   noncomm_ring
 
