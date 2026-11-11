@@ -2,7 +2,6 @@ import LeanCondensedMatter.Models.RashbaExchange.Model.OperatorSpectral
 import LeanCondensedMatter.Models.RashbaExchange.Current
 import LeanCondensedMatter.Models.RashbaExchange.Model.Interband
 import LeanCondensedMatter.Transport.Streda.FiniteProjectorBastin
-import LeanCondensedMatter.Transport.Streda.InterbandPole
 
 set_option linter.style.header false
 
@@ -88,44 +87,6 @@ noncomputable def projectorBastinTraceIntegrand
     (params : Parameters) (px py probeEnergy broadening : ℝ) : ℂ :=
   finiteDimensionalOperatorTrace
     (projectorBastinOperatorIntegrand params px py probeEnergy broadening)
-
-/-- The Rashba-exchange finite-broadening projector Bastin trace admits the same
-ordered band-pair expansion as any finite orthogonal projector family.
-Both diagonal and interband pairs are retained; the kinetic identity shift
-and the Rashba/exchange band energies enter only through the concrete projectors
-and scalar resolvent coefficients. -/
-theorem projectorBastinTraceIntegrand_eq_band_sum
-    (params : Parameters) (px py probeEnergy broadening : ℝ)
-    (hE : spinOrbitEnergy params px py ≠ 0) :
-    projectorBastinTraceIntegrand params px py probeEnergy broadening =
-      ∑ source : Band, ∑ target : Band,
-        let r := scalarResolventCoefficient
-          (retardedSpectralParameter probeEnergy broadening)
-          (bandEnergy params source px py)
-        let a := scalarResolventCoefficient
-          (advancedSpectralParameter probeEnergy broadening)
-          (bandEnergy params source px py)
-        let d := scalarSpectralDifferenceCoefficient
-          (bandEnergy params target px py) probeEnergy broadening
-        r ^ 2 * d * currentBandBlockTrace params 0 1 source target px py -
-          a ^ 2 * d * currentBandBlockTrace params 1 0 source target px py := by
-  unfold projectorBastinTraceIntegrand
-  dsimp only [projectorBastinOperatorIntegrand]
-  unfold projectorResolvent
-  simpa only [currentBandBlockTrace, scalarSpectralDifferenceCoefficient] using
-    (finiteProjectorBastinTrace_eq_band_sum
-      (P := fun band : Band => bandProjectorOperator params band px py)
-      (bandProjectorOperator_completeOrthogonalIdempotents params px py hE).toOrthogonalIdempotents
-      (fun band : Band =>
-        scalarResolventCoefficient
-          (retardedSpectralParameter probeEnergy broadening)
-          (bandEnergy params band px py))
-      (fun band : Band =>
-        scalarResolventCoefficient
-          (advancedSpectralParameter probeEnergy broadening)
-          (bandEnergy params band px py))
-      (currentBoundedOperator params 0 px py)
-      (currentBoundedOperator params 1 px py))
 
 /-- At nonzero broadening and away from the band degeneracy, the generic Bastin trace is exactly the
 projector-expanded Rashba-exchange expression. -/
