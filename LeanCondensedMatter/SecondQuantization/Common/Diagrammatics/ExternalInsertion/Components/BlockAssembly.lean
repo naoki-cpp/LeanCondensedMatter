@@ -768,6 +768,40 @@ theorem ExternalInsertionBlockLayout.assembleDiagram_componentExternalPairCount_
       ((layout.sourceEquiv e).1.1.card / 2)
   rw [layout.assembleDiagram_componentExternalSector_external S F hconnected e]
 
+/-- Restricting an assembled physical connected component preserves
+the original interaction-vertex label at every assigned ambient vertex.
+The membership in the *actual* graph-component interaction sector is
+derived from preconnected local blocks, not postulated. This is the
+vertex-label half of physical component/local Wick-block compatibility. -/
+theorem ExternalInsertionBlockLayout.assembleDiagram_restrictComponent_vertexLabel_external
+    {ExternalLabel InternalLabel : Type*}
+    (layout : ExternalInsertionBlockLayout E N) (S : Finset (Fin N))
+    (F : ∀ B : layout.partition.parts,
+      ExternalInsertionDiagram ExternalLabel InternalLabel
+        ((B : Finset (Fin (2 * E))).card / 2) N (layout.interactionBlock S B))
+    (hconnected : ∀ B, (F B).vertexGraph.Preconnected)
+    (e : Fin (2 * E))
+    (v : ↥(layout.interactionBlock S (layout.sourceEquiv e).1)) :
+    ((layout.assembleDiagram S F).restrictComponent
+      ⟨(layout.assembleDiagram S F).vertexGraph.componentBlock (Sum.inl e),
+        (layout.assembleDiagram S F).vertexGraph.componentBlock_mem_componentPartition
+          (Sum.inl e)⟩).vertexLabel
+      ⟨v.1, by
+        rw [layout.assembleDiagram_componentInteractionSector_external S F hconnected e]
+        exact v.2⟩ =
+      (F (layout.sourceEquiv e).1).vertexLabel v := by
+  classical
+  have hidx :
+      ((layout.interactionEquiv S).symm
+        ⟨(layout.sourceEquiv e).1, v⟩ : ↥S) =
+        ⟨v.1, (Finset.mem_filter.mp v.2).1⟩ := by
+    apply Subtype.ext
+    rfl
+  have hlabel :=
+    layout.assembleDiagram_vertexLabel S F (layout.sourceEquiv e).1 v
+  rw [hidx] at hlabel
+  exact hlabel
+
 /-- Connected local blocks also ensure that no internal-only vacuum
 component survives the assembly. Each prescribed partition part is
 nonempty and therefore supplies an external vertex reachable from all
