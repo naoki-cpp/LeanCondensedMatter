@@ -31,9 +31,15 @@ open scoped Matrix
 /-- Real matrices in the Cartesian three-orbital basis. -/
 abbrev OrbitalMatrix := Matrix (Fin 3) (Fin 3) ℝ
 
-/-- Real skew generator whose complex physical orbital observable is `i G_z`. -/
-def generatorZ : OrbitalMatrix :=
-  !![0, -1, 0; 1, 0, 0; 0, 0, 0]
+/-- Cartesian orbital-generator components as real skew matrices. The corresponding
+Hermitian angular-momentum observables are `i • orbitalGenerator axis`.
+Only the three axes of the supplied crystal model are indexed here. -/
+def orbitalGenerator (axis : Fin 3) : OrbitalMatrix :=
+  ![
+    !![0, 0, 0; 0, 0, -1; 0, 1, 0],
+    !![0, 0, 1; 0, 0, 0; -1, 0, 0],
+    !![0, -1, 0; 1, 0, 0; 0, 0, 0]
+  ] axis
 
 /-- Orbital-momentum part of the centrosymmetric spin-1 Hamiltonian.
 The scalar kinetic term is omitted because it drops out of commutators.
@@ -55,81 +61,88 @@ theorem orbitalHamiltonian_neg (c₁ c₂ : ℝ) (k : Fin 3 → ℝ) :
   fin_cases i <;> fin_cases j <;>
     simp [orbitalHamiltonian, Pi.neg_apply]
  
-/-- The polynomial multiplying the local `z` polarization in the
-double-commutator evolution. -/
-def orbitalZPolynomial (c₁ c₂ x y z : ℝ) : ℝ :=
-  c₁ ^ 2 * (x ^ 2 - y ^ 2) ^ 2 +
-    c₂ ^ 2 * (4 * x ^ 2 * y ^ 2 + x ^ 2 * z ^ 2 + y ^ 2 * z ^ 2)
+/-- Quartic double-commutator coefficient for the selected Cartesian
+orbital polarization. The two transverse indices are taken cyclically;
+the coefficients retain the crystal anisotropy of `orbitalHamiltonian`. -/
+def orbitalPolynomial (axis : Fin 3) (c₁ c₂ : ℝ) (k : Fin 3 → ℝ) : ℝ :=
+  let a := k (axis + 1)
+  let b := k (axis + 2)
+  let d := k axis
+  c₁ ^ 2 * (a ^ 2 - b ^ 2) ^ 2 +
+    c₂ ^ 2 * (4 * a ^ 2 * b ^ 2 + a ^ 2 * d ^ 2 + b ^ 2 * d ^ 2)
 
-/-- The exact matrix double-commutator coefficient for the `z` generator.
-The minus sign compensates for representing the physical Hermitian generator
-as `i G_z`. -/
-noncomputable def orbitalZDoubleCommutator (c₁ c₂ : ℝ) (k : Fin 3 → ℝ) : ℝ :=
+/-- Exact matrix double-commutator coefficient for any Cartesian
+polarization axis. The minus sign accounts for the physical generator
+being `i G`, whereas `orbitalGenerator` is real and skew. -/
+noncomputable def orbitalDoubleCommutator (axis : Fin 3) (c₁ c₂ : ℝ)
+    (k : Fin 3 → ℝ) : ℝ :=
   let H := orbitalHamiltonian c₁ c₂ k
-  let G := generatorZ
+  let G := orbitalGenerator axis
   (-Matrix.trace ((H * (H * G - G * H) - (H * G - G * H) * H) * G)) / 2
 
-theorem orbitalZDoubleCommutator_eq_polynomial (c₁ c₂ : ℝ)
+theorem orbitalDoubleCommutator_eq_polynomial (axis : Fin 3) (c₁ c₂ : ℝ)
     (k : Fin 3 → ℝ) :
-    orbitalZDoubleCommutator c₁ c₂ k =
-      orbitalZPolynomial c₁ c₂ (k 0) (k 1) (k 2) := by
-  simp [orbitalZDoubleCommutator, orbitalHamiltonian, generatorZ,
-    orbitalZPolynomial, Matrix.trace, Fin.sum_univ_three]
-  ring
+    orbitalDoubleCommutator axis c₁ c₂ k = orbitalPolynomial axis c₁ c₂ k := by
+  fin_cases axis <;>
+    simp [orbitalDoubleCommutator, orbitalHamiltonian, orbitalGenerator,
+      orbitalPolynomial, Matrix.trace, Fin.sum_univ_three] <;> ring
 
-/-- An exact cubature for polynomials even in each coordinate and homogeneous
-of degree four. It has the same `xᵢ⁴` and `xᵢ²xⱼ²` moments as the normalized
-uniform sphere measure. It is not asserted here to equal sphere integration
-for arbitrary functions. -/
+/-- Exact fourth-moment cubature for coordinate-even homogeneous quartics.
+It reproduces the `kᵢ⁴` and `kᵢ²kⱼ²` moments of the normalized uniform
+sphere measure, but is not asserted to integrate arbitrary functions on
+the sphere. -/
 noncomputable def evenQuarticCubature (r : ℝ) (f : (Fin 3 → ℝ) → ℝ) : ℝ :=
   (2 / 15 : ℝ) * (f ![r, 0, 0] + f ![0, r, 0] + f ![0, 0, r]) +
     (1 / 15 : ℝ) * f ![r, r, r]
 
-theorem evenQuarticCubature_x_four (r : ℝ) :
-    evenQuarticCubature r (fun k => k 0 ^ 4) = r ^ 4 / 5 := by
-  simp [evenQuarticCubature]
-  ring
+theorem evenQuarticCubature_coordinate_four (i : Fin 3) (r : ℝ) :
+    evenQuarticCubature r (fun k => k i ^ 4) = r ^ 4 / 5 := by
+  fin_cases i <;> simp [evenQuarticCubature] <;> ring
 
-theorem evenQuarticCubature_x_sq_y_sq (r : ℝ) :
-    evenQuarticCubature r (fun k => k 0 ^ 2 * k 1 ^ 2) = r ^ 4 / 15 := by
-  simp [evenQuarticCubature]
-  ring
+theorem evenQuarticCubature_coordinate_sq_mul_coordinate_sq
+    (i j : Fin 3) (hij : i ≠ j) (r : ℝ) :
+    evenQuarticCubature r (fun k => k i ^ 2 * k j ^ 2) = r ^ 4 / 15 := by
+  fin_cases i <;> fin_cases j <;>
+    simp_all [evenQuarticCubature] <;> ring
 
-theorem evenQuarticCubature_orbitalZPolynomial
+/-- The angular mean of the orbital double-commutator polynomial is the
+same for every Cartesian polarization axis, despite the anisotropic
+momentum dependence before averaging. -/
+theorem evenQuarticCubature_orbitalPolynomial (axis : Fin 3)
     (c₁ c₂ r : ℝ) :
-    evenQuarticCubature r
-        (fun k => orbitalZPolynomial c₁ c₂ (k 0) (k 1) (k 2)) =
+    evenQuarticCubature r (orbitalPolynomial axis c₁ c₂) =
       (2 * r ^ 4 / 15) * (2 * c₁ ^ 2 + 3 * c₂ ^ 2) := by
-  simp [evenQuarticCubature, orbitalZPolynomial]
-  ring
+  fin_cases axis <;>
+    simp [evenQuarticCubature, orbitalPolynomial] <;> ring
 
-theorem evenQuarticCubature_orbitalZDoubleCommutator
+theorem evenQuarticCubature_orbitalDoubleCommutator (axis : Fin 3)
     (c₁ c₂ r : ℝ) :
-    evenQuarticCubature r (orbitalZDoubleCommutator c₁ c₂) =
+    evenQuarticCubature r (orbitalDoubleCommutator axis c₁ c₂) =
       (2 * r ^ 4 / 15) * (2 * c₁ ^ 2 + 3 * c₂ ^ 2) := by
   calc
-    _ = evenQuarticCubature r
-        (fun k => orbitalZPolynomial c₁ c₂ (k 0) (k 1) (k 2)) := by
+    _ = evenQuarticCubature r (orbitalPolynomial axis c₁ c₂) := by
           congr 1
           funext k
-          exact orbitalZDoubleCommutator_eq_polynomial c₁ c₂ k
-    _ = _ := evenQuarticCubature_orbitalZPolynomial c₁ c₂ r
+          exact orbitalDoubleCommutator_eq_polynomial axis c₁ c₂ k
+    _ = _ := evenQuarticCubature_orbitalPolynomial axis c₁ c₂ r
 
-/-- Conditional orbital relaxation rate after supplying the degree-two
-scattering time and the second-order kinetic closure. -/
-noncomputable def orbitalRate (ℏ τ₂ c₁ c₂ r : ℝ) : ℝ :=
+/-- Conditional orbital relaxation rate for any Cartesian polarization
+axis, given the degree-two scattering time and second-order kinetic
+closure. Cubic symmetry gives a common rate for all three axes;
+this does not claim full rotational invariance of the Hamiltonian. -/
+noncomputable def orbitalRate (axis : Fin 3) (ℏ τ₂ c₁ c₂ r : ℝ) : ℝ :=
   τ₂ / ℏ ^ 2 * evenQuarticCubature r
-    (orbitalZDoubleCommutator c₁ c₂)
+    (orbitalDoubleCommutator axis c₁ c₂)
 
-theorem orbitalRate_eq (ℏ τ₂ c₁ c₂ r : ℝ) :
-    orbitalRate ℏ τ₂ c₁ c₂ r =
+theorem orbitalRate_eq (axis : Fin 3) (ℏ τ₂ c₁ c₂ r : ℝ) :
+    orbitalRate axis ℏ τ₂ c₁ c₂ r =
       (2 * r ^ 4 / (15 * ℏ ^ 2)) * (2 * c₁ ^ 2 + 3 * c₂ ^ 2) * τ₂ := by
-  rw [orbitalRate, evenQuarticCubature_orbitalZDoubleCommutator]
+  rw [orbitalRate, evenQuarticCubature_orbitalDoubleCommutator]
   ring
 
-theorem orbitalRate_nonneg (ℏ τ₂ c₁ c₂ r : ℝ)
+theorem orbitalRate_nonneg (axis : Fin 3) (ℏ τ₂ c₁ c₂ r : ℝ)
     (hτ₂ : 0 ≤ τ₂) :
-    0 ≤ orbitalRate ℏ τ₂ c₁ c₂ r := by
+    0 ≤ orbitalRate axis ℏ τ₂ c₁ c₂ r := by
   rw [orbitalRate_eq]
   positivity
 
