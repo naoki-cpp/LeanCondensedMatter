@@ -167,6 +167,160 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedZKernel_gap_eq
   push_cast
   ring
 
+/-- The physical RA first-harmonic *difference moment*, with exactly
+one radial physical momentum measure. It is the derivative kernel of
+the R/A scalar Fourier-generator difference (before the explicit
+derivative identification), not an independent reference Bessel model. -/
+noncomputable def finiteCutoffContinuumBornDysonRAFirstHarmonicDifferenceMoment
+    (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ) : ℂ :=
+  (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
+    ∫ p in (0 : ℝ)..pMax,
+      ((p : ℂ) ^ 2) *
+        polarFourierFirstCosineAngularKernel (p * radius / hbar) *
+        ((finiteCutoffContinuumBornDysonDenominator
+          .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax)⁻¹ -
+         (finiteCutoffContinuumBornDysonDenominator
+          .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax)⁻¹)
+
+/-- Lift a pointwise spectral-gap identity to an *integrated physical*
+radial current coefficient. The same regulated radial measure appears
+on both sides, and no improper-limit interchange is used. -/
+private theorem massiveDiracRASpectralGap_mul_integral
+    (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ)
+    (weight : ℂ) (kernel : ℝ → ℂ)
+    (hpoint : ∀ p : ℝ,
+      finiteCutoffContinuumBornDysonRASpectralGap
+          v m probeEnergy broadening disorderStrength hbar pMax * kernel p =
+        weight * (((p : ℂ) ^ 2) *
+          polarFourierFirstCosineAngularKernel (p * radius / hbar) *
+          ((finiteCutoffContinuumBornDysonDenominator
+            .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax)⁻¹ -
+           (finiteCutoffContinuumBornDysonDenominator
+            .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax)⁻¹))) :
+    finiteCutoffContinuumBornDysonRASpectralGap
+        v m probeEnergy broadening disorderStrength hbar pMax *
+      ((((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
+        ∫ p in (0 : ℝ)..pMax, kernel p) =
+      weight * finiteCutoffContinuumBornDysonRAFirstHarmonicDifferenceMoment
+        v m probeEnergy broadening disorderStrength hbar pMax radius := by
+  unfold finiteCutoffContinuumBornDysonRAFirstHarmonicDifferenceMoment
+  calc
+    _ = (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
+        (finiteCutoffContinuumBornDysonRASpectralGap
+            v m probeEnergy broadening disorderStrength hbar pMax *
+          (∫ p in (0 : ℝ)..pMax, kernel p)) := by ring
+    _ = (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
+        (∫ p in (0 : ℝ)..pMax,
+          finiteCutoffContinuumBornDysonRASpectralGap
+            v m probeEnergy broadening disorderStrength hbar pMax * kernel p) := by
+      rw [intervalIntegral.integral_const_mul]
+    _ = (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
+        (∫ p in (0 : ℝ)..pMax,
+          weight * (((p : ℂ) ^ 2) *
+            polarFourierFirstCosineAngularKernel (p * radius / hbar) *
+            ((finiteCutoffContinuumBornDysonDenominator
+              .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax)⁻¹ -
+             (finiteCutoffContinuumBornDysonDenominator
+              .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax)⁻¹))) := by
+      congr 1
+      apply intervalIntegral.integral_congr
+      intro p _
+      exact hpoint p
+    _ = _ := by
+      rw [intervalIntegral.integral_const_mul]
+      ring
+
+/-- An actual integrated source-x scalar crossed-current coefficient
+is a scalar multiple of the R/A first-harmonic difference moment.
+This eliminates the two-resolvent product from that physical channel. -/
+theorem finiteCutoffContinuumBornDysonGaussianCrossedScalarCurrent_gap_eq
+    (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ)
+    (hbroadening : broadening ≠ 0) (hdisorder : 0 ≤ disorderStrength)
+    (hpMax : 0 ≤ pMax) :
+    let eR := finiteCutoffContinuumBornEffectiveEnergy
+      .retarded v m probeEnergy broadening disorderStrength hbar pMax
+    let eA := finiteCutoffContinuumBornEffectiveEnergy
+      .advanced v m probeEnergy broadening disorderStrength hbar pMax
+    finiteCutoffContinuumBornDysonRASpectralGap
+        v m probeEnergy broadening disorderStrength hbar pMax *
+      finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentScalarCoefficient
+        0 v m probeEnergy broadening disorderStrength hbar pMax radius =
+      ((v : ℂ) * (eR + eA) *
+        finiteCutoffContinuumBornDysonGaussianCrossedCurrentFactor
+          v m probeEnergy broadening disorderStrength hbar pMax) *
+      finiteCutoffContinuumBornDysonRAFirstHarmonicDifferenceMoment
+        v m probeEnergy broadening disorderStrength hbar pMax radius := by
+  dsimp only
+  rw [finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentScalarCoefficient_eq_radialKernel_integral
+    0 v m probeEnergy broadening disorderStrength hbar pMax radius
+    hbroadening hdisorder hpMax]
+  apply massiveDiracRASpectralGap_mul_integral
+  intro p
+  have h := finiteCutoffContinuumBornDysonGaussianCrossedScalarKernel_gap_eq
+    v m probeEnergy broadening disorderStrength hbar pMax radius p
+    hbroadening hdisorder hpMax
+  dsimp only at h
+  calc
+    _ = ((p : ℂ) ^ 2) *
+          polarFourierFirstCosineAngularKernel (p * radius / hbar) *
+          ((v : ℂ) *
+            (finiteCutoffContinuumBornEffectiveEnergy .retarded v m probeEnergy
+              broadening disorderStrength hbar pMax +
+             finiteCutoffContinuumBornEffectiveEnergy .advanced v m probeEnergy
+              broadening disorderStrength hbar pMax)) *
+          finiteCutoffContinuumBornDysonGaussianCrossedCurrentFactor
+            v m probeEnergy broadening disorderStrength hbar pMax *
+          ((finiteCutoffContinuumBornDysonDenominator
+            .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax)⁻¹ -
+           (finiteCutoffContinuumBornDysonDenominator
+            .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax)⁻¹) := h
+    _ = _ := by ring
+
+/-- The real-space source-x Pauli-z crossed current obeys the same
+integrated identity, with the sum of effective R/A masses. -/
+theorem finiteCutoffContinuumBornDysonGaussianCrossedZCurrent_gap_eq
+    (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ)
+    (hbroadening : broadening ≠ 0) (hdisorder : 0 ≤ disorderStrength)
+    (hpMax : 0 ≤ pMax) :
+    let mR := finiteCutoffContinuumBornEffectiveMass
+      .retarded v m probeEnergy broadening disorderStrength hbar pMax
+    let mA := finiteCutoffContinuumBornEffectiveMass
+      .advanced v m probeEnergy broadening disorderStrength hbar pMax
+    finiteCutoffContinuumBornDysonRASpectralGap
+        v m probeEnergy broadening disorderStrength hbar pMax *
+      finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient
+        .z 0 v m probeEnergy broadening disorderStrength hbar pMax radius =
+      ((v : ℂ) * (mR + mA) *
+        finiteCutoffContinuumBornDysonGaussianCrossedCurrentFactor
+          v m probeEnergy broadening disorderStrength hbar pMax) *
+      finiteCutoffContinuumBornDysonRAFirstHarmonicDifferenceMoment
+        v m probeEnergy broadening disorderStrength hbar pMax radius := by
+  dsimp only
+  rw [finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient_eq_radialKernel_integral
+    .z 0 v m probeEnergy broadening disorderStrength hbar pMax radius
+    hbroadening hdisorder hpMax]
+  apply massiveDiracRASpectralGap_mul_integral
+  intro p
+  have h := finiteCutoffContinuumBornDysonGaussianCrossedZKernel_gap_eq
+    v m probeEnergy broadening disorderStrength hbar pMax radius p
+    hbroadening hdisorder hpMax
+  dsimp only at h
+  calc
+    _ = ((p : ℂ) ^ 2) *
+          polarFourierFirstCosineAngularKernel (p * radius / hbar) *
+          ((v : ℂ) *
+            (finiteCutoffContinuumBornEffectiveMass .retarded v m probeEnergy
+              broadening disorderStrength hbar pMax +
+             finiteCutoffContinuumBornEffectiveMass .advanced v m probeEnergy
+              broadening disorderStrength hbar pMax)) *
+          finiteCutoffContinuumBornDysonGaussianCrossedCurrentFactor
+            v m probeEnergy broadening disorderStrength hbar pMax *
+          ((finiteCutoffContinuumBornDysonDenominator
+            .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax)⁻¹ -
+           (finiteCutoffContinuumBornDysonDenominator
+            .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax)⁻¹) := h
+    _ = _ := by ring
+
 end
 
 end QuantumTheory.Models.MassiveDirac
