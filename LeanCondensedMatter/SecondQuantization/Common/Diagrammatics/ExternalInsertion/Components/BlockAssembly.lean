@@ -2442,7 +2442,7 @@ theorem ExternalInsertionBlockLayout.sum_connectedBlockFamilies_prod
             (layout.interactionBlock (Finset.univ : Finset (Fin N)) B) //
               d.vertexGraph.Preconnected}),
         ∏ B, weight B (F B).1 := by
-          simpa only [] using
+          simpa only [ExternalInsertionBlockLayout.connectedBlockFamilyEquivPi] using
             (Equiv.sum_comp
               (layout.connectedBlockFamilyEquivPi (ExternalLabel := ExternalLabel)
                 (InternalLabel := InternalLabel))
