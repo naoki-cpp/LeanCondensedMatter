@@ -11686,6 +11686,50 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {Site : Type u_1} {Obs : Type u_2} [inst : Fintype Site] [inst_1 : AddCommGroup Obs] [_root_.Module ℂ Obs]\n  (source : Site → Obs),\n  ∑ x, source x ≠ 0 → ¬∃ J, (∀ (x y : Site), J x y = -J y x) ∧ ∀ (x : Site), source x = ∑ y, J x y",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "ConservationLaw.nonzero_totalSource_not_bondFlux",
+    "module": "LeanCondensedMatter.Analysis.ConservationLaw.FiniteBondFlux",
+    "externalAxioms": [],
+    "docString": "Nonzero total source on a finite closed lattice cannot be written as the\noutflow of a pairwise antisymmetric bond current. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.OrbitalTransport.singleton_crystalFieldOrbitalTorque_not_bondFlux"
+    ],
+    "dependencies": [
+      "ConservationLaw.sum_antisymmetric_bondFlux_eq_zero"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.OrbitalTransport.singleton_crystalFieldOrbitalTorque_not_bondFlux"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {Test : Type u_1} [inst : AddCommGroup Test] [inst_1 : _root_.Module ℂ Test] (V : Type u_2) [inst_2 : AddCommGroup V]\n  [inst_3 : _root_.Module ℂ V] (h : V →ₗ[ℂ] V) (M : Test →ₗ[ℂ] V →ₗ[ℂ] V) (m : V →ₗ[ℂ] V) (f : Test),\n  ⁅h, m⁆ = 0 → ConservationLaw.sourceCommutator V h M m f = 0",
     "standardAxioms": [
       "Classical.choice",
@@ -11794,6 +11838,48 @@
     "completedMention": false,
     "compiledConsumers": [],
     "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Site : Type u_1} {Obs : Type u_2} [inst : Fintype Site] [inst_1 : AddCommGroup Obs] [_root_.Module ℂ Obs]\n  (J : Site → Site → Obs), (∀ (x y : Site), J x y = -J y x) → ∑ x, ∑ y, J x y = 0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "ConservationLaw.sum_antisymmetric_bondFlux_eq_zero",
+    "module": "LeanCondensedMatter.Analysis.ConservationLaw.FiniteBondFlux",
+    "externalAxioms": [],
+    "docString": "Total outflow vanishes for any antisymmetric oriented bond flux on a finite\nclosed set of sites. This statement uses characteristic zero. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "ConservationLaw.nonzero_totalSource_not_bondFlux"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "ConservationLaw.nonzero_totalSource_not_bondFlux"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -16687,6 +16773,7 @@
       "QuantumTheory.DensityOperator.expectation_star",
       "QuantumTheory.Models.MassiveDirac.currentBandBlockTrace_swap",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceIntegral_eq_radialCoefficient",
+      "QuantumTheory.Models.RashbaExchange.currentBandBlockTrace_swap",
       "QuantumTheory.Transport.Topology.PeriodicBlochProjector.berryCurvatureComplex_isSelfAdjoint",
       "QuantumTheory.Transport.regularizedStredaResidualSeaTraceKernel_swap",
       "QuantumTheory.Transport.regularizedStredaSurfacePrimitiveTrace_eq_suppliedGreen",
@@ -16701,12 +16788,13 @@
       "QuantumTheory.DensityOperator.expectation_star",
       "QuantumTheory.Models.MassiveDirac.currentBandBlockTrace_swap",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceIntegral_eq_radialCoefficient",
+      "QuantumTheory.Models.RashbaExchange.currentBandBlockTrace_swap",
       "QuantumTheory.Transport.Topology.PeriodicBlochProjector.berryCurvatureComplex_isSelfAdjoint",
       "QuantumTheory.Transport.regularizedStredaResidualSeaTraceKernel_swap",
       "QuantumTheory.Transport.regularizedStredaSurfacePrimitiveTrace_eq_suppliedGreen",
       "_private.LeanCondensedMatter.Transport.Streda.FiniteProjectorBastin.0.QuantumTheory.Transport.finiteProjectorTraceDoubleSum"
     ],
-    "compiledConsumerCount": 7,
+    "compiledConsumerCount": 8,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -48291,7 +48379,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (U : Multiplicative ℝ →* ↥(unitary (H →L[ℂ] H))) (hbar : ℝ)\n  (expectation : QuantumTheory.LinearResponse.NormalizedExpectation H) (measured source : H →L[ℂ] H) (f : ℝ → ℝ)\n  (t : ℝ),\n  (QuantumTheory.LinearResponse.ResponseChannel.fixed measured source).causalResponse U hbar expectation f t =\n    ∫ (s : ℝ) in 0..t,\n      ↑(f s) * QuantumTheory.LinearResponse.retardedSusceptibility U hbar expectation measured source t s",
     "standardAxioms": [
       "Classical.choice",
@@ -48299,7 +48387,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -48310,14 +48398,18 @@
     "docString": "A fixed-observable channel reduces to the ordinary causal retarded convolution. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "SecondQuantization.Fermionic.Validation.TwoSiteOrbitalResponse.orbitalChargeResponse_eq_retarded"
+    ],
     "dependencies": [
       "QuantumTheory.LinearResponse.heisenbergEvolution_apply"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.Validation.TwoSiteOrbitalResponse.orbitalChargeResponse_eq_retarded"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -82752,6 +82844,429 @@
   },
   {
     "terminal": false,
+    "statement": "∀ (t : ℝ),\n  QuantumTheory.Models.OrbitalTransport.TwoSite.bondFluxOneToZero t =\n    -QuantumTheory.Models.OrbitalTransport.TwoSite.bondFluxZeroToOne t",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.OrbitalTransport.TwoSite.bondFluxOneToZero_eq_neg",
+    "module": "LeanCondensedMatter.Models.OrbitalTransport.TwoSite",
+    "externalAxioms": [],
+    "docString": "The two oriented bond fluxes are antisymmetric. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.OrbitalTransport.TwoSite.totalOrbitalEvolution",
+      "SecondQuantization.Fermionic.Validation.TwoSiteOrbitalResponse.boundedOrbitalBondFlux_reverse"
+    ],
+    "dependencies": [
+      "QuantumTheory.Models.OrbitalTransport.TwoSite.hopping_commutes_totalOrbital"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.OrbitalTransport.TwoSite.totalOrbitalEvolution",
+      "SecondQuantization.Fermionic.Validation.TwoSiteOrbitalResponse.boundedOrbitalBondFlux_reverse"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (Δ t : ℝ),\n  Complex.I •\n        (QuantumTheory.Models.OrbitalTransport.TwoSite.hamiltonian Δ t *\n            QuantumTheory.Models.OrbitalTransport.TwoSite.orbitalZOne -\n          QuantumTheory.Models.OrbitalTransport.TwoSite.orbitalZOne *\n            QuantumTheory.Models.OrbitalTransport.TwoSite.hamiltonian Δ t) +\n      QuantumTheory.Models.OrbitalTransport.TwoSite.bondFluxOneToZero t =\n    QuantumTheory.Models.OrbitalTransport.TwoSite.localTorque Δ\n      QuantumTheory.Models.OrbitalTransport.TwoSite.orbitalZOne",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.OrbitalTransport.TwoSite.continuity_one",
+    "module": "LeanCondensedMatter.Models.OrbitalTransport.TwoSite",
+    "externalAxioms": [],
+    "docString": "Site-one local orbital balance: derivative + outgoing flux = local torque. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.OrbitalTransport.TwoSite.totalOrbitalEvolution"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.OrbitalTransport.TwoSite.totalOrbitalEvolution"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (Δ t : ℝ),\n  Complex.I •\n        (QuantumTheory.Models.OrbitalTransport.TwoSite.hamiltonian Δ t *\n            QuantumTheory.Models.OrbitalTransport.TwoSite.orbitalZZero -\n          QuantumTheory.Models.OrbitalTransport.TwoSite.orbitalZZero *\n            QuantumTheory.Models.OrbitalTransport.TwoSite.hamiltonian Δ t) +\n      QuantumTheory.Models.OrbitalTransport.TwoSite.bondFluxZeroToOne t =\n    QuantumTheory.Models.OrbitalTransport.TwoSite.localTorque Δ\n      QuantumTheory.Models.OrbitalTransport.TwoSite.orbitalZZero",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.OrbitalTransport.TwoSite.continuity_zero",
+    "module": "LeanCondensedMatter.Models.OrbitalTransport.TwoSite",
+    "externalAxioms": [],
+    "docString": "Site-zero local orbital balance: derivative + outgoing flux = local torque. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.OrbitalTransport.TwoSite.totalOrbitalEvolution"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.OrbitalTransport.TwoSite.totalOrbitalEvolution"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (t : ℝ),\n  QuantumTheory.Models.OrbitalTransport.TwoSite.hopping t *\n      (QuantumTheory.Models.OrbitalTransport.TwoSite.orbitalZZero +\n        QuantumTheory.Models.OrbitalTransport.TwoSite.orbitalZOne) =\n    (QuantumTheory.Models.OrbitalTransport.TwoSite.orbitalZZero +\n        QuantumTheory.Models.OrbitalTransport.TwoSite.orbitalZOne) *\n      QuantumTheory.Models.OrbitalTransport.TwoSite.hopping t",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.OrbitalTransport.TwoSite.hopping_commutes_totalOrbital",
+    "module": "LeanCondensedMatter.Models.OrbitalTransport.TwoSite",
+    "externalAxioms": [],
+    "docString": "The hopping does not change the total internal orbital moment. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.OrbitalTransport.TwoSite.bondFluxOneToZero_eq_neg"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.OrbitalTransport.TwoSite.bondFluxOneToZero_eq_neg"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (Δ : ℝ),\n  QuantumTheory.Models.OrbitalTransport.TwoSite.localTorque Δ\n      QuantumTheory.Models.OrbitalTransport.TwoSite.orbitalZZero =\n    !![0, 2 * ↑Δ, 0, 0; 2 * ↑Δ, 0, 0, 0; 0, 0, 0, 0; 0, 0, 0, 0]",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.OrbitalTransport.TwoSite.localTorque_zero_eq",
+    "module": "LeanCondensedMatter.Models.OrbitalTransport.TwoSite",
+    "externalAxioms": [],
+    "docString": "Explicit crystal-field torque on site zero, with no spin-orbit coupling. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.OrbitalTransport.TwoSite.localTorque_zero_ne_zero"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.OrbitalTransport.TwoSite.localTorque_zero_ne_zero"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (Δ : ℝ),\n  Δ ≠ 0 →\n    QuantumTheory.Models.OrbitalTransport.TwoSite.localTorque Δ\n        QuantumTheory.Models.OrbitalTransport.TwoSite.orbitalZZero ≠\n      0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.OrbitalTransport.TwoSite.localTorque_zero_ne_zero",
+    "module": "LeanCondensedMatter.Models.OrbitalTransport.TwoSite",
+    "externalAxioms": [],
+    "docString": "In particular the site-zero torque is nonzero for nonzero splitting. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.Models.OrbitalTransport.TwoSite.localTorque_zero_eq"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (Δ t : ℝ),\n  Complex.I •\n      (QuantumTheory.Models.OrbitalTransport.TwoSite.hamiltonian Δ t *\n          (QuantumTheory.Models.OrbitalTransport.TwoSite.orbitalZZero +\n            QuantumTheory.Models.OrbitalTransport.TwoSite.orbitalZOne) -\n        (QuantumTheory.Models.OrbitalTransport.TwoSite.orbitalZZero +\n            QuantumTheory.Models.OrbitalTransport.TwoSite.orbitalZOne) *\n          QuantumTheory.Models.OrbitalTransport.TwoSite.hamiltonian Δ t) =\n    QuantumTheory.Models.OrbitalTransport.TwoSite.localTorque Δ\n        QuantumTheory.Models.OrbitalTransport.TwoSite.orbitalZZero +\n      QuantumTheory.Models.OrbitalTransport.TwoSite.localTorque Δ\n        QuantumTheory.Models.OrbitalTransport.TwoSite.orbitalZOne",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.OrbitalTransport.TwoSite.totalOrbitalEvolution",
+    "module": "LeanCondensedMatter.Models.OrbitalTransport.TwoSite",
+    "externalAxioms": [],
+    "docString": "Total orbital angular momentum changes only through the crystal-field\ntorques; the bond flux cancels between the two sites. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.Models.OrbitalTransport.TwoSite.bondFluxOneToZero_eq_neg",
+      "QuantumTheory.Models.OrbitalTransport.TwoSite.continuity_one",
+      "QuantumTheory.Models.OrbitalTransport.TwoSite.continuity_zero"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (Δ : ℝ), QuantumTheory.Models.OrbitalTransport.crystalFieldOrbitalTorque Δ = (2 * ↑Δ) • InternalSpace.pauliX",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.OrbitalTransport.crystalFieldOrbitalTorque_eq",
+    "module": "LeanCondensedMatter.Models.OrbitalTransport.Finite",
+    "externalAxioms": [],
+    "docString": "Explicit nonconservation of local orbital angular momentum by the\ncrystal field, even in the absence of spin-orbit coupling. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.OrbitalTransport.crystalFieldOrbitalTorque_one_ne_zero"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.OrbitalTransport.crystalFieldOrbitalTorque_one_ne_zero"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "QuantumTheory.Models.OrbitalTransport.crystalFieldOrbitalTorque 1 ≠ 0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.OrbitalTransport.crystalFieldOrbitalTorque_one_ne_zero",
+    "module": "LeanCondensedMatter.Models.OrbitalTransport.Finite",
+    "externalAxioms": [],
+    "docString": "The crystal-field torque is nonzero in a concrete two-orbital site. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.OrbitalTransport.singleton_crystalFieldOrbitalTorque_not_bondFlux"
+    ],
+    "dependencies": [
+      "QuantumTheory.Models.OrbitalTransport.crystalFieldOrbitalTorque_eq"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.OrbitalTransport.singleton_crystalFieldOrbitalTorque_not_bondFlux"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "¬∃ J,\n    (∀ (x y : Fin 1), J x y = -J y x) ∧\n      ∀ (x : Fin 1), QuantumTheory.Models.OrbitalTransport.crystalFieldOrbitalTorque 1 = ∑ y, J x y",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.OrbitalTransport.singleton_crystalFieldOrbitalTorque_not_bondFlux",
+    "module": "LeanCondensedMatter.Models.OrbitalTransport.Finite",
+    "externalAxioms": [],
+    "docString": "On a closed singleton lattice, no antisymmetric bond flux can reproduce\nthe nonvanishing local crystal-field torque. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "ConservationLaw.nonzero_totalSource_not_bondFlux",
+      "QuantumTheory.Models.OrbitalTransport.crystalFieldOrbitalTorque_one_ne_zero"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {params : QuantumTheory.Models.Parabolic2DEG.Parameters}, params.IsRegular → params.broadening ≠ 0",
     "standardAxioms": [
       "Classical.choice",
@@ -83738,6 +84253,47 @@
   },
   {
     "terminal": true,
+    "statement": "∀ (params : QuantumTheory.Models.RashbaExchange.Parameters) (μ ν : Fin 2) (px py probeEnergy broadening : ℝ),\n  ∑ source,\n        ∑ target,\n          QuantumTheory.Models.RashbaExchange.bastinBandPairContribution params μ ν source target px py probeEnergy\n            broadening -\n      ∑ source,\n        ∑ target,\n          QuantumTheory.Models.RashbaExchange.bastinBandPairContribution params ν μ source target px py probeEnergy\n            broadening =\n    ∑ band,\n        QuantumTheory.Models.RashbaExchange.bastinBandPairContribution params μ ν band\n          (QuantumTheory.Models.RashbaExchange.oppositeBand band) px py probeEnergy broadening -\n      ∑ band,\n        QuantumTheory.Models.RashbaExchange.bastinBandPairContribution params ν μ band\n          (QuantumTheory.Models.RashbaExchange.oppositeBand band) px py probeEnergy broadening",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.RashbaExchange.antisymmetricBastinBandPairSum_eq_interband",
+    "module": "LeanCondensedMatter.Models.RashbaExchange.Bastin.Bands",
+    "externalAxioms": [],
+    "docString": "Diagonal Bastin band pairs cancel identically in the current-antisymmetric\nHall kernel, even at finite broadening. No energy-integrability assumption is used. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.Models.RashbaExchange.bastinBandPairContribution_diagonal_swap",
+      "QuantumTheory.Models.RashbaExchange.sum_band"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
     "statement": "∀ (params : QuantumTheory.Models.RashbaExchange.Parameters) (μ ν : Fin 2) (px py lowerEnergy upperEnergy : ℝ)\n  (occupation : ℝ → ℂ),\n  QuantumTheory.Models.RashbaExchange.spinOrbitEnergy params.toHamiltonianParameters px py ≠ 0 →\n    params.broadening ≠ 0 →\n      QuantumTheory.Models.RashbaExchange.antisymmetricCleanBastinPointResponse params μ ν px py lowerEnergy upperEnergy\n          occupation =\n        1 / 2 *\n          ((∫ (probeEnergy : ℝ) in lowerEnergy..upperEnergy,\n              occupation probeEnergy *\n                ∑ source,\n                  ∑ target,\n                    QuantumTheory.Models.RashbaExchange.bastinBandPairContribution params μ ν source target px py\n                      probeEnergy params.broadening) -\n            ∫ (probeEnergy : ℝ) in lowerEnergy..upperEnergy,\n              occupation probeEnergy *\n                ∑ source,\n                  ∑ target,\n                    QuantumTheory.Models.RashbaExchange.bastinBandPairContribution params ν μ source target px py\n                      probeEnergy params.broadening)",
     "standardAxioms": [
       "Classical.choice",
@@ -84286,6 +84842,95 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
+    "terminal": false,
+    "statement": "∀ (params : QuantumTheory.Models.RashbaExchange.Parameters) (μ ν : Fin 2)\n  (band : QuantumTheory.Models.RashbaExchange.Band) (px py probeEnergy broadening : ℝ),\n  QuantumTheory.Models.RashbaExchange.bastinBandPairContribution params μ ν band band px py probeEnergy broadening =\n    QuantumTheory.Models.RashbaExchange.bastinBandPairContribution params ν μ band band px py probeEnergy broadening",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.RashbaExchange.bastinBandPairContribution_diagonal_swap",
+    "module": "LeanCondensedMatter.Models.RashbaExchange.Bastin.Bands",
+    "externalAxioms": [],
+    "docString": "For a diagonal source/target band, the Bastin pair is symmetric in\nits two current directions at every energy and broadening. This is a\nfinite-dimensional trace identity, not a clean-limit argument. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.RashbaExchange.antisymmetricBastinBandPairSum_eq_interband"
+    ],
+    "dependencies": [
+      "QuantumTheory.Models.RashbaExchange.currentBandBlockTrace_swap"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.RashbaExchange.antisymmetricBastinBandPairSum_eq_interband"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (params : QuantumTheory.Models.RashbaExchange.Parameters) (μ ν : Fin 2)\n  (band : QuantumTheory.Models.RashbaExchange.Band) (px py offset broadening : ℝ),\n  broadening ≠ 0 →\n    QuantumTheory.Models.RashbaExchange.bastinBandPairContribution params μ ν\n        (QuantumTheory.Models.RashbaExchange.oppositeBand band) band px py\n        (QuantumTheory.Models.RashbaExchange.bandEnergy params.toHamiltonianParameters band px py + offset) broadening =\n      -2 * Complex.I * ↑(Lorentzian.spectralKernel offset broadening) *\n        QuantumTheory.Transport.interbandPoleRegularFactor\n          (QuantumTheory.Models.RashbaExchange.interbandEnergyGap params.toHamiltonianParameters band px py)\n          (QuantumTheory.Models.RashbaExchange.currentBandBlockTrace params μ ν\n            (QuantumTheory.Models.RashbaExchange.oppositeBand band) band px py)\n          (QuantumTheory.Models.RashbaExchange.currentBandBlockTrace params ν μ\n            (QuantumTheory.Models.RashbaExchange.oppositeBand band) band px py)\n          (offset, broadening)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.RashbaExchange.bastinBandPairContribution_opposite_source_eq_lorentzian",
+    "module": "LeanCondensedMatter.Models.RashbaExchange.Bastin.Pole",
+    "externalAxioms": [],
+    "docString": "At nonzero broadening the opposite-source contribution factorizes\nexactly into the target-band Lorentzian and the generic regular spectator. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.RashbaExchange.targetCenteredInterbandBastinPairIntegral_eq_interbandBastinPoleIntegral"
+    ],
+    "dependencies": [
+      "QuantumTheory.Models.RashbaExchange.sourceCoefficient_targetCentered",
+      "QuantumTheory.Transport.scalarSpectralDifferenceCoefficient_eq_lorentzian"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.RashbaExchange.targetCenteredInterbandBastinPairIntegral_eq_interbandBastinPoleIntegral"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
     "terminal": true,
     "statement": "∀ (params : QuantumTheory.Models.RashbaExchange.HamiltonianParameters) (band : QuantumTheory.Models.RashbaExchange.Band)\n  (px py : ℝ), params.exchangeSplitting = 0 → QuantumTheory.Models.RashbaExchange.berryCurvature params band px py = 0",
     "standardAxioms": [
@@ -84324,7 +84969,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ (params : QuantumTheory.Models.RashbaExchange.HamiltonianParameters) (band : QuantumTheory.Models.RashbaExchange.Band)\n  (px py : ℝ),\n  QuantumTheory.Models.RashbaExchange.berryCurvature params (QuantumTheory.Models.RashbaExchange.oppositeBand band) px\n      py =\n    -QuantumTheory.Models.RashbaExchange.berryCurvature params band px py",
     "standardAxioms": [
       "Classical.choice",
@@ -84332,7 +84977,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": true,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -84343,14 +84988,18 @@
     "docString": "Opposite bands carry opposite Berry curvature wherever the totalized closed formula is used. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "QuantumTheory.Models.RashbaExchange.interbandBlockDifference_im_div_gap_sq_eq_neg_chargeSq_berryCurvature"
+    ],
     "dependencies": [
       "QuantumTheory.Models.RashbaExchange.bandSign_oppositeBand"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "QuantumTheory.Models.RashbaExchange.interbandBlockDifference_im_div_gap_sq_eq_neg_chargeSq_berryCurvature"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -84607,6 +85256,52 @@
       "QuantumTheory.Models.RashbaExchange.two_mul_currentBandBlockTrace_interband_im_div_gap_sq_eq_chargeSq_berryCurvature"
     ],
     "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (params : QuantumTheory.Models.RashbaExchange.Parameters) (μ ν : Fin 2)\n  (source target : QuantumTheory.Models.RashbaExchange.Band) (px py : ℝ),\n  QuantumTheory.Models.RashbaExchange.currentBandBlockTrace params ν μ source target px py =\n    QuantumTheory.Models.RashbaExchange.currentBandBlockTrace params μ ν target source px py",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.RashbaExchange.currentBandBlockTrace_swap",
+    "module": "LeanCondensedMatter.Models.RashbaExchange.Current",
+    "externalAxioms": [],
+    "docString": "Cyclicity of finite-dimensional trace exchanges the current directions\nand swaps the ordered band projectors, without complex conjugation. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.RashbaExchange.bastinBandPairContribution_diagonal_swap",
+      "QuantumTheory.Models.RashbaExchange.interbandBlockDifference_im_div_gap_sq_eq_neg_chargeSq_berryCurvature"
+    ],
+    "dependencies": [
+      "ContinuousLinearMap.finiteDimensionalOperatorTrace_mul_comm"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.RashbaExchange.bastinBandPairContribution_diagonal_swap",
+      "QuantumTheory.Models.RashbaExchange.interbandBlockDifference_im_div_gap_sq_eq_neg_chargeSq_berryCurvature"
+    ],
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -85443,6 +86138,55 @@
   },
   {
     "terminal": false,
+    "statement": "∀ (params : QuantumTheory.Models.RashbaExchange.Parameters) (band : QuantumTheory.Models.RashbaExchange.Band)\n  (px py : ℝ),\n  QuantumTheory.Models.RashbaExchange.spinOrbitEnergy params.toHamiltonianParameters px py ≠ 0 →\n    (QuantumTheory.Models.RashbaExchange.currentBandBlockTrace params 0 1\n              (QuantumTheory.Models.RashbaExchange.oppositeBand band) band px py -\n            QuantumTheory.Models.RashbaExchange.currentBandBlockTrace params 1 0\n              (QuantumTheory.Models.RashbaExchange.oppositeBand band) band px py).im /\n        QuantumTheory.Models.RashbaExchange.interbandEnergyGap params.toHamiltonianParameters band px py ^ 2 =\n      -(params.signedCharge ^ 2 *\n          QuantumTheory.Models.RashbaExchange.berryCurvature params.toHamiltonianParameters band px py)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.RashbaExchange.interbandBlockDifference_im_div_gap_sq_eq_neg_chargeSq_berryCurvature",
+    "module": "LeanCondensedMatter.Models.RashbaExchange.Bastin.Berry",
+    "externalAxioms": [],
+    "docString": "The antisymmetric imaginary current block for a target band, normalized\nby its squared interband gap, is minus signed-charge-squared Berry curvature. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.RashbaExchange.interbandPoleRegularFactor_zero_im_eq_neg_chargeSq_berryCurvature"
+    ],
+    "dependencies": [
+      "QuantumTheory.Models.RashbaExchange.berryCurvature_oppositeBand",
+      "QuantumTheory.Models.RashbaExchange.currentBandBlockTrace_swap",
+      "QuantumTheory.Models.RashbaExchange.interbandEnergyGap_ne_zero_of_spinOrbitEnergy_ne_zero",
+      "QuantumTheory.Models.RashbaExchange.interbandEnergyGap_oppositeBand",
+      "QuantumTheory.Models.RashbaExchange.oppositeBand_oppositeBand",
+      "QuantumTheory.Models.RashbaExchange.two_mul_currentBandBlockTrace_interband_im_div_gap_sq_eq_chargeSq_berryCurvature"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.RashbaExchange.interbandPoleRegularFactor_zero_im_eq_neg_chargeSq_berryCurvature"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ (params : QuantumTheory.Models.RashbaExchange.HamiltonianParameters) (band : QuantumTheory.Models.RashbaExchange.Band)\n  (px py : ℝ),\n  QuantumTheory.Models.RashbaExchange.interbandEnergyGap params band px py =\n    2 * QuantumTheory.Models.RashbaExchange.bandSign band *\n      QuantumTheory.Models.RashbaExchange.spinOrbitEnergy params px py",
     "standardAxioms": [
       "Classical.choice",
@@ -85496,7 +86240,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -85508,7 +86252,9 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Models.RashbaExchange.bandEnergy_ne_oppositeBandEnergy"
+      "QuantumTheory.Models.RashbaExchange.bandEnergy_ne_oppositeBandEnergy",
+      "QuantumTheory.Models.RashbaExchange.interbandBlockDifference_im_div_gap_sq_eq_neg_chargeSq_berryCurvature",
+      "QuantumTheory.Models.RashbaExchange.interbandPoleRegularFactor_zero_im_eq_neg_chargeSq_berryCurvature"
     ],
     "dependencies": [
       "QuantumTheory.Models.RashbaExchange.interbandEnergyGap_eq"
@@ -85516,7 +86262,54 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Models.RashbaExchange.bandEnergy_ne_oppositeBandEnergy"
+      "QuantumTheory.Models.RashbaExchange.bandEnergy_ne_oppositeBandEnergy",
+      "QuantumTheory.Models.RashbaExchange.interbandBlockDifference_im_div_gap_sq_eq_neg_chargeSq_berryCurvature",
+      "QuantumTheory.Models.RashbaExchange.interbandPoleRegularFactor_zero_im_eq_neg_chargeSq_berryCurvature"
+    ],
+    "compiledConsumerCount": 3,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (params : QuantumTheory.Models.RashbaExchange.HamiltonianParameters) (band : QuantumTheory.Models.RashbaExchange.Band)\n  (px py : ℝ),\n  QuantumTheory.Models.RashbaExchange.interbandEnergyGap params (QuantumTheory.Models.RashbaExchange.oppositeBand band)\n      px py =\n    -QuantumTheory.Models.RashbaExchange.interbandEnergyGap params band px py",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.RashbaExchange.interbandEnergyGap_oppositeBand",
+    "module": "LeanCondensedMatter.Models.RashbaExchange.Model.Interband",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.RashbaExchange.interbandBlockDifference_im_div_gap_sq_eq_neg_chargeSq_berryCurvature"
+    ],
+    "dependencies": [
+      "QuantumTheory.Models.RashbaExchange.bandSign_oppositeBand",
+      "QuantumTheory.Models.RashbaExchange.interbandEnergyGap_eq"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.RashbaExchange.interbandBlockDifference_im_div_gap_sq_eq_neg_chargeSq_berryCurvature"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -85532,34 +86325,39 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
-    "statement": "∀ (params : QuantumTheory.Models.RashbaExchange.HamiltonianParameters) (band : QuantumTheory.Models.RashbaExchange.Band)\n  (px py : ℝ),\n  QuantumTheory.Models.RashbaExchange.interbandEnergyGap params (QuantumTheory.Models.RashbaExchange.oppositeBand band)\n      px py =\n    -QuantumTheory.Models.RashbaExchange.interbandEnergyGap params band px py",
+    "terminal": false,
+    "statement": "∀ (params : QuantumTheory.Models.RashbaExchange.Parameters) (band : QuantumTheory.Models.RashbaExchange.Band)\n  (px py : ℝ),\n  QuantumTheory.Models.RashbaExchange.spinOrbitEnergy params.toHamiltonianParameters px py ≠ 0 →\n    (QuantumTheory.Transport.interbandPoleRegularFactor\n          (QuantumTheory.Models.RashbaExchange.interbandEnergyGap params.toHamiltonianParameters band px py)\n          (QuantumTheory.Models.RashbaExchange.currentBandBlockTrace params 0 1\n            (QuantumTheory.Models.RashbaExchange.oppositeBand band) band px py)\n          (QuantumTheory.Models.RashbaExchange.currentBandBlockTrace params 1 0\n            (QuantumTheory.Models.RashbaExchange.oppositeBand band) band px py)\n          (0, 0)).im =\n      -(params.signedCharge ^ 2 *\n          QuantumTheory.Models.RashbaExchange.berryCurvature params.toHamiltonianParameters band px py)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": true,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "QuantumTheory.Models.RashbaExchange.interbandEnergyGap_oppositeBand",
-    "module": "LeanCondensedMatter.Models.RashbaExchange.Model.Interband",
+    "name": "QuantumTheory.Models.RashbaExchange.interbandPoleRegularFactor_zero_im_eq_neg_chargeSq_berryCurvature",
+    "module": "LeanCondensedMatter.Models.RashbaExchange.Bastin.Pole",
     "externalAxioms": [],
-    "docString": null,
+    "docString": "The regular target-pole coefficient gives precisely the Berry weight. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "QuantumTheory.Models.RashbaExchange.tendsto_targetCenteredInterbandBastinPairIntegral_re_berryCurvature"
+    ],
     "dependencies": [
-      "QuantumTheory.Models.RashbaExchange.bandSign_oppositeBand",
-      "QuantumTheory.Models.RashbaExchange.interbandEnergyGap_eq"
+      "QuantumTheory.Models.RashbaExchange.interbandBlockDifference_im_div_gap_sq_eq_neg_chargeSq_berryCurvature",
+      "QuantumTheory.Models.RashbaExchange.interbandEnergyGap_ne_zero_of_spinOrbitEnergy_ne_zero",
+      "QuantumTheory.Transport.interbandPoleRegularFactor_zero"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "QuantumTheory.Models.RashbaExchange.tendsto_targetCenteredInterbandBastinPairIntegral_re_berryCurvature"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -85603,11 +86401,11 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ (band : QuantumTheory.Models.RashbaExchange.Band),\n  QuantumTheory.Models.RashbaExchange.oppositeBand (QuantumTheory.Models.RashbaExchange.oppositeBand band) = band",
     "standardAxioms": [],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": true,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -85618,12 +86416,16 @@
     "docString": null,
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "QuantumTheory.Models.RashbaExchange.interbandBlockDifference_im_div_gap_sq_eq_neg_chargeSq_berryCurvature"
+    ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "QuantumTheory.Models.RashbaExchange.interbandBlockDifference_im_div_gap_sq_eq_neg_chargeSq_berryCurvature"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [],
     "definitionallyEquivalentTo": [],
     "replacementCandidates": [],
@@ -86026,6 +86828,48 @@
   },
   {
     "terminal": false,
+    "statement": "∀ (side : QuantumTheory.Transport.SpectralSide) (params : QuantumTheory.Models.RashbaExchange.Parameters)\n  (band : QuantumTheory.Models.RashbaExchange.Band) (px py offset broadening : ℝ),\n  QuantumTheory.Transport.scalarResolventCoefficient\n      (QuantumTheory.Transport.spectralParameter side\n        (QuantumTheory.Models.RashbaExchange.bandEnergy params.toHamiltonianParameters band px py + offset) broadening)\n      (QuantumTheory.Models.RashbaExchange.bandEnergy params.toHamiltonianParameters\n        (QuantumTheory.Models.RashbaExchange.oppositeBand band) px py) =\n    QuantumTheory.Transport.targetCenteredSourceCoefficient side\n      (QuantumTheory.Models.RashbaExchange.interbandEnergyGap params.toHamiltonianParameters band px py) offset\n      broadening",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.RashbaExchange.sourceCoefficient_targetCentered",
+    "module": "LeanCondensedMatter.Models.RashbaExchange.Bastin.Pole",
+    "externalAxioms": [],
+    "docString": "The source-band scalar coefficient at energy `E_target + offset` is\nthe generic target-centered source resolvent, with the full Rashba band\nenergies and their common kinetic shift cancelling only in the gap. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.RashbaExchange.bastinBandPairContribution_opposite_source_eq_lorentzian"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.RashbaExchange.bastinBandPairContribution_opposite_source_eq_lorentzian"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ (params : QuantumTheory.Models.RashbaExchange.HamiltonianParameters) (px py : ℝ),\n  QuantumTheory.Models.RashbaExchange.spinHamiltonian params px py *\n      QuantumTheory.Models.RashbaExchange.spinHamiltonian params px py =\n    ↑(QuantumTheory.Models.RashbaExchange.spinOrbitEnergySq params px py) • 1",
     "standardAxioms": [
       "Classical.choice",
@@ -86134,6 +86978,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "QuantumTheory.Models.RashbaExchange.antisymmetricBastinBandPairSum_eq_interband",
       "QuantumTheory.Models.RashbaExchange.bandProjector_add_oppositeBand",
       "QuantumTheory.Models.RashbaExchange.bandProjector_completeOrthogonalIdempotents",
       "QuantumTheory.Models.RashbaExchange.cleanBastinPointResponse_eq_integral_diagonal_add_interband",
@@ -86144,13 +86989,14 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "QuantumTheory.Models.RashbaExchange.antisymmetricBastinBandPairSum_eq_interband",
       "QuantumTheory.Models.RashbaExchange.bandProjector_add_oppositeBand",
       "QuantumTheory.Models.RashbaExchange.bandProjector_completeOrthogonalIdempotents",
       "QuantumTheory.Models.RashbaExchange.cleanBastinPointResponse_eq_integral_diagonal_add_interband",
       "QuantumTheory.Models.RashbaExchange.projectorBastinTraceIntegrand_eq_diagonal_add_interband",
       "QuantumTheory.Models.RashbaExchange.sum_bandProjector_eq_one"
     ],
-    "compiledConsumerCount": 5,
+    "compiledConsumerCount": 6,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -86249,6 +87095,136 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
+    "terminal": false,
+    "statement": "∀ (params : QuantumTheory.Models.RashbaExchange.Parameters) (band : QuantumTheory.Models.RashbaExchange.Band)\n  (px py radius broadening : ℝ),\n  broadening ≠ 0 →\n    QuantumTheory.Models.RashbaExchange.targetCenteredInterbandBastinPairIntegral params band px py radius broadening =\n      QuantumTheory.Transport.interbandBastinPoleIntegral\n        (QuantumTheory.Models.RashbaExchange.interbandEnergyGap params.toHamiltonianParameters band px py)\n        (QuantumTheory.Models.RashbaExchange.currentBandBlockTrace params 0 1\n          (QuantumTheory.Models.RashbaExchange.oppositeBand band) band px py)\n        (QuantumTheory.Models.RashbaExchange.currentBandBlockTrace params 1 0\n          (QuantumTheory.Models.RashbaExchange.oppositeBand band) band px py)\n        radius broadening",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.RashbaExchange.targetCenteredInterbandBastinPairIntegral_eq_interbandBastinPoleIntegral",
+    "module": "LeanCondensedMatter.Models.RashbaExchange.Bastin.Pole",
+    "externalAxioms": [],
+    "docString": "The concrete isolated Rashba pair is the generic regularized\ninterband Bastin pole integral. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.RashbaExchange.tendsto_targetCenteredInterbandBastinPairIntegral_re_berryCurvature"
+    ],
+    "dependencies": [
+      "QuantumTheory.Models.RashbaExchange.bastinBandPairContribution_opposite_source_eq_lorentzian"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.RashbaExchange.tendsto_targetCenteredInterbandBastinPairIntegral_re_berryCurvature"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (params : QuantumTheory.Models.RashbaExchange.Parameters) (band : QuantumTheory.Models.RashbaExchange.Band)\n  (px py radius : ℝ),\n  QuantumTheory.Models.RashbaExchange.spinOrbitEnergy params.toHamiltonianParameters px py ≠ 0 →\n    0 < radius →\n      radius < |QuantumTheory.Models.RashbaExchange.interbandEnergyGap params.toHamiltonianParameters band px py| →\n        Filter.Tendsto\n          (fun broadening =>\n            (QuantumTheory.Models.RashbaExchange.targetCenteredInterbandBastinPairIntegral params band px py radius\n                broadening).re)\n          (nhdsWithin 0 (Set.Ioi 0))\n          (nhds\n            (-2 * Real.pi *\n              (params.signedCharge ^ 2 *\n                QuantumTheory.Models.RashbaExchange.berryCurvature params.toHamiltonianParameters band px py)))",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.RashbaExchange.tendsto_targetCenteredInterbandBastinPairIntegral_re_berryCurvature",
+    "module": "LeanCondensedMatter.Models.RashbaExchange.Bastin.Pole",
+    "externalAxioms": [],
+    "docString": "Pointwise clean fixed-window limit of the *isolated* opposite-source\nBastin pair. This is `-2π q² Ω_band(p)`; no full-response limit is asserted. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.RashbaExchange.tendsto_targetCenteredInterbandBastinPairIntegral_re_cleanLocalDensity"
+    ],
+    "dependencies": [
+      "QuantumTheory.Models.RashbaExchange.interbandPoleRegularFactor_zero_im_eq_neg_chargeSq_berryCurvature",
+      "QuantumTheory.Models.RashbaExchange.targetCenteredInterbandBastinPairIntegral_eq_interbandBastinPoleIntegral",
+      "QuantumTheory.Transport.tendsto_interbandBastinPoleIntegral_re"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.RashbaExchange.tendsto_targetCenteredInterbandBastinPairIntegral_re_cleanLocalDensity"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (params : QuantumTheory.Models.RashbaExchange.Parameters) (band : QuantumTheory.Models.RashbaExchange.Band)\n  (px py radius : ℝ),\n  QuantumTheory.Models.RashbaExchange.spinOrbitEnergy params.toHamiltonianParameters px py ≠ 0 →\n    0 < radius →\n      radius < |QuantumTheory.Models.RashbaExchange.interbandEnergyGap params.toHamiltonianParameters band px py| →\n        Filter.Tendsto\n          (fun broadening =>\n            (QuantumTheory.Models.RashbaExchange.targetCenteredInterbandBastinPairIntegral params band px py radius\n                broadening).re)\n          (nhdsWithin 0 (Set.Ioi 0))\n          (nhds (QuantumTheory.Models.RashbaExchange.cleanLocalIsolatedBastinLimitDensity params band px py))",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.RashbaExchange.tendsto_targetCenteredInterbandBastinPairIntegral_re_cleanLocalDensity",
+    "module": "LeanCondensedMatter.Models.RashbaExchange.Bastin.Pole",
+    "externalAxioms": [],
+    "docString": "The named isolated-pole density is attained on a fixed window narrower\nthan the interband energy separation as broadening approaches zero from above. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.Models.RashbaExchange.tendsto_targetCenteredInterbandBastinPairIntegral_re_berryCurvature"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
     "terminal": true,
     "statement": "∀ (params : QuantumTheory.Models.RashbaExchange.HamiltonianParameters) (band : QuantumTheory.Models.RashbaExchange.Band)\n  (px py : ℝ), Matrix.trace (QuantumTheory.Models.RashbaExchange.bandProjector params band px py) = 1",
     "standardAxioms": [
@@ -86290,7 +87266,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ (params : QuantumTheory.Models.RashbaExchange.Parameters) (band : QuantumTheory.Models.RashbaExchange.Band)\n  (px py : ℝ),\n  QuantumTheory.Models.RashbaExchange.spinOrbitEnergy params.toHamiltonianParameters px py ≠ 0 →\n    2 *\n          (QuantumTheory.Models.RashbaExchange.currentBandBlockTrace params 0 1 band\n              (QuantumTheory.Models.RashbaExchange.oppositeBand band) px py).im /\n        QuantumTheory.Models.RashbaExchange.interbandEnergyGap params.toHamiltonianParameters band px py ^ 2 =\n      params.signedCharge ^ 2 *\n        QuantumTheory.Models.RashbaExchange.berryCurvature params.toHamiltonianParameters band px py",
     "standardAxioms": [
       "Classical.choice",
@@ -86298,7 +87274,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -86309,15 +87285,19 @@
     "docString": "Normalizing the interband current block by the squared energy gap reproduces `q²` times the\nclosed Rashba-exchange Berry curvature. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "QuantumTheory.Models.RashbaExchange.interbandBlockDifference_im_div_gap_sq_eq_neg_chargeSq_berryCurvature"
+    ],
     "dependencies": [
       "QuantumTheory.Models.RashbaExchange.currentBandBlockTrace_interband_eq_chargeSq_forceMatrixTraceNumerator",
       "QuantumTheory.Models.RashbaExchange.forceMatrixBerryCurvature_eq_berryCurvature"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "QuantumTheory.Models.RashbaExchange.interbandBlockDifference_im_div_gap_sq_eq_neg_chargeSq_berryCurvature"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -95024,7 +96004,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -95036,15 +96016,17 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Models.MassiveDirac.targetCenteredInterbandSpectatorCurrentFactor_zero_im_eq_neg_chargeSq_berryCurvature"
+      "QuantumTheory.Models.MassiveDirac.targetCenteredInterbandSpectatorCurrentFactor_zero_im_eq_neg_chargeSq_berryCurvature",
+      "QuantumTheory.Models.RashbaExchange.interbandPoleRegularFactor_zero_im_eq_neg_chargeSq_berryCurvature"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Models.MassiveDirac.targetCenteredInterbandSpectatorCurrentFactor_zero_im_eq_neg_chargeSq_berryCurvature"
+      "QuantumTheory.Models.MassiveDirac.targetCenteredInterbandSpectatorCurrentFactor_zero_im_eq_neg_chargeSq_berryCurvature",
+      "QuantumTheory.Models.RashbaExchange.interbandPoleRegularFactor_zero_im_eq_neg_chargeSq_berryCurvature"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -97829,7 +98811,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -97841,7 +98823,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Models.MassiveDirac.bastinBandPairContribution_opposite_source_eq_lorentzian"
+      "QuantumTheory.Models.MassiveDirac.bastinBandPairContribution_opposite_source_eq_lorentzian",
+      "QuantumTheory.Models.RashbaExchange.bastinBandPairContribution_opposite_source_eq_lorentzian"
     ],
     "dependencies": [
       "Lorentzian.inv_add_I_sub_inv_sub_I_eq_spectralKernel",
@@ -97851,9 +98834,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Models.MassiveDirac.bastinBandPairContribution_opposite_source_eq_lorentzian"
+      "QuantumTheory.Models.MassiveDirac.bastinBandPairContribution_opposite_source_eq_lorentzian",
+      "QuantumTheory.Models.RashbaExchange.bastinBandPairContribution_opposite_source_eq_lorentzian"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -99327,7 +100311,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -99339,7 +100323,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Models.MassiveDirac.tendsto_targetCenteredInterbandBastinPairIntegral_re_berryCurvature"
+      "QuantumTheory.Models.MassiveDirac.tendsto_targetCenteredInterbandBastinPairIntegral_re_berryCurvature",
+      "QuantumTheory.Models.RashbaExchange.tendsto_targetCenteredInterbandBastinPairIntegral_re_berryCurvature"
     ],
     "dependencies": [
       "QuantumTheory.Transport.tendsto_interbandBastinPoleIntegral"
@@ -99347,9 +100332,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Models.MassiveDirac.tendsto_targetCenteredInterbandBastinPairIntegral_re_berryCurvature"
+      "QuantumTheory.Models.MassiveDirac.tendsto_targetCenteredInterbandBastinPairIntegral_re_berryCurvature",
+      "QuantumTheory.Models.RashbaExchange.tendsto_targetCenteredInterbandBastinPairIntegral_re_berryCurvature"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -146427,6 +147413,7 @@
     "directWrapperOf": null,
     "dependents": [
       "LocallyFiniteHopping.star_boundedBondOperator",
+      "SecondQuantization.Fermionic.Validation.TwoSiteOrbitalResponse.boundedOrbitalMatrix_selfAdjoint",
       "SecondQuantization.Fermionic.Validation.twoSiteDimerHamiltonian_selfAdjoint"
     ],
     "dependencies": [
@@ -146438,9 +147425,10 @@
     "completedMention": false,
     "compiledConsumers": [
       "LocallyFiniteHopping.star_boundedBondOperator",
+      "SecondQuantization.Fermionic.Validation.TwoSiteOrbitalResponse.boundedOrbitalMatrix_selfAdjoint",
       "SecondQuantization.Fermionic.Validation.twoSiteDimerHamiltonian_selfAdjoint"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -147428,6 +148416,207 @@
       "SecondQuantization.Fermionic.Transport.tendsto_twoModeFockHallKuboResponse_re"
     ],
     "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (hoppingStrength : ℝ),\n  SecondQuantization.Fermionic.Validation.TwoSiteOrbitalResponse.boundedOrbitalMatrix\n      (QuantumTheory.Models.OrbitalTransport.TwoSite.bondFluxOneToZero hoppingStrength) =\n    -SecondQuantization.Fermionic.Validation.TwoSiteOrbitalResponse.boundedOrbitalBondFlux hoppingStrength",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Fermionic.Validation.TwoSiteOrbitalResponse.boundedOrbitalBondFlux_reverse",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Validation.TwoSiteOrbitalResponse",
+    "externalAxioms": [],
+    "docString": "Reversing the bond reverses its bounded orbital current. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.Models.OrbitalTransport.TwoSite.bondFluxOneToZero_eq_neg",
+      "SecondQuantization.Fermionic.Validation.TwoSiteOrbitalResponse.boundedOrbitalMatrix_neg"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (A : QuantumTheory.Models.OrbitalTransport.TwoSite.OrbitalMatrix),\n  SecondQuantization.Fermionic.Validation.TwoSiteOrbitalResponse.boundedOrbitalMatrix (-A) =\n    -SecondQuantization.Fermionic.Validation.TwoSiteOrbitalResponse.boundedOrbitalMatrix A",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Fermionic.Validation.TwoSiteOrbitalResponse.boundedOrbitalMatrix_neg",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Validation.TwoSiteOrbitalResponse",
+    "externalAxioms": [],
+    "docString": "Orbital matrix realization preserves sign reversal. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Fermionic.Validation.TwoSiteOrbitalResponse.boundedOrbitalBondFlux_reverse"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.Validation.TwoSiteOrbitalResponse.boundedOrbitalBondFlux_reverse"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (A : QuantumTheory.Models.OrbitalTransport.TwoSite.OrbitalMatrix),\n  Matrix.IsHermitian A →\n    IsSelfAdjoint (SecondQuantization.Fermionic.Validation.TwoSiteOrbitalResponse.boundedOrbitalMatrix A)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Fermionic.Validation.TwoSiteOrbitalResponse.boundedOrbitalMatrix_selfAdjoint",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Validation.TwoSiteOrbitalResponse",
+    "externalAxioms": [],
+    "docString": "A Hermitian four-state matrix gives a self-adjoint Fock observable. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "SecondQuantization.Fermionic.Lattice.star_boundedDgammaMatrixUnit"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (Δ hoppingStrength : ℝ)\n  (expectation :\n    QuantumTheory.LinearResponse.NormalizedExpectation\n      SecondQuantization.Fermionic.Validation.TwoSiteOrbitalResponse.OrbitalFock)\n  (sourceProfile : ℝ → ℝ) (observationTime : ℝ),\n  (SecondQuantization.Fermionic.Validation.TwoSiteOrbitalResponse.orbitalChargeResponseChannel\n          hoppingStrength).causalResponse\n      (QuantumTheory.LinearResponse.freePropagatorGroup\n        (SecondQuantization.Fermionic.Validation.TwoSiteOrbitalResponse.orbitalFreeSystem Δ hoppingStrength))\n      (SecondQuantization.Fermionic.Validation.TwoSiteOrbitalResponse.orbitalFreeSystem Δ hoppingStrength).hbar\n      expectation sourceProfile observationTime =\n    ∫ (s : ℝ) in 0..observationTime,\n      ↑(sourceProfile s) *\n        QuantumTheory.LinearResponse.retardedSusceptibility\n          (QuantumTheory.LinearResponse.freePropagatorGroup\n            (SecondQuantization.Fermionic.Validation.TwoSiteOrbitalResponse.orbitalFreeSystem Δ hoppingStrength))\n          (SecondQuantization.Fermionic.Validation.TwoSiteOrbitalResponse.orbitalFreeSystem Δ hoppingStrength).hbar\n          expectation\n          (SecondQuantization.Fermionic.Validation.TwoSiteOrbitalResponse.boundedOrbitalBondFlux hoppingStrength)\n          (SecondQuantization.Fermionic.Validation.TwoSiteOrbitalResponse.boundedChargeBondSource hoppingStrength)\n          observationTime s",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Fermionic.Validation.TwoSiteOrbitalResponse.orbitalChargeResponse_eq_retarded",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Validation.TwoSiteOrbitalResponse",
+    "externalAxioms": [],
+    "docString": "The channel's causal response is exactly the retarded Kubo convolution,\nevaluated using the *same* finite orbital Hamiltonian. No DC or continuum\nlimit is taken. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.LinearResponse.ResponseChannel.fixed_causalResponse_eq"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (Δ hoppingStrength : ℝ),\n  Matrix.IsHermitian (QuantumTheory.Models.OrbitalTransport.TwoSite.hamiltonian Δ hoppingStrength)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Fermionic.Validation.TwoSiteOrbitalResponse.orbitalHamiltonian_isHermitian",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Validation.TwoSiteOrbitalResponse",
+    "externalAxioms": [],
+    "docString": "Explicit two-site Hamiltonian is Hermitian for real hopping and splitting. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
