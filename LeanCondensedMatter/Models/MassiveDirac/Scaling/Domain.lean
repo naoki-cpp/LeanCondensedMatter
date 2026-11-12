@@ -1,4 +1,4 @@
-import LeanCondensedMatter.QuantumTheory.PlanckConstant
+import Mathlib.Basic.Real.Basic
 
 set_option linter.style.header false
 
@@ -17,7 +17,6 @@ metallic shell used by the finite-cutoff formulas.
 namespace QuantumTheory.Models.MassiveDirac
 
 noncomputable section
-
 
 /-- Minimal physical domain for the Born-RTA longitudinal benchmark.
 
@@ -79,40 +78,14 @@ structure AheScalingCoordinate where
   referenceEnergy_pos : 0 < referenceEnergy
   scatteringScale_pos : 0 < scatteringScale
 
-/-- The chosen disorder broadening energy, e.g. `ℏ / τ_tr` for a transport lifetime. -/
-def AheScalingCoordinate.gamma (coordinate : AheScalingCoordinate) : ℝ :=
-  coordinate.scatteringScale
-
 /-- Dimensionless disorder coordinate `x = γ / E_ref`. -/
 def AheScalingCoordinate.dimensionlessScattering (coordinate : AheScalingCoordinate) : ℝ :=
-  coordinate.gamma / coordinate.referenceEnergy
-
-/-- Conductivity normalized in the `e² / h` convention, `σ̂ = (h/e²) σ`, using the
-charge and reduced-Planck-constant data of this physical transport point. -/
-def AheScalingParameters.normalizedConductivity
-    (params : AheScalingParameters) (sigma : ℝ) : ℝ :=
-  (planckConstantFromReduced params.hbar / params.e ^ 2) * sigma
-
-lemma AheScalingCoordinate.referenceEnergy_ne_zero (coordinate : AheScalingCoordinate) :
-    coordinate.referenceEnergy ≠ 0 :=
-  ne_of_gt coordinate.referenceEnergy_pos
-
-lemma AheScalingCoordinate.scatteringScale_ne_zero (coordinate : AheScalingCoordinate) :
-    coordinate.scatteringScale ≠ 0 :=
-  ne_of_gt coordinate.scatteringScale_pos
-
-lemma AheScalingParameters.charge_sq_ne_zero (params : AheScalingParameters) :
-    params.e ^ 2 ≠ 0 :=
-  pow_ne_zero 2 params.charge_ne_zero
+  coordinate.scatteringScale / coordinate.referenceEnergy
 
 lemma AheScalingCoordinate.dimensionlessScattering_pos (coordinate : AheScalingCoordinate) :
     0 < coordinate.dimensionlessScattering := by
-  unfold AheScalingCoordinate.dimensionlessScattering AheScalingCoordinate.gamma
+  unfold AheScalingCoordinate.dimensionlessScattering
   exact div_pos coordinate.scatteringScale_pos coordinate.referenceEnergy_pos
-
-lemma AheScalingParameters.fermiEnergy_pos (params : AheScalingParameters) :
-    0 < params.fermiEnergy :=
-  lt_of_le_of_lt (abs_nonneg params.m) params.metallic
 
 end
 
