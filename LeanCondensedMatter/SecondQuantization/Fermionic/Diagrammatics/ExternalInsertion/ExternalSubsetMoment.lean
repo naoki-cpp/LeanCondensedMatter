@@ -492,11 +492,11 @@ theorem ExternalInsertionBlockLayout.assembleConnectedBlocks_signedDysonShuffleO
       exact ((d.vertexGraph.componentBlock_eq_iff_mem
         (reindex.symm B).2 (Sum.inl e)).2 hmem).symm
     rw [hC]
-    have h := layout.assembleConnectedBlocks_componentDysonAmplitude_eq_local
-      F hconnected ε β g externalTime e
+    have h := ExternalInsertionBlockLayout.assembleConnectedBlocks_componentDysonAmplitude_eq_local
+      layout F hconnected ε β g externalTime e
     simpa only [hsource] using h
-  have horbit := layout.assembleConnectedBlocks_signedDysonShuffleOrbit
-    F hconnected ε β g externalTime
+  have horbit := ExternalInsertionBlockLayout.assembleConnectedBlocks_signedDysonShuffleOrbit
+    layout F hconnected ε β g externalTime
   calc
     (∑ shuffle : d.ComponentInteractionOrderShuffle,
       d.orderedDysonAmplitude ε β g externalTime
