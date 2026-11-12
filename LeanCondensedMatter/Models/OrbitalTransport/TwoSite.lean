@@ -101,13 +101,8 @@ theorem bondFluxOneToZero_eq_neg (t : ℝ) :
       _ = 0 := sub_eq_zero.mpr (hopping_commutes_totalOrbital t)
   have hcomm :
       hopping t * orbitalZOne - orbitalZOne * hopping t =
-        -(hopping t * orbitalZZero - orbitalZZero * hopping t) := by
-    calc
-      _ = ((hopping t * orbitalZZero - orbitalZZero * hopping t) +
-          (hopping t * orbitalZOne - orbitalZOne * hopping t)) -
-            (hopping t * orbitalZZero - orbitalZZero * hopping t) := by abel
-      _ = 0 - (hopping t * orbitalZZero - orbitalZZero * hopping t) := by rw [hsum]
-      _ = _ := zero_sub _
+        -(hopping t * orbitalZZero - orbitalZZero * hopping t) :=
+    eq_neg_of_add_eq_zero_right hsum
   unfold bondFluxOneToZero bondFluxZeroToOne
   rw [hcomm]
   simp only [smul_neg]
