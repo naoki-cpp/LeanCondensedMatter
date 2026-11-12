@@ -2579,5 +2579,89 @@ theorem ExternalInsertionBlockLayout.sum_externalPartitionFiber_eq_sum_connected
       rw [hπ]
 
 
+
+/-- A prescribed external partition determines every physical block
+layout uniquely once the owner of each ambient interaction vertex is
+fixed. The external parity witnesses are propositions, not additional
+diagram data. -/
+noncomputable def ExternalInsertionBlockLayout.fixedPartitionOwnerEquiv
+    (π : Finpartition (Finset.univ : Finset (Fin (2 * E))))
+    (heven : ∀ B : π.parts, Even (B : Finset (Fin (2 * E))).card) :
+    {layout : ExternalInsertionBlockLayout E N // layout.partition = π} ≃
+      (Fin N → π.parts) where
+  toFun x v :=
+    ⟨(x.1.interactionOwner v).1, by
+      rw [← x.2]
+      exact (x.1.interactionOwner v).2⟩
+  invFun owner :=
+    ⟨⟨π, heven, owner⟩, rfl⟩
+  left_inv x := by
+    obtain ⟨⟨partition, even, owner⟩, hp⟩ := x
+    cases hp
+    rfl
+  right_inv owner := by
+    rfl
+
+/-- An interaction-owner assignment is uniquely specified by its
+complete family of fiber cardinalities and an order-preserving slot
+shuffle. All zero-size blocks remain in the domain. -/
+private noncomputable def ownerFiberSizesEquiv
+    {ι : Type*} [Fintype ι] :
+    (Fin N → ι) ≃
+      Σ size : ι → ℕ,
+        {owner : Fin N → ι //
+          ∀ i, Fintype.card {v : Fin N // owner v = i} = size i} where
+  toFun owner :=
+    ⟨fun i => Fintype.card {v : Fin N // owner v = i},
+      ⟨owner, fun _ => rfl⟩⟩
+  invFun x := x.2.1
+  left_inv owner := rfl
+  right_inv x := by
+    rcases x with ⟨size, ⟨owner, hsize⟩⟩
+    have hs : size = fun i => Fintype.card {v : Fin N // owner v = i} :=
+      funext (fun i => (hsize i).symm)
+    cases hs
+    rfl
+
+/-- For a **fixed physical external-source partition**, layouts of all
+ambient interaction vertices are in exact bijection with a variable
+family of local vertex cardinalities and the shuffle interleaving those
+vertices. This is the owner/shuffle reindexing required to upgrade the
+genuine local Dyson shuffle-orbit factorization to a coefficientwise
+partition identity.
+
+The map is bijective even when some connected external blocks have no
+interaction vertices, and counts no additional internal permutations. -/
+noncomputable def ExternalInsertionBlockLayout.fixedPartitionSizeShuffleEquiv
+    (π : Finpartition (Finset.univ : Finset (Fin (2 * E))))
+    (heven : ∀ B : π.parts, Even (B : Finset (Fin (2 * E))).card) :
+    {layout : ExternalInsertionBlockLayout E N // layout.partition = π} ≃
+      Σ size : π.parts → ℕ, FamilySlotShuffleTo size N :=
+  (ExternalInsertionBlockLayout.fixedPartitionOwnerEquiv π heven).trans
+    ((ownerFiberSizesEquiv (N := N)).trans
+      (Equiv.sigmaCongrRight (fun size =>
+        (familyShuffleOwnerEquiv (ι := π.parts) (size := size)
+          (total := N)).symm)))
+
+/-- Reindex any finite sum over physical interaction-owner assignments
+for a fixed even external partition into a sum over exactly the
+independent local interaction sizes and their order-preserving shuffles.
+This finite sum is the *physical layout* sum, not an artificial factorial
+multiple of the diagram coefficient. -/
+theorem ExternalInsertionBlockLayout.sum_fixedPartitionLayouts_eq_sizes_shuffles
+    {M : Type*} [AddCommMonoid M]
+    (π : Finpartition (Finset.univ : Finset (Fin (2 * E))))
+    (heven : ∀ B : π.parts, Even (B : Finset (Fin (2 * E))).card)
+    (weight : ExternalInsertionBlockLayout E N → M) :
+    (∑ layout : {layout : ExternalInsertionBlockLayout E N //
+        layout.partition = π}, weight layout.1) =
+      ∑ data : Σ size : π.parts → ℕ, FamilySlotShuffleTo size N,
+        weight ((ExternalInsertionBlockLayout.fixedPartitionSizeShuffleEquiv π heven).symm
+          data).1 := by
+  classical
+  exact (Equiv.sum_comp
+    (ExternalInsertionBlockLayout.fixedPartitionSizeShuffleEquiv π heven).symm
+    (fun layout => weight layout.1)).symm
+
 end Common
 end SecondQuantization
