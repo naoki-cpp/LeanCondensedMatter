@@ -89,14 +89,20 @@ private theorem sortedEigenvalues_eq_bandEnergy
     linarith
   fin_cases iu <;> fin_cases il
   · exfalso
-    exact (ne_of_gt hgap) (hiuR.symm.trans hilR).symm
+    exact (ne_of_gt hgap) (hiuR.symm.trans hilR)
   · exact ⟨by simpa using hiuR, by simpa using hilR⟩
   · exfalso
+    have hiuR' :
+        sortedEigenvalues v m px py (1 : Fin 2) = bandEnergy .upper v m px py := by
+      simpa using hiuR
+    have hilR' :
+        sortedEigenvalues v m px py (0 : Fin 2) = bandEnergy .lower v m px py := by
+      simpa using hilR
     have horder := hanti (show (0 : Fin 2) ≤ 1 by decide)
-    rw [hiuR, hilR] at horder
+    rw [hiuR', hilR'] at horder
     exact (not_le_of_gt hgap) horder
   · exfalso
-    exact (ne_of_gt hgap) (hiuR.symm.trans hilR).symm
+    exact (ne_of_gt hgap) (hiuR.symm.trans hilR)
 
 private def finTwoEquivBand : Fin 2 ≃ Band where
   toFun := Fin.cases .upper (fun _ => .lower)
