@@ -25,18 +25,6 @@ noncomputable section
 
 variable {Mode : Type*}
 
-private theorem norm_sqrt_natCast_le_norm_natCast_add_one (k : ℕ) :
-    ‖(Real.sqrt (k : ℝ) : ℂ)‖ ≤ ‖(k : ℂ) + 1‖ := by
-  rw [Complex.norm_real, Real.norm_of_nonneg (Real.sqrt_nonneg _)]
-  have hcast : (k : ℂ) + 1 = (((k : ℝ) + 1 : ℝ) : ℂ) := by
-    norm_num
-  rw [hcast, Complex.norm_real, Real.norm_of_nonneg (by positivity)]
-  rw [Real.sqrt_le_iff]
-  constructor
-  · positivity
-  · have hk : 0 ≤ (k : ℝ) := by positivity
-    nlinarith
-
 private theorem norm_sqrt_natCast_add_one_le_norm_natCast_add_one (k : ℕ) :
     ‖(Real.sqrt ((k : ℝ) + 1) : ℂ)‖ ≤ ‖(k : ℂ) + 1‖ := by
   rw [Complex.norm_real, Real.norm_of_nonneg (Real.sqrt_nonneg _)]
@@ -48,9 +36,21 @@ private theorem norm_sqrt_natCast_add_one_le_norm_natCast_add_one (k : ℕ) :
   have hk : (0 : ℝ) ≤ (k : ℝ) := by positivity
   linarith
 
-/-- The number-operator domain lies in the annihilation domain. -/
-theorem completedNumberOperatorDomain_le_completedAnnihilateDomain (i : Mode) :
-    completedNumberOperatorDomain i ≤ completedAnnihilateDomain i := by
+private theorem norm_sqrt_natCast_le_norm_natCast_add_one (k : ℕ) :
+    ‖(Real.sqrt (k : ℝ) : ℂ)‖ ≤ ‖(k : ℂ) + 1‖ := by
+  calc
+    ‖(Real.sqrt (k : ℝ) : ℂ)‖ ≤
+        ‖(Real.sqrt ((k : ℝ) + 1) : ℂ)‖ := by
+      simp only [Complex.norm_real, Real.norm_of_nonneg (Real.sqrt_nonneg _)]
+      exact Real.sqrt_le_sqrt (by linarith)
+    _ ≤ ‖(k : ℂ) + 1‖ := norm_sqrt_natCast_add_one_le_norm_natCast_add_one k
+
+/-- A pointwise majorization of diagonal weights transfers the number-operator domain into
+any weighted diagonal domain. Both bosonic ladder domains are special cases. -/
+private theorem completedNumberOperatorDomain_le_weightDomain
+    (i : Mode) (w : Occupation Mode → ℂ)
+    (hw : ∀ n, ‖w n‖ ≤ ‖(n i : ℂ) + 1‖) :
+    completedNumberOperatorDomain i ≤ Common.completedDiagonalDomain w := by
   intro ψ hψ
   rw [Common.mem_completedDiagonalDomain_iff]
   have hshift :=
@@ -59,22 +59,21 @@ theorem completedNumberOperatorDomain_le_completedAnnihilateDomain (i : Mode) :
   rw [Common.mem_completedDiagonalDomain_iff] at hshift
   exact hshift.mono' fun n => by
     simp only [norm_mul]
-    exact mul_le_mul_of_nonneg_right
-      (norm_sqrt_natCast_le_norm_natCast_add_one (n i)) (norm_nonneg _)
+    exact mul_le_mul_of_nonneg_right (hw n) (norm_nonneg _)
+
+/-- The number-operator domain lies in the annihilation domain. -/
+theorem completedNumberOperatorDomain_le_completedAnnihilateDomain (i : Mode) :
+    completedNumberOperatorDomain i ≤ completedAnnihilateDomain i := by
+  exact completedNumberOperatorDomain_le_weightDomain i
+    (fun n : Occupation Mode => (Real.sqrt (n i : ℝ) : ℂ))
+    (fun n => norm_sqrt_natCast_le_norm_natCast_add_one (n i))
 
 /-- The number-operator domain lies in the creation domain. -/
 theorem completedNumberOperatorDomain_le_completedCreateDomain (i : Mode) :
     completedNumberOperatorDomain i ≤ completedCreateDomain i := by
-  intro ψ hψ
-  rw [Common.mem_completedDiagonalDomain_iff]
-  have hshift :=
-    Common.mem_completedDiagonalDomain_add_const
-      (fun n : Occupation Mode => (n i : ℂ)) 1 hψ
-  rw [Common.mem_completedDiagonalDomain_iff] at hshift
-  exact hshift.mono' fun n => by
-    simp only [norm_mul]
-    exact mul_le_mul_of_nonneg_right
-      (norm_sqrt_natCast_add_one_le_norm_natCast_add_one (n i)) (norm_nonneg _)
+  exact completedNumberOperatorDomain_le_weightDomain i
+    (fun n : Occupation Mode => (Real.sqrt (n i + 1 : ℝ) : ℂ))
+    (fun n => norm_sqrt_natCast_add_one_le_norm_natCast_add_one (n i))
 
 /-- On `Dom(Nᵢ)`, annihilation lands in the creation domain. -/
 theorem completedAnnihilate_mem_completedCreateDomain_of_mem_completedNumberOperatorDomain
