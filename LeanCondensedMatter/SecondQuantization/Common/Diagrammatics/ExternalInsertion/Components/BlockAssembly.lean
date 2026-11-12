@@ -2433,13 +2433,6 @@ theorem ExternalInsertionBlockLayout.sum_connectedBlockFamilies_prod
               d.vertexGraph.Preconnected},
           weight B d.1 := by
   classical
-  letI : Fintype (layout.ConnectedBlockFamily (ExternalLabel := ExternalLabel)
-      (InternalLabel := InternalLabel)) := Fintype.ofFinite _
-  letI : (B : layout.partition.parts) →
-      Fintype {d : ExternalInsertionDiagram ExternalLabel InternalLabel
-        ((B : Finset (Fin (2 * E))).card / 2) N
-        (layout.interactionBlock (Finset.univ : Finset (Fin N)) B) //
-          d.vertexGraph.Preconnected} := fun _ => Fintype.ofFinite _
   calc
     (∑ F : layout.ConnectedBlockFamily (ExternalLabel := ExternalLabel)
         (InternalLabel := InternalLabel), ∏ B, weight B (F.1 B)) =
@@ -2455,7 +2448,8 @@ theorem ExternalInsertionBlockLayout.sum_connectedBlockFamilies_prod
                 (InternalLabel := InternalLabel))
               (fun F => ∏ B, weight B (F B).1))
     _ = _ :=
-      (Fintype.prod_sum (fun B (d : {d : ExternalInsertionDiagram
+      (Fintype.prod_sum (fun (B : layout.partition.parts)
+        (d : {d : ExternalInsertionDiagram
           ExternalLabel InternalLabel
             ((B : Finset (Fin (2 * E))).card / 2) N
             (layout.interactionBlock (Finset.univ : Finset (Fin N)) B) //
