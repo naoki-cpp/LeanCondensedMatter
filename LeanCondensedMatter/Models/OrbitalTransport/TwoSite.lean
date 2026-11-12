@@ -107,22 +107,10 @@ theorem hopping_commutes_totalOrbital (t : ℝ) :
 /-- The two oriented bond fluxes are antisymmetric. -/
 theorem bondFluxOneToZero_eq_neg (t : ℝ) :
     bondFluxOneToZero t = -bondFluxZeroToOne t := by
-  have hsum :
-      (hopping t * orbitalZZero - orbitalZZero * hopping t) +
-        (hopping t * orbitalZOne - orbitalZOne * hopping t) = 0 := by
-    calc
-      _ = hopping t * (orbitalZZero + orbitalZOne) -
-            (orbitalZZero + orbitalZOne) * hopping t := by
-              rw [mul_add, add_mul]
-              abel
-      _ = 0 := sub_eq_zero.mpr (hopping_commutes_totalOrbital t)
-  have hcomm :
-      hopping t * orbitalZOne - orbitalZOne * hopping t =
-        -(hopping t * orbitalZZero - orbitalZZero * hopping t) :=
-    eq_neg_of_add_eq_zero_right hsum
   unfold bondFluxOneToZero bondFluxZeroToOne hoppingOutflow
-  rw [hcomm]
-  simp only [smul_neg]
+  have h := hopping_commutes_totalOrbital t
+  simp only [mul_add, add_mul] at h
+  module
 
 /-- Site-zero local orbital balance: derivative + outgoing flux = local torque. -/
 theorem continuity_zero (Δ t : ℝ) :
