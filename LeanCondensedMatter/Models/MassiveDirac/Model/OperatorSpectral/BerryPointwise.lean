@@ -125,15 +125,12 @@ private theorem hamiltonianOperator_bandEigenbasis
   have hspectral := sortedEigenvalues_eq_bandEnergy v m px py hE
   have happ := (hamiltonianOperator_isSelfAdjoint v m px py).isSymmetric.apply_eigenvectorBasis
     diracHilbert_finrank
-  cases band with
-  | lower =>
-      simp only [bandEigenbasis, OrthonormalBasis.reindex_apply, finTwoEquivBand]
-      rw [← hspectral.2]
-      exact happ (1 : Fin 2)
-  | upper =>
-      simp only [bandEigenbasis, OrthonormalBasis.reindex_apply, finTwoEquivBand]
-      rw [← hspectral.1]
-      exact happ (0 : Fin 2)
+  cases band <;>
+    simp only [bandEigenbasis, OrthonormalBasis.reindex_apply, finTwoEquivBand]
+  · rw [← hspectral.2]
+    exact happ (1 : Fin 2)
+  · rw [← hspectral.1]
+    exact happ (0 : Fin 2)
 
 /-- Generic pointwise Berry eigenbasis data for the nondegenerate massive-Dirac Hamiltonian.
 
@@ -196,23 +193,15 @@ private theorem bandProjectorOperator_apply_pointwiseEigenbasis
   · simp only [one_div, bandSign_lower, Complex.ofReal_div, Complex.ofReal_neg,
       Complex.ofReal_one, bandEnergy_lower, neg_smul, Complex.coe_smul, smul_neg,
       smul_add, ↓reduceIte]
-    match_scalars
-    field_simp [hEc]
-    simp [two_mul]
   · simp only [one_div, bandSign_lower, Complex.ofReal_div, Complex.ofReal_neg,
       Complex.ofReal_one, bandEnergy_upper, Complex.coe_smul, smul_add, reduceCtorEq,
       ↓reduceIte]
-    match_scalars
-    field_simp [hEc]
-    simp [two_mul]
   · simp only [one_div, bandSign_upper, Complex.ofReal_inv, bandEnergy_lower,
       Complex.ofReal_neg, neg_smul, Complex.coe_smul, smul_neg, smul_add, reduceCtorEq,
       ↓reduceIte]
-    match_scalars
-    field_simp [hEc]
-    simp [two_mul]
   · simp only [one_div, bandSign_upper, Complex.ofReal_inv, bandEnergy_upper,
       Complex.coe_smul, smul_add, ↓reduceIte]
+  all_goals
     match_scalars
     field_simp [hEc]
     simp [two_mul]
