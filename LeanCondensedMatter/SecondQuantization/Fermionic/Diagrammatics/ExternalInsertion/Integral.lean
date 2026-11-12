@@ -73,14 +73,9 @@ theorem ExternalInsertionWickDiagram.orderedDysonAmplitude_canonicalOrder
       ((Finset.univ : Finset (Fin n)).orderIsoOfFin rfl).toEquiv =
       d.dysonAmplitude ε β g externalTime := by
   classical
+  unfold ExternalInsertionWickDiagram.orderedDysonAmplitude
   rw [← d.orderedSimplexIntegral_dysonFixedTimeAmplitude ε β g externalTime]
-  change
-    intervalIntegral.orderedSimplexIntegral n β
-      (fun τ => d.dysonFixedTimeAmplitude ε β g externalTime
-        (fun v => τ (((Finset.univ : Finset (Fin n)).orderIsoOfFin rfl).toEquiv.symm
-          ⟨v, Finset.mem_univ v⟩))) =
-    intervalIntegral.orderedSimplexIntegral n β
-      (fun τ => d.dysonFixedTimeAmplitude ε β g externalTime τ)
+  simp only [Finset.card_fin]
   apply intervalIntegral.orderedSimplexIntegral_congr
   intro τ
   apply congrArg (d.dysonFixedTimeAmplitude ε β g externalTime)
