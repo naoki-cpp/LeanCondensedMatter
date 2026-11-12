@@ -30,6 +30,7 @@ local instance instDecidableEqConcretePairKernel : DecidableEq Mode := Classical
 
 variable [Fintype Mode]
 
+omit [Fintype Mode] in
 /-- A nonzero particle-number charge has zero free grand-canonical Gibbs expectation. -/
 private theorem grandCanonicalGibbsExpectation_eq_zero_of_charge
     (ε : Mode → ℝ) (β μ : ℝ)
