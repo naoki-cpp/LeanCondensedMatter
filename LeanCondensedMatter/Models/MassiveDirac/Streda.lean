@@ -13,6 +13,7 @@ import LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.RealSpace
 import LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.CurrentGradientBridge
 import LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.CurrentGradientDerivative
 import LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.CurrentGradientSourceY
+import LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.CurrentInPlaneResolvent
 import LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.RadialHarmonics
 import LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.RadialTrace
 import LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.RealSpaceIntegral
