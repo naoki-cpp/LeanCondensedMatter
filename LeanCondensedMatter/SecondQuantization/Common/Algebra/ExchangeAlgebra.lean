@@ -29,40 +29,6 @@ class ExchangeAlgebra (s : Statistics) (Mode Config : Type*) [DecidableEq Mode] 
 
 variable {s : Statistics} {Mode Config : Type*} [DecidableEq Mode] [ExchangeAlgebra s Mode Config]
 
-/-- Same-mode mixed exchange relation `[a_i,a_i†]_ζ = id`. -/
-theorem exchangeCommutator_annihilate_create_self (i : Mode) :
-    exchangeCommutator s (ExchangeAlgebra.annihilate (s := s) (Config := Config) i)
-      (ExchangeAlgebra.create (s := s) (Config := Config) i) =
-      (LinearMap.id : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) := by
-  have h := ExchangeAlgebra.annihilate_create (s := s) (Config := Config) i i
-  rwa [ite_eq_left rfl] at h
-
-/-- Reverse mixed exchange relation `[a_i†,a_j]_ζ = -ζ δᵢⱼ`. -/
-theorem exchangeCommutator_create_annihilate (i j : Mode) :
-    exchangeCommutator s (ExchangeAlgebra.create (s := s) (Config := Config) i)
-      (ExchangeAlgebra.annihilate (s := s) (Config := Config) j) =
-      if i = j then (-(s.zetaInt : ℂ)) •
-        (LinearMap.id : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) else 0 := by
-  have hζ : (s.zetaInt : ℂ) * (s.zetaInt : ℂ) = 1 := by
-    exact_mod_cast s.zeta_sq
-  calc
-    exchangeCommutator s (ExchangeAlgebra.create (s := s) (Config := Config) i)
-        (ExchangeAlgebra.annihilate (s := s) (Config := Config) j) =
-      (-(s.zetaInt : ℂ)) • exchangeCommutator s
-        (ExchangeAlgebra.annihilate (s := s) (Config := Config) j)
-        (ExchangeAlgebra.create (s := s) (Config := Config) i) := by
-          simpa [exchangeCommutator] using
-            (ScalarExchange.zetaCommutator_swap_of_sq_eq_one (s.zetaInt : ℂ) hζ
-              (ExchangeAlgebra.annihilate (s := s) (Config := Config) j)
-              (ExchangeAlgebra.create (s := s) (Config := Config) i))
-    _ = if i = j then (-(s.zetaInt : ℂ)) •
-        (LinearMap.id : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) else 0 := by
-      rw [ExchangeAlgebra.annihilate_create]
-      by_cases h : i = j
-      · subst j
-        simp
-      · simp [h, Ne.symm h]
-
 /-- Generic reordering `a_i a_i† = id + ζ a_i† a_i`. -/
 theorem annihilate_comp_create_self (i : Mode) :
     (ExchangeAlgebra.annihilate (s := s) (Config := Config) i).comp
@@ -70,8 +36,7 @@ theorem annihilate_comp_create_self (i : Mode) :
       (LinearMap.id : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) +
         (s.zetaInt : ℂ) • ((ExchangeAlgebra.create (s := s) (Config := Config) i).comp
           (ExchangeAlgebra.annihilate (s := s) (Config := Config) i)) := by
-  have hcomm := exchangeCommutator_annihilate_create_self
-    (s := s) (Mode := Mode) (Config := Config) i
+  have hcomm := ExchangeAlgebra.annihilate_create (s := s) (Config := Config) i i
   have h := ScalarExchange.mul_eq_add_smul_mul_of_zetaCommutator_eq (s.zetaInt : ℂ)
     (by simpa [exchangeCommutator] using hcomm)
   simpa [Module.End.mul_eq_comp] using h
