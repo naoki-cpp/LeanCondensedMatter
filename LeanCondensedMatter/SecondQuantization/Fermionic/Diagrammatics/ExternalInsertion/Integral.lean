@@ -98,7 +98,7 @@ theorem ExternalInsertionWickDiagram.orderedDysonAmplitude_canonicalOrder
       funext v
       apply congrArg τ
       apply Fin.ext
-      simp only [Fin.cast_val, Finset.orderIsoOfFin_symm_apply,
+      simp only [Fin.val_cast, Finset.orderIsoOfFin_symm_apply,
         Fin.sort_univ, List.idxOf_finRange]
 
 
