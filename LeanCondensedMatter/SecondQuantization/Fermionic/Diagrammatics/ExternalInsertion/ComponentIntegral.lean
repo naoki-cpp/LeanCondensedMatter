@@ -465,16 +465,16 @@ theorem ExternalInsertionBlockLayout.assembleConnectedBlocks_componentOrderedCro
     simpa only [Equiv.apply_symm_apply] using hab
   have hpair :
       (d.componentOrderedDiagram C).pairing.transport k = (F B).pairing :=
-    layout.assembleConnectedBlocks_componentOrderedPairing_eq_local F hconnected e
+    ExternalInsertionBlockLayout.assembleConnectedBlocks_componentOrderedPairing_eq_local
+      layout F hconnected e
   have hpartnerCanonical (p : Fin (2 * (2 *
       (Finset.univ : Finset (Fin T.card)).card + d.externalPairCount C))) :
       (F B).pairing.partner (q p) =
         q ((d.componentOrderedDiagram C).pairing.partner p) := by
-    rw [← hpair]
-    change k.symm ((d.componentOrderedDiagram C).pairing.partner
-      (k (k.symm p))) =
+    change (F B).pairing.partner (k.symm p) =
       k.symm ((d.componentOrderedDiagram C).pairing.partner p)
-    rw [Equiv.apply_symm_apply]
+    have h := congrArg (fun pairing => pairing.partner (k.symm p)) hpair
+    simpa only [PairingOn.transport_partner, Equiv.apply_symm_apply] using h.symm
   change (d.componentOrderedDiagram C).pairing.crossingCount =
     (F B).pairing.crossingCount
   exact (d.componentOrderedDiagram C).pairing.crossingCount_eq_of_partnerEquiv_strictMono
