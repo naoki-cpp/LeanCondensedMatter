@@ -32,11 +32,10 @@ theorem quarticInteractionOn_mem_grandCanonicalGibbsDomain
   change (∑ q ∈ support, g q • quarticVertexOperator q) ∈ grandCanonicalGibbsDomain ε β μ
   exact Submodule.sum_mem (grandCanonicalGibbsDomain ε β μ) fun q hq =>
     (grandCanonicalGibbsDomain ε β μ).smul_mem (g q) (by
-      change grandCanonicalGibbsSummable ε β μ (quarticVertexOperator q)
       simpa only [FreeThermalField.orderedProduct_cons, FreeThermalField.orderedProduct_nil,
         FreeThermalField.operator, LinearMap.comp_id,
         quarticVertexOperator, Common.quarticVertexOperator] using
-        (FreeThermalField.grandCanonicalGibbsSummable_orderedProduct ε β μ hpos
+        (FreeThermalField.orderedProduct_mem_grandCanonicalGibbsDomain ε β μ hpos
           [.create q.create₁, .create q.create₂, .annihilate q.annihilate₂,
             .annihilate q.annihilate₁]))
 

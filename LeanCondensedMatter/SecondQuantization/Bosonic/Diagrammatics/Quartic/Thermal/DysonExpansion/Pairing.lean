@@ -40,9 +40,8 @@ theorem dysonCoeff_quarticInteractionOn_mem_grandCanonicalGibbsDomain
   rw [dysonCoeff_quarticInteractionOn_eq_sum support ε g n t]
   exact Submodule.sum_mem (grandCanonicalGibbsDomain ε β μ) fun q _ =>
     (grandCanonicalGibbsDomain ε β μ).smul_mem _ (by
-      rw [mem_grandCanonicalGibbsDomain_iff,
-        ← quarticFreeThermalOrderedProduct_eq_quarticVertexSequenceOperator]
-      exact FreeThermalField.grandCanonicalGibbsSummable_orderedProduct ε β μ hpos _)
+      rw [← quarticFreeThermalOrderedProduct_eq_quarticVertexSequenceOperator]
+      exact FreeThermalField.orderedProduct_mem_grandCanonicalGibbsDomain ε β μ hpos _)
 
 /-- The convergence-aware Gibbs expectation of a finite-order quartic Dyson coefficient is a finite
 sum over support-valued vertex sequences and bosonic pairings. The scalar
@@ -68,17 +67,15 @@ theorem grandCanonicalGibbsDysonCoeff_quarticInteractionOn_eq_sum_pairingEvaluat
   classical
   rw [grandCanonicalGibbsDysonCoeff, dysonCoeff_quarticInteractionOn_eq_sum support ε g n t]
   have hsumm : ∀ q : Fin n → ↥support,
-      grandCanonicalGibbsSummable ε β μ
-        (Common.quarticDysonSequenceCoeff ε g
-            (fun i => (q i : QuarticVertexLabel Mode)) t •
-          Common.quarticVertexSequenceOperator create annihilate
-            (fun i => (q i : QuarticVertexLabel Mode))) := by
+      Common.quarticDysonSequenceCoeff ε g
+          (fun i => (q i : QuarticVertexLabel Mode)) t •
+        Common.quarticVertexSequenceOperator create annihilate
+          (fun i => (q i : QuarticVertexLabel Mode)) ∈
+            grandCanonicalGibbsDomain ε β μ := by
     intro q
-    apply (mem_grandCanonicalGibbsDomain_iff ε β μ _).1
     refine (grandCanonicalGibbsDomain ε β μ).smul_mem _ ?_
     rw [← quarticFreeThermalOrderedProduct_eq_quarticVertexSequenceOperator]
-    exact (mem_grandCanonicalGibbsDomain_iff ε β μ _).2
-      (FreeThermalField.grandCanonicalGibbsSummable_orderedProduct ε β μ hpos _)
+    exact FreeThermalField.orderedProduct_mem_grandCanonicalGibbsDomain ε β μ hpos _
   rw [grandCanonicalGibbsExpectation_sum_of_summable ε β μ _ hsumm]
   refine Finset.sum_congr rfl fun q _ => ?_
   rw [grandCanonicalGibbsExpectation_smul]

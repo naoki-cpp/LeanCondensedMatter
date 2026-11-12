@@ -190,15 +190,14 @@ theorem FreeThermalField.norm_matrixCoeff_orderedProduct_le
 
 /-- Every finite ordered product of free bosonic thermal fields has a summable
 grand-canonical Gibbs numerator under positive effective one-mode Boltzmann exponents. -/
-theorem FreeThermalField.grandCanonicalGibbsSummable_orderedProduct
+theorem FreeThermalField.orderedProduct_mem_grandCanonicalGibbsDomain
     (ε : Mode → ℝ) (β μ : ℝ) (hpos : ∀ i, 0 < β * (ε i - μ))
     (fields : List (FreeThermalField Mode)) :
-    grandCanonicalGibbsSummable ε β μ (FreeThermalField.orderedProduct fields) := by
-  rw [grandCanonicalGibbsSummable_shift ε β μ (FreeThermalField.orderedProduct fields)]
+    FreeThermalField.orderedProduct fields ∈ grandCanonicalGibbsDomain ε β μ := by
   let ξ : Mode → ℝ := fun i => ε i - μ
-  change grandCanonicalGibbsSummable ξ β 0 (FreeThermalField.orderedProduct fields)
-  unfold grandCanonicalGibbsSummable
-  simp only [sub_zero]
+  change Summable (fun n : Occupation Mode =>
+    Common.matrixCoeff ((imaginaryTimeEvolveFree ξ (-β)).comp
+      (FreeThermalField.orderedProduct fields)) n n)
   have hmajorant := summable_shiftedOccupationPowerProduct_boltzmannWeight
     ξ β hpos (fun _ => fields.length + 1) (fun _ => fields.length)
   apply hmajorant.of_norm_bounded

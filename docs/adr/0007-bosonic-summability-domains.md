@@ -6,8 +6,8 @@ status: accepted
 
 A nonempty finite bosonic mode set still has infinitely many occupation configurations because each mode admits arbitrary natural-number occupation. Therefore finite-mode bosonic thermal theory uses an explicit summability domain rather than the finite-configuration trace argument available to finite-mode fermions.
 
-`grandCanonicalGibbsDomain ε β μ` specializes `Common.summableDiagonalTraceDomain` to the shifted free-heat operator, while `Common.summableDiagonalTraceRatioLinear` supplies the state-independent partial linear trace ratio. The concrete bosonic membership equivalence and finite-sum adapter transport
-explicit summability witnesses to that common linear map. The total trace-ratio
+`grandCanonicalGibbsDomain ε β μ` specializes `Common.summableDiagonalTraceDomain` to the shifted free-heat operator, while `Common.summableDiagonalTraceRatioLinear` supplies the state-independent partial linear trace ratio. The bosonic ordered-product summability proof establishes membership in that domain directly,
+and finite-sum expectation identities use the common linear map. The total trace-ratio
 expression `grandCanonicalGibbsExpectation ε β μ` has physical expectation semantics only when its numerator is
 summable and its partition series is nonzero. For free thermal field lists, the ordered-product
 summability theorem establishes this domain condition for every finite product; the Common pairing
