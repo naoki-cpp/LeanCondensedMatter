@@ -84,46 +84,19 @@ private theorem sortedEigenvalues_eq_bandEnergy
     lt_of_le_of_ne (Real.sqrt_nonneg _) (Ne.symm hE)
   have hanti : Antitone (sortedEigenvalues v m px py) := by
     exact hsymm.eigenvalues_antitone diracHilbert_finrank
+  have hgap : bandEnergy .lower v m px py < bandEnergy .upper v m px py := by
+    simp [bandEnergy]
+    linarith
   fin_cases iu <;> fin_cases il
   · exfalso
-    have hiuR' :
-        sortedEigenvalues v m px py (0 : Fin 2) = bandEnergy .upper v m px py := by
-      simpa using hiuR
-    have hilR' :
-        sortedEigenvalues v m px py (0 : Fin 2) = bandEnergy .lower v m px py := by
-      simpa using hilR
-    rw [hiuR'] at hilR'
-    simp [bandEnergy] at hilR'
-    apply hE
-    linarith
-  · constructor
-    · simpa using hiuR
-    · simpa using hilR
+    exact (ne_of_gt hgap) (hiuR.symm.trans hilR).symm
+  · exact ⟨by simpa using hiuR, by simpa using hilR⟩
   · exfalso
-    have hiuR' :
-        sortedEigenvalues v m px py (1 : Fin 2) = bandEnergy .upper v m px py := by
-      simpa using hiuR
-    have hilR' :
-        sortedEigenvalues v m px py (0 : Fin 2) = bandEnergy .lower v m px py := by
-      simpa using hilR
-    have horder :
-        sortedEigenvalues v m px py (1 : Fin 2) ≤
-          sortedEigenvalues v m px py (0 : Fin 2) :=
-      hanti (by decide)
-    rw [hiuR', hilR'] at horder
-    simp [bandEnergy] at horder
-    linarith
+    have horder := hanti (show (0 : Fin 2) ≤ 1 by decide)
+    rw [hiuR, hilR] at horder
+    exact (not_le_of_gt hgap) horder
   · exfalso
-    have hiuR' :
-        sortedEigenvalues v m px py (1 : Fin 2) = bandEnergy .upper v m px py := by
-      simpa using hiuR
-    have hilR' :
-        sortedEigenvalues v m px py (1 : Fin 2) = bandEnergy .lower v m px py := by
-      simpa using hilR
-    rw [hiuR'] at hilR'
-    simp [bandEnergy] at hilR'
-    apply hE
-    linarith
+    exact (ne_of_gt hgap) (hiuR.symm.trans hilR).symm
 
 private def finTwoEquivBand : Fin 2 ≃ Band where
   toFun := Fin.cases .upper (fun _ => .lower)
