@@ -100,8 +100,9 @@ private theorem trace_double_commutator_eq_commutator_sq
     _ = Matrix.trace (C * C) / 2 := by
       have h : G * H - H * G = -C := by
         dsimp [C]
-        abel
-      simp [h]
+        rw [neg_sub]
+      rw [h, mul_neg]
+      simp
 
 /-- Exact matrix double-commutator coefficient for any Cartesian
 polarization axis. The minus sign accounts for the physical generator
@@ -140,9 +141,6 @@ theorem evenQuarticCubature_coordinate_sq_mul_coordinate_sq
   fin_cases i <;> fin_cases j <;>
     simp_all [evenQuarticCubature] <;> ring
 
-/-- The angular mean of the orbital double-commutator polynomial is the
-same for every Cartesian polarization axis, despite the anisotropic
-momentum dependence before averaging. -/
 /-- Cyclic reindexing of the three momentum coordinates. -/
 private def rotateMomentum (k : Fin 3 → ℝ) : Fin 3 → ℝ :=
   ![k 1, k 2, k 0]
