@@ -3029,6 +3029,23 @@
       "externalImportCount": 3
     },
     {
+      "name": "LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.CurrentGradientSourceY",
+      "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Streda/GaussianCrossed/CurrentGradientSourceY.lean",
+      "imports": [
+        "LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.CurrentGradientDerivative"
+      ],
+      "externalImportCount": 1
+    },
+    {
+      "name": "LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.CurrentInPlaneResolvent",
+      "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Streda/GaussianCrossed/CurrentInPlaneResolvent.lean",
+      "imports": [
+        "LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.CurrentGradientSourceY",
+        "LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.RadialHarmonics"
+      ],
+      "externalImportCount": 2
+    },
+    {
       "name": "LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.ExplicitMoments",
       "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Streda/GaussianCrossed/ExplicitMoments.lean",
       "imports": [
@@ -3126,6 +3143,8 @@
         "LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.TraceBridge",
         "LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.CurrentGradientBridge",
         "LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.CurrentGradientDerivative",
+        "LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.CurrentGradientSourceY",
+        "LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.CurrentInPlaneResolvent",
         "LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.ExplicitMoments",
         "LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.RadialHarmonics",
         "LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.RadialTrace",
