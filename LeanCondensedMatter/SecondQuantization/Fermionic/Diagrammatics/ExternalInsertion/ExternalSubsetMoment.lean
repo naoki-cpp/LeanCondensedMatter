@@ -837,7 +837,7 @@ theorem sum_fixedExternalPartitionFiber_eq_sum_localLabelConnectedBlockFamilies
             ε β g times
         else 0
       else 0)
-  rw [layout.assembleDiagram_externalLabel_eq_iff
+  simp only [layout.assembleDiagram_externalLabel_eq_iff
     (Finset.univ : Finset (Fin n)) F labels]
 
 /-- The full fixed-order physical Dyson coefficient is reindexed by even
