@@ -838,6 +838,42 @@ theorem sum_fixedExternalPartitionFiber_eq_sum_localLabelConnectedBlockFamilies
   rw [layout.assembleDiagram_externalLabel_eq_iff
     (Finset.univ : Finset (Fin n)) F labels]
 
+/-- The full fixed-order physical Dyson coefficient is reindexed by even
+external-component partitions and independently labelled connected blocks.
+The owner assignments and genuine assembled Dyson amplitudes are retained:
+the remaining factorization must still sum those assignments and their
+ordered interaction shuffles. -/
+theorem vacuumFreeExternalInsertionDysonCoefficient_eq_sum_evenPartitions_localLabelFamilies
+    {K n : ℕ} (anchor : Fin (2 * K))
+    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
+    (labels : Fin (2 * K) → ExternalFieldLabel Mode)
+    (times : Fin (2 * K) → ℝ) :
+    vacuumFreeExternalInsertionDysonCoefficient ε β g labels times n =
+      ∑ π : Finpartition (Finset.univ : Finset (Fin (2 * K))),
+        if ∀ B : π.parts, Even (B : Finset (Fin (2 * K))).card then
+          ∑ p ∈ ExternalInsertionBlockLayout.connectedAssemblyFiniteDomain
+              (E := K) (N := n) (ExternalLabel := ExternalFieldLabel Mode)
+              (InternalLabel := QuarticVertexLabel Mode) anchor,
+            if p.1.partition = π then
+              if ∀ B : p.1.partition.parts,
+                  (p.2.1 B).externalLabel =
+                    fun i => labels (p.1.sourceEquiv.symm ⟨B, i⟩) then
+                ExternalInsertionWickDiagram.dysonAmplitude
+                  (ExternalInsertionBlockLayout.assembleConnectedBlockFamily p).1
+                  ε β g times
+              else 0
+            else 0
+        else 0 := by
+  classical
+  rw [vacuumFreeExternalInsertionDysonCoefficient_eq_sum_evenPartitionFibers]
+  apply Finset.sum_congr rfl
+  intro π _
+  by_cases heven : ∀ B : π.parts, Even (B : Finset (Fin (2 * K))).card
+  · simp only [heven, ↓reduceIte]
+    exact sum_fixedExternalPartitionFiber_eq_sum_localLabelConnectedBlockFamilies
+      anchor π ε β g labels times
+  · simp only [heven, ↓reduceIte]
+
 /-- Fully external-connected, vacuum-free Dyson coefficient using the actual
 integrated signed Wick diagram amplitude, with all labels and times fixed. -/
 noncomputable def connectedExternalInsertionDysonCoefficient {K : ℕ}
