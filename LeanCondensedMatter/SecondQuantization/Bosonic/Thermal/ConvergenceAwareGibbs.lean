@@ -123,7 +123,7 @@ theorem grandCanonicalAlgebraicPartition_ne_zero
     grandCanonicalAlgebraicPartition ε β μ ≠ 0 := by
   rw [grandCanonicalAlgebraicPartition_eq_tsum ε β μ hpos]
   exact Complex.ofReal_ne_zero.2
-    (tsum_boltzmannWeight_ne_zero (fun i => ε i - μ) β hpos)
+    (ne_of_gt (tsum_boltzmannWeight_pos (fun i => ε i - μ) β hpos))
 
 /-- The free bosonic Gibbs expectation is normalized on the identity endomorphism. -/
 theorem grandCanonicalGibbsExpectation_id (ε : Mode → ℝ) (β μ : ℝ)
