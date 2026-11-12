@@ -775,6 +775,115 @@ theorem ExternalInsertionBlockLayout.assembleDiagram_legInComponent_iff_legEquiv
   rw [layout.vertexEquiv_vertexOfLeg S leg, layout.vertexEquiv_external]
   rfl
 
+/-- Canonical identification of the legs in an *actual* connected graph
+component with the flattened legs of its independently assigned Wick
+block. Unlike a cardinality argument, this equivalence retains every
+individual source and interaction leg of the physical pairing. -/
+noncomputable def ExternalInsertionBlockLayout.physicalComponentLegEquiv
+    {ExternalLabel InternalLabel : Type*}
+    (layout : ExternalInsertionBlockLayout E N) (S : Finset (Fin N))
+    (F : ∀ B : layout.partition.parts,
+      ExternalInsertionDiagram ExternalLabel InternalLabel
+        ((B : Finset (Fin (2 * E))).card / 2) N (layout.interactionBlock S B))
+    (hconnected : ∀ B, (F B).vertexGraph.Preconnected)
+    (e : Fin (2 * E)) :
+    {leg : Fin (2 * (2 * S.card + E)) //
+      (layout.assembleDiagram S F).legInComponent
+        ((layout.assembleDiagram S F).vertexGraph.componentBlock (Sum.inl e)) leg} ≃
+      Fin (2 * (2 * (layout.interactionBlock S (layout.sourceEquiv e).1).card +
+        ((layout.sourceEquiv e).1.1.card / 2))) :=
+  ((layout.legEquiv S).subtypeEquiv
+    (layout.assembleDiagram_legInComponent_iff_legEquiv_fst S F hconnected e)).trans
+    (Combinatorics.sigmaFiberEquiv (layout.sourceEquiv e).1)
+
+/-- A local leg embedded by the physical-component equivalence is
+exactly that same leg embedded by independent block assembly. -/
+theorem ExternalInsertionBlockLayout.physicalComponentLegEquiv_symm_val
+    {ExternalLabel InternalLabel : Type*}
+    (layout : ExternalInsertionBlockLayout E N) (S : Finset (Fin N))
+    (F : ∀ B : layout.partition.parts,
+      ExternalInsertionDiagram ExternalLabel InternalLabel
+        ((B : Finset (Fin (2 * E))).card / 2) N (layout.interactionBlock S B))
+    (hconnected : ∀ B, (F B).vertexGraph.Preconnected)
+    (e : Fin (2 * E))
+    (i : Fin (2 * (2 * (layout.interactionBlock S (layout.sourceEquiv e).1).card +
+      ((layout.sourceEquiv e).1.1.card / 2)))) :
+    ((layout.physicalComponentLegEquiv S F hconnected e).symm i).1 =
+      (layout.legEquiv S).symm ⟨(layout.sourceEquiv e).1, i⟩ := by
+  rfl
+
+/-- Being an actual physical graph component is invariant under the
+assembled perfect pairing; this justifies physical partner restriction. -/
+private theorem ExternalInsertionBlockLayout.physicalComponentLeg_partner_iff
+    {ExternalLabel InternalLabel : Type*}
+    (layout : ExternalInsertionBlockLayout E N) (S : Finset (Fin N))
+    (F : ∀ B : layout.partition.parts,
+      ExternalInsertionDiagram ExternalLabel InternalLabel
+        ((B : Finset (Fin (2 * E))).card / 2) N (layout.interactionBlock S B))
+    (e : Fin (2 * E))
+    (leg : Fin (2 * (2 * S.card + E))) :
+    (layout.assembleDiagram S F).legInComponent
+      ((layout.assembleDiagram S F).vertexGraph.componentBlock (Sum.inl e)) leg ↔
+    (layout.assembleDiagram S F).legInComponent
+      ((layout.assembleDiagram S F).vertexGraph.componentBlock (Sum.inl e))
+        ((layout.assembleDiagram S F).pairing.partner leg) := by
+  unfold ExternalInsertionDiagram.legInComponent
+  rw [(layout.assembleDiagram S F).pairing.vertexGraph_componentBlock_partner
+    (externalInsertionVertexOfLeg (E := E)) leg]
+
+/-- The pairing obtained by restricting the actual physical component to
+its legs, reindexed through their independent block-fiber equivalence. -/
+noncomputable def ExternalInsertionBlockLayout.physicalComponentPairing
+    {ExternalLabel InternalLabel : Type*}
+    (layout : ExternalInsertionBlockLayout E N) (S : Finset (Fin N))
+    (F : ∀ B : layout.partition.parts,
+      ExternalInsertionDiagram ExternalLabel InternalLabel
+        ((B : Finset (Fin (2 * E))).card / 2) N (layout.interactionBlock S B))
+    (hconnected : ∀ B, (F B).vertexGraph.Preconnected)
+    (e : Fin (2 * E)) :
+    PairingOn (Fin (2 * (2 * (layout.interactionBlock S (layout.sourceEquiv e).1).card +
+      ((layout.sourceEquiv e).1.1.card / 2)))) :=
+  (layout.assembleDiagram S F).pairing.restrictAlongEquiv
+    ((layout.assembleDiagram S F).legInComponent
+      ((layout.assembleDiagram S F).vertexGraph.componentBlock (Sum.inl e)))
+    (layout.physicalComponentLeg_partner_iff S F e)
+    (layout.physicalComponentLegEquiv S F hconnected e)
+
+/-- The *physical component-restricted* Wick pairing, not merely the
+global assembled pairing, equals the independently supplied local
+perfect pairing on each leg. No local pairing data are lost or changed
+by building and then restricting the actual connected graph. -/
+theorem ExternalInsertionBlockLayout.physicalComponentPairing_eq_local
+    {ExternalLabel InternalLabel : Type*}
+    (layout : ExternalInsertionBlockLayout E N) (S : Finset (Fin N))
+    (F : ∀ B : layout.partition.parts,
+      ExternalInsertionDiagram ExternalLabel InternalLabel
+        ((B : Finset (Fin (2 * E))).card / 2) N (layout.interactionBlock S B))
+    (hconnected : ∀ B, (F B).vertexGraph.Preconnected)
+    (e : Fin (2 * E)) :
+    layout.physicalComponentPairing S F hconnected e =
+      (F (layout.sourceEquiv e).1).pairing := by
+  classical
+  let B := (layout.sourceEquiv e).1
+  let d := layout.assembleDiagram S F
+  let P := layout.physicalComponentPairing S F hconnected e
+  let T := layout.physicalComponentLegEquiv S F hconnected e
+  apply PairingOn.ext
+  apply Equiv.ext
+  intro i
+  have hpair : (T.symm (P.partner i)).1 =
+      d.pairing.partner (T.symm i).1 := by
+    exact d.pairing.restrictAlongEquiv_partner_symm_val
+      (d.legInComponent (d.vertexGraph.componentBlock (Sum.inl e)))
+      (layout.physicalComponentLeg_partner_iff S F e) T i
+  have hpair' :
+      (layout.legEquiv S).symm ⟨B, P.partner i⟩ =
+        d.pairing.partner ((layout.legEquiv S).symm ⟨B, i⟩) := by
+    simpa only [T, layout.physicalComponentLegEquiv_symm_val] using hpair
+  rw [layout.assembleDiagram_partner S F B i] at hpair'
+  have hsigma := (layout.legEquiv S).symm.injective hpair'
+  exact eq_of_heq (Sigma.mk.inj_iff.mp hsigma).2
+
 /-- The local external-pair parameter of an actual assembled graph component
 is the half-cardinality of its assigned source-partition block. This closes
 the dependent external-size index needed to identify physical component
