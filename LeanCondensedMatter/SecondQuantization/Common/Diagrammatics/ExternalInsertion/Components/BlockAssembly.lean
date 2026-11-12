@@ -72,7 +72,6 @@ noncomputable def ExternalInsertionBlockLayout.sourceEquiv
 /-- The inverse block source equivalence is the canonical increasing
 enumeration of the partition block. In particular, component restriction
 does not introduce an additional permutation of the fermionic source legs. -/
-@[simp]
 theorem ExternalInsertionBlockLayout.sourceEquiv_symm_apply
     (layout : ExternalInsertionBlockLayout E N)
     (B : layout.partition.parts)
