@@ -773,7 +773,6 @@ theorem ExternalInsertionBlockLayout.assembleDiagram_legInComponent_iff_legEquiv
   rw [d.vertexGraph.mem_componentBlock]
   rw [layout.assembleDiagram_reachable_iff_same_block S F hconnected]
   rw [layout.vertexEquiv_vertexOfLeg S leg, layout.vertexEquiv_external]
-  rfl
 
 /-- Canonical identification of the legs in an *actual* connected graph
 component with the flattened legs of its independently assigned Wick
@@ -828,6 +827,15 @@ private theorem ExternalInsertionBlockLayout.physicalComponentLeg_partner_iff
       ((layout.assembleDiagram S F).vertexGraph.componentBlock (Sum.inl e))
         ((layout.assembleDiagram S F).pairing.partner leg) := by
   unfold ExternalInsertionDiagram.legInComponent
+  change
+    ((layout.assembleDiagram S F).pairing.vertexGraph
+      (externalInsertionVertexOfLeg (E := E))).componentBlock
+        (externalInsertionVertexOfLeg leg) =
+      (layout.assembleDiagram S F).vertexGraph.componentBlock (Sum.inl e) ↔
+    ((layout.assembleDiagram S F).pairing.vertexGraph
+      (externalInsertionVertexOfLeg (E := E))).componentBlock
+        (externalInsertionVertexOfLeg ((layout.assembleDiagram S F).pairing.partner leg)) =
+      (layout.assembleDiagram S F).vertexGraph.componentBlock (Sum.inl e)
   rw [(layout.assembleDiagram S F).pairing.vertexGraph_componentBlock_partner
     (externalInsertionVertexOfLeg (E := E)) leg]
 
