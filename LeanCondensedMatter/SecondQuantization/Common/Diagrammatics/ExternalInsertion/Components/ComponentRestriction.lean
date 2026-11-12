@@ -236,7 +236,7 @@ theorem ExternalInsertionDiagram.componentExternalShuffle_blockInversionCount_ze
 
 /-- Reindex the flattened legs of one component as the flattened legs of its local
 external-insertion diagram. -/
-private noncomputable def ExternalInsertionDiagram.componentBlockLegEquiv
+noncomputable def ExternalInsertionDiagram.componentBlockLegEquiv
     {S : Finset (Fin N)}
     (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
     (B : d.vertexGraph.componentPartition.parts) :
