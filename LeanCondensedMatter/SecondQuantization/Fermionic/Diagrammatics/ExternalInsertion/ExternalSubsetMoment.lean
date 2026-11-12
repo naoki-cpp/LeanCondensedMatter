@@ -525,6 +525,60 @@ theorem ExternalInsertionBlockLayout.assembleConnectedBlocks_signedDysonShuffleO
         exact hlocal B
 
 omit [LinearOrder Mode] [Fintype Mode] in
+/-- The source labels of an assembled diagram agree with the canonical
+increasing restriction on *each* external block.  This converts the
+independent-block label predicate into the source-subset convention used
+by the connected Dyson series, without changing any interaction owners. -/
+theorem ExternalInsertionBlockLayout.assembleDiagram_externalLabel_eq_iff_evenSubsetLabels
+    {n : ℕ} (layout : ExternalInsertionBlockLayout E n)
+    (F : ∀ B : layout.partition.parts,
+      ExternalInsertionDiagram (ExternalFieldLabel Mode) (QuarticVertexLabel Mode)
+        ((B : Finset (Fin (2 * E))).card / 2) n
+        (layout.interactionBlock (Finset.univ : Finset (Fin n)) B))
+    (labels : Fin (2 * E) → ExternalFieldLabel Mode) :
+    (layout.assembleDiagram (Finset.univ : Finset (Fin n)) F).externalLabel = labels ↔
+      ∀ B : layout.partition.parts,
+        (F B).externalLabel =
+          evenExternalSubsetLabels labels (B : Finset (Fin (2 * E)))
+            (layout.evenBlocks B) := by
+  simpa only [evenExternalSubsetLabels, evenExternalSubsetOrderIso,
+    layout.sourceEquiv_symm_apply] using
+    (layout.assembleDiagram_externalLabel_eq_iff
+      (Finset.univ : Finset (Fin n)) F labels)
+
+/-- The physical connected-block Dyson shuffle orbit, now expressed using
+the canonical increasing *subset restriction* of external insertion times.
+These are exactly the times appearing in each connected source-subset
+coefficient.  Only the full shuffle sum, never a single simplex integral,
+is replaced by the product of local integrated amplitudes. -/
+theorem ExternalInsertionBlockLayout.assembleConnectedBlocks_signedDysonShuffleOrbit_eq_subsetTimes
+    {n : ℕ} (layout : ExternalInsertionBlockLayout E n)
+    (F : ∀ B : layout.partition.parts,
+      ExternalInsertionDiagram (ExternalFieldLabel Mode) (QuarticVertexLabel Mode)
+        ((B : Finset (Fin (2 * E))).card / 2) n
+        (layout.interactionBlock (Finset.univ : Finset (Fin n)) B))
+    (hconnected : ∀ B, (F B).vertexGraph.Preconnected)
+    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
+    (times : Fin (2 * E) → ℝ) :
+    let d : ExternalInsertionWickDiagram Mode E n :=
+      layout.assembleDiagram (Finset.univ : Finset (Fin n)) F
+    (∑ shuffle : d.ComponentInteractionOrderShuffle,
+      d.orderedDysonAmplitude ε β g times
+        (d.assembleInteractionOrder d.canonicalComponentInteractionOrders shuffle)) =
+      externalPartitionSourceSign layout.partition *
+        ∏ B : layout.partition.parts,
+          ExternalInsertionWickDiagram.dysonAmplitude
+            ((F B).slotCongr (Combinatorics.standardSlotEquiv
+              (layout.interactionBlock (Finset.univ : Finset (Fin n)) B)))
+            ε β g (evenExternalSubsetTimes times
+              (B : Finset (Fin (2 * E))) (layout.evenBlocks B)) := by
+  classical
+  simpa only [evenExternalSubsetTimes, evenExternalSubsetOrderIso,
+    layout.sourceEquiv_symm_apply] using
+    (layout.assembleConnectedBlocks_signedDysonShuffleOrbit_eq_independentLocals
+      F hconnected ε β g times)
+
+omit [LinearOrder Mode] [Fintype Mode] in
 /-- On each external-partition block of a vacuum-free diagram, the field
 labels used by the source-subset moment are exactly the labels of the
 canonical standalone connected-component diagram.
