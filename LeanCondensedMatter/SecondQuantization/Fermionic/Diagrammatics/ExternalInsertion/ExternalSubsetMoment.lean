@@ -308,6 +308,108 @@ theorem ExternalInsertionBlockLayout.assembleDiagram_restrictComponent_heq_local
   exact externalInsertionDiagram_heq_of_fields hcount hsector
     (d.restrictComponent C) (F B) hsrc hvertex hpairHeq
 
+/-- Canonical increasing interaction-slot standardization respects
+heterogeneous equality of diagrams whose dependent source counts and
+interaction supports have already been identified. -/
+private theorem externalInsertionSlotCongr_heq_of_diagram_heq
+    {ExternalLabel InternalLabel : Type*} {E₁ E₂ n : ℕ}
+    {S₁ S₂ : Finset (Fin n)}
+    (hE : E₁ = E₂) (hS : S₁ = S₂)
+    (p : ExternalInsertionDiagram ExternalLabel InternalLabel E₁ n S₁)
+    (q : ExternalInsertionDiagram ExternalLabel InternalLabel E₂ n S₂)
+    (hp : HEq p q) :
+    HEq (p.slotCongr (Combinatorics.standardSlotEquiv S₁))
+      (q.slotCongr (Combinatorics.standardSlotEquiv S₂)) := by
+  cases hE
+  cases hS
+  exact heq_of_eq (congrArg
+    (fun d : ExternalInsertionDiagram ExternalLabel InternalLabel E₁ n S₁ =>
+      d.slotCongr (Combinatorics.standardSlotEquiv S₁)) (eq_of_heq hp))
+
+/-- Actual integrated Dyson amplitudes are invariant under simultaneous
+dependent equality of their entire ordered Wick diagram and source-time
+family. No sign or thermal-kernel symmetry is assumed. -/
+private theorem dysonAmplitude_eq_of_diagram_time_heq
+    {E₁ E₂ n₁ n₂ : ℕ} (hE : E₁ = E₂) (hn : n₁ = n₂)
+    (p : ExternalInsertionWickDiagram Mode E₁ n₁)
+    (q : ExternalInsertionWickDiagram Mode E₂ n₂)
+    (hp : HEq p q)
+    (t₁ : Fin (2 * E₁) → ℝ) (t₂ : Fin (2 * E₂) → ℝ)
+    (ht : HEq t₁ t₂)
+    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ) :
+    p.dysonAmplitude ε β g t₁ = q.dysonAmplitude ε β g t₂ := by
+  cases hE
+  cases hn
+  have hd : p = q := eq_of_heq hp
+  have ht' : t₁ = t₂ := eq_of_heq ht
+  rw [hd, ht']
+
+/-- The integrated Dyson amplitude of an *actual physical connected
+component*, with its original source times, is exactly the integrated
+Dyson amplitude of the independently supplied connected Wick block
+after its canonical increasing interaction-slot standardization.
+
+In particular this establishes the concrete free-Gibbs contraction-kernel
+compatibility by equality of the complete timed Wick data. It neither
+exchanges fermionic pair endpoints nor assumes that one ordered simplex
+integral factors before summing over component shuffles. -/
+theorem ExternalInsertionBlockLayout.assembleConnectedBlocks_componentDysonAmplitude_eq_local
+    {n : ℕ} (layout : ExternalInsertionBlockLayout E n)
+    (F : ∀ B : layout.partition.parts,
+      ExternalInsertionDiagram (ExternalFieldLabel Mode) (QuarticVertexLabel Mode)
+        ((B : Finset (Fin (2 * E))).card / 2) n
+        (layout.interactionBlock (Finset.univ : Finset (Fin n)) B))
+    (hconnected : ∀ B, (F B).vertexGraph.Preconnected)
+    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
+    (externalTime : Fin (2 * E) → ℝ) (e : Fin (2 * E)) :
+    let d : ExternalInsertionWickDiagram Mode E n :=
+      layout.assembleDiagram (Finset.univ : Finset (Fin n)) F
+    let C : d.vertexGraph.componentPartition.parts :=
+      ⟨d.vertexGraph.componentBlock (Sum.inl e),
+        d.vertexGraph.componentBlock_mem_componentPartition (Sum.inl e)⟩
+    (d.componentOrderedDiagram C).dysonAmplitude ε β g
+        (d.componentExternalTime externalTime C) =
+      ((F (layout.sourceEquiv e).1).slotCongr
+          (Combinatorics.standardSlotEquiv
+            (layout.interactionBlock (Finset.univ : Finset (Fin n))
+              (layout.sourceEquiv e).1))).dysonAmplitude ε β g
+        (fun i => externalTime
+          (layout.sourceEquiv.symm ⟨(layout.sourceEquiv e).1, i⟩)) := by
+  classical
+  let S : Finset (Fin n) := Finset.univ
+  let B := (layout.sourceEquiv e).1
+  let d : ExternalInsertionWickDiagram Mode E n := layout.assembleDiagram S F
+  let C : d.vertexGraph.componentPartition.parts :=
+    ⟨d.vertexGraph.componentBlock (Sum.inl e),
+      d.vertexGraph.componentBlock_mem_componentPartition (Sum.inl e)⟩
+  let T := interactionSector (C : Finset (ExternalInsertionVertex E S))
+  have hsector : T = layout.interactionBlock S B :=
+    layout.assembleDiagram_componentInteractionSector_external S F hconnected e
+  have hcount : d.externalPairCount C = B.1.card / 2 :=
+    layout.assembleDiagram_componentExternalPairCount_external S F hconnected e
+  have hphysical : HEq (d.restrictComponent C) (F B) :=
+    ExternalInsertionBlockLayout.assembleDiagram_restrictComponent_heq_local
+      layout F hconnected e
+  have hordered : HEq (d.componentOrderedDiagram C)
+      ((F B).slotCongr (Combinatorics.standardSlotEquiv
+        (layout.interactionBlock S B))) := by
+    have hslot := externalInsertionSlotCongr_heq_of_diagram_heq
+      hcount hsector (d.restrictComponent C) (F B) hphysical
+    exact (heq_of_eq (d.componentOrderedDiagram_eq_slotCongr C)).trans hslot
+  have htimes : HEq (d.componentExternalTime externalTime C)
+      (fun i : Fin (2 * (B.1.card / 2)) =>
+        externalTime (layout.sourceEquiv.symm ⟨B, i⟩)) :=
+    (ExternalInsertionBlockLayout.assembleDiagram_componentExternalTime_eq_localTimes
+      layout F hconnected externalTime e).symm
+  exact dysonAmplitude_eq_of_diagram_time_heq
+    hcount (congrArg Finset.card hsector)
+    (d.componentOrderedDiagram C)
+    ((F B).slotCongr (Combinatorics.standardSlotEquiv
+      (layout.interactionBlock S B))) hordered
+    (d.componentExternalTime externalTime C)
+    (fun i => externalTime (layout.sourceEquiv.symm ⟨B, i⟩))
+    htimes ε β g
+
 omit [LinearOrder Mode] [Fintype Mode] in
 /-- On each external-partition block of a vacuum-free diagram, the field
 labels used by the source-subset moment are exactly the labels of the
