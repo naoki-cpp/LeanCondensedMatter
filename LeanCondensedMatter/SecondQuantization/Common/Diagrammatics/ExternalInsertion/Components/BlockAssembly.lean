@@ -1196,9 +1196,14 @@ theorem ExternalInsertionBlockLayout.physicalComponentCanonicalLegEquiv_eq_finCo
       (C : Finset (ExternalInsertionVertex E S))).card + d.externalPairCount C)) ≃o
       Fin (2 * (2 * (layout.interactionBlock S B).card + B.1.card / 2)) :=
     { toEquiv := c
-      map_rel_iff' := fun a b => hc.le_iff_le }
-  have hu : iso = Fin.castOrderIso hlegs := Subsingleton.elim _ _
-  exact congrArg OrderIso.toEquiv hu
+      map_rel_iff' := by
+        intro a b
+        exact hc.le_iff_le }
+  apply Equiv.ext
+  intro p
+  apply Fin.ext
+  change (c p).val = p.val
+  exact Fin.coe_orderIso_apply iso p
 
 /-- Restricting an assembled physical connected component preserves
 the original interaction-vertex label at every assigned ambient vertex.
