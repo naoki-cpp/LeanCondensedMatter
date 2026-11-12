@@ -74,9 +74,11 @@ theorem grandCanonicalGibbsDysonCoeff_quarticInteractionOn_eq_sum_pairingEvaluat
           Common.quarticVertexSequenceOperator create annihilate
             (fun i => (q i : QuarticVertexLabel Mode))) := by
     intro q
-    apply grandCanonicalGibbsSummable_smul
+    apply (mem_grandCanonicalGibbsDomain_iff ε β μ _).1
+    refine (grandCanonicalGibbsDomain ε β μ).smul_mem _ ?_
     rw [← quarticFreeThermalOrderedProduct_eq_quarticVertexSequenceOperator]
-    exact FreeThermalField.grandCanonicalGibbsSummable_orderedProduct ε β μ hpos _
+    exact (mem_grandCanonicalGibbsDomain_iff ε β μ _).2
+      (FreeThermalField.grandCanonicalGibbsSummable_orderedProduct ε β μ hpos _)
   rw [grandCanonicalGibbsExpectation_sum_of_summable ε β μ _ hsumm]
   refine Finset.sum_congr rfl fun q _ => ?_
   rw [grandCanonicalGibbsExpectation_smul]
