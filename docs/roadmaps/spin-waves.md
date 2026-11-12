@@ -187,9 +187,14 @@ space, including every finite-occupation sector, not an exact spin-Hamiltonian i
 defines creation linear in a finite one-particle vector and annihilation conjugate-linear
 in that vector. Their mixed commutator is the one-particle inner product times identity;
 the same-type commutators vanish. Thus the normalized Fourier fields preserve CCR.
-The pinned Mathlib survey reuses `OrthonormalBasis.sum_repr'` and the existing Fourier
-eigenbasis to diagonalize number-conserving second quantization for any complete finite
-orthonormal eigenbasis. No custom Fourier transform or completed Fock-space unitary is used.
+Creation and number-conserving second quantization are bundled complex-linear maps;
+annihilation remains conjugate-linear in its one-particle vector. The canonical
+rank-one computation lifts the one-particle operator |v><w| to creation in v composed
+with annihilation in w. Its complete-orthonormal-basis expansion is shared by the
+one-boson restriction and the cyclic ring identification; those consumers do not
+unfold the defining double matrix sum. The pinned Mathlib survey reuses
+`InnerProductSpace.rankOne`, `OrthonormalBasis.sum_repr'`, and the existing Fourier
+eigenbasis. No separate matrix-unit representation is introduced. No custom Fourier transform or completed Fock-space unitary is used.
 [OneParticle](../../LeanCondensedMatter/SecondQuantization/Bosonic/Algebra/OneParticle.lean)
 defines the injective linear map from finite one-particle amplitudes to algebraic Fock
 vectors supported on configurations with total particle number one. It agrees with

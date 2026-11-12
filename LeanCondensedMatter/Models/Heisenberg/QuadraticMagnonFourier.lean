@@ -23,8 +23,6 @@ open scoped BigOperators InnerProductSpace
 noncomputable section
 variable {N : ℕ} [NeZero N]
 
-/-- File-local decidable equality matching the algebraic second-quantization coordinates. -/
-local instance instDecidableEqQuadraticMagnonFourier : DecidableEq (ZMod N) := Classical.decEq _
 
 /-- The normalized Fourier fields obey the mixed bosonic CCR on the algebraic domain. -/
 theorem comm_fourier_annihilate_create (q r : ZMod N) :
@@ -53,25 +51,17 @@ theorem excitationHamiltonian_eq_secondQuantization (J : ℝ) (twiceSpin : ℕ) 
       secondQuantization (ZMod.cyclicLaplacian (J * twiceSpin)) := by
   classical
   have hn := sum_shift (N := N) (fun i => numberOperator i)
-  have hh : (∑ i : ZMod N, (create (i + 1)).comp (annihilate i)) =
-      ∑ i : ZMod N, (create i).comp (annihilate (i - 1)) := by
-    simpa using sum_shift (N := N) (fun i => (create i).comp (annihilate (i - 1)))
-  have hcoeff (i j : ZMod N) :
-      ZMod.cyclicLaplacian (J * twiceSpin) (EuclideanSpace.single j 1) i =
-        ((J : ℂ) * twiceSpin) *
-          (2 * (if i = j then 1 else 0) - (if i - 1 = j then 1 else 0) -
-            (if i + 1 = j then 1 else 0)) := by
-    simp [ZMod.cyclicLaplacian, PiLp.single_apply]
-  have hrow (i : ZMod N) :
-      (∑ j : ZMod N, ZMod.cyclicLaplacian (J * twiceSpin) (EuclideanSpace.single j 1) i •
-        (create i).comp (annihilate j)) =
-      ((J : ℂ) * twiceSpin) • ((2 : ℂ) • numberOperator i -
-        (create i).comp (annihilate (i - 1)) - (create i).comp (annihilate (i + 1))) := by
-    simp [hcoeff, mul_sub, sub_smul, mul_ite, ite_smul,
-      Finset.sum_sub_distrib, numberOperator]
-    module
-  unfold secondQuantization
-  simp_rw [hrow]
+  have hh : (∑ i : ZMod N, (create (i - 1)).comp (annihilate i)) =
+      ∑ i : ZMod N, (create i).comp (annihilate (i + 1)) := by
+    simpa using (sum_shift (N := N) (fun i => (create (i - 1)).comp (annihilate i))).symm
+  rw [secondQuantization_eq_sum_of_basis (EuclideanSpace.basisFun (ZMod N) ℂ)]
+  simp_rw [EuclideanSpace.basisFun_apply, ZMod.cyclicLaplacian_single,
+    map_smul, map_add, map_sub, createVector_single, annihilateVector_single,
+    LinearMap.smul_comp, LinearMap.add_comp, LinearMap.sub_comp]
+  push_cast
+  have hnumber (i : ZMod N) :
+      (create i).comp (annihilate i) = numberOperator i := rfl
+  simp only [hnumber]
   simp only [excitationHamiltonian, excitationBond, smul_sub, smul_add,
     Finset.sum_sub_distrib, Finset.sum_add_distrib, ← Finset.smul_sum]
   rw [hn, hh]

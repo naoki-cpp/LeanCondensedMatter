@@ -242,6 +242,12 @@ to their canonical occupation or amplitude form:
 - `SecondQuantization.Bosonic.oneParticleEmbedding_single`
 - `SecondQuantization.Bosonic.annihilate_oneParticleEmbedding`
 
+Finite-mode field and rank-one lifting computations have canonical normal forms:
+
+- `SecondQuantization.Bosonic.createVector_single`
+- `SecondQuantization.Bosonic.annihilateVector_single`
+- `SecondQuantization.Bosonic.secondQuantization_rankOne`
+
 ## Green: Transport
 
 The following current simp boundaries are Green:

@@ -75,18 +75,15 @@ theorem oneParticleEmbedding_mem_supported (v : EuclideanSpace ℂ Mode) :
 theorem secondQuantization_comp_oneParticleEmbedding
     (T : Module.End ℂ (EuclideanSpace ℂ Mode)) :
     (secondQuantization T).comp oneParticleEmbedding = oneParticleEmbedding.comp T := by
-  apply (EuclideanSpace.basisFun Mode ℂ).toBasis.ext
-  intro j
-  simp only [OrthonormalBasis.coe_toBasis, EuclideanSpace.basisFun_apply,
-    LinearMap.comp_apply]
-  rw [oneParticleEmbedding_single]
-  have hhop (i k : Mode) :
-      create i (annihilate k (basisState (singleOccupation j))) =
-        if k = j then basisState (singleOccupation i) else 0 := by
-    rw [annihilate_basisState_singleOccupation]
-    split_ifs <;> simp
-  simp [secondQuantization, oneParticleEmbedding, LinearMap.sum_apply,
-    LinearMap.comp_apply, hhop, smul_ite]
+  rw [secondQuantization_eq_sum_of_basis (EuclideanSpace.basisFun Mode ℂ)]
+  apply LinearMap.ext
+  intro v
+  simp only [LinearMap.comp_apply, LinearMap.sum_apply, EuclideanSpace.basisFun_apply,
+    annihilateVector_single, annihilate_oneParticleEmbedding, map_smul,
+    createVector_fockVacuum]
+  have h := congrArg (fun x => oneParticleEmbedding (T x))
+    ((EuclideanSpace.basisFun Mode ℂ).sum_repr' v)
+  simpa [map_sum, map_smul, EuclideanSpace.inner_single_left] using h
 
 end
 end SecondQuantization.Bosonic
