@@ -24,6 +24,7 @@ namespace QuantumTheory.Models.RashbaExchange
 noncomputable section
 
 open QuantumTheory.Transport
+open ContinuousLinearMap
 open Filter
 
 /-- The source-band scalar coefficient at energy `E_target + offset` is
@@ -62,6 +63,7 @@ theorem bastinBandPairContribution_opposite_source_eq_lorentzian
   rw [scalarSpectralDifferenceCoefficient_eq_lorentzian
       (bandEnergy params band px py)
       (bandEnergy params band px py + offset) broadening hbroadening]
+  simp only [retardedSpectralParameter, advancedSpectralParameter]
   rw [sourceCoefficient_targetCentered .retarded params band px py offset broadening,
     sourceCoefficient_targetCentered .advanced params band px py offset broadening]
   rw [show bandEnergy params band px py + offset -
@@ -93,6 +95,7 @@ theorem targetCenteredInterbandBastinPairIntegral_eq_interbandBastinPoleIntegral
   rw [← intervalIntegral.integral_const_mul]
   apply intervalIntegral.integral_congr
   intro offset _
+  dsimp only
   rw [bastinBandPairContribution_opposite_source_eq_lorentzian
     params 0 1 band px py offset broadening hbroadening]
   ring
