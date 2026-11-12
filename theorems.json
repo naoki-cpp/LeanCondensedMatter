@@ -85036,7 +85036,6 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "QuantumTheory.Models.RashbaExchange.currentBoundedOperator_eq_charge_smul_velocity",
       "QuantumTheory.Transport.regularizedStredaSurfacePrimitiveTrace_eq_suppliedGreen"
     ],
     "crossModuleDirectWrapper": false,
@@ -85147,7 +85146,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": false,
+    "terminal": true,
     "statement": "∀ (params : QuantumTheory.Models.RashbaExchange.Parameters) (direction : Fin 2) (px py : ℝ),\n  QuantumTheory.Models.RashbaExchange.currentBoundedOperator params direction px py =\n    ↑params.signedCharge •\n      QuantumTheory.Models.RashbaExchange.velocityBoundedOperator params.toHamiltonianParameters direction px py",
     "standardAxioms": [
       "Classical.choice",
@@ -85155,7 +85154,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": true,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -85166,16 +85165,12 @@
     "docString": null,
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Models.RashbaExchange.cleanSurfaceHallPointKernel_eq_regularized"
-    ],
+    "dependents": [],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Models.RashbaExchange.cleanSurfaceHallPointKernel_eq_regularized"
-    ],
-    "compiledConsumerCount": 1,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -86890,7 +86885,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ (params : QuantumTheory.Models.RashbaExchange.Parameters) (measured source : Fin 2) (px py : ℝ),\n  QuantumTheory.Models.RashbaExchange.suppliedSurfaceHallPointKernel params measured px py\n      (QuantumTheory.Models.RashbaExchange.greenOperator QuantumTheory.Transport.SpectralSide.retarded params px py)\n      (QuantumTheory.Models.RashbaExchange.currentBoundedOperator params source px py)\n      (QuantumTheory.Models.RashbaExchange.greenOperator QuantumTheory.Transport.SpectralSide.advanced params px py) =\n    QuantumTheory.Models.RashbaExchange.cleanSurfaceHallPointKernel params measured source px py",
+    "statement": "∀ (params : QuantumTheory.Models.RashbaExchange.Parameters) (measured source : Fin 2) (px py : ℝ),\n  QuantumTheory.Models.RashbaExchange.suppliedSurfaceHallPointKernel params measured px py\n      (QuantumTheory.Transport.retardedResolvent\n        (QuantumTheory.Models.RashbaExchange.hamiltonianOperator params.toHamiltonianParameters px py)\n        params.chemicalPotential params.broadening)\n      (QuantumTheory.Models.RashbaExchange.currentBoundedOperator params source px py)\n      (QuantumTheory.Transport.advancedResolvent\n        (QuantumTheory.Models.RashbaExchange.hamiltonianOperator params.toHamiltonianParameters px py)\n        params.chemicalPotential params.broadening) =\n    QuantumTheory.Models.RashbaExchange.cleanSurfaceHallPointKernel params measured source px py",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",

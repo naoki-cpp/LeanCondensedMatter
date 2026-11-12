@@ -3288,16 +3288,6 @@
       "externalImportCount": 0
     },
     {
-      "name": "LeanCondensedMatter.Models.RashbaExchange.Green",
-      "sourceFile": "LeanCondensedMatter/Models/RashbaExchange/Green.lean",
-      "imports": [
-        "LeanCondensedMatter.Models.RashbaExchange.Operator",
-        "LeanCondensedMatter.Models.RashbaExchange.ResponseParameters",
-        "LeanCondensedMatter.Transport.Streda.RetardedAdvanced"
-      ],
-      "externalImportCount": 0
-    },
-    {
       "name": "LeanCondensedMatter.Models.RashbaExchange.Model.Interband",
       "sourceFile": "LeanCondensedMatter/Models/RashbaExchange/Model/Interband.lean",
       "imports": [
@@ -3345,10 +3335,11 @@
       "sourceFile": "LeanCondensedMatter/Models/RashbaExchange/Response.lean",
       "imports": [
         "LeanCondensedMatter.Models.RashbaExchange.Current",
-        "LeanCondensedMatter.Models.RashbaExchange.Green",
+        "LeanCondensedMatter.Models.RashbaExchange.Operator",
         "LeanCondensedMatter.Transport.Analysis.ContinuumMeasure",
         "LeanCondensedMatter.Transport.Core.ConductivityTensor",
         "LeanCondensedMatter.Transport.Streda.ConductivityNormalization",
+        "LeanCondensedMatter.Transport.Streda.RetardedAdvanced",
         "LeanCondensedMatter.Transport.Streda.TraceRepresentation"
       ],
       "externalImportCount": 2
@@ -3370,7 +3361,6 @@
         "LeanCondensedMatter.Models.RashbaExchange.Bastin.Pole",
         "LeanCondensedMatter.Models.RashbaExchange.Bastin.ResponseBridge",
         "LeanCondensedMatter.Models.RashbaExchange.Current",
-        "LeanCondensedMatter.Models.RashbaExchange.Green",
         "LeanCondensedMatter.Models.RashbaExchange.Model",
         "LeanCondensedMatter.Models.RashbaExchange.Model.Interband",
         "LeanCondensedMatter.Models.RashbaExchange.Model.OperatorSpectral",
