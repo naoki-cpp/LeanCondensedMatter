@@ -367,12 +367,13 @@ theorem ExternalInsertionBlockLayout.assembleConnectedBlocks_componentDysonAmpli
     let C : d.vertexGraph.componentPartition.parts :=
       ⟨d.vertexGraph.componentBlock (Sum.inl e),
         d.vertexGraph.componentBlock_mem_componentPartition (Sum.inl e)⟩
-    (d.componentOrderedDiagram C).dysonAmplitude ε β g
+    ExternalInsertionWickDiagram.dysonAmplitude (d.componentOrderedDiagram C) ε β g
         (d.componentExternalTime externalTime C) =
-      ((F (layout.sourceEquiv e).1).slotCongr
+      ExternalInsertionWickDiagram.dysonAmplitude
+        ((F (layout.sourceEquiv e).1).slotCongr
           (Combinatorics.standardSlotEquiv
             (layout.interactionBlock (Finset.univ : Finset (Fin n))
-              (layout.sourceEquiv e).1))).dysonAmplitude ε β g
+              (layout.sourceEquiv e).1))) ε β g
         (fun i => externalTime
           (layout.sourceEquiv.symm ⟨(layout.sourceEquiv e).1, i⟩)) := by
   classical
