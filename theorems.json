@@ -83262,124 +83262,6 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": false,
-    "statement": "∀ {params : QuantumTheory.Models.Parabolic2DEG.Parameters}, params.IsRegular → params.broadening ≠ 0",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Models.Parabolic2DEG.Parameters.IsRegular.broadening_ne_zero",
-    "module": "LeanCondensedMatter.Models.Parabolic2DEG.ResponseParameters",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Models.Parabolic2DEG.broadeningTransportLifetime_mul_lorentzianNormalization_eq_bastinStredaTracePrefactor"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Models.Parabolic2DEG.broadeningTransportLifetime_mul_lorentzianNormalization_eq_bastinStredaTracePrefactor"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {params : QuantumTheory.Models.Parabolic2DEG.Parameters}, params.IsRegular → params.effectiveMass ≠ 0",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Models.Parabolic2DEG.Parameters.IsRegular.effectiveMass_ne_zero",
-    "module": "LeanCondensedMatter.Models.Parabolic2DEG.ResponseParameters",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {params : QuantumTheory.Models.Parabolic2DEG.Parameters}, params.IsRegular → params.hbar ≠ 0",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Models.Parabolic2DEG.Parameters.IsRegular.hbar_ne_zero",
-    "module": "LeanCondensedMatter.Models.Parabolic2DEG.ResponseParameters",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
     "terminal": true,
     "statement": "∀ {params : QuantumTheory.Models.Parabolic2DEG.Parameters},\n  QuantumTheory.Models.Parabolic2DEG.UsesCanonicalMomentumMeasure params →\n    params.momentumMeasureNormalization * (2 * Real.pi) =\n      QuantumTheory.Transport.fullAngleMomentumMeasurePrefactor params.hbar",
     "standardAxioms": [
@@ -83502,52 +83384,8 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": false,
-    "statement": "∀ (params : QuantumTheory.Models.Parabolic2DEG.Parameters),\n  params.IsRegular →\n    QuantumTheory.Models.Parabolic2DEG.broadeningTransportLifetime params *\n        QuantumTheory.Models.Parabolic2DEG.lorentzianNormalization params =\n      QuantumTheory.Transport.bastinStredaTraceConductivityPrefactor params.hbar",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Models.Parabolic2DEG.broadeningTransportLifetime_mul_lorentzianNormalization_eq_bastinStredaTracePrefactor",
-    "module": "LeanCondensedMatter.Models.Parabolic2DEG.Response",
-    "externalAxioms": [],
-    "docString": "Finite-parameter Drude/Kubo normalization identity under the model's explicit physical\nregularity assumptions. No cutoff, thermodynamic, or zero-broadening limit is used. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Models.Parabolic2DEG.broadeningTransportLifetime_mul_lorentzianWeight_eq_kuboWeight"
-    ],
-    "dependencies": [
-      "QuantumTheory.Models.Parabolic2DEG.Parameters.IsRegular.broadening_ne_zero"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Models.Parabolic2DEG.broadeningTransportLifetime_mul_lorentzianWeight_eq_kuboWeight"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
     "terminal": true,
-    "statement": "∀ (params : QuantumTheory.Models.Parabolic2DEG.Parameters),\n  params.IsRegular →\n    ∀ (p : ℝ),\n      ↑(QuantumTheory.Models.Parabolic2DEG.broadeningTransportLifetime params *\n              QuantumTheory.Models.Parabolic2DEG.lorentzianNormalization params) *\n          QuantumTheory.Models.Parabolic2DEG.stredaSurfaceGreenWeight params p =\n        ↑(QuantumTheory.Transport.bastinStredaTraceConductivityPrefactor params.hbar) *\n          QuantumTheory.Models.Parabolic2DEG.stredaSurfaceGreenWeight params p",
+    "statement": "∀ (params : QuantumTheory.Models.Parabolic2DEG.Parameters),\n  params.IsRegular →\n    QuantumTheory.Models.Parabolic2DEG.broadeningTransportLifetime params *\n        QuantumTheory.Models.Parabolic2DEG.lorentzianNormalization params =\n      QuantumTheory.Transport.bastinStredaTraceConductivityPrefactor params.hbar",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -83559,16 +83397,14 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "QuantumTheory.Models.Parabolic2DEG.broadeningTransportLifetime_mul_lorentzianWeight_eq_kuboWeight",
+    "name": "QuantumTheory.Models.Parabolic2DEG.broadeningTransportLifetime_mul_lorentzianNormalization_eq_bastinStredaTracePrefactor",
     "module": "LeanCondensedMatter.Models.Parabolic2DEG.Response",
     "externalAxioms": [],
-    "docString": "Pointwise version of the finite Drude/Kubo normalization identity on the canonical Středa\nsurface Green-sector weight. ",
+    "docString": "Finite-parameter Drude/Kubo normalization identity under the model's explicit physical\nregularity assumptions. No cutoff, thermodynamic, or zero-broadening limit is used. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [],
-    "dependencies": [
-      "QuantumTheory.Models.Parabolic2DEG.broadeningTransportLifetime_mul_lorentzianNormalization_eq_bastinStredaTracePrefactor"
-    ],
+    "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [],
