@@ -116,18 +116,14 @@ theorem boundedOrbitalBondFlux_reverse (hoppingStrength : ℝ) :
   rw [bondFluxOneToZero_eq_neg, boundedOrbitalMatrix_neg]
   rfl
 
-/-- Charge within the left two-orbital site, with q=1. -/
-def chargeProjectorZero : OrbitalMatrix :=
-  !![1, 0, 0, 0;
-     0, 1, 0, 0;
-     0, 0, 0, 0;
-     0, 0, 0, 0]
+/-- Legacy name for the one-particle charge projector, now owned by the orbital model. -/
+abbrev chargeProjectorZero : OrbitalMatrix :=
+  siteZeroChargeProjector
 
-/-- The oriented charge-bond vertex obtained from the same hopping term as
-the orbital flux. It is the negative Heisenberg change in the left-site charge. -/
-noncomputable def chargeBondSource (hoppingStrength : ℝ) : OrbitalMatrix :=
-  -Complex.I • (hopping hoppingStrength * chargeProjectorZero -
-    chargeProjectorZero * hopping hoppingStrength)
+/-- Legacy name for the one-particle hopping-driven charge source.
+The operator itself is now defined alongside the orbital bond fluxes. -/
+noncomputable abbrev chargeBondSource (hoppingStrength : ℝ) : OrbitalMatrix :=
+  siteZeroChargeBondFlux hoppingStrength
 
 /-- Bounded charge-current source coupled to an external vector-potential-like
 parameter; any physical charge or lattice-spacing factors remain explicit. -/
