@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Combinatorics.PerfectPairing.Crossing
 import LeanCondensedMatter.SecondQuantization.Common.Algebra.Statistics
 import LeanCondensedMatter.Combinatorics.ExchangeSign
 import LeanCondensedMatter.Combinatorics.PerfectPairing.SplitCrossing
@@ -76,6 +77,21 @@ theorem zetaInt_pow_eq_prod_of_sum_mod_two_eq (s : Statistics)
       zetaInt_pow_eq_of_mod_two_eq s h
     _ = ∏ i, (s.zetaInt : ℂ) ^ localExponent i := by
       rw [← Finset.prod_pow_eq_pow_sum]
+
+/-- An order-preserving equivalence of finite fermion positions that
+intertwines Wick partners preserves the exchange-statistics weight. This
+applies to both fermions and bosons, and depends on the **exact**
+crossing-number invariance, not a replacement of physical pairings by
+formal local variables. -/
+theorem Pairing.weight_eq_of_partnerEquiv_strictMono
+    (s : Statistics) {m n : ℕ}
+    (source : Pairing m) (target : Pairing n)
+    (e : Fin (2 * m) ≃ Fin (2 * n))
+    (hpartner : ∀ p, target.partner (e p) = e (source.partner p))
+    (hmono : StrictMono e) :
+    source.weight s = target.weight s := by
+  unfold Pairing.weight
+  rw [source.crossingCount_eq_of_partnerEquiv_strictMono target e hpartner hmono]
 
 /-- The exchange-statistics weight of a binary assembled pairing is the product
 of the two local weights, multiplied by the parity sign of right-before-left
