@@ -251,7 +251,6 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedInPlaneTrace_gap_eq_Green_d
     finiteCutoffContinuumBornDysonPauliCoefficient,
     InternalSpace.pauliAxisComponent]
   rw [← hgap]
-  push_cast
   ring
 
 end
