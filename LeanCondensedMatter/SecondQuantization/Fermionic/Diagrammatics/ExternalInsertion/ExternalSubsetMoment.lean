@@ -605,6 +605,61 @@ theorem vacuumFreeExternalInsertionDysonCoefficient_eq_sum_externalPartitionFibe
   · intro d _
     rfl
 
+/-- A physical vacuum-free Wick diagram can never have an external
+connected component with an odd number of fermion insertions. Therefore
+the *actual integrated Dyson partition fiber* at an odd-block partition
+vanishes term by term, without a cancellation or cumulant assumption. -/
+theorem fixedExternalPartitionDysonFiber_eq_zero_of_oddBlock
+    {K n : ℕ} (π : Finpartition (Finset.univ : Finset (Fin (2 * K))))
+    (B : π.parts) (hodd : ¬ Even (B : Finset (Fin (2 * K))).card)
+    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
+    (labels : Fin (2 * K) → ExternalFieldLabel Mode)
+    (times : Fin (2 * K) → ℝ) :
+    (∑ d : VacuumFreeFixedExternalInsertionWickDiagram Mode K n labels,
+      if externalComponentPartition d.1.1.vertexGraph = π then
+        d.1.1.dysonAmplitude ε β g times else 0) = 0 := by
+  classical
+  apply Finset.sum_eq_zero
+  intro d _
+  by_cases hp : externalComponentPartition d.1.1.vertexGraph = π
+  · have hmem : (B : Finset (Fin (2 * K))) ∈
+        (externalComponentPartition d.1.1.vertexGraph).parts := by
+      rw [hp]
+      exact B.2
+    have hEven := d.1.1.externalComponentPartition_block_card_even B.1 hmem
+    exact (hodd hEven).elim
+  · simp only [hp, ↓reduceIte]
+
+/-- The **physical** vacuum-free Dyson coefficient is supported only on
+external partitions with even block cardinalities. This is the required
+fermion-parity reduction *before* the physical fixed-partition layout and
+shuffle reindexing; arbitrary odd-block partitions are not silently
+discarded. -/
+theorem vacuumFreeExternalInsertionDysonCoefficient_eq_sum_evenPartitionFibers
+    {K : ℕ} (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
+    (labels : Fin (2 * K) → ExternalFieldLabel Mode)
+    (times : Fin (2 * K) → ℝ) (n : ℕ) :
+    vacuumFreeExternalInsertionDysonCoefficient ε β g labels times n =
+      ∑ π : Finpartition (Finset.univ : Finset (Fin (2 * K))),
+        if ∀ B : π.parts, Even (B : Finset (Fin (2 * K))).card then
+          ∑ d : VacuumFreeFixedExternalInsertionWickDiagram Mode K n labels,
+            if externalComponentPartition d.1.1.vertexGraph = π then
+              d.1.1.dysonAmplitude ε β g times else 0
+        else 0 := by
+  classical
+  rw [vacuumFreeExternalInsertionDysonCoefficient_eq_sum_externalPartitionFibers]
+  apply Finset.sum_congr rfl
+  intro π _
+  by_cases heven : ∀ B : π.parts, Even (B : Finset (Fin (2 * K))).card
+  · simp only [heven, ↓reduceIte]
+  · have hOdd : ∃ B : π.parts, ¬ Even (B : Finset (Fin (2 * K))).card := by
+      push_neg at heven
+      exact heven
+    obtain ⟨B, hBodd⟩ := hOdd
+    rw [if_neg heven]
+    exact fixedExternalPartitionDysonFiber_eq_zero_of_oddBlock
+      π B hBodd ε β g labels times
+
 open Classical in
 /-- At each fixed perturbation order, the *integrated fermionic Dyson
 amplitude* sum over diagrams respecting a prescribed even external-block
