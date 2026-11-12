@@ -651,7 +651,7 @@ theorem vacuumFreeExternalInsertionDysonCoefficient_eq_sum_evenPartitionFibers
   apply Finset.sum_congr rfl
   intro π _
   by_cases heven : ∀ B : π.parts, Even (B : Finset (Fin (2 * K))).card
-  · simp only [heven, ↓reduceIte]
+  · simp only [if_pos heven]
   · have hOdd : ∃ B : π.parts, ¬ Even (B : Finset (Fin (2 * K))).card := by
       push_neg at heven
       exact heven
@@ -823,7 +823,8 @@ theorem sum_fixedExternalPartitionFiber_eq_sum_localLabelConnectedBlockFamilies
       (if layout.partition = π then
         if (layout.assembleDiagram (Finset.univ : Finset (Fin n)) F).externalLabel =
             labels then
-          (layout.assembleDiagram (Finset.univ : Finset (Fin n)) F).dysonAmplitude
+          ExternalInsertionWickDiagram.dysonAmplitude
+            (layout.assembleDiagram (Finset.univ : Finset (Fin n)) F)
             ε β g times
         else 0
       else 0) =
@@ -831,7 +832,8 @@ theorem sum_fixedExternalPartitionFiber_eq_sum_localLabelConnectedBlockFamilies
         if ∀ B : layout.partition.parts,
             (F B).externalLabel =
               fun i => labels (layout.sourceEquiv.symm ⟨B, i⟩) then
-          (layout.assembleDiagram (Finset.univ : Finset (Fin n)) F).dysonAmplitude
+          ExternalInsertionWickDiagram.dysonAmplitude
+            (layout.assembleDiagram (Finset.univ : Finset (Fin n)) F)
             ε β g times
         else 0
       else 0)
@@ -869,10 +871,10 @@ theorem vacuumFreeExternalInsertionDysonCoefficient_eq_sum_evenPartitions_localL
   apply Finset.sum_congr rfl
   intro π _
   by_cases heven : ∀ B : π.parts, Even (B : Finset (Fin (2 * K))).card
-  · simp only [heven, ↓reduceIte]
+  · simp only [if_pos heven]
     exact sum_fixedExternalPartitionFiber_eq_sum_localLabelConnectedBlockFamilies
       anchor π ε β g labels times
-  · simp only [heven, ↓reduceIte]
+  · simp only [if_neg heven]
 
 /-- Fully external-connected, vacuum-free Dyson coefficient using the actual
 integrated signed Wick diagram amplitude, with all labels and times fixed. -/
