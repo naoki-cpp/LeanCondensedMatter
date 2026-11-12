@@ -45,8 +45,7 @@ theorem crystalFieldOrbitalTorque_eq (Δ : ℝ) :
   ext i j
   fin_cases i <;> fin_cases j <;>
     simp [crystalFieldOrbitalTorque, crystalFieldHamiltonian, orbitalZ,
-      InternalSpace.pauliX, InternalSpace.pauliY, InternalSpace.pauliZ,
-      ] <;> ring_nf <;> simp [pow_two, Complex.I_mul_I]
+      InternalSpace.pauliX, InternalSpace.pauliY, InternalSpace.pauliZ] <;> ring_nf <;> simp [pow_two, Complex.I_mul_I]
 
 /-- The crystal-field torque is nonzero in a concrete two-orbital site. -/
 theorem crystalFieldOrbitalTorque_one_ne_zero :
