@@ -23,8 +23,6 @@ open scoped BigOperators InnerProductSpace
 noncomputable section
 variable {N : ℕ} [NeZero N]
 
-/-- File-local decidable equality matching the algebraic second-quantization coordinates. -/
-local instance instDecidableEqQuadraticMagnonFourier : DecidableEq (ZMod N) := Classical.decEq _
 
 /-- The normalized Fourier fields obey the mixed bosonic CCR on the algebraic domain. -/
 theorem comm_fourier_annihilate_create (q r : ZMod N) :
