@@ -112,6 +112,17 @@ theorem Pairing.crossingCount_eq_sum_crosses {n : ℕ} (pairing : Pairing n) :
     _ = _ := by
       simp only [Finset.attach_eq_univ, Fintype.sum_prod_type]
 
+/-- Merely changing the natural-number index of a finite perfect
+pairing by equality leaves its geometric crossing count unchanged.  In
+particular, casting the pair count during canonical interaction-slot
+standardization introduces no extra fermionic crossing sign. -/
+theorem Pairing.cast_crossingCount {m n : ℕ} (h : m = n)
+    (pairing : Pairing m) :
+    (Equiv.cast (congrArg Pairing h) pairing).crossingCount =
+      pairing.crossingCount := by
+  cases h
+  rfl
+
 /-- The number of pairs crossing `firstPair`. -/
 def Pairing.crossingsWithFirstPair {n : ℕ} (pairing : Pairing (n + 1)) : ℕ :=
   (pairing.pairs.filter fun p => Crosses pairing.firstPair p).card
