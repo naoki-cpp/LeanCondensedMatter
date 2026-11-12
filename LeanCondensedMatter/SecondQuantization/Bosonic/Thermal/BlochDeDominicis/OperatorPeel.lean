@@ -45,27 +45,17 @@ theorem FreeThermalField.operator_comp_operator_eq_exchangeValue
             (ScalarExchange.mul_eq_add_smul_mul_of_zetaCommutator_eq (1 : ℂ)
               (comm_annihilate_annihilate i j))
       | create j =>
-          by_cases hij : i = j
-          · subst j
-            simpa [FreeThermalField.operator, FreeThermalField.exchangeValue, Module.End.mul_eq_comp,
-              Module.End.one_eq_id] using
-              (ScalarExchange.mul_eq_add_smul_mul_of_zetaCommutator_eq (1 : ℂ)
-                (comm_annihilate_create i i))
-          · simpa [FreeThermalField.operator, FreeThermalField.exchangeValue, hij, Module.End.mul_eq_comp,
-              Module.End.one_eq_id] using
+          by_cases hij : i = j <;>
+            simpa [FreeThermalField.operator, FreeThermalField.exchangeValue, hij,
+              Module.End.mul_eq_comp, Module.End.one_eq_id] using
               (ScalarExchange.mul_eq_add_smul_mul_of_zetaCommutator_eq (1 : ℂ)
                 (comm_annihilate_create i j))
   | create i =>
       cases D with
       | annihilate j =>
-          by_cases hij : i = j
-          · subst j
-            simpa [FreeThermalField.operator, FreeThermalField.exchangeValue, Module.End.mul_eq_comp,
-              Module.End.one_eq_id] using
-              (ScalarExchange.mul_eq_add_smul_mul_of_zetaCommutator_eq (1 : ℂ)
-                (comm_create_annihilate i i))
-          · simpa [FreeThermalField.operator, FreeThermalField.exchangeValue, hij, Module.End.mul_eq_comp,
-              Module.End.one_eq_id] using
+          by_cases hij : i = j <;>
+            simpa [FreeThermalField.operator, FreeThermalField.exchangeValue, hij,
+              Module.End.mul_eq_comp, Module.End.one_eq_id] using
               (ScalarExchange.mul_eq_add_smul_mul_of_zetaCommutator_eq (1 : ℂ)
                 (comm_create_annihilate i j))
       | create j =>
