@@ -655,11 +655,9 @@ theorem vacuumFreeExternalInsertionDysonCoefficient_eq_sum_evenPartitionFibers
   · have hOdd : ∃ B : π.parts, ¬ Even (B : Finset (Fin (2 * K))).card :=
       not_forall.mp heven
     obtain ⟨B, hBodd⟩ := hOdd
-    have hnot : ¬ ∀ P ∈ π.parts, Even P.card := by
-      intro h
-      exact heven (fun P => h P.1 P.2)
-    simp [hnot] <;>
-      exact fixedExternalPartitionDysonFiber_eq_zero_of_oddBlock
+    split_ifs with h
+    · exact (heven (fun P => h P.1 P.2)).elim
+    · exact fixedExternalPartitionDysonFiber_eq_zero_of_oddBlock
         π B hBodd ε β g labels times
 
 open Classical in
