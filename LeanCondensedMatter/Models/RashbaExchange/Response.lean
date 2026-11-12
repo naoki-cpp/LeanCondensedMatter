@@ -1,9 +1,10 @@
 import LeanCondensedMatter.Transport.Analysis.ContinuumMeasure
 import LeanCondensedMatter.Transport.Core.ConductivityTensor
-import LeanCondensedMatter.Models.RashbaExchange.Green
+import LeanCondensedMatter.Models.RashbaExchange.Operator
 import LeanCondensedMatter.Models.RashbaExchange.Current
 import LeanCondensedMatter.Transport.Streda.ConductivityNormalization
 import LeanCondensedMatter.Transport.Streda.TraceRepresentation
+import LeanCondensedMatter.Transport.Streda.RetardedAdvanced
 import Mathlib.Analysis.SpecialFunctions.Integrals.Basic
 import Mathlib.Tactic.Ring
 
@@ -54,18 +55,22 @@ noncomputable def suppliedSurfaceHallPointKernel
 noncomputable def cleanSurfaceHallPointKernel
     (params : Parameters) (measured source : Fin 2) (px py : ℝ) : ℂ :=
   suppliedSurfaceHallPointKernel params measured px py
-    (greenOperator .retarded params px py)
+    (retardedResolvent (hamiltonianOperator params px py)
+      params.chemicalPotential params.broadening)
     (currentBoundedOperator params source px py)
-    (greenOperator .advanced params px py)
+    (advancedResolvent (hamiltonianOperator params px py)
+      params.chemicalPotential params.broadening)
 
 /-- The disorder/vertex seam specialized to clean resolvents and the bare charge-current source
 vertex is definitionally the clean surface kernel. -/
 theorem suppliedSurfaceHallPointKernel_bare_eq_clean
     (params : Parameters) (measured source : Fin 2) (px py : ℝ) :
     suppliedSurfaceHallPointKernel params measured px py
-        (greenOperator .retarded params px py)
+        (retardedResolvent (hamiltonianOperator params px py)
+      params.chemicalPotential params.broadening)
         (currentBoundedOperator params source px py)
-        (greenOperator .advanced params px py) =
+        (advancedResolvent (hamiltonianOperator params px py)
+      params.chemicalPotential params.broadening) =
       cleanSurfaceHallPointKernel params measured source px py := by
   rfl
 
@@ -79,7 +84,7 @@ theorem cleanSurfaceHallPointKernel_eq_regularized
         (currentBoundedOperator params source px py)
         params.chemicalPotential params.broadening := by
   symm
-  simpa [cleanSurfaceHallPointKernel, suppliedSurfaceHallPointKernel, greenOperator] using
+  simpa only [cleanSurfaceHallPointKernel, suppliedSurfaceHallPointKernel] using
     (regularizedStredaSurfacePrimitiveTrace_eq_suppliedGreen
       (hamiltonianOperator params px py)
       (currentBoundedOperator params measured px py)
