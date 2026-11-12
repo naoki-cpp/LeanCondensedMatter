@@ -153,7 +153,8 @@ theorem Pairing.evaluation_eq_of_partnerEquiv_strictMono
       Equiv.prod_comp pairEquiv
         (fun pr : target.NormalizedPair => targetValue pr.1.1 pr.1.2)
     _ = ∏ pr ∈ target.pairs, targetValue pr.1 pr.2 :=
-      (Finset.prod_subtype target.pairs (fun _ => Iff.rfl) _).symm
+      (Finset.prod_subtype target.pairs (fun _ => Iff.rfl)
+        (fun pr => targetValue pr.1 pr.2)).symm
 
 /-- Scalar pairing evaluation factors into a residual factor and component evaluations when both
 its weight and its pair kernel respect the component-pair decomposition. -/
