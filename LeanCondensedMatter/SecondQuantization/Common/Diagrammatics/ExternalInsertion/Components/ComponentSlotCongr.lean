@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Combinatorics.PerfectPairing.Crossing
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.MixedOrderData
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.SupportStandardization
 
@@ -70,6 +71,29 @@ theorem ExternalInsertionDiagram.componentOrderedDiagram_eq_slotCongr
       rfl
     rw [hsymm] at hforward
     simpa only [Equiv.symm_symm, Equiv.apply_symm_apply] using hforward
+
+
+/-- Consecutive interaction-slot standardization of an actual connected
+component preserves the crossing count of its **restricted physical Wick
+pairing**.  This is an exact crossing-number identity, not just a parity
+congruence, and no assumption on the component interaction count is needed. -/
+theorem ExternalInsertionDiagram.componentOrderedDiagram_pairing_crossingCount
+    {E n : ℕ}
+    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E n
+      (Finset.univ : Finset (Fin n)))
+    (B : d.vertexGraph.componentPartition.parts) :
+    (d.componentOrderedDiagram B).pairing.crossingCount =
+      (d.restrictComponent B).pairing.crossingCount := by
+  classical
+  let T := interactionSector
+    (B : Finset (ExternalInsertionVertex E (Finset.univ : Finset (Fin n))))
+  change (Equiv.cast (show
+      Pairing (2 * T.card + d.externalPairCount B) =
+        Pairing (2 * (Finset.univ : Finset (Fin T.card)).card +
+          d.externalPairCount B) from by simp)
+      (d.restrictComponent B).pairing).crossingCount =
+        (d.restrictComponent B).pairing.crossingCount
+  exact Pairing.cast_crossingCount (by simp) _
 
 end Common
 end SecondQuantization
