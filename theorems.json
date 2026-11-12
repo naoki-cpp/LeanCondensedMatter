@@ -48379,7 +48379,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": false,
+    "terminal": true,
     "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (U : Multiplicative ℝ →* ↥(unitary (H →L[ℂ] H))) (hbar : ℝ)\n  (expectation : QuantumTheory.LinearResponse.NormalizedExpectation H) (measured source : H →L[ℂ] H) (f : ℝ → ℝ)\n  (t : ℝ),\n  (QuantumTheory.LinearResponse.ResponseChannel.fixed measured source).causalResponse U hbar expectation f t =\n    ∫ (s : ℝ) in 0..t,\n      ↑(f s) * QuantumTheory.LinearResponse.retardedSusceptibility U hbar expectation measured source t s",
     "standardAxioms": [
       "Classical.choice",
@@ -48387,7 +48387,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -48398,18 +48398,14 @@
     "docString": "A fixed-observable channel reduces to the ordinary causal retarded convolution. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.Validation.TwoSiteOrbitalResponse.orbitalChargeResponse_eq_retarded"
-    ],
+    "dependents": [],
     "dependencies": [
       "QuantumTheory.LinearResponse.heisenbergEvolution_apply"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.Validation.TwoSiteOrbitalResponse.orbitalChargeResponse_eq_retarded"
-    ],
-    "compiledConsumerCount": 1,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -148471,6 +148467,50 @@
   },
   {
     "terminal": false,
+    "statement": "∀ (A : QuantumTheory.Models.OrbitalTransport.TwoSite.OrbitalMatrix),\n  SecondQuantization.Fermionic.Validation.TwoSiteOrbitalResponse.boundedOrbitalMatrix A =\n    ∑ i, ∑ j, A i j • SecondQuantization.Fermionic.Lattice.boundedDgammaMatrixUnit i j",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Fermionic.Validation.TwoSiteOrbitalResponse.boundedOrbitalMatrix_eq_sum",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Validation.TwoSiteOrbitalResponse",
+    "externalAxioms": [],
+    "docString": "Recover the former matrix-unit expansion directly from linearity of\nthe canonical one-body second quantization. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Fermionic.Validation.TwoSiteOrbitalResponse.boundedOrbitalMatrix_neg",
+      "SecondQuantization.Fermionic.Validation.TwoSiteOrbitalResponse.boundedOrbitalMatrix_selfAdjoint"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.Validation.TwoSiteOrbitalResponse.boundedOrbitalMatrix_neg",
+      "SecondQuantization.Fermionic.Validation.TwoSiteOrbitalResponse.boundedOrbitalMatrix_selfAdjoint"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ (A : QuantumTheory.Models.OrbitalTransport.TwoSite.OrbitalMatrix),\n  SecondQuantization.Fermionic.Validation.TwoSiteOrbitalResponse.boundedOrbitalMatrix (-A) =\n    -SecondQuantization.Fermionic.Validation.TwoSiteOrbitalResponse.boundedOrbitalMatrix A",
     "standardAxioms": [
       "Classical.choice",
@@ -148492,7 +148532,9 @@
     "dependents": [
       "SecondQuantization.Fermionic.Validation.TwoSiteOrbitalResponse.boundedOrbitalBondFlux_reverse"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "SecondQuantization.Fermionic.Validation.TwoSiteOrbitalResponse.boundedOrbitalMatrix_eq_sum"
+    ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
@@ -148533,47 +148575,8 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "SecondQuantization.Fermionic.Lattice.star_boundedDgammaMatrixUnit"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ (Δ hoppingStrength : ℝ)\n  (expectation :\n    QuantumTheory.LinearResponse.NormalizedExpectation\n      SecondQuantization.Fermionic.Validation.TwoSiteOrbitalResponse.OrbitalFock)\n  (sourceProfile : ℝ → ℝ) (observationTime : ℝ),\n  (SecondQuantization.Fermionic.Validation.TwoSiteOrbitalResponse.orbitalChargeResponseChannel\n          hoppingStrength).causalResponse\n      (QuantumTheory.LinearResponse.freePropagatorGroup\n        (SecondQuantization.Fermionic.Validation.TwoSiteOrbitalResponse.orbitalFreeSystem Δ hoppingStrength))\n      (SecondQuantization.Fermionic.Validation.TwoSiteOrbitalResponse.orbitalFreeSystem Δ hoppingStrength).hbar\n      expectation sourceProfile observationTime =\n    ∫ (s : ℝ) in 0..observationTime,\n      ↑(sourceProfile s) *\n        QuantumTheory.LinearResponse.retardedSusceptibility\n          (QuantumTheory.LinearResponse.freePropagatorGroup\n            (SecondQuantization.Fermionic.Validation.TwoSiteOrbitalResponse.orbitalFreeSystem Δ hoppingStrength))\n          (SecondQuantization.Fermionic.Validation.TwoSiteOrbitalResponse.orbitalFreeSystem Δ hoppingStrength).hbar\n          expectation\n          (SecondQuantization.Fermionic.Validation.TwoSiteOrbitalResponse.boundedOrbitalBondFlux hoppingStrength)\n          (SecondQuantization.Fermionic.Validation.TwoSiteOrbitalResponse.boundedChargeBondSource hoppingStrength)\n          observationTime s",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.Validation.TwoSiteOrbitalResponse.orbitalChargeResponse_eq_retarded",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Validation.TwoSiteOrbitalResponse",
-    "externalAxioms": [],
-    "docString": "The channel's causal response is exactly the retarded Kubo convolution,\nevaluated using the *same* finite orbital Hamiltonian. No DC or continuum\nlimit is taken. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "QuantumTheory.LinearResponse.ResponseChannel.fixed_causalResponse_eq"
+      "SecondQuantization.Fermionic.Lattice.star_boundedDgammaMatrixUnit",
+      "SecondQuantization.Fermionic.Validation.TwoSiteOrbitalResponse.boundedOrbitalMatrix_eq_sum"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
