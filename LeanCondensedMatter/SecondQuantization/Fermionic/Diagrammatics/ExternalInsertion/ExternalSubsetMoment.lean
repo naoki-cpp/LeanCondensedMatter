@@ -541,10 +541,27 @@ theorem ExternalInsertionBlockLayout.assembleDiagram_externalLabel_eq_iff_evenSu
         (F B).externalLabel =
           evenExternalSubsetLabels labels (B : Finset (Fin (2 * E)))
             (layout.evenBlocks B) := by
-  simpa only [evenExternalSubsetLabels, evenExternalSubsetOrderIso,
-    layout.sourceEquiv_symm_apply] using
-    (layout.assembleDiagram_externalLabel_eq_iff
-      (Finset.univ : Finset (Fin n)) F labels)
+  rw [layout.assembleDiagram_externalLabel_eq_iff
+    (Finset.univ : Finset (Fin n)) F labels]
+  constructor
+  · intro h B
+    calc
+      (F B).externalLabel =
+          (fun i => labels (layout.sourceEquiv.symm ⟨B, i⟩)) := h B
+      _ = evenExternalSubsetLabels labels (B : Finset (Fin (2 * E)))
+            (layout.evenBlocks B) := by
+        funext i
+        rw [layout.sourceEquiv_symm_apply B i]
+        rfl
+  · intro h B
+    calc
+      (F B).externalLabel =
+          evenExternalSubsetLabels labels (B : Finset (Fin (2 * E)))
+            (layout.evenBlocks B) := h B
+      _ = (fun i => labels (layout.sourceEquiv.symm ⟨B, i⟩)) := by
+        funext i
+        rw [layout.sourceEquiv_symm_apply B i]
+        rfl
 
 /-- The physical connected-block Dyson shuffle orbit, now expressed using
 the canonical increasing *subset restriction* of external insertion times.
@@ -575,8 +592,8 @@ theorem ExternalInsertionBlockLayout.assembleConnectedBlocks_signedDysonShuffleO
   classical
   simpa only [evenExternalSubsetTimes, evenExternalSubsetOrderIso,
     layout.sourceEquiv_symm_apply] using
-    (layout.assembleConnectedBlocks_signedDysonShuffleOrbit_eq_independentLocals
-      F hconnected ε β g times)
+    (ExternalInsertionBlockLayout.assembleConnectedBlocks_signedDysonShuffleOrbit_eq_independentLocals
+      layout F hconnected ε β g times)
 
 omit [LinearOrder Mode] [Fintype Mode] in
 /-- On each external-partition block of a vacuum-free diagram, the field
