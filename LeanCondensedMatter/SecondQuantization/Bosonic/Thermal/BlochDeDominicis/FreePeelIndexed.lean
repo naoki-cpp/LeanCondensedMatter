@@ -82,7 +82,8 @@ theorem grandCanonicalGibbsExpectation_operatorPeelSum_eq_sum
           grandCanonicalGibbsExpectation ε β μ (orderedProduct (l.eraseIdx j)) := by
       apply Finset.sum_congr rfl
       intro j _
-      rw [grandCanonicalGibbsExpectation_smul]
+      simp only [grandCanonicalGibbsExpectation, LinearMap.comp_smul,
+        Common.tsumTrace_smul, mul_div_assoc]
 
 end FreeThermalField
 
