@@ -42,7 +42,7 @@ private theorem norm_sqrt_natCast_le_norm_natCast_add_one (k : ℕ) :
     ‖(Real.sqrt (k : ℝ) : ℂ)‖ ≤
         ‖(Real.sqrt ((k : ℝ) + 1) : ℂ)‖ := by
       simp only [Complex.norm_real, Real.norm_of_nonneg (Real.sqrt_nonneg _)]
-      exact Real.sqrt_le_sqrt (by positivity)
+      exact Real.sqrt_le_sqrt (by linarith)
     _ ≤ ‖(k : ℂ) + 1‖ := norm_sqrt_natCast_add_one_le_norm_natCast_add_one k
 
 /-- A pointwise majorization of diagonal weights transfers the number-operator domain into
