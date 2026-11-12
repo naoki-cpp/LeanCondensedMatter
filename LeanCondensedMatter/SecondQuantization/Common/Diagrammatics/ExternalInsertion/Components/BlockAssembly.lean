@@ -1125,6 +1125,28 @@ theorem ExternalInsertionBlockLayout.physicalComponentCanonicalLegEquiv_strictMo
   rw [hbridge j, hbridge i] at hcontra
   exact (not_le_of_gt hglobal) hcontra
 
+/-- The local external-pair parameter of an actual assembled graph component
+is the half-cardinality of its assigned source-partition block. This closes
+the dependent external-size index needed to identify physical component
+restriction with the independently supplied labelled Wick block. -/
+theorem ExternalInsertionBlockLayout.assembleDiagram_componentExternalPairCount_external
+    {ExternalLabel InternalLabel : Type*}
+    (layout : ExternalInsertionBlockLayout E N) (S : Finset (Fin N))
+    (F : ∀ B : layout.partition.parts,
+      ExternalInsertionDiagram ExternalLabel InternalLabel
+        ((B : Finset (Fin (2 * E))).card / 2) N (layout.interactionBlock S B))
+    (hconnected : ∀ B, (F B).vertexGraph.Preconnected)
+    (e : Fin (2 * E)) :
+    (layout.assembleDiagram S F).externalPairCount
+      ⟨(layout.assembleDiagram S F).vertexGraph.componentBlock (Sum.inl e),
+        (layout.assembleDiagram S F).vertexGraph.componentBlock_mem_componentPartition
+          (Sum.inl e)⟩ =
+      ((layout.sourceEquiv e).1.1.card / 2) := by
+  change (Finset.toLeft
+    ((layout.assembleDiagram S F).vertexGraph.componentBlock (Sum.inl e))).card / 2 =
+      ((layout.sourceEquiv e).1.1.card / 2)
+  rw [layout.assembleDiagram_componentExternalSector_external S F hconnected e]
+
 /-- The particular physical component-to-independent-block leg equivalence
 is just the equality cast of *ordered flattened-leg indices*.  There is
 no residual permutation: the earlier strict-monotonicity proof and the
@@ -1177,28 +1199,6 @@ theorem ExternalInsertionBlockLayout.physicalComponentCanonicalLegEquiv_eq_finCo
       map_rel_iff' := fun a b => hc.le_iff_le }
   have hu : iso = Fin.castOrderIso hlegs := Subsingleton.elim _ _
   exact congrArg OrderIso.toEquiv hu
-
-/-- The local external-pair parameter of an actual assembled graph component
-is the half-cardinality of its assigned source-partition block. This closes
-the dependent external-size index needed to identify physical component
-restriction with the independently supplied labelled Wick block. -/
-theorem ExternalInsertionBlockLayout.assembleDiagram_componentExternalPairCount_external
-    {ExternalLabel InternalLabel : Type*}
-    (layout : ExternalInsertionBlockLayout E N) (S : Finset (Fin N))
-    (F : ∀ B : layout.partition.parts,
-      ExternalInsertionDiagram ExternalLabel InternalLabel
-        ((B : Finset (Fin (2 * E))).card / 2) N (layout.interactionBlock S B))
-    (hconnected : ∀ B, (F B).vertexGraph.Preconnected)
-    (e : Fin (2 * E)) :
-    (layout.assembleDiagram S F).externalPairCount
-      ⟨(layout.assembleDiagram S F).vertexGraph.componentBlock (Sum.inl e),
-        (layout.assembleDiagram S F).vertexGraph.componentBlock_mem_componentPartition
-          (Sum.inl e)⟩ =
-      ((layout.sourceEquiv e).1.1.card / 2) := by
-  change (Finset.toLeft
-    ((layout.assembleDiagram S F).vertexGraph.componentBlock (Sum.inl e))).card / 2 =
-      ((layout.sourceEquiv e).1.1.card / 2)
-  rw [layout.assembleDiagram_componentExternalSector_external S F hconnected e]
 
 /-- Restricting an assembled physical connected component preserves
 the original interaction-vertex label at every assigned ambient vertex.
