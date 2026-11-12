@@ -2606,7 +2606,7 @@ noncomputable def ExternalInsertionBlockLayout.fixedPartitionOwnerEquiv
 complete family of fiber cardinalities and an order-preserving slot
 shuffle. All zero-size blocks remain in the domain. -/
 private noncomputable def ownerFiberSizesEquiv
-    {ι : Type*} [Fintype ι] :
+    {ι : Type*} [Fintype ι] [DecidableEq ι] :
     (Fin N → ι) ≃
       Σ size : ι → ℕ,
         {owner : Fin N → ι //
@@ -2639,8 +2639,9 @@ noncomputable def ExternalInsertionBlockLayout.fixedPartitionSizeShuffleEquiv
     (π : Finpartition (Finset.univ : Finset (Fin (2 * E))))
     (heven : ∀ B : π.parts, Even (B : Finset (Fin (2 * E))).card) :
     {layout : ExternalInsertionBlockLayout E N // layout.partition = π} ≃
-      Σ size : π.parts → ℕ, FamilySlotShuffleTo size N :=
-  (ExternalInsertionBlockLayout.fixedPartitionOwnerEquiv π heven).trans
+      Σ size : π.parts → ℕ, FamilySlotShuffleTo size N := by
+  classical
+  exact (ExternalInsertionBlockLayout.fixedPartitionOwnerEquiv π heven).trans
     ((ownerFiberSizesEquiv (N := N)).trans
       (Equiv.sigmaCongrRight (fun size =>
         (familyShuffleOwnerEquiv (ι := π.parts) (size := size)
