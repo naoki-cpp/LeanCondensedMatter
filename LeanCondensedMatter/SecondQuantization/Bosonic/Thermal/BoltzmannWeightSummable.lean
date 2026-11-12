@@ -28,10 +28,6 @@ theorem hasSum_boltzmannWeight {Mode : Type*} [Fintype Mode] (ε : Mode → ℝ)
     (fun i => hasSum_oneModeBoltzmannWeight (hpos i))
     (fun i k => Real.exp_nonneg _)
 
-theorem summable_boltzmannWeight {Mode : Type*} [Fintype Mode] (ε : Mode → ℝ)
-    (β : ℝ) (hpos : ∀ i, 0 < β * ε i) : Summable (boltzmannWeight ε β) :=
-  (hasSum_boltzmannWeight ε β hpos).summable
-
 theorem tsum_boltzmannWeight {Mode : Type*} [Fintype Mode] (ε : Mode → ℝ)
     (β : ℝ) (hpos : ∀ i, 0 < β * ε i) :
     ∑' n, boltzmannWeight ε β n = ∏ i, (1 - Real.exp (-β * ε i))⁻¹ :=
@@ -45,10 +41,6 @@ theorem tsum_boltzmannWeight_pos {Mode : Type*} [Fintype Mode] (ε : Mode → �
   have hnorm : Real.exp (-β * ε i) < 1 := by
     rw [Real.exp_lt_one_iff]; linarith [hpos i]
   linarith
-
-theorem tsum_boltzmannWeight_ne_zero {Mode : Type*} [Fintype Mode] (ε : Mode → ℝ) (β : ℝ)
-    (hpos : ∀ i, 0 < β * ε i) : (∑' n, boltzmannWeight ε β n) ≠ 0 :=
-  ne_of_gt (tsum_boltzmannWeight_pos ε β hpos)
 
 end Bosonic
 end SecondQuantization
