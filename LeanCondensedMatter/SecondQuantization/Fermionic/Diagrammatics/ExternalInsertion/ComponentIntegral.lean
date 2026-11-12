@@ -370,7 +370,8 @@ theorem ExternalInsertionBlockLayout.assembleConnectedBlocks_componentOrderedPai
   rw [PairingOn.transport_trans]
   have hcancel : (c.symm.trans leg).trans leg.symm = c.symm := by
     ext x
-    simp
+    change leg.symm (leg (c.symm x)) = c.symm x
+    exact leg.symm_apply_apply _
   rw [hcancel]
   exact layout.physicalComponentCanonicalPairing_eq_local S F hconnected e
 
