@@ -265,6 +265,11 @@ theorem ExternalInsertionBlockLayout.blockLegEmbedding_strictMono
   · change
       (externalInsertionExternalLeg (B.1.card / 2) T e).val <
         (externalInsertionExternalLeg (B.1.card / 2) T f).val at hab
+    change
+      (layout.legEquiv S).symm
+        ⟨B, externalInsertionExternalLeg (B.1.card / 2) T e⟩ <
+      (layout.legEquiv S).symm
+        ⟨B, externalInsertionExternalLeg (B.1.card / 2) T f⟩
     rw [layout.legEquiv_symm_externalLeg S B e,
       layout.legEquiv_symm_externalLeg S B f]
     change (layout.sourceEquiv.symm ⟨B, e⟩).val <
@@ -274,7 +279,12 @@ theorem ExternalInsertionBlockLayout.blockLegEmbedding_strictMono
     have hef : e < f := by simpa using hab
     exact (B.1.orderIsoOfFin
       (Nat.two_mul_div_two_of_even (layout.evenBlocks B)).symm).strictMono hef
-  · rw [layout.legEquiv_symm_externalLeg S B e,
+  · change
+      (layout.legEquiv S).symm
+        ⟨B, externalInsertionExternalLeg (B.1.card / 2) T e⟩ <
+      (layout.legEquiv S).symm
+        ⟨B, externalInsertionInteractionLeg (E := B.1.card / 2) w k⟩
+    rw [layout.legEquiv_symm_externalLeg S B e,
       layout.legEquiv_symm_interactionLeg S B w k]
     change
       (externalInsertionExternalLeg E S (layout.sourceEquiv.symm ⟨B, e⟩)).val <
@@ -286,8 +296,15 @@ theorem ExternalInsertionBlockLayout.blockLegEmbedding_strictMono
   · change
       (externalInsertionInteractionLeg (E := B.1.card / 2) v l).val <
         (externalInsertionExternalLeg (B.1.card / 2) T f).val at hab
-    simp at hab
-  · rw [layout.legEquiv_symm_interactionLeg S B v l,
+    simp only [externalInsertionInteractionLeg_val, externalInsertionExternalLeg_val] at hab
+    have hf := f.isLt
+    omega
+  · change
+      (layout.legEquiv S).symm
+        ⟨B, externalInsertionInteractionLeg (E := B.1.card / 2) v l⟩ <
+      (layout.legEquiv S).symm
+        ⟨B, externalInsertionInteractionLeg (E := B.1.card / 2) w k⟩
+    rw [layout.legEquiv_symm_interactionLeg S B v l,
       layout.legEquiv_symm_interactionLeg S B w k]
     change
       (externalInsertionInteractionLeg (E := E)
