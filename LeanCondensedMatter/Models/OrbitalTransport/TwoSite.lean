@@ -1,5 +1,6 @@
 import Mathlib.Basic.Complex.Basic
 import Mathlib.LinearAlgebra.Matrix.Notation
+import Mathlib.Tactic.Abel
 import Mathlib.Tactic.FinCases
 import Mathlib.Tactic.Module
 import Mathlib.Tactic.NormNum
@@ -89,10 +90,27 @@ theorem hopping_commutes_totalOrbital (t : ℝ) :
 /-- The two oriented bond fluxes are antisymmetric. -/
 theorem bondFluxOneToZero_eq_neg (t : ℝ) :
     bondFluxOneToZero t = -bondFluxZeroToOne t := by
-  have h := hopping_commutes_totalOrbital t
-  rw [mul_add, add_mul] at h
+  have hsum :
+      (hopping t * orbitalZZero - orbitalZZero * hopping t) +
+        (hopping t * orbitalZOne - orbitalZOne * hopping t) = 0 := by
+    calc
+      _ = hopping t * (orbitalZZero + orbitalZOne) -
+            (orbitalZZero + orbitalZOne) * hopping t := by
+              rw [mul_add, add_mul]
+              abel
+      _ = 0 := sub_eq_zero.mpr (hopping_commutes_totalOrbital t)
+  have hcomm :
+      hopping t * orbitalZOne - orbitalZOne * hopping t =
+        -(hopping t * orbitalZZero - orbitalZZero * hopping t) := by
+    calc
+      _ = ((hopping t * orbitalZZero - orbitalZZero * hopping t) +
+          (hopping t * orbitalZOne - orbitalZOne * hopping t)) -
+            (hopping t * orbitalZZero - orbitalZZero * hopping t) := by abel
+      _ = 0 - (hopping t * orbitalZZero - orbitalZZero * hopping t) := by rw [hsum]
+      _ = _ := zero_sub _
   unfold bondFluxOneToZero bondFluxZeroToOne
-  module
+  rw [hcomm]
+  simp only [smul_neg]
 
 /-- Site-zero local orbital balance: derivative + outgoing flux = local torque. -/
 theorem continuity_zero (Δ t : ℝ) :
@@ -121,8 +139,7 @@ theorem localTorque_zero_eq (Δ : ℝ) :
          0, 0, 0, 0] := by
   ext i j
   fin_cases i <;> fin_cases j <;>
-    simp [localTorque, crystalField, orbitalZZero, Matrix.mul_apply,
-      Fin.sum_univ_four] <;> ring_nf <;> simp [Complex.I_mul_I]
+    simp [localTorque, crystalField, orbitalZZero] <;> ring_nf <;> simp [Complex.I_mul_I]
 
 /-- In particular the site-zero torque is nonzero for nonzero splitting. -/
 theorem localTorque_zero_ne_zero (Δ : ℝ) (hΔ : Δ ≠ 0) :
@@ -143,8 +160,19 @@ theorem totalOrbitalEvolution (Δ t : ℝ) :
         localTorque Δ orbitalZZero + localTorque Δ orbitalZOne := by
   have h0 := continuity_zero Δ t
   have h1 := continuity_one Δ t
-  rw [bondFluxOneToZero_eq_neg] at h1
-  simp only [mul_add, add_mul, sub_add_sub_comm]
-  module
+  calc
+    _ = Complex.I • (hamiltonian Δ t * orbitalZZero -
+          orbitalZZero * hamiltonian Δ t) +
+        Complex.I • (hamiltonian Δ t * orbitalZOne -
+          orbitalZOne * hamiltonian Δ t) := by
+            simp only [mul_add, add_mul, smul_add, smul_sub]
+            abel
+    _ = (Complex.I • (hamiltonian Δ t * orbitalZZero -
+          orbitalZZero * hamiltonian Δ t) + bondFluxZeroToOne t) +
+        (Complex.I • (hamiltonian Δ t * orbitalZOne -
+          orbitalZOne * hamiltonian Δ t) + bondFluxOneToZero t) := by
+            rw [bondFluxOneToZero_eq_neg]
+            abel
+    _ = _ := by rw [h0, h1]
 
 end QuantumTheory.Models.OrbitalTransport.TwoSite
