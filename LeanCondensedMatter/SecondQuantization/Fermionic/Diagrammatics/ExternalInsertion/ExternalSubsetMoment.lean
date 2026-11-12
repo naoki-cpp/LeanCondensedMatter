@@ -478,7 +478,7 @@ theorem ExternalInsertionBlockLayout.assembleConnectedBlocks_signedDysonShuffleO
     have hCleft :
         ((reindex.symm B).1 : Finset (ExternalInsertionVertex E S)).toLeft =
           (B : Finset (Fin (2 * E))) := by
-      simpa only [Equiv.apply_symm_apply] using hblock (reindex.symm B)
+      simpa only [Equiv.apply_symm_apply] using (hblock (reindex.symm B)).symm
     have hmem : (Sum.inl e : ExternalInsertionVertex E S) ∈
         ((reindex.symm B).1 : Finset (ExternalInsertionVertex E S)) := by
       apply Finset.mem_toLeft.mp
@@ -494,7 +494,7 @@ theorem ExternalInsertionBlockLayout.assembleConnectedBlocks_signedDysonShuffleO
     rw [hC]
     have h := ExternalInsertionBlockLayout.assembleConnectedBlocks_componentDysonAmplitude_eq_local
       layout F hconnected ε β g externalTime e
-    simpa only [hsource] using h
+    simpa only [d, S, B] using h
   have horbit := ExternalInsertionBlockLayout.assembleConnectedBlocks_signedDysonShuffleOrbit
     layout F hconnected ε β g externalTime
   calc
