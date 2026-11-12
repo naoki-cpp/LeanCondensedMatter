@@ -287,7 +287,7 @@ theorem broadeningTransportLifetime_mul_lorentzianNormalization_eq_bastinStredaT
     broadeningTransportLifetime params * lorentzianNormalization params =
       bastinStredaTraceConductivityPrefactor params.hbar := by
   unfold broadeningTransportLifetime lorentzianNormalization bastinStredaTraceConductivityPrefactor
-  field_simp [hregular.broadening_ne_zero, Real.pi_ne_zero]
+  field_simp [ne_of_gt hregular.broadening_pos, Real.pi_ne_zero]
 
 /-- Pointwise version of the finite Drude/Kubo normalization identity on the canonical Středa
 surface Green-sector weight. -/
