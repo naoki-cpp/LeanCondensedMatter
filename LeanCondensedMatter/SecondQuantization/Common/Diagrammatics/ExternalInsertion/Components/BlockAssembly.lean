@@ -1054,6 +1054,60 @@ theorem ExternalInsertionBlockLayout.physicalComponentCanonicalPairing_eq_local
     _ = (F (layout.sourceEquiv e).1).pairing :=
       layout.physicalComponentPairing_eq_local S F hconnected e
 
+/-- The **actual physical graph component** and its independently assigned
+connected Wick block have the same increasing flattened-leg order.  The
+comparison passes through the physically restricted component-leg fiber,
+not a formal replacement of the component by an assumed local diagram.
+This proves strict monotonicity of the specific equivalence used in
+`physicalComponentCanonicalPairing_eq_local`. -/
+theorem ExternalInsertionBlockLayout.physicalComponentCanonicalLegEquiv_strictMono
+    {ExternalLabel InternalLabel : Type*}
+    (layout : ExternalInsertionBlockLayout E N) (S : Finset (Fin N))
+    (F : ∀ B : layout.partition.parts,
+      ExternalInsertionDiagram ExternalLabel InternalLabel
+        ((B : Finset (Fin (2 * E))).card / 2) N (layout.interactionBlock S B))
+    (hconnected : ∀ B, (F B).vertexGraph.Preconnected)
+    (e : Fin (2 * E)) :
+    (let d := layout.assembleDiagram S F
+     let C : d.vertexGraph.componentPartition.parts :=
+       ⟨d.vertexGraph.componentBlock (Sum.inl e),
+         d.vertexGraph.componentBlock_mem_componentPartition (Sum.inl e)⟩
+     StrictMono ((d.componentBlockLegEquiv C).symm.trans
+       (layout.physicalComponentLegEquiv S F hconnected e))) := by
+  classical
+  let B := (layout.sourceEquiv e).1
+  let d := layout.assembleDiagram S F
+  let C : d.vertexGraph.componentPartition.parts :=
+    ⟨d.vertexGraph.componentBlock (Sum.inl e),
+      d.vertexGraph.componentBlock_mem_componentPartition (Sum.inl e)⟩
+  let c := (d.componentBlockLegEquiv C).symm.trans
+    (layout.physicalComponentLegEquiv S F hconnected e)
+  change StrictMono c
+  have hbridge (p : Fin (2 * (2 * (interactionSector
+      (C : Finset (ExternalInsertionVertex E S))).card + d.externalPairCount C))) :
+      (layout.legEquiv S).symm ⟨B, c p⟩ =
+        d.componentDiagramLeg C p := by
+    calc
+      (layout.legEquiv S).symm ⟨B, c p⟩ =
+          ((layout.physicalComponentLegEquiv S F hconnected e).symm (c p)).1 :=
+        (layout.physicalComponentLegEquiv_symm_val S F hconnected e (c p)).symm
+      _ = ((d.componentBlockLegEquiv C).symm p).1 := by
+        change ((layout.physicalComponentLegEquiv S F hconnected e).symm
+          ((layout.physicalComponentLegEquiv S F hconnected e)
+            ((d.componentBlockLegEquiv C).symm p))).1 = _
+        rw [Equiv.symm_apply_apply]
+      _ = d.componentDiagramLeg C p := rfl
+  intro i j hij
+  have hglobal : d.componentDiagramLeg C i < d.componentDiagramLeg C j := by
+    simpa only [d.componentLegShuffle_slotEquiv_apply] using
+      (d.componentLegShuffle.strictMono C) hij
+  have hlocal := layout.blockLegEmbedding_strictMono S B
+  apply lt_of_not_ge
+  intro hge
+  have hcontra := hlocal.monotone hge
+  rw [hbridge j, hbridge i] at hcontra
+  exact (not_le_of_gt hglobal) hcontra
+
 /-- The local external-pair parameter of an actual assembled graph component
 is the half-cardinality of its assigned source-partition block. This closes
 the dependent external-size index needed to identify physical component
