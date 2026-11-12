@@ -27,7 +27,6 @@ theorem summable_particleNumber_total_sq_boltzmannWeight (ε : Mode → ℝ) (β
     (hpos : ∀ i, 0 < β * ε i) :
     Summable (fun n : Occupation Mode =>
       (particleNumber n : ℝ) ^ 2 * boltzmannWeight ε β n) := by
-
   have hpair (i j : Mode) :
       Summable (fun n : Occupation Mode =>
         (n i : ℝ) * (n j : ℝ) * boltzmannWeight ε β n) := by
