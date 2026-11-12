@@ -1747,10 +1747,19 @@
       "externalImportCount": 0
     },
     {
+      "name": "LeanCondensedMatter.Models.Heisenberg.QuadraticMagnon.TransverseReplacement",
+      "sourceFile": "LeanCondensedMatter/Models/Heisenberg/QuadraticMagnon/TransverseReplacement.lean",
+      "imports": [
+        "LeanCondensedMatter.Models.Heisenberg.QuadraticMagnon",
+        "LeanCondensedMatter.Models.HolsteinPrimakoff"
+      ],
+      "externalImportCount": 0
+    },
+    {
       "name": "LeanCondensedMatter.Models.Heisenberg.QuadraticMagnon",
       "sourceFile": "LeanCondensedMatter/Models/Heisenberg/QuadraticMagnon.lean",
       "imports": [
-        "LeanCondensedMatter.Models.HolsteinPrimakoff"
+        "LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.NumberOperator"
       ],
       "externalImportCount": 1
     },
@@ -1817,6 +1826,7 @@
       "imports": [
         "LeanCondensedMatter.Models.MassiveDirac.Bastin.Berry",
         "LeanCondensedMatter.Models.MassiveDirac.Model.OperatorSpectral",
+        "LeanCondensedMatter.Transport.Streda.FiniteProjectorBastin",
         "LeanCondensedMatter.Transport.Streda.InterbandPole"
       ],
       "externalImportCount": 0
@@ -2278,6 +2288,14 @@
       "externalImportCount": 6
     },
     {
+      "name": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVResolventDifference",
+      "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Disorder/Born/RadialUVResolventDifference.lean",
+      "imports": [
+        "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVBesselJ"
+      ],
+      "externalImportCount": 3
+    },
+    {
       "name": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVUnitVelocity",
       "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Disorder/Born/RadialUVUnitVelocity.lean",
       "imports": [
@@ -2630,6 +2648,7 @@
         "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVFinitePart",
         "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVHankelReduction",
         "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVHankelUnitReduction",
+        "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVResolventDifference",
         "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVUnitVelocity",
         "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.UltravioletSelfEnergy",
         "LeanCondensedMatter.Models.MassiveDirac.Disorder.BornCurrentVertexInfiniteCutoff",
@@ -3200,6 +3219,15 @@
       "externalImportCount": 0
     },
     {
+      "name": "LeanCondensedMatter.Models.RashbaExchange.Bastin.Bands",
+      "sourceFile": "LeanCondensedMatter/Models/RashbaExchange/Bastin/Bands.lean",
+      "imports": [
+        "LeanCondensedMatter.Models.RashbaExchange.Bastin.Berry",
+        "LeanCondensedMatter.Transport.Streda.InterbandPole"
+      ],
+      "externalImportCount": 0
+    },
+    {
       "name": "LeanCondensedMatter.Models.RashbaExchange.Bastin.Berry",
       "sourceFile": "LeanCondensedMatter/Models/RashbaExchange/Bastin/Berry.lean",
       "imports": [
@@ -3207,6 +3235,15 @@
         "LeanCondensedMatter.Models.RashbaExchange.Model.Interband",
         "LeanCondensedMatter.Models.RashbaExchange.Model.OperatorSpectral",
         "LeanCondensedMatter.Transport.Streda.FiniteProjectorBastin"
+      ],
+      "externalImportCount": 0
+    },
+    {
+      "name": "LeanCondensedMatter.Models.RashbaExchange.Bastin.ResponseBridge",
+      "sourceFile": "LeanCondensedMatter/Models/RashbaExchange/Bastin/ResponseBridge.lean",
+      "imports": [
+        "LeanCondensedMatter.Models.RashbaExchange.Bastin.Bands",
+        "LeanCondensedMatter.Models.RashbaExchange.Response"
       ],
       "externalImportCount": 0
     },
@@ -3298,7 +3335,9 @@
       "name": "LeanCondensedMatter.Models.RashbaExchange",
       "sourceFile": "LeanCondensedMatter/Models/RashbaExchange.lean",
       "imports": [
+        "LeanCondensedMatter.Models.RashbaExchange.Bastin.Bands",
         "LeanCondensedMatter.Models.RashbaExchange.Bastin.Berry",
+        "LeanCondensedMatter.Models.RashbaExchange.Bastin.ResponseBridge",
         "LeanCondensedMatter.Models.RashbaExchange.Current",
         "LeanCondensedMatter.Models.RashbaExchange.Green",
         "LeanCondensedMatter.Models.RashbaExchange.Model",
@@ -3315,6 +3354,7 @@
       "name": "LeanCondensedMatter.Models",
       "sourceFile": "LeanCondensedMatter/Models.lean",
       "imports": [
+        "LeanCondensedMatter.Models.Heisenberg.QuadraticMagnon.TransverseReplacement",
         "LeanCondensedMatter.Models.Heisenberg.QuadraticMagnonFourier",
         "LeanCondensedMatter.Models.Heisenberg.SpinWaveSpectrum",
         "LeanCondensedMatter.Models.HolsteinPrimakoff.MultiSite",
@@ -3785,6 +3825,15 @@
       "externalImportCount": 4
     },
     {
+      "name": "LeanCondensedMatter.QuantumMechanics.SingleParticle.OrbitalAngularMomentumCurrent",
+      "sourceFile": "LeanCondensedMatter/QuantumMechanics/SingleParticle/OrbitalAngularMomentumCurrent.lean",
+      "imports": [
+        "LeanCondensedMatter.QuantumMechanics.SingleParticle.CorrectedCurrent",
+        "LeanCondensedMatter.QuantumMechanics.SingleParticle.OrbitalAngularMomentum"
+      ],
+      "externalImportCount": 0
+    },
+    {
       "name": "LeanCondensedMatter.QuantumMechanics.SingleParticle.SymmetrizedVelocityCurrent",
       "sourceFile": "LeanCondensedMatter/QuantumMechanics/SingleParticle/SymmetrizedVelocityCurrent.lean",
       "imports": [
@@ -3802,6 +3851,7 @@
         "LeanCondensedMatter.QuantumMechanics.SingleParticle.CorrectedCurrentAmbiguity",
         "LeanCondensedMatter.QuantumMechanics.SingleParticle.GeneralizedCurrent",
         "LeanCondensedMatter.QuantumMechanics.SingleParticle.OrbitalAngularMomentum",
+        "LeanCondensedMatter.QuantumMechanics.SingleParticle.OrbitalAngularMomentumCurrent",
         "LeanCondensedMatter.QuantumMechanics.SingleParticle.SymmetrizedVelocityCurrent"
       ],
       "externalImportCount": 0
@@ -8802,6 +8852,7 @@
       "name": "LeanCondensedMatter.Transport.Streda.FiniteProjectorBastin",
       "sourceFile": "LeanCondensedMatter/Transport/Streda/FiniteProjectorBastin.lean",
       "imports": [
+        "LeanCondensedMatter.Analysis.Operator.Spectral.Resolvent",
         "LeanCondensedMatter.Transport.Resolvent.Spectral",
         "LeanCondensedMatter.Transport.Streda.TraceKernel"
       ],

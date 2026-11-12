@@ -11393,9 +11393,9 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": true,
-    "retainedNeedsReview": true,
+    "retainedNeedsReview": false,
     "retainedMention": true,
     "projectAxioms": [],
     "name": "ConservationLaw.localizationCorrectionCurrentFlux_apply",
@@ -11405,7 +11405,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "ConservationLaw.localizationCorrectionCurrentFlux_eq_zero_of_commutes"
+      "ConservationLaw.localizationCorrectionCurrentFlux_eq_zero_of_commutes",
+      "QuantumMechanics.SingleParticle.orbitalAngularMomentumZ_localizationCorrectionCurrentFlux_apply"
     ],
     "dependencies": [
       "ConservationLaw.symmetrizedProduct_nested"
@@ -11413,9 +11414,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "ConservationLaw.localizationCorrectionCurrentFlux_eq_zero_of_commutes"
+      "ConservationLaw.localizationCorrectionCurrentFlux_eq_zero_of_commutes",
+      "QuantumMechanics.SingleParticle.orbitalAngularMomentumZ_localizationCorrectionCurrentFlux_apply"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -11657,6 +11659,7 @@
     "dependents": [
       "QuantumMechanics.SingleParticle.correctedChargeCurrentFlux_eq",
       "QuantumMechanics.SingleParticle.exists_current_eq_symmetrized_add_correction_add_invisible",
+      "QuantumMechanics.SingleParticle.heisenbergTransportOrbitalAngularMomentumZ_apply",
       "SecondQuantization.Fermionic.Transport.boundedFluxRetardedResponse_eq_symmetrized_add_correction"
     ],
     "dependencies": [],
@@ -11665,9 +11668,10 @@
     "compiledConsumers": [
       "QuantumMechanics.SingleParticle.correctedChargeCurrentFlux_eq",
       "QuantumMechanics.SingleParticle.exists_current_eq_symmetrized_add_correction_add_invisible",
+      "QuantumMechanics.SingleParticle.heisenbergTransportOrbitalAngularMomentumZ_apply",
       "SecondQuantization.Fermionic.Transport.boundedFluxRetardedResponse_eq_symmetrized_add_correction"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -16683,10 +16687,10 @@
       "QuantumTheory.DensityOperator.expectation_star",
       "QuantumTheory.Models.MassiveDirac.currentBandBlockTrace_swap",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceIntegral_eq_radialCoefficient",
-      "QuantumTheory.Models.MassiveDirac.projectorBastinTraceIntegrand_eq_band_sum",
       "QuantumTheory.Transport.Topology.PeriodicBlochProjector.berryCurvatureComplex_isSelfAdjoint",
       "QuantumTheory.Transport.regularizedStredaResidualSeaTraceKernel_swap",
-      "QuantumTheory.Transport.regularizedStredaSurfacePrimitiveTrace_eq_suppliedGreen"
+      "QuantumTheory.Transport.regularizedStredaSurfacePrimitiveTrace_eq_suppliedGreen",
+      "_private.LeanCondensedMatter.Transport.Streda.FiniteProjectorBastin.0.QuantumTheory.Transport.finiteProjectorTraceDoubleSum"
     ],
     "dependencies": [
       "ContinuousLinearMap.finiteDimensionalOperatorTrace_apply"
@@ -16697,10 +16701,10 @@
       "QuantumTheory.DensityOperator.expectation_star",
       "QuantumTheory.Models.MassiveDirac.currentBandBlockTrace_swap",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceIntegral_eq_radialCoefficient",
-      "QuantumTheory.Models.MassiveDirac.projectorBastinTraceIntegrand_eq_band_sum",
       "QuantumTheory.Transport.Topology.PeriodicBlochProjector.berryCurvatureComplex_isSelfAdjoint",
       "QuantumTheory.Transport.regularizedStredaResidualSeaTraceKernel_swap",
-      "QuantumTheory.Transport.regularizedStredaSurfacePrimitiveTrace_eq_suppliedGreen"
+      "QuantumTheory.Transport.regularizedStredaSurfacePrimitiveTrace_eq_suppliedGreen",
+      "_private.LeanCondensedMatter.Transport.Streda.FiniteProjectorBastin.0.QuantumTheory.Transport.finiteProjectorTraceDoubleSum"
     ],
     "compiledConsumerCount": 7,
     "axioms": [
@@ -36057,7 +36061,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "Models.Heisenberg.QuadraticMagnon.sum_transverseReplacedBond",
-    "module": "LeanCondensedMatter.Models.Heisenberg.QuadraticMagnon",
+    "module": "LeanCondensedMatter.Models.Heisenberg.QuadraticMagnon.TransverseReplacement",
     "externalAxioms": [],
     "docString": "Summing replaced bonds gives the quadratic Hamiltonian plus the explicit\nlongitudinal quartic remainder. No transverse HP error is included in this identity. ",
     "directWrapperTargetModule": null,
@@ -36097,7 +36101,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "Models.Heisenberg.QuadraticMagnon.transverseReplacedBond_eq",
-    "module": "LeanCondensedMatter.Models.Heisenberg.QuadraticMagnon",
+    "module": "LeanCondensedMatter.Models.Heisenberg.QuadraticMagnon.TransverseReplacement",
     "externalAxioms": [],
     "docString": "Exact polynomial decomposition after the transverse replacement. For distinct\nsites the last term is quartic in ladder operators; dropping it defines the quadratic model. ",
     "directWrapperTargetModule": null,
@@ -44301,6 +44305,48 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
+    "terminal": true,
+    "statement": "∀ {V : Type u_1} {OneForm : Type u_2} [inst : AddCommGroup V] [inst_1 : _root_.Module ℂ V]\n  [inst_2 : AddCommGroup OneForm] [inst_3 : _root_.Module ℂ OneForm] {Test : Type u_3} [inst_4 : AddCommGroup Test]\n  [inst_5 : _root_.Module ℂ Test] (ℏ : ℝ) (h : V →ₗ[ℂ] V) (M : Test →ₗ[ℂ] V →ₗ[ℂ] V) (X Y Px Py velocity : V →ₗ[ℂ] V)\n  (d : Test →ₗ[ℂ] OneForm) (N : OneForm →ₗ[ℂ] V →ₗ[ℂ] V) (f : Test) (Dx Dy : V →ₗ[ℂ] V) (c : ℂ),\n  QuantumMechanics.SingleParticle.heisenbergLocalizationFunctional V ℏ h M =\n      QuantumMechanics.SingleParticle.velocityLocalizationFlux V velocity N ∘ₗ d →\n    ⁅N (d f), X⁆ = 0 →\n      ⁅N (d f), Y⁆ = 0 →\n        ⁅N (d f), Px⁆ = c • Dx →\n          ⁅N (d f), Py⁆ = c • Dy →\n            (QuantumMechanics.SingleParticle.heisenbergTransportFunctional V ℏ h M\n                  (QuantumMechanics.SingleParticle.orbitalAngularMomentumZ X Y Px Py))\n                f =\n              (ConservationLaw.symmetrizedCurrentFlux V velocity\n                    (QuantumMechanics.SingleParticle.orbitalAngularMomentumZ X Y Px Py) N)\n                  (d f) +\n                (1 / 4) • ⁅velocity, X ∘ₗ (c • Dy) - Y ∘ₗ (c • Dx)⁆",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumMechanics.SingleParticle.heisenbergTransportOrbitalAngularMomentumZ_apply",
+    "module": "LeanCondensedMatter.QuantumMechanics.SingleParticle.OrbitalAngularMomentumCurrent",
+    "externalAxioms": [],
+    "docString": "At an exact differential `d f`, the canonical one-body Heisenberg transport equals\nthe conventional symmetrized flux plus the explicit orbital-localization correction.\nThe velocity representation is an explicit physical hypothesis; no local density is chosen. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "ConservationLaw.nestedSymmetrizedCurrentFlux_eq_symmetrized_add_correction",
+      "QuantumMechanics.SingleParticle.nestedSymmetrizedCurrentFlux_eq_comp",
+      "QuantumMechanics.SingleParticle.orbitalAngularMomentumZ_localizationCorrectionCurrentFlux_apply"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
     "terminal": false,
     "statement": "∀ {V : Type u_1} [inst : AddCommGroup V] [inst_1 : _root_.Module ℂ V] (M X Y Px Py : V →ₗ[ℂ] V),\n  ⁅M, QuantumMechanics.SingleParticle.orbitalAngularMomentumZ X Y Px Py⁆ =\n    ⁅M, X⁆ ∘ₗ Py + X ∘ₗ ⁅M, Py⁆ - (⁅M, Y⁆ ∘ₗ Px + Y ∘ₗ ⁅M, Px⁆)",
     "standardAxioms": [
@@ -44477,7 +44523,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -44489,7 +44535,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumMechanics.SingleParticle.lie_orbitalAngularMomentumZ_continuum_sign"
+      "QuantumMechanics.SingleParticle.lie_orbitalAngularMomentumZ_continuum_sign",
+      "QuantumMechanics.SingleParticle.orbitalAngularMomentumZ_localizationCorrectionCurrentFlux_apply"
     ],
     "dependencies": [
       "QuantumMechanics.SingleParticle.lie_orbitalAngularMomentumZ_of_commutes_position"
@@ -44497,9 +44544,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumMechanics.SingleParticle.lie_orbitalAngularMomentumZ_continuum_sign"
+      "QuantumMechanics.SingleParticle.lie_orbitalAngularMomentumZ_continuum_sign",
+      "QuantumMechanics.SingleParticle.orbitalAngularMomentumZ_localizationCorrectionCurrentFlux_apply"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -44513,7 +44561,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ {Test : Type u_1} {OneForm : Type u_2} [inst : AddCommGroup Test] [inst_1 : _root_.Module ℂ Test]\n  [inst_2 : AddCommGroup OneForm] [inst_3 : _root_.Module ℂ OneForm] (V : Type u_3) [inst_4 : AddCommGroup V]\n  [inst_5 : _root_.Module ℂ V] (ℏ : ℝ) (h : V →ₗ[ℂ] V) (M : Test →ₗ[ℂ] V →ₗ[ℂ] V) (m velocity : V →ₗ[ℂ] V)\n  (d : Test →ₗ[ℂ] OneForm) (N : OneForm →ₗ[ℂ] V →ₗ[ℂ] V),\n  QuantumMechanics.SingleParticle.heisenbergLocalizationFunctional V ℏ h M =\n      QuantumMechanics.SingleParticle.velocityLocalizationFlux V velocity N ∘ₗ d →\n    QuantumMechanics.SingleParticle.heisenbergTransportFunctional V ℏ h M m =\n      ConservationLaw.nestedSymmetrizedCurrentFlux V velocity m N ∘ₗ d",
     "standardAxioms": [
       "Classical.choice",
@@ -44521,7 +44569,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -44532,16 +44580,19 @@
     "docString": "A velocity representation of localizer evolution lifts to the generic nested current flux for\nan arbitrary transported operator `m`; no locality/commutation assumption on `m` is needed. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "QuantumMechanics.SingleParticle.heisenbergTransportOrbitalAngularMomentumZ_apply"
+    ],
     "dependencies": [
       "QuantumMechanics.SingleParticle.heisenbergTransportFunctional_eq_symmetrizedProductRight_comp"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumMechanics.SingleParticle.correctedSymmetrizedVelocityCurrentRepresentation"
+      "QuantumMechanics.SingleParticle.correctedSymmetrizedVelocityCurrentRepresentation",
+      "QuantumMechanics.SingleParticle.heisenbergTransportOrbitalAngularMomentumZ_apply"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -44584,6 +44635,93 @@
       "QuantumMechanics.SingleParticle.symmetrizedCurrentFlux_smul_id_eq_localPairing"
     ],
     "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {V : Type u_1} {OneForm : Type u_2} [inst : AddCommGroup V] [inst_1 : _root_.Module ℂ V]\n  [inst_2 : AddCommGroup OneForm] [inst_3 : _root_.Module ℂ OneForm] (velocity X Y Px Py : V →ₗ[ℂ] V)\n  (N : OneForm →ₗ[ℂ] V →ₗ[ℂ] V) (α : OneForm) (Dx Dy : V →ₗ[ℂ] V) (c : ℂ),\n  ⁅N α, X⁆ = 0 →\n    ⁅N α, Y⁆ = 0 →\n      ⁅N α, Px⁆ = c • Dx →\n        ⁅N α, Py⁆ = c • Dy →\n          (ConservationLaw.localizationCorrectionCurrentFlux V velocity\n                (QuantumMechanics.SingleParticle.orbitalAngularMomentumZ X Y Px Py) N)\n              α =\n            (1 / 4) • ⁅velocity, X ∘ₗ (c • Dy) - Y ∘ₗ (c • Dx)⁆",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumMechanics.SingleParticle.orbitalAngularMomentumZ_localizationCorrectionCurrentFlux_apply",
+    "module": "LeanCondensedMatter.QuantumMechanics.SingleParticle.OrbitalAngularMomentumCurrent",
+    "externalAxioms": [],
+    "docString": "For `L_z = X P_y - Y P_x`, identify the *existing* localization-current correction\nwith the commutator of the velocity and the derivative-localizer obstruction.\nThe coefficient `c` can be instantiated with `iℏ` in the continuum-sign convention. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumMechanics.SingleParticle.heisenbergTransportOrbitalAngularMomentumZ_apply",
+      "QuantumMechanics.SingleParticle.orbitalAngularMomentumZ_localizationCorrectionCurrentFlux_ne_zero_iff"
+    ],
+    "dependencies": [
+      "ConservationLaw.localizationCorrectionCurrentFlux_apply",
+      "QuantumMechanics.SingleParticle.lie_orbitalAngularMomentumZ_of_derivative_localizers"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumMechanics.SingleParticle.heisenbergTransportOrbitalAngularMomentumZ_apply",
+      "QuantumMechanics.SingleParticle.orbitalAngularMomentumZ_localizationCorrectionCurrentFlux_ne_zero_iff"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {V : Type u_1} {OneForm : Type u_2} [inst : AddCommGroup V] [inst_1 : _root_.Module ℂ V]\n  [inst_2 : AddCommGroup OneForm] [inst_3 : _root_.Module ℂ OneForm] (velocity X Y Px Py : V →ₗ[ℂ] V)\n  (N : OneForm →ₗ[ℂ] V →ₗ[ℂ] V) (α : OneForm) (Dx Dy : V →ₗ[ℂ] V) (c : ℂ),\n  ⁅N α, X⁆ = 0 →\n    ⁅N α, Y⁆ = 0 →\n      ⁅N α, Px⁆ = c • Dx →\n        ⁅N α, Py⁆ = c • Dy →\n          ((ConservationLaw.localizationCorrectionCurrentFlux V velocity\n                  (QuantumMechanics.SingleParticle.orbitalAngularMomentumZ X Y Px Py) N)\n                α ≠\n              0 ↔\n            ⁅velocity, X ∘ₗ (c • Dy) - Y ∘ₗ (c • Dx)⁆ ≠ 0)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumMechanics.SingleParticle.orbitalAngularMomentumZ_localizationCorrectionCurrentFlux_ne_zero_iff",
+    "module": "LeanCondensedMatter.QuantumMechanics.SingleParticle.OrbitalAngularMomentumCurrent",
+    "externalAxioms": [],
+    "docString": "Noncommutation of a localizer with `L_z` alone does *not* imply a nonzero\ncurrent correction. The exact criterion is the *double* commutator with velocity. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumMechanics.SingleParticle.orbitalAngularMomentumZ_localizationCorrectionCurrentFlux_apply"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -73028,16 +73166,18 @@
     "directWrapperOf": null,
     "dependents": [
       "QuantumTheory.Models.MassiveDirac.massiveDiracRadialCenter_firstHarmonicBoundary_tendsto_zero",
-      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierRemainder_norm_le_center"
+      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierRemainder_norm_le_center",
+      "QuantumTheory.Models.MassiveDirac.massiveDiracUnitResolventDifferenceKernel_norm_le"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.Models.MassiveDirac.massiveDiracRadialCenter_firstHarmonicBoundary_tendsto_zero",
-      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierRemainder_norm_le_center"
+      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierRemainder_norm_le_center",
+      "QuantumTheory.Models.MassiveDirac.massiveDiracUnitResolventDifferenceKernel_norm_le"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -73754,7 +73894,8 @@
       "QuantumTheory.Models.MassiveDirac.massiveDiracRadialBesselJ_tendsto_uvValue",
       "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVCenter_conj",
       "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVCenter_neg",
-      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVCenter_scale_velocity"
+      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVCenter_scale_velocity",
+      "QuantumTheory.Models.MassiveDirac.massiveDiracUnitResolvent_difference_tendsto"
     ],
     "dependencies": [
       "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourier_tendsto_uvFinitePartAt_center"
@@ -73765,9 +73906,10 @@
       "QuantumTheory.Models.MassiveDirac.massiveDiracRadialBesselJ_tendsto_uvValue",
       "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVCenter_conj",
       "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVCenter_neg",
-      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVCenter_scale_velocity"
+      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVCenter_scale_velocity",
+      "QuantumTheory.Models.MassiveDirac.massiveDiracUnitResolvent_difference_tendsto"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 5,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -73940,6 +74082,315 @@
       "QuantumTheory.Models.MassiveDirac.massiveDiracUpperHalfPlaneHankelTransform_of_unitVelocity"
     ],
     "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (c : ℝ) (s t : ℂ),\n  s.im ≠ 0 →\n    t.im ≠ 0 →\n      MeasureTheory.IntegrableOn (QuantumTheory.Models.MassiveDirac.massiveDiracUnitResolventDifferenceKernel c s t)\n        (Set.Ioi 0) MeasureTheory.volume",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.MassiveDirac.massiveDiracUnitResolventDifferenceKernel_integrableOn",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVResolventDifference",
+    "externalAxioms": [],
+    "docString": "The two-resolvent spectral-difference kernel is genuinely Bochner\nintegrable over all positive momenta, including at zero separation.\nUnlike a proof for a single center at nonzero separation, this proof\nneeds no Bessel asymptotic: the angular-kernel bound gives a `p⁻³`\nmajorant after cancellation of the leading resolvent term. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.MassiveDirac.massiveDiracUnitResolvent_UVCenter_sub_eq_integral"
+    ],
+    "dependencies": [
+      "QuantumTheory.Models.MassiveDirac.massiveDiracUnitResolventDifferenceKernel_norm_le",
+      "QuantumTheory.Models.MassiveDirac.massiveDiracUnitResolvent_den_ne_zero",
+      "QuantumTheory.Transport.continuous_polarFourierZerothAngularKernel"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.massiveDiracUnitResolvent_UVCenter_sub_eq_integral"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (c p : ℝ) (s t : ℂ),\n  max (max 1 (2 * ‖s‖)) (max 1 (2 * ‖t‖)) ≤ p →\n    ‖QuantumTheory.Models.MassiveDirac.massiveDiracUnitResolventDifferenceKernel c s t p‖ ≤ 8 * Real.pi * p ^ (-3)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.MassiveDirac.massiveDiracUnitResolventDifferenceKernel_norm_le",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVResolventDifference",
+    "externalAxioms": [],
+    "docString": "On the ultraviolet half-line the two-center resolvent difference\ndecays like `p⁻³`, including the radial Jacobian. No asymptotic\nexpansion of Bessel functions is needed: the full-angle Fourier\nkernel is uniformly bounded by `2π`. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.MassiveDirac.massiveDiracUnitResolventDifferenceKernel_integrableOn"
+    ],
+    "dependencies": [
+      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialCenter_inv_norm_le_half_quadratic_inv",
+      "QuantumTheory.Transport.polarFourierZerothAngularKernel_norm_le"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.massiveDiracUnitResolventDifferenceKernel_integrableOn"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (c : ℝ) (s t : ℂ),\n  c ≠ 0 →\n    s.im ≠ 0 →\n      t.im ≠ 0 →\n        QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVCenter 1 c s -\n            QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVCenter 1 c t =\n          (t - s) *\n            ∫ (p : ℝ) in Set.Ioi 0, QuantumTheory.Models.MassiveDirac.massiveDiracUnitResolventDifferenceKernel c s t p",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.MassiveDirac.massiveDiracUnitResolvent_UVCenter_sub_eq_integral",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVResolventDifference",
+    "externalAxioms": [],
+    "docString": "The center difference of the ultraviolet Fourier Green functions\nis a single **absolutely convergent** complex Lebesgue integral.\nThe proof uses a finite-cutoff resolvent identity and uniqueness\nof the two already established spectral-center UV limits.\nThe assumption `c ≠ 0` is needed for those single-center UV limit\ntheorems, not for integrability of the difference kernel.\nThe two nonreal spectral centers may lie in opposite half-planes.\nMatching an outgoing Hankel candidate should first restrict both\ncenters to the upper half-plane; the lower half-plane requires\nSchwarz reflection. The individual Fourier–Hankel transform\nremains unproved. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.Models.MassiveDirac.massiveDiracUnitResolventDifferenceKernel_integrableOn",
+      "QuantumTheory.Models.MassiveDirac.massiveDiracUnitResolvent_difference_tendsto"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (s : ℂ), s.im ≠ 0 → ∀ (p : ℝ), s - ↑(p ^ 2) ≠ 0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.MassiveDirac.massiveDiracUnitResolvent_den_ne_zero",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVResolventDifference",
+    "externalAxioms": [],
+    "docString": "Nonreal spectral centers have no real radial-momentum poles. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.MassiveDirac.massiveDiracUnitResolventDifferenceKernel_integrableOn",
+      "QuantumTheory.Models.MassiveDirac.massiveDiracUnitResolvent_integral_sub"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.massiveDiracUnitResolventDifferenceKernel_integrableOn",
+      "QuantumTheory.Models.MassiveDirac.massiveDiracUnitResolvent_integral_sub"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (c : ℝ) (s t : ℂ),\n  c ≠ 0 →\n    s.im ≠ 0 →\n      t.im ≠ 0 →\n        Filter.Tendsto\n          (fun b =>\n            (t - s) *\n              ∫ (p : ℝ) in 0..b, QuantumTheory.Models.MassiveDirac.massiveDiracUnitResolventDifferenceKernel c s t p)\n          Filter.atTop\n          (nhds\n            (QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVCenter 1 c s -\n              QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVCenter 1 c t))",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.MassiveDirac.massiveDiracUnitResolvent_difference_tendsto",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVResolventDifference",
+    "externalAxioms": [],
+    "docString": "The already-proved Fourier UV limits show that the\ndifference of two centers converges to a *single* two-resolvent integral\nwith the exact spectral difference prefactor.\n\nA separate absolute-integrability argument is needed to identify the\nright side with a Lebesgue integral over `Set.Ioi 0`. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.MassiveDirac.massiveDiracUnitResolvent_UVCenter_sub_eq_integral"
+    ],
+    "dependencies": [
+      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourier_tendsto_uvValue_center",
+      "QuantumTheory.Models.MassiveDirac.massiveDiracUnitResolvent_integral_sub"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.massiveDiracUnitResolvent_UVCenter_sub_eq_integral"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (c b : ℝ) (s t : ℂ),\n  s.im ≠ 0 →\n    t.im ≠ 0 →\n      (∫ (p : ℝ) in 0..b, ↑p * QuantumTheory.Transport.polarFourierZerothAngularKernel (p * c) * (s - ↑(p ^ 2))⁻¹) -\n          ∫ (p : ℝ) in 0..b, ↑p * QuantumTheory.Transport.polarFourierZerothAngularKernel (p * c) * (t - ↑(p ^ 2))⁻¹ =\n        (t - s) * ∫ (p : ℝ) in 0..b, QuantumTheory.Models.MassiveDirac.massiveDiracUnitResolventDifferenceKernel c s t p",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.MassiveDirac.massiveDiracUnitResolvent_integral_sub",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVResolventDifference",
+    "externalAxioms": [],
+    "docString": "The finite-cutoff radial Fourier resolvent difference is exactly\na two-denominator integral, with no limit or distributional prescription. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.MassiveDirac.massiveDiracUnitResolvent_difference_tendsto"
+    ],
+    "dependencies": [
+      "QuantumTheory.Models.MassiveDirac.massiveDiracUnitResolvent_den_ne_zero",
+      "QuantumTheory.Models.MassiveDirac.massiveDiracUnitResolvent_inverse_sub",
+      "QuantumTheory.Transport.continuous_polarFourierZerothAngularKernel"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.massiveDiracUnitResolvent_difference_tendsto"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (s t q : ℂ), s - q ≠ 0 → t - q ≠ 0 → (s - q)⁻¹ - (t - q)⁻¹ = (t - s) * ((s - q)⁻¹ * (t - q)⁻¹)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.MassiveDirac.massiveDiracUnitResolvent_inverse_sub",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVResolventDifference",
+    "externalAxioms": [],
+    "docString": "At unit velocity the difference of two complex resolvents\nfactors into a product of resolvents. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.MassiveDirac.massiveDiracUnitResolvent_integral_sub"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.massiveDiracUnitResolvent_integral_sub"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -75824,10 +76275,8 @@
       "QuantumTheory.Models.MassiveDirac.projectorBastinTraceIntegrand_eq_diagonal_add_interband"
     ],
     "dependencies": [
-      "ContinuousLinearMap.finiteDimensionalOperatorTrace_mul_comm",
       "QuantumTheory.Models.MassiveDirac.bandProjectorOperator_completeOrthogonalIdempotents",
-      "QuantumTheory.Models.MassiveDirac.sum_band",
-      "QuantumTheory.sum_smul_sq_of_orthogonalIdempotents"
+      "QuantumTheory.Transport.finiteProjectorBastinTrace_eq_band_sum"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -76946,7 +77395,6 @@
       "QuantumTheory.Models.MassiveDirac.bandProjector_add_oppositeBand",
       "QuantumTheory.Models.MassiveDirac.bandProjector_completeOrthogonalIdempotents",
       "QuantumTheory.Models.MassiveDirac.pointwiseBerryCurvature_xy_eq_forceMatrixBerryCurvature",
-      "QuantumTheory.Models.MassiveDirac.projectorBastinTraceIntegrand_eq_band_sum",
       "QuantumTheory.Models.MassiveDirac.projectorBastinTraceIntegrand_eq_diagonal_add_interband",
       "QuantumTheory.Models.MassiveDirac.sum_bandProjector_eq_one",
       "QuantumTheory.Models.MassiveDirac.tendsto_pointwiseDiagonalFockHallResponse_re",
@@ -76962,7 +77410,6 @@
       "QuantumTheory.Models.MassiveDirac.bandProjector_add_oppositeBand",
       "QuantumTheory.Models.MassiveDirac.bandProjector_completeOrthogonalIdempotents",
       "QuantumTheory.Models.MassiveDirac.pointwiseBerryCurvature_xy_eq_forceMatrixBerryCurvature",
-      "QuantumTheory.Models.MassiveDirac.projectorBastinTraceIntegrand_eq_band_sum",
       "QuantumTheory.Models.MassiveDirac.projectorBastinTraceIntegrand_eq_diagonal_add_interband",
       "QuantumTheory.Models.MassiveDirac.sum_bandProjector_eq_one",
       "QuantumTheory.Models.MassiveDirac.tendsto_pointwiseDiagonalFockHallResponse_re",
@@ -76971,7 +77418,7 @@
       "QuantumTheory.Models.MassiveDirac.zeroTemperatureOccupiedBerryWeightCutoff_eq",
       "QuantumTheory.Models.MassiveDirac.zeroTemperatureOccupiedCleanInterbandBastinPairCutoff_eq"
     ],
-    "compiledConsumerCount": 11,
+    "compiledConsumerCount": 10,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -83291,6 +83738,46 @@
   },
   {
     "terminal": true,
+    "statement": "∀ (params : QuantumTheory.Models.RashbaExchange.Parameters) (μ ν : Fin 2) (px py lowerEnergy upperEnergy : ℝ)\n  (occupation : ℝ → ℂ),\n  QuantumTheory.Models.RashbaExchange.spinOrbitEnergy params.toHamiltonianParameters px py ≠ 0 →\n    params.broadening ≠ 0 →\n      QuantumTheory.Models.RashbaExchange.antisymmetricCleanBastinPointResponse params μ ν px py lowerEnergy upperEnergy\n          occupation =\n        1 / 2 *\n          ((∫ (probeEnergy : ℝ) in lowerEnergy..upperEnergy,\n              occupation probeEnergy *\n                ∑ source,\n                  ∑ target,\n                    QuantumTheory.Models.RashbaExchange.bastinBandPairContribution params μ ν source target px py\n                      probeEnergy params.broadening) -\n            ∫ (probeEnergy : ℝ) in lowerEnergy..upperEnergy,\n              occupation probeEnergy *\n                ∑ source,\n                  ∑ target,\n                    QuantumTheory.Models.RashbaExchange.bastinBandPairContribution params ν μ source target px py\n                      probeEnergy params.broadening)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.RashbaExchange.antisymmetricCleanBastinPointResponse_eq_integral_band_sum",
+    "module": "LeanCondensedMatter.Models.RashbaExchange.Bastin.ResponseBridge",
+    "externalAxioms": [],
+    "docString": "The antisymmetric clean Bastin response is exactly the difference of\nthe two direction-ordered finite-window band-pair integrals. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.Models.RashbaExchange.cleanBastinPointResponse_eq_integral_band_sum"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
     "statement": "∀ (params : QuantumTheory.Models.RashbaExchange.Parameters) (measured source : Fin 2)\n  (px py lowerEnergy upperEnergy : ℝ) (occupation : ℝ → ℂ),\n  params.rashbaVelocity = 0 →\n    QuantumTheory.Models.RashbaExchange.antisymmetricCleanBastinPointResponse params measured source px py lowerEnergy\n        upperEnergy occupation =\n      0",
     "standardAxioms": [
       "Classical.choice",
@@ -83534,9 +84021,9 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
-    "retainedNeedsReview": true,
+    "retainedNeedsReview": false,
     "retainedMention": true,
     "projectAxioms": [],
     "name": "QuantumTheory.Models.RashbaExchange.bandProjectorOperator_completeOrthogonalIdempotents",
@@ -83546,7 +84033,9 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Models.RashbaExchange.regularizedBastinTraceIntegrand_eq_projectorBastinTraceIntegrand"
+      "QuantumTheory.Models.RashbaExchange.projectorBastinTraceIntegrandFor_eq_band_sum",
+      "QuantumTheory.Models.RashbaExchange.regularizedBastinTraceIntegrand_eq_projectorBastinTraceIntegrand",
+      "QuantumTheory.Models.RashbaExchange.regularizedBastinTraceIntegrand_eq_projectorBastinTraceIntegrandFor"
     ],
     "dependencies": [
       "QuantumTheory.Models.RashbaExchange.bandProjector_completeOrthogonalIdempotents"
@@ -83554,9 +84043,11 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Models.RashbaExchange.regularizedBastinTraceIntegrand_eq_projectorBastinTraceIntegrand"
+      "QuantumTheory.Models.RashbaExchange.projectorBastinTraceIntegrandFor_eq_band_sum",
+      "QuantumTheory.Models.RashbaExchange.regularizedBastinTraceIntegrand_eq_projectorBastinTraceIntegrand",
+      "QuantumTheory.Models.RashbaExchange.regularizedBastinTraceIntegrand_eq_projectorBastinTraceIntegrandFor"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -83894,6 +84385,91 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (params : QuantumTheory.Models.RashbaExchange.Parameters) (μ ν : Fin 2) (px py lowerEnergy upperEnergy : ℝ)\n  (occupation : ℝ → ℂ),\n  QuantumTheory.Models.RashbaExchange.spinOrbitEnergy params.toHamiltonianParameters px py ≠ 0 →\n    params.broadening ≠ 0 →\n      QuantumTheory.Models.RashbaExchange.cleanBastinPointResponse params μ ν px py lowerEnergy upperEnergy occupation =\n        ∫ (probeEnergy : ℝ) in lowerEnergy..upperEnergy,\n          occupation probeEnergy *\n            ∑ source,\n              ∑ target,\n                QuantumTheory.Models.RashbaExchange.bastinBandPairContribution params μ ν source target px py\n                  probeEnergy params.broadening",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.RashbaExchange.cleanBastinPointResponse_eq_integral_band_sum",
+    "module": "LeanCondensedMatter.Models.RashbaExchange.Bastin.ResponseBridge",
+    "externalAxioms": [],
+    "docString": "The physical clean ordered Bastin energy integral equals the weighted\nband-pair integral on any finite energy window. No limit interchange occurs. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.RashbaExchange.antisymmetricCleanBastinPointResponse_eq_integral_band_sum"
+    ],
+    "dependencies": [
+      "QuantumTheory.Models.RashbaExchange.regularizedBastinTraceIntegrand_eq_band_sum"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.RashbaExchange.antisymmetricCleanBastinPointResponse_eq_integral_band_sum"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (params : QuantumTheory.Models.RashbaExchange.Parameters) (μ ν : Fin 2) (px py lowerEnergy upperEnergy : ℝ)\n  (occupation : ℝ → ℂ),\n  QuantumTheory.Models.RashbaExchange.spinOrbitEnergy params.toHamiltonianParameters px py ≠ 0 →\n    params.broadening ≠ 0 →\n      QuantumTheory.Models.RashbaExchange.cleanBastinPointResponse params μ ν px py lowerEnergy upperEnergy occupation =\n        ∫ (probeEnergy : ℝ) in lowerEnergy..upperEnergy,\n          occupation probeEnergy *\n            (∑ band,\n                QuantumTheory.Models.RashbaExchange.bastinBandPairContribution params μ ν band band px py probeEnergy\n                  params.broadening +\n              ∑ band,\n                QuantumTheory.Models.RashbaExchange.bastinBandPairContribution params μ ν band\n                  (QuantumTheory.Models.RashbaExchange.oppositeBand band) px py probeEnergy params.broadening)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.RashbaExchange.cleanBastinPointResponse_eq_integral_diagonal_add_interband",
+    "module": "LeanCondensedMatter.Models.RashbaExchange.Bastin.ResponseBridge",
+    "externalAxioms": [],
+    "docString": "The weighted finite-window Bastin energy response retains diagonal and\ninterband contributions separately, for any ordered current directions. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.Models.RashbaExchange.regularizedBastinTraceIntegrand_eq_band_sum",
+      "QuantumTheory.Models.RashbaExchange.sum_band"
+    ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [],
@@ -84649,7 +85225,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -84661,7 +85237,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Models.RashbaExchange.regularizedBastinTraceIntegrand_eq_projectorBastinTraceIntegrand"
+      "QuantumTheory.Models.RashbaExchange.regularizedBastinTraceIntegrand_eq_projectorBastinTraceIntegrand",
+      "QuantumTheory.Models.RashbaExchange.regularizedBastinTraceIntegrand_eq_projectorBastinTraceIntegrandFor"
     ],
     "dependencies": [
       "QuantumTheory.Models.RashbaExchange.hamiltonian_isHermitian"
@@ -84669,9 +85246,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Models.RashbaExchange.regularizedBastinTraceIntegrand_eq_projectorBastinTraceIntegrand"
+      "QuantumTheory.Models.RashbaExchange.regularizedBastinTraceIntegrand_eq_projectorBastinTraceIntegrand",
+      "QuantumTheory.Models.RashbaExchange.regularizedBastinTraceIntegrand_eq_projectorBastinTraceIntegrandFor"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -84693,9 +85271,9 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
-    "retainedNeedsReview": true,
+    "retainedNeedsReview": false,
     "retainedMention": true,
     "projectAxioms": [],
     "name": "QuantumTheory.Models.RashbaExchange.hamiltonianOperator_mul_bandProjectorOperator",
@@ -84705,7 +85283,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Models.RashbaExchange.regularizedBastinTraceIntegrand_eq_projectorBastinTraceIntegrand"
+      "QuantumTheory.Models.RashbaExchange.regularizedBastinTraceIntegrand_eq_projectorBastinTraceIntegrand",
+      "QuantumTheory.Models.RashbaExchange.regularizedBastinTraceIntegrand_eq_projectorBastinTraceIntegrandFor"
     ],
     "dependencies": [
       "QuantumTheory.Models.RashbaExchange.hamiltonian_mul_bandProjector"
@@ -84713,9 +85292,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Models.RashbaExchange.regularizedBastinTraceIntegrand_eq_projectorBastinTraceIntegrand"
+      "QuantumTheory.Models.RashbaExchange.regularizedBastinTraceIntegrand_eq_projectorBastinTraceIntegrand",
+      "QuantumTheory.Models.RashbaExchange.regularizedBastinTraceIntegrand_eq_projectorBastinTraceIntegrandFor"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -85084,6 +85664,142 @@
   },
   {
     "terminal": false,
+    "statement": "∀ (params : QuantumTheory.Models.RashbaExchange.Parameters) (μ ν : Fin 2) (px py probeEnergy broadening : ℝ),\n  QuantumTheory.Models.RashbaExchange.spinOrbitEnergy params.toHamiltonianParameters px py ≠ 0 →\n    QuantumTheory.Models.RashbaExchange.projectorBastinTraceIntegrandFor params μ ν px py probeEnergy broadening =\n      ∑ source,\n        ∑ target,\n          QuantumTheory.Models.RashbaExchange.bastinBandPairContribution params μ ν source target px py probeEnergy\n            broadening",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.RashbaExchange.projectorBastinTraceIntegrandFor_eq_band_sum",
+    "module": "LeanCondensedMatter.Models.RashbaExchange.Bastin.Bands",
+    "externalAxioms": [],
+    "docString": "Exact ordered source/target band-pair expansion for arbitrary current directions. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.RashbaExchange.projectorBastinTraceIntegrand_eq_band_sum",
+      "QuantumTheory.Models.RashbaExchange.regularizedBastinTraceIntegrand_eq_band_sum"
+    ],
+    "dependencies": [
+      "QuantumTheory.Models.RashbaExchange.bandProjectorOperator_completeOrthogonalIdempotents",
+      "QuantumTheory.Transport.finiteProjectorBastinTrace_eq_band_sum"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.RashbaExchange.projectorBastinTraceIntegrand_eq_band_sum",
+      "QuantumTheory.Models.RashbaExchange.regularizedBastinTraceIntegrand_eq_band_sum"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (params : QuantumTheory.Models.RashbaExchange.Parameters) (px py probeEnergy broadening : ℝ),\n  QuantumTheory.Models.RashbaExchange.spinOrbitEnergy params.toHamiltonianParameters px py ≠ 0 →\n    QuantumTheory.Models.RashbaExchange.projectorBastinTraceIntegrand params px py probeEnergy broadening =\n      ∑ source,\n        ∑ target,\n          QuantumTheory.Models.RashbaExchange.bastinBandPairContribution params 0 1 source target px py probeEnergy\n            broadening",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.RashbaExchange.projectorBastinTraceIntegrand_eq_band_sum",
+    "module": "LeanCondensedMatter.Models.RashbaExchange.Bastin.Bands",
+    "externalAxioms": [],
+    "docString": "The existing x-y projector Bastin trace is the ordered band-pair sum. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.RashbaExchange.projectorBastinTraceIntegrand_eq_diagonal_add_interband"
+    ],
+    "dependencies": [
+      "QuantumTheory.Models.RashbaExchange.projectorBastinTraceIntegrandFor_eq_band_sum"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.RashbaExchange.projectorBastinTraceIntegrand_eq_diagonal_add_interband"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (params : QuantumTheory.Models.RashbaExchange.Parameters) (px py probeEnergy broadening : ℝ),\n  QuantumTheory.Models.RashbaExchange.spinOrbitEnergy params.toHamiltonianParameters px py ≠ 0 →\n    QuantumTheory.Models.RashbaExchange.projectorBastinTraceIntegrand params px py probeEnergy broadening =\n      QuantumTheory.Models.RashbaExchange.diagonalBastinTraceContribution params px py probeEnergy broadening +\n        QuantumTheory.Models.RashbaExchange.interbandBastinTraceContribution params px py probeEnergy broadening",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.RashbaExchange.projectorBastinTraceIntegrand_eq_diagonal_add_interband",
+    "module": "LeanCondensedMatter.Models.RashbaExchange.Bastin.Bands",
+    "externalAxioms": [],
+    "docString": "Exact finite-broadening diagonal/interband split of the projector trace. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.RashbaExchange.regularizedBastinTraceIntegrand_eq_diagonal_add_interband"
+    ],
+    "dependencies": [
+      "QuantumTheory.Models.RashbaExchange.projectorBastinTraceIntegrand_eq_band_sum",
+      "QuantumTheory.Models.RashbaExchange.sum_band"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.RashbaExchange.regularizedBastinTraceIntegrand_eq_diagonal_add_interband"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ (params : QuantumTheory.Models.RashbaExchange.HamiltonianParameters) (px py : ℝ),\n  QuantumTheory.Models.RashbaExchange.rashbaPauliCoefficients params px py ⬝ᵥ\n      QuantumTheory.Models.RashbaExchange.rashbaPauliCoefficients params px py =\n    ↑(QuantumTheory.Models.RashbaExchange.spinOrbitEnergySq params px py)",
     "standardAxioms": [
       "Classical.choice",
@@ -85127,8 +85843,8 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
-    "statement": "∀ (params : QuantumTheory.Models.RashbaExchange.Parameters) (px py probeEnergy broadening : ℝ),\n  QuantumTheory.Models.RashbaExchange.spinOrbitEnergy params.toHamiltonianParameters px py ≠ 0 →\n    broadening ≠ 0 →\n      QuantumTheory.Transport.regularizedBastinTraceIntegrand\n          (QuantumTheory.Models.RashbaExchange.hamiltonianOperator params.toHamiltonianParameters px py)\n          (QuantumTheory.Models.RashbaExchange.currentBoundedOperator params 0 px py)\n          (QuantumTheory.Models.RashbaExchange.currentBoundedOperator params 1 px py) probeEnergy broadening =\n        QuantumTheory.Models.RashbaExchange.projectorBastinTraceIntegrand params px py probeEnergy broadening",
+    "terminal": false,
+    "statement": "∀ (params : QuantumTheory.Models.RashbaExchange.Parameters) (μ ν : Fin 2) (px py probeEnergy broadening : ℝ),\n  QuantumTheory.Models.RashbaExchange.spinOrbitEnergy params.toHamiltonianParameters px py ≠ 0 →\n    broadening ≠ 0 →\n      QuantumTheory.Transport.regularizedBastinTraceIntegrand\n          (QuantumTheory.Models.RashbaExchange.hamiltonianOperator params.toHamiltonianParameters px py)\n          (QuantumTheory.Models.RashbaExchange.currentBoundedOperator params μ px py)\n          (QuantumTheory.Models.RashbaExchange.currentBoundedOperator params ν px py) probeEnergy broadening =\n        ∑ source,\n          ∑ target,\n            QuantumTheory.Models.RashbaExchange.bastinBandPairContribution params μ ν source target px py probeEnergy\n              broadening",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -85140,13 +85856,103 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
+    "name": "QuantumTheory.Models.RashbaExchange.regularizedBastinTraceIntegrand_eq_band_sum",
+    "module": "LeanCondensedMatter.Models.RashbaExchange.Bastin.Bands",
+    "externalAxioms": [],
+    "docString": "Direction-indexed canonical Bastin trace equals the ordered band-pair sum. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.RashbaExchange.cleanBastinPointResponse_eq_integral_band_sum",
+      "QuantumTheory.Models.RashbaExchange.cleanBastinPointResponse_eq_integral_diagonal_add_interband"
+    ],
+    "dependencies": [
+      "QuantumTheory.Models.RashbaExchange.projectorBastinTraceIntegrandFor_eq_band_sum",
+      "QuantumTheory.Models.RashbaExchange.regularizedBastinTraceIntegrand_eq_projectorBastinTraceIntegrandFor"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.RashbaExchange.cleanBastinPointResponse_eq_integral_band_sum",
+      "QuantumTheory.Models.RashbaExchange.cleanBastinPointResponse_eq_integral_diagonal_add_interband"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (params : QuantumTheory.Models.RashbaExchange.Parameters) (px py probeEnergy broadening : ℝ),\n  QuantumTheory.Models.RashbaExchange.spinOrbitEnergy params.toHamiltonianParameters px py ≠ 0 →\n    broadening ≠ 0 →\n      QuantumTheory.Transport.regularizedBastinTraceIntegrand\n          (QuantumTheory.Models.RashbaExchange.hamiltonianOperator params.toHamiltonianParameters px py)\n          (QuantumTheory.Models.RashbaExchange.currentBoundedOperator params 0 px py)\n          (QuantumTheory.Models.RashbaExchange.currentBoundedOperator params 1 px py) probeEnergy broadening =\n        QuantumTheory.Models.RashbaExchange.diagonalBastinTraceContribution params px py probeEnergy broadening +\n          QuantumTheory.Models.RashbaExchange.interbandBastinTraceContribution params px py probeEnergy broadening",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.RashbaExchange.regularizedBastinTraceIntegrand_eq_diagonal_add_interband",
+    "module": "LeanCondensedMatter.Models.RashbaExchange.Bastin.Bands",
+    "externalAxioms": [],
+    "docString": "The canonical regularized x-y Bastin trace has its original exact\ndiagonal plus interband decomposition at nonzero broadening. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.Models.RashbaExchange.projectorBastinTraceIntegrand_eq_diagonal_add_interband",
+      "QuantumTheory.Models.RashbaExchange.regularizedBastinTraceIntegrand_eq_projectorBastinTraceIntegrand"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (params : QuantumTheory.Models.RashbaExchange.Parameters) (px py probeEnergy broadening : ℝ),\n  QuantumTheory.Models.RashbaExchange.spinOrbitEnergy params.toHamiltonianParameters px py ≠ 0 →\n    broadening ≠ 0 →\n      QuantumTheory.Transport.regularizedBastinTraceIntegrand\n          (QuantumTheory.Models.RashbaExchange.hamiltonianOperator params.toHamiltonianParameters px py)\n          (QuantumTheory.Models.RashbaExchange.currentBoundedOperator params 0 px py)\n          (QuantumTheory.Models.RashbaExchange.currentBoundedOperator params 1 px py) probeEnergy broadening =\n        QuantumTheory.Models.RashbaExchange.projectorBastinTraceIntegrand params px py probeEnergy broadening",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
     "name": "QuantumTheory.Models.RashbaExchange.regularizedBastinTraceIntegrand_eq_projectorBastinTraceIntegrand",
     "module": "LeanCondensedMatter.Models.RashbaExchange.Bastin.Berry",
     "externalAxioms": [],
     "docString": "At nonzero broadening and away from the band degeneracy, the generic Bastin trace is exactly the\nprojector-expanded Rashba-exchange expression. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "QuantumTheory.Models.RashbaExchange.regularizedBastinTraceIntegrand_eq_diagonal_add_interband"
+    ],
     "dependencies": [
       "QuantumTheory.Models.RashbaExchange.bandProjectorOperator_completeOrthogonalIdempotents",
       "QuantumTheory.Models.RashbaExchange.hamiltonianOperator_isSelfAdjoint",
@@ -85155,8 +85961,57 @@
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "QuantumTheory.Models.RashbaExchange.regularizedBastinTraceIntegrand_eq_diagonal_add_interband"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (params : QuantumTheory.Models.RashbaExchange.Parameters) (μ ν : Fin 2) (px py probeEnergy broadening : ℝ),\n  QuantumTheory.Models.RashbaExchange.spinOrbitEnergy params.toHamiltonianParameters px py ≠ 0 →\n    broadening ≠ 0 →\n      QuantumTheory.Transport.regularizedBastinTraceIntegrand\n          (QuantumTheory.Models.RashbaExchange.hamiltonianOperator params.toHamiltonianParameters px py)\n          (QuantumTheory.Models.RashbaExchange.currentBoundedOperator params μ px py)\n          (QuantumTheory.Models.RashbaExchange.currentBoundedOperator params ν px py) probeEnergy broadening =\n        QuantumTheory.Models.RashbaExchange.projectorBastinTraceIntegrandFor params μ ν px py probeEnergy broadening",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.RashbaExchange.regularizedBastinTraceIntegrand_eq_projectorBastinTraceIntegrandFor",
+    "module": "LeanCondensedMatter.Models.RashbaExchange.Bastin.Bands",
+    "externalAxioms": [],
+    "docString": "The canonical regularized Bastin trace agrees with the direction-indexed\nprojector trace away from spectral degeneracy and at nonzero broadening. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.RashbaExchange.regularizedBastinTraceIntegrand_eq_band_sum"
+    ],
+    "dependencies": [
+      "QuantumTheory.Models.RashbaExchange.bandProjectorOperator_completeOrthogonalIdempotents",
+      "QuantumTheory.Models.RashbaExchange.hamiltonianOperator_isSelfAdjoint",
+      "QuantumTheory.Models.RashbaExchange.hamiltonianOperator_mul_bandProjectorOperator",
+      "QuantumTheory.Transport.regularizedBastinTraceIntegrand_eq_projectorSum"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.RashbaExchange.regularizedBastinTraceIntegrand_eq_band_sum"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -85281,6 +86136,8 @@
     "dependents": [
       "QuantumTheory.Models.RashbaExchange.bandProjector_add_oppositeBand",
       "QuantumTheory.Models.RashbaExchange.bandProjector_completeOrthogonalIdempotents",
+      "QuantumTheory.Models.RashbaExchange.cleanBastinPointResponse_eq_integral_diagonal_add_interband",
+      "QuantumTheory.Models.RashbaExchange.projectorBastinTraceIntegrand_eq_diagonal_add_interband",
       "QuantumTheory.Models.RashbaExchange.sum_bandProjector_eq_one"
     ],
     "dependencies": [],
@@ -85289,9 +86146,11 @@
     "compiledConsumers": [
       "QuantumTheory.Models.RashbaExchange.bandProjector_add_oppositeBand",
       "QuantumTheory.Models.RashbaExchange.bandProjector_completeOrthogonalIdempotents",
+      "QuantumTheory.Models.RashbaExchange.cleanBastinPointResponse_eq_integral_diagonal_add_interband",
+      "QuantumTheory.Models.RashbaExchange.projectorBastinTraceIntegrand_eq_diagonal_add_interband",
       "QuantumTheory.Models.RashbaExchange.sum_bandProjector_eq_one"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 5,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -92118,6 +92977,8 @@
       "QuantumTheory.Models.MassiveDirac.continuous_finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel",
       "QuantumTheory.Models.MassiveDirac.continuous_finiteCutoffContinuumBornDysonRadialGreenEntryKernel",
       "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourier_tendsto_uvFinitePartAt_center",
+      "QuantumTheory.Models.MassiveDirac.massiveDiracUnitResolventDifferenceKernel_integrableOn",
+      "QuantumTheory.Models.MassiveDirac.massiveDiracUnitResolvent_integral_sub",
       "QuantumTheory.Transport.integral_polarFourierZerothAngularKernel_mul_weight_by_parts"
     ],
     "dependencies": [],
@@ -92127,9 +92988,11 @@
       "QuantumTheory.Models.MassiveDirac.continuous_finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel",
       "QuantumTheory.Models.MassiveDirac.continuous_finiteCutoffContinuumBornDysonRadialGreenEntryKernel",
       "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourier_tendsto_uvFinitePartAt_center",
+      "QuantumTheory.Models.MassiveDirac.massiveDiracUnitResolventDifferenceKernel_integrableOn",
+      "QuantumTheory.Models.MassiveDirac.massiveDiracUnitResolvent_integral_sub",
       "QuantumTheory.Transport.integral_polarFourierZerothAngularKernel_mul_weight_by_parts"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 6,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -92938,6 +93801,53 @@
       "QuantumTheory.Transport.finiteStaticKuboBastinChannelResponse_eq_surface_add_sea_add_observableVariation"
     ],
     "compiledConsumerCount": 3,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {H : Type u_1} {ι : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : FiniteDimensional ℂ H] [inst_3 : Fintype ι] (P : ι → H →L[ℂ] H),\n  OrthogonalIdempotents P →\n    ∀ (r a : ι → ℂ) (J K : H →L[ℂ] H),\n      ContinuousLinearMap.finiteDimensionalOperatorTrace\n          ((J * (∑ s, r s • P s) ^ 2 * K - K * (∑ s, a s • P s) ^ 2 * J) * (∑ t, r t • P t - ∑ t, a t • P t)) =\n        ∑ s,\n          ∑ t,\n            (r s ^ 2 * (r t - a t) * ContinuousLinearMap.finiteDimensionalOperatorTrace (P t * J * P s * K) -\n              a s ^ 2 * (r t - a t) * ContinuousLinearMap.finiteDimensionalOperatorTrace (P t * K * P s * J))",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.finiteProjectorBastinTrace_eq_band_sum",
+    "module": "LeanCondensedMatter.Transport.Streda.FiniteProjectorBastin",
+    "externalAxioms": [],
+    "docString": "The finite-broadening projector Bastin trace is an exact sum of ordered\nsource/target band blocks. Neither completeness nor band energies are needed;\northogonal idempotence is sufficient to square the spectral sums. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.MassiveDirac.projectorBastinTraceIntegrand_eq_band_sum",
+      "QuantumTheory.Models.RashbaExchange.projectorBastinTraceIntegrandFor_eq_band_sum"
+    ],
+    "dependencies": [
+      "QuantumTheory.sum_smul_sq_of_orthogonalIdempotents",
+      "_private.LeanCondensedMatter.Transport.Streda.FiniteProjectorBastin.0.QuantumTheory.Transport.finiteProjectorTraceDoubleSum"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.projectorBastinTraceIntegrand_eq_band_sum",
+      "QuantumTheory.Models.RashbaExchange.projectorBastinTraceIntegrandFor_eq_band_sum"
+    ],
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -95776,6 +96686,48 @@
   },
   {
     "terminal": false,
+    "statement": "∀ (z : ℝ), ‖QuantumTheory.Transport.polarFourierZerothAngularKernel z‖ ≤ 2 * Real.pi",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.polarFourierZerothAngularKernel_norm_le",
+    "module": "LeanCondensedMatter.Transport.Analysis.PolarFourierRadialDerivative",
+    "externalAxioms": [],
+    "docString": "The zeroth full-angle Fourier harmonic has norm at most the\nlength `2π` of the angular interval, uniformly in the real argument.\nThis bound is used to control absolutely convergent spectral resolvent\n*differences*, without any real-argument Bessel asymptotics. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.MassiveDirac.massiveDiracUnitResolventDifferenceKernel_norm_le"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.massiveDiracUnitResolventDifferenceKernel_norm_le"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "QuantumTheory.Transport.polarFourierZerothAngularKernel 0 = ↑(2 * Real.pi)",
     "standardAxioms": [
       "Classical.choice",
@@ -96184,7 +97136,8 @@
     "directWrapperOf": null,
     "dependents": [
       "QuantumTheory.Models.MassiveDirac.regularizedBastinTraceIntegrand_eq_projectorBastinTraceIntegrand",
-      "QuantumTheory.Models.RashbaExchange.regularizedBastinTraceIntegrand_eq_projectorBastinTraceIntegrand"
+      "QuantumTheory.Models.RashbaExchange.regularizedBastinTraceIntegrand_eq_projectorBastinTraceIntegrand",
+      "QuantumTheory.Models.RashbaExchange.regularizedBastinTraceIntegrand_eq_projectorBastinTraceIntegrandFor"
     ],
     "dependencies": [
       "QuantumTheory.Transport.SpectralSide.regulator_ne_zero",
@@ -96194,9 +97147,10 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.Models.MassiveDirac.regularizedBastinTraceIntegrand_eq_projectorBastinTraceIntegrand",
-      "QuantumTheory.Models.RashbaExchange.regularizedBastinTraceIntegrand_eq_projectorBastinTraceIntegrand"
+      "QuantumTheory.Models.RashbaExchange.regularizedBastinTraceIntegrand_eq_projectorBastinTraceIntegrand",
+      "QuantumTheory.Models.RashbaExchange.regularizedBastinTraceIntegrand_eq_projectorBastinTraceIntegrandFor"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -102655,13 +103609,13 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Models.MassiveDirac.projectorBastinTraceIntegrand_eq_band_sum"
+      "QuantumTheory.Transport.finiteProjectorBastinTrace_eq_band_sum"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Models.MassiveDirac.projectorBastinTraceIntegrand_eq_band_sum"
+      "QuantumTheory.Transport.finiteProjectorBastinTrace_eq_band_sum"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -195483,6 +196437,50 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.Transport.tendsto_scalarResolventCoefficient_spectralParameter_zero"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {H : Type u_1} {ι : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : FiniteDimensional ℂ H] [inst_3 : Fintype ι] (P : ι → H →L[ℂ] H) (c d : ι → ℂ) (J K : H →L[ℂ] H),\n  ContinuousLinearMap.finiteDimensionalOperatorTrace ((J * ∑ s, c s • P s) * K * ∑ t, d t • P t) =\n    ∑ s, ∑ t, c s * d t * ContinuousLinearMap.finiteDimensionalOperatorTrace (P t * J * P s * K)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Transport.Streda.FiniteProjectorBastin.0.QuantumTheory.Transport.finiteProjectorTraceDoubleSum",
+    "module": "LeanCondensedMatter.Transport.Streda.FiniteProjectorBastin",
+    "externalAxioms": [],
+    "docString": "Expand a traced product containing two independently weighted finite\nprojector sums. Moving the terminal projector to the front uses ordinary\nfinite-dimensional cyclicity, not any assumption on the projectors. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.finiteProjectorBastinTrace_eq_band_sum"
+    ],
+    "dependencies": [
+      "ContinuousLinearMap.finiteDimensionalOperatorTrace_mul_comm"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.finiteProjectorBastinTrace_eq_band_sum"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
