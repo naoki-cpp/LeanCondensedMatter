@@ -374,5 +374,44 @@ theorem ExternalInsertionBlockLayout.assembleConnectedBlocks_componentOrderedPai
   rw [hcancel]
   exact layout.physicalComponentCanonicalPairing_eq_local S F hconnected e
 
+
+omit [LinearOrder Mode] [Fintype Mode] in
+/-- The actual canonically numbered connected component has the same
+quartic coupling product as the independently specified local block.
+The first equality uses physical `slotCongr`, and the second uses exact
+reindexing of the component's actual interaction vertices. -/
+theorem ExternalInsertionBlockLayout.assembleConnectedBlocks_componentOrderedVertexWeight_eq_local
+    {E n : ℕ} (layout : ExternalInsertionBlockLayout E n)
+    (F : ∀ B : layout.partition.parts,
+      ExternalInsertionDiagram (ExternalFieldLabel Mode) (QuarticVertexLabel Mode)
+        ((B : Finset (Fin (2 * E))).card / 2) n
+        (layout.interactionBlock (Finset.univ : Finset (Fin n)) B))
+    (hconnected : ∀ B, (F B).vertexGraph.Preconnected)
+    (g : QuarticVertexLabel Mode → ℂ) (e : Fin (2 * E)) :
+    let d : ExternalInsertionWickDiagram Mode E n :=
+      layout.assembleDiagram (Finset.univ : Finset (Fin n)) F
+    let C : d.vertexGraph.componentPartition.parts :=
+      ⟨d.vertexGraph.componentBlock (Sum.inl e),
+        d.vertexGraph.componentBlock_mem_componentPartition (Sum.inl e)⟩
+    (d.componentOrderedDiagram C).vertexWeight g =
+      (F (layout.sourceEquiv e).1).vertexWeight g := by
+  classical
+  let S : Finset (Fin n) := Finset.univ
+  let d : ExternalInsertionWickDiagram Mode E n := layout.assembleDiagram S F
+  let C : d.vertexGraph.componentPartition.parts :=
+    ⟨d.vertexGraph.componentBlock (Sum.inl e),
+      d.vertexGraph.componentBlock_mem_componentPartition (Sum.inl e)⟩
+  let T := interactionSector (C : Finset (ExternalInsertionVertex E S))
+  change (d.componentOrderedDiagram C).vertexWeight g =
+    (F (layout.sourceEquiv e).1).vertexWeight g
+  calc
+    _ = ((d.restrictComponent C).slotCongr (standardSlotEquiv T)).vertexWeight g := by
+          rw [d.componentOrderedDiagram_eq_slotCongr C]
+    _ = (d.restrictComponent C).vertexWeight g :=
+      (d.restrictComponent C).slotCongr_vertexWeight (standardSlotEquiv T) g
+    _ = _ :=
+      layout.assembleDiagram_restrictComponent_vertexWeight_external
+        S F hconnected g e
+
 end Fermionic
 end SecondQuantization
