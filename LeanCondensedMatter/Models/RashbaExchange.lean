@@ -10,6 +10,7 @@ import LeanCondensedMatter.Models.RashbaExchange.Response
 import LeanCondensedMatter.Models.RashbaExchange.Bastin.Berry
 import LeanCondensedMatter.Models.RashbaExchange.Bastin.Bands
 import LeanCondensedMatter.Models.RashbaExchange.Bastin.ResponseBridge
+import LeanCondensedMatter.Models.RashbaExchange.Bastin.Pole
 
 set_option linter.style.header false
 
