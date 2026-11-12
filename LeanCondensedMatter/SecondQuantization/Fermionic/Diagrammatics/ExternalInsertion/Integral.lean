@@ -75,7 +75,8 @@ theorem ExternalInsertionWickDiagram.orderedDysonAmplitude_canonicalOrder
   classical
   unfold ExternalInsertionWickDiagram.orderedDysonAmplitude
   rw [← d.orderedSimplexIntegral_dysonFixedTimeAmplitude ε β g externalTime]
-  simp only [Finset.card_univ, Fintype.card_fin]
+  have hcard : (Finset.univ : Finset (Fin n)).card = n := by simp
+  rw [hcard]
   apply intervalIntegral.orderedSimplexIntegral_congr
   intro τ
   apply congrArg (d.dysonFixedTimeAmplitude ε β g externalTime)
