@@ -1063,12 +1063,33 @@ theorem ExternalInsertionBlockLayout.assembleDiagram_restrictComponent_vertexWei
   let C : d.vertexGraph.componentPartition.parts :=
     ⟨d.vertexGraph.componentBlock (Sum.inl e),
       d.vertexGraph.componentBlock_mem_componentPartition (Sum.inl e)⟩
-  have hv : HEq (F B).vertexLabel (d.restrictComponent C).vertexLabel :=
-    layout.assembleDiagram_restrictComponent_vertexLabel_heq S F hconnected e
-  change (∏ v, g ((d.restrictComponent C).vertexLabel v)) =
-    ∏ v, g ((F B).vertexLabel v)
-  cases hv
-  rfl
+  have hsec :
+      interactionSector (C : Finset (ExternalInsertionVertex E S)) =
+        layout.interactionBlock S B :=
+    layout.assembleDiagram_componentInteractionSector_external S F hconnected e
+  let fiberEquiv :
+      ↥(interactionSector (C : Finset (ExternalInsertionVertex E S))) ≃
+        ↥(layout.interactionBlock S B) :=
+    { toFun := fun v => ⟨v.1, by rw [← hsec]; exact v.2⟩
+      invFun := fun v => ⟨v.1, by rw [hsec]; exact v.2⟩
+      left_inv := fun v => Subtype.ext rfl
+      right_inv := fun v => Subtype.ext rfl }
+  have hpoint (v : ↥(interactionSector (C : Finset (ExternalInsertionVertex E S)))) :
+      (d.restrictComponent C).vertexLabel v = (F B).vertexLabel (fiberEquiv v) := by
+    have hv := layout.assembleDiagram_restrictComponent_vertexLabel_external
+      S F hconnected e (fiberEquiv v)
+    convert hv using 1
+    exact Subtype.ext rfl
+  change (∏ v : ↥(interactionSector (C : Finset (ExternalInsertionVertex E S))),
+      g ((d.restrictComponent C).vertexLabel v)) =
+    ∏ v : ↥(layout.interactionBlock S B), g ((F B).vertexLabel v)
+  calc
+    _ = ∏ v : ↥(interactionSector (C : Finset (ExternalInsertionVertex E S))),
+        g ((F B).vertexLabel (fiberEquiv v)) := by
+          apply Finset.prod_congr rfl
+          intro v _
+          rw [hpoint v]
+    _ = _ := Equiv.prod_comp fiberEquiv (fun v => g ((F B).vertexLabel v))
 
 /-- Connected local blocks also ensure that no internal-only vacuum
 component survives the assembly. Each prescribed partition part is
