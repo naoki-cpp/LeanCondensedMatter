@@ -76,6 +76,24 @@ theorem PairingOn.restrictAlongEquiv_partner_symm_val {α β : Type*} (pairing :
 
 
 
+/-- Restricting a perfect pairing to an invariant subtype is
+independent of which local coordinate equivalence is chosen: the two
+restricted pairings are related by transport along the induced change
+of local coordinates. -/
+theorem PairingOn.restrictAlongEquiv_change_coordinates
+    {α β γ : Type*} (P : PairingOn α)
+    (p : α → Prop) (hp : ∀ i, p i ↔ p (P.partner i))
+    (e : {i : α // p i} ≃ β)
+    (f : {i : α // p i} ≃ γ) :
+    (P.restrictAlongEquiv p hp e).transport (e.symm.trans f).symm =
+      P.restrictAlongEquiv p hp f := by
+  unfold PairingOn.restrictAlongEquiv
+  rw [PairingOn.transport_trans]
+  congr 1
+  apply Equiv.ext
+  intro x
+  simp
+
 /-- Extract the fiber over a fixed index from a dependent sigma type.
 This is the canonical transport used when restricting a pairing which
 never connects different sigma fibers. -/
