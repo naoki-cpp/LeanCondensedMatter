@@ -56,14 +56,11 @@ theorem grandCanonicalGibbsExpectation_orderedProduct_pair_eq_freeThermalPairVal
   | annihilate i =>
       cases g with
       | annihilate j =>
-          have hzero : grandCanonicalGibbsExpectation ε β μ
-              ((_root_.SecondQuantization.Bosonic.annihilate i).comp
-                (_root_.SecondQuantization.Bosonic.annihilate j)) = 0 :=
-            grandCanonicalGibbsExpectation_eq_zero_of_charge ε β μ
-              ((carriesParticleNumberCharge_annihilate i).comp
-                (carriesParticleNumberCharge_annihilate j)) (by norm_num)
           simpa [FreeThermalField.orderedProduct, FreeThermalField.operator,
-            freeThermalPairValue, Module.End.mul_eq_comp] using hzero
+            freeThermalPairValue, Module.End.mul_eq_comp] using
+            (grandCanonicalGibbsExpectation_eq_zero_of_charge ε β μ
+              ((carriesParticleNumberCharge_annihilate i).comp
+                (carriesParticleNumberCharge_annihilate j)) (by norm_num))
       | create j =>
           simpa [FreeThermalField.orderedProduct, FreeThermalField.operator,
             freeThermalPairValue, Module.End.mul_eq_comp] using
@@ -77,14 +74,11 @@ theorem grandCanonicalGibbsExpectation_orderedProduct_pair_eq_freeThermalPairVal
             (grandCanonicalGibbsExpectation_create_comp_annihilate_concrete
               ε β μ hpos i j)
       | create j =>
-          have hzero : grandCanonicalGibbsExpectation ε β μ
-              ((_root_.SecondQuantization.Bosonic.create i).comp
-                (_root_.SecondQuantization.Bosonic.create j)) = 0 :=
-            grandCanonicalGibbsExpectation_eq_zero_of_charge ε β μ
-              ((carriesParticleNumberCharge_create i).comp
-                (carriesParticleNumberCharge_create j)) (by norm_num)
           simpa [FreeThermalField.orderedProduct, FreeThermalField.operator,
-            freeThermalPairValue, Module.End.mul_eq_comp] using hzero
+            freeThermalPairValue, Module.End.mul_eq_comp] using
+            (grandCanonicalGibbsExpectation_eq_zero_of_charge ε β μ
+              ((carriesParticleNumberCharge_create i).comp
+                (carriesParticleNumberCharge_create j)) (by norm_num))
 
 end
 end Bosonic
