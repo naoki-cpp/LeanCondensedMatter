@@ -75,12 +75,31 @@ theorem ExternalInsertionWickDiagram.orderedDysonAmplitude_canonicalOrder
   classical
   unfold ExternalInsertionWickDiagram.orderedDysonAmplitude
   rw [← d.orderedSimplexIntegral_dysonFixedTimeAmplitude ε β g externalTime]
-  simp only [Finset.card_univ, Fintype.card_fin]
-  apply intervalIntegral.orderedSimplexIntegral_congr
-  intro τ
-  apply congrArg (d.dysonFixedTimeAmplitude ε β g externalTime)
-  funext v
-  simp only [Finset.orderIsoOfFin_symm_apply, Fin.sort_univ, List.idxOf_finRange]
+  have hcard : (Finset.univ : Finset (Fin n)).card = n := by simp
+  calc
+    intervalIntegral.orderedSimplexIntegral
+        (Finset.univ : Finset (Fin n)).card β
+        (fun τ => d.dysonFixedTimeAmplitude ε β g externalTime
+          (fun v => τ
+            (((Finset.univ : Finset (Fin n)).orderIsoOfFin rfl).toEquiv.symm
+              ⟨v, Finset.mem_univ v⟩))) =
+      intervalIntegral.orderedSimplexIntegral n β
+        (fun τ => d.dysonFixedTimeAmplitude ε β g externalTime
+          (fun v => τ
+            (Fin.cast hcard
+              (((Finset.univ : Finset (Fin n)).orderIsoOfFin rfl).toEquiv.symm
+                ⟨v, Finset.mem_univ v⟩)))) :=
+        intervalIntegral.orderedSimplexIntegral_cast hcard β _
+    _ = intervalIntegral.orderedSimplexIntegral n β
+          (fun τ => d.dysonFixedTimeAmplitude ε β g externalTime τ) := by
+      apply intervalIntegral.orderedSimplexIntegral_congr
+      intro τ
+      apply congrArg (d.dysonFixedTimeAmplitude ε β g externalTime)
+      funext v
+      apply congrArg τ
+      apply Fin.ext
+      simp only [Fin.cast_val, Finset.orderIsoOfFin_symm_apply,
+        Fin.sort_univ, List.idxOf_finRange]
 
 
 end Fermionic
