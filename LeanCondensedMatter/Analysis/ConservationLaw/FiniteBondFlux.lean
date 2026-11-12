@@ -46,7 +46,10 @@ theorem sum_antisymmetric_bondFlux_eq_zero
   have htwo : (2 : ℂ) • S = 0 := by
     calc
       (2 : ℂ) • S = S + S := by module
-      _ = 0 := by rw [hswap]; simp
+      _ = 0 := by
+        calc
+          S + S = S + (-S) := congrArg (fun T : Obs => S + T) hswap
+          _ = 0 := add_neg_cancel S
   have hS : S = 0 := (smul_eq_zero.mp htwo).resolve_left (by norm_num)
   exact hS
 
