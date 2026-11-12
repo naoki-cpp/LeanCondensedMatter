@@ -88,6 +88,19 @@ theorem externalInsertionLegCongr_standardize
         rw [Finset.orderIsoOfFin_symm_apply, Fin.sort_univ, List.idxOf_finRange]
       rw [huniv]
 
+/-- The canonical consecutive-slot reindexing preserves the exact
+ordering of **all flattened fermion legs**, including the external legs
+and each quartic four-leg group. It therefore introduces no additional
+crossings merely from standardizing interaction slots. -/
+theorem externalInsertionLegCongr_standardize_lt_iff
+    (T : Finset (Fin N)) (a b : Fin (2 * (2 * T.card + E))) :
+    externalInsertionLegCongr (E := E) (standardSlotEquiv T) a <
+      externalInsertionLegCongr (E := E) (standardSlotEquiv T) b ↔
+        a < b := by
+  rw [externalInsertionLegCongr_standardize (E := E) T]
+  change a.val < b.val ↔ a.val < b.val
+  rfl
+
 /-- Standardize both halves of a shuffle fiber: vacuum-free external insertions and
 ordered quartic vacuum data. The vacuum complement uses the canonical quartic API. -/
 noncomputable def ExternalInsertionDiagram.standardizedSupportFiberDataEquiv
