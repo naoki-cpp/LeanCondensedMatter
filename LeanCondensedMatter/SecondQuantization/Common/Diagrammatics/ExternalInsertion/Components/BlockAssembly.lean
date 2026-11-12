@@ -2607,7 +2607,7 @@ open Classical in
 complete family of fiber cardinalities and an order-preserving slot
 shuffle. All zero-size blocks remain in the domain. -/
 noncomputable def ownerFiberSizesEquiv
-    {ι : Type*} [Fintype ι] :
+    {ι : Type*} :
     (Fin N → ι) ≃
       Σ size : ι → ℕ,
         {owner : Fin N → ι //
