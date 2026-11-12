@@ -6,9 +6,9 @@ set_option linter.style.header false
 # Finite-response parameters for the parabolic two-dimensional electron gas
 
 The clean Hamiltonian depends only on the effective mass in `Model`. This module owns the
-extended finite-response parameter bundle, its regularity predicate, and the explicit finite
-radial momentum domain. Spectral broadening, charge and continuum normalization are not
-assumptions of the clean Hamiltonian.
+extended finite-response parameter bundle and its regularity predicate. The momentum cutoff
+is stored explicitly in the response parameters; spectral broadening, charge and continuum
+normalization are not assumptions of the clean Hamiltonian.
 -/
 
 namespace QuantumTheory.Models.Parabolic2DEG
@@ -42,26 +42,6 @@ structure Parameters.IsRegular (params : Parameters) : Prop where
   broadening_pos : 0 < params.broadening
   momentumCutoff_nonneg : 0 ≤ params.momentumCutoff
   hbar_pos : 0 < params.hbar
-
-namespace Parameters.IsRegular
-
-theorem effectiveMass_ne_zero {params : Parameters} (h : params.IsRegular) :
-    params.effectiveMass ≠ 0 :=
-  ne_of_gt h.effectiveMass_pos
-
-theorem broadening_ne_zero {params : Parameters} (h : params.IsRegular) :
-    params.broadening ≠ 0 :=
-  ne_of_gt h.broadening_pos
-
-theorem hbar_ne_zero {params : Parameters} (h : params.IsRegular) :
-    params.hbar ≠ 0 :=
-  ne_of_gt h.hbar_pos
-
-end Parameters.IsRegular
-
-/-- Finite radial momentum domain encoded by the cutoff stored in `params`. -/
-def MomentumInDomain (params : Parameters) (px py : ℝ) : Prop :=
-  px ^ 2 + py ^ 2 ≤ params.momentumCutoff ^ 2
 
 end
 
