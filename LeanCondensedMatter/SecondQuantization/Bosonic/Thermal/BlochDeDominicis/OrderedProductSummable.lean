@@ -55,6 +55,31 @@ private theorem orderedProductMajorant_nonneg (n : Occupation Mode) (K : ℕ) :
   rw [orderedProductMajorant]
   exact Finset.prod_nonneg fun i _ => by positivity
 
+/-- A single ladder factor is bounded by the same polynomial majorant for either ladder kind. -/
+private theorem sqrt_natCast_le_orderedProductMajorant
+    (n : Occupation Mode) (K k : ℕ) (i : Mode)
+    (hk : k ≤ n i + K + 1) :
+    Real.sqrt (k : ℝ) ≤ orderedProductMajorant n K := by
+  have hle : (k : ℝ) ≤ ((n i + K + 1 : ℕ) : ℝ) := by
+    exact_mod_cast hk
+  have hs := Real.sqrt_le_sqrt hle
+  have hR0 : 0 ≤ ((n i + K + 1 : ℕ) : ℝ) := by positivity
+  have hsRsq := Real.sq_sqrt hR0
+  have hR1 : 1 ≤ ((n i + K + 1 : ℕ) : ℝ) := by
+    exact_mod_cast (show 1 ≤ n i + K + 1 by omega)
+  have hsR : Real.sqrt (((n i + K + 1 : ℕ) : ℝ)) ≤
+      ((n i + K + 1 : ℕ) : ℝ) := by
+    nlinarith [Real.sqrt_nonneg (((n i + K + 1 : ℕ) : ℝ))]
+  exact (hs.trans hsR).trans (shiftedOccupation_le_orderedProductMajorant n K i)
+
+/-- Multiplying a bounded coefficient by one bounded nonnegative ladder factor adds one power. -/
+private theorem norm_mul_real_le_pow_succ
+    (B : ℝ) (hB : 0 ≤ B) (c : ℂ) (a : ℝ)
+    (ha : 0 ≤ a) (haB : a ≤ B) (k : ℕ) (hc : ‖c‖ ≤ B ^ k) :
+    ‖c * (a : ℂ)‖ ≤ B ^ (k + 1) := by
+  rw [norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg ha, pow_succ]
+  exact mul_le_mul hc haB ha (pow_nonneg hB _)
+
 /-- Basis-state action of an arbitrary free-thermal-field list, with a uniform coefficient bound.
 
 `K` is an external upper bound on the list length. Keeping it fixed through the induction avoids
@@ -98,29 +123,11 @@ private theorem FreeThermalField.orderedProduct_basisState_bound_aux
           · have hmK : m i + 1 ≤ n i + K + 1 := by
               have hmi := hm i
               omega
-            have hsqrt : a ≤ ((n i + K + 1 : ℕ) : ℝ) := by
-              have hle : (m i + 1 : ℝ) ≤ ((n i + K + 1 : ℕ) : ℝ) := by
-                exact_mod_cast hmK
-              have hs := Real.sqrt_le_sqrt hle
-              have hR0 : 0 ≤ ((n i + K + 1 : ℕ) : ℝ) := by positivity
-              have hsRsq := Real.sq_sqrt hR0
-              have hR1 : 1 ≤ ((n i + K + 1 : ℕ) : ℝ) := by
-                exact_mod_cast (show 1 ≤ n i + K + 1 by omega)
-              have hsR : Real.sqrt (((n i + K + 1 : ℕ) : ℝ)) ≤
-                  ((n i + K + 1 : ℕ) : ℝ) := by
-                nlinarith [Real.sqrt_nonneg (((n i + K + 1 : ℕ) : ℝ))]
-              exact hs.trans hsR
-            have haB : a ≤ orderedProductMajorant n K :=
-              hsqrt.trans (shiftedOccupation_le_orderedProductMajorant n K i)
-            rw [norm_mul, Complex.norm_real, Real.norm_eq_abs,
-              abs_of_nonneg (Real.sqrt_nonneg _)]
-            calc
-              ‖c‖ * a ≤ (orderedProductMajorant n K) ^ fields.length *
-                  orderedProductMajorant n K :=
-                mul_le_mul hc haB (Real.sqrt_nonneg _) (pow_nonneg hB0 _)
-              _ = (orderedProductMajorant n K) ^
-                    (FreeThermalField.create i :: fields).length := by
-                simp only [List.length_cons, pow_succ]
+            have haB : a ≤ orderedProductMajorant n K := by
+              simpa only [a, Nat.cast_add, Nat.cast_one] using
+                (sqrt_natCast_le_orderedProductMajorant n K (m i + 1) i hmK)
+            exact norm_mul_real_le_pow_succ (orderedProductMajorant n K) hB0
+              c a (Real.sqrt_nonneg _) haB fields.length hc
       | annihilate i =>
           by_cases hi : m i = 0
           · refine ⟨0, m, ?_, ?_, ?_⟩
@@ -150,29 +157,10 @@ private theorem FreeThermalField.orderedProduct_basisState_bound_aux
             · have hmK : m i ≤ n i + K + 1 := by
                 have hmi := hm i
                 omega
-              have hsqrt : a ≤ ((n i + K + 1 : ℕ) : ℝ) := by
-                have hle : (m i : ℝ) ≤ ((n i + K + 1 : ℕ) : ℝ) := by
-                  exact_mod_cast hmK
-                have hs := Real.sqrt_le_sqrt hle
-                have hR0 : 0 ≤ ((n i + K + 1 : ℕ) : ℝ) := by positivity
-                have hsRsq := Real.sq_sqrt hR0
-                have hR1 : 1 ≤ ((n i + K + 1 : ℕ) : ℝ) := by
-                  exact_mod_cast (show 1 ≤ n i + K + 1 by omega)
-                have hsR : Real.sqrt (((n i + K + 1 : ℕ) : ℝ)) ≤
-                    ((n i + K + 1 : ℕ) : ℝ) := by
-                  nlinarith [Real.sqrt_nonneg (((n i + K + 1 : ℕ) : ℝ))]
-                exact hs.trans hsR
               have haB : a ≤ orderedProductMajorant n K :=
-                hsqrt.trans (shiftedOccupation_le_orderedProductMajorant n K i)
-              rw [norm_mul, Complex.norm_real, Real.norm_eq_abs,
-                abs_of_nonneg (Real.sqrt_nonneg _)]
-              calc
-                ‖c‖ * a ≤ (orderedProductMajorant n K) ^ fields.length *
-                    orderedProductMajorant n K :=
-                  mul_le_mul hc haB (Real.sqrt_nonneg _) (pow_nonneg hB0 _)
-                _ = (orderedProductMajorant n K) ^
-                      (FreeThermalField.annihilate i :: fields).length := by
-                  simp only [List.length_cons, pow_succ]
+                sqrt_natCast_le_orderedProductMajorant n K (m i) i hmK
+              exact norm_mul_real_le_pow_succ (orderedProductMajorant n K) hB0
+                c a (Real.sqrt_nonneg _) haB fields.length hc
 
 /-- Diagonal matrix coefficients of an arbitrary fixed free-thermal-field list have polynomial
 growth controlled by a uniform finite-mode product. -/
