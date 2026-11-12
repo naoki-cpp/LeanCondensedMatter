@@ -494,7 +494,8 @@ theorem ExternalInsertionBlockLayout.assembleConnectedBlocks_signedDysonShuffleO
     rw [hC]
     have h := ExternalInsertionBlockLayout.assembleConnectedBlocks_componentDysonAmplitude_eq_local
       layout F hconnected ε β g externalTime e
-    simpa only [d, S, B] using h
+    rw [hsource] at h
+    simpa only [d, S] using h
   have horbit := ExternalInsertionBlockLayout.assembleConnectedBlocks_signedDysonShuffleOrbit
     layout F hconnected ε β g externalTime
   calc
