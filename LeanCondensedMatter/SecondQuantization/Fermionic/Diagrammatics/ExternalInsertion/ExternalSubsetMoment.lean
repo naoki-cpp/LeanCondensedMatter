@@ -157,6 +157,54 @@ theorem ExternalInsertionBlockLayout.assembleDiagram_componentOrderedDiagram_ext
   exact (heq_of_eq hlabels).trans (htransport.trans (heq_of_eq hcomponent))
 
 omit [LinearOrder Mode] [Fintype Mode] in
+/-- An independently assembled connected block inherits exactly the
+canonical source times from the physical assembled component. The local
+source slots are increasing ambient slots, not reordered by their real
+time values. This supplies the time-data transport for comparing genuine
+local Dyson amplitudes with the extracted physical components. -/
+theorem ExternalInsertionBlockLayout.assembleDiagram_componentExternalTime_eq_localTimes
+    {n : ℕ} (layout : ExternalInsertionBlockLayout E n)
+    (F : ∀ B : layout.partition.parts,
+      ExternalInsertionDiagram (ExternalFieldLabel Mode) (QuarticVertexLabel Mode)
+        ((B : Finset (Fin (2 * E))).card / 2) n
+        (layout.interactionBlock (Finset.univ : Finset (Fin n)) B))
+    (hconnected : ∀ B, (F B).vertexGraph.Preconnected)
+    (times : Fin (2 * E) → ℝ)
+    (e : Fin (2 * E)) :
+    HEq
+      (fun i : Fin (2 * ((layout.sourceEquiv e).1.1.card / 2)) =>
+        times (layout.sourceEquiv.symm ⟨(layout.sourceEquiv e).1, i⟩))
+      ((layout.assembleDiagram (Finset.univ : Finset (Fin n)) F).componentExternalTime
+        times
+        ⟨(layout.assembleDiagram (Finset.univ : Finset (Fin n)) F).vertexGraph.componentBlock
+            (Sum.inl e),
+          (layout.assembleDiagram (Finset.univ : Finset (Fin n)) F).vertexGraph.componentBlock_mem_componentPartition
+            (Sum.inl e)⟩) := by
+  classical
+  let d := layout.assembleDiagram (Finset.univ : Finset (Fin n)) F
+  let B := (layout.sourceEquiv e).1
+  let C : d.vertexGraph.componentPartition.parts :=
+    ⟨d.vertexGraph.componentBlock (Sum.inl e),
+      d.vertexGraph.componentBlock_mem_componentPartition (Sum.inl e)⟩
+  have hsec : (B : Finset (Fin (2 * E))) =
+      (C.1 : Finset (ExternalInsertionVertex E (Finset.univ : Finset (Fin n)))).toLeft :=
+    (layout.assembleDiagram_componentExternalSector_external
+      (Finset.univ : Finset (Fin n)) F hconnected e).symm
+  have hlocal :
+      (fun i : Fin (2 * (B.1.card / 2)) =>
+        times (layout.sourceEquiv.symm ⟨B, i⟩)) =
+        evenExternalSubsetTimes times (B : Finset (Fin (2 * E)))
+          (layout.evenBlocks B) := by
+    funext i
+    simpa only [evenExternalSubsetTimes, evenExternalSubsetOrderIso] using
+      congrArg times (layout.sourceEquiv_symm_apply B i)
+  have htransport :=
+    evenExternalSubsetRestriction_heq_of_eq times
+      (layout.evenBlocks B) (d.externalSector_card_even C) hsec
+  have hcomponent := evenExternalSubsetTimes_component (d := d) times C
+  exact (heq_of_eq hlocal).trans (htransport.trans (heq_of_eq hcomponent))
+
+omit [LinearOrder Mode] [Fintype Mode] in
 /-- On each external-partition block of a vacuum-free diagram, the field
 labels used by the source-subset moment are exactly the labels of the
 canonical standalone connected-component diagram.
