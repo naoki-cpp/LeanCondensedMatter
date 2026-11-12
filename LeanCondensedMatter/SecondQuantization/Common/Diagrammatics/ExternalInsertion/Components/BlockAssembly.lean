@@ -2590,9 +2590,8 @@ noncomputable def ExternalInsertionBlockLayout.fixedPartitionOwnerEquiv
     {layout : ExternalInsertionBlockLayout E N // layout.partition = π} ≃
       (Fin N → π.parts) where
   toFun x v :=
-    ⟨(x.1.interactionOwner v).1, by
-      rw [← x.2]
-      exact (x.1.interactionOwner v).2⟩
+    ⟨(x.1.interactionOwner v).1,
+      x.2 ▸ (x.1.interactionOwner v).2⟩
   invFun owner :=
     ⟨⟨π, heven, owner⟩, rfl⟩
   left_inv x := by
@@ -2605,6 +2604,7 @@ noncomputable def ExternalInsertionBlockLayout.fixedPartitionOwnerEquiv
 /-- An interaction-owner assignment is uniquely specified by its
 complete family of fiber cardinalities and an order-preserving slot
 shuffle. All zero-size blocks remain in the domain. -/
+open Classical in
 private noncomputable def ownerFiberSizesEquiv
     {ι : Type*} [Fintype ι] :
     (Fin N → ι) ≃
@@ -2643,25 +2643,52 @@ noncomputable def ExternalInsertionBlockLayout.fixedPartitionSizeShuffleEquiv
         (familyShuffleOwnerEquiv (ι := π.parts) (size := size)
           (total := N)).symm)))
 
-/-- Reindex any finite sum over physical interaction-owner assignments
-for a fixed even external partition into a sum over exactly the
-independent local interaction sizes and their order-preserving shuffles.
-This finite sum is the *physical layout* sum, not an artificial factorial
-multiple of the diagram coefficient. -/
+/-- The exact finite collection of physical layouts with a prescribed
+external partition, obtained from all actual interaction-owner functions.
+No artificial finiteness instance for arbitrary size vectors is used. -/
+noncomputable def ExternalInsertionBlockLayout.fixedPartitionLayoutFiniteDomain
+    (π : Finpartition (Finset.univ : Finset (Fin (2 * E))))
+    (heven : ∀ B : π.parts, Even (B : Finset (Fin (2 * E))).card) :
+    Finset {layout : ExternalInsertionBlockLayout E N // layout.partition = π} := by
+  classical
+  exact (Finset.univ : Finset (Fin N → π.parts)).image
+    (ExternalInsertionBlockLayout.fixedPartitionOwnerEquiv π heven).symm
+
+/-- The finite domain of actual size vectors and order-preserving
+shuffles, as the exact image of the physical layout domain. Every
+element of this domain is physically realizable by some vertex-owner
+assignment, including all zero-vertex external components. -/
+noncomputable def ExternalInsertionBlockLayout.fixedPartitionSizeShuffleFiniteDomain
+    (π : Finpartition (Finset.univ : Finset (Fin (2 * E))))
+    (heven : ∀ B : π.parts, Even (B : Finset (Fin (2 * E))).card) :
+    Finset (Σ size : π.parts → ℕ, FamilySlotShuffleTo size N) := by
+  classical
+  exact (ExternalInsertionBlockLayout.fixedPartitionLayoutFiniteDomain π heven).image
+    (ExternalInsertionBlockLayout.fixedPartitionSizeShuffleEquiv π heven)
+
+/-- Reindex the **actual finite** physical layout sum at a fixed even
+external-source partition by the realized local interaction sizes and
+their unique owner shuffles. No unbounded enumeration of arbitrary
+natural-number size vectors is assumed and no factorial is inserted. -/
 theorem ExternalInsertionBlockLayout.sum_fixedPartitionLayouts_eq_sizes_shuffles
     {M : Type*} [AddCommMonoid M]
     (π : Finpartition (Finset.univ : Finset (Fin (2 * E))))
     (heven : ∀ B : π.parts, Even (B : Finset (Fin (2 * E))).card)
     (weight : ExternalInsertionBlockLayout E N → M) :
-    (∑ layout : {layout : ExternalInsertionBlockLayout E N //
-        layout.partition = π}, weight layout.1) =
-      ∑ data : Σ size : π.parts → ℕ, FamilySlotShuffleTo size N,
+    (∑ layout ∈ ExternalInsertionBlockLayout.fixedPartitionLayoutFiniteDomain π heven,
+        weight layout.1) =
+      ∑ data ∈ ExternalInsertionBlockLayout.fixedPartitionSizeShuffleFiniteDomain π heven,
         weight ((ExternalInsertionBlockLayout.fixedPartitionSizeShuffleEquiv π heven).symm
           data).1 := by
   classical
-  exact (Equiv.sum_comp
-    (ExternalInsertionBlockLayout.fixedPartitionSizeShuffleEquiv π heven).symm
-    (fun layout => weight layout.1)).symm
+  unfold ExternalInsertionBlockLayout.fixedPartitionSizeShuffleFiniteDomain
+  rw [Finset.sum_image]
+  · apply Finset.sum_congr rfl
+    intro layout _
+    rw [Equiv.symm_apply_apply]
+  · intro x _ y _ h
+    exact (ExternalInsertionBlockLayout.fixedPartitionSizeShuffleEquiv π heven).injective h
+
 
 end Common
 end SecondQuantization
