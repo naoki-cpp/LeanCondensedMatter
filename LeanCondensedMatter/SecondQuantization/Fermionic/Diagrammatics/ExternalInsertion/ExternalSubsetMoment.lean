@@ -4,6 +4,7 @@ import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalIn
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.MixedOrderData
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ExternalPartition
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.BlockAssembly
+import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentIntegral
 import LeanCondensedMatter.Combinatorics.Cumulant.Moment
 import Mathlib.Data.Fintype.EquivFin
 
@@ -205,6 +206,107 @@ theorem ExternalInsertionBlockLayout.assembleDiagram_componentExternalTime_eq_lo
   exact (heq_of_eq hlocal).trans (htransport.trans (heq_of_eq hcomponent))
 
 omit [LinearOrder Mode] [Fintype Mode] in
+/-- Pairing transport along an equality cast is only a change in the
+dependent pair-count index; it does not change any Wick partners. -/
+private theorem pairing_heq_of_finCongr_transport
+    {a b : ℕ} (h : a = b) (P : Combinatorics.Pairing a)
+    (Q : Combinatorics.Pairing b)
+    (hpair : P.transport
+      (finCongr (congrArg (fun k : ℕ => 2 * k) h)).symm = Q) :
+    HEq P Q := by
+  cases h
+  have hc :
+      (finCongr (congrArg (fun k : ℕ => 2 * k) (rfl : a = a))).symm =
+        Equiv.refl (Fin (2 * a)) := by
+    apply Equiv.ext
+    intro i
+    apply Fin.ext
+    rfl
+  rw [hc] at hpair
+  have hself : P.transport (Equiv.refl _) = P := by
+    apply Combinatorics.PairingOn.ext
+    apply Equiv.ext
+    intro i
+    simp only [Combinatorics.PairingOn.transport_partner, Equiv.refl_apply,
+      Equiv.refl_symm]
+  rw [hself] at hpair
+  exact heq_of_eq hpair
+
+/-- Two dependent external-insertion diagrams are the same diagram
+after equality of their external sizes and interaction supports, provided
+their three original fields are equal in the heterogeneous sense. -/
+private theorem externalInsertionDiagram_heq_of_fields
+    {ExternalLabel InternalLabel : Type*} {E₁ E₂ n : ℕ}
+    {S₁ S₂ : Finset (Fin n)}
+    (hE : E₁ = E₂) (hS : S₁ = S₂)
+    (p : ExternalInsertionDiagram ExternalLabel InternalLabel E₁ n S₁)
+    (q : ExternalInsertionDiagram ExternalLabel InternalLabel E₂ n S₂)
+    (he : HEq p.externalLabel q.externalLabel)
+    (hv : HEq p.vertexLabel q.vertexLabel)
+    (hp : HEq p.pairing q.pairing) :
+    HEq p q := by
+  cases hE
+  cases hS
+  exact heq_of_eq (ExternalInsertionDiagram.ext
+    (eq_of_heq he) (eq_of_heq hv) (eq_of_heq hp))
+
+omit [LinearOrder Mode] [Fintype Mode] in
+/-- The *complete actual physically restricted graph component* is
+the independently assembled connected Wick block, up to the dependent
+equalities of its external-pair count and quartic-vertex subset.
+
+Unlike separate label/vertex-weight/pair-sign comparisons, this identifies
+the entire Wick diagram, including the actual oriented pairing.  It therefore
+allows all concrete timed-field kernels to be transported by equality rather
+than by an unjustified fermionic endpoint-symmetry assumption. -/
+theorem ExternalInsertionBlockLayout.assembleDiagram_restrictComponent_heq_local
+    {n : ℕ} (layout : ExternalInsertionBlockLayout E n)
+    (F : ∀ B : layout.partition.parts,
+      ExternalInsertionDiagram (ExternalFieldLabel Mode) (QuarticVertexLabel Mode)
+        ((B : Finset (Fin (2 * E))).card / 2) n
+        (layout.interactionBlock (Finset.univ : Finset (Fin n)) B))
+    (hconnected : ∀ B, (F B).vertexGraph.Preconnected)
+    (e : Fin (2 * E)) :
+    let d := layout.assembleDiagram (Finset.univ : Finset (Fin n)) F
+    let C : d.vertexGraph.componentPartition.parts :=
+      ⟨d.vertexGraph.componentBlock (Sum.inl e),
+        d.vertexGraph.componentBlock_mem_componentPartition (Sum.inl e)⟩
+    HEq (d.restrictComponent C) (F (layout.sourceEquiv e).1) := by
+  classical
+  let S : Finset (Fin n) := Finset.univ
+  let B := (layout.sourceEquiv e).1
+  let d := layout.assembleDiagram S F
+  let C : d.vertexGraph.componentPartition.parts :=
+    ⟨d.vertexGraph.componentBlock (Sum.inl e),
+      d.vertexGraph.componentBlock_mem_componentPartition (Sum.inl e)⟩
+  let T := interactionSector (C : Finset (ExternalInsertionVertex E S))
+  let c := (d.componentBlockLegEquiv C).symm.trans
+    (layout.physicalComponentLegEquiv S F hconnected e)
+  have hsector : T = layout.interactionBlock S B :=
+    layout.assembleDiagram_componentInteractionSector_external S F hconnected e
+  have hcount : d.externalPairCount C = B.1.card / 2 :=
+    layout.assembleDiagram_componentExternalPairCount_external S F hconnected e
+  have hcards : 2 * T.card + d.externalPairCount C =
+      2 * (layout.interactionBlock S B).card + B.1.card / 2 := by
+    rw [hsector, hcount]
+  have hcoord : c = finCongr (congrArg (fun k : ℕ => 2 * k) hcards) := by
+    exact layout.physicalComponentCanonicalLegEquiv_eq_finCongr S F hconnected e
+  have hpair :
+      (d.restrictComponent C).pairing.transport
+        (finCongr (congrArg (fun k : ℕ => 2 * k) hcards)).symm =
+      (F B).pairing := by
+    have hp := layout.physicalComponentCanonicalPairing_eq_local S F hconnected e
+    change (d.restrictComponent C).pairing.transport c.symm = (F B).pairing at hp
+    rwa [hcoord] at hp
+  have hpairHeq : HEq (d.restrictComponent C).pairing (F B).pairing :=
+    pairing_heq_of_finCongr_transport hcards _ _ hpair
+  have hsrc : HEq (d.restrictComponent C).externalLabel (F B).externalLabel :=
+    (layout.assembleDiagram_componentOrderedDiagram_externalLabel F hconnected e).symm
+  have hvertex : HEq (d.restrictComponent C).vertexLabel (F B).vertexLabel :=
+    (layout.assembleDiagram_restrictComponent_vertexLabel_heq S F hconnected e).symm
+  exact externalInsertionDiagram_heq_of_fields hcount hsector
+    (d.restrictComponent C) (F B) hsrc hvertex hpairHeq
+
 /-- On each external-partition block of a vacuum-free diagram, the field
 labels used by the source-subset moment are exactly the labels of the
 canonical standalone connected-component diagram.
