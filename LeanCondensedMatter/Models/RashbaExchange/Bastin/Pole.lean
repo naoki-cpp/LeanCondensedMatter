@@ -15,8 +15,10 @@ the regular spectator. The generic interband-pole theorem controls the
 fixed target-centered energy window and positive-broadening limit.
 
 This proves a pointwise-in-momentum *isolated pair* limit, not a limit of
-the complete Bastin response. No diagonal/spectator limit cancellation,
-occupation integration, momentum integration, or limit interchange is claimed.
+the complete Bastin response. The trace-cyclicity and Berry-current-block
+identities are upstream in `Current` and `Bastin/Berry`, respectively.
+No diagonal/spectator limit cancellation, occupation integration, momentum
+integration, or limit interchange is claimed.
 -/
 
 namespace QuantumTheory.Models.RashbaExchange
@@ -100,45 +102,6 @@ theorem targetCenteredInterbandBastinPairIntegral_eq_interbandBastinPoleIntegral
     params 0 1 band px py offset broadening hbroadening]
   ring
 
-/-- Cyclicity of finite-dimensional trace exchanges the current directions
-and swaps the ordered band projectors, without complex conjugation. -/
-theorem currentBandBlockTrace_swap
-    (params : Parameters) (μ ν : Fin 2) (source target : Band)
-    (px py : ℝ) :
-    currentBandBlockTrace params ν μ source target px py =
-      currentBandBlockTrace params μ ν target source px py := by
-  unfold currentBandBlockTrace
-  simpa only [mul_assoc] using
-    (finiteDimensionalOperatorTrace_mul_comm
-      (bandProjectorOperator params target px py *
-        currentBoundedOperator params ν px py)
-      (bandProjectorOperator params source px py *
-        currentBoundedOperator params μ px py))
-
-/-- The antisymmetric imaginary current block for a target band, normalized
-by its squared interband gap, is minus signed-charge-squared Berry curvature. -/
-theorem interbandBlockDifference_im_div_gap_sq_eq_neg_chargeSq_berryCurvature
-    (params : Parameters) (band : Band) (px py : ℝ)
-    (hE : spinOrbitEnergy params px py ≠ 0) :
-    (currentBandBlockTrace params 0 1 (oppositeBand band) band px py -
-      currentBandBlockTrace params 1 0 (oppositeBand band) band px py).im /
-        interbandEnergyGap params band px py ^ 2 =
-      -(params.signedCharge ^ 2 * berryCurvature params band px py) := by
-  have hband :=
-    two_mul_currentBandBlockTrace_interband_im_div_gap_sq_eq_chargeSq_berryCurvature
-      params band px py hE
-  have hopp :=
-    two_mul_currentBandBlockTrace_interband_im_div_gap_sq_eq_chargeSq_berryCurvature
-      params (oppositeBand band) px py hE
-  simp only [oppositeBand_oppositeBand, interbandEnergyGap_oppositeBand,
-    berryCurvature_oppositeBand, neg_sq] at hopp
-  rw [currentBandBlockTrace_swap params 0 1 (oppositeBand band) band]
-  rw [Complex.sub_im]
-  have hgap : interbandEnergyGap params band px py ≠ 0 :=
-    interbandEnergyGap_ne_zero_of_spinOrbitEnergy_ne_zero params band px py hE
-  field_simp [hgap] at hband hopp ⊢
-  nlinarith
-
 /-- The regular target-pole coefficient gives precisely the Berry weight. -/
 theorem interbandPoleRegularFactor_zero_im_eq_neg_chargeSq_berryCurvature
     (params : Parameters) (band : Band) (px py : ℝ)
@@ -213,9 +176,10 @@ theorem tendsto_targetCenteredInterbandBastinPairIntegral_re_berryCurvature
     (targetCenteredInterbandBastinPairIntegral_eq_interbandBastinPoleIntegral
       params band px py radius broadening hbroadening.ne').symm
 
-
 /-- The clean local density extracted from one isolated opposite-source
-Bastin pole, before any occupation or momentum integration. -/
+Bastin pole. This is a single unweighted ordered-pair coefficient, not a
+conductivity: it has no occupation factor, sum over bands, Hall factor `1/2`,
+response prefactor, or momentum integral. -/
 noncomputable def cleanLocalIsolatedBastinLimitDensity
     (params : Parameters) (band : Band) (px py : ℝ) : ℝ :=
   -2 * Real.pi * (params.signedCharge ^ 2 * berryCurvature params band px py)

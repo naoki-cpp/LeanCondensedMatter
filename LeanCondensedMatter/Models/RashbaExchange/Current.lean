@@ -60,5 +60,20 @@ noncomputable def currentBandBlockTrace
       bandProjectorOperator params source px py *
       currentBoundedOperator params ν px py)
 
+/-- Cyclicity of finite-dimensional trace exchanges the current directions
+and swaps the ordered band projectors, without complex conjugation. -/
+theorem currentBandBlockTrace_swap
+    (params : Parameters) (μ ν : Fin 2) (source target : Band)
+    (px py : ℝ) :
+    currentBandBlockTrace params ν μ source target px py =
+      currentBandBlockTrace params μ ν target source px py := by
+  unfold currentBandBlockTrace
+  simpa only [mul_assoc] using
+    (finiteDimensionalOperatorTrace_mul_comm
+      (bandProjectorOperator params target px py *
+        currentBoundedOperator params ν px py)
+      (bandProjectorOperator params source px py *
+        currentBoundedOperator params μ px py))
+
 end
 end QuantumTheory.Models.RashbaExchange

@@ -9,6 +9,7 @@ import LeanCondensedMatter.Models.RashbaExchange
 import LeanCondensedMatter.Models.OrbitalRelaxation.Finite
 import LeanCondensedMatter.Models.OrbitalRelaxation.T2gProjectors
 import LeanCondensedMatter.Models.OrbitalRelaxation.AngularCollision
+import LeanCondensedMatter.Models.OrbitalTransport.Finite
 
 set_option linter.style.header false
 
