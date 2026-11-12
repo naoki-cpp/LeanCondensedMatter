@@ -139,7 +139,7 @@ theorem localTorque_zero_eq (Δ : ℝ) :
          0, 0, 0, 0] := by
   ext i j
   fin_cases i <;> fin_cases j <;>
-    simp [localTorque, crystalField, orbitalZZero] <;> ring_nf <;> simp [Complex.I_mul_I]
+    simp [localTorque, crystalField, orbitalZZero] <;> ring_nf <;> simp
 
 /-- In particular the site-zero torque is nonzero for nonzero splitting. -/
 theorem localTorque_zero_ne_zero (Δ : ℝ) (hΔ : Δ ≠ 0) :
