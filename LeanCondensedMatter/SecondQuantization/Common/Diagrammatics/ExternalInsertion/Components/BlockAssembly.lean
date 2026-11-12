@@ -253,7 +253,7 @@ theorem ExternalInsertionBlockLayout.blockLegEmbedding_strictMono
     (layout : ExternalInsertionBlockLayout E N) (S : Finset (Fin N))
     (B : layout.partition.parts) :
     StrictMono (fun p : Fin (2 * (2 * (layout.interactionBlock S B).card +
-        ((B : Finset (Fin (2 * E))).card / 2)) =>
+        ((B : Finset (Fin (2 * E))).card / 2))) =>
       (layout.legEquiv S).symm ⟨B, p⟩) := by
   classical
   let T := layout.interactionBlock S B
