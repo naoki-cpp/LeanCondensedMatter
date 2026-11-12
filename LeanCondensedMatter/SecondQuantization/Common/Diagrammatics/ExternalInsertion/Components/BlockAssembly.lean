@@ -884,6 +884,53 @@ theorem ExternalInsertionBlockLayout.physicalComponentPairing_eq_local
   have hsigma := (layout.legEquiv S).symm.injective hpair'
   exact eq_of_heq (Sigma.mk.inj_iff.mp hsigma).2
 
+/-- The canonical connected-component pairing agrees with the original
+independent Wick block pairing after the *explicit* change from canonical
+physical component-leg coordinates to assigned block-leg coordinates.
+Unlike blockwise assembly alone, the left-hand side starts with the
+actual graph component restricted from the assembled physical diagram.
+The change of coordinates accounts for the distinct dependent local
+interaction-slot and external-pair indices. -/
+theorem ExternalInsertionBlockLayout.physicalComponentCanonicalPairing_eq_local
+    {ExternalLabel InternalLabel : Type*}
+    (layout : ExternalInsertionBlockLayout E N) (S : Finset (Fin N))
+    (F : ∀ B : layout.partition.parts,
+      ExternalInsertionDiagram ExternalLabel InternalLabel
+        ((B : Finset (Fin (2 * E))).card / 2) N (layout.interactionBlock S B))
+    (hconnected : ∀ B, (F B).vertexGraph.Preconnected)
+    (e : Fin (2 * E)) :
+    (let d := layout.assembleDiagram S F
+     let C : d.vertexGraph.componentPartition.parts :=
+       ⟨d.vertexGraph.componentBlock (Sum.inl e),
+         d.vertexGraph.componentBlock_mem_componentPartition (Sum.inl e)⟩
+     (d.restrictComponent C).pairing.transport
+       ((d.componentBlockLegEquiv C).symm.trans
+         (layout.physicalComponentLegEquiv S F hconnected e)).symm) =
+      (F (layout.sourceEquiv e).1).pairing := by
+  classical
+  let d := layout.assembleDiagram S F
+  let C : d.vertexGraph.componentPartition.parts :=
+    ⟨d.vertexGraph.componentBlock (Sum.inl e),
+      d.vertexGraph.componentBlock_mem_componentPartition (Sum.inl e)⟩
+  change (d.restrictComponent C).pairing.transport
+      ((d.componentBlockLegEquiv C).symm.trans
+        (layout.physicalComponentLegEquiv S F hconnected e)).symm =
+      (F (layout.sourceEquiv e).1).pairing
+  calc
+    (d.restrictComponent C).pairing.transport
+        ((d.componentBlockLegEquiv C).symm.trans
+          (layout.physicalComponentLegEquiv S F hconnected e)).symm =
+      layout.physicalComponentPairing S F hconnected e := by
+        simpa [ExternalInsertionDiagram.restrictComponent,
+          ExternalInsertionBlockLayout.physicalComponentPairing] using
+          (d.pairing.restrictAlongEquiv_change_coordinates
+            (d.legInComponent C.1)
+            (layout.physicalComponentLeg_partner_iff S F e)
+            (d.componentBlockLegEquiv C)
+            (layout.physicalComponentLegEquiv S F hconnected e))
+    _ = (F (layout.sourceEquiv e).1).pairing :=
+      layout.physicalComponentPairing_eq_local S F hconnected e
+
 /-- The local external-pair parameter of an actual assembled graph component
 is the half-cardinality of its assigned source-partition block. This closes
 the dependent external-size index needed to identify physical component
