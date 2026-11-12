@@ -153,21 +153,9 @@ theorem totalOrbitalEvolution (Δ t : ℝ) :
     Complex.I • (hamiltonian Δ t * (orbitalZZero + orbitalZOne) -
       (orbitalZZero + orbitalZOne) * hamiltonian Δ t) =
         localTorque Δ orbitalZZero + localTorque Δ orbitalZOne := by
-  have h0 := continuity_zero Δ t
-  have h1 := continuity_one Δ t
-  calc
-    _ = Complex.I • (hamiltonian Δ t * orbitalZZero -
-          orbitalZZero * hamiltonian Δ t) +
-        Complex.I • (hamiltonian Δ t * orbitalZOne -
-          orbitalZOne * hamiltonian Δ t) := by
-            simp only [mul_add, add_mul, smul_add, smul_sub]
-            abel
-    _ = (Complex.I • (hamiltonian Δ t * orbitalZZero -
-          orbitalZZero * hamiltonian Δ t) + bondFluxZeroToOne t) +
-        (Complex.I • (hamiltonian Δ t * orbitalZOne -
-          orbitalZOne * hamiltonian Δ t) + bondFluxOneToZero t) := by
-            rw [bondFluxOneToZero_eq_neg]
-            abel
-    _ = _ := by rw [h0, h1]
+  unfold hamiltonian localTorque
+  rw [add_mul, mul_add, hopping_commutes_totalOrbital t]
+  simp only [mul_add, add_mul, smul_add, smul_sub]
+  module
 
 end QuantumTheory.Models.OrbitalTransport.TwoSite
