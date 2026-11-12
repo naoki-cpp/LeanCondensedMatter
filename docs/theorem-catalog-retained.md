@@ -172,9 +172,9 @@ using a zero-consumer signal as grounds for changing its retention.
 - `SecondQuantization.Fermionic.timeOrderedExternalFields_swap` — canonical fermionic exchange law
   for the named time-ordered external-field construction: swapping both fields and times produces
   the fermionic statistics sign.
-- `QuantumMechanics.SingleParticle.lie_orbitalAngularMomentumZ_continuum_sign` — physics-facing continuum
-  specialization fixing the derivative-localizer coefficient to `iℏ`; it records the expected
-  orbital-angular-momentum localization commutator rather than a proof-routing alias.
+- `QuantumMechanics.SingleParticle.lie_orbitalAngularMomentum_continuum_sign` — physics-facing
+  directional continuum specialization fixing the derivative-localizer coefficient to `iℏ`;
+  it records the orbital-localization commutator in an arbitrary oriented plane.
 - `QuantumMechanics.SingleParticle.Continuum.continuumRealPotentialSchrodingerHamiltonian1D_isClosed`
   — physical real-scalar-potential closedness theorem for the named continuum Hamiltonian; the
   generic complex-multiplier proof does not make the real-potential endpoint redundant.
