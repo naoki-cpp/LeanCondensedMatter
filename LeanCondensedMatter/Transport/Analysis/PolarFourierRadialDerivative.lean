@@ -24,6 +24,21 @@ noncomputable section
 open MeasureTheory
 open scoped Interval
 
+/-- The zeroth full-angle Fourier harmonic has norm at most the
+length `2π` of the angular interval, uniformly in the real argument.
+This bound is used to control absolutely convergent spectral resolvent
+*differences*, without any real-argument Bessel asymptotics. -/
+theorem polarFourierZerothAngularKernel_norm_le (z : ℝ) :
+    ‖polarFourierZerothAngularKernel z‖ ≤ 2 * Real.pi := by
+  have h := intervalIntegral.norm_integral_le_of_norm_le_const
+    (a := (0 : ℝ)) (b := 2 * Real.pi) (C := (1 : ℝ))
+    (f := fun θ : ℝ => polarFourierRadialPhase z θ) (by
+      intro θ _
+      simp [polarFourierRadialPhase, Complex.norm_exp, Complex.mul_re])
+  simpa only [polarFourierZerothAngularKernel, one_mul, sub_zero,
+    abs_of_nonneg (mul_nonneg (by norm_num : (0 : ℝ) ≤ 2) Real.pi_pos.le)]
+    using h
+
 /-- The first angular Fourier harmonic is uniformly bounded by the
 length of the full angular interval, independently of its argument. -/
 theorem polarFourierFirstCosineAngularKernel_norm_le (z : ℝ) :
