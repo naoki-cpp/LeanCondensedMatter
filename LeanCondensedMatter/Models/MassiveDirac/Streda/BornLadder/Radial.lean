@@ -343,7 +343,7 @@ theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceRadialIntegr
   rw [finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceIntegral_eq_radialCoefficient]
 
 /-- Rotational closure makes the ordered `yx` radial coefficient the negative of `xy`. -/
-theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yx_eq_neg_xy
+private theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yx_eq_neg_xy
     (e v m p probeEnergy broadening disorderStrength hbar pMax : ℝ) :
     finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient
         1 0 e v m p probeEnergy broadening disorderStrength hbar pMax =
@@ -361,7 +361,7 @@ theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTrace
   ring
 
 /-- Rotational closure makes the two diagonal radial coefficients equal. -/
-theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yy_eq_xx
+private theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yy_eq_xx
     (e v m p probeEnergy broadening disorderStrength hbar pMax : ℝ) :
     finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient
         1 1 e v m p probeEnergy broadening disorderStrength hbar pMax =
@@ -377,29 +377,6 @@ theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTrace
     inPlaneRotationMatrix_apply_y_y, inPlaneLadderBareXSource, inPlaneCoefficientVector,
     Matrix.cons_val_zero, Matrix.cons_val_one]
   ring
-
-/-- The finite-`η` ordered `yx` radial Středa response is the negative of `xy`. -/
-theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceRadialIntegrand_yx_eq_neg_xy
-    (e v m p probeEnergy broadening disorderStrength hbar pMax : ℝ) :
-    finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceRadialIntegrand
-        1 0 e v m p probeEnergy broadening disorderStrength hbar pMax =
-      -finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceRadialIntegrand
-        0 1 e v m p probeEnergy broadening disorderStrength hbar pMax := by
-  rw [finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceRadialIntegrand_eq_radialCoefficient,
-    finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceRadialIntegrand_eq_radialCoefficient,
-    finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yx_eq_neg_xy]
-  ring
-
-/-- The two finite-`η` diagonal radial Středa responses are equal. -/
-theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceRadialIntegrand_yy_eq_xx
-    (e v m p probeEnergy broadening disorderStrength hbar pMax : ℝ) :
-    finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceRadialIntegrand
-        1 1 e v m p probeEnergy broadening disorderStrength hbar pMax =
-      finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceRadialIntegrand
-        0 0 e v m p probeEnergy broadening disorderStrength hbar pMax := by
-  rw [finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceRadialIntegrand_eq_radialCoefficient,
-    finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceRadialIntegrand_eq_radialCoefficient,
-    finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yy_eq_xx]
 
 /-- After radial integration, the finite-`η` ordered `yx` Středa response is the negative of `xy`. -/
 theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral_yx_eq_neg_xy
@@ -418,8 +395,15 @@ theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumInte
           0 1 e v m p probeEnergy broadening disorderStrength hbar pMax := by
         apply intervalIntegral.integral_congr
         intro p _
-        exact finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceRadialIntegrand_yx_eq_neg_xy
-          e v m p probeEnergy broadening disorderStrength hbar pMax
+        change
+          finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceRadialIntegrand
+              1 0 e v m p probeEnergy broadening disorderStrength hbar pMax =
+            -finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceRadialIntegrand
+              0 1 e v m p probeEnergy broadening disorderStrength hbar pMax
+        rw [finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceRadialIntegrand_eq_radialCoefficient,
+          finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceRadialIntegrand_eq_radialCoefficient,
+          finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yx_eq_neg_xy]
+        ring
     _ = -∫ p in (0 : ℝ)..pMax,
         finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceRadialIntegrand
           0 1 e v m p probeEnergy broadening disorderStrength hbar pMax := by
@@ -435,8 +419,14 @@ theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumInte
   unfold finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral
   apply intervalIntegral.integral_congr
   intro p _
-  exact finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceRadialIntegrand_yy_eq_xx
-    e v m p probeEnergy broadening disorderStrength hbar pMax
+  change
+    finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceRadialIntegrand
+        1 1 e v m p probeEnergy broadening disorderStrength hbar pMax =
+      finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceRadialIntegrand
+        0 0 e v m p probeEnergy broadening disorderStrength hbar pMax
+  rw [finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceRadialIntegrand_eq_radialCoefficient,
+    finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceRadialIntegrand_eq_radialCoefficient,
+    finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yy_eq_xx]
 
 end
 
