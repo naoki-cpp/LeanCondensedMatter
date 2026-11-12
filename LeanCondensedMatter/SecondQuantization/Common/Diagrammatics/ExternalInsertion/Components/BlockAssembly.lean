@@ -2602,10 +2602,10 @@ noncomputable def ExternalInsertionBlockLayout.fixedPartitionOwnerEquiv
   right_inv owner := by
     rfl
 
+open Classical in
 /-- An interaction-owner assignment is uniquely specified by its
 complete family of fiber cardinalities and an order-preserving slot
 shuffle. All zero-size blocks remain in the domain. -/
-open Classical in
 noncomputable def ownerFiberSizesEquiv
     {ι : Type*} [Fintype ι] :
     (Fin N → ι) ≃
