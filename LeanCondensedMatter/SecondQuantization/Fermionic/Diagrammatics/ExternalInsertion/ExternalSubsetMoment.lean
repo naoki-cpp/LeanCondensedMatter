@@ -658,9 +658,9 @@ theorem vacuumFreeExternalInsertionDysonCoefficient_eq_sum_evenPartitionFibers
     have hnot : ¬ ∀ P ∈ π.parts, Even P.card := by
       intro h
       exact heven (fun P => h P.1 P.2)
-    simp only [hnot, ↓reduceIte]
-    exact fixedExternalPartitionDysonFiber_eq_zero_of_oddBlock
-      π B hBodd ε β g labels times
+    simp [hnot] <;>
+      exact fixedExternalPartitionDysonFiber_eq_zero_of_oddBlock
+        π B hBodd ε β g labels times
 
 open Classical in
 /-- At each fixed perturbation order, the *integrated fermionic Dyson
