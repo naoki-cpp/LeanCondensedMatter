@@ -85,7 +85,7 @@ theorem grandCanonicalGibbsDysonCoeff_quarticInteractionOn_eq_sum_pairingEvaluat
   have hwick := grandCanonicalGibbsExpectation_eq_sum_pairing_concrete ε β μ hpos
     (2 * n) (quarticFreeThermalFieldFamily
       (fun i => (q i : QuarticVertexLabel Mode)))
-  simpa only [Pairing.evaluation] using congrArg
+  simpa only [Pairing.evaluation, grandCanonicalGibbsExpectation] using congrArg
     (fun z => Common.quarticDysonSequenceCoeff ε g
       (fun i => (q i : QuarticVertexLabel Mode)) t * z) hwick
 
