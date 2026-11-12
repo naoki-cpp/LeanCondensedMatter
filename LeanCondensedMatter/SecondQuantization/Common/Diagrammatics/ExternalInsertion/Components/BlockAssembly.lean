@@ -801,6 +801,41 @@ theorem ExternalInsertionBlockLayout.assembleDiagram_restrictComponent_vertexLab
   rw [hidx] at hlabel
   exact hlabel
 
+/-- The actual physical connected-component restriction and the
+independently supplied block have *heterogeneously equal vertex-label
+families*. Their indexing sets are equal because the assembled graph has
+precisely the prescribed interaction component, not merely the same
+cardinality. This is the dependent-type form needed before standardizing
+the local interaction slots. -/
+theorem ExternalInsertionBlockLayout.assembleDiagram_restrictComponent_vertexLabel_heq
+    {ExternalLabel InternalLabel : Type*}
+    (layout : ExternalInsertionBlockLayout E N) (S : Finset (Fin N))
+    (F : ∀ B : layout.partition.parts,
+      ExternalInsertionDiagram ExternalLabel InternalLabel
+        ((B : Finset (Fin (2 * E))).card / 2) N (layout.interactionBlock S B))
+    (hconnected : ∀ B, (F B).vertexGraph.Preconnected)
+    (e : Fin (2 * E)) :
+    HEq (F (layout.sourceEquiv e).1).vertexLabel
+      ((layout.assembleDiagram S F).restrictComponent
+        ⟨(layout.assembleDiagram S F).vertexGraph.componentBlock (Sum.inl e),
+          (layout.assembleDiagram S F).vertexGraph.componentBlock_mem_componentPartition
+            (Sum.inl e)⟩).vertexLabel := by
+  classical
+  let B := (layout.sourceEquiv e).1
+  let d := layout.assembleDiagram S F
+  let C : d.vertexGraph.componentPartition.parts :=
+    ⟨d.vertexGraph.componentBlock (Sum.inl e),
+      d.vertexGraph.componentBlock_mem_componentPartition (Sum.inl e)⟩
+  change HEq (F B).vertexLabel (d.restrictComponent C).vertexLabel
+  have hsector : interactionSector
+      (C : Finset (ExternalInsertionVertex E S)) = layout.interactionBlock S B :=
+    layout.assembleDiagram_componentInteractionSector_external S F hconnected e
+  cases hsector
+  apply heq_of_eq
+  funext v
+  exact (layout.assembleDiagram_restrictComponent_vertexLabel_external
+    S F hconnected e v).symm
+
 /-- Connected local blocks also ensure that no internal-only vacuum
 component survives the assembly. Each prescribed partition part is
 nonempty and therefore supplies an external vertex reachable from all
