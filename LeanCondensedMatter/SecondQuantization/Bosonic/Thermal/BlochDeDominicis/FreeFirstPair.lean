@@ -51,7 +51,7 @@ theorem grandCanonicalGibbsExpectation_cons_eq_kmsRatio_mul_operatorPeelSum
   set R : ℂ := grandCanonicalGibbsExpectation ε β μ ((orderedProduct l).comp C.operator)
   have hRmem : (orderedProduct l).comp C.operator ∈ grandCanonicalGibbsDomain ε β μ := by
     rw [← orderedProduct_append_singleton]
-    exact grandCanonicalGibbsSummable_orderedProduct ε β μ hpos (l ++ [C])
+    exact orderedProduct_mem_grandCanonicalGibbsDomain ε β μ hpos (l ++ [C])
   have hPmem : C.operatorPeelSum l ∈ grandCanonicalGibbsDomain ε β μ :=
     operatorPeelSum_mem_grandCanonicalGibbsDomain ε β μ hpos C l
   have hpeel : E = P + R := by
