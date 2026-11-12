@@ -57,7 +57,7 @@ theorem excitationHamiltonian_eq_secondQuantization (J : ℝ) (twiceSpin : ℕ) 
   rw [secondQuantization_eq_sum_of_basis (EuclideanSpace.basisFun (ZMod N) ℂ)]
   simp_rw [EuclideanSpace.basisFun_apply, ZMod.cyclicLaplacian_single,
     map_smul, map_add, map_sub, createVector_single, annihilateVector_single,
-    LinearMap.add_comp, LinearMap.sub_comp, LinearMap.smul_comp]
+    LinearMap.smul_comp, LinearMap.add_comp, LinearMap.sub_comp]
   push_cast
   simp only [← numberOperator]
   simp only [excitationHamiltonian, excitationBond, smul_sub, smul_add,
