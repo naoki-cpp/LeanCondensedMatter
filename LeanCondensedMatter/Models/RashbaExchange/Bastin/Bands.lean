@@ -155,6 +155,44 @@ theorem regularizedBastinTraceIntegrand_eq_band_sum
   exact projectorBastinTraceIntegrandFor_eq_band_sum
     params μ ν px py probeEnergy broadening hE
 
+/-- For a diagonal source/target band, the Bastin pair is symmetric in
+its two current directions at every energy and broadening. This is a
+finite-dimensional trace identity, not a clean-limit argument. -/
+theorem bastinBandPairContribution_diagonal_swap
+    (params : Parameters) (μ ν : Fin 2) (band : Band)
+    (px py probeEnergy broadening : ℝ) :
+    bastinBandPairContribution params μ ν band band
+        px py probeEnergy broadening =
+      bastinBandPairContribution params ν μ band band
+        px py probeEnergy broadening := by
+  unfold bastinBandPairContribution
+  dsimp
+  rw [currentBandBlockTrace_swap params μ ν band band px py]
+
+/-- Diagonal Bastin band pairs cancel identically in the current-antisymmetric
+Hall kernel, even at finite broadening. No energy-integrability assumption is used. -/
+theorem antisymmetricBastinBandPairSum_eq_interband
+    (params : Parameters) (μ ν : Fin 2)
+    (px py probeEnergy broadening : ℝ) :
+    (∑ source : Band, ∑ target : Band,
+        bastinBandPairContribution params μ ν source target
+          px py probeEnergy broadening) -
+      (∑ source : Band, ∑ target : Band,
+        bastinBandPairContribution params ν μ source target
+          px py probeEnergy broadening) =
+    (∑ band : Band,
+        bastinBandPairContribution params μ ν band (oppositeBand band)
+          px py probeEnergy broadening) -
+      (∑ band : Band,
+        bastinBandPairContribution params ν μ band (oppositeBand band)
+          px py probeEnergy broadening) := by
+  simp only [sum_band, oppositeBand_lower, oppositeBand_upper]
+  rw [bastinBandPairContribution_diagonal_swap params μ ν .lower
+      px py probeEnergy broadening,
+    bastinBandPairContribution_diagonal_swap params μ ν .upper
+      px py probeEnergy broadening]
+  ring
+
 /-- The canonical regularized x-y Bastin trace has its original exact
 diagonal plus interband decomposition at nonzero broadening. -/
 theorem regularizedBastinTraceIntegrand_eq_diagonal_add_interband
