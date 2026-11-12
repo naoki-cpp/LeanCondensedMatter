@@ -214,6 +214,121 @@ theorem ExternalInsertionBlockLayout.legEquiv_interactionLeg
   simp [ExternalInsertionBlockLayout.legEquiv, externalInsertionInteractionLeg,
     sumSigmaEquiv]
 
+/-- An independently assigned local external leg is embedded at its
+original ambient source slot, in increasing source-partition order. -/
+theorem ExternalInsertionBlockLayout.legEquiv_symm_externalLeg
+    (layout : ExternalInsertionBlockLayout E N) (S : Finset (Fin N))
+    (B : layout.partition.parts)
+    (i : Fin (2 * ((B : Finset (Fin (2 * E))).card / 2))) :
+    (layout.legEquiv S).symm
+      ⟨B, externalInsertionExternalLeg
+        ((B : Finset (Fin (2 * E))).card / 2)
+        (layout.interactionBlock S B) i⟩ =
+      externalInsertionExternalLeg E S (layout.sourceEquiv.symm ⟨B, i⟩) := by
+  apply (layout.legEquiv S).injective
+  rw [Equiv.apply_symm_apply, layout.legEquiv_externalLeg,
+    Equiv.apply_symm_apply]
+
+/-- An independently assigned local quartic leg is embedded at the
+same physical interaction vertex and with the same four-leg index. -/
+theorem ExternalInsertionBlockLayout.legEquiv_symm_interactionLeg
+    (layout : ExternalInsertionBlockLayout E N) (S : Finset (Fin N))
+    (B : layout.partition.parts)
+    (v : ↥(layout.interactionBlock S B)) (i : Fin 4) :
+    (layout.legEquiv S).symm
+      ⟨B, externalInsertionInteractionLeg
+        (E := ((B : Finset (Fin (2 * E))).card / 2)) v i⟩ =
+      externalInsertionInteractionLeg (E := E)
+        ((layout.interactionEquiv S).symm ⟨B, v⟩) i := by
+  apply (layout.legEquiv S).injective
+  rw [Equiv.apply_symm_apply, layout.legEquiv_interactionLeg,
+    Equiv.apply_symm_apply]
+
+/-- Every independent local Wick block embeds its **entire** flattened
+fermion-leg sequence in strictly increasing ambient order. This is
+stronger than preserving source insertion order alone: it preserves
+the relative order of all quartic legs, including blocks without
+interaction vertices. -/
+theorem ExternalInsertionBlockLayout.blockLegEmbedding_strictMono
+    (layout : ExternalInsertionBlockLayout E N) (S : Finset (Fin N))
+    (B : layout.partition.parts) :
+    StrictMono (fun p : Fin (2 * (2 * (layout.interactionBlock S B).card +
+        ((B : Finset (Fin (2 * E))).card / 2)) =>
+      (layout.legEquiv S).symm ⟨B, p⟩) := by
+  classical
+  let T := layout.interactionBlock S B
+  let localEquiv := externalInsertionLegEquiv (B.1.card / 2) T
+  intro a b hab
+  obtain ⟨la, rfl⟩ := localEquiv.symm.surjective a
+  obtain ⟨lb, rfl⟩ := localEquiv.symm.surjective b
+  rcases la with e | ⟨v, l⟩ <;> rcases lb with f | ⟨w, k⟩
+  · change
+      (externalInsertionExternalLeg (B.1.card / 2) T e).val <
+        (externalInsertionExternalLeg (B.1.card / 2) T f).val at hab
+    rw [layout.legEquiv_symm_externalLeg S B e,
+      layout.legEquiv_symm_externalLeg S B f]
+    change (layout.sourceEquiv.symm ⟨B, e⟩).val <
+      (layout.sourceEquiv.symm ⟨B, f⟩).val
+    rw [layout.sourceEquiv_symm_apply B e,
+      layout.sourceEquiv_symm_apply B f]
+    have hef : e < f := by simpa using hab
+    exact (B.1.orderIsoOfFin
+      (Nat.two_mul_div_two_of_even (layout.evenBlocks B)).symm).strictMono hef
+  · rw [layout.legEquiv_symm_externalLeg S B e,
+      layout.legEquiv_symm_interactionLeg S B w k]
+    change
+      (externalInsertionExternalLeg E S (layout.sourceEquiv.symm ⟨B, e⟩)).val <
+      (externalInsertionInteractionLeg (E := E)
+        ((layout.interactionEquiv S).symm ⟨B, w⟩) k).val
+    simp only [externalInsertionExternalLeg_val, externalInsertionInteractionLeg_val]
+    have hbound := (layout.sourceEquiv.symm ⟨B, e⟩).isLt
+    omega
+  · change
+      (externalInsertionInteractionLeg (E := B.1.card / 2) v l).val <
+        (externalInsertionExternalLeg (B.1.card / 2) T f).val at hab
+    simp at hab
+  · rw [layout.legEquiv_symm_interactionLeg S B v l,
+      layout.legEquiv_symm_interactionLeg S B w k]
+    change
+      (externalInsertionInteractionLeg (E := E)
+        ((layout.interactionEquiv S).symm ⟨B, v⟩) l).val <
+      (externalInsertionInteractionLeg (E := E)
+        ((layout.interactionEquiv S).symm ⟨B, w⟩) k).val
+    change
+      (externalInsertionInteractionLeg (E := B.1.card / 2) v l).val <
+      (externalInsertionInteractionLeg (E := B.1.card / 2) w k).val at hab
+    simp only [externalInsertionInteractionLeg_val] at hab ⊢
+    have hv (u : ↥T) :
+        ((layout.interactionEquiv S).symm ⟨B, u⟩ : ↥S) =
+          ⟨u.1, (Finset.mem_filter.mp u.2).1⟩ := by
+      apply Subtype.ext
+      rfl
+    rw [hv v, hv w]
+    by_cases hvw : v = w
+    · subst w
+      omega
+    · have hrank_ne :
+          ((T.orderIsoOfFin rfl).symm v).val ≠
+            ((T.orderIsoOfFin rfl).symm w).val :=
+        fun h => hvw ((T.orderIsoOfFin rfl).symm.injective (Fin.ext h))
+      have hrank :
+          ((T.orderIsoOfFin rfl).symm v).val <
+            ((T.orderIsoOfFin rfl).symm w).val := by
+        have hl := l.isLt
+        have hk := k.isLt
+        omega
+      have hamb :
+          ((S.orderIsoOfFin rfl).symm
+            (⟨v.1, (Finset.mem_filter.mp v.2).1⟩ : ↥S)).val <
+          ((S.orderIsoOfFin rfl).symm
+            (⟨w.1, (Finset.mem_filter.mp w.2).1⟩ : ↥S)).val := by
+        apply (S.orderIsoOfFin rfl).symm.strictMono
+        change v.1 < w.1
+        simpa using (T.orderIsoOfFin rfl).strictMono hrank
+      have hl := l.isLt
+      have hk := k.isLt
+      omega
+
 /-- A leg and its incident vertex have exactly the same independent
 external-block owner. More strongly, the vertex inside that block is
 preserved by the two canonical equivalences. -/
