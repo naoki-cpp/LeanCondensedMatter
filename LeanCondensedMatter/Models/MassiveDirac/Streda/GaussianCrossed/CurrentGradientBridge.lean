@@ -84,9 +84,8 @@ theorem finiteCutoffContinuumBornDysonRASpectralGap_mul_inv_product
       (finiteCutoffContinuumBornDysonDenominator_ne_zero
         .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax
         hbroadening hdisorder hpMax)
-  simpa only [finiteCutoffContinuumBornDysonRASpectralGap,
-    finiteCutoffContinuumBornDysonDenominator, sR, sA, q, eR, eA, mR, mA,
-    zero_pow, add_zero, mul_one] using
+  simpa [finiteCutoffContinuumBornDysonRASpectralGap,
+    finiteCutoffContinuumBornDysonDenominator, sR, sA, q, eR, eA, mR, mA] using
     (massiveDiracUnitResolvent_inverse_sub sR sA q hR hA).symm
 
 /-- Exact source-x scalar current-kernel bridge: after multiplying by
@@ -122,7 +121,7 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedScalarKernel_gap_eq
     v m probeEnergy broadening disorderStrength hbar pMax p
     hbroadening hdisorder hpMax
   simp only [finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentScalarKernel,
-    if_pos rfl, finiteCutoffContinuumBornDysonRadialPauliData,
+    finiteCutoffContinuumBornDysonRadialPauliData,
     finiteCutoffContinuumBornDysonScalarCoefficient,
     finiteCutoffContinuumBornDysonPauliCoefficient,
     InternalSpace.pauliAxisComponent]
@@ -160,7 +159,7 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedZKernel_gap_eq
     v m probeEnergy broadening disorderStrength hbar pMax p
     hbroadening hdisorder hpMax
   simp only [finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliKernel,
-    if_pos rfl, finiteCutoffContinuumBornDysonRadialPauliData,
+    finiteCutoffContinuumBornDysonRadialPauliData,
     finiteCutoffContinuumBornDysonScalarCoefficient,
     finiteCutoffContinuumBornDysonPauliCoefficient,
     InternalSpace.pauliAxisComponent]
