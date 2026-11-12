@@ -84,10 +84,9 @@ private theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMome
         finiteCutoffContinuumBornEffectiveMass
           side v m probeEnergy broadening disorderStrength hbar pMax ^ 2)
   have hpref : pref ≠ 0 := by
-    dsimp [pref, continuumBornDisorderMeasurePrefactor, momentumMeasurePrefactor]
+    dsimp [pref, continuumBornDisorderMeasurePrefactor]
     exact_mod_cast mul_ne_zero (ne_of_gt hdisorder)
-      (one_div_ne_zero (pow_ne_zero 2
-        (mul_ne_zero (mul_ne_zero (by norm_num) Real.pi_ne_zero) hhbar)))
+      (momentumMeasurePrefactor_pos hbar hhbar).ne'
   have hpointwise : ∀ p : ℝ,
       finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceRadialIntegrand
           0 0 e v m p probeEnergy broadening disorderStrength hbar pMax =

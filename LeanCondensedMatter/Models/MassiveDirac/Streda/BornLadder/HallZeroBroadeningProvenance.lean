@@ -77,10 +77,8 @@ private theorem tendsto_orderedXYProvenance_rungYSolvedX_disorder_zero
           (probeEnergy ^ 2 + 3 * m ^ 2) : ℝ) : ℂ))) := by
   let q : ℂ := (((-e : ℝ) : ℂ)) * (((v : ℝ) : ℂ))
   let measure : ℂ := ((momentumMeasurePrefactor hbar : ℝ) : ℂ)
-  have hmeasureReal : momentumMeasurePrefactor hbar ≠ 0 := by
-    unfold momentumMeasurePrefactor
-    exact one_div_ne_zero (pow_ne_zero 2
-      (mul_ne_zero (mul_ne_zero (by norm_num) Real.pi_ne_zero) hhbar))
+  have hmeasureReal : momentumMeasurePrefactor hbar ≠ 0 :=
+    (momentumMeasurePrefactor_pos hbar hhbar).ne'
   have hmeasure : measure ≠ 0 := by
     dsimp [measure]
     exact_mod_cast hmeasureReal
@@ -158,10 +156,8 @@ private theorem tendsto_orderedXYProvenance_rungXSolvedY_disorder_zero
           (probeEnergy ^ 2 + 3 * m ^ 2) ^ 2 : ℝ) : ℂ))) := by
   let q : ℂ := (((-e : ℝ) : ℂ)) * (((v : ℝ) : ℂ))
   let measure : ℂ := ((momentumMeasurePrefactor hbar : ℝ) : ℂ)
-  have hmeasureReal : momentumMeasurePrefactor hbar ≠ 0 := by
-    unfold momentumMeasurePrefactor
-    exact one_div_ne_zero (pow_ne_zero 2
-      (mul_ne_zero (mul_ne_zero (by norm_num) Real.pi_ne_zero) hhbar))
+  have hmeasureReal : momentumMeasurePrefactor hbar ≠ 0 :=
+    (momentumMeasurePrefactor_pos hbar hhbar).ne'
   have hmeasure : measure ≠ 0 := by
     dsimp [measure]
     exact_mod_cast hmeasureReal

@@ -1,6 +1,7 @@
 module
 
 public import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
+import Mathlib.Tactic.NormNum
 
 public section
 
@@ -33,6 +34,21 @@ namespace Transport
 `2π /(2πℏ)²`. The radial Jacobian `p` remains part of the radial integrand. -/
 @[expose] noncomputable def fullAngleMomentumMeasurePrefactor (hbar : ℝ) : ℝ :=
   2 * Real.pi * momentumMeasurePrefactor hbar
+
+/-- The two-dimensional physical-momentum normalization is positive when ℏ is nonzero. -/
+theorem momentumMeasurePrefactor_pos (hbar : ℝ) (hhbar : hbar ≠ 0) :
+    0 < momentumMeasurePrefactor hbar := by
+  unfold momentumMeasurePrefactor
+  exact one_div_pos.mpr
+    (sq_pos_of_ne_zero
+      (mul_ne_zero (mul_ne_zero (by norm_num) Real.pi_ne_zero) hhbar))
+
+/-- Full-angle integration preserves positivity of the physical-momentum measure. -/
+theorem fullAngleMomentumMeasurePrefactor_pos (hbar : ℝ) (hhbar : hbar ≠ 0) :
+    0 < fullAngleMomentumMeasurePrefactor hbar := by
+  unfold fullAngleMomentumMeasurePrefactor
+  exact mul_pos (mul_pos (by norm_num) Real.pi_pos)
+    (momentumMeasurePrefactor_pos hbar hhbar)
 
 end Transport
 end QuantumTheory
