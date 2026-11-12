@@ -165,7 +165,9 @@ expanding about the polarized state and retaining terms through degree two.
 defines the zero-field ring model on unrestricted algebraic bosonic Fock space.
 With each bond counted once, its excitation bond is
 J(2s)(n_i + n_j - a_i† a_j - a_j† a_i), and its reference energy is -2JN s².
-`transverseReplacedBond_eq` and `sum_transverseReplacedBond` separate the quadratic
+[TransverseReplacement](../../LeanCondensedMatter/Models/Heisenberg/QuadraticMagnon/TransverseReplacement.lean)
+owns the comparison with the HP representation; the quadratic operators depend directly on
+bosonic algebra. Its `transverseReplacedBond_eq` and `sum_transverseReplacedBond` separate the quadratic
 terms from the longitudinal remainder -2J sum n_i n_(i+1), after replacing the
 transverse square-root factors by sqrt(2s). These identities do not estimate the
 error of that replacement. The vacuum eigenvalue equals the reference energy.
