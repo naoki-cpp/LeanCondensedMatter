@@ -1,5 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.NumberOperator
 import Mathlib.Analysis.InnerProductSpace.PiL2
+import Mathlib.Analysis.InnerProductSpace.LinearMap
 
 set_option linter.style.header false
 
@@ -21,8 +22,10 @@ variable {Mode : Type*} [Fintype Mode]
 local instance instDecidableEqFiniteModes : DecidableEq Mode := Classical.decEq Mode
 
 /-- Creation in a one-particle vector, as a finite linear combination of site creations. -/
-def createVector (v : EuclideanSpace ℂ Mode) : Module.End ℂ (FockSpace Mode) :=
-  ∑ i, v i • create i
+def createVector : EuclideanSpace ℂ Mode →ₗ[ℂ] Module.End ℂ (FockSpace Mode) where
+  toFun v := ∑ i, v i • create i
+  map_add' v w := by simp [add_smul, Finset.sum_add_distrib]
+  map_smul' c v := by simp [Finset.smul_sum, smul_smul]
 
 /-- Annihilation in a one-particle vector, conjugate-linear in that vector. -/
 def annihilateVector (v : EuclideanSpace ℂ Mode) : Module.End ℂ (FockSpace Mode) :=
@@ -49,9 +52,63 @@ theorem comm_annihilateVector_annihilateVector (v w : EuclideanSpace ℂ Mode) :
   simp
 
 /-- Finite-mode, number-conserving second quantization of a one-particle endomorphism. -/
-def secondQuantization (T : Module.End ℂ (EuclideanSpace ℂ Mode)) :
-    Module.End ℂ (FockSpace Mode) :=
-  ∑ i, ∑ j, (T (EuclideanSpace.single j 1) i) • (create i).comp (annihilate j)
+def secondQuantization : Module.End ℂ (EuclideanSpace ℂ Mode) →ₗ[ℂ]
+    Module.End ℂ (FockSpace Mode) where
+  toFun T := ∑ i, ∑ j, (T (EuclideanSpace.single j 1) i) • (create i).comp (annihilate j)
+  map_add' T S := by simp [add_smul, Finset.sum_add_distrib]
+  map_smul' c T := by simp [Finset.smul_sum, smul_smul]
+
+/-- Creation in a coordinate basis vector is the corresponding site creation. -/
+@[simp]
+theorem createVector_single (i : Mode) :
+    createVector (EuclideanSpace.single i 1) = create i := by
+  simp [createVector, PiLp.single_apply, ite_smul]
+
+/-- Annihilation in a coordinate basis vector is the corresponding site annihilation. -/
+@[simp]
+theorem annihilateVector_single (i : Mode) :
+    annihilateVector (EuclideanSpace.single i 1) = annihilate i := by
+  simp [annihilateVector, PiLp.single_apply, ite_smul]
+
+/-- A rank-one one-particle operator lifts to its normal-ordered field product. -/
+@[simp]
+theorem secondQuantization_rankOne (v w : EuclideanSpace ℂ Mode) :
+    secondQuantization (InnerProductSpace.rankOne ℂ v w).toLinearMap =
+      (createVector v).comp (annihilateVector w) := by
+  have hc (i j : Mode) :
+      (InnerProductSpace.rankOne ℂ v w).toLinearMap (EuclideanSpace.single j 1) i =
+        v i * star (w j) := by
+    change inner ℂ w (EuclideanSpace.single j 1) * v i = _
+    simp [EuclideanSpace.inner_single_right, mul_comm]
+  apply LinearMap.ext
+  intro ψ
+  apply Finsupp.ext
+  intro n
+  suffices h :
+      (∑ i, ∑ j, (v i * star (w j)) * ((create i) ((annihilate j) ψ)) n) =
+        ∑ i, ∑ j, v i * (star (w j) * ((create i) ((annihilate j) ψ)) n) by
+    simpa [secondQuantization, createVector, annihilateVector, hc,
+      LinearMap.sum_apply, LinearMap.comp_apply, map_sum, map_smul,
+      Finset.sum_apply, Finset.mul_sum] using h
+  apply Finset.sum_congr rfl
+  intro i _
+  apply Finset.sum_congr rfl
+  intro j _
+  ring
+
+/-- Every finite orthonormal basis gives the same number-conserving quadratic operator. -/
+theorem secondQuantization_eq_sum_of_basis {ι : Type*} [Fintype ι]
+    (b : OrthonormalBasis ι ℂ (EuclideanSpace ℂ Mode))
+    (T : Module.End ℂ (EuclideanSpace ℂ Mode)) :
+    secondQuantization T =
+      ∑ q, (createVector (T (b q))).comp (annihilateVector (b q)) := by
+  have hT : T = ∑ q, (InnerProductSpace.rankOne ℂ (T (b q)) (b q)).toLinearMap := by
+    apply LinearMap.ext
+    intro v
+    have h := congrArg T (b.sum_repr' v)
+    simpa [map_sum, map_smul, LinearMap.sum_apply] using h.symm
+  conv_lhs => rw [hT, map_sum]
+  simp_rw [secondQuantization_rankOne]
 
 /-- A complete orthonormal eigenbasis diagonalizes the algebraic quadratic operator. -/
 theorem secondQuantization_eq_sum_of_eigenbasis {ι : Type*} [Fintype ι]
@@ -59,45 +116,8 @@ theorem secondQuantization_eq_sum_of_eigenbasis {ι : Type*} [Fintype ι]
     (T : Module.End ℂ (EuclideanSpace ℂ Mode)) (ε : ι → ℂ)
     (hT : ∀ q, T (b q) = ε q • b q) :
     secondQuantization T = ∑ q, ε q • (createVector (b q)).comp (annihilateVector (b q)) := by
-  have hc (i j : Mode) :
-      T (EuclideanSpace.single j 1) i = ∑ q, ε q * b q i * star (b q j) := by
-    let ev : EuclideanSpace ℂ Mode →ₗ[ℂ] ℂ :=
-      (LinearMap.proj i).comp (WithLp.linearEquiv 2 ℂ (Mode → ℂ)).toLinearMap
-    have h := congrArg (fun v => ev (T v)) (b.sum_repr' (EuclideanSpace.single j 1))
-    simp only [map_sum, map_smul, hT, EuclideanSpace.inner_single_right,
-      one_mul] at h
-    change (∑ q, star (b q j) * (ε q * b q i)) = T (EuclideanSpace.single j 1) i at h
-    rw [← h]
-    apply Finset.sum_congr rfl
-    intro q _
-    ring
-  unfold secondQuantization
-  simp_rw [hc, Finset.sum_smul]
-  calc
-    _ = ∑ i, ∑ q, ∑ j, (ε q * b q i * star (b q j)) •
-        (create i).comp (annihilate j) := by
-      apply Finset.sum_congr rfl
-      intro i _
-      exact Finset.sum_comm
-    _ = ∑ q, ∑ i, ∑ j, (ε q * b q i * star (b q j)) •
-        (create i).comp (annihilate j) := Finset.sum_comm
-    _ = _ := by
-      apply Finset.sum_congr rfl
-      intro q _
-      apply LinearMap.ext
-      intro ψ
-      apply Finsupp.ext
-      intro n
-      suffices h :
-          (∑ i, ∑ j, (ε q * b q i * star (b q j)) * ((create i) ((annihilate j) ψ)) n) =
-            ∑ i, ∑ j, ε q * (b q i * (star (b q j) * ((create i) ((annihilate j) ψ)) n)) by
-        simpa [createVector, annihilateVector, LinearMap.sum_apply, map_sum,
-          Finset.sum_apply, map_smul, Finset.mul_sum] using h
-      apply Finset.sum_congr rfl
-      intro i _
-      apply Finset.sum_congr rfl
-      intro j _
-      ring
+  rw [secondQuantization_eq_sum_of_basis b]
+  simp_rw [hT, map_smul, LinearMap.smul_comp]
 
 end
 end SecondQuantization.Bosonic
