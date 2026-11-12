@@ -45,9 +45,8 @@ theorem operatorPeelSum_mem_grandCanonicalGibbsDomain
   refine Submodule.sum_mem (grandCanonicalGibbsDomain ε β μ) fun j _ => ?_
   exact (grandCanonicalGibbsDomain ε β μ).smul_mem
     (C₁.exchangeValue (l[(j : ℕ)]'j.isLt))
-    ((mem_grandCanonicalGibbsDomain_iff ε β μ _).2
-      (FreeThermalField.grandCanonicalGibbsSummable_orderedProduct ε β μ hpos
-        (l.eraseIdx j)))
+    (FreeThermalField.orderedProduct_mem_grandCanonicalGibbsDomain ε β μ hpos
+      (l.eraseIdx j))
 
 /-- Expectation of the bosonic CCR peel as a finite sum over the removed tail position. -/
 theorem grandCanonicalGibbsExpectation_operatorPeelSum_eq_sum
@@ -73,13 +72,11 @@ theorem grandCanonicalGibbsExpectation_operatorPeelSum_eq_sum
       grandCanonicalGibbsExpectation_sum_of_summable ε β μ
         (fun j : Fin l.length =>
           C₁.exchangeValue (l[(j : ℕ)]'j.isLt) • orderedProduct (l.eraseIdx j))
-        (fun j => by
-          apply (mem_grandCanonicalGibbsDomain_iff ε β μ _).1
-          exact (grandCanonicalGibbsDomain ε β μ).smul_mem
+        (fun j =>
+          (grandCanonicalGibbsDomain ε β μ).smul_mem
             (C₁.exchangeValue (l[(j : ℕ)]'j.isLt))
-            ((mem_grandCanonicalGibbsDomain_iff ε β μ _).2
-              (FreeThermalField.grandCanonicalGibbsSummable_orderedProduct ε β μ hpos
-                (l.eraseIdx j))))
+            (FreeThermalField.orderedProduct_mem_grandCanonicalGibbsDomain ε β μ hpos
+              (l.eraseIdx j)))
     _ = ∑ j : Fin l.length,
         C₁.exchangeValue (l[(j : ℕ)]'j.isLt) *
           grandCanonicalGibbsExpectation ε β μ (orderedProduct (l.eraseIdx j)) := by
