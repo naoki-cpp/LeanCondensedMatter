@@ -35,13 +35,17 @@ theorem comm_annihilateVector_createVector (v w : EuclideanSpace ℂ Mode) :
     ScalarExchange.zetaCommutator (1 : ℂ) (annihilateVector v) (createVector w) =
       inner ℂ v w • LinearMap.id := by
   classical
-  rw [annihilateVector, createVector, ScalarExchange.zetaCommutator_sum_sum]
+  change ScalarExchange.zetaCommutator (1 : ℂ)
+    (∑ i, star (v i) • annihilate i) (∑ j, w j • create j) = _
+  rw [ScalarExchange.zetaCommutator_sum_sum]
   simp_rw [ScalarExchange.zetaCommutator_smul_smul, comm_annihilate_create]
   simp [PiLp.inner_apply, RCLike.inner_apply, mul_comm, Finset.sum_smul]
 
 theorem comm_createVector_createVector (v w : EuclideanSpace ℂ Mode) :
     ScalarExchange.zetaCommutator (1 : ℂ) (createVector v) (createVector w) = 0 := by
-  rw [createVector, createVector, ScalarExchange.zetaCommutator_sum_sum]
+  change ScalarExchange.zetaCommutator (1 : ℂ)
+    (∑ i, v i • create i) (∑ j, w j • create j) = 0
+  rw [ScalarExchange.zetaCommutator_sum_sum]
   simp_rw [ScalarExchange.zetaCommutator_smul_smul, comm_create_create]
   simp
 
@@ -80,20 +84,25 @@ theorem secondQuantization_rankOne (v w : EuclideanSpace ℂ Mode) :
         v i * star (w j) := by
     change inner ℂ w (EuclideanSpace.single j 1) * v i = _
     simp [EuclideanSpace.inner_single_right, mul_comm]
+  change (∑ i, ∑ j,
+    ((InnerProductSpace.rankOne ℂ v w).toLinearMap (EuclideanSpace.single j 1) i) •
+      (create i).comp (annihilate j)) =
+    (∑ i, v i • create i).comp (∑ j, star (w j) • annihilate j)
+  simp_rw [hc]
   apply LinearMap.ext
   intro ψ
   apply Finsupp.ext
   intro n
   suffices h :
       (∑ i, ∑ j, (v i * star (w j)) * ((create i) ((annihilate j) ψ)) n) =
-        ∑ i, ∑ j, v i * (star (w j) * ((create i) ((annihilate j) ψ)) n) by
-    simpa [secondQuantization, createVector, annihilateVector, hc,
-      LinearMap.sum_apply, LinearMap.comp_apply, map_sum, map_smul,
+        ∑ j, ∑ i, star (w j) * (v i * ((create i) ((annihilate j) ψ)) n) by
+    simpa [LinearMap.sum_apply, LinearMap.comp_apply, map_sum, map_smul,
       Finset.sum_apply, Finset.mul_sum] using h
-  apply Finset.sum_congr rfl
-  intro i _
+  rw [Finset.sum_comm]
   apply Finset.sum_congr rfl
   intro j _
+  apply Finset.sum_congr rfl
+  intro i _
   ring
 
 /-- Every finite orthonormal basis gives the same number-conserving quadratic operator. -/
