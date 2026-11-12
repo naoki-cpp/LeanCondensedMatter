@@ -395,6 +395,11 @@ theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumInte
           0 1 e v m p probeEnergy broadening disorderStrength hbar pMax := by
         apply intervalIntegral.integral_congr
         intro p _
+        change
+          finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceRadialIntegrand
+              1 0 e v m p probeEnergy broadening disorderStrength hbar pMax =
+            -finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceRadialIntegrand
+              0 1 e v m p probeEnergy broadening disorderStrength hbar pMax
         rw [finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceRadialIntegrand_eq_radialCoefficient,
           finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceRadialIntegrand_eq_radialCoefficient,
           finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yx_eq_neg_xy]
@@ -414,6 +419,11 @@ theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumInte
   unfold finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral
   apply intervalIntegral.integral_congr
   intro p _
+  change
+    finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceRadialIntegrand
+        1 1 e v m p probeEnergy broadening disorderStrength hbar pMax =
+      finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceRadialIntegrand
+        0 0 e v m p probeEnergy broadening disorderStrength hbar pMax
   rw [finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceRadialIntegrand_eq_radialCoefficient,
     finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceRadialIntegrand_eq_radialCoefficient,
     finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yy_eq_xx]
