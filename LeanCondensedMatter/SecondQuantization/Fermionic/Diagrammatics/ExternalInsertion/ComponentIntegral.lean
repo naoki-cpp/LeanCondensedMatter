@@ -415,5 +415,80 @@ theorem ExternalInsertionBlockLayout.assembleConnectedBlocks_componentOrderedVer
       layout.assembleDiagram_restrictComponent_vertexWeight_external
         S F hconnected g e
 
+
+omit [LinearOrder Mode] [Fintype Mode] in
+/-- The **physical** connected component obtained from independent connected
+Wick blocks has exactly the same crossing count as its supplied local
+pairing, even after canonical interaction-slot standardization.
+
+The result uses the actual physical component restriction, its already
+identified pairing, and the strict monotonicity of the **specific**
+physical-to-local coordinate map. In particular, no arbitrary pairing
+reindexing is assumed to preserve fermionic signs. -/
+theorem ExternalInsertionBlockLayout.assembleConnectedBlocks_componentOrderedCrossingCount_eq_local
+    {E n : ℕ} (layout : ExternalInsertionBlockLayout E n)
+    (F : ∀ B : layout.partition.parts,
+      ExternalInsertionDiagram (ExternalFieldLabel Mode) (QuarticVertexLabel Mode)
+        ((B : Finset (Fin (2 * E))).card / 2) n
+        (layout.interactionBlock (Finset.univ : Finset (Fin n)) B))
+    (hconnected : ∀ B, (F B).vertexGraph.Preconnected)
+    (e : Fin (2 * E)) :
+    let d : ExternalInsertionWickDiagram Mode E n :=
+      layout.assembleDiagram (Finset.univ : Finset (Fin n)) F
+    let C : d.vertexGraph.componentPartition.parts :=
+      ⟨d.vertexGraph.componentBlock (Sum.inl e),
+        d.vertexGraph.componentBlock_mem_componentPartition (Sum.inl e)⟩
+    (d.componentOrderedDiagram C).pairing.crossingCount =
+      (F (layout.sourceEquiv e).1).pairing.crossingCount := by
+  classical
+  let S : Finset (Fin n) := Finset.univ
+  let B := (layout.sourceEquiv e).1
+  let d : ExternalInsertionWickDiagram Mode E n := layout.assembleDiagram S F
+  let C : d.vertexGraph.componentPartition.parts :=
+    ⟨d.vertexGraph.componentBlock (Sum.inl e),
+      d.vertexGraph.componentBlock_mem_componentPartition (Sum.inl e)⟩
+  let T := interactionSector (C : Finset (ExternalInsertionVertex E S))
+  let c := (d.componentBlockLegEquiv C).symm.trans
+    (layout.physicalComponentLegEquiv S F hconnected e)
+  let leg := externalInsertionLegCongr (E := d.externalPairCount C) (standardSlotEquiv T)
+  let k := c.symm.trans leg
+  let q := k.symm
+  have hc : StrictMono c :=
+    layout.physicalComponentCanonicalLegEquiv_strictMono S F hconnected e
+  have hq : StrictMono q := by
+    intro a b hab
+    change c (leg.symm a) < c (leg.symm b)
+    apply hc
+    apply (externalInsertionLegCongr_standardize_lt_iff
+      (E := d.externalPairCount C) T (leg.symm a) (leg.symm b)).1
+    change leg (leg.symm a) < leg (leg.symm b)
+    simpa only [Equiv.apply_symm_apply] using hab
+  have hpair :
+      (d.componentOrderedDiagram C).pairing.transport k = (F B).pairing :=
+    layout.assembleConnectedBlocks_componentOrderedPairing_eq_local F hconnected e
+  have hpartner (p : Fin (2 * (2 * T.card + d.externalPairCount C))) :
+      (F B).pairing.partner (q (leg p)) =
+        q (leg ((d.restrictComponent C).pairing.partner p)) := by
+    rw [← hpair]
+    change k.symm ((d.componentOrderedDiagram C).pairing.partner
+      (k (k.symm (leg p)))) =
+      k.symm (leg ((d.restrictComponent C).pairing.partner p))
+    rw [Equiv.apply_symm_apply]
+    rw [d.componentOrderedDiagram_eq_slotCongr C]
+    simp only [ExternalInsertionDiagram.slotCongr_pairing, PairingOn.transport_partner]
+  have hpartnerCanonical (p : Fin (2 * (2 *
+      (Finset.univ : Finset (Fin T.card)).card + d.externalPairCount C))) :
+      (F B).pairing.partner (q p) =
+        q ((d.componentOrderedDiagram C).pairing.partner p) := by
+    rw [← hpair]
+    change k.symm ((d.componentOrderedDiagram C).pairing.partner
+      (k (k.symm p))) =
+      k.symm ((d.componentOrderedDiagram C).pairing.partner p)
+    rw [Equiv.apply_symm_apply]
+  change (d.componentOrderedDiagram C).pairing.crossingCount =
+    (F B).pairing.crossingCount
+  exact (d.componentOrderedDiagram C).pairing.crossingCount_eq_of_partnerEquiv_strictMono
+    (F B).pairing q hpartnerCanonical hq
+
 end Fermionic
 end SecondQuantization
