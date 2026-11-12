@@ -78,13 +78,14 @@ theorem grandCanonicalGibbsDysonCoeff_quarticInteractionOn_eq_sum_pairingEvaluat
     exact FreeThermalField.orderedProduct_mem_grandCanonicalGibbsDomain ε β μ hpos _
   rw [grandCanonicalGibbsExpectation_sum_of_summable ε β μ _ hsumm]
   refine Finset.sum_congr rfl fun q _ => ?_
-  rw [grandCanonicalGibbsExpectation_smul]
+  simp only [grandCanonicalGibbsExpectation, LinearMap.comp_smul,
+    Common.tsumTrace_smul, mul_div_assoc]
   rw [← quarticFreeThermalOrderedProduct_eq_quarticVertexSequenceOperator,
     quarticFreeThermalOrderedProduct]
   have hwick := grandCanonicalGibbsExpectation_eq_sum_pairing_concrete ε β μ hpos
     (2 * n) (quarticFreeThermalFieldFamily
       (fun i => (q i : QuarticVertexLabel Mode)))
-  simpa only [Pairing.evaluation] using congrArg
+  simpa only [Pairing.evaluation, grandCanonicalGibbsExpectation] using congrArg
     (fun z => Common.quarticDysonSequenceCoeff ε g
       (fun i => (q i : QuarticVertexLabel Mode)) t * z) hwick
 
