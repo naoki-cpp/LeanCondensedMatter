@@ -56,25 +56,6 @@ noncomputable def grandCanonicalGibbsExpectation (ε : Mode → ℝ) (β μ : �
     grandCanonicalAlgebraicPartition ε β μ
 
 omit [Fintype Mode] in
-/-- The normalized free Gibbs expectation is additive on its explicit summability domain. -/
-theorem grandCanonicalGibbsExpectation_add (ε : Mode → ℝ) (β μ : ℝ)
-    {A B : FockSpace Mode →ₗ[ℂ] FockSpace Mode}
-    (hA : A ∈ grandCanonicalGibbsDomain ε β μ)
-    (hB : B ∈ grandCanonicalGibbsDomain ε β μ) :
-    grandCanonicalGibbsExpectation ε β μ (A + B) =
-      grandCanonicalGibbsExpectation ε β μ A + grandCanonicalGibbsExpectation ε β μ B := by
-  unfold grandCanonicalGibbsExpectation
-  rw [LinearMap.comp_add, Common.tsumTrace_add hA hB, add_div]
-
-omit [Fintype Mode] in
-/-- The normalized free Gibbs expectation is homogeneous on algebraic-Fock endomorphisms. -/
-theorem grandCanonicalGibbsExpectation_smul (ε : Mode → ℝ) (β μ : ℝ) (c : ℂ)
-    (A : FockSpace Mode →ₗ[ℂ] FockSpace Mode) :
-    grandCanonicalGibbsExpectation ε β μ (c • A) = c * grandCanonicalGibbsExpectation ε β μ A := by
-  unfold grandCanonicalGibbsExpectation
-  rw [LinearMap.comp_smul, Common.tsumTrace_smul, mul_div_assoc]
-
-omit [Fintype Mode] in
 /-- The normalized free-Gibbs expectation commutes with a finite sum when every summand carries an
 explicit summability witness.  The subtype construction and linear-map evaluation stay inside this
 analytic adapter. -/
