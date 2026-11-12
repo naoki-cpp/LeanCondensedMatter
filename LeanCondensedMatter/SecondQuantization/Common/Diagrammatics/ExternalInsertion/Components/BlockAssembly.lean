@@ -1125,6 +1125,59 @@ theorem ExternalInsertionBlockLayout.physicalComponentCanonicalLegEquiv_strictMo
   rw [hbridge j, hbridge i] at hcontra
   exact (not_le_of_gt hglobal) hcontra
 
+/-- The particular physical component-to-independent-block leg equivalence
+is just the equality cast of *ordered flattened-leg indices*.  There is
+no residual permutation: the earlier strict-monotonicity proof and the
+uniqueness of increasing equivalences between finite initial segments
+force the full coordinate identification, even for zero interaction
+vertices.  This is the cast-level bridge for comparing timed fields
+without assuming symmetry under swapping fermionic endpoints. -/
+theorem ExternalInsertionBlockLayout.physicalComponentCanonicalLegEquiv_eq_finCongr
+    {ExternalLabel InternalLabel : Type*}
+    (layout : ExternalInsertionBlockLayout E N) (S : Finset (Fin N))
+    (F : ∀ B : layout.partition.parts,
+      ExternalInsertionDiagram ExternalLabel InternalLabel
+        ((B : Finset (Fin (2 * E))).card / 2) N (layout.interactionBlock S B))
+    (hconnected : ∀ B, (F B).vertexGraph.Preconnected)
+    (e : Fin (2 * E)) :
+    let d := layout.assembleDiagram S F
+    let C : d.vertexGraph.componentPartition.parts :=
+      ⟨d.vertexGraph.componentBlock (Sum.inl e),
+        d.vertexGraph.componentBlock_mem_componentPartition (Sum.inl e)⟩
+    let B := (layout.sourceEquiv e).1
+    let hlegs : 2 * (2 * (interactionSector
+        (C : Finset (ExternalInsertionVertex E S))).card + d.externalPairCount C) =
+      2 * (2 * (layout.interactionBlock S B).card + B.1.card / 2) := by
+      rw [layout.assembleDiagram_componentInteractionSector_external
+        S F hconnected e, layout.assembleDiagram_componentExternalPairCount_external
+          S F hconnected e]
+    (d.componentBlockLegEquiv C).symm.trans
+      (layout.physicalComponentLegEquiv S F hconnected e) = finCongr hlegs := by
+  classical
+  let d := layout.assembleDiagram S F
+  let C : d.vertexGraph.componentPartition.parts :=
+    ⟨d.vertexGraph.componentBlock (Sum.inl e),
+      d.vertexGraph.componentBlock_mem_componentPartition (Sum.inl e)⟩
+  let B := (layout.sourceEquiv e).1
+  let hlegs : 2 * (2 * (interactionSector
+      (C : Finset (ExternalInsertionVertex E S))).card + d.externalPairCount C) =
+      2 * (2 * (layout.interactionBlock S B).card + B.1.card / 2) := by
+    rw [layout.assembleDiagram_componentInteractionSector_external
+      S F hconnected e, layout.assembleDiagram_componentExternalPairCount_external
+        S F hconnected e]
+  let c := (d.componentBlockLegEquiv C).symm.trans
+    (layout.physicalComponentLegEquiv S F hconnected e)
+  change c = finCongr hlegs
+  have hc : StrictMono c :=
+    layout.physicalComponentCanonicalLegEquiv_strictMono S F hconnected e
+  let iso : Fin (2 * (2 * (interactionSector
+      (C : Finset (ExternalInsertionVertex E S))).card + d.externalPairCount C)) ≃o
+      Fin (2 * (2 * (layout.interactionBlock S B).card + B.1.card / 2)) :=
+    { toEquiv := c
+      map_rel_iff' := fun a b => hc.le_iff_le }
+  have hu : iso = Fin.castOrderIso hlegs := Subsingleton.elim _ _
+  exact congrArg OrderIso.toEquiv hu
+
 /-- The local external-pair parameter of an actual assembled graph component
 is the half-cardinality of its assigned source-partition block. This closes
 the dependent external-size index needed to identify physical component
