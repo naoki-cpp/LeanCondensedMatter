@@ -106311,7 +106311,6 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Bosonic.comm_create_annihilate",
-      "SecondQuantization.Common.exchangeCommutator_create_annihilate",
       "SecondQuantization.Fermionic.anticomm_create_annihilate",
       "SecondQuantization.Fermionic.completedAnticomm_create_annihilate"
     ],
@@ -106320,11 +106319,10 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Bosonic.comm_create_annihilate",
-      "SecondQuantization.Common.exchangeCommutator_create_annihilate",
       "SecondQuantization.Fermionic.anticomm_create_annihilate",
       "SecondQuantization.Fermionic.completedAnticomm_create_annihilate"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -114462,92 +114460,6 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [Fintype Mode] (ε : Mode → ℝ) (β : ℝ),\n  (∀ (i : Mode), 0 < β * ε i) →\n    ∀ (i j : Mode), Summable fun n => ↑(n i) * ↑(n j) * SecondQuantization.Bosonic.boltzmannWeight ε β n",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Bosonic.summable_particleNumber_mul_particleNumber_boltzmannWeight",
-    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.QuadraticParticleNumberWeightSummable",
-    "externalAxioms": [],
-    "docString": "A product of two occupation numbers remains summable against the free bosonic Boltzmann weight.\nThis is the degree-two estimate needed for diagonal matrix coefficients of quartic interactions. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Bosonic.summable_particleNumber_sq_boltzmannWeight",
-      "SecondQuantization.Bosonic.summable_particleNumber_total_sq_boltzmannWeight"
-    ],
-    "dependencies": [
-      "SecondQuantization.Bosonic.summable_shiftedOccupationPowerProduct_boltzmannWeight"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Bosonic.summable_particleNumber_sq_boltzmannWeight",
-      "SecondQuantization.Bosonic.summable_particleNumber_total_sq_boltzmannWeight"
-    ],
-    "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {Mode : Type u_1} [Fintype Mode] (ε : Mode → ℝ) (β : ℝ),\n  (∀ (i : Mode), 0 < β * ε i) →\n    ∀ (j : Mode), Summable fun n => ↑(n j) ^ 2 * SecondQuantization.Bosonic.boltzmannWeight ε β n",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Bosonic.summable_particleNumber_sq_boltzmannWeight",
-    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.QuadraticParticleNumberWeightSummable",
-    "externalAxioms": [],
-    "docString": "A square occupation-number weight remains summable against the free bosonic Boltzmann weight. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "SecondQuantization.Bosonic.summable_particleNumber_mul_particleNumber_boltzmannWeight"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
     "terminal": true,
     "statement": "∀ {Mode : Type u_1} [Fintype Mode] (ε : Mode → ℝ) (β : ℝ),\n  (∀ (i : Mode), 0 < β * ε i) →\n    Summable fun n =>\n      ↑(SecondQuantization.Bosonic.particleNumber n) ^ 2 * SecondQuantization.Bosonic.boltzmannWeight ε β n",
     "standardAxioms": [
@@ -114564,13 +114476,13 @@
     "name": "SecondQuantization.Bosonic.summable_particleNumber_total_sq_boltzmannWeight",
     "module": "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.QuadraticParticleNumberWeightSummable",
     "externalAxioms": [],
-    "docString": "The square of the total particle number remains summable against the free bosonic Boltzmann\nweight.  This is the uniform degree-two majorant used for quartic ladder amplitudes. ",
+    "docString": "The square of the total particle number remains summable against the free bosonic\nBoltzmann weight, providing a degree-two moment bound for quartic ladder amplitudes. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
       "SecondQuantization.Bosonic.particleNumber_eq_sum_univ",
-      "SecondQuantization.Bosonic.summable_particleNumber_mul_particleNumber_boltzmannWeight"
+      "SecondQuantization.Bosonic.summable_shiftedOccupationPowerProduct_boltzmannWeight"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -114610,7 +114522,7 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Bosonic.FreeThermalField.grandCanonicalGibbsSummable_orderedProduct",
-      "SecondQuantization.Bosonic.summable_particleNumber_mul_particleNumber_boltzmannWeight"
+      "SecondQuantization.Bosonic.summable_particleNumber_total_sq_boltzmannWeight"
     ],
     "dependencies": [
       "Finsupp.hasSum_prod_nonneg",
@@ -114621,7 +114533,7 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Bosonic.FreeThermalField.grandCanonicalGibbsSummable_orderedProduct",
-      "SecondQuantization.Bosonic.summable_particleNumber_mul_particleNumber_boltzmannWeight"
+      "SecondQuantization.Bosonic.summable_particleNumber_total_sq_boltzmannWeight"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -119741,7 +119653,7 @@
     "statement": "∀ (s : SecondQuantization.Common.Statistics), s.zetaInt * s.zetaInt = 1",
     "standardAxioms": [],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": true,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -119753,17 +119665,15 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Common.exchangeCommutator_create_annihilate",
       "SecondQuantization.Common.timeOrderedProduct_swap"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Common.exchangeCommutator_create_annihilate",
       "SecondQuantization.Common.timeOrderedProduct_swap"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 1,
     "axioms": [],
     "definitionallyEquivalentTo": [],
     "replacementCandidates": [],
@@ -126093,8 +126003,7 @@
       "SecondQuantization.Fermionic.annihilate_comp_create_self"
     ],
     "dependencies": [
-      "ScalarExchange.mul_eq_add_smul_mul_of_zetaCommutator_eq",
-      "SecondQuantization.Common.exchangeCommutator_annihilate_create_self"
+      "ScalarExchange.mul_eq_add_smul_mul_of_zetaCommutator_eq"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -131189,89 +131098,6 @@
       "SecondQuantization.Common.support_interactionPicture_apply_subset_reachableSupport_succ"
     ],
     "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {s : SecondQuantization.Common.Statistics} {Mode : Type u_1} {Config : Type u_2} [inst : DecidableEq Mode]\n  [inst_1 : SecondQuantization.Common.ExchangeAlgebra s Mode Config] (i : Mode),\n  SecondQuantization.Common.exchangeCommutator s (SecondQuantization.Common.ExchangeAlgebra.annihilate s i)\n      (SecondQuantization.Common.ExchangeAlgebra.create s i) =\n    LinearMap.id",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.exchangeCommutator_annihilate_create_self",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Algebra.ExchangeAlgebra",
-    "externalAxioms": [],
-    "docString": "Same-mode mixed exchange relation `[a_i,a_i†]_ζ = id`. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.annihilate_comp_create_self"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.annihilate_comp_create_self"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {s : SecondQuantization.Common.Statistics} {Mode : Type u_1} {Config : Type u_2} [inst : DecidableEq Mode]\n  [inst_1 : SecondQuantization.Common.ExchangeAlgebra s Mode Config] (i j : Mode),\n  SecondQuantization.Common.exchangeCommutator s (SecondQuantization.Common.ExchangeAlgebra.create s i)\n      (SecondQuantization.Common.ExchangeAlgebra.annihilate s j) =\n    if i = j then -↑s.zetaInt • LinearMap.id else 0",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.exchangeCommutator_create_annihilate",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Algebra.ExchangeAlgebra",
-    "externalAxioms": [],
-    "docString": "Reverse mixed exchange relation `[a_i†,a_j]_ζ = -ζ δᵢⱼ`. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "ScalarExchange.zetaCommutator_swap_of_sq_eq_one",
-      "SecondQuantization.Common.Statistics.zeta_sq"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
