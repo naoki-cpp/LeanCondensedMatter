@@ -411,6 +411,118 @@ theorem ExternalInsertionBlockLayout.assembleConnectedBlocks_componentDysonAmpli
     (fun i => externalTime (layout.sourceEquiv.symm ⟨B, i⟩))
     htimes ε β g
 
+/-- The genuine **integrated physical component-shuffle orbit**
+of assembled connected Wick blocks equals the source-partition Koszul sign
+times the product of the *original independent local Dyson amplitudes*.
+
+Every local factor carries its actual labels, contracted Wick pairing,
+original restricted source times, and canonical increasing interaction-slot
+order. The product is indexed by the prescribed external partition rather
+than an unverified choice of graph components. The equality is only after
+the complete interaction-order shuffle sum; it does not factor an
+individual ordered-simplex integral. -/
+theorem ExternalInsertionBlockLayout.assembleConnectedBlocks_signedDysonShuffleOrbit_eq_independentLocals
+    {n : ℕ} (layout : ExternalInsertionBlockLayout E n)
+    (F : ∀ B : layout.partition.parts,
+      ExternalInsertionDiagram (ExternalFieldLabel Mode) (QuarticVertexLabel Mode)
+        ((B : Finset (Fin (2 * E))).card / 2) n
+        (layout.interactionBlock (Finset.univ : Finset (Fin n)) B))
+    (hconnected : ∀ B, (F B).vertexGraph.Preconnected)
+    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
+    (externalTime : Fin (2 * E) → ℝ) :
+    let d : ExternalInsertionWickDiagram Mode E n :=
+      layout.assembleDiagram (Finset.univ : Finset (Fin n)) F
+    (∑ shuffle : d.ComponentInteractionOrderShuffle,
+      d.orderedDysonAmplitude ε β g externalTime
+        (d.assembleInteractionOrder d.canonicalComponentInteractionOrders shuffle)) =
+      externalPartitionSourceSign layout.partition *
+        ∏ B : layout.partition.parts,
+          ExternalInsertionWickDiagram.dysonAmplitude
+            ((F B).slotCongr (Combinatorics.standardSlotEquiv
+              (layout.interactionBlock (Finset.univ : Finset (Fin n)) B)))
+            ε β g (fun i => externalTime (layout.sourceEquiv.symm ⟨B, i⟩)) := by
+  classical
+  let S : Finset (Fin n) := Finset.univ
+  let d : ExternalInsertionWickDiagram Mode E n := layout.assembleDiagram S F
+  have hVac : HasNoVacuumComponent d.vertexGraph :=
+    layout.hasNoVacuumComponent_assembleDiagram S F hconnected
+  have hpart : externalComponentPartition d.vertexGraph = layout.partition :=
+    layout.externalComponentPartition_assembleDiagram S F hconnected
+  let partsEquiv :
+      (externalComponentPartition d.vertexGraph).parts ≃ layout.partition.parts :=
+    { toFun := fun P => ⟨P.1, by rw [← hpart]; exact P.2⟩
+      invFun := fun P => ⟨P.1, by rw [hpart]; exact P.2⟩
+      left_inv := fun P => Subtype.ext rfl
+      right_inv := fun P => Subtype.ext rfl }
+  let reindex : d.vertexGraph.componentPartition.parts ≃ layout.partition.parts :=
+    (d.vacuumFreeComponentsEquivExternalBlocks hVac).trans partsEquiv
+  have hblock (C : d.vertexGraph.componentPartition.parts) :
+      (reindex C : Finset (Fin (2 * E))) =
+        (C.1 : Finset (ExternalInsertionVertex E S)).toLeft :=
+    d.vacuumFreeComponentsEquivExternalBlocks_apply hVac C
+  have hlocal (B : layout.partition.parts) :
+      ExternalInsertionWickDiagram.dysonAmplitude
+          (d.componentOrderedDiagram (reindex.symm B)) ε β g
+          (d.componentExternalTime externalTime (reindex.symm B)) =
+        ExternalInsertionWickDiagram.dysonAmplitude
+          ((F B).slotCongr (Combinatorics.standardSlotEquiv
+            (layout.interactionBlock S B)))
+          ε β g (fun i => externalTime (layout.sourceEquiv.symm ⟨B, i⟩)) := by
+    have hnonempty : (B : Finset (Fin (2 * E))).Nonempty :=
+      Finset.nonempty_iff_ne_empty.mpr (layout.partition.ne_bot B.2)
+    obtain ⟨e, he⟩ := hnonempty
+    have hsource : (layout.sourceEquiv e).1 = B := by
+      apply Subtype.ext
+      simpa only [layout.sourceEquiv_fst] using
+        (layout.partition.part_eq_of_mem B.2 he)
+    have hCleft :
+        ((reindex.symm B).1 : Finset (ExternalInsertionVertex E S)).toLeft =
+          (B : Finset (Fin (2 * E))) := by
+      simpa only [Equiv.apply_symm_apply] using hblock (reindex.symm B)
+    have hmem : (Sum.inl e : ExternalInsertionVertex E S) ∈
+        ((reindex.symm B).1 : Finset (ExternalInsertionVertex E S)) := by
+      apply Finset.mem_toLeft.mp
+      rw [hCleft]
+      exact he
+    have hC :
+        reindex.symm B =
+          ⟨d.vertexGraph.componentBlock (Sum.inl e),
+            d.vertexGraph.componentBlock_mem_componentPartition (Sum.inl e)⟩ := by
+      apply Subtype.ext
+      exact ((d.vertexGraph.componentBlock_eq_iff_mem
+        (reindex.symm B).2 (Sum.inl e)).2 hmem).symm
+    rw [hC]
+    have h := layout.assembleConnectedBlocks_componentDysonAmplitude_eq_local
+      F hconnected ε β g externalTime e
+    simpa only [hsource] using h
+  have horbit := layout.assembleConnectedBlocks_signedDysonShuffleOrbit
+    F hconnected ε β g externalTime
+  calc
+    (∑ shuffle : d.ComponentInteractionOrderShuffle,
+      d.orderedDysonAmplitude ε β g externalTime
+        (d.assembleInteractionOrder d.canonicalComponentInteractionOrders shuffle)) =
+        externalPartitionSourceSign layout.partition *
+          ∏ C : d.vertexGraph.componentPartition.parts,
+            ExternalInsertionWickDiagram.dysonAmplitude
+              (d.componentOrderedDiagram C) ε β g
+              (d.componentExternalTime externalTime C) := horbit
+    _ = externalPartitionSourceSign layout.partition *
+          ∏ B : layout.partition.parts,
+            ExternalInsertionWickDiagram.dysonAmplitude
+              (d.componentOrderedDiagram (reindex.symm B)) ε β g
+              (d.componentExternalTime externalTime (reindex.symm B)) := by
+        apply congrArg (fun z : ℂ => externalPartitionSourceSign layout.partition * z)
+        exact (Equiv.prod_comp reindex.symm
+          (fun C : d.vertexGraph.componentPartition.parts =>
+            ExternalInsertionWickDiagram.dysonAmplitude
+              (d.componentOrderedDiagram C) ε β g
+              (d.componentExternalTime externalTime C))).symm
+    _ = _ := by
+        apply congrArg (fun z : ℂ => externalPartitionSourceSign layout.partition * z)
+        apply Finset.prod_congr rfl
+        intro B _
+        exact hlocal B
+
 omit [LinearOrder Mode] [Fintype Mode] in
 /-- On each external-partition block of a vacuum-free diagram, the field
 labels used by the source-subset moment are exactly the labels of the
