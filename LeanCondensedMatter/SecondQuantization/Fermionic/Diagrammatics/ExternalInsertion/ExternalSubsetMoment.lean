@@ -301,12 +301,14 @@ theorem ExternalInsertionBlockLayout.assembleDiagram_restrictComponent_heq_local
   have hpairHeq : HEq (d.restrictComponent C).pairing (F B).pairing :=
     pairing_heq_of_finCongr_transport hcards _ _ hpair
   have hsrc : HEq (d.restrictComponent C).externalLabel (F B).externalLabel :=
-    (layout.assembleDiagram_componentOrderedDiagram_externalLabel F hconnected e).symm
+    (ExternalInsertionBlockLayout.assembleDiagram_componentOrderedDiagram_externalLabel
+      layout F hconnected e).symm
   have hvertex : HEq (d.restrictComponent C).vertexLabel (F B).vertexLabel :=
     (layout.assembleDiagram_restrictComponent_vertexLabel_heq S F hconnected e).symm
   exact externalInsertionDiagram_heq_of_fields hcount hsector
     (d.restrictComponent C) (F B) hsrc hvertex hpairHeq
 
+omit [LinearOrder Mode] [Fintype Mode] in
 /-- On each external-partition block of a vacuum-free diagram, the field
 labels used by the source-subset moment are exactly the labels of the
 canonical standalone connected-component diagram.
