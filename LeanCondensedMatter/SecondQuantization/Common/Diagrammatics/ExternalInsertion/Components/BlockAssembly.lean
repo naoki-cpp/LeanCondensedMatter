@@ -745,6 +745,36 @@ theorem ExternalInsertionBlockLayout.assembleDiagram_componentInteractionSector_
       exact hreach.symm
     exact (mem_interactionSector_subtype _ V).2 hmem
 
+/-- The legs of the *actual physical* connected component containing
+an external insertion are exactly the legs assigned to its independent
+source block by the global flattened-leg equivalence. This identifies
+the domain of physical pairing restriction with the block's entire leg
+fiber, including interaction legs and zero-interaction blocks. -/
+theorem ExternalInsertionBlockLayout.assembleDiagram_legInComponent_iff_legEquiv_fst
+    {ExternalLabel InternalLabel : Type*}
+    (layout : ExternalInsertionBlockLayout E N) (S : Finset (Fin N))
+    (F : ∀ B : layout.partition.parts,
+      ExternalInsertionDiagram ExternalLabel InternalLabel
+        ((B : Finset (Fin (2 * E))).card / 2) N (layout.interactionBlock S B))
+    (hconnected : ∀ B, (F B).vertexGraph.Preconnected)
+    (e : Fin (2 * E))
+    (leg : Fin (2 * (2 * S.card + E))) :
+    (layout.assembleDiagram S F).legInComponent
+        ((layout.assembleDiagram S F).vertexGraph.componentBlock (Sum.inl e)) leg ↔
+      (layout.legEquiv S leg).1 = (layout.sourceEquiv e).1 := by
+  classical
+  let d := layout.assembleDiagram S F
+  let C : d.vertexGraph.componentPartition.parts :=
+    ⟨d.vertexGraph.componentBlock (Sum.inl e),
+      d.vertexGraph.componentBlock_mem_componentPartition (Sum.inl e)⟩
+  change d.legInComponent C.1 leg ↔ _
+  rw [d.legInComponent_iff_vertex_mem C.2 leg]
+  change externalInsertionVertexOfLeg leg ∈ d.vertexGraph.componentBlock (Sum.inl e) ↔ _
+  rw [d.vertexGraph.mem_componentBlock]
+  rw [layout.assembleDiagram_reachable_iff_same_block S F hconnected]
+  rw [layout.vertexEquiv_vertexOfLeg S leg, layout.vertexEquiv_external]
+  rfl
+
 /-- The local external-pair parameter of an actual assembled graph component
 is the half-cardinality of its assigned source-partition block. This closes
 the dependent external-size index needed to identify physical component
