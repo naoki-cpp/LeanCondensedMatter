@@ -59,7 +59,9 @@ theorem excitationHamiltonian_eq_secondQuantization (J : ℝ) (twiceSpin : ℕ) 
     map_smul, map_add, map_sub, createVector_single, annihilateVector_single,
     LinearMap.smul_comp, LinearMap.add_comp, LinearMap.sub_comp]
   push_cast
-  simp only [← numberOperator]
+  have hnumber (i : ZMod N) :
+      (create i).comp (annihilate i) = numberOperator i := rfl
+  simp only [hnumber]
   simp only [excitationHamiltonian, excitationBond, smul_sub, smul_add,
     Finset.sum_sub_distrib, Finset.sum_add_distrib, ← Finset.smul_sum]
   rw [hn, hh]
