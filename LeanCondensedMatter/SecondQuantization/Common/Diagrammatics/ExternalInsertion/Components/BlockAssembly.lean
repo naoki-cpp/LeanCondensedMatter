@@ -2589,9 +2589,10 @@ noncomputable def ExternalInsertionBlockLayout.fixedPartitionOwnerEquiv
     (heven : ∀ B : π.parts, Even (B : Finset (Fin (2 * E))).card) :
     {layout : ExternalInsertionBlockLayout E N // layout.partition = π} ≃
       (Fin N → π.parts) where
-  toFun x v :=
-    ⟨(x.1.interactionOwner v).1,
-      x.2 ▸ (x.1.interactionOwner v).2⟩
+  toFun x := by
+    rcases x with ⟨⟨partition, even, owner⟩, hp⟩
+    cases hp
+    exact owner
   invFun owner :=
     ⟨⟨π, heven, owner⟩, rfl⟩
   left_inv x := by
@@ -2604,24 +2605,26 @@ noncomputable def ExternalInsertionBlockLayout.fixedPartitionOwnerEquiv
 /-- An interaction-owner assignment is uniquely specified by its
 complete family of fiber cardinalities and an order-preserving slot
 shuffle. All zero-size blocks remain in the domain. -/
-open Classical in
 private noncomputable def ownerFiberSizesEquiv
     {ι : Type*} [Fintype ι] :
     (Fin N → ι) ≃
       Σ size : ι → ℕ,
         {owner : Fin N → ι //
-          ∀ i, Fintype.card {v : Fin N // owner v = i} = size i} where
-  toFun owner :=
-    ⟨fun i => Fintype.card {v : Fin N // owner v = i},
-      ⟨owner, fun _ => rfl⟩⟩
-  invFun x := x.2.1
-  left_inv owner := rfl
-  right_inv x := by
-    rcases x with ⟨size, ⟨owner, hsize⟩⟩
-    have hs : size = fun i => Fintype.card {v : Fin N // owner v = i} :=
-      funext (fun i => (hsize i).symm)
-    cases hs
-    rfl
+          ∀ i, Fintype.card {v : Fin N // owner v = i} = size i} := by
+  classical
+  refine {
+    toFun := fun owner =>
+      ⟨fun i => Fintype.card {v : Fin N // owner v = i},
+        ⟨owner, fun _ => rfl⟩⟩
+    invFun := fun x => x.2.1
+    left_inv := fun _ => rfl
+    right_inv := ?_
+  }
+  rintro ⟨size, ⟨owner, hsize⟩⟩
+  have hs : size = fun i => Fintype.card {v : Fin N // owner v = i} :=
+    funext (fun i => (hsize i).symm)
+  cases hs
+  rfl
 
 /-- For a **fixed physical external-source partition**, layouts of all
 ambient interaction vertices are in exact bijection with a variable
