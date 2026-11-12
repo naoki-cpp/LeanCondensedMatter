@@ -49,6 +49,32 @@ noncomputable def ExternalInsertionWickDiagram.orderedDysonAmplitude
       d.dysonFixedTimeAmplitude ε β g externalTime
         (fun v => τ (order.symm ⟨v, Finset.mem_univ v⟩)))
 
+/-- The physical Dyson amplitude is exactly the ordered-simplex
+amplitude for the canonical increasing ambient interaction order. This
+allows diagram coefficients to use the same ordered-amplitude integrand
+as the complete component-shuffle orbit, without introducing a second
+physical amplitude or a factorial multiplier. -/
+theorem ExternalInsertionWickDiagram.orderedDysonAmplitude_canonicalOrder
+    {E n : ℕ} (d : ExternalInsertionWickDiagram Mode E n)
+    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
+    (externalTime : Fin (2 * E) → ℝ) :
+    d.orderedDysonAmplitude ε β g externalTime
+      ((Finset.univ : Finset (Fin n)).orderIsoOfFin rfl).toEquiv =
+      d.dysonAmplitude ε β g externalTime := by
+  classical
+  rw [ExternalInsertionWickDiagram.orderedDysonAmplitude,
+    ExternalInsertionWickDiagram.dysonAmplitude,
+    ExternalInsertionWickDiagram.orderedSimplexContribution]
+  rw [ExternalInsertionWickDiagram.dysonFixedTimeAmplitude]
+  rw [intervalIntegral.orderedSimplexIntegral_smul]
+  apply congrArg (fun z : ℂ => (-1 : ℂ) ^ n * z)
+  apply intervalIntegral.orderedSimplexIntegral_congr
+  intro τ
+  apply congrArg (d.fixedTimeAmplitude ε β g externalTime)
+  funext v
+  simp only [Finset.card_fin, Finset.orderIsoOfFin_symm_apply,
+    Fin.sort_univ, List.idxOf_finRange]
+
 /-- Integrating the Dyson-signed fixed-time amplitude is the integrated Dyson amplitude. -/
 theorem ExternalInsertionWickDiagram.orderedSimplexIntegral_dysonFixedTimeAmplitude
     {E n : ℕ} (d : ExternalInsertionWickDiagram Mode E n)
