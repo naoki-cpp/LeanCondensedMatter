@@ -79,7 +79,7 @@ theorem PairingOn.restrictAlongEquiv_partner_symm_val {α β : Type*} (pairing :
 /-- Extract the fiber over a fixed index from a dependent sigma type.
 This is the canonical transport used when restricting a pairing which
 never connects different sigma fibers. -/
-private def sigmaFiberEquiv {ι : Type*} {β : ι → Type*} (i : ι) :
+def sigmaFiberEquiv {ι : Type*} {β : ι → Type*} (i : ι) :
     {x : Σ j, β j // x.1 = i} ≃ β i where
   toFun := fun x => x.2 ▸ x.1.2
   invFun := fun x => ⟨⟨i, x⟩, rfl⟩
