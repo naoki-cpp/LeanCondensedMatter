@@ -2,6 +2,7 @@ import LeanCondensedMatter.Models.HolsteinPrimakoff.MultiSite
 import LeanCondensedMatter.Models.KronigPenney
 import LeanCondensedMatter.Models.Heisenberg.SpinWaveSpectrum
 import LeanCondensedMatter.Models.Heisenberg.QuadraticMagnonFourier
+import LeanCondensedMatter.Models.Heisenberg.QuadraticMagnon.TransverseReplacement
 import LeanCondensedMatter.Models.MassiveDirac
 import LeanCondensedMatter.Models.Parabolic2DEG
 import LeanCondensedMatter.Models.RashbaExchange

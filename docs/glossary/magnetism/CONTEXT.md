@@ -36,3 +36,10 @@ It represents a single magnon in the quadratic magnon model after the model's
 one-particle operator has been identified. Its state space is distinct from the
 one-magnon sector of the exact spin system.
 _Avoid_: equality of full spin and bosonic Fock spaces
+
+**Transverse-factor replacement**:
+Replacing the transverse Holstein-Primakoff square-root occupation factors by
+sqrt(2s), while keeping the longitudinal spin components unchanged. The resulting
+exchange operator still contains a longitudinal quartic term; dropping that term
+is a separate step toward the quadratic magnon model.
+_Avoid_: an exact spin identity or a bound on the approximation error
