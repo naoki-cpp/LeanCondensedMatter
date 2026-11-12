@@ -2880,10 +2880,8 @@
     {
       "name": "LeanCondensedMatter.Models.MassiveDirac.Scaling.Domain",
       "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Scaling/Domain.lean",
-      "imports": [
-        "LeanCondensedMatter.QuantumTheory.PlanckConstant"
-      ],
-      "externalImportCount": 0
+      "imports": [],
+      "externalImportCount": 1
     },
     {
       "name": "LeanCondensedMatter.Models.MassiveDirac.Scaling.Longitudinal",
@@ -4779,7 +4777,7 @@
       "imports": [
         "LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.NumberOperator"
       ],
-      "externalImportCount": 1
+      "externalImportCount": 2
     },
     {
       "name": "LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.FockSpace",
@@ -8567,7 +8565,7 @@
       "name": "LeanCondensedMatter.Transport.Analysis.ContinuumMeasure",
       "sourceFile": "LeanCondensedMatter/Transport/Analysis/ContinuumMeasure.lean",
       "imports": [],
-      "externalImportCount": 1
+      "externalImportCount": 2
     },
     {
       "name": "LeanCondensedMatter.Transport.Analysis.FourierGeometry",

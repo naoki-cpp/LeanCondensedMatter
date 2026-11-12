@@ -11406,7 +11406,7 @@
     "directWrapperOf": null,
     "dependents": [
       "ConservationLaw.localizationCorrectionCurrentFlux_eq_zero_of_commutes",
-      "QuantumMechanics.SingleParticle.orbitalAngularMomentumZ_localizationCorrectionCurrentFlux_apply"
+      "QuantumMechanics.SingleParticle.orbitalAngularMomentum_localizationCorrectionCurrentFlux_apply"
     ],
     "dependencies": [
       "ConservationLaw.symmetrizedProduct_nested"
@@ -11415,7 +11415,7 @@
     "completedMention": false,
     "compiledConsumers": [
       "ConservationLaw.localizationCorrectionCurrentFlux_eq_zero_of_commutes",
-      "QuantumMechanics.SingleParticle.orbitalAngularMomentumZ_localizationCorrectionCurrentFlux_apply"
+      "QuantumMechanics.SingleParticle.orbitalAngularMomentum_localizationCorrectionCurrentFlux_apply"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -11659,7 +11659,7 @@
     "dependents": [
       "QuantumMechanics.SingleParticle.correctedChargeCurrentFlux_eq",
       "QuantumMechanics.SingleParticle.exists_current_eq_symmetrized_add_correction_add_invisible",
-      "QuantumMechanics.SingleParticle.heisenbergTransportOrbitalAngularMomentumZ_apply",
+      "QuantumMechanics.SingleParticle.heisenbergTransportOrbitalAngularMomentum_apply",
       "SecondQuantization.Fermionic.Transport.boundedFluxRetardedResponse_eq_symmetrized_add_correction"
     ],
     "dependencies": [],
@@ -11668,7 +11668,7 @@
     "compiledConsumers": [
       "QuantumMechanics.SingleParticle.correctedChargeCurrentFlux_eq",
       "QuantumMechanics.SingleParticle.exists_current_eq_symmetrized_add_correction_add_invisible",
-      "QuantumMechanics.SingleParticle.heisenbergTransportOrbitalAngularMomentumZ_apply",
+      "QuantumMechanics.SingleParticle.heisenbergTransportOrbitalAngularMomentum_apply",
       "SecondQuantization.Fermionic.Transport.boundedFluxRetardedResponse_eq_symmetrized_add_correction"
     ],
     "compiledConsumerCount": 4,
@@ -35946,6 +35946,10 @@
       "Models.Heisenberg.QuadraticMagnon.excitationHamiltonian_eq_sum_fourier"
     ],
     "dependencies": [
+      "SecondQuantization.Bosonic.annihilateVector_single",
+      "SecondQuantization.Bosonic.createVector_single",
+      "SecondQuantization.Bosonic.secondQuantization_eq_sum_of_basis",
+      "ZMod.cyclicLaplacian_single",
       "_private.LeanCondensedMatter.Models.Heisenberg.QuadraticMagnonFourier.0.Models.Heisenberg.QuadraticMagnon.sum_shift"
     ],
     "crossModuleDirectWrapper": false,
@@ -44394,7 +44398,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {V : Type u_1} {OneForm : Type u_2} [inst : AddCommGroup V] [inst_1 : _root_.Module ℂ V]\n  [inst_2 : AddCommGroup OneForm] [inst_3 : _root_.Module ℂ OneForm] {Test : Type u_3} [inst_4 : AddCommGroup Test]\n  [inst_5 : _root_.Module ℂ Test] (ℏ : ℝ) (h : V →ₗ[ℂ] V) (M : Test →ₗ[ℂ] V →ₗ[ℂ] V) (X Y Px Py velocity : V →ₗ[ℂ] V)\n  (d : Test →ₗ[ℂ] OneForm) (N : OneForm →ₗ[ℂ] V →ₗ[ℂ] V) (f : Test) (Dx Dy : V →ₗ[ℂ] V) (c : ℂ),\n  QuantumMechanics.SingleParticle.heisenbergLocalizationFunctional V ℏ h M =\n      QuantumMechanics.SingleParticle.velocityLocalizationFlux V velocity N ∘ₗ d →\n    ⁅N (d f), X⁆ = 0 →\n      ⁅N (d f), Y⁆ = 0 →\n        ⁅N (d f), Px⁆ = c • Dx →\n          ⁅N (d f), Py⁆ = c • Dy →\n            (QuantumMechanics.SingleParticle.heisenbergTransportFunctional V ℏ h M\n                  (QuantumMechanics.SingleParticle.orbitalAngularMomentumZ X Y Px Py))\n                f =\n              (ConservationLaw.symmetrizedCurrentFlux V velocity\n                    (QuantumMechanics.SingleParticle.orbitalAngularMomentumZ X Y Px Py) N)\n                  (d f) +\n                (1 / 4) • ⁅velocity, X ∘ₗ (c • Dy) - Y ∘ₗ (c • Dx)⁆",
+    "statement": "∀ {E : Type u_1} {V : Type u_2} {OneForm : Type u_3} [inst : AddCommGroup E] [inst_1 : _root_.Module ℂ E]\n  [inst_2 : AddCommGroup V] [inst_3 : _root_.Module ℂ V] [inst_4 : AddCommGroup OneForm]\n  [inst_5 : _root_.Module ℂ OneForm] {Test : Type u_4} [inst_6 : AddCommGroup Test] [inst_7 : _root_.Module ℂ Test]\n  (ℏ : ℝ) (h : V →ₗ[ℂ] V) (M : Test →ₗ[ℂ] V →ₗ[ℂ] V) (X P : E →ₗ[ℂ] V →ₗ[ℂ] V) (u v : E) (velocity : V →ₗ[ℂ] V)\n  (d : Test →ₗ[ℂ] OneForm) (N : OneForm →ₗ[ℂ] V →ₗ[ℂ] V) (f : Test) (Du Dv : V →ₗ[ℂ] V) (c : ℂ),\n  QuantumMechanics.SingleParticle.heisenbergLocalizationFunctional V ℏ h M =\n      QuantumMechanics.SingleParticle.velocityLocalizationFlux V velocity N ∘ₗ d →\n    ⁅N (d f), X u⁆ = 0 →\n      ⁅N (d f), X v⁆ = 0 →\n        ⁅N (d f), P u⁆ = c • Du →\n          ⁅N (d f), P v⁆ = c • Dv →\n            (QuantumMechanics.SingleParticle.heisenbergTransportFunctional V ℏ h M\n                  (QuantumMechanics.SingleParticle.orbitalAngularMomentum X P u v))\n                f =\n              (ConservationLaw.symmetrizedCurrentFlux V velocity\n                    (QuantumMechanics.SingleParticle.orbitalAngularMomentum X P u v) N)\n                  (d f) +\n                (1 / 4) • ⁅velocity, X u ∘ₗ (c • Dv) - X v ∘ₗ (c • Du)⁆",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -44406,17 +44410,17 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "QuantumMechanics.SingleParticle.heisenbergTransportOrbitalAngularMomentumZ_apply",
+    "name": "QuantumMechanics.SingleParticle.heisenbergTransportOrbitalAngularMomentum_apply",
     "module": "LeanCondensedMatter.QuantumMechanics.SingleParticle.OrbitalAngularMomentumCurrent",
     "externalAxioms": [],
-    "docString": "At an exact differential `d f`, the canonical one-body Heisenberg transport equals\nthe conventional symmetrized flux plus the explicit orbital-localization correction.\nThe velocity representation is an explicit physical hypothesis; no local density is chosen. ",
+    "docString": "At an exact differential `d f`, the one-body Heisenberg transport of an\narbitrary orbital plane component equals its symmetrized flux plus the\nexplicit orbital-localization correction. The velocity representation\nis an explicit physical hypothesis. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
       "ConservationLaw.nestedSymmetrizedCurrentFlux_eq_symmetrized_add_correction",
       "QuantumMechanics.SingleParticle.nestedSymmetrizedCurrentFlux_eq_comp",
-      "QuantumMechanics.SingleParticle.orbitalAngularMomentumZ_localizationCorrectionCurrentFlux_apply"
+      "QuantumMechanics.SingleParticle.orbitalAngularMomentum_localizationCorrectionCurrentFlux_apply"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -44436,7 +44440,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {V : Type u_1} [inst : AddCommGroup V] [inst_1 : _root_.Module ℂ V] (M X Y Px Py : V →ₗ[ℂ] V),\n  ⁅M, QuantumMechanics.SingleParticle.orbitalAngularMomentumZ X Y Px Py⁆ =\n    ⁅M, X⁆ ∘ₗ Py + X ∘ₗ ⁅M, Py⁆ - (⁅M, Y⁆ ∘ₗ Px + Y ∘ₗ ⁅M, Px⁆)",
+    "statement": "∀ {E : Type u_1} {V : Type u_2} [inst : AddCommGroup E] [inst_1 : _root_.Module ℂ E] [inst_2 : AddCommGroup V]\n  [inst_3 : _root_.Module ℂ V] (M : V →ₗ[ℂ] V) (X P : E →ₗ[ℂ] V →ₗ[ℂ] V) (u v : E),\n  ⁅M, QuantumMechanics.SingleParticle.orbitalAngularMomentum X P u v⁆ =\n    ⁅M, X u⁆ ∘ₗ P v + X u ∘ₗ ⁅M, P v⁆ - (⁅M, X v⁆ ∘ₗ P u + X v ∘ₗ ⁅M, P u⁆)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -44448,20 +44452,20 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "QuantumMechanics.SingleParticle.lie_orbitalAngularMomentumZ",
+    "name": "QuantumMechanics.SingleParticle.lie_orbitalAngularMomentum",
     "module": "LeanCondensedMatter.QuantumMechanics.SingleParticle.OrbitalAngularMomentum",
     "externalAxioms": [],
-    "docString": "Expansion of a localization commutator with algebraic orbital angular momentum. ",
+    "docString": "Product expansion of a localization commutator with orbital angular momentum\nin an arbitrary oriented plane. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumMechanics.SingleParticle.lie_orbitalAngularMomentumZ_of_commutes_position"
+      "QuantumMechanics.SingleParticle.lie_orbitalAngularMomentum_of_commutes_position"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumMechanics.SingleParticle.lie_orbitalAngularMomentumZ_of_commutes_position"
+      "QuantumMechanics.SingleParticle.lie_orbitalAngularMomentum_of_commutes_position"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -44478,7 +44482,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {V : Type u_1} [inst : AddCommGroup V] [inst_1 : _root_.Module ℂ V] (M X Y Px Py Dx Dy : V →ₗ[ℂ] V) (ℏ : ℝ),\n  ⁅M, X⁆ = 0 →\n    ⁅M, Y⁆ = 0 →\n      ⁅M, Px⁆ = (Complex.I * ↑ℏ) • Dx →\n        ⁅M, Py⁆ = (Complex.I * ↑ℏ) • Dy →\n          ⁅M, QuantumMechanics.SingleParticle.orbitalAngularMomentumZ X Y Px Py⁆ =\n            X ∘ₗ ((Complex.I * ↑ℏ) • Dy) - Y ∘ₗ ((Complex.I * ↑ℏ) • Dx)",
+    "statement": "∀ {E : Type u_1} {V : Type u_2} [inst : AddCommGroup E] [inst_1 : _root_.Module ℂ E] [inst_2 : AddCommGroup V]\n  [inst_3 : _root_.Module ℂ V] (M : V →ₗ[ℂ] V) (X P : E →ₗ[ℂ] V →ₗ[ℂ] V) (u v : E) (Du Dv : V →ₗ[ℂ] V) (ℏ : ℝ),\n  ⁅M, X u⁆ = 0 →\n    ⁅M, X v⁆ = 0 →\n      ⁅M, P u⁆ = (Complex.I * ↑ℏ) • Du →\n        ⁅M, P v⁆ = (Complex.I * ↑ℏ) • Dv →\n          ⁅M, QuantumMechanics.SingleParticle.orbitalAngularMomentum X P u v⁆ =\n            X u ∘ₗ ((Complex.I * ↑ℏ) • Dv) - X v ∘ₗ ((Complex.I * ↑ℏ) • Du)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -44490,15 +44494,15 @@
     "retainedNeedsReview": true,
     "retainedMention": true,
     "projectAxioms": [],
-    "name": "QuantumMechanics.SingleParticle.lie_orbitalAngularMomentumZ_continuum_sign",
+    "name": "QuantumMechanics.SingleParticle.lie_orbitalAngularMomentum_continuum_sign",
     "module": "LeanCondensedMatter.QuantumMechanics.SingleParticle.OrbitalAngularMomentum",
     "externalAxioms": [],
-    "docString": "Continuum-sign specialization for `Pᵢ = -i ℏ ∂ᵢ`:\n`[M_f,L_z] = X (iℏ D_y) - Y (iℏ D_x)` once the momentum commutators have been identified with\nmultiplication by the derivatives of the localizer. ",
+    "docString": "Continuum-sign specialization `P(w) = -i ℏ ∂_w`. The assumptions\nidentify the supplied directional localizer derivatives with the\nmomentum-localization commutators; no analytic domain result is asserted. ",
     "directWrapperTargetModule": "LeanCondensedMatter.QuantumMechanics.SingleParticle.OrbitalAngularMomentum",
-    "directWrapperOf": "QuantumMechanics.SingleParticle.lie_orbitalAngularMomentumZ_of_derivative_localizers",
+    "directWrapperOf": "QuantumMechanics.SingleParticle.lie_orbitalAngularMomentum_of_derivative_localizers",
     "dependents": [],
     "dependencies": [
-      "QuantumMechanics.SingleParticle.lie_orbitalAngularMomentumZ_of_derivative_localizers"
+      "QuantumMechanics.SingleParticle.lie_orbitalAngularMomentum_of_derivative_localizers"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -44518,7 +44522,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {V : Type u_1} [inst : AddCommGroup V] [inst_1 : _root_.Module ℂ V] (M X Y Px Py : V →ₗ[ℂ] V),\n  ⁅M, X⁆ = 0 →\n    ⁅M, Y⁆ = 0 →\n      (⁅M, QuantumMechanics.SingleParticle.orbitalAngularMomentumZ X Y Px Py⁆ ≠ 0 ↔ X ∘ₗ ⁅M, Py⁆ - Y ∘ₗ ⁅M, Px⁆ ≠ 0)",
+    "statement": "∀ {E : Type u_1} {V : Type u_2} [inst : AddCommGroup E] [inst_1 : _root_.Module ℂ E] [inst_2 : AddCommGroup V]\n  [inst_3 : _root_.Module ℂ V] (M : V →ₗ[ℂ] V) (X P : E →ₗ[ℂ] V →ₗ[ℂ] V) (u v : E),\n  ⁅M, X u⁆ = 0 →\n    ⁅M, X v⁆ = 0 →\n      (⁅M, QuantumMechanics.SingleParticle.orbitalAngularMomentum X P u v⁆ ≠ 0 ↔ X u ∘ₗ ⁅M, P v⁆ - X v ∘ₗ ⁅M, P u⁆ ≠ 0)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -44530,15 +44534,15 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "QuantumMechanics.SingleParticle.lie_orbitalAngularMomentumZ_ne_zero_iff",
+    "name": "QuantumMechanics.SingleParticle.lie_orbitalAngularMomentum_ne_zero_iff",
     "module": "LeanCondensedMatter.QuantumMechanics.SingleParticle.OrbitalAngularMomentum",
     "externalAxioms": [],
-    "docString": "Exact nonvanishing criterion under position-localizer commutation.\n\nThis makes the obstruction explicit: continuum-like `L_z` fails to commute with localization exactly\nwhen the derivative-localization combination on the right is nonzero. ",
+    "docString": "Exact obstruction to localizer commutation in an arbitrary oriented plane. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "QuantumMechanics.SingleParticle.lie_orbitalAngularMomentumZ_of_commutes_position"
+      "QuantumMechanics.SingleParticle.lie_orbitalAngularMomentum_of_commutes_position"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -44558,7 +44562,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {V : Type u_1} [inst : AddCommGroup V] [inst_1 : _root_.Module ℂ V] (M X Y Px Py : V →ₗ[ℂ] V),\n  ⁅M, X⁆ = 0 →\n    ⁅M, Y⁆ = 0 → ⁅M, QuantumMechanics.SingleParticle.orbitalAngularMomentumZ X Y Px Py⁆ = X ∘ₗ ⁅M, Py⁆ - Y ∘ₗ ⁅M, Px⁆",
+    "statement": "∀ {E : Type u_1} {V : Type u_2} [inst : AddCommGroup E] [inst_1 : _root_.Module ℂ E] [inst_2 : AddCommGroup V]\n  [inst_3 : _root_.Module ℂ V] (M : V →ₗ[ℂ] V) (X P : E →ₗ[ℂ] V →ₗ[ℂ] V) (u v : E),\n  ⁅M, X u⁆ = 0 →\n    ⁅M, X v⁆ = 0 →\n      ⁅M, QuantumMechanics.SingleParticle.orbitalAngularMomentum X P u v⁆ = X u ∘ₗ ⁅M, P v⁆ - X v ∘ₗ ⁅M, P u⁆",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -44570,24 +44574,24 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "QuantumMechanics.SingleParticle.lie_orbitalAngularMomentumZ_of_commutes_position",
+    "name": "QuantumMechanics.SingleParticle.lie_orbitalAngularMomentum_of_commutes_position",
     "module": "LeanCondensedMatter.QuantumMechanics.SingleParticle.OrbitalAngularMomentum",
     "externalAxioms": [],
-    "docString": "If localization commutes with position, its orbital commutator is controlled entirely by the\nmomentum-localization commutators:\n\n`[M,L_z] = X [M,Pᵧ] - Y [M,Pₓ]`.\n",
+    "docString": "When localization commutes with positions in the two directions,\nonly the momentum-localization commutators remain. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumMechanics.SingleParticle.lie_orbitalAngularMomentumZ_ne_zero_iff",
-      "QuantumMechanics.SingleParticle.lie_orbitalAngularMomentumZ_of_derivative_localizers"
+      "QuantumMechanics.SingleParticle.lie_orbitalAngularMomentum_ne_zero_iff",
+      "QuantumMechanics.SingleParticle.lie_orbitalAngularMomentum_of_derivative_localizers"
     ],
     "dependencies": [
-      "QuantumMechanics.SingleParticle.lie_orbitalAngularMomentumZ"
+      "QuantumMechanics.SingleParticle.lie_orbitalAngularMomentum"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumMechanics.SingleParticle.lie_orbitalAngularMomentumZ_ne_zero_iff",
-      "QuantumMechanics.SingleParticle.lie_orbitalAngularMomentumZ_of_derivative_localizers"
+      "QuantumMechanics.SingleParticle.lie_orbitalAngularMomentum_ne_zero_iff",
+      "QuantumMechanics.SingleParticle.lie_orbitalAngularMomentum_of_derivative_localizers"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -44604,7 +44608,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {V : Type u_1} [inst : AddCommGroup V] [inst_1 : _root_.Module ℂ V] (M X Y Px Py Dx Dy : V →ₗ[ℂ] V) (c : ℂ),\n  ⁅M, X⁆ = 0 →\n    ⁅M, Y⁆ = 0 →\n      ⁅M, Px⁆ = c • Dx →\n        ⁅M, Py⁆ = c • Dy →\n          ⁅M, QuantumMechanics.SingleParticle.orbitalAngularMomentumZ X Y Px Py⁆ = X ∘ₗ (c • Dy) - Y ∘ₗ (c • Dx)",
+    "statement": "∀ {E : Type u_1} {V : Type u_2} [inst : AddCommGroup E] [inst_1 : _root_.Module ℂ E] [inst_2 : AddCommGroup V]\n  [inst_3 : _root_.Module ℂ V] (M : V →ₗ[ℂ] V) (X P : E →ₗ[ℂ] V →ₗ[ℂ] V) (u v : E) (Du Dv : V →ₗ[ℂ] V) (c : ℂ),\n  ⁅M, X u⁆ = 0 →\n    ⁅M, X v⁆ = 0 →\n      ⁅M, P u⁆ = c • Du →\n        ⁅M, P v⁆ = c • Dv →\n          ⁅M, QuantumMechanics.SingleParticle.orbitalAngularMomentum X P u v⁆ = X u ∘ₗ (c • Dv) - X v ∘ₗ (c • Du)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -44616,24 +44620,24 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "QuantumMechanics.SingleParticle.lie_orbitalAngularMomentumZ_of_derivative_localizers",
+    "name": "QuantumMechanics.SingleParticle.lie_orbitalAngularMomentum_of_derivative_localizers",
     "module": "LeanCondensedMatter.QuantumMechanics.SingleParticle.OrbitalAngularMomentum",
     "externalAxioms": [],
-    "docString": "Specialization when the momentum-localization commutators are represented by supplied\n\"derivative localizer\" operators `Dx` and `Dy` with a common scalar coefficient `c`.\n\nFor continuum momentum `Pᵢ = -i ℏ ∂ᵢ`, the physical coefficient is `c = i ℏ` and `Di` is\nmultiplication by `∂ᵢ f`. ",
+    "docString": "Supplied directional derivative-localizers `Du` and `Dv`\nrepresent the momentum-localization commutators with a common coefficient `c`. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumMechanics.SingleParticle.lie_orbitalAngularMomentumZ_continuum_sign",
-      "QuantumMechanics.SingleParticle.orbitalAngularMomentumZ_localizationCorrectionCurrentFlux_apply"
+      "QuantumMechanics.SingleParticle.lie_orbitalAngularMomentum_continuum_sign",
+      "QuantumMechanics.SingleParticle.orbitalAngularMomentum_localizationCorrectionCurrentFlux_apply"
     ],
     "dependencies": [
-      "QuantumMechanics.SingleParticle.lie_orbitalAngularMomentumZ_of_commutes_position"
+      "QuantumMechanics.SingleParticle.lie_orbitalAngularMomentum_of_commutes_position"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumMechanics.SingleParticle.lie_orbitalAngularMomentumZ_continuum_sign",
-      "QuantumMechanics.SingleParticle.orbitalAngularMomentumZ_localizationCorrectionCurrentFlux_apply"
+      "QuantumMechanics.SingleParticle.lie_orbitalAngularMomentum_continuum_sign",
+      "QuantumMechanics.SingleParticle.orbitalAngularMomentum_localizationCorrectionCurrentFlux_apply"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -44669,7 +44673,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumMechanics.SingleParticle.heisenbergTransportOrbitalAngularMomentumZ_apply"
+      "QuantumMechanics.SingleParticle.heisenbergTransportOrbitalAngularMomentum_apply"
     ],
     "dependencies": [
       "QuantumMechanics.SingleParticle.heisenbergTransportFunctional_eq_symmetrizedProductRight_comp"
@@ -44678,7 +44682,7 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumMechanics.SingleParticle.correctedSymmetrizedVelocityCurrentRepresentation",
-      "QuantumMechanics.SingleParticle.heisenbergTransportOrbitalAngularMomentumZ_apply"
+      "QuantumMechanics.SingleParticle.heisenbergTransportOrbitalAngularMomentum_apply"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -44736,8 +44740,8 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": false,
-    "statement": "∀ {V : Type u_1} {OneForm : Type u_2} [inst : AddCommGroup V] [inst_1 : _root_.Module ℂ V]\n  [inst_2 : AddCommGroup OneForm] [inst_3 : _root_.Module ℂ OneForm] (velocity X Y Px Py : V →ₗ[ℂ] V)\n  (N : OneForm →ₗ[ℂ] V →ₗ[ℂ] V) (α : OneForm) (Dx Dy : V →ₗ[ℂ] V) (c : ℂ),\n  ⁅N α, X⁆ = 0 →\n    ⁅N α, Y⁆ = 0 →\n      ⁅N α, Px⁆ = c • Dx →\n        ⁅N α, Py⁆ = c • Dy →\n          (ConservationLaw.localizationCorrectionCurrentFlux V velocity\n                (QuantumMechanics.SingleParticle.orbitalAngularMomentumZ X Y Px Py) N)\n              α =\n            (1 / 4) • ⁅velocity, X ∘ₗ (c • Dy) - Y ∘ₗ (c • Dx)⁆",
+    "terminal": true,
+    "statement": "∀ {E : Type u_1} {V : Type u_2} [inst : AddCommGroup E] [inst_1 : _root_.Module ℂ E] [inst_2 : AddCommGroup V]\n  [inst_3 : _root_.Module ℂ V] {F : Type u_3} [inst_4 : AddCommGroup F] [inst_5 : _root_.Module ℂ F]\n  (X P : E →ₗ[ℂ] V →ₗ[ℂ] V) (T : F →ₗ[ℂ] E) (u v : F),\n  QuantumMechanics.SingleParticle.orbitalAngularMomentum (X ∘ₗ T) (P ∘ₗ T) u v =\n    QuantumMechanics.SingleParticle.orbitalAngularMomentum X P (T u) (T v)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -44749,25 +44753,63 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "QuantumMechanics.SingleParticle.orbitalAngularMomentumZ_localizationCorrectionCurrentFlux_apply",
+    "name": "QuantumMechanics.SingleParticle.orbitalAngularMomentum_comp",
+    "module": "LeanCondensedMatter.QuantumMechanics.SingleParticle.OrbitalAngularMomentum",
+    "externalAxioms": [],
+    "docString": "The orbital component is natural under any linear reparametrization of\ndirections; it therefore does not depend on a chosen coordinate frame. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {E : Type u_1} {V : Type u_2} {OneForm : Type u_3} [inst : AddCommGroup E] [inst_1 : _root_.Module ℂ E]\n  [inst_2 : AddCommGroup V] [inst_3 : _root_.Module ℂ V] [inst_4 : AddCommGroup OneForm]\n  [inst_5 : _root_.Module ℂ OneForm] (velocity : V →ₗ[ℂ] V) (X P : E →ₗ[ℂ] V →ₗ[ℂ] V) (u v : E)\n  (N : OneForm →ₗ[ℂ] V →ₗ[ℂ] V) (α : OneForm) (Du Dv : V →ₗ[ℂ] V) (c : ℂ),\n  ⁅N α, X u⁆ = 0 →\n    ⁅N α, X v⁆ = 0 →\n      ⁅N α, P u⁆ = c • Du →\n        ⁅N α, P v⁆ = c • Dv →\n          (ConservationLaw.localizationCorrectionCurrentFlux V velocity\n                (QuantumMechanics.SingleParticle.orbitalAngularMomentum X P u v) N)\n              α =\n            (1 / 4) • ⁅velocity, X u ∘ₗ (c • Dv) - X v ∘ₗ (c • Du)⁆",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumMechanics.SingleParticle.orbitalAngularMomentum_localizationCorrectionCurrentFlux_apply",
     "module": "LeanCondensedMatter.QuantumMechanics.SingleParticle.OrbitalAngularMomentumCurrent",
     "externalAxioms": [],
-    "docString": "For `L_z = X P_y - Y P_x`, identify the *existing* localization-current correction\nwith the commutator of the velocity and the derivative-localizer obstruction.\nThe coefficient `c` can be instantiated with `iℏ` in the continuum-sign convention. ",
+    "docString": "The orbital localization-current correction for arbitrary directions\n`u,v`, expressed by the velocity commutator with the directional\nderivative-localizer obstruction. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumMechanics.SingleParticle.heisenbergTransportOrbitalAngularMomentumZ_apply",
-      "QuantumMechanics.SingleParticle.orbitalAngularMomentumZ_localizationCorrectionCurrentFlux_ne_zero_iff"
+      "QuantumMechanics.SingleParticle.heisenbergTransportOrbitalAngularMomentum_apply",
+      "QuantumMechanics.SingleParticle.orbitalAngularMomentum_localizationCorrectionCurrentFlux_ne_zero_iff"
     ],
     "dependencies": [
       "ConservationLaw.localizationCorrectionCurrentFlux_apply",
-      "QuantumMechanics.SingleParticle.lie_orbitalAngularMomentumZ_of_derivative_localizers"
+      "QuantumMechanics.SingleParticle.lie_orbitalAngularMomentum_of_derivative_localizers"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumMechanics.SingleParticle.heisenbergTransportOrbitalAngularMomentumZ_apply",
-      "QuantumMechanics.SingleParticle.orbitalAngularMomentumZ_localizationCorrectionCurrentFlux_ne_zero_iff"
+      "QuantumMechanics.SingleParticle.heisenbergTransportOrbitalAngularMomentum_apply",
+      "QuantumMechanics.SingleParticle.orbitalAngularMomentum_localizationCorrectionCurrentFlux_ne_zero_iff"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -44784,7 +44826,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {V : Type u_1} {OneForm : Type u_2} [inst : AddCommGroup V] [inst_1 : _root_.Module ℂ V]\n  [inst_2 : AddCommGroup OneForm] [inst_3 : _root_.Module ℂ OneForm] (velocity X Y Px Py : V →ₗ[ℂ] V)\n  (N : OneForm →ₗ[ℂ] V →ₗ[ℂ] V) (α : OneForm) (Dx Dy : V →ₗ[ℂ] V) (c : ℂ),\n  ⁅N α, X⁆ = 0 →\n    ⁅N α, Y⁆ = 0 →\n      ⁅N α, Px⁆ = c • Dx →\n        ⁅N α, Py⁆ = c • Dy →\n          ((ConservationLaw.localizationCorrectionCurrentFlux V velocity\n                  (QuantumMechanics.SingleParticle.orbitalAngularMomentumZ X Y Px Py) N)\n                α ≠\n              0 ↔\n            ⁅velocity, X ∘ₗ (c • Dy) - Y ∘ₗ (c • Dx)⁆ ≠ 0)",
+    "statement": "∀ {E : Type u_1} {V : Type u_2} {OneForm : Type u_3} [inst : AddCommGroup E] [inst_1 : _root_.Module ℂ E]\n  [inst_2 : AddCommGroup V] [inst_3 : _root_.Module ℂ V] [inst_4 : AddCommGroup OneForm]\n  [inst_5 : _root_.Module ℂ OneForm] (velocity : V →ₗ[ℂ] V) (X P : E →ₗ[ℂ] V →ₗ[ℂ] V) (u v : E)\n  (N : OneForm →ₗ[ℂ] V →ₗ[ℂ] V) (α : OneForm) (Du Dv : V →ₗ[ℂ] V) (c : ℂ),\n  ⁅N α, X u⁆ = 0 →\n    ⁅N α, X v⁆ = 0 →\n      ⁅N α, P u⁆ = c • Du →\n        ⁅N α, P v⁆ = c • Dv →\n          ((ConservationLaw.localizationCorrectionCurrentFlux V velocity\n                  (QuantumMechanics.SingleParticle.orbitalAngularMomentum X P u v) N)\n                α ≠\n              0 ↔\n            ⁅velocity, X u ∘ₗ (c • Dv) - X v ∘ₗ (c • Du)⁆ ≠ 0)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -44796,16 +44838,92 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "QuantumMechanics.SingleParticle.orbitalAngularMomentumZ_localizationCorrectionCurrentFlux_ne_zero_iff",
+    "name": "QuantumMechanics.SingleParticle.orbitalAngularMomentum_localizationCorrectionCurrentFlux_ne_zero_iff",
     "module": "LeanCondensedMatter.QuantumMechanics.SingleParticle.OrbitalAngularMomentumCurrent",
     "externalAxioms": [],
-    "docString": "Noncommutation of a localizer with `L_z` alone does *not* imply a nonzero\ncurrent correction. The exact criterion is the *double* commutator with velocity. ",
+    "docString": "Exact nonvanishing criterion for the *double* commutator. A\nlocalizer's noncommutation with orbital angular momentum alone is\nnot sufficient for a nonzero current correction. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "QuantumMechanics.SingleParticle.orbitalAngularMomentumZ_localizationCorrectionCurrentFlux_apply"
+      "QuantumMechanics.SingleParticle.orbitalAngularMomentum_localizationCorrectionCurrentFlux_apply"
     ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {E : Type u_1} {V : Type u_2} [inst : AddCommGroup E] [inst_1 : _root_.Module ℂ E] [inst_2 : AddCommGroup V]\n  [inst_3 : _root_.Module ℂ V] (X P : E →ₗ[ℂ] V →ₗ[ℂ] V) (u : E),\n  QuantumMechanics.SingleParticle.orbitalAngularMomentum X P u u = 0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumMechanics.SingleParticle.orbitalAngularMomentum_self",
+    "module": "LeanCondensedMatter.QuantumMechanics.SingleParticle.OrbitalAngularMomentum",
+    "externalAxioms": [],
+    "docString": "Orbital angular momentum vanishes on two equal directions. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {E : Type u_1} {V : Type u_2} [inst : AddCommGroup E] [inst_1 : _root_.Module ℂ E] [inst_2 : AddCommGroup V]\n  [inst_3 : _root_.Module ℂ V] (X P : E →ₗ[ℂ] V →ₗ[ℂ] V) (u v : E),\n  QuantumMechanics.SingleParticle.orbitalAngularMomentum X P v u =\n    -QuantumMechanics.SingleParticle.orbitalAngularMomentum X P u v",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumMechanics.SingleParticle.orbitalAngularMomentum_swap",
+    "module": "LeanCondensedMatter.QuantumMechanics.SingleParticle.OrbitalAngularMomentum",
+    "externalAxioms": [],
+    "docString": "Reversing the orientation of a plane reverses its orbital component. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [],
@@ -56896,158 +57014,6 @@
   },
   {
     "terminal": true,
-    "statement": "∀ (coordinate : QuantumTheory.Models.MassiveDirac.AheScalingCoordinate), coordinate.referenceEnergy ≠ 0",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Models.MassiveDirac.AheScalingCoordinate.referenceEnergy_ne_zero",
-    "module": "LeanCondensedMatter.Models.MassiveDirac.Scaling.Domain",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ (coordinate : QuantumTheory.Models.MassiveDirac.AheScalingCoordinate), coordinate.scatteringScale ≠ 0",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Models.MassiveDirac.AheScalingCoordinate.scatteringScale_ne_zero",
-    "module": "LeanCondensedMatter.Models.MassiveDirac.Scaling.Domain",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ (params : QuantumTheory.Models.MassiveDirac.AheScalingParameters), params.e ^ 2 ≠ 0",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Models.MassiveDirac.AheScalingParameters.charge_sq_ne_zero",
-    "module": "LeanCondensedMatter.Models.MassiveDirac.Scaling.Domain",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ (params : QuantumTheory.Models.MassiveDirac.AheScalingParameters), 0 < params.fermiEnergy",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Models.MassiveDirac.AheScalingParameters.fermiEnergy_pos",
-    "module": "LeanCondensedMatter.Models.MassiveDirac.Scaling.Domain",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
     "statement": "∀ (params : QuantumTheory.Models.MassiveDirac.AheScalingParameters) (broadening : ℝ),\n  (params.finiteBroadeningPair broadening).sxx =\n    params.normalizedComplexConductivity\n      ((QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensor\n            params.e params.v params.m params.fermiEnergy broadening params.disorderStrength params.hbar\n            params.pMax).component\n        0 0)",
     "standardAxioms": [
       "Classical.choice",
@@ -62978,9 +62944,9 @@
     ],
     "dependencies": [
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDenominatorIntegralBoundaryValue_im",
+      "QuantumTheory.Transport.fullAngleMomentumMeasurePrefactor_pos",
       "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornZeroBroadening.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornBoundaryRealRenormalization_eq_side",
-      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornZeroBroadening.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominatorZeroBroadeningBoundary_im_eq",
-      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornZeroBroadening.0.QuantumTheory.Models.MassiveDirac.fullAngleMomentumMeasurePrefactor_pos"
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornZeroBroadening.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominatorZeroBroadeningBoundary_im_eq"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -68650,10 +68616,10 @@
     "directWrapperOf": null,
     "dependents": [
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperator_x_eq_resummed",
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yx_eq_neg_xy",
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yy_eq_xx",
       "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.HallZeroBroadeningIntegral.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral_y_eq_endpointForm",
       "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.LongitudinalZeroBroadeningIntegral.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral_x_eq_endpointForm",
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.Radial.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yx_eq_neg_xy",
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.Radial.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yy_eq_xx",
       "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.RadialDenominator.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_y_eq_denominatorForm"
     ],
     "dependencies": [],
@@ -68661,10 +68627,10 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperator_x_eq_resummed",
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yx_eq_neg_xy",
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yy_eq_xx",
       "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.HallZeroBroadeningIntegral.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral_y_eq_endpointForm",
       "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.LongitudinalZeroBroadeningIntegral.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral_x_eq_endpointForm",
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.Radial.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yx_eq_neg_xy",
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.Radial.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yy_eq_xx",
       "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.RadialDenominator.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_y_eq_denominatorForm"
     ],
     "compiledConsumerCount": 6,
@@ -68701,16 +68667,16 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yx_eq_neg_xy",
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yy_eq_xx",
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.Radial.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yx_eq_neg_xy",
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.Radial.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yy_eq_xx",
       "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.RadialDenominator.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_y_eq_denominatorForm"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yx_eq_neg_xy",
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yy_eq_xx",
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.Radial.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yx_eq_neg_xy",
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.Radial.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yy_eq_xx",
       "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.RadialDenominator.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_y_eq_denominatorForm"
     ],
     "compiledConsumerCount": 3,
@@ -68911,108 +68877,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (e v m p probeEnergy broadening disorderStrength hbar pMax : ℝ),\n  QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient\n      1 0 e v m p probeEnergy broadening disorderStrength hbar pMax =\n    -QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient\n        0 1 e v m p probeEnergy broadening disorderStrength hbar pMax",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yx_eq_neg_xy",
-    "module": "LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.Radial",
-    "externalAxioms": [],
-    "docString": "Rotational closure makes the ordered `yx` radial coefficient the negative of `xy`. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceRadialIntegrand_yx_eq_neg_xy"
-    ],
-    "dependencies": [
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentCoefficientVector_x",
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentCoefficientVector_y",
-      "QuantumTheory.Models.MassiveDirac.inPlaneLadderAction_apply_x",
-      "QuantumTheory.Models.MassiveDirac.inPlaneLadderAction_apply_y",
-      "QuantumTheory.Models.MassiveDirac.inPlaneRotationMatrix_apply_x_x",
-      "QuantumTheory.Models.MassiveDirac.inPlaneRotationMatrix_apply_x_y",
-      "QuantumTheory.Models.MassiveDirac.inPlaneRotationMatrix_apply_y_x",
-      "QuantumTheory.Models.MassiveDirac.inPlaneRotationMatrix_apply_y_y"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceRadialIntegrand_yx_eq_neg_xy"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (e v m p probeEnergy broadening disorderStrength hbar pMax : ℝ),\n  QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient\n      1 1 e v m p probeEnergy broadening disorderStrength hbar pMax =\n    QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient\n      0 0 e v m p probeEnergy broadening disorderStrength hbar pMax",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yy_eq_xx",
-    "module": "LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.Radial",
-    "externalAxioms": [],
-    "docString": "Rotational closure makes the two diagonal radial coefficients equal. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceRadialIntegrand_yy_eq_xx"
-    ],
-    "dependencies": [
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentCoefficientVector_x",
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentCoefficientVector_y",
-      "QuantumTheory.Models.MassiveDirac.inPlaneLadderAction_apply_x",
-      "QuantumTheory.Models.MassiveDirac.inPlaneLadderAction_apply_y",
-      "QuantumTheory.Models.MassiveDirac.inPlaneRotationMatrix_apply_x_x",
-      "QuantumTheory.Models.MassiveDirac.inPlaneRotationMatrix_apply_x_y",
-      "QuantumTheory.Models.MassiveDirac.inPlaneRotationMatrix_apply_y_x",
-      "QuantumTheory.Models.MassiveDirac.inPlaneRotationMatrix_apply_y_y"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceRadialIntegrand_yy_eq_xx"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ (e v m probeEnergy disorderStrength hbar pMax : ℝ),\n  (QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensorZeroBroadeningBoundary\n          e v m probeEnergy disorderStrength hbar pMax).hallComponent\n      0 1 =\n    QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonOrderedXYRetardedAdvancedDressedSurfaceConductivityZeroBroadeningBoundary\n      e v m probeEnergy disorderStrength hbar pMax",
     "standardAxioms": [
       "Classical.choice",
@@ -69171,7 +69035,8 @@
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensor_component_yx_eq_neg_xy"
     ],
     "dependencies": [
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceRadialIntegrand_yx_eq_neg_xy"
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceRadialIntegrand_eq_radialCoefficient",
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.Radial.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yx_eq_neg_xy"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -69215,7 +69080,8 @@
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensor_component_yy_eq_xx"
     ],
     "dependencies": [
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceRadialIntegrand_yy_eq_xx"
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceRadialIntegrand_eq_radialCoefficient",
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.Radial.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yy_eq_xx"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -69257,8 +69123,8 @@
     "directWrapperOf": null,
     "dependents": [
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceRadialIntegrand_eq_denominatorForm",
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceRadialIntegrand_yx_eq_neg_xy",
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceRadialIntegrand_yy_eq_xx",
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral_yx_eq_neg_xy",
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral_yy_eq_xx",
       "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.LongitudinalZeroBroadeningIntegral.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral_x_eq_endpointForm"
     ],
     "dependencies": [
@@ -69268,101 +69134,11 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceRadialIntegrand_eq_denominatorForm",
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceRadialIntegrand_yx_eq_neg_xy",
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceRadialIntegrand_yy_eq_xx",
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral_yx_eq_neg_xy",
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral_yy_eq_xx",
       "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.LongitudinalZeroBroadeningIntegral.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral_x_eq_endpointForm"
     ],
     "compiledConsumerCount": 4,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (e v m p probeEnergy broadening disorderStrength hbar pMax : ℝ),\n  QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceRadialIntegrand 1 0 e v\n      m p probeEnergy broadening disorderStrength hbar pMax =\n    -QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceRadialIntegrand 0 1 e\n        v m p probeEnergy broadening disorderStrength hbar pMax",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceRadialIntegrand_yx_eq_neg_xy",
-    "module": "LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.Radial",
-    "externalAxioms": [],
-    "docString": "The finite-`η` ordered `yx` radial Středa response is the negative of `xy`. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral_yx_eq_neg_xy"
-    ],
-    "dependencies": [
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yx_eq_neg_xy",
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceRadialIntegrand_eq_radialCoefficient"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral_yx_eq_neg_xy"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (e v m p probeEnergy broadening disorderStrength hbar pMax : ℝ),\n  QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceRadialIntegrand 1 1 e v\n      m p probeEnergy broadening disorderStrength hbar pMax =\n    QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceRadialIntegrand 0 0 e\n      v m p probeEnergy broadening disorderStrength hbar pMax",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceRadialIntegrand_yy_eq_xx",
-    "module": "LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.Radial",
-    "externalAxioms": [],
-    "docString": "The two finite-`η` diagonal radial Středa responses are equal. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral_yy_eq_xx"
-    ],
-    "dependencies": [
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yy_eq_xx",
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceRadialIntegrand_eq_radialCoefficient"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral_yy_eq_xx"
-    ],
-    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -71165,14 +70941,14 @@
     "dependents": [
       "QuantumTheory.Models.MassiveDirac.continuumBornAngularRetardedAdvancedPauliXIntegral_eq",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_x_eq_denominatorForm",
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yx_eq_neg_xy",
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yy_eq_xx",
       "QuantumTheory.Models.MassiveDirac.inPlaneLadderAction_integrable_and_integral_eq",
       "QuantumTheory.Models.MassiveDirac.inPlaneLadderSolvedVector_eq_resummedLadderVertex",
       "QuantumTheory.Models.MassiveDirac.integral_polarPauliOperator_inPlane_eq",
       "QuantumTheory.Models.MassiveDirac.tendsto_disorderStrength_mul_finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceMomentumIntegralZeroBroadeningBoundary_disorder_zero",
       "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceMomentumIntegral_broadening_zero",
       "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.LongitudinalZeroBroadeningIntegral.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral_x_eq_endpointForm",
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.Radial.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yx_eq_neg_xy",
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.Radial.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yy_eq_xx",
       "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.RadialDenominator.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_y_eq_denominatorForm"
     ],
     "dependencies": [],
@@ -71181,14 +70957,14 @@
     "compiledConsumers": [
       "QuantumTheory.Models.MassiveDirac.continuumBornAngularRetardedAdvancedPauliXIntegral_eq",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_x_eq_denominatorForm",
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yx_eq_neg_xy",
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yy_eq_xx",
       "QuantumTheory.Models.MassiveDirac.inPlaneLadderAction_integrable_and_integral_eq",
       "QuantumTheory.Models.MassiveDirac.inPlaneLadderSolvedVector_eq_resummedLadderVertex",
       "QuantumTheory.Models.MassiveDirac.integral_polarPauliOperator_inPlane_eq",
       "QuantumTheory.Models.MassiveDirac.tendsto_disorderStrength_mul_finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceMomentumIntegralZeroBroadeningBoundary_disorder_zero",
       "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceMomentumIntegral_broadening_zero",
       "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.LongitudinalZeroBroadeningIntegral.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral_x_eq_endpointForm",
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.Radial.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yx_eq_neg_xy",
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.Radial.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yy_eq_xx",
       "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.RadialDenominator.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_y_eq_denominatorForm"
     ],
     "compiledConsumerCount": 11,
@@ -71227,14 +71003,14 @@
     "dependents": [
       "QuantumTheory.Models.MassiveDirac.continuumBornAngularRetardedAdvancedPauliXIntegral_eq",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonOrderedXYRetardedAdvancedDressedSurfaceMomentumIntegralZeroBroadeningBoundary_eq_rungSolvedProvenance",
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yx_eq_neg_xy",
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yy_eq_xx",
       "QuantumTheory.Models.MassiveDirac.inPlaneLadderAction_integrable_and_integral_eq",
       "QuantumTheory.Models.MassiveDirac.inPlaneLadderSolvedVector_eq_resummedLadderVertex",
       "QuantumTheory.Models.MassiveDirac.integral_polarPauliOperator_inPlane_eq",
       "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonLadderSolvedVectorZeroBroadeningBoundary_y_div_disorder_zero",
       "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonTransverseLadderActionZeroBroadeningBoundary_div_disorder_zero",
-      "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.HallZeroBroadeningIntegral.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral_y_eq_endpointForm"
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.HallZeroBroadeningIntegral.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral_y_eq_endpointForm",
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.Radial.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yx_eq_neg_xy",
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.Radial.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yy_eq_xx"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
@@ -71242,14 +71018,14 @@
     "compiledConsumers": [
       "QuantumTheory.Models.MassiveDirac.continuumBornAngularRetardedAdvancedPauliXIntegral_eq",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonOrderedXYRetardedAdvancedDressedSurfaceMomentumIntegralZeroBroadeningBoundary_eq_rungSolvedProvenance",
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yx_eq_neg_xy",
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yy_eq_xx",
       "QuantumTheory.Models.MassiveDirac.inPlaneLadderAction_integrable_and_integral_eq",
       "QuantumTheory.Models.MassiveDirac.inPlaneLadderSolvedVector_eq_resummedLadderVertex",
       "QuantumTheory.Models.MassiveDirac.integral_polarPauliOperator_inPlane_eq",
       "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonLadderSolvedVectorZeroBroadeningBoundary_y_div_disorder_zero",
       "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonTransverseLadderActionZeroBroadeningBoundary_div_disorder_zero",
-      "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.HallZeroBroadeningIntegral.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral_y_eq_endpointForm"
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.HallZeroBroadeningIntegral.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral_y_eq_endpointForm",
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.Radial.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yx_eq_neg_xy",
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.Radial.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yy_eq_xx"
     ],
     "compiledConsumerCount": 10,
     "axioms": [
@@ -71781,10 +71557,10 @@
     "dependents": [
       "QuantumTheory.Models.MassiveDirac.continuous_inPlaneRotationMatrix",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_x_eq_denominatorForm",
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yx_eq_neg_xy",
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yy_eq_xx",
       "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary_y_div_disorder_zero",
       "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.LongitudinalZeroBroadeningIntegral.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral_x_eq_endpointForm",
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.Radial.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yx_eq_neg_xy",
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.Radial.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yy_eq_xx",
       "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.RadialDenominator.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_y_eq_denominatorForm"
     ],
     "dependencies": [],
@@ -71793,10 +71569,10 @@
     "compiledConsumers": [
       "QuantumTheory.Models.MassiveDirac.continuous_inPlaneRotationMatrix",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_x_eq_denominatorForm",
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yx_eq_neg_xy",
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yy_eq_xx",
       "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary_y_div_disorder_zero",
       "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.LongitudinalZeroBroadeningIntegral.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral_x_eq_endpointForm",
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.Radial.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yx_eq_neg_xy",
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.Radial.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yy_eq_xx",
       "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.RadialDenominator.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_y_eq_denominatorForm"
     ],
     "compiledConsumerCount": 7,
@@ -71834,8 +71610,8 @@
     "directWrapperOf": null,
     "dependents": [
       "QuantumTheory.Models.MassiveDirac.continuous_inPlaneRotationMatrix",
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yx_eq_neg_xy",
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yy_eq_xx",
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.Radial.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yx_eq_neg_xy",
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.Radial.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yy_eq_xx",
       "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.RadialDenominator.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_y_eq_denominatorForm"
     ],
     "dependencies": [],
@@ -71843,8 +71619,8 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.Models.MassiveDirac.continuous_inPlaneRotationMatrix",
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yx_eq_neg_xy",
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yy_eq_xx",
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.Radial.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yx_eq_neg_xy",
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.Radial.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yy_eq_xx",
       "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.RadialDenominator.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_y_eq_denominatorForm"
     ],
     "compiledConsumerCount": 4,
@@ -71884,9 +71660,9 @@
       "QuantumTheory.Models.MassiveDirac.continuous_inPlaneRotationMatrix",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumeratorZeroBroadeningBoundary_yx_eq_disorder_mul",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_x_eq_denominatorForm",
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yx_eq_neg_xy",
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yy_eq_xx",
       "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.LongitudinalZeroBroadeningIntegral.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral_x_eq_endpointForm",
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.Radial.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yx_eq_neg_xy",
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.Radial.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yy_eq_xx",
       "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.RadialDenominator.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_y_eq_denominatorForm"
     ],
     "dependencies": [],
@@ -71896,9 +71672,9 @@
       "QuantumTheory.Models.MassiveDirac.continuous_inPlaneRotationMatrix",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumeratorZeroBroadeningBoundary_yx_eq_disorder_mul",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_x_eq_denominatorForm",
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yx_eq_neg_xy",
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yy_eq_xx",
       "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.LongitudinalZeroBroadeningIntegral.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral_x_eq_endpointForm",
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.Radial.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yx_eq_neg_xy",
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.Radial.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yy_eq_xx",
       "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.RadialDenominator.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_y_eq_denominatorForm"
     ],
     "compiledConsumerCount": 7,
@@ -71936,8 +71712,8 @@
     "directWrapperOf": null,
     "dependents": [
       "QuantumTheory.Models.MassiveDirac.continuous_inPlaneRotationMatrix",
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yx_eq_neg_xy",
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yy_eq_xx",
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.Radial.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yx_eq_neg_xy",
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.Radial.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yy_eq_xx",
       "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.RadialDenominator.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_y_eq_denominatorForm"
     ],
     "dependencies": [],
@@ -71945,8 +71721,8 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.Models.MassiveDirac.continuous_inPlaneRotationMatrix",
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yx_eq_neg_xy",
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yy_eq_xx",
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.Radial.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yx_eq_neg_xy",
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.Radial.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yy_eq_xx",
       "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.RadialDenominator.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_y_eq_denominatorForm"
     ],
     "compiledConsumerCount": 4,
@@ -78863,7 +78639,8 @@
     "dependencies": [
       "QuantumTheory.Models.MassiveDirac.inPlaneLadderAction_apply_x",
       "QuantumTheory.Models.MassiveDirac.tendsto_disorderStrength_mul_zeroBroadeningSameSideRadialEndpoint_disorder_zero",
-      "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonLongitudinalLadderActionZeroBroadeningBoundary_disorder_zero"
+      "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonLongitudinalLadderActionZeroBroadeningBoundary_disorder_zero",
+      "QuantumTheory.Transport.momentumMeasurePrefactor_pos"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -79758,7 +79535,8 @@
       "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonOrderedXYRetardedAdvancedDressedSurfaceConductivityZeroBroadeningBoundary_disorder_zero"
     ],
     "dependencies": [
-      "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonTransverseLadderActionZeroBroadeningBoundary_div_disorder_zero"
+      "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonTransverseLadderActionZeroBroadeningBoundary_div_disorder_zero",
+      "QuantumTheory.Transport.momentumMeasurePrefactor_pos"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -82727,8 +82505,84 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
+    "terminal": true,
+    "statement": "∀ (i : Fin 3) (r : ℝ), (QuantumTheory.Models.OrbitalRelaxation.evenQuarticCubature r fun k => k i ^ 4) = r ^ 4 / 5",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.OrbitalRelaxation.evenQuarticCubature_coordinate_four",
+    "module": "LeanCondensedMatter.Models.OrbitalRelaxation.Finite",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (i j : Fin 3),\n  i ≠ j →\n    ∀ (r : ℝ), (QuantumTheory.Models.OrbitalRelaxation.evenQuarticCubature r fun k => k i ^ 2 * k j ^ 2) = r ^ 4 / 15",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.OrbitalRelaxation.evenQuarticCubature_coordinate_sq_mul_coordinate_sq",
+    "module": "LeanCondensedMatter.Models.OrbitalRelaxation.Finite",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
     "terminal": false,
-    "statement": "∀ (c₁ c₂ r : ℝ),\n  QuantumTheory.Models.OrbitalRelaxation.evenQuarticCubature r\n      (QuantumTheory.Models.OrbitalRelaxation.orbitalZDoubleCommutator c₁ c₂) =\n    2 * r ^ 4 / 15 * (2 * c₁ ^ 2 + 3 * c₂ ^ 2)",
+    "statement": "∀ (axis : Fin 3) (c₁ c₂ r : ℝ),\n  QuantumTheory.Models.OrbitalRelaxation.evenQuarticCubature r\n      (QuantumTheory.Models.OrbitalRelaxation.orbitalDoubleCommutator axis c₁ c₂) =\n    2 * r ^ 4 / 15 * (2 * c₁ ^ 2 + 3 * c₂ ^ 2)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -82740,7 +82594,7 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "QuantumTheory.Models.OrbitalRelaxation.evenQuarticCubature_orbitalZDoubleCommutator",
+    "name": "QuantumTheory.Models.OrbitalRelaxation.evenQuarticCubature_orbitalDoubleCommutator",
     "module": "LeanCondensedMatter.Models.OrbitalRelaxation.Finite",
     "externalAxioms": [],
     "docString": null,
@@ -82750,8 +82604,8 @@
       "QuantumTheory.Models.OrbitalRelaxation.orbitalRate_eq"
     ],
     "dependencies": [
-      "QuantumTheory.Models.OrbitalRelaxation.evenQuarticCubature_orbitalZPolynomial",
-      "QuantumTheory.Models.OrbitalRelaxation.orbitalZDoubleCommutator_eq_polynomial"
+      "QuantumTheory.Models.OrbitalRelaxation.evenQuarticCubature_orbitalPolynomial",
+      "QuantumTheory.Models.OrbitalRelaxation.orbitalDoubleCommutator_eq_polynomial"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -82773,7 +82627,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (c₁ c₂ r : ℝ),\n  (QuantumTheory.Models.OrbitalRelaxation.evenQuarticCubature r fun k =>\n      QuantumTheory.Models.OrbitalRelaxation.orbitalZPolynomial c₁ c₂ (k 0) (k 1) (k 2)) =\n    2 * r ^ 4 / 15 * (2 * c₁ ^ 2 + 3 * c₂ ^ 2)",
+    "statement": "∀ (axis : Fin 3) (c₁ c₂ r : ℝ),\n  QuantumTheory.Models.OrbitalRelaxation.evenQuarticCubature r\n      (QuantumTheory.Models.OrbitalRelaxation.orbitalPolynomial axis c₁ c₂) =\n    2 * r ^ 4 / 15 * (2 * c₁ ^ 2 + 3 * c₂ ^ 2)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -82785,98 +82639,22 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "QuantumTheory.Models.OrbitalRelaxation.evenQuarticCubature_orbitalZPolynomial",
+    "name": "QuantumTheory.Models.OrbitalRelaxation.evenQuarticCubature_orbitalPolynomial",
     "module": "LeanCondensedMatter.Models.OrbitalRelaxation.Finite",
     "externalAxioms": [],
-    "docString": null,
+    "docString": "The angular mean of the orbital double-commutator polynomial is the\nsame for every Cartesian polarization axis, despite the anisotropic\nmomentum dependence before averaging. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Models.OrbitalRelaxation.evenQuarticCubature_orbitalZDoubleCommutator"
+      "QuantumTheory.Models.OrbitalRelaxation.evenQuarticCubature_orbitalDoubleCommutator"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Models.OrbitalRelaxation.evenQuarticCubature_orbitalZDoubleCommutator"
+      "QuantumTheory.Models.OrbitalRelaxation.evenQuarticCubature_orbitalDoubleCommutator"
     ],
     "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ (r : ℝ), (QuantumTheory.Models.OrbitalRelaxation.evenQuarticCubature r fun k => k 0 ^ 4) = r ^ 4 / 5",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Models.OrbitalRelaxation.evenQuarticCubature_x_four",
-    "module": "LeanCondensedMatter.Models.OrbitalRelaxation.Finite",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ (r : ℝ), (QuantumTheory.Models.OrbitalRelaxation.evenQuarticCubature r fun k => k 0 ^ 2 * k 1 ^ 2) = r ^ 4 / 15",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Models.OrbitalRelaxation.evenQuarticCubature_x_sq_y_sq",
-    "module": "LeanCondensedMatter.Models.OrbitalRelaxation.Finite",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -83004,6 +82782,48 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
+    "terminal": false,
+    "statement": "∀ (axis : Fin 3) (c₁ c₂ : ℝ) (k : Fin 3 → ℝ),\n  QuantumTheory.Models.OrbitalRelaxation.orbitalDoubleCommutator axis c₁ c₂ k =\n    QuantumTheory.Models.OrbitalRelaxation.orbitalPolynomial axis c₁ c₂ k",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.OrbitalRelaxation.orbitalDoubleCommutator_eq_polynomial",
+    "module": "LeanCondensedMatter.Models.OrbitalRelaxation.Finite",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.OrbitalRelaxation.evenQuarticCubature_orbitalDoubleCommutator"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.OrbitalRelaxation.evenQuarticCubature_orbitalDoubleCommutator"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
     "terminal": true,
     "statement": "∀ (c₁ c₂ : ℝ) (k : Fin 3 → ℝ),\n  QuantumTheory.Models.OrbitalRelaxation.orbitalHamiltonian c₁ c₂ (-k) =\n    QuantumTheory.Models.OrbitalRelaxation.orbitalHamiltonian c₁ c₂ k",
     "standardAxioms": [
@@ -83081,7 +82901,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (ℏ τ₂ c₁ c₂ r : ℝ),\n  QuantumTheory.Models.OrbitalRelaxation.orbitalRate ℏ τ₂ c₁ c₂ r =\n    2 * r ^ 4 / (15 * ℏ ^ 2) * (2 * c₁ ^ 2 + 3 * c₂ ^ 2) * τ₂",
+    "statement": "∀ (axis : Fin 3) (ℏ τ₂ c₁ c₂ r : ℝ),\n  QuantumTheory.Models.OrbitalRelaxation.orbitalRate axis ℏ τ₂ c₁ c₂ r =\n    2 * r ^ 4 / (15 * ℏ ^ 2) * (2 * c₁ ^ 2 + 3 * c₂ ^ 2) * τ₂",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -83103,7 +82923,7 @@
       "QuantumTheory.Models.OrbitalRelaxation.orbitalRate_nonneg"
     ],
     "dependencies": [
-      "QuantumTheory.Models.OrbitalRelaxation.evenQuarticCubature_orbitalZDoubleCommutator"
+      "QuantumTheory.Models.OrbitalRelaxation.evenQuarticCubature_orbitalDoubleCommutator"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -83125,7 +82945,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ (ℏ τ₂ c₁ c₂ r : ℝ), 0 ≤ τ₂ → 0 ≤ QuantumTheory.Models.OrbitalRelaxation.orbitalRate ℏ τ₂ c₁ c₂ r",
+    "statement": "∀ (axis : Fin 3) (ℏ τ₂ c₁ c₂ r : ℝ), 0 ≤ τ₂ → 0 ≤ QuantumTheory.Models.OrbitalRelaxation.orbitalRate axis ℏ τ₂ c₁ c₂ r",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -83151,48 +82971,6 @@
     "completedMention": false,
     "compiledConsumers": [],
     "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (c₁ c₂ : ℝ) (k : Fin 3 → ℝ),\n  QuantumTheory.Models.OrbitalRelaxation.orbitalZDoubleCommutator c₁ c₂ k =\n    QuantumTheory.Models.OrbitalRelaxation.orbitalZPolynomial c₁ c₂ (k 0) (k 1) (k 2)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Models.OrbitalRelaxation.orbitalZDoubleCommutator_eq_polynomial",
-    "module": "LeanCondensedMatter.Models.OrbitalRelaxation.Finite",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Models.OrbitalRelaxation.evenQuarticCubature_orbitalZDoubleCommutator"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Models.OrbitalRelaxation.evenQuarticCubature_orbitalZDoubleCommutator"
-    ],
-    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -95345,6 +95123,50 @@
   },
   {
     "terminal": false,
+    "statement": "∀ (hbar : ℝ), hbar ≠ 0 → 0 < QuantumTheory.Transport.fullAngleMomentumMeasurePrefactor hbar",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.fullAngleMomentumMeasurePrefactor_pos",
+    "module": "LeanCondensedMatter.Transport.Analysis.ContinuumMeasure",
+    "externalAxioms": [],
+    "docString": "Full-angle integration preserves positivity of the physical-momentum measure. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominatorZeroBroadeningBoundary_ne_zero"
+    ],
+    "dependencies": [
+      "QuantumTheory.Transport.momentumMeasurePrefactor_pos"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominatorZeroBroadeningBoundary_ne_zero"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ (n : ℕ), ↑(harmonic n) ≤ ↑n.factorial",
     "standardAxioms": [
       "Classical.choice",
@@ -96495,6 +96317,60 @@
       "QuantumTheory.Transport.eigenbasisLehmannVertexTerm_eq_bastinSpectral"
     ],
     "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (hbar : ℝ), hbar ≠ 0 → 0 < QuantumTheory.Transport.momentumMeasurePrefactor hbar",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.momentumMeasurePrefactor_pos",
+    "module": "LeanCondensedMatter.Transport.Analysis.ContinuumMeasure",
+    "externalAxioms": [],
+    "docString": "The two-dimensional physical-momentum normalization is positive when ℏ is nonzero. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.MassiveDirac.tendsto_disorderStrength_mul_finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceMomentumIntegralZeroBroadeningBoundary_disorder_zero",
+      "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonOrderedXYRetardedAdvancedDressedSurfaceMomentumIntegralZeroBroadeningBoundary_disorder_zero",
+      "QuantumTheory.Transport.fullAngleMomentumMeasurePrefactor_pos",
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.HallZeroBroadeningIntegral.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral_y_eq_endpointForm",
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.HallZeroBroadeningProvenance.0.QuantumTheory.Models.MassiveDirac.tendsto_orderedXYProvenance_rungXSolvedY_disorder_zero",
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.HallZeroBroadeningProvenance.0.QuantumTheory.Models.MassiveDirac.tendsto_orderedXYProvenance_rungYSolvedX_disorder_zero",
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.LongitudinalZeroBroadeningIntegral.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral_x_eq_endpointForm"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.tendsto_disorderStrength_mul_finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceMomentumIntegralZeroBroadeningBoundary_disorder_zero",
+      "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonOrderedXYRetardedAdvancedDressedSurfaceMomentumIntegralZeroBroadeningBoundary_disorder_zero",
+      "QuantumTheory.Transport.fullAngleMomentumMeasurePrefactor_pos",
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.HallZeroBroadeningIntegral.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral_y_eq_endpointForm",
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.HallZeroBroadeningProvenance.0.QuantumTheory.Models.MassiveDirac.tendsto_orderedXYProvenance_rungXSolvedY_disorder_zero",
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.HallZeroBroadeningProvenance.0.QuantumTheory.Models.MassiveDirac.tendsto_orderedXYProvenance_rungYSolvedX_disorder_zero",
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.LongitudinalZeroBroadeningIntegral.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral_x_eq_endpointForm"
+    ],
+    "compiledConsumerCount": 7,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -107121,7 +106997,7 @@
       "SecondQuantization.Bosonic.FreeThermalField.operator_comp_orderedProduct_eq_operatorPeelSum",
       "SecondQuantization.Bosonic.FreeThermalField.orderedProduct_append_singleton",
       "SecondQuantization.Bosonic.FreeThermalField.orderedProduct_mem_grandCanonicalGibbsDomain",
-      "SecondQuantization.Bosonic.grandCanonicalGibbsExpectation_add"
+      "SecondQuantization.Common.tsumTrace_add"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -107169,8 +107045,8 @@
     "dependencies": [
       "ScalarExchange.peelSum_eq_sum",
       "SecondQuantization.Bosonic.FreeThermalField.orderedProduct_mem_grandCanonicalGibbsDomain",
-      "SecondQuantization.Bosonic.grandCanonicalGibbsExpectation_smul",
-      "SecondQuantization.Bosonic.grandCanonicalGibbsExpectation_sum_of_summable"
+      "SecondQuantization.Bosonic.grandCanonicalGibbsExpectation_sum_of_summable",
+      "SecondQuantization.Common.tsumTrace_smul"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -107892,6 +107768,50 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {Mode : Type u_1} [inst : Fintype Mode] [inst_1 : DecidableEq Mode] (i : Mode),\n  SecondQuantization.Bosonic.annihilateVector (EuclideanSpace.single i 1) = SecondQuantization.Bosonic.annihilate i",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Bosonic.annihilateVector_single",
+    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.FiniteModes",
+    "externalAxioms": [],
+    "docString": "Annihilation in a coordinate basis vector is the corresponding site annihilation. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "Models.Heisenberg.QuadraticMagnon.excitationHamiltonian_eq_secondQuantization",
+      "SecondQuantization.Bosonic.secondQuantization_comp_oneParticleEmbedding"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "Models.Heisenberg.QuadraticMagnon.excitationHamiltonian_eq_secondQuantization",
+      "SecondQuantization.Bosonic.secondQuantization_comp_oneParticleEmbedding"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {Mode : Type u_1} (i : Mode) (n : SecondQuantization.Bosonic.Occupation Mode),\n  (SecondQuantization.Bosonic.annihilate i) (SecondQuantization.Bosonic.basisState n) =\n    ↑√↑(n i) • SecondQuantization.Bosonic.basisState (SecondQuantization.Bosonic.removeOccupation i n)",
     "standardAxioms": [
       "Classical.choice",
@@ -108202,7 +108122,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": true,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -108214,7 +108134,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Bosonic.oneParticleEmbedding_injective"
+      "SecondQuantization.Bosonic.oneParticleEmbedding_injective",
+      "SecondQuantization.Bosonic.secondQuantization_comp_oneParticleEmbedding"
     ],
     "dependencies": [
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.OneParticle.0.SecondQuantization.Bosonic.annihilate_basisState_singleOccupation"
@@ -108222,9 +108143,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Bosonic.oneParticleEmbedding_injective"
+      "SecondQuantization.Bosonic.oneParticleEmbedding_injective",
+      "SecondQuantization.Bosonic.secondQuantization_comp_oneParticleEmbedding"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -110802,7 +110724,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ {Mode : Type u_1} [inst : Fintype Mode] (v : EuclideanSpace ℂ Mode),\n  (SecondQuantization.Bosonic.createVector v) SecondQuantization.Bosonic.fockVacuum =\n    SecondQuantization.Bosonic.oneParticleEmbedding v",
     "standardAxioms": [
       "Classical.choice",
@@ -110810,7 +110732,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -110821,14 +110743,60 @@
     "docString": "The embedded vector is obtained by creating that one-particle amplitude from the vacuum. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "SecondQuantization.Bosonic.secondQuantization_comp_oneParticleEmbedding"
+    ],
     "dependencies": [
       "SecondQuantization.Bosonic.create_fockVacuum"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "SecondQuantization.Bosonic.secondQuantization_comp_oneParticleEmbedding"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} [inst : Fintype Mode] [inst_1 : DecidableEq Mode] (i : Mode),\n  SecondQuantization.Bosonic.createVector (EuclideanSpace.single i 1) = SecondQuantization.Bosonic.create i",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Bosonic.createVector_single",
+    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.FiniteModes",
+    "externalAxioms": [],
+    "docString": "Creation in a coordinate basis vector is the corresponding site creation. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "Models.Heisenberg.QuadraticMagnon.excitationHamiltonian_eq_secondQuantization"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "Models.Heisenberg.QuadraticMagnon.excitationHamiltonian_eq_secondQuantization"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -110982,7 +110950,6 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Bosonic.createVector_fockVacuum",
-      "SecondQuantization.Bosonic.secondQuantization_comp_oneParticleEmbedding",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.OneParticle.0.SecondQuantization.Bosonic.annihilate_basisState_singleOccupation"
     ],
     "dependencies": [
@@ -110992,10 +110959,9 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Bosonic.createVector_fockVacuum",
-      "SecondQuantization.Bosonic.secondQuantization_comp_oneParticleEmbedding",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.OneParticle.0.SecondQuantization.Bosonic.annihilate_basisState_singleOccupation"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -111975,9 +111941,9 @@
       "SecondQuantization.Bosonic.FreeThermalField.orderedProduct_mem_grandCanonicalGibbsDomain",
       "SecondQuantization.Bosonic.dysonCoeff_quarticInteractionOn_eq_sum",
       "SecondQuantization.Bosonic.grandCanonicalGibbsExpectation_eq_sum_pairing_concrete",
-      "SecondQuantization.Bosonic.grandCanonicalGibbsExpectation_smul",
       "SecondQuantization.Bosonic.grandCanonicalGibbsExpectation_sum_of_summable",
-      "SecondQuantization.Bosonic.quarticFreeThermalOrderedProduct_eq_quarticVertexSequenceOperator"
+      "SecondQuantization.Bosonic.quarticFreeThermalOrderedProduct_eq_quarticVertexSequenceOperator",
+      "SecondQuantization.Common.tsumTrace_smul"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -112028,50 +111994,6 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Bosonic.factorial_mul_grandCanonicalGibbsDysonCoeff_quarticInteraction_eq_sum_dysonThermalAmplitude"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) (β μ : ℝ)\n  {A B : SecondQuantization.Bosonic.FockSpace Mode →ₗ[ℂ] SecondQuantization.Bosonic.FockSpace Mode},\n  A ∈ SecondQuantization.Bosonic.grandCanonicalGibbsDomain ε β μ →\n    B ∈ SecondQuantization.Bosonic.grandCanonicalGibbsDomain ε β μ →\n      SecondQuantization.Bosonic.grandCanonicalGibbsExpectation ε β μ (A + B) =\n        SecondQuantization.Bosonic.grandCanonicalGibbsExpectation ε β μ A +\n          SecondQuantization.Bosonic.grandCanonicalGibbsExpectation ε β μ B",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Bosonic.grandCanonicalGibbsExpectation_add",
-    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.ConvergenceAwareGibbs",
-    "externalAxioms": [],
-    "docString": "The normalized free Gibbs expectation is additive on its explicit summability domain. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Bosonic.FreeThermalField.grandCanonicalGibbsExpectation_cons_eq_kmsRatio_mul_operatorPeelSum"
-    ],
-    "dependencies": [
-      "SecondQuantization.Common.tsumTrace_add"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Bosonic.FreeThermalField.grandCanonicalGibbsExpectation_cons_eq_kmsRatio_mul_operatorPeelSum"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -112301,7 +112223,7 @@
       "SecondQuantization.Bosonic.grandCanonicalGibbsExpectation_annihilate_comp_create_concrete",
       "SecondQuantization.Bosonic.grandCanonicalGibbsExpectation_create_comp_annihilate_concrete",
       "SecondQuantization.Common.CarriesShift.comp",
-      "SecondQuantization.Common.diagonalTraceRatio_eq_zero_of_carriesShift"
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.ConcretePairKernel.0.SecondQuantization.Bosonic.grandCanonicalGibbsExpectation_eq_zero_of_charge"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -112309,52 +112231,6 @@
       "SecondQuantization.Bosonic.FreeThermalField.grandCanonicalKmsRatio_mul_exchangeValue_eq_freeThermalPairValue"
     ],
     "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) (β μ : ℝ) (c : ℂ)\n  (A : SecondQuantization.Bosonic.FockSpace Mode →ₗ[ℂ] SecondQuantization.Bosonic.FockSpace Mode),\n  SecondQuantization.Bosonic.grandCanonicalGibbsExpectation ε β μ (c • A) =\n    c * SecondQuantization.Bosonic.grandCanonicalGibbsExpectation ε β μ A",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Bosonic.grandCanonicalGibbsExpectation_smul",
-    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.ConvergenceAwareGibbs",
-    "externalAxioms": [],
-    "docString": "The normalized free Gibbs expectation is homogeneous on algebraic-Fock endomorphisms. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Bosonic.FreeThermalField.grandCanonicalGibbsExpectation_operatorPeelSum_eq_sum",
-      "SecondQuantization.Bosonic.grandCanonicalGibbsDysonCoeff_quarticInteractionOn_eq_sum_pairingEvaluation"
-    ],
-    "dependencies": [
-      "SecondQuantization.Common.tsumTrace_smul"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Bosonic.FreeThermalField.grandCanonicalGibbsExpectation_operatorPeelSum_eq_sum",
-      "SecondQuantization.Bosonic.grandCanonicalGibbsDysonCoeff_quarticInteractionOn_eq_sum_pairingEvaluation"
-    ],
-    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -113452,7 +113328,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": false,
+    "terminal": true,
     "statement": "∀ {Mode : Type u_1} [inst : Fintype Mode] (i : Mode),\n  SecondQuantization.Bosonic.oneParticleEmbedding (EuclideanSpace.single i 1) =\n    SecondQuantization.Bosonic.basisState (SecondQuantization.Bosonic.singleOccupation i)",
     "standardAxioms": [
       "Classical.choice",
@@ -113460,7 +113336,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": true,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -113471,16 +113347,12 @@
     "docString": "The one-particle embedding sends a site basis vector to its one-boson occupation state. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Bosonic.secondQuantization_comp_oneParticleEmbedding"
-    ],
+    "dependents": [],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Bosonic.secondQuantization_comp_oneParticleEmbedding"
-    ],
-    "compiledConsumerCount": 1,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -114275,9 +114147,10 @@
       "Models.Heisenberg.QuadraticMagnon.excitationHamiltonian_comp_oneParticleEmbedding"
     ],
     "dependencies": [
-      "SecondQuantization.Bosonic.create_fockVacuum",
-      "SecondQuantization.Bosonic.oneParticleEmbedding_single",
-      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.OneParticle.0.SecondQuantization.Bosonic.annihilate_basisState_singleOccupation"
+      "SecondQuantization.Bosonic.annihilateVector_single",
+      "SecondQuantization.Bosonic.annihilate_oneParticleEmbedding",
+      "SecondQuantization.Bosonic.createVector_fockVacuum",
+      "SecondQuantization.Bosonic.secondQuantization_eq_sum_of_basis"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -114285,6 +114158,54 @@
       "Models.Heisenberg.QuadraticMagnon.excitationHamiltonian_comp_oneParticleEmbedding"
     ],
     "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} [inst : Fintype Mode] {ι : Type u_2} [inst_1 : Fintype ι]\n  (b : OrthonormalBasis ι ℂ (EuclideanSpace ℂ Mode)) (T : Module.End ℂ (EuclideanSpace ℂ Mode)),\n  SecondQuantization.Bosonic.secondQuantization T =\n    ∑ q, SecondQuantization.Bosonic.createVector (T (b q)) ∘ₗ SecondQuantization.Bosonic.annihilateVector (b q)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Bosonic.secondQuantization_eq_sum_of_basis",
+    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.FiniteModes",
+    "externalAxioms": [],
+    "docString": "Every finite orthonormal basis gives the same number-conserving quadratic operator. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "Models.Heisenberg.QuadraticMagnon.excitationHamiltonian_eq_secondQuantization",
+      "SecondQuantization.Bosonic.secondQuantization_comp_oneParticleEmbedding",
+      "SecondQuantization.Bosonic.secondQuantization_eq_sum_of_eigenbasis"
+    ],
+    "dependencies": [
+      "SecondQuantization.Bosonic.secondQuantization_rankOne"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "Models.Heisenberg.QuadraticMagnon.excitationHamiltonian_eq_secondQuantization",
+      "SecondQuantization.Bosonic.secondQuantization_comp_oneParticleEmbedding",
+      "SecondQuantization.Bosonic.secondQuantization_eq_sum_of_eigenbasis"
+    ],
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -114320,11 +114241,55 @@
     "dependents": [
       "Models.Heisenberg.QuadraticMagnon.excitationHamiltonian_eq_sum_fourier"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "SecondQuantization.Bosonic.secondQuantization_eq_sum_of_basis"
+    ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
       "Models.Heisenberg.QuadraticMagnon.excitationHamiltonian_eq_sum_fourier"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} [inst : Fintype Mode] (v w : EuclideanSpace ℂ Mode),\n  SecondQuantization.Bosonic.secondQuantization ↑(((InnerProductSpace.rankOne ℂ) v) w) =\n    SecondQuantization.Bosonic.createVector v ∘ₗ SecondQuantization.Bosonic.annihilateVector w",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Bosonic.secondQuantization_rankOne",
+    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.FiniteModes",
+    "externalAxioms": [],
+    "docString": "A rank-one one-particle operator lifts to its normal-ordered field product. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Bosonic.secondQuantization_eq_sum_of_basis"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Bosonic.secondQuantization_eq_sum_of_basis"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -130798,8 +130763,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Bosonic.grandCanonicalGibbsExpectation_orderedProduct_pair_eq_freeThermalPairValue",
-      "SecondQuantization.Common.summableDiagonalTraceRatioLinear_eq_zero_of_carriesShift"
+      "SecondQuantization.Common.summableDiagonalTraceRatioLinear_eq_zero_of_carriesShift",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.ConcretePairKernel.0.SecondQuantization.Bosonic.grandCanonicalGibbsExpectation_eq_zero_of_charge"
     ],
     "dependencies": [
       "SecondQuantization.Common.tsumTrace_diagonalOperator_comp_eq_zero_of_carriesShift"
@@ -130807,8 +130772,8 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Bosonic.grandCanonicalGibbsExpectation_orderedProduct_pair_eq_freeThermalPairValue",
-      "SecondQuantization.Common.summableDiagonalTraceRatioLinear_eq_zero_of_carriesShift"
+      "SecondQuantization.Common.summableDiagonalTraceRatioLinear_eq_zero_of_carriesShift",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.ConcretePairKernel.0.SecondQuantization.Bosonic.grandCanonicalGibbsExpectation_eq_zero_of_charge"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -141131,14 +141096,14 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Bosonic.grandCanonicalGibbsExpectation_add",
+      "SecondQuantization.Bosonic.FreeThermalField.grandCanonicalGibbsExpectation_cons_eq_kmsRatio_mul_operatorPeelSum",
       "SecondQuantization.Common.tsumTrace_diagonalEvolution_comp_peel"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Bosonic.grandCanonicalGibbsExpectation_add",
+      "SecondQuantization.Bosonic.FreeThermalField.grandCanonicalGibbsExpectation_cons_eq_kmsRatio_mul_operatorPeelSum",
       "SecondQuantization.Common.tsumTrace_diagonalEvolution_comp_peel"
     ],
     "compiledConsumerCount": 2,
@@ -141403,7 +141368,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Bosonic.grandCanonicalGibbsExpectation_smul",
+      "SecondQuantization.Bosonic.FreeThermalField.grandCanonicalGibbsExpectation_operatorPeelSum_eq_sum",
+      "SecondQuantization.Bosonic.grandCanonicalGibbsDysonCoeff_quarticInteractionOn_eq_sum_pairingEvaluation",
       "SecondQuantization.Common.normalizedTsumTrace_comp_eq_div_of_zetaCommutator",
       "SecondQuantization.Common.tsumTrace_diagonalEvolution_comp_peel",
       "SecondQuantization.Common.tsumTrace_diagonalEvolution_comp_rotate",
@@ -141413,13 +141379,14 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Bosonic.grandCanonicalGibbsExpectation_smul",
+      "SecondQuantization.Bosonic.FreeThermalField.grandCanonicalGibbsExpectation_operatorPeelSum_eq_sum",
+      "SecondQuantization.Bosonic.grandCanonicalGibbsDysonCoeff_quarticInteractionOn_eq_sum_pairingEvaluation",
       "SecondQuantization.Common.normalizedTsumTrace_comp_eq_div_of_zetaCommutator",
       "SecondQuantization.Common.tsumTrace_diagonalEvolution_comp_peel",
       "SecondQuantization.Common.tsumTrace_diagonalEvolution_comp_rotate",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.FreeKMSRotation.0.SecondQuantization.Bosonic.tsumTrace_rotate_of_comp_eq_smul"
     ],
-    "compiledConsumerCount": 5,
+    "compiledConsumerCount": 6,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -163196,7 +163163,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -163208,15 +163175,17 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "Models.Heisenberg.QuadraticMagnon.excitationHamiltonian_eq_secondQuantization",
       "Models.Heisenberg.excitationHamiltonian_comp_oneMagnonEmbedding"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "Models.Heisenberg.QuadraticMagnon.excitationHamiltonian_eq_secondQuantization",
       "Models.Heisenberg.excitationHamiltonian_comp_oneMagnonEmbedding"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -174939,48 +174908,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (hbar : ℝ), hbar ≠ 0 → 0 < QuantumTheory.Transport.fullAngleMomentumMeasurePrefactor hbar",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornZeroBroadening.0.QuantumTheory.Models.MassiveDirac.fullAngleMomentumMeasurePrefactor_pos",
-    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornZeroBroadening",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominatorZeroBroadeningBoundary_ne_zero"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominatorZeroBroadeningBoundary_ne_zero"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ (side : QuantumTheory.Transport.SpectralSide) (v m probeEnergy disorderStrength hbar pMax : ℝ),\n  (∀ p ∈ Set.Icc 0 pMax,\n      QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProductZeroBroadeningBoundary\n          v m p probeEnergy disorderStrength hbar pMax ≠\n        0) →\n    ∀ p ∈ Set.Icc 0 pMax,\n      QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominatorZeroBroadeningBoundary side v m p\n          probeEnergy disorderStrength hbar pMax ≠\n        0",
     "standardAxioms": [
       "Classical.choice",
@@ -176274,7 +176201,8 @@
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct_ne_zero",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentCoefficientVector_x",
       "QuantumTheory.Models.MassiveDirac.inPlaneLadderAction_apply_y",
-      "QuantumTheory.Models.MassiveDirac.inPlaneLadderAction_integrable_and_integral_eq"
+      "QuantumTheory.Models.MassiveDirac.inPlaneLadderAction_integrable_and_integral_eq",
+      "QuantumTheory.Transport.momentumMeasurePrefactor_pos"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -176319,7 +176247,8 @@
     ],
     "dependencies": [
       "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary_disorder_zero",
-      "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonLadderSolvedVectorZeroBroadeningBoundary_y_div_disorder_zero"
+      "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonLadderSolvedVectorZeroBroadeningBoundary_y_div_disorder_zero",
+      "QuantumTheory.Transport.momentumMeasurePrefactor_pos"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -176364,7 +176293,8 @@
     ],
     "dependencies": [
       "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary_y_div_disorder_zero",
-      "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonLadderSolvedVectorZeroBroadeningBoundary_disorder_zero"
+      "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonLadderSolvedVectorZeroBroadeningBoundary_disorder_zero",
+      "QuantumTheory.Transport.momentumMeasurePrefactor_pos"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -176502,7 +176432,8 @@
       "QuantumTheory.Models.MassiveDirac.inPlaneLadderAction_apply_x",
       "QuantumTheory.Models.MassiveDirac.inPlaneLadderAction_integrable_and_integral_eq",
       "QuantumTheory.Models.MassiveDirac.inPlaneRotationMatrix_apply_x_x",
-      "QuantumTheory.Models.MassiveDirac.inPlaneRotationMatrix_apply_y_x"
+      "QuantumTheory.Models.MassiveDirac.inPlaneRotationMatrix_apply_y_x",
+      "QuantumTheory.Transport.momentumMeasurePrefactor_pos"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -176598,6 +176529,108 @@
       "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.Radial.0.QuantumTheory.Models.MassiveDirac.intervalIntegrable_polarPauli_rung"
     ],
     "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (e v m p probeEnergy broadening disorderStrength hbar pMax : ℝ),\n  QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient\n      1 0 e v m p probeEnergy broadening disorderStrength hbar pMax =\n    -QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient\n        0 1 e v m p probeEnergy broadening disorderStrength hbar pMax",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.Radial.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yx_eq_neg_xy",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.Radial",
+    "externalAxioms": [],
+    "docString": "Rotational closure makes the ordered `yx` radial coefficient the negative of `xy`. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral_yx_eq_neg_xy"
+    ],
+    "dependencies": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentCoefficientVector_x",
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentCoefficientVector_y",
+      "QuantumTheory.Models.MassiveDirac.inPlaneLadderAction_apply_x",
+      "QuantumTheory.Models.MassiveDirac.inPlaneLadderAction_apply_y",
+      "QuantumTheory.Models.MassiveDirac.inPlaneRotationMatrix_apply_x_x",
+      "QuantumTheory.Models.MassiveDirac.inPlaneRotationMatrix_apply_x_y",
+      "QuantumTheory.Models.MassiveDirac.inPlaneRotationMatrix_apply_y_x",
+      "QuantumTheory.Models.MassiveDirac.inPlaneRotationMatrix_apply_y_y"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral_yx_eq_neg_xy"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (e v m p probeEnergy broadening disorderStrength hbar pMax : ℝ),\n  QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient\n      1 1 e v m p probeEnergy broadening disorderStrength hbar pMax =\n    QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient\n      0 0 e v m p probeEnergy broadening disorderStrength hbar pMax",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.Radial.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yy_eq_xx",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.Radial",
+    "externalAxioms": [],
+    "docString": "Rotational closure makes the two diagonal radial coefficients equal. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral_yy_eq_xx"
+    ],
+    "dependencies": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentCoefficientVector_x",
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentCoefficientVector_y",
+      "QuantumTheory.Models.MassiveDirac.inPlaneLadderAction_apply_x",
+      "QuantumTheory.Models.MassiveDirac.inPlaneLadderAction_apply_y",
+      "QuantumTheory.Models.MassiveDirac.inPlaneRotationMatrix_apply_x_x",
+      "QuantumTheory.Models.MassiveDirac.inPlaneRotationMatrix_apply_x_y",
+      "QuantumTheory.Models.MassiveDirac.inPlaneRotationMatrix_apply_y_x",
+      "QuantumTheory.Models.MassiveDirac.inPlaneRotationMatrix_apply_y_y"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral_yy_eq_xx"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -183222,7 +183255,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -183234,8 +183267,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Bosonic.annihilate_oneParticleEmbedding",
-      "SecondQuantization.Bosonic.secondQuantization_comp_oneParticleEmbedding"
+      "SecondQuantization.Bosonic.annihilate_oneParticleEmbedding"
     ],
     "dependencies": [
       "ScalarExchange.zetaCommutator_apply",
@@ -183248,10 +183280,9 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Bosonic.annihilate_oneParticleEmbedding",
-      "SecondQuantization.Bosonic.secondQuantization_comp_oneParticleEmbedding"
+      "SecondQuantization.Bosonic.annihilate_oneParticleEmbedding"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -184410,6 +184441,50 @@
     "completedMention": false,
     "compiledConsumers": [],
     "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) (β μ : ℝ)\n  {A : SecondQuantization.Bosonic.FockSpace Mode →ₗ[ℂ] SecondQuantization.Bosonic.FockSpace Mode} {q : ℤ},\n  SecondQuantization.Common.CarriesShift (fun n => ↑(SecondQuantization.Bosonic.particleNumber n)) A q →\n    q ≠ 0 → SecondQuantization.Bosonic.grandCanonicalGibbsExpectation ε β μ A = 0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.ConcretePairKernel.0.SecondQuantization.Bosonic.grandCanonicalGibbsExpectation_eq_zero_of_charge",
+    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.ConcretePairKernel",
+    "externalAxioms": [],
+    "docString": "A nonzero particle-number charge has zero free grand-canonical Gibbs expectation. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Bosonic.grandCanonicalGibbsExpectation_orderedProduct_pair_eq_freeThermalPairValue"
+    ],
+    "dependencies": [
+      "SecondQuantization.Common.diagonalTraceRatio_eq_zero_of_carriesShift"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Bosonic.grandCanonicalGibbsExpectation_orderedProduct_pair_eq_freeThermalPairValue"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
