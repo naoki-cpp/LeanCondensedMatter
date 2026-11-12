@@ -28,11 +28,11 @@ variable {Mode : Type*}
 local instance instDecidableEqCreationAnnihilation : DecidableEq Mode := Classical.decEq Mode
 
 /-- Creation on a basis state: `√(n_i + 1) • |n + e_i⟩`. -/
-noncomputable def createBasis (i : Mode) (n : Occupation Mode) : FockSpace Mode :=
+private noncomputable def createBasis (i : Mode) (n : Occupation Mode) : FockSpace Mode :=
   (Real.sqrt (n i + 1 : ℝ) : ℂ) • basisState (createOccupation i n)
 
 /-- Annihilation on a basis state, vanishing when mode `i` is unoccupied. -/
-noncomputable def annihilateBasis (i : Mode) (n : Occupation Mode) : FockSpace Mode :=
+private noncomputable def annihilateBasis (i : Mode) (n : Occupation Mode) : FockSpace Mode :=
   if n i = 0 then 0 else (Real.sqrt (n i : ℝ) : ℂ) • basisState (removeOccupation i n)
 
 /-- The creation operator at mode `i`. -/
@@ -43,20 +43,16 @@ noncomputable def create (i : Mode) : FockSpace Mode →ₗ[ℂ] FockSpace Mode 
 noncomputable def annihilate (i : Mode) : FockSpace Mode →ₗ[ℂ] FockSpace Mode :=
   Finsupp.lift (FockSpace Mode) ℂ (Occupation Mode) (annihilateBasis i)
 
-theorem create_basisState (i : Mode) (n : Occupation Mode) :
-    create i (basisState n) = createBasis i n := by
-  change Finsupp.lift _ ℂ _ (createBasis i) (Finsupp.single n 1) = createBasis i n
-  simp [Finsupp.lift_apply, Finsupp.sum_single_index]
-
-theorem annihilate_basisState (i : Mode) (n : Occupation Mode) :
+private theorem annihilate_basisState (i : Mode) (n : Occupation Mode) :
     annihilate i (basisState n) = annihilateBasis i n := by
   change Finsupp.lift _ ℂ _ (annihilateBasis i) (Finsupp.single n 1) = annihilateBasis i n
   simp [Finsupp.lift_apply, Finsupp.sum_single_index]
 
 /-- Creation raises the occupation at mode `i`. -/
 theorem create_basisState_eq (i : Mode) (n : Occupation Mode) :
-    create i (basisState n) = (Real.sqrt (n i + 1 : ℝ) : ℂ) • basisState (createOccupation i n) :=
-  create_basisState i n
+    create i (basisState n) = (Real.sqrt (n i + 1 : ℝ) : ℂ) • basisState (createOccupation i n) := by
+  change Finsupp.lift _ ℂ _ (createBasis i) (Finsupp.single n 1) = createBasis i n
+  simp [Finsupp.lift_apply, Finsupp.sum_single_index]
 
 @[simp]
 theorem annihilate_basisState_of_zero {i : Mode} {n : Occupation Mode} (h : n i = 0) :
