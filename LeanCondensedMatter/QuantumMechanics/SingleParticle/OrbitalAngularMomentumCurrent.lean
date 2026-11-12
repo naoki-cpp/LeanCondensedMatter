@@ -6,13 +6,15 @@ set_option linter.style.header false
 /-!
 # Orbital angular momentum in the weak-current representation
 
-Connect the existing continuum-like orbital-localizer commutator to the canonical
-symmetrized-current correction and its Heisenberg transport functional.
+The orbital component is taken in any oriented plane of the complexified
+direction space. Its localization commutator feeds the canonical generic
+symmetrized-current correction and the Heisenberg transport functional.
 
-The correction need not vanish when a localizer fails to commute with orbital angular momentum:
-it vanishes precisely when the *velocity* commutes with that orbital-localization obstruction.
-These are algebraic statements on a shared operator domain, not a unique local current-density
-formula, an unbounded continuum realization, or a torque-dipole (proper-current) identity.
+A nonzero orbital-localization commutator does not by itself imply a
+nonzero current correction: the velocity must fail to commute with the
+localization obstruction. These are algebraic operator identities, not
+a unique local current density, unbounded continuum realization, or
+torque-dipole (proper-current) identity.
 -/
 
 namespace QuantumMechanics
@@ -20,76 +22,80 @@ namespace SingleParticle
 
 attribute [local instance 100] LieRing.ofAssociativeRing
 
-variable {V OneForm : Type*}
+variable {E V OneForm : Type*}
+variable [AddCommGroup E] [Module ℂ E]
 variable [AddCommGroup V] [Module ℂ V]
 variable [AddCommGroup OneForm] [Module ℂ OneForm]
 
-/-- For `L_z = X P_y - Y P_x`, identify the *existing* localization-current correction
-with the commutator of the velocity and the derivative-localizer obstruction.
-The coefficient `c` can be instantiated with `iℏ` in the continuum-sign convention. -/
-theorem orbitalAngularMomentumZ_localizationCorrectionCurrentFlux_apply
-    (velocity X Y Px Py : V →ₗ[ℂ] V)
+/-- The orbital localization-current correction for arbitrary directions
+`u,v`, expressed by the velocity commutator with the directional
+derivative-localizer obstruction. -/
+theorem orbitalAngularMomentum_localizationCorrectionCurrentFlux_apply
+    (velocity : V →ₗ[ℂ] V) (X P : E →ₗ[ℂ] (V →ₗ[ℂ] V)) (u v : E)
     (N : OneForm →ₗ[ℂ] (V →ₗ[ℂ] V))
-    (α : OneForm) (Dx Dy : V →ₗ[ℂ] V) (c : ℂ)
-    (hX : ⁅N α, X⁆ = 0) (hY : ⁅N α, Y⁆ = 0)
-    (hPx : ⁅N α, Px⁆ = c • Dx)
-    (hPy : ⁅N α, Py⁆ = c • Dy) :
+    (α : OneForm) (Du Dv : V →ₗ[ℂ] V) (c : ℂ)
+    (hXu : ⁅N α, X u⁆ = 0) (hXv : ⁅N α, X v⁆ = 0)
+    (hPu : ⁅N α, P u⁆ = c • Du)
+    (hPv : ⁅N α, P v⁆ = c • Dv) :
     _root_.ConservationLaw.localizationCorrectionCurrentFlux V velocity
-        (orbitalAngularMomentumZ X Y Px Py) N α =
-      (1 / 4 : ℂ) • ⁅velocity, X.comp (c • Dy) - Y.comp (c • Dx)⁆ := by
+        (orbitalAngularMomentum X P u v) N α =
+      (1 / 4 : ℂ) • ⁅velocity, (X u).comp (c • Dv) - (X v).comp (c • Du)⁆ := by
   rw [_root_.ConservationLaw.localizationCorrectionCurrentFlux_apply]
-  rw [lie_orbitalAngularMomentumZ_of_derivative_localizers
-    (N α) X Y Px Py Dx Dy c hX hY hPx hPy]
+  rw [lie_orbitalAngularMomentum_of_derivative_localizers
+    (N α) X P u v Du Dv c hXu hXv hPu hPv]
 
-/-- Noncommutation of a localizer with `L_z` alone does *not* imply a nonzero
-current correction. The exact criterion is the *double* commutator with velocity. -/
-theorem orbitalAngularMomentumZ_localizationCorrectionCurrentFlux_ne_zero_iff
-    (velocity X Y Px Py : V →ₗ[ℂ] V)
+/-- Exact nonvanishing criterion for the *double* commutator. A
+localizer's noncommutation with orbital angular momentum alone is
+not sufficient for a nonzero current correction. -/
+theorem orbitalAngularMomentum_localizationCorrectionCurrentFlux_ne_zero_iff
+    (velocity : V →ₗ[ℂ] V) (X P : E →ₗ[ℂ] (V →ₗ[ℂ] V)) (u v : E)
     (N : OneForm →ₗ[ℂ] (V →ₗ[ℂ] V))
-    (α : OneForm) (Dx Dy : V →ₗ[ℂ] V) (c : ℂ)
-    (hX : ⁅N α, X⁆ = 0) (hY : ⁅N α, Y⁆ = 0)
-    (hPx : ⁅N α, Px⁆ = c • Dx)
-    (hPy : ⁅N α, Py⁆ = c • Dy) :
+    (α : OneForm) (Du Dv : V →ₗ[ℂ] V) (c : ℂ)
+    (hXu : ⁅N α, X u⁆ = 0) (hXv : ⁅N α, X v⁆ = 0)
+    (hPu : ⁅N α, P u⁆ = c • Du)
+    (hPv : ⁅N α, P v⁆ = c • Dv) :
     _root_.ConservationLaw.localizationCorrectionCurrentFlux V velocity
-        (orbitalAngularMomentumZ X Y Px Py) N α ≠ 0 ↔
-      ⁅velocity, X.comp (c • Dy) - Y.comp (c • Dx)⁆ ≠ 0 := by
-  rw [orbitalAngularMomentumZ_localizationCorrectionCurrentFlux_apply
-    velocity X Y Px Py N α Dx Dy c hX hY hPx hPy]
+        (orbitalAngularMomentum X P u v) N α ≠ 0 ↔
+      ⁅velocity, (X u).comp (c • Dv) - (X v).comp (c • Du)⁆ ≠ 0 := by
+  rw [orbitalAngularMomentum_localizationCorrectionCurrentFlux_apply
+    velocity X P u v N α Du Dv c hXu hXv hPu hPv]
   simp
 
 variable {Test : Type*} [AddCommGroup Test] [Module ℂ Test]
 
-/-- At an exact differential `d f`, the canonical one-body Heisenberg transport equals
-the conventional symmetrized flux plus the explicit orbital-localization correction.
-The velocity representation is an explicit physical hypothesis; no local density is chosen. -/
-theorem heisenbergTransportOrbitalAngularMomentumZ_apply
+/-- At an exact differential `d f`, the one-body Heisenberg transport of an
+arbitrary orbital plane component equals its symmetrized flux plus the
+explicit orbital-localization correction. The velocity representation
+is an explicit physical hypothesis. -/
+theorem heisenbergTransportOrbitalAngularMomentum_apply
     (ℏ : ℝ) (h : V →ₗ[ℂ] V)
     (M : Test →ₗ[ℂ] (V →ₗ[ℂ] V))
-    (X Y Px Py velocity : V →ₗ[ℂ] V)
+    (X P : E →ₗ[ℂ] (V →ₗ[ℂ] V)) (u v : E)
+    (velocity : V →ₗ[ℂ] V)
     (d : Test →ₗ[ℂ] OneForm)
     (N : OneForm →ₗ[ℂ] (V →ₗ[ℂ] V))
-    (f : Test) (Dx Dy : V →ₗ[ℂ] V) (c : ℂ)
+    (f : Test) (Du Dv : V →ₗ[ℂ] V) (c : ℂ)
     (hvelocity : heisenbergLocalizationFunctional V ℏ h M =
       (velocityLocalizationFlux V velocity N).comp d)
-    (hX : ⁅N (d f), X⁆ = 0) (hY : ⁅N (d f), Y⁆ = 0)
-    (hPx : ⁅N (d f), Px⁆ = c • Dx)
-    (hPy : ⁅N (d f), Py⁆ = c • Dy) :
-    heisenbergTransportFunctional V ℏ h M (orbitalAngularMomentumZ X Y Px Py) f =
+    (hXu : ⁅N (d f), X u⁆ = 0) (hXv : ⁅N (d f), X v⁆ = 0)
+    (hPu : ⁅N (d f), P u⁆ = c • Du)
+    (hPv : ⁅N (d f), P v⁆ = c • Dv) :
+    heisenbergTransportFunctional V ℏ h M (orbitalAngularMomentum X P u v) f =
       _root_.ConservationLaw.symmetrizedCurrentFlux V velocity
-          (orbitalAngularMomentumZ X Y Px Py) N (d f) +
-        (1 / 4 : ℂ) • ⁅velocity, X.comp (c • Dy) - Y.comp (c • Dx)⁆ := by
+          (orbitalAngularMomentum X P u v) N (d f) +
+        (1 / 4 : ℂ) • ⁅velocity, (X u).comp (c • Dv) - (X v).comp (c • Du)⁆ := by
   calc
     _ = _root_.ConservationLaw.nestedSymmetrizedCurrentFlux V velocity
-        (orbitalAngularMomentumZ X Y Px Py) N (d f) := by
+        (orbitalAngularMomentum X P u v) N (d f) := by
           simpa only [LinearMap.comp_apply] using congrArg
             (fun Φ : Test →ₗ[ℂ] (V →ₗ[ℂ] V) => Φ f)
             (nestedSymmetrizedCurrentFlux_eq_comp V ℏ h M
-              (orbitalAngularMomentumZ X Y Px Py) velocity d N hvelocity)
+              (orbitalAngularMomentum X P u v) velocity d N hvelocity)
     _ = _ := by
       rw [_root_.ConservationLaw.nestedSymmetrizedCurrentFlux_eq_symmetrized_add_correction]
       simp only [LinearMap.add_apply]
-      rw [orbitalAngularMomentumZ_localizationCorrectionCurrentFlux_apply
-        velocity X Y Px Py N (d f) Dx Dy c hX hY hPx hPy]
+      rw [orbitalAngularMomentum_localizationCorrectionCurrentFlux_apply
+        velocity X P u v N (d f) Du Dv c hXu hXv hPu hPv]
 
 end SingleParticle
 end QuantumMechanics
