@@ -11,7 +11,7 @@ set_option linter.style.header false
 The clean Rashba Hamiltonian and velocity matrices are lifted to bounded operators using
 only `HamiltonianParameters`. Their self-adjointness is proved here. Charge-current matrices
 and their bounded realizations are owned by `Current`; finite-broadening Green resolvents
-are defined in the separate `Green` module.
+are supplied by the generic transport API directly at response consumers.
 -/
 
 namespace QuantumTheory.Models.RashbaExchange
