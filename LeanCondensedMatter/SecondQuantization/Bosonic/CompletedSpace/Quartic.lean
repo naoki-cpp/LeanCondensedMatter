@@ -94,119 +94,72 @@ private theorem completedAnnihilate_algebraicToCompleted
   rw [hdomain] at hcore
   exact hcore
 
+/-- The algebraic-core intertwining property is stable under exact-domain composition.
+Each input core vector lies in the right operator's domain, and its image lies in the left
+operator's domain, so no unrestricted composition of unbounded operators is assumed. -/
+private theorem compOnDomain_algebraicCore
+    (T U : CompletedFockSpace Mode →ₗ.[ℂ] CompletedFockSpace Mode)
+    (a b : FockSpace Mode →ₗ[ℂ] FockSpace Mode)
+    (hT : ∀ y : FockSpace Mode,
+      ∃ h : algebraicToCompleted y ∈ T.domain,
+        T ⟨algebraicToCompleted y, h⟩ = algebraicToCompleted (a y))
+    (hU : ∀ y : FockSpace Mode,
+      ∃ h : algebraicToCompleted y ∈ U.domain,
+        U ⟨algebraicToCompleted y, h⟩ = algebraicToCompleted (b y))
+    (x : FockSpace Mode) :
+    ∃ h : algebraicToCompleted x ∈ (T.compOnDomain U).domain,
+      (T.compOnDomain U) ⟨algebraicToCompleted x, h⟩ =
+        algebraicToCompleted ((a.comp b) x) := by
+  obtain ⟨hUmem, hUeq⟩ := hU x
+  obtain ⟨hTmem, hTeq⟩ := hT (b x)
+  have hTU : U ⟨algebraicToCompleted x, hUmem⟩ ∈ T.domain := by
+    rw [hUeq]
+    exact hTmem
+  have hcomp : algebraicToCompleted x ∈ (T.compOnDomain U).domain :=
+    (LinearPMap.mem_compOnDomain_domain_iff T U _).2 ⟨hUmem, hTU⟩
+  refine ⟨hcomp, ?_⟩
+  rw [LinearPMap.compOnDomain_apply T U hcomp hUmem hTU]
+  have hinner :
+      (⟨U ⟨algebraicToCompleted x, hUmem⟩, hTU⟩ : T.domain) =
+        ⟨algebraicToCompleted (b x), hTmem⟩ := Subtype.ext hUeq
+  rw [hinner, hTeq]
+  rfl
+
+/-- Exact-domain quartic composition inherits the algebraic-core action by three applications
+of the generic composition lemma. -/
 private theorem completedQuarticVertexOperator_algebraicCore_aux
     (q : Common.QuarticVertexLabel Mode) (x : FockSpace Mode) :
     ∃ h : algebraicToCompleted x ∈ (completedQuarticVertexOperator q).domain,
       completedQuarticVertexOperator q ⟨algebraicToCompleted x, h⟩ =
         algebraicToCompleted (Common.quarticVertexOperator create annihilate q x) := by
-  let x1 := annihilate q.annihilate₁ x
-  let x2 := annihilate q.annihilate₂ x1
-  let x3 := create q.create₂ x2
-  let p1 :=
-    (completedAnnihilate q.annihilate₂).compOnDomain
-      (completedAnnihilate q.annihilate₁)
-  let p2 :=
-    (completedCreate q.create₂).compOnDomain p1
-  have h1 :
-      algebraicToCompleted x ∈ (completedAnnihilate q.annihilate₁).domain :=
-    algebraicToCompleted_mem_completedAnnihilateDomain q.annihilate₁ x
-  have h1_apply :
-      completedAnnihilate q.annihilate₁ ⟨algebraicToCompleted x, h1⟩ =
-        algebraicToCompleted x1 := by
-    simpa [x1] using
-      completedAnnihilate_algebraicToCompleted q.annihilate₁ x h1
-  have h2core :
-      algebraicToCompleted x1 ∈ (completedAnnihilate q.annihilate₂).domain :=
-    algebraicToCompleted_mem_completedAnnihilateDomain q.annihilate₂ x1
-  have h2 :
-      completedAnnihilate q.annihilate₁ ⟨algebraicToCompleted x, h1⟩ ∈
-        (completedAnnihilate q.annihilate₂).domain := by
-    rw [h1_apply]
-    exact h2core
-  have hp1 : algebraicToCompleted x ∈ p1.domain := by
-    apply (LinearPMap.mem_compOnDomain_domain_iff
-      (completedAnnihilate q.annihilate₂)
-      (completedAnnihilate q.annihilate₁) _).2
-    exact ⟨h1, h2⟩
-  have hp1_apply :
-      p1 ⟨algebraicToCompleted x, hp1⟩ = algebraicToCompleted x2 := by
-    change
-      (completedAnnihilate q.annihilate₂).compOnDomain
-          (completedAnnihilate q.annihilate₁)
-          ⟨algebraicToCompleted x, hp1⟩ =
-        algebraicToCompleted x2
-    rw [LinearPMap.compOnDomain_apply
-      (completedAnnihilate q.annihilate₂)
-      (completedAnnihilate q.annihilate₁) hp1 h1 h2]
-    have hinner :
-        (⟨completedAnnihilate q.annihilate₁
-              ⟨algebraicToCompleted x, h1⟩, h2⟩ :
-            (completedAnnihilate q.annihilate₂).domain) =
-          ⟨algebraicToCompleted x1, h2core⟩ := by
-      apply Subtype.ext
-      exact h1_apply
-    rw [hinner]
-    simpa [x2] using
-      completedAnnihilate_algebraicToCompleted q.annihilate₂ x1 h2core
-  have h3core :
-      algebraicToCompleted x2 ∈ (completedCreate q.create₂).domain :=
-    algebraicToCompleted_mem_completedCreateDomain q.create₂ x2
-  have h3 :
-      p1 ⟨algebraicToCompleted x, hp1⟩ ∈
-        (completedCreate q.create₂).domain := by
-    rw [hp1_apply]
-    exact h3core
-  have hp2 : algebraicToCompleted x ∈ p2.domain := by
-    apply (LinearPMap.mem_compOnDomain_domain_iff
-      (completedCreate q.create₂) p1 _).2
-    exact ⟨hp1, h3⟩
-  have hp2_apply :
-      p2 ⟨algebraicToCompleted x, hp2⟩ = algebraicToCompleted x3 := by
-    change
-      (completedCreate q.create₂).compOnDomain p1
-          ⟨algebraicToCompleted x, hp2⟩ =
-        algebraicToCompleted x3
-    rw [LinearPMap.compOnDomain_apply (completedCreate q.create₂) p1 hp2 hp1 h3]
-    have hinner :
-        (⟨p1 ⟨algebraicToCompleted x, hp1⟩, h3⟩ :
-            (completedCreate q.create₂).domain) =
-          ⟨algebraicToCompleted x2, h3core⟩ := by
-      apply Subtype.ext
-      exact hp1_apply
-    rw [hinner]
-    simpa [x3] using
-      completedCreate_algebraicToCompleted q.create₂ x2 h3core
-  have h4core :
-      algebraicToCompleted x3 ∈ (completedCreate q.create₁).domain :=
-    algebraicToCompleted_mem_completedCreateDomain q.create₁ x3
-  have h4 :
-      p2 ⟨algebraicToCompleted x, hp2⟩ ∈
-        (completedCreate q.create₁).domain := by
-    rw [hp2_apply]
-    exact h4core
-  have hq :
-      algebraicToCompleted x ∈
-        ((completedCreate q.create₁).compOnDomain p2).domain := by
-    apply (LinearPMap.mem_compOnDomain_domain_iff
-      (completedCreate q.create₁) p2 _).2
-    exact ⟨hp2, h4⟩
-  refine ⟨?_, ?_⟩
-  · simpa [completedQuarticVertexOperator, p1, p2] using hq
-  · change
-      (completedCreate q.create₁).compOnDomain p2
-          ⟨algebraicToCompleted x, hq⟩ =
-        algebraicToCompleted (Common.quarticVertexOperator create annihilate q x)
-    rw [LinearPMap.compOnDomain_apply (completedCreate q.create₁) p2 hq hp2 h4]
-    have hinner :
-        (⟨p2 ⟨algebraicToCompleted x, hp2⟩, h4⟩ :
-            (completedCreate q.create₁).domain) =
-          ⟨algebraicToCompleted x3, h4core⟩ := by
-      apply Subtype.ext
-      exact hp2_apply
-    rw [hinner]
-    have h4_apply :=
-      completedCreate_algebraicToCompleted q.create₁ x3 h4core
-    simpa [Common.quarticVertexOperator, LinearMap.comp_apply, x1, x2, x3] using h4_apply
+  let p1 := (completedAnnihilate q.annihilate₂).compOnDomain
+    (completedAnnihilate q.annihilate₁)
+  let a1 := (annihilate q.annihilate₂).comp (annihilate q.annihilate₁)
+  have hp1 (y : FockSpace Mode) :
+      ∃ h : algebraicToCompleted y ∈ p1.domain,
+        p1 ⟨algebraicToCompleted y, h⟩ = algebraicToCompleted (a1 y) := by
+    exact compOnDomain_algebraicCore
+      (completedAnnihilate q.annihilate₂) (completedAnnihilate q.annihilate₁)
+      (annihilate q.annihilate₂) (annihilate q.annihilate₁)
+      (fun z => ⟨algebraicToCompleted_mem_completedAnnihilateDomain q.annihilate₂ z,
+        completedAnnihilate_algebraicToCompleted q.annihilate₂ z _⟩)
+      (fun z => ⟨algebraicToCompleted_mem_completedAnnihilateDomain q.annihilate₁ z,
+        completedAnnihilate_algebraicToCompleted q.annihilate₁ z _⟩) y
+  let p2 := (completedCreate q.create₂).compOnDomain p1
+  let a2 := (create q.create₂).comp a1
+  have hp2 (y : FockSpace Mode) :
+      ∃ h : algebraicToCompleted y ∈ p2.domain,
+        p2 ⟨algebraicToCompleted y, h⟩ = algebraicToCompleted (a2 y) := by
+    exact compOnDomain_algebraicCore (completedCreate q.create₂) p1
+      (create q.create₂) a1
+      (fun z => ⟨algebraicToCompleted_mem_completedCreateDomain q.create₂ z,
+        completedCreate_algebraicToCompleted q.create₂ z _⟩)
+      hp1 y
+  exact compOnDomain_algebraicCore (completedCreate q.create₁) p2
+    (create q.create₁) a2
+    (fun z => ⟨algebraicToCompleted_mem_completedCreateDomain q.create₁ z,
+      completedCreate_algebraicToCompleted q.create₁ z _⟩)
+    hp2 x
 
 /-- Every finite-support algebraic bosonic Fock vector lies in the exact domain of every completed
 quartic vertex. -/
