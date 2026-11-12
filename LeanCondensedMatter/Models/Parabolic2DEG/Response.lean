@@ -289,15 +289,6 @@ theorem broadeningTransportLifetime_mul_lorentzianNormalization_eq_bastinStredaT
   unfold broadeningTransportLifetime lorentzianNormalization bastinStredaTraceConductivityPrefactor
   field_simp [ne_of_gt hregular.broadening_pos, Real.pi_ne_zero]
 
-/-- Pointwise version of the finite Drude/Kubo normalization identity on the canonical Středa
-surface Green-sector weight. -/
-theorem broadeningTransportLifetime_mul_lorentzianWeight_eq_kuboWeight
-    (params : Parameters) (hregular : params.IsRegular) (p : ℝ) :
-    (((broadeningTransportLifetime params * lorentzianNormalization params : ℝ) : ℂ)) *
-        stredaSurfaceGreenWeight params p =
-      (((bastinStredaTraceConductivityPrefactor params.hbar : ℝ) : ℂ)) * stredaSurfaceGreenWeight params p := by
-  rw [broadeningTransportLifetime_mul_lorentzianNormalization_eq_bastinStredaTracePrefactor
-    params hregular]
 
 end
 
