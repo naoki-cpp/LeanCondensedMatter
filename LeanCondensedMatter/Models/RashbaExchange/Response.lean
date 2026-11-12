@@ -67,10 +67,10 @@ theorem suppliedSurfaceHallPointKernel_bare_eq_clean
     (params : Parameters) (measured source : Fin 2) (px py : ℝ) :
     suppliedSurfaceHallPointKernel params measured px py
         (retardedResolvent (hamiltonianOperator params px py)
-      params.chemicalPotential params.broadening)
+          params.chemicalPotential params.broadening)
         (currentBoundedOperator params source px py)
         (advancedResolvent (hamiltonianOperator params px py)
-      params.chemicalPotential params.broadening) =
+          params.chemicalPotential params.broadening) =
       cleanSurfaceHallPointKernel params measured source px py := by
   rfl
 
