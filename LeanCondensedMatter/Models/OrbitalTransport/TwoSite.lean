@@ -66,34 +66,17 @@ def orbitalZOne : OrbitalMatrix :=
      0, 0, 0, -Complex.I;
      0, 0, Complex.I, 0]
 
-/-- Projector onto both orbitals of spatial site zero (unit charge). -/
-def siteZeroChargeProjector : OrbitalMatrix :=
-  !![1, 0, 0, 0;
-     0, 1, 0, 0;
-     0, 0, 0, 0;
-     0, 0, 0, 0]
-
 /-- Crystal-field torque on a specified local orbital moment. -/
 noncomputable def localTorque (Δ : ℝ) (L : OrbitalMatrix) : OrbitalMatrix :=
   Complex.I • (crystalField Δ * L - L * crystalField Δ)
 
-/-- Negative hopping contribution to the Heisenberg evolution of a supplied one-particle
-observable. It represents outgoing bond flux when the observable is site-localized;
-antisymmetry is not claimed for arbitrary observables. -/
-noncomputable def hoppingOutflow (t : ℝ) (L : OrbitalMatrix) : OrbitalMatrix :=
-  -Complex.I • (hopping t * L - L * hopping t)
-
 /-- Outgoing orbital bond flux from site zero to site one. -/
 noncomputable def bondFluxZeroToOne (t : ℝ) : OrbitalMatrix :=
-  hoppingOutflow t orbitalZZero
+  -Complex.I • (hopping t * orbitalZZero - orbitalZZero * hopping t)
 
 /-- Outgoing orbital bond flux from site one to site zero. -/
 noncomputable def bondFluxOneToZero (t : ℝ) : OrbitalMatrix :=
-  hoppingOutflow t orbitalZOne
-
-/-- Charge-bond outflow derived from the same hopping Hamiltonian as orbital flow. -/
-noncomputable def siteZeroChargeBondFlux (t : ℝ) : OrbitalMatrix :=
-  hoppingOutflow t siteZeroChargeProjector
+  -Complex.I • (hopping t * orbitalZOne - orbitalZOne * hopping t)
 
 /-- The hopping does not change the total internal orbital moment. -/
 theorem hopping_commutes_totalOrbital (t : ℝ) :
@@ -107,13 +90,20 @@ theorem hopping_commutes_totalOrbital (t : ℝ) :
 /-- The two oriented bond fluxes are antisymmetric. -/
 theorem bondFluxOneToZero_eq_neg (t : ℝ) :
     bondFluxOneToZero t = -bondFluxZeroToOne t := by
+  have hsum :
+      (hopping t * orbitalZZero - orbitalZZero * hopping t) +
+        (hopping t * orbitalZOne - orbitalZOne * hopping t) = 0 := by
+    calc
+      _ = hopping t * (orbitalZZero + orbitalZOne) -
+            (orbitalZZero + orbitalZOne) * hopping t := by
+              rw [mul_add, add_mul]
+              abel
+      _ = 0 := sub_eq_zero.mpr (hopping_commutes_totalOrbital t)
   have hcomm :
       hopping t * orbitalZOne - orbitalZOne * hopping t =
-        -(hopping t * orbitalZZero - orbitalZZero * hopping t) := by
-    have h := hopping_commutes_totalOrbital t
-    simp only [mul_add, add_mul] at h
-    module
-  unfold bondFluxOneToZero bondFluxZeroToOne hoppingOutflow
+        -(hopping t * orbitalZZero - orbitalZZero * hopping t) :=
+    eq_neg_of_add_eq_zero_right hsum
+  unfold bondFluxOneToZero bondFluxZeroToOne
   rw [hcomm]
   simp only [smul_neg]
 
@@ -122,7 +112,7 @@ theorem continuity_zero (Δ t : ℝ) :
     Complex.I • (hamiltonian Δ t * orbitalZZero -
         orbitalZZero * hamiltonian Δ t) +
       bondFluxZeroToOne t = localTorque Δ orbitalZZero := by
-  unfold hamiltonian bondFluxZeroToOne hoppingOutflow localTorque
+  unfold hamiltonian bondFluxZeroToOne localTorque
   simp only [add_mul, mul_add]
   module
 
@@ -131,7 +121,7 @@ theorem continuity_one (Δ t : ℝ) :
     Complex.I • (hamiltonian Δ t * orbitalZOne -
         orbitalZOne * hamiltonian Δ t) +
       bondFluxOneToZero t = localTorque Δ orbitalZOne := by
-  unfold hamiltonian bondFluxOneToZero hoppingOutflow localTorque
+  unfold hamiltonian bondFluxOneToZero localTorque
   simp only [add_mul, mul_add]
   module
 
