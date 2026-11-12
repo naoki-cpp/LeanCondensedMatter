@@ -2386,6 +2386,81 @@ abbrev ExternalInsertionBlockLayout.ConnectedBlockFamily
         (layout.interactionBlock (Finset.univ : Finset (Fin N)) B) //
     ∀ B, (F B).vertexGraph.Preconnected}
 
+/-- A preconnected family is equivalently a choice of a preconnected
+diagram for each external block. The equivalence is exact: the common
+ambient interaction vertex labels remain in their assigned fibers. -/
+def ExternalInsertionBlockLayout.connectedBlockFamilyEquivPi
+    {ExternalLabel InternalLabel : Type*}
+    (layout : ExternalInsertionBlockLayout E N) :
+    layout.ConnectedBlockFamily (ExternalLabel := ExternalLabel)
+      (InternalLabel := InternalLabel) ≃
+      (∀ B : layout.partition.parts,
+        {d : ExternalInsertionDiagram ExternalLabel InternalLabel
+          ((B : Finset (Fin (2 * E))).card / 2) N
+          (layout.interactionBlock (Finset.univ : Finset (Fin N)) B) //
+            d.vertexGraph.Preconnected}) where
+  toFun F B := ⟨F.1 B, F.2 B⟩
+  invFun F := ⟨fun B => (F B).1, fun B => (F B).2⟩
+  left_inv F := by
+    apply Subtype.ext
+    funext B
+    rfl
+  right_inv F := by
+    funext B
+    apply Subtype.ext
+    rfl
+
+open Classical in
+/-- Summing a multiplicative weight over all independent connected-block
+families gives the product of the individual block sums. This is a
+finite algebraic factorization: no ordered-simplex integral or fermionic
+sign is factored before summing the physical interaction-order shuffles. -/
+theorem ExternalInsertionBlockLayout.sum_connectedBlockFamilies_prod
+    {ExternalLabel InternalLabel M : Type*}
+    [Fintype ExternalLabel] [Fintype InternalLabel] [CommSemiring M]
+    (layout : ExternalInsertionBlockLayout E N)
+    (weight : ∀ B : layout.partition.parts,
+      ExternalInsertionDiagram ExternalLabel InternalLabel
+        ((B : Finset (Fin (2 * E))).card / 2) N
+        (layout.interactionBlock (Finset.univ : Finset (Fin N)) B) → M) :
+    (∑ F : layout.ConnectedBlockFamily (ExternalLabel := ExternalLabel)
+        (InternalLabel := InternalLabel),
+      ∏ B, weight B (F.1 B)) =
+      ∏ B : layout.partition.parts,
+        ∑ d : {d : ExternalInsertionDiagram ExternalLabel InternalLabel
+            ((B : Finset (Fin (2 * E))).card / 2) N
+            (layout.interactionBlock (Finset.univ : Finset (Fin N)) B) //
+              d.vertexGraph.Preconnected},
+          weight B d.1 := by
+  classical
+  letI : Fintype (layout.ConnectedBlockFamily (ExternalLabel := ExternalLabel)
+      (InternalLabel := InternalLabel)) := Fintype.ofFinite _
+  letI : (B : layout.partition.parts) →
+      Fintype {d : ExternalInsertionDiagram ExternalLabel InternalLabel
+        ((B : Finset (Fin (2 * E))).card / 2) N
+        (layout.interactionBlock (Finset.univ : Finset (Fin N)) B) //
+          d.vertexGraph.Preconnected} := fun _ => Fintype.ofFinite _
+  calc
+    (∑ F : layout.ConnectedBlockFamily (ExternalLabel := ExternalLabel)
+        (InternalLabel := InternalLabel), ∏ B, weight B (F.1 B)) =
+      ∑ F : (∀ B : layout.partition.parts,
+          {d : ExternalInsertionDiagram ExternalLabel InternalLabel
+            ((B : Finset (Fin (2 * E))).card / 2) N
+            (layout.interactionBlock (Finset.univ : Finset (Fin N)) B) //
+              d.vertexGraph.Preconnected}),
+        ∏ B, weight B (F B).1 := by
+          simpa only [] using
+            (Equiv.sum_comp
+              (layout.connectedBlockFamilyEquivPi (ExternalLabel := ExternalLabel)
+                (InternalLabel := InternalLabel))
+              (fun F => ∏ B, weight B (F B).1))
+    _ = _ :=
+      (Fintype.prod_sum (fun B (d : {d : ExternalInsertionDiagram
+          ExternalLabel InternalLabel
+            ((B : Finset (Fin (2 * E))).card / 2) N
+            (layout.interactionBlock (Finset.univ : Finset (Fin N)) B) //
+              d.vertexGraph.Preconnected}) => weight B d.1)).symm
+
 /-- Assemble a dependent family of connected external blocks into its
 vacuum-free labelled physical diagram. -/
 noncomputable def ExternalInsertionBlockLayout.assembleConnectedBlockFamily
