@@ -107341,50 +107341,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} (i : Mode) (n : SecondQuantization.Bosonic.Occupation Mode),\n  (SecondQuantization.Bosonic.annihilate i) (SecondQuantization.Bosonic.basisState n) =\n    SecondQuantization.Bosonic.annihilateBasis i n",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Bosonic.annihilate_basisState",
-    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.CreationAnnihilation",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Bosonic.annihilate_basisState_of_pos",
-      "SecondQuantization.Bosonic.annihilate_basisState_of_zero"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Bosonic.annihilate_basisState_of_pos",
-      "SecondQuantization.Bosonic.annihilate_basisState_of_zero"
-    ],
-    "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ {Mode : Type u_1} (i : Mode) (n : SecondQuantization.Bosonic.Occupation Mode),\n  (SecondQuantization.Bosonic.annihilate i) (SecondQuantization.Bosonic.basisState n) =\n    ↑√↑(n i) • SecondQuantization.Bosonic.basisState (SecondQuantization.Bosonic.removeOccupation i n)",
     "standardAxioms": [
       "Classical.choice",
@@ -107470,7 +107426,7 @@
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.OrderedProductSummable.0.SecondQuantization.Bosonic.FreeThermalField.orderedProduct_basisState_bound_aux"
     ],
     "dependencies": [
-      "SecondQuantization.Bosonic.annihilate_basisState"
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.CreationAnnihilation.0.SecondQuantization.Bosonic.annihilate_basisState"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -107525,7 +107481,7 @@
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.OrderedProductSummable.0.SecondQuantization.Bosonic.FreeThermalField.orderedProduct_basisState_bound_aux"
     ],
     "dependencies": [
-      "SecondQuantization.Bosonic.annihilate_basisState"
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.CreationAnnihilation.0.SecondQuantization.Bosonic.annihilate_basisState"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -110389,48 +110345,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} (i : Mode) (n : SecondQuantization.Bosonic.Occupation Mode),\n  (SecondQuantization.Bosonic.create i) (SecondQuantization.Bosonic.basisState n) =\n    SecondQuantization.Bosonic.createBasis i n",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Bosonic.create_basisState",
-    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.CreationAnnihilation",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Bosonic.create_basisState_eq"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Bosonic.create_basisState_eq"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ {Mode : Type u_1} (i : Mode) (n : SecondQuantization.Bosonic.Occupation Mode),\n  (SecondQuantization.Bosonic.create i) (SecondQuantization.Bosonic.basisState n) =\n    ↑√(↑(n i) + 1) • SecondQuantization.Bosonic.basisState (SecondQuantization.Bosonic.createOccupation i n)",
     "standardAxioms": [
       "Classical.choice",
@@ -110440,15 +110354,15 @@
     "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": false,
     "simpLemma": false,
-    "retainedNeedsReview": true,
+    "retainedNeedsReview": false,
     "retainedMention": true,
     "projectAxioms": [],
     "name": "SecondQuantization.Bosonic.create_basisState_eq",
     "module": "LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.CreationAnnihilation",
     "externalAxioms": [],
     "docString": "Creation raises the occupation at mode `i`. ",
-    "directWrapperTargetModule": "LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.CreationAnnihilation",
-    "directWrapperOf": "SecondQuantization.Bosonic.create_basisState",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
     "dependents": [
       "Models.HolsteinPrimakoff.spinMinus_basisState",
       "SecondQuantization.Bosonic.annihilate_create_basisState_same",
@@ -110465,9 +110379,7 @@
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.CCR.0.SecondQuantization.Bosonic.comm_create_create_basisState",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.OrderedProductSummable.0.SecondQuantization.Bosonic.FreeThermalField.orderedProduct_basisState_bound_aux"
     ],
-    "dependencies": [
-      "SecondQuantization.Bosonic.create_basisState"
-    ],
+    "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
@@ -111466,7 +111378,7 @@
     ],
     "dependencies": [
       "SecondQuantization.Bosonic.grandCanonicalAlgebraicPartition_eq_tsum",
-      "SecondQuantization.Bosonic.tsum_boltzmannWeight_ne_zero"
+      "SecondQuantization.Bosonic.tsum_boltzmannWeight_pos"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -111972,7 +111884,7 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Bosonic.grandCanonicalAlgebraicPartition_eq_tsum",
-      "SecondQuantization.Bosonic.summable_boltzmannWeight",
+      "SecondQuantization.Bosonic.summable_imaginaryTimeEvolveFree_self",
       "SecondQuantization.Bosonic.tsum_boltzmannWeight"
     ],
     "dependencies": [
@@ -111984,7 +111896,7 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Bosonic.grandCanonicalAlgebraicPartition_eq_tsum",
-      "SecondQuantization.Bosonic.summable_boltzmannWeight",
+      "SecondQuantization.Bosonic.summable_imaginaryTimeEvolveFree_self",
       "SecondQuantization.Bosonic.tsum_boltzmannWeight"
     ],
     "compiledConsumerCount": 3,
@@ -114016,50 +113928,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [Fintype Mode] (ε : Mode → ℝ) (β : ℝ),\n  (∀ (i : Mode), 0 < β * ε i) → Summable (SecondQuantization.Bosonic.boltzmannWeight ε β)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Bosonic.summable_boltzmannWeight",
-    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BoltzmannWeightSummable",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Bosonic.summable_imaginaryTimeEvolveFree_self"
-    ],
-    "dependencies": [
-      "SecondQuantization.Bosonic.hasSum_boltzmannWeight"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Bosonic.summable_imaginaryTimeEvolveFree_self"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ {Mode : Type u_1} [Fintype Mode] (ε : Mode → ℝ) (β : ℝ),\n  (∀ (k : Mode), 0 < β * ε k) →\n    ∀ (i j : Mode),\n      Summable\n        (Function.uncurry fun n k =>\n          SecondQuantization.Common.matrixCoeff\n              (SecondQuantization.Bosonic.imaginaryTimeEvolveFree ε (-β) ∘ₗ SecondQuantization.Bosonic.create j) n k *\n            SecondQuantization.Common.matrixCoeff (SecondQuantization.Bosonic.annihilate i) k n)",
     "standardAxioms": [
       "Classical.choice",
@@ -114127,8 +113995,8 @@
       "SecondQuantization.Bosonic.grandCanonicalGibbsExpectation_annihilate_comp_create_concrete"
     ],
     "dependencies": [
-      "SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_self",
-      "SecondQuantization.Bosonic.summable_boltzmannWeight"
+      "SecondQuantization.Bosonic.hasSum_boltzmannWeight",
+      "SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_self"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -114542,50 +114410,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [Fintype Mode] (ε : Mode → ℝ) (β : ℝ),\n  (∀ (i : Mode), 0 < β * ε i) →\n    ∑' (n : SecondQuantization.Bosonic.Occupation Mode), SecondQuantization.Bosonic.boltzmannWeight ε β n ≠ 0",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Bosonic.tsum_boltzmannWeight_ne_zero",
-    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BoltzmannWeightSummable",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Bosonic.grandCanonicalAlgebraicPartition_ne_zero"
-    ],
-    "dependencies": [
-      "SecondQuantization.Bosonic.tsum_boltzmannWeight_pos"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Bosonic.grandCanonicalAlgebraicPartition_ne_zero"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ {Mode : Type u_1} [Fintype Mode] (ε : Mode → ℝ) (β : ℝ),\n  (∀ (i : Mode), 0 < β * ε i) →\n    0 < ∑' (n : SecondQuantization.Bosonic.Occupation Mode), SecondQuantization.Bosonic.boltzmannWeight ε β n",
     "standardAxioms": [
       "Classical.choice",
@@ -114605,7 +114429,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Bosonic.tsum_boltzmannWeight_ne_zero"
+      "SecondQuantization.Bosonic.grandCanonicalAlgebraicPartition_ne_zero"
     ],
     "dependencies": [
       "SecondQuantization.Bosonic.tsum_boltzmannWeight"
@@ -114613,7 +114437,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Bosonic.tsum_boltzmannWeight_ne_zero"
+      "SecondQuantization.Bosonic.grandCanonicalAlgebraicPartition_ne_zero"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -182466,6 +182290,50 @@
       "SecondQuantization.Bosonic.comm_create_create"
     ],
     "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} (i : Mode) (n : SecondQuantization.Bosonic.Occupation Mode),\n  (SecondQuantization.Bosonic.annihilate i) (SecondQuantization.Bosonic.basisState n) =\n    SecondQuantization.Bosonic.annihilateBasis✝ i n",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.CreationAnnihilation.0.SecondQuantization.Bosonic.annihilate_basisState",
+    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.CreationAnnihilation",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Bosonic.annihilate_basisState_of_pos",
+      "SecondQuantization.Bosonic.annihilate_basisState_of_zero"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Bosonic.annihilate_basisState_of_pos",
+      "SecondQuantization.Bosonic.annihilate_basisState_of_zero"
+    ],
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
