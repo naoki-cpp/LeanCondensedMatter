@@ -98,8 +98,11 @@ theorem ExternalInsertionWickDiagram.orderedDysonAmplitude_canonicalOrder
       funext v
       apply congrArg τ
       apply Fin.ext
-      simp only [Fin.val_cast, Finset.orderIsoOfFin_symm_apply,
-        Fin.sort_univ, List.idxOf_finRange]
+      simp only [Fin.val_cast]
+      change (((Finset.univ : Finset (Fin n)).orderIsoOfFin rfl).symm
+        ⟨v, Finset.mem_univ v⟩).val = v.val
+      rw [Finset.orderIsoOfFin_symm_apply]
+      simp only [Fin.sort_univ, List.idxOf_finRange]
 
 
 end Fermionic
