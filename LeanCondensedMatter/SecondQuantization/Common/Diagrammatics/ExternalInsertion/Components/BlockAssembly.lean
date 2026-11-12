@@ -801,6 +801,16 @@ theorem ExternalInsertionBlockLayout.assembleDiagram_restrictComponent_vertexLab
   rw [hidx] at hlabel
   exact hlabel
 
+/-- Equal finite supports allow pointwise equality of dependent subtype
+functions to be promoted to heterogeneous equality of the functions. -/
+private theorem heq_subtypeFunctions_of_finset_eq
+    {α β : Type*} {S T : Finset α}
+    (f : ↥S → β) (g : ↥T → β) (hST : S = T)
+    (h : ∀ v : ↥S, f v = g ⟨v.1, hST ▸ v.2⟩) :
+    HEq f g := by
+  cases hST
+  exact heq_of_eq (funext h)
+
 /-- The actual physical connected-component restriction and the
 independently supplied block have *heterogeneously equal vertex-label
 families*. Their indexing sets are equal because the assembled graph has
@@ -827,12 +837,10 @@ theorem ExternalInsertionBlockLayout.assembleDiagram_restrictComponent_vertexLab
     ⟨d.vertexGraph.componentBlock (Sum.inl e),
       d.vertexGraph.componentBlock_mem_componentPartition (Sum.inl e)⟩
   change HEq (F B).vertexLabel (d.restrictComponent C).vertexLabel
-  have hsector : interactionSector
-      (C : Finset (ExternalInsertionVertex E S)) = layout.interactionBlock S B :=
-    layout.assembleDiagram_componentInteractionSector_external S F hconnected e
-  cases hsector
-  apply heq_of_eq
-  funext v
+  refine heq_subtypeFunctions_of_finset_eq
+    (F B).vertexLabel (d.restrictComponent C).vertexLabel
+    (layout.assembleDiagram_componentInteractionSector_external S F hconnected e).symm ?_
+  intro v
   exact (layout.assembleDiagram_restrictComponent_vertexLabel_external
     S F hconnected e v).symm
 
