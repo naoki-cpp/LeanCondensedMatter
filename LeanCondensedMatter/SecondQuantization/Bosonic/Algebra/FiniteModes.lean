@@ -64,13 +64,13 @@ def secondQuantization : Module.End ℂ (EuclideanSpace ℂ Mode) →ₗ[ℂ]
 
 /-- Creation in a coordinate basis vector is the corresponding site creation. -/
 @[simp]
-theorem createVector_single (i : Mode) :
+theorem createVector_single [DecidableEq Mode] (i : Mode) :
     createVector (EuclideanSpace.single i 1) = create i := by
   simp [createVector, PiLp.single_apply, ite_smul]
 
 /-- Annihilation in a coordinate basis vector is the corresponding site annihilation. -/
 @[simp]
-theorem annihilateVector_single (i : Mode) :
+theorem annihilateVector_single [DecidableEq Mode] (i : Mode) :
     annihilateVector (EuclideanSpace.single i 1) = annihilate i := by
   simp [annihilateVector, PiLp.single_apply, ite_smul]
 
