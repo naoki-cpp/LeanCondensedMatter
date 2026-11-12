@@ -213,6 +213,30 @@ theorem tendsto_targetCenteredInterbandBastinPairIntegral_re_berryCurvature
     (targetCenteredInterbandBastinPairIntegral_eq_interbandBastinPoleIntegral
       params band px py radius broadening hbroadening.ne').symm
 
+
+/-- The clean local density extracted from one isolated opposite-source
+Bastin pole, before any occupation or momentum integration. -/
+noncomputable def cleanLocalIsolatedBastinLimitDensity
+    (params : Parameters) (band : Band) (px py : ℝ) : ℝ :=
+  -2 * Real.pi * (params.signedCharge ^ 2 * berryCurvature params band px py)
+
+/-- The named isolated-pole density is attained on a fixed window narrower
+than the interband energy separation as broadening approaches zero from above. -/
+theorem tendsto_targetCenteredInterbandBastinPairIntegral_re_cleanLocalDensity
+    (params : Parameters) (band : Band) (px py radius : ℝ)
+    (hE : spinOrbitEnergy params px py ≠ 0)
+    (hradiusPos : 0 < radius)
+    (hradius : radius < |interbandEnergyGap params band px py|) :
+    Tendsto
+      (fun broadening : ℝ =>
+        (targetCenteredInterbandBastinPairIntegral
+          params band px py radius broadening).re)
+      (nhdsWithin 0 (Set.Ioi 0))
+      (nhds (cleanLocalIsolatedBastinLimitDensity params band px py)) := by
+  simpa only [cleanLocalIsolatedBastinLimitDensity] using
+    (tendsto_targetCenteredInterbandBastinPairIntegral_re_berryCurvature
+      params band px py radius hE hradiusPos hradius)
+
 end
 
 end QuantumTheory.Models.RashbaExchange
