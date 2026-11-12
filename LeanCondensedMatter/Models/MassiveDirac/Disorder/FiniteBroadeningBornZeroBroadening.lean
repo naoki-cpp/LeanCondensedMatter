@@ -261,15 +261,6 @@ private theorem finiteCutoffContinuumBornDysonDenominatorZeroBroadeningBoundary_
     add_zero, zero_add]
   ring
 
-private theorem fullAngleMomentumMeasurePrefactor_pos
-    (hbar : ℝ) (hhbar : hbar ≠ 0) :
-    0 < fullAngleMomentumMeasurePrefactor hbar := by
-  unfold fullAngleMomentumMeasurePrefactor momentumMeasurePrefactor
-  have hden : 0 < (2 * Real.pi * hbar) ^ 2 :=
-    sq_pos_of_ne_zero
-      (mul_ne_zero (mul_ne_zero (by norm_num) Real.pi_ne_zero) hhbar)
-  exact mul_pos (mul_pos (by norm_num) Real.pi_pos) (one_div_pos.mpr hden)
-
 /-- Positive disorder and a real-renormalization bound below one keep the side-indexed fixed-cutoff
 zero-broadening Born-Dyson denominator away from zero at every radial momentum. -/
 theorem finiteCutoffContinuumBornDysonDenominatorZeroBroadeningBoundary_ne_zero
