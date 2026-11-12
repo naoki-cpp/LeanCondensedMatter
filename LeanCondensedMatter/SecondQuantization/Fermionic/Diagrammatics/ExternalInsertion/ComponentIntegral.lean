@@ -466,16 +466,6 @@ theorem ExternalInsertionBlockLayout.assembleConnectedBlocks_componentOrderedCro
   have hpair :
       (d.componentOrderedDiagram C).pairing.transport k = (F B).pairing :=
     layout.assembleConnectedBlocks_componentOrderedPairing_eq_local F hconnected e
-  have hpartner (p : Fin (2 * (2 * T.card + d.externalPairCount C))) :
-      (F B).pairing.partner (q (leg p)) =
-        q (leg ((d.restrictComponent C).pairing.partner p)) := by
-    rw [← hpair]
-    change k.symm ((d.componentOrderedDiagram C).pairing.partner
-      (k (k.symm (leg p)))) =
-      k.symm (leg ((d.restrictComponent C).pairing.partner p))
-    rw [Equiv.apply_symm_apply]
-    rw [d.componentOrderedDiagram_eq_slotCongr C]
-    simp only [ExternalInsertionDiagram.slotCongr_pairing, PairingOn.transport_partner]
   have hpartnerCanonical (p : Fin (2 * (2 *
       (Finset.univ : Finset (Fin T.card)).card + d.externalPairCount C))) :
       (F B).pairing.partner (q p) =
