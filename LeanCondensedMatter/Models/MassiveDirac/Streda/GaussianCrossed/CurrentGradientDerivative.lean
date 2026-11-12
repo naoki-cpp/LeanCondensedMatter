@@ -178,7 +178,9 @@ theorem finiteCutoffContinuumBornDysonRAFirstHarmonicDifferenceMoment_eq_gradien
       v m probeEnergy broadening disorderStrength hbar pMax radius =
       Complex.I * (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
         ((∫ p in (0 : ℝ)..pMax, moment .retarded p) -
-         (∫ p in (0 : ℝ)..pMax, moment .advanced p)) := by rw [hmoment]
+         (∫ p in (0 : ℝ)..pMax, moment .advanced p)) := by
+      rw [hmoment]
+      ring
     _ = (hbar : ℂ) *
         deriv (fun r : ℝ => finiteCutoffContinuumBornDysonRadialScalarGreenGenerator
           .retarded v m probeEnergy broadening disorderStrength hbar pMax r) radius -
