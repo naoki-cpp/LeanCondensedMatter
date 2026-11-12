@@ -2,6 +2,8 @@ import LeanCondensedMatter.Models.RashbaExchange.Model.OperatorSpectral
 import LeanCondensedMatter.Models.RashbaExchange.Current
 import LeanCondensedMatter.Models.RashbaExchange.Model.Interband
 import LeanCondensedMatter.Transport.Streda.FiniteProjectorBastin
+import Mathlib.Tactic.FieldSimp
+import Mathlib.Tactic.Linarith
 
 set_option linter.style.header false
 
@@ -49,6 +51,30 @@ theorem two_mul_currentBandBlockTrace_interband_im_div_gap_sq_eq_chargeSq_berryC
   rw [← forceMatrixBerryCurvature_eq_berryCurvature params band px py hE]
   unfold forceMatrixBerryCurvature
   ring
+
+/-- The antisymmetric imaginary current block for a target band, normalized
+by its squared interband gap, is minus signed-charge-squared Berry curvature. -/
+theorem interbandBlockDifference_im_div_gap_sq_eq_neg_chargeSq_berryCurvature
+    (params : Parameters) (band : Band) (px py : ℝ)
+    (hE : spinOrbitEnergy params px py ≠ 0) :
+    (currentBandBlockTrace params 0 1 (oppositeBand band) band px py -
+      currentBandBlockTrace params 1 0 (oppositeBand band) band px py).im /
+        interbandEnergyGap params band px py ^ 2 =
+      -(params.signedCharge ^ 2 * berryCurvature params band px py) := by
+  have hband :=
+    two_mul_currentBandBlockTrace_interband_im_div_gap_sq_eq_chargeSq_berryCurvature
+      params band px py hE
+  have hopp :=
+    two_mul_currentBandBlockTrace_interband_im_div_gap_sq_eq_chargeSq_berryCurvature
+      params (oppositeBand band) px py hE
+  simp only [oppositeBand_oppositeBand, interbandEnergyGap_oppositeBand,
+    berryCurvature_oppositeBand, neg_sq] at hopp
+  rw [currentBandBlockTrace_swap params 0 1 (oppositeBand band) band]
+  rw [Complex.sub_im]
+  have hgap : interbandEnergyGap params band px py ≠ 0 :=
+    interbandEnergyGap_ne_zero_of_spinOrbitEnergy_ne_zero params band px py hE
+  field_simp [hgap] at hband hopp ⊢
+  nlinarith
 
 /-- Bastin operator integrand with canonical Green operators replaced by exact projector
 resolvents. -/
