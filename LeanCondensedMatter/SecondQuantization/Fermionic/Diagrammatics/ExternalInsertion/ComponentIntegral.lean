@@ -322,6 +322,7 @@ theorem ExternalInsertionBlockLayout.assembleConnectedBlocks_signedDysonShuffleO
 
 
 
+omit [LinearOrder Mode] [Fintype Mode] in
 /-- The pairing of the *canonically ordered actual connected component*
 is the originally supplied independent block pairing after its explicit
 canonical-to-local leg coordinate transformation. This composes the
