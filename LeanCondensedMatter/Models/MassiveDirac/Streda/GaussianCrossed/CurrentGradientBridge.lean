@@ -122,18 +122,12 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedScalarKernel_gap_eq
     v m probeEnergy broadening disorderStrength hbar pMax p
     hbroadening hdisorder hpMax
   simp only [finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentScalarKernel,
-    ite_true, finiteCutoffContinuumBornDysonRadialPauliData,
+    if_pos rfl, finiteCutoffContinuumBornDysonRadialPauliData,
     finiteCutoffContinuumBornDysonScalarCoefficient,
     finiteCutoffContinuumBornDysonPauliCoefficient,
     InternalSpace.pauliAxisComponent]
-  rw [show
-    finiteCutoffContinuumBornDysonRASpectralGap
-        v m probeEnergy broadening disorderStrength hbar pMax *
-      ((finiteCutoffContinuumBornDysonDenominator
-          .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax)⁻¹ *
-       (finiteCutoffContinuumBornDysonDenominator
-          .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax)⁻¹) =
-      _ from hgap]
+  rw [← hgap]
+  push_cast
   ring
 
 /-- The source-x Pauli-z crossed current has the *same* RA
@@ -166,18 +160,12 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedZKernel_gap_eq
     v m probeEnergy broadening disorderStrength hbar pMax p
     hbroadening hdisorder hpMax
   simp only [finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliKernel,
-    ite_true, finiteCutoffContinuumBornDysonRadialPauliData,
+    if_pos rfl, finiteCutoffContinuumBornDysonRadialPauliData,
     finiteCutoffContinuumBornDysonScalarCoefficient,
     finiteCutoffContinuumBornDysonPauliCoefficient,
     InternalSpace.pauliAxisComponent]
-  rw [show
-    finiteCutoffContinuumBornDysonRASpectralGap
-        v m probeEnergy broadening disorderStrength hbar pMax *
-      ((finiteCutoffContinuumBornDysonDenominator
-          .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax)⁻¹ *
-       (finiteCutoffContinuumBornDysonDenominator
-          .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax)⁻¹) =
-      _ from hgap]
+  rw [← hgap]
+  push_cast
   ring
 
 end
