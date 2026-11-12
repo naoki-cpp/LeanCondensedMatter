@@ -321,5 +321,57 @@ theorem ExternalInsertionBlockLayout.assembleConnectedBlocks_signedDysonShuffleO
         (d.componentOrderedDiagram_eq_slotCongr B)
 
 
+
+/-- The pairing of the *canonically ordered actual connected component*
+is the originally supplied independent block pairing after its explicit
+canonical-to-local leg coordinate transformation. This composes the
+physical component pairing identification with the real `slotCongr`
+transport; it does not replace the physical component by a formal block.
+
+The remaining amplitude comparison must show that this coordinate map
+preserves the mixed-time fermionic contraction and its ordering sign. -/
+theorem ExternalInsertionBlockLayout.assembleConnectedBlocks_componentOrderedPairing_eq_local
+    {E n : ℕ} (layout : ExternalInsertionBlockLayout E n)
+    (F : ∀ B : layout.partition.parts,
+      ExternalInsertionDiagram (ExternalFieldLabel Mode) (QuarticVertexLabel Mode)
+        ((B : Finset (Fin (2 * E))).card / 2) n
+        (layout.interactionBlock (Finset.univ : Finset (Fin n)) B))
+    (hconnected : ∀ B, (F B).vertexGraph.Preconnected)
+    (e : Fin (2 * E)) :
+    let d : ExternalInsertionWickDiagram Mode E n :=
+      layout.assembleDiagram (Finset.univ : Finset (Fin n)) F
+    let C : d.vertexGraph.componentPartition.parts :=
+      ⟨d.vertexGraph.componentBlock (Sum.inl e),
+        d.vertexGraph.componentBlock_mem_componentPartition (Sum.inl e)⟩
+    let T := interactionSector
+      (C : Finset (ExternalInsertionVertex E (Finset.univ : Finset (Fin n))))
+    (d.componentOrderedDiagram C).pairing.transport
+      (((d.componentBlockLegEquiv C).symm.trans
+        (layout.physicalComponentLegEquiv
+          (Finset.univ : Finset (Fin n)) F hconnected e)).symm.trans
+        (externalInsertionLegCongr (standardSlotEquiv T))) =
+      (F (layout.sourceEquiv e).1).pairing := by
+  classical
+  let S : Finset (Fin n) := Finset.univ
+  let d : ExternalInsertionWickDiagram Mode E n := layout.assembleDiagram S F
+  let C : d.vertexGraph.componentPartition.parts :=
+    ⟨d.vertexGraph.componentBlock (Sum.inl e),
+      d.vertexGraph.componentBlock_mem_componentPartition (Sum.inl e)⟩
+  let T := interactionSector (C : Finset (ExternalInsertionVertex E S))
+  let c := (d.componentBlockLegEquiv C).symm.trans
+    (layout.physicalComponentLegEquiv S F hconnected e)
+  let leg := externalInsertionLegCongr (E := d.externalPairCount C) (standardSlotEquiv T)
+  change (d.componentOrderedDiagram C).pairing.transport (c.symm.trans leg) =
+    (F (layout.sourceEquiv e).1).pairing
+  rw [d.componentOrderedDiagram_eq_slotCongr C]
+  change ((d.restrictComponent C).pairing.transport leg.symm).transport
+    (c.symm.trans leg) = _
+  rw [PairingOn.transport_trans]
+  have hcancel : (c.symm.trans leg).trans leg.symm = c.symm := by
+    ext x
+    simp
+  rw [hcancel]
+  exact layout.physicalComponentCanonicalPairing_eq_local S F hconnected e
+
 end Fermionic
 end SecondQuantization
