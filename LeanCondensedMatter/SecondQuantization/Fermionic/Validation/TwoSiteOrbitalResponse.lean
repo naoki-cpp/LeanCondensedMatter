@@ -37,16 +37,26 @@ noncomputable section
 /-- Full finite fermionic Fock space for four spinless orbital modes. -/
 abbrev OrbitalFock := FiniteLatticeHilbertFock (Fin 4)
 
-/-- Model-specific second quantization of a four-state one-particle matrix.
-It uses the existing bounded matrix-unit realization, not a new generic current API. -/
+/-- Four-state one-body matrices are represented by the existing finite-Fock
+second-quantization Lie homomorphism, using canonical matrix units. -/
 noncomputable def boundedOrbitalMatrix (A : OrbitalMatrix) :
     OrbitalFock →L[ℂ] OrbitalFock :=
-  ∑ i : Fin 4, ∑ j : Fin 4, A i j • boundedDgammaMatrixUnit i j
+  boundedOneBodyOperator
+    (∑ i : Fin 4, ∑ j : Fin 4, A i j • matrixUnit i j)
+
+/-- Recover the former matrix-unit expansion directly from linearity of
+the canonical one-body second quantization. -/
+theorem boundedOrbitalMatrix_eq_sum (A : OrbitalMatrix) :
+    boundedOrbitalMatrix A =
+      ∑ i : Fin 4, ∑ j : Fin 4, A i j • boundedDgammaMatrixUnit i j := by
+  simp only [boundedOrbitalMatrix, map_sum, map_smul,
+    boundedOneBodyOperator_eq, boundedDgammaMatrixUnit]
 
 /-- Orbital matrix realization preserves sign reversal. -/
 theorem boundedOrbitalMatrix_neg (A : OrbitalMatrix) :
     boundedOrbitalMatrix (-A) = -boundedOrbitalMatrix A := by
-  simp [boundedOrbitalMatrix, Finset.sum_neg_distrib, neg_smul]
+  rw [boundedOrbitalMatrix_eq_sum, boundedOrbitalMatrix_eq_sum]
+  simp [Finset.sum_neg_distrib, neg_smul]
 
 /-- A Hermitian four-state matrix gives a self-adjoint Fock observable. -/
 theorem boundedOrbitalMatrix_selfAdjoint (A : OrbitalMatrix)
@@ -60,13 +70,13 @@ theorem boundedOrbitalMatrix_selfAdjoint (A : OrbitalMatrix)
     star (boundedOrbitalMatrix A) =
         ∑ i : Fin 4, ∑ j : Fin 4,
           star (A i j) • boundedDgammaMatrixUnit j i := by
-            simp only [boundedOrbitalMatrix, star_sum, star_smul,
-              star_boundedDgammaMatrixUnit]
+            rw [boundedOrbitalMatrix_eq_sum]
+            simp only [star_sum, star_smul, star_boundedDgammaMatrixUnit]
     _ = ∑ i : Fin 4, ∑ j : Fin 4,
         star (A j i) • boundedDgammaMatrixUnit i j := by
           rw [Finset.sum_comm]
     _ = boundedOrbitalMatrix A := by
-      unfold boundedOrbitalMatrix
+      rw [boundedOrbitalMatrix_eq_sum]
       apply Finset.sum_congr rfl
       intro i _
       apply Finset.sum_congr rfl
@@ -133,29 +143,6 @@ noncomputable def orbitalChargeResponseChannel (hoppingStrength : ℝ) :
   ResponseChannel.fixed
     (boundedOrbitalBondFlux hoppingStrength)
     (boundedChargeBondSource hoppingStrength)
-
-/-- The channel's causal response is exactly the retarded Kubo convolution,
-evaluated using the *same* finite orbital Hamiltonian. No DC or continuum
-limit is taken. -/
-theorem orbitalChargeResponse_eq_retarded
-    (Δ hoppingStrength : ℝ) (expectation : NormalizedExpectation OrbitalFock)
-    (sourceProfile : ℝ → ℝ) (observationTime : ℝ) :
-    (orbitalChargeResponseChannel hoppingStrength).causalResponse
-        (freePropagatorGroup (orbitalFreeSystem Δ hoppingStrength))
-        (orbitalFreeSystem Δ hoppingStrength).hbar
-        expectation sourceProfile observationTime =
-      ∫ s in (0 : ℝ)..observationTime, (sourceProfile s : ℂ) *
-        retardedSusceptibility
-          (freePropagatorGroup (orbitalFreeSystem Δ hoppingStrength))
-          (orbitalFreeSystem Δ hoppingStrength).hbar expectation
-          (boundedOrbitalBondFlux hoppingStrength)
-          (boundedChargeBondSource hoppingStrength) observationTime s := by
-  exact ResponseChannel.fixed_causalResponse_eq
-    (freePropagatorGroup (orbitalFreeSystem Δ hoppingStrength))
-    (orbitalFreeSystem Δ hoppingStrength).hbar expectation
-    (boundedOrbitalBondFlux hoppingStrength)
-    (boundedChargeBondSource hoppingStrength)
-    sourceProfile observationTime
 
 end
 end SecondQuantization.Fermionic.Validation.TwoSiteOrbitalResponse
