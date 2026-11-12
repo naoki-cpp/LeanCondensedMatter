@@ -77,33 +77,6 @@ def orbitalPolynomial (axis : Fin 3) (c₁ c₂ : ℝ) (k : Fin 3 → ℝ) : ℝ
   c₁ ^ 2 * (a ^ 2 - b ^ 2) ^ 2 +
     c₂ ^ 2 * (4 * a ^ 2 * b ^ 2 + a ^ 2 * d ^ 2 + b ^ 2 * d ^ 2)
 
-/-- Trace cyclicity converts the nested commutator into the square of
-the simple commutator, without choosing matrix coordinates. -/
-private theorem trace_double_commutator_eq_commutator_sq
-    (H G : OrbitalMatrix) :
-    -Matrix.trace ((H * (H * G - G * H) - (H * G - G * H) * H) * G) / 2 =
-      Matrix.trace ((H * G - G * H) * (H * G - G * H)) / 2 := by
-  let C : OrbitalMatrix := H * G - G * H
-  have hcyclic : Matrix.trace (H * (C * G)) =
-      Matrix.trace ((C * G) * H) :=
-    Matrix.trace_mul_comm H (C * G)
-  calc
-    _ = -(Matrix.trace (H * (C * G)) - Matrix.trace (C * (H * G))) / 2 := by
-      change -Matrix.trace ((H * C - C * H) * G) / 2 = _
-      rw [sub_mul, Matrix.trace_sub]
-      simp only [mul_assoc]
-    _ = -(Matrix.trace (C * (G * H)) - Matrix.trace (C * (H * G))) / 2 := by
-      rw [hcyclic]
-      simp only [mul_assoc]
-    _ = -Matrix.trace (C * (G * H - H * G)) / 2 := by
-      simp only [mul_sub, Matrix.trace_sub]
-    _ = Matrix.trace (C * C) / 2 := by
-      have h : G * H - H * G = -C := by
-        dsimp [C]
-        rw [neg_sub]
-      rw [h, mul_neg]
-      simp
-
 /-- Exact matrix double-commutator coefficient for any Cartesian
 polarization axis. The minus sign accounts for the physical generator
 being `i G`, whereas `orbitalGenerator` is real and skew. -/
@@ -116,12 +89,9 @@ noncomputable def orbitalDoubleCommutator (axis : Fin 3) (c₁ c₂ : ℝ)
 theorem orbitalDoubleCommutator_eq_polynomial (axis : Fin 3) (c₁ c₂ : ℝ)
     (k : Fin 3 → ℝ) :
     orbitalDoubleCommutator axis c₁ c₂ k = orbitalPolynomial axis c₁ c₂ k := by
-  unfold orbitalDoubleCommutator
-  dsimp only
-  rw [trace_double_commutator_eq_commutator_sq]
   fin_cases axis <;>
-    simp [orbitalHamiltonian, orbitalGenerator, orbitalPolynomial,
-      Matrix.trace, Fin.sum_univ_three] <;> ring
+    simp [orbitalDoubleCommutator, orbitalHamiltonian, orbitalGenerator,
+      orbitalPolynomial, Matrix.trace, Fin.sum_univ_three] <;> ring
 
 /-- Exact fourth-moment cubature for coordinate-even homogeneous quartics.
 It reproduces the `kᵢ⁴` and `kᵢ²kⱼ²` moments of the normalized uniform
@@ -141,48 +111,15 @@ theorem evenQuarticCubature_coordinate_sq_mul_coordinate_sq
   fin_cases i <;> fin_cases j <;>
     simp_all [evenQuarticCubature] <;> ring
 
-/-- Cyclic reindexing of the three momentum coordinates. -/
-private def rotateMomentum (k : Fin 3 → ℝ) : Fin 3 → ℝ :=
-  ![k 1, k 2, k 0]
-
-/-- The model's orbital quartic polynomial transforms covariantly under the
-cyclic permutation of Cartesian axes. -/
-private theorem orbitalPolynomial_rotate (axis : Fin 3) (c₁ c₂ : ℝ)
-    (k : Fin 3 → ℝ) :
-    orbitalPolynomial (axis + 1) c₁ c₂ k =
-      orbitalPolynomial axis c₁ c₂ (rotateMomentum k) := by
-  fin_cases axis <;> simp [orbitalPolynomial, rotateMomentum]
-
-/-- The finite fourth-moment cubature is invariant under cyclic reindexing
-of the Cartesian momentum coordinates. -/
-private theorem evenQuarticCubature_rotate (r : ℝ) (f : (Fin 3 → ℝ) → ℝ) :
-    evenQuarticCubature r (fun k => f (rotateMomentum k)) =
-      evenQuarticCubature r f := by
-  simp [evenQuarticCubature, rotateMomentum]
-  ring
-
-/-- The angular mean agrees for all three Cartesian polarization axes by
-cyclic symmetry: only the first axis requires a direct quartic computation. -/
+/-- The angular mean of the orbital double-commutator polynomial is the
+same for every Cartesian polarization axis, despite the anisotropic
+momentum dependence before averaging. -/
 theorem evenQuarticCubature_orbitalPolynomial (axis : Fin 3)
     (c₁ c₂ r : ℝ) :
     evenQuarticCubature r (orbitalPolynomial axis c₁ c₂) =
       (2 * r ^ 4 / 15) * (2 * c₁ ^ 2 + 3 * c₂ ^ 2) := by
-  have hzero : evenQuarticCubature r (orbitalPolynomial 0 c₁ c₂) =
-      (2 * r ^ 4 / 15) * (2 * c₁ ^ 2 + 3 * c₂ ^ 2) := by
-    simp [evenQuarticCubature, orbitalPolynomial]
-    ring
-  have hstep (i : Fin 3) :
-      evenQuarticCubature r (orbitalPolynomial (i + 1) c₁ c₂) =
-        evenQuarticCubature r (orbitalPolynomial i c₁ c₂) := by
-    have hpoly : orbitalPolynomial (i + 1) c₁ c₂ =
-        (fun k => orbitalPolynomial i c₁ c₂ (rotateMomentum k)) := by
-      funext k
-      exact orbitalPolynomial_rotate i c₁ c₂ k
-    rw [hpoly, evenQuarticCubature_rotate]
-  fin_cases axis
-  · exact hzero
-  · simpa using (hstep 0).trans hzero
-  · simpa using (hstep 1).trans ((hstep 0).trans hzero)
+  fin_cases axis <;>
+    simp [evenQuarticCubature, orbitalPolynomial] <;> ring
 
 theorem evenQuarticCubature_orbitalDoubleCommutator (axis : Fin 3)
     (c₁ c₂ r : ℝ) :
