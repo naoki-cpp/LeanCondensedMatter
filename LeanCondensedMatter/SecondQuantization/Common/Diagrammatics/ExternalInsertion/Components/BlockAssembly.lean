@@ -1079,7 +1079,6 @@ theorem ExternalInsertionBlockLayout.assembleDiagram_restrictComponent_vertexWei
     have hv := layout.assembleDiagram_restrictComponent_vertexLabel_external
       S F hconnected e (fiberEquiv v)
     convert hv using 1
-    exact Subtype.ext rfl
   change (∏ v : ↥(interactionSector (C : Finset (ExternalInsertionVertex E S))),
       g ((d.restrictComponent C).vertexLabel v)) =
     ∏ v : ↥(layout.interactionBlock S B), g ((F B).vertexLabel v)
