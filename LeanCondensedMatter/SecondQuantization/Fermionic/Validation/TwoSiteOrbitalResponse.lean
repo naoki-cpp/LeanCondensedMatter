@@ -66,22 +66,10 @@ theorem boundedOrbitalMatrix_selfAdjoint (A : OrbitalMatrix)
     have h := congrArg (fun B : OrbitalMatrix => B i j) hA.star_eq
     simpa [Matrix.conjTranspose_apply] using h
   rw [isSelfAdjoint_iff]
-  calc
-    star (boundedOrbitalMatrix A) =
-        ∑ i : Fin 4, ∑ j : Fin 4,
-          star (A i j) • boundedDgammaMatrixUnit j i := by
-            rw [boundedOrbitalMatrix_eq_sum]
-            simp only [star_sum, star_smul, star_boundedDgammaMatrixUnit]
-    _ = ∑ i : Fin 4, ∑ j : Fin 4,
-        star (A j i) • boundedDgammaMatrixUnit i j := by
-          rw [Finset.sum_comm]
-    _ = boundedOrbitalMatrix A := by
-      rw [boundedOrbitalMatrix_eq_sum]
-      apply Finset.sum_congr rfl
-      intro i _
-      apply Finset.sum_congr rfl
-      intro j _
-      rw [hEntry]
+  simp only [boundedOrbitalMatrix_eq_sum, star_sum, star_smul,
+    star_boundedDgammaMatrixUnit]
+  rw [Finset.sum_comm]
+  simp_rw [hEntry]
 
 /-- Explicit two-site Hamiltonian is Hermitian for real hopping and splitting. -/
 theorem orbitalHamiltonian_isHermitian (Δ hoppingStrength : ℝ) :
