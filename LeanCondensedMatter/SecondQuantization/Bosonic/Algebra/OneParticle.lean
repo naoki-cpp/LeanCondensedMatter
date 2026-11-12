@@ -83,7 +83,7 @@ theorem secondQuantization_comp_oneParticleEmbedding
     createVector_fockVacuum]
   have h := congrArg (fun x => oneParticleEmbedding (T x))
     ((EuclideanSpace.basisFun Mode ℂ).sum_repr' v)
-  simpa [map_sum, map_smul] using h
+  simpa [map_sum, map_smul, EuclideanSpace.inner_single_left] using h
 
 end
 end SecondQuantization.Bosonic
