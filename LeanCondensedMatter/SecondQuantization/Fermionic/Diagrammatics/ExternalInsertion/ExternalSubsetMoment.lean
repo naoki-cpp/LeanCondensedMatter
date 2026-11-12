@@ -786,6 +786,58 @@ theorem sum_fixedExternalPartitionFiber_eq_sum_connectedBlockFamilies
         (fun d : ExternalInsertionWickDiagram Mode K n =>
           if d.externalLabel = labels then d.dysonAmplitude ε β g times else 0)
 
+/-- The exact physical fixed-partition Dyson fiber can be enumerated using only
+the independently specified local external-source labels. The test of the
+*assembled* global label family is equivalent to a separate label test on
+every source-partition block. This is needed before summing independently
+labelled connected Dyson coefficients, and remains valid for blocks with
+no interaction vertices. -/
+theorem sum_fixedExternalPartitionFiber_eq_sum_localLabelConnectedBlockFamilies
+    {K n : ℕ} (anchor : Fin (2 * K))
+    (π : Finpartition (Finset.univ : Finset (Fin (2 * K))))
+    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
+    (labels : Fin (2 * K) → ExternalFieldLabel Mode)
+    (times : Fin (2 * K) → ℝ) :
+    (∑ d : VacuumFreeFixedExternalInsertionWickDiagram Mode K n labels,
+      if externalComponentPartition d.1.1.vertexGraph = π then
+        d.1.1.dysonAmplitude ε β g times else 0) =
+      ∑ p ∈ ExternalInsertionBlockLayout.connectedAssemblyFiniteDomain
+          (E := K) (N := n) (ExternalLabel := ExternalFieldLabel Mode)
+          (InternalLabel := QuarticVertexLabel Mode) anchor,
+        if p.1.partition = π then
+          if ∀ B : p.1.partition.parts,
+              (p.2.1 B).externalLabel =
+                fun i => labels (p.1.sourceEquiv.symm ⟨B, i⟩) then
+            ExternalInsertionWickDiagram.dysonAmplitude
+              (ExternalInsertionBlockLayout.assembleConnectedBlockFamily p).1
+              ε β g times
+          else 0
+        else 0 := by
+  classical
+  rw [sum_fixedExternalPartitionFiber_eq_sum_connectedBlockFamilies
+    anchor π ε β g labels times]
+  apply Finset.sum_congr rfl
+  intro p _
+  rcases p with ⟨layout, ⟨F, hconnected⟩⟩
+  change
+      (if layout.partition = π then
+        if (layout.assembleDiagram (Finset.univ : Finset (Fin n)) F).externalLabel =
+            labels then
+          (layout.assembleDiagram (Finset.univ : Finset (Fin n)) F).dysonAmplitude
+            ε β g times
+        else 0
+      else 0) =
+      (if layout.partition = π then
+        if ∀ B : layout.partition.parts,
+            (F B).externalLabel =
+              fun i => labels (layout.sourceEquiv.symm ⟨B, i⟩) then
+          (layout.assembleDiagram (Finset.univ : Finset (Fin n)) F).dysonAmplitude
+            ε β g times
+        else 0
+      else 0)
+  rw [layout.assembleDiagram_externalLabel_eq_iff
+    (Finset.univ : Finset (Fin n)) F labels]
+
 /-- Fully external-connected, vacuum-free Dyson coefficient using the actual
 integrated signed Wick diagram amplitude, with all labels and times fixed. -/
 noncomputable def connectedExternalInsertionDysonCoefficient {K : ℕ}
