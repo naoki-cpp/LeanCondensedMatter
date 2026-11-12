@@ -66,22 +66,10 @@ theorem boundedOrbitalMatrix_selfAdjoint (A : OrbitalMatrix)
     have h := congrArg (fun B : OrbitalMatrix => B i j) hA.star_eq
     simpa [Matrix.conjTranspose_apply] using h
   rw [isSelfAdjoint_iff]
-  calc
-    star (boundedOrbitalMatrix A) =
-        ∑ i : Fin 4, ∑ j : Fin 4,
-          star (A i j) • boundedDgammaMatrixUnit j i := by
-            rw [boundedOrbitalMatrix_eq_sum]
-            simp only [star_sum, star_smul, star_boundedDgammaMatrixUnit]
-    _ = ∑ i : Fin 4, ∑ j : Fin 4,
-        star (A j i) • boundedDgammaMatrixUnit i j := by
-          rw [Finset.sum_comm]
-    _ = boundedOrbitalMatrix A := by
-      rw [boundedOrbitalMatrix_eq_sum]
-      apply Finset.sum_congr rfl
-      intro i _
-      apply Finset.sum_congr rfl
-      intro j _
-      rw [hEntry]
+  simp only [boundedOrbitalMatrix_eq_sum, star_sum, star_smul,
+    star_boundedDgammaMatrixUnit]
+  rw [Finset.sum_comm]
+  simp_rw [hEntry]
 
 /-- Explicit two-site Hamiltonian is Hermitian for real hopping and splitting. -/
 theorem orbitalHamiltonian_isHermitian (Δ hoppingStrength : ℝ) :
@@ -116,14 +104,18 @@ theorem boundedOrbitalBondFlux_reverse (hoppingStrength : ℝ) :
   rw [bondFluxOneToZero_eq_neg, boundedOrbitalMatrix_neg]
   rfl
 
-/-- Legacy name for the one-particle charge projector, now owned by the orbital model. -/
-abbrev chargeProjectorZero : OrbitalMatrix :=
-  siteZeroChargeProjector
+/-- Charge within the left two-orbital site, with q=1. -/
+def chargeProjectorZero : OrbitalMatrix :=
+  !![1, 0, 0, 0;
+     0, 1, 0, 0;
+     0, 0, 0, 0;
+     0, 0, 0, 0]
 
-/-- Legacy name for the one-particle hopping-driven charge source.
-The operator itself is now defined alongside the orbital bond fluxes. -/
-noncomputable abbrev chargeBondSource (hoppingStrength : ℝ) : OrbitalMatrix :=
-  siteZeroChargeBondFlux hoppingStrength
+/-- The oriented charge-bond vertex obtained from the same hopping term as
+the orbital flux. It is the negative Heisenberg change in the left-site charge. -/
+noncomputable def chargeBondSource (hoppingStrength : ℝ) : OrbitalMatrix :=
+  -Complex.I • (hopping hoppingStrength * chargeProjectorZero -
+    chargeProjectorZero * hopping hoppingStrength)
 
 /-- Bounded charge-current source coupled to an external vector-potential-like
 parameter; any physical charge or lattice-spacing factors remain explicit. -/
