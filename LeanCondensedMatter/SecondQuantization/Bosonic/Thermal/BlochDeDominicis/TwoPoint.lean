@@ -142,7 +142,7 @@ theorem summable_imaginaryTimeEvolveFree_self (ε : Mode → ℝ) (β : ℝ) (hp
     Summable (fun n : Occupation Mode =>
       Common.matrixCoeff (imaginaryTimeEvolveFree ε (-β)) n n) := by
   simpa [matrixCoeff_imaginaryTimeEvolveFree_self, boltzmannWeight] using
-    Complex.summable_ofReal.mpr (summable_boltzmannWeight ε β hpos)
+    Complex.summable_ofReal.mpr ((hasSum_boltzmannWeight ε β hpos).summable)
 
 
 end
