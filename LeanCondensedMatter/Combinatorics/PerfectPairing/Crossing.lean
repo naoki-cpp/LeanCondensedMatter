@@ -135,20 +135,10 @@ theorem Pairing.crossingCount_eq_of_partnerEquiv_strictMono
     source.crossingCount = target.crossingCount := by
   classical
   let pairEquiv := source.normalizedPairEquivOfPartnerEquiv target e hpartner
-  have hpartner0 (pr : source.NormalizedPair) :
-      target.partner (e (source.pairEndpointEquiv (pr, 0))) =
-        e (source.pairEndpointEquiv (pr, 1)) := by
-    change target.partner (e pr.1.1) = e pr.1.2
-    rw [hpartner]
-    exact congrArg e (((source.mem_pairs_iff pr.1.1 pr.1.2).1 pr.2).2)
   have hpair (pr : source.NormalizedPair) :
-      (pairEquiv pr).1 = (e pr.1.1, e pr.1.2) := by
-    change
-      (target.normalizedPairOfEndpointEquiv source.pairEndpointEquiv e pr).1 =
-        (e pr.1.1, e pr.1.2)
-    exact target.normalizedPairOfEndpointEquiv_pair_eq_of_lt
-      source.pairEndpointEquiv e hpartner0 pr
-      (hmono (((source.mem_pairs_iff pr.1.1 pr.1.2).1 pr.2).1))
+      (pairEquiv pr).1 = (e pr.1.1, e pr.1.2) :=
+    source.normalizedPairEquivOfPartnerEquiv_apply_of_strictMono
+      target e hpartner hmono pr
   have hcross (p q : source.NormalizedPair) :
       Crosses p.1 q.1 ↔ Crosses (pairEquiv p).1 (pairEquiv q).1 := by
     rw [hpair p, hpair q]
