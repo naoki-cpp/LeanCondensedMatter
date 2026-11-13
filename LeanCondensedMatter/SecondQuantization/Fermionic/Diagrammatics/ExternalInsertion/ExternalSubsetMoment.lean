@@ -1074,10 +1074,11 @@ theorem sum_fixedExternalPartitionDysonFiber_eq_sizes_shuffles
             (E := K) (N := n) (ExternalLabel := ExternalFieldLabel Mode)
             (InternalLabel := QuarticVertexLabel Mode)
             anchor π heven).symm p).1.1).externalLabel = labels then
-          (((ExternalInsertionBlockLayout.fixedPartitionPhysicalSizeShuffleEquiv
-            (E := K) (N := n) (ExternalLabel := ExternalFieldLabel Mode)
-            (InternalLabel := QuarticVertexLabel Mode)
-            anchor π heven).symm p).1.1).dysonAmplitude ε β g times
+          ExternalInsertionWickDiagram.dysonAmplitude
+            (((ExternalInsertionBlockLayout.fixedPartitionPhysicalSizeShuffleEquiv
+              (E := K) (N := n) (ExternalLabel := ExternalFieldLabel Mode)
+              (InternalLabel := QuarticVertexLabel Mode)
+              anchor π heven).symm p).1.1) ε β g times
         else 0 := by
   classical
   have hfixed :=
