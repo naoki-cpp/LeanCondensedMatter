@@ -122,8 +122,12 @@ theorem AheScalingParameters.zeroBroadeningPairAtDisorder_sxy
         (finiteCutoffContinuumBornDysonOrderedXYRetardedAdvancedDressedSurfaceConductivityZeroBroadeningBoundary
           params.e params.v params.m params.fermiEnergy disorderStrength params.hbar
           params.pMax) := by
-  simp [AheScalingParameters.zeroBroadeningPairAtDisorder,
-    AheScalingParameters.normalizedPairOfTensor]
+  unfold AheScalingParameters.zeroBroadeningPairAtDisorder
+    AheScalingParameters.normalizedPairOfTensor
+  rw [ConductivityTensor.hallComponent_zero_one_eq_of_isPlanarIsotropic
+    _ (by constructor <;> simp [
+      finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensorZeroBroadeningBoundary])]
+  rfl
 
 /-- At the stored disorder strength, the zero-broadening longitudinal scaling coordinate is the
 normalized ordered `xx` boundary component. -/
