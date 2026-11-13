@@ -1,7 +1,7 @@
+import LeanCondensedMatter.Transport.Disorder.TMatrix
 import LeanCondensedMatter.Models.MassiveDirac.Model.Operator
 import Mathlib.Algebra.Group.Units.Basic
 import Mathlib.Analysis.Normed.Ring.Units
-import Mathlib.Tactic.Abel
 import Mathlib.Tactic.Ring
 
 set_option linter.style.header false
@@ -74,77 +74,6 @@ theorem ScalarImpurityParameters.selfEnergy_eq_meanPotential_add_tMatrix_remaind
   unfold ScalarImpurityParameters.selfEnergy
   module
 
-/-- The explicit inverse is a right inverse of `1 - v_imp G_loop`. -/
-theorem ScalarImpurityParameters.shiftMatrix_mul_inverseShiftMatrix
-    (params : ScalarImpurityParameters) (greenLoop : Matrix2)
-    (hinvertible : IsUnit (params.shiftMatrix greenLoop)) :
-    params.shiftMatrix greenLoop * params.inverseShiftMatrix greenLoop hinvertible = 1 := by
-  simpa [ScalarImpurityParameters.inverseShiftMatrix] using hinvertible.mul_val_inv
-
-/-- The explicit inverse is also a left inverse of `1 - v_imp G_loop`. -/
-theorem ScalarImpurityParameters.inverseShiftMatrix_mul_shiftMatrix
-    (params : ScalarImpurityParameters) (greenLoop : Matrix2)
-    (hinvertible : IsUnit (params.shiftMatrix greenLoop)) :
-    params.inverseShiftMatrix greenLoop hinvertible * params.shiftMatrix greenLoop = 1 := by
-  simpa [ScalarImpurityParameters.inverseShiftMatrix] using hinvertible.val_inv_mul
-
-/-- Multiplying the T-matrix by its shift from the left gives the scalar impurity potential. -/
-theorem ScalarImpurityParameters.shiftMatrix_mul_tMatrix
-    (params : ScalarImpurityParameters) (greenLoop : Matrix2)
-    (hinvertible : IsUnit (params.shiftMatrix greenLoop)) :
-    params.shiftMatrix greenLoop * params.tMatrix greenLoop hinvertible =
-      (((params.impurityStrength : ℝ) : ℂ)) • (1 : Matrix2) := by
-  unfold ScalarImpurityParameters.tMatrix
-  rw [mul_smul_comm, params.shiftMatrix_mul_inverseShiftMatrix greenLoop hinvertible]
-
-/-- Multiplying the T-matrix by its shift from the right gives the same scalar impurity potential. -/
-theorem ScalarImpurityParameters.tMatrix_mul_shiftMatrix
-    (params : ScalarImpurityParameters) (greenLoop : Matrix2)
-    (hinvertible : IsUnit (params.shiftMatrix greenLoop)) :
-    params.tMatrix greenLoop hinvertible * params.shiftMatrix greenLoop =
-      (((params.impurityStrength : ℝ) : ℂ)) • (1 : Matrix2) := by
-  unfold ScalarImpurityParameters.tMatrix
-  rw [smul_mul_assoc, params.inverseShiftMatrix_mul_shiftMatrix greenLoop hinvertible]
-
-/-- Exact Lippmann--Schwinger fixed-point identity. This follows from invertibility alone and does
-not assert convergence of a geometric series. -/
-theorem ScalarImpurityParameters.tMatrix_eq_bare_add_loop_tMatrix
-    (params : ScalarImpurityParameters) (greenLoop : Matrix2)
-    (hinvertible : IsUnit (params.shiftMatrix greenLoop)) :
-    params.tMatrix greenLoop hinvertible =
-      (((params.impurityStrength : ℝ) : ℂ)) • (1 : Matrix2) +
-        (((params.impurityStrength : ℝ) : ℂ)) •
-          (greenLoop * params.tMatrix greenLoop hinvertible) := by
-  have h := params.shiftMatrix_mul_tMatrix greenLoop hinvertible
-  rw [ScalarImpurityParameters.shiftMatrix] at h
-  simp only [sub_mul, one_mul, smul_mul_assoc] at h
-  exact (sub_eq_iff_eq_add).mp h
-
-/-- Exact remainder after subtracting the bare scalar-impurity term. No series
-expansion is used. -/
-theorem ScalarImpurityParameters.tMatrix_sub_bare_eq
-    (params : ScalarImpurityParameters) (greenLoop : Matrix2)
-    (hinvertible : IsUnit (params.shiftMatrix greenLoop)) :
-    params.tMatrix greenLoop hinvertible -
-        (((params.impurityStrength : ℝ) : ℂ)) • (1 : Matrix2) =
-      (((params.impurityStrength : ℝ) : ℂ)) •
-        (greenLoop * params.tMatrix greenLoop hinvertible) := by
-  have h := params.tMatrix_eq_bare_add_loop_tMatrix greenLoop hinvertible
-  calc
-    params.tMatrix greenLoop hinvertible -
-        (((params.impurityStrength : ℝ) : ℂ)) • (1 : Matrix2) =
-      ((((params.impurityStrength : ℝ) : ℂ)) • (1 : Matrix2) +
-          (((params.impurityStrength : ℝ) : ℂ)) •
-            (greenLoop * params.tMatrix greenLoop hinvertible)) -
-        (((params.impurityStrength : ℝ) : ℂ)) • (1 : Matrix2) :=
-      congrArg
-        (fun M : Matrix2 =>
-          M - (((params.impurityStrength : ℝ) : ℂ)) • (1 : Matrix2))
-        h
-    _ = (((params.impurityStrength : ℝ) : ℂ)) •
-        (greenLoop * params.tMatrix greenLoop hinvertible) := by
-      abel
-
 /-- In operator norm, the exact T-matrix remainder carries two powers of the impurity strength, up
 to the norm of the supplied Green loop and inverse shift. -/
 theorem ScalarImpurityParameters.norm_matrixOperator_tMatrix_sub_bare_le
@@ -161,7 +90,28 @@ theorem ScalarImpurityParameters.norm_matrixOperator_tMatrix_sub_bare_le
           matrixOperator (params.inverseShiftMatrix greenLoop hinvertible) := by
     unfold ScalarImpurityParameters.tMatrix matrixOperator
     rw [map_smul]
-  rw [params.tMatrix_sub_bare_eq greenLoop hinvertible]
+  have hunit : IsUnit (1 - (((params.impurityStrength : ℝ) : ℂ)) • greenLoop) := by
+    simpa only [ScalarImpurityParameters.shiftMatrix] using hinvertible
+  have hrem := QuantumTheory.Transport.scalarImpurityTMatrix_sub_bare
+    ((params.impurityStrength : ℝ) : ℂ) greenLoop hunit
+  have hunitEq : hunit.unit = hinvertible.unit := by
+    apply Units.ext
+    calc
+      (hunit.unit : Matrix2) =
+          1 - (((params.impurityStrength : ℝ) : ℂ)) • greenLoop :=
+        hunit.unit_spec.symm
+      _ = params.shiftMatrix greenLoop := rfl
+      _ = (hinvertible.unit : Matrix2) := hinvertible.unit_spec
+  simp only [QuantumTheory.Transport.scalarImpurityTMatrix] at hrem
+  rw [hunitEq] at hrem
+  have hrewrite :
+      params.tMatrix greenLoop hinvertible -
+          (((params.impurityStrength : ℝ) : ℂ)) • (1 : Matrix2) =
+        (((params.impurityStrength : ℝ) : ℂ)) •
+          (greenLoop * params.tMatrix greenLoop hinvertible) := by
+    simpa only [ScalarImpurityParameters.tMatrix,
+      ScalarImpurityParameters.inverseShiftMatrix] using hrem
+  rw [hrewrite]
   simp only [matrixOperator, map_smul, map_mul]
   rw [norm_smul]
   calc
@@ -175,24 +125,6 @@ theorem ScalarImpurityParameters.norm_matrixOperator_tMatrix_sub_bare_le
         ‖matrixOperator (params.inverseShiftMatrix greenLoop hinvertible)‖ := by
       rw [ht, norm_smul]
       ring
-
-/-- With a supplied pointwise bound on the operator norm of the inverse shift, the exact remainder
-has an explicit quadratic impurity-strength factor. This does not by itself assert a uniform
-small-impurity estimate, Big-O statement, or limit as the impurity strength tends to zero. -/
-theorem ScalarImpurityParameters.norm_matrixOperator_tMatrix_sub_bare_le_of_inverse_bound
-    (params : ScalarImpurityParameters) (greenLoop : Matrix2)
-    (hinvertible : IsUnit (params.shiftMatrix greenLoop))
-    (inverseBound : ℝ)
-    (hinverse :
-      ‖matrixOperator (params.inverseShiftMatrix greenLoop hinvertible)‖ ≤ inverseBound) :
-    ‖matrixOperator
-        (params.tMatrix greenLoop hinvertible -
-          (((params.impurityStrength : ℝ) : ℂ)) • (1 : Matrix2))‖ ≤
-      ‖((params.impurityStrength : ℝ) : ℂ)‖ ^ 2 * ‖matrixOperator greenLoop‖ *
-        inverseBound := by
-  exact (params.norm_matrixOperator_tMatrix_sub_bare_le greenLoop hinvertible).trans
-    (mul_le_mul_of_nonneg_left hinverse
-      (mul_nonneg (sq_nonneg _) (norm_nonneg _)))
 
 /-- For a fixed Green loop, the scalar-impurity shift is a unit for all impurity strengths
 sufficiently close to zero. This is a family-level statement in the raw scalar strength, so the
@@ -286,9 +218,9 @@ theorem ScalarImpurityParameters.matrixOperator_tMatrix_eq_ringInverse_shift
     exact (isUnit_map_iff φ (params.shiftMatrix greenLoop)).mpr hinvertible
   have hinverse_mul : inverseOp * shiftOp = 1 := by
     dsimp [inverseOp, shiftOp]
-    simpa [matrixOperator, map_mul, map_one] using
-      congrArg matrixOperator
-        (params.inverseShiftMatrix_mul_shiftMatrix greenLoop hinvertible)
+    have h := hinvertible.val_inv_mul
+    simpa [ScalarImpurityParameters.inverseShiftMatrix, matrixOperator, map_mul, map_one] using
+      congrArg matrixOperator h
   have hinverse_eq : inverseOp = Ring.inverse shiftOp := by
     have hmul : shiftOp * Ring.inverse shiftOp = 1 :=
       Ring.mul_inverse_cancel shiftOp hshiftUnit
