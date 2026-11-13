@@ -3071,6 +3071,7 @@ noncomputable def ExternalInsertionBlockLayout.fixedPartitionPhysicalStandardize
 reindexed without loss or multiplicity by the exact finite
 size/shuffle/standardized-local domain. No factorization of an
 individual ordered Dyson integral is claimed. -/
+open Classical in
 theorem ExternalInsertionBlockLayout.sum_fixedPartitionPhysical_eq_standardized_sizes_shuffles
     {ExternalLabel InternalLabel M : Type*}
     [Fintype ExternalLabel] [Fintype InternalLabel] [AddCommMonoid M]
