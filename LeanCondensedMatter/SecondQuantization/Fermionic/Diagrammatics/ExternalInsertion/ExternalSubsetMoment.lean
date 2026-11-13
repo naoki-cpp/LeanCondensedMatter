@@ -893,12 +893,8 @@ theorem fixedExternalPartitionDysonFiber_eq_zero_of_oddBlock
   apply Finset.sum_eq_zero
   intro d _
   by_cases hp : externalComponentPartition d.1.1.vertexGraph = π
-  · have hmem : (B : Finset (Fin (2 * K))) ∈
-        (externalComponentPartition d.1.1.vertexGraph).parts := by
-      rw [hp]
-      exact B.2
-    have hEven := d.1.1.externalComponentPartition_block_card_even B.1 hmem
-    exact (hodd hEven).elim
+  · exact (hodd (d.1.1.externalComponentPartition_block_card_even B.1
+      (by rw [hp]; exact B.2))).elim
   · simp only [hp, ↓reduceIte]
 
 /-- The **physical** vacuum-free Dyson coefficient is supported only on
@@ -1476,13 +1472,10 @@ private theorem odd_externalSubset_has_odd_partition_block
     ∃ B ∈ π.parts, ¬ Even B.card := by
   classical
   by_contra h
-  have hall : ∀ B ∈ π.parts, Even B.card := by
-    intro B hB
-    by_contra hBodd
-    exact h ⟨B, hB, hBodd⟩
+  push_neg at h
   have hπ : Even (∑ B ∈ π.parts, B.card) :=
     Finset.sum_induction (s := π.parts) (fun B => B.card) Even
-      (fun _ _ ha hb => ha.add hb) (by simp) (fun B hB => hall B hB)
+      (fun _ _ ha hb => ha.add hb) (by simp) (fun B hB => h B hB)
   exact hodd (by simpa only [π.sum_card_parts] using hπ)
 
 /-- The signed connected-partition expression respects fermion parity:
