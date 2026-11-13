@@ -988,6 +988,7 @@ theorem vacuumFreeExternalInsertionDysonCoefficient_eq_sum_evenPartitionFibers
         π B hBodd ε β g labels times)
 
 open Classical in
+open Classical in
 /-- The actual order-`n` vacuum-free Dyson coefficient, with the external
 field labels fixed, is an explicit finite sum over all independent
 preconnected local external-block diagrams and their interaction-vertex
