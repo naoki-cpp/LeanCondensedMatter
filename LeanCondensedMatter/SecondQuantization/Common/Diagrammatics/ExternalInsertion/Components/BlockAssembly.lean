@@ -3005,6 +3005,57 @@ theorem ExternalInsertionBlockLayout.sum_vacuumFree_fixedPartition_eq_sizes_shuf
       ExternalInsertionBlockLayout.sum_fixedPartitionPhysical_eq_sizes_shuffles
         anchor π heven weight
 
+/-- Evaluating the inverse physical fixed-partition size/shuffle
+bijection reconstructs the actual assembled labelled Wick pairing,
+including vertex labels and all external insertion legs. -/
+theorem ExternalInsertionBlockLayout.fixedPartitionPhysicalSizeShuffleEquiv_symm_diagram
+    {ExternalLabel InternalLabel : Type*}
+    (anchor : Fin (2 * E))
+    (π : Finpartition (Finset.univ : Finset (Fin (2 * E))))
+    (heven : ∀ B : π.parts, Even (B : Finset (Fin (2 * E))).card)
+    (p : Σ data : (Σ size : π.parts → ℕ, FamilySlotShuffleTo size N),
+      (((ExternalInsertionBlockLayout.fixedPartitionSizeShuffleEquiv π heven).symm data).1)
+        .ConnectedBlockFamily (ExternalLabel := ExternalLabel)
+          (InternalLabel := InternalLabel)) :
+    (((ExternalInsertionBlockLayout.fixedPartitionPhysicalSizeShuffleEquiv
+      (ExternalLabel := ExternalLabel) (InternalLabel := InternalLabel)
+      anchor π heven).symm p).1.1) =
+      ((ExternalInsertionBlockLayout.fixedPartitionSizeShuffleEquiv π heven).symm p.1).1
+        .assembleDiagram (Finset.univ : Finset (Fin N)) p.2.1 := by
+  rfl
+
+open Classical in
+/-- The complete weighted physical fixed-partition diagram sum, now
+expressed entirely in terms of the actual assembly of independent
+connected local diagrams with their uniquely induced interaction
+size/shuffle data. Every signed Dyson amplitude stays on the original
+assembled diagram until its full shuffle orbit has been summed. -/
+theorem ExternalInsertionBlockLayout.sum_vacuumFree_fixedPartition_eq_sizes_shuffles_assembled
+    {ExternalLabel InternalLabel M : Type*}
+    [Fintype ExternalLabel] [Fintype InternalLabel] [AddCommMonoid M]
+    (anchor : Fin (2 * E))
+    (π : Finpartition (Finset.univ : Finset (Fin (2 * E))))
+    (heven : ∀ B : π.parts, Even (B : Finset (Fin (2 * E))).card)
+    (weight : ExternalInsertionDiagram ExternalLabel InternalLabel E N
+      (Finset.univ : Finset (Fin N)) → M) :
+    (∑ d : {d : ExternalInsertionDiagram ExternalLabel InternalLabel E N
+        (Finset.univ : Finset (Fin N)) //
+          HasNoVacuumComponent d.vertexGraph},
+      if externalComponentPartition d.1.vertexGraph = π then weight d.1 else 0) =
+      ∑ p ∈ ExternalInsertionBlockLayout.fixedPartitionPhysicalSizeShuffleFiniteDomain
+          (ExternalLabel := ExternalLabel) (InternalLabel := InternalLabel)
+          anchor π heven,
+        weight
+          (((ExternalInsertionBlockLayout.fixedPartitionSizeShuffleEquiv π heven).symm p.1).1
+            .assembleDiagram (Finset.univ : Finset (Fin N)) p.2.1) := by
+  classical
+  rw [ExternalInsertionBlockLayout.sum_vacuumFree_fixedPartition_eq_sizes_shuffles
+    anchor π heven weight]
+  apply Finset.sum_congr rfl
+  intro p _
+  rw [ExternalInsertionBlockLayout.fixedPartitionPhysicalSizeShuffleEquiv_symm_diagram
+    anchor π heven p]
+
 /-- The exact finite collection of physical layouts with a prescribed
 external partition, obtained from all actual interaction-owner functions.
 No artificial finiteness instance for arbitrary size vectors is used. -/
