@@ -41,6 +41,12 @@ def orbitalGenerator (axis : Fin 3) : OrbitalMatrix :=
     !![0, -1, 0; 1, 0, 0; 0, 0, 0]
   ] axis
 
+/-- Each real Cartesian orbital generator is skew-symmetric. -/
+theorem orbitalGenerator_transpose (axis : Fin 3) :
+    (orbitalGenerator axis).transpose = -orbitalGenerator axis := by
+  fin_cases axis <;> ext i j <;> fin_cases i <;> fin_cases j <;>
+    simp [orbitalGenerator, Matrix.transpose_apply]
+
 /-- Orbital-momentum part of the centrosymmetric spin-1 Hamiltonian.
 The scalar kinetic term is omitted because it drops out of commutators.
 The off-diagonal entries encode one anticommutator per unordered pair. -/
