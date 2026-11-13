@@ -48,36 +48,40 @@ variable (data : KuboTimeReversalData M d H)
 
 /-- Complex conjugation of the Schrödinger generator reverses its sign. -/
 theorem transform_schrodingerGenerator (m : M) :
-    data.transform (schrodingerGenerator (data.system m)) =
+    data.timeReversal.conjugateOperator (schrodingerGenerator (data.system m)) =
       -(schrodingerGenerator (data.system (data.reverse m))) := by
-  simp only [schrodingerGenerator, data.transform_smul,
+  simp only [schrodingerGenerator, data.timeReversal.conjugateOperator_smul,
     data.hamiltonian_reverse, data.system_hbar]
-  simp only [star_neg, star_div₀, RCLike.star_def, Complex.conj_I,
-    Complex.conj_ofReal, neg_smul, neg_neg]
-  rw [← neg_smul]
-  congr 1
-  ring
+  have hcoeff :
+      (starRingEnd ℂ) (-(Complex.I / (data.hbar : ℂ))) =
+        Complex.I / (data.hbar : ℂ) := by
+    change star (-(Complex.I / (data.hbar : ℂ))) =
+      Complex.I / (data.hbar : ℂ)
+    rw [star_neg, star_div₀]
+    simp only [RCLike.star_def, Complex.conj_I, Complex.conj_ofReal]
+    ring
+  rw [hcoeff]
 
 /-- Hamiltonian covariance induces negative-time covariance of the
 free Schrödinger propagator. -/
 theorem transform_freePropagator (m : M) (t : ℝ) :
-    data.transform (freePropagator (data.system m) t) =
+    data.timeReversal.conjugateOperator (freePropagator (data.system m) t) =
       freePropagator (data.system (data.reverse m)) (-t) := by
-  rw [freePropagator_eq_exp, freePropagator_eq_exp, data.transform_exp,
-    data.transform_smul, data.transform_schrodingerGenerator m]
+  rw [freePropagator_eq_exp, freePropagator_eq_exp, data.timeReversal.conjugateOperator_exp,
+    data.timeReversal.conjugateOperator_smul, data.transform_schrodingerGenerator m]
   simp
 
 /-- Antiunitarity reverses the time argument of Heisenberg evolution. -/
 theorem transform_heisenbergEvolution (m : M) (t : ℝ)
     (A : H →L[ℂ] H) :
-    data.transform
+    data.timeReversal.conjugateOperator
         (heisenbergEvolution (freePropagatorGroup (data.system m)) t A) =
       heisenbergEvolution
         (freePropagatorGroup (data.system (data.reverse m))) (-t)
-          (data.transform A) := by
+          (data.timeReversal.conjugateOperator A) := by
   rw [heisenbergEvolution_freePropagatorGroup_apply,
     heisenbergEvolution_freePropagatorGroup_apply,
-    data.transform_mul, data.transform_mul,
+    data.timeReversal.conjugateOperator_mul, data.timeReversal.conjugateOperator_mul,
     data.transform_freePropagator m (-t),
     data.transform_freePropagator m t]
 
@@ -88,8 +92,8 @@ theorem correlation_reverse_of_odd (m : M) (t : ℝ)
     (A B A' B' : H →L[ℂ] H)
     (hA : IsSelfAdjoint A')
     (hB : IsSelfAdjoint B')
-    (hTA : data.transform A = -A')
-    (hTB : data.transform B = -B') :
+    (hTA : data.timeReversal.conjugateOperator A = -A')
+    (hTB : data.timeReversal.conjugateOperator B = -B') :
     (data.density m).expectation
         (heisenbergEvolution (freePropagatorGroup (data.system m)) t A * B) =
       (data.density (data.reverse m)).expectation
@@ -97,10 +101,10 @@ theorem correlation_reverse_of_odd (m : M) (t : ℝ)
           (freePropagatorGroup (data.system (data.reverse m))) t B' * A') := by
   let U := freePropagatorGroup (data.system (data.reverse m))
   have hprod :
-      data.transform
+      data.timeReversal.conjugateOperator
         (heisenbergEvolution (freePropagatorGroup (data.system m)) t A * B) =
       heisenbergEvolution U (-t) A' * B' := by
-    rw [data.transform_mul, data.transform_heisenbergEvolution, hTA, hTB]
+    rw [data.timeReversal.conjugateOperator_mul, data.transform_heisenbergEvolution, hTA, hTB]
     simp [U]
   have hAstar : star (heisenbergEvolution U (-t) A') =
       heisenbergEvolution U (-t) A' :=
@@ -135,7 +139,7 @@ theorem correlation_reverse_of_odd (m : M) (t : ℝ)
     (data.density m).expectation
         (heisenbergEvolution (freePropagatorGroup (data.system m)) t A * B) =
       star ((data.density (data.reverse m)).expectation
-        (data.transform
+        (data.timeReversal.conjugateOperator
           (heisenbergEvolution (freePropagatorGroup (data.system m)) t A * B))) := by
       simpa using (congrArg star
         (data.expectation_reverse m
@@ -219,7 +223,7 @@ theorem contact_expectation_reverse (m : M) (i j : d) :
         star ((data.density m).expectation ((data.contact m i j).1)) := by
       rw [← (data.density m).expectation_star, hself]
     _ = (data.density (data.reverse m)).expectation
-          (data.transform ((data.contact m i j).1)) :=
+          (data.timeReversal.conjugateOperator ((data.contact m i j).1)) :=
       (data.expectation_reverse m _).symm
     _ = (data.density (data.reverse m)).expectation
           ((data.contact (data.reverse m) j i).1) := by
