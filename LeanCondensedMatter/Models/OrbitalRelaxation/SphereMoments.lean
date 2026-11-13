@@ -202,6 +202,7 @@ private theorem sphericalAverage_y_four (r : ℝ) :
   rw [intervalIntegral.integral_const_mul, integral_sin_five]
   have hpi : Real.pi ≠ 0 := Real.pi_ne_zero
   field_simp
+  all_goals ring
 
 private theorem sphericalAverage_xy (r : ℝ) :
     sphericalAverage r (fun k => k 0 ^ 2 * k 1 ^ 2) = r ^ 4 / 15 := by
@@ -233,6 +234,7 @@ private theorem sphericalAverage_xy (r : ℝ) :
   rw [intervalIntegral.integral_const_mul, integral_sin_five]
   have hpi : Real.pi ≠ 0 := Real.pi_ne_zero
   field_simp
+  all_goals ring
 
 private theorem sphericalAverage_xz (r : ℝ) :
     sphericalAverage r (fun k => k 0 ^ 2 * k 2 ^ 2) = r ^ 4 / 15 := by
@@ -265,7 +267,6 @@ private theorem sphericalAverage_xz (r : ℝ) :
   rw [intervalIntegral.integral_const_mul, integral_sin_three_mul_cos_sq]
   have hpi : Real.pi ≠ 0 := Real.pi_ne_zero
   field_simp
-  all_goals ring
 
 private theorem sphericalAverage_yz (r : ℝ) :
     sphericalAverage r (fun k => k 1 ^ 2 * k 2 ^ 2) = r ^ 4 / 15 := by
@@ -298,7 +299,6 @@ private theorem sphericalAverage_yz (r : ℝ) :
   rw [intervalIntegral.integral_const_mul, integral_sin_three_mul_cos_sq]
   have hpi : Real.pi ≠ 0 := Real.pi_ne_zero
   field_simp
-  all_goals ring
 
 /-- The normalized continuous spherical-coordinate average of each fourth
 Cartesian momentum moment equals the corresponding finite cubature value. -/
