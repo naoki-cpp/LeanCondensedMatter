@@ -43,15 +43,11 @@ private theorem integral_sin_one :
 
 private theorem integral_sin_three :
     (∫ θ in (0 : ℝ)..Real.pi, Real.sin θ ^ 3) = 4 / 3 := by
-  have h := integral_sin_pow_odd (n := 1)
-  norm_num at h
-  simpa using h
+  convert (integral_sin_pow_odd (n := 1)) using 1 <;> norm_num
 
 private theorem integral_sin_five :
     (∫ θ in (0 : ℝ)..Real.pi, Real.sin θ ^ 5) = 16 / 15 := by
-  have h := integral_sin_pow_odd (n := 2)
-  norm_num at h
-  simpa using h
+  convert (integral_sin_pow_odd (n := 2)) using 1 <;> norm_num
 
 private theorem integral_sin_three_mul_cos_sq :
     (∫ θ in (0 : ℝ)..Real.pi,
@@ -103,13 +99,11 @@ private theorem integral_cos_sq_full :
     (∫ φ in (0 : ℝ)..(2 * Real.pi), Real.cos φ ^ 2) = Real.pi := by
   rw [integral_cos_sq]
   simp
-  ring
 
 private theorem integral_sin_sq_full :
     (∫ φ in (0 : ℝ)..(2 * Real.pi), Real.sin φ ^ 2) = Real.pi := by
   rw [integral_sin_sq]
   simp
-  ring
 
 private theorem integral_cos_four_full :
     (∫ φ in (0 : ℝ)..(2 * Real.pi), Real.cos φ ^ 4) = 3 * Real.pi / 4 := by
@@ -130,6 +124,9 @@ private theorem integral_sin_sq_mul_cos_sq_full :
        Real.sin φ ^ 2 * Real.cos φ ^ 2) = Real.pi / 4 := by
   rw [integral_sin_sq_mul_cos_sq]
   simp
+  have hs : Real.sin (Real.pi * 8) = 0 := by
+    simpa [mul_comm] using Real.sin_nat_mul_pi 8
+  rw [hs]
   ring
 
 private theorem sphericalAverage_x_four (r : ℝ) :
@@ -205,7 +202,6 @@ private theorem sphericalAverage_y_four (r : ℝ) :
   rw [intervalIntegral.integral_const_mul, integral_sin_five]
   have hpi : Real.pi ≠ 0 := Real.pi_ne_zero
   field_simp
-  all_goals ring
 
 private theorem sphericalAverage_xy (r : ℝ) :
     sphericalAverage r (fun k => k 0 ^ 2 * k 1 ^ 2) = r ^ 4 / 15 := by
@@ -237,7 +233,6 @@ private theorem sphericalAverage_xy (r : ℝ) :
   rw [intervalIntegral.integral_const_mul, integral_sin_five]
   have hpi : Real.pi ≠ 0 := Real.pi_ne_zero
   field_simp
-  all_goals ring
 
 private theorem sphericalAverage_xz (r : ℝ) :
     sphericalAverage r (fun k => k 0 ^ 2 * k 2 ^ 2) = r ^ 4 / 15 := by
@@ -331,6 +326,8 @@ theorem sphericalAverage_coordinate_sq_mul_coordinate_sq (i j : Fin 3)
         (fun k => k 0 ^ 2 * k 1 ^ 2) := by
       funext k
       ring
+    change sphericalAverage r (fun k : Fin 3 → ℝ => k 1 ^ 2 * k 0 ^ 2) =
+      r ^ 4 / 15
     rw [hs]
     exact sphericalAverage_xy r
   · exact (hij rfl).elim
@@ -339,12 +336,16 @@ theorem sphericalAverage_coordinate_sq_mul_coordinate_sq (i j : Fin 3)
         (fun k => k 0 ^ 2 * k 2 ^ 2) := by
       funext k
       ring
+    change sphericalAverage r (fun k : Fin 3 → ℝ => k 2 ^ 2 * k 0 ^ 2) =
+      r ^ 4 / 15
     rw [hs]
     exact sphericalAverage_xz r
   · have hs : (fun k : Fin 3 → ℝ => k 2 ^ 2 * k 1 ^ 2) =
         (fun k => k 1 ^ 2 * k 2 ^ 2) := by
       funext k
       ring
+    change sphericalAverage r (fun k : Fin 3 → ℝ => k 2 ^ 2 * k 1 ^ 2) =
+      r ^ 4 / 15
     rw [hs]
     exact sphericalAverage_yz r
   · exact (hij rfl).elim
