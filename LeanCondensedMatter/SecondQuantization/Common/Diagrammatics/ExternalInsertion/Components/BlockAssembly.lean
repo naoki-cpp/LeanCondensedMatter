@@ -2900,6 +2900,64 @@ noncomputable def ExternalInsertionBlockLayout.fixedPartitionPhysicalSizeShuffle
     (ExternalInsertionBlockLayout.fixedPartitionSizeShuffleConnectedAssemblyEquiv
       (ExternalLabel := ExternalLabel) (InternalLabel := InternalLabel) π heven)
 
+/-- The finite image of the actual physical fixed-partition diagram
+fiber under the exact connected-block size/shuffle equivalence. This
+explicit domain avoids postulating a finiteness instance for an
+unrestricted family of natural-number interaction orders. -/
+noncomputable def ExternalInsertionBlockLayout.fixedPartitionPhysicalSizeShuffleFiniteDomain
+    {ExternalLabel InternalLabel : Type*}
+    [Fintype ExternalLabel] [Fintype InternalLabel]
+    (anchor : Fin (2 * E))
+    (π : Finpartition (Finset.univ : Finset (Fin (2 * E))))
+    (heven : ∀ B : π.parts, Even (B : Finset (Fin (2 * E))).card) :
+    Finset (Σ data : (Σ size : π.parts → ℕ, FamilySlotShuffleTo size N),
+      (((ExternalInsertionBlockLayout.fixedPartitionSizeShuffleEquiv π heven).symm data).1)
+        .ConnectedBlockFamily (ExternalLabel := ExternalLabel)
+          (InternalLabel := InternalLabel)) := by
+  classical
+  exact (Finset.univ : Finset
+    {d : {d : ExternalInsertionDiagram ExternalLabel InternalLabel E N
+        (Finset.univ : Finset (Fin N)) //
+        HasNoVacuumComponent d.vertexGraph} //
+      externalComponentPartition d.1.vertexGraph = π}).image
+      (ExternalInsertionBlockLayout.fixedPartitionPhysicalSizeShuffleEquiv anchor π heven)
+
+/-- The *actual finite physical diagram fiber* of one even external
+partition is reindexed by independently preconnected local Wick
+diagrams, their exact interaction-size vector, and the unique
+order-preserving owner shuffle. This works for any diagram weight,
+including the fully integrated signed Dyson amplitude, and never
+pretends that an individual time-ordered integral factors. -/
+theorem ExternalInsertionBlockLayout.sum_fixedPartitionPhysical_eq_sizes_shuffles
+    {ExternalLabel InternalLabel M : Type*}
+    [Fintype ExternalLabel] [Fintype InternalLabel] [AddCommMonoid M]
+    (anchor : Fin (2 * E))
+    (π : Finpartition (Finset.univ : Finset (Fin (2 * E))))
+    (heven : ∀ B : π.parts, Even (B : Finset (Fin (2 * E))).card)
+    (weight : ExternalInsertionDiagram ExternalLabel InternalLabel E N
+      (Finset.univ : Finset (Fin N)) → M) :
+    (∑ d : {d : {d : ExternalInsertionDiagram ExternalLabel InternalLabel E N
+        (Finset.univ : Finset (Fin N)) //
+        HasNoVacuumComponent d.vertexGraph} //
+        externalComponentPartition d.1.vertexGraph = π},
+      weight d.1.1) =
+      ∑ p ∈ ExternalInsertionBlockLayout.fixedPartitionPhysicalSizeShuffleFiniteDomain
+          (ExternalLabel := ExternalLabel) (InternalLabel := InternalLabel)
+          anchor π heven,
+        weight (((ExternalInsertionBlockLayout.fixedPartitionPhysicalSizeShuffleEquiv
+          (ExternalLabel := ExternalLabel) (InternalLabel := InternalLabel)
+          anchor π heven).symm p).1.1) := by
+  classical
+  unfold ExternalInsertionBlockLayout.fixedPartitionPhysicalSizeShuffleFiniteDomain
+  rw [Finset.sum_image]
+  · apply Finset.sum_congr rfl
+    intro d _
+    rw [Equiv.symm_apply_apply]
+  · intro x _ y _ h
+    exact (ExternalInsertionBlockLayout.fixedPartitionPhysicalSizeShuffleEquiv
+      (ExternalLabel := ExternalLabel) (InternalLabel := InternalLabel)
+      anchor π heven).injective h
+
 /-- The exact finite collection of physical layouts with a prescribed
 external partition, obtained from all actual interaction-owner functions.
 No artificial finiteness instance for arbitrary size vectors is used. -/
