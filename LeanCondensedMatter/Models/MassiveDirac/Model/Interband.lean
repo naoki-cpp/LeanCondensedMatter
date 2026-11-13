@@ -62,9 +62,8 @@ theorem interbandEnergyGap_ne_zero_of_energy_ne_zero
 theorem bandEnergy_ne_oppositeBandEnergy
     (band : Band) (v m px py : ℝ) (hE : energy v m px py ≠ 0) :
     bandEnergy band v m px py ≠ bandEnergy (oppositeBand band) v m px py := by
-  exact sub_ne_zero.mp (by
-    simpa [interbandEnergyGap] using
-      interbandEnergyGap_ne_zero_of_energy_ne_zero band v m px py hE)
+  apply (bandEnergy_injective v m px py hE).ne
+  cases band <;> decide
 
 /-- Gauge-independent direction-indexed interband force-matrix numerator.
 
