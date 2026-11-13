@@ -164,19 +164,13 @@ theorem hamiltonian_mul_bandProjector
     hamiltonian params px py * bandProjector params band px py =
       (((bandEnergy params band px py : ℝ) : ℂ)) •
         bandProjector params band px py := by
-  have hquad :
-      spinHamiltonian params px py * spinHamiltonian params px py =
-        (((spinOrbitEnergy params px py : ℝ) : ℂ) ^ 2) •
-          (1 : InternalSpace.PauliMatrix) := by
-    rw [spinHamiltonian_mul_self]
-    congr 1
-    exact_mod_cast (spinOrbitEnergy_sq params px py).symm
-  have hs : (((bandSign band : ℝ) : ℂ)) ^ 2 = 1 := by
-    cases band <;> norm_num [bandSign]
   have h := InternalSpace.quadratic_shift_mul_projector
     (spinHamiltonian params px py) (((spinOrbitEnergy params px py : ℝ) : ℂ))
     (((kineticEnergy params px py : ℝ) : ℂ)) (((bandSign band : ℝ) : ℂ))
-    (by exact_mod_cast hE) hquad hs
+    (by exact_mod_cast hE)
+    (by simpa only [← spinOrbitEnergy_sq, Complex.ofReal_pow] using
+      spinHamiltonian_mul_self params px py)
+    (by cases band <;> norm_num [bandSign])
   simpa [hamiltonian_eq_kinetic_add_spinHamiltonian, bandProjector, bandEnergy] using h
 
 /-- Away from the spin-orbit degeneracy, the matrix band projectors are
