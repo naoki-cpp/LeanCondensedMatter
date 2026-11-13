@@ -163,7 +163,7 @@ theorem ExternalInsertionDiagram.sum_preconnectedSlotCongr
       d.vertexGraph.Preconnected}, weight (φ d).1) =
     ∑ d : {d : ExternalInsertionDiagram ExternalLabel InternalLabel E M U //
       d.vertexGraph.Preconnected}, weight d.1
-  exact (Equiv.sum_comp φ (fun d => weight d.1)).symm
+  exact Equiv.sum_comp φ (fun d => weight d.1)
 
 end Common
 end SecondQuantization
