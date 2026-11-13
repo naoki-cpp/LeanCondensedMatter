@@ -1,4 +1,3 @@
-import LeanCondensedMatter.Analysis.Algebra.QuadraticNormalization
 import Mathlib.RingTheory.Idempotents
 import LeanCondensedMatter.Models.RashbaExchange.Model
 import Mathlib.Tactic.Linarith
@@ -101,35 +100,11 @@ theorem bandProjector_eq_pauliCombination
     InternalSpace.trace_pauliCombination]
   norm_num [Matrix.trace]
 
-private noncomputable def normalizedSpinHamiltonian
-    (params : HamiltonianParameters) (px py : ℝ) : InternalSpace.PauliMatrix :=
-  (((spinOrbitEnergy params px py : ℝ) : ℂ)⁻¹) •
-    spinHamiltonian params px py
-
-private theorem normalizedSpinHamiltonian_mul_self
-    (params : HamiltonianParameters) (px py : ℝ)
-    (hE : spinOrbitEnergy params px py ≠ 0) :
-    normalizedSpinHamiltonian params px py *
-        normalizedSpinHamiltonian params px py = 1 := by
-  unfold normalizedSpinHamiltonian
-  apply Algebra.inv_smul_mul_self_eq_one _ _ (by exact_mod_cast hE)
-  rw [spinHamiltonian_mul_self]
-  congr 1
-  exact_mod_cast (spinOrbitEnergy_sq params px py).symm
-
-private theorem bandProjector_eq_normalized
-    (params : HamiltonianParameters) (band : Band) (px py : ℝ) :
-    bandProjector params band px py =
-      (1 / 2 : ℂ) •
-        ((1 : InternalSpace.PauliMatrix) +
-          (((bandSign band : ℝ) : ℂ)) • normalizedSpinHamiltonian params px py) := by
-  simp [bandProjector, normalizedSpinHamiltonian, div_eq_mul_inv, smul_smul]
-
 /-- The two band projectors resolve the identity, including at the totalized `E = 0` value. -/
 theorem sum_bandProjector_eq_one
     (params : HamiltonianParameters) (px py : ℝ) :
     ∑ band : Band, bandProjector params band px py = 1 := by
-  simp only [sum_band, bandProjector_eq_normalized, bandSign]
+  simp only [sum_band, bandProjector, bandSign]
   push_cast
   module
 
@@ -181,10 +156,13 @@ theorem bandProjector_completeOrthogonalIdempotents
     CompleteOrthogonalIdempotents
       (fun band : Band => bandProjector params band px py) := by
   have hLower : IsIdempotentElem (bandProjector params .lower px py) := by
-    rw [bandProjector_eq_normalized]
-    exact InternalSpace.involution_projector_mul_self
-      (normalizedSpinHamiltonian params px py) (normalizedSpinHamiltonian_mul_self params px py hE)
-      (((bandSign Band.lower : ℝ) : ℂ)) (by norm_num [bandSign])
+    simpa [bandProjector, Complex.ofReal_div] using
+      (InternalSpace.quadratic_projector_isIdempotent
+        (spinHamiltonian params px py) (((spinOrbitEnergy params px py : ℝ) : ℂ))
+        (((bandSign Band.lower : ℝ) : ℂ)) (by exact_mod_cast hE)
+        (by simpa only [← spinOrbitEnergy_sq, Complex.ofReal_pow] using
+          spinHamiltonian_mul_self params px py)
+        (by norm_num [bandSign]))
   have hUpper : bandProjector params .upper px py =
       1 - bandProjector params .lower px py :=
     eq_sub_of_add_eq' (by simpa only [sum_band] using sum_bandProjector_eq_one params px py)
