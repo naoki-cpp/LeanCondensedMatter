@@ -1,7 +1,6 @@
 import LeanCondensedMatter.Transport.Disorder.Resolvent
 import Mathlib.Tactic.Abel
 import Mathlib.Tactic.NoncommRing
-import Mathlib.Tactic.NormCast
 
 set_option linter.style.header false
 
@@ -63,7 +62,7 @@ theorem operatorAverage_const
   unfold operatorAverage
   rw [← Finset.sum_smul]
   have hsum : (∑ ω, (ensemble.probability ω : ℂ)) = 1 := by
-    exact_mod_cast ensemble.probability_sum
+    simpa using congrArg (fun x : ℝ => (x : ℂ)) ensemble.probability_sum
   simp [hsum]
 
 /-- A fixed operator can be factored out on the right of a finite disorder average. -/
