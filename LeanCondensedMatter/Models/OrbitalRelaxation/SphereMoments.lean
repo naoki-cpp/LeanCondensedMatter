@@ -125,7 +125,7 @@ private theorem integral_sin_sq_mul_cos_sq_full :
     (∫ φ in (0 : ℝ)..(2 * Real.pi),
        Real.sin φ ^ 2 * Real.cos φ ^ 2) = Real.pi / 4 := by
   rw [integral_sin_sq_mul_cos_sq]
-  simp
+  simp only [sub_zero, mul_zero, Real.sin_zero]
   have hperiod : 4 * (2 * Real.pi) = (8 : ℕ) * Real.pi := by ring
   rw [hperiod, Real.sin_nat_mul_pi]
   ring
@@ -486,6 +486,8 @@ theorem sphericalAverage_orbitalPolynomial_eq_cubature (axis : Fin 3)
       funext k
       simp [orbitalPolynomial, evenQuarticPolynomial]
       ring
+    change sphericalAverage r (orbitalPolynomial (0 : Fin 3) c₁ c₂) =
+      evenQuarticCubature r (orbitalPolynomial (0 : Fin 3) c₁ c₂)
     rw [h]
     exact sphericalAverage_evenQuartic_eq_cubature r
       0 (c₁ ^ 2) (c₁ ^ 2) (c₂ ^ 2) (c₂ ^ 2)
@@ -496,6 +498,8 @@ theorem sphericalAverage_orbitalPolynomial_eq_cubature (axis : Fin 3)
       funext k
       simp [orbitalPolynomial, evenQuarticPolynomial]
       ring
+    change sphericalAverage r (orbitalPolynomial (1 : Fin 3) c₁ c₂) =
+      evenQuarticCubature r (orbitalPolynomial (1 : Fin 3) c₁ c₂)
     rw [h]
     exact sphericalAverage_evenQuartic_eq_cubature r
       (c₁ ^ 2) 0 (c₁ ^ 2) (c₂ ^ 2)
@@ -506,6 +510,8 @@ theorem sphericalAverage_orbitalPolynomial_eq_cubature (axis : Fin 3)
       funext k
       simp [orbitalPolynomial, evenQuarticPolynomial]
       ring
+    change sphericalAverage r (orbitalPolynomial (2 : Fin 3) c₁ c₂) =
+      evenQuarticCubature r (orbitalPolynomial (2 : Fin 3) c₁ c₂)
     rw [h]
     exact sphericalAverage_evenQuartic_eq_cubature r
       (c₁ ^ 2) (c₁ ^ 2) 0
