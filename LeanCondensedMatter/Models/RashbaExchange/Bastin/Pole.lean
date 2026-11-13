@@ -115,24 +115,9 @@ theorem interbandPoleRegularFactor_zero_im_eq_neg_chargeSq_berryCurvature
   rw [interbandPoleRegularFactor_zero]
   have hgap : interbandEnergyGap params band px py ≠ 0 :=
     interbandEnergyGap_ne_zero_of_spinOrbitEnergy_ne_zero params band px py hE
-  have hcoeff :
-      (((((interbandEnergyGap params band px py : ℝ) : ℂ))⁻¹) ^ 2) =
-        ((((interbandEnergyGap params band px py)⁻¹ ^ 2 : ℝ) : ℂ)) := by
-    rw [← Complex.ofReal_inv, ← Complex.ofReal_pow]
-  calc
-    (((((interbandEnergyGap params band px py : ℝ) : ℂ))⁻¹) ^ 2 *
-      (currentBandBlockTrace params 0 1 (oppositeBand band) band px py -
-        currentBandBlockTrace params 1 0 (oppositeBand band) band px py)).im =
-      (currentBandBlockTrace params 0 1 (oppositeBand band) band px py -
-        currentBandBlockTrace params 1 0 (oppositeBand band) band px py).im /
-        interbandEnergyGap params band px py ^ 2 := by
-      rw [hcoeff]
-      simp only [Complex.mul_im, Complex.ofReal_re, Complex.ofReal_im, zero_mul]
-      field_simp [hgap]
-      ring
-    _ = -(params.signedCharge ^ 2 * berryCurvature params band px py) :=
-      interbandBlockDifference_im_div_gap_sq_eq_neg_chargeSq_berryCurvature
-        params band px py hE
+  rw [inv_real_gap_sq_mul_im _ _ hgap]
+  exact interbandBlockDifference_im_div_gap_sq_eq_neg_chargeSq_berryCurvature
+    params band px py hE
 
 /-- Pointwise clean fixed-window limit of the *isolated* opposite-source
 Bastin pair. This is `-2π q² Ω_band(p)`; no full-response limit is asserted. -/
