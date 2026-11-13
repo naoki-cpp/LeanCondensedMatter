@@ -86,7 +86,7 @@ theorem forceMatrixTraceNumerator_xy_eq
         (1 / 2 : ℂ) •
           ((1 : InternalSpace.PauliMatrix) - InternalSpace.pauliCombination u) := by
     simp [bandProjector_eq_pauliCombination, bandSign_oppositeBand, u,
-      neg_div, InternalSpace.pauliCombination_smul, sub_eq_add_neg]
+      neg_div, sub_eq_add_neg]
   have hEc : (((spinOrbitEnergy params px py : ℝ) : ℂ)) ≠ 0 := by
     exact_mod_cast hE
   have hnorm : dotProduct u u = 1 := by
