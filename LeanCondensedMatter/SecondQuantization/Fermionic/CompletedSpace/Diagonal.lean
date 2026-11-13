@@ -1,6 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.Hamiltonian
 import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.Basic
-import LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.Diagonal
 
 set_option linter.style.header false
 

@@ -1,6 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.Hamiltonian
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.GrandCanonical
-import LeanCondensedMatter.QuantumTheory.Gibbs.Boltzmann
 import Mathlib.Analysis.SpecialFunctions.Log.Summable
 
 set_option linter.style.header false

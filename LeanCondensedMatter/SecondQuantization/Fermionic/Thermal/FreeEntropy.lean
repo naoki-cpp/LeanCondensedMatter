@@ -1,7 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreePartitionFunction
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.OneBodyExpectation
-import LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.BoundedEvolution
-import LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.RankOneSecondQuantization
 import LeanCondensedMatter.QuantumTheory.Gibbs.EigenbasisEntropy
 
 set_option linter.style.header false

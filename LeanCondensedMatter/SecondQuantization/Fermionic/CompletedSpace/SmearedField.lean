@@ -1,6 +1,4 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.CanonicalAnticommutationRelations
-import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.Core
-import LeanCondensedMatter.Analysis.ScalarExchange.Basic
 import Mathlib.Analysis.Normed.Operator.Extend
 import Mathlib.LinearAlgebra.Finsupp.LinearCombination
 import Mathlib.Topology.DenseEmbedding

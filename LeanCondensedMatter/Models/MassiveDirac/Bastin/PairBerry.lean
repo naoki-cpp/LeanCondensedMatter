@@ -1,4 +1,3 @@
-import LeanCondensedMatter.Models.MassiveDirac.Model.OperatorSpectral
 import LeanCondensedMatter.Models.MassiveDirac.Bastin.PairIntegral
 import Mathlib.Tactic.FieldSimp
 import Mathlib.Tactic.Ring

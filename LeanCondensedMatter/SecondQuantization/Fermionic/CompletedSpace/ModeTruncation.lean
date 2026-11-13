@@ -1,5 +1,4 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.Basic
-import LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.CoordinateProjection
 
 set_option linter.style.header false
 

@@ -1,6 +1,4 @@
 import LeanCondensedMatter.Models.MassiveDirac.Bastin.RadialEnergyBridge
-import LeanCondensedMatter.Models.MassiveDirac.Bastin.RadialPairUniformBound
-import LeanCondensedMatter.QuantumTheory.Occupation.ZeroTemperature
 import Mathlib.Tactic.Linarith
 import Mathlib.Tactic.NormNum
 import Mathlib.Tactic.Ring

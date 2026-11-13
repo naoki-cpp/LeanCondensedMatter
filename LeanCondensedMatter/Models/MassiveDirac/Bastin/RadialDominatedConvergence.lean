@@ -1,6 +1,5 @@
 import LeanCondensedMatter.Models.MassiveDirac.Bastin.PairBerry
 import LeanCondensedMatter.Models.MassiveDirac.Bastin.CleanLimit
-import LeanCondensedMatter.Models.MassiveDirac.Model.Interband
 import LeanCondensedMatter.Models.MassiveDirac.Bastin.RadialPairUniformBound
 import Mathlib.MeasureTheory.Integral.Bochner.Basic
 import Mathlib.MeasureTheory.Integral.Prod

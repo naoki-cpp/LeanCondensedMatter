@@ -1,6 +1,4 @@
-import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.Basic
 import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.Hamiltonian
-import LeanCondensedMatter.QuantumTheory.Gibbs.Eigenbasis
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.GrandCanonical
 import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.Core
 

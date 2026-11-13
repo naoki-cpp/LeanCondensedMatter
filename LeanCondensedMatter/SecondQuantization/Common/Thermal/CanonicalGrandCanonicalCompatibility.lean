@@ -1,4 +1,3 @@
-import LeanCondensedMatter.Analysis.Operator.Diagonal
 import LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.CoordinateProjection
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.CanonicalCompatibility
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.GrandCanonicalSectorDecomposition

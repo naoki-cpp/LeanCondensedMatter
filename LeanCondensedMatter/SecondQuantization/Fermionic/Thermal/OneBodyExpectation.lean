@@ -1,7 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.BlochDeDominicis
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteCompletedGibbsCompatibility
-import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.Core
-import LeanCondensedMatter.SecondQuantization.Common.Thermal.GrandCanonical
 import LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.BoundedEvolution
 import LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.RankOneSecondQuantization
 

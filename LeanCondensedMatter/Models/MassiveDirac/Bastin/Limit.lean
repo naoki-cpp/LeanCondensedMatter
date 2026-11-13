@@ -1,4 +1,3 @@
-import LeanCondensedMatter.Models.MassiveDirac.Model.OperatorSpectral
 import LeanCondensedMatter.Models.MassiveDirac.Bastin.Bands
 import Mathlib.Topology.Algebra.GroupWithZero
 

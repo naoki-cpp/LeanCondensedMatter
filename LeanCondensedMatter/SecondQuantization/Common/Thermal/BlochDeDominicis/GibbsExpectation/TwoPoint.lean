@@ -1,4 +1,3 @@
-import LeanCondensedMatter.Analysis.ScalarExchange.Basic
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsCoordinate
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.NormalizedTwoPointTrace
 import LeanCondensedMatter.SecondQuantization.Common.Algebra.ExchangeCommutator

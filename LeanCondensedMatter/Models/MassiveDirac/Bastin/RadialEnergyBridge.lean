@@ -1,6 +1,4 @@
 import LeanCondensedMatter.Models.MassiveDirac.Bastin.RadialDominatedConvergence
-import LeanCondensedMatter.Models.MassiveDirac.Bastin.CleanLimit
-import LeanCondensedMatter.Models.MassiveDirac.Model.Kinematics
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.IntegrationByParts
 import Mathlib.Tactic.FieldSimp
 

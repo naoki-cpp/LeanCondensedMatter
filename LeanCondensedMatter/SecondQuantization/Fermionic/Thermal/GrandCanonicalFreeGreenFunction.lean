@@ -1,5 +1,3 @@
-import LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsExpectationBridge
-import LeanCondensedMatter.SecondQuantization.Common.Thermal.GrandCanonical
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsContraction
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeBoltzmannCore
 import LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTime.TwoPoint
