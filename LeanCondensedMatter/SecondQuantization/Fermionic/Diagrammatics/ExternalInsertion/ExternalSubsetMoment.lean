@@ -1064,6 +1064,17 @@ theorem sum_fixedExternalPartitionFiber_eq_sum_localLabelConnectedBlockFamilies
   apply Finset.sum_congr rfl
   intro p _
   rcases p with ⟨layout, ⟨F, hconnected⟩⟩
+  let d := layout.assembleDiagram (Finset.univ : Finset (Fin n)) F
+  change
+    (if layout.partition = π then
+      if d.externalLabel = labels then d.dysonAmplitude ε β g times else 0
+    else 0) =
+    (if layout.partition = π then
+      if ∀ B : layout.partition.parts, (F B).externalLabel =
+          fun i => labels (layout.sourceEquiv.symm ⟨B, i⟩) then
+        d.dysonAmplitude ε β g times
+      else 0
+    else 0)
   simpa only [layout.assembleDiagram_externalLabel_eq_iff
     (Finset.univ : Finset (Fin n)) F labels]
 
