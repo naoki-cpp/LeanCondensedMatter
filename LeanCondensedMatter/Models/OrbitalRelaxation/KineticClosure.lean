@@ -114,8 +114,9 @@ private theorem scalar_decay_solution (rate : ℝ) (f : ℝ → ℝ)
   let g : ℝ → ℝ := fun s => f s * Real.exp (rate * s)
   have hgzero (s : ℝ) : HasDerivAt g 0 s := by
     have he : HasDerivAt (fun u : ℝ => Real.exp (rate * u))
-        (Real.exp (rate * s) * rate) s :=
-      ((hasDerivAt_id s).const_mul rate).exp
+        (Real.exp (rate * s) * rate) s := by
+      simpa only [id_eq, mul_one] using
+        (((hasDerivAt_id s).const_mul rate).exp)
     change HasDerivAt (fun u : ℝ => f u * Real.exp (rate * u)) 0 s
     convert (hderiv s).mul he using 1 <;> ring
   have hdiff : Differentiable ℝ g := fun s => (hgzero s).differentiableAt
