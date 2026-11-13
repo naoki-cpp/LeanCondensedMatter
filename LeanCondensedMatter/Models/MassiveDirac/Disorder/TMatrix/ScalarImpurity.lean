@@ -219,7 +219,12 @@ theorem ScalarImpurityParameters.matrixOperator_tMatrix_eq_ringInverse_shift
     have hunit :
         (↑(hinvertible.unit⁻¹) : Matrix2) =
           Ring.inverse (params.shiftMatrix greenLoop) := by
-      rw [← hinvertible.unit_spec, Ring.inverse_unit]
+      calc
+        (↑(hinvertible.unit⁻¹) : Matrix2) =
+            Ring.inverse (↑hinvertible.unit : Matrix2) :=
+          (Ring.inverse_unit hinvertible.unit).symm
+        _ = Ring.inverse (params.shiftMatrix greenLoop) :=
+          congrArg Ring.inverse hinvertible.unit_spec.symm
     rw [hunit]
     exact hinvertible.map_ringInverse φ
   calc
