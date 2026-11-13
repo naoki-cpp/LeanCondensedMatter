@@ -1573,7 +1573,7 @@ theorem externalSubsetMomentSeries_eq_signedConnected_two
         intro B hB
         by_cases hBempty : B = ∅
         · subst B
-          exact externalSubsetConnectedDiagramSeries_empty ε β g labels times
+          exact externalSubsetConnectedDiagramSeries_empty (E := 1) ε β g labels times
         · have hpos : 0 < B.card :=
             Finset.card_pos.mpr (Finset.nonempty_iff_ne_empty.mpr hBempty)
           have hlt : B.card < S.card := Finset.card_lt_card hB
