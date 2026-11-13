@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Transport.Disorder.TMatrix
 import LeanCondensedMatter.Models.MassiveDirac.Model.Operator
 import Mathlib.Algebra.Group.Units.Basic
 import Mathlib.Analysis.Normed.Ring.Units
@@ -88,38 +89,6 @@ theorem ScalarImpurityParameters.inverseShiftMatrix_mul_shiftMatrix
     params.inverseShiftMatrix greenLoop hinvertible * params.shiftMatrix greenLoop = 1 := by
   simpa [ScalarImpurityParameters.inverseShiftMatrix] using hinvertible.val_inv_mul
 
-/-- Multiplying the T-matrix by its shift from the left gives the scalar impurity potential. -/
-theorem ScalarImpurityParameters.shiftMatrix_mul_tMatrix
-    (params : ScalarImpurityParameters) (greenLoop : Matrix2)
-    (hinvertible : IsUnit (params.shiftMatrix greenLoop)) :
-    params.shiftMatrix greenLoop * params.tMatrix greenLoop hinvertible =
-      (((params.impurityStrength : ℝ) : ℂ)) • (1 : Matrix2) := by
-  unfold ScalarImpurityParameters.tMatrix
-  rw [mul_smul_comm, params.shiftMatrix_mul_inverseShiftMatrix greenLoop hinvertible]
-
-/-- Multiplying the T-matrix by its shift from the right gives the same scalar impurity potential. -/
-theorem ScalarImpurityParameters.tMatrix_mul_shiftMatrix
-    (params : ScalarImpurityParameters) (greenLoop : Matrix2)
-    (hinvertible : IsUnit (params.shiftMatrix greenLoop)) :
-    params.tMatrix greenLoop hinvertible * params.shiftMatrix greenLoop =
-      (((params.impurityStrength : ℝ) : ℂ)) • (1 : Matrix2) := by
-  unfold ScalarImpurityParameters.tMatrix
-  rw [smul_mul_assoc, params.inverseShiftMatrix_mul_shiftMatrix greenLoop hinvertible]
-
-/-- Exact Lippmann--Schwinger fixed-point identity. This follows from invertibility alone and does
-not assert convergence of a geometric series. -/
-theorem ScalarImpurityParameters.tMatrix_eq_bare_add_loop_tMatrix
-    (params : ScalarImpurityParameters) (greenLoop : Matrix2)
-    (hinvertible : IsUnit (params.shiftMatrix greenLoop)) :
-    params.tMatrix greenLoop hinvertible =
-      (((params.impurityStrength : ℝ) : ℂ)) • (1 : Matrix2) +
-        (((params.impurityStrength : ℝ) : ℂ)) •
-          (greenLoop * params.tMatrix greenLoop hinvertible) := by
-  have h := params.shiftMatrix_mul_tMatrix greenLoop hinvertible
-  rw [ScalarImpurityParameters.shiftMatrix] at h
-  simp only [sub_mul, one_mul, smul_mul_assoc] at h
-  exact (sub_eq_iff_eq_add).mp h
-
 /-- Exact remainder after subtracting the bare scalar-impurity term. No series
 expansion is used. -/
 theorem ScalarImpurityParameters.tMatrix_sub_bare_eq
@@ -129,21 +98,12 @@ theorem ScalarImpurityParameters.tMatrix_sub_bare_eq
         (((params.impurityStrength : ℝ) : ℂ)) • (1 : Matrix2) =
       (((params.impurityStrength : ℝ) : ℂ)) •
         (greenLoop * params.tMatrix greenLoop hinvertible) := by
-  have h := params.tMatrix_eq_bare_add_loop_tMatrix greenLoop hinvertible
-  calc
-    params.tMatrix greenLoop hinvertible -
-        (((params.impurityStrength : ℝ) : ℂ)) • (1 : Matrix2) =
-      ((((params.impurityStrength : ℝ) : ℂ)) • (1 : Matrix2) +
-          (((params.impurityStrength : ℝ) : ℂ)) •
-            (greenLoop * params.tMatrix greenLoop hinvertible)) -
-        (((params.impurityStrength : ℝ) : ℂ)) • (1 : Matrix2) :=
-      congrArg
-        (fun M : Matrix2 =>
-          M - (((params.impurityStrength : ℝ) : ℂ)) • (1 : Matrix2))
-        h
-    _ = (((params.impurityStrength : ℝ) : ℂ)) •
-        (greenLoop * params.tMatrix greenLoop hinvertible) := by
-      abel
+  have hunit : IsUnit (1 - (((params.impurityStrength : ℝ) : ℂ)) • greenLoop) := by
+    simpa only [ScalarImpurityParameters.shiftMatrix] using hinvertible
+  have h := QuantumTheory.Transport.scalarImpurityTMatrix_sub_bare
+    ((params.impurityStrength : ℝ) : ℂ) greenLoop hunit
+  simpa only [QuantumTheory.Transport.scalarImpurityTMatrix,
+    ScalarImpurityParameters.tMatrix, ScalarImpurityParameters.inverseShiftMatrix] using h
 
 /-- In operator norm, the exact T-matrix remainder carries two powers of the impurity strength, up
 to the norm of the supplied Green loop and inverse shift. -/
