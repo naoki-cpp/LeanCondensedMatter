@@ -601,6 +601,7 @@ theorem ExternalInsertionBlockLayout.assembleConnectedBlocks_signedDysonShuffleO
     (ExternalInsertionBlockLayout.assembleConnectedBlocks_signedDysonShuffleOrbit_eq_independentLocals
       layout F hconnected ε β g times)
 
+open Classical in
 /-- At a fixed physical external-block layout, summing the **actual
 integrated** component-shuffle orbit over every independent preconnected
 Wick-block family with the prescribed source labels gives the source
