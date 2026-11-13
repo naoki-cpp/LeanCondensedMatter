@@ -96,6 +96,11 @@ jobs:
       - name: Report project-local import overlap candidates (advisory)
         run: python3 scripts/export_module_import_graph.py --report-overlaps --limit 30
 
+      - name: Report implementation imports of public umbrellas (advisory)
+        run: |
+          python3 scripts/export_module_import_graph.py --report-umbrella-consumers --source-prefix LeanCondensedMatter/SecondQuantization/Fermionic --limit 30
+          python3 scripts/export_module_import_graph.py --report-umbrella-consumers --source-prefix LeanCondensedMatter/QuantumTheory/LinearResponse --limit 30
+
   build:
     needs: changes
     if: needs.changes.outputs.lean == 'true' || needs.changes.outputs.advisory == 'true'

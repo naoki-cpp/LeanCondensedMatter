@@ -99,6 +99,29 @@ and its downstream consumers before deleting or narrowing any direct import.
 Legacy non-module files require a separate review: `#norm_imports` does not support
 them yet. Do not change imports just to eliminate every overlap warning.
 
+### Advisory public-umbrella consumers
+
+The exporter can separately list **implementation** source files that directly
+import a project-local *import-only umbrella* (a module with a matching subtree
+and no declarations of its own). Unlike the transitive-overlap report, this
+identifies possibly overbroad **direct imports**, even when they are not
+transitively redundant:
+
+```bash
+python3 scripts/export_module_import_graph.py --report-umbrella-consumers \
+  --source-prefix LeanCondensedMatter/SecondQuantization/Fermionic --limit 30
+python3 scripts/export_module_import_graph.py --report-umbrella-consumers \
+  --source-prefix LeanCondensedMatter/QuantumTheory/LinearResponse --limit 30
+```
+
+This is advisory and never rejects imports or alters the generated import graph.
+Import-only packages are intentional public entry points and may legitimately
+be imported by public umbrellas or API examples. Prefer an owning leaf in an
+implementation proof when the source needs only that leaf's declarations.
+Do not rewrite semantic base files merely because they have a similarly named
+subdirectory; the classifier excludes modules with actual declarations.
+
+
 ## Declarative source topology
 
 `check_architecture_graphs.py` owns dependency direction and reachability. Its data lives here:

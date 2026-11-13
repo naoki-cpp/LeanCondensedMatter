@@ -102,6 +102,32 @@ def is_import_only_umbrella(relative_path: str) -> bool:
     return found_import
 
 
+def umbrella_consumer_candidates(
+    modules: list[dict[str, object]],
+) -> list[tuple[str, str, str]]:
+    """Find implementation imports of project-local import-only public umbrellas.
+
+    This is advisory: some consumers intentionally use package endpoints.
+    The classification checks that the imported file is import-only and has a
+    matching implementation subtree. It never assumes a source import is removable.
+    """
+    module_sources = {entry["name"]: entry["sourceFile"] for entry in modules}
+    public_umbrellas = {
+        name: path
+        for name, path in module_sources.items()
+        if is_import_only_umbrella(path)
+    }
+    consumers: list[tuple[str, str, str]] = []
+    for entry in modules:
+        path = entry["sourceFile"]
+        if is_import_only_umbrella(path):
+            continue
+        for target in entry["imports"]:
+            if target in public_umbrellas:
+                consumers.append((path, target, public_umbrellas[target]))
+    return sorted(consumers)
+
+
 def is_module_system_file(relative_path: str) -> bool:
     source = lean_source(ROOT / relative_path).lstrip().splitlines()
     return bool(source and source[0].strip() == "module")
@@ -115,6 +141,16 @@ def main() -> None:
         "--report-overlaps",
         action="store_true",
         help="Print advisory transitive overlaps between project-local direct imports",
+    )
+    parser.add_argument(
+        "--report-umbrella-consumers",
+        action="store_true",
+        help="Print advisory implementation imports of project-local import-only umbrellas",
+    )
+    parser.add_argument(
+        "--source-prefix",
+        default="",
+        help="Filter umbrella-consumer report to source paths starting with this prefix",
     )
     parser.add_argument(
         "--limit",
@@ -164,6 +200,25 @@ def main() -> None:
             print(f"... {len(candidates) - args.limit} more; increase --limit to see them")
         print("This is a graph overlap, NOT evidence that the direct import can be removed. "
               "Check Lean visibility and compile consumers before editing.")
+        return
+
+    if args.report_umbrella_consumers:
+        if args.report_overlaps:
+            parser.error("choose only one advisory report")
+        consumers = [
+            item for item in umbrella_consumer_candidates(inventory["modules"])
+            if item[0].startswith(args.source_prefix)
+        ]
+        print(f"{len(consumers)} implementation imports of import-only project umbrellas "
+              "(manual review only)")
+        print(f"Showing {min(args.limit, len(consumers))} of {len(consumers)} "
+              "candidates in selected scope")
+        for path, target, owner_path in consumers[:args.limit]:
+            print(f"[review] {path}: imports umbrella `{target}` ({owner_path})")
+        if len(consumers) > args.limit:
+            print(f"... {len(consumers) - args.limit} more; increase --limit to see them")
+        print("An umbrella import may be intentional. Prefer narrow declaration owners in "
+              "implementation code, and compile all affected consumers before changing imports.")
         return
 
     OUTPUT.parent.mkdir(parents=True, exist_ok=True)
