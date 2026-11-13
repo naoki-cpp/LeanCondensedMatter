@@ -1,5 +1,4 @@
 import Mathlib.Basic.Complex.Basic
-import Mathlib.Topology.Algebra.Module.Basic
 import Mathlib.Tactic.Ring
 
 set_option linter.style.header false
@@ -99,33 +98,6 @@ theorem hallComponent_zero_one_eq_of_isPlanarIsotropic
     conductivity.hallComponent 0 1 = conductivity.component 0 1 := by
   rw [hallComponent, hiso.2]
   ring
-
-/-- Under planar isotropy, convergence of xx and xy suffices for componentwise convergence
-of the full conductivity tensor. No limit interchange or normalization is involved. -/
-theorem tendsto_component_of_isPlanarIsotropic
-    {α : Type*} {l : Filter α}
-    (conductivity : α → ConductivityTensor (Fin 2))
-    (boundary : ConductivityTensor (Fin 2))
-    (hiso : ∀ a, (conductivity a).IsPlanarIsotropic)
-    (hboundary : boundary.IsPlanarIsotropic)
-    (hxx : Filter.Tendsto (fun a => (conductivity a).component 0 0) l
-      (nhds (boundary.component 0 0)))
-    (hxy : Filter.Tendsto (fun a => (conductivity a).component 0 1) l
-      (nhds (boundary.component 0 1)))
-    (measured source : Fin 2) :
-    Filter.Tendsto (fun a => (conductivity a).component measured source) l
-      (nhds (boundary.component measured source)) := by
-  fin_cases measured <;> fin_cases source
-  · exact hxx
-  · exact hxy
-  · rw [hboundary.2]
-    apply Filter.Tendsto.congr' ?_ hxy.neg
-    filter_upwards with a
-    exact (hiso a).2.symm
-  · rw [hboundary.1]
-    apply Filter.Tendsto.congr' ?_ hxx
-    filter_upwards with a
-    exact (hiso a).1.symm
 
 /-- Onsager–Casimir reciprocity as a *property* of a magnetization-indexed physical
 conductivity family. A concrete Kubo model must establish this hypothesis using its

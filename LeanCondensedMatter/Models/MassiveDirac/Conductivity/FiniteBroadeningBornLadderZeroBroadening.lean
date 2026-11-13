@@ -77,20 +77,19 @@ theorem tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceCond
   have hxy :=
     tendsto_finiteCutoffContinuumBornDysonOrderedXYRetardedAdvancedDressedSurfaceConductivity_broadening_zero
       e regime hrenorm hdet
-  exact ConductivityTensor.tendsto_component_of_isPlanarIsotropic
-    (fun broadening : ℝ =>
-      finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensor
-        e regime.v regime.m regime.probeEnergy broadening regime.disorderStrength regime.hbar
-          regime.pMax)
-    (finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensorZeroBroadeningBoundary
-      e regime.v regime.m regime.probeEnergy regime.disorderStrength regime.hbar regime.pMax)
-    (fun broadening =>
-      finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensor_isPlanarIsotropic
-        e regime.v regime.m regime.probeEnergy broadening regime.disorderStrength regime.hbar
-          regime.pMax)
-    (by constructor <;> simp [
-      finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensorZeroBroadeningBoundary])
-    hxx hxy measured source
+  have hiso (broadening : ℝ) :=
+    finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensor_isPlanarIsotropic
+      e regime.v regime.m regime.probeEnergy broadening regime.disorderStrength regime.hbar
+        regime.pMax
+  fin_cases measured <;> fin_cases source
+  · simpa [finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensorZeroBroadeningBoundary] using hxx
+  · simpa [finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensorZeroBroadeningBoundary] using hxy
+  · apply Tendsto.congr' ?_ hxy.neg
+    filter_upwards with broadening
+    exact (hiso broadening).2.symm
+  · apply Tendsto.congr' ?_ hxx
+    filter_upwards with broadening
+    exact (hiso broadening).1.symm
 
 end
 
