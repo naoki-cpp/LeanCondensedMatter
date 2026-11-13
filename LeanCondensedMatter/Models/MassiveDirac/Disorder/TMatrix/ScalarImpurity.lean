@@ -1,6 +1,7 @@
 import LeanCondensedMatter.Transport.Disorder.TMatrix
 import LeanCondensedMatter.Models.MassiveDirac.Model.Operator
 import Mathlib.Algebra.Group.Units.Basic
+import Mathlib.Algebra.GroupWithZero.Units.Lemmas
 import Mathlib.Analysis.Normed.Ring.Units
 import Mathlib.Tactic.Ring
 
@@ -208,49 +209,35 @@ theorem ScalarImpurityParameters.matrixOperator_tMatrix_eq_ringInverse_shift
         Ring.inverse
           ((1 : DiracHilbert →L[ℂ] DiracHilbert) -
             (((params.impurityStrength : ℝ) : ℂ)) • matrixOperator greenLoop) := by
-  let shiftOp : DiracHilbert →L[ℂ] DiracHilbert :=
-    matrixOperator (params.shiftMatrix greenLoop)
-  let inverseOp : DiracHilbert →L[ℂ] DiracHilbert :=
-    matrixOperator (params.inverseShiftMatrix greenLoop hinvertible)
-  let φ : Matrix2 ≃⋆ₐ[ℂ] (DiracHilbert →L[ℂ] DiracHilbert) := Matrix.toEuclideanCLM
-  have hshiftUnit : IsUnit shiftOp := by
-    dsimp [shiftOp]
-    exact (isUnit_map_iff φ (params.shiftMatrix greenLoop)).mpr hinvertible
-  have hinverse_mul : inverseOp * shiftOp = 1 := by
-    dsimp [inverseOp, shiftOp]
-    have h := hinvertible.val_inv_mul
-    simpa [ScalarImpurityParameters.inverseShiftMatrix, matrixOperator, map_mul, map_one] using
-      congrArg matrixOperator h
-  have hinverse_eq : inverseOp = Ring.inverse shiftOp := by
-    have hmul : shiftOp * Ring.inverse shiftOp = 1 :=
-      Ring.mul_inverse_cancel shiftOp hshiftUnit
-    calc
-      inverseOp = inverseOp * 1 := (mul_one inverseOp).symm
-      _ = inverseOp * (shiftOp * Ring.inverse shiftOp) := by rw [hmul]
-      _ = (inverseOp * shiftOp) * Ring.inverse shiftOp := by rw [mul_assoc]
-      _ = Ring.inverse shiftOp := by rw [hinverse_mul, one_mul]
-  have hshift_eq :
-      matrixOperator (params.shiftMatrix greenLoop) =
-        (1 : DiracHilbert →L[ℂ] DiracHilbert) -
-          (((params.impurityStrength : ℝ) : ℂ)) • matrixOperator greenLoop := by
-    simp only [ScalarImpurityParameters.shiftMatrix, matrixOperator, map_sub, map_one, map_smul]
-  have hinverse_eq' :
+  let φ : Matrix2 ≃⋆ₐ[ℂ] (DiracHilbert →L[ℂ] DiracHilbert) :=
+    Matrix.toEuclideanCLM
+  have hinverse :
       matrixOperator (params.inverseShiftMatrix greenLoop hinvertible) =
-        Ring.inverse
-          ((1 : DiracHilbert →L[ℂ] DiracHilbert) -
-            (((params.impurityStrength : ℝ) : ℂ)) • matrixOperator greenLoop) := by
-    dsimp [inverseOp, shiftOp] at hinverse_eq
-    rw [hshift_eq] at hinverse_eq
-    exact hinverse_eq
-  rw [ScalarImpurityParameters.tMatrix]
-  have hmap_smul :
-      matrixOperator
-          ((((params.impurityStrength : ℝ) : ℂ)) •
-            params.inverseShiftMatrix greenLoop hinvertible) =
+        Ring.inverse (matrixOperator (params.shiftMatrix greenLoop)) := by
+    change φ ((↑(hinvertible.unit⁻¹) : Matrix2)) =
+      Ring.inverse (φ (params.shiftMatrix greenLoop))
+    have hunit :
+        (↑(hinvertible.unit⁻¹) : Matrix2) =
+          Ring.inverse (params.shiftMatrix greenLoop) := by
+      calc
+        (↑(hinvertible.unit⁻¹) : Matrix2) =
+            Ring.inverse (↑hinvertible.unit : Matrix2) :=
+          (Ring.inverse_unit hinvertible.unit).symm
+        _ = Ring.inverse (params.shiftMatrix greenLoop) :=
+          congrArg Ring.inverse hinvertible.unit_spec.symm
+    rw [hunit]
+    exact hinvertible.map_ringInverse φ
+  calc
+    matrixOperator (params.tMatrix greenLoop hinvertible) =
         (((params.impurityStrength : ℝ) : ℂ)) •
           matrixOperator (params.inverseShiftMatrix greenLoop hinvertible) := by
-    simp only [matrixOperator, map_smul]
-  rw [hmap_smul, hinverse_eq']
+      simp only [ScalarImpurityParameters.tMatrix, matrixOperator, map_smul]
+    _ = (((params.impurityStrength : ℝ) : ℂ)) •
+          Ring.inverse (matrixOperator (params.shiftMatrix greenLoop)) := by
+      rw [hinverse]
+    _ = _ := by
+      simp only [ScalarImpurityParameters.shiftMatrix, matrixOperator,
+        map_sub, map_one, map_smul]
 
 /-- For a fixed Green loop, the operator-valued scalar-impurity T-matrix has a genuine quadratic
 remainder at zero impurity strength:
