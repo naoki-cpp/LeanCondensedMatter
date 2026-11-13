@@ -1,4 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Core.Diagram
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Core.SlotCongr
+import LeanCondensedMatter.Combinatorics.Shuffle.SlotShuffle
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalComponents
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ExternalPartition
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Transport
@@ -2494,6 +2496,49 @@ def ExternalInsertionBlockLayout.connectedBlockFamilyEquivPi
     funext B
     apply Subtype.ext
     rfl
+
+/-- Every independent preconnected physical block can be put on its
+canonical consecutive local interaction slots. This equivalence
+standardizes all blocks *simultaneously*, retaining the exact external
+labels, vertex labels and oriented Wick pairing in each block.
+It is the missing family-level transport needed when independent
+owner assignments have the same local interaction cardinalities but
+different ambient interaction subsets. Empty interaction fibers are
+included in the equivalence. -/
+noncomputable def ExternalInsertionBlockLayout.standardizedConnectedBlockFamilyEquiv
+    {ExternalLabel InternalLabel : Type*}
+    (layout : ExternalInsertionBlockLayout E N) :
+    layout.ConnectedBlockFamily (ExternalLabel := ExternalLabel)
+      (InternalLabel := InternalLabel) ≃
+    (∀ B : layout.partition.parts,
+      {d : ExternalInsertionDiagram ExternalLabel InternalLabel
+          ((B : Finset (Fin (2 * E))).card / 2)
+          (layout.interactionBlock (Finset.univ : Finset (Fin N)) B).card
+          (Finset.univ : Finset (Fin
+            (layout.interactionBlock (Finset.univ : Finset (Fin N)) B).card)) //
+          d.vertexGraph.Preconnected}) := by
+  classical
+  exact (layout.connectedBlockFamilyEquivPi
+    (ExternalLabel := ExternalLabel) (InternalLabel := InternalLabel)).trans
+      (Equiv.piCongrRight (fun B =>
+        ExternalInsertionDiagram.preconnectedSlotCongrEquiv
+          (Combinatorics.standardSlotEquiv
+            (layout.interactionBlock (Finset.univ : Finset (Fin N)) B))))
+
+/-- Evaluating a standardized connected-block family on a block
+recovers the original local Wick diagram with its interaction vertices
+relabeled by increasing ambient-slot enumeration. -/
+@[simp]
+theorem ExternalInsertionBlockLayout.standardizedConnectedBlockFamilyEquiv_apply
+    {ExternalLabel InternalLabel : Type*}
+    (layout : ExternalInsertionBlockLayout E N)
+    (F : layout.ConnectedBlockFamily (ExternalLabel := ExternalLabel)
+      (InternalLabel := InternalLabel))
+    (B : layout.partition.parts) :
+    ((layout.standardizedConnectedBlockFamilyEquiv F) B).1 =
+      (F.1 B).slotCongr (Combinatorics.standardSlotEquiv
+        (layout.interactionBlock (Finset.univ : Finset (Fin N)) B)) := by
+  rfl
 
 open Classical in
 /-- Summing a multiplicative weight over all independent connected-block
