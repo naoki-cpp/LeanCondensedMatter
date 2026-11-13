@@ -1,4 +1,3 @@
-import LeanCondensedMatter.Models.MassiveDirac.Model.OperatorSpectral
 import LeanCondensedMatter.Models.MassiveDirac.Bastin.PoleHall
 import LeanCondensedMatter.Models.MassiveDirac.Model.Kinematics
 import Mathlib.Tactic.Ring

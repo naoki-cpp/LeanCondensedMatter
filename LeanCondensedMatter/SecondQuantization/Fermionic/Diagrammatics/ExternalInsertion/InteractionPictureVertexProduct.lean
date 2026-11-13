@@ -1,6 +1,4 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.MixedAtomicDysonIntegral
-import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.LocalLeg
-import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.InteractionPicture
 
 set_option linter.style.header false
 

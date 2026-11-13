@@ -1,4 +1,3 @@
-import LeanCondensedMatter.SecondQuantization.Common.Algebra.AlgebraicFock
 import LeanCondensedMatter.SecondQuantization.Common.Algebra.SupportShift
 import Mathlib.Topology.Algebra.InfiniteSum.Constructions
 import Mathlib.Analysis.Complex.Basic

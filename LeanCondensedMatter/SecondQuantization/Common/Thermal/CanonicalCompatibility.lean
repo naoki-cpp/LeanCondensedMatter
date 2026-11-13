@@ -1,6 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.CoordinateIsometry
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.CanonicalFullFock
-import LeanCondensedMatter.QuantumTheory.DensityOperator.DiagonalFormula
 
 set_option linter.style.header false
 

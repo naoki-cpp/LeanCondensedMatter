@@ -1,7 +1,6 @@
 import LeanCondensedMatter.Analysis.Dyson.Basic
 import LeanCondensedMatter.SecondQuantization.Common.Perturbation.FiniteAnalyticBridge
 import LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExpansion
-import LeanCondensedMatter.SecondQuantization.Common.Perturbation.FiniteOperatorIntegral
 
 set_option linter.style.header false
 
