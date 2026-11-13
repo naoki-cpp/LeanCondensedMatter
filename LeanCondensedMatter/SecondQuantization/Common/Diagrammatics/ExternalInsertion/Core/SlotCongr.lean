@@ -1,4 +1,3 @@
-import LeanCondensedMatter.Combinatorics.PerfectPairing.Transport
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Core.Diagram
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalComponents
 

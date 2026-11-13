@@ -1,6 +1,4 @@
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.CutOrder
-import LeanCondensedMatter.Combinatorics.PerfectPairing.Restriction
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.InteractionSector
 
 set_option linter.style.header false
 

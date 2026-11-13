@@ -1,6 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.SlotLegSplitting
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Ordered
-import LeanCondensedMatter.Combinatorics.FiniteIndex.Block
 import LeanCondensedMatter.Combinatorics.Common.FintypeProduct
 
 set_option linter.style.header false

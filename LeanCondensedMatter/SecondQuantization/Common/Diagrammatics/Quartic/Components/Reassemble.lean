@@ -1,4 +1,3 @@
-import LeanCondensedMatter.Combinatorics.PerfectPairing.Transport
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentConnected
 
 set_option linter.style.header false
