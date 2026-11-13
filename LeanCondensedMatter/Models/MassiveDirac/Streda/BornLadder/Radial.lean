@@ -1,6 +1,4 @@
 import LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.RadialIntegrand
-import LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexResponse
-import LeanCondensedMatter.Models.MassiveDirac.Vertex.PauliRung
 import Mathlib.Tactic.FunProp
 import Mathlib.Tactic.Ring
 

@@ -1,6 +1,4 @@
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.Damping
-import LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialKernel
-import LeanCondensedMatter.Models.MassiveDirac.Propagator.Basic
 import Mathlib.Tactic.FieldSimp
 import Mathlib.Tactic.Ring
 

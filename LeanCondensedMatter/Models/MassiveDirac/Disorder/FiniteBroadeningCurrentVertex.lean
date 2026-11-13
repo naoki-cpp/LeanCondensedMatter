@@ -1,8 +1,5 @@
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornInvertibility
-import LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornPropagator
-import LeanCondensedMatter.Models.MassiveDirac.Disorder.ContinuumMeasurePrefactor
 import LeanCondensedMatter.Models.MassiveDirac.Vertex.PauliRung
-import LeanCondensedMatter.Models.MassiveDirac.Vertex.InPlaneLadder
 import Mathlib.Tactic.Ring
 
 set_option linter.style.header false

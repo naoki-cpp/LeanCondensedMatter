@@ -1,9 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.GrandCanonical
 import LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.DiagonalAnalytic
 import LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution
-import LeanCondensedMatter.QuantumTheory.DensityOperator.DiagonalFormula
-import LeanCondensedMatter.QuantumTheory.LinearResponse.Expectation.Density
-import LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.Stationarity
 import LeanCondensedMatter.QuantumTheory.LinearResponse.Response.DensitySusceptibility
 import LeanCondensedMatter.QuantumTheory.LinearResponse.Frequency.Integrability
 
