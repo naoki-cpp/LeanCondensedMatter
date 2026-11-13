@@ -85,16 +85,8 @@ theorem forceMatrixTraceNumerator_xy_eq
       bandProjector params (oppositeBand band) px py =
         (1 / 2 : ℂ) •
           ((1 : InternalSpace.PauliMatrix) - InternalSpace.pauliCombination u) := by
-    have hresolve := bandProjector_add_oppositeBand params band px py
-    rw [hProjector] at hresolve
-    have hsub :
-        bandProjector params (oppositeBand band) px py =
-          1 - (1 / 2 : ℂ) •
-            ((1 : InternalSpace.PauliMatrix) + InternalSpace.pauliCombination u) := by
-      apply (eq_sub_iff_add_eq).2
-      simpa [add_comm] using hresolve
-    rw [hsub]
-    module
+    simp [bandProjector_eq_pauliCombination, bandSign_oppositeBand, u,
+      neg_div, InternalSpace.pauliCombination_smul, sub_eq_add_neg]
   have hEc : (((spinOrbitEnergy params px py : ℝ) : ℂ)) ≠ 0 := by
     exact_mod_cast hE
   have hnorm : dotProduct u u = 1 := by
