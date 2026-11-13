@@ -214,30 +214,42 @@ finite-dimensional corollaries where finiteness is genuinely required
 
 ## CI-enforced architecture boundary
 
-`scripts/check_quantum_theory_architecture.py` enforces durable current-state invariants:
+The blocking source audit runs `python3 scripts/check_architecture.py` and dispatches
+`scripts/check_architecture_graphs.py` and `scripts/check_source_contracts.py`.
+The former reads `scripts/architecture/second_quantization.json` and
+`scripts/architecture/source_topology.json`; the latter checks selected
+current-state files and import contracts in `scripts/architecture/source_contracts.json`.
+These are *source-level* checks, not Lean semantic elaboration.
 
-- unique canonical ownership of `DensityOperator` and `POVM`;
-- unique canonical ownership of pure-state and density-state real observable expectations;
-- unique canonical ownership of `probNNReal` and `bornPMF`;
-- the lossless Born probability-kernel boundary;
-- ownership of the countable diagonal formulas;
-- absence of finite-dimensional/index assumptions from the generic countable diagonal modules;
-- export of the canonical diagonal modules from the density umbrella;
-- presence of the countable Gibbs diagonal-energy foundation.
+The scoped `quantumStateResponseManyBodyThermal` import DAG records the intended
+implementation dependency direction:
 
-Other architecture audits additionally enforce the project-wide physical-scalar boundary and the
-upstream dependency rule that `QuantumTheory` must not import `SecondQuantization`.
+```text
+Postulates -> DensityOperator -> Entropy -> Gibbs -> LinearResponse
+                         |            |                     |
+                         +-> POVM ----+---------------------+
+                                                               -> SecondQuantization.Common.Thermal
+```
 
-The architecture audits intentionally do **not** require:
+The actual graph permits imports only from an upstream layer into a downstream
+implementation layer (and within a layer). In particular, generic density-state,
+measurement, entropy, Gibbs, and response implementations must not depend on
+`SecondQuantization.Common.Thermal`, nor may `DensityOperator` implementations
+import downstream Gibbs/response code. The Common thermal implementation *may*
+consume generic Gibbs and linear-response results, but the reverse is forbidden.
 
-- exact definition bodies;
-- `simpa using ...` or other proof fragments;
-- helper theorem names merely because a current proof happens to use them;
-- historical lists of retired modules, aliases, or former owners.
+This is deliberately **not** a rule about the public umbrella:
+`QuantumTheory/DensityOperator.lean` reexports POVM endpoints for the existing
+public API, while the `DensityOperator/` *implementation directory* does not
+depend on POVM. The scoped graph excludes these umbrella files. No public import
+or declaration is changed by the audit.
 
-If a mathematical identity itself is important, it belongs as a Lean theorem. Python architecture CI
-should protect ownership, layering, type-level assumptions, and semantic safety properties that are
-not naturally expressed by merely compiling the library.
+The local-only compiled investigations `scripts/CheckSemanticBoundaries.lean`
+and `scripts/CheckArchitecture.lean` inspect elaborated declarations when
+needed; neither is part of this pull-request source-audit gate. This audit does
+not establish unique declaration ownership, exact definition bodies, or
+dimension independence by lexical analysis. Those require Lean statements,
+elaborated-environment checks, or focused review.
 
 ## Scope boundaries
 

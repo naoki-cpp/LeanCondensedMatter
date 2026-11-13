@@ -1,6 +1,43 @@
 {
   "scopedImportGraphs": [
     {
+      "id": "quantumStateResponseManyBodyThermal",
+      "sourceRoots": [
+        "LeanCondensedMatter/QuantumTheory/DensityOperator",
+        "LeanCondensedMatter/QuantumTheory/POVM",
+        "LeanCondensedMatter/QuantumTheory/Entropy",
+        "LeanCondensedMatter/QuantumTheory/Gibbs",
+        "LeanCondensedMatter/QuantumTheory/LinearResponse",
+        "LeanCondensedMatter/SecondQuantization/Common/Thermal"
+      ],
+      "coveragePrefixes": [
+        "LeanCondensedMatter.QuantumTheory.DensityOperator",
+        "LeanCondensedMatter.QuantumTheory.POVM",
+        "LeanCondensedMatter.QuantumTheory.Entropy",
+        "LeanCondensedMatter.QuantumTheory.Gibbs",
+        "LeanCondensedMatter.QuantumTheory.LinearResponse",
+        "LeanCondensedMatter.SecondQuantization.Common.Thermal"
+      ],
+      "layers": [
+        {"id": "postulates", "modulePrefixes": ["LeanCondensedMatter.QuantumTheory.Postulates"]},
+        {"id": "density", "modulePrefixes": ["LeanCondensedMatter.QuantumTheory.DensityOperator"]},
+        {"id": "povm", "modulePrefixes": ["LeanCondensedMatter.QuantumTheory.POVM"]},
+        {"id": "entropy", "modulePrefixes": ["LeanCondensedMatter.QuantumTheory.Entropy"]},
+        {"id": "gibbs", "modulePrefixes": ["LeanCondensedMatter.QuantumTheory.Gibbs"]},
+        {"id": "response", "modulePrefixes": ["LeanCondensedMatter.QuantumTheory.LinearResponse"]},
+        {"id": "manyBodyThermal", "modulePrefixes": ["LeanCondensedMatter.SecondQuantization.Common.Thermal"]}
+      ],
+      "edges": [
+        {"upstream": "postulates", "downstream": "density"},
+        {"upstream": "density", "downstream": "povm"},
+        {"upstream": "density", "downstream": "entropy"},
+        {"upstream": "entropy", "downstream": "gibbs"},
+        {"upstream": "gibbs", "downstream": "response"},
+        {"upstream": "povm", "downstream": "response"},
+        {"upstream": "response", "downstream": "manyBodyThermal"}
+      ]
+    },
+    {
       "id": "genericTransportBoundary",
       "sourceRoots": ["LeanCondensedMatter/Transport"],
       "layers": [
