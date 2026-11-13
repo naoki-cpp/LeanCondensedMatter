@@ -725,12 +725,8 @@ theorem ExternalInsertionBlockLayout.sum_preconnectedDysonBlock_eq_standardized
         if d.externalLabel = targetLabels then
           d.dysonAmplitude ε β g targetTimes else 0)
   convert h using 1
-  · apply Finset.sum_congr
-    · ext d
-      simp
-    · intro d _
-      rfl
-  · apply Finset.sum_congr
+  all_goals
+    apply Finset.sum_congr
     · ext d
       simp
     · intro d _
@@ -1470,12 +1466,10 @@ theorem externalSubsetSignedConnectedMomentSeries_eq_zero_of_odd
   apply Finset.sum_eq_zero
   intro π _
   obtain ⟨B, hB, hBodd⟩ := odd_externalSubset_has_odd_partition_block π hodd
-  have hzero : externalSubsetConnectedDiagramSeries ε β g labels times B = 0 :=
-    (externalSubsetSeries_eq_zero_of_odd ε β g labels times B hBodd).2
   have hprod : Finpartition.partitionProduct
-      (externalSubsetConnectedDiagramSeries ε β g labels times) π = 0 := by
-    unfold Finpartition.partitionProduct
-    exact Finset.prod_eq_zero hB hzero
+      (externalSubsetConnectedDiagramSeries ε β g labels times) π = 0 :=
+    Finset.prod_eq_zero hB
+      (externalSubsetSeries_eq_zero_of_odd ε β g labels times B hBodd).2
   rw [hprod, mul_zero]
 
 /-- Empty and odd external subsets already satisfy the physical
