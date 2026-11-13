@@ -1068,14 +1068,14 @@ theorem sum_fixedExternalPartitionDysonFiber_eq_sizes_shuffles
       if externalComponentPartition d.1.1.vertexGraph = π then
         d.1.1.dysonAmplitude ε β g times else 0) =
       ∑ p ∈ ExternalInsertionBlockLayout.fixedPartitionPhysicalSizeShuffleFiniteDomain
-          (ExternalLabel := ExternalFieldLabel Mode)
+          (E := K) (N := n) (ExternalLabel := ExternalFieldLabel Mode)
           (InternalLabel := QuarticVertexLabel Mode) anchor π heven,
         if (((ExternalInsertionBlockLayout.fixedPartitionPhysicalSizeShuffleEquiv
-            (ExternalLabel := ExternalFieldLabel Mode)
+            (E := K) (N := n) (ExternalLabel := ExternalFieldLabel Mode)
             (InternalLabel := QuarticVertexLabel Mode)
             anchor π heven).symm p).1.1).externalLabel = labels then
           (((ExternalInsertionBlockLayout.fixedPartitionPhysicalSizeShuffleEquiv
-            (ExternalLabel := ExternalFieldLabel Mode)
+            (E := K) (N := n) (ExternalLabel := ExternalFieldLabel Mode)
             (InternalLabel := QuarticVertexLabel Mode)
             anchor π heven).symm p).1.1).dysonAmplitude ε β g times
         else 0 := by
@@ -1107,7 +1107,7 @@ theorem sum_fixedExternalPartitionDysonFiber_eq_sizes_shuffles
           by_cases hp : externalComponentPartition d.1.vertexGraph = π <;> simp [hp]
     _ = _ :=
       ExternalInsertionBlockLayout.sum_vacuumFree_fixedPartition_eq_sizes_shuffles
-        anchor π heven
+        (E := K) (N := n) anchor π heven
         (fun d : ExternalInsertionWickDiagram Mode K n =>
           if d.externalLabel = labels then d.dysonAmplitude ε β g times else 0)
 
