@@ -57,8 +57,8 @@ noncomputable def weightSum (w : Config → ℂ) : ℂ :=
 @[simp]
 theorem traceFock_id : traceFock (LinearMap.id : AlgebraicFock Config →ₗ[ℂ] _) =
     (Fintype.card Config : ℂ) := by
-  rw [traceFock_eq_sum_matrixCoeff]
-  simp [matrixCoeff_id]
+  change LinearMap.trace ℂ (Config →₀ ℂ) LinearMap.id = (Fintype.card Config : ℂ)
+  simp
 
 end Common
 end SecondQuantization

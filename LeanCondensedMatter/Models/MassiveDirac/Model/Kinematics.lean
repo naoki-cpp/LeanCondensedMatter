@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Transport.Analysis.AngularHarmonics
+import Mathlib.Analysis.SpecialFunctions.Integrals.Basic
 import LeanCondensedMatter.Models.MassiveDirac.Model.Basic
 import Mathlib.Analysis.Calculus.Deriv.Add
 import Mathlib.Analysis.Calculus.Deriv.Mul
@@ -39,7 +39,6 @@ namespace QuantumTheory.Models.MassiveDirac
 noncomputable section
 
 open MeasureTheory
-open QuantumTheory.Transport
 open scoped Interval
 
 /-- The massive-Dirac dispersion polynomial is radial in polar momentum coordinates. -/
@@ -114,9 +113,11 @@ theorem isotropicMeanSquareRadialGroupVelocityX_eq
       radialEnergyDerivative v m p ^ 2 / 2 := by
   unfold isotropicMeanSquareRadialGroupVelocityX radialGroupVelocityX
   simp_rw [mul_pow]
-  rw [intervalIntegral.integral_const_mul, integral_cos_sq_zero_two_pi]
-  have hpi : Real.pi ≠ 0 := ne_of_gt Real.pi_pos
-  field_simp [hpi]
+  rw [intervalIntegral.integral_const_mul]
+  have hcos : (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi), Real.cos θ ^ 2) = Real.pi := by
+    simpa using (integral_cos_sq (a := (0 : ℝ)) (b := 2 * Real.pi))
+  rw [hcos]
+  field_simp [ne_of_gt Real.pi_pos]
 
 end
 
