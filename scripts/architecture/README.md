@@ -122,6 +122,34 @@ Do not rewrite semantic base files merely because they have a similarly named
 subdirectory; the classifier excludes modules with actual declarations.
 
 
+### Public umbrella dependency breadth (advisory)
+
+Compare the transitive *project-local* import closures for a public umbrella
+and any existing or proposed focused entry points:
+
+```bash
+python3 -m unittest discover -s scripts -p 'test_module_import_costs.py'
+python3 scripts/export_module_import_graph.py --report-umbrella-costs \
+  --baseline LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics \
+  --module LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic \
+  --module LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion \
+  --module LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.LinkedCluster
+python3 scripts/export_module_import_graph.py --report-umbrella-costs \
+  --baseline LeanCondensedMatter.QuantumTheory.LinearResponse \
+  --module LeanCondensedMatter.QuantumTheory.LinearResponse.Response \
+  --module LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann
+```
+
+The report measures `projectModules` (the number of unique reachable project
+modules **including the entry**), `directProjectImports` (the entry's own
+project-local direct imports), and `externalDirectImportEdges` (the sum of
+direct non-project import lines across the project closure). The latter **does
+not count distinct or transitively imported Mathlib/Lean modules**. No metric
+here measures compile latency, memory, or final public declaration count.
+Particularly, a public umbrella may have a wide closure intentionally for
+compatibility, and a leaf import can still transitively reach large libraries.
+Avoid changing an existing public endpoint merely to improve this proxy.
+
 ## Declarative source topology
 
 `check_architecture_graphs.py` owns dependency direction and reachability. Its data lives here:

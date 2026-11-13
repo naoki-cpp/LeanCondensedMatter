@@ -142,6 +142,20 @@ import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics
 import LeanCondensedMatter.SecondQuantization.Fermionic.Transport
 ```
 
+Public consumers can choose the existing narrower
+`SecondQuantization.Fermionic.Diagrammatics.Quartic`,
+`SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion`, or
+`SecondQuantization.Fermionic.Diagrammatics.LinkedCluster` package instead of
+the complete `Fermionic.Diagrammatics` tree. These existing branches are
+semantically different, so adding another aggregate entry solely to decrease
+source import counts would duplicate the public API.
+
+The import graph exporter can compare the number of *distinct reachable
+project-local modules* and the sum of their direct external-import edges
+between each focused package and the complete umbrella. These are static
+dependency-breadth proxies, not benchmarks for Lean build time, memory, or
+Mathlib's transitive import graph.
+
 Implementation modules should still import the narrowest leaf modules they use; umbrellas are public
 package boundaries and navigation surfaces, not a reason to widen internal dependencies.
 For example, `Fermionic.Diagrammatics.LinkedCluster.Theorem` uses the normalized
