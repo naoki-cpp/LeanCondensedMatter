@@ -1,10 +1,7 @@
-import LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExpansion
 import LeanCondensedMatter.SecondQuantization.Common.Perturbation.QuarticDysonExpansion
 import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.Quartic
-import LeanCondensedMatter.Analysis.OrderedSimplex.Integral
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsExpectationBridge
 import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.QuarticInteraction
-import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.InteractionPicture
 import LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTime.ImaginaryTimeEvolution
 
 set_option linter.style.header false

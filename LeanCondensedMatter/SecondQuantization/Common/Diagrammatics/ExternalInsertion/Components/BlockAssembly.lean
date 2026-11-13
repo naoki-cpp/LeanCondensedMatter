@@ -1,9 +1,6 @@
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Core.Diagram
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Core.SlotCongr
 import LeanCondensedMatter.Combinatorics.Shuffle.SlotShuffle
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalComponents
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ExternalPartition
-import LeanCondensedMatter.Combinatorics.PerfectPairing.Transport
 import LeanCondensedMatter.Combinatorics.Shuffle.FamilyOrderShuffle
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Ordered
 import Mathlib.Order.Partition.Finpartition
