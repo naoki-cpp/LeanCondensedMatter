@@ -1,12 +1,8 @@
 import LeanCondensedMatter.Analysis.OrderedSimplex.BinarySlotShuffle
-import LeanCondensedMatter.Combinatorics.Shuffle.SlotShuffle
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.SupportStandardization
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.ExternalSupportFiber
 import LeanCondensedMatter.Analysis.OrderedSimplex.StrictAntiCongr
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalVacuumStandalone
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.Integral
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Ordered
-import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Pairing
 
 set_option linter.style.header false
 

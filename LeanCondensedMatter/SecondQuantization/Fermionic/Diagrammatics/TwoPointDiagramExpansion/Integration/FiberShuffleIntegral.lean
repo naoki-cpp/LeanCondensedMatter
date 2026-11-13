@@ -1,7 +1,4 @@
 import LeanCondensedMatter.Analysis.OrderedSimplex.StrictAntiCongr
-import LeanCondensedMatter.Combinatorics.Shuffle.SlotShuffle
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumLegOrder
-import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Factorization.FiberDecomposition
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.FiberShuffleOrderedData
 
 set_option linter.style.header false
