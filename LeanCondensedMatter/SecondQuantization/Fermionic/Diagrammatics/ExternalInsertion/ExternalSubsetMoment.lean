@@ -1276,12 +1276,7 @@ theorem sum_fixedExternalPartitionDysonFiber_eq_assignmentOrderedDyson
   have hcanon :=
     ExternalInsertionBlockLayout.assembleDiagram_dysonAmplitude_eq_assignmentOrdered
       layout p.2.1 ε β g times
-  by_cases h : ∀ B : layout.partition.parts,
-      (p.2.1 B).externalLabel =
-        evenExternalSubsetLabels labels (B : Finset (Fin (2 * K)))
-          (layout.evenBlocks B)
-  · simpa only [h, ↓reduceIte] using hcanon
-  · simp [h]
+  exact if_congr Iff.rfl hcanon rfl
 
 /-- The full fixed-order physical Dyson coefficient is reindexed by even
 external-component partitions and independently labelled connected blocks.
