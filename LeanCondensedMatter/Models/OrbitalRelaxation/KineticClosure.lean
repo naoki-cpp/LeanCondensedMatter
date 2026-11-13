@@ -136,7 +136,7 @@ theorem polarization_eq_exp (t : ℝ) :
     closure.polarization t =
       closure.polarization 0 *
         Real.exp (-(orbitalRate axis ℏ (degreeTwoTime data.degreeTwoRate) c₁ c₂ r * t)) :=
-  closure.scalar_decay_solution
+  scalar_decay_solution
     (orbitalRate axis ℏ (degreeTwoTime data.degreeTwoRate) c₁ c₂ r)
     closure.polarization closure.hasDerivAt_polarization t
 
