@@ -1,6 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentRestriction
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Pairing.MixedOrder
-import LeanCondensedMatter.Combinatorics.Shuffle.FamilySlotShuffle
 
 set_option linter.style.header false
 

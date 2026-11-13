@@ -1,5 +1,4 @@
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentPosition
-import LeanCondensedMatter.Combinatorics.PerfectPairing.Transport
 
 set_option linter.style.header false
 

@@ -1,6 +1,4 @@
-import LeanCondensedMatter.Combinatorics.Shuffle.FamilySlotShuffleInversions
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentRestriction
-import LeanCondensedMatter.Combinatorics.Common.FintypeProduct
 import Mathlib.Algebra.BigOperators.ModEq
 
 set_option linter.style.header false

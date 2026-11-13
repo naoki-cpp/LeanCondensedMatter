@@ -1,5 +1,4 @@
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.OneParticleIrreducible
-import LeanCondensedMatter.Combinatorics.SetPartition.GraphComponents
 import Mathlib.Combinatorics.SimpleGraph.Operations
 
 set_option linter.style.header false
