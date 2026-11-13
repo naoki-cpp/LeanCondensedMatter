@@ -351,4 +351,178 @@ theorem sphericalAverage_coordinate_sq_mul_coordinate_sq (i j : Fin 3)
     exact sphericalAverage_yz r
   · exact (hij rfl).elim
 
+
+/-- The six coordinate-even homogeneous quartic monomials in three variables. -/
+private def evenQuarticPolynomial (a b c d e f : ℝ) (k : Fin 3 → ℝ) : ℝ :=
+  a * k 0 ^ 4 + b * k 1 ^ 4 + c * k 2 ^ 4 +
+    d * (k 0 ^ 2 * k 1 ^ 2) +
+    e * (k 0 ^ 2 * k 2 ^ 2) +
+    f * (k 1 ^ 2 * k 2 ^ 2)
+
+/-- The normalized continuous spherical-coordinate average of any coordinate-even
+homogeneous quartic, evaluated independently of the finite cubature. -/
+private theorem sphericalAverage_evenQuarticPolynomial (r a b c d e f : ℝ) :
+    sphericalAverage r (evenQuarticPolynomial a b c d e f) =
+      r ^ 4 / 5 * (a + b + c) + r ^ 4 / 15 * (d + e + f) := by
+  have hφ (θ : ℝ) :
+      (∫ φ in (0 : ℝ)..(2 * Real.pi),
+        evenQuarticPolynomial a b c d e f (sphericalMomentum r θ φ)) =
+        (a * (r ^ 4 * Real.sin θ ^ 4)) * (3 * Real.pi / 4) +
+        (b * (r ^ 4 * Real.sin θ ^ 4)) * (3 * Real.pi / 4) +
+        (c * (r ^ 4 * Real.cos θ ^ 4)) * (2 * Real.pi) +
+        (d * (r ^ 4 * Real.sin θ ^ 4)) * (Real.pi / 4) +
+        (e * (r ^ 4 * Real.sin θ ^ 2 * Real.cos θ ^ 2)) * Real.pi +
+        (f * (r ^ 4 * Real.sin θ ^ 2 * Real.cos θ ^ 2)) * Real.pi := by
+    let U : ℝ := r ^ 4 * Real.sin θ ^ 4
+    let V : ℝ := r ^ 4 * Real.cos θ ^ 4
+    let W : ℝ := r ^ 4 * Real.sin θ ^ 2 * Real.cos θ ^ 2
+    have hpoint (φ : ℝ) :
+        evenQuarticPolynomial a b c d e f (sphericalMomentum r θ φ) =
+          (a * U) * Real.cos φ ^ 4 +
+          (b * U) * Real.sin φ ^ 4 +
+          c * V +
+          (d * U) * (Real.sin φ ^ 2 * Real.cos φ ^ 2) +
+          (e * W) * Real.cos φ ^ 2 +
+          (f * W) * Real.sin φ ^ 2 := by
+      simp [evenQuarticPolynomial, sphericalMomentum, U, V, W]
+      ring
+    simp_rw [hpoint]
+    have hA : IntervalIntegrable
+        (fun φ : ℝ => (a * U) * Real.cos φ ^ 4) volume 0 (2 * Real.pi) := by
+      apply Continuous.intervalIntegrable
+      fun_prop
+    have hB : IntervalIntegrable
+        (fun φ : ℝ => (b * U) * Real.sin φ ^ 4) volume 0 (2 * Real.pi) := by
+      apply Continuous.intervalIntegrable
+      fun_prop
+    have hC : IntervalIntegrable
+        (fun _φ : ℝ => c * V) volume 0 (2 * Real.pi) :=
+      continuous_const.intervalIntegrable _ _
+    have hD : IntervalIntegrable
+        (fun φ : ℝ => (d * U) * (Real.sin φ ^ 2 * Real.cos φ ^ 2))
+        volume 0 (2 * Real.pi) := by
+      apply Continuous.intervalIntegrable
+      fun_prop
+    have hE : IntervalIntegrable
+        (fun φ : ℝ => (e * W) * Real.cos φ ^ 2) volume 0 (2 * Real.pi) := by
+      apply Continuous.intervalIntegrable
+      fun_prop
+    have hF : IntervalIntegrable
+        (fun φ : ℝ => (f * W) * Real.sin φ ^ 2) volume 0 (2 * Real.pi) := by
+      apply Continuous.intervalIntegrable
+      fun_prop
+    rw [
+      intervalIntegral.integral_add ((((hA.add hB).add hC).add hD).add hE) hF,
+      intervalIntegral.integral_add (((hA.add hB).add hC).add hD) hE,
+      intervalIntegral.integral_add ((hA.add hB).add hC) hD,
+      intervalIntegral.integral_add (hA.add hB) hC,
+      intervalIntegral.integral_add hA hB]
+    simp only [intervalIntegral.integral_const_mul, intervalIntegral.integral_const,
+      integral_cos_four_full, integral_sin_four_full,
+      integral_sin_sq_mul_cos_sq_full, integral_cos_sq_full, integral_sin_sq_full]
+    dsimp [U, V, W]
+    ring
+  have hθ (θ : ℝ) :
+      ((a * (r ^ 4 * Real.sin θ ^ 4)) * (3 * Real.pi / 4) +
+        (b * (r ^ 4 * Real.sin θ ^ 4)) * (3 * Real.pi / 4) +
+        (c * (r ^ 4 * Real.cos θ ^ 4)) * (2 * Real.pi) +
+        (d * (r ^ 4 * Real.sin θ ^ 4)) * (Real.pi / 4) +
+        (e * (r ^ 4 * Real.sin θ ^ 2 * Real.cos θ ^ 2)) * Real.pi +
+        (f * (r ^ 4 * Real.sin θ ^ 2 * Real.cos θ ^ 2)) * Real.pi) *
+          Real.sin θ =
+        (r ^ 4 * Real.pi * (3 * (a + b) + d) / 4) * Real.sin θ ^ 5 +
+        (r ^ 4 * Real.pi * (2 * c)) * (Real.sin θ * Real.cos θ ^ 4) +
+        (r ^ 4 * Real.pi * (e + f)) *
+          (Real.sin θ ^ 3 * Real.cos θ ^ 2) := by
+    ring
+  unfold sphericalAverage
+  simp_rw [hφ, hθ]
+  have hA : IntervalIntegrable
+      (fun θ : ℝ =>
+        (r ^ 4 * Real.pi * (3 * (a + b) + d) / 4) * Real.sin θ ^ 5)
+      volume 0 Real.pi := by
+    apply Continuous.intervalIntegrable
+    fun_prop
+  have hB : IntervalIntegrable
+      (fun θ : ℝ =>
+        (r ^ 4 * Real.pi * (2 * c)) * (Real.sin θ * Real.cos θ ^ 4))
+      volume 0 Real.pi := by
+    apply Continuous.intervalIntegrable
+    fun_prop
+  have hC : IntervalIntegrable
+      (fun θ : ℝ =>
+        (r ^ 4 * Real.pi * (e + f)) *
+          (Real.sin θ ^ 3 * Real.cos θ ^ 2))
+      volume 0 Real.pi := by
+    apply Continuous.intervalIntegrable
+    fun_prop
+  rw [intervalIntegral.integral_add (hA.add hB) hC,
+    intervalIntegral.integral_add hA hB]
+  simp only [intervalIntegral.integral_const_mul,
+    integral_sin_five, integral_sin_mul_cos_four, integral_sin_three_mul_cos_sq]
+  have hpi : Real.pi ≠ 0 := Real.pi_ne_zero
+  field_simp [hpi]
+  ring
+
+/-- Exactness of the finite cubature on *all* coordinate-even homogeneous
+quartics, justified by the continuous spherical-coordinate integral. -/
+private theorem sphericalAverage_evenQuartic_eq_cubature (r a b c d e f : ℝ) :
+    sphericalAverage r (evenQuarticPolynomial a b c d e f) =
+      evenQuarticCubature r (evenQuarticPolynomial a b c d e f) := by
+  rw [sphericalAverage_evenQuarticPolynomial]
+  simp [evenQuarticCubature, evenQuarticPolynomial]
+  ring
+
+/-- The orbital double-commutator quartic has the same continuous spherical
+average as the finite cubature, for all three Cartesian polarizations. -/
+theorem sphericalAverage_orbitalPolynomial_eq_cubature (axis : Fin 3)
+    (c₁ c₂ r : ℝ) :
+    sphericalAverage r (orbitalPolynomial axis c₁ c₂) =
+      evenQuarticCubature r (orbitalPolynomial axis c₁ c₂) := by
+  fin_cases axis
+  · have h : orbitalPolynomial (0 : Fin 3) c₁ c₂ =
+        evenQuarticPolynomial 0 (c₁ ^ 2) (c₁ ^ 2)
+          (c₂ ^ 2) (c₂ ^ 2) (4 * c₂ ^ 2 - 2 * c₁ ^ 2) := by
+      funext k
+      simp [orbitalPolynomial, evenQuarticPolynomial]
+      ring
+    rw [h]
+    exact sphericalAverage_evenQuartic_eq_cubature r
+      0 (c₁ ^ 2) (c₁ ^ 2) (c₂ ^ 2) (c₂ ^ 2)
+      (4 * c₂ ^ 2 - 2 * c₁ ^ 2)
+  · have h : orbitalPolynomial (1 : Fin 3) c₁ c₂ =
+        evenQuarticPolynomial (c₁ ^ 2) 0 (c₁ ^ 2)
+          (c₂ ^ 2) (4 * c₂ ^ 2 - 2 * c₁ ^ 2) (c₂ ^ 2) := by
+      funext k
+      simp [orbitalPolynomial, evenQuarticPolynomial]
+      ring
+    rw [h]
+    exact sphericalAverage_evenQuartic_eq_cubature r
+      (c₁ ^ 2) 0 (c₁ ^ 2) (c₂ ^ 2)
+      (4 * c₂ ^ 2 - 2 * c₁ ^ 2) (c₂ ^ 2)
+  · have h : orbitalPolynomial (2 : Fin 3) c₁ c₂ =
+        evenQuarticPolynomial (c₁ ^ 2) (c₁ ^ 2) 0
+          (4 * c₂ ^ 2 - 2 * c₁ ^ 2) (c₂ ^ 2) (c₂ ^ 2) := by
+      funext k
+      simp [orbitalPolynomial, evenQuarticPolynomial]
+      ring
+    rw [h]
+    exact sphericalAverage_evenQuartic_eq_cubature r
+      (c₁ ^ 2) (c₁ ^ 2) 0
+      (4 * c₂ ^ 2 - 2 * c₁ ^ 2) (c₂ ^ 2) (c₂ ^ 2)
+
+/-- The exact matrix double commutator has the physical spherical-coordinate
+fourth moment, without replacing the continuous angular integral by a cubature
+assumption. -/
+theorem sphericalAverage_orbitalDoubleCommutator (axis : Fin 3)
+    (c₁ c₂ r : ℝ) :
+    sphericalAverage r (orbitalDoubleCommutator axis c₁ c₂) =
+      (2 * r ^ 4 / 15) * (2 * c₁ ^ 2 + 3 * c₂ ^ 2) := by
+  have h : orbitalDoubleCommutator axis c₁ c₂ =
+      orbitalPolynomial axis c₁ c₂ := by
+    funext k
+    exact orbitalDoubleCommutator_eq_polynomial axis c₁ c₂ k
+  rw [h, sphericalAverage_orbitalPolynomial_eq_cubature,
+    evenQuarticCubature_orbitalPolynomial]
+
 end QuantumTheory.Models.OrbitalRelaxation
