@@ -1,8 +1,5 @@
-import LeanCondensedMatter.Transport.Streda.ConductivityNormalization
 import LeanCondensedMatter.Models.MassiveDirac.Conductivity.Hall.GaussianCrossedBenchmark
-import LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.RealSpaceIntegral
 import LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.ExplicitMoments
-import LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.GreenGeneratorMinors
 import LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.MasslessX
 
 set_option linter.style.header false

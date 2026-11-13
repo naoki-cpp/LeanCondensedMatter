@@ -1,5 +1,3 @@
-import LeanCondensedMatter.Analysis.Operator.FiniteTrace
-import LeanCondensedMatter.Analysis.Dyson.Bounds
 import LeanCondensedMatter.SecondQuantization.Common.Perturbation.ContinuousDyson
 import LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExponential
 import LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonTraceSeries

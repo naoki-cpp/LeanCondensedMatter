@@ -1,8 +1,5 @@
-import LeanCondensedMatter.QuantumTheory.PlanckConstant
-import LeanCondensedMatter.Transport.Analysis.ContinuumMeasure
 import LeanCondensedMatter.Models.MassiveDirac.Conductivity.Hall.NonCrossingDecomposition
 import LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.HallZeroBroadeningProvenance
-import LeanCondensedMatter.Models.MassiveDirac.Disorder.ContinuumMeasurePrefactor
 import Mathlib.Tactic.FieldSimp
 import Mathlib.Tactic.Linarith
 import Mathlib.Tactic.Ring
