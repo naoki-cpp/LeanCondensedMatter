@@ -39,17 +39,17 @@ noncomputable def sphericalAverage (r : ℝ) (f : (Fin 3 → ℝ) → ℝ) : ℝ
 
 private theorem integral_sin_one :
     (∫ θ in (0 : ℝ)..Real.pi, Real.sin θ) = 2 := by
-  simpa using (intervalIntegral.integral_sin_pow_odd (n := 0))
+  simpa using (integral_sin_pow_odd (n := 0))
 
 private theorem integral_sin_three :
     (∫ θ in (0 : ℝ)..Real.pi, Real.sin θ ^ 3) = 4 / 3 := by
-  have h := intervalIntegral.integral_sin_pow_odd (n := 1)
+  have h := integral_sin_pow_odd (n := 1)
   norm_num at h
   simpa using h
 
 private theorem integral_sin_five :
     (∫ θ in (0 : ℝ)..Real.pi, Real.sin θ ^ 5) = 16 / 15 := by
-  have h := intervalIntegral.integral_sin_pow_odd (n := 2)
+  have h := integral_sin_pow_odd (n := 2)
   norm_num at h
   simpa using h
 
@@ -64,10 +64,14 @@ private theorem integral_sin_three_mul_cos_sq :
     rw [hc]
     ring
   simp_rw [hid]
-  rw [intervalIntegral.integral_sub
-    (Real.continuous_sin.pow 3 |>.intervalIntegrable _ _)
-    (Real.continuous_sin.pow 5 |>.intervalIntegrable _ _),
-    integral_sin_three, integral_sin_five]
+  have hsplit :
+      (∫ θ in (0 : ℝ)..Real.pi, Real.sin θ ^ 3 - Real.sin θ ^ 5) =
+        (∫ θ in (0 : ℝ)..Real.pi, Real.sin θ ^ 3) -
+        (∫ θ in (0 : ℝ)..Real.pi, Real.sin θ ^ 5) :=
+    intervalIntegral.integral_sub
+      (Real.continuous_sin.pow 3 |>.intervalIntegrable _ _)
+      (Real.continuous_sin.pow 5 |>.intervalIntegrable _ _)
+  rw [hsplit, integral_sin_three, integral_sin_five]
   ring
 
 private theorem integral_sin_mul_cos_four :
@@ -97,26 +101,26 @@ private theorem integral_sin_mul_cos_four :
 
 private theorem integral_cos_sq_full :
     (∫ φ in (0 : ℝ)..(2 * Real.pi), Real.cos φ ^ 2) = Real.pi := by
-  rw [intervalIntegral.integral_cos_sq]
+  rw [integral_cos_sq]
   simp
   ring
 
 private theorem integral_sin_sq_full :
     (∫ φ in (0 : ℝ)..(2 * Real.pi), Real.sin φ ^ 2) = Real.pi := by
-  rw [intervalIntegral.integral_sin_sq]
+  rw [integral_sin_sq]
   simp
   ring
 
 private theorem integral_cos_four_full :
     (∫ φ in (0 : ℝ)..(2 * Real.pi), Real.cos φ ^ 4) = 3 * Real.pi / 4 := by
-  rw [intervalIntegral.integral_cos_pow (n := 2)]
+  rw [integral_cos_pow (n := 2)]
   rw [integral_cos_sq_full]
   simp
   ring
 
 private theorem integral_sin_four_full :
     (∫ φ in (0 : ℝ)..(2 * Real.pi), Real.sin φ ^ 4) = 3 * Real.pi / 4 := by
-  rw [intervalIntegral.integral_sin_pow (n := 2)]
+  rw [integral_sin_pow (n := 2)]
   rw [integral_sin_sq_full]
   simp
   ring
@@ -124,7 +128,7 @@ private theorem integral_sin_four_full :
 private theorem integral_sin_sq_mul_cos_sq_full :
     (∫ φ in (0 : ℝ)..(2 * Real.pi),
        Real.sin φ ^ 2 * Real.cos φ ^ 2) = Real.pi / 4 := by
-  rw [intervalIntegral.integral_sin_sq_mul_cos_sq]
+  rw [integral_sin_sq_mul_cos_sq]
   simp
   ring
 
@@ -152,7 +156,7 @@ private theorem sphericalAverage_x_four (r : ℝ) :
   rw [intervalIntegral.integral_const_mul, integral_sin_five]
   have hpi : Real.pi ≠ 0 := Real.pi_ne_zero
   field_simp
-  ring
+  all_goals ring
 
 private theorem sphericalAverage_z_four (r : ℝ) :
     sphericalAverage r (fun k => k 2 ^ 4) = r ^ 4 / 5 := by
@@ -174,7 +178,7 @@ private theorem sphericalAverage_z_four (r : ℝ) :
   rw [intervalIntegral.integral_const_mul, integral_sin_mul_cos_four]
   have hpi : Real.pi ≠ 0 := Real.pi_ne_zero
   field_simp
-  ring
+  all_goals ring
 
 
 private theorem sphericalAverage_y_four (r : ℝ) :
@@ -201,7 +205,7 @@ private theorem sphericalAverage_y_four (r : ℝ) :
   rw [intervalIntegral.integral_const_mul, integral_sin_five]
   have hpi : Real.pi ≠ 0 := Real.pi_ne_zero
   field_simp
-  ring
+  all_goals ring
 
 private theorem sphericalAverage_xy (r : ℝ) :
     sphericalAverage r (fun k => k 0 ^ 2 * k 1 ^ 2) = r ^ 4 / 15 := by
@@ -233,7 +237,7 @@ private theorem sphericalAverage_xy (r : ℝ) :
   rw [intervalIntegral.integral_const_mul, integral_sin_five]
   have hpi : Real.pi ≠ 0 := Real.pi_ne_zero
   field_simp
-  ring
+  all_goals ring
 
 private theorem sphericalAverage_xz (r : ℝ) :
     sphericalAverage r (fun k => k 0 ^ 2 * k 2 ^ 2) = r ^ 4 / 15 := by
@@ -266,7 +270,7 @@ private theorem sphericalAverage_xz (r : ℝ) :
   rw [intervalIntegral.integral_const_mul, integral_sin_three_mul_cos_sq]
   have hpi : Real.pi ≠ 0 := Real.pi_ne_zero
   field_simp
-  ring
+  all_goals ring
 
 private theorem sphericalAverage_yz (r : ℝ) :
     sphericalAverage r (fun k => k 1 ^ 2 * k 2 ^ 2) = r ^ 4 / 15 := by
@@ -299,7 +303,7 @@ private theorem sphericalAverage_yz (r : ℝ) :
   rw [intervalIntegral.integral_const_mul, integral_sin_three_mul_cos_sq]
   have hpi : Real.pi ≠ 0 := Real.pi_ne_zero
   field_simp
-  ring
+  all_goals ring
 
 /-- The normalized continuous spherical-coordinate average of each fourth
 Cartesian momentum moment equals the corresponding finite cubature value. -/
@@ -323,11 +327,26 @@ theorem sphericalAverage_coordinate_sq_mul_coordinate_sq (i j : Fin 3)
   · exact (hij rfl).elim
   · exact sphericalAverage_xy r
   · exact sphericalAverage_xz r
-  · simpa only [mul_comm] using (sphericalAverage_xy r)
+  · have hs : (fun k : Fin 3 → ℝ => k 1 ^ 2 * k 0 ^ 2) =
+        (fun k => k 0 ^ 2 * k 1 ^ 2) := by
+      funext k
+      ring
+    rw [hs]
+    exact sphericalAverage_xy r
   · exact (hij rfl).elim
   · exact sphericalAverage_yz r
-  · simpa only [mul_comm] using (sphericalAverage_xz r)
-  · simpa only [mul_comm] using (sphericalAverage_yz r)
+  · have hs : (fun k : Fin 3 → ℝ => k 2 ^ 2 * k 0 ^ 2) =
+        (fun k => k 0 ^ 2 * k 2 ^ 2) := by
+      funext k
+      ring
+    rw [hs]
+    exact sphericalAverage_xz r
+  · have hs : (fun k : Fin 3 → ℝ => k 2 ^ 2 * k 1 ^ 2) =
+        (fun k => k 1 ^ 2 * k 2 ^ 2) := by
+      funext k
+      ring
+    rw [hs]
+    exact sphericalAverage_yz r
   · exact (hij rfl).elim
 
 end QuantumTheory.Models.OrbitalRelaxation
