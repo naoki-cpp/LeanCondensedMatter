@@ -74,13 +74,6 @@ theorem ScalarImpurityParameters.selfEnergy_eq_meanPotential_add_tMatrix_remaind
   unfold ScalarImpurityParameters.selfEnergy
   module
 
-/-- The explicit inverse is also a left inverse of `1 - v_imp G_loop`. -/
-theorem ScalarImpurityParameters.inverseShiftMatrix_mul_shiftMatrix
-    (params : ScalarImpurityParameters) (greenLoop : Matrix2)
-    (hinvertible : IsUnit (params.shiftMatrix greenLoop)) :
-    params.inverseShiftMatrix greenLoop hinvertible * params.shiftMatrix greenLoop = 1 := by
-  simpa [ScalarImpurityParameters.inverseShiftMatrix] using hinvertible.val_inv_mul
-
 /-- In operator norm, the exact T-matrix remainder carries two powers of the impurity strength, up
 to the norm of the supplied Green loop and inverse shift. -/
 theorem ScalarImpurityParameters.norm_matrixOperator_tMatrix_sub_bare_le
@@ -132,24 +125,6 @@ theorem ScalarImpurityParameters.norm_matrixOperator_tMatrix_sub_bare_le
         ‖matrixOperator (params.inverseShiftMatrix greenLoop hinvertible)‖ := by
       rw [ht, norm_smul]
       ring
-
-/-- With a supplied pointwise bound on the operator norm of the inverse shift, the exact remainder
-has an explicit quadratic impurity-strength factor. This does not by itself assert a uniform
-small-impurity estimate, Big-O statement, or limit as the impurity strength tends to zero. -/
-theorem ScalarImpurityParameters.norm_matrixOperator_tMatrix_sub_bare_le_of_inverse_bound
-    (params : ScalarImpurityParameters) (greenLoop : Matrix2)
-    (hinvertible : IsUnit (params.shiftMatrix greenLoop))
-    (inverseBound : ℝ)
-    (hinverse :
-      ‖matrixOperator (params.inverseShiftMatrix greenLoop hinvertible)‖ ≤ inverseBound) :
-    ‖matrixOperator
-        (params.tMatrix greenLoop hinvertible -
-          (((params.impurityStrength : ℝ) : ℂ)) • (1 : Matrix2))‖ ≤
-      ‖((params.impurityStrength : ℝ) : ℂ)‖ ^ 2 * ‖matrixOperator greenLoop‖ *
-        inverseBound := by
-  exact (params.norm_matrixOperator_tMatrix_sub_bare_le greenLoop hinvertible).trans
-    (mul_le_mul_of_nonneg_left hinverse
-      (mul_nonneg (sq_nonneg _) (norm_nonneg _)))
 
 /-- For a fixed Green loop, the scalar-impurity shift is a unit for all impurity strengths
 sufficiently close to zero. This is a family-level statement in the raw scalar strength, so the
@@ -243,9 +218,9 @@ theorem ScalarImpurityParameters.matrixOperator_tMatrix_eq_ringInverse_shift
     exact (isUnit_map_iff φ (params.shiftMatrix greenLoop)).mpr hinvertible
   have hinverse_mul : inverseOp * shiftOp = 1 := by
     dsimp [inverseOp, shiftOp]
-    simpa [matrixOperator, map_mul, map_one] using
-      congrArg matrixOperator
-        (params.inverseShiftMatrix_mul_shiftMatrix greenLoop hinvertible)
+    have h := hinvertible.val_inv_mul
+    simpa [ScalarImpurityParameters.inverseShiftMatrix, matrixOperator, map_mul, map_one] using
+      congrArg matrixOperator h
   have hinverse_eq : inverseOp = Ring.inverse shiftOp := by
     have hmul : shiftOp * Ring.inverse shiftOp = 1 :=
       Ring.mul_inverse_cancel shiftOp hshiftUnit
