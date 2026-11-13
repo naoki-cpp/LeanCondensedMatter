@@ -988,42 +988,6 @@ theorem vacuumFreeExternalInsertionDysonCoefficient_eq_sum_evenPartitionFibers
         π B hBodd ε β g labels times)
 
 open Classical in
-/-- At each fixed perturbation order, the *integrated fermionic Dyson
-amplitude* sum over diagrams respecting a prescribed even external-block
-layout and a fixed family of external field labels is exactly the sum over
-independent block-local labelled Wick diagrams. This is an exact
-finite-dimensional sum reindexing, prior to evaluating the interaction-time
-shuffles or reorganizing the connected partition fibers. -/
-theorem externalInsertionDysonAmplitude_sum_blockRespectingFixedLabels
-    {K n : ℕ} (layout : ExternalInsertionBlockLayout K n)
-    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
-    (labels : Fin (2 * K) → ExternalFieldLabel Mode)
-    (times : Fin (2 * K) → ℝ) :
-    (∑ d : {d : ExternalInsertionWickDiagram Mode K n //
-        (∀ leg,
-          (layout.legEquiv (Finset.univ : Finset (Fin n))
-            (d.pairing.partner leg)).1 =
-          (layout.legEquiv (Finset.univ : Finset (Fin n)) leg).1) ∧
-          d.externalLabel = labels},
-        d.1.dysonAmplitude ε β g times) =
-      ∑ F : {F : ∀ B : layout.partition.parts,
-          ExternalInsertionDiagram (ExternalFieldLabel Mode)
-            (QuarticVertexLabel Mode)
-            ((B : Finset (Fin (2 * K))).card / 2) n
-            (layout.interactionBlock (Finset.univ : Finset (Fin n)) B) //
-          ∀ B, (F B).externalLabel =
-            fun i => labels (layout.sourceEquiv.symm ⟨B, i⟩)},
-        ExternalInsertionWickDiagram.dysonAmplitude
-          (layout.assembleDiagram (Finset.univ : Finset (Fin n)) F.1)
-          ε β g times := by
-  simpa only [layout.assemblyEquivBlockRespectingFixedLabels_apply] using
-    (Equiv.sum_comp
-      (layout.assemblyEquivBlockRespectingFixedLabels
-        (InternalLabel := QuarticVertexLabel Mode)
-        (Finset.univ : Finset (Fin n)) labels)
-      (fun d => ExternalInsertionWickDiagram.dysonAmplitude d.1 ε β g times)).symm
-
-open Classical in
 /-- The actual order-`n` vacuum-free Dyson coefficient, with the external
 field labels fixed, is an explicit finite sum over all independent
 preconnected local external-block diagrams and their interaction-vertex
