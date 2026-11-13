@@ -677,45 +677,18 @@ theorem ExternalInsertionBlockLayout.sum_signedDysonShuffleOrbits_eq_prod_connec
     simpa only [weight] using
       (ExternalInsertionBlockLayout.assembleConnectedBlocks_signedDysonShuffleOrbit_eq_subsetTimes
         layout F.1 F.2 ε β g times)
-  change
-    (∑ F : layout.ConnectedBlockFamily
-        (ExternalLabel := ExternalFieldLabel Mode)
-        (InternalLabel := QuarticVertexLabel Mode),
-      if ∀ B, condition B (F.1 B) then
-        (let d : ExternalInsertionWickDiagram Mode E n :=
-          layout.assembleDiagram (Finset.univ : Finset (Fin n)) F.1
-        ∑ shuffle : d.ComponentInteractionOrderShuffle,
-          d.orderedDysonAmplitude ε β g times
-            (d.assembleInteractionOrder d.canonicalComponentInteractionOrders shuffle))
-      else 0) =
-      externalPartitionSourceSign layout.partition *
-        ∏ B : layout.partition.parts,
-          ∑ d : {d : ExternalInsertionDiagram
-              (ExternalFieldLabel Mode) (QuarticVertexLabel Mode)
-              ((B : Finset (Fin (2 * E))).card / 2) n
-              (layout.interactionBlock (Finset.univ : Finset (Fin n)) B) //
-                d.vertexGraph.Preconnected},
-            if condition B d.1 then weight B d.1 else 0
   calc
     _ = ∑ F : layout.ConnectedBlockFamily
         (ExternalLabel := ExternalFieldLabel Mode)
         (InternalLabel := QuarticVertexLabel Mode),
-      if ∀ B, condition B (F.1 B) then
-        externalPartitionSourceSign layout.partition *
-          ∏ B, weight B (F.1 B)
-      else 0 := by
-        apply Finset.sum_congr rfl
-        intro F _
-        by_cases h : ∀ B, condition B (F.1 B)
-        · simpa [h] using horbit F
-        · have hnot :
-            ¬ ∀ (a : Finset (Fin (2 * E))) (ha : a ∈ layout.partition.parts),
-                condition ⟨a, ha⟩ (F.1 ⟨a, ha⟩) := by
-              intro hall
-              apply h
-              intro B
-              exact hall B.1 B.2
-          simp [hnot]
+        if ∀ B, condition B (F.1 B) then
+          externalPartitionSourceSign layout.partition * ∏ B, weight B (F.1 B)
+        else 0 := by
+      apply Finset.sum_congr rfl
+      intro F _
+      by_cases h : ∀ B, condition B (F.1 B)
+      · simpa only [condition, h, ↓reduceIte, weight] using horbit F
+      · simp only [condition, h, ↓reduceIte]
     _ = externalPartitionSourceSign layout.partition *
         ∑ F : layout.ConnectedBlockFamily
           (ExternalLabel := ExternalFieldLabel Mode)
@@ -723,10 +696,10 @@ theorem ExternalInsertionBlockLayout.sum_signedDysonShuffleOrbits_eq_prod_connec
           if ∀ B, condition B (F.1 B) then
             ∏ B, weight B (F.1 B)
           else 0 := by
-        rw [Finset.mul_sum]
-        apply Finset.sum_congr rfl
-        intro F _
-        split_ifs <;> simp
+      rw [Finset.mul_sum]
+      apply Finset.sum_congr rfl
+      intro F _
+      split_ifs <;> simp
     _ = _ := by
       simpa only [condition, weight] using
         (congrArg (fun z : ℂ => externalPartitionSourceSign layout.partition * z)
