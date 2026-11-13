@@ -942,7 +942,6 @@ theorem vacuumFreeExternalInsertionDysonCoefficient_eq_sum_evenPartitionFibers
         π B hBodd ε β g labels times)
 
 open Classical in
-open Classical in
 /-- The actual order-`n` vacuum-free Dyson coefficient, with the external
 field labels fixed, is an explicit finite sum over all independent
 preconnected local external-block diagrams and their interaction-vertex
@@ -1496,20 +1495,9 @@ private theorem odd_externalSubset_has_odd_partition_block
     intro B hB
     by_contra hBodd
     exact h ⟨B, hB, hBodd⟩
-  have hsum : ∀ T : Finset (Finset (Fin (2 * E))),
-      T ⊆ π.parts → Even (∑ B ∈ T, B.card) := by
-    intro T
-    induction T using Finset.induction_on with
-    | empty =>
-        intro _
-        simp
-    | @insert B T hBT ih =>
-        intro hsub
-        rw [Finset.sum_insert hBT]
-        apply Even.add
-        · exact hall B (hsub (Finset.mem_insert_self B T))
-        · exact ih (Finset.Subset.trans (Finset.subset_insert B T) hsub)
-  have hπ := hsum π.parts (Finset.Subset.refl _)
+  have hπ : Even (∑ B ∈ π.parts, B.card) :=
+    Finset.sum_induction (s := π.parts) (fun B => B.card) Even
+      (fun _ _ ha hb => ha.add hb) (by simp) (fun B hB => hall B hB)
   exact hodd (by simpa only [π.sum_card_parts] using hπ)
 
 /-- The signed connected-partition expression respects fermion parity:
