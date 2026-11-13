@@ -17,6 +17,7 @@ namespace SecondQuantization
 namespace Common
 
 open Combinatorics
+open scoped BigOperators
 
 variable {ExternalLabel InternalLabel : Type*} {E N M : ℕ}
   {T : Finset (Fin N)} {U : Finset (Fin M)}
@@ -137,6 +138,32 @@ noncomputable def ExternalInsertionDiagram.preconnectedSlotCongrEquiv
   Equiv.subtypeEquiv
     (ExternalInsertionDiagram.slotCongrEquiv (E := E) e)
     (fun d => (d.slotCongr_preconnected_iff (M := M) e).symm)
+
+open Classical in
+/-- Finite sums over preconnected Wick diagrams are invariant under
+bijective interaction-slot relabeling, provided the diagram weight is
+transported together with the diagram. This is the exact algebraic
+sum-reindexing needed to compare different physical interaction-owner
+fibers after canonical local standardization. It does not assume
+invariance of the ordered Dyson integrand under a nonmonotone
+interaction permutation. -/
+theorem ExternalInsertionDiagram.sum_preconnectedSlotCongr
+    [Fintype ExternalLabel] [Fintype InternalLabel]
+    {R : Type*} [AddCommMonoid R]
+    (e : ↥T ≃ ↥U)
+    (weight : ExternalInsertionDiagram ExternalLabel InternalLabel E M U → R) :
+    (∑ d : {d : ExternalInsertionDiagram ExternalLabel InternalLabel E N T //
+        d.vertexGraph.Preconnected}, weight (d.1.slotCongr e)) =
+      ∑ d : {d : ExternalInsertionDiagram ExternalLabel InternalLabel E M U //
+        d.vertexGraph.Preconnected}, weight d.1 := by
+  classical
+  let φ := ExternalInsertionDiagram.preconnectedSlotCongrEquiv
+    (E := E) (ExternalLabel := ExternalLabel) (InternalLabel := InternalLabel) e
+  change (∑ d : {d : ExternalInsertionDiagram ExternalLabel InternalLabel E N T //
+      d.vertexGraph.Preconnected}, weight (φ d).1) =
+    ∑ d : {d : ExternalInsertionDiagram ExternalLabel InternalLabel E M U //
+      d.vertexGraph.Preconnected}, weight d.1
+  exact (Equiv.sum_comp φ (fun d => weight d.1)).symm
 
 end Common
 end SecondQuantization
