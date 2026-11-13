@@ -1,4 +1,3 @@
-import LeanCondensedMatter.Models.MassiveDirac.Model.OperatorSpectral
 import LeanCondensedMatter.Models.MassiveDirac.Model.Berry.Bridge
 import LeanCondensedMatter.Transport.Streda.FiniteProjectorBastin
 

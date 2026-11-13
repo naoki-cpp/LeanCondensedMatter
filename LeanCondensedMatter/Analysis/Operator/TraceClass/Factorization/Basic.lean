@@ -1,6 +1,5 @@
 import LeanCondensedMatter.Analysis.Operator.TraceClass.General
 import LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.Norm
-import LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.InnerProduct
 import LeanCondensedMatter.Analysis.Operator.Polar
 
 set_option linter.style.header false
