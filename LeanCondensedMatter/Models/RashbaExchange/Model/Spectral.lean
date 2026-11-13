@@ -164,28 +164,14 @@ theorem hamiltonian_mul_bandProjector
     hamiltonian params px py * bandProjector params band px py =
       (((bandEnergy params band px py : ℝ) : ℂ)) •
         bandProjector params band px py := by
-  let Q := normalizedSpinHamiltonian params px py
-  let s : ℂ := ((bandSign band : ℝ) : ℂ)
-  let ε : ℂ := ((kineticEnergy params px py : ℝ) : ℂ)
-  let E : ℂ := ((spinOrbitEnergy params px py : ℝ) : ℂ)
-  have hQ : Q * Q = 1 := by
-    simpa [Q] using normalizedSpinHamiltonian_mul_self params px py hE
-  have hs : s ^ 2 = 1 := by
-    cases band <;> norm_num [s, bandSign]
-  have hSpin : spinHamiltonian params px py = E • Q := by
-    exact (smul_inv_smul₀ (show (((spinOrbitEnergy params px py : ℝ) : ℂ)) ≠ 0 from
-      by exact_mod_cast hE) (spinHamiltonian params px py)).symm
-  have hH :
-      hamiltonian params px py = ε • (1 : InternalSpace.PauliMatrix) + E • Q := by
-    rw [hamiltonian_eq_kinetic_add_spinHamiltonian, hSpin]
-  have hEnergy :
-      (((bandEnergy params band px py : ℝ) : ℂ)) = ε + s * E := by
-    simp [bandEnergy, ε, s, E]
-  simp only [bandProjector_eq_normalized]
-  rw [hH, hEnergy]
-  rw [add_mul, smul_mul_assoc, one_mul, smul_mul_assoc, mul_smul_comm]
-  rw [InternalSpace.involution_mul_one_add Q hQ s hs]
-  module
+  have h := InternalSpace.quadratic_shift_mul_projector
+    (spinHamiltonian params px py) (((spinOrbitEnergy params px py : ℝ) : ℂ))
+    (((kineticEnergy params px py : ℝ) : ℂ)) (((bandSign band : ℝ) : ℂ))
+    (by exact_mod_cast hE)
+    (by simpa only [← spinOrbitEnergy_sq, Complex.ofReal_pow] using
+      spinHamiltonian_mul_self params px py)
+    (by cases band <;> norm_num [bandSign])
+  simpa [hamiltonian_eq_kinetic_add_spinHamiltonian, bandProjector, bandEnergy] using h
 
 /-- Away from the spin-orbit degeneracy, the matrix band projectors are
 a complete orthogonal family. Completeness alone remains valid at zero energy. -/
