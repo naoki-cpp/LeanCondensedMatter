@@ -2466,6 +2466,62 @@ theorem ExternalInsertionBlockLayout.sum_connectedBlockFamilies_prod
             (layout.interactionBlock (Finset.univ : Finset (Fin N)) B) //
               d.vertexGraph.Preconnected}) => weight B d.1)).symm
 
+/-- Independent connected diagrams can be summed separately even after
+restricting each block by a local predicate. A simultaneous family
+predicate is exactly the product of the blockwise indicators, so no
+physical diagram or zero-interaction block is counted twice. -/
+theorem ExternalInsertionBlockLayout.sum_connectedBlockFamilies_prod_if
+    {ExternalLabel InternalLabel M : Type*}
+    [Fintype ExternalLabel] [Fintype InternalLabel] [CommSemiring M]
+    (layout : ExternalInsertionBlockLayout E N)
+    (condition : ∀ B : layout.partition.parts,
+      ExternalInsertionDiagram ExternalLabel InternalLabel
+        ((B : Finset (Fin (2 * E))).card / 2) N
+        (layout.interactionBlock (Finset.univ : Finset (Fin N)) B) → Prop)
+    (weight : ∀ B : layout.partition.parts,
+      ExternalInsertionDiagram ExternalLabel InternalLabel
+        ((B : Finset (Fin (2 * E))).card / 2) N
+        (layout.interactionBlock (Finset.univ : Finset (Fin N)) B) → M) :
+    (∑ F : layout.ConnectedBlockFamily (ExternalLabel := ExternalLabel)
+        (InternalLabel := InternalLabel),
+      if ∀ B, condition B (F.1 B) then
+        ∏ B, weight B (F.1 B)
+      else 0) =
+      ∏ B : layout.partition.parts,
+        ∑ d : {d : ExternalInsertionDiagram ExternalLabel InternalLabel
+            ((B : Finset (Fin (2 * E))).card / 2) N
+            (layout.interactionBlock (Finset.univ : Finset (Fin N)) B) //
+              d.vertexGraph.Preconnected},
+          if condition B d.1 then weight B d.1 else 0 := by
+  classical
+  have hindicator
+      (F : layout.ConnectedBlockFamily (ExternalLabel := ExternalLabel)
+        (InternalLabel := InternalLabel)) :
+      (if ∀ B, condition B (F.1 B) then
+        ∏ B, weight B (F.1 B)
+      else 0) =
+        ∏ B, if condition B (F.1 B) then weight B (F.1 B) else 0 := by
+    by_cases h : ∀ B, condition B (F.1 B)
+    · simp [h]
+    · obtain ⟨B, hB⟩ := not_forall.mp h
+      rw [if_neg h]
+      symm
+      exact Finset.prod_eq_zero (Finset.mem_univ B) (by simp [hB])
+  calc
+    (∑ F : layout.ConnectedBlockFamily (ExternalLabel := ExternalLabel)
+        (InternalLabel := InternalLabel),
+      if ∀ B, condition B (F.1 B) then
+        ∏ B, weight B (F.1 B)
+      else 0) =
+      ∑ F : layout.ConnectedBlockFamily (ExternalLabel := ExternalLabel)
+        (InternalLabel := InternalLabel),
+        ∏ B, if condition B (F.1 B) then weight B (F.1 B) else 0 := by
+      apply Finset.sum_congr rfl
+      intro F _
+      exact hindicator F
+    _ = _ := layout.sum_connectedBlockFamilies_prod
+      (fun B d => if condition B d then weight B d else 0)
+
 /-- Assemble a dependent family of connected external blocks into its
 vacuum-free labelled physical diagram. -/
 noncomputable def ExternalInsertionBlockLayout.assembleConnectedBlockFamily
