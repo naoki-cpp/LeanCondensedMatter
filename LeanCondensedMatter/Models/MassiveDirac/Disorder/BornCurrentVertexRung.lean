@@ -1,7 +1,5 @@
-import LeanCondensedMatter.Transport.Analysis.ContinuumMeasure
 import LeanCondensedMatter.Analysis.Lorentzian.RadialQuadratic
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.BornPropagator
-import LeanCondensedMatter.Models.MassiveDirac.Disorder.ContinuumMeasurePrefactor
 import LeanCondensedMatter.Models.MassiveDirac.Vertex.PauliRung
 import Mathlib.Tactic.FieldSimp
 import Mathlib.Tactic.Linarith

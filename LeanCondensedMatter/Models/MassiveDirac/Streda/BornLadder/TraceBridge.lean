@@ -1,7 +1,4 @@
-import LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornPropagator
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexResponse
-import LeanCondensedMatter.Models.MassiveDirac.Model.Operator
-import LeanCondensedMatter.Models.MassiveDirac.Propagator.Basic
 import LeanCondensedMatter.Transport.Streda.RetardedAdvanced
 
 set_option linter.style.header false

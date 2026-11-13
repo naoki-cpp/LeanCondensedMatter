@@ -1,6 +1,4 @@
-import LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertex
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexZeroBroadeningIntegral
-import LeanCondensedMatter.Models.MassiveDirac.TransportDomain
 
 set_option linter.style.header false
 
