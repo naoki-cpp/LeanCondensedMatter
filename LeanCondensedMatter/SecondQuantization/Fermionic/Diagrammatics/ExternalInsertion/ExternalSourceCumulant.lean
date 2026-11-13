@@ -39,6 +39,39 @@ private theorem externalPartition_part_ssubset_of_ne_top
     exact hne (le_antisymm le_top htopLe)
   exact Finset.ssubset_iff_subset_ne.mpr ⟨hsubset, hproper⟩
 
+/-- If every proper source subset has zero connected contribution, the
+signed partition-moment sum on a nonempty source set reduces to its single
+connected block. This uses the actual source sign of the top partition,
+not an unsigned cumulant identity. -/
+theorem externalPartitionWeightedMoment_eq_of_proper_zero
+    (κ : Finset (Fin (2 * E)) → PowerSeries ℂ)
+    (S : Finset (Fin (2 * E))) (hS : S ≠ ∅)
+    (hzero : ∀ B : Finset (Fin (2 * E)), B ⊂ S → κ B = 0) :
+    Finpartition.weightedMomentFromCumulant
+        (fun _ π => PowerSeries.C (externalPartitionSourceSign π)) κ S = κ S := by
+  classical
+  unfold Finpartition.weightedMomentFromCumulant
+  rw [← Finset.sum_erase_add Finset.univ
+    (fun π : Finpartition S =>
+      PowerSeries.C (externalPartitionSourceSign π) *
+        Finpartition.partitionProduct κ π) (Finset.mem_univ ⊤)]
+  have hrest :
+      (∑ π ∈ (Finset.univ : Finset (Finpartition S)).erase ⊤,
+        PowerSeries.C (externalPartitionSourceSign π) *
+          Finpartition.partitionProduct κ π) = 0 := by
+    apply Finset.sum_eq_zero
+    intro π hπ
+    obtain ⟨B, hB⟩ := (Finpartition.parts_nonempty_iff (P := π)).2 hS
+    have hproper : B ⊂ S :=
+      externalPartition_part_ssubset_of_ne_top π (Finset.mem_erase.mp hπ).1 hB
+    have hprod : Finpartition.partitionProduct κ π = 0 := by
+      unfold Finpartition.partitionProduct
+      exact Finset.prod_eq_zero hB (hzero B hproper)
+    rw [hprod, mul_zero]
+  rw [hrest, externalPartitionSourceSign_top,
+    Finpartition.partitionProduct_top hS]
+  simp
+
 /-- The signed external-source moment transform is injective on normalized
 connected-block functions (whose empty-set values agree). In particular,
 there is no ambiguity in defining connected source cumulants from physical
