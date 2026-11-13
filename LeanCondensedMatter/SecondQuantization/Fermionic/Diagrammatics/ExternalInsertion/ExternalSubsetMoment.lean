@@ -686,9 +686,7 @@ theorem ExternalInsertionBlockLayout.sum_signedDysonShuffleOrbits_eq_prod_connec
         else 0 := by
       apply Finset.sum_congr rfl
       intro F _
-      by_cases h : ∀ B, condition B (F.1 B)
-      · simpa only [h, ↓reduceIte, weight] using horbit F
-      · simp only [h, ↓reduceIte]
+      exact if_congr Iff.rfl (horbit F) rfl
     _ = externalPartitionSourceSign layout.partition *
         ∑ F : layout.ConnectedBlockFamily
           (ExternalLabel := ExternalFieldLabel Mode)
