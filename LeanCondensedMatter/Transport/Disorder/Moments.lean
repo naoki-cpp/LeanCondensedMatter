@@ -1,6 +1,7 @@
 import LeanCondensedMatter.Transport.Disorder.Finite
 import Mathlib.Algebra.Star.BigOperators
 import Mathlib.Analysis.Normed.Operator.Mul
+import Mathlib.Analysis.InnerProductSpace.Positive
 
 set_option linter.style.header false
 
@@ -19,7 +20,7 @@ No resolvent, Born closure, self-consistency, or thermodynamic-limit structure i
 namespace QuantumTheory
 namespace Transport
 
-open scoped BigOperators
+open scoped BigOperators ComplexOrder
 
 noncomputable section
 
@@ -111,6 +112,53 @@ theorem exactSecondMoment_star
   apply Finset.sum_congr rfl
   intro ω _
   simp [star_mul, (ensemble.impurityPotential ω).2.star_eq, mul_assoc]
+
+/-- The finite disorder second-moment map preserves positivity: each self-adjoint
+impurity potential conjugates a positive kernel, and the nonnegative ensemble
+weights preserve positivity under finite summation. -/
+theorem exactSecondMoment_isPositive
+    (kernel : H →L[ℂ] H) (hkernel : kernel.IsPositive) :
+    (ensemble.exactSecondMoment kernel).IsPositive := by
+  rw [ensemble.exactSecondMoment_eq_operatorAverage]
+  unfold operatorAverage
+  apply ContinuousLinearMap.isPositive_sum Finset.univ
+  intro ω _
+  have hconj : (((ensemble.impurityPotential ω).1 * kernel) *
+      (ensemble.impurityPotential ω).1).IsPositive := by
+    simpa only [← ContinuousLinearMap.mul_def,
+      (ensemble.impurityPotential ω).2.adjoint_eq] using
+        hkernel.adjoint_conj (ensemble.impurityPotential ω).1
+  have hweight : (0 : ℂ) ≤ (ensemble.probability ω : ℂ) :=
+    Complex.real_le_real.mpr (ensemble.probability_nonneg ω)
+  exact hconj.smul_of_nonneg hweight
+
+/-- The second-moment map also preserves the operator-valued dissipative spectral
+sign, represented by the positive Hermitian operator `iγ(X - X†)`.
+This is conditional on the supplied kernel's sign; it does not establish
+causality or existence for an arbitrary nonlinear SCBA fixed point. -/
+theorem exactSecondMoment_preserves_regulator_dissipation
+    (kernel : H →L[ℂ] H) (regulator : ℝ)
+    (hkernel : ((((regulator : ℂ) * Complex.I) •
+      (kernel - star kernel))).IsPositive) :
+    ((((regulator : ℂ) * Complex.I) •
+      (ensemble.exactSecondMoment kernel - star (ensemble.exactSecondMoment kernel)))).IsPositive := by
+  have hlinear :
+      ensemble.exactSecondMoment
+          (((regulator : ℂ) * Complex.I) • (kernel - star kernel)) =
+        ((regulator : ℂ) * Complex.I) •
+          (ensemble.exactSecondMoment kernel - star (ensemble.exactSecondMoment kernel)) := by
+    calc
+      ensemble.exactSecondMoment
+          (((regulator : ℂ) * Complex.I) • (kernel - star kernel)) =
+          ((regulator : ℂ) * Complex.I) •
+            ensemble.exactSecondMoment (kernel - star kernel) := by
+        simp only [exactSecondMoment, map_smul]
+      _ = ((regulator : ℂ) * Complex.I) •
+          (ensemble.exactSecondMoment kernel - ensemble.exactSecondMoment (star kernel)) := by
+        rw [ensemble.exactSecondMoment_sub]
+      _ = _ := by rw [ensemble.exactSecondMoment_star]
+  rw [← hlinear]
+  exact ensemble.exactSecondMoment_isPositive _ hkernel
 
 /-- Right equivariance of the exact second moment. If every impurity potential commutes with a
 bounded operator, that operator can be moved through the right side of the second-moment action. -/
