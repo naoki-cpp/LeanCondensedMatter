@@ -2312,6 +2312,33 @@ theorem ExternalInsertionBlockLayout.interactionAssignmentShuffle_reassembles
       ((Finset.univ : Finset (Fin N)).orderIsoOfFin rfl).toEquiv := by
   exact layout.interactionOrderDecompositionEquiv.symm_apply_apply _
 
+/-- The canonical interaction-assignment shuffle remembers the *actual*
+physical owner of each ambient Dyson slot. In particular, the owner
+read from its inverse shuffle is precisely the owner of the vertex
+enumerated at that slot by the increasing ambient order. This rules out
+silently replacing physical owner assignments by unrelated component
+interleavings when connecting the Dyson coefficient to a shuffle orbit. -/
+theorem ExternalInsertionBlockLayout.interactionAssignmentShuffle_owner
+    (layout : ExternalInsertionBlockLayout E N)
+    (v : Fin (Finset.univ : Finset (Fin N)).card) :
+    (layout.interactionAssignmentShuffle.slotEquiv.symm v).1 =
+      layout.interactionOwner
+        (((Finset.univ : Finset (Fin N)).orderIsoOfFin rfl).toEquiv v).1 := by
+  classical
+  let canonical : QuarticVertexOrder (Finset.univ : Finset (Fin N)) :=
+    ((Finset.univ : Finset (Fin N)).orderIsoOfFin rfl).toEquiv
+  let σ := layout.interactionAssignmentShuffle
+  obtain ⟨B, j⟩ : (Σ B : layout.partition.parts,
+      Fin (layout.interactionBlock (Finset.univ : Finset (Fin N)) B).card) :=
+    σ.slotEquiv.symm v
+  have h := layout.interactionOrderDecomposition_slot_owner canonical B j
+  change layout.interactionOwner (canonical (σ.slotEquiv ⟨B, j⟩)).1 = B at h
+  have hv : σ.slotEquiv ⟨B, j⟩ = v := by
+    simpa only [σ] using
+      (σ.slotEquiv.apply_symm_apply v)
+  rw [hv] at h
+  exact h.symm
+
 /-- Two external block layouts are equal if their source partitions and
 underlying interaction-owner blocks coincide. The evenness witnesses are
 propositions, so they carry no additional data. -/
