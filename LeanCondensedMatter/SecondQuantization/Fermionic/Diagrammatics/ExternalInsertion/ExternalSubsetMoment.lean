@@ -1528,6 +1528,67 @@ theorem externalSubsetMomentSeries_eq_signedConnected_of_nonempty_even
         externalSubsetSignedConnectedMomentSeries_eq_zero_of_odd
           ε β g labels times S hParity]
 
+/-- The *physical* signed external-source moment identity holds
+unconditionally for two external fermion insertions. A nonempty even
+subset of two slots has cardinality two, and every proper nonempty
+subset is odd. The only surviving term is therefore the connected
+top-partition term, which equals the vacuum-free Dyson series by the
+actual two-insertion graph theorem. -/
+theorem externalSubsetMomentSeries_eq_signedConnected_two
+    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
+    (labels : Fin 2 → ExternalFieldLabel Mode)
+    (times : Fin 2 → ℝ) :
+    ∀ S : Finset (Fin 2),
+      externalSubsetMomentSeries ε β g labels times S =
+        externalSubsetSignedConnectedMomentSeries ε β g labels times S := by
+  classical
+  intro S
+  by_cases hEmpty : S = ∅
+  · subst S
+    simp
+  · by_cases hEven : Even S.card
+    · have hcard : S.card = 2 := by
+        have hpos : 0 < S.card :=
+          Finset.card_pos.mpr (Finset.nonempty_iff_ne_empty.mpr hEmpty)
+        have hle : S.card ≤ 2 := by
+          simpa using (Finset.card_le_card (Finset.subset_univ S))
+        rcases hEven with ⟨k, hk⟩
+        omega
+      have hproper :
+          ∀ B : Finset (Fin 2), B ⊂ S →
+            externalSubsetConnectedDiagramSeries ε β g labels times B = 0 := by
+        intro B hB
+        by_cases hBempty : B = ∅
+        · simp [hBempty]
+        · have hpos : 0 < B.card :=
+            Finset.card_pos.mpr (Finset.nonempty_iff_ne_empty.mpr hBempty)
+          have hlt : B.card < S.card := Finset.card_lt_card hB
+          have hBcard : B.card = 1 := by omega
+          exact (externalSubsetSeries_eq_zero_of_odd
+            ε β g labels times B (by simp [hBcard])).2
+      have hweighted :
+          externalSubsetSignedConnectedMomentSeries ε β g labels times S =
+            externalSubsetConnectedDiagramSeries ε β g labels times S := by
+        unfold externalSubsetSignedConnectedMomentSeries
+        exact externalPartitionWeightedMoment_eq_of_proper_zero
+          (externalSubsetConnectedDiagramSeries ε β g labels times)
+          S hEmpty hproper
+      have hphysical :
+          externalSubsetMomentSeries ε β g labels times S =
+            externalSubsetConnectedDiagramSeries ε β g labels times S := by
+        simp only [externalSubsetMomentSeries, externalSubsetConnectedDiagramSeries,
+          hEmpty, hEven, dif_neg, dif_pos]
+        have hhalf : S.card / 2 = 1 := by omega
+        cases hhalf
+        exact vacuumFreeExternalInsertionDysonSeries_eq_connected_two
+          ε β g (evenExternalSubsetLabels labels S hEven)
+          (evenExternalSubsetTimes times S hEven)
+      exact hphysical.trans hweighted.symm
+    · rw [(externalSubsetSeries_eq_zero_of_odd
+        ε β g labels times S hEven).1,
+        externalSubsetSignedConnectedMomentSeries_eq_zero_of_odd
+          ε β g labels times S hEven]
+
 /-- The precise remaining physical bridge for Phase 5: once the actual
 vacuum-normalized Wick/Dyson moments satisfy the signed external-partition
 identity, the recursively defined fermionic *source cumulant* is the fully
@@ -1551,6 +1612,23 @@ theorem externalSubsetSourceCumulantSeries_eq_connectedDiagramSeries_of_signedMo
   · intro S
     exact (externalSubsetSourceCumulantSeries_reconstruct
       (externalSubsetMomentSeries ε β g labels times) (by simp) S).trans (hDiagram S)
+
+
+/-- The actual two-insertion source cumulant equals the fully
+externally connected physical Dyson series at all perturbative
+orders, with no signed-moment hypothesis. This is the two-insertion
+specialization; higher external sectors still need the shuffle
+covariance theorem. -/
+theorem externalSubsetSourceCumulantSeries_eq_connectedDiagramSeries_two
+    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
+    (labels : Fin 2 → ExternalFieldLabel Mode)
+    (times : Fin 2 → ℝ) :
+    externalSubsetSourceCumulantSeries
+        (externalSubsetMomentSeries ε β g labels times) =
+      externalSubsetConnectedDiagramSeries ε β g labels times := by
+  exact externalSubsetSourceCumulantSeries_eq_connectedDiagramSeries_of_signedMoments
+    ε β g labels times
+    (externalSubsetMomentSeries_eq_signedConnected_two ε β g labels times)
 
 
 end Fermionic
