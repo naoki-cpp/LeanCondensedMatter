@@ -143,7 +143,17 @@ import LeanCondensedMatter.SecondQuantization.Fermionic.Transport
 ```
 
 Implementation modules should still import the narrowest leaf modules they use; umbrellas are public
-package boundaries and navigation surfaces, not a reason to widen internal dependencies. When a file
+package boundaries and navigation surfaces, not a reason to widen internal dependencies.
+In particular, `SecondQuantization.Common.Thermal` is the broad public bundle
+for algebraic trace adapters, canonical/grand-canonical compatibility,
+completed-space response, and Bloch–de Dominicis results. Its explicit
+`QuantumTheory.Gibbs.Eigenbasis` import documents the generic Gibbs owner:
+the Common thermal layer consumes that API rather than defining a competing
+density-state model. Prefer `Common.Thermal.GibbsExpectation`,
+`Common.Thermal.FiniteGibbsExpectationBridge`,
+`Common.Thermal.CompletedResponse`, or `Common.Thermal.BlochDeDominicis`
+for narrower clients. Removing existing exports from the broad umbrella
+would be an API-breaking change and is not part of this cleanup. When a file
 sharing a directory name is itself a semantic base imported by descendants, it remains that base
 rather than being turned into an aggregator that would create an import cycle.
 

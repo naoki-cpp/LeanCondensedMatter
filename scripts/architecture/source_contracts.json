@@ -19,6 +19,10 @@
       ]
     },
     {
+      "id": "quantumTheoryPOVMEntryPoint",
+      "paths": ["LeanCondensedMatter/QuantumTheory/POVM.lean"]
+    },
+    {
       "id": "finiteTraceAnalysisOwner",
       "paths": [
         "LeanCondensedMatter/Analysis/Operator/FiniteTrace.lean"
@@ -218,17 +222,27 @@
   ],
   "requiredImports": [
     {
+      "id": "quantumTheoryPOVMExports",
+      "path": "LeanCondensedMatter/QuantumTheory/POVM.lean",
+      "modules": [
+        "LeanCondensedMatter.QuantumTheory.POVM.Basic",
+        "LeanCondensedMatter.QuantumTheory.POVM.Born"
+      ]
+    },
+    {
       "id": "quantumTheoryDensityUmbrella",
       "path": "LeanCondensedMatter/QuantumTheory/DensityOperator.lean",
       "modules": [
-        "LeanCondensedMatter.QuantumTheory.DensityOperator.DiagonalFormula"
+        "LeanCondensedMatter.QuantumTheory.DensityOperator.DiagonalFormula",
+        "LeanCondensedMatter.QuantumTheory.POVM"
       ]
     },
     {
       "id": "quantumTheoryPublicUmbrella",
       "path": "LeanCondensedMatter/QuantumTheory.lean",
       "modules": [
-        "LeanCondensedMatter.QuantumTheory.LinearResponse"
+        "LeanCondensedMatter.QuantumTheory.LinearResponse",
+        "LeanCondensedMatter.QuantumTheory.POVM"
       ]
     },
     {

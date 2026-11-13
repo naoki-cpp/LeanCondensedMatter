@@ -48,7 +48,14 @@ Canonical ownership is feature-based:
 - `QuantumTheory/Gibbs/` owns bounded Gibbs states, energy and free-energy results, entropy,
   equality/minimizer uniqueness, diagonal formulas, and pure-point Gibbs constructions.
 
-`QuantumTheory/DensityOperator.lean` and `QuantumTheory/Entropy.lean` are public umbrella modules.
+`QuantumTheory/DensityOperator.lean`, `QuantumTheory/POVM.lean`, and
+`QuantumTheory/Entropy.lean` are public umbrella modules. Measurement-specific
+consumers can import the narrow `QuantumTheory.POVM` entry point. For
+backward compatibility, `QuantumTheory.DensityOperator` still re-exports the
+POVM umbrella; `QuantumTheory` imports both entries explicitly. This compatibility
+surface must not be misread as ownership of POVM declarations by `DensityOperator`.
+Implementation files should import the actual owner leaf (`POVM.Basic`,
+`POVM.Born`, or a `DensityOperator` leaf) rather than either umbrella.
 Finite-dimensional specializations remain with the feature they specialize rather than forming a
 parallel finite-dimensional state hierarchy.
 
