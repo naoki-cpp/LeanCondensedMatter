@@ -59,7 +59,10 @@ private theorem integral_sin_three_mul_cos_sq :
   have hid (θ : ℝ) :
       Real.sin θ ^ 3 * Real.cos θ ^ 2 =
         Real.sin θ ^ 3 - Real.sin θ ^ 5 := by
-    nlinarith [Real.sin_sq_add_cos_sq θ]
+    have hc : Real.cos θ ^ 2 = 1 - Real.sin θ ^ 2 := by
+      nlinarith [Real.sin_sq_add_cos_sq θ]
+    rw [hc]
+    ring
   simp_rw [hid]
   rw [intervalIntegral.integral_sub
     (Real.continuous_sin.pow 3 |>.intervalIntegrable _ _)
@@ -73,7 +76,12 @@ private theorem integral_sin_mul_cos_four :
   have hid (θ : ℝ) :
       Real.sin θ * Real.cos θ ^ 4 =
         Real.sin θ - 2 * Real.sin θ ^ 3 + Real.sin θ ^ 5 := by
-    nlinarith [Real.sin_sq_add_cos_sq θ]
+    have hc : Real.cos θ ^ 2 = 1 - Real.sin θ ^ 2 := by
+      nlinarith [Real.sin_sq_add_cos_sq θ]
+    calc
+      _ = Real.sin θ * (Real.cos θ ^ 2) ^ 2 := by ring
+      _ = Real.sin θ * (1 - Real.sin θ ^ 2) ^ 2 := by rw [hc]
+      _ = _ := by ring
   simp_rw [hid]
   have h1 : IntervalIntegrable Real.sin volume 0 Real.pi :=
     Real.continuous_sin.intervalIntegrable _ _
