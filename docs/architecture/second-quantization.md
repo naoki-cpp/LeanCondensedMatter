@@ -143,7 +143,14 @@ import LeanCondensedMatter.SecondQuantization.Fermionic.Transport
 ```
 
 Implementation modules should still import the narrowest leaf modules they use; umbrellas are public
-package boundaries and navigation surfaces, not a reason to widen internal dependencies. When a file
+package boundaries and navigation surfaces, not a reason to widen internal dependencies.
+For example, `Fermionic.Diagrammatics.LinkedCluster.Theorem` uses the normalized
+Dyson moment identity from `Fermionic.Diagrammatics.DysonDiagramExpansion.Moment`;
+it imports this owner directly rather than the broader
+`Fermionic.Diagrammatics.DysonDiagramExpansion` package umbrella.
+The read-only `--report-umbrella-consumers` mode of
+`scripts/export_module_import_graph.py` lists potential implementation-to-public-package
+imports for manual review; it is not a prohibition on intentional public imports. When a file
 sharing a directory name is itself a semantic base imported by descendants, it remains that base
 rather than being turned into an aggregator that would create an import cycle.
 
