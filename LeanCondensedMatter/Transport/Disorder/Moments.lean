@@ -126,7 +126,7 @@ theorem exactSecondMoment_isPositive
   have hconj : (((ensemble.impurityPotential ω).1 * kernel) *
       (ensemble.impurityPotential ω).1).IsPositive := by
     simpa only [← ContinuousLinearMap.mul_def,
-      (ensemble.impurityPotential ω).2.adjoint_eq] using
+      (ensemble.impurityPotential ω).2.adjoint_eq, mul_assoc] using
         hkernel.adjoint_conj (ensemble.impurityPotential ω).1
   have hweight : (0 : ℂ) ≤ (ensemble.probability ω : ℂ) :=
     Complex.real_le_real.mpr (ensemble.probability_nonneg ω)
