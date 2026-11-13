@@ -1050,6 +1050,42 @@ theorem sum_fixedExternalPartitionFiber_eq_sum_localLabelConnectedBlockFamilies
   simp only [layout.assembleDiagram_externalLabel_eq_iff
     (Finset.univ : Finset (Fin n)) F labels]
 
+/-- The canonical physical Dyson integral of an independently
+assembled Wick diagram is precisely the ordered Dyson amplitude for
+the block-local orders induced by the increasing ambient order and
+the *actual* interaction-assignment shuffle. This identifies the
+canonical term among the global order/shuffle terms without asserting
+that a single ordered-simplex integral factors over blocks. -/
+theorem ExternalInsertionBlockLayout.assembleDiagram_dysonAmplitude_eq_assignmentOrdered
+    {n : ℕ} (layout : ExternalInsertionBlockLayout E n)
+    (F : ∀ B : layout.partition.parts,
+      ExternalInsertionDiagram (ExternalFieldLabel Mode) (QuarticVertexLabel Mode)
+        ((B : Finset (Fin (2 * E))).card / 2) n
+        (layout.interactionBlock (Finset.univ : Finset (Fin n)) B))
+    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
+    (times : Fin (2 * E) → ℝ) :
+    ExternalInsertionWickDiagram.dysonAmplitude
+        (layout.assembleDiagram (Finset.univ : Finset (Fin n)) F) ε β g times =
+      ExternalInsertionWickDiagram.orderedDysonAmplitude
+        (layout.assembleDiagram (Finset.univ : Finset (Fin n)) F) ε β g times
+        (layout.interactionOrderDecompositionEquiv.symm
+          ((layout.interactionOrderDecompositionEquiv
+            ((Finset.univ : Finset (Fin n)).orderIsoOfFin rfl).toEquiv).1,
+            layout.interactionAssignmentShuffle)) := by
+  let canonical : QuarticVertexOrder (Finset.univ : Finset (Fin n)) :=
+    ((Finset.univ : Finset (Fin n)).orderIsoOfFin rfl).toEquiv
+  have horder :
+      layout.interactionOrderDecompositionEquiv.symm
+        ((layout.interactionOrderDecompositionEquiv canonical).1,
+          layout.interactionAssignmentShuffle) = canonical := by
+    change layout.interactionOrderDecompositionEquiv.symm
+      (layout.interactionOrderDecompositionEquiv canonical) = canonical
+    exact layout.interactionAssignmentShuffle_reassembles
+  rw [horder]
+  exact (ExternalInsertionWickDiagram.orderedDysonAmplitude_canonicalOrder
+    (layout.assembleDiagram (Finset.univ : Finset (Fin n)) F)
+    ε β g times).symm
+
 open Classical in
 /-- The actual integrated, fixed-source-label Dyson coefficient in one
 even external-component partition is reindexed by the physical interaction
