@@ -29,18 +29,6 @@ open QuantumTheory.Transport
 
 open Filter QuantumTheory.Transport
 
-/-- The antisymmetric Hall projection of the zero-broadening tensor equals its ordered `xy`
-component exactly. -/
-@[simp]
-theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensorZeroBroadeningBoundary_hallComponent_xy
-    (e v m probeEnergy disorderStrength hbar pMax : ℝ) :
-    (finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensorZeroBroadeningBoundary
-        e v m probeEnergy disorderStrength hbar pMax).hallComponent 0 1 =
-      finiteCutoffContinuumBornDysonOrderedXYRetardedAdvancedDressedSurfaceConductivityZeroBroadeningBoundary
-        e v m probeEnergy disorderStrength hbar pMax := by
-  simp [ConductivityTensor.hallComponent,
-    finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensorZeroBroadeningBoundary]
-
 /-- The fixed-cutoff Hall projection has the same one-sided weak-disorder limit as the ordered `xy`
 endpoint, now interpreted as the antisymmetric part of a completed conductivity tensor. -/
 theorem tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensorZeroBroadeningBoundary_hallComponent_disorder_zero
@@ -56,8 +44,8 @@ theorem tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceCond
       (nhds
         (((-2 * e ^ 2 * probeEnergy * m * (probeEnergy ^ 2 + m ^ 2) /
           (Real.pi * hbar * (probeEnergy ^ 2 + 3 * m ^ 2) ^ 2) : ℝ) : ℂ))) := by
-  simpa only [
-    finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensorZeroBroadeningBoundary_hallComponent_xy] using
+  simpa [ConductivityTensor.hallComponent,
+    finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensorZeroBroadeningBoundary] using
     tendsto_finiteCutoffContinuumBornDysonOrderedXYRetardedAdvancedDressedSurfaceConductivityZeroBroadeningBoundary_disorder_zero
       e v m probeEnergy hbar pMax hvelocity hhbar hmetal hcutoff
 

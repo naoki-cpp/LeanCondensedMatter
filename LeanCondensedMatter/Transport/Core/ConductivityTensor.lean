@@ -84,6 +84,21 @@ theorem component_eq_symmetricComponent_add_hallComponent
   unfold symmetricComponent hallComponent
   ring
 
+/-- A two-dimensional conductivity tensor invariant under planar rotations: its diagonal
+entries agree and its off-diagonal entries are opposite. This is a property of the
+completed conductivity, not an assumption about its microscopic response representation. -/
+def IsPlanarIsotropic (conductivity : ConductivityTensor (Fin 2)) : Prop :=
+  conductivity.component 1 1 = conductivity.component 0 0 ∧
+    conductivity.component 1 0 = -conductivity.component 0 1
+
+/-- For a planar-isotropic tensor, the Hall projection equals the ordered xy component. -/
+theorem hallComponent_zero_one_eq_of_isPlanarIsotropic
+    (conductivity : ConductivityTensor (Fin 2))
+    (hiso : conductivity.IsPlanarIsotropic) :
+    conductivity.hallComponent 0 1 = conductivity.component 0 1 := by
+  rw [hallComponent, hiso.2]
+  ring
+
 /-- Onsager–Casimir reciprocity as a *property* of a magnetization-indexed physical
 conductivity family. A concrete Kubo model must establish this hypothesis using its
 time-reversal and current/source transformation laws; it is not automatic for a tensor. -/

@@ -96,11 +96,10 @@ theorem AheScalingParameters.finiteBroadeningPair_sxy
           params.hbar params.pMax).component 0 1) := by
   unfold AheScalingParameters.finiteBroadeningPair
     AheScalingParameters.normalizedPairOfTensor
-    AheScalingParameters.normalizedComplexConductivity
-    ConductivityTensor.longitudinal ConductivityTensor.hallComponent
-  rw [
-    finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensor_component_yx_eq_neg_xy]
-  ring
+  rw [ConductivityTensor.hallComponent_zero_one_eq_of_isPlanarIsotropic
+    _ (finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensor_isPlanarIsotropic
+      params.e params.v params.m params.fermiEnergy broadening params.disorderStrength
+      params.hbar params.pMax)]
 
 /-- The zero-broadening longitudinal scaling coordinate at arbitrary disorder strength is the
 normalized ordered `xx` boundary component. -/
@@ -123,8 +122,12 @@ theorem AheScalingParameters.zeroBroadeningPairAtDisorder_sxy
         (finiteCutoffContinuumBornDysonOrderedXYRetardedAdvancedDressedSurfaceConductivityZeroBroadeningBoundary
           params.e params.v params.m params.fermiEnergy disorderStrength params.hbar
           params.pMax) := by
-  simp [AheScalingParameters.zeroBroadeningPairAtDisorder,
-    AheScalingParameters.normalizedPairOfTensor]
+  unfold AheScalingParameters.zeroBroadeningPairAtDisorder
+    AheScalingParameters.normalizedPairOfTensor
+  rw [ConductivityTensor.hallComponent_zero_one_eq_of_isPlanarIsotropic
+    _ (by constructor <;> simp [
+      finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensorZeroBroadeningBoundary])]
+  rfl
 
 /-- At the stored disorder strength, the zero-broadening longitudinal scaling coordinate is the
 normalized ordered `xx` boundary component. -/
