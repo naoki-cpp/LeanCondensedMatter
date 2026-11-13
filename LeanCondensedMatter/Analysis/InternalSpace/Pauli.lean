@@ -711,4 +711,16 @@ theorem involution_projector_mul_self (Q : PauliMatrix) (hQ : Q * Q = 1)
   rw [show s * s = 1 by simpa [pow_two] using hs, one_smul]
   module
 
+
+/-- The signed projector of an element with `H² = E² • 1` is idempotent. -/
+theorem quadratic_projector_isIdempotent
+    (H : PauliMatrix) (E s : ℂ) (hE : E ≠ 0)
+    (hquad : H * H = E ^ 2 • (1 : PauliMatrix))
+    (hs : s ^ 2 = 1) :
+    IsIdempotentElem ((1 / 2 : ℂ) • ((1 : PauliMatrix) + (s / E) • H)) := by
+  have hQ : (E⁻¹ • H) * (E⁻¹ • H) = 1 :=
+    Algebra.inv_smul_mul_self_eq_one H E hE hquad
+  simpa [div_eq_mul_inv, smul_smul] using
+    (involution_projector_mul_self (E⁻¹ • H) hQ s hs)
+
 end InternalSpace
