@@ -1532,17 +1532,8 @@ theorem externalSubsetSourceCumulantSeries_eq_connectedDiagramSeries_of_signedMo
   apply externalPartitionWeightedMoment_injective
   · simp
   · intro S
-    calc
-      Finpartition.weightedMomentFromCumulant
-          (fun _ π => PowerSeries.C (externalPartitionSourceSign π))
-          (externalSubsetSourceCumulantSeries
-            (externalSubsetMomentSeries ε β g labels times)) S =
-        externalSubsetMomentSeries ε β g labels times S :=
-          externalSubsetSourceCumulantSeries_reconstruct
-            (externalSubsetMomentSeries ε β g labels times) (by simp) S
-      _ = Finpartition.weightedMomentFromCumulant
-          (fun _ π => PowerSeries.C (externalPartitionSourceSign π))
-          (externalSubsetConnectedDiagramSeries ε β g labels times) S := hDiagram S
+    exact (externalSubsetSourceCumulantSeries_reconstruct
+      (externalSubsetMomentSeries ε β g labels times) (by simp) S).trans (hDiagram S)
 
 
 end Fermionic
