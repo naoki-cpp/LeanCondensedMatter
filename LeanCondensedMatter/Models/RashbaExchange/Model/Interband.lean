@@ -35,8 +35,7 @@ theorem interbandEnergyGap_eq
     (params : HamiltonianParameters) (band : Band) (px py : ℝ) :
     interbandEnergyGap params (oppositeBand band) px py =
       -interbandEnergyGap params band px py := by
-  rw [interbandEnergyGap_eq, interbandEnergyGap_eq, bandSign_oppositeBand]
-  ring
+  simp only [interbandEnergyGap, oppositeBand_oppositeBand, neg_sub]
 
 theorem interbandEnergyGap_ne_zero_of_spinOrbitEnergy_ne_zero
     (params : HamiltonianParameters) (band : Band) (px py : ℝ)
