@@ -1,6 +1,7 @@
 import LeanCondensedMatter.Transport.Resolvent.Spectral
 import LeanCondensedMatter.Analysis.Lorentzian.Pole
 import Mathlib.Analysis.Normed.Group.Bounded
+import Mathlib.Tactic.FieldSimp
 import Mathlib.Tactic.FunProp
 import Mathlib.Tactic.Linarith
 import Mathlib.Tactic.NormNum
