@@ -113,9 +113,8 @@ theorem bandProjector_add_oppositeBand
     (params : HamiltonianParameters) (band : Band) (px py : ℝ) :
     bandProjector params band px py +
         bandProjector params (oppositeBand band) px py = 1 := by
-  cases band <;>
-    simpa only [sum_band, oppositeBand_lower, oppositeBand_upper, add_comm] using
-      sum_bandProjector_eq_one params px py
+  cases band <;> simpa only [sum_band, oppositeBand_lower, oppositeBand_upper, add_comm] using
+    sum_bandProjector_eq_one params px py
 
 /-- Away from the degeneracy, the two band energies are distinct. -/
 theorem bandEnergy_injective
