@@ -3384,7 +3384,6 @@
       "sourceFile": "LeanCondensedMatter/Permutation/ConnectedDecomposition.lean",
       "imports": [
         "LeanCondensedMatter.Combinatorics.Cumulant.ConnectedDecomposition",
-        "LeanCondensedMatter.Combinatorics.SetPartition.FinpartitionProduct",
         "LeanCondensedMatter.Permutation.OrbitPartition"
       ],
       "externalImportCount": 0
@@ -3950,7 +3949,6 @@
       "name": "LeanCondensedMatter.QuantumTheory.DensityOperator.Pure",
       "sourceFile": "LeanCondensedMatter/QuantumTheory/DensityOperator/Pure.lean",
       "imports": [
-        "LeanCondensedMatter.Analysis.Operator.Compact",
         "LeanCondensedMatter.Analysis.Operator.TraceClass.Positive",
         "LeanCondensedMatter.Analysis.Operator.TraceClass.Trace",
         "LeanCondensedMatter.QuantumTheory.DensityOperator.Basic"
@@ -3970,7 +3968,6 @@
       "name": "LeanCondensedMatter.QuantumTheory.DensityOperator.Purity",
       "sourceFile": "LeanCondensedMatter/QuantumTheory/DensityOperator/Purity.lean",
       "imports": [
-        "LeanCondensedMatter.QuantumTheory.DensityOperator.ExpectationOrder",
         "LeanCondensedMatter.QuantumTheory.DensityOperator.ObservableExpectation",
         "LeanCondensedMatter.QuantumTheory.DensityOperator.PureState"
       ],
@@ -4450,7 +4447,6 @@
       "sourceFile": "LeanCondensedMatter/QuantumTheory/LinearResponse/Perturbation/Unitary.lean",
       "imports": [
         "LeanCondensedMatter.Analysis.Dyson.Unitary",
-        "LeanCondensedMatter.Analysis.Operator.AdjointConjugation",
         "LeanCondensedMatter.QuantumTheory.LinearResponse.Response.KuboFormula"
       ],
       "externalImportCount": 0
@@ -7484,7 +7480,6 @@
       "imports": [
         "LeanCondensedMatter.Analysis.OrderedSimplex.MeasurableRegularity",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingTimeLocality",
-        "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentPairEquiv",
         "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ImaginaryTimeOrderSignature",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Factorization.MixedComponentDysonValue",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Semantics.PairContraction"
