@@ -120,7 +120,10 @@ private theorem im_inner_self_finiteCutoffContinuumBornGreenIntegralOfRegulator_
       (continuumBornRadialGreenKernelOfRegulator v m probeEnergy regulator) :=
     continuous_continuumBornRadialGreenKernelOfRegulator
       v m probeEnergy regulator hregulator
-  have hmap := Q.intervalIntegral_comp_comm (hkernel.intervalIntegrable 0 pMax)
+  have hint : IntervalIntegrable
+      (continuumBornRadialGreenKernelOfRegulator v m probeEnergy regulator)
+      volume 0 pMax := hkernel.intervalIntegrable 0 pMax
+  have hmap := Q.intervalIntegral_comp_comm hint
   have hquad :
       (inner ℂ ψ
         (finiteCutoffContinuumBornGreenIntegralOfRegulator
