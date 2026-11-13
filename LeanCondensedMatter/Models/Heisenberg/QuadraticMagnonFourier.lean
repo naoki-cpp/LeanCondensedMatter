@@ -1,7 +1,5 @@
 import LeanCondensedMatter.Models.Heisenberg.QuadraticMagnon
 import LeanCondensedMatter.Analysis.Fourier.CyclicLaplacian
-import LeanCondensedMatter.Analysis.Fourier.FiniteCyclic
-import LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.FiniteModes
 import LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.OneParticle
 
 set_option linter.style.header false

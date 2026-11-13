@@ -1,7 +1,4 @@
-import LeanCondensedMatter.Analysis.OrderedSimplex.Integral
 import LeanCondensedMatter.Analysis.OrderedSimplex.MeasurableProductSplit
-import LeanCondensedMatter.Analysis.OrderedSimplex.MeasurableRegularityBounds
-import LeanCondensedMatter.Combinatorics.Shuffle.BinaryShuffle
 import LeanCondensedMatter.Combinatorics.Shuffle.BinaryShuffleSlots
 import Mathlib.Analysis.Complex.Basic
 
