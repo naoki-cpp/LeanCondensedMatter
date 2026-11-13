@@ -1,4 +1,3 @@
-import LeanCondensedMatter.Analysis.Algebra.QuadraticNormalization
 import Mathlib.RingTheory.Idempotents
 import LeanCondensedMatter.Models.MassiveDirac.Model.Basic
 
@@ -50,36 +49,11 @@ theorem bandProjector_eq_pauliCombination
     InternalSpace.trace_pauliCombination]
   norm_num [Matrix.trace]
 
-/-- The Hamiltonian normalized by the positive Dirac energy. Away from the degeneracy this is an
-involution, and the two spectral projectors are its `±1` eigenspace projectors. -/
-private noncomputable def normalizedHamiltonian (v m px py : ℝ) : Matrix2 :=
-  (((energy v m px py : ℝ) : ℂ)⁻¹) • hamiltonian v m px py
-
-/-- Away from the band degeneracy, the normalized Hamiltonian squares to the identity. -/
-private theorem normalizedHamiltonian_mul_self
-    (v m px py : ℝ) (hE : energy v m px py ≠ 0) :
-    normalizedHamiltonian v m px py * normalizedHamiltonian v m px py = 1 := by
-  unfold normalizedHamiltonian
-  apply Algebra.inv_smul_mul_self_eq_one _ _ (by exact_mod_cast hE)
-  rw [hamiltonian_mul_self]
-  congr 1
-  exact_mod_cast (energy_sq v m px py).symm
-
-/-- Rewrite the band projector as the `±1` spectral projector of the normalized Hamiltonian. -/
-private theorem bandProjector_eq_normalizedHamiltonian
-    (band : Band) (v m px py : ℝ) :
-    bandProjector band v m px py =
-      (1 / 2 : ℂ) •
-        ((1 : Matrix2) +
-          (((bandSign band : ℝ) : ℂ)) • normalizedHamiltonian v m px py) := by
-  simp [bandProjector, normalizedHamiltonian, div_eq_mul_inv, smul_smul]
-
 /-- The finite sum of massive-Dirac band projectors resolves the identity, including at the
 algebraic `E = 0` value of the definition. -/
 theorem sum_bandProjector_eq_one (v m px py : ℝ) :
     ∑ band : Band, bandProjector band v m px py = 1 := by
-  simp only [sum_band, bandProjector_eq_normalizedHamiltonian,
-    bandSign_lower, bandSign_upper]
+  simp only [sum_band, bandProjector, bandSign_lower, bandSign_upper]
   push_cast
   module
 
@@ -124,10 +98,12 @@ theorem bandProjector_completeOrthogonalIdempotents
     CompleteOrthogonalIdempotents
       (fun band : Band => bandProjector band v m px py) := by
   have hLower : IsIdempotentElem (bandProjector .lower v m px py) := by
-    rw [bandProjector_eq_normalizedHamiltonian]
-    exact InternalSpace.involution_projector_mul_self
-      (normalizedHamiltonian v m px py) (normalizedHamiltonian_mul_self v m px py hE)
-      (((bandSign Band.lower : ℝ) : ℂ)) (by norm_num [bandSign])
+    simpa [bandProjector, Complex.ofReal_div] using
+      (InternalSpace.quadratic_projector_isIdempotent
+        (hamiltonian v m px py) (((energy v m px py : ℝ) : ℂ))
+        (((bandSign Band.lower : ℝ) : ℂ)) (by exact_mod_cast hE)
+        (by simpa only [← energy_sq, Complex.ofReal_pow] using hamiltonian_mul_self v m px py)
+        (by norm_num [bandSign]))
   have hUpper : bandProjector .upper v m px py =
       1 - bandProjector .lower v m px py :=
     eq_sub_of_add_eq' (by simpa only [sum_band] using sum_bandProjector_eq_one v m px py)
