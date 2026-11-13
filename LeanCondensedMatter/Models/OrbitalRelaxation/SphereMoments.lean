@@ -43,11 +43,13 @@ private theorem integral_sin_one :
 
 private theorem integral_sin_three :
     (∫ θ in (0 : ℝ)..Real.pi, Real.sin θ ^ 3) = 4 / 3 := by
-  convert (integral_sin_pow_odd (n := 1)) using 1 <;> norm_num
+  convert (integral_sin_pow_odd (n := 1)) using 1
+  norm_num
 
 private theorem integral_sin_five :
     (∫ θ in (0 : ℝ)..Real.pi, Real.sin θ ^ 5) = 16 / 15 := by
-  convert (integral_sin_pow_odd (n := 2)) using 1 <;> norm_num
+  convert (integral_sin_pow_odd (n := 2)) using 1
+  norm_num
 
 private theorem integral_sin_three_mul_cos_sq :
     (∫ θ in (0 : ℝ)..Real.pi,
@@ -124,9 +126,8 @@ private theorem integral_sin_sq_mul_cos_sq_full :
        Real.sin φ ^ 2 * Real.cos φ ^ 2) = Real.pi / 4 := by
   rw [integral_sin_sq_mul_cos_sq]
   simp
-  have hs : Real.sin (Real.pi * 8) = 0 := by
-    simpa [mul_comm] using Real.sin_nat_mul_pi 8
-  rw [hs]
+  have hperiod : 4 * (2 * Real.pi) = (8 : ℕ) * Real.pi := by ring
+  rw [hperiod, Real.sin_nat_mul_pi]
   ring
 
 private theorem sphericalAverage_x_four (r : ℝ) :
