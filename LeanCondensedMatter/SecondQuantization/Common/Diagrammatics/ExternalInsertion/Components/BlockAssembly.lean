@@ -2743,38 +2743,6 @@ def ExternalInsertionBlockLayout.fixedPartitionConnectedAssemblyEquiv
     rcases p with ⟨⟨layout, hπ⟩, F⟩
     rfl
 
-/-- A connected physical assembly of a fixed external partition is
-equivalent to a unique family of local interaction sizes, one
-order-preserving shuffle of those sizes, and an independent connected
-diagram for every external block.
-
-The shuffle is *the one recovered from the vertex-owner assignment*;
-there are no additional independent permutations of internal vertices.
-The local diagrams remain indexed by their actual interaction fibers,
-including zero-size fibers. -/
-noncomputable def ExternalInsertionBlockLayout.fixedPartitionSizeShuffleConnectedAssemblyEquiv
-    {ExternalLabel InternalLabel : Type*}
-    (π : Finpartition (Finset.univ : Finset (Fin (2 * E))))
-    (heven : ∀ B : π.parts, Even (B : Finset (Fin (2 * E))).card) :
-    {p : Σ layout : ExternalInsertionBlockLayout E N,
-        layout.ConnectedBlockFamily (ExternalLabel := ExternalLabel)
-          (InternalLabel := InternalLabel) //
-      p.1.partition = π} ≃
-      Σ data : (Σ size : π.parts → ℕ, FamilySlotShuffleTo size N),
-        (((ExternalInsertionBlockLayout.fixedPartitionSizeShuffleEquiv π heven).symm data).1)
-          .ConnectedBlockFamily (ExternalLabel := ExternalLabel)
-            (InternalLabel := InternalLabel) := by
-  classical
-  let e := ExternalInsertionBlockLayout.fixedPartitionSizeShuffleEquiv π heven
-  exact (ExternalInsertionBlockLayout.fixedPartitionConnectedAssemblyEquiv
-    (ExternalLabel := ExternalLabel) (InternalLabel := InternalLabel) π).trans
-      ((Equiv.sigmaCongrLeft
-        (β := fun layout : {layout : ExternalInsertionBlockLayout E N //
-            layout.partition = π} =>
-          layout.1.ConnectedBlockFamily (ExternalLabel := ExternalLabel)
-            (InternalLabel := InternalLabel))
-        e.symm).symm)
-
 /-- A prescribed external partition determines every physical block
 layout uniquely once the owner of each ambient interaction vertex is
 fixed. The external parity witnesses are propositions, not additional
@@ -2842,6 +2810,38 @@ noncomputable def ExternalInsertionBlockLayout.fixedPartitionSizeShuffleEquiv
       (Equiv.sigmaCongrRight (fun size =>
         (familyShuffleOwnerEquiv (ι := π.parts) (size := size)
           (total := N)).symm)))
+
+/-- A connected physical assembly of a fixed external partition is
+equivalent to a unique family of local interaction sizes, one
+order-preserving shuffle of those sizes, and an independent connected
+diagram for every external block.
+
+The shuffle is *the one recovered from the vertex-owner assignment*;
+there are no additional independent permutations of internal vertices.
+The local diagrams remain indexed by their actual interaction fibers,
+including zero-size fibers. -/
+noncomputable def ExternalInsertionBlockLayout.fixedPartitionSizeShuffleConnectedAssemblyEquiv
+    {ExternalLabel InternalLabel : Type*}
+    (π : Finpartition (Finset.univ : Finset (Fin (2 * E))))
+    (heven : ∀ B : π.parts, Even (B : Finset (Fin (2 * E))).card) :
+    {p : Σ layout : ExternalInsertionBlockLayout E N,
+        layout.ConnectedBlockFamily (ExternalLabel := ExternalLabel)
+          (InternalLabel := InternalLabel) //
+      p.1.partition = π} ≃
+      Σ data : (Σ size : π.parts → ℕ, FamilySlotShuffleTo size N),
+        (((ExternalInsertionBlockLayout.fixedPartitionSizeShuffleEquiv π heven).symm data).1)
+          .ConnectedBlockFamily (ExternalLabel := ExternalLabel)
+            (InternalLabel := InternalLabel) := by
+  classical
+  let e := ExternalInsertionBlockLayout.fixedPartitionSizeShuffleEquiv π heven
+  exact (ExternalInsertionBlockLayout.fixedPartitionConnectedAssemblyEquiv
+    (ExternalLabel := ExternalLabel) (InternalLabel := InternalLabel) π).trans
+      ((Equiv.sigmaCongrLeft
+        (β := fun layout : {layout : ExternalInsertionBlockLayout E N //
+            layout.partition = π} =>
+          layout.1.ConnectedBlockFamily (ExternalLabel := ExternalLabel)
+            (InternalLabel := InternalLabel))
+        e.symm).symm)
 
 /-- The exact finite collection of physical layouts with a prescribed
 external partition, obtained from all actual interaction-owner functions.
