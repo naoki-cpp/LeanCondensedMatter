@@ -31,8 +31,7 @@ theorem interbandEnergyGap_eq (band : Band) (v m px py : ℝ) :
     (band : Band) (v m px py : ℝ) :
     interbandEnergyGap (oppositeBand band) v m px py =
       -interbandEnergyGap band v m px py := by
-  simp only [interbandEnergyGap, oppositeBand_oppositeBand]
-  ring
+  simp only [interbandEnergyGap, oppositeBand_oppositeBand, neg_sub]
 
 /-- The absolute interband gap is bounded below by `2|m|`, uniformly in momentum. -/
 theorem two_mul_abs_mass_le_abs_interbandEnergyGap
