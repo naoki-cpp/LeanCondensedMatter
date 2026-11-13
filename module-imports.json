@@ -5476,7 +5476,6 @@
       "name": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentSlotCongr",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Diagrammatics/ExternalInsertion/Components/ComponentSlotCongr.lean",
       "imports": [
-        "LeanCondensedMatter.Combinatorics.PerfectPairing.Crossing",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.MixedOrderData",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.SupportStandardization"
       ],
@@ -5503,7 +5502,6 @@
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Diagrammatics/ExternalInsertion/Components/InteractionOrder.lean",
       "imports": [
         "LeanCondensedMatter.Combinatorics.Shuffle.FamilyOrderShuffle",
-        "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentRestriction",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ExternalPartition",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Ordered"
       ],
@@ -5513,7 +5511,6 @@
       "name": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.MixedOrderData",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Diagrammatics/ExternalInsertion/Components/MixedOrderData.lean",
       "imports": [
-        "LeanCondensedMatter.Combinatorics.Shuffle.FamilySlotShuffle",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentRestriction",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Pairing.MixedOrder"
       ],
@@ -5531,7 +5528,6 @@
       "name": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Core.Ordered",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Diagrammatics/ExternalInsertion/Core/Ordered.lean",
       "imports": [
-        "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Core.Diagram",
         "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionImaginaryTimeOrder"
       ],
       "externalImportCount": 0
@@ -5540,7 +5536,6 @@
       "name": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Core.SlotCongr",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Diagrammatics/ExternalInsertion/Core/SlotCongr.lean",
       "imports": [
-        "LeanCondensedMatter.Combinatorics.PerfectPairing.Transport",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalComponents",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Core.Diagram"
       ],
@@ -5550,8 +5545,6 @@
       "name": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Factorization.ComponentShuffleParity",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Diagrammatics/ExternalInsertion/Factorization/ComponentShuffleParity.lean",
       "imports": [
-        "LeanCondensedMatter.Combinatorics.Common.FintypeProduct",
-        "LeanCondensedMatter.Combinatorics.Shuffle.FamilySlotShuffleInversions",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentRestriction"
       ],
       "externalImportCount": 1
@@ -5561,7 +5554,6 @@
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Diagrammatics/ExternalInsertion/Factorization/FixedSlotSplitOrder.lean",
       "imports": [
         "LeanCondensedMatter.Combinatorics.Common.FintypeProduct",
-        "LeanCondensedMatter.Combinatorics.FiniteIndex.Block",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.SlotLegSplitting",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Ordered"
       ],
@@ -5600,7 +5592,6 @@
       "name": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Pairing.MixedOrder",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Diagrammatics/ExternalInsertion/Pairing/MixedOrder.lean",
       "imports": [
-        "LeanCondensedMatter.Combinatorics.PerfectPairing.Transport",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Core.Ordered"
       ],
       "externalImportCount": 0
@@ -5611,8 +5602,7 @@
       "imports": [
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Pairing.MixedOrder",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.SlotLegSplitting",
-        "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Ordered",
-        "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionImaginaryTimeOrder"
+        "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Ordered"
       ],
       "externalImportCount": 0
     },
@@ -5662,7 +5652,6 @@
       "name": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.SlotLegSplitting",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Diagrammatics/ExternalInsertion/SlotSplit/SlotLegSplitting.lean",
       "imports": [
-        "LeanCondensedMatter.Combinatorics.PerfectPairing.Split",
         "LeanCondensedMatter.Combinatorics.SetPartition.SubsetSplit",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Core.Diagram",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Diagram"
@@ -5673,7 +5662,6 @@
       "name": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.SupportPairingStandardization",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Diagrammatics/ExternalInsertion/SlotSplit/SupportPairingStandardization.lean",
       "imports": [
-        "LeanCondensedMatter.Combinatorics.Shuffle.SlotShuffle",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Pairing.MixedOrder",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.SupportStandardization"
       ],
@@ -5761,8 +5749,6 @@
       "name": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentRestriction",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Diagrammatics/Quartic/Components/ComponentRestriction.lean",
       "imports": [
-        "LeanCondensedMatter.Combinatorics.PerfectPairing.Restriction",
-        "LeanCondensedMatter.Combinatorics.SetPartition.GraphComponents",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Connected"
       ],
       "externalImportCount": 0
@@ -5771,7 +5757,6 @@
       "name": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Diagrammatics/Quartic/Components/Reassemble.lean",
       "imports": [
-        "LeanCondensedMatter.Combinatorics.PerfectPairing.Transport",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentConnected"
       ],
       "externalImportCount": 0
@@ -5815,9 +5800,7 @@
       "name": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Factorization.ComponentEvaluation",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Diagrammatics/Quartic/Factorization/ComponentEvaluation.lean",
       "imports": [
-        "LeanCondensedMatter.Combinatorics.PerfectPairing.ComponentDecomposition",
-        "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Factorization.ComponentGlobalCrossingParity",
-        "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Pairing.ComponentPairEquiv"
+        "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Factorization.ComponentGlobalCrossingParity"
       ],
       "externalImportCount": 0
     },
@@ -5912,7 +5895,6 @@
       "name": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Components.ComponentRestriction",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Diagrammatics/TwoPoint/Components/ComponentRestriction.lean",
       "imports": [
-        "LeanCondensedMatter.Combinatorics.PerfectPairing.Restriction",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ComponentLegData",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Diagram",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.Diagram"
@@ -5923,7 +5905,6 @@
       "name": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.CutComponents",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Diagrammatics/TwoPoint/Core/CutComponents.lean",
       "imports": [
-        "LeanCondensedMatter.Combinatorics.SetPartition.GraphComponents",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.OneParticleIrreducible"
       ],
       "externalImportCount": 1
@@ -5932,8 +5913,6 @@
       "name": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.CutIntervals",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Diagrammatics/TwoPoint/Core/CutIntervals.lean",
       "imports": [
-        "LeanCondensedMatter.Combinatorics.PerfectPairing.Restriction",
-        "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.InteractionSector",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.CutOrder"
       ],
       "externalImportCount": 0
@@ -5977,7 +5956,6 @@
       "name": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.IntervalPairing",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Diagrammatics/TwoPoint/Core/IntervalPairing.lean",
       "imports": [
-        "LeanCondensedMatter.Combinatorics.PerfectPairing.Restriction",
         "LeanCondensedMatter.Combinatorics.PerfectPairing.Transport",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.CutIntervals"
       ],
@@ -6003,7 +5981,6 @@
       "name": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.SlotCongr",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Diagrammatics/TwoPoint/Core/SlotCongr.lean",
       "imports": [
-        "LeanCondensedMatter.Combinatorics.PerfectPairing.Transport",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.External.ExternalConnectivity"
       ],
       "externalImportCount": 0
@@ -6034,8 +6011,7 @@
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Diagrammatics/TwoPoint/External/ExternalPiecePairing.lean",
       "imports": [
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.External.ExternalPiece",
-        "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossing",
-        "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentPairEquiv"
+        "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossing"
       ],
       "externalImportCount": 0
     },
@@ -6062,8 +6038,6 @@
       "name": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Diagrammatics/TwoPoint/Mixed/MixedComponentCrossingEven.lean",
       "imports": [
-        "LeanCondensedMatter.Combinatorics.PerfectPairing.CrossingParity",
-        "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Components.ComponentDecomposition",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossing"
       ],
       "externalImportCount": 0
@@ -6099,7 +6073,6 @@
       "name": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedOrderPairing",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Diagrammatics/TwoPoint/Mixed/MixedOrderPairing.lean",
       "imports": [
-        "LeanCondensedMatter.Combinatorics.PerfectPairing.Transport",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentPosition"
       ],
       "externalImportCount": 0
@@ -6108,10 +6081,8 @@
       "name": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotLegSplitting",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Diagrammatics/TwoPoint/SlotSplit/SlotLegSplitting.lean",
       "imports": [
-        "LeanCondensedMatter.Combinatorics.PerfectPairing.Split",
         "LeanCondensedMatter.Combinatorics.SetPartition.SubsetSplit",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Diagram",
-        "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Leg",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.Diagram"
       ],
       "externalImportCount": 0
@@ -6120,7 +6091,6 @@
       "name": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitConnectivity",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Diagrammatics/TwoPoint/SlotSplit/SlotSplitConnectivity.lean",
       "imports": [
-        "LeanCondensedMatter.Combinatorics.SetPartition.GraphComponents",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Connected",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.External.ExternalSlotSplit"
       ],
@@ -6149,7 +6119,6 @@
       "name": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumLegOrder",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Diagrammatics/TwoPoint/SlotSplit/SlotSplitVacuumLegOrder.lean",
       "imports": [
-        "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Ordered",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Factorization.TwoPointLegEmbedding",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotLegSplitting"
       ],
@@ -6179,7 +6148,6 @@
       "name": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumVertexProduct",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Diagrammatics/TwoPoint/SlotSplit/SlotSplitVacuumVertexProduct.lean",
       "imports": [
-        "LeanCondensedMatter.Combinatorics.Common.FintypeProduct",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentRestriction",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumComponents"
       ],
