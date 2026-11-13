@@ -92,7 +92,7 @@ theorem forceMatrixTraceNumerator_xy_eq (band : Band) (v m px py : ℝ)
       bandProjector (oppositeBand band) v m px py =
         (1 / 2 : ℂ) • ((1 : Matrix2) - InternalSpace.pauliCombination u) := by
     simp [bandProjector_eq_pauliCombination, bandSign_oppositeBand, u,
-      neg_div, InternalSpace.pauliCombination_smul, sub_eq_add_neg]
+      neg_div, sub_eq_add_neg]
   have hEc : (((energy v m px py : ℝ) : ℂ)) ≠ 0 := by
     exact_mod_cast hE
   unfold forceMatrixTraceNumerator
