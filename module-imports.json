@@ -246,8 +246,7 @@
       "sourceFile": "LeanCondensedMatter/Analysis/Inequalities/PeierlsBogoliubovEquality.lean",
       "imports": [
         "LeanCondensedMatter.Analysis.FunctionalCalculus.CFC",
-        "LeanCondensedMatter.Analysis.Inequalities.PeierlsBogoliubov",
-        "LeanCondensedMatter.Analysis.Operator.DiagonalExpectation"
+        "LeanCondensedMatter.Analysis.Inequalities.PeierlsBogoliubov"
       ],
       "externalImportCount": 1
     },
@@ -579,7 +578,6 @@
       "name": "LeanCondensedMatter.Analysis.Operator.TraceClass.Factorization.Basic",
       "sourceFile": "LeanCondensedMatter/Analysis/Operator/TraceClass/Factorization/Basic.lean",
       "imports": [
-        "LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.InnerProduct",
         "LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.Norm",
         "LeanCondensedMatter.Analysis.Operator.Polar",
         "LeanCondensedMatter.Analysis.Operator.TraceClass.General"
@@ -590,7 +588,6 @@
       "name": "LeanCondensedMatter.Analysis.Operator.TraceClass.Factorization.Norm",
       "sourceFile": "LeanCondensedMatter/Analysis/Operator/TraceClass/Factorization/Norm.lean",
       "imports": [
-        "LeanCondensedMatter.Analysis.Operator.Polar",
         "LeanCondensedMatter.Analysis.Operator.TraceClass.Factorization.Basic",
         "LeanCondensedMatter.Analysis.Operator.TraceClass.Norm"
       ],
@@ -860,10 +857,7 @@
       "name": "LeanCondensedMatter.Analysis.OrderedSimplex.BinarySlotShuffle",
       "sourceFile": "LeanCondensedMatter/Analysis/OrderedSimplex/BinarySlotShuffle.lean",
       "imports": [
-        "LeanCondensedMatter.Analysis.OrderedSimplex.Integral",
         "LeanCondensedMatter.Analysis.OrderedSimplex.MeasurableProductSplit",
-        "LeanCondensedMatter.Analysis.OrderedSimplex.MeasurableRegularityBounds",
-        "LeanCondensedMatter.Combinatorics.Shuffle.BinaryShuffle",
         "LeanCondensedMatter.Combinatorics.Shuffle.BinaryShuffleSlots"
       ],
       "externalImportCount": 1
@@ -874,6 +868,7 @@
       "imports": [
         "LeanCondensedMatter.Analysis.OrderedSimplex.BinarySlotShuffle",
         "LeanCondensedMatter.Analysis.OrderedSimplex.FamilyShuffleIntegrand",
+        "LeanCondensedMatter.Combinatorics.Shuffle.FamilyOrderShuffle",
         "LeanCondensedMatter.Combinatorics.Shuffle.FamilySlotShuffleDecomposition"
       ],
       "externalImportCount": 0
@@ -1774,9 +1769,7 @@
       "sourceFile": "LeanCondensedMatter/Models/Heisenberg/QuadraticMagnonFourier.lean",
       "imports": [
         "LeanCondensedMatter.Analysis.Fourier.CyclicLaplacian",
-        "LeanCondensedMatter.Analysis.Fourier.FiniteCyclic",
         "LeanCondensedMatter.Models.Heisenberg.QuadraticMagnon",
-        "LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.FiniteModes",
         "LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.OneParticle"
       ],
       "externalImportCount": 0
@@ -1831,8 +1824,6 @@
       "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Bastin/Bands.lean",
       "imports": [
         "LeanCondensedMatter.Models.MassiveDirac.Bastin.Berry",
-        "LeanCondensedMatter.Models.MassiveDirac.Model.OperatorSpectral",
-        "LeanCondensedMatter.Transport.Streda.FiniteProjectorBastin",
         "LeanCondensedMatter.Transport.Streda.InterbandPole"
       ],
       "externalImportCount": 0
@@ -1842,7 +1833,6 @@
       "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Bastin/Berry.lean",
       "imports": [
         "LeanCondensedMatter.Models.MassiveDirac.Model.Berry.Bridge",
-        "LeanCondensedMatter.Models.MassiveDirac.Model.OperatorSpectral",
         "LeanCondensedMatter.Transport.Streda.FiniteProjectorBastin"
       ],
       "externalImportCount": 0
@@ -1898,10 +1888,7 @@
       "name": "LeanCondensedMatter.Models.MassiveDirac.Bastin.PoleFactor",
       "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Bastin/PoleFactor.lean",
       "imports": [
-        "LeanCondensedMatter.Analysis.Lorentzian.Kernel",
-        "LeanCondensedMatter.Models.MassiveDirac.Bastin.Interband",
-        "LeanCondensedMatter.Models.MassiveDirac.Model.OperatorSpectral",
-        "LeanCondensedMatter.Transport.Streda.InterbandPole"
+        "LeanCondensedMatter.Models.MassiveDirac.Bastin.Interband"
       ],
       "externalImportCount": 1
     },
@@ -2092,10 +2079,7 @@
       "imports": [
         "LeanCondensedMatter.Models.MassiveDirac.Conductivity.Hall.GaussianCrossedBenchmark",
         "LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.ExplicitMoments",
-        "LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.GreenGeneratorMinors",
-        "LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.MasslessX",
-        "LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.RealSpaceIntegral",
-        "LeanCondensedMatter.Transport.Streda.ConductivityNormalization"
+        "LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.MasslessX"
       ],
       "externalImportCount": 0
     },
@@ -2153,10 +2137,7 @@
       "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Conductivity/Hall/NonCrossingMechanismClassification.lean",
       "imports": [
         "LeanCondensedMatter.Models.MassiveDirac.Conductivity.Hall.NonCrossingDecomposition",
-        "LeanCondensedMatter.Models.MassiveDirac.Disorder.ContinuumMeasurePrefactor",
-        "LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.HallZeroBroadeningProvenance",
-        "LeanCondensedMatter.QuantumTheory.PlanckConstant",
-        "LeanCondensedMatter.Transport.Analysis.ContinuumMeasure"
+        "LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.HallZeroBroadeningProvenance"
       ],
       "externalImportCount": 3
     },
@@ -2623,7 +2604,8 @@
       "name": "LeanCondensedMatter.Models.MassiveDirac.Disorder.TMatrix.ScalarImpurity",
       "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Disorder/TMatrix/ScalarImpurity.lean",
       "imports": [
-        "LeanCondensedMatter.Models.MassiveDirac.Model.Operator"
+        "LeanCondensedMatter.Models.MassiveDirac.Model.Operator",
+        "LeanCondensedMatter.Transport.Disorder.TMatrix"
       ],
       "externalImportCount": 4
     },
@@ -2763,10 +2745,9 @@
       "name": "LeanCondensedMatter.Models.MassiveDirac.Model.Kinematics",
       "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Model/Kinematics.lean",
       "imports": [
-        "LeanCondensedMatter.Models.MassiveDirac.Model.Basic",
-        "LeanCondensedMatter.Transport.Analysis.AngularHarmonics"
+        "LeanCondensedMatter.Models.MassiveDirac.Model.Basic"
       ],
-      "externalImportCount": 7
+      "externalImportCount": 8
     },
     {
       "name": "LeanCondensedMatter.Models.MassiveDirac.Model.Occupation",
@@ -3208,6 +3189,14 @@
       "externalImportCount": 7
     },
     {
+      "name": "LeanCondensedMatter.Models.OrbitalRelaxation.KineticClosure",
+      "sourceFile": "LeanCondensedMatter/Models/OrbitalRelaxation/KineticClosure.lean",
+      "imports": [
+        "LeanCondensedMatter.Models.OrbitalRelaxation.AngularCollision"
+      ],
+      "externalImportCount": 3
+    },
+    {
       "name": "LeanCondensedMatter.Models.OrbitalRelaxation.T2gProjectors",
       "sourceFile": "LeanCondensedMatter/Models/OrbitalRelaxation/T2gProjectors.lean",
       "imports": [
@@ -3421,6 +3410,7 @@
         "LeanCondensedMatter.Models.MassiveDirac",
         "LeanCondensedMatter.Models.OrbitalRelaxation.AngularCollision",
         "LeanCondensedMatter.Models.OrbitalRelaxation.Finite",
+        "LeanCondensedMatter.Models.OrbitalRelaxation.KineticClosure",
         "LeanCondensedMatter.Models.OrbitalRelaxation.T2gProjectors",
         "LeanCondensedMatter.Models.OrbitalTransport.Finite",
         "LeanCondensedMatter.Models.OrbitalTransport.TwoSite",
@@ -5506,6 +5496,18 @@
       "externalImportCount": 1
     },
     {
+      "name": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.BlockAssembly",
+      "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Diagrammatics/ExternalInsertion/Components/BlockAssembly.lean",
+      "imports": [
+        "LeanCondensedMatter.Combinatorics.Shuffle.FamilyOrderShuffle",
+        "LeanCondensedMatter.Combinatorics.Shuffle.SlotShuffle",
+        "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ExternalPartition",
+        "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Core.SlotCongr",
+        "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Ordered"
+      ],
+      "externalImportCount": 2
+    },
+    {
       "name": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentRestriction",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Diagrammatics/ExternalInsertion/Components/ComponentRestriction.lean",
       "imports": [
@@ -5519,6 +5521,16 @@
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Core.Diagram"
       ],
       "externalImportCount": 1
+    },
+    {
+      "name": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentSlotCongr",
+      "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Diagrammatics/ExternalInsertion/Components/ComponentSlotCongr.lean",
+      "imports": [
+        "LeanCondensedMatter.Combinatorics.PerfectPairing.Crossing",
+        "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.MixedOrderData",
+        "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.SupportStandardization"
+      ],
+      "externalImportCount": 0
     },
     {
       "name": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ExternalConnectivity",
@@ -5542,6 +5554,7 @@
       "imports": [
         "LeanCondensedMatter.Combinatorics.Shuffle.FamilyOrderShuffle",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentRestriction",
+        "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ExternalPartition",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Ordered"
       ],
       "externalImportCount": 0
@@ -5740,6 +5753,7 @@
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Diagrammatics/ExternalInsertion.lean",
       "imports": [
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalComponents",
+        "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.BlockAssembly",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentRestriction",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ExternalConnectivity",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ExternalPartition",
@@ -6398,8 +6412,6 @@
       "name": "LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonPartitionFunction",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Perturbation/AnalyticDysonPartitionFunction.lean",
       "imports": [
-        "LeanCondensedMatter.Analysis.Dyson.Bounds",
-        "LeanCondensedMatter.Analysis.Operator.FiniteTrace",
         "LeanCondensedMatter.SecondQuantization.Common.Perturbation.ContinuousDyson",
         "LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExponential",
         "LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonTraceSeries"
@@ -6590,6 +6602,7 @@
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Thermal/BlochDeDominicis/PairingWeight.lean",
       "imports": [
         "LeanCondensedMatter.Combinatorics.ExchangeSign",
+        "LeanCondensedMatter.Combinatorics.PerfectPairing.Crossing",
         "LeanCondensedMatter.Combinatorics.PerfectPairing.CrossingEraseZero",
         "LeanCondensedMatter.Combinatorics.PerfectPairing.Evaluation",
         "LeanCondensedMatter.Combinatorics.PerfectPairing.Examples.Four",
@@ -6948,8 +6961,6 @@
       "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.NumberOperator",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Algebra/NumberOperator.lean",
       "imports": [
-        "LeanCondensedMatter.SecondQuantization.Common.Algebra.AlgebraicFock",
-        "LeanCondensedMatter.SecondQuantization.Common.Algebra.ExchangeCommutator",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.CanonicalAnticommutationRelations",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.ExchangeAlgebra"
       ],
@@ -7123,10 +7134,7 @@
       "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Core",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Diagrammatics/DysonDiagramExpansion/Core.lean",
       "imports": [
-        "LeanCondensedMatter.Analysis.OrderedSimplex.Integral",
-        "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.InteractionPicture",
         "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.Quartic",
-        "LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExpansion",
         "LeanCondensedMatter.SecondQuantization.Common.Perturbation.QuarticDysonExpansion",
         "LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsExpectationBridge",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.QuarticInteraction",
@@ -7220,9 +7228,13 @@
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Diagrammatics/ExternalInsertion/ComponentIntegral.lean",
       "imports": [
         "LeanCondensedMatter.Analysis.OrderedSimplex.FamilyShuffle",
+        "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.BlockAssembly",
+        "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentSlotCongr",
+        "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ExternalPartition",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.InteractionOrder",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentAmplitude",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.DiagramRegularity",
+        "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalSourceSign",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.Integral"
       ],
       "externalImportCount": 0
@@ -7250,6 +7262,7 @@
       "imports": [
         "LeanCondensedMatter.Combinatorics.ExchangeSign",
         "LeanCondensedMatter.Combinatorics.Shuffle.FamilySlotShuffleInversions",
+        "LeanCondensedMatter.Combinatorics.Shuffle.FinpartitionOrderShuffle",
         "LeanCondensedMatter.SecondQuantization.Common.Algebra.Statistics",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentRestriction"
       ],
@@ -7294,6 +7307,40 @@
         "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.DysonSeries"
       ],
       "externalImportCount": 2
+    },
+    {
+      "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalSourceCumulant",
+      "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Diagrammatics/ExternalInsertion/ExternalSourceCumulant.lean",
+      "imports": [
+        "LeanCondensedMatter.Combinatorics.Cumulant.Moment",
+        "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalSourceSign"
+      ],
+      "externalImportCount": 1
+    },
+    {
+      "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalSourceSign",
+      "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Diagrammatics/ExternalInsertion/ExternalSourceSign.lean",
+      "imports": [
+        "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ExternalPartition",
+        "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentSign",
+        "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.Diagram"
+      ],
+      "externalImportCount": 1
+    },
+    {
+      "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalSubsetMoment",
+      "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Diagrammatics/ExternalInsertion/ExternalSubsetMoment.lean",
+      "imports": [
+        "LeanCondensedMatter.Combinatorics.Cumulant.Moment",
+        "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.BlockAssembly",
+        "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ExternalPartition",
+        "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.MixedOrderData",
+        "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentIntegral",
+        "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalSourceCumulant",
+        "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalVacuumFiberCauchySum",
+        "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.InteractionPictureVertexDyson"
+      ],
+      "externalImportCount": 1
     },
     {
       "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalVacuumAmplitude",
@@ -7448,6 +7495,9 @@
         "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.DiagramRegularity",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.DysonSeries",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalComponentReplicaPolynomial",
+        "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalSourceCumulant",
+        "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalSourceSign",
+        "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalSubsetMoment",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalVacuumAmplitude",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalVacuumFiberCauchySum",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalVacuumFiberShuffleIntegral",
@@ -7539,15 +7589,10 @@
       "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.Wick.AmplitudeFactorization",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Diagrammatics/Quartic/Wick/AmplitudeFactorization.lean",
       "imports": [
-        "LeanCondensedMatter.Analysis.OrderedSimplex.FamilyShuffleIntegrand",
         "LeanCondensedMatter.Analysis.OrderedSimplex.PartitionOrderIntegral",
-        "LeanCondensedMatter.Combinatorics.Cumulant.ConnectedDecomposition",
-        "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentConnected",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentDecompositionEquiv",
-        "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Ordered",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Factorization.ComponentEvaluation",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Factorization.ComponentVertexProduct",
-        "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Pairing.ComponentPairing",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.Wick.Amplitude"
       ],
       "externalImportCount": 0
@@ -8739,6 +8784,12 @@
         "LeanCondensedMatter.Transport.Resolvent.SelfEnergy"
       ],
       "externalImportCount": 0
+    },
+    {
+      "name": "LeanCondensedMatter.Transport.Disorder.TMatrix",
+      "sourceFile": "LeanCondensedMatter/Transport/Disorder/TMatrix.lean",
+      "imports": [],
+      "externalImportCount": 3
     },
     {
       "name": "LeanCondensedMatter.Transport.Disorder.Ward",
