@@ -1,5 +1,4 @@
 import LeanCondensedMatter.QuantumTheory.DensityOperator.PureState
-import LeanCondensedMatter.QuantumTheory.DensityOperator.ExpectationOrder
 import LeanCondensedMatter.QuantumTheory.DensityOperator.ObservableExpectation
 
 /-!
