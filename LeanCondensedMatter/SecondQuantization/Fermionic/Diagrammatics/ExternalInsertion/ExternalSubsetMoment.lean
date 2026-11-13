@@ -2,6 +2,7 @@ import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalIn
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.InteractionPictureVertexDyson
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentIntegral
 import Mathlib.Data.Fintype.EquivFin
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ExternalConnectivity
 
 set_option linter.style.header false
 
@@ -1324,6 +1325,39 @@ noncomputable def connectedExternalInsertionDysonSeries {K : ℕ}
     (labels : Fin (2 * K) → ExternalFieldLabel Mode)
     (times : Fin (2 * K) → ℝ) : PowerSeries ℂ :=
   PowerSeries.mk (connectedExternalInsertionDysonCoefficient ε β g labels times)
+
+/-- With exactly two external fermion insertions, every physical Wick pairing
+connects both external vertices. Removing vacuum components therefore already
+selects the fully externally connected diagrams, coefficient by coefficient.
+This does not identify the independent legacy two-point diagram model. -/
+theorem vacuumFreeExternalInsertionDysonCoefficient_eq_connected_two
+    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
+    (labels : Fin 2 → ExternalFieldLabel Mode)
+    (times : Fin 2 → ℝ) (n : ℕ) :
+    vacuumFreeExternalInsertionDysonCoefficient (E := 1) ε β g labels times n =
+      connectedExternalInsertionDysonCoefficient (K := 1) ε β g labels times n := by
+  classical
+  unfold vacuumFreeExternalInsertionDysonCoefficient
+    connectedExternalInsertionDysonCoefficient
+  apply Finset.sum_congr
+  · ext d
+    simp
+  · intro d _
+    simp only [d.1.1.allExternalVerticesConnected_two, ↓reduceIte]
+
+/-- At two external insertions, the *physical* vacuum-free Dyson series
+and the fully externally connected diagram series agree without a signed
+partition-moment hypothesis, at every perturbative order. -/
+theorem vacuumFreeExternalInsertionDysonSeries_eq_connected_two
+    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
+    (labels : Fin 2 → ExternalFieldLabel Mode)
+    (times : Fin 2 → ℝ) :
+    vacuumFreeExternalInsertionDysonSeries (E := 1) ε β g labels times =
+      connectedExternalInsertionDysonSeries (K := 1) ε β g labels times := by
+  unfold vacuumFreeExternalInsertionDysonSeries connectedExternalInsertionDysonSeries
+  exact congrArg PowerSeries.mk (funext fun n =>
+    vacuumFreeExternalInsertionDysonCoefficient_eq_connected_two
+      ε β g labels times n)
 
 /-- Physical, vacuum-normalized moment assigned to an external subset.
 For odd subsets the operator expectation vanishes by fermion parity; for the
