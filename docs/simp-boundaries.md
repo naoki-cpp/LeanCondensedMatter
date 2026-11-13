@@ -298,7 +298,6 @@ The following current simp boundaries are Green:
 - `finiteCutoffContinuumBornDysonGaussianCrossedCurrentFactor_zero_disorder`
 - `finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock_neg_radius`
 - `finiteCutoffContinuumBornDysonGaussianCrossedTraceKernel_psi_im`
-- `ConductivityTensor.hallComponent_zero_one_eq_of_isPlanarIsotropic`
 - `finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_psi_im`
 - `finiteCutoffContinuumBornDysonDenominator_zero_disorder`
 - `finiteCutoffContinuumBornDysonGreenOperator_zero_disorder`
