@@ -2085,6 +2085,46 @@ theorem ExternalInsertionBlockLayout.interactionOrderDecomposition_slot_owner
     ((layout.interactionEquiv (Finset.univ : Finset (Fin N))).symm ⟨B, v⟩).1 = B at hfst
   exact hfst
 
+/-- For an *arbitrary* global interaction-time order, the inverse
+order-preserving shuffle recovers the true physical owner of the vertex
+occupying each ordered-simplex slot. This is stronger than the canonical
+assignment-shuffle statement: it simultaneously handles every local
+interaction order and interleaving, including empty blocks. -/
+theorem ExternalInsertionBlockLayout.interactionOrderDecomposition_owner
+    (layout : ExternalInsertionBlockLayout E N)
+    (order : QuarticVertexOrder (Finset.univ : Finset (Fin N)))
+    (v : Fin (Finset.univ : Finset (Fin N)).card) :
+    ((layout.interactionOrderDecompositionEquiv order).2.slotEquiv.symm v).1 =
+      layout.interactionOwner (order v).1 := by
+  classical
+  let σ := (layout.interactionOrderDecompositionEquiv order).2
+  rcases hslot : σ.slotEquiv.symm v with ⟨B, j⟩
+  have hback : σ.slotEquiv ⟨B, j⟩ = v := by
+    calc
+      σ.slotEquiv ⟨B, j⟩ =
+          σ.slotEquiv (σ.slotEquiv.symm v) :=
+        congrArg σ.slotEquiv hslot.symm
+      _ = v := σ.slotEquiv.apply_symm_apply v
+  have howner := layout.interactionOrderDecomposition_slot_owner order B j
+  change layout.interactionOwner (order (σ.slotEquiv ⟨B, j⟩)).1 = B at howner
+  simpa only [hback] using howner.symm
+
+/-- The shuffle part of any physical global interaction order is
+characterized uniquely by the owners encountered along that order. -/
+theorem ExternalInsertionBlockLayout.interactionOrderDecomposition_shuffle_unique
+    (layout : ExternalInsertionBlockLayout E N)
+    (order : QuarticVertexOrder (Finset.univ : Finset (Fin N)))
+    (shuffle : FamilySlotShuffleTo
+      (fun B : layout.partition.parts =>
+        (layout.interactionBlock (Finset.univ : Finset (Fin N)) B).card)
+      (Finset.univ : Finset (Fin N)).card)
+    (howner : ∀ v : Fin (Finset.univ : Finset (Fin N)).card,
+      (shuffle.slotEquiv.symm v).1 = layout.interactionOwner (order v).1) :
+    shuffle = (layout.interactionOrderDecompositionEquiv order).2 := by
+  apply FamilySlotShuffleTo.eq_of_same_owner
+  intro v
+  rw [howner v, layout.interactionOrderDecomposition_owner order v]
+
 /-- An assembled Wick diagram retains the *actual quartic interaction
 label* at each local vertex when the ambient order is decomposed into
 block-local orders and its order-preserving shuffle. This is the
