@@ -482,18 +482,29 @@ owners, or incidental proof syntax.
 
 ## CI-enforced invariants
 
-`scripts/check_second_quantization_architecture.py` owns the repository-level SecondQuantization
-boundaries:
+`python3 scripts/check_architecture.py --scope all` is the blocking source-level
+entry point. It runs the declarative graph and source-contract checks defined
+in `scripts/check_architecture.py`:
 
-- path-owned `Common`, `Fermionic`, and `Bosonic` declaration namespaces;
-- no statistics-specific imports from `Common`;
-- no `SecondQuantization` imports from `Analysis`, `Combinatorics`, or `QuantumTheory`;
-- the canonical public SecondQuantization entry point.
+- `scripts/check_architecture_graphs.py` reads the primary
+  `scripts/architecture/second_quantization.json` graph and the scoped DAGs
+  in `scripts/architecture/source_topology.json`;
+- `scripts/check_source_contracts.py` checks selected canonical files,
+  directories, required imports, and forbidden import paths;
+- `scripts/check_diagrammatics_umbrella_boundaries.py` checks the focused
+  two-point and bosonic quartic public-endpoint boundaries.
 
-`scripts/check_fermionic_transport_validation_boundary.py` owns the fermionic responsibility DAG.
-Other focused audits own domain-specific constraints such as algebraic dimension independence,
-lattice/response separation, thermal ownership, mode boundaries, density boundaries, and diagrammatic
-layer ordering.
+The primary graph disallows reverse imports from `QuantumTheory` into
+`SecondQuantization` and prevents `SecondQuantization.Common` from importing
+the statistics-specific layers. The `quantumStateResponseManyBodyThermal` scoped
+graph further enforces source-module dependency direction between generic
+density states, Gibbs/entropy, linear response, and Common thermal consumers.
+It does not assert that `SecondQuantization.Common.Thermal` owns density-state
+or linear-response definitions.
 
-Architecture documentation should describe those durable current-state rules. Migration history
-belongs in Git history and issue/PR discussion rather than permanent CI assertions.
+These source audits do not establish declaration ownership or type-level
+dimension independence. Use the local elaborated-environment audits
+`scripts/CheckSemanticBoundaries.lean` and `scripts/CheckArchitecture.lean`
+for those focused questions; ordinary Lean declarations and proofs remain
+authoritative. A history of retired paths or proof shapes does not belong in
+permanent architecture CI.

@@ -104,7 +104,7 @@ them yet. Do not change imports just to eliminate every overlap warning.
 `check_architecture_graphs.py` owns dependency direction and reachability. Its data lives here:
 
 - `second_quantization.json` — the shared primary layer graph and SecondQuantization-focused DAGs;
-- `source_topology.json` — Transport, current, LinearResponse, Gibbs/entropy, and other source DAGs;
+- `source_topology.json` — Transport, current, QuantumTheory state/Gibbs/response to Common thermal, and other source DAGs;
 - `ahe_topology.json` — Massive-Dirac Model/Intrinsic and Bastin stage DAGs.
 
 Edges are written **upstream -> downstream**. A source layer may import itself or an ancestor. Scoped
