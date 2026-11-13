@@ -119,6 +119,19 @@ theorem selfEnergy_eq_secondMoment (side : SpectralSide) :
         _ = ensemble.exactSecondMoment (star solution.retardedGreen) :=
           (ensemble.exactSecondMoment_star solution.retardedGreen).symm
 
+/-- A supplied SCBA Green branch with the dissipative sign transfers that sign to
+its self-energy through the canonical positive second-moment map. The premise is
+essential; this does not select a causal branch of the nonlinear SCBA equation. -/
+theorem selfEnergy_preserves_regulator_dissipation
+    (side : SpectralSide) (regulator : ℝ)
+    (hgreen : ((((regulator : ℂ) * Complex.I) •
+      (solution.green side - star (solution.green side)))).IsPositive) :
+    ((((regulator : ℂ) * Complex.I) •
+      (solution.selfEnergy side - star (solution.selfEnergy side)))).IsPositive := by
+  rw [solution.selfEnergy_eq_secondMoment side]
+  exact ensemble.exactSecondMoment_preserves_regulator_dissipation
+    (solution.green side) regulator hgreen
+
 /-- The side-indexed SCBA shift is a left inverse of the side-indexed Green operator. -/
 theorem shift_mul_green (side : SpectralSide) :
     ensemble.scbaShift side energy broadening (solution.selfEnergy side) *
