@@ -708,7 +708,14 @@ theorem ExternalInsertionBlockLayout.sum_signedDysonShuffleOrbits_eq_prod_connec
         intro F _
         by_cases h : ∀ B, condition B (F.1 B)
         · simpa [h] using horbit F
-        · simp [h]
+        · have hnot :
+            ¬ ∀ (a : Finset (Fin (2 * E))) (ha : a ∈ layout.partition.parts),
+                condition ⟨a, ha⟩ (F.1 ⟨a, ha⟩) := by
+              intro hall
+              apply h
+              intro B
+              exact hall B.1 B.2
+          simp [hnot]
     _ = externalPartitionSourceSign layout.partition *
         ∑ F : layout.ConnectedBlockFamily
           (ExternalLabel := ExternalFieldLabel Mode)
