@@ -147,6 +147,20 @@ package boundaries and navigation surfaces, not a reason to widen internal depen
 sharing a directory name is itself a semantic base imported by descendants, it remains that base
 rather than being turned into an aggregator that would create an import cycle.
 
+The `SecondQuantization.Common.Thermal` umbrella deliberately aggregates
+statistics-independent thermal and finite-Hilbert adapter APIs. Its direct import
+of `QuantumTheory.Gibbs.Eigenbasis` documents the upstream generic Gibbs-state
+owner; it does **not** relocate density-state declarations into Common.
+Deleting that direct umbrella import merely because another adapter imports
+it transitively would not narrow the actual exported dependency closure.
+Consumers that need only the generic Gibbs density should import
+`QuantumTheory.Gibbs.Eigenbasis`; consumers of completed-Fock Gibbs
+expectations should import `SecondQuantization.Common.Thermal.GibbsExpectation`,
+and finite algebraic-Fock adapters should import
+`SecondQuantization.Common.Thermal.FiniteGibbsExpectationBridge`.
+A future genuinely narrower public thermal package should be driven by
+a documented consumer need, not by an import-count target.
+
 One-body generalized current work that does not use second quantization should instead import the
 appropriate `Analysis` or `QuantumTheory.ConservationLaw` leaf.
 

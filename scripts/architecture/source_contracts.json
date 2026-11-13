@@ -199,6 +199,10 @@
       "paths": [
         "LeanCondensedMatter/SecondQuantization/Common/Thermal/BlochDeDominicis/ExpectationRecursion.lean"
       ]
+    },
+    {
+      "id": "quantumPovmPublicEntry",
+      "paths": ["LeanCondensedMatter/QuantumTheory/POVM.lean"]
     }
   ],
   "requiredDirectories": [
@@ -662,6 +666,24 @@
       "id": "thermalPublicUmbrella",
       "path": "LeanCondensedMatter/SecondQuantization/Fermionic/Thermal.lean",
       "modules": ["LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed"]
+    },
+    {
+      "id": "quantumPovmPublicUmbrella",
+      "path": "LeanCondensedMatter/QuantumTheory/POVM.lean",
+      "modules": [
+        "LeanCondensedMatter.QuantumTheory.POVM.Basic",
+        "LeanCondensedMatter.QuantumTheory.POVM.Born"
+      ]
+    },
+    {
+      "id": "quantumPovmRootPublicEntry",
+      "path": "LeanCondensedMatter/QuantumTheory.lean",
+      "modules": ["LeanCondensedMatter.QuantumTheory.POVM"]
+    },
+    {
+      "id": "densityUmbrellaPovmCompatibility",
+      "path": "LeanCondensedMatter/QuantumTheory/DensityOperator.lean",
+      "modules": ["LeanCondensedMatter.QuantumTheory.POVM"]
     }
   ],
   "exactImports": [

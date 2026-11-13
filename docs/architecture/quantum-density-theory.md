@@ -48,9 +48,20 @@ Canonical ownership is feature-based:
 - `QuantumTheory/Gibbs/` owns bounded Gibbs states, energy and free-energy results, entropy,
   equality/minimizer uniqueness, diagonal formulas, and pure-point Gibbs constructions.
 
-`QuantumTheory/DensityOperator.lean` and `QuantumTheory/Entropy.lean` are public umbrella modules.
-Finite-dimensional specializations remain with the feature they specialize rather than forming a
-parallel finite-dimensional state hierarchy.
+Public package entry points are `QuantumTheory.DensityOperator`,
+`QuantumTheory.POVM`, and `QuantumTheory.Entropy`. The focused
+`QuantumTheory.POVM` umbrella exposes `POVM.Basic` and `POVM.Born` without
+requiring consumers to import all of `QuantumTheory.DensityOperator`.
+`QuantumTheory.DensityOperator` continues to reexport POVM for source
+compatibility; this is a deliberate legacy public convenience, **not** ownership:
+POVM declarations are defined exclusively in the `QuantumTheory/POVM/` leaves.
+
+For implementation code, use `QuantumTheory.DensityOperator.Basic`,
+`QuantumTheory.POVM.Basic`, `QuantumTheory.POVM.Born`, or another narrow
+declaration-owning leaf. Importing a broader umbrella does not make its
+transitive declarations new canonical owners. Finite-dimensional specializations
+remain with the feature they specialize rather than forming a parallel
+finite-dimensional state hierarchy.
 
 Analysis/InfiniteSum/Normalization.lean owns Real.normalizedWeight and its scalar
 summability, normalization, nonnegativity, and pointwise upper-bound laws. These laws require
@@ -239,10 +250,11 @@ import downstream Gibbs/response code. The Common thermal implementation *may*
 consume generic Gibbs and linear-response results, but the reverse is forbidden.
 
 This is deliberately **not** a rule about the public umbrella:
-`QuantumTheory/DensityOperator.lean` reexports POVM endpoints for the existing
-public API, while the `DensityOperator/` *implementation directory* does not
-depend on POVM. The scoped graph excludes these umbrella files. No public import
-or declaration is changed by the audit.
+`QuantumTheory/DensityOperator.lean` imports the dedicated `QuantumTheory.POVM`
+umbrella for compatibility with its existing measurement API, while the
+`DensityOperator/` *implementation directory* does not depend on POVM.
+The scoped graph excludes these umbrella files; ordinary implementation modules
+still follow the state-to-measurement dependency direction.
 
 The local-only compiled investigations `scripts/CheckSemanticBoundaries.lean`
 and `scripts/CheckArchitecture.lean` inspect elaborated declarations when

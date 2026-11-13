@@ -10,6 +10,7 @@ import LeanCondensedMatter.QuantumTheory.ConservationLaw.HeisenbergEvolution
 import LeanCondensedMatter.QuantumTheory.Occupation
 import LeanCondensedMatter.QuantumTheory.LinearResponse
 import LeanCondensedMatter.QuantumTheory.DensityOperator
+import LeanCondensedMatter.QuantumTheory.POVM
 import LeanCondensedMatter.QuantumTheory.DensityOperator.Diagonal
 import LeanCondensedMatter.QuantumTheory.Entropy.Basic
 import LeanCondensedMatter.QuantumTheory.Entropy.Diagonal
