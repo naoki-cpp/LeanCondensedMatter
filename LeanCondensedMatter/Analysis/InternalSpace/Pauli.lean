@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Analysis.Algebra.QuadraticNormalization
 import Mathlib.Analysis.Matrix.Hermitian
 import Mathlib.Basic.Complex.Basic
 import Mathlib.LinearAlgebra.CrossProduct
@@ -674,6 +675,28 @@ theorem involution_mul_one_add (Q : PauliMatrix) (hQ : Q * Q = 1)
   rw [mul_add, mul_one, mul_smul_comm, hQ]
   rw [smul_add, smul_smul]
   rw [show s * s = 1 by simpa [pow_two] using hs, one_smul]
+  module
+
+/-- The signed projector of a quadratic two-level Hamiltonian is an eigenprojector even
+after adding a scalar shift. This requires only `H² = E² I`, `E ≠ 0`, and `s² = 1`. -/
+theorem quadratic_shift_mul_projector
+    (H : PauliMatrix) (E ε s : ℂ) (hE : E ≠ 0)
+    (hquad : H * H = E ^ 2 • (1 : PauliMatrix))
+    (hs : s ^ 2 = 1) :
+    (ε • (1 : PauliMatrix) + H) *
+        ((1 / 2 : ℂ) • ((1 : PauliMatrix) + (s / E) • H)) =
+      (ε + s * E) •
+        ((1 / 2 : ℂ) • ((1 : PauliMatrix) + (s / E) • H)) := by
+  let Q : PauliMatrix := E⁻¹ • H
+  have hQ : Q * Q = 1 := Algebra.inv_smul_mul_self_eq_one H E hE hquad
+  have hH : H = E • Q := (smul_inv_smul₀ hE H).symm
+  have hP :
+      ((1 / 2 : ℂ) • ((1 : PauliMatrix) + (s / E) • H)) =
+        (1 / 2 : ℂ) • ((1 : PauliMatrix) + s • Q) := by
+    simp [Q, div_eq_mul_inv, smul_smul]
+  rw [hP, hH]
+  rw [add_mul, smul_mul_assoc, one_mul, smul_mul_assoc, mul_smul_comm,
+    involution_mul_one_add Q hQ s hs]
   module
 
 /-- The half-sum of the identity and a signed involution is idempotent. -/
