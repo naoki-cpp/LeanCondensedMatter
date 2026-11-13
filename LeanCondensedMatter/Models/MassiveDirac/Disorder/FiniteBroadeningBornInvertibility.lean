@@ -112,11 +112,10 @@ private theorem im_inner_self_finiteCutoffContinuumBornGreenIntegralOfRegulator_
       -regulator *
         ∫ p in (0 : ℝ)..pMax,
           continuumBornRadialDissipationDensity v m probeEnergy regulator ψ p := by
-  let eval :
-      (DiracHilbert →L[ℂ] DiracHilbert) →L[ℂ] DiracHilbert :=
-    ContinuousLinearMap.apply ℂ DiracHilbert ψ
-  let L : (DiracHilbert →L[ℂ] DiracHilbert) →L[ℂ] ℂ :=
-    (innerSL ℂ ψ).comp eval
+  let Q : (DiracHilbert →L[ℂ] DiracHilbert) →L[ℝ] ℝ :=
+    Complex.imCLM.comp
+      (((innerSL ℂ ψ).comp
+        (ContinuousLinearMap.apply ℂ DiracHilbert ψ)).restrictScalars ℝ)
   have hkernel : Continuous
       (continuumBornRadialGreenKernelOfRegulator v m probeEnergy regulator) :=
     continuous_continuumBornRadialGreenKernelOfRegulator
@@ -124,12 +123,7 @@ private theorem im_inner_self_finiteCutoffContinuumBornGreenIntegralOfRegulator_
   have hint : IntervalIntegrable
       (continuumBornRadialGreenKernelOfRegulator v m probeEnergy regulator)
       volume 0 pMax := hkernel.intervalIntegrable 0 pMax
-  have hmap := ContinuousLinearMap.intervalIntegral_comp_comm L hint
-  have hLint : IntervalIntegrable
-      (fun p : ℝ =>
-        L (continuumBornRadialGreenKernelOfRegulator v m probeEnergy regulator p))
-      volume 0 pMax :=
-    (L.continuous.comp hkernel).intervalIntegrable 0 pMax
+  have hmap := Q.intervalIntegral_comp_comm hint
   have hquad :
       (inner ℂ ψ
         (finiteCutoffContinuumBornGreenIntegralOfRegulator
@@ -138,22 +132,7 @@ private theorem im_inner_self_finiteCutoffContinuumBornGreenIntegralOfRegulator_
           (inner ℂ ψ
             (continuumBornRadialGreenKernelOfRegulator
               v m probeEnergy regulator p ψ)).im := by
-    unfold finiteCutoffContinuumBornGreenIntegralOfRegulator
-    change (L (∫ p in (0 : ℝ)..pMax,
-      continuumBornRadialGreenKernelOfRegulator
-        v m probeEnergy regulator p)).im = _
-    calc
-      _ = (∫ p in (0 : ℝ)..pMax,
-          L (continuumBornRadialGreenKernelOfRegulator
-            v m probeEnergy regulator p)).im := congrArg Complex.im hmap.symm
-      _ = ∫ p in (0 : ℝ)..pMax,
-          (L (continuumBornRadialGreenKernelOfRegulator
-            v m probeEnergy regulator p)).im :=
-            (intervalIntegral.intervalIntegral_im hLint).symm
-      _ = _ := by
-        apply intervalIntegral.integral_congr
-        intro p _
-        simp [L, eval]
+    simpa [Q, finiteCutoffContinuumBornGreenIntegralOfRegulator] using hmap.symm
   rw [hquad, ← intervalIntegral.integral_const_mul]
   apply intervalIntegral.integral_congr
   intro p _
