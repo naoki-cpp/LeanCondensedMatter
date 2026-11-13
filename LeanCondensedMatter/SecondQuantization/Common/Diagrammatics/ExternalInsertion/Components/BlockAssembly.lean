@@ -2843,6 +2843,63 @@ noncomputable def ExternalInsertionBlockLayout.fixedPartitionSizeShuffleConnecte
             (InternalLabel := InternalLabel))
         e.symm).symm)
 
+/-- The physical vacuum-free diagrams in one actual external-component
+partition fiber are equivalent to preconnected local diagrams together
+with their exact interaction-vertex owner assignment. The partition
+predicate is transported by the proved graph-component identity of
+the assembled diagram, rather than assumed. -/
+noncomputable def ExternalInsertionBlockLayout.fixedPartitionPhysicalAssemblyEquiv
+    {ExternalLabel InternalLabel : Type*}
+    (anchor : Fin (2 * E))
+    (π : Finpartition (Finset.univ : Finset (Fin (2 * E)))) :
+    {d : {d : ExternalInsertionDiagram ExternalLabel InternalLabel E N
+          (Finset.univ : Finset (Fin N)) //
+          HasNoVacuumComponent d.vertexGraph} //
+      externalComponentPartition d.1.vertexGraph = π} ≃
+    {p : Σ layout : ExternalInsertionBlockLayout E N,
+        layout.ConnectedBlockFamily (ExternalLabel := ExternalLabel)
+          (InternalLabel := InternalLabel) //
+      p.1.partition = π} := by
+  classical
+  let e := ExternalInsertionBlockLayout.connectedAssemblyEquiv
+    (ExternalLabel := ExternalLabel) (InternalLabel := InternalLabel) anchor
+  refine Equiv.subtypeEquiv e.symm ?_
+  intro d
+  let p := e.symm d
+  have he : (e p).1 = d.1 :=
+    congrArg Subtype.val (e.apply_symm_apply d)
+  have hpart : externalComponentPartition (e p).1.vertexGraph = p.1.partition :=
+    p.1.externalComponentPartition_assembleDiagram
+      (Finset.univ : Finset (Fin N)) p.2.1 p.2.2
+  have hp : externalComponentPartition d.1.vertexGraph = p.1.partition :=
+    (congrArg (fun x : ExternalInsertionDiagram ExternalLabel InternalLabel E N
+      (Finset.univ : Finset (Fin N)) =>
+        externalComponentPartition x.vertexGraph) he.symm).trans hpart
+  exact ⟨fun h => hp.symm.trans h, fun h => hp.trans h⟩
+
+/-- Every actual vacuum-free physical Wick diagram with the specified
+external-component partition is uniquely represented by (i) the local
+interaction cardinality of each external block, (ii) an order-preserving
+shuffle of those local slots, and (iii) one preconnected local labelled
+diagram for each block. This includes empty interaction fibers. -/
+noncomputable def ExternalInsertionBlockLayout.fixedPartitionPhysicalSizeShuffleEquiv
+    {ExternalLabel InternalLabel : Type*}
+    (anchor : Fin (2 * E))
+    (π : Finpartition (Finset.univ : Finset (Fin (2 * E))))
+    (heven : ∀ B : π.parts, Even (B : Finset (Fin (2 * E))).card) :
+    {d : {d : ExternalInsertionDiagram ExternalLabel InternalLabel E N
+          (Finset.univ : Finset (Fin N)) //
+          HasNoVacuumComponent d.vertexGraph} //
+      externalComponentPartition d.1.vertexGraph = π} ≃
+      Σ data : (Σ size : π.parts → ℕ, FamilySlotShuffleTo size N),
+        (((ExternalInsertionBlockLayout.fixedPartitionSizeShuffleEquiv π heven).symm data).1)
+          .ConnectedBlockFamily (ExternalLabel := ExternalLabel)
+            (InternalLabel := InternalLabel) :=
+  (ExternalInsertionBlockLayout.fixedPartitionPhysicalAssemblyEquiv
+    (ExternalLabel := ExternalLabel) (InternalLabel := InternalLabel) anchor π).trans
+    (ExternalInsertionBlockLayout.fixedPartitionSizeShuffleConnectedAssemblyEquiv
+      (ExternalLabel := ExternalLabel) (InternalLabel := InternalLabel) π heven)
+
 /-- The exact finite collection of physical layouts with a prescribed
 external partition, obtained from all actual interaction-owner functions.
 No artificial finiteness instance for arbitrary size vectors is used. -/
