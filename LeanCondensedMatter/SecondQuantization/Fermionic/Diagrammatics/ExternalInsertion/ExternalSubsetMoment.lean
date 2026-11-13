@@ -707,9 +707,8 @@ theorem ExternalInsertionBlockLayout.sum_signedDysonShuffleOrbits_eq_prod_connec
         apply Finset.sum_congr rfl
         intro F _
         by_cases h : ∀ B, condition B (F.1 B)
-        · simp only [h, ↓reduceIte]
-          exact horbit F
-        · simp only [h, ↓reduceIte]
+        · simpa [h] using horbit F
+        · simp [h]
     _ = externalPartitionSourceSign layout.partition *
         ∑ F : layout.ConnectedBlockFamily
           (ExternalLabel := ExternalFieldLabel Mode)
@@ -721,8 +720,10 @@ theorem ExternalInsertionBlockLayout.sum_signedDysonShuffleOrbits_eq_prod_connec
         apply Finset.sum_congr rfl
         intro F _
         split_ifs <;> simp
-    _ = _ := congrArg (fun z : ℂ => externalPartitionSourceSign layout.partition * z)
-      (layout.sum_connectedBlockFamilies_prod_if condition weight)
+    _ = _ := by
+      simpa only [condition, weight] using
+        (congrArg (fun z : ℂ => externalPartitionSourceSign layout.partition * z)
+          (layout.sum_connectedBlockFamilies_prod_if condition weight))
 
 omit [LinearOrder Mode] [Fintype Mode] in
 /-- On each external-partition block of a vacuum-free diagram, the field
