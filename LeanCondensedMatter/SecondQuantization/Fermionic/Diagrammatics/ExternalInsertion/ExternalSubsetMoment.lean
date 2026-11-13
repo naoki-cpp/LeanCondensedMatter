@@ -1539,8 +1539,8 @@ theorem externalSubsetMomentSeries_eq_signedConnected_two
     (labels : Fin 2 → ExternalFieldLabel Mode)
     (times : Fin 2 → ℝ) :
     ∀ S : Finset (Fin 2),
-      externalSubsetMomentSeries ε β g labels times S =
-        externalSubsetSignedConnectedMomentSeries ε β g labels times S := by
+      externalSubsetMomentSeries (E := 1) ε β g labels times S =
+        externalSubsetSignedConnectedMomentSeries (E := 1) ε β g labels times S := by
   classical
   intro S
   by_cases hEmpty : S = ∅
@@ -1556,7 +1556,7 @@ theorem externalSubsetMomentSeries_eq_signedConnected_two
         omega
       have hproper :
           ∀ B : Finset (Fin 2), B ⊂ S →
-            externalSubsetConnectedDiagramSeries ε β g labels times B = 0 := by
+            externalSubsetConnectedDiagramSeries (E := 1) ε β g labels times B = 0 := by
         intro B hB
         by_cases hBempty : B = ∅
         · simp [hBempty]
@@ -1564,29 +1564,29 @@ theorem externalSubsetMomentSeries_eq_signedConnected_two
             Finset.card_pos.mpr (Finset.nonempty_iff_ne_empty.mpr hBempty)
           have hlt : B.card < S.card := Finset.card_lt_card hB
           have hBcard : B.card = 1 := by omega
-          exact (externalSubsetSeries_eq_zero_of_odd
+          exact (externalSubsetSeries_eq_zero_of_odd (E := 1)
             ε β g labels times B (by simp [hBcard])).2
       have hweighted :
-          externalSubsetSignedConnectedMomentSeries ε β g labels times S =
-            externalSubsetConnectedDiagramSeries ε β g labels times S := by
+          externalSubsetSignedConnectedMomentSeries (E := 1) ε β g labels times S =
+            externalSubsetConnectedDiagramSeries (E := 1) ε β g labels times S := by
         unfold externalSubsetSignedConnectedMomentSeries
-        exact externalPartitionWeightedMoment_eq_of_proper_zero
-          (externalSubsetConnectedDiagramSeries ε β g labels times)
+        exact externalPartitionWeightedMoment_eq_of_proper_zero (E := 1)
+          (externalSubsetConnectedDiagramSeries (E := 1) ε β g labels times)
           S hEmpty hproper
       have hphysical :
-          externalSubsetMomentSeries ε β g labels times S =
-            externalSubsetConnectedDiagramSeries ε β g labels times S := by
+          externalSubsetMomentSeries (E := 1) ε β g labels times S =
+            externalSubsetConnectedDiagramSeries (E := 1) ε β g labels times S := by
         simp only [externalSubsetMomentSeries, externalSubsetConnectedDiagramSeries,
           hEmpty, hEven, dif_neg, dif_pos]
         have hhalf : S.card / 2 = 1 := by omega
         cases hhalf
         exact vacuumFreeExternalInsertionDysonSeries_eq_connected_two
-          ε β g (evenExternalSubsetLabels labels S hEven)
-          (evenExternalSubsetTimes times S hEven)
+          ε β g (evenExternalSubsetLabels (E := 1) labels S hEven)
+          (evenExternalSubsetTimes (E := 1) times S hEven)
       exact hphysical.trans hweighted.symm
-    · rw [(externalSubsetSeries_eq_zero_of_odd
+    · rw [(externalSubsetSeries_eq_zero_of_odd (E := 1)
         ε β g labels times S hEven).1,
-        externalSubsetSignedConnectedMomentSeries_eq_zero_of_odd
+        externalSubsetSignedConnectedMomentSeries_eq_zero_of_odd (E := 1)
           ε β g labels times S hEven]
 
 /-- The precise remaining physical bridge for Phase 5: once the actual
@@ -1623,9 +1623,9 @@ theorem externalSubsetSourceCumulantSeries_eq_connectedDiagramSeries_two
     (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
     (labels : Fin 2 → ExternalFieldLabel Mode)
     (times : Fin 2 → ℝ) :
-    externalSubsetSourceCumulantSeries
-        (externalSubsetMomentSeries ε β g labels times) =
-      externalSubsetConnectedDiagramSeries ε β g labels times := by
+    externalSubsetSourceCumulantSeries (E := 1)
+        (externalSubsetMomentSeries (E := 1) ε β g labels times) =
+      externalSubsetConnectedDiagramSeries (E := 1) ε β g labels times := by
   exact externalSubsetSourceCumulantSeries_eq_connectedDiagramSeries_of_signedMoments
     ε β g labels times
     (externalSubsetMomentSeries_eq_signedConnected_two ε β g labels times)
