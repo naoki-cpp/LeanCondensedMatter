@@ -100,10 +100,9 @@ theorem bandEnergy_injective (v m px py : ℝ) (hE : energy v m px py ≠ 0) :
   intro a b hab
   cases a <;> cases b <;> try rfl
   all_goals
-    exfalso
-    apply hE
-    simp only [bandEnergy_lower, bandEnergy_upper] at hab
-    linarith
+    exact (hE (by
+      simp only [bandEnergy_lower, bandEnergy_upper] at hab
+      linarith)).elim
 
 /-- Away from the band degeneracy, `H₀ P_s = E_s P_s`. -/
 theorem hamiltonian_mul_bandProjector (band : Band) (v m px py : ℝ)
