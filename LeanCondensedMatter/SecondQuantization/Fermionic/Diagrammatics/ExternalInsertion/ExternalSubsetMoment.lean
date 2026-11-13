@@ -1050,6 +1050,67 @@ theorem sum_fixedExternalPartitionFiber_eq_sum_localLabelConnectedBlockFamilies
   simp only [layout.assembleDiagram_externalLabel_eq_iff
     (Finset.univ : Finset (Fin n)) F labels]
 
+open Classical in
+/-- The actual integrated, fixed-source-label Dyson coefficient in one
+even external-component partition is reindexed by the physical interaction
+cardinalities and their unique owner shuffle, together with independently
+preconnected local labelled Wick diagrams. Each summand remains the
+*actual assembled physical Dyson amplitude*; the further shuffle-orbit
+summation is needed before its local integrals can be multiplied. -/
+theorem sum_fixedExternalPartitionDysonFiber_eq_sizes_shuffles
+    {K n : ℕ} (anchor : Fin (2 * K))
+    (π : Finpartition (Finset.univ : Finset (Fin (2 * K))))
+    (heven : ∀ B : π.parts, Even (B : Finset (Fin (2 * K))).card)
+    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
+    (labels : Fin (2 * K) → ExternalFieldLabel Mode)
+    (times : Fin (2 * K) → ℝ) :
+    (∑ d : VacuumFreeFixedExternalInsertionWickDiagram Mode K n labels,
+      if externalComponentPartition d.1.1.vertexGraph = π then
+        d.1.1.dysonAmplitude ε β g times else 0) =
+      ∑ p ∈ ExternalInsertionBlockLayout.fixedPartitionPhysicalSizeShuffleFiniteDomain
+          (ExternalLabel := ExternalFieldLabel Mode)
+          (InternalLabel := QuarticVertexLabel Mode) anchor π heven,
+        if (((ExternalInsertionBlockLayout.fixedPartitionPhysicalSizeShuffleEquiv
+            (ExternalLabel := ExternalFieldLabel Mode)
+            (InternalLabel := QuarticVertexLabel Mode)
+            anchor π heven).symm p).1.1).externalLabel = labels then
+          (((ExternalInsertionBlockLayout.fixedPartitionPhysicalSizeShuffleEquiv
+            (ExternalLabel := ExternalFieldLabel Mode)
+            (InternalLabel := QuarticVertexLabel Mode)
+            anchor π heven).symm p).1.1).dysonAmplitude ε β g times
+        else 0 := by
+  classical
+  have hfixed :=
+    sum_vacuumFreeFixedExternalInsertionWickDiagram_eq_sum_if
+      (Mode := Mode) labels
+      (fun d : ExternalInsertionWickDiagram Mode K n =>
+        if externalComponentPartition d.vertexGraph = π then
+          d.dysonAmplitude ε β g times else 0)
+  calc
+    (∑ d : VacuumFreeFixedExternalInsertionWickDiagram Mode K n labels,
+      if externalComponentPartition d.1.1.vertexGraph = π then
+        d.1.1.dysonAmplitude ε β g times else 0) =
+      ∑ d : {d : ExternalInsertionWickDiagram Mode K n //
+          HasNoVacuumComponent d.vertexGraph},
+        if d.1.externalLabel = labels then
+          if externalComponentPartition d.1.vertexGraph = π then
+            d.1.dysonAmplitude ε β g times else 0
+        else 0 := hfixed
+    _ = ∑ d : {d : ExternalInsertionWickDiagram Mode K n //
+          HasNoVacuumComponent d.vertexGraph},
+        if externalComponentPartition d.1.vertexGraph = π then
+          if d.1.externalLabel = labels then
+            d.1.dysonAmplitude ε β g times else 0
+        else 0 := by
+          apply Finset.sum_congr rfl
+          intro d _
+          by_cases hp : externalComponentPartition d.1.vertexGraph = π <;> simp [hp]
+    _ = _ :=
+      ExternalInsertionBlockLayout.sum_vacuumFree_fixedPartition_eq_sizes_shuffles
+        anchor π heven
+        (fun d : ExternalInsertionWickDiagram Mode K n =>
+          if d.externalLabel = labels then d.dysonAmplitude ε β g times else 0)
+
 /-- The full fixed-order physical Dyson coefficient is reindexed by even
 external-component partitions and independently labelled connected blocks.
 The owner assignments and genuine assembled Dyson amplitudes are retained:
