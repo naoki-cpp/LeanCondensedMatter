@@ -101,13 +101,23 @@ theorem ScalarImpurityParameters.norm_matrixOperator_tMatrix_sub_bare_le
     simpa only [ScalarImpurityParameters.shiftMatrix] using hinvertible
   have hrem := QuantumTheory.Transport.scalarImpurityTMatrix_sub_bare
     ((params.impurityStrength : ℝ) : ℂ) greenLoop hunit
+  have hunitEq : hunit.unit = hinvertible.unit := by
+    apply Units.ext
+    calc
+      (hunit.unit : Matrix2) =
+          1 - (((params.impurityStrength : ℝ) : ℂ)) • greenLoop :=
+        hunit.unit_spec.symm
+      _ = params.shiftMatrix greenLoop := rfl
+      _ = (hinvertible.unit : Matrix2) := hinvertible.unit_spec
+  simp only [QuantumTheory.Transport.scalarImpurityTMatrix] at hrem
+  rw [hunitEq] at hrem
   have hrewrite :
       params.tMatrix greenLoop hinvertible -
           (((params.impurityStrength : ℝ) : ℂ)) • (1 : Matrix2) =
         (((params.impurityStrength : ℝ) : ℂ)) •
           (greenLoop * params.tMatrix greenLoop hinvertible) := by
-    simpa only [QuantumTheory.Transport.scalarImpurityTMatrix,
-      ScalarImpurityParameters.tMatrix, ScalarImpurityParameters.inverseShiftMatrix] using hrem
+    simpa only [ScalarImpurityParameters.tMatrix,
+      ScalarImpurityParameters.inverseShiftMatrix] using hrem
   rw [hrewrite]
   simp only [matrixOperator, map_smul, map_mul]
   rw [norm_smul]
