@@ -794,13 +794,12 @@ theorem ExternalInsertionBlockLayout.sum_preconnectedDysonBlock_eq_standardized
     · ext d
       simp
     · intro d _
-      simp only [T, targetLabels, targetTimes,
-        ExternalInsertionDiagram.slotCongr_externalLabel]
+      rfl
   · apply Finset.sum_congr
     · ext d
       simp
     · intro d _
-      simp only [T, targetLabels, targetTimes]
+      rfl
 
 open Classical in
 /-- For one physical external-component layout, the complete integrated
@@ -847,7 +846,8 @@ theorem ExternalInsertionBlockLayout.sum_signedDysonShuffleOrbits_eq_prod_standa
   apply congrArg (fun z : ℂ => externalPartitionSourceSign layout.partition * z)
   apply Finset.prod_congr rfl
   intro B _
-  exact layout.sum_preconnectedDysonBlock_eq_standardized B ε β g labels times
+  exact SecondQuantization.Fermionic.ExternalInsertionBlockLayout.sum_preconnectedDysonBlock_eq_standardized
+    layout B ε β g labels times
 
 omit [LinearOrder Mode] [Fintype Mode] in
 /-- On each external-partition block of a vacuum-free diagram, the field
