@@ -3142,6 +3142,14 @@
       "externalImportCount": 3
     },
     {
+      "name": "LeanCondensedMatter.Models.OrbitalRelaxation.SphereMoments",
+      "sourceFile": "LeanCondensedMatter/Models/OrbitalRelaxation/SphereMoments.lean",
+      "imports": [
+        "LeanCondensedMatter.Models.OrbitalRelaxation.Finite"
+      ],
+      "externalImportCount": 5
+    },
+    {
       "name": "LeanCondensedMatter.Models.OrbitalRelaxation.T2gProjectors",
       "sourceFile": "LeanCondensedMatter/Models/OrbitalRelaxation/T2gProjectors.lean",
       "imports": [
@@ -3355,6 +3363,7 @@
         "LeanCondensedMatter.Models.OrbitalRelaxation.AngularCollision",
         "LeanCondensedMatter.Models.OrbitalRelaxation.Finite",
         "LeanCondensedMatter.Models.OrbitalRelaxation.KineticClosure",
+        "LeanCondensedMatter.Models.OrbitalRelaxation.SphereMoments",
         "LeanCondensedMatter.Models.OrbitalRelaxation.T2gProjectors",
         "LeanCondensedMatter.Models.OrbitalTransport.Finite",
         "LeanCondensedMatter.Models.OrbitalTransport.TwoSite",
@@ -3987,8 +3996,7 @@
         "LeanCondensedMatter.QuantumTheory.DensityOperator.Pure",
         "LeanCondensedMatter.QuantumTheory.DensityOperator.PureState",
         "LeanCondensedMatter.QuantumTheory.DensityOperator.Purity",
-        "LeanCondensedMatter.QuantumTheory.POVM.Basic",
-        "LeanCondensedMatter.QuantumTheory.POVM.Born"
+        "LeanCondensedMatter.QuantumTheory.POVM"
       ],
       "externalImportCount": 0
     },
@@ -4597,6 +4605,15 @@
       "externalImportCount": 4
     },
     {
+      "name": "LeanCondensedMatter.QuantumTheory.POVM",
+      "sourceFile": "LeanCondensedMatter/QuantumTheory/POVM.lean",
+      "imports": [
+        "LeanCondensedMatter.QuantumTheory.POVM.Basic",
+        "LeanCondensedMatter.QuantumTheory.POVM.Born"
+      ],
+      "externalImportCount": 0
+    },
+    {
       "name": "LeanCondensedMatter.QuantumTheory.PeierlsLattice",
       "sourceFile": "LeanCondensedMatter/QuantumTheory/PeierlsLattice.lean",
       "imports": [
@@ -4665,6 +4682,7 @@
         "LeanCondensedMatter.QuantumTheory.LinearResponse",
         "LeanCondensedMatter.QuantumTheory.LocalizedSpin",
         "LeanCondensedMatter.QuantumTheory.Occupation",
+        "LeanCondensedMatter.QuantumTheory.POVM",
         "LeanCondensedMatter.QuantumTheory.PeierlsLattice",
         "LeanCondensedMatter.QuantumTheory.PeierlsPhase",
         "LeanCondensedMatter.QuantumTheory.PlanckConstant",
@@ -7205,6 +7223,7 @@
       "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalSubsetMoment",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Diagrammatics/ExternalInsertion/ExternalSubsetMoment.lean",
       "imports": [
+        "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ExternalConnectivity",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentIntegral",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalSourceCumulant",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.InteractionPictureVertexDyson"
@@ -7398,7 +7417,7 @@
       "imports": [
         "LeanCondensedMatter.Analysis.PowerSeries.Moment",
         "LeanCondensedMatter.Analysis.PowerSeries.ReplicaBridge",
-        "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion"
+        "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Moment"
       ],
       "externalImportCount": 0
     },
