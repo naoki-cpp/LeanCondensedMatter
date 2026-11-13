@@ -31,6 +31,21 @@ theorem angularCollision_eq (kernel : Ω → Ω → ℝ) (f : Ω → ℝ) (p : �
       (∑ q, kernel p q * f q) - (∑ q, kernel p q) * f p := by
   simp [angularCollision, mul_sub, Finset.sum_sub_distrib, Finset.sum_mul]
 
+/-- Multiplying an angular mode by a constant commutes with finite scattering. -/
+theorem angularCollision_const_mul
+    (kernel : Ω → Ω → ℝ) (c : ℝ) (f : Ω → ℝ) (p : Ω) :
+    angularCollision kernel (fun q => c * f q) p =
+      c * angularCollision kernel f p := by
+  unfold angularCollision
+  calc
+    (∑ q, kernel p q * (c * f q - c * f p)) =
+        ∑ q, c * (kernel p q * (f q - f p)) := by
+          apply Finset.sum_congr rfl
+          intro q _
+          ring
+    _ = c * ∑ q, kernel p q * (f q - f p) := by
+          rw [Finset.mul_sum]
+
 /-- Coordinate direction mode, the finite analogue of a degree-one spherical harmonic. -/
 def coordinateMode (direction : Ω → Fin 3 → ℝ) (i : Fin 3) (p : Ω) : ℝ :=
   direction p i
