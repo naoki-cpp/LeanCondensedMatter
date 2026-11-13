@@ -38,8 +38,9 @@ theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivity
         e v m probeEnergy disorderStrength hbar pMax).hallComponent 0 1 =
       finiteCutoffContinuumBornDysonOrderedXYRetardedAdvancedDressedSurfaceConductivityZeroBroadeningBoundary
         e v m probeEnergy disorderStrength hbar pMax := by
-  simp [ConductivityTensor.hallComponent,
-    finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensorZeroBroadeningBoundary]
+  exact ConductivityTensor.hallComponent_zero_one_eq_of_isPlanarIsotropic _
+    (by constructor <;> simp [
+      finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensorZeroBroadeningBoundary])
 
 /-- The fixed-cutoff Hall projection has the same one-sided weak-disorder limit as the ordered `xy`
 endpoint, now interpreted as the antisymmetric part of a completed conductivity tensor. -/

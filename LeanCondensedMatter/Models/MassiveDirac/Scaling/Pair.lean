@@ -96,11 +96,10 @@ theorem AheScalingParameters.finiteBroadeningPair_sxy
           params.hbar params.pMax).component 0 1) := by
   unfold AheScalingParameters.finiteBroadeningPair
     AheScalingParameters.normalizedPairOfTensor
-    AheScalingParameters.normalizedComplexConductivity
-    ConductivityTensor.longitudinal ConductivityTensor.hallComponent
-  rw [
-    finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensor_component_yx_eq_neg_xy]
-  ring
+  rw [ConductivityTensor.hallComponent_zero_one_eq_of_isPlanarIsotropic
+    _ (finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensor_isPlanarIsotropic
+      params.e params.v params.m params.fermiEnergy broadening params.disorderStrength
+      params.hbar params.pMax)]
 
 /-- The zero-broadening longitudinal scaling coordinate at arbitrary disorder strength is the
 normalized ordered `xx` boundary component. -/

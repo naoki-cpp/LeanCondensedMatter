@@ -26,27 +26,17 @@ open QuantumTheory.Transport
 
 open Filter QuantumTheory.Transport
 
-/-- Finite-`η` rotational closure makes the physically normalized ordered `yx` tensor component the
-negative of ordered `xy`. -/
-theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensor_component_yx_eq_neg_xy
+/-- The finite-broadening dressed Středa conductivity tensor has the planar-isotropic
+component structure proved by the angular and radial response identities. -/
+theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensor_isPlanarIsotropic
     (e v m probeEnergy broadening disorderStrength hbar pMax : ℝ) :
     (finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensor
-        e v m probeEnergy broadening disorderStrength hbar pMax).component 1 0 =
-      -(finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensor
-        e v m probeEnergy broadening disorderStrength hbar pMax).component 0 1 := by
-  simp [finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensor,
-    finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral_yx_eq_neg_xy]
-
-/-- Finite-`η` rotational closure makes the two physically normalized diagonal tensor components
-equal. -/
-theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensor_component_yy_eq_xx
-    (e v m probeEnergy broadening disorderStrength hbar pMax : ℝ) :
-    (finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensor
-        e v m probeEnergy broadening disorderStrength hbar pMax).component 1 1 =
-      (finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensor
-        e v m probeEnergy broadening disorderStrength hbar pMax).component 0 0 := by
-  simp [finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensor,
-    finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral_yy_eq_xx]
+      e v m probeEnergy broadening disorderStrength hbar pMax).IsPlanarIsotropic := by
+  constructor
+  · simp [finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensor,
+      finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral_yy_eq_xx]
+  · simp [finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensor,
+      finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral_yx_eq_neg_xy]
 
 /-- Physical fixed-cutoff conductivity tensor after the componentwise `η → 0⁺` boundary has been
 formed at fixed positive disorder. -/
@@ -87,17 +77,20 @@ theorem tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceCond
   have hxy :=
     tendsto_finiteCutoffContinuumBornDysonOrderedXYRetardedAdvancedDressedSurfaceConductivity_broadening_zero
       e regime hrenorm hdet
-  fin_cases measured <;> fin_cases source
-  · simpa [finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensorZeroBroadeningBoundary] using hxx
-  · simpa [finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensorZeroBroadeningBoundary] using hxy
-  · apply Tendsto.congr' ?_ hxy.neg
-    filter_upwards with broadening
-    exact (finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensor_component_yx_eq_neg_xy
-      e regime.v regime.m regime.probeEnergy broadening regime.disorderStrength regime.hbar regime.pMax).symm
-  · apply Tendsto.congr' ?_ hxx
-    filter_upwards with broadening
-    exact (finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensor_component_yy_eq_xx
-      e regime.v regime.m regime.probeEnergy broadening regime.disorderStrength regime.hbar regime.pMax).symm
+  exact ConductivityTensor.tendsto_component_of_isPlanarIsotropic
+    (fun broadening : ℝ =>
+      finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensor
+        e regime.v regime.m regime.probeEnergy broadening regime.disorderStrength regime.hbar
+          regime.pMax)
+    (finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensorZeroBroadeningBoundary
+      e regime.v regime.m regime.probeEnergy regime.disorderStrength regime.hbar regime.pMax)
+    (fun broadening =>
+      finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensor_isPlanarIsotropic
+        e regime.v regime.m regime.probeEnergy broadening regime.disorderStrength regime.hbar
+          regime.pMax)
+    (by constructor <;> simp [
+      finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensorZeroBroadeningBoundary])
+    hxx hxy measured source
 
 end
 
