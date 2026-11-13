@@ -57074,7 +57074,8 @@
       "QuantumTheory.Models.MassiveDirac.AheScalingParameters.tendsto_finiteBroadeningPair_sxy_broadening_zero"
     ],
     "dependencies": [
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensor_component_yx_eq_neg_xy"
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensor_isPlanarIsotropic",
+      "QuantumTheory.Transport.ConductivityTensor.hallComponent_zero_one_eq_of_isPlanarIsotropic"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -57199,7 +57200,6 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensorZeroBroadeningBoundary_hallComponent_xy",
       "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensorZeroBroadeningBoundary_hallComponent_disorder_zero_eq_nonCrossing"
     ],
     "crossModuleDirectWrapper": false,
@@ -57280,7 +57280,7 @@
       "QuantumTheory.Models.MassiveDirac.AheScalingParameters.zeroBroadeningPair_sxy"
     ],
     "dependencies": [
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensorZeroBroadeningBoundary_hallComponent_xy"
+      "QuantumTheory.Transport.ConductivityTensor.hallComponent_zero_one_eq_of_isPlanarIsotropic"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -68877,53 +68877,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (e v m probeEnergy disorderStrength hbar pMax : ℝ),\n  (QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensorZeroBroadeningBoundary\n          e v m probeEnergy disorderStrength hbar pMax).hallComponent\n      0 1 =\n    QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonOrderedXYRetardedAdvancedDressedSurfaceConductivityZeroBroadeningBoundary\n      e v m probeEnergy disorderStrength hbar pMax",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensorZeroBroadeningBoundary_hallComponent_xy",
-    "module": "LeanCondensedMatter.Models.MassiveDirac.Conductivity.Hall.FiniteBroadeningBornLadderProjection",
-    "externalAxioms": [],
-    "docString": "The antisymmetric Hall projection of the zero-broadening tensor equals its ordered `xy`\ncomponent exactly. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Models.MassiveDirac.AheScalingParameters.tendsto_zeroBroadeningPairAtDisorder_sxy_disorder_zero",
-      "QuantumTheory.Models.MassiveDirac.AheScalingParameters.zeroBroadeningPairAtDisorder_sxy",
-      "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensorZeroBroadeningBoundary_hallComponent_disorder_zero"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Models.MassiveDirac.AheScalingParameters.tendsto_zeroBroadeningPairAtDisorder_sxy_disorder_zero",
-      "QuantumTheory.Models.MassiveDirac.AheScalingParameters.zeroBroadeningPairAtDisorder_sxy",
-      "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensorZeroBroadeningBoundary_hallComponent_disorder_zero"
-    ],
-    "compiledConsumerCount": 3,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (e v m probeEnergy broadening disorderStrength hbar pMax : ℝ),\n  (QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensor e v\n          m probeEnergy broadening disorderStrength hbar pMax).component\n      1 0 =\n    -(QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensor e\n            v m probeEnergy broadening disorderStrength hbar pMax).component\n        0 1",
+    "statement": "∀ (e v m probeEnergy broadening disorderStrength hbar pMax : ℝ),\n  (QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensor e v\n      m probeEnergy broadening disorderStrength hbar pMax).IsPlanarIsotropic",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -68935,10 +68889,10 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensor_component_yx_eq_neg_xy",
+    "name": "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensor_isPlanarIsotropic",
     "module": "LeanCondensedMatter.Models.MassiveDirac.Conductivity.FiniteBroadeningBornLadderZeroBroadening",
     "externalAxioms": [],
-    "docString": "Finite-`η` rotational closure makes the physically normalized ordered `yx` tensor component the\nnegative of ordered `xy`. ",
+    "docString": "The finite-broadening dressed Středa conductivity tensor has the planar-isotropic\ncomponent structure proved by the angular and radial response identities. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
@@ -68946,7 +68900,8 @@
       "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensor_component_broadening_zero"
     ],
     "dependencies": [
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral_yx_eq_neg_xy"
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral_yx_eq_neg_xy",
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral_yy_eq_xx"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -68955,50 +68910,6 @@
       "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensor_component_broadening_zero"
     ],
     "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (e v m probeEnergy broadening disorderStrength hbar pMax : ℝ),\n  (QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensor e v\n          m probeEnergy broadening disorderStrength hbar pMax).component\n      1 1 =\n    (QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensor e\n          v m probeEnergy broadening disorderStrength hbar pMax).component\n      0 0",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensor_component_yy_eq_xx",
-    "module": "LeanCondensedMatter.Models.MassiveDirac.Conductivity.FiniteBroadeningBornLadderZeroBroadening",
-    "externalAxioms": [],
-    "docString": "Finite-`η` rotational closure makes the two physically normalized diagonal tensor components\nequal. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensor_component_broadening_zero"
-    ],
-    "dependencies": [
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral_yy_eq_xx"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensor_component_broadening_zero"
-    ],
-    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -69032,7 +68943,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensor_component_yx_eq_neg_xy"
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensor_isPlanarIsotropic"
     ],
     "dependencies": [
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceRadialIntegrand_eq_radialCoefficient",
@@ -69041,7 +68952,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensor_component_yx_eq_neg_xy"
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensor_isPlanarIsotropic"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -69077,7 +68988,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensor_component_yy_eq_xx"
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensor_isPlanarIsotropic"
     ],
     "dependencies": [
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceRadialIntegrand_eq_radialCoefficient",
@@ -69086,7 +68997,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensor_component_yy_eq_xx"
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensor_isPlanarIsotropic"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -79942,7 +79853,6 @@
       "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensorZeroBroadeningBoundary_hallComponent_disorder_zero_eq_nonCrossing"
     ],
     "dependencies": [
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensorZeroBroadeningBoundary_hallComponent_xy",
       "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonOrderedXYRetardedAdvancedDressedSurfaceConductivityZeroBroadeningBoundary_disorder_zero"
     ],
     "crossModuleDirectWrapper": false,
@@ -80032,8 +79942,7 @@
       "QuantumTheory.Models.MassiveDirac.AheScalingParameters.tendsto_finiteBroadeningPair_sxy_broadening_zero"
     ],
     "dependencies": [
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensor_component_yx_eq_neg_xy",
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensor_component_yy_eq_xx",
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensor_isPlanarIsotropic",
       "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceConductivity_broadening_zero",
       "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonOrderedXYRetardedAdvancedDressedSurfaceConductivity_broadening_zero"
     ],
@@ -88700,6 +88609,50 @@
     "completedMention": false,
     "compiledConsumers": [],
     "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (conductivity : QuantumTheory.Transport.ConductivityTensor (Fin 2)),\n  conductivity.IsPlanarIsotropic → conductivity.hallComponent 0 1 = conductivity.component 0 1",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.ConductivityTensor.hallComponent_zero_one_eq_of_isPlanarIsotropic",
+    "module": "LeanCondensedMatter.Transport.Core.ConductivityTensor",
+    "externalAxioms": [],
+    "docString": "For a planar-isotropic tensor, the Hall projection equals the ordered xy component. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.MassiveDirac.AheScalingParameters.finiteBroadeningPair_sxy",
+      "QuantumTheory.Models.MassiveDirac.AheScalingParameters.zeroBroadeningPairAtDisorder_sxy"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.AheScalingParameters.finiteBroadeningPair_sxy",
+      "QuantumTheory.Models.MassiveDirac.AheScalingParameters.zeroBroadeningPairAtDisorder_sxy"
+    ],
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -106995,7 +106948,6 @@
       "SecondQuantization.Bosonic.FreeThermalField.grandCanonicalGibbsExpectation_operator_comp_rotate",
       "SecondQuantization.Bosonic.FreeThermalField.operatorPeelSum_mem_grandCanonicalGibbsDomain",
       "SecondQuantization.Bosonic.FreeThermalField.operator_comp_orderedProduct_eq_operatorPeelSum",
-      "SecondQuantization.Bosonic.FreeThermalField.orderedProduct_append_singleton",
       "SecondQuantization.Bosonic.FreeThermalField.orderedProduct_mem_grandCanonicalGibbsDomain",
       "SecondQuantization.Common.tsumTrace_add"
     ],
@@ -107331,48 +107283,6 @@
       "ScalarExchange.mul_prod_eq_peelSum",
       "SecondQuantization.Bosonic.FreeThermalField.operator_comp_operator_eq_exchangeValue"
     ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Bosonic.FreeThermalField.grandCanonicalGibbsExpectation_cons_eq_kmsRatio_mul_operatorPeelSum"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Mode : Type u_1} (l : List (SecondQuantization.Bosonic.FreeThermalField Mode))\n  (C : SecondQuantization.Bosonic.FreeThermalField Mode),\n  SecondQuantization.Bosonic.FreeThermalField.orderedProduct (l ++ [C]) =\n    SecondQuantization.Bosonic.FreeThermalField.orderedProduct l ∘ₗ C.operator",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Bosonic.FreeThermalField.orderedProduct_append_singleton",
-    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.FreeFirstPair",
-    "externalAxioms": [],
-    "docString": "Appending a free thermal field on the right agrees with postcomposition by its operator. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Bosonic.FreeThermalField.grandCanonicalGibbsExpectation_cons_eq_kmsRatio_mul_operatorPeelSum"
-    ],
-    "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
