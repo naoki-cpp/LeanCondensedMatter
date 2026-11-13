@@ -1075,7 +1075,7 @@ theorem sum_fixedExternalPartitionFiber_eq_sum_localLabelConnectedBlockFamilies
         ExternalInsertionWickDiagram.dysonAmplitude d ε β g times
       else 0
     else 0)
-  simpa only [layout.assembleDiagram_externalLabel_eq_iff
+  simpa only [d, layout.assembleDiagram_externalLabel_eq_iff
     (Finset.univ : Finset (Fin n)) F labels]
 
 /-- The canonical physical Dyson integral of an independently
