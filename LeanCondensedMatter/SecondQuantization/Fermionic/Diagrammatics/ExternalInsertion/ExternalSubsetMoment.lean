@@ -1112,6 +1112,84 @@ theorem sum_fixedExternalPartitionDysonFiber_eq_sizes_shuffles
         (fun d : ExternalInsertionWickDiagram Mode K n =>
           if d.externalLabel = labels then d.dysonAmplitude ε β g times else 0)
 
+open Classical in
+/-- A physical, integrated fixed-label Dyson partition fiber is a finite
+sum over the unique owner size/shuffle data and independently connected
+local Wick diagrams, with the source-label predicate imposed *blockwise*
+in the canonical increasing external-slot order. This is the form needed
+to compare the physical owner-shuffle sum with the previously proved
+summed connected-block Dyson shuffle orbit. No amplitude has been
+factorized at the level of an individual ordered-simplex integral. -/
+theorem sum_fixedExternalPartitionDysonFiber_eq_sizes_shuffles_localLabels
+    {K n : ℕ} (anchor : Fin (2 * K))
+    (π : Finpartition (Finset.univ : Finset (Fin (2 * K))))
+    (heven : ∀ B : π.parts, Even (B : Finset (Fin (2 * K))).card)
+    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
+    (labels : Fin (2 * K) → ExternalFieldLabel Mode)
+    (times : Fin (2 * K) → ℝ) :
+    (∑ d : VacuumFreeFixedExternalInsertionWickDiagram Mode K n labels,
+      if externalComponentPartition d.1.1.vertexGraph = π then
+        d.1.1.dysonAmplitude ε β g times else 0) =
+      ∑ p ∈ ExternalInsertionBlockLayout.fixedPartitionPhysicalSizeShuffleFiniteDomain
+          (E := K) (N := n) (ExternalLabel := ExternalFieldLabel Mode)
+          (InternalLabel := QuarticVertexLabel Mode) anchor π heven,
+        let layout : ExternalInsertionBlockLayout K n :=
+          ((ExternalInsertionBlockLayout.fixedPartitionSizeShuffleEquiv
+            (E := K) (N := n) π heven).symm p.1).1
+        if ∀ B : layout.partition.parts,
+            (p.2.1 B).externalLabel =
+              evenExternalSubsetLabels labels (B : Finset (Fin (2 * K)))
+                (layout.evenBlocks B) then
+          ExternalInsertionWickDiagram.dysonAmplitude
+            (layout.assembleDiagram (Finset.univ : Finset (Fin n)) p.2.1)
+            ε β g times
+        else 0 := by
+  classical
+  rw [sum_fixedExternalPartitionDysonFiber_eq_sizes_shuffles
+    anchor π heven ε β g labels times]
+  apply Finset.sum_congr rfl
+  intro p _
+  let layout : ExternalInsertionBlockLayout K n :=
+    ((ExternalInsertionBlockLayout.fixedPartitionSizeShuffleEquiv
+      (E := K) (N := n) π heven).symm p.1).1
+  have hd :
+      (((ExternalInsertionBlockLayout.fixedPartitionPhysicalSizeShuffleEquiv
+        (E := K) (N := n) (ExternalLabel := ExternalFieldLabel Mode)
+        (InternalLabel := QuarticVertexLabel Mode)
+        anchor π heven).symm p).1.1) =
+          layout.assembleDiagram (Finset.univ : Finset (Fin n)) p.2.1 :=
+    ExternalInsertionBlockLayout.fixedPartitionPhysicalSizeShuffleEquiv_symm_diagram
+      (E := K) (N := n) anchor π heven p
+  have hl :
+      (layout.assembleDiagram (Finset.univ : Finset (Fin n)) p.2.1).externalLabel =
+        labels ↔
+        ∀ B : layout.partition.parts,
+          (p.2.1 B).externalLabel =
+            evenExternalSubsetLabels labels (B : Finset (Fin (2 * K)))
+              (layout.evenBlocks B) :=
+    layout.assembleDiagram_externalLabel_eq_iff_evenSubsetLabels p.2.1 labels
+  change (if
+      (((ExternalInsertionBlockLayout.fixedPartitionPhysicalSizeShuffleEquiv
+        (E := K) (N := n) (ExternalLabel := ExternalFieldLabel Mode)
+        (InternalLabel := QuarticVertexLabel Mode)
+        anchor π heven).symm p).1.1).externalLabel = labels then
+        ExternalInsertionWickDiagram.dysonAmplitude
+          (((ExternalInsertionBlockLayout.fixedPartitionPhysicalSizeShuffleEquiv
+            (E := K) (N := n) (ExternalLabel := ExternalFieldLabel Mode)
+            (InternalLabel := QuarticVertexLabel Mode)
+            anchor π heven).symm p).1.1) ε β g times
+      else 0) =
+    (if ∀ B : layout.partition.parts,
+        (p.2.1 B).externalLabel =
+          evenExternalSubsetLabels labels (B : Finset (Fin (2 * K)))
+            (layout.evenBlocks B) then
+        ExternalInsertionWickDiagram.dysonAmplitude
+          (layout.assembleDiagram (Finset.univ : Finset (Fin n)) p.2.1)
+          ε β g times
+      else 0)
+  rw [hd]
+  exact if_congr hl (fun _ => rfl) rfl
+
 /-- The full fixed-order physical Dyson coefficient is reindexed by even
 external-component partitions and independently labelled connected blocks.
 The owner assignments and genuine assembled Dyson amplitudes are retained:
