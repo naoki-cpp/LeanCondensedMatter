@@ -50,10 +50,8 @@ theorem bandEnergy_ne_oppositeBandEnergy
     (hE : spinOrbitEnergy params px py ≠ 0) :
     bandEnergy params band px py ≠
       bandEnergy params (oppositeBand band) px py := by
-  exact sub_ne_zero.mp (by
-    simpa [interbandEnergyGap] using
-      interbandEnergyGap_ne_zero_of_spinOrbitEnergy_ne_zero
-        params band px py hE)
+  apply (bandEnergy_injective params px py hE).ne
+  cases band <;> decide
 
 /-- Gauge-independent interband velocity numerator
 `Tr(P_op v_μ P_band v_ν)`. -/
