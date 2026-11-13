@@ -17,6 +17,8 @@ supply the RR/AA remainder, sea term, contact term, conductivity normalization, 
 namespace QuantumTheory
 namespace Transport
 
+open scoped BigOperators
+
 noncomputable section
 
 variable {H Ω : Type*}
