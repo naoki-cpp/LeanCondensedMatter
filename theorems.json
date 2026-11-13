@@ -85871,7 +85871,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": true,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -85883,17 +85883,15 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Models.RashbaExchange.berryCurvature_oppositeBand",
-      "QuantumTheory.Models.RashbaExchange.interbandEnergyGap_oppositeBand"
+      "QuantumTheory.Models.RashbaExchange.berryCurvature_oppositeBand"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Models.RashbaExchange.berryCurvature_oppositeBand",
-      "QuantumTheory.Models.RashbaExchange.interbandEnergyGap_oppositeBand"
+      "QuantumTheory.Models.RashbaExchange.berryCurvature_oppositeBand"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -87308,18 +87306,16 @@
     "directWrapperOf": null,
     "dependents": [
       "QuantumTheory.Models.RashbaExchange.forceMatrixBerryCurvature_eq_berryCurvature",
-      "QuantumTheory.Models.RashbaExchange.interbandEnergyGap_ne_zero_of_spinOrbitEnergy_ne_zero",
-      "QuantumTheory.Models.RashbaExchange.interbandEnergyGap_oppositeBand"
+      "QuantumTheory.Models.RashbaExchange.interbandEnergyGap_ne_zero_of_spinOrbitEnergy_ne_zero"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.Models.RashbaExchange.forceMatrixBerryCurvature_eq_berryCurvature",
-      "QuantumTheory.Models.RashbaExchange.interbandEnergyGap_ne_zero_of_spinOrbitEnergy_ne_zero",
-      "QuantumTheory.Models.RashbaExchange.interbandEnergyGap_oppositeBand"
+      "QuantumTheory.Models.RashbaExchange.interbandEnergyGap_ne_zero_of_spinOrbitEnergy_ne_zero"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -87402,8 +87398,7 @@
       "QuantumTheory.Models.RashbaExchange.interbandBlockDifference_im_div_gap_sq_eq_neg_chargeSq_berryCurvature"
     ],
     "dependencies": [
-      "QuantumTheory.Models.RashbaExchange.bandSign_oppositeBand",
-      "QuantumTheory.Models.RashbaExchange.interbandEnergyGap_eq"
+      "QuantumTheory.Models.RashbaExchange.oppositeBand_oppositeBand"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -87504,7 +87499,7 @@
     "statement": "∀ (band : QuantumTheory.Models.RashbaExchange.Band),\n  QuantumTheory.Models.RashbaExchange.oppositeBand (QuantumTheory.Models.RashbaExchange.oppositeBand band) = band",
     "standardAxioms": [],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": true,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -87516,15 +87511,17 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Models.RashbaExchange.interbandBlockDifference_im_div_gap_sq_eq_neg_chargeSq_berryCurvature"
+      "QuantumTheory.Models.RashbaExchange.interbandBlockDifference_im_div_gap_sq_eq_neg_chargeSq_berryCurvature",
+      "QuantumTheory.Models.RashbaExchange.interbandEnergyGap_oppositeBand"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Models.RashbaExchange.interbandBlockDifference_im_div_gap_sq_eq_neg_chargeSq_berryCurvature"
+      "QuantumTheory.Models.RashbaExchange.interbandBlockDifference_im_div_gap_sq_eq_neg_chargeSq_berryCurvature",
+      "QuantumTheory.Models.RashbaExchange.interbandEnergyGap_oppositeBand"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [],
     "definitionallyEquivalentTo": [],
     "replacementCandidates": [],
