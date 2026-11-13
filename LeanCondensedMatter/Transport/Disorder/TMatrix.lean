@@ -33,15 +33,6 @@ theorem scalarImpurityShift_mul_tMatrix
   unfold scalarImpurityTMatrix
   rw [mul_smul_comm, hinvertible.mul_val_inv, smul_one]
 
-/-- The T-matrix also solves the right-sided shifted equation for a central potential. -/
-theorem scalarImpurityTMatrix_mul_shift
-    (strength : ℂ) (greenLoop : R)
-    (hinvertible : IsUnit (1 - strength • greenLoop)) :
-    scalarImpurityTMatrix strength greenLoop hinvertible *
-      (1 - strength • greenLoop) = strength • (1 : R) := by
-  unfold scalarImpurityTMatrix
-  rw [smul_mul_assoc, hinvertible.val_inv_mul, smul_one]
-
 /-- Exact Lippmann–Schwinger equation `T = vI + vGT`; invertibility alone suffices. -/
 theorem scalarImpurityTMatrix_fixedPoint
     (strength : ℂ) (greenLoop : R)

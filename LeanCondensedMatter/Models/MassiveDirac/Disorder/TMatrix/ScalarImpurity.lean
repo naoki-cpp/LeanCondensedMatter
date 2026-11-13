@@ -75,13 +75,6 @@ theorem ScalarImpurityParameters.selfEnergy_eq_meanPotential_add_tMatrix_remaind
   unfold ScalarImpurityParameters.selfEnergy
   module
 
-/-- The explicit inverse is a right inverse of `1 - v_imp G_loop`. -/
-theorem ScalarImpurityParameters.shiftMatrix_mul_inverseShiftMatrix
-    (params : ScalarImpurityParameters) (greenLoop : Matrix2)
-    (hinvertible : IsUnit (params.shiftMatrix greenLoop)) :
-    params.shiftMatrix greenLoop * params.inverseShiftMatrix greenLoop hinvertible = 1 := by
-  simpa [ScalarImpurityParameters.inverseShiftMatrix] using hinvertible.mul_val_inv
-
 /-- The explicit inverse is also a left inverse of `1 - v_imp G_loop`. -/
 theorem ScalarImpurityParameters.inverseShiftMatrix_mul_shiftMatrix
     (params : ScalarImpurityParameters) (greenLoop : Matrix2)
