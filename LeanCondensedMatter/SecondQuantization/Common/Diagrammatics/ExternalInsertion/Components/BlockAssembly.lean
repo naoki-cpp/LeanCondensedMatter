@@ -3023,7 +3023,9 @@ theorem ExternalInsertionBlockLayout.fixedPartitionPhysicalSizeShuffleEquiv_symm
     (((ExternalInsertionBlockLayout.fixedPartitionPhysicalSizeShuffleEquiv
       (E := E) (N := N) (ExternalLabel := ExternalLabel) (InternalLabel := InternalLabel)
       anchor π heven).symm p).1.1) =
-      (((ExternalInsertionBlockLayout.fixedPartitionSizeShuffleEquiv (E := E) (N := N) π heven).symm p.1).1).assembleDiagram (Finset.univ : Finset (Fin N)) p.2.1 := by
+      ExternalInsertionBlockLayout.assembleDiagram
+        ((ExternalInsertionBlockLayout.fixedPartitionSizeShuffleEquiv (E := E) (N := N) π heven).symm p.1).1
+        (Finset.univ : Finset (Fin N)) p.2.1 := by
   rfl
 
 open Classical in
@@ -3047,9 +3049,9 @@ theorem ExternalInsertionBlockLayout.sum_vacuumFree_fixedPartition_eq_sizes_shuf
       ∑ p ∈ ExternalInsertionBlockLayout.fixedPartitionPhysicalSizeShuffleFiniteDomain
           (E := E) (N := N) (ExternalLabel := ExternalLabel) (InternalLabel := InternalLabel)
           anchor π heven,
-        weight
-          (((ExternalInsertionBlockLayout.fixedPartitionSizeShuffleEquiv (E := E) (N := N) π heven).symm p.1).1).assembleDiagram
-            (Finset.univ : Finset (Fin N)) p.2.1 := by
+        weight (ExternalInsertionBlockLayout.assembleDiagram
+          ((ExternalInsertionBlockLayout.fixedPartitionSizeShuffleEquiv (E := E) (N := N) π heven).symm p.1).1
+          (Finset.univ : Finset (Fin N)) p.2.1) := by
   classical
   rw [ExternalInsertionBlockLayout.sum_vacuumFree_fixedPartition_eq_sizes_shuffles
     anchor π heven weight]
