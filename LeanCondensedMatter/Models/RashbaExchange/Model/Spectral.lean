@@ -150,7 +150,11 @@ theorem bandEnergy_injective
     (hE : spinOrbitEnergy params px py ≠ 0) :
     Function.Injective (fun band : Band => bandEnergy params band px py) := by
   intro a b hab
-  cases a <;> cases b <;> simp_all [bandEnergy, bandSign] <;> linarith
+  cases a <;> cases b <;> try rfl
+  all_goals
+    exact (hE (by
+      simp [bandEnergy, bandSign] at hab
+      linarith)).elim
 
 /-- Away from the degeneracy, the Hamiltonian acts on `P_s` with the corresponding shifted band
 energy `ε₀+sE`. -/
