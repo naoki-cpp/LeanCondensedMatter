@@ -3043,11 +3043,10 @@ noncomputable def ExternalInsertionBlockLayout.fixedPartitionPhysicalStandardize
     (E := E) (N := N) (ExternalLabel := ExternalLabel)
     (InternalLabel := InternalLabel) anchor π heven).trans
     (Equiv.sigmaCongrRight (fun data =>
-      (((ExternalInsertionBlockLayout.fixedPartitionSizeShuffleEquiv
-        (E := E) (N := N) π heven).symm data).1)
-          .standardizedConnectedBlockFamilyEquiv
-            (ExternalLabel := ExternalLabel)
-            (InternalLabel := InternalLabel)))
+      ExternalInsertionBlockLayout.standardizedConnectedBlockFamilyEquiv
+        (ExternalLabel := ExternalLabel) (InternalLabel := InternalLabel)
+        (((ExternalInsertionBlockLayout.fixedPartitionSizeShuffleEquiv
+          (E := E) (N := N) π heven).symm data).1)))
 
 /-- The physically realizable, finite size/shuffle/standardized-local
 diagram data. The finiteness follows from the actual fixed-partition
