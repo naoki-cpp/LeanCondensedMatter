@@ -732,6 +732,112 @@ theorem ExternalInsertionBlockLayout.sum_signedDysonShuffleOrbits_eq_prod_connec
         (congrArg (fun z : ℂ => externalPartitionSourceSign layout.partition * z)
           (layout.sum_connectedBlockFamilies_prod_if condition weight))
 
+open Classical in
+/-- Canonically standardizing the interaction vertices of one connected
+external-source block reindexes the *entire finite local Wick diagram sum*,
+including its prescribed external field labels and actual integrated
+Dyson amplitudes. Consequently a local sum depends only on the block's
+interaction-vertex cardinality, not its ambient owner subset. -/
+theorem ExternalInsertionBlockLayout.sum_preconnectedDysonBlock_eq_standardized
+    {n : ℕ} (layout : ExternalInsertionBlockLayout E n)
+    (B : layout.partition.parts)
+    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
+    (labels : Fin (2 * E) → ExternalFieldLabel Mode)
+    (times : Fin (2 * E) → ℝ) :
+    (∑ d : {d : ExternalInsertionDiagram
+        (ExternalFieldLabel Mode) (QuarticVertexLabel Mode)
+        ((B : Finset (Fin (2 * E))).card / 2) n
+        (layout.interactionBlock (Finset.univ : Finset (Fin n)) B) //
+        d.vertexGraph.Preconnected},
+      if d.1.externalLabel =
+          evenExternalSubsetLabels labels (B : Finset (Fin (2 * E)))
+            (layout.evenBlocks B) then
+        ExternalInsertionWickDiagram.dysonAmplitude
+          (d.1.slotCongr (Combinatorics.standardSlotEquiv
+            (layout.interactionBlock (Finset.univ : Finset (Fin n)) B)))
+          ε β g (evenExternalSubsetTimes times
+            (B : Finset (Fin (2 * E))) (layout.evenBlocks B))
+      else 0) =
+      ∑ d : {d : ExternalInsertionWickDiagram Mode
+          ((B : Finset (Fin (2 * E))).card / 2)
+          (layout.interactionBlock (Finset.univ : Finset (Fin n)) B).card //
+          d.vertexGraph.Preconnected},
+        if d.1.externalLabel =
+            evenExternalSubsetLabels labels (B : Finset (Fin (2 * E)))
+              (layout.evenBlocks B) then
+          d.1.dysonAmplitude ε β g
+            (evenExternalSubsetTimes times
+              (B : Finset (Fin (2 * E))) (layout.evenBlocks B))
+        else 0 := by
+  classical
+  let T := layout.interactionBlock (Finset.univ : Finset (Fin n)) B
+  let targetLabels :=
+    evenExternalSubsetLabels labels (B : Finset (Fin (2 * E)))
+      (layout.evenBlocks B)
+  let targetTimes :=
+    evenExternalSubsetTimes times (B : Finset (Fin (2 * E)))
+      (layout.evenBlocks B)
+  have h :=
+    ExternalInsertionDiagram.sum_preconnectedSlotCongr
+      (E := (B : Finset (Fin (2 * E))).card / 2)
+      (N := n) (M := T.card) (T := T)
+      (U := (Finset.univ : Finset (Fin T.card)))
+      (ExternalLabel := ExternalFieldLabel Mode)
+      (InternalLabel := QuarticVertexLabel Mode)
+      (Combinatorics.standardSlotEquiv T)
+      (fun d : ExternalInsertionWickDiagram Mode
+        ((B : Finset (Fin (2 * E))).card / 2) T.card =>
+        if d.externalLabel = targetLabels then
+          d.dysonAmplitude ε β g targetTimes else 0)
+  simpa only [ExternalInsertionDiagram.slotCongr_externalLabel] using h
+
+open Classical in
+/-- For one physical external-component layout, the complete integrated
+interaction-shuffle orbit summed over independent connected Wick
+families equals the signed product of *standardized consecutive-slot*
+local Dyson sums. All interactions are now referred to their blockwise
+cardinalities, enabling comparison across distinct physical owner
+assignments. This still does not equate a single canonical Dyson
+integral with its full shuffle orbit. -/
+theorem ExternalInsertionBlockLayout.sum_signedDysonShuffleOrbits_eq_prod_standardized
+    {n : ℕ} (layout : ExternalInsertionBlockLayout E n)
+    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
+    (labels : Fin (2 * E) → ExternalFieldLabel Mode)
+    (times : Fin (2 * E) → ℝ) :
+    (∑ F : layout.ConnectedBlockFamily
+        (ExternalLabel := ExternalFieldLabel Mode)
+        (InternalLabel := QuarticVertexLabel Mode),
+      if ∀ B : layout.partition.parts,
+          (F.1 B).externalLabel =
+            evenExternalSubsetLabels labels (B : Finset (Fin (2 * E)))
+              (layout.evenBlocks B) then
+        let d : ExternalInsertionWickDiagram Mode E n :=
+          layout.assembleDiagram (Finset.univ : Finset (Fin n)) F.1
+        ∑ shuffle : d.ComponentInteractionOrderShuffle,
+          d.orderedDysonAmplitude ε β g times
+            (d.assembleInteractionOrder d.canonicalComponentInteractionOrders shuffle)
+      else 0) =
+      externalPartitionSourceSign layout.partition *
+        ∏ B : layout.partition.parts,
+          ∑ d : {d : ExternalInsertionWickDiagram Mode
+              ((B : Finset (Fin (2 * E))).card / 2)
+              (layout.interactionBlock (Finset.univ : Finset (Fin n)) B).card //
+              d.vertexGraph.Preconnected},
+            if d.1.externalLabel =
+                evenExternalSubsetLabels labels (B : Finset (Fin (2 * E)))
+                  (layout.evenBlocks B) then
+              d.1.dysonAmplitude ε β g
+                (evenExternalSubsetTimes times
+                  (B : Finset (Fin (2 * E))) (layout.evenBlocks B))
+            else 0 := by
+  classical
+  rw [layout.sum_signedDysonShuffleOrbits_eq_prod_connectedBlocks
+    ε β g labels times]
+  apply congrArg (fun z : ℂ => externalPartitionSourceSign layout.partition * z)
+  apply Finset.prod_congr rfl
+  intro B _
+  exact layout.sum_preconnectedDysonBlock_eq_standardized B ε β g labels times
+
 omit [LinearOrder Mode] [Fintype Mode] in
 /-- On each external-partition block of a vacuum-free diagram, the field
 labels used by the source-subset moment are exactly the labels of the
