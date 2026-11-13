@@ -601,6 +601,128 @@ theorem ExternalInsertionBlockLayout.assembleConnectedBlocks_signedDysonShuffleO
     (ExternalInsertionBlockLayout.assembleConnectedBlocks_signedDysonShuffleOrbit_eq_independentLocals
       layout F hconnected ε β g times)
 
+/-- At a fixed physical external-block layout, summing the **actual
+integrated** component-shuffle orbit over every independent preconnected
+Wick-block family with the prescribed source labels gives the source
+Koszul sign times the product of the corresponding connected local
+Dyson amplitude sums.
+
+Unlike an unjustified factorization of one ordered-simplex integral, this
+first sums the complete physical interaction-shuffle orbit, then invokes
+the independent finite connected-block sum factorization. All block
+interaction fibers, including zero-size fibers, are retained. -/
+theorem ExternalInsertionBlockLayout.sum_signedDysonShuffleOrbits_eq_prod_connectedBlocks
+    {n : ℕ} (layout : ExternalInsertionBlockLayout E n)
+    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
+    (labels : Fin (2 * E) → ExternalFieldLabel Mode)
+    (times : Fin (2 * E) → ℝ) :
+    (∑ F : layout.ConnectedBlockFamily
+        (ExternalLabel := ExternalFieldLabel Mode)
+        (InternalLabel := QuarticVertexLabel Mode),
+      if ∀ B : layout.partition.parts,
+          (F.1 B).externalLabel =
+            evenExternalSubsetLabels labels (B : Finset (Fin (2 * E)))
+              (layout.evenBlocks B) then
+        let d : ExternalInsertionWickDiagram Mode E n :=
+          layout.assembleDiagram (Finset.univ : Finset (Fin n)) F.1
+        ∑ shuffle : d.ComponentInteractionOrderShuffle,
+          d.orderedDysonAmplitude ε β g times
+            (d.assembleInteractionOrder d.canonicalComponentInteractionOrders shuffle)
+      else 0) =
+      externalPartitionSourceSign layout.partition *
+        ∏ B : layout.partition.parts,
+          ∑ d : {d : ExternalInsertionDiagram
+              (ExternalFieldLabel Mode) (QuarticVertexLabel Mode)
+              ((B : Finset (Fin (2 * E))).card / 2) n
+              (layout.interactionBlock (Finset.univ : Finset (Fin n)) B) //
+                d.vertexGraph.Preconnected},
+            if d.1.externalLabel =
+                evenExternalSubsetLabels labels (B : Finset (Fin (2 * E)))
+                  (layout.evenBlocks B) then
+              ExternalInsertionWickDiagram.dysonAmplitude
+                (d.1.slotCongr (Combinatorics.standardSlotEquiv
+                  (layout.interactionBlock (Finset.univ : Finset (Fin n)) B)))
+                ε β g (evenExternalSubsetTimes times
+                  (B : Finset (Fin (2 * E))) (layout.evenBlocks B))
+            else 0 := by
+  classical
+  let condition : ∀ B : layout.partition.parts,
+      ExternalInsertionDiagram (ExternalFieldLabel Mode) (QuarticVertexLabel Mode)
+        ((B : Finset (Fin (2 * E))).card / 2) n
+        (layout.interactionBlock (Finset.univ : Finset (Fin n)) B) → Prop :=
+    fun B d => d.externalLabel =
+      evenExternalSubsetLabels labels (B : Finset (Fin (2 * E)))
+        (layout.evenBlocks B)
+  let weight : ∀ B : layout.partition.parts,
+      ExternalInsertionDiagram (ExternalFieldLabel Mode) (QuarticVertexLabel Mode)
+        ((B : Finset (Fin (2 * E))).card / 2) n
+        (layout.interactionBlock (Finset.univ : Finset (Fin n)) B) → ℂ :=
+    fun B d =>
+      ExternalInsertionWickDiagram.dysonAmplitude
+        (d.slotCongr (Combinatorics.standardSlotEquiv
+          (layout.interactionBlock (Finset.univ : Finset (Fin n)) B)))
+        ε β g (evenExternalSubsetTimes times
+          (B : Finset (Fin (2 * E))) (layout.evenBlocks B))
+  have horbit (F : layout.ConnectedBlockFamily
+      (ExternalLabel := ExternalFieldLabel Mode)
+      (InternalLabel := QuarticVertexLabel Mode)) :
+      (let d : ExternalInsertionWickDiagram Mode E n :=
+        layout.assembleDiagram (Finset.univ : Finset (Fin n)) F.1
+      ∑ shuffle : d.ComponentInteractionOrderShuffle,
+        d.orderedDysonAmplitude ε β g times
+          (d.assembleInteractionOrder d.canonicalComponentInteractionOrders shuffle)) =
+        externalPartitionSourceSign layout.partition *
+          ∏ B, weight B (F.1 B) := by
+    simpa only [weight] using
+      (ExternalInsertionBlockLayout.assembleConnectedBlocks_signedDysonShuffleOrbit_eq_subsetTimes
+        layout F.1 F.2 ε β g times)
+  change
+    (∑ F : layout.ConnectedBlockFamily
+        (ExternalLabel := ExternalFieldLabel Mode)
+        (InternalLabel := QuarticVertexLabel Mode),
+      if ∀ B, condition B (F.1 B) then
+        (let d : ExternalInsertionWickDiagram Mode E n :=
+          layout.assembleDiagram (Finset.univ : Finset (Fin n)) F.1
+        ∑ shuffle : d.ComponentInteractionOrderShuffle,
+          d.orderedDysonAmplitude ε β g times
+            (d.assembleInteractionOrder d.canonicalComponentInteractionOrders shuffle))
+      else 0) =
+      externalPartitionSourceSign layout.partition *
+        ∏ B : layout.partition.parts,
+          ∑ d : {d : ExternalInsertionDiagram
+              (ExternalFieldLabel Mode) (QuarticVertexLabel Mode)
+              ((B : Finset (Fin (2 * E))).card / 2) n
+              (layout.interactionBlock (Finset.univ : Finset (Fin n)) B) //
+                d.vertexGraph.Preconnected},
+            if condition B d.1 then weight B d.1 else 0
+  calc
+    _ = ∑ F : layout.ConnectedBlockFamily
+        (ExternalLabel := ExternalFieldLabel Mode)
+        (InternalLabel := QuarticVertexLabel Mode),
+      if ∀ B, condition B (F.1 B) then
+        externalPartitionSourceSign layout.partition *
+          ∏ B, weight B (F.1 B)
+      else 0 := by
+        apply Finset.sum_congr rfl
+        intro F _
+        by_cases h : ∀ B, condition B (F.1 B)
+        · simp only [h, ↓reduceIte]
+          exact horbit F
+        · simp only [h, ↓reduceIte]
+    _ = externalPartitionSourceSign layout.partition *
+        ∑ F : layout.ConnectedBlockFamily
+          (ExternalLabel := ExternalFieldLabel Mode)
+          (InternalLabel := QuarticVertexLabel Mode),
+          if ∀ B, condition B (F.1 B) then
+            ∏ B, weight B (F.1 B)
+          else 0 := by
+        rw [Finset.mul_sum]
+        apply Finset.sum_congr rfl
+        intro F _
+        split_ifs <;> simp
+    _ = _ := congrArg (fun z : ℂ => externalPartitionSourceSign layout.partition * z)
+      (layout.sum_connectedBlockFamilies_prod_if condition weight)
+
 omit [LinearOrder Mode] [Fintype Mode] in
 /-- On each external-partition block of a vacuum-free diagram, the field
 labels used by the source-subset moment are exactly the labels of the
