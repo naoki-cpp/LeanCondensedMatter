@@ -1167,7 +1167,8 @@ theorem sum_fixedExternalPartitionDysonFiber_eq_sizes_shuffles_localLabels
           (p.2.1 B).externalLabel =
             evenExternalSubsetLabels labels (B : Finset (Fin (2 * K)))
               (layout.evenBlocks B) :=
-    layout.assembleDiagram_externalLabel_eq_iff_evenSubsetLabels p.2.1 labels
+    ExternalInsertionBlockLayout.assembleDiagram_externalLabel_eq_iff_evenSubsetLabels
+      layout p.2.1 labels
   change (if
       (((ExternalInsertionBlockLayout.fixedPartitionPhysicalSizeShuffleEquiv
         (E := K) (N := n) (ExternalLabel := ExternalFieldLabel Mode)
@@ -1188,7 +1189,7 @@ theorem sum_fixedExternalPartitionDysonFiber_eq_sizes_shuffles_localLabels
           ε β g times
       else 0)
   rw [hd]
-  exact if_congr hl (fun _ => rfl) rfl
+  exact if_congr hl rfl rfl
 
 /-- The full fixed-order physical Dyson coefficient is reindexed by even
 external-component partitions and independently labelled connected blocks.
