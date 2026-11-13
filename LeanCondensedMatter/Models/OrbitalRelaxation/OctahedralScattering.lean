@@ -44,7 +44,7 @@ def octahedralKernel (W : ℝ → ℝ) (p q : Fin 6) : ℝ :=
   W (octahedralCosine p q)
 
 /-- Degree-two Legendre polynomial on the cosine of the scattering angle. -/
-def legendreP2 (μ : ℝ) : ℝ := (3 * μ ^ 2 - 1) / 2
+noncomputable def legendreP2 (μ : ℝ) : ℝ := (3 * μ ^ 2 - 1) / 2
 
 /-- The octahedral dot-product kernel automatically satisfies the moments
 needed for first and diagonal second angular modes. Only the three sampled
