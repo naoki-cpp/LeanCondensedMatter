@@ -130,6 +130,18 @@ theorem interbandPoleRegularFactor_zero
     scalarResolventCoefficient spectralParameter spectralParameterOfRegulator
   simp [SpectralSide.regulator, mul_sub]
 
+/-- A real inverse-gap square rescales the imaginary part of a complex current block. -/
+theorem inv_real_gap_sq_mul_im (gap : ℝ) (z : ℂ) (hgap : gap ≠ 0) :
+    (((((gap : ℝ) : ℂ)⁻¹) ^ 2) * z).im = z.im / gap ^ 2 := by
+  have hcoeff :
+      (((((gap : ℝ) : ℂ))⁻¹) ^ 2) =
+        ((((gap⁻¹ ^ 2 : ℝ) : ℂ))) := by
+    rw [← Complex.ofReal_inv, ← Complex.ofReal_pow]
+  rw [hcoeff]
+  simp only [Complex.mul_im, Complex.ofReal_re, Complex.ofReal_im, zero_mul]
+  field_simp [hgap]
+  ring
+
 /-- The regular interband factor is jointly continuous wherever the shifted real source denominator
 does not vanish. -/
 theorem continuousAt_interbandPoleRegularFactor_of_gap_add_offset_ne_zero
