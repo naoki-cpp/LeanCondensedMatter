@@ -20,15 +20,15 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "_private.LeanCondensedMatter.Models.MassiveDirac.Model.Spectral.0.QuantumTheory.Models.MassiveDirac.normalizedHamiltonian_mul_self",
-      "_private.LeanCondensedMatter.Models.RashbaExchange.Model.Spectral.0.QuantumTheory.Models.RashbaExchange.normalizedSpinHamiltonian_mul_self"
+      "InternalSpace.quadratic_projector_isIdempotent",
+      "InternalSpace.quadratic_shift_mul_projector"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "_private.LeanCondensedMatter.Models.MassiveDirac.Model.Spectral.0.QuantumTheory.Models.MassiveDirac.normalizedHamiltonian_mul_self",
-      "_private.LeanCondensedMatter.Models.RashbaExchange.Model.Spectral.0.QuantumTheory.Models.RashbaExchange.normalizedSpinHamiltonian_mul_self"
+      "InternalSpace.quadratic_projector_isIdempotent",
+      "InternalSpace.quadratic_shift_mul_projector"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -25622,18 +25622,16 @@
     "directWrapperOf": null,
     "dependents": [
       "InternalSpace.involution_projector_mul_self",
-      "QuantumTheory.Models.MassiveDirac.hamiltonian_mul_bandProjector",
-      "QuantumTheory.Models.RashbaExchange.hamiltonian_mul_bandProjector"
+      "InternalSpace.quadratic_shift_mul_projector"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
       "InternalSpace.involution_projector_mul_self",
-      "QuantumTheory.Models.MassiveDirac.hamiltonian_mul_bandProjector",
-      "QuantumTheory.Models.RashbaExchange.hamiltonian_mul_bandProjector"
+      "InternalSpace.quadratic_shift_mul_projector"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -25655,7 +25653,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -25667,8 +25665,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Models.MassiveDirac.bandProjector_completeOrthogonalIdempotents",
-      "QuantumTheory.Models.RashbaExchange.bandProjector_completeOrthogonalIdempotents"
+      "InternalSpace.quadratic_projector_isIdempotent"
     ],
     "dependencies": [
       "InternalSpace.involution_mul_one_add"
@@ -25676,10 +25673,9 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Models.MassiveDirac.bandProjector_completeOrthogonalIdempotents",
-      "QuantumTheory.Models.RashbaExchange.bandProjector_completeOrthogonalIdempotents"
+      "InternalSpace.quadratic_projector_isIdempotent"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -26451,6 +26447,100 @@
     "compiledConsumers": [
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient_eq_radialKernel_integral",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient_eq_radialKernel_integral"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (H : InternalSpace.PauliMatrix) (E s : ℂ),\n  E ≠ 0 → H * H = E ^ 2 • 1 → s ^ 2 = 1 → IsIdempotentElem ((1 / 2) • (1 + (s / E) • H))",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "InternalSpace.quadratic_projector_isIdempotent",
+    "module": "LeanCondensedMatter.Analysis.InternalSpace.Pauli",
+    "externalAxioms": [],
+    "docString": "The signed projector of an element with `H² = E² • 1` is idempotent. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.MassiveDirac.bandProjector_completeOrthogonalIdempotents",
+      "QuantumTheory.Models.RashbaExchange.bandProjector_completeOrthogonalIdempotents"
+    ],
+    "dependencies": [
+      "Algebra.inv_smul_mul_self_eq_one",
+      "InternalSpace.involution_projector_mul_self"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.bandProjector_completeOrthogonalIdempotents",
+      "QuantumTheory.Models.RashbaExchange.bandProjector_completeOrthogonalIdempotents"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (H : InternalSpace.PauliMatrix) (E ε s : ℂ),\n  E ≠ 0 →\n    H * H = E ^ 2 • 1 →\n      s ^ 2 = 1 → (ε • 1 + H) * (1 / 2) • (1 + (s / E) • H) = (ε + s * E) • (1 / 2) • (1 + (s / E) • H)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "InternalSpace.quadratic_shift_mul_projector",
+    "module": "LeanCondensedMatter.Analysis.InternalSpace.Pauli",
+    "externalAxioms": [],
+    "docString": "The signed projector of a quadratic two-level Hamiltonian is an eigenprojector even\nafter adding a scalar shift. This requires only `H² = E² I`, `E ≠ 0`, and `s² = 1`. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.MassiveDirac.hamiltonian_mul_bandProjector",
+      "QuantumTheory.Models.RashbaExchange.hamiltonian_mul_bandProjector"
+    ],
+    "dependencies": [
+      "Algebra.inv_smul_mul_self_eq_one",
+      "InternalSpace.involution_mul_one_add"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.hamiltonian_mul_bandProjector",
+      "QuantumTheory.Models.RashbaExchange.hamiltonian_mul_bandProjector"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -59015,6 +59105,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "QuantumTheory.Models.MassiveDirac.bandEnergy_ne_oppositeBandEnergy",
       "QuantumTheory.Models.MassiveDirac.pointwiseBerryCurvature_xy_eq_forceMatrixBerryCurvature"
     ],
     "dependencies": [
@@ -59024,10 +59115,11 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.bandEnergy_ne_oppositeBandEnergy",
       "QuantumTheory.Models.MassiveDirac.pointwiseBerryCurvature_xy_eq_forceMatrixBerryCurvature",
       "QuantumTheory.Models.MassiveDirac.pointwiseEigenbasisData"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -59116,7 +59208,7 @@
       "QuantumTheory.Models.MassiveDirac.tendsto_oppositeBandCoefficient_at_bandPole"
     ],
     "dependencies": [
-      "QuantumTheory.Models.MassiveDirac.interbandEnergyGap_ne_zero_of_energy_ne_zero"
+      "QuantumTheory.Models.MassiveDirac.bandEnergy_injective"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -59445,11 +59537,11 @@
       "QuantumTheory.Models.MassiveDirac.bandProjectorOperator_completeOrthogonalIdempotents"
     ],
     "dependencies": [
-      "InternalSpace.involution_projector_mul_self",
+      "InternalSpace.quadratic_projector_isIdempotent",
+      "QuantumTheory.Models.MassiveDirac.hamiltonian_eq_pauliCombination",
+      "QuantumTheory.Models.MassiveDirac.hamiltonian_mul_self",
       "QuantumTheory.Models.MassiveDirac.sum_band",
-      "QuantumTheory.Models.MassiveDirac.sum_bandProjector_eq_one",
-      "_private.LeanCondensedMatter.Models.MassiveDirac.Model.Spectral.0.QuantumTheory.Models.MassiveDirac.bandProjector_eq_normalizedHamiltonian",
-      "_private.LeanCondensedMatter.Models.MassiveDirac.Model.Spectral.0.QuantumTheory.Models.MassiveDirac.normalizedHamiltonian_mul_self"
+      "QuantumTheory.Models.MassiveDirac.sum_bandProjector_eq_one"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -62907,8 +62999,7 @@
       "QuantumTheory.Models.MassiveDirac.energy_pos_of_mass_ne_zero",
       "QuantumTheory.Models.MassiveDirac.energy_radial_eq_imp_eq_of_nonneg",
       "QuantumTheory.Models.MassiveDirac.energy_radial_lt_of_lt_of_nonneg",
-      "QuantumTheory.Models.MassiveDirac.pauliGreenDenominatorOfRegulator_ne_zero",
-      "_private.LeanCondensedMatter.Models.MassiveDirac.Model.Spectral.0.QuantumTheory.Models.MassiveDirac.normalizedHamiltonian_mul_self"
+      "QuantumTheory.Models.MassiveDirac.pauliGreenDenominatorOfRegulator_ne_zero"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
@@ -62919,10 +63010,9 @@
       "QuantumTheory.Models.MassiveDirac.energy_pos_of_mass_ne_zero",
       "QuantumTheory.Models.MassiveDirac.energy_radial_eq_imp_eq_of_nonneg",
       "QuantumTheory.Models.MassiveDirac.energy_radial_lt_of_lt_of_nonneg",
-      "QuantumTheory.Models.MassiveDirac.pauliGreenDenominatorOfRegulator_ne_zero",
-      "_private.LeanCondensedMatter.Models.MassiveDirac.Model.Spectral.0.QuantumTheory.Models.MassiveDirac.normalizedHamiltonian_mul_self"
+      "QuantumTheory.Models.MassiveDirac.pauliGreenDenominatorOfRegulator_ne_zero"
     ],
-    "compiledConsumerCount": 7,
+    "compiledConsumerCount": 6,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -71308,11 +71398,12 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "QuantumTheory.Models.MassiveDirac.bandProjector_completeOrthogonalIdempotents",
       "QuantumTheory.Models.MassiveDirac.bandProjector_eq_pauliCombination",
       "QuantumTheory.Models.MassiveDirac.hamiltonianOperator_isSelfAdjoint",
       "QuantumTheory.Models.MassiveDirac.hamiltonian_isHermitian",
-      "QuantumTheory.Models.MassiveDirac.hamiltonian_mul_self",
-      "_private.LeanCondensedMatter.Models.MassiveDirac.Model.Spectral.0.QuantumTheory.Models.MassiveDirac.bandProjector_eq_normalizedHamiltonian"
+      "QuantumTheory.Models.MassiveDirac.hamiltonian_mul_bandProjector",
+      "QuantumTheory.Models.MassiveDirac.hamiltonian_mul_self"
     ],
     "dependencies": [
       "InternalSpace.pauliCombination_eq_components"
@@ -71320,13 +71411,14 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.bandProjector_completeOrthogonalIdempotents",
       "QuantumTheory.Models.MassiveDirac.bandProjector_eq_pauliCombination",
       "QuantumTheory.Models.MassiveDirac.hamiltonianOperator_isSelfAdjoint",
       "QuantumTheory.Models.MassiveDirac.hamiltonian_isHermitian",
-      "QuantumTheory.Models.MassiveDirac.hamiltonian_mul_self",
-      "_private.LeanCondensedMatter.Models.MassiveDirac.Model.Spectral.0.QuantumTheory.Models.MassiveDirac.bandProjector_eq_normalizedHamiltonian"
+      "QuantumTheory.Models.MassiveDirac.hamiltonian_mul_bandProjector",
+      "QuantumTheory.Models.MassiveDirac.hamiltonian_mul_self"
     ],
-    "compiledConsumerCount": 5,
+    "compiledConsumerCount": 6,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -71408,9 +71500,9 @@
       "QuantumTheory.Models.MassiveDirac.hamiltonianOperator_mul_bandProjectorOperator"
     ],
     "dependencies": [
-      "InternalSpace.involution_mul_one_add",
-      "_private.LeanCondensedMatter.Models.MassiveDirac.Model.Spectral.0.QuantumTheory.Models.MassiveDirac.bandProjector_eq_normalizedHamiltonian",
-      "_private.LeanCondensedMatter.Models.MassiveDirac.Model.Spectral.0.QuantumTheory.Models.MassiveDirac.normalizedHamiltonian_mul_self"
+      "InternalSpace.quadratic_shift_mul_projector",
+      "QuantumTheory.Models.MassiveDirac.hamiltonian_eq_pauliCombination",
+      "QuantumTheory.Models.MassiveDirac.hamiltonian_mul_self"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -71451,8 +71543,9 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "QuantumTheory.Models.MassiveDirac.bandProjector_completeOrthogonalIdempotents",
       "QuantumTheory.Models.MassiveDirac.hamiltonianOperator_mul_self",
-      "_private.LeanCondensedMatter.Models.MassiveDirac.Model.Spectral.0.QuantumTheory.Models.MassiveDirac.normalizedHamiltonian_mul_self"
+      "QuantumTheory.Models.MassiveDirac.hamiltonian_mul_bandProjector"
     ],
     "dependencies": [
       "InternalSpace.dotProduct_pauliAxis",
@@ -71462,10 +71555,11 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.bandProjector_completeOrthogonalIdempotents",
       "QuantumTheory.Models.MassiveDirac.hamiltonianOperator_mul_self",
-      "_private.LeanCondensedMatter.Models.MassiveDirac.Model.Spectral.0.QuantumTheory.Models.MassiveDirac.normalizedHamiltonian_mul_self"
+      "QuantumTheory.Models.MassiveDirac.hamiltonian_mul_bandProjector"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -73121,7 +73215,6 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Models.MassiveDirac.bandEnergy_ne_oppositeBandEnergy",
       "QuantumTheory.Models.MassiveDirac.bastinInterbandBlockDifference_im_div_gap_sq_eq_neg_chargeSq_berryCurvature",
       "QuantumTheory.Models.MassiveDirac.pointwiseBerryCurvature_xy_eq_forceMatrixBerryCurvature",
       "QuantumTheory.Models.MassiveDirac.targetCenteredInterbandSpectatorCurrentFactor_zero_im_eq_neg_chargeSq_berryCurvature",
@@ -73133,13 +73226,12 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Models.MassiveDirac.bandEnergy_ne_oppositeBandEnergy",
       "QuantumTheory.Models.MassiveDirac.bastinInterbandBlockDifference_im_div_gap_sq_eq_neg_chargeSq_berryCurvature",
       "QuantumTheory.Models.MassiveDirac.pointwiseBerryCurvature_xy_eq_forceMatrixBerryCurvature",
       "QuantumTheory.Models.MassiveDirac.targetCenteredInterbandSpectatorCurrentFactor_zero_im_eq_neg_chargeSq_berryCurvature",
       "QuantumTheory.Models.MassiveDirac.tendsto_pointwiseDiagonalFockHallResponse_re"
     ],
-    "compiledConsumerCount": 5,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -78521,8 +78613,7 @@
       "QuantumTheory.Models.MassiveDirac.bandProjector_completeOrthogonalIdempotents"
     ],
     "dependencies": [
-      "QuantumTheory.Models.MassiveDirac.sum_band",
-      "_private.LeanCondensedMatter.Models.MassiveDirac.Model.Spectral.0.QuantumTheory.Models.MassiveDirac.bandProjector_eq_normalizedHamiltonian"
+      "QuantumTheory.Models.MassiveDirac.sum_band"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -85504,7 +85595,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ (params : QuantumTheory.Models.RashbaExchange.HamiltonianParameters) (px py : ℝ),\n  QuantumTheory.Models.RashbaExchange.spinOrbitEnergy params px py ≠ 0 →\n    Function.Injective fun band => QuantumTheory.Models.RashbaExchange.bandEnergy params band px py",
     "standardAxioms": [
       "Classical.choice",
@@ -85512,7 +85603,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": true,
     "retainedMention": true,
@@ -85523,12 +85614,16 @@
     "docString": "Away from the degeneracy, the two band energies are distinct. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "QuantumTheory.Models.RashbaExchange.bandEnergy_ne_oppositeBandEnergy"
+    ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "QuantumTheory.Models.RashbaExchange.bandEnergy_ne_oppositeBandEnergy"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -85563,7 +85658,7 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "QuantumTheory.Models.RashbaExchange.interbandEnergyGap_ne_zero_of_spinOrbitEnergy_ne_zero"
+      "QuantumTheory.Models.RashbaExchange.bandEnergy_injective"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -85698,11 +85793,10 @@
       "QuantumTheory.Models.RashbaExchange.bandProjectorOperator_completeOrthogonalIdempotents"
     ],
     "dependencies": [
-      "InternalSpace.involution_projector_mul_self",
+      "InternalSpace.quadratic_projector_isIdempotent",
+      "QuantumTheory.Models.RashbaExchange.spinHamiltonian_mul_self",
       "QuantumTheory.Models.RashbaExchange.sum_band",
-      "QuantumTheory.Models.RashbaExchange.sum_bandProjector_eq_one",
-      "_private.LeanCondensedMatter.Models.RashbaExchange.Model.Spectral.0.QuantumTheory.Models.RashbaExchange.bandProjector_eq_normalized",
-      "_private.LeanCondensedMatter.Models.RashbaExchange.Model.Spectral.0.QuantumTheory.Models.RashbaExchange.normalizedSpinHamiltonian_mul_self"
+      "QuantumTheory.Models.RashbaExchange.sum_bandProjector_eq_one"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -87121,10 +87215,9 @@
       "QuantumTheory.Models.RashbaExchange.hamiltonianOperator_mul_bandProjectorOperator"
     ],
     "dependencies": [
-      "InternalSpace.involution_mul_one_add",
+      "InternalSpace.quadratic_shift_mul_projector",
       "QuantumTheory.Models.RashbaExchange.hamiltonian_eq_kinetic_add_spinHamiltonian",
-      "_private.LeanCondensedMatter.Models.RashbaExchange.Model.Spectral.0.QuantumTheory.Models.RashbaExchange.bandProjector_eq_normalized",
-      "_private.LeanCondensedMatter.Models.RashbaExchange.Model.Spectral.0.QuantumTheory.Models.RashbaExchange.normalizedSpinHamiltonian_mul_self"
+      "QuantumTheory.Models.RashbaExchange.spinHamiltonian_mul_self"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -87260,7 +87353,6 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Models.RashbaExchange.bandEnergy_ne_oppositeBandEnergy",
       "QuantumTheory.Models.RashbaExchange.interbandBlockDifference_im_div_gap_sq_eq_neg_chargeSq_berryCurvature",
       "QuantumTheory.Models.RashbaExchange.interbandPoleRegularFactor_zero_im_eq_neg_chargeSq_berryCurvature"
     ],
@@ -87270,11 +87362,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Models.RashbaExchange.bandEnergy_ne_oppositeBandEnergy",
       "QuantumTheory.Models.RashbaExchange.interbandBlockDifference_im_div_gap_sq_eq_neg_chargeSq_berryCurvature",
       "QuantumTheory.Models.RashbaExchange.interbandPoleRegularFactor_zero_im_eq_neg_chargeSq_berryCurvature"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -87884,10 +87975,10 @@
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
-    "retainedNeedsReview": true,
+    "retainedNeedsReview": false,
     "retainedMention": true,
     "projectAxioms": [],
     "name": "QuantumTheory.Models.RashbaExchange.spinHamiltonian_mul_self",
@@ -87897,7 +87988,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "_private.LeanCondensedMatter.Models.RashbaExchange.Model.Spectral.0.QuantumTheory.Models.RashbaExchange.normalizedSpinHamiltonian_mul_self"
+      "QuantumTheory.Models.RashbaExchange.bandProjector_completeOrthogonalIdempotents",
+      "QuantumTheory.Models.RashbaExchange.hamiltonian_mul_bandProjector"
     ],
     "dependencies": [
       "InternalSpace.pauliCombination_mul_self",
@@ -87906,9 +87998,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "_private.LeanCondensedMatter.Models.RashbaExchange.Model.Spectral.0.QuantumTheory.Models.RashbaExchange.normalizedSpinHamiltonian_mul_self"
+      "QuantumTheory.Models.RashbaExchange.bandProjector_completeOrthogonalIdempotents",
+      "QuantumTheory.Models.RashbaExchange.hamiltonian_mul_bandProjector"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -87930,7 +88023,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -87942,17 +88035,15 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Models.RashbaExchange.forceMatrixTraceNumerator_xy_eq",
-      "_private.LeanCondensedMatter.Models.RashbaExchange.Model.Spectral.0.QuantumTheory.Models.RashbaExchange.normalizedSpinHamiltonian_mul_self"
+      "QuantumTheory.Models.RashbaExchange.forceMatrixTraceNumerator_xy_eq"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Models.RashbaExchange.forceMatrixTraceNumerator_xy_eq",
-      "_private.LeanCondensedMatter.Models.RashbaExchange.Model.Spectral.0.QuantumTheory.Models.RashbaExchange.normalizedSpinHamiltonian_mul_self"
+      "QuantumTheory.Models.RashbaExchange.forceMatrixTraceNumerator_xy_eq"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -88042,8 +88133,7 @@
       "QuantumTheory.Models.RashbaExchange.bandProjector_completeOrthogonalIdempotents"
     ],
     "dependencies": [
-      "QuantumTheory.Models.RashbaExchange.sum_band",
-      "_private.LeanCondensedMatter.Models.RashbaExchange.Model.Spectral.0.QuantumTheory.Models.RashbaExchange.bandProjector_eq_normalized"
+      "QuantumTheory.Models.RashbaExchange.sum_band"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -183823,102 +183913,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (band : QuantumTheory.Models.MassiveDirac.Band) (v m px py : ℝ),\n  QuantumTheory.Models.MassiveDirac.bandProjector band v m px py =\n    (1 / 2) •\n      (1 +\n        ↑(QuantumTheory.Models.MassiveDirac.bandSign band) •\n          QuantumTheory.Models.MassiveDirac.normalizedHamiltonian✝ v m px py)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Models.MassiveDirac.Model.Spectral.0.QuantumTheory.Models.MassiveDirac.bandProjector_eq_normalizedHamiltonian",
-    "module": "LeanCondensedMatter.Models.MassiveDirac.Model.Spectral",
-    "externalAxioms": [],
-    "docString": "Rewrite the band projector as the `±1` spectral projector of the normalized Hamiltonian. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Models.MassiveDirac.bandProjector_completeOrthogonalIdempotents",
-      "QuantumTheory.Models.MassiveDirac.hamiltonian_mul_bandProjector",
-      "QuantumTheory.Models.MassiveDirac.sum_bandProjector_eq_one"
-    ],
-    "dependencies": [
-      "QuantumTheory.Models.MassiveDirac.hamiltonian_eq_pauliCombination"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Models.MassiveDirac.bandProjector_completeOrthogonalIdempotents",
-      "QuantumTheory.Models.MassiveDirac.hamiltonian_mul_bandProjector",
-      "QuantumTheory.Models.MassiveDirac.sum_bandProjector_eq_one"
-    ],
-    "compiledConsumerCount": 3,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (v m px py : ℝ),\n  QuantumTheory.Models.MassiveDirac.energy v m px py ≠ 0 →\n    QuantumTheory.Models.MassiveDirac.normalizedHamiltonian✝ v m px py *\n        QuantumTheory.Models.MassiveDirac.normalizedHamiltonian✝ v m px py =\n      1",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Models.MassiveDirac.Model.Spectral.0.QuantumTheory.Models.MassiveDirac.normalizedHamiltonian_mul_self",
-    "module": "LeanCondensedMatter.Models.MassiveDirac.Model.Spectral",
-    "externalAxioms": [],
-    "docString": "Away from the band degeneracy, the normalized Hamiltonian squares to the identity. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Models.MassiveDirac.bandProjector_completeOrthogonalIdempotents",
-      "QuantumTheory.Models.MassiveDirac.hamiltonian_mul_bandProjector"
-    ],
-    "dependencies": [
-      "Algebra.inv_smul_mul_self_eq_one",
-      "QuantumTheory.Models.MassiveDirac.energy_sq",
-      "QuantumTheory.Models.MassiveDirac.hamiltonian_mul_self"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Models.MassiveDirac.bandProjector_completeOrthogonalIdempotents",
-      "QuantumTheory.Models.MassiveDirac.hamiltonian_mul_bandProjector"
-    ],
-    "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ (v m px py probeEnergy regulator : ℝ),\n  regulator ≠ 0 →\n    ((algebraMap ℂ\n              (QuantumTheory.Models.MassiveDirac.DiracHilbert →L[ℂ] QuantumTheory.Models.MassiveDirac.DiracHilbert))\n            (QuantumTheory.Transport.spectralParameterOfRegulator probeEnergy regulator) -\n          QuantumTheory.Models.MassiveDirac.hamiltonianOperator v m px py) *\n        QuantumTheory.Models.MassiveDirac.pauliGreenOperatorOfRegulator v m px py probeEnergy regulator =\n      1",
     "standardAxioms": [
       "Classical.choice",
@@ -185584,100 +185578,6 @@
       "QuantumTheory.Models.OrbitalRelaxation.QuasistationaryOrbitalKineticClosure.polarization_eq_exp"
     ],
     "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (params : QuantumTheory.Models.RashbaExchange.HamiltonianParameters) (band : QuantumTheory.Models.RashbaExchange.Band)\n  (px py : ℝ),\n  QuantumTheory.Models.RashbaExchange.bandProjector params band px py =\n    (1 / 2) •\n      (1 +\n        ↑(QuantumTheory.Models.RashbaExchange.bandSign band) •\n          QuantumTheory.Models.RashbaExchange.normalizedSpinHamiltonian✝ params px py)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Models.RashbaExchange.Model.Spectral.0.QuantumTheory.Models.RashbaExchange.bandProjector_eq_normalized",
-    "module": "LeanCondensedMatter.Models.RashbaExchange.Model.Spectral",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Models.RashbaExchange.bandProjector_completeOrthogonalIdempotents",
-      "QuantumTheory.Models.RashbaExchange.hamiltonian_mul_bandProjector",
-      "QuantumTheory.Models.RashbaExchange.sum_bandProjector_eq_one"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Models.RashbaExchange.bandProjector_completeOrthogonalIdempotents",
-      "QuantumTheory.Models.RashbaExchange.hamiltonian_mul_bandProjector",
-      "QuantumTheory.Models.RashbaExchange.sum_bandProjector_eq_one"
-    ],
-    "compiledConsumerCount": 3,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (params : QuantumTheory.Models.RashbaExchange.HamiltonianParameters) (px py : ℝ),\n  QuantumTheory.Models.RashbaExchange.spinOrbitEnergy params px py ≠ 0 →\n    QuantumTheory.Models.RashbaExchange.normalizedSpinHamiltonian✝ params px py *\n        QuantumTheory.Models.RashbaExchange.normalizedSpinHamiltonian✝ params px py =\n      1",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Models.RashbaExchange.Model.Spectral.0.QuantumTheory.Models.RashbaExchange.normalizedSpinHamiltonian_mul_self",
-    "module": "LeanCondensedMatter.Models.RashbaExchange.Model.Spectral",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Models.RashbaExchange.bandProjector_completeOrthogonalIdempotents",
-      "QuantumTheory.Models.RashbaExchange.hamiltonian_mul_bandProjector"
-    ],
-    "dependencies": [
-      "Algebra.inv_smul_mul_self_eq_one",
-      "QuantumTheory.Models.RashbaExchange.spinHamiltonian_mul_self",
-      "QuantumTheory.Models.RashbaExchange.spinOrbitEnergy_sq"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Models.RashbaExchange.bandProjector_completeOrthogonalIdempotents",
-      "QuantumTheory.Models.RashbaExchange.hamiltonian_mul_bandProjector"
-    ],
-    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
