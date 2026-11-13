@@ -2466,6 +2466,7 @@ theorem ExternalInsertionBlockLayout.sum_connectedBlockFamilies_prod
             (layout.interactionBlock (Finset.univ : Finset (Fin N)) B) //
               d.vertexGraph.Preconnected}) => weight B d.1)).symm
 
+open Classical in
 /-- Independent connected diagrams can be summed separately even after
 restricting each block by a local predicate. A simultaneous family
 predicate is exactly the product of the blockwise indicators, so no
@@ -2504,7 +2505,7 @@ theorem ExternalInsertionBlockLayout.sum_connectedBlockFamilies_prod_if
     by_cases h : ∀ B, condition B (F.1 B)
     · simp [h]
     · obtain ⟨B, hB⟩ := not_forall.mp h
-      rw [if_neg h]
+      simp only [h, ↓reduceIte]
       symm
       exact Finset.prod_eq_zero (Finset.mem_univ B) (by simp [hB])
   calc
