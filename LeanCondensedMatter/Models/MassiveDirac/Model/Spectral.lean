@@ -109,17 +109,11 @@ theorem hamiltonian_mul_bandProjector (band : Band) (v m px py : ℝ)
     (hE : energy v m px py ≠ 0) :
     hamiltonian v m px py * bandProjector band v m px py =
       ((bandEnergy band v m px py : ℝ) : ℂ) • bandProjector band v m px py := by
-  have hquad :
-      hamiltonian v m px py * hamiltonian v m px py =
-        (((energy v m px py : ℝ) : ℂ) ^ 2) • (1 : Matrix2) := by
-    rw [hamiltonian_mul_self]
-    congr 1
-    exact_mod_cast (energy_sq v m px py).symm
-  have hs : (((bandSign band : ℝ) : ℂ)) ^ 2 = 1 := by
-    cases band <;> norm_num [bandSign]
   have h := InternalSpace.quadratic_shift_mul_projector
     (hamiltonian v m px py) (((energy v m px py : ℝ) : ℂ))
-    0 (((bandSign band : ℝ) : ℂ)) (by exact_mod_cast hE) hquad hs
+    0 (((bandSign band : ℝ) : ℂ)) (by exact_mod_cast hE)
+    (by simpa only [← energy_sq, Complex.ofReal_pow] using hamiltonian_mul_self v m px py)
+    (by cases band <;> norm_num [bandSign])
   simpa [bandProjector, bandEnergy] using h
 
 /-- Away from the Dirac degeneracy, the matrix band projectors are a complete
