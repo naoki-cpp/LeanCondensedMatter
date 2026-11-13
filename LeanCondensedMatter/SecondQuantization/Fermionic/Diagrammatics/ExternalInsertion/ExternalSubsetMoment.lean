@@ -475,14 +475,10 @@ theorem ExternalInsertionBlockLayout.assembleConnectedBlocks_signedDysonShuffleO
       apply Subtype.ext
       simpa only [layout.sourceEquiv_fst] using
         (layout.partition.part_eq_of_mem B.2 he)
-    have hCleft :
-        ((reindex.symm B).1 : Finset (ExternalInsertionVertex E S)).toLeft =
-          (B : Finset (Fin (2 * E))) := by
-      simpa only [Equiv.apply_symm_apply] using (hblock (reindex.symm B)).symm
     have hmem : (Sum.inl e : ExternalInsertionVertex E S) ∈
         ((reindex.symm B).1 : Finset (ExternalInsertionVertex E S)) := by
       apply Finset.mem_toLeft.mp
-      rw [hCleft]
+      rw [← hblock (reindex.symm B), Equiv.apply_symm_apply]
       exact he
     have hC :
         reindex.symm B =
@@ -498,31 +494,14 @@ theorem ExternalInsertionBlockLayout.assembleConnectedBlocks_signedDysonShuffleO
     simpa only [d, S] using h
   have horbit := ExternalInsertionBlockLayout.assembleConnectedBlocks_signedDysonShuffleOrbit
     layout F hconnected ε β g externalTime
-  calc
-    (∑ shuffle : d.ComponentInteractionOrderShuffle,
-      d.orderedDysonAmplitude ε β g externalTime
-        (d.assembleInteractionOrder d.canonicalComponentInteractionOrders shuffle)) =
-        externalPartitionSourceSign layout.partition *
-          ∏ C : d.vertexGraph.componentPartition.parts,
-            ExternalInsertionWickDiagram.dysonAmplitude
-              (d.componentOrderedDiagram C) ε β g
-              (d.componentExternalTime externalTime C) := horbit
-    _ = externalPartitionSourceSign layout.partition *
-          ∏ B : layout.partition.parts,
-            ExternalInsertionWickDiagram.dysonAmplitude
-              (d.componentOrderedDiagram (reindex.symm B)) ε β g
-              (d.componentExternalTime externalTime (reindex.symm B)) := by
-        apply congrArg (fun z : ℂ => externalPartitionSourceSign layout.partition * z)
-        exact (Equiv.prod_comp reindex.symm
-          (fun C : d.vertexGraph.componentPartition.parts =>
-            ExternalInsertionWickDiagram.dysonAmplitude
-              (d.componentOrderedDiagram C) ε β g
-              (d.componentExternalTime externalTime C))).symm
-    _ = _ := by
-        apply congrArg (fun z : ℂ => externalPartitionSourceSign layout.partition * z)
-        apply Finset.prod_congr rfl
-        intro B _
-        exact hlocal B
+  rw [horbit]
+  apply congrArg (fun z : ℂ => externalPartitionSourceSign layout.partition * z)
+  exact (Equiv.prod_comp reindex.symm
+    (fun C : d.vertexGraph.componentPartition.parts =>
+      ExternalInsertionWickDiagram.dysonAmplitude
+        (d.componentOrderedDiagram C) ε β g
+        (d.componentExternalTime externalTime C))).symm.trans
+    (Finset.prod_congr rfl (fun B _ => hlocal B))
 
 omit [LinearOrder Mode] [Fintype Mode] in
 /-- The source labels of an assembled diagram agree with the canonical
