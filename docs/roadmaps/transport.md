@@ -92,6 +92,14 @@ The first-Born layer is kept directly in `Disorder.Born`:
 `bornSelfEnergyOfRegulator E γ = C₂(G₀(E,γ))`. No separate R/A Born routing modules or
 closure/truncation API are maintained.
 
+`Disorder.TwoParticle` proves the **exact finite-ensemble two-Green decomposition**
+`E[G₁ J G₂] = E[G₁] J E[G₂] + E[(G₁-E[G₁]) J (G₂-E[G₂])]`
+for independently supplied signed regulators and an arbitrary bounded insertion `J`.
+The connected term is a disorder covariance, not a diffuson, non-crossing vertex correction,
+or an assertion that a supplied Born/SCBA ladder equals the exact connected response.
+The full conductivity bridge additionally requires a current/trace/contact specialization and
+explicit physical normalization.
+
 The explicit massive-Dirac clean Green operator, its angular/radial reduction, common continuum Born
 denominator, polar-integral bridge, and finite-cutoff continuum Born self-energy use the same
 arbitrary-`γ` analytic ownership. Side-indexed forms remain only where broadening-limit, Born-Dyson,
@@ -158,6 +166,8 @@ not public APIs. Convergence and Ward identities are separate targets.
 - trace per unit volume and controlled thermodynamic limits;
 - justified DC and zero-broadening limits;
 - convergence-aware SCBA/ladder results where needed;
+- exact two-Green connected insertion to diagrammatic non-crossing / diffuson and Kubo vertex
+  channels, with explicit approximation hypotheses and charge-conservation constraints;
 - crossed-diagram, weak-localization, skew-scattering, and side-jump extensions;
 - unbounded Hamiltonian/current/position operators and gauge-equivalence results.
 
