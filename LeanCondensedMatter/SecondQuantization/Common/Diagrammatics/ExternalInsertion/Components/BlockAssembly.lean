@@ -2829,11 +2829,10 @@ noncomputable def ExternalInsertionBlockLayout.fixedPartitionSizeShuffleConnecte
           (InternalLabel := InternalLabel) //
       p.1.partition = π} ≃
       Σ data : (Σ size : π.parts → ℕ, FamilySlotShuffleTo size N),
-        (((ExternalInsertionBlockLayout.fixedPartitionSizeShuffleEquiv π heven).symm data).1)
-          .ConnectedBlockFamily (ExternalLabel := ExternalLabel)
+        (((ExternalInsertionBlockLayout.fixedPartitionSizeShuffleEquiv (E := E) (N := N) π heven).symm data).1).ConnectedBlockFamily (ExternalLabel := ExternalLabel)
             (InternalLabel := InternalLabel) := by
   classical
-  let e := ExternalInsertionBlockLayout.fixedPartitionSizeShuffleEquiv π heven
+  let e := ExternalInsertionBlockLayout.fixedPartitionSizeShuffleEquiv (E := E) (N := N) π heven
   exact (ExternalInsertionBlockLayout.fixedPartitionConnectedAssemblyEquiv
     (ExternalLabel := ExternalLabel) (InternalLabel := InternalLabel) π).trans
       ((Equiv.sigmaCongrLeft
@@ -2862,7 +2861,7 @@ noncomputable def ExternalInsertionBlockLayout.fixedPartitionPhysicalAssemblyEqu
       p.1.partition = π} := by
   classical
   let e := ExternalInsertionBlockLayout.connectedAssemblyEquiv
-    (ExternalLabel := ExternalLabel) (InternalLabel := InternalLabel) anchor
+    (E := E) (N := N) (ExternalLabel := ExternalLabel) (InternalLabel := InternalLabel) anchor
   refine Equiv.subtypeEquiv e.symm ?_
   intro d
   let p := e.symm d
@@ -2892,14 +2891,14 @@ noncomputable def ExternalInsertionBlockLayout.fixedPartitionPhysicalSizeShuffle
           HasNoVacuumComponent d.vertexGraph} //
       externalComponentPartition d.1.vertexGraph = π} ≃
       Σ data : (Σ size : π.parts → ℕ, FamilySlotShuffleTo size N),
-        (((ExternalInsertionBlockLayout.fixedPartitionSizeShuffleEquiv π heven).symm data).1)
-          .ConnectedBlockFamily (ExternalLabel := ExternalLabel)
+        (((ExternalInsertionBlockLayout.fixedPartitionSizeShuffleEquiv (E := E) (N := N) π heven).symm data).1).ConnectedBlockFamily (ExternalLabel := ExternalLabel)
             (InternalLabel := InternalLabel) :=
   (ExternalInsertionBlockLayout.fixedPartitionPhysicalAssemblyEquiv
-    (ExternalLabel := ExternalLabel) (InternalLabel := InternalLabel) anchor π).trans
+    (E := E) (N := N) (ExternalLabel := ExternalLabel) (InternalLabel := InternalLabel) anchor π).trans
     (ExternalInsertionBlockLayout.fixedPartitionSizeShuffleConnectedAssemblyEquiv
-      (ExternalLabel := ExternalLabel) (InternalLabel := InternalLabel) π heven)
+      (E := E) (N := N) (ExternalLabel := ExternalLabel) (InternalLabel := InternalLabel) π heven)
 
+open Classical in
 /-- The finite image of the actual physical fixed-partition diagram
 fiber under the exact connected-block size/shuffle equivalence. This
 explicit domain avoids postulating a finiteness instance for an
@@ -2911,8 +2910,7 @@ noncomputable def ExternalInsertionBlockLayout.fixedPartitionPhysicalSizeShuffle
     (π : Finpartition (Finset.univ : Finset (Fin (2 * E))))
     (heven : ∀ B : π.parts, Even (B : Finset (Fin (2 * E))).card) :
     Finset (Σ data : (Σ size : π.parts → ℕ, FamilySlotShuffleTo size N),
-      (((ExternalInsertionBlockLayout.fixedPartitionSizeShuffleEquiv π heven).symm data).1)
-        .ConnectedBlockFamily (ExternalLabel := ExternalLabel)
+      (((ExternalInsertionBlockLayout.fixedPartitionSizeShuffleEquiv (E := E) (N := N) π heven).symm data).1).ConnectedBlockFamily (ExternalLabel := ExternalLabel)
           (InternalLabel := InternalLabel)) := by
   classical
   exact (Finset.univ : Finset
@@ -2920,8 +2918,9 @@ noncomputable def ExternalInsertionBlockLayout.fixedPartitionPhysicalSizeShuffle
         (Finset.univ : Finset (Fin N)) //
         HasNoVacuumComponent d.vertexGraph} //
       externalComponentPartition d.1.vertexGraph = π}).image
-      (ExternalInsertionBlockLayout.fixedPartitionPhysicalSizeShuffleEquiv anchor π heven)
+      (ExternalInsertionBlockLayout.fixedPartitionPhysicalSizeShuffleEquiv (E := E) (N := N) anchor π heven)
 
+open Classical in
 /-- The *actual finite physical diagram fiber* of one even external
 partition is reindexed by independently preconnected local Wick
 diagrams, their exact interaction-size vector, and the unique
@@ -2942,10 +2941,10 @@ theorem ExternalInsertionBlockLayout.sum_fixedPartitionPhysical_eq_sizes_shuffle
         externalComponentPartition d.1.vertexGraph = π},
       weight d.1.1) =
       ∑ p ∈ ExternalInsertionBlockLayout.fixedPartitionPhysicalSizeShuffleFiniteDomain
-          (ExternalLabel := ExternalLabel) (InternalLabel := InternalLabel)
+          (E := E) (N := N) (ExternalLabel := ExternalLabel) (InternalLabel := InternalLabel)
           anchor π heven,
         weight (((ExternalInsertionBlockLayout.fixedPartitionPhysicalSizeShuffleEquiv
-          (ExternalLabel := ExternalLabel) (InternalLabel := InternalLabel)
+          (E := E) (N := N) (ExternalLabel := ExternalLabel) (InternalLabel := InternalLabel)
           anchor π heven).symm p).1.1) := by
   classical
   unfold ExternalInsertionBlockLayout.fixedPartitionPhysicalSizeShuffleFiniteDomain
@@ -2955,7 +2954,7 @@ theorem ExternalInsertionBlockLayout.sum_fixedPartitionPhysical_eq_sizes_shuffle
     rw [Equiv.symm_apply_apply]
   · intro x _ y _ h
     exact (ExternalInsertionBlockLayout.fixedPartitionPhysicalSizeShuffleEquiv
-      (ExternalLabel := ExternalLabel) (InternalLabel := InternalLabel)
+      (E := E) (N := N) (ExternalLabel := ExternalLabel) (InternalLabel := InternalLabel)
       anchor π heven).injective h
 
 open Classical in
@@ -2977,10 +2976,10 @@ theorem ExternalInsertionBlockLayout.sum_vacuumFree_fixedPartition_eq_sizes_shuf
           HasNoVacuumComponent d.vertexGraph},
       if externalComponentPartition d.1.vertexGraph = π then weight d.1 else 0) =
       ∑ p ∈ ExternalInsertionBlockLayout.fixedPartitionPhysicalSizeShuffleFiniteDomain
-          (ExternalLabel := ExternalLabel) (InternalLabel := InternalLabel)
+          (E := E) (N := N) (ExternalLabel := ExternalLabel) (InternalLabel := InternalLabel)
           anchor π heven,
         weight (((ExternalInsertionBlockLayout.fixedPartitionPhysicalSizeShuffleEquiv
-          (ExternalLabel := ExternalLabel) (InternalLabel := InternalLabel)
+          (E := E) (N := N) (ExternalLabel := ExternalLabel) (InternalLabel := InternalLabel)
           anchor π heven).symm p).1.1) := by
   classical
   calc
@@ -2993,14 +2992,19 @@ theorem ExternalInsertionBlockLayout.sum_vacuumFree_fixedPartition_eq_sizes_shuf
           HasNoVacuumComponent d.vertexGraph} //
           externalComponentPartition d.1.vertexGraph = π},
         weight d.1.1 := by
-      rw [← Finset.sum_filter]
-      exact Finset.sum_subtype
-        ((Finset.univ : Finset
-          {d : ExternalInsertionDiagram ExternalLabel InternalLabel E N
+      simpa only [Finset.sum_filter] using
+        (Finset.sum_subtype
+          (p := fun d : {d : ExternalInsertionDiagram ExternalLabel InternalLabel E N
             (Finset.univ : Finset (Fin N)) //
-            HasNoVacuumComponent d.vertexGraph}).filter
-              (fun d => externalComponentPartition d.1.vertexGraph = π))
-        (by simp) (fun d => weight d.1)
+            HasNoVacuumComponent d.vertexGraph} =>
+              externalComponentPartition d.1.vertexGraph = π)
+          ((Finset.univ : Finset
+            {d : ExternalInsertionDiagram ExternalLabel InternalLabel E N
+              (Finset.univ : Finset (Fin N)) //
+              HasNoVacuumComponent d.vertexGraph}).filter
+                (fun d => externalComponentPartition d.1.vertexGraph = π))
+          (fun _ => by simp)
+          (fun d => weight d.1))
     _ = _ :=
       ExternalInsertionBlockLayout.sum_fixedPartitionPhysical_eq_sizes_shuffles
         anchor π heven weight
@@ -3014,14 +3018,12 @@ theorem ExternalInsertionBlockLayout.fixedPartitionPhysicalSizeShuffleEquiv_symm
     (π : Finpartition (Finset.univ : Finset (Fin (2 * E))))
     (heven : ∀ B : π.parts, Even (B : Finset (Fin (2 * E))).card)
     (p : Σ data : (Σ size : π.parts → ℕ, FamilySlotShuffleTo size N),
-      (((ExternalInsertionBlockLayout.fixedPartitionSizeShuffleEquiv π heven).symm data).1)
-        .ConnectedBlockFamily (ExternalLabel := ExternalLabel)
+      (((ExternalInsertionBlockLayout.fixedPartitionSizeShuffleEquiv (E := E) (N := N) π heven).symm data).1).ConnectedBlockFamily (ExternalLabel := ExternalLabel)
           (InternalLabel := InternalLabel)) :
     (((ExternalInsertionBlockLayout.fixedPartitionPhysicalSizeShuffleEquiv
-      (ExternalLabel := ExternalLabel) (InternalLabel := InternalLabel)
+      (E := E) (N := N) (ExternalLabel := ExternalLabel) (InternalLabel := InternalLabel)
       anchor π heven).symm p).1.1) =
-      ((ExternalInsertionBlockLayout.fixedPartitionSizeShuffleEquiv π heven).symm p.1).1
-        .assembleDiagram (Finset.univ : Finset (Fin N)) p.2.1 := by
+      (((ExternalInsertionBlockLayout.fixedPartitionSizeShuffleEquiv (E := E) (N := N) π heven).symm p.1).1).assembleDiagram (Finset.univ : Finset (Fin N)) p.2.1 := by
   rfl
 
 open Classical in
@@ -3043,10 +3045,10 @@ theorem ExternalInsertionBlockLayout.sum_vacuumFree_fixedPartition_eq_sizes_shuf
           HasNoVacuumComponent d.vertexGraph},
       if externalComponentPartition d.1.vertexGraph = π then weight d.1 else 0) =
       ∑ p ∈ ExternalInsertionBlockLayout.fixedPartitionPhysicalSizeShuffleFiniteDomain
-          (ExternalLabel := ExternalLabel) (InternalLabel := InternalLabel)
+          (E := E) (N := N) (ExternalLabel := ExternalLabel) (InternalLabel := InternalLabel)
           anchor π heven,
         weight
-          (((ExternalInsertionBlockLayout.fixedPartitionSizeShuffleEquiv π heven).symm p.1).1
+          (((ExternalInsertionBlockLayout.fixedPartitionSizeShuffleEquiv (E := E) (N := N) π heven).symm p.1).1
             .assembleDiagram (Finset.univ : Finset (Fin N)) p.2.1) := by
   classical
   rw [ExternalInsertionBlockLayout.sum_vacuumFree_fixedPartition_eq_sizes_shuffles
