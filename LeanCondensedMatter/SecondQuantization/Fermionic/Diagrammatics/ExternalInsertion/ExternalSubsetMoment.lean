@@ -590,8 +590,14 @@ theorem ExternalInsertionBlockLayout.assembleConnectedBlocks_signedDysonShuffleO
             ε β g (evenExternalSubsetTimes times
               (B : Finset (Fin (2 * E))) (layout.evenBlocks B)) := by
   classical
-  simpa only [evenExternalSubsetTimes, evenExternalSubsetOrderIso,
-    layout.sourceEquiv_symm_apply] using
+  have htime (B : layout.partition.parts) :
+      (fun i => times (layout.sourceEquiv.symm ⟨B, i⟩)) =
+        evenExternalSubsetTimes times (B : Finset (Fin (2 * E)))
+          (layout.evenBlocks B) := by
+    funext i
+    rw [layout.sourceEquiv_symm_apply B i]
+    rfl
+  simpa only [htime] using
     (ExternalInsertionBlockLayout.assembleConnectedBlocks_signedDysonShuffleOrbit_eq_independentLocals
       layout F hconnected ε β g times)
 
