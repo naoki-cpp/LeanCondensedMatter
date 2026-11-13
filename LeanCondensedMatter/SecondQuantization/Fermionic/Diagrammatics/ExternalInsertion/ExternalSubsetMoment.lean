@@ -661,15 +661,6 @@ theorem ExternalInsertionBlockLayout.sum_signedDysonShuffleOrbits_eq_prod_connec
       (ExternalInsertionBlockLayout.assembleConnectedBlocks_signedDysonShuffleOrbit_eq_subsetTimes
         layout F.1 F.2 ε β g times)
   calc
-    _ = ∑ F : layout.ConnectedBlockFamily
-        (ExternalLabel := ExternalFieldLabel Mode)
-        (InternalLabel := QuarticVertexLabel Mode),
-        if ∀ B, condition B (F.1 B) then
-          externalPartitionSourceSign layout.partition * ∏ B, weight B (F.1 B)
-        else 0 := by
-      apply Finset.sum_congr rfl
-      intro F _
-      exact if_congr Iff.rfl (horbit F) rfl
     _ = externalPartitionSourceSign layout.partition *
         ∑ F : layout.ConnectedBlockFamily
           (ExternalLabel := ExternalFieldLabel Mode)
@@ -680,7 +671,8 @@ theorem ExternalInsertionBlockLayout.sum_signedDysonShuffleOrbits_eq_prod_connec
       rw [Finset.mul_sum]
       apply Finset.sum_congr rfl
       intro F _
-      split_ifs <;> simp
+      simpa only [mul_ite, mul_zero] using
+        (if_congr Iff.rfl (horbit F) rfl)
     _ = _ := by
       simpa only [condition, weight] using
         (congrArg (fun z : ℂ => externalPartitionSourceSign layout.partition * z)
