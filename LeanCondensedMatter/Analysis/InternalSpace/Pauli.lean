@@ -720,7 +720,7 @@ theorem quadratic_projector_isIdempotent
     IsIdempotentElem ((1 / 2 : ℂ) • ((1 : PauliMatrix) + (s / E) • H)) := by
   have hQ : (E⁻¹ • H) * (E⁻¹ • H) = 1 :=
     Algebra.inv_smul_mul_self_eq_one H E hE hquad
-  simpa [div_eq_mul_inv, smul_smul] using
+  simpa [IsIdempotentElem, div_eq_mul_inv, smul_smul] using
     (involution_projector_mul_self (E⁻¹ • H) hQ s hs)
 
 end InternalSpace
