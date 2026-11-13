@@ -172,32 +172,6 @@ theorem eventually_isUnit_scalarImpurityShiftMatrix (greenLoop : Matrix2) :
   rw [hmap]
   exact hoperator
 
-/-- The total ring inverse of the operator shift is uniformly bounded on some neighborhood of zero
-impurity strength. On that neighborhood the preceding theorem guarantees that this totalized
-inverse is the ordinary inverse of a unit. -/
-theorem exists_eventually_norm_scalarImpurityShiftOperator_inverse_le
-    (greenLoop : Matrix2) :
-    ∃ C : ℝ, ∀ᶠ impurityStrength : ℝ in 𝓝 0,
-      ‖Ring.inverse
-          ((1 : DiracHilbert →L[ℂ] DiracHilbert) -
-            (((impurityStrength : ℝ) : ℂ)) • matrixOperator greenLoop)‖ ≤ C := by
-  have hofReal :
-      Tendsto (fun impurityStrength : ℝ => (impurityStrength : ℂ)) (𝓝 0) (𝓝 0) := by
-    simpa using Complex.continuous_ofReal.tendsto 0
-  have hzero :
-      Tendsto
-        (fun impurityStrength : ℝ =>
-          (((impurityStrength : ℝ) : ℂ)) • matrixOperator greenLoop)
-        (𝓝 0) (𝓝 0) := by
-    simpa using hofReal.smul_const (matrixOperator greenLoop)
-  rcases
-      ((NormedRing.inverse_one_sub_norm
-        (R := DiracHilbert →L[ℂ] DiracHilbert)).comp_tendsto hzero).bound with
-    ⟨C, hC⟩
-  refine ⟨C, ?_⟩
-  filter_upwards [hC] with impurityStrength hbound
-  simpa [Function.comp_def] using hbound
-
 /-- On an invertible scalar-impurity shift, the canonical matrix T-matrix becomes the corresponding
 totalized operator-ring inverse after applying `matrixOperator`. This connects the family-level
 asymptotic route below to the existing `IsUnit`-guarded T-matrix API. -/
