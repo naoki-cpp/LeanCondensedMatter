@@ -40,6 +40,7 @@ jobs:
             source:
               - 'LeanCondensedMatter.lean'
               - 'LeanCondensedMatter/**/*.lean'
+              - 'scripts/rank_proofs.py'
               - 'scripts/check_architecture.py'
               - 'scripts/massive_dirac_radial_grid.py'
               - 'scripts/check_architecture_graphs.py'
@@ -87,6 +88,11 @@ jobs:
       - name: Check source architecture
         run: python3 scripts/check_architecture.py
 
+      - name: Smoke-test proof span ranking
+        run: |
+          python3 scripts/rank_proofs.py --top 1
+          python3 scripts/rank_proofs.py --top 1 --csv | grep -q '^proof_lines,file,theorem,start,end'
+
       - name: Test declaration explorer
         run: node --test docs-site/tests/*.test.mjs
 
@@ -95,6 +101,21 @@ jobs:
 
       - name: Report project-local import overlap candidates (advisory)
         run: python3 scripts/export_module_import_graph.py --report-overlaps --limit 30
+
+      # Lean 4.35 lake shake only supports module-system source files; this project
+      # currently uses legacy/non-module sources. Publish graph overlaps as review
+      # candidates, never as proof that an import can be removed.
+      - name: Export full import overlap inventory (advisory)
+        run: |
+          python3 scripts/export_module_import_graph.py --report-overlaps --limit 100000 > import-overlap-report.txt
+          cat import-overlap-report.txt
+
+      - name: Upload import overlap inventory
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: import-overlap-candidates
+          path: import-overlap-report.txt
+          if-no-files-found: error
 
   build:
     needs: changes
