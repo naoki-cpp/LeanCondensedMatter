@@ -32,7 +32,7 @@ theorem scalarImpurityShift_mul_tMatrix
     (1 - strength • greenLoop) *
       scalarImpurityTMatrix strength greenLoop hinvertible = strength • (1 : R) := by
   unfold scalarImpurityTMatrix
-  rw [mul_smul_comm, hinvertible.mul_val_inv, smul_one]
+  rw [mul_smul_comm, hinvertible.mul_val_inv]
 
 /-- Exact Lippmann–Schwinger equation `T = vI + vGT`; invertibility alone suffices. -/
 theorem scalarImpurityTMatrix_fixedPoint
@@ -51,7 +51,14 @@ theorem scalarImpurityTMatrix_sub_bare
     (hinvertible : IsUnit (1 - strength • greenLoop)) :
     scalarImpurityTMatrix strength greenLoop hinvertible - strength • (1 : R) =
       strength • (greenLoop * scalarImpurityTMatrix strength greenLoop hinvertible) := by
-  rw [scalarImpurityTMatrix_fixedPoint]
-  abel
+  have hfixed := scalarImpurityTMatrix_fixedPoint strength greenLoop hinvertible
+  calc
+    _ = (strength • (1 : R) +
+          strength • (greenLoop * scalarImpurityTMatrix strength greenLoop hinvertible)) -
+          strength • (1 : R) :=
+      congrArg (fun x : R => x - strength • (1 : R)) hfixed
+    _ = _ := by abel
 
-end QuantumTheory.Transport
+end
+end Transport
+end QuantumTheory
