@@ -789,7 +789,18 @@ theorem ExternalInsertionBlockLayout.sum_preconnectedDysonBlock_eq_standardized
         ((B : Finset (Fin (2 * E))).card / 2) T.card =>
         if d.externalLabel = targetLabels then
           d.dysonAmplitude ε β g targetTimes else 0)
-  simpa only [ExternalInsertionDiagram.slotCongr_externalLabel] using h
+  convert h using 1
+  · apply Finset.sum_congr
+    · ext d
+      simp
+    · intro d _
+      simp only [T, targetLabels, targetTimes,
+        ExternalInsertionDiagram.slotCongr_externalLabel]
+  · apply Finset.sum_congr
+    · ext d
+      simp
+    · intro d _
+      simp only [T, targetLabels, targetTimes]
 
 open Classical in
 /-- For one physical external-component layout, the complete integrated
@@ -831,8 +842,8 @@ theorem ExternalInsertionBlockLayout.sum_signedDysonShuffleOrbits_eq_prod_standa
                   (B : Finset (Fin (2 * E))) (layout.evenBlocks B))
             else 0 := by
   classical
-  rw [layout.sum_signedDysonShuffleOrbits_eq_prod_connectedBlocks
-    ε β g labels times]
+  rw [SecondQuantization.Fermionic.ExternalInsertionBlockLayout.sum_signedDysonShuffleOrbits_eq_prod_connectedBlocks
+    layout ε β g labels times]
   apply congrArg (fun z : ℂ => externalPartitionSourceSign layout.partition * z)
   apply Finset.prod_congr rfl
   intro B _
