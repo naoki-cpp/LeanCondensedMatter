@@ -2958,6 +2958,53 @@ theorem ExternalInsertionBlockLayout.sum_fixedPartitionPhysical_eq_sizes_shuffle
       (ExternalLabel := ExternalLabel) (InternalLabel := InternalLabel)
       anchor π heven).injective h
 
+open Classical in
+/-- Reindex a physical vacuum-free Wick diagram sum in a fixed even
+external-component partition directly by interaction size vectors,
+order-preserving owner shuffles and independent connected block families.
+The external-partition test is an actual physical graph condition; the
+weight remains attached to the original labelled Wick diagram. -/
+theorem ExternalInsertionBlockLayout.sum_vacuumFree_fixedPartition_eq_sizes_shuffles
+    {ExternalLabel InternalLabel M : Type*}
+    [Fintype ExternalLabel] [Fintype InternalLabel] [AddCommMonoid M]
+    (anchor : Fin (2 * E))
+    (π : Finpartition (Finset.univ : Finset (Fin (2 * E))))
+    (heven : ∀ B : π.parts, Even (B : Finset (Fin (2 * E))).card)
+    (weight : ExternalInsertionDiagram ExternalLabel InternalLabel E N
+      (Finset.univ : Finset (Fin N)) → M) :
+    (∑ d : {d : ExternalInsertionDiagram ExternalLabel InternalLabel E N
+        (Finset.univ : Finset (Fin N)) //
+          HasNoVacuumComponent d.vertexGraph},
+      if externalComponentPartition d.1.vertexGraph = π then weight d.1 else 0) =
+      ∑ p ∈ ExternalInsertionBlockLayout.fixedPartitionPhysicalSizeShuffleFiniteDomain
+          (ExternalLabel := ExternalLabel) (InternalLabel := InternalLabel)
+          anchor π heven,
+        weight (((ExternalInsertionBlockLayout.fixedPartitionPhysicalSizeShuffleEquiv
+          (ExternalLabel := ExternalLabel) (InternalLabel := InternalLabel)
+          anchor π heven).symm p).1.1) := by
+  classical
+  calc
+    (∑ d : {d : ExternalInsertionDiagram ExternalLabel InternalLabel E N
+        (Finset.univ : Finset (Fin N)) //
+          HasNoVacuumComponent d.vertexGraph},
+      if externalComponentPartition d.1.vertexGraph = π then weight d.1 else 0) =
+      ∑ d : {d : {d : ExternalInsertionDiagram ExternalLabel InternalLabel E N
+          (Finset.univ : Finset (Fin N)) //
+          HasNoVacuumComponent d.vertexGraph} //
+          externalComponentPartition d.1.vertexGraph = π},
+        weight d.1.1 := by
+      rw [← Finset.sum_filter]
+      exact Finset.sum_subtype
+        ((Finset.univ : Finset
+          {d : ExternalInsertionDiagram ExternalLabel InternalLabel E N
+            (Finset.univ : Finset (Fin N)) //
+            HasNoVacuumComponent d.vertexGraph}).filter
+              (fun d => externalComponentPartition d.1.vertexGraph = π))
+        (by simp) (fun d => weight d.1)
+    _ = _ :=
+      ExternalInsertionBlockLayout.sum_fixedPartitionPhysical_eq_sizes_shuffles
+        anchor π heven weight
+
 /-- The exact finite collection of physical layouts with a prescribed
 external partition, obtained from all actual interaction-owner functions.
 No artificial finiteness instance for arbitrary size vectors is used. -/
