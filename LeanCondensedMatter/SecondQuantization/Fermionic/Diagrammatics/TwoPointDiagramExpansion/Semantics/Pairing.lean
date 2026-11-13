@@ -1,7 +1,4 @@
-import LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTime.TimedField
-import LeanCondensedMatter.Combinatorics.PerfectPairing.Evaluation
 import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointMixedLegOrder
-import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.LocalLeg
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Semantics.Flattening
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.TimedFieldContraction
 

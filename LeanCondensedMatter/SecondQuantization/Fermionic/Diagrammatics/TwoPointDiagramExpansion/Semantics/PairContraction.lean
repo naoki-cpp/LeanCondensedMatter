@@ -1,7 +1,4 @@
-import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.LocalLeg
-import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Semantics.Pairing
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Semantics.Reindexing
-import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.TimedFieldContraction
 
 set_option linter.style.header false
 

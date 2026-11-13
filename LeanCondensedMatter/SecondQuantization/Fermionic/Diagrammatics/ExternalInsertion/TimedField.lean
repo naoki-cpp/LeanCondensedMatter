@@ -1,8 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.Diagram
-import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionImaginaryTimeOrder
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.TimedFieldContraction
-import LeanCondensedMatter.Combinatorics.PerfectPairing.Evaluation
-import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.PairingWeight
 
 set_option linter.style.header false
 
