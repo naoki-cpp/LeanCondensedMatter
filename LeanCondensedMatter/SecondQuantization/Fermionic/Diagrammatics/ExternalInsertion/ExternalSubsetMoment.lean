@@ -1472,7 +1472,7 @@ private theorem odd_externalSubset_has_odd_partition_block
     ∃ B ∈ π.parts, ¬ Even B.card := by
   classical
   by_contra h
-  push_neg at h
+  push Not at h
   have hπ : Even (∑ B ∈ π.parts, B.card) :=
     Finset.sum_induction (s := π.parts) (fun B => B.card) Even
       (fun _ _ ha hb => ha.add hb) (by simp) (fun B hB => h B hB)
