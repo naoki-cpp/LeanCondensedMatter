@@ -32,13 +32,6 @@ local instance instDecidableEqFreeFirstPair : DecidableEq Mode := Classical.decE
 
 namespace FreeThermalField
 
-omit [Fintype Mode] in
-/-- Appending a free thermal field on the right agrees with postcomposition by its operator. -/
-theorem orderedProduct_append_singleton
-    (l : List (FreeThermalField Mode)) (C : FreeThermalField Mode) :
-    orderedProduct (l ++ [C]) = (orderedProduct l).comp C.operator := by
-  simp [orderedProduct, List.map_append, List.prod_append, Module.End.mul_eq_comp]
-
 /-- Bosonic CCR exchange plus KMS rotation solves the wrapped term with factor `q / (q - 1)`. -/
 theorem grandCanonicalGibbsExpectation_cons_eq_kmsRatio_mul_operatorPeelSum
     (ε : Mode → ℝ) (β μ : ℝ) (hpos : ∀ i, 0 < β * (ε i - μ))
@@ -50,8 +43,8 @@ theorem grandCanonicalGibbsExpectation_cons_eq_kmsRatio_mul_operatorPeelSum
   set P : ℂ := grandCanonicalGibbsExpectation ε β μ (C.operatorPeelSum l)
   set R : ℂ := grandCanonicalGibbsExpectation ε β μ ((orderedProduct l).comp C.operator)
   have hRmem : (orderedProduct l).comp C.operator ∈ grandCanonicalGibbsDomain ε β μ := by
-    rw [← orderedProduct_append_singleton]
-    exact orderedProduct_mem_grandCanonicalGibbsDomain ε β μ hpos (l ++ [C])
+    simpa [orderedProduct, List.map_append, List.prod_append, Module.End.mul_eq_comp]
+      using (orderedProduct_mem_grandCanonicalGibbsDomain ε β μ hpos (l ++ [C]))
   have hPmem : C.operatorPeelSum l ∈ grandCanonicalGibbsDomain ε β μ :=
     operatorPeelSum_mem_grandCanonicalGibbsDomain ε β μ hpos C l
   have hpeel : E = P + R := by
