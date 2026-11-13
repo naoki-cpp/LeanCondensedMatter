@@ -1,8 +1,12 @@
 import LeanCondensedMatter.Analysis.OrderedSimplex.FamilyShuffle
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.InteractionOrder
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.BlockAssembly
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentSlotCongr
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ExternalPartition
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.Integral
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentAmplitude
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.DiagramRegularity
+import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalSourceSign
 
 set_option linter.style.header false
 
@@ -131,6 +135,350 @@ theorem ExternalInsertionWickDiagram.sum_componentInteractionOrderShuffle_ordere
   exact ExternalInsertionWickDiagram.orderedSimplexIntegral_dysonFixedTimeAmplitude
       (d.componentOrderedDiagram B)
     ε β g (d.componentExternalTime externalTime B)
+
+/-- For a vacuum-free external-insertion diagram, reindex the *integrated*
+Dyson component factorization by external-partition blocks rather than full
+graph components. The interaction-order shuffle sum is essential:
+individual ordered-simplex terms do not factor into component integrals.
+
+This is the diagram-side reindexing needed for the signed source moment
+identity; it uses the actual local Wick diagrams, local labels and times. -/
+theorem ExternalInsertionWickDiagram.sum_componentInteractionOrderShuffle_orderedDysonAmplitude_eq_externalPartitionProduct
+    {E n : ℕ} (d : ExternalInsertionWickDiagram Mode E n)
+    (hVac : HasNoVacuumComponent d.vertexGraph)
+    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
+    (externalTime : Fin (2 * E) → ℝ)
+    (blockOrder : d.vertexGraph.componentPartition.parts ≃
+      Fin (Fintype.card d.vertexGraph.componentPartition.parts)) :
+    (∑ shuffle : d.ComponentInteractionOrderShuffle,
+      d.orderedDysonAmplitude ε β g externalTime
+        (d.assembleInteractionOrder d.canonicalComponentInteractionOrders shuffle)) =
+      componentExternalOrderSign d blockOrder *
+        ∏ P : (externalComponentPartition d.vertexGraph).parts,
+          ExternalInsertionWickDiagram.dysonAmplitude
+              (d.componentOrderedDiagram
+                ((d.vacuumFreeComponentsEquivExternalBlocks hVac).symm P))
+              ε β g (d.componentExternalTime externalTime
+                ((d.vacuumFreeComponentsEquivExternalBlocks hVac).symm P)) := by
+  classical
+  let F : d.vertexGraph.componentPartition.parts → ℂ :=
+    fun B => ExternalInsertionWickDiagram.dysonAmplitude
+      (d.componentOrderedDiagram B) ε β g (d.componentExternalTime externalTime B)
+  calc
+    (∑ shuffle : d.ComponentInteractionOrderShuffle,
+      d.orderedDysonAmplitude ε β g externalTime
+        (d.assembleInteractionOrder d.canonicalComponentInteractionOrders shuffle)) =
+      componentExternalOrderSign d blockOrder * ∏ B, F B :=
+        d.sum_componentInteractionOrderShuffle_orderedDysonAmplitude_eq_componentExternalOrderSign_mul_prod_components
+          ε β g externalTime blockOrder
+    _ = componentExternalOrderSign d blockOrder *
+        ∏ P : (externalComponentPartition d.vertexGraph).parts,
+          F ((d.vacuumFreeComponentsEquivExternalBlocks hVac).symm P) := by
+      congr 1
+      exact (Equiv.prod_comp (d.vacuumFreeComponentsEquivExternalBlocks hVac).symm F).symm
+
+
+
+/-- The summed interaction-order shuffle orbit of a vacuum-free physical
+diagram factors with the **canonical fermionic external-partition source
+sign**, not merely an arbitrarily ordered component sign. Each factor is
+the integrated amplitude of its actual connected component with the
+correct increasing local external labels and times. -/
+theorem ExternalInsertionWickDiagram.sum_componentInteractionOrderShuffle_orderedDysonAmplitude_eq_sourceSign_mul_externalPartitionProduct
+    {E n : ℕ} (d : ExternalInsertionWickDiagram Mode E n)
+    (hVac : HasNoVacuumComponent d.vertexGraph)
+    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
+    (externalTime : Fin (2 * E) → ℝ)
+    (blockOrder : d.vertexGraph.componentPartition.parts ≃
+      Fin (Fintype.card d.vertexGraph.componentPartition.parts)) :
+    (∑ shuffle : d.ComponentInteractionOrderShuffle,
+      d.orderedDysonAmplitude ε β g externalTime
+        (d.assembleInteractionOrder d.canonicalComponentInteractionOrders shuffle)) =
+      externalPartitionSourceSign (externalComponentPartition d.vertexGraph) *
+        ∏ P : (externalComponentPartition d.vertexGraph).parts,
+          ExternalInsertionWickDiagram.dysonAmplitude
+            (d.componentOrderedDiagram
+              ((d.vacuumFreeComponentsEquivExternalBlocks hVac).symm P))
+            ε β g (d.componentExternalTime externalTime
+              ((d.vacuumFreeComponentsEquivExternalBlocks hVac).symm P)) := by
+  rw [d.sum_componentInteractionOrderShuffle_orderedDysonAmplitude_eq_externalPartitionProduct
+    hVac ε β g externalTime blockOrder]
+  rw [externalPartitionSourceSign_eq_componentExternalOrderSign_of_vacuumFree
+    d hVac blockOrder]
+
+/-- For an *actually assembled* family of connected external blocks,
+the interaction-time shuffle orbit of the physical Wick diagram carries
+the prescribed external-source partition sign and factors into its
+standalone connected-component Dyson amplitudes.
+
+The components on the right are still indexed through the physical
+assembled graph. Identifying each one with the independently supplied
+local diagram, including its canonical slot relabelling, is the
+remaining diagram-to-coefficient bridge. -/
+theorem ExternalInsertionBlockLayout.assembleConnectedBlocks_signedDysonShuffleOrbit
+    {E n : ℕ} (layout : ExternalInsertionBlockLayout E n)
+    (F : ∀ B : layout.partition.parts,
+      ExternalInsertionDiagram (ExternalFieldLabel Mode) (QuarticVertexLabel Mode)
+        ((B : Finset (Fin (2 * E))).card / 2) n
+        (layout.interactionBlock (Finset.univ : Finset (Fin n)) B))
+    (hconnected : ∀ B, (F B).vertexGraph.Preconnected)
+    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
+    (externalTime : Fin (2 * E) → ℝ) :
+    let d : ExternalInsertionWickDiagram Mode E n :=
+      layout.assembleDiagram (Finset.univ : Finset (Fin n)) F
+    (∑ shuffle : d.ComponentInteractionOrderShuffle,
+      d.orderedDysonAmplitude ε β g externalTime
+        (d.assembleInteractionOrder d.canonicalComponentInteractionOrders shuffle)) =
+      externalPartitionSourceSign layout.partition *
+        ∏ B : d.vertexGraph.componentPartition.parts,
+          ExternalInsertionWickDiagram.dysonAmplitude (d.componentOrderedDiagram B) ε β g
+            (d.componentExternalTime externalTime B) := by
+  classical
+  let d : ExternalInsertionWickDiagram Mode E n :=
+    layout.assembleDiagram (Finset.univ : Finset (Fin n)) F
+  let blockOrder : d.vertexGraph.componentPartition.parts ≃
+      Fin (Fintype.card d.vertexGraph.componentPartition.parts) :=
+    Fintype.equivFin d.vertexGraph.componentPartition.parts
+  have hVac : HasNoVacuumComponent d.vertexGraph :=
+    layout.hasNoVacuumComponent_assembleDiagram
+      (Finset.univ : Finset (Fin n)) F hconnected
+  have hpart : externalComponentPartition d.vertexGraph = layout.partition :=
+    layout.externalComponentPartition_assembleDiagram
+      (Finset.univ : Finset (Fin n)) F hconnected
+  have hsign :=
+    externalPartitionSourceSign_eq_componentExternalOrderSign_of_vacuumFree
+      d hVac blockOrder
+  have horbit :=
+    d.sum_componentInteractionOrderShuffle_orderedDysonAmplitude_eq_componentExternalOrderSign_mul_prod_components
+      ε β g externalTime blockOrder
+  calc
+    (∑ shuffle : d.ComponentInteractionOrderShuffle,
+      d.orderedDysonAmplitude ε β g externalTime
+        (d.assembleInteractionOrder d.canonicalComponentInteractionOrders shuffle)) =
+      componentExternalOrderSign d blockOrder *
+        ∏ B : d.vertexGraph.componentPartition.parts,
+          ExternalInsertionWickDiagram.dysonAmplitude (d.componentOrderedDiagram B) ε β g
+            (d.componentExternalTime externalTime B) := horbit
+    _ = externalPartitionSourceSign layout.partition *
+        ∏ B : d.vertexGraph.componentPartition.parts,
+          ExternalInsertionWickDiagram.dysonAmplitude (d.componentOrderedDiagram B) ε β g
+            (d.componentExternalTime externalTime B) := by
+      rw [← hsign, hpart]
+
+
+/-- The physical signed shuffle orbit of independently assembled connected
+Wick blocks, now written entirely in terms of the *canonical slot
+transport of the actual restricted components*. This removes the
+otherwise implicit consecutive-slot relabeling from each local factor.
+
+The subsequent identification of those restrictions with the original
+independent block-family data `F` remains a separate graph-component
+and pairing-fiber compatibility theorem. -/
+theorem ExternalInsertionBlockLayout.assembleConnectedBlocks_signedDysonShuffleOrbit_slotCongr
+    {E n : ℕ} (layout : ExternalInsertionBlockLayout E n)
+    (F : ∀ B : layout.partition.parts,
+      ExternalInsertionDiagram (ExternalFieldLabel Mode) (QuarticVertexLabel Mode)
+        ((B : Finset (Fin (2 * E))).card / 2) n
+        (layout.interactionBlock (Finset.univ : Finset (Fin n)) B))
+    (hconnected : ∀ B, (F B).vertexGraph.Preconnected)
+    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
+    (externalTime : Fin (2 * E) → ℝ) :
+    let d : ExternalInsertionWickDiagram Mode E n :=
+      layout.assembleDiagram (Finset.univ : Finset (Fin n)) F
+    (∑ shuffle : d.ComponentInteractionOrderShuffle,
+      d.orderedDysonAmplitude ε β g externalTime
+        (d.assembleInteractionOrder d.canonicalComponentInteractionOrders shuffle)) =
+      externalPartitionSourceSign layout.partition *
+        ∏ B : d.vertexGraph.componentPartition.parts,
+          ExternalInsertionWickDiagram.dysonAmplitude
+            ((d.restrictComponent B).slotCongr (Combinatorics.standardSlotEquiv
+              (interactionSector
+                (B : Finset (ExternalInsertionVertex E (Finset.univ : Finset (Fin n)))))))
+            ε β g (d.componentExternalTime externalTime B) := by
+  classical
+  let d : ExternalInsertionWickDiagram Mode E n :=
+    layout.assembleDiagram (Finset.univ : Finset (Fin n)) F
+  calc
+    (∑ shuffle : d.ComponentInteractionOrderShuffle,
+      d.orderedDysonAmplitude ε β g externalTime
+        (d.assembleInteractionOrder d.canonicalComponentInteractionOrders shuffle)) =
+      externalPartitionSourceSign layout.partition *
+        ∏ B : d.vertexGraph.componentPartition.parts,
+          ExternalInsertionWickDiagram.dysonAmplitude
+            (d.componentOrderedDiagram B) ε β g
+            (d.componentExternalTime externalTime B) :=
+      ExternalInsertionBlockLayout.assembleConnectedBlocks_signedDysonShuffleOrbit
+        layout F hconnected ε β g externalTime
+    _ = _ := by
+      apply congrArg
+        (fun z : ℂ => externalPartitionSourceSign layout.partition * z)
+      apply Finset.prod_congr rfl
+      intro B _
+      exact congrArg
+        (fun localDiagram =>
+          ExternalInsertionWickDiagram.dysonAmplitude localDiagram ε β g
+            (d.componentExternalTime externalTime B))
+        (d.componentOrderedDiagram_eq_slotCongr B)
+
+
+
+omit [LinearOrder Mode] [Fintype Mode] in
+/-- The pairing of the *canonically ordered actual connected component*
+is the originally supplied independent block pairing after its explicit
+canonical-to-local leg coordinate transformation. This composes the
+physical component pairing identification with the real `slotCongr`
+transport; it does not replace the physical component by a formal block.
+
+The remaining amplitude comparison must show that this coordinate map
+preserves the mixed-time fermionic contraction and its ordering sign. -/
+theorem ExternalInsertionBlockLayout.assembleConnectedBlocks_componentOrderedPairing_eq_local
+    {E n : ℕ} (layout : ExternalInsertionBlockLayout E n)
+    (F : ∀ B : layout.partition.parts,
+      ExternalInsertionDiagram (ExternalFieldLabel Mode) (QuarticVertexLabel Mode)
+        ((B : Finset (Fin (2 * E))).card / 2) n
+        (layout.interactionBlock (Finset.univ : Finset (Fin n)) B))
+    (hconnected : ∀ B, (F B).vertexGraph.Preconnected)
+    (e : Fin (2 * E)) :
+    let d : ExternalInsertionWickDiagram Mode E n :=
+      layout.assembleDiagram (Finset.univ : Finset (Fin n)) F
+    let C : d.vertexGraph.componentPartition.parts :=
+      ⟨d.vertexGraph.componentBlock (Sum.inl e),
+        d.vertexGraph.componentBlock_mem_componentPartition (Sum.inl e)⟩
+    let T := interactionSector
+      (C : Finset (ExternalInsertionVertex E (Finset.univ : Finset (Fin n))))
+    (d.componentOrderedDiagram C).pairing.transport
+      (((d.componentBlockLegEquiv C).symm.trans
+        (layout.physicalComponentLegEquiv
+          (Finset.univ : Finset (Fin n)) F hconnected e)).symm.trans
+        (externalInsertionLegCongr (standardSlotEquiv T))) =
+      (F (layout.sourceEquiv e).1).pairing := by
+  classical
+  let S : Finset (Fin n) := Finset.univ
+  let d : ExternalInsertionWickDiagram Mode E n := layout.assembleDiagram S F
+  let C : d.vertexGraph.componentPartition.parts :=
+    ⟨d.vertexGraph.componentBlock (Sum.inl e),
+      d.vertexGraph.componentBlock_mem_componentPartition (Sum.inl e)⟩
+  let T := interactionSector (C : Finset (ExternalInsertionVertex E S))
+  let c := (d.componentBlockLegEquiv C).symm.trans
+    (layout.physicalComponentLegEquiv S F hconnected e)
+  let leg := externalInsertionLegCongr (E := d.externalPairCount C) (standardSlotEquiv T)
+  change (d.componentOrderedDiagram C).pairing.transport (c.symm.trans leg) =
+    (F (layout.sourceEquiv e).1).pairing
+  rw [d.componentOrderedDiagram_eq_slotCongr C]
+  change ((d.restrictComponent C).pairing.transport leg.symm).transport
+    (c.symm.trans leg) = _
+  rw [PairingOn.transport_trans]
+  have hcancel : (c.symm.trans leg).trans leg.symm = c.symm := by
+    apply Equiv.ext
+    intro x
+    change leg.symm (leg (c.symm x)) = c.symm x
+    exact leg.symm_apply_apply _
+  rw [hcancel]
+  exact layout.physicalComponentCanonicalPairing_eq_local S F hconnected e
+
+
+omit [LinearOrder Mode] [Fintype Mode] in
+/-- The actual canonically numbered connected component has the same
+quartic coupling product as the independently specified local block.
+The first equality uses physical `slotCongr`, and the second uses exact
+reindexing of the component's actual interaction vertices. -/
+theorem ExternalInsertionBlockLayout.assembleConnectedBlocks_componentOrderedVertexWeight_eq_local
+    {E n : ℕ} (layout : ExternalInsertionBlockLayout E n)
+    (F : ∀ B : layout.partition.parts,
+      ExternalInsertionDiagram (ExternalFieldLabel Mode) (QuarticVertexLabel Mode)
+        ((B : Finset (Fin (2 * E))).card / 2) n
+        (layout.interactionBlock (Finset.univ : Finset (Fin n)) B))
+    (hconnected : ∀ B, (F B).vertexGraph.Preconnected)
+    (g : QuarticVertexLabel Mode → ℂ) (e : Fin (2 * E)) :
+    let d : ExternalInsertionWickDiagram Mode E n :=
+      layout.assembleDiagram (Finset.univ : Finset (Fin n)) F
+    let C : d.vertexGraph.componentPartition.parts :=
+      ⟨d.vertexGraph.componentBlock (Sum.inl e),
+        d.vertexGraph.componentBlock_mem_componentPartition (Sum.inl e)⟩
+    (d.componentOrderedDiagram C).vertexWeight g =
+      (F (layout.sourceEquiv e).1).vertexWeight g := by
+  classical
+  let S : Finset (Fin n) := Finset.univ
+  let d : ExternalInsertionWickDiagram Mode E n := layout.assembleDiagram S F
+  let C : d.vertexGraph.componentPartition.parts :=
+    ⟨d.vertexGraph.componentBlock (Sum.inl e),
+      d.vertexGraph.componentBlock_mem_componentPartition (Sum.inl e)⟩
+  let T := interactionSector (C : Finset (ExternalInsertionVertex E S))
+  change (d.componentOrderedDiagram C).vertexWeight g =
+    (F (layout.sourceEquiv e).1).vertexWeight g
+  calc
+    _ = ((d.restrictComponent C).slotCongr (standardSlotEquiv T)).vertexWeight g := by
+          rw [d.componentOrderedDiagram_eq_slotCongr C]
+    _ = (d.restrictComponent C).vertexWeight g :=
+      (d.restrictComponent C).slotCongr_vertexWeight (standardSlotEquiv T) g
+    _ = _ :=
+      layout.assembleDiagram_restrictComponent_vertexWeight_external
+        S F hconnected g e
+
+
+omit [LinearOrder Mode] [Fintype Mode] in
+/-- The **physical** connected component obtained from independent connected
+Wick blocks has exactly the same crossing count as its supplied local
+pairing, even after canonical interaction-slot standardization.
+
+The result uses the actual physical component restriction, its already
+identified pairing, and the strict monotonicity of the **specific**
+physical-to-local coordinate map. In particular, no arbitrary pairing
+reindexing is assumed to preserve fermionic signs. -/
+theorem ExternalInsertionBlockLayout.assembleConnectedBlocks_componentOrderedCrossingCount_eq_local
+    {E n : ℕ} (layout : ExternalInsertionBlockLayout E n)
+    (F : ∀ B : layout.partition.parts,
+      ExternalInsertionDiagram (ExternalFieldLabel Mode) (QuarticVertexLabel Mode)
+        ((B : Finset (Fin (2 * E))).card / 2) n
+        (layout.interactionBlock (Finset.univ : Finset (Fin n)) B))
+    (hconnected : ∀ B, (F B).vertexGraph.Preconnected)
+    (e : Fin (2 * E)) :
+    let d : ExternalInsertionWickDiagram Mode E n :=
+      layout.assembleDiagram (Finset.univ : Finset (Fin n)) F
+    let C : d.vertexGraph.componentPartition.parts :=
+      ⟨d.vertexGraph.componentBlock (Sum.inl e),
+        d.vertexGraph.componentBlock_mem_componentPartition (Sum.inl e)⟩
+    (d.componentOrderedDiagram C).pairing.crossingCount =
+      (F (layout.sourceEquiv e).1).pairing.crossingCount := by
+  classical
+  let S : Finset (Fin n) := Finset.univ
+  let B := (layout.sourceEquiv e).1
+  let d : ExternalInsertionWickDiagram Mode E n := layout.assembleDiagram S F
+  let C : d.vertexGraph.componentPartition.parts :=
+    ⟨d.vertexGraph.componentBlock (Sum.inl e),
+      d.vertexGraph.componentBlock_mem_componentPartition (Sum.inl e)⟩
+  let T := interactionSector (C : Finset (ExternalInsertionVertex E S))
+  let c := (d.componentBlockLegEquiv C).symm.trans
+    (layout.physicalComponentLegEquiv S F hconnected e)
+  let leg := externalInsertionLegCongr (E := d.externalPairCount C) (standardSlotEquiv T)
+  let k := c.symm.trans leg
+  let q := k.symm
+  have hc : StrictMono c :=
+    layout.physicalComponentCanonicalLegEquiv_strictMono S F hconnected e
+  have hq : StrictMono q := by
+    intro a b hab
+    change c (leg.symm a) < c (leg.symm b)
+    apply hc
+    apply (externalInsertionLegCongr_standardize_lt_iff
+      (E := d.externalPairCount C) T (leg.symm a) (leg.symm b)).1
+    change leg (leg.symm a) < leg (leg.symm b)
+    simpa only [Equiv.apply_symm_apply] using hab
+  have hpair :
+      (d.componentOrderedDiagram C).pairing.transport k = (F B).pairing :=
+    ExternalInsertionBlockLayout.assembleConnectedBlocks_componentOrderedPairing_eq_local
+      layout F hconnected e
+  have hpartnerCanonical (p : Fin (2 * (2 *
+      (Finset.univ : Finset (Fin T.card)).card + d.externalPairCount C))) :
+      (F B).pairing.partner (q p) =
+        q ((d.componentOrderedDiagram C).pairing.partner p) := by
+    change (F B).pairing.partner (k.symm p) =
+      k.symm ((d.componentOrderedDiagram C).pairing.partner p)
+    have h := congrArg (fun pairing => pairing.partner (k.symm p)) hpair
+    simpa only [PairingOn.transport_partner, Equiv.apply_symm_apply] using h.symm
+  change (d.componentOrderedDiagram C).pairing.crossingCount =
+    (F B).pairing.crossingCount
+  exact (d.componentOrderedDiagram C).pairing.crossingCount_eq_of_partnerEquiv_strictMono
+    (F B).pairing q hpartnerCanonical hq
 
 end Fermionic
 end SecondQuantization

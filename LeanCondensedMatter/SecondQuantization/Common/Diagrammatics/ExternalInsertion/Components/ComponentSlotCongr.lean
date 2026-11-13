@@ -1,0 +1,99 @@
+import LeanCondensedMatter.Combinatorics.PerfectPairing.Crossing
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.MixedOrderData
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.SupportStandardization
+
+set_option linter.style.header false
+
+/-!
+# Canonical reindexing of external-insertion connected components
+
+The connected-component restriction retains the original interaction-vertex
+subset. Its standalone ordered diagram enumerates the interaction slots
+in increasing order. We identify that operation with the already defined
+`slotCongr` transport, including the *actual pairing*, not just labels.
+-/
+
+namespace SecondQuantization
+namespace Common
+
+open Combinatorics
+
+variable {ExternalLabel InternalLabel : Type*}
+
+/-- The consecutive interaction-slot component diagram is exactly the
+canonical `slotCongr` relabeling of its actual connected-component
+restriction. This retains its external labels, interaction labels and
+flattened-leg Wick pairing. -/
+theorem ExternalInsertionDiagram.componentOrderedDiagram_eq_slotCongr
+    {E n : ℕ}
+    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E n
+      (Finset.univ : Finset (Fin n)))
+    (B : d.vertexGraph.componentPartition.parts) :
+    let T := interactionSector
+      (B : Finset (ExternalInsertionVertex E (Finset.univ : Finset (Fin n))))
+    d.componentOrderedDiagram B =
+      (d.restrictComponent B).slotCongr (standardSlotEquiv T) := by
+  classical
+  dsimp only
+  let T := interactionSector
+    (B : Finset (ExternalInsertionVertex E (Finset.univ : Finset (Fin n))))
+  let r := d.restrictComponent B
+  apply ExternalInsertionDiagram.ext
+  · rfl
+  · funext v
+    change r.vertexLabel (T.orderIsoOfFin rfl v.1) =
+      r.vertexLabel ((standardSlotEquiv T).symm v)
+    congr 1
+  · change (Equiv.cast (show Pairing (2 * T.card + d.externalPairCount B) =
+          PairingOn (Fin (2 * (2 * (Finset.univ : Finset (Fin T.card)).card +
+            d.externalPairCount B))) from by simp [Pairing]) r.pairing) =
+        r.pairing.transport
+          (externalInsertionLegCongr (E := d.externalPairCount B)
+            (standardSlotEquiv T)).symm
+    rw [externalInsertionLegCongr_standardize (E := d.externalPairCount B) T]
+    apply PairingOn.ext
+    apply Equiv.ext
+    intro p
+    simp only [PairingOn.transport_partner]
+    have hcard : 2 * T.card + d.externalPairCount B =
+        2 * (Finset.univ : Finset (Fin T.card)).card +
+          d.externalPairCount B := by
+      simp
+    have hback := Pairing.cast_partner hcard r.pairing p
+    have hforward :=
+      congrArg (finCongr (congrArg (fun k : ℕ => 2 * k) hcard)) hback
+    have hsymm :
+        finCongr (congrArg (fun k : ℕ => 2 * k) hcard.symm) =
+          (finCongr (congrArg (fun k : ℕ => 2 * k) hcard)).symm := by
+      apply Equiv.ext
+      intro x
+      apply Fin.ext
+      rfl
+    rw [hsymm] at hforward
+    simpa only [Equiv.symm_symm, Equiv.apply_symm_apply] using hforward
+
+
+/-- Consecutive interaction-slot standardization of an actual connected
+component preserves the crossing count of its **restricted physical Wick
+pairing**.  This is an exact crossing-number identity, not just a parity
+congruence, and no assumption on the component interaction count is needed. -/
+theorem ExternalInsertionDiagram.componentOrderedDiagram_pairing_crossingCount
+    {E n : ℕ}
+    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E n
+      (Finset.univ : Finset (Fin n)))
+    (B : d.vertexGraph.componentPartition.parts) :
+    (d.componentOrderedDiagram B).pairing.crossingCount =
+      (d.restrictComponent B).pairing.crossingCount := by
+  classical
+  let T := interactionSector
+    (B : Finset (ExternalInsertionVertex E (Finset.univ : Finset (Fin n))))
+  change (Equiv.cast (show
+      Pairing (2 * T.card + d.externalPairCount B) =
+        Pairing (2 * (Finset.univ : Finset (Fin T.card)).card +
+          d.externalPairCount B) from by simp)
+      (d.restrictComponent B).pairing).crossingCount =
+        (d.restrictComponent B).pairing.crossingCount
+  exact Pairing.cast_crossingCount (by simp) _
+
+end Common
+end SecondQuantization

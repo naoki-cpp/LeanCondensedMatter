@@ -182,6 +182,28 @@ theorem ExternalInsertionDiagram.componentExternalShuffle_slotEquiv_apply
   rfl
 
 
+/-- The ambient external slots occupied by a full-graph component's
+canonical external shuffle are exactly the external vertices of that
+component. This is the graph-side occupied-slot identity used for
+fermionic source-partition sign comparison. -/
+theorem ExternalInsertionDiagram.componentExternalShuffle_blockSlotSet
+    {S : Finset (Fin N)}
+    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
+    (B : d.vertexGraph.componentPartition.parts) :
+    d.componentExternalShuffle.blockSlotSet B =
+      (B.1 : Finset (ExternalInsertionVertex E S)).toLeft := by
+  classical
+  ext e
+  simp only [FamilySlotShuffleTo.blockSlotSet, Finset.mem_image,
+    Finset.mem_univ, true_and]
+  constructor
+  · rintro ⟨i, hi⟩
+    rw [d.componentExternalShuffle_slotEquiv_apply] at hi
+    simpa [hi] using (d.externalSectorOrderIso B i).2
+  · intro he
+    refine ⟨(d.externalSectorOrderIso B).symm ⟨e, he⟩, ?_⟩
+    simp [d.componentExternalShuffle_slotEquiv_apply]
+
 /-- Vacuum components do not contribute inversions with any other component when
 they occupy the left argument of the external-only shuffle. -/
 theorem ExternalInsertionDiagram.componentExternalShuffle_blockInversionCount_zero_of_left_vacuum
@@ -214,7 +236,7 @@ theorem ExternalInsertionDiagram.componentExternalShuffle_blockInversionCount_ze
 
 /-- Reindex the flattened legs of one component as the flattened legs of its local
 external-insertion diagram. -/
-private noncomputable def ExternalInsertionDiagram.componentBlockLegEquiv
+noncomputable def ExternalInsertionDiagram.componentBlockLegEquiv
     {S : Finset (Fin N)}
     (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
     (B : d.vertexGraph.componentPartition.parts) :
@@ -438,6 +460,119 @@ theorem ExternalInsertionDiagram.componentLegShuffle_slotEquiv_apply
       (B : Finset (ExternalInsertionVertex E S))).card + d.externalPairCount B))) :
     d.componentLegShuffle.slotEquiv ⟨B, p⟩ = d.componentDiagramLeg B p :=
   rfl
+
+
+/-- Assemble an **independent family of local perfect pairings** into an
+ambient external-insertion pairing, using the canonical component-leg shuffle
+of a fixed reference diagram.
+
+The reference diagram supplies the disjoint leg sectors, not the pairings to
+assemble. In particular, the local pairing family may differ from every
+component pairing of the reference diagram. A separate construction is still
+needed to assemble components over an *arbitrary* external source partition. -/
+noncomputable def ExternalInsertionDiagram.assembleComponentPairing
+    {S : Finset (Fin N)}
+    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
+    (componentPairings : ∀ B : d.vertexGraph.componentPartition.parts,
+      Pairing (2 * (interactionSector
+        (B : Finset (ExternalInsertionVertex E S))).card + d.externalPairCount B)) :
+    Pairing (2 * S.card + E) :=
+  (Combinatorics.PairingOn.sigmaCongrRight componentPairings).transport
+    d.componentLegShuffle.slotEquiv.symm
+
+/-- Independent pairing assembly is **right-inverse to unshuffling** the
+ambient flattened-leg positions. This proves the inverse pairing law before
+any connectedness or Dyson-amplitude arguments are introduced. -/
+@[simp]
+theorem ExternalInsertionDiagram.assembleComponentPairing_unshuffle
+    {S : Finset (Fin N)}
+    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
+    (componentPairings : ∀ B : d.vertexGraph.componentPartition.parts,
+      Pairing (2 * (interactionSector
+        (B : Finset (ExternalInsertionVertex E S))).card + d.externalPairCount B)) :
+    (d.assembleComponentPairing componentPairings).transport
+        d.componentLegShuffle.slotEquiv =
+      Combinatorics.PairingOn.sigmaCongrRight componentPairings := by
+  unfold ExternalInsertionDiagram.assembleComponentPairing
+  rw [Combinatorics.PairingOn.transport_transport_symm]
+
+/-- A pairing assembled from independent components preserves the block index
+of every flattened leg and applies precisely the chosen componentPairings pairing inside
+that block. -/
+theorem ExternalInsertionDiagram.assembleComponentPairing_partner
+    {S : Finset (Fin N)}
+    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
+    (componentPairings : ∀ B : d.vertexGraph.componentPartition.parts,
+      Pairing (2 * (interactionSector
+        (B : Finset (ExternalInsertionVertex E S))).card + d.externalPairCount B))
+    (B : d.vertexGraph.componentPartition.parts)
+    (p : Fin (2 * (2 * (interactionSector
+        (B : Finset (ExternalInsertionVertex E S))).card + d.externalPairCount B))) :
+    (d.assembleComponentPairing componentPairings).partner (d.componentDiagramLeg B p) =
+      d.componentDiagramLeg B ((componentPairings B).partner p) := by
+  rw [← d.componentLegShuffle_slotEquiv_apply B p,
+    ← d.componentLegShuffle_slotEquiv_apply B ((componentPairings B).partner p)]
+  unfold ExternalInsertionDiagram.assembleComponentPairing
+  rw [Combinatorics.PairingOn.transport_partner, Equiv.symm_apply_apply,
+    Combinatorics.PairingOn.sigmaCongrRight_partner, Equiv.symm_symm]
+
+/-- No information about the independent family of componentPairings pairings is lost by
+assembling it into an ambient perfect pairing. -/
+theorem ExternalInsertionDiagram.assembleComponentPairing_injective
+    {S : Finset (Fin N)}
+    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S) :
+    Function.Injective (d.assembleComponentPairing) := by
+  intro left right h
+  funext B
+  apply Combinatorics.PairingOn.ext
+  apply Equiv.ext
+  intro p
+  have hpartner := congrArg (fun q : Pairing (2 * S.card + E) =>
+    q.partner (d.componentDiagramLeg B p)) h
+  rw [d.assembleComponentPairing_partner left B p,
+    d.assembleComponentPairing_partner right B p] at hpartner
+  exact (d.componentDiagramLeg_strictMono B).injective hpartner
+
+/-- Rebuild the full pairing of an external-insertion diagram from the
+pairings restricted to **all of its actual connected components**.
+
+The canonical component-leg shuffle identifies the disjoint sum of local
+flattened legs with the original flattened legs. Unlike an abstract
+independent-component assembly, this definition does not yet choose an
+arbitrary external partition or distribute interaction labels between its
+blocks. -/
+noncomputable def ExternalInsertionDiagram.reassembleComponentPairing
+    {S : Finset (Fin N)}
+    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S) :
+    Pairing (2 * S.card + E) :=
+  d.assembleComponentPairing (fun B => (d.restrictComponent B).pairing)
+
+/-- Restriction followed by pairing reassembly recovers the *original
+physical pairing*, without losing interaction legs, external vertices,
+or component-local pairing information.
+
+The proof uses the existing exact partner-preservation theorem for
+component restriction, not an assumption about independent diagrams. -/
+theorem ExternalInsertionDiagram.reassembleComponentPairing_eq
+    {S : Finset (Fin N)}
+    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S) :
+    d.reassembleComponentPairing = d.pairing := by
+  classical
+  apply Combinatorics.PairingOn.ext
+  apply Equiv.ext
+  intro leg
+  obtain ⟨⟨B, i⟩, rfl⟩ := d.componentLegShuffle.slotEquiv.surjective leg
+  change
+    ((Combinatorics.PairingOn.sigmaCongrRight
+        (fun C : d.vertexGraph.componentPartition.parts =>
+          (d.restrictComponent C).pairing)).transport
+       d.componentLegShuffle.slotEquiv.symm).partner
+        (d.componentLegShuffle.slotEquiv ⟨B, i⟩) =
+      d.pairing.partner (d.componentLegShuffle.slotEquiv ⟨B, i⟩)
+  rw [Combinatorics.PairingOn.transport_partner,
+    Equiv.symm_apply_apply, Combinatorics.PairingOn.sigmaCongrRight_partner]
+  simpa only [Equiv.symm_symm, d.componentLegShuffle_slotEquiv_apply] using
+    d.componentDiagramLeg_restrictComponent_pairing_partner B i
 
 
 end Common

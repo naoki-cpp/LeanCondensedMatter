@@ -112,6 +112,50 @@ theorem Pairing.crossingCount_eq_sum_crosses {n : ℕ} (pairing : Pairing n) :
     _ = _ := by
       simp only [Finset.attach_eq_univ, Fintype.sum_prod_type]
 
+/-- Merely changing the natural-number index of a finite perfect
+pairing by equality leaves its geometric crossing count unchanged.  In
+particular, casting the pair count during canonical interaction-slot
+standardization introduces no extra fermionic crossing sign. -/
+theorem Pairing.cast_crossingCount {m n : ℕ} (h : m = n)
+    (pairing : Pairing m) :
+    (Equiv.cast (congrArg Pairing h) pairing).crossingCount =
+      pairing.crossingCount := by
+  cases h
+  rfl
+
+/-- An order-preserving equivalence that intertwines the **actual**
+perfect-pairing partners preserves the geometric crossing count exactly.
+The induced map on normalized pairs cannot exchange their endpoints,
+so the proof does not assume any symmetry of oriented contractions. -/
+theorem Pairing.crossingCount_eq_of_partnerEquiv_strictMono
+    {m n : ℕ} (source : Pairing m) (target : Pairing n)
+    (e : Fin (2 * m) ≃ Fin (2 * n))
+    (hpartner : ∀ p, target.partner (e p) = e (source.partner p))
+    (hmono : StrictMono e) :
+    source.crossingCount = target.crossingCount := by
+  classical
+  let pairEquiv := source.normalizedPairEquivOfPartnerEquiv target e hpartner
+  have hpair (pr : source.NormalizedPair) :
+      (pairEquiv pr).1 = (e pr.1.1, e pr.1.2) :=
+    source.normalizedPairEquivOfPartnerEquiv_apply_of_strictMono
+      target e hpartner hmono pr
+  have hcross (p q : source.NormalizedPair) :
+      Crosses p.1 q.1 ↔ Crosses (pairEquiv p).1 (pairEquiv q).1 := by
+    rw [hpair p, hpair q]
+    exact (crosses_map_iff e hmono p.1.1 p.1.2 q.1.1 q.1.2).symm
+  calc
+    source.crossingCount =
+        ∑ p : source.NormalizedPair, ∑ q : source.NormalizedPair,
+          if Crosses p.1 q.1 then 1 else 0 := by
+      simpa only [Fintype.sum_prod_type] using source.crossingCount_eq_sum_crosses
+    _ = ∑ p : target.NormalizedPair, ∑ q : target.NormalizedPair,
+          if Crosses p.1 q.1 then 1 else 0 := by
+      exact sum_sum_crosses_eq_of_equiv
+        (fun p : source.NormalizedPair => p.1)
+        (fun p : target.NormalizedPair => p.1) pairEquiv hcross
+    _ = target.crossingCount := by
+      simpa only [Fintype.sum_prod_type] using target.crossingCount_eq_sum_crosses.symm
+
 /-- The number of pairs crossing `firstPair`. -/
 def Pairing.crossingsWithFirstPair {n : ℕ} (pairing : Pairing (n + 1)) : ℕ :=
   (pairing.pairs.filter fun p => Crosses pairing.firstPair p).card

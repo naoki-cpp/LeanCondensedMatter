@@ -63,5 +63,47 @@ theorem ExternalInsertionWickDiagram.orderedSimplexIntegral_dysonFixedTimeAmplit
   exact intervalIntegral.orderedSimplexIntegral_smul n β
     ((-1 : ℂ) ^ n) (fun σ => d.fixedTimeAmplitude ε β g externalTime σ)
 
+/-- The physical Dyson amplitude is the ordered-simplex amplitude for
+the increasing ambient interaction order. No factorial is introduced. -/
+theorem ExternalInsertionWickDiagram.orderedDysonAmplitude_canonicalOrder
+    {E n : ℕ} (d : ExternalInsertionWickDiagram Mode E n)
+    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
+    (externalTime : Fin (2 * E) → ℝ) :
+    d.orderedDysonAmplitude ε β g externalTime
+      ((Finset.univ : Finset (Fin n)).orderIsoOfFin rfl).toEquiv =
+      d.dysonAmplitude ε β g externalTime := by
+  classical
+  unfold ExternalInsertionWickDiagram.orderedDysonAmplitude
+  rw [← d.orderedSimplexIntegral_dysonFixedTimeAmplitude ε β g externalTime]
+  have hcard : (Finset.univ : Finset (Fin n)).card = n := by simp
+  calc
+    intervalIntegral.orderedSimplexIntegral
+        (Finset.univ : Finset (Fin n)).card β
+        (fun τ => d.dysonFixedTimeAmplitude ε β g externalTime
+          (fun v => τ
+            (((Finset.univ : Finset (Fin n)).orderIsoOfFin rfl).toEquiv.symm
+              ⟨v, Finset.mem_univ v⟩))) =
+      intervalIntegral.orderedSimplexIntegral n β
+        (fun τ => d.dysonFixedTimeAmplitude ε β g externalTime
+          (fun v => τ
+            (Fin.cast hcard
+              (((Finset.univ : Finset (Fin n)).orderIsoOfFin rfl).toEquiv.symm
+                ⟨v, Finset.mem_univ v⟩)))) :=
+        intervalIntegral.orderedSimplexIntegral_cast hcard β _
+    _ = intervalIntegral.orderedSimplexIntegral n β
+          (fun τ => d.dysonFixedTimeAmplitude ε β g externalTime τ) := by
+      apply intervalIntegral.orderedSimplexIntegral_congr
+      intro τ
+      apply congrArg (d.dysonFixedTimeAmplitude ε β g externalTime)
+      funext v
+      apply congrArg τ
+      apply Fin.ext
+      simp only [Fin.val_cast]
+      change (((Finset.univ : Finset (Fin n)).orderIsoOfFin rfl).symm
+        ⟨v, Finset.mem_univ v⟩).val = v.val
+      rw [Finset.orderIsoOfFin_symm_apply]
+      simp only [Fin.sort_univ, List.idxOf_finRange]
+
+
 end Fermionic
 end SecondQuantization

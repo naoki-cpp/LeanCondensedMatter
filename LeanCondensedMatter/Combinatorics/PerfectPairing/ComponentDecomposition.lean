@@ -113,6 +113,49 @@ theorem Pairing.prod_pairs_eq_prod_components [Fintype ι]
         (componentPairing B).pairs (fun _ => Iff.rfl)
         (fun pr => localPairValue B pr.1 pr.2)).symm
 
+/-- The oriented pairing evaluation is invariant under a
+**strictly order-preserving**, partner-intertwining equivalence of
+the actual finite positions, provided the endpoint kernel is pulled
+back along that same equivalence. Both endpoints of a normalized
+fermion contraction retain their orientation; no symmetry assumption
+on the kernel is required. -/
+theorem Pairing.evaluation_eq_of_partnerEquiv_strictMono
+    {a b : ℕ} {R : Type*} [CommMonoid R]
+    (source : Pairing a) (target : Pairing b)
+    (e : Fin (2 * a) ≃ Fin (2 * b))
+    (hpartner : ∀ p, target.partner (e p) = e (source.partner p))
+    (hmono : StrictMono e)
+    (weight : R)
+    (sourceValue : Fin (2 * a) → Fin (2 * a) → R)
+    (targetValue : Fin (2 * b) → Fin (2 * b) → R)
+    (hvalue : ∀ i j, sourceValue i j = targetValue (e i) (e j)) :
+    source.evaluation weight sourceValue =
+      target.evaluation weight targetValue := by
+  classical
+  let pairEquiv := source.normalizedPairEquivOfPartnerEquiv target e hpartner
+  have hpair (pr : source.NormalizedPair) :
+      (pairEquiv pr).1 = (e pr.1.1, e pr.1.2) :=
+    source.normalizedPairEquivOfPartnerEquiv_apply_of_strictMono
+      target e hpartner hmono pr
+  unfold Pairing.evaluation
+  apply congrArg (fun z : R => weight * z)
+  calc
+    (∏ pr ∈ source.pairs, sourceValue pr.1 pr.2) =
+        ∏ pr : source.NormalizedPair, sourceValue pr.1.1 pr.1.2 :=
+      Finset.prod_subtype source.pairs (fun _ => Iff.rfl) _
+    _ = ∏ pr : source.NormalizedPair,
+          targetValue (pairEquiv pr).1.1 (pairEquiv pr).1.2 := by
+      apply Finset.prod_congr rfl
+      intro pr _
+      rw [hpair pr]
+      exact hvalue pr.1.1 pr.1.2
+    _ = ∏ pr : target.NormalizedPair, targetValue pr.1.1 pr.1.2 :=
+      Equiv.prod_comp pairEquiv
+        (fun pr : target.NormalizedPair => targetValue pr.1.1 pr.1.2)
+    _ = ∏ pr ∈ target.pairs, targetValue pr.1 pr.2 :=
+      (Finset.prod_subtype target.pairs (fun _ => Iff.rfl)
+        (fun pr => targetValue pr.1 pr.2)).symm
+
 /-- Scalar pairing evaluation factors into a residual factor and component evaluations when both
 its weight and its pair kernel respect the component-pair decomposition. -/
 theorem Pairing.evaluation_eq_mul_prod_components [Fintype ι]

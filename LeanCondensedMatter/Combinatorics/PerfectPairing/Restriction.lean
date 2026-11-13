@@ -75,4 +75,74 @@ theorem PairingOn.restrictAlongEquiv_partner_symm_val {α β : Type*} (pairing :
   simpa [j] using h'
 
 
+
+/-- Restricting a perfect pairing to an invariant subtype is
+independent of which local coordinate equivalence is chosen: the two
+restricted pairings are related by transport along the induced change
+of local coordinates. -/
+theorem PairingOn.restrictAlongEquiv_change_coordinates
+    {α β γ : Type*} (P : PairingOn α)
+    (p : α → Prop) (hp : ∀ i, p i ↔ p (P.partner i))
+    (e : {i : α // p i} ≃ β)
+    (f : {i : α // p i} ≃ γ) :
+    (P.restrictAlongEquiv p hp e).transport (e.symm.trans f).symm =
+      P.restrictAlongEquiv p hp f := by
+  unfold PairingOn.restrictAlongEquiv
+  rw [PairingOn.transport_trans]
+  congr 1
+  apply Equiv.ext
+  intro x
+  simp
+
+/-- Extract the fiber over a fixed index from a dependent sigma type.
+This is the canonical transport used when restricting a pairing which
+never connects different sigma fibers. -/
+def sigmaFiberEquiv {ι : Type*} {β : ι → Type*} (i : ι) :
+    {x : Σ j, β j // x.1 = i} ≃ β i where
+  toFun := fun x => x.2 ▸ x.1.2
+  invFun := fun x => ⟨⟨i, x⟩, rfl⟩
+  left_inv := by
+    rintro ⟨⟨j, x⟩, h⟩
+    cases h
+    rfl
+  right_inv := fun _ => rfl
+
+/-- Restrict a perfect pairing on a dependent disjoint union to one
+fiber when partners preserve the fiber index. -/
+noncomputable def PairingOn.sigmaFiberPairing
+    {ι : Type*} {β : ι → Type*}
+    (P : PairingOn (Σ i, β i))
+    (h : ∀ x, (P.partner x).1 = x.1) (i : ι) :
+    PairingOn (β i) :=
+  P.restrictAlongEquiv
+    (fun x => x.1 = i)
+    (fun x => by rw [h x])
+    (sigmaFiberEquiv i)
+
+/-- The local partner, inserted back into its sigma fiber, equals
+the original global partner. -/
+theorem PairingOn.sigmaFiberPairing_partner
+    {ι : Type*} {β : ι → Type*}
+    (P : PairingOn (Σ i, β i))
+    (h : ∀ x, (P.partner x).1 = x.1) (i : ι) (x : β i) :
+    P.partner ⟨i, x⟩ = ⟨i, (P.sigmaFiberPairing h i).partner x⟩ := by
+  have hp := P.restrictAlongEquiv_partner_symm_val
+    (fun z : Σ j, β j => z.1 = i)
+    (fun z => by rw [h z])
+    (sigmaFiberEquiv i) x
+  exact hp.symm
+
+/-- A pairing which preserves the indices of a dependent sum is precisely
+the disjoint union of its restrictions to the individual fibers. -/
+theorem PairingOn.sigmaCongrRight_sigmaFiberPairing
+    {ι : Type*} {β : ι → Type*}
+    (P : PairingOn (Σ i, β i))
+    (h : ∀ x, (P.partner x).1 = x.1) :
+    PairingOn.sigmaCongrRight (P.sigmaFiberPairing h) = P := by
+  apply PairingOn.ext
+  apply Equiv.ext
+  rintro ⟨i, x⟩
+  simpa only [PairingOn.sigmaCongrRight_partner] using
+    (P.sigmaFiberPairing_partner h i x).symm
+
 end Combinatorics

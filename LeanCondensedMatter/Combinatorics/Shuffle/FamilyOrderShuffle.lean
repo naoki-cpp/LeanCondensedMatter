@@ -284,6 +284,25 @@ noncomputable def familyOrderDecompositionEquivOfSize {total : ℕ} (size : ι �
     ext z
     simp [order, assembleFamilyOrderOfSize]
 
+omit [Fintype ι] [Fintype α] [∀ i, Fintype (F i)] in
+/-- Reassembling a family order places the prescribed block-local
+vertex at exactly its shuffled global slot. Unlike the inverse
+decomposition theorem, this requires no finiteness assumptions on
+either the family index or the ambient vertex type. -/
+theorem assembleFamilyOrderOfSize_slot {total : ℕ} (size : ι → ℕ)
+    (ambientEquiv : α ≃ Σ i, F i)
+    (orders : FamilyOrdersOf F size)
+    (shuffle : FamilySlotShuffleTo size total)
+    (i : ι) (j : Fin (size i)) :
+    (assembleFamilyOrderOfSize F size ambientEquiv orders shuffle)
+        (shuffle.slotEquiv ⟨i, j⟩) =
+      ambientEquiv.symm ⟨i, orders i j⟩ := by
+  have h := assembleFamilyOrderOfSize_symm_apply
+    F size ambientEquiv orders shuffle i j
+  have h' :=
+    congrArg (assembleFamilyOrderOfSize F size ambientEquiv orders shuffle) h
+  simpa only [Equiv.apply_symm_apply] using h'.symm
+
 /-- A global order on a finite family is equivalent to local fiber orders together with an
 order-preserving family shuffle. -/
 noncomputable def familyOrderDecompositionEquiv {total : ℕ}
@@ -291,5 +310,240 @@ noncomputable def familyOrderDecompositionEquiv {total : ℕ}
     (Fin total ≃ α) ≃
       FamilyOrders F × FamilySlotShuffleTo (fun i => Fintype.card (F i)) total :=
   familyOrderDecompositionEquivOfSize F (fun i => Fintype.card (F i)) (fun _ => rfl) ambientEquiv
+
+open Classical in
+/-- The canonically increasing shuffle determined by an assignment of
+ambient slots to family blocks. This is the assignment-side counterpart of
+`familyOrderDecompositionEquiv`, specialized to the identity ambient order.
+A block with no assigned slots retains its zero-size local fiber. -/
+@[nolint unusedArguments]
+noncomputable def ownerCanonicalShuffle
+    {ι : Type*} [Fintype ι] {total : ℕ} (owner : Fin total → ι) :
+    FamilySlotShuffleTo
+      (fun i => Fintype.card {v : Fin total // owner v = i}) total := by
+  classical
+  exact
+    (familyOrderDecompositionEquiv
+      (fun i : ι => {v : Fin total // owner v = i})
+      (Equiv.sigmaFiberEquiv owner).symm
+      (Equiv.refl (Fin total))).2
+
+open Classical in
+/-- Each slot in the shuffle of a particular owner fiber retains that
+owner, even if the other fibers have zero cardinality. -/
+theorem ownerCanonicalShuffle_apply_owner
+    {ι : Type*} [Fintype ι] {total : ℕ} (owner : Fin total → ι)
+    (i : ι) (j : Fin (Fintype.card {v : Fin total // owner v = i})) :
+    owner ((ownerCanonicalShuffle owner).slotEquiv ⟨i, j⟩) = i := by
+  classical
+  let orders :=
+    familyOrdersOfOrder
+      (fun i : ι => {v : Fin total // owner v = i})
+      (fun i => Fintype.card {v : Fin total // owner v = i})
+      (fun _ => rfl)
+      (Equiv.sigmaFiberEquiv owner).symm (Equiv.refl (Fin total))
+  have h := (orders i j).property
+  change owner ((orders i j).1) = i
+  exact h
+
+open Classical in
+/-- Recover the exact assigned owner of every ambient interaction slot
+by unshuffling the canonical owner shuffle. -/
+theorem ownerCanonicalShuffle_symm_owner
+    {ι : Type*} [Fintype ι] {total : ℕ} (owner : Fin total → ι)
+    (v : Fin total) :
+    ((ownerCanonicalShuffle owner).slotEquiv.symm v).1 = owner v := by
+  classical
+  let σ := ownerCanonicalShuffle owner
+  rcases hslot : σ.slotEquiv.symm v with ⟨i, j⟩
+  have hback : σ.slotEquiv ⟨i, j⟩ = v := by
+    calc
+      σ.slotEquiv ⟨i, j⟩ =
+          σ.slotEquiv (σ.slotEquiv.symm v) :=
+        congrArg σ.slotEquiv hslot.symm
+      _ = v := σ.slotEquiv.apply_symm_apply v
+  simpa [σ, hback] using
+    (ownerCanonicalShuffle_apply_owner owner i j).symm
+
+/-- An order-preserving family shuffle is uniquely determined by the
+ambient owner of each slot. Indeed, each block is necessarily enumerated
+in increasing ambient-slot order. Empty blocks cause no exception. -/
+theorem FamilySlotShuffleTo.eq_of_same_owner
+    {ι : Type*} {size : ι → ℕ} {total : ℕ}
+    (σ τ : FamilySlotShuffleTo size total)
+    (howner : ∀ v : Fin total,
+      (σ.slotEquiv.symm v).1 = (τ.slotEquiv.symm v).1) :
+    σ = τ := by
+  classical
+  apply FamilySlotShuffleTo.ext
+  apply Equiv.ext
+  rintro ⟨i, j⟩
+  let s : Finset (Fin total) :=
+    Finset.univ.image (fun k : Fin (size i) => σ.slotEquiv ⟨i, k⟩)
+  have hsize : s.card = size i := by
+    dsimp [s]
+    rw [Finset.card_image_of_injective _
+      (fun a b hab => (σ.strictMono i).injective hab)]
+    simp
+  have hσmem (k : Fin (size i)) : σ.slotEquiv ⟨i, k⟩ ∈ s :=
+    Finset.mem_image.mpr ⟨k, Finset.mem_univ _, rfl⟩
+  have hτmem (k : Fin (size i)) : τ.slotEquiv ⟨i, k⟩ ∈ s := by
+    have hi : (σ.slotEquiv.symm (τ.slotEquiv ⟨i, k⟩)).1 = i := by
+      simpa using howner (τ.slotEquiv ⟨i, k⟩)
+    rcases heq : σ.slotEquiv.symm (τ.slotEquiv ⟨i, k⟩) with ⟨i', q⟩
+    have hii : i' = i := by simpa [heq] using hi
+    subst i'
+    have hback : σ.slotEquiv ⟨i, q⟩ = τ.slotEquiv ⟨i, k⟩ := by
+      calc
+        σ.slotEquiv ⟨i, q⟩ =
+            σ.slotEquiv (σ.slotEquiv.symm (τ.slotEquiv ⟨i, k⟩)) :=
+          congrArg σ.slotEquiv heq.symm
+        _ = _ := σ.slotEquiv.apply_symm_apply _
+    exact Finset.mem_image.mpr ⟨q, Finset.mem_univ _, hback⟩
+  have hσ := Finset.orderEmbOfFin_unique
+    (s := s) (h := hsize)
+    (f := fun k : Fin (size i) => σ.slotEquiv ⟨i, k⟩)
+    hσmem (σ.strictMono i)
+  have hτ := Finset.orderEmbOfFin_unique
+    (s := s) (h := hsize)
+    (f := fun k : Fin (size i) => τ.slotEquiv ⟨i, k⟩)
+    hτmem (τ.strictMono i)
+  exact congrFun (hσ.trans hτ.symm) j
+
+open Classical in
+/-- Every shuffle has exactly the prescribed number of ambient slots
+owned by each block, including empty blocks. -/
+theorem FamilySlotShuffleTo.card_ownerFiber
+    {ι : Type*} {size : ι → ℕ} {total : ℕ}
+    (σ : FamilySlotShuffleTo size total) (i : ι) :
+    Fintype.card {v : Fin total // (σ.slotEquiv.symm v).1 = i} = size i := by
+  classical
+  let f : Fin (size i) →
+      {v : Fin total // (σ.slotEquiv.symm v).1 = i} :=
+    fun j => ⟨σ.slotEquiv ⟨i, j⟩, by simp⟩
+  have hinj : Function.Injective f := by
+    intro a b hab
+    have h := σ.slotEquiv.injective (congrArg Subtype.val hab)
+    exact eq_of_heq (Sigma.mk.inj_iff.mp h).2
+  have hsurj : Function.Surjective f := by
+    rintro ⟨v, hv⟩
+    rcases hslot : σ.slotEquiv.symm v with ⟨i', j⟩
+    have hi : i' = i := by simpa [hslot] using hv
+    subst i'
+    refine ⟨j, ?_⟩
+    apply Subtype.ext
+    dsimp [f]
+    calc
+      σ.slotEquiv ⟨i, j⟩ =
+          σ.slotEquiv (σ.slotEquiv.symm v) :=
+        congrArg σ.slotEquiv hslot.symm
+      _ = v := σ.slotEquiv.apply_symm_apply v
+  simpa using (Fintype.card_congr (Equiv.ofBijective f ⟨hinj, hsurj⟩)).symm
+
+open Classical in
+/-- Construct the unique order-preserving shuffle of a fixed prescribed
+local size from an owner assignment with those fiber cardinalities. -/
+@[nolint unusedArguments]
+noncomputable def assignmentShuffleOfSize
+    {ι : Type*} [Fintype ι] {size : ι → ℕ} {total : ℕ}
+    (owner : Fin total → ι)
+    (hcard : ∀ i, Fintype.card {v : Fin total // owner v = i} = size i) :
+    FamilySlotShuffleTo size total :=
+  (familyOrderDecompositionEquivOfSize
+    (fun i : ι => {v : Fin total // owner v = i})
+    size hcard (Equiv.sigmaFiberEquiv owner).symm
+    (Equiv.refl (Fin total))).2
+
+open Classical in
+/-- Each assigned local shuffle slot still belongs to its original
+owner block. -/
+theorem assignmentShuffleOfSize_apply_owner
+    {ι : Type*} [Fintype ι] {size : ι → ℕ} {total : ℕ}
+    (owner : Fin total → ι)
+    (hcard : ∀ i, Fintype.card {v : Fin total // owner v = i} = size i)
+    (i : ι) (j : Fin (size i)) :
+    owner ((assignmentShuffleOfSize owner hcard).slotEquiv ⟨i, j⟩) = i := by
+  classical
+  let orders :=
+    familyOrdersOfOrder
+      (fun i : ι => {v : Fin total // owner v = i})
+      size hcard (Equiv.sigmaFiberEquiv owner).symm
+      (Equiv.refl (Fin total))
+  have h := (orders i j).property
+  change owner ((orders i j).1) = i
+  exact h
+
+open Classical in
+/-- Unshuffling the fixed-size owner assignment recovers its original
+block name pointwise. -/
+theorem assignmentShuffleOfSize_symm_owner
+    {ι : Type*} [Fintype ι] {size : ι → ℕ} {total : ℕ}
+    (owner : Fin total → ι)
+    (hcard : ∀ i, Fintype.card {v : Fin total // owner v = i} = size i)
+    (v : Fin total) :
+    ((assignmentShuffleOfSize owner hcard).slotEquiv.symm v).1 = owner v := by
+  classical
+  let σ := assignmentShuffleOfSize owner hcard
+  rcases hslot : σ.slotEquiv.symm v with ⟨i, j⟩
+  have hback : σ.slotEquiv ⟨i, j⟩ = v := by
+    calc
+      σ.slotEquiv ⟨i, j⟩ =
+          σ.slotEquiv (σ.slotEquiv.symm v) :=
+        congrArg σ.slotEquiv hslot.symm
+      _ = v := σ.slotEquiv.apply_symm_apply v
+  simpa [σ, hback] using
+    (assignmentShuffleOfSize_apply_owner owner hcard i j).symm
+
+open Classical in
+/-- At fixed block sizes, assignments of all ambient slots to named
+blocks, each with exactly its prescribed size, are equivalent to
+order-preserving family shuffles. This includes empty blocks. -/
+noncomputable def familyShuffleOwnerEquiv
+    {ι : Type*} [Fintype ι] {size : ι → ℕ} {total : ℕ} :
+    FamilySlotShuffleTo size total ≃
+      {owner : Fin total → ι //
+        ∀ i, Fintype.card {v : Fin total // owner v = i} = size i} where
+  toFun σ :=
+    ⟨fun v => (σ.slotEquiv.symm v).1, fun i => σ.card_ownerFiber i⟩
+  invFun o := assignmentShuffleOfSize o.1 o.2
+  left_inv σ := by
+    apply FamilySlotShuffleTo.eq_of_same_owner
+    intro v
+    exact (assignmentShuffleOfSize_symm_owner
+      (fun v => (σ.slotEquiv.symm v).1)
+      (fun i => σ.card_ownerFiber i) v)
+  right_inv o := by
+    apply Subtype.ext
+    funext v
+    exact assignmentShuffleOfSize_symm_owner o.1 o.2 v
+
+open Classical in
+/-- Canonical finite enumeration of fixed-size owner assignments.
+Keeping the finite set explicit avoids selecting an unrelated subtype
+enumeration in the type of a theorem about weighted sums. -/
+noncomputable def fixedSizeOwnerFiniteDomain
+    {ι : Type*} [Fintype ι] {size : ι → ℕ} {total : ℕ} :
+    Finset {owner : Fin total → ι //
+      ∀ i, Fintype.card {v : Fin total // owner v = i} = size i} :=
+  (Finset.univ : Finset (FamilySlotShuffleTo size total)).image
+    (familyShuffleOwnerEquiv (ι := ι) (size := size) (total := total))
+
+/-- Reindex an arbitrary weighted family-shuffle sum by assignments
+with the same fixed local cardinalities. In particular, this counts
+no spurious permutations of the slots inside a block. -/
+theorem sum_familyShuffles_eq_sum_fixedSizeOwners
+    {ι M : Type*} [Fintype ι] [AddCommMonoid M]
+    {size : ι → ℕ} {total : ℕ}
+    (weight : FamilySlotShuffleTo size total → M) :
+    (∑ σ : FamilySlotShuffleTo size total, weight σ) =
+      ∑ o ∈ fixedSizeOwnerFiniteDomain (ι := ι) (size := size) (total := total),
+        weight (familyShuffleOwnerEquiv.symm o) := by
+  classical
+  unfold fixedSizeOwnerFiniteDomain
+  rw [Finset.sum_image]
+  · simp
+  · intro x _ y _ h
+    exact (familyShuffleOwnerEquiv (ι := ι) (size := size)
+      (total := total)).injective h
 
 end Combinatorics

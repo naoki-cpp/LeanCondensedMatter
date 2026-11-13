@@ -202,6 +202,31 @@ theorem Pairing.normalizedPairOfEndpointEquiv_pair_eq_of_lt
     rw [h] at hnormalized
     exact (lt_asymm horder hnormalized).elim
 
+/-- An order-preserving equivalence of paired positions transports each
+**normalized pair with its two endpoints in their original order**.
+Unlike a general partner-intertwining equivalence, no endpoint swap is
+needed. This is the common bridge for crossing-sign and oriented-kernel
+preservation. -/
+theorem Pairing.normalizedPairEquivOfPartnerEquiv_apply_of_strictMono
+    {m n : ℕ} (source : Pairing m) (target : Pairing n)
+    (e : Fin (2 * m) ≃ Fin (2 * n))
+    (hpartner : ∀ p, target.partner (e p) = e (source.partner p))
+    (hmono : StrictMono e) (pr : source.NormalizedPair) :
+    (source.normalizedPairEquivOfPartnerEquiv target e hpartner pr).1 =
+      (e pr.1.1, e pr.1.2) := by
+  have hpartner0 (q : source.NormalizedPair) :
+      target.partner (e (source.pairEndpointEquiv (q, 0))) =
+        e (source.pairEndpointEquiv (q, 1)) := by
+    change target.partner (e q.1.1) = e q.1.2
+    rw [hpartner]
+    exact congrArg e (((source.mem_pairs_iff q.1.1 q.1.2).1 q.2).2)
+  change
+    (target.normalizedPairOfEndpointEquiv source.pairEndpointEquiv e pr).1 =
+      (e pr.1.1, e pr.1.2)
+  exact target.normalizedPairOfEndpointEquiv_pair_eq_of_lt
+    source.pairEndpointEquiv e hpartner0 pr
+    (hmono (((source.mem_pairs_iff pr.1.1 pr.1.2).1 pr.2).1))
+
 /-- Endpoints selected from distinct normalized pairs are distinct. -/
 theorem Pairing.pairEndpoint_ne_of_normalizedPair_ne {n : ℕ} (pairing : Pairing n)
     (p q : pairing.NormalizedPair) (hpq : p ≠ q) (i j : Fin 2) :

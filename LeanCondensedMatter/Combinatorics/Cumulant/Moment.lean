@@ -44,6 +44,28 @@ theorem weightedMomentFromCumulant_one
   simp [weightedMomentFromCumulant, momentFromCumulant]
 
 
+/-- A weighted moment of an empty source set is exactly its weight
+on the unique (top) empty partition. The empty block product contributes one,
+irrespective of the cumulant's value at the empty set.
+
+In particular, a signed moment transform is normalized as soon as its
+empty-partition sign is one. -/
+@[simp]
+theorem weightedMomentFromCumulant_empty
+    (partitionWeight : ∀ S : Finset α, Finpartition S → R)
+    (κ : Finset α → R) :
+    weightedMomentFromCumulant partitionWeight κ ∅ =
+      partitionWeight ∅ ⊤ := by
+  classical
+  letI : Unique (Finpartition (∅ : Finset α)) :=
+    inferInstanceAs (Unique (Finpartition (⊥ : Finset α)))
+  rw [weightedMomentFromCumulant, Fintype.sum_unique]
+  have htop : (default : Finpartition (∅ : Finset α)) = ⊤ :=
+    Subsingleton.elim _ _
+  have hparts : (⊤ : Finpartition (∅ : Finset α)).parts = ∅ := by simp
+  simp only [htop]
+  simp [partitionProduct, hparts]
+
 /-- The moment transform is normalized to `1` on the empty set, independently of the input
 cumulant value at the empty set. -/
 @[simp]

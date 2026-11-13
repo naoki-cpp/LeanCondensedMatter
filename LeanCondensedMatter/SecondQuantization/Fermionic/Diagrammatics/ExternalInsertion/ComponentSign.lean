@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Combinatorics.Shuffle.FamilySlotShuffleInversions
+import LeanCondensedMatter.Combinatorics.Shuffle.FinpartitionOrderShuffle
 import LeanCondensedMatter.Combinatorics.ExchangeSign
 import LeanCondensedMatter.SecondQuantization.Common.Algebra.Statistics
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentRestriction
@@ -24,6 +25,124 @@ namespace Fermionic
 open Combinatorics
 
 variable {ExternalLabel InternalLabel : Type*} {E N : ℕ}
+
+/-- The increasing order of a finite family of external fermion slots. -/
+private noncomputable def externalSubsetIncreasingOrder
+    (S : Finset (Fin (2 * E))) : Fin S.card ≃ ↥S :=
+  (S.orderIsoOfFin rfl).toEquiv
+
+/-- The canonical shuffle of external slots within a finite subset, grouped by
+blocks of a partition and kept in increasing order inside each block.
+
+The source convention uses the increasing ambient slot order, restricted to
+the subset at hand. It is independent of any interaction vertices. -/
+noncomputable def externalPartitionShuffle
+    {S : Finset (Fin (2 * E))} (π : Finpartition S) : π.PartShuffle := by
+  let order := externalSubsetIncreasingOrder S
+  let localOrders := π.partOrdersOfOrder order
+  exact π.shuffleOfOrder order localOrders
+    (π.partOrdersCompatible_partOrdersOfOrder order)
+
+/-- On the full finite external-slot set, the canonical increasing
+enumeration agrees with the order-preserving cast from its cardinality
+to the actual external-slot count `2 * E`. -/
+private theorem externalSubsetIncreasingOrder_univ_apply
+    (i : Fin (Finset.univ : Finset (Fin (2 * E))).card) :
+    (externalSubsetIncreasingOrder
+      (Finset.univ : Finset (Fin (2 * E))) i).1 =
+      Fin.cast (by simp) i := by
+  classical
+  let hcard : (Finset.univ : Finset (Fin (2 * E))).card = 2 * E := by simp
+  let idIso : Fin (2 * E) ≃o ↥(Finset.univ : Finset (Fin (2 * E))) := {
+    toEquiv := {
+      toFun := fun x => ⟨x, Finset.mem_univ x⟩
+      invFun := Subtype.val
+      left_inv := fun _ => rfl
+      right_inv := fun x => Subtype.ext rfl
+    }
+    map_rel_iff' := by intro x y; rfl
+  }
+  let canonical := (Fin.castOrderIso hcard).trans idIso
+  have h : ((Finset.univ : Finset (Fin (2 * E))).orderIsoOfFin rfl) =
+      canonical := Subsingleton.elim _ _
+  change (((Finset.univ : Finset (Fin (2 * E))).orderIsoOfFin rfl) i).1 =
+    Fin.cast hcard i
+  rw [h]
+  rfl
+
+/-- The source shuffle of the *full* external slot family, transported
+from ambient size `Finset.univ.card` to the definitionally distinct
+but equal slot count `2 * E`. -/
+noncomputable def externalPartitionShuffleFull
+    (π : Finpartition (Finset.univ : Finset (Fin (2 * E)))) :
+    FamilySlotShuffleTo (fun P : π.parts => (P : Finset (Fin (2 * E))).card) (2 * E) :=
+  (FamilySlotShuffleTo.castTotalEquiv (by simp)) (externalPartitionShuffle π)
+
+/-- The ambient-size cast preserves the source regrouping inversion count. -/
+theorem externalPartitionShuffleFull_orderedBlockInversionCount
+    (π : Finpartition (Finset.univ : Finset (Fin (2 * E))))
+    (order : π.parts ≃ Fin (Fintype.card π.parts)) :
+    (externalPartitionShuffleFull π).orderedBlockInversionCount order =
+      (externalPartitionShuffle π).orderedBlockInversionCount order :=
+  (externalPartitionShuffle π).castTotalEquiv_orderedBlockInversionCount (by simp) order
+
+/-- The canonical full-source shuffle occupies exactly the source slots
+belonging to each partition block. -/
+theorem externalPartitionShuffleFull_blockSlotSet
+    (π : Finpartition (Finset.univ : Finset (Fin (2 * E))))
+    (P : π.parts) :
+    (externalPartitionShuffleFull π).blockSlotSet P =
+      (P : Finset (Fin (2 * E))) := by
+  classical
+  let o := externalSubsetIncreasingOrder (Finset.univ : Finset (Fin (2 * E)))
+  let orders := π.partOrdersOfOrder o
+  let hcard : (Finset.univ : Finset (Fin (2 * E))).card = 2 * E := by simp
+  have ho (z : ↥(Finset.univ : Finset (Fin (2 * E)))) :
+      Fin.cast hcard (o.symm z) = z.1 := by
+    obtain ⟨i, rfl⟩ := o.surjective z
+    simpa only [Equiv.symm_apply_apply] using
+      (externalSubsetIncreasingOrder_univ_apply i).symm
+  have hslot (i : Fin (P : Finset (Fin (2 * E))).card) :
+      (externalPartitionShuffleFull π).slotEquiv ⟨P, i⟩ =
+        (orders P i).1 := by
+    calc
+      (externalPartitionShuffleFull π).slotEquiv ⟨P, i⟩ =
+          Fin.cast hcard (o.symm (π.equivSigmaParts.symm ⟨P, orders P i⟩)) := rfl
+      _ = (π.equivSigmaParts.symm ⟨P, orders P i⟩).1 := ho _
+      _ = (orders P i).1 := rfl
+  ext x
+  simp only [FamilySlotShuffleTo.blockSlotSet, Finset.mem_image,
+    Finset.mem_univ, true_and, hslot]
+  constructor
+  · rintro ⟨i, hi⟩
+    simpa [hi] using (orders P i).2
+  · intro hx
+    exact ⟨(orders P).symm ⟨x, hx⟩, by simp⟩
+
+/-- Fermionic Koszul sign for grouping a subset of external insertions by
+partition blocks. The order on the blocks is explicit, because the sign
+of odd blocks need not be order independent. Physical nonvanishing blocks
+have even cardinality. -/
+noncomputable def externalPartitionOrderSign
+    {S : Finset (Fin (2 * E))} (π : Finpartition S)
+    (blockOrder : π.parts ≃ Fin (Fintype.card π.parts)) : ℂ :=
+  (Common.Statistics.fermion.zetaInt : ℂ) ^
+    (externalPartitionShuffle π).orderedBlockInversionCount blockOrder
+
+/-- For even-sized external blocks, the source regrouping sign does not
+depend on their arbitrary order. This applies to partitions of every
+subset, not only the full family of external insertions. -/
+theorem externalPartitionOrderSign_eq_of_blockOrder
+    {S : Finset (Fin (2 * E))} (π : Finpartition S)
+    (heven : ∀ B : π.parts, Even (B : Finset (Fin (2 * E))).card)
+    (order₁ order₂ : π.parts ≃ Fin (Fintype.card π.parts)) :
+    externalPartitionOrderSign π order₁ = externalPartitionOrderSign π order₂ := by
+  unfold externalPartitionOrderSign
+  exact pow_eq_of_mod_two_eq
+    (ζ := (Common.Statistics.fermion.zetaInt : ℂ))
+    (by norm_num [Common.Statistics.zetaInt_fermion])
+    ((externalPartitionShuffle π).orderedBlockInversionCount_modEq_of_even_sizes
+      order₁ order₂ heven)
 
 /-- Fermionic exchange sign for regrouping ambient external insertions into component blocks,
 preserving the canonical increasing external order inside each component. -/
@@ -136,36 +255,7 @@ theorem componentExternalOrderSign_eq_one_of_allExternalVerticesConnected
   have hsingle : Common.externallySupportedComponentParts d.vertexGraph = {A} :=
     (Common.allExternalVerticesConnected_iff_supportedComponentParts_eq_singleton
       d.vertexGraph anchor).mp hconnected
-  have hzero (B : d.vertexGraph.componentPartition.parts) (hBA : B ≠ A) :
-      d.externalPairCount B = 0 := by
-    have hEmpty :
-        (B : Finset (Common.ExternalInsertionVertex E S)).toLeft = ∅ := by
-      by_contra hNonempty
-      obtain ⟨e, he⟩ := Finset.nonempty_iff_ne_empty.mpr hNonempty
-      have hsupported : B ∈ Common.externallySupportedComponentParts d.vertexGraph :=
-        (Common.mem_externallySupportedComponentParts d.vertexGraph B).2
-          ⟨e, Finset.mem_toLeft.mp he⟩
-      rw [hsingle] at hsupported
-      exact hBA (Finset.mem_singleton.mp hsupported)
-    simp [Common.ExternalInsertionDiagram.externalPairCount, hEmpty]
-  have hpair (B C : d.vertexGraph.componentPartition.parts) (hBC : B ≠ C) :
-      d.componentExternalShuffle.blockInversionCount B C = 0 := by
-    rw [d.componentExternalShuffle.blockInversionCount_of_ne hBC]
-    by_cases hBA : B = A
-    · subst B
-      have hCzero : d.externalPairCount C = 0 := hzero C hBC.symm
-      simp [hCzero]
-    · have hBzero : d.externalPairCount B = 0 := hzero B hBA
-      simp [hBzero]
-  have hcount :
-      d.componentExternalShuffle.orderedBlockInversionCount blockOrder = 0 := by
-    unfold Combinatorics.FamilySlotShuffleTo.orderedBlockInversionCount
-    apply Finset.sum_eq_zero
-    intro BC hBC
-    have hne : BC.1 ≠ BC.2 := (Finset.mem_offDiag.mp hBC).2.2
-    simp [hpair BC.1 BC.2 hne]
-  unfold componentExternalOrderSign
-  rw [hcount]
+  rw [componentExternalOrderSign_eq_supportedParts d blockOrder, hsingle]
   simp
 
 end Fermionic
