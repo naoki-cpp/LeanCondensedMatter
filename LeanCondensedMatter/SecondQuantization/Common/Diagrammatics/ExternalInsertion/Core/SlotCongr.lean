@@ -111,5 +111,32 @@ noncomputable def ExternalInsertionDiagram.slotCongrEquiv (e : ↥T ≃ ↥U) :
       rw [externalInsertionLegCongr_symm]
       simp
 
+/-- Arbitrary interaction-slot relabeling preserves preconnectedness
+of the *entire* Wick vertex graph. This includes local blocks with no
+interaction vertices. No order-preservation assumption on the vertex
+relabeling is needed for this graph-theoretic statement. -/
+theorem ExternalInsertionDiagram.slotCongr_preconnected_iff
+    (e : ↥T ≃ ↥U)
+    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N T) :
+    (d.slotCongr (M := M) e).vertexGraph.Preconnected ↔
+      d.vertexGraph.Preconnected :=
+  (d.slotCongrVertexGraphIso (M := M) e).preconnected_iff.symm
+
+/-- A concrete equivalence between the preconnected local Wick-diagram
+fibers under an arbitrary bijective interaction-slot relabeling. This is
+the structural transport needed to compare independent connected
+blocks belonging to different physical owner assignments of the same
+interaction cardinalities. In particular, it does not insert an
+additional permutation or multiplicity of local pairings. -/
+noncomputable def ExternalInsertionDiagram.preconnectedSlotCongrEquiv
+    (e : ↥T ≃ ↥U) :
+    {d : ExternalInsertionDiagram ExternalLabel InternalLabel E N T //
+      d.vertexGraph.Preconnected} ≃
+    {d : ExternalInsertionDiagram ExternalLabel InternalLabel E M U //
+      d.vertexGraph.Preconnected} :=
+  Equiv.subtypeEquiv
+    (ExternalInsertionDiagram.slotCongrEquiv (E := E) e)
+    (fun d => (d.slotCongr_preconnected_iff (M := M) e).symm)
+
 end Common
 end SecondQuantization
