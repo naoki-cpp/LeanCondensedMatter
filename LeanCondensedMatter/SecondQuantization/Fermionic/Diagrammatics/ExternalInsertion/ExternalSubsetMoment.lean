@@ -1276,7 +1276,8 @@ theorem sum_fixedExternalPartitionDysonFiber_eq_sizes_shuffles_localLabels
   have hl :=
     ExternalInsertionBlockLayout.assembleDiagram_externalLabel_eq_iff_evenSubsetLabels
       layout p.2.1 labels
-  simpa only [hd, hl]
+  rw [hd]
+  exact if_congr hl rfl rfl
 
 open Classical in
 /-- At fixed perturbation order and fixed physical external partition,
