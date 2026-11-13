@@ -524,27 +524,16 @@ theorem ExternalInsertionBlockLayout.assembleDiagram_externalLabel_eq_iff_evenSu
         (F B).externalLabel =
           evenExternalSubsetLabels labels (B : Finset (Fin (2 * E)))
             (layout.evenBlocks B) := by
-  rw [layout.assembleDiagram_externalLabel_eq_iff
-    (Finset.univ : Finset (Fin n)) F labels]
-  constructor
-  · intro h B
-    calc
-      (F B).externalLabel =
-          (fun i => labels (layout.sourceEquiv.symm ⟨B, i⟩)) := h B
-      _ = evenExternalSubsetLabels labels (B : Finset (Fin (2 * E)))
-            (layout.evenBlocks B) := by
-        funext i
-        rw [layout.sourceEquiv_symm_apply B i]
-        rfl
-  · intro h B
-    calc
-      (F B).externalLabel =
-          evenExternalSubsetLabels labels (B : Finset (Fin (2 * E)))
-            (layout.evenBlocks B) := h B
-      _ = (fun i => labels (layout.sourceEquiv.symm ⟨B, i⟩)) := by
-        funext i
-        rw [layout.sourceEquiv_symm_apply B i]
-        rfl
+  have hlabels (B : layout.partition.parts) :
+      (fun i => labels (layout.sourceEquiv.symm ⟨B, i⟩)) =
+        evenExternalSubsetLabels labels (B : Finset (Fin (2 * E)))
+          (layout.evenBlocks B) := by
+    funext i
+    rw [layout.sourceEquiv_symm_apply B i]
+    rfl
+  simpa only [hlabels] using
+    (layout.assembleDiagram_externalLabel_eq_iff
+      (Finset.univ : Finset (Fin n)) F labels)
 
 /-- The physical connected-block Dyson shuffle orbit, now expressed using
 the canonical increasing *subset restriction* of external insertion times.
@@ -1390,15 +1379,10 @@ theorem externalSubsetMomentSeries_mul_normalizedPartition_eq_vertexDysonSeries
       externalInsertionVertexDysonSeries ε β 0 g
         (evenExternalSubsetLabels labels S heven)
         (evenExternalSubsetTimes times S heven) := by
-  have hm : externalSubsetMomentSeries ε β g labels times S =
-      vacuumFreeExternalInsertionDysonSeries ε β g
-        (evenExternalSubsetLabels labels S heven)
-        (evenExternalSubsetTimes times S heven) := by
-    simp [externalSubsetMomentSeries, hS, heven]
-  rw [hm]
-  exact (externalInsertionVertexDysonSeries_eq_vacuumFree_mul_normalizedDysonPartitionSeries
-    ε β hβ g (evenExternalSubsetLabels labels S heven)
-    (evenExternalSubsetTimes times S heven)).symm
+  simpa [externalSubsetMomentSeries, hS, heven] using
+    (externalInsertionVertexDysonSeries_eq_vacuumFree_mul_normalizedDysonPartitionSeries
+      ε β hβ g (evenExternalSubsetLabels labels S heven)
+      (evenExternalSubsetTimes times S heven)).symm
 
 /-- A connected-diagram contribution for each external subset. Odd and empty
 subsets contribute zero. This is defined from the actual integrated diagrams,
