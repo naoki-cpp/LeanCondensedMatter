@@ -1270,42 +1270,12 @@ theorem sum_fixedExternalPartitionDysonFiber_eq_sizes_shuffles_localLabels
   let layout : ExternalInsertionBlockLayout K n :=
     ((ExternalInsertionBlockLayout.fixedPartitionSizeShuffleEquiv
       (E := K) (N := n) π heven).symm p.1).1
-  have hd :
-      (((ExternalInsertionBlockLayout.fixedPartitionPhysicalSizeShuffleEquiv
-        (E := K) (N := n) (ExternalLabel := ExternalFieldLabel Mode)
-        (InternalLabel := QuarticVertexLabel Mode)
-        anchor π heven).symm p).1.1) =
-          layout.assembleDiagram (Finset.univ : Finset (Fin n)) p.2.1 :=
+  have hd :=
     ExternalInsertionBlockLayout.fixedPartitionPhysicalSizeShuffleEquiv_symm_diagram
       (E := K) (N := n) anchor π heven p
-  have hl :
-      (layout.assembleDiagram (Finset.univ : Finset (Fin n)) p.2.1).externalLabel =
-        labels ↔
-        ∀ B : layout.partition.parts,
-          (p.2.1 B).externalLabel =
-            evenExternalSubsetLabels labels (B : Finset (Fin (2 * K)))
-              (layout.evenBlocks B) :=
+  have hl :=
     ExternalInsertionBlockLayout.assembleDiagram_externalLabel_eq_iff_evenSubsetLabels
       layout p.2.1 labels
-  change (if
-      (((ExternalInsertionBlockLayout.fixedPartitionPhysicalSizeShuffleEquiv
-        (E := K) (N := n) (ExternalLabel := ExternalFieldLabel Mode)
-        (InternalLabel := QuarticVertexLabel Mode)
-        anchor π heven).symm p).1.1).externalLabel = labels then
-        ExternalInsertionWickDiagram.dysonAmplitude
-          (((ExternalInsertionBlockLayout.fixedPartitionPhysicalSizeShuffleEquiv
-            (E := K) (N := n) (ExternalLabel := ExternalFieldLabel Mode)
-            (InternalLabel := QuarticVertexLabel Mode)
-            anchor π heven).symm p).1.1) ε β g times
-      else 0) =
-    (if ∀ B : layout.partition.parts,
-        (p.2.1 B).externalLabel =
-          evenExternalSubsetLabels labels (B : Finset (Fin (2 * K)))
-            (layout.evenBlocks B) then
-        ExternalInsertionWickDiagram.dysonAmplitude
-          (layout.assembleDiagram (Finset.univ : Finset (Fin n)) p.2.1)
-          ε β g times
-      else 0)
   rw [hd]
   exact if_congr hl rfl rfl
 
