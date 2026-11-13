@@ -145,11 +145,6 @@ private theorem pauliBasis_mul_pauliBasis (a b : PauliAxis) :
     pauliCombination (c • u) = c • pauliCombination u := by
   simp [pauliCombination, sum_pauliAxis, smul_add, smul_smul]
 
-/-- Pauli synthesis preserves negation of coefficient families. -/
-@[simp] theorem pauliCombination_neg (u : PauliAxis → ℂ) :
-    pauliCombination (-u) = -pauliCombination u := by
-  simpa using pauliCombination_smul (-1) u
-
 /-- Product of two synthesized Pauli vectors:
 `(u·σ)(v·σ) = (u·v) I + i (u×v)·σ`. -/
 theorem pauliCombination_mul_pauliCombination (u v : PauliAxis → ℂ) :
