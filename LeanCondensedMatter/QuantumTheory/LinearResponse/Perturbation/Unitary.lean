@@ -1,4 +1,3 @@
-import LeanCondensedMatter.Analysis.Operator.AdjointConjugation
 import LeanCondensedMatter.Analysis.Dyson.Unitary
 import LeanCondensedMatter.QuantumTheory.LinearResponse.Response.KuboFormula
 

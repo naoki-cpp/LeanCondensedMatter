@@ -1,5 +1,4 @@
 import LeanCondensedMatter.Combinatorics.Cumulant.ConnectedDecomposition
-import LeanCondensedMatter.Combinatorics.SetPartition.FinpartitionProduct
 import LeanCondensedMatter.Permutation.OrbitPartition
 
 set_option linter.style.header false
