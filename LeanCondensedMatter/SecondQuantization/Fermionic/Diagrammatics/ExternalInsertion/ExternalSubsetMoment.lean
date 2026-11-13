@@ -1354,6 +1354,19 @@ theorem vacuumFreeExternalInsertionDysonSeries_eq_connected_two
     vacuumFreeExternalInsertionDysonCoefficient_eq_connected_two
       ε β g labels times n)
 
+/-- The physical vacuum-free and connected Dyson series agree for any
+external pair count *proved equal* to one; this dependent form avoids
+casts in the source-subset moment theorem. -/
+theorem vacuumFreeExternalInsertionDysonSeries_eq_connected_of_single_pair
+    {K : ℕ} (hK : K = 1)
+    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
+    (labels : Fin (2 * K) → ExternalFieldLabel Mode)
+    (times : Fin (2 * K) → ℝ) :
+    vacuumFreeExternalInsertionDysonSeries ε β g labels times =
+      connectedExternalInsertionDysonSeries ε β g labels times := by
+  subst K
+  exact vacuumFreeExternalInsertionDysonSeries_eq_connected_two ε β g labels times
+
 /-- Physical, vacuum-normalized moment assigned to an external subset.
 For odd subsets the operator expectation vanishes by fermion parity; for the
 empty subset the normalized moment is one. -/
@@ -1545,7 +1558,7 @@ theorem externalSubsetMomentSeries_eq_signedConnected_two
   intro S
   by_cases hEmpty : S = ∅
   · subst S
-    simp
+    rw [externalSubsetMomentSeries_empty, externalSubsetSignedConnectedMomentSeries_empty]
   · by_cases hEven : Even S.card
     · have hcard : S.card = 2 := by
         have hpos : 0 < S.card :=
@@ -1559,7 +1572,8 @@ theorem externalSubsetMomentSeries_eq_signedConnected_two
             externalSubsetConnectedDiagramSeries (E := 1) ε β g labels times B = 0 := by
         intro B hB
         by_cases hBempty : B = ∅
-        · simp [hBempty]
+        · subst B
+          exact externalSubsetConnectedDiagramSeries_empty ε β g labels times
         · have hpos : 0 < B.card :=
             Finset.card_pos.mpr (Finset.nonempty_iff_ne_empty.mpr hBempty)
           have hlt : B.card < S.card := Finset.card_lt_card hB
@@ -1577,11 +1591,10 @@ theorem externalSubsetMomentSeries_eq_signedConnected_two
           externalSubsetMomentSeries (E := 1) ε β g labels times S =
             externalSubsetConnectedDiagramSeries (E := 1) ε β g labels times S := by
         simp only [externalSubsetMomentSeries, externalSubsetConnectedDiagramSeries,
-          hEmpty, hEven, dif_neg, dif_pos]
+          hEmpty, hEven, dite_eq_left]
         have hhalf : S.card / 2 = 1 := by omega
-        cases hhalf
-        exact vacuumFreeExternalInsertionDysonSeries_eq_connected_two
-          ε β g (evenExternalSubsetLabels (E := 1) labels S hEven)
+        exact vacuumFreeExternalInsertionDysonSeries_eq_connected_of_single_pair
+          hhalf ε β g (evenExternalSubsetLabels (E := 1) labels S hEven)
           (evenExternalSubsetTimes (E := 1) times S hEven)
       exact hphysical.trans hweighted.symm
     · rw [(externalSubsetSeries_eq_zero_of_odd (E := 1)
@@ -1627,7 +1640,7 @@ theorem externalSubsetSourceCumulantSeries_eq_connectedDiagramSeries_two
         (externalSubsetMomentSeries (E := 1) ε β g labels times) =
       externalSubsetConnectedDiagramSeries (E := 1) ε β g labels times := by
   exact externalSubsetSourceCumulantSeries_eq_connectedDiagramSeries_of_signedMoments
-    ε β g labels times
+    (E := 1) ε β g labels times
     (externalSubsetMomentSeries_eq_signedConnected_two ε β g labels times)
 
 
