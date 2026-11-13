@@ -494,8 +494,17 @@ theorem ExternalInsertionBlockLayout.assembleConnectedBlocks_signedDysonShuffleO
     simpa only [d, S] using h
   have horbit := ExternalInsertionBlockLayout.assembleConnectedBlocks_signedDysonShuffleOrbit
     layout F hconnected ε β g externalTime
-  rw [horbit]
-  apply congrArg (fun z : ℂ => externalPartitionSourceSign layout.partition * z)
+  calc
+    (∑ shuffle : d.ComponentInteractionOrderShuffle,
+      d.orderedDysonAmplitude ε β g externalTime
+        (d.assembleInteractionOrder d.canonicalComponentInteractionOrders shuffle)) =
+        externalPartitionSourceSign layout.partition *
+          ∏ C : d.vertexGraph.componentPartition.parts,
+            ExternalInsertionWickDiagram.dysonAmplitude
+              (d.componentOrderedDiagram C) ε β g
+              (d.componentExternalTime externalTime C) := horbit
+    _ = _ := by
+      apply congrArg (fun z : ℂ => externalPartitionSourceSign layout.partition * z)
   exact (Equiv.prod_comp reindex.symm
     (fun C : d.vertexGraph.componentPartition.parts =>
       ExternalInsertionWickDiagram.dysonAmplitude
