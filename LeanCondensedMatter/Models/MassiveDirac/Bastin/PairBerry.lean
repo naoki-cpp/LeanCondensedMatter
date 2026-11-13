@@ -43,22 +43,9 @@ theorem targetCenteredInterbandSpectatorCurrentFactor_zero_im_eq_neg_chargeSq_be
         -(e ^ 2 * berryCurvature band v m px py)
   have hgap : interbandEnergyGap band v m px py ≠ 0 :=
     interbandEnergyGap_ne_zero_of_energy_ne_zero band v m px py hE
-  have hcoeff :
-      (((((interbandEnergyGap band v m px py : ℝ) : ℂ))⁻¹) ^ 2) =
-        ((((interbandEnergyGap band v m px py)⁻¹ ^ 2 : ℝ) : ℂ)) := by
-    rw [← Complex.ofReal_inv, ← Complex.ofReal_pow]
-  calc
-    (((((interbandEnergyGap band v m px py : ℝ) : ℂ))⁻¹) ^ 2 *
-        bastinInterbandBlockDifference 0 1 band e v m px py).im =
-      (bastinInterbandBlockDifference 0 1 band e v m px py).im /
-        interbandEnergyGap band v m px py ^ 2 := by
-      rw [hcoeff]
-      simp only [Complex.mul_im, Complex.ofReal_re, Complex.ofReal_im, zero_mul]
-      field_simp [hgap]
-      ring
-    _ = -(e ^ 2 * berryCurvature band v m px py) :=
-      bastinInterbandBlockDifference_im_div_gap_sq_eq_neg_chargeSq_berryCurvature
-        band e v m px py hE
+  rw [inv_real_gap_sq_mul_im _ _ hgap]
+  exact bastinInterbandBlockDifference_im_div_gap_sq_eq_neg_chargeSq_berryCurvature
+    band e v m px py hE
 
 /-- The real part of the extracted interband Bastin pair converges pointwise to
 `-2π e² Ω_n(p)`. The analytic real-part pole limit is generic; this specialization supplies only
