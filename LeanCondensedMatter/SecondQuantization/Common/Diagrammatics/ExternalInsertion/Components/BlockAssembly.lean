@@ -2717,6 +2717,32 @@ theorem ExternalInsertionBlockLayout.sum_externalPartitionFiber_eq_sum_connected
 
 
 
+/-- Restricting the physical connected-assembly domain to a prescribed
+external-component partition is exactly a dependent family over the
+corresponding fixed-partition layouts.  This preserves the local connected
+diagram family *without* casting it to an unrelated vertex-owner fiber.
+It is the dependent index bridge needed before reindexing those layouts
+by their interaction orders and shuffles. -/
+def ExternalInsertionBlockLayout.fixedPartitionConnectedAssemblyEquiv
+    {ExternalLabel InternalLabel : Type*}
+    (π : Finpartition (Finset.univ : Finset (Fin (2 * E)))) :
+    {p : Σ layout : ExternalInsertionBlockLayout E N,
+        layout.ConnectedBlockFamily (ExternalLabel := ExternalLabel)
+          (InternalLabel := InternalLabel) //
+      p.1.partition = π} ≃
+      Σ layout : {layout : ExternalInsertionBlockLayout E N //
+          layout.partition = π},
+        layout.1.ConnectedBlockFamily (ExternalLabel := ExternalLabel)
+          (InternalLabel := InternalLabel) where
+  toFun p := ⟨⟨p.1.1, p.2⟩, p.1.2⟩
+  invFun p := ⟨⟨p.1.1, p.2⟩, p.1.2⟩
+  left_inv p := by
+    rcases p with ⟨⟨layout, F⟩, hπ⟩
+    rfl
+  right_inv p := by
+    rcases p with ⟨⟨layout, hπ⟩, F⟩
+    rfl
+
 /-- A prescribed external partition determines every physical block
 layout uniquely once the owner of each ambient interaction vertex is
 fixed. The external parity witnesses are propositions, not additional
