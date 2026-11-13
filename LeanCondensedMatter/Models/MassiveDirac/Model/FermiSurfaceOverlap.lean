@@ -21,7 +21,6 @@ namespace QuantumTheory.Models.MassiveDirac
 noncomputable section
 
 open MeasureTheory
-open QuantumTheory.Transport
 open scoped Interval
 
 private theorem upperBandProjectorOverlap_eq
