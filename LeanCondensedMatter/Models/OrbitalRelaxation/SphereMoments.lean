@@ -176,4 +176,158 @@ private theorem sphericalAverage_z_four (r : ℝ) :
   field_simp
   ring
 
+
+private theorem sphericalAverage_y_four (r : ℝ) :
+    sphericalAverage r (fun k => k 1 ^ 4) = r ^ 4 / 5 := by
+  unfold sphericalAverage
+  have hφ (θ : ℝ) :
+      (∫ φ in (0 : ℝ)..(2 * Real.pi),
+         (sphericalMomentum r θ φ) 1 ^ 4) =
+      (r * Real.sin θ) ^ 4 * (3 * Real.pi / 4) := by
+    have hcoord (φ : ℝ) :
+        (sphericalMomentum r θ φ) 1 =
+          r * Real.sin θ * Real.sin φ := by rfl
+    simp_rw [hcoord]
+    have hmul (φ : ℝ) :
+        (r * Real.sin θ * Real.sin φ) ^ 4 =
+          (r * Real.sin θ) ^ 4 * Real.sin φ ^ 4 := by ring
+    simp_rw [hmul]
+    rw [intervalIntegral.integral_const_mul, integral_sin_four_full]
+  simp_rw [hφ]
+  have hθ (θ : ℝ) :
+      ((r * Real.sin θ) ^ 4 * (3 * Real.pi / 4)) * Real.sin θ =
+        (r ^ 4 * (3 * Real.pi / 4)) * Real.sin θ ^ 5 := by ring
+  simp_rw [hθ]
+  rw [intervalIntegral.integral_const_mul, integral_sin_five]
+  have hpi : Real.pi ≠ 0 := Real.pi_ne_zero
+  field_simp
+  ring
+
+private theorem sphericalAverage_xy (r : ℝ) :
+    sphericalAverage r (fun k => k 0 ^ 2 * k 1 ^ 2) = r ^ 4 / 15 := by
+  unfold sphericalAverage
+  have hφ (θ : ℝ) :
+      (∫ φ in (0 : ℝ)..(2 * Real.pi),
+         (sphericalMomentum r θ φ) 0 ^ 2 *
+           (sphericalMomentum r θ φ) 1 ^ 2) =
+      (r * Real.sin θ) ^ 4 * (Real.pi / 4) := by
+    have hx (φ : ℝ) :
+        (sphericalMomentum r θ φ) 0 =
+          r * Real.sin θ * Real.cos φ := by rfl
+    have hy (φ : ℝ) :
+        (sphericalMomentum r θ φ) 1 =
+          r * Real.sin θ * Real.sin φ := by rfl
+    simp_rw [hx, hy]
+    have hmul (φ : ℝ) :
+        (r * Real.sin θ * Real.cos φ) ^ 2 *
+          (r * Real.sin θ * Real.sin φ) ^ 2 =
+          (r * Real.sin θ) ^ 4 *
+            (Real.sin φ ^ 2 * Real.cos φ ^ 2) := by ring
+    simp_rw [hmul]
+    rw [intervalIntegral.integral_const_mul, integral_sin_sq_mul_cos_sq_full]
+  simp_rw [hφ]
+  have hθ (θ : ℝ) :
+      ((r * Real.sin θ) ^ 4 * (Real.pi / 4)) * Real.sin θ =
+        (r ^ 4 * (Real.pi / 4)) * Real.sin θ ^ 5 := by ring
+  simp_rw [hθ]
+  rw [intervalIntegral.integral_const_mul, integral_sin_five]
+  have hpi : Real.pi ≠ 0 := Real.pi_ne_zero
+  field_simp
+  ring
+
+private theorem sphericalAverage_xz (r : ℝ) :
+    sphericalAverage r (fun k => k 0 ^ 2 * k 2 ^ 2) = r ^ 4 / 15 := by
+  unfold sphericalAverage
+  have hφ (θ : ℝ) :
+      (∫ φ in (0 : ℝ)..(2 * Real.pi),
+         (sphericalMomentum r θ φ) 0 ^ 2 *
+           (sphericalMomentum r θ φ) 2 ^ 2) =
+      (r ^ 4 * Real.sin θ ^ 2 * Real.cos θ ^ 2) * Real.pi := by
+    have hx (φ : ℝ) :
+        (sphericalMomentum r θ φ) 0 =
+          r * Real.sin θ * Real.cos φ := by rfl
+    have hz (φ : ℝ) :
+        (sphericalMomentum r θ φ) 2 = r * Real.cos θ := by rfl
+    simp_rw [hx, hz]
+    have hmul (φ : ℝ) :
+        (r * Real.sin θ * Real.cos φ) ^ 2 *
+          (r * Real.cos θ) ^ 2 =
+          (r ^ 4 * Real.sin θ ^ 2 * Real.cos θ ^ 2) *
+            Real.cos φ ^ 2 := by ring
+    simp_rw [hmul]
+    rw [intervalIntegral.integral_const_mul, integral_cos_sq_full]
+  simp_rw [hφ]
+  have hθ (θ : ℝ) :
+      ((r ^ 4 * Real.sin θ ^ 2 * Real.cos θ ^ 2) * Real.pi) *
+        Real.sin θ =
+        (r ^ 4 * Real.pi) *
+          (Real.sin θ ^ 3 * Real.cos θ ^ 2) := by ring
+  simp_rw [hθ]
+  rw [intervalIntegral.integral_const_mul, integral_sin_three_mul_cos_sq]
+  have hpi : Real.pi ≠ 0 := Real.pi_ne_zero
+  field_simp
+  ring
+
+private theorem sphericalAverage_yz (r : ℝ) :
+    sphericalAverage r (fun k => k 1 ^ 2 * k 2 ^ 2) = r ^ 4 / 15 := by
+  unfold sphericalAverage
+  have hφ (θ : ℝ) :
+      (∫ φ in (0 : ℝ)..(2 * Real.pi),
+         (sphericalMomentum r θ φ) 1 ^ 2 *
+           (sphericalMomentum r θ φ) 2 ^ 2) =
+      (r ^ 4 * Real.sin θ ^ 2 * Real.cos θ ^ 2) * Real.pi := by
+    have hy (φ : ℝ) :
+        (sphericalMomentum r θ φ) 1 =
+          r * Real.sin θ * Real.sin φ := by rfl
+    have hz (φ : ℝ) :
+        (sphericalMomentum r θ φ) 2 = r * Real.cos θ := by rfl
+    simp_rw [hy, hz]
+    have hmul (φ : ℝ) :
+        (r * Real.sin θ * Real.sin φ) ^ 2 *
+          (r * Real.cos θ) ^ 2 =
+          (r ^ 4 * Real.sin θ ^ 2 * Real.cos θ ^ 2) *
+            Real.sin φ ^ 2 := by ring
+    simp_rw [hmul]
+    rw [intervalIntegral.integral_const_mul, integral_sin_sq_full]
+  simp_rw [hφ]
+  have hθ (θ : ℝ) :
+      ((r ^ 4 * Real.sin θ ^ 2 * Real.cos θ ^ 2) * Real.pi) *
+        Real.sin θ =
+        (r ^ 4 * Real.pi) *
+          (Real.sin θ ^ 3 * Real.cos θ ^ 2) := by ring
+  simp_rw [hθ]
+  rw [intervalIntegral.integral_const_mul, integral_sin_three_mul_cos_sq]
+  have hpi : Real.pi ≠ 0 := Real.pi_ne_zero
+  field_simp
+  ring
+
+/-- The normalized continuous spherical-coordinate average of each fourth
+Cartesian momentum moment equals the corresponding finite cubature value. -/
+theorem sphericalAverage_coordinate_four (i : Fin 3) (r : ℝ) :
+    sphericalAverage r (fun k => k i ^ 4) =
+      evenQuarticCubature r (fun k => k i ^ 4) := by
+  rw [evenQuarticCubature_coordinate_four]
+  fin_cases i
+  · exact sphericalAverage_x_four r
+  · exact sphericalAverage_y_four r
+  · exact sphericalAverage_z_four r
+
+/-- The continuous spherical-coordinate mixed fourth moments coincide with
+the finite cubature for two distinct Cartesian indices. -/
+theorem sphericalAverage_coordinate_sq_mul_coordinate_sq (i j : Fin 3)
+    (hij : i ≠ j) (r : ℝ) :
+    sphericalAverage r (fun k => k i ^ 2 * k j ^ 2) =
+      evenQuarticCubature r (fun k => k i ^ 2 * k j ^ 2) := by
+  rw [evenQuarticCubature_coordinate_sq_mul_coordinate_sq i j hij]
+  fin_cases i <;> fin_cases j
+  · exact (hij rfl).elim
+  · exact sphericalAverage_xy r
+  · exact sphericalAverage_xz r
+  · simpa only [mul_comm] using (sphericalAverage_xy r)
+  · exact (hij rfl).elim
+  · exact sphericalAverage_yz r
+  · simpa only [mul_comm] using (sphericalAverage_xz r)
+  · simpa only [mul_comm] using (sphericalAverage_yz r)
+  · exact (hij rfl).elim
+
 end QuantumTheory.Models.OrbitalRelaxation
