@@ -135,6 +135,15 @@ candidate and keeps the RR/AA remainder explicit. It assumes neither matching mi
 impurity statistics nor control of any mismatch, and it is not a proof that the approximation
 equals the exact AHE conductivity.
 
+The generic `Disorder.DressedTraceNormBound` now bounds the fixed-regulator exact-vs-
+supplied-dressed RA trace by `d ‖J_meas‖` times three *independent* residual norms:
+`‖Ḡᴸ-Gᴸ_sup‖ ‖J_src‖ |γᴿ|⁻¹`, `‖Gᴸ_sup‖ ‖J_src‖ ‖Ḡᴿ-Gᴿ_sup‖`, and
+`‖C_LR(J_src)-Gᴸ_sup(Γ_sup-J_src)Gᴿ_sup‖`. The massive-Dirac Born–Dyson
+surface candidate specializes `d=2` and includes the extra `‖RR/AA remainder‖`
+term. This is an **a-posteriori conditional error estimate**, not a proof that
+the vertex residual vanishes or is small. In particular, pointwise Hall traces
+are not the momentum-integrated DC conductivity.
+
 The explicit massive-Dirac clean Green operator, its angular/radial reduction, common continuum Born
 denominator, polar-integral bridge, and finite-cutoff continuum Born self-energy use the same
 arbitrary-`γ` analytic ownership. Side-indexed forms remain only where broadening-limit, Born-Dyson,
