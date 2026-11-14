@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Analysis.Operator.Spectral.Resolvent
+import Mathlib.Tactic.Nlinarith
 
 set_option linter.style.header false
 
@@ -232,6 +233,39 @@ theorem im_inner_resolvent_spectralParameterOfRegulator_apply_self
   rw [hinner, inner_sub_right, inner_smul_right]
   simp only [Complex.sub_im, Complex.mul_im, himHamiltonian, himSelf, hreSelf,
     spectralParameterOfRegulator_im, sub_zero, mul_zero, zero_add]
+
+
+/-- Uniform resolvent norm bound for a bounded self-adjoint Hamiltonian at any nonzero
+signed regulator: no spectral gap or finite-dimensionality is needed. -/
+theorem norm_resolvent_spectralParameterOfRegulator_le
+    (hamiltonian : H →L[ℂ] H) (hself : IsSelfAdjoint hamiltonian)
+    (energy regulator : ℝ) (hregulator : regulator ≠ 0) :
+    ‖resolvent hamiltonian (spectralParameterOfRegulator energy regulator)‖ ≤
+      |regulator|⁻¹ := by
+  let green := resolvent hamiltonian (spectralParameterOfRegulator energy regulator)
+  have hregPos : 0 < |regulator| := abs_pos.mpr hregulator
+  apply ContinuousLinearMap.opNorm_le_bound green (inv_nonneg.mpr hregPos.le)
+  intro v
+  have hIm := im_inner_resolvent_spectralParameterOfRegulator_apply_self
+    hamiltonian hself energy regulator hregulator v
+  have hquad : |regulator| * ‖green v‖ ^ 2 ≤ ‖green v‖ * ‖v‖ := by
+    calc
+      |regulator| * ‖green v‖ ^ 2 =
+          |(inner ℂ (green v) v).im| := by
+            rw [hIm, abs_mul, abs_of_nonneg (sq_nonneg _)]
+      _ ≤ ‖inner ℂ (green v) v‖ := Complex.abs_im_le_norm _
+      _ ≤ ‖green v‖ * ‖v‖ := norm_inner_le_norm _ _
+  by_cases hv : green v = 0
+  · simp [hv]
+  have hvPos : 0 < ‖green v‖ := norm_pos_iff.mpr hv
+  have hscaled : (|regulator| * ‖green v‖) * ‖green v‖ ≤
+      ‖v‖ * ‖green v‖ := by
+    nlinarith [hquad]
+  have hcancel : |regulator| * ‖green v‖ ≤ ‖v‖ :=
+    (mul_le_mul_iff_right₀ hvPos).mp hscaled
+  have hdiv : ‖green v‖ ≤ ‖v‖ / |regulator| :=
+    (le_div_iff₀ hregPos).mpr hcancel
+  simpa [div_eq_mul_inv, mul_comm] using hdiv
 
 /-- For a self-adjoint Hamiltonian, taking the adjoint of a resolvent reverses the arbitrary signed
 imaginary regulator. -/
