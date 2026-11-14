@@ -103,6 +103,14 @@ finite-dimensional operator trace and connects the exact two-Green insertion to 
 identity, not a full conductivity formula. Contact/same-side/sea response, physical normalization,
 and controlled limits remain separate.
 
+The exact two-Green Středa trace also admits an algebraic decomposition of its difference from a
+*supplied* dressed-vertex RA trace: left/right mean-Green mismatches plus a connected-vertex
+remainder. The `Models.MassiveDirac.Streda.BornLadder.DisorderComparison` specialization compares
+this exact trace with the pointwise finite-cutoff Born-Dyson **RA-dressed/bare-same-side**
+candidate and keeps the RR/AA remainder explicit. It assumes neither matching microscopic
+impurity statistics nor control of any mismatch, and it is not a proof that the approximation
+equals the exact AHE conductivity.
+
 The explicit massive-Dirac clean Green operator, its angular/radial reduction, common continuum Born
 denominator, polar-integral bridge, and finite-cutoff continuum Born self-energy use the same
 arbitrary-`γ` analytic ownership. Side-indexed forms remain only where broadening-limit, Born-Dyson,
