@@ -2773,7 +2773,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -2785,7 +2785,6 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Common.ExternalInsertionBlockLayout.interactionAssignmentShuffle_unique",
       "SecondQuantization.Common.ExternalInsertionBlockLayout.interactionOrderDecomposition_shuffle_unique"
     ],
     "dependencies": [
@@ -2794,10 +2793,9 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Common.ExternalInsertionBlockLayout.interactionAssignmentShuffle_unique",
       "SecondQuantization.Common.ExternalInsertionBlockLayout.interactionOrderDecomposition_shuffle_unique"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -7265,6 +7263,7 @@
       "SecondQuantization.Common.ExternalInsertionDiagram.assembleComponentPairing_injective",
       "SecondQuantization.Common.ExternalInsertionDiagram.componentOrderedDiagram_eq_slotCongr",
       "SecondQuantization.Common.ExternalInsertionDiagram.reassembleComponentPairing_eq",
+      "SecondQuantization.Common.ExternalInsertionDiagram.slotCongr_pairingInMixedOrder_eq_of_injective",
       "SecondQuantization.Common.QuarticDiagram.reassemble_componentPartition",
       "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.sidePairing_sideMatching",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.restrictComponent_reassemble_pairing",
@@ -7291,12 +7290,13 @@
       "SecondQuantization.Common.ExternalInsertionDiagram.assembleComponentPairing_injective",
       "SecondQuantization.Common.ExternalInsertionDiagram.componentOrderedDiagram_eq_slotCongr",
       "SecondQuantization.Common.ExternalInsertionDiagram.reassembleComponentPairing_eq",
+      "SecondQuantization.Common.ExternalInsertionDiagram.slotCongr_pairingInMixedOrder_eq_of_injective",
       "SecondQuantization.Common.QuarticDiagram.reassemble_componentPartition",
       "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.sidePairing_sideMatching",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.restrictComponent_reassemble_pairing",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalSubsetMoment.0.SecondQuantization.Fermionic.pairing_heq_of_finCongr_transport"
     ],
-    "compiledConsumerCount": 21,
+    "compiledConsumerCount": 22,
     "axioms": [
       "Quot.sound"
     ],
@@ -7861,6 +7861,7 @@
       "SecondQuantization.Common.ExternalInsertionDiagram.componentOrderedDiagram_eq_slotCongr",
       "SecondQuantization.Common.ExternalInsertionDiagram.pairingInMixedOrder_partner_legPosition",
       "SecondQuantization.Common.ExternalInsertionDiagram.reassembleComponentPairing_eq",
+      "SecondQuantization.Common.ExternalInsertionDiagram.slotCongr_pairing_partner",
       "SecondQuantization.Common.QuarticDiagram.pairingInOrder_partner_componentOrderedLeg",
       "SecondQuantization.Common.TwoPointDiagram.intervalAugmentedPairing_partner_external",
       "SecondQuantization.Common.TwoPointDiagram.intervalAugmentedPairing_partner_interior",
@@ -7893,6 +7894,7 @@
       "SecondQuantization.Common.ExternalInsertionDiagram.componentOrderedDiagram_eq_slotCongr",
       "SecondQuantization.Common.ExternalInsertionDiagram.pairingInMixedOrder_partner_legPosition",
       "SecondQuantization.Common.ExternalInsertionDiagram.reassembleComponentPairing_eq",
+      "SecondQuantization.Common.ExternalInsertionDiagram.slotCongr_pairing_partner",
       "SecondQuantization.Common.QuarticDiagram.pairingInOrder_partner_componentOrderedLeg",
       "SecondQuantization.Common.TwoPointDiagram.intervalAugmentedPairing_partner_external",
       "SecondQuantization.Common.TwoPointDiagram.intervalAugmentedPairing_partner_interior",
@@ -7907,7 +7909,7 @@
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_partner_bigLegEquiv_symm_sigma_mk",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalSubsetMoment.0.SecondQuantization.Fermionic.pairing_heq_of_finCongr_transport"
     ],
-    "compiledConsumerCount": 27,
+    "compiledConsumerCount": 28,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -53985,7 +53987,8 @@
     "directWrapperOf": null,
     "dependents": [
       "QuantumTheory.LinearResponse.hasDerivAt_perturbedDensityOperator_zero_of_bound",
-      "QuantumTheory.LinearResponse.hasDerivAt_timeDependentPerturbedObservable_zero_of_bound"
+      "QuantumTheory.LinearResponse.hasDerivAt_timeDependentPerturbedObservable_zero_of_bound",
+      "QuantumTheory.LinearResponse.hasDerivAt_timeDependentTransitionAmplitude_zero_of_bound"
     ],
     "dependencies": [
       "Dyson.hasDerivAt_evolution_linear_coupling_zero_of_bound",
@@ -53995,9 +53998,10 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.LinearResponse.hasDerivAt_perturbedDensityOperator_zero_of_bound",
-      "QuantumTheory.LinearResponse.hasDerivAt_timeDependentPerturbedObservable_zero_of_bound"
+      "QuantumTheory.LinearResponse.hasDerivAt_timeDependentPerturbedObservable_zero_of_bound",
+      "QuantumTheory.LinearResponse.hasDerivAt_timeDependentTransitionAmplitude_zero_of_bound"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -54183,6 +54187,50 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.LinearResponse.hasDerivAt_timeDependentPerturbedExpectationFunctional_apply_zero_of_bound"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (U : Multiplicative ℝ →* ↥(unitary (H →L[ℂ] H))) (hbar : ℝ) (initial final : H) {V : ℝ → H →L[ℂ] H} {β M t : ℝ},\n  0 ≤ M →\n    (∀ s ∈ Set.Icc 0 β, ‖QuantumTheory.LinearResponse.timeDependentInteractionPerturbation U V s‖ ≤ M) →\n      t ∈ Set.Icc 0 β →\n        HasDerivAt\n          (fun lam =>\n            inner ℂ final ((QuantumTheory.LinearResponse.timeDependentInteractionPropagator U hbar V lam t) initial))\n          (inner ℂ final ((QuantumTheory.LinearResponse.timeDependentPropagatorFirstVariation U hbar V t) initial)) 0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.LinearResponse.hasDerivAt_timeDependentTransitionAmplitude_zero_of_bound",
+    "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.Perturbation.TransitionProbability",
+    "externalAxioms": [],
+    "docString": "The matrix element of the first Dyson variation is the derivative of the exact\ninteraction-picture transition amplitude at zero physical coupling. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.LinearResponse.tendsto_timeDependentTransitionWeight_div_sq_zero_of_bound"
+    ],
+    "dependencies": [
+      "QuantumTheory.LinearResponse.hasDerivAt_timeDependentInteractionPropagator_zero_of_bound"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.LinearResponse.tendsto_timeDependentTransitionWeight_div_sq_zero_of_bound"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -57406,6 +57454,47 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
+    "terminal": true,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (U : Multiplicative ℝ →* ↥(unitary (H →L[ℂ] H))) (hbar : ℝ) (initial final : H),\n  inner ℂ final initial = 0 →\n    ∀ {V : ℝ → H →L[ℂ] H} {β M t : ℝ},\n      0 ≤ M →\n        (∀ s ∈ Set.Icc 0 β, ‖QuantumTheory.LinearResponse.timeDependentInteractionPerturbation U V s‖ ≤ M) →\n          t ∈ Set.Icc 0 β →\n            Filter.Tendsto\n              (fun lam =>\n                ‖inner ℂ final\n                        ((QuantumTheory.LinearResponse.timeDependentInteractionPropagator U hbar V lam t) initial)‖ ^\n                    2 /\n                  lam ^ 2)\n              (nhdsWithin 0 {0}ᶜ)\n              (nhds\n                (‖inner ℂ final\n                      ((QuantumTheory.LinearResponse.timeDependentPropagatorFirstVariation U hbar V t) initial)‖ ^\n                  2))",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.LinearResponse.tendsto_timeDependentTransitionWeight_div_sq_zero_of_bound",
+    "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.Perturbation.TransitionProbability",
+    "externalAxioms": [],
+    "docString": "Orthogonality removes the zeroth-order amplitude. The leading transition weight is\nquadratic in the physical coupling at each fixed time; it is a probability for normalized\nvectors when the exact propagator is unitary. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.LinearResponse.hasDerivAt_timeDependentTransitionAmplitude_zero_of_bound",
+      "QuantumTheory.LinearResponse.timeDependentInteractionPropagator_zero_coupling"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
     "terminal": false,
     "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (U : Multiplicative ℝ →* ↥(unitary (H →L[ℂ] H))) (f : ℝ → ℝ) (B : H →L[ℂ] H) (t : ℝ),\n  QuantumTheory.LinearResponse.timeDependentInteractionPerturbation U\n      (QuantumTheory.LinearResponse.sourceCoupledPerturbation f B) t =\n    -↑(f t) • (QuantumTheory.LinearResponse.heisenbergEvolution U t) B",
     "standardAxioms": [
@@ -57562,6 +57651,7 @@
       "QuantumTheory.LinearResponse.hasDerivAt_perturbedDensityOperator_zero_of_bound",
       "QuantumTheory.LinearResponse.hasDerivAt_timeDependentPerturbedObservable_zero_of_bound",
       "QuantumTheory.LinearResponse.perturbedDensityOperator_zero_coupling",
+      "QuantumTheory.LinearResponse.tendsto_timeDependentTransitionWeight_div_sq_zero_of_bound",
       "QuantumTheory.LinearResponse.timeDependentPerturbedObservable_zero_coupling"
     ],
     "dependencies": [
@@ -57574,9 +57664,10 @@
       "QuantumTheory.LinearResponse.hasDerivAt_perturbedDensityOperator_zero_of_bound",
       "QuantumTheory.LinearResponse.hasDerivAt_timeDependentPerturbedObservable_zero_of_bound",
       "QuantumTheory.LinearResponse.perturbedDensityOperator_zero_coupling",
+      "QuantumTheory.LinearResponse.tendsto_timeDependentTransitionWeight_div_sq_zero_of_bound",
       "QuantumTheory.LinearResponse.timeDependentPerturbedObservable_zero_coupling"
     ],
-    "compiledConsumerCount": 5,
+    "compiledConsumerCount": 6,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -62195,89 +62286,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (v m fermiEnergy disorderStrength hbar : ℝ),\n  hbar ≠ 0 →\n    QuantumTheory.Models.MassiveDirac.continuumBornUpperBandDampingEnergy v m fermiEnergy disorderStrength hbar =\n      hbar / 2 *\n        QuantumTheory.Models.MassiveDirac.continuumBornUpperBandSingleParticleScatteringRate v m fermiEnergy\n          disorderStrength hbar",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Models.MassiveDirac.continuumBornUpperBandDampingEnergy_eq_half_hbar_mul_scatteringRate",
-    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.SingleParticleRate",
-    "externalAxioms": [],
-    "docString": "The damping energy is one half of `ℏ` times the derived single-particle scattering rate. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Models.MassiveDirac.continuumBornUpperBandDampingEnergy_eq_hbar_div_two_lifetime"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Models.MassiveDirac.continuumBornUpperBandDampingEnergy_eq_hbar_div_two_lifetime"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ (v m fermiEnergy disorderStrength hbar : ℝ),\n  v ≠ 0 →\n    hbar ≠ 0 →\n      disorderStrength ≠ 0 →\n        fermiEnergy ≠ 0 →\n          QuantumTheory.Models.MassiveDirac.continuumBornUpperBandDampingEnergy v m fermiEnergy disorderStrength hbar =\n            hbar /\n              (2 *\n                QuantumTheory.Models.MassiveDirac.continuumBornUpperBandSingleParticleLifetime v m fermiEnergy\n                  disorderStrength hbar)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Models.MassiveDirac.continuumBornUpperBandDampingEnergy_eq_hbar_div_two_lifetime",
-    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.SingleParticleRate",
-    "externalAxioms": [],
-    "docString": "Equivalent lifetime form of the Born pole-width convention,\n`Γ_Born = ℏ / (2 τ_sp)`. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "QuantumTheory.Models.MassiveDirac.continuumBornUpperBandDampingEnergy_eq_half_hbar_mul_scatteringRate",
-      "QuantumTheory.Models.MassiveDirac.continuumBornUpperBandSingleParticleScatteringRate_ne_zero"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ (v m fermiEnergy disorderStrength hbar : ℝ),\n  v ≠ 0 →\n    hbar ≠ 0 →\n      0 < disorderStrength →\n        |m| < fermiEnergy →\n          0 <\n            QuantumTheory.Models.MassiveDirac.continuumBornUpperBandDampingEnergy v m fermiEnergy disorderStrength hbar",
     "standardAxioms": [
       "Classical.choice",
@@ -62306,46 +62314,6 @@
       "QuantumTheory.Models.MassiveDirac.continuumBornUpperBandSingleParticleScatteringRate_pos"
     ],
     "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ (v m fermiEnergy disorderStrength hbar : ℝ),\n  v ≠ 0 →\n    0 < hbar →\n      0 < disorderStrength →\n        |m| < fermiEnergy →\n          0 <\n            QuantumTheory.Models.MassiveDirac.continuumBornUpperBandSingleParticleLifetime v m fermiEnergy\n              disorderStrength hbar",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Models.MassiveDirac.continuumBornUpperBandSingleParticleLifetime_pos",
-    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.SingleParticleRate",
-    "externalAxioms": [],
-    "docString": "The derived Born single-particle lifetime is positive in the physical metallic regime. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "QuantumTheory.Models.MassiveDirac.continuumBornUpperBandSingleParticleScatteringRate_pos"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -62449,7 +62417,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ (v m fermiEnergy disorderStrength hbar : ℝ),\n  v ≠ 0 →\n    hbar ≠ 0 →\n      disorderStrength ≠ 0 →\n        fermiEnergy ≠ 0 →\n          QuantumTheory.Models.MassiveDirac.continuumBornUpperBandSingleParticleScatteringRate v m fermiEnergy\n                disorderStrength hbar *\n              QuantumTheory.Models.MassiveDirac.continuumBornUpperBandSingleParticleLifetime v m fermiEnergy\n                disorderStrength hbar =\n            1",
+    "statement": "∀ (v m fermiEnergy disorderStrength hbar : ℝ),\n  v ≠ 0 →\n    hbar ≠ 0 →\n      disorderStrength ≠ 0 →\n        fermiEnergy ≠ 0 →\n          QuantumTheory.Models.MassiveDirac.continuumBornUpperBandSingleParticleScatteringRate v m fermiEnergy\n              disorderStrength hbar ≠\n            0",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -62461,15 +62429,56 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "QuantumTheory.Models.MassiveDirac.continuumBornUpperBandSingleParticleScatteringRate_mul_lifetime",
+    "name": "QuantumTheory.Models.MassiveDirac.continuumBornUpperBandSingleParticleScatteringRate_ne_zero",
     "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.SingleParticleRate",
     "externalAxioms": [],
-    "docString": "The derived scattering rate and lifetime are reciprocal whenever the rate prefactors and Fermi\nenergy are nonzero. ",
+    "docString": "The Born single-particle scattering rate is nonzero whenever its algebraic prefactors and Fermi\nenergy are nonzero. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "QuantumTheory.Models.MassiveDirac.continuumBornUpperBandSingleParticleScatteringRate_ne_zero"
+      "QuantumTheory.Models.MassiveDirac.continuumBornUpperBandSingleParticleScatteringRate_eq"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (v m fermiEnergy disorderStrength hbar : ℝ),\n  v ≠ 0 →\n    0 < hbar →\n      0 < disorderStrength →\n        |m| < fermiEnergy →\n          0 <\n            QuantumTheory.Models.MassiveDirac.continuumBornUpperBandSingleParticleScatteringRate v m fermiEnergy\n              disorderStrength hbar",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.MassiveDirac.continuumBornUpperBandSingleParticleScatteringRate_pos",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.SingleParticleRate",
+    "externalAxioms": [],
+    "docString": "The Born single-particle scattering rate is positive for positive `ℏ` and positive disorder\nstrength in the strict metallic regime `|m| < εF`. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.Models.MassiveDirac.continuumBornUpperBandDampingEnergy_pos",
+      "QuantumTheory.scatteringRateOfDamping_pos"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -62489,97 +62498,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (v m fermiEnergy disorderStrength hbar : ℝ),\n  v ≠ 0 →\n    hbar ≠ 0 →\n      disorderStrength ≠ 0 →\n        fermiEnergy ≠ 0 →\n          QuantumTheory.Models.MassiveDirac.continuumBornUpperBandSingleParticleScatteringRate v m fermiEnergy\n              disorderStrength hbar ≠\n            0",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Models.MassiveDirac.continuumBornUpperBandSingleParticleScatteringRate_ne_zero",
-    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.SingleParticleRate",
-    "externalAxioms": [],
-    "docString": "The Born single-particle scattering rate is nonzero whenever its algebraic prefactors and Fermi\nenergy are nonzero. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Models.MassiveDirac.continuumBornUpperBandDampingEnergy_eq_hbar_div_two_lifetime",
-      "QuantumTheory.Models.MassiveDirac.continuumBornUpperBandSingleParticleScatteringRate_mul_lifetime"
-    ],
-    "dependencies": [
-      "QuantumTheory.Models.MassiveDirac.continuumBornUpperBandSingleParticleScatteringRate_eq"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Models.MassiveDirac.continuumBornUpperBandDampingEnergy_eq_hbar_div_two_lifetime",
-      "QuantumTheory.Models.MassiveDirac.continuumBornUpperBandSingleParticleScatteringRate_mul_lifetime"
-    ],
-    "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (v m fermiEnergy disorderStrength hbar : ℝ),\n  v ≠ 0 →\n    0 < hbar →\n      0 < disorderStrength →\n        |m| < fermiEnergy →\n          0 <\n            QuantumTheory.Models.MassiveDirac.continuumBornUpperBandSingleParticleScatteringRate v m fermiEnergy\n              disorderStrength hbar",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Models.MassiveDirac.continuumBornUpperBandSingleParticleScatteringRate_pos",
-    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.SingleParticleRate",
-    "externalAxioms": [],
-    "docString": "The Born single-particle scattering rate is positive for positive `ℏ` and positive disorder\nstrength in the strict metallic regime `|m| < εF`. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Models.MassiveDirac.continuumBornUpperBandSingleParticleLifetime_pos"
-    ],
-    "dependencies": [
-      "QuantumTheory.Models.MassiveDirac.continuumBornUpperBandDampingEnergy_pos"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Models.MassiveDirac.continuumBornUpperBandSingleParticleLifetime_pos"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (v m fermiEnergy disorderStrength hbar : ℝ),\n  v ≠ 0 →\n    hbar ≠ 0 →\n      disorderStrength ≠ 0 →\n        fermiEnergy ≠ 0 →\n          QuantumTheory.Models.MassiveDirac.continuumBornUpperBandTransportLifetime v m fermiEnergy disorderStrength\n              hbar =\n            2 * (fermiEnergy ^ 2 + m ^ 2) / (fermiEnergy ^ 2 + 3 * m ^ 2) *\n              QuantumTheory.Models.MassiveDirac.continuumBornUpperBandSingleParticleLifetime v m fermiEnergy\n                disorderStrength hbar",
+    "statement": "∀ (v m fermiEnergy disorderStrength hbar : ℝ),\n  v ≠ 0 →\n    hbar ≠ 0 →\n      disorderStrength ≠ 0 →\n        fermiEnergy ≠ 0 →\n          QuantumTheory.Models.MassiveDirac.continuumBornUpperBandTransportLifetime v m fermiEnergy disorderStrength\n              hbar =\n            2 * (fermiEnergy ^ 2 + m ^ 2) / (fermiEnergy ^ 2 + 3 * m ^ 2) *\n              QuantumTheory.lifetimeOfDamping hbar\n                (QuantumTheory.Models.MassiveDirac.continuumBornUpperBandDampingEnergy v m fermiEnergy disorderStrength\n                  hbar)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -62624,7 +62543,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ (v m fermiEnergy disorderStrength hbar : ℝ),\n  v ≠ 0 →\n    hbar ≠ 0 →\n      disorderStrength ≠ 0 →\n        fermiEnergy ≠ 0 →\n          QuantumTheory.Models.MassiveDirac.continuumBornUpperBandTransportLifetime v m fermiEnergy disorderStrength\n              hbar =\n            (1 -\n                  QuantumTheory.Models.MassiveDirac.continuumBornRetardedAdvancedPauliXWeakDisorderCurrentRungCoefficient\n                    m fermiEnergy)⁻¹ *\n              QuantumTheory.Models.MassiveDirac.continuumBornUpperBandSingleParticleLifetime v m fermiEnergy\n                disorderStrength hbar",
+    "statement": "∀ (v m fermiEnergy disorderStrength hbar : ℝ),\n  v ≠ 0 →\n    hbar ≠ 0 →\n      disorderStrength ≠ 0 →\n        fermiEnergy ≠ 0 →\n          QuantumTheory.Models.MassiveDirac.continuumBornUpperBandTransportLifetime v m fermiEnergy disorderStrength\n              hbar =\n            (1 -\n                  QuantumTheory.Models.MassiveDirac.continuumBornRetardedAdvancedPauliXWeakDisorderCurrentRungCoefficient\n                    m fermiEnergy)⁻¹ *\n              QuantumTheory.lifetimeOfDamping hbar\n                (QuantumTheory.Models.MassiveDirac.continuumBornUpperBandDampingEnergy v m fermiEnergy disorderStrength\n                  hbar)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -104060,6 +103979,82 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
+    "terminal": true,
+    "statement": "∀ (hbar damping : ℝ), hbar ≠ 0 → damping = hbar / 2 * QuantumTheory.scatteringRateOfDamping hbar damping",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.damping_eq_half_hbar_mul_rate",
+    "module": "LeanCondensedMatter.QuantumTheory.ScatteringRate",
+    "externalAxioms": [],
+    "docString": "The pole half-width is half of ℏ times the corresponding probability-decay rate. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (hbar damping : ℝ), hbar ≠ 0 → damping = hbar / (2 * QuantumTheory.lifetimeOfDamping hbar damping)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.damping_eq_hbar_div_two_lifetime",
+    "module": "LeanCondensedMatter.QuantumTheory.ScatteringRate",
+    "externalAxioms": [],
+    "docString": "Equivalent lifetime convention, stated without model-specific nonvanishing assumptions. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
     "terminal": false,
     "statement": "∀ {ι : Type u_1} {H : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] (b : HilbertBasis ι ℂ H) (a : ι → ℝ) (ha : Summable fun i => ‖a i‖)\n  (ha_nonneg : ∀ (i : ι), 0 ≤ a i) (hZ : 0 < ∑' (i : ι), a i) (i : ι),\n  (QuantumTheory.diagonalDensityOperator b a ha ha_nonneg hZ).op (b i) = ↑(Real.normalizedWeight a i) • b i",
     "standardAxioms": [
@@ -106905,6 +106900,46 @@
   },
   {
     "terminal": true,
+    "statement": "∀ {hbar damping : ℝ}, 0 < hbar → 0 < damping → 0 < QuantumTheory.lifetimeOfDamping hbar damping",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.lifetimeOfDamping_pos",
+    "module": "LeanCondensedMatter.QuantumTheory.ScatteringRate",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.scatteringRateOfDamping_pos"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
     "statement": "∀ {Band : Type u_1} {K : Type u_2} (energy : Band → K → ℝ) (fermiEnergy : ℝ) (band : Band) (k : K),\n  k ∈ QuantumTheory.fermiSurface energy fermiEnergy band ↔ energy band k = fermiEnergy",
     "standardAxioms": [
       "Classical.choice",
@@ -107009,6 +107044,44 @@
       "QuantumTheory.resolvent_eq_sum_inv_smul_of_diagonal_action"
     ],
     "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (hbar energy damping time : ℝ),\n  ‖Complex.exp (-↑(damping * time / hbar) - Complex.I * ↑(energy * time / hbar))‖ ^ 2 =\n    Real.exp (-QuantumTheory.scatteringRateOfDamping hbar damping * time)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.norm_exp_dampedPole_sq",
+    "module": "LeanCondensedMatter.QuantumTheory.ScatteringRate",
+    "externalAxioms": [],
+    "docString": "For the scalar damped-pole ansatz, squaring the amplitude doubles the exponent.\nThis proves the rate convention for that ansatz, not exponential decay for a general Hamiltonian. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -107696,6 +107769,50 @@
       "QuantumTheory.resolvent_eq_of_spectralShift_mul_eq_one_of_not_mem"
     ],
     "compiledConsumerCount": 3,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {hbar damping : ℝ}, 0 < hbar → 0 < damping → 0 < QuantumTheory.scatteringRateOfDamping hbar damping",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.scatteringRateOfDamping_pos",
+    "module": "LeanCondensedMatter.QuantumTheory.ScatteringRate",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.MassiveDirac.continuumBornUpperBandSingleParticleScatteringRate_pos",
+      "QuantumTheory.lifetimeOfDamping_pos"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.continuumBornUpperBandSingleParticleScatteringRate_pos",
+      "QuantumTheory.lifetimeOfDamping_pos"
+    ],
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -120549,135 +120666,6 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": false,
-    "statement": "∀ {E N : ℕ} (layout : SecondQuantization.Common.ExternalInsertionBlockLayout E N) (v : Fin Finset.univ.card),\n  (layout.interactionAssignmentShuffle.slotEquiv.symm v).fst =\n    layout.interactionOwner ↑((Finset.univ.orderIsoOfFin ⋯).toEquiv v)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.ExternalInsertionBlockLayout.interactionAssignmentShuffle_owner",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.BlockAssembly",
-    "externalAxioms": [],
-    "docString": "The canonical interaction-assignment shuffle remembers the *actual*\nphysical owner of each ambient Dyson slot. The owner read from the\ninverse shuffle is the owner of the interaction vertex at that slot,\nenumerated by the increasing ambient order. Zero-size blocks are\nretained without adding artificial slot permutations. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.ExternalInsertionBlockLayout.interactionAssignmentShuffle_unique"
-    ],
-    "dependencies": [
-      "SecondQuantization.Common.ExternalInsertionBlockLayout.interactionOrderDecomposition_slot_owner"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.ExternalInsertionBlockLayout.interactionAssignmentShuffle_unique"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {E N : ℕ} (layout : SecondQuantization.Common.ExternalInsertionBlockLayout E N),\n  layout.interactionOrderDecompositionEquiv.symm\n      (layout.interactionOrderDecompositionEquiv (Finset.univ.orderIsoOfFin ⋯).toEquiv) =\n    (Finset.univ.orderIsoOfFin ⋯).toEquiv",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.ExternalInsertionBlockLayout.interactionAssignmentShuffle_reassembles",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.BlockAssembly",
-    "externalAxioms": [],
-    "docString": "The global interaction order encoded by the canonical assignment\nshuffle and its associated local orders is exactly the original canonical\nincreasing interaction order. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleDiagram_dysonAmplitude_eq_assignmentOrdered"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleDiagram_dysonAmplitude_eq_assignmentOrdered"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [
-      "Equiv.symm_apply_apply"
-    ],
-    "mathlibReplacementCandidateCount": 1
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {E N : ℕ} (layout : SecondQuantization.Common.ExternalInsertionBlockLayout E N)\n  (shuffle :\n    Combinatorics.FamilySlotShuffleTo (fun B => (layout.interactionBlock Finset.univ B).card) Finset.univ.card),\n  (∀ (v : Fin Finset.univ.card),\n      (shuffle.slotEquiv.symm v).fst = layout.interactionOwner ↑((Finset.univ.orderIsoOfFin ⋯).toEquiv v)) →\n    shuffle = layout.interactionAssignmentShuffle",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.ExternalInsertionBlockLayout.interactionAssignmentShuffle_unique",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.BlockAssembly",
-    "externalAxioms": [],
-    "docString": "At fixed physical interaction-block sizes, the actual owner\nassignment uniquely determines the canonical order-preserving shuffle.\nThis is the converse of `interactionAssignmentShuffle_owner`; neither\nblock-internal orderings nor empty blocks introduce new owner data. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "Combinatorics.FamilySlotShuffleTo.eq_of_same_owner",
-      "SecondQuantization.Common.ExternalInsertionBlockLayout.interactionAssignmentShuffle_owner"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
     "terminal": true,
     "statement": "∀ {E N : ℕ} (layout : SecondQuantization.Common.ExternalInsertionBlockLayout E N)\n  (order : SecondQuantization.Common.QuarticVertexOrder Finset.univ) (τ : Fin Finset.univ.card → ℝ)\n  (B : ↥layout.partition.parts) (j : Fin (layout.interactionBlock Finset.univ B).card),\n  τ ((layout.interactionOrderDecompositionEquiv order).2.slotEquiv ⟨B, j⟩) =\n    τ\n      ((Equiv.symm order)\n        ((layout.interactionEquiv Finset.univ).symm ⟨B, ((layout.interactionOrderDecompositionEquiv order).1 B) j⟩))",
     "standardAxioms": [
@@ -120861,7 +120849,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -120873,7 +120861,6 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Common.ExternalInsertionBlockLayout.interactionAssignmentShuffle_owner",
       "SecondQuantization.Common.ExternalInsertionBlockLayout.interactionOrderDecomposition_owner"
     ],
     "dependencies": [
@@ -120882,10 +120869,9 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Common.ExternalInsertionBlockLayout.interactionAssignmentShuffle_owner",
       "SecondQuantization.Common.ExternalInsertionBlockLayout.interactionOrderDecomposition_owner"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -124611,7 +124597,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -124623,7 +124609,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Common.ExternalInsertionDiagram.pairingInMixedOrder_partner_componentMixedPosition"
+      "SecondQuantization.Common.ExternalInsertionDiagram.pairingInMixedOrder_partner_componentMixedPosition",
+      "SecondQuantization.Common.ExternalInsertionDiagram.slotCongr_pairingInMixedOrder_partner"
     ],
     "dependencies": [
       "Combinatorics.PairingOn.transport_partner",
@@ -124633,9 +124620,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Common.ExternalInsertionDiagram.pairingInMixedOrder_partner_componentMixedPosition"
+      "SecondQuantization.Common.ExternalInsertionDiagram.pairingInMixedOrder_partner_componentMixedPosition",
+      "SecondQuantization.Common.ExternalInsertionDiagram.slotCongr_pairingInMixedOrder_partner"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -124924,6 +124912,50 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
+    "terminal": false,
+    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {E n : ℕ}\n  (d : SecondQuantization.Common.ExternalInsertionDiagram ExternalLabel InternalLabel E n Finset.univ)\n  (e : ↥Finset.univ ≃ ↥Finset.univ) (leg : SecondQuantization.Common.OrderedExternalInsertionLeg E n),\n  (SecondQuantization.Common.ExternalInsertionDiagram.slotCongr e d).atomicLegPartner\n      ((SecondQuantization.Common.externalInsertionOrderedLegSlotCongr e) leg) =\n    (SecondQuantization.Common.externalInsertionOrderedLegSlotCongr e) (d.atomicLegPartner leg)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.ExternalInsertionDiagram.slotCongr_atomicLegPartner",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Pairing.MixedOrder",
+    "externalAxioms": [],
+    "docString": "The canonical-leg Wick pairing partner is equivariant under any\ninteraction-vertex permutation. This follows from the *actual*\nflattened-leg transport in `slotCongr`, not an abstract, new pairing. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Common.ExternalInsertionDiagram.slotCongr_pairingInMixedOrder_partner"
+    ],
+    "dependencies": [
+      "SecondQuantization.Common.ExternalInsertionDiagram.slotCongr_pairing_partner"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Common.ExternalInsertionDiagram.slotCongr_pairingInMixedOrder_partner"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
     "terminal": true,
     "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {E N M : ℕ} {T : Finset (Fin N)} {U : Finset (Fin M)}\n  (e : ↥T ≃ ↥U) (d : SecondQuantization.Common.ExternalInsertionDiagram ExternalLabel InternalLabel E N T),\n  (SecondQuantization.Common.ExternalInsertionDiagram.slotCongr e d).externalLabel = d.externalLabel",
     "standardAxioms": [
@@ -124949,6 +124981,138 @@
     "completedMention": false,
     "compiledConsumers": [],
     "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {E n : ℕ}\n  (d : SecondQuantization.Common.ExternalInsertionDiagram ExternalLabel InternalLabel E n Finset.univ)\n  (e : ↥Finset.univ ≃ ↥Finset.univ) (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ),\n  Function.Injective σ →\n    (SecondQuantization.Common.ExternalInsertionDiagram.slotCongr e d).pairingInMixedOrder externalTime\n        (σ ∘ fun v => ↑(e.symm ⟨v, ⋯⟩)) =\n      d.pairingInMixedOrder externalTime σ",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.ExternalInsertionDiagram.slotCongr_pairingInMixedOrder_eq_of_injective",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Pairing.MixedOrder",
+    "externalAxioms": [],
+    "docString": "The physical mixed-time Wick *pairing itself* is unchanged when\ninteraction slots are relabeled and their time assignment pulled\nback, on every injective interaction-time chamber. This is stronger\nthan partner-intertwining: the pairing lives on exactly the same\nmixed-time atomic position type on both sides. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "Combinatorics.PairingOn.ext",
+      "SecondQuantization.Common.ExternalInsertionDiagram.slotCongr_pairingInMixedOrder_partner",
+      "SecondQuantization.Common.externalInsertionMixedPositionSlotCongr_eq_refl_of_injective"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {E n : ℕ}\n  (d : SecondQuantization.Common.ExternalInsertionDiagram ExternalLabel InternalLabel E n Finset.univ)\n  (e : ↥Finset.univ ≃ ↥Finset.univ) (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ) (p : Fin (2 * (2 * n + E))),\n  ((SecondQuantization.Common.ExternalInsertionDiagram.slotCongr e d).pairingInMixedOrder externalTime\n          (σ ∘ fun v => ↑(e.symm ⟨v, ⋯⟩))).partner\n      ((SecondQuantization.Common.externalInsertionMixedPositionSlotCongr e externalTime σ) p) =\n    (SecondQuantization.Common.externalInsertionMixedPositionSlotCongr e externalTime σ)\n      ((d.pairingInMixedOrder externalTime σ).partner p)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.ExternalInsertionDiagram.slotCongr_pairingInMixedOrder_partner",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Pairing.MixedOrder",
+    "externalAxioms": [],
+    "docString": "The physical mixed-time Wick pairing partner, at *every* time\nassignment (including coincident times), is intertwined by the actual\nmixed-time position permutation induced from `slotCongr`.\n\nThis preserves the pairing as an involution, but it does not claim\nthat normalized pair endpoints maintain their increasing order; that\nis the additional sign/orientation lemma needed for the integrated\nfermionic amplitude. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Common.ExternalInsertionDiagram.slotCongr_pairingInMixedOrder_eq_of_injective"
+    ],
+    "dependencies": [
+      "SecondQuantization.Common.ExternalInsertionDiagram.pairingInMixedOrder_partner_legPosition",
+      "SecondQuantization.Common.ExternalInsertionDiagram.slotCongr_atomicLegPartner",
+      "SecondQuantization.Common.externalInsertionMixedPositionSlotCongr_legPosition"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Common.ExternalInsertionDiagram.slotCongr_pairingInMixedOrder_eq_of_injective"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {E N M : ℕ} {T : Finset (Fin N)} {U : Finset (Fin M)}\n  (e : ↥T ≃ ↥U) (d : SecondQuantization.Common.ExternalInsertionDiagram ExternalLabel InternalLabel E N T)\n  (p : Fin (2 * (2 * T.card + E))),\n  (SecondQuantization.Common.ExternalInsertionDiagram.slotCongr e d).pairing.partner\n      ((SecondQuantization.Common.externalInsertionLegCongr e) p) =\n    (SecondQuantization.Common.externalInsertionLegCongr e) (d.pairing.partner p)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.ExternalInsertionDiagram.slotCongr_pairing_partner",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Core.SlotCongr",
+    "externalAxioms": [],
+    "docString": "The physical Wick pairing partner is exactly conjugated by the\ninduced flattened-leg equivalence under *any* interaction-slot\nrelabeling. It transports the two endpoints together, without\nasserting that their normalized increasing order is preserved. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Common.ExternalInsertionDiagram.slotCongr_atomicLegPartner"
+    ],
+    "dependencies": [
+      "Combinatorics.PairingOn.transport_partner"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Common.ExternalInsertionDiagram.slotCongr_atomicLegPartner"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -139211,6 +139375,93 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {E n : ℕ} (e : ↥Finset.univ ≃ ↥Finset.univ) (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ),\n  Function.Injective σ →\n    SecondQuantization.Common.externalInsertionMixedPositionSlotCongr e externalTime σ =\n      Equiv.refl (Fin (2 * (2 * n + E)))",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.externalInsertionMixedPositionSlotCongr_eq_refl_of_injective",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Pairing.MixedOrder",
+    "externalAxioms": [],
+    "docString": "On injective interaction-time assignments, the physical\nmixed-time position permutation from arbitrary vertex relabeling is\nthe **identity**. Equal-time coincidences with external insertions\ndo not change this result, because the tie breaker is external-first.\nThis bridges sorted-event covariance to actual Wick partner transport. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Common.ExternalInsertionDiagram.slotCongr_pairingInMixedOrder_eq_of_injective"
+    ],
+    "dependencies": [
+      "SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegEquiv_perm_slots",
+      "SecondQuantization.Common.externalInsertionOrderedLegSlotCongr_apply_perm"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Common.ExternalInsertionDiagram.slotCongr_pairingInMixedOrder_eq_of_injective"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {E n : ℕ} (e : ↥Finset.univ ≃ ↥Finset.univ) (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ)\n  (leg : SecondQuantization.Common.OrderedExternalInsertionLeg E n),\n  (SecondQuantization.Common.externalInsertionMixedPositionSlotCongr e externalTime σ)\n      (SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegPosition externalTime σ leg) =\n    SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegPosition externalTime\n      (σ ∘ fun v => ↑(e.symm ⟨v, ⋯⟩)) ((SecondQuantization.Common.externalInsertionOrderedLegSlotCongr e) leg)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.externalInsertionMixedPositionSlotCongr_legPosition",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Pairing.MixedOrder",
+    "externalAxioms": [],
+    "docString": "A canonical atomic leg is sent to its *actual* mixed-time position\nafter relabeling the interaction slots. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Common.ExternalInsertionDiagram.slotCongr_pairingInMixedOrder_partner"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Common.ExternalInsertionDiagram.slotCongr_pairingInMixedOrder_partner"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {E n : ℕ} (T : Finset (Fin n)) (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ),\n  let S := Finset.univ \\ T;\n  have order := (S.orderIsoOfFin ⋯).toEquiv;\n  have f := fun i => ↑((S.orderIsoOfFin ⋯) i);\n  have localFixed :=\n    Equiv.symm\n      (SecondQuantization.Common.externalInsertionStandardToMixedAtomicPositionEquiv externalTime\n        (σ ∘ fun i => ↑((T.orderIsoOfFin ⋯) i)));\n  have split :=\n    (((Equiv.refl (Fin (2 * (2 * T.card + E)))).sumCongr\n              (SecondQuantization.Common.orderedLegToDiagramLeg S order)).trans\n          (SecondQuantization.Common.externalInsertionSlotLegSplitting ⋯)).trans\n      (SecondQuantization.Common.externalInsertionMixedTimeAmbientPositionEquiv externalTime σ).symm;\n  have mixedSplit := (localFixed.sumCongr (Equiv.refl (Fin (2 * (2 * S.card))))).trans split;\n  StrictAnti (σ ∘ f) →\n    (Equiv.Perm.sign (SecondQuantization.Common.externalInsertionStandardToMixedAtomicPositionEquiv externalTime σ) *\n        (-1) ^ ∑ i, ∑ j, if mixedSplit (Sum.inr j) < mixedSplit (Sum.inl i) then 1 else 0) =\n      Equiv.Perm.sign (localFixed.sumCongr (Equiv.refl (Fin (2 * (2 * S.card)))))",
     "standardAxioms": [
       "Classical.choice",
@@ -139289,6 +139540,51 @@
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.DiagramRegularity.0.SecondQuantization.Fermionic.ExternalInsertionWickDiagram.dysonFixedTimeChamberRepresentative_eq_of_sameChamber"
     ],
     "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {E n : ℕ} (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ),\n  Function.Injective σ →\n    ∀ (p : Equiv.Perm (Fin n)) (i : Fin (2 * (2 * n + E))),\n      (SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegEquiv externalTime (σ ∘ ⇑(Equiv.symm p))) i =\n        SecondQuantization.Common.orderedExternalInsertionLegMap id (⇑p)\n          ((SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegEquiv externalTime σ) i)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegEquiv_perm_slots",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionImaginaryTimeOrder",
+    "externalAxioms": [],
+    "docString": "Pointwise covariance of the **actual** mixed-time position-to-leg\nequivalence. Every position retains the same physical field under\nrelabeling, with its vertex identifier renamed by `p`. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Common.externalInsertionMixedPositionSlotCongr_eq_refl_of_injective"
+    ],
+    "dependencies": [
+      "SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegs_eq_ofFn",
+      "SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegs_perm_slots"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Common.externalInsertionMixedPositionSlotCongr_eq_refl_of_injective"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -139468,8 +139764,8 @@
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -139481,6 +139777,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegEquiv_perm_slots",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.InteractionPictureVertexProduct.0.SecondQuantization.Fermionic.externalInsertionMixedAtomicOperators_eq_ofFn"
     ],
     "dependencies": [
@@ -139489,7 +139786,53 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegEquiv_perm_slots",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.InteractionPictureVertexProduct.0.SecondQuantization.Fermionic.externalInsertionMixedAtomicOperators_eq_ofFn"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {E n : ℕ} (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ),\n  Function.Injective σ →\n    ∀ (p : Equiv.Perm (Fin n)),\n      List.map (SecondQuantization.Common.orderedExternalInsertionLegMap id ⇑p)\n          (SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegs externalTime σ) =\n        SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegs externalTime (σ ∘ ⇑(Equiv.symm p))",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegs_perm_slots",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionImaginaryTimeOrder",
+    "externalAxioms": [],
+    "docString": "On injective interaction-time assignments, the entire *mixed-time\natomic leg list* is relabeled pointwise by the vertex permutation.\nThe four atomic legs within each vertex remain consecutive and retain\ntheir local order. This includes external-time coincidences. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegEquiv_perm_slots"
+    ],
+    "dependencies": [
+      "SecondQuantization.Common.orderedExternalInsertionTimedEvents_perm_slots",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionImaginaryTimeOrder.0.SecondQuantization.Common.externalInsertionTimedEventAtomicLegs_map"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegEquiv_perm_slots"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -139583,6 +139926,48 @@
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.DiagramRegularity.0.SecondQuantization.Fermionic.ExternalInsertionWickDiagram.dysonFixedTimeChamberRepresentative_eq_of_sameChamber"
     ],
     "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {E n : ℕ} (e : ↥Finset.univ ≃ ↥Finset.univ) (leg : SecondQuantization.Common.OrderedExternalInsertionLeg E n),\n  (SecondQuantization.Common.externalInsertionOrderedLegSlotCongr e) leg =\n    SecondQuantization.Common.orderedExternalInsertionLegMap id\n      (⇑(SecondQuantization.Common.externalInsertionInteractionSlotPerm e)) leg",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.externalInsertionOrderedLegSlotCongr_apply_perm",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Pairing.MixedOrder",
+    "externalAxioms": [],
+    "docString": "The canonical-leg transport is precisely the interaction-slot\npermutation, extended by the identity on all external legs and the\nidentity on all four legs of each interaction vertex. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Common.externalInsertionMixedPositionSlotCongr_eq_refl_of_injective"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Common.externalInsertionMixedPositionSlotCongr_eq_refl_of_injective"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -140018,6 +140403,48 @@
     "completedMention": false,
     "compiledConsumers": [],
     "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {E n : ℕ} (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ),\n  Function.Injective σ →\n    ∀ (p : Equiv.Perm (Fin n)) (a b : SecondQuantization.Common.ExternalInsertionTimedEvent E n),\n      SecondQuantization.Common.externalInsertionTimedEventBeforeOrEqual✝ externalTime (σ ∘ ⇑(Equiv.symm p))\n          (Sum.map id (⇑p) a) (Sum.map id (⇑p) b) ↔\n        SecondQuantization.Common.externalInsertionTimedEventBeforeOrEqual✝ externalTime σ a b",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.externalInsertionTimedEventBeforeOrEqual_perm_iff",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionImaginaryTimeOrder",
+    "externalAxioms": [],
+    "docString": "Relabeling interaction events by an arbitrary permutation preserves the\n*stable* mixed-time comparison whenever distinct interaction vertices have\ndistinct times. External times may coincide with one another or with an\ninteraction time: the external-first tie-breaking rule is unaffected.\n\nThis is stronger than requiring all mixed-event times to be pairwise\ndistinct, and is exactly the property of a strict ordered Dyson chamber. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Common.orderedExternalInsertionTimedEvents_perm_slots"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Common.orderedExternalInsertionTimedEvents_perm_slots"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -146337,6 +146764,55 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {E n : ℕ} (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ),\n  Function.Injective σ →\n    ∀ (p : Equiv.Perm (Fin n)),\n      List.map (Sum.map id ⇑p) (SecondQuantization.Common.orderedExternalInsertionTimedEvents externalTime σ) =\n        SecondQuantization.Common.orderedExternalInsertionTimedEvents externalTime (σ ∘ ⇑(Equiv.symm p))",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.orderedExternalInsertionTimedEvents_perm_slots",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionImaginaryTimeOrder",
+    "externalAxioms": [],
+    "docString": "The *whole sorted event list* is transported by any interaction-slot\npermutation, provided the interaction times are injective. Equal-time\nexternal insertions remain allowed, including coincidences with vertices.\nThe proof uses pairwise sortedness and uniqueness of a fully enumerated\nfinite list, not an assumption about insertion sort implementation. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegs_perm_slots"
+    ],
+    "dependencies": [
+      "SecondQuantization.Common.externalInsertionTimedEventBeforeOrEqual_perm_iff",
+      "SecondQuantization.Common.stableTimedEventBeforeOrEqual_antisymm",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionImaginaryTimeOrder.0.SecondQuantization.Common.orderedExternalInsertionTimedEvents_all_mem",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionImaginaryTimeOrder.0.SecondQuantization.Common.orderedExternalInsertionTimedEvents_nodup",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionImaginaryTimeOrder.0.SecondQuantization.Common.orderedExternalInsertionTimedEvents_pairwise",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionImaginaryTimeOrder.0.SecondQuantization.Common.orderedExternalInsertionTimedEvents_perm"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegs_perm_slots"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {n : ℕ} (v : Fin n) (l : Fin 4),\n  SecondQuantization.Common.orderedQuarticLegToTwoPointLeg\n      ((SecondQuantization.Common.orderedQuarticLegEquiv n).symm (v, l)) =\n    Sum.inr (⟨v, ⋯⟩, l)",
     "standardAxioms": [
       "Classical.choice",
@@ -147709,6 +148185,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "SecondQuantization.Common.orderedExternalInsertionTimedEvents_perm_slots",
       "SecondQuantization.Common.orderedTwoPointTimedEventPosition_lt_iff",
       "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionImaginaryTimeOrder.0.SecondQuantization.Common.orderedExternalInsertionTimedEvents_map_sublist"
     ],
@@ -147716,10 +148193,11 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "SecondQuantization.Common.orderedExternalInsertionTimedEvents_perm_slots",
       "SecondQuantization.Common.orderedTwoPointTimedEventPosition_lt_iff",
       "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionImaginaryTimeOrder.0.SecondQuantization.Common.orderedExternalInsertionTimedEvents_map_sublist"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -152982,7 +153460,6 @@
       "SecondQuantization.Fermionic.sum_fixedExternalPartitionDysonFiber_eq_assignmentOrderedDyson"
     ],
     "dependencies": [
-      "SecondQuantization.Common.ExternalInsertionBlockLayout.interactionAssignmentShuffle_reassembles",
       "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.orderedDysonAmplitude_canonicalOrder"
     ],
     "crossModuleDirectWrapper": false,
@@ -164221,6 +164698,46 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
+    "terminal": true,
+    "statement": "∀ {E n : ℕ} {T : Finset (Fin n)} (e : ↥T ≃ ↥T),\n  Equiv.Perm.sign (SecondQuantization.Common.externalInsertionLegCongr e) = 1",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Fermionic.externalInsertionLegCongr_sign_eq_one",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.Amplitude",
+    "externalAxioms": [],
+    "docString": "The actual flattened-leg transport of an arbitrary external-insertion\ndiagram is even under any bijection of its interaction vertices.\nExternal insertion positions are fixed and each interaction contributes\nfour legs, so this does not depend on external field count or the\ninteraction-subset geometry. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "SecondQuantization.Fermionic.quarticVertexBlockPermutation_sign_eq_one"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
     "terminal": false,
     "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] {E : ℕ} (ε : Mode → ℝ) (β : ℝ)\n  (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ)\n  (externalLabel : Fin (2 * E) → SecondQuantization.Fermionic.ExternalFieldLabel Mode) (externalTime : Fin (2 * E) → ℝ)\n  (n : ℕ),\n  SecondQuantization.Fermionic.externalInsertionMixedAtomicDysonCoefficient ε β 0 g externalLabel externalTime n =\n    SecondQuantization.Fermionic.externalInsertionDysonCoefficient ε β g externalLabel externalTime n",
     "standardAxioms": [
@@ -169866,6 +170383,48 @@
     "completedMention": false,
     "compiledConsumers": [],
     "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {V : Type u_2} [inst : Fintype V] [inst_1 : DecidableEq V] (p : Equiv.Perm V),\n  Equiv.Perm.sign (Equiv.prodCongr p (Equiv.refl (Fin 4))) = 1",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Fermionic.quarticVertexBlockPermutation_sign_eq_one",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.Amplitude",
+    "externalAxioms": [],
+    "docString": "An arbitrary permutation of **quartic interaction vertices** induces\nan *even* permutation of their flattened atomic legs. The four local\nlegs of each vertex retain their order. This is the parity fact\nneeded to cancel relabeling signs in physical fermionic amplitudes. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Fermionic.externalInsertionLegCongr_sign_eq_one"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.externalInsertionLegCongr_sign_eq_one"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -200957,8 +201516,8 @@
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -200970,15 +201529,17 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegs_perm_slots",
       "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionImaginaryTimeOrder.0.SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegs_map_sublist"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegs_perm_slots",
       "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionImaginaryTimeOrder.0.SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegs_map_sublist"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -201141,6 +201702,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "SecondQuantization.Common.orderedExternalInsertionTimedEvents_perm_slots",
       "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionImaginaryTimeOrder.0.SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegs_all_mem",
       "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionImaginaryTimeOrder.0.SecondQuantization.Common.orderedExternalInsertionTimedEvents_map_sublist"
     ],
@@ -201150,10 +201712,11 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "SecondQuantization.Common.orderedExternalInsertionTimedEvents_perm_slots",
       "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionImaginaryTimeOrder.0.SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegs_all_mem",
       "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionImaginaryTimeOrder.0.SecondQuantization.Common.orderedExternalInsertionTimedEvents_map_sublist"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -201235,6 +201798,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "SecondQuantization.Common.orderedExternalInsertionTimedEvents_perm_slots",
       "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionImaginaryTimeOrder.0.SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegs_nodup",
       "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionImaginaryTimeOrder.0.SecondQuantization.Common.orderedExternalInsertionTimedEvents_map_sublist"
     ],
@@ -201244,10 +201808,11 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "SecondQuantization.Common.orderedExternalInsertionTimedEvents_perm_slots",
       "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionImaginaryTimeOrder.0.SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegs_nodup",
       "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionImaginaryTimeOrder.0.SecondQuantization.Common.orderedExternalInsertionTimedEvents_map_sublist"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -201268,8 +201833,8 @@
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -201281,6 +201846,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "SecondQuantization.Common.orderedExternalInsertionTimedEvents_perm_slots",
       "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionImaginaryTimeOrder.0.SecondQuantization.Common.orderedExternalInsertionTimedEvents_map_sublist"
     ],
     "dependencies": [
@@ -201290,9 +201856,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "SecondQuantization.Common.orderedExternalInsertionTimedEvents_perm_slots",
       "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionImaginaryTimeOrder.0.SecondQuantization.Common.orderedExternalInsertionTimedEvents_map_sublist"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -201326,6 +201893,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "SecondQuantization.Common.orderedExternalInsertionTimedEvents_perm_slots",
       "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionImaginaryTimeOrder.0.SecondQuantization.Common.orderedExternalInsertionTimedEvents_all_mem",
       "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionImaginaryTimeOrder.0.SecondQuantization.Common.orderedExternalInsertionTimedEvents_nodup"
     ],
@@ -201333,10 +201901,11 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "SecondQuantization.Common.orderedExternalInsertionTimedEvents_perm_slots",
       "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionImaginaryTimeOrder.0.SecondQuantization.Common.orderedExternalInsertionTimedEvents_all_mem",
       "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionImaginaryTimeOrder.0.SecondQuantization.Common.orderedExternalInsertionTimedEvents_nodup"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",

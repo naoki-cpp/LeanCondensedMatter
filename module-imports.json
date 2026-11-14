@@ -2332,7 +2332,8 @@
       "imports": [
         "LeanCondensedMatter.Analysis.Lorentzian.RadialQuadratic",
         "LeanCondensedMatter.Models.MassiveDirac.Disorder.BornCurrentVertexRung",
-        "LeanCondensedMatter.Models.MassiveDirac.Disorder.TransportRate"
+        "LeanCondensedMatter.Models.MassiveDirac.Disorder.TransportRate",
+        "LeanCondensedMatter.QuantumTheory.ScatteringRate"
       ],
       "externalImportCount": 7
     },
@@ -2565,7 +2566,8 @@
       "name": "LeanCondensedMatter.Models.MassiveDirac.Disorder.SingleParticleRate",
       "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Disorder/SingleParticleRate.lean",
       "imports": [
-        "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.Damping"
+        "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.Damping",
+        "LeanCondensedMatter.QuantumTheory.ScatteringRate"
       ],
       "externalImportCount": 3
     },
@@ -2603,6 +2605,7 @@
       "imports": [
         "LeanCondensedMatter.Models.MassiveDirac.Disorder.ScalarAngularWeights",
         "LeanCondensedMatter.Models.MassiveDirac.Disorder.SingleParticleRate",
+        "LeanCondensedMatter.QuantumTheory.ScatteringRate",
         "LeanCondensedMatter.Transport.Analysis.RelaxationTime"
       ],
       "externalImportCount": 4
@@ -4490,6 +4493,14 @@
       "externalImportCount": 2
     },
     {
+      "name": "LeanCondensedMatter.QuantumTheory.LinearResponse.Perturbation.TransitionProbability",
+      "sourceFile": "LeanCondensedMatter/QuantumTheory/LinearResponse/Perturbation/TransitionProbability.lean",
+      "imports": [
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.Perturbation.TimeDependent"
+      ],
+      "externalImportCount": 2
+    },
+    {
       "name": "LeanCondensedMatter.QuantumTheory.LinearResponse.Perturbation.Unitary",
       "sourceFile": "LeanCondensedMatter/QuantumTheory/LinearResponse/Perturbation/Unitary.lean",
       "imports": [
@@ -4591,6 +4602,7 @@
         "LeanCondensedMatter.QuantumTheory.LinearResponse.Perturbation.DensityFirstVariation",
         "LeanCondensedMatter.QuantumTheory.LinearResponse.Perturbation.Hermitian",
         "LeanCondensedMatter.QuantumTheory.LinearResponse.Perturbation.TimeDependent",
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.Perturbation.TransitionProbability",
         "LeanCondensedMatter.QuantumTheory.LinearResponse.Perturbation.Unitary",
         "LeanCondensedMatter.QuantumTheory.LinearResponse.Response"
       ],
@@ -4689,6 +4701,12 @@
       "externalImportCount": 3
     },
     {
+      "name": "LeanCondensedMatter.QuantumTheory.ScatteringRate",
+      "sourceFile": "LeanCondensedMatter/QuantumTheory/ScatteringRate.lean",
+      "imports": [],
+      "externalImportCount": 4
+    },
+    {
       "name": "LeanCondensedMatter.QuantumTheory.SpinHalf.Finite",
       "sourceFile": "LeanCondensedMatter/QuantumTheory/SpinHalf/Finite.lean",
       "imports": [
@@ -4734,6 +4752,7 @@
         "LeanCondensedMatter.QuantumTheory.PeierlsPhase",
         "LeanCondensedMatter.QuantumTheory.PlanckConstant",
         "LeanCondensedMatter.QuantumTheory.Postulates",
+        "LeanCondensedMatter.QuantumTheory.ScatteringRate",
         "LeanCondensedMatter.QuantumTheory.SpinHalf",
         "LeanCondensedMatter.QuantumTheory.SpinHalf.Finite",
         "LeanCondensedMatter.QuantumTheory.SpinfulLattice"
@@ -5640,7 +5659,8 @@
       "name": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Pairing.MixedOrder",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Diagrammatics/ExternalInsertion/Pairing/MixedOrder.lean",
       "imports": [
-        "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Core.Ordered"
+        "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Core.Ordered",
+        "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Core.SlotCongr"
       ],
       "externalImportCount": 0
     },
