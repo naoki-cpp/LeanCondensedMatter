@@ -37139,50 +37139,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} (J : ℝ) (twiceSpin : ℕ) (i j : Mode),\n  (Models.Heisenberg.QuadraticMagnon.excitationBond J twiceSpin i j) SecondQuantization.Bosonic.fockVacuum = 0",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "Models.Heisenberg.QuadraticMagnon.excitationBond_vacuum",
-    "module": "LeanCondensedMatter.Models.Heisenberg.QuadraticMagnon",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "Models.Heisenberg.QuadraticMagnon.excitationHamiltonian_vacuum"
-    ],
-    "dependencies": [
-      "SecondQuantization.Bosonic.annihilate_basisState_of_zero"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "Models.Heisenberg.QuadraticMagnon.excitationHamiltonian_vacuum"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ {N : ℕ} [inst : NeZero N] (J : ℝ) (twiceSpin : ℕ),\n  Models.Heisenberg.QuadraticMagnon.excitationHamiltonian J twiceSpin ∘ₗ\n      SecondQuantization.Bosonic.oneParticleEmbedding =\n    SecondQuantization.Bosonic.oneParticleEmbedding ∘ₗ ZMod.cyclicLaplacian (J * ↑twiceSpin)",
     "standardAxioms": [
       "Classical.choice",
@@ -37360,50 +37316,6 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": false,
-    "statement": "∀ {N : ℕ} [inst : NeZero N] (J : ℝ) (twiceSpin : ℕ),\n  (Models.Heisenberg.QuadraticMagnon.excitationHamiltonian J twiceSpin) SecondQuantization.Bosonic.fockVacuum = 0",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "Models.Heisenberg.QuadraticMagnon.excitationHamiltonian_vacuum",
-    "module": "LeanCondensedMatter.Models.Heisenberg.QuadraticMagnon",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "Models.Heisenberg.QuadraticMagnon.hamiltonian_vacuum"
-    ],
-    "dependencies": [
-      "Models.Heisenberg.QuadraticMagnon.excitationBond_vacuum"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "Models.Heisenberg.QuadraticMagnon.hamiltonian_vacuum"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
     "terminal": true,
     "statement": "∀ {N : ℕ} [inst : NeZero N] (J : ℝ) (twiceSpin : ℕ),\n  (Models.Heisenberg.QuadraticMagnon.hamiltonian J twiceSpin) SecondQuantization.Bosonic.fockVacuum =\n    ↑(Models.Heisenberg.QuadraticMagnon.polarizedEnergy N J twiceSpin) • SecondQuantization.Bosonic.fockVacuum",
     "standardAxioms": [
@@ -37425,7 +37337,7 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "Models.Heisenberg.QuadraticMagnon.excitationHamiltonian_vacuum"
+      "SecondQuantization.Bosonic.annihilate_basisState_of_zero"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -98548,48 +98460,6 @@
   },
   {
     "terminal": false,
-    "statement": "∫ (θ : ℝ) in 0..2 * Real.pi, Real.cos θ ^ 2 = Real.pi",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.integral_cos_sq_zero_two_pi",
-    "module": "LeanCondensedMatter.Transport.Analysis.AngularHarmonics",
-    "externalAxioms": [],
-    "docString": "Full-angle integral of `cos² θ`. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.integral_quadratic_cos_zero_two_pi"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.integral_quadratic_cos_zero_two_pi"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ (Y0 Y1 : ℝ → ℂ),\n  QuantumTheory.Transport.CrossedXBesselWronskian Y0 Y1 →\n    ∀ (R : ℝ),\n      ∫ (r : ℝ) in 0..R, Complex.besselJ 1 ↑r ^ 2 * (Complex.besselJ 1 ↑r * Y0 r - Complex.besselJ 0 ↑r * Y1 r) =\n        ↑(2 / Real.pi) * ((1 - (Complex.besselJ 0 ↑R ^ 2 + Complex.besselJ 1 ↑R ^ 2)) / 2)",
     "standardAxioms": [
       "Classical.choice",
@@ -99015,9 +98885,7 @@
       "QuantumTheory.Models.MassiveDirac.isotropicUpperBandSingleParticleAngularWeight_eq",
       "QuantumTheory.Models.MassiveDirac.isotropicUpperBandTransportAngularWeight_eq"
     ],
-    "dependencies": [
-      "QuantumTheory.Transport.integral_cos_sq_zero_two_pi"
-    ],
+    "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
@@ -111037,7 +110905,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "Models.Heisenberg.QuadraticMagnon.excitationBond_vacuum",
+      "Models.Heisenberg.QuadraticMagnon.hamiltonian_vacuum",
       "SecondQuantization.Bosonic.annihilate_basisState_eq",
       "SecondQuantization.Bosonic.annihilate_fockVacuum",
       "SecondQuantization.Bosonic.create_annihilate_basisState_same",
@@ -111052,7 +110920,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "Models.Heisenberg.QuadraticMagnon.excitationBond_vacuum",
+      "Models.Heisenberg.QuadraticMagnon.hamiltonian_vacuum",
       "SecondQuantization.Bosonic.annihilate_basisState_eq",
       "SecondQuantization.Bosonic.annihilate_fockVacuum",
       "SecondQuantization.Bosonic.create_annihilate_basisState_same",
@@ -124994,7 +124862,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {E n : ℕ}\n  (d : SecondQuantization.Common.ExternalInsertionDiagram ExternalLabel InternalLabel E n Finset.univ)\n  (e : ↥Finset.univ ≃ ↥Finset.univ) (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ),\n  Function.Injective σ →\n    (SecondQuantization.Common.ExternalInsertionDiagram.slotCongr e d).pairingInMixedOrder externalTime\n        (σ ∘ fun v => ↑(e.symm ⟨v, ⋯⟩)) =\n      d.pairingInMixedOrder externalTime σ",
     "standardAxioms": [
       "Classical.choice",
@@ -125002,7 +124870,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -125013,7 +124881,9 @@
     "docString": "The physical mixed-time Wick *pairing itself* is unchanged when\ninteraction slots are relabeled and their time assignment pulled\nback, on every injective interaction-time chamber. This is stronger\nthan partner-intertwining: the pairing lives on exactly the same\nmixed-time atomic position type on both sides. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.slotCongr_mixedPairingValue_eq_of_injective"
+    ],
     "dependencies": [
       "Combinatorics.PairingOn.ext",
       "SecondQuantization.Common.ExternalInsertionDiagram.slotCongr_pairingInMixedOrder_partner",
@@ -125021,8 +124891,10 @@
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.slotCongr_mixedPairingValue_eq_of_injective"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -125185,6 +125057,7 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.fixedTimeAmplitude_eq_componentExternalOrderSign_mul_prod_components",
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.slotCongr_fixedTimeAmplitude_eq_of_injective",
       "SecondQuantization.Fermionic.externalInsertionSupport_dysonFactor_eq_standardizedAmplitude"
     ],
     "dependencies": [],
@@ -125192,9 +125065,10 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.fixedTimeAmplitude_eq_componentExternalOrderSign_mul_prod_components",
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.slotCongr_fixedTimeAmplitude_eq_of_injective",
       "SecondQuantization.Fermionic.externalInsertionSupport_dysonFactor_eq_standardizedAmplitude"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -139382,7 +139256,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -139394,7 +139268,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Common.ExternalInsertionDiagram.slotCongr_pairingInMixedOrder_eq_of_injective"
+      "SecondQuantization.Common.ExternalInsertionDiagram.slotCongr_pairingInMixedOrder_eq_of_injective",
+      "SecondQuantization.Fermionic.externalInsertionStandardToMixedAtomicPositionEquiv_slotCongr"
     ],
     "dependencies": [
       "SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegEquiv_perm_slots",
@@ -139403,9 +139278,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Common.ExternalInsertionDiagram.slotCongr_pairingInMixedOrder_eq_of_injective"
+      "SecondQuantization.Common.ExternalInsertionDiagram.slotCongr_pairingInMixedOrder_eq_of_injective",
+      "SecondQuantization.Fermionic.externalInsertionStandardToMixedAtomicPositionEquiv_slotCongr"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -139561,7 +139437,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -139573,7 +139449,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Common.externalInsertionMixedPositionSlotCongr_eq_refl_of_injective"
+      "SecondQuantization.Common.externalInsertionMixedPositionSlotCongr_eq_refl_of_injective",
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.slotCongr_mixedAtomicFieldFamily_eq_of_injective"
     ],
     "dependencies": [
       "SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegs_eq_ofFn",
@@ -139582,9 +139459,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Common.externalInsertionMixedPositionSlotCongr_eq_refl_of_injective"
+      "SecondQuantization.Common.externalInsertionMixedPositionSlotCongr_eq_refl_of_injective",
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.slotCongr_mixedAtomicFieldFamily_eq_of_injective"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -154035,8 +153913,52 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] {E n : ℕ}\n  (d d' : SecondQuantization.Fermionic.ExternalInsertionWickDiagram Mode E n) (ε : Mode → ℝ) (β : ℝ),\n  0 ≤ β →\n    ∀ (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ) (externalTime : Fin (2 * E) → ℝ)\n      (order order' : SecondQuantization.Common.QuarticVertexOrder Finset.univ),\n      (∀ (τ : Fin Finset.univ.card → ℝ),\n          StrictAnti τ →\n            (∀ (i : Fin Finset.univ.card), τ i < β) →\n              (d.dysonFixedTimeAmplitude ε β g externalTime fun v => τ ((Equiv.symm order) ⟨v, ⋯⟩)) =\n                d'.dysonFixedTimeAmplitude ε β g externalTime fun v => τ ((Equiv.symm order') ⟨v, ⋯⟩)) →\n        d.orderedDysonAmplitude ε β g externalTime order = d'.orderedDysonAmplitude ε β g externalTime order'",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.orderedDysonAmplitude_congr_of_strictAnti",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.Integral",
+    "externalAxioms": [],
+    "docString": "A Dyson-amplitude covariance identity needs to be checked only on\nstrictly decreasing ambient time slots, assuming the physical inverse\ntemperature interval satisfies `0 ≤ β`.\n\nThe pointwise hypothesis is deliberately about the **full Dyson-signed\nWick amplitude**, not just the individual pair contraction. Relabeling\nfour-leg vertices changes the mixed-time pairing normalization and its\nfermionic sign; those must cancel before this integral theorem applies.\nEqual-time tie breakers do not enter the integral equality. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.orderedDysonAmplitude_slotCongr"
+    ],
+    "dependencies": [
+      "intervalIntegral.orderedSimplexIntegral_congr_of_strictAnti"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.orderedDysonAmplitude_slotCongr"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] {E n : ℕ}\n  (d : SecondQuantization.Fermionic.ExternalInsertionWickDiagram Mode E n) (e : ↥Finset.univ ≃ ↥Finset.univ)\n  (ε : Mode → ℝ) (β : ℝ),\n  0 ≤ β →\n    ∀ (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ) (externalTime : Fin (2 * E) → ℝ)\n      (order : SecondQuantization.Common.QuarticVertexOrder Finset.univ),\n      d.orderedDysonAmplitude ε β g externalTime order =\n        SecondQuantization.Fermionic.ExternalInsertionWickDiagram.orderedDysonAmplitude\n          (SecondQuantization.Common.ExternalInsertionDiagram.slotCongr e d) ε β g externalTime (Equiv.trans order e)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -154048,15 +153970,17 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.orderedDysonAmplitude_congr_of_strictAnti",
+    "name": "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.orderedDysonAmplitude_slotCongr",
     "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.Integral",
     "externalAxioms": [],
-    "docString": "A Dyson-amplitude covariance identity needs to be checked only on\nstrictly decreasing ambient time slots, assuming the physical inverse\ntemperature interval satisfies `0 ≤ β`.\n\nThe pointwise hypothesis is deliberately about the **full Dyson-signed\nWick amplitude**, not just the individual pair contraction. Relabeling\nfour-leg vertices changes the mixed-time pairing normalization and its\nfermionic sign; those must cancel before this integral theorem applies.\nEqual-time tie breakers do not enter the integral equality. ",
+    "docString": "The *integrated* physical Dyson contribution is invariant when\ninteraction-vertex slots are relabeled together with the global\ninteraction order.\n\nThe key input is exact equality of the **full** Dyson-signed Wick\namplitudes on injective-time assignments. On the ordered simplex,\ninjectivity follows from strict antitonicity almost everywhere; the\nstrict-chamber congruence already accounts for the lower-dimensional\ntime-collision set. Importantly, the order must be transported along\n`e`: the canonical-order integral need not be invariant under an\narbitrary permutation when the order is held fixed. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "intervalIntegral.orderedSimplexIntegral_congr_of_strictAnti"
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.orderedDysonAmplitude_congr_of_strictAnti",
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.slotCongr_dysonFixedTimeAmplitude_eq_of_injective",
+      "SecondQuantization.Fermionic.quarticVertexOrderedTime_injective_of_strictAnti"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -154221,6 +154145,140 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] {E n : ℕ}\n  (d : SecondQuantization.Fermionic.ExternalInsertionWickDiagram Mode E n) (e : ↥Finset.univ ≃ ↥Finset.univ)\n  (ε : Mode → ℝ) (β : ℝ) (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ) (externalTime : Fin (2 * E) → ℝ)\n  (σ : Fin n → ℝ),\n  Function.Injective σ →\n    SecondQuantization.Fermionic.ExternalInsertionWickDiagram.dysonFixedTimeAmplitude\n        (SecondQuantization.Common.ExternalInsertionDiagram.slotCongr e d) ε β g externalTime\n        (σ ∘ fun v => ↑(e.symm ⟨v, ⋯⟩)) =\n      d.dysonFixedTimeAmplitude ε β g externalTime σ",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.slotCongr_dysonFixedTimeAmplitude_eq_of_injective",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.Amplitude",
+    "externalAxioms": [],
+    "docString": "**Full physical Dyson-signed fixed-time amplitude covariance.**\nOn every strict interaction-time chamber, arbitrary relabeling of\nquartic interaction vertices has no effect on the physical amplitude;\nthe same Dyson factor `(-1)^n` multiplies both sides.\n\nNo equality at coincident interaction-vertex times is asserted. Such\ncollisions are excluded by the strict ordered-simplex congruence\ntheorem when passing to integrated Dyson contributions. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.orderedDysonAmplitude_slotCongr"
+    ],
+    "dependencies": [
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.slotCongr_fixedTimeAmplitude_eq_of_injective"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.orderedDysonAmplitude_slotCongr"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] {E n : ℕ}\n  (d : SecondQuantization.Fermionic.ExternalInsertionWickDiagram Mode E n) (e : ↥Finset.univ ≃ ↥Finset.univ)\n  (ε : Mode → ℝ) (β : ℝ) (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ) (externalTime : Fin (2 * E) → ℝ)\n  (σ : Fin n → ℝ),\n  Function.Injective σ →\n    SecondQuantization.Fermionic.ExternalInsertionWickDiagram.fixedTimeAmplitude\n        (SecondQuantization.Common.ExternalInsertionDiagram.slotCongr e d) ε β g externalTime\n        (σ ∘ fun v => ↑(e.symm ⟨v, ⋯⟩)) =\n      d.fixedTimeAmplitude ε β g externalTime σ",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.slotCongr_fixedTimeAmplitude_eq_of_injective",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.Amplitude",
+    "externalAxioms": [],
+    "docString": "The complete fixed-time physical Wick diagram amplitude, including\nits fermionic ordering sign, interaction coupling product, and oriented\nfree-Gibbs pairing evaluation, is invariant under any permutation of\nquartic interaction vertices and their time/label assignments, provided\nthe interaction times are injective. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.slotCongr_dysonFixedTimeAmplitude_eq_of_injective"
+    ],
+    "dependencies": [
+      "SecondQuantization.Common.ExternalInsertionDiagram.slotCongr_vertexWeight",
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.slotCongr_mixedPairingValue_eq_of_injective",
+      "SecondQuantization.Fermionic.externalInsertionMixedAtomicOrderSign_slotCongr_of_injective"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.slotCongr_dysonFixedTimeAmplitude_eq_of_injective"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} {E n : ℕ} (d : SecondQuantization.Fermionic.ExternalInsertionWickDiagram Mode E n)\n  (e : ↥Finset.univ ≃ ↥Finset.univ) (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ),\n  Function.Injective σ →\n    SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicFieldFamily\n        (SecondQuantization.Common.ExternalInsertionDiagram.slotCongr e d).externalLabel externalTime\n        (SecondQuantization.Common.ExternalInsertionDiagram.slotCongr e d).vertexLabelSequence\n        (σ ∘ fun v => ↑(e.symm ⟨v, ⋯⟩)) =\n      SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicFieldFamily d.externalLabel externalTime\n        (SecondQuantization.Common.ExternalInsertionDiagram.vertexLabelSequence d) σ",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.slotCongr_mixedAtomicFieldFamily_eq_of_injective",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.TimedField",
+    "externalAxioms": [],
+    "docString": "Under an injective interaction-time assignment, the *actual*\nmixed-time field at each atomic position is unchanged by a permutation\nof quartic interaction vertices. External times may coincide with\ninteraction times: the mixed-time ordering is still preserved by the\nexternal-first tie convention.\n\nThis is an identity of `TimedField` values, before Gibbs contraction\nor fermionic crossing weights are applied. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.slotCongr_mixedAtomicPairValue_eq_of_injective"
+    ],
+    "dependencies": [
+      "SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegEquiv_perm_slots"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.slotCongr_mixedAtomicPairValue_eq_of_injective"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
     "terminal": true,
     "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] {E n : ℕ}\n  (d : SecondQuantization.Fermionic.ExternalInsertionWickDiagram Mode E n) (e : ↥Finset.univ ≃ ↥Finset.univ)\n  (ε : Mode → ℝ) (β : ℝ) (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ)\n  (a b : SecondQuantization.Common.OrderedExternalInsertionLeg E n),\n  have f := fun v => ↑(e.symm ⟨v, ⋯⟩);\n  SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicPairValue ε β\n      (SecondQuantization.Common.ExternalInsertionDiagram.slotCongr e d).externalLabel externalTime\n      (SecondQuantization.Common.ExternalInsertionDiagram.slotCongr e d).vertexLabelSequence (σ ∘ f)\n      (SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegPosition externalTime (σ ∘ f) a)\n      (SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegPosition externalTime (σ ∘ f) b) =\n    SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicPairValue ε β d.externalLabel externalTime\n      (SecondQuantization.Common.ExternalInsertionDiagram.vertexLabelSequence d) σ\n      (SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegPosition externalTime σ\n        (SecondQuantization.Common.orderedExternalInsertionLegMap (fun x => x) f a))\n      (SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegPosition externalTime σ\n        (SecondQuantization.Common.orderedExternalInsertionLegMap (fun x => x) f b))",
     "standardAxioms": [
@@ -154248,6 +154306,95 @@
     "completedMention": false,
     "compiledConsumers": [],
     "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] {E n : ℕ}\n  (d : SecondQuantization.Fermionic.ExternalInsertionWickDiagram Mode E n) (e : ↥Finset.univ ≃ ↥Finset.univ)\n  (ε : Mode → ℝ) (β : ℝ) (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ),\n  Function.Injective σ →\n    ∀ (a b : Fin (2 * (2 * n + E))),\n      SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicPairValue ε β\n          (SecondQuantization.Common.ExternalInsertionDiagram.slotCongr e d).externalLabel externalTime\n          (SecondQuantization.Common.ExternalInsertionDiagram.slotCongr e d).vertexLabelSequence\n          (σ ∘ fun v => ↑(e.symm ⟨v, ⋯⟩)) a b =\n        SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicPairValue ε β d.externalLabel externalTime\n          (SecondQuantization.Common.ExternalInsertionDiagram.vertexLabelSequence d) σ a b",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.slotCongr_mixedAtomicPairValue_eq_of_injective",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.TimedField",
+    "externalAxioms": [],
+    "docString": "The actual oriented free-Gibbs contraction has the same value at\neach *fixed pair of mixed-time positions* after any interaction-slot\npermutation, on injective interaction-time chambers. No transposition\nof contraction endpoints occurs, because the mixed-time position\npermutation is the identity. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.slotCongr_mixedPairingValue_eq_of_injective"
+    ],
+    "dependencies": [
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.slotCongr_mixedAtomicFieldFamily_eq_of_injective"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.slotCongr_mixedPairingValue_eq_of_injective"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] {E n : ℕ}\n  (d : SecondQuantization.Fermionic.ExternalInsertionWickDiagram Mode E n) (e : ↥Finset.univ ≃ ↥Finset.univ)\n  (ε : Mode → ℝ) (β : ℝ) (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ),\n  Function.Injective σ →\n    SecondQuantization.Fermionic.ExternalInsertionWickDiagram.mixedPairingValue\n        (SecondQuantization.Common.ExternalInsertionDiagram.slotCongr e d) ε β externalTime\n        (σ ∘ fun v => ↑(e.symm ⟨v, ⋯⟩)) =\n      d.mixedPairingValue ε β externalTime σ",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.slotCongr_mixedPairingValue_eq_of_injective",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.TimedField",
+    "externalAxioms": [],
+    "docString": "Under distinct interaction times, both the actual physical\nmixed-time Wick pairing and its oriented free-Gibbs pair kernel agree\npointwise after arbitrary vertex reindexing. Consequently the full\nfermionic pairing evaluation, including its crossing weight, agrees. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.slotCongr_fixedTimeAmplitude_eq_of_injective"
+    ],
+    "dependencies": [
+      "SecondQuantization.Common.ExternalInsertionDiagram.slotCongr_pairingInMixedOrder_eq_of_injective",
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.slotCongr_mixedAtomicPairValue_eq_of_injective"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.slotCongr_fixedTimeAmplitude_eq_of_injective"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -164698,7 +164845,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ {E n : ℕ} {T : Finset (Fin n)} (e : ↥T ≃ ↥T),\n  Equiv.Perm.sign (SecondQuantization.Common.externalInsertionLegCongr e) = 1",
     "standardAxioms": [
       "Classical.choice",
@@ -164706,7 +164853,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -164717,14 +164864,18 @@
     "docString": "The actual flattened-leg transport of an arbitrary external-insertion\ndiagram is even under any bijection of its interaction vertices.\nExternal insertion positions are fixed and each interaction contributes\nfour legs, so this does not depend on external field count or the\ninteraction-subset geometry. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "SecondQuantization.Fermionic.externalInsertionStandardSlotPerm_sign_eq_one"
+    ],
     "dependencies": [
       "SecondQuantization.Fermionic.quarticVertexBlockPermutation_sign_eq_one"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.externalInsertionStandardSlotPerm_sign_eq_one"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -164771,6 +164922,51 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Fermionic.externalInsertionVertexDysonCoefficient_eq_externalInsertionDysonCoefficient"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {E n : ℕ} (e : ↥Finset.univ ≃ ↥Finset.univ) (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ),\n  Function.Injective σ →\n    SecondQuantization.Fermionic.externalInsertionMixedAtomicOrderSign externalTime (σ ∘ fun v => ↑(e.symm ⟨v, ⋯⟩)) =\n      SecondQuantization.Fermionic.externalInsertionMixedAtomicOrderSign externalTime σ",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Fermionic.externalInsertionMixedAtomicOrderSign_slotCongr_of_injective",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.Amplitude",
+    "externalAxioms": [],
+    "docString": "The physical fermionic ordering sign does not change when four-leg\ninteraction vertices and their times are permuted together, on any\nchamber with pairwise distinct interaction times. This is the\nnontrivial sign bridge between #4679's even fixed-leg parity and\n#4682's exact identity of mixed-time positions. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.slotCongr_fixedTimeAmplitude_eq_of_injective"
+    ],
+    "dependencies": [
+      "SecondQuantization.Fermionic.externalInsertionStandardSlotPerm_sign_eq_one",
+      "SecondQuantization.Fermionic.externalInsertionStandardToMixedAtomicPositionEquiv_slotCongr"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.slotCongr_fixedTimeAmplitude_eq_of_injective"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -165289,6 +165485,94 @@
     "completedMention": false,
     "compiledConsumers": [],
     "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {E n : ℕ} (e : ↥Finset.univ ≃ ↥Finset.univ),\n  Equiv.Perm.sign (SecondQuantization.Fermionic.externalInsertionStandardSlotPerm e) = 1",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Fermionic.externalInsertionStandardSlotPerm_sign_eq_one",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.Amplitude",
+    "externalAxioms": [],
+    "docString": "Every fixed flattened atomic permutation from relabeling\nfour-leg interaction vertices is even, for any number of external legs. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Fermionic.externalInsertionMixedAtomicOrderSign_slotCongr_of_injective"
+    ],
+    "dependencies": [
+      "SecondQuantization.Fermionic.externalInsertionLegCongr_sign_eq_one"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.externalInsertionMixedAtomicOrderSign_slotCongr_of_injective"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {E n : ℕ} (e : ↥Finset.univ ≃ ↥Finset.univ) (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ),\n  Function.Injective σ →\n    Equiv.trans (SecondQuantization.Fermionic.externalInsertionStandardSlotPerm e)\n        (SecondQuantization.Common.externalInsertionStandardToMixedAtomicPositionEquiv externalTime\n          (σ ∘ fun v => ↑(e.symm ⟨v, ⋯⟩))) =\n      SecondQuantization.Common.externalInsertionStandardToMixedAtomicPositionEquiv externalTime σ",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Fermionic.externalInsertionStandardToMixedAtomicPositionEquiv_slotCongr",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.Amplitude",
+    "externalAxioms": [],
+    "docString": "The original fixed-to-mixed atomic ordering map is obtained by\nfirst permuting the fixed flattened legs and then sorting using the\nrelabelled interaction times. On injective-time chambers, the\nphysical mixed-time position permutation itself is the identity. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Fermionic.externalInsertionMixedAtomicOrderSign_slotCongr_of_injective"
+    ],
+    "dependencies": [
+      "SecondQuantization.Common.externalInsertionMixedPositionSlotCongr_eq_refl_of_injective"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.externalInsertionMixedAtomicOrderSign_slotCongr_of_injective"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -170438,7 +170722,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ {n : ℕ} (order : SecondQuantization.Common.QuarticVertexOrder Finset.univ) (τ : Fin Finset.univ.card → ℝ),\n  StrictAnti τ → Function.Injective fun v => τ ((Equiv.symm order) ⟨v, ⋯⟩)",
     "standardAxioms": [
       "Classical.choice",
@@ -170446,7 +170730,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -170457,12 +170741,16 @@
     "docString": "Every strictly decreasing ordered-simplex time assignment remains\ninjective after pulling it back along an arbitrary global interaction\nvertex order. Thus interaction-vertex time collisions can be discarded\nwhen checking an ordered Dyson amplitude identity. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.orderedDysonAmplitude_slotCongr"
+    ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.orderedDysonAmplitude_slotCongr"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
