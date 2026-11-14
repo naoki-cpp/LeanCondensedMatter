@@ -10,6 +10,7 @@ import LeanCondensedMatter.Models.OrbitalRelaxation.Finite
 import LeanCondensedMatter.Models.OrbitalRelaxation.T2gProjectors
 import LeanCondensedMatter.Models.OrbitalRelaxation.AngularCollision
 import LeanCondensedMatter.Models.OrbitalRelaxation.KineticClosure
+import LeanCondensedMatter.Models.OrbitalRelaxation.OctahedralScattering
 import LeanCondensedMatter.Models.OrbitalRelaxation.SphereMoments
 import LeanCondensedMatter.Models.OrbitalTransport.Finite
 import LeanCondensedMatter.Models.OrbitalTransport.TwoSite
