@@ -198,6 +198,7 @@ noncomputable def ExternalInsertionWickDiagram.mixedPairingValue {E n : ℕ}
       d.externalLabel externalTime d.vertexLabelSequence σ)
 
 
+omit [LinearOrder Mode] [Fintype Mode] in
 /-- Under an injective interaction-time assignment, the *actual*
 mixed-time field at each atomic position is unchanged by a permutation
 of quartic interaction vertices. External times may coincide with
@@ -206,7 +207,6 @@ external-first tie convention.
 
 This is an identity of `TimedField` values, before Gibbs contraction
 or fermionic crossing weights are applied. -/
-omit [LinearOrder Mode] [Fintype Mode] in
 theorem ExternalInsertionWickDiagram.slotCongr_mixedAtomicFieldFamily_eq_of_injective
     {E n : ℕ} (d : ExternalInsertionWickDiagram Mode E n)
     (e : ↥(Finset.univ : Finset (Fin n)) ≃
