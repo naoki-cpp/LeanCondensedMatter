@@ -84,8 +84,8 @@ theorem ExternalInsertionDiagram.slotCongr_atomicLegPartner
   have hC (p : Fin (2 * (2 *
       (Finset.univ : Finset (Fin n)).card + E))) :
       L (P p) = C (L p) := by
-    simp [L, P, C, externalInsertionLegCongr,
-      externalInsertionOrderedLegSlotCongr]
+    change L ((L.trans (C.trans L.symm)) p) = C (L p)
+    simp only [Equiv.trans_apply, Equiv.apply_symm_apply]
   have hCI (a : OrderedExternalInsertionLeg E n) :
       L.symm (C a) = P (L.symm a) := by
     apply L.injective
