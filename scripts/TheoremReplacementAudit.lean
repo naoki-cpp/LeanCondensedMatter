@@ -144,7 +144,21 @@ private def independentMathlibNameMatch
   sourceName.length >= 10 &&
     (targetName == sourceName || targetName.startsWith (sourceName ++ "_"))
 
-private def mathlibByResultHead : CommandElabM (NameMap (Array PreparedCandidate)) := do
+/-- Precompute name prefixes worth probing so unrelated Mathlib declarations are never
+prepared or indexed. -/
+private def independentMathlibPrefixes (prepared : Array PreparedCandidate) : NameSet := Id.run do
+  let mut prefixes := NameSet.empty
+  for target in prepared do
+    if !(independentMathlibTarget target) then continue
+    let mut prefix := ""
+    for part in (shortDeclarationName target.candidate.name).splitOn "_" do
+      prefix := if prefix.isEmpty then part else prefix ++ "_" ++ part
+      if prefix.length >= 10 then
+        prefixes := prefixes.insert (Name.str Name.anonymous prefix)
+  return prefixes
+
+private def mathlibByResultHead
+    (prefixes : NameSet) : CommandElabM (NameMap (Array PreparedCandidate)) := do
   let env ← getEnv
   let mut groups : NameMap (Array PreparedCandidate) := {}
   for (declName, info) in env.constants.toList do
@@ -152,9 +166,10 @@ private def mathlibByResultHead : CommandElabM (NameMap (Array PreparedCandidate
     let some moduleName := declarationModule? env declName | continue
     unless mathlibModule? moduleName do continue
     if privateDeclarationName? declName || extensionTheoremName? declName then continue
+    if !(prefixes.contains (Name.str Name.anonymous (shortDeclarationName declName))) then
+      continue
     let candidate := prepareCandidate { name := declName, moduleName, theoremInfo }
     let some head := candidate.resultHead | continue
-    if (shortDeclarationName candidate.candidate.name).length < 10 then continue
     let group := (groups.find? head).getD #[]
     groups := groups.insert head (group.push candidate)
   return groups
@@ -376,7 +391,7 @@ private def json (entries : Array AuditEntry) : Json :=
 run_cmd do
   let (candidates, projectTheorems) ← collectCandidates
   let prepared := candidates.map prepareCandidate
-  let mathlibGroups ← mathlibByResultHead
+  let mathlibGroups ← mathlibByResultHead (independentMathlibPrefixes prepared)
   let (entries, totalProjectProbed, totalMathlibProbed) ←
     collectAuditEntries prepared projectTheorems mathlibGroups
   let defEqTargets := entries.filter fun entry => !entry.definitionallyEquivalentTo.isEmpty
