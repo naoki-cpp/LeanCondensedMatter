@@ -1,3 +1,4 @@
+import LeanCondensedMatter.QuantumTheory.ScatteringRate
 import LeanCondensedMatter.QuantumTheory.LocalizedSpin
 import LeanCondensedMatter.QuantumTheory.PlanckConstant
 import LeanCondensedMatter.QuantumTheory.Postulates

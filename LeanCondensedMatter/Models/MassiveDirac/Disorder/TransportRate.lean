@@ -1,3 +1,4 @@
+import LeanCondensedMatter.QuantumTheory.ScatteringRate
 import LeanCondensedMatter.Transport.Analysis.RelaxationTime
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.SingleParticleRate
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.ScalarAngularWeights
@@ -142,10 +143,13 @@ theorem continuumBornUpperBandTransportLifetime_eq_factor_mul_singleParticleLife
         v m fermiEnergy disorderStrength hbar =
       (2 * (fermiEnergy ^ 2 + m ^ 2) /
           (fermiEnergy ^ 2 + 3 * m ^ 2)) *
-        continuumBornUpperBandSingleParticleLifetime
-          v m fermiEnergy disorderStrength hbar := by
-  rw [continuumBornUpperBandTransportLifetime,
-    continuumBornUpperBandSingleParticleLifetime]
+        lifetimeOfDamping hbar (continuumBornUpperBandDampingEnergy
+          v m fermiEnergy disorderStrength hbar) := by
+  change (continuumBornUpperBandTransportScatteringRate
+      v m fermiEnergy disorderStrength hbar)⁻¹ =
+    (2 * (fermiEnergy ^ 2 + m ^ 2) / (fermiEnergy ^ 2 + 3 * m ^ 2)) *
+      (continuumBornUpperBandSingleParticleScatteringRate
+        v m fermiEnergy disorderStrength hbar)⁻¹
   rw [continuumBornUpperBandTransportScatteringRate_eq
       v m fermiEnergy disorderStrength hbar hvelocity hhbar hfermiEnergy,
     continuumBornUpperBandSingleParticleScatteringRate_eq

@@ -10,6 +10,7 @@ import LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.EquationsOfMoti
 import LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.ConservationLaws
 
 import LeanCondensedMatter.QuantumTheory.LinearResponse.Perturbation.TimeDependent
+import LeanCondensedMatter.QuantumTheory.LinearResponse.Perturbation.TransitionProbability
 import LeanCondensedMatter.QuantumTheory.LinearResponse.Perturbation.DensityFirstVariation
 import LeanCondensedMatter.QuantumTheory.LinearResponse.Perturbation.Hermitian
 import LeanCondensedMatter.QuantumTheory.LinearResponse.Perturbation.Unitary

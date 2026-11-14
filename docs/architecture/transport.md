@@ -267,6 +267,21 @@ massive-Dirac in-plane Pauli coefficient space, may therefore use the same resum
 proving their restricted shift is a unit. The disorder layer does not expose separate inverse-data,
 one-rung, or residual routing APIs and does not assume a Ward identity.
 
+## Model-independent scattering foundations
+
+`QuantumTheory.ScatteringRate` owns the scalar half-width/rate/lifetime convention and the
+squared scalar damped-pole amplitude law. These facts do not require a Dirac band or an impurity
+ensemble, and they do not identify arbitrary exact dynamics with exponential decay.
+`MassiveDirac.Disorder.SingleParticleRate` supplies the model's Born damping as its input;
+model consumers use the generic lifetime directly rather than a second model-named reciprocal.
+
+`LinearResponse.Perturbation.TransitionProbability` takes matrix elements of the existing Dyson
+first variation and proves the leading squared transition weight at fixed finite time for
+orthogonal vectors. For normalized vectors under unitary evolution this is the corresponding
+transition probability. This finite-time, weak-coupling statement is separate from a golden-rule
+rate, which needs a continuous final-state measure and an appropriately justified long-time limit.
+The remaining steps are recorded in [the scattering-theory roadmap](../roadmaps/scattering-theory.md).
+
 ## Scalar-impurity T-matrix ownership
 
 MassiveDirac.Disorder.TMatrix.ScalarImpurity owns the scalar-impurity parameters, unit-guarded
