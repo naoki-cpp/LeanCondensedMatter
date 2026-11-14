@@ -96,5 +96,71 @@ theorem ExternalInsertionDiagram.slotCongr_atomicLegPartner
   rw [hCI, d.slotCongr_pairing_partner e (L.symm leg),
     hC (d.pairing.partner (L.symm leg))]
 
+
+/-- The actual permutation of mixed-time atomic *positions* induced by
+relabeling the interaction vertices and pulling the interaction times
+back along the inverse permutation. Equal-time tie breakers may change
+this position permutation, so no monotonicity is asserted here. -/
+noncomputable def externalInsertionMixedPositionSlotCongr
+    {E n : ℕ}
+    (e : ↥(Finset.univ : Finset (Fin n)) ≃
+      ↥(Finset.univ : Finset (Fin n)))
+    (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ) :
+    Fin (2 * (2 * n + E)) ≃ Fin (2 * (2 * n + E)) :=
+  (externalInsertionMixedTimeOrderedAtomicLegEquiv externalTime σ).trans
+    ((externalInsertionOrderedLegSlotCongr e).trans
+      (externalInsertionMixedTimeOrderedAtomicLegEquiv externalTime
+        (σ ∘ fun v => (e.symm ⟨v, Finset.mem_univ v⟩).1)).symm)
+
+/-- A canonical atomic leg is sent to its *actual* mixed-time position
+after relabeling the interaction slots. -/
+theorem externalInsertionMixedPositionSlotCongr_legPosition
+    {E n : ℕ}
+    (e : ↥(Finset.univ : Finset (Fin n)) ≃
+      ↥(Finset.univ : Finset (Fin n)))
+    (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ)
+    (leg : OrderedExternalInsertionLeg E n) :
+    externalInsertionMixedPositionSlotCongr e externalTime σ
+        (externalInsertionMixedTimeOrderedAtomicLegPosition externalTime σ leg) =
+      externalInsertionMixedTimeOrderedAtomicLegPosition externalTime
+        (σ ∘ fun v => (e.symm ⟨v, Finset.mem_univ v⟩).1)
+        (externalInsertionOrderedLegSlotCongr e leg) := by
+  simp [externalInsertionMixedPositionSlotCongr,
+    externalInsertionMixedTimeOrderedAtomicLegPosition]
+
+/-- The physical mixed-time Wick pairing partner, at *every* time
+assignment (including coincident times), is intertwined by the actual
+mixed-time position permutation induced from `slotCongr`.
+
+This preserves the pairing as an involution, but it does not claim
+that normalized pair endpoints maintain their increasing order; that
+is the additional sign/orientation lemma needed for the integrated
+fermionic amplitude. -/
+theorem ExternalInsertionDiagram.slotCongr_pairingInMixedOrder_partner
+    {E n : ℕ}
+    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E n
+      (Finset.univ : Finset (Fin n)))
+    (e : ↥(Finset.univ : Finset (Fin n)) ≃
+      ↥(Finset.univ : Finset (Fin n)))
+    (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ)
+    (p : Fin (2 * (2 * n + E))) :
+    ((d.slotCongr e).pairingInMixedOrder externalTime
+        (σ ∘ fun v => (e.symm ⟨v, Finset.mem_univ v⟩).1)).partner
+        (externalInsertionMixedPositionSlotCongr e externalTime σ p) =
+      externalInsertionMixedPositionSlotCongr e externalTime σ
+        ((d.pairingInMixedOrder externalTime σ).partner p) := by
+  let leg := externalInsertionMixedTimeOrderedAtomicLegEquiv externalTime σ p
+  have hp :
+      externalInsertionMixedTimeOrderedAtomicLegPosition externalTime σ leg = p :=
+    (externalInsertionMixedTimeOrderedAtomicLegEquiv externalTime σ).symm_apply_apply p
+  have hpos := externalInsertionMixedPositionSlotCongr_legPosition
+    e externalTime σ leg
+  rw [← hp, hpos,
+    (d.slotCongr e).pairingInMixedOrder_partner_legPosition,
+    d.slotCongr_atomicLegPartner,
+    d.pairingInMixedOrder_partner_legPosition,
+    ← externalInsertionMixedPositionSlotCongr_legPosition]
+
+
 end Common
 end SecondQuantization
