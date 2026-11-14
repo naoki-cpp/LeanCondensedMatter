@@ -669,7 +669,7 @@ theorem externalInsertionTimedEventBeforeOrEqual_perm_iff
             have hj := j.isLt
             have hi := i.isLt
             have hpi := (p i).isLt
-            simp [externalInsertionTimedEventRank]
+            simp [externalInsertionTimedEventRank]; omega
         | inr j =>
             have hij : i = j := hσ (by simpa [externalInsertionTimedEventTime] using ht)
             subst j
