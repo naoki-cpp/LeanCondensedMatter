@@ -272,12 +272,11 @@ theorem ExternalInsertionWickDiagram.slotCongr_mixedPairingValue_eq_of_injective
     (ε : Mode → ℝ) (β : ℝ)
     (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ)
     (hσ : Function.Injective σ) :
-    (d.slotCongr e).mixedPairingValue ε β externalTime
+    ExternalInsertionWickDiagram.mixedPairingValue (d.slotCongr e) ε β externalTime
         (σ ∘ fun v => (e.symm ⟨v, Finset.mem_univ v⟩).1) =
       d.mixedPairingValue ε β externalTime σ := by
-  rw [ExternalInsertionWickDiagram.mixedPairingValue,
-    ExternalInsertionWickDiagram.mixedPairingValue,
-    d.slotCongr_pairingInMixedOrder_eq_of_injective e externalTime σ hσ]
+  unfold ExternalInsertionWickDiagram.mixedPairingValue
+  rw [d.slotCongr_pairingInMixedOrder_eq_of_injective e externalTime σ hσ]
   congr 1
   funext a b
   exact d.slotCongr_mixedAtomicPairValue_eq_of_injective
