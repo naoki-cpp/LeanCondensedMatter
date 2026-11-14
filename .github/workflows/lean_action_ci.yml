@@ -49,6 +49,7 @@ jobs:
               - 'scripts/architecture_audit_common.py'
               - 'scripts/architecture_graph_scopes.py'
               - 'scripts/export_module_import_graph.py'
+              - 'scripts/test_module_import_costs.py'
               - 'scripts/architecture/*.json'
               - 'docs-site/**'
               - '.github/workflows/lean_action_ci.yml'
@@ -100,6 +101,21 @@ jobs:
         run: |
           python3 scripts/export_module_import_graph.py --report-umbrella-consumers --source-prefix LeanCondensedMatter/SecondQuantization/Fermionic --limit 30
           python3 scripts/export_module_import_graph.py --report-umbrella-consumers --source-prefix LeanCondensedMatter/QuantumTheory/LinearResponse --limit 30
+
+      - name: Test public umbrella footprint accounting
+        run: python3 -m unittest discover -s scripts -p 'test_module_import_costs.py'
+
+      - name: Compare public umbrella dependency breadth (advisory)
+        run: |
+          python3 scripts/export_module_import_graph.py --report-umbrella-costs \
+            --baseline LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics \
+            --module LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic \
+            --module LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion \
+            --module LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.LinkedCluster
+          python3 scripts/export_module_import_graph.py --report-umbrella-costs \
+            --baseline LeanCondensedMatter.QuantumTheory.LinearResponse \
+            --module LeanCondensedMatter.QuantumTheory.LinearResponse.Response \
+            --module LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann
 
   build:
     needs: changes

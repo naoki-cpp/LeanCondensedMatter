@@ -39,6 +39,38 @@ def export_modules() -> dict[str, object]:
     return {"modules": modules}
 
 
+def project_import_footprint(
+    modules: list[dict[str, object]], module_name: str
+) -> dict[str, int]:
+    """Count the project-local transitive import closure, including the entry.
+
+    These counts describe source-graph breadth, *not* elaboration time, compiled
+    artifact size, or the full external (Mathlib/Lean) dependency closure.
+    """
+    graph = {entry["name"]: entry for entry in modules}
+    if module_name not in graph:
+        raise ValueError(f"unknown project module: {module_name}")
+
+    seen: set[str] = set()
+    pending = [module_name]
+    while pending:
+        name = pending.pop()
+        if name in seen:
+            continue
+        if name not in graph:
+            raise ValueError(f"missing imported project module: {name}")
+        seen.add(name)
+        pending.extend(graph[name]["imports"])
+
+    return {
+        "directProjectImports": len(graph[module_name]["imports"]),
+        "projectModules": len(seen),
+        "externalDirectImportEdges": sum(
+            graph[name]["externalImportCount"] for name in seen
+        ),
+    }
+
+
 def import_overlap_candidates(modules: list[dict[str, object]]) -> list[tuple[str, str, str]]:
     """Report project-local direct imports also reachable through another direct import.
 
@@ -153,6 +185,21 @@ def main() -> None:
         help="Filter umbrella-consumer report to source paths starting with this prefix",
     )
     parser.add_argument(
+        "--report-umbrella-costs",
+        action="store_true",
+        help="Compare import-closure breadth of a public module with focused entries",
+    )
+    parser.add_argument(
+        "--baseline",
+        help="Full public module used as the footprint baseline",
+    )
+    parser.add_argument(
+        "--module",
+        action="append",
+        default=[],
+        help="Focused public module to compare (repeatable)",
+    )
+    parser.add_argument(
         "--limit",
         type=int,
         default=30,
@@ -219,6 +266,34 @@ def main() -> None:
             print(f"... {len(consumers) - args.limit} more; increase --limit to see them")
         print("An umbrella import may be intentional. Prefer narrow declaration owners in "
               "implementation code, and compile all affected consumers before changing imports.")
+        return
+
+    if args.report_umbrella_costs:
+        if args.report_overlaps or args.report_umbrella_consumers:
+            parser.error("choose only one advisory report")
+        if not args.baseline or not args.module:
+            parser.error("--report-umbrella-costs requires --baseline and --module")
+        try:
+            baseline = project_import_footprint(inventory["modules"], args.baseline)
+            print(f"baseline {args.baseline}: directProjectImports="
+                  f"{baseline['directProjectImports']} projectModules="
+                  f"{baseline['projectModules']} externalDirectImportEdges="
+                  f"{baseline['externalDirectImportEdges']}")
+            for name in args.module:
+                current = project_import_footprint(inventory["modules"], name)
+                reduction = (baseline["projectModules"] - current["projectModules"])
+                percent = 100 * reduction / baseline["projectModules"]
+                print(f"focused {name}: directProjectImports="
+                      f"{current['directProjectImports']} projectModules="
+                      f"{current['projectModules']} externalDirectImportEdges="
+                      f"{current['externalDirectImportEdges']} "
+                      f"projectModuleReduction={reduction} ({percent:.1f}%)")
+        except ValueError as exc:
+            parser.error(str(exc))
+        print("Source-graph proxy only: counts include the entry module and "
+              "distinct reachable project modules; externalDirectImportEdges "
+              "sums direct external-import lines across those modules (not "
+              "unique Mathlib modules). No build-time or memory claim.")
         return
 
     OUTPUT.parent.mkdir(parents=True, exist_ok=True)

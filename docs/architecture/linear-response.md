@@ -9,6 +9,7 @@ LinearResponse/
 ├── Expectation/    normalized continuous functionals and the density-state bridge
 ├── Dynamics/       bounded free evolution, pictures, stationarity, equations and conservation
 ├── Perturbation/   time-dependent Dyson evolution, Hermitian laws and first density variation
+├── Response.lean   focused public response-formula package
 ├── Response/       Kubo formulas, source substitution, retarded kernels and response channels
 ├── Frequency/      adiabatic transforms, integrability, observation windows and limit orders
 ├── Lehmann.lean    coherent scalar/eigenbasis representation package
@@ -24,6 +25,24 @@ LinearResponse/
         ├── Table.lean
         └── Limits.lean
 ```
+
+The full entry `QuantumTheory.LinearResponse` continues to expose the complete
+framework. Two focused public entry points are available without removing that
+compatibility surface:
+
+```lean
+import LeanCondensedMatter.QuantumTheory.LinearResponse.Response
+-- Kubo/source coupling, causal/density susceptibility, observable/channel response
+
+import LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann
+-- scalar and eigenbasis Lehmann/limit representations
+```
+
+The `Response.lean` package imports the six `Response/*` implementation
+owners without relocating any declaration. These packages may still import
+their shared upstream dynamics, density-state, or perturbation prerequisites:
+a smaller project-local closure is **not** proof of a smaller elaboration time
+or full Mathlib dependency graph.
 
 `Expectation.Basic` is independent of free dynamics. `Expectation.Density` realizes that interface
 from a physical density operator. `Dynamics` owns the free system and its action on states and

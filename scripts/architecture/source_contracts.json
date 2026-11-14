@@ -203,6 +203,10 @@
     {
       "id": "quantumPovmPublicEntry",
       "paths": ["LeanCondensedMatter/QuantumTheory/POVM.lean"]
+    },
+    {
+      "id": "linearResponseResponsePackageEntry",
+      "paths": ["LeanCondensedMatter/QuantumTheory/LinearResponse/Response.lean"]
     }
   ],
   "requiredDirectories": [
@@ -684,6 +688,23 @@
       "id": "densityUmbrellaPovmCompatibility",
       "path": "LeanCondensedMatter/QuantumTheory/DensityOperator.lean",
       "modules": ["LeanCondensedMatter.QuantumTheory.POVM"]
+    },
+    {
+      "id": "linearResponseResponseEntryImports",
+      "path": "LeanCondensedMatter/QuantumTheory/LinearResponse/Response.lean",
+      "modules": [
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.Response.KuboFormula",
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.Response.SourceCoupling",
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.Response.RetardedSusceptibility",
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.Response.DensitySusceptibility",
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.Response.ObservableVariation",
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.Response.Channel"
+      ]
+    },
+    {
+      "id": "linearResponsePublicResponsePackage",
+      "path": "LeanCondensedMatter/QuantumTheory/LinearResponse.lean",
+      "modules": ["LeanCondensedMatter.QuantumTheory.LinearResponse.Response"]
     }
   ],
   "exactImports": [
