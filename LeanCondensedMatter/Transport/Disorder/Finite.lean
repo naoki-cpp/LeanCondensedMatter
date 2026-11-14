@@ -87,7 +87,7 @@ The same estimate applies to operator and scalar responses without introducing a
 probability-averaging API. -/
 theorem norm_average_le_of_forall {E : Type*}
     [NormedAddCommGroup E] [NormedSpace ℂ E]
-    (response : Ω → E) (bound : ℝ) (hbound : 0 ≤ bound)
+    (response : Ω → E) (bound : ℝ)
     (hpoint : ∀ ω, ‖response ω‖ ≤ bound) :
     ‖ensemble.average response‖ ≤ bound := by
   calc
