@@ -29,6 +29,8 @@ def main() -> None:
     defeq_rows: list[tuple[str, list[str]]] = []
     mathlib_replacement_rows: list[tuple[str, list[tuple[str, str]]]] = []
     mathlib_defeq_rows: list[tuple[str, list[str]]] = []
+    independent_replacement_rows: list[tuple[str, list[tuple[str, str]]]] = []
+    independent_defeq_rows: list[tuple[str, list[str]]] = []
 
     for finding in findings:
         target = finding["target"]
@@ -55,6 +57,15 @@ def main() -> None:
                 for candidate in finding.get("mathlibReplacementCandidates", [])
             }
         )
+        independent_defeq = sorted(
+            set(finding.get("mathlibIndependentDefinitionallyEquivalentTo", []))
+        )
+        independent_replacements = sorted(
+            {
+                (candidate["name"], candidate["module"])
+                for candidate in finding.get("mathlibIndependentReplacementCandidates", [])
+            }
+        )
 
         unknown = [name for name in defeq + replacements if name not in by_name]
         if unknown:
@@ -68,6 +79,14 @@ def main() -> None:
         entry["mathlibDefinitionallyEquivalentTo"] = mathlib_defeq
         entry["mathlibReplacementCandidates"] = [name for name, _ in mathlib_replacements]
         entry["mathlibReplacementCandidateCount"] = len(mathlib_replacements)
+        entry["mathlibIndependentProbedCandidateCount"] = finding.get(
+            "mathlibIndependentProbedCandidateCount", 0
+        )
+        entry["mathlibIndependentDefinitionallyEquivalentTo"] = independent_defeq
+        entry["mathlibIndependentReplacementCandidates"] = [
+            name for name, _ in independent_replacements
+        ]
+        entry["mathlibIndependentReplacementCandidateCount"] = len(independent_replacements)
 
         retained = bool(entry.get("retainedMention"))
         if defeq and not retained:
@@ -78,6 +97,10 @@ def main() -> None:
             mathlib_defeq_rows.append((target, mathlib_defeq))
         if mathlib_replacements and not retained:
             mathlib_replacement_rows.append((target, mathlib_replacements))
+        if independent_defeq and not retained:
+            independent_defeq_rows.append((target, independent_defeq))
+        if independent_replacements and not retained:
+            independent_replacement_rows.append((target, independent_replacements))
 
     missing_findings = sorted(set(by_name) - finding_targets)
     if missing_findings:
@@ -109,13 +132,33 @@ def main() -> None:
         for target, replacements in mathlib_replacement_rows:
             rendered = ", ".join(f"`{name}` ({module})" for name, module in replacements)
             handle.write(f"- `{target}` → {rendered}\n")
+        handle.write("\n## Mathlib replacements outside proof dependencies\n\n")
+        handle.write(
+            "Candidates here are discovered by a bounded name-prefix and conclusion-shape search "
+            "in Analysis/ and Combinatorics/. They do not already occur in the target proof. "
+            "Lean checks definitional equivalence or direct specialization, but human review "
+            "must still assess API value and in-repository consumers.\n\n"
+        )
+        handle.write(
+            f"Independent Mathlib definitionally equivalent targets: {len(independent_defeq_rows)}\n\n"
+        )
+        handle.write(
+            f"Independent Mathlib replacement-candidate targets: {len(independent_replacement_rows)}\n\n"
+        )
+        for target, replacements in independent_defeq_rows:
+            handle.write(f"- `{target}` ≡ " + ", ".join(f"`{name}`" for name in replacements) + "\n")
+        for target, replacements in independent_replacement_rows:
+            rendered = ", ".join(f"`{name}` ({module})" for name, module in replacements)
+            handle.write(f"- `{target}` → {rendered}\n")
 
     print(
         "Merged theorem replacement audit: "
         f"{len(defeq_rows)} project defeq targets; "
         f"{len(replacement_rows)} project replacement targets; "
         f"{len(mathlib_defeq_rows)} Mathlib defeq targets; "
-        f"{len(mathlib_replacement_rows)} Mathlib replacement targets"
+        f"{len(mathlib_replacement_rows)} Mathlib replacement targets; "
+        f"{len(independent_defeq_rows)} independent Mathlib defeq targets; "
+        f"{len(independent_replacement_rows)} independent Mathlib replacement targets"
     )
     for target, replacements in replacement_rows:
         rendered = ", ".join(replacements)
@@ -123,6 +166,9 @@ def main() -> None:
     for target, replacements in mathlib_replacement_rows:
         rendered = ", ".join(f"{name} ({module})" for name, module in replacements)
         print(f"Mathlib replacement: {target} -> {rendered}")
+    for target, replacements in independent_replacement_rows:
+        rendered = ", ".join(f"{name} ({module})" for name, module in replacements)
+        print(f"Independent Mathlib replacement: {target} -> {rendered}")
 
 
 if __name__ == "__main__":
