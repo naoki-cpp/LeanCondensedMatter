@@ -133,27 +133,11 @@ theorem pointwiseBerryCurvature_xy_eq_forceMatrixBerryCurvature
   rw [data.berryCurvature_eq_sum_hamiltonianDerivativeMatrixElements
     0 1 band hself hnondegenerate]
   rw [sum_band]
-  cases band with
-  | lower =>
-      simp only [reduceCtorEq, ↓reduceIte, oppositeBand_lower, zero_add]
-      have hgapLower : data.energy .lower - data.energy .upper ≠ 0 := by
-        simpa only [oppositeBand_lower] using hgap
-      have hgapEqLower :
-          data.energy .lower - data.energy .upper =
-            interbandEnergyGap .lower v m px py := by
-        simpa only [oppositeBand_lower] using hgapEq
-      rw [mul_div_real_gap_im _ _ _ hgapLower, hgapEqLower]
-      ring
-  | upper =>
-      simp only [reduceCtorEq, ↓reduceIte, oppositeBand_upper, add_zero]
-      have hgapUpper : data.energy .upper - data.energy .lower ≠ 0 := by
-        simpa only [oppositeBand_upper] using hgap
-      have hgapEqUpper :
-          data.energy .upper - data.energy .lower =
-            interbandEnergyGap .upper v m px py := by
-        simpa only [oppositeBand_upper] using hgapEq
-      rw [mul_div_real_gap_im _ _ _ hgapUpper, hgapEqUpper]
-      ring
+  cases band <;>
+    simp only [reduceCtorEq, ↓reduceIte, oppositeBand_lower, oppositeBand_upper,
+      zero_add, add_zero] at hgap hgapEq ⊢ <;>
+    rw [mul_div_real_gap_im _ _ _ hgap, hgapEq] <;>
+    ring
 
 /-- The projector/force-matrix expression equals the closed massive-Dirac Berry curvature away
 from the band degeneracy. -/
