@@ -19312,7 +19312,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -19324,6 +19324,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_averagedTwoGreenTrace_sub_dressed_le_residuals",
       "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_averagedTwoGreenTrace_sub_meanProduct_le_uniformPotential_sq"
     ],
     "dependencies": [
@@ -19332,9 +19333,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_averagedTwoGreenTrace_sub_dressed_le_residuals",
       "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_averagedTwoGreenTrace_sub_meanProduct_le_uniformPotential_sq"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -76592,6 +76594,46 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
+    "terminal": true,
+    "statement": "∀ {Ω : Type u_1} [inst : Fintype Ω] (ensemble : QuantumTheory.Transport.FiniteDisorderEnsemble)\n  (measured source : Fin 2) (e v m px py probeEnergy broadening disorderStrength hbar pMax : ℝ),\n  broadening ≠ 0 →\n    have measuredCurrent := QuantumTheory.Models.MassiveDirac.currentOperator measured e v;\n    have sourceCurrent := QuantumTheory.Models.MassiveDirac.currentOperator source e v;\n    have retarded :=\n      QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGreenOperator\n        QuantumTheory.Transport.SpectralSide.retarded v m px py probeEnergy broadening disorderStrength hbar pMax;\n    have advanced :=\n      QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGreenOperator\n        QuantumTheory.Transport.SpectralSide.advanced v m px py probeEnergy broadening disorderStrength hbar pMax;\n    have dressed :=\n      QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperator\n        source e v m probeEnergy broadening disorderStrength hbar pMax;\n    ‖ensemble.averagedTwoGreenVertexTraceKernelOfRegulators probeEnergy broadening probeEnergy (-broadening)\n            measuredCurrent sourceCurrent -\n          QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceTraceBridge\n            measured source e v m px py probeEnergy broadening disorderStrength hbar pMax‖ ≤\n      2 * ‖measuredCurrent‖ *\n          (‖ensemble.averagedGreenOfRegulator probeEnergy broadening - retarded‖ * ‖sourceCurrent‖ * |broadening|⁻¹ +\n              ‖retarded‖ * ‖sourceCurrent‖ * ‖ensemble.averagedGreenOfRegulator probeEnergy (-broadening) - advanced‖ +\n            ‖ensemble.connectedTwoGreenInsertionOfRegulators probeEnergy broadening probeEnergy (-broadening)\n                  sourceCurrent -\n                retarded * (dressed - sourceCurrent) * advanced‖) +\n        ‖QuantumTheory.Transport.sameSideVertexTraceRemainder measuredCurrent sourceCurrent retarded advanced‖",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.MassiveDirac.norm_averagedTwoGreenTrace_sub_bornDysonSurface_le_residuals",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.DisorderComparison",
+    "externalAxioms": [],
+    "docString": "Explicit pointwise error bound for the exact finite-ensemble massive-Dirac two-Green\ntrace versus the finite-cutoff Born–Dyson dressed RA, bare-same-side Středa *candidate*.\n\nThe terms are respectively the mean retarded propagator mismatch, mean advanced mismatch,\nthe exact connected insertion minus the supplied ladder dressing, and the RR/AA same-side\ncontribution. None is silently discarded or assumed small. This is not a full Hall\nconductivity estimate. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_averagedTwoGreenTrace_sub_dressed_le_residuals"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
     "terminal": false,
     "statement": "∀ (band : QuantumTheory.Models.MassiveDirac.Band) (e v m p offset radius broadening : ℝ),\n  m ≠ 0 →\n    radius < 2 * |m| →\n      |offset| ≤ radius →\n        0 ≤ broadening →\n          ‖↑(Lorentzian.spectralKernel offset broadening) *\n                QuantumTheory.Models.MassiveDirac.targetCenteredInterbandSpectatorCurrentFactor band e v m p 0\n                  (offset, broadening)‖ ≤\n            QuantumTheory.Models.MassiveDirac.radialInterbandSpectatorUniformBound e v m radius *\n              Lorentzian.spectralKernel offset broadening",
     "standardAxioms": [
@@ -92193,7 +92235,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -92205,7 +92247,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Models.MassiveDirac.averagedTwoGreenTrace_sub_bornDysonSurface_eq_residuals"
+      "QuantumTheory.Models.MassiveDirac.averagedTwoGreenTrace_sub_bornDysonSurface_eq_residuals",
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_averagedTwoGreenTrace_sub_dressed_le_residuals"
     ],
     "dependencies": [
       "QuantumTheory.Transport.FiniteDisorderEnsemble.averagedTwoGreenVertexTraceKernelOfRegulators_eq_mean_add_connected"
@@ -92213,9 +92256,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Models.MassiveDirac.averagedTwoGreenTrace_sub_bornDysonSurface_eq_residuals"
+      "QuantumTheory.Models.MassiveDirac.averagedTwoGreenTrace_sub_bornDysonSurface_eq_residuals",
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_averagedTwoGreenTrace_sub_dressed_le_residuals"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -92881,6 +92925,7 @@
     "directWrapperOf": null,
     "dependents": [
       "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_averagedGreen_sub_free_le",
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_averagedTwoGreenTrace_sub_dressed_le_residuals",
       "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_connectedTwoGreenInsertion_le_uniformPotential_sq"
     ],
     "dependencies": [],
@@ -92888,9 +92933,10 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_averagedGreen_sub_free_le",
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_averagedTwoGreenTrace_sub_dressed_le_residuals",
       "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_connectedTwoGreenInsertion_le_uniformPotential_sq"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -92976,6 +93022,53 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_configurationGreen_sub_averaged_le"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {H : Type u_1} {Ω : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] [inst_3 : FiniteDimensional ℂ H] [inst_4 : Fintype Ω]\n  (ensemble : QuantumTheory.Transport.FiniteDisorderEnsemble) (energyLeft regulatorLeft energyRight regulatorRight : ℝ),\n  regulatorRight ≠ 0 →\n    ∀ (measuredVertex bareSourceVertex suppliedLeftGreen dressedSourceVertex suppliedRightGreen : H →L[ℂ] H),\n      ‖ensemble.averagedTwoGreenVertexTraceKernelOfRegulators energyLeft regulatorLeft energyRight regulatorRight\n              measuredVertex bareSourceVertex -\n            QuantumTheory.Transport.retardedAdvancedVertexTraceKernel measuredVertex suppliedLeftGreen\n              dressedSourceVertex suppliedRightGreen‖ ≤\n        ↑(Module.finrank ℂ H) * ‖measuredVertex‖ *\n          (‖ensemble.averagedGreenOfRegulator energyLeft regulatorLeft - suppliedLeftGreen‖ * ‖bareSourceVertex‖ *\n                |regulatorRight|⁻¹ +\n              ‖suppliedLeftGreen‖ * ‖bareSourceVertex‖ *\n                ‖ensemble.averagedGreenOfRegulator energyRight regulatorRight - suppliedRightGreen‖ +\n            ‖ensemble.connectedTwoGreenInsertionOfRegulators energyLeft regulatorLeft energyRight regulatorRight\n                  bareSourceVertex -\n                suppliedLeftGreen * (dressedSourceVertex - bareSourceVertex) * suppliedRightGreen‖)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_averagedTwoGreenTrace_sub_dressed_le_residuals",
+    "module": "LeanCondensedMatter.Transport.Disorder.DressedTraceNormBound",
+    "externalAxioms": [],
+    "docString": "Explicit residual-norm stability of the finite-dimensional two-Green trace against\narbitrary supplied propagators and a dressed source vertex. This bounds the *actual*\nconnected-vertex mismatch, not the connected insertion alone. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.MassiveDirac.norm_averagedTwoGreenTrace_sub_bornDysonSurface_le_residuals"
+    ],
+    "dependencies": [
+      "ContinuousLinearMap.norm_finiteDimensionalOperatorTrace_le_finrank_mul",
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.averagedTwoGreenVertexTraceKernelOfRegulators_sub_dressed_eq",
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_average_le_of_forall",
+      "QuantumTheory.Transport.norm_resolvent_spectralParameterOfRegulator_le"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.norm_averagedTwoGreenTrace_sub_bornDysonSurface_le_residuals"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -99416,6 +99509,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_averagedTwoGreenTrace_sub_dressed_le_residuals",
       "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_configurationGreen_sub_free_le",
       "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_exactBornRemainder_le_thirdNormMoment"
     ],
@@ -99425,10 +99519,11 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_averagedTwoGreenTrace_sub_dressed_le_residuals",
       "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_configurationGreen_sub_free_le",
       "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_exactBornRemainder_le_thirdNormMoment"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",

@@ -2868,6 +2868,7 @@
       "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Streda/BornLadder/DisorderComparison.lean",
       "imports": [
         "LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.TraceBridge",
+        "LeanCondensedMatter.Transport.Disorder.DressedTraceNormBound",
         "LeanCondensedMatter.Transport.Disorder.TraceBridge",
         "LeanCondensedMatter.Transport.Disorder.TraceNormBound"
       ],
@@ -8631,6 +8632,14 @@
       "externalImportCount": 0
     },
     {
+      "name": "LeanCondensedMatter.Transport.Disorder.DressedTraceNormBound",
+      "sourceFile": "LeanCondensedMatter/Transport/Disorder/DressedTraceNormBound.lean",
+      "imports": [
+        "LeanCondensedMatter.Transport.Disorder.TraceNormBound"
+      ],
+      "externalImportCount": 2
+    },
+    {
       "name": "LeanCondensedMatter.Transport.Disorder.Finite",
       "sourceFile": "LeanCondensedMatter/Transport/Disorder/Finite.lean",
       "imports": [
@@ -8733,6 +8742,7 @@
         "LeanCondensedMatter.Transport.Disorder.Born",
         "LeanCondensedMatter.Transport.Disorder.BornNormBound",
         "LeanCondensedMatter.Transport.Disorder.ConnectedCorrelation",
+        "LeanCondensedMatter.Transport.Disorder.DressedTraceNormBound",
         "LeanCondensedMatter.Transport.Disorder.Finite",
         "LeanCondensedMatter.Transport.Disorder.Ladder",
         "LeanCondensedMatter.Transport.Disorder.Moments",
