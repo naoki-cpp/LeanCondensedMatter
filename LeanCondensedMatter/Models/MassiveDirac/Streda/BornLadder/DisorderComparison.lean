@@ -1,5 +1,6 @@
 import LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.TraceBridge
 import LeanCondensedMatter.Transport.Disorder.TraceBridge
+import LeanCondensedMatter.Transport.Disorder.TraceNormBound
 import Mathlib.Tactic.Ring
 
 set_option linter.style.header false
@@ -98,6 +99,36 @@ theorem averagedTwoGreenTrace_sub_bornDysonSurface_eq_residuals
         sameSideVertexTraceRemainder measuredCurrent sourceCurrent retarded advanced := by
           ring
     _ = _ := by rw [hRA]
+
+/-- In the two-component massive-Dirac Hilbert space, the exact disorder-connected
+Hall-current trace (x-measured, y-sourced) is quadratically bounded at opposite nonzero
+signed regulators. The factor two is the physical orbital/spinor-space dimension, not a
+momentum-volume normalization. The comparator uses *exact mean* propagators, not supplied
+Born-Dyson Green operators or dressed vertices. -/
+theorem norm_averagedHallCurrentTrace_sub_meanProduct_le_uniformPotential_sq
+    (e v energy broadening potentialBound : ℝ)
+    (hbroadening : broadening ≠ 0) (hbound : 0 ≤ potentialBound)
+    (hpotential : ∀ ω, ‖(ensemble.impurityPotential ω).1‖ ≤ potentialBound) :
+    ‖ensemble.averagedTwoGreenVertexTraceKernelOfRegulators
+        energy broadening energy (-broadening)
+        (currentOperator 0 e v) (currentOperator 1 e v) -
+      twoGreenVertexTraceKernel (currentOperator 0 e v)
+        (ensemble.averagedGreenOfRegulator energy broadening)
+        (currentOperator 1 e v)
+        (ensemble.averagedGreenOfRegulator energy (-broadening))‖ ≤
+      (2 * ‖currentOperator 0 e v‖) *
+        ((2 * (|broadening|⁻¹) ^ 2 * potentialBound) *
+          ‖currentOperator 1 e v‖ *
+          (2 * (|broadening|⁻¹) ^ 2 * potentialBound)) := by
+  have hrank : Module.finrank ℂ DiracHilbert = 2 := by
+    simp [DiracHilbert]
+  have hboundTrace :=
+    ensemble.norm_averagedTwoGreenTrace_sub_meanProduct_le_uniformPotential_sq
+      energy broadening energy (-broadening) hbroadening
+      (by simpa using hbroadening)
+      (currentOperator 0 e v) (currentOperator 1 e v)
+      potentialBound hbound hpotential
+  simpa only [hrank, Nat.cast_ofNat, abs_neg] using hboundTrace
 
 end
 
