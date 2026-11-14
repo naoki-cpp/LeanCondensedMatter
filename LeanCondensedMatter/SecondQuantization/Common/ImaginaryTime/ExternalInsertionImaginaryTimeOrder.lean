@@ -646,7 +646,7 @@ theorem externalInsertionTimedEventBeforeOrEqual_perm_iff
           (Sum.map id p event) =
         externalInsertionTimedEventTime externalTime σ event := by
     cases event <;>
-      simp [externalInsertionTimedEventTime, Function.comp_def]
+      simp [externalInsertionTimedEventTime]
   have hrank (a b : ExternalInsertionTimedEvent E n)
       (ht : externalInsertionTimedEventTime externalTime σ a =
         externalInsertionTimedEventTime externalTime σ b) :
@@ -662,14 +662,14 @@ theorem externalInsertionTimedEventBeforeOrEqual_perm_iff
             have hi := i.isLt
             have hj := j.isLt
             have hpj := (p j).isLt
-            simp [externalInsertionTimedEventRank] <;> omega
+            simp [externalInsertionTimedEventRank]
     | inr i =>
         cases b with
         | inl j =>
             have hj := j.isLt
             have hi := i.isLt
             have hpi := (p i).isLt
-            simp [externalInsertionTimedEventRank] <;> omega
+            simp [externalInsertionTimedEventRank]
         | inr j =>
             have hij : i = j := hσ (by simpa [externalInsertionTimedEventTime] using ht)
             subst j
@@ -683,6 +683,60 @@ theorem externalInsertionTimedEventBeforeOrEqual_perm_iff
   · rintro (h | ⟨ht, hr⟩)
     · exact Or.inl h
     · exact Or.inr ⟨ht, (hrank a b ht).mpr hr⟩
+
+
+/-- The *whole sorted event list* is transported by any interaction-slot
+permutation, provided the interaction times are injective. Equal-time
+external insertions remain allowed, including coincidences with vertices.
+The proof uses pairwise sortedness and uniqueness of a fully enumerated
+finite list, not an assumption about insertion sort implementation. -/
+theorem orderedExternalInsertionTimedEvents_perm_slots
+    {E n : ℕ} (externalTime : Fin (2 * E) → ℝ)
+    (σ : Fin n → ℝ) (hσ : Function.Injective σ)
+    (p : Equiv.Perm (Fin n)) :
+    (orderedExternalInsertionTimedEvents externalTime σ).map (Sum.map id p) =
+      orderedExternalInsertionTimedEvents externalTime (σ ∘ p.symm) := by
+  classical
+  let source := orderedExternalInsertionTimedEvents externalTime σ
+  let target := orderedExternalInsertionTimedEvents externalTime (σ ∘ p.symm)
+  let f : ExternalInsertionTimedEvent E n → ExternalInsertionTimedEvent E n :=
+    Sum.map id p
+  let rel :=
+    externalInsertionTimedEventBeforeOrEqual externalTime (σ ∘ p.symm)
+  have hPairwise : (source.map f).Pairwise rel := by
+    rw [List.pairwise_map]
+    exact (orderedExternalInsertionTimedEvents_pairwise externalTime σ).imp
+      (fun {a b} hab =>
+        (externalInsertionTimedEventBeforeOrEqual_perm_iff externalTime σ hσ p a b).2 hab)
+  have hInj : Function.Injective f := by
+    exact Sum.map_injective.mpr ⟨Function.injective_id, p.injective⟩
+  have hNodup : (source.map f).Nodup :=
+    List.Nodup.map hInj (orderedExternalInsertionTimedEvents_nodup externalTime σ)
+  have hSubperm : List.Subperm (source.map f) target :=
+    hNodup.subperm (fun event _ =>
+      orderedExternalInsertionTimedEvents_all_mem externalTime (σ ∘ p.symm) event)
+  letI : Std.Antisymm rel :=
+    ⟨fun _ _ hab hba =>
+      stableTimedEventBeforeOrEqual_antisymm
+        (externalInsertionTimedEventTime externalTime (σ ∘ p.symm))
+        externalInsertionTimedEventRank
+        (by
+          intro a b h
+          apply (finSumFinEquiv :
+            ExternalInsertionTimedEvent E n ≃ Fin (2 * E + n)).injective
+          apply Fin.ext
+          exact h)
+        hab hba⟩
+  have hTargetPairwise : target.Pairwise rel :=
+    orderedExternalInsertionTimedEvents_pairwise externalTime (σ ∘ p.symm)
+  have hSub : (source.map f).Sublist target :=
+    List.sublist_of_subperm_of_pairwise
+      (r := rel) hSubperm hPairwise hTargetPairwise
+  have hLen : (source.map f).length = target.length := by
+    simp only [List.length_map]
+    exact (orderedExternalInsertionTimedEvents_perm externalTime σ).length_eq.trans
+      (orderedExternalInsertionTimedEvents_perm externalTime (σ ∘ p.symm)).length_eq.symm
+  exact hSub.eq_of_length hLen
 
 end Common
 end SecondQuantization
