@@ -95,8 +95,10 @@ closure/truncation API are maintained.
 For *centered* finite disorder (`E[V] = 0`), the exact configuration Dyson identities give
 `Ḡ = G₀ + G₀ C₂(G₀) G₀ + E[G₀ V G₀ V Gω V G₀]` at any nonzero signed regulator.
 The last term is an exact cubic-in-impurity **remainder expression** (containing the exact
-configuration propagator `Gω`), not yet a quantitative `O(‖V‖³)` bound. Its connection to
-any continuum white-noise scalar disorder strength still requires a separate model bridge.
+configuration propagator `Gω`). `Disorder.BornNormBound` proves the unconditional fixed-regulator
+estimate `‖R₃‖ ≤ |γ|⁻⁴ E[‖V‖³]` and hence the same error bound for the centered second-order
+Born approximation. The bound is not uniform in `γ → 0` and does not identify an exact
+continuum white-noise scalar-disorder strength or yield a DC/Hall conductivity estimate.
 
 
 `Disorder.TwoParticle` proves the **exact finite-ensemble two-Green decomposition**
@@ -184,8 +186,8 @@ not public APIs. Convergence and Ward identities are separate targets.
 - trace per unit volume and controlled thermodynamic limits;
 - justified DC and zero-broadening limits;
 - convergence-aware SCBA/ladder results where needed;
-- operator-norm bounds on the exact centered Born cubic remainder at fixed nonzero regulator,
-  followed by explicit controlled approximation/error-to-Hall-response estimates;
+- controlled two-particle vertex and error-to-Hall-response estimates, including physical
+  continuum-disorder matching and noncommuting regulator/DC limits;
 - exact two-Green connected insertion to diagrammatic non-crossing / diffuson and full Kubo
   response channels, with explicit approximation hypotheses, charge-conservation constraints,
   and same-side/sea/contact terms;
