@@ -1,3 +1,4 @@
+import LeanCondensedMatter.QuantumTheory.ScatteringRate
 import LeanCondensedMatter.Analysis.Lorentzian.RadialQuadratic
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.BornCurrentVertexRung
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.TransportRate
@@ -215,8 +216,8 @@ theorem continuumBornUpperBandTransportLifetime_eq_weakDisorderCurrentRungFactor
         v m fermiEnergy disorderStrength hbar =
       (1 - continuumBornRetardedAdvancedPauliXWeakDisorderCurrentRungCoefficient
           m fermiEnergy)⁻¹ *
-        continuumBornUpperBandSingleParticleLifetime
-          v m fermiEnergy disorderStrength hbar := by
+        lifetimeOfDamping hbar (continuumBornUpperBandDampingEnergy
+          v m fermiEnergy disorderStrength hbar) := by
   rw [continuumBornUpperBandTransportLifetime_eq_factor_mul_singleParticleLifetime
     v m fermiEnergy disorderStrength hbar hvelocity hhbar hdisorder hfermiEnergy]
   have hfermiSq : 0 < fermiEnergy ^ 2 := sq_pos_of_ne_zero hfermiEnergy
