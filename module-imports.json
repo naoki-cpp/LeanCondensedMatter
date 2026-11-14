@@ -8634,6 +8634,14 @@
       "externalImportCount": 3
     },
     {
+      "name": "LeanCondensedMatter.Transport.Disorder.TwoParticle",
+      "sourceFile": "LeanCondensedMatter/Transport/Disorder/TwoParticle.lean",
+      "imports": [
+        "LeanCondensedMatter.Transport.Disorder.Resolvent"
+      ],
+      "externalImportCount": 2
+    },
+    {
       "name": "LeanCondensedMatter.Transport.Disorder.Ward",
       "sourceFile": "LeanCondensedMatter/Transport/Disorder/Ward.lean",
       "imports": [
@@ -8654,6 +8662,7 @@
         "LeanCondensedMatter.Transport.Disorder.Moments",
         "LeanCondensedMatter.Transport.Disorder.Resolvent",
         "LeanCondensedMatter.Transport.Disorder.SCBA",
+        "LeanCondensedMatter.Transport.Disorder.TwoParticle",
         "LeanCondensedMatter.Transport.Disorder.Ward"
       ],
       "externalImportCount": 0
@@ -8846,7 +8855,7 @@
         "LeanCondensedMatter.Analysis.Lorentzian.Pole",
         "LeanCondensedMatter.Transport.Resolvent.Spectral"
       ],
-      "externalImportCount": 5
+      "externalImportCount": 6
     },
     {
       "name": "LeanCondensedMatter.Transport.Streda.OperatorKernel",

@@ -23107,6 +23107,7 @@
     "dependents": [
       "Finpartition.cumulantFromMoment_momentFromCumulant",
       "Finpartition.momentFromCumulant_cumulantFromMoment",
+      "SecondQuantization.Fermionic.externalPartitionWeightedMoment_eq_of_proper_zero",
       "SecondQuantization.Fermionic.externalPartitionWeightedMoment_injective",
       "SecondQuantization.Fermionic.externalSubsetSourceCumulantSeries_reconstruct"
     ],
@@ -23116,10 +23117,11 @@
     "compiledConsumers": [
       "Finpartition.cumulantFromMoment_momentFromCumulant",
       "Finpartition.momentFromCumulant_cumulantFromMoment",
+      "SecondQuantization.Fermionic.externalPartitionWeightedMoment_eq_of_proper_zero",
       "SecondQuantization.Fermionic.externalPartitionWeightedMoment_injective",
       "SecondQuantization.Fermionic.externalSubsetSourceCumulantSeries_reconstruct"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 5,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -78898,7 +78900,8 @@
       "QuantumTheory.Models.MassiveDirac.bastinInterbandBlockDifference_im_div_gap_sq_eq_neg_chargeSq_berryCurvature",
       "QuantumTheory.Models.MassiveDirac.interbandEnergyGap_ne_zero_of_energy_ne_zero",
       "QuantumTheory.Models.MassiveDirac.targetCenteredInterbandSpectatorCurrentFactor_eq_interbandPoleRegularFactor",
-      "QuantumTheory.Transport.interbandPoleRegularFactor_zero"
+      "QuantumTheory.Transport.interbandPoleRegularFactor_zero",
+      "QuantumTheory.Transport.inv_real_gap_sq_mul_im"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -87673,7 +87676,8 @@
     "dependencies": [
       "QuantumTheory.Models.RashbaExchange.interbandBlockDifference_im_div_gap_sq_eq_neg_chargeSq_berryCurvature",
       "QuantumTheory.Models.RashbaExchange.interbandEnergyGap_ne_zero_of_spinOrbitEnergy_ne_zero",
-      "QuantumTheory.Transport.interbandPoleRegularFactor_zero"
+      "QuantumTheory.Transport.interbandPoleRegularFactor_zero",
+      "QuantumTheory.Transport.inv_real_gap_sq_mul_im"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -90735,6 +90739,94 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {H : Type u_1} {Ω : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] [inst_3 : Fintype Ω] (ensemble : QuantumTheory.Transport.FiniteDisorderEnsemble)\n  (left right : Ω → H →L[ℂ] H) (vertex : H →L[ℂ] H),\n  ensemble.averagedOperatorInsertion left right vertex =\n    ensemble.operatorAverage left * vertex * ensemble.operatorAverage right +\n      ensemble.connectedOperatorInsertion left right vertex",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.FiniteDisorderEnsemble.averagedOperatorInsertion_eq_mean_add_connected",
+    "module": "LeanCondensedMatter.Transport.Disorder.TwoParticle",
+    "externalAxioms": [],
+    "docString": "Exact two-particle decomposition. The correction is the covariance of the two operator\nfamilies, with their noncommutative order and the middle vertex preserved. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.averagedTwoGreenInsertionOfRegulators_eq_mean_add_connected"
+    ],
+    "dependencies": [
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.operatorAverage_add",
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.operatorAverage_const",
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.operatorAverage_mul_left",
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.operatorAverage_mul_right",
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.operatorAverage_sub"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.averagedTwoGreenInsertionOfRegulators_eq_mean_add_connected"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {H : Type u_1} {Ω : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] [inst_3 : Fintype Ω] (ensemble : QuantumTheory.Transport.FiniteDisorderEnsemble)\n  (energyLeft regulatorLeft energyRight regulatorRight : ℝ) (vertex : H →L[ℂ] H),\n  ensemble.averagedTwoGreenInsertionOfRegulators energyLeft regulatorLeft energyRight regulatorRight vertex =\n    ensemble.averagedGreenOfRegulator energyLeft regulatorLeft * vertex *\n        ensemble.averagedGreenOfRegulator energyRight regulatorRight +\n      ensemble.connectedTwoGreenInsertionOfRegulators energyLeft regulatorLeft energyRight regulatorRight vertex",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.FiniteDisorderEnsemble.averagedTwoGreenInsertionOfRegulators_eq_mean_add_connected",
+    "module": "LeanCondensedMatter.Transport.Disorder.TwoParticle",
+    "externalAxioms": [],
+    "docString": "The exact two-Green disorder average differs from the product of averaged Green operators\nby the connected two-Green insertion. This is valid before any Born or ladder truncation. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.averagedOperatorInsertion_eq_mean_add_connected"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {H : Type u_1} {Ω : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] [inst_3 : Fintype Ω] (ensemble : QuantumTheory.Transport.FiniteDisorderEnsemble)\n  (energy regulator : ℝ),\n  regulator ≠ 0 →\n    ∀ (ω : Ω),\n      ensemble.configurationGreenOfRegulator energy regulator ω =\n        ensemble.freeGreenOfRegulator energy regulator +\n          ensemble.freeGreenOfRegulator energy regulator * ↑(ensemble.impurityPotential ω) *\n            ensemble.configurationGreenOfRegulator energy regulator ω",
     "standardAxioms": [
       "Classical.choice",
@@ -91310,6 +91402,174 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {H : Type u_1} {Ω : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] [inst_3 : Fintype Ω] (ensemble : QuantumTheory.Transport.FiniteDisorderEnsemble)\n  (left right : Ω → H →L[ℂ] H),\n  (ensemble.operatorAverage fun ω => left ω + right ω) = ensemble.operatorAverage left + ensemble.operatorAverage right",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.FiniteDisorderEnsemble.operatorAverage_add",
+    "module": "LeanCondensedMatter.Transport.Disorder.TwoParticle",
+    "externalAxioms": [],
+    "docString": "Finite operator averaging preserves addition. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.averagedOperatorInsertion_eq_mean_add_connected"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.averagedOperatorInsertion_eq_mean_add_connected"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {H : Type u_1} {Ω : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] [inst_3 : Fintype Ω] (ensemble : QuantumTheory.Transport.FiniteDisorderEnsemble)\n  (operator : H →L[ℂ] H), (ensemble.operatorAverage fun x => operator) = operator",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.FiniteDisorderEnsemble.operatorAverage_const",
+    "module": "LeanCondensedMatter.Transport.Disorder.TwoParticle",
+    "externalAxioms": [],
+    "docString": "A constant operator is unchanged by a normalized disorder average. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.averagedOperatorInsertion_eq_mean_add_connected"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.averagedOperatorInsertion_eq_mean_add_connected"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {H : Type u_1} {Ω : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] [inst_3 : Fintype Ω] (ensemble : QuantumTheory.Transport.FiniteDisorderEnsemble)\n  (left : H →L[ℂ] H) (operator : Ω → H →L[ℂ] H),\n  (ensemble.operatorAverage fun ω => left * operator ω) = left * ensemble.operatorAverage operator",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.FiniteDisorderEnsemble.operatorAverage_mul_left",
+    "module": "LeanCondensedMatter.Transport.Disorder.TwoParticle",
+    "externalAxioms": [],
+    "docString": "A fixed operator can be factored out on the left of a finite disorder average. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.averagedOperatorInsertion_eq_mean_add_connected"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.averagedOperatorInsertion_eq_mean_add_connected"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {H : Type u_1} {Ω : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] [inst_3 : Fintype Ω] (ensemble : QuantumTheory.Transport.FiniteDisorderEnsemble)\n  (operator : Ω → H →L[ℂ] H) (right : H →L[ℂ] H),\n  (ensemble.operatorAverage fun ω => operator ω * right) = ensemble.operatorAverage operator * right",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.FiniteDisorderEnsemble.operatorAverage_mul_right",
+    "module": "LeanCondensedMatter.Transport.Disorder.TwoParticle",
+    "externalAxioms": [],
+    "docString": "A fixed operator can be factored out on the right of a finite disorder average. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.averagedOperatorInsertion_eq_mean_add_connected"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.averagedOperatorInsertion_eq_mean_add_connected"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {H : Type u_1} {Ω : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] [inst_3 : Fintype Ω] (ensemble : QuantumTheory.Transport.FiniteDisorderEnsemble)\n  (operator : Ω → H →L[ℂ] H),\n  (ensemble.operatorAverage fun ω => star (operator ω)) = star (ensemble.operatorAverage operator)",
     "standardAxioms": [
       "Classical.choice",
@@ -91336,6 +91596,48 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.Transport.FiniteDisorderEnsemble.star_averagedGreenOfRegulator"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {H : Type u_1} {Ω : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] [inst_3 : Fintype Ω] (ensemble : QuantumTheory.Transport.FiniteDisorderEnsemble)\n  (left right : Ω → H →L[ℂ] H),\n  (ensemble.operatorAverage fun ω => left ω - right ω) = ensemble.operatorAverage left - ensemble.operatorAverage right",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.FiniteDisorderEnsemble.operatorAverage_sub",
+    "module": "LeanCondensedMatter.Transport.Disorder.TwoParticle",
+    "externalAxioms": [],
+    "docString": "Finite operator averaging preserves subtraction. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.averagedOperatorInsertion_eq_mean_add_connected"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.averagedOperatorInsertion_eq_mean_add_connected"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -97427,6 +97729,50 @@
     "module": "LeanCondensedMatter.Transport.Streda.InterbandPole",
     "externalAxioms": [],
     "docString": "At the target pole the regular factor is the inverse-gap-squared antisymmetric current block. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.MassiveDirac.targetCenteredInterbandSpectatorCurrentFactor_zero_im_eq_neg_chargeSq_berryCurvature",
+      "QuantumTheory.Models.RashbaExchange.interbandPoleRegularFactor_zero_im_eq_neg_chargeSq_berryCurvature"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.targetCenteredInterbandSpectatorCurrentFactor_zero_im_eq_neg_chargeSq_berryCurvature",
+      "QuantumTheory.Models.RashbaExchange.interbandPoleRegularFactor_zero_im_eq_neg_chargeSq_berryCurvature"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (gap : ℝ) (z : ℂ), gap ≠ 0 → ((↑gap)⁻¹ ^ 2 * z).im = z.im / gap ^ 2",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.inv_real_gap_sq_mul_im",
+    "module": "LeanCondensedMatter.Transport.Streda.InterbandPole",
+    "externalAxioms": [],
+    "docString": "A real inverse-gap square rescales the imaginary part of a complex current block. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
@@ -163513,6 +163859,7 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Fermionic.externalPartitionSourceSign_eq_componentExternalOrderSign_of_connected",
+      "SecondQuantization.Fermionic.externalPartitionWeightedMoment_eq_of_proper_zero",
       "SecondQuantization.Fermionic.externalPartitionWeightedMoment_injective",
       "SecondQuantization.Fermionic.externalSubsetSignedConnectedMomentSeries_empty",
       "SecondQuantization.Fermionic.externalSubsetSourceCumulantSeries_reconstruct"
@@ -163522,11 +163869,58 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Fermionic.externalPartitionSourceSign_eq_componentExternalOrderSign_of_connected",
+      "SecondQuantization.Fermionic.externalPartitionWeightedMoment_eq_of_proper_zero",
       "SecondQuantization.Fermionic.externalPartitionWeightedMoment_injective",
       "SecondQuantization.Fermionic.externalSubsetSignedConnectedMomentSeries_empty",
       "SecondQuantization.Fermionic.externalSubsetSourceCumulantSeries_reconstruct"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 5,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {E : ℕ} (κ : Finset (Fin (2 * E)) → PowerSeries ℂ) (S : Finset (Fin (2 * E))),\n  S ≠ ∅ →\n    (∀ B ⊂ S, κ B = 0) →\n      Finpartition.weightedMomentFromCumulant\n          (fun x π => PowerSeries.C (SecondQuantization.Fermionic.externalPartitionSourceSign π)) κ S =\n        κ S",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Fermionic.externalPartitionWeightedMoment_eq_of_proper_zero",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalSourceCumulant",
+    "externalAxioms": [],
+    "docString": "If every proper source subset has zero connected contribution, the\nsigned partition-moment sum on a nonempty source set reduces to its single\nconnected block. This uses the actual source sign of the top partition,\nnot an unsigned cumulant identity. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Fermionic.externalSubsetMomentSeries_eq_signedConnected_two"
+    ],
+    "dependencies": [
+      "Finpartition.partitionProduct_top",
+      "SecondQuantization.Fermionic.externalPartitionSourceSign_top",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalSourceCumulant.0.SecondQuantization.Fermionic.externalPartition_part_ssubset_of_ne_top"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.externalSubsetMomentSeries_eq_signedConnected_two"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -163594,7 +163988,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": true,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -163606,15 +164000,17 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "SecondQuantization.Fermionic.externalSubsetMomentSeries_eq_signedConnected_two",
       "SecondQuantization.Fermionic.externalSubsetSourceCumulantSeries_eq_connectedDiagramSeries_of_signedMoments"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "SecondQuantization.Fermionic.externalSubsetMomentSeries_eq_signedConnected_two",
       "SecondQuantization.Fermionic.externalSubsetSourceCumulantSeries_eq_connectedDiagramSeries_of_signedMoments"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -163649,6 +164045,7 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Fermionic.externalSubsetMomentSeries_eq_signedConnected_of_nonempty_even",
+      "SecondQuantization.Fermionic.externalSubsetMomentSeries_eq_signedConnected_two",
       "SecondQuantization.Fermionic.externalSubsetSourceCumulantSeries_eq_connectedDiagramSeries_of_signedMoments"
     ],
     "dependencies": [],
@@ -163656,9 +164053,10 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Fermionic.externalSubsetMomentSeries_eq_signedConnected_of_nonempty_even",
+      "SecondQuantization.Fermionic.externalSubsetMomentSeries_eq_signedConnected_two",
       "SecondQuantization.Fermionic.externalSubsetSourceCumulantSeries_eq_connectedDiagramSeries_of_signedMoments"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -163702,6 +164100,56 @@
     "completedMention": false,
     "compiledConsumers": [],
     "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] (ε : Mode → ℝ) (β : ℝ)\n  (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ)\n  (labels : Fin 2 → SecondQuantization.Fermionic.ExternalFieldLabel Mode) (times : Fin 2 → ℝ) (S : Finset (Fin 2)),\n  SecondQuantization.Fermionic.externalSubsetMomentSeries ε β g labels times S =\n    SecondQuantization.Fermionic.externalSubsetSignedConnectedMomentSeries ε β g labels times S",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Fermionic.externalSubsetMomentSeries_eq_signedConnected_two",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalSubsetMoment",
+    "externalAxioms": [],
+    "docString": "The *physical* signed external-source moment identity holds\nunconditionally for two external fermion insertions. A nonempty even\nsubset of two slots has cardinality two, and every proper nonempty\nsubset is odd. The only surviving term is therefore the connected\ntop-partition term, which equals the vacuum-free Dyson series by the\nactual two-insertion graph theorem. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Fermionic.externalSubsetSourceCumulantSeries_eq_connectedDiagramSeries_two"
+    ],
+    "dependencies": [
+      "SecondQuantization.Fermionic.externalPartitionWeightedMoment_eq_of_proper_zero",
+      "SecondQuantization.Fermionic.externalSubsetConnectedDiagramSeries_empty",
+      "SecondQuantization.Fermionic.externalSubsetMomentSeries_empty",
+      "SecondQuantization.Fermionic.externalSubsetSeries_eq_zero_of_odd",
+      "SecondQuantization.Fermionic.externalSubsetSignedConnectedMomentSeries_empty",
+      "SecondQuantization.Fermionic.externalSubsetSignedConnectedMomentSeries_eq_zero_of_odd",
+      "SecondQuantization.Fermionic.vacuumFreeExternalInsertionDysonSeries_eq_connected_of_single_pair"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.externalSubsetSourceCumulantSeries_eq_connectedDiagramSeries_two"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -163776,6 +164224,7 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Fermionic.externalSubsetMomentSeries_eq_signedConnected_of_nonempty_even",
+      "SecondQuantization.Fermionic.externalSubsetMomentSeries_eq_signedConnected_two",
       "SecondQuantization.Fermionic.externalSubsetSignedConnectedMomentSeries_eq_zero_of_odd"
     ],
     "dependencies": [],
@@ -163783,9 +164232,10 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Fermionic.externalSubsetMomentSeries_eq_signedConnected_of_nonempty_even",
+      "SecondQuantization.Fermionic.externalSubsetMomentSeries_eq_signedConnected_two",
       "SecondQuantization.Fermionic.externalSubsetSignedConnectedMomentSeries_eq_zero_of_odd"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -163807,7 +164257,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": true,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -163819,7 +164269,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.externalSubsetMomentSeries_eq_signedConnected_of_nonempty_even"
+      "SecondQuantization.Fermionic.externalSubsetMomentSeries_eq_signedConnected_of_nonempty_even",
+      "SecondQuantization.Fermionic.externalSubsetMomentSeries_eq_signedConnected_two"
     ],
     "dependencies": [
       "Finpartition.weightedMomentFromCumulant_empty",
@@ -163828,9 +164279,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.externalSubsetMomentSeries_eq_signedConnected_of_nonempty_even"
+      "SecondQuantization.Fermionic.externalSubsetMomentSeries_eq_signedConnected_of_nonempty_even",
+      "SecondQuantization.Fermionic.externalSubsetMomentSeries_eq_signedConnected_two"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -163852,7 +164304,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -163864,7 +164316,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.externalSubsetMomentSeries_eq_signedConnected_of_nonempty_even"
+      "SecondQuantization.Fermionic.externalSubsetMomentSeries_eq_signedConnected_of_nonempty_even",
+      "SecondQuantization.Fermionic.externalSubsetMomentSeries_eq_signedConnected_two"
     ],
     "dependencies": [
       "SecondQuantization.Fermionic.externalSubsetSeries_eq_zero_of_odd",
@@ -163873,9 +164326,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.externalSubsetMomentSeries_eq_signedConnected_of_nonempty_even"
+      "SecondQuantization.Fermionic.externalSubsetMomentSeries_eq_signedConnected_of_nonempty_even",
+      "SecondQuantization.Fermionic.externalSubsetMomentSeries_eq_signedConnected_two"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -163931,8 +164385,56 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] {E : ℕ} (ε : Mode → ℝ) (β : ℝ)\n  (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ)\n  (labels : Fin (2 * E) → SecondQuantization.Fermionic.ExternalFieldLabel Mode) (times : Fin (2 * E) → ℝ),\n  (∀ (S : Finset (Fin (2 * E))),\n      SecondQuantization.Fermionic.externalSubsetMomentSeries ε β g labels times S =\n        SecondQuantization.Fermionic.externalSubsetSignedConnectedMomentSeries ε β g labels times S) →\n    SecondQuantization.Fermionic.externalSubsetSourceCumulantSeries\n        (SecondQuantization.Fermionic.externalSubsetMomentSeries ε β g labels times) =\n      SecondQuantization.Fermionic.externalSubsetConnectedDiagramSeries ε β g labels times",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Fermionic.externalSubsetSourceCumulantSeries_eq_connectedDiagramSeries_of_signedMoments",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalSubsetMoment",
+    "externalAxioms": [],
+    "docString": "The precise remaining physical bridge for Phase 5: once the actual\nvacuum-normalized Wick/Dyson moments satisfy the signed external-partition\nidentity, the recursively defined fermionic *source cumulant* is the fully\nexternally connected integrated diagram sum.\n\nThis theorem uses genuine signed moment inversion; it does not assume\nunsigned Möbius inversion or conflate vacuum-freeness with connectivity.\nIts hypothesis is the still-required diagram-assembly/shuffle identity. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Fermionic.externalSubsetSourceCumulantSeries_eq_connectedDiagramSeries_two"
+    ],
+    "dependencies": [
+      "SecondQuantization.Fermionic.externalPartitionWeightedMoment_injective",
+      "SecondQuantization.Fermionic.externalSubsetConnectedDiagramSeries_empty",
+      "SecondQuantization.Fermionic.externalSubsetMomentSeries_empty",
+      "SecondQuantization.Fermionic.externalSubsetSourceCumulantSeries_empty",
+      "SecondQuantization.Fermionic.externalSubsetSourceCumulantSeries_reconstruct"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.externalSubsetSourceCumulantSeries_eq_connectedDiagramSeries_two"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] (ε : Mode → ℝ) (β : ℝ)\n  (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ)\n  (labels : Fin 2 → SecondQuantization.Fermionic.ExternalFieldLabel Mode) (times : Fin 2 → ℝ),\n  SecondQuantization.Fermionic.externalSubsetSourceCumulantSeries\n      (SecondQuantization.Fermionic.externalSubsetMomentSeries ε β g labels times) =\n    SecondQuantization.Fermionic.externalSubsetConnectedDiagramSeries ε β g labels times",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -163944,19 +164446,16 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.externalSubsetSourceCumulantSeries_eq_connectedDiagramSeries_of_signedMoments",
+    "name": "SecondQuantization.Fermionic.externalSubsetSourceCumulantSeries_eq_connectedDiagramSeries_two",
     "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalSubsetMoment",
     "externalAxioms": [],
-    "docString": "The precise remaining physical bridge for Phase 5: once the actual\nvacuum-normalized Wick/Dyson moments satisfy the signed external-partition\nidentity, the recursively defined fermionic *source cumulant* is the fully\nexternally connected integrated diagram sum.\n\nThis theorem uses genuine signed moment inversion; it does not assume\nunsigned Möbius inversion or conflate vacuum-freeness with connectivity.\nIts hypothesis is the still-required diagram-assembly/shuffle identity. ",
+    "docString": "The actual two-insertion source cumulant equals the fully\nexternally connected physical Dyson series at all perturbative\norders, with no signed-moment hypothesis. This is the two-insertion\nspecialization; higher external sectors still need the shuffle\ncovariance theorem. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "SecondQuantization.Fermionic.externalPartitionWeightedMoment_injective",
-      "SecondQuantization.Fermionic.externalSubsetConnectedDiagramSeries_empty",
-      "SecondQuantization.Fermionic.externalSubsetMomentSeries_empty",
-      "SecondQuantization.Fermionic.externalSubsetSourceCumulantSeries_empty",
-      "SecondQuantization.Fermionic.externalSubsetSourceCumulantSeries_reconstruct"
+      "SecondQuantization.Fermionic.externalSubsetMomentSeries_eq_signedConnected_two",
+      "SecondQuantization.Fermionic.externalSubsetSourceCumulantSeries_eq_connectedDiagramSeries_of_signedMoments"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -170330,7 +170829,51 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] {K : ℕ},\n  K = 1 →\n    ∀ (ε : Mode → ℝ) (β : ℝ) (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ)\n      (labels : Fin (2 * K) → SecondQuantization.Fermionic.ExternalFieldLabel Mode) (times : Fin (2 * K) → ℝ),\n      SecondQuantization.Fermionic.vacuumFreeExternalInsertionDysonSeries ε β g labels times =\n        SecondQuantization.Fermionic.connectedExternalInsertionDysonSeries ε β g labels times",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Fermionic.vacuumFreeExternalInsertionDysonSeries_eq_connected_of_single_pair",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalSubsetMoment",
+    "externalAxioms": [],
+    "docString": "The physical vacuum-free and connected Dyson series agree for any\nexternal pair count *proved equal* to one; this dependent form avoids\ncasts in the source-subset moment theorem. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Fermionic.externalSubsetMomentSeries_eq_signedConnected_two"
+    ],
+    "dependencies": [
+      "SecondQuantization.Fermionic.vacuumFreeExternalInsertionDysonSeries_eq_connected_two"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.externalSubsetMomentSeries_eq_signedConnected_two"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] (ε : Mode → ℝ) (β : ℝ)\n  (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ)\n  (labels : Fin 2 → SecondQuantization.Fermionic.ExternalFieldLabel Mode) (times : Fin 2 → ℝ),\n  SecondQuantization.Fermionic.vacuumFreeExternalInsertionDysonSeries ε β g labels times =\n    SecondQuantization.Fermionic.connectedExternalInsertionDysonSeries ε β g labels times",
     "standardAxioms": [
       "Classical.choice",
@@ -170338,7 +170881,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -170349,14 +170892,18 @@
     "docString": "At two external insertions, the *physical* vacuum-free Dyson series\nand the fully externally connected diagram series agree without a signed\npartition-moment hypothesis, at every perturbative order. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "SecondQuantization.Fermionic.vacuumFreeExternalInsertionDysonSeries_eq_connected_of_single_pair"
+    ],
     "dependencies": [
       "SecondQuantization.Fermionic.vacuumFreeExternalInsertionDysonCoefficient_eq_connected_two"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.vacuumFreeExternalInsertionDysonSeries_eq_connected_of_single_pair"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -202268,7 +202815,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -202280,15 +202827,17 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "SecondQuantization.Fermionic.externalPartitionWeightedMoment_eq_of_proper_zero",
       "SecondQuantization.Fermionic.externalPartitionWeightedMoment_injective"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "SecondQuantization.Fermionic.externalPartitionWeightedMoment_eq_of_proper_zero",
       "SecondQuantization.Fermionic.externalPartitionWeightedMoment_injective"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
