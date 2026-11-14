@@ -63,11 +63,6 @@ private theorem integral_complex_sin_zero_two_pi :
   simpa using
     (@intervalIntegral.integral_ofReal (0 : ℝ) (2 * Real.pi) volume Real.sin)
 
-/-- Full-angle integral of `cos² θ`. -/
-theorem integral_cos_sq_zero_two_pi :
-    (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi), Real.cos θ ^ 2) = Real.pi := by
-  simpa using (integral_cos_sq (a := (0 : ℝ)) (b := 2 * Real.pi))
-
 /-- The complexified second cosine harmonic integrates to zero over a full polar angle. -/
 private theorem integral_complex_cos_sq_sub_sin_sq_zero_two_pi :
     (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi),
@@ -189,7 +184,11 @@ theorem integral_quadratic_cos_zero_two_pi (a b c : ℝ) :
   rw [intervalIntegral.integral_add (hconst.add hcos) hcosSq,
     intervalIntegral.integral_add hconst hcos,
     intervalIntegral.integral_const_mul, intervalIntegral.integral_const_mul,
-    integral_cos, integral_cos_sq_zero_two_pi]
+    integral_cos]
+  have hcosSq :
+      (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi), Real.cos θ ^ 2) = Real.pi := by
+    simpa using (integral_cos_sq (a := (0 : ℝ)) (b := 2 * Real.pi))
+  rw [hcosSq]
   simp
   ring
 
