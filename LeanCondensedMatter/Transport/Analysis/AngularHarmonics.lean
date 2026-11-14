@@ -185,10 +185,10 @@ theorem integral_quadratic_cos_zero_two_pi (a b c : ℝ) :
     intervalIntegral.integral_add hconst hcos,
     intervalIntegral.integral_const_mul, intervalIntegral.integral_const_mul,
     integral_cos]
-  have hcosSq :
+  have hcosSqIntegral :
       (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi), Real.cos θ ^ 2) = Real.pi := by
     simpa using (integral_cos_sq (a := (0 : ℝ)) (b := 2 * Real.pi))
-  rw [hcosSq]
+  rw [hcosSqIntegral]
   simp
   ring
 
