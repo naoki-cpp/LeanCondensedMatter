@@ -252,19 +252,21 @@ theorem norm_resolvent_spectralParameterOfRegulator_le
     calc
       |regulator| * ‖green v‖ ^ 2 =
           |(inner ℂ (green v) v).im| := by
-            rw [hIm, abs_mul, abs_of_nonneg (sq_nonneg _)]
+            rw [hIm, abs_mul]
+            rw [abs_of_nonneg (sq_nonneg _)]
       _ ≤ ‖inner ℂ (green v) v‖ := Complex.abs_im_le_norm _
       _ ≤ ‖green v‖ * ‖v‖ := norm_inner_le_norm _ _
   by_cases hv : green v = 0
-  · simp [hv]
+  · simp only [hv, norm_zero]
+    exact mul_nonneg (inv_nonneg.mpr hregPos.le) (norm_nonneg v)
   have hvPos : 0 < ‖green v‖ := norm_pos_iff.mpr hv
-  have hscaled : (|regulator| * ‖green v‖) * ‖green v‖ ≤
-      ‖v‖ * ‖green v‖ := by
+  have hscaled : ‖green v‖ * (|regulator| * ‖green v‖) ≤
+      ‖green v‖ * ‖v‖ := by
     nlinarith [hquad]
   have hcancel : |regulator| * ‖green v‖ ≤ ‖v‖ :=
     (mul_le_mul_iff_right₀ hvPos).mp hscaled
   have hdiv : ‖green v‖ ≤ ‖v‖ / |regulator| :=
-    (le_div_iff₀ hregPos).mpr hcancel
+    (le_div_iff₀ hregPos).mpr (by simpa only [mul_comm] using hcancel)
   simpa [div_eq_mul_inv, mul_comm] using hdiv
 
 /-- For a self-adjoint Hamiltonian, taking the adjoint of a resolvent reverses the arbitrary signed
