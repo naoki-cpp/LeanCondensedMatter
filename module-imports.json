@@ -952,6 +952,12 @@
       "externalImportCount": 4
     },
     {
+      "name": "LeanCondensedMatter.Analysis.PowerSeries.CoefficientSum",
+      "sourceFile": "LeanCondensedMatter/Analysis/PowerSeries/CoefficientSum.lean",
+      "imports": [],
+      "externalImportCount": 7
+    },
+    {
       "name": "LeanCondensedMatter.Analysis.PowerSeries.Cumulant",
       "sourceFile": "LeanCondensedMatter/Analysis/PowerSeries/Cumulant.lean",
       "imports": [
@@ -1017,6 +1023,7 @@
       "sourceFile": "LeanCondensedMatter/Analysis/PowerSeries.lean",
       "imports": [
         "LeanCondensedMatter.Analysis.PowerSeries.AnalyticLog",
+        "LeanCondensedMatter.Analysis.PowerSeries.CoefficientSum",
         "LeanCondensedMatter.Analysis.PowerSeries.Cumulant",
         "LeanCondensedMatter.Analysis.PowerSeries.Moment",
         "LeanCondensedMatter.Analysis.PowerSeries.Normalization",
@@ -8385,15 +8392,6 @@
       "externalImportCount": 0
     },
     {
-      "name": "LeanCondensedMatter.Transport.Analysis.BesselFormalEntireEvaluation",
-      "sourceFile": "LeanCondensedMatter/Transport/Analysis/BesselFormalEntireEvaluation.lean",
-      "imports": [
-        "LeanCondensedMatter.Transport.Analysis.BesselJFormalAnalyticBridge",
-        "LeanCondensedMatter.Transport.Analysis.BesselYFormalAnalyticBridge"
-      ],
-      "externalImportCount": 2
-    },
-    {
       "name": "LeanCondensedMatter.Transport.Analysis.BesselJFormalAnalyticBridge",
       "sourceFile": "LeanCondensedMatter/Transport/Analysis/BesselJFormalAnalyticBridge.lean",
       "imports": [
@@ -8430,8 +8428,10 @@
       "name": "LeanCondensedMatter.Transport.Analysis.BesselYAnalyticWronskian",
       "sourceFile": "LeanCondensedMatter/Transport/Analysis/BesselYAnalyticWronskian.lean",
       "imports": [
+        "LeanCondensedMatter.Analysis.PowerSeries.CoefficientSum",
         "LeanCondensedMatter.Transport.Analysis.BesselCrossedXMoment",
-        "LeanCondensedMatter.Transport.Analysis.BesselFormalEntireEvaluation"
+        "LeanCondensedMatter.Transport.Analysis.BesselJFormalAnalyticBridge",
+        "LeanCondensedMatter.Transport.Analysis.BesselYFormalAnalyticBridge"
       ],
       "externalImportCount": 0
     },
@@ -8532,7 +8532,6 @@
       "sourceFile": "LeanCondensedMatter/Transport/Analysis.lean",
       "imports": [
         "LeanCondensedMatter.Transport.Analysis.AngularHarmonics",
-        "LeanCondensedMatter.Transport.Analysis.BesselFormalEntireEvaluation",
         "LeanCondensedMatter.Transport.Analysis.BesselJFormalAnalyticBridge",
         "LeanCondensedMatter.Transport.Analysis.BesselRadialMoments",
         "LeanCondensedMatter.Transport.Analysis.BesselY0Series",

@@ -38767,6 +38767,260 @@
   },
   {
     "terminal": false,
+    "statement": "∀ (f : PowerSeries ℂ) (x c : ℂ), (PowerSeries.C c * f).coefficientSum x = c * f.coefficientSum x",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "PowerSeries.coefficientSum_C_mul",
+    "module": "LeanCondensedMatter.Analysis.PowerSeries.CoefficientSum",
+    "externalAxioms": [],
+    "docString": "Multiplication by a complex constant commutes with the total coefficientwise sum,\nincluding when the coefficient sequence is not summable. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.besselY0Y1_harmonicIdentity"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.besselY0Y1_harmonicIdentity"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (f : PowerSeries ℂ) (x : ℂ), (PowerSeries.X * f).coefficientSum x = x * f.coefficientSum x",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "PowerSeries.coefficientSum_X_mul",
+    "module": "LeanCondensedMatter.Analysis.PowerSeries.CoefficientSum",
+    "externalAxioms": [],
+    "docString": "Multiplication by X commutes with the total coefficientwise sum: its zero constant\ncoefficient permits an unconditional shift of the series. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.besselY0Y1_harmonicIdentity"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.besselY0Y1_harmonicIdentity"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (f g : PowerSeries ℂ) (x : ℂ),\n  (Summable fun n => (PowerSeries.coeff n) f * x ^ n) →\n    (Summable fun n => (PowerSeries.coeff n) g * x ^ n) →\n      (f + g).coefficientSum x = f.coefficientSum x + g.coefficientSum x",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "PowerSeries.coefficientSum_add",
+    "module": "LeanCondensedMatter.Analysis.PowerSeries.CoefficientSum",
+    "externalAxioms": [],
+    "docString": "Addition commutes with coefficientwise evaluation when both terms are summable. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.besselY0Y1_harmonicIdentity"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.besselY0Y1_harmonicIdentity"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (f g : PowerSeries ℂ) (x : ℂ),\n  (Summable fun n => (PowerSeries.coeff n) f * x ^ n) →\n    (Summable fun n => (PowerSeries.coeff n) g * x ^ n) →\n      (f * g).coefficientSum x = f.coefficientSum x * g.coefficientSum x",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "PowerSeries.coefficientSum_mul",
+    "module": "LeanCondensedMatter.Analysis.PowerSeries.CoefficientSum",
+    "externalAxioms": [],
+    "docString": "An absolutely convergent pair of coefficientwise series admits\nCauchy multiplication, with the product coefficients coming from the\n*formal* power-series multiplication in ℂ⟦X⟧. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.besselY0Y1_harmonicIdentity"
+    ],
+    "dependencies": [
+      "_private.LeanCondensedMatter.Analysis.PowerSeries.CoefficientSum.0.PowerSeries.coeff_mul_mul_pow"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.besselY0Y1_harmonicIdentity"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (x : ℂ), PowerSeries.coefficientSum 1 x = 1",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "PowerSeries.coefficientSum_one",
+    "module": "LeanCondensedMatter.Analysis.PowerSeries.CoefficientSum",
+    "externalAxioms": [],
+    "docString": "The unit formal power series evaluates to one. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.besselY0Y1_harmonicIdentity"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.besselY0Y1_harmonicIdentity"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (f g : PowerSeries ℂ) (x : ℂ),\n  (Summable fun n => (PowerSeries.coeff n) f * x ^ n) →\n    (Summable fun n => (PowerSeries.coeff n) g * x ^ n) →\n      (f - g).coefficientSum x = f.coefficientSum x - g.coefficientSum x",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "PowerSeries.coefficientSum_sub",
+    "module": "LeanCondensedMatter.Analysis.PowerSeries.CoefficientSum",
+    "externalAxioms": [],
+    "docString": "Subtraction commutes with coefficientwise evaluation when both terms are summable. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.besselY0Y1_harmonicIdentity"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.besselY0Y1_harmonicIdentity"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {R : Type u_1} [inst : Field R] {Z : PowerSeries R},\n  PowerSeries.constantCoeff Z ≠ 0 → PowerSeries.constantCoeff Z.normalizeByConstantCoeff = 1",
     "standardAxioms": [
       "Classical.choice",
@@ -39016,6 +39270,176 @@
     "completedMention": false,
     "compiledConsumers": [],
     "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (f : PowerSeries ℂ) (x c : ℂ),\n  (Summable fun n => (PowerSeries.coeff n) f * x ^ n) →\n    Summable fun n => (PowerSeries.coeff n) (PowerSeries.C c * f) * x ^ n",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "PowerSeries.summable_coefficientSum_C_mul",
+    "module": "LeanCondensedMatter.Analysis.PowerSeries.CoefficientSum",
+    "externalAxioms": [],
+    "docString": "Multiplication by a complex constant preserves coefficientwise summability. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.besselY0Y1_harmonicIdentity"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.besselY0Y1_harmonicIdentity"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (f : PowerSeries ℂ) (x : ℂ),\n  (Summable fun n => (PowerSeries.coeff n) f * x ^ n) →\n    Summable fun n => (PowerSeries.coeff n) (PowerSeries.X * f) * x ^ n",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "PowerSeries.summable_coefficientSum_X_mul",
+    "module": "LeanCondensedMatter.Analysis.PowerSeries.CoefficientSum",
+    "externalAxioms": [],
+    "docString": "Formal multiplication by X shifts a summable coefficient sequence\nand therefore preserves convergence at the chosen complex argument. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.besselY0Y1_harmonicIdentity"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.besselY0Y1_harmonicIdentity"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (f g : PowerSeries ℂ) (x : ℂ),\n  (Summable fun n => (PowerSeries.coeff n) f * x ^ n) →\n    (Summable fun n => (PowerSeries.coeff n) g * x ^ n) → Summable fun n => (PowerSeries.coeff n) (f + g) * x ^ n",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "PowerSeries.summable_coefficientSum_add",
+    "module": "LeanCondensedMatter.Analysis.PowerSeries.CoefficientSum",
+    "externalAxioms": [],
+    "docString": "Addition preserves summable coefficientwise complex evaluation. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.besselY0Y1_harmonicIdentity"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.besselY0Y1_harmonicIdentity"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (f g : PowerSeries ℂ) (x : ℂ),\n  (Summable fun n => (PowerSeries.coeff n) f * x ^ n) →\n    (Summable fun n => (PowerSeries.coeff n) g * x ^ n) → Summable fun n => (PowerSeries.coeff n) (f * g) * x ^ n",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "PowerSeries.summable_coefficientSum_mul",
+    "module": "LeanCondensedMatter.Analysis.PowerSeries.CoefficientSum",
+    "externalAxioms": [],
+    "docString": "Cauchy convolution is itself summable when the two coefficientwise\nseries are absolutely summable. This makes multiplication composable with\naddition and multiplication by X. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.besselY0Y1_harmonicIdentity"
+    ],
+    "dependencies": [
+      "_private.LeanCondensedMatter.Analysis.PowerSeries.CoefficientSum.0.PowerSeries.coeff_mul_mul_pow"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.besselY0Y1_harmonicIdentity"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -93929,260 +94353,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (f : PowerSeries ℂ) (x : ℂ),\n  (Summable fun n => (PowerSeries.coeff n) f * x ^ n) →\n    QuantumTheory.Transport.besselEntireCoefficientEval (PowerSeries.X * f) x =\n      x * QuantumTheory.Transport.besselEntireCoefficientEval f x",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.besselEntireCoefficientEval_X_mul",
-    "module": "LeanCondensedMatter.Transport.Analysis.BesselFormalEntireEvaluation",
-    "externalAxioms": [],
-    "docString": "The formal product by X is compatible with coefficientwise evaluation\nat any complex argument whenever the original series is summable. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.besselY0Y1_harmonicIdentity"
-    ],
-    "dependencies": [
-      "QuantumTheory.Transport.summable_besselEntireCoefficientEval_X_mul"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.besselY0Y1_harmonicIdentity"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (f g : PowerSeries ℂ) (x : ℂ),\n  (Summable fun n => (PowerSeries.coeff n) f * x ^ n) →\n    (Summable fun n => (PowerSeries.coeff n) g * x ^ n) →\n      QuantumTheory.Transport.besselEntireCoefficientEval (f + g) x =\n        QuantumTheory.Transport.besselEntireCoefficientEval f x +\n          QuantumTheory.Transport.besselEntireCoefficientEval g x",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.besselEntireCoefficientEval_add",
-    "module": "LeanCondensedMatter.Transport.Analysis.BesselFormalEntireEvaluation",
-    "externalAxioms": [],
-    "docString": "Transport of addition, requiring both terms to be summable. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.besselY0Y1_harmonicIdentity"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.besselY0Y1_harmonicIdentity"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (f g : PowerSeries ℂ) (x : ℂ),\n  (Summable fun n => (PowerSeries.coeff n) f * x ^ n) →\n    (Summable fun n => (PowerSeries.coeff n) g * x ^ n) →\n      QuantumTheory.Transport.besselEntireCoefficientEval (f * g) x =\n        QuantumTheory.Transport.besselEntireCoefficientEval f x *\n          QuantumTheory.Transport.besselEntireCoefficientEval g x",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.besselEntireCoefficientEval_mul",
-    "module": "LeanCondensedMatter.Transport.Analysis.BesselFormalEntireEvaluation",
-    "externalAxioms": [],
-    "docString": "An absolutely convergent pair of coefficientwise series admits\nCauchy multiplication, with the product coefficients coming from the\n*formal* power-series multiplication in ℂ⟦X⟧. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.besselY0Y1_harmonicIdentity"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.besselY0Y1_harmonicIdentity"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (x : ℂ), QuantumTheory.Transport.besselEntireCoefficientEval 1 x = 1",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.besselEntireCoefficientEval_one",
-    "module": "LeanCondensedMatter.Transport.Analysis.BesselFormalEntireEvaluation",
-    "externalAxioms": [],
-    "docString": "The unit formal power series evaluates to one. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.besselY0Y1_harmonicIdentity"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.besselY0Y1_harmonicIdentity"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (f g : PowerSeries ℂ) (x : ℂ),\n  (Summable fun n => (PowerSeries.coeff n) f * x ^ n) →\n    (Summable fun n => (PowerSeries.coeff n) g * x ^ n) →\n      QuantumTheory.Transport.besselEntireCoefficientEval (f - g) x =\n        QuantumTheory.Transport.besselEntireCoefficientEval f x -\n          QuantumTheory.Transport.besselEntireCoefficientEval g x",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.besselEntireCoefficientEval_sub",
-    "module": "LeanCondensedMatter.Transport.Analysis.BesselFormalEntireEvaluation",
-    "externalAxioms": [],
-    "docString": "Transport of subtraction, requiring both terms to be summable. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.besselY0Y1_harmonicIdentity"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.besselY0Y1_harmonicIdentity"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (f : PowerSeries ℂ) (x : ℂ),\n  (Summable fun n => (PowerSeries.coeff n) f * x ^ n) →\n    QuantumTheory.Transport.besselEntireCoefficientEval (2 * f) x =\n      2 * QuantumTheory.Transport.besselEntireCoefficientEval f x",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.besselEntireCoefficientEval_two_mul",
-    "module": "LeanCondensedMatter.Transport.Analysis.BesselFormalEntireEvaluation",
-    "externalAxioms": [],
-    "docString": "Scaling a formal series by two commutes with convergent evaluation. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.besselY0Y1_harmonicIdentity"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.besselY0Y1_harmonicIdentity"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ (n : ℕ),\n  ↑(n + 1) ^ 2 * (PowerSeries.coeff (n + 1)) QuantumTheory.Transport.besselFormalH0 =\n    (PowerSeries.coeff n) QuantumTheory.Transport.besselFormalH0 +\n      ↑(n + 1) * (PowerSeries.coeff (n + 1)) QuantumTheory.Transport.besselFormalJ0",
     "standardAxioms": [
       "Classical.choice",
@@ -95324,21 +95494,21 @@
       "QuantumTheory.Transport.besselY0Y1Series_wronskian"
     ],
     "dependencies": [
-      "QuantumTheory.Transport.besselEntireCoefficientEval_X_mul",
-      "QuantumTheory.Transport.besselEntireCoefficientEval_add",
-      "QuantumTheory.Transport.besselEntireCoefficientEval_mul",
-      "QuantumTheory.Transport.besselEntireCoefficientEval_one",
-      "QuantumTheory.Transport.besselEntireCoefficientEval_sub",
-      "QuantumTheory.Transport.besselEntireCoefficientEval_two_mul",
+      "PowerSeries.coefficientSum_C_mul",
+      "PowerSeries.coefficientSum_X_mul",
+      "PowerSeries.coefficientSum_add",
+      "PowerSeries.coefficientSum_mul",
+      "PowerSeries.coefficientSum_one",
+      "PowerSeries.coefficientSum_sub",
+      "PowerSeries.summable_coefficientSum_C_mul",
+      "PowerSeries.summable_coefficientSum_X_mul",
+      "PowerSeries.summable_coefficientSum_add",
+      "PowerSeries.summable_coefficientSum_mul",
       "QuantumTheory.Transport.besselFormalJ0H0H1_harmonicIdentity",
       "QuantumTheory.Transport.besselJOne_eq_formalDerivativeTsum",
       "QuantumTheory.Transport.besselJZero_eq_formalTsum",
       "QuantumTheory.Transport.besselY0HarmonicCorrection_eq_formalTsum",
       "QuantumTheory.Transport.besselY1HarmonicCorrection_eq_formalTsum",
-      "QuantumTheory.Transport.summable_besselEntireCoefficientEval_X_mul",
-      "QuantumTheory.Transport.summable_besselEntireCoefficientEval_add",
-      "QuantumTheory.Transport.summable_besselEntireCoefficientEval_mul",
-      "QuantumTheory.Transport.summable_besselEntireCoefficientEval_two_mul",
       "QuantumTheory.Transport.summable_besselFormalH0_eval",
       "QuantumTheory.Transport.summable_besselFormalH1_eval",
       "QuantumTheory.Transport.summable_besselFormalJ0_derivative_eval",
@@ -101592,176 +101762,6 @@
       "QuantumTheory.Transport.star_spectralParameter"
     ],
     "compiledConsumerCount": 3,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (f : PowerSeries ℂ) (x : ℂ),\n  (Summable fun n => (PowerSeries.coeff n) f * x ^ n) →\n    Summable fun n => (PowerSeries.coeff n) (PowerSeries.X * f) * x ^ n",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.summable_besselEntireCoefficientEval_X_mul",
-    "module": "LeanCondensedMatter.Transport.Analysis.BesselFormalEntireEvaluation",
-    "externalAxioms": [],
-    "docString": "Formal multiplication by X shifts a summable coefficient sequence\nand therefore preserves convergence at the chosen complex argument. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.besselEntireCoefficientEval_X_mul",
-      "QuantumTheory.Transport.besselY0Y1_harmonicIdentity"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.besselEntireCoefficientEval_X_mul",
-      "QuantumTheory.Transport.besselY0Y1_harmonicIdentity"
-    ],
-    "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (f g : PowerSeries ℂ) (x : ℂ),\n  (Summable fun n => (PowerSeries.coeff n) f * x ^ n) →\n    (Summable fun n => (PowerSeries.coeff n) g * x ^ n) → Summable fun n => (PowerSeries.coeff n) (f + g) * x ^ n",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.summable_besselEntireCoefficientEval_add",
-    "module": "LeanCondensedMatter.Transport.Analysis.BesselFormalEntireEvaluation",
-    "externalAxioms": [],
-    "docString": "Addition preserves summable coefficientwise complex evaluation. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.besselY0Y1_harmonicIdentity"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.besselY0Y1_harmonicIdentity"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (f g : PowerSeries ℂ) (x : ℂ),\n  (Summable fun n => (PowerSeries.coeff n) f * x ^ n) →\n    (Summable fun n => (PowerSeries.coeff n) g * x ^ n) → Summable fun n => (PowerSeries.coeff n) (f * g) * x ^ n",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.summable_besselEntireCoefficientEval_mul",
-    "module": "LeanCondensedMatter.Transport.Analysis.BesselFormalEntireEvaluation",
-    "externalAxioms": [],
-    "docString": "Cauchy convolution is itself summable when the two coefficientwise\nseries are absolutely summable. This makes multiplication composable with\naddition and multiplication by X. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.besselY0Y1_harmonicIdentity"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.besselY0Y1_harmonicIdentity"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (f : PowerSeries ℂ) (x : ℂ),\n  (Summable fun n => (PowerSeries.coeff n) f * x ^ n) → Summable fun n => (PowerSeries.coeff n) (2 * f) * x ^ n",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.summable_besselEntireCoefficientEval_two_mul",
-    "module": "LeanCondensedMatter.Transport.Analysis.BesselFormalEntireEvaluation",
-    "externalAxioms": [],
-    "docString": "Scaling a formal series by two preserves convergence. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.besselY0Y1_harmonicIdentity"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.besselY0Y1_harmonicIdentity"
-    ],
-    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -176380,6 +176380,50 @@
       "intervalIntegral.orderedSimplexIntegral_congr_of_strictAnti"
     ],
     "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (f g : PowerSeries ℂ) (x : ℂ) (n : ℕ),\n  (PowerSeries.coeff n) (f * g) * x ^ n =\n    ∑ p ∈ Finset.HasAntidiagonal.antidiagonal n,\n      (PowerSeries.coeff p.1) f * x ^ p.1 * ((PowerSeries.coeff p.2) g * x ^ p.2)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Analysis.PowerSeries.CoefficientSum.0.PowerSeries.coeff_mul_mul_pow",
+    "module": "LeanCondensedMatter.Analysis.PowerSeries.CoefficientSum",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "PowerSeries.coefficientSum_mul",
+      "PowerSeries.summable_coefficientSum_mul"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "PowerSeries.coefficientSum_mul",
+      "PowerSeries.summable_coefficientSum_mul"
+    ],
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
