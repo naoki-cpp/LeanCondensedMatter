@@ -134,32 +134,18 @@ theorem tendsto_targetCenteredInterbandBastinPairIntegral_re_berryCurvature
       (nhds
         (-2 * Real.pi *
           (params.signedCharge ^ 2 * berryCurvature params band px py))) := by
-  have hgeneric :=
-    tendsto_interbandBastinPoleIntegral_re
-      (interbandEnergyGap params band px py)
-      (currentBandBlockTrace params 0 1 (oppositeBand band) band px py)
-      (currentBandBlockTrace params 1 0 (oppositeBand band) band px py)
-      radius hradiusPos hradius
-  have him :=
-    interbandPoleRegularFactor_zero_im_eq_neg_chargeSq_berryCurvature
+  apply tendsto_interbandBastinPoleIntegral_re_of_eq_on_pos
+    (interbandEnergyGap params band px py)
+    (currentBandBlockTrace params 0 1 (oppositeBand band) band px py)
+    (currentBandBlockTrace params 1 0 (oppositeBand band) band px py)
+    radius (params.signedCharge ^ 2 * berryCurvature params band px py)
+    (fun broadening => targetCenteredInterbandBastinPairIntegral
+      params band px py radius broadening) hradiusPos hradius
+  · intro broadening hbroadening
+    exact targetCenteredInterbandBastinPairIntegral_eq_interbandBastinPoleIntegral
+      params band px py radius broadening hbroadening.ne'
+  · exact interbandPoleRegularFactor_zero_im_eq_neg_chargeSq_berryCurvature
       params band px py hE
-  have hgeneric' : Tendsto
-      (fun broadening : ℝ =>
-        (interbandBastinPoleIntegral
-          (interbandEnergyGap params band px py)
-          (currentBandBlockTrace params 0 1 (oppositeBand band) band px py)
-          (currentBandBlockTrace params 1 0 (oppositeBand band) band px py)
-          radius broadening).re)
-      (nhdsWithin 0 (Set.Ioi 0))
-      (nhds
-        (-2 * Real.pi *
-          (params.signedCharge ^ 2 * berryCurvature params band px py))) := by
-    simpa [him] using hgeneric
-  refine hgeneric'.congr' ?_
-  filter_upwards [self_mem_nhdsWithin] with broadening hbroadening
-  exact congrArg Complex.re
-    (targetCenteredInterbandBastinPairIntegral_eq_interbandBastinPoleIntegral
-      params band px py radius broadening hbroadening.ne').symm
 
 /-- The clean local density extracted from one isolated opposite-source
 Bastin pole. This is a single unweighted ordered-pair coefficient, not a

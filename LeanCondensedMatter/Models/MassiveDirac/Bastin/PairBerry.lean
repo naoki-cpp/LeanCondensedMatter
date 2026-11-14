@@ -61,37 +61,19 @@ theorem tendsto_targetCenteredInterbandBastinPairIntegral_re_berryCurvature
           band e v m px py radius broadening).re)
       (nhdsWithin 0 (Set.Ioi 0))
       (nhds (-2 * Real.pi * (e ^ 2 * berryCurvature band v m px py))) := by
-  have hgeneric :=
-    tendsto_interbandBastinPoleIntegral_re
-      (interbandEnergyGap band v m px py)
-      (currentBandBlockTrace 0 1 (oppositeBand band) band e v m px py)
-      (currentBandBlockTrace 1 0 (oppositeBand band) band e v m px py)
-      radius hradiusPos hradius
-  have him :
-      (interbandPoleRegularFactor
-        (interbandEnergyGap band v m px py)
-        (currentBandBlockTrace 0 1 (oppositeBand band) band e v m px py)
-        (currentBandBlockTrace 1 0 (oppositeBand band) band e v m px py)
-        (0, 0)).im =
-      -(e ^ 2 * berryCurvature band v m px py) := by
-    rw [← targetCenteredInterbandSpectatorCurrentFactor_eq_interbandPoleRegularFactor]
+  apply tendsto_interbandBastinPoleIntegral_re_of_eq_on_pos
+    (interbandEnergyGap band v m px py)
+    (currentBandBlockTrace 0 1 (oppositeBand band) band e v m px py)
+    (currentBandBlockTrace 1 0 (oppositeBand band) band e v m px py)
+    radius (e ^ 2 * berryCurvature band v m px py)
+    (fun broadening => targetCenteredInterbandBastinPairIntegral
+      band e v m px py radius broadening) hradiusPos hradius
+  · intro broadening hbroadening
+    exact targetCenteredInterbandBastinPairIntegral_eq_interbandBastinPoleIntegral
+      band e v m px py radius broadening hbroadening.ne'
+  · rw [← targetCenteredInterbandSpectatorCurrentFactor_eq_interbandPoleRegularFactor]
     exact targetCenteredInterbandSpectatorCurrentFactor_zero_im_eq_neg_chargeSq_berryCurvature
       band e v m px py hE
-  have hgeneric' : Tendsto
-      (fun broadening : ℝ =>
-        (interbandBastinPoleIntegral
-          (interbandEnergyGap band v m px py)
-          (currentBandBlockTrace 0 1 (oppositeBand band) band e v m px py)
-          (currentBandBlockTrace 1 0 (oppositeBand band) band e v m px py)
-          radius broadening).re)
-      (nhdsWithin 0 (Set.Ioi 0))
-      (nhds (-2 * Real.pi * (e ^ 2 * berryCurvature band v m px py))) := by
-    simpa [him] using hgeneric
-  refine hgeneric'.congr' ?_
-  filter_upwards [self_mem_nhdsWithin] with broadening hbroadening
-  exact congrArg Complex.re
-    (targetCenteredInterbandBastinPairIntegral_eq_interbandBastinPoleIntegral
-      band e v m px py radius broadening hbroadening.ne').symm
 
 end
 
