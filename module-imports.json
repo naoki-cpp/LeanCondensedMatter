@@ -8658,7 +8658,7 @@
         "LeanCondensedMatter.Transport.Disorder.TwoParticle",
         "LeanCondensedMatter.Transport.Streda.RetardedAdvanced"
       ],
-      "externalImportCount": 0
+      "externalImportCount": 1
     },
     {
       "name": "LeanCondensedMatter.Transport.Disorder.TwoParticle",
@@ -8666,7 +8666,7 @@
       "imports": [
         "LeanCondensedMatter.Transport.Disorder.Resolvent"
       ],
-      "externalImportCount": 2
+      "externalImportCount": 3
     },
     {
       "name": "LeanCondensedMatter.Transport.Disorder.Ward",

@@ -82338,7 +82338,7 @@
       "QuantumTheory.Models.MassiveDirac.targetCenteredInterbandBastinPairIntegral_eq_interbandBastinPoleIntegral",
       "QuantumTheory.Models.MassiveDirac.targetCenteredInterbandSpectatorCurrentFactor_eq_interbandPoleRegularFactor",
       "QuantumTheory.Models.MassiveDirac.targetCenteredInterbandSpectatorCurrentFactor_zero_im_eq_neg_chargeSq_berryCurvature",
-      "QuantumTheory.Transport.tendsto_interbandBastinPoleIntegral_re"
+      "QuantumTheory.Transport.tendsto_interbandBastinPoleIntegral_re_of_eq_on_pos"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -88532,7 +88532,7 @@
     "dependencies": [
       "QuantumTheory.Models.RashbaExchange.interbandPoleRegularFactor_zero_im_eq_neg_chargeSq_berryCurvature",
       "QuantumTheory.Models.RashbaExchange.targetCenteredInterbandBastinPairIntegral_eq_interbandBastinPoleIntegral",
-      "QuantumTheory.Transport.tendsto_interbandBastinPoleIntegral_re"
+      "QuantumTheory.Transport.tendsto_interbandBastinPoleIntegral_re_of_eq_on_pos"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -90562,40 +90562,76 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} {Ω : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] [inst_3 : Fintype Ω] (ensemble : QuantumTheory.Transport.FiniteDisorderEnsemble)\n  {left right : Ω → ℂ}, (∀ (ω : Ω), left ω = right ω) → ensemble.average left = ensemble.average right",
+    "statement": "∀ {H : Type u_1} {Ω : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] [inst_3 : Fintype Ω] (ensemble : QuantumTheory.Transport.FiniteDisorderEnsemble)\n  {E : Type u_3} [inst_4 : AddCommMonoid E] [inst_5 : _root_.Module ℂ E] (value : E),\n  (ensemble.average fun x => value) = value",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": true,
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "QuantumTheory.Transport.FiniteDisorderEnsemble.average_congr",
+    "name": "QuantumTheory.Transport.FiniteDisorderEnsemble.average_const",
     "module": "LeanCondensedMatter.Transport.Disorder.Finite",
     "externalAxioms": [],
-    "docString": "Pointwise-equal configuration observables have the same finite disorder average. ",
+    "docString": "Normalization makes the finite disorder average fix constant families. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Transport.FiniteDisorderEnsemble.average_twoGreenVertexTraceKernel_eq_trace_insertion",
-      "QuantumTheory.Transport.FiniteDisorderEnsemble.averagedConnectedCorrelation_eq_fourLegAverage",
-      "SecondQuantization.Fermionic.Transport.finiteDisorderAveragedStaticConductivity_eq_spectralEnergyIntegralAverage",
-      "SecondQuantization.Fermionic.Transport.finiteDisorderAveragedStaticConductivity_eq_tracedBastinAverage"
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.averagedOperatorInsertion_eq_mean_add_connected"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Transport.FiniteDisorderEnsemble.average_twoGreenVertexTraceKernel_eq_trace_insertion",
-      "QuantumTheory.Transport.FiniteDisorderEnsemble.averagedConnectedCorrelation_eq_fourLegAverage",
-      "SecondQuantization.Fermionic.Transport.finiteDisorderAveragedStaticConductivity_eq_spectralEnergyIntegralAverage",
-      "SecondQuantization.Fermionic.Transport.finiteDisorderAveragedStaticConductivity_eq_tracedBastinAverage"
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.averagedOperatorInsertion_eq_mean_add_connected"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {H : Type u_1} {Ω : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] [inst_3 : Fintype Ω] (ensemble : QuantumTheory.Transport.FiniteDisorderEnsemble)\n  (operator : Ω → H →L[ℂ] H), (ensemble.average fun ω => star (operator ω)) = star (ensemble.average operator)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.FiniteDisorderEnsemble.average_star",
+    "module": "LeanCondensedMatter.Transport.Disorder.Finite",
+    "externalAxioms": [],
+    "docString": "Finite operator averaging commutes with adjunction because ensemble weights are real. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.star_averagedGreenOfRegulator"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.star_averagedGreenOfRegulator"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -90632,9 +90668,7 @@
       "QuantumTheory.Transport.FiniteDisorderEnsemble.averagedTwoGreenVertexTraceKernelOfRegulators_eq_mean_add_connected"
     ],
     "dependencies": [
-      "QuantumTheory.Transport.FiniteDisorderEnsemble.average_congr",
-      "QuantumTheory.Transport.FiniteDisorderEnsemble.operatorAverage_mul_left",
-      "QuantumTheory.Transport.FiniteDisorderEnsemble.trace_operatorAverage"
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.map_average"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -90760,7 +90794,6 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "QuantumTheory.Transport.FiniteDisorderEnsemble.average_congr",
       "QuantumTheory.Transport.FiniteDisorderEnsemble.averagedConnectedCorrelation_eq_average_sub"
     ],
     "crossModuleDirectWrapper": false,
@@ -90827,7 +90860,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} {Ω : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] [inst_3 : Fintype Ω] (ensemble : QuantumTheory.Transport.FiniteDisorderEnsemble)\n  (left right : Ω → H →L[ℂ] H) (vertex : H →L[ℂ] H),\n  ensemble.averagedOperatorInsertion left right vertex =\n    ensemble.operatorAverage left * vertex * ensemble.operatorAverage right +\n      ensemble.connectedOperatorInsertion left right vertex",
+    "statement": "∀ {H : Type u_1} {Ω : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] [inst_3 : Fintype Ω] (ensemble : QuantumTheory.Transport.FiniteDisorderEnsemble)\n  (left right : Ω → H →L[ℂ] H) (vertex : H →L[ℂ] H),\n  ensemble.averagedOperatorInsertion left right vertex =\n    ensemble.average left * vertex * ensemble.average right + ensemble.connectedOperatorInsertion left right vertex",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -90849,11 +90882,8 @@
       "QuantumTheory.Transport.FiniteDisorderEnsemble.averagedTwoGreenInsertionOfRegulators_eq_mean_add_connected"
     ],
     "dependencies": [
-      "QuantumTheory.Transport.FiniteDisorderEnsemble.operatorAverage_add",
-      "QuantumTheory.Transport.FiniteDisorderEnsemble.operatorAverage_const",
-      "QuantumTheory.Transport.FiniteDisorderEnsemble.operatorAverage_mul_left",
-      "QuantumTheory.Transport.FiniteDisorderEnsemble.operatorAverage_mul_right",
-      "QuantumTheory.Transport.FiniteDisorderEnsemble.operatorAverage_sub"
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.average_const",
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.map_average"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -91226,7 +91256,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} {Ω : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] [inst_3 : Fintype Ω] (ensemble : QuantumTheory.Transport.FiniteDisorderEnsemble)\n  (kernel : H →L[ℂ] H),\n  ensemble.exactSecondMoment kernel =\n    ensemble.operatorAverage fun ω => ↑(ensemble.impurityPotential ω) * kernel * ↑(ensemble.impurityPotential ω)",
+    "statement": "∀ {H : Type u_1} {Ω : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] [inst_3 : Fintype Ω] (ensemble : QuantumTheory.Transport.FiniteDisorderEnsemble)\n  (kernel : H →L[ℂ] H),\n  ensemble.exactSecondMoment kernel =\n    ensemble.average fun ω => ↑(ensemble.impurityPotential ω) * kernel * ↑(ensemble.impurityPotential ω)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -91238,7 +91268,7 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "QuantumTheory.Transport.FiniteDisorderEnsemble.exactSecondMoment_eq_operatorAverage",
+    "name": "QuantumTheory.Transport.FiniteDisorderEnsemble.exactSecondMoment_eq_average",
     "module": "LeanCondensedMatter.Transport.Disorder.Moments",
     "externalAxioms": [],
     "docString": "The canonical exact second moment is the normalized finite operator average `E[Vω X Vω]`. ",
@@ -91296,7 +91326,7 @@
       "QuantumTheory.Models.MassiveDirac.FiniteScalarDisorderModel.exactSecondMoment_eq_strength_smul"
     ],
     "dependencies": [
-      "QuantumTheory.Transport.FiniteDisorderEnsemble.exactSecondMoment_eq_operatorAverage"
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.exactSecondMoment_eq_average"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -91340,7 +91370,7 @@
       "QuantumTheory.Transport.FiniteDisorderEnsemble.ChargeSymmetry.of_impurityPotential_commute"
     ],
     "dependencies": [
-      "QuantumTheory.Transport.FiniteDisorderEnsemble.exactSecondMoment_eq_operatorAverage"
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.exactSecondMoment_eq_average"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -91385,7 +91415,7 @@
       "QuantumTheory.Transport.FiniteDisorderEnsemble.star_bornSelfEnergyOfRegulator"
     ],
     "dependencies": [
-      "QuantumTheory.Transport.FiniteDisorderEnsemble.exactSecondMoment_eq_operatorAverage"
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.exactSecondMoment_eq_average"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -91539,135 +91569,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} {Ω : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] [inst_3 : Fintype Ω] (ensemble : QuantumTheory.Transport.FiniteDisorderEnsemble)\n  (left kernel : H →L[ℂ] H),\n  (∀ (ω : Ω), Commute (↑(ensemble.impurityPotential ω)) left) →\n    left * ensemble.exactSecondMoment kernel = ensemble.exactSecondMoment (left * kernel)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.FiniteDisorderEnsemble.mul_exactSecondMoment_of_commutes",
-    "module": "LeanCondensedMatter.Transport.Disorder.Moments",
-    "externalAxioms": [],
-    "docString": "Left equivariance of the exact second moment. If every impurity potential commutes with a\nbounded operator, that operator can be moved through the left side of the second-moment action. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.FiniteDisorderEnsemble.ChargeSymmetry.of_impurityPotential_commute"
-    ],
-    "dependencies": [
-      "QuantumTheory.Transport.FiniteDisorderEnsemble.exactSecondMoment_eq_operatorAverage"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.FiniteDisorderEnsemble.ChargeSymmetry.of_impurityPotential_commute"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {H : Type u_1} {Ω : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] [inst_3 : Fintype Ω] (ensemble : QuantumTheory.Transport.FiniteDisorderEnsemble)\n  (left right : Ω → H →L[ℂ] H),\n  (ensemble.operatorAverage fun ω => left ω + right ω) = ensemble.operatorAverage left + ensemble.operatorAverage right",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.FiniteDisorderEnsemble.operatorAverage_add",
-    "module": "LeanCondensedMatter.Transport.Disorder.TwoParticle",
-    "externalAxioms": [],
-    "docString": "Finite operator averaging preserves addition. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.FiniteDisorderEnsemble.averagedOperatorInsertion_eq_mean_add_connected"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.FiniteDisorderEnsemble.averagedOperatorInsertion_eq_mean_add_connected"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {H : Type u_1} {Ω : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] [inst_3 : Fintype Ω] (ensemble : QuantumTheory.Transport.FiniteDisorderEnsemble)\n  (operator : H →L[ℂ] H), (ensemble.operatorAverage fun x => operator) = operator",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.FiniteDisorderEnsemble.operatorAverage_const",
-    "module": "LeanCondensedMatter.Transport.Disorder.TwoParticle",
-    "externalAxioms": [],
-    "docString": "A constant operator is unchanged by a normalized disorder average. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.FiniteDisorderEnsemble.averagedOperatorInsertion_eq_mean_add_connected"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.FiniteDisorderEnsemble.averagedOperatorInsertion_eq_mean_add_connected"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {H : Type u_1} {Ω : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] [inst_3 : Fintype Ω] (ensemble : QuantumTheory.Transport.FiniteDisorderEnsemble)\n  (left : H →L[ℂ] H) (operator : Ω → H →L[ℂ] H),\n  (ensemble.operatorAverage fun ω => left * operator ω) = left * ensemble.operatorAverage operator",
+    "statement": "∀ {H : Type u_1} {Ω : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] [inst_3 : Fintype Ω] (ensemble : QuantumTheory.Transport.FiniteDisorderEnsemble)\n  {E : Type u_3} {F : Type u_4} [inst_4 : AddCommMonoid E] [inst_5 : _root_.Module ℂ E] [inst_6 : AddCommMonoid F]\n  [inst_7 : _root_.Module ℂ F] (f : E →ₗ[ℂ] F) (response : Ω → E),\n  f (ensemble.average response) = ensemble.average fun ω => f (response ω)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -91679,10 +91581,10 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "QuantumTheory.Transport.FiniteDisorderEnsemble.operatorAverage_mul_left",
-    "module": "LeanCondensedMatter.Transport.Disorder.TwoParticle",
+    "name": "QuantumTheory.Transport.FiniteDisorderEnsemble.map_average",
+    "module": "LeanCondensedMatter.Transport.Disorder.Finite",
     "externalAxioms": [],
-    "docString": "A fixed operator can be factored out on the left of a finite disorder average. ",
+    "docString": "Every complex-linear map commutes with finite disorder averaging. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
@@ -91711,7 +91613,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} {Ω : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] [inst_3 : Fintype Ω] (ensemble : QuantumTheory.Transport.FiniteDisorderEnsemble)\n  (operator : Ω → H →L[ℂ] H) (right : H →L[ℂ] H),\n  (ensemble.operatorAverage fun ω => operator ω * right) = ensemble.operatorAverage operator * right",
+    "statement": "∀ {H : Type u_1} {Ω : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] [inst_3 : Fintype Ω] (ensemble : QuantumTheory.Transport.FiniteDisorderEnsemble)\n  (left kernel : H →L[ℂ] H),\n  (∀ (ω : Ω), Commute (↑(ensemble.impurityPotential ω)) left) →\n    left * ensemble.exactSecondMoment kernel = ensemble.exactSecondMoment (left * kernel)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -91723,104 +91625,22 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "QuantumTheory.Transport.FiniteDisorderEnsemble.operatorAverage_mul_right",
-    "module": "LeanCondensedMatter.Transport.Disorder.TwoParticle",
+    "name": "QuantumTheory.Transport.FiniteDisorderEnsemble.mul_exactSecondMoment_of_commutes",
+    "module": "LeanCondensedMatter.Transport.Disorder.Moments",
     "externalAxioms": [],
-    "docString": "A fixed operator can be factored out on the right of a finite disorder average. ",
+    "docString": "Left equivariance of the exact second moment. If every impurity potential commutes with a\nbounded operator, that operator can be moved through the left side of the second-moment action. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Transport.FiniteDisorderEnsemble.averagedOperatorInsertion_eq_mean_add_connected"
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.ChargeSymmetry.of_impurityPotential_commute"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.exactSecondMoment_eq_average"
+    ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Transport.FiniteDisorderEnsemble.averagedOperatorInsertion_eq_mean_add_connected"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {H : Type u_1} {Ω : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] [inst_3 : Fintype Ω] (ensemble : QuantumTheory.Transport.FiniteDisorderEnsemble)\n  (operator : Ω → H →L[ℂ] H),\n  (ensemble.operatorAverage fun ω => star (operator ω)) = star (ensemble.operatorAverage operator)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.FiniteDisorderEnsemble.operatorAverage_star",
-    "module": "LeanCondensedMatter.Transport.Disorder.Finite",
-    "externalAxioms": [],
-    "docString": "Exact finite operator averaging commutes with adjunction because every ensemble weight is real. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.FiniteDisorderEnsemble.star_averagedGreenOfRegulator"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.FiniteDisorderEnsemble.star_averagedGreenOfRegulator"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {H : Type u_1} {Ω : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] [inst_3 : Fintype Ω] (ensemble : QuantumTheory.Transport.FiniteDisorderEnsemble)\n  (left right : Ω → H →L[ℂ] H),\n  (ensemble.operatorAverage fun ω => left ω - right ω) = ensemble.operatorAverage left - ensemble.operatorAverage right",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.FiniteDisorderEnsemble.operatorAverage_sub",
-    "module": "LeanCondensedMatter.Transport.Disorder.TwoParticle",
-    "externalAxioms": [],
-    "docString": "Finite operator averaging preserves subtraction. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.FiniteDisorderEnsemble.averagedOperatorInsertion_eq_mean_add_connected"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.FiniteDisorderEnsemble.averagedOperatorInsertion_eq_mean_add_connected"
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.ChargeSymmetry.of_impurityPotential_commute"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -91897,7 +91717,7 @@
       "_private.LeanCondensedMatter.Transport.Disorder.AveragedSelfEnergy.0.QuantumTheory.Transport.FiniteDisorderEnsemble.star_averagedGreenOfRegulator_injective"
     ],
     "dependencies": [
-      "QuantumTheory.Transport.FiniteDisorderEnsemble.operatorAverage_star",
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.average_star",
       "QuantumTheory.Transport.star_resolvent_spectralParameterOfRegulator"
     ],
     "crossModuleDirectWrapper": false,
@@ -91947,48 +91767,6 @@
     "completedMention": false,
     "compiledConsumers": [],
     "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {H : Type u_1} {Ω : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] [inst_3 : FiniteDimensional ℂ H] [inst_4 : Fintype Ω]\n  (ensemble : QuantumTheory.Transport.FiniteDisorderEnsemble) (operator : Ω → H →L[ℂ] H),\n  ContinuousLinearMap.finiteDimensionalOperatorTrace (ensemble.operatorAverage operator) =\n    ensemble.average fun ω => ContinuousLinearMap.finiteDimensionalOperatorTrace (operator ω)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.FiniteDisorderEnsemble.trace_operatorAverage",
-    "module": "LeanCondensedMatter.Transport.Disorder.TraceBridge",
-    "externalAxioms": [],
-    "docString": "The ordinary finite-dimensional trace commutes with a normalized finite disorder average. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.FiniteDisorderEnsemble.average_twoGreenVertexTraceKernel_eq_trace_insertion"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.FiniteDisorderEnsemble.average_twoGreenVertexTraceKernel_eq_trace_insertion"
-    ],
-    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -102480,7 +102258,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -102492,11 +102270,55 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "QuantumTheory.Transport.tendsto_interbandBastinPoleIntegral_re_of_eq_on_pos"
+    ],
+    "dependencies": [
+      "QuantumTheory.Transport.tendsto_interbandBastinPoleIntegral"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.tendsto_interbandBastinPoleIntegral_re_of_eq_on_pos"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (gap : ℝ) (forward reverse : ℂ) (radius weight : ℝ) (pair : ℝ → ℂ),\n  0 < radius →\n    radius < |gap| →\n      (∀ (broadening : ℝ),\n          0 < broadening →\n            pair broadening =\n              QuantumTheory.Transport.interbandBastinPoleIntegral gap forward reverse radius broadening) →\n        (QuantumTheory.Transport.interbandPoleRegularFactor gap forward reverse (0, 0)).im = -weight →\n          Filter.Tendsto (fun broadening => (pair broadening).re) (nhdsWithin 0 (Set.Ioi 0))\n            (nhds (-2 * Real.pi * weight))",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.tendsto_interbandBastinPoleIntegral_re_of_eq_on_pos",
+    "module": "LeanCondensedMatter.Transport.Streda.InterbandPole",
+    "externalAxioms": [],
+    "docString": "Transport a universal isolated-pole real-part limit to any pair representation that\nagrees with it at positive broadening, after identifying the regular imaginary weight. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
       "QuantumTheory.Models.MassiveDirac.tendsto_targetCenteredInterbandBastinPairIntegral_re_berryCurvature",
       "QuantumTheory.Models.RashbaExchange.tendsto_targetCenteredInterbandBastinPairIntegral_re_berryCurvature"
     ],
     "dependencies": [
-      "QuantumTheory.Transport.tendsto_interbandBastinPoleIntegral"
+      "QuantumTheory.Transport.tendsto_interbandBastinPoleIntegral_re"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -154642,7 +154464,6 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "QuantumTheory.Transport.FiniteDisorderEnsemble.average_congr",
       "QuantumTheory.Transport.StaticChannelTracedBastinIdentity.staticConductivity_eq_spectralEnergyIntegral"
     ],
     "crossModuleDirectWrapper": false,
@@ -154683,7 +154504,6 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "QuantumTheory.Transport.FiniteDisorderEnsemble.average_congr",
       "QuantumTheory.Transport.StaticChannelTracedBastinIdentity.staticConductivity_eq_tracedBastin"
     ],
     "crossModuleDirectWrapper": false,
@@ -207634,7 +207454,7 @@
     ],
     "dependencies": [
       "_private.LeanCondensedMatter.Transport.Disorder.AveragedSelfEnergy.0.QuantumTheory.Transport.FiniteDisorderEnsemble.im_inner_configurationGreenOfRegulator_apply_self",
-      "_private.LeanCondensedMatter.Transport.Disorder.AveragedSelfEnergy.0.QuantumTheory.Transport.FiniteDisorderEnsemble.inner_operatorAverage_apply"
+      "_private.LeanCondensedMatter.Transport.Disorder.AveragedSelfEnergy.0.QuantumTheory.Transport.FiniteDisorderEnsemble.inner_average_apply"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -207700,7 +207520,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} {Ω : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] [inst_3 : Fintype Ω] (ensemble : QuantumTheory.Transport.FiniteDisorderEnsemble)\n  (operator : Ω → H →L[ℂ] H) (v w : H),\n  inner ℂ ((ensemble.operatorAverage operator) v) w = ∑ ω, ↑(ensemble.probability ω) * inner ℂ ((operator ω) v) w",
+    "statement": "∀ {H : Type u_1} {Ω : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] [inst_3 : Fintype Ω] (ensemble : QuantumTheory.Transport.FiniteDisorderEnsemble)\n  (operator : Ω → H →L[ℂ] H) (v w : H),\n  inner ℂ ((ensemble.average operator) v) w = ∑ ω, ↑(ensemble.probability ω) * inner ℂ ((operator ω) v) w",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -207712,7 +207532,7 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Transport.Disorder.AveragedSelfEnergy.0.QuantumTheory.Transport.FiniteDisorderEnsemble.inner_operatorAverage_apply",
+    "name": "_private.LeanCondensedMatter.Transport.Disorder.AveragedSelfEnergy.0.QuantumTheory.Transport.FiniteDisorderEnsemble.inner_average_apply",
     "module": "LeanCondensedMatter.Transport.Disorder.AveragedSelfEnergy",
     "externalAxioms": [],
     "docString": "Taking an inner product after an exact finite operator average is the corresponding weighted\nfinite average of inner products. ",
