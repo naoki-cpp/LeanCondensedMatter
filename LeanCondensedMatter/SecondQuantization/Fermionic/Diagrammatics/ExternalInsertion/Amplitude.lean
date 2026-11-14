@@ -31,13 +31,12 @@ theorem quarticVertexBlockPermutation_sign_eq_one
     (p : Equiv.Perm V) :
     Equiv.Perm.sign (p.prodCongr (Equiv.refl (Fin 4))) = 1 := by
   classical
-  let swap : Fin 4 × V ≃ V × Fin 4 := Equiv.prodComm (Fin 4) V
   have hperm :
       p.prodCongr (Equiv.refl (Fin 4)) =
-        swap.permCongr (Equiv.prodCongrRight (fun _ : Fin 4 => p)) := by
+        Equiv.prodCongrLeft (fun _ : Fin 4 => p) := by
     ext ⟨v, l⟩
-    simp [swap, Equiv.permCongr, Equiv.prodCongrRight]
-  rw [hperm, Equiv.Perm.sign_permCongr, Equiv.Perm.sign_prodCongrRight]
+    rfl
+  rw [hperm, Equiv.Perm.sign_prodCongrLeft]
   simp only [Finset.prod_const, Finset.card_univ, Fintype.card_fin]
   calc
     (Equiv.Perm.sign p) ^ 4 =
