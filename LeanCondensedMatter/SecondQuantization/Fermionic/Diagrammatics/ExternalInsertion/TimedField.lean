@@ -180,7 +180,7 @@ theorem ExternalInsertionWickDiagram.slotCongr_mixedAtomicPairValue
       (d.slotCongr e).vertexLabelSequence = d.vertexLabelSequence ∘ f := by
     funext v
     rfl
-  simpa only [hlabel, hvertices, Function.comp_id] using
+  simpa [Function.comp_def, hlabel, hvertices] using
     (externalInsertionMixedTimeOrderedAtomicPairValue_map
       ε β (fun x : Fin (2 * E) => x) f
       d.externalLabel externalTime d.vertexLabelSequence σ a b).symm
