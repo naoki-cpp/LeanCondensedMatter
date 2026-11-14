@@ -275,12 +275,19 @@ theorem ExternalInsertionWickDiagram.slotCongr_mixedPairingValue_eq_of_injective
     ExternalInsertionWickDiagram.mixedPairingValue (d.slotCongr e) ε β externalTime
         (σ ∘ fun v => (e.symm ⟨v, Finset.mem_univ v⟩).1) =
       d.mixedPairingValue ε β externalTime σ := by
+  have hkernel :
+      externalInsertionMixedTimeOrderedAtomicPairValue ε β
+          (d.slotCongr e).externalLabel externalTime
+          (d.slotCongr e).vertexLabelSequence
+          (σ ∘ fun v => (e.symm ⟨v, Finset.mem_univ v⟩).1) =
+        externalInsertionMixedTimeOrderedAtomicPairValue ε β
+          d.externalLabel externalTime d.vertexLabelSequence σ := by
+    funext a b
+    exact d.slotCongr_mixedAtomicPairValue_eq_of_injective
+      e ε β externalTime σ hσ a b
   unfold ExternalInsertionWickDiagram.mixedPairingValue
   rw [d.slotCongr_pairingInMixedOrder_eq_of_injective e externalTime σ hσ]
-  congr 1
-  funext a b
-  exact d.slotCongr_mixedAtomicPairValue_eq_of_injective
-    e ε β externalTime σ hσ a b
+  rw [hkernel]
 
 end Fermionic
 end SecondQuantization
