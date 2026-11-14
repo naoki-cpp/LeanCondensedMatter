@@ -146,9 +146,11 @@ theorem continuousDegreeTwoRate_eq_sphericalAverage (W : ℝ → ℝ)
       sphericalAverage 1 (fun q => W (q 2) * (1 - legendreP2 (q 2))) := by
   unfold continuousDegreeTwoRate
   symm
-  exact sphericalAverage_zonal _ (by
+  apply sphericalAverage_zonal
+  have hp : Continuous legendreP2 := by
     unfold legendreP2
-    fun_prop)
+    fun_prop
+  exact hW.mul (continuous_const.sub hp)
 
 /-- A nonconstant, nonnegative-on-the-sphere zonal scattering kernel for
 `a,c ≥ 0`, including the nontrivial forward/backward anisotropy `c μ²`. -/
