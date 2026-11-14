@@ -1,4 +1,5 @@
 import Mathlib.Analysis.Complex.Basic
+import Mathlib.LinearAlgebra.Complex.FiniteDimensional
 import Mathlib.RingTheory.PowerSeries.Basic
 import Mathlib.Analysis.Normed.Ring.InfiniteSum
 import Mathlib.Analysis.Normed.Module.FiniteDimension
@@ -152,6 +153,7 @@ theorem coefficientSum_X_mul (f : ℂ⟦X⟧) (x : ℂ) :
       (∑' n : ℕ, PowerSeries.coeff (n + 1) (PowerSeries.X * f) * x ^ (n + 1)) =
         ∑' n : ℕ, PowerSeries.coeff n (PowerSeries.X * f) * x ^ n := by
     apply Nat.succ_injective.tsum_eq
+      (f := fun n : ℕ => PowerSeries.coeff n (PowerSeries.X * f) * x ^ n)
     intro n hn
     cases n with
     | zero => exact (hn (by simp only [PowerSeries.coeff_zero_X_mul, zero_mul])).elim
