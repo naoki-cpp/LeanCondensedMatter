@@ -136,7 +136,6 @@ theorem inv_real_gap_sq_mul_im (gap : ℝ) (z : ℂ) (hgap : gap ≠ 0) :
     (((((gap : ℝ) : ℂ)⁻¹) ^ 2) * z).im = z.im / gap ^ 2 := by
   rw [Algebra.inv_real_gap_sq_mul_im]
   field_simp [hgap]
-  ring
 
 /-- The regular interband factor is jointly continuous wherever the shifted real source denominator
 does not vanish. -/
