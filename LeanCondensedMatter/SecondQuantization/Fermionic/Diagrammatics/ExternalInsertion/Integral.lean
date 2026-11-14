@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Analysis.OrderedSimplex.Integral
+import LeanCondensedMatter.Analysis.OrderedSimplex.StrictAntiCongr
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Ordered
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.Amplitude
 
@@ -103,6 +103,50 @@ theorem ExternalInsertionWickDiagram.orderedDysonAmplitude_canonicalOrder
         ⟨v, Finset.mem_univ v⟩).val = v.val
       rw [Finset.orderIsoOfFin_symm_apply]
       simp only [Fin.sort_univ, List.idxOf_finRange]
+
+
+/-- Every strictly decreasing ordered-simplex time assignment remains
+injective after pulling it back along an arbitrary global interaction
+vertex order. Thus interaction-vertex time collisions can be discarded
+when checking an ordered Dyson amplitude identity. -/
+theorem quarticVertexOrderedTime_injective_of_strictAnti
+    {n : ℕ}
+    (order : QuarticVertexOrder (Finset.univ : Finset (Fin n)))
+    (τ : Fin (Finset.univ : Finset (Fin n)).card → ℝ)
+    (hτ : StrictAnti τ) :
+    Function.Injective
+      (fun v : Fin n => τ (order.symm ⟨v, Finset.mem_univ v⟩)) := by
+  intro a b hab
+  have h := order.symm.injective (hτ.injective hab)
+  exact congrArg Subtype.val h
+
+/-- A Dyson-amplitude covariance identity needs to be checked only on
+strictly decreasing ambient time slots, assuming the physical inverse
+temperature interval satisfies `0 ≤ β`.
+
+The pointwise hypothesis is deliberately about the **full Dyson-signed
+Wick amplitude**, not just the individual pair contraction. Relabeling
+four-leg vertices changes the mixed-time pairing normalization and its
+fermionic sign; those must cancel before this integral theorem applies.
+Equal-time tie breakers do not enter the integral equality. -/
+theorem ExternalInsertionWickDiagram.orderedDysonAmplitude_congr_of_strictAnti
+    {E n : ℕ}
+    (d d' : ExternalInsertionWickDiagram Mode E n)
+    (ε : Mode → ℝ) (β : ℝ) (hβ : 0 ≤ β)
+    (g : QuarticVertexLabel Mode → ℂ)
+    (externalTime : Fin (2 * E) → ℝ)
+    (order order' : QuarticVertexOrder (Finset.univ : Finset (Fin n)))
+    (hpoint : ∀ τ : Fin (Finset.univ : Finset (Fin n)).card → ℝ,
+      StrictAnti τ → (∀ i, τ i < β) →
+        d.dysonFixedTimeAmplitude ε β g externalTime
+          (fun v => τ (order.symm ⟨v, Finset.mem_univ v⟩)) =
+        d'.dysonFixedTimeAmplitude ε β g externalTime
+          (fun v => τ (order'.symm ⟨v, Finset.mem_univ v⟩))) :
+    d.orderedDysonAmplitude ε β g externalTime order =
+      d'.orderedDysonAmplitude ε β g externalTime order' := by
+  unfold ExternalInsertionWickDiagram.orderedDysonAmplitude
+  exact intervalIntegral.orderedSimplexIntegral_congr_of_strictAnti
+    _ β hβ _ _ hpoint
 
 
 end Fermionic
