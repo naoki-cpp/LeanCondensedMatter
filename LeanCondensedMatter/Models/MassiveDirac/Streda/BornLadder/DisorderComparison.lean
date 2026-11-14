@@ -209,7 +209,7 @@ theorem norm_averagedTwoGreenTrace_sub_bornDysonSurface_le_residuals
   have hsplit : exactRA - (suppliedRA - sameSide) =
       (exactRA - suppliedRA) + sameSide := by ring
   rw [hsplit]
-  exact (norm_add_le _ _).trans (add_le_add_right hbound _)
+  exact (norm_add_le _ _).trans (add_le_add hbound le_rfl)
 
 end
 
