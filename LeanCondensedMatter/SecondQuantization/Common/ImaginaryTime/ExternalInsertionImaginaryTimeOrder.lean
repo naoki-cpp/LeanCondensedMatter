@@ -625,5 +625,64 @@ theorem externalInsertionMixedTimeOrderedAtomicLegEquiv_eq_of_comparisons
     List.get_eq_getElem, hlegs]
   rfl
 
+
+/-- Relabeling interaction events by an arbitrary permutation preserves the
+*stable* mixed-time comparison whenever distinct interaction vertices have
+distinct times. External times may coincide with one another or with an
+interaction time: the external-first tie-breaking rule is unaffected.
+
+This is stronger than requiring all mixed-event times to be pairwise
+distinct, and is exactly the property of a strict ordered Dyson chamber. -/
+theorem externalInsertionTimedEventBeforeOrEqual_perm_iff
+    {E n : ℕ} (externalTime : Fin (2 * E) → ℝ)
+    (σ : Fin n → ℝ) (hσ : Function.Injective σ)
+    (p : Equiv.Perm (Fin n))
+    (a b : ExternalInsertionTimedEvent E n) :
+    externalInsertionTimedEventBeforeOrEqual externalTime (σ ∘ p.symm)
+        (Sum.map id p a) (Sum.map id p b) ↔
+      externalInsertionTimedEventBeforeOrEqual externalTime σ a b := by
+  have htime (event : ExternalInsertionTimedEvent E n) :
+      externalInsertionTimedEventTime externalTime (σ ∘ p.symm)
+          (Sum.map id p event) =
+        externalInsertionTimedEventTime externalTime σ event := by
+    cases event <;>
+      simp [externalInsertionTimedEventTime, Function.comp_def]
+  have hrank (a b : ExternalInsertionTimedEvent E n)
+      (ht : externalInsertionTimedEventTime externalTime σ a =
+        externalInsertionTimedEventTime externalTime σ b) :
+      (externalInsertionTimedEventRank (Sum.map id p a) ≤
+        externalInsertionTimedEventRank (Sum.map id p b)) ↔
+      (externalInsertionTimedEventRank a ≤
+        externalInsertionTimedEventRank b) := by
+    cases a with
+    | inl i =>
+        cases b with
+        | inl j => simp [externalInsertionTimedEventRank]
+        | inr j =>
+            have hi := i.isLt
+            have hj := j.isLt
+            have hpj := (p j).isLt
+            simp [externalInsertionTimedEventRank] <;> omega
+    | inr i =>
+        cases b with
+        | inl j =>
+            have hj := j.isLt
+            have hi := i.isLt
+            have hpi := (p i).isLt
+            simp [externalInsertionTimedEventRank] <;> omega
+        | inr j =>
+            have hij : i = j := hσ (by simpa [externalInsertionTimedEventTime] using ht)
+            subst j
+            simp
+  simp only [externalInsertionTimedEventBeforeOrEqual,
+    stableTimedEventBeforeOrEqual_iff, htime]
+  constructor
+  · rintro (h | ⟨ht, hr⟩)
+    · exact Or.inl h
+    · exact Or.inr ⟨ht, (hrank a b ht).mp hr⟩
+  · rintro (h | ⟨ht, hr⟩)
+    · exact Or.inl h
+    · exact Or.inr ⟨ht, (hrank a b ht).mpr hr⟩
+
 end Common
 end SecondQuantization
