@@ -738,5 +738,27 @@ theorem orderedExternalInsertionTimedEvents_perm_slots
       (orderedExternalInsertionTimedEvents_perm externalTime (σ ∘ p.symm)).length_eq.symm
   exact hSub.eq_of_length hLen
 
+
+/-- On injective interaction-time assignments, the entire *mixed-time
+atomic leg list* is relabeled pointwise by the vertex permutation.
+The four atomic legs within each vertex remain consecutive and retain
+their local order. This includes external-time coincidences. -/
+theorem externalInsertionMixedTimeOrderedAtomicLegs_perm_slots
+    {E n : ℕ} (externalTime : Fin (2 * E) → ℝ)
+    (σ : Fin n → ℝ) (hσ : Function.Injective σ)
+    (p : Equiv.Perm (Fin n)) :
+    (externalInsertionMixedTimeOrderedAtomicLegs externalTime σ).map
+        (orderedExternalInsertionLegMap id p) =
+      externalInsertionMixedTimeOrderedAtomicLegs externalTime (σ ∘ p.symm) := by
+  calc
+    _ =
+        ((orderedExternalInsertionTimedEvents externalTime σ).map
+          (Sum.map id p)).flatMap externalInsertionTimedEventAtomicLegs := by
+      simp only [externalInsertionMixedTimeOrderedAtomicLegs,
+        List.map_flatMap, List.flatMap_map, externalInsertionTimedEventAtomicLegs_map]
+    _ = _ := by
+      rw [orderedExternalInsertionTimedEvents_perm_slots externalTime σ hσ p]
+      rfl
+
 end Common
 end SecondQuantization
