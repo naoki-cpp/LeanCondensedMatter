@@ -1,6 +1,7 @@
 import LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.TraceBridge
 import LeanCondensedMatter.Transport.Disorder.TraceBridge
 import LeanCondensedMatter.Transport.Disorder.TraceNormBound
+import LeanCondensedMatter.Transport.Disorder.DressedTraceNormBound
 import Mathlib.Tactic.Ring
 
 set_option linter.style.header false
@@ -129,6 +130,86 @@ theorem norm_averagedHallCurrentTrace_sub_meanProduct_le_uniformPotential_sq
       (currentOperator 0 e v) (currentOperator 1 e v)
       potentialBound hbound hpotential
   simpa only [hrank, Nat.cast_ofNat, abs_neg] using hboundTrace
+
+
+/-- Explicit pointwise error bound for the exact finite-ensemble massive-Dirac two-Green
+trace versus the finite-cutoff Born–Dyson dressed RA, bare-same-side Středa *candidate*.
+
+The terms are respectively the mean retarded propagator mismatch, mean advanced mismatch,
+the exact connected insertion minus the supplied ladder dressing, and the RR/AA same-side
+contribution. None is silently discarded or assumed small. This is not a full Hall
+conductivity estimate. -/
+theorem norm_averagedTwoGreenTrace_sub_bornDysonSurface_le_residuals
+    (measured source : Fin 2)
+    (e v m px py probeEnergy broadening disorderStrength hbar pMax : ℝ)
+    (hbroadening : broadening ≠ 0) :
+    let measuredCurrent := currentOperator measured e v
+    let sourceCurrent := currentOperator source e v
+    let retarded := finiteCutoffContinuumBornDysonGreenOperator
+      .retarded v m px py probeEnergy broadening disorderStrength hbar pMax
+    let advanced := finiteCutoffContinuumBornDysonGreenOperator
+      .advanced v m px py probeEnergy broadening disorderStrength hbar pMax
+    let dressed := finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperator
+      source e v m probeEnergy broadening disorderStrength hbar pMax
+    ‖ensemble.averagedTwoGreenVertexTraceKernelOfRegulators
+        probeEnergy broadening probeEnergy (-broadening)
+        measuredCurrent sourceCurrent -
+      finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceTraceBridge
+        measured source e v m px py probeEnergy broadening disorderStrength hbar pMax‖ ≤
+      (2 * ‖measuredCurrent‖) *
+        (‖ensemble.averagedGreenOfRegulator probeEnergy broadening - retarded‖ *
+            ‖sourceCurrent‖ * |broadening|⁻¹ +
+          ‖retarded‖ * ‖sourceCurrent‖ *
+            ‖ensemble.averagedGreenOfRegulator probeEnergy (-broadening) - advanced‖ +
+          ‖ensemble.connectedTwoGreenInsertionOfRegulators
+                probeEnergy broadening probeEnergy (-broadening) sourceCurrent -
+              retarded * (dressed - sourceCurrent) * advanced‖) +
+        ‖sameSideVertexTraceRemainder measuredCurrent sourceCurrent retarded advanced‖ := by
+  dsimp only
+  let measuredCurrent := currentOperator measured e v
+  let sourceCurrent := currentOperator source e v
+  let retarded := finiteCutoffContinuumBornDysonGreenOperator
+    .retarded v m px py probeEnergy broadening disorderStrength hbar pMax
+  let advanced := finiteCutoffContinuumBornDysonGreenOperator
+    .advanced v m px py probeEnergy broadening disorderStrength hbar pMax
+  let dressed := finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperator
+    source e v m probeEnergy broadening disorderStrength hbar pMax
+  let exactRA := ensemble.averagedTwoGreenVertexTraceKernelOfRegulators
+    probeEnergy broadening probeEnergy (-broadening) measuredCurrent sourceCurrent
+  let suppliedRA :=
+    retardedAdvancedVertexTraceKernel measuredCurrent retarded dressed advanced
+  let sameSide :=
+    sameSideVertexTraceRemainder measuredCurrent sourceCurrent retarded advanced
+  have hdim : Module.finrank ℂ DiracHilbert = 2 := by
+    simp [DiracHilbert]
+  have hRA := ensemble.norm_averagedTwoGreenTrace_sub_dressed_le_residuals
+    probeEnergy broadening probeEnergy (-broadening)
+    (by simpa using hbroadening)
+    measuredCurrent sourceCurrent retarded dressed advanced
+  have hbound :
+      ‖exactRA - suppliedRA‖ ≤
+        (2 * ‖measuredCurrent‖) *
+          (‖ensemble.averagedGreenOfRegulator probeEnergy broadening - retarded‖ *
+              ‖sourceCurrent‖ * |broadening|⁻¹ +
+            ‖retarded‖ * ‖sourceCurrent‖ *
+              ‖ensemble.averagedGreenOfRegulator probeEnergy (-broadening) - advanced‖ +
+            ‖ensemble.connectedTwoGreenInsertionOfRegulators
+                  probeEnergy broadening probeEnergy (-broadening) sourceCurrent -
+                retarded * (dressed - sourceCurrent) * advanced‖) := by
+    simpa only [hdim, Nat.cast_ofNat, abs_neg] using hRA
+  change ‖exactRA - (suppliedRA - sameSide)‖ ≤
+    (2 * ‖measuredCurrent‖) *
+      (‖ensemble.averagedGreenOfRegulator probeEnergy broadening - retarded‖ *
+          ‖sourceCurrent‖ * |broadening|⁻¹ +
+        ‖retarded‖ * ‖sourceCurrent‖ *
+          ‖ensemble.averagedGreenOfRegulator probeEnergy (-broadening) - advanced‖ +
+        ‖ensemble.connectedTwoGreenInsertionOfRegulators
+              probeEnergy broadening probeEnergy (-broadening) sourceCurrent -
+            retarded * (dressed - sourceCurrent) * advanced‖) + ‖sameSide‖
+  have hsplit : exactRA - (suppliedRA - sameSide) =
+      (exactRA - suppliedRA) + sameSide := by ring
+  rw [hsplit]
+  exact (norm_add_le _ _).trans (add_le_add_right hbound _)
 
 end
 
