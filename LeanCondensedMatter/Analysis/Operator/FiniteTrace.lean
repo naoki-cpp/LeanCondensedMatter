@@ -121,6 +121,31 @@ variable [InnerProductSpace ℂ H] [FiniteDimensional ℂ H]
 
 local instance : CompleteSpace H := FiniteDimensional.complete ℂ H
 
+/-- The ordinary finite trace is bounded by the Hilbert-space dimension times the
+operator norm. The dimension factor is explicit (as opposed to an opaque trace-functional
+norm) and applies to any finite-dimensional complex Hilbert space. -/
+theorem norm_finiteDimensionalOperatorTrace_le_finrank_mul
+    (operator : H →L[ℂ] H) :
+    ‖finiteDimensionalOperatorTrace (H := H) operator‖ ≤
+      (Module.finrank ℂ H : ℝ) * ‖operator‖ := by
+  let b := stdOrthonormalBasis ℂ H
+  rw [finiteDimensionalOperatorTrace_apply]
+  rw [LinearMap.trace_eq_sum_inner (operator : H →ₗ[ℂ] H) b]
+  calc
+    ‖∑ i, inner ℂ (b i) (operator (b i))‖ ≤
+        ∑ i, ‖inner ℂ (b i) (operator (b i))‖ := norm_sum_le _ _
+    _ ≤ ∑ _ : Fin (Module.finrank ℂ H), ‖operator‖ := by
+      apply Finset.sum_le_sum
+      intro i _
+      have hb : ‖b i‖ = 1 := b.orthonormal.norm_eq_one i
+      calc
+        ‖inner ℂ (b i) (operator (b i))‖ ≤
+            ‖b i‖ * ‖operator (b i)‖ := norm_inner_le_norm _ _
+        _ = ‖operator (b i)‖ := by rw [hb, one_mul]
+        _ ≤ ‖operator‖ * ‖b i‖ := operator.le_opNorm (b i)
+        _ = ‖operator‖ := by rw [hb, mul_one]
+    _ = (Module.finrank ℂ H : ℝ) * ‖operator‖ := by simp
+
 /-- Ordinary finite-dimensional trace intertwines the operator adjoint with complex conjugation. -/
 theorem finiteDimensionalOperatorTrace_star
     (operator : H →L[ℂ] H) :

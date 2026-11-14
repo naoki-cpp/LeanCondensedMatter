@@ -118,6 +118,15 @@ finite-dimensional operator trace and connects the exact two-Green insertion to 
 identity, not a full conductivity formula. Contact/same-side/sea response, physical normalization,
 and controlled limits remain separate.
 
+The `Analysis.Operator.FiniteTrace` estimate `‖Tr(A)‖ ≤ (finrank ℂ H) ‖A‖`
+propagates the exact connected two-Green operator-norm bound into a finite-dimensional
+scalar trace comparison:
+`|E[Tr(Jx Gᴸ Jy Gᴿ)] - Tr(Jx E[Gᴸ] Jy E[Gᴿ])| ≤ 4 d M² ‖Jx‖ ‖Jy‖ / (|γᴸ|² |γᴿ|²)`.
+The two-component massive-Dirac x/y-current specialization proves this with `d = 2`.
+This pointwise RA trace comparison is not a dressed-vertex or DC conductivity approximation,
+and does not establish momentum integration, same-side/sea/contact contributions, or an
+error estimate against the model's Born-Dyson ladder.
+
 The exact two-Green Středa trace also admits an algebraic decomposition of its difference from a
 *supplied* dressed-vertex RA trace: left/right mean-Green mismatches plus a connected-vertex
 remainder. The `Models.MassiveDirac.Streda.BornLadder.DisorderComparison` specialization compares
