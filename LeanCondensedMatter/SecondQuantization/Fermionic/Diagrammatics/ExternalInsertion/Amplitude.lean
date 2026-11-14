@@ -31,12 +31,7 @@ theorem quarticVertexBlockPermutation_sign_eq_one
     (p : Equiv.Perm V) :
     Equiv.Perm.sign (p.prodCongr (Equiv.refl (Fin 4))) = 1 := by
   classical
-  have hperm :
-      p.prodCongr (Equiv.refl (Fin 4)) =
-        Equiv.prodCongrLeft (fun _ : Fin 4 => p) := by
-    ext ⟨v, l⟩
-    rfl
-  rw [hperm, Equiv.Perm.sign_prodCongrLeft]
+  rw [Equiv.prodCongr_refl_right, Equiv.Perm.sign_prodCongrLeft]
   simp only [Finset.prod_const, Finset.card_univ, Fintype.card_fin]
   calc
     (Equiv.Perm.sign p) ^ 4 =
