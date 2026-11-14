@@ -1076,7 +1076,7 @@ theorem ExternalInsertionBlockLayout.assembleDiagram_dysonAmplitude_eq_assignmen
           layout.interactionAssignmentShuffle) = canonical := by
     change layout.interactionOrderDecompositionEquiv.symm
       (layout.interactionOrderDecompositionEquiv canonical) = canonical
-    exact layout.interactionAssignmentShuffle_reassembles
+    exact layout.interactionOrderDecompositionEquiv.symm_apply_apply canonical
   rw [horder]
   exact (ExternalInsertionWickDiagram.orderedDysonAmplitude_canonicalOrder
     (layout.assembleDiagram (Finset.univ : Finset (Fin n)) F)
