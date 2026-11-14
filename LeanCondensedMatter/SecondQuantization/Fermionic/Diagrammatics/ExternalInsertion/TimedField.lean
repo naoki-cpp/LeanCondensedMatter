@@ -197,5 +197,91 @@ noncomputable def ExternalInsertionWickDiagram.mixedPairingValue {E n : ℕ}
     (externalInsertionMixedTimeOrderedAtomicPairValue ε β
       d.externalLabel externalTime d.vertexLabelSequence σ)
 
+
+/-- Under an injective interaction-time assignment, the *actual*
+mixed-time field at each atomic position is unchanged by a permutation
+of quartic interaction vertices. External times may coincide with
+interaction times: the mixed-time ordering is still preserved by the
+external-first tie convention.
+
+This is an identity of `TimedField` values, before Gibbs contraction
+or fermionic crossing weights are applied. -/
+theorem ExternalInsertionWickDiagram.slotCongr_mixedAtomicFieldFamily_eq_of_injective
+    {E n : ℕ} (d : ExternalInsertionWickDiagram Mode E n)
+    (e : ↥(Finset.univ : Finset (Fin n)) ≃
+      ↥(Finset.univ : Finset (Fin n)))
+    (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ)
+    (hσ : Function.Injective σ) :
+    externalInsertionMixedTimeOrderedAtomicFieldFamily
+        (d.slotCongr e).externalLabel externalTime
+        (d.slotCongr e).vertexLabelSequence
+        (σ ∘ fun v => (e.symm ⟨v, Finset.mem_univ v⟩).1) =
+      externalInsertionMixedTimeOrderedAtomicFieldFamily
+        d.externalLabel externalTime d.vertexLabelSequence σ := by
+  let p := externalInsertionInteractionSlotPerm e
+  have htime :
+      (σ ∘ fun v : Fin n => (e.symm ⟨v, Finset.mem_univ v⟩).1) =
+        σ ∘ p.symm := rfl
+  have hlabel : (d.slotCongr e).externalLabel = d.externalLabel := rfl
+  have hvertex :
+      (d.slotCongr e).vertexLabelSequence = d.vertexLabelSequence ∘ p.symm := by
+    funext v
+    rfl
+  funext i
+  simp only [externalInsertionMixedTimeOrderedAtomicFieldFamily, htime, hlabel, hvertex]
+  rw [externalInsertionMixedTimeOrderedAtomicLegEquiv_perm_slots
+    externalTime σ hσ p i]
+  cases hleg : externalInsertionMixedTimeOrderedAtomicLegEquiv externalTime σ i with
+  | inl a => rfl
+  | inr pair =>
+      rcases pair with ⟨⟨v, hv⟩, l⟩
+      simp [orderedExternalInsertionLegMap, orderedExternalInsertionLegField,
+        orderedExternalInsertionLegFieldLabel, orderedExternalInsertionLegTime,
+        Function.comp_def]
+
+/-- The actual oriented free-Gibbs contraction has the same value at
+each *fixed pair of mixed-time positions* after any interaction-slot
+permutation, on injective interaction-time chambers. No transposition
+of contraction endpoints occurs, because the mixed-time position
+permutation is the identity. -/
+theorem ExternalInsertionWickDiagram.slotCongr_mixedAtomicPairValue_eq_of_injective
+    {E n : ℕ} (d : ExternalInsertionWickDiagram Mode E n)
+    (e : ↥(Finset.univ : Finset (Fin n)) ≃
+      ↥(Finset.univ : Finset (Fin n)))
+    (ε : Mode → ℝ) (β : ℝ)
+    (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ)
+    (hσ : Function.Injective σ)
+    (a b : Fin (2 * (2 * n + E))) :
+    externalInsertionMixedTimeOrderedAtomicPairValue ε β
+        (d.slotCongr e).externalLabel externalTime
+        (d.slotCongr e).vertexLabelSequence
+        (σ ∘ fun v => (e.symm ⟨v, Finset.mem_univ v⟩).1) a b =
+      externalInsertionMixedTimeOrderedAtomicPairValue ε β
+        d.externalLabel externalTime d.vertexLabelSequence σ a b := by
+  unfold externalInsertionMixedTimeOrderedAtomicPairValue
+  rw [d.slotCongr_mixedAtomicFieldFamily_eq_of_injective e externalTime σ hσ]
+
+/-- Under distinct interaction times, both the actual physical
+mixed-time Wick pairing and its oriented free-Gibbs pair kernel agree
+pointwise after arbitrary vertex reindexing. Consequently the full
+fermionic pairing evaluation, including its crossing weight, agrees. -/
+theorem ExternalInsertionWickDiagram.slotCongr_mixedPairingValue_eq_of_injective
+    {E n : ℕ} (d : ExternalInsertionWickDiagram Mode E n)
+    (e : ↥(Finset.univ : Finset (Fin n)) ≃
+      ↥(Finset.univ : Finset (Fin n)))
+    (ε : Mode → ℝ) (β : ℝ)
+    (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ)
+    (hσ : Function.Injective σ) :
+    (d.slotCongr e).mixedPairingValue ε β externalTime
+        (σ ∘ fun v => (e.symm ⟨v, Finset.mem_univ v⟩).1) =
+      d.mixedPairingValue ε β externalTime σ := by
+  rw [ExternalInsertionWickDiagram.mixedPairingValue,
+    ExternalInsertionWickDiagram.mixedPairingValue,
+    d.slotCongr_pairingInMixedOrder_eq_of_injective e externalTime σ hσ]
+  congr 1
+  funext a b
+  exact d.slotCongr_mixedAtomicPairValue_eq_of_injective
+    e ε β externalTime σ hσ a b
+
 end Fermionic
 end SecondQuantization
