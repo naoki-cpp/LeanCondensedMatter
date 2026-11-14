@@ -14,11 +14,12 @@ set_option linter.style.header false
 Public package boundary for the reusable formal power-series workflow used by
 linked-cluster and thermal consumers. It exports constant-coefficient normalization,
 factorial-normalized finite-set moments, formal-log derivative identities, and the finite-set cumulant
-bridge, together with coefficientwise complex sums under explicit summability hypotheses.
+bridge, together with coefficientwise complex sums and their convergence-sensitive algebraic laws.
 Consumers who need order-specific logarithm formulas can import
 `Analysis.PowerSeries.LowOrderLog`.
 
-Coefficientwise complex evaluation keeps explicit summability hypotheses for its algebraic laws;
+Coefficientwise complex sums keep explicit summability hypotheses for addition, subtraction, and
+Cauchy multiplication. Constant multiplication and multiplication by X hold for the total sum;
 the analytic logarithm bridge keeps its analytic power-series hypotheses. The remaining algebra is
 purely formal. Normalization theorems require the original constant coefficient
 to be nonzero, while logarithm/cumulant theorems on an already normalized series keep the explicit

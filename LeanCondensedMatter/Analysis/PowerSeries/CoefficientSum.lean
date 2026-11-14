@@ -8,11 +8,12 @@ import Mathlib.Tactic.Ring
 set_option linter.style.header false
 
 /-!
-# Absolutely convergent evaluation of formal power-series coefficients
+# Coefficientwise complex sums of formal power series
 
 A general formal series in ℂ⟦X⟧ need not converge at a complex number.
-The coefficientwise evaluation below is therefore used only with explicit
-summability hypotheses. Crucially, the Cauchy-product theorem below
+The additive and Cauchy-product laws below therefore require explicit summability
+hypotheses. Constant multiplication and multiplication by X also hold for the total
+infinite sum without summability. Crucially, the Cauchy-product theorem below
 transports formal multiplication to *actual complex series* without claiming
 that Mathlib's topologically nilpotent `PowerSeries.eval₂` can be used
 at an arbitrary complex value.
@@ -24,8 +25,8 @@ noncomputable section
 
 open scoped BigOperators PowerSeries
 
-/-- The coefficientwise infinite sum. This is only used with an explicit
-`Summable` witness for algebraic laws; the total infinite sum alone does not assert convergence. -/
+/-- The total coefficientwise complex infinite sum. This does not assert convergence;
+addition, subtraction, and Cauchy multiplication retain explicit summability hypotheses. -/
 noncomputable def coefficientSum (f : ℂ⟦X⟧) (x : ℂ) : ℂ :=
   ∑' n : ℕ, PowerSeries.coeff n f * x ^ n
 
@@ -115,30 +116,17 @@ theorem summable_coefficientSum_add (f g : ℂ⟦X⟧) (x : ℂ)
   rw [map_add]
   ring
 
-/-- Scaling a formal series by two preserves convergence. -/
-theorem summable_coefficientSum_two_mul (f : ℂ⟦X⟧) (x : ℂ)
+/-- Multiplication by a complex constant preserves coefficientwise summability. -/
+theorem summable_coefficientSum_C_mul (f : ℂ⟦X⟧) (x c : ℂ)
     (hf : Summable (fun n : ℕ => PowerSeries.coeff n f * x ^ n)) :
-    Summable (fun n : ℕ => PowerSeries.coeff n (2 * f) * x ^ n) := by
-  convert hf.mul_left (2 : ℂ) using 1
-  funext n
-  rw [PowerSeries.coeff_ofNat_mul]
-  ring
+    Summable (fun n : ℕ => PowerSeries.coeff n (PowerSeries.C c * f) * x ^ n) := by
+  simpa only [PowerSeries.coeff_C_mul, mul_assoc] using hf.mul_left c
 
-/-- Scaling a formal series by two commutes with convergent evaluation. -/
-theorem coefficientSum_two_mul (f : ℂ⟦X⟧) (x : ℂ)
-    (hf : Summable (fun n : ℕ => PowerSeries.coeff n f * x ^ n)) :
-    coefficientSum (2 * f) x =
-      2 * coefficientSum f x := by
-  unfold coefficientSum
-  calc
-    (∑' n : ℕ, PowerSeries.coeff n (2 * f) * x ^ n) =
-        ∑' n : ℕ, (2 : ℂ) * (PowerSeries.coeff n f * x ^ n) := by
-      apply tsum_congr
-      intro n
-      rw [PowerSeries.coeff_ofNat_mul]
-      ring
-    _ = (2 : ℂ) * (∑' n : ℕ, PowerSeries.coeff n f * x ^ n) :=
-      hf.tsum_mul_left 2
+/-- Multiplication by a complex constant commutes with the total coefficientwise sum,
+including when the coefficient sequence is not summable. -/
+theorem coefficientSum_C_mul (f : ℂ⟦X⟧) (x c : ℂ) :
+    coefficientSum (PowerSeries.C c * f) x = c * coefficientSum f x := by
+  simp only [coefficientSum, PowerSeries.coeff_C_mul, mul_assoc, tsum_mul_left]
 
 /-- Formal multiplication by X shifts a summable coefficient sequence
 and therefore preserves convergence at the chosen complex argument. -/
@@ -156,16 +144,20 @@ theorem summable_coefficientSum_X_mul (f : ℂ⟦X⟧) (x : ℂ)
   apply (summable_nat_add_iff 1).1
   simpa only [Nat.add_one] using htail
 
-/-- The formal product by X is compatible with coefficientwise evaluation
-at any complex argument whenever the original series is summable. -/
-theorem coefficientSum_X_mul (f : ℂ⟦X⟧) (x : ℂ)
-    (hf : Summable (fun n : ℕ => PowerSeries.coeff n f * x ^ n)) :
-    coefficientSum (PowerSeries.X * f) x =
-      x * coefficientSum f x := by
-  have hall := summable_coefficientSum_X_mul f x hf
+/-- Multiplication by X commutes with the total coefficientwise sum: its zero constant
+coefficient permits an unconditional shift of the series. -/
+theorem coefficientSum_X_mul (f : ℂ⟦X⟧) (x : ℂ) :
+    coefficientSum (PowerSeries.X * f) x = x * coefficientSum f x := by
+  have hshift :
+      (∑' n : ℕ, PowerSeries.coeff (n + 1) (PowerSeries.X * f) * x ^ (n + 1)) =
+        ∑' n : ℕ, PowerSeries.coeff n (PowerSeries.X * f) * x ^ n := by
+    apply Nat.succ_injective.tsum_eq
+    intro n hn
+    cases n with
+    | zero => exact (hn (by simp only [PowerSeries.coeff_zero_X_mul, zero_mul])).elim
+    | succ n => exact ⟨n, rfl⟩
   unfold coefficientSum
-  rw [hall.tsum_eq_zero_add]
-  simp only [PowerSeries.coeff_zero_X_mul, zero_mul, zero_add]
+  rw [← hshift]
   calc
     (∑' n : ℕ,
       PowerSeries.coeff (n + 1) (PowerSeries.X * f) * x ^ (n + 1)) =
@@ -174,8 +166,7 @@ theorem coefficientSum_X_mul (f : ℂ⟦X⟧) (x : ℂ)
       intro n
       rw [PowerSeries.coeff_succ_X_mul, pow_succ]
       ring
-    _ = x * (∑' n : ℕ, PowerSeries.coeff n f * x ^ n) :=
-      hf.tsum_mul_left x
+    _ = x * (∑' n : ℕ, PowerSeries.coeff n f * x ^ n) := tsum_mul_left
 
 /-- The unit formal power series evaluates to one. -/
 theorem coefficientSum_one (x : ℂ) :

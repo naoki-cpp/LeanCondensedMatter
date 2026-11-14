@@ -45,9 +45,14 @@ theorem besselY0Y1_harmonicIdentity (z : ℂ) :
   have hC : Summable (fun n : ℕ =>
       PowerSeries.coeff n besselFormalH1 * x ^ n) :=
     summable_besselFormalH1_eval z
-  have h2D :=
-    PowerSeries.summable_coefficientSum_two_mul
-      (PowerSeries.derivative besselFormalJ0) x hD
+  have h2D : Summable (fun n : ℕ =>
+      PowerSeries.coeff n (2 * PowerSeries.derivative besselFormalJ0) * x ^ n) := by
+    simpa using PowerSeries.summable_coefficientSum_C_mul
+      (PowerSeries.derivative besselFormalJ0) x 2 hD
+  have h2DEval :
+      PowerSeries.coefficientSum (2 * PowerSeries.derivative besselFormalJ0) x =
+        2 * PowerSeries.coefficientSum (PowerSeries.derivative besselFormalJ0) x := by
+    simpa using PowerSeries.coefficientSum_C_mul (PowerSeries.derivative besselFormalJ0) x 2
   have h2DB :=
     PowerSeries.summable_coefficientSum_mul
       (2 * PowerSeries.derivative besselFormalJ0) besselFormalH0 x h2D hB
@@ -69,11 +74,12 @@ theorem besselY0Y1_harmonicIdentity (z : ℂ) :
     besselFormalJ0H0H1_harmonicIdentity
   rw [PowerSeries.coefficientSum_sub _ _ x hAplus hXAC,
       PowerSeries.coefficientSum_add _ _ x hA hX2DB,
-      PowerSeries.coefficientSum_X_mul _ x h2DB,
-      PowerSeries.coefficientSum_X_mul _ x hAC,
+      PowerSeries.coefficientSum_X_mul
+        (2 * PowerSeries.derivative besselFormalJ0 * besselFormalH0) x,
+      PowerSeries.coefficientSum_X_mul (besselFormalJ0 * besselFormalH1) x,
       PowerSeries.coefficientSum_mul _ _ x h2D hB,
       PowerSeries.coefficientSum_mul _ _ x hA hC,
-      PowerSeries.coefficientSum_two_mul _ x hD,
+      h2DEval,
       PowerSeries.coefficientSum_one] at hFormal
   have hJ0 :
       PowerSeries.coefficientSum besselFormalJ0 x =
