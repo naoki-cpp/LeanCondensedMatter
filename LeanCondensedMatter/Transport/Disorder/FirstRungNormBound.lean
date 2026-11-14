@@ -151,7 +151,8 @@ theorem norm_connectedTwoGreen_sub_firstBornRung_le_cubic
       ‖AL ω‖ ≤ ‖freeLeft‖ * ‖V ω‖ * ‖freeLeft‖ :=
         norm_mul_three_le freeLeft (V ω) freeLeft
       _ ≤ BL * potentialBound * BL := by
-        gcongr <;> first | exact hfree | exact hpotential ω | exact hbound
+        gcongr
+        exact hpotential ω
       _ = CL := by dsimp [CL]; ring
   have hpointEq (ω : Ω) :
       L ω * vertex * R ω - AL ω * vertex * AR ω =
