@@ -3160,6 +3160,14 @@
       "externalImportCount": 3
     },
     {
+      "name": "LeanCondensedMatter.Models.OrbitalRelaxation.OctahedralScattering",
+      "sourceFile": "LeanCondensedMatter/Models/OrbitalRelaxation/OctahedralScattering.lean",
+      "imports": [
+        "LeanCondensedMatter.Models.OrbitalRelaxation.KineticClosure"
+      ],
+      "externalImportCount": 3
+    },
+    {
       "name": "LeanCondensedMatter.Models.OrbitalRelaxation.SphereMoments",
       "sourceFile": "LeanCondensedMatter/Models/OrbitalRelaxation/SphereMoments.lean",
       "imports": [
@@ -3381,6 +3389,7 @@
         "LeanCondensedMatter.Models.OrbitalRelaxation.AngularCollision",
         "LeanCondensedMatter.Models.OrbitalRelaxation.Finite",
         "LeanCondensedMatter.Models.OrbitalRelaxation.KineticClosure",
+        "LeanCondensedMatter.Models.OrbitalRelaxation.OctahedralScattering",
         "LeanCondensedMatter.Models.OrbitalRelaxation.SphereMoments",
         "LeanCondensedMatter.Models.OrbitalRelaxation.T2gProjectors",
         "LeanCondensedMatter.Models.OrbitalTransport.Finite",
@@ -8593,6 +8602,14 @@
       "externalImportCount": 1
     },
     {
+      "name": "LeanCondensedMatter.Transport.Disorder.BornNormBound",
+      "sourceFile": "LeanCondensedMatter/Transport/Disorder/BornNormBound.lean",
+      "imports": [
+        "LeanCondensedMatter.Transport.Disorder.Born"
+      ],
+      "externalImportCount": 3
+    },
+    {
       "name": "LeanCondensedMatter.Transport.Disorder.ConnectedCorrelation",
       "sourceFile": "LeanCondensedMatter/Transport/Disorder/ConnectedCorrelation.lean",
       "imports": [
@@ -8669,6 +8686,15 @@
       "externalImportCount": 3
     },
     {
+      "name": "LeanCondensedMatter.Transport.Disorder.TwoParticleNormBound",
+      "sourceFile": "LeanCondensedMatter/Transport/Disorder/TwoParticleNormBound.lean",
+      "imports": [
+        "LeanCondensedMatter.Transport.Disorder.BornNormBound",
+        "LeanCondensedMatter.Transport.Disorder.TwoParticle"
+      ],
+      "externalImportCount": 3
+    },
+    {
       "name": "LeanCondensedMatter.Transport.Disorder.Ward",
       "sourceFile": "LeanCondensedMatter/Transport/Disorder/Ward.lean",
       "imports": [
@@ -8683,6 +8709,7 @@
       "imports": [
         "LeanCondensedMatter.Transport.Disorder.AveragedSelfEnergy",
         "LeanCondensedMatter.Transport.Disorder.Born",
+        "LeanCondensedMatter.Transport.Disorder.BornNormBound",
         "LeanCondensedMatter.Transport.Disorder.ConnectedCorrelation",
         "LeanCondensedMatter.Transport.Disorder.Finite",
         "LeanCondensedMatter.Transport.Disorder.Ladder",
@@ -8691,6 +8718,7 @@
         "LeanCondensedMatter.Transport.Disorder.SCBA",
         "LeanCondensedMatter.Transport.Disorder.TraceBridge",
         "LeanCondensedMatter.Transport.Disorder.TwoParticle",
+        "LeanCondensedMatter.Transport.Disorder.TwoParticleNormBound",
         "LeanCondensedMatter.Transport.Disorder.Ward"
       ],
       "externalImportCount": 0
@@ -8800,7 +8828,7 @@
       "imports": [
         "LeanCondensedMatter.Analysis.Operator.Spectral.Resolvent"
       ],
-      "externalImportCount": 0
+      "externalImportCount": 1
     },
     {
       "name": "LeanCondensedMatter.Transport.Resolvent.EnergyDerivative",

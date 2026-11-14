@@ -83795,7 +83795,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ {Ω : Type u_1} [inst : Fintype Ω] {data : QuantumTheory.Models.OrbitalRelaxation.AngularKernelMoments Ω}\n  {axis i j : Fin 3} {ℏ c₁ c₂ r : ℝ}\n  (closure : QuantumTheory.Models.OrbitalRelaxation.QuasistationaryOrbitalKineticClosure data axis i j ℏ c₁ c₂ r)\n  (t : ℝ),\n  closure.polarization t =\n    closure.polarization 0 *\n      Real.exp\n        (-(QuantumTheory.Models.OrbitalRelaxation.orbitalRate axis ℏ\n              (QuantumTheory.Models.OrbitalRelaxation.degreeTwoTime data.degreeTwoRate) c₁ c₂ r *\n            t))",
     "standardAxioms": [
       "Classical.choice",
@@ -83803,7 +83803,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -83814,15 +83814,19 @@
     "docString": "The finite quasistationary closure has a unique global polarization\ntrajectory determined by its value at time zero. This statement is conditional\non the closure holding at every real time, not an unconditional material law. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "QuantumTheory.Models.OrbitalRelaxation.octahedral_polarization_eq_exp"
+    ],
     "dependencies": [
       "QuantumTheory.Models.OrbitalRelaxation.QuasistationaryOrbitalKineticClosure.hasDerivAt_polarization",
       "_private.LeanCondensedMatter.Models.OrbitalRelaxation.KineticClosure.0.QuantumTheory.Models.OrbitalRelaxation.QuasistationaryOrbitalKineticClosure.scalar_decay_solution"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "QuantumTheory.Models.OrbitalRelaxation.octahedral_polarization_eq_exp"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -84235,6 +84239,293 @@
     "module": "LeanCondensedMatter.Models.OrbitalRelaxation.T2gProjectors",
     "externalAxioms": [],
     "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (W : ℝ → ℝ) (hplus : 0 ≤ W 1) (hminus : 0 ≤ W (-1)) (horth : 0 ≤ W 0),\n  (QuantumTheory.Models.OrbitalRelaxation.octahedralMoments W hplus hminus horth).degreeTwoRate = 6 * W 0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.OrbitalRelaxation.octahedral_degreeTwoRate",
+    "module": "LeanCondensedMatter.Models.OrbitalRelaxation.OctahedralScattering",
+    "externalAxioms": [],
+    "docString": "The degree-two collision eigenvalue depends only on the orthogonal\nscattering channel in this six-direction model. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.OrbitalRelaxation.octahedral_degreeTwoRate_eq_legendre",
+      "QuantumTheory.Models.OrbitalRelaxation.octahedral_degreeTwoRate_pos",
+      "QuantumTheory.Models.OrbitalRelaxation.octahedral_polarization_eq_exp"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.OrbitalRelaxation.octahedral_degreeTwoRate_eq_legendre",
+      "QuantumTheory.Models.OrbitalRelaxation.octahedral_degreeTwoRate_pos",
+      "QuantumTheory.Models.OrbitalRelaxation.octahedral_polarization_eq_exp"
+    ],
+    "compiledConsumerCount": 3,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (W : ℝ → ℝ) (hplus : 0 ≤ W 1) (hminus : 0 ≤ W (-1)) (horth : 0 ≤ W 0) (p : Fin 6),\n  (QuantumTheory.Models.OrbitalRelaxation.octahedralMoments W hplus hminus horth).degreeTwoRate =\n    ∑ q,\n      QuantumTheory.Models.OrbitalRelaxation.octahedralKernel W p q *\n        (1 -\n          QuantumTheory.Models.OrbitalRelaxation.legendreP2\n            (QuantumTheory.Models.OrbitalRelaxation.octahedralCosine p q))",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.OrbitalRelaxation.octahedral_degreeTwoRate_eq_legendre",
+    "module": "LeanCondensedMatter.Models.OrbitalRelaxation.OctahedralScattering",
+    "externalAxioms": [],
+    "docString": "The finite collision eigenvalue is exactly the Legendre-weighted\nangular loss sum. This does not identify the finite sum with a continuous\nangular integral over the sphere. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.Models.OrbitalRelaxation.octahedral_degreeTwoRate"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (W : ℝ → ℝ) (hplus : 0 ≤ W 1) (hminus : 0 ≤ W (-1)) (horth : 0 < W 0),\n  0 < (QuantumTheory.Models.OrbitalRelaxation.octahedralMoments W hplus hminus ⋯).degreeTwoRate",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.OrbitalRelaxation.octahedral_degreeTwoRate_pos",
+    "module": "LeanCondensedMatter.Models.OrbitalRelaxation.OctahedralScattering",
+    "externalAxioms": [],
+    "docString": "Strictly positive orthogonal scattering gives a positive quadrupole\nrelaxation rate, hence a finite positive `τ₂ = (6 W(0))⁻¹`. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.Models.OrbitalRelaxation.octahedral_degreeTwoRate"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (W : ℝ → ℝ) (hplus : 0 ≤ W 1) (hminus : 0 ≤ W (-1)) (horth : 0 ≤ W 0),\n  (QuantumTheory.Models.OrbitalRelaxation.octahedralMoments W hplus hminus horth).momentumRate = 2 * W (-1) + 4 * W 0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.OrbitalRelaxation.octahedral_momentumRate",
+    "module": "LeanCondensedMatter.Models.OrbitalRelaxation.OctahedralScattering",
+    "externalAxioms": [],
+    "docString": "The degree-one (momentum) collision eigenvalue, explicitly derived\nfrom the scattering kernel at backward and orthogonal scattering angles. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.OrbitalRelaxation.octahedral_momentumRate_eq_transport"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.OrbitalRelaxation.octahedral_momentumRate_eq_transport"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (W : ℝ → ℝ) (hplus : 0 ≤ W 1) (hminus : 0 ≤ W (-1)) (horth : 0 ≤ W 0) (p : Fin 6),\n  (QuantumTheory.Models.OrbitalRelaxation.octahedralMoments W hplus hminus horth).momentumRate =\n    ∑ q,\n      QuantumTheory.Models.OrbitalRelaxation.octahedralKernel W p q *\n        (1 - QuantumTheory.Models.OrbitalRelaxation.octahedralCosine p q)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.OrbitalRelaxation.octahedral_momentumRate_eq_transport",
+    "module": "LeanCondensedMatter.Models.OrbitalRelaxation.OctahedralScattering",
+    "externalAxioms": [],
+    "docString": "The analogous finite transport-weighted sum equals the linear\nangular-mode relaxation eigenvalue. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.Models.OrbitalRelaxation.octahedral_momentumRate"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (W : ℝ → ℝ) (hplus : 0 ≤ W 1) (hminus : 0 ≤ W (-1)) (horth : 0 ≤ W 0) {axis : Fin 3} {ℏ c₁ c₂ r : ℝ}\n  (closure :\n    QuantumTheory.Models.OrbitalRelaxation.QuasistationaryOrbitalKineticClosure\n      (QuantumTheory.Models.OrbitalRelaxation.octahedralMoments W hplus hminus horth) axis 0 0 ℏ c₁ c₂ r)\n  (t : ℝ),\n  closure.polarization t =\n    closure.polarization 0 *\n      Real.exp (-(QuantumTheory.Models.OrbitalRelaxation.orbitalRate axis ℏ (6 * W 0)⁻¹ c₁ c₂ r * t))",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.OrbitalRelaxation.octahedral_polarization_eq_exp",
+    "module": "LeanCondensedMatter.Models.OrbitalRelaxation.OctahedralScattering",
+    "externalAxioms": [],
+    "docString": "With the collision moments constructed from `W`, the conditional\nquasistationary kinetics has the expected `I₂ = 6 W(0)` timescale.\nThe closure hypothesis itself is not derived from this scattering kernel. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.Models.OrbitalRelaxation.QuasistationaryOrbitalKineticClosure.polarization_eq_exp",
+      "QuantumTheory.Models.OrbitalRelaxation.octahedral_degreeTwoRate"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∃ p,\n  QuantumTheory.Models.OrbitalRelaxation.quadrupoleMode QuantumTheory.Models.OrbitalRelaxation.octahedralDirection 0 0\n      p ≠\n    0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.OrbitalRelaxation.octahedral_quadrupole_nonzero",
+    "module": "LeanCondensedMatter.Models.OrbitalRelaxation.OctahedralScattering",
+    "externalAxioms": [],
+    "docString": "A diagonal degree-two mode is nonzero on the octahedral grid. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [],
@@ -91094,16 +91385,18 @@
     "directWrapperOf": null,
     "dependents": [
       "QuantumTheory.Transport.FiniteDisorderEnsemble.averagedGreenOfRegulator_eq_born_add_exactRemainder_of_centered",
-      "QuantumTheory.Transport.FiniteDisorderEnsemble.averagedOperatorInsertion_eq_mean_add_connected"
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.averagedOperatorInsertion_eq_mean_add_connected",
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_averagedGreen_sub_free_le"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.Transport.FiniteDisorderEnsemble.averagedGreenOfRegulator_eq_born_add_exactRemainder_of_centered",
-      "QuantumTheory.Transport.FiniteDisorderEnsemble.averagedOperatorInsertion_eq_mean_add_connected"
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.averagedOperatorInsertion_eq_mean_add_connected",
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_averagedGreen_sub_free_le"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -91327,7 +91620,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ {H : Type u_1} {Ω : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] [inst_3 : Fintype Ω] (ensemble : QuantumTheory.Transport.FiniteDisorderEnsemble)\n  (energy regulator : ℝ),\n  regulator ≠ 0 →\n    ensemble.IsCentered →\n      ensemble.averagedGreenOfRegulator energy regulator =\n        ensemble.freeGreenOfRegulator energy regulator +\n            ensemble.freeGreenOfRegulator energy regulator * ensemble.bornSelfEnergyOfRegulator energy regulator *\n              ensemble.freeGreenOfRegulator energy regulator +\n          ensemble.average fun ω =>\n            ensemble.freeGreenOfRegulator energy regulator * ↑(ensemble.impurityPotential ω) *\n                      ensemble.freeGreenOfRegulator energy regulator *\n                    ↑(ensemble.impurityPotential ω) *\n                  ensemble.configurationGreenOfRegulator energy regulator ω *\n                ↑(ensemble.impurityPotential ω) *\n              ensemble.freeGreenOfRegulator energy regulator",
     "standardAxioms": [
       "Classical.choice",
@@ -91335,7 +91628,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -91346,7 +91639,9 @@
     "docString": "Exact finite-ensemble third-order remainder of the centered Born expansion.\n\nFor any nonzero signed regulator, the averaged resolvent equals the clean Green operator\nplus the first nonzero Born contribution `G₀ C₂(G₀) G₀` and a *specified* remainder\ncontaining three impurity potentials and one exact configuration Green operator.\n\nThis is an identity, not an asymptotic expansion or an error estimate. A norm bound\nrequires additional quantitative control of the impurity potentials and resolvents. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_averagedGreen_sub_bornSecondOrder_le"
+    ],
     "dependencies": [
       "QuantumTheory.Transport.FiniteDisorderEnsemble.average_const",
       "QuantumTheory.Transport.FiniteDisorderEnsemble.configurationGreenOfRegulator_eq_free_add_dyson_right",
@@ -91356,8 +91651,10 @@
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_averagedGreen_sub_bornSecondOrder_le"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -91603,7 +91900,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -91615,7 +91912,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Transport.FiniteDisorderEnsemble.configurationGreenOfRegulator_eq_secondOrder_add_exactRemainder_left"
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.configurationGreenOfRegulator_eq_secondOrder_add_exactRemainder_left",
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_configurationGreen_sub_free_le"
     ],
     "dependencies": [
       "QuantumTheory.Transport.FiniteDisorderEnsemble.configurationGreenOfRegulator_isSelfEnergy",
@@ -91624,9 +91922,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Transport.FiniteDisorderEnsemble.configurationGreenOfRegulator_eq_secondOrder_add_exactRemainder_left"
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.configurationGreenOfRegulator_eq_secondOrder_add_exactRemainder_left",
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_configurationGreen_sub_free_le"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -92209,6 +92508,315 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.Transport.FiniteDisorderEnsemble.ChargeSymmetry.of_impurityPotential_commute"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {H : Type u_1} {Ω : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] [inst_3 : Fintype Ω] (ensemble : QuantumTheory.Transport.FiniteDisorderEnsemble)\n  {E : Type u_3} [inst_4 : NormedAddCommGroup E] [inst_5 : NormedSpace ℂ E] (response : Ω → E) (bound : ℝ),\n  (∀ (ω : Ω), ‖response ω‖ ≤ bound) → ‖ensemble.average response‖ ≤ bound",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_average_le_of_forall",
+    "module": "LeanCondensedMatter.Transport.Disorder.Finite",
+    "externalAxioms": [],
+    "docString": "A normalized finite disorder average is norm-contractive on pointwise bounded families.\nThe same estimate applies to operator and scalar responses without introducing a second\nprobability-averaging API. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_averagedGreen_sub_free_le",
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_connectedTwoGreenInsertion_le_uniformPotential_sq"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_averagedGreen_sub_free_le",
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_connectedTwoGreenInsertion_le_uniformPotential_sq"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {H : Type u_1} {Ω : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] [inst_3 : Fintype Ω] (ensemble : QuantumTheory.Transport.FiniteDisorderEnsemble)\n  (energy regulator : ℝ),\n  regulator ≠ 0 →\n    ensemble.IsCentered →\n      ‖ensemble.averagedGreenOfRegulator energy regulator -\n            (ensemble.freeGreenOfRegulator energy regulator +\n              ensemble.freeGreenOfRegulator energy regulator * ensemble.bornSelfEnergyOfRegulator energy regulator *\n                ensemble.freeGreenOfRegulator energy regulator)‖ ≤\n        |regulator|⁻¹ ^ 4 * ensemble.impurityThirdNormMoment",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_averagedGreen_sub_bornSecondOrder_le",
+    "module": "LeanCondensedMatter.Transport.Disorder.BornNormBound",
+    "externalAxioms": [],
+    "docString": "The exact quenched Green operator is within the third norm moment of its centered\nsecond-order Born approximation at every nonzero signed regulator. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.averagedGreenOfRegulator_eq_born_add_exactRemainder_of_centered",
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_exactBornRemainder_le_thirdNormMoment"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {H : Type u_1} {Ω : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] [inst_3 : Fintype Ω] (ensemble : QuantumTheory.Transport.FiniteDisorderEnsemble)\n  (energy regulator : ℝ),\n  regulator ≠ 0 →\n    ∀ (potentialBound : ℝ),\n      (∀ (ω : Ω), ‖↑(ensemble.impurityPotential ω)‖ ≤ potentialBound) →\n        ‖ensemble.averagedGreenOfRegulator energy regulator - ensemble.freeGreenOfRegulator energy regulator‖ ≤\n          |regulator|⁻¹ ^ 2 * potentialBound",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_averagedGreen_sub_free_le",
+    "module": "LeanCondensedMatter.Transport.Disorder.TwoParticleNormBound",
+    "externalAxioms": [],
+    "docString": "A finite disorder average is as close to the clean Green operator as each configuration\nat a common uniform potential bound. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_configurationGreen_sub_averaged_le"
+    ],
+    "dependencies": [
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.average_const",
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_average_le_of_forall",
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_configurationGreen_sub_free_le"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_configurationGreen_sub_averaged_le"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {H : Type u_1} {Ω : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] [inst_3 : Fintype Ω] (ensemble : QuantumTheory.Transport.FiniteDisorderEnsemble)\n  (energy regulator : ℝ),\n  regulator ≠ 0 →\n    ∀ (ω : Ω) (potentialBound : ℝ),\n      (∀ (ξ : Ω), ‖↑(ensemble.impurityPotential ξ)‖ ≤ potentialBound) →\n        ‖ensemble.configurationGreenOfRegulator energy regulator ω -\n              ensemble.averagedGreenOfRegulator energy regulator‖ ≤\n          2 * |regulator|⁻¹ ^ 2 * potentialBound",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_configurationGreen_sub_averaged_le",
+    "module": "LeanCondensedMatter.Transport.Disorder.TwoParticleNormBound",
+    "externalAxioms": [],
+    "docString": "The configuration-to-average Green fluctuation is first order in a uniform\nimpurity bound, without any centering or Gaussian assumption. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_connectedTwoGreenInsertion_le_uniformPotential_sq"
+    ],
+    "dependencies": [
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_averagedGreen_sub_free_le",
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_configurationGreen_sub_free_le"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_connectedTwoGreenInsertion_le_uniformPotential_sq"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {H : Type u_1} {Ω : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] [inst_3 : Fintype Ω] (ensemble : QuantumTheory.Transport.FiniteDisorderEnsemble)\n  (energy regulator : ℝ),\n  regulator ≠ 0 →\n    ∀ (ω : Ω) (potentialBound : ℝ),\n      ‖↑(ensemble.impurityPotential ω)‖ ≤ potentialBound →\n        ‖ensemble.configurationGreenOfRegulator energy regulator ω - ensemble.freeGreenOfRegulator energy regulator‖ ≤\n          |regulator|⁻¹ ^ 2 * potentialBound",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_configurationGreen_sub_free_le",
+    "module": "LeanCondensedMatter.Transport.Disorder.TwoParticleNormBound",
+    "externalAxioms": [],
+    "docString": "A single exact resolvent differs from the clean resolvent by at most a first-order\nimpurity contribution, uniformly at a fixed nonzero signed regulator. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_averagedGreen_sub_free_le",
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_configurationGreen_sub_averaged_le"
+    ],
+    "dependencies": [
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.configurationGreenOfRegulator_eq_free_add_dyson_left",
+      "QuantumTheory.Transport.norm_resolvent_spectralParameterOfRegulator_le"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_averagedGreen_sub_free_le",
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_configurationGreen_sub_averaged_le"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {H : Type u_1} {Ω : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] [inst_3 : Fintype Ω] (ensemble : QuantumTheory.Transport.FiniteDisorderEnsemble)\n  (energyLeft regulatorLeft energyRight regulatorRight : ℝ),\n  regulatorLeft ≠ 0 →\n    regulatorRight ≠ 0 →\n      ∀ (vertex : H →L[ℂ] H) (potentialBound : ℝ),\n        0 ≤ potentialBound →\n          (∀ (ω : Ω), ‖↑(ensemble.impurityPotential ω)‖ ≤ potentialBound) →\n            ‖ensemble.connectedTwoGreenInsertionOfRegulators energyLeft regulatorLeft energyRight regulatorRight\n                  vertex‖ ≤\n              2 * |regulatorLeft|⁻¹ ^ 2 * potentialBound * ‖vertex‖ * (2 * |regulatorRight|⁻¹ ^ 2 * potentialBound)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_connectedTwoGreenInsertion_le_uniformPotential_sq",
+    "module": "LeanCondensedMatter.Transport.Disorder.TwoParticleNormBound",
+    "externalAxioms": [],
+    "docString": "Exact connected two-Green disorder insertion is quadratically bounded at two\nindependent nonzero regulators for a uniform operator-norm potential bound.\n\nThis is a **nonasymptotic** estimate for exact disorder covariance, *not* an identification\nwith a noncrossing Born-ladder vertex. No assumption `E[V]=0` is required. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_average_le_of_forall",
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_configurationGreen_sub_averaged_le"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {H : Type u_1} {Ω : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] [inst_3 : Fintype Ω] (ensemble : QuantumTheory.Transport.FiniteDisorderEnsemble)\n  (energy regulator : ℝ),\n  regulator ≠ 0 →\n    ‖ensemble.average fun ω =>\n          ensemble.freeGreenOfRegulator energy regulator * ↑(ensemble.impurityPotential ω) *\n                    ensemble.freeGreenOfRegulator energy regulator *\n                  ↑(ensemble.impurityPotential ω) *\n                ensemble.configurationGreenOfRegulator energy regulator ω *\n              ↑(ensemble.impurityPotential ω) *\n            ensemble.freeGreenOfRegulator energy regulator‖ ≤\n      |regulator|⁻¹ ^ 4 * ensemble.impurityThirdNormMoment",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_exactBornRemainder_le_thirdNormMoment",
+    "module": "LeanCondensedMatter.Transport.Disorder.BornNormBound",
+    "externalAxioms": [],
+    "docString": "Fixed-regulator norm bound on the exact finite-ensemble cubic remainder appearing\nin the centered Born expansion, independent of a separate centering hypothesis. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_averagedGreen_sub_bornSecondOrder_le"
+    ],
+    "dependencies": [
+      "QuantumTheory.Transport.norm_resolvent_spectralParameterOfRegulator_le",
+      "_private.LeanCondensedMatter.Transport.Disorder.BornNormBound.0.QuantumTheory.Transport.FiniteDisorderEnsemble.norm_mul_seven_le"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_averagedGreen_sub_bornSecondOrder_le"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -97332,6 +97940,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "QuantumTheory.Transport.norm_resolvent_spectralParameterOfRegulator_le",
       "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornInvertibility.0.QuantumTheory.Models.MassiveDirac.im_inner_self_pauliGreenOperatorOfRegulator_apply",
       "_private.LeanCondensedMatter.Transport.Disorder.AveragedSelfEnergy.0.QuantumTheory.Transport.FiniteDisorderEnsemble.im_inner_configurationGreenOfRegulator_apply_self"
     ],
@@ -97342,10 +97951,11 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "QuantumTheory.Transport.norm_resolvent_spectralParameterOfRegulator_le",
       "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornInvertibility.0.QuantumTheory.Models.MassiveDirac.im_inner_self_pauliGreenOperatorOfRegulator_apply",
       "_private.LeanCondensedMatter.Transport.Disorder.AveragedSelfEnergy.0.QuantumTheory.Transport.FiniteDisorderEnsemble.im_inner_configurationGreenOfRegulator_apply_self"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -98386,6 +98996,52 @@
       "QuantumTheory.Transport.summable_besselY1HarmonicTerm"
     ],
     "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (hamiltonian : H →L[ℂ] H),\n  IsSelfAdjoint hamiltonian →\n    ∀ (energy regulator : ℝ),\n      regulator ≠ 0 →\n        ‖resolvent hamiltonian (QuantumTheory.Transport.spectralParameterOfRegulator energy regulator)‖ ≤ |regulator|⁻¹",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.norm_resolvent_spectralParameterOfRegulator_le",
+    "module": "LeanCondensedMatter.Transport.Resolvent.Basic",
+    "externalAxioms": [],
+    "docString": "Uniform resolvent norm bound for a bounded self-adjoint Hamiltonian at any nonzero\nsigned regulator: no spectral gap or finite-dimensionality is needed. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_configurationGreen_sub_free_le",
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_exactBornRemainder_le_thirdNormMoment"
+    ],
+    "dependencies": [
+      "QuantumTheory.Transport.im_inner_resolvent_spectralParameterOfRegulator_apply_self"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_configurationGreen_sub_free_le",
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_exactBornRemainder_le_thirdNormMoment"
+    ],
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -120633,6 +121289,44 @@
       "SecondQuantization.Common.ExternalInsertionBlockLayout.sum_vacuumFree_fixedPartition_eq_sizes_shuffles"
     ],
     "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {E N : ℕ} {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {M : Type u_3} [inst : Fintype ExternalLabel]\n  [inst_1 : Fintype InternalLabel] [inst_2 : AddCommMonoid M] (anchor : Fin (2 * E)) (π : Finpartition Finset.univ)\n  (heven : ∀ (B : ↥π.parts), Even (↑B).card)\n  (weight : { d // SecondQuantization.Common.externalComponentPartition (↑d).vertexGraph = π } → M),\n  ∑ d, weight d =\n    ∑\n      p ∈\n        SecondQuantization.Common.ExternalInsertionBlockLayout.fixedPartitionPhysicalStandardizedSizeShuffleFiniteDomain\n          anchor π heven,\n      weight\n        ((SecondQuantization.Common.ExternalInsertionBlockLayout.fixedPartitionPhysicalStandardizedSizeShuffleEquiv\n              anchor π heven).symm\n          p)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.ExternalInsertionBlockLayout.sum_fixedPartitionPhysical_eq_standardized_sizes_shuffles",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.BlockAssembly",
+    "externalAxioms": [],
+    "docString": "An arbitrary weight on physical partition-fiber diagrams can be\nreindexed without loss or multiplicity by the exact finite\nsize/shuffle/standardized-local domain. No factorization of an\nindividual ordered Dyson integral is claimed. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -207739,6 +208433,48 @@
     "completedMention": false,
     "compiledConsumers": [
       "_private.LeanCondensedMatter.Transport.Disorder.AveragedSelfEnergy.0.QuantumTheory.Transport.FiniteDisorderEnsemble.averagedGreenOfRegulator_denseRange"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [CompleteSpace H]\n  (a b c d e f g : H →L[ℂ] H), ‖a * b * c * d * e * f * g‖ ≤ ‖a‖ * ‖b‖ * ‖c‖ * ‖d‖ * ‖e‖ * ‖f‖ * ‖g‖",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Transport.Disorder.BornNormBound.0.QuantumTheory.Transport.FiniteDisorderEnsemble.norm_mul_seven_le",
+    "module": "LeanCondensedMatter.Transport.Disorder.BornNormBound",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_exactBornRemainder_le_thirdNormMoment"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_exactBornRemainder_le_thirdNormMoment"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
