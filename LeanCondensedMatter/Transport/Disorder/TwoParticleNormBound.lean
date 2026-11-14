@@ -84,7 +84,7 @@ theorem norm_configurationGreen_sub_free_le
 at a common uniform potential bound. -/
 theorem norm_averagedGreen_sub_free_le
     (energy regulator : ℝ) (hregulator : regulator ≠ 0)
-    (potentialBound : ℝ) (hbound : 0 ≤ potentialBound)
+    (potentialBound : ℝ)
     (hpotential : ∀ ω, ‖(ensemble.impurityPotential ω).1‖ ≤ potentialBound) :
     ‖ensemble.averagedGreenOfRegulator energy regulator -
         ensemble.freeGreenOfRegulator energy regulator‖ ≤
@@ -113,7 +113,7 @@ theorem norm_averagedGreen_sub_free_le
 impurity bound, without any centering or Gaussian assumption. -/
 theorem norm_configurationGreen_sub_averaged_le
     (energy regulator : ℝ) (hregulator : regulator ≠ 0) (ω : Ω)
-    (potentialBound : ℝ) (hbound : 0 ≤ potentialBound)
+    (potentialBound : ℝ)
     (hpotential : ∀ ξ, ‖(ensemble.impurityPotential ξ).1‖ ≤ potentialBound) :
     ‖ensemble.configurationGreenOfRegulator energy regulator ω -
         ensemble.averagedGreenOfRegulator energy regulator‖ ≤
@@ -129,7 +129,7 @@ theorem norm_configurationGreen_sub_averaged_le
   have hmean :
       ‖Gbar - G₀‖ ≤ B ^ 2 * potentialBound :=
     ensemble.norm_averagedGreen_sub_free_le
-      energy regulator hregulator potentialBound hbound hpotential
+      energy regulator hregulator potentialBound hpotential
   have hdiff : Gω - Gbar = (Gω - G₀) - (Gbar - G₀) := by abel
   change ‖Gω - Gbar‖ ≤ 2 * B ^ 2 * potentialBound
   rw [hdiff]
@@ -169,10 +169,10 @@ theorem norm_connectedTwoGreenInsertion_le_uniformPotential_sq
       ‖L ω * vertex * R ω‖ ≤ leftBound * ‖vertex‖ * rightBound := by
     have hleft : ‖L ω‖ ≤ leftBound :=
       ensemble.norm_configurationGreen_sub_averaged_le
-        energyLeft regulatorLeft hregLeft ω potentialBound hbound hpotential
+        energyLeft regulatorLeft hregLeft ω potentialBound hpotential
     have hright : ‖R ω‖ ≤ rightBound :=
       ensemble.norm_configurationGreen_sub_averaged_le
-        energyRight regulatorRight hregRight ω potentialBound hbound hpotential
+        energyRight regulatorRight hregRight ω potentialBound hpotential
     calc
       ‖L ω * vertex * R ω‖ ≤ (‖L ω‖ * ‖vertex‖) * ‖R ω‖ := by
         exact (norm_mul_le _ _).trans
