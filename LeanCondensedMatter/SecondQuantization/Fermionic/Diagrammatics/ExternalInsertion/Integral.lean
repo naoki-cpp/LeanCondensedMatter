@@ -149,5 +149,48 @@ theorem ExternalInsertionWickDiagram.orderedDysonAmplitude_congr_of_strictAnti
     _ β hβ _ _ hpoint
 
 
+
+/-- The *integrated* physical Dyson contribution is invariant when
+interaction-vertex slots are relabeled together with the global
+interaction order.
+
+The key input is exact equality of the **full** Dyson-signed Wick
+amplitudes on injective-time assignments. On the ordered simplex,
+injectivity follows from strict antitonicity almost everywhere; the
+strict-chamber congruence already accounts for the lower-dimensional
+time-collision set. Importantly, the order must be transported along
+`e`: the canonical-order integral need not be invariant under an
+arbitrary permutation when the order is held fixed. -/
+theorem ExternalInsertionWickDiagram.orderedDysonAmplitude_slotCongr
+    {E n : ℕ} (d : ExternalInsertionWickDiagram Mode E n)
+    (e : ↥(Finset.univ : Finset (Fin n)) ≃
+      ↥(Finset.univ : Finset (Fin n)))
+    (ε : Mode → ℝ) (β : ℝ) (hβ : 0 ≤ β)
+    (g : QuarticVertexLabel Mode → ℂ)
+    (externalTime : Fin (2 * E) → ℝ)
+    (order : QuarticVertexOrder (Finset.univ : Finset (Fin n))) :
+    d.orderedDysonAmplitude ε β g externalTime order =
+      (d.slotCongr e).orderedDysonAmplitude ε β g externalTime
+        (order.trans e) := by
+  apply d.orderedDysonAmplitude_congr_of_strictAnti
+    (d.slotCongr e) ε β hβ g externalTime order (order.trans e)
+  intro τ hτ _
+  let σ : Fin n → ℝ :=
+    fun v => τ (order.symm ⟨v, Finset.mem_univ v⟩)
+  have hσ : Function.Injective σ :=
+    quarticVertexOrderedTime_injective_of_strictAnti order τ hτ
+  have htime :
+      (fun v : Fin n => τ ((order.trans e).symm ⟨v, Finset.mem_univ v⟩)) =
+        σ ∘ fun v => (e.symm ⟨v, Finset.mem_univ v⟩).1 := by
+    funext v
+    rfl
+  change d.dysonFixedTimeAmplitude ε β g externalTime σ =
+    (d.slotCongr e).dysonFixedTimeAmplitude ε β g externalTime
+      (fun v => τ ((order.trans e).symm ⟨v, Finset.mem_univ v⟩))
+  rw [htime]
+  exact (d.slotCongr_dysonFixedTimeAmplitude_eq_of_injective
+    e ε β g externalTime σ hσ).symm
+
+
 end Fermionic
 end SecondQuantization
