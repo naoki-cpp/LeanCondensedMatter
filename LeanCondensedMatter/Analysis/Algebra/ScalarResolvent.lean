@@ -19,25 +19,23 @@ theorem scalarResolvent_gap_mul_inverse_product
   rw [hgap]
   field_simp [ha, hb]
 
-/-- Imaginary part after multiplication by a squared inverse of a nonzero real gap. -/
-theorem inv_real_gap_sq_mul_im (gap : ℝ) (z : ℂ) (hgap : gap ≠ 0) :
-    (((gap : ℂ)⁻¹) ^ 2 * z).im = z.im / gap ^ 2 := by
-  have hcoeff :
-      ((gap : ℂ)⁻¹) ^ 2 = ((gap⁻¹ ^ 2 : ℝ) : ℂ) := by
+/-- The imaginary part of an inverse real-gap square, valid also at zero
+because the inverse is totalized. -/
+theorem inv_real_gap_sq_mul_im (gap : ℝ) (z : ℂ) :
+    (((gap : ℂ)⁻¹) ^ 2 * z).im = (gap⁻¹ ^ 2) * z.im := by
+  have hcoeff : (((gap : ℂ)⁻¹) ^ 2) = ((gap⁻¹ ^ 2 : ℝ) : ℂ) := by
     rw [← Complex.ofReal_inv, ← Complex.ofReal_pow]
   rw [hcoeff]
-  simp only [Complex.mul_im, Complex.ofReal_re, Complex.ofReal_im, zero_mul]
-  field_simp [hgap]
-  ring
+  simp only [Complex.mul_im, Complex.ofReal_re, Complex.ofReal_im, zero_mul, add_zero]
 
-/-- Products of complex numerators with a shared real gap have the expected imaginary part. -/
+/-- Products of complex numerators with a shared nonzero real gap have the expected imaginary part. -/
 theorem mul_div_real_gap_im (a b : ℂ) (gap : ℝ) (hgap : gap ≠ 0) :
     ((a / (gap : ℂ)) * (b / (gap : ℂ))).im =
       (a * b).im / gap ^ 2 := by
   rw [show (a / (gap : ℂ)) * (b / (gap : ℂ)) =
       ((gap : ℂ)⁻¹) ^ 2 * (a * b) by
     simp only [div_eq_mul_inv]
-    ring]
-  exact inv_real_gap_sq_mul_im gap (a * b) hgap
+    ring, inv_real_gap_sq_mul_im]
+  field_simp [hgap]
 
 end Algebra
