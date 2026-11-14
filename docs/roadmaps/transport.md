@@ -92,6 +92,13 @@ The first-Born layer is kept directly in `Disorder.Born`:
 `bornSelfEnergyOfRegulator E γ = C₂(G₀(E,γ))`. No separate R/A Born routing modules or
 closure/truncation API are maintained.
 
+For *centered* finite disorder (`E[V] = 0`), the exact configuration Dyson identities give
+`Ḡ = G₀ + G₀ C₂(G₀) G₀ + E[G₀ V G₀ V Gω V G₀]` at any nonzero signed regulator.
+The last term is an exact cubic-in-impurity **remainder expression** (containing the exact
+configuration propagator `Gω`), not yet a quantitative `O(‖V‖³)` bound. Its connection to
+any continuum white-noise scalar disorder strength still requires a separate model bridge.
+
+
 `Disorder.TwoParticle` proves the **exact finite-ensemble two-Green decomposition**
 `E[G₁ J G₂] = E[G₁] J E[G₂] + E[(G₁-E[G₁]) J (G₂-E[G₂])]`
 for independently supplied signed regulators and an arbitrary bounded insertion `J`.
@@ -177,6 +184,8 @@ not public APIs. Convergence and Ward identities are separate targets.
 - trace per unit volume and controlled thermodynamic limits;
 - justified DC and zero-broadening limits;
 - convergence-aware SCBA/ladder results where needed;
+- operator-norm bounds on the exact centered Born cubic remainder at fixed nonzero regulator,
+  followed by explicit controlled approximation/error-to-Hall-response estimates;
 - exact two-Green connected insertion to diagrammatic non-crossing / diffuson and full Kubo
   response channels, with explicit approximation hypotheses, charge-conservation constraints,
   and same-side/sea/contact terms;
