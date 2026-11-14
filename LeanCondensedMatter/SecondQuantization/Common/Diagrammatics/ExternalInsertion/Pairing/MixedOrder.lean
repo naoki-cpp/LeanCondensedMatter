@@ -1,4 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Core.Ordered
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Core.SlotCongr
 
 set_option linter.style.header false
 
@@ -51,6 +52,49 @@ theorem ExternalInsertionDiagram.pairingInMixedOrder_partner_legPosition {E n : 
     Equiv.apply_symm_apply,
     hpos,
     ExternalInsertionDiagram.atomicLegPartner]
+
+
+/-- Relabel the canonical external and quartic atomic legs by an
+arbitrary bijection of interaction vertices. External legs and the four
+local leg positions of each vertex are unchanged. -/
+noncomputable def externalInsertionOrderedLegSlotCongr
+    {E n : ℕ}
+    (e : ↥(Finset.univ : Finset (Fin n)) ≃
+      ↥(Finset.univ : Finset (Fin n))) :
+    OrderedExternalInsertionLeg E n ≃ OrderedExternalInsertionLeg E n :=
+  (Equiv.refl (Fin (2 * E))).sumCongr
+    (e.prodCongr (Equiv.refl (Fin 4)))
+
+/-- The canonical-leg Wick pairing partner is equivariant under any
+interaction-vertex permutation. This follows from the *actual*
+flattened-leg transport in `slotCongr`, not an abstract, new pairing. -/
+theorem ExternalInsertionDiagram.slotCongr_atomicLegPartner
+    {E n : ℕ}
+    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E n
+      (Finset.univ : Finset (Fin n)))
+    (e : ↥(Finset.univ : Finset (Fin n)) ≃
+      ↥(Finset.univ : Finset (Fin n)))
+    (leg : OrderedExternalInsertionLeg E n) :
+    (d.slotCongr e).atomicLegPartner
+        (externalInsertionOrderedLegSlotCongr e leg) =
+      externalInsertionOrderedLegSlotCongr e (d.atomicLegPartner leg) := by
+  let L := externalInsertionLegEquiv E (Finset.univ : Finset (Fin n))
+  let P := externalInsertionLegCongr (E := E) e
+  let C := externalInsertionOrderedLegSlotCongr (E := E) e
+  have hC (p : Fin (2 * (2 *
+      (Finset.univ : Finset (Fin n)).card + E))) :
+      L (P p) = C (L p) := by
+    simp [L, P, C, externalInsertionLegCongr,
+      externalInsertionOrderedLegSlotCongr]
+  have hCI (a : OrderedExternalInsertionLeg E n) :
+      L.symm (C a) = P (L.symm a) := by
+    apply L.injective
+    rw [L.apply_symm_apply, hC, L.apply_symm_apply]
+  change L ((d.slotCongr e).pairing.partner
+      (L.symm (C leg))) =
+    C (L (d.pairing.partner (L.symm leg)))
+  rw [hCI, d.slotCongr_pairing_partner e (L.symm leg),
+    hC (d.pairing.partner (L.symm leg))]
 
 end Common
 end SecondQuantization
