@@ -150,11 +150,11 @@ private def independentMathlibPrefixes (prepared : Array PreparedCandidate) : Na
   let mut prefixes := NameSet.empty
   for target in prepared do
     if !(independentMathlibTarget target) then continue
-    let mut prefix := ""
+    let mut candidatePrefix := ""
     for part in (shortDeclarationName target.candidate.name).splitOn "_" do
-      prefix := if prefix.isEmpty then part else prefix ++ "_" ++ part
-      if prefix.length >= 10 then
-        prefixes := prefixes.insert (Name.str Name.anonymous prefix)
+      candidatePrefix := if candidatePrefix.isEmpty then part else candidatePrefix ++ "_" ++ part
+      if candidatePrefix.length >= 10 then
+        prefixes := prefixes.insert (Name.str Name.anonymous candidatePrefix)
   return prefixes
 
 private def mathlibByResultHead
