@@ -17813,6 +17813,7 @@
       "ContinuousLinearMap.finiteDimensionalOperatorTrace_star",
       "ContinuousLinearMap.finiteDimensionalOperatorTrace_toEuclideanCLM",
       "ContinuousLinearMap.hasDerivAt_finiteDimensionalOperatorTrace_comp",
+      "ContinuousLinearMap.norm_finiteDimensionalOperatorTrace_le_finrank_mul",
       "QuantumTheory.DensityOperator.expectation_eq_finiteDimensionalOperatorTrace",
       "QuantumTheory.Models.MassiveDirac.cleanBandFockHallDensity_eq_neg_chargeSq_berryCurvature",
       "QuantumTheory.Models.MassiveDirac.currentBandBlockTrace_interband_eq_chargeSq_forceMatrixTraceNumerator",
@@ -17837,6 +17838,7 @@
       "ContinuousLinearMap.finiteDimensionalOperatorTrace_star",
       "ContinuousLinearMap.finiteDimensionalOperatorTrace_toEuclideanCLM",
       "ContinuousLinearMap.hasDerivAt_finiteDimensionalOperatorTrace_comp",
+      "ContinuousLinearMap.norm_finiteDimensionalOperatorTrace_le_finrank_mul",
       "QuantumTheory.DensityOperator.expectation_eq_finiteDimensionalOperatorTrace",
       "QuantumTheory.Models.MassiveDirac.cleanBandFockHallDensity_eq_neg_chargeSq_berryCurvature",
       "QuantumTheory.Models.MassiveDirac.currentBandBlockTrace_interband_eq_chargeSq_forceMatrixTraceNumerator",
@@ -17853,7 +17855,7 @@
       "_private.LeanCondensedMatter.Transport.Streda.TraceSpectral.0.QuantumTheory.Transport.finiteDimensionalOperatorTrace_eq_sum_inner_energyEigenbasis",
       "_private.LeanCondensedMatter.Transport.Topology.0.QuantumTheory.Transport.Topology.PeriodicBlochProjector.rankOneProjectorCurvature_eq"
     ],
-    "compiledConsumerCount": 19,
+    "compiledConsumerCount": 20,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -19287,6 +19289,50 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Fermionic.Lattice.finiteSecondQuantization_exp_conjugate"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : FiniteDimensional ℂ H]\n  (operator : H →L[ℂ] H),\n  ‖ContinuousLinearMap.finiteDimensionalOperatorTrace operator‖ ≤ ↑(Module.finrank ℂ H) * ‖operator‖",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "ContinuousLinearMap.norm_finiteDimensionalOperatorTrace_le_finrank_mul",
+    "module": "LeanCondensedMatter.Analysis.Operator.FiniteTrace",
+    "externalAxioms": [],
+    "docString": "The ordinary finite trace is bounded by the Hilbert-space dimension times the\noperator norm. The dimension factor is explicit (as opposed to an opaque trace-functional\nnorm) and applies to any finite-dimensional complex Hilbert space. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_averagedTwoGreenTrace_sub_meanProduct_le_uniformPotential_sq"
+    ],
+    "dependencies": [
+      "ContinuousLinearMap.finiteDimensionalOperatorTrace_apply"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_averagedTwoGreenTrace_sub_meanProduct_le_uniformPotential_sq"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -76506,6 +76552,46 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
+    "terminal": true,
+    "statement": "∀ {Ω : Type u_1} [inst : Fintype Ω] (ensemble : QuantumTheory.Transport.FiniteDisorderEnsemble)\n  (e v energy broadening potentialBound : ℝ),\n  broadening ≠ 0 →\n    0 ≤ potentialBound →\n      (∀ (ω : Ω), ‖↑(ensemble.impurityPotential ω)‖ ≤ potentialBound) →\n        ‖ensemble.averagedTwoGreenVertexTraceKernelOfRegulators energy broadening energy (-broadening)\n                (QuantumTheory.Models.MassiveDirac.currentOperator 0 e v)\n                (QuantumTheory.Models.MassiveDirac.currentOperator 1 e v) -\n              QuantumTheory.Transport.twoGreenVertexTraceKernel\n                (QuantumTheory.Models.MassiveDirac.currentOperator 0 e v)\n                (ensemble.averagedGreenOfRegulator energy broadening)\n                (QuantumTheory.Models.MassiveDirac.currentOperator 1 e v)\n                (ensemble.averagedGreenOfRegulator energy (-broadening))‖ ≤\n          2 * ‖QuantumTheory.Models.MassiveDirac.currentOperator 0 e v‖ *\n            (2 * |broadening|⁻¹ ^ 2 * potentialBound * ‖QuantumTheory.Models.MassiveDirac.currentOperator 1 e v‖ *\n              (2 * |broadening|⁻¹ ^ 2 * potentialBound))",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.MassiveDirac.norm_averagedHallCurrentTrace_sub_meanProduct_le_uniformPotential_sq",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.DisorderComparison",
+    "externalAxioms": [],
+    "docString": "In the two-component massive-Dirac Hilbert space, the exact disorder-connected\nHall-current trace (x-measured, y-sourced) is quadratically bounded at opposite nonzero\nsigned regulators. The factor two is the physical orbital/spinor-space dimension, not a\nmomentum-volume normalization. The comparator uses *exact mean* propagators, not supplied\nBorn-Dyson Green operators or dressed vertices. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_averagedTwoGreenTrace_sub_meanProduct_le_uniformPotential_sq"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
     "terminal": false,
     "statement": "∀ (band : QuantumTheory.Models.MassiveDirac.Band) (e v m p offset radius broadening : ℝ),\n  m ≠ 0 →\n    radius < 2 * |m| →\n      |offset| ≤ radius →\n        0 ≤ broadening →\n          ‖↑(Lorentzian.spectralKernel offset broadening) *\n                QuantumTheory.Models.MassiveDirac.targetCenteredInterbandSpectatorCurrentFactor band e v m p 0\n                  (offset, broadening)‖ ≤\n            QuantumTheory.Models.MassiveDirac.radialInterbandSpectatorUniformBound e v m radius *\n              Lorentzian.spectralKernel offset broadening",
     "standardAxioms": [
@@ -83971,6 +84057,86 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
+    "terminal": true,
+    "statement": "∀ (W : ℝ → ℝ),\n  Continuous W →\n    QuantumTheory.Models.OrbitalRelaxation.continuousDegreeTwoRate W =\n      QuantumTheory.Models.OrbitalRelaxation.sphericalAverage 1 fun q =>\n        W (q 2) * (1 - QuantumTheory.Models.OrbitalRelaxation.legendreP2 (q 2))",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.OrbitalRelaxation.continuousDegreeTwoRate_eq_sphericalAverage",
+    "module": "LeanCondensedMatter.Models.OrbitalRelaxation.ContinuousZonalScattering",
+    "externalAxioms": [],
+    "docString": "The same degree-two loss rate is a genuine continuous spherical-coordinate\nintegral, rather than the six-direction cubature. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.Models.OrbitalRelaxation.sphericalAverage_zonal"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (W : ℝ → ℝ),\n  QuantumTheory.Models.OrbitalRelaxation.continuousZonalCollisionAtNorth W\n      QuantumTheory.Models.OrbitalRelaxation.legendreP2 =\n    -QuantumTheory.Models.OrbitalRelaxation.continuousDegreeTwoRate W",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.OrbitalRelaxation.continuousZonalCollisionAtNorth_P2",
+    "module": "LeanCondensedMatter.Models.OrbitalRelaxation.ContinuousZonalScattering",
+    "externalAxioms": [],
+    "docString": "At the reference pole, the degree-two Legendre profile loses amplitude\nwith the explicitly integrated degree-two rate, for any kernel `W`. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "_private.LeanCondensedMatter.Models.OrbitalRelaxation.ContinuousZonalScattering.0.QuantumTheory.Models.OrbitalRelaxation.polarCosineAverage_neg"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
     "terminal": false,
     "statement": "∀ (i : Fin 3) (r : ℝ), (QuantumTheory.Models.OrbitalRelaxation.evenQuarticCubature r fun k => k i ^ 4) = r ^ 4 / 5",
     "standardAxioms": [
@@ -84831,6 +84997,133 @@
   },
   {
     "terminal": true,
+    "statement": "∀ (a c μ : ℝ), 0 ≤ a → 0 ≤ c → 0 ≤ QuantumTheory.Models.OrbitalRelaxation.quadraticZonalKernel a c μ",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.OrbitalRelaxation.quadraticZonalKernel_nonneg",
+    "module": "LeanCondensedMatter.Models.OrbitalRelaxation.ContinuousZonalScattering",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (a c : ℝ),\n  QuantumTheory.Models.OrbitalRelaxation.continuousDegreeTwoRate\n      (QuantumTheory.Models.OrbitalRelaxation.quadraticZonalKernel a c) =\n    a + c / 5",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.OrbitalRelaxation.quadraticZonal_degreeTwoRate",
+    "module": "LeanCondensedMatter.Models.OrbitalRelaxation.ContinuousZonalScattering",
+    "externalAxioms": [],
+    "docString": "Exact Legendre `l=2` rate for a nonconstant continuous scattering\ncross-section `W(μ)=a+cμ²`. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.OrbitalRelaxation.quadraticZonal_degreeTwoRate_pos"
+    ],
+    "dependencies": [
+      "_private.LeanCondensedMatter.Models.OrbitalRelaxation.ContinuousZonalScattering.0.QuantumTheory.Models.OrbitalRelaxation.polarCosineAverage_add",
+      "_private.LeanCondensedMatter.Models.OrbitalRelaxation.ContinuousZonalScattering.0.QuantumTheory.Models.OrbitalRelaxation.polarCosineAverage_const",
+      "_private.LeanCondensedMatter.Models.OrbitalRelaxation.ContinuousZonalScattering.0.QuantumTheory.Models.OrbitalRelaxation.polarCosineAverage_const_mul",
+      "_private.LeanCondensedMatter.Models.OrbitalRelaxation.ContinuousZonalScattering.0.QuantumTheory.Models.OrbitalRelaxation.polarCosineAverage_four",
+      "_private.LeanCondensedMatter.Models.OrbitalRelaxation.ContinuousZonalScattering.0.QuantumTheory.Models.OrbitalRelaxation.polarCosineAverage_sq",
+      "_private.LeanCondensedMatter.Models.OrbitalRelaxation.ContinuousZonalScattering.0.QuantumTheory.Models.OrbitalRelaxation.polarCosineAverage_sub"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.OrbitalRelaxation.quadraticZonal_degreeTwoRate_pos"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (a c : ℝ),\n  0 < a →\n    0 ≤ c →\n      0 <\n        QuantumTheory.Models.OrbitalRelaxation.continuousDegreeTwoRate\n          (QuantumTheory.Models.OrbitalRelaxation.quadraticZonalKernel a c)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.OrbitalRelaxation.quadraticZonal_degreeTwoRate_pos",
+    "module": "LeanCondensedMatter.Models.OrbitalRelaxation.ContinuousZonalScattering",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.Models.OrbitalRelaxation.quadraticZonal_degreeTwoRate"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
     "statement": "∀ (I₁ I₂ : ℝ), I₁ ≠ 0 → I₂ ≠ 0 → QuantumTheory.Models.OrbitalRelaxation.scatteringRatio I₁ I₂ = I₂ / I₁",
     "standardAxioms": [
       "Classical.choice",
@@ -85029,6 +85322,48 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.Models.OrbitalRelaxation.sphericalAverage_orbitalDoubleCommutator"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (f : ℝ → ℝ),\n  Continuous f →\n    (QuantumTheory.Models.OrbitalRelaxation.sphericalAverage 1 fun k => f (k 2)) =\n      QuantumTheory.Models.OrbitalRelaxation.polarCosineAverage f",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.OrbitalRelaxation.sphericalAverage_zonal",
+    "module": "LeanCondensedMatter.Models.OrbitalRelaxation.ContinuousZonalScattering",
+    "externalAxioms": [],
+    "docString": "The polar-angle reduction is genuinely the existing normalized continuous\nspherical-coordinate average, for continuous functions of `k_z`. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.OrbitalRelaxation.continuousDegreeTwoRate_eq_sphericalAverage"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.OrbitalRelaxation.continuousDegreeTwoRate_eq_sphericalAverage"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -91811,7 +92146,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -91823,7 +92158,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Transport.FiniteDisorderEnsemble.averagedTwoGreenVertexTraceKernelOfRegulators_sub_dressed_eq"
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.averagedTwoGreenVertexTraceKernelOfRegulators_sub_dressed_eq",
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_averagedTwoGreenTrace_sub_meanProduct_le_uniformPotential_sq"
     ],
     "dependencies": [
       "QuantumTheory.Transport.FiniteDisorderEnsemble.average_twoGreenVertexTraceKernel_eq_trace_insertion",
@@ -91832,9 +92168,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Transport.FiniteDisorderEnsemble.averagedTwoGreenVertexTraceKernelOfRegulators_sub_dressed_eq"
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.averagedTwoGreenVertexTraceKernelOfRegulators_sub_dressed_eq",
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_averagedTwoGreenTrace_sub_meanProduct_le_uniformPotential_sq"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -92655,6 +92992,52 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {H : Type u_1} {Ω : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] [inst_3 : FiniteDimensional ℂ H] [inst_4 : Fintype Ω]\n  (ensemble : QuantumTheory.Transport.FiniteDisorderEnsemble) (energyLeft regulatorLeft energyRight regulatorRight : ℝ),\n  regulatorLeft ≠ 0 →\n    regulatorRight ≠ 0 →\n      ∀ (measuredVertex sourceVertex : H →L[ℂ] H) (potentialBound : ℝ),\n        0 ≤ potentialBound →\n          (∀ (ω : Ω), ‖↑(ensemble.impurityPotential ω)‖ ≤ potentialBound) →\n            ‖ensemble.averagedTwoGreenVertexTraceKernelOfRegulators energyLeft regulatorLeft energyRight regulatorRight\n                    measuredVertex sourceVertex -\n                  QuantumTheory.Transport.twoGreenVertexTraceKernel measuredVertex\n                    (ensemble.averagedGreenOfRegulator energyLeft regulatorLeft) sourceVertex\n                    (ensemble.averagedGreenOfRegulator energyRight regulatorRight)‖ ≤\n              ↑(Module.finrank ℂ H) * ‖measuredVertex‖ *\n                (2 * |regulatorLeft|⁻¹ ^ 2 * potentialBound * ‖sourceVertex‖ *\n                  (2 * |regulatorRight|⁻¹ ^ 2 * potentialBound))",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_averagedTwoGreenTrace_sub_meanProduct_le_uniformPotential_sq",
+    "module": "LeanCondensedMatter.Transport.Disorder.TraceNormBound",
+    "externalAxioms": [],
+    "docString": "The exact disorder-connected contribution to an averaged finite-dimensional two-Green\ncurrent trace is second order in a uniform impurity bound at fixed nonzero regulators.\nThe Hilbert-space dimension factor is explicit; no ladder approximation is assumed. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.MassiveDirac.norm_averagedHallCurrentTrace_sub_meanProduct_le_uniformPotential_sq"
+    ],
+    "dependencies": [
+      "ContinuousLinearMap.norm_finiteDimensionalOperatorTrace_le_finrank_mul",
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.averagedTwoGreenVertexTraceKernelOfRegulators_eq_mean_add_connected",
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_connectedTwoGreenInsertion_le_uniformPotential_sq"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.norm_averagedHallCurrentTrace_sub_meanProduct_le_uniformPotential_sq"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {H : Type u_1} {Ω : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] [inst_3 : Fintype Ω] (ensemble : QuantumTheory.Transport.FiniteDisorderEnsemble)\n  (energy regulator : ℝ),\n  regulator ≠ 0 →\n    ∀ (ω : Ω) (potentialBound : ℝ),\n      (∀ (ξ : Ω), ‖↑(ensemble.impurityPotential ξ)‖ ≤ potentialBound) →\n        ‖ensemble.configurationGreenOfRegulator energy regulator ω -\n              ensemble.averagedGreenOfRegulator energy regulator‖ ≤\n          2 * |regulator|⁻¹ ^ 2 * potentialBound",
     "standardAxioms": [
       "Classical.choice",
@@ -92746,7 +93129,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ {H : Type u_1} {Ω : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] [inst_3 : Fintype Ω] (ensemble : QuantumTheory.Transport.FiniteDisorderEnsemble)\n  (energyLeft regulatorLeft energyRight regulatorRight : ℝ),\n  regulatorLeft ≠ 0 →\n    regulatorRight ≠ 0 →\n      ∀ (vertex : H →L[ℂ] H) (potentialBound : ℝ),\n        0 ≤ potentialBound →\n          (∀ (ω : Ω), ‖↑(ensemble.impurityPotential ω)‖ ≤ potentialBound) →\n            ‖ensemble.connectedTwoGreenInsertionOfRegulators energyLeft regulatorLeft energyRight regulatorRight\n                  vertex‖ ≤\n              2 * |regulatorLeft|⁻¹ ^ 2 * potentialBound * ‖vertex‖ * (2 * |regulatorRight|⁻¹ ^ 2 * potentialBound)",
     "standardAxioms": [
       "Classical.choice",
@@ -92754,7 +93137,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -92765,15 +93148,19 @@
     "docString": "Exact connected two-Green disorder insertion is quadratically bounded at two\nindependent nonzero regulators for a uniform operator-norm potential bound.\n\nThis is a **nonasymptotic** estimate for exact disorder covariance, *not* an identification\nwith a noncrossing Born-ladder vertex. No assumption `E[V]=0` is required. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_averagedTwoGreenTrace_sub_meanProduct_le_uniformPotential_sq"
+    ],
     "dependencies": [
       "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_average_le_of_forall",
       "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_configurationGreen_sub_averaged_le"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_averagedTwoGreenTrace_sub_meanProduct_le_uniformPotential_sq"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -153076,6 +153463,46 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
+    "terminal": true,
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] {E n : ℕ}\n  (d d' : SecondQuantization.Fermionic.ExternalInsertionWickDiagram Mode E n) (ε : Mode → ℝ) (β : ℝ),\n  0 ≤ β →\n    ∀ (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ) (externalTime : Fin (2 * E) → ℝ)\n      (order order' : SecondQuantization.Common.QuarticVertexOrder Finset.univ),\n      (∀ (τ : Fin Finset.univ.card → ℝ),\n          StrictAnti τ →\n            (∀ (i : Fin Finset.univ.card), τ i < β) →\n              (d.dysonFixedTimeAmplitude ε β g externalTime fun v => τ ((Equiv.symm order) ⟨v, ⋯⟩)) =\n                d'.dysonFixedTimeAmplitude ε β g externalTime fun v => τ ((Equiv.symm order') ⟨v, ⋯⟩)) →\n        d.orderedDysonAmplitude ε β g externalTime order = d'.orderedDysonAmplitude ε β g externalTime order'",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.orderedDysonAmplitude_congr_of_strictAnti",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.Integral",
+    "externalAxioms": [],
+    "docString": "A Dyson-amplitude covariance identity needs to be checked only on\nstrictly decreasing ambient time slots, assuming the physical inverse\ntemperature interval satisfies `0 ≤ β`.\n\nThe pointwise hypothesis is deliberately about the **full Dyson-signed\nWick amplitude**, not just the individual pair contraction. Relabeling\nfour-leg vertices changes the mixed-time pairing normalization and its\nfermionic sign; those must cancel before this integral theorem applies.\nEqual-time tie breakers do not enter the integral equality. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "intervalIntegral.orderedSimplexIntegral_congr_of_strictAnti"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
     "terminal": false,
     "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] {E n : ℕ}\n  (d : SecondQuantization.Fermionic.ExternalInsertionWickDiagram Mode E n) (ε : Mode → ℝ) (β : ℝ)\n  (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ) (externalTime : Fin (2 * E) → ℝ),\n  (intervalIntegral.orderedSimplexIntegral n β fun σ => d.dysonFixedTimeAmplitude ε β g externalTime σ) =\n    d.dysonAmplitude ε β g externalTime",
     "standardAxioms": [
@@ -153209,6 +153636,84 @@
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentAmplitude.0.SecondQuantization.Fermionic.ExternalInsertionWickDiagram.mixedAtomicOrderSign_mul_mixedPairingValue_eq_components"
     ],
     "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] {E n : ℕ}\n  (d : SecondQuantization.Fermionic.ExternalInsertionWickDiagram Mode E n) (e : ↥Finset.univ ≃ ↥Finset.univ)\n  (ε : Mode → ℝ) (β : ℝ) (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ)\n  (a b : SecondQuantization.Common.OrderedExternalInsertionLeg E n),\n  have f := fun v => ↑(e.symm ⟨v, ⋯⟩);\n  SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicPairValue ε β\n      (SecondQuantization.Common.ExternalInsertionDiagram.slotCongr e d).externalLabel externalTime\n      (SecondQuantization.Common.ExternalInsertionDiagram.slotCongr e d).vertexLabelSequence (σ ∘ f)\n      (SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegPosition externalTime (σ ∘ f) a)\n      (SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegPosition externalTime (σ ∘ f) b) =\n    SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicPairValue ε β d.externalLabel externalTime\n      (SecondQuantization.Common.ExternalInsertionDiagram.vertexLabelSequence d) σ\n      (SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegPosition externalTime σ\n        (SecondQuantization.Common.orderedExternalInsertionLegMap (fun x => x) f a))\n      (SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegPosition externalTime σ\n        (SecondQuantization.Common.orderedExternalInsertionLegMap (fun x => x) f b))",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.slotCongr_mixedAtomicPairValue",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.TimedField",
+    "externalAxioms": [],
+    "docString": "The *oriented* finite-Gibbs pair contraction transported through an\narbitrary interaction-slot bijection. Both endpoints are mapped in their\ngiven order. In particular, this statement does not identify normalized\npair orientations under the induced mixed-time permutation; that sign\ncomparison remains a separate step in the full Dyson amplitude covariance. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicPairValue_map"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {Mode : Type u_1} {E n : ℕ} (d : SecondQuantization.Fermionic.ExternalInsertionWickDiagram Mode E n)\n  (e : ↥Finset.univ ≃ ↥Finset.univ) (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ)\n  (leg : SecondQuantization.Common.OrderedExternalInsertionLeg E n),\n  have f := fun v => ↑(e.symm ⟨v, ⋯⟩);\n  SecondQuantization.Fermionic.orderedExternalInsertionLegField\n      (SecondQuantization.Common.ExternalInsertionDiagram.slotCongr e d).externalLabel externalTime\n      (SecondQuantization.Common.ExternalInsertionDiagram.slotCongr e d).vertexLabelSequence (σ ∘ f) leg =\n    SecondQuantization.Fermionic.orderedExternalInsertionLegField d.externalLabel externalTime\n      (SecondQuantization.Common.ExternalInsertionDiagram.vertexLabelSequence d) σ\n      (SecondQuantization.Common.orderedExternalInsertionLegMap (fun x => x) f leg)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.slotCongr_orderedExternalInsertionLegField",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.TimedField",
+    "externalAxioms": [],
+    "docString": "The concrete time-labelled atomic field is equivariant under an\narbitrary bijection of interaction slots when the vertex labels and times\nare pulled back together. The external fields remain fixed. This holds\nbefore choosing a mixed-time order and is independent of any\ncoincidence-time conventions. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -163690,6 +164195,7 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.externalInsertionMixedTimeOrderedAtomicPairValue_componentMixedPosition",
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.slotCongr_mixedAtomicPairValue",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalVacuumPairing.0.SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_left"
     ],
     "dependencies": [
@@ -163700,9 +164206,10 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.externalInsertionMixedTimeOrderedAtomicPairValue_componentMixedPosition",
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.slotCongr_mixedAtomicPairValue",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalVacuumPairing.0.SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_left"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -169260,6 +169767,44 @@
       "SecondQuantization.Fermionic.imaginaryTimeEvolve_annihilate",
       "SecondQuantization.Fermionic.imaginaryTimeEvolve_create"
     ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {n : ℕ} (order : SecondQuantization.Common.QuarticVertexOrder Finset.univ) (τ : Fin Finset.univ.card → ℝ),\n  StrictAnti τ → Function.Injective fun v => τ ((Equiv.symm order) ⟨v, ⋯⟩)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Fermionic.quarticVertexOrderedTime_injective_of_strictAnti",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.Integral",
+    "externalAxioms": [],
+    "docString": "Every strictly decreasing ordered-simplex time assignment remains\ninjective after pulling it back along an arbitrary global interaction\nvertex order. Thus interaction-vertex time collisions can be discarded\nwhen checking an ordered Dyson amplitude identity. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [],
@@ -187279,6 +187824,300 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.Models.OrbitalRelaxation.AngularKernelMoments.collision_quadrupole"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (f g : ℝ → ℝ),\n  Continuous f →\n    Continuous g →\n      (QuantumTheory.Models.OrbitalRelaxation.polarCosineAverage fun μ => f μ + g μ) =\n        QuantumTheory.Models.OrbitalRelaxation.polarCosineAverage f +\n          QuantumTheory.Models.OrbitalRelaxation.polarCosineAverage g",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Models.OrbitalRelaxation.ContinuousZonalScattering.0.QuantumTheory.Models.OrbitalRelaxation.polarCosineAverage_add",
+    "module": "LeanCondensedMatter.Models.OrbitalRelaxation.ContinuousZonalScattering",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.OrbitalRelaxation.quadraticZonal_degreeTwoRate"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.OrbitalRelaxation.quadraticZonal_degreeTwoRate"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (c : ℝ), (QuantumTheory.Models.OrbitalRelaxation.polarCosineAverage fun x => c) = c",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Models.OrbitalRelaxation.ContinuousZonalScattering.0.QuantumTheory.Models.OrbitalRelaxation.polarCosineAverage_const",
+    "module": "LeanCondensedMatter.Models.OrbitalRelaxation.ContinuousZonalScattering",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.OrbitalRelaxation.quadraticZonal_degreeTwoRate"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.OrbitalRelaxation.quadraticZonal_degreeTwoRate"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (c : ℝ) (f : ℝ → ℝ),\n  (QuantumTheory.Models.OrbitalRelaxation.polarCosineAverage fun μ => c * f μ) =\n    c * QuantumTheory.Models.OrbitalRelaxation.polarCosineAverage f",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Models.OrbitalRelaxation.ContinuousZonalScattering.0.QuantumTheory.Models.OrbitalRelaxation.polarCosineAverage_const_mul",
+    "module": "LeanCondensedMatter.Models.OrbitalRelaxation.ContinuousZonalScattering",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.OrbitalRelaxation.quadraticZonal_degreeTwoRate"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.OrbitalRelaxation.quadraticZonal_degreeTwoRate"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "(QuantumTheory.Models.OrbitalRelaxation.polarCosineAverage fun μ => μ ^ 4) = 1 / 5",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Models.OrbitalRelaxation.ContinuousZonalScattering.0.QuantumTheory.Models.OrbitalRelaxation.polarCosineAverage_four",
+    "module": "LeanCondensedMatter.Models.OrbitalRelaxation.ContinuousZonalScattering",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.OrbitalRelaxation.quadraticZonal_degreeTwoRate"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.OrbitalRelaxation.quadraticZonal_degreeTwoRate"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (f : ℝ → ℝ),\n  (QuantumTheory.Models.OrbitalRelaxation.polarCosineAverage fun μ => -f μ) =\n    -QuantumTheory.Models.OrbitalRelaxation.polarCosineAverage f",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Models.OrbitalRelaxation.ContinuousZonalScattering.0.QuantumTheory.Models.OrbitalRelaxation.polarCosineAverage_neg",
+    "module": "LeanCondensedMatter.Models.OrbitalRelaxation.ContinuousZonalScattering",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.OrbitalRelaxation.continuousZonalCollisionAtNorth_P2"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.OrbitalRelaxation.continuousZonalCollisionAtNorth_P2"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "(QuantumTheory.Models.OrbitalRelaxation.polarCosineAverage fun μ => μ ^ 2) = 1 / 3",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Models.OrbitalRelaxation.ContinuousZonalScattering.0.QuantumTheory.Models.OrbitalRelaxation.polarCosineAverage_sq",
+    "module": "LeanCondensedMatter.Models.OrbitalRelaxation.ContinuousZonalScattering",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.OrbitalRelaxation.quadraticZonal_degreeTwoRate"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.OrbitalRelaxation.quadraticZonal_degreeTwoRate"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (f g : ℝ → ℝ),\n  Continuous f →\n    Continuous g →\n      (QuantumTheory.Models.OrbitalRelaxation.polarCosineAverage fun μ => f μ - g μ) =\n        QuantumTheory.Models.OrbitalRelaxation.polarCosineAverage f -\n          QuantumTheory.Models.OrbitalRelaxation.polarCosineAverage g",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Models.OrbitalRelaxation.ContinuousZonalScattering.0.QuantumTheory.Models.OrbitalRelaxation.polarCosineAverage_sub",
+    "module": "LeanCondensedMatter.Models.OrbitalRelaxation.ContinuousZonalScattering",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.OrbitalRelaxation.quadraticZonal_degreeTwoRate"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.OrbitalRelaxation.quadraticZonal_degreeTwoRate"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -210661,6 +211500,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.orderedDysonAmplitude_congr_of_strictAnti",
       "SecondQuantization.Fermionic.externalInsertionOfSlotSplit_dysonAmplitude_eq_integral_standalone_mul_vacuum",
       "SecondQuantization.Fermionic.fixedExternalShuffleFiber_dysonAmplitude_eq_orderedSimplexIntegral"
     ],
@@ -210671,10 +211511,11 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.orderedDysonAmplitude_congr_of_strictAnti",
       "SecondQuantization.Fermionic.externalInsertionOfSlotSplit_dysonAmplitude_eq_integral_standalone_mul_vacuum",
       "SecondQuantization.Fermionic.fixedExternalShuffleFiber_dysonAmplitude_eq_orderedSimplexIntegral"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",

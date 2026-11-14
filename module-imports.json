@@ -2868,7 +2868,8 @@
       "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Streda/BornLadder/DisorderComparison.lean",
       "imports": [
         "LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.TraceBridge",
-        "LeanCondensedMatter.Transport.Disorder.TraceBridge"
+        "LeanCondensedMatter.Transport.Disorder.TraceBridge",
+        "LeanCondensedMatter.Transport.Disorder.TraceNormBound"
       ],
       "externalImportCount": 1
     },
@@ -3146,6 +3147,15 @@
       "externalImportCount": 1
     },
     {
+      "name": "LeanCondensedMatter.Models.OrbitalRelaxation.ContinuousZonalScattering",
+      "sourceFile": "LeanCondensedMatter/Models/OrbitalRelaxation/ContinuousZonalScattering.lean",
+      "imports": [
+        "LeanCondensedMatter.Models.OrbitalRelaxation.OctahedralScattering",
+        "LeanCondensedMatter.Models.OrbitalRelaxation.SphereMoments"
+      ],
+      "externalImportCount": 4
+    },
+    {
       "name": "LeanCondensedMatter.Models.OrbitalRelaxation.Finite",
       "sourceFile": "LeanCondensedMatter/Models/OrbitalRelaxation/Finite.lean",
       "imports": [],
@@ -3387,6 +3397,7 @@
         "LeanCondensedMatter.Models.KronigPenney",
         "LeanCondensedMatter.Models.MassiveDirac",
         "LeanCondensedMatter.Models.OrbitalRelaxation.AngularCollision",
+        "LeanCondensedMatter.Models.OrbitalRelaxation.ContinuousZonalScattering",
         "LeanCondensedMatter.Models.OrbitalRelaxation.Finite",
         "LeanCondensedMatter.Models.OrbitalRelaxation.KineticClosure",
         "LeanCondensedMatter.Models.OrbitalRelaxation.OctahedralScattering",
@@ -7353,7 +7364,7 @@
       "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.Integral",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Diagrammatics/ExternalInsertion/Integral.lean",
       "imports": [
-        "LeanCondensedMatter.Analysis.OrderedSimplex.Integral",
+        "LeanCondensedMatter.Analysis.OrderedSimplex.StrictAntiCongr",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Ordered",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.Amplitude"
       ],
@@ -7390,6 +7401,7 @@
       "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.TimedField",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Diagrammatics/ExternalInsertion/TimedField.lean",
       "imports": [
+        "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Core.SlotCongr",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.Diagram",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.TimedFieldContraction"
       ],
@@ -8678,6 +8690,16 @@
       "externalImportCount": 1
     },
     {
+      "name": "LeanCondensedMatter.Transport.Disorder.TraceNormBound",
+      "sourceFile": "LeanCondensedMatter/Transport/Disorder/TraceNormBound.lean",
+      "imports": [
+        "LeanCondensedMatter.Analysis.Operator.FiniteTrace",
+        "LeanCondensedMatter.Transport.Disorder.TraceBridge",
+        "LeanCondensedMatter.Transport.Disorder.TwoParticleNormBound"
+      ],
+      "externalImportCount": 1
+    },
+    {
       "name": "LeanCondensedMatter.Transport.Disorder.TwoParticle",
       "sourceFile": "LeanCondensedMatter/Transport/Disorder/TwoParticle.lean",
       "imports": [
@@ -8717,6 +8739,7 @@
         "LeanCondensedMatter.Transport.Disorder.Resolvent",
         "LeanCondensedMatter.Transport.Disorder.SCBA",
         "LeanCondensedMatter.Transport.Disorder.TraceBridge",
+        "LeanCondensedMatter.Transport.Disorder.TraceNormBound",
         "LeanCondensedMatter.Transport.Disorder.TwoParticle",
         "LeanCondensedMatter.Transport.Disorder.TwoParticleNormBound",
         "LeanCondensedMatter.Transport.Disorder.Ward"
