@@ -36,13 +36,14 @@ theorem quarticVertexBlockPermutation_sign_eq_one
       p.prodCongr (Equiv.refl (Fin 4)) =
         swap.permCongr (Equiv.prodCongrRight (fun _ : Fin 4 => p)) := by
     ext ⟨v, l⟩
-    rfl
+    simp [swap, Equiv.Perm.permCongr, Equiv.prodCongrRight]
   rw [hperm, Equiv.Perm.sign_permCongr, Equiv.Perm.sign_prodCongrRight]
   simp only [Finset.prod_const, Finset.card_univ, Fintype.card_fin]
   calc
     (Equiv.Perm.sign p) ^ 4 =
         ((Equiv.Perm.sign p) ^ 2) ^ 2 := by
-          simp [pow_mul]
+          rw [← pow_mul]
+          norm_num
     _ = 1 := by simp
 
 /-- The actual flattened-leg transport of an arbitrary external-insertion
@@ -63,7 +64,7 @@ theorem externalInsertionLegCongr_sign_eq_one
         (externalInsertionLegEquiv E T).symm.permCongr p := by
     rfl
   rw [hcongr, Equiv.Perm.sign_permCongr, Equiv.Perm.sign_sumCongr]
-  simp [p, quarticVertexBlockPermutation_sign_eq_one]
+  simp [quarticVertexBlockPermutation_sign_eq_one]
 
 /-- Fermionic sign of the permutation from fixed flattened atomic order to mixed-time atomic order. -/
 noncomputable def externalInsertionMixedAtomicOrderSign {E n : ℕ}
