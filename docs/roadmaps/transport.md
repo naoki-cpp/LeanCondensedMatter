@@ -127,6 +127,17 @@ This pointwise RA trace comparison is not a dressed-vertex or DC conductivity ap
 and does not establish momentum integration, same-side/sea/contact contributions, or an
 error estimate against the model's Born-Dyson ladder.
 
+For centered finite disorder with `‖Vω‖ ≤ M`, `Disorder.LinearizedFluctuation`
+proves the configuration-to-average Green fluctuation differs from `G₀ Vω G₀`
+by at most `2 |γ|⁻³ M²`. The canonical first-rung insertion
+`G₀ᴸ C₂(G₀ᴸ J G₀ᴿ) G₀ᴿ` is the average of products of first Dyson insertions.
+`Disorder.FirstRungNormBound` controls the exact connected two-Green insertion minus
+this first rung by
+`[(4 |γᴸ|⁻³ |γᴿ|⁻²) + (2 |γᴸ|⁻² |γᴿ|⁻³)] M³ ‖J‖`.
+This is the first explicit **cubic truncation bound** on a two-particle covariance;
+the comparison is to a **single Born rung**, not the resummed noncrossing ladder
+or a dressed continuum vertex. All bounds are at fixed nonzero regulators.
+
 The exact two-Green Středa trace also admits an algebraic decomposition of its difference from a
 *supplied* dressed-vertex RA trace: left/right mean-Green mismatches plus a connected-vertex
 remainder. The `Models.MassiveDirac.Streda.BornLadder.DisorderComparison` specialization compares
