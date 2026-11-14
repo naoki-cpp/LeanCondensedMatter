@@ -58,27 +58,27 @@ theorem firstBornTwoGreenRungOfRegulators_eq_average_firstDyson
           (ensemble.freeGreenOfRegulator energyRight regulatorRight *
             (ensemble.impurityPotential ω).1 *
             ensemble.freeGreenOfRegulator energyRight regulatorRight)) := by
-  let GL := ensemble.freeGreenOfRegulator energyLeft regulatorLeft
-  let GR := ensemble.freeGreenOfRegulator energyRight regulatorRight
+  let freeLeft := ensemble.freeGreenOfRegulator energyLeft regulatorLeft
+  let freeRight := ensemble.freeGreenOfRegulator energyRight regulatorRight
   let V : Ω → H →L[ℂ] H := fun ω => (ensemble.impurityPotential ω).1
   let term : Ω → H →L[ℂ] H :=
-    fun ω => V ω * (GL * vertex * GR) * V ω
+    fun ω => V ω * (freeLeft * vertex * freeRight) * V ω
   have hfactor :
-      GL * ensemble.average term * GR =
-        ensemble.average (fun ω => GL * term ω * GR) := by
-    simpa only using (ensemble.map_average
-      ((ContinuousLinearMap.mulLeftRight ℂ (H →L[ℂ] H)) GL GR).toLinearMap term)
+      freeLeft * ensemble.average term * freeRight =
+        ensemble.average (fun ω => freeLeft * term ω * freeRight) := by
+    simpa using (ensemble.map_average
+      ((ContinuousLinearMap.mulLeftRight ℂ (H →L[ℂ] H)) freeLeft freeRight).toLinearMap term)
   have hterm :
-      ensemble.exactSecondMoment (GL * vertex * GR) = ensemble.average term := by
-    exact ensemble.exactSecondMoment_eq_average (GL * vertex * GR)
+      ensemble.exactSecondMoment (freeLeft * vertex * freeRight) = ensemble.average term := by
+    exact ensemble.exactSecondMoment_eq_average (freeLeft * vertex * freeRight)
   calc
     ensemble.firstBornTwoGreenRungOfRegulators
         energyLeft regulatorLeft energyRight regulatorRight vertex =
-        GL * ensemble.exactSecondMoment (GL * vertex * GR) * GR := rfl
-    _ = GL * ensemble.average term * GR := by rw [hterm]
-    _ = ensemble.average (fun ω => GL * term ω * GR) := hfactor
+        freeLeft * ensemble.exactSecondMoment (freeLeft * vertex * freeRight) * freeRight := rfl
+    _ = freeLeft * ensemble.average term * freeRight := by rw [hterm]
+    _ = ensemble.average (fun ω => freeLeft * term ω * freeRight) := hfactor
     _ = ensemble.average (fun ω =>
-        (GL * V ω * GL) * vertex * (GR * V ω * GR)) := by
+        (freeLeft * V ω * freeLeft) * vertex * (freeRight * V ω * freeRight)) := by
       apply congrArg ensemble.average
       funext ω
       dsimp only [term]
@@ -116,8 +116,8 @@ theorem norm_connectedTwoGreen_sub_firstBornRung_le_cubic
           (2 * (|regulatorRight|⁻¹) ^ 3 * potentialBound ^ 2) := by
   let BL : ℝ := |regulatorLeft|⁻¹
   let BR : ℝ := |regulatorRight|⁻¹
-  let GL := ensemble.freeGreenOfRegulator energyLeft regulatorLeft
-  let GR := ensemble.freeGreenOfRegulator energyRight regulatorRight
+  let freeLeft := ensemble.freeGreenOfRegulator energyLeft regulatorLeft
+  let freeRight := ensemble.freeGreenOfRegulator energyRight regulatorRight
   let V : Ω → H →L[ℂ] H := fun ω => (ensemble.impurityPotential ω).1
   let L : Ω → H →L[ℂ] H :=
     fun ω => ensemble.configurationGreenOfRegulator energyLeft regulatorLeft ω -
@@ -125,8 +125,8 @@ theorem norm_connectedTwoGreen_sub_firstBornRung_le_cubic
   let R : Ω → H →L[ℂ] H :=
     fun ω => ensemble.configurationGreenOfRegulator energyRight regulatorRight ω -
       ensemble.averagedGreenOfRegulator energyRight regulatorRight
-  let AL : Ω → H →L[ℂ] H := fun ω => GL * V ω * GL
-  let AR : Ω → H →L[ℂ] H := fun ω => GR * V ω * GR
+  let AL : Ω → H →L[ℂ] H := fun ω => freeLeft * V ω * freeLeft
+  let AR : Ω → H →L[ℂ] H := fun ω => freeRight * V ω * freeRight
   let EL : ℝ := 2 * BL ^ 3 * potentialBound ^ 2
   let ER : ℝ := 2 * BR ^ 3 * potentialBound ^ 2
   let CL : ℝ := BL ^ 2 * potentialBound
@@ -143,13 +143,13 @@ theorem norm_connectedTwoGreen_sub_firstBornRung_le_cubic
     ensemble.norm_configurationGreen_sub_averaged_le
       energyRight regulatorRight hregRight ω potentialBound hpotential
   have hAL (ω : Ω) : ‖AL ω‖ ≤ CL := by
-    have hfree : ‖GL‖ ≤ BL :=
+    have hfree : ‖freeLeft‖ ≤ BL :=
       norm_resolvent_spectralParameterOfRegulator_le
         ensemble.baseHamiltonian.1 ensemble.baseHamiltonian.2
         energyLeft regulatorLeft hregLeft
     calc
-      ‖AL ω‖ ≤ ‖GL‖ * ‖V ω‖ * ‖GL‖ :=
-        norm_mul_three_le GL (V ω) GL
+      ‖AL ω‖ ≤ ‖freeLeft‖ * ‖V ω‖ * ‖freeLeft‖ :=
+        norm_mul_three_le freeLeft (V ω) freeLeft
       _ ≤ BL * potentialBound * BL := by
         gcongr <;> first | exact hfree | exact hpotential ω | exact hbound
       _ = CL := by dsimp [CL]; ring
@@ -197,7 +197,7 @@ theorem norm_connectedTwoGreen_sub_firstBornRung_le_cubic
       ensemble.firstBornTwoGreenRungOfRegulators
           energyLeft regulatorLeft energyRight regulatorRight vertex =
         ensemble.average (fun ω => AL ω * vertex * AR ω) := by
-    simpa only [AL, AR, V, GL, GR] using
+    simpa only [AL, AR, V, freeLeft, freeRight] using
       (ensemble.firstBornTwoGreenRungOfRegulators_eq_average_firstDyson
         energyLeft regulatorLeft energyRight regulatorRight vertex)
   change ‖ensemble.average (fun ω => L ω * vertex * R ω) -
