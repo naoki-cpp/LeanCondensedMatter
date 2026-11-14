@@ -101,8 +101,11 @@ theorem norm_averagedGreen_sub_free_le
             rw [ensemble.average_const]
             rfl
       _ = ensemble.average (fun ω => G ω - G₀) := by
-        simpa only [Pi.sub_apply] using
-          (map_sub ensemble.average G (fun _ : Ω => G₀)).symm
+        have hfam : (G - (fun _ : Ω => G₀)) = (fun ω => G ω - G₀) := by
+          funext ω
+          rfl
+        exact (map_sub ensemble.average G (fun _ : Ω => G₀)).symm.trans
+          (congrArg ensemble.average hfam)
   rw [hshift]
   apply ensemble.norm_average_le_of_forall _ _
   intro ω
