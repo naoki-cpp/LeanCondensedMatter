@@ -110,11 +110,6 @@ theorem norm_averagedTwoGreenTrace_sub_dressed_le_residuals
         ‖suppliedLeftGreen‖ * ‖bareSourceVertex‖ *
           ‖meanR - suppliedRightGreen‖ + ‖c‖)
   rw [hgroup]
-  change ‖trace (measuredVertex * (a + b + c))‖ ≤
-    ((Module.finrank ℂ H : ℝ) * ‖measuredVertex‖) *
-      (‖meanL - suppliedLeftGreen‖ * ‖bareSourceVertex‖ * |regulatorRight|⁻¹ +
-        ‖suppliedLeftGreen‖ * ‖bareSourceVertex‖ *
-          ‖meanR - suppliedRightGreen‖ + ‖c‖)
   have hsum' :
       ‖a + b + c‖ ≤
         ‖meanL - suppliedLeftGreen‖ * ‖bareSourceVertex‖ * |regulatorRight|⁻¹ +
