@@ -93,7 +93,7 @@ theorem averagedGreenOfRegulator_eq_born_add_exactRemainder_of_centered
     calc
       G ω = G₀ + G₀ * V ω * G₀ + G₀ * V ω * G₀ * V ω * G ω := h2
       _ = G₀ + G₀ * V ω * G₀ +
-          G₀ * V ω * G₀ * V ω * (G₀ + G ω * V ω * G₀) := by rw [hr]
+          G₀ * V ω * G₀ * V ω * (G₀ + G ω * V ω * G₀) := by nth_rw 1 [hr]
       _ = G₀ + G₀ * V ω * G₀ +
           G₀ * (V ω * G₀ * V ω) * G₀ + remainder ω := by
         dsimp only [remainder]
