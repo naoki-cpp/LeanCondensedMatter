@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Analysis.PowerSeries.CoefficientSum
 import LeanCondensedMatter.Analysis.PowerSeries.Normalization
 import LeanCondensedMatter.Analysis.PowerSeries.Moment
 import LeanCondensedMatter.Analysis.PowerSeries.Replica
@@ -8,15 +9,19 @@ import LeanCondensedMatter.Analysis.PowerSeries.AnalyticLog
 set_option linter.style.header false
 
 /-!
-# Normalized formal power series
+# Formal power series and analytic bridges
 
 Public package boundary for the reusable formal power-series workflow used by
 linked-cluster and thermal consumers. It exports constant-coefficient normalization,
 factorial-normalized finite-set moments, formal-log derivative identities, and the finite-set cumulant
-bridge. Consumers who need order-specific logarithm formulas can import
+bridge, together with coefficientwise complex sums and their convergence-sensitive algebraic laws.
+Consumers who need order-specific logarithm formulas can import
 `Analysis.PowerSeries.LowOrderLog`.
 
-All results remain purely formal. Normalization theorems require the original constant coefficient
+Coefficientwise complex sums keep explicit summability hypotheses for addition, subtraction, and
+Cauchy multiplication. Constant multiplication and multiplication by X hold for the total sum;
+the analytic logarithm bridge keeps its analytic power-series hypotheses. The remaining algebra is
+purely formal. Normalization theorems require the original constant coefficient
 to be nonzero, while logarithm/cumulant theorems on an already normalized series keep the explicit
 constant-coefficient-one hypothesis.
 
