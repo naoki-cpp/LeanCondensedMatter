@@ -3025,6 +3025,82 @@ noncomputable def ExternalInsertionBlockLayout.fixedPartitionPhysicalSizeShuffle
     (ExternalInsertionBlockLayout.fixedPartitionSizeShuffleConnectedAssemblyEquiv
       (E := E) (N := N) (ExternalLabel := ExternalLabel) (InternalLabel := InternalLabel) π heven)
 
+/-- A physical diagram in a prescribed even external-partition fiber has
+a *unique* representation by the realized interaction-size vector, its
+order-preserving owner shuffle, and a family of connected local Wick
+diagrams on consecutive interaction slots.
+
+This combines the physical size/shuffle assembly equivalence with the
+existing simultaneous local standardization equivalence. Unlike an
+amplitude covariance assertion, this is purely combinatorial: it keeps
+the relabeling of the actual paired interaction legs explicit. -/
+noncomputable def ExternalInsertionBlockLayout.fixedPartitionPhysicalStandardizedSizeShuffleEquiv
+    {ExternalLabel InternalLabel : Type*}
+    (anchor : Fin (2 * E))
+    (π : Finpartition (Finset.univ : Finset (Fin (2 * E))))
+    (heven : ∀ B : π.parts, Even (B : Finset (Fin (2 * E))).card) :=
+  (ExternalInsertionBlockLayout.fixedPartitionPhysicalSizeShuffleEquiv
+    (E := E) (N := N) (ExternalLabel := ExternalLabel)
+    (InternalLabel := InternalLabel) anchor π heven).trans
+    (Equiv.sigmaCongrRight (fun data =>
+      ExternalInsertionBlockLayout.standardizedConnectedBlockFamilyEquiv
+        (ExternalLabel := ExternalLabel) (InternalLabel := InternalLabel)
+        (((ExternalInsertionBlockLayout.fixedPartitionSizeShuffleEquiv
+          (E := E) (N := N) π heven).symm data).1)))
+
+/-- The physically realizable, finite size/shuffle/standardized-local
+diagram data. The finiteness follows from the actual fixed-partition
+Wick-diagram fiber, not from an unbounded natural-size enumeration. -/
+noncomputable def ExternalInsertionBlockLayout.fixedPartitionPhysicalStandardizedSizeShuffleFiniteDomain
+    {ExternalLabel InternalLabel : Type*}
+    [Fintype ExternalLabel] [Fintype InternalLabel]
+    (anchor : Fin (2 * E))
+    (π : Finpartition (Finset.univ : Finset (Fin (2 * E))))
+    (heven : ∀ B : π.parts, Even (B : Finset (Fin (2 * E))).card) := by
+  classical
+  exact (Finset.univ : Finset
+    {d : {d : ExternalInsertionDiagram ExternalLabel InternalLabel E N
+        (Finset.univ : Finset (Fin N)) //
+        HasNoVacuumComponent d.vertexGraph} //
+      externalComponentPartition d.1.vertexGraph = π}).image
+        (ExternalInsertionBlockLayout.fixedPartitionPhysicalStandardizedSizeShuffleEquiv
+          (E := E) (N := N) (ExternalLabel := ExternalLabel)
+          (InternalLabel := InternalLabel) anchor π heven)
+
+open Classical in
+/-- An arbitrary weight on physical partition-fiber diagrams can be
+reindexed without loss or multiplicity by the exact finite
+size/shuffle/standardized-local domain. No factorization of an
+individual ordered Dyson integral is claimed. -/
+theorem ExternalInsertionBlockLayout.sum_fixedPartitionPhysical_eq_standardized_sizes_shuffles
+    {ExternalLabel InternalLabel M : Type*}
+    [Fintype ExternalLabel] [Fintype InternalLabel] [AddCommMonoid M]
+    (anchor : Fin (2 * E))
+    (π : Finpartition (Finset.univ : Finset (Fin (2 * E))))
+    (heven : ∀ B : π.parts, Even (B : Finset (Fin (2 * E))).card)
+    (weight :
+      {d : {d : ExternalInsertionDiagram ExternalLabel InternalLabel E N
+        (Finset.univ : Finset (Fin N)) //
+        HasNoVacuumComponent d.vertexGraph} //
+        externalComponentPartition d.1.vertexGraph = π} → M) :
+    (∑ d, weight d) =
+      ∑ p ∈ ExternalInsertionBlockLayout.fixedPartitionPhysicalStandardizedSizeShuffleFiniteDomain
+          (E := E) (N := N) (ExternalLabel := ExternalLabel)
+          (InternalLabel := InternalLabel) anchor π heven,
+        weight ((ExternalInsertionBlockLayout.fixedPartitionPhysicalStandardizedSizeShuffleEquiv
+          (E := E) (N := N) (ExternalLabel := ExternalLabel)
+          (InternalLabel := InternalLabel) anchor π heven).symm p) := by
+  classical
+  unfold ExternalInsertionBlockLayout.fixedPartitionPhysicalStandardizedSizeShuffleFiniteDomain
+  rw [Finset.sum_image]
+  · apply Finset.sum_congr rfl
+    intro d _
+    rw [Equiv.symm_apply_apply]
+  · intro d _ d' _ h
+    exact (ExternalInsertionBlockLayout.fixedPartitionPhysicalStandardizedSizeShuffleEquiv
+      (E := E) (N := N) (ExternalLabel := ExternalLabel)
+      (InternalLabel := InternalLabel) anchor π heven).injective h
+
 open Classical in
 /-- The finite image of the actual physical fixed-partition diagram
 fiber under the exact connected-block size/shuffle equivalence. This
