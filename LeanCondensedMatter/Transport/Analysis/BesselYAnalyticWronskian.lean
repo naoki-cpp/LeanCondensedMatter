@@ -45,14 +45,16 @@ theorem besselY0Y1_harmonicIdentity (z : ℂ) :
   have hC : Summable (fun n : ℕ =>
       PowerSeries.coeff n besselFormalH1 * x ^ n) :=
     summable_besselFormalH1_eval z
+  have htwo : PowerSeries.C (2 : ℂ) = (2 : ℂ⟦X⟧) :=
+    map_natCast (PowerSeries.C : ℂ →+* ℂ⟦X⟧) 2
   have h2D : Summable (fun n : ℕ =>
       PowerSeries.coeff n (2 * PowerSeries.derivative besselFormalJ0) * x ^ n) := by
-    simpa using PowerSeries.summable_coefficientSum_C_mul
+    simpa only [htwo] using PowerSeries.summable_coefficientSum_C_mul
       (PowerSeries.derivative besselFormalJ0) x 2 hD
   have h2DEval :
       PowerSeries.coefficientSum (2 * PowerSeries.derivative besselFormalJ0) x =
         2 * PowerSeries.coefficientSum (PowerSeries.derivative besselFormalJ0) x := by
-    simpa using PowerSeries.coefficientSum_C_mul (PowerSeries.derivative besselFormalJ0) x 2
+    simpa only [htwo] using PowerSeries.coefficientSum_C_mul (PowerSeries.derivative besselFormalJ0) x 2
   have h2DB :=
     PowerSeries.summable_coefficientSum_mul
       (2 * PowerSeries.derivative besselFormalJ0) besselFormalH0 x h2D hB
