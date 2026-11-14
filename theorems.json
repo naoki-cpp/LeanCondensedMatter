@@ -1,6 +1,50 @@
 [
   {
     "terminal": false,
+    "statement": "∀ (gap : ℝ) (z : ℂ), ((↑gap)⁻¹ ^ 2 * z).im = gap⁻¹ ^ 2 * z.im",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "Algebra.inv_real_gap_sq_mul_im",
+    "module": "LeanCondensedMatter.Analysis.Algebra.ScalarResolvent",
+    "externalAxioms": [],
+    "docString": "The imaginary part of an inverse real-gap square, valid also at zero\nbecause the inverse is totalized. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "Algebra.mul_div_real_gap_im",
+      "QuantumTheory.Transport.inv_real_gap_sq_mul_im"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "Algebra.mul_div_real_gap_im",
+      "QuantumTheory.Transport.inv_real_gap_sq_mul_im"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {K : Type u_1} {A : Type u_2} [inst : Field K] [inst_1 : Semiring A] [inst_2 : Algebra K A] (H : A) (E : K),\n  E ≠ 0 → H * H = E ^ 2 • 1 → E⁻¹ • H * E⁻¹ • H = 1",
     "standardAxioms": [
       "Classical.choice",
@@ -31,6 +75,50 @@
       "InternalSpace.quadratic_shift_mul_projector"
     ],
     "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (a b : ℂ) (gap : ℝ), gap ≠ 0 → (a / ↑gap * (b / ↑gap)).im = (a * b).im / gap ^ 2",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "Algebra.mul_div_real_gap_im",
+    "module": "LeanCondensedMatter.Analysis.Algebra.ScalarResolvent",
+    "externalAxioms": [],
+    "docString": "Products of complex numerators with a shared nonzero real gap have the expected imaginary part. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.MassiveDirac.pointwiseBerryCurvature_xy_eq_forceMatrixBerryCurvature"
+    ],
+    "dependencies": [
+      "Algebra.inv_real_gap_sq_mul_im"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.pointwiseBerryCurvature_xy_eq_forceMatrixBerryCurvature"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -77631,13 +77719,13 @@
       "QuantumTheory.Models.MassiveDirac.two_mul_currentBandBlockTrace_interband_im_div_gap_sq_eq_chargeSq_pointwiseBerryCurvature"
     ],
     "dependencies": [
+      "Algebra.mul_div_real_gap_im",
       "BerryGeometry.PointwiseEigenbasisData.berryCurvature_eq_sum_hamiltonianDerivativeMatrixElements",
       "QuantumTheory.Models.MassiveDirac.bandEnergy_injective",
       "QuantumTheory.Models.MassiveDirac.forceMatrixTraceNumerator_eq_hamiltonianDerivativeMatrixElements",
       "QuantumTheory.Models.MassiveDirac.interbandEnergyGap_ne_zero_of_energy_ne_zero",
       "QuantumTheory.Models.MassiveDirac.sum_band",
-      "QuantumTheory.Models.MassiveDirac.velocityOperator_isSelfAdjoint",
-      "_private.LeanCondensedMatter.Models.MassiveDirac.Model.Berry.Bridge.0.QuantumTheory.Models.MassiveDirac.mul_div_real_gap_im"
+      "QuantumTheory.Models.MassiveDirac.velocityOperator_isSelfAdjoint"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -98008,7 +98096,9 @@
       "QuantumTheory.Models.MassiveDirac.targetCenteredInterbandSpectatorCurrentFactor_zero_im_eq_neg_chargeSq_berryCurvature",
       "QuantumTheory.Models.RashbaExchange.interbandPoleRegularFactor_zero_im_eq_neg_chargeSq_berryCurvature"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Algebra.inv_real_gap_sq_mul_im"
+    ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
@@ -184409,48 +184499,6 @@
     "completedMention": false,
     "compiledConsumers": [
       "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.TMatrix.BornDysonLoop.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenEntryKernel_zero_disorder_zero_radius"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (a b : ℂ) (gap : ℝ), gap ≠ 0 → (a / ↑gap * (b / ↑gap)).im = (a * b).im / gap ^ 2",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Models.MassiveDirac.Model.Berry.Bridge.0.QuantumTheory.Models.MassiveDirac.mul_div_real_gap_im",
-    "module": "LeanCondensedMatter.Models.MassiveDirac.Model.Berry.Bridge",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Models.MassiveDirac.pointwiseBerryCurvature_xy_eq_forceMatrixBerryCurvature"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Models.MassiveDirac.pointwiseBerryCurvature_xy_eq_forceMatrixBerryCurvature"
     ],
     "compiledConsumerCount": 1,
     "axioms": [

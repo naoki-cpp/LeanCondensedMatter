@@ -10,7 +10,7 @@
       "name": "LeanCondensedMatter.Analysis.Algebra.ScalarResolvent",
       "sourceFile": "LeanCondensedMatter/Analysis/Algebra/ScalarResolvent.lean",
       "imports": [],
-      "externalImportCount": 2
+      "externalImportCount": 3
     },
     {
       "name": "LeanCondensedMatter.Analysis.Calculus.AlgebraicDerivative",
@@ -2662,6 +2662,7 @@
       "name": "LeanCondensedMatter.Models.MassiveDirac.Model.Berry.Bridge",
       "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Model/Berry/Bridge.lean",
       "imports": [
+        "LeanCondensedMatter.Analysis.Algebra.ScalarResolvent",
         "LeanCondensedMatter.Analysis.Operator.BerryGeometry.Curvature",
         "LeanCondensedMatter.Models.MassiveDirac.Model.Interband",
         "LeanCondensedMatter.Models.MassiveDirac.Model.OperatorSpectral.BerryPointwise"
@@ -8879,10 +8880,11 @@
       "name": "LeanCondensedMatter.Transport.Streda.InterbandPole",
       "sourceFile": "LeanCondensedMatter/Transport/Streda/InterbandPole.lean",
       "imports": [
+        "LeanCondensedMatter.Analysis.Algebra.ScalarResolvent",
         "LeanCondensedMatter.Analysis.Lorentzian.Pole",
         "LeanCondensedMatter.Transport.Resolvent.Spectral"
       ],
-      "externalImportCount": 6
+      "externalImportCount": 5
     },
     {
       "name": "LeanCondensedMatter.Transport.Streda.OperatorKernel",
