@@ -78,6 +78,22 @@ fail the build:
 python3 scripts/export_module_import_graph.py --report-overlaps --limit 30
 ```
 
+Use `--source-prefix` to constrain the overlap inventory to one directory or exact
+source file, rather than repeatedly reviewing an outdated repository-wide list.
+Directory matches use path-component boundaries (e.g. `Gibbs` does not
+also select `GibbsExtra`):
+
+```bash
+python3 scripts/export_module_import_graph.py --report-overlaps \
+  --source-prefix LeanCondensedMatter/QuantumTheory/Gibbs --limit 1000
+python3 scripts/export_module_import_graph.py --report-overlaps \
+  --source-prefix LeanCondensedMatter/SecondQuantization/Fermionic --limit 1000
+```
+
+The displayed counts are within the selected source scope; they are not
+repository-wide totals. `--limit` controls displayed rows, not the count
+used by the report.
+
 The report puts module-system files first and shows when one *project-local* direct
 import is also transitively reachable through another direct project import. Import-only
 umbrella files (a matching subtree, with only import commands, documentation, and the

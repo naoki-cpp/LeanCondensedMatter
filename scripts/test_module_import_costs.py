@@ -8,7 +8,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
-from export_module_import_graph import project_import_footprint
+from export_module_import_graph import matches_source_prefix, project_import_footprint
 
 
 def entry(name: str, imports: list[str], external_count: int = 0) -> dict[str, object]:
@@ -59,6 +59,26 @@ class ImportFootprintTests(unittest.TestCase):
                 "externalDirectImportEdges": 5,
             },
         )
+
+    def test_source_prefix_is_directory_scoped(self) -> None:
+        self.assertTrue(matches_source_prefix(
+            "LeanCondensedMatter/QuantumTheory/Gibbs/State.lean",
+            "LeanCondensedMatter/QuantumTheory/Gibbs",
+        ))
+        self.assertFalse(matches_source_prefix(
+            "LeanCondensedMatter/QuantumTheory/GibbsExtra/State.lean",
+            "LeanCondensedMatter/QuantumTheory/Gibbs",
+        ))
+
+    def test_source_prefix_accepts_exact_files_and_trailing_slash(self) -> None:
+        path = "LeanCondensedMatter/QuantumTheory/Gibbs/State.lean"
+        self.assertTrue(matches_source_prefix(path, path))
+        self.assertTrue(matches_source_prefix(
+            path, "LeanCondensedMatter/QuantumTheory/Gibbs/",
+        ))
+
+    def test_empty_source_prefix_matches_all(self) -> None:
+        self.assertTrue(matches_source_prefix("LeanCondensedMatter/QuantumTheory.lean", ""))
 
     def test_unknown_root_is_an_error(self) -> None:
         with self.assertRaisesRegex(ValueError, "unknown project module"):

@@ -160,6 +160,12 @@ def umbrella_consumer_candidates(
     return sorted(consumers)
 
 
+def matches_source_prefix(relative_path: str, prefix: str) -> bool:
+    """Match a source path or directory boundary, not similarly named siblings."""
+    prefix = prefix.rstrip("/")
+    return not prefix or relative_path == prefix or relative_path.startswith(prefix + "/")
+
+
 def is_module_system_file(relative_path: str) -> bool:
     source = lean_source(ROOT / relative_path).lstrip().splitlines()
     return bool(source and source[0].strip() == "module")
@@ -182,7 +188,7 @@ def main() -> None:
     parser.add_argument(
         "--source-prefix",
         default="",
-        help="Filter umbrella-consumer report to source paths starting with this prefix",
+        help="Filter overlap or umbrella-consumer reports to this source path or directory",
     )
     parser.add_argument(
         "--report-umbrella-costs",
@@ -216,7 +222,10 @@ def main() -> None:
 
     inventory = export_modules()
     if args.report_overlaps:
-        overlaps = import_overlap_candidates(inventory["modules"])
+        overlaps = [
+            item for item in import_overlap_candidates(inventory["modules"])
+            if matches_source_prefix(item[0], args.source_prefix)
+        ]
         source_files = {path for path, _, _ in overlaps}
         umbrellas = {path for path in source_files if is_import_only_umbrella(path)}
         module_system = {path for path in source_files if is_module_system_file(path)}
@@ -254,7 +263,7 @@ def main() -> None:
             parser.error("choose only one advisory report")
         consumers = [
             item for item in umbrella_consumer_candidates(inventory["modules"])
-            if item[0].startswith(args.source_prefix)
+            if matches_source_prefix(item[0], args.source_prefix)
         ]
         print(f"{len(consumers)} implementation imports of import-only project umbrellas "
               "(manual review only)")
