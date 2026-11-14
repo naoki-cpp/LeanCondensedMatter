@@ -147,6 +147,44 @@ theorem ExternalInsertionWickDiagram.slotCongr_orderedExternalInsertionLegField
 
 variable [Fintype Mode]
 
+/-- The *oriented* finite-Gibbs pair contraction transported through an
+arbitrary interaction-slot bijection. Both endpoints are mapped in their
+given order. In particular, this statement does not identify normalized
+pair orientations under the induced mixed-time permutation; that sign
+comparison remains a separate step in the full Dyson amplitude covariance. -/
+theorem ExternalInsertionWickDiagram.slotCongr_mixedAtomicPairValue
+    {E n : ℕ} (d : ExternalInsertionWickDiagram Mode E n)
+    (e : ↥(Finset.univ : Finset (Fin n)) ≃
+      ↥(Finset.univ : Finset (Fin n)))
+    (ε : Mode → ℝ) (β : ℝ)
+    (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ)
+    (a b : OrderedExternalInsertionLeg E n) :
+    let f : Fin n → Fin n :=
+      fun v => (e.symm ⟨v, Finset.mem_univ v⟩).1
+    externalInsertionMixedTimeOrderedAtomicPairValue ε β
+        (d.slotCongr e).externalLabel externalTime
+        (d.slotCongr e).vertexLabelSequence (σ ∘ f)
+        (externalInsertionMixedTimeOrderedAtomicLegPosition
+          externalTime (σ ∘ f) a)
+        (externalInsertionMixedTimeOrderedAtomicLegPosition
+          externalTime (σ ∘ f) b) =
+      externalInsertionMixedTimeOrderedAtomicPairValue ε β
+        d.externalLabel externalTime d.vertexLabelSequence σ
+        (externalInsertionMixedTimeOrderedAtomicLegPosition externalTime σ
+          (orderedExternalInsertionLegMap (fun x => x) f a))
+        (externalInsertionMixedTimeOrderedAtomicLegPosition externalTime σ
+          (orderedExternalInsertionLegMap (fun x => x) f b)) := by
+  intro f
+  have hlabel : (d.slotCongr e).externalLabel = d.externalLabel := rfl
+  have hvertices :
+      (d.slotCongr e).vertexLabelSequence = d.vertexLabelSequence ∘ f := by
+    funext v
+    rfl
+  simpa only [hlabel, hvertices, Function.comp_id] using
+    (externalInsertionMixedTimeOrderedAtomicPairValue_map
+      ε β (fun x : Fin (2 * E) => x) f
+      d.externalLabel externalTime d.vertexLabelSequence σ a b).symm
+
 /-- Fermionic pairing evaluation of one external-insertion diagram in mixed-time atomic order.
 Interaction couplings and the external time-ordering sign are not included here. -/
 noncomputable def ExternalInsertionWickDiagram.mixedPairingValue {E n : ℕ}
