@@ -65,6 +65,92 @@ noncomputable def externalInsertionMixedAtomicOrderSign {E n : ℕ}
   ((Equiv.Perm.sign
     (externalInsertionStandardToMixedAtomicPositionEquiv externalTime σ) : ℤ) : ℂ)
 
+
+/-- The permutation on *fixed flattened atomic positions* induced by
+relabeling interaction vertices. The cardinality cast is needed to
+identify the standard `n` slots with the full interaction Finset. -/
+private noncomputable def externalInsertionStandardSlotPerm
+    {E n : ℕ}
+    (e : ↥(Finset.univ : Finset (Fin n)) ≃
+      ↥(Finset.univ : Finset (Fin n))) :
+    Equiv.Perm (Fin (2 * (2 * n + E))) :=
+  (finCongr (by simp)).symm.permCongr
+    (externalInsertionLegCongr (E := E) e)
+
+/-- Every fixed flattened atomic permutation from relabeling
+four-leg interaction vertices is even, for any number of external legs. -/
+private theorem externalInsertionStandardSlotPerm_sign_eq_one
+    {E n : ℕ}
+    (e : ↥(Finset.univ : Finset (Fin n)) ≃
+      ↥(Finset.univ : Finset (Fin n))) :
+    Equiv.Perm.sign (externalInsertionStandardSlotPerm (E := E) e) = 1 := by
+  rw [externalInsertionStandardSlotPerm, Equiv.Perm.sign_permCongr]
+  exact externalInsertionLegCongr_sign_eq_one e
+
+/-- The original fixed-to-mixed atomic ordering map is obtained by
+first permuting the fixed flattened legs and then sorting using the
+relabelled interaction times. On injective-time chambers, the
+physical mixed-time position permutation itself is the identity. -/
+theorem externalInsertionStandardToMixedAtomicPositionEquiv_slotCongr
+    {E n : ℕ}
+    (e : ↥(Finset.univ : Finset (Fin n)) ≃
+      ↥(Finset.univ : Finset (Fin n)))
+    (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ)
+    (hσ : Function.Injective σ) :
+    (externalInsertionStandardSlotPerm (E := E) e).trans
+        (externalInsertionStandardToMixedAtomicPositionEquiv externalTime
+          (σ ∘ fun v => (e.symm ⟨v, Finset.mem_univ v⟩).1)) =
+      externalInsertionStandardToMixedAtomicPositionEquiv externalTime σ := by
+  let C := externalInsertionOrderedLegSlotCongr (E := E) e
+  let L := externalInsertionLegEquiv E (Finset.univ : Finset (Fin n))
+  let F : Fin (2 * (2 * n + E)) ≃
+      Fin (2 * (2 * (Finset.univ : Finset (Fin n)).card + E)) :=
+    finCongr (by simp)
+  let M := externalInsertionMixedTimeOrderedAtomicLegEquiv externalTime σ
+  let M' := externalInsertionMixedTimeOrderedAtomicLegEquiv externalTime
+    (σ ∘ fun v => (e.symm ⟨v, Finset.mem_univ v⟩).1)
+  have hC (x : Fin (2 * (2 * (Finset.univ : Finset (Fin n)).card + E))) :
+      L (externalInsertionLegCongr (E := E) e x) = C (L x) := by
+    change L ((L.trans (C.trans L.symm)) x) = C (L x)
+    simp only [Equiv.trans_apply, Equiv.apply_symm_apply]
+  have hMixed (leg : OrderedExternalInsertionLeg E n) :
+      M'.symm (C leg) = M.symm leg := by
+    have h := congrArg
+      (fun q : Equiv.Perm (Fin (2 * (2 * n + E))) => q (M.symm leg))
+      (externalInsertionMixedPositionSlotCongr_eq_refl_of_injective
+        e externalTime σ hσ)
+    simpa only [externalInsertionMixedPositionSlotCongr,
+      Equiv.trans_apply, Equiv.apply_symm_apply,
+      Equiv.refl_apply] using h
+  apply Equiv.ext
+  intro i
+  change M'.symm (L (externalInsertionLegCongr (E := E) e (F i))) =
+    M.symm (L (F i))
+  rw [hC]
+  exact hMixed (L (F i))
+
+/-- The physical fermionic ordering sign does not change when four-leg
+interaction vertices and their times are permuted together, on any
+chamber with pairwise distinct interaction times. This is the
+nontrivial sign bridge between #4679's even fixed-leg parity and
+#4682's exact identity of mixed-time positions. -/
+theorem externalInsertionMixedAtomicOrderSign_slotCongr_of_injective
+    {E n : ℕ}
+    (e : ↥(Finset.univ : Finset (Fin n)) ≃
+      ↥(Finset.univ : Finset (Fin n)))
+    (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ)
+    (hσ : Function.Injective σ) :
+    externalInsertionMixedAtomicOrderSign externalTime
+        (σ ∘ fun v => (e.symm ⟨v, Finset.mem_univ v⟩).1) =
+      externalInsertionMixedAtomicOrderSign externalTime σ := by
+  have h := congrArg Equiv.Perm.sign
+    (externalInsertionStandardToMixedAtomicPositionEquiv_slotCongr
+      e externalTime σ hσ)
+  rw [Equiv.Perm.sign_trans,
+    externalInsertionStandardSlotPerm_sign_eq_one] at h
+  simp only [mul_one, one_mul] at h
+  exact congrArg (fun u : ℤˣ => (u : ℂ)) h.symm
+
 /-- Fixed-time amplitude of an arbitrary external-insertion Wick diagram. -/
 noncomputable def ExternalInsertionWickDiagram.fixedTimeAmplitude {E n : ℕ}
     (d : ExternalInsertionWickDiagram Mode E n)
