@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Analysis.Operator.BerryGeometry.Curvature
+import LeanCondensedMatter.Analysis.Algebra.ScalarResolvent
 import LeanCondensedMatter.Models.MassiveDirac.Model.Interband
 import LeanCondensedMatter.Models.MassiveDirac.Model.OperatorSpectral.BerryPointwise
 
@@ -77,26 +78,6 @@ def forceMatrixBerryCurvature (band : Band) (v m px py : ℝ) : ℝ :=
   2 * (forceMatrixTraceNumerator 0 1 band v m px py).im /
     interbandEnergyGap band v m px py ^ 2
 
-private theorem mul_div_real_gap_im
-    (a b : ℂ) (gap : ℝ) (hgap : gap ≠ 0) :
-    ((a / ((gap : ℝ) : ℂ)) * (b / ((gap : ℝ) : ℂ))).im =
-      (a * b).im / gap ^ 2 := by
-  have hcoeff :
-      (((((gap : ℝ) : ℂ))⁻¹) ^ 2) =
-        ((((gap⁻¹ ^ 2 : ℝ) : ℂ))) := by
-    rw [← Complex.ofReal_inv, ← Complex.ofReal_pow]
-  calc
-    ((a / ((gap : ℝ) : ℂ)) * (b / ((gap : ℝ) : ℂ))).im =
-        (((((gap : ℝ) : ℂ))⁻¹) ^ 2 * (a * b)).im := by
-      congr 1
-      simp only [div_eq_mul_inv]
-      ring
-    _ = ((((gap⁻¹ ^ 2 : ℝ) : ℂ)) * (a * b)).im := by rw [hcoeff]
-    _ = (a * b).im / gap ^ 2 := by
-      simp only [Complex.mul_im, Complex.ofReal_re, Complex.ofReal_im, zero_mul]
-      field_simp [hgap]
-      ring
-
 /-- The generic pointwise Berry curvature in the physical x-y directions is exactly the
 model projector/force-matrix curvature away from the Dirac degeneracy. -/
 theorem pointwiseBerryCurvature_xy_eq_forceMatrixBerryCurvature
@@ -136,7 +117,7 @@ theorem pointwiseBerryCurvature_xy_eq_forceMatrixBerryCurvature
   cases band <;>
     simp only [reduceCtorEq, ↓reduceIte, oppositeBand_lower, oppositeBand_upper,
       zero_add, add_zero] at hgap hgapEq ⊢ <;>
-    rw [mul_div_real_gap_im _ _ _ hgap, hgapEq] <;>
+    rw [Algebra.mul_div_real_gap_im _ _ _ hgap, hgapEq] <;>
     ring
 
 /-- The projector/force-matrix expression equals the closed massive-Dirac Berry curvature away
