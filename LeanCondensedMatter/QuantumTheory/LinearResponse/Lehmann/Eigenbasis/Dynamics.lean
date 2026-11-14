@@ -1,3 +1,4 @@
+import LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.Eigenstate
 import LeanCondensedMatter.QuantumTheory.DensityOperator.DiagonalFormula
 import LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.ConservationLaws
 import LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann.Eigenbasis.Data
@@ -105,59 +106,6 @@ noncomputable def eigenbasisSchrodingerPhase
     (data : EnergyEigenbasisLehmannData system ι) (i : ι) (t : ℝ) : ℂ :=
   Complex.exp (-(Complex.I * (((t * data.energy i) / system.hbar : ℝ) : ℂ)))
 
-/-- The free propagator acts on an energy-basis vector by the expected Schrödinger phase. -/
-theorem freePropagator_apply_energyEigenbasis
-    (data : EnergyEigenbasisLehmannData system ι) (i : ι) (t : ℝ) :
-    freePropagator system t (data.basis i) =
-      eigenbasisSchrodingerPhase system data i t • data.basis i := by
-  let T : H →L[ℂ] H := (t : ℂ) • schrodingerGenerator system
-  let c : ℂ := -(Complex.I * (((t * data.energy i) / system.hbar : ℝ) : ℂ))
-  let v : H := data.basis i
-  have hT : T v = c • v := by
-    dsimp [T, c, v]
-    rw [schrodingerGenerator]
-    simp only [smul_apply, data.hamiltonian_apply_basis, smul_smul]
-    rw [RCLike.real_smul_eq_coe_smul (K := ℂ) t
-      ((-(Complex.I / (system.hbar : ℂ)) * (data.energy i : ℂ)) • data.basis i)]
-    rw [smul_smul]
-    apply congrArg (fun z : ℂ => z • data.basis i)
-    push_cast
-    simp only [div_eq_mul_inv, neg_mul, mul_neg]
-    apply congrArg (fun z : ℂ => -z)
-    simp [mul_assoc, mul_left_comm, mul_comm]
-  have hpow (n : ℕ) : (T ^ n) v = c ^ n • v := by
-    induction n with
-    | zero => simp
-    | succ n ih =>
-        rw [pow_succ]
-        simp only [mul_apply_eq_comp, ih, map_smul, hT, smul_smul]
-        congr 1
-        ring
-  have hop :=
-    (NormedSpace.exp_series_hasSum_exp' (𝕂 := ℂ) T).mapL
-      (ContinuousLinearMap.apply ℂ H v)
-  have hop' : HasSum
-      (fun n : ℕ => (((n.factorial : ℂ)⁻¹ * c ^ n) • v))
-      (freePropagator system t v) := by
-    rw [freePropagator_eq_exp]
-    convert hop using 1
-    · ext n
-      simp only [ContinuousLinearMap.apply_apply, smul_apply]
-      rw [hpow]
-      simp [c, v, smul_smul]
-    · rfl
-  have hscalar :=
-    (NormedSpace.exp_series_hasSum_exp' (𝕂 := ℂ) c).mapL
-      (ContinuousLinearMap.toSpanSingleton ℂ v)
-  have hscalar' : HasSum
-      (fun n : ℕ => (((n.factorial : ℂ)⁻¹ * c ^ n) • v))
-      (eigenbasisSchrodingerPhase system data i t • v) := by
-    convert hscalar using 1
-    · ext n
-      simp
-    · simp [eigenbasisSchrodingerPhase, Complex.exp_eq_exp_ℂ, c, v]
-  exact hop'.unique hscalar'
-
 /-- The relative phase carried by a Heisenberg-picture matrix element. -/
 noncomputable def eigenbasisTransitionPhase
     (data : EnergyEigenbasisLehmannData system ι)
@@ -178,25 +126,6 @@ theorem eigenbasisTransitionPhase_eq_exp_energyDifference
   rw [NormedSpace.star_exp, ← NormedSpace.exp_add]
   congr 1
   simp
-  ring
-
-/-- Matrix elements of a freely evolved observable acquire the energy-difference phase. -/
-theorem inner_energyEigenbasis_heisenbergEvolution
-    (data : EnergyEigenbasisLehmannData system ι)
-    (A : H →L[ℂ] H) (m n : ι) (t : ℝ) :
-    inner ℂ (data.basis m)
-        (heisenbergEvolution (freePropagatorGroup system) t A (data.basis n)) =
-      eigenbasisTransitionPhase system data m n t *
-        inner ℂ (data.basis m) (A (data.basis n)) := by
-  rw [heisenbergEvolution_freePropagatorGroup_apply]
-  simp only [mul_apply_eq_comp]
-  rw [freePropagator_apply_energyEigenbasis system data n t]
-  rw [map_smul]
-  rw [← star_freePropagator system t]
-  rw [ContinuousLinearMap.star_eq_adjoint]
-  rw [ContinuousLinearMap.adjoint_inner_right]
-  rw [freePropagator_apply_energyEigenbasis system data m t]
-  simp [eigenbasisTransitionPhase, inner_smul_left, inner_smul_right]
   ring
 
 /-- The canonical eigenbasis density expectation is stationary under the free dynamics. -/

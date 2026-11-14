@@ -280,6 +280,9 @@ first variation and proves the leading squared transition weight at fixed finite
 orthogonal vectors. For normalized vectors under unitary evolution this is the corresponding
 transition probability. This finite-time, weak-coupling statement is separate from a golden-rule
 rate, which needs a continuous final-state measure and an appropriately justified long-time limit.
+The static-eigenstate reduction uses individual free eigenvector phases from Dynamics.Eigenstate
+and the mathematical finite-time integral from Analysis.OscillatoryIntegral; it yields both the
+nonresonant sine kernel and the resonant quadratic-in-time squared amplitude without a full basis.
 The remaining steps are recorded in [the scattering-theory roadmap](../roadmaps/scattering-theory.md).
 
 ## Scalar-impurity T-matrix ownership

@@ -1,3 +1,4 @@
+import LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.Eigenstate
 import LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann.Eigenbasis.Dynamics
 import LeanCondensedMatter.QuantumTheory.LinearResponse.Frequency.Susceptibility
 import Mathlib.Topology.Algebra.InfiniteSum.Module
@@ -188,7 +189,10 @@ theorem eigenbasisExpectation_heisenberg_mul_eq_tsum
   apply tsum_congr
   intro n
   rw [ContinuousLinearMap.adjoint_inner_left]
-  rw [inner_energyEigenbasis_heisenbergEvolution system data A m n τ]
+  rw [inner_heisenbergEvolution_of_eigenvectors system
+    (data.basis n) (data.basis m) (data.energy n) (data.energy m)
+    (data.hamiltonian_apply_basis n) (data.hamiltonian_apply_basis m) A τ]
+  rw [← eigenbasisTransitionPhase_eq_exp_energyDifference system data m n τ]
   simp [eigenbasisForwardTimeTerm, eigenbasisForwardWeight]
   ring
 
@@ -216,7 +220,10 @@ theorem eigenbasisExpectation_mul_heisenberg_eq_tsum
   apply tsum_congr
   intro n
   rw [ContinuousLinearMap.adjoint_inner_left]
-  rw [inner_energyEigenbasis_heisenbergEvolution system data A n m τ]
+  rw [inner_heisenbergEvolution_of_eigenvectors system
+    (data.basis m) (data.basis n) (data.energy m) (data.energy n)
+    (data.hamiltonian_apply_basis m) (data.hamiltonian_apply_basis n) A τ]
+  rw [← eigenbasisTransitionPhase_eq_exp_energyDifference system data n m τ]
   simp [eigenbasisBackwardTimeTerm, eigenbasisBackwardWeight]
   ring
 
