@@ -68,6 +68,19 @@ theorem ExternalInsertionDiagram.slotCongr_externalLabel (e : ↥T ≃ ↥U)
     (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N T) :
     (d.slotCongr (M := M) e).externalLabel = d.externalLabel := rfl
 
+/-- The physical Wick pairing partner is exactly conjugated by the
+induced flattened-leg equivalence under *any* interaction-slot
+relabeling. It transports the two endpoints together, without
+asserting that their normalized increasing order is preserved. -/
+theorem ExternalInsertionDiagram.slotCongr_pairing_partner
+    (e : ↥T ≃ ↥U)
+    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N T)
+    (p : Fin (2 * (2 * T.card + E))) :
+    (d.slotCongr e).pairing.partner
+        (externalInsertionLegCongr (E := E) e p) =
+      externalInsertionLegCongr (E := E) e (d.pairing.partner p) := by
+  simp [ExternalInsertionDiagram.slotCongr, PairingOn.transport_partner]
+
 /-- Relabeling interaction slots preserves every commutative product of vertex weights.
 The result does not depend on any fermionic or time-ordering conventions. -/
 theorem ExternalInsertionDiagram.slotCongr_vertexWeight
