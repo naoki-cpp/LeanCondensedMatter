@@ -760,5 +760,28 @@ theorem externalInsertionMixedTimeOrderedAtomicLegs_perm_slots
       rw [orderedExternalInsertionTimedEvents_perm_slots externalTime σ hσ p]
       rfl
 
+
+/-- Pointwise covariance of the **actual** mixed-time position-to-leg
+equivalence. Every position retains the same physical field under
+relabeling, with its vertex identifier renamed by `p`. -/
+theorem externalInsertionMixedTimeOrderedAtomicLegEquiv_perm_slots
+    {E n : ℕ} (externalTime : Fin (2 * E) → ℝ)
+    (σ : Fin n → ℝ) (hσ : Function.Injective σ)
+    (p : Equiv.Perm (Fin n))
+    (i : Fin (2 * (2 * n + E))) :
+    externalInsertionMixedTimeOrderedAtomicLegEquiv externalTime (σ ∘ p.symm) i =
+      orderedExternalInsertionLegMap id p
+        (externalInsertionMixedTimeOrderedAtomicLegEquiv externalTime σ i) := by
+  have hlist :
+      List.ofFn (fun i : Fin (2 * (2 * n + E)) =>
+        orderedExternalInsertionLegMap id p
+          (externalInsertionMixedTimeOrderedAtomicLegEquiv externalTime σ i)) =
+      List.ofFn (externalInsertionMixedTimeOrderedAtomicLegEquiv
+        externalTime (σ ∘ p.symm)) := by
+    simpa only [externalInsertionMixedTimeOrderedAtomicLegs_eq_ofFn,
+      List.map_ofFn] using
+        (externalInsertionMixedTimeOrderedAtomicLegs_perm_slots externalTime σ hσ p)
+  exact (congrFun (List.ofFn_injective hlist) i).symm
+
 end Common
 end SecondQuantization
