@@ -33,11 +33,6 @@ def excitationBond (J : ℝ) (twiceSpin : ℕ) (i j : Mode) : Module.End ℂ (Fo
   ((J : ℂ) * twiceSpin) • (numberOperator i + numberOperator j -
     (create i).comp (annihilate j) - (create j).comp (annihilate i))
 
-theorem excitationBond_vacuum (J : ℝ) (twiceSpin : ℕ) (i j : Mode) :
-    excitationBond J twiceSpin i j fockVacuum = 0 := by
-  simp [excitationBond, numberOperator, fockVacuum, vacuum,
-    annihilate_basisState_of_zero]
-
 variable {N : ℕ} [NeZero N]
 
 /-- Polarized energy -2JN s^2 for the zero-field ring, with N bonds. -/
@@ -55,14 +50,16 @@ def hamiltonian (J : ℝ) (twiceSpin : ℕ) : Module.End ℂ (FockSpace (ZMod N)
   (polarizedEnergy N J twiceSpin : ℂ) • LinearMap.id +
     excitationHamiltonian J twiceSpin
 
-theorem excitationHamiltonian_vacuum (J : ℝ) (twiceSpin : ℕ) :
-    excitationHamiltonian (N := N) J twiceSpin fockVacuum = 0 := by
-  simp [excitationHamiltonian, LinearMap.sum_apply, excitationBond_vacuum]
-
 theorem hamiltonian_vacuum (J : ℝ) (twiceSpin : ℕ) :
     hamiltonian (N := N) J twiceSpin fockVacuum =
       (polarizedEnergy N J twiceSpin : ℂ) • fockVacuum := by
-  simp [hamiltonian, excitationHamiltonian_vacuum]
+  have hBond (i j : ZMod N) :
+      excitationBond J twiceSpin i j fockVacuum = 0 := by
+    simp [excitationBond, numberOperator, fockVacuum, vacuum,
+      annihilate_basisState_of_zero]
+  have hExcitation : excitationHamiltonian (N := N) J twiceSpin fockVacuum = 0 := by
+    simp [excitationHamiltonian, LinearMap.sum_apply, hBond]
+  simp [hamiltonian, hExcitation]
 
 end
 end Models.Heisenberg.QuadraticMagnon
