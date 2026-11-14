@@ -90569,7 +90569,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": true,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -90581,15 +90581,17 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.averagedGreenOfRegulator_eq_born_add_exactRemainder_of_centered",
       "QuantumTheory.Transport.FiniteDisorderEnsemble.averagedOperatorInsertion_eq_mean_add_connected"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.averagedGreenOfRegulator_eq_born_add_exactRemainder_of_centered",
       "QuantumTheory.Transport.FiniteDisorderEnsemble.averagedOperatorInsertion_eq_mean_add_connected"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -90795,6 +90797,50 @@
     "dependents": [],
     "dependencies": [
       "QuantumTheory.Transport.FiniteDisorderEnsemble.averagedConnectedCorrelation_eq_average_sub"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {H : Type u_1} {Ω : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] [inst_3 : Fintype Ω] (ensemble : QuantumTheory.Transport.FiniteDisorderEnsemble)\n  (energy regulator : ℝ),\n  regulator ≠ 0 →\n    ensemble.IsCentered →\n      ensemble.averagedGreenOfRegulator energy regulator =\n        ensemble.freeGreenOfRegulator energy regulator +\n            ensemble.freeGreenOfRegulator energy regulator * ensemble.bornSelfEnergyOfRegulator energy regulator *\n              ensemble.freeGreenOfRegulator energy regulator +\n          ensemble.average fun ω =>\n            ensemble.freeGreenOfRegulator energy regulator * ↑(ensemble.impurityPotential ω) *\n                      ensemble.freeGreenOfRegulator energy regulator *\n                    ↑(ensemble.impurityPotential ω) *\n                  ensemble.configurationGreenOfRegulator energy regulator ω *\n                ↑(ensemble.impurityPotential ω) *\n              ensemble.freeGreenOfRegulator energy regulator",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.FiniteDisorderEnsemble.averagedGreenOfRegulator_eq_born_add_exactRemainder_of_centered",
+    "module": "LeanCondensedMatter.Transport.Disorder.Born",
+    "externalAxioms": [],
+    "docString": "Exact finite-ensemble third-order remainder of the centered Born expansion.\n\nFor any nonzero signed regulator, the averaged resolvent equals the clean Green operator\nplus the first nonzero Born contribution `G₀ C₂(G₀) G₀` and a *specified* remainder\ncontaining three impurity potentials and one exact configuration Green operator.\n\nThis is an identity, not an asymptotic expansion or an error estimate. A norm bound\nrequires additional quantitative control of the impurity potentials and resolvents. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.average_const",
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.configurationGreenOfRegulator_eq_free_add_dyson_right",
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.configurationGreenOfRegulator_eq_secondOrder_add_exactRemainder_left",
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.exactSecondMoment_eq_average",
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.map_average"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -91090,7 +91136,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -91102,6 +91148,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.averagedGreenOfRegulator_eq_born_add_exactRemainder_of_centered",
       "QuantumTheory.Transport.FiniteDisorderEnsemble.configurationGreenOfRegulator_eq_secondOrder_add_exactRemainder_right"
     ],
     "dependencies": [
@@ -91111,9 +91158,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.averagedGreenOfRegulator_eq_born_add_exactRemainder_of_centered",
       "QuantumTheory.Transport.FiniteDisorderEnsemble.configurationGreenOfRegulator_eq_secondOrder_add_exactRemainder_right"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -91127,7 +91175,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ {H : Type u_1} {Ω : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] [inst_3 : Fintype Ω] (ensemble : QuantumTheory.Transport.FiniteDisorderEnsemble)\n  (energy regulator : ℝ),\n  regulator ≠ 0 →\n    ∀ (ω : Ω),\n      ensemble.configurationGreenOfRegulator energy regulator ω =\n        ensemble.freeGreenOfRegulator energy regulator +\n            ensemble.freeGreenOfRegulator energy regulator * ↑(ensemble.impurityPotential ω) *\n              ensemble.freeGreenOfRegulator energy regulator +\n          ensemble.freeGreenOfRegulator energy regulator * ↑(ensemble.impurityPotential ω) *\n                ensemble.freeGreenOfRegulator energy regulator *\n              ↑(ensemble.impurityPotential ω) *\n            ensemble.configurationGreenOfRegulator energy regulator ω",
     "standardAxioms": [
       "Classical.choice",
@@ -91135,7 +91183,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -91146,14 +91194,18 @@
     "docString": "Exact left-oriented second-order Dyson expansion at an arbitrary nonzero signed regulator. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.averagedGreenOfRegulator_eq_born_add_exactRemainder_of_centered"
+    ],
     "dependencies": [
       "QuantumTheory.Transport.FiniteDisorderEnsemble.configurationGreenOfRegulator_eq_free_add_dyson_left"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.averagedGreenOfRegulator_eq_born_add_exactRemainder_of_centered"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -91275,6 +91327,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.averagedGreenOfRegulator_eq_born_add_exactRemainder_of_centered",
       "QuantumTheory.Transport.FiniteDisorderEnsemble.exactSecondMoment_eq_scalarSecondMomentStrength_smul",
       "QuantumTheory.Transport.FiniteDisorderEnsemble.exactSecondMoment_mul_of_commutes",
       "QuantumTheory.Transport.FiniteDisorderEnsemble.exactSecondMoment_star",
@@ -91284,12 +91337,13 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.averagedGreenOfRegulator_eq_born_add_exactRemainder_of_centered",
       "QuantumTheory.Transport.FiniteDisorderEnsemble.exactSecondMoment_eq_scalarSecondMomentStrength_smul",
       "QuantumTheory.Transport.FiniteDisorderEnsemble.exactSecondMoment_mul_of_commutes",
       "QuantumTheory.Transport.FiniteDisorderEnsemble.exactSecondMoment_star",
       "QuantumTheory.Transport.FiniteDisorderEnsemble.mul_exactSecondMoment_of_commutes"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 5,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -91589,6 +91643,7 @@
     "directWrapperOf": null,
     "dependents": [
       "QuantumTheory.Transport.FiniteDisorderEnsemble.average_twoGreenVertexTraceKernel_eq_trace_insertion",
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.averagedGreenOfRegulator_eq_born_add_exactRemainder_of_centered",
       "QuantumTheory.Transport.FiniteDisorderEnsemble.averagedOperatorInsertion_eq_mean_add_connected"
     ],
     "dependencies": [],
@@ -91596,9 +91651,10 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.Transport.FiniteDisorderEnsemble.average_twoGreenVertexTraceKernel_eq_trace_insertion",
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.averagedGreenOfRegulator_eq_born_add_exactRemainder_of_centered",
       "QuantumTheory.Transport.FiniteDisorderEnsemble.averagedOperatorInsertion_eq_mean_add_connected"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
