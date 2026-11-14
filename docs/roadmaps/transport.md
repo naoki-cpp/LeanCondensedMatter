@@ -95,8 +95,10 @@ closure/truncation API are maintained.
 For *centered* finite disorder (`E[V] = 0`), the exact configuration Dyson identities give
 `Ḡ = G₀ + G₀ C₂(G₀) G₀ + E[G₀ V G₀ V Gω V G₀]` at any nonzero signed regulator.
 The last term is an exact cubic-in-impurity **remainder expression** (containing the exact
-configuration propagator `Gω`), not yet a quantitative `O(‖V‖³)` bound. Its connection to
-any continuum white-noise scalar disorder strength still requires a separate model bridge.
+configuration propagator `Gω`). `Disorder.BornNormBound` proves the unconditional fixed-regulator
+estimate `‖R₃‖ ≤ |γ|⁻⁴ E[‖V‖³]` and hence the same error bound for the centered second-order
+Born approximation. The bound is not uniform in `γ → 0` and does not identify an exact
+continuum white-noise scalar-disorder strength or yield a DC/Hall conductivity estimate.
 
 
 `Disorder.TwoParticle` proves the **exact finite-ensemble two-Green decomposition**
@@ -104,6 +106,12 @@ any continuum white-noise scalar disorder strength still requires a separate mod
 for independently supplied signed regulators and an arbitrary bounded insertion `J`.
 The connected term is a disorder covariance, not a diffuson, non-crossing vertex correction,
 or an assertion that a supplied Born/SCBA ladder equals the exact connected response.
+`Disorder.TwoParticleNormBound` now derives a fixed-regulator uniform-amplitude estimate
+`‖C(Gᴸ,J,Gᴿ)‖ ≤ 4 M² ‖J‖ / (|γᴸ|² |γᴿ|²)` from the exact Dyson identity and
+self-adjoint resolvent norm bounds, where `‖Vω‖ ≤ M` for all configurations. It needs no
+centering or Gaussian statistics, but is **not** a proof of equality or closeness to a ladder
+resummation and is not uniform at vanishing broadening.
+
 `Disorder.TraceBridge` now proves that finite-ensemble averaging commutes with the ordinary
 finite-dimensional operator trace and connects the exact two-Green insertion to the canonical
 `twoGreenVertexTraceKernel`. This establishes the exact RA (or other two-regulator) trace
@@ -184,8 +192,8 @@ not public APIs. Convergence and Ward identities are separate targets.
 - trace per unit volume and controlled thermodynamic limits;
 - justified DC and zero-broadening limits;
 - convergence-aware SCBA/ladder results where needed;
-- operator-norm bounds on the exact centered Born cubic remainder at fixed nonzero regulator,
-  followed by explicit controlled approximation/error-to-Hall-response estimates;
+- controlled two-particle vertex and error-to-Hall-response estimates, including physical
+  continuum-disorder matching and noncommuting regulator/DC limits;
 - exact two-Green connected insertion to diagrammatic non-crossing / diffuson and full Kubo
   response channels, with explicit approximation hypotheses, charge-conservation constraints,
   and same-side/sea/contact terms;
