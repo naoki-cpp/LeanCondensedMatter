@@ -106,6 +106,12 @@ continuum white-noise scalar-disorder strength or yield a DC/Hall conductivity e
 for independently supplied signed regulators and an arbitrary bounded insertion `J`.
 The connected term is a disorder covariance, not a diffuson, non-crossing vertex correction,
 or an assertion that a supplied Born/SCBA ladder equals the exact connected response.
+`Disorder.TwoParticleNormBound` now derives a fixed-regulator uniform-amplitude estimate
+`‖C(Gᴸ,J,Gᴿ)‖ ≤ 4 M² ‖J‖ / (|γᴸ|² |γᴿ|²)` from the exact Dyson identity and
+self-adjoint resolvent norm bounds, where `‖Vω‖ ≤ M` for all configurations. It needs no
+centering or Gaussian statistics, but is **not** a proof of equality or closeness to a ladder
+resummation and is not uniform at vanishing broadening.
+
 `Disorder.TraceBridge` now proves that finite-ensemble averaging commutes with the ordinary
 finite-dimensional operator trace and connects the exact two-Green insertion to the canonical
 `twoGreenVertexTraceKernel`. This establishes the exact RA (or other two-regulator) trace
