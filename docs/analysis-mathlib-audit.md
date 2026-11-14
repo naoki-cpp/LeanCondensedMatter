@@ -202,6 +202,15 @@ and [list interleaving](https://github.com/leanprover-community/mathlib4/blob/v4
 These are **source-level assessments, not compiled replacement proofs**; do not remove
 a declaration without checking its current uses and compiling affected consumers.
 
+## Theorem replacement discovery
+
+`scripts/TheoremReplacementAudit.lean` combines two checks against the pinned Mathlib:
+
+- Proof-guided reuse checks declarations already present in each theorem's compiled proof term.
+- A bounded independent search checks Mathlib declarations **not** present in the proof term, focusing on `Analysis/` and `Combinatorics/`. It filters candidates by matching theorem-name prefixes and conclusion head/arity before using Lean to check definitional equivalence or direct specialization.
+
+The independent search is deliberately incomplete: differences in theorem names, reformulated conclusions, or proofs requiring intermediate rewrites are outside its scope. It reports advisory candidates in the generated theorem catalog, not automatic removals. Retain a project theorem when it provides a distinct mathematical statement or a useful public interface.
+
 ## Remaining technical debt
 
 `Analysis/InfiniteSum/FinsuppProduct.lean` contains finite-cardinality induction proofs.
