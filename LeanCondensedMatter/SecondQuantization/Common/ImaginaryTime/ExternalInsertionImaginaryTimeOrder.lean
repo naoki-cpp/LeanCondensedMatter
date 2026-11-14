@@ -779,7 +779,7 @@ theorem externalInsertionMixedTimeOrderedAtomicLegEquiv_perm_slots
       List.ofFn (externalInsertionMixedTimeOrderedAtomicLegEquiv
         externalTime (σ ∘ p.symm)) := by
     simpa only [externalInsertionMixedTimeOrderedAtomicLegs_eq_ofFn,
-      List.map_ofFn] using
+      List.map_ofFn, Function.comp_def] using
         (externalInsertionMixedTimeOrderedAtomicLegs_perm_slots externalTime σ hσ p)
   exact (congrFun (List.ofFn_injective hlist) i).symm
 
