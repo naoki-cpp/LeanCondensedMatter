@@ -2340,17 +2340,6 @@ noncomputable def ExternalInsertionBlockLayout.interactionAssignmentShuffle
   (layout.interactionOrderDecompositionEquiv
     ((Finset.univ : Finset (Fin N)).orderIsoOfFin rfl).toEquiv).2
 
-/-- The global interaction order encoded by the canonical assignment
-shuffle and its associated local orders is exactly the original canonical
-increasing interaction order. -/
-theorem ExternalInsertionBlockLayout.interactionAssignmentShuffle_reassembles
-    (layout : ExternalInsertionBlockLayout E N) :
-    layout.interactionOrderDecompositionEquiv.symm
-      (layout.interactionOrderDecompositionEquiv
-        ((Finset.univ : Finset (Fin N)).orderIsoOfFin rfl).toEquiv) =
-      ((Finset.univ : Finset (Fin N)).orderIsoOfFin rfl).toEquiv := by
-  exact layout.interactionOrderDecompositionEquiv.symm_apply_apply _
-
 /-- The canonical interaction-assignment shuffle remembers the *actual*
 physical owner of each ambient Dyson slot. The owner read from the
 inverse shuffle is the owner of the interaction vertex at that slot,
