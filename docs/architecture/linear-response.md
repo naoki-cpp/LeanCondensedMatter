@@ -46,7 +46,10 @@ or full Mathlib dependency graph.
 
 `Expectation.Basic` is independent of free dynamics. `Expectation.Density` realizes that interface
 from a physical density operator. `Dynamics` owns the free system and its action on states and
-observables. `Perturbation` supplies time-dependent evolution; `Response` relates its first variation
+observables. `Perturbation` supplies time-dependent evolution, including the perturbed observable map
+used independently by `Perturbation.Unitary`. The observable map and its basic zero-coupling
+property are owned by `Perturbation.Observable`, not by the Kubo-formula module;
+`Response` relates the first variation
 to measured/source observables, including an explicit affine observable variation.
 
 `Frequency` owns the transform convention, real-valued harmonic profiles, convergence hypotheses
