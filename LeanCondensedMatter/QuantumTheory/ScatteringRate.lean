@@ -41,7 +41,7 @@ theorem lifetimeOfDamping_pos {hbar damping : ℝ}
 theorem damping_eq_half_hbar_mul_rate (hbar damping : ℝ) (hhbar : hbar ≠ 0) :
     damping = (hbar / 2) * scatteringRateOfDamping hbar damping := by
   unfold scatteringRateOfDamping
-  field_simp [hhbar] <;> ring
+  field_simp [hhbar]
 
 /-- Equivalent lifetime convention, stated without model-specific nonvanishing assumptions. -/
 theorem damping_eq_hbar_div_two_lifetime (hbar damping : ℝ) (hhbar : hbar ≠ 0) :
@@ -49,7 +49,7 @@ theorem damping_eq_hbar_div_two_lifetime (hbar damping : ℝ) (hhbar : hbar ≠ 
   by_cases hdamping : damping = 0
   · simp [hdamping, lifetimeOfDamping, scatteringRateOfDamping]
   · unfold lifetimeOfDamping scatteringRateOfDamping
-    field_simp [hhbar, hdamping] <;> ring
+    field_simp [hhbar, hdamping]
 
 /-- For the scalar damped-pole ansatz, squaring the amplitude doubles the exponent.
 This proves the rate convention for that ansatz, not exponential decay for a general Hamiltonian. -/
