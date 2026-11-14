@@ -90,7 +90,7 @@ theorem norm_configurationGreen_fluctuation_sub_firstDyson_le
   have hAavg : ensemble.average A = 0 := by
     have hfactor :
         ensemble.average A = G₀ * ensemble.average V * G₀ := by
-      simpa only [A] using
+      simpa using
         (ensemble.map_average
           ((ContinuousLinearMap.mulLeftRight ℂ (H →L[ℂ] H)) G₀ G₀).toLinearMap
           V).symm
