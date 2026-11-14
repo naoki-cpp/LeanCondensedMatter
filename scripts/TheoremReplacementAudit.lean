@@ -134,10 +134,13 @@ private def independentMathlibTarget (target : PreparedCandidate) : Bool :=
 
 /-- Name-prefix matches yield a bounded search outside the target's existing proof dependencies.
 This is a discovery heuristic, not a proof of theorem equivalence. -/
+private def shortDeclarationName (name : Name) : String :=
+  (name.toString.splitOn ".").getLast!
+
 private def independentMathlibNameMatch
     (target source : PreparedCandidate) : Bool :=
-  let targetName := target.candidate.name.getString!
-  let sourceName := source.candidate.name.getString!
+  let targetName := shortDeclarationName target.candidate.name
+  let sourceName := shortDeclarationName source.candidate.name
   sourceName.length >= 10 &&
     (targetName == sourceName || targetName.startsWith (sourceName ++ "_"))
 
@@ -151,7 +154,7 @@ private def mathlibByResultHead : CommandElabM (NameMap (Array PreparedCandidate
     if privateDeclarationName? declName || extensionTheoremName? declName then continue
     let candidate := prepareCandidate { name := declName, moduleName, theoremInfo }
     let some head := candidate.resultHead | continue
-    if candidate.candidate.name.getString!.length < 10 then continue
+    if (shortDeclarationName candidate.candidate.name).length < 10 then continue
     let group := (groups.find? head).getD #[]
     groups := groups.insert head (group.push candidate)
   return groups
