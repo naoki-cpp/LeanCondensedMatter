@@ -95,7 +95,8 @@ theorem norm_exactBornRemainder_le_thirdNormMoment
           ‖G₀‖ * ‖V ω‖ * ‖G₀‖ * ‖V ω‖ * ‖G ω‖ * ‖V ω‖ * ‖G₀‖ := by
             exact norm_mul_seven_le G₀ (V ω) G₀ (V ω) (G ω) (V ω) G₀
       _ ≤ B * ‖V ω‖ * B * ‖V ω‖ * B * ‖V ω‖ * B := by
-        gcongr <;> first | exact hfree | exact hconfig ω
+        gcongr
+        exact hconfig ω
       _ = B ^ 4 * ‖V ω‖ ^ 3 := by ring
   change ‖ensemble.average remainder‖ ≤ B ^ 4 *
     (∑ ω, ensemble.probability ω * ‖V ω‖ ^ 3)
