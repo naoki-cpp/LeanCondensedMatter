@@ -1,4 +1,6 @@
-import LeanCondensedMatter.Transport.Analysis.BesselFormalEntireEvaluation
+import LeanCondensedMatter.Analysis.PowerSeries.CoefficientSum
+import LeanCondensedMatter.Transport.Analysis.BesselJFormalAnalyticBridge
+import LeanCondensedMatter.Transport.Analysis.BesselYFormalAnalyticBridge
 import LeanCondensedMatter.Transport.Analysis.BesselCrossedXMoment
 
 set_option linter.style.header false
@@ -44,63 +46,63 @@ theorem besselY0Y1_harmonicIdentity (z : ℂ) :
       PowerSeries.coeff n besselFormalH1 * x ^ n) :=
     summable_besselFormalH1_eval z
   have h2D :=
-    summable_besselEntireCoefficientEval_two_mul
+    PowerSeries.summable_coefficientSum_two_mul
       (PowerSeries.derivative besselFormalJ0) x hD
   have h2DB :=
-    summable_besselEntireCoefficientEval_mul
+    PowerSeries.summable_coefficientSum_mul
       (2 * PowerSeries.derivative besselFormalJ0) besselFormalH0 x h2D hB
   have hAC :=
-    summable_besselEntireCoefficientEval_mul
+    PowerSeries.summable_coefficientSum_mul
       besselFormalJ0 besselFormalH1 x hA hC
   have hX2DB :=
-    summable_besselEntireCoefficientEval_X_mul
+    PowerSeries.summable_coefficientSum_X_mul
       (2 * PowerSeries.derivative besselFormalJ0 * besselFormalH0) x h2DB
   have hXAC :=
-    summable_besselEntireCoefficientEval_X_mul
+    PowerSeries.summable_coefficientSum_X_mul
       (besselFormalJ0 * besselFormalH1) x hAC
   have hAplus :=
-    summable_besselEntireCoefficientEval_add besselFormalJ0
+    PowerSeries.summable_coefficientSum_add besselFormalJ0
       (PowerSeries.X * (2 * PowerSeries.derivative besselFormalJ0 *
         besselFormalH0)) x hA hX2DB
   have hFormal := congrArg
-    (fun f : ℂ⟦X⟧ => besselEntireCoefficientEval f x)
+    (fun f : ℂ⟦X⟧ => PowerSeries.coefficientSum f x)
     besselFormalJ0H0H1_harmonicIdentity
-  rw [besselEntireCoefficientEval_sub _ _ x hAplus hXAC,
-      besselEntireCoefficientEval_add _ _ x hA hX2DB,
-      besselEntireCoefficientEval_X_mul _ x h2DB,
-      besselEntireCoefficientEval_X_mul _ x hAC,
-      besselEntireCoefficientEval_mul _ _ x h2D hB,
-      besselEntireCoefficientEval_mul _ _ x hA hC,
-      besselEntireCoefficientEval_two_mul _ x hD,
-      besselEntireCoefficientEval_one] at hFormal
+  rw [PowerSeries.coefficientSum_sub _ _ x hAplus hXAC,
+      PowerSeries.coefficientSum_add _ _ x hA hX2DB,
+      PowerSeries.coefficientSum_X_mul _ x h2DB,
+      PowerSeries.coefficientSum_X_mul _ x hAC,
+      PowerSeries.coefficientSum_mul _ _ x h2D hB,
+      PowerSeries.coefficientSum_mul _ _ x hA hC,
+      PowerSeries.coefficientSum_two_mul _ x hD,
+      PowerSeries.coefficientSum_one] at hFormal
   have hJ0 :
-      besselEntireCoefficientEval besselFormalJ0 x =
+      PowerSeries.coefficientSum besselFormalJ0 x =
         Complex.besselJ 0 z :=
     (besselJZero_eq_formalTsum z).symm
   have hJ1 :
       (z / 2) *
-          besselEntireCoefficientEval
+          PowerSeries.coefficientSum
             (PowerSeries.derivative besselFormalJ0) x =
         Complex.besselJ 1 z :=
     (besselJOne_eq_formalDerivativeTsum z).symm
   have hY0 :
-      besselEntireCoefficientEval besselFormalH0 x =
+      PowerSeries.coefficientSum besselFormalH0 x =
         besselY0HarmonicCorrection z :=
     (besselY0HarmonicCorrection_eq_formalTsum z).symm
   have hY1 :
-      besselEntireCoefficientEval besselFormalH1 x =
+      PowerSeries.coefficientSum besselFormalH1 x =
         besselY1HarmonicCorrection z :=
     (besselY1HarmonicCorrection_eq_formalTsum z).symm
   calc
     Complex.besselJ 0 z -
         z * Complex.besselJ 1 z * besselY0HarmonicCorrection z +
         (z ^ 2 / 4) * Complex.besselJ 0 z * besselY1HarmonicCorrection z =
-      besselEntireCoefficientEval besselFormalJ0 x +
-        x * (2 * besselEntireCoefficientEval
+      PowerSeries.coefficientSum besselFormalJ0 x +
+        x * (2 * PowerSeries.coefficientSum
           (PowerSeries.derivative besselFormalJ0) x *
-          besselEntireCoefficientEval besselFormalH0 x) -
-        x * (besselEntireCoefficientEval besselFormalJ0 x *
-          besselEntireCoefficientEval besselFormalH1 x) := by
+          PowerSeries.coefficientSum besselFormalH0 x) -
+        x * (PowerSeries.coefficientSum besselFormalJ0 x *
+          PowerSeries.coefficientSum besselFormalH1 x) := by
         rw [← hJ0, ← hJ1, ← hY0, ← hY1]
         dsimp [x]
         ring

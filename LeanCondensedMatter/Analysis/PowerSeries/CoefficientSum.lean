@@ -1,7 +1,9 @@
-import LeanCondensedMatter.Transport.Analysis.BesselJFormalAnalyticBridge
-import LeanCondensedMatter.Transport.Analysis.BesselYFormalAnalyticBridge
+import Mathlib.Analysis.Complex.Basic
+import Mathlib.RingTheory.PowerSeries.Basic
 import Mathlib.Analysis.Normed.Ring.InfiniteSum
 import Mathlib.Analysis.Normed.Module.FiniteDimension
+import Mathlib.Tactic.Convert
+import Mathlib.Tactic.Ring
 
 set_option linter.style.header false
 
@@ -16,43 +18,49 @@ that Mathlib's topologically nilpotent `PowerSeries.eval₂` can be used
 at an arbitrary complex value.
 -/
 
-namespace QuantumTheory.Transport
+namespace PowerSeries
 
 noncomputable section
 
-open scoped PowerSeries
+open scoped BigOperators PowerSeries
 
 /-- The coefficientwise infinite sum. This is only used with an explicit
-`Summable` witness; it is not a global power-series evaluation map. -/
-noncomputable def besselEntireCoefficientEval (f : ℂ⟦X⟧) (x : ℂ) : ℂ :=
+`Summable` witness for algebraic laws; the total infinite sum alone does not assert convergence. -/
+noncomputable def coefficientSum (f : ℂ⟦X⟧) (x : ℂ) : ℂ :=
   ∑' n : ℕ, PowerSeries.coeff n f * x ^ n
+
+private theorem coeff_mul_mul_pow (f g : ℂ⟦X⟧) (x : ℂ) (n : ℕ) :
+    PowerSeries.coeff n (f * g) * x ^ n =
+      ∑ p ∈ Finset.antidiagonal n,
+        (PowerSeries.coeff p.1 f * x ^ p.1) *
+          (PowerSeries.coeff p.2 g * x ^ p.2) := by
+  rw [PowerSeries.coeff_mul, Finset.sum_mul]
+  apply Finset.sum_congr rfl
+  intro p hp
+  rw [← Finset.mem_antidiagonal.mp hp, pow_add]
+  ring
 
 /-- An absolutely convergent pair of coefficientwise series admits
 Cauchy multiplication, with the product coefficients coming from the
 *formal* power-series multiplication in ℂ⟦X⟧. -/
-theorem besselEntireCoefficientEval_mul (f g : ℂ⟦X⟧) (x : ℂ)
+theorem coefficientSum_mul (f g : ℂ⟦X⟧) (x : ℂ)
     (hf : Summable (fun n : ℕ => PowerSeries.coeff n f * x ^ n))
     (hg : Summable (fun n : ℕ => PowerSeries.coeff n g * x ^ n)) :
-    besselEntireCoefficientEval (f * g) x =
-      besselEntireCoefficientEval f x * besselEntireCoefficientEval g x := by
-  unfold besselEntireCoefficientEval
+    coefficientSum (f * g) x =
+      coefficientSum f x * coefficientSum g x := by
+  unfold coefficientSum
   rw [tsum_mul_tsum_eq_tsum_sum_antidiagonal_of_summable_norm hf.norm hg.norm]
   apply tsum_congr
   intro n
-  rw [PowerSeries.coeff_mul, Finset.sum_mul]
-  apply Finset.sum_congr rfl
-  intro p hp
-  have hp' : p.1 + p.2 = n := Finset.mem_antidiagonal.mp hp
-  rw [← hp', pow_add]
-  ring
+  exact coeff_mul_mul_pow f g x n
 
-/-- Transport of addition, requiring both terms to be summable. -/
-theorem besselEntireCoefficientEval_add (f g : ℂ⟦X⟧) (x : ℂ)
+/-- Addition commutes with coefficientwise evaluation when both terms are summable. -/
+theorem coefficientSum_add (f g : ℂ⟦X⟧) (x : ℂ)
     (hf : Summable (fun n : ℕ => PowerSeries.coeff n f * x ^ n))
     (hg : Summable (fun n : ℕ => PowerSeries.coeff n g * x ^ n)) :
-    besselEntireCoefficientEval (f + g) x =
-      besselEntireCoefficientEval f x + besselEntireCoefficientEval g x := by
-  unfold besselEntireCoefficientEval
+    coefficientSum (f + g) x =
+      coefficientSum f x + coefficientSum g x := by
+  unfold coefficientSum
   calc
     (∑' n : ℕ, PowerSeries.coeff n (f + g) * x ^ n) =
         ∑' n : ℕ,
@@ -63,13 +71,13 @@ theorem besselEntireCoefficientEval_add (f g : ℂ⟦X⟧) (x : ℂ)
       ring
     _ = _ := hf.tsum_add hg
 
-/-- Transport of subtraction, requiring both terms to be summable. -/
-theorem besselEntireCoefficientEval_sub (f g : ℂ⟦X⟧) (x : ℂ)
+/-- Subtraction commutes with coefficientwise evaluation when both terms are summable. -/
+theorem coefficientSum_sub (f g : ℂ⟦X⟧) (x : ℂ)
     (hf : Summable (fun n : ℕ => PowerSeries.coeff n f * x ^ n))
     (hg : Summable (fun n : ℕ => PowerSeries.coeff n g * x ^ n)) :
-    besselEntireCoefficientEval (f - g) x =
-      besselEntireCoefficientEval f x - besselEntireCoefficientEval g x := by
-  unfold besselEntireCoefficientEval
+    coefficientSum (f - g) x =
+      coefficientSum f x - coefficientSum g x := by
+  unfold coefficientSum
   calc
     (∑' n : ℕ, PowerSeries.coeff n (f - g) * x ^ n) =
         ∑' n : ℕ,
@@ -83,7 +91,7 @@ theorem besselEntireCoefficientEval_sub (f g : ℂ⟦X⟧) (x : ℂ)
 /-- Cauchy convolution is itself summable when the two coefficientwise
 series are absolutely summable. This makes multiplication composable with
 addition and multiplication by X. -/
-theorem summable_besselEntireCoefficientEval_mul (f g : ℂ⟦X⟧) (x : ℂ)
+theorem summable_coefficientSum_mul (f g : ℂ⟦X⟧) (x : ℂ)
     (hf : Summable (fun n : ℕ => PowerSeries.coeff n f * x ^ n))
     (hg : Summable (fun n : ℕ => PowerSeries.coeff n g * x ^ n)) :
     Summable (fun n : ℕ => PowerSeries.coeff n (f * g) * x ^ n) := by
@@ -95,14 +103,10 @@ theorem summable_besselEntireCoefficientEval_mul (f g : ℂ⟦X⟧) (x : ℂ)
     (summable_norm_sum_mul_antidiagonal_of_summable_norm hf.norm hg.norm).of_norm
   convert hs using 1
   funext n
-  rw [PowerSeries.coeff_mul, Finset.sum_mul]
-  apply Finset.sum_congr rfl
-  intro p hp
-  rw [← Finset.mem_antidiagonal.mp hp, pow_add]
-  ring
+  exact coeff_mul_mul_pow f g x n
 
 /-- Addition preserves summable coefficientwise complex evaluation. -/
-theorem summable_besselEntireCoefficientEval_add (f g : ℂ⟦X⟧) (x : ℂ)
+theorem summable_coefficientSum_add (f g : ℂ⟦X⟧) (x : ℂ)
     (hf : Summable (fun n : ℕ => PowerSeries.coeff n f * x ^ n))
     (hg : Summable (fun n : ℕ => PowerSeries.coeff n g * x ^ n)) :
     Summable (fun n : ℕ => PowerSeries.coeff n (f + g) * x ^ n) := by
@@ -112,7 +116,7 @@ theorem summable_besselEntireCoefficientEval_add (f g : ℂ⟦X⟧) (x : ℂ)
   ring
 
 /-- Scaling a formal series by two preserves convergence. -/
-theorem summable_besselEntireCoefficientEval_two_mul (f : ℂ⟦X⟧) (x : ℂ)
+theorem summable_coefficientSum_two_mul (f : ℂ⟦X⟧) (x : ℂ)
     (hf : Summable (fun n : ℕ => PowerSeries.coeff n f * x ^ n)) :
     Summable (fun n : ℕ => PowerSeries.coeff n (2 * f) * x ^ n) := by
   convert hf.mul_left (2 : ℂ) using 1
@@ -121,11 +125,11 @@ theorem summable_besselEntireCoefficientEval_two_mul (f : ℂ⟦X⟧) (x : ℂ)
   ring
 
 /-- Scaling a formal series by two commutes with convergent evaluation. -/
-theorem besselEntireCoefficientEval_two_mul (f : ℂ⟦X⟧) (x : ℂ)
+theorem coefficientSum_two_mul (f : ℂ⟦X⟧) (x : ℂ)
     (hf : Summable (fun n : ℕ => PowerSeries.coeff n f * x ^ n)) :
-    besselEntireCoefficientEval (2 * f) x =
-      2 * besselEntireCoefficientEval f x := by
-  unfold besselEntireCoefficientEval
+    coefficientSum (2 * f) x =
+      2 * coefficientSum f x := by
+  unfold coefficientSum
   calc
     (∑' n : ℕ, PowerSeries.coeff n (2 * f) * x ^ n) =
         ∑' n : ℕ, (2 : ℂ) * (PowerSeries.coeff n f * x ^ n) := by
@@ -138,7 +142,7 @@ theorem besselEntireCoefficientEval_two_mul (f : ℂ⟦X⟧) (x : ℂ)
 
 /-- Formal multiplication by X shifts a summable coefficient sequence
 and therefore preserves convergence at the chosen complex argument. -/
-theorem summable_besselEntireCoefficientEval_X_mul (f : ℂ⟦X⟧) (x : ℂ)
+theorem summable_coefficientSum_X_mul (f : ℂ⟦X⟧) (x : ℂ)
     (hf : Summable (fun n : ℕ => PowerSeries.coeff n f * x ^ n)) :
     Summable (fun n : ℕ =>
       PowerSeries.coeff n (PowerSeries.X * f) * x ^ n) := by
@@ -154,12 +158,12 @@ theorem summable_besselEntireCoefficientEval_X_mul (f : ℂ⟦X⟧) (x : ℂ)
 
 /-- The formal product by X is compatible with coefficientwise evaluation
 at any complex argument whenever the original series is summable. -/
-theorem besselEntireCoefficientEval_X_mul (f : ℂ⟦X⟧) (x : ℂ)
+theorem coefficientSum_X_mul (f : ℂ⟦X⟧) (x : ℂ)
     (hf : Summable (fun n : ℕ => PowerSeries.coeff n f * x ^ n)) :
-    besselEntireCoefficientEval (PowerSeries.X * f) x =
-      x * besselEntireCoefficientEval f x := by
-  have hall := summable_besselEntireCoefficientEval_X_mul f x hf
-  unfold besselEntireCoefficientEval
+    coefficientSum (PowerSeries.X * f) x =
+      x * coefficientSum f x := by
+  have hall := summable_coefficientSum_X_mul f x hf
+  unfold coefficientSum
   rw [hall.tsum_eq_zero_add]
   simp only [PowerSeries.coeff_zero_X_mul, zero_mul, zero_add]
   calc
@@ -174,10 +178,10 @@ theorem besselEntireCoefficientEval_X_mul (f : ℂ⟦X⟧) (x : ℂ)
       hf.tsum_mul_left x
 
 /-- The unit formal power series evaluates to one. -/
-theorem besselEntireCoefficientEval_one (x : ℂ) :
-    besselEntireCoefficientEval (1 : ℂ⟦X⟧) x = 1 := by
-  simp [besselEntireCoefficientEval, PowerSeries.coeff_one]
+theorem coefficientSum_one (x : ℂ) :
+    coefficientSum (1 : ℂ⟦X⟧) x = 1 := by
+  simp [coefficientSum, PowerSeries.coeff_one]
 
 end
 
-end QuantumTheory.Transport
+end PowerSeries

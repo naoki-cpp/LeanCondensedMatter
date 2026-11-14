@@ -402,6 +402,13 @@ not expose a second trace representation to downstream consumers.
 The canonical top-level owner of all three concrete benchmark families is `Models`;
 `Transport` contains only reusable model-independent theory.
 
+The coefficientwise complex infinite sum and its summable algebraic laws belong to
+`Analysis.PowerSeries.CoefficientSum`. The pinned Mathlib provides the underlying norm-summable
+Cauchy-product theorems; its `PowerSeries.eval₂` requires topological nilpotence through `HasEval`,
+so it does not replace coefficientwise evaluation at arbitrary complex arguments under explicit
+summability hypotheses. The Bessel analytic Wronskian consumes these generic laws alongside the
+Bessel J/Y formal-to-analytic bridges; the generic module imports neither bridge.
+
 ## Import boundaries
 
 - generic Transport must not import `LeanCondensedMatter.SecondQuantization`;
