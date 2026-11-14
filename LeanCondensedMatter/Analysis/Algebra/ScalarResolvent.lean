@@ -36,6 +36,6 @@ theorem mul_div_real_gap_im (a b : ℂ) (gap : ℝ) (hgap : gap ≠ 0) :
       ((gap : ℂ)⁻¹) ^ 2 * (a * b) by
     simp only [div_eq_mul_inv]
     ring, inv_real_gap_sq_mul_im]
-  field_simp [hgap] <;> ring
+  field_simp [hgap]
 
 end Algebra
