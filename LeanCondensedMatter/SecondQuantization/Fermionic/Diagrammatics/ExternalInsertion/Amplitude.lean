@@ -181,7 +181,7 @@ theorem ExternalInsertionWickDiagram.slotCongr_fixedTimeAmplitude_eq_of_injectiv
     (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
     (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ)
     (hσ : Function.Injective σ) :
-    (d.slotCongr e).fixedTimeAmplitude ε β g externalTime
+    ExternalInsertionWickDiagram.fixedTimeAmplitude (d.slotCongr e) ε β g externalTime
         (σ ∘ fun v => (e.symm ⟨v, Finset.mem_univ v⟩).1) =
       d.fixedTimeAmplitude ε β g externalTime σ := by
   simp only [ExternalInsertionWickDiagram.fixedTimeAmplitude,
@@ -204,7 +204,7 @@ theorem ExternalInsertionWickDiagram.slotCongr_dysonFixedTimeAmplitude_eq_of_inj
     (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
     (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ)
     (hσ : Function.Injective σ) :
-    (d.slotCongr e).dysonFixedTimeAmplitude ε β g externalTime
+    ExternalInsertionWickDiagram.dysonFixedTimeAmplitude (d.slotCongr e) ε β g externalTime
         (σ ∘ fun v => (e.symm ⟨v, Finset.mem_univ v⟩).1) =
       d.dysonFixedTimeAmplitude ε β g externalTime σ := by
   simp only [ExternalInsertionWickDiagram.dysonFixedTimeAmplitude,
