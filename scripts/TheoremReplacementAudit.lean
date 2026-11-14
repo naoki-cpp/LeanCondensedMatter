@@ -132,11 +132,11 @@ private def independentMathlibTarget (target : PreparedCandidate) : Bool :=
   moduleName.startsWith "LeanCondensedMatter.Analysis" ||
     moduleName.startsWith "LeanCondensedMatter.Combinatorics"
 
-/-- Name-prefix matches yield a bounded search outside the target's existing proof dependencies.
-This is a discovery heuristic, not a proof of theorem equivalence. -/
 private def shortDeclarationName (name : Name) : String :=
   (name.toString.splitOn ".").getLast!
 
+/-- Name-prefix matches yield a bounded search outside the target's existing proof dependencies.
+This is a discovery heuristic, not a proof of theorem equivalence. -/
 private def independentMathlibNameMatch
     (target source : PreparedCandidate) : Bool :=
   let targetName := shortDeclarationName target.candidate.name
@@ -177,7 +177,7 @@ private def mathlibByResultHead
 private def independentMathlibCandidates
     (groups : NameMap (Array PreparedCandidate)) (target : PreparedCandidate)
     (proofDependencies : Array Name) : Array PreparedCandidate :=
-  if !independentMathlibTarget target then #[]
+  if !(independentMathlibTarget target) then #[]
   else
     match target.resultHead with
     | none => #[]
