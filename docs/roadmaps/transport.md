@@ -97,8 +97,11 @@ closure/truncation API are maintained.
 for independently supplied signed regulators and an arbitrary bounded insertion `J`.
 The connected term is a disorder covariance, not a diffuson, non-crossing vertex correction,
 or an assertion that a supplied Born/SCBA ladder equals the exact connected response.
-The full conductivity bridge additionally requires a current/trace/contact specialization and
-explicit physical normalization.
+`Disorder.TraceBridge` now proves that finite-ensemble averaging commutes with the ordinary
+finite-dimensional operator trace and connects the exact two-Green insertion to the canonical
+`twoGreenVertexTraceKernel`. This establishes the exact RA (or other two-regulator) trace
+identity, not a full conductivity formula. Contact/same-side/sea response, physical normalization,
+and controlled limits remain separate.
 
 The explicit massive-Dirac clean Green operator, its angular/radial reduction, common continuum Born
 denominator, polar-integral bridge, and finite-cutoff continuum Born self-energy use the same
@@ -166,8 +169,9 @@ not public APIs. Convergence and Ward identities are separate targets.
 - trace per unit volume and controlled thermodynamic limits;
 - justified DC and zero-broadening limits;
 - convergence-aware SCBA/ladder results where needed;
-- exact two-Green connected insertion to diagrammatic non-crossing / diffuson and Kubo vertex
-  channels, with explicit approximation hypotheses and charge-conservation constraints;
+- exact two-Green connected insertion to diagrammatic non-crossing / diffuson and full Kubo
+  response channels, with explicit approximation hypotheses, charge-conservation constraints,
+  and same-side/sea/contact terms;
 - crossed-diagram, weak-localization, skew-scattering, and side-jump extensions;
 - unbounded Hamiltonian/current/position operators and gauge-equivalence results.
 
