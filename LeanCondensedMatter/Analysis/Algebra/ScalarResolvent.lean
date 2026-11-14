@@ -23,7 +23,7 @@ theorem scalarResolvent_gap_mul_inverse_product
 theorem inv_real_gap_sq_mul_im (gap : ℝ) (z : ℂ) (hgap : gap ≠ 0) :
     (((gap : ℂ)⁻¹) ^ 2 * z).im = z.im / gap ^ 2 := by
   have hcoeff :
-      (((gap : ℂ)⁻¹) ^ 2 = ((gap⁻¹ ^ 2 : ℝ) : ℂ) := by
+      ((gap : ℂ)⁻¹) ^ 2 = ((gap⁻¹ ^ 2 : ℝ) : ℂ) := by
     rw [← Complex.ofReal_inv, ← Complex.ofReal_pow]
   rw [hcoeff]
   simp only [Complex.mul_im, Complex.ofReal_re, Complex.ofReal_im, zero_mul]
