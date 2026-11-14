@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Transport.Disorder.TraceNormBound
+import Mathlib.Tactic.Abel
 import Mathlib.Tactic.Ring
 
 set_option linter.style.header false
@@ -93,8 +94,22 @@ theorem norm_averagedTwoGreenTrace_sub_dressed_le_residuals
     calc
       ‖a + b + c‖ ≤ ‖a + b‖ + ‖c‖ := norm_add_le _ _
       _ ≤ (‖a‖ + ‖b‖) + ‖c‖ :=
-        add_le_add_right (norm_add_le a b) _
+        add_le_add (norm_add_le a b) le_rfl
+  have hgroup :
+      a + b + conn -
+        suppliedLeftGreen * (dressedSourceVertex - bareSourceVertex) * suppliedRightGreen =
+      a + b + c := by
+    dsimp only [c]
+    abel
   rw [ensemble.averagedTwoGreenVertexTraceKernelOfRegulators_sub_dressed_eq]
+  change ‖trace (measuredVertex *
+    (a + b + conn -
+      suppliedLeftGreen * (dressedSourceVertex - bareSourceVertex) * suppliedRightGreen))‖ ≤
+    ((Module.finrank ℂ H : ℝ) * ‖measuredVertex‖) *
+      (‖meanL - suppliedLeftGreen‖ * ‖bareSourceVertex‖ * |regulatorRight|⁻¹ +
+        ‖suppliedLeftGreen‖ * ‖bareSourceVertex‖ *
+          ‖meanR - suppliedRightGreen‖ + ‖c‖)
+  rw [hgroup]
   change ‖trace (measuredVertex * (a + b + c))‖ ≤
     ((Module.finrank ℂ H : ℝ) * ‖measuredVertex‖) *
       (‖meanL - suppliedLeftGreen‖ * ‖bareSourceVertex‖ * |regulatorRight|⁻¹ +
