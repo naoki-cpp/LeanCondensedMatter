@@ -267,6 +267,28 @@ theorem tendsto_interbandBastinPoleIntegral_re
   rw [hlimit] at h
   exact h
 
+/-- Transport a universal isolated-pole real-part limit to any pair representation that
+agrees with it at positive broadening, after identifying the regular imaginary weight. -/
+theorem tendsto_interbandBastinPoleIntegral_re_of_eq_on_pos
+    (gap : ℝ) (forward reverse : ℂ) (radius weight : ℝ) (pair : ℝ → ℂ)
+    (hradiusPos : 0 < radius) (hradius : radius < |gap|)
+    (hpair : ∀ broadening : ℝ, 0 < broadening →
+      pair broadening =
+        interbandBastinPoleIntegral gap forward reverse radius broadening)
+    (hIm : (interbandPoleRegularFactor gap forward reverse (0, 0)).im = -weight) :
+    Tendsto
+      (fun broadening : ℝ => (pair broadening).re)
+      (nhdsWithin 0 (Set.Ioi 0))
+      (nhds (-2 * Real.pi * weight)) := by
+  have hgeneric :=
+    tendsto_interbandBastinPoleIntegral_re gap forward reverse radius hradiusPos hradius
+  rw [hIm] at hgeneric
+  have hlimit : 2 * Real.pi * -weight = -2 * Real.pi * weight := by ring
+  rw [hlimit] at hgeneric
+  refine hgeneric.congr' ?_
+  filter_upwards [self_mem_nhdsWithin] with broadening hbroadening
+  exact congrArg Complex.re (hpair broadening hbroadening).symm
+
 end
 end Transport
 end QuantumTheory
