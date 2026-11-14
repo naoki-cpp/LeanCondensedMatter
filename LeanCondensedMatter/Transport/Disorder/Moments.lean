@@ -103,7 +103,10 @@ theorem exactSecondMoment_star
     ensemble.exactSecondMoment (star kernel) =
       star (ensemble.exactSecondMoment kernel) := by
   rw [exactSecondMoment_eq_average, exactSecondMoment_eq_average]
-  unfold average
+  change (∑ ω, (ensemble.probability ω : ℂ) •
+      ((ensemble.impurityPotential ω).1 * star kernel * (ensemble.impurityPotential ω).1)) =
+    star (∑ ω, (ensemble.probability ω : ℂ) •
+      ((ensemble.impurityPotential ω).1 * kernel * (ensemble.impurityPotential ω).1))
   rw [star_sum]
   apply Finset.sum_congr rfl
   intro ω _
@@ -118,7 +121,10 @@ theorem exactSecondMoment_mul_of_commutes
       ensemble.exactSecondMoment (kernel * right) := by
   rw [ensemble.exactSecondMoment_eq_average,
     ensemble.exactSecondMoment_eq_average]
-  unfold average
+  change (∑ ω, (ensemble.probability ω : ℂ) •
+      ((ensemble.impurityPotential ω).1 * kernel * (ensemble.impurityPotential ω).1)) * right =
+    ∑ ω, (ensemble.probability ω : ℂ) •
+      ((ensemble.impurityPotential ω).1 * (kernel * right) * (ensemble.impurityPotential ω).1)
   rw [Finset.sum_mul]
   apply Finset.sum_congr rfl
   intro ω _
@@ -137,7 +143,10 @@ theorem mul_exactSecondMoment_of_commutes
       ensemble.exactSecondMoment (left * kernel) := by
   rw [ensemble.exactSecondMoment_eq_average,
     ensemble.exactSecondMoment_eq_average]
-  unfold average
+  change left * (∑ ω, (ensemble.probability ω : ℂ) •
+      ((ensemble.impurityPotential ω).1 * kernel * (ensemble.impurityPotential ω).1)) =
+    ∑ ω, (ensemble.probability ω : ℂ) •
+      ((ensemble.impurityPotential ω).1 * (left * kernel) * (ensemble.impurityPotential ω).1)
   rw [Finset.mul_sum]
   apply Finset.sum_congr rfl
   intro ω _
