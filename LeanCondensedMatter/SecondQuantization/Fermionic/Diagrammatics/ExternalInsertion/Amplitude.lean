@@ -168,5 +168,47 @@ noncomputable def ExternalInsertionWickDiagram.dysonFixedTimeAmplitude {E n : �
     (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ) : ℂ :=
   (-1 : ℂ) ^ n * d.fixedTimeAmplitude ε β g externalTime σ
 
+
+/-- The complete fixed-time physical Wick diagram amplitude, including
+its fermionic ordering sign, interaction coupling product, and oriented
+free-Gibbs pairing evaluation, is invariant under any permutation of
+quartic interaction vertices and their time/label assignments, provided
+the interaction times are injective. -/
+theorem ExternalInsertionWickDiagram.slotCongr_fixedTimeAmplitude_eq_of_injective
+    {E n : ℕ} (d : ExternalInsertionWickDiagram Mode E n)
+    (e : ↥(Finset.univ : Finset (Fin n)) ≃
+      ↥(Finset.univ : Finset (Fin n)))
+    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
+    (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ)
+    (hσ : Function.Injective σ) :
+    (d.slotCongr e).fixedTimeAmplitude ε β g externalTime
+        (σ ∘ fun v => (e.symm ⟨v, Finset.mem_univ v⟩).1) =
+      d.fixedTimeAmplitude ε β g externalTime σ := by
+  simp only [ExternalInsertionWickDiagram.fixedTimeAmplitude,
+    externalInsertionMixedAtomicOrderSign_slotCongr_of_injective e externalTime σ hσ,
+    d.slotCongr_vertexWeight e g,
+    d.slotCongr_mixedPairingValue_eq_of_injective e ε β externalTime σ hσ]
+
+/-- **Full physical Dyson-signed fixed-time amplitude covariance.**
+On every strict interaction-time chamber, arbitrary relabeling of
+quartic interaction vertices has no effect on the physical amplitude;
+the same Dyson factor `(-1)^n` multiplies both sides.
+
+No equality at coincident interaction-vertex times is asserted. Such
+collisions are excluded by the strict ordered-simplex congruence
+theorem when passing to integrated Dyson contributions. -/
+theorem ExternalInsertionWickDiagram.slotCongr_dysonFixedTimeAmplitude_eq_of_injective
+    {E n : ℕ} (d : ExternalInsertionWickDiagram Mode E n)
+    (e : ↥(Finset.univ : Finset (Fin n)) ≃
+      ↥(Finset.univ : Finset (Fin n)))
+    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
+    (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ)
+    (hσ : Function.Injective σ) :
+    (d.slotCongr e).dysonFixedTimeAmplitude ε β g externalTime
+        (σ ∘ fun v => (e.symm ⟨v, Finset.mem_univ v⟩).1) =
+      d.dysonFixedTimeAmplitude ε β g externalTime σ := by
+  simp only [ExternalInsertionWickDiagram.dysonFixedTimeAmplitude,
+    d.slotCongr_fixedTimeAmplitude_eq_of_injective e ε β g externalTime σ hσ]
+
 end Fermionic
 end SecondQuantization
