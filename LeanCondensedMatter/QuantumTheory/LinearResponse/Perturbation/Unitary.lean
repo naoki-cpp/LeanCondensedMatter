@@ -1,5 +1,6 @@
 import LeanCondensedMatter.Analysis.Dyson.Unitary
-import LeanCondensedMatter.QuantumTheory.LinearResponse.Response.KuboFormula
+import LeanCondensedMatter.QuantumTheory.LinearResponse.Perturbation.Observable
+import LeanCondensedMatter.QuantumTheory.LinearResponse.Expectation.Basic
 
 set_option linter.style.header false
 
