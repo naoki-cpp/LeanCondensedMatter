@@ -36,14 +36,13 @@ theorem quarticVertexBlockPermutation_sign_eq_one
       p.prodCongr (Equiv.refl (Fin 4)) =
         swap.permCongr (Equiv.prodCongrRight (fun _ : Fin 4 => p)) := by
     ext ⟨v, l⟩
-    simp [swap, Equiv.Perm.permCongr, Equiv.prodCongrRight]
+    simp [swap, Equiv.permCongr, Equiv.prodCongrRight]
   rw [hperm, Equiv.Perm.sign_permCongr, Equiv.Perm.sign_prodCongrRight]
   simp only [Finset.prod_const, Finset.card_univ, Fintype.card_fin]
   calc
     (Equiv.Perm.sign p) ^ 4 =
         ((Equiv.Perm.sign p) ^ 2) ^ 2 := by
           rw [← pow_mul]
-          norm_num
     _ = 1 := by simp
 
 /-- The actual flattened-leg transport of an arbitrary external-insertion
