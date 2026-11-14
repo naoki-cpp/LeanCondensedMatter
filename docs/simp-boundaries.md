@@ -253,6 +253,7 @@ Finite-mode field and rank-one lifting computations have canonical normal forms:
 The following current simp boundaries are Green:
 
 - all current simp rules in `Resolvent/Basic`
+- `FiniteDisorderEnsemble.average_const` — a normalized average of a constant family reduces to its value.
 - `ConductivityTensor.hallComponent_self`
 - `StaticStredaResponseMatrix.fermiSea_self`
 - `energySq_neg_momentum`

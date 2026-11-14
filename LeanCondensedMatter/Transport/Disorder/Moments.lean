@@ -36,11 +36,9 @@ bounded complex-linear map on bounded operators. This is exact finite-ensemble d
 Born or self-consistency approximation. -/
 noncomputable def exactSecondMomentCLM :
     (H →L[ℂ] H) →L[ℂ] (H →L[ℂ] H) :=
-  ∑ ω,
-    (ensemble.probability ω : ℂ) •
-      ((ContinuousLinearMap.mulLeftRight ℂ (H →L[ℂ] H))
-        (ensemble.impurityPotential ω).1
-        (ensemble.impurityPotential ω).1)
+  ensemble.average (fun ω =>
+    (ContinuousLinearMap.mulLeftRight ℂ (H →L[ℂ] H))
+      (ensemble.impurityPotential ω).1 (ensemble.impurityPotential ω).1)
 
 /-- Exact normalized finite second moment `E[Vω X Vω]` of one bounded operator `X`. -/
 noncomputable def exactSecondMoment
@@ -49,17 +47,16 @@ noncomputable def exactSecondMoment
 
 /-- Weighted second moment `E[uω²]` of a supplied real scalar impurity amplitude. -/
 noncomputable def scalarSecondMomentStrength (amplitude : Ω → ℝ) : ℂ :=
-  ∑ ω, (ensemble.probability ω : ℂ) * (amplitude ω : ℂ) ^ 2
+  ensemble.average (fun ω => (amplitude ω : ℂ) ^ 2)
 
 /-- The canonical exact second moment is the normalized finite operator average `E[Vω X Vω]`. -/
-theorem exactSecondMoment_eq_operatorAverage
+theorem exactSecondMoment_eq_average
     (kernel : H →L[ℂ] H) :
     ensemble.exactSecondMoment kernel =
-      ensemble.operatorAverage (fun ω =>
+      ensemble.average (fun ω =>
         (ensemble.impurityPotential ω).1 * kernel *
           (ensemble.impurityPotential ω).1) := by
-  unfold exactSecondMoment exactSecondMomentCLM operatorAverage
-  simp
+  simp [exactSecondMoment, exactSecondMomentCLM, average]
 
 /-- If every impurity potential is scalar, `Vω = uω I`, the exact second-moment action is scalar
 multiplication by `E[uω²]`. -/
@@ -71,8 +68,8 @@ theorem exactSecondMoment_eq_scalarSecondMomentStrength_smul
     (kernel : H →L[ℂ] H) :
     ensemble.exactSecondMoment kernel =
       ensemble.scalarSecondMomentStrength amplitude • kernel := by
-  rw [ensemble.exactSecondMoment_eq_operatorAverage]
-  unfold operatorAverage scalarSecondMomentStrength
+  rw [ensemble.exactSecondMoment_eq_average]
+  unfold scalarSecondMomentStrength
   change
     (∑ ω, (ensemble.probability ω : ℂ) •
       ((ensemble.impurityPotential ω).1 * kernel *
@@ -105,8 +102,8 @@ theorem exactSecondMoment_star
     (kernel : H →L[ℂ] H) :
     ensemble.exactSecondMoment (star kernel) =
       star (ensemble.exactSecondMoment kernel) := by
-  rw [exactSecondMoment_eq_operatorAverage, exactSecondMoment_eq_operatorAverage]
-  unfold operatorAverage
+  rw [exactSecondMoment_eq_average, exactSecondMoment_eq_average]
+  unfold average
   rw [star_sum]
   apply Finset.sum_congr rfl
   intro ω _
@@ -119,9 +116,9 @@ theorem exactSecondMoment_mul_of_commutes
     (hcommute : ∀ ω, Commute (ensemble.impurityPotential ω).1 right) :
     ensemble.exactSecondMoment kernel * right =
       ensemble.exactSecondMoment (kernel * right) := by
-  rw [ensemble.exactSecondMoment_eq_operatorAverage,
-    ensemble.exactSecondMoment_eq_operatorAverage]
-  unfold operatorAverage
+  rw [ensemble.exactSecondMoment_eq_average,
+    ensemble.exactSecondMoment_eq_average]
+  unfold average
   rw [Finset.sum_mul]
   apply Finset.sum_congr rfl
   intro ω _
@@ -138,9 +135,9 @@ theorem mul_exactSecondMoment_of_commutes
     (hcommute : ∀ ω, Commute (ensemble.impurityPotential ω).1 left) :
     left * ensemble.exactSecondMoment kernel =
       ensemble.exactSecondMoment (left * kernel) := by
-  rw [ensemble.exactSecondMoment_eq_operatorAverage,
-    ensemble.exactSecondMoment_eq_operatorAverage]
-  unfold operatorAverage
+  rw [ensemble.exactSecondMoment_eq_average,
+    ensemble.exactSecondMoment_eq_average]
+  unfold average
   rw [Finset.mul_sum]
   apply Finset.sum_congr rfl
   intro ω _
@@ -153,7 +150,7 @@ theorem mul_exactSecondMoment_of_commutes
 /-- Exact centered-disorder property `E[Vω] = 0`. The second moment is computed canonically and is
 not stored as additional data. -/
 def IsCentered : Prop :=
-  ensemble.operatorAverage (fun ω => (ensemble.impurityPotential ω).1) = 0
+  ensemble.average (fun ω => (ensemble.impurityPotential ω).1) = 0
 
 end FiniteDisorderEnsemble
 

@@ -76,8 +76,8 @@ theorem averagedConnectedCorrelation_eq_fourLegAverage
   calc
     ensemble.average (fun ω => expectation ω (A * B)) =
         ensemble.average (∑ a : α, coefficient a • (fun ω => fourLeg ω a)) := by
-      apply ensemble.average_congr
-      intro ω
+      apply congrArg ensemble.average
+      funext ω
       simpa only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul] using hfourLeg ω
     _ = _ := by simp only [map_sum, map_smul, smul_eq_mul]
 

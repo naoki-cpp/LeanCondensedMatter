@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Transport.Disorder.Resolvent
+import Mathlib.Analysis.Normed.Operator.Mul
 import Mathlib.Tactic.Abel
 import Mathlib.Tactic.NoncommRing
 
@@ -38,76 +39,27 @@ namespace FiniteDisorderEnsemble
 
 variable (ensemble : FiniteDisorderEnsemble (H := H) (Ω := Ω))
 
-/-- Finite operator averaging preserves addition. -/
-theorem operatorAverage_add
-    (left right : Ω → H →L[ℂ] H) :
-    ensemble.operatorAverage (fun ω => left ω + right ω) =
-      ensemble.operatorAverage left + ensemble.operatorAverage right := by
-  unfold operatorAverage
-  simp only [smul_add, Finset.sum_add_distrib]
-
-/-- Finite operator averaging preserves subtraction. -/
-theorem operatorAverage_sub
-    (left right : Ω → H →L[ℂ] H) :
-    ensemble.operatorAverage (fun ω => left ω - right ω) =
-      ensemble.operatorAverage left - ensemble.operatorAverage right := by
-  unfold operatorAverage
-  simp only [smul_sub, Finset.sum_sub_distrib]
-
-/-- A constant operator is unchanged by a normalized disorder average. -/
-@[simp]
-theorem operatorAverage_const
-    (operator : H →L[ℂ] H) :
-    ensemble.operatorAverage (fun _ => operator) = operator := by
-  unfold operatorAverage
-  rw [← Finset.sum_smul]
-  have hsum : (∑ ω, (ensemble.probability ω : ℂ)) = 1 := by
-    simpa using congrArg (fun x : ℝ => (x : ℂ)) ensemble.probability_sum
-  simp [hsum]
-
-/-- A fixed operator can be factored out on the right of a finite disorder average. -/
-theorem operatorAverage_mul_right
-    (operator : Ω → H →L[ℂ] H) (right : H →L[ℂ] H) :
-    ensemble.operatorAverage (fun ω => operator ω * right) =
-      ensemble.operatorAverage operator * right := by
-  unfold operatorAverage
-  rw [Finset.sum_mul]
-  apply Finset.sum_congr rfl
-  intro ω _
-  rw [smul_mul_assoc]
-
-/-- A fixed operator can be factored out on the left of a finite disorder average. -/
-theorem operatorAverage_mul_left
-    (left : H →L[ℂ] H) (operator : Ω → H →L[ℂ] H) :
-    ensemble.operatorAverage (fun ω => left * operator ω) =
-      left * ensemble.operatorAverage operator := by
-  unfold operatorAverage
-  rw [Finset.mul_sum]
-  apply Finset.sum_congr rfl
-  intro ω _
-  rw [mul_smul_comm]
-
 /-- Exact disorder average of a two-operator insertion with a fixed middle vertex. -/
 noncomputable def averagedOperatorInsertion
     (left right : Ω → H →L[ℂ] H) (vertex : H →L[ℂ] H) : H →L[ℂ] H :=
-  ensemble.operatorAverage (fun ω => left ω * vertex * right ω)
+  ensemble.average (fun ω => left ω * vertex * right ω)
 
 /-- Connected disorder insertion, centered separately in both operator factors. -/
 noncomputable def connectedOperatorInsertion
     (left right : Ω → H →L[ℂ] H) (vertex : H →L[ℂ] H) : H →L[ℂ] H :=
-  ensemble.operatorAverage (fun ω =>
-    (left ω - ensemble.operatorAverage left) * vertex *
-      (right ω - ensemble.operatorAverage right))
+  ensemble.average (fun ω =>
+    (left ω - ensemble.average left) * vertex *
+      (right ω - ensemble.average right))
 
 /-- Exact two-particle decomposition. The correction is the covariance of the two operator
 families, with their noncommutative order and the middle vertex preserved. -/
 theorem averagedOperatorInsertion_eq_mean_add_connected
     (left right : Ω → H →L[ℂ] H) (vertex : H →L[ℂ] H) :
     ensemble.averagedOperatorInsertion left right vertex =
-      ensemble.operatorAverage left * vertex * ensemble.operatorAverage right +
+      ensemble.average left * vertex * ensemble.average right +
         ensemble.connectedOperatorInsertion left right vertex := by
-  let meanLeft : H →L[ℂ] H := ensemble.operatorAverage left
-  let meanRight : H →L[ℂ] H := ensemble.operatorAverage right
+  let meanLeft : H →L[ℂ] H := ensemble.average left
+  let meanRight : H →L[ℂ] H := ensemble.average right
   have hpoint (ω : Ω) :
       (left ω - meanLeft) * vertex * (right ω - meanRight) =
         left ω * vertex * right ω -
@@ -115,29 +67,42 @@ theorem averagedOperatorInsertion_eq_mean_add_connected
           (meanLeft * vertex) * right ω +
           meanLeft * vertex * meanRight := by
     noncomm_ring
+  have hright :
+      ensemble.average (fun ω => left ω * (vertex * meanRight)) =
+        ensemble.average left * (vertex * meanRight) := by
+    simpa using (ensemble.map_average
+      ((ContinuousLinearMap.mulLeftRight ℂ (H →L[ℂ] H) 1 (vertex * meanRight)).toLinearMap)
+      left).symm
+  have hleft :
+      ensemble.average (fun ω => (meanLeft * vertex) * right ω) =
+        (meanLeft * vertex) * ensemble.average right := by
+    simpa using (ensemble.map_average
+      ((ContinuousLinearMap.mulLeftRight ℂ (H →L[ℂ] H) (meanLeft * vertex) 1).toLinearMap)
+      right).symm
   have hconnected :
       ensemble.connectedOperatorInsertion left right vertex =
         ensemble.averagedOperatorInsertion left right vertex -
           meanLeft * vertex * meanRight := by
     calc
       ensemble.connectedOperatorInsertion left right vertex =
-          ensemble.operatorAverage (fun ω =>
+          ensemble.average (fun ω =>
             left ω * vertex * right ω -
               left ω * (vertex * meanRight) -
               (meanLeft * vertex) * right ω +
               meanLeft * vertex * meanRight) := by
-        change ensemble.operatorAverage (fun ω =>
+        change ensemble.average (fun ω =>
           (left ω - meanLeft) * vertex * (right ω - meanRight)) = _
-        apply congrArg ensemble.operatorAverage
+        apply congrArg ensemble.average
         funext ω
         exact hpoint ω
       _ = ensemble.averagedOperatorInsertion left right vertex -
           meanLeft * vertex * meanRight := by
-        rw [ensemble.operatorAverage_add, ensemble.operatorAverage_sub,
-          ensemble.operatorAverage_sub,
-          ensemble.operatorAverage_mul_right,
-          ensemble.operatorAverage_mul_left,
-          ensemble.operatorAverage_const]
+        change ensemble.average
+          ((fun ω => left ω * vertex * right ω) -
+            (fun ω => left ω * (vertex * meanRight)) -
+            (fun ω => (meanLeft * vertex) * right ω) +
+            (fun _ => meanLeft * vertex * meanRight)) = _
+        rw [map_add, map_sub, map_sub, hright, hleft, ensemble.average_const]
         change ensemble.averagedOperatorInsertion left right vertex -
           meanLeft * (vertex * meanRight) -
           (meanLeft * vertex) * meanRight +

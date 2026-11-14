@@ -51,7 +51,7 @@ noncomputable def configurationGreenOfRegulator
 signed regulator. No Born or self-consistent closure is imposed. -/
 noncomputable def averagedGreenOfRegulator
     (energy regulator : ℝ) : H →L[ℂ] H :=
-  ensemble.operatorAverage (fun ω => ensemble.configurationGreenOfRegulator energy regulator ω)
+  ensemble.average (fun ω => ensemble.configurationGreenOfRegulator energy regulator ω)
 
 /-- Adjointing the exact finite disorder-averaged Green operator reverses the signed regulator. -/
 theorem star_averagedGreenOfRegulator
@@ -59,8 +59,8 @@ theorem star_averagedGreenOfRegulator
     star (ensemble.averagedGreenOfRegulator energy regulator) =
       ensemble.averagedGreenOfRegulator energy (-regulator) := by
   unfold averagedGreenOfRegulator
-  rw [← ensemble.operatorAverage_star]
-  apply congrArg ensemble.operatorAverage
+  rw [← ensemble.average_star]
+  apply congrArg ensemble.average
   funext ω
   unfold configurationGreenOfRegulator
   exact star_resolvent_spectralParameterOfRegulator
