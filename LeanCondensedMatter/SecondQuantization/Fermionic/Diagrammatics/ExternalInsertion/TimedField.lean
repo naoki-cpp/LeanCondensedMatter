@@ -1,4 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.Diagram
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Core.SlotCongr
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.TimedFieldContraction
 
 set_option linter.style.header false
@@ -122,7 +123,68 @@ theorem externalInsertionMixedTimeOrderedAtomicPairValue_map
     externalInsertionMixedTimeOrderedAtomicLegEquiv_position,
     orderedExternalInsertionLegField_map]
 
+omit [LinearOrder Mode] in
+/-- The concrete time-labelled atomic field is equivariant under an
+arbitrary bijection of interaction slots when the vertex labels and times
+are pulled back together. The external fields remain fixed. This holds
+before choosing a mixed-time order and is independent of any
+coincidence-time conventions. -/
+theorem ExternalInsertionWickDiagram.slotCongr_orderedExternalInsertionLegField
+    {E n : ℕ} (d : ExternalInsertionWickDiagram Mode E n)
+    (e : ↥(Finset.univ : Finset (Fin n)) ≃
+      ↥(Finset.univ : Finset (Fin n)))
+    (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ)
+    (leg : OrderedExternalInsertionLeg E n) :
+    let f : Fin n → Fin n :=
+      fun v => (e.symm ⟨v, Finset.mem_univ v⟩).1
+    orderedExternalInsertionLegField
+        (d.slotCongr e).externalLabel externalTime
+        (d.slotCongr e).vertexLabelSequence (σ ∘ f) leg =
+      orderedExternalInsertionLegField
+        d.externalLabel externalTime d.vertexLabelSequence σ
+        (orderedExternalInsertionLegMap (fun x => x) f leg) := by
+  intro f
+  rcases leg with a | ⟨v, l⟩ <;> rfl
+
 variable [Fintype Mode]
+
+/-- The *oriented* finite-Gibbs pair contraction transported through an
+arbitrary interaction-slot bijection. Both endpoints are mapped in their
+given order. In particular, this statement does not identify normalized
+pair orientations under the induced mixed-time permutation; that sign
+comparison remains a separate step in the full Dyson amplitude covariance. -/
+theorem ExternalInsertionWickDiagram.slotCongr_mixedAtomicPairValue
+    {E n : ℕ} (d : ExternalInsertionWickDiagram Mode E n)
+    (e : ↥(Finset.univ : Finset (Fin n)) ≃
+      ↥(Finset.univ : Finset (Fin n)))
+    (ε : Mode → ℝ) (β : ℝ)
+    (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ)
+    (a b : OrderedExternalInsertionLeg E n) :
+    let f : Fin n → Fin n :=
+      fun v => (e.symm ⟨v, Finset.mem_univ v⟩).1
+    externalInsertionMixedTimeOrderedAtomicPairValue ε β
+        (d.slotCongr e).externalLabel externalTime
+        (d.slotCongr e).vertexLabelSequence (σ ∘ f)
+        (externalInsertionMixedTimeOrderedAtomicLegPosition
+          externalTime (σ ∘ f) a)
+        (externalInsertionMixedTimeOrderedAtomicLegPosition
+          externalTime (σ ∘ f) b) =
+      externalInsertionMixedTimeOrderedAtomicPairValue ε β
+        d.externalLabel externalTime d.vertexLabelSequence σ
+        (externalInsertionMixedTimeOrderedAtomicLegPosition externalTime σ
+          (orderedExternalInsertionLegMap (fun x => x) f a))
+        (externalInsertionMixedTimeOrderedAtomicLegPosition externalTime σ
+          (orderedExternalInsertionLegMap (fun x => x) f b)) := by
+  intro f
+  have hlabel : (d.slotCongr e).externalLabel = d.externalLabel := rfl
+  have hvertices :
+      (d.slotCongr e).vertexLabelSequence = d.vertexLabelSequence ∘ f := by
+    funext v
+    rfl
+  simpa [Function.comp_def, hlabel, hvertices] using
+    (externalInsertionMixedTimeOrderedAtomicPairValue_map
+      ε β (fun x : Fin (2 * E) => x) f
+      d.externalLabel externalTime d.vertexLabelSequence σ a b).symm
 
 /-- Fermionic pairing evaluation of one external-insertion diagram in mixed-time atomic order.
 Interaction couplings and the external time-ordering sign are not included here. -/
