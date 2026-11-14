@@ -38,7 +38,7 @@ theorem norm_timeIntegral_sq (frequency time : ℝ) (hfrequency : frequency ≠ 
       4 * Real.sin (frequency * time / 2) ^ 2 / frequency ^ 2 := by
   rw [timeIntegral_of_ne_zero frequency time hfrequency]
   simp only [norm_div, norm_mul, Complex.norm_I, one_mul, Complex.norm_real,
-    Complex.norm_exp_I_mul_ofReal_sub_one, Real.norm_eq_abs, div_pow, sq_abs]
+    Complex.norm_exp_I_mul_ofReal_sub_one, Real.norm_eq_abs, div_pow, mul_pow, sq_abs]
   ring
 
 end

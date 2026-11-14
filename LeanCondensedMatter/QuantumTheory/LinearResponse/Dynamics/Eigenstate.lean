@@ -81,7 +81,7 @@ theorem inner_heisenbergEvolution_of_eigenvectors
     map_smul, ← star_freePropagator system t, ContinuousLinearMap.star_eq_adjoint,
     ContinuousLinearMap.adjoint_inner_right,
     freePropagator_apply_of_eigenvector system final energyFinal hfinal t]
-  simp only [inner_smul_left, inner_smul_right]
+  simp only [inner_smul_left, inner_smul_right, starRingEnd_apply]
   have hphase :
       star (Complex.exp (-(Complex.I * (((t * energyFinal) / system.hbar : ℝ) : ℂ)))) *
         Complex.exp (-(Complex.I * (((t * energyInitial) / system.hbar : ℝ) : ℂ))) =
