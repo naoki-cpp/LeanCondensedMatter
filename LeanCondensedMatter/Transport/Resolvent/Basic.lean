@@ -253,7 +253,7 @@ theorem norm_resolvent_spectralParameterOfRegulator_le
       |regulator| * ‖green v‖ ^ 2 =
           |(inner ℂ (green v) v).im| := by
             rw [hIm, abs_mul]
-            rw [abs_of_nonneg (sq_nonneg _)]
+            rw [abs_of_nonneg (sq_nonneg (‖green v‖))]
       _ ≤ ‖inner ℂ (green v) v‖ := Complex.abs_im_le_norm _
       _ ≤ ‖green v‖ * ‖v‖ := norm_inner_le_norm _ _
   by_cases hv : green v = 0
