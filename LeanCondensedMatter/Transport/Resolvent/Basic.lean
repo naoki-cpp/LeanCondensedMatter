@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Analysis.Operator.Spectral.Resolvent
-import Mathlib.Tactic.Nlinarith
+import Mathlib.Tactic.Linarith
 
 set_option linter.style.header false
 
