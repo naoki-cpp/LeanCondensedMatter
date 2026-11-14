@@ -56,37 +56,37 @@ noncomputable def configurationSystem
   hbar := hbar
   hbar_pos := hbar_pos
 
-/-- Exact finite disorder averaging as a complex linear map. -/
-noncomputable def average : (Ω → ℂ) →ₗ[ℂ] ℂ where
-  toFun response := ∑ ω, (ensemble.probability ω : ℂ) * response ω
-  map_add' := by
-    intro left right
-    simp only [Pi.add_apply, mul_add, Finset.sum_add_distrib]
-  map_smul' := by
-    intro c response
-    change (∑ ω, (ensemble.probability ω : ℂ) * (c * response ω)) =
-      c * ∑ ω, (ensemble.probability ω : ℂ) * response ω
-    rw [Finset.mul_sum]
-    apply Finset.sum_congr rfl
-    intro ω _
-    ring
+/-- Exact normalized finite disorder averaging for any complex module. -/
+noncomputable def average {E : Type*} [AddCommMonoid E] [Module ℂ E] :
+    (Ω → E) →ₗ[ℂ] E where
+  toFun response := ∑ ω, (ensemble.probability ω : ℂ) • response ω
+  map_add' left right := by simp [smul_add, Finset.sum_add_distrib]
+  map_smul' c response := by simp [Finset.smul_sum, smul_smul, mul_comm]
 
-/-- Pointwise-equal configuration observables have the same finite disorder average. -/
-theorem average_congr {left right : Ω → ℂ} (h : ∀ ω, left ω = right ω) :
-    ensemble.average left = ensemble.average right :=
-  congrArg ensemble.average (funext h)
+/-- Every complex-linear map commutes with finite disorder averaging. -/
+theorem map_average {E F : Type*}
+    [AddCommMonoid E] [Module ℂ E] [AddCommMonoid F] [Module ℂ F]
+    (f : E →ₗ[ℂ] F) (response : Ω → E) :
+    f (ensemble.average response) = ensemble.average (fun ω => f (response ω)) := by
+  change f (∑ ω, (ensemble.probability ω : ℂ) • response ω) =
+    ∑ ω, (ensemble.probability ω : ℂ) • f (response ω)
+  simp only [map_sum, map_smul]
 
-/-- Exact weighted finite average of an operator-valued configuration observable. -/
-noncomputable def operatorAverage
-    (operator : Ω → H →L[ℂ] H) : H →L[ℂ] H :=
-  ∑ ω, (ensemble.probability ω : ℂ) • operator ω
+/-- Normalization makes the finite disorder average fix constant families. -/
+@[simp]
+theorem average_const {E : Type*} [AddCommMonoid E] [Module ℂ E] (value : E) :
+    ensemble.average (fun _ => value) = value := by
+  change (∑ ω, (ensemble.probability ω : ℂ) • value) = value
+  rw [← Finset.sum_smul]
+  have hsum : (∑ ω, (ensemble.probability ω : ℂ)) = 1 := by
+    simpa using congrArg (fun x : ℝ => (x : ℂ)) ensemble.probability_sum
+  simp [hsum]
 
-/-- Exact finite operator averaging commutes with adjunction because every ensemble weight is real. -/
-theorem operatorAverage_star
-    (operator : Ω → H →L[ℂ] H) :
-    ensemble.operatorAverage (fun ω => star (operator ω)) =
-      star (ensemble.operatorAverage operator) := by
-  unfold operatorAverage
+/-- Finite operator averaging commutes with adjunction because ensemble weights are real. -/
+theorem average_star (operator : Ω → H →L[ℂ] H) :
+    ensemble.average (fun ω => star (operator ω)) = star (ensemble.average operator) := by
+  change (∑ ω, (ensemble.probability ω : ℂ) • star (operator ω)) =
+    star (∑ ω, (ensemble.probability ω : ℂ) • operator ω)
   rw [star_sum]
   apply Finset.sum_congr rfl
   intro ω _

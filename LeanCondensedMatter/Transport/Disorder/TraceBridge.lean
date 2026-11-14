@@ -1,5 +1,6 @@
 import LeanCondensedMatter.Transport.Disorder.TwoParticle
 import LeanCondensedMatter.Transport.Streda.RetardedAdvanced
+import Mathlib.Analysis.Normed.Operator.Mul
 
 set_option linter.style.header false
 
@@ -29,19 +30,6 @@ namespace FiniteDisorderEnsemble
 
 variable (ensemble : FiniteDisorderEnsemble (H := H) (Ω := Ω))
 
-/-- The ordinary finite-dimensional trace commutes with a normalized finite disorder average. -/
-theorem trace_operatorAverage
-    (operator : Ω → H →L[ℂ] H) :
-    ContinuousLinearMap.finiteDimensionalOperatorTrace
-        (ensemble.operatorAverage operator) =
-      ensemble.average (fun ω =>
-        ContinuousLinearMap.finiteDimensionalOperatorTrace (operator ω)) := by
-  change ContinuousLinearMap.finiteDimensionalOperatorTrace
-      (∑ ω, (ensemble.probability ω : ℂ) • operator ω) =
-    ∑ ω, (ensemble.probability ω : ℂ) *
-      ContinuousLinearMap.finiteDimensionalOperatorTrace (operator ω)
-  simp only [map_sum, map_smul, smul_eq_mul]
-
 /-- Average of the canonical two-Green trace kernel equals the trace of the canonical exact
 two-operator insertion. This is valid for arbitrary operator families and a fixed source vertex. -/
 theorem average_twoGreenVertexTraceKernel_eq_trace_insertion
@@ -55,16 +43,24 @@ theorem average_twoGreenVertexTraceKernel_eq_trace_insertion
     ensemble.average (fun ω =>
         twoGreenVertexTraceKernel measuredVertex (left ω) sourceVertex (right ω)) =
       ContinuousLinearMap.finiteDimensionalOperatorTrace
-        (ensemble.operatorAverage (fun ω =>
+        (ensemble.average (fun ω =>
           measuredVertex * (left ω * sourceVertex * right ω))) := by
-        rw [ensemble.trace_operatorAverage]
-        apply ensemble.average_congr
-        intro ω
-        simp only [twoGreenVertexTraceKernel, mul_assoc]
+        calc
+          _ = ensemble.average (fun ω =>
+              ContinuousLinearMap.finiteDimensionalOperatorTrace
+                (measuredVertex * (left ω * sourceVertex * right ω))) := by
+            apply congrArg ensemble.average
+            funext ω
+            simp only [twoGreenVertexTraceKernel, mul_assoc]
+          _ = _ := (ensemble.map_average
+            (ContinuousLinearMap.finiteDimensionalOperatorTrace (H := H)).toLinearMap
+            (fun ω => measuredVertex * (left ω * sourceVertex * right ω))).symm
     _ = ContinuousLinearMap.finiteDimensionalOperatorTrace
         (measuredVertex * ensemble.averagedOperatorInsertion left right sourceVertex) := by
-      rw [ensemble.operatorAverage_mul_left]
-      rfl
+      apply congrArg ContinuousLinearMap.finiteDimensionalOperatorTrace
+      simpa [averagedOperatorInsertion] using (ensemble.map_average
+        ((ContinuousLinearMap.mulLeftRight ℂ (H →L[ℂ] H) measuredVertex 1).toLinearMap)
+        (fun ω => left ω * sourceVertex * right ω)).symm
 
 /-- Exact ensemble average of the supplied two-Green Středa trace block. It is not a
 conductivity and does not discard same-side or sea response terms. -/

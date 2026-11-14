@@ -229,7 +229,11 @@ Dyson expansions are owned at arbitrary nonzero `γ`; physical consumers special
 locally when branch semantics are required.
 
 `FiniteDisorderEnsemble.average` is a complex linear map given by the normalized weighted finite
-sum. The ensemble-independent connected two-point subtraction belongs to
+sum for scalar observables and arbitrary complex-module-valued families, including bounded
+operators. Normalization fixes constant families, and every complex-linear map commutes with this
+average; trace and fixed-operator multiplication use this common law. Real ensemble weights also
+make operator adjunction commute with averaging. Averaging does not factor products of two
+configuration-dependent observables. The ensemble-independent connected two-point subtraction belongs to
 `QuantumTheory.LinearResponse.connectedCorrelation`. Its definition requires only a
 functional and ordered multiplication of observables, not Gibbs, KMS, or Gaussianity.
 For a normalized expectation it is the physical second cumulant; normalization makes

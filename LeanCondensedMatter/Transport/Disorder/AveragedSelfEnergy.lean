@@ -58,11 +58,11 @@ private theorem im_inner_configurationGreenOfRegulator_apply_self
 
 /-- Taking an inner product after an exact finite operator average is the corresponding weighted
 finite average of inner products. -/
-private theorem inner_operatorAverage_apply
+private theorem inner_average_apply
     (operator : Ω → H →L[ℂ] H) (v w : H) :
-    inner ℂ (ensemble.operatorAverage operator v) w =
+    inner ℂ (ensemble.average operator v) w =
       ∑ ω, (ensemble.probability ω : ℂ) * inner ℂ (operator ω v) w := by
-  unfold operatorAverage
+  change inner ℂ ((∑ ω, (ensemble.probability ω : ℂ) • operator ω) v) w = _
   rw [sum_apply, sum_inner]
   apply Finset.sum_congr rfl
   intro ω _
@@ -78,9 +78,9 @@ private theorem im_inner_averagedGreenOfRegulator_apply_self
           ‖ensemble.configurationGreenOfRegulator energy regulator ω v‖ ^ 2 := by
   change
     (inner ℂ
-      (ensemble.operatorAverage
+      (ensemble.average
         (fun ω => ensemble.configurationGreenOfRegulator energy regulator ω) v) v).im = _
-  rw [ensemble.inner_operatorAverage_apply
+  rw [ensemble.inner_average_apply
     (fun ω => ensemble.configurationGreenOfRegulator energy regulator ω) v v]
   rw [Complex.im_sum]
   simp_rw [Complex.mul_im, Complex.ofReal_re, Complex.ofReal_im,

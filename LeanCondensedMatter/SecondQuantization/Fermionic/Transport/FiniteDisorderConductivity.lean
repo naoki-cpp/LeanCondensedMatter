@@ -84,8 +84,8 @@ theorem finiteDisorderAveragedStaticConductivity_eq_tracedBastinAverage
             (ensemble.configurationSystem hbar hbar_pos ω).hbar eta)
           lowerEnergy upperEnergy occupation) := by
   unfold finiteDisorderAveragedStaticConductivity
-  apply ensemble.average_congr
-  intro ω
+  apply congrArg ensemble.average
+  funext ω
   exact (ward ω).staticConductivity_eq_tracedBastin
     convention (ensemble.configurationSystem hbar hbar_pos ω) (spectralData ω)
     (boundedDirectionalResponseChannel
@@ -123,8 +123,8 @@ theorem finiteDisorderAveragedStaticConductivity_eq_spectralEnergyIntegralAverag
             (ensemble.configurationSystem hbar hbar_pos ω).hbar eta)
           lowerEnergy upperEnergy occupation) := by
   unfold finiteDisorderAveragedStaticConductivity
-  apply ensemble.average_congr
-  intro ω
+  apply congrArg ensemble.average
+  funext ω
   exact (ward ω).staticConductivity_eq_spectralEnergyIntegral
     convention (ensemble.configurationSystem hbar hbar_pos ω)
       (spectralData ω)
