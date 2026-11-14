@@ -2856,6 +2856,15 @@
       "externalImportCount": 0
     },
     {
+      "name": "LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.DisorderComparison",
+      "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Streda/BornLadder/DisorderComparison.lean",
+      "imports": [
+        "LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.TraceBridge",
+        "LeanCondensedMatter.Transport.Disorder.TraceBridge"
+      ],
+      "externalImportCount": 1
+    },
+    {
       "name": "LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.HallZeroBroadeningIntegral",
       "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Streda/BornLadder/HallZeroBroadeningIntegral.lean",
       "imports": [
@@ -3055,6 +3064,7 @@
       "name": "LeanCondensedMatter.Models.MassiveDirac.Streda",
       "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Streda.lean",
       "imports": [
+        "LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.DisorderComparison",
         "LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.HallZeroBroadeningIntegral",
         "LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.HallZeroBroadeningProvenance",
         "LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.HallZeroBroadeningWeakDisorder",
@@ -4516,6 +4526,19 @@
       "externalImportCount": 1
     },
     {
+      "name": "LeanCondensedMatter.QuantumTheory.LinearResponse.Response",
+      "sourceFile": "LeanCondensedMatter/QuantumTheory/LinearResponse/Response.lean",
+      "imports": [
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.Response.Channel",
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.Response.DensitySusceptibility",
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.Response.KuboFormula",
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.Response.ObservableVariation",
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.Response.RetardedSusceptibility",
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.Response.SourceCoupling"
+      ],
+      "externalImportCount": 0
+    },
+    {
       "name": "LeanCondensedMatter.QuantumTheory.LinearResponse",
       "sourceFile": "LeanCondensedMatter/QuantumTheory/LinearResponse.lean",
       "imports": [
@@ -4540,12 +4563,7 @@
         "LeanCondensedMatter.QuantumTheory.LinearResponse.Perturbation.Hermitian",
         "LeanCondensedMatter.QuantumTheory.LinearResponse.Perturbation.TimeDependent",
         "LeanCondensedMatter.QuantumTheory.LinearResponse.Perturbation.Unitary",
-        "LeanCondensedMatter.QuantumTheory.LinearResponse.Response.Channel",
-        "LeanCondensedMatter.QuantumTheory.LinearResponse.Response.DensitySusceptibility",
-        "LeanCondensedMatter.QuantumTheory.LinearResponse.Response.KuboFormula",
-        "LeanCondensedMatter.QuantumTheory.LinearResponse.Response.ObservableVariation",
-        "LeanCondensedMatter.QuantumTheory.LinearResponse.Response.RetardedSusceptibility",
-        "LeanCondensedMatter.QuantumTheory.LinearResponse.Response.SourceCoupling"
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.Response"
       ],
       "externalImportCount": 0
     },
@@ -8634,6 +8652,15 @@
       "externalImportCount": 3
     },
     {
+      "name": "LeanCondensedMatter.Transport.Disorder.TraceBridge",
+      "sourceFile": "LeanCondensedMatter/Transport/Disorder/TraceBridge.lean",
+      "imports": [
+        "LeanCondensedMatter.Transport.Disorder.TwoParticle",
+        "LeanCondensedMatter.Transport.Streda.RetardedAdvanced"
+      ],
+      "externalImportCount": 0
+    },
+    {
       "name": "LeanCondensedMatter.Transport.Disorder.TwoParticle",
       "sourceFile": "LeanCondensedMatter/Transport/Disorder/TwoParticle.lean",
       "imports": [
@@ -8662,6 +8689,7 @@
         "LeanCondensedMatter.Transport.Disorder.Moments",
         "LeanCondensedMatter.Transport.Disorder.Resolvent",
         "LeanCondensedMatter.Transport.Disorder.SCBA",
+        "LeanCondensedMatter.Transport.Disorder.TraceBridge",
         "LeanCondensedMatter.Transport.Disorder.TwoParticle",
         "LeanCondensedMatter.Transport.Disorder.Ward"
       ],

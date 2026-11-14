@@ -59085,6 +59085,46 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
+    "terminal": true,
+    "statement": "∀ {Ω : Type u_1} [inst : Fintype Ω] (ensemble : QuantumTheory.Transport.FiniteDisorderEnsemble)\n  (measured source : Fin 2) (e v m px py probeEnergy broadening disorderStrength hbar pMax : ℝ),\n  have measuredCurrent := QuantumTheory.Models.MassiveDirac.currentOperator measured e v;\n  have sourceCurrent := QuantumTheory.Models.MassiveDirac.currentOperator source e v;\n  have retarded :=\n    QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGreenOperator\n      QuantumTheory.Transport.SpectralSide.retarded v m px py probeEnergy broadening disorderStrength hbar pMax;\n  have advanced :=\n    QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGreenOperator\n      QuantumTheory.Transport.SpectralSide.advanced v m px py probeEnergy broadening disorderStrength hbar pMax;\n  have dressed :=\n    QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperator source\n      e v m probeEnergy broadening disorderStrength hbar pMax;\n  ensemble.averagedTwoGreenVertexTraceKernelOfRegulators probeEnergy broadening probeEnergy (-broadening)\n        measuredCurrent sourceCurrent -\n      QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceTraceBridge measured\n        source e v m px py probeEnergy broadening disorderStrength hbar pMax =\n    ContinuousLinearMap.finiteDimensionalOperatorTrace\n        (measuredCurrent *\n          ((ensemble.averagedGreenOfRegulator probeEnergy broadening - retarded) * sourceCurrent *\n                  ensemble.averagedGreenOfRegulator probeEnergy (-broadening) +\n                retarded * sourceCurrent * (ensemble.averagedGreenOfRegulator probeEnergy (-broadening) - advanced) +\n              ensemble.connectedTwoGreenInsertionOfRegulators probeEnergy broadening probeEnergy (-broadening)\n                sourceCurrent -\n            retarded * (dressed - sourceCurrent) * advanced)) +\n      QuantumTheory.Transport.sameSideVertexTraceRemainder measuredCurrent sourceCurrent retarded advanced",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.MassiveDirac.averagedTwoGreenTrace_sub_bornDysonSurface_eq_residuals",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.DisorderComparison",
+    "externalAxioms": [],
+    "docString": "Exact pointwise difference from the model's RA-dressed, bare-same-side Středa surface\ncandidate. The last term is the explicitly retained same-side remainder, not an additional\nvertex correction. The remaining trace isolates independent one-particle and connected\ntwo-particle approximation errors without assuming their smallness. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.averagedTwoGreenVertexTraceKernelOfRegulators_sub_dressed_eq"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
     "terminal": false,
     "statement": "∀ (v m px py : ℝ),\n  QuantumTheory.Models.MassiveDirac.energy v m px py ≠ 0 →\n    Function.Injective fun band => QuantumTheory.Models.MassiveDirac.bandEnergy band v m px py",
     "standardAxioms": [
@@ -90541,6 +90581,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.average_twoGreenVertexTraceKernel_eq_trace_insertion",
       "QuantumTheory.Transport.FiniteDisorderEnsemble.averagedConnectedCorrelation_eq_fourLegAverage",
       "SecondQuantization.Fermionic.Transport.finiteDisorderAveragedStaticConductivity_eq_spectralEnergyIntegralAverage",
       "SecondQuantization.Fermionic.Transport.finiteDisorderAveragedStaticConductivity_eq_tracedBastinAverage"
@@ -90549,11 +90590,58 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.average_twoGreenVertexTraceKernel_eq_trace_insertion",
       "QuantumTheory.Transport.FiniteDisorderEnsemble.averagedConnectedCorrelation_eq_fourLegAverage",
       "SecondQuantization.Fermionic.Transport.finiteDisorderAveragedStaticConductivity_eq_spectralEnergyIntegralAverage",
       "SecondQuantization.Fermionic.Transport.finiteDisorderAveragedStaticConductivity_eq_tracedBastinAverage"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 4,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {H : Type u_1} {Ω : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] [inst_3 : FiniteDimensional ℂ H] [inst_4 : Fintype Ω]\n  (ensemble : QuantumTheory.Transport.FiniteDisorderEnsemble) (measuredVertex sourceVertex : H →L[ℂ] H)\n  (left right : Ω → H →L[ℂ] H),\n  (ensemble.average fun ω =>\n      QuantumTheory.Transport.twoGreenVertexTraceKernel measuredVertex (left ω) sourceVertex (right ω)) =\n    ContinuousLinearMap.finiteDimensionalOperatorTrace\n      (measuredVertex * ensemble.averagedOperatorInsertion left right sourceVertex)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.FiniteDisorderEnsemble.average_twoGreenVertexTraceKernel_eq_trace_insertion",
+    "module": "LeanCondensedMatter.Transport.Disorder.TraceBridge",
+    "externalAxioms": [],
+    "docString": "Average of the canonical two-Green trace kernel equals the trace of the canonical exact\ntwo-operator insertion. This is valid for arbitrary operator families and a fixed source vertex. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.averagedTwoGreenVertexTraceKernelOfRegulators_eq_mean_add_connected"
+    ],
+    "dependencies": [
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.average_congr",
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.operatorAverage_mul_left",
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.trace_operatorAverage"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.averagedTwoGreenVertexTraceKernelOfRegulators_eq_mean_add_connected"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -90786,7 +90874,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ {H : Type u_1} {Ω : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] [inst_3 : Fintype Ω] (ensemble : QuantumTheory.Transport.FiniteDisorderEnsemble)\n  (energyLeft regulatorLeft energyRight regulatorRight : ℝ) (vertex : H →L[ℂ] H),\n  ensemble.averagedTwoGreenInsertionOfRegulators energyLeft regulatorLeft energyRight regulatorRight vertex =\n    ensemble.averagedGreenOfRegulator energyLeft regulatorLeft * vertex *\n        ensemble.averagedGreenOfRegulator energyRight regulatorRight +\n      ensemble.connectedTwoGreenInsertionOfRegulators energyLeft regulatorLeft energyRight regulatorRight vertex",
     "standardAxioms": [
       "Classical.choice",
@@ -90794,7 +90882,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -90805,14 +90893,107 @@
     "docString": "The exact two-Green disorder average differs from the product of averaged Green operators\nby the connected two-Green insertion. This is valid before any Born or ladder truncation. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.averagedTwoGreenVertexTraceKernelOfRegulators_eq_mean_add_connected"
+    ],
     "dependencies": [
       "QuantumTheory.Transport.FiniteDisorderEnsemble.averagedOperatorInsertion_eq_mean_add_connected"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.averagedTwoGreenVertexTraceKernelOfRegulators_eq_mean_add_connected"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {H : Type u_1} {Ω : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] [inst_3 : FiniteDimensional ℂ H] [inst_4 : Fintype Ω]\n  (ensemble : QuantumTheory.Transport.FiniteDisorderEnsemble) (energyLeft regulatorLeft energyRight regulatorRight : ℝ)\n  (measuredVertex sourceVertex : H →L[ℂ] H),\n  ensemble.averagedTwoGreenVertexTraceKernelOfRegulators energyLeft regulatorLeft energyRight regulatorRight\n      measuredVertex sourceVertex =\n    QuantumTheory.Transport.twoGreenVertexTraceKernel measuredVertex\n        (ensemble.averagedGreenOfRegulator energyLeft regulatorLeft) sourceVertex\n        (ensemble.averagedGreenOfRegulator energyRight regulatorRight) +\n      ContinuousLinearMap.finiteDimensionalOperatorTrace\n        (measuredVertex *\n          ensemble.connectedTwoGreenInsertionOfRegulators energyLeft regulatorLeft energyRight regulatorRight\n            sourceVertex)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.FiniteDisorderEnsemble.averagedTwoGreenVertexTraceKernelOfRegulators_eq_mean_add_connected",
+    "module": "LeanCondensedMatter.Transport.Disorder.TraceBridge",
+    "externalAxioms": [],
+    "docString": "Exact decomposition of the averaged two-Green trace into the trace of mean Green operators\nand the trace of the connected disorder insertion, with noncommutative operator order intact.\nThe retarded/advanced channel is obtained by supplying the corresponding signed regulators. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.averagedTwoGreenVertexTraceKernelOfRegulators_sub_dressed_eq"
+    ],
+    "dependencies": [
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.average_twoGreenVertexTraceKernel_eq_trace_insertion",
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.averagedTwoGreenInsertionOfRegulators_eq_mean_add_connected"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.averagedTwoGreenVertexTraceKernelOfRegulators_sub_dressed_eq"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {H : Type u_1} {Ω : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] [inst_3 : FiniteDimensional ℂ H] [inst_4 : Fintype Ω]\n  (ensemble : QuantumTheory.Transport.FiniteDisorderEnsemble) (energyLeft regulatorLeft energyRight regulatorRight : ℝ)\n  (measuredVertex bareSourceVertex suppliedLeftGreen dressedSourceVertex suppliedRightGreen : H →L[ℂ] H),\n  ensemble.averagedTwoGreenVertexTraceKernelOfRegulators energyLeft regulatorLeft energyRight regulatorRight\n        measuredVertex bareSourceVertex -\n      QuantumTheory.Transport.retardedAdvancedVertexTraceKernel measuredVertex suppliedLeftGreen dressedSourceVertex\n        suppliedRightGreen =\n    ContinuousLinearMap.finiteDimensionalOperatorTrace\n      (measuredVertex *\n        ((ensemble.averagedGreenOfRegulator energyLeft regulatorLeft - suppliedLeftGreen) * bareSourceVertex *\n                ensemble.averagedGreenOfRegulator energyRight regulatorRight +\n              suppliedLeftGreen * bareSourceVertex *\n                (ensemble.averagedGreenOfRegulator energyRight regulatorRight - suppliedRightGreen) +\n            ensemble.connectedTwoGreenInsertionOfRegulators energyLeft regulatorLeft energyRight regulatorRight\n              bareSourceVertex -\n          suppliedLeftGreen * (dressedSourceVertex - bareSourceVertex) * suppliedRightGreen))",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.FiniteDisorderEnsemble.averagedTwoGreenVertexTraceKernelOfRegulators_sub_dressed_eq",
+    "module": "LeanCondensedMatter.Transport.Disorder.TraceBridge",
+    "externalAxioms": [],
+    "docString": "Exact deviation of an averaged two-Green trace from a supplied dressed-vertex RA trace.\nThe three terms inside the trace respectively measure the left and right one-particle Green\nmismatches and the connected vertex remainder. No equality between an exact disorder average\nand a noncrossing or SCBA approximation is assumed. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.MassiveDirac.averagedTwoGreenTrace_sub_bornDysonSurface_eq_residuals"
+    ],
+    "dependencies": [
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.averagedTwoGreenVertexTraceKernelOfRegulators_eq_mean_add_connected"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.averagedTwoGreenTrace_sub_bornDysonSurface_eq_residuals"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -91493,7 +91674,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -91505,15 +91686,17 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.average_twoGreenVertexTraceKernel_eq_trace_insertion",
       "QuantumTheory.Transport.FiniteDisorderEnsemble.averagedOperatorInsertion_eq_mean_add_connected"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.average_twoGreenVertexTraceKernel_eq_trace_insertion",
       "QuantumTheory.Transport.FiniteDisorderEnsemble.averagedOperatorInsertion_eq_mean_add_connected"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -91764,6 +91947,48 @@
     "completedMention": false,
     "compiledConsumers": [],
     "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {H : Type u_1} {Ω : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] [inst_3 : FiniteDimensional ℂ H] [inst_4 : Fintype Ω]\n  (ensemble : QuantumTheory.Transport.FiniteDisorderEnsemble) (operator : Ω → H →L[ℂ] H),\n  ContinuousLinearMap.finiteDimensionalOperatorTrace (ensemble.operatorAverage operator) =\n    ensemble.average fun ω => ContinuousLinearMap.finiteDimensionalOperatorTrace (operator ω)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.FiniteDisorderEnsemble.trace_operatorAverage",
+    "module": "LeanCondensedMatter.Transport.Disorder.TraceBridge",
+    "externalAxioms": [],
+    "docString": "The ordinary finite-dimensional trace commutes with a normalized finite disorder average. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.average_twoGreenVertexTraceKernel_eq_trace_insertion"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.average_twoGreenVertexTraceKernel_eq_trace_insertion"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
