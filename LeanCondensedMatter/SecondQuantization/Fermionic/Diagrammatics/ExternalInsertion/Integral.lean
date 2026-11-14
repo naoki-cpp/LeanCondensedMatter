@@ -170,7 +170,7 @@ theorem ExternalInsertionWickDiagram.orderedDysonAmplitude_slotCongr
     (externalTime : Fin (2 * E) → ℝ)
     (order : QuarticVertexOrder (Finset.univ : Finset (Fin n))) :
     d.orderedDysonAmplitude ε β g externalTime order =
-      (d.slotCongr e).orderedDysonAmplitude ε β g externalTime
+      ExternalInsertionWickDiagram.orderedDysonAmplitude (d.slotCongr e) ε β g externalTime
         (order.trans e) := by
   apply d.orderedDysonAmplitude_congr_of_strictAnti
     (d.slotCongr e) ε β hβ g externalTime order (order.trans e)
@@ -185,7 +185,7 @@ theorem ExternalInsertionWickDiagram.orderedDysonAmplitude_slotCongr
     funext v
     rfl
   change d.dysonFixedTimeAmplitude ε β g externalTime σ =
-    (d.slotCongr e).dysonFixedTimeAmplitude ε β g externalTime
+    ExternalInsertionWickDiagram.dysonFixedTimeAmplitude (d.slotCongr e) ε β g externalTime
       (fun v => τ ((order.trans e).symm ⟨v, Finset.mem_univ v⟩))
   rw [htime]
   exact (d.slotCongr_dysonFixedTimeAmplitude_eq_of_injective
