@@ -69,7 +69,7 @@ noncomputable def externalInsertionMixedAtomicOrderSign {E n : ℕ}
 /-- The permutation on *fixed flattened atomic positions* induced by
 relabeling interaction vertices. The cardinality cast is needed to
 identify the standard `n` slots with the full interaction Finset. -/
-private noncomputable def externalInsertionStandardSlotPerm
+noncomputable def externalInsertionStandardSlotPerm
     {E n : ℕ}
     (e : ↥(Finset.univ : Finset (Fin n)) ≃
       ↥(Finset.univ : Finset (Fin n))) :
@@ -79,7 +79,7 @@ private noncomputable def externalInsertionStandardSlotPerm
 
 /-- Every fixed flattened atomic permutation from relabeling
 four-leg interaction vertices is even, for any number of external legs. -/
-private theorem externalInsertionStandardSlotPerm_sign_eq_one
+theorem externalInsertionStandardSlotPerm_sign_eq_one
     {E n : ℕ}
     (e : ↥(Finset.univ : Finset (Fin n)) ≃
       ↥(Finset.univ : Finset (Fin n))) :
@@ -119,9 +119,8 @@ theorem externalInsertionStandardToMixedAtomicPositionEquiv_slotCongr
       (fun q : Equiv.Perm (Fin (2 * (2 * n + E))) => q (M.symm leg))
       (externalInsertionMixedPositionSlotCongr_eq_refl_of_injective
         e externalTime σ hσ)
-    simpa only [externalInsertionMixedPositionSlotCongr,
-      Equiv.trans_apply, Equiv.apply_symm_apply,
-      Equiv.refl_apply] using h
+    change M'.symm (C (M (M.symm leg))) = M.symm leg at h
+    simpa only [Equiv.apply_symm_apply] using h
   apply Equiv.ext
   intro i
   change M'.symm (L (externalInsertionLegCongr (E := E) e (F i))) =
@@ -148,8 +147,8 @@ theorem externalInsertionMixedAtomicOrderSign_slotCongr_of_injective
       e externalTime σ hσ)
   rw [Equiv.Perm.sign_trans,
     externalInsertionStandardSlotPerm_sign_eq_one] at h
-  simp only [mul_one, one_mul] at h
-  exact congrArg (fun u : ℤˣ => (u : ℂ)) h.symm
+  simp only [mul_one] at h
+  exact congrArg (fun u : ℤˣ => (u : ℂ)) h
 
 /-- Fixed-time amplitude of an arbitrary external-insertion Wick diagram. -/
 noncomputable def ExternalInsertionWickDiagram.fixedTimeAmplitude {E n : ℕ}
