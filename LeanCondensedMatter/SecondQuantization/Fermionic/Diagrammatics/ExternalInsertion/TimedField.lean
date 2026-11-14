@@ -123,6 +123,7 @@ theorem externalInsertionMixedTimeOrderedAtomicPairValue_map
     externalInsertionMixedTimeOrderedAtomicLegEquiv_position,
     orderedExternalInsertionLegField_map]
 
+omit [LinearOrder Mode] in
 /-- The concrete time-labelled atomic field is equivariant under an
 arbitrary bijection of interaction slots when the vertex labels and times
 are pulled back together. The external fields remain fixed. This holds
