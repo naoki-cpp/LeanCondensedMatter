@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.TraceBridge
+import LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.DisorderComparison
 import LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.RadialIntegrand
 import LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.Radial
 import LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.RadialDenominator
@@ -38,6 +39,10 @@ the first nonvanishing transverse ladder coefficient before cancelling the inver
 The ordered-`xy` endpoint also exposes a theorem-level expansion of the canonical
 `inPlaneLadderAction` component into the concrete `r_y Γ_x` and `r_x Γ_y` products, without
 introducing a second public representation or assigning scattering-mechanism labels.
+
+The exact finite-disorder two-Green trace and the pointwise Born-Dyson dressed-surface candidate
+are compared in `BornLadder.DisorderComparison` by an explicit, non-asymptotic error decomposition.
+No model impurity-ensemble realization or small-error estimate follows from that identity.
 
 The leading Gaussian crossed sector is grouped under `Streda/GaussianCrossed/` as a
 separate Středa-level real-space trace boundary. Its `X` and

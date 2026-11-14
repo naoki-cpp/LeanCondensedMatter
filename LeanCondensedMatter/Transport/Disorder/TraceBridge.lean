@@ -108,6 +108,61 @@ theorem averagedTwoGreenVertexTraceKernelOfRegulators_eq_mean_add_connected
       rw [ensemble.averagedTwoGreenInsertionOfRegulators_eq_mean_add_connected]
       simp only [mul_add, map_add, twoGreenVertexTraceKernel, mul_assoc]
 
+/-- Exact deviation of an averaged two-Green trace from a supplied dressed-vertex RA trace.
+The three terms inside the trace respectively measure the left and right one-particle Green
+mismatches and the connected vertex remainder. No equality between an exact disorder average
+and a noncrossing or SCBA approximation is assumed. -/
+theorem averagedTwoGreenVertexTraceKernelOfRegulators_sub_dressed_eq
+    (energyLeft regulatorLeft energyRight regulatorRight : ℝ)
+    (measuredVertex bareSourceVertex : H →L[ℂ] H)
+    (suppliedLeftGreen dressedSourceVertex suppliedRightGreen : H →L[ℂ] H) :
+    ensemble.averagedTwoGreenVertexTraceKernelOfRegulators
+        energyLeft regulatorLeft energyRight regulatorRight
+        measuredVertex bareSourceVertex -
+      retardedAdvancedVertexTraceKernel
+        measuredVertex suppliedLeftGreen dressedSourceVertex suppliedRightGreen =
+      ContinuousLinearMap.finiteDimensionalOperatorTrace
+        (measuredVertex *
+          ((ensemble.averagedGreenOfRegulator energyLeft regulatorLeft -
+              suppliedLeftGreen) * bareSourceVertex *
+              ensemble.averagedGreenOfRegulator energyRight regulatorRight +
+            suppliedLeftGreen * bareSourceVertex *
+              (ensemble.averagedGreenOfRegulator energyRight regulatorRight -
+                suppliedRightGreen) +
+            ensemble.connectedTwoGreenInsertionOfRegulators
+              energyLeft regulatorLeft energyRight regulatorRight bareSourceVertex -
+            suppliedLeftGreen * (dressedSourceVertex - bareSourceVertex) *
+              suppliedRightGreen)) := by
+  let meanLeft := ensemble.averagedGreenOfRegulator energyLeft regulatorLeft
+  let meanRight := ensemble.averagedGreenOfRegulator energyRight regulatorRight
+  let connected := ensemble.connectedTwoGreenInsertionOfRegulators
+    energyLeft regulatorLeft energyRight regulatorRight bareSourceVertex
+  let trace := ContinuousLinearMap.finiteDimensionalOperatorTrace (H := H)
+  have hoperator :
+      measuredVertex * meanLeft * bareSourceVertex * meanRight +
+          measuredVertex * connected -
+          measuredVertex * suppliedLeftGreen * dressedSourceVertex * suppliedRightGreen =
+        measuredVertex *
+          ((meanLeft - suppliedLeftGreen) * bareSourceVertex * meanRight +
+            suppliedLeftGreen * bareSourceVertex * (meanRight - suppliedRightGreen) +
+            connected -
+            suppliedLeftGreen * (dressedSourceVertex - bareSourceVertex) *
+              suppliedRightGreen) := by
+    noncomm_ring
+  rw [ensemble.averagedTwoGreenVertexTraceKernelOfRegulators_eq_mean_add_connected]
+  change
+    trace (measuredVertex * meanLeft * bareSourceVertex * meanRight) +
+        trace (measuredVertex * connected) -
+        trace (measuredVertex * suppliedLeftGreen * dressedSourceVertex *
+          suppliedRightGreen) =
+      trace (measuredVertex *
+        ((meanLeft - suppliedLeftGreen) * bareSourceVertex * meanRight +
+          suppliedLeftGreen * bareSourceVertex * (meanRight - suppliedRightGreen) +
+          connected -
+          suppliedLeftGreen * (dressedSourceVertex - bareSourceVertex) *
+            suppliedRightGreen))
+  simpa only [map_add, map_sub] using congrArg trace hoperator
+
 end FiniteDisorderEnsemble
 
 end
