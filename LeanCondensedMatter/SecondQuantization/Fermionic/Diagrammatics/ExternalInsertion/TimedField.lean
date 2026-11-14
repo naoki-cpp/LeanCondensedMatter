@@ -206,6 +206,7 @@ external-first tie convention.
 
 This is an identity of `TimedField` values, before Gibbs contraction
 or fermionic crossing weights are applied. -/
+omit [LinearOrder Mode] [Fintype Mode] in
 theorem ExternalInsertionWickDiagram.slotCongr_mixedAtomicFieldFamily_eq_of_injective
     {E n : ℕ} (d : ExternalInsertionWickDiagram Mode E n)
     (e : ↥(Finset.univ : Finset (Fin n)) ≃
@@ -236,8 +237,7 @@ theorem ExternalInsertionWickDiagram.slotCongr_mixedAtomicFieldFamily_eq_of_inje
   | inr pair =>
       rcases pair with ⟨⟨v, hv⟩, l⟩
       simp [orderedExternalInsertionLegMap, orderedExternalInsertionLegField,
-        orderedExternalInsertionLegFieldLabel, orderedExternalInsertionLegTime,
-        Function.comp_def]
+        orderedExternalInsertionLegFieldLabel, orderedExternalInsertionLegTime]
 
 /-- The actual oriented free-Gibbs contraction has the same value at
 each *fixed pair of mixed-time positions* after any interaction-slot
