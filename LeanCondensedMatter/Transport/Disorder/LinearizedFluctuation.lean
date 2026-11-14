@@ -80,7 +80,7 @@ theorem norm_configurationGreen_fluctuation_sub_firstDyson_le
       ‖R ξ‖ ≤ ‖G₀‖ * ‖V ξ‖ * ‖G₀‖ * ‖V ξ‖ * ‖G ξ‖ :=
         norm_mul_five_le G₀ (V ξ) G₀ (V ξ) (G ξ)
       _ ≤ B * potentialBound * B * potentialBound * B := by
-        gcongr <;> first | exact hfree | exact hpotential ξ | exact hconfig ξ | exact hbound
+        gcongr <;> first | exact hpotential ξ | exact hconfig ξ
       _ = B ^ 3 * potentialBound ^ 2 := by ring
   have hpoint (ξ : Ω) : G ξ = G₀ + A ξ + R ξ := by
     have h := ensemble.configurationGreenOfRegulator_eq_secondOrder_add_exactRemainder_left
