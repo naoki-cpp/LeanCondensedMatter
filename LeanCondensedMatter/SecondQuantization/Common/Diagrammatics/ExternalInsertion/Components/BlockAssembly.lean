@@ -2689,6 +2689,17 @@ noncomputable def ExternalInsertionBlockLayout.connectedAssemblyFiniteDomain
         HasNoVacuumComponent d.vertexGraph}).image
       (ExternalInsertionBlockLayout.connectedAssemblyEquiv anchor).symm
 
+/-- Transport a finite weighted sum across an equivalence without assuming that
+the target type has a finite enumeration. -/
+private theorem sum_image_equiv_symm
+    {α β M : Type*} [DecidableEq β] [AddCommMonoid M]
+    (e : α ≃ β) (s : Finset α) (weight : α → M) :
+    (∑ b ∈ s.image e, weight (e.symm b)) = ∑ a ∈ s, weight a := by
+  rw [Finset.sum_image]
+  · simp only [Equiv.symm_apply_apply]
+  · intro a _ b _ h
+    exact e.injective h
+
 open Classical in
 /-- Every finite weighted vacuum-free diagram sum is exactly reindexed by
 the full dependent family of connected local diagrams and their interaction
@@ -2708,20 +2719,11 @@ theorem ExternalInsertionBlockLayout.sum_vacuumFree_eq_sum_connectedBlockFamilie
         weight (ExternalInsertionBlockLayout.assembleConnectedBlockFamily p).1 := by
   classical
   unfold ExternalInsertionBlockLayout.connectedAssemblyFiniteDomain
-  rw [Finset.sum_image]
-  · apply Finset.sum_congr rfl
-    intro d _
-    have h := (ExternalInsertionBlockLayout.connectedAssemblyEquiv
-      (ExternalLabel := ExternalLabel) (InternalLabel := InternalLabel)
-      anchor).apply_symm_apply d
-    exact (congrArg (fun x : {d : ExternalInsertionDiagram
-        ExternalLabel InternalLabel E N
-          (Finset.univ : Finset (Fin N)) //
-          HasNoVacuumComponent d.vertexGraph} => weight x.1) h).symm
-  · intro x _ y _ h
-    exact (ExternalInsertionBlockLayout.connectedAssemblyEquiv
-      (ExternalLabel := ExternalLabel) (InternalLabel := InternalLabel)
-      anchor).symm.injective h
+  convert (sum_image_equiv_symm
+    (ExternalInsertionBlockLayout.connectedAssemblyEquiv
+      (ExternalLabel := ExternalLabel) (InternalLabel := InternalLabel) anchor).symm
+    Finset.univ (fun d => weight d.1)).symm using 1
+  rfl
 
 
 open Classical in
@@ -3024,15 +3026,12 @@ theorem ExternalInsertionBlockLayout.sum_fixedPartitionPhysical_eq_standardized_
           (E := E) (N := N) (ExternalLabel := ExternalLabel)
           (InternalLabel := InternalLabel) anchor π heven).symm p) := by
   classical
-  unfold ExternalInsertionBlockLayout.fixedPartitionPhysicalStandardizedSizeShuffleFiniteDomain
-  rw [Finset.sum_image]
-  · apply Finset.sum_congr rfl
-    intro d _
-    rw [Equiv.symm_apply_apply]
-  · intro d _ d' _ h
-    exact (ExternalInsertionBlockLayout.fixedPartitionPhysicalStandardizedSizeShuffleEquiv
-      (E := E) (N := N) (ExternalLabel := ExternalLabel)
-      (InternalLabel := InternalLabel) anchor π heven).injective h
+  simpa only [ExternalInsertionBlockLayout.fixedPartitionPhysicalStandardizedSizeShuffleFiniteDomain]
+    using (sum_image_equiv_symm
+      (ExternalInsertionBlockLayout.fixedPartitionPhysicalStandardizedSizeShuffleEquiv
+        (E := E) (N := N) (ExternalLabel := ExternalLabel)
+        (InternalLabel := InternalLabel) anchor π heven)
+      Finset.univ weight).symm
 
 open Classical in
 /-- The finite image of the actual physical fixed-partition diagram
@@ -3083,15 +3082,12 @@ theorem ExternalInsertionBlockLayout.sum_fixedPartitionPhysical_eq_sizes_shuffle
           (E := E) (N := N) (ExternalLabel := ExternalLabel) (InternalLabel := InternalLabel)
           anchor π heven).symm p).1.1) := by
   classical
-  unfold ExternalInsertionBlockLayout.fixedPartitionPhysicalSizeShuffleFiniteDomain
-  rw [Finset.sum_image]
-  · apply Finset.sum_congr rfl
-    intro d _
-    rw [Equiv.symm_apply_apply]
-  · intro x _ y _ h
-    exact (ExternalInsertionBlockLayout.fixedPartitionPhysicalSizeShuffleEquiv
-      (E := E) (N := N) (ExternalLabel := ExternalLabel) (InternalLabel := InternalLabel)
-      anchor π heven).injective h
+  simpa only [ExternalInsertionBlockLayout.fixedPartitionPhysicalSizeShuffleFiniteDomain]
+    using (sum_image_equiv_symm
+      (ExternalInsertionBlockLayout.fixedPartitionPhysicalSizeShuffleEquiv
+        (E := E) (N := N) (ExternalLabel := ExternalLabel)
+        (InternalLabel := InternalLabel) anchor π heven)
+      Finset.univ (fun d => weight d.1.1)).symm
 
 open Classical in
 /-- Reindex a physical vacuum-free Wick diagram sum in a fixed even
@@ -3234,13 +3230,11 @@ theorem ExternalInsertionBlockLayout.sum_fixedPartitionLayouts_eq_sizes_shuffles
         weight ((ExternalInsertionBlockLayout.fixedPartitionSizeShuffleEquiv π heven).symm
           data).1 := by
   classical
-  unfold ExternalInsertionBlockLayout.fixedPartitionSizeShuffleFiniteDomain
-  rw [Finset.sum_image]
-  · apply Finset.sum_congr rfl
-    intro layout _
-    rw [Equiv.symm_apply_apply]
-  · intro x _ y _ h
-    exact (ExternalInsertionBlockLayout.fixedPartitionSizeShuffleEquiv π heven).injective h
+  simpa only [ExternalInsertionBlockLayout.fixedPartitionSizeShuffleFiniteDomain] using
+    (sum_image_equiv_symm
+      (ExternalInsertionBlockLayout.fixedPartitionSizeShuffleEquiv π heven)
+      (ExternalInsertionBlockLayout.fixedPartitionLayoutFiniteDomain π heven)
+      (fun layout => weight layout.1)).symm
 
 
 end Common
