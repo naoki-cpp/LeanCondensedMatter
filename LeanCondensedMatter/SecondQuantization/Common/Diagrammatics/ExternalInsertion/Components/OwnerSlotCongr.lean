@@ -46,18 +46,19 @@ noncomputable def ExternalInsertionBlockLayout.interactionBlockOwnerSlotCongrEqu
         (Finset.univ : Finset (Fin N)) B) where
   toFun v := ⟨e v.1, by
     classical
-    have hv : layout.interactionOwner v.1 = B :=
-      (Finset.mem_filter.mp v.2).2
-    apply Finset.mem_filter.mpr
-    refine ⟨Finset.mem_univ _, ?_⟩
-    change layout.interactionOwner (e.symm (e v.1)) = B
-    simpa using hv⟩
+    have hv : layout.interactionOwner v.1 = B := by
+      simpa only [ExternalInsertionBlockLayout.interactionBlock,
+        Finset.mem_filter, Finset.mem_univ, true_and] using v.2
+    simp only [ExternalInsertionBlockLayout.interactionBlock,
+      Finset.mem_filter, Finset.mem_univ, true_and]
+    simpa [ExternalInsertionBlockLayout.ownerSlotCongr] using hv⟩
   invFun v := ⟨e.symm v.1, by
     classical
-    have hv : (layout.ownerSlotCongr e).interactionOwner v.1 = B :=
-      (Finset.mem_filter.mp v.2).2
-    apply Finset.mem_filter.mpr
-    refine ⟨Finset.mem_univ _, ?_⟩
+    have hv : (layout.ownerSlotCongr e).interactionOwner v.1 = B := by
+      simpa only [ExternalInsertionBlockLayout.interactionBlock,
+        Finset.mem_filter, Finset.mem_univ, true_and] using v.2
+    simp only [ExternalInsertionBlockLayout.interactionBlock,
+      Finset.mem_filter, Finset.mem_univ, true_and]
     simpa [ExternalInsertionBlockLayout.ownerSlotCongr] using hv⟩
   left_inv v := by
     apply Subtype.ext
@@ -179,6 +180,13 @@ theorem ExternalInsertionBlockLayout.ownerSlotCongr_interactionEquiv
   exact (Subtype.heq_iff_coe_eq (fun _ => by simp [hfst])).2 rfl
 
 
+/-- Interaction-owner relabeling does not modify the canonical external
+insertion order or its source-block equivalence. -/
+theorem ExternalInsertionBlockLayout.ownerSlotCongr_sourceEquiv
+    (layout : ExternalInsertionBlockLayout E N) (e : Fin N ≃ Fin N) :
+    (layout.ownerSlotCongr e).sourceEquiv = layout.sourceEquiv := by
+  rfl
+
 /-- The independent local leg families are transported componentwise
 along the actual ambient owner-fiber permutation. -/
 noncomputable def ExternalInsertionBlockLayout.ownerSlotCongrLocalLegEquiv
@@ -222,9 +230,9 @@ theorem ExternalInsertionBlockLayout.ownerSlotCongr_legEquiv
             (externalInsertionExternalLeg E (Finset.univ : Finset (Fin N)) x))
     simp only [externalInsertionLegCongr_externalLeg,
       ExternalInsertionBlockLayout.legEquiv_externalLeg]
-    simp only [ExternalInsertionBlockLayout.ownerSlotCongrLocalLegEquiv,
-      Equiv.sigmaCongrRight_apply, externalInsertionLegCongr_externalLeg]
-    rfl
+    rw [layout.ownerSlotCongr_sourceEquiv e]
+    simp [ExternalInsertionBlockLayout.ownerSlotCongrLocalLegEquiv,
+      externalInsertionLegCongr, externalInsertionExternalLeg]
   | inr x =>
     obtain ⟨v, i⟩ := x
     change
@@ -237,9 +245,8 @@ theorem ExternalInsertionBlockLayout.ownerSlotCongr_legEquiv
     simp only [externalInsertionLegCongr_interactionLeg,
       ExternalInsertionBlockLayout.legEquiv_interactionLeg]
     rw [layout.ownerSlotCongr_interactionEquiv e v]
-    simp only [ExternalInsertionBlockLayout.ownerSlotCongrLocalLegEquiv,
-      Equiv.sigmaCongrRight_apply, externalInsertionLegCongr_interactionLeg]
-    rfl
+    simp [ExternalInsertionBlockLayout.ownerSlotCongrLocalLegEquiv,
+      externalInsertionLegCongr, externalInsertionInteractionLeg]
 
 /-- Change the owner of every physical interaction vertex while
 transporting each local pairing and each local interaction label
