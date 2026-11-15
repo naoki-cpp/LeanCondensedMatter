@@ -222,11 +222,11 @@ theorem sphericalAverage_coordinate_sq_mul_coordinate_sq (i j : Fin 3)
     | exact (hij rfl).elim
     | solve
       | convert sphericalAverage_evenQuarticPolynomial r 0 0 0 1 0 0 using 1 <;>
-          (first | ring | (congr 1; funext k; simp [evenQuarticPolynomial]; ring))
+          (solve | ring | (congr 1; funext k; simp [evenQuarticPolynomial]; ring))
       | convert sphericalAverage_evenQuarticPolynomial r 0 0 0 0 1 0 using 1 <;>
-          (first | ring | (congr 1; funext k; simp [evenQuarticPolynomial]; ring))
+          (solve | ring | (congr 1; funext k; simp [evenQuarticPolynomial]; ring))
       | convert sphericalAverage_evenQuarticPolynomial r 0 0 0 0 0 1 using 1 <;>
-          (first | ring | (congr 1; funext k; simp [evenQuarticPolynomial]; ring))
+          (solve | ring | (congr 1; funext k; simp [evenQuarticPolynomial]; ring))
 
 /-- Exactness of the finite cubature on *all* coordinate-even homogeneous
 quartics, justified by the continuous spherical-coordinate integral. -/
