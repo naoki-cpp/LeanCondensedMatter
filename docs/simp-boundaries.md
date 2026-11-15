@@ -76,7 +76,6 @@ homomorphic normalization rules:
 - `orderedSimplexIntegral_zero_fun`
 - `finiteDimensionalOperatorTrace_apply`
 - `L2Multiplication.multiplicationOperator_apply`
-- `L2Multiplication.multiplicationLinear_apply`
 - `FamilySlotShuffleTo.timeAssignment_apply`
 - `boundedUnitaryEvolution_zero`
 - `resolventApproximationEvolution_zero`
