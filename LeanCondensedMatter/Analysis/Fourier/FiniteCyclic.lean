@@ -46,7 +46,7 @@ theorem orthonormal_fourierMode : Orthonormal ℂ (fourierMode (N := N)) := by
   rw [← Finset.mul_sum]
   have hsum : (∑ j : ZMod N, stdAddChar ((r - q) * j)) =
       if r - q = 0 then (N : ℂ) else 0 := by
-    simpa only [mul_comm (r - q), ZMod.card] using
+    simpa only [mul_comm (r - q), ZMod.card, Nat.cast_ite, Nat.cast_zero] using
       (AddChar.sum_mulShift (r - q) (isPrimitive_stdAddChar N))
   rw [hsum]
   by_cases h : q = r
