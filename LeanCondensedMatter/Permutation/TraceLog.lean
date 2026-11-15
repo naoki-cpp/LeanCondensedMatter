@@ -30,12 +30,6 @@ private noncomputable def tracePowerTransform
     (K : Matrix ι ι ℂ) (f : PowerSeries ℂ) : PowerSeries ℂ :=
   PowerSeries.mk fun m => PowerSeries.coeff m f * Matrix.trace (K ^ m)
 
-private theorem coeff_tracePowerTransform
-    (K : Matrix ι ι ℂ) (f : PowerSeries ℂ) (m : ℕ) :
-    PowerSeries.coeff m (tracePowerTransform K f) =
-      PowerSeries.coeff m f * Matrix.trace (K ^ m) :=
-  PowerSeries.coeff_mk m _
-
 /-- The formal scalar series representing `tr log(1 - ζ t K)` through matrix power traces.
 
 `PowerSeries.rescale (-ζ)` is Mathlib's substitution `f(X) ↦ f(-ζ X)`, so this definition uses
@@ -49,7 +43,7 @@ theorem coeff_formalTraceLogOneSubSeries
     (ζ : ℂ) (K : Matrix ι ι ℂ) (m : ℕ) :
     PowerSeries.coeff m (formalTraceLogOneSubSeries ζ K) =
       (-ζ) ^ m * PowerSeries.coeff m (PowerSeries.log ℂ) * Matrix.trace (K ^ m) := by
-  simp [formalTraceLogOneSubSeries, coeff_tracePowerTransform]
+  simp [formalTraceLogOneSubSeries, tracePowerTransform]
 
 @[simp]
 theorem constantCoeff_formalTraceLogOneSubSeries
