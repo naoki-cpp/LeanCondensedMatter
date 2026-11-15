@@ -144,13 +144,12 @@ private theorem sphericalAverage_evenQuarticPolynomial (r a b c d e f : ℝ) :
       r ^ 4 / 5 * (a + b + c) + r ^ 4 / 15 * (d + e + f) := by
   have hφ (θ : ℝ) :
       (∫ φ in (0 : ℝ)..(2 * Real.pi),
-        evenQuarticPolynomial a b c d e f (sphericalMomentum r θ φ)) =
-        (a * (r ^ 4 * Real.sin θ ^ 4)) * (3 * Real.pi / 4) +
-        (b * (r ^ 4 * Real.sin θ ^ 4)) * (3 * Real.pi / 4) +
-        (c * (r ^ 4 * Real.cos θ ^ 4)) * (2 * Real.pi) +
-        (d * (r ^ 4 * Real.sin θ ^ 4)) * (Real.pi / 4) +
-        (e * (r ^ 4 * Real.sin θ ^ 2 * Real.cos θ ^ 2)) * Real.pi +
-        (f * (r ^ 4 * Real.sin θ ^ 2 * Real.cos θ ^ 2)) * Real.pi := by
+        evenQuarticPolynomial a b c d e f (sphericalMomentum r θ φ)) *
+          Real.sin θ =
+        (r ^ 4 * Real.pi * (3 * (a + b) + d) / 4) * Real.sin θ ^ 5 +
+        (r ^ 4 * Real.pi * (2 * c)) * (Real.sin θ * Real.cos θ ^ 4) +
+        (r ^ 4 * Real.pi * (e + f)) *
+          (Real.sin θ ^ 3 * Real.cos θ ^ 2) := by
     let U : ℝ := r ^ 4 * Real.sin θ ^ 4
     let V : ℝ := r ^ 4 * Real.cos θ ^ 4
     let W : ℝ := r ^ 4 * Real.sin θ ^ 2 * Real.cos θ ^ 2
@@ -190,21 +189,8 @@ private theorem sphericalAverage_evenQuarticPolynomial (r a b c d e f : ℝ) :
       integral_sin_sq_mul_cos_sq_full, integral_cos_sq_full, integral_sin_sq_full]
     dsimp [U, V, W]
     ring
-  have hθ (θ : ℝ) :
-      ((a * (r ^ 4 * Real.sin θ ^ 4)) * (3 * Real.pi / 4) +
-        (b * (r ^ 4 * Real.sin θ ^ 4)) * (3 * Real.pi / 4) +
-        (c * (r ^ 4 * Real.cos θ ^ 4)) * (2 * Real.pi) +
-        (d * (r ^ 4 * Real.sin θ ^ 4)) * (Real.pi / 4) +
-        (e * (r ^ 4 * Real.sin θ ^ 2 * Real.cos θ ^ 2)) * Real.pi +
-        (f * (r ^ 4 * Real.sin θ ^ 2 * Real.cos θ ^ 2)) * Real.pi) *
-          Real.sin θ =
-        (r ^ 4 * Real.pi * (3 * (a + b) + d) / 4) * Real.sin θ ^ 5 +
-        (r ^ 4 * Real.pi * (2 * c)) * (Real.sin θ * Real.cos θ ^ 4) +
-        (r ^ 4 * Real.pi * (e + f)) *
-          (Real.sin θ ^ 3 * Real.cos θ ^ 2) := by
-    ring
   unfold sphericalAverage
-  simp_rw [hφ, hθ]
+  simp_rw [hφ]
   have hA : IntervalIntegrable
       (fun θ : ℝ =>
         (r ^ 4 * Real.pi * (3 * (a + b) + d) / 4) * Real.sin θ ^ 5)
