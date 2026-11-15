@@ -184,4 +184,40 @@ theorem FamilySlotShuffleTo.ambientRelabel_owner
   simp [FamilySlotShuffleTo.ambientRelabel]
 
 
+/-- A fixed local owner fiber is relabeled in increasing order by the
+permutation between two order-preserving family shuffles. This is
+stronger than owner preservation: it identifies local increasing
+enumerations without an extra within-block permutation. -/
+theorem FamilySlotShuffleTo.ambientRelabel_strictMono_ownerFiber
+    {size : ι → ℕ} {total : ℕ}
+    (σ τ : FamilySlotShuffleTo size total) (i : ι) :
+    StrictMono (fun v : {v : Fin total // (σ.slotEquiv.symm v).1 = i} =>
+      σ.ambientRelabel τ v.1) := by
+  have hrepr (v : {v : Fin total // (σ.slotEquiv.symm v).1 = i}) :
+      ∃ j : Fin (size i), v.1 = σ.slotEquiv ⟨i, j⟩ := by
+    rcases hq : σ.slotEquiv.symm v.1 with ⟨i', j⟩
+    have hi : i' = i := by
+      simpa [hq] using v.2
+    subst i'
+    refine ⟨j, ?_⟩
+    calc
+      v.1 = σ.slotEquiv (σ.slotEquiv.symm v.1) :=
+        (σ.slotEquiv.apply_symm_apply _).symm
+      _ = σ.slotEquiv ⟨i, j⟩ := congrArg σ.slotEquiv hq
+  intro a b hab
+  obtain ⟨ja, ha⟩ := hrepr a
+  obtain ⟨jb, hb⟩ := hrepr b
+  change a.1 < b.1 at hab
+  rw [ha, hb] at hab
+  have hj : ja < jb := by
+    by_contra h
+    have hle : jb ≤ ja := le_of_not_gt h
+    have hrev : σ.slotEquiv ⟨i, jb⟩ ≤ σ.slotEquiv ⟨i, ja⟩ :=
+      (σ.strictMono i).monotone hle
+    exact (not_le_of_gt hab) hrev
+  change (σ.ambientRelabel τ) a.1 < (σ.ambientRelabel τ) b.1
+  rw [ha, hb, σ.ambientRelabel_apply_slot, σ.ambientRelabel_apply_slot]
+  exact (τ.strictMono i) hj
+
+
 end Combinatorics
