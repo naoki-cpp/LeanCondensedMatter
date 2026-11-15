@@ -384,8 +384,11 @@ theorem ExternalInsertionBlockLayout.assembleDiagram_ownerSlotCongr
         ((layout.interactionEquiv S w).2)
     rw [layout.ownerSlotCongr_interactionEquiv e w]
     obtain ⟨B, u⟩ := layout.interactionEquiv S w
-    simp [ExternalInsertionBlockLayout.ownerSlotCongrBlockFamily,
-      ExternalInsertionDiagram.slotCongr]
+    change (F B).vertexLabel
+        ((layout.interactionBlockOwnerSlotCongrEquiv e B).symm
+          (layout.interactionBlockOwnerSlotCongrEquiv e B u)) =
+      (F B).vertexLabel u
+    rw [Equiv.symm_apply_apply]
   · let Q : Combinatorics.PairingOn
         (Σ B : layout.partition.parts,
           Fin (2 * (2 * (layout.interactionBlock S B).card +
