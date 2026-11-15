@@ -32,6 +32,25 @@ noncomputable def externalInsertionLegCongr (e : ↥T ≃ ↥U) :
     ((Equiv.sumCongr (Equiv.refl (Fin (2 * E))) (e.prodCongr (Equiv.refl (Fin 4)))).trans
       (externalInsertionLegEquiv E U).symm)
 
+/-- Composing two exact interaction-slot relabelings of the flattened
+fermionic legs is the relabeling along the composite slot equivalence.
+This keeps external insertion labels and each local quartic-leg number
+fixed, so it does not assume any order-dependent pairing sign. -/
+theorem externalInsertionLegCongr_trans
+    {V : ℕ} {W : Finset (Fin V)}
+    (e : ↥T ≃ ↥U) (f : ↥U ≃ ↥W) :
+    externalInsertionLegCongr (E := E) (e.trans f) =
+      (externalInsertionLegCongr (E := E) e).trans
+        (externalInsertionLegCongr (E := E) f) := by
+  apply Equiv.ext
+  intro p
+  obtain ⟨x, rfl⟩ := (externalInsertionLegEquiv E T).symm.surjective p
+  cases x with
+  | inl i => simp [externalInsertionLegCongr]
+  | inr v =>
+      obtain ⟨i, j⟩ := v
+      simp [externalInsertionLegCongr]
+
 /-- The inverse relabeling of legs is the relabeling along the inverse. -/
 theorem externalInsertionLegCongr_symm (e : ↥T ≃ ↥U) :
     externalInsertionLegCongr (E := E) e.symm = (externalInsertionLegCongr (E := E) e).symm := by
@@ -92,6 +111,25 @@ theorem ExternalInsertionDiagram.slotCongr_vertexWeight
   change (∏ v : ↥U, w (d.vertexLabel (e.symm v))) =
     ∏ v : ↥T, w (d.vertexLabel v)
   exact Equiv.prod_comp e.symm (fun v : ↥T => w (d.vertexLabel v))
+
+/-- The full labelled Wick diagram transport is functorial: relabeling
+interaction vertices in two stages has exactly the same external labels,
+quartic labels, and Wick pairing partners as one composite relabeling. -/
+theorem ExternalInsertionDiagram.slotCongr_trans
+    {V : ℕ} {W : Finset (Fin V)}
+    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N T)
+    (e : ↥T ≃ ↥U) (f : ↥U ≃ ↥W) :
+    (d.slotCongr e).slotCongr f = d.slotCongr (e.trans f) := by
+  apply ExternalInsertionDiagram.ext
+  · rfl
+  · funext v
+    simp [ExternalInsertionDiagram.slotCongr]
+  · change
+      (d.pairing.transport (externalInsertionLegCongr (E := E) e).symm).transport
+          (externalInsertionLegCongr (E := E) f).symm =
+        d.pairing.transport (externalInsertionLegCongr (E := E) (e.trans f)).symm
+    rw [Combinatorics.PairingOn.transport_trans, externalInsertionLegCongr_trans]
+    rfl
 
 /-- Interaction-slot relabeling induces an isomorphism of vertex graphs. -/
 noncomputable def ExternalInsertionDiagram.slotCongrVertexGraphIso (e : ↥T ≃ ↥U)
