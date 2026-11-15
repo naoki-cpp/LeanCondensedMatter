@@ -324,9 +324,10 @@ theorem sum_fixedPartitionDysonAmplitude_eq_standardizedOrderedDysonAmplitude
               (E := E) (N := n) (ExternalLabel := ExternalFieldLabel Mode)
               (InternalLabel := QuarticVertexLabel Mode) anchor π heven).symm p).1.1.externalLabel =
             labels then
-          ((ExternalInsertionBlockLayout.fixedPartitionPhysicalStandardizedSizeShuffleEquiv
+          ExternalInsertionWickDiagram.orderedDysonAmplitude
+            ((ExternalInsertionBlockLayout.fixedPartitionPhysicalStandardizedSizeShuffleEquiv
               (E := E) (N := n) (ExternalLabel := ExternalFieldLabel Mode)
-              (InternalLabel := QuarticVertexLabel Mode) anchor π heven).symm p).1.1.orderedDysonAmplitude
+              (InternalLabel := QuarticVertexLabel Mode) anchor π heven).symm p).1.1
             ε β g externalTime
             (((Finset.univ : Finset (Fin n)).orderIsoOfFin rfl).toEquiv.trans e)
         else 0 := by
@@ -336,7 +337,7 @@ theorem sum_fixedPartitionDysonAmplitude_eq_standardizedOrderedDysonAmplitude
     (E := E) (N := n) (ExternalLabel := ExternalFieldLabel Mode)
     (InternalLabel := QuarticVertexLabel Mode) anchor π heven
     (fun d => if d.1.1.externalLabel = labels then
-      d.1.1.orderedDysonAmplitude ε β g externalTime
+      ExternalInsertionWickDiagram.orderedDysonAmplitude d.1.1 ε β g externalTime
         (((Finset.univ : Finset (Fin n)).orderIsoOfFin rfl).toEquiv.trans e)
       else 0)
 
