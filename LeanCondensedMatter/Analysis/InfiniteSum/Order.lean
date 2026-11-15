@@ -19,22 +19,15 @@ theorem Summable.tsum_comp_injective_lt_of_exists_not_mem
     (hf_nonneg : ∀ k, 0 ≤ f k) (e : ι → κ) (he : Function.Injective e)
     {j : κ} (hj : j ∉ Set.range e) (hjpos : 0 < f j) :
     ∑' i, f (e i) < ∑' k, f k := by
-  let e' : ι ⊕ Unit → κ := Sum.elim e (fun _ => j)
-  have he' : Function.Injective e' :=
-    Function.Injective.sumElim he (fun _ _ _ => Subsingleton.elim _ _)
-      (fun i _ hij => hj ⟨i, hij⟩)
-  have haug : Summable (fun q : ι ⊕ Unit => f (e' q)) :=
-    hf.comp_injective he'
-  have hleft : Summable ((fun q : ι ⊕ Unit => f (e' q)) ∘ Sum.inl) :=
-    haug.comp_injective Sum.inl_injective
-  have hright : Summable ((fun q : ι ⊕ Unit => f (e' q)) ∘ Sum.inr) :=
-    haug.comp_injective Sum.inr_injective
-  have hsplit :
-      (∑' q : ι ⊕ Unit, f (e' q)) = (∑' i, f (e i)) + f j := by
-    simpa [Function.comp_def, e'] using hleft.tsum_sum hright
-  have hle : ∑' q : ι ⊕ Unit, f (e' q) ≤ ∑' k, f k :=
-    hasSum_le_inj e' he' (fun k _ => hf_nonneg k) (fun _ => le_rfl)
-      haug.hasSum hf.hasSum
-  rw [hsplit] at hle
-  linarith
+  classical
+  have hsub : Summable (fun k : ↥((Set.range e)ᶜ) => f (k : κ)) :=
+    hf.comp_injective Subtype.val_injective
+  have hpos : 0 < ∑' k : ↥((Set.range e)ᶜ), f (k : κ) :=
+    hsub.tsum_pos (fun k => hf_nonneg k) ⟨j, hj⟩ hjpos
+  have hrange :
+      (∑' i, f (e i)) = ∑' k : Set.range e, f (k : κ) := by
+    simpa using
+      (Equiv.tsum_eq (Equiv.ofInjective e he) (fun k : Set.range e => f (k : κ)))
+  rw [hrange]
+  linarith [hf.tsum_subtype_add_tsum_subtype_compl (Set.range e)]
 
