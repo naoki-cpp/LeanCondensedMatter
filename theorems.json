@@ -132,48 +132,6 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": false,
-    "statement": "∀ {K : Type u_1} [inst : Field K] (a b x : K),\n  a - x ≠ 0 → b - x ≠ 0 → (b - a) * ((a - x) * (b - x))⁻¹ = (a - x)⁻¹ - (b - x)⁻¹",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "Algebra.scalarResolvent_gap_mul_inverse_product",
-    "module": "LeanCondensedMatter.Analysis.Algebra.ScalarResolvent",
-    "externalAxioms": [],
-    "docString": "A common scalar shift cancels from the two-resolvent difference.\nNo assumption that the spectral parameters are distinct is needed. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadial_ra_weighted_moment_mul_center_gap"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadial_ra_weighted_moment_mul_center_gap"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
     "terminal": true,
     "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {ι : Type u_2} [inst_3 : Fintype ι] {κ : Type u_3} (data : BerryGeometry.PointwiseEigenbasisData κ ι H) (μ : κ)\n  (n : ι), (data.berryConnection μ n n).im = 0",
     "standardAxioms": [
@@ -2356,6 +2314,130 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {ι : Type u_1} {size : ι → ℕ} {total : ℕ} (σ τ : Combinatorics.FamilySlotShuffleTo size total)\n  (v : (i : ι) × Fin (size i)), (σ.ambientRelabel τ) (σ.slotEquiv v) = τ.slotEquiv v",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "Combinatorics.FamilySlotShuffleTo.ambientRelabel_apply_slot",
+    "module": "LeanCondensedMatter.Combinatorics.Shuffle.FamilySlotShuffle",
+    "externalAxioms": [],
+    "docString": "The ambient relabeling takes each exact source local slot to the\nsame local slot in the target shuffle, including empty fibers. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "Combinatorics.FamilySlotShuffleTo.ambientRelabel_strictMono_ownerFiber"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "Combinatorics.FamilySlotShuffleTo.ambientRelabel_strictMono_ownerFiber"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {ι : Type u_1} {size : ι → ℕ} {total : ℕ} (σ τ : Combinatorics.FamilySlotShuffleTo size total) (v : Fin total),\n  (τ.slotEquiv.symm ((σ.ambientRelabel τ) v)).fst = (σ.slotEquiv.symm v).fst",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "Combinatorics.FamilySlotShuffleTo.ambientRelabel_owner",
+    "module": "LeanCondensedMatter.Combinatorics.Shuffle.FamilySlotShuffle",
+    "externalAxioms": [],
+    "docString": "The relabeling preserves the *physical owner* of every ambient slot.\nThis lets the same standardized local Wick diagrams be carried through\ndifferent physical interaction-owner assignments. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {ι : Type u_1} {size : ι → ℕ} {total : ℕ} (σ τ : Combinatorics.FamilySlotShuffleTo size total) (i : ι),\n  StrictMono fun v => (σ.ambientRelabel τ) ↑v",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "Combinatorics.FamilySlotShuffleTo.ambientRelabel_strictMono_ownerFiber",
+    "module": "LeanCondensedMatter.Combinatorics.Shuffle.FamilySlotShuffle",
+    "externalAxioms": [],
+    "docString": "A fixed local owner fiber is relabeled in increasing order by the\npermutation between two order-preserving family shuffles. This is\nstronger than owner preservation: it identifies local increasing\nenumerations without an extra within-block permutation. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Common.ExternalInsertionBlockLayout.ofFamilyShuffle_ownerLocal_strictMono"
+    ],
+    "dependencies": [
+      "Combinatorics.FamilySlotShuffleTo.ambientRelabel_apply_slot"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Common.ExternalInsertionBlockLayout.ofFamilyShuffle_ownerLocal_strictMono"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {ι : Type u_1} {size : ι → ℕ} {total : ℕ} (shuffle : Combinatorics.FamilySlotShuffleTo size total) (i j : ι),\n  i ≠ j → shuffle.blockInversionCount i j + shuffle.blockInversionCount j i = size i * size j",
     "standardAxioms": [
       "Classical.choice",
@@ -2596,7 +2678,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ {ι : Type u_4} {size : ι → ℕ} {total : ℕ} (σ : Combinatorics.FamilySlotShuffleTo size total) (i : ι),\n  Fintype.card { v // (σ.slotEquiv.symm v).fst = i } = size i",
     "standardAxioms": [
       "Classical.choice",
@@ -2604,7 +2686,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -2615,14 +2697,17 @@
     "docString": "Every shuffle has exactly the prescribed number of ambient slots\nowned by each block, including empty blocks. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "SecondQuantization.Common.ExternalInsertionBlockLayout.ofFamilyShuffle_interactionBlock_card"
+    ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "Combinatorics.familyShuffleOwnerEquiv"
+      "Combinatorics.familyShuffleOwnerEquiv",
+      "SecondQuantization.Common.ExternalInsertionBlockLayout.ofFamilyShuffle_interactionBlock_card"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -7266,6 +7351,7 @@
       "SecondQuantization.Common.ExternalInsertionDiagram.slotCongr_pairingInMixedOrder_eq_of_injective",
       "SecondQuantization.Common.QuarticDiagram.reassemble_componentPartition",
       "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.sidePairing_sideMatching",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.OwnerSlotCongr.0.SecondQuantization.Common.sigmaPairing_transport",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.restrictComponent_reassemble_pairing",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalSubsetMoment.0.SecondQuantization.Fermionic.pairing_heq_of_finCongr_transport"
     ],
@@ -7293,10 +7379,11 @@
       "SecondQuantization.Common.ExternalInsertionDiagram.slotCongr_pairingInMixedOrder_eq_of_injective",
       "SecondQuantization.Common.QuarticDiagram.reassemble_componentPartition",
       "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.sidePairing_sideMatching",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.OwnerSlotCongr.0.SecondQuantization.Common.sigmaPairing_transport",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.restrictComponent_reassemble_pairing",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalSubsetMoment.0.SecondQuantization.Fermionic.pairing_heq_of_finCongr_transport"
     ],
-    "compiledConsumerCount": 22,
+    "compiledConsumerCount": 23,
     "axioms": [
       "Quot.sound"
     ],
@@ -7624,6 +7711,7 @@
       "SecondQuantization.Common.ExternalInsertionBlockLayout.assembleDiagram_partner_block",
       "SecondQuantization.Common.ExternalInsertionDiagram.assembleComponentPairing_partner",
       "SecondQuantization.Common.ExternalInsertionDiagram.reassembleComponentPairing_eq",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.OwnerSlotCongr.0.SecondQuantization.Common.sigmaPairing_transport",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_partner_bigLegEquiv_fst",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_partner_bigLegEquiv_symm_sigma_mk"
     ],
@@ -7636,10 +7724,11 @@
       "SecondQuantization.Common.ExternalInsertionBlockLayout.assembleDiagram_partner_block",
       "SecondQuantization.Common.ExternalInsertionDiagram.assembleComponentPairing_partner",
       "SecondQuantization.Common.ExternalInsertionDiagram.reassembleComponentPairing_eq",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.OwnerSlotCongr.0.SecondQuantization.Common.sigmaPairing_transport",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_partner_bigLegEquiv_fst",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_partner_bigLegEquiv_symm_sigma_mk"
     ],
-    "compiledConsumerCount": 7,
+    "compiledConsumerCount": 8,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -7872,6 +7961,7 @@
       "SecondQuantization.Common.TwoPointDiagram.slotCongr_partner",
       "SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_left_normalizedPair",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.BlockAssembly.0.SecondQuantization.Common.ExternalInsertionBlockLayout.pairingTransport_preserves_block",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.OwnerSlotCongr.0.SecondQuantization.Common.sigmaPairing_transport",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_partner_bigLegEquiv_fst",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_partner_bigLegEquiv_symm_sigma_mk",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalSubsetMoment.0.SecondQuantization.Fermionic.pairing_heq_of_finCongr_transport"
@@ -7905,11 +7995,12 @@
       "SecondQuantization.Common.TwoPointDiagram.slotCongr_partner",
       "SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_left_normalizedPair",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.BlockAssembly.0.SecondQuantization.Common.ExternalInsertionBlockLayout.pairingTransport_preserves_block",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.OwnerSlotCongr.0.SecondQuantization.Common.sigmaPairing_transport",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_partner_bigLegEquiv_fst",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_partner_bigLegEquiv_symm_sigma_mk",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalSubsetMoment.0.SecondQuantization.Fermionic.pairing_heq_of_finCongr_transport"
     ],
-    "compiledConsumerCount": 28,
+    "compiledConsumerCount": 29,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -7985,7 +8076,9 @@
     "directWrapperOf": null,
     "dependents": [
       "Combinatorics.PairingOn.restrictAlongEquiv_change_coordinates",
+      "SecondQuantization.Common.ExternalInsertionBlockLayout.assembleDiagram_ownerSlotCongr",
       "SecondQuantization.Common.ExternalInsertionDiagram.ofSlotSplit_pairingInMixedOrder_eq_ofSplit_orderedVacuum",
+      "SecondQuantization.Common.ExternalInsertionDiagram.slotCongr_trans",
       "SecondQuantization.Common.ExternalInsertionDiagram.supportSlotCongr_pairingInMixedOrder"
     ],
     "dependencies": [
@@ -7996,10 +8089,12 @@
     "completedMention": false,
     "compiledConsumers": [
       "Combinatorics.PairingOn.restrictAlongEquiv_change_coordinates",
+      "SecondQuantization.Common.ExternalInsertionBlockLayout.assembleDiagram_ownerSlotCongr",
       "SecondQuantization.Common.ExternalInsertionDiagram.ofSlotSplit_pairingInMixedOrder_eq_ofSplit_orderedVacuum",
+      "SecondQuantization.Common.ExternalInsertionDiagram.slotCongr_trans",
       "SecondQuantization.Common.ExternalInsertionDiagram.supportSlotCongr_pairingInMixedOrder"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 5,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -9017,6 +9112,44 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
+    "terminal": true,
+    "statement": "∀ {ι : Type u_1} {α : Type u_2} (F : ι → Type u_3) {total : ℕ} (size : ι → ℕ) (ambientEquiv : α ≃ (i : ι) × F i)\n  (orders : Combinatorics.FamilyOrdersOf F size) (σ τ : Combinatorics.FamilySlotShuffleTo size total),\n  (σ.ambientRelabel τ).symm.trans (Combinatorics.assembleFamilyOrderOfSize F size ambientEquiv orders σ) =\n    Combinatorics.assembleFamilyOrderOfSize F size ambientEquiv orders τ",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "Combinatorics.assembleFamilyOrderOfSize_ambientRelabel",
+    "module": "LeanCondensedMatter.Combinatorics.Shuffle.FamilyOrderShuffle",
+    "externalAxioms": [],
+    "docString": "Changing the ambient shuffle while retaining the same family of\nlocal orders is exactly precomposition of the original global order by\nthe inverse ambient slot relabeling. This is the algebraic identification\nbetween owner-shuffle transport and component interaction-order shuffles. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
     "terminal": false,
     "statement": "∀ {ι : Type u_1} {α : Type u_2} (F : ι → Type u_3) {total : ℕ} (size : ι → ℕ) (ambientEquiv : α ≃ (i : ι) × F i)\n  (orders : Combinatorics.FamilyOrdersOf F size) (shuffle : Combinatorics.FamilySlotShuffleTo size total)\n  (order : Fin total ≃ α),\n  (∀ (i : ι) (j : Fin (size i)), order.symm (ambientEquiv.symm ⟨i, (orders i) j⟩) = shuffle.slotEquiv ⟨i, j⟩) →\n    Combinatorics.assembleFamilyOrderOfSize F size ambientEquiv orders shuffle = order",
     "standardAxioms": [
@@ -9392,8 +9525,7 @@
       "Combinatorics.smul_permutationConnectedCycleSeries_eq_neg_traceLog"
     ],
     "dependencies": [
-      "Combinatorics.sum_singleCycleContribution_assignments_eq_factorial_mul_trace",
-      "_private.LeanCondensedMatter.Permutation.ConnectedCycleSeries.0.Combinatorics.factorial_pred_div_factorial_complex"
+      "Combinatorics.sum_singleCycleContribution_assignments_eq_factorial_mul_trace"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -11138,6 +11270,48 @@
     "completedMention": false,
     "compiledConsumers": [
       "Combinatorics.permutationConnectedCycleSeries_diagonal_eq_neg_inv_smul_sum_log"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {N M k : ℕ} (T : Finset (Fin N)) (U : Finset (Fin M)) (hT : T.card = k) (hU : U.card = k) (e : ↥T ≃ ↥U),\n  (StrictMono fun v => ↑(e v)) →\n    e.trans (Combinatorics.standardSlotEquivOfCardEq U hU) = Combinatorics.standardSlotEquivOfCardEq T hT",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "Combinatorics.standardSlotEquivOfCardEq_comp_of_strictMono",
+    "module": "LeanCondensedMatter.Combinatorics.Shuffle.SlotShuffle",
+    "externalAxioms": [],
+    "docString": "Canonical increasing interaction-slot standardization is natural\nunder an *order-preserving* equivalence of the two physical owner\nfibers. This is the precise extra hypothesis required to identify the\nsame standardized Wick diagram across two different owner shuffles;\narbitrary permutations do not satisfy this equality. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Common.ExternalInsertionBlockLayout.ofFamilyShuffle_standardSlotEquiv_comp"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Common.ExternalInsertionBlockLayout.ofFamilyShuffle_standardSlotEquiv_comp"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -36729,9 +36903,7 @@
     "dependents": [
       "LeanCondensedMatter.Crystal.AtomicConfiguration.pointGroup_rotation_power_of_det_one"
     ],
-    "dependencies": [
-      "Matrix.sq_sub_trace_smul_add_det_eq_zero"
-    ],
+    "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
@@ -36773,9 +36945,7 @@
     "dependents": [
       "LeanCondensedMatter.Crystal.AtomicConfiguration.pointGroup_rotation_power_of_det_one"
     ],
-    "dependencies": [
-      "Matrix.sq_sub_trace_smul_add_det_eq_zero"
-    ],
+    "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
@@ -36817,9 +36987,7 @@
     "dependents": [
       "LeanCondensedMatter.Crystal.AtomicConfiguration.pointGroup_rotation_power_of_det_one"
     ],
-    "dependencies": [
-      "Matrix.sq_sub_trace_smul_add_det_eq_zero"
-    ],
+    "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
@@ -36862,7 +37030,6 @@
       "LeanCondensedMatter.Crystal.AtomicConfiguration.pointGroup_crystallographic_restriction"
     ],
     "dependencies": [
-      "Matrix.sq_sub_trace_smul_add_det_eq_zero",
       "Matrix.trace_eq_zero_of_mul_transpose_eq_one_det_neg_one"
     ],
     "crossModuleDirectWrapper": false,
@@ -36871,54 +37038,6 @@
       "LeanCondensedMatter.Crystal.AtomicConfiguration.pointGroup_crystallographic_restriction"
     ],
     "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (M : Matrix (Fin 2) (Fin 2) ℝ),\n  M ^ 2 - (algebraMap ℝ (Matrix (Fin 2) (Fin 2) ℝ)) M.trace * M + (algebraMap ℝ (Matrix (Fin 2) (Fin 2) ℝ)) M.det = 0",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "Matrix.sq_sub_trace_smul_add_det_eq_zero",
-    "module": "LeanCondensedMatter.Analysis.Matrix.FinTwoCharpoly",
-    "externalAxioms": [],
-    "docString": "The quadratic Cayley–Hamilton identity for a real `2 × 2` matrix. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "Matrix.pow_four_eq_one_of_trace_zero_det_one",
-      "Matrix.pow_six_eq_one_of_trace_one_det_one",
-      "Matrix.pow_three_eq_one_of_trace_neg_one_det_one",
-      "Matrix.sq_eq_one_of_mul_transpose_eq_one_det_neg_one"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "Matrix.pow_four_eq_one_of_trace_zero_det_one",
-      "Matrix.pow_six_eq_one_of_trace_one_det_one",
-      "Matrix.pow_three_eq_one_of_trace_neg_one_det_one",
-      "Matrix.sq_eq_one_of_mul_transpose_eq_one_det_neg_one"
-    ],
-    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -58346,8 +58465,7 @@
     "dependents": [],
     "dependencies": [
       "QuantumTheory.Models.KronigPenney.barrierWaveNumber_ne_zero",
-      "QuantumTheory.Models.KronigPenney.wellWaveNumber_ne_zero",
-      "_private.LeanCondensedMatter.Models.KronigPenney.0.QuantumTheory.Models.KronigPenney.discriminant_eq_closedForm_algebraic"
+      "QuantumTheory.Models.KronigPenney.wellWaveNumber_ne_zero"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -69219,7 +69337,6 @@
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadial_ra_pole_moment_mul_center_gap_eq_log"
     ],
     "dependencies": [
-      "Algebra.scalarResolvent_gap_mul_inverse_product",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominator_eq_radial",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominator_ne_zero"
     ],
@@ -91509,7 +91626,8 @@
     "dependents": [
       "QuantumTheory.Transport.FiniteDisorderEnsemble.averagedGreenOfRegulator_eq_born_add_exactRemainder_of_centered",
       "QuantumTheory.Transport.FiniteDisorderEnsemble.averagedOperatorInsertion_eq_mean_add_connected",
-      "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_averagedGreen_sub_free_le"
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_averagedGreen_sub_free_le",
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_configurationGreen_fluctuation_sub_firstDyson_le"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
@@ -91517,9 +91635,10 @@
     "compiledConsumers": [
       "QuantumTheory.Transport.FiniteDisorderEnsemble.averagedGreenOfRegulator_eq_born_add_exactRemainder_of_centered",
       "QuantumTheory.Transport.FiniteDisorderEnsemble.averagedOperatorInsertion_eq_mean_add_connected",
-      "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_averagedGreen_sub_free_le"
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_averagedGreen_sub_free_le",
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_configurationGreen_fluctuation_sub_firstDyson_le"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -92121,7 +92240,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -92133,7 +92252,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Transport.FiniteDisorderEnsemble.averagedGreenOfRegulator_eq_born_add_exactRemainder_of_centered"
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.averagedGreenOfRegulator_eq_born_add_exactRemainder_of_centered",
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_configurationGreen_fluctuation_sub_firstDyson_le"
     ],
     "dependencies": [
       "QuantumTheory.Transport.FiniteDisorderEnsemble.configurationGreenOfRegulator_eq_free_add_dyson_left"
@@ -92141,9 +92261,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Transport.FiniteDisorderEnsemble.averagedGreenOfRegulator_eq_born_add_exactRemainder_of_centered"
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.averagedGreenOfRegulator_eq_born_add_exactRemainder_of_centered",
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_configurationGreen_fluctuation_sub_firstDyson_le"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -92269,6 +92390,7 @@
       "QuantumTheory.Transport.FiniteDisorderEnsemble.exactSecondMoment_eq_scalarSecondMomentStrength_smul",
       "QuantumTheory.Transport.FiniteDisorderEnsemble.exactSecondMoment_mul_of_commutes",
       "QuantumTheory.Transport.FiniteDisorderEnsemble.exactSecondMoment_star",
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.firstBornTwoGreenRungOfRegulators_eq_average_firstDyson",
       "QuantumTheory.Transport.FiniteDisorderEnsemble.mul_exactSecondMoment_of_commutes"
     ],
     "dependencies": [],
@@ -92279,9 +92401,10 @@
       "QuantumTheory.Transport.FiniteDisorderEnsemble.exactSecondMoment_eq_scalarSecondMomentStrength_smul",
       "QuantumTheory.Transport.FiniteDisorderEnsemble.exactSecondMoment_mul_of_commutes",
       "QuantumTheory.Transport.FiniteDisorderEnsemble.exactSecondMoment_star",
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.firstBornTwoGreenRungOfRegulators_eq_average_firstDyson",
       "QuantumTheory.Transport.FiniteDisorderEnsemble.mul_exactSecondMoment_of_commutes"
     ],
-    "compiledConsumerCount": 5,
+    "compiledConsumerCount": 6,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -92514,6 +92637,51 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {H : Type u_1} {Ω : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] [inst_3 : Fintype Ω] (ensemble : QuantumTheory.Transport.FiniteDisorderEnsemble)\n  (energyLeft regulatorLeft energyRight regulatorRight : ℝ) (vertex : H →L[ℂ] H),\n  ensemble.firstBornTwoGreenRungOfRegulators energyLeft regulatorLeft energyRight regulatorRight vertex =\n    ensemble.average fun ω =>\n      ensemble.freeGreenOfRegulator energyLeft regulatorLeft * ↑(ensemble.impurityPotential ω) *\n            ensemble.freeGreenOfRegulator energyLeft regulatorLeft *\n          vertex *\n        (ensemble.freeGreenOfRegulator energyRight regulatorRight * ↑(ensemble.impurityPotential ω) *\n          ensemble.freeGreenOfRegulator energyRight regulatorRight)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.FiniteDisorderEnsemble.firstBornTwoGreenRungOfRegulators_eq_average_firstDyson",
+    "module": "LeanCondensedMatter.Transport.Disorder.FirstRungNormBound",
+    "externalAxioms": [],
+    "docString": "The first covariance rung is the exact average of two first-order Dyson insertions.\nThe order of all noncommuting operators is preserved. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_connectedTwoGreen_sub_firstBornRung_le_cubic"
+    ],
+    "dependencies": [
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.exactSecondMoment_eq_average",
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.map_average"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_connectedTwoGreen_sub_firstBornRung_le_cubic"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {H : Type u_1} {Ω : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] [inst_3 : Fintype Ω] (ensemble : QuantumTheory.Transport.FiniteDisorderEnsemble)\n  (energy regulator : ℝ) (hregulator : regulator ≠ 0) (selfEnergy : H →L[ℂ] H),\n  QuantumTheory.Transport.IsSelfEnergy (ensemble.freeGreenOfRegulator energy regulator)\n      (ensemble.averagedGreenOfRegulator energy regulator) selfEnergy ↔\n    selfEnergy = ensemble.exactSelfEnergyOfRegulator energy regulator hregulator",
     "standardAxioms": [
       "Classical.choice",
@@ -92582,7 +92750,9 @@
     "dependents": [
       "QuantumTheory.Transport.FiniteDisorderEnsemble.average_twoGreenVertexTraceKernel_eq_trace_insertion",
       "QuantumTheory.Transport.FiniteDisorderEnsemble.averagedGreenOfRegulator_eq_born_add_exactRemainder_of_centered",
-      "QuantumTheory.Transport.FiniteDisorderEnsemble.averagedOperatorInsertion_eq_mean_add_connected"
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.averagedOperatorInsertion_eq_mean_add_connected",
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.firstBornTwoGreenRungOfRegulators_eq_average_firstDyson",
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_configurationGreen_fluctuation_sub_firstDyson_le"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
@@ -92590,9 +92760,11 @@
     "compiledConsumers": [
       "QuantumTheory.Transport.FiniteDisorderEnsemble.average_twoGreenVertexTraceKernel_eq_trace_insertion",
       "QuantumTheory.Transport.FiniteDisorderEnsemble.averagedGreenOfRegulator_eq_born_add_exactRemainder_of_centered",
-      "QuantumTheory.Transport.FiniteDisorderEnsemble.averagedOperatorInsertion_eq_mean_add_connected"
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.averagedOperatorInsertion_eq_mean_add_connected",
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.firstBornTwoGreenRungOfRegulators_eq_average_firstDyson",
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_configurationGreen_fluctuation_sub_firstDyson_le"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 5,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -92672,7 +92844,9 @@
     "dependents": [
       "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_averagedGreen_sub_free_le",
       "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_averagedTwoGreenTrace_sub_dressed_le_residuals",
-      "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_connectedTwoGreenInsertion_le_uniformPotential_sq"
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_configurationGreen_fluctuation_sub_firstDyson_le",
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_connectedTwoGreenInsertion_le_uniformPotential_sq",
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_connectedTwoGreen_sub_firstBornRung_le_cubic"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
@@ -92680,9 +92854,11 @@
     "compiledConsumers": [
       "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_averagedGreen_sub_free_le",
       "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_averagedTwoGreenTrace_sub_dressed_le_residuals",
-      "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_connectedTwoGreenInsertion_le_uniformPotential_sq"
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_configurationGreen_fluctuation_sub_firstDyson_le",
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_connectedTwoGreenInsertion_le_uniformPotential_sq",
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_connectedTwoGreen_sub_firstBornRung_le_cubic"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 5,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -92877,7 +93053,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} {Ω : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] [inst_3 : Fintype Ω] (ensemble : QuantumTheory.Transport.FiniteDisorderEnsemble)\n  (energy regulator : ℝ),\n  regulator ≠ 0 →\n    ∀ (ω : Ω) (potentialBound : ℝ),\n      (∀ (ξ : Ω), ‖↑(ensemble.impurityPotential ξ)‖ ≤ potentialBound) →\n        ‖ensemble.configurationGreenOfRegulator energy regulator ω -\n              ensemble.averagedGreenOfRegulator energy regulator‖ ≤\n          2 * |regulator|⁻¹ ^ 2 * potentialBound",
+    "statement": "∀ {H : Type u_1} {Ω : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] [inst_3 : Fintype Ω] (ensemble : QuantumTheory.Transport.FiniteDisorderEnsemble)\n  (energy regulator : ℝ),\n  regulator ≠ 0 →\n    ensemble.IsCentered →\n      ∀ (ω : Ω) (potentialBound : ℝ),\n        0 ≤ potentialBound →\n          (∀ (ξ : Ω), ‖↑(ensemble.impurityPotential ξ)‖ ≤ potentialBound) →\n            ‖ensemble.configurationGreenOfRegulator energy regulator ω -\n                    ensemble.averagedGreenOfRegulator energy regulator -\n                  ensemble.freeGreenOfRegulator energy regulator * ↑(ensemble.impurityPotential ω) *\n                    ensemble.freeGreenOfRegulator energy regulator‖ ≤\n              2 * |regulator|⁻¹ ^ 3 * potentialBound ^ 2",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -92889,6 +93065,55 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
+    "name": "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_configurationGreen_fluctuation_sub_firstDyson_le",
+    "module": "LeanCondensedMatter.Transport.Disorder.LinearizedFluctuation",
+    "externalAxioms": [],
+    "docString": "The exact centered configuration-wise resolvent fluctuation differs from the\nfirst Dyson insertion `G₀ Vω G₀` by at most `2 |γ|⁻³ M²`. In particular,\nthis controls a centered random operator, not an averaged Born–Dyson closure. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_connectedTwoGreen_sub_firstBornRung_le_cubic"
+    ],
+    "dependencies": [
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.average_const",
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.configurationGreenOfRegulator_eq_secondOrder_add_exactRemainder_left",
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.map_average",
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_average_le_of_forall",
+      "QuantumTheory.Transport.norm_resolvent_spectralParameterOfRegulator_le",
+      "_private.LeanCondensedMatter.Transport.Disorder.LinearizedFluctuation.0.QuantumTheory.Transport.FiniteDisorderEnsemble.norm_mul_five_le"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_connectedTwoGreen_sub_firstBornRung_le_cubic"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {H : Type u_1} {Ω : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] [inst_3 : Fintype Ω] (ensemble : QuantumTheory.Transport.FiniteDisorderEnsemble)\n  (energy regulator : ℝ),\n  regulator ≠ 0 →\n    ∀ (ω : Ω) (potentialBound : ℝ),\n      (∀ (ξ : Ω), ‖↑(ensemble.impurityPotential ξ)‖ ≤ potentialBound) →\n        ‖ensemble.configurationGreenOfRegulator energy regulator ω -\n              ensemble.averagedGreenOfRegulator energy regulator‖ ≤\n          2 * |regulator|⁻¹ ^ 2 * potentialBound",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
     "name": "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_configurationGreen_sub_averaged_le",
     "module": "LeanCondensedMatter.Transport.Disorder.TwoParticleNormBound",
     "externalAxioms": [],
@@ -92896,7 +93121,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_connectedTwoGreenInsertion_le_uniformPotential_sq"
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_connectedTwoGreenInsertion_le_uniformPotential_sq",
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_connectedTwoGreen_sub_firstBornRung_le_cubic"
     ],
     "dependencies": [
       "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_averagedGreen_sub_free_le",
@@ -92905,9 +93131,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_connectedTwoGreenInsertion_le_uniformPotential_sq"
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_connectedTwoGreenInsertion_le_uniformPotential_sq",
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_connectedTwoGreen_sub_firstBornRung_le_cubic"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -93000,6 +93227,51 @@
       "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_averagedTwoGreenTrace_sub_meanProduct_le_uniformPotential_sq"
     ],
     "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {H : Type u_1} {Ω : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] [inst_3 : Fintype Ω] (ensemble : QuantumTheory.Transport.FiniteDisorderEnsemble)\n  (energyLeft regulatorLeft energyRight regulatorRight : ℝ),\n  regulatorLeft ≠ 0 →\n    regulatorRight ≠ 0 →\n      ensemble.IsCentered →\n        ∀ (vertex : H →L[ℂ] H) (potentialBound : ℝ),\n          0 ≤ potentialBound →\n            (∀ (ω : Ω), ‖↑(ensemble.impurityPotential ω)‖ ≤ potentialBound) →\n              ‖ensemble.connectedTwoGreenInsertionOfRegulators energyLeft regulatorLeft energyRight regulatorRight\n                      vertex -\n                    ensemble.firstBornTwoGreenRungOfRegulators energyLeft regulatorLeft energyRight regulatorRight\n                      vertex‖ ≤\n                2 * |regulatorLeft|⁻¹ ^ 3 * potentialBound ^ 2 * ‖vertex‖ *\n                    (2 * |regulatorRight|⁻¹ ^ 2 * potentialBound) +\n                  |regulatorLeft|⁻¹ ^ 2 * potentialBound * ‖vertex‖ * (2 * |regulatorRight|⁻¹ ^ 3 * potentialBound ^ 2)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_connectedTwoGreen_sub_firstBornRung_le_cubic",
+    "module": "LeanCondensedMatter.Transport.Disorder.FirstRungNormBound",
+    "externalAxioms": [],
+    "docString": "Exact connected two-Green insertion differs from the first Born covariance rung\nby at most a *cubic* expression in a uniform impurity-norm bound. The bound is\nindependent of the Hilbert-space dimension and requires no Gaussian moments.\n\nWrite `Bᴸ = |γᴸ|⁻¹` and `Bᴿ = |γᴿ|⁻¹`. The right-hand side equals\n`(4 (Bᴸ)^3 (Bᴿ)^2 + 2 (Bᴸ)^2 (Bᴿ)^3) M³ ‖J‖`.\nNo statement about higher ladder rungs, SCBA, or vanishing broadening follows. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.firstBornTwoGreenRungOfRegulators_eq_average_firstDyson",
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_average_le_of_forall",
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_configurationGreen_fluctuation_sub_firstDyson_le",
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_configurationGreen_sub_averaged_le",
+      "QuantumTheory.Transport.norm_resolvent_spectralParameterOfRegulator_le",
+      "_private.LeanCondensedMatter.Transport.Disorder.FirstRungNormBound.0.QuantumTheory.Transport.FiniteDisorderEnsemble.norm_mul_three_le"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -99212,7 +99484,9 @@
     "directWrapperOf": null,
     "dependents": [
       "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_averagedTwoGreenTrace_sub_dressed_le_residuals",
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_configurationGreen_fluctuation_sub_firstDyson_le",
       "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_configurationGreen_sub_free_le",
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_connectedTwoGreen_sub_firstBornRung_le_cubic",
       "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_exactBornRemainder_le_thirdNormMoment"
     ],
     "dependencies": [
@@ -99222,10 +99496,12 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_averagedTwoGreenTrace_sub_dressed_le_residuals",
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_configurationGreen_fluctuation_sub_firstDyson_le",
       "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_configurationGreen_sub_free_le",
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_connectedTwoGreen_sub_firstBornRung_le_cubic",
       "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_exactBornRemainder_le_thirdNormMoment"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 5,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -101712,9 +101988,7 @@
     "dependents": [
       "QuantumTheory.Models.MassiveDirac.inPlaneLadderSolvedVector_fixedPoint"
     ],
-    "dependencies": [
-      "_private.LeanCondensedMatter.Transport.Disorder.Ladder.0.QuantumTheory.Transport.shiftedLadder_apply_resummedLadderVertex"
-    ],
+    "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
@@ -108575,8 +108849,7 @@
     "dependencies": [
       "Real.negMulLog_le_of_neg_log_le",
       "Real.summable_gibbsComparison_and_tsum_eq",
-      "Real.tsum_div_le_one",
-      "_private.LeanCondensedMatter.Analysis.Inequalities.Gibbs.0.Real.summable_and_tsum_le_of_nonneg_of_le"
+      "Real.tsum_div_le_one"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -119288,6 +119561,60 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {E N : ℕ} {ExternalLabel : Type u_1} {InternalLabel : Type u_2}\n  (layout : SecondQuantization.Common.ExternalInsertionBlockLayout E N) (e : Fin N ≃ Fin N)\n  (F :\n    (B : ↥layout.partition.parts) →\n      SecondQuantization.Common.ExternalInsertionDiagram ExternalLabel InternalLabel ((↑B).card / 2) N\n        (layout.interactionBlock Finset.univ B)),\n  (layout.ownerSlotCongr e).assembleDiagram Finset.univ (layout.ownerSlotCongrBlockFamily e F) =\n    SecondQuantization.Common.ExternalInsertionDiagram.slotCongr (SecondQuantization.Common.fullInteractionSlotEquiv e)\n      (layout.assembleDiagram Finset.univ F)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.ExternalInsertionBlockLayout.assembleDiagram_ownerSlotCongr",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.OwnerSlotCongr",
+    "externalAxioms": [],
+    "docString": "The complete physically assembled labelled Wick diagram commutes\nwith changing the actual ambient interaction owner assignment and\ntransporting all local pairings. This is an *equality of diagrams*, not\njust equality of their connected partitions or unsigned weights. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.sum_assembledOwnerShuffle_dysonAmplitude_eq_orderedDysonOrbit",
+      "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.sum_ownerSlotCongr_connectedDyson_eq_ordered",
+      "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.sum_ownerSlotCongr_connectedDyson_eq_ordered_globalLabels",
+      "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.sum_ownerSlotCongr_connectedDyson_eq_ordered_localLabels"
+    ],
+    "dependencies": [
+      "Combinatorics.PairingOn.transport_trans",
+      "SecondQuantization.Common.ExternalInsertionBlockLayout.ownerSlotCongr_interactionEquiv",
+      "SecondQuantization.Common.ExternalInsertionBlockLayout.ownerSlotCongr_legEquiv",
+      "SecondQuantization.Common.ExternalInsertionDiagram.ext",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.OwnerSlotCongr.0.SecondQuantization.Common.sigmaPairing_transport"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.sum_assembledOwnerShuffle_dysonAmplitude_eq_orderedDysonOrbit",
+      "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.sum_ownerSlotCongr_connectedDyson_eq_ordered",
+      "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.sum_ownerSlotCongr_connectedDyson_eq_ordered_globalLabels",
+      "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.sum_ownerSlotCongr_connectedDyson_eq_ordered_localLabels"
+    ],
+    "compiledConsumerCount": 4,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {E N : ℕ} {ExternalLabel : Type u_1} {InternalLabel : Type u_2}\n  (layout : SecondQuantization.Common.ExternalInsertionBlockLayout E N) (S : Finset (Fin N))\n  (F :\n    (B : ↥layout.partition.parts) →\n      SecondQuantization.Common.ExternalInsertionDiagram ExternalLabel InternalLabel ((↑B).card / 2) N\n        (layout.interactionBlock S B))\n  (B : ↥layout.partition.parts) (i : Fin (2 * (2 * (layout.interactionBlock S B).card + (↑B).card / 2))),\n  (layout.assembleDiagram S F).pairing.partner ((layout.legEquiv S).symm ⟨B, i⟩) =\n    (layout.legEquiv S).symm ⟨B, (F B).pairing.partner i⟩",
     "standardAxioms": [
       "Classical.choice",
@@ -120116,7 +120443,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -120128,15 +120455,17 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Common.ExternalInsertionBlockLayout.externalBlockLayout_assembleDiagram_eq"
+      "SecondQuantization.Common.ExternalInsertionBlockLayout.externalBlockLayout_assembleDiagram_eq",
+      "SecondQuantization.Common.ExternalInsertionBlockLayout.ofFamilyShuffle_ownerSlotCongr"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Common.ExternalInsertionBlockLayout.externalBlockLayout_assembleDiagram_eq"
+      "SecondQuantization.Common.ExternalInsertionBlockLayout.externalBlockLayout_assembleDiagram_eq",
+      "SecondQuantization.Common.ExternalInsertionBlockLayout.ofFamilyShuffle_ownerSlotCongr"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -120348,6 +120677,44 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
+    "terminal": true,
+    "statement": "∀ {E N : ℕ} (π : Finpartition Finset.univ) (heven : ∀ (B : ↥π.parts), Even (↑B).card) {size : ↥π.parts → ℕ}\n  (σ : Combinatorics.FamilySlotShuffleTo size N),\n  ↑((SecondQuantization.Common.ExternalInsertionBlockLayout.fixedPartitionSizeShuffleEquiv π heven).symm ⟨size, σ⟩) =\n    SecondQuantization.Common.ExternalInsertionBlockLayout.ofFamilyShuffle π heven σ",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.ExternalInsertionBlockLayout.fixedPartitionSizeShuffleEquiv_symm_layout",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.OwnerSlotCongr",
+    "externalAxioms": [],
+    "docString": "The layout reconstructed by the *actual physical fixed-partition\nsize/shuffle equivalence* is precisely the one obtained by directly\nassigning each interaction vertex to its shuffled owner. This connects\nowner transport to the domain of the genuine fixed-partition Dyson sum. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
     "terminal": false,
     "statement": "∀ {E N : ℕ} {ExternalLabel : Type u_1} {InternalLabel : Type u_2}\n  (layout : SecondQuantization.Common.ExternalInsertionBlockLayout E N) (S : Finset (Fin N))\n  (F :\n    (B : ↥layout.partition.parts) →\n      SecondQuantization.Common.ExternalInsertionDiagram ExternalLabel InternalLabel ((↑B).card / 2) N\n        (layout.interactionBlock S B)),\n  (∀ (B : ↥layout.partition.parts), (F B).vertexGraph.Preconnected) →\n    SecondQuantization.Common.HasNoVacuumComponent (layout.assembleDiagram S F).vertexGraph",
     "standardAxioms": [
@@ -120390,6 +120757,44 @@
       "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleConnectedBlocks_signedDysonShuffleOrbit_eq_independentLocals"
     ],
     "compiledConsumerCount": 5,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {E N : ℕ} (layout : SecondQuantization.Common.ExternalInsertionBlockLayout E N) (e : Fin N ≃ Fin N)\n  (B : ↥layout.partition.parts) (v : ↥(layout.interactionBlock Finset.univ B)),\n  ↑((layout.interactionBlockOwnerSlotCongrEquiv e B) v) = e ↑v",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.ExternalInsertionBlockLayout.interactionBlockOwnerSlotCongrEquiv_val",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.OwnerSlotCongr",
+    "externalAxioms": [],
+    "docString": "The local interaction-fiber equivalence acts as the ambient\npermutation on its underlying vertex label. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -120644,6 +121049,7 @@
     "dependents": [
       "SecondQuantization.Common.ExternalInsertionBlockLayout.assembleDiagram_partner_at_externalLeg",
       "SecondQuantization.Common.ExternalInsertionBlockLayout.legEquiv_symm_externalLeg",
+      "SecondQuantization.Common.ExternalInsertionBlockLayout.ownerSlotCongr_legEquiv",
       "SecondQuantization.Common.ExternalInsertionBlockLayout.vertexEquiv_vertexOfLeg"
     ],
     "dependencies": [],
@@ -120652,9 +121058,10 @@
     "compiledConsumers": [
       "SecondQuantization.Common.ExternalInsertionBlockLayout.assembleDiagram_partner_at_externalLeg",
       "SecondQuantization.Common.ExternalInsertionBlockLayout.legEquiv_symm_externalLeg",
+      "SecondQuantization.Common.ExternalInsertionBlockLayout.ownerSlotCongr_legEquiv",
       "SecondQuantization.Common.ExternalInsertionBlockLayout.vertexEquiv_vertexOfLeg"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -120690,6 +121097,7 @@
     "dependents": [
       "SecondQuantization.Common.ExternalInsertionBlockLayout.assembleDiagram_partner_at_shuffledInteractionLeg",
       "SecondQuantization.Common.ExternalInsertionBlockLayout.legEquiv_symm_interactionLeg",
+      "SecondQuantization.Common.ExternalInsertionBlockLayout.ownerSlotCongr_legEquiv",
       "SecondQuantization.Common.ExternalInsertionBlockLayout.vertexEquiv_vertexOfLeg"
     ],
     "dependencies": [],
@@ -120698,9 +121106,10 @@
     "compiledConsumers": [
       "SecondQuantization.Common.ExternalInsertionBlockLayout.assembleDiagram_partner_at_shuffledInteractionLeg",
       "SecondQuantization.Common.ExternalInsertionBlockLayout.legEquiv_symm_interactionLeg",
+      "SecondQuantization.Common.ExternalInsertionBlockLayout.ownerSlotCongr_legEquiv",
       "SecondQuantization.Common.ExternalInsertionBlockLayout.vertexEquiv_vertexOfLeg"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -120787,6 +121196,528 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Common.ExternalInsertionBlockLayout.blockLegEmbedding_strictMono"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {E N : ℕ} {ExternalLabel : Type u_1} {InternalLabel : Type u_2} (π : Finpartition Finset.univ)\n  (heven : ∀ (B : ↥π.parts), Even (↑B).card) {size : ↥π.parts → ℕ} (σ : Combinatorics.FamilySlotShuffleTo size N)\n  (F : (SecondQuantization.Common.ExternalInsertionBlockLayout.ofFamilyShuffle π heven σ).ConnectedBlockFamily)\n  (B : ↥π.parts),\n  ↑((SecondQuantization.Common.ExternalInsertionBlockLayout.ofFamilyShuffleFixedSizeStandardizedFamilyEquiv π heven σ) F\n        B) =\n    SecondQuantization.Common.ExternalInsertionDiagram.slotCongr\n      (Combinatorics.standardSlotEquivOfCardEq\n        ((SecondQuantization.Common.ExternalInsertionBlockLayout.ofFamilyShuffle π heven σ).interactionBlock Finset.univ\n          B)\n        ⋯)\n      (↑F B)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.ExternalInsertionBlockLayout.ofFamilyShuffleFixedSizeStandardizedFamilyEquiv_apply",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.OwnerSlotCongr",
+    "externalAxioms": [],
+    "docString": "The fixed-size standardized family maps the actual physical\nlabelled Wick diagram on each owner fiber to its increasing-slot\nstandardization, retaining the pairing and all labels. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "SecondQuantization.Common.ExternalInsertionBlockLayout.ofFamilyShuffle_interactionBlock_card"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {E N : ℕ} {ExternalLabel : Type u_1} {InternalLabel : Type u_2} (π : Finpartition Finset.univ)\n  (heven : ∀ (B : ↥π.parts), Even (↑B).card) {size : ↥π.parts → ℕ} (σ τ : Combinatorics.FamilySlotShuffleTo size N)\n  (B : ↥π.parts)\n  (hσ :\n    ((SecondQuantization.Common.ExternalInsertionBlockLayout.ofFamilyShuffle π heven σ).interactionBlock Finset.univ\n          B).card =\n      size B)\n  (hτ :\n    (((SecondQuantization.Common.ExternalInsertionBlockLayout.ofFamilyShuffle π heven σ).ownerSlotCongr\n              (σ.ambientRelabel τ)).interactionBlock\n          Finset.univ B).card =\n      size B)\n  (F : (SecondQuantization.Common.ExternalInsertionBlockLayout.ofFamilyShuffle π heven σ).ConnectedBlockFamily),\n  SecondQuantization.Common.ExternalInsertionDiagram.slotCongr\n      (Combinatorics.standardSlotEquivOfCardEq\n        (((SecondQuantization.Common.ExternalInsertionBlockLayout.ofFamilyShuffle π heven σ).ownerSlotCongr\n              (σ.ambientRelabel τ)).interactionBlock\n          Finset.univ B)\n        hτ)\n      (↑(((SecondQuantization.Common.ExternalInsertionBlockLayout.ofFamilyShuffle π heven\n                  σ).ownerSlotCongrConnectedBlockFamilyEquiv\n              (σ.ambientRelabel τ))\n            F)\n        B) =\n    SecondQuantization.Common.ExternalInsertionDiagram.slotCongr\n      (Combinatorics.standardSlotEquivOfCardEq\n        ((SecondQuantization.Common.ExternalInsertionBlockLayout.ofFamilyShuffle π heven σ).interactionBlock Finset.univ\n          B)\n        hσ)\n      (↑F B)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.ExternalInsertionBlockLayout.ofFamilyShuffle_connectedFamily_standardization",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.OwnerSlotCongr",
+    "externalAxioms": [],
+    "docString": "Transporting a *whole preconnected Wick-block family* between two\nphysical owner shuffles and then standardizing any chosen local block\nagrees with directly standardizing the original local Wick diagram.\nAll source labels, interaction labels, and Wick pairing legs are\nretained, including blocks with no interaction vertices. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "SecondQuantization.Common.ExternalInsertionBlockLayout.ofFamilyShuffle_localDiagram_standardization"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {E N : ℕ} (π : Finpartition Finset.univ) (heven : ∀ (B : ↥π.parts), Even (↑B).card) {size : ↥π.parts → ℕ}\n  (σ : Combinatorics.FamilySlotShuffleTo size N) (B : ↥π.parts),\n  ((SecondQuantization.Common.ExternalInsertionBlockLayout.ofFamilyShuffle π heven σ).interactionBlock Finset.univ\n        B).card =\n    size B",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.ExternalInsertionBlockLayout.ofFamilyShuffle_interactionBlock_card",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.OwnerSlotCongr",
+    "externalAxioms": [],
+    "docString": "The actual interaction vertices owned by a fixed external block\nhave exactly its prescribed shuffle size, including zero-size blocks. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Common.ExternalInsertionBlockLayout.ofFamilyShuffleFixedSizeStandardizedFamilyEquiv_apply"
+    ],
+    "dependencies": [
+      "Combinatorics.FamilySlotShuffleTo.card_ownerFiber"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Common.ExternalInsertionBlockLayout.ofFamilyShuffleFixedSizeStandardizedFamilyEquiv",
+      "SecondQuantization.Common.ExternalInsertionBlockLayout.ofFamilyShuffleFixedSizeStandardizedFamilyEquiv_apply"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {E N : ℕ} {ExternalLabel : Type u_1} {InternalLabel : Type u_2} (π : Finpartition Finset.univ)\n  (heven : ∀ (B : ↥π.parts), Even (↑B).card) {size : ↥π.parts → ℕ} (σ τ : Combinatorics.FamilySlotShuffleTo size N)\n  (B : ↥π.parts)\n  (hσ :\n    ((SecondQuantization.Common.ExternalInsertionBlockLayout.ofFamilyShuffle π heven σ).interactionBlock Finset.univ\n          B).card =\n      size B)\n  (hτ :\n    (((SecondQuantization.Common.ExternalInsertionBlockLayout.ofFamilyShuffle π heven σ).ownerSlotCongr\n              (σ.ambientRelabel τ)).interactionBlock\n          Finset.univ B).card =\n      size B)\n  (d :\n    SecondQuantization.Common.ExternalInsertionDiagram ExternalLabel InternalLabel ((↑B).card / 2) N\n      ((SecondQuantization.Common.ExternalInsertionBlockLayout.ofFamilyShuffle π heven σ).interactionBlock Finset.univ\n        B)),\n  SecondQuantization.Common.ExternalInsertionDiagram.slotCongr\n      (Combinatorics.standardSlotEquivOfCardEq\n        (((SecondQuantization.Common.ExternalInsertionBlockLayout.ofFamilyShuffle π heven σ).ownerSlotCongr\n              (σ.ambientRelabel τ)).interactionBlock\n          Finset.univ B)\n        hτ)\n      (SecondQuantization.Common.ExternalInsertionDiagram.slotCongr\n        ((SecondQuantization.Common.ExternalInsertionBlockLayout.ofFamilyShuffle π heven\n              σ).interactionBlockOwnerSlotCongrEquiv\n          (σ.ambientRelabel τ) B)\n        d) =\n    SecondQuantization.Common.ExternalInsertionDiagram.slotCongr\n      (Combinatorics.standardSlotEquivOfCardEq\n        ((SecondQuantization.Common.ExternalInsertionBlockLayout.ofFamilyShuffle π heven σ).interactionBlock Finset.univ\n          B)\n        hσ)\n      d",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.ExternalInsertionBlockLayout.ofFamilyShuffle_localDiagram_standardization",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.OwnerSlotCongr",
+    "externalAxioms": [],
+    "docString": "In particular, the **complete standardized local labelled Wick\ndiagram** is literally unchanged after transporting its physical owner\nby a shuffle. This includes its fermionic pairing, not merely its\ninteraction cardinality or abstract isomorphism class. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Common.ExternalInsertionBlockLayout.ofFamilyShuffle_connectedFamily_standardization"
+    ],
+    "dependencies": [
+      "SecondQuantization.Common.ExternalInsertionBlockLayout.ofFamilyShuffle_standardSlotEquiv_comp",
+      "SecondQuantization.Common.ExternalInsertionDiagram.slotCongr_trans"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Common.ExternalInsertionBlockLayout.ofFamilyShuffle_connectedFamily_standardization"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {E N : ℕ} (π : Finpartition Finset.univ) (heven : ∀ (B : ↥π.parts), Even (↑B).card) {size : ↥π.parts → ℕ}\n  (σ τ : Combinatorics.FamilySlotShuffleTo size N) (B : ↥π.parts),\n  StrictMono fun v =>\n    ↑(((SecondQuantization.Common.ExternalInsertionBlockLayout.ofFamilyShuffle π heven\n              σ).interactionBlockOwnerSlotCongrEquiv\n          (σ.ambientRelabel τ) B)\n        v)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.ExternalInsertionBlockLayout.ofFamilyShuffle_ownerLocal_strictMono",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.OwnerSlotCongr",
+    "externalAxioms": [],
+    "docString": "The ambient permutation between two physical owner shuffles is\nstrictly increasing on the vertices of each individual owner block.\nNo global monotonicity of the interleaved shuffle permutation is\nassumed. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Common.ExternalInsertionBlockLayout.ofFamilyShuffle_standardSlotEquiv_comp"
+    ],
+    "dependencies": [
+      "Combinatorics.FamilySlotShuffleTo.ambientRelabel_strictMono_ownerFiber"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Common.ExternalInsertionBlockLayout.ofFamilyShuffle_standardSlotEquiv_comp"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {E N : ℕ} (π : Finpartition Finset.univ) (heven : ∀ (B : ↥π.parts), Even (↑B).card) {size : ↥π.parts → ℕ}\n  (σ τ : Combinatorics.FamilySlotShuffleTo size N),\n  (SecondQuantization.Common.ExternalInsertionBlockLayout.ofFamilyShuffle π heven σ).ownerSlotCongr\n      (σ.ambientRelabel τ) =\n    SecondQuantization.Common.ExternalInsertionBlockLayout.ofFamilyShuffle π heven τ",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.ExternalInsertionBlockLayout.ofFamilyShuffle_ownerSlotCongr",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.OwnerSlotCongr",
+    "externalAxioms": [],
+    "docString": "Switching a fixed-size physical owner shuffle is exactly\ntransporting the interaction owner function by the ambient permutation.\nThe external source partition remains literally the same. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.sum_ofFamilyShuffle_connectedDyson_eq_referenceOrdered"
+    ],
+    "dependencies": [
+      "SecondQuantization.Common.ExternalInsertionBlockLayout.ext_of_partition_owner"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.sum_ofFamilyShuffle_connectedDyson_eq_referenceOrdered"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {E N : ℕ} (π : Finpartition Finset.univ) (heven : ∀ (B : ↥π.parts), Even (↑B).card) {size : ↥π.parts → ℕ}\n  (σ τ : Combinatorics.FamilySlotShuffleTo size N) (B : ↥π.parts)\n  (hσ :\n    ((SecondQuantization.Common.ExternalInsertionBlockLayout.ofFamilyShuffle π heven σ).interactionBlock Finset.univ\n          B).card =\n      size B)\n  (hτ :\n    (((SecondQuantization.Common.ExternalInsertionBlockLayout.ofFamilyShuffle π heven σ).ownerSlotCongr\n              (σ.ambientRelabel τ)).interactionBlock\n          Finset.univ B).card =\n      size B),\n  ((SecondQuantization.Common.ExternalInsertionBlockLayout.ofFamilyShuffle π heven\n              σ).interactionBlockOwnerSlotCongrEquiv\n          (σ.ambientRelabel τ) B).trans\n      (Combinatorics.standardSlotEquivOfCardEq\n        (((SecondQuantization.Common.ExternalInsertionBlockLayout.ofFamilyShuffle π heven σ).ownerSlotCongr\n              (σ.ambientRelabel τ)).interactionBlock\n          Finset.univ B)\n        hτ) =\n    Combinatorics.standardSlotEquivOfCardEq\n      ((SecondQuantization.Common.ExternalInsertionBlockLayout.ofFamilyShuffle π heven σ).interactionBlock Finset.univ\n        B)\n      hσ",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.ExternalInsertionBlockLayout.ofFamilyShuffle_standardSlotEquiv_comp",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.OwnerSlotCongr",
+    "externalAxioms": [],
+    "docString": "Standardizing the actual owner fiber after a fixed-size shuffle\nchange is identical to standardizing before the shuffle change. The\nspecific order-preserving local equivalence is essential here. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Common.ExternalInsertionBlockLayout.ofFamilyShuffle_localDiagram_standardization"
+    ],
+    "dependencies": [
+      "Combinatorics.standardSlotEquivOfCardEq_comp_of_strictMono",
+      "SecondQuantization.Common.ExternalInsertionBlockLayout.ofFamilyShuffle_ownerLocal_strictMono"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Common.ExternalInsertionBlockLayout.ofFamilyShuffle_localDiagram_standardization"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {E N : ℕ} {ExternalLabel : Type u_1} {InternalLabel : Type u_2}\n  (layout : SecondQuantization.Common.ExternalInsertionBlockLayout E N) (e : Fin N ≃ Fin N)\n  (F : layout.ConnectedBlockFamily) (B : ↥layout.partition.parts),\n  ↑((layout.ownerSlotCongrConnectedBlockFamilyEquiv e) F) B = layout.ownerSlotCongrBlockFamily e (↑F) B",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.ExternalInsertionBlockLayout.ownerSlotCongrConnectedBlockFamilyEquiv_apply",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.OwnerSlotCongr",
+    "externalAxioms": [],
+    "docString": "Transporting a connected local family applies the actual interaction\nowner-fiber relabeling separately to each physical Wick diagram. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.sum_ownerSlotCongr_connectedDyson_eq_ordered",
+      "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.sum_ownerSlotCongr_connectedDyson_eq_ordered_globalLabels",
+      "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.sum_ownerSlotCongr_connectedDyson_eq_ordered_localLabels"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.sum_ownerSlotCongr_connectedDyson_eq_ordered",
+      "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.sum_ownerSlotCongr_connectedDyson_eq_ordered_globalLabels",
+      "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.sum_ownerSlotCongr_connectedDyson_eq_ordered_localLabels"
+    ],
+    "compiledConsumerCount": 3,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {E N : ℕ} (layout : SecondQuantization.Common.ExternalInsertionBlockLayout E N) (e : Fin N ≃ Fin N)\n  (v : ↥Finset.univ),\n  ((layout.ownerSlotCongr e).interactionEquiv Finset.univ) ((SecondQuantization.Common.fullInteractionSlotEquiv e) v) =\n    (Equiv.sigmaCongrRight fun B => layout.interactionBlockOwnerSlotCongrEquiv e B)\n      ((layout.interactionEquiv Finset.univ) v)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.ExternalInsertionBlockLayout.ownerSlotCongr_interactionEquiv",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.OwnerSlotCongr",
+    "externalAxioms": [],
+    "docString": "The physical block and local vertex selected by the interaction\nequivalence commute with the global slot relabeling. All local labels\nretain their original block index, even with empty interaction fibers. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Common.ExternalInsertionBlockLayout.assembleDiagram_ownerSlotCongr",
+      "SecondQuantization.Common.ExternalInsertionBlockLayout.ownerSlotCongr_legEquiv"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Common.ExternalInsertionBlockLayout.assembleDiagram_ownerSlotCongr",
+      "SecondQuantization.Common.ExternalInsertionBlockLayout.ownerSlotCongr_legEquiv"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {E N : ℕ} (layout : SecondQuantization.Common.ExternalInsertionBlockLayout E N) (e : Fin N ≃ Fin N) (v : Fin N),\n  (layout.ownerSlotCongr e).interactionOwner (e v) = layout.interactionOwner v",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.ExternalInsertionBlockLayout.ownerSlotCongr_interactionOwner",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.OwnerSlotCongr",
+    "externalAxioms": [],
+    "docString": "The physical owner is transported by precomposition with the inverse\nambient permutation. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {E N : ℕ} (layout : SecondQuantization.Common.ExternalInsertionBlockLayout E N) (e : Fin N ≃ Fin N)\n  (p : Fin (2 * (2 * Finset.univ.card + E))),\n  ((layout.ownerSlotCongr e).legEquiv Finset.univ)\n      ((SecondQuantization.Common.externalInsertionLegCongr (SecondQuantization.Common.fullInteractionSlotEquiv e)) p) =\n    (layout.ownerSlotCongrLocalLegEquiv e) ((layout.legEquiv Finset.univ) p)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.ExternalInsertionBlockLayout.ownerSlotCongr_legEquiv",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.OwnerSlotCongr",
+    "externalAxioms": [],
+    "docString": "The entire flattened-leg decomposition commutes with moving the\nactual owners: first move the ambient interaction vertices or first\nassign each leg to its local block and move that block's vertices.\nExternal insertion indices and all four local quartic legs are retained. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Common.ExternalInsertionBlockLayout.assembleDiagram_ownerSlotCongr"
+    ],
+    "dependencies": [
+      "SecondQuantization.Common.ExternalInsertionBlockLayout.legEquiv_externalLeg",
+      "SecondQuantization.Common.ExternalInsertionBlockLayout.legEquiv_interactionLeg",
+      "SecondQuantization.Common.ExternalInsertionBlockLayout.ownerSlotCongr_interactionEquiv",
+      "SecondQuantization.Common.ExternalInsertionBlockLayout.ownerSlotCongr_sourceEquiv",
+      "SecondQuantization.Common.externalInsertionLegCongr_externalLeg",
+      "SecondQuantization.Common.externalInsertionLegCongr_interactionLeg"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Common.ExternalInsertionBlockLayout.assembleDiagram_ownerSlotCongr"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {E N : ℕ} (layout : SecondQuantization.Common.ExternalInsertionBlockLayout E N) (e : Fin N ≃ Fin N),\n  (layout.ownerSlotCongr e).sourceEquiv = layout.sourceEquiv",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.ExternalInsertionBlockLayout.ownerSlotCongr_sourceEquiv",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.OwnerSlotCongr",
+    "externalAxioms": [],
+    "docString": "Interaction-owner relabeling does not modify the canonical external\ninsertion order or its source-block equivalence. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Common.ExternalInsertionBlockLayout.ownerSlotCongr_legEquiv"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Common.ExternalInsertionBlockLayout.ownerSlotCongr_legEquiv"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -121623,6 +122554,54 @@
     "mathlibDefinitionallyEquivalentTo": [],
     "mathlibReplacementCandidates": [],
     "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {E N : ℕ} {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {M : Type u_3} [inst : Fintype ExternalLabel]\n  [inst_1 : Fintype InternalLabel] [inst_2 : AddCommMonoid M]\n  (layout : SecondQuantization.Common.ExternalInsertionBlockLayout E N) (e : Fin N ≃ Fin N)\n  (weight : (layout.ownerSlotCongr e).ConnectedBlockFamily → M),\n  ∑ F, weight ((layout.ownerSlotCongrConnectedBlockFamilyEquiv e) F) = ∑ G, weight G",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.ExternalInsertionBlockLayout.sum_ownerSlotCongrConnectedBlockFamilies",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.OwnerSlotCongr",
+    "externalAxioms": [],
+    "docString": "For any additive target, the complete preconnected local Wick-family\nsum is unchanged by reindexing the *family* along a physical owner\nrelabeling. No factorization or Dyson invariance is assumed. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.sum_ownerSlotCongr_connectedDyson_eq_ordered",
+      "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.sum_ownerSlotCongr_connectedDyson_eq_ordered_globalLabels",
+      "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.sum_ownerSlotCongr_connectedDyson_eq_ordered_localLabels"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.sum_ownerSlotCongr_connectedDyson_eq_ordered",
+      "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.sum_ownerSlotCongr_connectedDyson_eq_ordered_globalLabels",
+      "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.sum_ownerSlotCongr_connectedDyson_eq_ordered_localLabels"
+    ],
+    "compiledConsumerCount": 3,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [
+      "Equiv.sum_comp"
+    ],
+    "mathlibReplacementCandidateCount": 1
   },
   {
     "terminal": false,
@@ -123035,10 +124014,12 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Common.ExternalInsertionBlockLayout.assembleDiagram_injective",
+      "SecondQuantization.Common.ExternalInsertionBlockLayout.assembleDiagram_ownerSlotCongr",
       "SecondQuantization.Common.ExternalInsertionBlockLayout.assembleDiagram_restrictBlock",
       "SecondQuantization.Common.ExternalInsertionDiagram.componentOrderedDiagram_eq_slotCongr",
       "SecondQuantization.Common.ExternalInsertionDiagram.ext_iff",
       "SecondQuantization.Common.ExternalInsertionDiagram.ofSlotSplit_slotSplit",
+      "SecondQuantization.Common.ExternalInsertionDiagram.slotCongr_trans",
       "SecondQuantization.Common.ExternalInsertionDiagram.slotSplitExternal_ofSlotSplit",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalSubsetMoment.0.SecondQuantization.Fermionic.externalInsertionDiagram_heq_of_fields"
     ],
@@ -123047,14 +124028,16 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Common.ExternalInsertionBlockLayout.assembleDiagram_injective",
+      "SecondQuantization.Common.ExternalInsertionBlockLayout.assembleDiagram_ownerSlotCongr",
       "SecondQuantization.Common.ExternalInsertionBlockLayout.assembleDiagram_restrictBlock",
       "SecondQuantization.Common.ExternalInsertionDiagram.componentOrderedDiagram_eq_slotCongr",
       "SecondQuantization.Common.ExternalInsertionDiagram.ext_iff",
       "SecondQuantization.Common.ExternalInsertionDiagram.ofSlotSplit_slotSplit",
+      "SecondQuantization.Common.ExternalInsertionDiagram.slotCongr_trans",
       "SecondQuantization.Common.ExternalInsertionDiagram.slotSplitExternal_ofSlotSplit",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalSubsetMoment.0.SecondQuantization.Fermionic.externalInsertionDiagram_heq_of_fields"
     ],
-    "compiledConsumerCount": 7,
+    "compiledConsumerCount": 9,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -124940,6 +125923,52 @@
     "completedMention": false,
     "compiledConsumers": [],
     "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {E N M : ℕ} {T : Finset (Fin N)} {U : Finset (Fin M)} {V : ℕ}\n  {W : Finset (Fin V)} (d : SecondQuantization.Common.ExternalInsertionDiagram ExternalLabel InternalLabel E N T)\n  (e : ↥T ≃ ↥U) (f : ↥U ≃ ↥W),\n  SecondQuantization.Common.ExternalInsertionDiagram.slotCongr f\n      (SecondQuantization.Common.ExternalInsertionDiagram.slotCongr e d) =\n    SecondQuantization.Common.ExternalInsertionDiagram.slotCongr (e.trans f) d",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.ExternalInsertionDiagram.slotCongr_trans",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Core.SlotCongr",
+    "externalAxioms": [],
+    "docString": "The full labelled Wick diagram transport is functorial: relabeling\ninteraction vertices in two stages has exactly the same external labels,\nquartic labels, and Wick pairing partners as one composite relabeling. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Common.ExternalInsertionBlockLayout.ofFamilyShuffle_localDiagram_standardization"
+    ],
+    "dependencies": [
+      "Combinatorics.PairingOn.transport_trans",
+      "SecondQuantization.Common.ExternalInsertionDiagram.ext",
+      "SecondQuantization.Common.externalInsertionLegCongr_trans"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Common.ExternalInsertionBlockLayout.ofFamilyShuffle_localDiagram_standardization"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -139035,6 +140064,90 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {E N M : ℕ} {T : Finset (Fin N)} {U : Finset (Fin M)} (e : ↥T ≃ ↥U) (x : Fin (2 * E)),\n  (SecondQuantization.Common.externalInsertionLegCongr e)\n      (SecondQuantization.Common.externalInsertionExternalLeg E T x) =\n    SecondQuantization.Common.externalInsertionExternalLeg E U x",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.externalInsertionLegCongr_externalLeg",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.OwnerSlotCongr",
+    "externalAxioms": [],
+    "docString": "Relabeling interaction vertices leaves every external source leg at\nits exact original external insertion index. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Common.ExternalInsertionBlockLayout.ownerSlotCongr_legEquiv"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Common.ExternalInsertionBlockLayout.ownerSlotCongr_legEquiv"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {E N M : ℕ} {T : Finset (Fin N)} {U : Finset (Fin M)} (e : ↥T ≃ ↥U) (v : ↥T) (i : Fin 4),\n  (SecondQuantization.Common.externalInsertionLegCongr e)\n      (SecondQuantization.Common.externalInsertionInteractionLeg v i) =\n    SecondQuantization.Common.externalInsertionInteractionLeg (e v) i",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.externalInsertionLegCongr_interactionLeg",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.OwnerSlotCongr",
+    "externalAxioms": [],
+    "docString": "Relabeling a quartic interaction vertex does not change the\ncorresponding local quartic leg number. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Common.ExternalInsertionBlockLayout.ownerSlotCongr_legEquiv"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Common.ExternalInsertionBlockLayout.ownerSlotCongr_legEquiv"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {E N : ℕ} (T : Finset (Fin N)),\n  SecondQuantization.Common.externalInsertionLegCongr (Combinatorics.standardSlotEquiv T) = finCongr ⋯",
     "standardAxioms": [
       "Classical.choice",
@@ -139148,6 +140261,48 @@
     "completedMention": false,
     "compiledConsumers": [],
     "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {E N M : ℕ} {T : Finset (Fin N)} {U : Finset (Fin M)} {V : ℕ} {W : Finset (Fin V)} (e : ↥T ≃ ↥U) (f : ↥U ≃ ↥W),\n  SecondQuantization.Common.externalInsertionLegCongr (e.trans f) =\n    (SecondQuantization.Common.externalInsertionLegCongr e).trans\n      (SecondQuantization.Common.externalInsertionLegCongr f)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.externalInsertionLegCongr_trans",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Core.SlotCongr",
+    "externalAxioms": [],
+    "docString": "Composing two exact interaction-slot relabelings of the flattened\nfermionic legs is the relabeling along the composite slot equivalence.\nThis keeps external insertion labels and each local quartic-leg number\nfixed, so it does not assume any order-dependent pairing sign. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Common.ExternalInsertionDiagram.slotCongr_trans"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Common.ExternalInsertionDiagram.slotCongr_trans"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -141554,6 +142709,44 @@
       "SecondQuantization.Common.dysonCoeff_succ_basisState_apply"
     ],
     "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {N : ℕ} (e : Fin N ≃ Fin N) (v : ↥Finset.univ), ↑((SecondQuantization.Common.fullInteractionSlotEquiv e) v) = e ↑v",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.fullInteractionSlotEquiv_val",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.OwnerSlotCongr",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -153464,6 +154657,265 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
+    "terminal": true,
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] {E n : ℕ} (π : Finpartition Finset.univ)\n  (heven : ∀ (B : ↥π.parts), Even (↑B).card) {size : ↥π.parts → ℕ} (σ : Combinatorics.FamilySlotShuffleTo size n)\n  (labels : Fin (2 * E) → SecondQuantization.Fermionic.ExternalFieldLabel Mode) (ε : Mode → ℝ) (β : ℝ),\n  0 ≤ β →\n    ∀ (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ) (externalTime : Fin (2 * E) → ℝ),\n      (∑ τ,\n          ∑ G,\n            if\n                ((SecondQuantization.Common.ExternalInsertionBlockLayout.ofFamilyShuffle π heven τ).assembleDiagram\n                      Finset.univ ↑G).externalLabel =\n                  labels then\n              SecondQuantization.Fermionic.ExternalInsertionWickDiagram.dysonAmplitude\n                ((SecondQuantization.Common.ExternalInsertionBlockLayout.ofFamilyShuffle π heven τ).assembleDiagram\n                  Finset.univ ↑G)\n                ε β g externalTime\n            else 0) =\n        ∑ τ,\n          ∑ F,\n            if\n                ((SecondQuantization.Common.ExternalInsertionBlockLayout.ofFamilyShuffle π heven σ).assembleDiagram\n                      Finset.univ ↑F).externalLabel =\n                  labels then\n              SecondQuantization.Fermionic.ExternalInsertionWickDiagram.orderedDysonAmplitude\n                ((SecondQuantization.Common.ExternalInsertionBlockLayout.ofFamilyShuffle π heven σ).assembleDiagram\n                  Finset.univ ↑F)\n                ε β g externalTime\n                ((Finset.univ.orderIsoOfFin ⋯).trans\n                  (SecondQuantization.Common.fullInteractionSlotEquiv (σ.ambientRelabel τ)).symm)\n            else 0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.sum_allOwnerShuffles_connectedDyson_eq_referenceOrdered",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.Integral",
+    "externalAxioms": [],
+    "docString": "The full finite sum over actual physical owner shuffles of fixed\nlocal sizes equals the ordered Dyson orbit of one reference owner\nassignment. All physical external source labels and paired legs are\nretained, with no extra internal permutation factor. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.sum_ofFamilyShuffle_connectedDyson_eq_referenceOrdered"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] {E n : ℕ}\n  (layout : SecondQuantization.Common.ExternalInsertionBlockLayout E n) {size : ↥layout.partition.parts → ℕ}\n  (reference : Combinatorics.FamilySlotShuffleTo size n)\n  (F :\n    (B : ↥layout.partition.parts) →\n      SecondQuantization.Common.ExternalInsertionDiagram (SecondQuantization.Fermionic.ExternalFieldLabel Mode)\n        (SecondQuantization.Common.QuarticVertexLabel Mode) ((↑B).card / 2) n (layout.interactionBlock Finset.univ B))\n  (ε : Mode → ℝ) (β : ℝ),\n  0 ≤ β →\n    ∀ (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ) (externalTime : Fin (2 * E) → ℝ),\n      ∑ shuffle,\n          SecondQuantization.Fermionic.ExternalInsertionWickDiagram.dysonAmplitude\n            ((layout.ownerSlotCongr (reference.ambientRelabel shuffle)).assembleDiagram Finset.univ\n              (layout.ownerSlotCongrBlockFamily (reference.ambientRelabel shuffle) F))\n            ε β g externalTime =\n        ∑ shuffle,\n          SecondQuantization.Fermionic.ExternalInsertionWickDiagram.orderedDysonAmplitude\n            (layout.assembleDiagram Finset.univ F) ε β g externalTime\n            ((Finset.univ.orderIsoOfFin ⋯).trans\n              (SecondQuantization.Common.fullInteractionSlotEquiv (reference.ambientRelabel shuffle)).symm)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.sum_assembledOwnerShuffle_dysonAmplitude_eq_orderedDysonOrbit",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.Integral",
+    "externalAxioms": [],
+    "docString": "Physical interaction-owner shuffle orbit of an actually assembled\nfamily of labelled Wick diagrams equals the ordered Dyson integral\norbit of one fixed assembled reference diagram. The local data are\ntransported with their actual vertex owners, preserving pairing data;\nthe result does not assume diagramwise canonical integral invariance. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "SecondQuantization.Common.ExternalInsertionBlockLayout.assembleDiagram_ownerSlotCongr",
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.slotCongr_dysonAmplitude_eq_orderedDysonAmplitude"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] {E n : ℕ} (π : Finpartition Finset.univ)\n  (heven : ∀ (B : ↥π.parts), Even (↑B).card) {size : ↥π.parts → ℕ} (σ τ : Combinatorics.FamilySlotShuffleTo size n)\n  (labels : Fin (2 * E) → SecondQuantization.Fermionic.ExternalFieldLabel Mode) (ε : Mode → ℝ) (β : ℝ),\n  0 ≤ β →\n    ∀ (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ) (externalTime : Fin (2 * E) → ℝ),\n      (∑ G,\n          if\n              ((SecondQuantization.Common.ExternalInsertionBlockLayout.ofFamilyShuffle π heven τ).assembleDiagram\n                    Finset.univ ↑G).externalLabel =\n                labels then\n            SecondQuantization.Fermionic.ExternalInsertionWickDiagram.dysonAmplitude\n              ((SecondQuantization.Common.ExternalInsertionBlockLayout.ofFamilyShuffle π heven τ).assembleDiagram\n                Finset.univ ↑G)\n              ε β g externalTime\n          else 0) =\n        ∑ F,\n          if\n              ((SecondQuantization.Common.ExternalInsertionBlockLayout.ofFamilyShuffle π heven σ).assembleDiagram\n                    Finset.univ ↑F).externalLabel =\n                labels then\n            SecondQuantization.Fermionic.ExternalInsertionWickDiagram.orderedDysonAmplitude\n              ((SecondQuantization.Common.ExternalInsertionBlockLayout.ofFamilyShuffle π heven σ).assembleDiagram\n                Finset.univ ↑F)\n              ε β g externalTime\n              ((Finset.univ.orderIsoOfFin ⋯).trans\n                (SecondQuantization.Common.fullInteractionSlotEquiv (σ.ambientRelabel τ)).symm)\n          else 0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.sum_ofFamilyShuffle_connectedDyson_eq_referenceOrdered",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.Integral",
+    "externalAxioms": [],
+    "docString": "At fixed physical external partition and interaction sizes, the\n**actual global source-label-constrained Dyson sum** for one owner shuffle\nis the transported-order sum for a fixed reference owner shuffle. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.sum_allOwnerShuffles_connectedDyson_eq_referenceOrdered"
+    ],
+    "dependencies": [
+      "SecondQuantization.Common.ExternalInsertionBlockLayout.ofFamilyShuffle_ownerSlotCongr",
+      "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.sum_ownerSlotCongr_connectedDyson_eq_ordered_globalLabels"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.sum_allOwnerShuffles_connectedDyson_eq_referenceOrdered"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] {E n : ℕ}\n  (layout : SecondQuantization.Common.ExternalInsertionBlockLayout E n) (e : Fin n ≃ Fin n) (ε : Mode → ℝ) (β : ℝ),\n  0 ≤ β →\n    ∀ (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ) (externalTime : Fin (2 * E) → ℝ),\n      ∑ G,\n          SecondQuantization.Fermionic.ExternalInsertionWickDiagram.dysonAmplitude\n            ((layout.ownerSlotCongr e).assembleDiagram Finset.univ ↑G) ε β g externalTime =\n        ∑ F,\n          SecondQuantization.Fermionic.ExternalInsertionWickDiagram.orderedDysonAmplitude\n            (layout.assembleDiagram Finset.univ ↑F) ε β g externalTime\n            ((Finset.univ.orderIsoOfFin ⋯).trans (SecondQuantization.Common.fullInteractionSlotEquiv e).symm)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.sum_ownerSlotCongr_connectedDyson_eq_ordered",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.Integral",
+    "externalAxioms": [],
+    "docString": "The **entire finite sum over independently preconnected Wick-block\nfamilies** at a physically relabeled owner assignment equals the sum of\ntransported-order Dyson amplitudes over the original connected families.\n\nThe summed diagrams retain every labelled pairing; unlike a\ndiagram-by-diagram canonical-amplitude assertion, each relabeled\ncanonical integral is evaluated with its corresponding global Dyson\norder. This bridges physical owner-family reindexing to integration. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "SecondQuantization.Common.ExternalInsertionBlockLayout.assembleDiagram_ownerSlotCongr",
+      "SecondQuantization.Common.ExternalInsertionBlockLayout.ownerSlotCongrConnectedBlockFamilyEquiv_apply",
+      "SecondQuantization.Common.ExternalInsertionBlockLayout.sum_ownerSlotCongrConnectedBlockFamilies",
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.slotCongr_dysonAmplitude_eq_orderedDysonAmplitude"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] {E n : ℕ}\n  (layout : SecondQuantization.Common.ExternalInsertionBlockLayout E n) (e : Fin n ≃ Fin n)\n  (labels : Fin (2 * E) → SecondQuantization.Fermionic.ExternalFieldLabel Mode) (ε : Mode → ℝ) (β : ℝ),\n  0 ≤ β →\n    ∀ (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ) (externalTime : Fin (2 * E) → ℝ),\n      (∑ G,\n          if ((layout.ownerSlotCongr e).assembleDiagram Finset.univ ↑G).externalLabel = labels then\n            SecondQuantization.Fermionic.ExternalInsertionWickDiagram.dysonAmplitude\n              ((layout.ownerSlotCongr e).assembleDiagram Finset.univ ↑G) ε β g externalTime\n          else 0) =\n        ∑ F,\n          if (layout.assembleDiagram Finset.univ ↑F).externalLabel = labels then\n            SecondQuantization.Fermionic.ExternalInsertionWickDiagram.orderedDysonAmplitude\n              (layout.assembleDiagram Finset.univ ↑F) ε β g externalTime\n              ((Finset.univ.orderIsoOfFin ⋯).trans (SecondQuantization.Common.fullInteractionSlotEquiv e).symm)\n          else 0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.sum_ownerSlotCongr_connectedDyson_eq_ordered_globalLabels",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.Integral",
+    "externalAxioms": [],
+    "docString": "Reindex **all physically connected Wick-block families** while\npreserving the external source labels of the assembled physical diagram,\nindependently of a block-dependent source-label type. The canonical\nDyson integral becomes its corresponding transported-order integral.\nNo local ordered-simplex integral is factorized in isolation. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.sum_ofFamilyShuffle_connectedDyson_eq_referenceOrdered"
+    ],
+    "dependencies": [
+      "SecondQuantization.Common.ExternalInsertionBlockLayout.assembleDiagram_ownerSlotCongr",
+      "SecondQuantization.Common.ExternalInsertionBlockLayout.ownerSlotCongrConnectedBlockFamilyEquiv_apply",
+      "SecondQuantization.Common.ExternalInsertionBlockLayout.sum_ownerSlotCongrConnectedBlockFamilies",
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.slotCongr_dysonAmplitude_eq_orderedDysonAmplitude"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.sum_ofFamilyShuffle_connectedDyson_eq_referenceOrdered"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] {E n : ℕ}\n  (layout : SecondQuantization.Common.ExternalInsertionBlockLayout E n) (e : Fin n ≃ Fin n)\n  (localLabels :\n    (B : ↥layout.partition.parts) → Fin (2 * ((↑B).card / 2)) → SecondQuantization.Fermionic.ExternalFieldLabel Mode)\n  (ε : Mode → ℝ) (β : ℝ),\n  0 ≤ β →\n    ∀ (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ) (externalTime : Fin (2 * E) → ℝ),\n      (∑ G,\n          if ∀ (B : ↥(layout.ownerSlotCongr e).partition.parts), (↑G B).externalLabel = localLabels B then\n            SecondQuantization.Fermionic.ExternalInsertionWickDiagram.dysonAmplitude\n              ((layout.ownerSlotCongr e).assembleDiagram Finset.univ ↑G) ε β g externalTime\n          else 0) =\n        ∑ F,\n          if ∀ (B : ↥layout.partition.parts), (↑F B).externalLabel = localLabels B then\n            SecondQuantization.Fermionic.ExternalInsertionWickDiagram.orderedDysonAmplitude\n              (layout.assembleDiagram Finset.univ ↑F) ε β g externalTime\n              ((Finset.univ.orderIsoOfFin ⋯).trans (SecondQuantization.Common.fullInteractionSlotEquiv e).symm)\n          else 0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.sum_ownerSlotCongr_connectedDyson_eq_ordered_localLabels",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.Integral",
+    "externalAxioms": [],
+    "docString": "The physical connected-block Dyson sum with a prescribed **independent\nexternal source label on every block** is reindexed across any\ninteraction-owner relabeling. Exact block source labels are unchanged;\nthe global Dyson order is transported, not replaced by the canonical\norder of a different physical diagram.\n\nThis label-aware version is the form needed for the fixed-external-\npartition coefficientwise signed moment identity. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "SecondQuantization.Common.ExternalInsertionBlockLayout.assembleDiagram_ownerSlotCongr",
+      "SecondQuantization.Common.ExternalInsertionBlockLayout.ownerSlotCongrConnectedBlockFamilyEquiv_apply",
+      "SecondQuantization.Common.ExternalInsertionBlockLayout.sum_ownerSlotCongrConnectedBlockFamilies",
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.slotCongr_dysonAmplitude_eq_orderedDysonAmplitude"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
     "terminal": false,
     "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] {E n : ℕ}\n  (layout : SecondQuantization.Common.ExternalInsertionBlockLayout E n) (B : ↥layout.partition.parts) (ε : Mode → ℝ)\n  (β : ℝ) (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ)\n  (labels : Fin (2 * E) → SecondQuantization.Fermionic.ExternalFieldLabel Mode) (times : Fin (2 * E) → ℝ),\n  (∑ d,\n      if (↑d).externalLabel = SecondQuantization.Fermionic.evenExternalSubsetLabels labels ↑B ⋯ then\n        SecondQuantization.Fermionic.ExternalInsertionWickDiagram.dysonAmplitude\n          (SecondQuantization.Common.ExternalInsertionDiagram.slotCongr\n            (Combinatorics.standardSlotEquiv (layout.interactionBlock Finset.univ B)) ↑d)\n          ε β g (SecondQuantization.Fermionic.evenExternalSubsetTimes times ↑B ⋯)\n      else 0) =\n    ∑ d,\n      if (↑d).externalLabel = SecondQuantization.Fermionic.evenExternalSubsetLabels labels ↑B ⋯ then\n        (↑d).dysonAmplitude ε β g (SecondQuantization.Fermionic.evenExternalSubsetTimes times ↑B ⋯)\n      else 0",
     "standardAxioms": [
@@ -153602,7 +155054,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -153614,6 +155066,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.slotCongr_dysonAmplitude_eq_orderedDysonAmplitude",
       "SecondQuantization.Fermionic.sum_fixedPartitionDysonAmplitude_eq_reindexedOrderedDysonAmplitude"
     ],
     "dependencies": [
@@ -153623,9 +155076,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.slotCongr_dysonAmplitude_eq_orderedDysonAmplitude",
       "SecondQuantization.Fermionic.sum_fixedPartitionDysonAmplitude_eq_reindexedOrderedDysonAmplitude"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -154160,6 +155614,58 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] {E n : ℕ}\n  (d : SecondQuantization.Fermionic.ExternalInsertionWickDiagram Mode E n) (e : ↥Finset.univ ≃ ↥Finset.univ)\n  (ε : Mode → ℝ) (β : ℝ),\n  0 ≤ β →\n    ∀ (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ) (externalTime : Fin (2 * E) → ℝ),\n      SecondQuantization.Fermionic.ExternalInsertionWickDiagram.dysonAmplitude\n          (SecondQuantization.Common.ExternalInsertionDiagram.slotCongr e d) ε β g externalTime =\n        d.orderedDysonAmplitude ε β g externalTime ((Finset.univ.orderIsoOfFin ⋯).trans e.symm)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.slotCongr_dysonAmplitude_eq_orderedDysonAmplitude",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.Integral",
+    "externalAxioms": [],
+    "docString": "Relabeling the **physical** interaction vertices converts its canonical\nDyson integral into the corresponding transported-order integral of the\noriginal Wick diagram. This is the reverse direction of\n`dysonAmplitude_eq_slotCongr_orderedDysonAmplitude`, and notably it does\n*not* identify the two canonical-order integrals. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.sum_assembledOwnerShuffle_dysonAmplitude_eq_orderedDysonOrbit",
+      "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.sum_ownerSlotCongr_connectedDyson_eq_ordered",
+      "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.sum_ownerSlotCongr_connectedDyson_eq_ordered_globalLabels",
+      "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.sum_ownerSlotCongr_connectedDyson_eq_ordered_localLabels",
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.sum_slotCongr_dysonAmplitude_eq_orderedDysonOrbit"
+    ],
+    "dependencies": [
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.dysonAmplitude_eq_slotCongr_orderedDysonAmplitude"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.sum_assembledOwnerShuffle_dysonAmplitude_eq_orderedDysonOrbit",
+      "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.sum_ownerSlotCongr_connectedDyson_eq_ordered",
+      "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.sum_ownerSlotCongr_connectedDyson_eq_ordered_globalLabels",
+      "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.sum_ownerSlotCongr_connectedDyson_eq_ordered_localLabels",
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.sum_slotCongr_dysonAmplitude_eq_orderedDysonOrbit"
+    ],
+    "compiledConsumerCount": 5,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] {E n : ℕ}\n  (d : SecondQuantization.Fermionic.ExternalInsertionWickDiagram Mode E n) (e : ↥Finset.univ ≃ ↥Finset.univ)\n  (ε : Mode → ℝ) (β : ℝ) (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ) (externalTime : Fin (2 * E) → ℝ)\n  (σ : Fin n → ℝ),\n  Function.Injective σ →\n    SecondQuantization.Fermionic.ExternalInsertionWickDiagram.dysonFixedTimeAmplitude\n        (SecondQuantization.Common.ExternalInsertionDiagram.slotCongr e d) ε β g externalTime\n        (σ ∘ fun v => ↑(e.symm ⟨v, ⋯⟩)) =\n      d.dysonFixedTimeAmplitude ε β g externalTime σ",
     "standardAxioms": [
       "Classical.choice",
@@ -154498,6 +156004,46 @@
       "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleConnectedBlocks_signedDysonShuffleOrbit"
     ],
     "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] {E n : ℕ} {I : Type u_2} [inst_2 : Fintype I]\n  (d : SecondQuantization.Fermionic.ExternalInsertionWickDiagram Mode E n) (relabel : I → ↥Finset.univ ≃ ↥Finset.univ)\n  (ε : Mode → ℝ) (β : ℝ),\n  0 ≤ β →\n    ∀ (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ) (externalTime : Fin (2 * E) → ℝ),\n      ∑ i,\n          SecondQuantization.Fermionic.ExternalInsertionWickDiagram.dysonAmplitude\n            (SecondQuantization.Common.ExternalInsertionDiagram.slotCongr (relabel i) d) ε β g externalTime =\n        ∑ i, d.orderedDysonAmplitude ε β g externalTime ((Finset.univ.orderIsoOfFin ⋯).trans (relabel i).symm)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.sum_slotCongr_dysonAmplitude_eq_orderedDysonOrbit",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.Integral",
+    "externalAxioms": [],
+    "docString": "For a finite family of physical Wick diagrams obtained by *actual\ninteraction-slot relabelings of one fixed diagram*, the full canonical\nDyson sum is exactly its transported global-order orbit sum. The orbit\nis counted by the supplied finite index type, with no extra factorial.\nTo apply this to physical owner assignments one must prove the assembly\ntransport identity for the standardized connected-block family. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.slotCongr_dysonAmplitude_eq_orderedDysonAmplitude"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -174681,48 +176227,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {ι : Type u_1} {f g : ι → ℝ},\n  (∀ (i : ι), 0 ≤ f i) → (∀ (i : ι), f i ≤ g i) → Summable g → Summable f ∧ ∑' (i : ι), f i ≤ ∑' (i : ι), g i",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Analysis.Inequalities.Gibbs.0.Real.summable_and_tsum_le_of_nonneg_of_le",
-    "module": "LeanCondensedMatter.Analysis.Inequalities.Gibbs",
-    "externalAxioms": [],
-    "docString": "Comparison test packaged with `tsum` monotonicity. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "Real.summable_negMulLog_and_tsum_le_gibbs"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "Real.summable_negMulLog_and_tsum_le_gibbs"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {ι : Type u_2} [inst_3 : Fintype ι] (T : H →L[ℂ] H) (hT : IsSelfAdjoint T) (b : OrthonormalBasis ι ℂ H) (E : ι → ℝ),\n  (∀ (i : ι), ↑T (b i) = ↑(E i) • b i) → ∀ (x : H), T.diagonalExpectationValue hT x = ∑ i, E i * ‖(b.repr x).ofLp i‖ ^ 2",
     "standardAxioms": [
       "Classical.choice",
@@ -183031,48 +184535,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (params : QuantumTheory.Models.KronigPenney.Parameters) (energy : ℝ),\n  QuantumTheory.Models.KronigPenney.discriminant params energy =\n    Real.cos (QuantumTheory.Models.KronigPenney.barrierWaveNumber params energy * params.barrierWidth) *\n        Real.cos (QuantumTheory.Models.KronigPenney.wellWaveNumber params energy * params.wellWidth) -\n      (QuantumTheory.Models.KronigPenney.barrierWaveNumber params energy /\n                QuantumTheory.Models.KronigPenney.wellWaveNumber params energy +\n              QuantumTheory.Models.KronigPenney.wellWaveNumber params energy /\n                QuantumTheory.Models.KronigPenney.barrierWaveNumber params energy) /\n            2 *\n          Real.sin (QuantumTheory.Models.KronigPenney.barrierWaveNumber params energy * params.barrierWidth) *\n        Real.sin (QuantumTheory.Models.KronigPenney.wellWaveNumber params energy * params.wellWidth)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Models.KronigPenney.0.QuantumTheory.Models.KronigPenney.discriminant_eq_closedForm_algebraic",
-    "module": "LeanCondensedMatter.Models.KronigPenney",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Models.KronigPenney.discriminant_eq_closedForm"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Models.KronigPenney.discriminant_eq_closedForm"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ (params : QuantumTheory.Models.KronigPenney.Parameters) (potential energy : ℝ),\n  0 < params.particleMass →\n    0 < params.hbar → potential < energy → 0 < QuantumTheory.Models.KronigPenney.waveNumber params potential energy",
     "standardAxioms": [
       "Classical.choice",
@@ -189101,8 +190563,8 @@
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -189114,19 +190576,15 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "_private.LeanCondensedMatter.Models.OrbitalRelaxation.SphereMoments.0.QuantumTheory.Models.OrbitalRelaxation.integral_sin_mul_cos_four",
-      "_private.LeanCondensedMatter.Models.OrbitalRelaxation.SphereMoments.0.QuantumTheory.Models.OrbitalRelaxation.integral_sin_three_mul_cos_sq",
       "_private.LeanCondensedMatter.Models.OrbitalRelaxation.SphereMoments.0.QuantumTheory.Models.OrbitalRelaxation.sphericalAverage_evenQuarticPolynomial"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "_private.LeanCondensedMatter.Models.OrbitalRelaxation.SphereMoments.0.QuantumTheory.Models.OrbitalRelaxation.integral_sin_mul_cos_four",
-      "_private.LeanCondensedMatter.Models.OrbitalRelaxation.SphereMoments.0.QuantumTheory.Models.OrbitalRelaxation.integral_sin_three_mul_cos_sq",
       "_private.LeanCondensedMatter.Models.OrbitalRelaxation.SphereMoments.0.QuantumTheory.Models.OrbitalRelaxation.sphericalAverage_evenQuarticPolynomial"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -189206,57 +190664,11 @@
     "dependents": [
       "_private.LeanCondensedMatter.Models.OrbitalRelaxation.SphereMoments.0.QuantumTheory.Models.OrbitalRelaxation.sphericalAverage_evenQuarticPolynomial"
     ],
-    "dependencies": [
-      "_private.LeanCondensedMatter.Models.OrbitalRelaxation.SphereMoments.0.QuantumTheory.Models.OrbitalRelaxation.integral_sin_five",
-      "_private.LeanCondensedMatter.Models.OrbitalRelaxation.SphereMoments.0.QuantumTheory.Models.OrbitalRelaxation.integral_sin_one",
-      "_private.LeanCondensedMatter.Models.OrbitalRelaxation.SphereMoments.0.QuantumTheory.Models.OrbitalRelaxation.integral_sin_three"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.Models.OrbitalRelaxation.SphereMoments.0.QuantumTheory.Models.OrbitalRelaxation.sphericalAverage_evenQuarticPolynomial"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∫ (θ : ℝ) in 0..Real.pi, Real.sin θ = 2",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Models.OrbitalRelaxation.SphereMoments.0.QuantumTheory.Models.OrbitalRelaxation.integral_sin_one",
-    "module": "LeanCondensedMatter.Models.OrbitalRelaxation.SphereMoments",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.Models.OrbitalRelaxation.SphereMoments.0.QuantumTheory.Models.OrbitalRelaxation.integral_sin_mul_cos_four"
-    ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "_private.LeanCondensedMatter.Models.OrbitalRelaxation.SphereMoments.0.QuantumTheory.Models.OrbitalRelaxation.integral_sin_mul_cos_four"
+      "_private.LeanCondensedMatter.Models.OrbitalRelaxation.SphereMoments.0.QuantumTheory.Models.OrbitalRelaxation.sphericalAverage_evenQuarticPolynomial"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -189359,50 +190771,6 @@
   },
   {
     "terminal": false,
-    "statement": "∫ (θ : ℝ) in 0..Real.pi, Real.sin θ ^ 3 = 4 / 3",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Models.OrbitalRelaxation.SphereMoments.0.QuantumTheory.Models.OrbitalRelaxation.integral_sin_three",
-    "module": "LeanCondensedMatter.Models.OrbitalRelaxation.SphereMoments",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.Models.OrbitalRelaxation.SphereMoments.0.QuantumTheory.Models.OrbitalRelaxation.integral_sin_mul_cos_four",
-      "_private.LeanCondensedMatter.Models.OrbitalRelaxation.SphereMoments.0.QuantumTheory.Models.OrbitalRelaxation.integral_sin_three_mul_cos_sq"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.Models.OrbitalRelaxation.SphereMoments.0.QuantumTheory.Models.OrbitalRelaxation.integral_sin_mul_cos_four",
-      "_private.LeanCondensedMatter.Models.OrbitalRelaxation.SphereMoments.0.QuantumTheory.Models.OrbitalRelaxation.integral_sin_three_mul_cos_sq"
-    ],
-    "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∫ (θ : ℝ) in 0..Real.pi, Real.sin θ ^ 3 * Real.cos θ ^ 2 = 4 / 15",
     "standardAxioms": [
       "Classical.choice",
@@ -189424,10 +190792,7 @@
     "dependents": [
       "_private.LeanCondensedMatter.Models.OrbitalRelaxation.SphereMoments.0.QuantumTheory.Models.OrbitalRelaxation.sphericalAverage_evenQuarticPolynomial"
     ],
-    "dependencies": [
-      "_private.LeanCondensedMatter.Models.OrbitalRelaxation.SphereMoments.0.QuantumTheory.Models.OrbitalRelaxation.integral_sin_five",
-      "_private.LeanCondensedMatter.Models.OrbitalRelaxation.SphereMoments.0.QuantumTheory.Models.OrbitalRelaxation.integral_sin_three"
-    ],
+    "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
@@ -190190,48 +191555,6 @@
     "completedMention": false,
     "compiledConsumers": [
       "Combinatorics.sum_singleCycleContribution_assignments_eq_factorial_mul_trace"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (m : ℕ), 0 < m → ↑(m - 1).factorial / ↑m.factorial = 1 / ↑m",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Permutation.ConnectedCycleSeries.0.Combinatorics.factorial_pred_div_factorial_complex",
-    "module": "LeanCondensedMatter.Permutation.ConnectedCycleSeries",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "Combinatorics.coeff_permutationConnectedCycleSeries_of_pos"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "Combinatorics.coeff_permutationConnectedCycleSeries_of_pos"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -197405,6 +198728,52 @@
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.MixedOrderData.0.SecondQuantization.Common.ExternalInsertionDiagram.atomicLegPartner_componentOrderedLeg"
     ],
     "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {ι : Type u_1} {β : ι → Type u_2} {γ : ι → Type u_3} (P : (i : ι) → Combinatorics.PairingOn (β i))\n  (e : (i : ι) → β i ≃ γ i),\n  (Combinatorics.PairingOn.sigmaCongrRight fun i => (P i).transport (e i).symm) =\n    (Combinatorics.PairingOn.sigmaCongrRight P).transport (Equiv.sigmaCongrRight e).symm",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.OwnerSlotCongr.0.SecondQuantization.Common.sigmaPairing_transport",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.OwnerSlotCongr",
+    "externalAxioms": [],
+    "docString": "Conjugating each local perfect pairing by its own slot equivalence\ncommutes with assembling the complete independent block pairing. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Common.ExternalInsertionBlockLayout.assembleDiagram_ownerSlotCongr"
+    ],
+    "dependencies": [
+      "Combinatorics.PairingOn.ext",
+      "Combinatorics.PairingOn.sigmaCongrRight_partner",
+      "Combinatorics.PairingOn.transport_partner"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Common.ExternalInsertionBlockLayout.assembleDiagram_ownerSlotCongr"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -209815,7 +211184,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {V : Type u_1} [inst : NormedAddCommGroup V] [inst_1 : NormedSpace ℂ V] (ladder : V →L[ℂ] V)\n  (hinvertible : IsUnit (1 - ladder)) (bareVertex : V),\n  (1 - ladder) (QuantumTheory.Transport.resummedLadderVertex ladder hinvertible bareVertex) = bareVertex",
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [CompleteSpace H] (a b c : H →L[ℂ] H),\n  ‖a * b * c‖ ≤ ‖a‖ * ‖b‖ * ‖c‖",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -209827,20 +211196,62 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Transport.Disorder.Ladder.0.QuantumTheory.Transport.shiftedLadder_apply_resummedLadderVertex",
-    "module": "LeanCondensedMatter.Transport.Disorder.Ladder",
+    "name": "_private.LeanCondensedMatter.Transport.Disorder.FirstRungNormBound.0.QuantumTheory.Transport.FiniteDisorderEnsemble.norm_mul_three_le",
+    "module": "LeanCondensedMatter.Transport.Disorder.FirstRungNormBound",
     "externalAxioms": [],
     "docString": null,
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Transport.resummedLadderVertex_fixedPoint"
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_connectedTwoGreen_sub_firstBornRung_le_cubic"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Transport.resummedLadderVertex_fixedPoint"
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_connectedTwoGreen_sub_firstBornRung_le_cubic"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [CompleteSpace H]\n  (a b c d e : H →L[ℂ] H), ‖a * b * c * d * e‖ ≤ ‖a‖ * ‖b‖ * ‖c‖ * ‖d‖ * ‖e‖",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Transport.Disorder.LinearizedFluctuation.0.QuantumTheory.Transport.FiniteDisorderEnsemble.norm_mul_five_le",
+    "module": "LeanCondensedMatter.Transport.Disorder.LinearizedFluctuation",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_configurationGreen_fluctuation_sub_firstDyson_le"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_configurationGreen_fluctuation_sub_firstDyson_le"
     ],
     "compiledConsumerCount": 1,
     "axioms": [

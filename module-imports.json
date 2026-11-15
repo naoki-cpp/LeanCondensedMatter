@@ -3187,7 +3187,7 @@
       "imports": [
         "LeanCondensedMatter.Models.OrbitalRelaxation.Finite"
       ],
-      "externalImportCount": 5
+      "externalImportCount": 4
     },
     {
       "name": "LeanCondensedMatter.Models.OrbitalRelaxation.T2gProjectors",
@@ -5584,6 +5584,14 @@
       "externalImportCount": 0
     },
     {
+      "name": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.OwnerSlotCongr",
+      "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Diagrammatics/ExternalInsertion/Components/OwnerSlotCongr.lean",
+      "imports": [
+        "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.BlockAssembly"
+      ],
+      "externalImportCount": 0
+    },
+    {
       "name": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Core.Diagram",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Diagrammatics/ExternalInsertion/Core/Diagram.lean",
       "imports": [
@@ -7386,7 +7394,7 @@
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Diagrammatics/ExternalInsertion/Integral.lean",
       "imports": [
         "LeanCondensedMatter.Analysis.OrderedSimplex.StrictAntiCongr",
-        "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.BlockAssembly",
+        "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.OwnerSlotCongr",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.SupportStandardization",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Ordered",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.Amplitude"
@@ -8670,12 +8678,30 @@
       "externalImportCount": 1
     },
     {
+      "name": "LeanCondensedMatter.Transport.Disorder.FirstRungNormBound",
+      "sourceFile": "LeanCondensedMatter/Transport/Disorder/FirstRungNormBound.lean",
+      "imports": [
+        "LeanCondensedMatter.Transport.Disorder.Ladder",
+        "LeanCondensedMatter.Transport.Disorder.LinearizedFluctuation"
+      ],
+      "externalImportCount": 3
+    },
+    {
       "name": "LeanCondensedMatter.Transport.Disorder.Ladder",
       "sourceFile": "LeanCondensedMatter/Transport/Disorder/Ladder.lean",
       "imports": [
         "LeanCondensedMatter.Transport.Disorder.Moments"
       ],
       "externalImportCount": 0
+    },
+    {
+      "name": "LeanCondensedMatter.Transport.Disorder.LinearizedFluctuation",
+      "sourceFile": "LeanCondensedMatter/Transport/Disorder/LinearizedFluctuation.lean",
+      "imports": [
+        "LeanCondensedMatter.Transport.Disorder.Moments",
+        "LeanCondensedMatter.Transport.Disorder.TwoParticleNormBound"
+      ],
+      "externalImportCount": 3
     },
     {
       "name": "LeanCondensedMatter.Transport.Disorder.Moments",
@@ -8766,7 +8792,9 @@
         "LeanCondensedMatter.Transport.Disorder.ConnectedCorrelation",
         "LeanCondensedMatter.Transport.Disorder.DressedTraceNormBound",
         "LeanCondensedMatter.Transport.Disorder.Finite",
+        "LeanCondensedMatter.Transport.Disorder.FirstRungNormBound",
         "LeanCondensedMatter.Transport.Disorder.Ladder",
+        "LeanCondensedMatter.Transport.Disorder.LinearizedFluctuation",
         "LeanCondensedMatter.Transport.Disorder.Moments",
         "LeanCondensedMatter.Transport.Disorder.Resolvent",
         "LeanCondensedMatter.Transport.Disorder.SCBA",
