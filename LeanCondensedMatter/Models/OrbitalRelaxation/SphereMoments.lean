@@ -54,48 +54,22 @@ private theorem integral_sin_five :
 private theorem integral_sin_three_mul_cos_sq :
     (∫ θ in (0 : ℝ)..Real.pi,
        Real.sin θ ^ 3 * Real.cos θ ^ 2) = 4 / 15 := by
-  have hid (θ : ℝ) :
-      Real.sin θ ^ 3 * Real.cos θ ^ 2 =
-        Real.sin θ ^ 3 - Real.sin θ ^ 5 := by
-    have hc : Real.cos θ ^ 2 = 1 - Real.sin θ ^ 2 := by
-      nlinarith [Real.sin_sq_add_cos_sq θ]
-    rw [hc]
-    ring
-  simp_rw [hid]
-  have hsplit :
-      (∫ θ in (0 : ℝ)..Real.pi, Real.sin θ ^ 3 - Real.sin θ ^ 5) =
-        (∫ θ in (0 : ℝ)..Real.pi, Real.sin θ ^ 3) -
-        (∫ θ in (0 : ℝ)..Real.pi, Real.sin θ ^ 5) :=
-    intervalIntegral.integral_sub
-      (Real.continuous_sin.pow 3 |>.intervalIntegrable _ _)
-      (Real.continuous_sin.pow 5 |>.intervalIntegrable _ _)
-  rw [hsplit, integral_sin_three, integral_sin_five]
-  ring
+  have h := integral_sin_pow_odd_mul_cos_pow (a := (0 : ℝ)) (b := Real.pi) 1 2
+  simp only [pow_one] at h
+  have hid (u : ℝ) : u ^ 2 * (1 - u ^ 2) = u ^ 2 - u ^ 4 := by ring
+  simp_rw [hid] at h
+  rw [intervalIntegral.integral_sub
+    ((continuous_id.pow 2).intervalIntegrable _ _)
+    ((continuous_id.pow 4).intervalIntegrable _ _)] at h
+  norm_num [integral_pow] at h
+  exact h
 
 private theorem integral_sin_mul_cos_four :
     (∫ θ in (0 : ℝ)..Real.pi,
        Real.sin θ * Real.cos θ ^ 4) = 2 / 5 := by
-  have hid (θ : ℝ) :
-      Real.sin θ * Real.cos θ ^ 4 =
-        Real.sin θ - 2 * Real.sin θ ^ 3 + Real.sin θ ^ 5 := by
-    have hc : Real.cos θ ^ 2 = 1 - Real.sin θ ^ 2 := by
-      nlinarith [Real.sin_sq_add_cos_sq θ]
-    calc
-      _ = Real.sin θ * (Real.cos θ ^ 2) ^ 2 := by ring
-      _ = Real.sin θ * (1 - Real.sin θ ^ 2) ^ 2 := by rw [hc]
-      _ = _ := by ring
-  simp_rw [hid]
-  have h1 : IntervalIntegrable Real.sin volume 0 Real.pi :=
-    Real.continuous_sin.intervalIntegrable _ _
-  have h3 : IntervalIntegrable (fun θ : ℝ => 2 * Real.sin θ ^ 3) volume 0 Real.pi :=
-    (continuous_const.mul (Real.continuous_sin.pow 3)).intervalIntegrable _ _
-  have h5 : IntervalIntegrable (fun θ : ℝ => Real.sin θ ^ 5) volume 0 Real.pi :=
-    (Real.continuous_sin.pow 5).intervalIntegrable _ _
-  rw [intervalIntegral.integral_add (h1.sub h3) h5,
-      intervalIntegral.integral_sub h1 h3,
-      intervalIntegral.integral_const_mul,
-      integral_sin_one, integral_sin_three, integral_sin_five]
-  ring
+  have h := integral_sin_pow_odd_mul_cos_pow (a := (0 : ℝ)) (b := Real.pi) 0 4
+  norm_num [integral_pow] at h
+  exact h
 
 private theorem integral_cos_sq_full :
     (∫ φ in (0 : ℝ)..(2 * Real.pi), Real.cos φ ^ 2) = Real.pi := by
