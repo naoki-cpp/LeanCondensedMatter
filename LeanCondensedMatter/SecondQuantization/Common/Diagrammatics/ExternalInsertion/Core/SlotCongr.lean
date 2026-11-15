@@ -103,6 +103,19 @@ noncomputable def ExternalInsertionDiagram.slotCongrVertexGraphIso (e : ↥T ≃
     (externalInsertionVertexCongr (E := E) e)
     (externalInsertionVertexOfLeg_externalInsertionLegCongr e)
 
+/-- The actual external-source connected-component partition is
+invariant when arbitrary quartic interaction vertices are relabeled.
+This strengthens reachability invariance to equality of the **entire
+partition** over the same fixed external insertion slots. -/
+theorem ExternalInsertionDiagram.slotCongr_externalComponentPartition
+    (e : ↥T ≃ ↥U)
+    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N T) :
+    externalComponentPartition (d.slotCongr (M := M) e).vertexGraph =
+      externalComponentPartition d.vertexGraph := by
+  classical
+  exact externalComponentPartition_congr_of_external_fixed
+    (d.slotCongrVertexGraphIso (M := M) e) (fun _ => rfl)
+
 /-- The transport is an equivalence of diagram types. -/
 noncomputable def ExternalInsertionDiagram.slotCongrEquiv (e : ↥T ≃ ↥U) :
     ExternalInsertionDiagram ExternalLabel InternalLabel E N T ≃
