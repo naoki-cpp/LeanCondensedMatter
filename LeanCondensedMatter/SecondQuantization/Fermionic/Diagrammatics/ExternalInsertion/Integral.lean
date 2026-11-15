@@ -558,7 +558,11 @@ theorem ExternalInsertionBlockLayout.sum_ownerSlotCongr_connectedDyson_eq_ordere
         ((layout.ownerSlotCongrConnectedBlockFamilyEquiv e F).1 B).externalLabel =
           localLabels B) ↔
         (∀ B : layout.partition.parts, (F.1 B).externalLabel = localLabels B) := by
-    simp only [hlabel]
+    constructor
+    · intro h B
+      exact (hlabel B).symm.trans (h B)
+    · intro h B
+      exact (hlabel B).trans (h B)
   have hfamily :
       (layout.ownerSlotCongrConnectedBlockFamilyEquiv e F).1 =
         layout.ownerSlotCongrBlockFamily e F.1 := by
