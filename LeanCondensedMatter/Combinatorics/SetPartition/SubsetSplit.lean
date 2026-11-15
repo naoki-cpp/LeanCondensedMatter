@@ -1,5 +1,4 @@
-import Mathlib.Data.Finset.SDiff
-import Mathlib.Logic.Equiv.Set
+import Mathlib.Data.Finset.Basic
 
 set_option linter.style.header false
 
@@ -20,12 +19,10 @@ variable {α : Type*} [DecidableEq α]
 
 /-- A finite set is its subset together with the relative complement. -/
 def subsetSumSdiffEquiv {S T : Finset α} (h : T ⊆ S) : ↥T ⊕ ↥(S \ T) ≃ ↥S :=
-  (Equiv.sumCongr (Equiv.refl ↥T) (Equiv.subtypeEquivProp (by
-    funext x
-    apply propext
-    simp))).trans
-    (Equiv.Set.sumDiffSubset (s := (T : Set α)) (t := (S : Set α)) (by
-      simpa using h))
+  by
+    simpa only [Finset.union_sdiff_of_subset h] using
+      (Equiv.Finset.union T (S \ T)
+        (disjoint_sdiff_self_right : Disjoint T (S \ T)))
 
 @[simp]
 theorem subsetSumSdiffEquiv_inl_apply {S T : Finset α} (h : T ⊆ S) (x : ↥T) :
