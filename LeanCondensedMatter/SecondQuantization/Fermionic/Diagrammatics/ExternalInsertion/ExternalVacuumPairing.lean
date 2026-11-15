@@ -392,56 +392,17 @@ theorem externalInsertionOfSlotSplit_prod_mixedPairContractions_eq_left_mul_orie
             (fun v => vac.vertexLabel (S.orderIsoOfFin rfl v)) (σ ∘ f)
             pr.1.2 pr.1.1 := by
   intro S order f d split pairEquiv kernel
-  have hvac :
-      (∏ pr : (vac.pairingInOrder order).NormalizedPair,
-        kernel (pairEquiv (Sum.inr pr)).1.1 (pairEquiv (Sum.inr pr)).1.2) =
-      ∏ pr : (vac.pairingInOrder order).NormalizedPair,
-        if split (Sum.inr pr.1.1) < split (Sum.inr pr.1.2) then
-          flatVertexLegPairValue ε β
-            (fun v => vac.vertexLabel (S.orderIsoOfFin rfl v)) (σ ∘ f)
-            pr.1.1 pr.1.2
-        else
-          flatVertexLegPairValue ε β
-            (fun v => vac.vertexLabel (S.orderIsoOfFin rfl v)) (σ ∘ f)
-            pr.1.2 pr.1.1 := by
-    apply Fintype.prod_congr
-    intro pr
-    exact externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_right_normalizedPair
-      ε β T ext vac externalTime σ pr
-  have hsplit :
-      (∏ pr ∈ (d.pairingInMixedOrder externalTime σ).pairs, kernel pr.1 pr.2) =
-        (∏ pr : ext.pairing.NormalizedPair,
-          kernel (pairEquiv (Sum.inl pr)).1.1 (pairEquiv (Sum.inl pr)).1.2) *
-        ∏ pr : (vac.pairingInOrder order).NormalizedPair,
-          kernel (pairEquiv (Sum.inr pr)).1.1 (pairEquiv (Sum.inr pr)).1.2 := by
-    have hpairing :
-        d.pairingInMixedOrder externalTime σ =
-          Pairing.ofSplit split ext.pairing (vac.pairingInOrder order) :=
-      ExternalInsertionDiagram.ofSlotSplit_pairingInMixedOrder_eq_ofSplit_orderedVacuum
-        T ext vac externalTime σ
-    rw [hpairing]
-    let pairing := Pairing.ofSplit split ext.pairing (vac.pairingInOrder order)
-    change (∏ pr ∈ pairing.pairs, kernel pr.1 pr.2) =
-      (∏ pr : ext.pairing.NormalizedPair,
-        kernel (pairEquiv (Sum.inl pr)).1.1 (pairEquiv (Sum.inl pr)).1.2) *
-        ∏ pr : (vac.pairingInOrder order).NormalizedPair,
-          kernel (pairEquiv (Sum.inr pr)).1.1 (pairEquiv (Sum.inr pr)).1.2
-    calc
-      (∏ pr ∈ pairing.pairs, kernel pr.1 pr.2) =
-          ∏ pr : pairing.NormalizedPair, kernel pr.1.1 pr.1.2 :=
-        Finset.prod_subtype _ (fun _ => Iff.rfl) _
-      _ = ∏ pr : ext.pairing.NormalizedPair ⊕
-          (vac.pairingInOrder order).NormalizedPair,
-            kernel (pairEquiv pr).1.1 (pairEquiv pr).1.2 :=
-        (Equiv.prod_comp pairEquiv (fun pr => kernel pr.1.1 pr.1.2)).symm
-      _ = _ := Fintype.prod_sum_type _
-  exact hsplit.trans
-    (congrArg
-      (fun z : ℂ =>
-        (∏ pr : ext.pairing.NormalizedPair,
-          kernel (pairEquiv (Sum.inl pr)).1.1 (pairEquiv (Sum.inl pr)).1.2) * z)
-      hvac)
-
+  have hpairing :
+      d.pairingInMixedOrder externalTime σ =
+        Pairing.ofSplit split ext.pairing (vac.pairingInOrder order) :=
+    ExternalInsertionDiagram.ofSlotSplit_pairingInMixedOrder_eq_ofSplit_orderedVacuum
+      T ext vac externalTime σ
+  rw [hpairing, Pairing.prod_pairs_ofSplit_normalized]
+  congr 1
+  apply Fintype.prod_congr
+  intro pr
+  exact externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_right_normalizedPair
+    ε β T ext vac externalTime σ pr
 
 
 /-- The actual physical mixed-time pairing evaluation splits into its standalone
