@@ -9347,9 +9347,7 @@
       "Combinatorics.permutationConnectedCycleSeries_diagonal_eq_neg_inv_smul_sum_log",
       "Combinatorics.smul_permutationConnectedCycleSeries_eq_neg_traceLog"
     ],
-    "dependencies": [
-      "_private.LeanCondensedMatter.Permutation.TraceLog.0.Combinatorics.coeff_tracePowerTransform"
-    ],
+    "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
@@ -11134,8 +11132,7 @@
       "Combinatorics.coeff_permutationConnectedCycleSeries_of_pos",
       "Combinatorics.constantCoeff_formalTraceLogOneSubSeries",
       "Combinatorics.constantCoeff_permutationConnectedCycleSeries",
-      "_private.LeanCondensedMatter.Permutation.TraceLog.0.Combinatorics.coeff_log_complex_of_pos",
-      "_private.LeanCondensedMatter.Permutation.TraceLog.0.Combinatorics.neg_pow_mul_neg_one_pow_succ"
+      "_private.LeanCondensedMatter.Permutation.TraceLog.0.Combinatorics.coeff_log_complex_of_pos"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -27468,44 +27465,6 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
-    "statement": "∀ {α : Type u_1} [inst : MeasurableSpace α] (μ : MeasureTheory.Measure α) (f : L2Multiplication.ComplexLInf μ)\n  (ψ : L2Multiplication.ComplexL2 μ),\n  ((L2Multiplication.multiplicationLinear μ) f) ψ = (L2Multiplication.multiplicationOperator μ f) ψ",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "L2Multiplication.multiplicationLinear_apply",
-    "module": "LeanCondensedMatter.Analysis.Operator.L2Multiplication",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
     "terminal": false,
     "statement": "∀ {α : Type u_1} [inst : MeasurableSpace α] (μ : MeasureTheory.Measure α) (f : L2Multiplication.ComplexLInf μ)\n  (ψ : L2Multiplication.ComplexL2 μ), (L2Multiplication.multiplicationOperator μ f) ψ = f • ψ",
     "standardAxioms": [
@@ -36423,8 +36382,7 @@
       "QuantumTheory.Transport.scalarSpectralDifferenceCoefficient_eq_lorentzian"
     ],
     "dependencies": [
-      "_private.LeanCondensedMatter.Analysis.Lorentzian.Kernel.0.Lorentzian.complex_offset_add_I_ne_zero",
-      "_private.LeanCondensedMatter.Analysis.Lorentzian.Kernel.0.Lorentzian.complex_offset_sub_I_ne_zero"
+      "_private.LeanCondensedMatter.Analysis.Lorentzian.Kernel.0.Lorentzian.complex_offset_add_I_ne_zero"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -85017,9 +84975,7 @@
     "dependents": [],
     "dependencies": [
       "QuantumTheory.Models.OrbitalRelaxation.evenQuarticCubature_coordinate_four",
-      "_private.LeanCondensedMatter.Models.OrbitalRelaxation.SphereMoments.0.QuantumTheory.Models.OrbitalRelaxation.sphericalAverage_x_four",
-      "_private.LeanCondensedMatter.Models.OrbitalRelaxation.SphereMoments.0.QuantumTheory.Models.OrbitalRelaxation.sphericalAverage_y_four",
-      "_private.LeanCondensedMatter.Models.OrbitalRelaxation.SphereMoments.0.QuantumTheory.Models.OrbitalRelaxation.sphericalAverage_z_four"
+      "_private.LeanCondensedMatter.Models.OrbitalRelaxation.SphereMoments.0.QuantumTheory.Models.OrbitalRelaxation.sphericalAverage_evenQuarticPolynomial"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -85060,9 +85016,7 @@
     "dependents": [],
     "dependencies": [
       "QuantumTheory.Models.OrbitalRelaxation.evenQuarticCubature_coordinate_sq_mul_coordinate_sq",
-      "_private.LeanCondensedMatter.Models.OrbitalRelaxation.SphereMoments.0.QuantumTheory.Models.OrbitalRelaxation.sphericalAverage_xy",
-      "_private.LeanCondensedMatter.Models.OrbitalRelaxation.SphereMoments.0.QuantumTheory.Models.OrbitalRelaxation.sphericalAverage_xz",
-      "_private.LeanCondensedMatter.Models.OrbitalRelaxation.SphereMoments.0.QuantumTheory.Models.OrbitalRelaxation.sphericalAverage_yz"
+      "_private.LeanCondensedMatter.Models.OrbitalRelaxation.SphereMoments.0.QuantumTheory.Models.OrbitalRelaxation.sphericalAverage_evenQuarticPolynomial"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -99803,7 +99757,7 @@
       "_private.LeanCondensedMatter.Transport.Analysis.BesselRadialMoments.0.QuantumTheory.Transport.polarFourierBesselY_hasDerivAt"
     ],
     "dependencies": [
-      "_private.LeanCondensedMatter.Transport.Analysis.PolarFourier.0.QuantumTheory.Transport.norm_polarFourierRadialPhase"
+      "_private.LeanCondensedMatter.Transport.Analysis.PolarFourier.0.QuantumTheory.Transport.polarFourierWeightedAngularKernel_hasDerivAt"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -100611,7 +100565,7 @@
       "_private.LeanCondensedMatter.Transport.Analysis.BesselRadialMoments.0.QuantumTheory.Transport.polarFourierBesselX_hasDerivAt"
     ],
     "dependencies": [
-      "_private.LeanCondensedMatter.Transport.Analysis.PolarFourier.0.QuantumTheory.Transport.norm_polarFourierRadialPhase"
+      "_private.LeanCondensedMatter.Transport.Analysis.PolarFourier.0.QuantumTheory.Transport.polarFourierWeightedAngularKernel_hasDerivAt"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -103442,9 +103396,7 @@
       "QuantumTheory.Models.MassiveDirac.tendsto_oppositeBandCoefficient_at_bandPole",
       "QuantumTheory.Transport.tendsto_scalarSpectralDifferenceCoefficient_zero"
     ],
-    "dependencies": [
-      "_private.LeanCondensedMatter.Transport.Resolvent.Spectral.0.QuantumTheory.Transport.complex_spectral_offset_ne_zero"
-    ],
+    "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
@@ -105228,9 +105180,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [],
-    "dependencies": [
-      "_private.LeanCondensedMatter.QuantumTheory.Gibbs.State.0.QuantumTheory.coe_gibbsOpUnit"
-    ],
+    "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [],
@@ -105502,9 +105452,7 @@
       "QuantumTheory.gibbsState_op",
       "QuantumTheory.spectralTrace_gibbsOp_pos"
     ],
-    "dependencies": [
-      "_private.LeanCondensedMatter.QuantumTheory.Gibbs.State.0.QuantumTheory.coe_gibbsOpUnit"
-    ],
+    "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
@@ -109799,46 +109747,6 @@
       "SchwartzKinetic1D.secondDerivative_multiplication_apply"
     ],
     "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ (f : SchwartzKinetic1D.Space), SchwartzKinetic1D.multiplicationLinear f = SchwartzKinetic1D.multiplicationOperator f",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SchwartzKinetic1D.multiplicationLinear_apply",
-    "module": "LeanCondensedMatter.Analysis.Operator.SchwartzKinetic1D",
-    "externalAxioms": [],
-    "docString": "Applying the linear family of local multiplication operators recovers the pointwise operator. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "_private.LeanCondensedMatter.Analysis.Operator.SchwartzKinetic1D.0.SchwartzKinetic1D.multiplicationLinear_apply_private"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -121599,7 +121507,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ {E N : ℕ} {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {M : Type u_3} [inst : Fintype ExternalLabel]\n  [inst_1 : Fintype InternalLabel] [inst_2 : AddCommMonoid M] (anchor : Fin (2 * E)) (π : Finpartition Finset.univ)\n  (heven : ∀ (B : ↥π.parts), Even (↑B).card)\n  (weight : { d // SecondQuantization.Common.externalComponentPartition (↑d).vertexGraph = π } → M),\n  ∑ d, weight d =\n    ∑\n      p ∈\n        SecondQuantization.Common.ExternalInsertionBlockLayout.fixedPartitionPhysicalStandardizedSizeShuffleFiniteDomain\n          anchor π heven,\n      weight\n        ((SecondQuantization.Common.ExternalInsertionBlockLayout.fixedPartitionPhysicalStandardizedSizeShuffleEquiv\n              anchor π heven).symm\n          p)",
     "standardAxioms": [
       "Classical.choice",
@@ -121607,7 +121515,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -121618,12 +121526,16 @@
     "docString": "An arbitrary weight on physical partition-fiber diagrams can be\nreindexed without loss or multiplicity by the exact finite\nsize/shuffle/standardized-local domain. No factorization of an\nindividual ordered Dyson integral is claimed. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "SecondQuantization.Fermionic.sum_fixedPartitionDysonAmplitude_eq_standardizedOrderedDysonAmplitude"
+    ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.sum_fixedPartitionDysonAmplitude_eq_standardizedOrderedDysonAmplitude"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -124786,7 +124698,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {E N M : ℕ} {T : Finset (Fin N)} {U : Finset (Fin M)}\n  (e : ↥T ≃ ↥U) (d : SecondQuantization.Common.ExternalInsertionDiagram ExternalLabel InternalLabel E N T),\n  (SecondQuantization.Common.ExternalInsertionDiagram.slotCongr e d).externalLabel = d.externalLabel",
+    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {E N M : ℕ} {T : Finset (Fin N)} {U : Finset (Fin M)}\n  (e : ↥T ≃ ↥U) (d : SecondQuantization.Common.ExternalInsertionDiagram ExternalLabel InternalLabel E N T),\n  SecondQuantization.Common.externalComponentPartition\n      (SecondQuantization.Common.ExternalInsertionDiagram.slotCongr e d).vertexGraph =\n    SecondQuantization.Common.externalComponentPartition d.vertexGraph",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -124794,6 +124706,46 @@
     ],
     "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.ExternalInsertionDiagram.slotCongr_externalComponentPartition",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Core.SlotCongr",
+    "externalAxioms": [],
+    "docString": "The actual external-source connected-component partition is\ninvariant when arbitrary quartic interaction vertices are relabeled.\nThis strengthens reachability invariance to equality of the **entire\npartition** over the same fixed external insertion slots. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "SecondQuantization.Common.externalComponentPartition_congr_of_external_fixed"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {E N M : ℕ} {T : Finset (Fin N)} {U : Finset (Fin M)}\n  (e : ↥T ≃ ↥U) (d : SecondQuantization.Common.ExternalInsertionDiagram ExternalLabel InternalLabel E N T),\n  (SecondQuantization.Common.ExternalInsertionDiagram.slotCongr e d).externalLabel = d.externalLabel",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
     "simpLemma": true,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -124804,12 +124756,16 @@
     "docString": null,
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "SecondQuantization.Fermionic.sum_fixedPartitionDysonAmplitude_eq_reindexedOrderedDysonAmplitude"
+    ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.sum_fixedPartitionDysonAmplitude_eq_reindexedOrderedDysonAmplitude"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -138768,6 +138724,50 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {External : Type u_1} {Internal : Type u_2} [inst : Fintype External] [inst_1 : DecidableEq External]\n  {Internal' : Type u_3} {G : SimpleGraph (External ⊕ Internal)} {H : SimpleGraph (External ⊕ Internal')} (φ : G ≃g H),\n  (∀ (x : External), φ (Sum.inl x) = Sum.inl x) →\n    SecondQuantization.Common.externalComponentPartition H = SecondQuantization.Common.externalComponentPartition G",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.externalComponentPartition_congr_of_external_fixed",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalComponents",
+    "externalAxioms": [],
+    "docString": "A graph isomorphism fixing every external vertex preserves the\n**entire physical external-component partition**, including its blocks,\nnot merely the number of externally supported components. Arbitrary\nrelabelings of the internal vertices cannot change the equivalence\nrelation between external insertion sites. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Common.ExternalInsertionDiagram.slotCongr_externalComponentPartition"
+    ],
+    "dependencies": [
+      "SecondQuantization.Common.mem_externalComponentPartition_part"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Common.ExternalInsertionDiagram.slotCongr_externalComponentPartition"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {N : ℕ} (E : ℕ) (S : Finset (Fin N)) (e : Fin (2 * E)),\n  ↑(SecondQuantization.Common.externalInsertionExternalLeg E S e) = ↑e",
     "standardAxioms": [
       "Classical.choice",
@@ -145092,7 +145092,8 @@
       "SecondQuantization.Common.ExternalInsertionBlockLayout.externalComponentPartition_assembleDiagram",
       "SecondQuantization.Common.ExternalInsertionDiagram.allExternalVerticesConnected_iff_externalComponentPartition_eq_top",
       "SecondQuantization.Common.ExternalInsertionDiagram.externalComponentPartition_part_eq_toLeft_componentBlock",
-      "SecondQuantization.Common.allExternalVerticesConnected_iff_externalComponentPartition_parts_eq_singleton"
+      "SecondQuantization.Common.allExternalVerticesConnected_iff_externalComponentPartition_parts_eq_singleton",
+      "SecondQuantization.Common.externalComponentPartition_congr_of_external_fixed"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
@@ -145101,9 +145102,10 @@
       "SecondQuantization.Common.ExternalInsertionBlockLayout.externalComponentPartition_assembleDiagram",
       "SecondQuantization.Common.ExternalInsertionDiagram.allExternalVerticesConnected_iff_externalComponentPartition_eq_top",
       "SecondQuantization.Common.ExternalInsertionDiagram.externalComponentPartition_part_eq_toLeft_componentBlock",
-      "SecondQuantization.Common.allExternalVerticesConnected_iff_externalComponentPartition_parts_eq_singleton"
+      "SecondQuantization.Common.allExternalVerticesConnected_iff_externalComponentPartition_parts_eq_singleton",
+      "SecondQuantization.Common.externalComponentPartition_congr_of_external_fixed"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 5,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -153593,6 +153595,51 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] {E n : ℕ}\n  (d : SecondQuantization.Fermionic.ExternalInsertionWickDiagram Mode E n) (e : ↥Finset.univ ≃ ↥Finset.univ)\n  (ε : Mode → ℝ) (β : ℝ),\n  0 ≤ β →\n    ∀ (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ) (externalTime : Fin (2 * E) → ℝ),\n      d.dysonAmplitude ε β g externalTime =\n        SecondQuantization.Fermionic.ExternalInsertionWickDiagram.orderedDysonAmplitude\n          (SecondQuantization.Common.ExternalInsertionDiagram.slotCongr e d) ε β g externalTime\n          ((Finset.univ.orderIsoOfFin ⋯).trans e)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.dysonAmplitude_eq_slotCongr_orderedDysonAmplitude",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.Integral",
+    "externalAxioms": [],
+    "docString": "A canonical Dyson integral of one **physical** diagram is the\nordered-simplex amplitude of its relabeled diagram with the global\ninteraction order transported accordingly. This is the exact termwise\nbridge needed before reindexing the physical fixed-partition fiber:\nit does **not** assert invariance of individual canonical Dyson\nintegrals under arbitrary interaction-slot permutations. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Fermionic.sum_fixedPartitionDysonAmplitude_eq_reindexedOrderedDysonAmplitude"
+    ],
+    "dependencies": [
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.orderedDysonAmplitude_canonicalOrder",
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.orderedDysonAmplitude_slotCongr"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.sum_fixedPartitionDysonAmplitude_eq_reindexedOrderedDysonAmplitude"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] {E n : ℕ}\n  (d : SecondQuantization.Fermionic.ExternalInsertionWickDiagram Mode E n) (ε : Mode → ℝ) (β : ℝ)\n  (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ) (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ)\n  (blockOrder :\n    ↥(SecondQuantization.Common.ExternalInsertionDiagram.vertexGraph d).componentPartition.parts ≃\n      Fin (Fintype.card ↥(SecondQuantization.Common.ExternalInsertionDiagram.vertexGraph d).componentPartition.parts)),\n  d.dysonFixedTimeAmplitude ε β g externalTime σ =\n    SecondQuantization.Fermionic.componentExternalOrderSign d blockOrder *\n      ∏ B,\n        SecondQuantization.Fermionic.ExternalInsertionWickDiagram.dysonFixedTimeAmplitude\n          (SecondQuantization.Common.ExternalInsertionDiagram.componentOrderedDiagram d B) ε β g\n          (SecondQuantization.Common.ExternalInsertionDiagram.componentExternalTime d externalTime B)\n          (SecondQuantization.Common.ExternalInsertionDiagram.componentInteractionTime d σ B)",
     "standardAxioms": [
       "Classical.choice",
@@ -153836,7 +153883,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -153848,7 +153895,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleDiagram_dysonAmplitude_eq_assignmentOrdered"
+      "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleDiagram_dysonAmplitude_eq_assignmentOrdered",
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.dysonAmplitude_eq_slotCongr_orderedDysonAmplitude"
     ],
     "dependencies": [
       "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.orderedSimplexIntegral_dysonFixedTimeAmplitude",
@@ -153858,9 +153906,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleDiagram_dysonAmplitude_eq_assignmentOrdered"
+      "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleDiagram_dysonAmplitude_eq_assignmentOrdered",
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.dysonAmplitude_eq_slotCongr_orderedDysonAmplitude"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -153918,7 +153967,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] {E n : ℕ}\n  (d : SecondQuantization.Fermionic.ExternalInsertionWickDiagram Mode E n) (e : ↥Finset.univ ≃ ↥Finset.univ)\n  (ε : Mode → ℝ) (β : ℝ),\n  0 ≤ β →\n    ∀ (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ) (externalTime : Fin (2 * E) → ℝ)\n      (order : SecondQuantization.Common.QuarticVertexOrder Finset.univ),\n      d.orderedDysonAmplitude ε β g externalTime order =\n        SecondQuantization.Fermionic.ExternalInsertionWickDiagram.orderedDysonAmplitude\n          (SecondQuantization.Common.ExternalInsertionDiagram.slotCongr e d) ε β g externalTime (Equiv.trans order e)",
     "standardAxioms": [
       "Classical.choice",
@@ -153926,7 +153975,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -153937,7 +153986,9 @@
     "docString": "The *integrated* physical Dyson contribution is invariant when\ninteraction-vertex slots are relabeled together with the global\ninteraction order.\n\nThe key input is exact equality of the **full** Dyson-signed Wick\namplitudes on injective-time assignments. On the ordered simplex,\ninjectivity follows from strict antitonicity almost everywhere; the\nstrict-chamber congruence already accounts for the lower-dimensional\ntime-collision set. Importantly, the order must be transported along\n`e`: the canonical-order integral need not be invariant under an\narbitrary permutation when the order is held fixed. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.dysonAmplitude_eq_slotCongr_orderedDysonAmplitude"
+    ],
     "dependencies": [
       "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.orderedDysonAmplitude_congr_of_strictAnti",
       "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.slotCongr_dysonFixedTimeAmplitude_eq_of_injective",
@@ -153945,8 +153996,10 @@
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.dysonAmplitude_eq_slotCongr_orderedDysonAmplitude"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -171270,6 +171323,92 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] {E n : ℕ} (π : Finpartition Finset.univ)\n  (labels : Fin (2 * E) → SecondQuantization.Fermionic.ExternalFieldLabel Mode) (ε : Mode → ℝ) (β : ℝ),\n  0 ≤ β →\n    ∀ (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ) (externalTime : Fin (2 * E) → ℝ)\n      (e : ↥Finset.univ ≃ ↥Finset.univ),\n      (∑ d, if (↑↑d).externalLabel = labels then (↑↑d).dysonAmplitude ε β g externalTime else 0) =\n        ∑ d,\n          if (↑↑d).externalLabel = labels then\n            (↑↑d).orderedDysonAmplitude ε β g externalTime ((Finset.univ.orderIsoOfFin ⋯).trans e)\n          else 0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Fermionic.sum_fixedPartitionDysonAmplitude_eq_reindexedOrderedDysonAmplitude",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.Integral",
+    "externalAxioms": [],
+    "docString": "At one fixed *physical external-component partition*, the genuine\nvacuum-free fixed-label Dyson diagram sum is unchanged if its canonical\ninteraction-time order is replaced by any common reindexed order,\n**after the actual Wick diagram fiber has been reindexed** by the same\ninteraction-slot permutation.\n\nThis identifies the physical owner-assignment sector across vertex\nrenumberings, with neither an extra factorial nor a quotient of\nfermionic pairing orientations. In contrast to an individual diagram,\nthis statement holds after summing all diagrams with the prescribed\nexternal labels and graph-induced external partition. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Fermionic.sum_fixedPartitionDysonAmplitude_eq_standardizedOrderedDysonAmplitude"
+    ],
+    "dependencies": [
+      "SecondQuantization.Common.ExternalInsertionDiagram.slotCongr_externalLabel",
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.dysonAmplitude_eq_slotCongr_orderedDysonAmplitude"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.sum_fixedPartitionDysonAmplitude_eq_standardizedOrderedDysonAmplitude"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] {E n : ℕ} (anchor : Fin (2 * E))\n  (π : Finpartition Finset.univ) (heven : ∀ (B : ↥π.parts), Even (↑B).card)\n  (labels : Fin (2 * E) → SecondQuantization.Fermionic.ExternalFieldLabel Mode) (ε : Mode → ℝ) (β : ℝ),\n  0 ≤ β →\n    ∀ (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ) (externalTime : Fin (2 * E) → ℝ)\n      (e : ↥Finset.univ ≃ ↥Finset.univ),\n      (∑ d, if (↑↑d).externalLabel = labels then (↑↑d).dysonAmplitude ε β g externalTime else 0) =\n        ∑\n          p ∈\n            SecondQuantization.Common.ExternalInsertionBlockLayout.fixedPartitionPhysicalStandardizedSizeShuffleFiniteDomain\n              anchor π heven,\n          if\n              (↑↑((SecondQuantization.Common.ExternalInsertionBlockLayout.fixedPartitionPhysicalStandardizedSizeShuffleEquiv\n                            anchor π heven).symm\n                        p)).externalLabel =\n                labels then\n            SecondQuantization.Fermionic.ExternalInsertionWickDiagram.orderedDysonAmplitude\n              (↑↑((SecondQuantization.Common.ExternalInsertionBlockLayout.fixedPartitionPhysicalStandardizedSizeShuffleEquiv\n                        anchor π heven).symm\n                    p))\n              ε β g externalTime ((Finset.univ.orderIsoOfFin ⋯).trans e)\n          else 0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Fermionic.sum_fixedPartitionDysonAmplitude_eq_standardizedOrderedDysonAmplitude",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.Integral",
+    "externalAxioms": [],
+    "docString": "The actual fixed-label, fixed-external-partition physical Dyson\ncoefficient is a finite sum over **realized** interaction-size vectors,\nowner shuffles and standardized connected local Wick diagrams.\n\nThe integrand on the right retains its *transported global Dyson order*.\nThis composes the exact physical ordered-amplitude covariance with the\ncombinatorial standardized-size/shuffle equivalence. It introduces no\nextra factorial or independence assumption: factorizing the remaining\nowner-shuffle sum into local Dyson coefficients is a separate obligation. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "SecondQuantization.Common.ExternalInsertionBlockLayout.sum_fixedPartitionPhysical_eq_standardized_sizes_shuffles",
+      "SecondQuantization.Fermionic.sum_fixedPartitionDysonAmplitude_eq_reindexedOrderedDysonAmplitude"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] (ε : Mode → ℝ) (β : ℝ)\n  (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ) (k : ℕ),\n  (∑ x,\n      ((-1) ^ k * ∏ q, g (x.1 q)) *\n        intervalIntegral.orderedSimplexIntegral k β fun σ =>\n          SecondQuantization.Fermionic.flatVertexLegPairingEvaluation ε β x.1 σ x.2) =\n    (PowerSeries.coeff k)\n      (SecondQuantization.Common.dysonTraceSeries (SecondQuantization.Fermionic.fermionEnergy ε) β\n          (SecondQuantization.Fermionic.quarticInteraction g)).normalizeByConstantCoeff",
     "standardAxioms": [
       "Classical.choice",
@@ -175081,48 +175220,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (offset broadening : ℝ), broadening ≠ 0 → ↑offset - ↑broadening * Complex.I ≠ 0",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Analysis.Lorentzian.Kernel.0.Lorentzian.complex_offset_sub_I_ne_zero",
-    "module": "LeanCondensedMatter.Analysis.Lorentzian.Kernel",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "Lorentzian.inv_add_I_sub_inv_sub_I_eq_spectralKernel"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "Lorentzian.inv_add_I_sub_inv_sub_I_eq_spectralKernel"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ (factor : ℝ × ℝ → ℂ) (radius broadening : ℝ),\n  ContinuousOn (fun offset => factor (offset, broadening)) (Set.Icc (-radius) radius) →\n    broadening ≠ 0 → ContinuousOn (Lorentzian.regularFactorErrorIntegrand✝ factor broadening) (Set.Icc (-radius) radius)",
     "standardAxioms": [
       "Classical.choice",
@@ -176214,48 +176311,6 @@
     "completedMention": false,
     "compiledConsumers": [
       "ContinuousLinearMap.exists_leftPolarFactor"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (f : SchwartzKinetic1D.Space), SchwartzKinetic1D.multiplicationLinear f = SchwartzKinetic1D.multiplicationOperator f",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Analysis.Operator.SchwartzKinetic1D.0.SchwartzKinetic1D.multiplicationLinear_apply_private",
-    "module": "LeanCondensedMatter.Analysis.Operator.SchwartzKinetic1D",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SchwartzKinetic1D.multiplicationLinear_apply"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SchwartzKinetic1D.multiplicationLinear_apply"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -181458,46 +181513,6 @@
     "completedMention": false,
     "compiledConsumers": [
       "Combinatorics.sign_relative_binarySplittings_eq_inversionCounts"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {ι : Type u_1} {α : Type u_2} (F : ι → Type u_3) [inst : (i : ι) → Fintype (F i)] {total : ℕ} (size : ι → ℕ)\n  (hcard : ∀ (i : ι), Fintype.card (F i) = size i) (ambientEquiv : α ≃ (i : ι) × F i) (order : Fin total ≃ α),\n  Combinatorics.assembleFamilyOrderOfSize F size ambientEquiv\n      (Combinatorics.familyOrdersOfOrder F size hcard ambientEquiv order)\n      (Combinatorics.familyShuffleOfOrder✝ F size hcard ambientEquiv order) =\n    order",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Combinatorics.Shuffle.FamilyOrderShuffle.0.Combinatorics.assembleFamilyOrder_ordersOfOrder_shuffleOfOrder",
-    "module": "LeanCondensedMatter.Combinatorics.Shuffle.FamilyOrderShuffle",
-    "externalAxioms": [],
-    "docString": "Reassembling the extracted local orders and shuffle recovers the global order. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "Combinatorics.familyOrderDecompositionEquivOfSize"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -189452,13 +189467,9 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "_private.LeanCondensedMatter.Models.OrbitalRelaxation.SphereMoments.0.QuantumTheory.Models.OrbitalRelaxation.sphericalAverage_evenQuartic_eq_cubature",
-      "_private.LeanCondensedMatter.Models.OrbitalRelaxation.SphereMoments.0.QuantumTheory.Models.OrbitalRelaxation.sphericalAverage_x_four",
-      "_private.LeanCondensedMatter.Models.OrbitalRelaxation.SphereMoments.0.QuantumTheory.Models.OrbitalRelaxation.sphericalAverage_xy",
-      "_private.LeanCondensedMatter.Models.OrbitalRelaxation.SphereMoments.0.QuantumTheory.Models.OrbitalRelaxation.sphericalAverage_xz",
-      "_private.LeanCondensedMatter.Models.OrbitalRelaxation.SphereMoments.0.QuantumTheory.Models.OrbitalRelaxation.sphericalAverage_y_four",
-      "_private.LeanCondensedMatter.Models.OrbitalRelaxation.SphereMoments.0.QuantumTheory.Models.OrbitalRelaxation.sphericalAverage_yz",
-      "_private.LeanCondensedMatter.Models.OrbitalRelaxation.SphereMoments.0.QuantumTheory.Models.OrbitalRelaxation.sphericalAverage_z_four"
+      "QuantumTheory.Models.OrbitalRelaxation.sphericalAverage_coordinate_four",
+      "QuantumTheory.Models.OrbitalRelaxation.sphericalAverage_coordinate_sq_mul_coordinate_sq",
+      "_private.LeanCondensedMatter.Models.OrbitalRelaxation.SphereMoments.0.QuantumTheory.Models.OrbitalRelaxation.sphericalAverage_evenQuartic_eq_cubature"
     ],
     "dependencies": [
       "_private.LeanCondensedMatter.Models.OrbitalRelaxation.SphereMoments.0.QuantumTheory.Models.OrbitalRelaxation.integral_cos_four_full",
@@ -189473,15 +189484,11 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "_private.LeanCondensedMatter.Models.OrbitalRelaxation.SphereMoments.0.QuantumTheory.Models.OrbitalRelaxation.sphericalAverage_evenQuartic_eq_cubature",
-      "_private.LeanCondensedMatter.Models.OrbitalRelaxation.SphereMoments.0.QuantumTheory.Models.OrbitalRelaxation.sphericalAverage_x_four",
-      "_private.LeanCondensedMatter.Models.OrbitalRelaxation.SphereMoments.0.QuantumTheory.Models.OrbitalRelaxation.sphericalAverage_xy",
-      "_private.LeanCondensedMatter.Models.OrbitalRelaxation.SphereMoments.0.QuantumTheory.Models.OrbitalRelaxation.sphericalAverage_xz",
-      "_private.LeanCondensedMatter.Models.OrbitalRelaxation.SphereMoments.0.QuantumTheory.Models.OrbitalRelaxation.sphericalAverage_y_four",
-      "_private.LeanCondensedMatter.Models.OrbitalRelaxation.SphereMoments.0.QuantumTheory.Models.OrbitalRelaxation.sphericalAverage_yz",
-      "_private.LeanCondensedMatter.Models.OrbitalRelaxation.SphereMoments.0.QuantumTheory.Models.OrbitalRelaxation.sphericalAverage_z_four"
+      "QuantumTheory.Models.OrbitalRelaxation.sphericalAverage_coordinate_four",
+      "QuantumTheory.Models.OrbitalRelaxation.sphericalAverage_coordinate_sq_mul_coordinate_sq",
+      "_private.LeanCondensedMatter.Models.OrbitalRelaxation.SphereMoments.0.QuantumTheory.Models.OrbitalRelaxation.sphericalAverage_evenQuartic_eq_cubature"
     ],
-    "compiledConsumerCount": 7,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -189524,270 +189531,6 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.Models.OrbitalRelaxation.sphericalAverage_orbitalPolynomial_eq_cubature"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (r : ℝ), (QuantumTheory.Models.OrbitalRelaxation.sphericalAverage r fun k => k 0 ^ 4) = r ^ 4 / 5",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Models.OrbitalRelaxation.SphereMoments.0.QuantumTheory.Models.OrbitalRelaxation.sphericalAverage_x_four",
-    "module": "LeanCondensedMatter.Models.OrbitalRelaxation.SphereMoments",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Models.OrbitalRelaxation.sphericalAverage_coordinate_four"
-    ],
-    "dependencies": [
-      "_private.LeanCondensedMatter.Models.OrbitalRelaxation.SphereMoments.0.QuantumTheory.Models.OrbitalRelaxation.sphericalAverage_evenQuarticPolynomial"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Models.OrbitalRelaxation.sphericalAverage_coordinate_four"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (r : ℝ), (QuantumTheory.Models.OrbitalRelaxation.sphericalAverage r fun k => k 0 ^ 2 * k 1 ^ 2) = r ^ 4 / 15",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Models.OrbitalRelaxation.SphereMoments.0.QuantumTheory.Models.OrbitalRelaxation.sphericalAverage_xy",
-    "module": "LeanCondensedMatter.Models.OrbitalRelaxation.SphereMoments",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Models.OrbitalRelaxation.sphericalAverage_coordinate_sq_mul_coordinate_sq"
-    ],
-    "dependencies": [
-      "_private.LeanCondensedMatter.Models.OrbitalRelaxation.SphereMoments.0.QuantumTheory.Models.OrbitalRelaxation.sphericalAverage_evenQuarticPolynomial"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Models.OrbitalRelaxation.sphericalAverage_coordinate_sq_mul_coordinate_sq"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (r : ℝ), (QuantumTheory.Models.OrbitalRelaxation.sphericalAverage r fun k => k 0 ^ 2 * k 2 ^ 2) = r ^ 4 / 15",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Models.OrbitalRelaxation.SphereMoments.0.QuantumTheory.Models.OrbitalRelaxation.sphericalAverage_xz",
-    "module": "LeanCondensedMatter.Models.OrbitalRelaxation.SphereMoments",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Models.OrbitalRelaxation.sphericalAverage_coordinate_sq_mul_coordinate_sq"
-    ],
-    "dependencies": [
-      "_private.LeanCondensedMatter.Models.OrbitalRelaxation.SphereMoments.0.QuantumTheory.Models.OrbitalRelaxation.sphericalAverage_evenQuarticPolynomial"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Models.OrbitalRelaxation.sphericalAverage_coordinate_sq_mul_coordinate_sq"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (r : ℝ), (QuantumTheory.Models.OrbitalRelaxation.sphericalAverage r fun k => k 1 ^ 4) = r ^ 4 / 5",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Models.OrbitalRelaxation.SphereMoments.0.QuantumTheory.Models.OrbitalRelaxation.sphericalAverage_y_four",
-    "module": "LeanCondensedMatter.Models.OrbitalRelaxation.SphereMoments",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Models.OrbitalRelaxation.sphericalAverage_coordinate_four"
-    ],
-    "dependencies": [
-      "_private.LeanCondensedMatter.Models.OrbitalRelaxation.SphereMoments.0.QuantumTheory.Models.OrbitalRelaxation.sphericalAverage_evenQuarticPolynomial"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Models.OrbitalRelaxation.sphericalAverage_coordinate_four"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (r : ℝ), (QuantumTheory.Models.OrbitalRelaxation.sphericalAverage r fun k => k 1 ^ 2 * k 2 ^ 2) = r ^ 4 / 15",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Models.OrbitalRelaxation.SphereMoments.0.QuantumTheory.Models.OrbitalRelaxation.sphericalAverage_yz",
-    "module": "LeanCondensedMatter.Models.OrbitalRelaxation.SphereMoments",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Models.OrbitalRelaxation.sphericalAverage_coordinate_sq_mul_coordinate_sq"
-    ],
-    "dependencies": [
-      "_private.LeanCondensedMatter.Models.OrbitalRelaxation.SphereMoments.0.QuantumTheory.Models.OrbitalRelaxation.sphericalAverage_evenQuarticPolynomial"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Models.OrbitalRelaxation.sphericalAverage_coordinate_sq_mul_coordinate_sq"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (r : ℝ), (QuantumTheory.Models.OrbitalRelaxation.sphericalAverage r fun k => k 2 ^ 4) = r ^ 4 / 5",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Models.OrbitalRelaxation.SphereMoments.0.QuantumTheory.Models.OrbitalRelaxation.sphericalAverage_z_four",
-    "module": "LeanCondensedMatter.Models.OrbitalRelaxation.SphereMoments",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Models.OrbitalRelaxation.sphericalAverage_coordinate_four"
-    ],
-    "dependencies": [
-      "_private.LeanCondensedMatter.Models.OrbitalRelaxation.SphereMoments.0.QuantumTheory.Models.OrbitalRelaxation.sphericalAverage_evenQuarticPolynomial"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Models.OrbitalRelaxation.sphericalAverage_coordinate_four"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -193106,90 +192849,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {ι : Type u_1} [inst : Fintype ι] [inst_1 : DecidableEq ι] (K : Matrix ι ι ℂ) (f : PowerSeries ℂ) (m : ℕ),\n  (PowerSeries.coeff m) (Combinatorics.tracePowerTransform✝ K f) = (PowerSeries.coeff m) f * (K ^ m).trace",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Permutation.TraceLog.0.Combinatorics.coeff_tracePowerTransform",
-    "module": "LeanCondensedMatter.Permutation.TraceLog",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "Combinatorics.coeff_formalTraceLogOneSubSeries"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "Combinatorics.coeff_formalTraceLogOneSubSeries"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (ζ : ℂ) (m : ℕ), (-ζ) ^ m * (-1) ^ (m + 1) = -ζ ^ m",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Permutation.TraceLog.0.Combinatorics.neg_pow_mul_neg_one_pow_succ",
-    "module": "LeanCondensedMatter.Permutation.TraceLog",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "Combinatorics.smul_permutationConnectedCycleSeries_eq_neg_traceLog"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "Combinatorics.smul_permutationConnectedCycleSeries_eq_neg_traceLog"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ (q ℏ mass vectorPotential vectorPotentialDerivative scalarPotential : ℝ) (ψ ψt ψx ψxx : ℂ),\n  ℏ ≠ 0 →\n    mass ≠ 0 →\n      2 * mass * ℏ * ψt.im =\n          ℏ ^ 2 * ψxx.re + 2 * q * ℏ * vectorPotential * ψx.im + q * ℏ * vectorPotentialDerivative * ψ.im -\n            (q ^ 2 * vectorPotential ^ 2 + 2 * mass * q * scalarPotential) * ψ.re →\n        2 * mass * ℏ * ψt.re =\n            -(ℏ ^ 2 * ψxx.im) + 2 * q * ℏ * vectorPotential * ψx.re + q * ℏ * vectorPotentialDerivative * ψ.re +\n              (q ^ 2 * vectorPotential ^ 2 + 2 * mass * q * scalarPotential) * ψ.im →\n          QuantumMechanics.SingleParticle.Continuum.probabilityDensityTimeDerivativeValue ψ ψt +\n              QuantumMechanics.SingleParticle.Continuum.electromagneticProbabilityCurrentDivergenceValue1D q ℏ mass\n                vectorPotential vectorPotentialDerivative ψ ψx ψxx =\n            0",
     "standardAxioms": [
       "Classical.choice",
@@ -194353,50 +194012,6 @@
       "QuantumTheory.helmholtzFreeEnergy_eq_iff_eq_gibbsState"
     ],
     "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (Hop : QuantumTheory.Observable H) (β : ℝ), ↑(QuantumTheory.gibbsOpUnit✝ Hop β) = QuantumTheory.gibbsOp Hop β",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.QuantumTheory.Gibbs.State.0.QuantumTheory.coe_gibbsOpUnit",
-    "module": "LeanCondensedMatter.QuantumTheory.Gibbs.State",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.finiteDimensional_of_gibbsOp_isCompact",
-      "QuantumTheory.gibbsOp_ne_zero"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.finiteDimensional_of_gibbsOp_isCompact",
-      "QuantumTheory.gibbsOp_ne_zero"
-    ],
-    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -209546,8 +209161,8 @@
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -209559,17 +209174,15 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Transport.polarFourierFirstCosineAngularKernel_hasDerivAt",
-      "QuantumTheory.Transport.polarFourierZerothAngularKernel_hasDerivAt"
+      "_private.LeanCondensedMatter.Transport.Analysis.PolarFourier.0.QuantumTheory.Transport.polarFourierWeightedAngularKernel_hasDerivAt"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Transport.polarFourierFirstCosineAngularKernel_hasDerivAt",
-      "QuantumTheory.Transport.polarFourierZerothAngularKernel_hasDerivAt"
+      "_private.LeanCondensedMatter.Transport.Analysis.PolarFourier.0.QuantumTheory.Transport.polarFourierWeightedAngularKernel_hasDerivAt"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -209658,6 +209271,52 @@
       "QuantumTheory.Transport.polarFourierFirstCosineAngularKernel_two_mul_eq_zeroth_sub_second"
     ],
     "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (weight : ℝ → ℂ),\n  Continuous weight →\n    (∀ (θ : ℝ), ‖weight θ‖ ≤ 1) →\n      ∀ (z : ℝ),\n        HasDerivAt\n          (fun x => ∫ (θ : ℝ) in 0..2 * Real.pi, QuantumTheory.Transport.polarFourierRadialPhase x θ * weight θ)\n          (∫ (θ : ℝ) in 0..2 * Real.pi,\n            Complex.I * ↑(Real.cos θ) * QuantumTheory.Transport.polarFourierRadialPhase z θ * weight θ)\n          z",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Transport.Analysis.PolarFourier.0.QuantumTheory.Transport.polarFourierWeightedAngularKernel_hasDerivAt",
+    "module": "LeanCondensedMatter.Transport.Analysis.PolarFourier",
+    "externalAxioms": [],
+    "docString": "Differentiate a polar Fourier angular integral with any continuous weight bounded by one.\nThe common domination estimate also covers higher bounded angular harmonics. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.polarFourierFirstCosineAngularKernel_hasDerivAt",
+      "QuantumTheory.Transport.polarFourierZerothAngularKernel_hasDerivAt"
+    ],
+    "dependencies": [
+      "_private.LeanCondensedMatter.Transport.Analysis.PolarFourier.0.QuantumTheory.Transport.norm_polarFourierRadialPhase"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.polarFourierFirstCosineAngularKernel_hasDerivAt",
+      "QuantumTheory.Transport.polarFourierZerothAngularKernel_hasDerivAt"
+    ],
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -210315,48 +209974,6 @@
     ],
     "compiledConsumerCount": 1,
     "axioms": [
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (probeEnergy eigenvalue : ℝ), probeEnergy ≠ eigenvalue → ↑(probeEnergy - eigenvalue) ≠ 0",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Transport.Resolvent.Spectral.0.QuantumTheory.Transport.complex_spectral_offset_ne_zero",
-    "module": "LeanCondensedMatter.Transport.Resolvent.Spectral",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.tendsto_scalarResolventCoefficient_spectralParameter_zero"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.tendsto_scalarResolventCoefficient_spectralParameter_zero"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
       "propext"
     ],
     "definitionallyEquivalentTo": [],
