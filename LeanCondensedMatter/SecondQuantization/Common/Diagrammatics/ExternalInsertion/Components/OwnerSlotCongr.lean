@@ -156,6 +156,118 @@ theorem ExternalInsertionBlockLayout.ofFamilyShuffle_ownerSlotCongr
 
 
 
+/-- The actual interaction vertices owned by a fixed external block
+have exactly its prescribed shuffle size, including zero-size blocks. -/
+theorem ExternalInsertionBlockLayout.ofFamilyShuffle_interactionBlock_card
+    (π : Finpartition (Finset.univ : Finset (Fin (2 * E))))
+    (heven : ∀ B : π.parts, Even (B : Finset (Fin (2 * E))).card)
+    {size : π.parts → ℕ}
+    (σ : Combinatorics.FamilySlotShuffleTo size N)
+    (B : π.parts) :
+    ((ExternalInsertionBlockLayout.ofFamilyShuffle π heven σ).interactionBlock
+      (Finset.univ : Finset (Fin N)) B).card = size B := by
+  classical
+  simpa [ExternalInsertionBlockLayout.interactionBlock,
+    ExternalInsertionBlockLayout.ofFamilyShuffle,
+    Fintype.card_subtype] using σ.card_ownerFiber B
+
+/-- The ambient permutation between two physical owner shuffles is
+strictly increasing on the vertices of each individual owner block.
+No global monotonicity of the interleaved shuffle permutation is
+assumed. -/
+theorem ExternalInsertionBlockLayout.ofFamilyShuffle_ownerLocal_strictMono
+    (π : Finpartition (Finset.univ : Finset (Fin (2 * E))))
+    (heven : ∀ B : π.parts, Even (B : Finset (Fin (2 * E))).card)
+    {size : π.parts → ℕ}
+    (σ τ : Combinatorics.FamilySlotShuffleTo size N)
+    (B : π.parts) :
+    StrictMono (fun v : ↥((ExternalInsertionBlockLayout.ofFamilyShuffle
+        π heven σ).interactionBlock (Finset.univ : Finset (Fin N)) B) =>
+      (((ExternalInsertionBlockLayout.ofFamilyShuffle π heven σ).
+        interactionBlockOwnerSlotCongrEquiv
+          (σ.ambientRelabel τ) B) v).1) := by
+  intro a b hab
+  have ha : (σ.slotEquiv.symm a.1).1 = B := by
+    simpa [ExternalInsertionBlockLayout.interactionBlock,
+      ExternalInsertionBlockLayout.ofFamilyShuffle] using a.2
+  have hb : (σ.slotEquiv.symm b.1).1 = B := by
+    simpa [ExternalInsertionBlockLayout.interactionBlock,
+      ExternalInsertionBlockLayout.ofFamilyShuffle] using b.2
+  change (σ.ambientRelabel τ) a.1 < (σ.ambientRelabel τ) b.1
+  exact (σ.ambientRelabel_strictMono_ownerFiber τ B)
+    (show (⟨a.1, ha⟩ :
+      {v : Fin N // (σ.slotEquiv.symm v).1 = B}) <
+        ⟨b.1, hb⟩ from hab)
+
+/-- Standardizing the actual owner fiber after a fixed-size shuffle
+change is identical to standardizing before the shuffle change. The
+specific order-preserving local equivalence is essential here. -/
+theorem ExternalInsertionBlockLayout.ofFamilyShuffle_standardSlotEquiv_comp
+    (π : Finpartition (Finset.univ : Finset (Fin (2 * E))))
+    (heven : ∀ B : π.parts, Even (B : Finset (Fin (2 * E))).card)
+    {size : π.parts → ℕ}
+    (σ τ : Combinatorics.FamilySlotShuffleTo size N)
+    (B : π.parts)
+    (hσ : ((ExternalInsertionBlockLayout.ofFamilyShuffle π heven σ).
+      interactionBlock (Finset.univ : Finset (Fin N)) B).card = size B)
+    (hτ : (((ExternalInsertionBlockLayout.ofFamilyShuffle π heven σ).
+      ownerSlotCongr (σ.ambientRelabel τ)).
+      interactionBlock (Finset.univ : Finset (Fin N)) B).card = size B) :
+    ((ExternalInsertionBlockLayout.ofFamilyShuffle π heven σ).
+      interactionBlockOwnerSlotCongrEquiv (σ.ambientRelabel τ) B).trans
+      (Combinatorics.standardSlotEquivOfCardEq
+        (((ExternalInsertionBlockLayout.ofFamilyShuffle π heven σ).
+          ownerSlotCongr (σ.ambientRelabel τ)).
+          interactionBlock (Finset.univ : Finset (Fin N)) B) hτ) =
+      Combinatorics.standardSlotEquivOfCardEq
+        ((ExternalInsertionBlockLayout.ofFamilyShuffle π heven σ).
+          interactionBlock (Finset.univ : Finset (Fin N)) B) hσ := by
+  exact Combinatorics.standardSlotEquivOfCardEq_comp_of_strictMono
+    ((ExternalInsertionBlockLayout.ofFamilyShuffle π heven σ).
+      interactionBlock (Finset.univ : Finset (Fin N)) B)
+    (((ExternalInsertionBlockLayout.ofFamilyShuffle π heven σ).
+      ownerSlotCongr (σ.ambientRelabel τ)).
+      interactionBlock (Finset.univ : Finset (Fin N)) B)
+    hσ hτ
+    ((ExternalInsertionBlockLayout.ofFamilyShuffle π heven σ).
+      interactionBlockOwnerSlotCongrEquiv (σ.ambientRelabel τ) B)
+    (ExternalInsertionBlockLayout.ofFamilyShuffle_ownerLocal_strictMono
+      π heven σ τ B)
+
+/-- In particular, the **complete standardized local labelled Wick
+diagram** is literally unchanged after transporting its physical owner
+by a shuffle. This includes its fermionic pairing, not merely its
+interaction cardinality or abstract isomorphism class. -/
+theorem ExternalInsertionBlockLayout.ofFamilyShuffle_localDiagram_standardization
+    {ExternalLabel InternalLabel : Type*}
+    (π : Finpartition (Finset.univ : Finset (Fin (2 * E))))
+    (heven : ∀ B : π.parts, Even (B : Finset (Fin (2 * E))).card)
+    {size : π.parts → ℕ}
+    (σ τ : Combinatorics.FamilySlotShuffleTo size N)
+    (B : π.parts)
+    (hσ : ((ExternalInsertionBlockLayout.ofFamilyShuffle π heven σ).
+      interactionBlock (Finset.univ : Finset (Fin N)) B).card = size B)
+    (hτ : (((ExternalInsertionBlockLayout.ofFamilyShuffle π heven σ).
+      ownerSlotCongr (σ.ambientRelabel τ)).
+      interactionBlock (Finset.univ : Finset (Fin N)) B).card = size B)
+    (d : ExternalInsertionDiagram ExternalLabel InternalLabel
+      ((B : Finset (Fin (2 * E))).card / 2) N
+      ((ExternalInsertionBlockLayout.ofFamilyShuffle π heven σ).
+        interactionBlock (Finset.univ : Finset (Fin N)) B)) :
+    ((d.slotCongr
+      ((ExternalInsertionBlockLayout.ofFamilyShuffle π heven σ).
+        interactionBlockOwnerSlotCongrEquiv (σ.ambientRelabel τ) B)).slotCongr
+      (Combinatorics.standardSlotEquivOfCardEq
+        (((ExternalInsertionBlockLayout.ofFamilyShuffle π heven σ).
+          ownerSlotCongr (σ.ambientRelabel τ)).
+          interactionBlock (Finset.univ : Finset (Fin N)) B) hτ)) =
+      d.slotCongr (Combinatorics.standardSlotEquivOfCardEq
+        ((ExternalInsertionBlockLayout.ofFamilyShuffle π heven σ).
+          interactionBlock (Finset.univ : Finset (Fin N)) B) hσ) := by
+  rw [ExternalInsertionDiagram.slotCongr_trans,
+    ExternalInsertionBlockLayout.ofFamilyShuffle_standardSlotEquiv_comp
+      π heven σ τ B hσ hτ]
+
 /-- View an ambient permutation on the full Fin N slot set as a
 permutation of its corresponding full interaction slot subtype. -/
 def fullInteractionSlotEquiv (e : Fin N ≃ Fin N) :
