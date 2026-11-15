@@ -262,7 +262,7 @@ standardizes its entire preconnected block-family domain into the same
 dependent family of diagrams on consecutive Fin (size B) slots. This
 eliminates the former owner-dependent codomain in the physical
 size/shuffle reindexing and includes zero-interaction blocks. -/
-noncomputable def ExternalInsertionBlockLayout.ofFamilyShuffle_fixedSizeStandardizedFamilyEquiv
+noncomputable def ExternalInsertionBlockLayout.ofFamilyShuffleFixedSizeStandardizedFamilyEquiv
     {ExternalLabel InternalLabel : Type*}
     (π : Finpartition (Finset.univ : Finset (Fin (2 * E))))
     (heven : ∀ B : π.parts, Even (B : Finset (Fin (2 * E))).card)
@@ -290,7 +290,7 @@ noncomputable def ExternalInsertionBlockLayout.ofFamilyShuffle_fixedSizeStandard
 labelled Wick diagram on each owner fiber to its increasing-slot
 standardization, retaining the pairing and all labels. -/
 @[simp]
-theorem ExternalInsertionBlockLayout.ofFamilyShuffle_fixedSizeStandardizedFamilyEquiv_apply
+theorem ExternalInsertionBlockLayout.ofFamilyShuffleFixedSizeStandardizedFamilyEquiv_apply
     {ExternalLabel InternalLabel : Type*}
     (π : Finpartition (Finset.univ : Finset (Fin (2 * E))))
     (heven : ∀ B : π.parts, Even (B : Finset (Fin (2 * E))).card)
@@ -299,7 +299,7 @@ theorem ExternalInsertionBlockLayout.ofFamilyShuffle_fixedSizeStandardizedFamily
     (F : (ExternalInsertionBlockLayout.ofFamilyShuffle π heven σ).ConnectedBlockFamily
       (ExternalLabel := ExternalLabel) (InternalLabel := InternalLabel))
     (B : π.parts) :
-    ((ExternalInsertionBlockLayout.ofFamilyShuffle_fixedSizeStandardizedFamilyEquiv
+    ((ExternalInsertionBlockLayout.ofFamilyShuffleFixedSizeStandardizedFamilyEquiv
       π heven σ F) B).1 =
       (F.1 B).slotCongr
         (Combinatorics.standardSlotEquivOfCardEq
@@ -308,7 +308,7 @@ theorem ExternalInsertionBlockLayout.ofFamilyShuffle_fixedSizeStandardizedFamily
           (ExternalInsertionBlockLayout.ofFamilyShuffle_interactionBlock_card
             π heven σ B)) := by
   classical
-  dsimp [ExternalInsertionBlockLayout.ofFamilyShuffle_fixedSizeStandardizedFamilyEquiv,
+  dsimp [ExternalInsertionBlockLayout.ofFamilyShuffleFixedSizeStandardizedFamilyEquiv,
     ExternalInsertionBlockLayout.connectedBlockFamilyEquivPi,
     Equiv.trans, Equiv.piCongrRight, Pi.map,
     ExternalInsertionDiagram.preconnectedSlotCongrEquiv,
