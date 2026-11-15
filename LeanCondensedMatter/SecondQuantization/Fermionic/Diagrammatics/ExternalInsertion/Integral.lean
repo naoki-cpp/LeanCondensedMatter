@@ -587,28 +587,115 @@ theorem ExternalInsertionBlockLayout.sum_ownerSlotCongr_connectedDyson_eq_ordere
 
 
 
+
 open Classical in
-/-- At fixed physical external partition and interaction sizes, the Dyson
-sum over actual connected Wick diagrams with the owner shuffle τ equals
-the ordered-simplex sum for the reference owner shuffle σ. Local source
-labels and exact paired legs are preserved by the owner equivalence;
-no individual canonical integral is factorized. -/
+/-- Reindex **all physically connected Wick-block families** while
+preserving the external source labels of the assembled physical diagram,
+independently of a block-dependent source-label type. The canonical
+Dyson integral becomes its corresponding transported-order integral.
+No local ordered-simplex integral is factorized in isolation. -/
+theorem ExternalInsertionBlockLayout.sum_ownerSlotCongr_connectedDyson_eq_ordered_globalLabels
+    {E n : ℕ}
+    (layout : ExternalInsertionBlockLayout E n) (e : Fin n ≃ Fin n)
+    (labels : Fin (2 * E) → ExternalFieldLabel Mode)
+    (ε : Mode → ℝ) (β : ℝ) (hβ : 0 ≤ β)
+    (g : QuarticVertexLabel Mode → ℂ)
+    (externalTime : Fin (2 * E) → ℝ) :
+    (∑ G : (layout.ownerSlotCongr e).ConnectedBlockFamily
+        (ExternalLabel := ExternalFieldLabel Mode)
+        (InternalLabel := QuarticVertexLabel Mode),
+      if ((layout.ownerSlotCongr e).assembleDiagram
+          (Finset.univ : Finset (Fin n)) G.1).externalLabel = labels then
+        ExternalInsertionWickDiagram.dysonAmplitude
+          ((layout.ownerSlotCongr e).assembleDiagram
+            (Finset.univ : Finset (Fin n)) G.1)
+          ε β g externalTime
+      else 0) =
+      ∑ F : layout.ConnectedBlockFamily
+          (ExternalLabel := ExternalFieldLabel Mode)
+          (InternalLabel := QuarticVertexLabel Mode),
+        if (layout.assembleDiagram
+            (Finset.univ : Finset (Fin n)) F.1).externalLabel = labels then
+          ExternalInsertionWickDiagram.orderedDysonAmplitude
+            (layout.assembleDiagram (Finset.univ : Finset (Fin n)) F.1)
+            ε β g externalTime
+            (((Finset.univ : Finset (Fin n)).orderIsoOfFin rfl).toEquiv.trans
+              (fullInteractionSlotEquiv e).symm)
+        else 0 := by
+  let weight : (layout.ownerSlotCongr e).ConnectedBlockFamily
+      (ExternalLabel := ExternalFieldLabel Mode)
+      (InternalLabel := QuarticVertexLabel Mode) → ℂ :=
+    fun G =>
+      if ((layout.ownerSlotCongr e).assembleDiagram
+          (Finset.univ : Finset (Fin n)) G.1).externalLabel = labels then
+        ExternalInsertionWickDiagram.dysonAmplitude
+          ((layout.ownerSlotCongr e).assembleDiagram
+            (Finset.univ : Finset (Fin n)) G.1)
+          ε β g externalTime
+      else 0
+  change (∑ G, weight G) = _
+  rw [← layout.sum_ownerSlotCongrConnectedBlockFamilies e weight]
+  apply Finset.sum_congr rfl
+  intro F _
+  dsimp [weight]
+  have hfamily :
+      (layout.ownerSlotCongrConnectedBlockFamilyEquiv e F).1 =
+        layout.ownerSlotCongrBlockFamily e F.1 := by
+    funext B
+    exact layout.ownerSlotCongrConnectedBlockFamilyEquiv_apply e F B
+  have hdiagram :
+      (layout.ownerSlotCongr e).assembleDiagram
+        (Finset.univ : Finset (Fin n))
+        (layout.ownerSlotCongrConnectedBlockFamilyEquiv e F).1 =
+        (layout.assembleDiagram (Finset.univ : Finset (Fin n)) F.1).slotCongr
+          (fullInteractionSlotEquiv e) := by
+    rw [hfamily]
+    exact layout.assembleDiagram_ownerSlotCongr e F.1
+  have hlabel :
+      (((layout.ownerSlotCongr e).assembleDiagram
+        (Finset.univ : Finset (Fin n))
+        (layout.ownerSlotCongrConnectedBlockFamilyEquiv e F).1).externalLabel =
+          labels) ↔
+      ((layout.assembleDiagram
+        (Finset.univ : Finset (Fin n)) F.1).externalLabel = labels) := by
+    rw [hdiagram]
+    rfl
+  have hamplitude :
+      ExternalInsertionWickDiagram.dysonAmplitude
+          ((layout.ownerSlotCongr e).assembleDiagram
+            (Finset.univ : Finset (Fin n))
+            (layout.ownerSlotCongrConnectedBlockFamilyEquiv e F).1)
+          ε β g externalTime =
+        ExternalInsertionWickDiagram.orderedDysonAmplitude
+          (layout.assembleDiagram (Finset.univ : Finset (Fin n)) F.1)
+          ε β g externalTime
+          (((Finset.univ : Finset (Fin n)).orderIsoOfFin rfl).toEquiv.trans
+            (fullInteractionSlotEquiv e).symm) := by
+    rw [hdiagram]
+    exact ExternalInsertionWickDiagram.slotCongr_dysonAmplitude_eq_orderedDysonAmplitude
+      (layout.assembleDiagram (Finset.univ : Finset (Fin n)) F.1)
+      (fullInteractionSlotEquiv e) ε β hβ g externalTime
+  exact if_congr hlabel hamplitude rfl
+
+open Classical in
+/-- At fixed physical external partition and interaction sizes, the
+**actual global source-label-constrained Dyson sum** for one owner shuffle
+is the transported-order sum for a fixed reference owner shuffle. -/
 theorem ExternalInsertionBlockLayout.sum_ofFamilyShuffle_connectedDyson_eq_referenceOrdered
     {E n : ℕ}
     (π : Finpartition (Finset.univ : Finset (Fin (2 * E))))
     (heven : ∀ B : π.parts, Even (B : Finset (Fin (2 * E))).card)
     {size : π.parts → ℕ}
     (σ τ : Combinatorics.FamilySlotShuffleTo size n)
-    (localLabels : ∀ B : π.parts,
-      Fin (2 * ((B : Finset (Fin (2 * E))).card / 2)) →
-        ExternalFieldLabel Mode)
+    (labels : Fin (2 * E) → ExternalFieldLabel Mode)
     (ε : Mode → ℝ) (β : ℝ) (hβ : 0 ≤ β)
     (g : QuarticVertexLabel Mode → ℂ)
     (externalTime : Fin (2 * E) → ℝ) :
     (∑ G : (ExternalInsertionBlockLayout.ofFamilyShuffle π heven τ).ConnectedBlockFamily
         (ExternalLabel := ExternalFieldLabel Mode)
         (InternalLabel := QuarticVertexLabel Mode),
-      if ∀ B : π.parts, (G.1 B).externalLabel = localLabels B then
+      if ((ExternalInsertionBlockLayout.ofFamilyShuffle π heven τ).assembleDiagram
+          (Finset.univ : Finset (Fin n)) G.1).externalLabel = labels then
         ExternalInsertionWickDiagram.dysonAmplitude
           ((ExternalInsertionBlockLayout.ofFamilyShuffle π heven τ).assembleDiagram
             (Finset.univ : Finset (Fin n)) G.1)
@@ -617,7 +704,8 @@ theorem ExternalInsertionBlockLayout.sum_ofFamilyShuffle_connectedDyson_eq_refer
       ∑ F : (ExternalInsertionBlockLayout.ofFamilyShuffle π heven σ).ConnectedBlockFamily
           (ExternalLabel := ExternalFieldLabel Mode)
           (InternalLabel := QuarticVertexLabel Mode),
-        if ∀ B : π.parts, (F.1 B).externalLabel = localLabels B then
+        if ((ExternalInsertionBlockLayout.ofFamilyShuffle π heven σ).assembleDiagram
+            (Finset.univ : Finset (Fin n)) F.1).externalLabel = labels then
           ExternalInsertionWickDiagram.orderedDysonAmplitude
             ((ExternalInsertionBlockLayout.ofFamilyShuffle π heven σ).assembleDiagram
               (Finset.univ : Finset (Fin n)) F.1)
@@ -626,28 +714,24 @@ theorem ExternalInsertionBlockLayout.sum_ofFamilyShuffle_connectedDyson_eq_refer
               (fullInteractionSlotEquiv (σ.ambientRelabel τ)).symm)
         else 0 := by
   have h :=
-    ExternalInsertionBlockLayout.sum_ownerSlotCongr_connectedDyson_eq_ordered_localLabels
+    ExternalInsertionBlockLayout.sum_ownerSlotCongr_connectedDyson_eq_ordered_globalLabels
       (ExternalInsertionBlockLayout.ofFamilyShuffle π heven σ)
-      (σ.ambientRelabel τ) localLabels ε β hβ g externalTime
-  have hlayout :=
-    ExternalInsertionBlockLayout.ofFamilyShuffle_ownerSlotCongr π heven σ τ
-  rw [hlayout] at h
+      (σ.ambientRelabel τ) labels ε β hβ g externalTime
+  rw [ExternalInsertionBlockLayout.ofFamilyShuffle_ownerSlotCongr π heven σ τ] at h
   exact h
 
 open Classical in
-/-- The finite canonical Dyson sum over all physical owner shuffles of
-fixed realized local sizes is a transported-order orbit on one fixed
-reference owner assignment, retaining local source-label conditions,
-paired Wick legs, and every zero-interaction block. -/
+/-- The full finite sum over actual physical owner shuffles of fixed
+local sizes equals the ordered Dyson orbit of one reference owner
+assignment. All physical external source labels and paired legs are
+retained, with no extra internal permutation factor. -/
 theorem ExternalInsertionBlockLayout.sum_allOwnerShuffles_connectedDyson_eq_referenceOrdered
     {E n : ℕ}
     (π : Finpartition (Finset.univ : Finset (Fin (2 * E))))
     (heven : ∀ B : π.parts, Even (B : Finset (Fin (2 * E))).card)
     {size : π.parts → ℕ}
     (σ : Combinatorics.FamilySlotShuffleTo size n)
-    (localLabels : ∀ B : π.parts,
-      Fin (2 * ((B : Finset (Fin (2 * E))).card / 2)) →
-        ExternalFieldLabel Mode)
+    (labels : Fin (2 * E) → ExternalFieldLabel Mode)
     (ε : Mode → ℝ) (β : ℝ) (hβ : 0 ≤ β)
     (g : QuarticVertexLabel Mode → ℂ)
     (externalTime : Fin (2 * E) → ℝ) :
@@ -655,7 +739,8 @@ theorem ExternalInsertionBlockLayout.sum_allOwnerShuffles_connectedDyson_eq_refe
       ∑ G : (ExternalInsertionBlockLayout.ofFamilyShuffle π heven τ).ConnectedBlockFamily
           (ExternalLabel := ExternalFieldLabel Mode)
           (InternalLabel := QuarticVertexLabel Mode),
-        if ∀ B : π.parts, (G.1 B).externalLabel = localLabels B then
+        if ((ExternalInsertionBlockLayout.ofFamilyShuffle π heven τ).assembleDiagram
+            (Finset.univ : Finset (Fin n)) G.1).externalLabel = labels then
           ExternalInsertionWickDiagram.dysonAmplitude
             ((ExternalInsertionBlockLayout.ofFamilyShuffle π heven τ).assembleDiagram
               (Finset.univ : Finset (Fin n)) G.1)
@@ -665,7 +750,8 @@ theorem ExternalInsertionBlockLayout.sum_allOwnerShuffles_connectedDyson_eq_refe
         ∑ F : (ExternalInsertionBlockLayout.ofFamilyShuffle π heven σ).ConnectedBlockFamily
             (ExternalLabel := ExternalFieldLabel Mode)
             (InternalLabel := QuarticVertexLabel Mode),
-          if ∀ B : π.parts, (F.1 B).externalLabel = localLabels B then
+          if ((ExternalInsertionBlockLayout.ofFamilyShuffle π heven σ).assembleDiagram
+              (Finset.univ : Finset (Fin n)) F.1).externalLabel = labels then
             ExternalInsertionWickDiagram.orderedDysonAmplitude
               ((ExternalInsertionBlockLayout.ofFamilyShuffle π heven σ).assembleDiagram
                 (Finset.univ : Finset (Fin n)) F.1)
@@ -676,7 +762,7 @@ theorem ExternalInsertionBlockLayout.sum_allOwnerShuffles_connectedDyson_eq_refe
   apply Finset.sum_congr rfl
   intro τ _
   exact ExternalInsertionBlockLayout.sum_ofFamilyShuffle_connectedDyson_eq_referenceOrdered
-    π heven σ τ localLabels ε β hβ g externalTime
+    π heven σ τ labels ε β hβ g externalTime
 
 end Fermionic
 end SecondQuantization
