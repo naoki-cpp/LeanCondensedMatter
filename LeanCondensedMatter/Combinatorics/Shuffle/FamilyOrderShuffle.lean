@@ -88,7 +88,6 @@ noncomputable def assembleFamilyOrder {total : ℕ}
 local orders is exactly precomposition of the original global order by
 the inverse ambient slot relabeling. This is the algebraic identification
 between owner-shuffle transport and component interaction-order shuffles. -/
-omit [Fintype ι] [Fintype α] [∀ i, Fintype (F i)] in
 theorem assembleFamilyOrderOfSize_ambientRelabel {total : ℕ}
     (size : ι → ℕ) (ambientEquiv : α ≃ Σ i, F i)
     (orders : FamilyOrdersOf F size)
