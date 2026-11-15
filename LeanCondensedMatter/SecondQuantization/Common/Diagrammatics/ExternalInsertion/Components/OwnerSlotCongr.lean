@@ -170,6 +170,65 @@ theorem ExternalInsertionBlockLayout.ownerSlotCongr_interactionEquiv
   · apply Subtype.ext
     rfl
 
+
+/-- The independent local leg families are transported componentwise
+along the actual ambient owner-fiber permutation. -/
+noncomputable def ExternalInsertionBlockLayout.ownerSlotCongrLocalLegEquiv
+    (layout : ExternalInsertionBlockLayout E N) (e : Fin N ≃ Fin N) :
+    (Σ B : layout.partition.parts,
+      Fin (2 * (2 * (layout.interactionBlock
+        (Finset.univ : Finset (Fin N)) B).card +
+        (B : Finset (Fin (2 * E))).card / 2))) ≃
+    (Σ B : (layout.ownerSlotCongr e).partition.parts,
+      Fin (2 * (2 * ((layout.ownerSlotCongr e).interactionBlock
+        (Finset.univ : Finset (Fin N)) B).card +
+        (B : Finset (Fin (2 * E))).card / 2))) :=
+  Equiv.sigmaCongrRight
+    (fun B => externalInsertionLegCongr
+      (E := ((B : Finset (Fin (2 * E))).card / 2))
+      (layout.interactionBlockOwnerSlotCongrEquiv e B))
+
+/-- The entire flattened-leg decomposition commutes with moving the
+actual owners: first move the ambient interaction vertices or first
+assign each leg to its local block and move that block's vertices.
+External insertion indices and all four local quartic legs are retained. -/
+theorem ExternalInsertionBlockLayout.ownerSlotCongr_legEquiv
+    (layout : ExternalInsertionBlockLayout E N)
+    (e : Fin N ≃ Fin N)
+    (p : Fin (2 * (2 * (Finset.univ : Finset (Fin N)).card + E))) :
+    (layout.ownerSlotCongr e).legEquiv (Finset.univ : Finset (Fin N))
+        (externalInsertionLegCongr (E := E) (fullInteractionSlotEquiv e) p) =
+      (layout.ownerSlotCongrLocalLegEquiv e)
+        (layout.legEquiv (Finset.univ : Finset (Fin N)) p) := by
+  classical
+  obtain ⟨x, rfl⟩ :=
+    (externalInsertionLegEquiv E (Finset.univ : Finset (Fin N))).symm.surjective p
+  cases x with
+  | inl x =>
+    change
+      (layout.ownerSlotCongr e).legEquiv (Finset.univ : Finset (Fin N))
+          (externalInsertionLegCongr (E := E) (fullInteractionSlotEquiv e)
+            (externalInsertionExternalLeg E (Finset.univ : Finset (Fin N)) x)) =
+        (layout.ownerSlotCongrLocalLegEquiv e)
+          (layout.legEquiv (Finset.univ : Finset (Fin N))
+            (externalInsertionExternalLeg E (Finset.univ : Finset (Fin N)) x))
+    simp only [externalInsertionLegCongr_externalLeg,
+      ExternalInsertionBlockLayout.legEquiv_externalLeg]
+    rfl
+  | inr x =>
+    obtain ⟨v, i⟩ := x
+    change
+      (layout.ownerSlotCongr e).legEquiv (Finset.univ : Finset (Fin N))
+          (externalInsertionLegCongr (E := E) (fullInteractionSlotEquiv e)
+            (externalInsertionInteractionLeg (E := E) v i)) =
+        (layout.ownerSlotCongrLocalLegEquiv e)
+          (layout.legEquiv (Finset.univ : Finset (Fin N))
+            (externalInsertionInteractionLeg (E := E) v i))
+    simp only [externalInsertionLegCongr_interactionLeg,
+      ExternalInsertionBlockLayout.legEquiv_interactionLeg]
+    rw [layout.ownerSlotCongr_interactionEquiv e v]
+    rfl
+
 /-- Change the owner of every physical interaction vertex while
 transporting each local pairing and each local interaction label
 through exactly the induced local slot equivalence. -/
