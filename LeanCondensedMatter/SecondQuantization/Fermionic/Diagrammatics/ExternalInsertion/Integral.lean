@@ -480,7 +480,6 @@ theorem ExternalInsertionBlockLayout.sum_ownerSlotCongr_connectedDyson_eq_ordere
   rw [← layout.sum_ownerSlotCongrConnectedBlockFamilies e weight]
   apply Finset.sum_congr rfl
   intro F _
-  change weight (layout.ownerSlotCongrConnectedBlockFamilyEquiv e F) = _
   dsimp [weight]
   have hfamily :
       (layout.ownerSlotCongrConnectedBlockFamilyEquiv e F).1 =
