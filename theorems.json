@@ -9159,7 +9159,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -9171,15 +9171,17 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "Combinatorics.assignmentShuffleOfSize_symm_owner"
+      "Combinatorics.assignmentShuffleOfSize_symm_owner",
+      "Combinatorics.ownerCanonicalShuffle_apply_owner"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "Combinatorics.assignmentShuffleOfSize_symm_owner"
+      "Combinatorics.assignmentShuffleOfSize_symm_owner",
+      "Combinatorics.ownerCanonicalShuffle_apply_owner"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -9193,7 +9195,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ {ι : Type u_4} [inst : Fintype ι] {size : ι → ℕ} {total : ℕ} (owner : Fin total → ι)\n  (hcard : ∀ (i : ι), Fintype.card { v // owner v = i } = size i) (v : Fin total),\n  ((Combinatorics.assignmentShuffleOfSize owner hcard).slotEquiv.symm v).fst = owner v",
     "standardAxioms": [
       "Classical.choice",
@@ -9201,7 +9203,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -9212,14 +9214,18 @@
     "docString": "Unshuffling the fixed-size owner assignment recovers its original\nblock name pointwise. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "Combinatorics.ownerCanonicalShuffle_symm_owner"
+    ],
     "dependencies": [
       "Combinatorics.assignmentShuffleOfSize_apply_owner"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "Combinatorics.ownerCanonicalShuffle_symm_owner"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -10364,7 +10370,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": false,
+    "terminal": true,
     "statement": "∀ {ι : Type u_4} [inst : Fintype ι] {total : ℕ} (owner : Fin total → ι) (i : ι)\n  (j : Fin (Fintype.card { v // owner v = i })),\n  owner ((Combinatorics.ownerCanonicalShuffle owner).slotEquiv ⟨i, j⟩) = i",
     "standardAxioms": [
       "Classical.choice",
@@ -10372,7 +10378,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -10383,16 +10389,14 @@
     "docString": "Each slot in the shuffle of a particular owner fiber retains that\nowner, even if the other fibers have zero cardinality. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [
-      "Combinatorics.ownerCanonicalShuffle_symm_owner"
+    "dependents": [],
+    "dependencies": [
+      "Combinatorics.assignmentShuffleOfSize_apply_owner"
     ],
-    "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [
-      "Combinatorics.ownerCanonicalShuffle_symm_owner"
-    ],
-    "compiledConsumerCount": 1,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -10427,7 +10431,7 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "Combinatorics.ownerCanonicalShuffle_apply_owner"
+      "Combinatorics.assignmentShuffleOfSize_symm_owner"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
