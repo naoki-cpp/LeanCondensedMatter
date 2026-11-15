@@ -31,10 +31,15 @@ structure AuditEntry where
   replacementCandidates : Array ReplacementCandidate
   mathlibProofDependencies : Array String
   mathlibProbedCandidateCount : Nat
+  mathlibDiscoveryShapeMatches : Nat
+  mathlibDiscoveryProbedCandidateCount : Nat
   mathlibDefinitionallyEquivalentTo : Array String
   mathlibReplacementCandidates : Array ReplacementCandidate
 
 private def maxReplacementCandidatesPerTarget : Nat := 4
+
+/-- Bound the extra proof search for each target; proof dependencies remain unbounded. -/
+private def maxMathlibDiscoveryProbesPerTarget : Nat := 8
 
 private def projectModule? (moduleName : Name) : Bool :=
   moduleName.toString.startsWith "LeanCondensedMatter"
@@ -114,6 +119,88 @@ private def prepareCandidate (candidate : Candidate) : PreparedCandidate :=
     argumentHeads := arguments.map fun argument => argument.getAppFn.constName?
   }
 
+
+
+/-- Only a coarse, syntactic fingerprint: successful matches are still kernel-checked below.
+The full key prioritizes exact result shapes, and the relaxed key permits a different
+right-hand side of an equality or equivalence. -/
+private def discoveryExactKey (candidate : PreparedCandidate) : String :=
+  let head := candidate.resultHead.map Name.toString |>.getD "_"
+  let args := candidate.argumentHeads.toList.map fun name? =>
+    name?.map Name.toString |>.getD "_"
+  s!"{head}:{candidate.resultArity}:{String.intercalate ":" args}"
+
+private def discoveryCoarseKey (candidate : PreparedCandidate) : Option String := do
+  let head ← candidate.resultHead
+  let first ← candidate.argumentHeads[0]?.getD none
+  return s!"{head}:{candidate.resultArity}:{first}"
+
+private structure MathlibDiscoveryIndex where
+  exact : Std.HashMap String (Array PreparedCandidate) := {}
+  coarse : Std.HashMap String (Array PreparedCandidate) := {}
+  indexedCount : Nat := 0
+
+/-- Index all imported Mathlib theorems, not just the theorems named in project proofs.
+The index is constructed once, instead of scanning every Mathlib theorem for every target. -/
+private def collectMathlibDiscoveryIndex : CommandElabM MathlibDiscoveryIndex := do
+  let env ← getEnv
+  let mut index : MathlibDiscoveryIndex := {}
+  for (name, info) in env.constants.toList do
+    let .thmInfo theoremInfo := info | continue
+    let some moduleName := declarationModule? env name | continue
+    unless mathlibModule? moduleName do continue
+    if privateDeclarationName? name || extensionTheoremName? name ||
+        env.isProjectionFn name then continue
+    let candidate := prepareCandidate { name, moduleName, theoremInfo }
+    if candidate.resultHead.isNone || !(candidate.argumentHeads.any Option.isSome) then continue
+    let exactKey := discoveryExactKey candidate
+    let exact := index.exact.insert exactKey
+      ((index.exact.getD exactKey #[]).push candidate)
+    let coarse := match discoveryCoarseKey candidate with
+      | none => index.coarse
+      | some key => index.coarse.insert key ((index.coarse.getD key #[]).push candidate)
+    index := { exact, coarse, indexedCount := index.indexedCount + 1 }
+  return index
+
+private def argumentHeadAgreement (source target : PreparedCandidate) : Nat := Id.run do
+  let mut count := 0
+  for i in [:min source.argumentHeads.size target.argumentHeads.size] do
+    if let some head := source.argumentHeads[i]! then
+      if target.argumentHeads[i]! == some head then
+        count := count + 1
+  return count
+
+private def binderDistance (a b : Nat) : Nat :=
+  if a ≤ b then b - a else a - b
+
+private def discoveryBefore (target source₁ source₂ : PreparedCandidate) : Bool :=
+  let agreement₁ := argumentHeadAgreement source₁ target
+  let agreement₂ := argumentHeadAgreement source₂ target
+  if agreement₁ != agreement₂ then agreement₁ > agreement₂
+  else
+    let distance₁ := binderDistance source₁.binderCount target.binderCount
+    let distance₂ := binderDistance source₂.binderCount target.binderCount
+    if distance₁ != distance₂ then distance₁ < distance₂
+    else source₁.candidate.name.toString < source₂.candidate.name.toString
+
+/-- Return the bounded, highest-ranked candidate set and the count before truncation.
+Direct proof dependencies are excluded here because they are probed separately below. -/
+private def discoverMathlibCandidates (index : MathlibDiscoveryIndex)
+    (target : PreparedCandidate) (directDependencies : Array Name) :
+    Array PreparedCandidate × Nat := Id.run do
+  unless target.resultHead.isSome && target.argumentHeads.any Option.isSome do
+    return (#[], 0)
+  let exactKey := discoveryExactKey target
+  let exact := index.exact.getD exactKey #[]
+  let coarse := match discoveryCoarseKey target with
+    | none => #[]
+    | some key => index.coarse.getD key #[]
+  let pool := exact ++ coarse.filter (fun candidate => discoveryExactKey candidate != exactKey)
+  let matches := pool.filter (fun candidate =>
+    !directDependencies.contains candidate.candidate.name)
+  let ranked := matches.qsort (discoveryBefore target)
+  return ((ranked.toList.take maxMathlibDiscoveryProbesPerTarget).toArray, matches.size)
+
 private def sameArgumentHeadSketch
     (left right : Array (Option Name)) : Bool := Id.run do
   if left.size != right.size then return false
@@ -176,8 +263,8 @@ private def closeReplacementSubgoals
         loop remaining.reverse fuel
   loop goals (goals.length + 1)
 
-/-- Check whether an already-used theorem can discharge the target merely by specialization.
-No global theorem search is performed: the source must already occur in the target proof term. -/
+/-- Check whether a source theorem discharges the target by direct specialization.
+This is invoked for proof dependencies and for structurally indexed Mathlib discoveries. -/
 private def replacementCloses (source target : Candidate) : MetaM Bool :=
   withoutModifyingState do
     withTransparency .reducible do
@@ -217,13 +304,15 @@ private def auditTarget
     replacements.qsort fun left right => left.name < right.name)
 
 private def collectAuditEntries
-    (prepared : Array PreparedCandidate) (projectTheorems : NameSet) :
-    CommandElabM (Array AuditEntry × Nat × Nat) := do
+    (prepared : Array PreparedCandidate) (projectTheorems : NameSet)
+    (mathlibIndex : MathlibDiscoveryIndex) :
+    CommandElabM (Array AuditEntry × Nat × Nat × Nat) := do
   let env ← getEnv
   let byName := candidateMap prepared
   let mut entries := #[]
   let mut totalProjectProbed := 0
   let mut totalMathlibProbed := 0
+  let mut totalMathlibDiscoveredProbed := 0
   for target in prepared do
     let dependencyNames := directProjectTheoremDependencyNames
       projectTheorems target.candidate.name target.candidate.theoremInfo.value
@@ -239,7 +328,7 @@ private def collectAuditEntries
             sources.push source
     let mathlibDependencyNames := directMathlibTheoremDependencyNames
       env target.candidate.name target.candidate.theoremInfo.value
-    let mathlibSources := mathlibDependencyNames.foldl (init := #[]) fun sources dependency =>
+    let mathlibDependencySources := mathlibDependencyNames.foldl (init := #[]) fun sources dependency =>
       match theoremCandidate? env dependency with
       | none => sources
       | some source =>
@@ -250,8 +339,12 @@ private def collectAuditEntries
             sources
           else
             sources.push preparedSource
+    let (discovered, shapeMatches) :=
+      discoverMathlibCandidates mathlibIndex target mathlibDependencyNames
+    let mathlibSources := mathlibDependencySources ++ discovered
     totalProjectProbed := totalProjectProbed + sources.size
     totalMathlibProbed := totalMathlibProbed + mathlibSources.size
+    totalMathlibDiscoveredProbed := totalMathlibDiscoveredProbed + discovered.size
     let (defEq, replacements) ←
       if sources.isEmpty then
         pure (#[], #[])
@@ -272,13 +365,16 @@ private def collectAuditEntries
       mathlibProofDependencies :=
         (mathlibDependencyNames.map Name.toString).qsort fun left right => left < right
       mathlibProbedCandidateCount := mathlibSources.size
+      mathlibDiscoveryShapeMatches := shapeMatches
+      mathlibDiscoveryProbedCandidateCount := discovered.size
       mathlibDefinitionallyEquivalentTo := mathlibDefEq
       mathlibReplacementCandidates := mathlibReplacements
     }
   return (
     entries.qsort fun left right => left.target < right.target,
     totalProjectProbed,
-    totalMathlibProbed)
+    totalMathlibProbed,
+    totalMathlibDiscoveredProbed)
 
 private def jsonReplacement (candidate : ReplacementCandidate) : Json :=
   .mkObj [
@@ -296,6 +392,8 @@ private def jsonEntry (entry : AuditEntry) : Json :=
     ("replacementCandidates", .arr <| entry.replacementCandidates.map jsonReplacement),
     ("mathlibProofDependencies", .arr <| entry.mathlibProofDependencies.map Json.str),
     ("mathlibProbedCandidateCount", .num entry.mathlibProbedCandidateCount),
+    ("mathlibDiscoveryShapeMatches", .num entry.mathlibDiscoveryShapeMatches),
+    ("mathlibDiscoveryProbedCandidateCount", .num entry.mathlibDiscoveryProbedCandidateCount),
     ("mathlibDefinitionallyEquivalentTo",
       .arr <| entry.mathlibDefinitionallyEquivalentTo.map Json.str),
     ("mathlibReplacementCandidates",
@@ -308,8 +406,9 @@ private def json (entries : Array AuditEntry) : Json :=
 run_cmd do
   let (candidates, projectTheorems) ← collectCandidates
   let prepared := candidates.map prepareCandidate
-  let (entries, totalProjectProbed, totalMathlibProbed) ←
-    collectAuditEntries prepared projectTheorems
+  let mathlibIndex ← collectMathlibDiscoveryIndex
+  let (entries, totalProjectProbed, totalMathlibProbed, totalMathlibDiscoveredProbed) ←
+    collectAuditEntries prepared projectTheorems mathlibIndex
   let defEqTargets := entries.filter fun entry => !entry.definitionallyEquivalentTo.isEmpty
   let replacementTargets := entries.filter fun entry => !entry.replacementCandidates.isEmpty
   let replacementEdges := replacementTargets.foldl (init := 0) fun count entry =>
@@ -323,5 +422,5 @@ run_cmd do
   let outputDir : System.FilePath := "docs" / "generated"
   liftIO <| IO.FS.createDirAll outputDir
   liftIO <| IO.FS.writeFile (outputDir / "theorem-replacements.json") (json entries).pretty
-  logInfo m!"Generated proof-guided replacement audit for {entries.size} declarations; probed {totalProjectProbed} project proof-dependency pairs and {totalMathlibProbed} Mathlib proof-dependency pairs; {defEqTargets.size} targets have definitionally equivalent project proof dependencies; {replacementTargets.size} targets have verified project replacements ({replacementEdges} edges); {mathlibDefEqTargets.size} targets have definitionally equivalent Mathlib proof dependencies; {mathlibReplacementTargets.size} targets have verified Mathlib replacements ({mathlibReplacementEdges} edges)"
+  logInfo m!"Generated proof-guided replacement audit for {entries.size} declarations; indexed {mathlibIndex.indexedCount} Mathlib theorems; probed {totalProjectProbed} project proof-dependency pairs and {totalMathlibProbed} Mathlib candidate pairs ({totalMathlibDiscoveredProbed} newly discovered); {defEqTargets.size} targets have definitionally equivalent project proof dependencies; {replacementTargets.size} targets have verified project replacements ({replacementEdges} edges); {mathlibDefEqTargets.size} targets have definitionally equivalent Mathlib proof dependencies; {mathlibReplacementTargets.size} targets have verified Mathlib replacements ({mathlibReplacementEdges} edges)"
 end LeanCondensedMatter.TheoremReplacementAudit
