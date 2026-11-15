@@ -55247,7 +55247,7 @@
     "dependents": [
       "QuantumTheory.LinearResponse.hasStaticLimit_lehmannTerm",
       "SecondQuantization.Fermionic.Transport.twoModeFockHallKuboResponse_re",
-      "SecondQuantization.Fermionic.Validation.twoSiteDimerFrequencyDenominator_ne_zero",
+      "SecondQuantization.Fermionic.Validation.twoSiteDimerGroundState_conductivity_frequency",
       "SecondQuantization.Fermionic.Validation.twoSiteDimerGroundState_lehmannResponse_frequency"
     ],
     "dependencies": [],
@@ -55256,7 +55256,7 @@
     "compiledConsumers": [
       "QuantumTheory.LinearResponse.hasStaticLimit_lehmannTerm",
       "SecondQuantization.Fermionic.Transport.twoModeFockHallKuboResponse_re",
-      "SecondQuantization.Fermionic.Validation.twoSiteDimerFrequencyDenominator_ne_zero",
+      "SecondQuantization.Fermionic.Validation.twoSiteDimerGroundState_conductivity_frequency",
       "SecondQuantization.Fermionic.Validation.twoSiteDimerGroundState_lehmannResponse_frequency"
     ],
     "compiledConsumerCount": 4,
@@ -157615,48 +157615,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (omega eta : ℝ), eta ≠ 0 → SecondQuantization.Fermionic.Validation.twoSiteDimerComplexRate omega eta ≠ 0",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.Validation.twoSiteDimerComplexRate_ne_zero",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Validation.TwoSiteDimerFrequency",
-    "externalAxioms": [],
-    "docString": "A nonzero switching rate keeps `z = η - iω` nonzero. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.Validation.twoSiteDimerGroundState_conductivity_frequency"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.Validation.twoSiteDimerGroundState_conductivity_frequency"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "(SecondQuantization.Fermionic.Validation.twoSiteDimerContact 1)\n    SecondQuantization.Fermionic.Validation.twoSiteDimerBondingState =\n  -1 • SecondQuantization.Fermionic.Validation.twoSiteDimerBondingState",
     "standardAxioms": [
       "Classical.choice",
@@ -158380,62 +158338,17 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.Validation.twoSiteDimerFrequencyDenominator_ne_zero",
+      "SecondQuantization.Fermionic.Validation.twoSiteDimerGroundState_conductivity_frequency",
       "SecondQuantization.Fermionic.Validation.twoSiteDimerGroundState_lehmannResponse_frequency"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.Validation.twoSiteDimerFrequencyDenominator_ne_zero",
+      "SecondQuantization.Fermionic.Validation.twoSiteDimerGroundState_conductivity_frequency",
       "SecondQuantization.Fermionic.Validation.twoSiteDimerGroundState_lehmannResponse_frequency"
     ],
     "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (omega eta : ℝ), eta ≠ 0 → SecondQuantization.Fermionic.Validation.twoSiteDimerFrequencyDenominator omega eta ≠ 0",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.Validation.twoSiteDimerFrequencyDenominator_ne_zero",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Validation.TwoSiteDimerFrequency",
-    "externalAxioms": [],
-    "docString": "At nonzero switching rate the closed unit-dimer response denominator is nonsingular. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.Validation.twoSiteDimerGroundState_conductivity_frequency"
-    ],
-    "dependencies": [
-      "QuantumTheory.LinearResponse.lehmannDenominator_ne_zero",
-      "SecondQuantization.Fermionic.Validation.twoSiteDimerFrequencyDenominator_eq_transitionProduct"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.Validation.twoSiteDimerGroundState_conductivity_frequency"
-    ],
-    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -158726,8 +158639,8 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "SecondQuantization.Fermionic.Validation.twoSiteDimerComplexRate_ne_zero",
-      "SecondQuantization.Fermionic.Validation.twoSiteDimerFrequencyDenominator_ne_zero",
+      "QuantumTheory.LinearResponse.lehmannDenominator_ne_zero",
+      "SecondQuantization.Fermionic.Validation.twoSiteDimerFrequencyDenominator_eq_transitionProduct",
       "SecondQuantization.Fermionic.Validation.twoSiteDimerGroundState_lehmannResponse_frequency",
       "SecondQuantization.Fermionic.Validation.twoSiteDimerUnitVolume_normalization_frequency"
     ],
