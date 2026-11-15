@@ -84,6 +84,20 @@ noncomputable def assembleFamilyOrder {total : ℕ}
     Fin total ≃ α :=
   assembleFamilyOrderOfSize F (fun i => Fintype.card (F i)) ambientEquiv orders shuffle
 
+/-- Changing the ambient shuffle while retaining the same family of
+local orders is exactly precomposition of the original global order by
+the inverse ambient slot relabeling. This is the algebraic identification
+between owner-shuffle transport and component interaction-order shuffles. -/
+theorem assembleFamilyOrderOfSize_ambientRelabel {total : ℕ}
+    (size : ι → ℕ) (ambientEquiv : α ≃ Σ i, F i)
+    (orders : FamilyOrdersOf F size)
+    (σ τ : FamilySlotShuffleTo size total) :
+    (σ.ambientRelabel τ).symm.trans
+        (assembleFamilyOrderOfSize F size ambientEquiv orders σ) =
+      assembleFamilyOrderOfSize F size ambientEquiv orders τ := by
+  ext v
+  simp [assembleFamilyOrderOfSize, FamilySlotShuffleTo.ambientRelabel]
+
 /-- Ambient slots occupied by one family fiber under a global order. -/
 private noncomputable def familyGlobalSlots {total : ℕ}
     (ambientEquiv : α ≃ Σ i, F i)
