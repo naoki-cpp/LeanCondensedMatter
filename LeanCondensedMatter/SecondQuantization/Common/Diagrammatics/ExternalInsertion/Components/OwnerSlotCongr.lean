@@ -277,8 +277,7 @@ noncomputable def ExternalInsertionBlockLayout.ofFamilyShuffle_fixedSizeStandard
           d.vertexGraph.Preconnected}) := by
   classical
   exact
-    ((ExternalInsertionBlockLayout.ofFamilyShuffle π heven σ).
-      connectedBlockFamilyEquivPi).trans
+    ((ExternalInsertionBlockLayout.ofFamilyShuffle π heven σ).connectedBlockFamilyEquivPi).trans
       (Equiv.piCongrRight (fun B =>
         ExternalInsertionDiagram.preconnectedSlotCongrEquiv
           (Combinatorics.standardSlotEquivOfCardEq
@@ -656,8 +655,8 @@ theorem ExternalInsertionBlockLayout.ofFamilyShuffle_connectedFamily_standardiza
       (Finset.univ : Finset (Fin N)) B).card = size B)
     (F : (ExternalInsertionBlockLayout.ofFamilyShuffle π heven σ).ConnectedBlockFamily
       (ExternalLabel := ExternalLabel) (InternalLabel := InternalLabel)) :
-    (((((ExternalInsertionBlockLayout.ofFamilyShuffle π heven σ).
-      ownerSlotCongrConnectedBlockFamilyEquiv (σ.ambientRelabel τ)) F).1 B).slotCongr
+    (((((ExternalInsertionBlockLayout.ofFamilyShuffle π heven σ).ownerSlotCongrConnectedBlockFamilyEquiv
+      (σ.ambientRelabel τ)) F).1 B).slotCongr
         (Combinatorics.standardSlotEquivOfCardEq
           (((ExternalInsertionBlockLayout.ofFamilyShuffle π heven σ).ownerSlotCongr
             (σ.ambientRelabel τ)).interactionBlock
