@@ -97,16 +97,10 @@ theorem hasDerivAt_polarization (t : ℝ) :
     HasDerivAt closure.polarization
       (-(orbitalRate axis ℏ (degreeTwoTime data.degreeTwoRate) c₁ c₂ r *
           closure.polarization t)) t := by
-  have hcoefficient :
-      -(evenQuarticCubature r (orbitalDoubleCommutator axis c₁ c₂) / ℏ ^ 2 *
-          closure.quadrupoleAmplitude t) =
-        -(orbitalRate axis ℏ (degreeTwoTime data.degreeTwoRate) c₁ c₂ r *
-          closure.polarization t) := by
-    rw [closure.quadrupoleAmplitude_eq t]
-    simp only [orbitalRate, degreeTwoTime, momentumTime]
-    ring
-  rw [← hcoefficient]
-  exact closure.polarization_dynamics t
+  convert closure.polarization_dynamics t using 1
+  rw [closure.quadrupoleAmplitude_eq t]
+  simp only [orbitalRate, degreeTwoTime, momentumTime]
+  ring
 
 private theorem scalar_decay_solution (rate : ℝ) (f : ℝ → ℝ)
     (hderiv : ∀ t, HasDerivAt f (-(rate * f t)) t) (t : ℝ) :
