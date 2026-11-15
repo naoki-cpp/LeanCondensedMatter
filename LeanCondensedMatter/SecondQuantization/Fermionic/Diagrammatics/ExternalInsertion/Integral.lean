@@ -488,10 +488,9 @@ theorem ExternalInsertionBlockLayout.sum_ownerSlotCongr_connectedDyson_eq_ordere
     funext B
     exact layout.ownerSlotCongrConnectedBlockFamilyEquiv_apply e F B
   rw [hfamily, layout.assembleDiagram_ownerSlotCongr e F.1]
-  exact
-    (layout.assembleDiagram (Finset.univ : Finset (Fin n)) F.1).
-      slotCongr_dysonAmplitude_eq_orderedDysonAmplitude
-      (fullInteractionSlotEquiv e) ε β hβ g externalTime
+  exact ExternalInsertionWickDiagram.slotCongr_dysonAmplitude_eq_orderedDysonAmplitude
+    (layout.assembleDiagram (Finset.univ : Finset (Fin n)) F.1)
+    (fullInteractionSlotEquiv e) ε β hβ g externalTime
 
 
 end Fermionic
