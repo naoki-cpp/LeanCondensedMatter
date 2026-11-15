@@ -341,5 +341,62 @@ theorem sum_fixedPartitionDysonAmplitude_eq_standardizedOrderedDysonAmplitude
         (((Finset.univ : Finset (Fin n)).orderIsoOfFin rfl).toEquiv.trans e)
       else 0)
 
+
+/-- Relabeling the **physical** interaction vertices converts its canonical
+Dyson integral into the corresponding transported-order integral of the
+original Wick diagram. This is the reverse direction of
+`dysonAmplitude_eq_slotCongr_orderedDysonAmplitude`, and notably it does
+*not* identify the two canonical-order integrals. -/
+theorem ExternalInsertionWickDiagram.slotCongr_dysonAmplitude_eq_orderedDysonAmplitude
+    {E n : ℕ} (d : ExternalInsertionWickDiagram Mode E n)
+    (e : ↥(Finset.univ : Finset (Fin n)) ≃
+      ↥(Finset.univ : Finset (Fin n)))
+    (ε : Mode → ℝ) (β : ℝ) (hβ : 0 ≤ β)
+    (g : QuarticVertexLabel Mode → ℂ)
+    (externalTime : Fin (2 * E) → ℝ) :
+    ExternalInsertionWickDiagram.dysonAmplitude (d.slotCongr e)
+      ε β g externalTime =
+      d.orderedDysonAmplitude ε β g externalTime
+        (((Finset.univ : Finset (Fin n)).orderIsoOfFin rfl).toEquiv.trans e.symm) := by
+  have hback : (d.slotCongr e).slotCongr e.symm = d :=
+    (ExternalInsertionDiagram.slotCongrEquiv
+      (E := E) (ExternalLabel := ExternalFieldLabel Mode)
+      (InternalLabel := QuarticVertexLabel Mode) e).left_inv d
+  calc
+    ExternalInsertionWickDiagram.dysonAmplitude (d.slotCongr e)
+        ε β g externalTime =
+      ExternalInsertionWickDiagram.orderedDysonAmplitude
+        ((d.slotCongr e).slotCongr e.symm)
+        ε β g externalTime
+          (((Finset.univ : Finset (Fin n)).orderIsoOfFin rfl).toEquiv.trans e.symm) :=
+      (d.slotCongr e).dysonAmplitude_eq_slotCongr_orderedDysonAmplitude
+        e.symm ε β hβ g externalTime
+    _ = _ := by rw [hback]
+
+open Classical in
+/-- For a finite family of physical Wick diagrams obtained by *actual
+interaction-slot relabelings of one fixed diagram*, the full canonical
+Dyson sum is exactly its transported global-order orbit sum. The orbit
+is counted by the supplied finite index type, with no extra factorial.
+To apply this to physical owner assignments one must prove the assembly
+transport identity for the standardized connected-block family. -/
+theorem ExternalInsertionWickDiagram.sum_slotCongr_dysonAmplitude_eq_orderedDysonOrbit
+    {E n : ℕ} {I : Type*} [Fintype I]
+    (d : ExternalInsertionWickDiagram Mode E n)
+    (relabel : I → (↥(Finset.univ : Finset (Fin n)) ≃
+      ↥(Finset.univ : Finset (Fin n))))
+    (ε : Mode → ℝ) (β : ℝ) (hβ : 0 ≤ β)
+    (g : QuarticVertexLabel Mode → ℂ)
+    (externalTime : Fin (2 * E) → ℝ) :
+    (∑ i : I, ExternalInsertionWickDiagram.dysonAmplitude
+      (d.slotCongr (relabel i)) ε β g externalTime) =
+      ∑ i : I, d.orderedDysonAmplitude ε β g externalTime
+        (((Finset.univ : Finset (Fin n)).orderIsoOfFin rfl).toEquiv.trans
+          (relabel i).symm) := by
+  apply Finset.sum_congr rfl
+  intro i _
+  exact d.slotCongr_dysonAmplitude_eq_orderedDysonAmplitude
+    (relabel i) ε β hβ g externalTime
+
 end Fermionic
 end SecondQuantization
