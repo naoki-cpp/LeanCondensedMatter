@@ -44,7 +44,7 @@ theorem resummedLadderVertex_sub_eq_firstRung_add_tail
   change dressed - bareVertex = ladder bareVertex + ladder (dressed - bareVertex)
   calc
     dressed - bareVertex = ladder dressed := by
-      rw [hfixed]
+      nth_rw 1 [hfixed]
       abel
     _ = ladder (bareVertex + (dressed - bareVertex)) := by rw [hsum]
     _ = ladder bareVertex + ladder (dressed - bareVertex) :=
@@ -73,13 +73,13 @@ theorem norm_resummedLadderVertex_tail_le
         q * ‖bareVertex‖ + q * ‖dressed - bareVertex‖ := by
     calc
       ‖dressed - bareVertex‖ =
-          ‖ladder bareVertex + ladder (dressed - bareVertex)‖ := by rw [hdecomp]
+          ‖ladder bareVertex + ladder (dressed - bareVertex)‖ := by nth_rw 1 [hdecomp]
       _ ≤ ‖ladder bareVertex‖ + ‖ladder (dressed - bareVertex)‖ :=
         norm_add_le _ _
       _ ≤ q * ‖bareVertex‖ + q * ‖dressed - bareVertex‖ :=
         add_le_add (haction _) (haction _)
   have hlin :
-      (1 - q) * ‖dressed - bareVertex‖ ≤ q * ‖bareVertex‖ := by
+      ‖dressed - bareVertex‖ * (1 - q) ≤ q * ‖bareVertex‖ := by
     nlinarith [hdiff]
   have hratio :
       ‖dressed - bareVertex‖ ≤ (q * ‖bareVertex‖) / (1 - q) :=
