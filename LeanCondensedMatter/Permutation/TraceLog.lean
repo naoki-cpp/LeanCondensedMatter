@@ -60,11 +60,6 @@ private theorem coeff_log_complex_of_pos (m : ℕ) (hm : 0 < m) :
     (-1 : ℂ) ^ (m + 1) / (m : ℂ)
   rw [Rat.cast_div, Rat.cast_pow, Rat.cast_neg, Rat.cast_one, Rat.cast_natCast]
 
-private theorem neg_pow_mul_neg_one_pow_succ (ζ : ℂ) (m : ℕ) :
-    (-ζ) ^ m * (-1 : ℂ) ^ (m + 1) = -ζ ^ m := by
-  rw [pow_succ (-1 : ℂ), ← mul_assoc, ← mul_pow]
-  simp
-
 /-- Division-free formal trace-log identity for arbitrary exchange weight.
 
 Multiplying the connected-cycle series by `ζ` gives the negative coefficientwise trace-log
@@ -97,7 +92,8 @@ theorem smul_permutationConnectedCycleSeries_eq_neg_traceLog
               Matrix.trace (K ^ (n + 1)) / ((n + 1 : ℕ) : ℂ) := by
           ring
         _ = (-ζ ^ (n + 1)) * Matrix.trace (K ^ (n + 1)) / ((n + 1 : ℕ) : ℂ) := by
-          rw [neg_pow_mul_neg_one_pow_succ]
+          rw [pow_succ (-1 : ℂ), ← mul_assoc, ← mul_pow]
+          simp
         _ = -(ζ ^ (n + 1) * Matrix.trace (K ^ (n + 1)) / ((n + 1 : ℕ) : ℂ)) := by
           ring
     rw [htrace]
