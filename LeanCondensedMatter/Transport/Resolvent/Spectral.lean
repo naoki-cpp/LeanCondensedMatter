@@ -30,11 +30,6 @@ representation-independent scalar factor that appears in every finite-projector 
 noncomputable def scalarResolventCoefficient (z : ℂ) (eigenvalue : ℝ) : ℂ :=
   (z - (eigenvalue : ℂ))⁻¹
 
-private theorem complex_spectral_offset_ne_zero
-    (probeEnergy eigenvalue : ℝ) (hprobe : probeEnergy ≠ eigenvalue) :
-    (((probeEnergy - eigenvalue : ℝ) : ℂ)) ≠ 0 := by
-  exact_mod_cast sub_ne_zero.mpr hprobe
-
 /-- Away from a real spectral pole, the side-indexed regulated scalar coefficient converges to the
 ordinary real-energy scalar resolvent as the broadening tends to zero. -/
 theorem tendsto_scalarResolventCoefficient_spectralParameter_zero
@@ -48,8 +43,9 @@ theorem tendsto_scalarResolventCoefficient_spectralParameter_zero
       (nhds (scalarResolventCoefficient (probeEnergy : ℂ) eigenvalue)) := by
   have hden :
       spectralParameter side probeEnergy 0 - (eigenvalue : ℂ) ≠ 0 := by
-    simpa [spectralParameter, spectralParameterOfRegulator, SpectralSide.regulator] using
-      complex_spectral_offset_ne_zero probeEnergy eigenvalue hprobe
+    have hreal : (((probeEnergy - eigenvalue : ℝ) : ℂ)) ≠ 0 := by
+      exact_mod_cast sub_ne_zero.mpr hprobe
+    simpa [spectralParameter, spectralParameterOfRegulator, SpectralSide.regulator] using hreal
   have hcontinuous : ContinuousAt
       (fun broadening : ℝ =>
         spectralParameter side probeEnergy broadening - (eigenvalue : ℂ)) 0 := by
