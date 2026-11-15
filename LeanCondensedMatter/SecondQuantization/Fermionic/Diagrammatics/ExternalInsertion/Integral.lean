@@ -1,6 +1,7 @@
 import LeanCondensedMatter.Analysis.OrderedSimplex.StrictAntiCongr
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Ordered
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.SupportStandardization
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.BlockAssembly
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.Amplitude
 
 set_option linter.style.header false
@@ -288,6 +289,56 @@ theorem sum_fixedPartitionDysonAmplitude_eq_reindexedOrderedDysonAmplitude
         exact hterm d
     _ = ∑ d : fiber, weight d := Equiv.sum_comp φ weight
     _ = _ := rfl
+
+
+open Classical in
+/-- The actual fixed-label, fixed-external-partition physical Dyson
+coefficient is a finite sum over **realized** interaction-size vectors,
+owner shuffles and standardized connected local Wick diagrams.
+
+The integrand on the right retains its *transported global Dyson order*.
+This composes the exact physical ordered-amplitude covariance with the
+combinatorial standardized-size/shuffle equivalence. It introduces no
+extra factorial or independence assumption: factorizing the remaining
+owner-shuffle sum into local Dyson coefficients is a separate obligation. -/
+theorem sum_fixedPartitionDysonAmplitude_eq_standardizedOrderedDysonAmplitude
+    {E n : ℕ}
+    (anchor : Fin (2 * E))
+    (π : Finpartition (Finset.univ : Finset (Fin (2 * E))))
+    (heven : ∀ B : π.parts, Even (B : Finset (Fin (2 * E))).card)
+    (labels : Fin (2 * E) → ExternalFieldLabel Mode)
+    (ε : Mode → ℝ) (β : ℝ) (hβ : 0 ≤ β)
+    (g : QuarticVertexLabel Mode → ℂ)
+    (externalTime : Fin (2 * E) → ℝ)
+    (e : ↥(Finset.univ : Finset (Fin n)) ≃
+      ↥(Finset.univ : Finset (Fin n))) :
+    (∑ d : {d : {d : ExternalInsertionWickDiagram Mode E n //
+        HasNoVacuumComponent d.vertexGraph} //
+        externalComponentPartition d.1.vertexGraph = π},
+      if d.1.1.externalLabel = labels then
+        d.1.1.dysonAmplitude ε β g externalTime else 0) =
+      ∑ p ∈ ExternalInsertionBlockLayout.fixedPartitionPhysicalStandardizedSizeShuffleFiniteDomain
+          (E := E) (N := n) (ExternalLabel := ExternalFieldLabel Mode)
+          (InternalLabel := QuarticVertexLabel Mode) anchor π heven,
+        if ((ExternalInsertionBlockLayout.fixedPartitionPhysicalStandardizedSizeShuffleEquiv
+              (E := E) (N := n) (ExternalLabel := ExternalFieldLabel Mode)
+              (InternalLabel := QuarticVertexLabel Mode) anchor π heven).symm p).1.1.externalLabel =
+            labels then
+          ((ExternalInsertionBlockLayout.fixedPartitionPhysicalStandardizedSizeShuffleEquiv
+              (E := E) (N := n) (ExternalLabel := ExternalFieldLabel Mode)
+              (InternalLabel := QuarticVertexLabel Mode) anchor π heven).symm p).1.1.orderedDysonAmplitude
+            ε β g externalTime
+            (((Finset.univ : Finset (Fin n)).orderIsoOfFin rfl).toEquiv.trans e)
+        else 0 := by
+  rw [sum_fixedPartitionDysonAmplitude_eq_reindexedOrderedDysonAmplitude
+    π labels ε β hβ g externalTime e]
+  exact ExternalInsertionBlockLayout.sum_fixedPartitionPhysical_eq_standardized_sizes_shuffles
+    (E := E) (N := n) (ExternalLabel := ExternalFieldLabel Mode)
+    (InternalLabel := QuarticVertexLabel Mode) anchor π heven
+    (fun d => if d.1.1.externalLabel = labels then
+      d.1.1.orderedDysonAmplitude ε β g externalTime
+        (((Finset.univ : Finset (Fin n)).orderIsoOfFin rfl).toEquiv.trans e)
+      else 0)
 
 end Fermionic
 end SecondQuantization
