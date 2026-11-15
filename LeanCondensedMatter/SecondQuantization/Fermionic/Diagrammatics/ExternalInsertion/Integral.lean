@@ -626,9 +626,9 @@ theorem ExternalInsertionBlockLayout.sum_ofFamilyShuffle_connectedDyson_eq_refer
               (fullInteractionSlotEquiv (σ.ambientRelabel τ)).symm)
         else 0 := by
   have h :=
-    (ExternalInsertionBlockLayout.ofFamilyShuffle π heven σ).
-      sum_ownerSlotCongr_connectedDyson_eq_ordered_localLabels
-        (σ.ambientRelabel τ) localLabels ε β hβ g externalTime
+    ExternalInsertionBlockLayout.sum_ownerSlotCongr_connectedDyson_eq_ordered_localLabels
+      (ExternalInsertionBlockLayout.ofFamilyShuffle π heven σ)
+      (σ.ambientRelabel τ) localLabels ε β hβ g externalTime
   simpa only [ExternalInsertionBlockLayout.ofFamilyShuffle_ownerSlotCongr] using h
 
 open Classical in
