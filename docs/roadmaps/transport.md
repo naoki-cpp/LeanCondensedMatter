@@ -134,6 +134,19 @@ by at most `2 |γ|⁻³ M²`. The canonical first-rung insertion
 `Disorder.FirstRungNormBound` controls the exact connected two-Green insertion minus
 this first rung by
 `[(4 |γᴸ|⁻³ |γᴿ|⁻²) + (2 |γᴸ|⁻² |γᴿ|⁻³)] M³ ‖J‖`.
+The next finite-ensemble resummation step is in `Disorder.LadderNormBound` and
+`Disorder.ConnectedLadderNormBound`. At fixed nonzero signed regulators and `‖Vω‖≤M`,
+the exact finite second moment and clean-operator ladder obey
+`‖C₂(X)‖≤M²‖X‖` and `‖L‖≤q=M²/(|γL||γR|)`.
+If `q<1`, `I-L` is a unit and the resummed fixed-point tail beyond the first
+rung has norm at most `q² ‖J‖/(1-q)`. For centered disorder, combining with
+the cubic first-rung comparison yields a bound on
+`‖C_LR(J)-G₀ᴸ(Γ_res-J)G₀ᴿ‖` by
+`[4 B_L³ B_R²+2 B_L² B_R³] M³ ‖J‖ + B_L B_R q² ‖J‖/(1-q)`.
+This controls **all finite-ensemble clean-ladder iterations** under an explicit
+microscopic smallness condition, without identifying the result with the
+continuum massive-Dirac Born–Dyson/SCBA ladder or a physical DC conductivity.
+
 This is the first explicit **cubic truncation bound** on a two-particle covariance;
 the comparison is to a **single Born rung**, not the resummed noncrossing ladder
 or a dressed continuum vertex. All bounds are at fixed nonzero regulators.
