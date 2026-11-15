@@ -84,6 +84,7 @@ noncomputable def assembleFamilyOrder {total : ℕ}
     Fin total ≃ α :=
   assembleFamilyOrderOfSize F (fun i => Fintype.card (F i)) ambientEquiv orders shuffle
 
+omit [Fintype ι] [Fintype α] [∀ i, Fintype (F i)] in
 /-- Changing the ambient shuffle while retaining the same family of
 local orders is exactly precomposition of the original global order by
 the inverse ambient slot relabeling. This is the algebraic identification
