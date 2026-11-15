@@ -48,13 +48,9 @@ private theorem integral_sin_three_mul_cos_sq :
   simp only [pow_one] at h
   have hid (u : ℝ) : u ^ 2 * (1 - u ^ 2) = u ^ 2 - u ^ 4 := by ring
   simp_rw [hid] at h
-  have h2 : IntervalIntegrable (fun u : ℝ => u ^ 2) volume
-      (Real.cos Real.pi) (Real.cos (0 : ℝ)) :=
-    Continuous.intervalIntegrable (by fun_prop) _ _
-  have h4 : IntervalIntegrable (fun u : ℝ => u ^ 4) volume
-      (Real.cos Real.pi) (Real.cos (0 : ℝ)) :=
-    Continuous.intervalIntegrable (by fun_prop) _ _
-  rw [intervalIntegral.integral_sub h2 h4] at h
+  rw [intervalIntegral.integral_sub
+    (Continuous.intervalIntegrable (by fun_prop) _ _)
+    (Continuous.intervalIntegrable (by fun_prop) _ _)] at h
   norm_num [integral_pow] at h
   exact h
 
@@ -77,15 +73,13 @@ private theorem integral_sin_sq_full :
 
 private theorem integral_cos_four_full :
     (∫ φ in (0 : ℝ)..(2 * Real.pi), Real.cos φ ^ 4) = 3 * Real.pi / 4 := by
-  rw [integral_cos_pow (n := 2)]
-  rw [integral_cos_sq_full]
+  rw [integral_cos_pow (n := 2), integral_cos_sq_full]
   simp
   ring
 
 private theorem integral_sin_four_full :
     (∫ φ in (0 : ℝ)..(2 * Real.pi), Real.sin φ ^ 4) = 3 * Real.pi / 4 := by
-  rw [integral_sin_pow (n := 2)]
-  rw [integral_sin_sq_full]
+  rw [integral_sin_pow (n := 2), integral_sin_sq_full]
   simp
   ring
 
