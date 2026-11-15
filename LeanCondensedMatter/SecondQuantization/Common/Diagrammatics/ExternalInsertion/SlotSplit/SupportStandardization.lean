@@ -51,9 +51,8 @@ noncomputable def ExternalInsertionDiagram.fixedPartitionVacuumFreeSlotCongrEqui
       externalComponentPartition d.1.vertexGraph = π} :=
   Equiv.subtypeEquiv (ExternalInsertionDiagram.vacuumFreeSlotCongrEquiv
     (E := E) e) (fun d => by
-    change externalComponentPartition
-      (d.1.slotCongr (M := M) e).vertexGraph = π ↔
-      externalComponentPartition d.1.vertexGraph = π
+    change externalComponentPartition d.1.vertexGraph = π ↔
+      externalComponentPartition (d.1.slotCongr (M := M) e).vertexGraph = π
     rw [d.1.slotCongr_externalComponentPartition (M := M) e])
 
 /-- Canonically enumerate the interaction slots of a vacuum-free external diagram.
