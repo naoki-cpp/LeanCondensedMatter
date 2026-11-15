@@ -231,8 +231,29 @@ theorem ExternalInsertionBlockLayout.ownerSlotCongr_legEquiv
     simp only [externalInsertionLegCongr_externalLeg,
       ExternalInsertionBlockLayout.legEquiv_externalLeg]
     rw [layout.ownerSlotCongr_sourceEquiv e]
-    simp [ExternalInsertionBlockLayout.ownerSlotCongrLocalLegEquiv,
-      externalInsertionLegCongr, externalInsertionExternalLeg]
+    change
+      (⟨(layout.sourceEquiv x).1,
+        externalInsertionExternalLeg
+          ((layout.sourceEquiv x).1.1.card / 2)
+          ((layout.ownerSlotCongr e).interactionBlock
+            (Finset.univ : Finset (Fin N)) (layout.sourceEquiv x).1)
+          (layout.sourceEquiv x).2⟩ :
+            Σ B : layout.partition.parts,
+              Fin (2 * (2 * ((layout.ownerSlotCongr e).interactionBlock
+                (Finset.univ : Finset (Fin N)) B).card +
+                (B : Finset (Fin (2 * E))).card / 2))) =
+        ⟨(layout.sourceEquiv x).1,
+          externalInsertionLegCongr
+            (layout.interactionBlockOwnerSlotCongrEquiv e (layout.sourceEquiv x).1)
+            (externalInsertionExternalLeg
+              ((layout.sourceEquiv x).1.1.card / 2)
+              (layout.interactionBlock (Finset.univ : Finset (Fin N))
+                (layout.sourceEquiv x).1)
+              (layout.sourceEquiv x).2)⟩
+    exact congrArg (Sigma.mk (layout.sourceEquiv x).1)
+      (externalInsertionLegCongr_externalLeg
+        (layout.interactionBlockOwnerSlotCongrEquiv e (layout.sourceEquiv x).1)
+        (layout.sourceEquiv x).2).symm
   | inr x =>
     obtain ⟨v, i⟩ := x
     change
@@ -245,8 +266,31 @@ theorem ExternalInsertionBlockLayout.ownerSlotCongr_legEquiv
     simp only [externalInsertionLegCongr_interactionLeg,
       ExternalInsertionBlockLayout.legEquiv_interactionLeg]
     rw [layout.ownerSlotCongr_interactionEquiv e v]
-    simp [ExternalInsertionBlockLayout.ownerSlotCongrLocalLegEquiv,
-      externalInsertionLegCongr, externalInsertionInteractionLeg]
+    change
+      (⟨(layout.interactionEquiv (Finset.univ : Finset (Fin N)) v).1,
+        externalInsertionInteractionLeg (E :=
+          (layout.interactionEquiv (Finset.univ : Finset (Fin N)) v).1.1.card / 2)
+          (layout.interactionBlockOwnerSlotCongrEquiv e
+            (layout.interactionEquiv (Finset.univ : Finset (Fin N)) v).1
+            (layout.interactionEquiv (Finset.univ : Finset (Fin N)) v).2) i⟩ :
+            Σ B : layout.partition.parts,
+              Fin (2 * (2 * ((layout.ownerSlotCongr e).interactionBlock
+                (Finset.univ : Finset (Fin N)) B).card +
+                (B : Finset (Fin (2 * E))).card / 2))) =
+        ⟨(layout.interactionEquiv (Finset.univ : Finset (Fin N)) v).1,
+          externalInsertionLegCongr
+            (layout.interactionBlockOwnerSlotCongrEquiv e
+              (layout.interactionEquiv (Finset.univ : Finset (Fin N)) v).1)
+            (externalInsertionInteractionLeg
+              (E := (layout.interactionEquiv
+                (Finset.univ : Finset (Fin N)) v).1.1.card / 2)
+              (layout.interactionEquiv (Finset.univ : Finset (Fin N)) v).2 i)⟩
+    exact congrArg (Sigma.mk (layout.interactionEquiv
+      (Finset.univ : Finset (Fin N)) v).1)
+      (externalInsertionLegCongr_interactionLeg
+        (layout.interactionBlockOwnerSlotCongrEquiv e
+          (layout.interactionEquiv (Finset.univ : Finset (Fin N)) v).1)
+        (layout.interactionEquiv (Finset.univ : Finset (Fin N)) v).2 i).symm
 
 /-- Change the owner of every physical interaction vertex while
 transporting each local pairing and each local interaction label
@@ -324,11 +368,23 @@ theorem ExternalInsertionBlockLayout.assembleDiagram_ownerSlotCongr
   · rfl
   · funext v
     obtain ⟨w, rfl⟩ := (fullInteractionSlotEquiv e).surjective v
-    simp only [ExternalInsertionBlockLayout.assembleDiagram,
-      ExternalInsertionDiagram.slotCongr,
-      ExternalInsertionBlockLayout.ownerSlotCongrBlockFamily]
+    change
+      ((layout.ownerSlotCongr e).assembleDiagram S
+          (layout.ownerSlotCongrBlockFamily e F)).vertexLabel
+          (fullInteractionSlotEquiv e w) =
+        (layout.assembleDiagram S F).vertexLabel
+          ((fullInteractionSlotEquiv e).symm (fullInteractionSlotEquiv e w))
+    rw [Equiv.symm_apply_apply]
+    change
+      ((layout.ownerSlotCongrBlockFamily e F)
+        (((layout.ownerSlotCongr e).interactionEquiv S
+          (fullInteractionSlotEquiv e w)).1)).vertexLabel
+        (((layout.ownerSlotCongr e).interactionEquiv S
+          (fullInteractionSlotEquiv e w)).2) =
+      (F ((layout.interactionEquiv S w).1)).vertexLabel
+        ((layout.interactionEquiv S w).2)
     rw [layout.ownerSlotCongr_interactionEquiv e w]
-    simp
+    rfl
   · let Q : Combinatorics.PairingOn
         (Σ B : layout.partition.parts,
           Fin (2 * (2 * (layout.interactionBlock S B).card +
