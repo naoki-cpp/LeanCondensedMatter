@@ -629,7 +629,10 @@ theorem ExternalInsertionBlockLayout.sum_ofFamilyShuffle_connectedDyson_eq_refer
     ExternalInsertionBlockLayout.sum_ownerSlotCongr_connectedDyson_eq_ordered_localLabels
       (ExternalInsertionBlockLayout.ofFamilyShuffle π heven σ)
       (σ.ambientRelabel τ) localLabels ε β hβ g externalTime
-  simpa only [ExternalInsertionBlockLayout.ofFamilyShuffle_ownerSlotCongr] using h
+  have hlayout :=
+    ExternalInsertionBlockLayout.ofFamilyShuffle_ownerSlotCongr π heven σ τ
+  rw [hlayout] at h
+  exact h
 
 open Classical in
 /-- The finite canonical Dyson sum over all physical owner shuffles of
