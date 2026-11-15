@@ -247,33 +247,33 @@ private theorem sphericalAverage_evenQuarticPolynomial (r a b c d e f : ℝ) :
 
 private theorem sphericalAverage_x_four (r : ℝ) :
     sphericalAverage r (fun k => k 0 ^ 4) = r ^ 4 / 5 := by
-  simpa [evenQuarticPolynomial] using
-    (sphericalAverage_evenQuarticPolynomial r 1 0 0 0 0 0)
+  convert (sphericalAverage_evenQuarticPolynomial r 1 0 0 0 0 0) using 1 <;>
+    simp [evenQuarticPolynomial]
 
 private theorem sphericalAverage_y_four (r : ℝ) :
     sphericalAverage r (fun k => k 1 ^ 4) = r ^ 4 / 5 := by
-  simpa [evenQuarticPolynomial] using
-    (sphericalAverage_evenQuarticPolynomial r 0 1 0 0 0 0)
+  convert (sphericalAverage_evenQuarticPolynomial r 0 1 0 0 0 0) using 1 <;>
+    simp [evenQuarticPolynomial]
 
 private theorem sphericalAverage_z_four (r : ℝ) :
     sphericalAverage r (fun k => k 2 ^ 4) = r ^ 4 / 5 := by
-  simpa [evenQuarticPolynomial] using
-    (sphericalAverage_evenQuarticPolynomial r 0 0 1 0 0 0)
+  convert (sphericalAverage_evenQuarticPolynomial r 0 0 1 0 0 0) using 1 <;>
+    simp [evenQuarticPolynomial]
 
 private theorem sphericalAverage_xy (r : ℝ) :
     sphericalAverage r (fun k => k 0 ^ 2 * k 1 ^ 2) = r ^ 4 / 15 := by
-  simpa [evenQuarticPolynomial] using
-    (sphericalAverage_evenQuarticPolynomial r 0 0 0 1 0 0)
+  convert (sphericalAverage_evenQuarticPolynomial r 0 0 0 1 0 0) using 1 <;>
+    simp [evenQuarticPolynomial]
 
 private theorem sphericalAverage_xz (r : ℝ) :
     sphericalAverage r (fun k => k 0 ^ 2 * k 2 ^ 2) = r ^ 4 / 15 := by
-  simpa [evenQuarticPolynomial] using
-    (sphericalAverage_evenQuarticPolynomial r 0 0 0 0 1 0)
+  convert (sphericalAverage_evenQuarticPolynomial r 0 0 0 0 1 0) using 1 <;>
+    simp [evenQuarticPolynomial]
 
 private theorem sphericalAverage_yz (r : ℝ) :
     sphericalAverage r (fun k => k 1 ^ 2 * k 2 ^ 2) = r ^ 4 / 15 := by
-  simpa [evenQuarticPolynomial] using
-    (sphericalAverage_evenQuarticPolynomial r 0 0 0 0 0 1)
+  convert (sphericalAverage_evenQuarticPolynomial r 0 0 0 0 0 1) using 1 <;>
+    simp [evenQuarticPolynomial]
 
 /-- Continuous and finite fourth moments agree for every Cartesian index. -/
 theorem sphericalAverage_coordinate_four (i : Fin 3) (r : ℝ) :
