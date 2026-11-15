@@ -152,4 +152,36 @@ noncomputable instance FamilySlotShuffle.instUniqueZero (size : Fin 0 → ℕ) :
     rintro ⟨i, _⟩
     exact Fin.elim0 i
 
+
+/-- Relabel ambient interaction slots from one shuffle of a fixed
+family of local slot sizes to another. The local block identifier and
+local slot index are unchanged; only their ambient positions move. -/
+def FamilySlotShuffleTo.ambientRelabel
+    {size : ι → ℕ} {total : ℕ}
+    (σ τ : FamilySlotShuffleTo size total) :
+    Fin total ≃ Fin total :=
+  σ.slotEquiv.symm.trans τ.slotEquiv
+
+/-- The ambient relabeling takes each exact source local slot to the
+same local slot in the target shuffle, including empty fibers. -/
+@[simp]
+theorem FamilySlotShuffleTo.ambientRelabel_apply_slot
+    {size : ι → ℕ} {total : ℕ}
+    (σ τ : FamilySlotShuffleTo size total)
+    (v : Σ i, Fin (size i)) :
+    (σ.ambientRelabel τ) (σ.slotEquiv v) = τ.slotEquiv v := by
+  simp [FamilySlotShuffleTo.ambientRelabel]
+
+/-- The relabeling preserves the *physical owner* of every ambient slot.
+This lets the same standardized local Wick diagrams be carried through
+different physical interaction-owner assignments. -/
+theorem FamilySlotShuffleTo.ambientRelabel_owner
+    {size : ι → ℕ} {total : ℕ}
+    (σ τ : FamilySlotShuffleTo size total)
+    (v : Fin total) :
+    (τ.slotEquiv.symm (σ.ambientRelabel τ v)).1 =
+      (σ.slotEquiv.symm v).1 := by
+  simp [FamilySlotShuffleTo.ambientRelabel]
+
+
 end Combinatorics
