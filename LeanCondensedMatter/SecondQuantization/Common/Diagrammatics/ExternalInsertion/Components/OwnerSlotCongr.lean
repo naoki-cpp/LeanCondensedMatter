@@ -307,8 +307,10 @@ theorem ExternalInsertionBlockLayout.ofFamilyShuffle_fixedSizeStandardizedFamily
             (Finset.univ : Finset (Fin N)) B)
           (ExternalInsertionBlockLayout.ofFamilyShuffle_interactionBlock_card
             π heven σ B)) := by
-  simp [ExternalInsertionBlockLayout.ofFamilyShuffle_fixedSizeStandardizedFamilyEquiv,
+  classical
+  dsimp [ExternalInsertionBlockLayout.ofFamilyShuffle_fixedSizeStandardizedFamilyEquiv,
     ExternalInsertionBlockLayout.connectedBlockFamilyEquivPi,
+    Equiv.piCongrRight, Pi.map,
     ExternalInsertionDiagram.preconnectedSlotCongrEquiv,
     ExternalInsertionDiagram.slotCongrEquiv]
 
@@ -665,7 +667,18 @@ theorem ExternalInsertionBlockLayout.ofFamilyShuffle_connectedFamily_standardiza
         (Combinatorics.standardSlotEquivOfCardEq
           ((ExternalInsertionBlockLayout.ofFamilyShuffle π heven σ).interactionBlock
             (Finset.univ : Finset (Fin N)) B) hσ) := by
-  rw [ExternalInsertionBlockLayout.ownerSlotCongrConnectedBlockFamilyEquiv_apply]
+  change
+    ((F.1 B).slotCongr
+      ((ExternalInsertionBlockLayout.ofFamilyShuffle π heven σ).interactionBlockOwnerSlotCongrEquiv
+        (σ.ambientRelabel τ) B)).slotCongr
+      (Combinatorics.standardSlotEquivOfCardEq
+        (((ExternalInsertionBlockLayout.ofFamilyShuffle π heven σ).ownerSlotCongr
+          (σ.ambientRelabel τ)).interactionBlock
+          (Finset.univ : Finset (Fin N)) B) hτ) =
+      (F.1 B).slotCongr
+        (Combinatorics.standardSlotEquivOfCardEq
+          ((ExternalInsertionBlockLayout.ofFamilyShuffle π heven σ).interactionBlock
+            (Finset.univ : Finset (Fin N)) B) hσ)
   exact ExternalInsertionBlockLayout.ofFamilyShuffle_localDiagram_standardization
     π heven σ τ B hσ hτ (F.1 B)
 
