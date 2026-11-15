@@ -310,9 +310,10 @@ theorem ExternalInsertionBlockLayout.ofFamilyShuffle_fixedSizeStandardizedFamily
   classical
   dsimp [ExternalInsertionBlockLayout.ofFamilyShuffle_fixedSizeStandardizedFamilyEquiv,
     ExternalInsertionBlockLayout.connectedBlockFamilyEquivPi,
-    Equiv.piCongrRight, Pi.map,
+    Equiv.trans, Equiv.piCongrRight, Pi.map,
     ExternalInsertionDiagram.preconnectedSlotCongrEquiv,
     ExternalInsertionDiagram.slotCongrEquiv]
+  all_goals rfl
 
 /-- View an ambient permutation on the full Fin N slot set as a
 permutation of its corresponding full interaction slot subtype. -/
