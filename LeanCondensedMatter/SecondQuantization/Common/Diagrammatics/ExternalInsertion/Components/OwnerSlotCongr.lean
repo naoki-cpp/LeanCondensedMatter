@@ -383,6 +383,7 @@ theorem ExternalInsertionBlockLayout.assembleDiagram_ownerSlotCongr
       (F ((layout.interactionEquiv S w).1)).vertexLabel
         ((layout.interactionEquiv S w).2)
     rw [layout.ownerSlotCongr_interactionEquiv e w]
+    obtain ⟨B, u⟩ := layout.interactionEquiv S w
     simp [ExternalInsertionBlockLayout.ownerSlotCongrBlockFamily,
       ExternalInsertionDiagram.slotCongr]
   · let Q : Combinatorics.PairingOn
