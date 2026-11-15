@@ -398,5 +398,46 @@ theorem ExternalInsertionWickDiagram.sum_slotCongr_dysonAmplitude_eq_orderedDyso
   exact d.slotCongr_dysonAmplitude_eq_orderedDysonAmplitude
     (relabel i) ε β hβ g externalTime
 
+
+open Classical in
+/-- Physical interaction-owner shuffle orbit of an actually assembled
+family of labelled Wick diagrams equals the ordered Dyson integral
+orbit of one fixed assembled reference diagram. The local data are
+transported with their actual vertex owners, preserving pairing data;
+the result does not assume diagramwise canonical integral invariance. -/
+theorem ExternalInsertionBlockLayout.sum_assembledOwnerShuffle_dysonAmplitude_eq_orderedDysonOrbit
+    {E n : ℕ}
+    (layout : ExternalInsertionBlockLayout E n)
+    {size : layout.partition.parts → ℕ}
+    (reference : Combinatorics.FamilySlotShuffleTo size n)
+    (F : ∀ B : layout.partition.parts,
+      ExternalInsertionDiagram (ExternalFieldLabel Mode) (QuarticVertexLabel Mode)
+        ((B : Finset (Fin (2 * E))).card / 2) n
+        (layout.interactionBlock (Finset.univ : Finset (Fin n)) B))
+    (ε : Mode → ℝ) (β : ℝ) (hβ : 0 ≤ β)
+    (g : QuarticVertexLabel Mode → ℂ)
+    (externalTime : Fin (2 * E) → ℝ) :
+    (∑ shuffle : Combinatorics.FamilySlotShuffleTo size n,
+      ExternalInsertionWickDiagram.dysonAmplitude
+        ((layout.ownerSlotCongr (reference.ambientRelabel shuffle)).assembleDiagram
+          (Finset.univ : Finset (Fin n))
+          (layout.ownerSlotCongrBlockFamily
+            (reference.ambientRelabel shuffle) F))
+        ε β g externalTime) =
+      ∑ shuffle : Combinatorics.FamilySlotShuffleTo size n,
+        ExternalInsertionWickDiagram.orderedDysonAmplitude
+          (layout.assembleDiagram (Finset.univ : Finset (Fin n)) F)
+          ε β g externalTime
+          (((Finset.univ : Finset (Fin n)).orderIsoOfFin rfl).toEquiv.trans
+            (fullInteractionSlotEquiv (reference.ambientRelabel shuffle)).symm) := by
+  apply Finset.sum_congr rfl
+  intro shuffle _
+  rw [layout.assembleDiagram_ownerSlotCongr
+    (reference.ambientRelabel shuffle) F]
+  exact ExternalInsertionWickDiagram.slotCongr_dysonAmplitude_eq_orderedDysonAmplitude
+    (layout.assembleDiagram (Finset.univ : Finset (Fin n)) F)
+    (fullInteractionSlotEquiv (reference.ambientRelabel shuffle))
+    ε β hβ g externalTime
+
 end Fermionic
 end SecondQuantization
