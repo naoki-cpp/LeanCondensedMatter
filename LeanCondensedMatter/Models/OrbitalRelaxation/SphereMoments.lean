@@ -283,42 +283,18 @@ theorem sphericalAverage_orbitalPolynomial_eq_cubature (axis : Fin 3)
     sphericalAverage r (orbitalPolynomial axis c₁ c₂) =
       evenQuarticCubature r (orbitalPolynomial axis c₁ c₂) := by
   fin_cases axis
-  · have h : orbitalPolynomial (0 : Fin 3) c₁ c₂ =
-        evenQuarticPolynomial 0 (c₁ ^ 2) (c₁ ^ 2)
-          (c₂ ^ 2) (c₂ ^ 2) (4 * c₂ ^ 2 - 2 * c₁ ^ 2) := by
-      funext k
-      simp [orbitalPolynomial, evenQuarticPolynomial]
-      ring
-    change sphericalAverage r (orbitalPolynomial (0 : Fin 3) c₁ c₂) =
-      evenQuarticCubature r (orbitalPolynomial (0 : Fin 3) c₁ c₂)
-    rw [h]
-    exact sphericalAverage_evenQuartic_eq_cubature r
+  · convert sphericalAverage_evenQuartic_eq_cubature r
       0 (c₁ ^ 2) (c₁ ^ 2) (c₂ ^ 2) (c₂ ^ 2)
-      (4 * c₂ ^ 2 - 2 * c₁ ^ 2)
-  · have h : orbitalPolynomial (1 : Fin 3) c₁ c₂ =
-        evenQuarticPolynomial (c₁ ^ 2) 0 (c₁ ^ 2)
-          (c₂ ^ 2) (4 * c₂ ^ 2 - 2 * c₁ ^ 2) (c₂ ^ 2) := by
-      funext k
-      simp [orbitalPolynomial, evenQuarticPolynomial]
-      ring
-    change sphericalAverage r (orbitalPolynomial (1 : Fin 3) c₁ c₂) =
-      evenQuarticCubature r (orbitalPolynomial (1 : Fin 3) c₁ c₂)
-    rw [h]
-    exact sphericalAverage_evenQuartic_eq_cubature r
+      (4 * c₂ ^ 2 - 2 * c₁ ^ 2) using 1 <;>
+      (congr 1; funext k; simp [orbitalPolynomial, evenQuarticPolynomial]; ring)
+  · convert sphericalAverage_evenQuartic_eq_cubature r
       (c₁ ^ 2) 0 (c₁ ^ 2) (c₂ ^ 2)
-      (4 * c₂ ^ 2 - 2 * c₁ ^ 2) (c₂ ^ 2)
-  · have h : orbitalPolynomial (2 : Fin 3) c₁ c₂ =
-        evenQuarticPolynomial (c₁ ^ 2) (c₁ ^ 2) 0
-          (4 * c₂ ^ 2 - 2 * c₁ ^ 2) (c₂ ^ 2) (c₂ ^ 2) := by
-      funext k
-      simp [orbitalPolynomial, evenQuarticPolynomial]
-      ring
-    change sphericalAverage r (orbitalPolynomial (2 : Fin 3) c₁ c₂) =
-      evenQuarticCubature r (orbitalPolynomial (2 : Fin 3) c₁ c₂)
-    rw [h]
-    exact sphericalAverage_evenQuartic_eq_cubature r
+      (4 * c₂ ^ 2 - 2 * c₁ ^ 2) (c₂ ^ 2) using 1 <;>
+      (congr 1; funext k; simp [orbitalPolynomial, evenQuarticPolynomial]; ring)
+  · convert sphericalAverage_evenQuartic_eq_cubature r
       (c₁ ^ 2) (c₁ ^ 2) 0
-      (4 * c₂ ^ 2 - 2 * c₁ ^ 2) (c₂ ^ 2) (c₂ ^ 2)
+      (4 * c₂ ^ 2 - 2 * c₁ ^ 2) (c₂ ^ 2) (c₂ ^ 2) using 1 <;>
+      (congr 1; funext k; simp [orbitalPolynomial, evenQuarticPolynomial]; ring)
 
 /-- The exact matrix double commutator has the physical spherical-coordinate
 fourth moment, without replacing the continuous angular integral by a cubature
