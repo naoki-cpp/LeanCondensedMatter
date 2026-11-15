@@ -75,5 +75,39 @@ theorem ExternalInsertionBlockLayout.interactionBlockOwnerSlotCongrEquiv_val
         ↥((layout.ownerSlotCongr e).interactionBlock
           (Finset.univ : Finset (Fin N)) B)) : Fin N) = e v.1 := rfl
 
+
+/-- A physical layout whose owner of each ambient vertex is prescribed
+by the block of the corresponding shuffled local slot. -/
+noncomputable def ExternalInsertionBlockLayout.ofFamilyShuffle
+    (π : Finpartition (Finset.univ : Finset (Fin (2 * E))))
+    (heven : ∀ B : π.parts, Even (B : Finset (Fin (2 * E))).card)
+    {size : π.parts → ℕ}
+    (σ : Combinatorics.FamilySlotShuffleTo size N) :
+    ExternalInsertionBlockLayout E N where
+  partition := π
+  evenBlocks := heven
+  interactionOwner v := (σ.slotEquiv.symm v).1
+
+/-- Switching a fixed-size physical owner shuffle is exactly
+transporting the interaction owner function by the ambient permutation.
+The external source partition remains literally the same. -/
+theorem ExternalInsertionBlockLayout.ofFamilyShuffle_ownerSlotCongr
+    (π : Finpartition (Finset.univ : Finset (Fin (2 * E))))
+    (heven : ∀ B : π.parts, Even (B : Finset (Fin (2 * E))).card)
+    {size : π.parts → ℕ}
+    (σ τ : Combinatorics.FamilySlotShuffleTo size N) :
+    (ExternalInsertionBlockLayout.ofFamilyShuffle π heven σ).ownerSlotCongr
+        (σ.ambientRelabel τ) =
+      ExternalInsertionBlockLayout.ofFamilyShuffle π heven τ := by
+  apply ExternalInsertionBlockLayout.ext_of_partition_owner rfl
+  intro v
+  apply Subtype.ext
+  change
+    ((σ.slotEquiv.symm ((σ.ambientRelabel τ).symm v)).1 :
+      Finset (Fin (2 * E))) =
+    ((τ.slotEquiv.symm v).1 : Finset (Fin (2 * E)))
+  simp [Combinatorics.FamilySlotShuffleTo.ambientRelabel]
+
+
 end Common
 end SecondQuantization
