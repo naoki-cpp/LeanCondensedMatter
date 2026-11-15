@@ -150,6 +150,26 @@ theorem fullInteractionSlotEquiv_val (e : Fin N ≃ Fin N)
     (v : ↥(Finset.univ : Finset (Fin N))) :
     (fullInteractionSlotEquiv e v).1 = e v.1 := rfl
 
+
+/-- The physical block and local vertex selected by the interaction
+equivalence commute with the global slot relabeling. All local labels
+retain their original block index, even with empty interaction fibers. -/
+theorem ExternalInsertionBlockLayout.ownerSlotCongr_interactionEquiv
+    (layout : ExternalInsertionBlockLayout E N)
+    (e : Fin N ≃ Fin N)
+    (v : ↥(Finset.univ : Finset (Fin N))) :
+    ((layout.ownerSlotCongr e).interactionEquiv
+        (Finset.univ : Finset (Fin N)) (fullInteractionSlotEquiv e v)) =
+      (Equiv.sigmaCongrRight
+        (fun B => layout.interactionBlockOwnerSlotCongrEquiv e B))
+        (layout.interactionEquiv (Finset.univ : Finset (Fin N)) v) := by
+  apply Sigma.ext
+  · change layout.interactionOwner (e.symm (e v.1)) =
+      layout.interactionOwner v.1
+    simp
+  · apply Subtype.ext
+    rfl
+
 /-- Change the owner of every physical interaction vertex while
 transporting each local pairing and each local interaction label
 through exactly the induced local slot equivalence. -/
