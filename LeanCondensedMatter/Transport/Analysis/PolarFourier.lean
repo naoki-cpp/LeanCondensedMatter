@@ -444,13 +444,6 @@ private theorem norm_polarFourierRadialPhase (z θ : ℝ) :
     ‖polarFourierRadialPhase z θ‖ = 1 := by
   simp [polarFourierRadialPhase, Complex.norm_exp, Complex.mul_re]
 
-/-- The first nonzero-argument differential relation of the radial Fourier
-harmonics: the derivative of the zeroth angular kernel is `i` times the
-first-cosine kernel.
-
-Unlike an origin-only normalization, this holds for every real Fourier
-argument. Together with the J₀ Bessel bridge and the hypergeometric-series
-derivative, it yields the first-harmonic Bessel identity. -/
 /-- Differentiate a polar Fourier angular integral with any continuous weight bounded by one.
 The common domination estimate also covers higher bounded angular harmonics. -/
 private theorem polarFourierWeightedAngularKernel_hasDerivAt
@@ -516,6 +509,13 @@ private theorem polarFourierWeightedAngularKernel_hasDerivAt
     (intervalIntegrable_const)
     (Filter.Eventually.of_forall fun θ _ x _ => hdiff x θ)).2
 
+/-- The first nonzero-argument differential relation of the radial Fourier
+harmonics: the derivative of the zeroth angular kernel is `i` times the
+first-cosine kernel.
+
+Unlike an origin-only normalization, this holds for every real Fourier
+argument. Together with the J₀ Bessel bridge and the hypergeometric-series
+derivative, it yields the first-harmonic Bessel identity. -/
 theorem polarFourierZerothAngularKernel_hasDerivAt (z : ℝ) :
     HasDerivAt polarFourierZerothAngularKernel
       (Complex.I * polarFourierFirstCosineAngularKernel z) z := by
