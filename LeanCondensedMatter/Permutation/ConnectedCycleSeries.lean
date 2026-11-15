@@ -28,19 +28,6 @@ private noncomputable def connectedCycleCoeff
       singleCycleContribution ζ (fun a b : Fin m => K (x a) (x b)) Finset.univ) /
         (Nat.factorial m : ℂ)
 
-private theorem factorial_pred_div_factorial_complex (m : ℕ) (hm : 0 < m) :
-    (Nat.factorial (m - 1) : ℂ) / (Nat.factorial m : ℂ) = 1 / (m : ℂ) := by
-  cases m with
-  | zero => omega
-  | succ n =>
-      simp only [Nat.succ_sub_one, Nat.factorial_succ]
-      push_cast
-      have hn : ((n + 1 : ℕ) : ℂ) ≠ 0 := by
-        exact_mod_cast Nat.succ_ne_zero n
-      have hfac : ((Nat.factorial n : ℕ) : ℂ) ≠ 0 := by
-        exact_mod_cast Nat.factorial_ne_zero n
-      field_simp [hn, hfac]
-
 /-- The formal connected-cycle series associated with exchange weight `ζ` and finite kernel `K`.
 
 Its constant coefficient is zero. At positive order `m`, its coefficient is the EGF-normalized
@@ -72,7 +59,14 @@ theorem coeff_permutationConnectedCycleSeries_of_pos
           ((Nat.factorial (m - 1) : ℂ) / (Nat.factorial m : ℂ)) := by
       ring
     _ = ζ ^ (m - 1) * Matrix.trace (K ^ m) * (1 / (m : ℂ)) := by
-      rw [factorial_pred_div_factorial_complex m hm]
+      rw [← Nat.mul_factorial_pred (Nat.ne_of_gt hm)]
+      push_cast
+      have hm0 : (m : ℂ) ≠ 0 := by
+        exact_mod_cast Nat.ne_of_gt hm
+      have hfac0 : (Nat.factorial (m - 1) : ℂ) ≠ 0 := by
+        exact_mod_cast Nat.factorial_ne_zero (m - 1)
+      field_simp [hm0, hfac0]
+      ring
     _ = ζ ^ (m - 1) * Matrix.trace (K ^ m) / (m : ℂ) := by
       simp [div_eq_mul_inv]
 
