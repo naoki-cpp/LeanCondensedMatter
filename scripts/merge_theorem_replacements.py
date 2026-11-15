@@ -29,12 +29,16 @@ def main() -> None:
     defeq_rows: list[tuple[str, list[str]]] = []
     mathlib_replacement_rows: list[tuple[str, list[tuple[str, str]]]] = []
     mathlib_defeq_rows: list[tuple[str, list[str]]] = []
+    mathlib_shape_matches = 0
+    mathlib_discovery_probes = 0
 
     for finding in findings:
         target = finding["target"]
         if target in finding_targets:
             raise RuntimeError(f"duplicate replacement finding for {target}")
         finding_targets.add(target)
+        mathlib_shape_matches += finding.get("mathlibDiscoveryShapeMatches", 0)
+        mathlib_discovery_probes += finding.get("mathlibDiscoveryProbedCandidateCount", 0)
 
         entry = by_name.get(target)
         if entry is None:
@@ -92,9 +96,12 @@ def main() -> None:
     with MARKDOWN_PATH.open("a", encoding="utf-8") as handle:
         handle.write("\n## Proof-guided theorem replacement review queue\n\n")
         handle.write(
-            "This advisory queue contains source-declared project theorems whose compiled proof "
-            "already depends on another project or Mathlib theorem that Lean can replay as a direct "
-            "specialization. Existing project direct-wrapper relations and semantically retained declarations are omitted here.\n\n"
+            "This advisory queue contains source-declared project theorems for which Lean can "
+            "verify a direct specialization of another project or Mathlib theorem. Mathlib candidates "
+            "include both existing proof dependencies and structurally indexed theorems not used in "
+            "the original proof. The discovery search is bounded and incomplete; these are proof "
+            "replacement candidates, not automatic API-deletion recommendations. Existing project "
+            "direct-wrapper relations and semantically retained declarations are omitted here.\n\n"
         )
         handle.write(f"Definitionally equivalent proof-dependency targets: {len(defeq_rows)}\n\n")
         handle.write(f"Replacement-candidate targets: {len(replacement_rows)}\n\n")
@@ -106,6 +113,10 @@ def main() -> None:
             f"{len(mathlib_defeq_rows)}\n\n"
         )
         handle.write(f"Mathlib replacement-candidate targets: {len(mathlib_replacement_rows)}\n\n")
+        handle.write(
+            f"Mathlib structural discovery: {mathlib_discovery_probes} candidates probed "
+            f"from {mathlib_shape_matches} shape matches (bounded per target).\n\n"
+        )
         for target, replacements in mathlib_replacement_rows:
             rendered = ", ".join(f"`{name}` ({module})" for name, module in replacements)
             handle.write(f"- `{target}` → {rendered}\n")
@@ -115,7 +126,8 @@ def main() -> None:
         f"{len(defeq_rows)} project defeq targets; "
         f"{len(replacement_rows)} project replacement targets; "
         f"{len(mathlib_defeq_rows)} Mathlib defeq targets; "
-        f"{len(mathlib_replacement_rows)} Mathlib replacement targets"
+        f"{len(mathlib_replacement_rows)} Mathlib replacement targets; "
+        f"{mathlib_discovery_probes}/{mathlib_shape_matches} Mathlib discovery probes/shape matches"
     )
     for target, replacements in replacement_rows:
         rendered = ", ".join(replacements)
