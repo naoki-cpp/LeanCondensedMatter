@@ -252,5 +252,91 @@ noncomputable def ExternalInsertionBlockLayout.ownerSlotCongrBlockFamily
   fun B => (F B).slotCongr (layout.interactionBlockOwnerSlotCongrEquiv e B)
 
 
+
+/-- Conjugating each local perfect pairing by its own slot equivalence
+commutes with assembling the complete independent block pairing. -/
+private theorem sigmaPairing_transport
+    {ι : Type*} {β γ : ι → Type*}
+    (P : ∀ i, Combinatorics.PairingOn (β i))
+    (e : ∀ i, β i ≃ γ i) :
+    Combinatorics.PairingOn.sigmaCongrRight
+        (fun i => (P i).transport (e i).symm) =
+      (Combinatorics.PairingOn.sigmaCongrRight P).transport
+        (Equiv.sigmaCongrRight e).symm := by
+  apply Combinatorics.PairingOn.ext
+  apply Equiv.ext
+  rintro ⟨i, x⟩
+  simp [Combinatorics.PairingOn.transport_partner,
+    Combinatorics.PairingOn.sigmaCongrRight_partner]
+
+/-- The complete physically assembled labelled Wick diagram commutes
+with changing the actual ambient interaction owner assignment and
+transporting all local pairings. This is an *equality of diagrams*, not
+just equality of their connected partitions or unsigned weights. -/
+theorem ExternalInsertionBlockLayout.assembleDiagram_ownerSlotCongr
+    {ExternalLabel InternalLabel : Type*}
+    (layout : ExternalInsertionBlockLayout E N)
+    (e : Fin N ≃ Fin N)
+    (F : ∀ B : layout.partition.parts,
+      ExternalInsertionDiagram ExternalLabel InternalLabel
+        ((B : Finset (Fin (2 * E))).card / 2) N
+        (layout.interactionBlock (Finset.univ : Finset (Fin N)) B)) :
+    (layout.ownerSlotCongr e).assembleDiagram
+        (Finset.univ : Finset (Fin N))
+        (layout.ownerSlotCongrBlockFamily e F) =
+      (layout.assembleDiagram (Finset.univ : Finset (Fin N)) F).slotCongr
+        (fullInteractionSlotEquiv e) := by
+  classical
+  let S : Finset (Fin N) := Finset.univ
+  let g := externalInsertionLegCongr (E := E) (fullInteractionSlotEquiv e)
+  let h := layout.ownerSlotCongrLocalLegEquiv e
+  have hLeg :
+      ((layout.ownerSlotCongr e).legEquiv S).trans h.symm =
+        g.symm.trans (layout.legEquiv S) := by
+    apply Equiv.ext
+    intro p
+    obtain ⟨q, rfl⟩ := g.surjective p
+    simp only [Equiv.trans_apply, Equiv.symm_apply_apply]
+    exact (congrArg h.symm (layout.ownerSlotCongr_legEquiv e q)).trans
+      (h.symm_apply_apply _)
+  apply ExternalInsertionDiagram.ext
+  · rfl
+  · funext v
+    obtain ⟨w, rfl⟩ := (fullInteractionSlotEquiv e).surjective v
+    change
+      ((layout.ownerSlotCongrBlockFamily e F)
+        (((layout.ownerSlotCongr e).interactionEquiv S
+          (fullInteractionSlotEquiv e w)).1)).vertexLabel
+          (((layout.ownerSlotCongr e).interactionEquiv S
+            (fullInteractionSlotEquiv e w)).2) =
+      (F ((layout.interactionEquiv S w).1)).vertexLabel
+        ((layout.interactionEquiv S w).2)
+    rw [layout.ownerSlotCongr_interactionEquiv e w]
+    rfl
+  · let Q : Combinatorics.PairingOn
+        (Σ B : layout.partition.parts,
+          Fin (2 * (2 * (layout.interactionBlock S B).card +
+            (B : Finset (Fin (2 * E))).card / 2))) :=
+      Combinatorics.PairingOn.sigmaCongrRight (fun B => (F B).pairing)
+    have hLocal :
+        Combinatorics.PairingOn.sigmaCongrRight
+            (fun B => ((layout.ownerSlotCongrBlockFamily e F) B).pairing) =
+          Q.transport h.symm := by
+      change Combinatorics.PairingOn.sigmaCongrRight
+          (fun B => ((F B).slotCongr
+            (layout.interactionBlockOwnerSlotCongrEquiv e B)).pairing) =
+        Q.transport h.symm
+      exact sigmaPairing_transport (fun B => (F B).pairing)
+        (fun B => externalInsertionLegCongr
+          (E := (B : Finset (Fin (2 * E))).card / 2)
+          (layout.interactionBlockOwnerSlotCongrEquiv e B))
+    change
+      (Combinatorics.PairingOn.sigmaCongrRight
+        (fun B => ((layout.ownerSlotCongrBlockFamily e F) B).pairing)).transport
+        ((layout.ownerSlotCongr e).legEquiv S) =
+      (Q.transport (layout.legEquiv S)).transport g.symm
+    rw [hLocal, Combinatorics.PairingOn.transport_trans,
+      Combinatorics.PairingOn.transport_trans, hLeg]
+
 end Common
 end SecondQuantization
