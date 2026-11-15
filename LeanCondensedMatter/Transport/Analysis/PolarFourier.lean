@@ -480,12 +480,18 @@ private theorem polarFourierWeightedAngularKernel_hasDerivAt
   have hcont (x : ℝ) : Continuous (fun θ : ℝ =>
       polarFourierRadialPhase x θ * weight θ) := by
     apply Continuous.mul
-    · dsimp [polarFourierRadialPhase]
+    · change Continuous (fun θ : ℝ =>
+        Complex.exp (Complex.I * (((x * Real.cos θ : ℝ) : ℂ))))
       fun_prop
     · exact hweight
   have hcont' (x : ℝ) : Continuous (derivative x) := by
-    dsimp [derivative]
-    fun_prop
+    dsimp only [derivative]
+    apply Continuous.mul
+    · change Continuous (fun θ : ℝ =>
+        Complex.I * ((Real.cos θ : ℝ) : ℂ) *
+          Complex.exp (Complex.I * (((x * Real.cos θ : ℝ) : ℂ))))
+      fun_prop
+    · exact hweight
   have hderivBound (x θ : ℝ) : ‖derivative x θ‖ ≤ (1 : ℝ) := by
     have hnorm : ‖derivative x θ‖ = |Real.cos θ| * ‖weight θ‖ := by
       simp only [derivative, norm_mul, Complex.norm_I, Complex.norm_real,
@@ -532,7 +538,11 @@ theorem polarFourierZerothAngularKernel_hasDerivAt (z : ℝ) :
     intro θ _
     ring
   rw [hrew] at h
-  simpa only [mul_one, polarFourierZerothAngularKernel] using h
+  change HasDerivAt
+    (fun x : ℝ => ∫ θ in (0 : ℝ)..(2 * Real.pi),
+      polarFourierRadialPhase x θ)
+    (Complex.I * polarFourierFirstCosineAngularKernel z) z
+  exact h
 
 /-- The derivative of the regularized hypergeometric series with bottom parameter 1
 has bottom parameter 2. This is the coefficient identity behind `J₀' = -J₁`. -/
@@ -1384,7 +1394,13 @@ theorem polarFourierFirstCosineAngularKernel_hasDerivAt (z : ℝ) :
             fun_prop
           exact hc.intervalIntegrable _ _
   rw [hderiv, hrew] at h
-  simpa only [polarFourierFirstCosineAngularKernel] using h
+  change HasDerivAt
+    (fun x : ℝ => ∫ θ in (0 : ℝ)..(2 * Real.pi),
+      polarFourierRadialPhase x θ * ((Real.cos θ : ℝ) : ℂ))
+    ((Complex.I / 2) *
+      (polarFourierZerothAngularKernel z +
+        polarFourierSecondCosineAngularKernel z)) z
+  exact h
 
 /-- A finite-radius conservation-law primitive for the first two radial Fourier
 harmonics. Its derivative involves the same K0-minus-K2 channel that occurs in
