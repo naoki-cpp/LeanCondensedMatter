@@ -217,55 +217,16 @@ theorem sphericalAverage_coordinate_sq_mul_coordinate_sq (i j : Fin 3)
     sphericalAverage r (fun k => k i ^ 2 * k j ^ 2) =
       evenQuarticCubature r (fun k => k i ^ 2 * k j ^ 2) := by
   rw [evenQuarticCubature_coordinate_sq_mul_coordinate_sq i j hij]
-  fin_cases i <;> fin_cases j
-  · exact (hij rfl).elim
-  · have hf : evenQuarticPolynomial 0 0 0 1 0 0 =
-        (fun k : Fin 3 → ℝ => k 0 ^ 2 * k 1 ^ 2) := by
-      funext k
-      simp [evenQuarticPolynomial]
-    change sphericalAverage r (fun k : Fin 3 → ℝ => k 0 ^ 2 * k 1 ^ 2) = r ^ 4 / 15
-    rw [← hf]
-    simpa using (sphericalAverage_evenQuarticPolynomial r 0 0 0 1 0 0)
-  · have hf : evenQuarticPolynomial 0 0 0 0 1 0 =
-        (fun k : Fin 3 → ℝ => k 0 ^ 2 * k 2 ^ 2) := by
-      funext k
-      simp [evenQuarticPolynomial]
-    change sphericalAverage r (fun k : Fin 3 → ℝ => k 0 ^ 2 * k 2 ^ 2) = r ^ 4 / 15
-    rw [← hf]
-    simpa using (sphericalAverage_evenQuarticPolynomial r 0 0 0 0 1 0)
-  · have hf : evenQuarticPolynomial 0 0 0 1 0 0 =
-        (fun k : Fin 3 → ℝ => k 1 ^ 2 * k 0 ^ 2) := by
-      funext k
-      simp [evenQuarticPolynomial]
-      ring
-    change sphericalAverage r (fun k : Fin 3 → ℝ => k 1 ^ 2 * k 0 ^ 2) = r ^ 4 / 15
-    rw [← hf]
-    simpa using (sphericalAverage_evenQuarticPolynomial r 0 0 0 1 0 0)
-  · exact (hij rfl).elim
-  · have hf : evenQuarticPolynomial 0 0 0 0 0 1 =
-        (fun k : Fin 3 → ℝ => k 1 ^ 2 * k 2 ^ 2) := by
-      funext k
-      simp [evenQuarticPolynomial]
-    change sphericalAverage r (fun k : Fin 3 → ℝ => k 1 ^ 2 * k 2 ^ 2) = r ^ 4 / 15
-    rw [← hf]
-    simpa using (sphericalAverage_evenQuarticPolynomial r 0 0 0 0 0 1)
-  · have hf : evenQuarticPolynomial 0 0 0 0 1 0 =
-        (fun k : Fin 3 → ℝ => k 2 ^ 2 * k 0 ^ 2) := by
-      funext k
-      simp [evenQuarticPolynomial]
-      ring
-    change sphericalAverage r (fun k : Fin 3 → ℝ => k 2 ^ 2 * k 0 ^ 2) = r ^ 4 / 15
-    rw [← hf]
-    simpa using (sphericalAverage_evenQuarticPolynomial r 0 0 0 0 1 0)
-  · have hf : evenQuarticPolynomial 0 0 0 0 0 1 =
-        (fun k : Fin 3 → ℝ => k 2 ^ 2 * k 1 ^ 2) := by
-      funext k
-      simp [evenQuarticPolynomial]
-      ring
-    change sphericalAverage r (fun k : Fin 3 → ℝ => k 2 ^ 2 * k 1 ^ 2) = r ^ 4 / 15
-    rw [← hf]
-    simpa using (sphericalAverage_evenQuarticPolynomial r 0 0 0 0 0 1)
-  · exact (hij rfl).elim
+  fin_cases i <;> fin_cases j <;>
+    first
+    | exact (hij rfl).elim
+    | solve
+      | convert sphericalAverage_evenQuarticPolynomial r 0 0 0 1 0 0 using 1 <;>
+          (first | ring | (congr 1; funext k; simp [evenQuarticPolynomial]; ring))
+      | convert sphericalAverage_evenQuarticPolynomial r 0 0 0 0 1 0 using 1 <;>
+          (first | ring | (congr 1; funext k; simp [evenQuarticPolynomial]; ring))
+      | convert sphericalAverage_evenQuarticPolynomial r 0 0 0 0 0 1 using 1 <;>
+          (first | ring | (congr 1; funext k; simp [evenQuarticPolynomial]; ring))
 
 /-- Exactness of the finite cubature on *all* coordinate-even homogeneous
 quartics, justified by the continuous spherical-coordinate integral. -/
