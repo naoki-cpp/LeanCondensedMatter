@@ -225,69 +225,6 @@ theorem externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_right_local
     flatVertexLegPairValue]
   rfl
 
-/-- The vacuum-side ambient normalized contraction agrees with its standalone
-quartic kernel whenever the transported endpoints retain their order.
-
-This hypothesis is necessary: arbitrary mixed-time slot permutations can reverse
-a pair, and a fermionic contraction kernel is not symmetric in its arguments. -/
-private theorem externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_right_normalizedPair_of_lt
-    (ε : Mode → ℝ) (β : ℝ) {E n : ℕ} (T : Finset (Fin n))
-    (ext : ExternalInsertionDiagram (ExternalFieldLabel Mode)
-      (QuarticVertexLabel Mode) E n T)
-    (vac : QuarticDiagram (QuarticVertexLabel Mode) n
-      ((Finset.univ : Finset (Fin n)) \ T))
-    (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ) :
-    let S := (Finset.univ : Finset (Fin n)) \ T
-    let order : QuarticVertexOrder S := (S.orderIsoOfFin rfl).toEquiv
-    let f : Fin S.card → Fin n := fun i => (S.orderIsoOfFin rfl i).1
-    let d : ExternalInsertionWickDiagram Mode E n :=
-      ExternalInsertionDiagram.ofSlotSplit (Finset.subset_univ T) ext vac
-    let splitting :=
-      ((Equiv.sumCongr (Equiv.refl (Fin (2 * (2 * T.card + E))))
-        (orderedLegToDiagramLeg S order)).trans
-        (externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T))).trans
-        (externalInsertionMixedTimeAmbientPositionEquiv externalTime σ).symm
-    let pairEquiv := Pairing.ofSplitNormalizedPairEquiv
-      splitting ext.pairing (vac.pairingInOrder order)
-    let kernel := externalInsertionMixedTimeOrderedAtomicPairValue ε β
-      d.externalLabel externalTime d.vertexLabelSequence σ
-    ∀ pr : (vac.pairingInOrder order).NormalizedPair,
-      splitting (Sum.inr pr.1.1) < splitting (Sum.inr pr.1.2) →
-      kernel (pairEquiv (Sum.inr pr)).1.1 (pairEquiv (Sum.inr pr)).1.2 =
-        flatVertexLegPairValue ε β
-          (fun v => vac.vertexLabel (S.orderIsoOfFin rfl v)) (σ ∘ f)
-          pr.1.1 pr.1.2 := by
-  intro S order f d splitting pairEquiv kernel pr horder
-  have hpair :
-      (pairEquiv (Sum.inr pr)).1 =
-        (splitting (Sum.inr pr.1.1), splitting (Sum.inr pr.1.2)) :=
-    Pairing.ofSplitNormalizedPairEquiv_pair_eq_of_lt
-      splitting ext.pairing (vac.pairingInOrder order) (Sum.inr pr) horder
-  have hpos (q : Fin (2 * (2 * S.card))) :
-      splitting (Sum.inr q) =
-        externalInsertionMixedTimeOrderedAtomicLegPosition externalTime σ
-          (Sum.inr
-            (⟨(order (orderedQuarticLegEquiv S.card q).1).1, Finset.mem_univ _⟩,
-              (orderedQuarticLegEquiv S.card q).2)) :=
-    externalInsertionSlotLegSplitting_right_orderedMixedPosition T externalTime σ q
-  have hkernel :=
-    externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_right_locality
-      ε β T ext vac externalTime σ pr.1.1 pr.1.2
-  change kernel
-      (externalInsertionMixedTimeOrderedAtomicLegPosition externalTime σ
-        (Sum.inr
-          (⟨(order (orderedQuarticLegEquiv S.card pr.1.1).1).1, Finset.mem_univ _⟩,
-            (orderedQuarticLegEquiv S.card pr.1.1).2)))
-      (externalInsertionMixedTimeOrderedAtomicLegPosition externalTime σ
-        (Sum.inr
-          (⟨(order (orderedQuarticLegEquiv S.card pr.1.2).1).1, Finset.mem_univ _⟩,
-            (orderedQuarticLegEquiv S.card pr.1.2).2))) =
-      flatVertexLegPairValue ε β
-        (fun v => vac.vertexLabel (S.orderIsoOfFin rfl v))
-        (σ ∘ f) pr.1.1 pr.1.2 at hkernel
-  rw [hpair, hpos, hpos]
-  exact hkernel
-
 /-- The vacuum contraction of an ambient normalized pair is the standalone
 quartic contraction in the order actually induced by the mixed-time splitting.
 A reversed pair evaluates at reversed arguments, not at a presumed symmetric
@@ -331,26 +268,39 @@ theorem externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_right_norma
             (⟨(order (orderedQuarticLegEquiv S.card q).1).1, Finset.mem_univ _⟩,
               (orderedQuarticLegEquiv S.card q).2)) :=
     externalInsertionSlotLegSplitting_right_orderedMixedPosition T externalTime σ q
-  by_cases horder : splitting (Sum.inr pr.1.1) < splitting (Sum.inr pr.1.2)
-  · simp only [horder, ↓reduceIte]
-    exact externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_right_normalizedPair_of_lt
-      ε β T ext vac externalTime σ pr horder
-  · simp only [horder, ↓reduceIte]
-    have hpair :=
-      Pairing.ofSplitNormalizedPairEquiv_pair_eq_or_swap
-        splitting ext.pairing (vac.pairingInOrder order) (Sum.inr pr)
-    rcases hpair with hnormal | hreversed
-    · have hnormalized :=
+  have hkernel (a b : Fin (2 * (2 * S.card))) :
+      kernel (splitting (Sum.inr a)) (splitting (Sum.inr b)) =
+        flatVertexLegPairValue ε β
+          (fun v => vac.vertexLabel (S.orderIsoOfFin rfl v)) (σ ∘ f) a b := by
+    rw [hpos, hpos]
+    exact externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_right_locality
+      ε β T ext vac externalTime σ a b
+  have hpair :=
+    Pairing.ofSplitNormalizedPairEquiv_pair_eq_or_swap
+      splitting ext.pairing (vac.pairingInOrder order) (Sum.inr pr)
+  rcases hpair with hnormal | hreversed
+  · have horder :
+        splitting (Sum.inr pr.1.1) < splitting (Sum.inr pr.1.2) := by
+      have hnormalized :=
         (Pairing.ofSplit splitting ext.pairing
           (vac.pairingInOrder order)).pairs_normalized
           (pairEquiv (Sum.inr pr)).2
       rw [hnormal] at hnormalized
-      exact (horder hnormalized).elim
-    · rw [hreversed]
-      dsimp only
-      rw [hpos, hpos]
-      exact externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_right_locality
-        ε β T ext vac externalTime σ pr.1.2 pr.1.1
+      exact hnormalized
+    simp only [horder, ↓reduceIte]
+    rw [hnormal]
+    exact hkernel pr.1.1 pr.1.2
+  · have horder :
+        ¬ splitting (Sum.inr pr.1.1) < splitting (Sum.inr pr.1.2) := by
+      have hnormalized :=
+        (Pairing.ofSplit splitting ext.pairing
+          (vac.pairingInOrder order)).pairs_normalized
+          (pairEquiv (Sum.inr pr)).2
+      rw [hreversed] at hnormalized
+      exact not_lt_of_ge (le_of_lt hnormalized)
+    simp only [horder, ↓reduceIte]
+    rw [hreversed]
+    exact hkernel pr.1.2 pr.1.1
 
 
 /-- Factor the actual ambient mixed-time contraction product without an
