@@ -187,6 +187,7 @@ theorem ExternalInsertionBlockLayout.ofFamilyShuffle_ownerLocal_strictMono
         π heven σ).interactionBlock (Finset.univ : Finset (Fin N)) B) =>
       (((ExternalInsertionBlockLayout.ofFamilyShuffle π heven σ).interactionBlockOwnerSlotCongrEquiv
           (σ.ambientRelabel τ) B) v).1) := by
+  classical
   intro a b hab
   have ha : (σ.slotEquiv.symm a.1).1 = B := by
     exact (Finset.mem_filter.mp a.2).2
