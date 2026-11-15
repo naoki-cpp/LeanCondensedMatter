@@ -109,5 +109,40 @@ theorem ExternalInsertionBlockLayout.ofFamilyShuffle_ownerSlotCongr
   simp [Combinatorics.FamilySlotShuffleTo.ambientRelabel]
 
 
+
+/-- View an ambient permutation on the full Fin N slot set as a
+permutation of its corresponding full interaction slot subtype. -/
+def fullInteractionSlotEquiv (e : Fin N ≃ Fin N) :
+    ↥(Finset.univ : Finset (Fin N)) ≃
+    ↥(Finset.univ : Finset (Fin N)) where
+  toFun v := ⟨e v.1, Finset.mem_univ _⟩
+  invFun v := ⟨e.symm v.1, Finset.mem_univ _⟩
+  left_inv v := by apply Subtype.ext; simp
+  right_inv v := by apply Subtype.ext; simp
+
+@[simp]
+theorem fullInteractionSlotEquiv_val (e : Fin N ≃ Fin N)
+    (v : ↥(Finset.univ : Finset (Fin N))) :
+    (fullInteractionSlotEquiv e v).1 = e v.1 := rfl
+
+/-- Change the owner of every physical interaction vertex while
+transporting each local pairing and each local interaction label
+through exactly the induced local slot equivalence. -/
+noncomputable def ExternalInsertionBlockLayout.ownerSlotCongrBlockFamily
+    {ExternalLabel InternalLabel : Type*}
+    (layout : ExternalInsertionBlockLayout E N)
+    (e : Fin N ≃ Fin N)
+    (F : ∀ B : layout.partition.parts,
+      ExternalInsertionDiagram ExternalLabel InternalLabel
+        ((B : Finset (Fin (2 * E))).card / 2) N
+        (layout.interactionBlock (Finset.univ : Finset (Fin N)) B)) :
+    ∀ B : (layout.ownerSlotCongr e).partition.parts,
+      ExternalInsertionDiagram ExternalLabel InternalLabel
+        ((B : Finset (Fin (2 * E))).card / 2) N
+        ((layout.ownerSlotCongr e).interactionBlock
+          (Finset.univ : Finset (Fin N)) B) :=
+  fun B => (F B).slotCongr (layout.interactionBlockOwnerSlotCongrEquiv e B)
+
+
 end Common
 end SecondQuantization
