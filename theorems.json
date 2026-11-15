@@ -55825,7 +55825,6 @@
     ],
     "dependencies": [
       "QuantumTheory.LinearResponse.norm_commutatorSusceptibility_le",
-      "QuantumTheory.LinearResponse.retardedTimeDifferenceKernelNormBound_nonneg",
       "QuantumTheory.LinearResponse.retardedTimeDifferenceKernel_eq_commutatorSusceptibility_of_nonneg",
       "QuantumTheory.LinearResponse.retardedTimeDifferenceKernel_eq_zero_of_neg"
     ],
@@ -56585,48 +56584,6 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.LinearResponse.retardedTimeDifferenceKernel_eq_zero_of_neg"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H] (hbar : ℝ)\n  (expectation : QuantumTheory.LinearResponse.NormalizedExpectation H) (A B : H →L[ℂ] H),\n  0 ≤ QuantumTheory.LinearResponse.retardedTimeDifferenceKernelNormBound hbar expectation A B",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.LinearResponse.retardedTimeDifferenceKernelNormBound_nonneg",
-    "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.Frequency.Integrability",
-    "externalAxioms": [],
-    "docString": "The uniform kernel bound is nonnegative. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.LinearResponse.norm_retardedTimeDifferenceKernel_le"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.LinearResponse.norm_retardedTimeDifferenceKernel_le"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
