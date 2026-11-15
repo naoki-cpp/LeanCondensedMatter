@@ -249,6 +249,59 @@ theorem ExternalInsertionBlockLayout.ofFamilyShuffle_localDiagram_standardizatio
     ExternalInsertionBlockLayout.ofFamilyShuffle_standardSlotEquiv_comp
       π heven σ τ B hσ hτ]
 
+/-- For fixed local interaction sizes, every physical owner shuffle
+standardizes its entire preconnected block-family domain into the same
+dependent family of diagrams on consecutive Fin (size B) slots. This
+eliminates the former owner-dependent codomain in the physical
+size/shuffle reindexing and includes zero-interaction blocks. -/
+noncomputable def ExternalInsertionBlockLayout.ofFamilyShuffle_fixedSizeStandardizedFamilyEquiv
+    {ExternalLabel InternalLabel : Type*}
+    (π : Finpartition (Finset.univ : Finset (Fin (2 * E))))
+    (heven : ∀ B : π.parts, Even (B : Finset (Fin (2 * E))).card)
+    {size : π.parts → ℕ}
+    (σ : Combinatorics.FamilySlotShuffleTo size N) :
+    (ExternalInsertionBlockLayout.ofFamilyShuffle π heven σ).ConnectedBlockFamily
+      (ExternalLabel := ExternalLabel) (InternalLabel := InternalLabel) ≃
+      (∀ B : π.parts,
+        {d : ExternalInsertionDiagram ExternalLabel InternalLabel
+            ((B : Finset (Fin (2 * E))).card / 2) (size B)
+            (Finset.univ : Finset (Fin (size B))) //
+          d.vertexGraph.Preconnected}) := by
+  classical
+  exact
+    ((ExternalInsertionBlockLayout.ofFamilyShuffle π heven σ).
+      connectedBlockFamilyEquivPi).trans
+      (Equiv.piCongrRight (fun B =>
+        ExternalInsertionDiagram.preconnectedSlotCongrEquiv
+          (Combinatorics.standardSlotEquivOfCardEq
+            ((ExternalInsertionBlockLayout.ofFamilyShuffle π heven σ).interactionBlock
+              (Finset.univ : Finset (Fin N)) B)
+            (ExternalInsertionBlockLayout.ofFamilyShuffle_interactionBlock_card
+              π heven σ B))))
+
+/-- The fixed-size standardized family maps the actual physical
+labelled Wick diagram on each owner fiber to its increasing-slot
+standardization, retaining the pairing and all labels. -/
+@[simp]
+theorem ExternalInsertionBlockLayout.ofFamilyShuffle_fixedSizeStandardizedFamilyEquiv_apply
+    {ExternalLabel InternalLabel : Type*}
+    (π : Finpartition (Finset.univ : Finset (Fin (2 * E))))
+    (heven : ∀ B : π.parts, Even (B : Finset (Fin (2 * E))).card)
+    {size : π.parts → ℕ}
+    (σ : Combinatorics.FamilySlotShuffleTo size N)
+    (F : (ExternalInsertionBlockLayout.ofFamilyShuffle π heven σ).ConnectedBlockFamily
+      (ExternalLabel := ExternalLabel) (InternalLabel := InternalLabel))
+    (B : π.parts) :
+    ((ExternalInsertionBlockLayout.ofFamilyShuffle_fixedSizeStandardizedFamilyEquiv
+      π heven σ F) B).1 =
+      (F.1 B).slotCongr
+        (Combinatorics.standardSlotEquivOfCardEq
+          ((ExternalInsertionBlockLayout.ofFamilyShuffle π heven σ).interactionBlock
+            (Finset.univ : Finset (Fin N)) B)
+          (ExternalInsertionBlockLayout.ofFamilyShuffle_interactionBlock_card
+            π heven σ B)) := by
+  rfl
+
 /-- View an ambient permutation on the full Fin N slot set as a
 permutation of its corresponding full interaction slot subtype. -/
 def fullInteractionSlotEquiv (e : Fin N ≃ Fin N) :
