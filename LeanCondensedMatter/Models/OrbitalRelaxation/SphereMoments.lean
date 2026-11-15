@@ -48,9 +48,13 @@ private theorem integral_sin_three_mul_cos_sq :
   simp only [pow_one] at h
   have hid (u : ℝ) : u ^ 2 * (1 - u ^ 2) = u ^ 2 - u ^ 4 := by ring
   simp_rw [hid] at h
-  rw [intervalIntegral.integral_sub
-    ((continuous_id.pow 2).intervalIntegrable _ _)
-    ((continuous_id.pow 4).intervalIntegrable _ _)] at h
+  have h2 : IntervalIntegrable (fun u : ℝ => u ^ 2) volume
+      (Real.cos Real.pi) (Real.cos (0 : ℝ)) :=
+    Continuous.intervalIntegrable (by fun_prop) _ _
+  have h4 : IntervalIntegrable (fun u : ℝ => u ^ 4) volume
+      (Real.cos Real.pi) (Real.cos (0 : ℝ)) :=
+    Continuous.intervalIntegrable (by fun_prop) _ _
+  rw [intervalIntegral.integral_sub h2 h4] at h
   norm_num [integral_pow] at h
   exact h
 
