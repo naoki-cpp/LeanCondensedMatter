@@ -1,7 +1,6 @@
 import LeanCondensedMatter.Models.OrbitalRelaxation.Finite
 import Mathlib.Analysis.SpecialFunctions.Integrals.Basic
 import Mathlib.Tactic.FunProp
-import Mathlib.Tactic.Linarith
 import Mathlib.Tactic.Ring
 import Mathlib.Tactic.FieldSimp
 
@@ -36,15 +35,6 @@ noncomputable def sphericalAverage (r : ℝ) (f : (Fin 3 → ℝ) → ℝ) : ℝ
   (∫ θ in (0 : ℝ)..Real.pi,
     (∫ φ in (0 : ℝ)..(2 * Real.pi), f (sphericalMomentum r θ φ)) *
       Real.sin θ) / (4 * Real.pi)
-
-private theorem integral_sin_one :
-    (∫ θ in (0 : ℝ)..Real.pi, Real.sin θ) = 2 := by
-  simpa using (integral_sin_pow_odd (n := 0))
-
-private theorem integral_sin_three :
-    (∫ θ in (0 : ℝ)..Real.pi, Real.sin θ ^ 3) = 4 / 3 := by
-  convert (integral_sin_pow_odd (n := 1)) using 1
-  norm_num
 
 private theorem integral_sin_five :
     (∫ θ in (0 : ℝ)..Real.pi, Real.sin θ ^ 5) = 16 / 15 := by
