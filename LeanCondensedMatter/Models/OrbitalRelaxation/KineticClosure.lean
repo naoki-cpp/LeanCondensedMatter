@@ -74,21 +74,12 @@ theorem quadrupoleAmplitude_eq (t : ℝ) :
   obtain ⟨p, hp⟩ := closure.mode_nonzero
   have hs := closure.stationary_quadrupole t p
   rw [angularCollision_const_mul, data.collision_quadrupole] at hs
-  have hmult :
-      (closure.quadrupoleAmplitude t * data.degreeTwoRate -
-          closure.polarization t) * quadrupoleMode data.direction i j p = 0 := by
-    nlinarith [hs]
   have heq : closure.quadrupoleAmplitude t * data.degreeTwoRate =
-      closure.polarization t :=
-    sub_eq_zero.mp ((mul_eq_zero.mp hmult).resolve_right hp)
-  have hrate : data.degreeTwoRate ≠ 0 := ne_of_gt closure.degreeTwoRate_pos
-  calc
-    closure.quadrupoleAmplitude t =
-        closure.polarization t / data.degreeTwoRate :=
-          (eq_div_iff hrate).mpr heq
-    _ = degreeTwoTime data.degreeTwoRate * closure.polarization t := by
-          simp only [degreeTwoTime, momentumTime, div_eq_mul_inv]
-          ring
+      closure.polarization t := by
+    apply mul_right_cancel₀ hp
+    nlinarith [hs]
+  simpa only [degreeTwoTime, momentumTime, div_eq_mul_inv, mul_comm] using
+    ((eq_div_iff (ne_of_gt closure.degreeTwoRate_pos)).mpr heq)
 
 /-- The orbital polarization obeys a decay equation with a coefficient
 identified from the finite double commutator and the degree-two collision
