@@ -32,10 +32,6 @@ private noncomputable def gibbsOpUnit (Hop : Observable H) (β : ℝ) : (H →L[
   cfcUnits (fun x : ℝ => Real.exp (-β * x)) Hop.1
     (fun x _ => (Real.exp_pos _).ne') (hf := by fun_prop) (ha := Hop.2)
 
-private theorem coe_gibbsOpUnit (Hop : Observable H) (β : ℝ) :
-    (gibbsOpUnit Hop β : H →L[ℂ] H) = gibbsOp Hop β := by
-  rfl
-
 /-- The Gibbs operator acts on an energy eigenvector by the Boltzmann factor. -/
 theorem gibbsOp_apply_eigenvector (Hop : Observable H) (β : ℝ) {v : H} {E : ℝ}
     (hv : (Hop.1 : H →ₗ[ℂ] H) v = (E : ℂ) • v) :
@@ -49,7 +45,8 @@ theorem finiteDimensional_of_gibbsOp_isCompact (Hop : Observable H) (β : ℝ)
     (hcompact : IsCompactOperator (gibbsOp Hop β)) : FiniteDimensional ℂ H := by
   let u := gibbsOpUnit Hop β
   have hcompact_u : IsCompactOperator (u : H →L[ℂ] H) := by
-    simpa [u, coe_gibbsOpUnit] using hcompact
+    change IsCompactOperator (gibbsOp Hop β)
+    exact hcompact
   have hcompact_one : IsCompactOperator (1 : H →L[ℂ] H) := by
     have hcompact_inv_mul :
         IsCompactOperator ((↑u⁻¹ : H →L[ℂ] H) * (u : H →L[ℂ] H)) := by
@@ -70,7 +67,7 @@ theorem gibbsOp_isPositive (Hop : Observable H) (β : ℝ) : (gibbsOp Hop β).Is
 /-- On a nontrivial Hilbert space, the Gibbs operator is nonzero because it is invertible. -/
 theorem gibbsOp_ne_zero [Nontrivial H] (Hop : Observable H) (β : ℝ) :
     gibbsOp Hop β ≠ 0 := by
-  rw [← coe_gibbsOpUnit]
+  change (gibbsOpUnit Hop β : H →L[ℂ] H) ≠ 0
   exact Units.ne_zero _
 
 /-- In finite dimension, the Gibbs operator carries canonical positive spectral-trace-class data. -/
