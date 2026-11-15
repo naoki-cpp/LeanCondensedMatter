@@ -439,5 +439,60 @@ theorem ExternalInsertionBlockLayout.sum_assembledOwnerShuffle_dysonAmplitude_eq
     (fullInteractionSlotEquiv (reference.ambientRelabel shuffle))
     ε β hβ g externalTime
 
+
+open Classical in
+/-- The **entire finite sum over independently preconnected Wick-block
+families** at a physically relabeled owner assignment equals the sum of
+transported-order Dyson amplitudes over the original connected families.
+
+The summed diagrams retain every labelled pairing; unlike a
+diagram-by-diagram canonical-amplitude assertion, each relabeled
+canonical integral is evaluated with its corresponding global Dyson
+order. This bridges physical owner-family reindexing to integration. -/
+theorem ExternalInsertionBlockLayout.sum_ownerSlotCongr_connectedDyson_eq_ordered
+    {E n : ℕ}
+    (layout : ExternalInsertionBlockLayout E n) (e : Fin n ≃ Fin n)
+    (ε : Mode → ℝ) (β : ℝ) (hβ : 0 ≤ β)
+    (g : QuarticVertexLabel Mode → ℂ)
+    (externalTime : Fin (2 * E) → ℝ) :
+    (∑ G : (layout.ownerSlotCongr e).ConnectedBlockFamily
+        (ExternalLabel := ExternalFieldLabel Mode)
+        (InternalLabel := QuarticVertexLabel Mode),
+      ExternalInsertionWickDiagram.dysonAmplitude
+        ((layout.ownerSlotCongr e).assembleDiagram
+          (Finset.univ : Finset (Fin n)) G.1)
+        ε β g externalTime) =
+      ∑ F : layout.ConnectedBlockFamily
+          (ExternalLabel := ExternalFieldLabel Mode)
+          (InternalLabel := QuarticVertexLabel Mode),
+        ExternalInsertionWickDiagram.orderedDysonAmplitude
+          (layout.assembleDiagram (Finset.univ : Finset (Fin n)) F.1)
+          ε β g externalTime
+          (((Finset.univ : Finset (Fin n)).orderIsoOfFin rfl).toEquiv.trans
+            (fullInteractionSlotEquiv e).symm) := by
+  let weight : (layout.ownerSlotCongr e).ConnectedBlockFamily
+      (ExternalLabel := ExternalFieldLabel Mode)
+      (InternalLabel := QuarticVertexLabel Mode) → ℂ :=
+    fun G => ExternalInsertionWickDiagram.dysonAmplitude
+      ((layout.ownerSlotCongr e).assembleDiagram
+        (Finset.univ : Finset (Fin n)) G.1) ε β g externalTime
+  change (∑ G, weight G) = _
+  rw [← layout.sum_ownerSlotCongrConnectedBlockFamilies e weight]
+  apply Finset.sum_congr rfl
+  intro F _
+  change weight (layout.ownerSlotCongrConnectedBlockFamilyEquiv e F) = _
+  dsimp [weight]
+  have hfamily :
+      (layout.ownerSlotCongrConnectedBlockFamilyEquiv e F).1 =
+        layout.ownerSlotCongrBlockFamily e F.1 := by
+    funext B
+    exact layout.ownerSlotCongrConnectedBlockFamilyEquiv_apply e F B
+  rw [hfamily, layout.assembleDiagram_ownerSlotCongr e F.1]
+  exact
+    (layout.assembleDiagram (Finset.univ : Finset (Fin n)) F.1).
+      slotCongr_dysonAmplitude_eq_orderedDysonAmplitude
+      (fullInteractionSlotEquiv e) ε β hβ g externalTime
+
+
 end Fermionic
 end SecondQuantization
