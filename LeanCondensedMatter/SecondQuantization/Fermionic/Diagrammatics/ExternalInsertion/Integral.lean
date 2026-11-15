@@ -1,5 +1,7 @@
 import LeanCondensedMatter.Analysis.OrderedSimplex.StrictAntiCongr
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Ordered
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.SupportStandardization
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.BlockAssembly
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.Amplitude
 
 set_option linter.style.header false
@@ -191,6 +193,153 @@ theorem ExternalInsertionWickDiagram.orderedDysonAmplitude_slotCongr
   exact (d.slotCongr_dysonFixedTimeAmplitude_eq_of_injective
     e ε β g externalTime σ hσ).symm
 
+
+
+/-- A canonical Dyson integral of one **physical** diagram is the
+ordered-simplex amplitude of its relabeled diagram with the global
+interaction order transported accordingly. This is the exact termwise
+bridge needed before reindexing the physical fixed-partition fiber:
+it does **not** assert invariance of individual canonical Dyson
+integrals under arbitrary interaction-slot permutations. -/
+theorem ExternalInsertionWickDiagram.dysonAmplitude_eq_slotCongr_orderedDysonAmplitude
+    {E n : ℕ} (d : ExternalInsertionWickDiagram Mode E n)
+    (e : ↥(Finset.univ : Finset (Fin n)) ≃
+      ↥(Finset.univ : Finset (Fin n)))
+    (ε : Mode → ℝ) (β : ℝ) (hβ : 0 ≤ β)
+    (g : QuarticVertexLabel Mode → ℂ)
+    (externalTime : Fin (2 * E) → ℝ) :
+    d.dysonAmplitude ε β g externalTime =
+      ExternalInsertionWickDiagram.orderedDysonAmplitude (d.slotCongr e)
+        ε β g externalTime
+        (((Finset.univ : Finset (Fin n)).orderIsoOfFin rfl).toEquiv.trans e) := by
+  calc
+    d.dysonAmplitude ε β g externalTime =
+        d.orderedDysonAmplitude ε β g externalTime
+          ((Finset.univ : Finset (Fin n)).orderIsoOfFin rfl).toEquiv :=
+      (d.orderedDysonAmplitude_canonicalOrder ε β g externalTime).symm
+    _ = _ :=
+      d.orderedDysonAmplitude_slotCongr e ε β hβ g externalTime
+        ((Finset.univ : Finset (Fin n)).orderIsoOfFin rfl).toEquiv
+
+open Classical in
+/-- At one fixed *physical external-component partition*, the genuine
+vacuum-free fixed-label Dyson diagram sum is unchanged if its canonical
+interaction-time order is replaced by any common reindexed order,
+**after the actual Wick diagram fiber has been reindexed** by the same
+interaction-slot permutation.
+
+This identifies the physical owner-assignment sector across vertex
+renumberings, with neither an extra factorial nor a quotient of
+fermionic pairing orientations. In contrast to an individual diagram,
+this statement holds after summing all diagrams with the prescribed
+external labels and graph-induced external partition. -/
+theorem sum_fixedPartitionDysonAmplitude_eq_reindexedOrderedDysonAmplitude
+    {E n : ℕ}
+    (π : Finpartition (Finset.univ : Finset (Fin (2 * E))))
+    (labels : Fin (2 * E) → ExternalFieldLabel Mode)
+    (ε : Mode → ℝ) (β : ℝ) (hβ : 0 ≤ β)
+    (g : QuarticVertexLabel Mode → ℂ)
+    (externalTime : Fin (2 * E) → ℝ)
+    (e : ↥(Finset.univ : Finset (Fin n)) ≃
+      ↥(Finset.univ : Finset (Fin n))) :
+    (∑ d : {d : {d : ExternalInsertionWickDiagram Mode E n //
+        HasNoVacuumComponent d.vertexGraph} //
+        externalComponentPartition d.1.vertexGraph = π},
+      if d.1.1.externalLabel = labels then
+        d.1.1.dysonAmplitude ε β g externalTime else 0) =
+      ∑ d : {d : {d : ExternalInsertionWickDiagram Mode E n //
+          HasNoVacuumComponent d.vertexGraph} //
+          externalComponentPartition d.1.vertexGraph = π},
+        if d.1.1.externalLabel = labels then
+          d.1.1.orderedDysonAmplitude ε β g externalTime
+            (((Finset.univ : Finset (Fin n)).orderIsoOfFin rfl).toEquiv.trans e)
+        else 0 := by
+  let fiber := {d : {d : ExternalInsertionWickDiagram Mode E n //
+      HasNoVacuumComponent d.vertexGraph} //
+      externalComponentPartition d.1.vertexGraph = π}
+  let φ : fiber ≃ fiber :=
+    ExternalInsertionDiagram.fixedPartitionVacuumFreeSlotCongrEquiv
+      (E := E) (N := n) (M := n) e π
+  let weight : fiber → ℂ := fun d =>
+    if d.1.1.externalLabel = labels then
+      d.1.1.orderedDysonAmplitude ε β g externalTime
+        (((Finset.univ : Finset (Fin n)).orderIsoOfFin rfl).toEquiv.trans e)
+    else 0
+  have hterm (d : fiber) :
+      (if d.1.1.externalLabel = labels then
+        d.1.1.dysonAmplitude ε β g externalTime else 0) =
+        weight (φ d) := by
+    change (if d.1.1.externalLabel = labels then
+        d.1.1.dysonAmplitude ε β g externalTime else 0) =
+      (if (d.1.1.slotCongr e).externalLabel = labels then
+        ExternalInsertionWickDiagram.orderedDysonAmplitude (d.1.1.slotCongr e)
+          ε β g externalTime
+          (((Finset.univ : Finset (Fin n)).orderIsoOfFin rfl).toEquiv.trans e)
+      else 0)
+    rw [ExternalInsertionDiagram.slotCongr_externalLabel]
+    exact if_congr Iff.rfl
+      (d.1.1.dysonAmplitude_eq_slotCongr_orderedDysonAmplitude
+        e ε β hβ g externalTime) rfl
+  calc
+    (∑ d : fiber, if d.1.1.externalLabel = labels then
+        d.1.1.dysonAmplitude ε β g externalTime else 0) =
+      ∑ d : fiber, weight (φ d) := by
+        apply Finset.sum_congr rfl
+        intro d _
+        exact hterm d
+    _ = ∑ d : fiber, weight d := Equiv.sum_comp φ weight
+    _ = _ := rfl
+
+
+open Classical in
+/-- The actual fixed-label, fixed-external-partition physical Dyson
+coefficient is a finite sum over **realized** interaction-size vectors,
+owner shuffles and standardized connected local Wick diagrams.
+
+The integrand on the right retains its *transported global Dyson order*.
+This composes the exact physical ordered-amplitude covariance with the
+combinatorial standardized-size/shuffle equivalence. It introduces no
+extra factorial or independence assumption: factorizing the remaining
+owner-shuffle sum into local Dyson coefficients is a separate obligation. -/
+theorem sum_fixedPartitionDysonAmplitude_eq_standardizedOrderedDysonAmplitude
+    {E n : ℕ}
+    (anchor : Fin (2 * E))
+    (π : Finpartition (Finset.univ : Finset (Fin (2 * E))))
+    (heven : ∀ B : π.parts, Even (B : Finset (Fin (2 * E))).card)
+    (labels : Fin (2 * E) → ExternalFieldLabel Mode)
+    (ε : Mode → ℝ) (β : ℝ) (hβ : 0 ≤ β)
+    (g : QuarticVertexLabel Mode → ℂ)
+    (externalTime : Fin (2 * E) → ℝ)
+    (e : ↥(Finset.univ : Finset (Fin n)) ≃
+      ↥(Finset.univ : Finset (Fin n))) :
+    (∑ d : {d : {d : ExternalInsertionWickDiagram Mode E n //
+        HasNoVacuumComponent d.vertexGraph} //
+        externalComponentPartition d.1.vertexGraph = π},
+      if d.1.1.externalLabel = labels then
+        d.1.1.dysonAmplitude ε β g externalTime else 0) =
+      ∑ p ∈ ExternalInsertionBlockLayout.fixedPartitionPhysicalStandardizedSizeShuffleFiniteDomain
+          (E := E) (N := n) (ExternalLabel := ExternalFieldLabel Mode)
+          (InternalLabel := QuarticVertexLabel Mode) anchor π heven,
+        if ((ExternalInsertionBlockLayout.fixedPartitionPhysicalStandardizedSizeShuffleEquiv
+              (E := E) (N := n) (ExternalLabel := ExternalFieldLabel Mode)
+              (InternalLabel := QuarticVertexLabel Mode) anchor π heven).symm p).1.1.externalLabel =
+            labels then
+          ExternalInsertionWickDiagram.orderedDysonAmplitude
+            ((ExternalInsertionBlockLayout.fixedPartitionPhysicalStandardizedSizeShuffleEquiv
+              (E := E) (N := n) (ExternalLabel := ExternalFieldLabel Mode)
+              (InternalLabel := QuarticVertexLabel Mode) anchor π heven).symm p).1.1
+            ε β g externalTime
+            (((Finset.univ : Finset (Fin n)).orderIsoOfFin rfl).toEquiv.trans e)
+        else 0 := by
+  rw [sum_fixedPartitionDysonAmplitude_eq_reindexedOrderedDysonAmplitude
+    π labels ε β hβ g externalTime e]
+  exact ExternalInsertionBlockLayout.sum_fixedPartitionPhysical_eq_standardized_sizes_shuffles
+    (E := E) (N := n) (ExternalLabel := ExternalFieldLabel Mode)
+    (InternalLabel := QuarticVertexLabel Mode) anchor π heven
+    (fun d => if d.1.1.externalLabel = labels then
+      ExternalInsertionWickDiagram.orderedDysonAmplitude d.1.1 ε β g externalTime
+        (((Finset.univ : Finset (Fin n)).orderIsoOfFin rfl).toEquiv.trans e)
+      else 0)
 
 end Fermionic
 end SecondQuantization
