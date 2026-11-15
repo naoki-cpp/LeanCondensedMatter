@@ -64,12 +64,6 @@ noncomputable def multiplicationLinear : Space →ₗ[ℂ] (Space →ₗ[ℂ] Sp
     change c * f x * ψ x = c * (f x * ψ x)
     ring
 
-/-- Applying the linear family of local multiplication operators recovers the pointwise operator. -/
-@[simp]
-theorem multiplicationLinear_apply (f : Space) :
-    multiplicationLinear f = multiplicationOperator f :=
-  rfl
-
 /-- Differentiation obeys the product rule on Schwartz multiplication. -/
 theorem derivative_multiplication_apply (f ψ : Space) :
     derivative (multiplicationOperator f ψ) =
