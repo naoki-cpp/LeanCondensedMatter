@@ -162,7 +162,7 @@ theorem externalComponentPartition_congr_of_external_fixed
     rw [mem_externalComponentPartition_part, mem_externalComponentPartition_part]
     simpa only [hext] using
       (SimpleGraph.Iso.reachable_iff
-        (φ := φ) (u := Sum.inl x) (v := Sum.inl y)).symm
+        (φ := φ) (u := Sum.inl x) (v := Sum.inl y))
   apply Finpartition.ext
   apply Finset.Subset.antisymm
   · intro B hB
