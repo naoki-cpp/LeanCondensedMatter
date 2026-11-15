@@ -5,6 +5,8 @@ import LeanCondensedMatter.Transport.Disorder.TwoParticle
 import LeanCondensedMatter.Transport.Disorder.TwoParticleNormBound
 import LeanCondensedMatter.Transport.Disorder.LinearizedFluctuation
 import LeanCondensedMatter.Transport.Disorder.FirstRungNormBound
+import LeanCondensedMatter.Transport.Disorder.LadderNormBound
+import LeanCondensedMatter.Transport.Disorder.ConnectedLadderNormBound
 import LeanCondensedMatter.Transport.Disorder.TraceBridge
 import LeanCondensedMatter.Transport.Disorder.TraceNormBound
 import LeanCondensedMatter.Transport.Disorder.DressedTraceNormBound
@@ -22,7 +24,7 @@ set_option linter.style.header false
 # Finite disorder transport
 
 Finite disorder ensembles and their transport algebra: connected correlations, exact two-Green
-insertions, fixed-regulator covariance and controlled first Born-rung bounds, and their finite-dimensional Středa trace bridge and quantitative exact-vs-dressed trace bounds,
+insertions, fixed-regulator covariance and controlled first-rung and norm-convergent resummed-ladder bounds, and their finite-dimensional Středa trace bridge and quantitative exact-vs-dressed trace bounds,
 disorder covariance and moments,
 disorder resolvents and averaged Green functions
 and self-energy, first-Born self-energy and fixed-regulator cubic-remainder estimates,
