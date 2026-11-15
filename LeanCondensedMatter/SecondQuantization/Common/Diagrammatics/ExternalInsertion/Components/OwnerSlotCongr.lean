@@ -329,8 +329,7 @@ private theorem sigmaPairing_transport
       (Equiv.sigmaCongrRight e).symm ⟨i, x⟩ =
         ⟨i, (e i).symm x⟩ := by
     apply (Equiv.sigmaCongrRight e).injective
-    simp only [Equiv.apply_symm_apply, Equiv.sigmaCongrRight_apply,
-      Equiv.symm_apply_apply]
+    simp only [Equiv.apply_symm_apply, Equiv.sigmaCongrRight_apply]
   simp [Combinatorics.PairingOn.transport_partner,
     Combinatorics.PairingOn.sigmaCongrRight_partner, hsymm]
 
@@ -384,7 +383,8 @@ theorem ExternalInsertionBlockLayout.assembleDiagram_ownerSlotCongr
       (F ((layout.interactionEquiv S w).1)).vertexLabel
         ((layout.interactionEquiv S w).2)
     rw [layout.ownerSlotCongr_interactionEquiv e w]
-    rfl
+    simp [ExternalInsertionBlockLayout.ownerSlotCongrBlockFamily,
+      ExternalInsertionDiagram.slotCongr]
   · let Q : Combinatorics.PairingOn
         (Σ B : layout.partition.parts,
           Fin (2 * (2 * (layout.interactionBlock S B).card +
