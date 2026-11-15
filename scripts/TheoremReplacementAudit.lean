@@ -196,10 +196,10 @@ private def discoverMathlibCandidates (index : MathlibDiscoveryIndex)
     | none => #[]
     | some key => index.coarse.getD key #[]
   let pool := exact ++ coarse.filter (fun candidate => discoveryExactKey candidate != exactKey)
-  let matches := pool.filter (fun candidate =>
+  let shapeCandidates := pool.filter (fun candidate =>
     !directDependencies.contains candidate.candidate.name)
-  let ranked := matches.qsort (discoveryBefore target)
-  return ((ranked.toList.take maxMathlibDiscoveryProbesPerTarget).toArray, matches.size)
+  let ranked := shapeCandidates.qsort (discoveryBefore target)
+  return ((ranked.toList.take maxMathlibDiscoveryProbesPerTarget).toArray, shapeCandidates.size)
 
 private def sameArgumentHeadSketch
     (left right : Array (Option Name)) : Bool := Id.run do
