@@ -245,69 +245,33 @@ private theorem sphericalAverage_evenQuarticPolynomial (r a b c d e f : ℝ) :
 
 /-! ### Fourth moments deduced from the general quartic integral -/
 
-private theorem sphericalAverage_x_four (r : ℝ) :
-    sphericalAverage r (fun k => k 0 ^ 4) = r ^ 4 / 5 := by
-  have hf : evenQuarticPolynomial 1 0 0 0 0 0 =
-      (fun k : Fin 3 → ℝ => k 0 ^ 4) := by
-    funext k
-    simp [evenQuarticPolynomial]
-  rw [← hf]
-  simpa using (sphericalAverage_evenQuarticPolynomial r 1 0 0 0 0 0)
-
-private theorem sphericalAverage_y_four (r : ℝ) :
-    sphericalAverage r (fun k => k 1 ^ 4) = r ^ 4 / 5 := by
-  have hf : evenQuarticPolynomial 0 1 0 0 0 0 =
-      (fun k : Fin 3 → ℝ => k 1 ^ 4) := by
-    funext k
-    simp [evenQuarticPolynomial]
-  rw [← hf]
-  simpa using (sphericalAverage_evenQuarticPolynomial r 0 1 0 0 0 0)
-
-private theorem sphericalAverage_z_four (r : ℝ) :
-    sphericalAverage r (fun k => k 2 ^ 4) = r ^ 4 / 5 := by
-  have hf : evenQuarticPolynomial 0 0 1 0 0 0 =
-      (fun k : Fin 3 → ℝ => k 2 ^ 4) := by
-    funext k
-    simp [evenQuarticPolynomial]
-  rw [← hf]
-  simpa using (sphericalAverage_evenQuarticPolynomial r 0 0 1 0 0 0)
-
-private theorem sphericalAverage_xy (r : ℝ) :
-    sphericalAverage r (fun k => k 0 ^ 2 * k 1 ^ 2) = r ^ 4 / 15 := by
-  have hf : evenQuarticPolynomial 0 0 0 1 0 0 =
-      (fun k : Fin 3 → ℝ => k 0 ^ 2 * k 1 ^ 2) := by
-    funext k
-    simp [evenQuarticPolynomial]
-  rw [← hf]
-  simpa using (sphericalAverage_evenQuarticPolynomial r 0 0 0 1 0 0)
-
-private theorem sphericalAverage_xz (r : ℝ) :
-    sphericalAverage r (fun k => k 0 ^ 2 * k 2 ^ 2) = r ^ 4 / 15 := by
-  have hf : evenQuarticPolynomial 0 0 0 0 1 0 =
-      (fun k : Fin 3 → ℝ => k 0 ^ 2 * k 2 ^ 2) := by
-    funext k
-    simp [evenQuarticPolynomial]
-  rw [← hf]
-  simpa using (sphericalAverage_evenQuarticPolynomial r 0 0 0 0 1 0)
-
-private theorem sphericalAverage_yz (r : ℝ) :
-    sphericalAverage r (fun k => k 1 ^ 2 * k 2 ^ 2) = r ^ 4 / 15 := by
-  have hf : evenQuarticPolynomial 0 0 0 0 0 1 =
-      (fun k : Fin 3 → ℝ => k 1 ^ 2 * k 2 ^ 2) := by
-    funext k
-    simp [evenQuarticPolynomial]
-  rw [← hf]
-  simpa using (sphericalAverage_evenQuarticPolynomial r 0 0 0 0 0 1)
-
 /-- Continuous and finite fourth moments agree for every Cartesian index. -/
 theorem sphericalAverage_coordinate_four (i : Fin 3) (r : ℝ) :
     sphericalAverage r (fun k => k i ^ 4) =
       evenQuarticCubature r (fun k => k i ^ 4) := by
   rw [evenQuarticCubature_coordinate_four]
   fin_cases i
-  · exact sphericalAverage_x_four r
-  · exact sphericalAverage_y_four r
-  · exact sphericalAverage_z_four r
+  · have hf : evenQuarticPolynomial 1 0 0 0 0 0 =
+        (fun k : Fin 3 → ℝ => k 0 ^ 4) := by
+      funext k
+      simp [evenQuarticPolynomial]
+    change sphericalAverage r (fun k : Fin 3 → ℝ => k 0 ^ 4) = r ^ 4 / 5
+    rw [← hf]
+    simpa using (sphericalAverage_evenQuarticPolynomial r 1 0 0 0 0 0)
+  · have hf : evenQuarticPolynomial 0 1 0 0 0 0 =
+        (fun k : Fin 3 → ℝ => k 1 ^ 4) := by
+      funext k
+      simp [evenQuarticPolynomial]
+    change sphericalAverage r (fun k : Fin 3 → ℝ => k 1 ^ 4) = r ^ 4 / 5
+    rw [← hf]
+    simpa using (sphericalAverage_evenQuarticPolynomial r 0 1 0 0 0 0)
+  · have hf : evenQuarticPolynomial 0 0 1 0 0 0 =
+        (fun k : Fin 3 → ℝ => k 2 ^ 4) := by
+      funext k
+      simp [evenQuarticPolynomial]
+    change sphericalAverage r (fun k : Fin 3 → ℝ => k 2 ^ 4) = r ^ 4 / 5
+    rw [← hf]
+    simpa using (sphericalAverage_evenQuarticPolynomial r 0 0 1 0 0 0)
 
 /-- Continuous and finite mixed fourth moments agree for distinct indices. -/
 theorem sphericalAverage_coordinate_sq_mul_coordinate_sq (i j : Fin 3)
@@ -317,34 +281,52 @@ theorem sphericalAverage_coordinate_sq_mul_coordinate_sq (i j : Fin 3)
   rw [evenQuarticCubature_coordinate_sq_mul_coordinate_sq i j hij]
   fin_cases i <;> fin_cases j
   · exact (hij rfl).elim
-  · exact sphericalAverage_xy r
-  · exact sphericalAverage_xz r
-  · have hs : (fun k : Fin 3 → ℝ => k 1 ^ 2 * k 0 ^ 2) =
-        (fun k => k 0 ^ 2 * k 1 ^ 2) := by
+  · have hf : evenQuarticPolynomial 0 0 0 1 0 0 =
+        (fun k : Fin 3 → ℝ => k 0 ^ 2 * k 1 ^ 2) := by
       funext k
+      simp [evenQuarticPolynomial]
+    change sphericalAverage r (fun k : Fin 3 → ℝ => k 0 ^ 2 * k 1 ^ 2) = r ^ 4 / 15
+    rw [← hf]
+    simpa using (sphericalAverage_evenQuarticPolynomial r 0 0 0 1 0 0)
+  · have hf : evenQuarticPolynomial 0 0 0 0 1 0 =
+        (fun k : Fin 3 → ℝ => k 0 ^ 2 * k 2 ^ 2) := by
+      funext k
+      simp [evenQuarticPolynomial]
+    change sphericalAverage r (fun k : Fin 3 → ℝ => k 0 ^ 2 * k 2 ^ 2) = r ^ 4 / 15
+    rw [← hf]
+    simpa using (sphericalAverage_evenQuarticPolynomial r 0 0 0 0 1 0)
+  · have hf : evenQuarticPolynomial 0 0 0 1 0 0 =
+        (fun k : Fin 3 → ℝ => k 1 ^ 2 * k 0 ^ 2) := by
+      funext k
+      simp [evenQuarticPolynomial]
       ring
-    change sphericalAverage r (fun k : Fin 3 → ℝ => k 1 ^ 2 * k 0 ^ 2) =
-      r ^ 4 / 15
-    rw [hs]
-    exact sphericalAverage_xy r
+    change sphericalAverage r (fun k : Fin 3 → ℝ => k 1 ^ 2 * k 0 ^ 2) = r ^ 4 / 15
+    rw [← hf]
+    simpa using (sphericalAverage_evenQuarticPolynomial r 0 0 0 1 0 0)
   · exact (hij rfl).elim
-  · exact sphericalAverage_yz r
-  · have hs : (fun k : Fin 3 → ℝ => k 2 ^ 2 * k 0 ^ 2) =
-        (fun k => k 0 ^ 2 * k 2 ^ 2) := by
+  · have hf : evenQuarticPolynomial 0 0 0 0 0 1 =
+        (fun k : Fin 3 → ℝ => k 1 ^ 2 * k 2 ^ 2) := by
       funext k
-      ring
-    change sphericalAverage r (fun k : Fin 3 → ℝ => k 2 ^ 2 * k 0 ^ 2) =
-      r ^ 4 / 15
-    rw [hs]
-    exact sphericalAverage_xz r
-  · have hs : (fun k : Fin 3 → ℝ => k 2 ^ 2 * k 1 ^ 2) =
-        (fun k => k 1 ^ 2 * k 2 ^ 2) := by
+      simp [evenQuarticPolynomial]
+    change sphericalAverage r (fun k : Fin 3 → ℝ => k 1 ^ 2 * k 2 ^ 2) = r ^ 4 / 15
+    rw [← hf]
+    simpa using (sphericalAverage_evenQuarticPolynomial r 0 0 0 0 0 1)
+  · have hf : evenQuarticPolynomial 0 0 0 0 1 0 =
+        (fun k : Fin 3 → ℝ => k 2 ^ 2 * k 0 ^ 2) := by
       funext k
+      simp [evenQuarticPolynomial]
       ring
-    change sphericalAverage r (fun k : Fin 3 → ℝ => k 2 ^ 2 * k 1 ^ 2) =
-      r ^ 4 / 15
-    rw [hs]
-    exact sphericalAverage_yz r
+    change sphericalAverage r (fun k : Fin 3 → ℝ => k 2 ^ 2 * k 0 ^ 2) = r ^ 4 / 15
+    rw [← hf]
+    simpa using (sphericalAverage_evenQuarticPolynomial r 0 0 0 0 1 0)
+  · have hf : evenQuarticPolynomial 0 0 0 0 0 1 =
+        (fun k : Fin 3 → ℝ => k 2 ^ 2 * k 1 ^ 2) := by
+      funext k
+      simp [evenQuarticPolynomial]
+      ring
+    change sphericalAverage r (fun k : Fin 3 → ℝ => k 2 ^ 2 * k 1 ^ 2) = r ^ 4 / 15
+    rw [← hf]
+    simpa using (sphericalAverage_evenQuarticPolynomial r 0 0 0 0 0 1)
   · exact (hij rfl).elim
 
 /-- Exactness of the finite cubature on *all* coordinate-even homogeneous
