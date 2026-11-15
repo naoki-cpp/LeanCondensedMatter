@@ -39,7 +39,7 @@ structure AuditEntry where
 private def maxReplacementCandidatesPerTarget : Nat := 4
 
 /-- Bound the extra proof search for each target; proof dependencies remain unbounded. -/
-private def maxMathlibDiscoveryProbesPerTarget : Nat := 8
+private def maxMathlibDiscoveryProbesPerTarget : Nat := 3
 
 private def projectModule? (moduleName : Name) : Bool :=
   moduleName.toString.startsWith "LeanCondensedMatter"
@@ -183,23 +183,43 @@ private def discoveryBefore (target source₁ source₂ : PreparedCandidate) : B
     if distance₁ != distance₂ then distance₁ < distance₂
     else source₁.candidate.name.toString < source₂.candidate.name.toString
 
-/-- Return the bounded, highest-ranked candidate set and the count before truncation.
-Direct proof dependencies are excluded here because they are probed separately below. -/
+/-- Maintain only the highest-ranked candidates while scanning a bucket.
+Avoid sorting and allocating every matching equation from Mathlib for each target. -/
+private def selectBestDiscovered (target : PreparedCandidate)
+    (directDependencies : Array Name) (candidates : Array PreparedCandidate)
+    (limit : Nat) (accept : PreparedCandidate → Bool) : Array PreparedCandidate := Id.run do
+  let mut best : Array PreparedCandidate := #[]
+  for candidate in candidates do
+    if directDependencies.contains candidate.candidate.name || !accept candidate then
+      continue
+    best := (best.push candidate).qsort (discoveryBefore target)
+    if best.size > limit then
+      best := (best.toList.take limit).toArray
+  return best
+
+/-- Return the bounded, highest-ranked candidate set and the number of structural matches.
+Exact fingerprints are preferred, and the broad fallback is only probed when slots remain.
+Direct proof dependencies are excluded because they are probed separately below. -/
 private def discoverMathlibCandidates (index : MathlibDiscoveryIndex)
     (target : PreparedCandidate) (directDependencies : Array Name) :
     Array PreparedCandidate × Nat := Id.run do
   unless target.resultHead.isSome && target.argumentHeads.any Option.isSome do
     return (#[], 0)
   let exactKey := discoveryExactKey target
-  let exact := index.exact.getD exactKey #[]
-  let coarse := match discoveryCoarseKey target with
+  let exactCandidates := index.exact.getD exactKey #[]
+  let coarseCandidates := match discoveryCoarseKey target with
     | none => #[]
     | some key => index.coarse.getD key #[]
-  let pool := exact ++ coarse.filter (fun candidate => discoveryExactKey candidate != exactKey)
-  let shapeCandidates := pool.filter (fun candidate =>
-    !directDependencies.contains candidate.candidate.name)
-  let ranked := shapeCandidates.qsort (discoveryBefore target)
-  return ((ranked.toList.take maxMathlibDiscoveryProbesPerTarget).toArray, shapeCandidates.size)
+  let shapeMatches :=
+    if (discoveryCoarseKey target).isSome then coarseCandidates.size else exactCandidates.size
+  let selectedExact := selectBestDiscovered target directDependencies exactCandidates
+    maxMathlibDiscoveryProbesPerTarget (fun _ => true)
+  let slots := maxMathlibDiscoveryProbesPerTarget - selectedExact.size
+  let selectedCoarse :=
+    if slots == 0 then #[]
+    else selectBestDiscovered target directDependencies coarseCandidates slots
+      (fun candidate => discoveryExactKey candidate != exactKey)
+  return (selectedExact ++ selectedCoarse, shapeMatches)
 
 private def sameArgumentHeadSketch
     (left right : Array (Option Name)) : Bool := Id.run do
