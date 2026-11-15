@@ -20,9 +20,9 @@ theorem Summable.tsum_comp_injective_lt_of_exists_not_mem
     {j : κ} (hj : j ∉ Set.range e) (hjpos : 0 < f j) :
     ∑' i, f (e i) < ∑' k, f k := by
   classical
-  have hsub : Summable (fun k : (Set.range e)ᶜ => f (k : κ)) :=
+  have hsub : Summable (fun k : ↥((Set.range e)ᶜ) => f (k : κ)) :=
     hf.comp_injective Subtype.val_injective
-  have hpos : 0 < ∑' k : (Set.range e)ᶜ, f (k : κ) :=
+  have hpos : 0 < ∑' k : ↥((Set.range e)ᶜ), f (k : κ) :=
     hsub.tsum_pos (fun k => hf_nonneg k) ⟨j, hj⟩ hjpos
   have hrange :
       (∑' i, f (e i)) = ∑' k : Set.range e, f (k : κ) := by
