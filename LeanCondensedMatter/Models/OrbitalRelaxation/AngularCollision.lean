@@ -36,15 +36,10 @@ theorem angularCollision_const_mul
     (kernel : Ω → Ω → ℝ) (c : ℝ) (f : Ω → ℝ) (p : Ω) :
     angularCollision kernel (fun q => c * f q) p =
       c * angularCollision kernel f p := by
-  unfold angularCollision
-  calc
-    (∑ q, kernel p q * (c * f q - c * f p)) =
-        ∑ q, c * (kernel p q * (f q - f p)) := by
-          apply Finset.sum_congr rfl
-          intro q _
-          ring
-    _ = c * ∑ q, kernel p q * (f q - f p) := by
-          rw [Finset.mul_sum]
+  simp only [angularCollision, ← mul_sub, Finset.mul_sum]
+  apply Finset.sum_congr rfl
+  intro q _
+  ring
 
 /-- Coordinate direction mode, the finite analogue of a degree-one spherical harmonic. -/
 def coordinateMode (direction : Ω → Fin 3 → ℝ) (i : Fin 3) (p : Ω) : ℝ :=
@@ -102,19 +97,9 @@ theorem collision_coordinate (p : Ω) (i : Fin 3) :
 private theorem quadrupole_gain (p : Ω) (i j : Fin 3) :
     (∑ q, data.kernel p q * quadrupoleMode data.direction i j q) =
       data.secondCoefficient * quadrupoleMode data.direction i j p := by
-  simp only [quadrupoleMode]
-  calc
-    (∑ q, data.kernel p q *
-        (data.direction q i * data.direction q j -
-          if i = j then (1 / 3 : ℝ) else 0)) =
-        (∑ q, data.kernel p q * (data.direction q i * data.direction q j)) -
-          (∑ q, data.kernel p q) * (if i = j then (1 / 3 : ℝ) else 0) := by
-          simp [mul_sub, Finset.sum_sub_distrib, Finset.sum_mul]
-    _ = data.secondCoefficient *
-        (data.direction p i * data.direction p j -
-          if i = j then (1 / 3 : ℝ) else 0) := by
-          rw [data.second_moment p i j, data.total_moment p]
-          split_ifs <;> ring
+  simp only [quadrupoleMode, mul_sub, Finset.sum_sub_distrib, Finset.sum_mul,
+    data.second_moment, data.total_moment]
+  split_ifs <;> ring
 
 /-- The traceless quadratic mode is an eigenfunction of the collision action. -/
 theorem collision_quadrupole (p : Ω) (i j : Fin 3) :
