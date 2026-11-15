@@ -2516,7 +2516,8 @@ theorem ExternalInsertionBlockLayout.sum_connectedBlockFamilies_prod
           convert (Equiv.sum_comp
             (layout.connectedBlockFamilyEquivPi
               (ExternalLabel := ExternalLabel) (InternalLabel := InternalLabel))
-            (fun F => ∏ B, weight B (F B).1)) using 1 <;> rfl
+            (fun F => ∏ B, weight B (F B).1)) using 1
+          rfl
     _ = _ :=
       (Fintype.prod_sum (fun (B : layout.partition.parts)
         (d : {d : ExternalInsertionDiagram
