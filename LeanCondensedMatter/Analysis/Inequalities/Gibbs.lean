@@ -125,14 +125,6 @@ theorem tsum_div_le_one {ι : Type*} {q : ι → ℝ} {Z : ℝ}
   calc (∑' i, q i) * Z⁻¹ ≤ Z * Z⁻¹ := mul_le_mul_of_nonneg_right hsum (inv_nonneg.mpr hZ.le)
     _ = 1 := mul_inv_cancel₀ hZ.ne'
 
-/-- Comparison test packaged with `tsum` monotonicity. -/
-private theorem summable_and_tsum_le_of_nonneg_of_le {ι : Type*} {f g : ι → ℝ}
-    (hf_nonneg : ∀ i, 0 ≤ f i) (hfg : ∀ i, f i ≤ g i) (hg : Summable g) :
-    Summable f ∧ ∑' i, f i ≤ ∑' i, g i :=
-  have hf : Summable f := Summable.of_nonneg_of_le hf_nonneg hfg hg
-  ⟨hf, hf.tsum_mono hg hfg⟩
-
-
 /-- The Gibbs comparison series is summable whenever the normalized probability family,
 energy term, and comparison weights are summable. Its total separates into energy, normalization,
 and comparison-weight contributions. -/
@@ -193,8 +185,9 @@ theorem summable_negMulLog_and_tsum_le_gibbs
     rwa [hp_hasSum.tsum_eq] at hle
   have hnegMulLog_nonneg : ∀ i, 0 ≤ Real.negMulLog (p i) :=
     fun i => Real.negMulLog_nonneg (hp_nonneg i) (hp_le_one i)
-  obtain ⟨hnegMulLog_summable, hsum_le⟩ :=
-    summable_and_tsum_le_of_nonneg_of_le hnegMulLog_nonneg hbound hB_summable
+  have hnegMulLog_summable : Summable (fun i => Real.negMulLog (p i)) :=
+    Summable.of_nonneg_of_le hnegMulLog_nonneg hbound hB_summable
+  have hsum_le := hnegMulLog_summable.tsum_mono hB_summable hbound
   have hqZsum_le : ∑' i, q i / Z ≤ 1 :=
     tsum_div_le_one hq_tsum_le hZ
   have hfinal :
