@@ -369,8 +369,8 @@ theorem ExternalInsertionWickDiagram.slotCongr_dysonAmplitude_eq_orderedDysonAmp
         ((d.slotCongr e).slotCongr e.symm)
         ε β g externalTime
           (((Finset.univ : Finset (Fin n)).orderIsoOfFin rfl).toEquiv.trans e.symm) :=
-      (d.slotCongr e).dysonAmplitude_eq_slotCongr_orderedDysonAmplitude
-        e.symm ε β hβ g externalTime
+      ExternalInsertionWickDiagram.dysonAmplitude_eq_slotCongr_orderedDysonAmplitude
+        (d.slotCongr e) e.symm ε β hβ g externalTime
     _ = _ := by rw [hback]
 
 open Classical in
