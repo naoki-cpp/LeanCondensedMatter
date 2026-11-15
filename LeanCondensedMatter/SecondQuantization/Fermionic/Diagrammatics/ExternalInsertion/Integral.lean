@@ -492,5 +492,95 @@ theorem ExternalInsertionBlockLayout.sum_ownerSlotCongr_connectedDyson_eq_ordere
     (fullInteractionSlotEquiv e) ε β hβ g externalTime
 
 
+
+open Classical in
+/-- The physical connected-block Dyson sum with a prescribed **independent
+external source label on every block** is reindexed across any
+interaction-owner relabeling. Exact block source labels are unchanged;
+the global Dyson order is transported, not replaced by the canonical
+order of a different physical diagram.
+
+This label-aware version is the form needed for the fixed-external-
+partition coefficientwise signed moment identity. -/
+theorem ExternalInsertionBlockLayout.sum_ownerSlotCongr_connectedDyson_eq_ordered_localLabels
+    {E n : ℕ}
+    (layout : ExternalInsertionBlockLayout E n) (e : Fin n ≃ Fin n)
+    (localLabels : ∀ B : layout.partition.parts,
+      Fin (2 * ((B : Finset (Fin (2 * E))).card / 2)) →
+        ExternalFieldLabel Mode)
+    (ε : Mode → ℝ) (β : ℝ) (hβ : 0 ≤ β)
+    (g : QuarticVertexLabel Mode → ℂ)
+    (externalTime : Fin (2 * E) → ℝ) :
+    (∑ G : (layout.ownerSlotCongr e).ConnectedBlockFamily
+        (ExternalLabel := ExternalFieldLabel Mode)
+        (InternalLabel := QuarticVertexLabel Mode),
+      if ∀ B : (layout.ownerSlotCongr e).partition.parts,
+          (G.1 B).externalLabel = localLabels B then
+        ExternalInsertionWickDiagram.dysonAmplitude
+          ((layout.ownerSlotCongr e).assembleDiagram
+            (Finset.univ : Finset (Fin n)) G.1)
+          ε β g externalTime
+      else 0) =
+      ∑ F : layout.ConnectedBlockFamily
+          (ExternalLabel := ExternalFieldLabel Mode)
+          (InternalLabel := QuarticVertexLabel Mode),
+        if ∀ B : layout.partition.parts,
+            (F.1 B).externalLabel = localLabels B then
+          ExternalInsertionWickDiagram.orderedDysonAmplitude
+            (layout.assembleDiagram (Finset.univ : Finset (Fin n)) F.1)
+            ε β g externalTime
+            (((Finset.univ : Finset (Fin n)).orderIsoOfFin rfl).toEquiv.trans
+              (fullInteractionSlotEquiv e).symm)
+        else 0 := by
+  let weight : (layout.ownerSlotCongr e).ConnectedBlockFamily
+      (ExternalLabel := ExternalFieldLabel Mode)
+      (InternalLabel := QuarticVertexLabel Mode) → ℂ :=
+    fun G =>
+      if ∀ B : (layout.ownerSlotCongr e).partition.parts,
+          (G.1 B).externalLabel = localLabels B then
+        ExternalInsertionWickDiagram.dysonAmplitude
+          ((layout.ownerSlotCongr e).assembleDiagram
+            (Finset.univ : Finset (Fin n)) G.1)
+          ε β g externalTime
+      else 0
+  change (∑ G, weight G) = _
+  rw [← layout.sum_ownerSlotCongrConnectedBlockFamilies e weight]
+  apply Finset.sum_congr rfl
+  intro F _
+  dsimp [weight]
+  have hlabel (B : layout.partition.parts) :
+      ((layout.ownerSlotCongrConnectedBlockFamilyEquiv e F).1 B).externalLabel =
+        (F.1 B).externalLabel := by
+    rw [layout.ownerSlotCongrConnectedBlockFamilyEquiv_apply e F B]
+    rfl
+  have hcondition :
+      (∀ B : (layout.ownerSlotCongr e).partition.parts,
+        ((layout.ownerSlotCongrConnectedBlockFamilyEquiv e F).1 B).externalLabel =
+          localLabels B) ↔
+        (∀ B : layout.partition.parts, (F.1 B).externalLabel = localLabels B) := by
+    simp only [hlabel]
+  have hfamily :
+      (layout.ownerSlotCongrConnectedBlockFamilyEquiv e F).1 =
+        layout.ownerSlotCongrBlockFamily e F.1 := by
+    funext B
+    exact layout.ownerSlotCongrConnectedBlockFamilyEquiv_apply e F B
+  have hamplitude :
+      ExternalInsertionWickDiagram.dysonAmplitude
+          ((layout.ownerSlotCongr e).assembleDiagram
+            (Finset.univ : Finset (Fin n))
+            (layout.ownerSlotCongrConnectedBlockFamilyEquiv e F).1)
+          ε β g externalTime =
+        ExternalInsertionWickDiagram.orderedDysonAmplitude
+          (layout.assembleDiagram (Finset.univ : Finset (Fin n)) F.1)
+          ε β g externalTime
+          (((Finset.univ : Finset (Fin n)).orderIsoOfFin rfl).toEquiv.trans
+            (fullInteractionSlotEquiv e).symm) := by
+    rw [hfamily, layout.assembleDiagram_ownerSlotCongr e F.1]
+    exact ExternalInsertionWickDiagram.slotCongr_dysonAmplitude_eq_orderedDysonAmplitude
+      (layout.assembleDiagram (Finset.univ : Finset (Fin n)) F.1)
+      (fullInteractionSlotEquiv e) ε β hβ g externalTime
+  exact if_congr hcondition hamplitude rfl
+
+
 end Fermionic
 end SecondQuantization
