@@ -542,7 +542,7 @@ theorem polarFourierZerothAngularKernel_hasDerivAt (z : ℝ) :
     (fun x : ℝ => ∫ θ in (0 : ℝ)..(2 * Real.pi),
       polarFourierRadialPhase x θ)
     (Complex.I * polarFourierFirstCosineAngularKernel z) z
-  exact h
+  simpa only [mul_one] using h
 
 /-- The derivative of the regularized hypergeometric series with bottom parameter 1
 has bottom parameter 2. This is the coefficient identity behind `J₀' = -J₁`. -/
