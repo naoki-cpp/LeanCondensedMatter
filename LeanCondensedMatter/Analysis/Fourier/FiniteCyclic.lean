@@ -44,17 +44,17 @@ theorem orthonormal_fourierMode : Orthonormal ℂ (fourierMode (N := N)) := by
   rw [PiLp.inner_apply]
   simp_rw [hterm]
   rw [← Finset.mul_sum]
+  have hsum : (∑ j : ZMod N, stdAddChar ((r - q) * j)) =
+      if r - q = 0 then (N : ℂ) else 0 := by
+    simpa only [mul_comm (r - q), ZMod.card] using
+      (AddChar.sum_mulShift (r - q) (isPrimitive_stdAddChar N))
+  rw [hsum]
   by_cases h : q = r
   · subst r
-    have hsum : (∑ j : ZMod N, stdAddChar ((q - q) * j)) = (N : ℂ) := by
-      simp [ZMod.card]
-    rw [hsum]
-    simp only [ite_true]
+    simp only [sub_self, ite_true]
     field_simp
     exact hsq.symm
-  · have hdiff : r - q ≠ 0 := sub_ne_zero.mpr (Ne.symm h)
-    rw [AddChar.sum_eq_zero_of_ne_one (isPrimitive_stdAddChar N hdiff)]
-    simp [h]
+  · simp [sub_eq_zero, Ne.symm h, h]
 
 /-- The normalized Fourier modes as a complete orthonormal basis. -/
 def fourierBasis : OrthonormalBasis (ZMod N) ℂ (EuclideanSpace ℂ (ZMod N)) :=
