@@ -129,7 +129,8 @@ theorem norm_connectedTwoGreen_sub_resummedFreeLadder_le
   have hdiff :
       firstRung - freeLeft * (dressed - vertex) * freeRight =
         -(freeLeft * ladder (dressed - vertex) * freeRight) := by
-    rw [hfirst, hdecomp]
+    rw [hfirst]
+    nth_rw 1 [hdecomp]
     noncomm_ring
   have htailSandwich :
       ‖firstRung - freeLeft * (dressed - vertex) * freeRight‖ ≤
