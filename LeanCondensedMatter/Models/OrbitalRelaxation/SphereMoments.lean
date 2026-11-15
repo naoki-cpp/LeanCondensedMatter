@@ -132,26 +132,9 @@ private theorem sphericalAverage_evenQuarticPolynomial (r a b c d e f : ℝ) :
       simp [evenQuarticPolynomial, sphericalMomentum, U, V, W]
       ring
     simp_rw [hpoint]
-    have hA : IntervalIntegrable
-        (fun φ : ℝ => (a * U) * Real.cos φ ^ 4) volume 0 (2 * Real.pi) := Continuous.intervalIntegrable (by fun_prop) _ _
-    have hB : IntervalIntegrable
-        (fun φ : ℝ => (b * U) * Real.sin φ ^ 4) volume 0 (2 * Real.pi) := Continuous.intervalIntegrable (by fun_prop) _ _
-    have hC : IntervalIntegrable
-        (fun _φ : ℝ => c * V) volume 0 (2 * Real.pi) :=
-      continuous_const.intervalIntegrable _ _
-    have hD : IntervalIntegrable
-        (fun φ : ℝ => (d * U) * (Real.sin φ ^ 2 * Real.cos φ ^ 2))
-        volume 0 (2 * Real.pi) := Continuous.intervalIntegrable (by fun_prop) _ _
-    have hE : IntervalIntegrable
-        (fun φ : ℝ => (e * W) * Real.cos φ ^ 2) volume 0 (2 * Real.pi) := Continuous.intervalIntegrable (by fun_prop) _ _
-    have hF : IntervalIntegrable
-        (fun φ : ℝ => (f * W) * Real.sin φ ^ 2) volume 0 (2 * Real.pi) := Continuous.intervalIntegrable (by fun_prop) _ _
-    rw [
-      intervalIntegral.integral_add ((((hA.add hB).add hC).add hD).add hE) hF,
-      intervalIntegral.integral_add (((hA.add hB).add hC).add hD) hE,
-      intervalIntegral.integral_add ((hA.add hB).add hC) hD,
-      intervalIntegral.integral_add (hA.add hB) hC,
-      intervalIntegral.integral_add hA hB]
+    repeat' rw [intervalIntegral.integral_add
+      (Continuous.intervalIntegrable (by fun_prop) _ _)
+      (Continuous.intervalIntegrable (by fun_prop) _ _)]
     simp only [intervalIntegral.integral_const_mul, intervalIntegral.integral_const,
       integral_cos_four_full, integral_sin_four_full,
       integral_sin_sq_mul_cos_sq_full, integral_cos_sq_full, integral_sin_sq_full]
@@ -159,21 +142,9 @@ private theorem sphericalAverage_evenQuarticPolynomial (r a b c d e f : ℝ) :
     ring
   unfold sphericalAverage
   simp_rw [hφ]
-  have hA : IntervalIntegrable
-      (fun θ : ℝ =>
-        (r ^ 4 * Real.pi * (3 * (a + b) + d) / 4) * Real.sin θ ^ 5)
-      volume 0 Real.pi := Continuous.intervalIntegrable (by fun_prop) _ _
-  have hB : IntervalIntegrable
-      (fun θ : ℝ =>
-        (r ^ 4 * Real.pi * (2 * c)) * (Real.sin θ * Real.cos θ ^ 4))
-      volume 0 Real.pi := Continuous.intervalIntegrable (by fun_prop) _ _
-  have hC : IntervalIntegrable
-      (fun θ : ℝ =>
-        (r ^ 4 * Real.pi * (e + f)) *
-          (Real.sin θ ^ 3 * Real.cos θ ^ 2))
-      volume 0 Real.pi := Continuous.intervalIntegrable (by fun_prop) _ _
-  rw [intervalIntegral.integral_add (hA.add hB) hC,
-    intervalIntegral.integral_add hA hB]
+  repeat' rw [intervalIntegral.integral_add
+    (Continuous.intervalIntegrable (by fun_prop) _ _)
+    (Continuous.intervalIntegrable (by fun_prop) _ _)]
   simp only [intervalIntegral.integral_const_mul,
     integral_sin_five, integral_sin_mul_cos_four, integral_sin_three_mul_cos_sq]
   have hpi : Real.pi ≠ 0 := Real.pi_ne_zero
