@@ -2718,11 +2718,12 @@ theorem ExternalInsertionBlockLayout.sum_vacuumFree_eq_sum_connectedBlockFamilie
           (ExternalLabel := ExternalLabel) (InternalLabel := InternalLabel) anchor,
         weight (ExternalInsertionBlockLayout.assembleConnectedBlockFamily p).1 := by
   classical
-  simpa only [ExternalInsertionBlockLayout.connectedAssemblyFiniteDomain] using
-    (sum_image_equiv_symm
-      (ExternalInsertionBlockLayout.connectedAssemblyEquiv
-        (ExternalLabel := ExternalLabel) (InternalLabel := InternalLabel) anchor).symm
-      Finset.univ (fun d => weight d.1)).symm
+  unfold ExternalInsertionBlockLayout.connectedAssemblyFiniteDomain
+  convert (sum_image_equiv_symm
+    (ExternalInsertionBlockLayout.connectedAssemblyEquiv
+      (ExternalLabel := ExternalLabel) (InternalLabel := InternalLabel) anchor).symm
+    Finset.univ (fun d => weight d.1)).symm using 1
+  rfl
 
 
 open Classical in
