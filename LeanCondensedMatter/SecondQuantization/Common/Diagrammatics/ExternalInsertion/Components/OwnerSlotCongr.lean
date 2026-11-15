@@ -190,9 +190,17 @@ theorem ExternalInsertionBlockLayout.ofFamilyShuffle_ownerLocal_strictMono
   classical
   intro a b hab
   have ha : (σ.slotEquiv.symm a.1).1 = B := by
-    exact (Finset.mem_filter.mp a.2).2
+    have howner :
+        (ExternalInsertionBlockLayout.ofFamilyShuffle π heven σ).interactionOwner a.1 = B := by
+      simpa only [ExternalInsertionBlockLayout.interactionBlock,
+        Finset.mem_filter, Finset.mem_univ, true_and] using a.2
+    exact howner
   have hb : (σ.slotEquiv.symm b.1).1 = B := by
-    exact (Finset.mem_filter.mp b.2).2
+    have howner :
+        (ExternalInsertionBlockLayout.ofFamilyShuffle π heven σ).interactionOwner b.1 = B := by
+      simpa only [ExternalInsertionBlockLayout.interactionBlock,
+        Finset.mem_filter, Finset.mem_univ, true_and] using b.2
+    exact howner
   change (σ.ambientRelabel τ) a.1 < (σ.ambientRelabel τ) b.1
   exact (σ.ambientRelabel_strictMono_ownerFiber τ B)
     (show (⟨a.1, ha⟩ :
@@ -300,40 +308,10 @@ theorem ExternalInsertionBlockLayout.ofFamilyShuffle_fixedSizeStandardizedFamily
             (Finset.univ : Finset (Fin N)) B)
           (ExternalInsertionBlockLayout.ofFamilyShuffle_interactionBlock_card
             π heven σ B)) := by
-  rfl
-
-/-- Transporting a *whole preconnected Wick-block family* between two
-physical owner shuffles and then standardizing any chosen local block
-agrees with directly standardizing the original local Wick diagram.
-All source labels, interaction labels, and Wick pairing legs are
-retained, including blocks with no interaction vertices. -/
-theorem ExternalInsertionBlockLayout.ofFamilyShuffle_connectedFamily_standardization
-    {ExternalLabel InternalLabel : Type*}
-    (π : Finpartition (Finset.univ : Finset (Fin (2 * E))))
-    (heven : ∀ B : π.parts, Even (B : Finset (Fin (2 * E))).card)
-    {size : π.parts → ℕ}
-    (σ τ : Combinatorics.FamilySlotShuffleTo size N)
-    (B : π.parts)
-    (hσ : ((ExternalInsertionBlockLayout.ofFamilyShuffle π heven σ).interactionBlock
-      (Finset.univ : Finset (Fin N)) B).card = size B)
-    (hτ : (((ExternalInsertionBlockLayout.ofFamilyShuffle π heven σ).ownerSlotCongr
-      (σ.ambientRelabel τ)).interactionBlock
-      (Finset.univ : Finset (Fin N)) B).card = size B)
-    (F : (ExternalInsertionBlockLayout.ofFamilyShuffle π heven σ).ConnectedBlockFamily
-      (ExternalLabel := ExternalLabel) (InternalLabel := InternalLabel)) :
-    (((((ExternalInsertionBlockLayout.ofFamilyShuffle π heven σ).
-      ownerSlotCongrConnectedBlockFamilyEquiv (σ.ambientRelabel τ)) F).1 B).slotCongr
-        (Combinatorics.standardSlotEquivOfCardEq
-          (((ExternalInsertionBlockLayout.ofFamilyShuffle π heven σ).ownerSlotCongr
-            (σ.ambientRelabel τ)).interactionBlock
-            (Finset.univ : Finset (Fin N)) B) hτ)) =
-      (F.1 B).slotCongr
-        (Combinatorics.standardSlotEquivOfCardEq
-          ((ExternalInsertionBlockLayout.ofFamilyShuffle π heven σ).interactionBlock
-            (Finset.univ : Finset (Fin N)) B) hσ) := by
-  rw [ExternalInsertionBlockLayout.ownerSlotCongrConnectedBlockFamilyEquiv_apply]
-  exact ExternalInsertionBlockLayout.ofFamilyShuffle_localDiagram_standardization
-    π heven σ τ B hσ hτ (F.1 B)
+  simp [ExternalInsertionBlockLayout.ofFamilyShuffle_fixedSizeStandardizedFamilyEquiv,
+    ExternalInsertionBlockLayout.connectedBlockFamilyEquivPi,
+    ExternalInsertionDiagram.preconnectedSlotCongrEquiv,
+    ExternalInsertionDiagram.slotCongrEquiv]
 
 /-- View an ambient permutation on the full Fin N slot set as a
 permutation of its corresponding full interaction slot subtype. -/
@@ -657,6 +635,40 @@ theorem ExternalInsertionBlockLayout.sum_ownerSlotCongrConnectedBlockFamilies
         weight G := by
   exact Equiv.sum_comp
     (layout.ownerSlotCongrConnectedBlockFamilyEquiv e) weight
+
+
+/-- Transporting a *whole preconnected Wick-block family* between two
+physical owner shuffles and then standardizing any chosen local block
+agrees with directly standardizing the original local Wick diagram.
+All source labels, interaction labels, and Wick pairing legs are
+retained, including blocks with no interaction vertices. -/
+theorem ExternalInsertionBlockLayout.ofFamilyShuffle_connectedFamily_standardization
+    {ExternalLabel InternalLabel : Type*}
+    (π : Finpartition (Finset.univ : Finset (Fin (2 * E))))
+    (heven : ∀ B : π.parts, Even (B : Finset (Fin (2 * E))).card)
+    {size : π.parts → ℕ}
+    (σ τ : Combinatorics.FamilySlotShuffleTo size N)
+    (B : π.parts)
+    (hσ : ((ExternalInsertionBlockLayout.ofFamilyShuffle π heven σ).interactionBlock
+      (Finset.univ : Finset (Fin N)) B).card = size B)
+    (hτ : (((ExternalInsertionBlockLayout.ofFamilyShuffle π heven σ).ownerSlotCongr
+      (σ.ambientRelabel τ)).interactionBlock
+      (Finset.univ : Finset (Fin N)) B).card = size B)
+    (F : (ExternalInsertionBlockLayout.ofFamilyShuffle π heven σ).ConnectedBlockFamily
+      (ExternalLabel := ExternalLabel) (InternalLabel := InternalLabel)) :
+    (((((ExternalInsertionBlockLayout.ofFamilyShuffle π heven σ).
+      ownerSlotCongrConnectedBlockFamilyEquiv (σ.ambientRelabel τ)) F).1 B).slotCongr
+        (Combinatorics.standardSlotEquivOfCardEq
+          (((ExternalInsertionBlockLayout.ofFamilyShuffle π heven σ).ownerSlotCongr
+            (σ.ambientRelabel τ)).interactionBlock
+            (Finset.univ : Finset (Fin N)) B) hτ)) =
+      (F.1 B).slotCongr
+        (Combinatorics.standardSlotEquivOfCardEq
+          ((ExternalInsertionBlockLayout.ofFamilyShuffle π heven σ).interactionBlock
+            (Finset.univ : Finset (Fin N)) B) hσ) := by
+  rw [ExternalInsertionBlockLayout.ownerSlotCongrConnectedBlockFamilyEquiv_apply]
+  exact ExternalInsertionBlockLayout.ofFamilyShuffle_localDiagram_standardization
+    π heven σ τ B hσ hτ (F.1 B)
 
 
 end Common
