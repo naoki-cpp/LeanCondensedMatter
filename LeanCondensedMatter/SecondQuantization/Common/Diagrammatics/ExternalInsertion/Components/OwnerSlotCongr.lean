@@ -116,6 +116,21 @@ noncomputable def ExternalInsertionBlockLayout.ofFamilyShuffle
   evenBlocks := heven
   interactionOwner v := (σ.slotEquiv.symm v).1
 
+/-- The layout reconstructed by the *actual physical fixed-partition
+size/shuffle equivalence* is precisely the one obtained by directly
+assigning each interaction vertex to its shuffled owner. This connects
+owner transport to the domain of the genuine fixed-partition Dyson sum. -/
+@[simp]
+theorem ExternalInsertionBlockLayout.fixedPartitionSizeShuffleEquiv_symm_layout
+    (π : Finpartition (Finset.univ : Finset (Fin (2 * E))))
+    (heven : ∀ B : π.parts, Even (B : Finset (Fin (2 * E))).card)
+    {size : π.parts → ℕ}
+    (σ : Combinatorics.FamilySlotShuffleTo size N) :
+    ((ExternalInsertionBlockLayout.fixedPartitionSizeShuffleEquiv
+      (E := E) (N := N) π heven).symm ⟨size, σ⟩).1 =
+      ExternalInsertionBlockLayout.ofFamilyShuffle π heven σ := by
+  rfl
+
 /-- Switching a fixed-size physical owner shuffle is exactly
 transporting the interaction owner function by the ambient permutation.
 The external source partition remains literally the same. -/
