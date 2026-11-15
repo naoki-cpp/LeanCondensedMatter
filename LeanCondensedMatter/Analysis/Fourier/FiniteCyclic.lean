@@ -26,12 +26,6 @@ theorem stdAddChar_conj (j : ZMod N) :
   rw [stdAddChar_apply, stdAddChar_apply, AddChar.map_neg_eq_inv,
     Circle.coe_inv_eq_conj]
 
-private theorem sum_stdAddChar_mul (q : ZMod N) :
-    ∑ j : ZMod N, stdAddChar (q * j) = if q = 0 then (N : ℂ) else 0 := by
-  split_ifs with h
-  · simp [h, ZMod.card]
-  · exact AddChar.sum_eq_zero_of_ne_one (isPrimitive_stdAddChar N h)
-
 theorem orthonormal_fourierMode : Orthonormal ℂ (fourierMode (N := N)) := by
   rw [orthonormal_iff_ite]
   intro q r
@@ -49,13 +43,18 @@ theorem orthonormal_fourierMode : Orthonormal ℂ (fourierMode (N := N)) := by
     ring
   rw [PiLp.inner_apply]
   simp_rw [hterm]
-  rw [← Finset.mul_sum, sum_stdAddChar_mul]
+  rw [← Finset.mul_sum]
   by_cases h : q = r
   · subst r
-    simp only [sub_self, ite_true]
+    have hsum : (∑ j : ZMod N, stdAddChar ((q - q) * j)) = (N : ℂ) := by
+      simp [ZMod.card]
+    rw [hsum]
+    simp only [ite_true]
     field_simp
     exact hsq.symm
-  · simp [sub_eq_zero, Ne.symm h, h]
+  · have hdiff : r - q ≠ 0 := sub_ne_zero.mpr (Ne.symm h)
+    rw [AddChar.sum_eq_zero_of_ne_one (isPrimitive_stdAddChar N hdiff)]
+    simp [h]
 
 /-- The normalized Fourier modes as a complete orthonormal basis. -/
 def fourierBasis : OrthonormalBasis (ZMod N) ℂ (EuclideanSpace ℂ (ZMod N)) :=
