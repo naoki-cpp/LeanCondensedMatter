@@ -208,8 +208,10 @@ a declaration without checking its current uses and compiling affected consumers
 project proof. It now builds a one-time index over imported Mathlib theorem conclusions and selects
 candidate declarations with matching result heads, arity, and argument-head sketches. A relaxed
 first-argument-head index admits related equations whose right-hand sides differ. Candidates
-are ranked by argument-head agreement and binder-count distance; at most eight *additional*
+are ranked by argument-head agreement and binder-count distance; at most three *additional*
 Mathlib candidates per project theorem are checked using Lean's direct-application engine.
+Only the best few candidates are retained while traversing each fingerprint bucket, avoiding a full
+sort of broad Mathlib conclusion classes.
 Previously used Mathlib proof dependencies are checked separately without this discovery limit.
 
 The generated `theorem-replacements.json` includes per-target
