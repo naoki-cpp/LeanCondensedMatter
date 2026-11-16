@@ -209023,8 +209023,8 @@
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -209036,19 +209036,15 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Validation.GappedTwoSiteDimer.0.SecondQuantization.Fermionic.Validation.twoSiteGappedBenchmark_excited_inner_self",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Validation.GappedTwoSiteDimer.0.SecondQuantization.Fermionic.Validation.twoSiteGappedBenchmark_ground_inner_excited",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Validation.GappedTwoSiteDimer.0.SecondQuantization.Fermionic.Validation.twoSiteGappedBenchmark_ground_inner_self"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Validation.GappedTwoSiteDimer.0.SecondQuantization.Fermionic.Validation.inner_twoSiteDimer_linear_combination"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Validation.GappedTwoSiteDimer.0.SecondQuantization.Fermionic.Validation.twoSiteGappedBenchmark_excited_inner_self",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Validation.GappedTwoSiteDimer.0.SecondQuantization.Fermionic.Validation.twoSiteGappedBenchmark_ground_inner_excited",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Validation.GappedTwoSiteDimer.0.SecondQuantization.Fermionic.Validation.twoSiteGappedBenchmark_ground_inner_self"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Validation.GappedTwoSiteDimer.0.SecondQuantization.Fermionic.Validation.inner_twoSiteDimer_linear_combination"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -209063,7 +209059,7 @@
   },
   {
     "terminal": false,
-    "statement": "(starRingEnd ℂ) 2 = 2",
+    "statement": "∀ (a b c d : ℂ),\n  inner ℂ\n      (a • SecondQuantization.Fermionic.Validation.twoSiteDimerSiteState 0 +\n        b • SecondQuantization.Fermionic.Validation.twoSiteDimerSiteState 1)\n      (c • SecondQuantization.Fermionic.Validation.twoSiteDimerSiteState 0 +\n        d • SecondQuantization.Fermionic.Validation.twoSiteDimerSiteState 1) =\n    (starRingEnd ℂ) a * c + (starRingEnd ℂ) b * d",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -209075,7 +209071,7 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Validation.GappedTwoSiteDimer.0.SecondQuantization.Fermionic.Validation.star_two",
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Validation.GappedTwoSiteDimer.0.SecondQuantization.Fermionic.Validation.inner_twoSiteDimer_linear_combination",
     "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Validation.GappedTwoSiteDimer",
     "externalAxioms": [],
     "docString": null,
@@ -209086,7 +209082,9 @@
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Validation.GappedTwoSiteDimer.0.SecondQuantization.Fermionic.Validation.twoSiteGappedBenchmark_ground_inner_excited",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Validation.GappedTwoSiteDimer.0.SecondQuantization.Fermionic.Validation.twoSiteGappedBenchmark_ground_inner_self"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Validation.GappedTwoSiteDimer.0.SecondQuantization.Fermionic.Validation.inner_twoSiteDimerSiteState"
+    ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
@@ -209267,8 +209265,7 @@
       "SecondQuantization.Fermionic.Validation.twoSiteGappedBenchmarkTable_current_one_zero_from_operator"
     ],
     "dependencies": [
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Validation.GappedTwoSiteDimer.0.SecondQuantization.Fermionic.Validation.inner_twoSiteDimerSiteState",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Validation.GappedTwoSiteDimer.0.SecondQuantization.Fermionic.Validation.star_two"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Validation.GappedTwoSiteDimer.0.SecondQuantization.Fermionic.Validation.inner_twoSiteDimer_linear_combination"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -209312,8 +209309,7 @@
       "SecondQuantization.Fermionic.Validation.twoSiteGappedBenchmark_contactExpectation"
     ],
     "dependencies": [
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Validation.GappedTwoSiteDimer.0.SecondQuantization.Fermionic.Validation.inner_twoSiteDimerSiteState",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Validation.GappedTwoSiteDimer.0.SecondQuantization.Fermionic.Validation.star_two"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Validation.GappedTwoSiteDimer.0.SecondQuantization.Fermionic.Validation.inner_twoSiteDimer_linear_combination"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -209358,8 +209354,7 @@
       "SecondQuantization.Fermionic.Validation.twoSiteGappedBenchmark_contactExpectation"
     ],
     "dependencies": [
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Validation.GappedTwoSiteDimer.0.SecondQuantization.Fermionic.Validation.inner_twoSiteDimerSiteState",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Validation.GappedTwoSiteDimer.0.SecondQuantization.Fermionic.Validation.star_two"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Validation.GappedTwoSiteDimer.0.SecondQuantization.Fermionic.Validation.inner_twoSiteDimer_linear_combination"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
