@@ -95,14 +95,6 @@ theorem term_at_zero (V : ℝ → A) (lam : ℂ) (n : ℕ) :
     simp [term]
   · simp [term, coeff_at_zero, hn]
 
-omit [CompleteSpace A] in
-private theorem term_neg_neg (V : ℝ → A) (lam : ℂ) (τ : ℝ) (n : ℕ) :
-    term (fun σ => -V σ) (-lam) τ n = term V lam τ n := by
-  rw [term, term, coeff_neg, smul_smul]
-  congr 1
-  rw [← mul_pow]
-  simp
-
 /-- The formal norm-topological Dyson evolution, defined as the `tsum` of weighted coefficients. -/
 noncomputable def evolution (V : ℝ → A) (lam : ℂ) (τ : ℝ) : A :=
   ∑' n : ℕ, term V lam τ n
@@ -133,7 +125,10 @@ theorem evolution_neg_neg (V : ℝ → A) (lam : ℂ) (τ : ℝ) :
   rw [evolution, evolution]
   apply tsum_congr
   intro n
-  exact term_neg_neg V lam τ n
+  rw [term, term, coeff_neg, smul_smul]
+  congr 1
+  rw [← mul_pow]
+  simp
 
 /-- The scalar exponential-series majorant `(M τ)ⁿ / n!`. -/
 noncomputable def majorant (M τ : ℝ) (n : ℕ) : ℝ :=
