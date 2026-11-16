@@ -117,14 +117,6 @@ theorem negMulLog_eq_iff_of_neg_log_le {p q Z u : ℝ}
     rw [hlogdiv] at hscalar
     nlinarith
 
-/-- The sum of `q i / Z` is at most one when `∑' i, q i ≤ Z` and `Z > 0`. -/
-theorem tsum_div_le_one {ι : Type*} {q : ι → ℝ} {Z : ℝ}
-    (hsum : ∑' i, q i ≤ Z) (hZ : 0 < Z) : ∑' i, q i / Z ≤ 1 := by
-  rw [show (∑' i, q i / Z) = (∑' i, q i) * Z⁻¹ by
-    rw [← tsum_mul_right]; exact tsum_congr fun i => div_eq_mul_inv _ _]
-  calc (∑' i, q i) * Z⁻¹ ≤ Z * Z⁻¹ := mul_le_mul_of_nonneg_right hsum (inv_nonneg.mpr hZ.le)
-    _ = 1 := mul_inv_cancel₀ hZ.ne'
-
 /-- The Gibbs comparison series is summable whenever the normalized probability family,
 energy term, and comparison weights are summable. Its total separates into energy, normalization,
 and comparison-weight contributions. -/
@@ -188,8 +180,9 @@ theorem summable_negMulLog_and_tsum_le_gibbs
   have hnegMulLog_summable : Summable (fun i => Real.negMulLog (p i)) :=
     Summable.of_nonneg_of_le hnegMulLog_nonneg hbound hB_summable
   have hsum_le := hnegMulLog_summable.tsum_mono hB_summable hbound
-  have hqZsum_le : ∑' i, q i / Z ≤ 1 :=
-    tsum_div_le_one hq_tsum_le hZ
+  have hqZsum_le : ∑' i, q i / Z ≤ 1 := by
+    rw [tsum_div_const]
+    exact (div_le_one₀ hZ).2 hq_tsum_le
   have hfinal :
       ∑' i, Real.negMulLog (p i) ≤
         β * (∑' i, p i * energy i) + Real.log Z := by
@@ -230,7 +223,9 @@ theorem tsum_negMulLog_eq_gibbs_iff
     have hsum_le := hentropy.tsum_le_tsum hbound hB
     rw [heq, hBsum] at hsum_le
     have hqZsum : (∑' i, q i / Z) = 1 :=
-      le_antisymm (tsum_div_le_one hq_tsum_le hZ) (by linarith)
+      le_antisymm (by
+        rw [tsum_div_const]
+        exact (div_le_one₀ hZ).2 hq_tsum_le) (by linarith)
     have hqsum : (∑' i, q i) = Z := by
       have hdiv : (∑' i, q i) / Z = 1 := by
         rw [← tsum_div_const]
