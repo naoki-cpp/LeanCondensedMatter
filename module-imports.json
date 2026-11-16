@@ -1527,7 +1527,7 @@
       "name": "LeanCondensedMatter.Combinatorics.SetPartition.SubsetSplit",
       "sourceFile": "LeanCondensedMatter/Combinatorics/SetPartition/SubsetSplit.lean",
       "imports": [],
-      "externalImportCount": 2
+      "externalImportCount": 1
     },
     {
       "name": "LeanCondensedMatter.Combinatorics.SetPartition.SumEquivPartition",

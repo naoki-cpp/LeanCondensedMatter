@@ -6870,13 +6870,59 @@
     "dependents": [
       "SecondQuantization.Common.BlochDeDominicis.Pairing.evaluation_ofSplit_eq_positionInversions_mul"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Combinatorics.Pairing.prod_pairs_ofSplit_normalized"
+    ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Common.BlochDeDominicis.Pairing.evaluation_ofSplit_eq_positionInversions_mul"
     ],
     "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {a b n : ℕ} {R : Type u_1} [inst : CommMonoid R] (e : Combinatorics.PositionSplitting a b n)\n  (P : Combinatorics.Pairing a) (Q : Combinatorics.Pairing b) (value : Fin (2 * n) → Fin (2 * n) → R),\n  ∏ pr ∈ (Combinatorics.Pairing.ofSplit e P Q).pairs, value pr.1 pr.2 =\n    (∏ pr,\n        value (↑((Combinatorics.Pairing.ofSplitNormalizedPairEquiv e P Q) (Sum.inl pr))).1\n          (↑((Combinatorics.Pairing.ofSplitNormalizedPairEquiv e P Q) (Sum.inl pr))).2) *\n      ∏ pr,\n        value (↑((Combinatorics.Pairing.ofSplitNormalizedPairEquiv e P Q) (Sum.inr pr))).1\n          (↑((Combinatorics.Pairing.ofSplitNormalizedPairEquiv e P Q) (Sum.inr pr))).2",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "Combinatorics.Pairing.prod_pairs_ofSplit_normalized",
+    "module": "LeanCondensedMatter.Combinatorics.PerfectPairing.SplitNormalizedPairs",
+    "externalAxioms": [],
+    "docString": "Reindex a contraction product of a binary split directly by the normalized\npairs of its two parts, retaining the *ambient* orientation of every pair.\nThe local values may depend on the normalized pair itself, rather than on\nan arbitrary endpoint function. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "Combinatorics.Pairing.prod_pairs_ofSplit",
+      "SecondQuantization.Fermionic.externalInsertionOfSlotSplit_prod_mixedPairContractions_eq_left_mul_orientedVacuum"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "Combinatorics.Pairing.prod_pairs_ofSplit",
+      "SecondQuantization.Fermionic.externalInsertionOfSlotSplit_prod_mixedPairContractions_eq_left_mul_orientedVacuum"
+    ],
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -122378,7 +122424,9 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [],
-    "dependencies": [],
+    "dependencies": [
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.BlockAssembly.0.SecondQuantization.Common.sum_image_equiv_symm"
+    ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [],
@@ -122418,7 +122466,9 @@
     "dependents": [
       "SecondQuantization.Common.ExternalInsertionBlockLayout.sum_vacuumFree_fixedPartition_eq_sizes_shuffles"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.BlockAssembly.0.SecondQuantization.Common.sum_image_equiv_symm"
+    ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
@@ -122460,7 +122510,9 @@
     "dependents": [
       "SecondQuantization.Fermionic.sum_fixedPartitionDysonAmplitude_eq_standardizedOrderedDysonAmplitude"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.BlockAssembly.0.SecondQuantization.Common.sum_image_equiv_symm"
+    ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
@@ -122627,7 +122679,9 @@
       "SecondQuantization.Common.ExternalInsertionBlockLayout.sum_externalPartitionFiber_eq_sum_connectedBlockFamilies",
       "SecondQuantization.Fermionic.vacuumFreeExternalInsertionDysonCoefficient_eq_sum_connectedBlockFamilies"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.BlockAssembly.0.SecondQuantization.Common.sum_image_equiv_symm"
+    ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
@@ -166951,6 +167005,7 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
+      "Combinatorics.Pairing.prod_pairs_ofSplit_normalized",
       "SecondQuantization.Common.ExternalInsertionDiagram.ofSlotSplit_pairingInMixedOrder_eq_ofSplit_orderedVacuum",
       "SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_right_normalizedPair"
     ],
@@ -167806,7 +167861,6 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Fermionic.externalSubsetMomentSeries_eq_signedConnected_of_nonempty_even",
-      "SecondQuantization.Fermionic.externalSubsetMomentSeries_eq_signedConnected_two",
       "SecondQuantization.Fermionic.externalSubsetSourceCumulantSeries_eq_connectedDiagramSeries_of_signedMoments"
     ],
     "dependencies": [],
@@ -167814,10 +167868,9 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Fermionic.externalSubsetMomentSeries_eq_signedConnected_of_nonempty_even",
-      "SecondQuantization.Fermionic.externalSubsetMomentSeries_eq_signedConnected_two",
       "SecondQuantization.Fermionic.externalSubsetSourceCumulantSeries_eq_connectedDiagramSeries_of_signedMoments"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -167831,7 +167884,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] {E : ℕ} (ε : Mode → ℝ) (β : ℝ)\n  (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ)\n  (labels : Fin (2 * E) → SecondQuantization.Fermionic.ExternalFieldLabel Mode) (times : Fin (2 * E) → ℝ),\n  (∀ (S : Finset (Fin (2 * E))),\n      S ≠ ∅ →\n        Even S.card →\n          SecondQuantization.Fermionic.externalSubsetMomentSeries ε β g labels times S =\n            SecondQuantization.Fermionic.externalSubsetSignedConnectedMomentSeries ε β g labels times S) →\n    ∀ (S : Finset (Fin (2 * E))),\n      SecondQuantization.Fermionic.externalSubsetMomentSeries ε β g labels times S =\n        SecondQuantization.Fermionic.externalSubsetSignedConnectedMomentSeries ε β g labels times S",
     "standardAxioms": [
       "Classical.choice",
@@ -167839,7 +167892,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -167850,7 +167903,9 @@
     "docString": "Empty and odd external subsets already satisfy the physical\nsigned partition identity, unconditionally. Thus completing Phase 5\nrequires proving that identity **only for nonempty even subsets**.\n\nThe remaining hypothesis is genuinely diagrammatic: it is not replaced\nby an unsigned moment inversion or by defining the connected weights\nfrom the moments. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "SecondQuantization.Fermionic.externalSubsetMomentSeries_eq_signedConnected_two"
+    ],
     "dependencies": [
       "SecondQuantization.Fermionic.externalSubsetMomentSeries_empty",
       "SecondQuantization.Fermionic.externalSubsetSeries_eq_zero_of_odd",
@@ -167859,8 +167914,10 @@
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.externalSubsetMomentSeries_eq_signedConnected_two"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -167899,10 +167956,8 @@
     "dependencies": [
       "SecondQuantization.Fermionic.externalPartitionWeightedMoment_eq_of_proper_zero",
       "SecondQuantization.Fermionic.externalSubsetConnectedDiagramSeries_empty",
-      "SecondQuantization.Fermionic.externalSubsetMomentSeries_empty",
+      "SecondQuantization.Fermionic.externalSubsetMomentSeries_eq_signedConnected_of_nonempty_even",
       "SecondQuantization.Fermionic.externalSubsetSeries_eq_zero_of_odd",
-      "SecondQuantization.Fermionic.externalSubsetSignedConnectedMomentSeries_empty",
-      "SecondQuantization.Fermionic.externalSubsetSignedConnectedMomentSeries_eq_zero_of_odd",
       "SecondQuantization.Fermionic.vacuumFreeExternalInsertionDysonSeries_eq_connected_of_single_pair"
     ],
     "crossModuleDirectWrapper": false,
@@ -168018,7 +168073,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": true,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -168030,8 +168085,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.externalSubsetMomentSeries_eq_signedConnected_of_nonempty_even",
-      "SecondQuantization.Fermionic.externalSubsetMomentSeries_eq_signedConnected_two"
+      "SecondQuantization.Fermionic.externalSubsetMomentSeries_eq_signedConnected_of_nonempty_even"
     ],
     "dependencies": [
       "Finpartition.weightedMomentFromCumulant_empty",
@@ -168040,10 +168094,9 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.externalSubsetMomentSeries_eq_signedConnected_of_nonempty_even",
-      "SecondQuantization.Fermionic.externalSubsetMomentSeries_eq_signedConnected_two"
+      "SecondQuantization.Fermionic.externalSubsetMomentSeries_eq_signedConnected_of_nonempty_even"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -168065,7 +168118,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -168077,8 +168130,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.externalSubsetMomentSeries_eq_signedConnected_of_nonempty_even",
-      "SecondQuantization.Fermionic.externalSubsetMomentSeries_eq_signedConnected_two"
+      "SecondQuantization.Fermionic.externalSubsetMomentSeries_eq_signedConnected_of_nonempty_even"
     ],
     "dependencies": [
       "SecondQuantization.Fermionic.externalSubsetSeries_eq_zero_of_odd",
@@ -168087,10 +168139,9 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.externalSubsetMomentSeries_eq_signedConnected_of_nonempty_even",
-      "SecondQuantization.Fermionic.externalSubsetMomentSeries_eq_signedConnected_two"
+      "SecondQuantization.Fermionic.externalSubsetMomentSeries_eq_signedConnected_of_nonempty_even"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -175942,8 +175993,7 @@
       "ZMod.fourierBasis_apply"
     ],
     "dependencies": [
-      "ZMod.stdAddChar_conj",
-      "_private.LeanCondensedMatter.Analysis.Fourier.FiniteCyclic.0.ZMod.sum_stdAddChar_mul"
+      "ZMod.stdAddChar_conj"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -176169,48 +176219,6 @@
     "completedMention": false,
     "compiledConsumers": [
       "ZMod.cyclicLaplacian_fourierMode"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {N : ℕ} [inst : NeZero N] (q : ZMod N), ∑ j, ZMod.stdAddChar (q * j) = if q = 0 then ↑N else 0",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Analysis.Fourier.FiniteCyclic.0.ZMod.sum_stdAddChar_mul",
-    "module": "LeanCondensedMatter.Analysis.Fourier.FiniteCyclic",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "ZMod.orthonormal_fourierMode"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "ZMod.orthonormal_fourierMode"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -198493,6 +198501,54 @@
       "SecondQuantization.Common.ExternalInsertionBlockLayout.assembleDiagram_restrictComponent_vertexLabel_heq"
     ],
     "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {α : Type u_1} {β : Type u_2} {M : Type u_3} [inst : DecidableEq β] [inst_1 : AddCommMonoid M] (e : α ≃ β)\n  (s : Finset α) (weight : α → M), ∑ b ∈ Finset.image (⇑e) s, weight (e.symm b) = ∑ a ∈ s, weight a",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.BlockAssembly.0.SecondQuantization.Common.sum_image_equiv_symm",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.BlockAssembly",
+    "externalAxioms": [],
+    "docString": "Transport a finite weighted sum across an equivalence without assuming that\nthe target type has a finite enumeration. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Common.ExternalInsertionBlockLayout.sum_fixedPartitionLayouts_eq_sizes_shuffles",
+      "SecondQuantization.Common.ExternalInsertionBlockLayout.sum_fixedPartitionPhysical_eq_sizes_shuffles",
+      "SecondQuantization.Common.ExternalInsertionBlockLayout.sum_fixedPartitionPhysical_eq_standardized_sizes_shuffles",
+      "SecondQuantization.Common.ExternalInsertionBlockLayout.sum_vacuumFree_eq_sum_connectedBlockFamilies"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Common.ExternalInsertionBlockLayout.sum_fixedPartitionLayouts_eq_sizes_shuffles",
+      "SecondQuantization.Common.ExternalInsertionBlockLayout.sum_fixedPartitionPhysical_eq_sizes_shuffles",
+      "SecondQuantization.Common.ExternalInsertionBlockLayout.sum_fixedPartitionPhysical_eq_standardized_sizes_shuffles",
+      "SecondQuantization.Common.ExternalInsertionBlockLayout.sum_vacuumFree_eq_sum_connectedBlockFamilies"
+    ],
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
