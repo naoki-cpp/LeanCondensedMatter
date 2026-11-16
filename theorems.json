@@ -20741,7 +20741,7 @@
       "QuantumTheory.LinearResponse.sourceCoupledInteractionPropagator_eq_positiveSourceDyson"
     ],
     "dependencies": [
-      "_private.LeanCondensedMatter.Analysis.Dyson.Basic.0.Dyson.term_neg_neg"
+      "_private.LeanCondensedMatter.Analysis.Dyson.Basic.0.Dyson.coeff_neg"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -176101,7 +176101,7 @@
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": true,
+    "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
@@ -176114,54 +176114,10 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "_private.LeanCondensedMatter.Analysis.Dyson.Basic.0.Dyson.term_neg_neg"
-    ],
-    "dependencies": [
-      "Dyson.coeff_succ"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.Analysis.Dyson.Basic.0.Dyson.term_neg_neg"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {A : Type u_1} [inst : NormedRing A] [inst_1 : NormedAlgebra ℂ A] (V : ℝ → A) (lam : ℂ) (τ : ℝ) (n : ℕ),\n  Dyson.term (fun σ => -V σ) (-lam) τ n = Dyson.term V lam τ n",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Analysis.Dyson.Basic.0.Dyson.term_neg_neg",
-    "module": "LeanCondensedMatter.Analysis.Dyson.Basic",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
       "Dyson.evolution_neg_neg"
     ],
     "dependencies": [
-      "_private.LeanCondensedMatter.Analysis.Dyson.Basic.0.Dyson.coeff_neg"
+      "Dyson.coeff_succ"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
