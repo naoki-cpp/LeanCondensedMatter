@@ -97,8 +97,8 @@ theorem collision_coordinate (p : Ω) (i : Fin 3) :
 private theorem quadrupole_gain (p : Ω) (i j : Fin 3) :
     (∑ q, data.kernel p q * quadrupoleMode data.direction i j q) =
       data.secondCoefficient * quadrupoleMode data.direction i j p := by
-  simp only [quadrupoleMode, mul_sub, Finset.sum_sub_distrib, Finset.sum_mul,
-    data.second_moment, data.total_moment]
+  simp only [quadrupoleMode, mul_sub, Finset.sum_sub_distrib]
+  rw [← Finset.sum_mul, data.second_moment p i j, data.total_moment p]
   split_ifs <;> ring
 
 /-- The traceless quadratic mode is an eigenfunction of the collision action. -/
