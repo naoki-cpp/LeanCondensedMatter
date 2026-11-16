@@ -50,11 +50,8 @@ theorem coefficientSum_mul (f g : ℂ⟦X⟧) (x : ℂ)
     (hg : Summable (fun n : ℕ => PowerSeries.coeff n g * x ^ n)) :
     coefficientSum (f * g) x =
       coefficientSum f x * coefficientSum g x := by
-  unfold coefficientSum
-  rw [tsum_mul_tsum_eq_tsum_sum_antidiagonal_of_summable_norm hf.norm hg.norm]
-  apply tsum_congr
-  intro n
-  exact coeff_mul_mul_pow f g x n
+  simpa only [coefficientSum, ← coeff_mul_mul_pow f g x] using
+    (tsum_mul_tsum_eq_tsum_sum_antidiagonal_of_summable_norm hf.norm hg.norm).symm
 
 /-- Addition commutes with coefficientwise evaluation when both terms are summable. -/
 theorem coefficientSum_add (f g : ℂ⟦X⟧) (x : ℂ)
@@ -79,15 +76,8 @@ theorem summable_coefficientSum_mul (f g : ℂ⟦X⟧) (x : ℂ)
     (hf : Summable (fun n : ℕ => PowerSeries.coeff n f * x ^ n))
     (hg : Summable (fun n : ℕ => PowerSeries.coeff n g * x ^ n)) :
     Summable (fun n : ℕ => PowerSeries.coeff n (f * g) * x ^ n) := by
-  have hs :
-      Summable (fun n : ℕ =>
-        ∑ p ∈ Finset.antidiagonal n,
-          (PowerSeries.coeff p.1 f * x ^ p.1) *
-            (PowerSeries.coeff p.2 g * x ^ p.2)) :=
+  simpa only [← coeff_mul_mul_pow f g x] using
     (summable_norm_sum_mul_antidiagonal_of_summable_norm hf.norm hg.norm).of_norm
-  convert hs using 1
-  funext n
-  exact coeff_mul_mul_pow f g x n
 
 /-- Addition preserves summable coefficientwise complex evaluation. -/
 theorem summable_coefficientSum_add (f g : ℂ⟦X⟧) (x : ℂ)
