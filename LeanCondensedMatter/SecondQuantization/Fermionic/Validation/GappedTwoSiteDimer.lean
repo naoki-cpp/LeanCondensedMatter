@@ -129,33 +129,27 @@ private theorem inner_twoSiteDimerSiteState (i j : TwoSite) :
         (Config := Occupation TwoSite)).orthonormal
       ({i} : Occupation TwoSite) ({j} : Occupation TwoSite))
 
-private theorem star_two : (starRingEnd ℂ) (2 : ℂ) = 2 := by
-  change (starRingEnd ℂ) ((2 : ℝ) : ℂ) = ((2 : ℝ) : ℂ)
-  exact Complex.conj_ofReal 2
-
-/-- Inner product of two complex linear combinations of the orthonormal site states. -/
 private theorem inner_twoSiteDimer_linear_combination (a b c d : ℂ) :
     inner ℂ
         (a • twoSiteDimerSiteState 0 + b • twoSiteDimerSiteState 1)
         (c • twoSiteDimerSiteState 0 + d • twoSiteDimerSiteState 1) =
       (starRingEnd ℂ) a * c + (starRingEnd ℂ) b * d := by
-  simp only [inner_add_left, inner_add_right, inner_smul_left, inner_smul_right]
-  simp [inner_twoSiteDimerSiteState, smul_eq_mul]
+  simp [inner_add_left, inner_add_right, inner_smul_left, inner_smul_right,
+    inner_twoSiteDimerSiteState, smul_eq_mul]
 
 private theorem twoSiteGappedBenchmark_ground_inner_excited :
     inner ℂ twoSiteGappedBenchmarkGroundState twoSiteGappedBenchmarkExcitedState = 0 := by
   simpa [twoSiteGappedBenchmarkGroundState, twoSiteGappedBenchmarkExcitedState,
-    sub_eq_add_neg, star_two] using
-    (inner_twoSiteDimer_linear_combination 1 (-2) 2 1)
+    sub_eq_add_neg] using (inner_twoSiteDimer_linear_combination 1 (-2) 2 1)
 
 private theorem twoSiteGappedBenchmark_ground_inner_self :
     inner ℂ twoSiteGappedBenchmarkGroundState twoSiteGappedBenchmarkGroundState = 5 := by
-  simpa [twoSiteGappedBenchmarkGroundState, sub_eq_add_neg, star_two] using
+  simpa [twoSiteGappedBenchmarkGroundState, sub_eq_add_neg] using
     (inner_twoSiteDimer_linear_combination 1 (-2) 1 (-2))
 
 private theorem twoSiteGappedBenchmark_excited_inner_self :
     inner ℂ twoSiteGappedBenchmarkExcitedState twoSiteGappedBenchmarkExcitedState = 5 := by
-  simpa [twoSiteGappedBenchmarkExcitedState, star_two] using
+  simpa [twoSiteGappedBenchmarkExcitedState] using
     (inner_twoSiteDimer_linear_combination 2 1 2 1)
 
 /-- The normalized ground-state contact expectation is exactly `-4/5`, derived from the concrete
