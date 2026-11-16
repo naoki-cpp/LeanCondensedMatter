@@ -2754,6 +2754,12 @@ theorem ExternalInsertionBlockLayout.sum_externalPartitionFiber_eq_sum_connected
     anchor (fun d => if externalComponentPartition d.vertexGraph = π then weight d else 0)]
   apply Finset.sum_congr rfl
   intro p _
+  change
+    (if externalComponentPartition
+        (p.1.assembleDiagram (Finset.univ : Finset (Fin N)) p.2.1).vertexGraph = π
+      then weight (p.1.assembleDiagram (Finset.univ : Finset (Fin N)) p.2.1) else 0) =
+      if p.1.partition = π then
+        weight (p.1.assembleDiagram (Finset.univ : Finset (Fin N)) p.2.1) else 0
   rw [p.1.externalComponentPartition_assembleDiagram
     (Finset.univ : Finset (Fin N)) p.2.1 p.2.2]
 
