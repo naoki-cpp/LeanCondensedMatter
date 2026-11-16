@@ -5945,8 +5945,7 @@
     "directWrapperOf": null,
     "dependents": [
       "Combinatorics.Pairing.ofSplit_crossingCount_eq_left_add_right_add_inter",
-      "SecondQuantization.Fermionic.externalInsertionOfSlotSplit_mixedPairingEvaluation_eq_positionInversions_mul_of_strictAnti",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalVacuumPairing.0.SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_right_normalizedPair_of_lt"
+      "SecondQuantization.Fermionic.externalInsertionOfSlotSplit_mixedPairingEvaluation_eq_positionInversions_mul_of_strictAnti"
     ],
     "dependencies": [
       "Combinatorics.Pairing.normalizedPairOfEndpointEquiv_pair_eq_of_lt",
@@ -5958,10 +5957,9 @@
     "completedMention": false,
     "compiledConsumers": [
       "Combinatorics.Pairing.ofSplit_crossingCount_eq_left_add_right_add_inter",
-      "SecondQuantization.Fermionic.externalInsertionOfSlotSplit_mixedPairingEvaluation_eq_positionInversions_mul_of_strictAnti",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalVacuumPairing.0.SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_right_normalizedPair_of_lt"
+      "SecondQuantization.Fermionic.externalInsertionOfSlotSplit_mixedPairingEvaluation_eq_positionInversions_mul_of_strictAnti"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -11309,8 +11307,7 @@
       "Combinatorics.coeff_formalTraceLogOneSubSeries",
       "Combinatorics.coeff_permutationConnectedCycleSeries_of_pos",
       "Combinatorics.constantCoeff_formalTraceLogOneSubSeries",
-      "Combinatorics.constantCoeff_permutationConnectedCycleSeries",
-      "_private.LeanCondensedMatter.Permutation.TraceLog.0.Combinatorics.coeff_log_complex_of_pos"
+      "Combinatorics.constantCoeff_permutationConnectedCycleSeries"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -141345,8 +141342,7 @@
     "dependents": [
       "SecondQuantization.Common.externalInsertionSlotLegSplitting_right_strictMono_of_localOrder",
       "SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_right_normalizedPair",
-      "SecondQuantization.Fermionic.externalInsertionOfSlotSplit_mixedPairingEvaluation_eq_positionInversions_mul_of_strictAnti",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalVacuumPairing.0.SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_right_normalizedPair_of_lt"
+      "SecondQuantization.Fermionic.externalInsertionOfSlotSplit_mixedPairingEvaluation_eq_positionInversions_mul_of_strictAnti"
     ],
     "dependencies": [
       "SecondQuantization.Common.externalInsertionLegEquiv_mixedTimeAmbientPositionEquiv",
@@ -141358,10 +141354,9 @@
     "compiledConsumers": [
       "SecondQuantization.Common.externalInsertionSlotLegSplitting_right_strictMono_of_localOrder",
       "SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_right_normalizedPair",
-      "SecondQuantization.Fermionic.externalInsertionOfSlotSplit_mixedPairingEvaluation_eq_positionInversions_mul_of_strictAnti",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalVacuumPairing.0.SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_right_normalizedPair_of_lt"
+      "SecondQuantization.Fermionic.externalInsertionOfSlotSplit_mixedPairingEvaluation_eq_positionInversions_mul_of_strictAnti"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -166628,8 +166623,7 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_right_normalizedPair",
-      "SecondQuantization.Fermionic.externalInsertionOfSlotSplit_mixedPairingEvaluation_eq_positionInversions_mul_of_strictAnti",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalVacuumPairing.0.SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_right_normalizedPair_of_lt"
+      "SecondQuantization.Fermionic.externalInsertionOfSlotSplit_mixedPairingEvaluation_eq_positionInversions_mul_of_strictAnti"
     ],
     "dependencies": [
       "SecondQuantization.Common.ExternalInsertionDiagram.ofSlotSplit_vertexLabel_of_not_mem",
@@ -166639,10 +166633,9 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_right_normalizedPair",
-      "SecondQuantization.Fermionic.externalInsertionOfSlotSplit_mixedPairingEvaluation_eq_positionInversions_mul_of_strictAnti",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalVacuumPairing.0.SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_right_normalizedPair_of_lt"
+      "SecondQuantization.Fermionic.externalInsertionOfSlotSplit_mixedPairingEvaluation_eq_positionInversions_mul_of_strictAnti"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -166682,8 +166675,7 @@
       "Combinatorics.Pairing.ofSplitNormalizedPairEquiv_pair_eq_or_swap",
       "Combinatorics.Pairing.pairs_normalized",
       "SecondQuantization.Common.externalInsertionSlotLegSplitting_right_orderedMixedPosition",
-      "SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_right_locality",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalVacuumPairing.0.SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_right_normalizedPair_of_lt"
+      "SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_right_locality"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -194138,48 +194130,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (m : ℕ), 0 < m → (PowerSeries.coeff m) (PowerSeries.log ℂ) = (-1) ^ (m + 1) / ↑m",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Permutation.TraceLog.0.Combinatorics.coeff_log_complex_of_pos",
-    "module": "LeanCondensedMatter.Permutation.TraceLog",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "Combinatorics.smul_permutationConnectedCycleSeries_eq_neg_traceLog"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "Combinatorics.smul_permutationConnectedCycleSeries_eq_neg_traceLog"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ (q ℏ mass vectorPotential vectorPotentialDerivative scalarPotential : ℝ) (ψ ψt ψx ψxx : ℂ),\n  ℏ ≠ 0 →\n    mass ≠ 0 →\n      2 * mass * ℏ * ψt.im =\n          ℏ ^ 2 * ψxx.re + 2 * q * ℏ * vectorPotential * ψx.im + q * ℏ * vectorPotentialDerivative * ψ.im -\n            (q ^ 2 * vectorPotential ^ 2 + 2 * mass * q * scalarPotential) * ψ.re →\n        2 * mass * ℏ * ψt.re =\n            -(ℏ ^ 2 * ψxx.im) + 2 * q * ℏ * vectorPotential * ψx.re + q * ℏ * vectorPotentialDerivative * ψ.re +\n              (q ^ 2 * vectorPotential ^ 2 + 2 * mass * q * scalarPotential) * ψ.im →\n          QuantumMechanics.SingleParticle.Continuum.probabilityDensityTimeDerivativeValue ψ ψt +\n              QuantumMechanics.SingleParticle.Continuum.electromagneticProbabilityCurrentDivergenceValue1D q ℏ mass\n                vectorPotential vectorPotentialDerivative ψ ψx ψxx =\n            0",
     "standardAxioms": [
       "Classical.choice",
@@ -206822,52 +206772,6 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_left_normalizedPair"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] (ε : Mode → ℝ) (β : ℝ) {E n : ℕ}\n  (T : Finset (Fin n))\n  (ext :\n    SecondQuantization.Common.ExternalInsertionDiagram (SecondQuantization.Fermionic.ExternalFieldLabel Mode)\n      (SecondQuantization.Common.QuarticVertexLabel Mode) E n T)\n  (vac :\n    SecondQuantization.Common.QuarticDiagram (SecondQuantization.Common.QuarticVertexLabel Mode) n (Finset.univ \\ T))\n  (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ),\n  let S := Finset.univ \\ T;\n  have order := (S.orderIsoOfFin ⋯).toEquiv;\n  have f := fun i => ↑((S.orderIsoOfFin ⋯) i);\n  have d := SecondQuantization.Common.ExternalInsertionDiagram.ofSlotSplit ⋯ ext vac;\n  have splitting :=\n    (((Equiv.refl (Fin (2 * (2 * T.card + E)))).sumCongr\n              (SecondQuantization.Common.orderedLegToDiagramLeg S order)).trans\n          (SecondQuantization.Common.externalInsertionSlotLegSplitting ⋯)).trans\n      (SecondQuantization.Common.externalInsertionMixedTimeAmbientPositionEquiv externalTime σ).symm;\n  have pairEquiv := Combinatorics.Pairing.ofSplitNormalizedPairEquiv splitting ext.pairing (vac.pairingInOrder order);\n  have kernel :=\n    SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicPairValue ε β d.externalLabel externalTime\n      (SecondQuantization.Common.ExternalInsertionDiagram.vertexLabelSequence d) σ;\n  ∀ (pr : (vac.pairingInOrder order).NormalizedPair),\n    splitting (Sum.inr (↑pr).1) < splitting (Sum.inr (↑pr).2) →\n      kernel (↑(pairEquiv (Sum.inr pr))).1 (↑(pairEquiv (Sum.inr pr))).2 =\n        SecondQuantization.Fermionic.flatVertexLegPairValue ε β (fun v => vac.vertexLabel ((S.orderIsoOfFin ⋯) v))\n          (σ ∘ f) (↑pr).1 (↑pr).2",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalVacuumPairing.0.SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_right_normalizedPair_of_lt",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalVacuumPairing",
-    "externalAxioms": [],
-    "docString": "The vacuum-side ambient normalized contraction agrees with its standalone\nquartic kernel whenever the transported endpoints retain their order.\n\nThis hypothesis is necessary: arbitrary mixed-time slot permutations can reverse\na pair, and a fermionic contraction kernel is not symmetric in its arguments. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_right_normalizedPair"
-    ],
-    "dependencies": [
-      "Combinatorics.Pairing.ofSplitNormalizedPairEquiv_pair_eq_of_lt",
-      "SecondQuantization.Common.externalInsertionSlotLegSplitting_right_orderedMixedPosition",
-      "SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_right_locality"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_right_normalizedPair"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
