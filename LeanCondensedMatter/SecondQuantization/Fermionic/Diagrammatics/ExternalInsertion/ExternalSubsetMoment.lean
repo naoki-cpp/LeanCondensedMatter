@@ -947,6 +947,31 @@ theorem vacuumFreeExternalInsertionDysonCoefficient_eq_sum_connectedBlockFamilie
       if d.externalLabel = labels then d.dysonAmplitude ε β g times else 0)
 
 open Classical in
+/-- Impose the physical external-component partition on a fixed-label sum
+before transporting it to the unrestricted vacuum-free diagram domain. -/
+private theorem sum_vacuumFreeFixedExternalInsertionWickDiagram_partition
+    {K n : ℕ} {M : Type*} [AddCommMonoid M]
+    (π : Finpartition (Finset.univ : Finset (Fin (2 * K))))
+    (labels : Fin (2 * K) → ExternalFieldLabel Mode)
+    (weight : ExternalInsertionWickDiagram Mode K n → M) :
+    (∑ d : VacuumFreeFixedExternalInsertionWickDiagram Mode K n labels,
+      if externalComponentPartition d.1.1.vertexGraph = π then
+        weight d.1.1 else 0) =
+      ∑ d : {d : ExternalInsertionWickDiagram Mode K n //
+          HasNoVacuumComponent d.vertexGraph},
+        if externalComponentPartition d.1.vertexGraph = π then
+          if d.1.externalLabel = labels then weight d.1 else 0
+        else 0 := by
+  classical
+  rw [sum_vacuumFreeFixedExternalInsertionWickDiagram_eq_sum_if
+    (Mode := Mode) labels
+      (fun d : ExternalInsertionWickDiagram Mode K n =>
+        if externalComponentPartition d.vertexGraph = π then weight d else 0)]
+  apply Finset.sum_congr rfl
+  intro d _
+  by_cases hp : externalComponentPartition d.1.vertexGraph = π <;> simp [hp]
+
+open Classical in
 /-- For a *fixed physical external-component partition*, the actual
 fixed-external-label Dyson diagram fiber is reindexed by independent
 connected block families with exactly that prescribed source partition.
@@ -973,31 +998,14 @@ theorem sum_fixedExternalPartitionFiber_eq_sum_connectedBlockFamilies
           else 0
         else 0 := by
   classical
-  have hFixed :=
-    sum_vacuumFreeFixedExternalInsertionWickDiagram_eq_sum_if
-      (Mode := Mode) labels (fun d : ExternalInsertionWickDiagram Mode K n =>
-        if externalComponentPartition d.vertexGraph = π then
-          d.dysonAmplitude ε β g times else 0)
-  calc
-    (∑ d : VacuumFreeFixedExternalInsertionWickDiagram Mode K n labels,
-      if externalComponentPartition d.1.1.vertexGraph = π then
-        d.1.1.dysonAmplitude ε β g times else 0) =
-      ∑ d : {d : ExternalInsertionWickDiagram Mode K n //
-          HasNoVacuumComponent d.vertexGraph},
-        if externalComponentPartition d.1.vertexGraph = π then
-          if d.1.externalLabel = labels then
-            d.1.dysonAmplitude ε β g times else 0
-        else 0 := by
-      rw [hFixed]
-      apply Finset.sum_congr rfl
-      intro d _
-      by_cases hp : externalComponentPartition d.1.vertexGraph = π <;> simp [hp]
-    _ = _ :=
-      ExternalInsertionBlockLayout.sum_externalPartitionFiber_eq_sum_connectedBlockFamilies
-        (ExternalLabel := ExternalFieldLabel Mode)
-        (InternalLabel := QuarticVertexLabel Mode) anchor π
-        (fun d : ExternalInsertionWickDiagram Mode K n =>
-          if d.externalLabel = labels then d.dysonAmplitude ε β g times else 0)
+  exact (sum_vacuumFreeFixedExternalInsertionWickDiagram_partition
+    π labels (fun d : ExternalInsertionWickDiagram Mode K n =>
+      d.dysonAmplitude ε β g times)).trans
+    (ExternalInsertionBlockLayout.sum_externalPartitionFiber_eq_sum_connectedBlockFamilies
+      (ExternalLabel := ExternalFieldLabel Mode)
+      (InternalLabel := QuarticVertexLabel Mode) anchor π
+      (fun d : ExternalInsertionWickDiagram Mode K n =>
+        if d.externalLabel = labels then d.dysonAmplitude ε β g times else 0))
 
 /-- The exact physical fixed-partition Dyson fiber can be enumerated using only
 the independently specified local external-source labels. The test of the
@@ -1113,31 +1121,13 @@ theorem sum_fixedExternalPartitionDysonFiber_eq_sizes_shuffles
               anchor π heven).symm p).1.1) ε β g times
         else 0 := by
   classical
-  have hfixed :=
-    sum_vacuumFreeFixedExternalInsertionWickDiagram_eq_sum_if
-      (Mode := Mode) labels
+  exact (sum_vacuumFreeFixedExternalInsertionWickDiagram_partition
+    π labels (fun d : ExternalInsertionWickDiagram Mode K n =>
+      d.dysonAmplitude ε β g times)).trans
+    (ExternalInsertionBlockLayout.sum_vacuumFree_fixedPartition_eq_sizes_shuffles
+      (E := K) (N := n) anchor π heven
       (fun d : ExternalInsertionWickDiagram Mode K n =>
-        if externalComponentPartition d.vertexGraph = π then
-          d.dysonAmplitude ε β g times else 0)
-  calc
-    (∑ d : VacuumFreeFixedExternalInsertionWickDiagram Mode K n labels,
-      if externalComponentPartition d.1.1.vertexGraph = π then
-        d.1.1.dysonAmplitude ε β g times else 0) =
-      ∑ d : {d : ExternalInsertionWickDiagram Mode K n //
-          HasNoVacuumComponent d.vertexGraph},
-        if externalComponentPartition d.1.vertexGraph = π then
-          if d.1.externalLabel = labels then
-            d.1.dysonAmplitude ε β g times else 0
-        else 0 := by
-          rw [hfixed]
-          apply Finset.sum_congr rfl
-          intro d _
-          by_cases hp : externalComponentPartition d.1.vertexGraph = π <;> simp [hp]
-    _ = _ :=
-      ExternalInsertionBlockLayout.sum_vacuumFree_fixedPartition_eq_sizes_shuffles
-        (E := K) (N := n) anchor π heven
-        (fun d : ExternalInsertionWickDiagram Mode K n =>
-          if d.externalLabel = labels then d.dysonAmplitude ε β g times else 0)
+        if d.externalLabel = labels then d.dysonAmplitude ε β g times else 0))
 
 open Classical in
 /-- A physical, integrated fixed-label Dyson partition fiber is a finite
