@@ -62,16 +62,7 @@ theorem coefficientSum_add (f g : ℂ⟦X⟧) (x : ℂ)
     (hg : Summable (fun n : ℕ => PowerSeries.coeff n g * x ^ n)) :
     coefficientSum (f + g) x =
       coefficientSum f x + coefficientSum g x := by
-  unfold coefficientSum
-  calc
-    (∑' n : ℕ, PowerSeries.coeff n (f + g) * x ^ n) =
-        ∑' n : ℕ,
-          (PowerSeries.coeff n f * x ^ n + PowerSeries.coeff n g * x ^ n) := by
-      apply tsum_congr
-      intro n
-      rw [map_add]
-      ring
-    _ = _ := hf.tsum_add hg
+  simpa only [coefficientSum, map_add, add_mul] using hf.tsum_add hg
 
 /-- Subtraction commutes with coefficientwise evaluation when both terms are summable. -/
 theorem coefficientSum_sub (f g : ℂ⟦X⟧) (x : ℂ)
@@ -79,16 +70,7 @@ theorem coefficientSum_sub (f g : ℂ⟦X⟧) (x : ℂ)
     (hg : Summable (fun n : ℕ => PowerSeries.coeff n g * x ^ n)) :
     coefficientSum (f - g) x =
       coefficientSum f x - coefficientSum g x := by
-  unfold coefficientSum
-  calc
-    (∑' n : ℕ, PowerSeries.coeff n (f - g) * x ^ n) =
-        ∑' n : ℕ,
-          (PowerSeries.coeff n f * x ^ n - PowerSeries.coeff n g * x ^ n) := by
-      apply tsum_congr
-      intro n
-      rw [map_sub]
-      ring
-    _ = _ := hf.tsum_sub hg
+  simpa only [coefficientSum, map_sub, sub_mul] using hf.tsum_sub hg
 
 /-- Cauchy convolution is itself summable when the two coefficientwise
 series are absolutely summable. This makes multiplication composable with
@@ -112,10 +94,7 @@ theorem summable_coefficientSum_add (f g : ℂ⟦X⟧) (x : ℂ)
     (hf : Summable (fun n : ℕ => PowerSeries.coeff n f * x ^ n))
     (hg : Summable (fun n : ℕ => PowerSeries.coeff n g * x ^ n)) :
     Summable (fun n : ℕ => PowerSeries.coeff n (f + g) * x ^ n) := by
-  convert hf.add hg using 1
-  funext n
-  rw [map_add]
-  ring
+  simpa only [map_add, add_mul] using hf.add hg
 
 /-- Multiplication by a complex constant preserves coefficientwise summability. -/
 theorem summable_coefficientSum_C_mul (f : ℂ⟦X⟧) (x c : ℂ)
