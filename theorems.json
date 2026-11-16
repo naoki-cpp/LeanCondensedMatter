@@ -23555,9 +23555,7 @@
     "dependents": [
       "Combinatorics.factorial_mul_coeff_logOf_eq_connectedContribution_replica"
     ],
-    "dependencies": [
-      "_private.LeanCondensedMatter.Combinatorics.Cumulant.Replica.0.Finpartition.finpartition_eq_indiscrete_of_card_parts_eq_one"
-    ],
+    "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
@@ -180558,48 +180556,6 @@
     "completedMention": false,
     "compiledConsumers": [
       "_private.LeanCondensedMatter.Combinatorics.Cumulant.Replica.0.Finpartition.X_pow_eq_sum_stirlingSecond_descPochhammer"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {α : Type u_1} [inst : DecidableEq α] {S : Finset α} (hS : S ≠ ∅) (π : Finpartition S),\n  π.parts.card = 1 → π = Finpartition.indiscrete hS",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Combinatorics.Cumulant.Replica.0.Finpartition.finpartition_eq_indiscrete_of_card_parts_eq_one",
-    "module": "LeanCondensedMatter.Combinatorics.Cumulant.Replica",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "Finpartition.replicaPolynomial_coeff_one"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "Finpartition.replicaPolynomial_coeff_one"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
