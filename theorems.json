@@ -108891,8 +108891,7 @@
     ],
     "dependencies": [
       "Real.negMulLog_le_of_neg_log_le",
-      "Real.summable_gibbsComparison_and_tsum_eq",
-      "Real.tsum_div_le_one"
+      "Real.summable_gibbsComparison_and_tsum_eq"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -109095,50 +109094,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {ι : Type u_1} {q : ι → ℝ} {Z : ℝ}, ∑' (i : ι), q i ≤ Z → 0 < Z → ∑' (i : ι), q i / Z ≤ 1",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "Real.tsum_div_le_one",
-    "module": "LeanCondensedMatter.Analysis.Inequalities.Gibbs",
-    "externalAxioms": [],
-    "docString": "The sum of `q i / Z` is at most one when `∑' i, q i ≤ Z` and `Z > 0`. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "Real.summable_negMulLog_and_tsum_le_gibbs",
-      "Real.tsum_negMulLog_eq_gibbs_iff"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "Real.summable_negMulLog_and_tsum_le_gibbs",
-      "Real.tsum_negMulLog_eq_gibbs_iff"
-    ],
-    "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ {ι : Type u_1} (p q energy : ι → ℝ) (β Z : ℝ),\n  (∀ (i : ι), 0 ≤ p i) →\n    HasSum p 1 →\n      (Summable fun i => p i * energy i) →\n        Summable q →\n          ∑' (i : ι), q i ≤ Z →\n            (∀ (i : ι), 0 < q i) →\n              0 < Z →\n                (∀ (i : ι), -Real.log (q i) ≤ β * energy i) →\n                  (∑' (i : ι), (p i).negMulLog = β * ∑' (i : ι), p i * energy i + Real.log Z ↔\n                    ∑' (i : ι), q i = Z ∧ ∀ (i : ι), p i = q i / Z ∧ -Real.log (q i) = β * energy i)",
     "standardAxioms": [
       "Classical.choice",
@@ -109165,8 +109120,7 @@
       "Real.negMulLog_eq_iff_of_neg_log_le",
       "Real.negMulLog_le_of_neg_log_le",
       "Real.summable_gibbsComparison_and_tsum_eq",
-      "Real.summable_negMulLog_and_tsum_le_gibbs",
-      "Real.tsum_div_le_one"
+      "Real.summable_negMulLog_and_tsum_le_gibbs"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -161529,11 +161483,7 @@
       "SecondQuantization.Fermionic.Validation.twoSiteGappedBenchmark_conductivity_zero_one"
     ],
     "dependencies": [
-      "QuantumTheory.LinearResponse.finiteLehmannTableTransitionData_weight_diag",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Validation.GappedTwoSiteDimer.0.SecondQuantization.Fermionic.Validation.twoSiteGappedBenchmarkLehmannTable_energy_one",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Validation.GappedTwoSiteDimer.0.SecondQuantization.Fermionic.Validation.twoSiteGappedBenchmarkLehmannTable_energy_zero",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Validation.GappedTwoSiteDimer.0.SecondQuantization.Fermionic.Validation.twoSiteGappedBenchmarkTransitionWeight_one_zero",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Validation.GappedTwoSiteDimer.0.SecondQuantization.Fermionic.Validation.twoSiteGappedBenchmarkTransitionWeight_zero_one"
+      "QuantumTheory.LinearResponse.finiteLehmannTableTransitionData_weight_diag"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -172754,7 +172704,7 @@
     ],
     "dependencies": [
       "SecondQuantization.Common.ExternalInsertionBlockLayout.sum_vacuumFree_fixedPartition_eq_sizes_shuffles",
-      "SecondQuantization.Fermionic.sum_vacuumFreeFixedExternalInsertionWickDiagram_eq_sum_if"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalSubsetMoment.0.SecondQuantization.Fermionic.sum_vacuumFreeFixedExternalInsertionWickDiagram_partition"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -172845,7 +172795,7 @@
     ],
     "dependencies": [
       "SecondQuantization.Common.ExternalInsertionBlockLayout.sum_externalPartitionFiber_eq_sum_connectedBlockFamilies",
-      "SecondQuantization.Fermionic.sum_vacuumFreeFixedExternalInsertionWickDiagram_eq_sum_if"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalSubsetMoment.0.SecondQuantization.Fermionic.sum_vacuumFreeFixedExternalInsertionWickDiagram_partition"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -173164,19 +173114,17 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.sum_fixedExternalPartitionDysonFiber_eq_sizes_shuffles",
-      "SecondQuantization.Fermionic.sum_fixedExternalPartitionFiber_eq_sum_connectedBlockFamilies",
-      "SecondQuantization.Fermionic.vacuumFreeExternalInsertionDysonCoefficient_eq_sum_if"
+      "SecondQuantization.Fermionic.vacuumFreeExternalInsertionDysonCoefficient_eq_sum_if",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalSubsetMoment.0.SecondQuantization.Fermionic.sum_vacuumFreeFixedExternalInsertionWickDiagram_partition"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.sum_fixedExternalPartitionDysonFiber_eq_sizes_shuffles",
-      "SecondQuantization.Fermionic.sum_fixedExternalPartitionFiber_eq_sum_connectedBlockFamilies",
-      "SecondQuantization.Fermionic.vacuumFreeExternalInsertionDysonCoefficient_eq_sum_if"
+      "SecondQuantization.Fermionic.vacuumFreeExternalInsertionDysonCoefficient_eq_sum_if",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalSubsetMoment.0.SecondQuantization.Fermionic.sum_vacuumFreeFixedExternalInsertionWickDiagram_partition"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -206613,6 +206561,52 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] {K n : ℕ} {M : Type u_2}\n  [inst_2 : AddCommMonoid M] (π : Finpartition Finset.univ)\n  (labels : Fin (2 * K) → SecondQuantization.Fermionic.ExternalFieldLabel Mode)\n  (weight : SecondQuantization.Fermionic.ExternalInsertionWickDiagram Mode K n → M),\n  (∑ d,\n      if\n          SecondQuantization.Common.externalComponentPartition\n              (SecondQuantization.Common.ExternalInsertionDiagram.vertexGraph ↑↑d) =\n            π then\n        weight ↑↑d\n      else 0) =\n    ∑ d,\n      if\n          SecondQuantization.Common.externalComponentPartition\n              (SecondQuantization.Common.ExternalInsertionDiagram.vertexGraph ↑d) =\n            π then\n        if (↑d).externalLabel = labels then weight ↑d else 0\n      else 0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalSubsetMoment.0.SecondQuantization.Fermionic.sum_vacuumFreeFixedExternalInsertionWickDiagram_partition",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalSubsetMoment",
+    "externalAxioms": [],
+    "docString": "Impose the physical external-component partition on a fixed-label sum\nbefore transporting it to the unrestricted vacuum-free diagram domain. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Fermionic.sum_fixedExternalPartitionDysonFiber_eq_sizes_shuffles",
+      "SecondQuantization.Fermionic.sum_fixedExternalPartitionFiber_eq_sum_connectedBlockFamilies"
+    ],
+    "dependencies": [
+      "SecondQuantization.Fermionic.sum_vacuumFreeFixedExternalInsertionWickDiagram_eq_sum_if"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.sum_fixedExternalPartitionDysonFiber_eq_sizes_shuffles",
+      "SecondQuantization.Fermionic.sum_fixedExternalPartitionFiber_eq_sum_connectedBlockFamilies"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] (ε : Mode → ℝ) (β : ℝ)\n  (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ) {E N m : ℕ} (T : Finset (Fin N)) (h : T.card = m)\n  (ext :\n    SecondQuantization.Common.ExternalInsertionDiagram (SecondQuantization.Fermionic.ExternalFieldLabel Mode)\n      (SecondQuantization.Common.QuarticVertexLabel Mode) E N T)\n  (externalTime : Fin (2 * E) → ℝ) (σ : Fin N → ℝ),\n  have e := (T.orderIsoOfFin ⋯).symm.trans (Equiv.subtypeUnivEquiv ⋯).symm;\n  have e' := (T.orderIsoOfFin h).symm.trans (Equiv.subtypeUnivEquiv ⋯).symm;\n  (SecondQuantization.Fermionic.ExternalInsertionWickDiagram.dysonFixedTimeAmplitude\n      (SecondQuantization.Common.ExternalInsertionDiagram.slotCongr e ext) ε β g externalTime fun i =>\n      σ ↑((T.orderIsoOfFin ⋯) i)) =\n    SecondQuantization.Fermionic.ExternalInsertionWickDiagram.dysonFixedTimeAmplitude\n      (SecondQuantization.Common.ExternalInsertionDiagram.slotCongr e' ext) ε β g externalTime fun i =>\n      σ ↑((T.orderIsoOfFin h) i)",
     "standardAxioms": [
       "Classical.choice",
@@ -209101,174 +209095,6 @@
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Validation.GappedTwoSiteDimer.0.SecondQuantization.Fermionic.Validation.twoSiteGappedBenchmark_ground_inner_self"
     ],
     "compiledConsumerCount": 3,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "SecondQuantization.Fermionic.Validation.twoSiteGappedBenchmarkLehmannTable.energy 1 = 5 / 4",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Validation.GappedTwoSiteDimer.0.SecondQuantization.Fermionic.Validation.twoSiteGappedBenchmarkLehmannTable_energy_one",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Validation.GappedTwoSiteDimer",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.Validation.twoSiteGappedBenchmark_lehmannResponse_zero_one"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.Validation.twoSiteGappedBenchmark_lehmannResponse_zero_one"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "SecondQuantization.Fermionic.Validation.twoSiteGappedBenchmarkLehmannTable.energy 0 = -5 / 4",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Validation.GappedTwoSiteDimer.0.SecondQuantization.Fermionic.Validation.twoSiteGappedBenchmarkLehmannTable_energy_zero",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Validation.GappedTwoSiteDimer",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.Validation.twoSiteGappedBenchmark_lehmannResponse_zero_one"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.Validation.twoSiteGappedBenchmark_lehmannResponse_zero_one"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "(QuantumTheory.LinearResponse.finiteLehmannTableTransitionData 1\n      SecondQuantization.Fermionic.Validation.twoSiteGappedBenchmarkLehmannTable (1, 0)).weight =\n  -Complex.I",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Validation.GappedTwoSiteDimer.0.SecondQuantization.Fermionic.Validation.twoSiteGappedBenchmarkTransitionWeight_one_zero",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Validation.GappedTwoSiteDimer",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.Validation.twoSiteGappedBenchmark_lehmannResponse_zero_one"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.Validation.twoSiteGappedBenchmark_lehmannResponse_zero_one"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "(QuantumTheory.LinearResponse.finiteLehmannTableTransitionData 1\n      SecondQuantization.Fermionic.Validation.twoSiteGappedBenchmarkLehmannTable (0, 1)).weight =\n  Complex.I",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Validation.GappedTwoSiteDimer.0.SecondQuantization.Fermionic.Validation.twoSiteGappedBenchmarkTransitionWeight_zero_one",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Validation.GappedTwoSiteDimer",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.Validation.twoSiteGappedBenchmark_lehmannResponse_zero_one"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.Validation.twoSiteGappedBenchmark_lehmannResponse_zero_one"
-    ],
-    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
