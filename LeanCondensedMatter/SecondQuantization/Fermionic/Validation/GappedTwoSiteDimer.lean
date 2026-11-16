@@ -133,29 +133,30 @@ private theorem star_two : (starRingEnd ℂ) (2 : ℂ) = 2 := by
   change (starRingEnd ℂ) ((2 : ℝ) : ℂ) = ((2 : ℝ) : ℂ)
   exact Complex.conj_ofReal 2
 
+/-- Inner product of two complex linear combinations of the orthonormal site states. -/
+private theorem inner_twoSiteDimer_linear_combination (a b c d : ℂ) :
+    inner ℂ
+        (a • twoSiteDimerSiteState 0 + b • twoSiteDimerSiteState 1)
+        (c • twoSiteDimerSiteState 0 + d • twoSiteDimerSiteState 1) =
+      (starRingEnd ℂ) a * c + (starRingEnd ℂ) b * d := by
+  simp only [inner_add_left, inner_add_right, inner_smul_left, inner_smul_right]
+  simp [inner_twoSiteDimerSiteState, smul_eq_mul]
+
 private theorem twoSiteGappedBenchmark_ground_inner_excited :
     inner ℂ twoSiteGappedBenchmarkGroundState twoSiteGappedBenchmarkExcitedState = 0 := by
-  rw [twoSiteGappedBenchmarkGroundState, twoSiteGappedBenchmarkExcitedState]
-  simp only [inner_sub_left, inner_add_right, inner_smul_left, inner_smul_right]
-  rw [inner_twoSiteDimerSiteState 0 0, inner_twoSiteDimerSiteState 0 1,
-    inner_twoSiteDimerSiteState 1 0, inner_twoSiteDimerSiteState 1 1, star_two]
-  norm_num
+  simpa [twoSiteGappedBenchmarkGroundState, twoSiteGappedBenchmarkExcitedState,
+    sub_eq_add_neg, star_two] using
+    (inner_twoSiteDimer_linear_combination 1 (-2) 2 1)
 
 private theorem twoSiteGappedBenchmark_ground_inner_self :
     inner ℂ twoSiteGappedBenchmarkGroundState twoSiteGappedBenchmarkGroundState = 5 := by
-  rw [twoSiteGappedBenchmarkGroundState]
-  simp only [inner_sub_left, inner_sub_right, inner_smul_left, inner_smul_right]
-  rw [inner_twoSiteDimerSiteState 0 0, inner_twoSiteDimerSiteState 0 1,
-    inner_twoSiteDimerSiteState 1 0, inner_twoSiteDimerSiteState 1 1, star_two]
-  norm_num
+  simpa [twoSiteGappedBenchmarkGroundState, sub_eq_add_neg, star_two] using
+    (inner_twoSiteDimer_linear_combination 1 (-2) 1 (-2))
 
 private theorem twoSiteGappedBenchmark_excited_inner_self :
     inner ℂ twoSiteGappedBenchmarkExcitedState twoSiteGappedBenchmarkExcitedState = 5 := by
-  rw [twoSiteGappedBenchmarkExcitedState]
-  simp only [inner_add_left, inner_add_right, inner_smul_left, inner_smul_right]
-  rw [inner_twoSiteDimerSiteState 0 0, inner_twoSiteDimerSiteState 0 1,
-    inner_twoSiteDimerSiteState 1 0, inner_twoSiteDimerSiteState 1 1, star_two]
-  norm_num
+  simpa [twoSiteGappedBenchmarkExcitedState, star_two] using
+    (inner_twoSiteDimer_linear_combination 2 1 2 1)
 
 /-- The normalized ground-state contact expectation is exactly `-4/5`, derived from the concrete
 Peierls contact rather than inserted independently. -/
