@@ -105,16 +105,11 @@ private theorem scalar_decay_solution (rate : ℝ) (f : ℝ → ℝ)
     change HasDerivAt (fun u : ℝ => f u * Real.exp (rate * u)) 0 s
     convert (hderiv s).mul he using 1
     ring
-  have hdiff : Differentiable ℝ g := fun s => (hgzero s).differentiableAt
-  have hzero : ∀ s, deriv g s = 0 := fun s => (hgzero s).deriv
-  have hconst : g t = g 0 := is_const_of_deriv_eq_zero hdiff hzero t 0
-  have hproduct : f t * Real.exp (rate * t) = f 0 := by
-    simpa [g] using hconst
-  calc
-    f t = (f t * Real.exp (rate * t)) * Real.exp (-(rate * t)) := by
-      rw [mul_assoc, ← Real.exp_add]
-      simp
-    _ = f 0 * Real.exp (-(rate * t)) := by rw [hproduct]
+  have h := is_const_of_deriv_eq_zero
+    (fun s => (hgzero s).differentiableAt)
+    (fun s => (hgzero s).deriv) t 0
+  simpa [g, mul_assoc, ← Real.exp_add] using
+    congrArg (fun x : ℝ => x * Real.exp (-(rate * t))) h
 
 /-- The finite quasistationary closure has a unique global polarization
 trajectory determined by its value at time zero. This statement is conditional
