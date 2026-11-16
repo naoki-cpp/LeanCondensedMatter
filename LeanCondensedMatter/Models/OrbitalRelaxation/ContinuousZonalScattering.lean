@@ -63,20 +63,17 @@ theorem sphericalAverage_zonal (f : ℝ → ℝ) (hf : Continuous f) :
 
 private theorem polarCosineAverage_const (c : ℝ) :
     polarCosineAverage (fun _ => c) = c := by
-  unfold polarCosineAverage
-  rw [intervalIntegral.integral_const]
+  simp only [polarCosineAverage, intervalIntegral.integral_const]
   ring
 
 private theorem polarCosineAverage_const_mul (c : ℝ) (f : ℝ → ℝ) :
     polarCosineAverage (fun μ => c * f μ) = c * polarCosineAverage f := by
-  unfold polarCosineAverage
-  rw [intervalIntegral.integral_const_mul]
+  simp only [polarCosineAverage, intervalIntegral.integral_const_mul]
   ring
 
 private theorem polarCosineAverage_neg (f : ℝ → ℝ) :
     polarCosineAverage (fun μ => -f μ) = -polarCosineAverage f := by
-  unfold polarCosineAverage
-  rw [intervalIntegral.integral_neg]
+  simp only [polarCosineAverage, intervalIntegral.integral_neg]
   ring
 
 private theorem polarCosineAverage_add (f g : ℝ → ℝ)
@@ -146,12 +143,9 @@ theorem continuousDegreeTwoRate_eq_sphericalAverage (W : ℝ → ℝ)
       sphericalAverage 1 (fun q => W (q 2) * (1 - legendreP2 (q 2))) := by
   unfold continuousDegreeTwoRate
   symm
-  have hp : Continuous legendreP2 := by
-    unfold legendreP2
-    fun_prop
-  exact sphericalAverage_zonal
-    (fun μ : ℝ => W μ * (1 - legendreP2 μ))
-    (hW.mul (continuous_const.sub hp))
+  apply sphericalAverage_zonal
+  unfold legendreP2
+  fun_prop
 
 /-- A nonconstant, nonnegative-on-the-sphere zonal scattering kernel for
 `a,c ≥ 0`, including the nontrivial forward/backward anisotropy `c μ²`. -/
