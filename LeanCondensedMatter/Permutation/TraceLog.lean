@@ -52,14 +52,6 @@ theorem constantCoeff_formalTraceLogOneSubSeries
   rw [← PowerSeries.coeff_zero_eq_constantCoeff]
   simp
 
-private theorem coeff_log_complex_of_pos (m : ℕ) (hm : 0 < m) :
-    PowerSeries.coeff m (PowerSeries.log ℂ) =
-      (-1 : ℂ) ^ (m + 1) / (m : ℂ) := by
-  rw [PowerSeries.coeff_log, ite_eq_right (Nat.ne_of_gt hm)]
-  change (((-1 : ℚ) ^ (m + 1) / (m : ℚ) : ℚ) : ℂ) =
-    (-1 : ℂ) ^ (m + 1) / (m : ℂ)
-  rw [Rat.cast_div, Rat.cast_pow, Rat.cast_neg, Rat.cast_one, Rat.cast_natCast]
-
 /-- Division-free formal trace-log identity for arbitrary exchange weight.
 
 Multiplying the connected-cycle series by `ζ` gives the negative coefficientwise trace-log
@@ -83,7 +75,12 @@ theorem smul_permutationConnectedCycleSeries_eq_neg_traceLog
     have htrace :
         PowerSeries.coeff (n + 1) (formalTraceLogOneSubSeries ζ K) =
           -(ζ ^ (n + 1) * Matrix.trace (K ^ (n + 1)) / ((n + 1 : ℕ) : ℂ)) := by
-      rw [coeff_formalTraceLogOneSubSeries, coeff_log_complex_of_pos (n + 1) (by omega)]
+      rw [coeff_formalTraceLogOneSubSeries, PowerSeries.coeff_log,
+        ite_eq_right (Nat.succ_ne_zero n)]
+      change (-ζ) ^ (n + 1) *
+          (((-1 : ℚ) ^ ((n + 1) + 1) / ((n + 1 : ℕ) : ℚ) : ℚ) : ℂ) *
+          Matrix.trace (K ^ (n + 1)) = _
+      rw [Rat.cast_div, Rat.cast_pow, Rat.cast_neg, Rat.cast_one, Rat.cast_natCast]
       calc
         (-ζ) ^ (n + 1) *
               ((-1 : ℂ) ^ ((n + 1) + 1) / ((n + 1 : ℕ) : ℂ)) *
