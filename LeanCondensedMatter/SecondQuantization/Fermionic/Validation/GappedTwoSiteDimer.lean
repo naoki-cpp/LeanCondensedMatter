@@ -146,13 +146,15 @@ private theorem twoSiteGappedBenchmark_ground_inner_excited :
 
 private theorem twoSiteGappedBenchmark_ground_inner_self :
     inner ℂ twoSiteGappedBenchmarkGroundState twoSiteGappedBenchmarkGroundState = 5 := by
-  simpa [twoSiteGappedBenchmarkGroundState, sub_eq_add_neg, starRingEnd_apply] using
-    (inner_twoSiteDimer_linear_combination 1 (-2) 1 (-2))
+  have h := inner_twoSiteDimer_linear_combination 1 (-2) 1 (-2)
+  norm_num [starRingEnd_apply] at h
+  simpa [twoSiteGappedBenchmarkGroundState, sub_eq_add_neg] using h
 
 private theorem twoSiteGappedBenchmark_excited_inner_self :
     inner ℂ twoSiteGappedBenchmarkExcitedState twoSiteGappedBenchmarkExcitedState = 5 := by
-  simpa [twoSiteGappedBenchmarkExcitedState, starRingEnd_apply] using
-    (inner_twoSiteDimer_linear_combination 2 1 2 1)
+  have h := inner_twoSiteDimer_linear_combination 2 1 2 1
+  norm_num [starRingEnd_apply] at h
+  simpa [twoSiteGappedBenchmarkExcitedState] using h
 
 /-- The normalized ground-state contact expectation is exactly `-4/5`, derived from the concrete
 Peierls contact rather than inserted independently. -/
