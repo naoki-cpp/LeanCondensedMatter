@@ -182,28 +182,6 @@ def twoSiteGappedBenchmarkConductivityTable : FiniteConductivityTable (Fin 2) wh
   lehmann := twoSiteGappedBenchmarkLehmannTable
   contact := (-4 : ℂ) / 5
 
-private theorem twoSiteGappedBenchmarkLehmannTable_energy_zero :
-    twoSiteGappedBenchmarkLehmannTable.energy 0 = -5 / 4 := by
-  norm_num [twoSiteGappedBenchmarkLehmannTable]
-
-private theorem twoSiteGappedBenchmarkLehmannTable_energy_one :
-    twoSiteGappedBenchmarkLehmannTable.energy 1 = 5 / 4 := by
-  norm_num [twoSiteGappedBenchmarkLehmannTable]
-
-private theorem twoSiteGappedBenchmarkTransitionWeight_zero_one :
-    (finiteLehmannTableTransitionData 1
-        twoSiteGappedBenchmarkLehmannTable (0, 1)).weight = Complex.I := by
-  norm_num [finiteLehmannTableTransitionData,
-    orderedLehmannTransitionWeight, twoSiteGappedBenchmarkLehmannTable,
-    twoSiteDimerEnergyBasisCurrent]
-
-private theorem twoSiteGappedBenchmarkTransitionWeight_one_zero :
-    (finiteLehmannTableTransitionData 1
-        twoSiteGappedBenchmarkLehmannTable (1, 0)).weight = -Complex.I := by
-  norm_num [finiteLehmannTableTransitionData,
-    orderedLehmannTransitionWeight, twoSiteGappedBenchmarkLehmannTable,
-    twoSiteDimerEnergyBasisCurrent]
-
 /-- The table entry `J₋₊ = i` is the normalized Peierls-current matrix element. Both supplied
 operator eigenvectors have squared norm `5`, so division by `5` exactly accounts for normalizing
 both bra and ket. -/
@@ -245,13 +223,11 @@ theorem twoSiteGappedBenchmark_lehmannResponse_zero_one :
   rw [Fintype.sum_prod_type]
   simp only [Fin.sum_univ_two, Fin.isValue, LehmannTransitionData.frequencyTerm,
     finiteLehmannTableTransitionData_energyGap,
-    twoSiteGappedBenchmarkLehmannTable_energy_zero,
-    twoSiteGappedBenchmarkLehmannTable_energy_one,
-    twoSiteGappedBenchmarkTransitionWeight_zero_one,
-    twoSiteGappedBenchmarkTransitionWeight_one_zero,
     finiteLehmannTableTransitionData_weight_diag, sub_self]
   apply Complex.ext <;>
-    norm_num [lehmannTerm, lehmannDenominator, Complex.normSq]
+    norm_num [finiteLehmannTableTransitionData, orderedLehmannEnergyGap,
+      orderedLehmannTransitionWeight, twoSiteGappedBenchmarkLehmannTable,
+      twoSiteDimerEnergyBasisCurrent, lehmannTerm, lehmannDenominator, Complex.normSq]
 
 /-- Independent direct Kubo/Lehmann cross-check at `ω = 0`, `η = 1`, written from the two explicit
 nonzero transitions and the operator-derived contact rather than through `FiniteConductivityTable`. -/
