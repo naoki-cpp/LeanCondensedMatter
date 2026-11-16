@@ -136,7 +136,7 @@ private theorem inner_twoSiteDimer_linear_combination (a b c d : ℂ) :
       (starRingEnd ℂ) a * c + (starRingEnd ℂ) b * d := by
   simp only [inner_add_left, inner_add_right, inner_smul_left,
     inner_smul_right, inner_twoSiteDimerSiteState]
-  simp <;> ring
+  simp
 
 private theorem twoSiteGappedBenchmark_ground_inner_excited :
     inner ℂ twoSiteGappedBenchmarkGroundState twoSiteGappedBenchmarkExcitedState = 0 := by
