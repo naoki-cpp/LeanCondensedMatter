@@ -447,9 +447,8 @@ theorem ExternalInsertionBlockLayout.assembleConnectedBlocks_signedDysonShuffleO
           ((F B).slotCongr (Combinatorics.standardSlotEquiv
             (layout.interactionBlock S B)))
           ε β g (fun i => externalTime (layout.sourceEquiv.symm ⟨B, i⟩)) := by
-    have hnonempty : (B : Finset (Fin (2 * E))).Nonempty :=
+    obtain ⟨e, he⟩ :=
       Finset.nonempty_iff_ne_empty.mpr (layout.partition.ne_bot B.2)
-    obtain ⟨e, he⟩ := hnonempty
     have hsource : (layout.sourceEquiv e).1 = B := by
       apply Subtype.ext
       simpa only [layout.sourceEquiv_fst] using
@@ -462,15 +461,13 @@ theorem ExternalInsertionBlockLayout.assembleConnectedBlocks_signedDysonShuffleO
     have hC :
         reindex.symm B =
           ⟨d.vertexGraph.componentBlock (Sum.inl e),
-            d.vertexGraph.componentBlock_mem_componentPartition (Sum.inl e)⟩ := by
-      apply Subtype.ext
-      exact ((d.vertexGraph.componentBlock_eq_iff_mem
+            d.vertexGraph.componentBlock_mem_componentPartition (Sum.inl e)⟩ :=
+      Subtype.ext ((d.vertexGraph.componentBlock_eq_iff_mem
         (reindex.symm B).2 (Sum.inl e)).2 hmem).symm
     rw [hC]
-    have h := ExternalInsertionBlockLayout.assembleConnectedBlocks_componentDysonAmplitude_eq_local
-      layout F hconnected ε β g externalTime e
-    rw [hsource] at h
-    simpa only [d, S] using h
+    simpa only [hsource, d, S] using
+      (ExternalInsertionBlockLayout.assembleConnectedBlocks_componentDysonAmplitude_eq_local
+        layout F hconnected ε β g externalTime e)
   have horbit := ExternalInsertionBlockLayout.assembleConnectedBlocks_signedDysonShuffleOrbit
     layout F hconnected ε β g externalTime
   exact horbit.trans
