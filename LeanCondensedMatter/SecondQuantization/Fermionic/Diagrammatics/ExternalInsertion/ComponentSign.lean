@@ -94,25 +94,10 @@ theorem externalPartitionShuffleFull_blockSlotSet
     (P : π.parts) :
     (externalPartitionShuffleFull π).blockSlotSet P =
       (P : Finset (Fin (2 * E))) := by
-  classical
   let o := externalSubsetIncreasingOrder (Finset.univ : Finset (Fin (2 * E)))
-  let orders := π.partOrdersOfOrder o
-  let hcard : (Finset.univ : Finset (Fin (2 * E))).card = 2 * E := by simp
-  ext x
-  change x ∈ ((FamilySlotShuffleTo.castTotalEquiv hcard)
-      (externalPartitionShuffle π)).blockSlotSet P ↔
-    x ∈ (P : Finset (Fin (2 * E)))
-  rw [(externalPartitionShuffle π).mem_castTotalEquiv_blockSlotSet_iff hcard P x]
-  change (Fin.cast hcard.symm x) ∈
-    (π.shuffleOfOrder o orders (π.partOrdersCompatible_partOrdersOfOrder o)).blockSlotSet P ↔
-      x ∈ (P : Finset (Fin (2 * E)))
-  rw [π.mem_shuffleOfOrder_blockSlotSet_iff o orders
-    (π.partOrdersCompatible_partOrdersOfOrder o) P]
-  have ho : (o (Fin.cast hcard.symm x)).1 = x := by
-    rw [externalSubsetIncreasingOrder_univ_apply]
-    apply Fin.ext
-    rfl
-  rw [ho]
+  exact π.cast_shuffleOfOrder_blockSlotSet_eq o (π.partOrdersOfOrder o)
+    (π.partOrdersCompatible_partOrdersOfOrder o)
+    externalSubsetIncreasingOrder_univ_apply P
 
 /-- Fermionic Koszul sign for grouping a subset of external insertions by
 partition blocks. The order on the blocks is explicit, because the sign
