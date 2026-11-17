@@ -671,10 +671,11 @@ theorem externalSubsetSignedConnectedMomentSeries_eq_zero_of_odd
   intro π _
   obtain ⟨B, hB, hBodd⟩ : ∃ B ∈ π.parts, ¬ Even B.card := by
     by_contra h
-    push_neg at h
+    push Not at h
     apply hodd
     rw [← π.sum_card_parts]
-    exact Finset.even_sum (fun B => B.card) h
+    exact Finset.even_sum (s := π.parts)
+      (fun B : Finset (Fin (2 * E)) => B.card) h
   have hprod : Finpartition.partitionProduct
       (externalSubsetConnectedDiagramSeries ε β g labels times) π = 0 :=
     Finset.prod_eq_zero hB
