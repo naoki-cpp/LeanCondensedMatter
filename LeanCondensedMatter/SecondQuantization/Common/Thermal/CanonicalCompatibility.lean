@@ -185,18 +185,14 @@ theorem canonicalFullGibbsDensityOperator_expectation_eq_sector
         (Subtype.val : ParticleNumberSector Mode Config N → Config)
         Subtype.val_injective).toContinuousLinearMap)
   let E : ParticleNumberSector Mode Config N → ℝ := fun n => occupationEnergy ε n.val
-  have hdiag : ∀ n : ParticleNumberSector Mode Config N,
-      ρ.op ((completedHilbertBasis (Config := ParticleNumberSector Mode Config N)) n) =
-        (eigenbasisGibbsProbability E β n : ℂ) •
-          (completedHilbertBasis (Config := ParticleNumberSector Mode Config N)) n := by
-    intro n
-    simpa only [ρ, E, completedHilbertBasis_apply] using
-      (canonicalGibbsDensityOperator_apply_basis ε β N hsum n)
   rw [canonicalFullGibbsDensityOperator_expectation_eq_tsum_sector ε β N hsum A]
   change _ = ρ.expectation B
   rw [ρ.expectation_eq_tsum_diagonal B
     (completedHilbertBasis (Config := ParticleNumberSector Mode Config N))
-    (eigenbasisGibbsProbability E β) hdiag]
+    (eigenbasisGibbsProbability E β) (by
+      intro n
+      simpa only [ρ, E, completedHilbertBasis_apply] using
+        (canonicalGibbsDensityOperator_apply_basis ε β N hsum n))]
   apply tsum_congr
   intro n
   change
