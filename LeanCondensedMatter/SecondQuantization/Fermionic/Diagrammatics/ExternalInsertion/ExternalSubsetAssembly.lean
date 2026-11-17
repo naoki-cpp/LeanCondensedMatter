@@ -188,8 +188,7 @@ theorem ExternalInsertionBlockLayout.assembleDiagram_componentExternalTime_eq_lo
         times (layout.sourceEquiv.symm ⟨B, i⟩)) =
         evenExternalSubsetTimes times (B : Finset (Fin (2 * E)))
           (layout.evenBlocks B) := by
-    simpa only [evenExternalSubsetTimes] using
-      sourceEquiv_symm_restrict_eq_evenSubset layout times B
+    exact sourceEquiv_symm_restrict_eq_evenSubset layout times B
   exact (heq_of_eq hlocal).trans
     ((evenExternalSubsetRestriction_heq_of_eq times
       (layout.evenBlocks B) (d.externalSector_card_even C)
@@ -514,8 +513,7 @@ theorem ExternalInsertionBlockLayout.assembleDiagram_externalLabel_eq_iff_evenSu
       (fun i => labels (layout.sourceEquiv.symm ⟨B, i⟩)) =
         evenExternalSubsetLabels labels (B : Finset (Fin (2 * E)))
           (layout.evenBlocks B) := by
-    simpa only [evenExternalSubsetLabels] using
-      sourceEquiv_symm_restrict_eq_evenSubset layout labels B
+    exact sourceEquiv_symm_restrict_eq_evenSubset layout labels B
   simpa only [hlabels] using
     (layout.assembleDiagram_externalLabel_eq_iff
       (Finset.univ : Finset (Fin n)) F labels)
@@ -551,8 +549,7 @@ theorem ExternalInsertionBlockLayout.assembleConnectedBlocks_signedDysonShuffleO
       (fun i => times (layout.sourceEquiv.symm ⟨B, i⟩)) =
         evenExternalSubsetTimes times (B : Finset (Fin (2 * E)))
           (layout.evenBlocks B) := by
-    simpa only [evenExternalSubsetTimes] using
-      sourceEquiv_symm_restrict_eq_evenSubset layout times B
+    exact sourceEquiv_symm_restrict_eq_evenSubset layout times B
   simpa only [htime] using
     (ExternalInsertionBlockLayout.assembleConnectedBlocks_signedDysonShuffleOrbit_eq_independentLocals
       layout F hconnected ε β g times)
