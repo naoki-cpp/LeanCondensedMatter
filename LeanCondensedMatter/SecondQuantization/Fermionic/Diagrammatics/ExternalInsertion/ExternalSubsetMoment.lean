@@ -656,21 +656,6 @@ theorem externalSubsetSeries_eq_zero_of_odd
   simp [externalSubsetMomentSeries, externalSubsetConnectedDiagramSeries, hne, hodd]
 
 
-/-- Every partition of an odd-sized external subset contains an odd-sized block.
-This makes the odd-fermion vanishing visible directly in the signed source
-partition expansion, rather than only in the Wick-diagram definitions. -/
-private theorem odd_externalSubset_has_odd_partition_block
-    {S : Finset (Fin (2 * E))} (π : Finpartition S)
-    (hodd : ¬ Even S.card) :
-    ∃ B ∈ π.parts, ¬ Even B.card := by
-  classical
-  by_contra h
-  push Not at h
-  have hπ : Even (∑ B ∈ π.parts, B.card) :=
-    Finset.sum_induction (s := π.parts) (fun B => B.card) Even
-      (fun _ _ ha hb => ha.add hb) (by simp) (fun B hB => h B hB)
-  exact hodd (by simpa only [π.sum_card_parts] using hπ)
-
 /-- The signed connected-partition expression respects fermion parity:
 an odd number of source insertions gives zero term by term. No hypothesis
 identifying the diagrammatic moments with the partition expression is used. -/
@@ -684,7 +669,13 @@ theorem externalSubsetSignedConnectedMomentSeries_eq_zero_of_odd
   unfold externalSubsetSignedConnectedMomentSeries Finpartition.weightedMomentFromCumulant
   apply Finset.sum_eq_zero
   intro π _
-  obtain ⟨B, hB, hBodd⟩ := odd_externalSubset_has_odd_partition_block π hodd
+  obtain ⟨B, hB, hBodd⟩ : ∃ B ∈ π.parts, ¬ Even B.card := by
+    by_contra h
+    push Not at h
+    apply hodd
+    rw [← π.sum_card_parts]
+    exact Finset.even_sum (s := π.parts)
+      (fun B : Finset (Fin (2 * E)) => B.card) h
   have hprod : Finpartition.partitionProduct
       (externalSubsetConnectedDiagramSeries ε β g labels times) π = 0 :=
     Finset.prod_eq_zero hB
