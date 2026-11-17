@@ -98,13 +98,8 @@ theorem vacuumFreeExternalInsertionDysonCoefficient_eq_sum_evenPartitionFibers
   intro π _
   by_cases heven : ∀ B : π.parts, Even (B : Finset (Fin (2 * K))).card
   · simp [heven]
-  · have hOdd : ∃ B : π.parts, ¬ Even (B : Finset (Fin (2 * K))).card :=
-      not_forall.mp heven
-    obtain ⟨B, hBodd⟩ := hOdd
-    have hnot : ¬ ∀ P ∈ π.parts, Even P.card := by
-      intro h
-      exact heven (fun P => h P.1 P.2)
-    simpa [hnot] using
+  · obtain ⟨B, hBodd⟩ := not_forall.mp heven
+    simpa only [heven, ↓reduceIte] using
       (fixedExternalPartitionDysonFiber_eq_zero_of_oddBlock
         π B hBodd ε β g labels times)
 
@@ -450,10 +445,7 @@ theorem vacuumFreeExternalInsertionDysonCoefficient_eq_sum_evenPartitions_localL
   · simpa [heven] using
       (sum_fixedExternalPartitionFiber_eq_sum_localLabelConnectedBlockFamilies
         anchor π ε β g labels times)
-  · have hnot : ¬ ∀ P ∈ π.parts, Even P.card := by
-      intro h
-      exact heven (fun P => h P.1 P.2)
-    simp [hnot]
+  · simp only [heven, ↓reduceIte]
 
 /-- Fully external-connected, vacuum-free Dyson coefficient using the actual
 integrated signed Wick diagram amplitude, with all labels and times fixed. -/
