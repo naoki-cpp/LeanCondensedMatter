@@ -135,8 +135,8 @@ private theorem twoLevelLehmannPair (Δ : ℝ) :
         Complex.I * ((1 : ℂ) - Complex.I * (Δ : ℂ))⁻¹ =
           (2 * (Δ : ℂ)) / (1 + (Δ : ℂ) ^ 2) := by
     field_simp [hp, hm, hd]
-    rw [Complex.I_sq]
-    ring
+    ring_nf
+    simp [Complex.I_sq]
   convert halgebra using 1 <;>
     simp [lehmannTerm, lehmannDenominator, div_eq_mul_inv, sub_eq_add_neg]
 
@@ -156,7 +156,9 @@ theorem twoLevelLehmannResponse_of_gap (table : FiniteLehmannTable (Fin 2)) (Δ 
     finiteLehmannTableTransitionData_energyGap,
     finiteLehmannTableTransitionData_weight_diag, sub_self]
   simp only [lehmannTerm, zero_mul, add_zero, zero_add]
-  rw [h01, h10, hrev, hgap]
+  rw [h01, h10]
+  simp only [orderedLehmannEnergyGap]
+  rw [hrev, hgap]
   simpa only [lehmannTerm, neg_mul, neg_add_rev] using twoLevelLehmannPair Δ
 
 /-- At `ℏ = 1`, zero driving frequency, and positive switching rate `η = 1`, the dimer's exact
@@ -167,7 +169,7 @@ theorem twoSiteDimerGroundState_lehmannResponse_zero_one :
   convert twoLevelLehmannResponse_of_gap twoSiteDimerGroundStateLehmannTable 2
     (by norm_num [twoSiteDimerGroundStateLehmannTable])
     twoSiteDimerGroundStateTransitionWeight_zero_one
-    twoSiteDimerGroundStateTransitionWeight_one_zero using 1 <;> norm_num
+    twoSiteDimerGroundStateTransitionWeight_one_zero using 1; norm_num
 
 /-- The benchmark contact expectation equals the occupied bonding-state energy. -/
 theorem twoSiteDimerGroundState_contact_eq_groundEnergy :
