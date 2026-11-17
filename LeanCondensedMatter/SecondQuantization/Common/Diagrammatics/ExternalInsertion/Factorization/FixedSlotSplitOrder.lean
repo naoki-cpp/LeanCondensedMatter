@@ -62,6 +62,12 @@ theorem externalInsertionSlotLegSplitting_left_strictMono
     have he := e.isLt
     omega
   · change (externalInsertionInteractionLeg (E := E) v l).val <
+      (externalInsertionExternalLeg E T f).val at hab
+    simp only [externalInsertionInteractionLeg_val,
+      externalInsertionExternalLeg_val] at hab
+    have hf := f.isLt
+    omega
+  · change (externalInsertionInteractionLeg (E := E) v l).val <
         (externalInsertionInteractionLeg (E := E) w k).val at hab
     change externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T)
         (Sum.inl (externalInsertionInteractionLeg (E := E) v l)) <
