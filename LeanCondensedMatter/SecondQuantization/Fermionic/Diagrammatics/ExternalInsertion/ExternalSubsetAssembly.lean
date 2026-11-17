@@ -697,7 +697,11 @@ theorem ExternalInsertionBlockLayout.sum_preconnectedDysonBlock_eq_standardized
         ((B : Finset (Fin (2 * E))).card / 2) T.card =>
         if d.externalLabel = targetLabels then
           d.dysonAmplitude ε β g targetTimes else 0)
-  simpa only [T, targetLabels, targetTimes] using h
+  convert h using 1
+  all_goals
+    apply Finset.sum_congr
+    · ext d; simp
+    · intro d _; rfl
 
 open Classical in
 /-- For one physical external-component layout, the complete integrated
