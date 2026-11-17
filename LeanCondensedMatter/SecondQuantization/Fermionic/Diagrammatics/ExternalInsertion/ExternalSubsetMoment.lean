@@ -732,7 +732,7 @@ theorem externalSubsetMomentSeries_eq_signedConnected_two
     have hlt := Finset.card_lt_card hB
     have hBcard : B.card = 0 ∨ B.card = 1 := by omega
     rcases hBcard with hzero | hone
-    · simpa [Finset.card_eq_zero.mp hzero]
+    · simp [Finset.card_eq_zero.mp hzero, externalSubsetConnectedDiagramSeries]
     · exact (externalSubsetSeries_eq_zero_of_odd (E := 1)
         ε β g labels times B (by simp [hone])).2
   have hweighted :
@@ -745,12 +745,12 @@ theorem externalSubsetMomentSeries_eq_signedConnected_two
   have hphysical :
       externalSubsetMomentSeries (E := 1) ε β g labels times S =
         externalSubsetConnectedDiagramSeries (E := 1) ε β g labels times S := by
-    simpa only [externalSubsetMomentSeries, externalSubsetConnectedDiagramSeries,
-      hEmpty, hEven, dite_eq_left] using
-      (vacuumFreeExternalInsertionDysonSeries_eq_connected_of_single_pair
-        (show S.card / 2 = 1 by omega) ε β g
-        (evenExternalSubsetLabels (E := 1) labels S hEven)
-        (evenExternalSubsetTimes (E := 1) times S hEven))
+    simp only [externalSubsetMomentSeries, externalSubsetConnectedDiagramSeries,
+      hEmpty, hEven, dite_eq_left]
+    exact vacuumFreeExternalInsertionDysonSeries_eq_connected_of_single_pair
+      (show S.card / 2 = 1 by omega) ε β g
+      (evenExternalSubsetLabels (E := 1) labels S hEven)
+      (evenExternalSubsetTimes (E := 1) times S hEven)
   exact hphysical.trans hweighted.symm
 
 /-- The precise remaining physical bridge for Phase 5: once the actual
