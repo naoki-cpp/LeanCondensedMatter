@@ -132,7 +132,8 @@ theorem ExternalInsertionBlockLayout.assembleDiagram_componentOrderedDiagram_ext
     ⟨d.vertexGraph.componentBlock (Sum.inl e),
       d.vertexGraph.componentBlock_mem_componentPartition (Sum.inl e)⟩
   exact (heq_of_eq
-    (layout.assembleDiagram_externalLabel_eq_evenExternalSubsetLabels F B)).trans
+    (ExternalInsertionBlockLayout.assembleDiagram_externalLabel_eq_evenExternalSubsetLabels
+      layout F B)).trans
     ((evenExternalSubsetRestriction_heq_of_eq d.externalLabel
       (layout.evenBlocks B) (d.externalSector_card_even C)
       (layout.assembleDiagram_componentExternalSector_external
