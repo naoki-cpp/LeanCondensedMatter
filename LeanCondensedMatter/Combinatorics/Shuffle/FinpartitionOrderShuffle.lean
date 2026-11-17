@@ -85,6 +85,32 @@ theorem mem_shuffleOfOrder_blockSlotSet_iff
     change (orders B ((orders B).symm ⟨(order x).1, hx⟩)).1 = (order x).1
     simp
 
+/-- For a full partition of `Fin n`, an ambient order agreeing with the
+canonical cast makes each shuffled block occupy exactly its own labels. -/
+theorem cast_shuffleOfOrder_blockSlotSet_eq
+    {n : ℕ} (π : Finpartition (Finset.univ : Finset (Fin n)))
+    (order : Fin (Finset.univ : Finset (Fin n)).card ≃
+      ↥(Finset.univ : Finset (Fin n)))
+    (orders : π.PartOrders) (h : π.PartOrdersCompatible order orders)
+    (hOrder : ∀ i, (order i).1 = Fin.cast (by simp) i)
+    (B : π.parts) :
+    ((Combinatorics.FamilySlotShuffleTo.castTotalEquiv (by simp))
+      (π.shuffleOfOrder order orders h)).blockSlotSet B =
+        (B : Finset (Fin n)) := by
+  classical
+  let hcard : (Finset.univ : Finset (Fin n)).card = n := by simp
+  ext x
+  change x ∈ ((Combinatorics.FamilySlotShuffleTo.castTotalEquiv hcard)
+      (π.shuffleOfOrder order orders h)).blockSlotSet B ↔
+    x ∈ (B : Finset (Fin n))
+  rw [(π.shuffleOfOrder order orders h).mem_castTotalEquiv_blockSlotSet_iff hcard B x,
+    π.mem_shuffleOfOrder_blockSlotSet_iff order orders h B]
+  have hx : (order (Fin.cast hcard.symm x)).1 = x := by
+    rw [hOrder]
+    apply Fin.ext
+    rfl
+  rw [hx]
+
 /-- The local orders used to assemble a global order are compatible with that assembled order. -/
 theorem partOrdersCompatible_assembleOrder (π : Finpartition s) (orders : π.PartOrders)
     (shuffle : π.PartShuffle) :
