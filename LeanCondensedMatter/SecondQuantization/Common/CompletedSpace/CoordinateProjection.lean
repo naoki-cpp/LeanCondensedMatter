@@ -1,4 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.Diagonal
+import LeanCondensedMatter.Analysis.Operator.Diagonal
 import Mathlib.Order.Filter.Finite
 
 set_option linter.style.header false
@@ -17,6 +18,7 @@ namespace SecondQuantization
 namespace Common
 
 open Filter Topology
+open ContinuousLinearMap
 
 noncomputable section
 
