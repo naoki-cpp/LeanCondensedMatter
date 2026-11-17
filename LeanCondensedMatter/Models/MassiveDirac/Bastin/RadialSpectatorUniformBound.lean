@@ -27,12 +27,6 @@ open QuantumTheory.Transport
 def radialBastinMassWindowMargin (m radius : ℝ) : ℝ :=
   2 * |m| - radius
 
-/-- A window narrower than the mass-magnitude gap has strictly positive separation margin. -/
-theorem radialBastinMassWindowMargin_pos
-    (m radius : ℝ) (hradius : radius < 2 * |m|) :
-    0 < radialBastinMassWindowMargin m radius := by
-  exact sub_pos.mpr hradius
-
 /-- The mass-window margin is a lower bound for the shifted real interband denominator at every
 radial momentum. -/
 theorem radialBastinMassWindowMargin_le_abs_gap_add_offset
@@ -72,7 +66,7 @@ theorem norm_radialSpectatorResolvent_le_inv_margin
         (((side.regulator broadening : ℝ) : ℂ) * Complex.I))⁻¹)‖ ≤
       (radialBastinMassWindowMargin m radius)⁻¹ := by
   have hmargin : 0 < radialBastinMassWindowMargin m radius :=
-    radialBastinMassWindowMargin_pos m radius hradius
+    sub_pos.mpr hradius
   have hden := radialBastinMassWindowMargin_le_norm_spectralDenominator
     side band v m p offset radius broadening hoffset
   have hnorm : 0 <
