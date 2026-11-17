@@ -269,15 +269,13 @@ theorem ExternalInsertionBlockLayout.assembleDiagram_dysonAmplitude_eq_assignmen
           ((layout.interactionOrderDecompositionEquiv
             ((Finset.univ : Finset (Fin n)).orderIsoOfFin rfl).toEquiv).1,
             layout.interactionAssignmentShuffle)) := by
-  let canonical : QuarticVertexOrder (Finset.univ : Finset (Fin n)) :=
-    ((Finset.univ : Finset (Fin n)).orderIsoOfFin rfl).toEquiv
   have horder :
       layout.interactionOrderDecompositionEquiv.symm
-        ((layout.interactionOrderDecompositionEquiv canonical).1,
-          layout.interactionAssignmentShuffle) = canonical := by
-    change layout.interactionOrderDecompositionEquiv.symm
-      (layout.interactionOrderDecompositionEquiv canonical) = canonical
-    exact layout.interactionOrderDecompositionEquiv.symm_apply_apply canonical
+        ((layout.interactionOrderDecompositionEquiv
+          ((Finset.univ : Finset (Fin n)).orderIsoOfFin rfl).toEquiv).1,
+          layout.interactionAssignmentShuffle) =
+        ((Finset.univ : Finset (Fin n)).orderIsoOfFin rfl).toEquiv :=
+    layout.interactionOrderDecompositionEquiv.symm_apply_apply _
   rw [horder]
   exact (ExternalInsertionWickDiagram.orderedDysonAmplitude_canonicalOrder
     (layout.assembleDiagram (Finset.univ : Finset (Fin n)) F)
@@ -362,14 +360,11 @@ theorem sum_fixedExternalPartitionDysonFiber_eq_sizes_shuffles_localLabels
   let layout : ExternalInsertionBlockLayout K n :=
     ((ExternalInsertionBlockLayout.fixedPartitionSizeShuffleEquiv
       (E := K) (N := n) π heven).symm p.1).1
-  have hd :=
-    ExternalInsertionBlockLayout.fixedPartitionPhysicalSizeShuffleEquiv_symm_diagram
-      (E := K) (N := n) anchor π heven p
-  have hl :=
-    ExternalInsertionBlockLayout.assembleDiagram_externalLabel_eq_iff_evenSubsetLabels
-      layout p.2.1 labels
-  rw [hd]
-  exact if_congr hl rfl rfl
+  rw [ExternalInsertionBlockLayout.fixedPartitionPhysicalSizeShuffleEquiv_symm_diagram
+    (E := K) (N := n) anchor π heven p]
+  exact if_congr
+    (ExternalInsertionBlockLayout.assembleDiagram_externalLabel_eq_iff_evenSubsetLabels
+      layout p.2.1 labels) rfl rfl
 
 open Classical in
 /-- At fixed perturbation order and fixed physical external partition,
@@ -417,10 +412,9 @@ theorem sum_fixedExternalPartitionDysonFiber_eq_assignmentOrderedDyson
   let layout : ExternalInsertionBlockLayout K n :=
     ((ExternalInsertionBlockLayout.fixedPartitionSizeShuffleEquiv
       (E := K) (N := n) π heven).symm p.1).1
-  have hcanon :=
-    ExternalInsertionBlockLayout.assembleDiagram_dysonAmplitude_eq_assignmentOrdered
-      layout p.2.1 ε β g times
-  exact if_congr Iff.rfl hcanon rfl
+  exact if_congr Iff.rfl
+    (ExternalInsertionBlockLayout.assembleDiagram_dysonAmplitude_eq_assignmentOrdered
+      layout p.2.1 ε β g times) rfl
 
 /-- The full fixed-order physical Dyson coefficient is reindexed by even
 external-component partitions and independently labelled connected blocks.
