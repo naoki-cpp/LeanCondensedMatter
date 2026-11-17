@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Combinatorics.Shuffle.FamilyOrderShuffle
+import LeanCondensedMatter.Combinatorics.Shuffle.FamilySlotShuffleInversions
 import Mathlib.Algebra.BigOperators.Ring.Finset
 import Mathlib.Data.Fintype.BigOperators
 import Mathlib.Order.Partition.Finpartition
@@ -56,6 +57,28 @@ noncomputable def shuffleOfOrder (π : Finpartition s) (order : Fin s.card ≃ �
     (orders : π.PartOrders) (h : π.PartOrdersCompatible order orders) : π.PartShuffle where
   slotEquiv := (π.partEquiv orders).trans order.symm
   strictMono := h
+
+/-- The slots occupied by a partition block under the shuffle extracted from
+a global order are exactly the ambient positions whose elements belong to
+that block. This depends only on finite-set combinatorics, not on statistics. -/
+theorem mem_shuffleOfOrder_blockSlotSet_iff
+    (π : Finpartition s) (order : Fin s.card ≃ ↥s)
+    (orders : π.PartOrders) (h : π.PartOrdersCompatible order orders)
+    (B : π.parts) (x : Fin s.card) :
+    x ∈ (π.shuffleOfOrder order orders h).blockSlotSet B ↔
+      (order x).1 ∈ (B : Finset α) := by
+  classical
+  simp only [Combinatorics.FamilySlotShuffleTo.blockSlotSet,
+    Finset.mem_image, Finset.mem_univ, true_and]
+  change (∃ i : Fin (B : Finset α).card,
+      order.symm (π.partEquiv orders ⟨B, i⟩) = x) ↔ _
+  constructor
+  · rintro ⟨i, rfl⟩
+    simpa [Finpartition.partEquiv] using (orders B i).2
+  · intro hx
+    refine ⟨(orders B).symm ⟨(order x).1, hx⟩, ?_⟩
+    apply order.injective
+    simp [Finpartition.partEquiv]
 
 /-- The local orders used to assemble a global order are compatible with that assembled order. -/
 theorem partOrdersCompatible_assembleOrder (π : Finpartition s) (orders : π.PartOrders)
