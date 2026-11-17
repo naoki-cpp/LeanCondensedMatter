@@ -224,7 +224,7 @@ theorem twoSiteGappedBenchmark_lehmannResponse_zero_one :
       twoSiteDimerEnergyBasisCurrent])
     (by norm_num [finiteLehmannTableTransitionData,
       orderedLehmannTransitionWeight, twoSiteGappedBenchmarkLehmannTable,
-      twoSiteDimerEnergyBasisCurrent]) using 1 <;> norm_num
+      twoSiteDimerEnergyBasisCurrent]) using 1; norm_num
 
 /-- Independent direct Kubo/Lehmann cross-check at `ω = 0`, `η = 1`, written from the two explicit
 nonzero transitions and the operator-derived contact rather than through `FiniteConductivityTable`. -/
