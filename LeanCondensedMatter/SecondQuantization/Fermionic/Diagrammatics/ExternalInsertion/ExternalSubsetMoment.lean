@@ -729,14 +729,12 @@ theorem externalSubsetMomentSeries_eq_signedConnected_two
       ∀ B : Finset (Fin 2), B ⊂ S →
         externalSubsetConnectedDiagramSeries (E := 1) ε β g labels times B = 0 := by
     intro B hB
-    by_cases hBempty : B = ∅
-    · simp [hBempty]
-    · have hpos : 0 < B.card :=
-        Finset.card_pos.mpr (Finset.nonempty_iff_ne_empty.mpr hBempty)
-      have hlt := Finset.card_lt_card hB
-      have hBcard : B.card = 1 := by omega
-      exact (externalSubsetSeries_eq_zero_of_odd (E := 1)
-        ε β g labels times B (by simp [hBcard])).2
+    have hlt := Finset.card_lt_card hB
+    have hBcard : B.card = 0 ∨ B.card = 1 := by omega
+    rcases hBcard with hzero | hone
+    · simpa [Finset.card_eq_zero.mp hzero]
+    · exact (externalSubsetSeries_eq_zero_of_odd (E := 1)
+        ε β g labels times B (by simp [hone])).2
   have hweighted :
       externalSubsetSignedConnectedMomentSeries (E := 1) ε β g labels times S =
         externalSubsetConnectedDiagramSeries (E := 1) ε β g labels times S := by
