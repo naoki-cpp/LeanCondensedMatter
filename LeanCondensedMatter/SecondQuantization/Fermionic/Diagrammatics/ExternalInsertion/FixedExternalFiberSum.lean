@@ -167,20 +167,7 @@ theorem externalInsertionDysonCoefficient_powersetCard_eq_sum_standardizedSuppor
   rw [Finset.sum_subtype
     (p := fun T : Finset (Fin (m + k)) => T.card = m)
     (Finset.powersetCard m (Finset.univ : Finset (Fin (m + k))))
-    (fun T => by simp)
-    (fun T =>
-      ∑ p : {ext : ExternalInsertionDiagram
-            (ExternalFieldLabel Mode) (QuarticVertexLabel Mode) E (m + k) T //
-            HasNoVacuumComponent ext.vertexGraph} ×
-            QuarticDiagram (QuarticVertexLabel Mode) (m + k)
-              ((Finset.univ : Finset (Fin (m + k))) \ T),
-        if p.1.1.externalLabel = externalLabel then
-          ExternalInsertionWickDiagram.dysonAmplitude
-            (((ExternalInsertionDiagram.externalSupportFiberEquiv
-                (Finset.subset_univ T)).symm p).1 :
-                ExternalInsertionWickDiagram Mode E (m + k))
-            ε β g externalTime
-        else 0)]
+    (fun T => by simp)]
   exact ExternalInsertionDiagram.sum_leftSlotSet_standardizedSupportFiber
     (F := fun d : ExternalInsertionWickDiagram Mode E (m + k) =>
       if d.externalLabel = externalLabel then
