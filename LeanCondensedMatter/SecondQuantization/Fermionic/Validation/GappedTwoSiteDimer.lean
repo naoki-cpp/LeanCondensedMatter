@@ -217,16 +217,14 @@ theorem twoSiteGappedBenchmarkTable_contact_from_operator :
 theorem twoSiteGappedBenchmark_lehmannResponse_zero_one :
     finiteLehmannTableResponse 1 0 1 twoSiteGappedBenchmarkLehmannTable =
       (20 : ℂ) / 29 := by
-  classical
-  unfold finiteLehmannTableResponse
-  rw [Fintype.sum_prod_type]
-  simp only [Fin.sum_univ_two, Fin.isValue, LehmannTransitionData.frequencyTerm,
-    finiteLehmannTableTransitionData_energyGap,
-    finiteLehmannTableTransitionData_weight_diag, sub_self]
-  apply Complex.ext <;>
-    norm_num [finiteLehmannTableTransitionData, orderedLehmannEnergyGap,
+  convert twoLevelLehmannResponse_of_gap twoSiteGappedBenchmarkLehmannTable (5 / 2)
+    (by norm_num [twoSiteGappedBenchmarkLehmannTable])
+    (by norm_num [finiteLehmannTableTransitionData,
       orderedLehmannTransitionWeight, twoSiteGappedBenchmarkLehmannTable,
-      twoSiteDimerEnergyBasisCurrent, lehmannTerm, lehmannDenominator, Complex.normSq]
+      twoSiteDimerEnergyBasisCurrent])
+    (by norm_num [finiteLehmannTableTransitionData,
+      orderedLehmannTransitionWeight, twoSiteGappedBenchmarkLehmannTable,
+      twoSiteDimerEnergyBasisCurrent]) using 1 <;> norm_num
 
 /-- Independent direct Kubo/Lehmann cross-check at `ω = 0`, `η = 1`, written from the two explicit
 nonzero transitions and the operator-derived contact rather than through `FiniteConductivityTable`. -/
