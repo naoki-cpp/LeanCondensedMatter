@@ -722,19 +722,18 @@ theorem externalSubsetMomentSeries_eq_signedConnected_two
     have hpos : 0 < S.card :=
       Finset.card_pos.mpr (Finset.nonempty_iff_ne_empty.mpr hEmpty)
     have hle : S.card ≤ 2 := by
-      simpa using (Finset.card_le_card (Finset.subset_univ S))
-    rcases hEven with ⟨k, hk⟩
+      simpa using Finset.card_le_card (Finset.subset_univ S)
+    obtain ⟨k, hk⟩ := hEven
     omega
   have hproper :
       ∀ B : Finset (Fin 2), B ⊂ S →
         externalSubsetConnectedDiagramSeries (E := 1) ε β g labels times B = 0 := by
     intro B hB
     by_cases hBempty : B = ∅
-    · subst B
-      exact externalSubsetConnectedDiagramSeries_empty (E := 1) ε β g labels times
+    · simp [hBempty]
     · have hpos : 0 < B.card :=
         Finset.card_pos.mpr (Finset.nonempty_iff_ne_empty.mpr hBempty)
-      have hlt : B.card < S.card := Finset.card_lt_card hB
+      have hlt := Finset.card_lt_card hB
       have hBcard : B.card = 1 := by omega
       exact (externalSubsetSeries_eq_zero_of_odd (E := 1)
         ε β g labels times B (by simp [hBcard])).2
@@ -748,12 +747,12 @@ theorem externalSubsetMomentSeries_eq_signedConnected_two
   have hphysical :
       externalSubsetMomentSeries (E := 1) ε β g labels times S =
         externalSubsetConnectedDiagramSeries (E := 1) ε β g labels times S := by
-    simp only [externalSubsetMomentSeries, externalSubsetConnectedDiagramSeries,
-      hEmpty, hEven, dite_eq_left]
-    have hhalf : S.card / 2 = 1 := by omega
-    exact vacuumFreeExternalInsertionDysonSeries_eq_connected_of_single_pair
-      hhalf ε β g (evenExternalSubsetLabels (E := 1) labels S hEven)
-      (evenExternalSubsetTimes (E := 1) times S hEven)
+    simpa only [externalSubsetMomentSeries, externalSubsetConnectedDiagramSeries,
+      hEmpty, hEven, dite_eq_left] using
+      (vacuumFreeExternalInsertionDysonSeries_eq_connected_of_single_pair
+        (show S.card / 2 = 1 by omega) ε β g
+        (evenExternalSubsetLabels (E := 1) labels S hEven)
+        (evenExternalSubsetTimes (E := 1) times S hEven))
   exact hphysical.trans hweighted.symm
 
 /-- The precise remaining physical bridge for Phase 5: once the actual
