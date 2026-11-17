@@ -183,13 +183,8 @@ theorem ExternalInsertionBlockLayout.assembleDiagram_componentExternalTime_eq_lo
   let C : d.vertexGraph.componentPartition.parts :=
     ⟨d.vertexGraph.componentBlock (Sum.inl e),
       d.vertexGraph.componentBlock_mem_componentPartition (Sum.inl e)⟩
-  have hlocal :
-      (fun i : Fin (2 * (B.1.card / 2)) =>
-        times (layout.sourceEquiv.symm ⟨B, i⟩)) =
-        evenExternalSubsetTimes times (B : Finset (Fin (2 * E)))
-          (layout.evenBlocks B) := by
-    exact sourceEquiv_symm_restrict_eq_evenSubset layout times B
-  exact (heq_of_eq hlocal).trans
+  exact (heq_of_eq
+    (sourceEquiv_symm_restrict_eq_evenSubset layout times B)).trans
     ((evenExternalSubsetRestriction_heq_of_eq times
       (layout.evenBlocks B) (d.externalSector_card_even C)
       (layout.assembleDiagram_componentExternalSector_external
@@ -509,12 +504,7 @@ theorem ExternalInsertionBlockLayout.assembleDiagram_externalLabel_eq_iff_evenSu
         (F B).externalLabel =
           evenExternalSubsetLabels labels (B : Finset (Fin (2 * E)))
             (layout.evenBlocks B) := by
-  have hlabels (B : layout.partition.parts) :
-      (fun i => labels (layout.sourceEquiv.symm ⟨B, i⟩)) =
-        evenExternalSubsetLabels labels (B : Finset (Fin (2 * E)))
-          (layout.evenBlocks B) := by
-    exact sourceEquiv_symm_restrict_eq_evenSubset layout labels B
-  simpa only [hlabels] using
+  simpa only [sourceEquiv_symm_restrict_eq_evenSubset] using
     (layout.assembleDiagram_externalLabel_eq_iff
       (Finset.univ : Finset (Fin n)) F labels)
 
@@ -545,12 +535,7 @@ theorem ExternalInsertionBlockLayout.assembleConnectedBlocks_signedDysonShuffleO
             ε β g (evenExternalSubsetTimes times
               (B : Finset (Fin (2 * E))) (layout.evenBlocks B)) := by
   classical
-  have htime (B : layout.partition.parts) :
-      (fun i => times (layout.sourceEquiv.symm ⟨B, i⟩)) =
-        evenExternalSubsetTimes times (B : Finset (Fin (2 * E)))
-          (layout.evenBlocks B) := by
-    exact sourceEquiv_symm_restrict_eq_evenSubset layout times B
-  simpa only [htime] using
+  simpa only [sourceEquiv_symm_restrict_eq_evenSubset] using
     (ExternalInsertionBlockLayout.assembleConnectedBlocks_signedDysonShuffleOrbit_eq_independentLocals
       layout F hconnected ε β g times)
 
