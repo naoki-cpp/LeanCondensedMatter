@@ -265,30 +265,23 @@ theorem sum_fixedPartitionDysonAmplitude_eq_reindexedOrderedDysonAmplitude
       d.1.1.orderedDysonAmplitude ε β g externalTime
         (((Finset.univ : Finset (Fin n)).orderIsoOfFin rfl).toEquiv.trans e)
     else 0
-  have hterm (d : fiber) :
-      (if d.1.1.externalLabel = labels then
-        d.1.1.dysonAmplitude ε β g externalTime else 0) =
-        weight (φ d) := by
-    change (if d.1.1.externalLabel = labels then
-        d.1.1.dysonAmplitude ε β g externalTime else 0) =
-      (if (d.1.1.slotCongr e).externalLabel = labels then
-        ExternalInsertionWickDiagram.orderedDysonAmplitude (d.1.1.slotCongr e)
-          ε β g externalTime
-          (((Finset.univ : Finset (Fin n)).orderIsoOfFin rfl).toEquiv.trans e)
-      else 0)
-    rw [ExternalInsertionDiagram.slotCongr_externalLabel]
-    exact if_congr Iff.rfl
-      (d.1.1.dysonAmplitude_eq_slotCongr_orderedDysonAmplitude
-        e ε β hβ g externalTime) rfl
-  calc
-    (∑ d : fiber, if d.1.1.externalLabel = labels then
-        d.1.1.dysonAmplitude ε β g externalTime else 0) =
-      ∑ d : fiber, weight (φ d) := by
-        apply Finset.sum_congr rfl
-        intro d _
-        exact hterm d
-    _ = ∑ d : fiber, weight d := Equiv.sum_comp φ weight
-    _ = _ := rfl
+  change (∑ d : fiber, if d.1.1.externalLabel = labels then
+    d.1.1.dysonAmplitude ε β g externalTime else 0) =
+      ∑ d : fiber, weight d
+  rw [← Equiv.sum_comp φ weight]
+  apply Finset.sum_congr rfl
+  intro d _
+  change (if d.1.1.externalLabel = labels then
+      d.1.1.dysonAmplitude ε β g externalTime else 0) =
+    (if (d.1.1.slotCongr e).externalLabel = labels then
+      ExternalInsertionWickDiagram.orderedDysonAmplitude (d.1.1.slotCongr e)
+        ε β g externalTime
+        (((Finset.univ : Finset (Fin n)).orderIsoOfFin rfl).toEquiv.trans e)
+    else 0)
+  rw [ExternalInsertionDiagram.slotCongr_externalLabel]
+  exact if_congr Iff.rfl
+    (d.1.1.dysonAmplitude_eq_slotCongr_orderedDysonAmplitude
+      e ε β hβ g externalTime) rfl
 
 
 open Classical in
