@@ -52090,50 +52090,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (hbar omega eta energyGap : ℝ), eta ≤ ‖QuantumTheory.LinearResponse.lehmannDenominator hbar omega eta energyGap‖",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.LinearResponse.eta_le_norm_lehmannDenominator",
-    "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann.Transition",
-    "externalAxioms": [],
-    "docString": "The switching rate is a lower bound for the norm of every Lehmann denominator. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.LinearResponse.norm_inv_lehmannDenominator_le"
-    ],
-    "dependencies": [
-      "QuantumTheory.LinearResponse.lehmannDenominator_re"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.LinearResponse.norm_inv_lehmannDenominator_le"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H) (ρ : QuantumTheory.DensityOperator H),\n  Commute (↑system.hamiltonian) ρ.op → ∀ (t : ℝ), QuantumTheory.LinearResponse.evolveDensityOperator system ρ t = ρ",
     "standardAxioms": [
       "Classical.choice",
@@ -55365,17 +55321,17 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.LinearResponse.eta_le_norm_lehmannDenominator",
       "QuantumTheory.LinearResponse.integrableOn_lehmannMode_Ioi_zero",
-      "QuantumTheory.LinearResponse.integral_lehmannMode_Ioi_zero_eq_resolvent"
+      "QuantumTheory.LinearResponse.integral_lehmannMode_Ioi_zero_eq_resolvent",
+      "QuantumTheory.LinearResponse.norm_inv_lehmannDenominator_le"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.LinearResponse.eta_le_norm_lehmannDenominator",
       "QuantumTheory.LinearResponse.integrableOn_lehmannMode_Ioi_zero",
-      "QuantumTheory.LinearResponse.integral_lehmannMode_Ioi_zero_eq_resolvent"
+      "QuantumTheory.LinearResponse.integral_lehmannMode_Ioi_zero_eq_resolvent",
+      "QuantumTheory.LinearResponse.norm_inv_lehmannDenominator_le"
     ],
     "compiledConsumerCount": 3,
     "axioms": [
@@ -55762,7 +55718,7 @@
       "QuantumTheory.LinearResponse.norm_lehmannTerm_le"
     ],
     "dependencies": [
-      "QuantumTheory.LinearResponse.eta_le_norm_lehmannDenominator"
+      "QuantumTheory.LinearResponse.lehmannDenominator_re"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -212893,9 +212849,7 @@
       "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.measurableLocallyBounded_dysonFixedTimeAmplitude",
       "SecondQuantization.Fermionic.FixedExternalTwoPointWickDiagram.measurableLocallyBounded_dysonFixedTimeAmplitude"
     ],
-    "dependencies": [
-      "intervalIntegral.finiteSignatureBase_signature_eq_of_exists"
-    ],
+    "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
@@ -212903,48 +212857,6 @@
       "SecondQuantization.Fermionic.FixedExternalTwoPointWickDiagram.measurableLocallyBounded_dysonFixedTimeAmplitude"
     ],
     "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {n : ℕ} {ι : Type u_1} (signature : (Fin n → ℝ) → ι) (s : ι),\n  (∃ σ, signature σ = s) → signature (intervalIntegral.finiteSignatureBase signature s) = s",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "intervalIntegral.finiteSignatureBase_signature_eq_of_exists",
-    "module": "LeanCondensedMatter.Analysis.OrderedSimplex.MeasurableRegularity",
-    "externalAxioms": [],
-    "docString": "The chosen representative has the requested signature whenever its fiber is nonempty. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "intervalIntegral.finiteSignatureBase_signature_eq"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "intervalIntegral.finiteSignatureBase_signature_eq"
-    ],
-    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
