@@ -460,7 +460,7 @@ theorem ExternalInsertionBlockLayout.assembleConnectedBlocks_signedDysonShuffleO
           d.vertexGraph.componentBlock_mem_componentPartition (Sum.inl e)⟩ :
           Finset (Fin (2 * E)))
       rw [Equiv.apply_symm_apply, hblock]
-      exact hsource.symm.trans
+      exact (congrArg Subtype.val hsource.symm).trans
         (layout.assembleDiagram_componentExternalSector_external S F hconnected e).symm
     rw [hC]
     have h := ExternalInsertionBlockLayout.assembleConnectedBlocks_componentDysonAmplitude_eq_local
