@@ -87,7 +87,8 @@ theorem externalPartitionShuffleFull_orderedBlockInversionCount
   (externalPartitionShuffle π).castTotalEquiv_orderedBlockInversionCount (by simp) order
 
 /-- The canonical full-source shuffle occupies exactly the source slots
-belonging to each partition block. -/
+belonging to each partition block. This is the generic partition-shuffle
+occupancy theorem specialized to the increasing external-slot order. -/
 theorem externalPartitionShuffleFull_blockSlotSet
     (π : Finpartition (Finset.univ : Finset (Fin (2 * E))))
     (P : π.parts) :
@@ -97,27 +98,20 @@ theorem externalPartitionShuffleFull_blockSlotSet
   let o := externalSubsetIncreasingOrder (Finset.univ : Finset (Fin (2 * E)))
   let orders := π.partOrdersOfOrder o
   let hcard : (Finset.univ : Finset (Fin (2 * E))).card = 2 * E := by simp
-  have ho (z : ↥(Finset.univ : Finset (Fin (2 * E)))) :
-      Fin.cast hcard (o.symm z) = z.1 := by
-    obtain ⟨i, rfl⟩ := o.surjective z
-    simpa only [Equiv.symm_apply_apply] using
-      (externalSubsetIncreasingOrder_univ_apply i).symm
-  have hslot (i : Fin (P : Finset (Fin (2 * E))).card) :
-      (externalPartitionShuffleFull π).slotEquiv ⟨P, i⟩ =
-        (orders P i).1 := by
-    calc
-      (externalPartitionShuffleFull π).slotEquiv ⟨P, i⟩ =
-          Fin.cast hcard (o.symm (π.equivSigmaParts.symm ⟨P, orders P i⟩)) := rfl
-      _ = (π.equivSigmaParts.symm ⟨P, orders P i⟩).1 := ho _
-      _ = (orders P i).1 := rfl
   ext x
-  simp only [FamilySlotShuffleTo.blockSlotSet, Finset.mem_image,
-    Finset.mem_univ, true_and, hslot]
-  constructor
-  · rintro ⟨i, hi⟩
-    simpa [hi] using (orders P i).2
-  · intro hx
-    exact ⟨(orders P).symm ⟨x, hx⟩, by simp⟩
+  change x ∈ ((FamilySlotShuffleTo.castTotalEquiv hcard)
+      (externalPartitionShuffle π)).blockSlotSet P ↔
+    x ∈ (P : Finset (Fin (2 * E)))
+  rw [(externalPartitionShuffle π).mem_castTotalEquiv_blockSlotSet_iff hcard P x]
+  change (Fin.cast hcard.symm x) ∈
+    (π.shuffleOfOrder o orders (π.partOrdersCompatible_partOrdersOfOrder o)).blockSlotSet P ↔
+      x ∈ (P : Finset (Fin (2 * E)))
+  rw [π.mem_shuffleOfOrder_blockSlotSet_iff o orders
+    (π.partOrdersCompatible_partOrdersOfOrder o) P]
+  have ho : (o (Fin.cast hcard.symm x)).1 = x := by
+    simpa using
+      (externalSubsetIncreasingOrder_univ_apply (E := E) (Fin.cast hcard.symm x))
+  rw [ho]
 
 /-- Fermionic Koszul sign for grouping a subset of external insertions by
 partition blocks. The order on the blocks is explicit, because the sign
