@@ -452,6 +452,7 @@ private theorem sum_ownerSlotCongr_connectedDyson_eq_ordered_of_predicates
     (Q : (layout.ownerSlotCongr e).ConnectedBlockFamily
       (ExternalLabel := ExternalFieldLabel Mode)
       (InternalLabel := QuarticVertexLabel Mode) → Prop)
+    [DecidablePred P] [DecidablePred Q]
     (hPQ : ∀ F, Q (layout.ownerSlotCongrConnectedBlockFamilyEquiv e F) ↔ P F)
     (ε : Mode → ℝ) (β : ℝ) (hβ : 0 ≤ β)
     (g : QuarticVertexLabel Mode → ℂ)
