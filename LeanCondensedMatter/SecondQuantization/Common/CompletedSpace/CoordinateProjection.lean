@@ -69,6 +69,8 @@ theorem completedCoordinateProjection_basisState (P : Config → Prop)
 
 
 set_option maxHeartbeats 1000000 in
+-- The nested subtype HasSum reindexing and continuous-linear-map composition need more
+-- elaboration heartbeats than the default budget; restrict the increase to this lemma.
 /-- Compressing a summable diagonal series to a coordinate subset keeps exactly the
 diagonal terms indexed by that subset. This holds for any configuration predicate,
 independently of the origin of the diagonal weights. -/
