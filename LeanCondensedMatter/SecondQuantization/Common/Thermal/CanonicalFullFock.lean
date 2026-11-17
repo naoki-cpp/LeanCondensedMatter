@@ -68,7 +68,7 @@ theorem canonicalFullGibbsWeight_nonneg (ε : Mode → ℝ) (β : ℝ) (N : ℕ)
   unfold canonicalFullGibbsWeight
   exact Function.extend_nonneg
     (fun n => eigenbasisBoltzmannWeight_nonneg _ _ n)
-    (fun _ => le_refl (0 : ℝ)) c
+    (le_refl (0 : Config → ℝ)) c
 
 /-- Sector Boltzmann summability implies absolute summability of its zero extension. -/
 theorem canonicalFullGibbsWeight_norm_summable (ε : Mode → ℝ) (β : ℝ) (N : ℕ)
