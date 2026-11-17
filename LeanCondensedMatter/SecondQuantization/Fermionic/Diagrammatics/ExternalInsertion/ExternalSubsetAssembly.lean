@@ -131,20 +131,13 @@ theorem ExternalInsertionBlockLayout.assembleDiagram_componentOrderedDiagram_ext
   let C : d.vertexGraph.componentPartition.parts :=
     ⟨d.vertexGraph.componentBlock (Sum.inl e),
       d.vertexGraph.componentBlock_mem_componentPartition (Sum.inl e)⟩
-  have hsec : (B : Finset (Fin (2 * E))) =
-      (C.1 : Finset (ExternalInsertionVertex E (Finset.univ : Finset (Fin n)))).toLeft :=
-    (layout.assembleDiagram_componentExternalSector_external
-      (Finset.univ : Finset (Fin n)) F hconnected e).symm
-  have hlabels :
-      (F B).externalLabel =
-        evenExternalSubsetLabels d.externalLabel (B : Finset (Fin (2 * E)))
-          (layout.evenBlocks B) :=
-    ExternalInsertionBlockLayout.assembleDiagram_externalLabel_eq_evenExternalSubsetLabels layout F B
-  have htransport :=
-    evenExternalSubsetRestriction_heq_of_eq d.externalLabel
-      (layout.evenBlocks B) (d.externalSector_card_even C) hsec
-  have hcomponent := evenExternalSubsetLabels_componentOrderedDiagram (d := d) C
-  exact (heq_of_eq hlabels).trans (htransport.trans (heq_of_eq hcomponent))
+  exact (heq_of_eq
+    (layout.assembleDiagram_externalLabel_eq_evenExternalSubsetLabels F B)).trans
+    ((evenExternalSubsetRestriction_heq_of_eq d.externalLabel
+      (layout.evenBlocks B) (d.externalSector_card_even C)
+      (layout.assembleDiagram_componentExternalSector_external
+        (Finset.univ : Finset (Fin n)) F hconnected e).symm).trans
+      (heq_of_eq (evenExternalSubsetLabels_componentOrderedDiagram (d := d) C)))
 
 omit [LinearOrder Mode] [Fintype Mode] in
 /-- An independently assembled connected block inherits exactly the
@@ -170,16 +163,11 @@ theorem ExternalInsertionBlockLayout.assembleDiagram_componentExternalTime_eq_lo
             (Sum.inl e),
           (layout.assembleDiagram (Finset.univ : Finset (Fin n)) F).vertexGraph.componentBlock_mem_componentPartition
             (Sum.inl e)⟩) := by
-  classical
   let d := layout.assembleDiagram (Finset.univ : Finset (Fin n)) F
   let B := (layout.sourceEquiv e).1
   let C : d.vertexGraph.componentPartition.parts :=
     ⟨d.vertexGraph.componentBlock (Sum.inl e),
       d.vertexGraph.componentBlock_mem_componentPartition (Sum.inl e)⟩
-  have hsec : (B : Finset (Fin (2 * E))) =
-      (C.1 : Finset (ExternalInsertionVertex E (Finset.univ : Finset (Fin n)))).toLeft :=
-    (layout.assembleDiagram_componentExternalSector_external
-      (Finset.univ : Finset (Fin n)) F hconnected e).symm
   have hlocal :
       (fun i : Fin (2 * (B.1.card / 2)) =>
         times (layout.sourceEquiv.symm ⟨B, i⟩)) =
@@ -188,11 +176,12 @@ theorem ExternalInsertionBlockLayout.assembleDiagram_componentExternalTime_eq_lo
     funext i
     simpa only [evenExternalSubsetTimes, evenExternalSubsetOrderIso] using
       congrArg times (layout.sourceEquiv_symm_apply B i)
-  have htransport :=
-    evenExternalSubsetRestriction_heq_of_eq times
-      (layout.evenBlocks B) (d.externalSector_card_even C) hsec
-  have hcomponent := evenExternalSubsetTimes_component (d := d) times C
-  exact (heq_of_eq hlocal).trans (htransport.trans (heq_of_eq hcomponent))
+  exact (heq_of_eq hlocal).trans
+    ((evenExternalSubsetRestriction_heq_of_eq times
+      (layout.evenBlocks B) (d.externalSector_card_even C)
+      (layout.assembleDiagram_componentExternalSector_external
+        (Finset.univ : Finset (Fin n)) F hconnected e).symm).trans
+      (heq_of_eq (evenExternalSubsetTimes_component (d := d) times C)))
 
 omit [LinearOrder Mode] [Fintype Mode] in
 /-- Pairing transport along an equality cast is only a change in the
