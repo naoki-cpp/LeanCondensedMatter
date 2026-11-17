@@ -175,8 +175,7 @@ theorem ExternalInsertionBlockLayout.assembleDiagram_componentExternalTime_eq_lo
         evenExternalSubsetTimes times (B : Finset (Fin (2 * E)))
           (layout.evenBlocks B) := by
     funext i
-    simpa only [evenExternalSubsetTimes, evenExternalSubsetOrderIso] using
-      congrArg times (layout.sourceEquiv_symm_apply B i)
+    exact congrArg times (layout.sourceEquiv_symm_apply B i)
   exact (heq_of_eq hlocal).trans
     ((evenExternalSubsetRestriction_heq_of_eq times
       (layout.evenBlocks B) (d.externalSector_card_even C)
@@ -497,16 +496,8 @@ theorem ExternalInsertionBlockLayout.assembleDiagram_externalLabel_eq_iff_evenSu
         (F B).externalLabel =
           evenExternalSubsetLabels labels (B : Finset (Fin (2 * E)))
             (layout.evenBlocks B) := by
-  have hlabels (B : layout.partition.parts) :
-      (fun i => labels (layout.sourceEquiv.symm ⟨B, i⟩)) =
-        evenExternalSubsetLabels labels (B : Finset (Fin (2 * E)))
-          (layout.evenBlocks B) := by
-    funext i
-    rw [layout.sourceEquiv_symm_apply B i]
-    rfl
-  simpa only [hlabels] using
-    (layout.assembleDiagram_externalLabel_eq_iff
-      (Finset.univ : Finset (Fin n)) F labels)
+  exact layout.assembleDiagram_externalLabel_eq_iff
+    (Finset.univ : Finset (Fin n)) F labels
 
 /-- The physical connected-block Dyson shuffle orbit, now expressed using
 the canonical increasing *subset restriction* of external insertion times.
@@ -535,16 +526,8 @@ theorem ExternalInsertionBlockLayout.assembleConnectedBlocks_signedDysonShuffleO
             ε β g (evenExternalSubsetTimes times
               (B : Finset (Fin (2 * E))) (layout.evenBlocks B)) := by
   classical
-  have htime (B : layout.partition.parts) :
-      (fun i => times (layout.sourceEquiv.symm ⟨B, i⟩)) =
-        evenExternalSubsetTimes times (B : Finset (Fin (2 * E)))
-          (layout.evenBlocks B) := by
-    funext i
-    rw [layout.sourceEquiv_symm_apply B i]
-    rfl
-  simpa only [htime] using
-    (ExternalInsertionBlockLayout.assembleConnectedBlocks_signedDysonShuffleOrbit_eq_independentLocals
-      layout F hconnected ε β g times)
+  exact ExternalInsertionBlockLayout.assembleConnectedBlocks_signedDysonShuffleOrbit_eq_independentLocals
+    layout F hconnected ε β g times
 
 open Classical in
 /-- At a fixed physical external-block layout, summing the **actual
