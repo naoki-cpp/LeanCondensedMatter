@@ -955,7 +955,7 @@
       "name": "LeanCondensedMatter.Analysis.PowerSeries.CoefficientSum",
       "sourceFile": "LeanCondensedMatter/Analysis/PowerSeries/CoefficientSum.lean",
       "imports": [],
-      "externalImportCount": 7
+      "externalImportCount": 6
     },
     {
       "name": "LeanCondensedMatter.Analysis.PowerSeries.Cumulant",
@@ -7295,8 +7295,8 @@
       "externalImportCount": 1
     },
     {
-      "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalSubsetMoment",
-      "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Diagrammatics/ExternalInsertion/ExternalSubsetMoment.lean",
+      "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalSubsetAssembly",
+      "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Diagrammatics/ExternalInsertion/ExternalSubsetAssembly.lean",
       "imports": [
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ExternalConnectivity",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentIntegral",
@@ -7304,6 +7304,14 @@
         "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.InteractionPictureVertexDyson"
       ],
       "externalImportCount": 1
+    },
+    {
+      "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalSubsetMoment",
+      "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Diagrammatics/ExternalInsertion/ExternalSubsetMoment.lean",
+      "imports": [
+        "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalSubsetAssembly"
+      ],
+      "externalImportCount": 0
     },
     {
       "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalVacuumAmplitude",
@@ -8662,6 +8670,14 @@
       "externalImportCount": 0
     },
     {
+      "name": "LeanCondensedMatter.Transport.Disorder.ConnectedLadderNormBound",
+      "sourceFile": "LeanCondensedMatter/Transport/Disorder/ConnectedLadderNormBound.lean",
+      "imports": [
+        "LeanCondensedMatter.Transport.Disorder.LadderNormBound"
+      ],
+      "externalImportCount": 3
+    },
+    {
       "name": "LeanCondensedMatter.Transport.Disorder.DressedTraceNormBound",
       "sourceFile": "LeanCondensedMatter/Transport/Disorder/DressedTraceNormBound.lean",
       "imports": [
@@ -8693,6 +8709,14 @@
         "LeanCondensedMatter.Transport.Disorder.Moments"
       ],
       "externalImportCount": 0
+    },
+    {
+      "name": "LeanCondensedMatter.Transport.Disorder.LadderNormBound",
+      "sourceFile": "LeanCondensedMatter/Transport/Disorder/LadderNormBound.lean",
+      "imports": [
+        "LeanCondensedMatter.Transport.Disorder.FirstRungNormBound"
+      ],
+      "externalImportCount": 3
     },
     {
       "name": "LeanCondensedMatter.Transport.Disorder.LinearizedFluctuation",
@@ -8790,10 +8814,12 @@
         "LeanCondensedMatter.Transport.Disorder.Born",
         "LeanCondensedMatter.Transport.Disorder.BornNormBound",
         "LeanCondensedMatter.Transport.Disorder.ConnectedCorrelation",
+        "LeanCondensedMatter.Transport.Disorder.ConnectedLadderNormBound",
         "LeanCondensedMatter.Transport.Disorder.DressedTraceNormBound",
         "LeanCondensedMatter.Transport.Disorder.Finite",
         "LeanCondensedMatter.Transport.Disorder.FirstRungNormBound",
         "LeanCondensedMatter.Transport.Disorder.Ladder",
+        "LeanCondensedMatter.Transport.Disorder.LadderNormBound",
         "LeanCondensedMatter.Transport.Disorder.LinearizedFluctuation",
         "LeanCondensedMatter.Transport.Disorder.Moments",
         "LeanCondensedMatter.Transport.Disorder.Resolvent",
