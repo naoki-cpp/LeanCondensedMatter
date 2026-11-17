@@ -3086,7 +3086,7 @@ theorem ExternalInsertionBlockLayout.sum_vacuumFree_fixedPartition_eq_sizes_shuf
   simpa only [Finset.sum_filter] using
     ((Finset.sum_subtype
       (p := P) ((Finset.univ : Finset X).filter P)
-      (fun _ => by simp) (fun d : X => weight d.1)).symm.trans
+      (fun _ => by simp) (fun d : X => weight d.1)).trans
       (ExternalInsertionBlockLayout.sum_fixedPartitionPhysical_eq_sizes_shuffles
         anchor π heven weight))
 
