@@ -100,84 +100,23 @@ theorem grandCanonicalGibbsDensityOperator_op_eq_tsum_canonical
       (Real.summable_norm_normalizedWeight
         (eigenbasisBoltzmannWeight (grandCanonicalEnergy (Config := Config) ε μ) β)
         hsum)
-  have hρ : ρ.op = b.diagonalOp a := by
-    apply continuousLinearMap_ext_completedBasis
-    intro c
-    change ρ.op (b c) = b.diagonalOp a (b c)
-    rw [HilbertBasis.diagonalOp_apply_basis b a ha c]
-    simpa only [ρ, b, a, completedHilbertBasis_apply] using
-      (grandCanonicalGibbsDensityOperator_apply_basis ε β μ hsum c)
-  have hfull : HasSum (fun c : Config => b.diagonalTerm a c) ρ.op := by
-    rw [hρ]
-    exact HilbertBasis.hasSum_diagonalTerm b a ha
-  have hblock (N : ℕ) :
-      (∑' n : ParticleNumberSector Mode Config N, b.diagonalTerm a n.val) =
-        (completedCoordinateProjection
-          (fun c : Config => particleNumber (Mode := Mode) c = N)).comp
-          (ρ.op.comp (completedCoordinateProjection
-            (fun c : Config => particleNumber (Mode := Mode) c = N))) := by
-    let P := completedCoordinateProjection
-      (fun c : Config => particleNumber (Mode := Mode) c = N)
-    let L : (CompletedFock Config →L[ℂ] CompletedFock Config) →L[ℂ]
-        (CompletedFock Config →L[ℂ] CompletedFock Config) :=
-      (ContinuousLinearMap.mulLeftRight ℂ
-        (CompletedFock Config →L[ℂ] CompletedFock Config)) P P
-    have hterm (c : Config) :
-        L (b.diagonalTerm a c) =
-          if particleNumber (Mode := Mode) c = N then b.diagonalTerm a c else 0 := by
-      apply ContinuousLinearMap.ext
-      intro ψ
-      change P ((b.diagonalTerm a c) (P ψ)) =
-        (if particleNumber (Mode := Mode) c = N then b.diagonalTerm a c else 0) ψ
-      simp only [HilbertBasis.diagonalTerm, smul_apply,
-        InnerProductSpace.rankOne_apply, map_smul, b, completedHilbertBasis_apply]
-      by_cases hc : particleNumber (Mode := Mode) c = N
-      · simp [P, hc, inner_completedBasisState_left,
-          completedCoordinateProjection_apply, completedCoordinateProjection_basisState]
-      · simp [P, hc, inner_completedBasisState_left,
-          completedCoordinateProjection_apply, completedCoordinateProjection_basisState]
-    have hfamily :
-        (fun c : Config => L (b.diagonalTerm a c)) =
-          Function.extend (Subtype.val : ParticleNumberSector Mode Config N → Config)
-            (fun n : ParticleNumberSector Mode Config N => b.diagonalTerm a n.val) 0 := by
-      funext c
-      by_cases hc : particleNumber (Mode := Mode) c = N
-      · let n : ParticleNumberSector Mode Config N := ⟨c, hc⟩
-        change L (b.diagonalTerm a n.val) =
-          Function.extend (Subtype.val : ParticleNumberSector Mode Config N → Config)
-            (fun n : ParticleNumberSector Mode Config N => b.diagonalTerm a n.val) 0 n.val
-        rw [hterm, ite_eq_left hc, Subtype.val_injective.extend_apply]
-      · have hnot : ¬ ∃ n : ParticleNumberSector Mode Config N, n.val = c := by
-          rintro ⟨n, hn⟩
-          apply hc
-          rw [← hn]
-          exact n.property
-        rw [hterm, ite_eq_right hc, Function.extend_apply' _ _ _ hnot]
-        simp
-    have hcompressed := hfull.mapL L
-    rw [hfamily] at hcompressed
-    have hsector := (hasSum_extend_zero Subtype.val_injective).mp hcompressed
-    have hL : L ρ.op = P.comp (ρ.op.comp P) := by
-      apply ContinuousLinearMap.ext
-      intro ψ
-      change P (ρ.op (P ψ)) = P (ρ.op (P ψ))
-      rfl
-    exact hsector.tsum_eq.trans hL
-  have hgroups :
-      ρ.op = ∑' N : ℕ, ∑' n : ParticleNumberSector Mode Config N,
-        b.diagonalTerm a n.val :=
-    (hfull.tsum_fiberwise
-      (particleNumber (Mode := Mode) (Config := Config))).tsum_eq.symm
+  have hfull : HasSum (fun c : Config => b.diagonalTerm a c) ρ.op :=
+    HilbertBasis.hasSum_diagonalTerm b a ha
   calc
     ρ.op = ∑' N : ℕ, ∑' n : ParticleNumberSector Mode Config N,
-        b.diagonalTerm a n.val := hgroups
+        b.diagonalTerm a n.val :=
+      (hfull.tsum_fiberwise
+        (particleNumber (Mode := Mode) (Config := Config))).tsum_eq.symm
     _ = _ := by
       apply tsum_congr
       intro N
       by_cases hN : Nonempty (ParticleNumberSector Mode Config N)
       · letI : Nonempty (ParticleNumberSector Mode Config N) := hN
         simp only [dite_eq_left hN]
-        rw [hblock N]
+        rw [completedCoordinateProjection_tsum_diagonalTerm
+          (Config := Config)
+          (P := fun c : Config => particleNumber (Mode := Mode) c = N)
+          a ρ.op hfull]
         exact grandCanonicalGibbsDensityOperator_compress_sector ε β μ N hsum
       · letI : IsEmpty (ParticleNumberSector Mode Config N) :=
           ⟨fun n => hN ⟨n⟩⟩
