@@ -2749,34 +2749,19 @@ theorem ExternalInsertionBlockLayout.sum_externalPartitionFiber_eq_sum_connected
           weight (ExternalInsertionBlockLayout.assembleConnectedBlockFamily p).1
         else 0 := by
   classical
-  calc
-    (∑ d : {d : ExternalInsertionDiagram ExternalLabel InternalLabel E N
-        (Finset.univ : Finset (Fin N)) //
-          HasNoVacuumComponent d.vertexGraph},
-      if externalComponentPartition d.1.vertexGraph = π then weight d.1 else 0) =
-      ∑ p ∈ ExternalInsertionBlockLayout.connectedAssemblyFiniteDomain
-          (ExternalLabel := ExternalLabel) (InternalLabel := InternalLabel) anchor,
-        if externalComponentPartition
-            (ExternalInsertionBlockLayout.assembleConnectedBlockFamily p).1.vertexGraph = π
-          then weight (ExternalInsertionBlockLayout.assembleConnectedBlockFamily p).1
-          else 0 :=
-        ExternalInsertionBlockLayout.sum_vacuumFree_eq_sum_connectedBlockFamilies
-          anchor (fun d => if externalComponentPartition d.vertexGraph = π then weight d else 0)
-    _ = ∑ p ∈ ExternalInsertionBlockLayout.connectedAssemblyFiniteDomain
-          (ExternalLabel := ExternalLabel) (InternalLabel := InternalLabel) anchor,
-        if p.1.partition = π then
-          weight (ExternalInsertionBlockLayout.assembleConnectedBlockFamily p).1
-        else 0 := by
-      apply Finset.sum_congr rfl
-      intro p _
-      have hπ :
-          externalComponentPartition
-            (ExternalInsertionBlockLayout.assembleConnectedBlockFamily p).1.vertexGraph =
-            p.1.partition :=
-        p.1.externalComponentPartition_assembleDiagram
-          (Finset.univ : Finset (Fin N)) p.2.1 p.2.2
-      rw [hπ]
-
+  rw [ExternalInsertionBlockLayout.sum_vacuumFree_eq_sum_connectedBlockFamilies
+    (ExternalLabel := ExternalLabel) (InternalLabel := InternalLabel)
+    anchor (fun d => if externalComponentPartition d.vertexGraph = π then weight d else 0)]
+  apply Finset.sum_congr rfl
+  intro p _
+  change
+    (if externalComponentPartition
+        (p.1.assembleDiagram (Finset.univ : Finset (Fin N)) p.2.1).vertexGraph = π
+      then weight (p.1.assembleDiagram (Finset.univ : Finset (Fin N)) p.2.1) else 0) =
+      if p.1.partition = π then
+        weight (p.1.assembleDiagram (Finset.univ : Finset (Fin N)) p.2.1) else 0
+  rw [p.1.externalComponentPartition_assembleDiagram
+    (Finset.univ : Finset (Fin N)) p.2.1 p.2.2]
 
 
 /-- Restricting the physical connected-assembly domain to a prescribed
