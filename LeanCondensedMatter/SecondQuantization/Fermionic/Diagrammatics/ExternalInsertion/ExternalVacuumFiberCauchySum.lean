@@ -60,14 +60,16 @@ theorem sum_vacuumFreeFixedExternalInsertionWickDiagram_eq_sum_if
     HasNoVacuumComponent d.vertexGraph}
   let P : X → Prop := fun d => d.1.externalLabel = externalLabel
   let e := vacuumFreeFixedExternalSubtypeEquiv (Mode := Mode) (m := m) externalLabel
-  exact (Equiv.sum_comp e
-    (fun d : VacuumFreeFixedExternalInsertionWickDiagram Mode E m externalLabel =>
-      weight d.1.1)).symm.trans
-    (by
+  calc
+    _ = ∑ d : {d : X // P d}, weight d.1.1 := by
+      exact (Equiv.sum_comp e
+        (fun d : VacuumFreeFixedExternalInsertionWickDiagram Mode E m externalLabel =>
+          weight d.1.1)).symm
+    _ = _ := by
       simpa only [Finset.sum_filter] using
         (Finset.sum_subtype
           (p := P) ((Finset.univ : Finset X).filter P)
-          (fun _ => by simp) (fun ext : X => weight ext.1)).symm)
+          (fun _ => by simp) (fun ext : X => weight ext.1)).symm
 
 open Classical in
 theorem vacuumFreeExternalInsertionDysonCoefficient_eq_sum_if
