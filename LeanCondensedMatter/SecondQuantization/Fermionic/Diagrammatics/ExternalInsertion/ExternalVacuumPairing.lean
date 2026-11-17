@@ -275,29 +275,19 @@ theorem externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_right_norma
     rw [hpos, hpos]
     exact externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_right_locality
       ε β T ext vac externalTime σ a b
-  have hpair :=
-    Pairing.ofSplitNormalizedPairEquiv_pair_eq_or_swap
-      splitting ext.pairing (vac.pairingInOrder order) (Sum.inr pr)
-  rcases hpair with hnormal | hreversed
-  · have horder :
-        splitting (Sum.inr pr.1.1) < splitting (Sum.inr pr.1.2) := by
-      have hnormalized :=
-        (Pairing.ofSplit splitting ext.pairing
-          (vac.pairingInOrder order)).pairs_normalized
-          (pairEquiv (Sum.inr pr)).2
-      rw [hnormal] at hnormalized
-      exact hnormalized
-    simp only [horder, ↓reduceIte]
+  have hnormalized :=
+    (Pairing.ofSplit splitting ext.pairing
+      (vac.pairingInOrder order)).pairs_normalized
+      (pairEquiv (Sum.inr pr)).2
+  rcases Pairing.ofSplitNormalizedPairEquiv_pair_eq_or_swap
+      splitting ext.pairing (vac.pairingInOrder order) (Sum.inr pr) with
+    hnormal | hreversed
+  · rw [hnormal] at hnormalized
+    simp only [hnormalized, ↓reduceIte]
     rw [hnormal]
     exact hkernel pr.1.1 pr.1.2
-  · have horder :
-        ¬ splitting (Sum.inr pr.1.1) < splitting (Sum.inr pr.1.2) := by
-      have hnormalized :=
-        (Pairing.ofSplit splitting ext.pairing
-          (vac.pairingInOrder order)).pairs_normalized
-          (pairEquiv (Sum.inr pr)).2
-      rw [hreversed] at hnormalized
-      exact not_lt_of_ge (le_of_lt hnormalized)
+  · rw [hreversed] at hnormalized
+    have horder := not_lt_of_ge (le_of_lt hnormalized)
     simp only [horder, ↓reduceIte]
     rw [hreversed]
     exact hkernel pr.1.2 pr.1.1
