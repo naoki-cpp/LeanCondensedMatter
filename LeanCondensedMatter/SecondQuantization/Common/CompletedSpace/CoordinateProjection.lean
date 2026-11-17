@@ -102,27 +102,13 @@ theorem completedCoordinateProjection_tsum_diagonalTerm
         completedCoordinateProjection_apply, completedCoordinateProjection_basisState]
     · simp [Q, hc, inner_completedBasisState_left,
         completedCoordinateProjection_apply, completedCoordinateProjection_basisState]
-  have hfamily :
-      (fun c : Config => L (b.diagonalTerm a c)) =
-        Function.extend (Subtype.val : {c : Config // P c} → Config)
-          (fun c : {c : Config // P c} => b.diagonalTerm a c.val) 0 := by
-    funext c
-    by_cases hc : P c
-    · let n : {c : Config // P c} := ⟨c, hc⟩
-      change L (b.diagonalTerm a n.val) =
-        Function.extend (Subtype.val : {c : Config // P c} → Config)
-          (fun c : {c : Config // P c} => b.diagonalTerm a c.val) 0 n.val
-      rw [hterm, ite_eq_left hc, Subtype.val_injective.extend_apply]
-    · have hnot : ¬ ∃ n : {c : Config // P c}, n.val = c := by
-        rintro ⟨n, hn⟩
-        apply hc
-        rw [← hn]
-        exact n.property
-      rw [hterm, ite_eq_right hc, Function.extend_apply' _ _ _ hnot]
-      simp
-  have hcompressed := hA.mapL L
-  rw [hfamily] at hcompressed
-  have hsubset := (hasSum_extend_zero Subtype.val_injective).mp hcompressed
+  have hsubset :
+      HasSum (fun c : {c : Config // P c} => b.diagonalTerm a c.val) (L A) := by
+    apply (hasSum_subtype_iff_indicator).2
+    apply (hA.mapL L).congr_fun
+    intro c
+    rw [hterm]
+    by_cases hc : P c <;> simp [Set.indicator, hc]
   have hL : L A = Q.comp (A.comp Q) := by
     apply ContinuousLinearMap.ext
     intro ψ
