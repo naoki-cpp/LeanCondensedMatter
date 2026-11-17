@@ -443,7 +443,7 @@ theorem ExternalInsertionBlockLayout.sum_assembledOwnerShuffle_dysonAmplitude_eq
 open Classical in
 /-- Reindex a predicate-filtered connected-block Dyson sum through an owner
 slot relabeling. The signed integral follows its transported global order. -/
-private theorem ExternalInsertionBlockLayout.sum_ownerSlotCongr_connectedDyson_eq_ordered_of_predicates
+private theorem sum_ownerSlotCongr_connectedDyson_eq_ordered_of_predicates
     {E n : ℕ}
     (layout : ExternalInsertionBlockLayout E n) (e : Fin n ≃ Fin n)
     (P : layout.ConnectedBlockFamily
@@ -543,8 +543,8 @@ theorem ExternalInsertionBlockLayout.sum_ownerSlotCongr_connectedDyson_eq_ordere
           ε β g externalTime
           (((Finset.univ : Finset (Fin n)).orderIsoOfFin rfl).toEquiv.trans
             (fullInteractionSlotEquiv e).symm) := by
-  simpa only [if_true] using
-    (layout.sum_ownerSlotCongr_connectedDyson_eq_ordered_of_predicates e
+  simpa only [ite_true] using
+    (sum_ownerSlotCongr_connectedDyson_eq_ordered_of_predicates layout e
       (fun _ => True) (fun _ => True) (by intro F; rfl)
       ε β hβ g externalTime)
 
@@ -587,7 +587,7 @@ theorem ExternalInsertionBlockLayout.sum_ownerSlotCongr_connectedDyson_eq_ordere
             (((Finset.univ : Finset (Fin n)).orderIsoOfFin rfl).toEquiv.trans
               (fullInteractionSlotEquiv e).symm)
         else 0 := by
-  apply layout.sum_ownerSlotCongr_connectedDyson_eq_ordered_of_predicates e
+  apply sum_ownerSlotCongr_connectedDyson_eq_ordered_of_predicates layout e
     (fun F => ∀ B : layout.partition.parts, (F.1 B).externalLabel = localLabels B)
     (fun G => ∀ B : (layout.ownerSlotCongr e).partition.parts,
       (G.1 B).externalLabel = localLabels B)
@@ -638,7 +638,7 @@ theorem ExternalInsertionBlockLayout.sum_ownerSlotCongr_connectedDyson_eq_ordere
             (((Finset.univ : Finset (Fin n)).orderIsoOfFin rfl).toEquiv.trans
               (fullInteractionSlotEquiv e).symm)
         else 0 := by
-  apply layout.sum_ownerSlotCongr_connectedDyson_eq_ordered_of_predicates e
+  apply sum_ownerSlotCongr_connectedDyson_eq_ordered_of_predicates layout e
     (fun F => (layout.assembleDiagram
       (Finset.univ : Finset (Fin n)) F.1).externalLabel = labels)
     (fun G => ((layout.ownerSlotCongr e).assembleDiagram
