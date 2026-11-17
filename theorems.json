@@ -14820,10 +14820,8 @@
       "QuantumTheory.DensityOperator.expectation_pure_observable",
       "QuantumTheory.DensityOperator.hasSum_expectation_diagonal",
       "QuantumTheory.LinearResponse.expectation_evolveDensityOperator_eq_heisenberg",
-      "SecondQuantization.Common.grandCanonicalGibbsDensityOperator_expectation_eq_tsum_canonical",
       "SecondQuantization.Fermionic.CompletedThermalLadder.grandCanonicalGibbsExpectation_operator_comp",
-      "_private.LeanCondensedMatter.QuantumTheory.DensityOperator.Expectation.0.QuantumTheory.trace_comp_right_norm_le",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Thermal.CanonicalGrandCanonicalCompatibility.0.SecondQuantization.Common.grandCanonicalGibbsDensityOperator_trace_tsum_canonical_blocks"
+      "_private.LeanCondensedMatter.QuantumTheory.DensityOperator.Expectation.0.QuantumTheory.trace_comp_right_norm_le"
     ],
     "dependencies": [
       "ContinuousLinearMap.IsTraceClass.adjoint",
@@ -14842,12 +14840,10 @@
       "QuantumTheory.DensityOperator.expectation_pure_observable",
       "QuantumTheory.DensityOperator.hasSum_expectation_diagonal",
       "QuantumTheory.LinearResponse.expectation_evolveDensityOperator_eq_heisenberg",
-      "SecondQuantization.Common.grandCanonicalGibbsDensityOperator_expectation_eq_tsum_canonical",
       "SecondQuantization.Fermionic.CompletedThermalLadder.grandCanonicalGibbsExpectation_operator_comp",
-      "_private.LeanCondensedMatter.QuantumTheory.DensityOperator.Expectation.0.QuantumTheory.trace_comp_right_norm_le",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Thermal.CanonicalGrandCanonicalCompatibility.0.SecondQuantization.Common.grandCanonicalGibbsDensityOperator_trace_tsum_canonical_blocks"
+      "_private.LeanCondensedMatter.QuantumTheory.DensityOperator.Expectation.0.QuantumTheory.trace_comp_right_norm_le"
     ],
-    "compiledConsumerCount": 14,
+    "compiledConsumerCount": 12,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -16378,9 +16374,7 @@
     "dependents": [
       "QuantumTheory.DensityOperator.expectation_id",
       "QuantumTheory.DensityOperator.expectation_pure_observable",
-      "SecondQuantization.Common.grandCanonicalGibbsDensityOperator_expectation_eq_tsum_canonical",
-      "SecondQuantization.Fermionic.CompletedThermalLadder.grandCanonicalGibbsExpectation_operator_comp",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Thermal.CanonicalGrandCanonicalCompatibility.0.SecondQuantization.Common.grandCanonicalGibbsDensityOperator_trace_tsum_canonical_blocks"
+      "SecondQuantization.Fermionic.CompletedThermalLadder.grandCanonicalGibbsExpectation_operator_comp"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
@@ -16388,11 +16382,9 @@
     "compiledConsumers": [
       "QuantumTheory.DensityOperator.expectation_id",
       "QuantumTheory.DensityOperator.expectation_pure_observable",
-      "SecondQuantization.Common.grandCanonicalGibbsDensityOperator_expectation_eq_tsum_canonical",
-      "SecondQuantization.Fermionic.CompletedThermalLadder.grandCanonicalGibbsExpectation_operator_comp",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Thermal.CanonicalGrandCanonicalCompatibility.0.SecondQuantization.Common.grandCanonicalGibbsDensityOperator_trace_tsum_canonical_blocks"
+      "SecondQuantization.Fermionic.CompletedThermalLadder.grandCanonicalGibbsExpectation_operator_comp"
     ],
-    "compiledConsumerCount": 5,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -23232,9 +23224,9 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
-    "retainedNeedsReview": true,
+    "retainedNeedsReview": false,
     "retainedMention": true,
     "projectAxioms": [],
     "name": "Finpartition.partOrdersCompatible_partOrdersOfOrder",
@@ -23252,9 +23244,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "Finpartition.shuffleOfIncreasingOrder",
       "SecondQuantization.Common.QuarticDiagram.assembleVertexOrder_fixedOrderComponentShuffle"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -23727,6 +23720,48 @@
     "completedMention": false,
     "compiledConsumers": [
       "Finpartition.mu_eq_prod_restrict"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {n : ℕ} (π : Finpartition Finset.univ) (B : ↥π.parts),\n  ((Combinatorics.FamilySlotShuffleTo.castTotalEquiv ⋯) π.shuffleOfIncreasingOrder).blockSlotSet B = ↑B",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "Finpartition.shuffleOfIncreasingOrderFull_blockSlotSet",
+    "module": "LeanCondensedMatter.Combinatorics.Shuffle.FinpartitionOrderShuffle",
+    "externalAxioms": [],
+    "docString": "For a partition of the full `Fin n` family, the canonical increasing\nshuffle occupies precisely the slots belonging to each block. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Fermionic.externalPartitionShuffleFull_blockSlotSet"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.externalPartitionShuffleFull_blockSlotSet"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -47800,9 +47835,7 @@
       "QuantumTheory.DensityOperator.expectation_pure_observable",
       "QuantumTheory.DensityOperator.hasSum_expectation_diagonal",
       "QuantumTheory.LinearResponse.expectation_evolveDensityOperator_eq_heisenberg",
-      "SecondQuantization.Common.grandCanonicalGibbsDensityOperator_expectation_eq_tsum_canonical",
-      "SecondQuantization.Fermionic.CompletedThermalLadder.grandCanonicalGibbsExpectation_operator_comp",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Thermal.CanonicalGrandCanonicalCompatibility.0.SecondQuantization.Common.grandCanonicalGibbsDensityOperator_trace_tsum_canonical_blocks"
+      "SecondQuantization.Fermionic.CompletedThermalLadder.grandCanonicalGibbsExpectation_operator_comp"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
@@ -47814,11 +47847,9 @@
       "QuantumTheory.DensityOperator.expectation_pure_observable",
       "QuantumTheory.DensityOperator.hasSum_expectation_diagonal",
       "QuantumTheory.LinearResponse.expectation_evolveDensityOperator_eq_heisenberg",
-      "SecondQuantization.Common.grandCanonicalGibbsDensityOperator_expectation_eq_tsum_canonical",
-      "SecondQuantization.Fermionic.CompletedThermalLadder.grandCanonicalGibbsExpectation_operator_comp",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Thermal.CanonicalGrandCanonicalCompatibility.0.SecondQuantization.Common.grandCanonicalGibbsDensityOperator_trace_tsum_canonical_blocks"
+      "SecondQuantization.Fermionic.CompletedThermalLadder.grandCanonicalGibbsExpectation_operator_comp"
     ],
-    "compiledConsumerCount": 9,
+    "compiledConsumerCount": 7,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -48121,6 +48152,50 @@
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.ModeTruncation.0.SecondQuantization.Fermionic.completedFreeModeTruncatedGibbsDensityOperator_expectation_eq_ratio_mul"
     ],
     "compiledConsumerCount": 9,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {ι : Type u_1} {H : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] (ρ : QuantumTheory.DensityOperator H) (A : H →L[ℂ] H) (b : HilbertBasis ι ℂ H) (w : ι → ℝ),\n  (∀ (i : ι), ρ.op (b i) = ↑(w i) • b i) →\n    ∀ {κ : Type u_3} (f : ι → κ),\n      ρ.expectation A = ∑' (k : κ) (i : { i // f i = k }), ↑(w ↑i) * inner ℂ (b ↑i) (A (b ↑i))",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.DensityOperator.expectation_eq_tsum_fiberwise",
+    "module": "LeanCondensedMatter.QuantumTheory.DensityOperator.DiagonalFormula",
+    "externalAxioms": [],
+    "docString": "A trace-class density operator diagonal in a Hilbert basis has an absolutely\nconvergent expectation series, which may be regrouped by any map of basis labels.\nThis does not assert trace continuity in the operator norm. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Common.grandCanonicalGibbsDensityOperator_expectation_eq_tsum_canonical"
+    ],
+    "dependencies": [
+      "QuantumTheory.DensityOperator.hasSum_expectation_diagonal"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Common.grandCanonicalGibbsDensityOperator_expectation_eq_tsum_canonical"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -48899,9 +48974,9 @@
     "directWrapperOf": null,
     "dependents": [
       "QuantumTheory.DensityOperator.expectation_eq_tsum_diagonal",
+      "QuantumTheory.DensityOperator.expectation_eq_tsum_fiberwise",
       "QuantumTheory.DensityOperator.hasSum_observableExpectation_diagonal",
       "SecondQuantization.Common.canonicalFullGibbsDensityOperator_expectation_eq_tsum_sector",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Thermal.CanonicalGrandCanonicalCompatibility.0.SecondQuantization.Common.grandCanonicalGibbsDensityOperator_trace_tsum_canonical_blocks",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.ModeTruncation.0.SecondQuantization.Fermionic.tendsto_completedFreeModeRetainedExpectation"
     ],
     "dependencies": [
@@ -48914,9 +48989,9 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.DensityOperator.expectation_eq_tsum_diagonal",
+      "QuantumTheory.DensityOperator.expectation_eq_tsum_fiberwise",
       "QuantumTheory.DensityOperator.hasSum_observableExpectation_diagonal",
       "SecondQuantization.Common.canonicalFullGibbsDensityOperator_expectation_eq_tsum_sector",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Thermal.CanonicalGrandCanonicalCompatibility.0.SecondQuantization.Common.grandCanonicalGibbsDensityOperator_trace_tsum_canonical_blocks",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.ModeTruncation.0.SecondQuantization.Fermionic.tendsto_completedFreeModeRetainedExpectation"
     ],
     "compiledConsumerCount": 5,
@@ -135231,7 +135306,7 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Common.canonicalFullGibbsDensityOperator_expectation_eq_sector",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Thermal.CanonicalGrandCanonicalCompatibility.0.SecondQuantization.Common.grandCanonicalGibbsDensityOperator_trace_tsum_canonical_blocks"
+      "SecondQuantization.Common.grandCanonicalGibbsDensityOperator_expectation_eq_tsum_canonical"
     ],
     "dependencies": [
       "QuantumTheory.DensityOperator.hasSum_expectation_diagonal",
@@ -135248,7 +135323,7 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Common.canonicalFullGibbsDensityOperator_expectation_eq_sector",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Thermal.CanonicalGrandCanonicalCompatibility.0.SecondQuantization.Common.grandCanonicalGibbsDensityOperator_trace_tsum_canonical_blocks"
+      "SecondQuantization.Common.grandCanonicalGibbsDensityOperator_expectation_eq_tsum_canonical"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -135718,8 +135793,7 @@
       "SecondQuantization.Common.grandCanonicalGibbsDensityOperator_op_eq_tsum_canonical",
       "SecondQuantization.Common.grandCanonicalGibbsProbability_of_sector",
       "SecondQuantization.Common.grandCanonicalSectorProbability_pos",
-      "SecondQuantization.Fermionic.CompletedThermalLadder.grandCanonicalGibbsExpectation_tsum_canonical_eq_sum_pairing",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Thermal.CanonicalGrandCanonicalCompatibility.0.SecondQuantization.Common.grandCanonicalGibbsDensityOperator_trace_tsum_canonical_blocks"
+      "SecondQuantization.Fermionic.CompletedThermalLadder.grandCanonicalGibbsExpectation_tsum_canonical_eq_sum_pairing"
     ],
     "dependencies": [
       "QuantumTheory.eigenbasisGibbsSummable_add_const"
@@ -135732,10 +135806,9 @@
       "SecondQuantization.Common.grandCanonicalGibbsDensityOperator_op_eq_tsum_canonical",
       "SecondQuantization.Common.grandCanonicalGibbsProbability_of_sector",
       "SecondQuantization.Common.grandCanonicalSectorProbability_pos",
-      "SecondQuantization.Fermionic.CompletedThermalLadder.grandCanonicalGibbsExpectation_tsum_canonical_eq_sum_pairing",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Thermal.CanonicalGrandCanonicalCompatibility.0.SecondQuantization.Common.grandCanonicalGibbsDensityOperator_trace_tsum_canonical_blocks"
+      "SecondQuantization.Fermionic.CompletedThermalLadder.grandCanonicalGibbsExpectation_tsum_canonical_eq_sum_pairing"
     ],
-    "compiledConsumerCount": 7,
+    "compiledConsumerCount": 6,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -137656,9 +137729,9 @@
       "SecondQuantization.Common.finiteGibbsExpectation_eq_completed_of_algebraicCore",
       "SecondQuantization.Common.gibbsExpectation_eq_tsum",
       "SecondQuantization.Common.grandCanonicalGibbsDensityOperator_apply_basis",
+      "SecondQuantization.Common.grandCanonicalGibbsDensityOperator_expectation_eq_tsum_canonical",
       "SecondQuantization.Common.isStationary_grandCanonicalGibbsDensityOperator",
-      "SecondQuantization.Fermionic.completedOccupationHilbertBasis_apply",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Thermal.CanonicalGrandCanonicalCompatibility.0.SecondQuantization.Common.grandCanonicalGibbsDensityOperator_trace_tsum_canonical_blocks"
+      "SecondQuantization.Fermionic.completedOccupationHilbertBasis_apply"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
@@ -137676,9 +137749,9 @@
       "SecondQuantization.Common.finiteGibbsExpectation_eq_completed_of_algebraicCore",
       "SecondQuantization.Common.gibbsExpectation_eq_tsum",
       "SecondQuantization.Common.grandCanonicalGibbsDensityOperator_apply_basis",
+      "SecondQuantization.Common.grandCanonicalGibbsDensityOperator_expectation_eq_tsum_canonical",
       "SecondQuantization.Common.isStationary_grandCanonicalGibbsDensityOperator",
-      "SecondQuantization.Fermionic.completedOccupationHilbertBasis_apply",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Thermal.CanonicalGrandCanonicalCompatibility.0.SecondQuantization.Common.grandCanonicalGibbsDensityOperator_trace_tsum_canonical_blocks"
+      "SecondQuantization.Fermionic.completedOccupationHilbertBasis_apply"
     ],
     "compiledConsumerCount": 15,
     "axioms": [
@@ -143468,12 +143541,12 @@
     "dependents": [
       "SecondQuantization.Common.adiabaticIntegrable_grandCanonicalGibbsDensityOperator",
       "SecondQuantization.Common.grandCanonicalGibbsDensityOperator_compress_sector",
+      "SecondQuantization.Common.grandCanonicalGibbsDensityOperator_expectation_eq_tsum_canonical",
       "SecondQuantization.Common.grandCanonicalGibbsDensityOperator_shift_invariant",
       "SecondQuantization.Common.isStationary_grandCanonicalGibbsDensityOperator",
       "SecondQuantization.Fermionic.grandCanonicalGibbsDensityOperator_comp_annihilate",
       "SecondQuantization.Fermionic.grandCanonicalGibbsDensityOperator_comp_create",
       "SecondQuantization.Fermionic.hasSum_grandCanonicalGibbsDensityOperator_totalNumber_diagonal",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Thermal.CanonicalGrandCanonicalCompatibility.0.SecondQuantization.Common.grandCanonicalGibbsDensityOperator_trace_tsum_canonical_blocks",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.ModeTruncation.0.SecondQuantization.Fermionic.tendsto_completedFreeModeRetainedExpectation"
     ],
     "dependencies": [
@@ -143485,12 +143558,12 @@
     "compiledConsumers": [
       "SecondQuantization.Common.adiabaticIntegrable_grandCanonicalGibbsDensityOperator",
       "SecondQuantization.Common.grandCanonicalGibbsDensityOperator_compress_sector",
+      "SecondQuantization.Common.grandCanonicalGibbsDensityOperator_expectation_eq_tsum_canonical",
       "SecondQuantization.Common.grandCanonicalGibbsDensityOperator_shift_invariant",
       "SecondQuantization.Common.isStationary_grandCanonicalGibbsDensityOperator",
       "SecondQuantization.Fermionic.grandCanonicalGibbsDensityOperator_comp_annihilate",
       "SecondQuantization.Fermionic.grandCanonicalGibbsDensityOperator_comp_create",
       "SecondQuantization.Fermionic.hasSum_grandCanonicalGibbsDensityOperator_totalNumber_diagonal",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Thermal.CanonicalGrandCanonicalCompatibility.0.SecondQuantization.Common.grandCanonicalGibbsDensityOperator_trace_tsum_canonical_blocks",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.ModeTruncation.0.SecondQuantization.Fermionic.tendsto_completedFreeModeRetainedExpectation"
     ],
     "compiledConsumerCount": 9,
@@ -143573,19 +143646,19 @@
     "name": "SecondQuantization.Common.grandCanonicalGibbsDensityOperator_expectation_eq_tsum_canonical",
     "module": "LeanCondensedMatter.SecondQuantization.Common.Thermal.CanonicalGrandCanonicalCompatibility",
     "externalAxioms": [],
-    "docString": "Every bounded grand-canonical expectation is a probability-weighted mixture\nof full-Fock canonical expectations. The proof applies the trace-exchange\nformula to the operator-valued canonical sector decomposition, and includes\nempty sectors without particle-number conservation assumptions on A. ",
+    "docString": "Every bounded grand-canonical expectation is a probability-weighted mixture\nof full-Fock canonical expectations. Trace-class summability of the diagonal\nexpectation series justifies regrouping by particle number; operator-norm\nconvergence of the density-sector series alone would not justify this exchange.\nNo particle-number conservation assumption on the bounded observable is needed. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Fermionic.CompletedThermalLadder.grandCanonicalGibbsExpectation_tsum_canonical_eq_sum_pairing"
     ],
     "dependencies": [
-      "ContinuousLinearMap.IsTraceClass.comp_right",
-      "ContinuousLinearMap.IsTraceClass.trace_congr",
-      "QuantumTheory.DensityOperator.expectation_apply",
+      "QuantumTheory.DensityOperator.expectation_eq_tsum_fiberwise",
+      "SecondQuantization.Common.canonicalFullGibbsDensityOperator_expectation_eq_tsum_sector",
       "SecondQuantization.Common.canonicalGibbsSummable_of_grandCanonical",
-      "SecondQuantization.Common.grandCanonicalGibbsDensityOperator_op_eq_tsum_canonical",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Thermal.CanonicalGrandCanonicalCompatibility.0.SecondQuantization.Common.grandCanonicalGibbsDensityOperator_trace_tsum_canonical_blocks"
+      "SecondQuantization.Common.completedHilbertBasis_apply",
+      "SecondQuantization.Common.grandCanonicalGibbsDensityOperator_apply_basis",
+      "SecondQuantization.Common.grandCanonicalGibbsProbability_of_sector"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -143606,7 +143679,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": false,
+    "terminal": true,
     "statement": "∀ {Mode : Type u_1} {Config : Type u_2} [inst : SecondQuantization.Common.OccupationBasis Mode Config] (ε : Mode → ℝ)\n  (β μ : ℝ) (hsum : QuantumTheory.EigenbasisGibbsSummable (SecondQuantization.Common.grandCanonicalEnergy ε μ) β),\n  (SecondQuantization.Common.grandCanonicalGibbsDensityOperator ε β μ hsum).op =\n    ∑' (N : ℕ),\n      if hN : Nonempty (SecondQuantization.Common.ParticleNumberSector Mode Config N) then\n        ↑(SecondQuantization.Common.grandCanonicalSectorProbability ε β μ N) •\n          (SecondQuantization.Common.canonicalFullGibbsDensityOperator ε β N ⋯).op\n      else 0",
     "standardAxioms": [
       "Classical.choice",
@@ -143625,10 +143698,7 @@
     "docString": "The grand-canonical density is the operator-norm convergent sum of its\nsharp-number blocks. Every nonempty block is the sector probability times the\nzero-extended canonical density, while empty sectors contribute zero.\nThe total operator is trace class; the asserted convergence is in operator norm. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.grandCanonicalGibbsDensityOperator_expectation_eq_tsum_canonical",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Thermal.CanonicalGrandCanonicalCompatibility.0.SecondQuantization.Common.grandCanonicalGibbsDensityOperator_trace_tsum_canonical_blocks"
-    ],
+    "dependents": [],
     "dependencies": [
       "HilbertBasis.hasSum_diagonalTerm",
       "Real.summable_norm_normalizedWeight",
@@ -143638,11 +143708,8 @@
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.grandCanonicalGibbsDensityOperator_expectation_eq_tsum_canonical",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Thermal.CanonicalGrandCanonicalCompatibility.0.SecondQuantization.Common.grandCanonicalGibbsDensityOperator_trace_tsum_canonical_blocks"
-    ],
-    "compiledConsumerCount": 2,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -143721,7 +143788,7 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Common.grandCanonicalGibbsDensityOperator_compress_sector",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Thermal.CanonicalGrandCanonicalCompatibility.0.SecondQuantization.Common.grandCanonicalGibbsDensityOperator_trace_tsum_canonical_blocks"
+      "SecondQuantization.Common.grandCanonicalGibbsDensityOperator_expectation_eq_tsum_canonical"
     ],
     "dependencies": [
       "SecondQuantization.Common.canonicalGibbsSummable_of_grandCanonical",
@@ -143733,7 +143800,7 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Common.grandCanonicalGibbsDensityOperator_compress_sector",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Thermal.CanonicalGrandCanonicalCompatibility.0.SecondQuantization.Common.grandCanonicalGibbsDensityOperator_trace_tsum_canonical_blocks"
+      "SecondQuantization.Common.grandCanonicalGibbsDensityOperator_expectation_eq_tsum_canonical"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -167827,16 +167894,16 @@
     "name": "SecondQuantization.Fermionic.externalPartitionShuffleFull_blockSlotSet",
     "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentSign",
     "externalAxioms": [],
-    "docString": "The canonical full-source shuffle occupies exactly the source slots\nbelonging to each partition block. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
+    "docString": "The canonical full-source shuffle occupies exactly the source slots\nbelonging to each partition block. This is the generic partition-shuffle\noccupancy theorem specialized to the increasing external-slot order. ",
+    "directWrapperTargetModule": "LeanCondensedMatter.Combinatorics.Shuffle.FinpartitionOrderShuffle",
+    "directWrapperOf": "Finpartition.shuffleOfIncreasingOrderFull_blockSlotSet",
     "dependents": [
       "SecondQuantization.Fermionic.externalPartitionSourceSign_eq_componentExternalOrderSign_of_vacuumFree"
     ],
     "dependencies": [
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentSign.0.SecondQuantization.Fermionic.externalSubsetIncreasingOrder_univ_apply"
+      "Finpartition.shuffleOfIncreasingOrderFull_blockSlotSet"
     ],
-    "crossModuleDirectWrapper": false,
+    "crossModuleDirectWrapper": true,
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Fermionic.externalPartitionSourceSign_eq_componentExternalOrderSign_of_vacuumFree"
@@ -204640,59 +204707,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} {Config : Type u_2} [inst : SecondQuantization.Common.OccupationBasis Mode Config] (ε : Mode → ℝ)\n  (β μ : ℝ) (hsum : QuantumTheory.EigenbasisGibbsSummable (SecondQuantization.Common.grandCanonicalEnergy ε μ) β)\n  (A : ↥(SecondQuantization.Common.CompletedFock Config) →L[ℂ] ↥(SecondQuantization.Common.CompletedFock Config))\n  (hseries :\n    (∑' (N : ℕ),\n        if hN : Nonempty (SecondQuantization.Common.ParticleNumberSector Mode Config N) then\n          ↑(SecondQuantization.Common.grandCanonicalSectorProbability ε β μ N) •\n            (SecondQuantization.Common.canonicalFullGibbsDensityOperator ε β N ⋯).op\n        else 0).IsTraceClass),\n  ⋯.trace =\n    ∑' (N : ℕ),\n      if hN : Nonempty (SecondQuantization.Common.ParticleNumberSector Mode Config N) then\n        ↑(SecondQuantization.Common.grandCanonicalSectorProbability ε β μ N) *\n          (SecondQuantization.Common.canonicalFullGibbsDensityOperator ε β N ⋯).expectation A\n      else 0",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Thermal.CanonicalGrandCanonicalCompatibility.0.SecondQuantization.Common.grandCanonicalGibbsDensityOperator_trace_tsum_canonical_blocks",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Thermal.CanonicalGrandCanonicalCompatibility",
-    "externalAxioms": [],
-    "docString": "For the absolutely summable diagonal grand-canonical decomposition, the trace\nof the operator-valued sector series can be exchanged with the sector sum.\nThis is a trace-specific result: operator-norm convergence alone does not\njustify interchange of traces for an arbitrary operator series. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.grandCanonicalGibbsDensityOperator_expectation_eq_tsum_canonical"
-    ],
-    "dependencies": [
-      "ContinuousLinearMap.IsTraceClass.comp_right",
-      "ContinuousLinearMap.IsTraceClass.trace_congr",
-      "QuantumTheory.DensityOperator.expectation_apply",
-      "QuantumTheory.DensityOperator.hasSum_expectation_diagonal",
-      "SecondQuantization.Common.canonicalFullGibbsDensityOperator_expectation_eq_tsum_sector",
-      "SecondQuantization.Common.canonicalGibbsSummable_of_grandCanonical",
-      "SecondQuantization.Common.completedHilbertBasis_apply",
-      "SecondQuantization.Common.grandCanonicalGibbsDensityOperator_apply_basis",
-      "SecondQuantization.Common.grandCanonicalGibbsDensityOperator_op_eq_tsum_canonical",
-      "SecondQuantization.Common.grandCanonicalGibbsProbability_of_sector"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.grandCanonicalGibbsDensityOperator_expectation_eq_tsum_canonical"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ {Mode : Type u_1} {Config : Type u_2} [inst : SecondQuantization.Common.OccupationBasis Mode Config] (ε : Mode → ℝ)\n  (N : ℕ) (C : ℝ),\n  (fun n => SecondQuantization.Common.occupationEnergy (fun i => ε i + C) ↑n) = fun n =>\n    SecondQuantization.Common.occupationEnergy ε ↑n + C * ↑N",
     "standardAxioms": [
       "Classical.choice",
@@ -206544,48 +206558,6 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.fixedTimeAmplitude_eq_componentExternalOrderSign_mul_prod_components"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {E : ℕ} (i : Fin Finset.univ.card),\n  ↑((SecondQuantization.Fermionic.externalSubsetIncreasingOrder✝ Finset.univ) i) = Fin.cast ⋯ i",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentSign.0.SecondQuantization.Fermionic.externalSubsetIncreasingOrder_univ_apply",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentSign",
-    "externalAxioms": [],
-    "docString": "On the full finite external-slot set, the canonical increasing\nenumeration agrees with the order-preserving cast from its cardinality\nto the actual external-slot count `2 * E`. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.externalPartitionShuffleFull_blockSlotSet"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.externalPartitionShuffleFull_blockSlotSet"
     ],
     "compiledConsumerCount": 1,
     "axioms": [

@@ -1630,7 +1630,8 @@
       "name": "LeanCondensedMatter.Combinatorics.Shuffle.FinpartitionOrderShuffle",
       "sourceFile": "LeanCondensedMatter/Combinatorics/Shuffle/FinpartitionOrderShuffle.lean",
       "imports": [
-        "LeanCondensedMatter.Combinatorics.Shuffle.FamilyOrderShuffle"
+        "LeanCondensedMatter.Combinatorics.Shuffle.FamilyOrderShuffle",
+        "LeanCondensedMatter.Combinatorics.Shuffle.FamilySlotShuffleInversions"
       ],
       "externalImportCount": 5
     },
