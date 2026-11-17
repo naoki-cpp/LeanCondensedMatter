@@ -68,10 +68,10 @@ theorem completedCoordinateProjection_basisState (P : Config → Prop)
   by_cases hc : P c <;> simp [completedCoordinateProjection, hc]
 
 
+set_option maxHeartbeats 1000000 in
 /-- Compressing a summable diagonal series to a coordinate subset keeps exactly the
 diagonal terms indexed by that subset. This holds for any configuration predicate,
 independently of the origin of the diagonal weights. -/
-set_option maxHeartbeats 1000000 in
 theorem completedCoordinateProjection_tsum_diagonalTerm
     (P : Config → Prop) (a : Config → ℂ)
     (A : CompletedFock Config →L[ℂ] CompletedFock Config)
