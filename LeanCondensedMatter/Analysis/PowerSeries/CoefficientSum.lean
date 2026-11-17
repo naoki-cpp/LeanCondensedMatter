@@ -104,8 +104,8 @@ theorem summable_coefficientSum_X_mul (f : ℂ⟦X⟧) (x : ℂ)
     Summable (fun n : ℕ =>
       PowerSeries.coeff n (PowerSeries.X * f) * x ^ n) := by
   apply (summable_nat_add_iff 1).1
-  simpa only [Nat.add_one, PowerSeries.coeff_succ_X_mul, pow_succ,
-    mul_comm, mul_left_comm, mul_assoc] using hf.mul_left x
+  simp only [Nat.add_one, PowerSeries.coeff_succ_X_mul, pow_succ]
+  simpa only [mul_comm, mul_left_comm, mul_assoc] using hf.mul_left x
 
 /-- Multiplication by X commutes with the total coefficientwise sum: its zero constant
 coefficient permits an unconditional shift of the series. -/
