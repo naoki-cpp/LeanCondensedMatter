@@ -125,12 +125,8 @@ theorem evenQuarticCubature_orbitalDoubleCommutator (axis : Fin 3)
     (c₁ c₂ r : ℝ) :
     evenQuarticCubature r (orbitalDoubleCommutator axis c₁ c₂) =
       (2 * r ^ 4 / 15) * (2 * c₁ ^ 2 + 3 * c₂ ^ 2) := by
-  calc
-    _ = evenQuarticCubature r (orbitalPolynomial axis c₁ c₂) := by
-          congr 1
-          funext k
-          exact orbitalDoubleCommutator_eq_polynomial axis c₁ c₂ k
-    _ = _ := evenQuarticCubature_orbitalPolynomial axis c₁ c₂ r
+  simpa only [evenQuarticCubature, orbitalDoubleCommutator_eq_polynomial] using
+    evenQuarticCubature_orbitalPolynomial axis c₁ c₂ r
 
 /-- Conditional orbital relaxation rate for any Cartesian polarization
 axis, given the degree-two scattering time and second-order kinetic
