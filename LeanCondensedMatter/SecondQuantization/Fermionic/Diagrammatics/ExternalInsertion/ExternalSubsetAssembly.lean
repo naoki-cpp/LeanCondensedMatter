@@ -372,10 +372,10 @@ theorem ExternalInsertionBlockLayout.assembleConnectedBlocks_componentDysonAmpli
       layout F hconnected e
   have hordered : HEq (d.componentOrderedDiagram C)
       ((F B).slotCongr (Combinatorics.standardSlotEquiv
-        (layout.interactionBlock S B))) := by
-    have hslot := externalInsertionSlotCongr_heq_of_diagram_heq
-      hcount hsector (d.restrictComponent C) (F B) hphysical
-    exact (heq_of_eq (d.componentOrderedDiagram_eq_slotCongr C)).trans hslot
+        (layout.interactionBlock S B))) :=
+    (heq_of_eq (d.componentOrderedDiagram_eq_slotCongr C)).trans
+      (externalInsertionSlotCongr_heq_of_diagram_heq
+        hcount hsector (d.restrictComponent C) (F B) hphysical)
   have htimes : HEq (d.componentExternalTime externalTime C)
       (fun i : Fin (2 * (B.1.card / 2)) =>
         externalTime (layout.sourceEquiv.symm ⟨B, i⟩)) :=
@@ -473,23 +473,14 @@ theorem ExternalInsertionBlockLayout.assembleConnectedBlocks_signedDysonShuffleO
     simpa only [d, S] using h
   have horbit := ExternalInsertionBlockLayout.assembleConnectedBlocks_signedDysonShuffleOrbit
     layout F hconnected ε β g externalTime
-  calc
-    (∑ shuffle : d.ComponentInteractionOrderShuffle,
-      d.orderedDysonAmplitude ε β g externalTime
-        (d.assembleInteractionOrder d.canonicalComponentInteractionOrders shuffle)) =
-        externalPartitionSourceSign layout.partition *
-          ∏ C : d.vertexGraph.componentPartition.parts,
-            ExternalInsertionWickDiagram.dysonAmplitude
-              (d.componentOrderedDiagram C) ε β g
-              (d.componentExternalTime externalTime C) := horbit
-    _ = _ := by
-      apply congrArg (fun z : ℂ => externalPartitionSourceSign layout.partition * z)
-      exact (Equiv.prod_comp reindex.symm
+  exact horbit.trans
+    (congrArg (fun z : ℂ => externalPartitionSourceSign layout.partition * z)
+      ((Equiv.prod_comp reindex.symm
         (fun C : d.vertexGraph.componentPartition.parts =>
           ExternalInsertionWickDiagram.dysonAmplitude
             (d.componentOrderedDiagram C) ε β g
             (d.componentExternalTime externalTime C))).symm.trans
-        (Finset.prod_congr rfl (fun B _ => hlocal B))
+        (Finset.prod_congr rfl (fun B _ => hlocal B))))
 
 omit [LinearOrder Mode] [Fintype Mode] in
 /-- The source labels of an assembled diagram agree with the canonical
