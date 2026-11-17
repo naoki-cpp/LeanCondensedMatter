@@ -141,9 +141,7 @@ theorem summable_gibbsComparison_and_tsum_eq
   rw [(((henergy.mul_left β).add hplogZ_summable).sub hp_summable).tsum_add
     hqZ_summable, ((henergy.mul_left β).add hplogZ_summable).tsum_sub hp_summable,
     (henergy.mul_left β).tsum_add hplogZ_summable, tsum_mul_left,
-    show (fun i => p i * Real.log Z) = (fun i => Real.log Z * p i) by
-      funext i
-      ring, tsum_mul_left, hp_hasSum.tsum_eq]
+    tsum_mul_right, hp_hasSum.tsum_eq]
   ring
 
 /-- Countable Gibbs entropy bound for a normalized nonnegative family. The comparison weights need
@@ -183,19 +181,9 @@ theorem summable_negMulLog_and_tsum_le_gibbs
   have hqZsum_le : ∑' i, q i / Z ≤ 1 := by
     rw [tsum_div_const]
     exact (div_le_one₀ hZ).2 hq_tsum_le
-  have hfinal :
-      ∑' i, Real.negMulLog (p i) ≤
-        β * (∑' i, p i * energy i) + Real.log Z := by
-    calc
-      ∑' i, Real.negMulLog (p i) ≤
-          ∑' i, (β * (p i * energy i) + p i * Real.log Z - p i + q i / Z) :=
-        hsum_le
-      _ = β * (∑' i, p i * energy i) + Real.log Z - 1 + ∑' i, q i / Z :=
-        hBsum
-      _ ≤ β * (∑' i, p i * energy i) + Real.log Z - 1 + 1 := by
-        linarith
-      _ = β * (∑' i, p i * energy i) + Real.log Z := by ring
-  exact ⟨hnegMulLog_summable, hfinal⟩
+  refine ⟨hnegMulLog_summable, ?_⟩
+  rw [hBsum] at hsum_le
+  linarith
 
 /-- Equality in the countable Gibbs entropy bound holds exactly when the comparison mass,
 normalized weights, and logarithmic energy bounds are all saturated. Zero probabilities are allowed
