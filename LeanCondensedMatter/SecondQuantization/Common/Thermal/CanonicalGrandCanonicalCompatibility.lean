@@ -124,24 +124,17 @@ theorem grandCanonicalGibbsDensityOperator_op_eq_tsum_canonical
         simp
 
 open Classical in
-/-- For the absolutely summable diagonal grand-canonical decomposition, the trace
-of the operator-valued sector series can be exchanged with the sector sum.
-This is a trace-specific result: operator-norm convergence alone does not
-justify interchange of traces for an arbitrary operator series. -/
-private theorem grandCanonicalGibbsDensityOperator_trace_tsum_canonical_blocks
+/-- Every bounded grand-canonical expectation is a probability-weighted mixture
+of full-Fock canonical expectations. Trace-class summability of the diagonal
+expectation series justifies regrouping by particle number; operator-norm
+convergence of the density-sector series alone would not justify this exchange.
+No particle-number conservation assumption on the bounded observable is needed. -/
+theorem grandCanonicalGibbsDensityOperator_expectation_eq_tsum_canonical
     (ε : Mode → ℝ) (β μ : ℝ)
     (hsum : EigenbasisGibbsSummable
       (grandCanonicalEnergy (Config := Config) ε μ) β)
-    (A : CompletedFock Config →L[ℂ] CompletedFock Config)
-    (hseries : IsTraceClass
-      (∑' N : ℕ,
-        if hN : Nonempty (ParticleNumberSector Mode Config N) then
-          letI : Nonempty (ParticleNumberSector Mode Config N) := hN
-          (grandCanonicalSectorProbability (Config := Config) ε β μ N : ℂ) •
-            (canonicalFullGibbsDensityOperator (Config := Config) ε β N
-              (canonicalGibbsSummable_of_grandCanonical ε β μ N hsum)).op
-        else 0)) :
-    (hseries.comp_right A).trace =
+    (A : CompletedFock Config →L[ℂ] CompletedFock Config) :
+    (grandCanonicalGibbsDensityOperator (Config := Config) ε β μ hsum).expectation A =
       ∑' N : ℕ,
         if hN : Nonempty (ParticleNumberSector Mode Config N) then
           letI : Nonempty (ParticleNumberSector Mode Config N) := hN
@@ -151,15 +144,6 @@ private theorem grandCanonicalGibbsDensityOperator_trace_tsum_canonical_blocks
         else 0 := by
   classical
   let ρ := grandCanonicalGibbsDensityOperator (Config := Config) ε β μ hsum
-  have hOp := grandCanonicalGibbsDensityOperator_op_eq_tsum_canonical
-    (Config := Config) ε β μ hsum
-  have htrace : (hseries.comp_right A).trace = ρ.expectation A := by
-    rw [ρ.expectation_apply]
-    apply IsTraceClass.trace_congr
-    simpa only [mul_apply_eq_comp] using
-      congrArg (fun T : CompletedFock Config →L[ℂ] CompletedFock Config => T * A)
-        hOp.symm
-  rw [htrace]
   let f : Config → ℂ := fun c =>
     (eigenbasisGibbsProbability (grandCanonicalEnergy ε μ) β c : ℂ) *
       inner ℂ (completedBasisState c) (A (completedBasisState c))
@@ -170,16 +154,14 @@ private theorem grandCanonicalGibbsDensityOperator_trace_tsum_canonical_blocks
     intro c
     simpa only [ρ, completedHilbertBasis_apply] using
       (grandCanonicalGibbsDensityOperator_apply_basis ε β μ hsum c)
-  have hfull : HasSum f (ρ.expectation A) := by
-    simpa only [f, completedHilbertBasis_apply] using
-      (ρ.hasSum_expectation_diagonal A
-        (completedHilbertBasis (Config := Config))
-        (eigenbasisGibbsProbability (grandCanonicalEnergy ε μ) β) hdiag)
   calc
     ρ.expectation A = ∑' N : ℕ, ∑' n : ParticleNumberSector Mode Config N,
-        f n.val :=
-      (hfull.tsum_fiberwise
-        (particleNumber (Mode := Mode) (Config := Config))).tsum_eq.symm
+        f n.val := by
+      simpa only [f, completedHilbertBasis_apply] using
+        (ρ.expectation_eq_tsum_fiberwise A
+          (completedHilbertBasis (Config := Config))
+          (eigenbasisGibbsProbability (grandCanonicalEnergy ε μ) β) hdiag
+          (particleNumber (Mode := Mode) (Config := Config)))
     _ = _ := by
       apply tsum_congr
       intro N
@@ -200,50 +182,6 @@ private theorem grandCanonicalGibbsDensityOperator_trace_tsum_canonical_blocks
           ⟨fun n => hN ⟨n⟩⟩
         simp only [dite_eq_right hN]
         simp
-
-open Classical in
-/-- Every bounded grand-canonical expectation is a probability-weighted mixture
-of full-Fock canonical expectations. The proof applies the trace-exchange
-formula to the operator-valued canonical sector decomposition, and includes
-empty sectors without particle-number conservation assumptions on A. -/
-theorem grandCanonicalGibbsDensityOperator_expectation_eq_tsum_canonical
-    (ε : Mode → ℝ) (β μ : ℝ)
-    (hsum : EigenbasisGibbsSummable
-      (grandCanonicalEnergy (Config := Config) ε μ) β)
-    (A : CompletedFock Config →L[ℂ] CompletedFock Config) :
-    (grandCanonicalGibbsDensityOperator (Config := Config) ε β μ hsum).expectation A =
-      ∑' N : ℕ,
-        if hN : Nonempty (ParticleNumberSector Mode Config N) then
-          letI : Nonempty (ParticleNumberSector Mode Config N) := hN
-          (grandCanonicalSectorProbability (Config := Config) ε β μ N : ℂ) *
-            (canonicalFullGibbsDensityOperator (Config := Config) ε β N
-              (canonicalGibbsSummable_of_grandCanonical ε β μ N hsum)).expectation A
-        else 0 := by
-  classical
-  let ρ := grandCanonicalGibbsDensityOperator (Config := Config) ε β μ hsum
-  have hOp := grandCanonicalGibbsDensityOperator_op_eq_tsum_canonical
-    (Config := Config) ε β μ hsum
-  have hseries : IsTraceClass
-      (∑' N : ℕ,
-        if hN : Nonempty (ParticleNumberSector Mode Config N) then
-          letI : Nonempty (ParticleNumberSector Mode Config N) := hN
-          (grandCanonicalSectorProbability (Config := Config) ε β μ N : ℂ) •
-            (canonicalFullGibbsDensityOperator (Config := Config) ε β N
-              (canonicalGibbsSummable_of_grandCanonical ε β μ N hsum)).op
-        else 0) := by
-    rw [← hOp]
-    exact ρ.isTraceClass
-  have hexchange :=
-    grandCanonicalGibbsDensityOperator_trace_tsum_canonical_blocks
-      (Config := Config) ε β μ hsum A hseries
-  calc
-    ρ.expectation A = (ρ.isTraceClass.comp_right A).trace :=
-      ρ.expectation_apply A
-    _ = (hseries.comp_right A).trace := by
-      apply IsTraceClass.trace_congr
-      simpa only [mul_apply_eq_comp] using
-        congrArg (fun T : CompletedFock Config →L[ℂ] CompletedFock Config => T * A) hOp
-    _ = _ := hexchange
 
 end
 
