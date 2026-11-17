@@ -105,11 +105,8 @@ theorem cast_shuffleOfOrder_blockSlotSet_eq
     x ∈ (B : Finset (Fin n))
   rw [(π.shuffleOfOrder order orders h).mem_castTotalEquiv_blockSlotSet_iff hcard B x,
     π.mem_shuffleOfOrder_blockSlotSet_iff order orders h B]
-  have hx : (order (Fin.cast hcard.symm x)).1 = x := by
-    rw [hOrder]
-    apply Fin.ext
-    rfl
-  rw [hx]
+  rw [hOrder (Fin.cast hcard.symm x)]
+  simp
 
 /-- The local orders used to assemble a global order are compatible with that assembled order. -/
 theorem partOrdersCompatible_assembleOrder (π : Finpartition s) (orders : π.PartOrders)
