@@ -313,37 +313,18 @@ theorem ExternalInsertionBlockLayout.blockLegEmbedding_strictMono
     change
       (externalInsertionInteractionLeg (E := B.1.card / 2) v l).val <
       (externalInsertionInteractionLeg (E := B.1.card / 2) w k).val at hab
-    simp only [externalInsertionInteractionLeg_val] at hab ⊢
     have hv (u : ↥T) :
         ((layout.interactionEquiv S).symm ⟨B, u⟩ : ↥S) =
           ⟨u.1, (Finset.mem_filter.mp u.2).1⟩ := by
       apply Subtype.ext
       rfl
     rw [hv v, hv w]
-    by_cases hvw : v = w
-    · subst w
-      omega
-    · have hrank_ne :
-          ((T.orderIsoOfFin rfl).symm v).val ≠
-            ((T.orderIsoOfFin rfl).symm w).val :=
-        fun h => hvw ((T.orderIsoOfFin rfl).symm.injective (Fin.ext h))
-      have hrank :
-          ((T.orderIsoOfFin rfl).symm v).val <
-            ((T.orderIsoOfFin rfl).symm w).val := by
-        have hl := l.isLt
-        have hk := k.isLt
-        omega
-      have hamb :
-          ((S.orderIsoOfFin rfl).symm
-            (⟨v.1, (Finset.mem_filter.mp v.2).1⟩ : ↥S)).val <
-          ((S.orderIsoOfFin rfl).symm
-            (⟨w.1, (Finset.mem_filter.mp w.2).1⟩ : ↥S)).val := by
-        apply (S.orderIsoOfFin rfl).symm.strictMono
-        change v.1 < w.1
-        simpa using (T.orderIsoOfFin rfl).strictMono hrank
-      have hl := l.isLt
-      have hk := k.isLt
-      omega
+    exact externalInsertionInteractionLeg_lt_of_subset
+      (E := B.1.card / 2) (E' := E) (T := T) (S := S)
+      (by
+        intro u hu
+        exact (Finset.mem_filter.mp hu).1)
+      v w l k (Fin.lt_def.mpr hab)
 
 /-- A leg and its incident vertex have exactly the same independent
 external-block owner. More strongly, the vertex inside that block is
