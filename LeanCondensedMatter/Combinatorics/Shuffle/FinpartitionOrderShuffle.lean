@@ -58,33 +58,6 @@ noncomputable def shuffleOfOrder (π : Finpartition s) (order : Fin s.card ≃ �
   slotEquiv := (π.partEquiv orders).trans order.symm
   strictMono := h
 
-/-- The slots occupied by a partition block under the shuffle extracted from
-a global order are exactly the ambient positions whose elements belong to
-that block. This depends only on finite-set combinatorics, not on statistics. -/
-theorem mem_shuffleOfOrder_blockSlotSet_iff
-    (π : Finpartition s) (order : Fin s.card ≃ ↥s)
-    (orders : π.PartOrders) (h : π.PartOrdersCompatible order orders)
-    (B : π.parts) (x : Fin s.card) :
-    x ∈ (π.shuffleOfOrder order orders h).blockSlotSet B ↔
-      (order x).1 ∈ (B : Finset α) := by
-  classical
-  simp only [Combinatorics.FamilySlotShuffleTo.blockSlotSet,
-    Finset.mem_image, Finset.mem_univ, true_and]
-  change (∃ i : Fin (B : Finset α).card,
-      order.symm (π.partEquiv orders ⟨B, i⟩) = x) ↔ _
-  constructor
-  · rintro ⟨i, rfl⟩
-    have hmem : (π.partEquiv orders ⟨B, i⟩).1 ∈ (B : Finset α) :=
-      (orders B i).2
-    simpa only [Equiv.apply_symm_apply] using hmem
-  · intro hx
-    refine ⟨(orders B).symm ⟨(order x).1, hx⟩, ?_⟩
-    apply order.injective
-    rw [Equiv.apply_symm_apply]
-    apply Subtype.ext
-    change (orders B ((orders B).symm ⟨(order x).1, hx⟩)).1 = (order x).1
-    simp
-
 /-- The local orders used to assemble a global order are compatible with that assembled order. -/
 theorem partOrdersCompatible_assembleOrder (π : Finpartition s) (orders : π.PartOrders)
     (shuffle : π.PartShuffle) :
@@ -155,6 +128,7 @@ theorem shuffleOfIncreasingOrderFull_blockSlotSet
   classical
   let s : Finset (Fin n) := Finset.univ
   let o : Fin s.card ≃ ↥s := (s.orderIsoOfFin rfl).toEquiv
+  let orders := π.partOrdersOfOrder o
   let hcard : s.card = n := by simp [s]
   let idIso : Fin n ≃o ↥s := {
     toEquiv := {
@@ -167,25 +141,29 @@ theorem shuffleOfIncreasingOrderFull_blockSlotSet
   }
   let canonical := (Fin.castOrderIso hcard).trans idIso
   have heq : (s.orderIsoOfFin rfl) = canonical := Subsingleton.elim _ _
-  have ho (i : Fin s.card) : (o i).1 = Fin.cast hcard i := by
-    change ((s.orderIsoOfFin rfl) i).1 = Fin.cast hcard i
-    rw [heq]
-    rfl
+  have ho (z : ↥s) : Fin.cast hcard (o.symm z) = z.1 := by
+    obtain ⟨i, rfl⟩ := o.surjective z
+    have hi : (o i).1 = Fin.cast hcard i := by
+      change ((s.orderIsoOfFin rfl) i).1 = Fin.cast hcard i
+      rw [heq]
+      rfl
+    simpa only [Equiv.symm_apply_apply] using hi.symm
+  have hslot (i : Fin (B : Finset (Fin n)).card) :
+      ((Combinatorics.FamilySlotShuffleTo.castTotalEquiv hcard)
+        π.shuffleOfIncreasingOrder).slotEquiv ⟨B, i⟩ =
+        (orders B i).1 := by
+    calc
+      _ = Fin.cast hcard (o.symm (π.equivSigmaParts.symm ⟨B, orders B i⟩)) := rfl
+      _ = (π.equivSigmaParts.symm ⟨B, orders B i⟩).1 := ho _
+      _ = (orders B i).1 := rfl
   ext x
-  change x ∈ ((Combinatorics.FamilySlotShuffleTo.castTotalEquiv hcard)
-      (π.shuffleOfOrder o (π.partOrdersOfOrder o)
-        (π.partOrdersCompatible_partOrdersOfOrder o))).blockSlotSet B ↔
-    x ∈ (B : Finset (Fin n))
-  rw [(π.shuffleOfOrder o (π.partOrdersOfOrder o)
-      (π.partOrdersCompatible_partOrdersOfOrder o)).mem_castTotalEquiv_blockSlotSet_iff
-        hcard B x,
-    π.mem_shuffleOfOrder_blockSlotSet_iff o (π.partOrdersOfOrder o)
-      (π.partOrdersCompatible_partOrdersOfOrder o) B]
-  have hx : (o (Fin.cast hcard.symm x)).1 = x := by
-    rw [ho]
-    apply Fin.ext
-    rfl
-  rw [hx]
+  simp only [Combinatorics.FamilySlotShuffleTo.blockSlotSet, Finset.mem_image,
+    Finset.mem_univ, true_and, hslot]
+  constructor
+  · rintro ⟨i, hi⟩
+    simpa [hi] using (orders B i).2
+  · intro hx
+    exact ⟨(orders B).symm ⟨x, hx⟩, by simp⟩
 
 /-- A global finite-set order is equivalent to part-local orders together with an order-preserving
 shuffle of their slots. -/
