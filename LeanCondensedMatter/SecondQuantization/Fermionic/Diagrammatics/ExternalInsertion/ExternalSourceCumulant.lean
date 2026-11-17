@@ -39,6 +39,33 @@ private theorem externalPartition_part_ssubset_of_ne_top
     exact hne (le_antisymm le_top htopLe)
   exact Finset.ssubset_iff_subset_ne.mpr ⟨hsubset, hproper⟩
 
+/-- Split the signed source-partition moment into the non-top
+partitions and the one-block contribution. The latter has source sign one. -/
+private theorem externalPartitionWeightedMoment_eq_sum_proper_add_top
+    (κ : Finset (Fin (2 * E)) → PowerSeries ℂ)
+    (S : Finset (Fin (2 * E))) (hS : S ≠ ∅) :
+    Finpartition.weightedMomentFromCumulant
+        (fun _ π => PowerSeries.C (externalPartitionSourceSign π)) κ S =
+      (∑ π : {π : Finpartition S // π ≠ ⊤},
+        PowerSeries.C (externalPartitionSourceSign π.1) *
+          Finpartition.partitionProduct κ π.1) + κ S := by
+  classical
+  let f : Finpartition S → PowerSeries ℂ := fun π =>
+    PowerSeries.C (externalPartitionSourceSign π) *
+      Finpartition.partitionProduct κ π
+  change (∑ π : Finpartition S, f π) = _
+  rw [← Finset.sum_erase_add Finset.univ f (Finset.mem_univ (⊤ : Finpartition S))]
+  have htop : f (⊤ : Finpartition S) = κ S := by
+    change PowerSeries.C (externalPartitionSourceSign (⊤ : Finpartition S)) *
+      Finpartition.partitionProduct κ (⊤ : Finpartition S) = κ S
+    rw [externalPartitionSourceSign_top, Finpartition.partitionProduct_top hS]
+    simp
+  rw [htop]
+  rw [Finset.sum_subtype
+    (p := fun π : Finpartition S => π ≠ ⊤)
+    ((Finset.univ : Finset (Finpartition S)).erase ⊤)
+    (fun π => by simp) f]
+
 /-- If every proper source subset has zero connected contribution, the
 signed partition-moment sum on a nonempty source set reduces to its single
 connected block. This uses the actual source sign of the top partition,
@@ -50,27 +77,21 @@ theorem externalPartitionWeightedMoment_eq_of_proper_zero
     Finpartition.weightedMomentFromCumulant
         (fun _ π => PowerSeries.C (externalPartitionSourceSign π)) κ S = κ S := by
   classical
-  unfold Finpartition.weightedMomentFromCumulant
-  rw [← Finset.sum_erase_add Finset.univ
-    (fun π : Finpartition S =>
-      PowerSeries.C (externalPartitionSourceSign π) *
-        Finpartition.partitionProduct κ π) (Finset.mem_univ ⊤)]
+  rw [externalPartitionWeightedMoment_eq_sum_proper_add_top κ S hS]
   have hrest :
-      (∑ π ∈ (Finset.univ : Finset (Finpartition S)).erase ⊤,
-        PowerSeries.C (externalPartitionSourceSign π) *
-          Finpartition.partitionProduct κ π) = 0 := by
+      (∑ π : {π : Finpartition S // π ≠ ⊤},
+        PowerSeries.C (externalPartitionSourceSign π.1) *
+          Finpartition.partitionProduct κ π.1) = 0 := by
     apply Finset.sum_eq_zero
-    intro π hπ
-    obtain ⟨B, hB⟩ := (Finpartition.parts_nonempty_iff (P := π)).2 hS
+    intro π _
+    obtain ⟨B, hB⟩ := (Finpartition.parts_nonempty_iff (P := π.1)).2 hS
     have hproper : B ⊂ S :=
-      externalPartition_part_ssubset_of_ne_top π (Finset.mem_erase.mp hπ).1 hB
-    have hprod : Finpartition.partitionProduct κ π = 0 := by
+      externalPartition_part_ssubset_of_ne_top π.1 π.2 hB
+    have hprod : Finpartition.partitionProduct κ π.1 = 0 := by
       unfold Finpartition.partitionProduct
       exact Finset.prod_eq_zero hB (hzero B hproper)
     rw [hprod, mul_zero]
-  rw [hrest, externalPartitionSourceSign_top,
-    Finpartition.partitionProduct_top hS]
-  simp
+  rw [hrest, zero_add]
 
 /-- The signed external-source moment transform is injective on normalized
 connected-block functions (whose empty-set values agree). In particular,
@@ -103,32 +124,19 @@ theorem externalPartitionWeightedMoment_injective
       intro B hB
       exact ih B (externalPartition_part_ssubset_of_ne_top π hne hB)
     have hrest :
-        (∑ π ∈ (Finset.univ : Finset (Finpartition S)).erase ⊤,
-          PowerSeries.C (externalPartitionSourceSign π) *
-            Finpartition.partitionProduct κ π) =
-        (∑ π ∈ (Finset.univ : Finset (Finpartition S)).erase ⊤,
-          PowerSeries.C (externalPartitionSourceSign π) *
-            Finpartition.partitionProduct κ' π) := by
+        (∑ π : {π : Finpartition S // π ≠ ⊤},
+          PowerSeries.C (externalPartitionSourceSign π.1) *
+            Finpartition.partitionProduct κ π.1) =
+        (∑ π : {π : Finpartition S // π ≠ ⊤},
+          PowerSeries.C (externalPartitionSourceSign π.1) *
+            Finpartition.partitionProduct κ' π.1) := by
       apply Finset.sum_congr rfl
-      intro π hπ
-      rw [hprod π (Finset.mem_erase.mp hπ).1]
+      intro π _
+      rw [hprod π.1 π.2]
     have hsource := hMoments S
-    unfold Finpartition.weightedMomentFromCumulant at hsource
-    rw [← Finset.sum_erase_add Finset.univ
-      (fun π : Finpartition S =>
-        PowerSeries.C (externalPartitionSourceSign π) *
-          Finpartition.partitionProduct κ π) (Finset.mem_univ ⊤),
-      ← Finset.sum_erase_add Finset.univ
-      (fun π : Finpartition S =>
-        PowerSeries.C (externalPartitionSourceSign π) *
-          Finpartition.partitionProduct κ' π) (Finset.mem_univ ⊤)] at hsource
+    rw [externalPartitionWeightedMoment_eq_sum_proper_add_top κ S hS,
+      externalPartitionWeightedMoment_eq_sum_proper_add_top κ' S hS] at hsource
     rw [hrest] at hsource
-    have htop (k : Finset (Fin (2 * E)) → PowerSeries ℂ) :
-        PowerSeries.C (externalPartitionSourceSign (⊤ : Finpartition S)) *
-          Finpartition.partitionProduct k (⊤ : Finpartition S) = k S := by
-      rw [externalPartitionSourceSign_top, Finpartition.partitionProduct_top hS]
-      simp
-    rw [htop κ, htop κ'] at hsource
     exact add_left_cancel hsource
 
 /-- Finite fermionic source cumulants, defined recursively from the complete
@@ -203,39 +211,14 @@ theorem externalSubsetSourceCumulantSeries_reconstruct
     rw [Finpartition.weightedMomentFromCumulant_empty,
       externalPartitionSourceSign_top, hEmpty]
     simp
-  · let f : Finpartition S → PowerSeries ℂ := fun π =>
-      PowerSeries.C (externalPartitionSourceSign π) *
-        Finpartition.partitionProduct κ π
-    have hrest :
-        (∑ π ∈ (Finset.univ : Finset (Finpartition S)).erase ⊤, f π) =
-          ∑ π : {π : Finpartition S // π ≠ ⊤}, f π.1 := by
-      rw [Finset.sum_subtype
-        (p := fun π : Finpartition S => π ≠ ⊤)
-        ((Finset.univ : Finset (Finpartition S)).erase ⊤)
-        (fun π => by simp) f]
-    have htop : f (⊤ : Finpartition S) = κ S := by
-      change PowerSeries.C (externalPartitionSourceSign (⊤ : Finpartition S)) *
-        Finpartition.partitionProduct κ (⊤ : Finpartition S) = κ S
-      rw [externalPartitionSourceSign_top, Finpartition.partitionProduct_top hS]
-      simp
-    have hsum :
-        Finpartition.weightedMomentFromCumulant
-          (fun _ π => PowerSeries.C (externalPartitionSourceSign π)) κ S =
-        (∑ π ∈ (Finset.univ : Finset (Finpartition S)).erase ⊤, f π) + κ S := by
-      change (∑ π : Finpartition S, f π) = _
-      rw [← Finset.sum_erase_add Finset.univ f (Finset.mem_univ (⊤ : Finpartition S))]
-      rw [htop]
-    have hrec := externalSubsetSourceCumulantSeries_eq_sub_properPartitions M S hS
+  · have hrec := externalSubsetSourceCumulantSeries_eq_sub_properPartitions M S hS
     change κ S = M S -
-      ∑ π : {π : Finpartition S // π ≠ ⊤}, f π.1 at hrec
-    calc
-      Finpartition.weightedMomentFromCumulant
-          (fun _ π => PowerSeries.C (externalPartitionSourceSign π)) κ S =
-          (∑ π ∈ (Finset.univ : Finset (Finpartition S)).erase ⊤, f π) + κ S := hsum
-      _ = (∑ π : {π : Finpartition S // π ≠ ⊤}, f π.1) + κ S := by rw [hrest]
-      _ = (∑ π : {π : Finpartition S // π ≠ ⊤}, f π.1) +
-            (M S - ∑ π : {π : Finpartition S // π ≠ ⊤}, f π.1) := by rw [hrec]
-      _ = M S := by abel
+      ∑ π : {π : Finpartition S // π ≠ ⊤},
+        PowerSeries.C (externalPartitionSourceSign π.1) *
+          Finpartition.partitionProduct κ π.1 at hrec
+    rw [externalPartitionWeightedMoment_eq_sum_proper_add_top κ S hS]
+    rw [hrec]
+    abel
 
 
 end Fermionic
