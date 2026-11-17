@@ -3080,32 +3080,15 @@ theorem ExternalInsertionBlockLayout.sum_vacuumFree_fixedPartition_eq_sizes_shuf
           (E := E) (N := N) (ExternalLabel := ExternalLabel) (InternalLabel := InternalLabel)
           anchor π heven).symm p).1.1) := by
   classical
-  calc
-    (∑ d : {d : ExternalInsertionDiagram ExternalLabel InternalLabel E N
-        (Finset.univ : Finset (Fin N)) //
-          HasNoVacuumComponent d.vertexGraph},
-      if externalComponentPartition d.1.vertexGraph = π then weight d.1 else 0) =
-      ∑ d : {d : {d : ExternalInsertionDiagram ExternalLabel InternalLabel E N
-          (Finset.univ : Finset (Fin N)) //
-          HasNoVacuumComponent d.vertexGraph} //
-          externalComponentPartition d.1.vertexGraph = π},
-        weight d.1.1 := by
-      simpa only [Finset.sum_filter] using
-        (Finset.sum_subtype
-          (p := fun d : {d : ExternalInsertionDiagram ExternalLabel InternalLabel E N
-            (Finset.univ : Finset (Fin N)) //
-            HasNoVacuumComponent d.vertexGraph} =>
-              externalComponentPartition d.1.vertexGraph = π)
-          ((Finset.univ : Finset
-            {d : ExternalInsertionDiagram ExternalLabel InternalLabel E N
-              (Finset.univ : Finset (Fin N)) //
-              HasNoVacuumComponent d.vertexGraph}).filter
-                (fun d => externalComponentPartition d.1.vertexGraph = π))
-          (fun _ => by simp)
-          (fun d => weight d.1))
-    _ = _ :=
-      ExternalInsertionBlockLayout.sum_fixedPartitionPhysical_eq_sizes_shuffles
-        anchor π heven weight
+  let X := {d : ExternalInsertionDiagram ExternalLabel InternalLabel E N
+    (Finset.univ : Finset (Fin N)) // HasNoVacuumComponent d.vertexGraph}
+  let P : X → Prop := fun d => externalComponentPartition d.1.vertexGraph = π
+  simpa only [Finset.sum_filter] using
+    ((Finset.sum_subtype
+      (p := P) ((Finset.univ : Finset X).filter P)
+      (fun _ => by simp) (fun d : X => weight d.1)).symm.trans
+      (ExternalInsertionBlockLayout.sum_fixedPartitionPhysical_eq_sizes_shuffles
+        anchor π heven weight))
 
 /-- Evaluating the inverse physical fixed-partition size/shuffle
 bijection reconstructs the actual assembled labelled Wick pairing,
