@@ -100,36 +100,23 @@ theorem grandCanonicalGibbsDensityOperator_op_eq_tsum_canonical
       (Real.summable_norm_normalizedWeight
         (eigenbasisBoltzmannWeight (grandCanonicalEnergy (Config := Config) ε μ) β)
         hsum)
-  have hρ : ρ.op = b.diagonalOp a := by
-    rfl
-  have hfull : HasSum (fun c : Config => b.diagonalTerm a c) ρ.op := by
-    rw [hρ]
-    exact HilbertBasis.hasSum_diagonalTerm b a ha
-  have hblock (N : ℕ) :
-      (∑' n : ParticleNumberSector Mode Config N, b.diagonalTerm a n.val) =
-        (completedCoordinateProjection
-          (fun c : Config => particleNumber (Mode := Mode) c = N)).comp
-          (ρ.op.comp (completedCoordinateProjection
-            (fun c : Config => particleNumber (Mode := Mode) c = N))) := by
-    exact completedCoordinateProjection_tsum_diagonalTerm
-      (Config := Config)
-      (P := fun c : Config => particleNumber (Mode := Mode) c = N)
-      a ρ.op hfull
-  have hgroups :
-      ρ.op = ∑' N : ℕ, ∑' n : ParticleNumberSector Mode Config N,
-        b.diagonalTerm a n.val :=
-    (hfull.tsum_fiberwise
-      (particleNumber (Mode := Mode) (Config := Config))).tsum_eq.symm
+  have hfull : HasSum (fun c : Config => b.diagonalTerm a c) ρ.op :=
+    HilbertBasis.hasSum_diagonalTerm b a ha
   calc
     ρ.op = ∑' N : ℕ, ∑' n : ParticleNumberSector Mode Config N,
-        b.diagonalTerm a n.val := hgroups
+        b.diagonalTerm a n.val :=
+      (hfull.tsum_fiberwise
+        (particleNumber (Mode := Mode) (Config := Config))).tsum_eq.symm
     _ = _ := by
       apply tsum_congr
       intro N
       by_cases hN : Nonempty (ParticleNumberSector Mode Config N)
       · letI : Nonempty (ParticleNumberSector Mode Config N) := hN
         simp only [dite_eq_left hN]
-        rw [hblock N]
+        rw [completedCoordinateProjection_tsum_diagonalTerm
+          (Config := Config)
+          (P := fun c : Config => particleNumber (Mode := Mode) c = N)
+          a ρ.op hfull]
         exact grandCanonicalGibbsDensityOperator_compress_sector ε β μ N hsum
       · letI : IsEmpty (ParticleNumberSector Mode Config N) :=
           ⟨fun n => hN ⟨n⟩⟩
