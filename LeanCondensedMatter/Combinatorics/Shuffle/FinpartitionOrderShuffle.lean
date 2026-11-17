@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Combinatorics.Shuffle.FamilyOrderShuffle
+import LeanCondensedMatter.Combinatorics.Shuffle.FamilySlotShuffleInversions
 import Mathlib.Algebra.BigOperators.Ring.Finset
 import Mathlib.Data.Fintype.BigOperators
 import Mathlib.Order.Partition.Finpartition
@@ -107,6 +108,62 @@ theorem partOrdersCompatible_partOrdersOfOrder (π : Finpartition s)
       (size := fun B : π.parts => (B : Finset α).card)
       (hcard := fun B => Fintype.card_coe (B : Finset α))
       π.equivSigmaParts order B)
+
+/-- The canonical partition shuffle preserves the increasing order of
+elements within each block. -/
+noncomputable def shuffleOfIncreasingOrder [LinearOrder α]
+    (π : Finpartition s) : π.PartShuffle := by
+  let order := (s.orderIsoOfFin rfl).toEquiv
+  exact π.shuffleOfOrder order (π.partOrdersOfOrder order)
+    (π.partOrdersCompatible_partOrdersOfOrder order)
+
+/-- For a partition of the full `Fin n` family, the canonical increasing
+shuffle occupies precisely the slots belonging to each block. -/
+theorem shuffleOfIncreasingOrderFull_blockSlotSet
+    {n : ℕ} (π : Finpartition (Finset.univ : Finset (Fin n)))
+    (B : π.parts) :
+    ((Combinatorics.FamilySlotShuffleTo.castTotalEquiv (by simp))
+      π.shuffleOfIncreasingOrder).blockSlotSet B =
+        (B : Finset (Fin n)) := by
+  classical
+  let s : Finset (Fin n) := Finset.univ
+  let o : Fin s.card ≃ ↥s := (s.orderIsoOfFin rfl).toEquiv
+  let orders := π.partOrdersOfOrder o
+  let hcard : s.card = n := by simp [s]
+  let idIso : Fin n ≃o ↥s := {
+    toEquiv := {
+      toFun := fun x => ⟨x, Finset.mem_univ x⟩
+      invFun := Subtype.val
+      left_inv := fun _ => rfl
+      right_inv := fun x => Subtype.ext rfl
+    }
+    map_rel_iff' := by intro x y; rfl
+  }
+  let canonical := (Fin.castOrderIso hcard).trans idIso
+  have heq : (s.orderIsoOfFin rfl) = canonical := Subsingleton.elim _ _
+  have ho (z : ↥s) : Fin.cast hcard (o.symm z) = z.1 := by
+    obtain ⟨i, rfl⟩ := o.surjective z
+    have hi : (o i).1 = Fin.cast hcard i := by
+      change ((s.orderIsoOfFin rfl) i).1 = Fin.cast hcard i
+      rw [heq]
+      rfl
+    simpa only [Equiv.symm_apply_apply] using hi.symm
+  have hslot (i : Fin (B : Finset (Fin n)).card) :
+      ((Combinatorics.FamilySlotShuffleTo.castTotalEquiv hcard)
+        π.shuffleOfIncreasingOrder).slotEquiv ⟨B, i⟩ =
+        (orders B i).1 := by
+    calc
+      _ = Fin.cast hcard (o.symm (π.equivSigmaParts.symm ⟨B, orders B i⟩)) := rfl
+      _ = (π.equivSigmaParts.symm ⟨B, orders B i⟩).1 := ho _
+      _ = (orders B i).1 := rfl
+  ext x
+  simp only [Combinatorics.FamilySlotShuffleTo.blockSlotSet, Finset.mem_image,
+    Finset.mem_univ, true_and, hslot]
+  constructor
+  · rintro ⟨i, hi⟩
+    simpa [hi] using (orders B i).2
+  · intro hx
+    exact ⟨(orders B).symm ⟨x, hx⟩, by simp⟩
 
 /-- A global finite-set order is equivalent to part-local orders together with an order-preserving
 shuffle of their slots. -/

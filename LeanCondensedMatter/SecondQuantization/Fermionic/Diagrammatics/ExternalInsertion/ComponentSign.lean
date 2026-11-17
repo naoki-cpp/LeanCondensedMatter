@@ -26,49 +26,14 @@ open Combinatorics
 
 variable {ExternalLabel InternalLabel : Type*} {E N : ℕ}
 
-/-- The increasing order of a finite family of external fermion slots. -/
-private noncomputable def externalSubsetIncreasingOrder
-    (S : Finset (Fin (2 * E))) : Fin S.card ≃ ↥S :=
-  (S.orderIsoOfFin rfl).toEquiv
-
 /-- The canonical shuffle of external slots within a finite subset, grouped by
 blocks of a partition and kept in increasing order inside each block.
 
 The source convention uses the increasing ambient slot order, restricted to
 the subset at hand. It is independent of any interaction vertices. -/
 noncomputable def externalPartitionShuffle
-    {S : Finset (Fin (2 * E))} (π : Finpartition S) : π.PartShuffle := by
-  let order := externalSubsetIncreasingOrder S
-  let localOrders := π.partOrdersOfOrder order
-  exact π.shuffleOfOrder order localOrders
-    (π.partOrdersCompatible_partOrdersOfOrder order)
-
-/-- On the full finite external-slot set, the canonical increasing
-enumeration agrees with the order-preserving cast from its cardinality
-to the actual external-slot count `2 * E`. -/
-private theorem externalSubsetIncreasingOrder_univ_apply
-    (i : Fin (Finset.univ : Finset (Fin (2 * E))).card) :
-    (externalSubsetIncreasingOrder
-      (Finset.univ : Finset (Fin (2 * E))) i).1 =
-      Fin.cast (by simp) i := by
-  classical
-  let hcard : (Finset.univ : Finset (Fin (2 * E))).card = 2 * E := by simp
-  let idIso : Fin (2 * E) ≃o ↥(Finset.univ : Finset (Fin (2 * E))) := {
-    toEquiv := {
-      toFun := fun x => ⟨x, Finset.mem_univ x⟩
-      invFun := Subtype.val
-      left_inv := fun _ => rfl
-      right_inv := fun x => Subtype.ext rfl
-    }
-    map_rel_iff' := by intro x y; rfl
-  }
-  let canonical := (Fin.castOrderIso hcard).trans idIso
-  have h : ((Finset.univ : Finset (Fin (2 * E))).orderIsoOfFin rfl) =
-      canonical := Subsingleton.elim _ _
-  change (((Finset.univ : Finset (Fin (2 * E))).orderIsoOfFin rfl) i).1 =
-    Fin.cast hcard i
-  rw [h]
-  rfl
+    {S : Finset (Fin (2 * E))} (π : Finpartition S) : π.PartShuffle :=
+  π.shuffleOfIncreasingOrder
 
 /-- The source shuffle of the *full* external slot family, transported
 from ambient size `Finset.univ.card` to the definitionally distinct
@@ -87,37 +52,14 @@ theorem externalPartitionShuffleFull_orderedBlockInversionCount
   (externalPartitionShuffle π).castTotalEquiv_orderedBlockInversionCount (by simp) order
 
 /-- The canonical full-source shuffle occupies exactly the source slots
-belonging to each partition block. -/
+belonging to each partition block. This is the generic partition-shuffle
+occupancy theorem specialized to the increasing external-slot order. -/
 theorem externalPartitionShuffleFull_blockSlotSet
     (π : Finpartition (Finset.univ : Finset (Fin (2 * E))))
     (P : π.parts) :
     (externalPartitionShuffleFull π).blockSlotSet P =
       (P : Finset (Fin (2 * E))) := by
-  classical
-  let o := externalSubsetIncreasingOrder (Finset.univ : Finset (Fin (2 * E)))
-  let orders := π.partOrdersOfOrder o
-  let hcard : (Finset.univ : Finset (Fin (2 * E))).card = 2 * E := by simp
-  have ho (z : ↥(Finset.univ : Finset (Fin (2 * E)))) :
-      Fin.cast hcard (o.symm z) = z.1 := by
-    obtain ⟨i, rfl⟩ := o.surjective z
-    simpa only [Equiv.symm_apply_apply] using
-      (externalSubsetIncreasingOrder_univ_apply i).symm
-  have hslot (i : Fin (P : Finset (Fin (2 * E))).card) :
-      (externalPartitionShuffleFull π).slotEquiv ⟨P, i⟩ =
-        (orders P i).1 := by
-    calc
-      (externalPartitionShuffleFull π).slotEquiv ⟨P, i⟩ =
-          Fin.cast hcard (o.symm (π.equivSigmaParts.symm ⟨P, orders P i⟩)) := rfl
-      _ = (π.equivSigmaParts.symm ⟨P, orders P i⟩).1 := ho _
-      _ = (orders P i).1 := rfl
-  ext x
-  simp only [FamilySlotShuffleTo.blockSlotSet, Finset.mem_image,
-    Finset.mem_univ, true_and, hslot]
-  constructor
-  · rintro ⟨i, hi⟩
-    simpa [hi] using (orders P i).2
-  · intro hx
-    exact ⟨(orders P).symm ⟨x, hx⟩, by simp⟩
+  exact π.shuffleOfIncreasingOrderFull_blockSlotSet P
 
 /-- Fermionic Koszul sign for grouping a subset of external insertions by
 partition blocks. The order on the blocks is explicit, because the sign
