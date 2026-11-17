@@ -80,8 +80,10 @@ theorem mem_shuffleOfOrder_blockSlotSet_iff
   · intro hx
     refine ⟨(orders B).symm ⟨(order x).1, hx⟩, ?_⟩
     apply order.injective
+    rw [Equiv.apply_symm_apply]
     apply Subtype.ext
-    rfl
+    change (orders B ((orders B).symm ⟨(order x).1, hx⟩)).1 = (order x).1
+    simp
 
 /-- The local orders used to assemble a global order are compatible with that assembled order. -/
 theorem partOrdersCompatible_assembleOrder (π : Finpartition s) (orders : π.PartOrders)
