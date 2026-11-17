@@ -169,20 +169,14 @@ noncomputable def finiteSignatureBase {n : ℕ} {ι : Type*}
   else
     0
 
-/-- The chosen representative has the requested signature whenever its fiber is nonempty. -/
-theorem finiteSignatureBase_signature_eq_of_exists {n : ℕ} {ι : Type*}
-    (signature : (Fin n → ℝ) → ι) (s : ι)
-    (h : ∃ σ : Fin n → ℝ, signature σ = s) :
-    signature (finiteSignatureBase signature s) = s := by
-  classical
-  simp only [finiteSignatureBase, dite_eq_left h]
-  exact Classical.choose_spec h
-
 /-- Every assignment shares its signature with the representative of its own fiber. -/
 theorem finiteSignatureBase_signature_eq {n : ℕ} {ι : Type*}
     (signature : (Fin n → ℝ) → ι) (σ : Fin n → ℝ) :
-    signature (finiteSignatureBase signature (signature σ)) = signature σ :=
-  finiteSignatureBase_signature_eq_of_exists signature (signature σ) ⟨σ, rfl⟩
+    signature (finiteSignatureBase signature (signature σ)) = signature σ := by
+  classical
+  have h : ∃ τ : Fin n → ℝ, signature τ = signature σ := ⟨σ, rfl⟩
+  simp only [finiteSignatureBase, dite_eq_left h]
+  exact Classical.choose_spec h
 
 /-- A finite measurable signature selects one of finitely many continuous branches
 measurably, without assuming continuity across signature boundaries. -/
