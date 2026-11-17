@@ -116,53 +116,10 @@ theorem grandCanonicalGibbsDensityOperator_op_eq_tsum_canonical
           (fun c : Config => particleNumber (Mode := Mode) c = N)).comp
           (ρ.op.comp (completedCoordinateProjection
             (fun c : Config => particleNumber (Mode := Mode) c = N))) := by
-    let P := completedCoordinateProjection
-      (fun c : Config => particleNumber (Mode := Mode) c = N)
-    let L : (CompletedFock Config →L[ℂ] CompletedFock Config) →L[ℂ]
-        (CompletedFock Config →L[ℂ] CompletedFock Config) :=
-      (ContinuousLinearMap.mulLeftRight ℂ
-        (CompletedFock Config →L[ℂ] CompletedFock Config)) P P
-    have hterm (c : Config) :
-        L (b.diagonalTerm a c) =
-          if particleNumber (Mode := Mode) c = N then b.diagonalTerm a c else 0 := by
-      apply ContinuousLinearMap.ext
-      intro ψ
-      change P ((b.diagonalTerm a c) (P ψ)) =
-        (if particleNumber (Mode := Mode) c = N then b.diagonalTerm a c else 0) ψ
-      simp only [HilbertBasis.diagonalTerm, smul_apply,
-        InnerProductSpace.rankOne_apply, map_smul, b, completedHilbertBasis_apply]
-      by_cases hc : particleNumber (Mode := Mode) c = N
-      · simp [P, hc, inner_completedBasisState_left,
-          completedCoordinateProjection_apply, completedCoordinateProjection_basisState]
-      · simp [P, hc, inner_completedBasisState_left,
-          completedCoordinateProjection_apply, completedCoordinateProjection_basisState]
-    have hfamily :
-        (fun c : Config => L (b.diagonalTerm a c)) =
-          Function.extend (Subtype.val : ParticleNumberSector Mode Config N → Config)
-            (fun n : ParticleNumberSector Mode Config N => b.diagonalTerm a n.val) 0 := by
-      funext c
-      by_cases hc : particleNumber (Mode := Mode) c = N
-      · let n : ParticleNumberSector Mode Config N := ⟨c, hc⟩
-        change L (b.diagonalTerm a n.val) =
-          Function.extend (Subtype.val : ParticleNumberSector Mode Config N → Config)
-            (fun n : ParticleNumberSector Mode Config N => b.diagonalTerm a n.val) 0 n.val
-        rw [hterm, ite_eq_left hc, Subtype.val_injective.extend_apply]
-      · have hnot : ¬ ∃ n : ParticleNumberSector Mode Config N, n.val = c := by
-          rintro ⟨n, hn⟩
-          apply hc
-          rw [← hn]
-          exact n.property
-        rw [hterm, ite_eq_right hc, Function.extend_apply' _ _ _ hnot]
-        simp
-    have hcompressed := hfull.mapL L
-    rw [hfamily] at hcompressed
-    have hsector := (hasSum_extend_zero Subtype.val_injective).mp hcompressed
-    have hL : L ρ.op = P.comp (ρ.op.comp P) := by
-      apply ContinuousLinearMap.ext
-      intro ψ
-      change P (ρ.op (P ψ)) = P (ρ.op (P ψ))
-      rfl
-    exact hsector.tsum_eq.trans hL
+    exact completedCoordinateProjection_tsum_diagonalTerm
+      (Config := Config)
+      (P := fun c : Config => particleNumber (Mode := Mode) c = N)
+      a ρ.op hfull
   have hgroups :
       ρ.op = ∑' N : ℕ, ∑' n : ParticleNumberSector Mode Config N,
         b.diagonalTerm a n.val :=
