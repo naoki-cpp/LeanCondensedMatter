@@ -23463,7 +23463,7 @@
     "dependents": [
       "Finpartition.cumulantFromMoment_momentFromCumulant",
       "Finpartition.momentFromCumulant_cumulantFromMoment",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalSourceCumulant.0.SecondQuantization.Fermionic.externalPartitionWeightedMoment_eq_sum_proper_add_top"
+      "Finpartition.weightedMomentFromCumulant_eq_sum_proper_add_top"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
@@ -23471,7 +23471,7 @@
     "compiledConsumers": [
       "Finpartition.cumulantFromMoment_momentFromCumulant",
       "Finpartition.momentFromCumulant_cumulantFromMoment",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalSourceCumulant.0.SecondQuantization.Fermionic.externalPartitionWeightedMoment_eq_sum_proper_add_top"
+      "Finpartition.weightedMomentFromCumulant_eq_sum_proper_add_top"
     ],
     "compiledConsumerCount": 3,
     "axioms": [
@@ -24020,6 +24020,92 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {α : Type u_1} {R : Type u_2} [inst : DecidableEq α] [inst_1 : CommRing R] (w : (S : Finset α) → Finpartition S → R)\n  (M : Finset α → R), Finpartition.weightedCumulantFromMoment w M ∅ = 0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "Finpartition.weightedCumulantFromMoment_empty",
+    "module": "LeanCondensedMatter.Combinatorics.Cumulant.WeightedInversion",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Fermionic.externalSubsetSourceCumulantSeries_empty"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.externalSubsetSourceCumulantSeries_empty"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {α : Type u_1} {R : Type u_2} [inst : DecidableEq α] [inst_1 : CommRing R] (w : (S : Finset α) → Finpartition S → R)\n  (M : Finset α → R) (S : Finset α),\n  S ≠ ∅ →\n    Finpartition.weightedCumulantFromMoment w M S =\n      M S - ∑ π, w S ↑π * Finpartition.partitionProduct (Finpartition.weightedCumulantFromMoment w M) ↑π",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "Finpartition.weightedCumulantFromMoment_eq_sub_properPartitions",
+    "module": "LeanCondensedMatter.Combinatorics.Cumulant.WeightedInversion",
+    "externalAxioms": [],
+    "docString": "The recursive inverse is the moment minus its proper-partition terms. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "Finpartition.weightedMomentFromCumulant_weightedCumulantFromMoment",
+      "SecondQuantization.Fermionic.externalSubsetSourceCumulantSeries_eq_sub_properPartitions"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "Finpartition.weightedMomentFromCumulant_weightedCumulantFromMoment",
+      "SecondQuantization.Fermionic.externalSubsetSourceCumulantSeries_eq_sub_properPartitions"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {α : Type u_1} {R : Type u_2} [inst : DecidableEq α] [inst_1 : CommSemiring R]\n  (partitionWeight : (S : Finset α) → Finpartition S → R) (κ : Finset α → R),\n  Finpartition.weightedMomentFromCumulant partitionWeight κ ∅ = partitionWeight ∅ ⊤",
     "standardAxioms": [
       "Classical.choice",
@@ -24039,17 +24125,155 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.externalSubsetSignedConnectedMomentSeries_empty",
-      "SecondQuantization.Fermionic.externalSubsetSourceCumulantSeries_reconstruct"
+      "Finpartition.weightedMomentFromCumulant_weightedCumulantFromMoment",
+      "SecondQuantization.Fermionic.externalSubsetSignedConnectedMomentSeries_empty"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.externalSubsetSignedConnectedMomentSeries_empty",
-      "SecondQuantization.Fermionic.externalSubsetSourceCumulantSeries_reconstruct"
+      "Finpartition.weightedMomentFromCumulant_weightedCumulantFromMoment",
+      "SecondQuantization.Fermionic.externalSubsetSignedConnectedMomentSeries_empty"
     ],
     "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {α : Type u_1} {R : Type u_2} [inst : DecidableEq α] [inst_1 : CommRing R] (w : (S : Finset α) → Finpartition S → R)\n  (κ : Finset α → R) (S : Finset α),\n  S ≠ ∅ → w S ⊤ = 1 → (∀ B ⊂ S, κ B = 0) → Finpartition.weightedMomentFromCumulant w κ S = κ S",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "Finpartition.weightedMomentFromCumulant_eq_of_proper_zero",
+    "module": "LeanCondensedMatter.Combinatorics.Cumulant.WeightedInversion",
+    "externalAxioms": [],
+    "docString": "Vanishing on all proper subsets reduces a weighted moment to its top term. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Fermionic.externalPartitionWeightedMoment_eq_of_proper_zero"
+    ],
+    "dependencies": [
+      "Finpartition.weightedMomentFromCumulant_eq_sum_proper_add_top",
+      "_private.LeanCondensedMatter.Combinatorics.Cumulant.WeightedInversion.0.Finpartition.part_ssubset_of_ne_top"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.externalPartitionWeightedMoment_eq_of_proper_zero"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {α : Type u_1} {R : Type u_2} [inst : DecidableEq α] [inst_1 : CommRing R] (w : (S : Finset α) → Finpartition S → R)\n  (κ : Finset α → R) (S : Finset α),\n  S ≠ ∅ →\n    w S ⊤ = 1 → Finpartition.weightedMomentFromCumulant w κ S = ∑ π, w S ↑π * Finpartition.partitionProduct κ ↑π + κ S",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "Finpartition.weightedMomentFromCumulant_eq_sum_proper_add_top",
+    "module": "LeanCondensedMatter.Combinatorics.Cumulant.WeightedInversion",
+    "externalAxioms": [],
+    "docString": "The top partition contributes precisely the connected weight;\nall other partitions involve proper subsets. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "Finpartition.weightedMomentFromCumulant_eq_of_proper_zero",
+      "Finpartition.weightedMomentFromCumulant_injective",
+      "Finpartition.weightedMomentFromCumulant_weightedCumulantFromMoment"
+    ],
+    "dependencies": [
+      "Finpartition.partitionProduct_top"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "Finpartition.weightedMomentFromCumulant_eq_of_proper_zero",
+      "Finpartition.weightedMomentFromCumulant_injective",
+      "Finpartition.weightedMomentFromCumulant_weightedCumulantFromMoment"
+    ],
+    "compiledConsumerCount": 3,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {α : Type u_1} {R : Type u_2} [inst : DecidableEq α] [inst_1 : CommRing R] (w : (S : Finset α) → Finpartition S → R),\n  (∀ (S : Finset α), w S ⊤ = 1) →\n    ∀ (κ κ' : Finset α → R),\n      κ ∅ = κ' ∅ →\n        (∀ (S : Finset α),\n            Finpartition.weightedMomentFromCumulant w κ S = Finpartition.weightedMomentFromCumulant w κ' S) →\n          κ = κ'",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "Finpartition.weightedMomentFromCumulant_injective",
+    "module": "LeanCondensedMatter.Combinatorics.Cumulant.WeightedInversion",
+    "externalAxioms": [],
+    "docString": "A unit-top weighted moment transform is injective on connected\nset functions whose empty-set values agree. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Fermionic.externalPartitionWeightedMoment_injective"
+    ],
+    "dependencies": [
+      "Finpartition.weightedMomentFromCumulant_eq_sum_proper_add_top",
+      "_private.LeanCondensedMatter.Combinatorics.Cumulant.WeightedInversion.0.Finpartition.part_ssubset_of_ne_top"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.externalPartitionWeightedMoment_injective"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -24090,6 +24314,52 @@
     "completedMention": false,
     "compiledConsumers": [
       "Combinatorics.MultiplicativeWeight.objectMoment_eq_momentFromCumulant"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {α : Type u_1} {R : Type u_2} [inst : DecidableEq α] [inst_1 : CommRing R] (w : (S : Finset α) → Finpartition S → R)\n  (M : Finset α → R),\n  (∀ (S : Finset α), w S ⊤ = 1) →\n    M ∅ = 1 →\n      ∀ (S : Finset α), Finpartition.weightedMomentFromCumulant w (Finpartition.weightedCumulantFromMoment w M) S = M S",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "Finpartition.weightedMomentFromCumulant_weightedCumulantFromMoment",
+    "module": "LeanCondensedMatter.Combinatorics.Cumulant.WeightedInversion",
+    "externalAxioms": [],
+    "docString": "A unit-top weighted moment transform reconstructs the original\nnormalized moments from its recursively defined connected weights. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Fermionic.externalSubsetSourceCumulantSeries_reconstruct"
+    ],
+    "dependencies": [
+      "Finpartition.weightedCumulantFromMoment_eq_sub_properPartitions",
+      "Finpartition.weightedMomentFromCumulant_empty",
+      "Finpartition.weightedMomentFromCumulant_eq_sum_proper_add_top"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.externalSubsetSourceCumulantSeries_reconstruct"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -24960,8 +25230,7 @@
       "HilbertBasis.one_add_diagonalOp_apply_basis",
       "QuantumTheory.DensityOperator.entropyOp_isTraceClass_of_diagonal",
       "QuantumTheory.diagonalDensityOperator_apply_basis",
-      "QuantumTheory.isTraceClass_iff_eigenbasisGibbsSummable_of_basis_action",
-      "SecondQuantization.Common.grandCanonicalGibbsDensityOperator_op_eq_tsum_canonical"
+      "QuantumTheory.isTraceClass_iff_eigenbasisGibbsSummable_of_basis_action"
     ],
     "dependencies": [
       "HilbertBasis.hasSum_diagonalTerm"
@@ -24974,10 +25243,9 @@
       "HilbertBasis.one_add_diagonalOp_apply_basis",
       "QuantumTheory.DensityOperator.entropyOp_isTraceClass_of_diagonal",
       "QuantumTheory.diagonalDensityOperator_apply_basis",
-      "QuantumTheory.isTraceClass_iff_eigenbasisGibbsSummable_of_basis_action",
-      "SecondQuantization.Common.grandCanonicalGibbsDensityOperator_op_eq_tsum_canonical"
+      "QuantumTheory.isTraceClass_iff_eigenbasisGibbsSummable_of_basis_action"
     ],
-    "compiledConsumerCount": 7,
+    "compiledConsumerCount": 6,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -136367,7 +136635,7 @@
     "dependents": [
       "SecondQuantization.Bosonic.completedParticleNumberTruncation_apply",
       "SecondQuantization.Common.completedCoordinateProjection_algebraicToCompleted_of_support",
-      "SecondQuantization.Common.grandCanonicalGibbsDensityOperator_op_eq_tsum_canonical",
+      "SecondQuantization.Common.completedCoordinateProjection_tsum_diagonalTerm",
       "SecondQuantization.Fermionic.completedAnnihilate_apply",
       "SecondQuantization.Fermionic.completedCreate_apply",
       "SecondQuantization.Fermionic.completedModeTruncation_apply",
@@ -136381,7 +136649,7 @@
     "compiledConsumers": [
       "SecondQuantization.Bosonic.completedParticleNumberTruncation_apply",
       "SecondQuantization.Common.completedCoordinateProjection_algebraicToCompleted_of_support",
-      "SecondQuantization.Common.grandCanonicalGibbsDensityOperator_op_eq_tsum_canonical",
+      "SecondQuantization.Common.completedCoordinateProjection_tsum_diagonalTerm",
       "SecondQuantization.Fermionic.completedAnnihilate_apply",
       "SecondQuantization.Fermionic.completedCreate_apply",
       "SecondQuantization.Fermionic.completedModeTruncation_apply",
@@ -136421,8 +136689,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "SecondQuantization.Common.completedCoordinateProjection_tsum_diagonalTerm",
       "SecondQuantization.Common.grandCanonicalGibbsDensityOperator_compress_sector",
-      "SecondQuantization.Common.grandCanonicalGibbsDensityOperator_op_eq_tsum_canonical",
       "SecondQuantization.Fermionic.completedAnnihilate_basisState_of_mem",
       "SecondQuantization.Fermionic.completedAnnihilate_basisState_of_not_mem",
       "SecondQuantization.Fermionic.completedCreate_basisState_of_mem",
@@ -136435,8 +136703,8 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "SecondQuantization.Common.completedCoordinateProjection_tsum_diagonalTerm",
       "SecondQuantization.Common.grandCanonicalGibbsDensityOperator_compress_sector",
-      "SecondQuantization.Common.grandCanonicalGibbsDensityOperator_op_eq_tsum_canonical",
       "SecondQuantization.Fermionic.completedAnnihilate_basisState_of_mem",
       "SecondQuantization.Fermionic.completedAnnihilate_basisState_of_not_mem",
       "SecondQuantization.Fermionic.completedCreate_basisState_of_mem",
@@ -136444,6 +136712,53 @@
       "SecondQuantization.Fermionic.completedNumberOperator_basisState"
     ],
     "compiledConsumerCount": 7,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Config : Type u_1} (P : Config → Prop) (a : Config → ℂ)\n  (A : ↥(SecondQuantization.Common.CompletedFock Config) →L[ℂ] ↥(SecondQuantization.Common.CompletedFock Config)),\n  HasSum (fun c => SecondQuantization.Common.completedHilbertBasis.diagonalTerm a c) A →\n    ∑' (c : { c // P c }), SecondQuantization.Common.completedHilbertBasis.diagonalTerm a ↑c =\n      SecondQuantization.Common.completedCoordinateProjection P ∘SL\n        A ∘SL SecondQuantization.Common.completedCoordinateProjection P",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.completedCoordinateProjection_tsum_diagonalTerm",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.CoordinateProjection",
+    "externalAxioms": [],
+    "docString": "Compressing a summable diagonal series to a coordinate subset keeps exactly the\ndiagonal terms indexed by that subset. This holds for any configuration predicate,\nindependently of the origin of the diagonal weights. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Common.grandCanonicalGibbsDensityOperator_op_eq_tsum_canonical"
+    ],
+    "dependencies": [
+      "SecondQuantization.Common.completedCoordinateProjection_apply",
+      "SecondQuantization.Common.completedCoordinateProjection_basisState",
+      "SecondQuantization.Common.completedHilbertBasis_apply",
+      "SecondQuantization.Common.inner_completedBasisState_left"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Common.grandCanonicalGibbsDensityOperator_op_eq_tsum_canonical"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -137336,11 +137651,11 @@
       "SecondQuantization.Common.canonicalFullGibbsDensityOperator_expectation_eq_sector",
       "SecondQuantization.Common.canonicalFullGibbsDensityOperator_expectation_eq_tsum_sector",
       "SecondQuantization.Common.canonicalGibbsDensityOperator_apply_basis",
+      "SecondQuantization.Common.completedCoordinateProjection_tsum_diagonalTerm",
       "SecondQuantization.Common.exists_bounded_diagonal_extension_iff",
       "SecondQuantization.Common.finiteGibbsExpectation_eq_completed_of_algebraicCore",
       "SecondQuantization.Common.gibbsExpectation_eq_tsum",
       "SecondQuantization.Common.grandCanonicalGibbsDensityOperator_apply_basis",
-      "SecondQuantization.Common.grandCanonicalGibbsDensityOperator_op_eq_tsum_canonical",
       "SecondQuantization.Common.isStationary_grandCanonicalGibbsDensityOperator",
       "SecondQuantization.Fermionic.completedOccupationHilbertBasis_apply",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Thermal.CanonicalGrandCanonicalCompatibility.0.SecondQuantization.Common.grandCanonicalGibbsDensityOperator_trace_tsum_canonical_blocks"
@@ -137356,11 +137671,11 @@
       "SecondQuantization.Common.canonicalFullGibbsDensityOperator_expectation_eq_sector",
       "SecondQuantization.Common.canonicalFullGibbsDensityOperator_expectation_eq_tsum_sector",
       "SecondQuantization.Common.canonicalGibbsDensityOperator_apply_basis",
+      "SecondQuantization.Common.completedCoordinateProjection_tsum_diagonalTerm",
       "SecondQuantization.Common.exists_bounded_diagonal_extension_iff",
       "SecondQuantization.Common.finiteGibbsExpectation_eq_completed_of_algebraicCore",
       "SecondQuantization.Common.gibbsExpectation_eq_tsum",
       "SecondQuantization.Common.grandCanonicalGibbsDensityOperator_apply_basis",
-      "SecondQuantization.Common.grandCanonicalGibbsDensityOperator_op_eq_tsum_canonical",
       "SecondQuantization.Common.isStationary_grandCanonicalGibbsDensityOperator",
       "SecondQuantization.Fermionic.completedOccupationHilbertBasis_apply",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Thermal.CanonicalGrandCanonicalCompatibility.0.SecondQuantization.Common.grandCanonicalGibbsDensityOperator_trace_tsum_canonical_blocks"
@@ -138293,7 +138608,6 @@
       "SecondQuantization.Common.canonicalFullGibbsDensityOperator_eq_sector_embedding",
       "SecondQuantization.Common.canonicalGibbsDensityOperator_shift_invariant",
       "SecondQuantization.Common.grandCanonicalGibbsDensityOperator_compress_sector",
-      "SecondQuantization.Common.grandCanonicalGibbsDensityOperator_op_eq_tsum_canonical",
       "SecondQuantization.Common.grandCanonicalGibbsDensityOperator_shift_invariant",
       "SecondQuantization.Fermionic.completedCreate_comp_completedAnnihilate_eq_numberOperator",
       "SecondQuantization.Fermionic.grandCanonicalGibbsDensityOperator_comp_annihilate",
@@ -138311,14 +138625,13 @@
       "SecondQuantization.Common.canonicalFullGibbsDensityOperator_eq_sector_embedding",
       "SecondQuantization.Common.canonicalGibbsDensityOperator_shift_invariant",
       "SecondQuantization.Common.grandCanonicalGibbsDensityOperator_compress_sector",
-      "SecondQuantization.Common.grandCanonicalGibbsDensityOperator_op_eq_tsum_canonical",
       "SecondQuantization.Common.grandCanonicalGibbsDensityOperator_shift_invariant",
       "SecondQuantization.Fermionic.completedCreate_comp_completedAnnihilate_eq_numberOperator",
       "SecondQuantization.Fermionic.grandCanonicalGibbsDensityOperator_comp_annihilate",
       "SecondQuantization.Fermionic.grandCanonicalGibbsDensityOperator_comp_create",
       "SecondQuantization.Fermionic.star_completedCreate"
     ],
-    "compiledConsumerCount": 9,
+    "compiledConsumerCount": 8,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -143155,7 +143468,6 @@
     "dependents": [
       "SecondQuantization.Common.adiabaticIntegrable_grandCanonicalGibbsDensityOperator",
       "SecondQuantization.Common.grandCanonicalGibbsDensityOperator_compress_sector",
-      "SecondQuantization.Common.grandCanonicalGibbsDensityOperator_op_eq_tsum_canonical",
       "SecondQuantization.Common.grandCanonicalGibbsDensityOperator_shift_invariant",
       "SecondQuantization.Common.isStationary_grandCanonicalGibbsDensityOperator",
       "SecondQuantization.Fermionic.grandCanonicalGibbsDensityOperator_comp_annihilate",
@@ -143173,7 +143485,6 @@
     "compiledConsumers": [
       "SecondQuantization.Common.adiabaticIntegrable_grandCanonicalGibbsDensityOperator",
       "SecondQuantization.Common.grandCanonicalGibbsDensityOperator_compress_sector",
-      "SecondQuantization.Common.grandCanonicalGibbsDensityOperator_op_eq_tsum_canonical",
       "SecondQuantization.Common.grandCanonicalGibbsDensityOperator_shift_invariant",
       "SecondQuantization.Common.isStationary_grandCanonicalGibbsDensityOperator",
       "SecondQuantization.Fermionic.grandCanonicalGibbsDensityOperator_comp_annihilate",
@@ -143182,7 +143493,7 @@
       "_private.LeanCondensedMatter.SecondQuantization.Common.Thermal.CanonicalGrandCanonicalCompatibility.0.SecondQuantization.Common.grandCanonicalGibbsDensityOperator_trace_tsum_canonical_blocks",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.ModeTruncation.0.SecondQuantization.Fermionic.tendsto_completedFreeModeRetainedExpectation"
     ],
-    "compiledConsumerCount": 10,
+    "compiledConsumerCount": 9,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -143319,17 +143630,11 @@
       "_private.LeanCondensedMatter.SecondQuantization.Common.Thermal.CanonicalGrandCanonicalCompatibility.0.SecondQuantization.Common.grandCanonicalGibbsDensityOperator_trace_tsum_canonical_blocks"
     ],
     "dependencies": [
-      "HilbertBasis.diagonalOp_apply_basis",
       "HilbertBasis.hasSum_diagonalTerm",
       "Real.summable_norm_normalizedWeight",
       "SecondQuantization.Common.canonicalGibbsSummable_of_grandCanonical",
-      "SecondQuantization.Common.completedCoordinateProjection_apply",
-      "SecondQuantization.Common.completedCoordinateProjection_basisState",
-      "SecondQuantization.Common.completedHilbertBasis_apply",
-      "SecondQuantization.Common.continuousLinearMap_ext_completedBasis",
-      "SecondQuantization.Common.grandCanonicalGibbsDensityOperator_apply_basis",
-      "SecondQuantization.Common.grandCanonicalGibbsDensityOperator_compress_sector",
-      "SecondQuantization.Common.inner_completedBasisState_left"
+      "SecondQuantization.Common.completedCoordinateProjection_tsum_diagonalTerm",
+      "SecondQuantization.Common.grandCanonicalGibbsDensityOperator_compress_sector"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -144579,8 +144884,8 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Common.canonicalFullGibbsDensityOperator_expectation_eq_tsum_sector",
+      "SecondQuantization.Common.completedCoordinateProjection_tsum_diagonalTerm",
       "SecondQuantization.Common.completedCoordinatePullback_apply",
-      "SecondQuantization.Common.grandCanonicalGibbsDensityOperator_op_eq_tsum_canonical",
       "SecondQuantization.Common.inner_completedBasisState_coordinatePullback_comp",
       "SecondQuantization.Fermionic.inner_completedBasisState_left",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.LadderAnalytic.0.SecondQuantization.Bosonic.adjoint_apply_of_basisState",
@@ -144591,8 +144896,8 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Common.canonicalFullGibbsDensityOperator_expectation_eq_tsum_sector",
+      "SecondQuantization.Common.completedCoordinateProjection_tsum_diagonalTerm",
       "SecondQuantization.Common.completedCoordinatePullback_apply",
-      "SecondQuantization.Common.grandCanonicalGibbsDensityOperator_op_eq_tsum_canonical",
       "SecondQuantization.Common.inner_completedBasisState_coordinatePullback_comp",
       "SecondQuantization.Fermionic.inner_completedBasisState_left",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.LadderAnalytic.0.SecondQuantization.Bosonic.adjoint_apply_of_basisState",
@@ -167706,20 +168011,22 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Fermionic.externalPartitionSourceSign_eq_componentExternalOrderSign_of_connected",
+      "SecondQuantization.Fermionic.externalPartitionWeightedMoment_eq_of_proper_zero",
+      "SecondQuantization.Fermionic.externalPartitionWeightedMoment_injective",
       "SecondQuantization.Fermionic.externalSubsetSignedConnectedMomentSeries_empty",
-      "SecondQuantization.Fermionic.externalSubsetSourceCumulantSeries_reconstruct",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalSourceCumulant.0.SecondQuantization.Fermionic.externalPartitionWeightedMoment_eq_sum_proper_add_top"
+      "SecondQuantization.Fermionic.externalSubsetSourceCumulantSeries_reconstruct"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Fermionic.externalPartitionSourceSign_eq_componentExternalOrderSign_of_connected",
+      "SecondQuantization.Fermionic.externalPartitionWeightedMoment_eq_of_proper_zero",
+      "SecondQuantization.Fermionic.externalPartitionWeightedMoment_injective",
       "SecondQuantization.Fermionic.externalSubsetSignedConnectedMomentSeries_empty",
-      "SecondQuantization.Fermionic.externalSubsetSourceCumulantSeries_reconstruct",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalSourceCumulant.0.SecondQuantization.Fermionic.externalPartitionWeightedMoment_eq_sum_proper_add_top"
+      "SecondQuantization.Fermionic.externalSubsetSourceCumulantSeries_reconstruct"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 5,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -167749,15 +168056,15 @@
     "name": "SecondQuantization.Fermionic.externalPartitionWeightedMoment_eq_of_proper_zero",
     "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalSourceCumulant",
     "externalAxioms": [],
-    "docString": "If every proper source subset has zero connected contribution, the\nsigned partition-moment sum on a nonempty source set reduces to its single\nconnected block. This uses the actual source sign of the top partition,\nnot an unsigned cumulant identity. ",
+    "docString": "Proper-source vanishing reduces a signed external moment to its\nsingle-block connected contribution. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Fermionic.externalSubsetMomentSeries_eq_signedConnected_two"
     ],
     "dependencies": [
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalSourceCumulant.0.SecondQuantization.Fermionic.externalPartitionWeightedMoment_eq_sum_proper_add_top",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalSourceCumulant.0.SecondQuantization.Fermionic.externalPartition_part_ssubset_of_ne_top"
+      "Finpartition.weightedMomentFromCumulant_eq_of_proper_zero",
+      "SecondQuantization.Fermionic.externalPartitionSourceSign_top"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -167794,15 +168101,15 @@
     "name": "SecondQuantization.Fermionic.externalPartitionWeightedMoment_injective",
     "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalSourceCumulant",
     "externalAxioms": [],
-    "docString": "The signed external-source moment transform is injective on normalized\nconnected-block functions (whose empty-set values agree). In particular,\nthere is no ambiguity in defining connected source cumulants from physical\nmoments, provided the signed Dyson partition identity is established.\n\nThe proof is triangular on proper external subsets: the one-block term has\nsign one, and every other partition uses strictly smaller blocks. It does\nnot apply ordinary unsigned Möbius inversion to signed partition weights. ",
+    "docString": "The signed external-source moment transform is injective on\nconnected functions with equal empty-set values. In particular, actual\ndiagram cumulants are uniquely determined once their signed partition\nmoment identity has been proved. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Fermionic.externalSubsetSourceCumulantSeries_eq_connectedDiagramSeries_of_signedMoments"
     ],
     "dependencies": [
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalSourceCumulant.0.SecondQuantization.Fermionic.externalPartitionWeightedMoment_eq_sum_proper_add_top",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalSourceCumulant.0.SecondQuantization.Fermionic.externalPartition_part_ssubset_of_ne_top"
+      "Finpartition.weightedMomentFromCumulant_injective",
+      "SecondQuantization.Fermionic.externalPartitionSourceSign_top"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -168198,13 +168505,15 @@
     "name": "SecondQuantization.Fermionic.externalSubsetSourceCumulantSeries_empty",
     "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalSourceCumulant",
     "externalAxioms": [],
-    "docString": "The recursive source cumulant is normalized to zero on empty insertion\nsets. The normalized empty source moment, in contrast, is one. ",
+    "docString": null,
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Fermionic.externalSubsetSourceCumulantSeries_eq_connectedDiagramSeries_of_signedMoments"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Finpartition.weightedCumulantFromMoment_empty"
+    ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
@@ -168313,7 +168622,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": false,
+    "terminal": true,
     "statement": "∀ {E : ℕ} (M : Finset (Fin (2 * E)) → PowerSeries ℂ) (S : Finset (Fin (2 * E))),\n  S ≠ ∅ →\n    SecondQuantization.Fermionic.externalSubsetSourceCumulantSeries M S =\n      M S -\n        ∑ π,\n          PowerSeries.C (SecondQuantization.Fermionic.externalPartitionSourceSign ↑π) *\n            Finpartition.partitionProduct (SecondQuantization.Fermionic.externalSubsetSourceCumulantSeries M) ↑π",
     "standardAxioms": [
       "Classical.choice",
@@ -168321,7 +168630,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -168332,16 +168641,14 @@
     "docString": "The defining triangular equation for fermionic source cumulants. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.externalSubsetSourceCumulantSeries_reconstruct"
+    "dependents": [],
+    "dependencies": [
+      "Finpartition.weightedCumulantFromMoment_eq_sub_properPartitions"
     ],
-    "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.externalSubsetSourceCumulantSeries_reconstruct"
-    ],
-    "compiledConsumerCount": 1,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -168371,17 +168678,15 @@
     "name": "SecondQuantization.Fermionic.externalSubsetSourceCumulantSeries_reconstruct",
     "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalSourceCumulant",
     "externalAxioms": [],
-    "docString": "The signed source moment transform is inverted by finite subset\nrecursion, provided the empty moment is one. This supplies an explicit\nfermionic cumulant/source convention before any physical n-point theorem.\nNo assumption about diagram factorization is needed for this algebraic step. ",
+    "docString": "The normalized signed source moment transform is inverted by finite\nsubset recursion. No unsigned Möbius inversion is used for fermionic signs. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Fermionic.externalSubsetSourceCumulantSeries_eq_connectedDiagramSeries_of_signedMoments"
     ],
     "dependencies": [
-      "Finpartition.weightedMomentFromCumulant_empty",
-      "SecondQuantization.Fermionic.externalPartitionSourceSign_top",
-      "SecondQuantization.Fermionic.externalSubsetSourceCumulantSeries_eq_sub_properPartitions",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalSourceCumulant.0.SecondQuantization.Fermionic.externalPartitionWeightedMoment_eq_sum_proper_add_top"
+      "Finpartition.weightedMomentFromCumulant_weightedCumulantFromMoment",
+      "SecondQuantization.Fermionic.externalPartitionSourceSign_top"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -180689,6 +180994,50 @@
       "Finpartition.replicaPolynomial_eq_sum_descPochhammer_stirling"
     ],
     "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {α : Type u_1} [inst : DecidableEq α] {S : Finset α} (π : Finpartition S),\n  π ≠ ⊤ → ∀ {B : Finset α}, B ∈ π.parts → B ⊂ S",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Combinatorics.Cumulant.WeightedInversion.0.Finpartition.part_ssubset_of_ne_top",
+    "module": "LeanCondensedMatter.Combinatorics.Cumulant.WeightedInversion",
+    "externalAxioms": [],
+    "docString": "Every block of a non-top partition is a strict subset of its support. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "Finpartition.weightedMomentFromCumulant_eq_of_proper_zero",
+      "Finpartition.weightedMomentFromCumulant_injective"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "Finpartition.weightedMomentFromCumulant_eq_of_proper_zero",
+      "Finpartition.weightedMomentFromCumulant_injective"
+    ],
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -206284,99 +206633,6 @@
       "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.measurableLocallyBounded_dysonFixedTimeAmplitude"
     ],
     "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {E : ℕ} (κ : Finset (Fin (2 * E)) → PowerSeries ℂ) (S : Finset (Fin (2 * E))),\n  S ≠ ∅ →\n    Finpartition.weightedMomentFromCumulant\n        (fun x π => PowerSeries.C (SecondQuantization.Fermionic.externalPartitionSourceSign π)) κ S =\n      ∑ π,\n          PowerSeries.C (SecondQuantization.Fermionic.externalPartitionSourceSign ↑π) *\n            Finpartition.partitionProduct κ ↑π +\n        κ S",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalSourceCumulant.0.SecondQuantization.Fermionic.externalPartitionWeightedMoment_eq_sum_proper_add_top",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalSourceCumulant",
-    "externalAxioms": [],
-    "docString": "Split the signed source-partition moment into the non-top\npartitions and the one-block contribution. The latter has source sign one. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.externalPartitionWeightedMoment_eq_of_proper_zero",
-      "SecondQuantization.Fermionic.externalPartitionWeightedMoment_injective",
-      "SecondQuantization.Fermionic.externalSubsetSourceCumulantSeries_reconstruct"
-    ],
-    "dependencies": [
-      "Finpartition.partitionProduct_top",
-      "SecondQuantization.Fermionic.externalPartitionSourceSign_top"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.externalPartitionWeightedMoment_eq_of_proper_zero",
-      "SecondQuantization.Fermionic.externalPartitionWeightedMoment_injective",
-      "SecondQuantization.Fermionic.externalSubsetSourceCumulantSeries_reconstruct"
-    ],
-    "compiledConsumerCount": 3,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {E : ℕ} {S : Finset (Fin (2 * E))} (π : Finpartition S), π ≠ ⊤ → ∀ {B : Finset (Fin (2 * E))}, B ∈ π.parts → B ⊂ S",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalSourceCumulant.0.SecondQuantization.Fermionic.externalPartition_part_ssubset_of_ne_top",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalSourceCumulant",
-    "externalAxioms": [],
-    "docString": "A non-top external partition cannot contain the entire ambient source\nset as one of its blocks. This strict decrease underpins the recursive\nfermionic cumulant inversion, without postulating an unsigned Möbius formula. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.externalPartitionWeightedMoment_eq_of_proper_zero",
-      "SecondQuantization.Fermionic.externalPartitionWeightedMoment_injective"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.externalPartitionWeightedMoment_eq_of_proper_zero",
-      "SecondQuantization.Fermionic.externalPartitionWeightedMoment_injective"
-    ],
-    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",

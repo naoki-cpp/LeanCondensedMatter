@@ -1163,6 +1163,14 @@
       "externalImportCount": 6
     },
     {
+      "name": "LeanCondensedMatter.Combinatorics.Cumulant.WeightedInversion",
+      "sourceFile": "LeanCondensedMatter/Combinatorics/Cumulant/WeightedInversion.lean",
+      "imports": [
+        "LeanCondensedMatter.Combinatorics.Cumulant.Moment"
+      ],
+      "externalImportCount": 2
+    },
+    {
       "name": "LeanCondensedMatter.Combinatorics.Cumulant",
       "sourceFile": "LeanCondensedMatter/Combinatorics/Cumulant.lean",
       "imports": [
@@ -5446,6 +5454,7 @@
       "name": "LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.CoordinateProjection",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/CompletedSpace/CoordinateProjection.lean",
       "imports": [
+        "LeanCondensedMatter.Analysis.Operator.Diagonal",
         "LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.Diagonal"
       ],
       "externalImportCount": 1
@@ -7279,7 +7288,7 @@
       "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalSourceCumulant",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Diagrammatics/ExternalInsertion/ExternalSourceCumulant.lean",
       "imports": [
-        "LeanCondensedMatter.Combinatorics.Cumulant.Moment",
+        "LeanCondensedMatter.Combinatorics.Cumulant.WeightedInversion",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalSourceSign"
       ],
       "externalImportCount": 1
