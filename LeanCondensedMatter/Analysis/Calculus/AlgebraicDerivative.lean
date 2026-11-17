@@ -74,13 +74,7 @@ theorem sum {ι : Type*} (s : Finset ι) {F : ι → ℂ → V} {F' : ι → V} 
     (hF : ∀ i ∈ s, HasAlgebraicDerivAt (F i) (F' i) A) :
     HasAlgebraicDerivAt (fun z => ∑ i ∈ s, F i z) (∑ i ∈ s, F' i) A := by
   classical
-  induction s using Finset.induction_on with
-  | empty =>
-      intro ℓ
-      simpa using (hasDerivAt_const (x := A) (c := (0 : ℂ)))
-  | @insert a s ha ih =>
-      have ha' := hF a (Finset.mem_insert_self a s)
-      have hs' := ih (fun i hi => hF i (Finset.mem_insert_of_mem hi))
-      simpa only [Finset.sum_insert ha] using ha'.add hs'
+  intro ℓ
+  simpa only [map_sum] using HasDerivAt.fun_sum (fun i hi => hF i hi ℓ)
 
 end HasAlgebraicDerivAt
