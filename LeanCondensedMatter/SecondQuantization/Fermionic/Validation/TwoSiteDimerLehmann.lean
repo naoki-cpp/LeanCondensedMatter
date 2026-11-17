@@ -116,23 +116,58 @@ theorem twoSiteDimerGroundStateTransitionWeight_one_zero :
     orderedLehmannTransitionWeight, twoSiteDimerGroundStateLehmannTable,
     twoSiteDimerEnergyBasisCurrent]
 
+/-- The exact fixed-rate response of two opposite unit-current transitions separated
+by the real energy gap `Δ`. The response depends only on the level spacing. -/
+private theorem twoLevelLehmannPair (Δ : ℝ) :
+    lehmannTerm 1 0 1 (-Δ) Complex.I +
+      lehmannTerm 1 0 1 Δ (-Complex.I) =
+        ((2 * Δ / (1 + Δ ^ 2) : ℝ) : ℂ) := by
+  have hp : (1 : ℂ) + Complex.I * (Δ : ℂ) ≠ 0 := by
+    simpa [lehmannDenominator] using
+      (lehmannDenominator_ne_zero 1 0 1 (-Δ) (by norm_num))
+  have hm : (1 : ℂ) - Complex.I * (Δ : ℂ) ≠ 0 := by
+    simpa [lehmannDenominator] using
+      (lehmannDenominator_ne_zero 1 0 1 Δ (by norm_num))
+  have hd : (1 : ℂ) + (Δ : ℂ) ^ 2 ≠ 0 := by
+    exact_mod_cast (show (1 : ℝ) + Δ ^ 2 ≠ 0 by positivity)
+  have halgebra :
+      Complex.I * ((1 : ℂ) + Complex.I * (Δ : ℂ))⁻¹ -
+        Complex.I * ((1 : ℂ) - Complex.I * (Δ : ℂ))⁻¹ =
+          (2 * (Δ : ℂ)) / (1 + (Δ : ℂ) ^ 2) := by
+    field_simp [hp, hm, hd]
+    rw [Complex.I_sq]
+    ring
+  convert halgebra using 1 <;>
+    simp [lehmannTerm, lehmannDenominator, div_eq_mul_inv, sub_eq_add_neg]
+
+/-- For a two-level Lehmann table with opposite unit-current transition weights,
+the response is fixed by its real level spacing `Δ = E₁ - E₀`. -/
+theorem twoLevelLehmannResponse_of_gap (table : FiniteLehmannTable (Fin 2)) (Δ : ℝ)
+    (hgap : table.energy 1 - table.energy 0 = Δ)
+    (h01 : (finiteLehmannTableTransitionData 1 table (0, 1)).weight = Complex.I)
+    (h10 : (finiteLehmannTableTransitionData 1 table (1, 0)).weight = -Complex.I) :
+    finiteLehmannTableResponse 1 0 1 table =
+      ((2 * Δ / (1 + Δ ^ 2) : ℝ) : ℂ) := by
+  classical
+  have hrev : table.energy 0 - table.energy 1 = -Δ := by linarith
+  unfold finiteLehmannTableResponse
+  rw [Fintype.sum_prod_type]
+  simp only [Fin.sum_univ_two, Fin.isValue, LehmannTransitionData.frequencyTerm,
+    finiteLehmannTableTransitionData_energyGap,
+    finiteLehmannTableTransitionData_weight_diag, sub_self]
+  simp only [lehmannTerm, zero_mul, add_zero, zero_add]
+  rw [h01, h10, hrev, hgap]
+  simpa only [lehmannTerm, neg_mul, neg_add_rev] using twoLevelLehmannPair Δ
+
 /-- At `ℏ = 1`, zero driving frequency, and positive switching rate `η = 1`, the dimer's exact
 finite Lehmann current-current response is `4/5`. -/
 theorem twoSiteDimerGroundState_lehmannResponse_zero_one :
     finiteLehmannTableResponse 1 0 1 twoSiteDimerGroundStateLehmannTable =
       (4 : ℂ) / 5 := by
-  classical
-  unfold finiteLehmannTableResponse
-  rw [Fintype.sum_prod_type]
-  simp only [Fin.sum_univ_two, Fin.isValue, LehmannTransitionData.frequencyTerm,
-    finiteLehmannTableTransitionData_energyGap,
-    twoSiteDimerGroundStateLehmannTable_energy_zero, sub_neg_eq_add,
-    twoSiteDimerGroundStateLehmannTable_energy_one, neg_add_cancel,
-    finiteLehmannTableTransitionData_weight_diag,
-    twoSiteDimerGroundStateTransitionWeight_zero_one,
-    twoSiteDimerGroundStateTransitionWeight_one_zero, sub_self]
-  apply Complex.ext <;>
-    norm_num [lehmannTerm, lehmannDenominator, Complex.normSq]
+  convert twoLevelLehmannResponse_of_gap twoSiteDimerGroundStateLehmannTable 2
+    (by norm_num [twoSiteDimerGroundStateLehmannTable])
+    twoSiteDimerGroundStateTransitionWeight_zero_one
+    twoSiteDimerGroundStateTransitionWeight_one_zero using 1 <;> norm_num
 
 /-- The benchmark contact expectation equals the occupied bonding-state energy. -/
 theorem twoSiteDimerGroundState_contact_eq_groundEnergy :
