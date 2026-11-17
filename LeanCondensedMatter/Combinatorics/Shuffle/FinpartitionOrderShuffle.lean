@@ -74,11 +74,13 @@ theorem mem_shuffleOfOrder_blockSlotSet_iff
       order.symm (π.partEquiv orders ⟨B, i⟩) = x) ↔ _
   constructor
   · rintro ⟨i, rfl⟩
-    simpa [Finpartition.partEquiv] using (orders B i).2
+    change (orders B i).1 ∈ (B : Finset α)
+    exact (orders B i).2
   · intro hx
     refine ⟨(orders B).symm ⟨(order x).1, hx⟩, ?_⟩
     apply order.injective
-    simp [Finpartition.partEquiv]
+    apply Subtype.ext
+    rfl
 
 /-- The local orders used to assemble a global order are compatible with that assembled order. -/
 theorem partOrdersCompatible_assembleOrder (π : Finpartition s) (orders : π.PartOrders)
