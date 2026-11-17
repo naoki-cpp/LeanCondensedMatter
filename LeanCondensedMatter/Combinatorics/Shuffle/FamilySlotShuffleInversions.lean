@@ -55,25 +55,6 @@ noncomputable def FamilySlotShuffleTo.blockSlotSet
     Finset (Fin total) :=
   Finset.univ.image (fun p : Fin (size i) => shuffle.slotEquiv ⟨i, p⟩)
 
-/-- Casting the ambient size of a shuffle transports the occupied slots
-along the corresponding finite-index cast. -/
-theorem FamilySlotShuffleTo.mem_castTotalEquiv_blockSlotSet_iff
-    {size : ι → ℕ} {m n : ℕ}
-    (shuffle : FamilySlotShuffleTo size m) (h : m = n)
-    (i : ι) (x : Fin n) :
-    x ∈ ((FamilySlotShuffleTo.castTotalEquiv h) shuffle).blockSlotSet i ↔
-      Fin.cast h.symm x ∈ shuffle.blockSlotSet i := by
-  classical
-  simp only [FamilySlotShuffleTo.blockSlotSet,
-    Finset.mem_image, Finset.mem_univ, true_and]
-  change (∃ p : Fin (size i), Fin.cast h (shuffle.slotEquiv ⟨i, p⟩) = x) ↔
-    ∃ p : Fin (size i), shuffle.slotEquiv ⟨i, p⟩ = Fin.cast h.symm x
-  constructor
-  · rintro ⟨p, hp⟩
-    exact ⟨p, by simpa using congrArg (Fin.cast h.symm) hp⟩
-  · rintro ⟨p, hp⟩
-    exact ⟨p, by simpa using congrArg (Fin.cast h) hp⟩
-
 /-- An inter-block inversion count depends only on the two sets of ambient
 positions occupied by the blocks, not their local enumerations. -/
 theorem FamilySlotShuffleTo.blockInversionCount_eq_sum_blockSlotSet
