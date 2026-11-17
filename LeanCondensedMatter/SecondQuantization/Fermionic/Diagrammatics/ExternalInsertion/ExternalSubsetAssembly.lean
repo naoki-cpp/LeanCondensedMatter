@@ -446,23 +446,22 @@ theorem ExternalInsertionBlockLayout.assembleConnectedBlocks_signedDysonShuffleO
           ((F B).slotCongr (Combinatorics.standardSlotEquiv
             (layout.interactionBlock S B)))
           ε β g (fun i => externalTime (layout.sourceEquiv.symm ⟨B, i⟩)) := by
-    obtain ⟨e, he⟩ :=
-      Finset.nonempty_iff_ne_empty.mpr (layout.partition.ne_bot B.2)
-    have hsource : (layout.sourceEquiv e).1 = B := by
-      apply Subtype.ext
-      simpa only [layout.sourceEquiv_fst] using
-        (layout.partition.part_eq_of_mem B.2 he)
-    have hmem : (Sum.inl e : ExternalInsertionVertex E S) ∈
-        ((reindex.symm B).1 : Finset (ExternalInsertionVertex E S)) := by
-      apply Finset.mem_toLeft.mp
-      rw [← hblock (reindex.symm B), Equiv.apply_symm_apply]
-      exact he
+    obtain ⟨e, -, he⟩ := layout.partition.part_surjOn B.2
+    have hsource : (layout.sourceEquiv e).1 = B :=
+      Subtype.ext ((layout.sourceEquiv_fst e).trans he)
     have hC :
         reindex.symm B =
           ⟨d.vertexGraph.componentBlock (Sum.inl e),
-            d.vertexGraph.componentBlock_mem_componentPartition (Sum.inl e)⟩ :=
-      Subtype.ext ((d.vertexGraph.componentBlock_eq_iff_mem
-        (reindex.symm B).2 (Sum.inl e)).2 hmem).symm
+            d.vertexGraph.componentBlock_mem_componentPartition (Sum.inl e)⟩ := by
+      apply reindex.injective
+      apply Subtype.ext
+      change (reindex (reindex.symm B) : Finset (Fin (2 * E))) =
+        (reindex ⟨d.vertexGraph.componentBlock (Sum.inl e),
+          d.vertexGraph.componentBlock_mem_componentPartition (Sum.inl e)⟩ :
+          Finset (Fin (2 * E)))
+      rw [Equiv.apply_symm_apply, hblock]
+      exact hsource.symm.trans
+        (layout.assembleDiagram_componentExternalSector_external S F hconnected e).symm
     rw [hC]
     have h := ExternalInsertionBlockLayout.assembleConnectedBlocks_componentDysonAmplitude_eq_local
       layout F hconnected ε β g externalTime e
