@@ -58,6 +58,18 @@ theorem DensityOperator.expectation_eq_tsum_diagonal (ρ : DensityOperator H)
     ρ.expectation A = ∑' i, (w i : ℂ) * inner ℂ (b i) (A (b i)) :=
   (ρ.hasSum_expectation_diagonal A b w hρ).tsum_eq.symm
 
+/-- A trace-class density operator diagonal in a Hilbert basis has an absolutely
+convergent expectation series, which may be regrouped by any map of basis labels.
+This does not assert trace continuity in the operator norm. -/
+theorem DensityOperator.expectation_eq_tsum_fiberwise (ρ : DensityOperator H)
+    (A : H →L[ℂ] H) (b : HilbertBasis ι ℂ H) (w : ι → ℝ)
+    (hρ : ∀ i, ρ.op (b i) = (w i : ℂ) • b i)
+    {κ : Type*} (f : ι → κ) :
+    ρ.expectation A =
+      ∑' k : κ, ∑' i : {i : ι // f i = k},
+        (w i.val : ℂ) * inner ℂ (b i.val) (A (b i.val)) :=
+  ((ρ.hasSum_expectation_diagonal A b w hρ).tsum_fiberwise f).tsum_eq.symm
+
 /-- For an observable, the same diagonal formula is a lossless real-valued series. -/
 theorem DensityOperator.hasSum_observableExpectation_diagonal (ρ : DensityOperator H)
     (A : Observable H) (b : HilbertBasis ι ℂ H) (w : ι → ℝ)
