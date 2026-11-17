@@ -122,15 +122,8 @@ theorem coefficientSum_X_mul (f : ℂ⟦X⟧) (x : ℂ) :
     | succ n => exact ⟨n, rfl⟩
   unfold coefficientSum
   rw [← hshift]
-  calc
-    (∑' n : ℕ,
-      PowerSeries.coeff (n + 1) (PowerSeries.X * f) * x ^ (n + 1)) =
-        ∑' n : ℕ, x * (PowerSeries.coeff n f * x ^ n) := by
-      apply tsum_congr
-      intro n
-      rw [PowerSeries.coeff_succ_X_mul, pow_succ]
-      ring
-    _ = x * (∑' n : ℕ, PowerSeries.coeff n f * x ^ n) := tsum_mul_left
+  simp_rw [PowerSeries.coeff_succ_X_mul, pow_succ, ← mul_assoc]
+  rw [tsum_mul_right, mul_comm]
 
 /-- The unit formal power series evaluates to one. -/
 theorem coefficientSum_one (x : ℂ) :
