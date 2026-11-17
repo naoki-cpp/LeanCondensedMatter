@@ -68,7 +68,7 @@ theorem externalInsertionSlotLegSplitting_left_strictMono
     have hf := f.isLt
     omega
   · change (externalInsertionInteractionLeg (E := E) v l).val <
-      (externalInsertionInteractionLeg (E := E) w k).val at hab
+        (externalInsertionInteractionLeg (E := E) w k).val at hab
     change externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T)
         (Sum.inl (externalInsertionInteractionLeg (E := E) v l)) <
       externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T)
@@ -76,37 +76,10 @@ theorem externalInsertionSlotLegSplitting_left_strictMono
     unfold externalInsertionInteractionLeg
     rw [externalInsertionSlotLegSplitting_left_interaction,
       externalInsertionSlotLegSplitting_left_interaction]
-    change (externalInsertionInteractionLeg (E := E)
-        (⟨v.1, Finset.mem_univ _⟩ : ↥(Finset.univ : Finset (Fin N))) l).val <
-      (externalInsertionInteractionLeg (E := E)
-        (⟨w.1, Finset.mem_univ _⟩ : ↥(Finset.univ : Finset (Fin N))) k).val
-    simp only [externalInsertionInteractionLeg_val] at hab ⊢
-    have huniv (x : Fin N) :
-        (((Finset.univ : Finset (Fin N)).orderIsoOfFin rfl).symm
-          ⟨x, Finset.mem_univ x⟩).val = x.val := by
-      rw [Finset.orderIsoOfFin_symm_apply, Fin.sort_univ, List.idxOf_finRange]
-    rw [huniv, huniv]
-    by_cases hvw : v = w
-    · subst w
-      omega
-    · have hrank_ne :
-          ((T.orderIsoOfFin rfl).symm v).val ≠
-            ((T.orderIsoOfFin rfl).symm w).val := by
-        intro h
-        apply hvw
-        exact (T.orderIsoOfFin rfl).symm.injective (Fin.ext h)
-      have hrank :
-          ((T.orderIsoOfFin rfl).symm v).val <
-            ((T.orderIsoOfFin rfl).symm w).val := by
-        have hl := l.isLt
-        have hk := k.isLt
-        omega
-      have hvertex : v.1 < w.1 := by
-        have h := (T.orderIsoOfFin rfl).strictMono (Fin.lt_def.mpr hrank)
-        simpa using h
-      have hl := l.isLt
-      have hk := k.isLt
-      omega
+    exact externalInsertionInteractionLeg_lt_of_subset
+      (E := E) (E' := E) (T := T)
+      (S := (Finset.univ : Finset (Fin N)))
+      (Finset.subset_univ T) v w l k (Fin.lt_def.mpr hab)
 
 /-- The canonically ordered vacuum-sector legs retain their flat order when inserted
 into the ambient fixed-order external-insertion leg array. -/
