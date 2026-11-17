@@ -504,7 +504,8 @@ theorem ExternalInsertionBlockLayout.assembleDiagram_externalLabel_eq_iff_evenSu
         (F B).externalLabel =
           evenExternalSubsetLabels labels (B : Finset (Fin (2 * E)))
             (layout.evenBlocks B) := by
-  simpa only [sourceEquiv_symm_restrict_eq_evenSubset] using
+  simpa only [sourceEquiv_symm_restrict_eq_evenSubset,
+    evenExternalSubsetLabels, evenExternalSubsetOrderIso] using
     (layout.assembleDiagram_externalLabel_eq_iff
       (Finset.univ : Finset (Fin n)) F labels)
 
@@ -535,7 +536,8 @@ theorem ExternalInsertionBlockLayout.assembleConnectedBlocks_signedDysonShuffleO
             ε β g (evenExternalSubsetTimes times
               (B : Finset (Fin (2 * E))) (layout.evenBlocks B)) := by
   classical
-  simpa only [sourceEquiv_symm_restrict_eq_evenSubset] using
+  simpa only [sourceEquiv_symm_restrict_eq_evenSubset,
+    evenExternalSubsetTimes, evenExternalSubsetOrderIso] using
     (ExternalInsertionBlockLayout.assembleConnectedBlocks_signedDysonShuffleOrbit_eq_independentLocals
       layout F hconnected ε β g times)
 
