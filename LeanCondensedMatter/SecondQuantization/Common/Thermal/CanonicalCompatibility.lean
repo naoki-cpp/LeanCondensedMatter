@@ -119,10 +119,6 @@ theorem canonicalFullGibbsDensityOperator_expectation_eq_tsum_sector
   classical
   let ρ := canonicalFullGibbsDensityOperator (Config := Config) ε β N hsum
   let w : Config → ℝ := Real.normalizedWeight (canonicalFullGibbsWeight ε β N)
-  let f : ParticleNumberSector Mode Config N → ℂ := fun n =>
-    (eigenbasisGibbsProbability
-      (fun m : ParticleNumberSector Mode Config N => occupationEnergy ε m.val) β n : ℂ) *
-      inner ℂ (completedBasisState n.val) (A (completedBasisState n.val))
   let g : Config → ℂ := fun c =>
     (w c : ℂ) * inner ℂ (completedBasisState c) (A (completedBasisState c))
   have hdiag : ∀ c : Config,
@@ -139,39 +135,27 @@ theorem canonicalFullGibbsDensityOperator_expectation_eq_tsum_sector
     simpa only [g, completedHilbertBasis_apply] using
       (ρ.hasSum_expectation_diagonal A
         (completedHilbertBasis (Config := Config)) w hdiag)
-  have hpoint :
-      Function.extend
-        (Subtype.val : ParticleNumberSector Mode Config N → Config) f 0 = g := by
-    funext c
+  have hindicator :
+      HasSum
+        (({c : Config | particleNumber (Mode := Mode) c = N} : Set Config).indicator g)
+        (ρ.expectation A) := by
+    apply hfull.congr_fun
+    intro c
     by_cases hc : particleNumber (Mode := Mode) c = N
-    · let n : ParticleNumberSector Mode Config N := ⟨c, hc⟩
-      change Function.extend
-        (Subtype.val : ParticleNumberSector Mode Config N → Config) f 0 n.val = g n.val
-      rw [Subtype.val_injective.extend_apply]
-      change
-        (eigenbasisGibbsProbability
-          (fun m : ParticleNumberSector Mode Config N => occupationEnergy ε m.val) β n : ℂ) *
-          inner ℂ (completedBasisState n.val) (A (completedBasisState n.val)) =
-        (w n.val : ℂ) *
-          inner ℂ (completedBasisState n.val) (A (completedBasisState n.val))
-      change _ =
-        (Real.normalizedWeight (canonicalFullGibbsWeight ε β N) n.val : ℂ) *
-          inner ℂ (completedBasisState n.val) (A (completedBasisState n.val))
-      rw [normalizedWeight_canonicalFullGibbsWeight_apply_sector ε β N hsum n]
-    · have hnot : ¬ ∃ n : ParticleNumberSector Mode Config N, n.val = c := by
-        rintro ⟨n, hn⟩
-        apply hc
-        rw [← hn]
-        exact n.property
-      change Function.extend
-        (Subtype.val : ParticleNumberSector Mode Config N → Config) f 0 c = g c
-      rw [Function.extend_apply' _ _ _ hnot]
-      simp [g, w, Real.normalizedWeight,
+    · simp [Set.indicator, hc]
+    · simp [Set.indicator, hc, g, w, Real.normalizedWeight,
         canonicalFullGibbsWeight_apply_of_ne ε β N c hc]
-  have hsector : HasSum f (ρ.expectation A) := by
-    rw [← hpoint] at hfull
-    exact (hasSum_extend_zero Subtype.val_injective).mp hfull
-  exact hsector.tsum_eq.symm
+  have hsector :
+      HasSum (fun n : ParticleNumberSector Mode Config N => g n.val) (ρ.expectation A) :=
+    (hasSum_subtype_iff_indicator
+      (s := {c : Config | particleNumber (Mode := Mode) c = N}) (f := g)).2 hindicator
+  calc
+    ρ.expectation A = ∑' n : ParticleNumberSector Mode Config N, g n.val :=
+      hsector.tsum_eq.symm
+    _ = _ := by
+      apply tsum_congr
+      intro n
+      simp only [g, w, normalizedWeight_canonicalFullGibbsWeight_apply_sector ε β N hsum n]
 
 /-- A bounded full-Fock observable has the same canonical expectation as its
 compression to the fixed-number sector. The observable need not preserve
