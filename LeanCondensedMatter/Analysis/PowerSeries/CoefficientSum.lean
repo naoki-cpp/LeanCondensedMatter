@@ -3,7 +3,6 @@ import Mathlib.LinearAlgebra.Complex.FiniteDimensional
 import Mathlib.RingTheory.PowerSeries.Basic
 import Mathlib.Analysis.Normed.Ring.InfiniteSum
 import Mathlib.Analysis.Normed.Module.FiniteDimension
-import Mathlib.Tactic.Convert
 import Mathlib.Tactic.Ring
 
 set_option linter.style.header false
@@ -104,15 +103,9 @@ theorem summable_coefficientSum_X_mul (f : ℂ⟦X⟧) (x : ℂ)
     (hf : Summable (fun n : ℕ => PowerSeries.coeff n f * x ^ n)) :
     Summable (fun n : ℕ =>
       PowerSeries.coeff n (PowerSeries.X * f) * x ^ n) := by
-  have htail :
-      Summable (fun n : ℕ =>
-        PowerSeries.coeff (n + 1) (PowerSeries.X * f) * x ^ (n + 1)) := by
-    convert hf.mul_left x using 1
-    funext n
-    rw [PowerSeries.coeff_succ_X_mul, pow_succ]
-    ring
   apply (summable_nat_add_iff 1).1
-  simpa only [Nat.add_one] using htail
+  simp only [Nat.add_one, PowerSeries.coeff_succ_X_mul, pow_succ]
+  simpa only [mul_comm, mul_left_comm, mul_assoc] using hf.mul_left x
 
 /-- Multiplication by X commutes with the total coefficientwise sum: its zero constant
 coefficient permits an unconditional shift of the series. -/
