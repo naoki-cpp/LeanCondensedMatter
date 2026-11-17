@@ -64,13 +64,6 @@ theorem harmonic_real_nonneg_le (n : ℕ) :
       · simpa only [Nat.cast_add, Nat.cast_one] using
           (add_le_add ih.2 hfrac_le)
 
-/-- Every harmonic number is bounded by the factorial of its index.
-This is the basic domination needed for entire summability. -/
-theorem harmonic_real_le_factorial (n : ℕ) :
-    (harmonic n : ℝ) ≤ (n.factorial : ℝ) := by
-  exact (harmonic_real_nonneg_le n).2.trans
-    (by exact_mod_cast Nat.self_le_factorial n)
-
 /-- The analytic correction coefficient appearing in the DLMF
 order-zero second-kind Bessel series, with sign chosen so the Y₀
 formula contains its subtraction. -/
@@ -84,7 +77,8 @@ theorem norm_besselY0HarmonicTerm_le_expTerm (z : ℂ) (n : ℕ) :
     ‖besselY0HarmonicTerm z n‖ ≤
       (‖z / 2‖ ^ 2) ^ n / (n.factorial : ℝ) := by
   have hH := harmonic_real_nonneg_le n
-  have hHfac := harmonic_real_le_factorial n
+  have hHfac : (harmonic n : ℝ) ≤ (n.factorial : ℝ) :=
+    hH.2.trans (by exact_mod_cast Nat.self_le_factorial n)
   have hfpos : (0 : ℝ) < (n.factorial : ℝ) := by
     exact_mod_cast Nat.factorial_pos n
   have hx : 0 ≤ (‖z / 2‖ ^ 2) ^ n := by positivity
