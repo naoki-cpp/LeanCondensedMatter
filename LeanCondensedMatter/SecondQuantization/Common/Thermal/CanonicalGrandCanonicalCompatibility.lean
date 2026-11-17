@@ -101,12 +101,7 @@ theorem grandCanonicalGibbsDensityOperator_op_eq_tsum_canonical
         (eigenbasisBoltzmannWeight (grandCanonicalEnergy (Config := Config) ε μ) β)
         hsum)
   have hρ : ρ.op = b.diagonalOp a := by
-    apply continuousLinearMap_ext_completedBasis
-    intro c
-    change ρ.op (b c) = b.diagonalOp a (b c)
-    rw [HilbertBasis.diagonalOp_apply_basis b a ha c]
-    simpa only [ρ, b, a, completedHilbertBasis_apply] using
-      (grandCanonicalGibbsDensityOperator_apply_basis ε β μ hsum c)
+    rfl
   have hfull : HasSum (fun c : Config => b.diagonalTerm a c) ρ.op := by
     rw [hρ]
     exact HilbertBasis.hasSum_diagonalTerm b a ha
