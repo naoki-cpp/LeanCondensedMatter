@@ -455,10 +455,6 @@ theorem ExternalInsertionBlockLayout.assembleConnectedBlocks_signedDysonShuffleO
             d.vertexGraph.componentBlock_mem_componentPartition (Sum.inl e)⟩ := by
       apply reindex.injective
       apply Subtype.ext
-      change (reindex (reindex.symm B) : Finset (Fin (2 * E))) =
-        (reindex ⟨d.vertexGraph.componentBlock (Sum.inl e),
-          d.vertexGraph.componentBlock_mem_componentPartition (Sum.inl e)⟩ :
-          Finset (Fin (2 * E)))
       rw [Equiv.apply_symm_apply, hblock]
       exact (congrArg Subtype.val hsource.symm).trans
         (layout.assembleDiagram_componentExternalSector_external S F hconnected e).symm
