@@ -465,9 +465,10 @@ theorem ExternalInsertionBlockLayout.assembleConnectedBlocks_signedDysonShuffleO
       Subtype.ext ((d.vertexGraph.componentBlock_eq_iff_mem
         (reindex.symm B).2 (Sum.inl e)).2 hmem).symm
     rw [hC]
-    simpa only [hsource, d, S] using
-      (ExternalInsertionBlockLayout.assembleConnectedBlocks_componentDysonAmplitude_eq_local
-        layout F hconnected ε β g externalTime e)
+    have h := ExternalInsertionBlockLayout.assembleConnectedBlocks_componentDysonAmplitude_eq_local
+      layout F hconnected ε β g externalTime e
+    rw [hsource] at h
+    simpa only [d, S] using h
   have horbit := ExternalInsertionBlockLayout.assembleConnectedBlocks_signedDysonShuffleOrbit
     layout F hconnected ε β g externalTime
   exact horbit.trans
