@@ -44,20 +44,6 @@ noncomputable def evenExternalSubsetTimes
     Fin (2 * (S.card / 2)) → ℝ :=
   fun i => times (evenExternalSubsetOrderIso S heven i).1
 
-/-- The source equivalence of a block restricts any ambient data in the
-canonical increasing source-slot order. This one transport identity is shared
-by field labels and insertion times. -/
-private theorem sourceEquiv_symm_restrict_eq_evenSubset
-    {n : ℕ} (layout : ExternalInsertionBlockLayout E n)
-    {Value : Type*} (F : Fin (2 * E) → Value)
-    (B : layout.partition.parts) :
-    (fun i : Fin (2 * ((B : Finset (Fin (2 * E))).card / 2)) =>
-      F (layout.sourceEquiv.symm ⟨B, i⟩)) =
-      (fun i => F (evenExternalSubsetOrderIso
-        (B : Finset (Fin (2 * E))) (layout.evenBlocks B) i).1) := by
-  funext i
-  exact congrArg F (layout.sourceEquiv_symm_apply B i)
-
 omit [LinearOrder Mode] [Fintype Mode] in
 /-- Independently assembled Wick blocks have exactly the physically
 restricted external-source labels in canonical increasing order. This
@@ -183,8 +169,14 @@ theorem ExternalInsertionBlockLayout.assembleDiagram_componentExternalTime_eq_lo
   let C : d.vertexGraph.componentPartition.parts :=
     ⟨d.vertexGraph.componentBlock (Sum.inl e),
       d.vertexGraph.componentBlock_mem_componentPartition (Sum.inl e)⟩
-  exact (heq_of_eq
-    (sourceEquiv_symm_restrict_eq_evenSubset layout times B)).trans
+  have hlocal :
+      (fun i : Fin (2 * (B.1.card / 2)) =>
+        times (layout.sourceEquiv.symm ⟨B, i⟩)) =
+        evenExternalSubsetTimes times (B : Finset (Fin (2 * E)))
+          (layout.evenBlocks B) := by
+    funext i
+    exact congrArg times (layout.sourceEquiv_symm_apply B i)
+  exact (heq_of_eq hlocal).trans
     ((evenExternalSubsetRestriction_heq_of_eq times
       (layout.evenBlocks B) (d.externalSector_card_even C)
       (layout.assembleDiagram_componentExternalSector_external
