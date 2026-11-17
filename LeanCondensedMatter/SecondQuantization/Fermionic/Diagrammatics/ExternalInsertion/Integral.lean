@@ -162,22 +162,10 @@ theorem ExternalInsertionWickDiagram.orderedDysonAmplitude_slotCongr
   apply d.orderedDysonAmplitude_congr_of_strictAnti
     (d.slotCongr e) ε β hβ g externalTime order (order.trans e)
   intro τ hτ _
-  let σ : Fin n → ℝ :=
-    fun v => τ (order.symm ⟨v, Finset.mem_univ v⟩)
-  have hσ : Function.Injective σ :=
-    quarticVertexOrderedTime_injective_of_strictAnti order τ hτ
-  have htime :
-      (fun v : Fin n => τ ((order.trans e).symm ⟨v, Finset.mem_univ v⟩)) =
-        σ ∘ fun v => (e.symm ⟨v, Finset.mem_univ v⟩).1 := by
-    funext v
-    rfl
-  change d.dysonFixedTimeAmplitude ε β g externalTime σ =
-    ExternalInsertionWickDiagram.dysonFixedTimeAmplitude (d.slotCongr e) ε β g externalTime
-      (fun v => τ ((order.trans e).symm ⟨v, Finset.mem_univ v⟩))
-  rw [htime]
   exact (d.slotCongr_dysonFixedTimeAmplitude_eq_of_injective
-    e ε β g externalTime σ hσ).symm
-
+    e ε β g externalTime
+    (fun v => τ (order.symm ⟨v, Finset.mem_univ v⟩))
+    (quarticVertexOrderedTime_injective_of_strictAnti order τ hτ)).symm
 
 
 /-- A canonical Dyson integral of one **physical** diagram is the
