@@ -109,8 +109,9 @@ theorem externalPartitionShuffleFull_blockSlotSet
   rw [π.mem_shuffleOfOrder_blockSlotSet_iff o orders
     (π.partOrdersCompatible_partOrdersOfOrder o) P]
   have ho : (o (Fin.cast hcard.symm x)).1 = x := by
-    simpa using
-      (externalSubsetIncreasingOrder_univ_apply (E := E) (Fin.cast hcard.symm x))
+    rw [externalSubsetIncreasingOrder_univ_apply]
+    apply Fin.ext
+    rfl
   rw [ho]
 
 /-- Fermionic Koszul sign for grouping a subset of external insertions by
