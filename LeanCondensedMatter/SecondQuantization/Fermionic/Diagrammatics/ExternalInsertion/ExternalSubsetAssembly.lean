@@ -471,15 +471,16 @@ theorem ExternalInsertionBlockLayout.assembleConnectedBlocks_signedDysonShuffleO
       layout F hconnected ε β g externalTime e
     rw [hsource] at h
     simpa only [d, S] using h
-  rw [ExternalInsertionBlockLayout.assembleConnectedBlocks_signedDysonShuffleOrbit
-    layout F hconnected ε β g externalTime]
-  apply congrArg (fun z : ℂ => externalPartitionSourceSign layout.partition * z)
-  exact (Equiv.prod_comp reindex.symm
-    (fun C : d.vertexGraph.componentPartition.parts =>
-      ExternalInsertionWickDiagram.dysonAmplitude
-        (d.componentOrderedDiagram C) ε β g
-        (d.componentExternalTime externalTime C))).symm.trans
-    (Finset.prod_congr rfl (fun B _ => hlocal B))
+  have horbit := ExternalInsertionBlockLayout.assembleConnectedBlocks_signedDysonShuffleOrbit
+    layout F hconnected ε β g externalTime
+  exact horbit.trans
+    (congrArg (fun z : ℂ => externalPartitionSourceSign layout.partition * z)
+      ((Equiv.prod_comp reindex.symm
+        (fun C : d.vertexGraph.componentPartition.parts =>
+          ExternalInsertionWickDiagram.dysonAmplitude
+            (d.componentOrderedDiagram C) ε β g
+            (d.componentExternalTime externalTime C))).symm.trans
+        (Finset.prod_congr rfl (fun B _ => hlocal B))))
 
 omit [LinearOrder Mode] [Fintype Mode] in
 /-- The source labels of an assembled diagram agree with the canonical
