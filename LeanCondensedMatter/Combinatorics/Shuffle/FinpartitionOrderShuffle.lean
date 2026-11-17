@@ -74,8 +74,9 @@ theorem mem_shuffleOfOrder_blockSlotSet_iff
       order.symm (π.partEquiv orders ⟨B, i⟩) = x) ↔ _
   constructor
   · rintro ⟨i, rfl⟩
-    change (orders B i).1 ∈ (B : Finset α)
-    exact (orders B i).2
+    have hmem : (π.partEquiv orders ⟨B, i⟩).1 ∈ (B : Finset α) :=
+      (orders B i).2
+    simpa only [Equiv.apply_symm_apply] using hmem
   · intro hx
     refine ⟨(orders B).symm ⟨(order x).1, hx⟩, ?_⟩
     apply order.injective
