@@ -37,52 +37,34 @@ theorem canonicalFullGibbsDensityOperator_eq_sector_embedding
             (Subtype.val : ParticleNumberSector Mode Config N → Config)
             Subtype.val_injective)) := by
   classical
+  let e := completedCoordinateEmbedding
+    (Subtype.val : ParticleNumberSector Mode Config N → Config) Subtype.val_injective
+  let p := completedCoordinatePullback
+    (Subtype.val : ParticleNumberSector Mode Config N → Config) Subtype.val_injective
+  let ρ := canonicalGibbsDensityOperator (Config := Config) ε β N hsum
+  let σ := canonicalFullGibbsDensityOperator (Config := Config) ε β N hsum
+  change σ.op = e.toContinuousLinearMap.comp (ρ.op.comp p)
   apply continuousLinearMap_ext_completedBasis
   intro c
+  change σ.op (completedBasisState c) = e (ρ.op (p (completedBasisState c)))
   by_cases hc : particleNumber (Mode := Mode) c = N
   · let n : ParticleNumberSector Mode Config N := ⟨c, hc⟩
-    change
-      (canonicalFullGibbsDensityOperator (Config := Config) ε β N hsum).op
-          (completedBasisState n.val) =
-        (completedCoordinateEmbedding
-          (Subtype.val : ParticleNumberSector Mode Config N → Config)
-          Subtype.val_injective).toContinuousLinearMap
-          ((canonicalGibbsDensityOperator (Config := Config) ε β N hsum).op
-            (completedCoordinatePullback
-              (Subtype.val : ParticleNumberSector Mode Config N → Config)
-              Subtype.val_injective (completedBasisState n.val)))
-    rw [canonicalFullGibbsDensityOperator_apply_basis_of_sector,
+    change σ.op (completedBasisState n.val) = e (ρ.op (p (completedBasisState n.val)))
+    simp only [σ, ρ, p, e, canonicalFullGibbsDensityOperator_apply_basis_of_sector,
       completedCoordinatePullback_basisState_of_image,
-      canonicalGibbsDensityOperator_apply_basis, map_smul]
-    exact (congrArg
-      (fun ψ : CompletedFock Config =>
-        (eigenbasisGibbsProbability
-          (fun m : ParticleNumberSector Mode Config N => occupationEnergy ε m.val) β n : ℂ) • ψ)
-      (completedCoordinateEmbedding_basisState
-        (Subtype.val : ParticleNumberSector Mode Config N → Config)
-        Subtype.val_injective n)).symm
-  · change
-      (canonicalFullGibbsDensityOperator (Config := Config) ε β N hsum).op
-          (completedBasisState c) =
-        (completedCoordinateEmbedding
-          (Subtype.val : ParticleNumberSector Mode Config N → Config)
-          Subtype.val_injective).toContinuousLinearMap
-          ((canonicalGibbsDensityOperator (Config := Config) ε β N hsum).op
-            (completedCoordinatePullback
-              (Subtype.val : ParticleNumberSector Mode Config N → Config)
-              Subtype.val_injective (completedBasisState c)))
-    have hnot : c ∉ Set.range
+      canonicalGibbsDensityOperator_apply_basis, map_smul,
+      completedCoordinateEmbedding_basisState]
+  · have hnot : c ∉ Set.range
         (Subtype.val : ParticleNumberSector Mode Config N → Config) := by
-      rintro ⟨n, hn⟩
-      apply hc
-      rw [← hn]
-      exact n.property
-    rw [canonicalFullGibbsDensityOperator_apply_basis_of_ne ε β N hsum c hc,
-      completedCoordinatePullback_basisState_of_not_mem
-        (Subtype.val : ParticleNumberSector Mode Config N → Config)
-        Subtype.val_injective c hnot]
+      rintro ⟨n, rfl⟩
+      exact hc n.property
+    rw [show σ.op (completedBasisState c) = 0 from
+      canonicalFullGibbsDensityOperator_apply_basis_of_ne ε β N hsum c hc,
+      show p (completedBasisState c) = 0 from
+        completedCoordinatePullback_basisState_of_not_mem
+          (Subtype.val : ParticleNumberSector Mode Config N → Config)
+          Subtype.val_injective c hnot]
     simp
-
 
 /-- The fixed-number canonical state on the full completed Fock space is
 invariant under a common one-particle energy offset. The proof transports
