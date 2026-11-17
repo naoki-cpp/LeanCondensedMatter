@@ -71,6 +71,7 @@ theorem completedCoordinateProjection_basisState (P : Config → Prop)
 /-- Compressing a summable diagonal series to a coordinate subset keeps exactly the
 diagonal terms indexed by that subset. This holds for any configuration predicate,
 independently of the origin of the diagonal weights. -/
+set_option maxHeartbeats 1000000 in
 theorem completedCoordinateProjection_tsum_diagonalTerm
     (P : Config → Prop) (a : Config → ℂ)
     (A : CompletedFock Config →L[ℂ] CompletedFock Config)
@@ -102,13 +103,16 @@ theorem completedCoordinateProjection_tsum_diagonalTerm
         completedCoordinateProjection_apply, completedCoordinateProjection_basisState]
     · simp [Q, hc, inner_completedBasisState_left,
         completedCoordinateProjection_apply, completedCoordinateProjection_basisState]
-  have hsubset :
-      HasSum (fun c : {c : Config // P c} => b.diagonalTerm a c.val) (L A) := by
-    apply (hasSum_subtype_iff_indicator).2
+  have hindicator :
+      HasSum (({c : Config | P c} : Set Config).indicator (b.diagonalTerm a)) (L A) := by
     apply (hA.mapL L).congr_fun
     intro c
     rw [hterm]
     by_cases hc : P c <;> simp [Set.indicator, hc]
+  have hsubset :
+      HasSum (fun c : {c : Config // P c} => b.diagonalTerm a c.val) (L A) :=
+    (hasSum_subtype_iff_indicator (s := {c : Config | P c})
+      (f := b.diagonalTerm a)).2 hindicator
   have hL : L A = Q.comp (A.comp Q) := by
     apply ContinuousLinearMap.ext
     intro ψ
