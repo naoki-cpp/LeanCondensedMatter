@@ -296,24 +296,6 @@ private theorem externalInsertionSlotCongr_heq_of_diagram_heq
     (fun d : ExternalInsertionDiagram ExternalLabel InternalLabel E₁ n S₁ =>
       d.slotCongr (Combinatorics.standardSlotEquiv S₁)) (eq_of_heq hp))
 
-/-- Actual integrated Dyson amplitudes are invariant under simultaneous
-dependent equality of their entire ordered Wick diagram and source-time
-family. No sign or thermal-kernel symmetry is assumed. -/
-private theorem dysonAmplitude_eq_of_diagram_time_heq
-    {E₁ E₂ n₁ n₂ : ℕ} (hE : E₁ = E₂) (hn : n₁ = n₂)
-    (p : ExternalInsertionWickDiagram Mode E₁ n₁)
-    (q : ExternalInsertionWickDiagram Mode E₂ n₂)
-    (hp : HEq p q)
-    (t₁ : Fin (2 * E₁) → ℝ) (t₂ : Fin (2 * E₂) → ℝ)
-    (ht : HEq t₁ t₂)
-    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ) :
-    p.dysonAmplitude ε β g t₁ = q.dysonAmplitude ε β g t₂ := by
-  cases hE
-  cases hn
-  have hd : p = q := eq_of_heq hp
-  have ht' : t₁ = t₂ := eq_of_heq ht
-  rw [hd, ht']
-
 /-- The integrated Dyson amplitude of an *actual physical connected
 component*, with its original source times, is exactly the integrated
 Dyson amplitude of the independently supplied connected Wick block
@@ -372,14 +354,9 @@ theorem ExternalInsertionBlockLayout.assembleConnectedBlocks_componentDysonAmpli
         externalTime (layout.sourceEquiv.symm ⟨B, i⟩)) :=
     (ExternalInsertionBlockLayout.assembleDiagram_componentExternalTime_eq_localTimes
       layout F hconnected externalTime e).symm
-  exact dysonAmplitude_eq_of_diagram_time_heq
-    hcount (congrArg Finset.card hsector)
-    (d.componentOrderedDiagram C)
-    ((F B).slotCongr (Combinatorics.standardSlotEquiv
-      (layout.interactionBlock S B))) hordered
-    (d.componentExternalTime externalTime C)
-    (fun i => externalTime (layout.sourceEquiv.symm ⟨B, i⟩))
-    htimes ε β g
+  cases hcount
+  cases congrArg Finset.card hsector
+  rw [eq_of_heq hordered, eq_of_heq htimes]
 
 /-- The genuine **integrated physical component-shuffle orbit**
 of assembled connected Wick blocks equals the source-partition Koszul sign
