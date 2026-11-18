@@ -103,20 +103,12 @@ theorem canonicalFullGibbsDensityOperator_expectation_eq_tsum_sector
   let w : Config → ℝ := Real.normalizedWeight (canonicalFullGibbsWeight ε β N)
   let g : Config → ℂ := fun c =>
     (w c : ℂ) * inner ℂ (completedBasisState c) (A (completedBasisState c))
-  have hdiag : ∀ c : Config,
-      ρ.op ((completedHilbertBasis (Config := Config)) c) =
-        (w c : ℂ) • (completedHilbertBasis (Config := Config)) c := by
-    intro c
-    simpa only [ρ, canonicalFullGibbsDensityOperator, w, completedHilbertBasis_apply] using
-      (diagonalDensityOperator_apply_basis
-        (completedHilbertBasis (Config := Config)) (canonicalFullGibbsWeight ε β N)
-        (canonicalFullGibbsWeight_norm_summable ε β N hsum)
-        (canonicalFullGibbsWeight_nonneg ε β N)
-        (canonicalFullGibbsWeight_tsum_pos ε β N hsum) c)
   have hfull : HasSum g (ρ.expectation A) := by
     simpa only [g, completedHilbertBasis_apply] using
       (ρ.hasSum_expectation_diagonal A
-        (completedHilbertBasis (Config := Config)) w hdiag)
+        (completedHilbertBasis (Config := Config)) w (fun c => by
+          simpa only [ρ, w, completedHilbertBasis_apply] using
+            (canonicalFullGibbsDensityOperator_apply_basis ε β N hsum c)))
   have hindicator :
       HasSum
         (({c : Config | particleNumber (Mode := Mode) c = N} : Set Config).indicator g)
