@@ -112,13 +112,16 @@ theorem probability_continuity_balance_of_schrodinger
       Complex.I * (ℏ : ℂ) * ψt = -(κ : ℂ) * ψxx + (potential : ℂ) * ψ) :
     probabilityDensityTimeDerivativeValue ψ ψt +
       probabilityCurrentDivergenceValue1D ℏ κ ψ ψxx = 0 := by
-  have hre := congrArg Complex.re hschrodinger
-  have him := congrArg Complex.im hschrodinger
-  simp at hre him
-  have hreal : ℏ * ψt.im = κ * ψxx.re - potential * ψ.re := by
-    linear_combination -hre
-  have himag : ℏ * ψt.re = -κ * ψxx.im + potential * ψ.im := by
-    linear_combination him
+  have hcomponents :
+      ℏ * ψt.im = κ * ψxx.re - potential * ψ.re ∧
+        ℏ * ψt.re = -κ * ψxx.im + potential * ψ.im := by
+    have hre := congrArg Complex.re hschrodinger
+    have him := congrArg Complex.im hschrodinger
+    simp at hre him
+    constructor
+    · linear_combination -hre
+    · linear_combination him
+  rcases hcomponents with ⟨hreal, himag⟩
   unfold probabilityDensityTimeDerivativeValue probabilityCurrentDivergenceValue1D
   rw [probabilityCurrentPairingValue_eq_coordinates]
   field_simp [hℏ]
