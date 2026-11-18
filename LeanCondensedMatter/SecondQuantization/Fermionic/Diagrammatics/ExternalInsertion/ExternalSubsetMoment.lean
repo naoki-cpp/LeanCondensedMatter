@@ -48,7 +48,8 @@ theorem vacuumFreeExternalInsertionDysonCoefficient_eq_sum_externalPartitionFibe
   classical
   unfold vacuumFreeExternalInsertionDysonCoefficient
   rw [Finset.sum_comm]
-  simp [Finset.sum_ite_eq]
+  simp only [Finset.sum_ite_eq, Finset.mem_univ, ↓reduceIte]
+  exact Finset.sum_congr (by ext d; simp) (fun _ _ => rfl)
 
 /-- A physical vacuum-free Wick diagram can never have an external
 connected component with an odd number of fermion insertions. Therefore
