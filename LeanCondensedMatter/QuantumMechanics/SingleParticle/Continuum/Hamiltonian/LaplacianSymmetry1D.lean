@@ -31,15 +31,6 @@ open scoped ENNReal MeasureTheory InnerProductSpace SchwartzMap Laplacian LineDe
 private def laplacianFourierSymbol1D (x : ℝ) : ℂ :=
   ((-((2 * Real.pi) ^ 2) * ‖x‖ ^ 2 : ℝ) : ℂ)
 
-private theorem inner_laplacianFourierSymbol1D_mul
-    (x : ℝ) (z w : ℂ) :
-    inner ℂ (laplacianFourierSymbol1D x * z) w =
-      inner ℂ z (laplacianFourierSymbol1D x * w) := by
-  let r : ℝ := -((2 * Real.pi) ^ 2) * ‖x‖ ^ 2
-  change inner ℂ ((r : ℂ) • z) w = inner ℂ z ((r : ℂ) • w)
-  rw [inner_smul_left, inner_smul_right]
-  simp
-
 /-- Fourier-transforming the distributional `H²` Laplacian gives multiplication by the usual
 real Laplacian symbol. This statement is still at the tempered-distribution level. -/
 theorem fourier_l2ToTemperedDistribution1D_continuumH2Laplacian1D
@@ -141,9 +132,10 @@ theorem continuumH2Laplacian1D_symmetric
       filter_upwards [fourier_continuumH2Laplacian1D_ae ψ,
         fourier_continuumH2Laplacian1D_ae φ] with x hψ hφ
       rw [hψ, hφ]
-      exact inner_laplacianFourierSymbol1D_mul x
-        ((𝓕 (ψ : ContinuumL2Wavefunction1D) : ContinuumL2Wavefunction1D) x)
-        ((𝓕 (φ : ContinuumL2Wavefunction1D) : ContinuumL2Wavefunction1D) x)
+      let r : ℝ := -((2 * Real.pi) ^ 2) * ‖x‖ ^ 2
+      change inner ℂ ((r : ℂ) • _) _ = inner ℂ _ ((r : ℂ) • _)
+      rw [inner_smul_left, inner_smul_right]
+      simp
     _ = inner ℂ (ψ : ContinuumL2Wavefunction1D) (continuumH2Laplacian1D φ) :=
       MeasureTheory.Lp.inner_fourier_eq
         (ψ : ContinuumL2Wavefunction1D) (continuumH2Laplacian1D φ)
