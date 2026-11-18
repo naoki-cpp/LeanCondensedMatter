@@ -1162307,7 +1162307,7 @@
   "sourceLine": 92,
   "sourceFile":
   "LeanCondensedMatter/SecondQuantization/Fermionic/Diagrammatics/ExternalInsertion/ExternalVacuumFiberCauchySum.lean",
-  "sourceEndLine": 199,
+  "sourceEndLine": 196,
   "sourceEndColumn": 22,
   "sourceColumn": 8,
   "soleCompiledConsumerPrivate": false,
@@ -1172448,11 +1172448,11 @@
   "statement":
   "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] {E : ℕ} (ε : Mode → ℝ) (β : ℝ)\n  (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ)\n  (labels : Fin (2 * E) → SecondQuantization.Fermionic.ExternalFieldLabel Mode) (times : Fin (2 * E) → ℝ),\n  (∀ (S : Finset (Fin (2 * E))),\n      S ≠ ∅ →\n        Even S.card →\n          SecondQuantization.Fermionic.externalSubsetMomentSeries ε β g labels times S =\n            SecondQuantization.Fermionic.externalSubsetSignedConnectedMomentSeries ε β g labels times S) →\n    ∀ (S : Finset (Fin (2 * E))),\n      SecondQuantization.Fermionic.externalSubsetMomentSeries ε β g labels times S =\n        SecondQuantization.Fermionic.externalSubsetSignedConnectedMomentSeries ε β g labels times S",
   "standardAxioms": ["Classical.choice", "Quot.sound", "propext"],
-  "sourceLine": 639,
+  "sourceLine": 636,
   "sourceFile":
   "LeanCondensedMatter/SecondQuantization/Fermionic/Diagrammatics/ExternalInsertion/ExternalSubsetMoment.lean",
-  "sourceEndLine": 657,
-  "sourceEndColumn": 39,
+  "sourceEndLine": 653,
+  "sourceEndColumn": 37,
   "sourceColumn": 8,
   "soleCompiledConsumerPrivate": false,
   "singleCompiledConsumer": true,
@@ -1172484,7 +1172484,7 @@
    "SecondQuantization.Fermionic.externalSubsetSignedConnectedMomentSeries",
    "SecondQuantization.Fermionic.externalSubsetSignedConnectedMomentSeries_empty",
    "SecondQuantization.Fermionic.externalSubsetSignedConnectedMomentSeries_eq_zero_of_odd"],
-  "declarationStartLine": 632,
+  "declarationStartLine": 629,
   "crossModuleDirectWrapper": false,
   "completedMention": false,
   "compiledConsumers":
@@ -1172648,10 +1172648,10 @@
   "statement":
   "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] (ε : Mode → ℝ) (β : ℝ)\n  (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ)\n  (labels : Fin 2 → SecondQuantization.Fermionic.ExternalFieldLabel Mode) (times : Fin 2 → ℝ) (S : Finset (Fin 2)),\n  SecondQuantization.Fermionic.externalSubsetMomentSeries ε β g labels times S =\n    SecondQuantization.Fermionic.externalSubsetSignedConnectedMomentSeries ε β g labels times S",
   "standardAxioms": ["Classical.choice", "Quot.sound", "propext"],
-  "sourceLine": 665,
+  "sourceLine": 661,
   "sourceFile":
   "LeanCondensedMatter/SecondQuantization/Fermionic/Diagrammatics/ExternalInsertion/ExternalSubsetMoment.lean",
-  "sourceEndLine": 709,
+  "sourceEndLine": 705,
   "sourceEndColumn": 38,
   "sourceColumn": 8,
   "soleCompiledConsumerPrivate": false,
@@ -1172691,7 +1172691,7 @@
    "SecondQuantization.Fermionic.externalSubsetSignedConnectedMomentSeries",
    "SecondQuantization.Fermionic.vacuumFreeExternalInsertionDysonSeries",
    "SecondQuantization.Fermionic.vacuumFreeExternalInsertionDysonSeries_eq_connected_of_single_pair"],
-  "declarationStartLine": 659,
+  "declarationStartLine": 655,
   "crossModuleDirectWrapper": false,
   "completedMention": false,
   "compiledConsumers":
@@ -1173304,7 +1173304,7 @@
   "sourceLine": 594,
   "sourceFile":
   "LeanCondensedMatter/SecondQuantization/Fermionic/Diagrammatics/ExternalInsertion/ExternalSubsetMoment.lean",
-  "sourceEndLine": 605,
+  "sourceEndLine": 602,
   "sourceEndColumn": 84,
   "sourceColumn": 8,
   "soleCompiledConsumerPrivate": false,
@@ -1173855,10 +1173855,10 @@
   "statement":
   "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] {E : ℕ} (ε : Mode → ℝ) (β : ℝ)\n  (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ)\n  (labels : Fin (2 * E) → SecondQuantization.Fermionic.ExternalFieldLabel Mode) (times : Fin (2 * E) → ℝ)\n  (S : Finset (Fin (2 * E))),\n  ¬Even S.card → SecondQuantization.Fermionic.externalSubsetSignedConnectedMomentSeries ε β g labels times S = 0",
   "standardAxioms": ["Classical.choice", "Quot.sound", "propext"],
-  "sourceLine": 611,
+  "sourceLine": 608,
   "sourceFile":
   "LeanCondensedMatter/SecondQuantization/Fermionic/Diagrammatics/ExternalInsertion/ExternalSubsetMoment.lean",
-  "sourceEndLine": 630,
+  "sourceEndLine": 627,
   "sourceEndColumn": 13,
   "sourceColumn": 8,
   "soleCompiledConsumerPrivate": false,
@@ -1173892,7 +1173892,7 @@
    "SecondQuantization.Fermionic.externalSubsetMomentSeries",
    "SecondQuantization.Fermionic.externalSubsetSeries_eq_zero_of_odd",
    "SecondQuantization.Fermionic.externalSubsetSignedConnectedMomentSeries"],
-  "declarationStartLine": 608,
+  "declarationStartLine": 605,
   "crossModuleDirectWrapper": false,
   "completedMention": false,
   "compiledConsumers":
@@ -1174262,10 +1174262,10 @@
   "statement":
   "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] {E : ℕ} (ε : Mode → ℝ) (β : ℝ)\n  (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ)\n  (labels : Fin (2 * E) → SecondQuantization.Fermionic.ExternalFieldLabel Mode) (times : Fin (2 * E) → ℝ),\n  (∀ (S : Finset (Fin (2 * E))),\n      SecondQuantization.Fermionic.externalSubsetMomentSeries ε β g labels times S =\n        SecondQuantization.Fermionic.externalSubsetSignedConnectedMomentSeries ε β g labels times S) →\n    SecondQuantization.Fermionic.externalSubsetSourceCumulantSeries\n        (SecondQuantization.Fermionic.externalSubsetMomentSeries ε β g labels times) =\n      SecondQuantization.Fermionic.externalSubsetConnectedDiagramSeries ε β g labels times",
   "standardAxioms": ["Classical.choice", "Quot.sound", "propext"],
-  "sourceLine": 719,
+  "sourceLine": 715,
   "sourceFile":
   "LeanCondensedMatter/SecondQuantization/Fermionic/Diagrammatics/ExternalInsertion/ExternalSubsetMoment.lean",
-  "sourceEndLine": 733,
+  "sourceEndLine": 729,
   "sourceEndColumn": 85,
   "sourceColumn": 8,
   "soleCompiledConsumerPrivate": false,
@@ -1174302,7 +1174302,7 @@
    "SecondQuantization.Fermionic.externalSubsetSourceCumulantSeries",
    "SecondQuantization.Fermionic.externalSubsetSourceCumulantSeries_empty",
    "SecondQuantization.Fermionic.externalSubsetSourceCumulantSeries_reconstruct"],
-  "declarationStartLine": 711,
+  "declarationStartLine": 707,
   "crossModuleDirectWrapper": false,
   "completedMention": false,
   "compiledConsumers":
@@ -1174439,10 +1174439,10 @@
   "statement":
   "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] (ε : Mode → ℝ) (β : ℝ)\n  (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ)\n  (labels : Fin 2 → SecondQuantization.Fermionic.ExternalFieldLabel Mode) (times : Fin 2 → ℝ),\n  SecondQuantization.Fermionic.externalSubsetSourceCumulantSeries\n      (SecondQuantization.Fermionic.externalSubsetMomentSeries ε β g labels times) =\n    SecondQuantization.Fermionic.externalSubsetConnectedDiagramSeries ε β g labels times",
   "standardAxioms": ["Classical.choice", "Quot.sound", "propext"],
-  "sourceLine": 741,
+  "sourceLine": 737,
   "sourceFile":
   "LeanCondensedMatter/SecondQuantization/Fermionic/Diagrammatics/ExternalInsertion/ExternalSubsetMoment.lean",
-  "sourceEndLine": 750,
+  "sourceEndLine": 746,
   "sourceEndColumn": 74,
   "sourceColumn": 8,
   "soleCompiledConsumerPrivate": false,
@@ -1174472,7 +1174472,7 @@
    "SecondQuantization.Fermionic.externalSubsetMomentSeries_eq_signedConnected_two",
    "SecondQuantization.Fermionic.externalSubsetSourceCumulantSeries",
    "SecondQuantization.Fermionic.externalSubsetSourceCumulantSeries_eq_connectedDiagramSeries_of_signedMoments"],
-  "declarationStartLine": 736,
+  "declarationStartLine": 732,
   "crossModuleDirectWrapper": false,
   "completedMention": false,
   "compiledConsumers": [],
