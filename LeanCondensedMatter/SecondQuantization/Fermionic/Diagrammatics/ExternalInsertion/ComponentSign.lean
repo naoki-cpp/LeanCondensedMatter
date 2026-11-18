@@ -51,16 +51,6 @@ theorem externalPartitionShuffleFull_orderedBlockInversionCount
       (externalPartitionShuffle π).orderedBlockInversionCount order :=
   (externalPartitionShuffle π).castTotalEquiv_orderedBlockInversionCount (by simp) order
 
-/-- The canonical full-source shuffle occupies exactly the source slots
-belonging to each partition block. This is the generic partition-shuffle
-occupancy theorem specialized to the increasing external-slot order. -/
-theorem externalPartitionShuffleFull_blockSlotSet
-    (π : Finpartition (Finset.univ : Finset (Fin (2 * E))))
-    (P : π.parts) :
-    (externalPartitionShuffleFull π).blockSlotSet P =
-      (P : Finset (Fin (2 * E))) := by
-  exact π.shuffleOfIncreasingOrderFull_blockSlotSet P
-
 /-- Fermionic Koszul sign for grouping a subset of external insertions by
 partition blocks. The order on the blocks is explicit, because the sign
 of odd blocks need not be order independent. Physical nonvanishing blocks
