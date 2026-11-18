@@ -49,11 +49,28 @@ private theorem norm_mul_three_le
     _ ≤ (‖a‖ * ‖b‖) * ‖c‖ :=
       mul_le_mul_of_nonneg_right (norm_mul_le _ _) (norm_nonneg _)
 
+/-- Canonical resummed free-Green ladder vertex. The microscopic smallness
+bound supplies invertibility; callers do not provide an independent unit witness. -/
+noncomputable def resummedFreeGreenLadderVertex
+    (energyLeft regulatorLeft energyRight regulatorRight : ℝ)
+    (hregLeft : regulatorLeft ≠ 0) (hregRight : regulatorRight ≠ 0)
+    (potentialBound : ℝ)
+    (hpotential : ∀ ω, ‖(ensemble.impurityPotential ω).1‖ ≤ potentialBound)
+    (hsmall : potentialBound ^ 2 * |regulatorLeft|⁻¹ *
+        |regulatorRight|⁻¹ < 1)
+    (vertex : H →L[ℂ] H) : H →L[ℂ] H :=
+  resummedLadderVertex
+    (ensemble.retardedAdvancedLadderCLM
+      (ensemble.freeGreenOfRegulator energyLeft regulatorLeft)
+      (ensemble.freeGreenOfRegulator energyRight regulatorRight))
+    (ensemble.isUnit_one_sub_freeGreenLadder_of_smallPotential
+      energyLeft regulatorLeft energyRight regulatorRight
+      hregLeft hregRight potentialBound hpotential hsmall) vertex
+
 /-- The exact connected insertion is close to the first Born rung **plus all
 higher geometric ladder rungs**, with explicit microscopic smallness condition.
-The `hinvertible` witness is always available under `hsmall` by
-`isUnit_one_sub_freeGreenLadder_of_smallPotential`. -/
-theorem norm_connectedTwoGreen_sub_resummedFreeLadder_le
+The generic form accepts an explicit `IsUnit` witness. -/
+theorem norm_connectedTwoGreen_sub_resummedFreeLadder_le_of_isUnit
     (energyLeft regulatorLeft energyRight regulatorRight : ℝ)
     (hregLeft : regulatorLeft ≠ 0) (hregRight : regulatorRight ≠ 0)
     (hcentered : ensemble.IsCentered)
@@ -165,6 +182,41 @@ theorem norm_connectedTwoGreen_sub_resummedFreeLadder_le
     cubic + (leftBound * rightBound) * (q ^ 2 / (1 - q) * ‖vertex‖)
   rw [hsplit]
   exact (norm_add_le _ _).trans (add_le_add hcubic htailSandwich)
+
+/-- The exact connected two-Green insertion is controlled by the canonical
+resummed free ladder under microscopic smallness alone. Invertibility is derived
+from the supplied potential bound and nonzero regulators, not assumed separately. -/
+theorem norm_connectedTwoGreen_sub_resummedFreeLadder_le
+    (energyLeft regulatorLeft energyRight regulatorRight : ℝ)
+    (hregLeft : regulatorLeft ≠ 0) (hregRight : regulatorRight ≠ 0)
+    (hcentered : ensemble.IsCentered)
+    (vertex : H →L[ℂ] H)
+    (potentialBound : ℝ)
+    (hpotential : ∀ ω, ‖(ensemble.impurityPotential ω).1‖ ≤ potentialBound)
+    (hsmall : potentialBound ^ 2 * |regulatorLeft|⁻¹ *
+        |regulatorRight|⁻¹ < 1) :
+    ‖ensemble.connectedTwoGreenInsertionOfRegulators
+        energyLeft regulatorLeft energyRight regulatorRight vertex -
+      ensemble.freeGreenOfRegulator energyLeft regulatorLeft *
+        (ensemble.resummedFreeGreenLadderVertex
+          energyLeft regulatorLeft energyRight regulatorRight
+          hregLeft hregRight potentialBound hpotential hsmall vertex - vertex) *
+        ensemble.freeGreenOfRegulator energyRight regulatorRight‖ ≤
+      ((2 * (|regulatorLeft|⁻¹) ^ 3 * potentialBound ^ 2) *
+          ‖vertex‖ * (2 * (|regulatorRight|⁻¹) ^ 2 * potentialBound) +
+        ((|regulatorLeft|⁻¹) ^ 2 * potentialBound) * ‖vertex‖ *
+          (2 * (|regulatorRight|⁻¹) ^ 3 * potentialBound ^ 2)) +
+      (|regulatorLeft|⁻¹ * |regulatorRight|⁻¹) *
+        ((potentialBound ^ 2 * |regulatorLeft|⁻¹ * |regulatorRight|⁻¹) ^ 2 /
+          (1 - potentialBound ^ 2 * |regulatorLeft|⁻¹ * |regulatorRight|⁻¹) *
+          ‖vertex‖) := by
+  simpa only [resummedFreeGreenLadderVertex] using
+    (ensemble.norm_connectedTwoGreen_sub_resummedFreeLadder_le_of_isUnit
+      energyLeft regulatorLeft energyRight regulatorRight
+      hregLeft hregRight hcentered vertex potentialBound hpotential hsmall
+      (ensemble.isUnit_one_sub_freeGreenLadder_of_smallPotential
+        energyLeft regulatorLeft energyRight regulatorRight
+        hregLeft hregRight potentialBound hpotential hsmall))
 
 end FiniteDisorderEnsemble
 
