@@ -598,10 +598,7 @@ theorem externalSubsetSeries_eq_zero_of_odd
     (S : Finset (Fin (2 * E))) (hodd : ¬ Even S.card) :
     externalSubsetMomentSeries ε β g labels times S = 0 ∧
       externalSubsetConnectedDiagramSeries ε β g labels times S = 0 := by
-  have hne : S ≠ ∅ := by
-    intro h
-    subst S
-    exact hodd (by simp)
+  have hne : S ≠ ∅ := fun h => hodd (by simpa [h])
   simp [externalSubsetMomentSeries, externalSubsetConnectedDiagramSeries, hne, hodd]
 
 
@@ -647,14 +644,13 @@ theorem externalSubsetMomentSeries_eq_signedConnected_of_nonempty_even
       externalSubsetMomentSeries ε β g labels times S =
         externalSubsetSignedConnectedMomentSeries ε β g labels times S := by
   intro S
-  by_cases hEmpty : S = ∅
-  · subst S
-    simp
-  · by_cases hParity : Even S.card
-    · exact hEven S hEmpty hParity
-    · rw [(externalSubsetSeries_eq_zero_of_odd ε β g labels times S hParity).1,
-        externalSubsetSignedConnectedMomentSeries_eq_zero_of_odd
-          ε β g labels times S hParity]
+  rcases eq_or_ne S ∅ with rfl | hEmpty
+  · simp
+  rcases em (Even S.card) with hParity | hParity
+  · exact hEven S hEmpty hParity
+  · rw [(externalSubsetSeries_eq_zero_of_odd ε β g labels times S hParity).1,
+      externalSubsetSignedConnectedMomentSeries_eq_zero_of_odd
+        ε β g labels times S hParity]
 
 /-- The *physical* signed external-source moment identity holds
 unconditionally for two external fermion insertions. A nonempty even
