@@ -41,8 +41,7 @@ theorem canonicalFullGibbsWeight_hasSum (ε : Mode → ℝ) (β : ℝ) (N : ℕ)
       (canonicalPartitionFunction (Config := Config) ε β N) := by
   unfold canonicalFullGibbsWeight canonicalPartitionFunction eigenbasisPartitionFunction
   exact (hasSum_extend_zero Subtype.val_injective).2
-    (eigenbasisBoltzmannWeight_summable
-      (fun n : ParticleNumberSector Mode Config N => occupationEnergy ε n.val) β hsum).hasSum
+    (eigenbasisBoltzmannWeight_summable _ _ hsum).hasSum
 
 /-- On the chosen sector the extended weight equals the original Boltzmann weight. -/
 @[simp]
@@ -83,8 +82,8 @@ theorem canonicalFullGibbsWeight_tsum_pos (ε : Mode → ℝ) (β : ℝ) (N : �
     (hsum : EigenbasisGibbsSummable
       (fun n : ParticleNumberSector Mode Config N => occupationEnergy ε n.val) β) :
     0 < ∑' c : Config, canonicalFullGibbsWeight ε β N c := by
-  rw [(canonicalFullGibbsWeight_hasSum ε β N hsum).tsum_eq]
-  exact canonicalPartitionFunction_pos ε β N hsum
+  simpa only [(canonicalFullGibbsWeight_hasSum ε β N hsum).tsum_eq] using
+    (canonicalPartitionFunction_pos ε β N hsum)
 
 /-- Normalizing the zero-extended fixed-number Boltzmann weights agrees
 with the Gibbs probability computed directly on the sector. -/
