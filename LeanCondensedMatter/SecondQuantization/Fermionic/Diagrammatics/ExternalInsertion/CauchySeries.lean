@@ -39,9 +39,12 @@ theorem externalInsertionDysonCoefficient_eq_sum_vacuumFree_mul_normalizedDysonP
   intro m hm
   have hmn : m ≤ n := by
     simpa [Nat.lt_succ_iff] using hm
-  simpa only [Nat.add_sub_of_le hmn] using
+  let k := n - m
+  have hmk : m + k = n := Nat.add_sub_of_le hmn
+  rw [← hmk]
+  simpa only [Nat.add_sub_cancel_left] using
     (externalInsertionFixedCardinalityFiberSum_eq_cauchyFactor
-      ε β hβ g externalLabel externalTime m (n - m))
+      ε β hβ g externalLabel externalTime m k)
 
 /-- The full arbitrary-external Dyson series is the product of its vacuum-free
 part and the normalized vacuum partition series. -/
