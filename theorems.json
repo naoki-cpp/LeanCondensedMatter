@@ -21481,8 +21481,8 @@
     "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": true,
     "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "Dyson.majorant_norm_mul_le_sq_mul_majorant",
     "module": "LeanCondensedMatter.Analysis.Dyson.FirstVariation",
@@ -44677,8 +44677,8 @@
       "QuantumMechanics.SingleParticle.Continuum.probabilityCurrentDivergenceValue1D_eq_coordinates",
       "QuantumMechanics.SingleParticle.Continuum.probabilityCurrentPairingValue_phase_mul",
       "QuantumMechanics.SingleParticle.Continuum.probabilityCurrentValue1D_eq_coordinates",
-      "QuantumMechanics.SingleParticle.Continuum.schwartzProbabilityCurrentPairing1D_apply",
-      "_private.LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Continuity.Scalar1D.0.QuantumMechanics.SingleParticle.Continuum.probability_continuity_balance_of_components"
+      "QuantumMechanics.SingleParticle.Continuum.probability_continuity_balance_of_schrodinger",
+      "QuantumMechanics.SingleParticle.Continuum.schwartzProbabilityCurrentPairing1D_apply"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
@@ -44688,8 +44688,8 @@
       "QuantumMechanics.SingleParticle.Continuum.probabilityCurrentDivergenceValue1D_eq_coordinates",
       "QuantumMechanics.SingleParticle.Continuum.probabilityCurrentPairingValue_phase_mul",
       "QuantumMechanics.SingleParticle.Continuum.probabilityCurrentValue1D_eq_coordinates",
-      "QuantumMechanics.SingleParticle.Continuum.schwartzProbabilityCurrentPairing1D_apply",
-      "_private.LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Continuity.Scalar1D.0.QuantumMechanics.SingleParticle.Continuum.probability_continuity_balance_of_components"
+      "QuantumMechanics.SingleParticle.Continuum.probability_continuity_balance_of_schrodinger",
+      "QuantumMechanics.SingleParticle.Continuum.schwartzProbabilityCurrentPairing1D_apply"
     ],
     "compiledConsumerCount": 6,
     "axioms": [
@@ -44989,8 +44989,7 @@
       "QuantumMechanics.SingleParticle.Continuum.schrodinger_weak_continuity_wholeSpace_of_schwartz"
     ],
     "dependencies": [
-      "_private.LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Continuity.Scalar1D.0.QuantumMechanics.SingleParticle.Continuum.probability_continuity_balance_of_components",
-      "_private.LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Continuity.Scalar1D.0.QuantumMechanics.SingleParticle.Continuum.schrodinger_component_equations"
+      "QuantumMechanics.SingleParticle.Continuum.probabilityCurrentPairingValue_eq_coordinates"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -84272,9 +84271,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [],
-    "dependencies": [
-      "_private.LeanCondensedMatter.Models.OrbitalRelaxation.ContinuousZonalScattering.0.QuantumTheory.Models.OrbitalRelaxation.polarCosineAverage_neg"
-    ],
+    "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [],
@@ -85036,8 +85033,8 @@
     "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": true,
     "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "QuantumTheory.Models.OrbitalRelaxation.orbitalRate_eq",
     "module": "LeanCondensedMatter.Models.OrbitalRelaxation.Finite",
@@ -85211,14 +85208,7 @@
     "dependents": [
       "QuantumTheory.Models.OrbitalRelaxation.quadraticZonal_degreeTwoRate_pos"
     ],
-    "dependencies": [
-      "_private.LeanCondensedMatter.Models.OrbitalRelaxation.ContinuousZonalScattering.0.QuantumTheory.Models.OrbitalRelaxation.polarCosineAverage_add",
-      "_private.LeanCondensedMatter.Models.OrbitalRelaxation.ContinuousZonalScattering.0.QuantumTheory.Models.OrbitalRelaxation.polarCosineAverage_const",
-      "_private.LeanCondensedMatter.Models.OrbitalRelaxation.ContinuousZonalScattering.0.QuantumTheory.Models.OrbitalRelaxation.polarCosineAverage_const_mul",
-      "_private.LeanCondensedMatter.Models.OrbitalRelaxation.ContinuousZonalScattering.0.QuantumTheory.Models.OrbitalRelaxation.polarCosineAverage_four",
-      "_private.LeanCondensedMatter.Models.OrbitalRelaxation.ContinuousZonalScattering.0.QuantumTheory.Models.OrbitalRelaxation.polarCosineAverage_sq",
-      "_private.LeanCondensedMatter.Models.OrbitalRelaxation.ContinuousZonalScattering.0.QuantumTheory.Models.OrbitalRelaxation.polarCosineAverage_sub"
-    ],
+    "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
@@ -104571,9 +104561,7 @@
     "dependents": [
       "QuantumTheory.LinearResponse.eigenbasisDensityOperator_apply_basis",
       "QuantumTheory.eigenbasisGibbsDensityOperator_apply_basis",
-      "SecondQuantization.Common.canonicalFullGibbsDensityOperator_apply_basis_of_ne",
-      "SecondQuantization.Common.canonicalFullGibbsDensityOperator_apply_basis_of_sector",
-      "SecondQuantization.Common.canonicalFullGibbsDensityOperator_expectation_eq_tsum_sector",
+      "SecondQuantization.Common.canonicalFullGibbsDensityOperator_apply_basis",
       "SecondQuantization.Fermionic.completedFreeModeTruncatedGibbsDensityOperator_apply_basis"
     ],
     "dependencies": [
@@ -104585,12 +104573,10 @@
     "compiledConsumers": [
       "QuantumTheory.LinearResponse.eigenbasisDensityOperator_apply_basis",
       "QuantumTheory.eigenbasisGibbsDensityOperator_apply_basis",
-      "SecondQuantization.Common.canonicalFullGibbsDensityOperator_apply_basis_of_ne",
-      "SecondQuantization.Common.canonicalFullGibbsDensityOperator_apply_basis_of_sector",
-      "SecondQuantization.Common.canonicalFullGibbsDensityOperator_expectation_eq_tsum_sector",
+      "SecondQuantization.Common.canonicalFullGibbsDensityOperator_apply_basis",
       "SecondQuantization.Fermionic.completedFreeModeTruncatedGibbsDensityOperator_apply_basis"
     ],
-    "compiledConsumerCount": 6,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -135088,6 +135074,57 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {Mode : Type u_1} {Config : Type u_2} [inst : SecondQuantization.Common.OccupationBasis Mode Config] (ε : Mode → ℝ)\n  (β : ℝ) (N : ℕ) [inst_1 : Nonempty (SecondQuantization.Common.ParticleNumberSector Mode Config N)]\n  (hsum : QuantumTheory.EigenbasisGibbsSummable (fun n => SecondQuantization.Common.occupationEnergy ε ↑n) β)\n  (c : Config),\n  (SecondQuantization.Common.canonicalFullGibbsDensityOperator ε β N hsum).op\n      (SecondQuantization.Common.completedBasisState c) =\n    ↑(Real.normalizedWeight (SecondQuantization.Common.canonicalFullGibbsWeight ε β N) c) •\n      SecondQuantization.Common.completedBasisState c",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.canonicalFullGibbsDensityOperator_apply_basis",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Thermal.CanonicalFullFock",
+    "externalAxioms": [],
+    "docString": "The full-Fock canonical Gibbs operator acts diagonally with the\nnormalized zero-extended Boltzmann weight. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Common.canonicalFullGibbsDensityOperator_apply_basis_of_ne",
+      "SecondQuantization.Common.canonicalFullGibbsDensityOperator_apply_basis_of_sector",
+      "SecondQuantization.Common.canonicalFullGibbsDensityOperator_expectation_eq_tsum_sector"
+    ],
+    "dependencies": [
+      "QuantumTheory.diagonalDensityOperator_apply_basis",
+      "SecondQuantization.Common.canonicalFullGibbsWeight_nonneg",
+      "SecondQuantization.Common.canonicalFullGibbsWeight_norm_summable",
+      "SecondQuantization.Common.canonicalFullGibbsWeight_tsum_pos"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Common.canonicalFullGibbsDensityOperator_apply_basis_of_ne",
+      "SecondQuantization.Common.canonicalFullGibbsDensityOperator_apply_basis_of_sector",
+      "SecondQuantization.Common.canonicalFullGibbsDensityOperator_expectation_eq_tsum_sector"
+    ],
+    "compiledConsumerCount": 3,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {Mode : Type u_1} {Config : Type u_2} [inst : SecondQuantization.Common.OccupationBasis Mode Config] (ε : Mode → ℝ)\n  (β : ℝ) (N : ℕ) [inst_1 : Nonempty (SecondQuantization.Common.ParticleNumberSector Mode Config N)]\n  (hsum : QuantumTheory.EigenbasisGibbsSummable (fun n => SecondQuantization.Common.occupationEnergy ε ↑n) β)\n  (c : Config),\n  SecondQuantization.Common.particleNumber c ≠ N →\n    (SecondQuantization.Common.canonicalFullGibbsDensityOperator ε β N hsum).op\n        (SecondQuantization.Common.completedBasisState c) =\n      0",
     "standardAxioms": [
       "Classical.choice",
@@ -135111,12 +135148,8 @@
       "SecondQuantization.Common.grandCanonicalGibbsDensityOperator_compress_sector"
     ],
     "dependencies": [
-      "QuantumTheory.diagonalDensityOperator_apply_basis",
-      "SecondQuantization.Common.canonicalFullGibbsWeight_apply_of_ne",
-      "SecondQuantization.Common.canonicalFullGibbsWeight_nonneg",
-      "SecondQuantization.Common.canonicalFullGibbsWeight_norm_summable",
-      "SecondQuantization.Common.canonicalFullGibbsWeight_tsum_pos",
-      "SecondQuantization.Common.completedHilbertBasis_apply"
+      "SecondQuantization.Common.canonicalFullGibbsDensityOperator_apply_basis",
+      "SecondQuantization.Common.canonicalFullGibbsWeight_apply_of_ne"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -135162,11 +135195,7 @@
       "SecondQuantization.Common.grandCanonicalGibbsDensityOperator_compress_sector"
     ],
     "dependencies": [
-      "QuantumTheory.diagonalDensityOperator_apply_basis",
-      "SecondQuantization.Common.canonicalFullGibbsWeight_nonneg",
-      "SecondQuantization.Common.canonicalFullGibbsWeight_norm_summable",
-      "SecondQuantization.Common.canonicalFullGibbsWeight_tsum_pos",
-      "SecondQuantization.Common.completedHilbertBasis_apply",
+      "SecondQuantization.Common.canonicalFullGibbsDensityOperator_apply_basis",
       "SecondQuantization.Common.normalizedWeight_canonicalFullGibbsWeight_apply_sector"
     ],
     "crossModuleDirectWrapper": false,
@@ -135308,11 +135337,8 @@
     ],
     "dependencies": [
       "QuantumTheory.DensityOperator.hasSum_expectation_diagonal",
-      "QuantumTheory.diagonalDensityOperator_apply_basis",
+      "SecondQuantization.Common.canonicalFullGibbsDensityOperator_apply_basis",
       "SecondQuantization.Common.canonicalFullGibbsWeight_apply_of_ne",
-      "SecondQuantization.Common.canonicalFullGibbsWeight_nonneg",
-      "SecondQuantization.Common.canonicalFullGibbsWeight_norm_summable",
-      "SecondQuantization.Common.canonicalFullGibbsWeight_tsum_pos",
       "SecondQuantization.Common.completedHilbertBasis_apply",
       "SecondQuantization.Common.inner_completedBasisState_left",
       "SecondQuantization.Common.normalizedWeight_canonicalFullGibbsWeight_apply_sector"
@@ -135401,18 +135427,16 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Common.canonicalFullGibbsDensityOperator_apply_basis_of_ne",
-      "SecondQuantization.Common.canonicalFullGibbsDensityOperator_expectation_eq_tsum_sector",
-      "SecondQuantization.Common.canonicalFullGibbsWeight_nonneg"
+      "SecondQuantization.Common.canonicalFullGibbsDensityOperator_expectation_eq_tsum_sector"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Common.canonicalFullGibbsDensityOperator_apply_basis_of_ne",
-      "SecondQuantization.Common.canonicalFullGibbsDensityOperator_expectation_eq_tsum_sector",
-      "SecondQuantization.Common.canonicalFullGibbsWeight_nonneg"
+      "SecondQuantization.Common.canonicalFullGibbsDensityOperator_expectation_eq_tsum_sector"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -135434,7 +135458,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": true,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -135446,17 +135470,15 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Common.canonicalFullGibbsWeight_nonneg",
       "SecondQuantization.Common.normalizedWeight_canonicalFullGibbsWeight_apply_sector"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Common.canonicalFullGibbsWeight_nonneg",
       "SecondQuantization.Common.normalizedWeight_canonicalFullGibbsWeight_apply_sector"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -135538,24 +135560,18 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Common.canonicalFullGibbsDensityOperator_apply_basis_of_ne",
-      "SecondQuantization.Common.canonicalFullGibbsDensityOperator_apply_basis_of_sector",
-      "SecondQuantization.Common.canonicalFullGibbsDensityOperator_expectation_eq_tsum_sector"
+      "SecondQuantization.Common.canonicalFullGibbsDensityOperator_apply_basis"
     ],
     "dependencies": [
-      "QuantumTheory.eigenbasisBoltzmannWeight_nonneg",
-      "SecondQuantization.Common.canonicalFullGibbsWeight_apply_of_ne",
-      "SecondQuantization.Common.canonicalFullGibbsWeight_apply_sector"
+      "QuantumTheory.eigenbasisBoltzmannWeight_nonneg"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Common.canonicalFullGibbsDensityOperator",
-      "SecondQuantization.Common.canonicalFullGibbsDensityOperator_apply_basis_of_ne",
-      "SecondQuantization.Common.canonicalFullGibbsDensityOperator_apply_basis_of_sector",
-      "SecondQuantization.Common.canonicalFullGibbsDensityOperator_expectation_eq_tsum_sector"
+      "SecondQuantization.Common.canonicalFullGibbsDensityOperator_apply_basis"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -135589,9 +135605,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Common.canonicalFullGibbsDensityOperator_apply_basis_of_ne",
-      "SecondQuantization.Common.canonicalFullGibbsDensityOperator_apply_basis_of_sector",
-      "SecondQuantization.Common.canonicalFullGibbsDensityOperator_expectation_eq_tsum_sector"
+      "SecondQuantization.Common.canonicalFullGibbsDensityOperator_apply_basis"
     ],
     "dependencies": [
       "SecondQuantization.Common.canonicalFullGibbsWeight_hasSum"
@@ -135600,11 +135614,9 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Common.canonicalFullGibbsDensityOperator",
-      "SecondQuantization.Common.canonicalFullGibbsDensityOperator_apply_basis_of_ne",
-      "SecondQuantization.Common.canonicalFullGibbsDensityOperator_apply_basis_of_sector",
-      "SecondQuantization.Common.canonicalFullGibbsDensityOperator_expectation_eq_tsum_sector"
+      "SecondQuantization.Common.canonicalFullGibbsDensityOperator_apply_basis"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -135638,9 +135650,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Common.canonicalFullGibbsDensityOperator_apply_basis_of_ne",
-      "SecondQuantization.Common.canonicalFullGibbsDensityOperator_apply_basis_of_sector",
-      "SecondQuantization.Common.canonicalFullGibbsDensityOperator_expectation_eq_tsum_sector"
+      "SecondQuantization.Common.canonicalFullGibbsDensityOperator_apply_basis"
     ],
     "dependencies": [
       "SecondQuantization.Common.canonicalFullGibbsWeight_hasSum",
@@ -135650,11 +135660,9 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Common.canonicalFullGibbsDensityOperator",
-      "SecondQuantization.Common.canonicalFullGibbsDensityOperator_apply_basis_of_ne",
-      "SecondQuantization.Common.canonicalFullGibbsDensityOperator_apply_basis_of_sector",
-      "SecondQuantization.Common.canonicalFullGibbsDensityOperator_expectation_eq_tsum_sector"
+      "SecondQuantization.Common.canonicalFullGibbsDensityOperator_apply_basis"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -137717,8 +137725,6 @@
     "dependents": [
       "SecondQuantization.Bosonic.completedOccupationHilbertBasis_apply",
       "SecondQuantization.Common.adiabaticIntegrable_grandCanonicalGibbsDensityOperator",
-      "SecondQuantization.Common.canonicalFullGibbsDensityOperator_apply_basis_of_ne",
-      "SecondQuantization.Common.canonicalFullGibbsDensityOperator_apply_basis_of_sector",
       "SecondQuantization.Common.canonicalFullGibbsDensityOperator_expectation_eq_sector",
       "SecondQuantization.Common.canonicalFullGibbsDensityOperator_expectation_eq_tsum_sector",
       "SecondQuantization.Common.canonicalGibbsDensityOperator_apply_basis",
@@ -137737,8 +137743,6 @@
     "compiledConsumers": [
       "SecondQuantization.Bosonic.completedOccupationHilbertBasis_apply",
       "SecondQuantization.Common.adiabaticIntegrable_grandCanonicalGibbsDensityOperator",
-      "SecondQuantization.Common.canonicalFullGibbsDensityOperator_apply_basis_of_ne",
-      "SecondQuantization.Common.canonicalFullGibbsDensityOperator_apply_basis_of_sector",
       "SecondQuantization.Common.canonicalFullGibbsDensityOperator_expectation_eq_sector",
       "SecondQuantization.Common.canonicalFullGibbsDensityOperator_expectation_eq_tsum_sector",
       "SecondQuantization.Common.canonicalGibbsDensityOperator_apply_basis",
@@ -137751,7 +137755,7 @@
       "SecondQuantization.Common.isStationary_grandCanonicalGibbsDensityOperator",
       "SecondQuantization.Fermionic.completedOccupationHilbertBasis_apply"
     ],
-    "compiledConsumerCount": 15,
+    "compiledConsumerCount": 13,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -154680,7 +154684,6 @@
       "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleDiagram_componentExternalTime_eq_localTimes",
       "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleDiagram_restrictComponent_heq_local",
       "SimpleGraph.componentBlock_mem_componentPartition",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalSubsetAssembly.0.SecondQuantization.Fermionic.dysonAmplitude_eq_of_diagram_time_heq",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalSubsetAssembly.0.SecondQuantization.Fermionic.externalInsertionSlotCongr_heq_of_diagram_heq"
     ],
     "crossModuleDirectWrapper": false,
@@ -190486,300 +190489,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (f g : ℝ → ℝ),\n  Continuous f →\n    Continuous g →\n      (QuantumTheory.Models.OrbitalRelaxation.polarCosineAverage fun μ => f μ + g μ) =\n        QuantumTheory.Models.OrbitalRelaxation.polarCosineAverage f +\n          QuantumTheory.Models.OrbitalRelaxation.polarCosineAverage g",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Models.OrbitalRelaxation.ContinuousZonalScattering.0.QuantumTheory.Models.OrbitalRelaxation.polarCosineAverage_add",
-    "module": "LeanCondensedMatter.Models.OrbitalRelaxation.ContinuousZonalScattering",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Models.OrbitalRelaxation.quadraticZonal_degreeTwoRate"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Models.OrbitalRelaxation.quadraticZonal_degreeTwoRate"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (c : ℝ), (QuantumTheory.Models.OrbitalRelaxation.polarCosineAverage fun x => c) = c",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Models.OrbitalRelaxation.ContinuousZonalScattering.0.QuantumTheory.Models.OrbitalRelaxation.polarCosineAverage_const",
-    "module": "LeanCondensedMatter.Models.OrbitalRelaxation.ContinuousZonalScattering",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Models.OrbitalRelaxation.quadraticZonal_degreeTwoRate"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Models.OrbitalRelaxation.quadraticZonal_degreeTwoRate"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (c : ℝ) (f : ℝ → ℝ),\n  (QuantumTheory.Models.OrbitalRelaxation.polarCosineAverage fun μ => c * f μ) =\n    c * QuantumTheory.Models.OrbitalRelaxation.polarCosineAverage f",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Models.OrbitalRelaxation.ContinuousZonalScattering.0.QuantumTheory.Models.OrbitalRelaxation.polarCosineAverage_const_mul",
-    "module": "LeanCondensedMatter.Models.OrbitalRelaxation.ContinuousZonalScattering",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Models.OrbitalRelaxation.quadraticZonal_degreeTwoRate"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Models.OrbitalRelaxation.quadraticZonal_degreeTwoRate"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "(QuantumTheory.Models.OrbitalRelaxation.polarCosineAverage fun μ => μ ^ 4) = 1 / 5",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Models.OrbitalRelaxation.ContinuousZonalScattering.0.QuantumTheory.Models.OrbitalRelaxation.polarCosineAverage_four",
-    "module": "LeanCondensedMatter.Models.OrbitalRelaxation.ContinuousZonalScattering",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Models.OrbitalRelaxation.quadraticZonal_degreeTwoRate"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Models.OrbitalRelaxation.quadraticZonal_degreeTwoRate"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (f : ℝ → ℝ),\n  (QuantumTheory.Models.OrbitalRelaxation.polarCosineAverage fun μ => -f μ) =\n    -QuantumTheory.Models.OrbitalRelaxation.polarCosineAverage f",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Models.OrbitalRelaxation.ContinuousZonalScattering.0.QuantumTheory.Models.OrbitalRelaxation.polarCosineAverage_neg",
-    "module": "LeanCondensedMatter.Models.OrbitalRelaxation.ContinuousZonalScattering",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Models.OrbitalRelaxation.continuousZonalCollisionAtNorth_P2"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Models.OrbitalRelaxation.continuousZonalCollisionAtNorth_P2"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "(QuantumTheory.Models.OrbitalRelaxation.polarCosineAverage fun μ => μ ^ 2) = 1 / 3",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Models.OrbitalRelaxation.ContinuousZonalScattering.0.QuantumTheory.Models.OrbitalRelaxation.polarCosineAverage_sq",
-    "module": "LeanCondensedMatter.Models.OrbitalRelaxation.ContinuousZonalScattering",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Models.OrbitalRelaxation.quadraticZonal_degreeTwoRate"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Models.OrbitalRelaxation.quadraticZonal_degreeTwoRate"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (f g : ℝ → ℝ),\n  Continuous f →\n    Continuous g →\n      (QuantumTheory.Models.OrbitalRelaxation.polarCosineAverage fun μ => f μ - g μ) =\n        QuantumTheory.Models.OrbitalRelaxation.polarCosineAverage f -\n          QuantumTheory.Models.OrbitalRelaxation.polarCosineAverage g",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Models.OrbitalRelaxation.ContinuousZonalScattering.0.QuantumTheory.Models.OrbitalRelaxation.polarCosineAverage_sub",
-    "module": "LeanCondensedMatter.Models.OrbitalRelaxation.ContinuousZonalScattering",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Models.OrbitalRelaxation.quadraticZonal_degreeTwoRate"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Models.OrbitalRelaxation.quadraticZonal_degreeTwoRate"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ (rate : ℝ) (f : ℝ → ℝ), (∀ (t : ℝ), HasDerivAt f (-(rate * f t)) t) → ∀ (t : ℝ), f t = f 0 * Real.exp (-(rate * t))",
     "standardAxioms": [
       "Classical.choice",
@@ -194597,92 +194306,6 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumMechanics.SingleParticle.Continuum.probabilityCurrentValue1D_eq_velocityExpectation"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (ℏ κ potential : ℝ) (ψ ψt ψxx : ℂ),\n  ℏ ≠ 0 →\n    ℏ * ψt.im = κ * ψxx.re - potential * ψ.re →\n      ℏ * ψt.re = -κ * ψxx.im + potential * ψ.im →\n        QuantumMechanics.SingleParticle.Continuum.probabilityDensityTimeDerivativeValue ψ ψt +\n            QuantumMechanics.SingleParticle.Continuum.probabilityCurrentDivergenceValue1D ℏ κ ψ ψxx =\n          0",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Continuity.Scalar1D.0.QuantumMechanics.SingleParticle.Continuum.probability_continuity_balance_of_components",
-    "module": "LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Continuity.Scalar1D",
-    "externalAxioms": [],
-    "docString": "The local probability balance from the two real component equations. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumMechanics.SingleParticle.Continuum.probability_continuity_balance_of_schrodinger"
-    ],
-    "dependencies": [
-      "QuantumMechanics.SingleParticle.Continuum.probabilityCurrentPairingValue_eq_coordinates"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumMechanics.SingleParticle.Continuum.probability_continuity_balance_of_schrodinger"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (ℏ κ potential : ℝ) (ψ ψt ψxx : ℂ),\n  Complex.I * ↑ℏ * ψt = -↑κ * ψxx + ↑potential * ψ →\n    ℏ * ψt.im = κ * ψxx.re - potential * ψ.re ∧ ℏ * ψt.re = -κ * ψxx.im + potential * ψ.im",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Continuity.Scalar1D.0.QuantumMechanics.SingleParticle.Continuum.schrodinger_component_equations",
-    "module": "LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Continuity.Scalar1D",
-    "externalAxioms": [],
-    "docString": "Real and imaginary component equations extracted from the pointwise Schrödinger equation. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumMechanics.SingleParticle.Continuum.probability_continuity_balance_of_schrodinger"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumMechanics.SingleParticle.Continuum.probability_continuity_balance_of_schrodinger"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -206593,48 +206216,6 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.measurableLocallyBounded_dysonFixedTimeAmplitude"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] {E₁ E₂ n₁ n₂ : ℕ},\n  E₁ = E₂ →\n    n₁ = n₂ →\n      ∀ (p : SecondQuantization.Fermionic.ExternalInsertionWickDiagram Mode E₁ n₁)\n        (q : SecondQuantization.Fermionic.ExternalInsertionWickDiagram Mode E₂ n₂),\n        p ≍ q →\n          ∀ (t₁ : Fin (2 * E₁) → ℝ) (t₂ : Fin (2 * E₂) → ℝ),\n            t₁ ≍ t₂ →\n              ∀ (ε : Mode → ℝ) (β : ℝ) (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ),\n                p.dysonAmplitude ε β g t₁ = q.dysonAmplitude ε β g t₂",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalSubsetAssembly.0.SecondQuantization.Fermionic.dysonAmplitude_eq_of_diagram_time_heq",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalSubsetAssembly",
-    "externalAxioms": [],
-    "docString": "Actual integrated Dyson amplitudes are invariant under simultaneous\ndependent equality of their entire ordered Wick diagram and source-time\nfamily. No sign or thermal-kernel symmetry is assumed. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleConnectedBlocks_componentDysonAmplitude_eq_local"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleConnectedBlocks_componentDysonAmplitude_eq_local"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
