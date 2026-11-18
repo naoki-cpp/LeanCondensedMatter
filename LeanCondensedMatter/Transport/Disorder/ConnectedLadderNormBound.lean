@@ -41,14 +41,6 @@ namespace FiniteDisorderEnsemble
 
 variable (ensemble : FiniteDisorderEnsemble (H := H) (Ω := Ω))
 
-private theorem norm_mul_three_le
-    (a b c : H →L[ℂ] H) :
-    ‖a * b * c‖ ≤ ‖a‖ * ‖b‖ * ‖c‖ := by
-  calc
-    _ ≤ ‖a * b‖ * ‖c‖ := norm_mul_le _ _
-    _ ≤ (‖a‖ * ‖b‖) * ‖c‖ :=
-      mul_le_mul_of_nonneg_right (norm_mul_le _ _) (norm_nonneg _)
-
 /-- Canonical resummed free-Green ladder vertex. The microscopic smallness
 bound supplies invertibility; callers do not provide an independent unit witness. -/
 noncomputable def resummedFreeGreenLadderVertex
@@ -155,8 +147,11 @@ theorem norm_connectedTwoGreen_sub_resummedFreeLadder_le_of_isUnit
     rw [hdiff, norm_neg]
     calc
       ‖freeLeft * ladder (dressed - vertex) * freeRight‖ ≤
-          ‖freeLeft‖ * ‖ladder (dressed - vertex)‖ * ‖freeRight‖ :=
-        norm_mul_three_le _ _ _
+          ‖freeLeft‖ * ‖ladder (dressed - vertex)‖ * ‖freeRight‖ := by
+        simpa only [List.prod_cons, List.prod_nil, List.map_cons, List.map_nil,
+          mul_one, mul_assoc] using
+          (List.norm_prod_le'
+            (l := [freeLeft, ladder (dressed - vertex), freeRight]) (by simp))
       _ ≤ leftBound * ‖ladder (dressed - vertex)‖ * ‖freeRight‖ := by
         exact mul_le_mul_of_nonneg_right
           (mul_le_mul_of_nonneg_right hleft
