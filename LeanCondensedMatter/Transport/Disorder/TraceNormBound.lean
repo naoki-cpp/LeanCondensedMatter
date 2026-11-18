@@ -42,7 +42,7 @@ theorem norm_averagedTwoGreenTrace_sub_meanProduct_le_uniformPotential_sq
     (energyLeft regulatorLeft energyRight regulatorRight : ℝ)
     (hregLeft : regulatorLeft ≠ 0) (hregRight : regulatorRight ≠ 0)
     (measuredVertex sourceVertex : H →L[ℂ] H)
-    (potentialBound : ℝ) (hbound : 0 ≤ potentialBound)
+    (potentialBound : ℝ)
     (hpotential : ∀ ω, ‖(ensemble.impurityPotential ω).1‖ ≤ potentialBound) :
     ‖ensemble.averagedTwoGreenVertexTraceKernelOfRegulators
         energyLeft regulatorLeft energyRight regulatorRight measuredVertex sourceVertex -
@@ -60,7 +60,7 @@ theorem norm_averagedTwoGreenTrace_sub_meanProduct_le_uniformPotential_sq
   have hconn : ‖conn‖ ≤ limit :=
     ensemble.norm_connectedTwoGreenInsertion_le_uniformPotential_sq
       energyLeft regulatorLeft energyRight regulatorRight hregLeft hregRight
-      sourceVertex potentialBound hbound hpotential
+      sourceVertex potentialBound hpotential
   have hdiff :
       ensemble.averagedTwoGreenVertexTraceKernelOfRegulators
           energyLeft regulatorLeft energyRight regulatorRight measuredVertex sourceVertex -

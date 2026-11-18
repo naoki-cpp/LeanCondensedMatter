@@ -107,6 +107,17 @@ theorem norm_average_le_of_forall {E : Type*}
     _ = bound := by
       rw [← Finset.sum_mul, ensemble.probability_sum, one_mul]
 
+/-- A uniform impurity-norm upper bound is automatically nonnegative in a
+normalized finite disorder ensemble. -/
+theorem uniformPotentialBound_nonneg (bound : ℝ)
+    (hpotential : ∀ ω, ‖(ensemble.impurityPotential ω).1‖ ≤ bound) :
+    0 ≤ bound := by
+  have haverage :
+      ‖ensemble.average (fun ω => (ensemble.impurityPotential ω).1)‖ ≤ bound :=
+    ensemble.norm_average_le_of_forall
+      (fun ω => (ensemble.impurityPotential ω).1) bound hpotential
+  exact (norm_nonneg _).trans haverage
+
 /-- Finite operator averaging commutes with adjunction because ensemble weights are real. -/
 theorem average_star (operator : Ω → H →L[ℂ] H) :
     ensemble.average (fun ω => star (operator ω)) = star (ensemble.average operator) := by

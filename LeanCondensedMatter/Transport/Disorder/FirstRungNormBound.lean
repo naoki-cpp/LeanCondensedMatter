@@ -104,7 +104,7 @@ theorem norm_connectedTwoGreen_sub_firstBornRung_le_cubic
     (hregLeft : regulatorLeft ≠ 0) (hregRight : regulatorRight ≠ 0)
     (hcentered : ensemble.IsCentered)
     (vertex : H →L[ℂ] H)
-    (potentialBound : ℝ) (hbound : 0 ≤ potentialBound)
+    (potentialBound : ℝ)
     (hpotential : ∀ ω, ‖(ensemble.impurityPotential ω).1‖ ≤ potentialBound) :
     ‖ensemble.connectedTwoGreenInsertionOfRegulators
         energyLeft regulatorLeft energyRight regulatorRight vertex -
@@ -135,10 +135,10 @@ theorem norm_connectedTwoGreen_sub_firstBornRung_le_cubic
   have hCL : 0 ≤ CL := by dsimp [CL]; positivity
   have hLerr (ω : Ω) : ‖L ω - AL ω‖ ≤ EL :=
     ensemble.norm_configurationGreen_fluctuation_sub_firstDyson_le
-      energyLeft regulatorLeft hregLeft hcentered ω potentialBound hbound hpotential
+      energyLeft regulatorLeft hregLeft hcentered ω potentialBound hpotential
   have hRerr (ω : Ω) : ‖R ω - AR ω‖ ≤ ER :=
     ensemble.norm_configurationGreen_fluctuation_sub_firstDyson_le
-      energyRight regulatorRight hregRight hcentered ω potentialBound hbound hpotential
+      energyRight regulatorRight hregRight hcentered ω potentialBound hpotential
   have hRfluct (ω : Ω) : ‖R ω‖ ≤ CR :=
     ensemble.norm_configurationGreen_sub_averaged_le
       energyRight regulatorRight hregRight ω potentialBound hpotential

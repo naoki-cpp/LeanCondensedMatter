@@ -36,7 +36,7 @@ this controls a centered random operator, not an averaged Born–Dyson closure. 
 theorem norm_configurationGreen_fluctuation_sub_firstDyson_le
     (energy regulator : ℝ) (hregulator : regulator ≠ 0)
     (hcentered : ensemble.IsCentered) (ω : Ω)
-    (potentialBound : ℝ) (hbound : 0 ≤ potentialBound)
+    (potentialBound : ℝ)
     (hpotential : ∀ ξ, ‖(ensemble.impurityPotential ξ).1‖ ≤ potentialBound) :
     ‖(ensemble.configurationGreenOfRegulator energy regulator ω -
         ensemble.averagedGreenOfRegulator energy regulator) -

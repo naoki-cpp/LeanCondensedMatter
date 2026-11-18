@@ -108,7 +108,7 @@ momentum-volume normalization. The comparator uses *exact mean* propagators, not
 Born-Dyson Green operators or dressed vertices. -/
 theorem norm_averagedHallCurrentTrace_sub_meanProduct_le_uniformPotential_sq
     (e v energy broadening potentialBound : ℝ)
-    (hbroadening : broadening ≠ 0) (hbound : 0 ≤ potentialBound)
+    (hbroadening : broadening ≠ 0)
     (hpotential : ∀ ω, ‖(ensemble.impurityPotential ω).1‖ ≤ potentialBound) :
     ‖ensemble.averagedTwoGreenVertexTraceKernelOfRegulators
         energy broadening energy (-broadening)
@@ -128,7 +128,7 @@ theorem norm_averagedHallCurrentTrace_sub_meanProduct_le_uniformPotential_sq
       energy broadening energy (-broadening) hbroadening
       (by simpa using hbroadening)
       (currentOperator 0 e v) (currentOperator 1 e v)
-      potentialBound hbound hpotential
+      potentialBound hpotential
   simpa only [hrank, Nat.cast_ofNat, abs_neg] using hboundTrace
 
 
