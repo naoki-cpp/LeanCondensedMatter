@@ -38,9 +38,8 @@ theorem canonicalFullGibbsWeight_hasSum (ε : Mode → ℝ) (β : ℝ) (N : ℕ)
     (hsum : EigenbasisGibbsSummable
       (fun n : ParticleNumberSector Mode Config N => occupationEnergy ε n.val) β) :
     HasSum (canonicalFullGibbsWeight (Config := Config) ε β N)
-      (canonicalPartitionFunction (Config := Config) ε β N) := by
-  unfold canonicalFullGibbsWeight canonicalPartitionFunction eigenbasisPartitionFunction
-  exact (hasSum_extend_zero Subtype.val_injective).2
+      (canonicalPartitionFunction (Config := Config) ε β N) :=
+  (hasSum_extend_zero Subtype.val_injective).2
     (eigenbasisBoltzmannWeight_summable _ _ hsum).hasSum
 
 /-- On the chosen sector the extended weight equals the original Boltzmann weight. -/
