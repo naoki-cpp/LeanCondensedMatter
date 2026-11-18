@@ -619,26 +619,6 @@ theorem ExternalInsertionBlockLayout.ownerSlotCongrConnectedBlockFamilyEquiv_app
       (layout.ownerSlotCongrBlockFamily e F.1) B := by
   rfl
 
-open Classical in
-/-- For any additive target, the complete preconnected local Wick-family
-sum is unchanged by reindexing the *family* along a physical owner
-relabeling. No factorization or Dyson invariance is assumed. -/
-theorem ExternalInsertionBlockLayout.sum_ownerSlotCongrConnectedBlockFamilies
-    {ExternalLabel InternalLabel M : Type*}
-    [Fintype ExternalLabel] [Fintype InternalLabel] [AddCommMonoid M]
-    (layout : ExternalInsertionBlockLayout E N) (e : Fin N ≃ Fin N)
-    (weight : (layout.ownerSlotCongr e).ConnectedBlockFamily
-      (ExternalLabel := ExternalLabel) (InternalLabel := InternalLabel) → M) :
-    (∑ F : layout.ConnectedBlockFamily
-        (ExternalLabel := ExternalLabel) (InternalLabel := InternalLabel),
-      weight (layout.ownerSlotCongrConnectedBlockFamilyEquiv e F)) =
-      ∑ G : (layout.ownerSlotCongr e).ConnectedBlockFamily
-        (ExternalLabel := ExternalLabel) (InternalLabel := InternalLabel),
-        weight G := by
-  exact Equiv.sum_comp
-    (layout.ownerSlotCongrConnectedBlockFamilyEquiv e) weight
-
-
 /-- Transporting a *whole preconnected Wick-block family* between two
 physical owner shuffles and then standardizing any chosen local block
 agrees with directly standardizing the original local Wick diagram.
