@@ -460,11 +460,9 @@ theorem connectedExternalInsertionDysonCoefficient_eq_topPartitionFiber
           d.1.1.dysonAmplitude ε β g times else 0 := by
   classical
   unfold connectedExternalInsertionDysonCoefficient
-  apply Finset.sum_congr
-  · ext d
-    simp
-  · intro d _
-    simp only [← (d.1.1.allExternalVerticesConnected_iff_externalComponentPartition_eq_top anchor)]
+  apply Finset.sum_congr (by ext d; simp)
+  intro d _
+  simp only [← (d.1.1.allExternalVerticesConnected_iff_externalComponentPartition_eq_top anchor)]
 
 /-- The formal Dyson series of the fully external-connected diagram sector.
 It is not identified with a source cumulant without the signed moment theorem. -/
@@ -487,11 +485,9 @@ theorem vacuumFreeExternalInsertionDysonCoefficient_eq_connected_two
   classical
   unfold vacuumFreeExternalInsertionDysonCoefficient
     connectedExternalInsertionDysonCoefficient
-  apply Finset.sum_congr
-  · ext d
-    simp
-  · intro d _
-    simp only [d.1.1.allExternalVerticesConnected_two, ↓reduceIte]
+  apply Finset.sum_congr (by ext d; simp)
+  intro d _
+  simp only [d.1.1.allExternalVerticesConnected_two, ↓reduceIte]
 
 /-- At two external insertions, the *physical* vacuum-free Dyson series
 and the fully externally connected diagram series agree without a signed
