@@ -619,17 +619,15 @@ theorem externalSubsetSignedConnectedMomentSeries_eq_zero_of_odd
   apply Finset.sum_eq_zero
   intro π _
   obtain ⟨B, hB, hBodd⟩ : ∃ B ∈ π.parts, ¬ Even B.card := by
-    by_contra h
-    push Not at h
+    by_contra! h
     apply hodd
     rw [← π.sum_card_parts]
     exact Finset.even_sum (s := π.parts)
       (fun B : Finset (Fin (2 * E)) => B.card) h
-  have hprod : Finpartition.partitionProduct
-      (externalSubsetConnectedDiagramSeries ε β g labels times) π = 0 :=
+  rw [Finpartition.partitionProduct,
     Finset.prod_eq_zero hB
-      (externalSubsetSeries_eq_zero_of_odd ε β g labels times B hBodd).2
-  rw [hprod, mul_zero]
+      (externalSubsetSeries_eq_zero_of_odd ε β g labels times B hBodd).2,
+    mul_zero]
 
 /-- Empty and odd external subsets already satisfy the physical
 signed partition identity, unconditionally. Thus completing Phase 5
