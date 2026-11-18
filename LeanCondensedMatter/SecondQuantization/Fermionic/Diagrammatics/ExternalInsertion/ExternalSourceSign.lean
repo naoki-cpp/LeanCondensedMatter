@@ -104,7 +104,7 @@ theorem externalPartitionSourceSign_eq_componentExternalOrderSign_of_vacuumFree
       d.componentExternalShuffle.blockSlotSet B =
         (externalPartitionShuffleFull π).blockSlotSet (e B) := by
     rw [d.componentExternalShuffle_blockSlotSet,
-      externalPartitionShuffleFull_blockSlotSet]
+      π.shuffleOfIncreasingOrderFull_blockSlotSet]
     exact (d.vacuumFreeComponentsEquivExternalBlocks_apply hVac B).symm
   have horder (B C : d.vertexGraph.componentPartition.parts) :
       compOrder B < compOrder C ↔
