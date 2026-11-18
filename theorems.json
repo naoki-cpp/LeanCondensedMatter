@@ -40683,8 +40683,7 @@
       "QuantumMechanics.SingleParticle.Continuum.continuumRealPotentialSchrodingerHamiltonian1D_symmetric"
     ],
     "dependencies": [
-      "QuantumMechanics.SingleParticle.Continuum.fourier_continuumH2Laplacian1D_ae",
-      "_private.LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Hamiltonian.LaplacianSymmetry1D.0.QuantumMechanics.SingleParticle.Continuum.inner_laplacianFourierSymbol1D_mul"
+      "QuantumMechanics.SingleParticle.Continuum.fourier_continuumH2Laplacian1D_ae"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -114798,7 +114797,7 @@
       "SecondQuantization.Bosonic.factorial_mul_grandCanonicalGibbsDysonCoeff_quarticInteraction_eq_sum_dysonThermalAmplitude"
     ],
     "crossModuleDirectWrapper": false,
-    "completedMention": false,
+    "completedMention": true,
     "compiledConsumers": [],
     "compiledConsumerCount": 0,
     "axioms": [
@@ -194685,48 +194684,6 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumMechanics.SingleParticle.Continuum.fourier_continuumH2Laplacian1D_ae"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (x : ℝ) (z w : ℂ),\n  inner ℂ (QuantumMechanics.SingleParticle.Continuum.laplacianFourierSymbol1D✝ x * z) w =\n    inner ℂ z (QuantumMechanics.SingleParticle.Continuum.laplacianFourierSymbol1D✝ x * w)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Hamiltonian.LaplacianSymmetry1D.0.QuantumMechanics.SingleParticle.Continuum.inner_laplacianFourierSymbol1D_mul",
-    "module": "LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Hamiltonian.LaplacianSymmetry1D",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumMechanics.SingleParticle.Continuum.continuumH2Laplacian1D_symmetric"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumMechanics.SingleParticle.Continuum.continuumH2Laplacian1D_symmetric"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
