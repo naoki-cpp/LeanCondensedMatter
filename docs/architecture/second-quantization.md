@@ -85,15 +85,16 @@ Fermionic.Validation            terminal examples and checks
 realization or on downstream consumers. `Field` and `Lattice` do not depend on `Transport` or
 `Validation`, and `Transport` does not depend on `Validation`.
 
-The dependency DAG is owned centrally by
-`scripts/check_fermionic_transport_validation_boundary.py`. Focused AlgebraicFock and Lattice audits
-add domain-specific constraints without duplicating that graph.
+The `fermionicResponsibility` scoped DAG is defined in
+`scripts/architecture/second_quantization.json` and checked by
+`scripts/check_architecture_graphs.py`. Focused AlgebraicFock and Lattice rules
+add domain-specific constraints without duplicating this graph.
 
 ## Public import hierarchy
 
-The public import surface mirrors the repository directory hierarchy. Each reusable package has an
-umbrella module at the corresponding dotted path, and each parent umbrella imports its immediate
-public children instead of flattening all descendant leaves.
+The umbrella imports in `SecondQuantization.lean`, `Common.lean`,
+`Fermionic.lean`, and `Bosonic.lean` define the public routes. A named subtree
+is not necessarily an umbrella module: some paths are imported as leaves.
 
 ```text
 SecondQuantization
@@ -102,7 +103,7 @@ SecondQuantization
 │   ├── CompletedSpace
 │   ├── Diagrammatics
 │   ├── ImaginaryTime
-│   ├── Interaction
+│   ├── Interaction.Quartic (leaf)
 │   ├── Perturbation
 │   └── Thermal
 ├── Fermionic
@@ -112,17 +113,22 @@ SecondQuantization
 │   ├── Field
 │   ├── ImaginaryTime
 │   ├── Lattice
-│   ├── Perturbation
 │   ├── Thermal
 │   ├── Transport
 │   └── Validation
 └── Bosonic
     ├── Algebra
+    ├── CompletedSpace
     ├── Diagrammatics
-    ├── ImaginaryTime
+    ├── ImaginaryTime.ImaginaryTimeEvolution (leaf)
     ├── Perturbation
     └── Thermal
 ```
+
+The two leaf entries above have no corresponding intermediate
+`Common.Interaction` or `Bosonic.ImaginaryTime` umbrella. There is no
+`Fermionic.Perturbation` umbrella; its perturbative endpoints are available
+through the diagrammatics modules and the shared Common layer.
 
 The full public entry point is
 
@@ -182,9 +188,8 @@ a documented consumer need, not by an import-count target.
 One-body generalized current work that does not use second quantization should instead import the
 appropriate `Analysis` or `QuantumTheory.ConservationLaw` leaf.
 
-Leaf implementation files are not a compatibility surface. When a routing module ceases to represent
-a reusable concept, downstream code should consume the surviving semantic owner rather than keeping a
-compatibility layer solely for an old import path.
+Leaf implementation files are not a compatibility surface. A routing module without reusable
+semantics should be removed in favor of the canonical declaration owner.
 
 ## Diagrammatics boundary
 
@@ -355,33 +360,14 @@ Lean imports rather than source-line regexes.
 The Common imaginary-time quartic sequence is the ordered product of evolved vertex operators.
 Its zero and successor equations remain available to recursive consumers; the fermionic flattened
 leg product reaches the sequence through the Common row-major product theorem and vertex evolution.
-## Current linked-cluster endpoints
+## Linked-cluster ownership
 
-The finite-mode fermionic partition-function line has both formal and analytic linked-cluster
-endpoints. The canonical formal endpoint is
-
-```lean
-SecondQuantization.Fermionic.
-  factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_sum_connectedQuarticWickDiagramAmplitude
-```
-
-and the finite-dimensional analytic endpoint is
-
-```lean
-SecondQuantization.Fermionic.
-  iteratedDeriv_analyticNormalizedLogPartitionFunction_eq_sum_connectedQuarticWickDiagramAmplitude
-```
-
-The external-leg line has also reached the finite-mode two-point endpoint
-
-```lean
-SecondQuantization.Fermionic.
-  partitionFunctionNormalizedTwoPointDysonSeries_eq_connectedTwoPointDysonSeries
-```
-
-in `TwoPointDiagramExpansion/Series/CauchySeries.lean`. This means the next correlation-function
-target is higher-point/source-insertion structure, not re-proving the two-point linked-cluster
-identity.
+The finite-mode fermionic formal and analytic partition-function endpoints belong to
+`Fermionic.Diagrammatics.LinkedCluster`; the two-point endpoint belongs to
+`Fermionic.Diagrammatics.TwoPointDiagramExpansion`. Their declarations,
+hypotheses, and higher-point limitations are documented in the
+[linked-cluster roadmap](../roadmaps/linked-cluster-theorem.md) and
+[completed theorem index](../completed.md).
 
 ## Normalized moment and connected-decomposition boundary
 
@@ -492,11 +478,10 @@ inferred from formal permutation or power-series identities.
 
 ## Bosonic boundary
 
-Bosonic algebraic and free thermal results may reuse Common infrastructure, but finite fermionic trace
-arguments must not be transferred merely because the mode type is finite. A finite bosonic mode set
-still has an infinite occupation basis. Product-domain closure, summability, KMS identities, operator
-integration, and Dyson convergence therefore remain explicit analytic obligations of the bosonic
-line.
+Bosonic results may reuse Common infrastructure, but finite-fermion trace arguments do not apply
+merely because the bosonic mode type is finite: its occupation basis is still infinite. Completed
+operators require explicit product domains, and free Gibbs expectations require summability and
+KMS hypotheses. Fixed-order Dyson identities do not supply all-order interacting convergence.
 
 ## Refactoring rule
 
