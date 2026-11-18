@@ -206,7 +206,7 @@ For each proposed abstraction:
 4. Keep sign, statistics, normalization, domain, convergence, and regularity
    assumptions visible at their actual boundaries.
 5. Implement and compile a focused pilot before committing to a broader
-   migration; update this roadmap with the resulting current design.
+   API change; update this roadmap to reflect the resulting design.
 
 No definitions, theorems, or physics guarantees are introduced by this
 document.

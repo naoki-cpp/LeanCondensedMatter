@@ -52,9 +52,8 @@ Public package entry points are `QuantumTheory.DensityOperator`,
 `QuantumTheory.POVM`, and `QuantumTheory.Entropy`. The focused
 `QuantumTheory.POVM` umbrella exposes `POVM.Basic` and `POVM.Born` without
 requiring consumers to import all of `QuantumTheory.DensityOperator`.
-`QuantumTheory.DensityOperator` continues to reexport POVM for source
-compatibility; this is a deliberate legacy public convenience, **not** ownership:
-POVM declarations are defined exclusively in the `QuantumTheory/POVM/` leaves.
+`QuantumTheory.DensityOperator` also re-exports POVM, but the declarations
+remain owned by the `QuantumTheory/POVM/` leaves.
 
 For implementation code, use `QuantumTheory.DensityOperator.Basic`,
 `QuantumTheory.POVM.Basic`, `QuantumTheory.POVM.Born`, or another narrow
@@ -249,9 +248,8 @@ import downstream Gibbs/response code. The Common thermal implementation *may*
 consume generic Gibbs and linear-response results, but the reverse is forbidden.
 
 This is deliberately **not** a rule about the public umbrella:
-`QuantumTheory/DensityOperator.lean` imports the dedicated `QuantumTheory.POVM`
-umbrella for compatibility with its existing measurement API, while the
-`DensityOperator/` *implementation directory* does not depend on POVM.
+`QuantumTheory/DensityOperator.lean` imports the `QuantumTheory.POVM`
+umbrella, while the `DensityOperator/` *implementation directory* does not depend on POVM.
 The scoped graph excludes these umbrella files; ordinary implementation modules
 still follow the state-to-measurement dependency direction.
 

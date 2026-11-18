@@ -212,7 +212,7 @@ summability over occupation configurations. Finite-mode contraction and one-body
 use `Common.finiteGibbsExpectation_eq_completed_of_algebraicCore` directly to transport
 expectations from algebraic observables to their bounded completed extensions.
 Finite-coordinate trace ratios are handled directly by
-`Common.finiteGibbsExpectation_eq_summableDiagonalTraceRatioLinear` from #4074.
+`Common.finiteGibbsExpectation_eq_summableDiagonalTraceRatioLinear`.
 
 Unbounded observables do not use `DensityOperator.expectation`. The completed total-number operator
 is owned by `Fermionic.CompletedSpace.Diagonal`. Its integrability condition and spectral mean
@@ -265,13 +265,10 @@ public Bloch--de Dominicis theorem.
 The generic recursion must remain independent of finite-coordinate or representation-specific Gibbs
 implementations.
 
-## Ensemble-parameter dependency audit
+## Ensemble-parameter dependencies
 
-The following is the boundary for issue
-[#3986](https://github.com/naoki-cpp/LeanCondensedMatter/issues/3986), after the
-ensemble-neutral refactors #3988, #3991, #3993, #3996, #3997, #3999, #4002, #4004, and #4008.
-An API being *statistics-independent* does not by itself make a Gibbs expectation or trace
-independent of the ensemble: the operator algebra and the chosen state are separate inputs.
+A statistics-independent operator algebra does not make a Gibbs expectation
+or trace ensemble-independent: the chosen state is a separate input.
 
 | Layer | Existing owner | Ensemble dependence |
 |---|---|---|

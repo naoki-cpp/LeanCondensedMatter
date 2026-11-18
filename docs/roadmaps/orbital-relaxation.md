@@ -11,8 +11,6 @@ They also do not yet derive an orbital Bloch Hamiltonian from a crystal. Until
 the model-origin bridge below is proved, a theorem about a supplied `H(k)` is
 a theorem about that matrix model, not about a crystal built from atomic orbitals.
 
-Tracking issue: [#3360](https://github.com/naoki-cpp/LeanCondensedMatter/issues/3360).
-
 ## Target and boundary
 
 The first target is the orbital sector of a centrosymmetric, three-dimensional
