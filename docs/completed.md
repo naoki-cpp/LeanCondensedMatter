@@ -19,14 +19,5 @@ architectural context and later infinite-dimensional or convergence-aware extens
 | Analytic finite-dimensional fermionic Linked Cluster Theorem | Combined | `SecondQuantization.Fermionic.iteratedDeriv_analyticNormalizedLogPartitionFunction_eq_sum_connectedQuarticWickDiagramAmplitude` | `LeanCondensedMatter/SecondQuantization/Fermionic/Diagrammatics/LinkedCluster/Analytic.lean` |
 | Finite-mode fermionic two-point linked-cluster theorem | D | `SecondQuantization.Fermionic.partitionFunctionNormalizedTwoPointDysonSeries_eq_connectedTwoPointDysonSeries` | `LeanCondensedMatter/SecondQuantization/Fermionic/Diagrammatics/TwoPointDiagramExpansion/Series/CauchySeries.lean` |
 
-The finite-mode fermionic line is complete through both the zero-external-leg/partition-function
-linked-cluster theorem and the partition-function-normalized two-point series: the latter equals the formal series
-formed from externally connected two-point diagrams. The analytic log-partition theorem additionally
-identifies logarithmic derivatives of the genuine finite-dimensional interacting partition function
-with connected quartic diagram amplitudes.
-
-The completed fermionic free line also contains bounded completed CAR operators, explicit domains and
-self-adjointness results for supported unbounded diagonal operators, summability-controlled free Gibbs
-specializations, and finite-mode Gibbs convergence against bounded observables. Completed bosonic
-operator-domain theory, interacting completed-space perturbation theory, thermodynamic limits,
-trace-class completeness, and the convergence-aware bosonic Dyson line remain separate targets.
+For assumptions and open extensions, see the [linked-cluster roadmap](roadmaps/linked-cluster-theorem.md)
+and [completed-space boundary](roadmaps/completed-space-and-infinite-mode.md).

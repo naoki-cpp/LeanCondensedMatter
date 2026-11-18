@@ -124,14 +124,9 @@ as are [S+, S-] = 2 hbar Sz and [Sz, S±] = ± hbar S±. The first commutator is
 restricted to the physical sector. These are algebraic-domain statements, not
 Hilbert-space completion or truncated canonical bosonic commutators.
 
-The pinned Mathlib survey reuses `Finsupp.supported`, `supported_eq_span_single`,
-`single_mem_supported`, and kernel/comap containment to
-extend basis identities to every vector in the physical sector. The existing
-`Common.diagonalOperator` implements the square-root factor, existing bosonic
-creation and annihilation supply the oscillator actions, and `Real.sq_sqrt`
-provides the coefficient identities. A custom oscillator or spin matrix is unnecessary.
-The ordered factors use the original equations (2.149)-(2.150), without their later
-low-occupation expansion.
+The square-root factor uses `Common.diagonalOperator` and bosonic creation and
+annihilation. The ordered factors implement the exact Holstein–Primakoff
+relations, not a low-occupation expansion.
 
 [HP/MultiSite](../../LeanCondensedMatter/Models/HolsteinPrimakoff/MultiSite.lean)
 defines `simultaneousSubspace` with every site's occupation at most 2s, and proves
@@ -151,13 +146,9 @@ algebras on both domains, including their linear combinations and products.
 The state correspondence is complex-linear; no completed Fock-space isometry or
 adjoint-compatibility theorem is claimed.
 
-The pinned Mathlib survey uses `Finsupp.supported_iInter`, `supportedEquivFinsupp`,
-`domLCongr`, `linearEquivFunOnFinite`, `LinearMap.restrict`, and
-`LinearEquiv.conjAlgEquiv`. Mathlib supplies restriction of individual maps;
 [AlgebraRestriction](../../LeanCondensedMatter/Analysis/Operator/AlgebraRestriction.lean)
-bundles it as an algebra homomorphism for any endomorphism subalgebra preserving a
-submodule. Configuration and occupation coordinates use canonical equivalences rather
-than a second oscillator representation.
+restricts endomorphism subalgebras preserving the physical sector. Configuration
+and occupation coordinates use canonical equivalences, not a separate oscillator representation.
 
 Keep this exact representation separate from the quadratic Hamiltonian obtained by
 expanding about the polarized state and retaining terms through degree two.
@@ -192,9 +183,8 @@ annihilation remains conjugate-linear in its one-particle vector. The canonical
 rank-one computation lifts the one-particle operator |v><w| to creation in v composed
 with annihilation in w. Its complete-orthonormal-basis expansion is shared by the
 one-boson restriction and the cyclic ring identification; those consumers do not
-unfold the defining double matrix sum. The pinned Mathlib survey reuses
-`InnerProductSpace.rankOne`, `OrthonormalBasis.sum_repr'`, and the existing Fourier
-eigenbasis. No separate matrix-unit representation is introduced. No custom Fourier transform or completed Fock-space unitary is used.
+unfold the defining double matrix sum. The construction reuses the canonical rank-one operator and Fourier eigenbasis;
+no separate matrix-unit representation or completed Fock-space unitary is needed.
 [OneParticle](../../LeanCondensedMatter/SecondQuantization/Bosonic/Algebra/OneParticle.lean)
 defines the injective linear map from finite one-particle amplitudes to algebraic Fock
 vectors supported on configurations with total particle number one. It agrees with
