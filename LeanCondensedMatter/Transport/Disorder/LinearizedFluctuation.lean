@@ -30,21 +30,6 @@ namespace FiniteDisorderEnsemble
 
 variable (ensemble : FiniteDisorderEnsemble (H := H) (Ω := Ω))
 
-private theorem norm_mul_five_le
-    (a b c d e : H →L[ℂ] H) :
-    ‖a * b * c * d * e‖ ≤ ‖a‖ * ‖b‖ * ‖c‖ * ‖d‖ * ‖e‖ := by
-  calc
-    _ ≤ ‖a * b * c * d‖ * ‖e‖ := norm_mul_le _ _
-    _ ≤ (‖a * b * c‖ * ‖d‖) * ‖e‖ := by
-      gcongr
-      exact norm_mul_le _ _
-    _ ≤ ((‖a * b‖ * ‖c‖) * ‖d‖) * ‖e‖ := by
-      gcongr
-      exact norm_mul_le _ _
-    _ ≤ ((‖a‖ * ‖b‖) * ‖c‖ * ‖d‖) * ‖e‖ := by
-      gcongr
-      exact norm_mul_le _ _
-
 /-- The exact centered configuration-wise resolvent fluctuation differs from the
 first Dyson insertion `G₀ Vω G₀` by at most `2 |γ|⁻³ M²`. In particular,
 this controls a centered random operator, not an averaged Born–Dyson closure. -/
@@ -77,8 +62,11 @@ theorem norm_configurationGreen_fluctuation_sub_firstDyson_le
       (ensemble.configurationHamiltonian ξ).2 energy regulator hregulator
   have hR (ξ : Ω) : ‖R ξ‖ ≤ B ^ 3 * potentialBound ^ 2 := by
     calc
-      ‖R ξ‖ ≤ ‖G₀‖ * ‖V ξ‖ * ‖G₀‖ * ‖V ξ‖ * ‖G ξ‖ :=
-        norm_mul_five_le G₀ (V ξ) G₀ (V ξ) (G ξ)
+      ‖R ξ‖ ≤ ‖G₀‖ * ‖V ξ‖ * ‖G₀‖ * ‖V ξ‖ * ‖G ξ‖ := by
+        change ‖G₀ * V ξ * G₀ * V ξ * G ξ‖ ≤ _
+        simpa only [List.prod_cons, List.prod_nil, List.map_cons, List.map_nil,
+          mul_one, mul_assoc] using
+          (List.norm_prod_le' (l := [G₀, V ξ, G₀, V ξ, G ξ]) (by simp))
       _ ≤ B * potentialBound * B * potentialBound * B := by
         gcongr <;> first | exact hpotential ξ | exact hconfig ξ
       _ = B ^ 3 * potentialBound ^ 2 := by ring
