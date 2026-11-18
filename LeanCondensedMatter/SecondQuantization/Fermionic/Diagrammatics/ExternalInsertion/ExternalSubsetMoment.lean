@@ -90,14 +90,12 @@ theorem vacuumFreeExternalInsertionDysonCoefficient_eq_sum_evenPartitionFibers
         else 0 := by
   classical
   rw [vacuumFreeExternalInsertionDysonCoefficient_eq_sum_externalPartitionFibers]
-  apply Finset.sum_congr rfl
-  intro π _
-  by_cases heven : ∀ B : π.parts, Even (B : Finset (Fin (2 * K))).card
-  · simp [heven]
-  · obtain ⟨B, hBodd⟩ := not_forall.mp heven
-    simpa only [heven, ↓reduceIte] using
-      (fixedExternalPartitionDysonFiber_eq_zero_of_oddBlock
-        π B hBodd ε β g labels times)
+  refine Finset.sum_congr rfl fun π _ => ?_
+  split_ifs with heven
+  · rfl
+  · obtain ⟨B, hodd⟩ := not_forall.mp heven
+    exact fixedExternalPartitionDysonFiber_eq_zero_of_oddBlock
+      π B hodd ε β g labels times
 
 open Classical in
 /-- The actual order-`n` vacuum-free Dyson coefficient, with the external
@@ -408,13 +406,7 @@ theorem vacuumFreeExternalInsertionDysonCoefficient_eq_sum_evenPartitions_localL
         else 0 := by
   classical
   rw [vacuumFreeExternalInsertionDysonCoefficient_eq_sum_evenPartitionFibers]
-  apply Finset.sum_congr rfl
-  intro π _
-  by_cases heven : ∀ B : π.parts, Even (B : Finset (Fin (2 * K))).card
-  · simpa [heven] using
-      (sum_fixedExternalPartitionFiber_eq_sum_localLabelConnectedBlockFamilies
-        anchor π ε β g labels times)
-  · simp only [heven, ↓reduceIte]
+  simp_rw [sum_fixedExternalPartitionFiber_eq_sum_localLabelConnectedBlockFamilies anchor]
 
 /-- Fully external-connected, vacuum-free Dyson coefficient using the actual
 integrated signed Wick diagram amplitude, with all labels and times fixed. -/
