@@ -185,10 +185,7 @@ theorem externalInsertionFixedCardinalityFiberSum_eq_cauchyFactor
       rw [Finset.sum_mul]
       apply Finset.sum_congr rfl
       intro ext _
-      rw [Finset.mul_sum]
-      apply Finset.sum_congr rfl
-      intro x _
-      split_ifs <;> simp
+      simp only [Finset.mul_sum, ite_mul, zero_mul]
     _ = vacuumFreeExternalInsertionDysonCoefficient
           ε β g externalLabel externalTime m *
         PowerSeries.coeff k (PowerSeries.normalizeByConstantCoeff (Common.dysonTraceSeries (fermionEnergy ε) β (quarticInteraction g))) := by
