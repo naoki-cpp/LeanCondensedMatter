@@ -153,7 +153,7 @@ private theorem sum_vacuumFreeFixedExternalInsertionWickDiagram_partition
         if externalComponentPartition d.vertexGraph = π then weight d else 0)]
   apply Finset.sum_congr rfl
   intro d _
-  by_cases hp : externalComponentPartition d.1.vertexGraph = π <;> simp [hp]
+  split_ifs <;> simp_all
 
 open Classical in
 /-- For a *fixed physical external-component partition*, the actual
@@ -248,17 +248,11 @@ theorem ExternalInsertionBlockLayout.assembleDiagram_dysonAmplitude_eq_assignmen
           ((layout.interactionOrderDecompositionEquiv
             ((Finset.univ : Finset (Fin n)).orderIsoOfFin rfl).toEquiv).1,
             layout.interactionAssignmentShuffle)) := by
-  have horder :
-      layout.interactionOrderDecompositionEquiv.symm
-        ((layout.interactionOrderDecompositionEquiv
-          ((Finset.univ : Finset (Fin n)).orderIsoOfFin rfl).toEquiv).1,
-          layout.interactionAssignmentShuffle) =
-        ((Finset.univ : Finset (Fin n)).orderIsoOfFin rfl).toEquiv :=
-    layout.interactionOrderDecompositionEquiv.symm_apply_apply _
-  rw [horder]
-  exact (ExternalInsertionWickDiagram.orderedDysonAmplitude_canonicalOrder
-    (layout.assembleDiagram (Finset.univ : Finset (Fin n)) F)
-    ε β g times).symm
+  simpa only [ExternalInsertionBlockLayout.interactionAssignmentShuffle,
+    Prod.mk.eta, Equiv.symm_apply_apply] using
+    (ExternalInsertionWickDiagram.orderedDysonAmplitude_canonicalOrder
+      (layout.assembleDiagram (Finset.univ : Finset (Fin n)) F)
+      ε β g times).symm
 
 open Classical in
 /-- The actual integrated, fixed-source-label Dyson coefficient in one
@@ -339,11 +333,10 @@ theorem sum_fixedExternalPartitionDysonFiber_eq_sizes_shuffles_localLabels
   let layout : ExternalInsertionBlockLayout K n :=
     ((ExternalInsertionBlockLayout.fixedPartitionSizeShuffleEquiv
       (E := K) (N := n) π heven).symm p.1).1
-  rw [ExternalInsertionBlockLayout.fixedPartitionPhysicalSizeShuffleEquiv_symm_diagram
-    (E := K) (N := n) anchor π heven p]
-  exact if_congr
-    (ExternalInsertionBlockLayout.assembleDiagram_externalLabel_eq_iff_evenSubsetLabels
-      layout p.2.1 labels) rfl rfl
+  simp only [ExternalInsertionBlockLayout.fixedPartitionPhysicalSizeShuffleEquiv_symm_diagram
+    (E := K) (N := n) anchor π heven p,
+    ExternalInsertionBlockLayout.assembleDiagram_externalLabel_eq_iff_evenSubsetLabels
+      layout p.2.1 labels]
 
 open Classical in
 /-- At fixed perturbation order and fixed physical external partition,
