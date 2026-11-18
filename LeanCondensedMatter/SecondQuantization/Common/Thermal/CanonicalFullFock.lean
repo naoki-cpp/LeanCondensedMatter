@@ -57,23 +57,18 @@ theorem canonicalFullGibbsWeight_apply_sector (ε : Mode → ℝ) (β : ℝ) (N 
 theorem canonicalFullGibbsWeight_apply_of_ne (ε : Mode → ℝ) (β : ℝ) (N : ℕ)
     (c : Config) (hc : particleNumber (Mode := Mode) c ≠ N) :
     canonicalFullGibbsWeight (Config := Config) ε β N c = 0 := by
-  have hnot : ¬ ∃ n : ParticleNumberSector Mode Config N, n.val = c := by
-    rintro ⟨n, hn⟩
-    apply hc
-    rw [← hn]
-    exact n.property
   unfold canonicalFullGibbsWeight
-  rw [Function.extend_apply' _ _ _ hnot]
-  simp
+  apply Function.extend_apply'
+  rintro ⟨n, rfl⟩
+  exact hc n.property
 
 /-- The full-space canonical Boltzmann weights are nonnegative. -/
 theorem canonicalFullGibbsWeight_nonneg (ε : Mode → ℝ) (β : ℝ) (N : ℕ)
     (c : Config) : 0 ≤ canonicalFullGibbsWeight (Config := Config) ε β N c := by
-  by_cases hc : particleNumber (Mode := Mode) c = N
-  · let n : ParticleNumberSector Mode Config N := ⟨c, hc⟩
-    rw [show c = n.val from rfl, canonicalFullGibbsWeight_apply_sector]
-    exact eigenbasisBoltzmannWeight_nonneg _ _ n
-  · rw [canonicalFullGibbsWeight_apply_of_ne ε β N c hc]
+  unfold canonicalFullGibbsWeight
+  exact Function.extend_nonneg
+    (fun n => eigenbasisBoltzmannWeight_nonneg _ _ n)
+    (le_refl (0 : Config → ℝ)) c
 
 /-- Sector Boltzmann summability implies absolute summability of its zero extension. -/
 theorem canonicalFullGibbsWeight_norm_summable (ε : Mode → ℝ) (β : ℝ) (N : ℕ)
