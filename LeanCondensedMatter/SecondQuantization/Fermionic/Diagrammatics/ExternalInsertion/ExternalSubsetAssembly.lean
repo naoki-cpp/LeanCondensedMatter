@@ -193,22 +193,14 @@ private theorem pairing_heq_of_finCongr_transport
       (finCongr (congrArg (fun k : ℕ => 2 * k) h)).symm = Q) :
     HEq P Q := by
   cases h
-  have hc :
-      (finCongr (congrArg (fun k : ℕ => 2 * k) (rfl : a = a))).symm =
-        Equiv.refl (Fin (2 * a)) := by
-    apply Equiv.ext
-    intro i
-    apply Fin.ext
-    rfl
-  rw [hc] at hpair
   have hself : P.transport (Equiv.refl _) = P := by
     apply Combinatorics.PairingOn.ext
     apply Equiv.ext
     intro i
     simp only [Combinatorics.PairingOn.transport_partner, Equiv.refl_apply,
       Equiv.refl_symm]
-  rw [hself] at hpair
-  exact heq_of_eq hpair
+  exact heq_of_eq (by
+    simpa only [finCongr_refl, Equiv.refl_symm, hself] using hpair)
 
 /-- Two dependent external-insertion diagrams are the same diagram
 after equality of their external sizes and interaction supports, provided
@@ -258,8 +250,6 @@ theorem ExternalInsertionBlockLayout.assembleDiagram_restrictComponent_heq_local
     ⟨d.vertexGraph.componentBlock (Sum.inl e),
       d.vertexGraph.componentBlock_mem_componentPartition (Sum.inl e)⟩
   let T := interactionSector (C : Finset (ExternalInsertionVertex E S))
-  let c := (d.componentBlockLegEquiv C).symm.trans
-    (layout.physicalComponentLegEquiv S F hconnected e)
   have hsector : T = layout.interactionBlock S B :=
     layout.assembleDiagram_componentInteractionSector_external S F hconnected e
   have hcount : d.externalPairCount C = B.1.card / 2 :=
@@ -267,15 +257,17 @@ theorem ExternalInsertionBlockLayout.assembleDiagram_restrictComponent_heq_local
   have hcards : 2 * T.card + d.externalPairCount C =
       2 * (layout.interactionBlock S B).card + B.1.card / 2 := by
     rw [hsector, hcount]
-  have hcoord : c = finCongr (congrArg (fun k : ℕ => 2 * k) hcards) := by
-    exact layout.physicalComponentCanonicalLegEquiv_eq_finCongr S F hconnected e
   have hpair :
       (d.restrictComponent C).pairing.transport
         (finCongr (congrArg (fun k : ℕ => 2 * k) hcards)).symm =
       (F B).pairing := by
     have hp := layout.physicalComponentCanonicalPairing_eq_local S F hconnected e
-    change (d.restrictComponent C).pairing.transport c.symm = (F B).pairing at hp
-    rwa [hcoord] at hp
+    change (d.restrictComponent C).pairing.transport
+      ((d.componentBlockLegEquiv C).symm.trans
+        (layout.physicalComponentLegEquiv S F hconnected e)).symm =
+      (F B).pairing at hp
+    rw [layout.physicalComponentCanonicalLegEquiv_eq_finCongr S F hconnected e] at hp
+    exact hp
   have hpairHeq : HEq (d.restrictComponent C).pairing (F B).pairing :=
     pairing_heq_of_finCongr_transport hcards _ _ hpair
   have hsrc : HEq (d.restrictComponent C).externalLabel (F B).externalLabel :=
