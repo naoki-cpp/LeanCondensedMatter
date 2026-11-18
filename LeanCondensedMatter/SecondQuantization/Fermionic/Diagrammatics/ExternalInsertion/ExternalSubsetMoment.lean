@@ -333,10 +333,10 @@ theorem sum_fixedExternalPartitionDysonFiber_eq_sizes_shuffles_localLabels
   let layout : ExternalInsertionBlockLayout K n :=
     ((ExternalInsertionBlockLayout.fixedPartitionSizeShuffleEquiv
       (E := K) (N := n) π heven).symm p.1).1
-  simp only [ExternalInsertionBlockLayout.fixedPartitionPhysicalSizeShuffleEquiv_symm_diagram
-    (E := K) (N := n) anchor π heven p,
-    ExternalInsertionBlockLayout.assembleDiagram_externalLabel_eq_iff_evenSubsetLabels
-      layout p.2.1 labels]
+  rw [ExternalInsertionBlockLayout.fixedPartitionPhysicalSizeShuffleEquiv_symm_diagram
+    (E := K) (N := n) anchor π heven p]
+  exact if_congr (layout.assembleDiagram_externalLabel_eq_iff_evenSubsetLabels p.2.1 labels)
+    rfl rfl
 
 open Classical in
 /-- At fixed perturbation order and fixed physical external partition,
