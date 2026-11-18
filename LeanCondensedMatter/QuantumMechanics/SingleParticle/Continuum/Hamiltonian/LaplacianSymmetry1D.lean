@@ -133,7 +133,8 @@ theorem continuumH2Laplacian1D_symmetric
         fourier_continuumH2Laplacian1D_ae φ] with x hψ hφ
       rw [hψ, hφ]
       let r : ℝ := -((2 * Real.pi) ^ 2) * ‖x‖ ^ 2
-      change inner ℂ ((r : ℂ) • _) _ = inner ℂ _ ((r : ℂ) • _)
+      change inner ℂ ((r : ℂ) • (_ : ℂ)) (_ : ℂ) =
+        inner ℂ (_ : ℂ) ((r : ℂ) • (_ : ℂ))
       rw [inner_smul_left, inner_smul_right]
       simp
     _ = inner ℂ (ψ : ContinuumL2Wavefunction1D) (continuumH2Laplacian1D φ) :=
