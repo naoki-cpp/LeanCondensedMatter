@@ -34,33 +34,14 @@ theorem externalInsertionDysonCoefficient_eq_sum_vacuumFree_mul_normalizedDysonP
           ε β g externalLabel externalTime m *
           PowerSeries.coeff (n - m) (PowerSeries.normalizeByConstantCoeff (Common.dysonTraceSeries (fermionEnergy ε) β (quarticInteraction g))) := by
   classical
-  have slice : ∀ {n m k : ℕ}, m + k = n →
-      (∑ T ∈ Finset.powersetCard m (Finset.univ : Finset (Fin n)),
-        ∑ p : {ext : ExternalInsertionDiagram
-            (ExternalFieldLabel Mode) (QuarticVertexLabel Mode) E n T //
-            HasNoVacuumComponent ext.vertexGraph} ×
-            QuarticDiagram (QuarticVertexLabel Mode) n
-              ((Finset.univ : Finset (Fin n)) \ T),
-          if p.1.1.externalLabel = externalLabel then
-            ExternalInsertionWickDiagram.dysonAmplitude
-              (((ExternalInsertionDiagram.externalSupportFiberEquiv
-                (Finset.subset_univ T)).symm p).1 :
-                  ExternalInsertionWickDiagram Mode E n)
-              ε β g externalTime
-          else 0) =
-        vacuumFreeExternalInsertionDysonCoefficient
-          ε β g externalLabel externalTime m *
-          PowerSeries.coeff k (PowerSeries.normalizeByConstantCoeff (Common.dysonTraceSeries (fermionEnergy ε) β (quarticInteraction g))) := by
-    intro n m k hmk
-    subst n
-    exact externalInsertionFixedCardinalityFiberSum_eq_cauchyFactor
-      ε β hβ g externalLabel externalTime m k
   rw [externalInsertionDysonCoefficient_eq_sum_powersetCard_externalSupportFiber]
   apply Finset.sum_congr rfl
   intro m hm
   have hmn : m ≤ n := by
     simpa [Nat.lt_succ_iff] using hm
-  exact slice (Nat.add_sub_of_le hmn)
+  simpa only [Nat.add_sub_of_le hmn] using
+    (externalInsertionFixedCardinalityFiberSum_eq_cauchyFactor
+      ε β hβ g externalLabel externalTime m (n - m))
 
 /-- The full arbitrary-external Dyson series is the product of its vacuum-free
 part and the normalized vacuum partition series. -/
