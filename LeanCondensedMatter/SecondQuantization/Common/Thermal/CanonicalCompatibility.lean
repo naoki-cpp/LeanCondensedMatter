@@ -107,12 +107,8 @@ theorem canonicalFullGibbsDensityOperator_expectation_eq_tsum_sector
       ρ.op ((completedHilbertBasis (Config := Config)) c) =
         (w c : ℂ) • (completedHilbertBasis (Config := Config)) c := by
     intro c
-    simpa only [ρ, canonicalFullGibbsDensityOperator, w, completedHilbertBasis_apply] using
-      (diagonalDensityOperator_apply_basis
-        (completedHilbertBasis (Config := Config)) (canonicalFullGibbsWeight ε β N)
-        (canonicalFullGibbsWeight_norm_summable ε β N hsum)
-        (canonicalFullGibbsWeight_nonneg ε β N)
-        (canonicalFullGibbsWeight_tsum_pos ε β N hsum) c)
+    simpa only [ρ, w, completedHilbertBasis_apply] using
+      (canonicalFullGibbsDensityOperator_apply_basis ε β N hsum c)
   have hfull : HasSum g (ρ.expectation A) := by
     simpa only [g, completedHilbertBasis_apply] using
       (ρ.hasSum_expectation_diagonal A
