@@ -41,8 +41,10 @@ theorem totalProbability1D_l2_coe_eq_norm_sq (ψ : ContinuumL2Wavefunction1D) :
     apply integral_congr_ae
     exact Filter.Eventually.of_forall fun x => by
       change inner ℂ (ψ x) (ψ x) = (probabilityDensityValue (ψ x) : ℂ)
-      rw [probabilityDensityValue_eq_norm_sq, inner_self_eq_norm_sq_to_K,
-        Complex.ofReal_pow]
+      rw [probabilityDensityValue, inner_self_eq_norm_sq_to_K, pow_two]
+      change Complex.ofReal ‖ψ x‖ * Complex.ofReal ‖ψ x‖ =
+        Complex.ofReal (Complex.normSq (ψ x))
+      rw [← Complex.ofReal_mul, Complex.norm_mul_self_eq_normSq]
   have hnorm : inner ℂ ψ ψ = ((‖ψ‖ ^ 2 : ℝ) : ℂ) := by
     simpa using (inner_self_eq_norm_sq_to_K (𝕜 := ℂ) ψ)
   apply Complex.ofReal_injective
