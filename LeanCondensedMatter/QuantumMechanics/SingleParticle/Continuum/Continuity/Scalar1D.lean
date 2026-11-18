@@ -104,32 +104,6 @@ theorem hasDerivAt_probabilityCurrentValue1D
   simpa [probabilityCurrentValue1D_eq_coordinates,
     probabilityCurrentDivergenceValue1D_eq_coordinates, Pi.mul_apply, Pi.sub_apply] using hscaled
 
-/-- Real and imaginary component equations extracted from the pointwise Schrödinger equation. -/
-private theorem schrodinger_component_equations
-    (ℏ κ potential : ℝ) (ψ ψt ψxx : ℂ)
-    (hschrodinger :
-      Complex.I * (ℏ : ℂ) * ψt = -(κ : ℂ) * ψxx + (potential : ℂ) * ψ) :
-    ℏ * ψt.im = κ * ψxx.re - potential * ψ.re ∧
-      ℏ * ψt.re = -κ * ψxx.im + potential * ψ.im := by
-  have hre := congrArg Complex.re hschrodinger
-  have him := congrArg Complex.im hschrodinger
-  simp at hre him
-  constructor
-  · linear_combination -hre
-  · linear_combination him
-
-/-- The local probability balance from the two real component equations. -/
-private theorem probability_continuity_balance_of_components
-    (ℏ κ potential : ℝ) (ψ ψt ψxx : ℂ) (hℏ : ℏ ≠ 0)
-    (hreal : ℏ * ψt.im = κ * ψxx.re - potential * ψ.re)
-    (himag : ℏ * ψt.re = -κ * ψxx.im + potential * ψ.im) :
-    probabilityDensityTimeDerivativeValue ψ ψt +
-      probabilityCurrentDivergenceValue1D ℏ κ ψ ψxx = 0 := by
-  unfold probabilityDensityTimeDerivativeValue probabilityCurrentDivergenceValue1D
-  rw [probabilityCurrentPairingValue_eq_coordinates]
-  field_simp [hℏ]
-  linear_combination 2 * ψ.re * himag + 2 * ψ.im * hreal
-
 /-- Pointwise continuity balance derived directly from the nonrelativistic Schrödinger equation with
 a real scalar potential. -/
 theorem probability_continuity_balance_of_schrodinger
@@ -138,10 +112,17 @@ theorem probability_continuity_balance_of_schrodinger
       Complex.I * (ℏ : ℂ) * ψt = -(κ : ℂ) * ψxx + (potential : ℂ) * ψ) :
     probabilityDensityTimeDerivativeValue ψ ψt +
       probabilityCurrentDivergenceValue1D ℏ κ ψ ψxx = 0 := by
-  rcases schrodinger_component_equations ℏ κ potential ψ ψt ψxx hschrodinger with
-    ⟨hreal, himag⟩
-  exact probability_continuity_balance_of_components
-    ℏ κ potential ψ ψt ψxx hℏ hreal himag
+  have hre := congrArg Complex.re hschrodinger
+  have him := congrArg Complex.im hschrodinger
+  simp at hre him
+  have hreal : ℏ * ψt.im = κ * ψxx.re - potential * ψ.re := by
+    linear_combination -hre
+  have himag : ℏ * ψt.re = -κ * ψxx.im + potential * ψ.im := by
+    linear_combination him
+  unfold probabilityDensityTimeDerivativeValue probabilityCurrentDivergenceValue1D
+  rw [probabilityCurrentPairingValue_eq_coordinates]
+  field_simp [hℏ]
+  linear_combination 2 * ψ.re * himag + 2 * ψ.im * hreal
 
 /-- One-dimensional pointwise continuity equation for coordinatewise differentiable time and space
 slices of a wavefunction.
