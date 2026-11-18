@@ -670,8 +670,7 @@ theorem externalSubsetMomentSeries_eq_signedConnected_two
     (E := 1) ε β g labels times
   intro S hEmpty hEven
   have hcard : S.card = 2 := by
-    have hpos : 0 < S.card :=
-      Finset.card_pos.mpr (Finset.nonempty_iff_ne_empty.mpr hEmpty)
+    have hpos := Finset.card_pos.mpr (Finset.nonempty_iff_ne_empty.mpr hEmpty)
     have hle : S.card ≤ 2 := by
       simpa using Finset.card_le_card (Finset.subset_univ S)
     obtain ⟨k, hk⟩ := hEven
@@ -681,28 +680,25 @@ theorem externalSubsetMomentSeries_eq_signedConnected_two
         externalSubsetConnectedDiagramSeries (E := 1) ε β g labels times B = 0 := by
     intro B hB
     have hlt := Finset.card_lt_card hB
-    have hBcard : B.card = 0 ∨ B.card = 1 := by omega
-    rcases hBcard with hzero | hone
+    rcases (show B.card = 0 ∨ B.card = 1 by omega) with hzero | hone
     · simp [Finset.card_eq_zero.mp hzero, externalSubsetConnectedDiagramSeries]
     · exact (externalSubsetSeries_eq_zero_of_odd (E := 1)
         ε β g labels times B (by simp [hone])).2
   have hweighted :
       externalSubsetSignedConnectedMomentSeries (E := 1) ε β g labels times S =
-        externalSubsetConnectedDiagramSeries (E := 1) ε β g labels times S := by
-    unfold externalSubsetSignedConnectedMomentSeries
-    exact externalPartitionWeightedMoment_eq_of_proper_zero (E := 1)
+        externalSubsetConnectedDiagramSeries (E := 1) ε β g labels times S :=
+    externalPartitionWeightedMoment_eq_of_proper_zero (E := 1)
       (externalSubsetConnectedDiagramSeries (E := 1) ε β g labels times)
       S hEmpty hproper
-  have hphysical :
-      externalSubsetMomentSeries (E := 1) ε β g labels times S =
-        externalSubsetConnectedDiagramSeries (E := 1) ε β g labels times S := by
-    simp only [externalSubsetMomentSeries, externalSubsetConnectedDiagramSeries,
-      hEmpty, hEven, dite_eq_left]
-    exact vacuumFreeExternalInsertionDysonSeries_eq_connected_of_single_pair
-      (show S.card / 2 = 1 by omega) ε β g
-      (evenExternalSubsetLabels (E := 1) labels S hEven)
-      (evenExternalSubsetTimes (E := 1) times S hEven)
-  exact hphysical.trans hweighted.symm
+  calc
+    _ = externalSubsetConnectedDiagramSeries (E := 1) ε β g labels times S := by
+      simp only [externalSubsetMomentSeries, externalSubsetConnectedDiagramSeries,
+        hEmpty, hEven, dite_eq_left]
+      exact vacuumFreeExternalInsertionDysonSeries_eq_connected_of_single_pair
+        (show S.card / 2 = 1 by omega) ε β g
+        (evenExternalSubsetLabels (E := 1) labels S hEven)
+        (evenExternalSubsetTimes (E := 1) times S hEven)
+    _ = _ := hweighted.symm
 
 /-- The precise remaining physical bridge for Phase 5: once the actual
 vacuum-normalized Wick/Dyson moments satisfy the signed external-partition
