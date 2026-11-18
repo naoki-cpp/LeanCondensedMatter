@@ -61,51 +61,6 @@ theorem sphericalAverage_zonal (f : ℝ → ℝ) (hf : Continuous f) :
   field_simp [hpi]
   ring
 
-private theorem polarCosineAverage_const (c : ℝ) :
-    polarCosineAverage (fun _ => c) = c := by
-  simp only [polarCosineAverage, intervalIntegral.integral_const]
-  ring
-
-private theorem polarCosineAverage_const_mul (c : ℝ) (f : ℝ → ℝ) :
-    polarCosineAverage (fun μ => c * f μ) = c * polarCosineAverage f := by
-  simp only [polarCosineAverage, intervalIntegral.integral_const_mul]
-  ring
-
-private theorem polarCosineAverage_neg (f : ℝ → ℝ) :
-    polarCosineAverage (fun μ => -f μ) = -polarCosineAverage f := by
-  simp only [polarCosineAverage, intervalIntegral.integral_neg]
-  ring
-
-private theorem polarCosineAverage_add (f g : ℝ → ℝ)
-    (hf : Continuous f) (hg : Continuous g) :
-    polarCosineAverage (fun μ => f μ + g μ) =
-      polarCosineAverage f + polarCosineAverage g := by
-  unfold polarCosineAverage
-  rw [intervalIntegral.integral_add
-    (hf.intervalIntegrable _ _) (hg.intervalIntegrable _ _)]
-  ring
-
-private theorem polarCosineAverage_sub (f g : ℝ → ℝ)
-    (hf : Continuous f) (hg : Continuous g) :
-    polarCosineAverage (fun μ => f μ - g μ) =
-      polarCosineAverage f - polarCosineAverage g := by
-  unfold polarCosineAverage
-  rw [intervalIntegral.integral_sub
-    (hf.intervalIntegrable _ _) (hg.intervalIntegrable _ _)]
-  ring
-
-private theorem polarCosineAverage_sq :
-    polarCosineAverage (fun μ => μ ^ 2) = 1 / 3 := by
-  unfold polarCosineAverage
-  rw [integral_pow]
-  norm_num
-
-private theorem polarCosineAverage_four :
-    polarCosineAverage (fun μ => μ ^ 4) = 1 / 5 := by
-  unfold polarCosineAverage
-  rw [integral_pow]
-  norm_num
-
 /-- Legendre-weighted continuous degree-two loss rate at the north pole.
 The integral is normalized by `1/(4π)` in the original sphere chart. -/
 noncomputable def continuousDegreeTwoRate (W : ℝ → ℝ) : ℝ :=
@@ -133,7 +88,9 @@ theorem continuousZonalCollisionAtNorth_P2 (W : ℝ → ℝ) :
       W μ * (legendreP2 μ - 1) =
         -(W μ * (1 - legendreP2 μ)) := by ring
   simp_rw [hpoint]
-  exact polarCosineAverage_neg _
+  unfold polarCosineAverage
+  rw [intervalIntegral.integral_neg]
+  ring
 
 /-- The same degree-two loss rate is a genuine continuous spherical-coordinate
 integral, rather than the six-direction cubature. -/
@@ -167,12 +124,16 @@ theorem quadraticZonal_degreeTwoRate (a c : ℝ) :
           (3 * c / 2) * μ ^ 4 := by
     unfold quadraticZonalKernel legendreP2
     ring
-  unfold continuousDegreeTwoRate
+  unfold continuousDegreeTwoRate polarCosineAverage
   simp_rw [hp]
-  rw [polarCosineAverage_sub _ _ (by fun_prop) (by fun_prop)]
-  rw [polarCosineAverage_add _ _ (by fun_prop) (by fun_prop)]
-  rw [polarCosineAverage_const_mul, polarCosineAverage_const_mul,
-    polarCosineAverage_const, polarCosineAverage_sq, polarCosineAverage_four]
+  rw [intervalIntegral.integral_sub
+    (Continuous.intervalIntegrable (by fun_prop) _ _)
+    (Continuous.intervalIntegrable (by fun_prop) _ _)]
+  rw [intervalIntegral.integral_add
+    (Continuous.intervalIntegrable (by fun_prop) _ _)
+    (Continuous.intervalIntegrable (by fun_prop) _ _)]
+  simp only [intervalIntegral.integral_const_mul,
+    intervalIntegral.integral_const, integral_pow]
   ring
 
 theorem quadraticZonal_degreeTwoRate_pos (a c : ℝ)
