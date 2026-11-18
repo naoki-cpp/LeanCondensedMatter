@@ -246,6 +246,7 @@ not public APIs. Convergence and Ward identities are separate targets.
 
 The spin-Hall-specific model, current-definition, disorder-vertex, and inverse-
 response work is tracked separately in the [spin Hall roadmap](spin-hall.md).
-Issue #1159 remains the owner of the generic current/source architecture; the
-spin-Hall roadmap supplies concrete Rashba and impurity specializations without
-duplicating the generic transport targets above.
+The generic current/source architecture is documented in
+[transport ownership](../architecture/transport.md); the spin-Hall roadmap
+covers Rashba and impurity specializations without duplicating generic
+transport targets.

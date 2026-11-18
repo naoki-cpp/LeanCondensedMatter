@@ -90,7 +90,8 @@ The main semantic boundaries are:
 - `FiniteConductivityTable` is an electrical-conductivity adapter downstream of the generic
   `QuantumTheory.LinearResponse.FiniteLehmannTable`; the generic Lehmann evaluator does not depend
   on contact terms, physical volume, driving frequency normalization, or electric-field conversion;
-- generic Transport must not acquire model-specific assumptions from `Transport.Models`.
+- generic Transport must not acquire model-specific assumptions from
+  `LeanCondensedMatter.Models`.
 
 `QuantumTheory.LinearResponse.FiniteLehmannTable` evaluates each transition through the canonical
 scalar owner `Lehmann.Transition`, independently of operator spectral reconstruction.
