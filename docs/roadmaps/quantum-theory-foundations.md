@@ -152,10 +152,13 @@ The Gibbs layer provides `gibbsOp`, normalized Gibbs states, energy expectation,
 formulas, the Helmholtz free-energy lower bound, the Gibbs entropy identity, attainment of the bound,
 and the equality/uniqueness characterization of the Gibbs minimizer.
 
-The bounded Gibbs API assumes finite dimensionality. An invertible compact Gibbs exponential
-of a bounded Hamiltonian is possible only in finite dimension.
-Infinite-dimensional Gibbs theory therefore requires an unbounded self-adjoint Hamiltonian or
-semigroup/resolvent framework with explicit domains.
+The bounded-Hamiltonian `gibbsState` API assumes finite dimensionality: an invertible
+compact Gibbs exponential of a bounded Hamiltonian forces a finite-dimensional space.
+Separately, `Gibbs/Eigenbasis.lean` already constructs a density state on an
+infinite-dimensional Hilbert space from supplied pure-point energies and summable
+Boltzmann weights, without defining a Hamiltonian operator. Constructing Gibbs
+states from general unbounded (not necessarily pure-point) Hamiltonians still
+requires a domain-aware heat-semigroup or functional-calculus bridge.
 
 ## Open work
 
@@ -163,6 +166,7 @@ semigroup/resolvent framework with explicit domains.
   proofs need that formulation;
 - add a projective/ray presentation only if it materially improves public use without duplicating
   expectation or dynamics theory;
-- extend the Hamiltonian interface to genuine infinite-dimensional Gibbs states;
+- construct heat operators from general semibounded unbounded self-adjoint Hamiltonians
+  and relate them to normalized Gibbs density states;
 - reuse the canonical density expectation throughout completed Fock/KMS and response layers;
 - add continuous-outcome measurement theory after a measure-theoretic operator-valued API is fixed.

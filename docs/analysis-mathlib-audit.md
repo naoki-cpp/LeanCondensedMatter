@@ -245,6 +245,7 @@ The repository does not yet provide:
 - a Fredholm determinant on general trace-class operators;
 - basis independence for unrelated diagonal presentations without spectral uniqueness;
 - unbounded spectral/functional calculus with domains;
-- completed infinite-mode Fock-space operator theory.
+- a general completed-space interacting-Hamiltonian and Dyson theory beyond the existing
+  fermionic diagonal/CAR and bosonic weighted-ladder/quartic partial-map constructions.
 
 These are future analysis targets rather than gaps to be hidden by compatibility wrappers.

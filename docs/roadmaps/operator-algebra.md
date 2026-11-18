@@ -5,29 +5,20 @@ second quantization.
 
 ## Quadratic normalization
 
-On the pinned Mathlib v4.34.1, a source search did not identify a directly reusable
-normalization theorem taking `H * H = E ^ 2 • 1` and `E ≠ 0` to
-`(E⁻¹ • H) * (E⁻¹ • H) = 1` in an algebra over an arbitrary field.
-`Analysis/Algebra/QuadraticNormalization.lean` therefore owns
-`Algebra.inv_smul_mul_self_eq_one` for semiring algebras over fields; the
-Massive Dirac and Rashba-exchange spectral models supply their physical
-quadratic-energy identities as its hypotheses. Re-check this boundary
-when the pinned Mathlib is upgraded.
+`Analysis/Algebra/QuadraticNormalization.lean` owns
+`Algebra.inv_smul_mul_self_eq_one`: if `H * H = E ^ 2 • 1` and `E ≠ 0`,
+then `E⁻¹ • H` squares to the identity in a semiring algebra over a field.
+Massive Dirac and Rashba-exchange models supply their respective
+quadratic-energy identities as hypotheses.
 
 ## Fixed-sign commutator algebra
 
-On the pinned Mathlib v4.33.1 (`0df444a360eaa60ab8c11dca51a86af692955474`), the ordinary
-associative commutator is available through the Lie bracket,
-`⁅A, B⁆ = A * B - B * A` (`LieRing.of_associative_ring_bracket`), with `Module.End` multiplication
-identified with composition by `Module.End.mul_eq_comp`. The pinned API survey found no
-`zetaCommutator`, q-commutator, or fixed-scalar twisted-commutator family matching
-`A ∘ B - ζ • (B ∘ A)`.
-
-Accordingly, `Analysis/ScalarExchange.lean` owns the representation-independent
-`ScalarExchange.zetaCommutator` for associative complex algebras. The operator layer keeps the
-ordinary commutator as a semantic `ζ = 1` endomorphism specialization, while second-quantization
-code uses the generic bracket directly and selects `ζ` through `Statistics.zetaInt`. Re-check this
-ownership after Mathlib upgrades.
+The ordinary associative commutator is available through Mathlib's
+Lie bracket `⁅A, B⁆ = A * B - B * A`. The project-specific
+`ScalarExchange.zetaCommutator` in `Analysis/ScalarExchange/Basic.lean`
+expresses `A * B - ζ • (B * A)` for complex algebras, with the ordinary
+bracket recovered at `ζ = 1`. Second-quantization consumers select
+the exchange scalar through `Statistics.zetaInt`.
 
 ## Infinite sums and spectral analysis
 
@@ -42,7 +33,6 @@ These layers are physics-independent.
 
 ## Trace class
 
-On the pinned Mathlib v4.34.1 revision `d13f23b723b8a846827a245b89c10fc7d3f11612`,
 `CFC.abs T` is the canonical operator absolute value
 `|T| = (T† T)^(1/2)`. The project therefore does not define a second operator-absolute-value
 wrapper. General trace-class membership is based on summability of the nonnegative Hilbert-basis
@@ -136,16 +126,13 @@ this composition to form the ordered four-ladder monomial without suppressing in
 conditions. Finite quartic interactions are also defined on the common intersection of their vertex
 domains, with a dense algebraic core and algebraic/completed compatibility.
 
-These results do not amount to a general unbounded spectral theory. A 2026-10-05 re-survey of
-the pinned Mathlib v4.34.1 revision `d13f23b723b8a846827a245b89c10fc7d3f11612` confirms that
-`LinearPMap` still provides the domain-aware adjoint, dense-domain consequences of
-self-adjointness, and closedness of self-adjoint operators, but no composition constructor that
-shrinks two partial maps to the natural operator-product domain and no general unbounded
-self-adjoint spectral or functional calculus. Mathlib's `LinearPMap.comp` instead requires the
-entire inner domain to map into the outer domain and retains that inner domain; the exact restricted
-composition used by interacting completed-space operators remains project-local. The pinned API also does not provide a `LinearPMap` semibounded
-quadratic-form package, positivity package, general resolvent calculus, projection-valued spectral
-measure calculus, or strongly continuous positive heat-semigroup construction.
+These results do not amount to a general unbounded spectral theory. Mathlib's
+`LinearPMap.comp` requires the full inner domain to map into the outer domain;
+the project-local `LinearPMap.compOnDomain` instead restricts to the natural
+operator-product domain in `Analysis/Operator/Unbounded/Composition.lean`.
+The current project has not established a general unbounded functional calculus,
+spectral-measure calculus, semibounded quadratic-form framework, or positive
+heat-semigroup construction from arbitrary self-adjoint unbounded generators.
 
 The project-local resolvent/Cayley/Stone line remains a real-time construction: it builds strongly
 continuous unitary evolution from a self-adjoint `LinearPMap` without an unbounded functional
