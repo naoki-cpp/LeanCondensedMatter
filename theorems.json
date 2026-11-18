@@ -45971,9 +45971,7 @@
       "QuantumMechanics.SingleParticle.Continuum.ContinuumSchrodingerEvolution1D.totalProbability1D_l2_propagator",
       "QuantumMechanics.SingleParticle.Continuum.totalProbability1D_schwartz_eq_toLp_norm_sq"
     ],
-    "dependencies": [
-      "_private.LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.L2.Probability1D.0.QuantumMechanics.SingleParticle.Continuum.inner_self_complex_eq_probabilityDensityValue"
-    ],
+    "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
@@ -93548,8 +93546,7 @@
       "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_freeGreenLadder_le_uniformPotential_sq",
       "QuantumTheory.Transport.norm_resolvent_spectralParameterOfRegulator_le",
       "QuantumTheory.Transport.norm_resummedLadderVertex_tail_le",
-      "QuantumTheory.Transport.resummedLadderVertex_sub_eq_firstRung_add_tail",
-      "_private.LeanCondensedMatter.Transport.Disorder.ConnectedLadderNormBound.0.QuantumTheory.Transport.FiniteDisorderEnsemble.norm_mul_three_le"
+      "QuantumTheory.Transport.resummedLadderVertex_sub_eq_firstRung_add_tail"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -93591,8 +93588,7 @@
       "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_averagedGreen_sub_bornSecondOrder_le"
     ],
     "dependencies": [
-      "QuantumTheory.Transport.norm_resolvent_spectralParameterOfRegulator_le",
-      "_private.LeanCondensedMatter.Transport.Disorder.BornNormBound.0.QuantumTheory.Transport.FiniteDisorderEnsemble.norm_mul_seven_le"
+      "QuantumTheory.Transport.norm_resolvent_spectralParameterOfRegulator_le"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -122934,50 +122930,6 @@
     "mathlibDefinitionallyEquivalentTo": [],
     "mathlibReplacementCandidates": [],
     "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {E N : ℕ} {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {M : Type u_3} [inst : Fintype ExternalLabel]\n  [inst_1 : Fintype InternalLabel] [inst_2 : AddCommMonoid M]\n  (layout : SecondQuantization.Common.ExternalInsertionBlockLayout E N) (e : Fin N ≃ Fin N)\n  (weight : (layout.ownerSlotCongr e).ConnectedBlockFamily → M),\n  ∑ F, weight ((layout.ownerSlotCongrConnectedBlockFamilyEquiv e) F) = ∑ G, weight G",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.ExternalInsertionBlockLayout.sum_ownerSlotCongrConnectedBlockFamilies",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.OwnerSlotCongr",
-    "externalAxioms": [],
-    "docString": "For any additive target, the complete preconnected local Wick-family\nsum is unchanged by reindexing the *family* along a physical owner\nrelabeling. No factorization or Dyson invariance is assumed. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.Integral.0.SecondQuantization.Fermionic.sum_ownerSlotCongr_connectedDyson_eq_ordered_of_predicates"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.Integral.0.SecondQuantization.Fermionic.sum_ownerSlotCongr_connectedDyson_eq_ordered_of_predicates"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [
-      "Equiv.sum_comp"
-    ],
-    "mathlibReplacementCandidateCount": 1
   },
   {
     "terminal": false,
@@ -194832,48 +194784,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (z : ℂ), inner ℂ z z = ↑(QuantumMechanics.SingleParticle.Continuum.probabilityDensityValue z)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.L2.Probability1D.0.QuantumMechanics.SingleParticle.Continuum.inner_self_complex_eq_probabilityDensityValue",
-    "module": "LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.L2.Probability1D",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumMechanics.SingleParticle.Continuum.totalProbability1D_l2_coe_eq_norm_sq"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumMechanics.SingleParticle.Continuum.totalProbability1D_l2_coe_eq_norm_sq"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] (A : H →L[ℂ] H) {x : H},\n  ‖x‖ = 1 → ‖inner ℂ x (A x)‖ ≤ ‖A‖",
     "standardAxioms": [
       "Classical.choice",
@@ -206570,7 +206480,6 @@
     "dependencies": [
       "SecondQuantization.Common.ExternalInsertionBlockLayout.assembleDiagram_ownerSlotCongr",
       "SecondQuantization.Common.ExternalInsertionBlockLayout.ownerSlotCongrConnectedBlockFamilyEquiv_apply",
-      "SecondQuantization.Common.ExternalInsertionBlockLayout.sum_ownerSlotCongrConnectedBlockFamilies",
       "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.slotCongr_dysonAmplitude_eq_orderedDysonAmplitude"
     ],
     "crossModuleDirectWrapper": false,
@@ -210720,90 +210629,6 @@
     "completedMention": false,
     "compiledConsumers": [
       "_private.LeanCondensedMatter.Transport.Disorder.AveragedSelfEnergy.0.QuantumTheory.Transport.FiniteDisorderEnsemble.averagedGreenOfRegulator_denseRange"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [CompleteSpace H]\n  (a b c d e f g : H →L[ℂ] H), ‖a * b * c * d * e * f * g‖ ≤ ‖a‖ * ‖b‖ * ‖c‖ * ‖d‖ * ‖e‖ * ‖f‖ * ‖g‖",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Transport.Disorder.BornNormBound.0.QuantumTheory.Transport.FiniteDisorderEnsemble.norm_mul_seven_le",
-    "module": "LeanCondensedMatter.Transport.Disorder.BornNormBound",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_exactBornRemainder_le_thirdNormMoment"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_exactBornRemainder_le_thirdNormMoment"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [CompleteSpace H] (a b c : H →L[ℂ] H),\n  ‖a * b * c‖ ≤ ‖a‖ * ‖b‖ * ‖c‖",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Transport.Disorder.ConnectedLadderNormBound.0.QuantumTheory.Transport.FiniteDisorderEnsemble.norm_mul_three_le",
-    "module": "LeanCondensedMatter.Transport.Disorder.ConnectedLadderNormBound",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_connectedTwoGreen_sub_resummedFreeLadder_le"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_connectedTwoGreen_sub_resummedFreeLadder_le"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
