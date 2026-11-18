@@ -428,10 +428,7 @@ theorem ExternalInsertionBlockLayout.assembleConnectedBlocks_signedDysonShuffleO
     layout.externalComponentPartition_assembleDiagram S F hconnected
   let partsEquiv :
       (externalComponentPartition d.vertexGraph).parts ≃ layout.partition.parts :=
-    { toFun := fun P => ⟨P.1, by rw [← hpart]; exact P.2⟩
-      invFun := fun P => ⟨P.1, by rw [hpart]; exact P.2⟩
-      left_inv := fun P => Subtype.ext rfl
-      right_inv := fun P => Subtype.ext rfl }
+    Equiv.subtypeEquiv (Equiv.refl _) (fun _ => by simp only [Equiv.refl_apply, hpart])
   let reindex : d.vertexGraph.componentPartition.parts ≃ layout.partition.parts :=
     (d.vacuumFreeComponentsEquivExternalBlocks hVac).trans partsEquiv
   have hblock (C : d.vertexGraph.componentPartition.parts) :
