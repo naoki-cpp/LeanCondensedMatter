@@ -354,9 +354,9 @@ theorem ExternalInsertionBlockLayout.assembleConnectedBlocks_componentDysonAmpli
         externalTime (layout.sourceEquiv.symm ⟨B, i⟩)) :=
     (ExternalInsertionBlockLayout.assembleDiagram_componentExternalTime_eq_localTimes
       layout F hconnected externalTime e).symm
-  cases hcount
-  cases congrArg Finset.card hsector
-  rw [eq_of_heq hordered, eq_of_heq htimes]
+  congr 1
+  · exact hordered
+  · exact htimes
 
 /-- The genuine **integrated physical component-shuffle orbit**
 of assembled connected Wick blocks equals the source-partition Koszul sign
