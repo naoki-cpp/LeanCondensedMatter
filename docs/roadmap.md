@@ -21,7 +21,8 @@ E  transport/disorder      Kubo–Bastin/Středa, resolvents, disorder, Born/SCB
 | Target | Track | Status | Details |
 |---|---|---|---|
 | Minimal bounded axiomatic quantum theory | A | `proved` | [quantum-theory foundations](roadmaps/quantum-theory-foundations.md#minimal-bounded-theory) |
-| Exact finite-spin one-magnon spectrum, magnon approximations, and macroscopic magnetic response | A/C/D | SW1–SW3 `proved` for their stated finite/algebraic results; SW4+ `idea` | [spin waves](roadmaps/spin-waves.md) |
+| Exact finite-spin spectrum and algebraic Holstein–Primakoff/quadratic-magnon constructions | A/C/D | SW1–SW3 `proved` | [spin waves](roadmaps/spin-waves.md) |
+| Free-magnon interactions, macroscopic magnetic response, and dipolar-exchange film modes | A/C/D | SW4–SW6 `idea` | [spin waves](roadmaps/spin-waves.md) |
 | Canonical density operators and expectations | A/C | `proved` | [architecture](architecture/quantum-density-theory.md) |
 | Canonical purity, bounds, pure-state value, and finite-dimensional trace formula | A/C | `proved` | [quantum-theory foundations](roadmaps/quantum-theory-foundations.md#density-operators-physical-pure-states-expectations-and-purity) |
 | Maximal-purity rank-one characterization | A/C | `proved` | [quantum-theory foundations](roadmaps/quantum-theory-foundations.md#density-operators-physical-pure-states-expectations-and-purity) |
@@ -29,7 +30,8 @@ E  transport/disorder      Kubo–Bastin/Středa, resolvents, disorder, Born/SCB
 | Von Neumann entropy with finite-dimensional specialization | A/C | `proved` | [quantum-theory foundations](roadmaps/quantum-theory-foundations.md#von-neumann-entropy) |
 | Finite free-fermion Gibbs entropy and Fermi–Dirac binary decomposition | A/D | `proved` | [worked example](examples/free-fermion-entropy.md) |
 | Bounded Gibbs state, free-energy bound, Gibbs entropy identity, and minimizer uniqueness | A/C | `proved` in finite dimension | [quantum-theory foundations](roadmaps/quantum-theory-foundations.md#gibbs-states-and-helmholtz-free-energy) |
-| Unbounded Hamiltonian and genuine infinite-dimensional Gibbs theory | A/C | `idea` | [operator analysis](roadmaps/operator-algebra.md) |
+| Infinite-dimensional pure-point Gibbs density under Boltzmann summability | A/C | `proved` | [quantum-theory foundations](roadmaps/quantum-theory-foundations.md#gibbs-states-and-helmholtz-free-energy) |
+| General Gibbs theory for non-pure-point unbounded Hamiltonians | A/C | `idea` | [operator analysis](roadmaps/operator-algebra.md) |
 | Partition-lattice refinement and Möbius factorization | B | `proved` | [combinatorics](roadmaps/combinatorics.md) |
 | Explicit partition-lattice Möbius formula | B | `proved` | [combinatorics](roadmaps/combinatorics.md) |
 | Moment–cumulant inversion | B | `proved` | [combinatorics](roadmaps/combinatorics.md) |
@@ -54,8 +56,9 @@ E  transport/disorder      Kubo–Bastin/Středa, resolvents, disorder, Born/SCB
 | Finite-mode fermionic thermal, Dyson, and partition-function linked-cluster line | D | `proved` | [linked cluster theorem](roadmaps/linked-cluster-theorem.md) |
 | Finite-mode fermionic two-point linked-cluster theorem with external legs | D | `proved` | `SecondQuantization/Fermionic/Diagrammatics/TwoPointDiagramExpansion/Series/CauchySeries.lean` |
 | Finite-temperature Bloch–de Dominicis pairing recursion and finite Gibbs instance | A/D | `proved` | [thermal expectation architecture](roadmaps/thermal-expectation-architecture.md) |
-| Bosonic algebraic and two-point thermal layer | D | `proved` for current stated results; general Gibbs/Dyson layer remains `idea` | [second-quantization status](roadmaps/second-quantization-status.md) |
-| Convergence-aware bosonic Gibbs and perturbation theory | C/D | `idea` | [second quantization](roadmaps/second-quantization.md) |
+| Bosonic algebraic CCR and thermal pairing identities | D | `proved` under stated summability/admissibility assumptions | [second-quantization status](roadmaps/second-quantization-status.md) |
+| Completed free bosonic Fock/domain and Gibbs theory | C/D | `proved` for the domain-aware free operators and summable Gibbs weights; finite positive-energy modes imply summability | [completed-space boundary](roadmaps/completed-space-and-infinite-mode.md#completed-bosonic-free-thermal-representation) |
+| Bosonic finite-order quartic Dyson formal linked-cluster theorem | D | `proved` for finite mode sets with positive effective mode gaps; not an analytic interacting partition-function theorem | [second quantization](roadmaps/second-quantization.md#bosonic-line) |
 | Completed fermionic free Fock/domain and thermal theory | C/D | `proved` under explicit boundedness, domain, and summability hypotheses | [completed-space boundary](roadmaps/completed-space-and-infinite-mode.md) |
-| Completed bosonic, interacting completed-space, and thermodynamic-limit second quantization | C/D | `idea` | [completed-space boundary](roadmaps/completed-space-and-infinite-mode.md#open-work) |
+| Bosonic interacting analytic Dyson theory, completed interacting-Hamiltonian control, and thermodynamic limits | C/D | `idea` | [completed-space boundary](roadmaps/completed-space-and-infinite-mode.md#open-work) |
 | Higher time-ordered correlation functions, general source insertions, and multi-leg connected expansions | D | `idea` | [second quantization](roadmaps/second-quantization.md) |
