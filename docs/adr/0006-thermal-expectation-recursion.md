@@ -12,4 +12,3 @@ Share the finite scalar-exchange recurrence in `Analysis.ScalarExchange` under o
 
 Evidence: [generic pairing recursion](../../LeanCondensedMatter/SecondQuantization/Common/Thermal/BlochDeDominicis/ExpectationRecursion.lean), [scalar-exchange algebra](../../LeanCondensedMatter/Analysis/ScalarExchange.lean), [bosonic BDD peel](../../LeanCondensedMatter/SecondQuantization/Bosonic/Thermal/BlochDeDominicis/OperatorPeel.lean), [completed fermionic BDD](../../LeanCondensedMatter/SecondQuantization/Fermionic/Thermal/Completed/BlochDeDominicis.lean), and [thermal architecture](../roadmaps/thermal-expectation-architecture.md).
 
-Issue-focused chronology for this decision is maintained in [history-review.md](history-review.md).

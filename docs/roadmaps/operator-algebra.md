@@ -145,9 +145,7 @@ self-adjoint spectral or functional calculus. Mathlib's `LinearPMap.comp` instea
 entire inner domain to map into the outer domain and retains that inner domain; the exact restricted
 composition used by interacting completed-space operators remains project-local. The pinned API also does not provide a `LinearPMap` semibounded
 quadratic-form package, positivity package, general resolvent calculus, projection-valued spectral
-measure calculus, or strongly continuous positive heat-semigroup construction. Comparing the
-previous v4.33.1 pin with v4.34.1 reveals no new unbounded functional-calculus layer that closes
-this gap.
+measure calculus, or strongly continuous positive heat-semigroup construction.
 
 The project-local resolvent/Cayley/Stone line remains a real-time construction: it builds strongly
 continuous unitary evolution from a self-adjoint `LinearPMap` without an unbounded functional
