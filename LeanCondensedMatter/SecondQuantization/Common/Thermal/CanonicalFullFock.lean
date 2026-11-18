@@ -126,12 +126,7 @@ theorem canonicalFullGibbsDensityOperator_apply_basis
         (completedBasisState c) =
       (Real.normalizedWeight (canonicalFullGibbsWeight ε β N) c : ℂ) •
         completedBasisState c := by
-  simpa only [canonicalFullGibbsDensityOperator, completedHilbertBasis_apply] using
-    (diagonalDensityOperator_apply_basis
-      (completedHilbertBasis (Config := Config)) (canonicalFullGibbsWeight ε β N)
-      (canonicalFullGibbsWeight_norm_summable ε β N hsum)
-      (canonicalFullGibbsWeight_nonneg ε β N)
-      (canonicalFullGibbsWeight_tsum_pos ε β N hsum) c)
+  exact diagonalDensityOperator_apply_basis _ _ _ _ _ c
 
 /-- The full-Fock canonical state has the same diagonal occupation probabilities
 as the fixed-number sector state on every admitted configuration. -/
