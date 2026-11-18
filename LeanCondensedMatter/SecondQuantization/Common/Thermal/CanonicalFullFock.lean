@@ -127,13 +127,9 @@ theorem canonicalFullGibbsDensityOperator_apply_basis_of_sector
       (eigenbasisGibbsProbability
         (fun m : ParticleNumberSector Mode Config N => occupationEnergy ε m.val) β n : ℂ) •
         completedBasisState n.val := by
-  simpa only [canonicalFullGibbsDensityOperator, completedHilbertBasis_apply,
-    normalizedWeight_canonicalFullGibbsWeight_apply_sector ε β N hsum n] using
-    (diagonalDensityOperator_apply_basis
-      (completedHilbertBasis (Config := Config)) (canonicalFullGibbsWeight ε β N)
-      (canonicalFullGibbsWeight_norm_summable ε β N hsum)
-      (canonicalFullGibbsWeight_nonneg ε β N)
-      (canonicalFullGibbsWeight_tsum_pos ε β N hsum) n.val)
+  simp only [canonicalFullGibbsDensityOperator, diagonalDensityOperator_apply_basis,
+    completedHilbertBasis_apply,
+    normalizedWeight_canonicalFullGibbsWeight_apply_sector ε β N hsum n]
 
 /-- The canonical density annihilates basis states in all other particle-number sectors. -/
 theorem canonicalFullGibbsDensityOperator_apply_basis_of_ne
@@ -144,14 +140,9 @@ theorem canonicalFullGibbsDensityOperator_apply_basis_of_ne
     (c : Config) (hc : particleNumber (Mode := Mode) c ≠ N) :
     (canonicalFullGibbsDensityOperator (Config := Config) ε β N hsum).op
         (completedBasisState c) = 0 := by
-  have hzero : Real.normalizedWeight (canonicalFullGibbsWeight ε β N) c = 0 := by
-    simp [Real.normalizedWeight, canonicalFullGibbsWeight_apply_of_ne ε β N c hc]
-  simpa [canonicalFullGibbsDensityOperator, completedHilbertBasis_apply, hzero] using
-    (diagonalDensityOperator_apply_basis
-      (completedHilbertBasis (Config := Config)) (canonicalFullGibbsWeight ε β N)
-      (canonicalFullGibbsWeight_norm_summable ε β N hsum)
-      (canonicalFullGibbsWeight_nonneg ε β N)
-      (canonicalFullGibbsWeight_tsum_pos ε β N hsum) c)
+  simp [canonicalFullGibbsDensityOperator, diagonalDensityOperator_apply_basis,
+    completedHilbertBasis_apply, Real.normalizedWeight,
+    canonicalFullGibbsWeight_apply_of_ne ε β N c hc]
 
 end
 
