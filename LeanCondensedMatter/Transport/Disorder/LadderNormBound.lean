@@ -110,7 +110,6 @@ private theorem norm_mul_three_le
 /-- Microscopic norm control of the exact finite second-moment action. -/
 theorem norm_exactSecondMoment_le_uniformPotential_sq
     (kernel : H →L[ℂ] H) (potentialBound : ℝ)
-
     (hpotential : ∀ ω, ‖(ensemble.impurityPotential ω).1‖ ≤ potentialBound) :
     ‖ensemble.exactSecondMoment kernel‖ ≤
       potentialBound ^ 2 * ‖kernel‖ := by
