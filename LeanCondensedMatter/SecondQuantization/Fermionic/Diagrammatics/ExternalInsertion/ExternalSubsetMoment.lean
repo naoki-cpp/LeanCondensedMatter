@@ -151,9 +151,7 @@ private theorem sum_vacuumFreeFixedExternalInsertionWickDiagram_partition
     (Mode := Mode) labels
       (fun d : ExternalInsertionWickDiagram Mode K n =>
         if externalComponentPartition d.vertexGraph = π then weight d else 0)]
-  apply Finset.sum_congr rfl
-  intro d _
-  split_ifs <;> simp_all
+  exact Finset.sum_congr rfl (by intros; split_ifs <;> simp_all)
 
 open Classical in
 /-- For a *fixed physical external-component partition*, the actual
@@ -380,14 +378,7 @@ theorem sum_fixedExternalPartitionDysonFiber_eq_assignmentOrderedDyson
   classical
   rw [sum_fixedExternalPartitionDysonFiber_eq_sizes_shuffles_localLabels
     anchor π heven ε β g labels times]
-  apply Finset.sum_congr rfl
-  intro p _
-  let layout : ExternalInsertionBlockLayout K n :=
-    ((ExternalInsertionBlockLayout.fixedPartitionSizeShuffleEquiv
-      (E := K) (N := n) π heven).symm p.1).1
-  exact if_congr Iff.rfl
-    (ExternalInsertionBlockLayout.assembleDiagram_dysonAmplitude_eq_assignmentOrdered
-      layout p.2.1 ε β g times) rfl
+  simp only [ExternalInsertionBlockLayout.assembleDiagram_dysonAmplitude_eq_assignmentOrdered]
 
 /-- The full fixed-order physical Dyson coefficient is reindexed by even
 external-component partitions and independently labelled connected blocks.
