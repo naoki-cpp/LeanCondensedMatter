@@ -552,19 +552,6 @@ theorem ExternalInsertionBlockLayout.sum_signedDysonShuffleOrbits_eq_prod_connec
           (layout.interactionBlock (Finset.univ : Finset (Fin n)) B)))
         ε β g (evenExternalSubsetTimes times
           (B : Finset (Fin (2 * E))) (layout.evenBlocks B))
-  have horbit (F : layout.ConnectedBlockFamily
-      (ExternalLabel := ExternalFieldLabel Mode)
-      (InternalLabel := QuarticVertexLabel Mode)) :
-      (let d : ExternalInsertionWickDiagram Mode E n :=
-        layout.assembleDiagram (Finset.univ : Finset (Fin n)) F.1
-      ∑ shuffle : d.ComponentInteractionOrderShuffle,
-        d.orderedDysonAmplitude ε β g times
-          (d.assembleInteractionOrder d.canonicalComponentInteractionOrders shuffle)) =
-        externalPartitionSourceSign layout.partition *
-          ∏ B, weight B (F.1 B) := by
-    simpa only [weight] using
-      (ExternalInsertionBlockLayout.assembleConnectedBlocks_signedDysonShuffleOrbit_eq_subsetTimes
-        layout F.1 F.2 ε β g times)
   calc
     _ = externalPartitionSourceSign layout.partition *
         ∑ F : layout.ConnectedBlockFamily
@@ -576,8 +563,10 @@ theorem ExternalInsertionBlockLayout.sum_signedDysonShuffleOrbits_eq_prod_connec
       rw [Finset.mul_sum]
       apply Finset.sum_congr rfl
       intro F _
-      simpa only [mul_ite, mul_zero] using
-        (if_congr Iff.rfl (horbit F) rfl)
+      simpa only [condition, weight, mul_ite, mul_zero] using
+        (if_congr Iff.rfl
+          (ExternalInsertionBlockLayout.assembleConnectedBlocks_signedDysonShuffleOrbit_eq_subsetTimes
+            layout F.1 F.2 ε β g times) rfl)
     _ = _ := by
       simpa only [condition, weight] using
         (congrArg (fun z : ℂ => externalPartitionSourceSign layout.partition * z)
