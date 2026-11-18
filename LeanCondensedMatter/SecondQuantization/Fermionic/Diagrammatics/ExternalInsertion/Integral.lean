@@ -453,7 +453,7 @@ private theorem sum_ownerSlotCongr_connectedDyson_eq_ordered_of_predicates
           ε β g externalTime
       else 0
   change (∑ G, weight G) = _
-  rw [← layout.sum_ownerSlotCongrConnectedBlockFamilies e weight]
+  rw [← Equiv.sum_comp (layout.ownerSlotCongrConnectedBlockFamilyEquiv e) weight]
   apply Finset.sum_congr rfl
   intro F _
   dsimp [weight]
