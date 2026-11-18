@@ -131,6 +131,8 @@ theorem norm_connectedTwoGreen_sub_firstBornRung_le_cubic
   let ER : ℝ := 2 * BR ^ 3 * potentialBound ^ 2
   let CL : ℝ := BL ^ 2 * potentialBound
   let CR : ℝ := 2 * BR ^ 2 * potentialBound
+  have hbound : 0 ≤ potentialBound :=
+    ensemble.uniformPotentialBound_nonneg potentialBound hpotential
   have hEL : 0 ≤ EL := by dsimp [EL]; positivity
   have hCL : 0 ≤ CL := by dsimp [CL]; positivity
   have hLerr (ω : Ω) : ‖L ω - AL ω‖ ≤ EL :=
