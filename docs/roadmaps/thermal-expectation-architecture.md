@@ -29,7 +29,7 @@ identifies these two APIs whenever the bounded completed operator extends `A`.
 The finite fermionic two-point contractions now use that bridge directly at explicit
 chemical potential, deriving their Fermi–Dirac values from completed bounded CAR/KMS
 operators. The free grand-canonical Green function evaluates its finite Gibbs
-expectation without routing through the old density-specific contraction API.
+expectation using the common Gibbs-expectation API.
 The finite-mode-supported one-body bilinear mean now states its result using
 `Common.gibbsExpectation` directly, for arbitrary fermionic mode types under
 the grand-canonical Gibbs summability hypothesis. The finite second-quantized
@@ -99,13 +99,11 @@ convergent diagonal trace series and the full-Fock canonical sector formula.
 Operator-norm convergence alone would not justify interchanging traces and
 infinite sums.
 
-PR #4097 now proves the **bounded-observable** grand-canonical expectation decomposition
-by sharp particle-number sector (including empty sectors). PR #4100 connects that
-sector-weighted mixture of canonical expectations to the completed fermionic Wick
-pairing theorem; it does **not** assert Wick factorization for a single sharp-`N` state.
-PRs #4102 and #4108 identify the first particle-number moment of sector probabilities
-under explicit integrability assumptions, without applying bounded-observable expectation
-to an unbounded number operator.
+The **bounded-observable** grand-canonical expectation decomposes into a weighted sum over
+canonical particle-number sectors, including empty sectors. This mixture satisfies the
+completed fermionic Wick pairing theorem; an individual sharp-`N` state need not.
+The first particle-number moment is identified under explicit integrability hypotheses,
+without applying a bounded-observable result to an unbounded number operator.
 
 Trace-norm convergence of the sector mixture, sector-probability conservation
 under specified open-system dynamics, and relative-entropy/thermalization results
@@ -151,12 +149,12 @@ remains `fermionEnergy ε`.
 The external-insertion mixed-atomic and interaction-picture vertex Dyson coefficient APIs
 accept explicit μ and evaluate directly via `Common.finiteGibbsExpectation` at
 `fermionEnergy (ε - μ)`, while existing diagrammatic and vacuum-factorization theorems
-remain explicitly restricted to μ = 0 until the full diagrammatic API migrates.
+remain explicitly restricted to μ = 0 in the present diagrammatic API.
 The finite two-point operator Dyson coefficient and its unnormalized formal series now
 also use explicit μ through the generic finite Gibbs expectation. Their current
 identities with Wick diagrams, connected components and normalized partition series
 remain explicitly specialized to μ = 0; nonzero-μ linked-cluster factorization
-requires migrating the diagram-side amplitudes and partition trace together. Concrete ensemble-specific Dyson/Wick statements choose the Gibbs
+requires a separate extension of the diagram-side amplitudes and partition trace. Concrete ensemble-specific Dyson/Wick statements choose the Gibbs
 energy separately; no finite density-state adapter is required by the coefficient expansion.
 Finite fermionic contractions, one-body expectations, Wick amplitudes, and Dyson consumers
 use the generic finite Gibbs expectation or eigenbasis density operator directly, with
@@ -165,7 +163,7 @@ Where the diagrammatic series still specializes to `μ = 0`, this choice is expl
 and does not constitute a fixed-number canonical state.
 `grandCanonicalTimedFieldPairContraction ε β μ` uses the generic finite Gibbs functional
 at effective dispersion `ε - μ` with physical imaginary-time fields at `ε`. Existing
-diagrammatic consumers explicitly choose `μ = 0` until their higher-level APIs migrate.
+diagrammatic consumers explicitly choose `μ = 0` at these endpoints.
 The finite `Fermionic.grandCanonicalFreeGreenFunction ε β μ` instead uses the generic
 `Common.finiteGibbsExpectation` at `Common.grandCanonicalEnergy ε μ`;
 its imaginary-time field evolution uses physical energies `ε`, while its
@@ -174,14 +172,11 @@ The one-body endpoint `finiteGrandCanonicalGibbsDensityOperator_expectation_fini
 instead takes explicit `μ` and evaluates the generic eigenbasis Gibbs state at
 `Common.grandCanonicalEnergy ε μ`. Its finite mean-energy consumer passes `μ = 0`
 explicitly. The binary-entropy endpoint likewise uses the generic finite Gibbs state
-at explicit chemical potential. The older
-finite `freeBoltzmannWeight` and `freePartitionFunction` specializations are removed in
-the #3986 partition migration: generic coordinate weights are
-`Common.boltzmannWeight`, and the physical full-Fock partition is
-`Common.grandCanonicalPartitionFunction ε β μ`. The finite fermionic product theorem accepts explicit `μ`. The previous finite
-implicit-μ density constructor and its consumer-specific expectation bridge have been
-removed. Finite density-state expectations use the generic pure-point Gibbs state
-directly; finite complex Boltzmann coordinates remain a separate proof/perturbation lane.
+at explicit chemical potential. Generic coordinate weights are `Common.boltzmannWeight`, while the physical full-Fock
+partition is `Common.grandCanonicalPartitionFunction ε β μ`. The finite fermionic
+product theorem accepts explicit `μ`. Finite density-state expectations use the
+generic pure-point Gibbs state; complex Boltzmann coordinates are a distinct
+proof/perturbation construction.
 
 `Fermionic.Thermal.FreeEntropy` uses the full-occupation grand-canonical one-body
 expectation, not a sharp-number canonical expectation, to derive finite mean-energy
@@ -287,7 +282,7 @@ independent of the ensemble: the operator algebra and the chosen state are separ
 | Finite trace ratios and normalized Dyson trace-series coefficients | `Common.Thermal.FiniteGibbsCoordinate`, `Common.Perturbation.DysonTraceSeries` | Concrete Gibbs specialization on the supplied finite configuration type. That type may be a selected sector or all configurations; the trace ratio alone does not select an ensemble. |
 | Completed / infinite-occupation Gibbs realizations | `QuantumTheory.Gibbs.Eigenbasis`, `Bosonic.Thermal.ConvergenceAwareGibbs` | Density states require summable weights; unbounded bosonic algebraic observables also require an explicit summability domain with `μ` in the thermal weight. |
 
-**Migration policy.** Introduce a sharp `N` or chemical potential `μ` only in the
+**Ensemble boundary.** Use sharp `N` or chemical potential `μ` only in the
 appropriate physical state constructors and their genuinely ensemble-dependent expectations.
 Do not thread either parameter through formal Dyson coefficients, generic pairing
 combinatorics, abstract connected correlations, or cumulant inversion. The grand-canonical
@@ -301,12 +296,10 @@ weights `p_N` or imply thermalization. A finite-mode bosonic Fock occupation
 type is still infinite, so a finite-configuration theorem never justifies
 omitting its summability hypotheses.
 
-The fixed-`N` canonical and explicit-`μ` grand-canonical state constructions and
-migration of their legacy implicit-`μ = 0` finite-fermion and bosonic free-field
-adapters are implemented. The remaining **nonzero-`μ` diagrammatic
-linked-cluster factorization**, sharp-sector dynamical/KMS questions, and
-interacting or infinite-volume limits require separate theorems; they are not
-consequences of the completed API migration.
+The fixed-`N` canonical and explicit-`μ` grand-canonical state constructions are
+available. **Nonzero-`μ` diagrammatic linked-cluster factorization**, sharp-sector
+dynamical/KMS questions, and interacting or infinite-volume limits require
+separate theorems.
 
 ## Open work
 

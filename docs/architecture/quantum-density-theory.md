@@ -197,8 +197,7 @@ For `β > 0`, the Helmholtz lower bound is attained exactly by the canonical Gib
 same finite-dimensional and nontrivial-space assumptions. Pure-point spectral data provide a
 separate state-level Gibbs construction when the Boltzmann weights are summable.
 
-This finite-dimensional scope is equivalent to the earlier compactness boundary for bounded
-Hamiltonians: the Gibbs exponential is invertible, so compactness forces finite dimensionality.
+For bounded Hamiltonians, an invertible compact Gibbs exponential requires finite dimensionality.
 Genuine infinite-dimensional Gibbs states therefore require the separate unbounded/domain-aware line
 or explicit pure-point spectral data.
 

@@ -64,9 +64,6 @@ The durable CI rules are current-state dependency rules:
 - `SecondQuantization.Common` does not import `Fermionic` or `Bosonic`;
 - statistics-specific layers may consume Common and upstream reusable mathematics/quantum theory.
 
-These rules intentionally do not maintain blacklists of modules, imports, or identifiers that existed
-before an earlier refactor.
-
 ## Fermionic responsibility DAG
 
 Within the fermionic tree, reusable theory flows downstream through explicit responsibility layers:

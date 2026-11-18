@@ -152,8 +152,8 @@ The Gibbs layer provides `gibbsOp`, normalized Gibbs states, energy expectation,
 formulas, the Helmholtz free-energy lower bound, the Gibbs entropy identity, attainment of the bound,
 and the equality/uniqueness characterization of the Gibbs minimizer.
 
-The bounded Gibbs API states finite dimensionality directly. This matches the previous compactness
-boundary because an invertible bounded Gibbs exponential can be compact only in finite dimension.
+The bounded Gibbs API assumes finite dimensionality. An invertible compact Gibbs exponential
+of a bounded Hamiltonian is possible only in finite dimension.
 Infinite-dimensional Gibbs theory therefore requires an unbounded self-adjoint Hamiltonian or
 semigroup/resolvent framework with explicit domains.
 
