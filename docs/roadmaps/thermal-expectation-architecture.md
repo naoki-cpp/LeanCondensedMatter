@@ -294,16 +294,19 @@ type is still infinite, so a finite-configuration theorem never justifies
 omitting its summability hypotheses.
 
 The fixed-`N` canonical and explicit-`μ` grand-canonical state constructions are
-available. **Nonzero-`μ` diagrammatic linked-cluster factorization**, sharp-sector
-dynamical/KMS questions, and interacting or infinite-volume limits require
-separate theorems.
+available. The finite-mode **bosonic coefficientwise formal** quartic Dyson
+linked-cluster theorem already accepts `μ` under `0 < β * (ε i - μ)`.
+It does not establish an analytic interacting partition function. Sharp-sector
+dynamical/KMS questions, interacting convergence, and infinite-volume limits
+remain separate targets.
 
 ## Open work
 
 - extend the established free-field product summability and KMS/exchange recurrence to further
   operator families with explicit domain conditions;
 - establish a justified bosonic operator-integration boundary;
-- build completed bosonic Fock/operator-domain theory;
+- characterize completed bosonic mixed-mode/quartic weighted domains and control
+  interacting Hamiltonians beyond the existing densely defined quartic operators;
 - extend connected expansions from the proved fermionic two-point case to higher/source insertions;
 - formulate infinite-mode and thermodynamic-limit results with explicit analytic hypotheses.
 

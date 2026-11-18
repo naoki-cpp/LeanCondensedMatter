@@ -98,12 +98,12 @@ bounded-Hamiltonian Gibbs state satisfies the corresponding entropy identity. Fo
 in the Helmholtz bound holds exactly for the canonical Gibbs state under the same finite-dimensional
 and nontrivial-space assumptions.
 
-A bounded Hamiltonian cannot model a genuinely infinite-dimensional compact Gibbs operator: the
-operator exponential is invertible, so compactness forces finite dimensionality. This equivalence is
-why the bounded Gibbs API states finite dimensionality directly. Infinite-volume or
-infinite-mode Gibbs theory therefore requires an unbounded self-adjoint Hamiltonian or a semigroup
-interface with domain control; pure-point spectral data provide one state-level route when the
-Boltzmann weights are summable.
+A bounded Hamiltonian cannot yield a compact Gibbs exponential in infinite dimension:
+the exponential is invertible, so compactness forces finite dimensionality. This is why
+the bounded `gibbsState` API assumes finite dimension. In infinite dimension, summable
+pure-point spectral data already construct a density state without a Hamiltonian operator;
+identifying a general unbounded Hamiltonian with a heat operator requires a separate
+domain-aware functional-calculus or semigroup theorem. Infinite-volume limits remain open.
 
 ## Finite-temperature linked-cluster theory
 
@@ -159,10 +159,13 @@ endpoint is
 SecondQuantization.Common.BlochDeDominicis.finiteGibbsExpectation_prod_eq_sum_pairing
 ```
 
-The generic pairing recursion is independent of occupation bases and finite-dimensional traces. The
-current concrete instance transports algebraic Fock operators to a finite Hilbert realization and
-evaluates them in the generic finite pure-point Gibbs state. A bosonic infinite-occupation instance
-must state all summability, integrability, product-domain, and KMS assumptions explicitly.
+The generic pairing recursion is independent of occupation bases and finite-dimensional traces.
+Concrete specializations include the finite-configuration Hilbert/Gibbs route and the
+infinite-occupation free-boson grand-canonical route. The latter proves fixed-length
+ordered-product summability, KMS rotation, and the pairing theorem
+`grandCanonicalGibbsExpectation_eq_sum_pairing_concrete` under the explicit gap condition
+`0 < β * (ε i - μ)` for each mode. No finite bosonic occupation basis is assumed;
+interacting and sharp-particle-number Gibbs states are not covered by this pairing theorem.
 
 ## Second-quantization representations
 

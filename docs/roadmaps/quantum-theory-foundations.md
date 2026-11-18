@@ -107,8 +107,6 @@ operators represented by some normalized state vector through `QuantumTheory.pur
   agreement with representative evolution;
 - normalized complex and lossless real observable expectations;
 - positivity, reality, contractivity, and countable Hilbert-basis formulas;
-- a positive square root with Hilbert--Schmidt control and the corresponding `innerHS` expectation
-  identity;
 - finite-dimensional matrix-trace specializations;
 - spectral purity with `0 ≤ purity ρ ≤ 1`, `purity (pure ψ) = 1`, and the dimension-independent
   characterization `IsPureDensity ρ ↔ purity ρ = 1`;
