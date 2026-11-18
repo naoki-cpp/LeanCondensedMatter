@@ -182,13 +182,7 @@ theorem externalInsertionFixedCardinalityFiberSum_eq_cauchyFactor
           if ext.1.externalLabel = externalLabel then
             ext.1.dysonAmplitude ε β g externalTime else 0) *
         (∑ x : Y, vacuum x) := by
-      rw [Finset.sum_mul]
-      apply Finset.sum_congr rfl
-      intro ext _
-      rw [Finset.mul_sum]
-      apply Finset.sum_congr rfl
-      intro x _
-      split_ifs <;> simp
+      simp only [Finset.sum_mul, Finset.mul_sum, ite_mul, zero_mul]
     _ = vacuumFreeExternalInsertionDysonCoefficient
           ε β g externalLabel externalTime m *
         PowerSeries.coeff k (PowerSeries.normalizeByConstantCoeff (Common.dysonTraceSeries (fermionEnergy ε) β (quarticInteraction g))) := by
