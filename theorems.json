@@ -93315,8 +93315,7 @@
       "QuantumTheory.Transport.FiniteDisorderEnsemble.configurationGreenOfRegulator_eq_secondOrder_add_exactRemainder_left",
       "QuantumTheory.Transport.FiniteDisorderEnsemble.map_average",
       "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_average_le_of_forall",
-      "QuantumTheory.Transport.norm_resolvent_spectralParameterOfRegulator_le",
-      "_private.LeanCondensedMatter.Transport.Disorder.LinearizedFluctuation.0.QuantumTheory.Transport.FiniteDisorderEnsemble.norm_mul_five_le"
+      "QuantumTheory.Transport.norm_resolvent_spectralParameterOfRegulator_le"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -210936,48 +210935,6 @@
       "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_retardedAdvancedLadderCLM_le_uniformPotential_sq"
     ],
     "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [CompleteSpace H]\n  (a b c d e : H →L[ℂ] H), ‖a * b * c * d * e‖ ≤ ‖a‖ * ‖b‖ * ‖c‖ * ‖d‖ * ‖e‖",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Transport.Disorder.LinearizedFluctuation.0.QuantumTheory.Transport.FiniteDisorderEnsemble.norm_mul_five_le",
-    "module": "LeanCondensedMatter.Transport.Disorder.LinearizedFluctuation",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_configurationGreen_fluctuation_sub_firstDyson_le"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_configurationGreen_fluctuation_sub_firstDyson_le"
-    ],
-    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
