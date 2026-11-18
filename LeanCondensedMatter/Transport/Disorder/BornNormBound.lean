@@ -39,28 +39,6 @@ variable (ensemble : FiniteDisorderEnsemble (H := H) (Ω := Ω))
 noncomputable def impurityThirdNormMoment : ℝ :=
   ∑ ω, ensemble.probability ω * ‖(ensemble.impurityPotential ω).1‖ ^ 3
 
-private theorem norm_mul_seven_le
-    (a b c d e f g : H →L[ℂ] H) :
-    ‖a * b * c * d * e * f * g‖ ≤
-      ‖a‖ * ‖b‖ * ‖c‖ * ‖d‖ * ‖e‖ * ‖f‖ * ‖g‖ := by
-  calc
-    _ ≤ ‖a * b * c * d * e * f‖ * ‖g‖ := norm_mul_le _ _
-    _ ≤ ‖a * b * c * d * e‖ * ‖f‖ * ‖g‖ := by
-      gcongr
-      exact norm_mul_le _ _
-    _ ≤ ‖a * b * c * d‖ * ‖e‖ * ‖f‖ * ‖g‖ := by
-      gcongr
-      exact norm_mul_le _ _
-    _ ≤ ‖a * b * c‖ * ‖d‖ * ‖e‖ * ‖f‖ * ‖g‖ := by
-      gcongr
-      exact norm_mul_le _ _
-    _ ≤ ‖a * b‖ * ‖c‖ * ‖d‖ * ‖e‖ * ‖f‖ * ‖g‖ := by
-      gcongr
-      exact norm_mul_le _ _
-    _ ≤ ‖a‖ * ‖b‖ * ‖c‖ * ‖d‖ * ‖e‖ * ‖f‖ * ‖g‖ := by
-      gcongr
-      exact norm_mul_le _ _
-
 /-- Fixed-regulator norm bound on the exact finite-ensemble cubic remainder appearing
 in the centered Born expansion, independent of a separate centering hypothesis. -/
 theorem norm_exactBornRemainder_le_thirdNormMoment
@@ -93,7 +71,10 @@ theorem norm_exactBornRemainder_le_thirdNormMoment
     calc
       ‖remainder ω‖ ≤
           ‖G₀‖ * ‖V ω‖ * ‖G₀‖ * ‖V ω‖ * ‖G ω‖ * ‖V ω‖ * ‖G₀‖ := by
-            exact norm_mul_seven_le G₀ (V ω) G₀ (V ω) (G ω) (V ω) G₀
+            change ‖G₀ * V ω * G₀ * V ω * G ω * V ω * G₀‖ ≤ _
+            simpa only [List.prod_cons, List.prod_nil, List.map_cons, List.map_nil,
+              mul_one, mul_assoc] using
+              (List.norm_prod_le' (l := [G₀, V ω, G₀, V ω, G ω, V ω, G₀]) (by simp))
       _ ≤ B * ‖V ω‖ * B * ‖V ω‖ * B * ‖V ω‖ * B := by
         gcongr
         exact hconfig ω
