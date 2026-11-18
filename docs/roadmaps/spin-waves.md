@@ -252,13 +252,3 @@ angle and stable-equilibrium conditions before selecting a positive square root.
 Thin-film surface and volume modes need their own geometry, boundary conditions, and
 mode-existence argument. Leave electromagnetic retardation, optical coupling, nonlinear
 solitons, spin-torque devices, and material calibration to subsequent model-specific work.
-
-## Delivery and verification
-
-Implement SW1 and SW2 first, with each PR ending in a physical theorem rather than a
-collection of unused definitions. SW3-SW4 form the quantum branch; SW5-SW6 form the
-macroscopic branch. Exact filenames and additional generalizations follow concrete consumers.
-
-Validate Lean changes through PR CI, without local lake/Lean or Python execution for
-this workstream. Review every physical coefficient, approximation, and source convention.
-Documentation-only changes require link, scope, and status checks rather than a Lean build.
