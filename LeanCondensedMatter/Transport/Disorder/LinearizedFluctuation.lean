@@ -60,6 +60,8 @@ theorem norm_configurationGreen_fluctuation_sub_firstDyson_le
     norm_resolvent_spectralParameterOfRegulator_le
       (ensemble.configurationHamiltonian ξ).1
       (ensemble.configurationHamiltonian ξ).2 energy regulator hregulator
+  have hbound : 0 ≤ potentialBound :=
+    ensemble.uniformPotentialBound_nonneg potentialBound hpotential
   have hR (ξ : Ω) : ‖R ξ‖ ≤ B ^ 3 * potentialBound ^ 2 := by
     calc
       ‖R ξ‖ ≤ ‖G₀‖ * ‖V ξ‖ * ‖G₀‖ * ‖V ξ‖ * ‖G ξ‖ := by
