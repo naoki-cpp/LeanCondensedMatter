@@ -92,21 +92,14 @@ theorem eigenbasisTimeDomainSummable_of_finite
     EigenbasisTimeDomainSummable system data A B := by
   exact ⟨Summable.of_finite, Summable.of_finite⟩
 
-/-- Schrödinger phases have unit norm. -/
-@[simp]
-theorem norm_eigenbasisSchrodingerPhase
-    (data : EnergyEigenbasisLehmannData system ι) (i : ι) (t : ℝ) :
-    ‖eigenbasisSchrodingerPhase system data i t‖ = 1 := by
-  rw [eigenbasisSchrodingerPhase, Complex.norm_exp]
-  simp
-
 /-- Relative transition phases have unit norm. -/
 @[simp]
 theorem norm_eigenbasisTransitionPhase
     (data : EnergyEigenbasisLehmannData system ι)
     (m n : ι) (t : ℝ) :
     ‖eigenbasisTransitionPhase system data m n t‖ = 1 := by
-  simp [eigenbasisTransitionPhase]
+  rw [eigenbasisTransitionPhase, Complex.norm_exp]
+  simp
 
 /-- One forward ordered transition at time `τ`. -/
 noncomputable def eigenbasisForwardTimeTerm
