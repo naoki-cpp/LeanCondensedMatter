@@ -112,11 +112,8 @@ normalized finite disorder ensemble. -/
 theorem uniformPotentialBound_nonneg (bound : ℝ)
     (hpotential : ∀ ω, ‖(ensemble.impurityPotential ω).1‖ ≤ bound) :
     0 ≤ bound := by
-  have haverage :
-      ‖ensemble.average (fun ω => (ensemble.impurityPotential ω).1)‖ ≤ bound :=
-    ensemble.norm_average_le_of_forall
-      (fun ω => (ensemble.impurityPotential ω).1) bound hpotential
-  exact (norm_nonneg _).trans haverage
+  exact (norm_nonneg _).trans
+    (ensemble.norm_average_le_of_forall _ _ hpotential)
 
 /-- Finite operator averaging commutes with adjunction because ensemble weights are real. -/
 theorem average_star (operator : Ω → H →L[ℂ] H) :
