@@ -76,25 +76,24 @@ theorem norm_averagedTwoGreenTrace_sub_dressed_le_residuals
   have ha :
       ‖a‖ ≤ ‖meanL - suppliedLeftGreen‖ * ‖bareSourceVertex‖ * |regulatorRight|⁻¹ := by
     calc
-      ‖a‖ ≤ (‖meanL - suppliedLeftGreen‖ * ‖bareSourceVertex‖) * ‖meanR‖ := by
-        exact (norm_mul_le _ _).trans
-          (mul_le_mul_of_nonneg_right
-            (norm_mul_le (meanL - suppliedLeftGreen) bareSourceVertex)
-            (norm_nonneg meanR))
-      _ ≤ _ := mul_le_mul_of_nonneg_left hmeanR
-        (mul_nonneg (norm_nonneg _) (norm_nonneg _))
+      ‖a‖ ≤ ‖meanL - suppliedLeftGreen‖ * ‖bareSourceVertex‖ * ‖meanR‖ :=
+        (norm_mul_le _ _).trans
+          (mul_le_mul_of_nonneg_right (norm_mul_le _ _) (norm_nonneg _))
+      _ ≤ _ := by gcongr
   have hb :
       ‖b‖ ≤ ‖suppliedLeftGreen‖ * ‖bareSourceVertex‖ *
-        ‖meanR - suppliedRightGreen‖ := by
-    exact (norm_mul_le _ _).trans
-      (mul_le_mul_of_nonneg_right
-        (norm_mul_le suppliedLeftGreen bareSourceVertex)
-        (norm_nonneg _))
-  have hsum : ‖a + b + c‖ ≤ ‖a‖ + ‖b‖ + ‖c‖ := by
+        ‖meanR - suppliedRightGreen‖ :=
+    (norm_mul_le _ _).trans
+      (mul_le_mul_of_nonneg_right (norm_mul_le _ _) (norm_nonneg _))
+  have hsum :
+      ‖a + b + c‖ ≤
+        ‖meanL - suppliedLeftGreen‖ * ‖bareSourceVertex‖ * |regulatorRight|⁻¹ +
+          ‖suppliedLeftGreen‖ * ‖bareSourceVertex‖ *
+            ‖meanR - suppliedRightGreen‖ + ‖c‖ := by
     calc
-      ‖a + b + c‖ ≤ ‖a + b‖ + ‖c‖ := norm_add_le _ _
-      _ ≤ (‖a‖ + ‖b‖) + ‖c‖ :=
-        add_le_add (norm_add_le a b) le_rfl
+      _ ≤ ‖a‖ + ‖b‖ + ‖c‖ :=
+        (norm_add_le _ _).trans (add_le_add (norm_add_le _ _) le_rfl)
+      _ ≤ _ := add_le_add (add_le_add ha hb) le_rfl
   have hgroup :
       a + b + conn -
         suppliedLeftGreen * (dressedSourceVertex - bareSourceVertex) * suppliedRightGreen =
@@ -110,12 +109,6 @@ theorem norm_averagedTwoGreenTrace_sub_dressed_le_residuals
         ‖suppliedLeftGreen‖ * ‖bareSourceVertex‖ *
           ‖meanR - suppliedRightGreen‖ + ‖c‖)
   rw [hgroup]
-  have hsum' :
-      ‖a + b + c‖ ≤
-        ‖meanL - suppliedLeftGreen‖ * ‖bareSourceVertex‖ * |regulatorRight|⁻¹ +
-          ‖suppliedLeftGreen‖ * ‖bareSourceVertex‖ *
-            ‖meanR - suppliedRightGreen‖ + ‖c‖ := by
-    exact hsum.trans (add_le_add (add_le_add ha hb) le_rfl)
   calc
     ‖trace (measuredVertex * (a + b + c))‖ ≤
         (Module.finrank ℂ H : ℝ) * ‖measuredVertex * (a + b + c)‖ :=
@@ -125,7 +118,7 @@ theorem norm_averagedTwoGreenTrace_sub_dressed_le_residuals
       mul_le_mul_of_nonneg_left (norm_mul_le _ _) (Nat.cast_nonneg _)
     _ = ((Module.finrank ℂ H : ℝ) * ‖measuredVertex‖) * ‖a + b + c‖ := by
       ring
-    _ ≤ _ := mul_le_mul_of_nonneg_left hsum'
+    _ ≤ _ := mul_le_mul_of_nonneg_left hsum
       (mul_nonneg (Nat.cast_nonneg _) (norm_nonneg _))
 
 end FiniteDisorderEnsemble
