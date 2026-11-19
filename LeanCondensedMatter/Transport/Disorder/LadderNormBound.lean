@@ -127,7 +127,7 @@ theorem norm_exactSecondMoment_le_uniformPotential_sq
         ‖impurity‖ * ‖kernel‖ * ‖impurity‖ :=
       norm_mul_three_le _ _ _
     _ ≤ potentialBound * ‖kernel‖ * potentialBound := by
-      gcongr <;> exact hp
+      gcongr
     _ = potentialBound ^ 2 * ‖kernel‖ := by ring
 
 /-- The supplied finite covariance ladder has norm at most
