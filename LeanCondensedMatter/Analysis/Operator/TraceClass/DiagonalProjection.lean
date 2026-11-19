@@ -65,9 +65,9 @@ theorem traceNorm_sub_compress_diagonal
     change T (b i) - Q (T (Q (b i))) = D (b i)
     rw [hDdiag, hTdiag i]
     by_cases hi : P i
-    · rw [hQdiag i, if_pos hi, hTdiag i, map_smul, hQdiag i, if_pos hi]
-      simp [a, hi] <;> exact sub_self _
-    · rw [hQdiag i, if_neg hi, map_zero, map_zero]
+    · rw [hQdiag i, ite_eq_left hi, hTdiag i, map_smul, hQdiag i, ite_eq_left hi]
+      simp [a, hi]
+    · rw [hQdiag i, ite_eq_right hi, map_zero, map_zero]
       simp [a, hi]
   have hres : IsTraceClass (T - Q.comp (T.comp Q)) := by
     rw [hOp]
