@@ -99,14 +99,6 @@ namespace FiniteDisorderEnsemble
 
 variable (ensemble : FiniteDisorderEnsemble (H := H) (Ω := Ω))
 
-private theorem norm_mul_three_le
-    (a b c : H →L[ℂ] H) :
-    ‖a * b * c‖ ≤ ‖a‖ * ‖b‖ * ‖c‖ := by
-  calc
-    _ ≤ ‖a * b‖ * ‖c‖ := norm_mul_le _ _
-    _ ≤ (‖a‖ * ‖b‖) * ‖c‖ :=
-      mul_le_mul_of_nonneg_right (norm_mul_le _ _) (norm_nonneg _)
-
 /-- Microscopic norm control of the exact finite second-moment action. -/
 theorem norm_exactSecondMoment_le_uniformPotential_sq
     (kernel : H →L[ℂ] H) (potentialBound : ℝ)
