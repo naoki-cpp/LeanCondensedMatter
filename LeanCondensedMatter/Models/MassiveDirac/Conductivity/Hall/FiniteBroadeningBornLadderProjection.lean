@@ -1,5 +1,9 @@
 import LeanCondensedMatter.Models.MassiveDirac.Conductivity.FiniteBroadeningBornLadderZeroBroadening
-import LeanCondensedMatter.Models.MassiveDirac.Conductivity.Hall.FiniteBroadeningBornLadderWeakDisorder
+import LeanCondensedMatter.Transport.Analysis.ContinuumMeasure
+import LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.HallZeroBroadeningWeakDisorder
+import Mathlib.Tactic.FieldSimp
+import Mathlib.Tactic.Linarith
+import Mathlib.Tactic.Ring
 
 set_option linter.style.header false
 
@@ -12,9 +16,10 @@ zero-broadening tensor boundary. This module consumes that seam to expose the an
 projection.
 
 The Hall component is the antisymmetric tensor projection rather than a label attached to an
-ordered response. Its subsequent one-sided weak-disorder limit is inherited from the ordered `xy`
-endpoint. Identification with external closed-form benchmarks belongs to downstream benchmark
-modules.
+ordered response. Its one-sided weak-disorder limit uses the upstream ordered `xy` momentum-integral
+limit with physical Bastin/Středa normalization. The ordered response is only a local proof step;
+the tensor projection is the public endpoint. Identification with external closed-form benchmarks
+belongs to downstream benchmark modules.
 
 The cutoff remains fixed beyond the metallic shell, and the limits remain sequential: `η → 0⁺` at
 fixed positive disorder, then `W → 0⁺`. No ultraviolet/thermodynamic/simultaneous limit, crossed
@@ -46,10 +51,43 @@ theorem tendsto_hallComponent
       (nhds
         (((-2 * e ^ 2 * probeEnergy * m * (probeEnergy ^ 2 + m ^ 2) /
           (Real.pi * hbar * (probeEnergy ^ 2 + 3 * m ^ 2) ^ 2) : ℝ) : ℂ))) := by
+  have hOrderedXY :
+      Tendsto
+        (fun disorderStrength : ℝ =>
+          finiteCutoffContinuumBornDysonOrderedXYRetardedAdvancedDressedSurfaceConductivityZeroBroadeningBoundary
+            e v m probeEnergy disorderStrength hbar pMax)
+        (nhdsWithin 0 (Set.Ioi 0))
+        (nhds
+          (((-2 * e ^ 2 * probeEnergy * m * (probeEnergy ^ 2 + m ^ 2) /
+            (Real.pi * hbar * (probeEnergy ^ 2 + 3 * m ^ 2) ^ 2) : ℝ) : ℂ))) := by
+    have hhbarNe : hbar ≠ 0 := ne_of_gt hhbar
+    have hresponse :=
+      tendsto_orderedXY_momentumIntegral
+        e v m probeEnergy hbar pMax hvelocity hhbarNe hmetal hcutoff
+    have hprobe : 0 < probeEnergy := lt_of_le_of_lt (abs_nonneg m) hmetal
+    have hden : probeEnergy ^ 2 + 3 * m ^ 2 ≠ 0 := by
+      nlinarith [sq_pos_of_ne_zero (ne_of_gt hprobe), sq_nonneg m]
+    have htarget :
+        (((bastinStredaPhysicalMomentumConductivityNormalization hbar : ℝ) : ℂ)) *
+            (((-16 * Real.pi ^ 2 * e ^ 2 * probeEnergy * m *
+              (probeEnergy ^ 2 + m ^ 2) /
+              (probeEnergy ^ 2 + 3 * m ^ 2) ^ 2 : ℝ) : ℂ)) =
+          (((-2 * e ^ 2 * probeEnergy * m * (probeEnergy ^ 2 + m ^ 2) /
+            (Real.pi * hbar * (probeEnergy ^ 2 + 3 * m ^ 2) ^ 2) : ℝ) : ℂ)) := by
+      unfold bastinStredaPhysicalMomentumConductivityNormalization bastinStredaConductivityNormalization
+        bastinStredaTraceConductivityPrefactor
+        momentumMeasurePrefactor
+      push_cast
+      field_simp [hhbarNe, hden, Real.pi_ne_zero]
+      ring
+    have hnormalized :=
+      hresponse.const_mul (((bastinStredaPhysicalMomentumConductivityNormalization hbar : ℝ) : ℂ))
+    rw [htarget] at hnormalized
+    simpa [
+      finiteCutoffContinuumBornDysonOrderedXYRetardedAdvancedDressedSurfaceConductivityZeroBroadeningBoundary] using
+      hnormalized
   simpa [ConductivityTensor.hallComponent,
-    finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensorZeroBroadeningBoundary] using
-    tendsto_orderedXY_conductivity
-      e v m probeEnergy hbar pMax hvelocity hhbar hmetal hcutoff
+    finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensorZeroBroadeningBoundary] using hOrderedXY
 
 end FiniteCutoffBornDyson.Hall.ZeroBroadeningWeakDisorder
 
