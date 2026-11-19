@@ -43,7 +43,10 @@ theorem Pairing.crossingCount_eraseZeroPair {n : ℕ} (pairing : Pairing (n + 1)
   have hFterm : (S.filter (fun q => Crosses F q)).card = pairing.crossingsWithFirstPair := rfl
   have hAterm : ∀ p ∈ A, S.filter (fun q => Crosses p q) = A.filter (fun q => Crosses p q) := by
     intro p _
-    rw [hsplit, Finset.filter_insert, ite_eq_right (not_crosses_firstPair pairing p)]
+    have hnot : ¬ Crosses p pairing.firstPair := by
+      rintro ⟨h1, -, -⟩
+      exact absurd h1 (by simp [Pairing.firstPair])
+    rw [hsplit, Finset.filter_insert, ite_eq_right hnot]
   have hsum' : pairing.crossingCount =
       pairing.crossingsWithFirstPair + ∑ p ∈ A, (A.filter (fun q => Crosses p q)).card := by
     rw [hsum, hFterm]
