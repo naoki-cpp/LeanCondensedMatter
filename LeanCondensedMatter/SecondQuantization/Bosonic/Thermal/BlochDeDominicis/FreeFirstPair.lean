@@ -44,12 +44,7 @@ theorem operatorPeelSum_mem_grandCanonicalGibbsDomain
     (ε : Mode → ℝ) (β μ : ℝ) (hpos : ∀ i, 0 < β * (ε i - μ))
     (C₁ : FreeThermalField Mode) (l : List (FreeThermalField Mode)) :
     C₁.operatorPeelSum l ∈ grandCanonicalGibbsDomain ε β μ := by
-  have h : C₁.operatorPeelSum l =
-      ∑ j : Fin l.length,
-        C₁.exchangeValue (l[(j : ℕ)]'j.isLt) • orderedProduct (l.eraseIdx j) := by
-    simpa only [operatorPeelSum, one_pow, one_mul, orderedProduct] using
-      ScalarExchange.peelSum_eq_sum operator exchangeValue (1 : ℂ) C₁ l
-  rw [h]
+  simp only [operatorPeelSum, ScalarExchange.peelSum_eq_sum, one_pow, one_mul]
   refine Submodule.sum_mem (grandCanonicalGibbsDomain ε β μ) fun j _ => ?_
   exact (grandCanonicalGibbsDomain ε β μ).smul_mem
     (C₁.exchangeValue (l[(j : ℕ)]'j.isLt))
@@ -64,12 +59,7 @@ theorem grandCanonicalGibbsExpectation_operatorPeelSum_eq_sum
       ∑ j : Fin l.length,
         C₁.exchangeValue (l[(j : ℕ)]'j.isLt) *
           grandCanonicalGibbsExpectation ε β μ (orderedProduct (l.eraseIdx j)) := by
-  have h : C₁.operatorPeelSum l =
-      ∑ j : Fin l.length,
-        C₁.exchangeValue (l[(j : ℕ)]'j.isLt) • orderedProduct (l.eraseIdx j) := by
-    simpa only [operatorPeelSum, one_pow, one_mul, orderedProduct] using
-      ScalarExchange.peelSum_eq_sum operator exchangeValue (1 : ℂ) C₁ l
-  rw [h]
+  simp only [operatorPeelSum, ScalarExchange.peelSum_eq_sum, one_pow, one_mul]
   calc
     grandCanonicalGibbsExpectation ε β μ
         (∑ j : Fin l.length,
