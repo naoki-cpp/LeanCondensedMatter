@@ -65,6 +65,8 @@ theorem norm_configurationGreen_sub_free_le
         (mul_le_mul_of_nonneg_right (norm_mul_le G₀ V) (norm_nonneg Gω))
     _ ≤ (B * potentialBound) * B := by
       gcongr
+      exact mul_nonneg (inv_nonneg.mpr (abs_nonneg regulator))
+        ((norm_nonneg V).trans hpotential)
     _ = B ^ 2 * potentialBound := by ring
 
 /-- A finite disorder average is as close to the clean Green operator as each configuration
