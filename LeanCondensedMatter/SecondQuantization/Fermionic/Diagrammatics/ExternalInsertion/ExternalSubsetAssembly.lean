@@ -67,32 +67,6 @@ theorem ExternalInsertionBlockLayout.assembleDiagram_externalLabel_eq_evenExtern
     (layout.assembleDiagram_externalLabel
       (Finset.univ : Finset (Fin n)) F B i).symm
 
-omit [LinearOrder Mode] [Fintype Mode] in
-/-- Restricting fixed external field labels by their canonical subset order
-agrees definitionally with the labels on the standalone connected component. -/
-theorem evenExternalSubsetLabels_componentOrderedDiagram
-    {n : ℕ} (d : ExternalInsertionWickDiagram Mode E n)
-    (B : d.vertexGraph.componentPartition.parts) :
-    evenExternalSubsetLabels d.externalLabel
-      ((B : Finset (ExternalInsertionVertex E (Finset.univ : Finset (Fin n)))).toLeft)
-      (d.externalSector_card_even B) =
-        (d.componentOrderedDiagram B).externalLabel := by
-  rfl
-
-omit [LinearOrder Mode] [Fintype Mode] in
-/-- The same increasing external-slot reindexing transports the actual
-insertion times, without sorting by the imaginary-time value. -/
-theorem evenExternalSubsetTimes_component
-    {n : ℕ} (d : ExternalInsertionWickDiagram Mode E n)
-    (times : Fin (2 * E) → ℝ)
-    (B : d.vertexGraph.componentPartition.parts) :
-    evenExternalSubsetTimes times
-      ((B : Finset (ExternalInsertionVertex E (Finset.univ : Finset (Fin n)))).toLeft)
-      (d.externalSector_card_even B) =
-        d.componentExternalTime times B := by
-  rfl
-
-
 /-- Restricting an external-field family to an even subset is invariant,
 up to dependent equality, under equality of the actual source slot sets.
 The two parity witnesses need not be definitionally the same. -/
@@ -202,7 +176,7 @@ theorem ExternalInsertionBlockLayout.assembleDiagram_restrictComponent_heq_local
         ((evenExternalSubsetRestriction_heq_of_eq d.externalLabel
           (layout.evenBlocks B) (d.externalSector_card_even C)
           (layout.assembleDiagram_componentExternalSector_external S F hconnected e).symm).trans
-          (heq_of_eq (evenExternalSubsetLabels_componentOrderedDiagram (d := d) C)))
+          (heq_of_eq rfl))
     exact hlabels.symm
   have hvertex : HEq (d.restrictComponent C).vertexLabel (F B).vertexLabel :=
     (layout.assembleDiagram_restrictComponent_vertexLabel_heq S F hconnected e).symm
@@ -294,7 +268,7 @@ theorem ExternalInsertionBlockLayout.assembleConnectedBlocks_componentDysonAmpli
       ((evenExternalSubsetRestriction_heq_of_eq externalTime
         (layout.evenBlocks B) (d.externalSector_card_even C)
         (layout.assembleDiagram_componentExternalSector_external S F hconnected e).symm).trans
-        (heq_of_eq (evenExternalSubsetTimes_component (d := d) externalTime C)))).symm
+        (heq_of_eq rfl))).symm
   congr 1
   exact congrArg Finset.card hsector
 
