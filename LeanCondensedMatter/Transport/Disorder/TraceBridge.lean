@@ -146,18 +146,8 @@ theorem averagedTwoGreenVertexTraceKernelOfRegulators_sub_dressed_eq
               suppliedRightGreen) := by
     noncomm_ring
   rw [ensemble.averagedTwoGreenVertexTraceKernelOfRegulators_eq_mean_add_connected]
-  change
-    trace (measuredVertex * meanLeft * bareSourceVertex * meanRight) +
-        trace (measuredVertex * connected) -
-        trace (measuredVertex * suppliedLeftGreen * dressedSourceVertex *
-          suppliedRightGreen) =
-      trace (measuredVertex *
-        ((meanLeft - suppliedLeftGreen) * bareSourceVertex * meanRight +
-          suppliedLeftGreen * bareSourceVertex * (meanRight - suppliedRightGreen) +
-          connected -
-          suppliedLeftGreen * (dressedSourceVertex - bareSourceVertex) *
-            suppliedRightGreen))
-  simpa only [map_add, map_sub] using congrArg trace hoperator
+  simpa only [twoGreenVertexTraceKernel, retardedAdvancedVertexTraceKernel,
+    map_add, map_sub, mul_assoc] using congrArg trace hoperator
 
 end FiniteDisorderEnsemble
 
