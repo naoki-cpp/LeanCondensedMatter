@@ -217,7 +217,6 @@ The following declaration families are deliberate API normalization boundaries:
 - `evolveState_after_neg`
 - `evolveState_phaseState`
 - `DensityOperator.toNormalizedExpectation_apply`
-- `norm_eigenbasisSchrodingerPhase`
 - `norm_eigenbasisTransitionPhase`
 - `timeDependentPerturbedNormalizedExpectation_apply`
 - `norm_heisenbergEvolution`
