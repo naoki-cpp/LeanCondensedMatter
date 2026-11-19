@@ -37,16 +37,8 @@ noncomputable def conjugateOperator (A : H →L[ℂ] H) : H →L[ℂ] H where
     simp only [map_add]
   map_smul' := by
     intro c x
-    calc
-      Θ.equiv (A (Θ.equiv.symm (c • x))) =
-          Θ.equiv (A (((starRingEnd ℂ) c) • Θ.equiv.symm x)) := by
-        rw [Θ.equiv.symm.map_smulₛₗ]
-      _ = Θ.equiv (((starRingEnd ℂ) c) • A (Θ.equiv.symm x)) := by
-        rw [A.map_smul]
-      _ = ((starRingEnd ℂ) ((starRingEnd ℂ) c)) •
-          Θ.equiv (A (Θ.equiv.symm x)) := by
-        rw [Θ.equiv.map_smulₛₗ]
-      _ = (RingHom.id ℂ) c • Θ.equiv (A (Θ.equiv.symm x)) := by simp
+    simp only [Θ.equiv.symm.map_smulₛₗ, A.map_smul, Θ.equiv.map_smulₛₗ]
+    simp
   cont := Θ.equiv.continuous.comp (A.continuous.comp Θ.equiv.symm.continuous)
 
 @[simp]
