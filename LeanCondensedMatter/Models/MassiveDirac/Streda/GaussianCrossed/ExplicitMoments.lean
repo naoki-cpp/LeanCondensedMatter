@@ -193,7 +193,6 @@ private theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_x
   dsimp only [finiteCutoffContinuumBornDysonRadialPauliData] at hz ⊢
   dsimp only [gaussianCrossedZerothSubSecondRadialMoment] at ⊢
   rw [hs, hz]
-  dsimp only at hdiag ⊢
   rw [hdiag.1, hdiag.2]
   ring
 
