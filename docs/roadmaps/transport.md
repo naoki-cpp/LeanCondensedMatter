@@ -40,7 +40,7 @@ derivation of microscopic reciprocity.
 The `Transport.Reciprocity.Data` module defines
 `KuboTimeReversalData` on a finite-dimensional Hilbert space. It uses a
 positive normalized density operator commuting with the Hamiltonian, a
-conjugate-linear multiplicative time-reversal action on bounded operators,
+Hilbert-space antiunitary inducing conjugation on bounded operators,
 and the transformation laws of the Hamiltonian, density, directional charge
 currents, and contact operators. The canonical `DensityOperator.expectation` and `toNormalizedExpectation` APIs
 supply state expectations without choosing an eigenbasis. In particular, there is no
@@ -57,9 +57,10 @@ module constructs the bounded-operator action `A ↦ Θ A Θ⁻¹` directly from
 a Mathlib continuous star-linear equivalence and proves the algebraic,
 adjoint, and finite-dimensional exponential transformation laws. It also
 shows that `Θ² = -I` on states induces an involution on observables.
-The finite-trace conjugation law and a constructor that discharges the
-remaining `KuboTimeReversalData` transformation hypotheses are not yet
-proved.
+The `QuantumTheory.LinearResponse.Dynamics.Antiunitary.Trace` module
+proves finite-dimensional trace conjugation. `KuboTimeReversalData` now uses
+these derived laws directly, retaining only the model-dependent operator
+covariance and equilibrium assumptions.
 
 The next targets are to instantiate the induced operator action in a
 spin-half model with time reversal squared equal to minus identity,
