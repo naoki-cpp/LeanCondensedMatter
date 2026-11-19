@@ -66,7 +66,7 @@ theorem staticTransitionFirstVariation_eq_timeIntegral
         ring
       simp_rw [hphase]
       rw [intervalIntegral.integral_mul_const]
-      rfl
+      simp only [OscillatoryIntegral.timeIntegral, mul_assoc]
 
 /-- Off resonance the squared first-order transition amplitude has the finite-time sine form. -/
 theorem norm_staticTransitionFirstVariation_sq_of_ne
@@ -87,7 +87,7 @@ theorem norm_staticTransitionFirstVariation_sq_of_ne
   simp only [norm_mul, norm_neg, norm_div, Complex.norm_I, Complex.norm_real,
     Real.norm_eq_abs, mul_pow, div_pow, one_pow, sq_abs]
   rw [OscillatoryIntegral.norm_timeIntegral_sq _ _ hfrequency]
-  field_simp [hhbar, hgap] <;> ring
+  field_simp [hhbar, hgap]
 
 /-- At resonance the squared first-order transition amplitude grows quadratically in time. -/
 theorem norm_staticTransitionFirstVariation_sq_resonant
