@@ -1,6 +1,6 @@
 import LeanCondensedMatter.Analysis.Dyson.Uniqueness
 import LeanCondensedMatter.SecondQuantization.Common.Perturbation.ContinuousDyson
-import Mathlib.Analysis.SpecialFunctions.Exponential
+import LeanCondensedMatter.Analysis.Operator.ExponentialEigenvector
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.FundThmCalculus
 
 set_option linter.style.header false
@@ -36,54 +36,21 @@ private theorem continuousDiagonalHamiltonian_basis_apply (energy : Config → �
     _ = (energy c : ℂ) • finiteAnalyticBasis c := by
       rw [diagonalOperator_basisState, map_smul, finiteAnalyticFockEquiv_basisState]
 
-private theorem smul_continuousDiagonalHamiltonian_basis_apply (energy : Config → ℝ)
-    (τ : ℝ) (c : Config) :
-    (τ • continuousDiagonalHamiltonian energy) (finiteAnalyticBasis c) =
-      ((τ * energy c : ℝ) : ℂ) • finiteAnalyticBasis c := by
-  change (τ : ℂ) • continuousDiagonalHamiltonian energy (finiteAnalyticBasis c) = _
-  rw [continuousDiagonalHamiltonian_basis_apply, smul_smul, Complex.ofReal_mul]
-
-private theorem smul_continuousDiagonalHamiltonian_pow_basis_apply (energy : Config → ℝ)
-    (τ : ℝ) (c : Config) (n : ℕ) :
-    ((τ • continuousDiagonalHamiltonian energy) ^ n) (finiteAnalyticBasis c) =
-      (((τ * energy c : ℝ) : ℂ) ^ n) • finiteAnalyticBasis c := by
-  induction n with
-  | zero => simp
-  | succ n ih =>
-      rw [pow_succ']
-      change (τ • continuousDiagonalHamiltonian energy)
-        (((τ • continuousDiagonalHamiltonian energy) ^ n) (finiteAnalyticBasis c)) = _
-      rw [ih, map_smul, smul_continuousDiagonalHamiltonian_basis_apply, smul_smul]
-      rw [pow_succ]
-
 /-- The Banach-algebra exponential of the free Hamiltonian acts diagonally with the expected
 scalar exponential. -/
 private theorem exp_continuousDiagonalHamiltonian_basis_apply (energy : Config → ℝ)
     (τ : ℝ) (c : Config) :
     NormedSpace.exp (τ • continuousDiagonalHamiltonian energy) (finiteAnalyticBasis c) =
       Complex.exp ((τ * energy c : ℝ) : ℂ) • finiteAnalyticBasis c := by
-  let evalBasis : FiniteContinuousOperator Config →L[ℂ] FiniteAnalyticFock Config :=
-    ContinuousLinearMap.apply ℂ (FiniteAnalyticFock Config) (finiteAnalyticBasis c)
-  let spanBasis : ℂ →L[ℂ] FiniteAnalyticFock Config :=
-    ContinuousLinearMap.toSpanSingleton ℂ (finiteAnalyticBasis c)
-  have hop := (NormedSpace.exp_series_hasSum_exp' (𝕂 := ℂ)
-    (τ • continuousDiagonalHamiltonian energy)).map evalBasis evalBasis.continuous
-  have hscalar := (NormedSpace.exp_series_hasSum_exp' (𝕂 := ℂ)
-    (((τ * energy c : ℝ) : ℂ))).map spanBasis spanBasis.continuous
-  have hterms :
-      (evalBasis ∘ fun n : ℕ =>
-        ((Nat.factorial n : ℂ)⁻¹) • (τ • continuousDiagonalHamiltonian energy) ^ n) =
-      (spanBasis ∘ fun n : ℕ =>
-        ((Nat.factorial n : ℂ)⁻¹) • (((τ * energy c : ℝ) : ℂ) ^ n)) := by
-    funext n
-    change ((Nat.factorial n : ℂ)⁻¹) •
-        ((τ • continuousDiagonalHamiltonian energy) ^ n) (finiteAnalyticBasis c) =
-      (((Nat.factorial n : ℂ)⁻¹ * (((τ * energy c : ℝ) : ℂ) ^ n)) •
-        finiteAnalyticBasis c)
-    rw [smul_continuousDiagonalHamiltonian_pow_basis_apply, smul_smul]
-  rw [hterms] at hop
-  have heq := hop.unique hscalar
-  simpa [evalBasis, spanBasis, Complex.exp_eq_exp_ℂ] using heq
+  have heigen :
+      (τ • continuousDiagonalHamiltonian energy) (finiteAnalyticBasis c) =
+        ((τ * energy c : ℝ) : ℂ) • finiteAnalyticBasis c := by
+    change (τ : ℂ) • continuousDiagonalHamiltonian energy (finiteAnalyticBasis c) = _
+    rw [continuousDiagonalHamiltonian_basis_apply, smul_smul, Complex.ofReal_mul]
+  rw [Complex.exp_eq_exp_ℂ]
+  exact NormedSpace.exp_apply_of_eigenvector
+    (τ • continuousDiagonalHamiltonian energy) (finiteAnalyticBasis c)
+    (((τ * energy c : ℝ) : ℂ)) heigen
 
 /-- The continuous free evolution is the Banach-algebra exponential of the diagonal
 Hamiltonian. -/
