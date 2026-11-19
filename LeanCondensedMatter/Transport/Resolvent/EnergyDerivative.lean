@@ -28,14 +28,6 @@ noncomputable section
 
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
 
-/-- Along the real-energy axis, a spectral parameter with fixed signed regulator has derivative one. -/
-theorem hasDerivAt_spectralParameterOfRegulator_energy
-    (energy regulator : ℝ) :
-    HasDerivAt (fun x : ℝ => spectralParameterOfRegulator x regulator)
-      (1 : ℂ) energy := by
-  simpa [spectralParameterOfRegulator] using
-    (Complex.ofRealCLM.hasDerivAt.add_const ((regulator : ℂ) * Complex.I))
-
 /-- A resolvent at fixed nonzero signed regulator differentiates to minus its square along the real
 energy axis. -/
 theorem hasDerivAt_resolvent_spectralParameterOfRegulator_energy
@@ -56,8 +48,12 @@ theorem hasDerivAt_resolvent_spectralParameterOfRegulator_energy
           (by
             rw [spectralParameterOfRegulator_im]
             exact hregulator)))
-  have hcomp := hresolvent.scomp energy
-    (hasDerivAt_spectralParameterOfRegulator_energy energy regulator)
+  have hparameter :
+      HasDerivAt (fun x : ℝ => spectralParameterOfRegulator x regulator)
+        (1 : ℂ) energy := by
+    simpa [spectralParameterOfRegulator] using
+      (Complex.ofRealCLM.hasDerivAt.add_const ((regulator : ℂ) * Complex.I))
+  have hcomp := hresolvent.scomp energy hparameter
   change HasDerivAt
     (resolvent hamiltonian ∘ fun x : ℝ => spectralParameterOfRegulator x regulator)
     (-(resolvent hamiltonian (spectralParameterOfRegulator energy regulator)) ^ 2)

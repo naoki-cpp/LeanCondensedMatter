@@ -107,8 +107,6 @@ operators represented by some normalized state vector through `QuantumTheory.pur
   agreement with representative evolution;
 - normalized complex and lossless real observable expectations;
 - positivity, reality, contractivity, and countable Hilbert-basis formulas;
-- a positive square root with Hilbert--Schmidt control and the corresponding `innerHS` expectation
-  identity;
 - finite-dimensional matrix-trace specializations;
 - spectral purity with `0 ≤ purity ρ ≤ 1`, `purity (pure ψ) = 1`, and the dimension-independent
   characterization `IsPureDensity ρ ↔ purity ρ = 1`;
@@ -152,10 +150,13 @@ The Gibbs layer provides `gibbsOp`, normalized Gibbs states, energy expectation,
 formulas, the Helmholtz free-energy lower bound, the Gibbs entropy identity, attainment of the bound,
 and the equality/uniqueness characterization of the Gibbs minimizer.
 
-The bounded Gibbs API states finite dimensionality directly. This matches the previous compactness
-boundary because an invertible bounded Gibbs exponential can be compact only in finite dimension.
-Infinite-dimensional Gibbs theory therefore requires an unbounded self-adjoint Hamiltonian or
-semigroup/resolvent framework with explicit domains.
+The bounded-Hamiltonian `gibbsState` API assumes finite dimensionality: an invertible
+compact Gibbs exponential of a bounded Hamiltonian forces a finite-dimensional space.
+Separately, `Gibbs/Eigenbasis.lean` already constructs a density state on an
+infinite-dimensional Hilbert space from supplied pure-point energies and summable
+Boltzmann weights, without defining a Hamiltonian operator. Constructing Gibbs
+states from general unbounded (not necessarily pure-point) Hamiltonians still
+requires a domain-aware heat-semigroup or functional-calculus bridge.
 
 ## Open work
 
@@ -163,6 +164,7 @@ semigroup/resolvent framework with explicit domains.
   proofs need that formulation;
 - add a projective/ray presentation only if it materially improves public use without duplicating
   expectation or dynamics theory;
-- extend the Hamiltonian interface to genuine infinite-dimensional Gibbs states;
+- construct heat operators from general semibounded unbounded self-adjoint Hamiltonians
+  and relate them to normalized Gibbs density states;
 - reuse the canonical density expectation throughout completed Fock/KMS and response layers;
 - add continuous-outcome measurement theory after a measure-theoretic operator-valued API is fixed.

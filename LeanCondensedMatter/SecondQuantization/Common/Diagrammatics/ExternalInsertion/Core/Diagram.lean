@@ -74,6 +74,45 @@ theorem externalInsertionInteractionLeg_val {E : ℕ} {S : Finset (Fin N)}
     externalInsertionInteractionLegEquiv, finProdFinEquiv]
   omega
 
+/-- Including interaction vertices into a larger sector preserves the order of their
+flattened quartic legs, independently of the number of external insertions. -/
+theorem externalInsertionInteractionLeg_lt_of_subset
+    {E' : ℕ} {T S : Finset (Fin N)} (hTS : T ⊆ S)
+    (v w : ↥T) (l k : Fin 4)
+    (h : externalInsertionInteractionLeg (E := E) v l <
+      externalInsertionInteractionLeg (E := E) w k) :
+    externalInsertionInteractionLeg (E := E')
+        (⟨v.1, hTS v.2⟩ : ↥S) l <
+      externalInsertionInteractionLeg (E := E')
+        (⟨w.1, hTS w.2⟩ : ↥S) k := by
+  simp only [Fin.lt_def, externalInsertionInteractionLeg_val] at h ⊢
+  by_cases hvw : v = w
+  · subst w
+    have hl := l.isLt
+    have hk := k.isLt
+    omega
+  · have hrank_ne :
+        ((T.orderIsoOfFin rfl).symm v).val ≠
+          ((T.orderIsoOfFin rfl).symm w).val :=
+      fun heq => hvw ((T.orderIsoOfFin rfl).symm.injective (Fin.ext heq))
+    have hrank :
+        ((T.orderIsoOfFin rfl).symm v).val <
+          ((T.orderIsoOfFin rfl).symm w).val := by
+      have hl := l.isLt
+      have hk := k.isLt
+      omega
+    have hamb :
+        ((S.orderIsoOfFin rfl).symm
+          (⟨v.1, hTS v.2⟩ : ↥S)).val <
+        ((S.orderIsoOfFin rfl).symm
+          (⟨w.1, hTS w.2⟩ : ↥S)).val := by
+      apply (S.orderIsoOfFin rfl).symm.strictMono
+      change v.1 < w.1
+      simpa using (T.orderIsoOfFin rfl).strictMono (Fin.lt_def.mpr hrank)
+    have hl := l.isLt
+    have hk := k.isLt
+    omega
+
 /-- The vertex incident to a flattened external-insertion diagram leg. -/
 noncomputable def externalInsertionVertexOfLeg {E : ℕ} {S : Finset (Fin N)}
     (leg : Fin (2 * (2 * S.card + E))) : ExternalInsertionVertex E S :=

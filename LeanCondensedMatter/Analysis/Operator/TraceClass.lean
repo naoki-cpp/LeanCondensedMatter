@@ -6,7 +6,6 @@ import LeanCondensedMatter.Analysis.Operator.TraceClass.Trace
 import LeanCondensedMatter.Analysis.Operator.TraceClass.Positive
 import LeanCondensedMatter.Analysis.Operator.TraceClass.Compact
 import LeanCondensedMatter.Analysis.Operator.TraceClass.Ops
-import LeanCondensedMatter.Analysis.Operator.TraceClass.Cyclicity
 import LeanCondensedMatter.Analysis.Operator.TraceClass.AdjointConjugation
 import LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral
 

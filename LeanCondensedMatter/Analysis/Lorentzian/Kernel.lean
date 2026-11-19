@@ -69,14 +69,6 @@ private theorem complex_offset_add_I_ne_zero
     simpa using congrArg Complex.im hzero
   exact hbroadening him
 
-private theorem complex_offset_sub_I_ne_zero
-    (offset broadening : ℝ) (hbroadening : broadening ≠ 0) :
-    (offset : ℂ) - (broadening : ℂ) * Complex.I ≠ 0 := by
-  intro hzero
-  have him : broadening = 0 := by
-    simpa using congrArg Complex.im hzero
-  exact hbroadening him
-
 /-- Elementary retarded-minus-advanced scalar resolvent identity. -/
 theorem inv_add_I_sub_inv_sub_I_eq_spectralKernel
     (offset broadening : ℝ) (hbroadening : broadening ≠ 0) :
@@ -84,7 +76,9 @@ theorem inv_add_I_sub_inv_sub_I_eq_spectralKernel
         ((offset : ℂ) - (broadening : ℂ) * Complex.I)⁻¹ =
       (-2 * Complex.I) * (spectralKernel offset broadening : ℂ) := by
   have hplus := complex_offset_add_I_ne_zero offset broadening hbroadening
-  have hminus := complex_offset_sub_I_ne_zero offset broadening hbroadening
+  have hminus : (offset : ℂ) - (broadening : ℂ) * Complex.I ≠ 0 := by
+    simpa only [Complex.ofReal_neg, neg_mul, sub_eq_add_neg] using
+      (complex_offset_add_I_ne_zero offset (-broadening) (neg_ne_zero.mpr hbroadening))
   have hsumReal : broadening ^ 2 + offset ^ 2 ≠ 0 := by
     nlinarith [sq_pos_of_ne_zero hbroadening]
   have hsumPow : (broadening : ℂ) ^ 2 + (offset : ℂ) ^ 2 ≠ 0 := by

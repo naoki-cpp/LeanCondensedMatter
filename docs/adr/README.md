@@ -1,15 +1,13 @@
 # Architecture decision records
 
-These records state current architectural decisions and proposed boundaries for extending the repository. The original accepted records were reconstructed from implementation and design documentation; they do not claim to reproduce historical discussions, decision dates, or the order in which decisions were made. Numbering is for reference.
-
-Records without an explicit status have status **accepted**. Acceptance means the architectural decision is approved; implementation status is recorded separately in each record and its roadmap. Records marked **proposed** remain under consideration. Alternatives explain the relevant trade-off, not an undocumented historical evaluation.
+These records describe current architectural decisions and their constraints. **Accepted** records define project policy; **proposed** records are not binding. Implementation status belongs in the relevant roadmap.
 
 ## Foundations and module ownership
 
 - [0001 — Use Lean and Mathlib as the mathematical foundation](0001-lean-and-mathlib.md)
 - [0002 — Assign modules by semantic responsibility](0002-semantic-ownership.md)
 - [0021 — Prefer intrinsic mathematical structures over case-specific representations](0021-intrinsic-mathematical-structures.md)
-- [0023 — Migrate to Lean's module system incrementally](0023-lean-module-system-migration.md)
+- [0023 — Keep Lean module visibility explicit](0023-lean-module-visibility.md)
 
 ## States, measurements, and thermal structure
 
@@ -45,9 +43,6 @@ Records without an explicit status have status **accepted**. Acceptance means th
 - [0017 — Derive crystal structure from weak atomic configurations](0017-crystal-from-atomic-configurations.md)
 - [0022 — Separate exact spin models, magnon approximations, and macroscopic magnetization](0022-spin-wave-model-boundaries.md)
 
-The [historical issue-review index](history-review.md) records review coverage separately from
-the current decisions and implementation constraints.
-
 Lean declarations are authoritative for mathematical meaning. [Architecture notes](../architecture/) describe the current subsystem layout, [roadmaps](../roadmap.md) describe targets and remaining work, and these ADRs explain why the enduring boundaries exist. An ADR is not a proof milestone or a replacement for those documents.
 
-Add a new sequentially numbered record when a consequential design decision changes these boundaries. Mark a replaced decision as superseded and link its successor; keep the active decision and current architecture notes consistent. Do not add retrospective timestamps or implementation logs.
+Record consequential decisions only when their constraints are not already covered. Keep the active decisions consistent with code and architecture notes.

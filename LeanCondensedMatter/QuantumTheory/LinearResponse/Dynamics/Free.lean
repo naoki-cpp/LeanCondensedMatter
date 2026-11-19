@@ -48,11 +48,6 @@ structure BoundedFreeSystem (H : Type*) [NormedAddCommGroup H] [InnerProductSpac
 
 variable (system : BoundedFreeSystem H)
 
-/-- Self-adjointness of the free Hamiltonian, exposed from its canonical observable data. -/
-theorem BoundedFreeSystem.hamiltonian_selfAdjoint :
-    IsSelfAdjoint system.hamiltonian.1 :=
-  system.hamiltonian.2
-
 /-- The bounded Schrödinger generator `-(i/ℏ) H₀`. -/
 noncomputable def schrodingerGenerator : H →L[ℂ] H :=
   (-(Complex.I / (system.hbar : ℂ))) • system.hamiltonian.1
@@ -85,7 +80,7 @@ theorem star_freePropagator (t : ℝ) :
     apply IsSelfAdjoint.smul
     · rw [isSelfAdjoint_iff, Complex.star_def]
       simp
-    · exact system.hamiltonian_selfAdjoint) t
+    · exact system.hamiltonian.2) t
 
 /-- Free propagators form a one-parameter multiplicative group. -/
 theorem freePropagator_add (t s : ℝ) :

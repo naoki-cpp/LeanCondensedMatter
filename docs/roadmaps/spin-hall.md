@@ -65,22 +65,12 @@ case. These are foundations, not an existing SHE theorem.
 
 The transport roadmap already lists vertex-corrected Kubo--Bastin/Streda
 response, thermodynamic limits, DC limits, and crossed/side-jump/skew work.
-This file supplies the spin-Hall specialization and links those generic tasks
-to concrete model and observable choices. Issue #1159 remains the owner of the
-generic current/source architecture; this roadmap owns the spin-Hall model
-specializations.
+This roadmap specifies spin-Hall model and observable choices; the generic
+current/source architecture remains in the transport and linear-response layers.
 
-## Phased roadmap
+## Open targets
 
-### R0 -- provenance and terminology (documented)
-
-* Keep the referent table for every new name before opening a PR.
-* Add primary citations for the intrinsic, vertex, proper-current, and skew
-  claims to `docs/references.md`.
-* Mark Kato, Kimura, Ando, and related device papers as validation boundaries,
-  not as proofs of a finite Lean response.
-
-### R1 -- finite Rashba response (next implementation slice)
+### Finite Rashba response
 
 Define a bounded finite two-dimensional spinful lattice or momentum-grid model
 with an explicit Rashba term, charge-driving source, velocity, and spin-space component vector. Prove the finite mixed Kubo response is well-typed and state the
@@ -94,15 +84,15 @@ Acceptance criteria:
 3. no claim of a universal infinite-system value is made without an order of
    limits and a non-degeneracy/broadening hypothesis.
 
-### R2 -- clean intrinsic benchmark
+### Clean intrinsic benchmark
 
-Specialize R1 to the clean/interband regime discussed by Sinova et al. and
+Specialize the finite Rashba model to the clean/interband regime discussed by Sinova et al. and
 prove a finite spectral identity for the chosen response kernel. Only after
 that identity is stable should a continuum or universal-value bridge be
 considered. The bridge must state which bands are occupied, whether both
 Rashba branches are present, and how the zero-broadening limit is taken.
 
-### R3 -- disorder vertices and cancellation
+### Disorder vertices and cancellation
 
 Use the existing finite second-moment and retarded-advanced ladder layers to
 encode an impurity covariance and response vertex. Reproduce the isotropic
@@ -112,7 +102,7 @@ separate the bare current, the ladder-dressed vertex, and the resummation
 hypothesis; it should not assert convergence of an uncontrolled physical
 approximation.
 
-### R4 -- proper-current specialization
+### Proper-current specialization
 
 Specialize the abstract corrected-current layer to a spin-orbit model and prove
 when the correction is the torque-dipole term of Shi et al. Record separately
@@ -121,22 +111,20 @@ used by a contact calculation. The theorem must expose the localization and
 boundary assumptions rather than treating an exact commutator identity as a
 universal physical equivalence.
 
-### R5 -- extrinsic mechanisms
+### Extrinsic mechanisms
 
 Introduce the smallest finite impurity model that can distinguish side-jump
-and skew-scattering contributions. Use Dyakonov--Perel as historical
-provenance and Niimi et al. as a scale/sign benchmark, while keeping material
+and skew-scattering contributions. Use Dyakonov--Perel as a theoretical reference and Niimi et al. as a scale/sign benchmark, while keeping material
 parameters and fitted spin Hall angles outside the core. Add mechanism labels
 only when the decomposition is invariant under the declared convention.
 
-### R6 -- inverse response and reciprocity
+### Inverse response and reciprocity
 
 Add a spin-source/charge-observable response and formulate an Onsager-type
 reciprocity theorem with time-reversal, magnetization, and source conventions
-visible. Kimura et al. is the experimental benchmark. Link the implementation
-to the source-dependent observable/contact work tracked by issue #1159.
+visible. Kimura et al. is the experimental benchmark. The source-dependent observable/contact term belongs to the generic response layer.
 
-### R7 -- bulk, edge, and validation boundary
+### Bulk, edge, and validation boundary
 
 Only after the finite model is stable, pursue trace-per-volume and controlled
 thermodynamic/DC limits, edge accumulation, spin diffusion, interface mixing,
@@ -145,17 +133,11 @@ spin Hall magnetoresistance, and spin Hall-angle extraction belong here as
 validation or separate applied-model issues, not as prerequisites for the
 finite algebraic theorems.
 
-## Priority and issue split
+## Priority
 
-* **P0:** R1 finite Rashba model and R4 proper-current specialization.
-* **P1:** R2 clean intrinsic identity and R3 ladder cancellation.
-* **P2:** R5 extrinsic mechanism benchmark and R6 inverse reciprocity.
-* **P3:** R7 bulk/edge/device validation and material-specific calibration.
-
-The implementation work should be tracked as a separate roadmap issue rather
-than mixed into the documentation PR. The documentation PR carries citations,
-semantic boundaries, and this roadmap; the issue carries the R1--R7 acceptance
-criteria and dependency order.
+Establish finite Rashba response and proper-current semantics first; then address
+clean intrinsic identities and disorder vertices. Extrinsic mechanisms, inverse
+reciprocity, and bulk/device limits require additional model-specific hypotheses.
 
 ## References
 

@@ -1,131 +1,16 @@
-# Second Quantization — current status
+# Second quantization — current status
 
-Lean declarations and CI-enforced dependency checks are the source of truth. This page summarizes
-stable public ownership and proved endpoints.
+This is a navigation summary; declaration owners and hypotheses are recorded in the linked
+documents rather than duplicated here.
 
-## Public structure
+| Area | Proved boundary | Source of detail |
+|---|---|---|
+| Algebraic and thermal theory | Common occupation/Fock algebra, fermionic CAR, bosonic CCR, thermal pairing under stated hypotheses | [architecture](../architecture/second-quantization.md) and [thermal assumptions](thermal-expectation-architecture.md) |
+| Fermionic linked-cluster | Finite-mode formal and analytic log-partition theorems, plus the two-point normalized series theorem | [linked-cluster results](linked-cluster-theorem.md) and [declarations](../completed.md) |
+| Completed fermionic theory | Bounded completed CAR operators, explicit unbounded diagonal domains, summable free Gibbs/KMS and finite-mode truncations | [completed-space boundary](completed-space-and-infinite-mode.md) |
+| Bosonic completed and thermal theory | Closed domain-aware ladder operators, self-adjoint free operators, summable completed free Gibbs state, fixed-order quartic formal linked-cluster theorem | [completed-space boundary](completed-space-and-infinite-mode.md) and [roadmap](second-quantization.md) |
 
-```text
-Analysis, Combinatorics
-          ↓
-SecondQuantization.Common
-          ↓
-SecondQuantization.Fermionic, SecondQuantization.Bosonic
-```
-
-The full public import is
-
-```lean
-import LeanCondensedMatter.SecondQuantization
-```
-
-Responsibility-specific developments should use the narrowest stable umbrella. Reusable finite
-combinatorics belongs in `Combinatorics`; statistics-independent Fock/thermal/diagrammatic structure
-belongs in `SecondQuantization.Common`; statistics-specific or physics-facing endpoints belong in the
-Fermionic or Bosonic layers. Proof-only routing and one-use reindexing helpers should not become
-public API.
-
-## Fermionic algebraic and thermal line
-
-The algebraic foundations allow arbitrary mode types with finite-support states. The fermionic line
-contains CAR/Fock infrastructure, free Hamiltonians and interactions, imaginary-time evolution, free
-Gibbs theory, KMS identities, and the finite-temperature Bloch--de Dominicis pairing theorem.
-
-Finite mode assumptions enter where the theory enumerates all occupations, uses finite-dimensional
-trace/operator integration, or forms finite diagram sums.
-
-## Fermionic connected-diagram endpoints
-
-Three finite-mode endpoints are proved:
-
-```lean
-factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_sum_connectedQuarticWickDiagramAmplitude
-```
-
-for the coefficientwise formal log-partition linked-cluster theorem,
-
-```lean
-iteratedDeriv_analyticNormalizedLogPartitionFunction_eq_sum_connectedQuarticWickDiagramAmplitude
-```
-
-for the finite-dimensional analytic log-partition theorem, and
-
-```lean
-partitionFunctionNormalizedTwoPointDysonSeries_eq_connectedTwoPointDysonSeries
-```
-
-for the two-external-leg linked-cluster theorem. Here the partition-function normalization
-cancels vacuum bubbles while retaining the finite-temperature Gibbs-state setting.
-
-The general higher-point/source-insertion connected expansion remains open.
-
-## Normalized moment / connected-decomposition boundary
-
-The statistics-independent formal boundary has two independent proof routes over the same
-`Combinatorics.MultiplicativeWeight` connected-decomposition data and the same bundled normalized
-moment equality
-`Combinatorics.powerSeriesMomentSetFunction Z hZ = W.normalizedObjectMoment`. The inversion route
-uses `Combinatorics.factorial_mul_coeff_logOf_eq_connectedContribution`. The replica route uses
-`PowerSeries.replicaCoeffPolynomial`,
-`Combinatorics.replicaCoeffPolynomial_eq_replicaPolynomial`, and
-`Combinatorics.factorial_mul_coeff_logOf_eq_connectedContribution_replica`; it converts the bundled
-boundary internally to the forward moment relation and does not use cumulant inversion. The
-canonical finite-mode fermionic formal linked-cluster endpoint consumes the replica route.
-
-There is currently no separate source-functional wrapper. Division by the normalized
-zero-external-leg Dyson partition series is available for arbitrary fixed external insertions;
-this removes vacuum-only components but does not make a higher-point function connected.
-A source-functional cumulant expansion, Grassmann-variable formalization, and connected
-higher-point/source identities remain open; a source API should be added only for concrete consumers.
-
-## Completed fermionic representation
-
-```lean
-Fermionic.CompletedFockSpace Mode := ℓ²(Fermionic.Occupation Mode, ℂ)
-```
-
-is implemented with a dense algebraic core, bounded number/creation/annihilation operators, completed
-CAR, maximal diagonal unbounded operators with explicit `LinearPMap` domains, analytic properties of
-real diagonal operators, product-domain/free-Hamiltonian ladder results, finite-dimensional
-compatibility, and finite-mode truncations.
-
-Completed free-fermion thermal specializations live under `Fermionic.Thermal.Completed`. They reuse
-the generic pure-point Gibbs state, provide summability-controlled expectations, KMS and pairing
-recursion data, and prove finite-mode Gibbs convergence against bounded observables.
-
-This does not provide interacting completed-space Dyson theory or a thermodynamic limit.
-
-## Bosonic boundary
-
-Even for finite `Mode`,
-
-```lean
-Bosonic.Occupation Mode := Mode →₀ ℕ
-```
-
-is infinite. The bosonic line therefore uses explicit summability domains. Algebraic CCR,
-imaginary-time evolution, convergent free thermal sums, a convergence-aware Gibbs functional, and
-reusable Common diagrammatics are available. The completed occupation representation
-`Bosonic.CompletedFockSpace Mode := ℓ²(Bosonic.Occupation Mode, ℂ)` now carries maximal-domain
-self-adjoint single-mode number operators and the free Hamiltonian, together with maximal-domain
-creation and annihilation weighted shifts. The ladder maps are densely defined, closed, and mutual
-adjoints, and they agree with their algebraic counterparts on the finite-support core. Equal-mode
-mixed ladder products have maximal domain `Dom(Nᵢ)` and satisfy the completed number-operator and
-CCR identities. Ordered quartic vertices are genuine completed-space `LinearPMap` operators on
-their exact iterated ladder-composition domains. Finite quartic interactions are now `LinearPMap`
-sums on the common intersection of the supported vertex domains; that domain is dense and the
-interaction agrees with the existing algebraic quartic interaction on the finite-support core.
-Under positive mode energies the representation also carries
-the bounded free heat operator, its trace-class identification, and the canonical pure-point Gibbs
-density operator. For finite mode types, every finite-order quartic Dyson coefficient is proved to
-belong to the free-Gibbs domain and the coefficientwise formal linked-cluster theorem is proved. A genuine interacting analytic partition-function theorem still requires interacting-Hamiltonian
-analytic control and all-order convergence.
-
-## Open work
-
-- pre-normalized higher time-ordered correlation functions and arbitrary source/multi-leg insertions;
-- bosonic interacting Dyson convergence and analytic connected-diagram theory;
-- explicit mixed-mode/quartic weighted-domain characterizations and interacting-Hamiltonian control;
-- interacting completed-space fermionic perturbation theory;
-- infinite-volume and thermodynamic limits with explicit analytic hypotheses;
-- continued removal of public declarations that serve only proof routing.
+**Open:** general higher-point/source-functional connected identities, interacting completed-space
+Hamiltonian and Dyson control, analytic interacting bosonic partition functions, and thermodynamic
+limits. These require additional domain, convergence, or limit hypotheses; see the
+[second-quantization roadmap](second-quantization.md#research-directions).

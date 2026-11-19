@@ -114,6 +114,32 @@ theorem Pairing.ofSplitNormalizedPairEquiv_pair_eq_of_lt
   | inl p => simpa [Pairing.splitPairEndpointEquiv] using h
   | inr p => simpa [Pairing.splitPairEndpointEquiv] using h
 
+/-- Reindex a contraction product of a binary split directly by the normalized
+pairs of its two parts, retaining the *ambient* orientation of every pair.
+The local values may depend on the normalized pair itself, rather than on
+an arbitrary endpoint function. -/
+theorem Pairing.prod_pairs_ofSplit_normalized
+    {R : Type*} [CommMonoid R]
+    (e : PositionSplitting a b n) (P : Pairing a) (Q : Pairing b)
+    (value : Fin (2 * n) → Fin (2 * n) → R) :
+    (∏ pr ∈ (Pairing.ofSplit e P Q).pairs, value pr.1 pr.2) =
+      (∏ pr : P.NormalizedPair,
+        value (Pairing.ofSplitNormalizedPairEquiv e P Q (Sum.inl pr)).1.1
+          (Pairing.ofSplitNormalizedPairEquiv e P Q (Sum.inl pr)).1.2) *
+      ∏ pr : Q.NormalizedPair,
+        value (Pairing.ofSplitNormalizedPairEquiv e P Q (Sum.inr pr)).1.1
+          (Pairing.ofSplitNormalizedPairEquiv e P Q (Sum.inr pr)).1.2 := by
+  classical
+  let split := Pairing.ofSplitNormalizedPairEquiv e P Q
+  calc
+    _ = ∏ pr : (Pairing.ofSplit e P Q).NormalizedPair,
+          value pr.1.1 pr.1.2 :=
+      Finset.prod_subtype _ (fun _ => Iff.rfl) _
+    _ = ∏ pr : P.NormalizedPair ⊕ Q.NormalizedPair,
+          value (split pr).1.1 (split pr).1.2 :=
+      (Equiv.prod_comp split (fun pr => value pr.1.1 pr.1.2)).symm
+    _ = _ := Fintype.prod_sum_type _
+
 /-- The contraction product of a pairing reassembled from two independent parts splits into
 two local contraction products when the corresponding normalized pair values agree.
 
@@ -138,20 +164,14 @@ theorem Pairing.prod_pairs_ofSplit
       (∏ pr ∈ P.pairs, leftValue pr.1 pr.2) *
       ∏ pr ∈ Q.pairs, rightValue pr.1 pr.2 := by
   classical
-  let split := Pairing.ofSplitNormalizedPairEquiv e P Q
   calc
-    (∏ pr ∈ (Pairing.ofSplit e P Q).pairs, value pr.1 pr.2) =
-        ∏ pr : (Pairing.ofSplit e P Q).NormalizedPair,
-          value pr.1.1 pr.1.2 :=
-      Finset.prod_subtype _ (fun _ => Iff.rfl) _
-    _ = ∏ pr : P.NormalizedPair ⊕ Q.NormalizedPair,
-          value (split pr).1.1 (split pr).1.2 :=
-      (Equiv.prod_comp split (fun pr => value pr.1.1 pr.1.2)).symm
     _ = (∏ pr : P.NormalizedPair,
-          value (split (Sum.inl pr)).1.1 (split (Sum.inl pr)).1.2) *
+          value (Pairing.ofSplitNormalizedPairEquiv e P Q (Sum.inl pr)).1.1
+            (Pairing.ofSplitNormalizedPairEquiv e P Q (Sum.inl pr)).1.2) *
         ∏ pr : Q.NormalizedPair,
-          value (split (Sum.inr pr)).1.1 (split (Sum.inr pr)).1.2 :=
-      Fintype.prod_sum_type _
+          value (Pairing.ofSplitNormalizedPairEquiv e P Q (Sum.inr pr)).1.1
+            (Pairing.ofSplitNormalizedPairEquiv e P Q (Sum.inr pr)).1.2 :=
+      Pairing.prod_pairs_ofSplit_normalized e P Q value
     _ = (∏ pr : P.NormalizedPair, leftValue pr.1.1 pr.1.2) *
         ∏ pr : Q.NormalizedPair, rightValue pr.1.1 pr.1.2 := by
       congr 1

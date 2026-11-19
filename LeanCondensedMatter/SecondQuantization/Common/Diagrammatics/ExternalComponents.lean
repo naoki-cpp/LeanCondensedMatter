@@ -142,6 +142,38 @@ theorem mem_externalComponentPartition_part
   rw [Finpartition.mem_part_ofSetoid_iff_rel]
   rfl
 
+/-- A graph isomorphism fixing every external vertex preserves the
+**entire physical external-component partition**, including its blocks,
+not merely the number of externally supported components. Arbitrary
+relabelings of the internal vertices cannot change the equivalence
+relation between external insertion sites. -/
+theorem externalComponentPartition_congr_of_external_fixed
+    {Internal' : Type*}
+    {G : SimpleGraph (External ⊕ Internal)}
+    {H : SimpleGraph (External ⊕ Internal')}
+    (φ : G ≃g H)
+    (hext : ∀ x : External, φ (Sum.inl x) = Sum.inl x) :
+    externalComponentPartition H = externalComponentPartition G := by
+  classical
+  have hpart (x : External) :
+      (externalComponentPartition H).part x =
+        (externalComponentPartition G).part x := by
+    ext y
+    rw [mem_externalComponentPartition_part, mem_externalComponentPartition_part]
+    simpa only [hext] using
+      (SimpleGraph.Iso.reachable_iff
+        (φ := φ) (u := Sum.inl x) (v := Sum.inl y))
+  apply Finpartition.ext
+  apply Finset.Subset.antisymm
+  · intro B hB
+    obtain ⟨x, -, hx⟩ := (externalComponentPartition H).part_surjOn hB
+    rw [← hx, hpart x]
+    exact (externalComponentPartition G).part_mem.2 (Finset.mem_univ x)
+  · intro B hB
+    obtain ⟨x, -, hx⟩ := (externalComponentPartition G).part_surjOn hB
+    rw [← hx, ← hpart x]
+    exact (externalComponentPartition H).part_mem.2 (Finset.mem_univ x)
+
 /-- For a nonempty external sector, mutual external connectivity means that
 the external-component partition consists of exactly the full external set.
 

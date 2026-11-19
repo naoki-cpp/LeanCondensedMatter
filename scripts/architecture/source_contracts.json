@@ -70,7 +70,6 @@
         "LeanCondensedMatter/Transport/Disorder/Born.lean",
         "LeanCondensedMatter/Transport/Disorder/SCBA.lean",
         "LeanCondensedMatter/QuantumTheory/LinearResponse/Frequency/AdiabaticSwitching.lean",
-        "LeanCondensedMatter/QuantumTheory/LinearResponse/Frequency/HarmonicSource.lean",
         "LeanCondensedMatter/QuantumTheory/LinearResponse/Frequency/FiniteTime.lean",
         "LeanCondensedMatter/QuantumTheory/LinearResponse/Frequency/InfiniteTime.lean"
       ]

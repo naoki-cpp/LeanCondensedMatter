@@ -64,20 +64,9 @@ theorem norm_configurationGreen_sub_free_le
       exact (norm_mul_le _ _).trans
         (mul_le_mul_of_nonneg_right (norm_mul_le G₀ V) (norm_nonneg Gω))
     _ ≤ (B * potentialBound) * B := by
-      have hMnonneg : 0 ≤ potentialBound :=
-        (norm_nonneg V).trans hpotential
-      have hBnonneg : 0 ≤ B := inv_nonneg.mpr (abs_nonneg regulator)
-      have hleft : ‖G₀‖ * ‖V‖ ≤ B * potentialBound := by
-        calc
-          ‖G₀‖ * ‖V‖ ≤ ‖G₀‖ * potentialBound :=
-            mul_le_mul_of_nonneg_left hpotential (norm_nonneg G₀)
-          _ ≤ B * potentialBound :=
-            mul_le_mul_of_nonneg_right hfree hMnonneg
-      calc
-        (‖G₀‖ * ‖V‖) * ‖Gω‖ ≤ (B * potentialBound) * ‖Gω‖ :=
-          mul_le_mul_of_nonneg_right hleft (norm_nonneg Gω)
-        _ ≤ (B * potentialBound) * B :=
-          mul_le_mul_of_nonneg_left hconfig (mul_nonneg hBnonneg hMnonneg)
+      gcongr
+      exact mul_nonneg (inv_nonneg.mpr (abs_nonneg regulator))
+        ((norm_nonneg V).trans hpotential)
     _ = B ^ 2 * potentialBound := by ring
 
 /-- A finite disorder average is as close to the clean Green operator as each configuration
@@ -95,17 +84,10 @@ theorem norm_averagedGreen_sub_free_le
   have hshift :
       ensemble.averagedGreenOfRegulator energy regulator - G₀ =
         ensemble.average (fun ω => G ω - G₀) := by
-    calc
-      ensemble.averagedGreenOfRegulator energy regulator - G₀ =
-          ensemble.average G - ensemble.average (fun _ : Ω => G₀) := by
-            rw [ensemble.average_const]
-            rfl
-      _ = ensemble.average (fun ω => G ω - G₀) := by
-        have hfam : (G - (fun _ : Ω => G₀)) = (fun ω => G ω - G₀) := by
-          funext ω
-          rfl
-        exact (map_sub ensemble.average G (fun _ : Ω => G₀)).symm.trans
-          (congrArg ensemble.average hfam)
+    change ensemble.average G - G₀ = _
+    conv_lhs =>
+      rw [← ensemble.average_const G₀, ← map_sub]
+    rfl
   rw [hshift]
   apply ensemble.norm_average_le_of_forall _ _
   intro ω
@@ -151,7 +133,7 @@ theorem norm_connectedTwoGreenInsertion_le_uniformPotential_sq
     (energyLeft regulatorLeft energyRight regulatorRight : ℝ)
     (hregLeft : regulatorLeft ≠ 0) (hregRight : regulatorRight ≠ 0)
     (vertex : H →L[ℂ] H)
-    (potentialBound : ℝ) (hbound : 0 ≤ potentialBound)
+    (potentialBound : ℝ)
     (hpotential : ∀ ω, ‖(ensemble.impurityPotential ω).1‖ ≤ potentialBound) :
     ‖ensemble.connectedTwoGreenInsertionOfRegulators
         energyLeft regulatorLeft energyRight regulatorRight vertex‖ ≤
@@ -159,6 +141,8 @@ theorem norm_connectedTwoGreenInsertion_le_uniformPotential_sq
         (2 * (|regulatorRight|⁻¹) ^ 2 * potentialBound) := by
   let leftBound := 2 * (|regulatorLeft|⁻¹) ^ 2 * potentialBound
   let rightBound := 2 * (|regulatorRight|⁻¹) ^ 2 * potentialBound
+  have hbound : 0 ≤ potentialBound :=
+    ensemble.uniformPotentialBound_nonneg potentialBound hpotential
   have hleftNonneg : 0 ≤ leftBound := by
     dsimp [leftBound]
     positivity
@@ -181,15 +165,7 @@ theorem norm_connectedTwoGreenInsertion_le_uniformPotential_sq
         exact (norm_mul_le _ _).trans
           (mul_le_mul_of_nonneg_right (norm_mul_le (L ω) vertex) (norm_nonneg (R ω)))
       _ ≤ leftBound * ‖vertex‖ * rightBound := by
-        have hleftMul : ‖L ω‖ * ‖vertex‖ ≤ leftBound * ‖vertex‖ :=
-          mul_le_mul_of_nonneg_right hleft (norm_nonneg vertex)
-        calc
-          (‖L ω‖ * ‖vertex‖) * ‖R ω‖ ≤
-              (leftBound * ‖vertex‖) * ‖R ω‖ :=
-            mul_le_mul_of_nonneg_right hleftMul (norm_nonneg (R ω))
-          _ ≤ leftBound * ‖vertex‖ * rightBound :=
-            mul_le_mul_of_nonneg_left hright
-              (mul_nonneg hleftNonneg (norm_nonneg vertex))
+        gcongr
   change ‖ensemble.average (fun ω => L ω * vertex * R ω)‖ ≤
     leftBound * ‖vertex‖ * rightBound
   exact ensemble.norm_average_le_of_forall _ _ hpoint

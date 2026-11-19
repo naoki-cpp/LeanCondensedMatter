@@ -202,6 +202,27 @@ and [list interleaving](https://github.com/leanprover-community/mathlib4/blob/v4
 These are **source-level assessments, not compiled replacement proofs**; do not remove
 a declaration without checking its current uses and compiling affected consumers.
 
+## Proof-guided Mathlib replacement discovery
+
+`scripts/TheoremReplacementAudit.lean` checks more than the Mathlib theorems already used by each
+project proof. It now builds a one-time index over imported Mathlib theorem conclusions and selects
+candidate declarations with matching result heads, arity, and argument-head sketches. A relaxed
+first-argument-head index admits related equations whose right-hand sides differ. Candidates
+are ranked by argument-head agreement and binder-count distance; at most three *additional*
+Mathlib candidates per project theorem are checked using Lean's direct-application engine.
+Only the best few candidates are retained while traversing each fingerprint bucket, avoiding a full
+sort of broad Mathlib conclusion classes.
+Previously used Mathlib proof dependencies are checked separately without this discovery limit.
+
+The generated `theorem-replacements.json` includes per-target
+`mathlibDiscoveryShapeMatches` and `mathlibDiscoveryProbedCandidateCount`.
+Verified matches continue to populate the existing `mathlibDefinitionallyEquivalentTo` and
+`mathlibReplacementCandidates` fields, so downstream review tooling remains compatible.
+
+**Limitations:** the syntactic index is intentionally incomplete, and the per-target cap makes
+it a bounded candidate finder, not an exhaustive redundancy proof. Candidates still require
+manual review of abstraction boundaries, downstream use, and total code reduction before removal.
+
 ## Remaining technical debt
 
 `Analysis/InfiniteSum/FinsuppProduct.lean` contains finite-cardinality induction proofs.
@@ -224,6 +245,7 @@ The repository does not yet provide:
 - a Fredholm determinant on general trace-class operators;
 - basis independence for unrelated diagonal presentations without spectral uniqueness;
 - unbounded spectral/functional calculus with domains;
-- completed infinite-mode Fock-space operator theory.
+- a general completed-space interacting-Hamiltonian and Dyson theory beyond the existing
+  fermionic diagonal/CAR and bosonic weighted-ladder/quartic partial-map constructions.
 
 These are future analysis targets rather than gaps to be hidden by compatibility wrappers.

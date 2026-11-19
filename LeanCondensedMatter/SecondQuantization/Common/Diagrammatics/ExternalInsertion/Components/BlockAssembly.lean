@@ -313,37 +313,18 @@ theorem ExternalInsertionBlockLayout.blockLegEmbedding_strictMono
     change
       (externalInsertionInteractionLeg (E := B.1.card / 2) v l).val <
       (externalInsertionInteractionLeg (E := B.1.card / 2) w k).val at hab
-    simp only [externalInsertionInteractionLeg_val] at hab ⊢
     have hv (u : ↥T) :
         ((layout.interactionEquiv S).symm ⟨B, u⟩ : ↥S) =
           ⟨u.1, (Finset.mem_filter.mp u.2).1⟩ := by
       apply Subtype.ext
       rfl
     rw [hv v, hv w]
-    by_cases hvw : v = w
-    · subst w
-      omega
-    · have hrank_ne :
-          ((T.orderIsoOfFin rfl).symm v).val ≠
-            ((T.orderIsoOfFin rfl).symm w).val :=
-        fun h => hvw ((T.orderIsoOfFin rfl).symm.injective (Fin.ext h))
-      have hrank :
-          ((T.orderIsoOfFin rfl).symm v).val <
-            ((T.orderIsoOfFin rfl).symm w).val := by
-        have hl := l.isLt
-        have hk := k.isLt
-        omega
-      have hamb :
-          ((S.orderIsoOfFin rfl).symm
-            (⟨v.1, (Finset.mem_filter.mp v.2).1⟩ : ↥S)).val <
-          ((S.orderIsoOfFin rfl).symm
-            (⟨w.1, (Finset.mem_filter.mp w.2).1⟩ : ↥S)).val := by
-        apply (S.orderIsoOfFin rfl).symm.strictMono
-        change v.1 < w.1
-        simpa using (T.orderIsoOfFin rfl).strictMono hrank
-      have hl := l.isLt
-      have hk := k.isLt
-      omega
+    exact externalInsertionInteractionLeg_lt_of_subset
+      (E := B.1.card / 2) (E' := E) (T := T) (S := S)
+      (by
+        intro u hu
+        exact (Finset.mem_filter.mp hu).1)
+      v w l k (Fin.lt_def.mpr hab)
 
 /-- A leg and its incident vertex have exactly the same independent
 external-block owner. More strongly, the vertex inside that block is
@@ -2340,62 +2321,6 @@ noncomputable def ExternalInsertionBlockLayout.interactionAssignmentShuffle
   (layout.interactionOrderDecompositionEquiv
     ((Finset.univ : Finset (Fin N)).orderIsoOfFin rfl).toEquiv).2
 
-/-- The global interaction order encoded by the canonical assignment
-shuffle and its associated local orders is exactly the original canonical
-increasing interaction order. -/
-theorem ExternalInsertionBlockLayout.interactionAssignmentShuffle_reassembles
-    (layout : ExternalInsertionBlockLayout E N) :
-    layout.interactionOrderDecompositionEquiv.symm
-      (layout.interactionOrderDecompositionEquiv
-        ((Finset.univ : Finset (Fin N)).orderIsoOfFin rfl).toEquiv) =
-      ((Finset.univ : Finset (Fin N)).orderIsoOfFin rfl).toEquiv := by
-  exact layout.interactionOrderDecompositionEquiv.symm_apply_apply _
-
-/-- The canonical interaction-assignment shuffle remembers the *actual*
-physical owner of each ambient Dyson slot. The owner read from the
-inverse shuffle is the owner of the interaction vertex at that slot,
-enumerated by the increasing ambient order. Zero-size blocks are
-retained without adding artificial slot permutations. -/
-theorem ExternalInsertionBlockLayout.interactionAssignmentShuffle_owner
-    (layout : ExternalInsertionBlockLayout E N)
-    (v : Fin (Finset.univ : Finset (Fin N)).card) :
-    (layout.interactionAssignmentShuffle.slotEquiv.symm v).1 =
-      layout.interactionOwner
-        (((Finset.univ : Finset (Fin N)).orderIsoOfFin rfl).toEquiv v).1 := by
-  classical
-  let canonical : QuarticVertexOrder (Finset.univ : Finset (Fin N)) :=
-    ((Finset.univ : Finset (Fin N)).orderIsoOfFin rfl).toEquiv
-  let σ := layout.interactionAssignmentShuffle
-  rcases hslot : σ.slotEquiv.symm v with ⟨B, j⟩
-  have hback : σ.slotEquiv ⟨B, j⟩ = v := by
-    calc
-      σ.slotEquiv ⟨B, j⟩ =
-          σ.slotEquiv (σ.slotEquiv.symm v) :=
-        congrArg σ.slotEquiv hslot.symm
-      _ = v := σ.slotEquiv.apply_symm_apply v
-  have howner := layout.interactionOrderDecomposition_slot_owner canonical B j
-  change layout.interactionOwner (canonical (σ.slotEquiv ⟨B, j⟩)).1 = B at howner
-  simpa only [hback] using howner.symm
-
-/-- At fixed physical interaction-block sizes, the actual owner
-assignment uniquely determines the canonical order-preserving shuffle.
-This is the converse of `interactionAssignmentShuffle_owner`; neither
-block-internal orderings nor empty blocks introduce new owner data. -/
-theorem ExternalInsertionBlockLayout.interactionAssignmentShuffle_unique
-    (layout : ExternalInsertionBlockLayout E N)
-    (shuffle : FamilySlotShuffleTo
-      (fun B : layout.partition.parts =>
-        (layout.interactionBlock (Finset.univ : Finset (Fin N)) B).card)
-      (Finset.univ : Finset (Fin N)).card)
-    (howner : ∀ v : Fin (Finset.univ : Finset (Fin N)).card,
-      (shuffle.slotEquiv.symm v).1 =
-        layout.interactionOwner
-          (((Finset.univ : Finset (Fin N)).orderIsoOfFin rfl).toEquiv v).1) :
-    shuffle = layout.interactionAssignmentShuffle := by
-  apply FamilySlotShuffleTo.eq_of_same_owner
-  intro v
-  rw [howner v, layout.interactionAssignmentShuffle_owner v]
-
 /-- Two external block layouts are equal if their source partitions and
 underlying interaction-owner blocks coincide. The evenness witnesses are
 propositions, so they carry no additional data. -/
@@ -2569,22 +2494,11 @@ theorem ExternalInsertionBlockLayout.sum_connectedBlockFamilies_prod
             (layout.interactionBlock (Finset.univ : Finset (Fin N)) B) //
               d.vertexGraph.Preconnected}),
         ∏ B, weight B (F B).1 := by
-          calc
-            (∑ F : layout.ConnectedBlockFamily (ExternalLabel := ExternalLabel)
-                (InternalLabel := InternalLabel),
-              ∏ B, weight B (F.1 B)) =
-                ∑ F : layout.ConnectedBlockFamily (ExternalLabel := ExternalLabel)
-                    (InternalLabel := InternalLabel),
-                  ∏ B, weight B
-                    (((layout.connectedBlockFamilyEquivPi
-                      (ExternalLabel := ExternalLabel)
-                      (InternalLabel := InternalLabel) F) B).1) := by
-                rfl
-            _ = _ :=
-              Equiv.sum_comp
-                (layout.connectedBlockFamilyEquivPi (ExternalLabel := ExternalLabel)
-                  (InternalLabel := InternalLabel))
-                (fun F => ∏ B, weight B (F B).1)
+          convert (Equiv.sum_comp
+            (layout.connectedBlockFamilyEquivPi
+              (ExternalLabel := ExternalLabel) (InternalLabel := InternalLabel))
+            (fun F => ∏ B, weight B (F B).1)) using 1
+          rfl
     _ = _ :=
       (Fintype.prod_sum (fun (B : layout.partition.parts)
         (d : {d : ExternalInsertionDiagram
@@ -2756,6 +2670,17 @@ noncomputable def ExternalInsertionBlockLayout.connectedAssemblyFiniteDomain
         HasNoVacuumComponent d.vertexGraph}).image
       (ExternalInsertionBlockLayout.connectedAssemblyEquiv anchor).symm
 
+/-- Transport a finite weighted sum across an equivalence without assuming that
+the target type has a finite enumeration. -/
+private theorem sum_image_equiv_symm
+    {α β M : Type*} [DecidableEq β] [AddCommMonoid M]
+    (e : α ≃ β) (s : Finset α) (weight : α → M) :
+    (∑ b ∈ s.image e, weight (e.symm b)) = ∑ a ∈ s, weight a := by
+  rw [Finset.sum_image]
+  · simp only [Equiv.symm_apply_apply]
+  · intro a _ b _ h
+    exact e.injective h
+
 open Classical in
 /-- Every finite weighted vacuum-free diagram sum is exactly reindexed by
 the full dependent family of connected local diagrams and their interaction
@@ -2775,20 +2700,11 @@ theorem ExternalInsertionBlockLayout.sum_vacuumFree_eq_sum_connectedBlockFamilie
         weight (ExternalInsertionBlockLayout.assembleConnectedBlockFamily p).1 := by
   classical
   unfold ExternalInsertionBlockLayout.connectedAssemblyFiniteDomain
-  rw [Finset.sum_image]
-  · apply Finset.sum_congr rfl
-    intro d _
-    have h := (ExternalInsertionBlockLayout.connectedAssemblyEquiv
-      (ExternalLabel := ExternalLabel) (InternalLabel := InternalLabel)
-      anchor).apply_symm_apply d
-    exact (congrArg (fun x : {d : ExternalInsertionDiagram
-        ExternalLabel InternalLabel E N
-          (Finset.univ : Finset (Fin N)) //
-          HasNoVacuumComponent d.vertexGraph} => weight x.1) h).symm
-  · intro x _ y _ h
-    exact (ExternalInsertionBlockLayout.connectedAssemblyEquiv
-      (ExternalLabel := ExternalLabel) (InternalLabel := InternalLabel)
-      anchor).symm.injective h
+  convert (sum_image_equiv_symm
+    (ExternalInsertionBlockLayout.connectedAssemblyEquiv
+      (ExternalLabel := ExternalLabel) (InternalLabel := InternalLabel) anchor).symm
+    Finset.univ (fun d => weight d.1)).symm using 1
+  rfl
 
 
 open Classical in
@@ -2814,34 +2730,19 @@ theorem ExternalInsertionBlockLayout.sum_externalPartitionFiber_eq_sum_connected
           weight (ExternalInsertionBlockLayout.assembleConnectedBlockFamily p).1
         else 0 := by
   classical
-  calc
-    (∑ d : {d : ExternalInsertionDiagram ExternalLabel InternalLabel E N
-        (Finset.univ : Finset (Fin N)) //
-          HasNoVacuumComponent d.vertexGraph},
-      if externalComponentPartition d.1.vertexGraph = π then weight d.1 else 0) =
-      ∑ p ∈ ExternalInsertionBlockLayout.connectedAssemblyFiniteDomain
-          (ExternalLabel := ExternalLabel) (InternalLabel := InternalLabel) anchor,
-        if externalComponentPartition
-            (ExternalInsertionBlockLayout.assembleConnectedBlockFamily p).1.vertexGraph = π
-          then weight (ExternalInsertionBlockLayout.assembleConnectedBlockFamily p).1
-          else 0 :=
-        ExternalInsertionBlockLayout.sum_vacuumFree_eq_sum_connectedBlockFamilies
-          anchor (fun d => if externalComponentPartition d.vertexGraph = π then weight d else 0)
-    _ = ∑ p ∈ ExternalInsertionBlockLayout.connectedAssemblyFiniteDomain
-          (ExternalLabel := ExternalLabel) (InternalLabel := InternalLabel) anchor,
-        if p.1.partition = π then
-          weight (ExternalInsertionBlockLayout.assembleConnectedBlockFamily p).1
-        else 0 := by
-      apply Finset.sum_congr rfl
-      intro p _
-      have hπ :
-          externalComponentPartition
-            (ExternalInsertionBlockLayout.assembleConnectedBlockFamily p).1.vertexGraph =
-            p.1.partition :=
-        p.1.externalComponentPartition_assembleDiagram
-          (Finset.univ : Finset (Fin N)) p.2.1 p.2.2
-      rw [hπ]
-
+  rw [ExternalInsertionBlockLayout.sum_vacuumFree_eq_sum_connectedBlockFamilies
+    (ExternalLabel := ExternalLabel) (InternalLabel := InternalLabel)
+    anchor (fun d => if externalComponentPartition d.vertexGraph = π then weight d else 0)]
+  apply Finset.sum_congr rfl
+  intro p _
+  change
+    (if externalComponentPartition
+        (p.1.assembleDiagram (Finset.univ : Finset (Fin N)) p.2.1).vertexGraph = π
+      then weight (p.1.assembleDiagram (Finset.univ : Finset (Fin N)) p.2.1) else 0) =
+      if p.1.partition = π then
+        weight (p.1.assembleDiagram (Finset.univ : Finset (Fin N)) p.2.1) else 0
+  rw [p.1.externalComponentPartition_assembleDiagram
+    (Finset.univ : Finset (Fin N)) p.2.1 p.2.2]
 
 
 /-- Restricting the physical connected-assembly domain to a prescribed
@@ -3091,15 +2992,12 @@ theorem ExternalInsertionBlockLayout.sum_fixedPartitionPhysical_eq_standardized_
           (E := E) (N := N) (ExternalLabel := ExternalLabel)
           (InternalLabel := InternalLabel) anchor π heven).symm p) := by
   classical
-  unfold ExternalInsertionBlockLayout.fixedPartitionPhysicalStandardizedSizeShuffleFiniteDomain
-  rw [Finset.sum_image]
-  · apply Finset.sum_congr rfl
-    intro d _
-    rw [Equiv.symm_apply_apply]
-  · intro d _ d' _ h
-    exact (ExternalInsertionBlockLayout.fixedPartitionPhysicalStandardizedSizeShuffleEquiv
-      (E := E) (N := N) (ExternalLabel := ExternalLabel)
-      (InternalLabel := InternalLabel) anchor π heven).injective h
+  simpa only [ExternalInsertionBlockLayout.fixedPartitionPhysicalStandardizedSizeShuffleFiniteDomain]
+    using (sum_image_equiv_symm
+      (ExternalInsertionBlockLayout.fixedPartitionPhysicalStandardizedSizeShuffleEquiv
+        (E := E) (N := N) (ExternalLabel := ExternalLabel)
+        (InternalLabel := InternalLabel) anchor π heven)
+      Finset.univ weight).symm
 
 open Classical in
 /-- The finite image of the actual physical fixed-partition diagram
@@ -3150,15 +3048,12 @@ theorem ExternalInsertionBlockLayout.sum_fixedPartitionPhysical_eq_sizes_shuffle
           (E := E) (N := N) (ExternalLabel := ExternalLabel) (InternalLabel := InternalLabel)
           anchor π heven).symm p).1.1) := by
   classical
-  unfold ExternalInsertionBlockLayout.fixedPartitionPhysicalSizeShuffleFiniteDomain
-  rw [Finset.sum_image]
-  · apply Finset.sum_congr rfl
-    intro d _
-    rw [Equiv.symm_apply_apply]
-  · intro x _ y _ h
-    exact (ExternalInsertionBlockLayout.fixedPartitionPhysicalSizeShuffleEquiv
-      (E := E) (N := N) (ExternalLabel := ExternalLabel) (InternalLabel := InternalLabel)
-      anchor π heven).injective h
+  simpa only [ExternalInsertionBlockLayout.fixedPartitionPhysicalSizeShuffleFiniteDomain]
+    using (sum_image_equiv_symm
+      (ExternalInsertionBlockLayout.fixedPartitionPhysicalSizeShuffleEquiv
+        (E := E) (N := N) (ExternalLabel := ExternalLabel)
+        (InternalLabel := InternalLabel) anchor π heven)
+      Finset.univ (fun d => weight d.1.1)).symm
 
 open Classical in
 /-- Reindex a physical vacuum-free Wick diagram sum in a fixed even
@@ -3185,32 +3080,15 @@ theorem ExternalInsertionBlockLayout.sum_vacuumFree_fixedPartition_eq_sizes_shuf
           (E := E) (N := N) (ExternalLabel := ExternalLabel) (InternalLabel := InternalLabel)
           anchor π heven).symm p).1.1) := by
   classical
-  calc
-    (∑ d : {d : ExternalInsertionDiagram ExternalLabel InternalLabel E N
-        (Finset.univ : Finset (Fin N)) //
-          HasNoVacuumComponent d.vertexGraph},
-      if externalComponentPartition d.1.vertexGraph = π then weight d.1 else 0) =
-      ∑ d : {d : {d : ExternalInsertionDiagram ExternalLabel InternalLabel E N
-          (Finset.univ : Finset (Fin N)) //
-          HasNoVacuumComponent d.vertexGraph} //
-          externalComponentPartition d.1.vertexGraph = π},
-        weight d.1.1 := by
-      simpa only [Finset.sum_filter] using
-        (Finset.sum_subtype
-          (p := fun d : {d : ExternalInsertionDiagram ExternalLabel InternalLabel E N
-            (Finset.univ : Finset (Fin N)) //
-            HasNoVacuumComponent d.vertexGraph} =>
-              externalComponentPartition d.1.vertexGraph = π)
-          ((Finset.univ : Finset
-            {d : ExternalInsertionDiagram ExternalLabel InternalLabel E N
-              (Finset.univ : Finset (Fin N)) //
-              HasNoVacuumComponent d.vertexGraph}).filter
-                (fun d => externalComponentPartition d.1.vertexGraph = π))
-          (fun _ => by simp)
-          (fun d => weight d.1))
-    _ = _ :=
-      ExternalInsertionBlockLayout.sum_fixedPartitionPhysical_eq_sizes_shuffles
-        anchor π heven weight
+  let X := {d : ExternalInsertionDiagram ExternalLabel InternalLabel E N
+    (Finset.univ : Finset (Fin N)) // HasNoVacuumComponent d.vertexGraph}
+  let P : X → Prop := fun d => externalComponentPartition d.1.vertexGraph = π
+  simpa only [Finset.sum_filter] using
+    ((Finset.sum_subtype
+      (p := P) ((Finset.univ : Finset X).filter P)
+      (fun _ => by simp) (fun d : X => weight d.1)).trans
+      (ExternalInsertionBlockLayout.sum_fixedPartitionPhysical_eq_sizes_shuffles
+        anchor π heven weight))
 
 /-- Evaluating the inverse physical fixed-partition size/shuffle
 bijection reconstructs the actual assembled labelled Wick pairing,
@@ -3301,13 +3179,11 @@ theorem ExternalInsertionBlockLayout.sum_fixedPartitionLayouts_eq_sizes_shuffles
         weight ((ExternalInsertionBlockLayout.fixedPartitionSizeShuffleEquiv π heven).symm
           data).1 := by
   classical
-  unfold ExternalInsertionBlockLayout.fixedPartitionSizeShuffleFiniteDomain
-  rw [Finset.sum_image]
-  · apply Finset.sum_congr rfl
-    intro layout _
-    rw [Equiv.symm_apply_apply]
-  · intro x _ y _ h
-    exact (ExternalInsertionBlockLayout.fixedPartitionSizeShuffleEquiv π heven).injective h
+  simpa only [ExternalInsertionBlockLayout.fixedPartitionSizeShuffleFiniteDomain] using
+    (sum_image_equiv_symm
+      (ExternalInsertionBlockLayout.fixedPartitionSizeShuffleEquiv π heven)
+      (ExternalInsertionBlockLayout.fixedPartitionLayoutFiniteDomain π heven)
+      (fun layout => weight layout.1)).symm
 
 
 end Common

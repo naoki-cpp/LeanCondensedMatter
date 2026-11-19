@@ -283,8 +283,7 @@ Annotated reference list. One entry per source: full citation, what it is used f
   quantum Hall effect.” *Journal of Mathematical Physics* **35**, 5373–5451 (1994). DOI:
   [10.1063/1.530758](https://doi.org/10.1063/1.530758).
   - **Roadmap use:** Primary source for covariant trace per unit volume, noncommutative integration,
-    and quantum-Hall response; it is the main analytic reference for the first boundary in issue
-    #2457.
+    and quantum-Hall response.
   - **Caveat:** The repository's current response APIs are finite-system constructions and do not
     yet provide the covariant observable algebra or thermodynamic trace required by this source.
 
@@ -292,8 +291,7 @@ Annotated reference list. One entry per source: full citation, what it is used f
   magnetic Schrödinger operators in disordered media.” *Journal of Functional Analysis* **226**(2),
   301–372 (2005). DOI: [10.1016/j.jfa.2005.02.002](https://doi.org/10.1016/j.jfa.2005.02.002).
   - **Roadmap use:** Rigorous covariant magnetic linear response and the localization-regime
-    Kubo–Středa formula; it supports the trace-per-volume and unbounded magnetic-response work in
-    issue #2457.
+    Kubo–Středa formula for trace-per-volume and unbounded magnetic response.
   - **Caveat:** Its ergodic Schrödinger hypotheses and measurable covariant-operator spaces are not
     present in the current finite bounded declarations.
 
@@ -301,7 +299,7 @@ Annotated reference list. One entry per source: full citation, what it is used f
   Mathematics* **24**(3), 244–273 (1977). DOI:
   [10.1016/0001-8708(77)90057-3](https://doi.org/10.1016/0001-8708(77)90057-3).
   - **Roadmap use:** Primary analytic reference for Lidskii's theorem, trace ideals, Fredholm
-    determinants, and regularized determinants; it anchors the second boundary in issue #2457.
+    determinants, and regularized determinants.
   - **Caveat:** Current determinant APIs are finite or explicitly diagonal and are not claimed to
     define a determinant on arbitrary trace-class operators.
 
@@ -309,7 +307,7 @@ Annotated reference list. One entry per source: full citation, what it is used f
   Substitution and Beyond.” *Communications in Mathematical Physics* **242**, 547–578 (2003).
   DOI: [10.1007/s00220-003-0950-1](https://doi.org/10.1007/s00220-003-0950-1).
   - **Roadmap use:** Companion reference for the domain-sensitive, gauge/Peierls-covariant
-    effective-dynamics boundary in issue #2457.
+    effective-dynamics boundary.
   - **Caveat:** No current theorem is attributed to this paper; it identifies the assumptions needed
     before extending finite bounded response to continuum Bloch Hamiltonians.
 

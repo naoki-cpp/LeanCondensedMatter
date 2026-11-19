@@ -134,11 +134,5 @@ noncomputable def multiplicationLinear (μ : Measure α) :
     change (c • f) • ψ = c • (f • ψ)
     exact Lp.smul_assoc c f ψ
 
-@[simp]
-theorem multiplicationLinear_apply
-    (μ : Measure α) (f : ComplexLInf μ) (ψ : ComplexL2 μ) :
-    multiplicationLinear μ f ψ = multiplicationOperator μ f ψ :=
-  rfl
-
 end
 end L2Multiplication

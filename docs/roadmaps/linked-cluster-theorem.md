@@ -1,8 +1,10 @@
-# Fermionic linked-cluster theorems
+# Linked-cluster theorems
 
-The current proved line covers finite-mode fermionic zero-external-leg/partition-function and
-two-point connected-diagram expansions. It does not claim a thermodynamic limit or a general
-higher-point expansion.
+The proved endpoints include finite-mode fermionic formal and analytic log-partition
+identities, the normalized two-point connected series, and a finite-mode bosonic
+**coefficientwise formal** quartic Dyson linked-cluster theorem with explicit
+Gibbs-summability conditions. None establishes a thermodynamic limit or a general
+higher-point connected expansion.
 
 ## Formal log-partition theorem
 

@@ -625,5 +625,163 @@ theorem externalInsertionMixedTimeOrderedAtomicLegEquiv_eq_of_comparisons
     List.get_eq_getElem, hlegs]
   rfl
 
+
+/-- Relabeling interaction events by an arbitrary permutation preserves the
+*stable* mixed-time comparison whenever distinct interaction vertices have
+distinct times. External times may coincide with one another or with an
+interaction time: the external-first tie-breaking rule is unaffected.
+
+This is stronger than requiring all mixed-event times to be pairwise
+distinct, and is exactly the property of a strict ordered Dyson chamber. -/
+theorem externalInsertionTimedEventBeforeOrEqual_perm_iff
+    {E n : ℕ} (externalTime : Fin (2 * E) → ℝ)
+    (σ : Fin n → ℝ) (hσ : Function.Injective σ)
+    (p : Equiv.Perm (Fin n))
+    (a b : ExternalInsertionTimedEvent E n) :
+    externalInsertionTimedEventBeforeOrEqual externalTime (σ ∘ p.symm)
+        (Sum.map id p a) (Sum.map id p b) ↔
+      externalInsertionTimedEventBeforeOrEqual externalTime σ a b := by
+  have htime (event : ExternalInsertionTimedEvent E n) :
+      externalInsertionTimedEventTime externalTime (σ ∘ p.symm)
+          (Sum.map id p event) =
+        externalInsertionTimedEventTime externalTime σ event := by
+    cases event <;>
+      simp [externalInsertionTimedEventTime]
+  have hrank (a b : ExternalInsertionTimedEvent E n)
+      (ht : externalInsertionTimedEventTime externalTime σ a =
+        externalInsertionTimedEventTime externalTime σ b) :
+      (externalInsertionTimedEventRank (Sum.map id p a) ≤
+        externalInsertionTimedEventRank (Sum.map id p b)) ↔
+      (externalInsertionTimedEventRank a ≤
+        externalInsertionTimedEventRank b) := by
+    cases a with
+    | inl i =>
+        cases b with
+        | inl j => simp [externalInsertionTimedEventRank]
+        | inr j =>
+            have hi := i.isLt
+            have hj := j.isLt
+            have hpj := (p j).isLt
+            simp [externalInsertionTimedEventRank]; omega
+    | inr i =>
+        cases b with
+        | inl j =>
+            have hj := j.isLt
+            have hi := i.isLt
+            have hpi := (p i).isLt
+            simp [externalInsertionTimedEventRank]; omega
+        | inr j =>
+            have hij : i = j := hσ (by simpa [externalInsertionTimedEventTime] using ht)
+            subst j
+            simp
+  simp only [externalInsertionTimedEventBeforeOrEqual,
+    stableTimedEventBeforeOrEqual_iff, htime]
+  constructor
+  · rintro (h | ⟨ht, hr⟩)
+    · exact Or.inl h
+    · exact Or.inr ⟨ht, (hrank a b ht).mp hr⟩
+  · rintro (h | ⟨ht, hr⟩)
+    · exact Or.inl h
+    · exact Or.inr ⟨ht, (hrank a b ht).mpr hr⟩
+
+
+/-- The *whole sorted event list* is transported by any interaction-slot
+permutation, provided the interaction times are injective. Equal-time
+external insertions remain allowed, including coincidences with vertices.
+The proof uses pairwise sortedness and uniqueness of a fully enumerated
+finite list, not an assumption about insertion sort implementation. -/
+theorem orderedExternalInsertionTimedEvents_perm_slots
+    {E n : ℕ} (externalTime : Fin (2 * E) → ℝ)
+    (σ : Fin n → ℝ) (hσ : Function.Injective σ)
+    (p : Equiv.Perm (Fin n)) :
+    (orderedExternalInsertionTimedEvents externalTime σ).map (Sum.map id p) =
+      orderedExternalInsertionTimedEvents externalTime (σ ∘ p.symm) := by
+  classical
+  let source := orderedExternalInsertionTimedEvents externalTime σ
+  let target := orderedExternalInsertionTimedEvents externalTime (σ ∘ p.symm)
+  let f : ExternalInsertionTimedEvent E n → ExternalInsertionTimedEvent E n :=
+    Sum.map id p
+  let rel :=
+    externalInsertionTimedEventBeforeOrEqual externalTime (σ ∘ p.symm)
+  have hPairwise : (source.map f).Pairwise rel := by
+    rw [List.pairwise_map]
+    exact (orderedExternalInsertionTimedEvents_pairwise externalTime σ).imp
+      (fun {a b} hab =>
+        (externalInsertionTimedEventBeforeOrEqual_perm_iff externalTime σ hσ p a b).2 hab)
+  have hInj : Function.Injective f := by
+    exact Sum.map_injective.mpr ⟨Function.injective_id, p.injective⟩
+  have hNodup : (source.map f).Nodup :=
+    List.Nodup.map hInj (orderedExternalInsertionTimedEvents_nodup externalTime σ)
+  have hSubperm : List.Subperm (source.map f) target :=
+    hNodup.subperm (fun event _ =>
+      orderedExternalInsertionTimedEvents_all_mem externalTime (σ ∘ p.symm) event)
+  letI : Std.Antisymm rel :=
+    ⟨fun _ _ hab hba =>
+      stableTimedEventBeforeOrEqual_antisymm
+        (externalInsertionTimedEventTime externalTime (σ ∘ p.symm))
+        externalInsertionTimedEventRank
+        (by
+          intro a b h
+          apply (finSumFinEquiv :
+            ExternalInsertionTimedEvent E n ≃ Fin (2 * E + n)).injective
+          apply Fin.ext
+          exact h)
+        hab hba⟩
+  have hTargetPairwise : target.Pairwise rel :=
+    orderedExternalInsertionTimedEvents_pairwise externalTime (σ ∘ p.symm)
+  have hSub : (source.map f).Sublist target :=
+    List.sublist_of_subperm_of_pairwise
+      (r := rel) hSubperm hPairwise hTargetPairwise
+  have hLen : (source.map f).length = target.length := by
+    simp only [List.length_map]
+    exact (orderedExternalInsertionTimedEvents_perm externalTime σ).length_eq.trans
+      (orderedExternalInsertionTimedEvents_perm externalTime (σ ∘ p.symm)).length_eq.symm
+  exact hSub.eq_of_length hLen
+
+
+/-- On injective interaction-time assignments, the entire *mixed-time
+atomic leg list* is relabeled pointwise by the vertex permutation.
+The four atomic legs within each vertex remain consecutive and retain
+their local order. This includes external-time coincidences. -/
+theorem externalInsertionMixedTimeOrderedAtomicLegs_perm_slots
+    {E n : ℕ} (externalTime : Fin (2 * E) → ℝ)
+    (σ : Fin n → ℝ) (hσ : Function.Injective σ)
+    (p : Equiv.Perm (Fin n)) :
+    (externalInsertionMixedTimeOrderedAtomicLegs externalTime σ).map
+        (orderedExternalInsertionLegMap id p) =
+      externalInsertionMixedTimeOrderedAtomicLegs externalTime (σ ∘ p.symm) := by
+  calc
+    _ =
+        ((orderedExternalInsertionTimedEvents externalTime σ).map
+          (Sum.map id p)).flatMap externalInsertionTimedEventAtomicLegs := by
+      simp only [externalInsertionMixedTimeOrderedAtomicLegs,
+        List.map_flatMap, List.flatMap_map, externalInsertionTimedEventAtomicLegs_map]
+    _ = _ := by
+      rw [orderedExternalInsertionTimedEvents_perm_slots externalTime σ hσ p]
+      rfl
+
+
+/-- Pointwise covariance of the **actual** mixed-time position-to-leg
+equivalence. Every position retains the same physical field under
+relabeling, with its vertex identifier renamed by `p`. -/
+theorem externalInsertionMixedTimeOrderedAtomicLegEquiv_perm_slots
+    {E n : ℕ} (externalTime : Fin (2 * E) → ℝ)
+    (σ : Fin n → ℝ) (hσ : Function.Injective σ)
+    (p : Equiv.Perm (Fin n))
+    (i : Fin (2 * (2 * n + E))) :
+    externalInsertionMixedTimeOrderedAtomicLegEquiv externalTime (σ ∘ p.symm) i =
+      orderedExternalInsertionLegMap id p
+        (externalInsertionMixedTimeOrderedAtomicLegEquiv externalTime σ i) := by
+  have hlist :
+      List.ofFn (fun i : Fin (2 * (2 * n + E)) =>
+        orderedExternalInsertionLegMap id p
+          (externalInsertionMixedTimeOrderedAtomicLegEquiv externalTime σ i)) =
+      List.ofFn (externalInsertionMixedTimeOrderedAtomicLegEquiv
+        externalTime (σ ∘ p.symm)) := by
+    simpa only [externalInsertionMixedTimeOrderedAtomicLegs_eq_ofFn,
+      List.map_ofFn, Function.comp_def] using
+        (externalInsertionMixedTimeOrderedAtomicLegs_perm_slots externalTime σ hσ p)
+  exact (congrFun (List.ofFn_injective hlist) i).symm
+
 end Common
 end SecondQuantization

@@ -17,17 +17,11 @@ This specializes to useful finite-order relations for determinant-one matrices.
 
 namespace Matrix
 
-/-- The quadratic Cayley–Hamilton identity for a real `2 × 2` matrix. -/
-theorem sq_sub_trace_smul_add_det_eq_zero (M : Matrix (Fin 2) (Fin 2) ℝ) :
-    M ^ 2 - (algebraMap ℝ (Matrix (Fin 2) (Fin 2) ℝ)) M.trace * M +
-      (algebraMap ℝ (Matrix (Fin 2) (Fin 2) ℝ)) M.det = 0 := by
-  simpa [Matrix.charpoly_fin_two] using M.aeval_self_charpoly
-
 /-- A real `2 × 2` matrix with determinant one and trace zero has fourth power one. -/
 theorem pow_four_eq_one_of_trace_zero_det_one (M : Matrix (Fin 2) (Fin 2) ℝ)
     (htrace : M.trace = 0) (hdet : M.det = 1) : M ^ 4 = 1 := by
   have hquad : M ^ 2 + 1 = 0 := by
-    simpa [htrace, hdet] using M.sq_sub_trace_smul_add_det_eq_zero
+    simpa [Matrix.charpoly_fin_two, htrace, hdet] using M.aeval_self_charpoly
   calc
     M ^ 4 = (M ^ 2 + 1) * (M ^ 2 - 1) + 1 := by noncomm_ring
     _ = 1 := by rw [hquad]; simp
@@ -37,7 +31,7 @@ theorem pow_four_eq_one_of_trace_zero_det_one (M : Matrix (Fin 2) (Fin 2) ℝ)
 theorem pow_three_eq_one_of_trace_neg_one_det_one (M : Matrix (Fin 2) (Fin 2) ℝ)
     (htrace : M.trace = -1) (hdet : M.det = 1) : M ^ 3 = 1 := by
   have hquad : M ^ 2 + M + 1 = 0 := by
-    simpa [htrace, hdet] using M.sq_sub_trace_smul_add_det_eq_zero
+    simpa [Matrix.charpoly_fin_two, htrace, hdet] using M.aeval_self_charpoly
   calc
     M ^ 3 = (M ^ 2 + M + 1) * (M - 1) + 1 := by noncomm_ring
     _ = 1 := by rw [hquad]; simp
@@ -46,7 +40,7 @@ theorem pow_three_eq_one_of_trace_neg_one_det_one (M : Matrix (Fin 2) (Fin 2) �
 theorem pow_six_eq_one_of_trace_one_det_one (M : Matrix (Fin 2) (Fin 2) ℝ)
     (htrace : M.trace = 1) (hdet : M.det = 1) : M ^ 6 = 1 := by
   have hquad : M ^ 2 - M + 1 = 0 := by
-    simpa [htrace, hdet] using M.sq_sub_trace_smul_add_det_eq_zero
+    simpa [Matrix.charpoly_fin_two, htrace, hdet] using M.aeval_self_charpoly
   have hcube : M ^ 3 = -(1 : Matrix (Fin 2) (Fin 2) ℝ) := by
     calc
       M ^ 3 = (M ^ 2 - M + 1) * (M + 1) - 1 := by noncomm_ring
@@ -81,8 +75,8 @@ theorem trace_eq_zero_of_mul_transpose_eq_one_det_neg_one
 theorem sq_eq_one_of_mul_transpose_eq_one_det_neg_one
     (M : Matrix (Fin 2) (Fin 2) ℝ)
     (horth : M * Mᵀ = 1) (hdet : M.det = -1) : M ^ 2 = 1 := by
-  have h := M.sq_sub_trace_smul_add_det_eq_zero
-  rw [M.trace_eq_zero_of_mul_transpose_eq_one_det_neg_one horth hdet, hdet] at h
-  simpa only [map_zero, map_neg, map_one, zero_mul, sub_zero, add_neg_eq_zero] using h
+  have htrace := M.trace_eq_zero_of_mul_transpose_eq_one_det_neg_one horth hdet
+  simpa [Matrix.charpoly_fin_two, htrace, hdet, add_neg_eq_zero] using
+    M.aeval_self_charpoly
 
 end Matrix

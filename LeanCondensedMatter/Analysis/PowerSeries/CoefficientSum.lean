@@ -3,7 +3,6 @@ import Mathlib.LinearAlgebra.Complex.FiniteDimensional
 import Mathlib.RingTheory.PowerSeries.Basic
 import Mathlib.Analysis.Normed.Ring.InfiniteSum
 import Mathlib.Analysis.Normed.Module.FiniteDimension
-import Mathlib.Tactic.Convert
 import Mathlib.Tactic.Ring
 
 set_option linter.style.header false
@@ -50,11 +49,8 @@ theorem coefficientSum_mul (f g : ℂ⟦X⟧) (x : ℂ)
     (hg : Summable (fun n : ℕ => PowerSeries.coeff n g * x ^ n)) :
     coefficientSum (f * g) x =
       coefficientSum f x * coefficientSum g x := by
-  unfold coefficientSum
-  rw [tsum_mul_tsum_eq_tsum_sum_antidiagonal_of_summable_norm hf.norm hg.norm]
-  apply tsum_congr
-  intro n
-  exact coeff_mul_mul_pow f g x n
+  simpa only [coefficientSum, ← coeff_mul_mul_pow f g x] using
+    (tsum_mul_tsum_eq_tsum_sum_antidiagonal_of_summable_norm hf.norm hg.norm).symm
 
 /-- Addition commutes with coefficientwise evaluation when both terms are summable. -/
 theorem coefficientSum_add (f g : ℂ⟦X⟧) (x : ℂ)
@@ -62,16 +58,7 @@ theorem coefficientSum_add (f g : ℂ⟦X⟧) (x : ℂ)
     (hg : Summable (fun n : ℕ => PowerSeries.coeff n g * x ^ n)) :
     coefficientSum (f + g) x =
       coefficientSum f x + coefficientSum g x := by
-  unfold coefficientSum
-  calc
-    (∑' n : ℕ, PowerSeries.coeff n (f + g) * x ^ n) =
-        ∑' n : ℕ,
-          (PowerSeries.coeff n f * x ^ n + PowerSeries.coeff n g * x ^ n) := by
-      apply tsum_congr
-      intro n
-      rw [map_add]
-      ring
-    _ = _ := hf.tsum_add hg
+  simpa only [coefficientSum, map_add, add_mul] using hf.tsum_add hg
 
 /-- Subtraction commutes with coefficientwise evaluation when both terms are summable. -/
 theorem coefficientSum_sub (f g : ℂ⟦X⟧) (x : ℂ)
@@ -79,16 +66,7 @@ theorem coefficientSum_sub (f g : ℂ⟦X⟧) (x : ℂ)
     (hg : Summable (fun n : ℕ => PowerSeries.coeff n g * x ^ n)) :
     coefficientSum (f - g) x =
       coefficientSum f x - coefficientSum g x := by
-  unfold coefficientSum
-  calc
-    (∑' n : ℕ, PowerSeries.coeff n (f - g) * x ^ n) =
-        ∑' n : ℕ,
-          (PowerSeries.coeff n f * x ^ n - PowerSeries.coeff n g * x ^ n) := by
-      apply tsum_congr
-      intro n
-      rw [map_sub]
-      ring
-    _ = _ := hf.tsum_sub hg
+  simpa only [coefficientSum, map_sub, sub_mul] using hf.tsum_sub hg
 
 /-- Cauchy convolution is itself summable when the two coefficientwise
 series are absolutely summable. This makes multiplication composable with
@@ -97,25 +75,15 @@ theorem summable_coefficientSum_mul (f g : ℂ⟦X⟧) (x : ℂ)
     (hf : Summable (fun n : ℕ => PowerSeries.coeff n f * x ^ n))
     (hg : Summable (fun n : ℕ => PowerSeries.coeff n g * x ^ n)) :
     Summable (fun n : ℕ => PowerSeries.coeff n (f * g) * x ^ n) := by
-  have hs :
-      Summable (fun n : ℕ =>
-        ∑ p ∈ Finset.antidiagonal n,
-          (PowerSeries.coeff p.1 f * x ^ p.1) *
-            (PowerSeries.coeff p.2 g * x ^ p.2)) :=
+  simpa only [← coeff_mul_mul_pow f g x] using
     (summable_norm_sum_mul_antidiagonal_of_summable_norm hf.norm hg.norm).of_norm
-  convert hs using 1
-  funext n
-  exact coeff_mul_mul_pow f g x n
 
 /-- Addition preserves summable coefficientwise complex evaluation. -/
 theorem summable_coefficientSum_add (f g : ℂ⟦X⟧) (x : ℂ)
     (hf : Summable (fun n : ℕ => PowerSeries.coeff n f * x ^ n))
     (hg : Summable (fun n : ℕ => PowerSeries.coeff n g * x ^ n)) :
     Summable (fun n : ℕ => PowerSeries.coeff n (f + g) * x ^ n) := by
-  convert hf.add hg using 1
-  funext n
-  rw [map_add]
-  ring
+  simpa only [map_add, add_mul] using hf.add hg
 
 /-- Multiplication by a complex constant preserves coefficientwise summability. -/
 theorem summable_coefficientSum_C_mul (f : ℂ⟦X⟧) (x c : ℂ)
@@ -135,15 +103,9 @@ theorem summable_coefficientSum_X_mul (f : ℂ⟦X⟧) (x : ℂ)
     (hf : Summable (fun n : ℕ => PowerSeries.coeff n f * x ^ n)) :
     Summable (fun n : ℕ =>
       PowerSeries.coeff n (PowerSeries.X * f) * x ^ n) := by
-  have htail :
-      Summable (fun n : ℕ =>
-        PowerSeries.coeff (n + 1) (PowerSeries.X * f) * x ^ (n + 1)) := by
-    convert hf.mul_left x using 1
-    funext n
-    rw [PowerSeries.coeff_succ_X_mul, pow_succ]
-    ring
   apply (summable_nat_add_iff 1).1
-  simpa only [Nat.add_one] using htail
+  simp only [Nat.add_one, PowerSeries.coeff_succ_X_mul, pow_succ]
+  simpa only [mul_comm, mul_left_comm, mul_assoc] using hf.mul_left x
 
 /-- Multiplication by X commutes with the total coefficientwise sum: its zero constant
 coefficient permits an unconditional shift of the series. -/
@@ -160,15 +122,8 @@ theorem coefficientSum_X_mul (f : ℂ⟦X⟧) (x : ℂ) :
     | succ n => exact ⟨n, rfl⟩
   unfold coefficientSum
   rw [← hshift]
-  calc
-    (∑' n : ℕ,
-      PowerSeries.coeff (n + 1) (PowerSeries.X * f) * x ^ (n + 1)) =
-        ∑' n : ℕ, x * (PowerSeries.coeff n f * x ^ n) := by
-      apply tsum_congr
-      intro n
-      rw [PowerSeries.coeff_succ_X_mul, pow_succ]
-      ring
-    _ = x * (∑' n : ℕ, PowerSeries.coeff n f * x ^ n) := tsum_mul_left
+  simp_rw [PowerSeries.coeff_succ_X_mul, pow_succ, ← mul_assoc]
+  rw [tsum_mul_right, mul_comm]
 
 /-- The unit formal power series evaluates to one. -/
 theorem coefficientSum_one (x : ℂ) :

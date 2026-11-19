@@ -62,13 +62,10 @@ theorem vacuumFreeExternalInsertionReplicaPolynomial_coeff_one
     allExternalVerticesConnected_iff_externalComponentPartition_parts_card_eq_one
       d.1.1.vertexGraph
   by_cases hconn : AllExternalVerticesConnected d.1.1.vertexGraph
-  · have hcard := hcriterion.mp hconn
+  · simp [hconn, hcriterion.mp hconn]
+  · have hcard : 1 ≠ (externalComponentPartition d.1.1.vertexGraph).parts.card :=
+      fun hc => hconn (hcriterion.mpr hc.symm)
     simp [hconn, hcard]
-  · have hcard : (externalComponentPartition d.1.1.vertexGraph).parts.card ≠ 1 :=
-      fun hc => hconn (hcriterion.mpr hc)
-    have hcard' : 1 ≠ (externalComponentPartition d.1.1.vertexGraph).parts.card :=
-      Ne.symm hcard
-    simp [hconn, hcard']
 
 end Fermionic
 end SecondQuantization

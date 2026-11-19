@@ -29,18 +29,6 @@ noncomputable section
 open MeasureTheory
 open scoped ENNReal MeasureTheory InnerProductSpace SchwartzMap
 
-private theorem inner_self_complex_eq_probabilityDensityValue (z : ℂ) :
-    inner ℂ z z = (probabilityDensityValue z : ℂ) := by
-  rw [probabilityDensityValue]
-  rw [inner_self_eq_norm_sq_to_K, pow_two]
-  change Complex.ofReal ‖z‖ * Complex.ofReal ‖z‖ =
-    Complex.ofReal (Complex.normSq z)
-  calc
-    Complex.ofReal ‖z‖ * Complex.ofReal ‖z‖ =
-        Complex.ofReal (‖z‖ * ‖z‖) := (Complex.ofReal_mul _ _).symm
-    _ = Complex.ofReal (Complex.normSq z) :=
-      congrArg Complex.ofReal (Complex.norm_mul_self_eq_normSq z)
-
 /-- The whole-space probability integral of the canonical representative of an `L²` wavefunction
 is its squared Hilbert norm. -/
 theorem totalProbability1D_l2_coe_eq_norm_sq (ψ : ContinuumL2Wavefunction1D) :
@@ -51,8 +39,12 @@ theorem totalProbability1D_l2_coe_eq_norm_sq (ψ : ContinuumL2Wavefunction1D) :
     unfold totalProbability1D
     rw [← integral_complex_ofReal]
     apply integral_congr_ae
-    exact Filter.Eventually.of_forall fun x =>
-      inner_self_complex_eq_probabilityDensityValue (ψ x)
+    exact Filter.Eventually.of_forall fun x => by
+      change inner ℂ (ψ x) (ψ x) = (probabilityDensityValue (ψ x) : ℂ)
+      rw [probabilityDensityValue, inner_self_eq_norm_sq_to_K, pow_two]
+      change Complex.ofReal ‖ψ x‖ * Complex.ofReal ‖ψ x‖ =
+        Complex.ofReal (Complex.normSq (ψ x))
+      rw [← Complex.ofReal_mul, Complex.norm_mul_self_eq_normSq]
   have hnorm : inner ℂ ψ ψ = ((‖ψ‖ ^ 2 : ℝ) : ℂ) := by
     simpa using (inner_self_eq_norm_sq_to_K (𝕜 := ℂ) ψ)
   apply Complex.ofReal_injective

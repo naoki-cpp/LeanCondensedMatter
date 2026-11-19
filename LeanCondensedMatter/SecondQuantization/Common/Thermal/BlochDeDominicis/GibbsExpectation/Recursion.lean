@@ -1,20 +1,127 @@
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.ExpectationRecursion
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.GibbsExpectation.TwoPoint
-import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.GibbsExpectation.Peel
+import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.Unnormalized.PeelFirstTrace
 
 set_option linter.style.header false
 
 /-!
-# Finite Gibbs implementation of the expectation pairing recursion
+# Finite Gibbs peeling and expectation pairing recursion
 
-This module discharges the abstract `ExpectationPairingRecursion` contract for the canonical finite
-Gibbs density-state expectation.  All finite-configuration, diagonal-evolution, and trace-ratio
+This module records the normalized four-point specialization and discharges the abstract
+`ExpectationPairingRecursion` contract for the canonical finite Gibbs density-state expectation.  All finite-configuration, diagonal-evolution, and trace-ratio
 facts are confined to this implementation; the arbitrary-length pairing induction itself is
 independent of them.
 -/
 
 namespace SecondQuantization
 namespace Common
+
+/-!
+## Finite Gibbs indexed peel and four-point specialization
+
+The normalized peel identity specializes the finite Gibbs trace relation to an indexed sum.
+The four-point formula then follows from the indexed peel and normalized two-point identities.
+It allows a general complex exchange factor `ζ` satisfying `ζ² = 1`, independently of the
+statistics-indexed arbitrary-length recursion below.
+-/
+
+section
+
+variable {Config : Type*} [Fintype Config] [Nonempty Config]
+
+/-- The normalized peel identity, as an indexed `Finset.sum`. -/
+theorem finiteGibbsExpectation_peel_indexed (energy : Config → ℝ) (β q1 : ℝ) (ζ : ℂ)
+    (C1 : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
+    (l : List ((AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) × ℂ))
+    (hC1 : heisenbergEvolve energy (-β) C1 = Complex.exp ((q1 * (-β) : ℝ) : ℂ) • C1)
+    (hcomm : ∀ p ∈ l, ScalarExchange.zetaCommutator ζ C1 p.1 =
+      p.2 • (LinearMap.id : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config))
+    (hne : (1 : ℂ) - ζ ^ l.length * Complex.exp ((q1 * β : ℝ) : ℂ) ≠ 0) :
+    finiteGibbsExpectation energy β (C1.comp (List.prod (l.map Prod.fst))) =
+      (∑ j : Fin l.length, ζ ^ (j : ℕ) * (l[(j : ℕ)]'j.isLt).2 *
+          finiteGibbsExpectation energy β (List.prod ((l.eraseIdx j).map Prod.fst))) /
+        (1 - ζ ^ l.length * Complex.exp ((q1 * β : ℝ) : ℂ)) := by
+  have hpeel :
+      finiteGibbsExpectation energy β (C1.comp (List.prod (l.map Prod.fst))) =
+        finiteGibbsExpectation energy β (ScalarExchange.peelSumWithCoefficients ζ l) /
+          (1 - ζ ^ l.length * Complex.exp ((q1 * β : ℝ) : ℂ)) := by
+    have h := tsumTrace_diagonalEvolution_comp_peel energy β q1 ζ C1 l hC1 hcomm
+      Summable.of_finite Summable.of_finite
+    simp only [tsumTrace, tsum_fintype, ← traceFock_eq_sum_matrixCoeff] at h
+    have hZ := traceFock_diagonalEvolution_ne_zero energy β
+    have hne' : (1 : ℂ) - ζ ^ l.length * Complex.exp ((β * q1 : ℝ) : ℂ) ≠ 0 := by
+      rwa [mul_comm β q1]
+    simp only [finiteGibbsExpectation_eq_trace_div]
+    field_simp [hZ, hne']
+    linear_combination (norm := ring_nf) h
+  rw [hpeel]
+  apply congrArg (fun x : ℂ =>
+    x / (1 - ζ ^ l.length * Complex.exp ((q1 * β : ℝ) : ℂ)))
+  change (finiteGibbsExpectationLinearMap energy β)
+    (ScalarExchange.peelSumWithCoefficients ζ l) = _
+  rw [ScalarExchange.peelSumWithCoefficients_eq_sum, map_sum]
+  apply Finset.sum_congr rfl
+  intro j _
+  simpa only [finiteGibbsExpectation, smul_smul, smul_eq_mul, mul_assoc] using
+    (finiteGibbsExpectationLinearMap energy β).map_smul
+      (ζ ^ (j : ℕ) * (l[(j : ℕ)]'j.isLt).2)
+      (List.prod ((l.eraseIdx j).map Prod.fst))
+
+/-- The genuine normalized 4-point Bloch–de Dominicis expansion. -/
+theorem finiteGibbsExpectation_four_point (energy : Config → ℝ) (β q1 : ℝ)
+    (ζ c12 c13 c14 : ℂ)
+    (C1 C2 C3 C4 : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
+    (hC1 : heisenbergEvolve energy (-β) C1 = Complex.exp ((q1 * (-β) : ℝ) : ℂ) • C1)
+    (hcomm12 : C1.comp C2 - ζ • (C2.comp C1) =
+      c12 • (LinearMap.id : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config))
+    (hcomm13 : C1.comp C3 - ζ • (C3.comp C1) =
+      c13 • (LinearMap.id : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config))
+    (hcomm14 : C1.comp C4 - ζ • (C4.comp C1) =
+      c14 • (LinearMap.id : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config))
+    (hζ2 : ζ ^ 2 = 1)
+    (hne : (1 : ℂ) - ζ * Complex.exp ((q1 * β : ℝ) : ℂ) ≠ 0) :
+    finiteGibbsExpectation energy β (C1.comp (C2.comp (C3.comp C4))) =
+      finiteGibbsExpectation energy β (C1.comp C2) *
+          finiteGibbsExpectation energy β (C3.comp C4) +
+        ζ * finiteGibbsExpectation energy β (C1.comp C3) *
+          finiteGibbsExpectation energy β (C2.comp C4) +
+        finiteGibbsExpectation energy β (C1.comp C4) *
+          finiteGibbsExpectation energy β (C2.comp C3) := by
+  have hζ3 : ζ ^ 3 = ζ := by
+    have h32 : ζ ^ 3 = ζ ^ 2 * ζ := by ring
+    rw [h32, hζ2, one_mul]
+  have h4 :
+    finiteGibbsExpectation energy β (C1.comp (C2.comp (C3.comp C4))) =
+      (c12 * finiteGibbsExpectation energy β (C3.comp C4) +
+          ζ * c13 * finiteGibbsExpectation energy β (C2.comp C4) +
+          ζ ^ 2 * c14 * finiteGibbsExpectation energy β (C2.comp C3)) /
+        (1 - ζ ^ 3 * Complex.exp ((q1 * β : ℝ) : ℂ)) := by
+    have hmem : ∀ p ∈ [(C2, c12), (C3, c13), (C4, c14)],
+        ScalarExchange.zetaCommutator ζ C1 p.1 =
+          p.2 • (LinearMap.id : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) := by
+      intro p hp
+      fin_cases hp
+      · simpa [ScalarExchange.zetaCommutator, Module.End.mul_eq_comp] using hcomm12
+      · simpa [ScalarExchange.zetaCommutator, Module.End.mul_eq_comp] using hcomm13
+      · simpa [ScalarExchange.zetaCommutator, Module.End.mul_eq_comp] using hcomm14
+    have hpeel := finiteGibbsExpectation_peel_indexed energy β q1 ζ C1
+      [(C2, c12), (C3, c13), (C4, c14)] hC1 hmem
+      (by simpa [hζ3] using hne)
+    simpa [Fin.sum_univ_succ, List.eraseIdx_cons_zero, List.eraseIdx_cons_succ,
+      List.map_cons, List.map_nil, List.prod_cons, List.prod_nil,
+      Module.End.mul_eq_comp, Module.End.one_eq_id, add_assoc] using hpeel
+  rw [hζ3, hζ2] at h4
+  have h12 := finiteGibbsExpectation_comp_eq_div_of_zetaCommutator energy β q1 ζ c12 C1 C2 hC1
+    hcomm12 hne
+  have h13 := finiteGibbsExpectation_comp_eq_div_of_zetaCommutator energy β q1 ζ c13 C1 C3 hC1
+    hcomm13 hne
+  have h14 := finiteGibbsExpectation_comp_eq_div_of_zetaCommutator energy β q1 ζ c14 C1 C4 hC1
+    hcomm14 hne
+  rw [h4, h12, h13, h14]
+  field_simp
+
+end
+
 namespace BlochDeDominicis
 
 variable {Config : Type*} [Fintype Config] [Nonempty Config]

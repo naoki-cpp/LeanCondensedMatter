@@ -117,22 +117,6 @@ theorem negMulLog_eq_iff_of_neg_log_le {p q Z u : ℝ}
     rw [hlogdiv] at hscalar
     nlinarith
 
-/-- The sum of `q i / Z` is at most one when `∑' i, q i ≤ Z` and `Z > 0`. -/
-theorem tsum_div_le_one {ι : Type*} {q : ι → ℝ} {Z : ℝ}
-    (hsum : ∑' i, q i ≤ Z) (hZ : 0 < Z) : ∑' i, q i / Z ≤ 1 := by
-  rw [show (∑' i, q i / Z) = (∑' i, q i) * Z⁻¹ by
-    rw [← tsum_mul_right]; exact tsum_congr fun i => div_eq_mul_inv _ _]
-  calc (∑' i, q i) * Z⁻¹ ≤ Z * Z⁻¹ := mul_le_mul_of_nonneg_right hsum (inv_nonneg.mpr hZ.le)
-    _ = 1 := mul_inv_cancel₀ hZ.ne'
-
-/-- Comparison test packaged with `tsum` monotonicity. -/
-private theorem summable_and_tsum_le_of_nonneg_of_le {ι : Type*} {f g : ι → ℝ}
-    (hf_nonneg : ∀ i, 0 ≤ f i) (hfg : ∀ i, f i ≤ g i) (hg : Summable g) :
-    Summable f ∧ ∑' i, f i ≤ ∑' i, g i :=
-  have hf : Summable f := Summable.of_nonneg_of_le hf_nonneg hfg hg
-  ⟨hf, hf.tsum_mono hg hfg⟩
-
-
 /-- The Gibbs comparison series is summable whenever the normalized probability family,
 energy term, and comparison weights are summable. Its total separates into energy, normalization,
 and comparison-weight contributions. -/
@@ -157,9 +141,7 @@ theorem summable_gibbsComparison_and_tsum_eq
   rw [(((henergy.mul_left β).add hplogZ_summable).sub hp_summable).tsum_add
     hqZ_summable, ((henergy.mul_left β).add hplogZ_summable).tsum_sub hp_summable,
     (henergy.mul_left β).tsum_add hplogZ_summable, tsum_mul_left,
-    show (fun i => p i * Real.log Z) = (fun i => Real.log Z * p i) by
-      funext i
-      ring, tsum_mul_left, hp_hasSum.tsum_eq]
+    tsum_mul_right, hp_hasSum.tsum_eq]
   ring
 
 /-- Countable Gibbs entropy bound for a normalized nonnegative family. The comparison weights need
@@ -193,23 +175,15 @@ theorem summable_negMulLog_and_tsum_le_gibbs
     rwa [hp_hasSum.tsum_eq] at hle
   have hnegMulLog_nonneg : ∀ i, 0 ≤ Real.negMulLog (p i) :=
     fun i => Real.negMulLog_nonneg (hp_nonneg i) (hp_le_one i)
-  obtain ⟨hnegMulLog_summable, hsum_le⟩ :=
-    summable_and_tsum_le_of_nonneg_of_le hnegMulLog_nonneg hbound hB_summable
-  have hqZsum_le : ∑' i, q i / Z ≤ 1 :=
-    tsum_div_le_one hq_tsum_le hZ
-  have hfinal :
-      ∑' i, Real.negMulLog (p i) ≤
-        β * (∑' i, p i * energy i) + Real.log Z := by
-    calc
-      ∑' i, Real.negMulLog (p i) ≤
-          ∑' i, (β * (p i * energy i) + p i * Real.log Z - p i + q i / Z) :=
-        hsum_le
-      _ = β * (∑' i, p i * energy i) + Real.log Z - 1 + ∑' i, q i / Z :=
-        hBsum
-      _ ≤ β * (∑' i, p i * energy i) + Real.log Z - 1 + 1 := by
-        linarith
-      _ = β * (∑' i, p i * energy i) + Real.log Z := by ring
-  exact ⟨hnegMulLog_summable, hfinal⟩
+  have hnegMulLog_summable : Summable (fun i => Real.negMulLog (p i)) :=
+    Summable.of_nonneg_of_le hnegMulLog_nonneg hbound hB_summable
+  have hsum_le := hnegMulLog_summable.tsum_mono hB_summable hbound
+  have hqZsum_le : ∑' i, q i / Z ≤ 1 := by
+    rw [tsum_div_const]
+    exact (div_le_one₀ hZ).2 hq_tsum_le
+  refine ⟨hnegMulLog_summable, ?_⟩
+  rw [hBsum] at hsum_le
+  linarith
 
 /-- Equality in the countable Gibbs entropy bound holds exactly when the comparison mass,
 normalized weights, and logarithmic energy bounds are all saturated. Zero probabilities are allowed
@@ -237,7 +211,9 @@ theorem tsum_negMulLog_eq_gibbs_iff
     have hsum_le := hentropy.tsum_le_tsum hbound hB
     rw [heq, hBsum] at hsum_le
     have hqZsum : (∑' i, q i / Z) = 1 :=
-      le_antisymm (tsum_div_le_one hq_tsum_le hZ) (by linarith)
+      le_antisymm (by
+        rw [tsum_div_const]
+        exact (div_le_one₀ hZ).2 hq_tsum_le) (by linarith)
     have hqsum : (∑' i, q i) = Z := by
       have hdiv : (∑' i, q i) / Z = 1 := by
         rw [← tsum_div_const]

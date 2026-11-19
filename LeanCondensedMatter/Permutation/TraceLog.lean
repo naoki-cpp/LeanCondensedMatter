@@ -30,12 +30,6 @@ private noncomputable def tracePowerTransform
     (K : Matrix ι ι ℂ) (f : PowerSeries ℂ) : PowerSeries ℂ :=
   PowerSeries.mk fun m => PowerSeries.coeff m f * Matrix.trace (K ^ m)
 
-private theorem coeff_tracePowerTransform
-    (K : Matrix ι ι ℂ) (f : PowerSeries ℂ) (m : ℕ) :
-    PowerSeries.coeff m (tracePowerTransform K f) =
-      PowerSeries.coeff m f * Matrix.trace (K ^ m) :=
-  PowerSeries.coeff_mk m _
-
 /-- The formal scalar series representing `tr log(1 - ζ t K)` through matrix power traces.
 
 `PowerSeries.rescale (-ζ)` is Mathlib's substitution `f(X) ↦ f(-ζ X)`, so this definition uses
@@ -49,26 +43,13 @@ theorem coeff_formalTraceLogOneSubSeries
     (ζ : ℂ) (K : Matrix ι ι ℂ) (m : ℕ) :
     PowerSeries.coeff m (formalTraceLogOneSubSeries ζ K) =
       (-ζ) ^ m * PowerSeries.coeff m (PowerSeries.log ℂ) * Matrix.trace (K ^ m) := by
-  simp [formalTraceLogOneSubSeries, coeff_tracePowerTransform]
+  simp [formalTraceLogOneSubSeries, tracePowerTransform]
 
 @[simp]
 theorem constantCoeff_formalTraceLogOneSubSeries
     (ζ : ℂ) (K : Matrix ι ι ℂ) :
     PowerSeries.constantCoeff (formalTraceLogOneSubSeries ζ K) = 0 := by
   rw [← PowerSeries.coeff_zero_eq_constantCoeff]
-  simp
-
-private theorem coeff_log_complex_of_pos (m : ℕ) (hm : 0 < m) :
-    PowerSeries.coeff m (PowerSeries.log ℂ) =
-      (-1 : ℂ) ^ (m + 1) / (m : ℂ) := by
-  rw [PowerSeries.coeff_log, ite_eq_right (Nat.ne_of_gt hm)]
-  change (((-1 : ℚ) ^ (m + 1) / (m : ℚ) : ℚ) : ℂ) =
-    (-1 : ℂ) ^ (m + 1) / (m : ℂ)
-  rw [Rat.cast_div, Rat.cast_pow, Rat.cast_neg, Rat.cast_one, Rat.cast_natCast]
-
-private theorem neg_pow_mul_neg_one_pow_succ (ζ : ℂ) (m : ℕ) :
-    (-ζ) ^ m * (-1 : ℂ) ^ (m + 1) = -ζ ^ m := by
-  rw [pow_succ (-1 : ℂ), ← mul_assoc, ← mul_pow]
   simp
 
 /-- Division-free formal trace-log identity for arbitrary exchange weight.
@@ -94,7 +75,12 @@ theorem smul_permutationConnectedCycleSeries_eq_neg_traceLog
     have htrace :
         PowerSeries.coeff (n + 1) (formalTraceLogOneSubSeries ζ K) =
           -(ζ ^ (n + 1) * Matrix.trace (K ^ (n + 1)) / ((n + 1 : ℕ) : ℂ)) := by
-      rw [coeff_formalTraceLogOneSubSeries, coeff_log_complex_of_pos (n + 1) (by omega)]
+      rw [coeff_formalTraceLogOneSubSeries, PowerSeries.coeff_log,
+        ite_eq_right (Nat.succ_ne_zero n)]
+      change (-ζ) ^ (n + 1) *
+          (((-1 : ℚ) ^ ((n + 1) + 1) / ((n + 1 : ℕ) : ℚ) : ℚ) : ℂ) *
+          Matrix.trace (K ^ (n + 1)) = _
+      rw [Rat.cast_div, Rat.cast_pow, Rat.cast_neg, Rat.cast_one, Rat.cast_natCast]
       calc
         (-ζ) ^ (n + 1) *
               ((-1 : ℂ) ^ ((n + 1) + 1) / ((n + 1 : ℕ) : ℂ)) *
@@ -103,7 +89,8 @@ theorem smul_permutationConnectedCycleSeries_eq_neg_traceLog
               Matrix.trace (K ^ (n + 1)) / ((n + 1 : ℕ) : ℂ) := by
           ring
         _ = (-ζ ^ (n + 1)) * Matrix.trace (K ^ (n + 1)) / ((n + 1 : ℕ) : ℂ) := by
-          rw [neg_pow_mul_neg_one_pow_succ]
+          rw [pow_succ (-1 : ℂ), ← mul_assoc, ← mul_pow]
+          simp
         _ = -(ζ ^ (n + 1) * Matrix.trace (K ^ (n + 1)) / ((n + 1 : ℕ) : ℂ)) := by
           ring
     rw [htrace]

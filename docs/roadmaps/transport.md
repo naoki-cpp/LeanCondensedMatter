@@ -127,6 +127,30 @@ This pointwise RA trace comparison is not a dressed-vertex or DC conductivity ap
 and does not establish momentum integration, same-side/sea/contact contributions, or an
 error estimate against the model's Born-Dyson ladder.
 
+For centered finite disorder with `‖Vω‖ ≤ M`, `Disorder.LinearizedFluctuation`
+proves the configuration-to-average Green fluctuation differs from `G₀ Vω G₀`
+by at most `2 |γ|⁻³ M²`. The canonical first-rung insertion
+`G₀ᴸ C₂(G₀ᴸ J G₀ᴿ) G₀ᴿ` is the average of products of first Dyson insertions.
+`Disorder.FirstRungNormBound` controls the exact connected two-Green insertion minus
+this first rung by
+`[(4 |γᴸ|⁻³ |γᴿ|⁻²) + (2 |γᴸ|⁻² |γᴿ|⁻³)] M³ ‖J‖`.
+The next finite-ensemble resummation step is in `Disorder.LadderNormBound` and
+`Disorder.ConnectedLadderNormBound`. At fixed nonzero signed regulators and `‖Vω‖≤M`,
+the exact finite second moment and clean-operator ladder obey
+`‖C₂(X)‖≤M²‖X‖` and `‖L‖≤q=M²/(|γL||γR|)`.
+If `q<1`, `I-L` is a unit and the resummed fixed-point tail beyond the first
+rung has norm at most `q² ‖J‖/(1-q)`. For centered disorder, combining with
+the cubic first-rung comparison yields a bound on
+`‖C_LR(J)-G₀ᴸ(Γ_res-J)G₀ᴿ‖` by
+`[4 B_L³ B_R²+2 B_L² B_R³] M³ ‖J‖ + B_L B_R q² ‖J‖/(1-q)`.
+This controls **all finite-ensemble clean-ladder iterations** under an explicit
+microscopic smallness condition, without identifying the result with the
+continuum massive-Dirac Born–Dyson/SCBA ladder or a physical DC conductivity.
+
+This is the first explicit **cubic truncation bound** on a two-particle covariance;
+the comparison is to a **single Born rung**, not the resummed noncrossing ladder
+or a dressed continuum vertex. All bounds are at fixed nonzero regulators.
+
 The exact two-Green Středa trace also admits an algebraic decomposition of its difference from a
 *supplied* dressed-vertex RA trace: left/right mean-Green mismatches plus a connected-vertex
 remainder. The `Models.MassiveDirac.Streda.BornLadder.DisorderComparison` specialization compares
@@ -222,6 +246,7 @@ not public APIs. Convergence and Ward identities are separate targets.
 
 The spin-Hall-specific model, current-definition, disorder-vertex, and inverse-
 response work is tracked separately in the [spin Hall roadmap](spin-hall.md).
-Issue #1159 remains the owner of the generic current/source architecture; the
-spin-Hall roadmap supplies concrete Rashba and impurity specializations without
-duplicating the generic transport targets above.
+The generic current/source architecture is documented in
+[transport ownership](../architecture/transport.md); the spin-Hall roadmap
+covers Rashba and impurity specializations without duplicating generic
+transport targets.

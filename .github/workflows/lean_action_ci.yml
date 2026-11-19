@@ -155,6 +155,10 @@ jobs:
           use-github-cache: false
           use-mathlib-cache: auto
 
+      - name: Validate theorem replacement search
+        if: needs.changes.outputs.advisory == 'true'
+        run: lake env lean scripts/TheoremReplacementAudit.lean
+
       - name: Generate and validate declaration graph
         if: needs.changes.outputs.advisory == 'true'
         shell: bash
@@ -164,13 +168,9 @@ jobs:
           python3 scripts/check_declaration_catalog.py
           python3 -m unittest discover -s scripts -p 'test_declaration_catalog.py'
 
-      - name: Validate theorem replacement tooling
+      - name: Merge theorem replacement findings
         if: needs.changes.outputs.advisory == 'true'
-        shell: bash
-        run: |
-          set -euo pipefail
-          lake env lean scripts/TheoremReplacementAudit.lean
-          python3 scripts/merge_theorem_replacements.py
+        run: python3 scripts/merge_theorem_replacements.py
 
       - name: Save project build cache
         if: steps.lean-build.outcome == 'success' && steps.project-cache.outputs.cache-hit != 'true'

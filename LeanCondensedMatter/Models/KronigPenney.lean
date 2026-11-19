@@ -196,18 +196,6 @@ theorem oneCellTransfer_det_of_mem
 def discriminant (params : Parameters) (energy : ℝ) : ℝ :=
   (oneCellTransfer params energy).trace / 2
 
-private theorem discriminant_eq_closedForm_algebraic (params : Parameters) (energy : ℝ) :
-    discriminant params energy =
-      Real.cos (barrierWaveNumber params energy * params.barrierWidth) *
-          Real.cos (wellWaveNumber params energy * params.wellWidth) -
-        ((barrierWaveNumber params energy / wellWaveNumber params energy +
-              wellWaveNumber params energy / barrierWaveNumber params energy) / 2) *
-          Real.sin (barrierWaveNumber params energy * params.barrierWidth) *
-          Real.sin (wellWaveNumber params energy * params.wellWidth) := by
-  simp [discriminant, oneCellTransfer, barrierTransfer, wellTransfer, regionTransfer,
-    Matrix.trace_fin_two]
-  ring
-
 /-- Closed form of the one-cell Kronig–Penney discriminant on the regular finite energy domain.
 Both local wave numbers are nonzero there, so this is the standard physical transfer-matrix
 dispersion formula rather than an artifact of totalized division. -/
@@ -223,7 +211,9 @@ theorem discriminant_eq_closedForm
           Real.sin (wellWaveNumber params energy * params.wellWidth) := by
   have _hwell := wellWaveNumber_ne_zero params hregular henergy
   have _hbarrier := barrierWaveNumber_ne_zero params hregular henergy
-  exact discriminant_eq_closedForm_algebraic params energy
+  simp [discriminant, oneCellTransfer, barrierTransfer, wellTransfer, regionTransfer,
+    Matrix.trace_fin_two]
+  ring
 
 /-- Bloch phase across one real-space period, using the canonical `Crystal.blochPhase`
 normalization and orientation. -/

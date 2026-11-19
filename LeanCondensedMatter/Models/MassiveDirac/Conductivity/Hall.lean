@@ -1,6 +1,5 @@
 import LeanCondensedMatter.Models.MassiveDirac.Conductivity.FiniteBroadeningBornLadder
 import LeanCondensedMatter.Models.MassiveDirac.Conductivity.Hall.FiniteBroadeningBornLadderZeroBroadening
-import LeanCondensedMatter.Models.MassiveDirac.Conductivity.Hall.FiniteBroadeningBornLadderWeakDisorder
 import LeanCondensedMatter.Models.MassiveDirac.Conductivity.Hall.FiniteBroadeningBornLadderProjection
 import LeanCondensedMatter.Models.MassiveDirac.Conductivity.Hall.GaussianCrossed
 import LeanCondensedMatter.Models.MassiveDirac.Conductivity.Hall.NonCrossing

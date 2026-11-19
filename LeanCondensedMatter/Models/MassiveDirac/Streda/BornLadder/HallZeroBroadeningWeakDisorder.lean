@@ -29,9 +29,11 @@ open QuantumTheory.Transport
 
 open Filter QuantumTheory.Transport
 
+namespace FiniteCutoffBornDyson.Hall.ZeroBroadeningWeakDisorder
+
 /-- The fixed-cutoff zero-broadening ordered source-`.y` Středa momentum-integral response has a
 finite one-sided weak-disorder limit. -/
-theorem tendsto_finiteCutoffContinuumBornDysonOrderedXYRetardedAdvancedDressedSurfaceMomentumIntegralZeroBroadeningBoundary_disorder_zero
+theorem tendsto_orderedXY_momentumIntegral
     (e v m probeEnergy hbar pMax : ℝ)
     (hvelocity : v ≠ 0) (hhbar : hbar ≠ 0)
     (hmetal : |m| < probeEnergy)
@@ -82,6 +84,8 @@ theorem tendsto_finiteCutoffContinuumBornDysonOrderedXYRetardedAdvancedDressedSu
   unfold continuumBornDisorderMeasurePrefactor
   push_cast
   field_simp [hdisorderC, hmeasure]
+
+end FiniteCutoffBornDyson.Hall.ZeroBroadeningWeakDisorder
 
 end
 

@@ -48,16 +48,6 @@ noncomputable def retardedTimeDifferenceKernelNormBound
     ‖expectation.toContinuousLinearMap‖ *
       (2 * ‖A‖ * ‖B‖)
 
-/-- The uniform kernel bound is nonnegative. -/
-theorem retardedTimeDifferenceKernelNormBound_nonneg
-    (expectation : NormalizedExpectation H)
-    (A B : H →L[ℂ] H) :
-    0 ≤ retardedTimeDifferenceKernelNormBound hbar expectation A B := by
-  unfold retardedTimeDifferenceKernelNormBound
-  exact mul_nonneg
-    (mul_nonneg (norm_nonneg _) (norm_nonneg _))
-    (mul_nonneg (mul_nonneg (by norm_num) (norm_nonneg _)) (norm_nonneg _))
-
 /-- Uniform norm control of the causal retarded kernel. -/
 theorem norm_retardedTimeDifferenceKernel_le
     (expectation : NormalizedExpectation H)
@@ -66,7 +56,10 @@ theorem norm_retardedTimeDifferenceKernel_le
       retardedTimeDifferenceKernelNormBound hbar expectation A B := by
   by_cases hτ : τ < 0
   · rw [retardedTimeDifferenceKernel_eq_zero_of_neg U hbar expectation A B hτ, norm_zero]
-    exact retardedTimeDifferenceKernelNormBound_nonneg hbar expectation A B
+    unfold retardedTimeDifferenceKernelNormBound
+    exact mul_nonneg
+      (mul_nonneg (norm_nonneg _) (norm_nonneg _))
+      (mul_nonneg (mul_nonneg (by norm_num) (norm_nonneg _)) (norm_nonneg _))
   · have hτnonneg : 0 ≤ τ := le_of_not_gt hτ
     rw [retardedTimeDifferenceKernel_eq_commutatorSusceptibility_of_nonneg
       U hbar expectation A B hτnonneg]

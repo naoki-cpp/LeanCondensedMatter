@@ -142,23 +142,15 @@ theorem besselY0Y1Wronskian_of_harmonicIdentity
       Complex.besselJ 0 z * besselY1Series z =
         (((2 / Real.pi : ℝ) : ℂ)) * z⁻¹ := by
   rw [besselY0Y1Wronskian_eq_harmonicCorrections]
-  have hcancel :
-      Complex.besselJ 0 z * z⁻¹ -
-          Complex.besselJ 1 z * besselY0HarmonicCorrection z +
-          (z / 4) * Complex.besselJ 0 z * besselY1HarmonicCorrection z = z⁻¹ := by
-    apply (mul_left_cancel₀ hz)
-    calc
-      z * (Complex.besselJ 0 z * z⁻¹ -
-          Complex.besselJ 1 z * besselY0HarmonicCorrection z +
-          (z / 4) * Complex.besselJ 0 z * besselY1HarmonicCorrection z) =
-          Complex.besselJ 0 z -
+  congr 1
+  apply (mul_left_cancel₀ hz)
+  calc
+    _ = Complex.besselJ 0 z -
           z * Complex.besselJ 1 z * besselY0HarmonicCorrection z +
           (z ^ 2 / 4) * Complex.besselJ 0 z *
-            besselY1HarmonicCorrection z := by
-              field_simp [hz]
-      _ = 1 := hidentity
-      _ = z * z⁻¹ := by field_simp [hz]
-  rw [hcancel]
+            besselY1HarmonicCorrection z := by field_simp [hz]
+    _ = 1 := hidentity
+    _ = z * z⁻¹ := by field_simp [hz]
 
 end
 

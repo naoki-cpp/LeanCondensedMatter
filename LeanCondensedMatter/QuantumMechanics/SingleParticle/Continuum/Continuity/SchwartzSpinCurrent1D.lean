@@ -89,7 +89,8 @@ theorem schwartzSpinorVelocityLocalizationFlux_eq_comp1D
     (fun T : SchwartzSpinorOneParticle1D →ₗ[ℂ] SchwartzSpinorOneParticle1D => T ψ)
     (SchwartzTwoLevelSchrodinger1D.heisenberg_localization_eq_symmetrized_velocity
       ℏ κ potential internalH f)
-  simpa [heisenbergScale, _root_.ConservationLaw.symmetrizedProduct_apply] using h
+  simpa [heisenbergScale, _root_.ConservationLaw.symmetrizedProduct_apply,
+    SchwartzTwoLevel1D.multiplicationLinear] using h
 
 /-- The symmetrized velocity-current representation of spin transport on the Schwartz model. -/
 noncomputable def schwartzSpinCurrentRepresentation1D

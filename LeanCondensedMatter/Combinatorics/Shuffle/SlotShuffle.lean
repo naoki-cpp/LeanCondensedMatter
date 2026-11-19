@@ -41,6 +41,37 @@ noncomputable def standardSlotEquiv {N : ℕ} (T : Finset (Fin N)) :
     ↥T ≃ ↥(Finset.univ : Finset (Fin T.card)) :=
   standardSlotEquivOfCardEq T rfl
 
+/-- Canonical increasing interaction-slot standardization is natural
+under an *order-preserving* equivalence of the two physical owner
+fibers. This is the precise extra hypothesis required to identify the
+same standardized Wick diagram across two different owner shuffles;
+arbitrary permutations do not satisfy this equality. -/
+theorem standardSlotEquivOfCardEq_comp_of_strictMono
+    {N M k : ℕ} (T : Finset (Fin N)) (U : Finset (Fin M))
+    (hT : T.card = k) (hU : U.card = k)
+    (e : ↥T ≃ ↥U)
+    (hmono : StrictMono (fun v : ↥T => (e v).1)) :
+    e.trans (standardSlotEquivOfCardEq U hU) =
+      standardSlotEquivOfCardEq T hT := by
+  let q := T.orderIsoOfFin hT
+  have horder :
+      (fun j : Fin k => (e (q j)).1) = U.orderEmbOfFin hU := by
+    apply Finset.orderEmbOfFin_unique hU
+    · intro j
+      exact (e (q j)).2
+    · exact hmono.comp q.strictMono
+  apply Equiv.ext
+  intro v
+  obtain ⟨j, rfl⟩ := q.surjective v
+  have hval : e (q j) = (U.orderIsoOfFin hU) j := by
+    apply Subtype.ext
+    exact congrFun horder j
+  apply Subtype.ext
+  change ((U.orderIsoOfFin hU).symm (e (q j)) : Fin k) =
+    ((T.orderIsoOfFin hT).symm (q j) : Fin k)
+  rw [hval]
+  simp [q]
+
 /-- An order-preserving equivalence of two local slot families with the ambient slots. -/
 structure SlotShuffle (m n : ℕ) where
   /-- Equivalence between tagged local slots and ambient slots. -/

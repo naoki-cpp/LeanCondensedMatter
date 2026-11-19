@@ -152,4 +152,72 @@ noncomputable instance FamilySlotShuffle.instUniqueZero (size : Fin 0 → ℕ) :
     rintro ⟨i, _⟩
     exact Fin.elim0 i
 
+
+/-- Relabel ambient interaction slots from one shuffle of a fixed
+family of local slot sizes to another. The local block identifier and
+local slot index are unchanged; only their ambient positions move. -/
+def FamilySlotShuffleTo.ambientRelabel
+    {size : ι → ℕ} {total : ℕ}
+    (σ τ : FamilySlotShuffleTo size total) :
+    Fin total ≃ Fin total :=
+  σ.slotEquiv.symm.trans τ.slotEquiv
+
+/-- The ambient relabeling takes each exact source local slot to the
+same local slot in the target shuffle, including empty fibers. -/
+@[simp]
+theorem FamilySlotShuffleTo.ambientRelabel_apply_slot
+    {size : ι → ℕ} {total : ℕ}
+    (σ τ : FamilySlotShuffleTo size total)
+    (v : Σ i, Fin (size i)) :
+    (σ.ambientRelabel τ) (σ.slotEquiv v) = τ.slotEquiv v := by
+  simp [FamilySlotShuffleTo.ambientRelabel]
+
+/-- The relabeling preserves the *physical owner* of every ambient slot.
+This lets the same standardized local Wick diagrams be carried through
+different physical interaction-owner assignments. -/
+theorem FamilySlotShuffleTo.ambientRelabel_owner
+    {size : ι → ℕ} {total : ℕ}
+    (σ τ : FamilySlotShuffleTo size total)
+    (v : Fin total) :
+    (τ.slotEquiv.symm (σ.ambientRelabel τ v)).1 =
+      (σ.slotEquiv.symm v).1 := by
+  simp [FamilySlotShuffleTo.ambientRelabel]
+
+
+/-- A fixed local owner fiber is relabeled in increasing order by the
+permutation between two order-preserving family shuffles. This is
+stronger than owner preservation: it identifies local increasing
+enumerations without an extra within-block permutation. -/
+theorem FamilySlotShuffleTo.ambientRelabel_strictMono_ownerFiber
+    {size : ι → ℕ} {total : ℕ}
+    (σ τ : FamilySlotShuffleTo size total) (i : ι) :
+    StrictMono (fun v : {v : Fin total // (σ.slotEquiv.symm v).1 = i} =>
+      σ.ambientRelabel τ v.1) := by
+  have hrepr (v : {v : Fin total // (σ.slotEquiv.symm v).1 = i}) :
+      ∃ j : Fin (size i), v.1 = σ.slotEquiv ⟨i, j⟩ := by
+    rcases hq : σ.slotEquiv.symm v.1 with ⟨i', j⟩
+    have hi : i' = i := by
+      simpa [hq] using v.2
+    subst i'
+    refine ⟨j, ?_⟩
+    calc
+      v.1 = σ.slotEquiv (σ.slotEquiv.symm v.1) :=
+        (σ.slotEquiv.apply_symm_apply _).symm
+      _ = σ.slotEquiv ⟨i, j⟩ := congrArg σ.slotEquiv hq
+  intro a b hab
+  obtain ⟨ja, ha⟩ := hrepr a
+  obtain ⟨jb, hb⟩ := hrepr b
+  change a.1 < b.1 at hab
+  rw [ha, hb] at hab
+  have hj : ja < jb := by
+    by_contra h
+    have hle : jb ≤ ja := le_of_not_gt h
+    have hrev : σ.slotEquiv ⟨i, jb⟩ ≤ σ.slotEquiv ⟨i, ja⟩ :=
+      (σ.strictMono i).monotone hle
+    exact (not_le_of_gt hab) hrev
+  change (σ.ambientRelabel τ) a.1 < (σ.ambientRelabel τ) b.1
+  rw [ha, hb, σ.ambientRelabel_apply_slot, σ.ambientRelabel_apply_slot]
+  exact (τ.strictMono i) hj
+
+
 end Combinatorics

@@ -73,25 +73,28 @@ noncomputable def finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCur
 
 /-! ## Algebraic and physical-fixed-point bridge -/
 
-/-- Under ladder regularity, the source-`x` insertion is the canonical resummed ladder vertex. -/
-theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperator_x_eq_resummed
+/-- Under ladder regularity, every source-indexed insertion is the rotated canonical
+resummed source-`x` ladder vertex. The same rotation determines both in-plane source directions. -/
+theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperator_eq_rotatedResummed
+    (source : Fin 2)
     (e v m probeEnergy broadening disorderStrength hbar pMax : ℝ)
     (hregular : finiteCutoffContinuumBornDysonLadderRegular
       v m probeEnergy broadening disorderStrength hbar pMax) :
     finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperator
-        0 e v m probeEnergy broadening disorderStrength hbar pMax =
+        source e v m probeEnergy broadening disorderStrength hbar pMax =
       inPlaneCurrentOperator e v
-        (resummedLadderVertex
-          (inPlaneLadderCLM
-            (finiteCutoffContinuumBornDysonCurrentRungVector
-              v m probeEnergy broadening disorderStrength hbar pMax))
-          (inPlaneLadderShift_isUnit
-            (finiteCutoffContinuumBornDysonCurrentRungVector
-              v m probeEnergy broadening disorderStrength hbar pMax)
-            hregular)
-          inPlaneLadderBareXSource) := by
+        (Matrix.transpose (inPlaneRotationMatrix
+          (resummedLadderVertex
+            (inPlaneLadderCLM
+              (finiteCutoffContinuumBornDysonCurrentRungVector
+                v m probeEnergy broadening disorderStrength hbar pMax))
+            (inPlaneLadderShift_isUnit
+              (finiteCutoffContinuumBornDysonCurrentRungVector
+                v m probeEnergy broadening disorderStrength hbar pMax)
+              hregular)
+            inPlaneLadderBareXSource)) source) := by
   rw [finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperator,
-    finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentCoefficientVector_x,
+    finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentCoefficientVector,
     finiteCutoffContinuumBornDysonLadderSolvedVector,
     inPlaneLadderSolvedVector_eq_resummedLadderVertex _ hregular]
 

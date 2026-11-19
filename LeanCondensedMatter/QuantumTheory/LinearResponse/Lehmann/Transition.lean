@@ -93,19 +93,14 @@ theorem lehmannDenominator_ne_zero
     simpa [lehmannDenominator] using congrArg Complex.re hzero
   exact heta hre
 
-/-- The switching rate is a lower bound for the norm of every Lehmann denominator. -/
-theorem eta_le_norm_lehmannDenominator
-    (hbar omega eta energyGap : ℝ) :
-    eta ≤ ‖lehmannDenominator hbar omega eta energyGap‖ := by
-  simpa using RCLike.re_le_norm (lehmannDenominator hbar omega eta energyGap)
-
 /-- At positive switching rate, the inverse denominator is uniformly bounded by `1 / eta`. -/
 theorem norm_inv_lehmannDenominator_le
     (hbar omega eta energyGap : ℝ) (heta : 0 < eta) :
     ‖(lehmannDenominator hbar omega eta energyGap)⁻¹‖ ≤ 1 / eta := by
   rw [norm_inv]
   simpa [one_div] using one_div_le_one_div_of_le heta
-    (eta_le_norm_lehmannDenominator hbar omega eta energyGap)
+    (by simpa using
+      RCLike.re_le_norm (lehmannDenominator hbar omega eta energyGap))
 
 /-- The mode integral written in conventional resolvent-denominator form. -/
 theorem integral_lehmannMode_Ioi_zero_eq_resolvent

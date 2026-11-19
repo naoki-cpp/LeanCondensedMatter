@@ -383,43 +383,12 @@ private theorem ExternalInsertionDiagram.componentDiagramLeg_strictMono
         d.componentDiagramLeg B
           (externalInsertionInteractionLeg (E := d.externalPairCount B) w k)
     rw [d.componentDiagramLeg_interaction B, d.componentDiagramLeg_interaction B]
-    change
-      (externalInsertionInteractionLeg (E := E)
-        ⟨v.1, interactionSector_subset
-          (B : Finset (ExternalInsertionVertex E S)) v.2⟩ l).val <
-        (externalInsertionInteractionLeg (E := E)
-          ⟨w.1, interactionSector_subset
-            (B : Finset (ExternalInsertionVertex E S)) w.2⟩ k).val
-    change
-      (externalInsertionInteractionLeg (E := d.externalPairCount B) v l).val <
-        (externalInsertionInteractionLeg (E := d.externalPairCount B) w k).val at hab
-    simp only [externalInsertionInteractionLeg_val] at hab ⊢
-    by_cases hvw : v = w
-    · subst w
-      omega
-    · have hrank_ne :
-          ((T.orderIsoOfFin rfl).symm v).val ≠
-            ((T.orderIsoOfFin rfl).symm w).val :=
-        fun h => hvw ((T.orderIsoOfFin rfl).symm.injective (Fin.ext h))
-      have hrank :
-          ((T.orderIsoOfFin rfl).symm v).val <
-            ((T.orderIsoOfFin rfl).symm w).val := by
-        have hl := l.isLt
-        have hk := k.isLt
-        omega
-      have hamb :
-          ((S.orderIsoOfFin rfl).symm
-            (⟨v.1, interactionSector_subset
-              (B : Finset (ExternalInsertionVertex E S)) v.2⟩ : ↥S)).val <
-          ((S.orderIsoOfFin rfl).symm
-            (⟨w.1, interactionSector_subset
-              (B : Finset (ExternalInsertionVertex E S)) w.2⟩ : ↥S)).val := by
-        apply (S.orderIsoOfFin rfl).symm.strictMono
-        change v.1 < w.1
-        simpa using (T.orderIsoOfFin rfl).strictMono hrank
-      have hl := l.isLt
-      have hk := k.isLt
-      omega
+    change (externalInsertionInteractionLeg (E := d.externalPairCount B) v l).val <
+      (externalInsertionInteractionLeg (E := d.externalPairCount B) w k).val at hab
+    exact externalInsertionInteractionLeg_lt_of_subset
+      (E := d.externalPairCount B) (E' := E) (T := T) (S := S)
+      (interactionSector_subset (B : Finset (ExternalInsertionVertex E S)))
+      v w l k (Fin.lt_def.mpr hab)
 
 /-- The component-local leg embeddings, taken over every connected component, form the canonical
 order-preserving family shuffle onto the full ambient flattened-leg enumeration. -/

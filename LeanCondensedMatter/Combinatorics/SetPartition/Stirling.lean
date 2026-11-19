@@ -30,72 +30,47 @@ private theorem sum_choose_mul_stirlingSecond (n k : ℕ) :
             (fun i => (n + 1).choose i * Nat.stirlingSecond i 0) (n + 1)]
           simp [Nat.stirlingSecond_one_right]
       | succ k =>
-          rw [Finset.sum_range_succ'
-            (fun i => (n + 1).choose i * Nat.stirlingSecond i (k + 1)) (n + 1)]
-          simp only [Nat.choose_zero_right, Nat.stirlingSecond_zero_succ, mul_zero]
-          have hshift :
-              (∑ i ∈ Finset.range (n + 1),
-                  n.choose (i + 1) * Nat.stirlingSecond (i + 1) (k + 1)) =
-                ∑ i ∈ Finset.range (n + 1),
-                  n.choose i * Nat.stirlingSecond i (k + 1) := by
-            rw [Finset.sum_range_succ
-                (fun i => n.choose (i + 1) * Nat.stirlingSecond (i + 1) (k + 1)),
-              Finset.sum_range_succ'
-                (fun i => n.choose i * Nat.stirlingSecond i (k + 1)) n]
-            simp
+          have hsplit :
+              (∑ i ∈ Finset.range (n + 1 + 1),
+                  (n + 1).choose i * Nat.stirlingSecond i (k + 1)) =
+                (∑ i ∈ Finset.range (n + 1),
+                  n.choose i * Nat.stirlingSecond i (k + 1)) +
+                  ∑ i ∈ Finset.range (n + 1),
+                    n.choose i * Nat.stirlingSecond (i + 1) (k + 1) := by
+            simpa only [Nat.cast_id, Nat.add_assoc, Nat.reduceAdd] using
+              (Finset.sum_choose_succ_mul
+                (R := ℕ) (fun i _ => Nat.stirlingSecond i (k + 1)) n)
+          rw [hsplit]
           have hrec :
               (∑ i ∈ Finset.range (n + 1),
-                  n.choose i * Nat.stirlingSecond (i + 1) (k + 1)) =
+                n.choose i * Nat.stirlingSecond (i + 1) (k + 1)) =
                 (k + 1) *
                     (∑ i ∈ Finset.range (n + 1),
                       n.choose i * Nat.stirlingSecond i (k + 1)) +
                   ∑ i ∈ Finset.range (n + 1),
                     n.choose i * Nat.stirlingSecond i k := by
-            simp_rw [Nat.stirlingSecond_succ_succ, mul_add]
-            rw [Finset.sum_add_distrib]
-            apply congrArg₂ (· + ·)
-            · calc
-                (∑ i ∈ Finset.range (n + 1),
-                    n.choose i * ((k + 1) * Nat.stirlingSecond i (k + 1))) =
-                    ∑ i ∈ Finset.range (n + 1),
-                      (k + 1) * (n.choose i * Nat.stirlingSecond i (k + 1)) := by
-                        apply Finset.sum_congr rfl
-                        intro i hi
-                        ring
-                _ = (k + 1) *
-                    (∑ i ∈ Finset.range (n + 1),
-                      n.choose i * Nat.stirlingSecond i (k + 1)) := by
-                        rw [Finset.mul_sum]
-            · rfl
-          simp_rw [Nat.choose_succ_succ', add_mul]
-          rw [Finset.sum_add_distrib, hrec, hshift, ih (k + 1), ih k]
-          calc
-            (k + 1) * Nat.stirlingSecond (n + 1) (k + 1 + 1) +
-                  Nat.stirlingSecond (n + 1) (k + 1) +
-                  Nat.stirlingSecond (n + 1) (k + 1 + 1) =
-                (k + 2) * Nat.stirlingSecond (n + 1) (k + 2) +
-                  Nat.stirlingSecond (n + 1) (k + 1) := by
-                    ring
-            _ = Nat.stirlingSecond (n + 2) (k + 2) := by
-                  exact (Nat.stirlingSecond_succ_succ (n + 1) (k + 1)).symm
+            simp_rw [Nat.stirlingSecond_succ_succ, mul_add, Finset.sum_add_distrib]
+            rw [Finset.mul_sum]
+            congr 1
+            apply Finset.sum_congr rfl
+            intro i _
+            ring
+          rw [hrec, ih (k + 1), ih k,
+            Nat.stirlingSecond_succ_succ (n + 1) (k + 1)]
+          ring
 
 private theorem sum_choose_mul_stirlingSecond_complement (n k : ℕ) :
     (∑ i ∈ Finset.range (n + 1), n.choose i * Nat.stirlingSecond (n - i) k) =
       Nat.stirlingSecond (n + 1) (k + 1) := by
-  have h :
-      (∑ i ∈ Finset.range (n + 1),
-          n.choose (n - i) * Nat.stirlingSecond (n - (n - i)) k) =
-        ∑ i ∈ Finset.range (n + 1), n.choose i * Nat.stirlingSecond i k := by
-    apply Finset.sum_congr rfl
-    intro i hi
-    have hin : i ≤ n := Nat.le_of_lt_succ (Finset.mem_range.mp hi)
-    have hsub : n - (n - i) = i := by omega
-    rw [Nat.choose_symm hin, hsub]
-  rw [← Finset.sum_range_reflect]
-  have hn : n + 1 - 1 = n := by omega
-  simp_rw [hn]
-  rw [h]
-  exact sum_choose_mul_stirlingSecond n k
+  calc
+    _ = ∑ i ∈ Finset.range (n + 1), n.choose i * Nat.stirlingSecond i k := by
+      rw [← Finset.sum_range_reflect]
+      simp_rw [show n + 1 - 1 = n by omega]
+      apply Finset.sum_congr rfl
+      intro i hi
+      have hin : i ≤ n := Nat.le_of_lt_succ (Finset.mem_range.mp hi)
+      rw [Nat.choose_symm hin, show n - (n - i) = i by omega]
+    _ = _ := sum_choose_mul_stirlingSecond n k
 
 /-- Finite partitions with exactly `k` blocks are counted by the Stirling number of the second
 kind. -/

@@ -181,19 +181,8 @@ theorem ExternalInsertionBlockLayout.assembleConnectedBlocks_signedDysonShuffleO
   have horbit :=
     d.sum_componentInteractionOrderShuffle_orderedDysonAmplitude_eq_componentExternalOrderSign_mul_prod_components
       ε β g externalTime blockOrder
-  calc
-    (∑ shuffle : d.ComponentInteractionOrderShuffle,
-      d.orderedDysonAmplitude ε β g externalTime
-        (d.assembleInteractionOrder d.canonicalComponentInteractionOrders shuffle)) =
-      componentExternalOrderSign d blockOrder *
-        ∏ B : d.vertexGraph.componentPartition.parts,
-          ExternalInsertionWickDiagram.dysonAmplitude (d.componentOrderedDiagram B) ε β g
-            (d.componentExternalTime externalTime B) := horbit
-    _ = externalPartitionSourceSign layout.partition *
-        ∏ B : d.vertexGraph.componentPartition.parts,
-          ExternalInsertionWickDiagram.dysonAmplitude (d.componentOrderedDiagram B) ε β g
-            (d.componentExternalTime externalTime B) := by
-      rw [← hsign, hpart]
+  rw [← hsign, hpart] at horbit
+  exact horbit
 
 end Fermionic
 end SecondQuantization

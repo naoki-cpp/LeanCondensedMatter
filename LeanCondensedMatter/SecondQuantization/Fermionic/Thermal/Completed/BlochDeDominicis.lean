@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Analysis.ScalarExchange.Peel
-import LeanCondensedMatter.Analysis.Operator.TraceClass.Cyclicity
+import LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Basic
 import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.CanonicalAnticommutationRelations
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.Gibbs
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.CanonicalGrandCanonicalCompatibility

@@ -87,18 +87,6 @@ theorem resummedLadderVertex_smul
       scalar • resummedLadderVertex ladder hinvertible bareVertex := by
   simp [resummedLadderVertex]
 
-private theorem shiftedLadder_apply_resummedLadderVertex
-    (ladder : V →L[ℂ] V)
-    (hinvertible : IsUnit (1 - ladder))
-    (bareVertex : V) :
-    (1 - ladder) (resummedLadderVertex ladder hinvertible bareVertex) = bareVertex := by
-  let inverse : V →L[ℂ] V := ↑(hinvertible.unit⁻¹)
-  have hmul : (1 - ladder) * inverse = 1 := by
-    simpa [inverse] using hinvertible.mul_val_inv
-  change ((1 - ladder) * inverse) bareVertex = bareVertex
-  rw [hmul]
-  simp
-
 /-- The conditional resummation satisfies the exact ladder fixed-point equation. -/
 theorem resummedLadderVertex_fixedPoint
     (ladder : V →L[ℂ] V)
@@ -107,8 +95,9 @@ theorem resummedLadderVertex_fixedPoint
     resummedLadderVertex ladder hinvertible bareVertex =
       bareVertex + ladder (resummedLadderVertex ladder hinvertible bareVertex) := by
   apply (sub_eq_iff_eq_add).mp
+  change ((1 - ladder) * (↑(hinvertible.unit⁻¹) : V →L[ℂ] V)) bareVertex = bareVertex
   simpa using
-    shiftedLadder_apply_resummedLadderVertex ladder hinvertible bareVertex
+    congrArg (fun T : V →L[ℂ] V => T bareVertex) hinvertible.mul_val_inv
 
 /-- When `I - L` is a unit, the ladder fixed point is unique. -/
 theorem eq_resummedLadderVertex_of_fixedPoint

@@ -1,14 +1,18 @@
 import Mathlib.Analysis.SpecialFunctions.Complex.Log
-import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.FreePeelIndexed
+import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.FreeKMSRotation
+import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.OperatorPeel
+import Mathlib.Algebra.Module.LinearMap.End
+import Mathlib.Tactic.Module
 import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.ConcretePairKernel
 
 set_option linter.style.header false
 set_option linter.unusedFintypeInType false
 
 /-!
-# Free-boson first-pair thermal reduction
+# Free-boson indexed peel and first-pair thermal reduction
 
-This file combines the bosonic CCR peel with the free-Gibbs KMS rotation.  Since the bosonic
+This module proves the finite position-indexed bosonic peel formulas in the free-Gibbs domain,
+then combines the bosonic CCR peel with the free-Gibbs KMS rotation.  Since the bosonic
 exchange sign is `+1`, the wrapped term is solved with denominator `kmsFactor - 1`.  Under the
 standard positivity hypothesis this denominator is nonzero for both annihilation and creation
 fields.
@@ -24,6 +28,74 @@ namespace Bosonic
 open Common
 
 noncomputable section
+
+/-! ## Indexed bosonic peel and Gibbs expectation -/
+
+section IndexedPeel
+
+variable {Mode : Type*}
+
+namespace FreeThermalField
+
+variable [Fintype Mode]
+
+/-- The whole finite CCR peel is in the convergence-aware free-Gibbs domain. -/
+theorem operatorPeelSum_mem_grandCanonicalGibbsDomain
+    (ε : Mode → ℝ) (β μ : ℝ) (hpos : ∀ i, 0 < β * (ε i - μ))
+    (C₁ : FreeThermalField Mode) (l : List (FreeThermalField Mode)) :
+    C₁.operatorPeelSum l ∈ grandCanonicalGibbsDomain ε β μ := by
+  have h : C₁.operatorPeelSum l =
+      ∑ j : Fin l.length,
+        C₁.exchangeValue (l[(j : ℕ)]'j.isLt) • orderedProduct (l.eraseIdx j) := by
+    simpa only [operatorPeelSum, one_pow, one_mul, orderedProduct] using
+      ScalarExchange.peelSum_eq_sum operator exchangeValue (1 : ℂ) C₁ l
+  rw [h]
+  refine Submodule.sum_mem (grandCanonicalGibbsDomain ε β μ) fun j _ => ?_
+  exact (grandCanonicalGibbsDomain ε β μ).smul_mem
+    (C₁.exchangeValue (l[(j : ℕ)]'j.isLt))
+    (FreeThermalField.orderedProduct_mem_grandCanonicalGibbsDomain ε β μ hpos
+      (l.eraseIdx j))
+
+/-- Expectation of the bosonic CCR peel as a finite sum over the removed tail position. -/
+theorem grandCanonicalGibbsExpectation_operatorPeelSum_eq_sum
+    (ε : Mode → ℝ) (β μ : ℝ) (hpos : ∀ i, 0 < β * (ε i - μ))
+    (C₁ : FreeThermalField Mode) (l : List (FreeThermalField Mode)) :
+    grandCanonicalGibbsExpectation ε β μ (C₁.operatorPeelSum l) =
+      ∑ j : Fin l.length,
+        C₁.exchangeValue (l[(j : ℕ)]'j.isLt) *
+          grandCanonicalGibbsExpectation ε β μ (orderedProduct (l.eraseIdx j)) := by
+  have h : C₁.operatorPeelSum l =
+      ∑ j : Fin l.length,
+        C₁.exchangeValue (l[(j : ℕ)]'j.isLt) • orderedProduct (l.eraseIdx j) := by
+    simpa only [operatorPeelSum, one_pow, one_mul, orderedProduct] using
+      ScalarExchange.peelSum_eq_sum operator exchangeValue (1 : ℂ) C₁ l
+  rw [h]
+  calc
+    grandCanonicalGibbsExpectation ε β μ
+        (∑ j : Fin l.length,
+          C₁.exchangeValue (l[(j : ℕ)]'j.isLt) • orderedProduct (l.eraseIdx j)) =
+        ∑ j : Fin l.length,
+          grandCanonicalGibbsExpectation ε β μ
+            (C₁.exchangeValue (l[(j : ℕ)]'j.isLt) • orderedProduct (l.eraseIdx j)) :=
+      grandCanonicalGibbsExpectation_sum_of_summable ε β μ
+        (fun j : Fin l.length =>
+          C₁.exchangeValue (l[(j : ℕ)]'j.isLt) • orderedProduct (l.eraseIdx j))
+        (fun j =>
+          (grandCanonicalGibbsDomain ε β μ).smul_mem
+            (C₁.exchangeValue (l[(j : ℕ)]'j.isLt))
+            (FreeThermalField.orderedProduct_mem_grandCanonicalGibbsDomain ε β μ hpos
+              (l.eraseIdx j)))
+    _ = ∑ j : Fin l.length,
+        C₁.exchangeValue (l[(j : ℕ)]'j.isLt) *
+          grandCanonicalGibbsExpectation ε β μ (orderedProduct (l.eraseIdx j)) := by
+      apply Finset.sum_congr rfl
+      intro j _
+      simp only [grandCanonicalGibbsExpectation, LinearMap.comp_smul,
+        Common.tsumTrace_smul, mul_div_assoc]
+
+end FreeThermalField
+
+end IndexedPeel
 
 variable {Mode : Type*} [Fintype Mode]
 

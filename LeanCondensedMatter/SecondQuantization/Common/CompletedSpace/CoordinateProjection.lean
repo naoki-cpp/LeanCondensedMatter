@@ -1,4 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.Diagonal
+import LeanCondensedMatter.Analysis.Operator.Diagonal
 import Mathlib.Order.Filter.Finite
 
 set_option linter.style.header false
@@ -17,6 +18,7 @@ namespace SecondQuantization
 namespace Common
 
 open Filter Topology
+open ContinuousLinearMap
 
 noncomputable section
 
@@ -65,6 +67,60 @@ theorem completedCoordinateProjection_basisState (P : Config → Prop)
   classical
   by_cases hc : P c <;> simp [completedCoordinateProjection, hc]
 
+
+set_option maxHeartbeats 1000000 in
+-- The nested subtype HasSum reindexing and continuous-linear-map composition need more
+-- elaboration heartbeats than the default budget; restrict the increase to this lemma.
+/-- Compressing a summable diagonal series to a coordinate subset keeps exactly the
+diagonal terms indexed by that subset. This holds for any configuration predicate,
+independently of the origin of the diagonal weights. -/
+theorem completedCoordinateProjection_tsum_diagonalTerm
+    (P : Config → Prop) (a : Config → ℂ)
+    (A : CompletedFock Config →L[ℂ] CompletedFock Config)
+    (hA : HasSum
+      (fun c : Config =>
+        (completedHilbertBasis (Config := Config)).diagonalTerm a c) A) :
+    (∑' c : {c : Config // P c},
+      (completedHilbertBasis (Config := Config)).diagonalTerm a c.val) =
+      (completedCoordinateProjection P).comp
+        (A.comp (completedCoordinateProjection P)) := by
+  classical
+  let b := completedHilbertBasis (Config := Config)
+  let Q := completedCoordinateProjection P
+  let L : (CompletedFock Config →L[ℂ] CompletedFock Config) →L[ℂ]
+      (CompletedFock Config →L[ℂ] CompletedFock Config) :=
+    (ContinuousLinearMap.mulLeftRight ℂ
+      (CompletedFock Config →L[ℂ] CompletedFock Config)) Q Q
+  have hterm (c : Config) :
+      L (b.diagonalTerm a c) =
+        if P c then b.diagonalTerm a c else 0 := by
+    apply ContinuousLinearMap.ext
+    intro ψ
+    change Q ((b.diagonalTerm a c) (Q ψ)) =
+      (if P c then b.diagonalTerm a c else 0) ψ
+    simp only [HilbertBasis.diagonalTerm, smul_apply,
+      InnerProductSpace.rankOne_apply, map_smul, b, completedHilbertBasis_apply]
+    by_cases hc : P c
+    · simp [Q, hc, inner_completedBasisState_left,
+        completedCoordinateProjection_apply, completedCoordinateProjection_basisState]
+    · simp [Q, hc, inner_completedBasisState_left,
+        completedCoordinateProjection_apply, completedCoordinateProjection_basisState]
+  have hindicator :
+      HasSum (({c : Config | P c} : Set Config).indicator (b.diagonalTerm a)) (L A) := by
+    apply (hA.mapL L).congr_fun
+    intro c
+    rw [hterm]
+    by_cases hc : P c <;> simp [Set.indicator, hc]
+  have hsubset :
+      HasSum (fun c : {c : Config // P c} => b.diagonalTerm a c.val) (L A) :=
+    (hasSum_subtype_iff_indicator (s := {c : Config | P c})
+      (f := b.diagonalTerm a)).2 hindicator
+  have hL : L A = Q.comp (A.comp Q) := by
+    apply ContinuousLinearMap.ext
+    intro ψ
+    change Q (A (Q ψ)) = Q (A (Q ψ))
+    rfl
+  exact hsubset.tsum_eq.trans hL
 
 /-- A coordinate projection fixes an algebraic vector whenever its mask retains every
 configuration in that vector's finite support. -/

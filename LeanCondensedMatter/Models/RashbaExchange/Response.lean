@@ -161,13 +161,6 @@ noncomputable def antisymmetricCleanSurfaceHallPointKernel
     (cleanSurfaceHallPointKernel params measured source px py -
       cleanSurfaceHallPointKernel params source measured px py)
 
-theorem antisymmetricCleanSurfaceHallPointKernel_swap
-    (params : Parameters) (measured source : Fin 2) (px py : ℝ) :
-    antisymmetricCleanSurfaceHallPointKernel params source measured px py =
-      -antisymmetricCleanSurfaceHallPointKernel params measured source px py := by
-  unfold antisymmetricCleanSurfaceHallPointKernel
-  ring
-
 @[simp] theorem antisymmetricCleanSurfaceHallPointKernel_self
     (params : Parameters) (direction : Fin 2) (px py : ℝ) :
     antisymmetricCleanSurfaceHallPointKernel params direction direction px py = 0 := by
@@ -197,7 +190,8 @@ theorem finiteDiskSurfaceHallIntegrand_swap
   classical
   unfold finiteDiskSurfaceHallIntegrand
   split
-  · exact antisymmetricCleanSurfaceHallPointKernel_swap params measured source px py
+  · unfold antisymmetricCleanSurfaceHallPointKernel
+    ring
   · simp
 
 theorem finiteCutoffSurfaceHallResponseComponent_swap

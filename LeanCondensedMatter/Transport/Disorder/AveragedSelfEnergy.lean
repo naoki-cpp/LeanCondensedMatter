@@ -45,17 +45,6 @@ private theorem exists_probability_pos : ∃ ω : Ω, 0 < ensemble.probability �
   simpa using (Finset.sum_pos_iff_of_nonneg
     (fun ω _ => ensemble.probability_nonneg ω)).mp hsum
 
-/-- The imaginary part of a configuration-resolvent quadratic form equals the signed regulator
-multiplied by the squared resolvent norm. -/
-private theorem im_inner_configurationGreenOfRegulator_apply_self
-    (energy regulator : ℝ) (hregulator : regulator ≠ 0) (ω : Ω) (v : H) :
-    (inner ℂ (ensemble.configurationGreenOfRegulator energy regulator ω v) v).im =
-      regulator * ‖ensemble.configurationGreenOfRegulator energy regulator ω v‖ ^ 2 := by
-  simpa only [FiniteDisorderEnsemble.configurationGreenOfRegulator] using
-    im_inner_resolvent_spectralParameterOfRegulator_apply_self
-      (ensemble.configurationHamiltonian ω).1
-      (ensemble.configurationHamiltonian ω).2 energy regulator hregulator v
-
 /-- Taking an inner product after an exact finite operator average is the corresponding weighted
 finite average of inner products. -/
 private theorem inner_average_apply
@@ -83,10 +72,15 @@ private theorem im_inner_averagedGreenOfRegulator_apply_self
   rw [ensemble.inner_average_apply
     (fun ω => ensemble.configurationGreenOfRegulator energy regulator ω) v v]
   rw [Complex.im_sum]
+  have him (ω : Ω) :
+      (inner ℂ (ensemble.configurationGreenOfRegulator energy regulator ω v) v).im =
+        regulator * ‖ensemble.configurationGreenOfRegulator energy regulator ω v‖ ^ 2 := by
+    simpa only [FiniteDisorderEnsemble.configurationGreenOfRegulator] using
+      im_inner_resolvent_spectralParameterOfRegulator_apply_self
+        (ensemble.configurationHamiltonian ω).1
+        (ensemble.configurationHamiltonian ω).2 energy regulator hregulator v
   simp_rw [Complex.mul_im, Complex.ofReal_re, Complex.ofReal_im,
-    zero_mul, add_zero,
-    ensemble.im_inner_configurationGreenOfRegulator_apply_self
-      energy regulator hregulator]
+    zero_mul, add_zero, him]
   simp_rw [mul_left_comm (ensemble.probability _) regulator]
   rw [← Finset.mul_sum]
 
@@ -219,29 +213,17 @@ private theorem averagedGreenOfRegulator_antilipschitz
         ring
   exact hbound
 
-private theorem averagedGreenOfRegulator_injective
-    (energy regulator : ℝ) (hregulator : regulator ≠ 0) :
-    Function.Injective (ensemble.averagedGreenOfRegulator energy regulator) := by
-  obtain ⟨_, hantilipschitz⟩ :=
-    ensemble.averagedGreenOfRegulator_antilipschitz energy regulator hregulator
-  exact hantilipschitz.injective
-
-private theorem star_averagedGreenOfRegulator_injective
-    (energy regulator : ℝ) (hregulator : regulator ≠ 0) :
-    Function.Injective
-      ((star (ensemble.averagedGreenOfRegulator energy regulator) : H →L[ℂ] H)) := by
-  rw [ensemble.star_averagedGreenOfRegulator]
-  exact ensemble.averagedGreenOfRegulator_injective
-    energy (-regulator) (neg_ne_zero.mpr hregulator)
-
 private theorem averagedGreenOfRegulator_denseRange
     (energy regulator : ℝ) (hregulator : regulator ≠ 0) :
     (ensemble.averagedGreenOfRegulator energy regulator).range.topologicalClosure = ⊤ := by
   let averaged : H →L[ℂ] H := ensemble.averagedGreenOfRegulator energy regulator
   let averagedStar : H →L[ℂ] H := star averaged
   have hstarInjective : Function.Injective averagedStar := by
-    simpa [averagedStar, averaged] using
-      ensemble.star_averagedGreenOfRegulator_injective energy regulator hregulator
+    obtain ⟨_, hanti⟩ :=
+      ensemble.averagedGreenOfRegulator_antilipschitz
+        energy (-regulator) (neg_ne_zero.mpr hregulator)
+    simpa only [averagedStar, averaged, ensemble.star_averagedGreenOfRegulator] using
+      hanti.injective
   have hker : averagedStar.ker = ⊥ := by
     rw [LinearMap.ker_eq_bot]
     exact hstarInjective

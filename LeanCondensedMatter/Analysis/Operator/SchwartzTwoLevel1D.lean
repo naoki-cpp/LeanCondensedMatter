@@ -80,11 +80,6 @@ noncomputable def internalOperatorLinear :
     funext a
     simp [internalOperator, smul_smul]
 
-@[simp]
-theorem internalOperatorLinear_apply (S : InternalMatrix) :
-    internalOperatorLinear S = internalOperator S :=
-  rfl
-
 /-- Componentwise spatial operators Lie-commute with internal matrix operators. -/
 theorem lie_spatialLift_internalOperator_eq_zero
     (A : Spatial →ₗ[ℂ] Spatial) (S : InternalMatrix) :
@@ -124,11 +119,6 @@ noncomputable def multiplicationLinear : Spatial →ₗ[ℂ] (State →ₗ[ℂ] 
     ext x
     simp [multiplicationOperator]
     ring
-
-@[simp]
-theorem multiplicationLinear_apply (f : Spatial) :
-    multiplicationLinear f = multiplicationOperator f :=
-  rfl
 
 
 end

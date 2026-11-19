@@ -34,6 +34,27 @@ noncomputable def ExternalInsertionDiagram.vacuumFreeSlotCongrEquiv
       (d.slotCongrVertexGraphIso (M := M) e) (Equiv.refl (Fin (2 * E))) e
       (fun _ => rfl) (fun _ => rfl)).symm)
 
+/-- The entire fiber of **vacuum-free physical Wick diagrams** over a
+fixed external-component partition is preserved bijectively by an
+arbitrary interaction-slot relabeling. The external partition is not
+reindexed, and vacuum-freeness follows from the actual graph
+isomorphism. Thus a physical fixed-partition diagram sum may be
+reindexed without inserting extra owner or shuffle multiplicities. -/
+noncomputable def ExternalInsertionDiagram.fixedPartitionVacuumFreeSlotCongrEquiv
+    (e : ↥T ≃ ↥U)
+    (π : Finpartition (Finset.univ : Finset (Fin (2 * E)))) :
+    {d : {d : ExternalInsertionDiagram ExternalLabel InternalLabel E N T //
+        HasNoVacuumComponent d.vertexGraph} //
+      externalComponentPartition d.1.vertexGraph = π} ≃
+    {d : {d : ExternalInsertionDiagram ExternalLabel InternalLabel E M U //
+        HasNoVacuumComponent d.vertexGraph} //
+      externalComponentPartition d.1.vertexGraph = π} :=
+  Equiv.subtypeEquiv (ExternalInsertionDiagram.vacuumFreeSlotCongrEquiv
+    (E := E) e) (fun d => by
+    change externalComponentPartition d.1.vertexGraph = π ↔
+      externalComponentPartition (d.1.slotCongr (M := M) e).vertexGraph = π
+    rw [d.1.slotCongr_externalComponentPartition (M := M) e])
+
 /-- Canonically enumerate the interaction slots of a vacuum-free external diagram.
 External insertion labels are not reordered. -/
 noncomputable def ExternalInsertionDiagram.standardizeVacuumFree

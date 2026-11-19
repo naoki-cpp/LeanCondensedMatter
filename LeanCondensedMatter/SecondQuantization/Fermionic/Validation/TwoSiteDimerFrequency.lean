@@ -58,15 +58,6 @@ theorem twoSiteDimerFrequencyDenominator_eq_transitionProduct
     simp [twoSiteDimerFrequencyDenominator, twoSiteDimerComplexRate,
       lehmannDenominator, pow_two] <;> ring
 
-/-- At nonzero switching rate the closed unit-dimer response denominator is nonsingular. -/
-theorem twoSiteDimerFrequencyDenominator_ne_zero
-    (omega eta : ℝ) (heta : eta ≠ 0) :
-    twoSiteDimerFrequencyDenominator omega eta ≠ 0 := by
-  rw [twoSiteDimerFrequencyDenominator_eq_transitionProduct]
-  exact mul_ne_zero
-    (lehmannDenominator_ne_zero 1 omega eta (-2) heta)
-    (lehmannDenominator_ne_zero 1 omega eta 2 heta)
-
 /-- Closed finite-frequency current-current Lehmann response of the unit-hopping dimer:
 `χ_JJ = 4 / ((η - iω)² + 4)` at every nonzero switching rate. -/
 theorem twoSiteDimerGroundState_lehmannResponse_frequency
@@ -110,15 +101,6 @@ theorem twoSiteDimerUnitVolume_normalization_frequency
   rw [hfactor]
   simp [twoSiteDimerUnitVolume]
 
-/-- A nonzero switching rate keeps `z = η - iω` nonzero. -/
-theorem twoSiteDimerComplexRate_ne_zero
-    (omega eta : ℝ) (heta : eta ≠ 0) :
-    twoSiteDimerComplexRate omega eta ≠ 0 := by
-  intro hzero
-  have hre : eta = 0 := by
-    simpa [twoSiteDimerComplexRate] using congrArg Complex.re hzero
-  exact heta hre
-
 /-- Closed unit-volume finite-rate electrical conductivity of the unit-hopping dimer:
 
 `σ(ω,η) = (η - iω) / ((η - iω)² + 4)`.
@@ -131,8 +113,16 @@ theorem twoSiteDimerGroundState_conductivity_frequency
         twoSiteDimerGroundStateConductivityTable =
       twoSiteDimerComplexRate omega eta *
         (twoSiteDimerFrequencyDenominator omega eta)⁻¹ := by
-  have hz := twoSiteDimerComplexRate_ne_zero omega eta heta
-  have hden := twoSiteDimerFrequencyDenominator_ne_zero omega eta heta
+  have hz : twoSiteDimerComplexRate omega eta ≠ 0 := by
+    intro hzero
+    have hre : eta = 0 := by
+      simpa [twoSiteDimerComplexRate] using congrArg Complex.re hzero
+    exact heta hre
+  have hden : twoSiteDimerFrequencyDenominator omega eta ≠ 0 := by
+    rw [twoSiteDimerFrequencyDenominator_eq_transitionProduct]
+    exact mul_ne_zero
+      (lehmannDenominator_ne_zero 1 omega eta (-2) heta)
+      (lehmannDenominator_ne_zero 1 omega eta 2 heta)
   unfold finiteConductivityTableValue
   change
     (finiteLehmannTableResponse 1 omega eta twoSiteDimerGroundStateLehmannTable + (-1 : ℂ)) *

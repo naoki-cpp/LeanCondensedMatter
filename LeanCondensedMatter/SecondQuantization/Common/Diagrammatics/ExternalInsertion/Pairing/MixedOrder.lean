@@ -162,5 +162,86 @@ theorem ExternalInsertionDiagram.slotCongr_pairingInMixedOrder_partner
     ← externalInsertionMixedPositionSlotCongr_legPosition]
 
 
+
+/-- The vertex permutation on the concrete `Fin n` index induced by an
+equivalence of the full interaction slot set. -/
+def externalInsertionInteractionSlotPerm
+    {n : ℕ}
+    (e : ↥(Finset.univ : Finset (Fin n)) ≃
+      ↥(Finset.univ : Finset (Fin n))) : Equiv.Perm (Fin n) where
+  toFun v := (e ⟨v, Finset.mem_univ v⟩).1
+  invFun v := (e.symm ⟨v, Finset.mem_univ v⟩).1
+  left_inv v := congrArg Subtype.val (e.symm_apply_apply ⟨v, Finset.mem_univ v⟩)
+  right_inv v := congrArg Subtype.val (e.apply_symm_apply ⟨v, Finset.mem_univ v⟩)
+
+/-- The canonical-leg transport is precisely the interaction-slot
+permutation, extended by the identity on all external legs and the
+identity on all four legs of each interaction vertex. -/
+theorem externalInsertionOrderedLegSlotCongr_apply_perm
+    {E n : ℕ}
+    (e : ↥(Finset.univ : Finset (Fin n)) ≃
+      ↥(Finset.univ : Finset (Fin n)))
+    (leg : OrderedExternalInsertionLeg E n) :
+    externalInsertionOrderedLegSlotCongr e leg =
+      orderedExternalInsertionLegMap id
+        (externalInsertionInteractionSlotPerm e) leg := by
+  rcases leg with a | ⟨v, l⟩
+  · rfl
+  · rfl
+
+/-- On injective interaction-time assignments, the physical
+mixed-time position permutation from arbitrary vertex relabeling is
+the **identity**. Equal-time coincidences with external insertions
+do not change this result, because the tie breaker is external-first.
+This bridges sorted-event covariance to actual Wick partner transport. -/
+theorem externalInsertionMixedPositionSlotCongr_eq_refl_of_injective
+    {E n : ℕ}
+    (e : ↥(Finset.univ : Finset (Fin n)) ≃
+      ↥(Finset.univ : Finset (Fin n)))
+    (externalTime : Fin (2 * E) → ℝ)
+    (σ : Fin n → ℝ) (hσ : Function.Injective σ) :
+    externalInsertionMixedPositionSlotCongr e externalTime σ =
+      Equiv.refl (Fin (2 * (2 * n + E))) := by
+  let p := externalInsertionInteractionSlotPerm e
+  have htime :
+      (σ ∘ fun v : Fin n => (e.symm ⟨v, Finset.mem_univ v⟩).1) =
+        σ ∘ p.symm := by
+    rfl
+  apply Equiv.ext
+  intro i
+  change (externalInsertionMixedTimeOrderedAtomicLegEquiv externalTime
+      (σ ∘ p.symm)).symm
+      (externalInsertionOrderedLegSlotCongr e
+        (externalInsertionMixedTimeOrderedAtomicLegEquiv externalTime σ i)) = i
+  apply (externalInsertionMixedTimeOrderedAtomicLegEquiv externalTime
+    (σ ∘ p.symm)).injective
+  rw [Equiv.apply_symm_apply, externalInsertionOrderedLegSlotCongr_apply_perm]
+  exact (externalInsertionMixedTimeOrderedAtomicLegEquiv_perm_slots
+    externalTime σ hσ p i).symm
+
+/-- The physical mixed-time Wick *pairing itself* is unchanged when
+interaction slots are relabeled and their time assignment pulled
+back, on every injective interaction-time chamber. This is stronger
+than partner-intertwining: the pairing lives on exactly the same
+mixed-time atomic position type on both sides. -/
+theorem ExternalInsertionDiagram.slotCongr_pairingInMixedOrder_eq_of_injective
+    {E n : ℕ}
+    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E n
+      (Finset.univ : Finset (Fin n)))
+    (e : ↥(Finset.univ : Finset (Fin n)) ≃
+      ↥(Finset.univ : Finset (Fin n)))
+    (externalTime : Fin (2 * E) → ℝ)
+    (σ : Fin n → ℝ) (hσ : Function.Injective σ) :
+    (d.slotCongr e).pairingInMixedOrder externalTime
+        (σ ∘ fun v => (e.symm ⟨v, Finset.mem_univ v⟩).1) =
+      d.pairingInMixedOrder externalTime σ := by
+  apply PairingOn.ext
+  apply Equiv.ext
+  intro i
+  have hPartner := d.slotCongr_pairingInMixedOrder_partner e externalTime σ i
+  rw [externalInsertionMixedPositionSlotCongr_eq_refl_of_injective
+      e externalTime σ hσ] at hPartner
+  simpa using hPartner
+
 end Common
 end SecondQuantization

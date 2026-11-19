@@ -74,21 +74,12 @@ theorem quadrupoleAmplitude_eq (t : ℝ) :
   obtain ⟨p, hp⟩ := closure.mode_nonzero
   have hs := closure.stationary_quadrupole t p
   rw [angularCollision_const_mul, data.collision_quadrupole] at hs
-  have hmult :
-      (closure.quadrupoleAmplitude t * data.degreeTwoRate -
-          closure.polarization t) * quadrupoleMode data.direction i j p = 0 := by
-    nlinarith [hs]
   have heq : closure.quadrupoleAmplitude t * data.degreeTwoRate =
-      closure.polarization t :=
-    sub_eq_zero.mp ((mul_eq_zero.mp hmult).resolve_right hp)
-  have hrate : data.degreeTwoRate ≠ 0 := ne_of_gt closure.degreeTwoRate_pos
-  calc
-    closure.quadrupoleAmplitude t =
-        closure.polarization t / data.degreeTwoRate :=
-          (eq_div_iff hrate).mpr heq
-    _ = degreeTwoTime data.degreeTwoRate * closure.polarization t := by
-          simp only [degreeTwoTime, momentumTime, div_eq_mul_inv]
-          ring
+      closure.polarization t := by
+    apply mul_right_cancel₀ hp
+    nlinarith [hs]
+  simpa only [degreeTwoTime, momentumTime, div_eq_mul_inv, mul_comm] using
+    ((eq_div_iff (ne_of_gt closure.degreeTwoRate_pos)).mpr heq)
 
 /-- The orbital polarization obeys a decay equation with a coefficient
 identified from the finite double commutator and the degree-two collision
@@ -97,16 +88,10 @@ theorem hasDerivAt_polarization (t : ℝ) :
     HasDerivAt closure.polarization
       (-(orbitalRate axis ℏ (degreeTwoTime data.degreeTwoRate) c₁ c₂ r *
           closure.polarization t)) t := by
-  have hcoefficient :
-      -(evenQuarticCubature r (orbitalDoubleCommutator axis c₁ c₂) / ℏ ^ 2 *
-          closure.quadrupoleAmplitude t) =
-        -(orbitalRate axis ℏ (degreeTwoTime data.degreeTwoRate) c₁ c₂ r *
-          closure.polarization t) := by
-    rw [closure.quadrupoleAmplitude_eq t]
-    simp only [orbitalRate, degreeTwoTime, momentumTime]
-    ring
-  rw [← hcoefficient]
-  exact closure.polarization_dynamics t
+  convert closure.polarization_dynamics t using 1
+  rw [closure.quadrupoleAmplitude_eq t]
+  simp only [orbitalRate, degreeTwoTime, momentumTime]
+  ring
 
 private theorem scalar_decay_solution (rate : ℝ) (f : ℝ → ℝ)
     (hderiv : ∀ t, HasDerivAt f (-(rate * f t)) t) (t : ℝ) :
@@ -120,16 +105,11 @@ private theorem scalar_decay_solution (rate : ℝ) (f : ℝ → ℝ)
     change HasDerivAt (fun u : ℝ => f u * Real.exp (rate * u)) 0 s
     convert (hderiv s).mul he using 1
     ring
-  have hdiff : Differentiable ℝ g := fun s => (hgzero s).differentiableAt
-  have hzero : ∀ s, deriv g s = 0 := fun s => (hgzero s).deriv
-  have hconst : g t = g 0 := is_const_of_deriv_eq_zero hdiff hzero t 0
-  have hproduct : f t * Real.exp (rate * t) = f 0 := by
-    simpa [g] using hconst
-  calc
-    f t = (f t * Real.exp (rate * t)) * Real.exp (-(rate * t)) := by
-      rw [mul_assoc, ← Real.exp_add]
-      simp
-    _ = f 0 * Real.exp (-(rate * t)) := by rw [hproduct]
+  have h := is_const_of_deriv_eq_zero
+    (fun s => (hgzero s).differentiableAt)
+    (fun s => (hgzero s).deriv) t 0
+  simpa [g, mul_assoc, ← Real.exp_add] using
+    congrArg (fun x : ℝ => x * Real.exp (-(rate * t))) h
 
 /-- The finite quasistationary closure has a unique global polarization
 trajectory determined by its value at time zero. This statement is conditional

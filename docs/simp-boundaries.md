@@ -49,9 +49,7 @@ homomorphic normalization rules:
 - `diagonalExpectationValue_add`
 - `SchwartzTwoLevel1D.spatialLift_apply`
 - `SchwartzTwoLevel1D.internalOperator_apply`
-- `SchwartzTwoLevel1D.internalOperatorLinear_apply`
 - `SchwartzTwoLevel1D.multiplicationOperator_apply`
-- `SchwartzTwoLevel1D.multiplicationLinear_apply`
 - `nonrealShiftLinearEquiv_apply`
 - `nonrealShiftInverseDomain_apply`
 - `nonrealResolvent_apply`
@@ -62,7 +60,6 @@ homomorphic normalization rules:
 - `diagonalDet_zero`
 - `SchwartzKinetic1D.derivative_apply`
 - `SchwartzKinetic1D.multiplicationOperator_apply`
-- `SchwartzKinetic1D.multiplicationLinear_apply`
 - `ConservationLaw.symmetrizedProductRightLinear_apply`
 - `ConservationLaw.symmetrizedProductLeftLinear_apply`
 - `ConservationLaw.localizedQuantityFunctional_apply`
@@ -77,7 +74,6 @@ homomorphic normalization rules:
 - `orderedSimplexIntegral_zero_fun`
 - `finiteDimensionalOperatorTrace_apply`
 - `L2Multiplication.multiplicationOperator_apply`
-- `L2Multiplication.multiplicationLinear_apply`
 - `FamilySlotShuffleTo.timeAssignment_apply`
 - `boundedUnitaryEvolution_zero`
 - `resolventApproximationEvolution_zero`
@@ -172,7 +168,7 @@ The following declaration families are deliberate API normalization boundaries:
   `norm_heisenbergEvolution` in `LinearResponse/Dynamics/Unitary`
 - `LinearPMap.stoneEvolutionUnitaryGroup_apply`
 - `DensityOperator.normalizePositive_op`
-- all current simp rules in `LinearResponse/HarmonicSource`
+- all current simp rules in `LinearResponse/Frequency/AdiabaticSwitching`
 - all current simp rules in `LinearResponse/FrequencyDomain`
 - all current simp rules in `POVM/Born`
 - `NormalizedExpectation.pullback_apply`
