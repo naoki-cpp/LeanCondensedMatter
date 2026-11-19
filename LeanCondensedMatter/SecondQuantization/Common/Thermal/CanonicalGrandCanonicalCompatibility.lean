@@ -288,7 +288,7 @@ theorem grandCanonicalGibbsDensityOperator_traceNorm_complement_projection
         intro n
         simp [tail, n.property, hN]
       simp only [if_pos hN]
-      simp [hzero]]
+      simp [hzero]
     · simp only [if_neg hN]
       calc
         (∑' n : ParticleNumberSector Mode Config N, tail n.val) =
