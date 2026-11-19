@@ -261,7 +261,7 @@ theorem grandCanonicalGibbsDensityOperator_traceNorm_complement_projection
     apply tsum_congr
     intro N
     by_cases hN : N ∈ F
-    · simp only [if_pos hN]
+    · simp only [ite_eq_left hN]
       calc
         (∑' n : ParticleNumberSector Mode Config N, tail n.val) =
             ∑' _n : ParticleNumberSector Mode Config N, (0 : ℝ) := by
@@ -269,7 +269,7 @@ theorem grandCanonicalGibbsDensityOperator_traceNorm_complement_projection
           intro n
           simp [tail, n.property, hN]
         _ = 0 := tsum_zero
-    · simp only [if_neg hN]
+    · simp only [ite_eq_right hN]
       calc
         (∑' n : ParticleNumberSector Mode Config N, tail n.val) =
             ∑' n : ParticleNumberSector Mode Config N, w n.val := by
