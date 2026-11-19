@@ -16,7 +16,7 @@ A `EnergyEigenbasisLehmannData` probability distribution is first realized as th
 `DensityOperator`. Its normalized expectation is then obtained through
 `DensityOperator.toNormalizedExpectation`; no parallel linear-functional construction is retained.
 The module proves that this density state commutes with the Hamiltonian and derives stationarity
-from the general conservation law. It also proves the free energy-basis phases used downstream.
+from the general conservation law. It supplies the energy-difference phase used downstream.
 
 The countable double-sum expansion of the commutator and the exchange of that sum with the time
 integral are intentionally left to the next layer.
@@ -101,32 +101,22 @@ theorem eigenbasisNormalizedExpectation_apply
   exact (eigenbasisDensityOperator system data).expectation_eq_tsum_diagonal
     A data.basis data.probability (eigenbasisDensityOperator_apply_basis system data)
 
-/-- The scalar free Schrödinger phase of one energy-basis vector. -/
-noncomputable def eigenbasisSchrodingerPhase
-    (data : EnergyEigenbasisLehmannData system ι) (i : ι) (t : ℝ) : ℂ :=
-  Complex.exp (-(Complex.I * (((t * data.energy i) / system.hbar : ℝ) : ℂ)))
-
 /-- The relative phase carried by a Heisenberg-picture matrix element. -/
 noncomputable def eigenbasisTransitionPhase
     (data : EnergyEigenbasisLehmannData system ι)
     (m n : ι) (t : ℝ) : ℂ :=
-  star (eigenbasisSchrodingerPhase system data m t) *
-    eigenbasisSchrodingerPhase system data n t
+  Complex.exp
+    (Complex.I * (((orderedLehmannEnergyGap (data.energy m) (data.energy n) * t) /
+      system.hbar : ℝ) : ℂ))
 
-/-- The relative Schrödinger phases combine into the usual energy-difference phase. -/
+/-- Unfold the transition phase into its energy-difference expression. -/
 theorem eigenbasisTransitionPhase_eq_exp_energyDifference
     (data : EnergyEigenbasisLehmannData system ι)
     (m n : ι) (t : ℝ) :
     eigenbasisTransitionPhase system data m n t =
       Complex.exp
         (Complex.I * (((orderedLehmannEnergyGap (data.energy m) (data.energy n) * t) /
-          system.hbar : ℝ) : ℂ)) := by
-  rw [eigenbasisTransitionPhase, eigenbasisSchrodingerPhase,
-    eigenbasisSchrodingerPhase, Complex.exp_eq_exp_ℂ]
-  rw [NormedSpace.star_exp, ← NormedSpace.exp_add]
-  congr 1
-  simp
-  ring
+          system.hbar : ℝ) : ℂ)) := rfl
 
 /-- The canonical eigenbasis density expectation is stationary under the free dynamics. -/
 theorem isStationary_eigenbasisNormalizedExpectation
