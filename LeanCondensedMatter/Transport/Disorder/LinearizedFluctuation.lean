@@ -72,22 +72,13 @@ theorem norm_configurationGreen_fluctuation_sub_firstDyson_le
       _ ≤ B * potentialBound * B * potentialBound * B := by
         gcongr <;> first | exact hpotential ξ | exact hconfig ξ
       _ = B ^ 3 * potentialBound ^ 2 := by ring
-  have hpoint (ξ : Ω) : G ξ = G₀ + A ξ + R ξ := by
-    have h := ensemble.configurationGreenOfRegulator_eq_secondOrder_add_exactRemainder_left
+  have hpoint (ξ : Ω) : G ξ = G₀ + A ξ + R ξ :=
+    ensemble.configurationGreenOfRegulator_eq_secondOrder_add_exactRemainder_left
       energy regulator hregulator ξ
-    change G ξ = G₀ + A ξ + R ξ at h
-    exact h
   have hAavg : ensemble.average A = 0 := by
-    have hfactor :
-        ensemble.average A = G₀ * ensemble.average V * G₀ := by
-      simpa using
-        (ensemble.map_average
-          ((ContinuousLinearMap.mulLeftRight ℂ (H →L[ℂ] H)) G₀ G₀).toLinearMap
-          V).symm
-    rw [hfactor]
-    have hcenter : ensemble.average V = 0 := hcentered
-    rw [hcenter]
-    simp
+    simpa [show ensemble.average V = 0 from hcentered] using
+      (ensemble.map_average
+        ((ContinuousLinearMap.mulLeftRight ℂ (H →L[ℂ] H)) G₀ G₀).toLinearMap V).symm
   have hGavg :
       ensemble.averagedGreenOfRegulator energy regulator =
         G₀ + ensemble.average R := by
