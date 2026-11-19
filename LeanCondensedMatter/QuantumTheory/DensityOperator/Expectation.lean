@@ -17,17 +17,6 @@ open ContinuousLinearMap
 
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
 
-omit [CompleteSpace H] in
-private theorem norm_inner_apply_le_opNorm_of_norm_eq_one
-    (A : H →L[ℂ] H) {x : H} (hx : ‖x‖ = 1) :
-    ‖(inner ℂ x (A x) : ℂ)‖ ≤ ‖A‖ := by
-  calc
-    ‖(inner ℂ x (A x) : ℂ)‖ ≤ ‖x‖ * ‖A x‖ := norm_inner_le_norm _ _
-    _ ≤ ‖x‖ * (‖A‖ * ‖x‖) := by
-      gcongr
-      exact A.le_opNorm _
-    _ = ‖A‖ := by rw [hx]; ring
-
 /-- The spectral series representing the expectation of a bounded operator is summable. -/
 theorem DensityOperator.summable_expectation_term (ρ : DensityOperator H) (A : H →L[ℂ] H) :
     Summable (fun a : EigenvectorIndex ρ.op => (a.1.1 : ℂ) *
@@ -36,9 +25,15 @@ theorem DensityOperator.summable_expectation_term (ρ : DensityOperator H) (A : 
   have hnorm := eigenvectorFamily_norm_eq_one ρ
   refine Summable.of_norm_bounded
     (ρ.hasSum_abs_eigenvalues_eq_one.summable.mul_right ‖A‖) fun a => ?_
-  have hle := norm_inner_apply_le_opNorm_of_norm_eq_one A (hnorm a)
+  let x := eigenvectorFamily ρ.spectralTraceClass.compact a
   rw [norm_mul, Complex.norm_real]
-  exact mul_le_mul_of_nonneg_left hle (abs_nonneg _)
+  apply mul_le_mul_of_nonneg_left _ (abs_nonneg _)
+  change ‖(inner ℂ x (A x) : ℂ)‖ ≤ ‖A‖
+  calc
+    _ ≤ ‖x‖ * ‖A x‖ := norm_inner_le_norm _ _
+    _ ≤ ‖x‖ * (‖A‖ * ‖x‖) :=
+      mul_le_mul_of_nonneg_left (A.le_opNorm _) (norm_nonneg x)
+    _ = ‖A‖ := by simp [x, hnorm a]
 
 private theorem trace_comp_right_norm_le
     (ρ : DensityOperator H) (A : H →L[ℂ] H) :

@@ -67,14 +67,6 @@ private noncomputable def probabilityKernel (P : POVM H M)
   a.1.1 * diagonalExpectationValue (P.E m) (P.pos m).isSelfAdjoint
     (eigenvectorFamily ρ.spectralTraceClass.compact a)
 
-private theorem probabilityKernel_nonneg (P : POVM H M)
-    (ρ : DensityOperator H) (a : EigenvectorIndex ρ.op) (m : M) :
-    0 ≤ probabilityKernel P ρ a m :=
-  mul_nonneg
-    (eigenvalue_nonneg_of_isPositive ρ.pos.toLinearMap a)
-    (diagonalExpectationValue_nonneg (P.E m) (P.pos m)
-      (eigenvectorFamily ρ.spectralTraceClass.compact a))
-
 private theorem hasSum_probabilityKernel_outcome (P : POVM H M)
     (ρ : DensityOperator H) (a : EigenvectorIndex ρ.op) :
     HasSum (fun m => probabilityKernel P ρ a m) a.1.1 := by
@@ -109,8 +101,12 @@ theorem hasSum_probNNReal (P : POVM H M) (ρ : DensityOperator H) :
     HasSum (probNNReal P ρ) 1 := by
   let g : EigenvectorIndex ρ.op × M → ℝ :=
     fun p => probabilityKernel P ρ p.1 p.2
-  have hg_nonneg : ∀ p, 0 ≤ g p := fun p =>
-    probabilityKernel_nonneg P ρ p.1 p.2
+  have hg_nonneg : ∀ p, 0 ≤ g p := by
+    rintro ⟨a, m⟩
+    exact mul_nonneg
+      (eigenvalue_nonneg_of_isPositive ρ.pos.toLinearMap a)
+      (diagonalExpectationValue_nonneg (P.E m) (P.pos m)
+        (eigenvectorFamily ρ.spectralTraceClass.compact a))
   have hrow : ∀ a, HasSum (fun m => g (a, m)) a.1.1 := fun a => by
     simpa [g] using hasSum_probabilityKernel_outcome P ρ a
   have hg_summable : Summable g :=
