@@ -238,7 +238,11 @@ theorem grandCanonicalGibbsDensityOperator_traceNorm_complement_projection
           (fun x : Config => particleNumber (Mode := Mode) x ∈ F) c)
   obtain ⟨hres, hresNorm⟩ :=
     b.traceNorm_sub_compress_diagonal w hw hw_nonneg ρ.op Q
-      (fun c : Config => particleNumber (Mode := Mode) c ∈ F) hρdiag hQdiag
+      (fun c : Config => particleNumber (Mode := Mode) c ∈ F) hρdiag (by
+        intro c
+        by_cases hc : particleNumber (Mode := Mode) c ∈ F
+        · simpa [hc] using hQdiag c
+        · simpa [hc] using hQdiag c)
   have ht : Summable (fun c => ‖tail c‖) := by
     refine Summable.of_norm_bounded hw ?_
     intro c
@@ -279,7 +283,12 @@ theorem grandCanonicalGibbsDensityOperator_traceNorm_complement_projection
   refine ⟨hres, ?_⟩
   calc
     hres.traceNorm = ∑' c : Config, tail c := by
-      simpa only [tail] using hresNorm
+      rw [hresNorm]
+      apply tsum_congr
+      intro c
+      by_cases hc : particleNumber (Mode := Mode) c ∈ F
+      · simp [tail, hc]
+      · simp [tail, hc]
     _ = _ := htailgroup
 
 end
