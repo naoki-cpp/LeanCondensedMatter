@@ -93,27 +93,14 @@ private theorem avoid_extend_eq {s B : Finset α} {a : α}
     (Q.extend (Finset.ne_empty_of_mem haB) disjoint_sdiff_self_left
       (Finset.sdiff_union_of_subset hBsub)).avoid B = Q := by
   classical
+  have hmap : Q.parts.image (· \ B) = Q.parts := by
+    calc
+      _ = Q.parts.image id := Finset.image_congr (fun D hD =>
+        (disjoint_sdiff_self_left.mono_left (Q.le hD)).sdiff_eq_left)
+      _ = _ := Finset.image_id
   apply Finpartition.ext
-  ext C
-  constructor
-  · intro hC
-    rw [Finpartition.mem_avoid] at hC
-    obtain ⟨D, hD, hDle, hDC⟩ := hC
-    change D ∈ insert B Q.parts at hD
-    rcases Finset.mem_insert.mp hD with hDB | hDQ
-    · subst D
-      exact (hDle le_rfl).elim
-    · have hdisj : Disjoint D B :=
-        disjoint_sdiff_self_left.mono_left (Q.le hDQ)
-      rw [hdisj.sdiff_eq_left] at hDC
-      simpa [← hDC] using hDQ
-  · intro hC
-    rw [Finpartition.mem_avoid]
-    have hdisj : Disjoint C B :=
-      disjoint_sdiff_self_left.mono_left (Q.le hC)
-    refine ⟨C, Finset.mem_insert.mpr (Or.inr hC), ?_, hdisj.sdiff_eq_left⟩
-    intro hle
-    exact Q.ne_bot hC (hdisj.eq_bot_of_le hle)
+  change ((insert B Q.parts).image (· \ B)).erase ∅ = Q.parts
+  simp [Finset.image_insert, hmap, Q.bot_notMem]
 
 /-- A partition is equivalent to its distinguished block and a partition of the complement. -/
 def distinguishedBlockEquiv (s : Finset α) (a : α) (ha : a ∈ s) :
