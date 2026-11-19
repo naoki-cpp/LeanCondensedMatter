@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Models.MassiveDirac.Conductivity.FiniteBroadeningBornLadderZeroBroadening
+import LeanCondensedMatter.Models.MassiveDirac.Conductivity.Hall.FiniteBroadeningBornLadderZeroBroadening
 import LeanCondensedMatter.Transport.Analysis.ContinuumMeasure
 import LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.HallZeroBroadeningWeakDisorder
 import Mathlib.Tactic.FieldSimp
