@@ -41,30 +41,26 @@ theorem freePropagator_apply_of_eigenvector (vector : H) (energy : ℝ)
         simp only [mul_apply_eq_comp, ih, map_smul, hT, smul_smul]
         congr 1
         ring
-  have hop :=
-    (NormedSpace.exp_series_hasSum_exp' (𝕂 := ℂ) T).mapL
-      (ContinuousLinearMap.apply ℂ H v)
-  have hop' : HasSum
+  have hop : HasSum
       (fun n : ℕ => (((n.factorial : ℂ)⁻¹ * c ^ n) • v))
-      (freePropagator system t v) := by
-    rw [freePropagator_eq_exp]
-    convert hop using 1
+      ((NormedSpace.exp T) v) := by
+    convert (NormedSpace.exp_series_hasSum_exp' (𝕂 := ℂ) T).mapL
+      (ContinuousLinearMap.apply ℂ H v) using 1
     · ext n
       simp only [ContinuousLinearMap.apply_apply, smul_apply]
       rw [hpow]
       simp [c, v, smul_smul]
     · rfl
-  have hscalar :=
-    (NormedSpace.exp_series_hasSum_exp' (𝕂 := ℂ) c).mapL
-      (ContinuousLinearMap.toSpanSingleton ℂ v)
-  have hscalar' : HasSum
+  have hscalar : HasSum
       (fun n : ℕ => (((n.factorial : ℂ)⁻¹ * c ^ n) • v))
-      (Complex.exp (-(Complex.I * (((t * energy) / system.hbar : ℝ) : ℂ))) • v) := by
-    convert hscalar using 1
+      (NormedSpace.exp c • v) := by
+    convert (NormedSpace.exp_series_hasSum_exp' (𝕂 := ℂ) c).mapL
+      (ContinuousLinearMap.toSpanSingleton ℂ v) using 1
     · ext n
       simp
-    · simp [Complex.exp_eq_exp_ℂ, c, v]
-  exact hop'.unique hscalar'
+    · rfl
+  simpa [freePropagator_eq_exp, Complex.exp_eq_exp_ℂ, T, c, v] using
+    hop.unique hscalar
 
 /-- A Heisenberg matrix element between two real-energy eigenvectors has their relative phase. -/
 theorem inner_heisenbergEvolution_of_eigenvectors
