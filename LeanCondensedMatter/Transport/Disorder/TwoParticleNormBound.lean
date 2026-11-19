@@ -64,20 +64,7 @@ theorem norm_configurationGreen_sub_free_le
       exact (norm_mul_le _ _).trans
         (mul_le_mul_of_nonneg_right (norm_mul_le G₀ V) (norm_nonneg Gω))
     _ ≤ (B * potentialBound) * B := by
-      have hMnonneg : 0 ≤ potentialBound :=
-        (norm_nonneg V).trans hpotential
-      have hBnonneg : 0 ≤ B := inv_nonneg.mpr (abs_nonneg regulator)
-      have hleft : ‖G₀‖ * ‖V‖ ≤ B * potentialBound := by
-        calc
-          ‖G₀‖ * ‖V‖ ≤ ‖G₀‖ * potentialBound :=
-            mul_le_mul_of_nonneg_left hpotential (norm_nonneg G₀)
-          _ ≤ B * potentialBound :=
-            mul_le_mul_of_nonneg_right hfree hMnonneg
-      calc
-        (‖G₀‖ * ‖V‖) * ‖Gω‖ ≤ (B * potentialBound) * ‖Gω‖ :=
-          mul_le_mul_of_nonneg_right hleft (norm_nonneg Gω)
-        _ ≤ (B * potentialBound) * B :=
-          mul_le_mul_of_nonneg_left hconfig (mul_nonneg hBnonneg hMnonneg)
+      gcongr
     _ = B ^ 2 * potentialBound := by ring
 
 /-- A finite disorder average is as close to the clean Green operator as each configuration
@@ -183,15 +170,7 @@ theorem norm_connectedTwoGreenInsertion_le_uniformPotential_sq
         exact (norm_mul_le _ _).trans
           (mul_le_mul_of_nonneg_right (norm_mul_le (L ω) vertex) (norm_nonneg (R ω)))
       _ ≤ leftBound * ‖vertex‖ * rightBound := by
-        have hleftMul : ‖L ω‖ * ‖vertex‖ ≤ leftBound * ‖vertex‖ :=
-          mul_le_mul_of_nonneg_right hleft (norm_nonneg vertex)
-        calc
-          (‖L ω‖ * ‖vertex‖) * ‖R ω‖ ≤
-              (leftBound * ‖vertex‖) * ‖R ω‖ :=
-            mul_le_mul_of_nonneg_right hleftMul (norm_nonneg (R ω))
-          _ ≤ leftBound * ‖vertex‖ * rightBound :=
-            mul_le_mul_of_nonneg_left hright
-              (mul_nonneg hleftNonneg (norm_nonneg vertex))
+        gcongr
   change ‖ensemble.average (fun ω => L ω * vertex * R ω)‖ ≤
     leftBound * ‖vertex‖ * rightBound
   exact ensemble.norm_average_le_of_forall _ _ hpoint
