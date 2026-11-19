@@ -1,5 +1,4 @@
 import LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.Antiunitary
-import Mathlib.Analysis.InnerProductSpace.Adjoint
 import Mathlib.Analysis.Normed.Algebra.Exponential
 import Mathlib.LinearAlgebra.Complex.FiniteDimensional
 import Mathlib.Analysis.RCLike.Basic
@@ -15,8 +14,7 @@ a complex-linear bounded operator is automatically bounded and linear.
 Finite dimensionality is needed only below to prove continuity of the
 induced action on the *space of operators* for the exponential theorem.
 
-No assumption Θ² = 1 is used. In particular, Θ² = -1 still induces an
-involutive action on observables.
+No assumption Θ² = 1 is used for operator conjugation or exponential covariance.
 -/
 
 namespace QuantumTheory.LinearResponse
@@ -92,29 +90,6 @@ theorem conjugateOperator_zero :
   change Θ.equiv (0 : H) = 0
   exact map_zero Θ.equiv
 
-/-- Antiunitary conjugation preserves adjoints without any condition on
-the square of the state-space antiunitary. -/
-theorem conjugateOperator_star [CompleteSpace H] (A : H →L[ℂ] H) :
-    Θ.conjugateOperator (star A) = star (Θ.conjugateOperator A) := by
-  rw [ContinuousLinearMap.star_eq_adjoint]
-  apply (ContinuousLinearMap.eq_adjoint_iff _ _).2
-  intro x y
-  calc
-    inner ℂ (Θ.conjugateOperator (star A) x) y =
-        inner ℂ (Θ.equiv ((star A) (Θ.equiv.symm x)))
-          (Θ.equiv (Θ.equiv.symm y)) := by
-      rw [Θ.equiv.apply_symm_apply]
-      rfl
-    _ = (starRingEnd ℂ) (inner ℂ ((star A) (Θ.equiv.symm x)) (Θ.equiv.symm y)) :=
-      Θ.inner_map _ _
-    _ = (starRingEnd ℂ) (inner ℂ (Θ.equiv.symm x) (A (Θ.equiv.symm y))) := by
-      rw [ContinuousLinearMap.star_eq_adjoint, ContinuousLinearMap.adjoint_inner_left]
-    _ = inner ℂ (Θ.equiv (Θ.equiv.symm x)) (Θ.equiv (A (Θ.equiv.symm y))) :=
-      (Θ.inner_map _ _).symm
-    _ = inner ℂ x (Θ.conjugateOperator A y) := by
-      rw [Θ.equiv.apply_symm_apply]
-      rfl
-
 /-- The conjugation action is a unital ring homomorphism on bounded
 endomorphisms, even for infinite-dimensional state spaces. -/
 noncomputable def conjugateOperatorRingHom :
@@ -154,24 +129,6 @@ theorem conjugateOperator_exp [FiniteDimensional ℂ H] [CompleteSpace H]
   have hcont : Continuous (Θ.conjugateOperator : (H →L[ℂ] H) → (H →L[ℂ] H)) :=
     Θ.conjugateOperatorRealLinear.continuous_of_finiteDimensional
   exact NormedSpace.map_exp (Θ.conjugateOperatorRingHom) hcont A
-
-/-- A spin-half antiunitary with square minus the identity still induces
-an involution on bounded observables. -/
-theorem conjugateOperator_involutive_of_square_neg
-    (hsq : ∀ x : H, Θ.equiv (Θ.equiv x) = -x)
-    (A : H →L[ℂ] H) :
-    Θ.conjugateOperator (Θ.conjugateOperator A) = A := by
-  have hinv : ∀ x : H, Θ.equiv.symm x = -(Θ.equiv x) := by
-    intro x
-    apply Θ.equiv.injective
-    rw [Θ.equiv.apply_symm_apply, map_neg, hsq]
-    simp
-  have hinvsq (x : H) : Θ.equiv.symm (Θ.equiv.symm x) = -x := by
-    rw [hinv x, map_neg, Θ.equiv.symm_apply_apply]
-  ext x
-  change Θ.equiv (Θ.equiv (A (Θ.equiv.symm (Θ.equiv.symm x)))) = A x
-  rw [hinvsq x, A.map_neg, map_neg, map_neg, hsq (A x)]
-  simp
 
 end AntiunitaryMap
 
