@@ -7,8 +7,8 @@ set_option linter.style.header false
 
 Fixed finite products of bosonic ladder operators have occupation-basis coefficients with polynomial
 growth.  This module owns the reusable finite-mode polynomial majorants for the genuinely infinite
-bosonic occupation space.  Quadratic and total-particle-number estimates specialize this layer;
-they do not supply analytic input back to it.
+bosonic occupation space.  The quadratic total-particle-number estimate at the end of this module specializes these
+polynomial majorants; it adds no analytic input to their proof.
 
 On a finite mode type, each mode contributes a one-dimensional series `k^p r^k`, which is summable
 for `|r| < 1`; `Finsupp.hasSum_prod_nonneg` then reconstructs the infinite occupation-space sum.
@@ -77,6 +77,52 @@ theorem summable_shiftedOccupationPowerProduct_boltzmannWeight
     rw [boltzmannWeight_eq_prod]
     simp only [hgdef]
     exact Finset.prod_mul_distrib).summable
+
+/-!
+## Quadratic total-particle-number moment
+
+The following bound is a direct finite-mode specialization of the general polynomial majorant.
+-/
+
+set_option linter.unusedFintypeInType false
+
+/-! ## Total particle number -/
+
+/-- The square of the total particle number remains summable against the free bosonic
+Boltzmann weight, providing a degree-two moment bound for quartic ladder amplitudes. -/
+theorem summable_particleNumber_total_sq_boltzmannWeight (ε : Mode → ℝ) (β : ℝ)
+    (hpos : ∀ i, 0 < β * ε i) :
+    Summable (fun n : Occupation Mode =>
+      (particleNumber n : ℝ) ^ 2 * boltzmannWeight ε β n) := by
+  have hpair (i j : Mode) :
+      Summable (fun n : Occupation Mode =>
+        (n i : ℝ) * (n j : ℝ) * boltzmannWeight ε β n) := by
+    classical
+    have h := summable_shiftedOccupationPowerProduct_boltzmannWeight ε β hpos (fun _ => 0)
+      (fun k => (if k = i then 1 else 0) + (if k = j then 1 else 0))
+    refine h.congr fun n => ?_
+    simp only [Nat.add_zero, pow_add, Finset.prod_mul_distrib]
+    congr 1
+    have hprod (k : Mode) :
+        (∏ l : Mode, (n l : ℝ) ^ (if l = k then 1 else 0 : ℕ)) = (n k : ℝ) := by
+      rw [Fintype.prod_eq_single k]
+      · simp
+      · intro l hl
+        simp [hl]
+    rw [hprod i, hprod j]
+  have hinner : ∀ i : Mode, Summable (fun n : Occupation Mode =>
+      ∑ j, (n i : ℝ) * (n j : ℝ) * boltzmannWeight ε β n) := by
+    intro i
+    exact summable_sum fun j (_ : j ∈ Finset.univ) =>
+      hpair i j
+  have hdouble : Summable (fun n : Occupation Mode =>
+      ∑ i, ∑ j, (n i : ℝ) * (n j : ℝ) * boltzmannWeight ε β n) := by
+    exact summable_sum fun i (_ : i ∈ Finset.univ) => hinner i
+  refine hdouble.congr fun n => ?_
+  rw [particleNumber_eq_sum_univ]
+  push_cast
+  rw [pow_two, Finset.sum_mul_sum, Finset.sum_mul]
+  simp_rw [Finset.sum_mul]
 
 end
 end Bosonic
