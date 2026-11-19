@@ -357,17 +357,14 @@ theorem ExternalInsertionBlockLayout.assembleConnectedBlocks_componentDysonAmpli
   congr 1
   exact congrArg Finset.card hsector
 
-/-- The genuine **integrated physical component-shuffle orbit**
-of assembled connected Wick blocks equals the source-partition Koszul sign
-times the product of the *original independent local Dyson amplitudes*.
+/-- The complete physical component-shuffle orbit of assembled connected
+Wick blocks equals the source-partition Koszul sign times the product of
+independent local Dyson amplitudes at canonically restricted subset times.
 
-Every local factor carries its actual labels, contracted Wick pairing,
-original restricted source times, and canonical increasing interaction-slot
-order. The product is indexed by the prescribed external partition rather
-than an unverified choice of graph components. The equality is only after
-the complete interaction-order shuffle sum; it does not factor an
+Each local factor retains its actual labels, oriented pairing, and increasing
+interaction-slot order. Only the complete shuffle sum factors, not an
 individual ordered-simplex integral. -/
-theorem ExternalInsertionBlockLayout.assembleConnectedBlocks_signedDysonShuffleOrbit_eq_independentLocals
+theorem ExternalInsertionBlockLayout.assembleConnectedBlocks_signedDysonShuffleOrbit_eq_subsetTimes
     {n : ℕ} (layout : ExternalInsertionBlockLayout E n)
     (F : ∀ B : layout.partition.parts,
       ExternalInsertionDiagram (ExternalFieldLabel Mode) (QuarticVertexLabel Mode)
@@ -386,7 +383,8 @@ theorem ExternalInsertionBlockLayout.assembleConnectedBlocks_signedDysonShuffleO
           ExternalInsertionWickDiagram.dysonAmplitude
             ((F B).slotCongr (Combinatorics.standardSlotEquiv
               (layout.interactionBlock (Finset.univ : Finset (Fin n)) B)))
-            ε β g (fun i => externalTime (layout.sourceEquiv.symm ⟨B, i⟩)) := by
+            ε β g (evenExternalSubsetTimes externalTime
+              (B : Finset (Fin (2 * E))) (layout.evenBlocks B)) := by
   classical
   let S : Finset (Fin n) := Finset.univ
   let d : ExternalInsertionWickDiagram Mode E n := layout.assembleDiagram S F
@@ -438,36 +436,6 @@ theorem ExternalInsertionBlockLayout.assembleConnectedBlocks_signedDysonShuffleO
             (d.componentOrderedDiagram C) ε β g
             (d.componentExternalTime externalTime C))).symm.trans
         (Finset.prod_congr rfl (fun B _ => hlocal B))))
-
-/-- The physical connected-block Dyson shuffle orbit, now expressed using
-the canonical increasing *subset restriction* of external insertion times.
-These are exactly the times appearing in each connected source-subset
-coefficient.  Only the full shuffle sum, never a single simplex integral,
-is replaced by the product of local integrated amplitudes. -/
-theorem ExternalInsertionBlockLayout.assembleConnectedBlocks_signedDysonShuffleOrbit_eq_subsetTimes
-    {n : ℕ} (layout : ExternalInsertionBlockLayout E n)
-    (F : ∀ B : layout.partition.parts,
-      ExternalInsertionDiagram (ExternalFieldLabel Mode) (QuarticVertexLabel Mode)
-        ((B : Finset (Fin (2 * E))).card / 2) n
-        (layout.interactionBlock (Finset.univ : Finset (Fin n)) B))
-    (hconnected : ∀ B, (F B).vertexGraph.Preconnected)
-    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
-    (times : Fin (2 * E) → ℝ) :
-    let d : ExternalInsertionWickDiagram Mode E n :=
-      layout.assembleDiagram (Finset.univ : Finset (Fin n)) F
-    (∑ shuffle : d.ComponentInteractionOrderShuffle,
-      d.orderedDysonAmplitude ε β g times
-        (d.assembleInteractionOrder d.canonicalComponentInteractionOrders shuffle)) =
-      externalPartitionSourceSign layout.partition *
-        ∏ B : layout.partition.parts,
-          ExternalInsertionWickDiagram.dysonAmplitude
-            ((F B).slotCongr (Combinatorics.standardSlotEquiv
-              (layout.interactionBlock (Finset.univ : Finset (Fin n)) B)))
-            ε β g (evenExternalSubsetTimes times
-              (B : Finset (Fin (2 * E))) (layout.evenBlocks B)) := by
-  classical
-  exact ExternalInsertionBlockLayout.assembleConnectedBlocks_signedDysonShuffleOrbit_eq_independentLocals
-    layout F hconnected ε β g times
 
 open Classical in
 /-- At a fixed physical external-block layout, summing the **actual
