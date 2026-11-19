@@ -62,20 +62,15 @@ private theorem sum_choose_mul_stirlingSecond (n k : ℕ) :
 private theorem sum_choose_mul_stirlingSecond_complement (n k : ℕ) :
     (∑ i ∈ Finset.range (n + 1), n.choose i * Nat.stirlingSecond (n - i) k) =
       Nat.stirlingSecond (n + 1) (k + 1) := by
-  have h :
-      (∑ i ∈ Finset.range (n + 1),
-          n.choose (n - i) * Nat.stirlingSecond (n - (n - i)) k) =
-        ∑ i ∈ Finset.range (n + 1), n.choose i * Nat.stirlingSecond i k := by
-    apply Finset.sum_congr rfl
-    intro i hi
-    have hin : i ≤ n := Nat.le_of_lt_succ (Finset.mem_range.mp hi)
-    have hsub : n - (n - i) = i := by omega
-    rw [Nat.choose_symm hin, hsub]
-  rw [← Finset.sum_range_reflect]
-  have hn : n + 1 - 1 = n := by omega
-  simp_rw [hn]
-  rw [h]
-  exact sum_choose_mul_stirlingSecond n k
+  calc
+    _ = ∑ i ∈ Finset.range (n + 1), n.choose i * Nat.stirlingSecond i k := by
+      rw [← Finset.sum_range_reflect]
+      simp_rw [show n + 1 - 1 = n by omega]
+      apply Finset.sum_congr rfl
+      intro i hi
+      have hin : i ≤ n := Nat.le_of_lt_succ (Finset.mem_range.mp hi)
+      rw [Nat.choose_symm hin, show n - (n - i) = i by omega]
+    _ = _ := sum_choose_mul_stirlingSecond n k
 
 /-- Finite partitions with exactly `k` blocks are counted by the Stirling number of the second
 kind. -/
