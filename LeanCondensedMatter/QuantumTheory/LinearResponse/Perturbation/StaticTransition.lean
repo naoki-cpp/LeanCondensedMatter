@@ -68,7 +68,10 @@ theorem staticTransitionFirstVariation_eq_timeIntegral
       rw [intervalIntegral.integral_mul_const]
       simp only [OscillatoryIntegral.timeIntegral, mul_assoc]
 
-/-- Off resonance the squared first-order transition amplitude has the finite-time sine form. -/
+/-- Off resonance the squared first-order transition amplitude has the finite-time sine form.
+This algebraic identity requires only a bounded perturbation, not self-adjointness.
+For a physical transition probability, normalized states and unitary exact evolution
+must be supplied separately. -/
 theorem norm_staticTransitionFirstVariation_sq_of_ne
     (initial final : H) (energyInitial energyFinal : ℝ)
     (hinitial : system.hamiltonian.1 initial = (energyInitial : ℂ) • initial)
@@ -89,7 +92,9 @@ theorem norm_staticTransitionFirstVariation_sq_of_ne
   rw [OscillatoryIntegral.norm_timeIntegral_sq _ _ hfrequency]
   field_simp [hhbar, hgap]
 
-/-- At resonance the squared first-order transition amplitude grows quadratically in time. -/
+/-- At resonance the squared first-order transition amplitude grows quadratically in time.
+This describes the first variation at fixed finite time, not an exact probability
+growth law for arbitrarily long times. -/
 theorem norm_staticTransitionFirstVariation_sq_resonant
     (initial final : H) (energy : ℝ)
     (hinitial : system.hamiltonian.1 initial = (energy : ℂ) • initial)
@@ -107,7 +112,9 @@ theorem norm_staticTransitionFirstVariation_sq_resonant
   ring
 
 /-- The finite-time kernel controls the leading squared amplitude of the exact Dyson
-propagator, not merely a postulated first-order ansatz. Orthogonality removes the constant term. -/
+propagator at fixed finite time, not merely a postulated first-order ansatz.
+Orthogonality removes the constant term. The norm-square becomes a transition
+probability for normalized states only when the exact dynamics is unitary. -/
 theorem tendsto_staticTransitionWeight_div_sq_zero_of_eigenvectors
     (initial final : H) (energyInitial energyFinal : ℝ)
     (hinitial : system.hamiltonian.1 initial = (energyInitial : ℂ) • initial)
