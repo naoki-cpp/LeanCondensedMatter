@@ -17,6 +17,8 @@ The resulting operators provide a finite tight-binding model to which the canoni
 Kubo–Bastin/Středa identity applies directly. Current-orientation reversal is recorded here, while
 simultaneous current-sign reversal is provided by the general Středa operator-kernel API. No disorder
 average, numerical approximation, or limiting procedure is used.
+
+Zero-hopping and zero-charge specializations are also checked here as finite-operator identities.
 -/
 
 namespace SecondQuantization
@@ -91,6 +93,55 @@ theorem twoSiteDimerCurrent_reverse (t : ℂ) :
       -twoSiteDimerCurrent t := by
   simpa [twoSiteDimerCurrent] using
     boundedBondCurrent_swap (1 : ℂ) (1 : ℂ) (twoSiteDimerHopping t) 0 1
+
+/-! ## Zero-hopping and zero-charge checks
+
+All zero-parameter results below are finite-operator identities, not singular frequency,
+broadening, or thermodynamic limits.
+-/
+
+section ZeroParameterChecks
+
+open QuantumTheory.PeierlsPhase
+
+/-- Turning off the hopping removes the bounded dimer Hamiltonian. -/
+@[simp]
+theorem twoSiteDimerHamiltonian_zero :
+    twoSiteDimerHamiltonian 0 = 0 := by
+  simp [twoSiteDimerHamiltonian]
+
+/-- Turning off the hopping removes the continuity-derived dimer current. -/
+@[simp]
+theorem twoSiteDimerCurrent_zero_hopping :
+    twoSiteDimerCurrent 0 = 0 := by
+  rw [twoSiteDimerCurrent, boundedBondCurrent_eq_peierlsCoupling_smul]
+  rw [LocallyFiniteHopping.boundedBondOperator_eq]
+  simp [twoSiteDimerHopping, LocallyFiniteHopping.amplitude_eq]
+
+/-- Turning off the hopping also removes the Peierls contact operator. -/
+@[simp]
+theorem twoSiteDimerContact_zero_hopping :
+    twoSiteDimerContact 0 = 0 := by
+  unfold twoSiteDimerContact boundedBondContact
+  simp [LocallyFiniteHopping.oneParticleBondContact, twoSiteDimerHopping,
+    LocallyFiniteHopping.amplitude_eq, peierlsCoupling, boundedLatticeOperator]
+
+/-- At zero charge, the dimer bond carries no Peierls current. -/
+@[simp]
+theorem twoSiteDimerBondCurrent_zero_charge (t : ℂ) :
+    boundedBondCurrent (1 : ℂ) 0 (twoSiteDimerHopping t) 0 1 = 0 := by
+  rw [boundedBondCurrent_eq_peierlsCoupling_smul]
+  simp [peierlsCoupling]
+
+/-- At zero charge, the source derivative of the Peierls current also vanishes. -/
+@[simp]
+theorem twoSiteDimerBondContact_zero_charge (t : ℂ) :
+    boundedBondContact (twoSiteDimerHopping t) (1 : ℂ) 0 0 1 = 0 := by
+  unfold boundedBondContact
+  simp [LocallyFiniteHopping.oneParticleBondContact, peierlsCoupling,
+    boundedLatticeOperator]
+
+end ZeroParameterChecks
 
 end
 end Validation
