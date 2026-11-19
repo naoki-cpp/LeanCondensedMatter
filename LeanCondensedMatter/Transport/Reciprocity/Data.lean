@@ -81,17 +81,8 @@ theorem expectation_reverse (m : M) (A : H →L[ℂ] H) :
       star ((data.density m).expectation A) := by
   rw [(data.density (data.reverse m)).expectation_eq_finiteDimensionalOperatorTrace,
     (data.density m).expectation_eq_finiteDimensionalOperatorTrace]
-  calc
-    finiteDimensionalOperatorTrace ((data.density (data.reverse m)).op * data.timeReversal.conjugateOperator A) =
-        finiteDimensionalOperatorTrace
-          (data.timeReversal.conjugateOperator (data.density m).op * data.timeReversal.conjugateOperator A) := by
-      rw [data.density_reverse m]
-    _ = finiteDimensionalOperatorTrace
-          (data.timeReversal.conjugateOperator ((data.density m).op * A)) := by
-      exact (congrArg finiteDimensionalOperatorTrace
-        (data.timeReversal.conjugateOperator_mul (data.density m).op A)).symm
-    _ = star (finiteDimensionalOperatorTrace ((data.density m).op * A)) :=
-      data.timeReversal.conjugateOperator_trace _
+  rw [← data.density_reverse m, ← data.timeReversal.conjugateOperator_mul]
+  exact data.timeReversal.conjugateOperator_trace _
 
 end KuboTimeReversalData
 
