@@ -1,6 +1,7 @@
 import LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.Antiunitary
 import Mathlib.Analysis.Normed.Algebra.Exponential
 import Mathlib.LinearAlgebra.Complex.FiniteDimensional
+import Mathlib.Topology.Algebra.Module.FiniteDimension
 import Mathlib.Analysis.RCLike.Basic
 
 set_option linter.style.header false
