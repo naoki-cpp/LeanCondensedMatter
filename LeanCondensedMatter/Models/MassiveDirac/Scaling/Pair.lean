@@ -222,7 +222,7 @@ theorem AheScalingParameters.tendsto_zeroBroadeningPairAtDisorder_sxy_disorder_z
           (((nonCrossingHallConductivity
             params.e params.hbar params.m params.fermiEnergy : ℝ) : ℂ)))) := by
   have h :=
-    tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensorZeroBroadeningBoundary_hallComponent_disorder_zero_eq_nonCrossing
+    FiniteCutoffBornDyson.Hall.ZeroBroadeningWeakDisorder.tendsto_hallComponent_nonCrossing
       params.e params.v params.m params.fermiEnergy params.hbar params.pMax
       params.velocity_ne_zero params.hbar_pos params.metallic params.cutoff_shell
   have hnormalized :=
