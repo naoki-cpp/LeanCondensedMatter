@@ -44,29 +44,6 @@ noncomputable def evenExternalSubsetTimes
     Fin (2 * (S.card / 2)) → ℝ :=
   fun i => times (evenExternalSubsetOrderIso S heven i).1
 
-omit [LinearOrder Mode] [Fintype Mode] in
-/-- Independently assembled Wick blocks have exactly the physically
-restricted external-source labels in canonical increasing order. This
-identifies the source-label part of the future actual-component/local-block
-comparison without imposing or changing any source sign. -/
-theorem ExternalInsertionBlockLayout.assembleDiagram_externalLabel_eq_evenExternalSubsetLabels
-    {n : ℕ} (layout : ExternalInsertionBlockLayout E n)
-    (F : ∀ B : layout.partition.parts,
-      ExternalInsertionDiagram (ExternalFieldLabel Mode) (QuarticVertexLabel Mode)
-        ((B : Finset (Fin (2 * E))).card / 2) n
-        (layout.interactionBlock (Finset.univ : Finset (Fin n)) B))
-    (B : layout.partition.parts) :
-    (F B).externalLabel =
-      evenExternalSubsetLabels
-        (layout.assembleDiagram (Finset.univ : Finset (Fin n)) F).externalLabel
-        (B : Finset (Fin (2 * E))) (layout.evenBlocks B) := by
-  classical
-  funext i
-  simpa only [evenExternalSubsetLabels, evenExternalSubsetOrderIso,
-    layout.sourceEquiv_symm_apply] using
-    (layout.assembleDiagram_externalLabel
-      (Finset.univ : Finset (Fin n)) F B i).symm
-
 /-- Restricting an external-field family to an even subset is invariant,
 up to dependent equality, under equality of the actual source slot sets.
 The two parity witnesses need not be definitionally the same. -/
@@ -168,11 +145,17 @@ theorem ExternalInsertionBlockLayout.assembleDiagram_restrictComponent_heq_local
   have hpairHeq : HEq (d.restrictComponent C).pairing (F B).pairing :=
     pairing_heq_of_finCongr_transport hcards _ _ hpair
   have hsrc : HEq (d.restrictComponent C).externalLabel (F B).externalLabel := by
+    have hlocal :
+        (F B).externalLabel =
+          evenExternalSubsetLabels d.externalLabel
+            (B : Finset (Fin (2 * E))) (layout.evenBlocks B) := by
+      funext i
+      simpa only [evenExternalSubsetLabels, evenExternalSubsetOrderIso,
+        layout.sourceEquiv_symm_apply] using
+        (layout.assembleDiagram_externalLabel S F B i).symm
     have hlabels :
         HEq (F B).externalLabel (d.componentOrderedDiagram C).externalLabel :=
-      (heq_of_eq
-        (ExternalInsertionBlockLayout.assembleDiagram_externalLabel_eq_evenExternalSubsetLabels
-          layout F B)).trans
+      (heq_of_eq hlocal).trans
         ((evenExternalSubsetRestriction_heq_of_eq d.externalLabel
           (layout.evenBlocks B) (d.externalSector_card_even C)
           (layout.assembleDiagram_componentExternalSector_external S F hconnected e).symm).trans
