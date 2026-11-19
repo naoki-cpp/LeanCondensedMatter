@@ -193,7 +193,7 @@ private theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_x
           (b * va .z - d * vr .z) *
             ((moments.isotropic ^ 2 - moments.anisotropic ^ 2) / 4 + (u .y) ^ 2) +
           greenScalarX * (first * (w .y * zX - u .y * zY))) := by
-rw [finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_x_antisymmetric_eq_transverse_minors
+  rw [finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_x_antisymmetric_eq_transverse_minors
     v m probeEnergy broadening disorderStrength hbar pMax radius
     hbroadening hdisorder hpMax]
   have hs :=
@@ -214,7 +214,6 @@ rw [finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_x_antisymmetr
   dsimp only [gaussianCrossedZerothSubSecondRadialMoment] at ⊢
   rw [hs, hz]
   rw [hdiag.1, hdiag.2]
-  ring
   have hxz :=
     finiteCutoffContinuumBornDysonRadialGreen_ra_xz_minor_eq_harmonic_moments
       v m probeEnergy broadening disorderStrength hbar pMax (-radius)
