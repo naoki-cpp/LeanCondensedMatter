@@ -61,7 +61,11 @@ theorem transform_schrodingerGenerator (m : M) :
     simp only [RCLike.star_def, Complex.conj_I, Complex.conj_ofReal]
     ring
   rw [hcoeff]
-  simp only [neg_neg]
+  change (Complex.I / (data.hbar : ℂ)) •
+      (data.system (data.reverse m)).hamiltonian.1 =
+    -(-(Complex.I / (data.hbar : ℂ)) •
+      (data.system (data.reverse m)).hamiltonian.1)
+  exact (neg_neg _).symm
 
 /-- Hamiltonian covariance induces negative-time covariance of the
 free Schrödinger propagator. -/
