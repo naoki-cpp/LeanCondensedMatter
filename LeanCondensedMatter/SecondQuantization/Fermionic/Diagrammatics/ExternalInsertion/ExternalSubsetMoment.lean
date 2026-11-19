@@ -684,12 +684,6 @@ theorem externalSubsetMomentSeries_eq_signedConnected_two
     · simp [Finset.card_eq_zero.mp hzero, externalSubsetConnectedDiagramSeries]
     · exact (externalSubsetSeries_eq_zero_of_odd (E := 1)
         ε β g labels times B (by simp [hone])).2
-  have hweighted :
-      externalSubsetSignedConnectedMomentSeries (E := 1) ε β g labels times S =
-        externalSubsetConnectedDiagramSeries (E := 1) ε β g labels times S :=
-    externalPartitionWeightedMoment_eq_of_proper_zero (E := 1)
-      (externalSubsetConnectedDiagramSeries (E := 1) ε β g labels times)
-      S hEmpty hproper
   calc
     _ = externalSubsetConnectedDiagramSeries (E := 1) ε β g labels times S := by
       simp only [externalSubsetMomentSeries, externalSubsetConnectedDiagramSeries,
@@ -698,7 +692,10 @@ theorem externalSubsetMomentSeries_eq_signedConnected_two
         (show S.card / 2 = 1 by omega) ε β g
         (evenExternalSubsetLabels (E := 1) labels S hEven)
         (evenExternalSubsetTimes (E := 1) times S hEven)
-    _ = _ := hweighted.symm
+    _ = _ :=
+      (externalPartitionWeightedMoment_eq_of_proper_zero (E := 1)
+        (externalSubsetConnectedDiagramSeries (E := 1) ε β g labels times)
+        S hEmpty hproper).symm
 
 /-- The precise remaining physical bridge for Phase 5: once the actual
 vacuum-normalized Wick/Dyson moments satisfy the signed external-partition
