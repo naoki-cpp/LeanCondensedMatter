@@ -27,9 +27,11 @@ theorem freePropagator_apply_of_eigenvector (vector : H) (energy : ℝ)
     rw [RCLike.real_smul_eq_coe_smul (K := ℂ) t
       ((-(Complex.I / (system.hbar : ℂ)) * (energy : ℂ)) • vector)]
     rw [smul_smul]
-    congr 1
+    apply congrArg (fun z : ℂ => z • vector)
     push_cast
-    ring
+    simp only [div_eq_mul_inv, neg_mul, mul_neg]
+    apply congrArg (fun z : ℂ => -z)
+    simp [mul_assoc, mul_left_comm, mul_comm]
   rw [freePropagator_eq_exp, Complex.exp_eq_exp_ℂ]
   exact NormedSpace.exp_apply_of_eigenvector T vector c hT
 
