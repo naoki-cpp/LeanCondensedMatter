@@ -65,7 +65,8 @@ theorem transform_schrodingerGenerator (m : M) :
       (data.system (data.reverse m)).hamiltonian.1 =
     -(-(Complex.I / (data.hbar : ℂ)) •
       (data.system (data.reverse m)).hamiltonian.1)
-  exact (neg_neg _).symm
+  exact (neg_neg ((Complex.I / (data.hbar : ℂ)) •
+    (data.system (data.reverse m)).hamiltonian.1)).symm
 
 /-- Hamiltonian covariance induces negative-time covariance of the
 free Schrödinger propagator. -/
