@@ -58,13 +58,10 @@ private theorem externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_lef
       d.vertexLabelSequence ∘ f =
         (fun v => ext.vertexLabel (T.orderIsoOfFin rfl v)) := by
     funext v
-    change (ExternalInsertionDiagram.ofSlotSplit (Finset.subset_univ T) ext vac).vertexLabel
-        ⟨(T.orderIsoOfFin rfl v).1, Finset.mem_univ _⟩ =
-      ext.vertexLabel (T.orderIsoOfFin rfl v)
-    rw [ExternalInsertionDiagram.ofSlotSplit_vertexLabel_of_mem
+    exact ExternalInsertionDiagram.ofSlotSplit_vertexLabel_of_mem
       (Finset.subset_univ T) ext vac
       ⟨(T.orderIsoOfFin rfl v).1, Finset.mem_univ _⟩
-      (T.orderIsoOfFin rfl v).2]
+      (T.orderIsoOfFin rfl v).2
   change externalInsertionMixedTimeOrderedAtomicPairValue ε β
       d.externalLabel externalTime d.vertexLabelSequence σ
       (externalInsertionMixedTimeOrderedAtomicLegPosition externalTime σ
@@ -210,14 +207,9 @@ theorem externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_right_local
         (fun v => vac.vertexLabel (S.orderIsoOfFin rfl v)) := by
     funext v
     let w := S.orderIsoOfFin rfl v
-    have hw : (w.1 : Fin n) ∉ T := (Finset.mem_sdiff.mp w.2).2
-    change
-      (ExternalInsertionDiagram.ofSlotSplit
-        (Finset.subset_univ T) ext vac).vertexLabel
-        ⟨w.1, Finset.mem_univ _⟩ = vac.vertexLabel w
-    rw [ExternalInsertionDiagram.ofSlotSplit_vertexLabel_of_not_mem
+    exact ExternalInsertionDiagram.ofSlotSplit_vertexLabel_of_not_mem
       (Finset.subset_univ T) ext vac
-      ⟨w.1, Finset.mem_univ _⟩ hw]
+      ⟨w.1, Finset.mem_univ _⟩ (Finset.mem_sdiff.mp w.2).2
   rw [← hvertices]
   simp only [externalInsertionMixedTimeOrderedAtomicPairValue,
     externalInsertionMixedTimeOrderedAtomicFieldFamily,
