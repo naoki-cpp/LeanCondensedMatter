@@ -109,15 +109,6 @@ noncomputable def eigenbasisTransitionPhase
     (Complex.I * (((orderedLehmannEnergyGap (data.energy m) (data.energy n) * t) /
       system.hbar : ℝ) : ℂ))
 
-/-- Unfold the transition phase into its energy-difference expression. -/
-theorem eigenbasisTransitionPhase_eq_exp_energyDifference
-    (data : EnergyEigenbasisLehmannData system ι)
-    (m n : ι) (t : ℝ) :
-    eigenbasisTransitionPhase system data m n t =
-      Complex.exp
-        (Complex.I * (((orderedLehmannEnergyGap (data.energy m) (data.energy n) * t) /
-          system.hbar : ℝ) : ℂ)) := rfl
-
 /-- The canonical eigenbasis density expectation is stationary under the free dynamics. -/
 theorem isStationary_eigenbasisNormalizedExpectation
     (data : EnergyEigenbasisLehmannData system ι) :
