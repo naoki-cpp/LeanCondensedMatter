@@ -5125,9 +5125,10 @@
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Bosonic/Thermal/BlochDeDominicis/FreeFirstPair.lean",
       "imports": [
         "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.ConcretePairKernel",
-        "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.FreePeelIndexed"
+        "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.FreeKMSRotation",
+        "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.OperatorPeel"
       ],
-      "externalImportCount": 1
+      "externalImportCount": 3
     },
     {
       "name": "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.FreeKMSRotation",
@@ -5139,15 +5140,6 @@
         "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.FreeThermalField"
       ],
       "externalImportCount": 0
-    },
-    {
-      "name": "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.FreePeelIndexed",
-      "sourceFile": "LeanCondensedMatter/SecondQuantization/Bosonic/Thermal/BlochDeDominicis/FreePeelIndexed.lean",
-      "imports": [
-        "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.FreeKMSRotation",
-        "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.OperatorPeel"
-      ],
-      "externalImportCount": 2
     },
     {
       "name": "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.OperatorPeel",
@@ -5187,7 +5179,6 @@
         "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.ConcretePairKernel",
         "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.FreeFirstPair",
         "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.FreeKMSRotation",
-        "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.FreePeelIndexed",
         "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.OperatorPeel",
         "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.OrderedProductSummable",
         "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.TwoPoint",
@@ -5206,20 +5197,12 @@
       "externalImportCount": 2
     },
     {
-      "name": "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BoltzmannWeightFactorization",
-      "sourceFile": "LeanCondensedMatter/SecondQuantization/Bosonic/Thermal/BoltzmannWeightFactorization.lean",
-      "imports": [
-        "LeanCondensedMatter.SecondQuantization.Bosonic.ImaginaryTime.ImaginaryTimeEvolution",
-        "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.FreePartitionFunction"
-      ],
-      "externalImportCount": 0
-    },
-    {
       "name": "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BoltzmannWeightSummable",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Bosonic/Thermal/BoltzmannWeightSummable.lean",
       "imports": [
         "LeanCondensedMatter.Analysis.InfiniteSum.FinsuppProduct",
-        "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BoltzmannWeightFactorization"
+        "LeanCondensedMatter.SecondQuantization.Bosonic.ImaginaryTime.ImaginaryTimeEvolution",
+        "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.FreePartitionFunction"
       ],
       "externalImportCount": 0
     },
@@ -5284,14 +5267,6 @@
       "externalImportCount": 0
     },
     {
-      "name": "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.QuadraticParticleNumberWeightSummable",
-      "sourceFile": "LeanCondensedMatter/SecondQuantization/Bosonic/Thermal/QuadraticParticleNumberWeightSummable.lean",
-      "imports": [
-        "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.PolynomialOccupationWeightSummable"
-      ],
-      "externalImportCount": 0
-    },
-    {
       "name": "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Bosonic/Thermal.lean",
       "imports": [
@@ -5301,8 +5276,7 @@
         "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.ConvergenceAwareGibbs",
         "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.FreePartitionDeterminant",
         "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.ParticleNumberWeightSummable",
-        "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.PolynomialOccupationWeightSummable",
-        "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.QuadraticParticleNumberWeightSummable"
+        "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.PolynomialOccupationWeightSummable"
       ],
       "externalImportCount": 0
     },
@@ -8332,14 +8306,6 @@
       "externalImportCount": 0
     },
     {
-      "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Validation.TwoSiteDimerLimits",
-      "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Validation/TwoSiteDimerLimits.lean",
-      "imports": [
-        "LeanCondensedMatter.SecondQuantization.Fermionic.Validation.TwoSiteDimer"
-      ],
-      "externalImportCount": 0
-    },
-    {
       "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Validation.TwoSiteDimerOperatorBridge",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Validation/TwoSiteDimerOperatorBridge.lean",
       "imports": [
@@ -8369,7 +8335,6 @@
         "LeanCondensedMatter.SecondQuantization.Fermionic.Validation.TwoSiteDimer",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Validation.TwoSiteDimerFrequency",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Validation.TwoSiteDimerLehmann",
-        "LeanCondensedMatter.SecondQuantization.Fermionic.Validation.TwoSiteDimerLimits",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Validation.TwoSiteDimerOperatorBridge",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Validation.TwoSiteOrbitalResponse"
       ],
@@ -8741,7 +8706,7 @@
         "LeanCondensedMatter.Transport.Disorder.TraceBridge",
         "LeanCondensedMatter.Transport.Disorder.TwoParticleNormBound"
       ],
-      "externalImportCount": 1
+      "externalImportCount": 0
     },
     {
       "name": "LeanCondensedMatter.Transport.Disorder.TwoParticle",
