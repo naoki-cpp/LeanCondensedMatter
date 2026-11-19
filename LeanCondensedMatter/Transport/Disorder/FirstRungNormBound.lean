@@ -171,30 +171,14 @@ theorem norm_connectedTwoGreen_sub_firstBornRung_le_cubic
         _ ≤ ‖L ω - AL ω‖ * ‖vertex‖ * ‖R ω‖ :=
           norm_mul_three_le _ _ _
         _ ≤ EL * ‖vertex‖ * CR := by
-          have hmul :
-              ‖L ω - AL ω‖ * ‖vertex‖ ≤ EL * ‖vertex‖ :=
-            mul_le_mul_of_nonneg_right (hLerr ω) (norm_nonneg vertex)
-          calc
-            _ ≤ (EL * ‖vertex‖) * ‖R ω‖ :=
-              mul_le_mul_of_nonneg_right hmul (norm_nonneg _)
-            _ ≤ (EL * ‖vertex‖) * CR :=
-              mul_le_mul_of_nonneg_left (hRfluct ω)
-                (mul_nonneg hEL (norm_nonneg vertex))
+          gcongr <;> first | exact hLerr ω | exact hRfluct ω
     have hsecond :
         ‖AL ω * vertex * (R ω - AR ω)‖ ≤ CL * ‖vertex‖ * ER := by
       calc
         _ ≤ ‖AL ω‖ * ‖vertex‖ * ‖R ω - AR ω‖ :=
           norm_mul_three_le _ _ _
         _ ≤ CL * ‖vertex‖ * ER := by
-          have hmul :
-              ‖AL ω‖ * ‖vertex‖ ≤ CL * ‖vertex‖ :=
-            mul_le_mul_of_nonneg_right (hAL ω) (norm_nonneg vertex)
-          calc
-            _ ≤ (CL * ‖vertex‖) * ‖R ω - AR ω‖ :=
-              mul_le_mul_of_nonneg_right hmul (norm_nonneg _)
-            _ ≤ (CL * ‖vertex‖) * ER :=
-              mul_le_mul_of_nonneg_left (hRerr ω)
-                (mul_nonneg hCL (norm_nonneg vertex))
+          gcongr <;> first | exact hAL ω | exact hRerr ω
     exact (norm_add_le _ _).trans (add_le_add hfirst hsecond)
   have hfirstRung :
       ensemble.firstBornTwoGreenRungOfRegulators
