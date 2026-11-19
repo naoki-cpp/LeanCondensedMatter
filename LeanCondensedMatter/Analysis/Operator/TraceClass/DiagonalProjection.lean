@@ -19,6 +19,7 @@ open ContinuousLinearMap
 
 variable {ι H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
 
+open Classical in
 /-- The trace-norm error of a positive summable diagonal operator under a
 coordinate projection is exactly the sum of the omitted diagonal weights.
 Both operators are characterized on an arbitrary Hilbert basis; no finite-rank
