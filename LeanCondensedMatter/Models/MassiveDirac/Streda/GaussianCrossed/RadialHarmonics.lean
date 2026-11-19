@@ -696,30 +696,6 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficie
   · linear_combination (1 / 2 : ℂ) * h.1 - (1 / 2 : ℂ) * h.2
 
 
-/-- The diagonal source-current product entering both crossed Hall minors
-contains no mixed K0-K2 term. It is exactly a difference of squares of the
-integrated isotropic K0 and traceless K2 radial moments. The momentum
-measure is already included in both moments; no regulator is removed. -/
-theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient_diagonal_product_eq_harmonic_squares
-    (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ)
-    (hbroadening : broadening ≠ 0) (hdisorder : 0 ≤ disorderStrength)
-    (hpMax : 0 ≤ pMax) :
-    let moments := finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentFourierMoments
-      v m probeEnergy broadening disorderStrength hbar pMax radius
-    finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient
-        .x 0 v m probeEnergy broadening disorderStrength hbar pMax radius *
-      finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient
-        .y 1 v m probeEnergy broadening disorderStrength hbar pMax radius =
-      (moments.isotropic ^ 2 - moments.anisotropic ^ 2) / 4 := by
-  have h :=
-    finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient_eq_diagonal_harmonic_integrals
-      v m probeEnergy broadening disorderStrength hbar pMax radius
-      hbroadening hdisorder hpMax
-  dsimp only at h ⊢
-  rw [h.1, h.2]
-  ring
-
-
 /-- The antisymmetric source-scalar/diagonal-current minor needed in the
 crossed X and Psi Hall amplitudes uses only the two K1 first-harmonic
 scalar-current moments, the isotropic K0 moment, the traceless K2 moment,

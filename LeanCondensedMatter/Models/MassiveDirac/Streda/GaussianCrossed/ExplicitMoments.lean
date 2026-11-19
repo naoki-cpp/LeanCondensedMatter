@@ -166,19 +166,12 @@ private theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_x
     v m probeEnergy broadening disorderStrength hbar pMax radius
     hbroadening hdisorder hpMax]
   have hdiag :=
-    finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient_diagonal_product_eq_harmonic_squares
+    finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient_eq_diagonal_harmonic_integrals
       v m probeEnergy broadening disorderStrength hbar pMax radius
       hbroadening hdisorder hpMax
   dsimp only [finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient] at hdiag
-  rw [mul_comm
-    (InternalSpace.pauliVectorCoefficient
-      (finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock
-        0 v m probeEnergy broadening disorderStrength hbar pMax radius) .x)
-    (InternalSpace.pauliVectorCoefficient
-      (finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock
-        1 v m probeEnergy broadening disorderStrength hbar pMax radius) .y)] at hdiag
   dsimp only at hdiag ⊢
-  rw [hdiag]
+  rw [hdiag.1, hdiag.2]
   ring
 
 private theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_x_antisymmetric_eq_first_harmonic_minor
@@ -449,12 +442,13 @@ private theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_p
     v m probeEnergy broadening disorderStrength hbar pMax radius
     hbroadening hdisorder hpMax]
   have hdiag :=
-    finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient_diagonal_product_eq_harmonic_squares
+    finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient_eq_diagonal_harmonic_integrals
       v m probeEnergy broadening disorderStrength hbar pMax radius
       hbroadening hdisorder hpMax
   dsimp only [finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient] at hdiag
   dsimp only at hdiag ⊢
-  rw [hdiag]
+  rw [hdiag.1, hdiag.2]
+  ring
 
 private theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_psi_antisymmetric_eq_first_harmonic_minors
     (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ)
