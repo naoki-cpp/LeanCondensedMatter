@@ -107,49 +107,6 @@ private theorem evenExternalSubsetRestriction_heq_of_eq
   rfl
 
 omit [LinearOrder Mode] [Fintype Mode] in
-/-- An independently assembled connected block inherits exactly the
-canonical source times from the physical assembled component. The local
-source slots are increasing ambient slots, not reordered by their real
-time values. This supplies the time-data transport for comparing genuine
-local Dyson amplitudes with the extracted physical components. -/
-theorem ExternalInsertionBlockLayout.assembleDiagram_componentExternalTime_eq_localTimes
-    {n : ℕ} (layout : ExternalInsertionBlockLayout E n)
-    (F : ∀ B : layout.partition.parts,
-      ExternalInsertionDiagram (ExternalFieldLabel Mode) (QuarticVertexLabel Mode)
-        ((B : Finset (Fin (2 * E))).card / 2) n
-        (layout.interactionBlock (Finset.univ : Finset (Fin n)) B))
-    (hconnected : ∀ B, (F B).vertexGraph.Preconnected)
-    (times : Fin (2 * E) → ℝ)
-    (e : Fin (2 * E)) :
-    HEq
-      (fun i : Fin (2 * ((layout.sourceEquiv e).1.1.card / 2)) =>
-        times (layout.sourceEquiv.symm ⟨(layout.sourceEquiv e).1, i⟩))
-      ((layout.assembleDiagram (Finset.univ : Finset (Fin n)) F).componentExternalTime
-        times
-        ⟨(layout.assembleDiagram (Finset.univ : Finset (Fin n)) F).vertexGraph.componentBlock
-            (Sum.inl e),
-          (layout.assembleDiagram (Finset.univ : Finset (Fin n)) F).vertexGraph.componentBlock_mem_componentPartition
-            (Sum.inl e)⟩) := by
-  let d := layout.assembleDiagram (Finset.univ : Finset (Fin n)) F
-  let B := (layout.sourceEquiv e).1
-  let C : d.vertexGraph.componentPartition.parts :=
-    ⟨d.vertexGraph.componentBlock (Sum.inl e),
-      d.vertexGraph.componentBlock_mem_componentPartition (Sum.inl e)⟩
-  have hlocal :
-      (fun i : Fin (2 * (B.1.card / 2)) =>
-        times (layout.sourceEquiv.symm ⟨B, i⟩)) =
-        evenExternalSubsetTimes times (B : Finset (Fin (2 * E)))
-          (layout.evenBlocks B) := by
-    funext i
-    exact congrArg times (layout.sourceEquiv_symm_apply B i)
-  exact (heq_of_eq hlocal).trans
-    ((evenExternalSubsetRestriction_heq_of_eq times
-      (layout.evenBlocks B) (d.externalSector_card_even C)
-      (layout.assembleDiagram_componentExternalSector_external
-        (Finset.univ : Finset (Fin n)) F hconnected e).symm).trans
-      (heq_of_eq (evenExternalSubsetTimes_component (d := d) times C)))
-
-omit [LinearOrder Mode] [Fintype Mode] in
 /-- Pairing transport along an equality cast is only a change in the
 dependent pair-count index; it does not change any Wick partners. -/
 private theorem pairing_heq_of_finCongr_transport
@@ -325,9 +282,19 @@ theorem ExternalInsertionBlockLayout.assembleConnectedBlocks_componentDysonAmpli
         hcount hsector (d.restrictComponent C) (F B) hphysical)
   have htimes : HEq (d.componentExternalTime externalTime C)
       (fun i : Fin (2 * (B.1.card / 2)) =>
-        externalTime (layout.sourceEquiv.symm ⟨B, i⟩)) :=
-    (ExternalInsertionBlockLayout.assembleDiagram_componentExternalTime_eq_localTimes
-      layout F hconnected externalTime e).symm
+        externalTime (layout.sourceEquiv.symm ⟨B, i⟩)) := by
+    have hlocal :
+        (fun i : Fin (2 * (B.1.card / 2)) =>
+          externalTime (layout.sourceEquiv.symm ⟨B, i⟩)) =
+          evenExternalSubsetTimes externalTime (B : Finset (Fin (2 * E)))
+            (layout.evenBlocks B) := by
+      funext i
+      exact congrArg externalTime (layout.sourceEquiv_symm_apply B i)
+    exact ((heq_of_eq hlocal).trans
+      ((evenExternalSubsetRestriction_heq_of_eq externalTime
+        (layout.evenBlocks B) (d.externalSector_card_even C)
+        (layout.assembleDiagram_componentExternalSector_external S F hconnected e).symm).trans
+        (heq_of_eq (evenExternalSubsetTimes_component (d := d) externalTime C)))).symm
   congr 1
   exact congrArg Finset.card hsector
 
