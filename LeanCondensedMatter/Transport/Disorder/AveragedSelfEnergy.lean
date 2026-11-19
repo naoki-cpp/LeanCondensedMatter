@@ -219,29 +219,17 @@ private theorem averagedGreenOfRegulator_antilipschitz
         ring
   exact hbound
 
-private theorem averagedGreenOfRegulator_injective
-    (energy regulator : ℝ) (hregulator : regulator ≠ 0) :
-    Function.Injective (ensemble.averagedGreenOfRegulator energy regulator) := by
-  obtain ⟨_, hantilipschitz⟩ :=
-    ensemble.averagedGreenOfRegulator_antilipschitz energy regulator hregulator
-  exact hantilipschitz.injective
-
-private theorem star_averagedGreenOfRegulator_injective
-    (energy regulator : ℝ) (hregulator : regulator ≠ 0) :
-    Function.Injective
-      ((star (ensemble.averagedGreenOfRegulator energy regulator) : H →L[ℂ] H)) := by
-  rw [ensemble.star_averagedGreenOfRegulator]
-  exact ensemble.averagedGreenOfRegulator_injective
-    energy (-regulator) (neg_ne_zero.mpr hregulator)
-
 private theorem averagedGreenOfRegulator_denseRange
     (energy regulator : ℝ) (hregulator : regulator ≠ 0) :
     (ensemble.averagedGreenOfRegulator energy regulator).range.topologicalClosure = ⊤ := by
   let averaged : H →L[ℂ] H := ensemble.averagedGreenOfRegulator energy regulator
   let averagedStar : H →L[ℂ] H := star averaged
   have hstarInjective : Function.Injective averagedStar := by
-    simpa [averagedStar, averaged] using
-      ensemble.star_averagedGreenOfRegulator_injective energy regulator hregulator
+    obtain ⟨_, hanti⟩ :=
+      ensemble.averagedGreenOfRegulator_antilipschitz
+        energy (-regulator) (neg_ne_zero.mpr hregulator)
+    simpa only [averagedStar, averaged, ensemble.star_averagedGreenOfRegulator] using
+      hanti.injective
   have hker : averagedStar.ker = ⊥ := by
     rw [LinearMap.ker_eq_bot]
     exact hstarInjective
