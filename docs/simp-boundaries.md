@@ -168,7 +168,7 @@ The following declaration families are deliberate API normalization boundaries:
   `norm_heisenbergEvolution` in `LinearResponse/Dynamics/Unitary`
 - `LinearPMap.stoneEvolutionUnitaryGroup_apply`
 - `DensityOperator.normalizePositive_op`
-- all current simp rules in `LinearResponse/HarmonicSource`
+- all current simp rules in `LinearResponse/Frequency/AdiabaticSwitching`
 - all current simp rules in `LinearResponse/FrequencyDomain`
 - all current simp rules in `POVM/Born`
 - `NormalizedExpectation.pullback_apply`
