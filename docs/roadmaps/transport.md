@@ -55,8 +55,8 @@ response with canonical electric-field normalization thus satisfies
 not the earlier infinite-time Lehmann evaluation. The `QuantumTheory.LinearResponse.Dynamics.Antiunitary.Operator`
 module constructs the bounded-operator action `A ↦ Θ A Θ⁻¹` directly from
 a Mathlib continuous star-linear equivalence and proves the algebraic,
-adjoint, and finite-dimensional exponential transformation laws. It also
-shows that `Θ² = -I` on states induces an involution on observables.
+and finite-dimensional exponential transformation laws without imposing a
+constraint on the square of the state-space antiunitary.
 The `QuantumTheory.LinearResponse.Dynamics.Antiunitary.Trace` module
 proves finite-dimensional trace conjugation. `KuboTimeReversalData` now uses
 these derived laws directly, retaining only the model-dependent operator
