@@ -27,9 +27,11 @@ open QuantumTheory.Transport
 
 open Filter QuantumTheory.Transport
 
+namespace FiniteCutoffBornDyson.Longitudinal.ZeroBroadeningWeakDisorder
+
 /-- After the fixed-cutoff zero-broadening boundary is formed, multiplying the longitudinal Středa
 momentum integral by the disorder strength gives a finite weak-disorder limit. -/
-theorem tendsto_disorderStrength_mul_finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceMomentumIntegralZeroBroadeningBoundary_disorder_zero
+theorem tendsto_disorder_mul_momentum_integral
     (e v m probeEnergy hbar pMax : ℝ)
     (hvelocity : v ≠ 0) (hhbar : hbar ≠ 0)
     (hmetal : |m| < probeEnergy)
@@ -91,6 +93,8 @@ theorem tendsto_disorderStrength_mul_finiteCutoffContinuumBornDysonLongitudinalR
   dsimp [q, measure] at hmeasure ⊢
   push_cast
   field_simp [hdisorderC, hmeasure]
+
+end FiniteCutoffBornDyson.Longitudinal.ZeroBroadeningWeakDisorder
 
 end
 

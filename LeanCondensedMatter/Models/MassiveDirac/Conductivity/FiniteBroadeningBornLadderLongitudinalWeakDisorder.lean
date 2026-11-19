@@ -27,9 +27,11 @@ open QuantumTheory.Transport
 
 open Filter QuantumTheory.Transport
 
+namespace FiniteCutoffBornDyson.Longitudinal.ZeroBroadeningWeakDisorder
+
 /-- The disorder-scaled fixed-cutoff zero-broadening Born-Dyson longitudinal conductivity tends to
 the finite Drude coefficient. -/
-theorem tendsto_disorderStrength_mul_finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceConductivityZeroBroadeningBoundary_disorder_zero
+theorem tendsto_disorder_mul_conductivity
     (e v m probeEnergy hbar pMax : ℝ)
     (hvelocity : v ≠ 0) (hhbar : 0 < hbar)
     (hmetal : |m| < probeEnergy)
@@ -45,7 +47,7 @@ theorem tendsto_disorderStrength_mul_finiteCutoffContinuumBornDysonLongitudinalR
           (Real.pi * (probeEnergy ^ 2 + 3 * m ^ 2)) : ℝ) : ℂ))) := by
   have hhbarNe : hbar ≠ 0 := ne_of_gt hhbar
   have hmomentum :=
-    tendsto_disorderStrength_mul_finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceMomentumIntegralZeroBroadeningBoundary_disorder_zero
+    tendsto_disorder_mul_momentum_integral
       e v m probeEnergy hbar pMax hvelocity hhbarNe hmetal hcutoff
   have hprobe : 0 < probeEnergy := lt_of_le_of_lt (abs_nonneg m) hmetal
   have hden : probeEnergy ^ 2 + 3 * m ^ 2 ≠ 0 := by
@@ -72,7 +74,7 @@ theorem tendsto_disorderStrength_mul_finiteCutoffContinuumBornDysonLongitudinalR
 
 /-- The scaled Born-Dyson conductivity converges directly to the microscopic Born-RTA scaled
 benchmark evaluated at any positive reference disorder strength. -/
-theorem tendsto_disorderStrength_mul_finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceConductivityZeroBroadeningBoundary_disorder_zero_bornRelaxationTime
+theorem tendsto_disorder_mul_conductivity_born_rta
     (e v m probeEnergy hbar pMax referenceDisorderStrength : ℝ)
     (hvelocity : v ≠ 0) (hhbar : 0 < hbar)
     (hdisorder : 0 < referenceDisorderStrength)
@@ -94,8 +96,10 @@ theorem tendsto_disorderStrength_mul_finiteCutoffContinuumBornDysonLongitudinalR
   rw [disorderStrength_mul_zeroTemperatureRelaxationTimeLongitudinalConductivity_bornTransportLifetime_eq
     e hbar v m probeEnergy referenceDisorderStrength hvelocity hhbar hdisorder hmetal]
   exact
-    tendsto_disorderStrength_mul_finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceConductivityZeroBroadeningBoundary_disorder_zero
+    tendsto_disorder_mul_conductivity
       e v m probeEnergy hbar pMax hvelocity hhbar hmetal hcutoff
+
+end FiniteCutoffBornDyson.Longitudinal.ZeroBroadeningWeakDisorder
 
 end
 
