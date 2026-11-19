@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Analysis.Operator.AdjointConjugation
-import LeanCondensedMatter.Analysis.Operator.TraceClass.Cyclicity
+import LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Basic
 
 set_option linter.style.header false
 
