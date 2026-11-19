@@ -85,7 +85,8 @@ theorem norm_averagedGreen_sub_free_le
       ensemble.averagedGreenOfRegulator energy regulator - G₀ =
         ensemble.average (fun ω => G ω - G₀) := by
     change ensemble.average G - G₀ = _
-    rw [← ensemble.average_const G₀, ← map_sub]
+    conv_lhs =>
+      rw [← ensemble.average_const G₀, ← map_sub]
     rfl
   rw [hshift]
   apply ensemble.norm_average_le_of_forall _ _
