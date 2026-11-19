@@ -582,8 +582,9 @@ theorem ExternalInsertionBlockLayout.sum_signedDysonShuffleOrbits_eq_prod_standa
               (layout.interactionBlock (Finset.univ : Finset (Fin n)) B) //
                 d.vertexGraph.Preconnected},
             if condition B d.1 then weight B d.1 else 0 := by
-      exact congrArg (fun z : ℂ => externalPartitionSourceSign layout.partition * z)
-        (layout.sum_connectedBlockFamilies_prod_if condition weight)
+      simpa only [condition, weight] using
+        (congrArg (fun z : ℂ => externalPartitionSourceSign layout.partition * z)
+          (layout.sum_connectedBlockFamilies_prod_if condition weight))
     _ = _ := by
       apply congrArg (fun z : ℂ => externalPartitionSourceSign layout.partition * z)
       apply Finset.prod_congr rfl
