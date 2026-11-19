@@ -84,17 +84,10 @@ theorem norm_averagedGreen_sub_free_le
   have hshift :
       ensemble.averagedGreenOfRegulator energy regulator - G₀ =
         ensemble.average (fun ω => G ω - G₀) := by
-    calc
-      ensemble.averagedGreenOfRegulator energy regulator - G₀ =
-          ensemble.average G - ensemble.average (fun _ : Ω => G₀) := by
-            rw [ensemble.average_const]
-            rfl
-      _ = ensemble.average (fun ω => G ω - G₀) := by
-        have hfam : (G - (fun _ : Ω => G₀)) = (fun ω => G ω - G₀) := by
-          funext ω
-          rfl
-        exact (map_sub ensemble.average G (fun _ : Ω => G₀)).symm.trans
-          (congrArg ensemble.average hfam)
+    change ensemble.average G - G₀ = _
+    conv_lhs =>
+      rw [← ensemble.average_const G₀, ← map_sub]
+    rfl
   rw [hshift]
   apply ensemble.norm_average_le_of_forall _ _
   intro ω
