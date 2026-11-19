@@ -107,40 +107,6 @@ private theorem evenExternalSubsetRestriction_heq_of_eq
   rfl
 
 omit [LinearOrder Mode] [Fintype Mode] in
-/-- In a physical assembly of independently connected Wick blocks, the
-canonical standalone physical connected component has the same external
-source labels as the originally supplied local diagram, up to the
-dependent equality of its physically reconstructed external-pair count. -/
-theorem ExternalInsertionBlockLayout.assembleDiagram_componentOrderedDiagram_externalLabel
-    {n : ℕ} (layout : ExternalInsertionBlockLayout E n)
-    (F : ∀ B : layout.partition.parts,
-      ExternalInsertionDiagram (ExternalFieldLabel Mode) (QuarticVertexLabel Mode)
-        ((B : Finset (Fin (2 * E))).card / 2) n
-        (layout.interactionBlock (Finset.univ : Finset (Fin n)) B))
-    (hconnected : ∀ B, (F B).vertexGraph.Preconnected)
-    (e : Fin (2 * E)) :
-    HEq (F (layout.sourceEquiv e).1).externalLabel
-      ((layout.assembleDiagram (Finset.univ : Finset (Fin n)) F).componentOrderedDiagram
-        ⟨(layout.assembleDiagram (Finset.univ : Finset (Fin n)) F).vertexGraph.componentBlock
-            (Sum.inl e),
-          (layout.assembleDiagram (Finset.univ : Finset (Fin n)) F).vertexGraph.componentBlock_mem_componentPartition
-            (Sum.inl e)⟩).externalLabel := by
-  classical
-  let d := layout.assembleDiagram (Finset.univ : Finset (Fin n)) F
-  let B := (layout.sourceEquiv e).1
-  let C : d.vertexGraph.componentPartition.parts :=
-    ⟨d.vertexGraph.componentBlock (Sum.inl e),
-      d.vertexGraph.componentBlock_mem_componentPartition (Sum.inl e)⟩
-  exact (heq_of_eq
-    (ExternalInsertionBlockLayout.assembleDiagram_externalLabel_eq_evenExternalSubsetLabels
-      layout F B)).trans
-    ((evenExternalSubsetRestriction_heq_of_eq d.externalLabel
-      (layout.evenBlocks B) (d.externalSector_card_even C)
-      (layout.assembleDiagram_componentExternalSector_external
-        (Finset.univ : Finset (Fin n)) F hconnected e).symm).trans
-      (heq_of_eq (evenExternalSubsetLabels_componentOrderedDiagram (d := d) C)))
-
-omit [LinearOrder Mode] [Fintype Mode] in
 /-- An independently assembled connected block inherits exactly the
 canonical source times from the physical assembled component. The local
 source slots are increasing ambient slots, not reordered by their real
@@ -270,9 +236,17 @@ theorem ExternalInsertionBlockLayout.assembleDiagram_restrictComponent_heq_local
     exact hp
   have hpairHeq : HEq (d.restrictComponent C).pairing (F B).pairing :=
     pairing_heq_of_finCongr_transport hcards _ _ hpair
-  have hsrc : HEq (d.restrictComponent C).externalLabel (F B).externalLabel :=
-    (ExternalInsertionBlockLayout.assembleDiagram_componentOrderedDiagram_externalLabel
-      layout F hconnected e).symm
+  have hsrc : HEq (d.restrictComponent C).externalLabel (F B).externalLabel := by
+    have hlabels :
+        HEq (F B).externalLabel (d.componentOrderedDiagram C).externalLabel :=
+      (heq_of_eq
+        (ExternalInsertionBlockLayout.assembleDiagram_externalLabel_eq_evenExternalSubsetLabels
+          layout F B)).trans
+        ((evenExternalSubsetRestriction_heq_of_eq d.externalLabel
+          (layout.evenBlocks B) (d.externalSector_card_even C)
+          (layout.assembleDiagram_componentExternalSector_external S F hconnected e).symm).trans
+          (heq_of_eq (evenExternalSubsetLabels_componentOrderedDiagram (d := d) C)))
+    exact hlabels.symm
   have hvertex : HEq (d.restrictComponent C).vertexLabel (F B).vertexLabel :=
     (layout.assembleDiagram_restrictComponent_vertexLabel_heq S F hconnected e).symm
   exact externalInsertionDiagram_heq_of_fields hcount hsector
