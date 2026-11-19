@@ -1,4 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.CoordinateProjection
+import LeanCondensedMatter.Analysis.Operator.TraceClass.DiagonalProjection
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.CanonicalCompatibility
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.GrandCanonicalSectorDecomposition
 
@@ -184,9 +185,8 @@ theorem grandCanonicalGibbsDensityOperator_expectation_eq_tsum_canonical
         simp
 
 /-- The trace-norm error from retaining a finite set of particle-number sectors
-equals the total probability of the discarded sectors. The truncated operator is
-the sharp-number coordinate compression of the grand-canonical density.
-No trace-class completeness theorem or finite-dimensional hypothesis is needed. -/
+equals the total probability of the discarded sectors. This specializes the
+Hilbert-basis diagonal cutoff theorem; no finite-dimensional assumption is used. -/
 theorem grandCanonicalGibbsDensityOperator_traceNorm_complement_projection
     (ε : Mode → ℝ) (β μ : ℝ)
     (hsum : EigenbasisGibbsSummable
@@ -222,55 +222,29 @@ theorem grandCanonicalGibbsDensityOperator_traceNorm_complement_projection
     intro c
     exact eigenbasisGibbsProbability_nonneg
       (grandCanonicalEnergy (Config := Config) ε μ) β c
+  have hρdiag : ∀ c, ρ.op (b c) = (w c : ℂ) • b c := by
+    intro c
+    simpa only [ρ, b, w, completedHilbertBasis_apply] using
+      (grandCanonicalGibbsDensityOperator_apply_basis ε β μ hsum c)
+  have hQdiag : ∀ c, Q (b c) =
+      if particleNumber (Mode := Mode) c ∈ F then b c else 0 := by
+    intro c
+    by_cases hc : particleNumber (Mode := Mode) c ∈ F
+    · simpa [Q, b, completedHilbertBasis_apply, hc] using
+        (completedCoordinateProjection_basisState
+          (fun x : Config => particleNumber (Mode := Mode) x ∈ F) c)
+    · simpa [Q, b, completedHilbertBasis_apply, hc] using
+        (completedCoordinateProjection_basisState
+          (fun x : Config => particleNumber (Mode := Mode) x ∈ F) c)
+  obtain ⟨hres, hresNorm⟩ :=
+    b.traceNorm_sub_compress_diagonal w hw hw_nonneg ρ.op Q
+      (fun c : Config => particleNumber (Mode := Mode) c ∈ F) hρdiag hQdiag
   have ht : Summable (fun c => ‖tail c‖) := by
     refine Summable.of_norm_bounded hw ?_
     intro c
     by_cases hc : particleNumber (Mode := Mode) c ∈ F
     · simp [tail, hc]
     · simp [tail, hc]
-  have ht_nonneg : ∀ c, 0 ≤ tail c := by
-    intro c
-    by_cases hc : particleNumber (Mode := Mode) c ∈ F
-    · simp [tail, hc]
-    · simpa [tail, hc] using hw_nonneg c
-  let T := b.diagonalOp (fun c => (tail c : ℂ))
-  have hT : IsTraceClass T :=
-    b.diagonalOp_isTraceClass tail ht ht_nonneg
-  have hTpos : T.IsPositive := b.diagonalOp_isPositive tail ht ht_nonneg
-  have hTnorm : hT.traceNorm = ∑' c : Config, tail c := by
-    have h := hT.hasSum_diagonalExpectationValue_eq_traceNorm hTpos b
-    have h' : HasSum tail hT.traceNorm := by
-      apply HasSum.congr_fun h
-      intro c
-      simpa only [T] using
-        (b.diagonalExpectationValue_diagonalOp tail ht ht_nonneg c).symm
-    exact h'.tsum_eq.symm
-  have hOp : ρ.op - Q.comp (ρ.op.comp Q) = T := by
-    apply continuousLinearMap_ext_completedBasis
-    intro c
-    have happly :
-        T (completedBasisState c) = (tail c : ℂ) • completedBasisState c := by
-      simpa only [T, b, completedHilbertBasis_apply] using
-        (b.diagonalOp_apply_basis (fun i => (tail i : ℂ))
-          (by simpa using ht) c)
-    have hρc :
-        ρ.op (completedBasisState c) = (w c : ℂ) • completedBasisState c := by
-      simpa only [ρ, w] using
-        (grandCanonicalGibbsDensityOperator_apply_basis ε β μ hsum c)
-    have hQc :
-        Q (completedBasisState c) =
-          if particleNumber (Mode := Mode) c ∈ F then completedBasisState c else 0 := by
-      simpa only [Q] using
-        (completedCoordinateProjection_basisState
-          (fun x : Config => particleNumber (Mode := Mode) x ∈ F) c)
-    rw [sub_apply, ContinuousLinearMap.comp_apply, ContinuousLinearMap.comp_apply,
-      happly, hρc, hQc]
-    by_cases hc : particleNumber (Mode := Mode) c ∈ F
-    · simp [hc, hρc, hQc, tail] <;> exact sub_self _
-    · simp [hc, hρc, hQc, tail]
-  have hres : IsTraceClass (ρ.op - Q.comp (ρ.op.comp Q)) := by
-    rw [hOp]
-    exact hT
   have htailgroup :
       (∑' c : Config, tail c) =
         ∑' N : ℕ,
@@ -283,12 +257,14 @@ theorem grandCanonicalGibbsDensityOperator_traceNorm_complement_projection
     apply tsum_congr
     intro N
     by_cases hN : N ∈ F
-    · have hzero : ∀ n : ParticleNumberSector Mode Config N,
-          tail n.val = 0 := by
-        intro n
-        simp [tail, n.property, hN]
-      simp only [if_pos hN]
-      simp [hzero]
+    · simp only [if_pos hN]
+      calc
+        (∑' n : ParticleNumberSector Mode Config N, tail n.val) =
+            ∑' _n : ParticleNumberSector Mode Config N, (0 : ℝ) := by
+          apply tsum_congr
+          intro n
+          simp [tail, n.property, hN]
+        _ = 0 := tsum_zero
     · simp only [if_neg hN]
       calc
         (∑' n : ParticleNumberSector Mode Config N, tail n.val) =
@@ -302,9 +278,8 @@ theorem grandCanonicalGibbsDensityOperator_traceNorm_complement_projection
               (Config := Config) ε β μ N).symm
   refine ⟨hres, ?_⟩
   calc
-    hres.traceNorm = hT.traceNorm :=
-      IsTraceClass.traceNorm_congr hres hT hOp
-    _ = ∑' c : Config, tail c := hTnorm
+    hres.traceNorm = ∑' c : Config, tail c := by
+      simpa only [tail] using hresNorm
     _ = _ := htailgroup
 
 end
