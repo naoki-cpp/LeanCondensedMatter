@@ -1,7 +1,6 @@
 import LeanCondensedMatter.Transport.Disorder.TraceBridge
 import LeanCondensedMatter.Transport.Disorder.TwoParticleNormBound
 import LeanCondensedMatter.Analysis.Operator.FiniteTrace
-import Mathlib.Tactic.Abel
 
 set_option linter.style.header false
 
@@ -61,16 +60,8 @@ theorem norm_averagedTwoGreenTrace_sub_meanProduct_le_uniformPotential_sq
     ensemble.norm_connectedTwoGreenInsertion_le_uniformPotential_sq
       energyLeft regulatorLeft energyRight regulatorRight hregLeft hregRight
       sourceVertex potentialBound hpotential
-  have hdiff :
-      ensemble.averagedTwoGreenVertexTraceKernelOfRegulators
-          energyLeft regulatorLeft energyRight regulatorRight measuredVertex sourceVertex -
-        twoGreenVertexTraceKernel measuredVertex
-          (ensemble.averagedGreenOfRegulator energyLeft regulatorLeft)
-          sourceVertex (ensemble.averagedGreenOfRegulator energyRight regulatorRight) =
-      trace (measuredVertex * conn) := by
-    rw [ensemble.averagedTwoGreenVertexTraceKernelOfRegulators_eq_mean_add_connected]
-    abel
-  rw [hdiff]
+  rw [ensemble.averagedTwoGreenVertexTraceKernelOfRegulators_eq_mean_add_connected]
+  simp only [add_sub_cancel_left]
   change ‖trace (measuredVertex * conn)‖ ≤
     ((Module.finrank ℂ H : ℝ) * ‖measuredVertex‖) * limit
   calc
