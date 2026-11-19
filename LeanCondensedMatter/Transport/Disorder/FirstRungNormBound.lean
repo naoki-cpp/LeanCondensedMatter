@@ -84,7 +84,7 @@ theorem firstBornTwoGreenRungOfRegulators_eq_average_firstDyson
       dsimp only [term]
       noncomm_ring
 
-private theorem norm_mul_three_le
+theorem norm_mul_three_le
     (a b c : H →L[ℂ] H) :
     ‖a * b * c‖ ≤ ‖a‖ * ‖b‖ * ‖c‖ := by
   calc
