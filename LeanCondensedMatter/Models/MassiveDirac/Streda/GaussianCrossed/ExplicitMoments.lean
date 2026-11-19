@@ -224,12 +224,10 @@ private theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_x
       hbroadening hdisorder hpMax
   dsimp only [finiteCutoffContinuumBornDysonRadialGreenScalarCoefficient,
     finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient] at hxz hsx
-  dsimp only at hxz hsx ⊢
   dsimp only [gaussianCrossedZerothRadialMoment,
     gaussianCrossedZerothSubSecondRadialMoment] at ⊢
   rw [hxz, hsx]
-
-  ring
+  all_goals ring
 /-- The finite-regulator X antisymmetric radial trace in explicit K0/K1/K2 moments.
 No radial integration or regulator limit is asserted. -/
 theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_x_antisymmetric_eq_explicit_k0_k1_k2_moments
