@@ -119683,7 +119683,7 @@
       "SecondQuantization.Common.ExternalInsertionBlockLayout.assembleDiagram_componentExternalPairCount_external",
       "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleConnectedBlocks_signedDysonShuffleOrbit_eq_subsetTimes",
       "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleDiagram_componentExternalTime_eq_localTimes",
-      "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleDiagram_componentOrderedDiagram_externalLabel"
+      "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleDiagram_restrictComponent_heq_local"
     ],
     "dependencies": [
       "SecondQuantization.Common.ExternalInsertionBlockLayout.externalComponentPartition_assembleDiagram",
@@ -119696,7 +119696,7 @@
       "SecondQuantization.Common.ExternalInsertionBlockLayout.assembleDiagram_componentExternalPairCount_external",
       "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleConnectedBlocks_signedDysonShuffleOrbit_eq_subsetTimes",
       "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleDiagram_componentExternalTime_eq_localTimes",
-      "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleDiagram_componentOrderedDiagram_externalLabel"
+      "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleDiagram_restrictComponent_heq_local"
     ],
     "compiledConsumerCount": 4,
     "axioms": [
@@ -122721,7 +122721,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.sum_signedDysonShuffleOrbits_eq_prod_connectedBlocks"
+      "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.sum_signedDysonShuffleOrbits_eq_prod_standardized"
     ],
     "dependencies": [
       "SecondQuantization.Common.ExternalInsertionBlockLayout.sum_connectedBlockFamilies_prod"
@@ -122729,7 +122729,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.sum_signedDysonShuffleOrbits_eq_prod_connectedBlocks"
+      "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.sum_signedDysonShuffleOrbits_eq_prod_standardized"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -125065,7 +125065,7 @@
       "SecondQuantization.Common.ExternalInsertionDiagram.allExternalVerticesConnected_two",
       "SecondQuantization.Common.ExternalInsertionDiagram.externalComponentPartition_part_card_even",
       "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleDiagram_componentExternalTime_eq_localTimes",
-      "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleDiagram_componentOrderedDiagram_externalLabel",
+      "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleDiagram_restrictComponent_heq_local",
       "SecondQuantization.Fermionic.evenExternalSubsetLabels_componentOrderedDiagram",
       "SecondQuantization.Fermionic.evenExternalSubsetLabels_externalPartitionBlock",
       "SecondQuantization.Fermionic.evenExternalSubsetTimes_component",
@@ -125082,7 +125082,7 @@
       "SecondQuantization.Common.ExternalInsertionDiagram.allExternalVerticesConnected_two",
       "SecondQuantization.Common.ExternalInsertionDiagram.externalComponentPartition_part_card_even",
       "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleDiagram_componentExternalTime_eq_localTimes",
-      "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleDiagram_componentOrderedDiagram_externalLabel",
+      "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleDiagram_restrictComponent_heq_local",
       "SecondQuantization.Fermionic.evenExternalSubsetLabels_componentOrderedDiagram",
       "SecondQuantization.Fermionic.evenExternalSubsetLabels_externalPartitionBlock",
       "SecondQuantization.Fermionic.evenExternalSubsetTimes_component",
@@ -142796,7 +142796,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "SecondQuantization.Common.finiteGibbsExpectation_four_point",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.GibbsExpectation.FourPoint",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.GibbsExpectation.Recursion",
     "externalAxioms": [],
     "docString": "The genuine normalized 4-point Bloch–de Dominicis expansion. ",
     "directWrapperTargetModule": null,
@@ -154784,7 +154784,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.sum_signedDysonShuffleOrbits_eq_prod_connectedBlocks"
+      "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.sum_signedDysonShuffleOrbits_eq_prod_standardized"
     ],
     "dependencies": [
       "SecondQuantization.Common.ExternalInsertionBlockLayout.assembleDiagram_componentExternalSector_external",
@@ -154799,7 +154799,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.sum_signedDysonShuffleOrbits_eq_prod_connectedBlocks"
+      "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.sum_signedDysonShuffleOrbits_eq_prod_standardized"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -154849,55 +154849,6 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleConnectedBlocks_componentDysonAmplitude_eq_local"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Mode : Type u_1} {E n : ℕ} (layout : SecondQuantization.Common.ExternalInsertionBlockLayout E n)\n  (F :\n    (B : ↥layout.partition.parts) →\n      SecondQuantization.Common.ExternalInsertionDiagram (SecondQuantization.Fermionic.ExternalFieldLabel Mode)\n        (SecondQuantization.Common.QuarticVertexLabel Mode) ((↑B).card / 2) n (layout.interactionBlock Finset.univ B)),\n  (∀ (B : ↥layout.partition.parts), (F B).vertexGraph.Preconnected) →\n    ∀ (e : Fin (2 * E)),\n      (F (layout.sourceEquiv e).fst).externalLabel ≍\n        ((layout.assembleDiagram Finset.univ F).componentOrderedDiagram\n            ⟨(layout.assembleDiagram Finset.univ F).vertexGraph.componentBlock (Sum.inl e), ⋯⟩).externalLabel",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleDiagram_componentOrderedDiagram_externalLabel",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalSubsetAssembly",
-    "externalAxioms": [],
-    "docString": "In a physical assembly of independently connected Wick blocks, the\ncanonical standalone physical connected component has the same external\nsource labels as the originally supplied local diagram, up to the\ndependent equality of its physically reconstructed external-pair count. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleDiagram_restrictComponent_heq_local"
-    ],
-    "dependencies": [
-      "SecondQuantization.Common.ExternalInsertionBlockLayout.assembleDiagram_componentExternalSector_external",
-      "SecondQuantization.Common.ExternalInsertionDiagram.externalSector_card_even",
-      "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleDiagram_externalLabel_eq_evenExternalSubsetLabels",
-      "SecondQuantization.Fermionic.evenExternalSubsetLabels_componentOrderedDiagram",
-      "SimpleGraph.componentBlock_mem_componentPartition",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalSubsetAssembly.0.SecondQuantization.Fermionic.evenExternalSubsetRestriction_heq_of_eq"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleDiagram_restrictComponent_heq_local"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -154977,7 +154928,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleDiagram_componentOrderedDiagram_externalLabel"
+      "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleDiagram_restrictComponent_heq_local"
     ],
     "dependencies": [
       "SecondQuantization.Common.ExternalInsertionBlockLayout.assembleDiagram_externalLabel",
@@ -154986,7 +154937,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleDiagram_componentOrderedDiagram_externalLabel"
+      "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleDiagram_restrictComponent_heq_local"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -155026,12 +154977,16 @@
     ],
     "dependencies": [
       "SecondQuantization.Common.ExternalInsertionBlockLayout.assembleDiagram_componentExternalPairCount_external",
+      "SecondQuantization.Common.ExternalInsertionBlockLayout.assembleDiagram_componentExternalSector_external",
       "SecondQuantization.Common.ExternalInsertionBlockLayout.assembleDiagram_componentInteractionSector_external",
       "SecondQuantization.Common.ExternalInsertionBlockLayout.assembleDiagram_restrictComponent_vertexLabel_heq",
       "SecondQuantization.Common.ExternalInsertionBlockLayout.physicalComponentCanonicalLegEquiv_eq_finCongr",
       "SecondQuantization.Common.ExternalInsertionBlockLayout.physicalComponentCanonicalPairing_eq_local",
-      "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleDiagram_componentOrderedDiagram_externalLabel",
+      "SecondQuantization.Common.ExternalInsertionDiagram.externalSector_card_even",
+      "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleDiagram_externalLabel_eq_evenExternalSubsetLabels",
+      "SecondQuantization.Fermionic.evenExternalSubsetLabels_componentOrderedDiagram",
       "SimpleGraph.componentBlock_mem_componentPartition",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalSubsetAssembly.0.SecondQuantization.Fermionic.evenExternalSubsetRestriction_heq_of_eq",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalSubsetAssembly.0.SecondQuantization.Fermionic.externalInsertionDiagram_heq_of_fields",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalSubsetAssembly.0.SecondQuantization.Fermionic.pairing_heq_of_finCongr_transport"
     ],
@@ -155351,51 +155306,6 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] {E n : ℕ}\n  (layout : SecondQuantization.Common.ExternalInsertionBlockLayout E n) (ε : Mode → ℝ) (β : ℝ)\n  (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ)\n  (labels : Fin (2 * E) → SecondQuantization.Fermionic.ExternalFieldLabel Mode) (times : Fin (2 * E) → ℝ),\n  (∑ F,\n      if\n          ∀ (B : ↥layout.partition.parts),\n            (↑F B).externalLabel = SecondQuantization.Fermionic.evenExternalSubsetLabels labels ↑B ⋯ then\n        have d := layout.assembleDiagram Finset.univ ↑F;\n        ∑ shuffle,\n          d.orderedDysonAmplitude ε β g times\n            (SecondQuantization.Common.ExternalInsertionDiagram.assembleInteractionOrder d\n              (SecondQuantization.Common.ExternalInsertionDiagram.canonicalComponentInteractionOrders d) shuffle)\n      else 0) =\n    SecondQuantization.Fermionic.externalPartitionSourceSign layout.partition *\n      ∏ B,\n        ∑ d,\n          if (↑d).externalLabel = SecondQuantization.Fermionic.evenExternalSubsetLabels labels ↑B ⋯ then\n            SecondQuantization.Fermionic.ExternalInsertionWickDiagram.dysonAmplitude\n              (SecondQuantization.Common.ExternalInsertionDiagram.slotCongr\n                (Combinatorics.standardSlotEquiv (layout.interactionBlock Finset.univ B)) ↑d)\n              ε β g (SecondQuantization.Fermionic.evenExternalSubsetTimes times ↑B ⋯)\n          else 0",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.sum_signedDysonShuffleOrbits_eq_prod_connectedBlocks",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalSubsetAssembly",
-    "externalAxioms": [],
-    "docString": "At a fixed physical external-block layout, summing the **actual\nintegrated** component-shuffle orbit over every independent preconnected\nWick-block family with the prescribed source labels gives the source\nKoszul sign times the product of the corresponding connected local\nDyson amplitude sums.\n\nUnlike an unjustified factorization of one ordered-simplex integral, this\nfirst sums the complete physical interaction-shuffle orbit, then invokes\nthe independent finite connected-block sum factorization. All block\ninteraction fibers, including zero-size fibers, are retained. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.sum_signedDysonShuffleOrbits_eq_prod_standardized"
-    ],
-    "dependencies": [
-      "SecondQuantization.Common.ExternalInsertionBlockLayout.sum_connectedBlockFamilies_prod_if",
-      "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleConnectedBlocks_signedDysonShuffleOrbit_eq_subsetTimes"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.sum_signedDysonShuffleOrbits_eq_prod_standardized"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
     "terminal": true,
     "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] {E n : ℕ}\n  (layout : SecondQuantization.Common.ExternalInsertionBlockLayout E n) (ε : Mode → ℝ) (β : ℝ)\n  (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ)\n  (labels : Fin (2 * E) → SecondQuantization.Fermionic.ExternalFieldLabel Mode) (times : Fin (2 * E) → ℝ),\n  (∑ F,\n      if\n          ∀ (B : ↥layout.partition.parts),\n            (↑F B).externalLabel = SecondQuantization.Fermionic.evenExternalSubsetLabels labels ↑B ⋯ then\n        have d := layout.assembleDiagram Finset.univ ↑F;\n        ∑ shuffle,\n          d.orderedDysonAmplitude ε β g times\n            (SecondQuantization.Common.ExternalInsertionDiagram.assembleInteractionOrder d\n              (SecondQuantization.Common.ExternalInsertionDiagram.canonicalComponentInteractionOrders d) shuffle)\n      else 0) =\n    SecondQuantization.Fermionic.externalPartitionSourceSign layout.partition *\n      ∏ B,\n        ∑ d,\n          if (↑d).externalLabel = SecondQuantization.Fermionic.evenExternalSubsetLabels labels ↑B ⋯ then\n            (↑d).dysonAmplitude ε β g (SecondQuantization.Fermionic.evenExternalSubsetTimes times ↑B ⋯)\n          else 0",
     "standardAxioms": [
@@ -155417,8 +155327,9 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.sum_preconnectedDysonBlock_eq_standardized",
-      "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.sum_signedDysonShuffleOrbits_eq_prod_connectedBlocks"
+      "SecondQuantization.Common.ExternalInsertionBlockLayout.sum_connectedBlockFamilies_prod_if",
+      "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleConnectedBlocks_signedDysonShuffleOrbit_eq_subsetTimes",
+      "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.sum_preconnectedDysonBlock_eq_standardized"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -166015,7 +165926,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleDiagram_componentOrderedDiagram_externalLabel"
+      "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleDiagram_restrictComponent_heq_local"
     ],
     "dependencies": [
       "SecondQuantization.Common.ExternalInsertionDiagram.externalSector_card_even"
@@ -166023,7 +165934,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleDiagram_componentOrderedDiagram_externalLabel"
+      "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleDiagram_restrictComponent_heq_local"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -175453,7 +175364,6 @@
       "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleConnectedBlocks_componentDysonAmplitude_eq_local",
       "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleConnectedBlocks_signedDysonShuffleOrbit_eq_subsetTimes",
       "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleDiagram_componentExternalTime_eq_localTimes",
-      "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleDiagram_componentOrderedDiagram_externalLabel",
       "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleDiagram_restrictComponent_heq_local",
       "SecondQuantization.Fermionic.componentExternalOrderSign_eq_one_of_allExternalVerticesConnected",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumComponentPair.0.SecondQuantization.Common.slotSplitVacuumNormalizedPairEmbedding_pairComponent",
@@ -175486,13 +175396,12 @@
       "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleConnectedBlocks_componentDysonAmplitude_eq_local",
       "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleConnectedBlocks_signedDysonShuffleOrbit_eq_subsetTimes",
       "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleDiagram_componentExternalTime_eq_localTimes",
-      "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleDiagram_componentOrderedDiagram_externalLabel",
       "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleDiagram_restrictComponent_heq_local",
       "SecondQuantization.Fermionic.componentExternalOrderSign_eq_one_of_allExternalVerticesConnected",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumComponentPair.0.SecondQuantization.Common.slotSplitVacuumNormalizedPairEmbedding_pairComponent",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumComponents.0.SecondQuantization.Common.not_mem_left_of_mem_vacuumComponentPart"
     ],
-    "compiledConsumerCount": 28,
+    "compiledConsumerCount": 27,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -205865,7 +205774,7 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleDiagram_componentExternalTime_eq_localTimes",
-      "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleDiagram_componentOrderedDiagram_externalLabel",
+      "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleDiagram_restrictComponent_heq_local",
       "SecondQuantization.Fermionic.evenExternalSubsetLabels_externalPartitionBlock",
       "SecondQuantization.Fermionic.evenExternalSubsetTimes_externalPartitionBlock"
     ],
@@ -205874,7 +205783,7 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleDiagram_componentExternalTime_eq_localTimes",
-      "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleDiagram_componentOrderedDiagram_externalLabel",
+      "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleDiagram_restrictComponent_heq_local",
       "SecondQuantization.Fermionic.evenExternalSubsetLabels_externalPartitionBlock",
       "SecondQuantization.Fermionic.evenExternalSubsetTimes_externalPartitionBlock"
     ],
