@@ -546,7 +546,7 @@
       "sourceFile": "LeanCondensedMatter/Analysis/Operator/TraceClass/AdjointConjugation.lean",
       "imports": [
         "LeanCondensedMatter.Analysis.Operator.AdjointConjugation",
-        "LeanCondensedMatter.Analysis.Operator.TraceClass.Cyclicity"
+        "LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Basic"
       ],
       "externalImportCount": 0
     },
@@ -556,14 +556,6 @@
       "imports": [
         "LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.Compact",
         "LeanCondensedMatter.Analysis.Operator.TraceClass.Factorization.Basic"
-      ],
-      "externalImportCount": 0
-    },
-    {
-      "name": "LeanCondensedMatter.Analysis.Operator.TraceClass.Cyclicity",
-      "sourceFile": "LeanCondensedMatter/Analysis/Operator/TraceClass/Cyclicity.lean",
-      "imports": [
-        "LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Basic"
       ],
       "externalImportCount": 0
     },
@@ -735,7 +727,6 @@
       "imports": [
         "LeanCondensedMatter.Analysis.Operator.TraceClass.AdjointConjugation",
         "LeanCondensedMatter.Analysis.Operator.TraceClass.Compact",
-        "LeanCondensedMatter.Analysis.Operator.TraceClass.Cyclicity",
         "LeanCondensedMatter.Analysis.Operator.TraceClass.Diagonal",
         "LeanCondensedMatter.Analysis.Operator.TraceClass.Factorization",
         "LeanCondensedMatter.Analysis.Operator.TraceClass.General",
@@ -2055,14 +2046,6 @@
       "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Conductivity/Hall/FiniteBroadeningBornLadderProjection.lean",
       "imports": [
         "LeanCondensedMatter.Models.MassiveDirac.Conductivity.FiniteBroadeningBornLadderZeroBroadening",
-        "LeanCondensedMatter.Models.MassiveDirac.Conductivity.Hall.FiniteBroadeningBornLadderWeakDisorder"
-      ],
-      "externalImportCount": 0
-    },
-    {
-      "name": "LeanCondensedMatter.Models.MassiveDirac.Conductivity.Hall.FiniteBroadeningBornLadderWeakDisorder",
-      "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Conductivity/Hall/FiniteBroadeningBornLadderWeakDisorder.lean",
-      "imports": [
         "LeanCondensedMatter.Models.MassiveDirac.Conductivity.Hall.FiniteBroadeningBornLadderZeroBroadening",
         "LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.HallZeroBroadeningWeakDisorder",
         "LeanCondensedMatter.Transport.Analysis.ContinuumMeasure"
@@ -2154,7 +2137,6 @@
         "LeanCondensedMatter.Models.MassiveDirac.Conductivity.FiniteBroadeningBornLadder",
         "LeanCondensedMatter.Models.MassiveDirac.Conductivity.Hall.CleanBastin",
         "LeanCondensedMatter.Models.MassiveDirac.Conductivity.Hall.FiniteBroadeningBornLadderProjection",
-        "LeanCondensedMatter.Models.MassiveDirac.Conductivity.Hall.FiniteBroadeningBornLadderWeakDisorder",
         "LeanCondensedMatter.Models.MassiveDirac.Conductivity.Hall.FiniteBroadeningBornLadderZeroBroadening",
         "LeanCondensedMatter.Models.MassiveDirac.Conductivity.Hall.GaussianCrossed",
         "LeanCondensedMatter.Models.MassiveDirac.Conductivity.Hall.Intrinsic",
@@ -4345,14 +4327,6 @@
       "externalImportCount": 1
     },
     {
-      "name": "LeanCondensedMatter.QuantumTheory.LinearResponse.Frequency.HarmonicSource",
-      "sourceFile": "LeanCondensedMatter/QuantumTheory/LinearResponse/Frequency/HarmonicSource.lean",
-      "imports": [
-        "LeanCondensedMatter.QuantumTheory.LinearResponse.Frequency.AdiabaticSwitching"
-      ],
-      "externalImportCount": 0
-    },
-    {
       "name": "LeanCondensedMatter.QuantumTheory.LinearResponse.Frequency.InfiniteTime",
       "sourceFile": "LeanCondensedMatter/QuantumTheory/LinearResponse/Frequency/InfiniteTime.lean",
       "imports": [
@@ -4602,7 +4576,6 @@
         "LeanCondensedMatter.QuantumTheory.LinearResponse.Expectation.Density",
         "LeanCondensedMatter.QuantumTheory.LinearResponse.Frequency.AdiabaticSwitching",
         "LeanCondensedMatter.QuantumTheory.LinearResponse.Frequency.FiniteTime",
-        "LeanCondensedMatter.QuantumTheory.LinearResponse.Frequency.HarmonicSource",
         "LeanCondensedMatter.QuantumTheory.LinearResponse.Frequency.InfiniteTime",
         "LeanCondensedMatter.QuantumTheory.LinearResponse.Frequency.Integrability",
         "LeanCondensedMatter.QuantumTheory.LinearResponse.Frequency.LimitOrder",
@@ -8053,7 +8026,7 @@
       "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.BlochDeDominicis",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Thermal/Completed/BlochDeDominicis.lean",
       "imports": [
-        "LeanCondensedMatter.Analysis.Operator.TraceClass.Cyclicity",
+        "LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Basic",
         "LeanCondensedMatter.Analysis.ScalarExchange.Peel",
         "LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.ExpectationRecursion",
         "LeanCondensedMatter.SecondQuantization.Common.Thermal.CanonicalGrandCanonicalCompatibility",

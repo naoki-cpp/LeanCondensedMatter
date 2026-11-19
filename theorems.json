@@ -16314,7 +16314,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "ContinuousLinearMap.IsTraceClass.trace_comp_comm",
-    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Cyclicity",
+    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Basic",
     "externalAxioms": [],
     "docString": "If `T` is trace class and `W` is bounded, then `Tr(TW) = Tr(WT)`. ",
     "directWrapperTargetModule": null,
@@ -16843,14 +16843,14 @@
       "QuantumTheory.DensityOperator.expectation_re_nonneg_of_isPositive",
       "QuantumTheory.DensityOperator.summable_expectation_term",
       "QuantumTheory.hasSum_eigenvalue_mul_energy",
+      "QuantumTheory.hasSum_probNNReal",
       "QuantumTheory.helmholtzFreeEnergy_eq_components",
       "QuantumTheory.helmholtzFreeEnergy_eq_iff_eq_gibbsState",
       "QuantumTheory.helmholtzFreeEnergy_ge_and_entropy_ne_top",
       "QuantumTheory.isPureDensity_of_purity_eq_one",
       "_private.LeanCondensedMatter.QuantumTheory.Gibbs.MinimizerUniqueness.0.QuantumTheory.gibbsOp_orthogonal_span_eq_bot_of_tsum_eq_spectralTrace",
       "_private.LeanCondensedMatter.QuantumTheory.POVM.Born.0.QuantumTheory.hasSum_probabilityKernel_eigenvector",
-      "_private.LeanCondensedMatter.QuantumTheory.POVM.Born.0.QuantumTheory.hasSum_probabilityKernel_outcome",
-      "_private.LeanCondensedMatter.QuantumTheory.POVM.Born.0.QuantumTheory.probabilityKernel_nonneg"
+      "_private.LeanCondensedMatter.QuantumTheory.POVM.Born.0.QuantumTheory.hasSum_probabilityKernel_outcome"
     ],
     "dependencies": [
       "ContinuousLinearMap.IsTraceClass.isCompact"
@@ -16866,14 +16866,14 @@
       "QuantumTheory.DensityOperator.expectation_re_nonneg_of_isPositive",
       "QuantumTheory.DensityOperator.summable_expectation_term",
       "QuantumTheory.hasSum_eigenvalue_mul_energy",
+      "QuantumTheory.hasSum_probNNReal",
       "QuantumTheory.helmholtzFreeEnergy_eq_components",
       "QuantumTheory.helmholtzFreeEnergy_eq_iff_eq_gibbsState",
       "QuantumTheory.helmholtzFreeEnergy_ge_and_entropy_ne_top",
       "QuantumTheory.isPureDensity_of_purity_eq_one",
       "_private.LeanCondensedMatter.QuantumTheory.Gibbs.MinimizerUniqueness.0.QuantumTheory.gibbsOp_orthogonal_span_eq_bot_of_tsum_eq_spectralTrace",
       "_private.LeanCondensedMatter.QuantumTheory.POVM.Born.0.QuantumTheory.hasSum_probabilityKernel_eigenvector",
-      "_private.LeanCondensedMatter.QuantumTheory.POVM.Born.0.QuantumTheory.hasSum_probabilityKernel_outcome",
-      "_private.LeanCondensedMatter.QuantumTheory.POVM.Born.0.QuantumTheory.probabilityKernel_nonneg"
+      "_private.LeanCondensedMatter.QuantumTheory.POVM.Born.0.QuantumTheory.hasSum_probabilityKernel_outcome"
     ],
     "compiledConsumerCount": 16,
     "axioms": [
@@ -17782,7 +17782,7 @@
       "ContinuousLinearMap.IsTraceClass.sum_diagonalExpectationValue_le_traceNorm",
       "ContinuousLinearMap.IsTraceClass.traceNorm_eq_tsum_norm_inner_left_of_polar",
       "ContinuousLinearMap.orthogonal_span_eq_bot_of_sum_diagonalExpectationValue_eq_spectralTrace",
-      "_private.LeanCondensedMatter.QuantumTheory.POVM.Born.0.QuantumTheory.probabilityKernel_nonneg"
+      "QuantumTheory.hasSum_probNNReal"
     ],
     "dependencies": [
       "ContinuousLinearMap.coe_diagonalExpectationValue_right"
@@ -17795,7 +17795,7 @@
       "ContinuousLinearMap.IsTraceClass.traceNorm_eq_tsum_norm_inner_left_of_polar",
       "ContinuousLinearMap.diagonalExpectationNNReal",
       "ContinuousLinearMap.orthogonal_span_eq_bot_of_sum_diagonalExpectationValue_eq_spectralTrace",
-      "_private.LeanCondensedMatter.QuantumTheory.POVM.Born.0.QuantumTheory.probabilityKernel_nonneg"
+      "QuantumTheory.hasSum_probNNReal"
     ],
     "compiledConsumerCount": 6,
     "axioms": [
@@ -17922,7 +17922,7 @@
       "ContinuousLinearMap.IsTraceClass.realTrace_pos",
       "QuantumTheory.DensityOperator.eigenvalue_nonneg",
       "QuantumTheory.DensityOperator.expectation_re_nonneg_of_isPositive",
-      "_private.LeanCondensedMatter.QuantumTheory.POVM.Born.0.QuantumTheory.probabilityKernel_nonneg"
+      "QuantumTheory.hasSum_probNNReal"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
@@ -17931,7 +17931,7 @@
       "ContinuousLinearMap.IsTraceClass.realTrace_pos",
       "QuantumTheory.DensityOperator.eigenvalue_nonneg",
       "QuantumTheory.DensityOperator.expectation_re_nonneg_of_isPositive",
-      "_private.LeanCondensedMatter.QuantumTheory.POVM.Born.0.QuantumTheory.probabilityKernel_nonneg"
+      "QuantumTheory.hasSum_probNNReal"
     ],
     "compiledConsumerCount": 4,
     "axioms": [
@@ -23755,13 +23755,13 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.externalPartitionShuffleFull_blockSlotSet"
+      "SecondQuantization.Fermionic.externalPartitionSourceSign_eq_componentExternalOrderSign_of_vacuumFree"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.externalPartitionShuffleFull_blockSlotSet"
+      "SecondQuantization.Fermionic.externalPartitionSourceSign_eq_componentExternalOrderSign_of_vacuumFree"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -49528,13 +49528,13 @@
       "QuantumTheory.DensityOperator.expectation_re_nonneg_of_isPositive",
       "QuantumTheory.DensityOperator.summable_expectation_term",
       "QuantumTheory.hasSum_eigenvalue_mul_energy",
+      "QuantumTheory.hasSum_probNNReal",
       "QuantumTheory.helmholtzFreeEnergy_eq_components",
       "QuantumTheory.helmholtzFreeEnergy_eq_iff_eq_gibbsState",
       "QuantumTheory.helmholtzFreeEnergy_ge_and_entropy_ne_top",
       "QuantumTheory.isPureDensity_of_purity_eq_one",
       "_private.LeanCondensedMatter.QuantumTheory.POVM.Born.0.QuantumTheory.hasSum_probabilityKernel_eigenvector",
-      "_private.LeanCondensedMatter.QuantumTheory.POVM.Born.0.QuantumTheory.hasSum_probabilityKernel_outcome",
-      "_private.LeanCondensedMatter.QuantumTheory.POVM.Born.0.QuantumTheory.probabilityKernel_nonneg"
+      "_private.LeanCondensedMatter.QuantumTheory.POVM.Born.0.QuantumTheory.hasSum_probabilityKernel_outcome"
     ],
     "dependencies": [
       "QuantumTheory.DensityOperator.isSymmetric"
@@ -49549,13 +49549,13 @@
       "QuantumTheory.DensityOperator.expectation_re_nonneg_of_isPositive",
       "QuantumTheory.DensityOperator.summable_expectation_term",
       "QuantumTheory.hasSum_eigenvalue_mul_energy",
+      "QuantumTheory.hasSum_probNNReal",
       "QuantumTheory.helmholtzFreeEnergy_eq_components",
       "QuantumTheory.helmholtzFreeEnergy_eq_iff_eq_gibbsState",
       "QuantumTheory.helmholtzFreeEnergy_ge_and_entropy_ne_top",
       "QuantumTheory.isPureDensity_of_purity_eq_one",
       "_private.LeanCondensedMatter.QuantumTheory.POVM.Born.0.QuantumTheory.hasSum_probabilityKernel_eigenvector",
-      "_private.LeanCondensedMatter.QuantumTheory.POVM.Born.0.QuantumTheory.hasSum_probabilityKernel_outcome",
-      "_private.LeanCondensedMatter.QuantumTheory.POVM.Born.0.QuantumTheory.probabilityKernel_nonneg"
+      "_private.LeanCondensedMatter.QuantumTheory.POVM.Born.0.QuantumTheory.hasSum_probabilityKernel_outcome"
     ],
     "compiledConsumerCount": 14,
     "axioms": [
@@ -49740,8 +49740,7 @@
       "ContinuousLinearMap.SpectralTraceClass.compact",
       "QuantumTheory.DensityOperator.hasSum_abs_eigenvalues_eq_one",
       "QuantumTheory.DensityOperator.spectralTraceClass",
-      "QuantumTheory.eigenvectorFamily_norm_eq_one",
-      "_private.LeanCondensedMatter.QuantumTheory.DensityOperator.Expectation.0.QuantumTheory.norm_inner_apply_le_opNorm_of_norm_eq_one"
+      "QuantumTheory.eigenvectorFamily_norm_eq_one"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -50782,7 +50781,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "QuantumTheory.LinearResponse.adiabaticCosineSource_at_observation",
-    "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.Frequency.HarmonicSource",
+    "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.Frequency.AdiabaticSwitching",
     "externalAxioms": [],
     "docString": null,
     "directWrapperTargetModule": null,
@@ -50961,7 +50960,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "QuantumTheory.LinearResponse.adiabaticFrequencyPhase_eq_cosine_add_I_sine",
-    "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.Frequency.HarmonicSource",
+    "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.Frequency.AdiabaticSwitching",
     "externalAxioms": [],
     "docString": "The canonical complex adiabatic phase is the complexification of its two real quadratures. ",
     "directWrapperTargetModule": null,
@@ -51301,7 +51300,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "QuantumTheory.LinearResponse.adiabaticSineSource_at_observation",
-    "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.Frequency.HarmonicSource",
+    "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.Frequency.AdiabaticSwitching",
     "externalAxioms": [],
     "docString": null,
     "directWrapperTargetModule": null,
@@ -59252,7 +59251,7 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensorZeroBroadeningBoundary_hallComponent_disorder_zero_eq_nonCrossing"
+      "QuantumTheory.Models.MassiveDirac.FiniteCutoffBornDyson.Hall.ZeroBroadeningWeakDisorder.tendsto_hallComponent_nonCrossing"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -59424,6 +59423,271 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.Models.MassiveDirac.AheScalingParameters.tendsto_finiteBroadeningPair_sxy_broadening_zero"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (e v m probeEnergy hbar pMax : ℝ),\n  v ≠ 0 →\n    0 < hbar →\n      |m| < probeEnergy →\n        probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2 →\n          Filter.Tendsto\n            (fun disorderStrength =>\n              (QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensorZeroBroadeningBoundary\n                    e v m probeEnergy disorderStrength hbar pMax).hallComponent\n                0 1)\n            (nhdsWithin 0 (Set.Ioi 0))\n            (nhds\n              ↑(-2 * e ^ 2 * probeEnergy * m * (probeEnergy ^ 2 + m ^ 2) /\n                  (Real.pi * hbar * (probeEnergy ^ 2 + 3 * m ^ 2) ^ 2)))",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.MassiveDirac.FiniteCutoffBornDyson.Hall.ZeroBroadeningWeakDisorder.tendsto_hallComponent",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Conductivity.Hall.FiniteBroadeningBornLadderProjection",
+    "externalAxioms": [],
+    "docString": "The fixed-cutoff Hall projection has the same one-sided weak-disorder limit as the ordered `xy`\nendpoint, now interpreted as the antisymmetric part of a completed conductivity tensor. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.MassiveDirac.FiniteCutoffBornDyson.Hall.ZeroBroadeningWeakDisorder.tendsto_hallComponent_nonCrossing"
+    ],
+    "dependencies": [
+      "QuantumTheory.Models.MassiveDirac.FiniteCutoffBornDyson.Hall.ZeroBroadeningWeakDisorder.tendsto_orderedXY_momentumIntegral"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.FiniteCutoffBornDyson.Hall.ZeroBroadeningWeakDisorder.tendsto_hallComponent_nonCrossing"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (e v m probeEnergy hbar pMax : ℝ),\n  v ≠ 0 →\n    0 < hbar →\n      |m| < probeEnergy →\n        probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2 →\n          Filter.Tendsto\n            (fun disorderStrength =>\n              (QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensorZeroBroadeningBoundary\n                    e v m probeEnergy disorderStrength hbar pMax).hallComponent\n                0 1)\n            (nhdsWithin 0 (Set.Ioi 0))\n            (nhds ↑(QuantumTheory.Models.MassiveDirac.nonCrossingHallConductivity e hbar m probeEnergy))",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.MassiveDirac.FiniteCutoffBornDyson.Hall.ZeroBroadeningWeakDisorder.tendsto_hallComponent_nonCrossing",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Conductivity.Hall.NonCrossing",
+    "externalAxioms": [],
+    "docString": "The sequential zero-broadening then weak-disorder Hall projection reproduces the Ado\nnon-crossing conductivity formula. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.MassiveDirac.AheScalingParameters.tendsto_zeroBroadeningPairAtDisorder_sxy_disorder_zero"
+    ],
+    "dependencies": [
+      "QuantumTheory.Models.MassiveDirac.FiniteCutoffBornDyson.Hall.ZeroBroadeningWeakDisorder.tendsto_hallComponent"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.AheScalingParameters.tendsto_zeroBroadeningPairAtDisorder_sxy_disorder_zero"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (e v m probeEnergy hbar pMax : ℝ),\n  v ≠ 0 →\n    hbar ≠ 0 →\n      |m| < probeEnergy →\n        probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2 →\n          Filter.Tendsto\n            (fun disorderStrength =>\n              QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonOrderedXYRetardedAdvancedDressedSurfaceMomentumIntegralZeroBroadeningBoundary\n                e v m probeEnergy disorderStrength hbar pMax)\n            (nhdsWithin 0 (Set.Ioi 0))\n            (nhds\n              ↑(-16 * Real.pi ^ 2 * e ^ 2 * probeEnergy * m * (probeEnergy ^ 2 + m ^ 2) /\n                  (probeEnergy ^ 2 + 3 * m ^ 2) ^ 2))",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.MassiveDirac.FiniteCutoffBornDyson.Hall.ZeroBroadeningWeakDisorder.tendsto_orderedXY_momentumIntegral",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.HallZeroBroadeningWeakDisorder",
+    "externalAxioms": [],
+    "docString": "The fixed-cutoff zero-broadening ordered source-`.y` Středa momentum-integral response has a\nfinite one-sided weak-disorder limit. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.MassiveDirac.FiniteCutoffBornDyson.Hall.ZeroBroadeningWeakDisorder.tendsto_hallComponent"
+    ],
+    "dependencies": [
+      "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonTransverseLadderActionZeroBroadeningBoundary_div_disorder_zero",
+      "QuantumTheory.Transport.momentumMeasurePrefactor_pos"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.FiniteCutoffBornDyson.Hall.ZeroBroadeningWeakDisorder.tendsto_hallComponent"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (e v m probeEnergy hbar pMax : ℝ),\n  v ≠ 0 →\n    0 < hbar →\n      |m| < probeEnergy →\n        probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2 →\n          Filter.Tendsto\n            (fun disorderStrength =>\n              ↑disorderStrength *\n                QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceConductivityZeroBroadeningBoundary\n                  e v m probeEnergy disorderStrength hbar pMax)\n            (nhdsWithin 0 (Set.Ioi 0))\n            (nhds ↑(e ^ 2 * hbar * v ^ 2 * (probeEnergy ^ 2 - m ^ 2) / (Real.pi * (probeEnergy ^ 2 + 3 * m ^ 2))))",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.MassiveDirac.FiniteCutoffBornDyson.Longitudinal.ZeroBroadeningWeakDisorder.tendsto_disorder_mul_conductivity",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Conductivity.FiniteBroadeningBornLadderLongitudinalWeakDisorder",
+    "externalAxioms": [],
+    "docString": "The disorder-scaled fixed-cutoff zero-broadening Born-Dyson longitudinal conductivity tends to\nthe finite Drude coefficient. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.MassiveDirac.FiniteCutoffBornDyson.Longitudinal.ZeroBroadeningWeakDisorder.tendsto_disorder_mul_conductivity_born_rta"
+    ],
+    "dependencies": [
+      "QuantumTheory.Models.MassiveDirac.FiniteCutoffBornDyson.Longitudinal.ZeroBroadeningWeakDisorder.tendsto_disorder_mul_momentum_integral"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.FiniteCutoffBornDyson.Longitudinal.ZeroBroadeningWeakDisorder.tendsto_disorder_mul_conductivity_born_rta"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (e v m probeEnergy hbar pMax referenceDisorderStrength : ℝ) (hvelocity : v ≠ 0) (hhbar : 0 < hbar)\n  (hdisorder : 0 < referenceDisorderStrength) (hmetal : |m| < probeEnergy),\n  probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2 →\n    Filter.Tendsto\n      (fun disorderStrength =>\n        ↑disorderStrength *\n          QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceConductivityZeroBroadeningBoundary\n            e v m probeEnergy disorderStrength hbar pMax)\n      (nhdsWithin 0 (Set.Ioi 0))\n      (nhds\n        ↑(referenceDisorderStrength *\n            QuantumTheory.Models.MassiveDirac.zeroTemperatureRelaxationTimeLongitudinalConductivity e hbar v m\n              probeEnergy\n              (QuantumTheory.Models.MassiveDirac.continuumBornUpperBandPositiveTransportLifetime v m probeEnergy\n                referenceDisorderStrength hbar hvelocity hhbar hdisorder hmetal)))",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.MassiveDirac.FiniteCutoffBornDyson.Longitudinal.ZeroBroadeningWeakDisorder.tendsto_disorder_mul_conductivity_born_rta",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Conductivity.FiniteBroadeningBornLadderLongitudinalWeakDisorder",
+    "externalAxioms": [],
+    "docString": "The scaled Born-Dyson conductivity converges directly to the microscopic Born-RTA scaled\nbenchmark evaluated at any positive reference disorder strength. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.Models.MassiveDirac.FiniteCutoffBornDyson.Longitudinal.ZeroBroadeningWeakDisorder.tendsto_disorder_mul_conductivity",
+      "QuantumTheory.Models.MassiveDirac.disorderStrength_mul_zeroTemperatureRelaxationTimeLongitudinalConductivity_bornTransportLifetime_eq"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (e v m probeEnergy hbar pMax : ℝ),\n  v ≠ 0 →\n    hbar ≠ 0 →\n      |m| < probeEnergy →\n        probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2 →\n          Filter.Tendsto\n            (fun disorderStrength =>\n              ↑disorderStrength *\n                QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceMomentumIntegralZeroBroadeningBoundary\n                  e v m probeEnergy disorderStrength hbar pMax)\n            (nhdsWithin 0 (Set.Ioi 0))\n            (nhds\n              (2 * (↑(-e) * ↑v) ^ 2 * (↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar))⁻¹ *\n                ↑((probeEnergy ^ 2 - m ^ 2) / (probeEnergy ^ 2 + 3 * m ^ 2))))",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.MassiveDirac.FiniteCutoffBornDyson.Longitudinal.ZeroBroadeningWeakDisorder.tendsto_disorder_mul_momentum_integral",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.LongitudinalZeroBroadeningWeakDisorder",
+    "externalAxioms": [],
+    "docString": "After the fixed-cutoff zero-broadening boundary is formed, multiplying the longitudinal Středa\nmomentum integral by the disorder strength gives a finite weak-disorder limit. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.MassiveDirac.FiniteCutoffBornDyson.Longitudinal.ZeroBroadeningWeakDisorder.tendsto_disorder_mul_conductivity"
+    ],
+    "dependencies": [
+      "QuantumTheory.Models.MassiveDirac.inPlaneLadderAction_apply_x",
+      "QuantumTheory.Models.MassiveDirac.tendsto_disorderStrength_mul_zeroBroadeningSameSideRadialEndpoint_disorder_zero",
+      "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonLongitudinalLadderActionZeroBroadeningBoundary_disorder_zero",
+      "QuantumTheory.Transport.momentumMeasurePrefactor_pos"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.FiniteCutoffBornDyson.Longitudinal.ZeroBroadeningWeakDisorder.tendsto_disorder_mul_conductivity"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -63242,7 +63506,7 @@
     "directWrapperOf": null,
     "dependents": [
       "QuantumTheory.Models.MassiveDirac.AheBornRtaParameters.disorderStrength_mul_bornRtaLongitudinalConductivity_eq",
-      "QuantumTheory.Models.MassiveDirac.tendsto_disorderStrength_mul_finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceConductivityZeroBroadeningBoundary_disorder_zero_bornRelaxationTime"
+      "QuantumTheory.Models.MassiveDirac.FiniteCutoffBornDyson.Longitudinal.ZeroBroadeningWeakDisorder.tendsto_disorder_mul_conductivity_born_rta"
     ],
     "dependencies": [
       "QuantumTheory.Models.MassiveDirac.zeroTemperatureRelaxationTimeLongitudinalConductivity_bornTransportLifetime_eq"
@@ -63251,7 +63515,7 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.Models.MassiveDirac.AheBornRtaParameters.disorderStrength_mul_bornRtaLongitudinalConductivity_eq",
-      "QuantumTheory.Models.MassiveDirac.tendsto_disorderStrength_mul_finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceConductivityZeroBroadeningBoundary_disorder_zero_bornRelaxationTime"
+      "QuantumTheory.Models.MassiveDirac.FiniteCutoffBornDyson.Longitudinal.ZeroBroadeningWeakDisorder.tendsto_disorder_mul_conductivity_born_rta"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -70192,7 +70456,6 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperator_x_eq_resummed",
       "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.HallZeroBroadeningIntegral.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral_y_eq_endpointForm",
       "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.LongitudinalZeroBroadeningIntegral.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral_x_eq_endpointForm",
       "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.Radial.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yx_eq_neg_xy",
@@ -70203,14 +70466,13 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperator_x_eq_resummed",
       "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.HallZeroBroadeningIntegral.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral_y_eq_endpointForm",
       "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.LongitudinalZeroBroadeningIntegral.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral_x_eq_endpointForm",
       "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.Radial.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yx_eq_neg_xy",
       "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.Radial.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yy_eq_xx",
       "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.RadialDenominator.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_y_eq_denominatorForm"
     ],
-    "compiledConsumerCount": 6,
+    "compiledConsumerCount": 5,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -70271,7 +70533,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ (e v m probeEnergy broadening disorderStrength hbar pMax : ℝ)\n  (hregular :\n    QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonLadderRegular v m probeEnergy broadening\n      disorderStrength hbar pMax),\n  QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperator 0 e v m\n      probeEnergy broadening disorderStrength hbar pMax =\n    QuantumTheory.Models.MassiveDirac.inPlaneCurrentOperator e v\n      (QuantumTheory.Transport.resummedLadderVertex\n        (QuantumTheory.Models.MassiveDirac.inPlaneLadderCLM\n          (QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonCurrentRungVector v m probeEnergy broadening\n            disorderStrength hbar pMax))\n        ⋯ QuantumTheory.Models.MassiveDirac.inPlaneLadderBareXSource)",
+    "statement": "∀ (source : Fin 2) (e v m probeEnergy broadening disorderStrength hbar pMax : ℝ)\n  (hregular :\n    QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonLadderRegular v m probeEnergy broadening\n      disorderStrength hbar pMax),\n  QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperator source e\n      v m probeEnergy broadening disorderStrength hbar pMax =\n    QuantumTheory.Models.MassiveDirac.inPlaneCurrentOperator e v\n      ((QuantumTheory.Models.MassiveDirac.inPlaneRotationMatrix\n            (QuantumTheory.Transport.resummedLadderVertex\n              (QuantumTheory.Models.MassiveDirac.inPlaneLadderCLM\n                (QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonCurrentRungVector v m probeEnergy\n                  broadening disorderStrength hbar pMax))\n              ⋯ QuantumTheory.Models.MassiveDirac.inPlaneLadderBareXSource)).transpose\n        source)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -70283,15 +70545,14 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperator_x_eq_resummed",
+    "name": "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperator_eq_rotatedResummed",
     "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexResponse",
     "externalAxioms": [],
-    "docString": "Under ladder regularity, the source-`x` insertion is the canonical resummed ladder vertex. ",
+    "docString": "Under ladder regularity, every source-indexed insertion is the rotated canonical\nresummed source-`x` ladder vertex. The same rotation determines both in-plane source directions. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentCoefficientVector_x",
       "QuantumTheory.Models.MassiveDirac.inPlaneLadderShift_isUnit",
       "QuantumTheory.Models.MassiveDirac.inPlaneLadderSolvedVector_eq_resummedLadderVertex"
     ],
@@ -72431,12 +72692,12 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "QuantumTheory.Models.MassiveDirac.FiniteCutoffBornDyson.Longitudinal.ZeroBroadeningWeakDisorder.tendsto_disorder_mul_momentum_integral",
       "QuantumTheory.Models.MassiveDirac.continuumBornAngularRetardedAdvancedPauliXIntegral_eq",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_x_eq_denominatorForm",
       "QuantumTheory.Models.MassiveDirac.inPlaneLadderAction_integrable_and_integral_eq",
       "QuantumTheory.Models.MassiveDirac.inPlaneLadderSolvedVector_eq_resummedLadderVertex",
       "QuantumTheory.Models.MassiveDirac.integral_polarPauliOperator_inPlane_eq",
-      "QuantumTheory.Models.MassiveDirac.tendsto_disorderStrength_mul_finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceMomentumIntegralZeroBroadeningBoundary_disorder_zero",
       "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceMomentumIntegral_broadening_zero",
       "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.LongitudinalZeroBroadeningIntegral.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral_x_eq_endpointForm",
       "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.Radial.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yx_eq_neg_xy",
@@ -72447,12 +72708,12 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.FiniteCutoffBornDyson.Longitudinal.ZeroBroadeningWeakDisorder.tendsto_disorder_mul_momentum_integral",
       "QuantumTheory.Models.MassiveDirac.continuumBornAngularRetardedAdvancedPauliXIntegral_eq",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_x_eq_denominatorForm",
       "QuantumTheory.Models.MassiveDirac.inPlaneLadderAction_integrable_and_integral_eq",
       "QuantumTheory.Models.MassiveDirac.inPlaneLadderSolvedVector_eq_resummedLadderVertex",
       "QuantumTheory.Models.MassiveDirac.integral_polarPauliOperator_inPlane_eq",
-      "QuantumTheory.Models.MassiveDirac.tendsto_disorderStrength_mul_finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceMomentumIntegralZeroBroadeningBoundary_disorder_zero",
       "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceMomentumIntegral_broadening_zero",
       "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.LongitudinalZeroBroadeningIntegral.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral_x_eq_endpointForm",
       "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.Radial.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yx_eq_neg_xy",
@@ -72638,7 +72899,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperator_x_eq_resummed",
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperator_eq_rotatedResummed",
       "QuantumTheory.Models.MassiveDirac.inPlaneLadderSolvedVector_eq_resummedLadderVertex",
       "QuantumTheory.Models.MassiveDirac.inPlaneLadderSolvedVector_fixedPoint",
       "QuantumTheory.Models.MassiveDirac.inPlaneLadder_fixedPoint_unique"
@@ -72650,7 +72911,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperator_x_eq_resummed",
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperator_eq_rotatedResummed",
       "QuantumTheory.Models.MassiveDirac.inPlaneLadderSolvedVector_eq_resummedLadderVertex",
       "QuantumTheory.Models.MassiveDirac.inPlaneLadderSolvedVector_fixedPoint",
       "QuantumTheory.Models.MassiveDirac.inPlaneLadder_fixedPoint_unique"
@@ -72781,7 +73042,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperator_x_eq_resummed",
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperator_eq_rotatedResummed",
       "QuantumTheory.Models.MassiveDirac.inPlaneLadderSolvedVector_fixedPoint",
       "QuantumTheory.Models.MassiveDirac.inPlaneLadder_fixedPoint_unique"
     ],
@@ -72796,7 +73057,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperator_x_eq_resummed",
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperator_eq_rotatedResummed",
       "QuantumTheory.Models.MassiveDirac.inPlaneLadderSolvedVector_fixedPoint",
       "QuantumTheory.Models.MassiveDirac.inPlaneLadder_fixedPoint_unique"
     ],
@@ -76707,7 +76968,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {Ω : Type u_1} [inst : Fintype Ω] (ensemble : QuantumTheory.Transport.FiniteDisorderEnsemble)\n  (e v energy broadening potentialBound : ℝ),\n  broadening ≠ 0 →\n    0 ≤ potentialBound →\n      (∀ (ω : Ω), ‖↑(ensemble.impurityPotential ω)‖ ≤ potentialBound) →\n        ‖ensemble.averagedTwoGreenVertexTraceKernelOfRegulators energy broadening energy (-broadening)\n                (QuantumTheory.Models.MassiveDirac.currentOperator 0 e v)\n                (QuantumTheory.Models.MassiveDirac.currentOperator 1 e v) -\n              QuantumTheory.Transport.twoGreenVertexTraceKernel\n                (QuantumTheory.Models.MassiveDirac.currentOperator 0 e v)\n                (ensemble.averagedGreenOfRegulator energy broadening)\n                (QuantumTheory.Models.MassiveDirac.currentOperator 1 e v)\n                (ensemble.averagedGreenOfRegulator energy (-broadening))‖ ≤\n          2 * ‖QuantumTheory.Models.MassiveDirac.currentOperator 0 e v‖ *\n            (2 * |broadening|⁻¹ ^ 2 * potentialBound * ‖QuantumTheory.Models.MassiveDirac.currentOperator 1 e v‖ *\n              (2 * |broadening|⁻¹ ^ 2 * potentialBound))",
+    "statement": "∀ {Ω : Type u_1} [inst : Fintype Ω] (ensemble : QuantumTheory.Transport.FiniteDisorderEnsemble)\n  (e v energy broadening potentialBound : ℝ),\n  broadening ≠ 0 →\n    (∀ (ω : Ω), ‖↑(ensemble.impurityPotential ω)‖ ≤ potentialBound) →\n      ‖ensemble.averagedTwoGreenVertexTraceKernelOfRegulators energy broadening energy (-broadening)\n              (QuantumTheory.Models.MassiveDirac.currentOperator 0 e v)\n              (QuantumTheory.Models.MassiveDirac.currentOperator 1 e v) -\n            QuantumTheory.Transport.twoGreenVertexTraceKernel (QuantumTheory.Models.MassiveDirac.currentOperator 0 e v)\n              (ensemble.averagedGreenOfRegulator energy broadening)\n              (QuantumTheory.Models.MassiveDirac.currentOperator 1 e v)\n              (ensemble.averagedGreenOfRegulator energy (-broadening))‖ ≤\n        2 * ‖QuantumTheory.Models.MassiveDirac.currentOperator 0 e v‖ *\n          (2 * |broadening|⁻¹ ^ 2 * potentialBound * ‖QuantumTheory.Models.MassiveDirac.currentOperator 1 e v‖ *\n            (2 * |broadening|⁻¹ ^ 2 * potentialBound))",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -80055,138 +80316,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (e v m probeEnergy hbar pMax : ℝ),\n  v ≠ 0 →\n    0 < hbar →\n      |m| < probeEnergy →\n        probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2 →\n          Filter.Tendsto\n            (fun disorderStrength =>\n              ↑disorderStrength *\n                QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceConductivityZeroBroadeningBoundary\n                  e v m probeEnergy disorderStrength hbar pMax)\n            (nhdsWithin 0 (Set.Ioi 0))\n            (nhds ↑(e ^ 2 * hbar * v ^ 2 * (probeEnergy ^ 2 - m ^ 2) / (Real.pi * (probeEnergy ^ 2 + 3 * m ^ 2))))",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Models.MassiveDirac.tendsto_disorderStrength_mul_finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceConductivityZeroBroadeningBoundary_disorder_zero",
-    "module": "LeanCondensedMatter.Models.MassiveDirac.Conductivity.FiniteBroadeningBornLadderLongitudinalWeakDisorder",
-    "externalAxioms": [],
-    "docString": "The disorder-scaled fixed-cutoff zero-broadening Born-Dyson longitudinal conductivity tends to\nthe finite Drude coefficient. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Models.MassiveDirac.tendsto_disorderStrength_mul_finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceConductivityZeroBroadeningBoundary_disorder_zero_bornRelaxationTime"
-    ],
-    "dependencies": [
-      "QuantumTheory.Models.MassiveDirac.tendsto_disorderStrength_mul_finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceMomentumIntegralZeroBroadeningBoundary_disorder_zero"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Models.MassiveDirac.tendsto_disorderStrength_mul_finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceConductivityZeroBroadeningBoundary_disorder_zero_bornRelaxationTime"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ (e v m probeEnergy hbar pMax referenceDisorderStrength : ℝ) (hvelocity : v ≠ 0) (hhbar : 0 < hbar)\n  (hdisorder : 0 < referenceDisorderStrength) (hmetal : |m| < probeEnergy),\n  probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2 →\n    Filter.Tendsto\n      (fun disorderStrength =>\n        ↑disorderStrength *\n          QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceConductivityZeroBroadeningBoundary\n            e v m probeEnergy disorderStrength hbar pMax)\n      (nhdsWithin 0 (Set.Ioi 0))\n      (nhds\n        ↑(referenceDisorderStrength *\n            QuantumTheory.Models.MassiveDirac.zeroTemperatureRelaxationTimeLongitudinalConductivity e hbar v m\n              probeEnergy\n              (QuantumTheory.Models.MassiveDirac.continuumBornUpperBandPositiveTransportLifetime v m probeEnergy\n                referenceDisorderStrength hbar hvelocity hhbar hdisorder hmetal)))",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Models.MassiveDirac.tendsto_disorderStrength_mul_finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceConductivityZeroBroadeningBoundary_disorder_zero_bornRelaxationTime",
-    "module": "LeanCondensedMatter.Models.MassiveDirac.Conductivity.FiniteBroadeningBornLadderLongitudinalWeakDisorder",
-    "externalAxioms": [],
-    "docString": "The scaled Born-Dyson conductivity converges directly to the microscopic Born-RTA scaled\nbenchmark evaluated at any positive reference disorder strength. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "QuantumTheory.Models.MassiveDirac.disorderStrength_mul_zeroTemperatureRelaxationTimeLongitudinalConductivity_bornTransportLifetime_eq",
-      "QuantumTheory.Models.MassiveDirac.tendsto_disorderStrength_mul_finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceConductivityZeroBroadeningBoundary_disorder_zero"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (e v m probeEnergy hbar pMax : ℝ),\n  v ≠ 0 →\n    hbar ≠ 0 →\n      |m| < probeEnergy →\n        probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2 →\n          Filter.Tendsto\n            (fun disorderStrength =>\n              ↑disorderStrength *\n                QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceMomentumIntegralZeroBroadeningBoundary\n                  e v m probeEnergy disorderStrength hbar pMax)\n            (nhdsWithin 0 (Set.Ioi 0))\n            (nhds\n              (2 * (↑(-e) * ↑v) ^ 2 * (↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar))⁻¹ *\n                ↑((probeEnergy ^ 2 - m ^ 2) / (probeEnergy ^ 2 + 3 * m ^ 2))))",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Models.MassiveDirac.tendsto_disorderStrength_mul_finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceMomentumIntegralZeroBroadeningBoundary_disorder_zero",
-    "module": "LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.LongitudinalZeroBroadeningWeakDisorder",
-    "externalAxioms": [],
-    "docString": "After the fixed-cutoff zero-broadening boundary is formed, multiplying the longitudinal Středa\nmomentum integral by the disorder strength gives a finite weak-disorder limit. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Models.MassiveDirac.tendsto_disorderStrength_mul_finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceConductivityZeroBroadeningBoundary_disorder_zero"
-    ],
-    "dependencies": [
-      "QuantumTheory.Models.MassiveDirac.inPlaneLadderAction_apply_x",
-      "QuantumTheory.Models.MassiveDirac.tendsto_disorderStrength_mul_zeroBroadeningSameSideRadialEndpoint_disorder_zero",
-      "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonLongitudinalLadderActionZeroBroadeningBoundary_disorder_zero",
-      "QuantumTheory.Transport.momentumMeasurePrefactor_pos"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Models.MassiveDirac.tendsto_disorderStrength_mul_finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceConductivityZeroBroadeningBoundary_disorder_zero"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ (side : QuantumTheory.Transport.SpectralSide) (v m probeEnergy hbar pMax : ℝ),\n  |m| < probeEnergy →\n    probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2 →\n      Filter.Tendsto\n        (fun disorderStrength =>\n          ↑disorderStrength *\n            QuantumTheory.Models.MassiveDirac.zeroBroadeningSameSideRadialEndpoint side v m probeEnergy disorderStrength\n              hbar pMax)\n        (nhdsWithin 0 (Set.Ioi 0)) (nhds 0)",
     "standardAxioms": [
       "Classical.choice",
@@ -80206,7 +80335,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Models.MassiveDirac.tendsto_disorderStrength_mul_finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceMomentumIntegralZeroBroadeningBoundary_disorder_zero"
+      "QuantumTheory.Models.MassiveDirac.FiniteCutoffBornDyson.Longitudinal.ZeroBroadeningWeakDisorder.tendsto_disorder_mul_momentum_integral"
     ],
     "dependencies": [
       "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.LongitudinalSameSide.0.QuantumTheory.Models.MassiveDirac.continuousAt_zeroBroadeningSameSideRadialEndpoint_disorder_zero"
@@ -80214,7 +80343,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Models.MassiveDirac.tendsto_disorderStrength_mul_finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceMomentumIntegralZeroBroadeningBoundary_disorder_zero"
+      "QuantumTheory.Models.MassiveDirac.FiniteCutoffBornDyson.Longitudinal.ZeroBroadeningWeakDisorder.tendsto_disorder_mul_momentum_integral"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -80829,7 +80958,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Models.MassiveDirac.tendsto_disorderStrength_mul_finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceMomentumIntegralZeroBroadeningBoundary_disorder_zero"
+      "QuantumTheory.Models.MassiveDirac.FiniteCutoffBornDyson.Longitudinal.ZeroBroadeningWeakDisorder.tendsto_disorder_mul_momentum_integral"
     ],
     "dependencies": [
       "QuantumTheory.Models.MassiveDirac.eventually_finiteCutoffContinuumBornDysonLadderDeterminantZeroBroadeningBoundary_ne_zero_disorder_zero",
@@ -80839,7 +80968,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Models.MassiveDirac.tendsto_disorderStrength_mul_finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceMomentumIntegralZeroBroadeningBoundary_disorder_zero"
+      "QuantumTheory.Models.MassiveDirac.FiniteCutoffBornDyson.Longitudinal.ZeroBroadeningWeakDisorder.tendsto_disorder_mul_momentum_integral"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -80950,50 +81079,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (e v m probeEnergy hbar pMax : ℝ),\n  v ≠ 0 →\n    0 < hbar →\n      |m| < probeEnergy →\n        probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2 →\n          Filter.Tendsto\n            (fun disorderStrength =>\n              QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonOrderedXYRetardedAdvancedDressedSurfaceConductivityZeroBroadeningBoundary\n                e v m probeEnergy disorderStrength hbar pMax)\n            (nhdsWithin 0 (Set.Ioi 0))\n            (nhds\n              ↑(-2 * e ^ 2 * probeEnergy * m * (probeEnergy ^ 2 + m ^ 2) /\n                  (Real.pi * hbar * (probeEnergy ^ 2 + 3 * m ^ 2) ^ 2)))",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonOrderedXYRetardedAdvancedDressedSurfaceConductivityZeroBroadeningBoundary_disorder_zero",
-    "module": "LeanCondensedMatter.Models.MassiveDirac.Conductivity.Hall.FiniteBroadeningBornLadderWeakDisorder",
-    "externalAxioms": [],
-    "docString": "The physically normalized fixed-cutoff zero-broadening ordered source-`.y` conductivity has a\nfinite one-sided weak-disorder limit. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensorZeroBroadeningBoundary_hallComponent_disorder_zero"
-    ],
-    "dependencies": [
-      "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonOrderedXYRetardedAdvancedDressedSurfaceMomentumIntegralZeroBroadeningBoundary_disorder_zero"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensorZeroBroadeningBoundary_hallComponent_disorder_zero"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ (e : ℝ) (regime : QuantumTheory.Models.MassiveDirac.FixedCutoffMetallicBornRegime),\n  QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornBoundaryRealRenormalization regime.v regime.m\n        regime.probeEnergy regime.disorderStrength regime.hbar regime.pMax <\n      1 →\n    QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonLadderDeterminantZeroBroadeningBoundary regime.v\n          regime.m regime.probeEnergy regime.disorderStrength regime.hbar regime.pMax ≠\n        0 →\n      Filter.Tendsto\n        (fun broadening =>\n          (QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensor\n                e regime.v regime.m regime.probeEnergy broadening regime.disorderStrength regime.hbar\n                regime.pMax).component\n            0 1)\n        (nhdsWithin 0 (Set.Ioi 0))\n        (nhds\n          (QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonOrderedXYRetardedAdvancedDressedSurfaceConductivityZeroBroadeningBoundary\n            e regime.v regime.m regime.probeEnergy regime.disorderStrength regime.hbar regime.pMax))",
     "standardAxioms": [
       "Classical.choice",
@@ -81022,51 +81107,6 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensor_component_broadening_zero"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (e v m probeEnergy hbar pMax : ℝ),\n  v ≠ 0 →\n    hbar ≠ 0 →\n      |m| < probeEnergy →\n        probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2 →\n          Filter.Tendsto\n            (fun disorderStrength =>\n              QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonOrderedXYRetardedAdvancedDressedSurfaceMomentumIntegralZeroBroadeningBoundary\n                e v m probeEnergy disorderStrength hbar pMax)\n            (nhdsWithin 0 (Set.Ioi 0))\n            (nhds\n              ↑(-16 * Real.pi ^ 2 * e ^ 2 * probeEnergy * m * (probeEnergy ^ 2 + m ^ 2) /\n                  (probeEnergy ^ 2 + 3 * m ^ 2) ^ 2))",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonOrderedXYRetardedAdvancedDressedSurfaceMomentumIntegralZeroBroadeningBoundary_disorder_zero",
-    "module": "LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.HallZeroBroadeningWeakDisorder",
-    "externalAxioms": [],
-    "docString": "The fixed-cutoff zero-broadening ordered source-`.y` Středa momentum-integral response has a\nfinite one-sided weak-disorder limit. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonOrderedXYRetardedAdvancedDressedSurfaceConductivityZeroBroadeningBoundary_disorder_zero"
-    ],
-    "dependencies": [
-      "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonTransverseLadderActionZeroBroadeningBoundary_div_disorder_zero",
-      "QuantumTheory.Transport.momentumMeasurePrefactor_pos"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonOrderedXYRetardedAdvancedDressedSurfaceConductivityZeroBroadeningBoundary_disorder_zero"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -81445,94 +81485,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (e v m probeEnergy hbar pMax : ℝ),\n  v ≠ 0 →\n    0 < hbar →\n      |m| < probeEnergy →\n        probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2 →\n          Filter.Tendsto\n            (fun disorderStrength =>\n              (QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensorZeroBroadeningBoundary\n                    e v m probeEnergy disorderStrength hbar pMax).hallComponent\n                0 1)\n            (nhdsWithin 0 (Set.Ioi 0))\n            (nhds\n              ↑(-2 * e ^ 2 * probeEnergy * m * (probeEnergy ^ 2 + m ^ 2) /\n                  (Real.pi * hbar * (probeEnergy ^ 2 + 3 * m ^ 2) ^ 2)))",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensorZeroBroadeningBoundary_hallComponent_disorder_zero",
-    "module": "LeanCondensedMatter.Models.MassiveDirac.Conductivity.Hall.FiniteBroadeningBornLadderProjection",
-    "externalAxioms": [],
-    "docString": "The fixed-cutoff Hall projection has the same one-sided weak-disorder limit as the ordered `xy`\nendpoint, now interpreted as the antisymmetric part of a completed conductivity tensor. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensorZeroBroadeningBoundary_hallComponent_disorder_zero_eq_nonCrossing"
-    ],
-    "dependencies": [
-      "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonOrderedXYRetardedAdvancedDressedSurfaceConductivityZeroBroadeningBoundary_disorder_zero"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensorZeroBroadeningBoundary_hallComponent_disorder_zero_eq_nonCrossing"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (e v m probeEnergy hbar pMax : ℝ),\n  v ≠ 0 →\n    0 < hbar →\n      |m| < probeEnergy →\n        probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2 →\n          Filter.Tendsto\n            (fun disorderStrength =>\n              (QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensorZeroBroadeningBoundary\n                    e v m probeEnergy disorderStrength hbar pMax).hallComponent\n                0 1)\n            (nhdsWithin 0 (Set.Ioi 0))\n            (nhds ↑(QuantumTheory.Models.MassiveDirac.nonCrossingHallConductivity e hbar m probeEnergy))",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensorZeroBroadeningBoundary_hallComponent_disorder_zero_eq_nonCrossing",
-    "module": "LeanCondensedMatter.Models.MassiveDirac.Conductivity.Hall.NonCrossing",
-    "externalAxioms": [],
-    "docString": "The sequential zero-broadening then weak-disorder Hall projection reproduces the Ado\nnon-crossing conductivity formula. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Models.MassiveDirac.AheScalingParameters.tendsto_zeroBroadeningPairAtDisorder_sxy_disorder_zero"
-    ],
-    "dependencies": [
-      "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensorZeroBroadeningBoundary_hallComponent_disorder_zero"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Models.MassiveDirac.AheScalingParameters.tendsto_zeroBroadeningPairAtDisorder_sxy_disorder_zero"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ (measured source : Fin 2) (e : ℝ) (regime : QuantumTheory.Models.MassiveDirac.FixedCutoffMetallicBornRegime),\n  QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornBoundaryRealRenormalization regime.v regime.m\n        regime.probeEnergy regime.disorderStrength regime.hbar regime.pMax <\n      1 →\n    QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonLadderDeterminantZeroBroadeningBoundary regime.v\n          regime.m regime.probeEnergy regime.disorderStrength regime.hbar regime.pMax ≠\n        0 →\n      Filter.Tendsto\n        (fun broadening =>\n          (QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensor\n                e regime.v regime.m regime.probeEnergy broadening regime.disorderStrength regime.hbar\n                regime.pMax).component\n            measured source)\n        (nhdsWithin 0 (Set.Ioi 0))\n        (nhds\n          ((QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensorZeroBroadeningBoundary\n                e regime.v regime.m regime.probeEnergy regime.disorderStrength regime.hbar regime.pMax).component\n            measured source))",
     "standardAxioms": [
       "Classical.choice",
@@ -81600,8 +81552,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonLadderSolvedVectorZeroBroadeningBoundary_y_div_disorder_zero",
-      "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonOrderedXYRetardedAdvancedDressedSurfaceMomentumIntegralZeroBroadeningBoundary_disorder_zero"
+      "QuantumTheory.Models.MassiveDirac.FiniteCutoffBornDyson.Hall.ZeroBroadeningWeakDisorder.tendsto_orderedXY_momentumIntegral",
+      "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonLadderSolvedVectorZeroBroadeningBoundary_y_div_disorder_zero"
     ],
     "dependencies": [
       "QuantumTheory.Models.MassiveDirac.inPlaneLadderAction_apply_y",
@@ -81615,8 +81567,8 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonLadderSolvedVectorZeroBroadeningBoundary_y_div_disorder_zero",
-      "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonOrderedXYRetardedAdvancedDressedSurfaceMomentumIntegralZeroBroadeningBoundary_disorder_zero"
+      "QuantumTheory.Models.MassiveDirac.FiniteCutoffBornDyson.Hall.ZeroBroadeningWeakDisorder.tendsto_orderedXY_momentumIntegral",
+      "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonLadderSolvedVectorZeroBroadeningBoundary_y_div_disorder_zero"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -92919,15 +92871,15 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
-    "statement": "∀ {H : Type u_2} {Ω : Type u_3} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] [inst_3 : Fintype Ω] (ensemble : QuantumTheory.Transport.FiniteDisorderEnsemble)\n  (energyLeft regulatorLeft energyRight regulatorRight : ℝ),\n  regulatorLeft ≠ 0 →\n    regulatorRight ≠ 0 →\n      ∀ (potentialBound : ℝ),\n        0 ≤ potentialBound →\n          (∀ (ω : Ω), ‖↑(ensemble.impurityPotential ω)‖ ≤ potentialBound) →\n            potentialBound ^ 2 * |regulatorLeft|⁻¹ * |regulatorRight|⁻¹ < 1 →\n              IsUnit\n                (1 -\n                  ensemble.retardedAdvancedLadderCLM (ensemble.freeGreenOfRegulator energyLeft regulatorLeft)\n                    (ensemble.freeGreenOfRegulator energyRight regulatorRight))",
+    "terminal": false,
+    "statement": "∀ {H : Type u_2} {Ω : Type u_3} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] [inst_3 : Fintype Ω] (ensemble : QuantumTheory.Transport.FiniteDisorderEnsemble)\n  (energyLeft regulatorLeft energyRight regulatorRight : ℝ),\n  regulatorLeft ≠ 0 →\n    regulatorRight ≠ 0 →\n      ∀ (potentialBound : ℝ),\n        (∀ (ω : Ω), ‖↑(ensemble.impurityPotential ω)‖ ≤ potentialBound) →\n          potentialBound ^ 2 * |regulatorLeft|⁻¹ * |regulatorRight|⁻¹ < 1 →\n            IsUnit\n              (1 -\n                ensemble.retardedAdvancedLadderCLM (ensemble.freeGreenOfRegulator energyLeft regulatorLeft)\n                  (ensemble.freeGreenOfRegulator energyRight regulatorRight))",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -92938,14 +92890,18 @@
     "docString": "The microscopic condition `M²/(|γL| |γR|)<1` makes\n`I - L` invertible on the bounded-operator space. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_connectedTwoGreen_sub_resummedFreeLadder_le"
+    ],
     "dependencies": [
       "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_freeGreenLadder_le_uniformPotential_sq"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_connectedTwoGreen_sub_resummedFreeLadder_le"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -93078,7 +93034,8 @@
       "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_configurationGreen_fluctuation_sub_firstDyson_le",
       "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_connectedTwoGreenInsertion_le_uniformPotential_sq",
       "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_connectedTwoGreen_sub_firstBornRung_le_cubic",
-      "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_exactSecondMoment_le_uniformPotential_sq"
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_exactSecondMoment_le_uniformPotential_sq",
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.uniformPotentialBound_nonneg"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
@@ -93089,9 +93046,10 @@
       "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_configurationGreen_fluctuation_sub_firstDyson_le",
       "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_connectedTwoGreenInsertion_le_uniformPotential_sq",
       "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_connectedTwoGreen_sub_firstBornRung_le_cubic",
-      "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_exactSecondMoment_le_uniformPotential_sq"
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_exactSecondMoment_le_uniformPotential_sq",
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.uniformPotentialBound_nonneg"
     ],
-    "compiledConsumerCount": 6,
+    "compiledConsumerCount": 7,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -93240,7 +93198,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} {Ω : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] [inst_3 : FiniteDimensional ℂ H] [inst_4 : Fintype Ω]\n  (ensemble : QuantumTheory.Transport.FiniteDisorderEnsemble) (energyLeft regulatorLeft energyRight regulatorRight : ℝ),\n  regulatorLeft ≠ 0 →\n    regulatorRight ≠ 0 →\n      ∀ (measuredVertex sourceVertex : H →L[ℂ] H) (potentialBound : ℝ),\n        0 ≤ potentialBound →\n          (∀ (ω : Ω), ‖↑(ensemble.impurityPotential ω)‖ ≤ potentialBound) →\n            ‖ensemble.averagedTwoGreenVertexTraceKernelOfRegulators energyLeft regulatorLeft energyRight regulatorRight\n                    measuredVertex sourceVertex -\n                  QuantumTheory.Transport.twoGreenVertexTraceKernel measuredVertex\n                    (ensemble.averagedGreenOfRegulator energyLeft regulatorLeft) sourceVertex\n                    (ensemble.averagedGreenOfRegulator energyRight regulatorRight)‖ ≤\n              ↑(Module.finrank ℂ H) * ‖measuredVertex‖ *\n                (2 * |regulatorLeft|⁻¹ ^ 2 * potentialBound * ‖sourceVertex‖ *\n                  (2 * |regulatorRight|⁻¹ ^ 2 * potentialBound))",
+    "statement": "∀ {H : Type u_1} {Ω : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] [inst_3 : FiniteDimensional ℂ H] [inst_4 : Fintype Ω]\n  (ensemble : QuantumTheory.Transport.FiniteDisorderEnsemble) (energyLeft regulatorLeft energyRight regulatorRight : ℝ),\n  regulatorLeft ≠ 0 →\n    regulatorRight ≠ 0 →\n      ∀ (measuredVertex sourceVertex : H →L[ℂ] H) (potentialBound : ℝ),\n        (∀ (ω : Ω), ‖↑(ensemble.impurityPotential ω)‖ ≤ potentialBound) →\n          ‖ensemble.averagedTwoGreenVertexTraceKernelOfRegulators energyLeft regulatorLeft energyRight regulatorRight\n                  measuredVertex sourceVertex -\n                QuantumTheory.Transport.twoGreenVertexTraceKernel measuredVertex\n                  (ensemble.averagedGreenOfRegulator energyLeft regulatorLeft) sourceVertex\n                  (ensemble.averagedGreenOfRegulator energyRight regulatorRight)‖ ≤\n            ↑(Module.finrank ℂ H) * ‖measuredVertex‖ *\n              (2 * |regulatorLeft|⁻¹ ^ 2 * potentialBound * ‖sourceVertex‖ *\n                (2 * |regulatorRight|⁻¹ ^ 2 * potentialBound))",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -93286,7 +93244,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} {Ω : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] [inst_3 : Fintype Ω] (ensemble : QuantumTheory.Transport.FiniteDisorderEnsemble)\n  (energy regulator : ℝ),\n  regulator ≠ 0 →\n    ensemble.IsCentered →\n      ∀ (ω : Ω) (potentialBound : ℝ),\n        0 ≤ potentialBound →\n          (∀ (ξ : Ω), ‖↑(ensemble.impurityPotential ξ)‖ ≤ potentialBound) →\n            ‖ensemble.configurationGreenOfRegulator energy regulator ω -\n                    ensemble.averagedGreenOfRegulator energy regulator -\n                  ensemble.freeGreenOfRegulator energy regulator * ↑(ensemble.impurityPotential ω) *\n                    ensemble.freeGreenOfRegulator energy regulator‖ ≤\n              2 * |regulator|⁻¹ ^ 3 * potentialBound ^ 2",
+    "statement": "∀ {H : Type u_1} {Ω : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] [inst_3 : Fintype Ω] (ensemble : QuantumTheory.Transport.FiniteDisorderEnsemble)\n  (energy regulator : ℝ),\n  regulator ≠ 0 →\n    ensemble.IsCentered →\n      ∀ (ω : Ω) (potentialBound : ℝ),\n        (∀ (ξ : Ω), ‖↑(ensemble.impurityPotential ξ)‖ ≤ potentialBound) →\n          ‖ensemble.configurationGreenOfRegulator energy regulator ω -\n                  ensemble.averagedGreenOfRegulator energy regulator -\n                ensemble.freeGreenOfRegulator energy regulator * ↑(ensemble.impurityPotential ω) *\n                  ensemble.freeGreenOfRegulator energy regulator‖ ≤\n            2 * |regulator|⁻¹ ^ 3 * potentialBound ^ 2",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -93312,6 +93270,7 @@
       "QuantumTheory.Transport.FiniteDisorderEnsemble.configurationGreenOfRegulator_eq_secondOrder_add_exactRemainder_left",
       "QuantumTheory.Transport.FiniteDisorderEnsemble.map_average",
       "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_average_le_of_forall",
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.uniformPotentialBound_nonneg",
       "QuantumTheory.Transport.norm_resolvent_spectralParameterOfRegulator_le"
     ],
     "crossModuleDirectWrapper": false,
@@ -93428,7 +93387,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} {Ω : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] [inst_3 : Fintype Ω] (ensemble : QuantumTheory.Transport.FiniteDisorderEnsemble)\n  (energyLeft regulatorLeft energyRight regulatorRight : ℝ),\n  regulatorLeft ≠ 0 →\n    regulatorRight ≠ 0 →\n      ∀ (vertex : H →L[ℂ] H) (potentialBound : ℝ),\n        0 ≤ potentialBound →\n          (∀ (ω : Ω), ‖↑(ensemble.impurityPotential ω)‖ ≤ potentialBound) →\n            ‖ensemble.connectedTwoGreenInsertionOfRegulators energyLeft regulatorLeft energyRight regulatorRight\n                  vertex‖ ≤\n              2 * |regulatorLeft|⁻¹ ^ 2 * potentialBound * ‖vertex‖ * (2 * |regulatorRight|⁻¹ ^ 2 * potentialBound)",
+    "statement": "∀ {H : Type u_1} {Ω : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] [inst_3 : Fintype Ω] (ensemble : QuantumTheory.Transport.FiniteDisorderEnsemble)\n  (energyLeft regulatorLeft energyRight regulatorRight : ℝ),\n  regulatorLeft ≠ 0 →\n    regulatorRight ≠ 0 →\n      ∀ (vertex : H →L[ℂ] H) (potentialBound : ℝ),\n        (∀ (ω : Ω), ‖↑(ensemble.impurityPotential ω)‖ ≤ potentialBound) →\n          ‖ensemble.connectedTwoGreenInsertionOfRegulators energyLeft regulatorLeft energyRight regulatorRight vertex‖ ≤\n            2 * |regulatorLeft|⁻¹ ^ 2 * potentialBound * ‖vertex‖ * (2 * |regulatorRight|⁻¹ ^ 2 * potentialBound)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -93451,7 +93410,8 @@
     ],
     "dependencies": [
       "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_average_le_of_forall",
-      "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_configurationGreen_sub_averaged_le"
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_configurationGreen_sub_averaged_le",
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.uniformPotentialBound_nonneg"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -93473,7 +93433,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} {Ω : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] [inst_3 : Fintype Ω] (ensemble : QuantumTheory.Transport.FiniteDisorderEnsemble)\n  (energyLeft regulatorLeft energyRight regulatorRight : ℝ),\n  regulatorLeft ≠ 0 →\n    regulatorRight ≠ 0 →\n      ensemble.IsCentered →\n        ∀ (vertex : H →L[ℂ] H) (potentialBound : ℝ),\n          0 ≤ potentialBound →\n            (∀ (ω : Ω), ‖↑(ensemble.impurityPotential ω)‖ ≤ potentialBound) →\n              ‖ensemble.connectedTwoGreenInsertionOfRegulators energyLeft regulatorLeft energyRight regulatorRight\n                      vertex -\n                    ensemble.firstBornTwoGreenRungOfRegulators energyLeft regulatorLeft energyRight regulatorRight\n                      vertex‖ ≤\n                2 * |regulatorLeft|⁻¹ ^ 3 * potentialBound ^ 2 * ‖vertex‖ *\n                    (2 * |regulatorRight|⁻¹ ^ 2 * potentialBound) +\n                  |regulatorLeft|⁻¹ ^ 2 * potentialBound * ‖vertex‖ * (2 * |regulatorRight|⁻¹ ^ 3 * potentialBound ^ 2)",
+    "statement": "∀ {H : Type u_1} {Ω : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] [inst_3 : Fintype Ω] (ensemble : QuantumTheory.Transport.FiniteDisorderEnsemble)\n  (energyLeft regulatorLeft energyRight regulatorRight : ℝ),\n  regulatorLeft ≠ 0 →\n    regulatorRight ≠ 0 →\n      ensemble.IsCentered →\n        ∀ (vertex : H →L[ℂ] H) (potentialBound : ℝ),\n          (∀ (ω : Ω), ‖↑(ensemble.impurityPotential ω)‖ ≤ potentialBound) →\n            ‖ensemble.connectedTwoGreenInsertionOfRegulators energyLeft regulatorLeft energyRight regulatorRight\n                    vertex -\n                  ensemble.firstBornTwoGreenRungOfRegulators energyLeft regulatorLeft energyRight regulatorRight\n                    vertex‖ ≤\n              2 * |regulatorLeft|⁻¹ ^ 3 * potentialBound ^ 2 * ‖vertex‖ *\n                  (2 * |regulatorRight|⁻¹ ^ 2 * potentialBound) +\n                |regulatorLeft|⁻¹ ^ 2 * potentialBound * ‖vertex‖ * (2 * |regulatorRight|⁻¹ ^ 3 * potentialBound ^ 2)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -93499,8 +93459,9 @@
       "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_average_le_of_forall",
       "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_configurationGreen_fluctuation_sub_firstDyson_le",
       "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_configurationGreen_sub_averaged_le",
-      "QuantumTheory.Transport.norm_resolvent_spectralParameterOfRegulator_le",
-      "_private.LeanCondensedMatter.Transport.Disorder.FirstRungNormBound.0.QuantumTheory.Transport.FiniteDisorderEnsemble.norm_mul_three_le"
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_mul_three_le",
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.uniformPotentialBound_nonneg",
+      "QuantumTheory.Transport.norm_resolvent_spectralParameterOfRegulator_le"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -93522,7 +93483,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {H : Type u_1} {Ω : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] [inst_3 : Fintype Ω] (ensemble : QuantumTheory.Transport.FiniteDisorderEnsemble)\n  (energyLeft regulatorLeft energyRight regulatorRight : ℝ),\n  regulatorLeft ≠ 0 →\n    regulatorRight ≠ 0 →\n      ensemble.IsCentered →\n        ∀ (vertex : H →L[ℂ] H) (potentialBound : ℝ),\n          0 ≤ potentialBound →\n            (∀ (ω : Ω), ‖↑(ensemble.impurityPotential ω)‖ ≤ potentialBound) →\n              potentialBound ^ 2 * |regulatorLeft|⁻¹ * |regulatorRight|⁻¹ < 1 →\n                ∀\n                  (hinvertible :\n                    IsUnit\n                      (1 -\n                        ensemble.retardedAdvancedLadderCLM (ensemble.freeGreenOfRegulator energyLeft regulatorLeft)\n                          (ensemble.freeGreenOfRegulator energyRight regulatorRight))),\n                  ‖ensemble.connectedTwoGreenInsertionOfRegulators energyLeft regulatorLeft energyRight regulatorRight\n                          vertex -\n                        ensemble.freeGreenOfRegulator energyLeft regulatorLeft *\n                            (QuantumTheory.Transport.resummedLadderVertex\n                                (ensemble.retardedAdvancedLadderCLM\n                                  (ensemble.freeGreenOfRegulator energyLeft regulatorLeft)\n                                  (ensemble.freeGreenOfRegulator energyRight regulatorRight))\n                                hinvertible vertex -\n                              vertex) *\n                          ensemble.freeGreenOfRegulator energyRight regulatorRight‖ ≤\n                    2 * |regulatorLeft|⁻¹ ^ 3 * potentialBound ^ 2 * ‖vertex‖ *\n                          (2 * |regulatorRight|⁻¹ ^ 2 * potentialBound) +\n                        |regulatorLeft|⁻¹ ^ 2 * potentialBound * ‖vertex‖ *\n                          (2 * |regulatorRight|⁻¹ ^ 3 * potentialBound ^ 2) +\n                      |regulatorLeft|⁻¹ * |regulatorRight|⁻¹ *\n                        ((potentialBound ^ 2 * |regulatorLeft|⁻¹ * |regulatorRight|⁻¹) ^ 2 /\n                            (1 - potentialBound ^ 2 * |regulatorLeft|⁻¹ * |regulatorRight|⁻¹) *\n                          ‖vertex‖)",
+    "statement": "∀ {H : Type u_1} {Ω : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] [inst_3 : Fintype Ω] (ensemble : QuantumTheory.Transport.FiniteDisorderEnsemble)\n  (energyLeft regulatorLeft energyRight regulatorRight : ℝ) (hregLeft : regulatorLeft ≠ 0)\n  (hregRight : regulatorRight ≠ 0),\n  ensemble.IsCentered →\n    ∀ (vertex : H →L[ℂ] H) (potentialBound : ℝ)\n      (hpotential : ∀ (ω : Ω), ‖↑(ensemble.impurityPotential ω)‖ ≤ potentialBound)\n      (hsmall : potentialBound ^ 2 * |regulatorLeft|⁻¹ * |regulatorRight|⁻¹ < 1),\n      ‖ensemble.connectedTwoGreenInsertionOfRegulators energyLeft regulatorLeft energyRight regulatorRight vertex -\n            ensemble.freeGreenOfRegulator energyLeft regulatorLeft *\n                (QuantumTheory.Transport.resummedLadderVertex\n                    (ensemble.retardedAdvancedLadderCLM (ensemble.freeGreenOfRegulator energyLeft regulatorLeft)\n                      (ensemble.freeGreenOfRegulator energyRight regulatorRight))\n                    ⋯ vertex -\n                  vertex) *\n              ensemble.freeGreenOfRegulator energyRight regulatorRight‖ ≤\n        2 * |regulatorLeft|⁻¹ ^ 3 * potentialBound ^ 2 * ‖vertex‖ * (2 * |regulatorRight|⁻¹ ^ 2 * potentialBound) +\n            |regulatorLeft|⁻¹ ^ 2 * potentialBound * ‖vertex‖ * (2 * |regulatorRight|⁻¹ ^ 3 * potentialBound ^ 2) +\n          |regulatorLeft|⁻¹ * |regulatorRight|⁻¹ *\n            ((potentialBound ^ 2 * |regulatorLeft|⁻¹ * |regulatorRight|⁻¹) ^ 2 /\n                (1 - potentialBound ^ 2 * |regulatorLeft|⁻¹ * |regulatorRight|⁻¹) *\n              ‖vertex‖)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -93537,11 +93498,12 @@
     "name": "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_connectedTwoGreen_sub_resummedFreeLadder_le",
     "module": "LeanCondensedMatter.Transport.Disorder.ConnectedLadderNormBound",
     "externalAxioms": [],
-    "docString": "The exact connected insertion is close to the first Born rung **plus all\nhigher geometric ladder rungs**, with explicit microscopic smallness condition.\nThe `hinvertible` witness is always available under `hsmall` by\n`isUnit_one_sub_freeGreenLadder_of_smallPotential`. ",
+    "docString": "The exact connected insertion is close to the first Born rung **plus all\nhigher geometric ladder rungs**, with explicit microscopic smallness condition.\nThe ladder inverse is derived from the microscopic smallness condition. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.isUnit_one_sub_freeGreenLadder_of_smallPotential",
       "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_connectedTwoGreen_sub_firstBornRung_le_cubic",
       "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_freeGreenLadder_le_uniformPotential_sq",
       "QuantumTheory.Transport.norm_resolvent_spectralParameterOfRegulator_le",
@@ -93610,7 +93572,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_2} {Ω : Type u_3} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] [inst_3 : Fintype Ω] (ensemble : QuantumTheory.Transport.FiniteDisorderEnsemble)\n  (kernel : H →L[ℂ] H) (potentialBound : ℝ),\n  0 ≤ potentialBound →\n    (∀ (ω : Ω), ‖↑(ensemble.impurityPotential ω)‖ ≤ potentialBound) →\n      ‖ensemble.exactSecondMoment kernel‖ ≤ potentialBound ^ 2 * ‖kernel‖",
+    "statement": "∀ {H : Type u_2} {Ω : Type u_3} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] [inst_3 : Fintype Ω] (ensemble : QuantumTheory.Transport.FiniteDisorderEnsemble)\n  (kernel : H →L[ℂ] H) (potentialBound : ℝ),\n  (∀ (ω : Ω), ‖↑(ensemble.impurityPotential ω)‖ ≤ potentialBound) →\n    ‖ensemble.exactSecondMoment kernel‖ ≤ potentialBound ^ 2 * ‖kernel‖",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -93634,7 +93596,8 @@
     "dependencies": [
       "QuantumTheory.Transport.FiniteDisorderEnsemble.exactSecondMoment_eq_average",
       "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_average_le_of_forall",
-      "_private.LeanCondensedMatter.Transport.Disorder.LadderNormBound.0.QuantumTheory.Transport.FiniteDisorderEnsemble.norm_mul_three_le"
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_mul_three_le",
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.uniformPotentialBound_nonneg"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -93656,7 +93619,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_2} {Ω : Type u_3} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] [inst_3 : Fintype Ω] (ensemble : QuantumTheory.Transport.FiniteDisorderEnsemble)\n  (energyLeft regulatorLeft energyRight regulatorRight : ℝ),\n  regulatorLeft ≠ 0 →\n    regulatorRight ≠ 0 →\n      ∀ (potentialBound : ℝ),\n        0 ≤ potentialBound →\n          (∀ (ω : Ω), ‖↑(ensemble.impurityPotential ω)‖ ≤ potentialBound) →\n            ‖ensemble.retardedAdvancedLadderCLM (ensemble.freeGreenOfRegulator energyLeft regulatorLeft)\n                  (ensemble.freeGreenOfRegulator energyRight regulatorRight)‖ ≤\n              potentialBound ^ 2 * |regulatorLeft|⁻¹ * |regulatorRight|⁻¹",
+    "statement": "∀ {H : Type u_2} {Ω : Type u_3} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] [inst_3 : Fintype Ω] (ensemble : QuantumTheory.Transport.FiniteDisorderEnsemble)\n  (energyLeft regulatorLeft energyRight regulatorRight : ℝ),\n  regulatorLeft ≠ 0 →\n    regulatorRight ≠ 0 →\n      ∀ (potentialBound : ℝ),\n        (∀ (ω : Ω), ‖↑(ensemble.impurityPotential ω)‖ ≤ potentialBound) →\n          ‖ensemble.retardedAdvancedLadderCLM (ensemble.freeGreenOfRegulator energyLeft regulatorLeft)\n                (ensemble.freeGreenOfRegulator energyRight regulatorRight)‖ ≤\n            potentialBound ^ 2 * |regulatorLeft|⁻¹ * |regulatorRight|⁻¹",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -93703,7 +93666,53 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_2} {Ω : Type u_3} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] [inst_3 : Fintype Ω] (ensemble : QuantumTheory.Transport.FiniteDisorderEnsemble)\n  (leftGreen rightGreen : H →L[ℂ] H) (potentialBound : ℝ),\n  0 ≤ potentialBound →\n    (∀ (ω : Ω), ‖↑(ensemble.impurityPotential ω)‖ ≤ potentialBound) →\n      ‖ensemble.retardedAdvancedLadderCLM leftGreen rightGreen‖ ≤ potentialBound ^ 2 * ‖leftGreen‖ * ‖rightGreen‖",
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [CompleteSpace H] (a b c : H →L[ℂ] H),\n  ‖a * b * c‖ ≤ ‖a‖ * ‖b‖ * ‖c‖",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_mul_three_le",
+    "module": "LeanCondensedMatter.Transport.Disorder.FirstRungNormBound",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_connectedTwoGreen_sub_firstBornRung_le_cubic",
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_exactSecondMoment_le_uniformPotential_sq",
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_retardedAdvancedLadderCLM_le_uniformPotential_sq"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_connectedTwoGreen_sub_firstBornRung_le_cubic",
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_exactSecondMoment_le_uniformPotential_sq",
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_retardedAdvancedLadderCLM_le_uniformPotential_sq"
+    ],
+    "compiledConsumerCount": 3,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {H : Type u_2} {Ω : Type u_3} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] [inst_3 : Fintype Ω] (ensemble : QuantumTheory.Transport.FiniteDisorderEnsemble)\n  (leftGreen rightGreen : H →L[ℂ] H) (potentialBound : ℝ),\n  (∀ (ω : Ω), ‖↑(ensemble.impurityPotential ω)‖ ≤ potentialBound) →\n    ‖ensemble.retardedAdvancedLadderCLM leftGreen rightGreen‖ ≤ potentialBound ^ 2 * ‖leftGreen‖ * ‖rightGreen‖",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -93726,7 +93735,7 @@
     ],
     "dependencies": [
       "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_exactSecondMoment_le_uniformPotential_sq",
-      "_private.LeanCondensedMatter.Transport.Disorder.LadderNormBound.0.QuantumTheory.Transport.FiniteDisorderEnsemble.norm_mul_three_le"
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_mul_three_le"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -93805,7 +93814,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "_private.LeanCondensedMatter.Transport.Disorder.AveragedSelfEnergy.0.QuantumTheory.Transport.FiniteDisorderEnsemble.star_averagedGreenOfRegulator_injective"
+      "_private.LeanCondensedMatter.Transport.Disorder.AveragedSelfEnergy.0.QuantumTheory.Transport.FiniteDisorderEnsemble.averagedGreenOfRegulator_denseRange"
     ],
     "dependencies": [
       "QuantumTheory.Transport.FiniteDisorderEnsemble.average_star",
@@ -93814,7 +93823,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "_private.LeanCondensedMatter.Transport.Disorder.AveragedSelfEnergy.0.QuantumTheory.Transport.FiniteDisorderEnsemble.star_averagedGreenOfRegulator_injective"
+      "_private.LeanCondensedMatter.Transport.Disorder.AveragedSelfEnergy.0.QuantumTheory.Transport.FiniteDisorderEnsemble.averagedGreenOfRegulator_denseRange"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -93858,6 +93867,56 @@
     "completedMention": false,
     "compiledConsumers": [],
     "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {H : Type u_1} {Ω : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] [inst_3 : Fintype Ω] (ensemble : QuantumTheory.Transport.FiniteDisorderEnsemble)\n  (bound : ℝ), (∀ (ω : Ω), ‖↑(ensemble.impurityPotential ω)‖ ≤ bound) → 0 ≤ bound",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.FiniteDisorderEnsemble.uniformPotentialBound_nonneg",
+    "module": "LeanCondensedMatter.Transport.Disorder.Finite",
+    "externalAxioms": [],
+    "docString": "A uniform impurity-norm upper bound is automatically nonnegative in a\nnormalized finite disorder ensemble. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_configurationGreen_fluctuation_sub_firstDyson_le",
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_connectedTwoGreenInsertion_le_uniformPotential_sq",
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_connectedTwoGreen_sub_firstBornRung_le_cubic",
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_exactSecondMoment_le_uniformPotential_sq"
+    ],
+    "dependencies": [
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_average_le_of_forall"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_configurationGreen_fluctuation_sub_firstDyson_le",
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_connectedTwoGreenInsertion_le_uniformPotential_sq",
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_connectedTwoGreen_sub_firstBornRung_le_cubic",
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_exactSecondMoment_le_uniformPotential_sq"
+    ],
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -98768,7 +98827,7 @@
     "dependents": [
       "QuantumTheory.Transport.norm_resolvent_spectralParameterOfRegulator_le",
       "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornInvertibility.0.QuantumTheory.Models.MassiveDirac.im_inner_self_pauliGreenOperatorOfRegulator_apply",
-      "_private.LeanCondensedMatter.Transport.Disorder.AveragedSelfEnergy.0.QuantumTheory.Transport.FiniteDisorderEnsemble.im_inner_configurationGreenOfRegulator_apply_self"
+      "_private.LeanCondensedMatter.Transport.Disorder.AveragedSelfEnergy.0.QuantumTheory.Transport.FiniteDisorderEnsemble.im_inner_averagedGreenOfRegulator_apply_self"
     ],
     "dependencies": [
       "QuantumTheory.Transport.spectralParameterOfRegulator_im",
@@ -98779,7 +98838,7 @@
     "compiledConsumers": [
       "QuantumTheory.Transport.norm_resolvent_spectralParameterOfRegulator_le",
       "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornInvertibility.0.QuantumTheory.Models.MassiveDirac.im_inner_self_pauliGreenOperatorOfRegulator_apply",
-      "_private.LeanCondensedMatter.Transport.Disorder.AveragedSelfEnergy.0.QuantumTheory.Transport.FiniteDisorderEnsemble.im_inner_configurationGreenOfRegulator_apply_self"
+      "_private.LeanCondensedMatter.Transport.Disorder.AveragedSelfEnergy.0.QuantumTheory.Transport.FiniteDisorderEnsemble.im_inner_averagedGreenOfRegulator_apply_self"
     ],
     "compiledConsumerCount": 3,
     "axioms": [
@@ -99621,8 +99680,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Models.MassiveDirac.tendsto_disorderStrength_mul_finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceMomentumIntegralZeroBroadeningBoundary_disorder_zero",
-      "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonOrderedXYRetardedAdvancedDressedSurfaceMomentumIntegralZeroBroadeningBoundary_disorder_zero",
+      "QuantumTheory.Models.MassiveDirac.FiniteCutoffBornDyson.Hall.ZeroBroadeningWeakDisorder.tendsto_orderedXY_momentumIntegral",
+      "QuantumTheory.Models.MassiveDirac.FiniteCutoffBornDyson.Longitudinal.ZeroBroadeningWeakDisorder.tendsto_disorder_mul_momentum_integral",
       "QuantumTheory.Transport.fullAngleMomentumMeasurePrefactor_pos",
       "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.HallZeroBroadeningIntegral.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral_y_eq_endpointForm",
       "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.HallZeroBroadeningProvenance.0.QuantumTheory.Models.MassiveDirac.tendsto_orderedXYProvenance_rungXSolvedY_disorder_zero",
@@ -99633,8 +99692,8 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Models.MassiveDirac.tendsto_disorderStrength_mul_finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceMomentumIntegralZeroBroadeningBoundary_disorder_zero",
-      "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonOrderedXYRetardedAdvancedDressedSurfaceMomentumIntegralZeroBroadeningBoundary_disorder_zero",
+      "QuantumTheory.Models.MassiveDirac.FiniteCutoffBornDyson.Hall.ZeroBroadeningWeakDisorder.tendsto_orderedXY_momentumIntegral",
+      "QuantumTheory.Models.MassiveDirac.FiniteCutoffBornDyson.Longitudinal.ZeroBroadeningWeakDisorder.tendsto_disorder_mul_momentum_integral",
       "QuantumTheory.Transport.fullAngleMomentumMeasurePrefactor_pos",
       "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.HallZeroBroadeningIntegral.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral_y_eq_endpointForm",
       "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.HallZeroBroadeningProvenance.0.QuantumTheory.Models.MassiveDirac.tendsto_orderedXYProvenance_rungXSolvedY_disorder_zero",
@@ -106899,11 +106958,14 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
+      "ContinuousLinearMap.SpectralTraceClass.compact",
+      "ContinuousLinearMap.diagonalExpectationValue_nonneg",
+      "ContinuousLinearMap.eigenvalue_nonneg_of_isPositive",
       "QuantumTheory.DensityOperator.hasSum_eigenvalues_eq_one",
+      "QuantumTheory.DensityOperator.spectralTraceClass",
       "QuantumTheory.DensityOperator.tsum_eigenvalues_eq_one",
       "_private.LeanCondensedMatter.QuantumTheory.POVM.Born.0.QuantumTheory.hasSum_probabilityKernel_eigenvector",
       "_private.LeanCondensedMatter.QuantumTheory.POVM.Born.0.QuantumTheory.hasSum_probabilityKernel_outcome",
-      "_private.LeanCondensedMatter.QuantumTheory.POVM.Born.0.QuantumTheory.probabilityKernel_nonneg",
       "tsum_fiberwise_eq_of_summable"
     ],
     "crossModuleDirectWrapper": false,
@@ -119619,7 +119681,7 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Common.ExternalInsertionBlockLayout.assembleDiagram_componentExternalPairCount_external",
-      "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleConnectedBlocks_signedDysonShuffleOrbit_eq_independentLocals",
+      "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleConnectedBlocks_signedDysonShuffleOrbit_eq_subsetTimes",
       "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleDiagram_componentExternalTime_eq_localTimes",
       "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleDiagram_componentOrderedDiagram_externalLabel"
     ],
@@ -119632,7 +119694,7 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Common.ExternalInsertionBlockLayout.assembleDiagram_componentExternalPairCount_external",
-      "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleConnectedBlocks_signedDysonShuffleOrbit_eq_independentLocals",
+      "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleConnectedBlocks_signedDysonShuffleOrbit_eq_subsetTimes",
       "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleDiagram_componentExternalTime_eq_localTimes",
       "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleDiagram_componentOrderedDiagram_externalLabel"
     ],
@@ -119771,7 +119833,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleDiagram_externalLabel_eq_iff_evenSubsetLabels",
+      "SecondQuantization.Fermionic.sum_fixedExternalPartitionDysonFiber_eq_sizes_shuffles_localLabels",
       "SecondQuantization.Fermionic.sum_fixedExternalPartitionFiber_eq_sum_localLabelConnectedBlockFamilies"
     ],
     "dependencies": [
@@ -119780,7 +119842,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleDiagram_externalLabel_eq_iff_evenSubsetLabels",
+      "SecondQuantization.Fermionic.sum_fixedExternalPartitionDysonFiber_eq_sizes_shuffles_localLabels",
       "SecondQuantization.Fermionic.sum_fixedExternalPartitionFiber_eq_sum_localLabelConnectedBlockFamilies"
     ],
     "compiledConsumerCount": 2,
@@ -120975,7 +121037,7 @@
       "SecondQuantization.Common.ExternalInsertionBlockLayout.externalBlockLayout_assembleDiagram_interactionOwner",
       "SecondQuantization.Common.ExternalInsertionBlockLayout.sum_externalPartitionFiber_eq_sum_connectedBlockFamilies",
       "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleConnectedBlocks_signedDysonShuffleOrbit",
-      "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleConnectedBlocks_signedDysonShuffleOrbit_eq_independentLocals"
+      "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleConnectedBlocks_signedDysonShuffleOrbit_eq_subsetTimes"
     ],
     "dependencies": [
       "SecondQuantization.Common.ExternalInsertionBlockLayout.assembleDiagram_reachable_iff_same_block",
@@ -120991,7 +121053,7 @@
       "SecondQuantization.Common.ExternalInsertionBlockLayout.externalBlockLayout_assembleDiagram_interactionOwner",
       "SecondQuantization.Common.ExternalInsertionBlockLayout.sum_externalPartitionFiber_eq_sum_connectedBlockFamilies",
       "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleConnectedBlocks_signedDysonShuffleOrbit",
-      "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleConnectedBlocks_signedDysonShuffleOrbit_eq_independentLocals"
+      "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleConnectedBlocks_signedDysonShuffleOrbit_eq_subsetTimes"
     ],
     "compiledConsumerCount": 6,
     "axioms": [
@@ -121113,7 +121175,7 @@
       "SecondQuantization.Common.ExternalInsertionBlockLayout.externalBlockLayout_assembleDiagram_eq",
       "SecondQuantization.Common.ExternalInsertionBlockLayout.externalBlockLayout_assembleDiagram_interactionOwner",
       "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleConnectedBlocks_signedDysonShuffleOrbit",
-      "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleConnectedBlocks_signedDysonShuffleOrbit_eq_independentLocals"
+      "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleConnectedBlocks_signedDysonShuffleOrbit_eq_subsetTimes"
     ],
     "dependencies": [
       "SecondQuantization.Common.ExternalInsertionBlockLayout.assembleDiagram_reachable_iff_same_block",
@@ -121128,7 +121190,7 @@
       "SecondQuantization.Common.ExternalInsertionBlockLayout.externalBlockLayout_assembleDiagram_eq",
       "SecondQuantization.Common.ExternalInsertionBlockLayout.externalBlockLayout_assembleDiagram_interactionOwner",
       "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleConnectedBlocks_signedDysonShuffleOrbit",
-      "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleConnectedBlocks_signedDysonShuffleOrbit_eq_independentLocals"
+      "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleConnectedBlocks_signedDysonShuffleOrbit_eq_subsetTimes"
     ],
     "compiledConsumerCount": 5,
     "axioms": [
@@ -122407,7 +122469,7 @@
       "SecondQuantization.Common.ExternalInsertionBlockLayout.externalBlockLayout_assembleDiagram_interactionOwner",
       "SecondQuantization.Common.ExternalInsertionBlockLayout.externalComponentPartition_assembleDiagram",
       "SecondQuantization.Common.ExternalInsertionBlockLayout.hasNoVacuumComponent_assembleDiagram",
-      "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleConnectedBlocks_signedDysonShuffleOrbit_eq_independentLocals"
+      "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleConnectedBlocks_signedDysonShuffleOrbit_eq_subsetTimes"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
@@ -122417,7 +122479,7 @@
       "SecondQuantization.Common.ExternalInsertionBlockLayout.externalBlockLayout_assembleDiagram_interactionOwner",
       "SecondQuantization.Common.ExternalInsertionBlockLayout.externalComponentPartition_assembleDiagram",
       "SecondQuantization.Common.ExternalInsertionBlockLayout.hasNoVacuumComponent_assembleDiagram",
-      "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleConnectedBlocks_signedDysonShuffleOrbit_eq_independentLocals"
+      "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleConnectedBlocks_signedDysonShuffleOrbit_eq_subsetTimes"
     ],
     "compiledConsumerCount": 5,
     "axioms": [
@@ -122703,7 +122765,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.sum_fixedExternalPartitionFiber_eq_sum_connectedBlockFamilies"
+      "SecondQuantization.Fermionic.sum_fixedExternalPartitionFiber_eq_sum_localLabelConnectedBlockFamilies"
     ],
     "dependencies": [
       "SecondQuantization.Common.ExternalInsertionBlockLayout.externalComponentPartition_assembleDiagram",
@@ -122712,7 +122774,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.sum_fixedExternalPartitionFiber_eq_sum_connectedBlockFamilies"
+      "SecondQuantization.Fermionic.sum_fixedExternalPartitionFiber_eq_sum_localLabelConnectedBlockFamilies"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -122999,7 +123061,7 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Common.ExternalInsertionBlockLayout.sum_vacuumFree_fixedPartition_eq_sizes_shuffles_assembled",
-      "SecondQuantization.Fermionic.sum_fixedExternalPartitionDysonFiber_eq_sizes_shuffles"
+      "SecondQuantization.Fermionic.sum_fixedExternalPartitionDysonFiber_eq_sizes_shuffles_localLabels"
     ],
     "dependencies": [
       "SecondQuantization.Common.ExternalInsertionBlockLayout.sum_fixedPartitionPhysical_eq_sizes_shuffles"
@@ -123008,7 +123070,7 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Common.ExternalInsertionBlockLayout.sum_vacuumFree_fixedPartition_eq_sizes_shuffles_assembled",
-      "SecondQuantization.Fermionic.sum_fixedExternalPartitionDysonFiber_eq_sizes_shuffles"
+      "SecondQuantization.Fermionic.sum_fixedExternalPartitionDysonFiber_eq_sizes_shuffles_localLabels"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -126767,7 +126829,7 @@
       "SecondQuantization.Common.ExternalInsertionDiagram.externalBlockLayout_vertexPart",
       "SecondQuantization.Common.ExternalInsertionDiagram.reachable_iff_externalBlockLayout_same_block",
       "SecondQuantization.Common.ExternalInsertionDiagram.vacuumFreeComponentsEquivExternalBlocks_symm_apply",
-      "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleConnectedBlocks_signedDysonShuffleOrbit_eq_independentLocals",
+      "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleConnectedBlocks_signedDysonShuffleOrbit_eq_subsetTimes",
       "SecondQuantization.Fermionic.externalPartitionSourceSign_eq_componentExternalOrderSign_of_vacuumFree"
     ],
     "dependencies": [
@@ -126780,7 +126842,7 @@
       "SecondQuantization.Common.ExternalInsertionDiagram.externalBlockLayout_vertexPart",
       "SecondQuantization.Common.ExternalInsertionDiagram.reachable_iff_externalBlockLayout_same_block",
       "SecondQuantization.Common.ExternalInsertionDiagram.vacuumFreeComponentsEquivExternalBlocks_symm_apply",
-      "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleConnectedBlocks_signedDysonShuffleOrbit_eq_independentLocals",
+      "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleConnectedBlocks_signedDysonShuffleOrbit_eq_subsetTimes",
       "SecondQuantization.Fermionic.externalPartitionSourceSign_eq_componentExternalOrderSign_of_vacuumFree"
     ],
     "compiledConsumerCount": 6,
@@ -154625,7 +154687,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleConnectedBlocks_signedDysonShuffleOrbit_eq_independentLocals"
+      "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleConnectedBlocks_signedDysonShuffleOrbit_eq_subsetTimes"
     ],
     "dependencies": [
       "SecondQuantization.Common.ExternalInsertionBlockLayout.assembleDiagram_componentExternalPairCount_external",
@@ -154639,7 +154701,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleConnectedBlocks_signedDysonShuffleOrbit_eq_independentLocals"
+      "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleConnectedBlocks_signedDysonShuffleOrbit_eq_subsetTimes"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -154675,7 +154737,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleConnectedBlocks_signedDysonShuffleOrbit_eq_independentLocals"
+      "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleConnectedBlocks_signedDysonShuffleOrbit_eq_subsetTimes"
     ],
     "dependencies": [
       "SecondQuantization.Common.ExternalInsertionBlockLayout.externalComponentPartition_assembleDiagram",
@@ -154686,57 +154748,6 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleConnectedBlocks_signedDysonShuffleOrbit_eq_independentLocals"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] {E n : ℕ}\n  (layout : SecondQuantization.Common.ExternalInsertionBlockLayout E n)\n  (F :\n    (B : ↥layout.partition.parts) →\n      SecondQuantization.Common.ExternalInsertionDiagram (SecondQuantization.Fermionic.ExternalFieldLabel Mode)\n        (SecondQuantization.Common.QuarticVertexLabel Mode) ((↑B).card / 2) n (layout.interactionBlock Finset.univ B)),\n  (∀ (B : ↥layout.partition.parts), (F B).vertexGraph.Preconnected) →\n    ∀ (ε : Mode → ℝ) (β : ℝ) (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ)\n      (externalTime : Fin (2 * E) → ℝ),\n      have d := layout.assembleDiagram Finset.univ F;\n      ∑ shuffle,\n          d.orderedDysonAmplitude ε β g externalTime\n            (SecondQuantization.Common.ExternalInsertionDiagram.assembleInteractionOrder d\n              (SecondQuantization.Common.ExternalInsertionDiagram.canonicalComponentInteractionOrders d) shuffle) =\n        SecondQuantization.Fermionic.externalPartitionSourceSign layout.partition *\n          ∏ B,\n            SecondQuantization.Fermionic.ExternalInsertionWickDiagram.dysonAmplitude\n              (SecondQuantization.Common.ExternalInsertionDiagram.slotCongr\n                (Combinatorics.standardSlotEquiv (layout.interactionBlock Finset.univ B)) (F B))\n              ε β g fun i => externalTime (layout.sourceEquiv.symm ⟨B, i⟩)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleConnectedBlocks_signedDysonShuffleOrbit_eq_independentLocals",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalSubsetAssembly",
-    "externalAxioms": [],
-    "docString": "The genuine **integrated physical component-shuffle orbit**\nof assembled connected Wick blocks equals the source-partition Koszul sign\ntimes the product of the *original independent local Dyson amplitudes*.\n\nEvery local factor carries its actual labels, contracted Wick pairing,\noriginal restricted source times, and canonical increasing interaction-slot\norder. The product is indexed by the prescribed external partition rather\nthan an unverified choice of graph components. The equality is only after\nthe complete interaction-order shuffle sum; it does not factor an\nindividual ordered-simplex integral. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleConnectedBlocks_signedDysonShuffleOrbit_eq_subsetTimes"
-    ],
-    "dependencies": [
-      "SecondQuantization.Common.ExternalInsertionBlockLayout.assembleDiagram_componentExternalSector_external",
-      "SecondQuantization.Common.ExternalInsertionBlockLayout.externalComponentPartition_assembleDiagram",
-      "SecondQuantization.Common.ExternalInsertionBlockLayout.hasNoVacuumComponent_assembleDiagram",
-      "SecondQuantization.Common.ExternalInsertionBlockLayout.sourceEquiv_fst",
-      "SecondQuantization.Common.ExternalInsertionDiagram.vacuumFreeComponentsEquivExternalBlocks_apply",
-      "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleConnectedBlocks_componentDysonAmplitude_eq_local",
-      "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleConnectedBlocks_signedDysonShuffleOrbit",
-      "SimpleGraph.componentBlock_mem_componentPartition"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
       "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleConnectedBlocks_signedDysonShuffleOrbit_eq_subsetTimes"
     ],
     "compiledConsumerCount": 1,
@@ -154754,7 +154765,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] {E n : ℕ}\n  (layout : SecondQuantization.Common.ExternalInsertionBlockLayout E n)\n  (F :\n    (B : ↥layout.partition.parts) →\n      SecondQuantization.Common.ExternalInsertionDiagram (SecondQuantization.Fermionic.ExternalFieldLabel Mode)\n        (SecondQuantization.Common.QuarticVertexLabel Mode) ((↑B).card / 2) n (layout.interactionBlock Finset.univ B)),\n  (∀ (B : ↥layout.partition.parts), (F B).vertexGraph.Preconnected) →\n    ∀ (ε : Mode → ℝ) (β : ℝ) (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ) (times : Fin (2 * E) → ℝ),\n      have d := layout.assembleDiagram Finset.univ F;\n      ∑ shuffle,\n          d.orderedDysonAmplitude ε β g times\n            (SecondQuantization.Common.ExternalInsertionDiagram.assembleInteractionOrder d\n              (SecondQuantization.Common.ExternalInsertionDiagram.canonicalComponentInteractionOrders d) shuffle) =\n        SecondQuantization.Fermionic.externalPartitionSourceSign layout.partition *\n          ∏ B,\n            SecondQuantization.Fermionic.ExternalInsertionWickDiagram.dysonAmplitude\n              (SecondQuantization.Common.ExternalInsertionDiagram.slotCongr\n                (Combinatorics.standardSlotEquiv (layout.interactionBlock Finset.univ B)) (F B))\n              ε β g (SecondQuantization.Fermionic.evenExternalSubsetTimes times ↑B ⋯)",
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] {E n : ℕ}\n  (layout : SecondQuantization.Common.ExternalInsertionBlockLayout E n)\n  (F :\n    (B : ↥layout.partition.parts) →\n      SecondQuantization.Common.ExternalInsertionDiagram (SecondQuantization.Fermionic.ExternalFieldLabel Mode)\n        (SecondQuantization.Common.QuarticVertexLabel Mode) ((↑B).card / 2) n (layout.interactionBlock Finset.univ B)),\n  (∀ (B : ↥layout.partition.parts), (F B).vertexGraph.Preconnected) →\n    ∀ (ε : Mode → ℝ) (β : ℝ) (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ)\n      (externalTime : Fin (2 * E) → ℝ),\n      have d := layout.assembleDiagram Finset.univ F;\n      ∑ shuffle,\n          d.orderedDysonAmplitude ε β g externalTime\n            (SecondQuantization.Common.ExternalInsertionDiagram.assembleInteractionOrder d\n              (SecondQuantization.Common.ExternalInsertionDiagram.canonicalComponentInteractionOrders d) shuffle) =\n        SecondQuantization.Fermionic.externalPartitionSourceSign layout.partition *\n          ∏ B,\n            SecondQuantization.Fermionic.ExternalInsertionWickDiagram.dysonAmplitude\n              (SecondQuantization.Common.ExternalInsertionDiagram.slotCongr\n                (Combinatorics.standardSlotEquiv (layout.interactionBlock Finset.univ B)) (F B))\n              ε β g (SecondQuantization.Fermionic.evenExternalSubsetTimes externalTime ↑B ⋯)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -154769,14 +154780,21 @@
     "name": "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleConnectedBlocks_signedDysonShuffleOrbit_eq_subsetTimes",
     "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalSubsetAssembly",
     "externalAxioms": [],
-    "docString": "The physical connected-block Dyson shuffle orbit, now expressed using\nthe canonical increasing *subset restriction* of external insertion times.\nThese are exactly the times appearing in each connected source-subset\ncoefficient.  Only the full shuffle sum, never a single simplex integral,\nis replaced by the product of local integrated amplitudes. ",
-    "directWrapperTargetModule": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalSubsetAssembly",
-    "directWrapperOf": "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleConnectedBlocks_signedDysonShuffleOrbit_eq_independentLocals",
+    "docString": "The complete physical component-shuffle orbit of assembled connected\nWick blocks equals the source-partition Koszul sign times the product of\nindependent local Dyson amplitudes at canonically restricted subset times.\n\nEach local factor retains its actual labels, oriented pairing, and increasing\ninteraction-slot order. Only the complete shuffle sum factors, not an\nindividual ordered-simplex integral. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.sum_signedDysonShuffleOrbits_eq_prod_connectedBlocks"
     ],
     "dependencies": [
-      "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleConnectedBlocks_signedDysonShuffleOrbit_eq_independentLocals"
+      "SecondQuantization.Common.ExternalInsertionBlockLayout.assembleDiagram_componentExternalSector_external",
+      "SecondQuantization.Common.ExternalInsertionBlockLayout.externalComponentPartition_assembleDiagram",
+      "SecondQuantization.Common.ExternalInsertionBlockLayout.hasNoVacuumComponent_assembleDiagram",
+      "SecondQuantization.Common.ExternalInsertionBlockLayout.sourceEquiv_fst",
+      "SecondQuantization.Common.ExternalInsertionDiagram.vacuumFreeComponentsEquivExternalBlocks_apply",
+      "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleConnectedBlocks_componentDysonAmplitude_eq_local",
+      "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleConnectedBlocks_signedDysonShuffleOrbit",
+      "SimpleGraph.componentBlock_mem_componentPartition"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -154969,50 +154987,6 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleDiagram_componentOrderedDiagram_externalLabel"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Mode : Type u_1} {E n : ℕ} (layout : SecondQuantization.Common.ExternalInsertionBlockLayout E n)\n  (F :\n    (B : ↥layout.partition.parts) →\n      SecondQuantization.Common.ExternalInsertionDiagram (SecondQuantization.Fermionic.ExternalFieldLabel Mode)\n        (SecondQuantization.Common.QuarticVertexLabel Mode) ((↑B).card / 2) n (layout.interactionBlock Finset.univ B))\n  (labels : Fin (2 * E) → SecondQuantization.Fermionic.ExternalFieldLabel Mode),\n  (layout.assembleDiagram Finset.univ F).externalLabel = labels ↔\n    ∀ (B : ↥layout.partition.parts),\n      (F B).externalLabel = SecondQuantization.Fermionic.evenExternalSubsetLabels labels ↑B ⋯",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleDiagram_externalLabel_eq_iff_evenSubsetLabels",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalSubsetAssembly",
-    "externalAxioms": [],
-    "docString": "The source labels of an assembled diagram agree with the canonical\nincreasing restriction on *each* external block.  This converts the\nindependent-block label predicate into the source-subset convention used\nby the connected Dyson series, without changing any interaction owners. ",
-    "directWrapperTargetModule": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.BlockAssembly",
-    "directWrapperOf": "SecondQuantization.Common.ExternalInsertionBlockLayout.assembleDiagram_externalLabel_eq_iff",
-    "dependents": [
-      "SecondQuantization.Fermionic.sum_fixedExternalPartitionDysonFiber_eq_sizes_shuffles_localLabels"
-    ],
-    "dependencies": [
-      "SecondQuantization.Common.ExternalInsertionBlockLayout.assembleDiagram_externalLabel_eq_iff"
-    ],
-    "crossModuleDirectWrapper": true,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.sum_fixedExternalPartitionDysonFiber_eq_sizes_shuffles_localLabels"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -166029,7 +166003,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -166041,8 +166015,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleDiagram_componentOrderedDiagram_externalLabel",
-      "SecondQuantization.Fermionic.evenExternalSubsetLabels_externalPartitionBlock"
+      "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleDiagram_componentOrderedDiagram_externalLabel"
     ],
     "dependencies": [
       "SecondQuantization.Common.ExternalInsertionDiagram.externalSector_card_even"
@@ -166050,10 +166023,9 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleDiagram_componentOrderedDiagram_externalLabel",
-      "SecondQuantization.Fermionic.evenExternalSubsetLabels_externalPartitionBlock"
+      "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleDiagram_componentOrderedDiagram_externalLabel"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -166091,7 +166063,6 @@
       "SecondQuantization.Common.ExternalInsertionDiagram.externalComponentPartition_block_card_even",
       "SecondQuantization.Common.ExternalInsertionDiagram.externalSector_card_even",
       "SecondQuantization.Common.ExternalInsertionDiagram.vacuumFreeComponentsEquivExternalBlocks_symm_apply",
-      "SecondQuantization.Fermionic.evenExternalSubsetLabels_componentOrderedDiagram",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalSubsetAssembly.0.SecondQuantization.Fermionic.evenExternalSubsetRestriction_heq_of_eq"
     ],
     "crossModuleDirectWrapper": false,
@@ -166119,7 +166090,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -166131,8 +166102,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleDiagram_componentExternalTime_eq_localTimes",
-      "SecondQuantization.Fermionic.evenExternalSubsetTimes_externalPartitionBlock"
+      "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleDiagram_componentExternalTime_eq_localTimes"
     ],
     "dependencies": [
       "SecondQuantization.Common.ExternalInsertionDiagram.externalSector_card_even"
@@ -166140,10 +166110,9 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleDiagram_componentExternalTime_eq_localTimes",
-      "SecondQuantization.Fermionic.evenExternalSubsetTimes_externalPartitionBlock"
+      "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleDiagram_componentExternalTime_eq_localTimes"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -166181,7 +166150,6 @@
       "SecondQuantization.Common.ExternalInsertionDiagram.externalComponentPartition_block_card_even",
       "SecondQuantization.Common.ExternalInsertionDiagram.externalSector_card_even",
       "SecondQuantization.Common.ExternalInsertionDiagram.vacuumFreeComponentsEquivExternalBlocks_symm_apply",
-      "SecondQuantization.Fermionic.evenExternalSubsetTimes_component",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalSubsetAssembly.0.SecondQuantization.Fermionic.evenExternalSubsetRestriction_heq_of_eq"
     ],
     "crossModuleDirectWrapper": false,
@@ -167828,50 +167796,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {E : ℕ} (π : Finpartition Finset.univ) (P : ↥π.parts),\n  (SecondQuantization.Fermionic.externalPartitionShuffleFull π).blockSlotSet P = ↑P",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.externalPartitionShuffleFull_blockSlotSet",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentSign",
-    "externalAxioms": [],
-    "docString": "The canonical full-source shuffle occupies exactly the source slots\nbelonging to each partition block. This is the generic partition-shuffle\noccupancy theorem specialized to the increasing external-slot order. ",
-    "directWrapperTargetModule": "LeanCondensedMatter.Combinatorics.Shuffle.FinpartitionOrderShuffle",
-    "directWrapperOf": "Finpartition.shuffleOfIncreasingOrderFull_blockSlotSet",
-    "dependents": [
-      "SecondQuantization.Fermionic.externalPartitionSourceSign_eq_componentExternalOrderSign_of_vacuumFree"
-    ],
-    "dependencies": [
-      "Finpartition.shuffleOfIncreasingOrderFull_blockSlotSet"
-    ],
-    "crossModuleDirectWrapper": true,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.externalPartitionSourceSign_eq_componentExternalOrderSign_of_vacuumFree"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ {E : ℕ} (π : Finpartition Finset.univ) (order : ↥π.parts ≃ Fin (Fintype.card ↥π.parts)),\n  (SecondQuantization.Fermionic.externalPartitionShuffleFull π).orderedBlockInversionCount order =\n    Combinatorics.FamilySlotShuffleTo.orderedBlockInversionCount\n      (SecondQuantization.Fermionic.externalPartitionShuffle π) order",
     "standardAxioms": [
       "Classical.choice",
@@ -167981,10 +167905,10 @@
     ],
     "dependencies": [
       "Combinatorics.FamilySlotShuffleTo.orderedBlockInversionCount_eq_of_blockSlotSet",
+      "Finpartition.shuffleOfIncreasingOrderFull_blockSlotSet",
       "SecondQuantization.Common.ExternalInsertionDiagram.componentExternalShuffle_blockSlotSet",
       "SecondQuantization.Common.ExternalInsertionDiagram.vacuumFreeComponentsEquivExternalBlocks_apply",
       "SecondQuantization.Fermionic.componentExternalOrderSign_eq_of_blockOrder",
-      "SecondQuantization.Fermionic.externalPartitionShuffleFull_blockSlotSet",
       "SecondQuantization.Fermionic.externalPartitionShuffleFull_orderedBlockInversionCount"
     ],
     "crossModuleDirectWrapper": false,
@@ -173083,51 +173007,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] {K n : ℕ} (anchor : Fin (2 * K))\n  (π : Finpartition Finset.univ) (heven : ∀ (B : ↥π.parts), Even (↑B).card) (ε : Mode → ℝ) (β : ℝ)\n  (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ)\n  (labels : Fin (2 * K) → SecondQuantization.Fermionic.ExternalFieldLabel Mode) (times : Fin (2 * K) → ℝ),\n  (∑ d,\n      if\n          SecondQuantization.Common.externalComponentPartition\n              (SecondQuantization.Common.ExternalInsertionDiagram.vertexGraph ↑↑d) =\n            π then\n        (↑↑d).dysonAmplitude ε β g times\n      else 0) =\n    ∑\n      p ∈\n        SecondQuantization.Common.ExternalInsertionBlockLayout.fixedPartitionPhysicalSizeShuffleFiniteDomain anchor π\n          heven,\n      if\n          (↑↑((SecondQuantization.Common.ExternalInsertionBlockLayout.fixedPartitionPhysicalSizeShuffleEquiv anchor π\n                        heven).symm\n                    p)).externalLabel =\n            labels then\n        SecondQuantization.Fermionic.ExternalInsertionWickDiagram.dysonAmplitude\n          (↑↑((SecondQuantization.Common.ExternalInsertionBlockLayout.fixedPartitionPhysicalSizeShuffleEquiv anchor π\n                    heven).symm\n                p))\n          ε β g times\n      else 0",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.sum_fixedExternalPartitionDysonFiber_eq_sizes_shuffles",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalSubsetMoment",
-    "externalAxioms": [],
-    "docString": "The actual integrated, fixed-source-label Dyson coefficient in one\neven external-component partition is reindexed by the physical interaction\ncardinalities and their unique owner shuffle, together with independently\npreconnected local labelled Wick diagrams. Each summand remains the\n*actual assembled physical Dyson amplitude*; the further shuffle-orbit\nsummation is needed before its local integrals can be multiplied. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.sum_fixedExternalPartitionDysonFiber_eq_sizes_shuffles_localLabels"
-    ],
-    "dependencies": [
-      "SecondQuantization.Common.ExternalInsertionBlockLayout.sum_vacuumFree_fixedPartition_eq_sizes_shuffles",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalSubsetMoment.0.SecondQuantization.Fermionic.sum_vacuumFreeFixedExternalInsertionWickDiagram_partition"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.sum_fixedExternalPartitionDysonFiber_eq_sizes_shuffles_localLabels"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] {K n : ℕ} (anchor : Fin (2 * K))\n  (π : Finpartition Finset.univ) (heven : ∀ (B : ↥π.parts), Even (↑B).card) (ε : Mode → ℝ) (β : ℝ)\n  (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ)\n  (labels : Fin (2 * K) → SecondQuantization.Fermionic.ExternalFieldLabel Mode) (times : Fin (2 * K) → ℝ),\n  (∑ d,\n      if\n          SecondQuantization.Common.externalComponentPartition\n              (SecondQuantization.Common.ExternalInsertionDiagram.vertexGraph ↑↑d) =\n            π then\n        (↑↑d).dysonAmplitude ε β g times\n      else 0) =\n    ∑\n      p ∈\n        SecondQuantization.Common.ExternalInsertionBlockLayout.fixedPartitionPhysicalSizeShuffleFiniteDomain anchor π\n          heven,\n      let layout :=\n        ↑((SecondQuantization.Common.ExternalInsertionBlockLayout.fixedPartitionSizeShuffleEquiv π heven).symm p.fst);\n      if\n          ∀ (B : ↥layout.partition.parts),\n            (↑p.snd B).externalLabel = SecondQuantization.Fermionic.evenExternalSubsetLabels labels ↑B ⋯ then\n        SecondQuantization.Fermionic.ExternalInsertionWickDiagram.dysonAmplitude\n          (layout.assembleDiagram Finset.univ ↑p.snd) ε β g times\n      else 0",
     "standardAxioms": [
       "Classical.choice",
@@ -173150,59 +173029,15 @@
       "SecondQuantization.Fermionic.sum_fixedExternalPartitionDysonFiber_eq_assignmentOrderedDyson"
     ],
     "dependencies": [
+      "SecondQuantization.Common.ExternalInsertionBlockLayout.assembleDiagram_externalLabel_eq_iff",
       "SecondQuantization.Common.ExternalInsertionBlockLayout.fixedPartitionPhysicalSizeShuffleEquiv_symm_diagram",
-      "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleDiagram_externalLabel_eq_iff_evenSubsetLabels",
-      "SecondQuantization.Fermionic.sum_fixedExternalPartitionDysonFiber_eq_sizes_shuffles"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.sum_fixedExternalPartitionDysonFiber_eq_assignmentOrderedDyson"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] {K n : ℕ} (anchor : Fin (2 * K))\n  (π : Finpartition Finset.univ) (ε : Mode → ℝ) (β : ℝ) (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ)\n  (labels : Fin (2 * K) → SecondQuantization.Fermionic.ExternalFieldLabel Mode) (times : Fin (2 * K) → ℝ),\n  (∑ d,\n      if\n          SecondQuantization.Common.externalComponentPartition\n              (SecondQuantization.Common.ExternalInsertionDiagram.vertexGraph ↑↑d) =\n            π then\n        (↑↑d).dysonAmplitude ε β g times\n      else 0) =\n    ∑ p ∈ SecondQuantization.Common.ExternalInsertionBlockLayout.connectedAssemblyFiniteDomain anchor,\n      if p.fst.partition = π then\n        if\n            (↑(SecondQuantization.Common.ExternalInsertionBlockLayout.assembleConnectedBlockFamily p)).externalLabel =\n              labels then\n          SecondQuantization.Fermionic.ExternalInsertionWickDiagram.dysonAmplitude\n            (↑(SecondQuantization.Common.ExternalInsertionBlockLayout.assembleConnectedBlockFamily p)) ε β g times\n        else 0\n      else 0",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.sum_fixedExternalPartitionFiber_eq_sum_connectedBlockFamilies",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalSubsetMoment",
-    "externalAxioms": [],
-    "docString": "For a *fixed physical external-component partition*, the actual\nfixed-external-label Dyson diagram fiber is reindexed by independent\nconnected block families with exactly that prescribed source partition.\nThe external-field-label condition is retained on the assembled diagram;\nthe integration amplitudes themselves are not yet factorized. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.sum_fixedExternalPartitionFiber_eq_sum_localLabelConnectedBlockFamilies"
-    ],
-    "dependencies": [
-      "SecondQuantization.Common.ExternalInsertionBlockLayout.sum_externalPartitionFiber_eq_sum_connectedBlockFamilies",
+      "SecondQuantization.Common.ExternalInsertionBlockLayout.sum_vacuumFree_fixedPartition_eq_sizes_shuffles",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalSubsetMoment.0.SecondQuantization.Fermionic.sum_vacuumFreeFixedExternalInsertionWickDiagram_partition"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.sum_fixedExternalPartitionFiber_eq_sum_localLabelConnectedBlockFamilies"
+      "SecondQuantization.Fermionic.sum_fixedExternalPartitionDysonFiber_eq_assignmentOrderedDyson"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -173242,7 +173077,8 @@
     ],
     "dependencies": [
       "SecondQuantization.Common.ExternalInsertionBlockLayout.assembleDiagram_externalLabel_eq_iff",
-      "SecondQuantization.Fermionic.sum_fixedExternalPartitionFiber_eq_sum_connectedBlockFamilies"
+      "SecondQuantization.Common.ExternalInsertionBlockLayout.sum_externalPartitionFiber_eq_sum_connectedBlockFamilies",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalSubsetMoment.0.SecondQuantization.Fermionic.sum_vacuumFreeFixedExternalInsertionWickDiagram_partition"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -175615,7 +175451,7 @@
       "SecondQuantization.Common.componentBlock_slotSplitVacuumVertex_mem_vacuumComponentParts",
       "SecondQuantization.Common.hasNoVacuumComponent_iff_forall_component_meetsExternal",
       "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleConnectedBlocks_componentDysonAmplitude_eq_local",
-      "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleConnectedBlocks_signedDysonShuffleOrbit_eq_independentLocals",
+      "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleConnectedBlocks_signedDysonShuffleOrbit_eq_subsetTimes",
       "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleDiagram_componentExternalTime_eq_localTimes",
       "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleDiagram_componentOrderedDiagram_externalLabel",
       "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleDiagram_restrictComponent_heq_local",
@@ -175648,7 +175484,7 @@
       "SecondQuantization.Common.componentBlock_slotSplitVacuumVertex_mem_vacuumComponentParts",
       "SecondQuantization.Common.hasNoVacuumComponent_iff_forall_component_meetsExternal",
       "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleConnectedBlocks_componentDysonAmplitude_eq_local",
-      "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleConnectedBlocks_signedDysonShuffleOrbit_eq_independentLocals",
+      "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleConnectedBlocks_signedDysonShuffleOrbit_eq_subsetTimes",
       "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleDiagram_componentExternalTime_eq_localTimes",
       "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleDiagram_componentOrderedDiagram_externalLabel",
       "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleDiagram_restrictComponent_heq_local",
@@ -194784,48 +194620,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] (A : H →L[ℂ] H) {x : H},\n  ‖x‖ = 1 → ‖inner ℂ x (A x)‖ ≤ ‖A‖",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.QuantumTheory.DensityOperator.Expectation.0.QuantumTheory.norm_inner_apply_le_opNorm_of_norm_eq_one",
-    "module": "LeanCondensedMatter.QuantumTheory.DensityOperator.Expectation",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.DensityOperator.summable_expectation_term"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.DensityOperator.summable_expectation_term"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (ρ : QuantumTheory.DensityOperator H) (A : H →L[ℂ] H), ‖⋯.trace‖ ≤ ‖A‖",
     "standardAxioms": [
       "Classical.choice",
@@ -195579,53 +195373,6 @@
       "QuantumTheory.DensityOperator.spectralTraceClass",
       "QuantumTheory.POVM.hasSum_inner_apply",
       "QuantumTheory.eigenvectorFamily_norm_eq_one"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.hasSum_probNNReal"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {M : Type u_2} [inst_3 : Countable M] (P : QuantumTheory.POVM H M) (ρ : QuantumTheory.DensityOperator H)\n  (a : ρ.op.EigenvectorIndex) (m : M), 0 ≤ QuantumTheory.probabilityKernel✝ P ρ a m",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.QuantumTheory.POVM.Born.0.QuantumTheory.probabilityKernel_nonneg",
-    "module": "LeanCondensedMatter.QuantumTheory.POVM.Born",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.hasSum_probNNReal"
-    ],
-    "dependencies": [
-      "ContinuousLinearMap.SpectralTraceClass.compact",
-      "ContinuousLinearMap.diagonalExpectationValue_nonneg",
-      "ContinuousLinearMap.eigenvalue_nonneg_of_isPositive",
-      "QuantumTheory.DensityOperator.spectralTraceClass"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -206296,8 +206043,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.sum_fixedExternalPartitionDysonFiber_eq_sizes_shuffles",
-      "SecondQuantization.Fermionic.sum_fixedExternalPartitionFiber_eq_sum_connectedBlockFamilies"
+      "SecondQuantization.Fermionic.sum_fixedExternalPartitionDysonFiber_eq_sizes_shuffles_localLabels",
+      "SecondQuantization.Fermionic.sum_fixedExternalPartitionFiber_eq_sum_localLabelConnectedBlockFamilies"
     ],
     "dependencies": [
       "SecondQuantization.Fermionic.sum_vacuumFreeFixedExternalInsertionWickDiagram_eq_sum_if"
@@ -206305,8 +206052,8 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.sum_fixedExternalPartitionDysonFiber_eq_sizes_shuffles",
-      "SecondQuantization.Fermionic.sum_fixedExternalPartitionFiber_eq_sum_connectedBlockFamilies"
+      "SecondQuantization.Fermionic.sum_fixedExternalPartitionDysonFiber_eq_sizes_shuffles_localLabels",
+      "SecondQuantization.Fermionic.sum_fixedExternalPartitionFiber_eq_sum_localLabelConnectedBlockFamilies"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -210311,7 +210058,7 @@
     "directWrapperOf": null,
     "dependents": [
       "QuantumTheory.Transport.FiniteDisorderEnsemble.averagedGreenOfRegulator_isUnit",
-      "_private.LeanCondensedMatter.Transport.Disorder.AveragedSelfEnergy.0.QuantumTheory.Transport.FiniteDisorderEnsemble.averagedGreenOfRegulator_injective"
+      "_private.LeanCondensedMatter.Transport.Disorder.AveragedSelfEnergy.0.QuantumTheory.Transport.FiniteDisorderEnsemble.averagedGreenOfRegulator_denseRange"
     ],
     "dependencies": [
       "QuantumTheory.Transport.spectralShift_mul_resolvent_spectralParameterOfRegulator",
@@ -210322,7 +210069,7 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.Transport.FiniteDisorderEnsemble.averagedGreenOfRegulator_isUnit",
-      "_private.LeanCondensedMatter.Transport.Disorder.AveragedSelfEnergy.0.QuantumTheory.Transport.FiniteDisorderEnsemble.averagedGreenOfRegulator_injective"
+      "_private.LeanCondensedMatter.Transport.Disorder.AveragedSelfEnergy.0.QuantumTheory.Transport.FiniteDisorderEnsemble.averagedGreenOfRegulator_denseRange"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -210361,56 +210108,13 @@
       "QuantumTheory.Transport.FiniteDisorderEnsemble.averagedGreenOfRegulator_isUnit"
     ],
     "dependencies": [
-      "_private.LeanCondensedMatter.Transport.Disorder.AveragedSelfEnergy.0.QuantumTheory.Transport.FiniteDisorderEnsemble.star_averagedGreenOfRegulator_injective"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.FiniteDisorderEnsemble.averagedGreenOfRegulator_isUnit"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {H : Type u_1} {Ω : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] [inst_3 : Fintype Ω] (ensemble : QuantumTheory.Transport.FiniteDisorderEnsemble)\n  (energy regulator : ℝ), regulator ≠ 0 → Function.Injective ⇑(ensemble.averagedGreenOfRegulator energy regulator)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Transport.Disorder.AveragedSelfEnergy.0.QuantumTheory.Transport.FiniteDisorderEnsemble.averagedGreenOfRegulator_injective",
-    "module": "LeanCondensedMatter.Transport.Disorder.AveragedSelfEnergy",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.Transport.Disorder.AveragedSelfEnergy.0.QuantumTheory.Transport.FiniteDisorderEnsemble.star_averagedGreenOfRegulator_injective"
-    ],
-    "dependencies": [
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.star_averagedGreenOfRegulator",
       "_private.LeanCondensedMatter.Transport.Disorder.AveragedSelfEnergy.0.QuantumTheory.Transport.FiniteDisorderEnsemble.averagedGreenOfRegulator_antilipschitz"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "_private.LeanCondensedMatter.Transport.Disorder.AveragedSelfEnergy.0.QuantumTheory.Transport.FiniteDisorderEnsemble.star_averagedGreenOfRegulator_injective"
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.averagedGreenOfRegulator_isUnit"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -210491,57 +210195,13 @@
       "_private.LeanCondensedMatter.Transport.Disorder.AveragedSelfEnergy.0.QuantumTheory.Transport.FiniteDisorderEnsemble.averagedGreenOfRegulator_antilipschitz"
     ],
     "dependencies": [
-      "_private.LeanCondensedMatter.Transport.Disorder.AveragedSelfEnergy.0.QuantumTheory.Transport.FiniteDisorderEnsemble.im_inner_configurationGreenOfRegulator_apply_self",
+      "QuantumTheory.Transport.im_inner_resolvent_spectralParameterOfRegulator_apply_self",
       "_private.LeanCondensedMatter.Transport.Disorder.AveragedSelfEnergy.0.QuantumTheory.Transport.FiniteDisorderEnsemble.inner_average_apply"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
       "_private.LeanCondensedMatter.Transport.Disorder.AveragedSelfEnergy.0.QuantumTheory.Transport.FiniteDisorderEnsemble.averagedGreenOfRegulator_antilipschitz"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {H : Type u_1} {Ω : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] [inst_3 : Fintype Ω] (ensemble : QuantumTheory.Transport.FiniteDisorderEnsemble)\n  (energy regulator : ℝ),\n  regulator ≠ 0 →\n    ∀ (ω : Ω) (v : H),\n      (inner ℂ ((ensemble.configurationGreenOfRegulator energy regulator ω) v) v).im =\n        regulator * ‖(ensemble.configurationGreenOfRegulator energy regulator ω) v‖ ^ 2",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Transport.Disorder.AveragedSelfEnergy.0.QuantumTheory.Transport.FiniteDisorderEnsemble.im_inner_configurationGreenOfRegulator_apply_self",
-    "module": "LeanCondensedMatter.Transport.Disorder.AveragedSelfEnergy",
-    "externalAxioms": [],
-    "docString": "The imaginary part of a configuration-resolvent quadratic form equals the signed regulator\nmultiplied by the squared resolvent norm. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.Transport.Disorder.AveragedSelfEnergy.0.QuantumTheory.Transport.FiniteDisorderEnsemble.im_inner_averagedGreenOfRegulator_apply_self"
-    ],
-    "dependencies": [
-      "QuantumTheory.Transport.im_inner_resolvent_spectralParameterOfRegulator_apply_self"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.Transport.Disorder.AveragedSelfEnergy.0.QuantumTheory.Transport.FiniteDisorderEnsemble.im_inner_averagedGreenOfRegulator_apply_self"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -210586,137 +210246,6 @@
       "_private.LeanCondensedMatter.Transport.Disorder.AveragedSelfEnergy.0.QuantumTheory.Transport.FiniteDisorderEnsemble.im_inner_averagedGreenOfRegulator_apply_self"
     ],
     "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {H : Type u_1} {Ω : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] [inst_3 : Fintype Ω] (ensemble : QuantumTheory.Transport.FiniteDisorderEnsemble)\n  (energy regulator : ℝ),\n  regulator ≠ 0 → Function.Injective ⇑(star (ensemble.averagedGreenOfRegulator energy regulator))",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Transport.Disorder.AveragedSelfEnergy.0.QuantumTheory.Transport.FiniteDisorderEnsemble.star_averagedGreenOfRegulator_injective",
-    "module": "LeanCondensedMatter.Transport.Disorder.AveragedSelfEnergy",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.Transport.Disorder.AveragedSelfEnergy.0.QuantumTheory.Transport.FiniteDisorderEnsemble.averagedGreenOfRegulator_denseRange"
-    ],
-    "dependencies": [
-      "QuantumTheory.Transport.FiniteDisorderEnsemble.star_averagedGreenOfRegulator",
-      "_private.LeanCondensedMatter.Transport.Disorder.AveragedSelfEnergy.0.QuantumTheory.Transport.FiniteDisorderEnsemble.averagedGreenOfRegulator_injective"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.Transport.Disorder.AveragedSelfEnergy.0.QuantumTheory.Transport.FiniteDisorderEnsemble.averagedGreenOfRegulator_denseRange"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [CompleteSpace H] (a b c : H →L[ℂ] H),\n  ‖a * b * c‖ ≤ ‖a‖ * ‖b‖ * ‖c‖",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Transport.Disorder.FirstRungNormBound.0.QuantumTheory.Transport.FiniteDisorderEnsemble.norm_mul_three_le",
-    "module": "LeanCondensedMatter.Transport.Disorder.FirstRungNormBound",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_connectedTwoGreen_sub_firstBornRung_le_cubic"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_connectedTwoGreen_sub_firstBornRung_le_cubic"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {H : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [CompleteSpace H] (a b c : H →L[ℂ] H),\n  ‖a * b * c‖ ≤ ‖a‖ * ‖b‖ * ‖c‖",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Transport.Disorder.LadderNormBound.0.QuantumTheory.Transport.FiniteDisorderEnsemble.norm_mul_three_le",
-    "module": "LeanCondensedMatter.Transport.Disorder.LadderNormBound",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_exactSecondMoment_le_uniformPotential_sq",
-      "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_retardedAdvancedLadderCLM_le_uniformPotential_sq"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_exactSecondMoment_le_uniformPotential_sq",
-      "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_retardedAdvancedLadderCLM_le_uniformPotential_sq"
-    ],
-    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
