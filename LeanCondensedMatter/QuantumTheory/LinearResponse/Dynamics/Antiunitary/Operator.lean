@@ -54,13 +54,6 @@ theorem conjugateOperator_apply (A : H →L[ℂ] H) (x : H) :
     Θ.conjugateOperator A x = Θ.equiv (A (Θ.equiv.symm x)) := rfl
 
 @[simp]
-theorem conjugateOperator_add (A B : H →L[ℂ] H) :
-    Θ.conjugateOperator (A + B) =
-      Θ.conjugateOperator A + Θ.conjugateOperator B := by
-  ext x
-  simp only [conjugateOperator_apply, add_apply, map_add]
-
-@[simp]
 theorem conjugateOperator_mul (A B : H →L[ℂ] H) :
     Θ.conjugateOperator (A * B) =
       Θ.conjugateOperator A * Θ.conjugateOperator B := by
@@ -77,36 +70,34 @@ theorem conjugateOperator_smul (c : ℂ) (A : H →L[ℂ] H) :
   simp only [conjugateOperator_apply, smul_apply]
   exact Θ.equiv.map_smulₛₗ c (A (Θ.equiv.symm x))
 
-@[simp]
-theorem conjugateOperator_one :
-    Θ.conjugateOperator (1 : H →L[ℂ] H) = 1 := by
-  ext x
-  change Θ.equiv (Θ.equiv.symm x) = x
-  exact Θ.equiv.apply_symm_apply x
-
-@[simp]
-theorem conjugateOperator_zero :
-    Θ.conjugateOperator (0 : H →L[ℂ] H) = 0 := by
-  ext x
-  change Θ.equiv (0 : H) = 0
-  exact map_zero Θ.equiv
-
 /-- The conjugation action is a unital ring homomorphism on bounded
 endomorphisms, even for infinite-dimensional state spaces. -/
 noncomputable def conjugateOperatorRingHom :
     (H →L[ℂ] H) →+* (H →L[ℂ] H) where
   toFun := Θ.conjugateOperator
-  map_one' := Θ.conjugateOperator_one
+  map_one' := by
+    ext x
+    change Θ.equiv (Θ.equiv.symm x) = x
+    exact Θ.equiv.apply_symm_apply x
   map_mul' := Θ.conjugateOperator_mul
-  map_zero' := Θ.conjugateOperator_zero
-  map_add' := Θ.conjugateOperator_add
+  map_zero' := by
+    ext x
+    change Θ.equiv (0 : H) = 0
+    exact map_zero Θ.equiv
+  map_add' := by
+    intro A B
+    ext x
+    simp only [conjugateOperator_apply, add_apply, map_add]
 
 /-- The ring action is real-linear; its continuity in finite dimensions
 gives a direct route to exponential covariance. -/
 private noncomputable def conjugateOperatorRealLinear :
     (H →L[ℂ] H) →ₗ[ℝ] (H →L[ℂ] H) where
   toFun := Θ.conjugateOperator
-  map_add' := Θ.conjugateOperator_add
+  map_add' := by
+    intro A B
+    ext x
+    simp only [conjugateOperator_apply, add_apply, map_add]
   map_smul' := by
     intro r A
     change Θ.conjugateOperator ((r : ℂ) • A) =
