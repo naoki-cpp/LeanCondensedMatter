@@ -683,11 +683,10 @@ theorem evenExternalSubsetLabels_externalPartitionBlock
       ((d.componentOrderedDiagram
         ((d.vacuumFreeComponentsEquivExternalBlocks hVac).symm P)).externalLabel) := by
   let B := (d.vacuumFreeComponentsEquivExternalBlocks hVac).symm P
-  exact (evenExternalSubsetRestriction_heq_of_eq d.externalLabel
+  exact evenExternalSubsetRestriction_heq_of_eq d.externalLabel
     (d.externalComponentPartition_block_card_even P.1 P.2)
     (d.externalSector_card_even B)
-    (d.vacuumFreeComponentsEquivExternalBlocks_symm_apply hVac P).symm).trans
-      (heq_of_eq (evenExternalSubsetLabels_componentOrderedDiagram (d := d) B))
+    (d.vacuumFreeComponentsEquivExternalBlocks_symm_apply hVac P).symm
 
 omit [LinearOrder Mode] [Fintype Mode] in
 /-- The same external-block transport preserves the insertion times in
@@ -704,11 +703,10 @@ theorem evenExternalSubsetTimes_externalPartitionBlock
       (d.componentExternalTime times
         ((d.vacuumFreeComponentsEquivExternalBlocks hVac).symm P)) := by
   let B := (d.vacuumFreeComponentsEquivExternalBlocks hVac).symm P
-  exact (evenExternalSubsetRestriction_heq_of_eq times
+  exact evenExternalSubsetRestriction_heq_of_eq times
     (d.externalComponentPartition_block_card_even P.1 P.2)
     (d.externalSector_card_even B)
-    (d.vacuumFreeComponentsEquivExternalBlocks_symm_apply hVac P).symm).trans
-      (heq_of_eq (evenExternalSubsetTimes_component (d := d) times B))
+    (d.vacuumFreeComponentsEquivExternalBlocks_symm_apply hVac P).symm
 
 
 end Fermionic
