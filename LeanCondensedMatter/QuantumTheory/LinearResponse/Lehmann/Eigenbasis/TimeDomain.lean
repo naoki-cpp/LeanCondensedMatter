@@ -130,7 +130,7 @@ theorem eigenbasisTimeDomainTerm_eq_weight_mul_transitionPhase
       (eigenbasisTransitionData system data A B mn).weight *
         eigenbasisTransitionPhase system data mn.1 mn.2 τ := by
   simp [eigenbasisTimeDomainTerm, LehmannTransitionData.timeTerm,
-    eigenbasisTransitionPhase_eq_exp_energyDifference]
+    eigenbasisTransitionPhase]
 
 /-- The countable time-domain eigenbasis Lehmann series. -/
 noncomputable def eigenbasisTimeDomainSeries
@@ -185,8 +185,7 @@ theorem eigenbasisExpectation_heisenberg_mul_eq_tsum
   rw [inner_heisenbergEvolution_of_eigenvectors system
     (data.basis n) (data.basis m) (data.energy n) (data.energy m)
     (data.hamiltonian_apply_basis n) (data.hamiltonian_apply_basis m) A τ]
-  rw [← eigenbasisTransitionPhase_eq_exp_energyDifference system data m n τ]
-  simp [eigenbasisForwardTimeTerm, eigenbasisForwardWeight]
+  simp [eigenbasisForwardTimeTerm, eigenbasisForwardWeight, eigenbasisTransitionPhase]
   ring
 
 /-- Expansion of `ω(B A_I(τ))` into the backward ordered transition series. -/
@@ -216,8 +215,7 @@ theorem eigenbasisExpectation_mul_heisenberg_eq_tsum
   rw [inner_heisenbergEvolution_of_eigenvectors system
     (data.basis m) (data.basis n) (data.energy m) (data.energy n)
     (data.hamiltonian_apply_basis m) (data.hamiltonian_apply_basis n) A τ]
-  rw [← eigenbasisTransitionPhase_eq_exp_energyDifference system data n m τ]
-  simp [eigenbasisBackwardTimeTerm, eigenbasisBackwardWeight]
+  simp [eigenbasisBackwardTimeTerm, eigenbasisBackwardWeight, eigenbasisTransitionPhase]
   ring
 
 /-- The two ordered transition sums combine into the physical `(pₘ - pₙ)` transition series. -/
