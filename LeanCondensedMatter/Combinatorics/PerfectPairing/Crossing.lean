@@ -160,11 +160,6 @@ theorem Pairing.crossingCount_eq_of_partnerEquiv_strictMono
 def Pairing.crossingsWithFirstPair {n : ℕ} (pairing : Pairing (n + 1)) : ℕ :=
   (pairing.pairs.filter fun p => Crosses pairing.firstPair p).card
 
-theorem not_crosses_firstPair {n : ℕ} (pairing : Pairing (n + 1))
-    (p : Fin (2 * (n + 1)) × Fin (2 * (n + 1))) : ¬ Crosses p pairing.firstPair := by
-  rintro ⟨h1, -, -⟩
-  exact absurd h1 (by simp [Pairing.firstPair])
-
 theorem not_crosses_self {n : ℕ} (p : Fin (2 * n) × Fin (2 * n)) : ¬ Crosses p p := by
   rintro ⟨h, -, -⟩
   exact absurd h (lt_irrefl _)
