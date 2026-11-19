@@ -19,7 +19,6 @@ import LeanCondensedMatter.QuantumTheory.LinearResponse.Response
 
 import LeanCondensedMatter.QuantumTheory.LinearResponse.Frequency.Susceptibility
 import LeanCondensedMatter.QuantumTheory.LinearResponse.Frequency.AdiabaticSwitching
-import LeanCondensedMatter.QuantumTheory.LinearResponse.Frequency.HarmonicSource
 import LeanCondensedMatter.QuantumTheory.LinearResponse.Frequency.FiniteTime
 import LeanCondensedMatter.QuantumTheory.LinearResponse.Frequency.InfiniteTime
 import LeanCondensedMatter.QuantumTheory.LinearResponse.Frequency.Integrability

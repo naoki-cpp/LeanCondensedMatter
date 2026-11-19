@@ -17,6 +17,7 @@ and the fixed-rate transform is
 The named predicate `AdiabaticIntegrable` includes both the physical condition `η > 0` and
 Bochner integrability of the switched integrand.  No limit `η → 0⁺` is formed or assumed here.
 The zero-rate integrand is related explicitly to the unswitched convention from `FrequencyDomain`.
+Real cosine and sine source profiles and their phase decomposition are defined alongside the phase.
 -/
 
 namespace QuantumTheory
@@ -47,6 +48,48 @@ theorem adiabaticFrequencyPhase_zero_frequency (η τ : ℝ) :
     adiabaticFrequencyPhase 0 η τ =
       Complex.exp (-(η : ℂ) * (τ : ℂ)) := by
   simp [adiabaticFrequencyPhase]
+
+/-!
+### Real harmonic quadratures of the adiabatic phase
+
+At observation time `T`, the complex phase separates into real cosine and sine source
+profiles. These representation-independent definitions also fix their observation-time values.
+-/
+
+/-- Real cosine quadrature of the normalized adiabatic harmonic source. -/
+def adiabaticCosineSource (ω η T s : ℝ) : ℝ :=
+  Real.exp (-η * (T - s)) * Real.cos (ω * (T - s))
+
+/-- Real sine quadrature of the normalized adiabatic harmonic source. -/
+def adiabaticSineSource (ω η T s : ℝ) : ℝ :=
+  Real.exp (-η * (T - s)) * Real.sin (ω * (T - s))
+
+/-- The canonical complex adiabatic phase is the complexification of its two real quadratures. -/
+theorem adiabaticFrequencyPhase_eq_cosine_add_I_sine
+    (ω η T s : ℝ) :
+    adiabaticFrequencyPhase ω η (T - s) =
+      (adiabaticCosineSource ω η T s : ℂ) +
+        Complex.I * (adiabaticSineSource ω η T s : ℂ) := by
+  let τ : ℝ := T - s
+  unfold adiabaticFrequencyPhase
+  rw [show
+    (Complex.I * (ω : ℂ) - (η : ℂ)) * (τ : ℂ) =
+      ((-η * τ : ℝ) : ℂ) + ((ω * τ : ℝ) : ℂ) * Complex.I by
+        push_cast
+        ring]
+  rw [Complex.exp_add, ← Complex.ofReal_exp, ← Complex.cos_add_sin_I]
+  simp [adiabaticCosineSource, adiabaticSineSource, τ]
+  ring
+
+@[simp]
+theorem adiabaticCosineSource_at_observation (ω η T : ℝ) :
+    adiabaticCosineSource ω η T T = 1 := by
+  simp [adiabaticCosineSource]
+
+@[simp]
+theorem adiabaticSineSource_at_observation (ω η T : ℝ) :
+    adiabaticSineSource ω η T T = 0 := by
+  simp [adiabaticSineSource]
 
 /-- The switched oscillatory integrand `exp ((i ω - η) τ) χᴿ_AB(τ)`. -/
 noncomputable def adiabaticFrequencySusceptibilityIntegrand

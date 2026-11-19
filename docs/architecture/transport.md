@@ -175,7 +175,7 @@ uses `ResponseChannel.causalResponse` directly. Its `observableVariation` is the
 `A₁` in `A₀ + λ A₁`; the channel does not multiply it by the external profile again. A geometric
 current with contact operator `C` supplies `A₁ = f(t) C`. At observation time the normalized cosine
 profile gives `A₁ = C`, while the sine profile gives `A₁ = 0`, using the generic profile computation
-rules in `LinearResponse.Frequency.HarmonicSource`. Current self-adjointness is supplied by the lattice
+rules in `LinearResponse.Frequency.AdiabaticSwitching`. Current self-adjointness is supplied by the lattice
 realization, and no complex-valued Hamiltonian perturbation is introduced.
 
 `ResponseChannel.finiteTimeAdiabaticResponse_eq_stationaryLag` owns the stationary change from
