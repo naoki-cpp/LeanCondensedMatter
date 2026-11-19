@@ -534,49 +534,5 @@ theorem ExternalInsertionBlockLayout.sum_signedDysonShuffleOrbits_eq_prod_standa
         (ExternalInsertionBlockLayout.sum_preconnectedDysonBlock_eq_standardized
           layout B ε β g labels times)
 
-omit [LinearOrder Mode] [Fintype Mode] in
-/-- On each external-partition block of a vacuum-free diagram, the field
-labels used by the source-subset moment are exactly the labels of the
-canonical standalone connected-component diagram.
-
-The inverse component/block equivalence is essential here: the statement
-does not select an arbitrary representative of a block. -/
-theorem evenExternalSubsetLabels_externalPartitionBlock
-    {n : ℕ} (d : ExternalInsertionWickDiagram Mode E n)
-    (hVac : HasNoVacuumComponent d.vertexGraph)
-    (P : (externalComponentPartition d.vertexGraph).parts) :
-    HEq
-      (evenExternalSubsetLabels d.externalLabel
-        (P : Finset (Fin (2 * E)))
-        (d.externalComponentPartition_block_card_even P.1 P.2))
-      ((d.componentOrderedDiagram
-        ((d.vacuumFreeComponentsEquivExternalBlocks hVac).symm P)).externalLabel) := by
-  let B := (d.vacuumFreeComponentsEquivExternalBlocks hVac).symm P
-  exact evenExternalSubsetRestriction_heq_of_eq d.externalLabel
-    (d.externalComponentPartition_block_card_even P.1 P.2)
-    (d.externalSector_card_even B)
-    (d.vacuumFreeComponentsEquivExternalBlocks_symm_apply hVac P).symm
-
-omit [LinearOrder Mode] [Fintype Mode] in
-/-- The same external-block transport preserves the insertion times in
-increasing source-slot order, not in the order of their numerical values. -/
-theorem evenExternalSubsetTimes_externalPartitionBlock
-    {n : ℕ} (d : ExternalInsertionWickDiagram Mode E n)
-    (hVac : HasNoVacuumComponent d.vertexGraph)
-    (times : Fin (2 * E) → ℝ)
-    (P : (externalComponentPartition d.vertexGraph).parts) :
-    HEq
-      (evenExternalSubsetTimes times
-        (P : Finset (Fin (2 * E)))
-        (d.externalComponentPartition_block_card_even P.1 P.2))
-      (d.componentExternalTime times
-        ((d.vacuumFreeComponentsEquivExternalBlocks hVac).symm P)) := by
-  let B := (d.vacuumFreeComponentsEquivExternalBlocks hVac).symm P
-  exact evenExternalSubsetRestriction_heq_of_eq times
-    (d.externalComponentPartition_block_card_even P.1 P.2)
-    (d.externalSector_card_even B)
-    (d.vacuumFreeComponentsEquivExternalBlocks_symm_apply hVac P).symm
-
-
 end Fermionic
 end SecondQuantization
