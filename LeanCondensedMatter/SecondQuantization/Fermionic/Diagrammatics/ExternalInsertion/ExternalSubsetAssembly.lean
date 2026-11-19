@@ -240,7 +240,8 @@ theorem ExternalInsertionBlockLayout.assembleDiagram_restrictComponent_heq_local
     have hlabels :
         HEq (F B).externalLabel (d.componentOrderedDiagram C).externalLabel :=
       (heq_of_eq
-        (layout.assembleDiagram_externalLabel_eq_evenExternalSubsetLabels F B)).trans
+        (ExternalInsertionBlockLayout.assembleDiagram_externalLabel_eq_evenExternalSubsetLabels
+          layout F B)).trans
         ((evenExternalSubsetRestriction_heq_of_eq d.externalLabel
           (layout.evenBlocks B) (d.externalSector_card_even C)
           (layout.assembleDiagram_componentExternalSector_external S F hconnected e).symm).trans
