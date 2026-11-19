@@ -166,24 +166,6 @@ theorem ExternalInsertionBlockLayout.assembleDiagram_restrictComponent_heq_local
   exact externalInsertionDiagram_heq_of_fields hcount hsector
     (d.restrictComponent C) (F B) hsrc hvertex hpairHeq
 
-/-- Canonical increasing interaction-slot standardization respects
-heterogeneous equality of diagrams whose dependent source counts and
-interaction supports have already been identified. -/
-private theorem externalInsertionSlotCongr_heq_of_diagram_heq
-    {ExternalLabel InternalLabel : Type*} {E₁ E₂ n : ℕ}
-    {S₁ S₂ : Finset (Fin n)}
-    (hE : E₁ = E₂) (hS : S₁ = S₂)
-    (p : ExternalInsertionDiagram ExternalLabel InternalLabel E₁ n S₁)
-    (q : ExternalInsertionDiagram ExternalLabel InternalLabel E₂ n S₂)
-    (hp : HEq p q) :
-    HEq (p.slotCongr (Combinatorics.standardSlotEquiv S₁))
-      (q.slotCongr (Combinatorics.standardSlotEquiv S₂)) := by
-  cases hE
-  cases hS
-  exact heq_of_eq (congrArg
-    (fun d : ExternalInsertionDiagram ExternalLabel InternalLabel E₁ n S₁ =>
-      d.slotCongr (Combinatorics.standardSlotEquiv S₁)) (eq_of_heq hp))
-
 /-- The integrated Dyson amplitude of an *actual physical connected
 component*, with its original source times, is exactly the integrated
 Dyson amplitude of the independently supplied connected Wick block
@@ -231,12 +213,20 @@ theorem ExternalInsertionBlockLayout.assembleConnectedBlocks_componentDysonAmpli
   have hphysical : HEq (d.restrictComponent C) (F B) :=
     ExternalInsertionBlockLayout.assembleDiagram_restrictComponent_heq_local
       layout F hconnected e
+  have hstandard : HEq
+      ((d.restrictComponent C).slotCongr (Combinatorics.standardSlotEquiv T))
+      ((F B).slotCongr (Combinatorics.standardSlotEquiv
+        (layout.interactionBlock S B))) := by
+    cases hcount
+    cases hsector
+    exact heq_of_eq (congrArg
+      (fun x : ExternalInsertionDiagram (ExternalFieldLabel Mode)
+          (QuarticVertexLabel Mode) (B.1.card / 2) n T =>
+        x.slotCongr (Combinatorics.standardSlotEquiv T)) (eq_of_heq hphysical))
   have hordered : HEq (d.componentOrderedDiagram C)
       ((F B).slotCongr (Combinatorics.standardSlotEquiv
         (layout.interactionBlock S B))) :=
-    (heq_of_eq (d.componentOrderedDiagram_eq_slotCongr C)).trans
-      (externalInsertionSlotCongr_heq_of_diagram_heq
-        hcount hsector (d.restrictComponent C) (F B) hphysical)
+    (heq_of_eq (d.componentOrderedDiagram_eq_slotCongr C)).trans hstandard
   have htimes : HEq (d.componentExternalTime externalTime C)
       (fun i : Fin (2 * (B.1.card / 2)) =>
         externalTime (layout.sourceEquiv.symm ⟨B, i⟩)) := by
