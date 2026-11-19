@@ -138,18 +138,8 @@ theorem norm_connectedTwoGreen_sub_resummedFreeLadder_le
           mul_one, mul_assoc] using
           (List.norm_prod_le'
             (l := [freeLeft, ladder (dressed - vertex), freeRight]) (by simp))
-      _ ≤ leftBound * ‖ladder (dressed - vertex)‖ * ‖freeRight‖ := by
-        exact mul_le_mul_of_nonneg_right
-          (mul_le_mul_of_nonneg_right hleft
-            (norm_nonneg (ladder (dressed - vertex))))
-          (norm_nonneg freeRight)
-      _ ≤ leftBound * (q ^ 2 / (1 - q) * ‖vertex‖) * ‖freeRight‖ := by
-        exact mul_le_mul_of_nonneg_right
-          (mul_le_mul_of_nonneg_left htail hleftNonneg)
-          (norm_nonneg freeRight)
       _ ≤ leftBound * (q ^ 2 / (1 - q) * ‖vertex‖) * rightBound := by
-        exact mul_le_mul_of_nonneg_left hright
-          (mul_nonneg hleftNonneg htailNonneg)
+        gcongr <;> first | exact hleft | exact htail | exact hright
       _ = (leftBound * rightBound) * (q ^ 2 / (1 - q) * ‖vertex‖) := by ring
   have hcubic : ‖connected - firstRung‖ ≤ cubic :=
     ensemble.norm_connectedTwoGreen_sub_firstBornRung_le_cubic
