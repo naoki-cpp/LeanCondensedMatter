@@ -139,7 +139,7 @@ theorem norm_connectedTwoGreen_sub_resummedFreeLadder_le
           (List.norm_prod_le'
             (l := [freeLeft, ladder (dressed - vertex), freeRight]) (by simp))
       _ ≤ leftBound * (q ^ 2 / (1 - q) * ‖vertex‖) * rightBound := by
-        gcongr <;> first | exact hleft | exact htail | exact hright
+        gcongr
       _ = (leftBound * rightBound) * (q ^ 2 / (1 - q) * ‖vertex‖) := by ring
   have hcubic : ‖connected - firstRung‖ ≤ cubic :=
     ensemble.norm_connectedTwoGreen_sub_firstBornRung_le_cubic
