@@ -29,9 +29,11 @@ open QuantumTheory.Transport
 
 open Filter QuantumTheory.Transport
 
+namespace FiniteCutoffBornDyson.Hall.ZeroBroadeningWeakDisorder
+
 /-- The fixed-cutoff Hall projection has the same one-sided weak-disorder limit as the ordered `xy`
 endpoint, now interpreted as the antisymmetric part of a completed conductivity tensor. -/
-theorem tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensorZeroBroadeningBoundary_hallComponent_disorder_zero
+theorem tendsto_hallComponent
     (e v m probeEnergy hbar pMax : ℝ)
     (hvelocity : v ≠ 0) (hhbar : 0 < hbar)
     (hmetal : |m| < probeEnergy)
@@ -46,8 +48,10 @@ theorem tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceCond
           (Real.pi * hbar * (probeEnergy ^ 2 + 3 * m ^ 2) ^ 2) : ℝ) : ℂ))) := by
   simpa [ConductivityTensor.hallComponent,
     finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensorZeroBroadeningBoundary] using
-    tendsto_finiteCutoffContinuumBornDysonOrderedXYRetardedAdvancedDressedSurfaceConductivityZeroBroadeningBoundary_disorder_zero
+    tendsto_orderedXY_conductivity
       e v m probeEnergy hbar pMax hvelocity hhbar hmetal hcutoff
+
+end FiniteCutoffBornDyson.Hall.ZeroBroadeningWeakDisorder
 
 end
 

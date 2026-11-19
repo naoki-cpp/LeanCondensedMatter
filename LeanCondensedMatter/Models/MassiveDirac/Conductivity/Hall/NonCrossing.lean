@@ -35,9 +35,11 @@ def nonCrossingHallConductivity (e hbar m probeEnergy : ℝ) : ℝ :=
     (probeEnergy * m * (probeEnergy ^ 2 + m ^ 2) /
       (probeEnergy ^ 2 + 3 * m ^ 2) ^ 2)
 
+namespace FiniteCutoffBornDyson.Hall.ZeroBroadeningWeakDisorder
+
 /-- The sequential zero-broadening then weak-disorder Hall projection reproduces the Ado
 non-crossing conductivity formula. -/
-theorem tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensorZeroBroadeningBoundary_hallComponent_disorder_zero_eq_nonCrossing
+theorem tendsto_hallComponent_nonCrossing
     (e v m probeEnergy hbar pMax : ℝ)
     (hvelocity : v ≠ 0) (hhbar : 0 < hbar)
     (hmetal : |m| < probeEnergy)
@@ -49,7 +51,7 @@ theorem tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceCond
       (nhdsWithin 0 (Set.Ioi 0))
       (nhds (((nonCrossingHallConductivity e hbar m probeEnergy : ℝ) : ℂ))) := by
   have h :=
-    tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensorZeroBroadeningBoundary_hallComponent_disorder_zero
+    tendsto_hallComponent
       e v m probeEnergy hbar pMax hvelocity hhbar hmetal hcutoff
   have hprobe : 0 < probeEnergy := lt_of_le_of_lt (abs_nonneg m) hmetal
   have hden : probeEnergy ^ 2 + 3 * m ^ 2 ≠ 0 := by
@@ -65,6 +67,8 @@ theorem tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceCond
     ring
   rw [htarget] at h
   exact h
+
+end FiniteCutoffBornDyson.Hall.ZeroBroadeningWeakDisorder
 
 end
 

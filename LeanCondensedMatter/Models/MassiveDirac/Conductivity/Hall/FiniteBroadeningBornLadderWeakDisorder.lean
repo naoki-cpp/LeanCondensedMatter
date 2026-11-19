@@ -27,9 +27,11 @@ open QuantumTheory.Transport
 
 open Filter QuantumTheory.Transport
 
+namespace FiniteCutoffBornDyson.Hall.ZeroBroadeningWeakDisorder
+
 /-- The physically normalized fixed-cutoff zero-broadening ordered source-`.y` conductivity has a
 finite one-sided weak-disorder limit. -/
-theorem tendsto_finiteCutoffContinuumBornDysonOrderedXYRetardedAdvancedDressedSurfaceConductivityZeroBroadeningBoundary_disorder_zero
+theorem tendsto_orderedXY_conductivity
     (e v m probeEnergy hbar pMax : ℝ)
     (hvelocity : v ≠ 0) (hhbar : 0 < hbar)
     (hmetal : |m| < probeEnergy)
@@ -44,7 +46,7 @@ theorem tendsto_finiteCutoffContinuumBornDysonOrderedXYRetardedAdvancedDressedSu
           (Real.pi * hbar * (probeEnergy ^ 2 + 3 * m ^ 2) ^ 2) : ℝ) : ℂ))) := by
   have hhbarNe : hbar ≠ 0 := ne_of_gt hhbar
   have hresponse :=
-    tendsto_finiteCutoffContinuumBornDysonOrderedXYRetardedAdvancedDressedSurfaceMomentumIntegralZeroBroadeningBoundary_disorder_zero
+    tendsto_orderedXY_momentumIntegral
       e v m probeEnergy hbar pMax hvelocity hhbarNe hmetal hcutoff
   have hprobe : 0 < probeEnergy := lt_of_le_of_lt (abs_nonneg m) hmetal
   have hden : probeEnergy ^ 2 + 3 * m ^ 2 ≠ 0 := by
@@ -68,6 +70,8 @@ theorem tendsto_finiteCutoffContinuumBornDysonOrderedXYRetardedAdvancedDressedSu
   simpa [
     finiteCutoffContinuumBornDysonOrderedXYRetardedAdvancedDressedSurfaceConductivityZeroBroadeningBoundary] using
     hnormalized
+
+end FiniteCutoffBornDyson.Hall.ZeroBroadeningWeakDisorder
 
 end
 
