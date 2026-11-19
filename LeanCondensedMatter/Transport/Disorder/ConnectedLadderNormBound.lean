@@ -43,20 +43,16 @@ variable (ensemble : FiniteDisorderEnsemble (H := H) (Ω := Ω))
 
 /-- The exact connected insertion is close to the first Born rung **plus all
 higher geometric ladder rungs**, with explicit microscopic smallness condition.
-The `hinvertible` witness is always available under `hsmall` by
-`isUnit_one_sub_freeGreenLadder_of_smallPotential`. -/
+The ladder inverse is derived from the microscopic smallness condition. -/
 theorem norm_connectedTwoGreen_sub_resummedFreeLadder_le
     (energyLeft regulatorLeft energyRight regulatorRight : ℝ)
     (hregLeft : regulatorLeft ≠ 0) (hregRight : regulatorRight ≠ 0)
     (hcentered : ensemble.IsCentered)
     (vertex : H →L[ℂ] H)
-    (potentialBound : ℝ) (hbound : 0 ≤ potentialBound)
+    (potentialBound : ℝ)
     (hpotential : ∀ ω, ‖(ensemble.impurityPotential ω).1‖ ≤ potentialBound)
     (hsmall : potentialBound ^ 2 * |regulatorLeft|⁻¹ *
-        |regulatorRight|⁻¹ < 1)
-    (hinvertible : IsUnit (1 - ensemble.retardedAdvancedLadderCLM
-        (ensemble.freeGreenOfRegulator energyLeft regulatorLeft)
-        (ensemble.freeGreenOfRegulator energyRight regulatorRight))) :
+        |regulatorRight|⁻¹ < 1) :
     ‖ensemble.connectedTwoGreenInsertionOfRegulators
         energyLeft regulatorLeft energyRight regulatorRight vertex -
       ensemble.freeGreenOfRegulator energyLeft regulatorLeft *
@@ -64,7 +60,10 @@ theorem norm_connectedTwoGreen_sub_resummedFreeLadder_le
           (ensemble.retardedAdvancedLadderCLM
             (ensemble.freeGreenOfRegulator energyLeft regulatorLeft)
             (ensemble.freeGreenOfRegulator energyRight regulatorRight))
-          hinvertible vertex - vertex) *
+          (ensemble.isUnit_one_sub_freeGreenLadder_of_smallPotential
+            energyLeft regulatorLeft energyRight regulatorRight
+            hregLeft hregRight potentialBound hpotential hsmall)
+          vertex - vertex) *
         ensemble.freeGreenOfRegulator energyRight regulatorRight‖ ≤
       ((2 * (|regulatorLeft|⁻¹) ^ 3 * potentialBound ^ 2) *
           ‖vertex‖ * (2 * (|regulatorRight|⁻¹) ^ 2 * potentialBound) +
@@ -74,6 +73,10 @@ theorem norm_connectedTwoGreen_sub_resummedFreeLadder_le
         ((potentialBound ^ 2 * |regulatorLeft|⁻¹ * |regulatorRight|⁻¹) ^ 2 /
           (1 - potentialBound ^ 2 * |regulatorLeft|⁻¹ * |regulatorRight|⁻¹) *
           ‖vertex‖) := by
+  let hinvertible :=
+    ensemble.isUnit_one_sub_freeGreenLadder_of_smallPotential
+      energyLeft regulatorLeft energyRight regulatorRight
+      hregLeft hregRight potentialBound hpotential hsmall
   let freeLeft := ensemble.freeGreenOfRegulator energyLeft regulatorLeft
   let freeRight := ensemble.freeGreenOfRegulator energyRight regulatorRight
   let ladder := ensemble.retardedAdvancedLadderCLM freeLeft freeRight
@@ -105,7 +108,7 @@ theorem norm_connectedTwoGreen_sub_resummedFreeLadder_le
   have hq : ‖ladder‖ ≤ q :=
     ensemble.norm_freeGreenLadder_le_uniformPotential_sq
       energyLeft regulatorLeft energyRight regulatorRight
-      hregLeft hregRight potentialBound hbound hpotential
+      hregLeft hregRight potentialBound hpotential
   have htail : ‖ladder (dressed - vertex)‖ ≤
       q ^ 2 / (1 - q) * ‖vertex‖ :=
     norm_resummedLadderVertex_tail_le ladder hinvertible vertex q hq hsmall
@@ -135,23 +138,13 @@ theorem norm_connectedTwoGreen_sub_resummedFreeLadder_le
           mul_one, mul_assoc] using
           (List.norm_prod_le'
             (l := [freeLeft, ladder (dressed - vertex), freeRight]) (by simp))
-      _ ≤ leftBound * ‖ladder (dressed - vertex)‖ * ‖freeRight‖ := by
-        exact mul_le_mul_of_nonneg_right
-          (mul_le_mul_of_nonneg_right hleft
-            (norm_nonneg (ladder (dressed - vertex))))
-          (norm_nonneg freeRight)
-      _ ≤ leftBound * (q ^ 2 / (1 - q) * ‖vertex‖) * ‖freeRight‖ := by
-        exact mul_le_mul_of_nonneg_right
-          (mul_le_mul_of_nonneg_left htail hleftNonneg)
-          (norm_nonneg freeRight)
       _ ≤ leftBound * (q ^ 2 / (1 - q) * ‖vertex‖) * rightBound := by
-        exact mul_le_mul_of_nonneg_left hright
-          (mul_nonneg hleftNonneg htailNonneg)
+        gcongr
       _ = (leftBound * rightBound) * (q ^ 2 / (1 - q) * ‖vertex‖) := by ring
   have hcubic : ‖connected - firstRung‖ ≤ cubic :=
     ensemble.norm_connectedTwoGreen_sub_firstBornRung_le_cubic
       energyLeft regulatorLeft energyRight regulatorRight
-      hregLeft hregRight hcentered vertex potentialBound hbound hpotential
+      hregLeft hregRight hcentered vertex potentialBound hpotential
   have hsplit :
       connected - freeLeft * (dressed - vertex) * freeRight =
         (connected - firstRung) +

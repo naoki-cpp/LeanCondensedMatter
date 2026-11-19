@@ -110,10 +110,11 @@ private theorem norm_mul_three_le
 /-- Microscopic norm control of the exact finite second-moment action. -/
 theorem norm_exactSecondMoment_le_uniformPotential_sq
     (kernel : H →L[ℂ] H) (potentialBound : ℝ)
-    (hbound : 0 ≤ potentialBound)
     (hpotential : ∀ ω, ‖(ensemble.impurityPotential ω).1‖ ≤ potentialBound) :
     ‖ensemble.exactSecondMoment kernel‖ ≤
       potentialBound ^ 2 * ‖kernel‖ := by
+  have hbound : 0 ≤ potentialBound :=
+    ensemble.uniformPotentialBound_nonneg potentialBound hpotential
   rw [ensemble.exactSecondMoment_eq_average]
   apply ensemble.norm_average_le_of_forall _ _
   intro ω
@@ -126,23 +127,14 @@ theorem norm_exactSecondMoment_le_uniformPotential_sq
         ‖impurity‖ * ‖kernel‖ * ‖impurity‖ :=
       norm_mul_three_le _ _ _
     _ ≤ potentialBound * ‖kernel‖ * potentialBound := by
-      have hfirst : ‖impurity‖ * ‖kernel‖ ≤
-          potentialBound * ‖kernel‖ :=
-        mul_le_mul_of_nonneg_right hp (norm_nonneg kernel)
-      calc
-        ‖impurity‖ * ‖kernel‖ * ‖impurity‖ ≤
-            (potentialBound * ‖kernel‖) * ‖impurity‖ :=
-          mul_le_mul_of_nonneg_right hfirst (norm_nonneg impurity)
-        _ ≤ (potentialBound * ‖kernel‖) * potentialBound :=
-          mul_le_mul_of_nonneg_left hp
-            (mul_nonneg hbound (norm_nonneg kernel))
+      gcongr
     _ = potentialBound ^ 2 * ‖kernel‖ := by ring
 
 /-- The supplied finite covariance ladder has norm at most
 `M² ‖Gᴸ‖ ‖Gᴿ‖`, without Gaussian or momentum-space assumptions. -/
 theorem norm_retardedAdvancedLadderCLM_le_uniformPotential_sq
     (leftGreen rightGreen : H →L[ℂ] H)
-    (potentialBound : ℝ) (hbound : 0 ≤ potentialBound)
+    (potentialBound : ℝ)
     (hpotential : ∀ ω, ‖(ensemble.impurityPotential ω).1‖ ≤ potentialBound) :
     ‖ensemble.retardedAdvancedLadderCLM leftGreen rightGreen‖ ≤
       potentialBound ^ 2 * ‖leftGreen‖ * ‖rightGreen‖ := by
@@ -155,7 +147,7 @@ theorem norm_retardedAdvancedLadderCLM_le_uniformPotential_sq
     ‖ensemble.exactSecondMoment (leftGreen * vertex * rightGreen)‖ ≤
         potentialBound ^ 2 * ‖leftGreen * vertex * rightGreen‖ :=
       ensemble.norm_exactSecondMoment_le_uniformPotential_sq
-        _ potentialBound hbound hpotential
+        _ potentialBound hpotential
     _ ≤ potentialBound ^ 2 *
         (‖leftGreen‖ * ‖vertex‖ * ‖rightGreen‖) :=
       mul_le_mul_of_nonneg_left (norm_mul_three_le _ _ _) (sq_nonneg _)
@@ -167,7 +159,7 @@ The clean resolvents have norms at most the inverse absolute regulators. -/
 theorem norm_freeGreenLadder_le_uniformPotential_sq
     (energyLeft regulatorLeft energyRight regulatorRight : ℝ)
     (hregLeft : regulatorLeft ≠ 0) (hregRight : regulatorRight ≠ 0)
-    (potentialBound : ℝ) (hbound : 0 ≤ potentialBound)
+    (potentialBound : ℝ)
     (hpotential : ∀ ω, ‖(ensemble.impurityPotential ω).1‖ ≤ potentialBound) :
     ‖ensemble.retardedAdvancedLadderCLM
       (ensemble.freeGreenOfRegulator energyLeft regulatorLeft)
@@ -193,7 +185,7 @@ theorem norm_freeGreenLadder_le_uniformPotential_sq
   calc
     _ ≤ potentialBound ^ 2 * ‖freeLeft‖ * ‖freeRight‖ :=
       ensemble.norm_retardedAdvancedLadderCLM_le_uniformPotential_sq
-        freeLeft freeRight potentialBound hbound hpotential
+        freeLeft freeRight potentialBound hpotential
     _ ≤ potentialBound ^ 2 * leftBound * ‖freeRight‖ := by
       exact mul_le_mul_of_nonneg_right
         (mul_le_mul_of_nonneg_left hleft hM) (norm_nonneg freeRight)
@@ -205,7 +197,7 @@ theorem norm_freeGreenLadder_le_uniformPotential_sq
 theorem isUnit_one_sub_freeGreenLadder_of_smallPotential
     (energyLeft regulatorLeft energyRight regulatorRight : ℝ)
     (hregLeft : regulatorLeft ≠ 0) (hregRight : regulatorRight ≠ 0)
-    (potentialBound : ℝ) (hbound : 0 ≤ potentialBound)
+    (potentialBound : ℝ)
     (hpotential : ∀ ω, ‖(ensemble.impurityPotential ω).1‖ ≤ potentialBound)
     (hsmall : potentialBound ^ 2 * |regulatorLeft|⁻¹ *
         |regulatorRight|⁻¹ < 1) :
@@ -216,7 +208,7 @@ theorem isUnit_one_sub_freeGreenLadder_of_smallPotential
     (lt_of_le_of_lt
       (ensemble.norm_freeGreenLadder_le_uniformPotential_sq
         energyLeft regulatorLeft energyRight regulatorRight
-        hregLeft hregRight potentialBound hbound hpotential) hsmall)
+        hregLeft hregRight potentialBound hpotential) hsmall)
 
 end FiniteDisorderEnsemble
 

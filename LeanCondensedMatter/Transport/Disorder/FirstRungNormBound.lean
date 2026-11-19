@@ -104,7 +104,7 @@ theorem norm_connectedTwoGreen_sub_firstBornRung_le_cubic
     (hregLeft : regulatorLeft ≠ 0) (hregRight : regulatorRight ≠ 0)
     (hcentered : ensemble.IsCentered)
     (vertex : H →L[ℂ] H)
-    (potentialBound : ℝ) (hbound : 0 ≤ potentialBound)
+    (potentialBound : ℝ)
     (hpotential : ∀ ω, ‖(ensemble.impurityPotential ω).1‖ ≤ potentialBound) :
     ‖ensemble.connectedTwoGreenInsertionOfRegulators
         energyLeft regulatorLeft energyRight regulatorRight vertex -
@@ -131,14 +131,16 @@ theorem norm_connectedTwoGreen_sub_firstBornRung_le_cubic
   let ER : ℝ := 2 * BR ^ 3 * potentialBound ^ 2
   let CL : ℝ := BL ^ 2 * potentialBound
   let CR : ℝ := 2 * BR ^ 2 * potentialBound
+  have hbound : 0 ≤ potentialBound :=
+    ensemble.uniformPotentialBound_nonneg potentialBound hpotential
   have hEL : 0 ≤ EL := by dsimp [EL]; positivity
   have hCL : 0 ≤ CL := by dsimp [CL]; positivity
   have hLerr (ω : Ω) : ‖L ω - AL ω‖ ≤ EL :=
     ensemble.norm_configurationGreen_fluctuation_sub_firstDyson_le
-      energyLeft regulatorLeft hregLeft hcentered ω potentialBound hbound hpotential
+      energyLeft regulatorLeft hregLeft hcentered ω potentialBound hpotential
   have hRerr (ω : Ω) : ‖R ω - AR ω‖ ≤ ER :=
     ensemble.norm_configurationGreen_fluctuation_sub_firstDyson_le
-      energyRight regulatorRight hregRight hcentered ω potentialBound hbound hpotential
+      energyRight regulatorRight hregRight hcentered ω potentialBound hpotential
   have hRfluct (ω : Ω) : ‖R ω‖ ≤ CR :=
     ensemble.norm_configurationGreen_sub_averaged_le
       energyRight regulatorRight hregRight ω potentialBound hpotential
@@ -169,30 +171,14 @@ theorem norm_connectedTwoGreen_sub_firstBornRung_le_cubic
         _ ≤ ‖L ω - AL ω‖ * ‖vertex‖ * ‖R ω‖ :=
           norm_mul_three_le _ _ _
         _ ≤ EL * ‖vertex‖ * CR := by
-          have hmul :
-              ‖L ω - AL ω‖ * ‖vertex‖ ≤ EL * ‖vertex‖ :=
-            mul_le_mul_of_nonneg_right (hLerr ω) (norm_nonneg vertex)
-          calc
-            _ ≤ (EL * ‖vertex‖) * ‖R ω‖ :=
-              mul_le_mul_of_nonneg_right hmul (norm_nonneg _)
-            _ ≤ (EL * ‖vertex‖) * CR :=
-              mul_le_mul_of_nonneg_left (hRfluct ω)
-                (mul_nonneg hEL (norm_nonneg vertex))
+          gcongr <;> first | exact hLerr ω | exact hRfluct ω
     have hsecond :
         ‖AL ω * vertex * (R ω - AR ω)‖ ≤ CL * ‖vertex‖ * ER := by
       calc
         _ ≤ ‖AL ω‖ * ‖vertex‖ * ‖R ω - AR ω‖ :=
           norm_mul_three_le _ _ _
         _ ≤ CL * ‖vertex‖ * ER := by
-          have hmul :
-              ‖AL ω‖ * ‖vertex‖ ≤ CL * ‖vertex‖ :=
-            mul_le_mul_of_nonneg_right (hAL ω) (norm_nonneg vertex)
-          calc
-            _ ≤ (CL * ‖vertex‖) * ‖R ω - AR ω‖ :=
-              mul_le_mul_of_nonneg_right hmul (norm_nonneg _)
-            _ ≤ (CL * ‖vertex‖) * ER :=
-              mul_le_mul_of_nonneg_left (hRerr ω)
-                (mul_nonneg hCL (norm_nonneg vertex))
+          gcongr <;> first | exact hAL ω | exact hRerr ω
     exact (norm_add_le _ _).trans (add_le_add hfirst hsecond)
   have hfirstRung :
       ensemble.firstBornTwoGreenRungOfRegulators

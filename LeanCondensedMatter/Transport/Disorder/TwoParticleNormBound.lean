@@ -151,7 +151,7 @@ theorem norm_connectedTwoGreenInsertion_le_uniformPotential_sq
     (energyLeft regulatorLeft energyRight regulatorRight : ℝ)
     (hregLeft : regulatorLeft ≠ 0) (hregRight : regulatorRight ≠ 0)
     (vertex : H →L[ℂ] H)
-    (potentialBound : ℝ) (hbound : 0 ≤ potentialBound)
+    (potentialBound : ℝ)
     (hpotential : ∀ ω, ‖(ensemble.impurityPotential ω).1‖ ≤ potentialBound) :
     ‖ensemble.connectedTwoGreenInsertionOfRegulators
         energyLeft regulatorLeft energyRight regulatorRight vertex‖ ≤
@@ -159,6 +159,8 @@ theorem norm_connectedTwoGreenInsertion_le_uniformPotential_sq
         (2 * (|regulatorRight|⁻¹) ^ 2 * potentialBound) := by
   let leftBound := 2 * (|regulatorLeft|⁻¹) ^ 2 * potentialBound
   let rightBound := 2 * (|regulatorRight|⁻¹) ^ 2 * potentialBound
+  have hbound : 0 ≤ potentialBound :=
+    ensemble.uniformPotentialBound_nonneg potentialBound hpotential
   have hleftNonneg : 0 ≤ leftBound := by
     dsimp [leftBound]
     positivity
