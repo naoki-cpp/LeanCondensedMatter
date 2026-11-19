@@ -439,26 +439,6 @@ theorem ExternalInsertionBlockLayout.assembleConnectedBlocks_signedDysonShuffleO
             (d.componentExternalTime externalTime C))).symm.trans
         (Finset.prod_congr rfl (fun B _ => hlocal B))))
 
-omit [LinearOrder Mode] [Fintype Mode] in
-/-- The source labels of an assembled diagram agree with the canonical
-increasing restriction on *each* external block.  This converts the
-independent-block label predicate into the source-subset convention used
-by the connected Dyson series, without changing any interaction owners. -/
-theorem ExternalInsertionBlockLayout.assembleDiagram_externalLabel_eq_iff_evenSubsetLabels
-    {n : ℕ} (layout : ExternalInsertionBlockLayout E n)
-    (F : ∀ B : layout.partition.parts,
-      ExternalInsertionDiagram (ExternalFieldLabel Mode) (QuarticVertexLabel Mode)
-        ((B : Finset (Fin (2 * E))).card / 2) n
-        (layout.interactionBlock (Finset.univ : Finset (Fin n)) B))
-    (labels : Fin (2 * E) → ExternalFieldLabel Mode) :
-    (layout.assembleDiagram (Finset.univ : Finset (Fin n)) F).externalLabel = labels ↔
-      ∀ B : layout.partition.parts,
-        (F B).externalLabel =
-          evenExternalSubsetLabels labels (B : Finset (Fin (2 * E)))
-            (layout.evenBlocks B) := by
-  exact layout.assembleDiagram_externalLabel_eq_iff
-    (Finset.univ : Finset (Fin n)) F labels
-
 /-- The physical connected-block Dyson shuffle orbit, now expressed using
 the canonical increasing *subset restriction* of external insertion times.
 These are exactly the times appearing in each connected source-subset
