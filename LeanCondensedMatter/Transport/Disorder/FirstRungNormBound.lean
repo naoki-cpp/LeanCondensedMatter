@@ -197,14 +197,10 @@ theorem norm_connectedTwoGreen_sub_firstBornRung_le_cubic
         ensemble.average (fun ω => AL ω * vertex * AR ω) =
       ensemble.average (fun ω =>
         L ω * vertex * R ω - AL ω * vertex * AR ω) := by
-    have hfam :
-        ((fun ω => L ω * vertex * R ω) -
-          (fun ω => AL ω * vertex * AR ω)) =
-        (fun ω => L ω * vertex * R ω - AL ω * vertex * AR ω) := by
-      funext ω
-      rfl
-    exact (map_sub ensemble.average _ _).symm.trans
-      (congrArg ensemble.average hfam)
+    simpa only [Pi.sub_apply] using
+      (map_sub ensemble.average
+        (fun ω => L ω * vertex * R ω)
+        (fun ω => AL ω * vertex * AR ω)).symm
   rw [hsub]
   exact ensemble.norm_average_le_of_forall _ _ hpoint
 
