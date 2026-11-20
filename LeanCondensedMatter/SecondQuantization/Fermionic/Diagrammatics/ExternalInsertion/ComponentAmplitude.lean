@@ -189,14 +189,8 @@ theorem ExternalInsertionWickDiagram.dysonFixedTimeAmplitude_eq_componentExterna
             (B : Finset (ExternalInsertionVertex E
               (Finset.univ : Finset (Fin n))))).card) = n := by
       simpa using (sum_interactionSector_card_eq d.vertexGraph)
-    calc
-      (-1 : ℂ) ^ n =
-          (-1 : ℂ) ^ (∑ B : d.vertexGraph.componentPartition.parts,
-            (interactionSector
-              (B : Finset (ExternalInsertionVertex E
-                (Finset.univ : Finset (Fin n))))).card) :=
-        congrArg (fun k : ℕ => (-1 : ℂ) ^ k) hcount.symm
-      _ = _ := by rw [← Finset.prod_pow_eq_pow_sum]
+    simpa only [← Finset.prod_pow_eq_pow_sum] using
+      (congrArg (fun k : ℕ => (-1 : ℂ) ^ k) hcount.symm)
   unfold ExternalInsertionWickDiagram.dysonFixedTimeAmplitude
   rw [d.fixedTimeAmplitude_eq_componentExternalOrderSign_mul_prod_components
     ε β g externalTime σ blockOrder, hdyson, Finset.prod_mul_distrib]
