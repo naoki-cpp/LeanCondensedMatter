@@ -109,8 +109,8 @@ theorem externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_left_normal
   have hfixed (p : Fin (2 * (2 * T.card + E))) :
       externalInsertionMixedTimeAmbientPositionEquiv externalTime σ (embed p) =
         externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T)
-          (Sum.inl (localFixed p)) := by
-    exact externalInsertionLeftMixedPosition_fixed T externalTime σ p
+          (Sum.inl (localFixed p)) :=
+    externalInsertionLeftMixedPosition_fixed T externalTime σ p
   have hpartner (p : Fin (2 * (2 * T.card + E))) :
       (d.pairingInMixedOrder externalTime σ).partner (embed p) =
         embed (localPairing.partner p) := by
@@ -134,26 +134,13 @@ theorem externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_left_normal
   constructor
   · exact (Pairing.mem_pairs_map_iff localPairing (d.pairingInMixedOrder externalTime σ)
       (OrderEmbedding.ofStrictMono embed hmono) hpartner pr.1.1 pr.1.2).2 pr.2
-  · let a := externalInsertionMixedTimeOrderedAtomicLegEquiv
-      externalTime (σ ∘ f) pr.1.1
-    let b := externalInsertionMixedTimeOrderedAtomicLegEquiv
-      externalTime (σ ∘ f) pr.1.2
-    have hvalue :=
+  · have hvalue :=
       externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_left
-        ε β T ext vac externalTime σ a b
-    have ha :
-        externalInsertionMixedTimeOrderedAtomicLegPosition externalTime (σ ∘ f) a =
-          pr.1.1 := by
-      exact (externalInsertionMixedTimeOrderedAtomicLegEquiv
-        externalTime (σ ∘ f)).symm_apply_apply pr.1.1
-    have hb :
-        externalInsertionMixedTimeOrderedAtomicLegPosition externalTime (σ ∘ f) b =
-          pr.1.2 := by
-      exact (externalInsertionMixedTimeOrderedAtomicLegEquiv
-        externalTime (σ ∘ f)).symm_apply_apply pr.1.2
-    dsimp only at hvalue
-    rw [ha, hb] at hvalue
-    exact hvalue
+        ε β T ext vac externalTime σ
+        (externalInsertionMixedTimeOrderedAtomicLegEquiv externalTime (σ ∘ f) pr.1.1)
+        (externalInsertionMixedTimeOrderedAtomicLegEquiv externalTime (σ ∘ f) pr.1.2)
+    simpa only [externalInsertionMixedTimeOrderedAtomicLegPosition,
+      Equiv.symm_apply_apply] using hvalue
 
 /-- The actual quartic vacuum half of an assembled external-insertion diagram has
 the standalone free-Gibbs pair kernel when its vertex slots are reindexed into the
