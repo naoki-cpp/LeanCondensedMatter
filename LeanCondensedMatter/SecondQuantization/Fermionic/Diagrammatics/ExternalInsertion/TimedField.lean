@@ -123,29 +123,6 @@ theorem externalInsertionMixedTimeOrderedAtomicPairValue_map
     externalInsertionMixedTimeOrderedAtomicLegEquiv_position,
     orderedExternalInsertionLegField_map]
 
-omit [LinearOrder Mode] in
-/-- The concrete time-labelled atomic field is equivariant under an
-arbitrary bijection of interaction slots when the vertex labels and times
-are pulled back together. The external fields remain fixed. This holds
-before choosing a mixed-time order and is independent of any
-coincidence-time conventions. -/
-theorem ExternalInsertionWickDiagram.slotCongr_orderedExternalInsertionLegField
-    {E n : ℕ} (d : ExternalInsertionWickDiagram Mode E n)
-    (e : ↥(Finset.univ : Finset (Fin n)) ≃
-      ↥(Finset.univ : Finset (Fin n)))
-    (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ)
-    (leg : OrderedExternalInsertionLeg E n) :
-    let f : Fin n → Fin n :=
-      fun v => (e.symm ⟨v, Finset.mem_univ v⟩).1
-    orderedExternalInsertionLegField
-        (d.slotCongr e).externalLabel externalTime
-        (d.slotCongr e).vertexLabelSequence (σ ∘ f) leg =
-      orderedExternalInsertionLegField
-        d.externalLabel externalTime d.vertexLabelSequence σ
-        (orderedExternalInsertionLegMap (fun x => x) f leg) := by
-  intro f
-  rcases leg with a | ⟨v, l⟩ <;> rfl
-
 variable [Fintype Mode]
 
 /-- The *oriented* finite-Gibbs pair contraction transported through an
