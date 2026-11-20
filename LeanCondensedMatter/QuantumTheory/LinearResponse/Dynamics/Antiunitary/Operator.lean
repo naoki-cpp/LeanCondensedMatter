@@ -1,8 +1,6 @@
 import LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.Antiunitary
 import Mathlib.Analysis.Normed.Algebra.Exponential
-import Mathlib.LinearAlgebra.Complex.FiniteDimensional
-import Mathlib.Topology.Algebra.Module.FiniteDimension
-import Mathlib.Analysis.RCLike.Basic
+import Mathlib.Topology.Algebra.Module.Spaces.ContinuousLinearMap
 
 set_option linter.style.header false
 
@@ -12,8 +10,8 @@ set_option linter.style.header false
 The induced action on bounded operators is A ↦ Θ A Θ⁻¹. Both Θ and Θ⁻¹
 are continuous conjugate-linear equivalences, so their composition around
 a complex-linear bounded operator is automatically bounded and linear.
-Finite dimensionality is needed only below to prove continuity of the
-induced action on the *space of operators* for the exponential theorem.
+The induced action on the *space of operators* is continuous by Mathlib's
+semilinear arrow congruence, without requiring finite dimensionality.
 
 No assumption Θ² = 1 is used for operator conjugation or exponential covariance.
 -/
@@ -62,15 +60,12 @@ theorem conjugateOperator_smul (c : ℂ) (A : H →L[ℂ] H) :
   simp only [conjugateOperator_apply, smul_apply]
   exact Θ.equiv.map_smulₛₗ c (A (Θ.equiv.symm x))
 
-/-- Antiunitary conjugation commutes with bounded-operator exponentiation.
-Finite-dimensionality is used to establish continuity on the operator space. -/
-theorem conjugateOperator_exp [FiniteDimensional ℂ H] [CompleteSpace H]
+/-- Antiunitary conjugation commutes with bounded-operator exponentiation
+on any complete complex inner-product space. -/
+theorem conjugateOperator_exp [CompleteSpace H]
     (A : H →L[ℂ] H) :
     Θ.conjugateOperator (NormedSpace.exp A) =
       NormedSpace.exp (Θ.conjugateOperator A) := by
-  haveI : FiniteDimensional ℂ (H →L[ℂ] H) := inferInstance
-  haveI : FiniteDimensional ℝ (H →L[ℂ] H) :=
-    FiniteDimensional.complexToReal _
   letI : NormedAlgebra ℚ (H →L[ℂ] H) :=
     NormedAlgebra.restrictScalars ℚ ℂ _
   let f : (H →L[ℂ] H) →+* (H →L[ℂ] H) :=
@@ -83,17 +78,7 @@ theorem conjugateOperator_exp [FiniteDimensional ℂ H] [CompleteSpace H]
         ext x
         simp only [conjugateOperator_apply, add_apply, map_add] }
   have hcont : Continuous (Θ.conjugateOperator : (H →L[ℂ] H) → (H →L[ℂ] H)) := by
-    let f : (H →L[ℂ] H) →ₗ[ℝ] (H →L[ℂ] H) :=
-      { f.toAddMonoidHom with
-        map_smul' := by
-          intro r B
-          change Θ.conjugateOperator ((r : ℂ) • B) =
-            (r : ℂ) • Θ.conjugateOperator B
-          rw [Θ.conjugateOperator_smul]
-          have hr : (starRingEnd ℂ) (r : ℂ) = (r : ℂ) :=
-            RCLike.conj_ofReal (K := ℂ) r
-          rw [hr] }
-    exact f.continuous_of_finiteDimensional
+    exact (Θ.equiv.arrowCongrSL Θ.equiv).continuous
   exact NormedSpace.map_exp f hcont A
 
 end AntiunitaryMap
