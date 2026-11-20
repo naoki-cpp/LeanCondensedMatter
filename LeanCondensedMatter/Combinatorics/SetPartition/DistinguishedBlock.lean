@@ -36,26 +36,16 @@ noncomputable instance blockContainingFintype (s : Finset α) (a : α) :
 /-- Blocks containing `a` correspond to subsets of `s.erase a`. -/
 def blockContainingEquivPowerset (s : Finset α) (a : α) (ha : a ∈ s) :
     BlockContaining s a ≃ {T : Finset α // T ∈ (s.erase a).powerset} where
-  toFun B := ⟨B.1.erase a, by
-    rw [Finset.mem_powerset]
-    intro x hx
-    have hxB : x ∈ B.1 := Finset.mem_of_mem_erase hx
-    exact Finset.mem_erase.mpr ⟨Finset.ne_of_mem_erase hx, B.2.1 hxB⟩⟩
+  toFun B := ⟨B.1.erase a,
+    Finset.mem_powerset.mpr (Finset.erase_subset_erase a B.2.1)⟩
   invFun T := ⟨insert a T.1, by
     constructor
     · rw [Finset.insert_subset_iff]
       exact ⟨ha, (Finset.mem_powerset.mp T.2).trans (Finset.erase_subset _ _)⟩
     · exact Finset.mem_insert_self _ _⟩
-  left_inv B := by
-    apply Subtype.ext
-    exact Finset.insert_erase B.2.2
-  right_inv T := by
-    apply Subtype.ext
-    have haT : a ∉ T.1 := by
-      intro haT
-      have hmem := (Finset.mem_powerset.mp T.2) haT
-      exact (Finset.mem_erase.mp hmem).1 rfl
-    simp [haT]
+  left_inv B := Subtype.ext (Finset.insert_erase B.2.2)
+  right_inv T := Subtype.ext <| Finset.erase_insert <|
+    fun h => Finset.notMem_erase a s ((Finset.mem_powerset.mp T.2) h)
 
 private theorem insert_part_parts_avoid {s : Finset α} (P : Finpartition s) {a : α}
     (ha : a ∈ s) :
