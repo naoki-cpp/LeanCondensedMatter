@@ -169,20 +169,13 @@ theorem norm_freeGreenLadder_le_uniformPotential_sq
     norm_resolvent_spectralParameterOfRegulator_le
       ensemble.baseHamiltonian.1 ensemble.baseHamiltonian.2
       energyRight regulatorRight hregRight
-  have hM : 0 ≤ potentialBound ^ 2 := sq_nonneg _
-  have hLM : 0 ≤ potentialBound ^ 2 * leftBound :=
-    mul_nonneg hM (inv_nonneg.mpr (abs_nonneg regulatorLeft))
   change ‖ensemble.retardedAdvancedLadderCLM freeLeft freeRight‖ ≤
     potentialBound ^ 2 * leftBound * rightBound
   calc
     _ ≤ potentialBound ^ 2 * ‖freeLeft‖ * ‖freeRight‖ :=
       ensemble.norm_retardedAdvancedLadderCLM_le_uniformPotential_sq
         freeLeft freeRight potentialBound hpotential
-    _ ≤ potentialBound ^ 2 * leftBound * ‖freeRight‖ := by
-      exact mul_le_mul_of_nonneg_right
-        (mul_le_mul_of_nonneg_left hleft hM) (norm_nonneg freeRight)
-    _ ≤ potentialBound ^ 2 * leftBound * rightBound := by
-      exact mul_le_mul_of_nonneg_left hright hLM
+    _ ≤ _ := by gcongr
 
 /-- The microscopic condition `M²/(|γL| |γR|)<1` makes
 `I - L` invertible on the bounded-operator space. -/
