@@ -125,6 +125,13 @@ noncomputable def peelSumWithCoefficients {A : Type*} [Semiring A] [Algebra ℂ 
 theorem peelSumWithCoefficients_nil {A : Type*} [Semiring A] [Algebra ℂ A]
     (ζ : ℂ) : peelSumWithCoefficients (A := A) ζ [] = 0 := rfl
 
+/-- Computation on a nonempty coefficient-paired list, derived from the canonical peel recursion. -/
+@[simp]
+theorem peelSumWithCoefficients_cons {A : Type*} [Semiring A] [Algebra ℂ A]
+    (ζ : ℂ) (B : A) (c : ℂ) (t : List (A × ℂ)) :
+    peelSumWithCoefficients ζ ((B, c) :: t) =
+      c • (t.map Prod.fst).prod + ζ • (B * peelSumWithCoefficients ζ t) := rfl
+
 /-- Both peel sums encode the same recursion; the first label is only used to select
 its coefficients, which the paired representation already stores in each list element. -/
 private theorem peelSumWithCoefficients_eq_peelSum {A : Type*} [Semiring A] [Algebra ℂ A]
