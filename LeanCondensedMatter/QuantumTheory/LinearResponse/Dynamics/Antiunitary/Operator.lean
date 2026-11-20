@@ -47,10 +47,8 @@ theorem conjugateOperator_mul (A B : H →L[ℂ] H) :
 @[simp]
 theorem conjugateOperator_smul (c : ℂ) (A : H →L[ℂ] H) :
     Θ.conjugateOperator (c • A) =
-      ((starRingEnd ℂ) c) • Θ.conjugateOperator A := by
-  ext x
-  simp only [conjugateOperator_apply, smul_apply]
-  exact Θ.equiv.map_smulₛₗ c (A (Θ.equiv.symm x))
+      ((starRingEnd ℂ) c) • Θ.conjugateOperator A :=
+  (Θ.equiv.arrowCongrSL Θ.equiv).map_smulₛₗ c A
 
 /-- Antiunitary conjugation commutes with bounded-operator exponentiation
 on any complete complex inner-product space. -/
@@ -64,11 +62,8 @@ theorem conjugateOperator_exp [CompleteSpace H]
     { toFun := Θ.conjugateOperator
       map_one' := by ext x; exact Θ.equiv.apply_symm_apply x
       map_mul' := Θ.conjugateOperator_mul
-      map_zero' := by ext x; exact map_zero Θ.equiv
-      map_add' := by
-        intro B C
-        ext x
-        simp only [conjugateOperator_apply, add_apply, map_add] }
+      map_zero' := (Θ.equiv.arrowCongrSL Θ.equiv).map_zero
+      map_add' := (Θ.equiv.arrowCongrSL Θ.equiv).map_add }
   have hcont : Continuous (Θ.conjugateOperator : (H →L[ℂ] H) → (H →L[ℂ] H)) := by
     exact (Θ.equiv.arrowCongrSL Θ.equiv).continuous
   exact NormedSpace.map_exp f hcont A
