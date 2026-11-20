@@ -63,7 +63,7 @@ private theorem insert_part_parts_avoid {s : Finset α} (P : Finpartition s) {a 
   classical
   have hp : P.part a ∈ P.parts := P.part_mem.mpr ha
   have hmap :
-      (P.parts.erase (P.part a)).image (· \\ P.part a) =
+      (P.parts.erase (P.part a)).image (· \ P.part a) =
         P.parts.erase (P.part a) := by
     calc
       _ = (P.parts.erase (P.part a)).image id := by
@@ -72,7 +72,7 @@ private theorem insert_part_parts_avoid {s : Finset α} (P : Finpartition s) {a 
         exact (P.disjoint (Finset.mem_of_mem_erase hB) hp
           (Finset.ne_of_mem_erase hB)).sdiff_eq_left
       _ = _ := Finset.image_id
-  change insert (P.part a) ((P.parts.image (· \\ P.part a)).erase ∅) = P.parts
+  change insert (P.part a) ((P.parts.image (· \ P.part a)).erase ∅) = P.parts
   rw [← Finset.insert_erase hp, Finset.image_insert, hmap]
   simp [hp]
 
