@@ -131,6 +131,7 @@ private theorem peelSumWithCoefficients_eq_peelSum {A : Type*} [Semiring A] [Alg
     (ζ : ℂ) (C : A) (l : List (A × ℂ)) :
     peelSumWithCoefficients ζ l =
       peelSum Prod.fst (fun _ p => p.2) ζ (C, 0) l := by
+  unfold peelSumWithCoefficients
   induction l with
   | nil => rfl
   | cons p t ih =>
