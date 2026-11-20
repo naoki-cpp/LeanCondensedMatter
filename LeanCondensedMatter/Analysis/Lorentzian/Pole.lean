@@ -373,14 +373,13 @@ private theorem tendsto_regularFactorErrorIntegral_zero
   have hlocalAt : ∀ offset : ℝ, |offset| ≤ innerRadius →
       ‖regularFactorError factor offset broadening‖ ≤ tolerance := by
     intro offset hoffset
-    have hoffsetLtDelta : |offset| < δ := lt_of_le_of_lt hoffset hinnerLtDelta
-    have hbroadeningAbsLtDelta : |broadening| < δ := by
-      simpa [abs_of_pos hbroadening] using hbroadeningLtDelta
     have hmem : (offset, broadening) ∈
         Set.Icc (-radius) radius ×ˢ Set.Icc (0 : ℝ) etaMax :=
       ⟨abs_le.mp (hoffset.trans hnested),
         ⟨hbroadening.le, hbroadeningLtEtaMax.le⟩⟩
-    have h := hlocal offset broadening hmem hoffsetLtDelta hbroadeningAbsLtDelta
+    have h := hlocal offset broadening hmem
+      (lt_of_le_of_lt hoffset hinnerLtDelta)
+      (by simpa [abs_of_pos hbroadening] using hbroadeningLtDelta)
     simpa [regularFactorError] using h.le
   have hannulusAt : ∀ offset : ℝ,
       innerRadius ≤ |offset| → |offset| ≤ radius →
@@ -401,45 +400,29 @@ private theorem tendsto_regularFactorErrorIntegral_zero
     rw [hsplit]
     calc
       ‖regularFactorOuterErrorIntegral
-            factor innerRadius radius broadening +
-          (∫ offset in -innerRadius..innerRadius,
-            regularFactorErrorIntegrand factor broadening offset)‖ ≤
-        ‖regularFactorOuterErrorIntegral
-            factor innerRadius radius broadening‖ +
-          ‖∫ offset in -innerRadius..innerRadius,
-            regularFactorErrorIntegrand factor broadening offset‖ :=
-        norm_add_le _ _
-      _ ≤ C * spectralTailMass innerRadius radius broadening +
-          tolerance *
-            (∫ offset in -innerRadius..innerRadius,
-              spectralKernel offset broadening) := by
-        apply add_le_add
-        · exact norm_regularFactorOuterErrorIntegral_le
+          factor innerRadius radius broadening +
+        (∫ offset in -innerRadius..innerRadius,
+          regularFactorErrorIntegrand factor broadening offset)‖ ≤
+          _ + _ := norm_add_le _ _
+      _ ≤ _ + _ := add_le_add
+          (norm_regularFactorOuterErrorIntegral_le
             factor innerRadius radius broadening C hinnerNonneg hnested
-            hbroadening hannulusAt
-        · exact norm_integral_spectralKernel_mul_regularFactorError_le
-            factor innerRadius broadening tolerance hinnerNonneg hbroadening hlocalAt
-      _ = tolerance *
-            (∫ offset in -innerRadius..innerRadius,
-              spectralKernel offset broadening) +
-          C * spectralTailMass innerRadius radius broadening := by
-        ring
+            hbroadening hannulusAt)
+          (norm_integral_spectralKernel_mul_regularFactorError_le
+            factor innerRadius broadening tolerance hinnerNonneg hbroadening hlocalAt)
+      _ = _ := add_comm _ _
   have hmassLtPi :=
     integral_spectralKernel_symmetric_lt_pi innerRadius broadening
   have hinnerTermLt :
       tolerance *
           (∫ offset in -innerRadius..innerRadius,
             spectralKernel offset broadening) < ε / 4 := by
-    have hmassLt :
-        (∫ offset in -innerRadius..innerRadius,
-          spectralKernel offset broadening) < Real.pi + 1 := by
-      linarith
     calc
       tolerance *
           (∫ offset in -innerRadius..innerRadius,
             spectralKernel offset broadening) <
         tolerance * (Real.pi + 1) :=
-          mul_lt_mul_of_pos_left hmassLt htolerancePos
+          mul_lt_mul_of_pos_left (by linarith [hmassLtPi]) htolerancePos
       _ = ε / 4 := by
         dsimp [tolerance]
         field_simp [ne_of_gt hpiOnePos]
@@ -459,14 +442,7 @@ private theorem tendsto_regularFactorErrorIntegral_zero
         dsimp [tailTolerance]
         field_simp [ne_of_gt hCOnePos]
   have hnormLt : ‖regularFactorErrorIntegral factor radius broadening‖ < ε := by
-    calc
-      ‖regularFactorErrorIntegral factor radius broadening‖ ≤
-        tolerance *
-            (∫ offset in -innerRadius..innerRadius,
-              spectralKernel offset broadening) +
-          C * spectralTailMass innerRadius radius broadening := hboundAt
-      _ < ε / 4 + ε / 4 := add_lt_add_of_lt_of_le hinnerTermLt houterTermLe
-      _ < ε := by linarith
+    linarith only [hboundAt, hinnerTermLt, houterTermLe, hε]
   simpa [dist_eq_norm] using hnormLt
 
 private theorem integral_spectralKernel_mul_eq_error_add_mass_smul_pole
