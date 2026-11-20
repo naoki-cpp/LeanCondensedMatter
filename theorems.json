@@ -4967,44 +4967,6 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
-    "statement": "∀ {R : Type u_1} [inst : CommMonoid R] {m n : ℕ} (h : m = n) (pairing : Combinatorics.Pairing m) (weight : R)\n  (pairValue : Fin (2 * m) → Fin (2 * m) → R),\n  (((Equiv.cast ⋯) pairing).evaluation weight fun a b => pairValue ((finCongr ⋯) a) ((finCongr ⋯) b)) =\n    pairing.evaluation weight pairValue",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "Combinatorics.Pairing.evaluation_cast",
-    "module": "LeanCondensedMatter.Combinatorics.PerfectPairing.Evaluation",
-    "externalAxioms": [],
-    "docString": "Reindexing a pairing by an equality of pair counts preserves its\nevaluation together with the **oriented endpoint kernel**.  The endpoints\nare cast back in their original order, rather than assuming the pair\ncontraction is symmetric under endpoint exchange. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
     "terminal": false,
     "statement": "∀ {ι : Type u_1} {m : ι → ℕ} {n : ℕ} [inst : Fintype ι] {R : Type u_2} [inst_1 : CommMonoid R]\n  (global : Combinatorics.Pairing n) (componentPairing : (B : ι) → Combinatorics.Pairing (m B))\n  (componentPairEquiv : (B : ι) × (componentPairing B).NormalizedPair ≃ global.NormalizedPair) (weight factor : R)\n  (localWeight : ι → R) (pairValue : Fin (2 * n) → Fin (2 * n) → R)\n  (localPairValue : (B : ι) → Fin (2 * m B) → Fin (2 * m B) → R),\n  weight = factor * ∏ B, localWeight B →\n    (∀ (B : ι) (pr : (componentPairing B).NormalizedPair),\n        pairValue (↑(componentPairEquiv ⟨B, pr⟩)).1 (↑(componentPairEquiv ⟨B, pr⟩)).2 =\n          localPairValue B (↑pr).1 (↑pr).2) →\n      global.evaluation weight pairValue =\n        factor * ∏ B, (componentPairing B).evaluation (localWeight B) (localPairValue B)",
     "standardAxioms": [
