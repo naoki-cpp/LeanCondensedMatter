@@ -116,7 +116,7 @@ def partsCardSuccEquiv
       Σ B : BlockContaining s a,
         {Q : Finpartition (s \ B.1) // Q.parts.card = k} := by
   let e := distinguishedBlockEquiv s a ha
-  refine (Equiv.subtypeEquiv e ?_).trans {
+  refine (Equiv.subtypeEquiv e (q := fun x => x.2.parts.card = k) ?_).trans {
     toFun := fun x => ⟨x.1.1, ⟨x.1.2, x.2⟩⟩
     invFun := fun x => ⟨⟨x.1, x.2.1⟩, x.2.2⟩
     left_inv := by
