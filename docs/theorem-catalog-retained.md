@@ -286,10 +286,6 @@ using a zero-consumer signal as grounds for changing its retention.
 - `SecondQuantization.Fermionic.continuous_matrixCoeff_quarticVertexSequenceInteractionPicture` — joint continuity of
   matrix coefficients of the quartic vertex sequence for arbitrary mode types; this follows from
   the Common scalar-time-factor decomposition without finite intermediate-state sums.
-- `Combinatorics.Pairing.sign_pairPerm` — canonical parity endpoint identifying the sign of the
-  permutation that lists normalized pairs blockwise with `(-1)` raised to the pairing crossing
-  count. It records the intrinsic bridge between crossing parity and permutation sign independently
-  of downstream bridge implementations.
 - `Combinatorics.Pairing.insertFirstPair_eraseZeroPair` — canonical erase/insert round-trip law:
   erasing the pair containing position zero and reinserting it recovers the original pairing. It is
   the left-inverse law underlying `Pairing.equivSigma`, not merely one-use proof routing.
