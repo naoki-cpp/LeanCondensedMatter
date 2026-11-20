@@ -1,3 +1,4 @@
+import LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.Eigenstate
 import LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann.Eigenbasis.Dynamics
 import LeanCondensedMatter.QuantumTheory.LinearResponse.Frequency.Susceptibility
 import Mathlib.Topology.Algebra.InfiniteSum.Module
@@ -91,21 +92,14 @@ theorem eigenbasisTimeDomainSummable_of_finite
     EigenbasisTimeDomainSummable system data A B := by
   exact ⟨Summable.of_finite, Summable.of_finite⟩
 
-/-- Schrödinger phases have unit norm. -/
-@[simp]
-theorem norm_eigenbasisSchrodingerPhase
-    (data : EnergyEigenbasisLehmannData system ι) (i : ι) (t : ℝ) :
-    ‖eigenbasisSchrodingerPhase system data i t‖ = 1 := by
-  rw [eigenbasisSchrodingerPhase, Complex.norm_exp]
-  simp
-
 /-- Relative transition phases have unit norm. -/
 @[simp]
 theorem norm_eigenbasisTransitionPhase
     (data : EnergyEigenbasisLehmannData system ι)
     (m n : ι) (t : ℝ) :
     ‖eigenbasisTransitionPhase system data m n t‖ = 1 := by
-  simp [eigenbasisTransitionPhase]
+  rw [eigenbasisTransitionPhase, Complex.norm_exp]
+  simp
 
 /-- One forward ordered transition at time `τ`. -/
 noncomputable def eigenbasisForwardTimeTerm
@@ -136,7 +130,7 @@ theorem eigenbasisTimeDomainTerm_eq_weight_mul_transitionPhase
       (eigenbasisTransitionData system data A B mn).weight *
         eigenbasisTransitionPhase system data mn.1 mn.2 τ := by
   simp [eigenbasisTimeDomainTerm, LehmannTransitionData.timeTerm,
-    eigenbasisTransitionPhase_eq_exp_energyDifference]
+    eigenbasisTransitionPhase]
 
 /-- The countable time-domain eigenbasis Lehmann series. -/
 noncomputable def eigenbasisTimeDomainSeries
@@ -188,8 +182,10 @@ theorem eigenbasisExpectation_heisenberg_mul_eq_tsum
   apply tsum_congr
   intro n
   rw [ContinuousLinearMap.adjoint_inner_left]
-  rw [inner_energyEigenbasis_heisenbergEvolution system data A m n τ]
-  simp [eigenbasisForwardTimeTerm, eigenbasisForwardWeight]
+  rw [inner_heisenbergEvolution_of_eigenvectors system
+    (data.basis n) (data.basis m) (data.energy n) (data.energy m)
+    (data.hamiltonian_apply_basis n) (data.hamiltonian_apply_basis m) A τ]
+  simp [eigenbasisForwardTimeTerm, eigenbasisForwardWeight, eigenbasisTransitionPhase]
   ring
 
 /-- Expansion of `ω(B A_I(τ))` into the backward ordered transition series. -/
@@ -216,8 +212,10 @@ theorem eigenbasisExpectation_mul_heisenberg_eq_tsum
   apply tsum_congr
   intro n
   rw [ContinuousLinearMap.adjoint_inner_left]
-  rw [inner_energyEigenbasis_heisenbergEvolution system data A n m τ]
-  simp [eigenbasisBackwardTimeTerm, eigenbasisBackwardWeight]
+  rw [inner_heisenbergEvolution_of_eigenvectors system
+    (data.basis m) (data.basis n) (data.energy m) (data.energy n)
+    (data.hamiltonian_apply_basis m) (data.hamiltonian_apply_basis n) A τ]
+  simp [eigenbasisBackwardTimeTerm, eigenbasisBackwardWeight, eigenbasisTransitionPhase]
   ring
 
 /-- The two ordered transition sums combine into the physical `(pₘ - pₙ)` transition series. -/
