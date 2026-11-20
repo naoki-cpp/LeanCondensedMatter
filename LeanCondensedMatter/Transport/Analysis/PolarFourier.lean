@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Transport.Analysis.AngularHarmonics
+import LeanCondensedMatter.Analysis.Fourier.AngularHarmonics
 import LeanCondensedMatter.Transport.Analysis.ContinuumMeasure
 import LeanCondensedMatter.Transport.Analysis.FourierGeometry
 import Mathlib.Analysis.Calculus.ParametricIntervalIntegral
@@ -38,6 +38,8 @@ conductivity normalization is introduced here.
 -/
 
 namespace QuantumTheory
+
+open AngularHarmonics
 namespace Transport
 
 noncomputable section
@@ -1004,7 +1006,7 @@ theorem integral_polarFourierRadialPhase_mul_cos_mul_sin_zero (z : ℝ) :
 
 /-- Phase-weighted full-angle integration of the canonical constant/first/second harmonic
 decomposition. The first-sine and mixed-second channels vanish on the radial axis. -/
-theorem AngularHarmonicCoefficients.integral_polarFourierRadialPhase
+theorem integral_polarFourierRadialPhase_harmonicCoefficients
     (coefficients : AngularHarmonicCoefficients ℂ) (z p : ℝ) :
     (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi),
       ((p : ℂ) * polarFourierRadialPhase z θ) * coefficients.eval θ) =
@@ -1053,7 +1055,7 @@ theorem integral_polarFourierRadialPhase_first_harmonics
       secondCosine := 0
       secondMixed := 0 }
   simpa [coefficients, AngularHarmonicCoefficients.eval, smul_eq_mul] using
-    coefficients.integral_polarFourierRadialPhase z p
+    integral_polarFourierRadialPhase_harmonicCoefficients coefficients z p
 
 /-- The zeroth full-angle radial Fourier kernel is even in its radial argument. -/
 @[simp] theorem polarFourierZerothAngularKernel_neg (z : ℝ) :
@@ -1239,11 +1241,11 @@ private theorem integral_polarFourierRadialPhase_shifted_second_harmonics
             -4 * (((Real.cos angle : ℝ) : ℂ) * ((Real.sin angle : ℝ) : ℂ)) * d +
               (((Real.cos angle : ℝ) : ℂ) ^ 2 - ((Real.sin angle : ℝ) : ℂ) ^ 2) * e }
       simpa [coefficients, AngularHarmonicCoefficients.eval, smul_eq_mul] using
-        coefficients.integral_polarFourierRadialPhase z p
+        integral_polarFourierRadialPhase_harmonicCoefficients coefficients z p
 
 /-- Phase-weighted full-angle reduction of canonical harmonic coefficients at an arbitrary
 real-space polar angle. -/
-theorem AngularHarmonicCoefficients.integral_polarFourierRadialPhase_shifted
+theorem integral_polarFourierRadialPhase_harmonicCoefficients_shifted
     (coefficients : AngularHarmonicCoefficients ℂ) (z p angle : ℝ) :
     (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi),
       ((p : ℂ) * polarFourierRadialPhase z (θ - angle)) * coefficients.eval θ) =
@@ -1294,7 +1296,7 @@ theorem finiteCutoffPhysicalMomentumPolarFourier_polarPoint2D_harmonics
   apply intervalIntegral.integral_congr
   intro p _
   simp_rw [physicalMomentumPolarFourierPhase_polarPoint2D]
-  exact (coefficients p).integral_polarFourierRadialPhase_shifted
+  exact integral_polarFourierRadialPhase_harmonicCoefficients_shifted (coefficients p)
     (p * radius / hbar) p angle
 
 /-- Differentiating the first polar Fourier harmonic produces precisely the

@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Transport.Analysis.AngularHarmonics
+import LeanCondensedMatter.Analysis.Fourier.AngularHarmonics
 import LeanCondensedMatter.Models.MassiveDirac.Model.FermiSurfaceOverlap
 import Mathlib.Analysis.SpecialFunctions.Integrals.Basic
 import Mathlib.Tactic.FieldSimp
@@ -20,6 +20,8 @@ in `Disorder.TransportRate`.
 -/
 
 namespace QuantumTheory.Models.MassiveDirac
+
+open AngularHarmonics
 
 noncomputable section
 

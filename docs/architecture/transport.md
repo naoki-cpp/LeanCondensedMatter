@@ -44,7 +44,7 @@ Transport/
 ├── Scattering/    finite-state collision operators and angular-mode eigenvalue laws
 ├── Resolvent/     signed spectral regulator, physical spectral sides, self-energy algebra
 ├── Spectral/      response-neutral adapters from supplied spectral data to resolvent algebra
-├── Analysis/      occupations, 2D continuum measure, angular harmonics, polar Fourier, relaxation time
+├── Analysis/      occupations, 2D continuum measure, polar Fourier, relaxation time
 ├── KuboBastin/    Lehmann-to-resolvent response algebra and finite spectral sums
 ├── Streda/        static response kernels, traces, integration, response matrices
 └── Disorder/      exact finite disorder, Green operators, Born, SCBA, ladder algebra
@@ -120,9 +120,9 @@ isolated-pole weights.
 
 `Analysis.ContinuumMeasure` owns the opt-in two-dimensional physical-momentum convention
 `d²p/(2πℏ)²` and its exact full-angle radial prefactor `2π/(2πℏ)²`; these are continuum conventions,
-not dimension-independent transport invariants. `Analysis.AngularHarmonics`
+not dimension-independent transport invariants. `LeanCondensedMatter.Analysis.Fourier.AngularHarmonics`
 owns the reusable constant/first/second harmonic
-coefficient decomposition and ordinary full-angle cancellation laws. `Analysis.PolarFourier`
+coefficient decomposition and ordinary full-angle cancellation laws. `Transport.Analysis.PolarFourier`
 consumes the same coefficient data for phase-weighted radial-axis reduction while keeping the
 zeroth, first-cosine, and second-cosine kernels explicit. Model layers supply coefficient values;
 Pauli algebra, propagator data, and radial physics remain model-owned.

@@ -179,7 +179,7 @@ for the mechanism, not consequences of the finite kinetic benchmark.
 state-level foundations. `QuantumTheory.SpinHalf.spinMatrix` provides the
 physical spin-1/2 normalization, while `Analysis.InternalSpace.Pauli` provides
 dimensionless representation matrices. The existing
-`Transport.Analysis.AngularHarmonics` API concerns a two-dimensional polar
+`Analysis.Fourier.AngularHarmonics` API concerns a two-dimensional polar
 angle; it does not supply the three-dimensional sphere moments needed here.
 The finite disorder and transport response APIs describe different observables
 and should only be connected by a separate identification theorem. The finite

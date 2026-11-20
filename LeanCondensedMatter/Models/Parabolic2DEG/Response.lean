@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Transport.Analysis.AngularHarmonics
+import LeanCondensedMatter.Analysis.Fourier.AngularHarmonics
 import LeanCondensedMatter.Transport.Analysis.ContinuumMeasure
 import LeanCondensedMatter.Transport.Core.ConductivityTensor
 import LeanCondensedMatter.Models.Parabolic2DEG.Green
@@ -28,6 +28,8 @@ nonzero Hall response.
 -/
 
 namespace QuantumTheory.Models.Parabolic2DEG
+
+open AngularHarmonics
 
 noncomputable section
 
