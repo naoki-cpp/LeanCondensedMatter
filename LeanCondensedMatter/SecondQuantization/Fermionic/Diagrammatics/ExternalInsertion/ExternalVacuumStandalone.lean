@@ -53,14 +53,12 @@ theorem externalInsertionSupport_dysonFactor_eq_standardizedAmplitude
   intro fT localFixed localPairing localSign localKernel localValue e
   have hpair :
       (ext.slotCongr e).pairingInMixedOrder externalTime (σ ∘ fT) =
-        localPairing := by
-    exact ext.supportSlotCongr_pairingInMixedOrder T externalTime σ
+        localPairing :=
+    ext.supportSlotCongr_pairingInMixedOrder T externalTime σ
   have hvertices :
       (ext.slotCongr e).vertexLabelSequence =
         (fun v => ext.vertexLabel (T.orderIsoOfFin rfl v)) := by
     funext v
-    change ext.vertexLabel (e.symm ⟨v, Finset.mem_univ v⟩) =
-      ext.vertexLabel (T.orderIsoOfFin rfl v)
     rfl
   have hkernel :
       externalInsertionMixedTimeOrderedAtomicPairValue ε β
