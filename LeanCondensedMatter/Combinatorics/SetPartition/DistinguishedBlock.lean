@@ -108,18 +108,6 @@ private theorem card_parts_distinguishedBlockEquiv_symm
       (Finset.sdiff_union_of_subset B.2.1)).parts.card = Q.parts.card + 1
   exact card_extend Q B.1 s
 
-private def subtypeSigmaSndEquiv {ι : Type*} {β : ι → Type*}
-    (q : (i : ι) → β i → Prop) :
-    {x : Σ i, β i // q x.1 x.2} ≃ Σ i, {b : β i // q i b} where
-  toFun x := ⟨x.1.1, ⟨x.1.2, x.2⟩⟩
-  invFun x := ⟨⟨x.1, x.2.1⟩, x.2.2⟩
-  left_inv x := by
-    rcases x with ⟨⟨i, b⟩, hb⟩
-    rfl
-  right_inv x := by
-    rcases x with ⟨i, ⟨b, hb⟩⟩
-    rfl
-
 /-- Partitions of `s` with `k + 1` blocks are equivalent to a choice of the block containing
 `a` together with a `k`-block partition of its complement. -/
 def partsCardSuccEquiv
@@ -128,9 +116,10 @@ def partsCardSuccEquiv
       Σ B : BlockContaining s a,
         {Q : Finpartition (s \ B.1) // Q.parts.card = k} := by
   let e := distinguishedBlockEquiv s a ha
-  refine (Equiv.subtypeEquiv e ?_).trans
-    (subtypeSigmaSndEquiv
-      (fun B : BlockContaining s a => fun Q : Finpartition (s \ B.1) => Q.parts.card = k))
+  refine (Equiv.subtypeEquiv e ?_).trans <|
+    (Equiv.subtypeEquivRight fun x => (true_and (x.2.parts.card = k)).symm).trans <|
+      (Equiv.subtypeSigmaEquivSigma (p := fun _ => True)).trans <|
+        Equiv.sigmaCongrLeft (Equiv.subtypeUnivEquiv fun _ => trivial)
   intro P
   have hcard : P.parts.card = (e P).2.parts.card + 1 := by
     simpa [e] using card_parts_distinguishedBlockEquiv_symm ha (e P)
