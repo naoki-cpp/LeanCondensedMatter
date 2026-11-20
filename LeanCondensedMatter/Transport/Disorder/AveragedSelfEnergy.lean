@@ -45,19 +45,6 @@ private theorem exists_probability_pos : ∃ ω : Ω, 0 < ensemble.probability �
   simpa using (Finset.sum_pos_iff_of_nonneg
     (fun ω _ => ensemble.probability_nonneg ω)).mp hsum
 
-/-- Taking an inner product after an exact finite operator average is the corresponding weighted
-finite average of inner products. -/
-private theorem inner_average_apply
-    (operator : Ω → H →L[ℂ] H) (v w : H) :
-    inner ℂ (ensemble.average operator v) w =
-      ∑ ω, (ensemble.probability ω : ℂ) * inner ℂ (operator ω v) w := by
-  change inner ℂ ((∑ ω, (ensemble.probability ω : ℂ) • operator ω) v) w = _
-  rw [sum_apply, sum_inner]
-  apply Finset.sum_congr rfl
-  intro ω _
-  simpa [Algebra.smul_def] using
-    (inner_smul_real_left (𝕜 := ℂ) (operator ω v) w (ensemble.probability ω))
-
 /-- The exact finite disorder average inherits the signed-regulator Herglotz identity. -/
 private theorem im_inner_averagedGreenOfRegulator_apply_self
     (energy regulator : ℝ) (hregulator : regulator ≠ 0) (v : H) :
@@ -66,11 +53,19 @@ private theorem im_inner_averagedGreenOfRegulator_apply_self
         ∑ ω, ensemble.probability ω *
           ‖ensemble.configurationGreenOfRegulator energy regulator ω v‖ ^ 2 := by
   change
-    (inner ℂ
-      (ensemble.average
-        (fun ω => ensemble.configurationGreenOfRegulator energy regulator ω) v) v).im = _
-  rw [ensemble.inner_average_apply
-    (fun ω => ensemble.configurationGreenOfRegulator energy regulator ω) v v]
+    (inner ℂ ((∑ ω, (ensemble.probability ω : ℂ) •
+      ensemble.configurationGreenOfRegulator energy regulator ω) v) v).im = _
+  rw [sum_apply, sum_inner]
+  have hreal (ω : Ω) :
+      inner ℂ ((ensemble.probability ω : ℂ) •
+        ensemble.configurationGreenOfRegulator energy regulator ω v) v =
+        (ensemble.probability ω : ℂ) *
+          inner ℂ (ensemble.configurationGreenOfRegulator energy regulator ω v) v := by
+    simpa [Algebra.smul_def] using
+      (inner_smul_real_left (𝕜 := ℂ)
+        (ensemble.configurationGreenOfRegulator energy regulator ω v) v
+        (ensemble.probability ω))
+  simp_rw [hreal]
   rw [Complex.im_sum]
   have him (ω : Ω) :
       (inner ℂ (ensemble.configurationGreenOfRegulator energy regulator ω v) v).im =
