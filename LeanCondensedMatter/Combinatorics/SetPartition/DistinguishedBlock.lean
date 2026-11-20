@@ -117,9 +117,14 @@ def partsCardSuccEquiv
         {Q : Finpartition (s \ B.1) // Q.parts.card = k} := by
   let e := distinguishedBlockEquiv s a ha
   refine (Equiv.subtypeEquiv e ?_).trans <|
-    (Equiv.subtypeEquivRight fun x => (true_and (x.2.parts.card = k)).symm).trans <|
-      (Equiv.subtypeSigmaEquivSigma (p := fun _ => True)).trans <|
-        Equiv.sigmaCongrLeft (Equiv.subtypeUnivEquiv fun _ => trivial)
+    (Equiv.subtypeEquivRight (fun x : Σ B : BlockContaining s a,
+      Finpartition (s \ B.1) => by simp)).trans <|
+      (Equiv.subtypeSigmaEquivSigma
+        (p := fun _ : BlockContaining s a => True)
+        (q := fun (B : BlockContaining s a) (Q : Finpartition (s \ B.1)) =>
+          Q.parts.card = k)).trans <|
+        Equiv.sigmaCongrLeft
+          (Equiv.subtypeUnivEquiv (fun _ : BlockContaining s a => True.intro))
   intro P
   have hcard : P.parts.card = (e P).2.parts.card + 1 := by
     simpa [e] using card_parts_distinguishedBlockEquiv_symm ha (e P)
