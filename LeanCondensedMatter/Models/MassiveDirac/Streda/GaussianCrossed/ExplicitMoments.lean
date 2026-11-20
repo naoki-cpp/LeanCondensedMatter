@@ -270,27 +270,52 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_psi_antis
       finiteCutoffContinuumBornDysonGaussianCrossedPsiFourierMomentKernel
         v m probeEnergy broadening disorderStrength hbar pMax radius := by
   unfold finiteCutoffContinuumBornDysonGaussianCrossedPsiFourierMomentKernel
-  rw [finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_psi_antisymmetric_eq_real_minor
-    v m probeEnergy broadening disorderStrength hbar pMax radius
-    hbroadening hdisorder hpMax]
-  have hs :=
-    finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrent_scalar_diagonal_minor_eq_harmonic_moments
+  have hmid :
+    (finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor
+        .psi v m probeEnergy broadening disorderStrength hbar pMax radius 0 1 -
+      finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor
+        .psi v m probeEnergy broadening disorderStrength hbar pMax radius 1 0) / 2 =
+      let Jx := finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock
+         0 v m probeEnergy broadening disorderStrength hbar pMax radius
+      let GR := finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix
+         .retarded v m probeEnergy broadening disorderStrength hbar pMax radius
+      let b := InternalSpace.pauliScalarCoefficient GR
+      let gz := InternalSpace.pauliVectorCoefficient GR .z
+      let u := InternalSpace.pauliVectorCoefficient Jx
+      let moments := finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentFourierMoments
+        v m probeEnergy broadening disorderStrength hbar pMax radius
+      let greenFirst := Complex.I * (((radius / hbar : ℝ) : ℂ)) / 2
+      let greenSecondMoment := gaussianCrossedZerothSubSecondRadialMoment hbar pMax radius
+        (fun p => finiteCutoffContinuumBornDysonPauliCoefficient .x
+          .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax)
+      let minor := (greenFirst * greenSecondMoment) *
+         (moments.firstX * ((moments.isotropic - moments.anisotropic) / 2) - moments.firstY * u .y) -
+         b * ((u .y) ^ 2 + (moments.isotropic ^ 2 - moments.anisotropic ^ 2) / 4)
+      ((-8 * (gz.re * minor.im + gz.im * minor.re) : ℝ) : ℂ) := by
+    rw [finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_psi_antisymmetric_eq_real_minor
       v m probeEnergy broadening disorderStrength hbar pMax radius
-      hbroadening hdisorder hpMax
-  have hdiag :=
-    finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient_eq_diagonal_harmonic_integrals
-      v m probeEnergy broadening disorderStrength hbar pMax radius
-      hbroadening hdisorder hpMax
-  have hgr :=
-    finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient_x_negRadius_eq_k0_sub_k2
-      .retarded v m probeEnergy broadening disorderStrength hbar pMax (-radius)
-      hbroadening hdisorder hpMax
-  simp only [neg_neg] at hgr
-  dsimp only [finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentScalarCoefficient,
-    finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient,
-    finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient] at hs hgr hdiag
-  dsimp only [gaussianCrossedZerothSubSecondRadialMoment] at ⊢
-  rw [hs, hgr, hdiag.1, hdiag.2]
+      hbroadening hdisorder hpMax]
+    have hs :=
+      finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrent_scalar_diagonal_minor_eq_harmonic_moments
+        v m probeEnergy broadening disorderStrength hbar pMax radius
+        hbroadening hdisorder hpMax
+    have hdiag :=
+      finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient_eq_diagonal_harmonic_integrals
+        v m probeEnergy broadening disorderStrength hbar pMax radius
+        hbroadening hdisorder hpMax
+    have hgr :=
+      finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient_x_negRadius_eq_k0_sub_k2
+        .retarded v m probeEnergy broadening disorderStrength hbar pMax (-radius)
+        hbroadening hdisorder hpMax
+    simp only [neg_neg] at hgr
+    dsimp only [finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentScalarCoefficient,
+      finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient,
+      finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient] at hs hgr hdiag
+    dsimp only at hs hgr hdiag ⊢
+    dsimp only [gaussianCrossedZerothSubSecondRadialMoment] at ⊢
+    rw [hs, hgr, hdiag.1, hdiag.2]
+    ring
+  rw [hmid]
   have hscalar :=
     finiteCutoffContinuumBornDysonRadialGreenScalarCoefficient_eq_radialKernel_integral
       .retarded v m probeEnergy broadening disorderStrength hbar pMax radius
@@ -312,12 +337,10 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_psi_antis
     finiteCutoffContinuumBornDysonRadialPauliData] at hz
   dsimp only [finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliKernel] at htransverse
   simp only [ite_true] at htransverse
+  dsimp only at hscalar hz htransverse ⊢
   dsimp only [finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentFourierMoments,
     gaussianCrossedZerothRadialMoment, gaussianCrossedZerothSubSecondRadialMoment] at ⊢
   rw [hscalar, hz, htransverse]
-  simp only [Complex.add_re, Complex.add_im, Complex.sub_re, Complex.sub_im,
-    Complex.mul_re, Complex.mul_im] at ⊢
-  all_goals ring_nf
 
 
 end
