@@ -40,9 +40,7 @@ theorem conjugateOperator_mul (A B : H →L[ℂ] H) :
     Θ.conjugateOperator (A * B) =
       Θ.conjugateOperator A * Θ.conjugateOperator B := by
   ext x
-  change Θ.equiv (A (B (Θ.equiv.symm x))) =
-    Θ.equiv (A (Θ.equiv.symm (Θ.equiv (B (Θ.equiv.symm x)))))
-  rw [Θ.equiv.symm_apply_apply]
+  simp [conjugateOperator_apply]
 
 @[simp]
 theorem conjugateOperator_smul (c : ℂ) (A : H →L[ℂ] H) :
