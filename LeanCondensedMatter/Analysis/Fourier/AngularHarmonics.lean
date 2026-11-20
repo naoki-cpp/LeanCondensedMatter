@@ -8,22 +8,20 @@ set_option linter.style.header false
 /-!
 # Full-angle harmonic integrals
 
-Model-independent real- and complex-valued trigonometric integrals used by angular reductions in
-transport calculations. Constant, first, and second harmonics share one coefficient representation;
-ordinary full-angle integration and phase-weighted polar Fourier reduction consume that same data.
-No general Fourier API is introduced.
+Model-independent real- and complex-valued trigonometric integrals. Constant, first, and
+second harmonics share one coefficient representation suitable for scalars, matrices, or bounded
+operators. The ordinary full-angle integration laws are independent of physical momentum
+measures and Fourier phases.
 -/
 
-namespace QuantumTheory
-namespace Transport
+namespace AngularHarmonics
 
 noncomputable section
 
 open MeasureTheory
 open scoped Interval
 
-/-- Coefficients of the constant, first, and second polar-angle harmonics used by transport
-reductions. The value type is generic so the same decomposition can describe scalars, matrices, or
+/-- Coefficients of the constant, first, and second polar-angle harmonics used by harmonic decompositions. The value type is generic so the same decomposition can describe scalars, matrices, or
 bounded operators. -/
 structure AngularHarmonicCoefficients (E : Type*) where
   /-- Constant angular harmonic. -/
@@ -194,5 +192,4 @@ theorem integral_quadratic_cos_zero_two_pi (a b c : ℝ) :
 
 end
 
-end Transport
-end QuantumTheory
+end AngularHarmonics

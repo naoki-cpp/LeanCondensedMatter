@@ -204,9 +204,8 @@ definitions as the Fourier-reduction API. Do not introduce local Bessel definiti
 
 ## Harmonic and measure boundaries
 
-The implementation uses `Analysis.AngularHarmonics.AngularHarmonicCoefficients` as the single
-constant/first/second-harmonic representation. `Analysis.PolarFourier` consumes it both for ordinary
-full-angle integration and for phase-weighted reduction at an arbitrary polar point; concrete
+The implementation uses `AngularHarmonics.AngularHarmonicCoefficients` from `Analysis.Fourier.AngularHarmonics` as the single
+constant/first/second-harmonic representation. `Transport.Analysis.PolarFourier` consumes it for phase-weighted reduction at an arbitrary polar point; concrete
 massive-Dirac consumers specialize it to the radial axis where the sine and mixed channels drop out.
 Continuum measure factors are kept separate from trace/current normalization.
 `Analysis.ContinuumMeasure` owns both the bare two-dimensional physical-momentum prefactor and its
