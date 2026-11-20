@@ -100,7 +100,7 @@ private theorem avoid_extend_eq {s B : Finset α} {a : α}
       _ = _ := Finset.image_id
   apply Finpartition.ext
   change ((insert B Q.parts).image (· \ B)).erase ∅ = Q.parts
-  simp [Finset.image_insert, hmap, Q.bot_notMem]
+  simp [Finset.image_insert, hmap]
 
 /-- A partition is equivalent to its distinguished block and a partition of the complement. -/
 def distinguishedBlockEquiv (s : Finset α) (a : α) (ha : a ∈ s) :
