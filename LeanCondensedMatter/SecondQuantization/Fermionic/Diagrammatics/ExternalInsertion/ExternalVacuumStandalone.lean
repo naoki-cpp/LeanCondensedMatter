@@ -68,7 +68,7 @@ theorem externalInsertionSupport_dysonFactor_eq_standardizedAmplitude
   have hvalue :
       ExternalInsertionWickDiagram.mixedPairingValue (ext.slotCongr e) ε β externalTime (σ ∘ fT) =
         localValue := by
-    simp only [ExternalInsertionWickDiagram.mixedPairingValue, hpair, hkernel]
+    simp only [ExternalInsertionWickDiagram.mixedPairingValue, hpair, hkernel, localValue]
   have hweight : (ext.slotCongr e).vertexWeight g = ext.vertexWeight g :=
     ext.slotCongr_vertexWeight e g
   have hsign :
