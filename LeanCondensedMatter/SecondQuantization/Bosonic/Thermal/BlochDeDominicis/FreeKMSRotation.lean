@@ -26,16 +26,6 @@ noncomputable section
 
 variable {Mode : Type*}
 
-private theorem tsumTrace_rotate_of_comp_eq_smul
-    (D C A : FockSpace Mode →ₗ[ℂ] FockSpace Mode) (q : ℂ)
-    (hmove : D.comp C = q • (C.comp D))
-    (hcyclic : Common.tsumTrace (C.comp (D.comp A)) =
-      Common.tsumTrace ((D.comp A).comp C)) :
-    Common.tsumTrace (D.comp (C.comp A)) =
-      q * Common.tsumTrace (D.comp (A.comp C)) := by
-  rw [← LinearMap.comp_assoc, hmove, LinearMap.smul_comp,
-    Common.tsumTrace_smul, LinearMap.comp_assoc, hcyclic, LinearMap.comp_assoc]
-
 /-- The KMS factor of a free thermal field. -/
 noncomputable def FreeThermalField.kmsFactor (ε : Mode → ℝ) (β : ℝ) :
     FreeThermalField Mode → ℂ
@@ -70,7 +60,9 @@ theorem FreeThermalField.grandCanonicalGibbsExpectation_operator_comp_rotate
     | annihilate i => exact tsumTrace_annihilate_comp i _
     | create i => exact tsumTrace_create_comp i _
   unfold grandCanonicalGibbsExpectation
-  rw [tsumTrace_rotate_of_comp_eq_smul _ _ _ _ hmove hcyclic, mul_div_assoc]
+  rw [← LinearMap.comp_assoc, hmove, LinearMap.smul_comp,
+    Common.tsumTrace_smul, LinearMap.comp_assoc, hcyclic,
+    LinearMap.comp_assoc, mul_div_assoc]
 
 end
 end Bosonic
