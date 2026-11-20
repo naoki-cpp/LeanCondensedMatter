@@ -162,7 +162,6 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_x_antisym
   dsimp only [finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentScalarCoefficient,
     finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient] at hs hz hdiag
   dsimp only [finiteCutoffContinuumBornDysonRadialPauliData] at hz ⊢
-  dsimp only [gaussianCrossedZerothSubSecondRadialMoment] at ⊢
   rw [hs, hz]
   rw [hdiag.1, hdiag.2]
   have hxz :=
