@@ -62,25 +62,10 @@ private theorem externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_lef
       (Finset.subset_univ T) ext vac
       ⟨(T.orderIsoOfFin rfl v).1, Finset.mem_univ _⟩
       (T.orderIsoOfFin rfl v).2
-  change externalInsertionMixedTimeOrderedAtomicPairValue ε β
-      d.externalLabel externalTime d.vertexLabelSequence σ
-      (externalInsertionMixedTimeOrderedAtomicLegPosition externalTime σ
-        (orderedExternalInsertionLegMap (fun e => e) f a))
-      (externalInsertionMixedTimeOrderedAtomicLegPosition externalTime σ
-        (orderedExternalInsertionLegMap (fun e => e) f b)) =
-    externalInsertionMixedTimeOrderedAtomicPairValue ε β
-      ext.externalLabel externalTime
-      (fun v => ext.vertexLabel (T.orderIsoOfFin rfl v)) (σ ∘ f)
-      (externalInsertionMixedTimeOrderedAtomicLegPosition externalTime (σ ∘ f) a)
-      (externalInsertionMixedTimeOrderedAtomicLegPosition externalTime (σ ∘ f) b)
   have hLabelComp :
-      d.externalLabel ∘ (fun e : Fin (2 * E) => e) = ext.externalLabel := by
-    funext e
-    exact congrFun hlabel e
+      d.externalLabel ∘ (fun e : Fin (2 * E) => e) = ext.externalLabel := rfl
   have hTimeComp :
-      externalTime ∘ (fun e : Fin (2 * E) => e) = externalTime := by
-    funext e
-    rfl
+      externalTime ∘ (fun e : Fin (2 * E) => e) = externalTime := rfl
   have hmap :=
     externalInsertionMixedTimeOrderedAtomicPairValue_map
       ε β (fun e : Fin (2 * E) => e) f
