@@ -61,7 +61,7 @@ theorem schwartzVelocityLocalizationFlux_eq_comp1D
     (SchwartzSchrodinger1D.heisenberg_localization_eq_symmetrized_velocity ℏ κ potential f)
   simpa [SchwartzKinetic1D.multiplicationLinear, heisenbergScale,
     LieRing.of_associative_ring_bracket, Module.End.mul_eq_comp,
-    _root_.ConservationLaw.symmetrizedProduct_apply] using h
+    _root_.LinearMap.symmetrizedProduct_apply] using h
 
 /-- Probability transport (`m = I`) on the Schwartz Schrödinger model is locally represented by the
 velocity operator itself. -/
@@ -122,9 +122,9 @@ theorem schwartzOperatorChargeCurrentRepresentation1D_currentDensity
     (q : ℂ) (ℏ κ : ℝ) (potential : SchwartzOneParticle1D) :
     (schwartzOperatorChargeCurrentRepresentation1D q ℏ κ potential).currentDensity =
       q • SchwartzSchrodinger1D.velocityOperator ℏ κ := by
-  change _root_.ConservationLaw.symmetrizedProduct
+  change _root_.LinearMap.symmetrizedProduct
       (SchwartzSchrodinger1D.velocityOperator ℏ κ) (q • LinearMap.id) = _
-  exact _root_.ConservationLaw.symmetrizedProduct_smul_id
+  exact _root_.LinearMap.symmetrizedProduct_smul_id
     (SchwartzSchrodinger1D.velocityOperator ℏ κ) q
 
 end

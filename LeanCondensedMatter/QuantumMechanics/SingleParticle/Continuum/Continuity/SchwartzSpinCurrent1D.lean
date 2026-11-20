@@ -89,7 +89,7 @@ theorem schwartzSpinorVelocityLocalizationFlux_eq_comp1D
     (fun T : SchwartzSpinorOneParticle1D →ₗ[ℂ] SchwartzSpinorOneParticle1D => T ψ)
     (SchwartzTwoLevelSchrodinger1D.heisenberg_localization_eq_symmetrized_velocity
       ℏ κ potential internalH f)
-  simpa [heisenbergScale, _root_.ConservationLaw.symmetrizedProduct_apply,
+  simpa [heisenbergScale, _root_.LinearMap.symmetrizedProduct_apply,
     SchwartzTwoLevel1D.multiplicationLinear] using h
 
 /-- The symmetrized velocity-current representation of spin transport on the Schwartz model. -/
@@ -138,7 +138,7 @@ theorem symmetrizedSpinCurrent_eq_velocity_comp_spin
         (schwartzSpinOperatorLinear ℏ spinComponent) =
       (SchwartzTwoLevelSchrodinger1D.velocityOperator ℏ κ).comp
         (schwartzSpinOperatorLinear ℏ spinComponent) := by
-  apply _root_.ConservationLaw.symmetrizedProduct_eq_comp_of_commutes
+  apply _root_.LinearMap.symmetrizedProduct_eq_comp_of_commutes
   change
     ⁅SchwartzTwoLevel1D.spatialLift (SchwartzSchrodinger1D.velocityOperator ℏ κ),
       SchwartzTwoLevel1D.internalOperator
@@ -168,18 +168,18 @@ theorem schwartzSpin_sourceCommutator_eq_internal
         (SchwartzTwoLevelSchrodinger1D.hamiltonian κ potential internalH)
         SchwartzTwoLevel1D.multiplicationLinear
         (schwartzSpinOperatorLinear ℏ spinComponent) f =
-      _root_.ConservationLaw.symmetrizedProduct
+      _root_.LinearMap.symmetrizedProduct
         (SchwartzTwoLevel1D.multiplicationOperator f)
         ⁅SchwartzTwoLevel1D.internalOperator internalH,
           schwartzSpinOperatorLinear ℏ spinComponent⁆ := by
   rw [_root_.ConservationLaw.sourceCommutator]
   change
-    _root_.ConservationLaw.symmetrizedProduct
+    _root_.LinearMap.symmetrizedProduct
         (SchwartzTwoLevel1D.multiplicationOperator f)
         ⁅SchwartzTwoLevelSchrodinger1D.hamiltonian κ potential internalH,
           SchwartzTwoLevel1D.internalOperator
             (QuantumTheory.SpinHalf.spinMatrix ℏ spinComponent)⁆ =
-      _root_.ConservationLaw.symmetrizedProduct
+      _root_.LinearMap.symmetrizedProduct
         (SchwartzTwoLevel1D.multiplicationOperator f)
         ⁅SchwartzTwoLevel1D.internalOperator internalH,
           SchwartzTwoLevel1D.internalOperator

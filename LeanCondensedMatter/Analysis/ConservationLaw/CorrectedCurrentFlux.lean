@@ -43,15 +43,15 @@ noncomputable def nestedSymmetrizedCurrentFlux
     (velocity m : V →ₗ[ℂ] V)
     (N : OneForm →ₗ[ℂ] (V →ₗ[ℂ] V)) :
     OneForm →ₗ[ℂ] (V →ₗ[ℂ] V) :=
-  (symmetrizedProductRightLinear V m).comp
-    ((symmetrizedProductRightLinear V velocity).comp N)
+  (LinearMap.symmetrizedProductRightLinear V m).comp
+    ((LinearMap.symmetrizedProductRightLinear V velocity).comp N)
 
 @[simp]
 theorem nestedSymmetrizedCurrentFlux_apply
     (velocity m : V →ₗ[ℂ] V)
     (N : OneForm →ₗ[ℂ] (V →ₗ[ℂ] V)) (α : OneForm) :
     nestedSymmetrizedCurrentFlux V velocity m N α =
-      symmetrizedProduct (symmetrizedProduct (N α) velocity) m :=
+      LinearMap.symmetrizedProduct (LinearMap.symmetrizedProduct (N α) velocity) m :=
   rfl
 
 /-- Flux obtained from the symmetrized current `1/2 {v,m}`. -/
@@ -59,14 +59,14 @@ noncomputable def symmetrizedCurrentFlux
     (velocity m : V →ₗ[ℂ] V)
     (N : OneForm →ₗ[ℂ] (V →ₗ[ℂ] V)) :
     OneForm →ₗ[ℂ] (V →ₗ[ℂ] V) :=
-  (symmetrizedProductRightLinear V (symmetrizedProduct velocity m)).comp N
+  (LinearMap.symmetrizedProductRightLinear V (LinearMap.symmetrizedProduct velocity m)).comp N
 
 @[simp]
 theorem symmetrizedCurrentFlux_apply
     (velocity m : V →ₗ[ℂ] V)
     (N : OneForm →ₗ[ℂ] (V →ₗ[ℂ] V)) (α : OneForm) :
     symmetrizedCurrentFlux V velocity m N α =
-      symmetrizedProduct (N α) (symmetrizedProduct velocity m) :=
+      LinearMap.symmetrizedProduct (N α) (LinearMap.symmetrizedProduct velocity m) :=
   rfl
 
 /-- Canonical localization correction, defined as the exact difference between the nested and
@@ -85,9 +85,9 @@ theorem localizationCorrectionCurrentFlux_apply
     localizationCorrectionCurrentFlux V velocity m N α =
       (1 / 4 : ℂ) • ⁅velocity, ⁅N α, m⁆⁆ := by
   change
-    symmetrizedProduct (symmetrizedProduct (N α) velocity) m -
-      symmetrizedProduct (N α) (symmetrizedProduct velocity m) = _
-  rw [symmetrizedProduct_nested]
+    LinearMap.symmetrizedProduct (LinearMap.symmetrizedProduct (N α) velocity) m -
+      LinearMap.symmetrizedProduct (N α) (LinearMap.symmetrizedProduct velocity m) = _
+  rw [LinearMap.symmetrizedProduct_nested]
   module
 
 /-- The nested flux is exactly the symmetrized flux plus localization correction. -/

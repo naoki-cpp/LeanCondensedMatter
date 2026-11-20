@@ -34,7 +34,7 @@ theorem symmetrizedCurrentFlux_smul_id_eq_localPairing
   intro α
   rw [_root_.ConservationLaw.symmetrizedCurrentFlux_apply,
     operatorLocalCurrentPairing_apply,
-    _root_.ConservationLaw.symmetrizedProduct_smul_id]
+    _root_.LinearMap.symmetrizedProduct_smul_id]
 
 /-- The canonical corrected current functional for a charge-like quantity is exactly the local
 pairing with the charge current density `q v`. -/
