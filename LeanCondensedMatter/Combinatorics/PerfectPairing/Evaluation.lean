@@ -24,6 +24,5 @@ def evaluation {n : ℕ} (pairing : Pairing n) (weight : R)
     (pairValue : Fin (2 * n) → Fin (2 * n) → R) : R :=
   weight * ∏ pr ∈ pairing.pairs, pairValue pr.1 pr.2
 
-
 end Pairing
 end Combinatorics
