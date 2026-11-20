@@ -139,8 +139,10 @@ theorem externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_left_normal
         ε β T ext vac externalTime σ
         (externalInsertionMixedTimeOrderedAtomicLegEquiv externalTime (σ ∘ f) pr.1.1)
         (externalInsertionMixedTimeOrderedAtomicLegEquiv externalTime (σ ∘ f) pr.1.2)
-    simpa only [externalInsertionMixedTimeOrderedAtomicLegPosition,
-      Equiv.symm_apply_apply] using hvalue
+    dsimp only at hvalue
+    simp only [externalInsertionMixedTimeOrderedAtomicLegPosition,
+      Equiv.symm_apply_apply] at hvalue
+    exact hvalue
 
 /-- The actual quartic vacuum half of an assembled external-insertion diagram has
 the standalone free-Gibbs pair kernel when its vertex slots are reindexed into the
