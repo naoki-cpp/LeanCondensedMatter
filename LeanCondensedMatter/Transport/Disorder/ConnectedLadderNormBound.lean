@@ -116,16 +116,13 @@ theorem norm_connectedTwoGreen_sub_resummedFreeLadder_le
     apply mul_nonneg
     · exact div_nonneg (sq_nonneg q) (le_of_lt (sub_pos.mpr hsmall))
     · exact norm_nonneg vertex
-  have hfirst :
-      firstRung = freeLeft * ladder vertex * freeRight := rfl
-  have hdecomp : dressed - vertex =
-      ladder vertex + ladder (dressed - vertex) :=
-    resummedLadderVertex_sub_eq_firstRung_add_tail ladder hinvertible vertex
   have hdiff :
       firstRung - freeLeft * (dressed - vertex) * freeRight =
         -(freeLeft * ladder (dressed - vertex) * freeRight) := by
-    rw [hfirst]
-    nth_rw 1 [hdecomp]
+    change freeLeft * ladder vertex * freeRight -
+      freeLeft * (dressed - vertex) * freeRight = _
+    nth_rw 1 [resummedLadderVertex_sub_eq_firstRung_add_tail
+      ladder hinvertible vertex]
     noncomm_ring
   have htailSandwich :
       ‖firstRung - freeLeft * (dressed - vertex) * freeRight‖ ≤
