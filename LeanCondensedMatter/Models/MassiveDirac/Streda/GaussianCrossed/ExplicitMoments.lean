@@ -211,7 +211,6 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_x_antisym
     finiteCutoffContinuumBornDysonRadialPauliData] at hzr hza
   dsimp only [finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliKernel] at hux
   simp only [ite_true] at hux
-  dsimp only at hsr hsa hzr hza hux hwy ⊢
   dsimp only [finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentFourierMoments,
     gaussianCrossedZerothRadialMoment, gaussianCrossedZerothSubSecondRadialMoment] at hwy ⊢
   rw [hsr, hsa, hzr, hza, hux, hwy]
