@@ -104,14 +104,9 @@ def distinguishedBlockEquiv (s : Finset α) (a : α) (ha : a ∈ s) :
     rcases x with ⟨B, Q⟩
     let P := Q.extend (Finset.ne_empty_of_mem B.2.2) disjoint_sdiff_self_left
       (Finset.sdiff_union_of_subset B.2.1)
-    have hBmem : B.1 ∈ P.parts := by
-      exact Finset.mem_insert_self _ _
-    have hpart : P.part a = B.1 := P.part_eq_of_mem hBmem B.2.2
-    have hblock :
-        (⟨P.part a, P.part_subset a, P.mem_part ha⟩ : BlockContaining s a) = B := by
-      apply Subtype.ext
-      exact hpart
-    apply Sigma.ext hblock
+    have hpart : P.part a = B.1 :=
+      P.part_eq_of_mem (Finset.mem_insert_self _ _) B.2.2
+    apply Sigma.ext (Subtype.ext hpart)
     change HEq (P.avoid (P.part a)) Q
     rw [hpart]
     exact heq_of_eq (avoid_extend_eq B.2.1 B.2.2 Q)
