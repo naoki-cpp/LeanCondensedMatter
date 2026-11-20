@@ -99,7 +99,10 @@ theorem conjugateOperator_exp [FiniteDimensional ℂ H] [CompleteSpace H]
           intro r B
           change Θ.conjugateOperator ((r : ℂ) • B) =
             (r : ℂ) • Θ.conjugateOperator B
-          rw [Θ.conjugateOperator_smul, RCLike.conj_ofReal] }
+          rw [Θ.conjugateOperator_smul]
+          have hr : (starRingEnd ℂ) (r : ℂ) = (r : ℂ) :=
+            RCLike.conj_ofReal (K := ℂ) r
+          rw [hr] }
     exact f.continuous_of_finiteDimensional
   exact NormedSpace.map_exp (Θ.conjugateOperatorRingHom) hcont A
 
