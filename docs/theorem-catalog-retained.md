@@ -164,9 +164,6 @@ using a zero-consumer signal as grounds for changing its retention.
 - `QuantumMechanics.SingleParticle.exists_current_eq_symmetrized_add_correction_add_invisible` —
   physics-facing representation theorem `J = J_sym + J_corr + K` with `K` invisible on exact
   differentials; it is the explicit extension-ambiguity endpoint of the corrected-current API.
-- `SecondQuantization.Fermionic.timeOrderedExternalFields_swap` — canonical fermionic exchange law
-  for the named time-ordered external-field construction: swapping both fields and times produces
-  the fermionic statistics sign.
 - `QuantumMechanics.SingleParticle.lie_orbitalAngularMomentum_continuum_sign` — physics-facing
   directional continuum specialization fixing the derivative-localizer coefficient to `iℏ`;
   it records the orbital-localization commutator in an arbitrary oriented plane.
@@ -177,9 +174,6 @@ using a zero-consumer signal as grounds for changing its retention.
   every bosonic annihilation operator kills the Fock vacuum.
 - `SecondQuantization.Bosonic.particleNumber_vacuum` — canonical `[simp]` statement that the bosonic
   vacuum has zero total occupation number.
-- `SecondQuantization.Common.finiteGibbsExpectation_comp_eq_div_of_exchangeCommutator` — deliberate
-  `Statistics`-indexed Gibbs two-point API for callers that already work with `exchangeCommutator`,
-  rather than the lower-level raw-`ζ` presentation.
 - `SecondQuantization.Fermionic.annihilate_fockVacuum` — canonical `[simp]` CAR vacuum identity that
   every fermionic annihilation operator kills the Fock vacuum.
 - `ContinuousLinearMap.adjointConjugate_rankOne` — canonical rank-one covariance identity under
