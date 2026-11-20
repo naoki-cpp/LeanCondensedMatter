@@ -53,9 +53,7 @@ private theorem im_inner_averagedGreenOfRegulator_apply_self
         ∑ ω, ensemble.probability ω *
           ‖ensemble.configurationGreenOfRegulator energy regulator ω v‖ ^ 2 := by
   have hinner :
-      inner ℂ
-        (ensemble.average
-          (fun ω => ensemble.configurationGreenOfRegulator energy regulator ω) v) v =
+      inner ℂ (ensemble.averagedGreenOfRegulator energy regulator v) v =
         ∑ ω, (ensemble.probability ω : ℂ) *
           inner ℂ (ensemble.configurationGreenOfRegulator energy regulator ω v) v := by
     change inner ℂ ((∑ ω, (ensemble.probability ω : ℂ) •
