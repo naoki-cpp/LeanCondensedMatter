@@ -39,27 +39,11 @@ theorem average_twoGreenVertexTraceKernel_eq_trace_insertion
         twoGreenVertexTraceKernel measuredVertex (left ω) sourceVertex (right ω)) =
       ContinuousLinearMap.finiteDimensionalOperatorTrace
         (measuredVertex * ensemble.averagedOperatorInsertion left right sourceVertex) := by
-  calc
-    ensemble.average (fun ω =>
-        twoGreenVertexTraceKernel measuredVertex (left ω) sourceVertex (right ω)) =
-      ContinuousLinearMap.finiteDimensionalOperatorTrace
-        (ensemble.average (fun ω =>
-          measuredVertex * (left ω * sourceVertex * right ω))) := by
-        simp only [twoGreenVertexTraceKernel, mul_assoc]
-        change ensemble.average (fun ω =>
-            (ContinuousLinearMap.finiteDimensionalOperatorTrace (H := H)).toLinearMap
-              (measuredVertex * (left ω * (sourceVertex * right ω)))) =
-          (ContinuousLinearMap.finiteDimensionalOperatorTrace (H := H)).toLinearMap
-            (ensemble.average (fun ω => measuredVertex * (left ω * (sourceVertex * right ω))))
-        exact (ensemble.map_average
-          (ContinuousLinearMap.finiteDimensionalOperatorTrace (H := H)).toLinearMap
-          (fun ω => measuredVertex * (left ω * sourceVertex * right ω))).symm
-    _ = ContinuousLinearMap.finiteDimensionalOperatorTrace
-        (measuredVertex * ensemble.averagedOperatorInsertion left right sourceVertex) := by
-      apply congrArg ContinuousLinearMap.finiteDimensionalOperatorTrace
-      simpa [averagedOperatorInsertion] using (ensemble.map_average
-        ((ContinuousLinearMap.mulLeftRight ℂ (H →L[ℂ] H) measuredVertex 1).toLinearMap)
-        (fun ω => left ω * sourceVertex * right ω)).symm
+  simpa [twoGreenVertexTraceKernel, averagedOperatorInsertion, mul_assoc] using
+    (ensemble.map_average
+      ((ContinuousLinearMap.finiteDimensionalOperatorTrace (H := H)).toLinearMap.comp
+        ((ContinuousLinearMap.mulLeftRight ℂ (H →L[ℂ] H) measuredVertex 1).toLinearMap))
+      (fun ω => left ω * sourceVertex * right ω)).symm
 
 /-- Exact ensemble average of the supplied two-Green Středa trace block. It is not a
 conductivity and does not discard same-side or sea response terms. -/
