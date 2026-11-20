@@ -1,5 +1,4 @@
 import LeanCondensedMatter.Transport.Disorder.Born
-import Mathlib.Tactic.Abel
 import Mathlib.Tactic.GCongr
 import Mathlib.Tactic.Ring
 
@@ -111,26 +110,10 @@ theorem norm_averagedGreen_sub_bornSecondOrder_le
           ensemble.bornSelfEnergyOfRegulator energy regulator *
             ensemble.freeGreenOfRegulator energy regulator)‖ ≤
       |regulator|⁻¹ ^ 4 * ensemble.impurityThirdNormMoment := by
-  have hdecomp := ensemble.averagedGreenOfRegulator_eq_born_add_exactRemainder_of_centered
-    energy regulator hregulator hcentered
-  have herr :
-      ensemble.averagedGreenOfRegulator energy regulator -
-        (ensemble.freeGreenOfRegulator energy regulator +
-          ensemble.freeGreenOfRegulator energy regulator *
-            ensemble.bornSelfEnergyOfRegulator energy regulator *
-              ensemble.freeGreenOfRegulator energy regulator) =
-      ensemble.average (fun ω =>
-        ensemble.freeGreenOfRegulator energy regulator *
-          (ensemble.impurityPotential ω).1 *
-          ensemble.freeGreenOfRegulator energy regulator *
-          (ensemble.impurityPotential ω).1 *
-          ensemble.configurationGreenOfRegulator energy regulator ω *
-          (ensemble.impurityPotential ω).1 *
-          ensemble.freeGreenOfRegulator energy regulator) := by
-    rw [hdecomp]
-    abel
-  rw [herr]
-  exact ensemble.norm_exactBornRemainder_le_thirdNormMoment energy regulator hregulator
+  rw [ensemble.averagedGreenOfRegulator_eq_born_add_exactRemainder_of_centered
+    energy regulator hregulator hcentered]
+  simpa only [add_sub_cancel_left] using
+    ensemble.norm_exactBornRemainder_le_thirdNormMoment energy regulator hregulator
 
 end FiniteDisorderEnsemble
 
