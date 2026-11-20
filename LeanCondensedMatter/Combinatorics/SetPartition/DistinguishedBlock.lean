@@ -51,14 +51,10 @@ private theorem insert_part_parts_avoid {s : Finset α} (P : Finpartition s) {a 
   have hp : P.part a ∈ P.parts := P.part_mem.mpr ha
   have hmap :
       (P.parts.erase (P.part a)).image (· \ P.part a) =
-        P.parts.erase (P.part a) := by
-    calc
-      _ = (P.parts.erase (P.part a)).image id := by
-        apply Finset.image_congr
-        intro B hB
-        exact (P.disjoint (Finset.mem_of_mem_erase hB) hp
-          (Finset.ne_of_mem_erase hB)).sdiff_eq_left
-      _ = _ := Finset.image_id
+        P.parts.erase (P.part a) :=
+    (Finset.image_congr (g := id) (fun B hB =>
+      (P.disjoint (Finset.mem_of_mem_erase hB) hp
+        (Finset.ne_of_mem_erase hB)).sdiff_eq_left)).trans Finset.image_id
   change insert (P.part a) ((P.parts.image (· \ P.part a)).erase ∅) = P.parts
   rw [← Finset.insert_erase hp, Finset.image_insert, hmap]
   simp [hp]
@@ -68,11 +64,10 @@ private theorem avoid_extend_eq {s B : Finset α} {a : α}
     (Q.extend (Finset.ne_empty_of_mem haB) disjoint_sdiff_self_left
       (Finset.sdiff_union_of_subset hBsub)).avoid B = Q := by
   classical
-  have hmap : Q.parts.image (· \ B) = Q.parts := by
-    calc
-      _ = Q.parts.image id := Finset.image_congr (fun D hD =>
-        (disjoint_sdiff_self_left.mono_left (Q.le hD)).sdiff_eq_left)
-      _ = _ := Finset.image_id
+  have hmap : Q.parts.image (· \ B) = Q.parts :=
+    (Finset.image_congr (g := id) (fun D hD =>
+      (disjoint_sdiff_self_left.mono_left (Q.le hD)).sdiff_eq_left)).trans
+      Finset.image_id
   apply Finpartition.ext
   change ((insert B Q.parts).image (· \ B)).erase ∅ = Q.parts
   simp [Finset.image_insert, hmap]
