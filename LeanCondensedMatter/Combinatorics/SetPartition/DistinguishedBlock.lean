@@ -26,12 +26,8 @@ def BlockContaining (s : Finset α) (a : α) :=
 noncomputable instance blockContainingFintype (s : Finset α) (a : α) :
     Fintype (BlockContaining s a) := by
   classical
-  let f : BlockContaining s a → {T : Finset α // T ∈ s.powerset} :=
-    fun B => ⟨B.1, Finset.mem_powerset.mpr B.2.1⟩
-  exact Fintype.ofInjective f (by
-    intro B C h
-    apply Subtype.ext
-    exact congrArg (fun T : {T : Finset α // T ∈ s.powerset} => T.1) h)
+  exact Set.Finite.fintype <|
+    s.powerset.finite_toSet.subset (fun B hB => Finset.mem_powerset.mpr hB.1)
 
 /-- Blocks containing `a` correspond to subsets of `s.erase a`. -/
 def blockContainingEquivPowerset (s : Finset α) (a : α) (ha : a ∈ s) :
