@@ -66,13 +66,8 @@ theorem norm_resummedLadderVertex_tail_le
   have hdiff :
       ‖dressed - bareVertex‖ ≤
         q * ‖bareVertex‖ + q * ‖dressed - bareVertex‖ := by
-    calc
-      ‖dressed - bareVertex‖ =
-          ‖ladder bareVertex + ladder (dressed - bareVertex)‖ := by nth_rw 1 [hdecomp]
-      _ ≤ ‖ladder bareVertex‖ + ‖ladder (dressed - bareVertex)‖ :=
-        norm_add_le _ _
-      _ ≤ q * ‖bareVertex‖ + q * ‖dressed - bareVertex‖ :=
-        add_le_add (haction _) (haction _)
+    conv_lhs => rw [hdecomp]
+    exact (norm_add_le _ _).trans (add_le_add (haction _) (haction _))
   have hlin :
       ‖dressed - bareVertex‖ * (1 - q) ≤ q * ‖bareVertex‖ := by
     nlinarith [hdiff]
