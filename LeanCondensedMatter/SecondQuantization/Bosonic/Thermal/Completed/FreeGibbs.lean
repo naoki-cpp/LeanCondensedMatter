@@ -28,13 +28,6 @@ noncomputable section
 
 variable {Mode : Type*}
 
-/-- At zero chemical potential, the grand-canonical excitation generator
-reduces to the physical free-boson energy. -/
-private theorem grandCanonicalEnergy_zero_eq_freeEigenvalue (ε : Mode → ℝ) :
-    Common.grandCanonicalEnergy (Config := Occupation Mode) ε 0 = freeEigenvalue ε := by
-  funext n
-  simp [Common.grandCanonicalEnergy, freeEigenvalue]
-
 /-- The bounded completed free-boson heat operator `exp (-β H₀)`. -/
 noncomputable def completedFreeHeatOperator
     (ε : Mode → ℝ) (β : ℝ) (hβ : 0 < β) (hε : ∀ i, 0 ≤ ε i) :
@@ -81,8 +74,8 @@ theorem completedFreeHeatOperator_trace_eq_grandCanonicalPartitionFunction_zero
     (hsum : EigenbasisGibbsSummable (freeEigenvalue ε) β) :
     (completedFreeHeatOperator_isTraceClass ε β hβ hε hsum).trace =
       (Common.grandCanonicalPartitionFunction (Config := Occupation Mode) ε β 0 : ℂ) := by
-  rw [Common.grandCanonicalPartitionFunction,
-    grandCanonicalEnergy_zero_eq_freeEigenvalue]
+  rw [Common.grandCanonicalPartitionFunction]
+  simp only [Common.grandCanonicalEnergy, zero_mul, sub_zero]
   exact heatTrace_eq_eigenbasisPartitionFunction_of_basis_action
     (completedFreeHeatOperator ε β hβ hε)
     (completedFreeHeatOperator_isTraceClass ε β hβ hε hsum)
