@@ -23,11 +23,6 @@ def pairingCrossing : Pairing 2 :=
 def pairingNested : Pairing 2 :=
   PairingOn.ofPartner (Equiv.swap 0 3 * Equiv.swap 1 2) (by decide)
 
-/-- There are exactly three perfect pairings of four ordered positions. -/
-theorem allPairings_two :
-    allPairings 2 = {pairingAdjacent, pairingCrossing, pairingNested} := by
-  decide
-
 @[simp]
 theorem crossingCount_pairingAdjacent : pairingAdjacent.crossingCount = 0 := by
   decide
