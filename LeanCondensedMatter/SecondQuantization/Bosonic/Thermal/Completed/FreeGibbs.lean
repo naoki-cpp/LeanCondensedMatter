@@ -74,8 +74,11 @@ theorem completedFreeHeatOperator_trace_eq_grandCanonicalPartitionFunction_zero
     (hsum : EigenbasisGibbsSummable (freeEigenvalue ε) β) :
     (completedFreeHeatOperator_isTraceClass ε β hβ hε hsum).trace =
       (Common.grandCanonicalPartitionFunction (Config := Occupation Mode) ε β 0 : ℂ) := by
-  rw [Common.grandCanonicalPartitionFunction]
-  simp only [Common.grandCanonicalEnergy, zero_mul, sub_zero]
+  rw [Common.grandCanonicalPartitionFunction,
+    show Common.grandCanonicalEnergy (Config := Occupation Mode) ε 0 =
+      freeEigenvalue ε from by
+        funext n
+        simp [Common.grandCanonicalEnergy, freeEigenvalue]]
   exact heatTrace_eq_eigenbasisPartitionFunction_of_basis_action
     (completedFreeHeatOperator ε β hβ hε)
     (completedFreeHeatOperator_isTraceClass ε β hβ hε hsum)
