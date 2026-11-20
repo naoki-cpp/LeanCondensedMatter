@@ -57,14 +57,10 @@ theorem conjugateOperator_exp [CompleteSpace H]
   letI : NormedAlgebra ℚ (H →L[ℂ] H) :=
     NormedAlgebra.restrictScalars ℚ ℂ _
   let f : (H →L[ℂ] H) →+* (H →L[ℂ] H) :=
-    { toFun := Θ.conjugateOperator
+    { (Θ.equiv.arrowCongrSL Θ.equiv).toLinearEquiv.toAddEquiv.toAddMonoidHom with
       map_one' := by ext x; exact Θ.equiv.apply_symm_apply x
-      map_mul' := Θ.conjugateOperator_mul
-      map_zero' := (Θ.equiv.arrowCongrSL Θ.equiv).map_zero
-      map_add' := (Θ.equiv.arrowCongrSL Θ.equiv).map_add }
-  have hcont : Continuous (Θ.conjugateOperator : (H →L[ℂ] H) → (H →L[ℂ] H)) := by
-    exact (Θ.equiv.arrowCongrSL Θ.equiv).continuous
-  exact NormedSpace.map_exp f hcont A
+      map_mul' := Θ.conjugateOperator_mul }
+  exact NormedSpace.map_exp f (Θ.equiv.arrowCongrSL Θ.equiv).continuous A
 
 end AntiunitaryMap
 
