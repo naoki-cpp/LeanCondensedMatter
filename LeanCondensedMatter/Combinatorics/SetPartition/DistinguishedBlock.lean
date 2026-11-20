@@ -2,6 +2,7 @@ import Mathlib.Order.Partition.Finpartition
 import Mathlib.Algebra.BigOperators.Group.Finset.Powerset
 import Mathlib.Algebra.BigOperators.Ring.Finset
 import Mathlib.Data.Fintype.BigOperators
+import Mathlib.Data.Nat.Choose.Sum
 
 set_option linter.style.header false
 
@@ -148,26 +149,19 @@ theorem sum_blockContaining_card (s : Finset α) (a : α) (ha : a ∈ s)
       f (insert a T.1).card) = _
   rw [← Finset.sum_subtype (s.erase a).powerset (fun _ => Iff.rfl)
     (fun T => f (insert a T).card)]
-  have hcard : (s.erase a).card + 1 = s.card := Finset.card_erase_add_one ha
-  rw [Finset.sum_powerset, hcard]
-  apply Finset.sum_congr rfl
-  intro k hk
   calc
-    (∑ T ∈ (s.erase a).powersetCard k, f (insert a T).card) =
-        ∑ T ∈ (s.erase a).powersetCard k, f (k + 1) := by
+    (∑ T ∈ (s.erase a).powerset, f (insert a T).card) =
+        ∑ T ∈ (s.erase a).powerset, f (T.card + 1) := by
       apply Finset.sum_congr rfl
       intro T hT
-      have hTa : a ∉ T := by
-        intro hTa
-        have hsub := (Finset.mem_powersetCard.mp hT).1 hTa
-        exact (Finset.mem_erase.mp hsub).1 rfl
-      have hTk : T.card = k := (Finset.mem_powersetCard.mp hT).2
-      rw [Finset.card_insert_of_notMem hTa, hTk]
-    _ = (Nat.choose (s.card - 1) k : R) * f (k + 1) := by
-      rw [Finset.sum_const, Finset.card_powersetCard]
-      have herase : (s.erase a).card = s.card - 1 := Finset.card_erase_of_mem ha
-      rw [herase]
-      simp [nsmul_eq_mul]
+      rw [Finset.card_insert_of_notMem (fun haT =>
+        Finset.notMem_erase a s ((Finset.mem_powerset.mp hT) haT))]
+    _ = _ := by
+      have hcard : s.card - 1 + 1 = s.card := by
+        simpa only [Finset.card_erase_of_mem ha] using Finset.card_erase_add_one ha
+      rw [Finset.sum_powerset_apply_card (f := fun n => f (n + 1)),
+        Finset.card_erase_of_mem ha, hcard]
+      simp only [nsmul_eq_mul]
 
 end Semiring
 
