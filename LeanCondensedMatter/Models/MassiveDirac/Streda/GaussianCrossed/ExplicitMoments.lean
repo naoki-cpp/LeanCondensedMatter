@@ -318,7 +318,6 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_psi_antis
   dsimp only [gaussianCrossedZerothSubSecondRadialMoment] at ⊢
   rw [hs, hgr, hdiag.1, hdiag.2]
   ring
-  all_goals ring
 
 
 end
