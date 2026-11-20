@@ -25,25 +25,15 @@ its square. -/
 private theorem sqrt_four_mul_le_sq {a b c d R : ℝ}
     (hR0 : 0 ≤ R) (ha : a ≤ R) (hb : b ≤ R) (hc : c ≤ R) (hd : d ≤ R) :
     Real.sqrt a * Real.sqrt b * Real.sqrt c * Real.sqrt d ≤ R ^ 2 := by
-  have hsa : Real.sqrt a ≤ Real.sqrt R := Real.sqrt_le_sqrt ha
-  have hsb : Real.sqrt b ≤ Real.sqrt R := Real.sqrt_le_sqrt hb
-  have hsc : Real.sqrt c ≤ Real.sqrt R := Real.sqrt_le_sqrt hc
-  have hsd : Real.sqrt d ≤ Real.sqrt R := Real.sqrt_le_sqrt hd
-  have hab : Real.sqrt a * Real.sqrt b ≤ R := by
-    calc
-      Real.sqrt a * Real.sqrt b ≤ Real.sqrt R * Real.sqrt R :=
-        mul_le_mul hsa hsb (Real.sqrt_nonneg _) (Real.sqrt_nonneg _)
-      _ = R := by rw [← pow_two, Real.sq_sqrt hR0]
-  have hcd : Real.sqrt c * Real.sqrt d ≤ R := by
-    calc
-      Real.sqrt c * Real.sqrt d ≤ Real.sqrt R * Real.sqrt R :=
-        mul_le_mul hsc hsd (Real.sqrt_nonneg _) (Real.sqrt_nonneg _)
-      _ = R := by rw [← pow_two, Real.sq_sqrt hR0]
   calc
-    Real.sqrt a * Real.sqrt b * Real.sqrt c * Real.sqrt d =
-        (Real.sqrt a * Real.sqrt b) * (Real.sqrt c * Real.sqrt d) := by ring
-    _ ≤ R * R := mul_le_mul hab hcd (mul_nonneg (Real.sqrt_nonneg _) (Real.sqrt_nonneg _)) hR0
-    _ = R ^ 2 := by ring
+    Real.sqrt a * Real.sqrt b * Real.sqrt c * Real.sqrt d ≤
+        Real.sqrt R * Real.sqrt R * Real.sqrt R * Real.sqrt R := by
+      gcongr
+    _ = R ^ 2 := by
+      calc
+        Real.sqrt R * Real.sqrt R * Real.sqrt R * Real.sqrt R =
+            (Real.sqrt R ^ 2) ^ 2 := by ring
+        _ = R ^ 2 := by rw [Real.sq_sqrt hR0]
 
 /-- The diagonal coefficient of a single ordered bosonic quartic vertex is bounded uniformly by
 `(N + 2)^2`, where `N` is the total occupation of the input basis state. -/
