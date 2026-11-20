@@ -1,4 +1,6 @@
-import LeanCondensedMatter.Models.OrbitalRelaxation.Finite
+import Mathlib.Algebra.BigOperators.Ring.Finset
+import Mathlib.Basic.Real.Basic
+import Mathlib.Data.Fintype.Basic
 import Mathlib.Tactic.Ring
 
 set_option linter.style.header false
@@ -12,11 +14,11 @@ collision operator on the first two nonconstant angular modes. These moment
 identities are explicit hypotheses: deriving them from a rotationally invariant
 continuous kernel or a microscopic disorder ensemble is a separate step.
 
-The mode distinction follows the orbital kinetic calculation of Sohn, Lee,
-and Lee, Phys. Rev. Lett. 132, 246301 (2024), supplemental Sec. I.A.
+This module is independent of any Hamiltonian, disorder ensemble, or orbital
+representation. Concrete direction grids and kinetic closures are downstream.
 -/
 
-namespace QuantumTheory.Models.OrbitalRelaxation
+namespace QuantumTheory.Transport
 
 open scoped BigOperators
 
@@ -111,4 +113,4 @@ theorem collision_quadrupole (p : Ω) (i j : Fin 3) :
 
 end AngularKernelMoments
 
-end QuantumTheory.Models.OrbitalRelaxation
+end QuantumTheory.Transport
