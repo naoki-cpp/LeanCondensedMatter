@@ -159,7 +159,8 @@ theorem sum_blockContaining_card (s : Finset α) (a : α) (ha : a ∈ s)
     _ = _ := by
       have hcard : s.card - 1 + 1 = s.card := by
         simpa only [Finset.card_erase_of_mem ha] using Finset.card_erase_add_one ha
-      rw [Finset.sum_powerset_apply_card, Finset.card_erase_of_mem ha, hcard]
+      rw [Finset.sum_powerset_apply_card (f := fun n => f (n + 1)),
+        Finset.card_erase_of_mem ha, hcard]
       simp only [nsmul_eq_mul]
 
 end Semiring
