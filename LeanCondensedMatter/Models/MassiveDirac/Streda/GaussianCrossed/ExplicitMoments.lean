@@ -315,7 +315,6 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_psi_antis
     finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient,
     finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient] at hs hgr hdiag
   dsimp only at hs hgr hdiag ⊢
-  dsimp only [gaussianCrossedZerothSubSecondRadialMoment] at ⊢
   rw [hs, hgr, hdiag.1, hdiag.2]
   ring
 
