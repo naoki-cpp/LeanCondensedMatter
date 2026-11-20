@@ -315,7 +315,9 @@ remain separate targets.
 The finite position-indexed expansion of a recursive exchange sum is owned by
 `Analysis/ScalarExchange/Peel.lean`. `ScalarExchange.peelSum_eq_sum` applies to labelled
 factors; `ScalarExchange.peelSumWithCoefficients_eq_sum` applies to factors paired with their
-scalar coefficients. Both preserve the ordered product after deleting one position and accept
+scalar coefficients. The coefficient-paired form is defined by specializing the same labelled
+recursion, rather than maintaining a separate recurrence. Both preserve the ordered product after
+deleting one position and accept
 an arbitrary complex exchange factor. Common finite Gibbs, bosonic free Gibbs, and completed
 fermionic Gibbs proofs use these algebraic identities directly. CCR/CAR relations, KMS rotation,
 trace identities, and summability remain in the respective thermal implementations.
