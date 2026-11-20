@@ -3137,14 +3137,6 @@
       "externalImportCount": 0
     },
     {
-      "name": "LeanCondensedMatter.Models.OrbitalRelaxation.AngularCollision",
-      "sourceFile": "LeanCondensedMatter/Models/OrbitalRelaxation/AngularCollision.lean",
-      "imports": [
-        "LeanCondensedMatter.Models.OrbitalRelaxation.Finite"
-      ],
-      "externalImportCount": 1
-    },
-    {
       "name": "LeanCondensedMatter.Models.OrbitalRelaxation.ContinuousZonalScattering",
       "sourceFile": "LeanCondensedMatter/Models/OrbitalRelaxation/ContinuousZonalScattering.lean",
       "imports": [
@@ -3163,7 +3155,8 @@
       "name": "LeanCondensedMatter.Models.OrbitalRelaxation.KineticClosure",
       "sourceFile": "LeanCondensedMatter/Models/OrbitalRelaxation/KineticClosure.lean",
       "imports": [
-        "LeanCondensedMatter.Models.OrbitalRelaxation.AngularCollision"
+        "LeanCondensedMatter.Models.OrbitalRelaxation.Finite",
+        "LeanCondensedMatter.Transport.Scattering.AngularCollision"
       ],
       "externalImportCount": 3
     },
@@ -3394,7 +3387,6 @@
         "LeanCondensedMatter.Models.HolsteinPrimakoff.MultiSite",
         "LeanCondensedMatter.Models.KronigPenney",
         "LeanCondensedMatter.Models.MassiveDirac",
-        "LeanCondensedMatter.Models.OrbitalRelaxation.AngularCollision",
         "LeanCondensedMatter.Models.OrbitalRelaxation.ContinuousZonalScattering",
         "LeanCondensedMatter.Models.OrbitalRelaxation.Finite",
         "LeanCondensedMatter.Models.OrbitalRelaxation.KineticClosure",
@@ -7162,7 +7154,10 @@
       "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.CauchySeries",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Diagrammatics/ExternalInsertion/CauchySeries.lean",
       "imports": [
-        "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalVacuumFiberCauchySum"
+        "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.OrderedVacuum",
+        "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalVacuumFiberShuffleIntegral",
+        "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalVacuumShuffleIntegral",
+        "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.FixedExternalFiberSum"
       ],
       "externalImportCount": 0
     },
@@ -7297,26 +7292,6 @@
       "externalImportCount": 0
     },
     {
-      "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalVacuumAmplitude",
-      "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Diagrammatics/ExternalInsertion/ExternalVacuumAmplitude.lean",
-      "imports": [
-        "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.Amplitude",
-        "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalVacuumPairing"
-      ],
-      "externalImportCount": 0
-    },
-    {
-      "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalVacuumFiberCauchySum",
-      "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Diagrammatics/ExternalInsertion/ExternalVacuumFiberCauchySum.lean",
-      "imports": [
-        "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.OrderedVacuum",
-        "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalVacuumFiberShuffleIntegral",
-        "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalVacuumShuffleIntegral",
-        "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.FixedExternalFiberSum"
-      ],
-      "externalImportCount": 0
-    },
-    {
       "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalVacuumFiberShuffleIntegral",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Diagrammatics/ExternalInsertion/ExternalVacuumFiberShuffleIntegral.lean",
       "imports": [
@@ -7357,7 +7332,8 @@
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Diagrammatics/ExternalInsertion/ExternalVacuumStandalone.lean",
       "imports": [
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.SupportPairingStandardization",
-        "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalVacuumAmplitude"
+        "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.Amplitude",
+        "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalVacuumPairing"
       ],
       "externalImportCount": 0
     },
@@ -7438,8 +7414,6 @@
         "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalSourceCumulant",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalSourceSign",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalSubsetMoment",
-        "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalVacuumAmplitude",
-        "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalVacuumFiberCauchySum",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalVacuumFiberShuffleIntegral",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalVacuumPairing",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalVacuumShuffleIntegral",
@@ -8940,6 +8914,12 @@
       "externalImportCount": 0
     },
     {
+      "name": "LeanCondensedMatter.Transport.Scattering.AngularCollision",
+      "sourceFile": "LeanCondensedMatter/Transport/Scattering/AngularCollision.lean",
+      "imports": [],
+      "externalImportCount": 4
+    },
+    {
       "name": "LeanCondensedMatter.Transport.Spectral.Eigenbasis",
       "sourceFile": "LeanCondensedMatter/Transport/Spectral/Eigenbasis.lean",
       "imports": [
@@ -9118,6 +9098,7 @@
         "LeanCondensedMatter.Transport.Reciprocity.Data",
         "LeanCondensedMatter.Transport.Reciprocity.Kubo",
         "LeanCondensedMatter.Transport.Resolvent",
+        "LeanCondensedMatter.Transport.Scattering.AngularCollision",
         "LeanCondensedMatter.Transport.Streda",
         "LeanCondensedMatter.Transport.Topology"
       ],
