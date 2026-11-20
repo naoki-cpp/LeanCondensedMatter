@@ -28,7 +28,7 @@ private theorem sqrt_four_mul_le_sq {a b c d R : ℝ}
   calc
     Real.sqrt a * Real.sqrt b * Real.sqrt c * Real.sqrt d ≤
         Real.sqrt R * Real.sqrt R * Real.sqrt R * Real.sqrt R := by
-      gcongr <;> assumption
+      gcongr
     _ = R ^ 2 := by
       calc
         Real.sqrt R * Real.sqrt R * Real.sqrt R * Real.sqrt R =
