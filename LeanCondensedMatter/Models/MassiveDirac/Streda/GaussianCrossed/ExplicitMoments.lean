@@ -315,6 +315,8 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_psi_antis
   dsimp only [finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentFourierMoments,
     gaussianCrossedZerothRadialMoment, gaussianCrossedZerothSubSecondRadialMoment] at ⊢
   rw [hscalar, hz, htransverse]
+  simp only [Complex.add_re, Complex.add_im, Complex.sub_re, Complex.sub_im,
+    Complex.mul_re, Complex.mul_im] at ⊢
   all_goals ring_nf
 
 
