@@ -40,7 +40,7 @@ derivation of microscopic reciprocity.
 The `Transport.Reciprocity.Data` module defines
 `KuboTimeReversalData` on a finite-dimensional Hilbert space. It uses a
 positive normalized density operator commuting with the Hamiltonian, a
-conjugate-linear multiplicative time-reversal action on bounded operators,
+Hilbert-space antiunitary inducing conjugation on bounded operators,
 and the transformation laws of the Hamiltonian, density, directional charge
 currents, and contact operators. The canonical `DensityOperator.expectation` and `toNormalizedExpectation` APIs
 supply state expectations without choosing an eigenbasis. In particular, there is no
@@ -52,10 +52,15 @@ current correlation; the contact expectation is reciprocal by operator
 covariance and Hermiticity. The finite-time, exponentially switched Kubo
 response with canonical electric-field normalization thus satisfies
 `ConductivityTensor.IsOnsagerReciprocal`. This is a finite-time statement,
-not the earlier infinite-time Lehmann evaluation. Its operator action
-records trace-conjugation and exponential preservation explicitly; the
-construction of this action from a specific Hilbert-space antiunitary
-remains a model-level mathematical bridge.
+not the earlier infinite-time Lehmann evaluation. The `QuantumTheory.LinearResponse.Dynamics.Antiunitary.Operator`
+module constructs the bounded-operator action `A ↦ Θ A Θ⁻¹` directly from
+a Mathlib continuous star-linear equivalence and proves the algebraic,
+and finite-dimensional exponential transformation laws without imposing a
+constraint on the square of the state-space antiunitary.
+The `QuantumTheory.LinearResponse.Dynamics.Antiunitary.Trace` module
+proves finite-dimensional trace conjugation. `KuboTimeReversalData` now uses
+these derived laws directly, retaining only the model-dependent operator
+covariance and equilibrium assumptions.
 
 The next targets are to instantiate the induced operator action in a
 spin-half model with time reversal squared equal to minus identity,

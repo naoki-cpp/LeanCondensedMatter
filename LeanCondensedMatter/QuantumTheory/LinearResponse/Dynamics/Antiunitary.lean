@@ -1,36 +1,31 @@
 import Mathlib.Analysis.InnerProductSpace.Basic
+import Mathlib.Topology.Algebra.Module.Star
 
 set_option linter.style.header false
 
 /-!
 # Antiunitary maps for bounded linear-response systems
 
-A concrete antiunitary is supplied with its conjugate-linearity, inner-product
-conjugation, and bijectivity properties. This structure is independent of
-Hamiltonians, time evolution, conductivity, and the choice of physical currents.
+An antiunitary is a continuous conjugate-linear equivalence of Hilbert-space
+vectors that conjugates the complex inner product. Additivity, semilinearity,
+bijectivity, continuity and the inverse map are inherited from Mathlib rather
+than repeated as independent structure fields.
 
-The covariance of a Hamiltonian or current under this map must be proved
-separately for each model; neither is an axiom of an arbitrary antiunitary.
+Covariance of a particular Hamiltonian or current under this map must be
+proved separately for each model.
 -/
 
 namespace QuantumTheory.LinearResponse
 
-/-- A bijective conjugate-linear Hilbert-space map preserving the inner product
-up to complex conjugation. This records the antiunitary laws without introducing
-a second complex-linear operator representation. -/
+/-- A continuous conjugate-linear equivalence conjugating the Hilbert-space
+inner product. No condition on its square is imposed, so Kramers time reversal
+with square minus identity is permitted. -/
 structure AntiunitaryMap (H : Type*)
     [NormedAddCommGroup H] [InnerProductSpace ℂ H] where
-  /-- Map on state vectors. -/
-  toFun : H → H
-  /-- Additivity of the map. -/
-  map_add : ∀ x y, toFun (x + y) = toFun x + toFun y
-  /-- Conjugate-linearity of the map. -/
-  map_smul : ∀ (c : ℂ) (x : H),
-    toFun (c • x) = ((starRingEnd ℂ) c) • toFun x
-  /-- Inner products are complex-conjugated under the map. -/
+  /-- The bijective continuous conjugate-linear action on state vectors. -/
+  equiv : H ≃L⋆[ℂ] H
+  /-- Antiunitarity: inner products are complex conjugated. -/
   inner_map : ∀ x y,
-    inner ℂ (toFun x) (toFun y) = (starRingEnd ℂ) (inner ℂ x y)
-  /-- Surjectivity and injectivity, completing the antiunitary equivalence. -/
-  bijective : Function.Bijective toFun
+    inner ℂ (equiv x) (equiv y) = (starRingEnd ℂ) (inner ℂ x y)
 
 end QuantumTheory.LinearResponse
