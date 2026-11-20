@@ -198,13 +198,9 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_x_antisym
     finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient_eq_radialKernel_integral
       .y 0 v m probeEnergy broadening disorderStrength hbar pMax radius
       hbroadening hdisorder hpMax
-  have hwy :=
-    (finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient_eq_diagonal_harmonic_integrals
-      v m probeEnergy broadening disorderStrength hbar pMax radius
-      hbroadening hdisorder hpMax).2
   dsimp only [finiteCutoffContinuumBornDysonRadialGreenScalarCoefficient,
     finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient,
-    finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient] at hsr hsa hzr hza hux hwy
+    finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient] at hsr hsa hzr hza hux
   dsimp only [finiteCutoffContinuumBornDysonRadialGreenScalarKernel,
     finiteCutoffContinuumBornDysonRadialPauliData] at hsr hsa
   dsimp only [finiteCutoffContinuumBornDysonRadialGreenPauliKernel,
@@ -212,8 +208,8 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_x_antisym
   dsimp only [finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliKernel] at hux
   simp only [ite_true] at hux
   dsimp only [finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentFourierMoments,
-    gaussianCrossedZerothRadialMoment, gaussianCrossedZerothSubSecondRadialMoment] at hwy ⊢
-  rw [hsr, hsa, hzr, hza, hux, hwy]
+    gaussianCrossedZerothRadialMoment, gaussianCrossedZerothSubSecondRadialMoment] at ⊢
+  rw [hsr, hsa, hzr, hza, hux]
   all_goals ring
 
 
