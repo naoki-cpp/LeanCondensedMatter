@@ -57,9 +57,8 @@ theorem externalInsertionSupport_dysonFactor_eq_standardizedAmplitude
     ext.supportSlotCongr_pairingInMixedOrder T externalTime σ
   have hvertices :
       (ext.slotCongr e).vertexLabelSequence =
-        (fun v => ext.vertexLabel (T.orderIsoOfFin rfl v)) := by
-    funext v
-    rfl
+        (fun v => ext.vertexLabel (T.orderIsoOfFin rfl v)) :=
+    funext (fun v => rfl)
   have hkernel :
       externalInsertionMixedTimeOrderedAtomicPairValue ε β
           (ext.slotCongr e).externalLabel externalTime
@@ -73,13 +72,8 @@ theorem externalInsertionSupport_dysonFactor_eq_standardizedAmplitude
     ext.slotCongr_vertexWeight e g
   have hsign :
       localSign = externalInsertionMixedAtomicOrderSign externalTime (σ ∘ fT) := by
-    change ((Equiv.Perm.sign
-      (Equiv.sumCongr localFixed
-        (Equiv.refl (Fin (2 * (2 * ((Finset.univ : Finset (Fin n)) \ T).card))))) : ℤ) : ℂ) =
-      ((Equiv.Perm.sign
-        (externalInsertionStandardToMixedAtomicPositionEquiv externalTime (σ ∘ fT)) : ℤ) : ℂ)
-    simp only [localFixed, Equiv.Perm.sign_sumCongr, Equiv.Perm.sign_refl,
-      mul_one, Equiv.Perm.sign_symm]
+    simp only [localSign, externalInsertionMixedAtomicOrderSign, localFixed,
+      Equiv.Perm.sign_sumCongr, Equiv.Perm.sign_refl, mul_one, Equiv.Perm.sign_symm]
   unfold ExternalInsertionWickDiagram.dysonFixedTimeAmplitude
     ExternalInsertionWickDiagram.fixedTimeAmplitude
   rw [← hsign, hweight, hvalue]
