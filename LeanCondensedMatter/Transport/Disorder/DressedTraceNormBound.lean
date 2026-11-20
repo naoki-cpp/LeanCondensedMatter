@@ -94,21 +94,14 @@ theorem norm_averagedTwoGreenTrace_sub_dressed_le_residuals
       _ ≤ ‖a‖ + ‖b‖ + ‖c‖ :=
         (norm_add_le _ _).trans (add_le_add (norm_add_le _ _) le_rfl)
       _ ≤ _ := add_le_add (add_le_add ha hb) le_rfl
-  have hgroup :
-      a + b + conn -
-        suppliedLeftGreen * (dressedSourceVertex - bareSourceVertex) * suppliedRightGreen =
-      a + b + c := by
-    dsimp only [c]
-    abel
   rw [ensemble.averagedTwoGreenVertexTraceKernelOfRegulators_sub_dressed_eq]
-  change ‖trace (measuredVertex *
-    (a + b + conn -
-      suppliedLeftGreen * (dressedSourceVertex - bareSourceVertex) * suppliedRightGreen))‖ ≤
-    ((Module.finrank ℂ H : ℝ) * ‖measuredVertex‖) *
-      (‖meanL - suppliedLeftGreen‖ * ‖bareSourceVertex‖ * |regulatorRight|⁻¹ +
-        ‖suppliedLeftGreen‖ * ‖bareSourceVertex‖ *
-          ‖meanR - suppliedRightGreen‖ + ‖c‖)
-  rw [hgroup]
+  change ‖trace (measuredVertex * (a + b + conn -
+    suppliedLeftGreen * (dressedSourceVertex - bareSourceVertex) * suppliedRightGreen))‖ ≤ _
+  rw [show a + b + conn -
+    suppliedLeftGreen * (dressedSourceVertex - bareSourceVertex) * suppliedRightGreen =
+      a + b + c by
+        dsimp only [c]
+        abel]
   calc
     ‖trace (measuredVertex * (a + b + c))‖ ≤
         (Module.finrank ℂ H : ℝ) * ‖measuredVertex * (a + b + c)‖ :=
