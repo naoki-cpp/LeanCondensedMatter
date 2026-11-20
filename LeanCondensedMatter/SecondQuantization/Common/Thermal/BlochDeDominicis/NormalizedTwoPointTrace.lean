@@ -35,14 +35,14 @@ theorem normalizedTsumTrace_comp_eq_div_of_zetaCommutator
   have hpeel := hpartition.mul_left c
   have h := tsumTrace_diagonalEvolution_comp_peel energy β q ζ C₁ [(C₂, c)] hC₁
     (by simpa using hcomm)
-    (by simpa only [ScalarExchange.peelSumWithCoefficients, List.map_nil, List.prod_nil,
+    (by simpa only [ScalarExchange.peelSumWithCoefficients_cons, ScalarExchange.peelSumWithCoefficients_nil, List.map_nil, List.prod_nil,
       mul_zero, smul_zero, add_zero, Module.End.one_eq_id, LinearMap.comp_smul,
       LinearMap.comp_id, ← matrixCoeffLinear_apply, map_smul, smul_eq_mul] using hpeel)
     (by simpa only [List.map_cons, List.map_nil, List.prod_cons, List.prod_nil, mul_one]
       using hrotate)
   simp only [List.length_cons, List.length_nil, List.map_cons, List.map_nil,
     List.prod_cons, List.prod_nil,
-    ScalarExchange.peelSumWithCoefficients, mul_zero, smul_zero, add_zero,
+    ScalarExchange.peelSumWithCoefficients_cons, ScalarExchange.peelSumWithCoefficients_nil, mul_zero, smul_zero, add_zero,
     Module.End.one_eq_id, LinearMap.comp_smul, LinearMap.comp_id, tsumTrace_smul] at h
   apply (div_eq_div_iff hZ hden).2
   linear_combination h
