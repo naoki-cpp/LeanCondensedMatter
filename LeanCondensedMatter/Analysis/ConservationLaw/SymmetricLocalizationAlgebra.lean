@@ -126,7 +126,7 @@ theorem lie_localizedQuantity
     ⁅h, localizedQuantity V M m f⁆ =
       transportCommutator V h M m f + sourceCommutator V h M m f := by
   simpa [localizedQuantity, transportCommutator, sourceCommutator] using
-    lie_symmetrizedProduct h (M f) m
+    LinearMap.lie_symmetrizedProduct h (M f) m
 
 /-- A conserved one-body quantity has no local source/torque contribution. -/
 @[simp]
