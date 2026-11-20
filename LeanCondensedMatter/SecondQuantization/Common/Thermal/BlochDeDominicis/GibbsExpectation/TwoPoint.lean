@@ -38,6 +38,5 @@ theorem finiteGibbsExpectation_comp_eq_div_of_zetaCommutator (energy : Config �
     normalizedTsumTrace_comp_eq_div_of_zetaCommutator energy β q1 ζ c1j C1 Cj
       hC1 hcomm Summable.of_finite Summable.of_finite hZ hne
 
-
 end Common
 end SecondQuantization
