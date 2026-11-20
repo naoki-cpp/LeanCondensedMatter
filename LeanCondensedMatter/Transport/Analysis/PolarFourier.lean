@@ -899,37 +899,12 @@ theorem polarFourierSecondCosineAngularKernel_eq_besselJ (z : ℝ) :
   · subst z
     simp [Complex.besselJ_zero]
   · have hzc : (z : ℂ) ≠ 0 := by exact_mod_cast hz
-    have hfactor : Complex.I * (z : ℂ) ≠ 0 :=
-      mul_ne_zero Complex.I_ne_zero hzc
     have hK := polarFourierFirstCosineAngularKernel_two_mul_eq_zeroth_sub_second z
     rw [polarFourierFirstCosineAngularKernel_eq_besselJ,
       polarFourierZerothAngularKernel_eq_besselJ] at hK
     have hJ := besselJ_zero_one_two_recurrence (z : ℂ)
-    have hmain :
-        (Complex.I * (z : ℂ)) * polarFourierSecondCosineAngularKernel z =
-          (Complex.I * (z : ℂ)) *
-            (-(((2 * Real.pi : ℝ) : ℂ) * Complex.besselJ 2 (z : ℂ))) := by
-      calc
-        (Complex.I * (z : ℂ)) * polarFourierSecondCosineAngularKernel z =
-            (Complex.I * (z : ℂ)) *
-                (((2 * Real.pi : ℝ) : ℂ) * Complex.besselJ 0 (z : ℂ)) -
-              2 * (((2 * Real.pi : ℝ) : ℂ) * Complex.I *
-                Complex.besselJ 1 (z : ℂ)) := by
-            linear_combination hK
-        _ = (Complex.I * (z : ℂ)) *
-            (((2 * Real.pi : ℝ) : ℂ) * Complex.besselJ 0 (z : ℂ)) -
-              (((2 * Real.pi : ℝ) : ℂ) * Complex.I) *
-                (2 * Complex.besselJ 1 (z : ℂ)) := by ring
-        _ = (Complex.I * (z : ℂ)) *
-            (((2 * Real.pi : ℝ) : ℂ) * Complex.besselJ 0 (z : ℂ)) -
-              (((2 * Real.pi : ℝ) : ℂ) * Complex.I) *
-                ((z : ℂ) *
-                  (Complex.besselJ 0 (z : ℂ) + Complex.besselJ 2 (z : ℂ))) := by
-            rw [hJ]
-        _ = (Complex.I * (z : ℂ)) *
-            (-(((2 * Real.pi : ℝ) : ℂ) * Complex.besselJ 2 (z : ℂ))) := by
-          ring
-    exact (mul_left_cancel₀ hfactor) hmain
+    apply mul_left_cancel₀ (mul_ne_zero Complex.I_ne_zero hzc)
+    linear_combination hK - (((2 * Real.pi : ℝ) : ℂ) * Complex.I) * hJ
 
 /-- The unnormalized first-harmonic recurrence also holds after finite radial
 momentum integration. This reduces any weighted K1 moment to K0/K2 moments
