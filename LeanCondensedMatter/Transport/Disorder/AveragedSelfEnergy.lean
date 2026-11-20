@@ -37,14 +37,6 @@ namespace FiniteDisorderEnsemble
 
 variable (ensemble : FiniteDisorderEnsemble (H := H) (Ω := Ω))
 
-/-- A normalized finite nonnegative probability weight has at least one strictly positive entry. -/
-private theorem exists_probability_pos : ∃ ω : Ω, 0 < ensemble.probability ω := by
-  have hsum : 0 < ∑ ω, ensemble.probability ω := by
-    rw [ensemble.probability_sum]
-    norm_num
-  simpa using (Finset.sum_pos_iff_of_nonneg
-    (fun ω _ => ensemble.probability_nonneg ω)).mp hsum
-
 /-- The exact finite disorder average inherits the signed-regulator Herglotz identity. -/
 private theorem im_inner_averagedGreenOfRegulator_apply_self
     (energy regulator : ℝ) (hregulator : regulator ≠ 0) (v : H) :
@@ -84,7 +76,10 @@ private theorem averagedGreenOfRegulator_antilipschitz
     (energy regulator : ℝ) (hregulator : regulator ≠ 0) :
     ∃ c : NNReal, AntilipschitzWith c (ensemble.averagedGreenOfRegulator energy regulator) := by
   classical
-  obtain ⟨ω, hprobability⟩ := ensemble.exists_probability_pos
+  obtain ⟨ω, _, hprobability⟩ :=
+    (Finset.sum_pos_iff_of_nonneg
+      (fun ω _ => ensemble.probability_nonneg ω)).mp
+      (by rw [ensemble.probability_sum]; norm_num)
   let shift : H →L[ℂ] H :=
     algebraMap ℂ (H →L[ℂ] H) (spectralParameterOfRegulator energy regulator) -
       (ensemble.configurationHamiltonian ω).1
