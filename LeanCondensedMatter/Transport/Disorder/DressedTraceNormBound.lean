@@ -77,14 +77,12 @@ theorem norm_averagedTwoGreenTrace_sub_dressed_le_residuals
       ‖a‖ ≤ ‖meanL - suppliedLeftGreen‖ * ‖bareSourceVertex‖ * |regulatorRight|⁻¹ := by
     calc
       ‖a‖ ≤ ‖meanL - suppliedLeftGreen‖ * ‖bareSourceVertex‖ * ‖meanR‖ :=
-        (norm_mul_le _ _).trans
-          (mul_le_mul_of_nonneg_right (norm_mul_le _ _) (norm_nonneg _))
+        norm_mul_three_le _ _ _
       _ ≤ _ := by gcongr
   have hb :
       ‖b‖ ≤ ‖suppliedLeftGreen‖ * ‖bareSourceVertex‖ *
         ‖meanR - suppliedRightGreen‖ :=
-    (norm_mul_le _ _).trans
-      (mul_le_mul_of_nonneg_right (norm_mul_le _ _) (norm_nonneg _))
+    norm_mul_three_le _ _ _
   have hsum :
       ‖a + b + c‖ ≤
         ‖meanL - suppliedLeftGreen‖ * ‖bareSourceVertex‖ * |regulatorRight|⁻¹ +

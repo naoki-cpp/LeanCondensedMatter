@@ -84,14 +84,6 @@ theorem firstBornTwoGreenRungOfRegulators_eq_average_firstDyson
       dsimp only [term]
       noncomm_ring
 
-theorem norm_mul_three_le
-    (a b c : H →L[ℂ] H) :
-    ‖a * b * c‖ ≤ ‖a‖ * ‖b‖ * ‖c‖ := by
-  calc
-    _ ≤ ‖a * b‖ * ‖c‖ := norm_mul_le _ _
-    _ ≤ (‖a‖ * ‖b‖) * ‖c‖ :=
-      mul_le_mul_of_nonneg_right (norm_mul_le _ _) (norm_nonneg _)
-
 /-- Exact connected two-Green insertion differs from the first Born covariance rung
 by at most a *cubic* expression in a uniform impurity-norm bound. The bound is
 independent of the Hilbert-space dimension and requires no Gaussian moments.

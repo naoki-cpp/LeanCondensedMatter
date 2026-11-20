@@ -30,6 +30,15 @@ namespace FiniteDisorderEnsemble
 
 variable (ensemble : FiniteDisorderEnsemble (H := H) (Ω := Ω))
 
+theorem norm_mul_three_le
+    (a b c : H →L[ℂ] H) :
+    ‖a * b * c‖ ≤ ‖a‖ * ‖b‖ * ‖c‖ := by
+  calc
+    _ ≤ ‖a * b‖ * ‖c‖ := norm_mul_le _ _
+    _ ≤ (‖a‖ * ‖b‖) * ‖c‖ :=
+      mul_le_mul_of_nonneg_right (norm_mul_le _ _) (norm_nonneg _)
+
+
 /-- A single exact resolvent differs from the clean resolvent by at most a first-order
 impurity contribution, uniformly at a fixed nonzero signed regulator. -/
 theorem norm_configurationGreen_sub_free_le
@@ -60,9 +69,8 @@ theorem norm_configurationGreen_sub_free_le
   change ‖Gω - G₀‖ ≤ B ^ 2 * potentialBound
   rw [hdyson]
   calc
-    ‖G₀ * V * Gω‖ ≤ (‖G₀‖ * ‖V‖) * ‖Gω‖ := by
-      exact (norm_mul_le _ _).trans
-        (mul_le_mul_of_nonneg_right (norm_mul_le G₀ V) (norm_nonneg Gω))
+    ‖G₀ * V * Gω‖ ≤ (‖G₀‖ * ‖V‖) * ‖Gω‖ :=
+      norm_mul_three_le _ _ _
     _ ≤ (B * potentialBound) * B := by
       gcongr
       exact mul_nonneg (inv_nonneg.mpr (abs_nonneg regulator))
@@ -161,9 +169,8 @@ theorem norm_connectedTwoGreenInsertion_le_uniformPotential_sq
       ensemble.norm_configurationGreen_sub_averaged_le
         energyRight regulatorRight hregRight ω potentialBound hpotential
     calc
-      ‖L ω * vertex * R ω‖ ≤ (‖L ω‖ * ‖vertex‖) * ‖R ω‖ := by
-        exact (norm_mul_le _ _).trans
-          (mul_le_mul_of_nonneg_right (norm_mul_le (L ω) vertex) (norm_nonneg (R ω)))
+      ‖L ω * vertex * R ω‖ ≤ (‖L ω‖ * ‖vertex‖) * ‖R ω‖ :=
+        norm_mul_three_le _ _ _
       _ ≤ leftBound * ‖vertex‖ * rightBound := by
         gcongr
   change ‖ensemble.average (fun ω => L ω * vertex * R ω)‖ ≤
