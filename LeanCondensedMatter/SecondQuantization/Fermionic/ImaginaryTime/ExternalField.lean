@@ -54,6 +54,5 @@ noncomputable def timeOrderedExternalFields (ε : Mode → ℝ)
   Common.timeOrderedProduct Common.Statistics.fermion
     (externalFieldOperator ε τA A) (externalFieldOperator ε τB B) τA τB
 
-
 end Fermionic
 end SecondQuantization
