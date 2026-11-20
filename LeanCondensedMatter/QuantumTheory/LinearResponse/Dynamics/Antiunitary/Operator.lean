@@ -81,24 +81,6 @@ noncomputable def conjugateOperatorRingHom :
     ext x
     simp only [conjugateOperator_apply, add_apply, map_add]
 
-/-- The ring action is real-linear; its continuity in finite dimensions
-gives a direct route to exponential covariance. -/
-private noncomputable def conjugateOperatorRealLinear :
-    (H →L[ℂ] H) →ₗ[ℝ] (H →L[ℂ] H) where
-  toFun := Θ.conjugateOperator
-  map_add' := by
-    intro A B
-    ext x
-    simp only [conjugateOperator_apply, add_apply, map_add]
-  map_smul' := by
-    intro r A
-    change Θ.conjugateOperator ((r : ℂ) • A) =
-      (r : ℂ) • Θ.conjugateOperator A
-    rw [Θ.conjugateOperator_smul]
-    have hr : (starRingEnd ℂ) (r : ℂ) = (r : ℂ) :=
-      RCLike.conj_ofReal (K := ℂ) r
-    rw [hr]
-
 /-- Antiunitary conjugation commutes with bounded-operator exponentiation.
 Finite-dimensionality is used to establish continuity on the operator space. -/
 theorem conjugateOperator_exp [FiniteDimensional ℂ H] [CompleteSpace H]
@@ -110,8 +92,15 @@ theorem conjugateOperator_exp [FiniteDimensional ℂ H] [CompleteSpace H]
     FiniteDimensional.complexToReal _
   letI : NormedAlgebra ℚ (H →L[ℂ] H) :=
     NormedAlgebra.restrictScalars ℚ ℂ _
-  have hcont : Continuous (Θ.conjugateOperator : (H →L[ℂ] H) → (H →L[ℂ] H)) :=
-    Θ.conjugateOperatorRealLinear.continuous_of_finiteDimensional
+  have hcont : Continuous (Θ.conjugateOperator : (H →L[ℂ] H) → (H →L[ℂ] H)) := by
+    let f : (H →L[ℂ] H) →ₗ[ℝ] (H →L[ℂ] H) :=
+      { (Θ.conjugateOperatorRingHom).toAddMonoidHom with
+        map_smul' := by
+          intro r B
+          change Θ.conjugateOperator ((r : ℂ) • B) =
+            (r : ℂ) • Θ.conjugateOperator B
+          rw [Θ.conjugateOperator_smul, RCLike.conj_ofReal] }
+    exact f.continuous_of_finiteDimensional
   exact NormedSpace.map_exp (Θ.conjugateOperatorRingHom) hcont A
 
 end AntiunitaryMap
