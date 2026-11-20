@@ -118,7 +118,7 @@ private theorem FreeThermalField.orderedProduct_basisState_bound_aux
             have haB : a ≤ orderedProductMajorant n K := by
               simpa only [a, Nat.cast_add, Nat.cast_one] using
                 (sqrt_natCast_le_orderedProductMajorant n K (m i + 1) i hmK)
-            rw [norm_mul, Complex.norm_real, Real.norm_eq_abs,
+            rw [List.length_cons, norm_mul, Complex.norm_real, Real.norm_eq_abs,
               abs_of_nonneg (show 0 ≤ a from Real.sqrt_nonneg _), pow_succ]
             exact mul_le_mul hc haB (Real.sqrt_nonneg _) (pow_nonneg hB0 _)
       | annihilate i =>
@@ -152,7 +152,7 @@ private theorem FreeThermalField.orderedProduct_basisState_bound_aux
                 omega
               have haB : a ≤ orderedProductMajorant n K :=
                 sqrt_natCast_le_orderedProductMajorant n K (m i) i hmK
-              rw [norm_mul, Complex.norm_real, Real.norm_eq_abs,
+              rw [List.length_cons, norm_mul, Complex.norm_real, Real.norm_eq_abs,
                 abs_of_nonneg (show 0 ≤ a from Real.sqrt_nonneg _), pow_succ]
               exact mul_le_mul hc haB (Real.sqrt_nonneg _) (pow_nonneg hB0 _)
 
