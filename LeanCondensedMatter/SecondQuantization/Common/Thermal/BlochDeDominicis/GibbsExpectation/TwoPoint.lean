@@ -38,18 +38,6 @@ theorem finiteGibbsExpectation_comp_eq_div_of_zetaCommutator (energy : Config �
     normalizedTsumTrace_comp_eq_div_of_zetaCommutator energy β q1 ζ c1j C1 Cj
       hC1 hcomm Summable.of_finite Summable.of_finite hZ hne
 
-/-- **The `Statistics`-indexed presentation**, in terms of `exchangeCommutator s` rather than a
-raw `ζ : ℂ` bracket — the form callers already holding a `Statistics` value should reach for. -/
-theorem finiteGibbsExpectation_comp_eq_div_of_exchangeCommutator (energy : Config → ℝ) (β q1 : ℝ)
-    (s : Statistics) (c1j : ℂ) (C1 Cj : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
-    (hC1 : heisenbergEvolve energy (-β) C1 = Complex.exp ((q1 * (-β) : ℝ) : ℂ) • C1)
-    (hcomm : exchangeCommutator s C1 Cj =
-      c1j • (LinearMap.id : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config))
-    (hne : (1 : ℂ) - (s.zetaInt : ℂ) * Complex.exp ((q1 * β : ℝ) : ℂ) ≠ 0) :
-    finiteGibbsExpectation energy β (C1.comp Cj) =
-      c1j / (1 - (s.zetaInt : ℂ) * Complex.exp ((q1 * β : ℝ) : ℂ)) :=
-  finiteGibbsExpectation_comp_eq_div_of_zetaCommutator energy β q1 (s.zetaInt : ℂ) c1j C1 Cj hC1
-    hcomm hne
 
 end Common
 end SecondQuantization
