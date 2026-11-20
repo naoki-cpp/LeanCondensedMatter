@@ -24,6 +24,8 @@ The stationary kinetic closure remains a separate physical hypothesis.
 
 namespace QuantumTheory.Models.OrbitalRelaxation
 
+open QuantumTheory.Transport
+
 open scoped BigOperators
 
 /-- The six signed Cartesian unit vectors in three dimensions. -/

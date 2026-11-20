@@ -13,6 +13,7 @@ LeanCondensedMatter.Transport
         ├── Resolvent
         ├── KuboBastin
         ├── Streda
+        ├── Scattering
         └── Disorder
 
 LeanCondensedMatter.Transport.Analysis   (opt-in analytical utilities)
@@ -40,6 +41,7 @@ Transport/
 ├── FiniteConductivityTable/Eigenbasis.lean
 │                  statistics-independent eigenbasis/channel-to-scalar adapter
 ├── Reciprocity/   operator time-reversal covariance and finite-time Kubo conductivity
+├── Scattering/    finite-state collision operators and angular-mode eigenvalue laws
 ├── Resolvent/     signed spectral regulator, physical spectral sides, self-energy algebra
 ├── Spectral/      response-neutral adapters from supplied spectral data to resolvent algebra
 ├── Analysis/      occupations, 2D continuum measure, angular harmonics, polar Fourier, relaxation time
