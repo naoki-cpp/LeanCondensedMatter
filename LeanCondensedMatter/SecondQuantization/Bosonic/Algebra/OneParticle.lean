@@ -38,21 +38,17 @@ theorem createVector_fockVacuum (v : EuclideanSpace ℂ Mode) :
     createVector v fockVacuum = oneParticleEmbedding v := by
   simp [createVector, oneParticleEmbedding, LinearMap.sum_apply]
 
-omit [Fintype Mode] in
-private theorem annihilate_basisState_singleOccupation (i j : Mode) :
-    annihilate i (basisState (singleOccupation j)) =
-      if i = j then fockVacuum else 0 := by
-  have h := LinearMap.congr_fun (comm_annihilate_create i j) fockVacuum
-  by_cases hij : i = j
-  · simpa [hij, ScalarExchange.zetaCommutator_apply] using h
-  · simpa [hij, ScalarExchange.zetaCommutator_apply] using h
-
 /-- Annihilation recovers the corresponding one-particle amplitude as a vacuum coefficient. -/
 @[simp]
 theorem annihilate_oneParticleEmbedding (i : Mode) (v : EuclideanSpace ℂ Mode) :
     annihilate i (oneParticleEmbedding v) = v i • fockVacuum := by
-  simp [oneParticleEmbedding, map_sum, map_smul,
-    annihilate_basisState_singleOccupation, smul_ite]
+  have hsingle (j : Mode) :
+      annihilate i (basisState (singleOccupation j)) =
+        if i = j then fockVacuum else 0 := by
+    have h := LinearMap.congr_fun (comm_annihilate_create i j) fockVacuum
+    by_cases hij : i = j <;>
+      simpa [hij, ScalarExchange.zetaCommutator_apply] using h
+  simp [oneParticleEmbedding, map_sum, map_smul, hsingle, smul_ite]
 
 /-- Distinct one-particle amplitudes define distinct algebraic one-boson states. -/
 theorem oneParticleEmbedding_injective :
