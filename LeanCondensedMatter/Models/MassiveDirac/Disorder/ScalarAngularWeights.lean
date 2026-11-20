@@ -26,7 +26,6 @@ open AngularHarmonics
 noncomputable section
 
 open MeasureTheory
-open QuantumTheory.Transport
 open scoped Interval
 
 /-- Full-circle mean of the upper-band scalar-disorder overlap. This is the angular factor carried
