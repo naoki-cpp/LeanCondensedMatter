@@ -16,6 +16,7 @@ nontrivial sinc-square integral and is not implied by pointwise normalization.
 namespace OscillatoryIntegral
 noncomputable section
 open Filter MeasureTheory Bornology
+open scoped Topology
 
 /-- The nonnegative unit-time spectral profile. -/
 def spectralProfile (frequency : ℝ) : ℝ :=
@@ -40,7 +41,7 @@ theorem tendsto_scaled_spectralProfile_of_mass_and_decay
       (fun time : ℝ => ∫ energy : ℝ,
         (time * spectralProfile (time * energy)) * density energy)
       atTop (𝓝 (density 0)) := by
-  have h := MeasureTheory.tendsto_integral_comp_smul_smul_of_integrable
+  have h := tendsto_integral_comp_smul_smul_of_integrable
     (φ := spectralProfile) spectralProfile_nonneg hMass
     (by simpa using hDecay) hDensity hContinuous
   simpa only [Module.finrank_self, pow_one, smul_eq_mul] using h
