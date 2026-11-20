@@ -1,5 +1,6 @@
 import LeanCondensedMatter.Combinatorics.PerfectPairing.EraseZero
 import Mathlib.GroupTheory.Perm.Support
+import Mathlib.Logic.Equiv.Fin.Basic
 
 set_option linter.style.header false
 
@@ -8,7 +9,8 @@ set_option linter.style.header false
 
 `Pairing.insertFirstPair` inserts a new pair `(0, j)` ahead of a smaller pairing, reindexing it
 onto the positions left after removing `0` and `j`. The erase/insert round-trip laws package this
-recursion as `Pairing.equivSigma`.
+recursion as `Pairing.equivSigma`. The same module provides the general product and sum
+factorizations along that equivalence.
 -/
 
 namespace Combinatorics
@@ -181,5 +183,51 @@ noncomputable def Pairing.equivSigma (n : ℕ) :
     refine Sigma.ext (Subtype.ext ?_) ?_
     · exact Q.insertFirstPair_partner_zero j hj
     · exact heq_of_eq (Q.eraseZeroPair_insertFirstPair j hj)
+
+
+/-- A product over `pairing.pairs` splits into the `firstPair` factor times a product over the
+smaller pairing's own pairs. -/
+theorem Pairing.prod_pairs_eq_firstPair_mul {n : ℕ} {M : Type*} [CommMonoid M]
+    (pairing : Pairing (n + 1)) (f : Fin (2 * (n + 1)) × Fin (2 * (n + 1)) → M) :
+    ∏ pr ∈ pairing.pairs, f pr =
+      f pairing.firstPair *
+        ∏ pr ∈ pairing.eraseZeroPair.pairs,
+          f ((pairing.eraseZeroOrderIso pr.1 : Fin (2 * (n + 1))),
+            (pairing.eraseZeroOrderIso pr.2 : Fin (2 * (n + 1)))) := by
+  classical
+  rw [← Finset.insert_erase pairing.firstPair_mem_pairs,
+    pairing.pairs_erase_firstPair_eq_image]
+  rw [Finset.prod_insert, Finset.prod_image]
+  · rfl
+  · intro p _ q _ h
+    exact pairing.eraseZeroPairEmbedding.injective h
+  · rw [← pairing.pairs_erase_firstPair_eq_image]
+    simp
+
+/-- A sum over `Pairing (n + 1)`, reindexed as a double sum over a peeled position and the smaller
+pairing. -/
+theorem Pairing.sum_eq_sum_sum_insertFirstPair {n : ℕ} {M : Type*} [AddCommMonoid M]
+    (F : Pairing (n + 1) → M) :
+    ∑ pairing : Pairing (n + 1), F pairing =
+      ∑ j : Fin (2 * n + 1), ∑ Q : Pairing n,
+        F (Q.insertFirstPair j.succ (Fin.succ_ne_zero j)) := by
+  rw [← Equiv.sum_comp (Pairing.equivSigma n).symm F, Fintype.sum_sigma]
+  let e :
+      {j : Fin (2 * (n + 1)) // j ≠ 0} ≃ Fin (2 * n + 1) :=
+    (finSuccAboveEquiv (0 : Fin (2 * n + 2))).symm
+  refine Fintype.sum_equiv e
+    (fun x => ∑ Q : Pairing n, F ((Pairing.equivSigma n).symm ⟨x, Q⟩))
+    (fun j => ∑ Q : Pairing n, F (Q.insertFirstPair j.succ (Fin.succ_ne_zero j)))
+    fun x => ?_
+  apply Finset.sum_congr rfl
+  intro Q _
+  have hxSubtype :=
+    (finSuccAboveEquiv (0 : Fin (2 * n + 2))).apply_symm_apply x
+  have hx : (e x).succ = x.1 := by
+    change ((finSuccAboveEquiv (0 : Fin (2 * n + 2))).symm x).succ = x.1
+    have hxVal := congrArg Subtype.val hxSubtype
+    rw [finSuccAboveEquiv_apply] at hxVal
+    simpa using hxVal
+  simp only [Pairing.equivSigma, Equiv.coe_fn_symm_mk, hx]
 
 end Combinatorics
