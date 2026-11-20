@@ -202,6 +202,12 @@
       "externalImportCount": 0
     },
     {
+      "name": "LeanCondensedMatter.Analysis.Fourier.AngularHarmonics",
+      "sourceFile": "LeanCondensedMatter/Analysis/Fourier/AngularHarmonics.lean",
+      "imports": [],
+      "externalImportCount": 4
+    },
+    {
       "name": "LeanCondensedMatter.Analysis.Fourier.CyclicLaplacian",
       "sourceFile": "LeanCondensedMatter/Analysis/Fourier/CyclicLaplacian.lean",
       "imports": [
@@ -1067,6 +1073,7 @@
         "LeanCondensedMatter.Analysis.ConservationLaw",
         "LeanCondensedMatter.Analysis.DiscreteLattice",
         "LeanCondensedMatter.Analysis.Dyson",
+        "LeanCondensedMatter.Analysis.Fourier.AngularHarmonics",
         "LeanCondensedMatter.Analysis.Fourier.CyclicLaplacian",
         "LeanCondensedMatter.Analysis.Fourier.FiniteCyclic",
         "LeanCondensedMatter.Analysis.FunctionalCalculus.CFC",
@@ -1477,7 +1484,7 @@
       "name": "LeanCondensedMatter.Combinatorics.SetPartition.DistinguishedBlock",
       "sourceFile": "LeanCondensedMatter/Combinatorics/SetPartition/DistinguishedBlock.lean",
       "imports": [],
-      "externalImportCount": 4
+      "externalImportCount": 5
     },
     {
       "name": "LeanCondensedMatter.Combinatorics.SetPartition.FinpartitionProduct",
@@ -2441,6 +2448,7 @@
       "name": "LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornRealSpacePropagator",
       "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Disorder/FiniteBroadeningBornRealSpacePropagator.lean",
       "imports": [
+        "LeanCondensedMatter.Analysis.Fourier.AngularHarmonics",
         "LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornRadialRealSpacePropagator",
         "LeanCondensedMatter.Models.MassiveDirac.Model.Rotation"
       ],
@@ -2542,8 +2550,8 @@
       "name": "LeanCondensedMatter.Models.MassiveDirac.Disorder.ScalarAngularWeights",
       "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Disorder/ScalarAngularWeights.lean",
       "imports": [
-        "LeanCondensedMatter.Models.MassiveDirac.Model.FermiSurfaceOverlap",
-        "LeanCondensedMatter.Transport.Analysis.AngularHarmonics"
+        "LeanCondensedMatter.Analysis.Fourier.AngularHarmonics",
+        "LeanCondensedMatter.Models.MassiveDirac.Model.FermiSurfaceOverlap"
       ],
       "externalImportCount": 3
     },
@@ -2801,9 +2809,9 @@
       "name": "LeanCondensedMatter.Models.MassiveDirac.Propagator.AngularReduction",
       "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Propagator/AngularReduction.lean",
       "imports": [
+        "LeanCondensedMatter.Analysis.Fourier.AngularHarmonics",
         "LeanCondensedMatter.Models.MassiveDirac.Model.Kinematics",
-        "LeanCondensedMatter.Models.MassiveDirac.Propagator.Symmetry",
-        "LeanCondensedMatter.Transport.Analysis.AngularHarmonics"
+        "LeanCondensedMatter.Models.MassiveDirac.Propagator.Symmetry"
       ],
       "externalImportCount": 2
     },
@@ -3045,6 +3053,7 @@
       "name": "LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.RealSpace",
       "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Streda/GaussianCrossed/RealSpace.lean",
       "imports": [
+        "LeanCondensedMatter.Analysis.Fourier.AngularHarmonics",
         "LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornRealSpacePropagator",
         "LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexResponse",
         "LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.Trace"
@@ -3055,6 +3064,7 @@
       "name": "LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.RealSpaceIntegral",
       "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Streda/GaussianCrossed/RealSpaceIntegral.lean",
       "imports": [
+        "LeanCondensedMatter.Analysis.Fourier.AngularHarmonics",
         "LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.RadialTrace"
       ],
       "externalImportCount": 1
@@ -3113,9 +3123,9 @@
       "name": "LeanCondensedMatter.Models.MassiveDirac.Vertex.PauliRung",
       "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Vertex/PauliRung.lean",
       "imports": [
+        "LeanCondensedMatter.Analysis.Fourier.AngularHarmonics",
         "LeanCondensedMatter.Models.MassiveDirac.Model.Operator",
-        "LeanCondensedMatter.Models.MassiveDirac.Vertex.InPlaneLadder",
-        "LeanCondensedMatter.Transport.Analysis.AngularHarmonics"
+        "LeanCondensedMatter.Models.MassiveDirac.Vertex.InPlaneLadder"
       ],
       "externalImportCount": 1
     },
@@ -3218,8 +3228,8 @@
       "name": "LeanCondensedMatter.Models.Parabolic2DEG.Response",
       "sourceFile": "LeanCondensedMatter/Models/Parabolic2DEG/Response.lean",
       "imports": [
+        "LeanCondensedMatter.Analysis.Fourier.AngularHarmonics",
         "LeanCondensedMatter.Models.Parabolic2DEG.Green",
-        "LeanCondensedMatter.Transport.Analysis.AngularHarmonics",
         "LeanCondensedMatter.Transport.Analysis.ContinuumMeasure",
         "LeanCondensedMatter.Transport.Core.ConductivityTensor",
         "LeanCondensedMatter.Transport.Streda.ConductivityNormalization",
@@ -8378,12 +8388,6 @@
       "externalImportCount": 0
     },
     {
-      "name": "LeanCondensedMatter.Transport.Analysis.AngularHarmonics",
-      "sourceFile": "LeanCondensedMatter/Transport/Analysis/AngularHarmonics.lean",
-      "imports": [],
-      "externalImportCount": 4
-    },
-    {
       "name": "LeanCondensedMatter.Transport.Analysis.BesselCrossedXMoment",
       "sourceFile": "LeanCondensedMatter/Transport/Analysis/BesselCrossedXMoment.lean",
       "imports": [
@@ -8482,7 +8486,7 @@
       "name": "LeanCondensedMatter.Transport.Analysis.PolarFourier",
       "sourceFile": "LeanCondensedMatter/Transport/Analysis/PolarFourier.lean",
       "imports": [
-        "LeanCondensedMatter.Transport.Analysis.AngularHarmonics",
+        "LeanCondensedMatter.Analysis.Fourier.AngularHarmonics",
         "LeanCondensedMatter.Transport.Analysis.ContinuumMeasure",
         "LeanCondensedMatter.Transport.Analysis.FourierGeometry"
       ],
@@ -8531,7 +8535,6 @@
       "name": "LeanCondensedMatter.Transport.Analysis",
       "sourceFile": "LeanCondensedMatter/Transport/Analysis.lean",
       "imports": [
-        "LeanCondensedMatter.Transport.Analysis.AngularHarmonics",
         "LeanCondensedMatter.Transport.Analysis.BesselJFormalAnalyticBridge",
         "LeanCondensedMatter.Transport.Analysis.BesselRadialMoments",
         "LeanCondensedMatter.Transport.Analysis.BesselY0Series",

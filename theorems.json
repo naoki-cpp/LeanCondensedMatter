@@ -132,6 +132,191 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
+    "terminal": false,
+    "statement": "∀ {E : Type u_1} [inst : NormedAddCommGroup E] [inst_1 : NormedSpace ℂ E] [CompleteSpace E]\n  (coefficients : AngularHarmonics.AngularHarmonicCoefficients E),\n  ∫ (θ : ℝ) in 0..2 * Real.pi, coefficients.eval θ = (2 * Real.pi) • coefficients.constant",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "AngularHarmonics.AngularHarmonicCoefficients.integral_eval",
+    "module": "LeanCondensedMatter.Analysis.Fourier.AngularHarmonics",
+    "externalAxioms": [],
+    "docString": "Ordinary full-angle integration of the canonical constant/first/second harmonic decomposition.\nAll nonconstant channels vanish. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "AngularHarmonics.AngularHarmonicCoefficients.intervalIntegral_weighted_integral_eval",
+      "AngularHarmonics.integral_complex_cos_mul_add_sin_mul_zero_two_pi",
+      "QuantumTheory.Models.MassiveDirac.continuumAngularGreenIntegralOfRegulator_eq",
+      "QuantumTheory.Models.MassiveDirac.integral_polarPauliOperator_inPlane_eq",
+      "QuantumTheory.Models.Parabolic2DEG.angularIntegratedCurrentProduct_eq_integral",
+      "QuantumTheory.Transport.polarFourierSecondCosineAngularKernel_zero"
+    ],
+    "dependencies": [
+      "_private.LeanCondensedMatter.Analysis.Fourier.AngularHarmonics.0.AngularHarmonics.integral_complex_cos_mul_sin_zero_two_pi",
+      "_private.LeanCondensedMatter.Analysis.Fourier.AngularHarmonics.0.AngularHarmonics.integral_complex_cos_sq_sub_sin_sq_zero_two_pi",
+      "_private.LeanCondensedMatter.Analysis.Fourier.AngularHarmonics.0.AngularHarmonics.integral_complex_cos_zero_two_pi",
+      "_private.LeanCondensedMatter.Analysis.Fourier.AngularHarmonics.0.AngularHarmonics.integral_complex_sin_zero_two_pi"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "AngularHarmonics.AngularHarmonicCoefficients.intervalIntegral_weighted_integral_eval",
+      "AngularHarmonics.integral_complex_cos_mul_add_sin_mul_zero_two_pi",
+      "QuantumTheory.Models.MassiveDirac.continuumAngularGreenIntegralOfRegulator_eq",
+      "QuantumTheory.Models.MassiveDirac.integral_polarPauliOperator_inPlane_eq",
+      "QuantumTheory.Models.Parabolic2DEG.angularIntegratedCurrentProduct_eq_integral",
+      "QuantumTheory.Transport.polarFourierSecondCosineAngularKernel_zero"
+    ],
+    "compiledConsumerCount": 6,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (a b : ℝ) (weight : ℝ → ℂ) (coefficients : ℝ → AngularHarmonics.AngularHarmonicCoefficients ℂ),\n  ∫ (radius : ℝ) in a..b, ∫ (angle : ℝ) in 0..2 * Real.pi, weight radius * (coefficients radius).eval angle =\n    ↑(2 * Real.pi) * ∫ (radius : ℝ) in a..b, weight radius * (coefficients radius).constant",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "AngularHarmonics.AngularHarmonicCoefficients.intervalIntegral_weighted_integral_eval",
+    "module": "LeanCondensedMatter.Analysis.Fourier.AngularHarmonics",
+    "externalAxioms": [],
+    "docString": "Full angular projection inside an arbitrary weighted radial interval integral.\nOnly the constant harmonic survives, with no assumptions on the radial weight or\ncoefficients beyond those used by ordinary interval integration. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceIntegral_eq_radial_antisymmetric_trace"
+    ],
+    "dependencies": [
+      "AngularHarmonics.AngularHarmonicCoefficients.integral_eval"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceIntegral_eq_radial_antisymmetric_trace"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (cCos cSin : ℂ), ∫ (θ : ℝ) in 0..2 * Real.pi, ↑(Real.cos θ) * cCos + ↑(Real.sin θ) * cSin = 0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "AngularHarmonics.integral_complex_cos_mul_add_sin_mul_zero_two_pi",
+    "module": "LeanCondensedMatter.Analysis.Fourier.AngularHarmonics",
+    "externalAxioms": [],
+    "docString": "A complex linear combination of the first sine and cosine harmonics integrates to zero. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "AngularHarmonics.AngularHarmonicCoefficients.integral_eval"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (a b c : ℝ), ∫ (θ : ℝ) in 0..2 * Real.pi, a + b * Real.cos θ + c * Real.cos θ ^ 2 = 2 * Real.pi * a + Real.pi * c",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "AngularHarmonics.integral_quadratic_cos_zero_two_pi",
+    "module": "LeanCondensedMatter.Analysis.Fourier.AngularHarmonics",
+    "externalAxioms": [],
+    "docString": "Full-angle integral of a real quadratic polynomial in the first cosine harmonic. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.MassiveDirac.isotropicUpperBandSingleParticleAngularWeight_eq",
+      "QuantumTheory.Models.MassiveDirac.isotropicUpperBandTransportAngularWeight_eq"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.isotropicUpperBandSingleParticleAngularWeight_eq",
+      "QuantumTheory.Models.MassiveDirac.isotropicUpperBandTransportAngularWeight_eq"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
     "terminal": true,
     "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {ι : Type u_2} [inst_3 : Fintype ι] {κ : Type u_3} (data : BerryGeometry.PointwiseEigenbasisData κ ι H) (μ : κ)\n  (n : ι), (data.berryConnection μ n n).im = 0",
     "standardAxioms": [
@@ -62502,8 +62687,8 @@
       "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.SelfEnergy.0.QuantumTheory.Models.MassiveDirac.continuumBornPolarRadialKernelOfRegulator_eq"
     ],
     "dependencies": [
-      "QuantumTheory.Models.MassiveDirac.pauliGreenOperatorOfRegulator_polar_eq",
-      "QuantumTheory.Transport.AngularHarmonicCoefficients.integral_eval"
+      "AngularHarmonics.AngularHarmonicCoefficients.integral_eval",
+      "QuantumTheory.Models.MassiveDirac.pauliGreenOperatorOfRegulator_polar_eq"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -67494,7 +67679,7 @@
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceIntegral_eq_radial_antisymmetric_trace_of_regulated"
     ],
     "dependencies": [
-      "QuantumTheory.Transport.AngularHarmonicCoefficients.intervalIntegral_weighted_integral_eval",
+      "AngularHarmonics.AngularHarmonicCoefficients.intervalIntegral_weighted_integral_eval",
       "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.RealSpaceIntegral.0.QuantumTheory.Models.MassiveDirac.gaussianCrossedAngularTensorCoefficients_eval"
     ],
     "crossModuleDirectWrapper": false,
@@ -74318,10 +74503,10 @@
       "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.Radial.0.QuantumTheory.Models.MassiveDirac.integral_polarPauli_directionTrace_eq"
     ],
     "dependencies": [
+      "AngularHarmonics.AngularHarmonicCoefficients.integral_eval",
       "QuantumTheory.Models.MassiveDirac.inPlaneLadderAction_apply_x",
       "QuantumTheory.Models.MassiveDirac.inPlaneLadderAction_apply_y",
-      "QuantumTheory.Models.MassiveDirac.polarPauliMatrix_inPlane_sandwich_eq_harmonics",
-      "QuantumTheory.Transport.AngularHarmonicCoefficients.integral_eval"
+      "QuantumTheory.Models.MassiveDirac.polarPauliMatrix_inPlane_sandwich_eq_harmonics"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -75089,7 +75274,7 @@
       "QuantumTheory.Models.MassiveDirac.continuumBornUpperBandSingleParticleScatteringRate_eq_prefactor_mul_angularWeight"
     ],
     "dependencies": [
-      "QuantumTheory.Transport.integral_quadratic_cos_zero_two_pi"
+      "AngularHarmonics.integral_quadratic_cos_zero_two_pi"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -75133,7 +75318,7 @@
       "QuantumTheory.Models.MassiveDirac.continuumBornUpperBandTransportScatteringRate_eq"
     ],
     "dependencies": [
-      "QuantumTheory.Transport.integral_quadratic_cos_zero_two_pi"
+      "AngularHarmonics.integral_quadratic_cos_zero_two_pi"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -86106,7 +86291,7 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "QuantumTheory.Transport.AngularHarmonicCoefficients.integral_eval"
+      "AngularHarmonics.AngularHarmonicCoefficients.integral_eval"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -90769,198 +90954,6 @@
     "completedMention": false,
     "compiledConsumers": [],
     "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {E : Type u_1} [inst : NormedAddCommGroup E] [inst_1 : NormedSpace ℂ E] [CompleteSpace E]\n  (coefficients : QuantumTheory.Transport.AngularHarmonicCoefficients E),\n  ∫ (θ : ℝ) in 0..2 * Real.pi, coefficients.eval θ = (2 * Real.pi) • coefficients.constant",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.AngularHarmonicCoefficients.integral_eval",
-    "module": "LeanCondensedMatter.Transport.Analysis.AngularHarmonics",
-    "externalAxioms": [],
-    "docString": "Ordinary full-angle integration of the canonical constant/first/second harmonic decomposition.\nAll nonconstant channels vanish. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Models.MassiveDirac.continuumAngularGreenIntegralOfRegulator_eq",
-      "QuantumTheory.Models.MassiveDirac.integral_polarPauliOperator_inPlane_eq",
-      "QuantumTheory.Models.Parabolic2DEG.angularIntegratedCurrentProduct_eq_integral",
-      "QuantumTheory.Transport.AngularHarmonicCoefficients.intervalIntegral_weighted_integral_eval",
-      "QuantumTheory.Transport.integral_complex_cos_mul_add_sin_mul_zero_two_pi",
-      "QuantumTheory.Transport.polarFourierSecondCosineAngularKernel_zero"
-    ],
-    "dependencies": [
-      "_private.LeanCondensedMatter.Transport.Analysis.AngularHarmonics.0.QuantumTheory.Transport.integral_complex_cos_mul_sin_zero_two_pi",
-      "_private.LeanCondensedMatter.Transport.Analysis.AngularHarmonics.0.QuantumTheory.Transport.integral_complex_cos_sq_sub_sin_sq_zero_two_pi",
-      "_private.LeanCondensedMatter.Transport.Analysis.AngularHarmonics.0.QuantumTheory.Transport.integral_complex_cos_zero_two_pi",
-      "_private.LeanCondensedMatter.Transport.Analysis.AngularHarmonics.0.QuantumTheory.Transport.integral_complex_sin_zero_two_pi"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Models.MassiveDirac.continuumAngularGreenIntegralOfRegulator_eq",
-      "QuantumTheory.Models.MassiveDirac.integral_polarPauliOperator_inPlane_eq",
-      "QuantumTheory.Models.Parabolic2DEG.angularIntegratedCurrentProduct_eq_integral",
-      "QuantumTheory.Transport.AngularHarmonicCoefficients.intervalIntegral_weighted_integral_eval",
-      "QuantumTheory.Transport.integral_complex_cos_mul_add_sin_mul_zero_two_pi",
-      "QuantumTheory.Transport.polarFourierSecondCosineAngularKernel_zero"
-    ],
-    "compiledConsumerCount": 6,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (coefficients : QuantumTheory.Transport.AngularHarmonicCoefficients ℂ) (z p : ℝ),\n  ∫ (θ : ℝ) in 0..2 * Real.pi, ↑p * QuantumTheory.Transport.polarFourierRadialPhase z θ * coefficients.eval θ =\n    ↑p *\n      (QuantumTheory.Transport.polarFourierZerothAngularKernel z * coefficients.constant +\n          QuantumTheory.Transport.polarFourierFirstCosineAngularKernel z * coefficients.firstCosine +\n        QuantumTheory.Transport.polarFourierSecondCosineAngularKernel z * coefficients.secondCosine)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.AngularHarmonicCoefficients.integral_polarFourierRadialPhase",
-    "module": "LeanCondensedMatter.Transport.Analysis.PolarFourier",
-    "externalAxioms": [],
-    "docString": "Phase-weighted full-angle integration of the canonical constant/first/second harmonic\ndecomposition. The first-sine and mixed-second channels vanish on the radial axis. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.integral_polarFourierRadialPhase_first_harmonics",
-      "_private.LeanCondensedMatter.Transport.Analysis.PolarFourier.0.QuantumTheory.Transport.integral_polarFourierRadialPhase_shifted_second_harmonics"
-    ],
-    "dependencies": [
-      "QuantumTheory.Transport.integral_polarFourierRadialPhase_mul_cos_mul_sin_zero",
-      "QuantumTheory.Transport.integral_polarFourierRadialPhase_mul_sin_zero"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.integral_polarFourierRadialPhase_first_harmonics",
-      "_private.LeanCondensedMatter.Transport.Analysis.PolarFourier.0.QuantumTheory.Transport.integral_polarFourierRadialPhase_shifted_second_harmonics"
-    ],
-    "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (coefficients : QuantumTheory.Transport.AngularHarmonicCoefficients ℂ) (z p angle : ℝ),\n  ∫ (θ : ℝ) in 0..2 * Real.pi,\n      ↑p * QuantumTheory.Transport.polarFourierRadialPhase z (θ - angle) * coefficients.eval θ =\n    ↑p *\n      (QuantumTheory.Transport.polarFourierZerothAngularKernel z * coefficients.constant +\n          QuantumTheory.Transport.polarFourierFirstCosineAngularKernel z *\n            (↑(Real.cos angle) * coefficients.firstCosine + ↑(Real.sin angle) * coefficients.firstSine) +\n        QuantumTheory.Transport.polarFourierSecondCosineAngularKernel z *\n          ((↑(Real.cos angle) ^ 2 - ↑(Real.sin angle) ^ 2) * coefficients.secondCosine +\n            ↑(Real.cos angle) * ↑(Real.sin angle) * coefficients.secondMixed))",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.AngularHarmonicCoefficients.integral_polarFourierRadialPhase_shifted",
-    "module": "LeanCondensedMatter.Transport.Analysis.PolarFourier",
-    "externalAxioms": [],
-    "docString": "Phase-weighted full-angle reduction of canonical harmonic coefficients at an arbitrary\nreal-space polar angle. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.finiteCutoffPhysicalMomentumPolarFourier_polarPoint2D_harmonics"
-    ],
-    "dependencies": [
-      "_private.LeanCondensedMatter.Transport.Analysis.PolarFourier.0.QuantumTheory.Transport.integral_polarFourierRadialPhase_shifted_second_harmonics"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.finiteCutoffPhysicalMomentumPolarFourier_polarPoint2D_harmonics"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (a b : ℝ) (weight : ℝ → ℂ) (coefficients : ℝ → QuantumTheory.Transport.AngularHarmonicCoefficients ℂ),\n  ∫ (radius : ℝ) in a..b, ∫ (angle : ℝ) in 0..2 * Real.pi, weight radius * (coefficients radius).eval angle =\n    ↑(2 * Real.pi) * ∫ (radius : ℝ) in a..b, weight radius * (coefficients radius).constant",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.AngularHarmonicCoefficients.intervalIntegral_weighted_integral_eval",
-    "module": "LeanCondensedMatter.Transport.Analysis.AngularHarmonics",
-    "externalAxioms": [],
-    "docString": "Full angular projection inside an arbitrary weighted radial interval integral.\nOnly the constant harmonic survives, with no assumptions on the radial weight or\ncoefficients beyond those used by ordinary interval integration. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceIntegral_eq_radial_antisymmetric_trace"
-    ],
-    "dependencies": [
-      "QuantumTheory.Transport.AngularHarmonicCoefficients.integral_eval"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceIntegral_eq_radial_antisymmetric_trace"
-    ],
-    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -98298,7 +98291,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (hbar pMax radius angle : ℝ) (coefficients : ℝ → QuantumTheory.Transport.AngularHarmonicCoefficients ℂ),\n  QuantumTheory.Transport.finiteCutoffPhysicalMomentumPolarFourier hbar pMax (fun p θ => (coefficients p).eval θ)\n      (QuantumTheory.Transport.polarPoint2D radius angle) =\n    ↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n      ∫ (p : ℝ) in 0..pMax,\n        ↑p *\n          (QuantumTheory.Transport.polarFourierZerothAngularKernel (p * radius / hbar) * (coefficients p).constant +\n              QuantumTheory.Transport.polarFourierFirstCosineAngularKernel (p * radius / hbar) *\n                (↑(Real.cos angle) * (coefficients p).firstCosine + ↑(Real.sin angle) * (coefficients p).firstSine) +\n            QuantumTheory.Transport.polarFourierSecondCosineAngularKernel (p * radius / hbar) *\n              ((↑(Real.cos angle) ^ 2 - ↑(Real.sin angle) ^ 2) * (coefficients p).secondCosine +\n                ↑(Real.cos angle) * ↑(Real.sin angle) * (coefficients p).secondMixed))",
+    "statement": "∀ (hbar pMax radius angle : ℝ) (coefficients : ℝ → AngularHarmonics.AngularHarmonicCoefficients ℂ),\n  QuantumTheory.Transport.finiteCutoffPhysicalMomentumPolarFourier hbar pMax (fun p θ => (coefficients p).eval θ)\n      (QuantumTheory.Transport.polarPoint2D radius angle) =\n    ↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n      ∫ (p : ℝ) in 0..pMax,\n        ↑p *\n          (QuantumTheory.Transport.polarFourierZerothAngularKernel (p * radius / hbar) * (coefficients p).constant +\n              QuantumTheory.Transport.polarFourierFirstCosineAngularKernel (p * radius / hbar) *\n                (↑(Real.cos angle) * (coefficients p).firstCosine + ↑(Real.sin angle) * (coefficients p).firstSine) +\n            QuantumTheory.Transport.polarFourierSecondCosineAngularKernel (p * radius / hbar) *\n              ((↑(Real.cos angle) ^ 2 - ↑(Real.sin angle) ^ 2) * (coefficients p).secondCosine +\n                ↑(Real.cos angle) * ↑(Real.sin angle) * (coefficients p).secondMixed))",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -98321,7 +98314,7 @@
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRealSpaceGreenMatrix_polarPoint2D_eq_angularKernel_integral"
     ],
     "dependencies": [
-      "QuantumTheory.Transport.AngularHarmonicCoefficients.integral_polarFourierRadialPhase_shifted",
+      "QuantumTheory.Transport.integral_polarFourierRadialPhase_harmonicCoefficients_shifted",
       "QuantumTheory.Transport.physicalMomentumPolarFourierPhase_polarPoint2D"
     ],
     "crossModuleDirectWrapper": false,
@@ -99198,46 +99191,6 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
-    "statement": "∀ (cCos cSin : ℂ), ∫ (θ : ℝ) in 0..2 * Real.pi, ↑(Real.cos θ) * cCos + ↑(Real.sin θ) * cSin = 0",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.integral_complex_cos_mul_add_sin_mul_zero_two_pi",
-    "module": "LeanCondensedMatter.Transport.Analysis.AngularHarmonics",
-    "externalAxioms": [],
-    "docString": "A complex linear combination of the first sine and cosine harmonics integrates to zero. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "QuantumTheory.Transport.AngularHarmonicCoefficients.integral_eval"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
     "terminal": false,
     "statement": "∀ (Y0 Y1 : ℝ → ℂ),\n  QuantumTheory.Transport.CrossedXBesselWronskian Y0 Y1 →\n    ∀ (R : ℝ),\n      ∫ (r : ℝ) in 0..R, Complex.besselJ 1 ↑r ^ 2 * (Complex.besselJ 1 ↑r * Y0 r - Complex.besselJ 0 ↑r * Y1 r) =\n        ↑(2 / Real.pi) * ((1 - (Complex.besselJ 0 ↑R ^ 2 + Complex.besselJ 1 ↑R ^ 2)) / 2)",
     "standardAxioms": [
@@ -99486,12 +99439,103 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "QuantumTheory.Transport.AngularHarmonicCoefficients.integral_polarFourierRadialPhase"
+      "QuantumTheory.Transport.integral_polarFourierRadialPhase_harmonicCoefficients"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [],
     "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (coefficients : AngularHarmonics.AngularHarmonicCoefficients ℂ) (z p : ℝ),\n  ∫ (θ : ℝ) in 0..2 * Real.pi, ↑p * QuantumTheory.Transport.polarFourierRadialPhase z θ * coefficients.eval θ =\n    ↑p *\n      (QuantumTheory.Transport.polarFourierZerothAngularKernel z * coefficients.constant +\n          QuantumTheory.Transport.polarFourierFirstCosineAngularKernel z * coefficients.firstCosine +\n        QuantumTheory.Transport.polarFourierSecondCosineAngularKernel z * coefficients.secondCosine)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.integral_polarFourierRadialPhase_harmonicCoefficients",
+    "module": "LeanCondensedMatter.Transport.Analysis.PolarFourier",
+    "externalAxioms": [],
+    "docString": "Phase-weighted full-angle integration of the canonical constant/first/second harmonic\ndecomposition. The first-sine and mixed-second channels vanish on the radial axis. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.integral_polarFourierRadialPhase_first_harmonics",
+      "_private.LeanCondensedMatter.Transport.Analysis.PolarFourier.0.QuantumTheory.Transport.integral_polarFourierRadialPhase_shifted_second_harmonics"
+    ],
+    "dependencies": [
+      "QuantumTheory.Transport.integral_polarFourierRadialPhase_mul_cos_mul_sin_zero",
+      "QuantumTheory.Transport.integral_polarFourierRadialPhase_mul_sin_zero"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.integral_polarFourierRadialPhase_first_harmonics",
+      "_private.LeanCondensedMatter.Transport.Analysis.PolarFourier.0.QuantumTheory.Transport.integral_polarFourierRadialPhase_shifted_second_harmonics"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (coefficients : AngularHarmonics.AngularHarmonicCoefficients ℂ) (z p angle : ℝ),\n  ∫ (θ : ℝ) in 0..2 * Real.pi,\n      ↑p * QuantumTheory.Transport.polarFourierRadialPhase z (θ - angle) * coefficients.eval θ =\n    ↑p *\n      (QuantumTheory.Transport.polarFourierZerothAngularKernel z * coefficients.constant +\n          QuantumTheory.Transport.polarFourierFirstCosineAngularKernel z *\n            (↑(Real.cos angle) * coefficients.firstCosine + ↑(Real.sin angle) * coefficients.firstSine) +\n        QuantumTheory.Transport.polarFourierSecondCosineAngularKernel z *\n          ((↑(Real.cos angle) ^ 2 - ↑(Real.sin angle) ^ 2) * coefficients.secondCosine +\n            ↑(Real.cos angle) * ↑(Real.sin angle) * coefficients.secondMixed))",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.integral_polarFourierRadialPhase_harmonicCoefficients_shifted",
+    "module": "LeanCondensedMatter.Transport.Analysis.PolarFourier",
+    "externalAxioms": [],
+    "docString": "Phase-weighted full-angle reduction of canonical harmonic coefficients at an arbitrary\nreal-space polar angle. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.finiteCutoffPhysicalMomentumPolarFourier_polarPoint2D_harmonics"
+    ],
+    "dependencies": [
+      "_private.LeanCondensedMatter.Transport.Analysis.PolarFourier.0.QuantumTheory.Transport.integral_polarFourierRadialPhase_shifted_second_harmonics"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.finiteCutoffPhysicalMomentumPolarFourier_polarPoint2D_harmonics"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -99525,7 +99569,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Transport.AngularHarmonicCoefficients.integral_polarFourierRadialPhase"
+      "QuantumTheory.Transport.integral_polarFourierRadialPhase_harmonicCoefficients"
     ],
     "dependencies": [
       "_private.LeanCondensedMatter.Transport.Analysis.PolarFourier.0.QuantumTheory.Transport.integral_fullPeriod_eq_zero_of_reflection_neg"
@@ -99533,7 +99577,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Transport.AngularHarmonicCoefficients.integral_polarFourierRadialPhase"
+      "QuantumTheory.Transport.integral_polarFourierRadialPhase_harmonicCoefficients"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -99569,7 +99613,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Transport.AngularHarmonicCoefficients.integral_polarFourierRadialPhase"
+      "QuantumTheory.Transport.integral_polarFourierRadialPhase_harmonicCoefficients"
     ],
     "dependencies": [
       "_private.LeanCondensedMatter.Transport.Analysis.PolarFourier.0.QuantumTheory.Transport.integral_fullPeriod_eq_zero_of_reflection_neg"
@@ -99577,7 +99621,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Transport.AngularHarmonicCoefficients.integral_polarFourierRadialPhase"
+      "QuantumTheory.Transport.integral_polarFourierRadialPhase_harmonicCoefficients"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -99626,50 +99670,6 @@
     "compiledConsumers": [
       "QuantumTheory.Models.MassiveDirac.integral_massiveDiracRadialCenter_inv_fourierKernel_by_parts",
       "QuantumTheory.Transport.tendsto_integral_polarFourierZerothAngularKernel_of_by_parts"
-    ],
-    "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (a b c : ℝ), ∫ (θ : ℝ) in 0..2 * Real.pi, a + b * Real.cos θ + c * Real.cos θ ^ 2 = 2 * Real.pi * a + Real.pi * c",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.integral_quadratic_cos_zero_two_pi",
-    "module": "LeanCondensedMatter.Transport.Analysis.AngularHarmonics",
-    "externalAxioms": [],
-    "docString": "Full-angle integral of a real quadratic polynomial in the first cosine harmonic. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Models.MassiveDirac.isotropicUpperBandSingleParticleAngularWeight_eq",
-      "QuantumTheory.Models.MassiveDirac.isotropicUpperBandTransportAngularWeight_eq"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Models.MassiveDirac.isotropicUpperBandSingleParticleAngularWeight_eq",
-      "QuantumTheory.Models.MassiveDirac.isotropicUpperBandTransportAngularWeight_eq"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -101231,7 +101231,7 @@
       "QuantumTheory.Transport.polarFourierSecondCosineAngularKernel_eq_besselJ"
     ],
     "dependencies": [
-      "QuantumTheory.Transport.AngularHarmonicCoefficients.integral_eval"
+      "AngularHarmonics.AngularHarmonicCoefficients.integral_eval"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -142710,46 +142710,6 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
-    "statement": "∀ {Config : Type u_1} [inst : Fintype Config] [inst_1 : Nonempty Config] (energy : Config → ℝ) (β q1 : ℝ)\n  (s : SecondQuantization.Common.Statistics) (c1j : ℂ)\n  (C1 Cj : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config),\n  (SecondQuantization.Common.heisenbergEvolve energy (-β)) C1 = Complex.exp ↑(q1 * -β) • C1 →\n    SecondQuantization.Common.exchangeCommutator s C1 Cj = c1j • LinearMap.id →\n      1 - ↑s.zetaInt * Complex.exp ↑(q1 * β) ≠ 0 →\n        SecondQuantization.Common.finiteGibbsExpectation energy β (C1 ∘ₗ Cj) =\n          c1j / (1 - ↑s.zetaInt * Complex.exp ↑(q1 * β))",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": true,
-    "retainedMention": true,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.finiteGibbsExpectation_comp_eq_div_of_exchangeCommutator",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.GibbsExpectation.TwoPoint",
-    "externalAxioms": [],
-    "docString": "**The `Statistics`-indexed presentation**, in terms of `exchangeCommutator s` rather than a\nraw `ζ : ℂ` bracket — the form callers already holding a `Statistics` value should reach for. ",
-    "directWrapperTargetModule": "LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.GibbsExpectation.TwoPoint",
-    "directWrapperOf": "SecondQuantization.Common.finiteGibbsExpectation_comp_eq_div_of_zetaCommutator",
-    "dependents": [],
-    "dependencies": [
-      "SecondQuantization.Common.finiteGibbsExpectation_comp_eq_div_of_zetaCommutator"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
     "terminal": false,
     "statement": "∀ {Config : Type u_1} [inst : Fintype Config] [inst_1 : Nonempty Config] (energy : Config → ℝ) (β q1 : ℝ) (ζ c1j : ℂ)\n  (C1 Cj : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config),\n  (SecondQuantization.Common.heisenbergEvolve energy (-β)) C1 = Complex.exp ↑(q1 * -β) • C1 →\n    ScalarExchange.zetaCommutator ζ C1 Cj = c1j • LinearMap.id →\n      1 - ζ * Complex.exp ↑(q1 * β) ≠ 0 →\n        SecondQuantization.Common.finiteGibbsExpectation energy β (C1 ∘ₗ Cj) = c1j / (1 - ζ * Complex.exp ↑(q1 * β))",
     "standardAxioms": [
@@ -142758,7 +142718,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -142770,7 +142730,6 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Common.finiteGibbsExpectation_comp_eq_div_of_exchangeCommutator",
       "SecondQuantization.Common.finiteGibbsExpectation_four_point"
     ],
     "dependencies": [
@@ -142782,10 +142741,9 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Common.finiteGibbsExpectation_comp_eq_div_of_exchangeCommutator",
       "SecondQuantization.Common.finiteGibbsExpectation_four_point"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -150621,7 +150579,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": false,
+    "terminal": true,
     "statement": "∀ {Config : Type u_1} (s : SecondQuantization.Common.Statistics)\n  (A B : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config)\n  (τA τB : ℝ),\n  SecondQuantization.Common.timeOrderedProduct s B A τB τA =\n    ↑s.zetaInt • SecondQuantization.Common.timeOrderedProduct s A B τA τB",
     "standardAxioms": [
       "Classical.choice",
@@ -150629,7 +150587,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -150640,9 +150598,7 @@
     "docString": "**Swapping the pair of operators (with their times) and multiplying by the exchange sign\nreturns the same time-ordered product**:\n`T_τ[B(τ_B) A(τ_A)] = s.zetaInt · T_τ[A(τ_A) B(τ_B)]`.\n`Statistics.zeta_sq` supplies the fact that the exchange sign squares to one. See the module\ndocstring's scope note on which operators admit the usual physical reading. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.timeOrderedExternalFields_swap"
-    ],
+    "dependents": [],
     "dependencies": [
       "SecondQuantization.Common.Statistics.zeta_sq",
       "SecondQuantization.Common.timeOrderedProduct_of_gt",
@@ -150651,10 +150607,8 @@
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.timeOrderedExternalFields_swap"
-    ],
-    "compiledConsumerCount": 1,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -173372,46 +173326,6 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (ε : Mode → ℝ)\n  (A B : SecondQuantization.Fermionic.ExternalFieldLabel Mode) (τA τB : ℝ),\n  SecondQuantization.Fermionic.timeOrderedExternalFields ε B A τB τA =\n    ↑SecondQuantization.Common.Statistics.fermion.zetaInt •\n      SecondQuantization.Fermionic.timeOrderedExternalFields ε A B τA τB",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": true,
-    "retainedMention": true,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.timeOrderedExternalFields_swap",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTime.ExternalField",
-    "externalAxioms": [],
-    "docString": "Swapping both external fields and their times produces the fermionic exchange sign. ",
-    "directWrapperTargetModule": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TimeOrdering",
-    "directWrapperOf": "SecondQuantization.Common.timeOrderedProduct_swap",
-    "dependents": [],
-    "dependencies": [
-      "SecondQuantization.Common.timeOrderedProduct_swap"
-    ],
-    "crossModuleDirectWrapper": true,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
     "terminal": false,
     "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (ε : Mode → ℝ) (field : SecondQuantization.Fermionic.TimedField Mode),\n  SecondQuantization.Fermionic.timedFieldOperator ε field =\n    Complex.exp ↑(field.time * SecondQuantization.Fermionic.externalFieldLabelEnergyShift ε field.label) •\n      SecondQuantization.Fermionic.bareExternalFieldOperator field.label",
     "standardAxioms": [
@@ -176044,6 +175958,174 @@
     "completedMention": false,
     "compiledConsumers": [
       "Dyson.evolution_neg_neg"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∫ (θ : ℝ) in 0..2 * Real.pi, ↑(Real.cos θ) * ↑(Real.sin θ) = 0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Analysis.Fourier.AngularHarmonics.0.AngularHarmonics.integral_complex_cos_mul_sin_zero_two_pi",
+    "module": "LeanCondensedMatter.Analysis.Fourier.AngularHarmonics",
+    "externalAxioms": [],
+    "docString": "The complexified mixed second harmonic integrates to zero over a full polar angle. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "AngularHarmonics.AngularHarmonicCoefficients.integral_eval"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "AngularHarmonics.AngularHarmonicCoefficients.integral_eval"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∫ (θ : ℝ) in 0..2 * Real.pi, ↑(Real.cos θ) ^ 2 - ↑(Real.sin θ) ^ 2 = 0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Analysis.Fourier.AngularHarmonics.0.AngularHarmonics.integral_complex_cos_sq_sub_sin_sq_zero_two_pi",
+    "module": "LeanCondensedMatter.Analysis.Fourier.AngularHarmonics",
+    "externalAxioms": [],
+    "docString": "The complexified second cosine harmonic integrates to zero over a full polar angle. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "AngularHarmonics.AngularHarmonicCoefficients.integral_eval"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "AngularHarmonics.AngularHarmonicCoefficients.integral_eval"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∫ (θ : ℝ) in 0..2 * Real.pi, ↑(Real.cos θ) = 0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Analysis.Fourier.AngularHarmonics.0.AngularHarmonics.integral_complex_cos_zero_two_pi",
+    "module": "LeanCondensedMatter.Analysis.Fourier.AngularHarmonics",
+    "externalAxioms": [],
+    "docString": "Full-angle integral of the complexified first cosine harmonic. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "AngularHarmonics.AngularHarmonicCoefficients.integral_eval"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "AngularHarmonics.AngularHarmonicCoefficients.integral_eval"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∫ (θ : ℝ) in 0..2 * Real.pi, ↑(Real.sin θ) = 0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Analysis.Fourier.AngularHarmonics.0.AngularHarmonics.integral_complex_sin_zero_two_pi",
+    "module": "LeanCondensedMatter.Analysis.Fourier.AngularHarmonics",
+    "externalAxioms": [],
+    "docString": "Full-angle integral of the complexified first sine harmonic. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "AngularHarmonics.AngularHarmonicCoefficients.integral_eval"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "AngularHarmonics.AngularHarmonicCoefficients.integral_eval"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -208091,174 +208173,6 @@
   },
   {
     "terminal": false,
-    "statement": "∫ (θ : ℝ) in 0..2 * Real.pi, ↑(Real.cos θ) * ↑(Real.sin θ) = 0",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Transport.Analysis.AngularHarmonics.0.QuantumTheory.Transport.integral_complex_cos_mul_sin_zero_two_pi",
-    "module": "LeanCondensedMatter.Transport.Analysis.AngularHarmonics",
-    "externalAxioms": [],
-    "docString": "The complexified mixed second harmonic integrates to zero over a full polar angle. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.AngularHarmonicCoefficients.integral_eval"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.AngularHarmonicCoefficients.integral_eval"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∫ (θ : ℝ) in 0..2 * Real.pi, ↑(Real.cos θ) ^ 2 - ↑(Real.sin θ) ^ 2 = 0",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Transport.Analysis.AngularHarmonics.0.QuantumTheory.Transport.integral_complex_cos_sq_sub_sin_sq_zero_two_pi",
-    "module": "LeanCondensedMatter.Transport.Analysis.AngularHarmonics",
-    "externalAxioms": [],
-    "docString": "The complexified second cosine harmonic integrates to zero over a full polar angle. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.AngularHarmonicCoefficients.integral_eval"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.AngularHarmonicCoefficients.integral_eval"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∫ (θ : ℝ) in 0..2 * Real.pi, ↑(Real.cos θ) = 0",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Transport.Analysis.AngularHarmonics.0.QuantumTheory.Transport.integral_complex_cos_zero_two_pi",
-    "module": "LeanCondensedMatter.Transport.Analysis.AngularHarmonics",
-    "externalAxioms": [],
-    "docString": "Full-angle integral of the complexified first cosine harmonic. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.AngularHarmonicCoefficients.integral_eval"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.AngularHarmonicCoefficients.integral_eval"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∫ (θ : ℝ) in 0..2 * Real.pi, ↑(Real.sin θ) = 0",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Transport.Analysis.AngularHarmonics.0.QuantumTheory.Transport.integral_complex_sin_zero_two_pi",
-    "module": "LeanCondensedMatter.Transport.Analysis.AngularHarmonics",
-    "externalAxioms": [],
-    "docString": "Full-angle integral of the complexified first sine harmonic. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.AngularHarmonicCoefficients.integral_eval"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.AngularHarmonicCoefficients.integral_eval"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ (x y : ℝ → ℝ),\n  (∀ (r : ℝ), 2 ≤ r → HasDerivAt x (-y r) r) →\n    (∀ (r : ℝ), 2 ≤ r → HasDerivAt y (x r - y r / r) r) →\n      Filter.Tendsto (fun r => x r ^ 2 + y r ^ 2) Filter.atTop (nhds 0)",
     "standardAxioms": [
       "Classical.choice",
@@ -208766,17 +208680,17 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Transport.AngularHarmonicCoefficients.integral_polarFourierRadialPhase_shifted"
+      "QuantumTheory.Transport.integral_polarFourierRadialPhase_harmonicCoefficients_shifted"
     ],
     "dependencies": [
-      "QuantumTheory.Transport.AngularHarmonicCoefficients.integral_polarFourierRadialPhase",
+      "QuantumTheory.Transport.integral_polarFourierRadialPhase_harmonicCoefficients",
       "_private.LeanCondensedMatter.Transport.Analysis.PolarFourier.0.QuantumTheory.Transport.angular_second_harmonics_add",
       "_private.LeanCondensedMatter.Transport.Analysis.PolarFourier.0.QuantumTheory.Transport.intervalIntegral_fullPeriod_comp_sub_eq"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Transport.AngularHarmonicCoefficients.integral_polarFourierRadialPhase_shifted"
+      "QuantumTheory.Transport.integral_polarFourierRadialPhase_harmonicCoefficients_shifted"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
