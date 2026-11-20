@@ -45,10 +45,15 @@ theorem average_twoGreenVertexTraceKernel_eq_trace_insertion
       ContinuousLinearMap.finiteDimensionalOperatorTrace
         (ensemble.average (fun ω =>
           measuredVertex * (left ω * sourceVertex * right ω))) := by
-        simpa only [twoGreenVertexTraceKernel, mul_assoc] using
-          (ensemble.map_average
+        simp only [twoGreenVertexTraceKernel, mul_assoc]
+        change ensemble.average (fun ω =>
             (ContinuousLinearMap.finiteDimensionalOperatorTrace (H := H)).toLinearMap
-            (fun ω => measuredVertex * (left ω * sourceVertex * right ω))).symm
+              (measuredVertex * (left ω * (sourceVertex * right ω)))) =
+          (ContinuousLinearMap.finiteDimensionalOperatorTrace (H := H)).toLinearMap
+            (ensemble.average (fun ω => measuredVertex * (left ω * (sourceVertex * right ω))))
+        exact (ensemble.map_average
+          (ContinuousLinearMap.finiteDimensionalOperatorTrace (H := H)).toLinearMap
+          (fun ω => measuredVertex * (left ω * sourceVertex * right ω))).symm
     _ = ContinuousLinearMap.finiteDimensionalOperatorTrace
         (measuredVertex * ensemble.averagedOperatorInsertion left right sourceVertex) := by
       apply congrArg ContinuousLinearMap.finiteDimensionalOperatorTrace
