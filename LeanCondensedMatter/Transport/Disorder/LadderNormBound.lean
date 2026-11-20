@@ -37,18 +37,9 @@ theorem resummedLadderVertex_sub_eq_firstRung_add_tail
     resummedLadderVertex ladder hinvertible bareVertex - bareVertex =
       ladder bareVertex +
         ladder (resummedLadderVertex ladder hinvertible bareVertex - bareVertex) := by
-  let dressed := resummedLadderVertex ladder hinvertible bareVertex
-  have hfixed : dressed = bareVertex + ladder dressed :=
-    resummedLadderVertex_fixedPoint ladder hinvertible bareVertex
-  have hsum : bareVertex + (dressed - bareVertex) = dressed := by abel
-  change dressed - bareVertex = ladder bareVertex + ladder (dressed - bareVertex)
-  calc
-    dressed - bareVertex = ladder dressed := by
-      nth_rw 1 [hfixed]
-      abel
-    _ = ladder (bareVertex + (dressed - bareVertex)) := by rw [hsum]
-    _ = ladder bareVertex + ladder (dressed - bareVertex) :=
-      map_add ladder _ _
+  rw [map_sub]
+  nth_rw 1 [resummedLadderVertex_fixedPoint ladder hinvertible bareVertex]
+  abel
 
 /-- Geometric norm bound on the sum of second and higher ladder rungs, for any
 bounded complex-linear ladder fixed point. The upper bound `q < 1`
