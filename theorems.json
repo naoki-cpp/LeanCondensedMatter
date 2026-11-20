@@ -6766,7 +6766,7 @@
     "retainedMention": true,
     "projectAxioms": [],
     "name": "Combinatorics.Pairing.prod_pairs_eq_firstPair_mul",
-    "module": "LeanCondensedMatter.Combinatorics.PerfectPairing.FirstPairDecomposition",
+    "module": "LeanCondensedMatter.Combinatorics.PerfectPairing.InsertFirstPair",
     "externalAxioms": [],
     "docString": "A product over `pairing.pairs` splits into the `firstPair` factor times a product over the\nsmaller pairing's own pairs. ",
     "directWrapperTargetModule": null,
@@ -7130,7 +7130,7 @@
     "retainedMention": true,
     "projectAxioms": [],
     "name": "Combinatorics.Pairing.sum_eq_sum_sum_insertFirstPair",
-    "module": "LeanCondensedMatter.Combinatorics.PerfectPairing.FirstPairDecomposition",
+    "module": "LeanCondensedMatter.Combinatorics.PerfectPairing.InsertFirstPair",
     "externalAxioms": [],
     "docString": "A sum over `Pairing (n + 1)`, reindexed as a double sum over a peeled position and the smaller\npairing. ",
     "directWrapperTargetModule": null,
@@ -110228,6 +110228,44 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
+    "terminal": true,
+    "statement": "∀ {A : Type u_1} [inst : Semiring A] [inst_1 : Algebra ℂ A] (ζ : ℂ) (B : A) (c : ℂ) (t : List (A × ℂ)),\n  ScalarExchange.peelSumWithCoefficients ζ ((B, c) :: t) =\n    c • (List.map Prod.fst t).prod + ζ • (B * ScalarExchange.peelSumWithCoefficients ζ t)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "ScalarExchange.peelSumWithCoefficients_cons",
+    "module": "LeanCondensedMatter.Analysis.ScalarExchange.Peel",
+    "externalAxioms": [],
+    "docString": "Computation on a nonempty coefficient-paired list, derived from the canonical peel recursion. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
     "terminal": false,
     "statement": "∀ {A : Type u_1} [inst : Semiring A] [inst_1 : Algebra ℂ A] (ζ : ℂ) (l : List (A × ℂ)),\n  ScalarExchange.peelSumWithCoefficients ζ l = ∑ j, (ζ ^ ↑j * l[↑j].2) • (List.map Prod.fst (l.eraseIdx ↑j)).prod",
     "standardAxioms": [
@@ -141677,7 +141715,7 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegEquiv_perm_slots",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.InteractionPictureVertexProduct.0.SecondQuantization.Fermionic.externalInsertionMixedAtomicOperators_eq_ofFn"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.InteractionPictureVertexDyson.0.SecondQuantization.Fermionic.externalInsertionMixedAtomicOperators_eq_ofFn"
     ],
     "dependencies": [
       "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionImaginaryTimeOrder.0.SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegs_length"
@@ -141686,7 +141724,7 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegEquiv_perm_slots",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.InteractionPictureVertexProduct.0.SecondQuantization.Fermionic.externalInsertionMixedAtomicOperators_eq_ofFn"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.InteractionPictureVertexDyson.0.SecondQuantization.Fermionic.externalInsertionMixedAtomicOperators_eq_ofFn"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -145273,7 +145311,7 @@
     "directWrapperOf": null,
     "dependents": [
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Pairing.0.SecondQuantization.Fermionic.prod_ofFn_quarticLegOperatorForSequence_eq_quarticVertexSequenceInteractionPicture",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.InteractionPictureVertexProduct.0.SecondQuantization.Fermionic.prod_externalInsertionTimedEventAtomicOperators",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.InteractionPictureVertexDyson.0.SecondQuantization.Fermionic.prod_externalInsertionTimedEventAtomicOperators",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Semantics.Flattening.0.SecondQuantization.Fermionic.prod_twoPointTimedEventAtomicOperators"
     ],
     "dependencies": [],
@@ -145281,7 +145319,7 @@
     "completedMention": false,
     "compiledConsumers": [
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Pairing.0.SecondQuantization.Fermionic.prod_ofFn_quarticLegOperatorForSequence_eq_quarticVertexSequenceInteractionPicture",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.InteractionPictureVertexProduct.0.SecondQuantization.Fermionic.prod_externalInsertionTimedEventAtomicOperators",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.InteractionPictureVertexDyson.0.SecondQuantization.Fermionic.prod_externalInsertionTimedEventAtomicOperators",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Semantics.Flattening.0.SecondQuantization.Fermionic.prod_twoPointTimedEventAtomicOperators"
     ],
     "compiledConsumerCount": 3,
@@ -156535,44 +156573,6 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
-    "statement": "∀ {Mode : Type u_1} {E n : ℕ} (d : SecondQuantization.Fermionic.ExternalInsertionWickDiagram Mode E n)\n  (e : ↥Finset.univ ≃ ↥Finset.univ) (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ)\n  (leg : SecondQuantization.Common.OrderedExternalInsertionLeg E n),\n  have f := fun v => ↑(e.symm ⟨v, ⋯⟩);\n  SecondQuantization.Fermionic.orderedExternalInsertionLegField\n      (SecondQuantization.Common.ExternalInsertionDiagram.slotCongr e d).externalLabel externalTime\n      (SecondQuantization.Common.ExternalInsertionDiagram.slotCongr e d).vertexLabelSequence (σ ∘ f) leg =\n    SecondQuantization.Fermionic.orderedExternalInsertionLegField d.externalLabel externalTime\n      (SecondQuantization.Common.ExternalInsertionDiagram.vertexLabelSequence d) σ\n      (SecondQuantization.Common.orderedExternalInsertionLegMap (fun x => x) f leg)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.slotCongr_orderedExternalInsertionLegField",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.TimedField",
-    "externalAxioms": [],
-    "docString": "The concrete time-labelled atomic field is equivariant under an\narbitrary bijection of interaction slots when the vertex labels and times\nare pulled back together. The external fields remain fixed. This holds\nbefore choosing a mixed-time order and is independent of any\ncoincidence-time conventions. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
     "terminal": false,
     "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] {E n : ℕ}\n  (d : SecondQuantization.Fermionic.ExternalInsertionWickDiagram Mode E n) (ε : Mode → ℝ) (β : ℝ)\n  (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ) (externalTime : Fin (2 * E) → ℝ)\n  (blockOrder :\n    ↥(SecondQuantization.Common.ExternalInsertionDiagram.vertexGraph d).componentPartition.parts ≃\n      Fin (Fintype.card ↥(SecondQuantization.Common.ExternalInsertionDiagram.vertexGraph d).componentPartition.parts)),\n  ∑ shuffle,\n      d.orderedDysonAmplitude ε β g externalTime\n        (SecondQuantization.Common.ExternalInsertionDiagram.assembleInteractionOrder d\n          (SecondQuantization.Common.ExternalInsertionDiagram.canonicalComponentInteractionOrders d) shuffle) =\n    SecondQuantization.Fermionic.componentExternalOrderSign d blockOrder *\n      ∏ B,\n        SecondQuantization.Fermionic.ExternalInsertionWickDiagram.dysonAmplitude\n          (SecondQuantization.Common.ExternalInsertionDiagram.componentOrderedDiagram d B) ε β g\n          (SecondQuantization.Common.ExternalInsertionDiagram.componentExternalTime d externalTime B)",
     "standardAxioms": [
@@ -167035,7 +167035,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedVertexComp_eq_atomicProduct",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.InteractionPictureVertexProduct",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.InteractionPictureVertexDyson",
     "externalAxioms": [],
     "docString": "**Vertex-to-atomic operator identity.** The mixed time-ordered product\nof full interaction-picture vertices and external fields is exactly the\nfermionic atomic-order sign times the product of its mixed-time atomic fields. ",
     "directWrapperTargetModule": null,
@@ -167044,8 +167044,8 @@
       "SecondQuantization.Fermionic.externalInsertionVertexDysonCoefficient_eq_externalInsertionDysonCoefficient"
     ],
     "dependencies": [
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.InteractionPictureVertexProduct.0.SecondQuantization.Fermionic.externalInsertionMixedAtomicOperators_eq_ofFn",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.InteractionPictureVertexProduct.0.SecondQuantization.Fermionic.prod_externalInsertionTimedEventAtomicOperators"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.InteractionPictureVertexDyson.0.SecondQuantization.Fermionic.externalInsertionMixedAtomicOperators_eq_ofFn",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.InteractionPictureVertexDyson.0.SecondQuantization.Fermionic.prod_externalInsertionTimedEventAtomicOperators"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -173744,7 +173744,7 @@
     "dependents": [
       "SecondQuantization.Fermionic.finiteGibbsExpectation_mixedTimeOrderedVertexComp_eq_sum_pairingValue",
       "SecondQuantization.Fermionic.timedFieldOperator_quarticLegFieldForSequence",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.InteractionPictureVertexProduct.0.SecondQuantization.Fermionic.prod_externalInsertionTimedEventAtomicOperators",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.InteractionPictureVertexDyson.0.SecondQuantization.Fermionic.prod_externalInsertionTimedEventAtomicOperators",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Factorization.FiberVacuumIntegrand.0.SecondQuantization.Fermionic.fixedExternalOfSlotSplit_mixedAtomicOperator_vacuumOrderedLeg"
     ],
     "dependencies": [
@@ -173760,7 +173760,7 @@
     "compiledConsumers": [
       "SecondQuantization.Fermionic.finiteGibbsExpectation_mixedTimeOrderedVertexComp_eq_sum_pairingValue",
       "SecondQuantization.Fermionic.timedFieldOperator_quarticLegFieldForSequence",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.InteractionPictureVertexProduct.0.SecondQuantization.Fermionic.prod_externalInsertionTimedEventAtomicOperators",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.InteractionPictureVertexDyson.0.SecondQuantization.Fermionic.prod_externalInsertionTimedEventAtomicOperators",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Factorization.FiberVacuumIntegrand.0.SecondQuantization.Fermionic.fixedExternalOfSlotSplit_mixedAtomicOperator_vacuumOrderedLeg"
     ],
     "compiledConsumerCount": 4,
@@ -205766,8 +205766,8 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.InteractionPictureVertexProduct.0.SecondQuantization.Fermionic.externalInsertionMixedAtomicOperators_eq_ofFn",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.InteractionPictureVertexProduct",
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.InteractionPictureVertexDyson.0.SecondQuantization.Fermionic.externalInsertionMixedAtomicOperators_eq_ofFn",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.InteractionPictureVertexDyson",
     "externalAxioms": [],
     "docString": "The flattened time-ordered event list agrees with the established\nmixed-time atomic field family, including all equal-time conventions. ",
     "directWrapperTargetModule": null,
@@ -205810,8 +205810,8 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.InteractionPictureVertexProduct.0.SecondQuantization.Fermionic.prod_externalInsertionTimedEventAtomicOperators",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.InteractionPictureVertexProduct",
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.InteractionPictureVertexDyson.0.SecondQuantization.Fermionic.prod_externalInsertionTimedEventAtomicOperators",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.InteractionPictureVertexDyson",
     "externalAxioms": [],
     "docString": null,
     "directWrapperTargetModule": null,

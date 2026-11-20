@@ -1330,22 +1330,12 @@
       "externalImportCount": 0
     },
     {
-      "name": "LeanCondensedMatter.Combinatorics.PerfectPairing.FirstPairDecomposition",
-      "sourceFile": "LeanCondensedMatter/Combinatorics/PerfectPairing/FirstPairDecomposition.lean",
-      "imports": [
-        "LeanCondensedMatter.Combinatorics.PerfectPairing.EraseZero",
-        "LeanCondensedMatter.Combinatorics.PerfectPairing.InsertFirstPair"
-      ],
-      "externalImportCount": 1
-    },
-    {
       "name": "LeanCondensedMatter.Combinatorics.PerfectPairing.FirstPairRecursion",
       "sourceFile": "LeanCondensedMatter/Combinatorics/PerfectPairing/FirstPairRecursion.lean",
       "imports": [
         "LeanCondensedMatter.Combinatorics.ExchangeSign",
         "LeanCondensedMatter.Combinatorics.PerfectPairing.CrossingEraseZero",
         "LeanCondensedMatter.Combinatorics.PerfectPairing.EraseZero",
-        "LeanCondensedMatter.Combinatorics.PerfectPairing.FirstPairDecomposition",
         "LeanCondensedMatter.Combinatorics.PerfectPairing.InsertFirstPair"
       ],
       "externalImportCount": 0
@@ -1356,7 +1346,7 @@
       "imports": [
         "LeanCondensedMatter.Combinatorics.PerfectPairing.EraseZero"
       ],
-      "externalImportCount": 1
+      "externalImportCount": 2
     },
     {
       "name": "LeanCondensedMatter.Combinatorics.PerfectPairing.InvolutionCard",
@@ -1461,7 +1451,6 @@
         "LeanCondensedMatter.Combinatorics.PerfectPairing.Embedding",
         "LeanCondensedMatter.Combinatorics.PerfectPairing.EraseZero",
         "LeanCondensedMatter.Combinatorics.PerfectPairing.Evaluation",
-        "LeanCondensedMatter.Combinatorics.PerfectPairing.FirstPairDecomposition",
         "LeanCondensedMatter.Combinatorics.PerfectPairing.InsertFirstPair",
         "LeanCondensedMatter.Combinatorics.PerfectPairing.InvolutionCard",
         "LeanCondensedMatter.Combinatorics.PerfectPairing.NormalizedPairRestriction",
@@ -7408,14 +7397,6 @@
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Diagrammatics/ExternalInsertion/InteractionPictureVertexDyson.lean",
       "imports": [
         "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.CauchySeries",
-        "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.InteractionPictureVertexProduct"
-      ],
-      "externalImportCount": 0
-    },
-    {
-      "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.InteractionPictureVertexProduct",
-      "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Diagrammatics/ExternalInsertion/InteractionPictureVertexProduct.lean",
-      "imports": [
         "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.MixedAtomicDysonIntegral"
       ],
       "externalImportCount": 0
@@ -7467,7 +7448,6 @@
         "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.FreeGibbsWickExpansion",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.Integral",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.InteractionPictureVertexDyson",
-        "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.InteractionPictureVertexProduct",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.MixedAtomicDysonIntegral",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.TimedField"
       ],
