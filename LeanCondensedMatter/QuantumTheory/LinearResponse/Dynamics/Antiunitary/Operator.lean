@@ -62,25 +62,6 @@ theorem conjugateOperator_smul (c : ℂ) (A : H →L[ℂ] H) :
   simp only [conjugateOperator_apply, smul_apply]
   exact Θ.equiv.map_smulₛₗ c (A (Θ.equiv.symm x))
 
-/-- The conjugation action is a unital ring homomorphism on bounded
-endomorphisms, even for infinite-dimensional state spaces. -/
-noncomputable def conjugateOperatorRingHom :
-    (H →L[ℂ] H) →+* (H →L[ℂ] H) where
-  toFun := Θ.conjugateOperator
-  map_one' := by
-    ext x
-    change Θ.equiv (Θ.equiv.symm x) = x
-    exact Θ.equiv.apply_symm_apply x
-  map_mul' := Θ.conjugateOperator_mul
-  map_zero' := by
-    ext x
-    change Θ.equiv (0 : H) = 0
-    exact map_zero Θ.equiv
-  map_add' := by
-    intro A B
-    ext x
-    simp only [conjugateOperator_apply, add_apply, map_add]
-
 /-- Antiunitary conjugation commutes with bounded-operator exponentiation.
 Finite-dimensionality is used to establish continuity on the operator space. -/
 theorem conjugateOperator_exp [FiniteDimensional ℂ H] [CompleteSpace H]
@@ -92,9 +73,18 @@ theorem conjugateOperator_exp [FiniteDimensional ℂ H] [CompleteSpace H]
     FiniteDimensional.complexToReal _
   letI : NormedAlgebra ℚ (H →L[ℂ] H) :=
     NormedAlgebra.restrictScalars ℚ ℂ _
+  let f : (H →L[ℂ] H) →+* (H →L[ℂ] H) :=
+    { toFun := Θ.conjugateOperator
+      map_one' := by ext x; exact Θ.equiv.apply_symm_apply x
+      map_mul' := Θ.conjugateOperator_mul
+      map_zero' := by ext x; exact map_zero Θ.equiv
+      map_add' := by
+        intro B C
+        ext x
+        simp only [conjugateOperator_apply, add_apply, map_add] }
   have hcont : Continuous (Θ.conjugateOperator : (H →L[ℂ] H) → (H →L[ℂ] H)) := by
     let f : (H →L[ℂ] H) →ₗ[ℝ] (H →L[ℂ] H) :=
-      { (Θ.conjugateOperatorRingHom).toAddMonoidHom with
+      { f.toAddMonoidHom with
         map_smul' := by
           intro r B
           change Θ.conjugateOperator ((r : ℂ) • B) =
@@ -104,7 +94,7 @@ theorem conjugateOperator_exp [FiniteDimensional ℂ H] [CompleteSpace H]
             RCLike.conj_ofReal (K := ℂ) r
           rw [hr] }
     exact f.continuous_of_finiteDimensional
-  exact NormedSpace.map_exp (Θ.conjugateOperatorRingHom) hcont A
+  exact NormedSpace.map_exp f hcont A
 
 end AntiunitaryMap
 
