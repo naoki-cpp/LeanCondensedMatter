@@ -317,7 +317,7 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_psi_antis
   dsimp only at hs hgr hdiag ⊢
   rw [hs, hgr, hdiag.1, hdiag.2]
   dsimp only [finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentFourierMoments] at ⊢
-  ring
+  congr 5 <;> ring
 
 
 end
