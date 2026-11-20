@@ -408,6 +408,12 @@
       "externalImportCount": 2
     },
     {
+      "name": "LeanCondensedMatter.Analysis.Operator.ExponentialEigenvector",
+      "sourceFile": "LeanCondensedMatter/Analysis/Operator/ExponentialEigenvector.lean",
+      "imports": [],
+      "externalImportCount": 2
+    },
+    {
       "name": "LeanCondensedMatter.Analysis.Operator.FiniteTrace",
       "sourceFile": "LeanCondensedMatter/Analysis/Operator/FiniteTrace.lean",
       "imports": [],
@@ -935,6 +941,12 @@
       "externalImportCount": 0
     },
     {
+      "name": "LeanCondensedMatter.Analysis.OscillatoryIntegral",
+      "sourceFile": "LeanCondensedMatter/Analysis/OscillatoryIntegral.lean",
+      "imports": [],
+      "externalImportCount": 3
+    },
+    {
       "name": "LeanCondensedMatter.Analysis.PowerSeries.AnalyticLog",
       "sourceFile": "LeanCondensedMatter/Analysis/PowerSeries/AnalyticLog.lean",
       "imports": [
@@ -1066,7 +1078,9 @@
         "LeanCondensedMatter.Analysis.Matrix.FinTwoCharpoly",
         "LeanCondensedMatter.Analysis.Operator",
         "LeanCondensedMatter.Analysis.Operator.AlgebraRestriction",
+        "LeanCondensedMatter.Analysis.Operator.ExponentialEigenvector",
         "LeanCondensedMatter.Analysis.OrderedSimplex",
+        "LeanCondensedMatter.Analysis.OscillatoryIntegral",
         "LeanCondensedMatter.Analysis.PowerSeries",
         "LeanCondensedMatter.Analysis.ScalarExchange"
       ],
@@ -4223,10 +4237,27 @@
       "externalImportCount": 0
     },
     {
+      "name": "LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.Antiunitary.Operator",
+      "sourceFile": "LeanCondensedMatter/QuantumTheory/LinearResponse/Dynamics/Antiunitary/Operator.lean",
+      "imports": [
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.Antiunitary"
+      ],
+      "externalImportCount": 4
+    },
+    {
+      "name": "LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.Antiunitary.Trace",
+      "sourceFile": "LeanCondensedMatter/QuantumTheory/LinearResponse/Dynamics/Antiunitary/Trace.lean",
+      "imports": [
+        "LeanCondensedMatter.Analysis.Operator.FiniteTrace",
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.Antiunitary.Operator"
+      ],
+      "externalImportCount": 0
+    },
+    {
       "name": "LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.Antiunitary",
       "sourceFile": "LeanCondensedMatter/QuantumTheory/LinearResponse/Dynamics/Antiunitary.lean",
       "imports": [],
-      "externalImportCount": 1
+      "externalImportCount": 2
     },
     {
       "name": "LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.ConservationLaws",
@@ -4235,6 +4266,15 @@
         "LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.PictureEquivalence",
         "LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.Stationarity",
         "LeanCondensedMatter.QuantumTheory.LinearResponse.Expectation.Density"
+      ],
+      "externalImportCount": 0
+    },
+    {
+      "name": "LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.Eigenstate",
+      "sourceFile": "LeanCondensedMatter/QuantumTheory/LinearResponse/Dynamics/Eigenstate.lean",
+      "imports": [
+        "LeanCondensedMatter.Analysis.Operator.ExponentialEigenvector",
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.Free"
       ],
       "externalImportCount": 0
     },
@@ -4372,6 +4412,7 @@
       "imports": [
         "LeanCondensedMatter.QuantumTheory.DensityOperator.DiagonalFormula",
         "LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.ConservationLaws",
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.Eigenstate",
         "LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann.Eigenbasis.Data"
       ],
       "externalImportCount": 1
@@ -4409,6 +4450,7 @@
       "name": "LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann.Eigenbasis.TimeDomain",
       "sourceFile": "LeanCondensedMatter/QuantumTheory/LinearResponse/Lehmann/Eigenbasis/TimeDomain.lean",
       "imports": [
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.Eigenstate",
         "LeanCondensedMatter.QuantumTheory.LinearResponse.Frequency.Susceptibility",
         "LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann.Eigenbasis.Dynamics"
       ],
@@ -4464,6 +4506,16 @@
         "LeanCondensedMatter.QuantumTheory.LinearResponse.Perturbation.TimeDependent"
       ],
       "externalImportCount": 2
+    },
+    {
+      "name": "LeanCondensedMatter.QuantumTheory.LinearResponse.Perturbation.StaticTransition",
+      "sourceFile": "LeanCondensedMatter/QuantumTheory/LinearResponse/Perturbation/StaticTransition.lean",
+      "imports": [
+        "LeanCondensedMatter.Analysis.OscillatoryIntegral",
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.Eigenstate",
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.Perturbation.TransitionProbability"
+      ],
+      "externalImportCount": 3
     },
     {
       "name": "LeanCondensedMatter.QuantumTheory.LinearResponse.Perturbation.TimeDependent",
@@ -4566,7 +4618,10 @@
       "sourceFile": "LeanCondensedMatter/QuantumTheory/LinearResponse.lean",
       "imports": [
         "LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.Antiunitary",
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.Antiunitary.Operator",
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.Antiunitary.Trace",
         "LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.ConservationLaws",
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.Eigenstate",
         "LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.EquationsOfMotion",
         "LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.Free",
         "LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.PictureEquivalence",
@@ -4583,6 +4638,7 @@
         "LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann",
         "LeanCondensedMatter.QuantumTheory.LinearResponse.Perturbation.DensityFirstVariation",
         "LeanCondensedMatter.QuantumTheory.LinearResponse.Perturbation.Hermitian",
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.Perturbation.StaticTransition",
         "LeanCondensedMatter.QuantumTheory.LinearResponse.Perturbation.TimeDependent",
         "LeanCondensedMatter.QuantumTheory.LinearResponse.Perturbation.TransitionProbability",
         "LeanCondensedMatter.QuantumTheory.LinearResponse.Perturbation.Unitary",
@@ -6399,9 +6455,10 @@
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Perturbation/DysonExponential.lean",
       "imports": [
         "LeanCondensedMatter.Analysis.Dyson.Uniqueness",
+        "LeanCondensedMatter.Analysis.Operator.ExponentialEigenvector",
         "LeanCondensedMatter.SecondQuantization.Common.Perturbation.ContinuousDyson"
       ],
-      "externalImportCount": 2
+      "externalImportCount": 1
     },
     {
       "name": "LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonTraceSeries",
@@ -8586,7 +8643,7 @@
       "imports": [
         "LeanCondensedMatter.Transport.Disorder.Born"
       ],
-      "externalImportCount": 3
+      "externalImportCount": 2
     },
     {
       "name": "LeanCondensedMatter.Transport.Disorder.ConnectedCorrelation",
@@ -8844,6 +8901,7 @@
       "imports": [
         "LeanCondensedMatter.Analysis.Operator.FiniteTrace",
         "LeanCondensedMatter.QuantumTheory.DensityOperator.Finite",
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.Antiunitary.Trace",
         "LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.ConservationLaws"
       ],
       "externalImportCount": 0
