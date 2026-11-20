@@ -28,16 +28,8 @@ variable (Θ : AntiunitaryMap H)
 /-- Conjugation of a bounded operator by a state-space antiunitary.
 Unlike the earlier linear-map construction, boundedness does not require
 the Hilbert space to be finite dimensional. -/
-noncomputable def conjugateOperator (A : H →L[ℂ] H) : H →L[ℂ] H where
-  toFun := fun x => Θ.equiv (A (Θ.equiv.symm x))
-  map_add' := by
-    intro x y
-    simp only [map_add]
-  map_smul' := by
-    intro c x
-    simp only [Θ.equiv.symm.map_smulₛₗ, A.map_smul, Θ.equiv.map_smulₛₗ]
-    simp
-  cont := Θ.equiv.continuous.comp (A.continuous.comp Θ.equiv.symm.continuous)
+noncomputable def conjugateOperator (A : H →L[ℂ] H) : H →L[ℂ] H :=
+  (Θ.equiv.arrowCongrSL Θ.equiv) A
 
 @[simp]
 theorem conjugateOperator_apply (A : H →L[ℂ] H) (x : H) :
