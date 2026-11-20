@@ -72,14 +72,6 @@ private theorem sqrt_natCast_le_orderedProductMajorant
     nlinarith [Real.sqrt_nonneg (((n i + K + 1 : ℕ) : ℝ))]
   exact (hs.trans hsR).trans (shiftedOccupation_le_orderedProductMajorant n K i)
 
-/-- Multiplying a bounded coefficient by one bounded nonnegative ladder factor adds one power. -/
-private theorem norm_mul_real_le_pow_succ
-    (B : ℝ) (hB : 0 ≤ B) (c : ℂ) (a : ℝ)
-    (ha : 0 ≤ a) (haB : a ≤ B) (k : ℕ) (hc : ‖c‖ ≤ B ^ k) :
-    ‖c * (a : ℂ)‖ ≤ B ^ (k + 1) := by
-  rw [norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg ha, pow_succ]
-  exact mul_le_mul hc haB ha (pow_nonneg hB _)
-
 /-- Basis-state action of an arbitrary free-thermal-field list, with a uniform coefficient bound.
 
 `K` is an external upper bound on the list length. Keeping it fixed through the induction avoids
@@ -126,8 +118,9 @@ private theorem FreeThermalField.orderedProduct_basisState_bound_aux
             have haB : a ≤ orderedProductMajorant n K := by
               simpa only [a, Nat.cast_add, Nat.cast_one] using
                 (sqrt_natCast_le_orderedProductMajorant n K (m i + 1) i hmK)
-            exact norm_mul_real_le_pow_succ (orderedProductMajorant n K) hB0
-              c a (Real.sqrt_nonneg _) haB fields.length hc
+            rw [norm_mul, Complex.norm_real, Real.norm_eq_abs,
+              abs_of_nonneg (show 0 ≤ a from Real.sqrt_nonneg _), pow_succ]
+            exact mul_le_mul hc haB (Real.sqrt_nonneg _) (pow_nonneg hB0 _)
       | annihilate i =>
           by_cases hi : m i = 0
           · refine ⟨0, m, ?_, ?_, ?_⟩
@@ -159,8 +152,9 @@ private theorem FreeThermalField.orderedProduct_basisState_bound_aux
                 omega
               have haB : a ≤ orderedProductMajorant n K :=
                 sqrt_natCast_le_orderedProductMajorant n K (m i) i hmK
-              exact norm_mul_real_le_pow_succ (orderedProductMajorant n K) hB0
-                c a (Real.sqrt_nonneg _) haB fields.length hc
+              rw [norm_mul, Complex.norm_real, Real.norm_eq_abs,
+                abs_of_nonneg (show 0 ≤ a from Real.sqrt_nonneg _), pow_succ]
+              exact mul_le_mul hc haB (Real.sqrt_nonneg _) (pow_nonneg hB0 _)
 
 /-- Diagonal matrix coefficients of an arbitrary fixed free-thermal-field list have polynomial
 growth controlled by a uniform finite-mode product. -/
