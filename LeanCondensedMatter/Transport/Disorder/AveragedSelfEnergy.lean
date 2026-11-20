@@ -52,21 +52,22 @@ private theorem im_inner_averagedGreenOfRegulator_apply_self
       regulator *
         ∑ ω, ensemble.probability ω *
           ‖ensemble.configurationGreenOfRegulator energy regulator ω v‖ ^ 2 := by
-  change
-    (inner ℂ ((∑ ω, (ensemble.probability ω : ℂ) •
-      ensemble.configurationGreenOfRegulator energy regulator ω) v) v).im = _
-  rw [sum_apply, sum_inner]
-  have hreal (ω : Ω) :
-      inner ℂ ((ensemble.probability ω : ℂ) •
-        ensemble.configurationGreenOfRegulator energy regulator ω v) v =
-        (ensemble.probability ω : ℂ) *
+  have hinner :
+      inner ℂ
+        (ensemble.average
+          (fun ω => ensemble.configurationGreenOfRegulator energy regulator ω) v) v =
+        ∑ ω, (ensemble.probability ω : ℂ) *
           inner ℂ (ensemble.configurationGreenOfRegulator energy regulator ω v) v := by
+    change inner ℂ ((∑ ω, (ensemble.probability ω : ℂ) •
+      ensemble.configurationGreenOfRegulator energy regulator ω) v) v = _
+    rw [sum_apply, sum_inner]
+    apply Finset.sum_congr rfl
+    intro ω _
     simpa [Algebra.smul_def] using
       (inner_smul_real_left (𝕜 := ℂ)
         (ensemble.configurationGreenOfRegulator energy regulator ω v) v
         (ensemble.probability ω))
-  simp_rw [hreal]
-  rw [Complex.im_sum]
+  rw [hinner, Complex.im_sum]
   have him (ω : Ω) :
       (inner ℂ (ensemble.configurationGreenOfRegulator energy regulator ω v) v).im =
         regulator * ‖ensemble.configurationGreenOfRegulator energy regulator ω v‖ ^ 2 := by
