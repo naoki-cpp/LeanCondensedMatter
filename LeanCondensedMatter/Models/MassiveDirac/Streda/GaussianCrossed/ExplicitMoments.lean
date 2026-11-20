@@ -277,11 +277,9 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_psi_antis
     finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient,
     finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient] at hscalar hz htransverse
   dsimp only [finiteCutoffContinuumBornDysonRadialGreenScalarKernel,
-    finiteCutoffContinuumBornDysonRadialPauliData] at hscalar
-  dsimp only [finiteCutoffContinuumBornDysonRadialGreenPauliKernel,
-    finiteCutoffContinuumBornDysonRadialPauliData] at hz
-  dsimp only [finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliKernel] at htransverse
-  simp only [ite_true] at htransverse
+    finiteCutoffContinuumBornDysonRadialGreenPauliKernel,
+    finiteCutoffContinuumBornDysonRadialPauliData] at hscalar hz
+  simp only [finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliKernel, ite_true] at htransverse
   dsimp only [finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentFourierMoments,
     gaussianCrossedZerothRadialMoment, gaussianCrossedZerothSubSecondRadialMoment] at ⊢
   rw [← hscalar, ← hz, ← htransverse]
