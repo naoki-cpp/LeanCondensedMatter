@@ -61,32 +61,20 @@ private theorem insert_part_parts_avoid {s : Finset α} (P : Finpartition s) {a 
     (ha : a ∈ s) :
     insert (P.part a) (P.avoid (P.part a)).parts = P.parts := by
   classical
-  ext B
-  constructor
-  · intro hB
-    rcases Finset.mem_insert.mp hB with hB | hB
-    · simpa [hB] using P.part_mem.mpr ha
-    · rw [P.mem_avoid] at hB
-      obtain ⟨C, hC, hCle, hCB⟩ := hB
-      have hCne : C ≠ P.part a := by
-        intro h
-        subst C
-        exact hCle le_rfl
-      have hdisj : Disjoint C (P.part a) :=
-        P.disjoint hC (P.part_mem.mpr ha) hCne
-      rw [hdisj.sdiff_eq_left] at hCB
-      simpa [← hCB] using hC
-  · intro hB
-    by_cases hEq : B = P.part a
-    · exact Finset.mem_insert.mpr (Or.inl hEq)
-    · apply Finset.mem_insert.mpr
-      right
-      rw [P.mem_avoid]
-      have hdisj : Disjoint B (P.part a) :=
-        P.disjoint hB (P.part_mem.mpr ha) hEq
-      refine ⟨B, hB, ?_, hdisj.sdiff_eq_left⟩
-      intro hle
-      exact P.ne_bot hB (hdisj.eq_bot_of_le hle)
+  have hp : P.part a ∈ P.parts := P.part_mem.mpr ha
+  have hmap :
+      (P.parts.erase (P.part a)).image (· \\ P.part a) =
+        P.parts.erase (P.part a) := by
+    calc
+      _ = (P.parts.erase (P.part a)).image id := by
+        apply Finset.image_congr
+        intro B hB
+        exact (P.disjoint (Finset.mem_of_mem_erase hB) hp
+          (Finset.ne_of_mem_erase hB)).sdiff_eq_left
+      _ = _ := Finset.image_id
+  change insert (P.part a) ((P.parts.image (· \\ P.part a)).erase ∅) = P.parts
+  rw [← Finset.insert_erase hp, Finset.image_insert, hmap]
+  simp [hp]
 
 private theorem avoid_extend_eq {s B : Finset α} {a : α}
     (hBsub : B ⊆ s) (haB : a ∈ B) (Q : Finpartition (s \ B)) :
