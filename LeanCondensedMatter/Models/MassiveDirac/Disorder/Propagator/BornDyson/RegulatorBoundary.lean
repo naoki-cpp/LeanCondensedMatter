@@ -1,6 +1,6 @@
 import LeanCondensedMatter.Transport.Analysis.ContinuumMeasure
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.Boundary
-import LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.BornDyson.Green
+import LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.BornDyson.Green.Basic
 import Mathlib.Tactic.FunProp
 import Mathlib.Tactic.Linarith
 import Mathlib.Tactic.NormNum

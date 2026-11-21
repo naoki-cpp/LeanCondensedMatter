@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.BornDyson.Green
+import LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.BornDyson.Green.Basic
 import Mathlib.LinearAlgebra.Matrix.NonsingularInverse
 import Mathlib.Tactic.Ring
 
