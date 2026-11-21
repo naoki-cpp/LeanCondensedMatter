@@ -13,6 +13,7 @@ import LeanCondensedMatter.Analysis.Matrix.FinTwoCharpoly
 import LeanCondensedMatter.Analysis.ScalarExchange
 import LeanCondensedMatter.Analysis.InternalSpace.Pauli
 import LeanCondensedMatter.Analysis.PowerSeries
+import LeanCondensedMatter.Analysis.PowerSeries.FrobeniusWronskian
 import LeanCondensedMatter.Analysis.Dyson
 import LeanCondensedMatter.Analysis.OrderedSimplex
 import LeanCondensedMatter.Analysis.FunctionalCalculus.CFC
