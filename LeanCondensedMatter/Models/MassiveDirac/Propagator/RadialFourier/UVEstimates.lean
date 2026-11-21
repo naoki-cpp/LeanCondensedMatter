@@ -1,4 +1,3 @@
-import LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialKernel
 import LeanCondensedMatter.Transport.Analysis.PolarFourierRadialDerivative
 import Mathlib.Tactic.FieldSimp
 import Mathlib.Tactic.Linarith

@@ -139,11 +139,8 @@ theorem configurationGreenOfRegulator_eq_secondOrder_add_exactRemainder_left
                 ensemble.configurationGreenOfRegulator energy regulator ω := by
   have hdyson := configurationGreenOfRegulator_eq_free_add_dyson_left
     ensemble energy regulator hregulator ω
-  calc
-    _ = _ := hdyson
-    _ = _ := by
-      nth_rw 1 [hdyson]
-      noncomm_ring
+  nth_rw 1 [hdyson, hdyson]
+  noncomm_ring
 
 /-- Exact right-oriented second-order Dyson expansion at an arbitrary nonzero signed regulator. -/
 theorem configurationGreenOfRegulator_eq_secondOrder_add_exactRemainder_right
@@ -160,11 +157,8 @@ theorem configurationGreenOfRegulator_eq_secondOrder_add_exactRemainder_right
                 ensemble.freeGreenOfRegulator energy regulator := by
   have hdyson := configurationGreenOfRegulator_eq_free_add_dyson_right
     ensemble energy regulator hregulator ω
-  calc
-    _ = _ := hdyson
-    _ = _ := by
-      nth_rw 1 [hdyson]
-      noncomm_ring
+  nth_rw 1 [hdyson, hdyson]
+  noncomm_ring
 
 end FiniteDisorderEnsemble
 
