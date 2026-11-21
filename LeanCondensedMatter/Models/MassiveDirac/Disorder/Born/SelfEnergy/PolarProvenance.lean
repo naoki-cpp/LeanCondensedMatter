@@ -65,6 +65,46 @@ private noncomputable def finiteCutoffContinuumBornSelfEnergyFromPolarIntegralOf
     finiteCutoffContinuumBornPolarGreenIntegralOfRegulator
       v m probeEnergy regulator pMax
 
+
+/-- The finite-cutoff Born self-energy is exactly the physical-momentum polar integral.
+Angular integration supplies the full-angle factor, without a nonzero-regulator
+assumption or any ultraviolet limit. -/
+theorem finiteCutoffContinuumBornSelfEnergyOfRegulator_eq_polarIntegral
+    (v m probeEnergy regulator disorderStrength hbar pMax : ℝ) :
+    finiteCutoffContinuumBornSelfEnergyOfRegulator
+        v m probeEnergy regulator disorderStrength hbar pMax =
+      (continuumBornDisorderMeasurePrefactor disorderStrength hbar : ℂ) •
+        (∫ p in (0 : ℝ)..pMax,
+          (p : ℝ) • continuumAngularGreenIntegralOfRegulator
+            v m p probeEnergy regulator) := by
+  change finiteCutoffContinuumBornSelfEnergyOfRegulator
+      v m probeEnergy regulator disorderStrength hbar pMax =
+    finiteCutoffContinuumBornSelfEnergyFromPolarIntegralOfRegulator
+      v m probeEnergy regulator disorderStrength hbar pMax
+  unfold finiteCutoffContinuumBornSelfEnergyFromPolarIntegralOfRegulator
+  rw [finiteCutoffContinuumBornPolarGreenIntegralOfRegulator_eq]
+  rw [RCLike.real_smul_eq_coe_smul (K := ℂ)]
+  rw [smul_smul]
+  unfold finiteCutoffContinuumBornSelfEnergyOfRegulator
+  congr 1
+  simp only [continuumBornDisorderMeasurePrefactor, fullAngleMomentumMeasurePrefactor]
+  push_cast
+  ring
+
+/-- Physical retarded/advanced-side specialization of the Born polar-integral identity. -/
+theorem finiteCutoffContinuumBornSelfEnergy_eq_polarIntegral
+    (side : SpectralSide)
+    (v m probeEnergy broadening disorderStrength hbar pMax : ℝ) :
+    finiteCutoffContinuumBornSelfEnergy
+        side v m probeEnergy broadening disorderStrength hbar pMax =
+      (continuumBornDisorderMeasurePrefactor disorderStrength hbar : ℂ) •
+        (∫ p in (0 : ℝ)..pMax,
+          (p : ℝ) • continuumAngularGreenIntegralOfRegulator
+            v m p probeEnergy (side.regulator broadening)) := by
+  simpa only [finiteCutoffContinuumBornSelfEnergy] using
+    finiteCutoffContinuumBornSelfEnergyOfRegulator_eq_polarIntegral
+      v m probeEnergy (side.regulator broadening) disorderStrength hbar pMax
+
 end
 
 end QuantumTheory.Models.MassiveDirac
