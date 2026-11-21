@@ -1,6 +1,8 @@
 import LeanCondensedMatter.Models.MassiveDirac.Propagator.Basic
 import LeanCondensedMatter.Models.MassiveDirac.Propagator.Symmetry
 import LeanCondensedMatter.Models.MassiveDirac.Propagator.AngularReduction
+import LeanCondensedMatter.Models.MassiveDirac.Propagator.RadialFourier.HankelScaling
+import LeanCondensedMatter.Models.MassiveDirac.Propagator.RadialFourier.ResolventDifference
 
 set_option linter.style.header false
 

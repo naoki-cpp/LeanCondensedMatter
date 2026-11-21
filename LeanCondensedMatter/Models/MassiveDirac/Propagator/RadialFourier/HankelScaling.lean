@@ -1,5 +1,5 @@
-import LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVBesselJ
-import LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVHankelReduction
+import LeanCondensedMatter.Models.MassiveDirac.Propagator.RadialFourier.BesselJ
+import LeanCondensedMatter.Models.MassiveDirac.Propagator.RadialFourier.HankelReduction
 import Mathlib.Analysis.SpecialFunctions.Complex.Log
 import Mathlib.Analysis.RCLike.Sqrt
 
