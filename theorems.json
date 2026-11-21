@@ -1133,6 +1133,508 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
+    "terminal": true,
+    "statement": "BesselSecondKind.besselY0HarmonicCorrection 0 = 0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "BesselSecondKind.besselY0HarmonicCorrection_zero",
+    "module": "LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.Y0Series",
+    "externalAxioms": [],
+    "docString": "The power-series correction vanishes at zero; the nonanalytic\npart of the physical Y₀ comes solely from its logarithm. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (z : ℂ), BesselSecondKind.besselY0HarmonicTerm z 1 = -(z / 2) ^ 2",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "BesselSecondKind.besselY0HarmonicTerm_one",
+    "module": "LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.Y0Series",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (z : ℂ), BesselSecondKind.besselY0HarmonicTerm z 0 = 0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "BesselSecondKind.besselY0HarmonicTerm_zero",
+    "module": "LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.Y0Series",
+    "externalAxioms": [],
+    "docString": "The correction coefficients are zero at n=0, and the\nfirst harmonic coefficient has its standard value H₁=1. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (z : ℂ),\n  Complex.besselJ 1 z * BesselSecondKind.besselY0Series z - Complex.besselJ 0 z * BesselSecondKind.besselY1Series z =\n    ↑(2 / Real.pi) *\n      (Complex.besselJ 0 z * z⁻¹ - Complex.besselJ 1 z * BesselSecondKind.besselY0HarmonicCorrection z +\n        z / 4 * Complex.besselJ 0 z * BesselSecondKind.besselY1HarmonicCorrection z)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "BesselSecondKind.besselY0Y1Wronskian_eq_harmonicCorrections",
+    "module": "LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.Y1Series",
+    "externalAxioms": [],
+    "docString": "Exact Wronskian algebra for the *concrete* convergent DLMF Y₀/Y₁\nseries. The logarithm and Euler–Mascheroni terms cancel completely.\nThus the sole remaining nonalgebraic Wronskian obligation is an identity\nbetween Mathlib J₀/J₁ and the two convergent harmonic corrections.\nThis theorem does **not** assume or prove that remaining identity. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "BesselSecondKind.besselY0Y1Wronskian_of_harmonicIdentity"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "BesselSecondKind.besselY0Y1Wronskian_of_harmonicIdentity"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (z : ℂ),\n  z ≠ 0 →\n    Complex.besselJ 0 z - z * Complex.besselJ 1 z * BesselSecondKind.besselY0HarmonicCorrection z +\n          z ^ 2 / 4 * Complex.besselJ 0 z * BesselSecondKind.besselY1HarmonicCorrection z =\n        1 →\n      Complex.besselJ 1 z * BesselSecondKind.besselY0Series z -\n          Complex.besselJ 0 z * BesselSecondKind.besselY1Series z =\n        ↑(2 / Real.pi) * z⁻¹",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "BesselSecondKind.besselY0Y1Wronskian_of_harmonicIdentity",
+    "module": "LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.Y1Series",
+    "externalAxioms": [],
+    "docString": "Reduction of the J/Y Wronskian theorem to one explicit\nharmonic-number series identity. The hypothesis is kept visible\nrather than incorrectly presenting the Wronskian as proved. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.besselY0Y1Series_wronskian"
+    ],
+    "dependencies": [
+      "BesselSecondKind.besselY0Y1Wronskian_eq_harmonicCorrections"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.besselY0Y1Series_wronskian"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (z : ℂ), BesselSecondKind.besselY1HarmonicTerm z 0 = 1",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "BesselSecondKind.besselY1HarmonicTerm_zero",
+    "module": "LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.Y1Series",
+    "externalAxioms": [],
+    "docString": "The leading power-series coefficient is H₀+H₁=1. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (n : ℕ), 0 ≤ ↑(harmonic n) + ↑(harmonic (n + 1)) ∧ ↑(harmonic n) + ↑(harmonic (n + 1)) ≤ 2 * ↑(n + 1).factorial",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "BesselSecondKind.besselY1Harmonic_nonneg_le_factorial",
+    "module": "LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.Y1Series",
+    "externalAxioms": [],
+    "docString": "The combined real harmonic coefficient is bounded by twice the\nfactorial of the higher index; the corrected series is dominated\nby two copies of the ordinary exponential series. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "BesselSecondKind.norm_besselY1HarmonicTerm_le_two_expTerm"
+    ],
+    "dependencies": [
+      "BesselSecondKind.harmonic_real_nonneg_le"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "BesselSecondKind.norm_besselY1HarmonicTerm_le_two_expTerm"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (n : ℕ), 0 ≤ ↑(harmonic n) ∧ ↑(harmonic n) ≤ ↑n",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "BesselSecondKind.harmonic_real_nonneg_le",
+    "module": "LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.Y0Series",
+    "externalAxioms": [],
+    "docString": "The rational harmonic number is nonnegative and at most its index,\nviewed as a real number. Used to give the logarithmic Y₀ correction\na direct exponential majorant independent of any Bessel-Y axioms. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "BesselSecondKind.besselY1Harmonic_nonneg_le_factorial",
+      "BesselSecondKind.norm_besselY0HarmonicTerm_le_expTerm"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "BesselSecondKind.besselY1Harmonic_nonneg_le_factorial",
+      "BesselSecondKind.norm_besselY0HarmonicTerm_le_expTerm"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (z : ℂ) (n : ℕ), ‖BesselSecondKind.besselY0HarmonicTerm z n‖ ≤ (‖z / 2‖ ^ 2) ^ n / ↑n.factorial",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "BesselSecondKind.norm_besselY0HarmonicTerm_le_expTerm",
+    "module": "LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.Y0Series",
+    "externalAxioms": [],
+    "docString": "The absolute value of each harmonic correction term is dominated\nby the factorial exponential term of argument `‖z/2‖²`. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "BesselSecondKind.summable_besselY0HarmonicTerm"
+    ],
+    "dependencies": [
+      "BesselSecondKind.harmonic_real_nonneg_le"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "BesselSecondKind.summable_besselY0HarmonicTerm"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (z : ℂ) (n : ℕ), ‖BesselSecondKind.besselY1HarmonicTerm z n‖ ≤ 2 * ((‖z / 2‖ ^ 2) ^ n / ↑n.factorial)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "BesselSecondKind.norm_besselY1HarmonicTerm_le_two_expTerm",
+    "module": "LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.Y1Series",
+    "externalAxioms": [],
+    "docString": "Direct absolute convergence estimate for the order-one harmonic\nseries coefficient. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "BesselSecondKind.summable_besselY1HarmonicTerm"
+    ],
+    "dependencies": [
+      "BesselSecondKind.besselY1Harmonic_nonneg_le_factorial"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "BesselSecondKind.summable_besselY1HarmonicTerm"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (z : ℂ), Summable (BesselSecondKind.besselY0HarmonicTerm z)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "BesselSecondKind.summable_besselY0HarmonicTerm",
+    "module": "LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.Y0Series",
+    "externalAxioms": [],
+    "docString": "The DLMF harmonic-number correction is absolutely summable for\n**every** complex argument, including the origin. No informal\nrearrangement of conditionally convergent special-function series. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.summable_besselFormalH0_eval"
+    ],
+    "dependencies": [
+      "BesselSecondKind.norm_besselY0HarmonicTerm_le_expTerm"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.summable_besselFormalH0_eval"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (z : ℂ), Summable (BesselSecondKind.besselY1HarmonicTerm z)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "BesselSecondKind.summable_besselY1HarmonicTerm",
+    "module": "LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.Y1Series",
+    "externalAxioms": [],
+    "docString": "The order-one second-kind Bessel harmonic correction converges\nabsolutely everywhere in the complex plane. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.summable_besselFormalH1_eval"
+    ],
+    "dependencies": [
+      "BesselSecondKind.norm_besselY1HarmonicTerm_le_two_expTerm"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.summable_besselFormalH1_eval"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
     "terminal": false,
     "statement": "∀ {ι : Type u_1} [inst : Fintype ι] [inst_1 : DecidableEq ι] (k : ι → ℝ),\n  CartesianProjectors.outer k + CartesianProjectors.transverse k = CartesianProjectors.normSq k • 1",
     "standardAxioms": [
@@ -61166,7 +61668,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ (R : ℝ),\n  ∫ (r : ℝ) in 0..R,\n      Complex.besselJ 1 ↑r ^ 2 *\n        (Complex.besselJ 1 ↑r * QuantumTheory.Transport.besselY0Series ↑r -\n          Complex.besselJ 0 ↑r * QuantumTheory.Transport.besselY1Series ↑r) =\n    ↑(2 / Real.pi) * ((1 - (Complex.besselJ 0 ↑R ^ 2 + Complex.besselJ 1 ↑R ^ 2)) / 2)",
+    "statement": "∀ (R : ℝ),\n  ∫ (r : ℝ) in 0..R,\n      Complex.besselJ 1 ↑r ^ 2 *\n        (Complex.besselJ 1 ↑r * BesselSecondKind.besselY0Series ↑r -\n          Complex.besselJ 0 ↑r * BesselSecondKind.besselY1Series ↑r) =\n    ↑(2 / Real.pi) * ((1 - (Complex.besselJ 0 ↑R ^ 2 + Complex.besselJ 1 ↑R ^ 2)) / 2)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -61207,7 +61709,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ (e hbar m probeEnergy : ℝ),\n  Filter.Tendsto\n    (fun R =>\n      ↑Real.pi *\n          ↑(4 * e ^ 2 / QuantumTheory.planckConstantFromReduced hbar *\n              (probeEnergy * m * (probeEnergy ^ 2 - m ^ 2) / (probeEnergy ^ 2 + 3 * m ^ 2) ^ 2)) *\n        ∫ (r : ℝ) in 0..R,\n          Complex.besselJ 1 ↑r ^ 2 *\n            (Complex.besselJ 1 ↑r * QuantumTheory.Transport.besselY0Series ↑r -\n              Complex.besselJ 0 ↑r * QuantumTheory.Transport.besselY1Series ↑r))\n    Filter.atTop\n    (nhds\n      ↑(4 * e ^ 2 / QuantumTheory.planckConstantFromReduced hbar *\n          (probeEnergy * m * (probeEnergy ^ 2 - m ^ 2) / (probeEnergy ^ 2 + 3 * m ^ 2) ^ 2)))",
+    "statement": "∀ (e hbar m probeEnergy : ℝ),\n  Filter.Tendsto\n    (fun R =>\n      ↑Real.pi *\n          ↑(4 * e ^ 2 / QuantumTheory.planckConstantFromReduced hbar *\n              (probeEnergy * m * (probeEnergy ^ 2 - m ^ 2) / (probeEnergy ^ 2 + 3 * m ^ 2) ^ 2)) *\n        ∫ (r : ℝ) in 0..R,\n          Complex.besselJ 1 ↑r ^ 2 *\n            (Complex.besselJ 1 ↑r * BesselSecondKind.besselY0Series ↑r -\n              Complex.besselJ 0 ↑r * BesselSecondKind.besselY1Series ↑r))\n    Filter.atTop\n    (nhds\n      ↑(4 * e ^ 2 / QuantumTheory.planckConstantFromReduced hbar *\n          (probeEnergy * m * (probeEnergy ^ 2 - m ^ 2) / (probeEnergy ^ 2 + 3 * m ^ 2) ^ 2)))",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -75133,7 +75635,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "QuantumTheory.Models.MassiveDirac.integral_massiveDiracRadialDenominatorKernel_eq_log",
-    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.Denominator",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Propagator.RadialFourier.LogIntegral",
     "externalAxioms": [],
     "docString": "Exact finite-cutoff radial primitive for a massive-Dirac propagator with\narbitrary complex effective energy and mass. The nonzero imaginary part of\nthe squared-energy-minus-mass center keeps the whole radial path off the\nprincipal logarithm's branch cut. This extends the clean-regulator Born\nprimitive to the complex Dyson parameters used by crossed RA diagrams,\nwithout taking any disorder, broadening, or cutoff limit. ",
     "directWrapperTargetModule": null,
@@ -76293,7 +76795,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "QuantumTheory.Models.MassiveDirac.massiveDiracRadialCenter_im_ne_zero_of_re_pos",
-    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.Denominator",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Propagator.RadialFourier.LogIntegral",
     "externalAxioms": [],
     "docString": "A pole-free quadratic radial denominator with positive real spectral\nparameter has nonzero imaginary part. This uses only the radial pole\nparameter, not a particular effective-energy/mass decomposition. ",
     "directWrapperTargetModule": null,
@@ -96894,7 +97396,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (z : ℂ),\n  QuantumTheory.Transport.besselY0HarmonicCorrection z =\n    ∑' (n : ℕ), (PowerSeries.coeff n) BesselFormal.besselFormalH0 * (-(z / 2) ^ 2) ^ n",
+    "statement": "∀ (z : ℂ),\n  BesselSecondKind.besselY0HarmonicCorrection z =\n    ∑' (n : ℕ), (PowerSeries.coeff n) BesselFormal.besselFormalH0 * (-(z / 2) ^ 2) ^ n",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -96937,46 +97439,8 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
-    "statement": "QuantumTheory.Transport.besselY0HarmonicCorrection 0 = 0",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.besselY0HarmonicCorrection_zero",
-    "module": "LeanCondensedMatter.Transport.Analysis.BesselY0Series",
-    "externalAxioms": [],
-    "docString": "The power-series correction vanishes at zero; the nonanalytic\npart of the physical Y₀ comes solely from its logarithm. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
     "terminal": false,
-    "statement": "∀ (z : ℂ) (n : ℕ),\n  QuantumTheory.Transport.besselY0HarmonicTerm z n =\n    (PowerSeries.coeff n) BesselFormal.besselFormalH0 * (-(z / 2) ^ 2) ^ n",
+    "statement": "∀ (z : ℂ) (n : ℕ),\n  BesselSecondKind.besselY0HarmonicTerm z n = (PowerSeries.coeff n) BesselFormal.besselFormalH0 * (-(z / 2) ^ 2) ^ n",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -97017,84 +97481,8 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
-    "statement": "∀ (z : ℂ), QuantumTheory.Transport.besselY0HarmonicTerm z 1 = -(z / 2) ^ 2",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.besselY0HarmonicTerm_one",
-    "module": "LeanCondensedMatter.Transport.Analysis.BesselY0Series",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ (z : ℂ), QuantumTheory.Transport.besselY0HarmonicTerm z 0 = 0",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.besselY0HarmonicTerm_zero",
-    "module": "LeanCondensedMatter.Transport.Analysis.BesselY0Series",
-    "externalAxioms": [],
-    "docString": "The correction coefficients are zero at n=0, and the\nfirst harmonic coefficient has its standard value H₁=1. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
     "terminal": false,
-    "statement": "∀ (z : ℂ),\n  z ≠ 0 →\n    Complex.besselJ 1 z * QuantumTheory.Transport.besselY0Series z -\n        Complex.besselJ 0 z * QuantumTheory.Transport.besselY1Series z =\n      ↑(2 / Real.pi) * z⁻¹",
+    "statement": "∀ (z : ℂ),\n  z ≠ 0 →\n    Complex.besselJ 1 z * BesselSecondKind.besselY0Series z - Complex.besselJ 0 z * BesselSecondKind.besselY1Series z =\n      ↑(2 / Real.pi) * z⁻¹",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -97116,7 +97504,7 @@
       "QuantumTheory.Transport.crossedXBesselWronskian_concreteSeries"
     ],
     "dependencies": [
-      "QuantumTheory.Transport.besselY0Y1Wronskian_of_harmonicIdentity",
+      "BesselSecondKind.besselY0Y1Wronskian_of_harmonicIdentity",
       "QuantumTheory.Transport.besselY0Y1_harmonicIdentity"
     ],
     "crossModuleDirectWrapper": false,
@@ -97139,93 +97527,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (z : ℂ),\n  Complex.besselJ 1 z * QuantumTheory.Transport.besselY0Series z -\n      Complex.besselJ 0 z * QuantumTheory.Transport.besselY1Series z =\n    ↑(2 / Real.pi) *\n      (Complex.besselJ 0 z * z⁻¹ - Complex.besselJ 1 z * QuantumTheory.Transport.besselY0HarmonicCorrection z +\n        z / 4 * Complex.besselJ 0 z * QuantumTheory.Transport.besselY1HarmonicCorrection z)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.besselY0Y1Wronskian_eq_harmonicCorrections",
-    "module": "LeanCondensedMatter.Transport.Analysis.BesselY1Series",
-    "externalAxioms": [],
-    "docString": "Exact Wronskian algebra for the *concrete* convergent DLMF Y₀/Y₁\nseries. The logarithm and Euler–Mascheroni terms cancel completely.\nThus the sole remaining nonalgebraic Wronskian obligation is an identity\nbetween Mathlib J₀/J₁ and the two convergent harmonic corrections.\nThis theorem does **not** assume or prove that remaining identity. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.besselY0Y1Wronskian_of_harmonicIdentity"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.besselY0Y1Wronskian_of_harmonicIdentity"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (z : ℂ),\n  z ≠ 0 →\n    Complex.besselJ 0 z - z * Complex.besselJ 1 z * QuantumTheory.Transport.besselY0HarmonicCorrection z +\n          z ^ 2 / 4 * Complex.besselJ 0 z * QuantumTheory.Transport.besselY1HarmonicCorrection z =\n        1 →\n      Complex.besselJ 1 z * QuantumTheory.Transport.besselY0Series z -\n          Complex.besselJ 0 z * QuantumTheory.Transport.besselY1Series z =\n        ↑(2 / Real.pi) * z⁻¹",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.besselY0Y1Wronskian_of_harmonicIdentity",
-    "module": "LeanCondensedMatter.Transport.Analysis.BesselY1Series",
-    "externalAxioms": [],
-    "docString": "Reduction of the J/Y Wronskian theorem to one explicit\nharmonic-number series identity. The hypothesis is kept visible\nrather than incorrectly presenting the Wronskian as proved. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.besselY0Y1Series_wronskian"
-    ],
-    "dependencies": [
-      "QuantumTheory.Transport.besselY0Y1Wronskian_eq_harmonicCorrections"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.besselY0Y1Series_wronskian"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (z : ℂ),\n  Complex.besselJ 0 z - z * Complex.besselJ 1 z * QuantumTheory.Transport.besselY0HarmonicCorrection z +\n      z ^ 2 / 4 * Complex.besselJ 0 z * QuantumTheory.Transport.besselY1HarmonicCorrection z =\n    1",
+    "statement": "∀ (z : ℂ),\n  Complex.besselJ 0 z - z * Complex.besselJ 1 z * BesselSecondKind.besselY0HarmonicCorrection z +\n      z ^ 2 / 4 * Complex.besselJ 0 z * BesselSecondKind.besselY1HarmonicCorrection z =\n    1",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -97287,7 +97589,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (z : ℂ),\n  QuantumTheory.Transport.besselY1HarmonicCorrection z =\n    ∑' (n : ℕ), (PowerSeries.coeff n) BesselFormal.besselFormalH1 * (-(z / 2) ^ 2) ^ n",
+    "statement": "∀ (z : ℂ),\n  BesselSecondKind.besselY1HarmonicCorrection z =\n    ∑' (n : ℕ), (PowerSeries.coeff n) BesselFormal.besselFormalH1 * (-(z / 2) ^ 2) ^ n",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -97331,7 +97633,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (z : ℂ) (n : ℕ),\n  QuantumTheory.Transport.besselY1HarmonicTerm z n =\n    (PowerSeries.coeff n) BesselFormal.besselFormalH1 * (-(z / 2) ^ 2) ^ n",
+    "statement": "∀ (z : ℂ) (n : ℕ),\n  BesselSecondKind.besselY1HarmonicTerm z n = (PowerSeries.coeff n) BesselFormal.besselFormalH1 * (-(z / 2) ^ 2) ^ n",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -97357,88 +97659,6 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.Transport.besselY1HarmonicCorrection_eq_formalTsum"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ (z : ℂ), QuantumTheory.Transport.besselY1HarmonicTerm z 0 = 1",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.besselY1HarmonicTerm_zero",
-    "module": "LeanCondensedMatter.Transport.Analysis.BesselY1Series",
-    "externalAxioms": [],
-    "docString": "The leading power-series coefficient is H₀+H₁=1. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (n : ℕ), 0 ≤ ↑(harmonic n) + ↑(harmonic (n + 1)) ∧ ↑(harmonic n) + ↑(harmonic (n + 1)) ≤ 2 * ↑(n + 1).factorial",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.besselY1Harmonic_nonneg_le_factorial",
-    "module": "LeanCondensedMatter.Transport.Analysis.BesselY1Series",
-    "externalAxioms": [],
-    "docString": "The combined real harmonic coefficient is bounded by twice the\nfactorial of the higher index; the corrected series is dominated\nby two copies of the ordinary exponential series. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.norm_besselY1HarmonicTerm_le_two_expTerm"
-    ],
-    "dependencies": [
-      "QuantumTheory.Transport.harmonic_real_nonneg_le"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.norm_besselY1HarmonicTerm_le_two_expTerm"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -97945,7 +98165,7 @@
   },
   {
     "terminal": false,
-    "statement": "QuantumTheory.Transport.CrossedXBesselWronskian (fun r => QuantumTheory.Transport.besselY0Series ↑r) fun r =>\n  QuantumTheory.Transport.besselY1Series ↑r",
+    "statement": "QuantumTheory.Transport.CrossedXBesselWronskian (fun r => BesselSecondKind.besselY0Series ↑r) fun r =>\n  BesselSecondKind.besselY1Series ↑r",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -98653,50 +98873,6 @@
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominatorZeroBroadeningBoundary_ne_zero"
     ],
     "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (n : ℕ), 0 ≤ ↑(harmonic n) ∧ ↑(harmonic n) ≤ ↑n",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.harmonic_real_nonneg_le",
-    "module": "LeanCondensedMatter.Transport.Analysis.BesselY0Series",
-    "externalAxioms": [],
-    "docString": "The rational harmonic number is nonnegative and at most its index,\nviewed as a real number. Used to give the logarithmic Y₀ correction\na direct exponential majorant independent of any Bessel-Y axioms. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.besselY1Harmonic_nonneg_le_factorial",
-      "QuantumTheory.Transport.norm_besselY0HarmonicTerm_le_expTerm"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.besselY1Harmonic_nonneg_le_factorial",
-      "QuantumTheory.Transport.norm_besselY0HarmonicTerm_le_expTerm"
-    ],
-    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -99838,94 +100014,6 @@
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedTraceKernel_radialAxis_eq"
     ],
     "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (z : ℂ) (n : ℕ), ‖QuantumTheory.Transport.besselY0HarmonicTerm z n‖ ≤ (‖z / 2‖ ^ 2) ^ n / ↑n.factorial",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.norm_besselY0HarmonicTerm_le_expTerm",
-    "module": "LeanCondensedMatter.Transport.Analysis.BesselY0Series",
-    "externalAxioms": [],
-    "docString": "The absolute value of each harmonic correction term is dominated\nby the factorial exponential term of argument `‖z/2‖²`. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.summable_besselY0HarmonicTerm"
-    ],
-    "dependencies": [
-      "QuantumTheory.Transport.harmonic_real_nonneg_le"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.summable_besselY0HarmonicTerm"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (z : ℂ) (n : ℕ), ‖QuantumTheory.Transport.besselY1HarmonicTerm z n‖ ≤ 2 * ((‖z / 2‖ ^ 2) ^ n / ↑n.factorial)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.norm_besselY1HarmonicTerm_le_two_expTerm",
-    "module": "LeanCondensedMatter.Transport.Analysis.BesselY1Series",
-    "externalAxioms": [],
-    "docString": "Direct absolute convergence estimate for the order-one harmonic\nseries coefficient. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.summable_besselY1HarmonicTerm"
-    ],
-    "dependencies": [
-      "QuantumTheory.Transport.besselY1Harmonic_nonneg_le_factorial"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.summable_besselY1HarmonicTerm"
-    ],
-    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -103574,7 +103662,7 @@
       "QuantumTheory.Transport.besselY0Y1_harmonicIdentity"
     ],
     "dependencies": [
-      "QuantumTheory.Transport.summable_besselY0HarmonicTerm"
+      "BesselSecondKind.summable_besselY0HarmonicTerm"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -103618,7 +103706,7 @@
       "QuantumTheory.Transport.besselY0Y1_harmonicIdentity"
     ],
     "dependencies": [
-      "QuantumTheory.Transport.summable_besselY1HarmonicTerm"
+      "BesselSecondKind.summable_besselY1HarmonicTerm"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -103712,94 +103800,6 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.Transport.besselY0Y1_harmonicIdentity"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (z : ℂ), Summable (QuantumTheory.Transport.besselY0HarmonicTerm z)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.summable_besselY0HarmonicTerm",
-    "module": "LeanCondensedMatter.Transport.Analysis.BesselY0Series",
-    "externalAxioms": [],
-    "docString": "The DLMF harmonic-number correction is absolutely summable for\n**every** complex argument, including the origin. No informal\nrearrangement of conditionally convergent special-function series. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.summable_besselFormalH0_eval"
-    ],
-    "dependencies": [
-      "QuantumTheory.Transport.norm_besselY0HarmonicTerm_le_expTerm"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.summable_besselFormalH0_eval"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (z : ℂ), Summable (QuantumTheory.Transport.besselY1HarmonicTerm z)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.summable_besselY1HarmonicTerm",
-    "module": "LeanCondensedMatter.Transport.Analysis.BesselY1Series",
-    "externalAxioms": [],
-    "docString": "The order-one second-kind Bessel harmonic correction converges\nabsolutely everywhere in the complex plane. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.summable_besselFormalH1_eval"
-    ],
-    "dependencies": [
-      "QuantumTheory.Transport.norm_besselY1HarmonicTerm_le_two_expTerm"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.summable_besselFormalH1_eval"
     ],
     "compiledConsumerCount": 1,
     "axioms": [

@@ -1099,6 +1099,20 @@
       "externalImportCount": 0
     },
     {
+      "name": "LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.Y0Series",
+      "sourceFile": "LeanCondensedMatter/Analysis/SpecialFunctions/Bessel/Y0Series.lean",
+      "imports": [],
+      "externalImportCount": 9
+    },
+    {
+      "name": "LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.Y1Series",
+      "sourceFile": "LeanCondensedMatter/Analysis/SpecialFunctions/Bessel/Y1Series.lean",
+      "imports": [
+        "LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.Y0Series"
+      ],
+      "externalImportCount": 0
+    },
+    {
       "name": "LeanCondensedMatter.Analysis",
       "sourceFile": "LeanCondensedMatter/Analysis.lean",
       "imports": [
@@ -1128,7 +1142,9 @@
         "LeanCondensedMatter.Analysis.PowerSeries.FrobeniusWronskian",
         "LeanCondensedMatter.Analysis.ScalarExchange",
         "LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.FormalCoefficients",
-        "LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.FormalOrderOne"
+        "LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.FormalOrderOne",
+        "LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.Y0Series",
+        "LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.Y1Series"
       ],
       "externalImportCount": 0
     },
@@ -2247,7 +2263,8 @@
       "name": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.Denominator",
       "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Disorder/Born/Denominator.lean",
       "imports": [
-        "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.SelfEnergy"
+        "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.SelfEnergy",
+        "LeanCondensedMatter.Models.MassiveDirac.Propagator.RadialFourier.LogIntegral"
       ],
       "externalImportCount": 9
     },
@@ -2256,7 +2273,7 @@
       "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Disorder/Born/RadialKernel.lean",
       "imports": [
         "LeanCondensedMatter.Models.MassiveDirac.Propagator.Basic",
-        "LeanCondensedMatter.Models.MassiveDirac.Propagator.RadialFourier.QuadraticKernel"
+        "LeanCondensedMatter.Models.MassiveDirac.Propagator.RadialDenominator"
       ],
       "externalImportCount": 2
     },
@@ -2805,6 +2822,14 @@
       "externalImportCount": 0
     },
     {
+      "name": "LeanCondensedMatter.Models.MassiveDirac.Propagator.RadialDenominator",
+      "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Propagator/RadialDenominator.lean",
+      "imports": [
+        "LeanCondensedMatter.Models.MassiveDirac.Propagator.Basic"
+      ],
+      "externalImportCount": 0
+    },
+    {
       "name": "LeanCondensedMatter.Models.MassiveDirac.Propagator.RadialFourier.BesselJ",
       "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Propagator/RadialFourier/BesselJ.lean",
       "imports": [
@@ -2825,8 +2850,8 @@
       "name": "LeanCondensedMatter.Models.MassiveDirac.Propagator.RadialFourier.HankelReduction",
       "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Propagator/RadialFourier/HankelReduction.lean",
       "imports": [
-        "LeanCondensedMatter.Models.MassiveDirac.Propagator.RadialFourier.FinitePart",
-        "LeanCondensedMatter.Transport.Analysis.BesselY0Series"
+        "LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.Y0Series",
+        "LeanCondensedMatter.Models.MassiveDirac.Propagator.RadialFourier.FinitePart"
       ],
       "externalImportCount": 1
     },
@@ -2840,9 +2865,18 @@
       "externalImportCount": 2
     },
     {
+      "name": "LeanCondensedMatter.Models.MassiveDirac.Propagator.RadialFourier.LogIntegral",
+      "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Propagator/RadialFourier/LogIntegral.lean",
+      "imports": [
+        "LeanCondensedMatter.Models.MassiveDirac.Propagator.RadialDenominator"
+      ],
+      "externalImportCount": 9
+    },
+    {
       "name": "LeanCondensedMatter.Models.MassiveDirac.Propagator.RadialFourier.QuadraticKernel",
       "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Propagator/RadialFourier/QuadraticKernel.lean",
       "imports": [
+        "LeanCondensedMatter.Models.MassiveDirac.Propagator.RadialDenominator",
         "LeanCondensedMatter.Transport.Analysis.PolarFourierRadialLimit"
       ],
       "externalImportCount": 2
@@ -2877,6 +2911,7 @@
       "imports": [
         "LeanCondensedMatter.Models.MassiveDirac.Propagator.AngularReduction",
         "LeanCondensedMatter.Models.MassiveDirac.Propagator.Basic",
+        "LeanCondensedMatter.Models.MassiveDirac.Propagator.RadialDenominator",
         "LeanCondensedMatter.Models.MassiveDirac.Propagator.RadialFourier.HankelScaling",
         "LeanCondensedMatter.Models.MassiveDirac.Propagator.RadialFourier.ResolventDifference",
         "LeanCondensedMatter.Models.MassiveDirac.Propagator.Symmetry"
@@ -8456,22 +8491,6 @@
       "externalImportCount": 1
     },
     {
-      "name": "LeanCondensedMatter.Transport.Analysis.BesselY0Series",
-      "sourceFile": "LeanCondensedMatter/Transport/Analysis/BesselY0Series.lean",
-      "imports": [
-        "LeanCondensedMatter.Transport.Analysis.BesselRadialMoments"
-      ],
-      "externalImportCount": 8
-    },
-    {
-      "name": "LeanCondensedMatter.Transport.Analysis.BesselY1Series",
-      "sourceFile": "LeanCondensedMatter/Transport/Analysis/BesselY1Series.lean",
-      "imports": [
-        "LeanCondensedMatter.Transport.Analysis.BesselY0Series"
-      ],
-      "externalImportCount": 0
-    },
-    {
       "name": "LeanCondensedMatter.Transport.Analysis.BesselYAnalyticWronskian",
       "sourceFile": "LeanCondensedMatter/Transport/Analysis/BesselYAnalyticWronskian.lean",
       "imports": [
@@ -8487,7 +8506,7 @@
       "sourceFile": "LeanCondensedMatter/Transport/Analysis/BesselYFormalAnalyticBridge.lean",
       "imports": [
         "LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.FormalOrderOne",
-        "LeanCondensedMatter.Transport.Analysis.BesselY1Series"
+        "LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.Y1Series"
       ],
       "externalImportCount": 0
     },
@@ -8558,8 +8577,6 @@
       "imports": [
         "LeanCondensedMatter.Transport.Analysis.BesselJFormalAnalyticBridge",
         "LeanCondensedMatter.Transport.Analysis.BesselRadialMoments",
-        "LeanCondensedMatter.Transport.Analysis.BesselY0Series",
-        "LeanCondensedMatter.Transport.Analysis.BesselY1Series",
         "LeanCondensedMatter.Transport.Analysis.BesselYAnalyticWronskian",
         "LeanCondensedMatter.Transport.Analysis.BesselYFormalAnalyticBridge",
         "LeanCondensedMatter.Transport.Analysis.ContinuumMeasure",
