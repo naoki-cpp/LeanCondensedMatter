@@ -1,5 +1,8 @@
 import LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.FormalCoefficients
-import LeanCondensedMatter.Transport.Analysis.PolarFourier
+import LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.HypergeometricSeries
+import Mathlib.Tactic.FieldSimp
+import Mathlib.Tactic.NormNum
+import Mathlib.Tactic.Ring
 
 set_option linter.style.header false
 
@@ -18,7 +21,9 @@ arguments. Transporting products through these evaluations requires a
 separate Cauchy-product theorem.
 -/
 
-namespace QuantumTheory.Transport
+namespace BesselFormal
+
+open BesselHypergeometric
 
 open BesselFormal
 
@@ -85,7 +90,7 @@ theorem besselJZero_eq_formalTsum (z : ℂ) :
     Complex.besselJ 0 z =
       ∑' n : ℕ, PowerSeries.coeff n besselFormalJ0 *
         (-(z / 2) ^ 2) ^ n := by
-  rw [polarFourierBesselJZero_eq_tsum]
+  rw [besselJZero_eq_regularizedHGTsum]
   apply tsum_congr
   intro n
   rw [besselFormalJ0_coeff_eq_regularizedHGFun]
@@ -128,4 +133,4 @@ theorem besselJOne_eq_formalDerivativeTsum (z : ℂ) :
 
 end
 
-end QuantumTheory.Transport
+end BesselFormal

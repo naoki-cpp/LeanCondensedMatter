@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.HypergeometricSeries
 import LeanCondensedMatter.Analysis.Fourier.AngularHarmonics
 import LeanCondensedMatter.Transport.Analysis.ContinuumMeasure
 import LeanCondensedMatter.Transport.Analysis.FourierGeometry
@@ -41,6 +42,8 @@ namespace QuantumTheory
 
 open AngularHarmonics
 namespace Transport
+
+open BesselHypergeometric
 
 noncomputable section
 
@@ -286,18 +289,6 @@ theorem polarFourierZerothAngularKernel_eq_tsum_moments (z : ℝ) :
       rw [intervalIntegral.integral_const_mul]
     _ = _ := by rw [hcos]
 
-/-- The coefficient of the regularized hypergeometric series with lower parameter `k + 1`. -/
-theorem regularizedHGFunCoeff_zero_singleton_nat_add_one (k n : ℕ) :
-    Complex.regularizedHGFunCoeff 0 {((k + 1 : ℕ) : ℂ)} n =
-      1 / ((Nat.factorial n : ℂ) * (Nat.factorial (n + k) : ℂ)) := by
-  have hgamma : Complex.Gamma (((k : ℂ) + 1) + (n : ℂ)) =
-      (Nat.factorial (n + k) : ℂ) := by
-    rw [show ((k : ℂ) + 1) + (n : ℂ) = ((n + k : ℕ) : ℂ) + 1 by
-      simp only [Nat.cast_add]
-      ring]
-    exact Complex.Gamma_nat_eq_factorial (n + k)
-  simp [Complex.regularizedHGFunCoeff, Nat.cast_add, hgamma]
-
 /-- A full-period cosine moment is bounded by the length of its integration interval. -/
 theorem polarFourierCosineMoment_norm_le (n : ℕ) :
     ‖polarFourierCosineMoment n‖ ≤ 2 * Real.pi := by
@@ -333,18 +324,6 @@ theorem polarFourierZerothMoments_summable (z : ℝ) :
     _ ≤ (|z| ^ n / (Nat.factorial n : ℝ)) * (2 * Real.pi) :=
       mul_le_mul_of_nonneg_left hmoment (div_nonneg hpow hfact)
     _ = (2 * Real.pi) * (|z| ^ n / (Nat.factorial n : ℝ)) := by ring
-
-/-- Mathlib's integer-order Bessel function has the expected coefficient expansion. -/
-theorem polarFourierBesselJZero_eq_tsum (z : ℂ) :
-    Complex.besselJ 0 z =
-      ∑' n : ℕ, Complex.regularizedHGFunCoeff 0 {(1 : ℂ)} n *
-        (-(z / 2) ^ 2) ^ n := by
-  rw [Complex.besselJ_def]
-  simp only [Complex.cpow_zero, one_mul, zero_add]
-  change (Complex.regularizedHGFunSeries 0 {(1 : ℂ)}).sum (-(z / 2) ^ 2) = _
-  rw [Complex.regularizedHGFunSeries, ← FormalMultilinearSeries.ofScalarsSum,
-    FormalMultilinearSeries.ofScalars_sum_eq]
-  simp only [smul_eq_mul]
 
 /-- The coefficient of each even Fourier moment agrees with the corresponding
 coefficient in the zeroth Bessel series. -/
@@ -410,7 +389,7 @@ theorem polarFourierZerothAngularKernel_eq_besselJ (z : ℝ) :
           (-((z : ℂ) / 2) ^ 2) ^ n) := by
       rw [tsum_mul_left]
     _ = ((2 * Real.pi : ℝ) : ℂ) * Complex.besselJ 0 (z : ℂ) := by
-      rw [polarFourierBesselJZero_eq_tsum]
+      rw [besselJZero_eq_regularizedHGTsum]
 
 /-- The zeroth radial Fourier kernel is normalized by the full polar angle at the origin. -/
 @[simp] theorem polarFourierZerothAngularKernel_zero :
