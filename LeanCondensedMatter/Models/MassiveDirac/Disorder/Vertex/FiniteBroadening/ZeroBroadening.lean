@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornZeroBroadening
-import LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertex
+import LeanCondensedMatter.Models.MassiveDirac.Disorder.Vertex.FiniteBroadening.Current
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.ContinuumMeasurePrefactor
 import Mathlib.Tactic.FieldSimp
 import Mathlib.Tactic.Ring

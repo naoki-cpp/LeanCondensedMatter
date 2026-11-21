@@ -374,13 +374,13 @@ consume the common owner directly, rather than importing the longitudinal same-s
 Středa remainder merely to obtain a radial logarithmic primitive. The RR/AA
 same-side remainder stays in its own response-specific module.
 
-`Disorder.FiniteBroadeningCurrentVertexResponse` owns the source-indexed dressed current,
+`Disorder.Vertex.FiniteBroadening.Response` owns the source-indexed dressed current,
 its source evaluations, and its fixed-disorder zero-broadening insertion. Continuity of the
 in-plane rotation and current realization belongs to `Vertex.InPlaneLadder` and `Model.Operator`.
 Středa trace adapters consume these results; the same-side remainder and conductivity normalization
 remain separate.
 
-`Disorder.FiniteBroadeningCurrentVertexZeroBroadeningIntegral` owns the common radial
+`Disorder.Vertex.FiniteBroadening.ZeroBroadeningIntegral` owns the common radial
 factorization of the zero-broadening current-rung entries. The weak-disorder Lorentzian reduction
 and the scaled transverse limit consume that identity, while keeping their distinct limit arguments
 and assumptions local.

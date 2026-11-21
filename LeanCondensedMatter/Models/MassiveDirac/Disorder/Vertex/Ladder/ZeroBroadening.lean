@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexZeroBroadeningIntegral
+import LeanCondensedMatter.Models.MassiveDirac.Disorder.Vertex.FiniteBroadening.ZeroBroadeningIntegral
 
 set_option linter.style.header false
 

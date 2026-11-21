@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexZeroBroadening
+import LeanCondensedMatter.Models.MassiveDirac.Disorder.Vertex.FiniteBroadening.ZeroBroadening
 import LeanCondensedMatter.Models.MassiveDirac.TransportDomain
 import Mathlib.MeasureTheory.Integral.Bochner.Basic
 import Mathlib.Tactic.FunProp

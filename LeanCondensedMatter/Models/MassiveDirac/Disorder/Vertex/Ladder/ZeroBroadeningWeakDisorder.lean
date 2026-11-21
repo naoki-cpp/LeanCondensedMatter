@@ -1,6 +1,6 @@
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.Vertex.Born.WeakDisorder
-import LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexZeroBroadeningWeakDisorder
-import LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningLadderZeroBroadening
+import LeanCondensedMatter.Models.MassiveDirac.Disorder.Vertex.FiniteBroadening.ZeroBroadeningWeakDisorder
+import LeanCondensedMatter.Models.MassiveDirac.Disorder.Vertex.Ladder.ZeroBroadening
 
 set_option linter.style.header false
 

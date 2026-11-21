@@ -1,7 +1,7 @@
 import LeanCondensedMatter.Transport.Analysis.ContinuumMeasure
 import LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.LongitudinalSameSide
 import LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.LongitudinalZeroBroadeningIntegral
-import LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningLadderZeroBroadeningWeakDisorder
+import LeanCondensedMatter.Models.MassiveDirac.Disorder.Vertex.Ladder.ZeroBroadeningWeakDisorder
 import Mathlib.Tactic.FieldSimp
 import Mathlib.Tactic.NormNum
 

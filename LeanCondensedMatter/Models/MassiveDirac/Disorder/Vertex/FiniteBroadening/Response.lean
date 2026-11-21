@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningLadderZeroBroadening
+import LeanCondensedMatter.Models.MassiveDirac.Disorder.Vertex.Ladder.ZeroBroadening
 import LeanCondensedMatter.Models.MassiveDirac.Model.Operator
 
 set_option linter.style.header false

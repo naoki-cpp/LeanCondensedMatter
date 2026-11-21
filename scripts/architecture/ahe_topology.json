@@ -74,7 +74,7 @@
         "LeanCondensedMatter.Models.MassiveDirac.Disorder.TransportRate",
         "LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornPropagator",
         "LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornDysonShift",
-        "LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertex",
+        "LeanCondensedMatter.Models.MassiveDirac.Disorder.Vertex.FiniteBroadening.Current",
         "LeanCondensedMatter.Models.MassiveDirac.Streda",
         "LeanCondensedMatter.Models.MassiveDirac.Conductivity.Longitudinal.RelaxationTime",
         "LeanCondensedMatter.Models.MassiveDirac.Conductivity.Longitudinal.BornRelaxationTime",
@@ -111,7 +111,7 @@
           "modulePrefixes": [
             "LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornPropagator",
         "LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornDysonShift",
-            "LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertex"
+            "LeanCondensedMatter.Models.MassiveDirac.Disorder.Vertex.FiniteBroadening.Current"
           ]
         },
         {
