@@ -301,8 +301,7 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_psi_antis
   simp only [neg_neg] at hgr
   dsimp only [finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentScalarCoefficient,
     finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient,
-    finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient] at hs hgr hdiag
-  dsimp only at hs hgr hdiag ⊢
+    finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient] at hs hgr hdiag ⊢
   rw [hs, hgr, hdiag.1, hdiag.2]
   dsimp only [finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentFourierMoments] at ⊢
   congr 5 <;> ring
