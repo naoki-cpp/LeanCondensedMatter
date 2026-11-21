@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Models.MassiveDirac.Disorder.BornCurrentVertexWeakDisorder
+import LeanCondensedMatter.Models.MassiveDirac.Disorder.Vertex.Born.WeakDisorder
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexZeroBroadeningWeakDisorder
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningLadderZeroBroadening
 
