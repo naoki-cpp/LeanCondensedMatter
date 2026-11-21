@@ -298,8 +298,7 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_psi_antis
     finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient_x_negRadius_eq_k0_sub_k2
       .retarded v m probeEnergy broadening disorderStrength hbar pMax (-radius)
       hbroadening hdisorder hpMax
-  simp only [neg_neg] at hgr
-  dsimp only [finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentScalarCoefficient,
+  simp only [neg_neg, finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentScalarCoefficient,
     finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient,
     finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient] at hs hgr hdiag ⊢
   rw [hs, hgr, hdiag.1, hdiag.2]
