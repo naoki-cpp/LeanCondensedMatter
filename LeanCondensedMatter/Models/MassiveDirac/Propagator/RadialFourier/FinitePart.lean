@@ -1,4 +1,5 @@
-import LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.BornDyson.RealSpace.ScalarTail
+import LeanCondensedMatter.Models.MassiveDirac.Propagator.RadialFourier.QuadraticKernel
+import LeanCondensedMatter.Models.MassiveDirac.Propagator.RadialFourier.UVEstimates
 import Mathlib.Tactic.FunProp
 import Mathlib.Analysis.Complex.Basic
 

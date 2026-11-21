@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Models.MassiveDirac.Propagator.Basic
+import LeanCondensedMatter.Models.MassiveDirac.Propagator.RadialFourier.QuadraticKernel
 import Mathlib.Tactic.Positivity
 import Mathlib.Tactic.Ring
 
@@ -21,11 +22,6 @@ namespace QuantumTheory.Models.MassiveDirac
 noncomputable section
 
 open QuantumTheory.Transport
-
-/-- Radial massive-Dirac denominator for arbitrary complex effective energy and mass. -/
-def massiveDiracRadialDenominator
-    (v p : ℝ) (effectiveEnergy effectiveMass : ℂ) : ℂ :=
-  effectiveEnergy ^ 2 - effectiveMass ^ 2 - ((v ^ 2 * p ^ 2 : ℝ) : ℂ)
 
 /-- Retarded-advanced product of two radial massive-Dirac denominators. -/
 def massiveDiracRetardedAdvancedRadialDenominatorProduct

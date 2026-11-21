@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVBesselJ
+import LeanCondensedMatter.Models.MassiveDirac.Propagator.RadialFourier.FinitePart
 import Mathlib.Tactic.FunProp
 import Mathlib.Tactic.FieldSimp
 import Mathlib.Tactic.Ring

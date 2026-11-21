@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVBesselJ
+import LeanCondensedMatter.Models.MassiveDirac.Propagator.RadialFourier.FinitePart
 import LeanCondensedMatter.Transport.Analysis.BesselY0Series
 import Mathlib.Analysis.RCLike.Sqrt
 
