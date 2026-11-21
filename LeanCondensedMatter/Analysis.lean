@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Analysis.OscillatoryIntegral
+import LeanCondensedMatter.Analysis.OscillatoryApproximateIdentity
 import LeanCondensedMatter.Analysis.Algebra.QuadraticNormalization
 import LeanCondensedMatter.Analysis.Operator.ExponentialEigenvector
 import LeanCondensedMatter.Analysis.Operator.AlgebraRestriction
