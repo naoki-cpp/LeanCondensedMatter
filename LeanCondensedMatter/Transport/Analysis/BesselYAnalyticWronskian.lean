@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Analysis.PowerSeries.CoefficientSum
-import LeanCondensedMatter.Transport.Analysis.BesselJFormalAnalyticBridge
+import LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.FormalAnalyticBridgeJ
 import LeanCondensedMatter.Transport.Analysis.BesselYFormalAnalyticBridge
 import LeanCondensedMatter.Transport.Analysis.BesselCrossedXMoment
 
