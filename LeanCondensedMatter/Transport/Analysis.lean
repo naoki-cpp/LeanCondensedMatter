@@ -1,6 +1,5 @@
 import LeanCondensedMatter.Transport.Analysis.BesselRadialMoments
-import LeanCondensedMatter.Transport.Analysis.BesselYFormalAnalyticBridge
-import LeanCondensedMatter.Transport.Analysis.BesselYAnalyticWronskian
+import LeanCondensedMatter.Transport.Analysis.BesselCrossedXMoment
 import LeanCondensedMatter.Transport.Analysis.ContinuumMeasure
 import LeanCondensedMatter.Transport.Analysis.FourierGeometry
 import LeanCondensedMatter.Transport.Analysis.PolarFourier

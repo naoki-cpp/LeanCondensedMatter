@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Transport.Analysis.BesselRadialMoments
+import LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.AnalyticWronskian
 
 set_option linter.style.header false
 
@@ -26,6 +27,8 @@ boundary, is a separate and presently unproved obligation.
 
 namespace QuantumTheory
 namespace Transport
+
+open BesselSecondKind
 
 noncomputable section
 
@@ -132,6 +135,16 @@ theorem tendsto_integral_crossedXBesselIntegrand_one_div_pi
     ring
   simpa only [hscale] using
     (tendsto_integral_crossedXBesselIntegrand Y0 Y1 hW)
+
+/-- No abstract Y₀/Y₁ Wronskian premise is required for the
+specific convergent Bessel-Y implementations used in the
+Gaussian crossed-X reference moment. -/
+theorem crossedXBesselWronskian_concreteSeries :
+    CrossedXBesselWronskian
+      (fun r : ℝ => besselY0Series (r : ℂ))
+      (fun r : ℝ => besselY1Series (r : ℂ)) := by
+  intro r hr
+  exact besselY0Y1Series_wronskian (r : ℂ) (by exact_mod_cast hr)
 
 end
 

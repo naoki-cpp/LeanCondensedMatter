@@ -6,7 +6,7 @@ set_option linter.style.header false
 /-!
 # Exact term-level bridge between formal and convergent Y harmonic series
 
-The formal coefficient calculations in BesselYFormalOrderOne are for
+The formal coefficient calculations in FormalOrderOne are for
 power-series coefficients `A,B,C`. This module verifies that the
 realized DLMF harmonic corrections from merged PR #4529 are **exactly**
 the coefficientwise `tsum` evaluations of `B` and `C` at
@@ -14,14 +14,14 @@ the coefficientwise `tsum` evaluations of `B` and `C` at
 and no shortcut using a topologically nilpotent formal-power-series
 evaluation at arbitrary complex arguments.
 
-This identifies the precise analytic bridge still required:
-a theorem transporting the formal products and derivatives through
-their absolutely convergent complex series.
+The equivalence is a termwise identity with absolutely convergent sums.
+Polynomial products and formal Wronskian identities are transported
+through these evaluations in the separate analytic Wronskian module.
 -/
 
-namespace QuantumTheory.Transport
+namespace BesselSecondKind
 
-open BesselFormal BesselSecondKind
+open BesselFormal
 
 noncomputable section
 
@@ -84,4 +84,4 @@ theorem summable_besselFormalH1_eval (z : ℂ) :
 
 end
 
-end QuantumTheory.Transport
+end BesselSecondKind
