@@ -112,21 +112,19 @@ private theorem averagedGreenOfRegulator_antilipschitz
       ‖v‖ = ‖shift (green v)‖ := by rw [hshiftApply]
       _ ≤ ‖shift‖ * ‖green v‖ := ContinuousLinearMap.le_opNorm shift (green v)
   have hvSqLe : ‖v‖ ^ 2 ≤ ‖shift‖ ^ 2 * ‖green v‖ ^ 2 := by
-    have hsq : ‖v‖ ^ 2 ≤ (‖shift‖ * ‖green v‖) ^ 2 :=
-      (sq_le_sq₀ (norm_nonneg v)
-        (mul_nonneg (norm_nonneg shift) (norm_nonneg (green v)))).2 hvLe
     calc
-      ‖v‖ ^ 2 ≤ (‖shift‖ * ‖green v‖) ^ 2 := hsq
-      _ = ‖shift‖ ^ 2 * ‖green v‖ ^ 2 := by ring
-  have hterm_nonneg : ∀ ξ : Ω,
+      _ ≤ (‖shift‖ * ‖green v‖) ^ 2 :=
+        (sq_le_sq₀ (norm_nonneg v)
+          (mul_nonneg (norm_nonneg shift) (norm_nonneg (green v)))).2 hvLe
+      _ = _ := mul_pow .. ..
+  have hterm_nonneg (ξ : Ω) :
       0 ≤ ensemble.probability ξ *
-        ‖ensemble.configurationGreenOfRegulator energy regulator ξ v‖ ^ 2 := by
-    intro ξ
-    exact mul_nonneg (ensemble.probability_nonneg ξ) (sq_nonneg _)
+        ‖ensemble.configurationGreenOfRegulator energy regulator ξ v‖ ^ 2 :=
+    mul_nonneg (ensemble.probability_nonneg ξ) (sq_nonneg _)
   have hsumNonneg :
       0 ≤ ∑ ξ, ensemble.probability ξ *
-        ‖ensemble.configurationGreenOfRegulator energy regulator ξ v‖ ^ 2 := by
-    exact Finset.sum_nonneg fun ξ _ => hterm_nonneg ξ
+        ‖ensemble.configurationGreenOfRegulator energy regulator ξ v‖ ^ 2 :=
+    Finset.sum_nonneg fun ξ _ => hterm_nonneg ξ
   have htermLe :
       ensemble.probability ω * ‖green v‖ ^ 2 ≤
         ∑ ξ, ensemble.probability ξ *
@@ -158,49 +156,33 @@ private theorem averagedGreenOfRegulator_antilipschitz
         ‖averaged v‖ * ‖v‖ := by
     rw [← himAbs]
     exact himLe
-  have hscaledVSq :
-      |regulator| * ensemble.probability ω * ‖v‖ ^ 2 ≤
-        ‖shift‖ ^ 2 *
-          (|regulator| *
-            ∑ ξ, ensemble.probability ξ *
-              ‖ensemble.configurationGreenOfRegulator energy regulator ξ v‖ ^ 2) := by
-    calc
-      |regulator| * ensemble.probability ω * ‖v‖ ^ 2 ≤
-          |regulator| * ensemble.probability ω *
-            (‖shift‖ ^ 2 * ‖green v‖ ^ 2) :=
-        mul_le_mul_of_nonneg_left hvSqLe
-          (mul_nonneg (abs_nonneg regulator) hprobability.le)
-      _ = ‖shift‖ ^ 2 *
-          (|regulator| *
-            (ensemble.probability ω * ‖green v‖ ^ 2)) := by ring
-      _ ≤ ‖shift‖ ^ 2 *
-          (|regulator| *
-            ∑ ξ, ensemble.probability ξ *
-              ‖ensemble.configurationGreenOfRegulator energy regulator ξ v‖ ^ 2) := by
-        apply mul_le_mul_of_nonneg_left _ (sq_nonneg _)
-        exact mul_le_mul_of_nonneg_left htermLe (abs_nonneg regulator)
   have hcore :
       |regulator| * ensemble.probability ω * ‖v‖ ^ 2 ≤
-        ‖shift‖ ^ 2 * (‖averaged v‖ * ‖v‖) :=
-    hscaledVSq.trans (mul_le_mul_of_nonneg_left hsumLe (sq_nonneg _))
+        ‖shift‖ ^ 2 * (‖averaged v‖ * ‖v‖) := by
+    calc
+      _ ≤ |regulator| * ensemble.probability ω *
+            (‖shift‖ ^ 2 * ‖green v‖ ^ 2) :=
+        mul_le_mul_of_nonneg_left hvSqLe hdenomPos.le
+      _ = ‖shift‖ ^ 2 *
+            (|regulator| * (ensemble.probability ω * ‖green v‖ ^ 2)) := by ring
+      _ ≤ ‖shift‖ ^ 2 *
+            (|regulator| *
+              ∑ ξ, ensemble.probability ξ *
+                ‖ensemble.configurationGreenOfRegulator energy regulator ξ v‖ ^ 2) :=
+        mul_le_mul_of_nonneg_left
+          (mul_le_mul_of_nonneg_left htermLe (abs_nonneg _)) (sq_nonneg _)
+      _ ≤ ‖shift‖ ^ 2 * (‖averaged v‖ * ‖v‖) :=
+        mul_le_mul_of_nonneg_left hsumLe (sq_nonneg _)
   have hcancel :
       (|regulator| * ensemble.probability ω) * ‖v‖ ≤
         ‖shift‖ ^ 2 * ‖averaged v‖ := by
     apply (mul_le_mul_iff_right₀ hvnormPos).mp
     simpa [pow_two, mul_assoc, mul_left_comm, mul_comm] using hcore
-  have hbound : ‖v‖ ≤ Kreal * ‖averaged v‖ := by
-    have hdiv :
-        ‖v‖ ≤ (‖shift‖ ^ 2 * ‖averaged v‖) /
-            (|regulator| * ensemble.probability ω) := by
-      apply (le_div_iff₀ hdenomPos).2
-      simpa [mul_comm] using hcancel
-    calc
-      ‖v‖ ≤ (‖shift‖ ^ 2 * ‖averaged v‖) /
-          (|regulator| * ensemble.probability ω) := hdiv
-      _ = Kreal * ‖averaged v‖ := by
-        dsimp [Kreal]
-        ring
-  exact hbound
+  calc
+    ‖v‖ ≤ (‖shift‖ ^ 2 * ‖averaged v‖) /
+        (|regulator| * ensemble.probability ω) :=
+      (le_div_iff₀ hdenomPos).2 (by simpa [mul_comm] using hcancel)
+    _ = Kreal * ‖averaged v‖ := by dsimp [Kreal]; ring
 
 private theorem averagedGreenOfRegulator_denseRange
     (energy regulator : ℝ) (hregulator : regulator ≠ 0) :
