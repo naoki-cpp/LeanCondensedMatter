@@ -24,6 +24,8 @@ second-order kinetic closure.
 
 namespace QuantumTheory.Models.OrbitalRelaxation
 
+open SphericalMoments
+
 open MeasureTheory
 open scoped Interval
 

@@ -175,6 +175,12 @@ for the mechanism, not consequences of the finite kinetic benchmark.
 
 ## Existing repository boundary
 
+The normalized continuous spherical-coordinate average and its Cartesian fourth moments
+live in `Analysis.Geometry.SphericalMoments`. The orbital module proves only the finite
+cubature comparison and the double-commutator specialization; it does not identify the
+spherical chart integral with an arbitrary probability measure on a Fermi surface.
+
+
 `QuantumTheory.DensityOperator` and finite-dimensional expectations provide
 state-level foundations. `QuantumTheory.SpinHalf.spinMatrix` provides the
 physical spin-1/2 normalization, while `Analysis.InternalSpace.Pauli` provides
