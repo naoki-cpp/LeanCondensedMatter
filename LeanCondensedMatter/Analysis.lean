@@ -16,6 +16,8 @@ import LeanCondensedMatter.Analysis.PowerSeries
 import LeanCondensedMatter.Analysis.PowerSeries.FrobeniusWronskian
 import LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.FormalCoefficients
 import LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.FormalOrderOne
+import LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.Y0Series
+import LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.Y1Series
 import LeanCondensedMatter.Analysis.Dyson
 import LeanCondensedMatter.Analysis.OrderedSimplex
 import LeanCondensedMatter.Analysis.FunctionalCalculus.CFC

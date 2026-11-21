@@ -28,7 +28,7 @@ namespace QuantumTheory.Models.MassiveDirac
 
 noncomputable section
 
-open QuantumTheory.Transport
+open QuantumTheory.Transport BesselSecondKind
 open MeasureTheory
 open scoped Interval
 
