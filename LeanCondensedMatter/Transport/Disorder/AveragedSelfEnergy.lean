@@ -116,7 +116,7 @@ private theorem averagedGreenOfRegulator_antilipschitz
       _ ≤ (‖shift‖ * ‖green v‖) ^ 2 :=
         (sq_le_sq₀ (norm_nonneg v)
           (mul_nonneg (norm_nonneg shift) (norm_nonneg (green v)))).2 hvLe
-      _ = _ := mul_pow .. ..
+      _ = _ := by ring
   have hterm_nonneg (ξ : Ω) :
       0 ≤ ensemble.probability ξ *
         ‖ensemble.configurationGreenOfRegulator energy regulator ξ v‖ ^ 2 :=
