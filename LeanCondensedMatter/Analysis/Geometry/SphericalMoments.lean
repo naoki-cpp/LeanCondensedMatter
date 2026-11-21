@@ -155,26 +155,43 @@ theorem sphericalAverage_evenQuarticPolynomial (r a b c d e f : ℝ) :
 theorem sphericalAverage_coordinate_four (i : Fin 3) (r : ℝ) :
     sphericalAverage r (fun k => k i ^ 4) = r ^ 4 / 5 := by
   fin_cases i
-  · simpa [evenQuarticPolynomial] using
-      (sphericalAverage_evenQuarticPolynomial r 1 0 0 0 0 0)
-  · simpa [evenQuarticPolynomial] using
-      (sphericalAverage_evenQuarticPolynomial r 0 1 0 0 0 0)
-  · simpa [evenQuarticPolynomial] using
-      (sphericalAverage_evenQuarticPolynomial r 0 0 1 0 0 0)
+  · convert sphericalAverage_evenQuarticPolynomial r 1 0 0 0 0 0 using 1
+    · congr 1; funext k; simp [evenQuarticPolynomial]
+    · ring
+  · convert sphericalAverage_evenQuarticPolynomial r 0 1 0 0 0 0 using 1
+    · congr 1; funext k; simp [evenQuarticPolynomial]
+    · ring
+  · convert sphericalAverage_evenQuarticPolynomial r 0 0 1 0 0 0 using 1
+    · congr 1; funext k; simp [evenQuarticPolynomial]
+    · ring
+
 
 /-- The normalized mixed spherical fourth moment for distinct coordinates is `r⁴/15`. -/
 theorem sphericalAverage_coordinate_sq_mul_coordinate_sq (i j : Fin 3)
     (hij : i ≠ j) (r : ℝ) :
     sphericalAverage r (fun k => k i ^ 2 * k j ^ 2) = r ^ 4 / 15 := by
-  fin_cases i <;> fin_cases j <;>
-    first
-    | exact (hij rfl).elim
-    | simpa [evenQuarticPolynomial, mul_comm] using
-        (sphericalAverage_evenQuarticPolynomial r 0 0 0 1 0 0)
-    | simpa [evenQuarticPolynomial, mul_comm] using
-        (sphericalAverage_evenQuarticPolynomial r 0 0 0 0 1 0)
-    | simpa [evenQuarticPolynomial, mul_comm] using
-        (sphericalAverage_evenQuarticPolynomial r 0 0 0 0 0 1)
+  fin_cases i <;> fin_cases j
+  · exact (hij rfl).elim
+  · convert sphericalAverage_evenQuarticPolynomial r 0 0 0 1 0 0 using 1
+    · congr 1; funext k; simp [evenQuarticPolynomial]
+    · ring
+  · convert sphericalAverage_evenQuarticPolynomial r 0 0 0 0 1 0 using 1
+    · congr 1; funext k; simp [evenQuarticPolynomial]
+    · ring
+  · convert sphericalAverage_evenQuarticPolynomial r 0 0 0 1 0 0 using 1
+    · congr 1; funext k; simp [evenQuarticPolynomial]; ring
+    · ring
+  · exact (hij rfl).elim
+  · convert sphericalAverage_evenQuarticPolynomial r 0 0 0 0 0 1 using 1
+    · congr 1; funext k; simp [evenQuarticPolynomial]
+    · ring
+  · convert sphericalAverage_evenQuarticPolynomial r 0 0 0 0 1 0 using 1
+    · congr 1; funext k; simp [evenQuarticPolynomial]; ring
+    · ring
+  · convert sphericalAverage_evenQuarticPolynomial r 0 0 0 0 0 1 using 1
+    · congr 1; funext k; simp [evenQuarticPolynomial]; ring
+    · ring
+  · exact (hij rfl).elim
 
 
 end SphericalMoments
