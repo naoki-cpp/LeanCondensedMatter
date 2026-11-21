@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Transport.Analysis.BesselYFormalOrderOne
+import LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.FormalOrderOne
 import LeanCondensedMatter.Transport.Analysis.BesselY1Series
 
 set_option linter.style.header false
@@ -20,6 +20,8 @@ their absolutely convergent complex series.
 -/
 
 namespace QuantumTheory.Transport
+
+open BesselFormal
 
 noncomputable section
 
