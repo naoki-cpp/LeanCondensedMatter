@@ -19,6 +19,11 @@ open QuantumTheory.Transport
 open MeasureTheory
 open scoped Interval
 
+/-- Radial massive-Dirac denominator for arbitrary complex effective energy and mass. -/
+def massiveDiracRadialDenominator
+    (v p : ℝ) (effectiveEnergy effectiveMass : ℂ) : ℂ :=
+  effectiveEnergy ^ 2 - effectiveMass ^ 2 - ((v ^ 2 * p ^ 2 : ℝ) : ℂ)
+
 /-- The inverse of the massive-Dirac quadratic radial denominator has an
 explicit real-radial derivative whenever the denominator stays nonzero. -/
 theorem massiveDiracRadialCenter_inv_hasDerivAt
