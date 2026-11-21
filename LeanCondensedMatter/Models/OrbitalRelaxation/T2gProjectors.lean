@@ -1,97 +1,55 @@
 import LeanCondensedMatter.Models.OrbitalRelaxation.Finite
+import LeanCondensedMatter.Analysis.Matrix.CartesianProjectors
+import Mathlib.Tactic.FinCases
+import Mathlib.Tactic.Ring
 
 set_option linter.style.header false
 
 /-!
-# Spectral numerators of the spherical t2g Hamiltonian
+# Spherical t2g Hamiltonian as a Cartesian outer-product model
 
-For an assumed Cartesian spin-1 matrix representation, `(k · L)^2` is
-represented by `|k|² I - k kᵀ`. We use real matrices and keep the spectral
-numerators unnormalized, so every statement also holds at `k = 0`. At nonzero momentum,
-division by `|k|²` gives the two complementary spectral projectors used in
-Manchon et al., arXiv:2512.06355v1, Eq. (4). The paper's `r` band is the
-rank-two transverse subspace in this Cartesian representation.
+The longitudinal and transverse rank-one matrix numerators are imported from
+`Analysis.Matrix.CartesianProjectors`, where they are proved in any finite
+real dimension. Only the identification with the supplied Cartesian spin-1
+orbital Hamiltonian and the model's spectral-parameter specialization live
+here. The numerator identities hold even at zero momentum.
 
-This file proves algebra inside the supplied three-by-three model. It does not
-construct atomic `d` orbitals, project physical `l = 2` angular momentum onto
-the `t₂g` subspace, or derive the momentum-dependent matrix from a crystal
-Hamiltonian. Those identifications are separate prerequisites for a physical
-orbital-to-band interpretation.
+The `t₂g` realization is assumed, not derived from crystal orbitals.
 -/
 
 namespace QuantumTheory.Models.OrbitalRelaxation
 
-open scoped Matrix
+open CartesianProjectors
 
-/-- Squared momentum in the three-dimensional Cartesian basis. -/
-def momentumNormSq (k : Fin 3 → ℝ) : ℝ :=
-  k 0 ^ 2 + k 1 ^ 2 + k 2 ^ 2
-
-/-- Outer product of the Cartesian momentum vector with itself. -/
-def momentumOuter (k : Fin 3 → ℝ) : OrbitalMatrix :=
-  !![k 0 * k 0, k 0 * k 1, k 0 * k 2;
-     k 1 * k 0, k 1 * k 1, k 1 * k 2;
-     k 2 * k 0, k 2 * k 1, k 2 * k 2]
-
-/-- The unnormalized projector numerator onto the transverse orbital band. -/
-def transverseNumerator (k : Fin 3 → ℝ) : OrbitalMatrix :=
-  !![k 1 ^ 2 + k 2 ^ 2, -k 0 * k 1, -k 0 * k 2;
-     -k 1 * k 0, k 0 ^ 2 + k 2 ^ 2, -k 1 * k 2;
-     -k 2 * k 0, -k 2 * k 1, k 0 ^ 2 + k 1 ^ 2]
-
-theorem transverseNumerator_eq_orbitalHamiltonian (k : Fin 3 → ℝ) :
-    transverseNumerator k = orbitalHamiltonian 1 1 k := by
+/-- The transverse numerator coincides with the supplied spherical orbital matrix. -/
+theorem transverse_eq_orbitalHamiltonian (k : Fin 3 → ℝ) :
+    transverse k = orbitalHamiltonian 1 1 k := by
   ext i j
   fin_cases i <;> fin_cases j <;>
-    simp [transverseNumerator, orbitalHamiltonian] <;> ring
+    simp [transverse, outer, normSq, Matrix.dotProduct, Matrix.vecMulVec_apply,
+      Fin.sum_univ_three, orbitalHamiltonian, pow_two] <;> ring
 
-theorem momentumOuter_add_transverseNumerator (k : Fin 3 → ℝ) :
-    momentumOuter k + transverseNumerator k = momentumNormSq k • (1 : OrbitalMatrix) := by
-  ext i j
-  fin_cases i <;> fin_cases j <;>
-    simp [momentumOuter, transverseNumerator, momentumNormSq, Matrix.add_apply,
-      Matrix.smul_apply, smul_eq_mul] <;> ring
-
-theorem momentumOuter_mul_self (k : Fin 3 → ℝ) :
-    momentumOuter k * momentumOuter k = momentumNormSq k • momentumOuter k := by
-  ext i j
-  fin_cases i <;> fin_cases j <;>
-    simp [momentumOuter, momentumNormSq, Matrix.mul_apply, Fin.sum_univ_three,
-      Matrix.smul_apply, smul_eq_mul] <;> ring
-
-theorem transverseNumerator_mul_self (k : Fin 3 → ℝ) :
-    transverseNumerator k * transverseNumerator k =
-      momentumNormSq k • transverseNumerator k := by
-  ext i j
-  fin_cases i <;> fin_cases j <;>
-    simp [transverseNumerator, momentumNormSq, Matrix.mul_apply, Fin.sum_univ_three,
-      Matrix.smul_apply, smul_eq_mul] <;> ring
-
-theorem momentumOuter_mul_transverseNumerator (k : Fin 3 → ℝ) :
-    momentumOuter k * transverseNumerator k = 0 := by
-  ext i j
-  fin_cases i <;> fin_cases j <;>
-    simp [momentumOuter, transverseNumerator, Matrix.mul_apply, Fin.sum_univ_three] <;> ring
-
-theorem transverseNumerator_mul_momentumOuter (k : Fin 3 → ℝ) :
-    transverseNumerator k * momentumOuter k = 0 := by
-  ext i j
-  fin_cases i <;> fin_cases j <;>
-    simp [momentumOuter, transverseNumerator, Matrix.mul_apply, Fin.sum_univ_three] <;> ring
-
-/-- Assumed spherical `t₂g` matrix Hamiltonian, with `t` the kinetic coefficient
-and `r` the crystal-field splitting in the source model. This definition does
-not derive either coefficient or the model from orbital-indexed hopping. -/
+/-- Assumed spherical `t₂g` matrix Hamiltonian, with `t` the kinetic
+coefficient and `r` the band-splitting parameter. -/
 def t2gHamiltonian (t r : ℝ) (k : Fin 3 → ℝ) : OrbitalMatrix :=
-  (t * momentumNormSq k) • (1 : OrbitalMatrix) + r • transverseNumerator k
+  (t * normSq k) • (1 : OrbitalMatrix) + r • transverse k
 
 theorem t2gHamiltonian_spectral_decomposition (t r : ℝ) (k : Fin 3 → ℝ) :
-    momentumNormSq k • t2gHamiltonian t r k =
-      (t * momentumNormSq k) • momentumOuter k +
-      ((t + r) * momentumNormSq k) • transverseNumerator k := by
+    normSq k • t2gHamiltonian t r k =
+      (t * normSq k) • outer k +
+      ((t + r) * normSq k) • transverse k := by
+  have hsplit := CartesianProjectors.outer_add_transverse k
   ext i j
-  fin_cases i <;> fin_cases j <;>
-    simp [t2gHamiltonian, momentumNormSq, momentumOuter, transverseNumerator,
-      Matrix.add_apply, Matrix.smul_apply, smul_eq_mul] <;> ring_nf
+  have hsplit' := congrArg (fun M : OrbitalMatrix => M i j) hsplit
+  simp only [Matrix.add_apply, Matrix.smul_apply, smul_eq_mul] at hsplit'
+  simp only [t2gHamiltonian, Matrix.add_apply, Matrix.smul_apply, smul_eq_mul]
+  calc
+    normSq k * (t * normSq k * (1 : OrbitalMatrix) i j + r * transverse k i j) =
+        t * normSq k * (normSq k * (1 : OrbitalMatrix) i j) +
+          (r * normSq k) * transverse k i j := by ring
+    _ = t * normSq k * (outer k i j + transverse k i j) +
+          (r * normSq k) * transverse k i j := by rw [← hsplit']
+    _ = t * normSq k * outer k i j +
+          ((t + r) * normSq k) * transverse k i j := by ring
 
 end QuantumTheory.Models.OrbitalRelaxation
