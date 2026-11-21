@@ -18,10 +18,10 @@ import LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVHankelUnitR
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVResolventDifference
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornRadialScalarGrid
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornRealSpacePropagator
-import LeanCondensedMatter.Models.MassiveDirac.Disorder.Vertex.FiniteBroadening.Response
+import LeanCondensedMatter.Models.MassiveDirac.Disorder.Vertex.BornDyson.DressedCurrent
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.TMatrix
-import LeanCondensedMatter.Models.MassiveDirac.Disorder.Vertex.Ladder.ZeroBroadeningWeakDisorder
-import LeanCondensedMatter.Models.MassiveDirac.Disorder.Vertex.Ladder.ZeroBroadeningTransverseWeakDisorder
+import LeanCondensedMatter.Models.MassiveDirac.Disorder.Vertex.Ladder.RegulatorBoundaryWeakDisorder
+import LeanCondensedMatter.Models.MassiveDirac.Disorder.Vertex.Ladder.RegulatorBoundaryTransverseWeakDisorder
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.Vertex.Born.WeakDisorder
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.Vertex.Born.InfiniteCutoff
 
