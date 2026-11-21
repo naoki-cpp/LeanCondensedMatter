@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Transport.Analysis.BesselY0Series
+import LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.Y0Series
 
 set_option linter.style.header false
 
@@ -19,10 +19,10 @@ discarded by a totalized inverse at zero.
 The derivative identity Y₁=-Y₀', the second-kind Bessel equation
 and its Wronskian with J₀/J₁ are mathematical goals, NOT assumptions
 or conclusions in this file. An explicit convergent formula alone
-cannot yet discharge `CrossedXBesselWronskian`.
+does not by itself establish the Wronskian.
 -/
 
-namespace QuantumTheory.Transport
+namespace BesselSecondKind
 
 noncomputable section
 
@@ -154,4 +154,4 @@ theorem besselY0Y1Wronskian_of_harmonicIdentity
 
 end
 
-end QuantumTheory.Transport
+end BesselSecondKind

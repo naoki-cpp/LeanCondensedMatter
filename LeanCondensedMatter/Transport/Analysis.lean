@@ -1,6 +1,4 @@
 import LeanCondensedMatter.Transport.Analysis.BesselRadialMoments
-import LeanCondensedMatter.Transport.Analysis.BesselY0Series
-import LeanCondensedMatter.Transport.Analysis.BesselY1Series
 import LeanCondensedMatter.Transport.Analysis.BesselYFormalAnalyticBridge
 import LeanCondensedMatter.Transport.Analysis.BesselJFormalAnalyticBridge
 import LeanCondensedMatter.Transport.Analysis.BesselYAnalyticWronskian
