@@ -155,7 +155,7 @@ assert that the model's cutoff-dependent Born-Dyson crossed-X integral
 has this Bessel representation, or justify its regulator limits. Those
 physical bridge theorems remain the outstanding Phase 7 obligations. -/
 theorem adoCrossedXBesselReference_tendsto_benchmark
-    (Y0 Y1 : ℝ → ℂ) (hW : CrossedXBesselWronskian Y0 Y1)
+    (Y0 Y1 : ℝ → ℂ) (hW : RealWronskianCondition Y0 Y1)
     (e hbar m probeEnergy : ℝ) :
     Filter.Tendsto
       (fun R : ℝ =>
@@ -215,7 +215,7 @@ theorem adoCrossedXConcreteBesselReference_integral_eq_endpoints (R : ℝ) :
   exact integral_crossedXBesselIntegrand_eq_endpoints
     (fun r : ℝ => besselY0Series (r : ℂ))
     (fun r : ℝ => besselY1Series (r : ℂ))
-    crossedXBesselWronskian_concreteSeries R
+    realWronskianCondition_concreteSeries R
 
 /-- The Ado crossed-X **reference** Eq. (17) benchmark for Mathlib J
 and the *concrete* convergent Y₀/Y₁ series, now unconditional.
@@ -244,7 +244,7 @@ theorem adoCrossedXConcreteBesselReference_tendsto_benchmark
   exact adoCrossedXBesselReference_tendsto_benchmark
     (fun r : ℝ => besselY0Series (r : ℂ))
     (fun r : ℝ => besselY1Series (r : ℂ))
-    crossedXBesselWronskian_concreteSeries e hbar m probeEnergy
+    realWronskianCondition_concreteSeries e hbar m probeEnergy
 
 end
 
