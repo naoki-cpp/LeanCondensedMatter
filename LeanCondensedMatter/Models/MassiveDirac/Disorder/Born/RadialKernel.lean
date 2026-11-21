@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Models.MassiveDirac.Propagator.Basic
-import LeanCondensedMatter.Models.MassiveDirac.Propagator.RadialFourier.QuadraticKernel
+import LeanCondensedMatter.Models.MassiveDirac.Propagator.RadialDenominator
 import Mathlib.Tactic.Positivity
 import Mathlib.Tactic.Ring
 
@@ -8,10 +8,10 @@ set_option linter.style.header false
 /-!
 # Massive-Dirac radial denominator kernels
 
-This module owns the model-local radial denominator algebra shared by Born self-energy, Born
-propagators, and retarded-advanced current-rung calculations. It contains the effective-energy /
-effective-mass quadratic denominator, the weak-Born retarded-advanced denominator data, and the
-single-denominator polar-Jacobian kernel.
+This module owns the weak-Born retarded/advanced denominator parametrization and its
+real nonnegative product. The disorder-independent complex radial denominator,
+retarded/advanced product, and polar-Jacobian kernel live in
+`Propagator.RadialDenominator`, which this module imports.
 
 No self-energy, disorder/measure prefactor, radial integral, ladder conclusion, or conductivity
 statement lives here.
@@ -22,18 +22,6 @@ namespace QuantumTheory.Models.MassiveDirac
 noncomputable section
 
 open QuantumTheory.Transport
-
-/-- Retarded-advanced product of two radial massive-Dirac denominators. -/
-def massiveDiracRetardedAdvancedRadialDenominatorProduct
-    (v p : ℝ)
-    (retardedEnergy retardedMass advancedEnergy advancedMass : ℂ) : ℂ :=
-  massiveDiracRadialDenominator v p retardedEnergy retardedMass *
-    massiveDiracRadialDenominator v p advancedEnergy advancedMass
-
-/-- Polar Jacobian divided by one radial massive-Dirac denominator. -/
-def massiveDiracRadialDenominatorKernel
-    (v p : ℝ) (effectiveEnergy effectiveMass : ℂ) : ℂ :=
-  (p : ℂ) * (massiveDiracRadialDenominator v p effectiveEnergy effectiveMass)⁻¹
 
 /-- Common positive-scale expression multiplying the metallic Born scalar and `σ_z` damping
 channels. Positivity requires the physical hypotheses proved downstream when needed. -/
