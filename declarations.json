@@ -639263,10 +639263,10 @@
   "statement":
   "∀ {H : Type u_1} {Ω : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] [inst_3 : Fintype Ω] (ensemble : QuantumTheory.Transport.FiniteDisorderEnsemble)\n  (energy regulator : ℝ), regulator ≠ 0 → IsUnit (ensemble.averagedGreenOfRegulator energy regulator)",
   "standardAxioms": ["Classical.choice", "Quot.sound", "propext"],
-  "sourceLine": 231,
+  "sourceLine": 213,
   "sourceFile":
   "LeanCondensedMatter/Transport/Disorder/AveragedSelfEnergy.lean",
-  "sourceEndLine": 238,
+  "sourceEndLine": 220,
   "sourceEndColumn": 80,
   "sourceColumn": 8,
   "soleCompiledConsumerPrivate": false,
@@ -639294,7 +639294,7 @@
    "QuantumTheory.Transport.FiniteDisorderEnsemble.averagedGreenOfRegulator",
    "_private.LeanCondensedMatter.Transport.Disorder.AveragedSelfEnergy.0.QuantumTheory.Transport.FiniteDisorderEnsemble.averagedGreenOfRegulator_antilipschitz",
    "_private.LeanCondensedMatter.Transport.Disorder.AveragedSelfEnergy.0.QuantumTheory.Transport.FiniteDisorderEnsemble.averagedGreenOfRegulator_denseRange"],
-  "declarationStartLine": 229,
+  "declarationStartLine": 211,
   "crossModuleDirectWrapper": false,
   "completedMention": false,
   "compiledConsumers":
@@ -646698,10 +646698,10 @@
      "id": "_uniq.89039"}]},
   "statement":
   "{H : Type u_1} →\n  {Ω : Type u_2} →\n    [inst : NormedAddCommGroup H] →\n      [inst_1 : InnerProductSpace ℂ H] →\n        [inst_2 : CompleteSpace H] →\n          [inst_3 : Fintype Ω] →\n            QuantumTheory.Transport.FiniteDisorderEnsemble → ℝ → (regulator : ℝ) → regulator ≠ 0 → H →L[ℂ] H",
-  "sourceLine": 241,
+  "sourceLine": 223,
   "sourceFile":
   "LeanCondensedMatter/Transport/Disorder/AveragedSelfEnergy.lean",
-  "sourceEndLine": 249,
+  "sourceEndLine": 231,
   "sourceEndColumn": 53,
   "sourceColumn": 18,
   "projection": false,
@@ -646726,7 +646726,7 @@
    "QuantumTheory.Transport.FiniteDisorderEnsemble.exactSelfEnergyOfRegulator._proof_4",
    "QuantumTheory.Transport.FiniteDisorderEnsemble.exactSelfEnergyOfRegulator._proof_5",
    "QuantumTheory.Transport.spectralParameterOfRegulator"],
-  "declarationStartLine": 240},
+  "declarationStartLine": 222},
  {"valueDependencies": [],
   "typeDependencies": [],
   "structuredStatement": null,
@@ -647011,10 +647011,10 @@
   "statement":
   "∀ {H : Type u_1} {Ω : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] [inst_3 : Fintype Ω] (ensemble : QuantumTheory.Transport.FiniteDisorderEnsemble)\n  (energy regulator : ℝ) (hregulator : regulator ≠ 0),\n  QuantumTheory.Transport.IsSelfEnergy (ensemble.freeGreenOfRegulator energy regulator)\n    (ensemble.averagedGreenOfRegulator energy regulator)\n    (ensemble.exactSelfEnergyOfRegulator energy regulator hregulator)",
   "standardAxioms": ["Classical.choice", "Quot.sound", "propext"],
-  "sourceLine": 299,
+  "sourceLine": 281,
   "sourceFile":
   "LeanCondensedMatter/Transport/Disorder/AveragedSelfEnergy.lean",
-  "sourceEndLine": 308,
+  "sourceEndLine": 290,
   "sourceEndColumn": 5,
   "sourceColumn": 8,
   "soleCompiledConsumerPrivate": false,
@@ -647042,7 +647042,7 @@
    "QuantumTheory.Transport.FiniteDisorderEnsemble.freeGreenOfRegulator",
    "QuantumTheory.Transport.FiniteDisorderEnsemble.isSelfEnergy_iff_eq_exactSelfEnergyOfRegulator",
    "QuantumTheory.Transport.IsSelfEnergy"],
-  "declarationStartLine": 297,
+  "declarationStartLine": 279,
   "crossModuleDirectWrapper": false,
   "completedMention": false,
   "compiledConsumers": [],
@@ -648273,10 +648273,10 @@
   "statement":
   "∀ {H : Type u_1} {Ω : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] [inst_3 : Fintype Ω] (ensemble : QuantumTheory.Transport.FiniteDisorderEnsemble)\n  (energy regulator : ℝ) (hregulator : regulator ≠ 0) (selfEnergy : H →L[ℂ] H),\n  QuantumTheory.Transport.IsSelfEnergy (ensemble.freeGreenOfRegulator energy regulator)\n      (ensemble.averagedGreenOfRegulator energy regulator) selfEnergy ↔\n    selfEnergy = ensemble.exactSelfEnergyOfRegulator energy regulator hregulator",
   "standardAxioms": ["Classical.choice", "Quot.sound", "propext"],
-  "sourceLine": 253,
+  "sourceLine": 235,
   "sourceFile":
   "LeanCondensedMatter/Transport/Disorder/AveragedSelfEnergy.lean",
-  "sourceEndLine": 295,
+  "sourceEndLine": 277,
   "sourceEndColumn": 53,
   "sourceColumn": 8,
   "soleCompiledConsumerPrivate": false,
@@ -648310,7 +648310,7 @@
    "QuantumTheory.Transport.resolvent_spectralParameterOfRegulator_mul_spectralShift",
    "QuantumTheory.Transport.spectralParameterOfRegulator",
    "QuantumTheory.Transport.spectralShift_mul_resolvent_spectralParameterOfRegulator"],
-  "declarationStartLine": 251,
+  "declarationStartLine": 233,
   "crossModuleDirectWrapper": false,
   "completedMention": false,
   "compiledConsumers":
@@ -1405452,8 +1405452,8 @@
   "sourceLine": 75,
   "sourceFile":
   "LeanCondensedMatter/Transport/Disorder/AveragedSelfEnergy.lean",
-  "sourceEndLine": 203,
-  "sourceEndColumn": 14,
+  "sourceEndLine": 185,
+  "sourceEndColumn": 54,
   "sourceColumn": 16,
   "soleCompiledConsumerPrivate": false,
   "singleCompiledConsumer": false,
@@ -1405665,10 +1405665,10 @@
   "statement":
   "∀ {H : Type u_1} {Ω : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] [inst_3 : Fintype Ω] (ensemble : QuantumTheory.Transport.FiniteDisorderEnsemble)\n  (energy regulator : ℝ),\n  regulator ≠ 0 → (↑(ensemble.averagedGreenOfRegulator energy regulator)).range.topologicalClosure = ⊤",
   "standardAxioms": ["Classical.choice", "Quot.sound", "propext"],
-  "sourceLine": 205,
+  "sourceLine": 187,
   "sourceFile":
   "LeanCondensedMatter/Transport/Disorder/AveragedSelfEnergy.lean",
-  "sourceEndLine": 227,
+  "sourceEndLine": 209,
   "sourceEndColumn": 31,
   "sourceColumn": 16,
   "soleCompiledConsumerPrivate": false,
@@ -1405694,7 +1405694,7 @@
    "QuantumTheory.Transport.FiniteDisorderEnsemble.averagedGreenOfRegulator",
    "QuantumTheory.Transport.FiniteDisorderEnsemble.star_averagedGreenOfRegulator",
    "_private.LeanCondensedMatter.Transport.Disorder.AveragedSelfEnergy.0.QuantumTheory.Transport.FiniteDisorderEnsemble.averagedGreenOfRegulator_antilipschitz"],
-  "declarationStartLine": 205,
+  "declarationStartLine": 187,
   "crossModuleDirectWrapper": false,
   "completedMention": false,
   "compiledConsumers":
