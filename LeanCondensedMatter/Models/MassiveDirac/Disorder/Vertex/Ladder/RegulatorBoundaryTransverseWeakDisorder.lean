@@ -1,5 +1,5 @@
-import LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexZeroBroadeningTransverseWeakDisorder
-import LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningLadderZeroBroadeningWeakDisorder
+import LeanCondensedMatter.Models.MassiveDirac.Disorder.Vertex.BornDyson.RegulatorBoundaryTransverseWeakDisorder
+import LeanCondensedMatter.Models.MassiveDirac.Disorder.Vertex.Ladder.RegulatorBoundaryWeakDisorder
 import Mathlib.Tactic.FieldSimp
 import Mathlib.Tactic.Linarith
 import Mathlib.Tactic.NormNum
@@ -8,7 +8,7 @@ import Mathlib.Tactic.Ring
 set_option linter.style.header false
 
 /-!
-# Scaled transverse weak-disorder limit of the zero-broadening ladder
+# Transverse weak-disorder limit after ladder regulator removal
 
 This module propagates the first nonvanishing transverse current-rung coefficient through the
 canonical two-component solved ladder. The quotient by `W` is formed before the one-sided

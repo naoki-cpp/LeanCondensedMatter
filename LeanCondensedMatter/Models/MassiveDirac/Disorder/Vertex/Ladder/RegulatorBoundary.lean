@@ -1,9 +1,9 @@
-import LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexZeroBroadeningIntegral
+import LeanCondensedMatter.Models.MassiveDirac.Disorder.Vertex.BornDyson.RegulatorBoundaryIntegral
 
 set_option linter.style.header false
 
 /-!
-# Zero-broadening boundary of the finite-cutoff Born-Dyson ladder
+# External-regulator boundary of the Born-Dyson ladder
 
 At fixed positive disorder and finite cutoff, the integrated current-rung boundary determines the
 zero-broadening boundary of the canonical in-plane ladder. The only additional analytic condition is

@@ -1,10 +1,10 @@
-import LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningLadderZeroBroadening
+import LeanCondensedMatter.Models.MassiveDirac.Disorder.Vertex.Ladder.RegulatorBoundary
 import LeanCondensedMatter.Models.MassiveDirac.Model.Operator
 
 set_option linter.style.header false
 
 /-!
-# Finite-broadening Born-Dyson dressed current insertion
+# Born-Dyson dressed current insertion
 
 This module is the response seam for the finite-cutoff finite-broadening Born-Dyson current
 vertex. The current-rung implementation owns angular reduction, radial normalization, and the
