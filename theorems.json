@@ -84359,7 +84359,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ (W : ℝ → ℝ),\n  Continuous W →\n    QuantumTheory.Models.OrbitalRelaxation.continuousDegreeTwoRate W =\n      QuantumTheory.Models.OrbitalRelaxation.sphericalAverage 1 fun q =>\n        W (q 2) * (1 - QuantumTheory.Models.OrbitalRelaxation.legendreP2 (q 2))",
+    "statement": "∀ (W : ℝ → ℝ),\n  Continuous W →\n    QuantumTheory.Models.OrbitalRelaxation.continuousDegreeTwoRate W =\n      SphericalMoments.sphericalAverage 1 fun q =>\n        W (q 2) * (1 - QuantumTheory.Models.OrbitalRelaxation.legendreP2 (q 2))",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -84436,7 +84436,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": false,
+    "terminal": true,
     "statement": "∀ (i : Fin 3) (r : ℝ), (QuantumTheory.Models.OrbitalRelaxation.evenQuarticCubature r fun k => k i ^ 4) = r ^ 4 / 5",
     "standardAxioms": [
       "Classical.choice",
@@ -84444,7 +84444,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -84455,16 +84455,12 @@
     "docString": null,
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Models.OrbitalRelaxation.sphericalAverage_coordinate_four"
-    ],
+    "dependents": [],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Models.OrbitalRelaxation.sphericalAverage_coordinate_four"
-    ],
-    "compiledConsumerCount": 1,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -84478,7 +84474,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": false,
+    "terminal": true,
     "statement": "∀ (i j : Fin 3),\n  i ≠ j →\n    ∀ (r : ℝ), (QuantumTheory.Models.OrbitalRelaxation.evenQuarticCubature r fun k => k i ^ 2 * k j ^ 2) = r ^ 4 / 15",
     "standardAxioms": [
       "Classical.choice",
@@ -84486,7 +84482,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -84497,16 +84493,12 @@
     "docString": null,
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Models.OrbitalRelaxation.sphericalAverage_coordinate_sq_mul_coordinate_sq"
-    ],
+    "dependents": [],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Models.OrbitalRelaxation.sphericalAverage_coordinate_sq_mul_coordinate_sq"
-    ],
-    "compiledConsumerCount": 1,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -84575,7 +84567,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -84587,17 +84579,15 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Models.OrbitalRelaxation.evenQuarticCubature_orbitalDoubleCommutator",
-      "QuantumTheory.Models.OrbitalRelaxation.sphericalAverage_orbitalDoubleCommutator"
+      "QuantumTheory.Models.OrbitalRelaxation.evenQuarticCubature_orbitalDoubleCommutator"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Models.OrbitalRelaxation.evenQuarticCubature_orbitalDoubleCommutator",
-      "QuantumTheory.Models.OrbitalRelaxation.sphericalAverage_orbitalDoubleCommutator"
+      "QuantumTheory.Models.OrbitalRelaxation.evenQuarticCubature_orbitalDoubleCommutator"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -85215,7 +85205,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ (axis : Fin 3) (ℏ τ₂ c₁ c₂ r : ℝ),\n  QuantumTheory.Models.OrbitalRelaxation.orbitalRate axis ℏ τ₂ c₁ c₂ r =\n    τ₂ / ℏ ^ 2 *\n      QuantumTheory.Models.OrbitalRelaxation.sphericalAverage r\n        (QuantumTheory.Models.OrbitalRelaxation.orbitalDoubleCommutator axis c₁ c₂)",
+    "statement": "∀ (axis : Fin 3) (ℏ τ₂ c₁ c₂ r : ℝ),\n  QuantumTheory.Models.OrbitalRelaxation.orbitalRate axis ℏ τ₂ c₁ c₂ r =\n    τ₂ / ℏ ^ 2 *\n      SphericalMoments.sphericalAverage r (QuantumTheory.Models.OrbitalRelaxation.orbitalDoubleCommutator axis c₁ c₂)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -85453,90 +85443,8 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
-    "statement": "∀ (i : Fin 3) (r : ℝ),\n  (QuantumTheory.Models.OrbitalRelaxation.sphericalAverage r fun k => k i ^ 4) =\n    QuantumTheory.Models.OrbitalRelaxation.evenQuarticCubature r fun k => k i ^ 4",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Models.OrbitalRelaxation.sphericalAverage_coordinate_four",
-    "module": "LeanCondensedMatter.Models.OrbitalRelaxation.SphereMoments",
-    "externalAxioms": [],
-    "docString": "Continuous and finite fourth moments agree for every Cartesian index. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "QuantumTheory.Models.OrbitalRelaxation.evenQuarticCubature_coordinate_four",
-      "_private.LeanCondensedMatter.Models.OrbitalRelaxation.SphereMoments.0.QuantumTheory.Models.OrbitalRelaxation.sphericalAverage_evenQuarticPolynomial"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ (i j : Fin 3),\n  i ≠ j →\n    ∀ (r : ℝ),\n      (QuantumTheory.Models.OrbitalRelaxation.sphericalAverage r fun k => k i ^ 2 * k j ^ 2) =\n        QuantumTheory.Models.OrbitalRelaxation.evenQuarticCubature r fun k => k i ^ 2 * k j ^ 2",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Models.OrbitalRelaxation.sphericalAverage_coordinate_sq_mul_coordinate_sq",
-    "module": "LeanCondensedMatter.Models.OrbitalRelaxation.SphereMoments",
-    "externalAxioms": [],
-    "docString": "Continuous and finite mixed fourth moments agree for distinct indices. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "QuantumTheory.Models.OrbitalRelaxation.evenQuarticCubature_coordinate_sq_mul_coordinate_sq",
-      "_private.LeanCondensedMatter.Models.OrbitalRelaxation.SphereMoments.0.QuantumTheory.Models.OrbitalRelaxation.sphericalAverage_evenQuarticPolynomial"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
     "terminal": false,
-    "statement": "∀ (axis : Fin 3) (c₁ c₂ r : ℝ),\n  QuantumTheory.Models.OrbitalRelaxation.sphericalAverage r\n      (QuantumTheory.Models.OrbitalRelaxation.orbitalDoubleCommutator axis c₁ c₂) =\n    2 * r ^ 4 / 15 * (2 * c₁ ^ 2 + 3 * c₂ ^ 2)",
+    "statement": "∀ (axis : Fin 3) (c₁ c₂ r : ℝ),\n  SphericalMoments.sphericalAverage r (QuantumTheory.Models.OrbitalRelaxation.orbitalDoubleCommutator axis c₁ c₂) =\n    2 * r ^ 4 / 15 * (2 * c₁ ^ 2 + 3 * c₂ ^ 2)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -85558,9 +85466,8 @@
       "QuantumTheory.Models.OrbitalRelaxation.orbitalRate_eq_sphericalAverage"
     ],
     "dependencies": [
-      "QuantumTheory.Models.OrbitalRelaxation.evenQuarticCubature_orbitalPolynomial",
       "QuantumTheory.Models.OrbitalRelaxation.orbitalDoubleCommutator_eq_polynomial",
-      "QuantumTheory.Models.OrbitalRelaxation.sphericalAverage_orbitalPolynomial_eq_cubature"
+      "SphericalMoments.sphericalAverage_evenQuarticPolynomial"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -85582,51 +85489,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (axis : Fin 3) (c₁ c₂ r : ℝ),\n  QuantumTheory.Models.OrbitalRelaxation.sphericalAverage r\n      (QuantumTheory.Models.OrbitalRelaxation.orbitalPolynomial axis c₁ c₂) =\n    QuantumTheory.Models.OrbitalRelaxation.evenQuarticCubature r\n      (QuantumTheory.Models.OrbitalRelaxation.orbitalPolynomial axis c₁ c₂)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Models.OrbitalRelaxation.sphericalAverage_orbitalPolynomial_eq_cubature",
-    "module": "LeanCondensedMatter.Models.OrbitalRelaxation.SphereMoments",
-    "externalAxioms": [],
-    "docString": "The orbital double-commutator quartic has the same continuous spherical\naverage as the finite cubature, for all three Cartesian polarizations. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Models.OrbitalRelaxation.sphericalAverage_orbitalDoubleCommutator"
-    ],
-    "dependencies": [
-      "_private.LeanCondensedMatter.Models.OrbitalRelaxation.SphereMoments.0.QuantumTheory.Models.OrbitalRelaxation.sphericalAverage_evenQuartic_eq_cubature"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Models.OrbitalRelaxation.sphericalAverage_orbitalDoubleCommutator"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (f : ℝ → ℝ),\n  Continuous f →\n    (QuantumTheory.Models.OrbitalRelaxation.sphericalAverage 1 fun k => f (k 2)) =\n      QuantumTheory.Models.OrbitalRelaxation.polarCosineAverage f",
+    "statement": "∀ (f : ℝ → ℝ),\n  Continuous f →\n    (SphericalMoments.sphericalAverage 1 fun k => f (k 2)) = QuantumTheory.Models.OrbitalRelaxation.polarCosineAverage f",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -175457,6 +175320,141 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
+    "terminal": true,
+    "statement": "∀ (i : Fin 3) (r : ℝ), (SphericalMoments.sphericalAverage r fun k => k i ^ 4) = r ^ 4 / 5",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SphericalMoments.sphericalAverage_coordinate_four",
+    "module": "LeanCondensedMatter.Analysis.Geometry.SphericalMoments",
+    "externalAxioms": [],
+    "docString": "The normalized spherical fourth moment of any Cartesian coordinate is `r⁴/5`. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "SphericalMoments.sphericalAverage_evenQuarticPolynomial"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (i j : Fin 3), i ≠ j → ∀ (r : ℝ), (SphericalMoments.sphericalAverage r fun k => k i ^ 2 * k j ^ 2) = r ^ 4 / 15",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SphericalMoments.sphericalAverage_coordinate_sq_mul_coordinate_sq",
+    "module": "LeanCondensedMatter.Analysis.Geometry.SphericalMoments",
+    "externalAxioms": [],
+    "docString": "The normalized mixed spherical fourth moment for distinct coordinates is `r⁴/15`. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "SphericalMoments.sphericalAverage_evenQuarticPolynomial"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (r a b c d e f : ℝ),\n  SphericalMoments.sphericalAverage r (SphericalMoments.evenQuarticPolynomial a b c d e f) =\n    r ^ 4 / 5 * (a + b + c) + r ^ 4 / 15 * (d + e + f)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SphericalMoments.sphericalAverage_evenQuarticPolynomial",
+    "module": "LeanCondensedMatter.Analysis.Geometry.SphericalMoments",
+    "externalAxioms": [],
+    "docString": "The normalized continuous spherical-coordinate average of any coordinate-even\nhomogeneous quartic, evaluated independently of the finite cubature. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.OrbitalRelaxation.sphericalAverage_orbitalDoubleCommutator",
+      "SphericalMoments.sphericalAverage_coordinate_four",
+      "SphericalMoments.sphericalAverage_coordinate_sq_mul_coordinate_sq"
+    ],
+    "dependencies": [
+      "_private.LeanCondensedMatter.Analysis.Geometry.SphericalMoments.0.SphericalMoments.integral_cos_four_full",
+      "_private.LeanCondensedMatter.Analysis.Geometry.SphericalMoments.0.SphericalMoments.integral_cos_sq_full",
+      "_private.LeanCondensedMatter.Analysis.Geometry.SphericalMoments.0.SphericalMoments.integral_sin_five",
+      "_private.LeanCondensedMatter.Analysis.Geometry.SphericalMoments.0.SphericalMoments.integral_sin_four_full",
+      "_private.LeanCondensedMatter.Analysis.Geometry.SphericalMoments.0.SphericalMoments.integral_sin_mul_cos_four",
+      "_private.LeanCondensedMatter.Analysis.Geometry.SphericalMoments.0.SphericalMoments.integral_sin_sq_full",
+      "_private.LeanCondensedMatter.Analysis.Geometry.SphericalMoments.0.SphericalMoments.integral_sin_sq_mul_cos_sq_full",
+      "_private.LeanCondensedMatter.Analysis.Geometry.SphericalMoments.0.SphericalMoments.integral_sin_three_mul_cos_sq"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.OrbitalRelaxation.sphericalAverage_orbitalDoubleCommutator",
+      "SphericalMoments.sphericalAverage_coordinate_four",
+      "SphericalMoments.sphericalAverage_coordinate_sq_mul_coordinate_sq"
+    ],
+    "compiledConsumerCount": 3,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
     "terminal": false,
     "statement": "∀ {ι : Type u_1} {κ : Type u_2} {f : κ → ℝ},\n  Summable f →\n    (∀ (k : κ), 0 ≤ f k) →\n      ∀ (e : ι → κ), Function.Injective e → ∀ {j : κ}, j ∉ Set.range e → 0 < f j → ∑' (i : ι), f (e i) < ∑' (k : κ), f k",
     "standardAxioms": [
@@ -176170,6 +176168,350 @@
     "completedMention": false,
     "compiledConsumers": [
       "ZMod.cyclicLaplacian_fourierMode"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∫ (φ : ℝ) in 0..2 * Real.pi, Real.cos φ ^ 4 = 3 * Real.pi / 4",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Analysis.Geometry.SphericalMoments.0.SphericalMoments.integral_cos_four_full",
+    "module": "LeanCondensedMatter.Analysis.Geometry.SphericalMoments",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SphericalMoments.sphericalAverage_evenQuarticPolynomial"
+    ],
+    "dependencies": [
+      "_private.LeanCondensedMatter.Analysis.Geometry.SphericalMoments.0.SphericalMoments.integral_cos_sq_full"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SphericalMoments.sphericalAverage_evenQuarticPolynomial"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∫ (φ : ℝ) in 0..2 * Real.pi, Real.cos φ ^ 2 = Real.pi",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Analysis.Geometry.SphericalMoments.0.SphericalMoments.integral_cos_sq_full",
+    "module": "LeanCondensedMatter.Analysis.Geometry.SphericalMoments",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SphericalMoments.sphericalAverage_evenQuarticPolynomial",
+      "_private.LeanCondensedMatter.Analysis.Geometry.SphericalMoments.0.SphericalMoments.integral_cos_four_full"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SphericalMoments.sphericalAverage_evenQuarticPolynomial",
+      "_private.LeanCondensedMatter.Analysis.Geometry.SphericalMoments.0.SphericalMoments.integral_cos_four_full"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∫ (θ : ℝ) in 0..Real.pi, Real.sin θ ^ 5 = 16 / 15",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Analysis.Geometry.SphericalMoments.0.SphericalMoments.integral_sin_five",
+    "module": "LeanCondensedMatter.Analysis.Geometry.SphericalMoments",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SphericalMoments.sphericalAverage_evenQuarticPolynomial"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SphericalMoments.sphericalAverage_evenQuarticPolynomial"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∫ (φ : ℝ) in 0..2 * Real.pi, Real.sin φ ^ 4 = 3 * Real.pi / 4",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Analysis.Geometry.SphericalMoments.0.SphericalMoments.integral_sin_four_full",
+    "module": "LeanCondensedMatter.Analysis.Geometry.SphericalMoments",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SphericalMoments.sphericalAverage_evenQuarticPolynomial"
+    ],
+    "dependencies": [
+      "_private.LeanCondensedMatter.Analysis.Geometry.SphericalMoments.0.SphericalMoments.integral_sin_sq_full"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SphericalMoments.sphericalAverage_evenQuarticPolynomial"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∫ (θ : ℝ) in 0..Real.pi, Real.sin θ * Real.cos θ ^ 4 = 2 / 5",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Analysis.Geometry.SphericalMoments.0.SphericalMoments.integral_sin_mul_cos_four",
+    "module": "LeanCondensedMatter.Analysis.Geometry.SphericalMoments",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SphericalMoments.sphericalAverage_evenQuarticPolynomial"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SphericalMoments.sphericalAverage_evenQuarticPolynomial"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∫ (φ : ℝ) in 0..2 * Real.pi, Real.sin φ ^ 2 = Real.pi",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Analysis.Geometry.SphericalMoments.0.SphericalMoments.integral_sin_sq_full",
+    "module": "LeanCondensedMatter.Analysis.Geometry.SphericalMoments",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SphericalMoments.sphericalAverage_evenQuarticPolynomial",
+      "_private.LeanCondensedMatter.Analysis.Geometry.SphericalMoments.0.SphericalMoments.integral_sin_four_full"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SphericalMoments.sphericalAverage_evenQuarticPolynomial",
+      "_private.LeanCondensedMatter.Analysis.Geometry.SphericalMoments.0.SphericalMoments.integral_sin_four_full"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∫ (φ : ℝ) in 0..2 * Real.pi, Real.sin φ ^ 2 * Real.cos φ ^ 2 = Real.pi / 4",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Analysis.Geometry.SphericalMoments.0.SphericalMoments.integral_sin_sq_mul_cos_sq_full",
+    "module": "LeanCondensedMatter.Analysis.Geometry.SphericalMoments",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SphericalMoments.sphericalAverage_evenQuarticPolynomial"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SphericalMoments.sphericalAverage_evenQuarticPolynomial"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∫ (θ : ℝ) in 0..Real.pi, Real.sin θ ^ 3 * Real.cos θ ^ 2 = 4 / 15",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Analysis.Geometry.SphericalMoments.0.SphericalMoments.integral_sin_three_mul_cos_sq",
+    "module": "LeanCondensedMatter.Analysis.Geometry.SphericalMoments",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SphericalMoments.sphericalAverage_evenQuarticPolynomial"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SphericalMoments.sphericalAverage_evenQuarticPolynomial"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -189759,449 +190101,6 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.Models.OrbitalRelaxation.QuasistationaryOrbitalKineticClosure.polarization_eq_exp"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∫ (φ : ℝ) in 0..2 * Real.pi, Real.cos φ ^ 4 = 3 * Real.pi / 4",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Models.OrbitalRelaxation.SphereMoments.0.QuantumTheory.Models.OrbitalRelaxation.integral_cos_four_full",
-    "module": "LeanCondensedMatter.Models.OrbitalRelaxation.SphereMoments",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.Models.OrbitalRelaxation.SphereMoments.0.QuantumTheory.Models.OrbitalRelaxation.sphericalAverage_evenQuarticPolynomial"
-    ],
-    "dependencies": [
-      "_private.LeanCondensedMatter.Models.OrbitalRelaxation.SphereMoments.0.QuantumTheory.Models.OrbitalRelaxation.integral_cos_sq_full"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.Models.OrbitalRelaxation.SphereMoments.0.QuantumTheory.Models.OrbitalRelaxation.sphericalAverage_evenQuarticPolynomial"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∫ (φ : ℝ) in 0..2 * Real.pi, Real.cos φ ^ 2 = Real.pi",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Models.OrbitalRelaxation.SphereMoments.0.QuantumTheory.Models.OrbitalRelaxation.integral_cos_sq_full",
-    "module": "LeanCondensedMatter.Models.OrbitalRelaxation.SphereMoments",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.Models.OrbitalRelaxation.SphereMoments.0.QuantumTheory.Models.OrbitalRelaxation.integral_cos_four_full",
-      "_private.LeanCondensedMatter.Models.OrbitalRelaxation.SphereMoments.0.QuantumTheory.Models.OrbitalRelaxation.sphericalAverage_evenQuarticPolynomial"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.Models.OrbitalRelaxation.SphereMoments.0.QuantumTheory.Models.OrbitalRelaxation.integral_cos_four_full",
-      "_private.LeanCondensedMatter.Models.OrbitalRelaxation.SphereMoments.0.QuantumTheory.Models.OrbitalRelaxation.sphericalAverage_evenQuarticPolynomial"
-    ],
-    "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∫ (θ : ℝ) in 0..Real.pi, Real.sin θ ^ 5 = 16 / 15",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Models.OrbitalRelaxation.SphereMoments.0.QuantumTheory.Models.OrbitalRelaxation.integral_sin_five",
-    "module": "LeanCondensedMatter.Models.OrbitalRelaxation.SphereMoments",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.Models.OrbitalRelaxation.SphereMoments.0.QuantumTheory.Models.OrbitalRelaxation.sphericalAverage_evenQuarticPolynomial"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.Models.OrbitalRelaxation.SphereMoments.0.QuantumTheory.Models.OrbitalRelaxation.sphericalAverage_evenQuarticPolynomial"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∫ (φ : ℝ) in 0..2 * Real.pi, Real.sin φ ^ 4 = 3 * Real.pi / 4",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Models.OrbitalRelaxation.SphereMoments.0.QuantumTheory.Models.OrbitalRelaxation.integral_sin_four_full",
-    "module": "LeanCondensedMatter.Models.OrbitalRelaxation.SphereMoments",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.Models.OrbitalRelaxation.SphereMoments.0.QuantumTheory.Models.OrbitalRelaxation.sphericalAverage_evenQuarticPolynomial"
-    ],
-    "dependencies": [
-      "_private.LeanCondensedMatter.Models.OrbitalRelaxation.SphereMoments.0.QuantumTheory.Models.OrbitalRelaxation.integral_sin_sq_full"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.Models.OrbitalRelaxation.SphereMoments.0.QuantumTheory.Models.OrbitalRelaxation.sphericalAverage_evenQuarticPolynomial"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∫ (θ : ℝ) in 0..Real.pi, Real.sin θ * Real.cos θ ^ 4 = 2 / 5",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Models.OrbitalRelaxation.SphereMoments.0.QuantumTheory.Models.OrbitalRelaxation.integral_sin_mul_cos_four",
-    "module": "LeanCondensedMatter.Models.OrbitalRelaxation.SphereMoments",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.Models.OrbitalRelaxation.SphereMoments.0.QuantumTheory.Models.OrbitalRelaxation.sphericalAverage_evenQuarticPolynomial"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.Models.OrbitalRelaxation.SphereMoments.0.QuantumTheory.Models.OrbitalRelaxation.sphericalAverage_evenQuarticPolynomial"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∫ (φ : ℝ) in 0..2 * Real.pi, Real.sin φ ^ 2 = Real.pi",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Models.OrbitalRelaxation.SphereMoments.0.QuantumTheory.Models.OrbitalRelaxation.integral_sin_sq_full",
-    "module": "LeanCondensedMatter.Models.OrbitalRelaxation.SphereMoments",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.Models.OrbitalRelaxation.SphereMoments.0.QuantumTheory.Models.OrbitalRelaxation.integral_sin_four_full",
-      "_private.LeanCondensedMatter.Models.OrbitalRelaxation.SphereMoments.0.QuantumTheory.Models.OrbitalRelaxation.sphericalAverage_evenQuarticPolynomial"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.Models.OrbitalRelaxation.SphereMoments.0.QuantumTheory.Models.OrbitalRelaxation.integral_sin_four_full",
-      "_private.LeanCondensedMatter.Models.OrbitalRelaxation.SphereMoments.0.QuantumTheory.Models.OrbitalRelaxation.sphericalAverage_evenQuarticPolynomial"
-    ],
-    "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∫ (φ : ℝ) in 0..2 * Real.pi, Real.sin φ ^ 2 * Real.cos φ ^ 2 = Real.pi / 4",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Models.OrbitalRelaxation.SphereMoments.0.QuantumTheory.Models.OrbitalRelaxation.integral_sin_sq_mul_cos_sq_full",
-    "module": "LeanCondensedMatter.Models.OrbitalRelaxation.SphereMoments",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.Models.OrbitalRelaxation.SphereMoments.0.QuantumTheory.Models.OrbitalRelaxation.sphericalAverage_evenQuarticPolynomial"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.Models.OrbitalRelaxation.SphereMoments.0.QuantumTheory.Models.OrbitalRelaxation.sphericalAverage_evenQuarticPolynomial"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∫ (θ : ℝ) in 0..Real.pi, Real.sin θ ^ 3 * Real.cos θ ^ 2 = 4 / 15",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Models.OrbitalRelaxation.SphereMoments.0.QuantumTheory.Models.OrbitalRelaxation.integral_sin_three_mul_cos_sq",
-    "module": "LeanCondensedMatter.Models.OrbitalRelaxation.SphereMoments",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.Models.OrbitalRelaxation.SphereMoments.0.QuantumTheory.Models.OrbitalRelaxation.sphericalAverage_evenQuarticPolynomial"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.Models.OrbitalRelaxation.SphereMoments.0.QuantumTheory.Models.OrbitalRelaxation.sphericalAverage_evenQuarticPolynomial"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (r a b c d e f : ℝ),\n  QuantumTheory.Models.OrbitalRelaxation.sphericalAverage r\n      (QuantumTheory.Models.OrbitalRelaxation.evenQuarticPolynomial✝ a b c d e f) =\n    r ^ 4 / 5 * (a + b + c) + r ^ 4 / 15 * (d + e + f)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Models.OrbitalRelaxation.SphereMoments.0.QuantumTheory.Models.OrbitalRelaxation.sphericalAverage_evenQuarticPolynomial",
-    "module": "LeanCondensedMatter.Models.OrbitalRelaxation.SphereMoments",
-    "externalAxioms": [],
-    "docString": "The normalized continuous spherical-coordinate average of any coordinate-even\nhomogeneous quartic, evaluated independently of the finite cubature. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Models.OrbitalRelaxation.sphericalAverage_coordinate_four",
-      "QuantumTheory.Models.OrbitalRelaxation.sphericalAverage_coordinate_sq_mul_coordinate_sq",
-      "_private.LeanCondensedMatter.Models.OrbitalRelaxation.SphereMoments.0.QuantumTheory.Models.OrbitalRelaxation.sphericalAverage_evenQuartic_eq_cubature"
-    ],
-    "dependencies": [
-      "_private.LeanCondensedMatter.Models.OrbitalRelaxation.SphereMoments.0.QuantumTheory.Models.OrbitalRelaxation.integral_cos_four_full",
-      "_private.LeanCondensedMatter.Models.OrbitalRelaxation.SphereMoments.0.QuantumTheory.Models.OrbitalRelaxation.integral_cos_sq_full",
-      "_private.LeanCondensedMatter.Models.OrbitalRelaxation.SphereMoments.0.QuantumTheory.Models.OrbitalRelaxation.integral_sin_five",
-      "_private.LeanCondensedMatter.Models.OrbitalRelaxation.SphereMoments.0.QuantumTheory.Models.OrbitalRelaxation.integral_sin_four_full",
-      "_private.LeanCondensedMatter.Models.OrbitalRelaxation.SphereMoments.0.QuantumTheory.Models.OrbitalRelaxation.integral_sin_mul_cos_four",
-      "_private.LeanCondensedMatter.Models.OrbitalRelaxation.SphereMoments.0.QuantumTheory.Models.OrbitalRelaxation.integral_sin_sq_full",
-      "_private.LeanCondensedMatter.Models.OrbitalRelaxation.SphereMoments.0.QuantumTheory.Models.OrbitalRelaxation.integral_sin_sq_mul_cos_sq_full",
-      "_private.LeanCondensedMatter.Models.OrbitalRelaxation.SphereMoments.0.QuantumTheory.Models.OrbitalRelaxation.integral_sin_three_mul_cos_sq"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Models.OrbitalRelaxation.sphericalAverage_coordinate_four",
-      "QuantumTheory.Models.OrbitalRelaxation.sphericalAverage_coordinate_sq_mul_coordinate_sq",
-      "_private.LeanCondensedMatter.Models.OrbitalRelaxation.SphereMoments.0.QuantumTheory.Models.OrbitalRelaxation.sphericalAverage_evenQuartic_eq_cubature"
-    ],
-    "compiledConsumerCount": 3,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (r a b c d e f : ℝ),\n  QuantumTheory.Models.OrbitalRelaxation.sphericalAverage r\n      (QuantumTheory.Models.OrbitalRelaxation.evenQuarticPolynomial✝ a b c d e f) =\n    QuantumTheory.Models.OrbitalRelaxation.evenQuarticCubature r\n      (QuantumTheory.Models.OrbitalRelaxation.evenQuarticPolynomial✝ a b c d e f)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Models.OrbitalRelaxation.SphereMoments.0.QuantumTheory.Models.OrbitalRelaxation.sphericalAverage_evenQuartic_eq_cubature",
-    "module": "LeanCondensedMatter.Models.OrbitalRelaxation.SphereMoments",
-    "externalAxioms": [],
-    "docString": "Exactness of the finite cubature on *all* coordinate-even homogeneous\nquartics, justified by the continuous spherical-coordinate integral. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Models.OrbitalRelaxation.sphericalAverage_orbitalPolynomial_eq_cubature"
-    ],
-    "dependencies": [
-      "_private.LeanCondensedMatter.Models.OrbitalRelaxation.SphereMoments.0.QuantumTheory.Models.OrbitalRelaxation.sphericalAverage_evenQuarticPolynomial"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Models.OrbitalRelaxation.sphericalAverage_orbitalPolynomial_eq_cubature"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
