@@ -188,7 +188,8 @@ private theorem averagedGreenOfRegulator_denseRange
     (energy regulator : ℝ) (hregulator : regulator ≠ 0) :
     (ensemble.averagedGreenOfRegulator energy regulator).range.topologicalClosure = ⊤ := by
   let averaged : H →L[ℂ] H := ensemble.averagedGreenOfRegulator energy regulator
-  have hstarInjective : Function.Injective (star averaged) := by
+  have hstarInjective : Function.Injective
+      (star averaged : H →L[ℂ] H) := by
     obtain ⟨_, hanti⟩ :=
       ensemble.averagedGreenOfRegulator_antilipschitz
         energy (-regulator) (neg_ne_zero.mpr hregulator)
