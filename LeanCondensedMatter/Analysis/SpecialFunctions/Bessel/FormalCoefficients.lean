@@ -23,13 +23,13 @@ differential equations
   d/dx (x A') = A
   d/dx (x B') = B + A'.
 
-This file deliberately works in `ℂ⟦X⟧`; identifying
-formal evaluation with the convergent analytic
-`Complex.besselJ 0` and the concrete harmonic `tsum`
-is the remaining separate analytic bridge.
+This module works entirely in `ℂ⟦X⟧`, independently of transport or
+physical models. Identifying formal evaluation with convergent
+analytic Bessel functions and their harmonic `tsum` representations
+requires separate theorems in the analytic bridge.
 -/
 
-namespace QuantumTheory.Transport
+namespace BesselFormal
 
 noncomputable section
 
@@ -152,4 +152,4 @@ theorem besselFormalJ0H0_wronskian :
 
 end
 
-end QuantumTheory.Transport
+end BesselFormal

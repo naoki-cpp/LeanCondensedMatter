@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Transport.Analysis.BesselYFormalCoefficients
+import LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.FormalCoefficients
 import LeanCondensedMatter.Transport.Analysis.PolarFourier
 
 set_option linter.style.header false
@@ -19,6 +19,8 @@ separate Cauchy-product theorem.
 -/
 
 namespace QuantumTheory.Transport
+
+open BesselFormal
 
 noncomputable section
 

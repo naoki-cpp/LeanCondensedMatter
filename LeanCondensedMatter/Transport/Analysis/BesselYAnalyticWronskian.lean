@@ -21,6 +21,8 @@ Gaussian crossed-X diagram and the reference Bessel integral.
 
 namespace QuantumTheory.Transport
 
+open BesselFormal
+
 noncomputable section
 
 open scoped PowerSeries

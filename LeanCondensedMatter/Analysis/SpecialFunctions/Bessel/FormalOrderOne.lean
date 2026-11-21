@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Transport.Analysis.BesselYFormalCoefficients
+import LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.FormalCoefficients
 
 set_option linter.style.header false
 
@@ -26,10 +26,11 @@ After the analytic evaluation at x=-z²/4, this is exactly
 the remaining complex Bessel J/Y harmonic-series identity
 of PR #4529. The formal identity is unconditional;
 passing to analytic sums needs a separate justified
-evaluation/Cauchy product theorem, not an assertion.
+evaluation/Cauchy product theorem, not an assertion. This module contains
+only generic formal Bessel series algebra, with no transport assumptions.
 -/
 
-namespace QuantumTheory.Transport
+namespace BesselFormal
 
 noncomputable section
 
@@ -105,4 +106,4 @@ theorem besselFormalJ0H0H1_harmonicIdentity :
 
 end
 
-end QuantumTheory.Transport
+end BesselFormal
