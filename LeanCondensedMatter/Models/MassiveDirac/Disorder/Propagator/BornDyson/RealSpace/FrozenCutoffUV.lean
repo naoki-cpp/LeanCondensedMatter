@@ -1,10 +1,10 @@
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVFinitePart
-import LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornInvertibility
+import LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.BornDyson.Invertibility
 
 set_option linter.style.header false
 
 /-!
-# Explicit radial UV value at a frozen physical Born cutoff
+# Radial Fourier ultraviolet limit at a fixed Born cutoff
 
 The physical Born-Dyson spectral energy and mass at a **fixed** disorder
 cutoff pRef are complex constants with respect to the *separate* outer

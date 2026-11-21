@@ -6,7 +6,7 @@ import Mathlib.Tactic.Ring
 set_option linter.style.header false
 
 /-!
-# Finite-external-broadening Born-Dyson propagator
+# Born-Dyson Green function at finite external regulator
 
 The continuum Born self-energy already exists at finite cutoff and finite external broadening as
 
@@ -31,7 +31,7 @@ The radial retarded-advanced denominator product is the finite-`η` specializati
 MassiveDirac radial owner. The propagator itself remains exposed in the shared polar Pauli
 representation for downstream angular and radial reductions. Its Dyson-shift inverse
 identities and spectral-side adjoint relations are owned downstream by
-`FiniteBroadeningBornDysonShift`. This is a finite-cutoff Born-Dyson
+`Disorder.Propagator.BornDyson.DysonShift`. This is a finite-cutoff Born-Dyson
 approximation candidate. It is not identified with the exact disorder average, and no `η → 0⁺`,
 weak-disorder, SCBA/Ward, or conductivity-limit statement is made here.
 -/

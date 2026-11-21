@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornRadialScalarTail
+import LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.BornDyson.RealSpace.ScalarTail
 import Mathlib.Tactic.FunProp
 import Mathlib.Analysis.Complex.Basic
 

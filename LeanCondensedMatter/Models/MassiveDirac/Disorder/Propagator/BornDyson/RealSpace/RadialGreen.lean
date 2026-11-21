@@ -1,10 +1,10 @@
 import LeanCondensedMatter.Transport.Analysis.PolarFourier
-import LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornInvertibility
+import LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.BornDyson.Invertibility
 
 set_option linter.style.header false
 
 /-!
-# Radial finite-cutoff Born-Dyson Green matrix
+# Radial real-space Born-Dyson Green function
 
 This module owns the one-dimensional real-space radial Green kernels and their
 entrywise and Pauli-coefficient momentum integrals. It proves finite-regulator
@@ -13,7 +13,7 @@ reversing the signed radial real-space coordinate.
 
 The physical momentum measure and zeroth/first polar Fourier kernels remain
 explicit. The two-dimensional real-space Green matrix and its polar-angle
-reduction are downstream in `FiniteBroadeningBornRealSpacePropagator`.
+reduction are downstream in `Disorder.Propagator.BornDyson.RealSpace.Green`.
 No angular integration beyond these kernels or cutoff/broadening limit is taken.
 -/
 

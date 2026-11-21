@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornRadialConjugation
+import LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.BornDyson.RealSpace.Conjugation
 import LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.RealSpaceIntegral
 import Mathlib.Tactic.Ring
 

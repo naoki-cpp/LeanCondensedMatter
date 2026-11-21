@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornRadialScalarGenerator
+import LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.BornDyson.RealSpace.ScalarGenerator
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVIntegrability
 import LeanCondensedMatter.Transport.Analysis.PolarFourierRadialLimit
 import Mathlib.Tactic.FunProp
@@ -7,7 +7,7 @@ import Mathlib.Tactic.Ring
 set_option linter.style.header false
 
 /-!
-# Radial scalar Green kernel: finite-cutoff ultraviolet tail decomposition
+# Ultraviolet tail of the Born-Dyson radial Fourier generator
 
 The Fourier first-harmonic primitive yields an exact integration-by-parts
 decomposition of the complex quadratic Dirac resolvent kernel. In

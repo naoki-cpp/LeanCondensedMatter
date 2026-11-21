@@ -1,11 +1,11 @@
-import LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornRadialScalarGenerator
+import LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.BornDyson.RealSpace.ScalarGenerator
 import Mathlib.Tactic.Linarith
 import Mathlib.Tactic.FieldSimp
 
 set_option linter.style.header false
 
 /-!
-# Finite momentum-grid realization of the regulated massive-Dirac radial Green generator
+# Finite radial grid for the Born-Dyson Fourier generator
 
 For a fixed momentum cutoff `pMax`, the midpoint rule below replaces only the
 radial integral by a finite sum. Its denominator is the **existing** finite-cutoff

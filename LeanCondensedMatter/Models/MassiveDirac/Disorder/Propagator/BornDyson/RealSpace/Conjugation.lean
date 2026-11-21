@@ -1,11 +1,11 @@
-import LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornRadialScalarGenerator
-import LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornDysonShift
+import LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.BornDyson.RealSpace.ScalarGenerator
+import LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.BornDyson.DysonShift
 import Mathlib.Analysis.Calculus.Deriv.Star
 
 set_option linter.style.header false
 
 /-!
-# Retarded/advanced scalar Fourier-generator conjugation
+# Retarded/advanced conjugation of the radial Fourier generator
 
 At finite broadening and momentum cutoff, the scalar radial Fourier
 generator of the *actual* Born-Dyson propagator has only one independent

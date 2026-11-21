@@ -1,19 +1,19 @@
-import LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornPropagator
+import LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.BornDyson.Green
 import Mathlib.LinearAlgebra.Matrix.NonsingularInverse
 import Mathlib.Tactic.Ring
 
 set_option linter.style.header false
 
 /-!
-# Born-Dyson shift and propagator inverse identities
+# Born-Dyson shift and Green-function inverse identities
 
 The finite-cutoff Born-Dyson shift is the operator `G₀⁻¹ - Σ`, with the
 Pauli-matrix realization determined by the same effective energy and mass
-as the upstream `FiniteBroadeningBornPropagator`.
+as the upstream `Disorder.Propagator.BornDyson.Green`.
 
 This module proves the matrix and bounded-operator inverse identities when the
 quadratic Green denominator is nonzero, together with spectral-side adjoint
-relations. The separate `FiniteBroadeningBornInvertibility` module derives
+relations. The separate `Disorder.Propagator.BornDyson.Invertibility` module derives
 denominator nonvanishing from the dissipativity of the Born self-energy; those
 analytic hypotheses are not prerequisites for defining the propagator itself.
 

@@ -366,7 +366,7 @@ from the generic Born–Dyson denominator and radial-moment laws owned by `Disor
 `MassiveDirac.Streda` is the public umbrella for these leaves alongside
 the independent `Streda.GaussianCrossed` package.
 
-`Disorder.FiniteBroadeningBornRadialMoments` owns the finite-cutoff Born–Dyson single-pole
+`Disorder.Propagator.BornDyson.RadialMoments` owns the finite-cutoff Born–Dyson single-pole
 logarithmic integral, the arbitrary-weight retarded–advanced double-pole spectral difference,
 and its logarithmic specialization. These are model-level denominator identities independent
 of a particular response channel. The Gaussian-crossed K0/K2 current harmonics
@@ -408,7 +408,7 @@ kernels remain distinct from the antisymmetric trace used for Hall conductivity.
 `Analysis.InternalSpace.Pauli` owns coefficient extraction through entrywise interval
 integrals with a complex prefactor. These laws use Mathlib's integral addition,
 subtraction, division, and constant-multiplication results; no additional linear-map
-representation is needed. `Disorder.FiniteBroadeningBornRadialRealSpacePropagator`
+representation is needed. `Disorder.Propagator.BornDyson.RealSpace.RadialGreen`
 owns the radial Green coefficient integration laws, while
 `Streda.GaussianCrossed.RealSpace` owns the crossed-current coefficient integration laws
 alongside their pointwise kernels. Both models use the same model-independent Pauli

@@ -1,11 +1,11 @@
 import LeanCondensedMatter.Analysis.Fourier.AngularHarmonics
-import LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornRadialRealSpacePropagator
+import LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.BornDyson.RealSpace.RadialGreen
 import LeanCondensedMatter.Models.MassiveDirac.Model.Rotation
 
 set_option linter.style.header false
 
 /-!
-# Two-dimensional real-space Born-Dyson propagator
+# Two-dimensional real-space Born-Dyson Green function
 
 The finite-cutoff, finite-broadening Born-Dyson Green matrix is transformed entrywise by the
 generic two-dimensional physical-momentum polar Fourier transform, with measure
@@ -14,7 +14,7 @@ generic two-dimensional physical-momentum polar Fourier transform, with measure
 The model-independent constant, first, and second angular-harmonic kernels support an
 arbitrary polar real-space point. The radial-axis identity identifies this two-dimensional
 representation with the one-dimensional Green matrix defined upstream in
-`FiniteBroadeningBornRadialRealSpacePropagator`. The massive-Dirac Green matrix has vanishing
+`Disorder.Propagator.BornDyson.RealSpace.RadialGreen`. The massive-Dirac Green matrix has vanishing
 second-harmonic coefficients, and its first-sine channel vanishes on the radial axis.
 The entrywise Fourier reduction reuses one `AngularHarmonicCoefficients` decomposition.
 

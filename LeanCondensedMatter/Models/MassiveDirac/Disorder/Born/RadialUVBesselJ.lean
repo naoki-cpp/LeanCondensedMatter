@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornRadialFrozenUV
+import LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.BornDyson.RealSpace.FrozenCutoffUV
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVFinitePart
 
 set_option linter.style.header false

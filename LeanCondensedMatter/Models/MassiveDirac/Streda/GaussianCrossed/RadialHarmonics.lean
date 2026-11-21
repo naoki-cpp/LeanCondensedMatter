@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Transport.Analysis.ContinuumMeasure
-import LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornRadialMoments
+import LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.BornDyson.RadialMoments
 import LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.RealSpace
 import Mathlib.Tactic.FieldSimp
 import Mathlib.Tactic.FunProp

@@ -1,7 +1,7 @@
 import LeanCondensedMatter.Analysis.Operator.Spectral.DissipativeShift
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.Denominator
 import LeanCondensedMatter.Transport.Analysis.ContinuumMeasure
-import LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornDysonShift
+import LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.BornDyson.DysonShift
 import Mathlib.Analysis.Normed.Operator.Banach
 import Mathlib.LinearAlgebra.FiniteDimensional.Basic
 import Mathlib.Tactic.Linarith
@@ -12,7 +12,7 @@ import Mathlib.Tactic.Ring
 set_option linter.style.header false
 
 /-!
-# Finite-broadening Born-Dyson invertibility
+# Born-Dyson invertibility at nonzero external regulator
 
 For nonzero external broadening, nonnegative scalar-disorder strength, and a nonnegative radial
 cutoff, the finite-cutoff continuum Born self-energy is dissipative with the sign selected by the

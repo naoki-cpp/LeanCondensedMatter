@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornRadialRealSpacePropagator
+import LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.BornDyson.RealSpace.RadialGreen
 import LeanCondensedMatter.Transport.Analysis.PolarFourierRadialDerivative
 import Mathlib.Tactic.FieldSimp
 import Mathlib.Tactic.FunProp
@@ -7,7 +7,7 @@ import Mathlib.Tactic.Ring
 set_option linter.style.header false
 
 /-!
-# Finite-cutoff massive-Dirac scalar radial Green generator
+# Scalar radial Fourier generator for the Born-Dyson Green function
 
 A single scalar radial Fourier integral generates the finite-broadening
 Born--Dyson Green matrix: its scalar and z-Pauli components are obtained by
