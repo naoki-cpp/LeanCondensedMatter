@@ -188,25 +188,21 @@ private theorem averagedGreenOfRegulator_denseRange
     (energy regulator : ℝ) (hregulator : regulator ≠ 0) :
     (ensemble.averagedGreenOfRegulator energy regulator).range.topologicalClosure = ⊤ := by
   let averaged : H →L[ℂ] H := ensemble.averagedGreenOfRegulator energy regulator
-  let averagedStar : H →L[ℂ] H := star averaged
-  have hstarInjective : Function.Injective averagedStar := by
+  have hstarInjective : Function.Injective
+      (star averaged : H →L[ℂ] H) := by
     obtain ⟨_, hanti⟩ :=
       ensemble.averagedGreenOfRegulator_antilipschitz
         energy (-regulator) (neg_ne_zero.mpr hregulator)
-    simpa only [averagedStar, averaged, ensemble.star_averagedGreenOfRegulator] using
+    simpa only [averaged, ensemble.star_averagedGreenOfRegulator] using
       hanti.injective
-  have hker : averagedStar.ker = ⊥ := by
-    rw [LinearMap.ker_eq_bot]
-    exact hstarInjective
-  have hadjoint : ContinuousLinearMap.adjoint averagedStar = averaged := by
-    change star (star averaged) = averaged
-    exact star_star averaged
   change averaged.range.topologicalClosure = ⊤
   calc
-    averaged.range.topologicalClosure = averagedStar.kerᗮ := by
-      rw [← hadjoint]
-      exact (ContinuousLinearMap.orthogonal_ker averagedStar).symm
-    _ = ⊤ := by rw [hker]; simp
+    averaged.range.topologicalClosure = (star averaged).kerᗮ := by
+      simpa only [← ContinuousLinearMap.star_eq_adjoint, star_star] using
+        (ContinuousLinearMap.orthogonal_ker (star averaged)).symm
+    _ = ⊤ := by
+      rw [LinearMap.ker_eq_bot.mpr hstarInjective]
+      simp
 
 /-- At any nonzero signed regulator the exact averaged Green operator is a unit in arbitrary
 Hilbert-space dimension. -/
