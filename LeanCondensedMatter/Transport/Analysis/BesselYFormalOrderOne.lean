@@ -100,7 +100,7 @@ theorem besselFormalJ0H0H1_harmonicIdentity :
         PowerSeries.X * (besselFormalJ0 * besselFormalH1) = 1 := by
   have hW := besselFormalJ0H0_wronskian
   have hC := besselFormalH1_derivative_relation
-  unfold besselFormalWronskianInvariant at hW
+  unfold FrobeniusWronskian.invariant at hW
   linear_combination hW - besselFormalJ0 * hC
 
 end

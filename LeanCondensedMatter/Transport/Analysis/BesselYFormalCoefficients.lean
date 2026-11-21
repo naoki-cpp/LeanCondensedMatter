@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Transport.Analysis.BesselYFormalWronskian
+import LeanCondensedMatter.Analysis.PowerSeries.FrobeniusWronskian
 import Mathlib.NumberTheory.Harmonic.EulerMascheroni
 import Mathlib.Tactic.FieldSimp
 import Mathlib.Tactic.NormNum
@@ -140,8 +140,8 @@ logarithm is hidden in the formal correction. -/
 the factorial and harmonic coefficients. No Wronskian
 hypothesis and no imported special-function identity. -/
 theorem besselFormalJ0H0_wronskian :
-    besselFormalWronskianInvariant besselFormalJ0 besselFormalH0 = 1 := by
-  apply besselFormalWronskianInvariant_eq_one
+    FrobeniusWronskian.invariant besselFormalJ0 besselFormalH0 = 1 := by
+  apply FrobeniusWronskian.invariant_eq_one
   · simpa only [Derivation.leibniz,
       PowerSeries.derivative_X, smul_eq_mul, mul_one, one_mul, add_comm] using
         besselFormalJ0_frobenius
