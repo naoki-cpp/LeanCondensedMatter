@@ -22,8 +22,8 @@ import LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentV
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.TMatrix
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningLadderZeroBroadeningWeakDisorder
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningLadderZeroBroadeningTransverseWeakDisorder
-import LeanCondensedMatter.Models.MassiveDirac.Disorder.BornCurrentVertexWeakDisorder
-import LeanCondensedMatter.Models.MassiveDirac.Disorder.BornCurrentVertexInfiniteCutoff
+import LeanCondensedMatter.Models.MassiveDirac.Disorder.Vertex.Born.WeakDisorder
+import LeanCondensedMatter.Models.MassiveDirac.Disorder.Vertex.Born.InfiniteCutoff
 
 set_option linter.style.header false
 
