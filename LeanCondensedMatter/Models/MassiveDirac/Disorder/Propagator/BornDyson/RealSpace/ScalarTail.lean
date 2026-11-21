@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.BornDyson.RealSpace.ScalarGenerator
-import LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVIntegrability
+import LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVEstimates
 import LeanCondensedMatter.Transport.Analysis.PolarFourierRadialLimit
 import Mathlib.Tactic.FunProp
 import Mathlib.Tactic.Ring

@@ -12,9 +12,8 @@ import LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.BornDyson.Rea
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVFinitePart
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.BornDyson.RealSpace.FrozenCutoffUV
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVBesselJ
-import LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVUnitVelocity
+import LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVHankelScaling
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVHankelReduction
-import LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVHankelUnitReduction
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVResolventDifference
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.BornDyson.RealSpace.ScalarGrid
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.BornDyson.RealSpace.Green
