@@ -175,6 +175,12 @@ for the mechanism, not consequences of the finite kinetic benchmark.
 
 ## Existing repository boundary
 
+`Analysis.Matrix.CartesianProjectors` owns finite-dimensional rank-one outer products
+and their unnormalized transverse complements. The spherical `t₂g` realization
+under `Models.OrbitalRelaxation.T2gProjectors` supplies only the Hamiltonian
+identification and spectral-parameter specialization.
+
+
 The normalized continuous spherical-coordinate average and its Cartesian fourth moments
 live in `Analysis.Geometry.SphericalMoments`. The orbital module proves only the finite
 cubature comparison and the double-commutator specialization; it does not identify the
