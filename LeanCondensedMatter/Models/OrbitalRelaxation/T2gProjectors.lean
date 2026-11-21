@@ -26,7 +26,7 @@ theorem transverse_eq_orbitalHamiltonian (k : Fin 3 → ℝ) :
     transverse k = orbitalHamiltonian 1 1 k := by
   ext i j
   fin_cases i <;> fin_cases j <;>
-    simp [transverse, outer, normSq, Matrix.dotProduct, Matrix.vecMulVec_apply,
+    simp [transverse, outer, normSq, dotProduct, Matrix.vecMulVec_apply,
       Fin.sum_univ_three, orbitalHamiltonian, pow_two] <;> ring
 
 /-- Assumed spherical `t₂g` matrix Hamiltonian, with `t` the kinetic

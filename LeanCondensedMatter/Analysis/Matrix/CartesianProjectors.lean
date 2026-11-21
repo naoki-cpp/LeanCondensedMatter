@@ -1,3 +1,4 @@
+import Mathlib.Basic.Real.Basic
 import Mathlib.Data.Matrix.Mul
 import Mathlib.Tactic.Abel
 import Mathlib.Tactic.Ring
@@ -19,10 +20,12 @@ Hamiltonian, band interpretation, or physical momentum measure is assumed.
 
 namespace CartesianProjectors
 
+open scoped Matrix
+
 variable {ι : Type*} [Fintype ι] [DecidableEq ι]
 
 /-- Coordinate squared norm, defined as an ordinary finite dot product. -/
-def normSq (k : ι → ℝ) : ℝ := Matrix.dotProduct k k
+def normSq (k : ι → ℝ) : ℝ := (k ⬝ᵥ k)
 
 /-- The unnormalized rank-one longitudinal matrix `k kᵀ`. -/
 def outer (k : ι → ℝ) : Matrix ι ι ℝ := Matrix.vecMulVec k k
@@ -39,7 +42,7 @@ theorem outer_add_transverse (k : ι → ℝ) :
 theorem outer_mul_self (k : ι → ℝ) :
     outer k * outer k = normSq k • outer k := by
   change Matrix.vecMulVec k k * Matrix.vecMulVec k k =
-    Matrix.dotProduct k k • Matrix.vecMulVec k k
+    (k ⬝ᵥ k) • Matrix.vecMulVec k k
   rw [Matrix.vecMulVec_mul_vecMulVec]
   ext i j
   simp only [Matrix.vecMulVec_apply, Matrix.smul_apply, Pi.smul_apply, smul_eq_mul]
