@@ -217,14 +217,10 @@ theorem averagedGreenOfRegulator_isUnit
 
 /-- Canonical exact finite-disorder self-energy at an arbitrary nonzero signed regulator. -/
 noncomputable def exactSelfEnergyOfRegulator
-    (energy regulator : ℝ) (hregulator : regulator ≠ 0) : H →L[ℂ] H := by
-  let hunit : IsUnit (ensemble.averagedGreenOfRegulator energy regulator) :=
-    ensemble.averagedGreenOfRegulator_isUnit energy regulator hregulator
-  let averagedUnit : (H →L[ℂ] H)ˣ := hunit.unit
-  let averagedInverse : H →L[ℂ] H := ↑(averagedUnit⁻¹)
-  exact
-    (algebraMap ℂ (H →L[ℂ] H) (spectralParameterOfRegulator energy regulator) -
-        ensemble.baseHamiltonian.1) - averagedInverse
+    (energy regulator : ℝ) (hregulator : regulator ≠ 0) : H →L[ℂ] H :=
+  let hunit := ensemble.averagedGreenOfRegulator_isUnit energy regulator hregulator
+  (algebraMap ℂ (H →L[ℂ] H) (spectralParameterOfRegulator energy regulator) -
+      ensemble.baseHamiltonian.1) - (↑(hunit.unit⁻¹) : H →L[ℂ] H)
 
 /-- At a nonzero signed regulator, the canonical exact self-energy is the unique self-energy
 satisfying the exact two-sided Dyson relation for the clean and disorder-averaged Green operators. -/
@@ -237,8 +233,7 @@ theorem isSelfEnergy_iff_eq_exactSelfEnergyOfRegulator
       selfEnergy = ensemble.exactSelfEnergyOfRegulator energy regulator hregulator := by
   let hunit : IsUnit (ensemble.averagedGreenOfRegulator energy regulator) :=
     ensemble.averagedGreenOfRegulator_isUnit energy regulator hregulator
-  let averagedUnit : (H →L[ℂ] H)ˣ := hunit.unit
-  let averagedInverse : H →L[ℂ] H := ↑(averagedUnit⁻¹)
+  let averagedInverse : H →L[ℂ] H := ↑(hunit.unit⁻¹)
   let freeInverse : H →L[ℂ] H :=
     algebraMap ℂ (H →L[ℂ] H) (spectralParameterOfRegulator energy regulator) -
       ensemble.baseHamiltonian.1
@@ -260,8 +255,8 @@ theorem isSelfEnergy_iff_eq_exactSelfEnergyOfRegulator
   · simpa [freeInverse, FiniteDisorderEnsemble.freeGreenOfRegulator] using
       resolvent_spectralParameterOfRegulator_mul_spectralShift
         ensemble.baseHamiltonian.1 ensemble.baseHamiltonian.2 energy regulator hregulator
-  · simpa [averagedInverse, averagedUnit] using hunit.val_inv_mul
-  · simpa [averagedInverse, averagedUnit] using hunit.mul_val_inv
+  · simpa [averagedInverse] using hunit.val_inv_mul
+  · simpa [averagedInverse] using hunit.mul_val_inv
 
 /-- The canonical exact finite-disorder self-energy satisfies the exact two-sided Dyson relation at
 any nonzero signed regulator. -/
