@@ -22,22 +22,13 @@ namespace CartesianProjectors
 
 open scoped Matrix
 
-variable {ι : Type*} [Fintype ι] [DecidableEq ι]
+variable {ι : Type*} [Fintype ι]
 
 /-- Coordinate squared norm, defined as an ordinary finite dot product. -/
 def normSq (k : ι → ℝ) : ℝ := (k ⬝ᵥ k)
 
 /-- The unnormalized rank-one longitudinal matrix `k kᵀ`. -/
 def outer (k : ι → ℝ) : Matrix ι ι ℝ := Matrix.vecMulVec k k
-
-/-- The unnormalized matrix transverse to `k`. -/
-def transverse (k : ι → ℝ) : Matrix ι ι ℝ :=
-  normSq k • (1 : Matrix ι ι ℝ) - outer k
-
-theorem outer_add_transverse (k : ι → ℝ) :
-    outer k + transverse k = normSq k • (1 : Matrix ι ι ℝ) := by
-  unfold transverse
-  abel
 
 theorem outer_mul_self (k : ι → ℝ) :
     outer k * outer k = normSq k • outer k := by
@@ -47,6 +38,17 @@ theorem outer_mul_self (k : ι → ℝ) :
   ext i j
   simp only [Matrix.vecMulVec_apply, Matrix.smul_apply, Pi.smul_apply, smul_eq_mul]
   ring
+
+variable [DecidableEq ι]
+
+/-- The unnormalized matrix transverse to `k`. -/
+def transverse (k : ι → ℝ) : Matrix ι ι ℝ :=
+  normSq k • (1 : Matrix ι ι ℝ) - outer k
+
+theorem outer_add_transverse (k : ι → ℝ) :
+    outer k + transverse k = normSq k • (1 : Matrix ι ι ℝ) := by
+  unfold transverse
+  abel
 
 theorem outer_mul_transverse (k : ι → ℝ) :
     outer k * transverse k = 0 := by
