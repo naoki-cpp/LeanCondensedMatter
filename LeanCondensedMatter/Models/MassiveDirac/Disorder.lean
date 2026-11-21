@@ -4,20 +4,20 @@ import LeanCondensedMatter.Models.MassiveDirac.Disorder.SingleParticleRate
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.TransportRate
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.ContinuumMeasurePrefactor
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.UltravioletSelfEnergy
-import LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornDysonShift
-import LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornRadialMoments
-import LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornRadialRealSpacePropagator
-import LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornRadialScalarGenerator
-import LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornRadialScalarTail
+import LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.BornDyson.DysonShift
+import LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.BornDyson.RadialMoments
+import LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.BornDyson.RealSpace.RadialGreen
+import LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.BornDyson.RealSpace.ScalarGenerator
+import LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.BornDyson.RealSpace.ScalarTail
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVFinitePart
-import LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornRadialFrozenUV
+import LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.BornDyson.RealSpace.FrozenCutoffUV
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVBesselJ
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVUnitVelocity
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVHankelReduction
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVHankelUnitReduction
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVResolventDifference
-import LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornRadialScalarGrid
-import LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornRealSpacePropagator
+import LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.BornDyson.RealSpace.ScalarGrid
+import LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.BornDyson.RealSpace.Green
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.Vertex.BornDyson.DressedCurrent
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.TMatrix
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.Vertex.Ladder.RegulatorBoundaryWeakDisorder
@@ -37,24 +37,24 @@ where a consumer performs angular reduction; `Born.SelfEnergy` owns the finite-c
 its polar provenance; `Born.Denominator` owns exact denominator evaluation and the branch-oriented
 imaginary boundary analysis; `Born.Boundary` owns the finite metallic boundary value as a complex
 number together with its scalar and `σ_z` propagation; `Born.Damping` projects that complex API to
-the physical damping observables; `BornPropagator` feeds those damping channels into the
+the physical damping observables; `Disorder.Propagator.Born.WeakDisorder` feeds those damping channels into the
 weak-disorder propagator and owns its retarded-advanced radial denominator pair;
 `ScalarAngularWeights` owns the angular overlap and current-relaxation integrals;
 `SingleParticleRate` owns the Born single-particle rate and lifetime; and `TransportRate` owns
 the corresponding transport scattering rate and lifetime. The finite-`η`
 Born-Dyson layer propagates the same fixed-cutoff boundary through its effective energy, effective
 mass, and radial denominator before any weak-disorder or ultraviolet limit is taken.
-`FiniteBroadeningBornRadialMoments` owns the single-pole logarithmic integral,
+`Disorder.Propagator.BornDyson.RadialMoments` owns the single-pole logarithmic integral,
 arbitrary-weight RA double-pole spectral difference, and its logarithmic specialization.
 These analytic identities are independent of the longitudinal same-side Středa
 remainder and are consumed by Gaussian-crossed harmonics.
-`FiniteBroadeningBornZeroBroadening` owns that propagator boundary together with the real Born
+`Disorder.Propagator.BornDyson.RegulatorBoundary` owns that propagator boundary together with the real Born
 renormalization and the denominator nonvanishing guarantee protected by the renormalization bound.
 
-`FiniteBroadeningBornPropagator` owns the finite-broadening Dyson Green and its
-Cartesian-to-polar representation; `FiniteBroadeningBornDysonShift` proves inverse and adjoint
-identities for the Dyson shift, consumed by the dissipative invertibility analysis. `FiniteBroadeningBornRadialRealSpacePropagator` owns the one-dimensional radial Green kernels,
-integrals, and signed-radius inversion; `FiniteBroadeningBornRealSpacePropagator` owns the
+`Disorder.Propagator.BornDyson.Green` owns the finite-broadening Dyson Green and its
+Cartesian-to-polar representation; `Disorder.Propagator.BornDyson.DysonShift` proves inverse and adjoint
+identities for the Dyson shift, consumed by the dissipative invertibility analysis. `Disorder.Propagator.BornDyson.RealSpace.RadialGreen` owns the one-dimensional radial Green kernels,
+integrals, and signed-radius inversion; `Disorder.Propagator.BornDyson.RealSpace.Green` owns the
 full-angle Fourier representation and its exact radial-axis identification, using the generic
 physical-momentum polar Fourier transform from `Transport.Analysis`. `Disorder.Vertex.BornDyson.CurrentVertex` owns the direction-indexed
 in-plane rung, its common RA denominator form, radial normalization, solved coefficient pair, and the

@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.Denominator
-import LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornPropagator
+import LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.BornDyson.Green
 import Mathlib.Tactic.FieldSimp
 import Mathlib.Tactic.Positivity
 import Mathlib.Tactic.Ring

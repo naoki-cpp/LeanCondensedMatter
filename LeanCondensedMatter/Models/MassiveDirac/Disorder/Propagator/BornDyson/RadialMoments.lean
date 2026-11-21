@@ -1,12 +1,12 @@
 import LeanCondensedMatter.Analysis.Algebra.ScalarResolvent
-import LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornInvertibility
+import LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.BornDyson.Invertibility
 import Mathlib.Tactic.FunProp
 import Mathlib.Tactic.Ring
 
 set_option linter.style.header false
 
 /-!
-# Finite-broadening Born–Dyson radial moments
+# Finite-regulator Born-Dyson radial moments
 
 Model-specific finite-cutoff radial integration laws for Born–Dyson denominators.
 The single-pole logarithmic primitive, arbitrary-weight retarded–advanced

@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornInvertibility
+import LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.BornDyson.Invertibility
 import LeanCondensedMatter.Models.MassiveDirac.Vertex.PauliRung
 import Mathlib.Tactic.Ring
 
@@ -10,7 +10,7 @@ set_option linter.style.header false
 This module owns the finite-cutoff finite-external-broadening Born-Dyson current-vertex chain from
 fixed-radius angular reduction through radial normalization to the algebraic in-plane ladder
 coefficients. The Cartesian-to-polar Born-Dyson propagator bridge is owned by
-`FiniteBroadeningBornPropagator`; this module consumes that representation to obtain the
+`Disorder.Propagator.BornDyson.Green`; this module consumes that representation to obtain the
 repository-oriented in-plane action
 
 ```text

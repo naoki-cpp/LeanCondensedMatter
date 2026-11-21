@@ -1,6 +1,6 @@
 import LeanCondensedMatter.Transport.Analysis.ContinuumMeasure
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.Boundary
-import LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornPropagator
+import LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.BornDyson.Green
 import Mathlib.Tactic.FunProp
 import Mathlib.Tactic.Linarith
 import Mathlib.Tactic.NormNum
@@ -9,7 +9,7 @@ import Mathlib.Tactic.Ring
 set_option linter.style.header false
 
 /-!
-# Fixed-cutoff zero-broadening boundary of finite-eta Born-Dyson data
+# Fixed-cutoff external-regulator boundary of Born-Dyson data
 
 This module starts from the common complex Born boundary and propagates it through the finite-`η`
 Born-Dyson effective energy and mass and radial denominator. The external broadening limit is taken

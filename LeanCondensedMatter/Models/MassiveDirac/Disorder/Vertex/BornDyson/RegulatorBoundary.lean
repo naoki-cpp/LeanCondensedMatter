@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornZeroBroadening
+import LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.BornDyson.RegulatorBoundary
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.Vertex.BornDyson.CurrentVertex
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.ContinuumMeasurePrefactor
 import Mathlib.Tactic.FieldSimp

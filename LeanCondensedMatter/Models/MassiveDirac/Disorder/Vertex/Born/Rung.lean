@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Analysis.Lorentzian.RadialQuadratic
-import LeanCondensedMatter.Models.MassiveDirac.Disorder.BornPropagator
+import LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.Born.WeakDisorder
 import LeanCondensedMatter.Models.MassiveDirac.Vertex.PauliRung
 import Mathlib.Tactic.FieldSimp
 import Mathlib.Tactic.Linarith

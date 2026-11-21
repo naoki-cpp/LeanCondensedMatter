@@ -1,5 +1,5 @@
-import LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornZeroBroadening
-import LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornInvertibility
+import LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.BornDyson.RegulatorBoundary
+import LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.BornDyson.Invertibility
 import Mathlib.Analysis.Complex.RealDeriv
 import Mathlib.Tactic.FieldSimp
 import Mathlib.Tactic.FunProp
@@ -15,7 +15,7 @@ This module owns the bare-source `RR/AA` same-side radial remainder used by the 
 Massive-Dirac Středa response. It evaluates the finite-broadening radial integral, exposes its
 fixed-disorder `η → 0⁺` endpoint, and records the separate weak-disorder behavior of that endpoint.
 General single-pole Born–Dyson logarithmic integration is owned upstream by
-`Disorder.FiniteBroadeningBornRadialMoments`.
+`Disorder.Propagator.BornDyson.RadialMoments`.
 
 The same-side remainder stays separate from the singular retarded-advanced ladder action. The cutoff
 remains fixed throughout, and no physical conductivity normalization is attached here.
