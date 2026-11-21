@@ -7,8 +7,13 @@ import LeanCondensedMatter.Models.MassiveDirac.Propagator.RadialFourier.Resolven
 set_option linter.style.header false
 
 /-!
-# Massive-Dirac clean propagator
+# Massive-Dirac propagator and radial Fourier analysis
 
 The clean massive-Dirac Green operator, its momentum-inversion symmetry, and exact polar-angle
-reduction.
+reduction. The `RadialFourier` modules own fixed-complex-center quadratic Fourier resolvent
+identities, ultraviolet estimates, Bessel-J representations, and conditional outgoing Hankel
+reductions. These general results do not import disorder-specific Born or Dyson data.
+
+The upper-half-plane Hankel transform identity remains an explicit hypothesis; its unconditional
+proof is not asserted by the conditional reduction theorems.
 -/
