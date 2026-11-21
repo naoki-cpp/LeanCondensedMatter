@@ -1,27 +1,24 @@
 import LeanCondensedMatter.Analysis.PowerSeries.CoefficientSum
 import LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.FormalAnalyticBridgeJ
-import LeanCondensedMatter.Transport.Analysis.BesselYFormalAnalyticBridge
-import LeanCondensedMatter.Transport.Analysis.BesselCrossedXMoment
+import LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.FormalAnalyticBridgeY
 
 set_option linter.style.header false
 
 /-!
 # Unconditional analytic Bessel J/Y Wronskian
 
-Transport the normalized factorial/harmonic identity proved in
-`BesselYFormalOrderOne` from ℂ⟦X⟧ to actual complex infinite sums,
-using only absolutely convergent coefficientwise evaluations.
-Then apply the already proved DLMF Y₀/Y₁ algebraic reduction and
-instantiate the concrete real-argument Wronskian required by the
-reference crossed-X Bessel integral.
+Transport the normalized formal J₀/H₀/H₁ harmonic identity from ℂ⟦X⟧
+to absolutely convergent complex series using coefficientwise evaluations
+and the proven power-series Cauchy-product theorems. The result is the
+unconditional J/Y Wronskian for the concrete DLMF second-kind series
+at nonzero complex arguments.
 
-This proves no identification between the physical finite-regulator
-Gaussian crossed-X diagram and the reference Bessel integral.
+This module does not depend on transport, Fourier geometry or physical models.
 -/
 
-namespace QuantumTheory.Transport
+namespace BesselSecondKind
 
-open BesselFormal BesselSecondKind
+open BesselFormal
 
 noncomputable section
 
@@ -127,16 +124,6 @@ theorem besselY0Y1Series_wronskian (z : ℂ) (hz : z ≠ 0) :
   besselY0Y1Wronskian_of_harmonicIdentity z hz
     (besselY0Y1_harmonicIdentity z)
 
-/-- No abstract Y₀/Y₁ Wronskian premise is required for the
-specific convergent Bessel-Y implementations used in the
-Gaussian crossed-X reference moment. -/
-theorem crossedXBesselWronskian_concreteSeries :
-    CrossedXBesselWronskian
-      (fun r : ℝ => besselY0Series (r : ℂ))
-      (fun r : ℝ => besselY1Series (r : ℂ)) := by
-  intro r hr
-  exact besselY0Y1Series_wronskian (r : ℂ) (by exact_mod_cast hr)
-
 end
 
-end QuantumTheory.Transport
+end BesselSecondKind
