@@ -1,5 +1,5 @@
-import LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVBesselJ
-import LeanCondensedMatter.Transport.Analysis.BesselY0Series
+import LeanCondensedMatter.Models.MassiveDirac.Propagator.RadialFourier.FinitePart
+import LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.Y0Series
 import Mathlib.Analysis.RCLike.Sqrt
 
 set_option linter.style.header false
@@ -37,7 +37,7 @@ namespace QuantumTheory.Models.MassiveDirac
 
 noncomputable section
 
-open QuantumTheory.Transport
+open QuantumTheory.Transport BesselSecondKind
 open scoped ComplexConjugate
 
 /-- Dimensionless Bessel argument `√s |c| / |v|` for a fixed quadratic

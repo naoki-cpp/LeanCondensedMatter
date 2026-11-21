@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Transport.Analysis.BesselRadialMoments
+import Mathlib.Analysis.SpecialFunctions.Bessel
 import Mathlib.NumberTheory.Harmonic.EulerMascheroni
 import Mathlib.Analysis.SpecificLimits.Normed
 import Mathlib.Tactic.Positivity
@@ -29,11 +29,11 @@ total `Complex.log 0` is not the physical limiting value.
 This module only establishes a genuine convergent definition and
 elementary normalization; the Bessel ODE, derivative Y₁=-Y₀′,
 normalization of the J/Y Wronskian, and outgoing Hankel transform
-are separate proof obligations. In particular, merely defining Y₀
-does not discharge `CrossedXBesselWronskian`.
+are separate proof obligations. In particular, merely defining Y₀ does not prove its
+Wronskian with J₀ or J₁.
 -/
 
-namespace QuantumTheory.Transport
+namespace BesselSecondKind
 
 noncomputable section
 
@@ -143,4 +143,4 @@ first harmonic coefficient has its standard value H₁=1. -/
 
 end
 
-end QuantumTheory.Transport
+end BesselSecondKind

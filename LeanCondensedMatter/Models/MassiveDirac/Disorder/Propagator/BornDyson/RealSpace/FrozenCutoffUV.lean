@@ -1,5 +1,6 @@
-import LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVFinitePart
+import LeanCondensedMatter.Models.MassiveDirac.Propagator.RadialFourier.FinitePart
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.BornDyson.Invertibility
+import LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.BornDyson.RealSpace.ScalarGenerator
 
 set_option linter.style.header false
 
