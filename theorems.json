@@ -931,7 +931,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Transport.besselY0Y1_harmonicIdentity"
+      "BesselSecondKind.besselY0Y1_harmonicIdentity"
     ],
     "dependencies": [
       "BesselFormal.besselFormalH1_derivative_relation",
@@ -940,7 +940,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Transport.besselY0Y1_harmonicIdentity"
+      "BesselSecondKind.besselY0Y1_harmonicIdentity"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -990,6 +990,52 @@
       "BesselFormal.besselFormalJ0H0H1_harmonicIdentity"
     ],
     "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (n : ℕ), (PowerSeries.coeff n) BesselFormal.besselFormalJ0 = Complex.regularizedHGFunCoeff 0 {1} n",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "BesselFormal.besselFormalJ0_coeff_eq_regularizedHGFun",
+    "module": "LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.FormalAnalyticBridgeJ",
+    "externalAxioms": [],
+    "docString": "The formal J₀ factorial coefficient agrees with the *actual*\nregularized hypergeometric coefficient for bottom parameter 1. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "BesselFormal.besselJZero_eq_formalTsum",
+      "BesselFormal.summable_besselFormalJ0_eval"
+    ],
+    "dependencies": [
+      "BesselHypergeometric.regularizedHGFunCoeff_zero_singleton_nat_add_one"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "BesselFormal.besselJZero_eq_formalTsum",
+      "BesselFormal.summable_besselFormalJ0_eval"
+    ],
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -1090,6 +1136,52 @@
   },
   {
     "terminal": false,
+    "statement": "∀ (n : ℕ),\n  (PowerSeries.coeff n) (PowerSeries.derivative BesselFormal.besselFormalJ0) = Complex.regularizedHGFunCoeff 0 {2} n",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "BesselFormal.besselFormalJ0_derivative_coeff_eq_regularizedHGFun",
+    "module": "LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.FormalAnalyticBridgeJ",
+    "externalAxioms": [],
+    "docString": "The formal derivative of J₀ has exactly the bottom-parameter-2\nhypergeometric coefficients. This is a coefficient-level statement,\nnot analytic differentiation of an infinite sum. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "BesselFormal.besselJOne_eq_formalDerivativeTsum",
+      "BesselFormal.summable_besselFormalJ0_derivative_eval"
+    ],
+    "dependencies": [
+      "BesselHypergeometric.regularizedHGFunCoeff_zero_singleton_nat_add_one"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "BesselFormal.besselJOne_eq_formalDerivativeTsum",
+      "BesselFormal.summable_besselFormalJ0_derivative_eval"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "PowerSeries.derivative (PowerSeries.X * PowerSeries.derivative BesselFormal.besselFormalJ0) =\n  BesselFormal.besselFormalJ0",
     "standardAxioms": [
       "Classical.choice",
@@ -1133,6 +1225,364 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
+    "terminal": false,
+    "statement": "∀ (z : ℂ),\n  Complex.besselJ 1 z =\n    z / 2 * ∑' (n : ℕ), (PowerSeries.coeff n) (PowerSeries.derivative BesselFormal.besselFormalJ0) * (-(z / 2) ^ 2) ^ n",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "BesselFormal.besselJOne_eq_formalDerivativeTsum",
+    "module": "LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.FormalAnalyticBridgeJ",
+    "externalAxioms": [],
+    "docString": "Analytic J₁ is the complex evaluation of the *formal derivative*\nof the normalized J₀ factorial series, multiplied by z/2. No analytic\nderivative-of-sum exchange is postulated. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "BesselSecondKind.besselY0Y1_harmonicIdentity"
+    ],
+    "dependencies": [
+      "BesselFormal.besselFormalJ0_derivative_coeff_eq_regularizedHGFun",
+      "BesselFormal.besselJOne_eq_regularizedHGTsum"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "BesselSecondKind.besselY0Y1_harmonicIdentity"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (z : ℂ), Complex.besselJ 1 z = z / 2 * ∑' (n : ℕ), Complex.regularizedHGFunCoeff 0 {2} n * (-(z / 2) ^ 2) ^ n",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "BesselFormal.besselJOne_eq_regularizedHGTsum",
+    "module": "LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.FormalAnalyticBridgeJ",
+    "externalAxioms": [],
+    "docString": "The order-one J function in Mathlib, in its bottom-parameter-2\nhypergeometric series representation. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "BesselFormal.besselJOne_eq_formalDerivativeTsum"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "BesselFormal.besselJOne_eq_formalDerivativeTsum"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (z : ℂ), Complex.besselJ 0 z = ∑' (n : ℕ), (PowerSeries.coeff n) BesselFormal.besselFormalJ0 * (-(z / 2) ^ 2) ^ n",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "BesselFormal.besselJZero_eq_formalTsum",
+    "module": "LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.FormalAnalyticBridgeJ",
+    "externalAxioms": [],
+    "docString": "Mathlib's J₀ is the coefficientwise entire evaluation of the\nconcrete formal factorial power series. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "BesselSecondKind.besselY0Y1_harmonicIdentity"
+    ],
+    "dependencies": [
+      "BesselFormal.besselFormalJ0_coeff_eq_regularizedHGFun",
+      "BesselHypergeometric.besselJZero_eq_regularizedHGTsum"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "BesselSecondKind.besselY0Y1_harmonicIdentity"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (z : ℂ),\n  Summable fun n => (PowerSeries.coeff n) (PowerSeries.derivative BesselFormal.besselFormalJ0) * (-(z / 2) ^ 2) ^ n",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "BesselFormal.summable_besselFormalJ0_derivative_eval",
+    "module": "LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.FormalAnalyticBridgeJ",
+    "externalAxioms": [],
+    "docString": "Formal J₀ derivative coefficients also have an everywhere\nconvergent complex evaluation. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "BesselSecondKind.besselY0Y1_harmonicIdentity"
+    ],
+    "dependencies": [
+      "BesselFormal.besselFormalJ0_derivative_coeff_eq_regularizedHGFun"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "BesselSecondKind.besselY0Y1_harmonicIdentity"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (z : ℂ), Summable fun n => (PowerSeries.coeff n) BesselFormal.besselFormalJ0 * (-(z / 2) ^ 2) ^ n",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "BesselFormal.summable_besselFormalJ0_eval",
+    "module": "LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.FormalAnalyticBridgeJ",
+    "externalAxioms": [],
+    "docString": "Formal J₀ coefficients have an everywhere convergent complex\npower-series evaluation, by the known entire hypergeometric series. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "BesselSecondKind.besselY0Y1_harmonicIdentity"
+    ],
+    "dependencies": [
+      "BesselFormal.besselFormalJ0_coeff_eq_regularizedHGFun"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "BesselSecondKind.besselY0Y1_harmonicIdentity"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (z : ℂ), Complex.besselJ 0 z = ∑' (n : ℕ), Complex.regularizedHGFunCoeff 0 {1} n * (-(z / 2) ^ 2) ^ n",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "BesselHypergeometric.besselJZero_eq_regularizedHGTsum",
+    "module": "LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.HypergeometricSeries",
+    "externalAxioms": [],
+    "docString": "Mathlib's integer-order Bessel function has the expected coefficient expansion. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "BesselFormal.besselJZero_eq_formalTsum",
+      "QuantumTheory.Transport.polarFourierZerothAngularKernel_eq_besselJ"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "BesselFormal.besselJZero_eq_formalTsum",
+      "QuantumTheory.Transport.polarFourierZerothAngularKernel_eq_besselJ"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (k n : ℕ), Complex.regularizedHGFunCoeff 0 {↑(k + 1)} n = 1 / (↑n.factorial * ↑(n + k).factorial)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "BesselHypergeometric.regularizedHGFunCoeff_zero_singleton_nat_add_one",
+    "module": "LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.HypergeometricSeries",
+    "externalAxioms": [],
+    "docString": "The coefficient of the regularized hypergeometric series with lower parameter `k + 1`. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "BesselFormal.besselFormalJ0_coeff_eq_regularizedHGFun",
+      "BesselFormal.besselFormalJ0_derivative_coeff_eq_regularizedHGFun",
+      "QuantumTheory.Transport.polarFourierZerothMoment_even_eq_bessel",
+      "_private.LeanCondensedMatter.Transport.Analysis.PolarFourier.0.QuantumTheory.Transport.regularizedHGFun_one_sub_two_eq_mul_three",
+      "_private.LeanCondensedMatter.Transport.Analysis.PolarFourier.0.QuantumTheory.Transport.regularizedHGFun_zero_one_hasDerivAt"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "BesselFormal.besselFormalJ0_coeff_eq_regularizedHGFun",
+      "BesselFormal.besselFormalJ0_derivative_coeff_eq_regularizedHGFun",
+      "QuantumTheory.Transport.polarFourierZerothMoment_even_eq_bessel",
+      "_private.LeanCondensedMatter.Transport.Analysis.PolarFourier.0.QuantumTheory.Transport.regularizedHGFun_one_sub_two_eq_mul_three",
+      "_private.LeanCondensedMatter.Transport.Analysis.PolarFourier.0.QuantumTheory.Transport.regularizedHGFun_zero_one_hasDerivAt"
+    ],
+    "compiledConsumerCount": 5,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (z : ℂ),\n  BesselSecondKind.besselY0HarmonicCorrection z =\n    ∑' (n : ℕ), (PowerSeries.coeff n) BesselFormal.besselFormalH0 * (-(z / 2) ^ 2) ^ n",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "BesselSecondKind.besselY0HarmonicCorrection_eq_formalTsum",
+    "module": "LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.FormalAnalyticBridgeY",
+    "externalAxioms": [],
+    "docString": "A real, absolutely convergent second-kind Y₀ correction is\nthe termwise sum of the **proved formal** harmonic coefficients. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "BesselSecondKind.besselY0Y1_harmonicIdentity"
+    ],
+    "dependencies": [
+      "BesselSecondKind.besselY0HarmonicTerm_eq_formal"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "BesselSecondKind.besselY0Y1_harmonicIdentity"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
     "terminal": true,
     "statement": "BesselSecondKind.besselY0HarmonicCorrection 0 = 0",
     "standardAxioms": [
@@ -1158,6 +1608,48 @@
     "completedMention": false,
     "compiledConsumers": [],
     "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (z : ℂ) (n : ℕ),\n  BesselSecondKind.besselY0HarmonicTerm z n = (PowerSeries.coeff n) BesselFormal.besselFormalH0 * (-(z / 2) ^ 2) ^ n",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "BesselSecondKind.besselY0HarmonicTerm_eq_formal",
+    "module": "LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.FormalAnalyticBridgeY",
+    "externalAxioms": [],
+    "docString": "The n-th actual Y₀ harmonic correction summand is the\ncorresponding formal coefficient evaluated at x=-(z/2)². ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "BesselSecondKind.besselY0HarmonicCorrection_eq_formalTsum"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "BesselSecondKind.besselY0HarmonicCorrection_eq_formalTsum"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -1248,6 +1740,51 @@
   },
   {
     "terminal": false,
+    "statement": "∀ (z : ℂ),\n  z ≠ 0 →\n    Complex.besselJ 1 z * BesselSecondKind.besselY0Series z - Complex.besselJ 0 z * BesselSecondKind.besselY1Series z =\n      ↑(2 / Real.pi) * z⁻¹",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "BesselSecondKind.besselY0Y1Series_wronskian",
+    "module": "LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.AnalyticWronskian",
+    "externalAxioms": [],
+    "docString": "The actual convergent DLMF Y₀/Y₁ series satisfy the standard\nnormalized J/Y Wronskian for every nonzero complex argument. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.crossedXBesselWronskian_concreteSeries"
+    ],
+    "dependencies": [
+      "BesselSecondKind.besselY0Y1Wronskian_of_harmonicIdentity",
+      "BesselSecondKind.besselY0Y1_harmonicIdentity"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.crossedXBesselWronskian_concreteSeries"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ (z : ℂ),\n  Complex.besselJ 1 z * BesselSecondKind.besselY0Series z - Complex.besselJ 0 z * BesselSecondKind.besselY1Series z =\n    ↑(2 / Real.pi) *\n      (Complex.besselJ 0 z * z⁻¹ - Complex.besselJ 1 z * BesselSecondKind.besselY0HarmonicCorrection z +\n        z / 4 * Complex.besselJ 0 z * BesselSecondKind.besselY1HarmonicCorrection z)",
     "standardAxioms": [
       "Classical.choice",
@@ -1309,7 +1846,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Transport.besselY0Y1Series_wronskian"
+      "BesselSecondKind.besselY0Y1Series_wronskian"
     ],
     "dependencies": [
       "BesselSecondKind.besselY0Y1Wronskian_eq_harmonicCorrections"
@@ -1317,7 +1854,155 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Transport.besselY0Y1Series_wronskian"
+      "BesselSecondKind.besselY0Y1Series_wronskian"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (z : ℂ),\n  Complex.besselJ 0 z - z * Complex.besselJ 1 z * BesselSecondKind.besselY0HarmonicCorrection z +\n      z ^ 2 / 4 * Complex.besselJ 0 z * BesselSecondKind.besselY1HarmonicCorrection z =\n    1",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "BesselSecondKind.besselY0Y1_harmonicIdentity",
+    "module": "LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.AnalyticWronskian",
+    "externalAxioms": [],
+    "docString": "The missing harmonic identity for the *actual* Mathlib J₀/J₁ and\nthe absolutely convergent DLMF Y₀/Y₁ harmonic corrections. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "BesselSecondKind.besselY0Y1Series_wronskian"
+    ],
+    "dependencies": [
+      "BesselFormal.besselFormalJ0H0H1_harmonicIdentity",
+      "BesselFormal.besselJOne_eq_formalDerivativeTsum",
+      "BesselFormal.besselJZero_eq_formalTsum",
+      "BesselFormal.summable_besselFormalJ0_derivative_eval",
+      "BesselFormal.summable_besselFormalJ0_eval",
+      "BesselSecondKind.besselY0HarmonicCorrection_eq_formalTsum",
+      "BesselSecondKind.besselY1HarmonicCorrection_eq_formalTsum",
+      "BesselSecondKind.summable_besselFormalH0_eval",
+      "BesselSecondKind.summable_besselFormalH1_eval",
+      "PowerSeries.coefficientSum_C_mul",
+      "PowerSeries.coefficientSum_X_mul",
+      "PowerSeries.coefficientSum_add",
+      "PowerSeries.coefficientSum_mul",
+      "PowerSeries.coefficientSum_one",
+      "PowerSeries.coefficientSum_sub",
+      "PowerSeries.summable_coefficientSum_C_mul",
+      "PowerSeries.summable_coefficientSum_X_mul",
+      "PowerSeries.summable_coefficientSum_add",
+      "PowerSeries.summable_coefficientSum_mul"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "BesselSecondKind.besselY0Y1Series_wronskian"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (z : ℂ),\n  BesselSecondKind.besselY1HarmonicCorrection z =\n    ∑' (n : ℕ), (PowerSeries.coeff n) BesselFormal.besselFormalH1 * (-(z / 2) ^ 2) ^ n",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "BesselSecondKind.besselY1HarmonicCorrection_eq_formalTsum",
+    "module": "LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.FormalAnalyticBridgeY",
+    "externalAxioms": [],
+    "docString": "The actual absolutely convergent Y₁ correction\nis the precise coefficientwise evaluation of its formal series. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "BesselSecondKind.besselY0Y1_harmonicIdentity"
+    ],
+    "dependencies": [
+      "BesselSecondKind.besselY1HarmonicTerm_eq_formal"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "BesselSecondKind.besselY0Y1_harmonicIdentity"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (z : ℂ) (n : ℕ),\n  BesselSecondKind.besselY1HarmonicTerm z n = (PowerSeries.coeff n) BesselFormal.besselFormalH1 * (-(z / 2) ^ 2) ^ n",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "BesselSecondKind.besselY1HarmonicTerm_eq_formal",
+    "module": "LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.FormalAnalyticBridgeY",
+    "externalAxioms": [],
+    "docString": "The n-th actual Y₁ harmonic correction summand is the\ncorresponding order-one formal coefficient. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "BesselSecondKind.besselY1HarmonicCorrection_eq_formalTsum"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "BesselSecondKind.besselY1HarmonicCorrection_eq_formalTsum"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -1548,6 +2233,94 @@
   },
   {
     "terminal": false,
+    "statement": "∀ (z : ℂ), Summable fun n => (PowerSeries.coeff n) BesselFormal.besselFormalH0 * (-(z / 2) ^ 2) ^ n",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "BesselSecondKind.summable_besselFormalH0_eval",
+    "module": "LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.FormalAnalyticBridgeY",
+    "externalAxioms": [],
+    "docString": "The coefficientwise evaluation of the formal H₀ series converges\nabsolutely at every complex argument, by the already proved concrete\nY₀ harmonic-term bound. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "BesselSecondKind.besselY0Y1_harmonicIdentity"
+    ],
+    "dependencies": [
+      "BesselSecondKind.summable_besselY0HarmonicTerm"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "BesselSecondKind.besselY0Y1_harmonicIdentity"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (z : ℂ), Summable fun n => (PowerSeries.coeff n) BesselFormal.besselFormalH1 * (-(z / 2) ^ 2) ^ n",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "BesselSecondKind.summable_besselFormalH1_eval",
+    "module": "LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.FormalAnalyticBridgeY",
+    "externalAxioms": [],
+    "docString": "The coefficientwise evaluation of the formal H₁ series also\nconverges absolutely at every complex argument. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "BesselSecondKind.besselY0Y1_harmonicIdentity"
+    ],
+    "dependencies": [
+      "BesselSecondKind.summable_besselY1HarmonicTerm"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "BesselSecondKind.besselY0Y1_harmonicIdentity"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ (z : ℂ), Summable (BesselSecondKind.besselY0HarmonicTerm z)",
     "standardAxioms": [
       "Classical.choice",
@@ -1567,7 +2340,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Transport.summable_besselFormalH0_eval"
+      "BesselSecondKind.summable_besselFormalH0_eval"
     ],
     "dependencies": [
       "BesselSecondKind.norm_besselY0HarmonicTerm_le_expTerm"
@@ -1575,7 +2348,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Transport.summable_besselFormalH0_eval"
+      "BesselSecondKind.summable_besselFormalH0_eval"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -1611,7 +2384,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Transport.summable_besselFormalH1_eval"
+      "BesselSecondKind.summable_besselFormalH1_eval"
     ],
     "dependencies": [
       "BesselSecondKind.norm_besselY1HarmonicTerm_le_two_expTerm"
@@ -1619,7 +2392,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Transport.summable_besselFormalH1_eval"
+      "BesselSecondKind.summable_besselFormalH1_eval"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -40534,13 +41307,13 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Transport.besselY0Y1_harmonicIdentity"
+      "BesselSecondKind.besselY0Y1_harmonicIdentity"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Transport.besselY0Y1_harmonicIdentity"
+      "BesselSecondKind.besselY0Y1_harmonicIdentity"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -40576,13 +41349,13 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Transport.besselY0Y1_harmonicIdentity"
+      "BesselSecondKind.besselY0Y1_harmonicIdentity"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Transport.besselY0Y1_harmonicIdentity"
+      "BesselSecondKind.besselY0Y1_harmonicIdentity"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -40618,13 +41391,13 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Transport.besselY0Y1_harmonicIdentity"
+      "BesselSecondKind.besselY0Y1_harmonicIdentity"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Transport.besselY0Y1_harmonicIdentity"
+      "BesselSecondKind.besselY0Y1_harmonicIdentity"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -40660,7 +41433,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Transport.besselY0Y1_harmonicIdentity"
+      "BesselSecondKind.besselY0Y1_harmonicIdentity"
     ],
     "dependencies": [
       "_private.LeanCondensedMatter.Analysis.PowerSeries.CoefficientSum.0.PowerSeries.coeff_mul_mul_pow"
@@ -40668,7 +41441,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Transport.besselY0Y1_harmonicIdentity"
+      "BesselSecondKind.besselY0Y1_harmonicIdentity"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -40704,13 +41477,13 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Transport.besselY0Y1_harmonicIdentity"
+      "BesselSecondKind.besselY0Y1_harmonicIdentity"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Transport.besselY0Y1_harmonicIdentity"
+      "BesselSecondKind.besselY0Y1_harmonicIdentity"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -40746,13 +41519,13 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Transport.besselY0Y1_harmonicIdentity"
+      "BesselSecondKind.besselY0Y1_harmonicIdentity"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Transport.besselY0Y1_harmonicIdentity"
+      "BesselSecondKind.besselY0Y1_harmonicIdentity"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -41051,13 +41824,13 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Transport.besselY0Y1_harmonicIdentity"
+      "BesselSecondKind.besselY0Y1_harmonicIdentity"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Transport.besselY0Y1_harmonicIdentity"
+      "BesselSecondKind.besselY0Y1_harmonicIdentity"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -41093,13 +41866,13 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Transport.besselY0Y1_harmonicIdentity"
+      "BesselSecondKind.besselY0Y1_harmonicIdentity"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Transport.besselY0Y1_harmonicIdentity"
+      "BesselSecondKind.besselY0Y1_harmonicIdentity"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -41135,13 +41908,13 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Transport.besselY0Y1_harmonicIdentity"
+      "BesselSecondKind.besselY0Y1_harmonicIdentity"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Transport.besselY0Y1_harmonicIdentity"
+      "BesselSecondKind.besselY0Y1_harmonicIdentity"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -41177,7 +41950,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Transport.besselY0Y1_harmonicIdentity"
+      "BesselSecondKind.besselY0Y1_harmonicIdentity"
     ],
     "dependencies": [
       "_private.LeanCondensedMatter.Analysis.PowerSeries.CoefficientSum.0.PowerSeries.coeff_mul_mul_pow"
@@ -41185,7 +41958,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Transport.besselY0Y1_harmonicIdentity"
+      "BesselSecondKind.besselY0Y1_harmonicIdentity"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -63352,23 +64125,23 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "QuantumTheory.Models.MassiveDirac.continuous_continuumBornRadialGreenKernelOfRegulator",
-    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.SelfEnergy",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.SelfEnergy.Core",
     "externalAxioms": [],
     "docString": "The operator-valued radial Born Green kernel is continuous away from zero regulator. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.SelfEnergy.0.QuantumTheory.Models.MassiveDirac.star_finiteCutoffContinuumBornGreenIntegralOfRegulator",
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.SelfEnergy.Core.0.QuantumTheory.Models.MassiveDirac.star_finiteCutoffContinuumBornGreenIntegralOfRegulator",
       "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.BornDyson.Invertibility.0.QuantumTheory.Models.MassiveDirac.im_inner_self_finiteCutoffContinuumBornGreenIntegralOfRegulator_apply"
     ],
     "dependencies": [
       "QuantumTheory.Models.MassiveDirac.continuous_continuumBornRadialIntegrandOfRegulator",
-      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.SelfEnergy.0.QuantumTheory.Models.MassiveDirac.continuumBornRadialGreenKernelOfRegulator_eq"
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.SelfEnergy.Core.0.QuantumTheory.Models.MassiveDirac.continuumBornRadialGreenKernelOfRegulator_eq"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.SelfEnergy.0.QuantumTheory.Models.MassiveDirac.star_finiteCutoffContinuumBornGreenIntegralOfRegulator",
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.SelfEnergy.Core.0.QuantumTheory.Models.MassiveDirac.star_finiteCutoffContinuumBornGreenIntegralOfRegulator",
       "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.BornDyson.Invertibility.0.QuantumTheory.Models.MassiveDirac.im_inner_self_finiteCutoffContinuumBornGreenIntegralOfRegulator_apply"
     ],
     "compiledConsumerCount": 2,
@@ -63399,7 +64172,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "QuantumTheory.Models.MassiveDirac.continuous_continuumBornRadialIntegrandOfRegulator",
-    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.SelfEnergy",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.SelfEnergy.Core",
     "externalAxioms": [],
     "docString": "Every surviving Born self-energy radial channel is continuous away from zero regulator. ",
     "directWrapperTargetModule": null,
@@ -63871,7 +64644,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.SelfEnergy.0.QuantumTheory.Models.MassiveDirac.continuumBornPolarRadialKernelOfRegulator_eq"
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.SelfEnergy.PolarProvenance.0.QuantumTheory.Models.MassiveDirac.continuumBornPolarRadialKernelOfRegulator_eq"
     ],
     "dependencies": [
       "AngularHarmonics.AngularHarmonicCoefficients.integral_eval",
@@ -63880,7 +64653,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.SelfEnergy.0.QuantumTheory.Models.MassiveDirac.continuumBornPolarRadialKernelOfRegulator_eq"
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.SelfEnergy.PolarProvenance.0.QuantumTheory.Models.MassiveDirac.continuumBornPolarRadialKernelOfRegulator_eq"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -72827,24 +73600,24 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornGreenIntegralOfRegulator_eq",
-    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.SelfEnergy",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.SelfEnergy.Core",
     "externalAxioms": [],
     "docString": "The arbitrary-regulator finite-cutoff operator integral has exactly the `I + σ_z` structure. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
       "QuantumTheory.Models.MassiveDirac.matrixOperator_finiteCutoffContinuumBornDysonGreenLoopMatrix_zero_disorder_eq",
-      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.SelfEnergy.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornSelfEnergyOfRegulator_eq"
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.SelfEnergy.Core.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornSelfEnergyOfRegulator_eq"
     ],
     "dependencies": [
       "QuantumTheory.Models.MassiveDirac.continuous_continuumBornRadialIntegrandOfRegulator",
-      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.SelfEnergy.0.QuantumTheory.Models.MassiveDirac.continuumBornRadialGreenKernelOfRegulator_eq"
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.SelfEnergy.Core.0.QuantumTheory.Models.MassiveDirac.continuumBornRadialGreenKernelOfRegulator_eq"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.Models.MassiveDirac.matrixOperator_finiteCutoffContinuumBornDysonGreenLoopMatrix_zero_disorder_eq",
-      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.SelfEnergy.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornSelfEnergyOfRegulator_eq"
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.SelfEnergy.Core.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornSelfEnergyOfRegulator_eq"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -72874,7 +73647,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornIntegral_eq_weight_mul_denominatorIntegral",
-    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.SelfEnergy",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.SelfEnergy.DenominatorIntegral",
     "externalAxioms": [],
     "docString": "Physical-side factorization of either surviving Born self-energy channel. ",
     "directWrapperTargetModule": null,
@@ -72884,7 +73657,7 @@
       "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornIntegral_broadening_zero"
     ],
     "dependencies": [
-      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.SelfEnergy.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornIntegralOfRegulator_eq_weight_mul_denominatorIntegral"
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.SelfEnergy.DenominatorIntegral.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornIntegralOfRegulator_eq_weight_mul_denominatorIntegral"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -73232,7 +74005,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornSelfEnergyCoefficient_zero_disorder",
-    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.SelfEnergy",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.SelfEnergy.Core",
     "externalAxioms": [],
     "docString": null,
     "directWrapperTargetModule": null,
@@ -73328,7 +74101,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornSelfEnergy_eq",
-    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.SelfEnergy",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.SelfEnergy.Core",
     "externalAxioms": [],
     "docString": "Physical-side channel decomposition, retained because it is consumed by downstream transport\ncalculations. ",
     "directWrapperTargetModule": null,
@@ -73339,7 +74112,7 @@
     ],
     "dependencies": [
       "QuantumTheory.Transport.SpectralSide.regulator_ne_zero",
-      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.SelfEnergy.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornSelfEnergyOfRegulator_eq"
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.SelfEnergy.Core.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornSelfEnergyOfRegulator_eq"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -76283,7 +77056,7 @@
     "directWrapperOf": null,
     "dependents": [
       "QuantumTheory.Models.MassiveDirac.pauliGreenOperatorOfRegulator_polar_eq",
-      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.SelfEnergy.0.QuantumTheory.Models.MassiveDirac.continuumBornRadialGreenKernelOfRegulator_eq"
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.SelfEnergy.Core.0.QuantumTheory.Models.MassiveDirac.continuumBornRadialGreenKernelOfRegulator_eq"
     ],
     "dependencies": [
       "QuantumTheory.Models.MassiveDirac.pauliGreenOperatorOfRegulator_add_neg_momentum"
@@ -76292,7 +77065,7 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.Models.MassiveDirac.pauliGreenOperatorOfRegulator_polar_eq",
-      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.SelfEnergy.0.QuantumTheory.Models.MassiveDirac.continuumBornRadialGreenKernelOfRegulator_eq"
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.SelfEnergy.Core.0.QuantumTheory.Models.MassiveDirac.continuumBornRadialGreenKernelOfRegulator_eq"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -79357,8 +80130,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.Denominator.0.QuantumTheory.Models.MassiveDirac.tendsto_arg_pauliGreenDenominator_cutoff_broadening_zero",
-      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.Denominator.0.QuantumTheory.Models.MassiveDirac.tendsto_arg_pauliGreenDenominator_zero_radial_broadening_zero"
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.Boundary.0.QuantumTheory.Models.MassiveDirac.tendsto_arg_pauliGreenDenominator_cutoff_broadening_zero",
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.Boundary.0.QuantumTheory.Models.MassiveDirac.tendsto_arg_pauliGreenDenominator_zero_radial_broadening_zero"
     ],
     "dependencies": [
       "QuantumTheory.Transport.SpectralSide.regulator_advanced",
@@ -79368,8 +80141,8 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.Denominator.0.QuantumTheory.Models.MassiveDirac.tendsto_arg_pauliGreenDenominator_cutoff_broadening_zero",
-      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.Denominator.0.QuantumTheory.Models.MassiveDirac.tendsto_arg_pauliGreenDenominator_zero_radial_broadening_zero"
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.Boundary.0.QuantumTheory.Models.MassiveDirac.tendsto_arg_pauliGreenDenominator_cutoff_broadening_zero",
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.Boundary.0.QuantumTheory.Models.MassiveDirac.tendsto_arg_pauliGreenDenominator_zero_radial_broadening_zero"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -79406,8 +80179,8 @@
     "directWrapperOf": null,
     "dependents": [
       "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDenominatorIntegral_broadening_zero",
-      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.Denominator.0.QuantumTheory.Models.MassiveDirac.tendsto_arg_pauliGreenDenominator_cutoff_broadening_zero",
-      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.Denominator.0.QuantumTheory.Models.MassiveDirac.tendsto_arg_pauliGreenDenominator_zero_radial_broadening_zero"
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.Boundary.0.QuantumTheory.Models.MassiveDirac.tendsto_arg_pauliGreenDenominator_cutoff_broadening_zero",
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.Boundary.0.QuantumTheory.Models.MassiveDirac.tendsto_arg_pauliGreenDenominator_zero_radial_broadening_zero"
     ],
     "dependencies": [
       "QuantumTheory.Transport.SpectralSide.regulator_advanced",
@@ -79418,8 +80191,8 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDenominatorIntegral_broadening_zero",
-      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.Denominator.0.QuantumTheory.Models.MassiveDirac.tendsto_arg_pauliGreenDenominator_cutoff_broadening_zero",
-      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.Denominator.0.QuantumTheory.Models.MassiveDirac.tendsto_arg_pauliGreenDenominator_zero_radial_broadening_zero"
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.Boundary.0.QuantumTheory.Models.MassiveDirac.tendsto_arg_pauliGreenDenominator_cutoff_broadening_zero",
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.Boundary.0.QuantumTheory.Models.MassiveDirac.tendsto_arg_pauliGreenDenominator_zero_radial_broadening_zero"
     ],
     "compiledConsumerCount": 3,
     "axioms": [
@@ -81057,7 +81830,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "QuantumTheory.Models.MassiveDirac.star_finiteCutoffContinuumBornSelfEnergy",
-    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.SelfEnergy",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.SelfEnergy.Core",
     "externalAxioms": [],
     "docString": "Physical-side adjunction, retained for downstream Born-Dyson consumers. ",
     "directWrapperTargetModule": null,
@@ -81068,7 +81841,7 @@
     "dependencies": [
       "QuantumTheory.Transport.SpectralSide.regulator_ne_zero",
       "QuantumTheory.Transport.SpectralSide.regulator_opposite",
-      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.SelfEnergy.0.QuantumTheory.Models.MassiveDirac.star_finiteCutoffContinuumBornSelfEnergyOfRegulator"
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.SelfEnergy.Core.0.QuantumTheory.Models.MassiveDirac.star_finiteCutoffContinuumBornSelfEnergyOfRegulator"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -81109,7 +81882,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.SelfEnergy.0.QuantumTheory.Models.MassiveDirac.star_continuumBornRadialGreenKernelOfRegulator"
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.SelfEnergy.Core.0.QuantumTheory.Models.MassiveDirac.star_continuumBornRadialGreenKernelOfRegulator"
     ],
     "dependencies": [
       "QuantumTheory.Models.MassiveDirac.hamiltonianOperator_isSelfAdjoint",
@@ -81119,7 +81892,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.SelfEnergy.0.QuantumTheory.Models.MassiveDirac.star_continuumBornRadialGreenKernelOfRegulator"
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.SelfEnergy.Core.0.QuantumTheory.Models.MassiveDirac.star_continuumBornRadialGreenKernelOfRegulator"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -82068,7 +82841,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDenominatorIntegral_im_broadening_zero",
-    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.Denominator",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.Boundary",
     "externalAxioms": [],
     "docString": "At fixed finite cutoff beyond the on-shell circle, `Im J_s → -sπ/(2v²)` as `η → 0⁺`. ",
     "directWrapperTargetModule": null,
@@ -82078,8 +82851,8 @@
     ],
     "dependencies": [
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDenominatorIntegral_im_eq",
-      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.Denominator.0.QuantumTheory.Models.MassiveDirac.tendsto_arg_pauliGreenDenominator_cutoff_broadening_zero",
-      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.Denominator.0.QuantumTheory.Models.MassiveDirac.tendsto_arg_pauliGreenDenominator_zero_radial_broadening_zero"
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.Boundary.0.QuantumTheory.Models.MassiveDirac.tendsto_arg_pauliGreenDenominator_cutoff_broadening_zero",
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.Boundary.0.QuantumTheory.Models.MassiveDirac.tendsto_arg_pauliGreenDenominator_zero_radial_broadening_zero"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -97083,230 +97856,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (n : ℕ), (PowerSeries.coeff n) BesselFormal.besselFormalJ0 = Complex.regularizedHGFunCoeff 0 {1} n",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.besselFormalJ0_coeff_eq_regularizedHGFun",
-    "module": "LeanCondensedMatter.Transport.Analysis.BesselJFormalAnalyticBridge",
-    "externalAxioms": [],
-    "docString": "The formal J₀ factorial coefficient agrees with the *actual*\nregularized hypergeometric coefficient for bottom parameter 1. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.besselJZero_eq_formalTsum",
-      "QuantumTheory.Transport.summable_besselFormalJ0_eval"
-    ],
-    "dependencies": [
-      "QuantumTheory.Transport.regularizedHGFunCoeff_zero_singleton_nat_add_one"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.besselJZero_eq_formalTsum",
-      "QuantumTheory.Transport.summable_besselFormalJ0_eval"
-    ],
-    "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (n : ℕ),\n  (PowerSeries.coeff n) (PowerSeries.derivative BesselFormal.besselFormalJ0) = Complex.regularizedHGFunCoeff 0 {2} n",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.besselFormalJ0_derivative_coeff_eq_regularizedHGFun",
-    "module": "LeanCondensedMatter.Transport.Analysis.BesselJFormalAnalyticBridge",
-    "externalAxioms": [],
-    "docString": "The formal derivative of J₀ has exactly the bottom-parameter-2\nhypergeometric coefficients. This is a coefficient-level statement,\nnot analytic differentiation of an infinite sum. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.besselJOne_eq_formalDerivativeTsum",
-      "QuantumTheory.Transport.summable_besselFormalJ0_derivative_eval"
-    ],
-    "dependencies": [
-      "QuantumTheory.Transport.regularizedHGFunCoeff_zero_singleton_nat_add_one"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.besselJOne_eq_formalDerivativeTsum",
-      "QuantumTheory.Transport.summable_besselFormalJ0_derivative_eval"
-    ],
-    "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (z : ℂ),\n  Complex.besselJ 1 z =\n    z / 2 * ∑' (n : ℕ), (PowerSeries.coeff n) (PowerSeries.derivative BesselFormal.besselFormalJ0) * (-(z / 2) ^ 2) ^ n",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.besselJOne_eq_formalDerivativeTsum",
-    "module": "LeanCondensedMatter.Transport.Analysis.BesselJFormalAnalyticBridge",
-    "externalAxioms": [],
-    "docString": "Analytic J₁ is the complex evaluation of the *formal derivative*\nof the normalized J₀ factorial series, multiplied by z/2. No analytic\nderivative-of-sum exchange is postulated. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.besselY0Y1_harmonicIdentity"
-    ],
-    "dependencies": [
-      "QuantumTheory.Transport.besselFormalJ0_derivative_coeff_eq_regularizedHGFun",
-      "QuantumTheory.Transport.besselJOne_eq_regularizedHGTsum"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.besselY0Y1_harmonicIdentity"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (z : ℂ), Complex.besselJ 1 z = z / 2 * ∑' (n : ℕ), Complex.regularizedHGFunCoeff 0 {2} n * (-(z / 2) ^ 2) ^ n",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.besselJOne_eq_regularizedHGTsum",
-    "module": "LeanCondensedMatter.Transport.Analysis.BesselJFormalAnalyticBridge",
-    "externalAxioms": [],
-    "docString": "The order-one J function in Mathlib, in its bottom-parameter-2\nhypergeometric series representation. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.besselJOne_eq_formalDerivativeTsum"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.besselJOne_eq_formalDerivativeTsum"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (z : ℂ), Complex.besselJ 0 z = ∑' (n : ℕ), (PowerSeries.coeff n) BesselFormal.besselFormalJ0 * (-(z / 2) ^ 2) ^ n",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.besselJZero_eq_formalTsum",
-    "module": "LeanCondensedMatter.Transport.Analysis.BesselJFormalAnalyticBridge",
-    "externalAxioms": [],
-    "docString": "Mathlib's J₀ is the coefficientwise entire evaluation of the\nconcrete formal factorial power series. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.besselY0Y1_harmonicIdentity"
-    ],
-    "dependencies": [
-      "QuantumTheory.Transport.besselFormalJ0_coeff_eq_regularizedHGFun",
-      "QuantumTheory.Transport.polarFourierBesselJZero_eq_tsum"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.besselY0Y1_harmonicIdentity"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ (z : ℝ), Complex.besselJ 1 ↑z ^ 2 / ↑z = Complex.besselJ 1 ↑z * (Complex.besselJ 0 ↑z + Complex.besselJ 2 ↑z) / 2",
     "standardAxioms": [
       "Classical.choice",
@@ -97380,285 +97929,6 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.Transport.tendsto_integral_besselJ_one_sq_div"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (z : ℂ),\n  BesselSecondKind.besselY0HarmonicCorrection z =\n    ∑' (n : ℕ), (PowerSeries.coeff n) BesselFormal.besselFormalH0 * (-(z / 2) ^ 2) ^ n",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.besselY0HarmonicCorrection_eq_formalTsum",
-    "module": "LeanCondensedMatter.Transport.Analysis.BesselYFormalAnalyticBridge",
-    "externalAxioms": [],
-    "docString": "A real, absolutely convergent second-kind Y₀ correction is\nthe termwise sum of the **proved formal** harmonic coefficients. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.besselY0Y1_harmonicIdentity"
-    ],
-    "dependencies": [
-      "QuantumTheory.Transport.besselY0HarmonicTerm_eq_formal"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.besselY0Y1_harmonicIdentity"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (z : ℂ) (n : ℕ),\n  BesselSecondKind.besselY0HarmonicTerm z n = (PowerSeries.coeff n) BesselFormal.besselFormalH0 * (-(z / 2) ^ 2) ^ n",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.besselY0HarmonicTerm_eq_formal",
-    "module": "LeanCondensedMatter.Transport.Analysis.BesselYFormalAnalyticBridge",
-    "externalAxioms": [],
-    "docString": "The n-th actual Y₀ harmonic correction summand is the\ncorresponding formal coefficient evaluated at x=-(z/2)². ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.besselY0HarmonicCorrection_eq_formalTsum"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.besselY0HarmonicCorrection_eq_formalTsum"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (z : ℂ),\n  z ≠ 0 →\n    Complex.besselJ 1 z * BesselSecondKind.besselY0Series z - Complex.besselJ 0 z * BesselSecondKind.besselY1Series z =\n      ↑(2 / Real.pi) * z⁻¹",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.besselY0Y1Series_wronskian",
-    "module": "LeanCondensedMatter.Transport.Analysis.BesselYAnalyticWronskian",
-    "externalAxioms": [],
-    "docString": "The actual convergent DLMF Y₀/Y₁ series satisfy the standard\nnormalized J/Y Wronskian for every nonzero complex argument. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.crossedXBesselWronskian_concreteSeries"
-    ],
-    "dependencies": [
-      "BesselSecondKind.besselY0Y1Wronskian_of_harmonicIdentity",
-      "QuantumTheory.Transport.besselY0Y1_harmonicIdentity"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.crossedXBesselWronskian_concreteSeries"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (z : ℂ),\n  Complex.besselJ 0 z - z * Complex.besselJ 1 z * BesselSecondKind.besselY0HarmonicCorrection z +\n      z ^ 2 / 4 * Complex.besselJ 0 z * BesselSecondKind.besselY1HarmonicCorrection z =\n    1",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.besselY0Y1_harmonicIdentity",
-    "module": "LeanCondensedMatter.Transport.Analysis.BesselYAnalyticWronskian",
-    "externalAxioms": [],
-    "docString": "The missing harmonic identity for the *actual* Mathlib J₀/J₁ and\nthe absolutely convergent DLMF Y₀/Y₁ harmonic corrections. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.besselY0Y1Series_wronskian"
-    ],
-    "dependencies": [
-      "BesselFormal.besselFormalJ0H0H1_harmonicIdentity",
-      "PowerSeries.coefficientSum_C_mul",
-      "PowerSeries.coefficientSum_X_mul",
-      "PowerSeries.coefficientSum_add",
-      "PowerSeries.coefficientSum_mul",
-      "PowerSeries.coefficientSum_one",
-      "PowerSeries.coefficientSum_sub",
-      "PowerSeries.summable_coefficientSum_C_mul",
-      "PowerSeries.summable_coefficientSum_X_mul",
-      "PowerSeries.summable_coefficientSum_add",
-      "PowerSeries.summable_coefficientSum_mul",
-      "QuantumTheory.Transport.besselJOne_eq_formalDerivativeTsum",
-      "QuantumTheory.Transport.besselJZero_eq_formalTsum",
-      "QuantumTheory.Transport.besselY0HarmonicCorrection_eq_formalTsum",
-      "QuantumTheory.Transport.besselY1HarmonicCorrection_eq_formalTsum",
-      "QuantumTheory.Transport.summable_besselFormalH0_eval",
-      "QuantumTheory.Transport.summable_besselFormalH1_eval",
-      "QuantumTheory.Transport.summable_besselFormalJ0_derivative_eval",
-      "QuantumTheory.Transport.summable_besselFormalJ0_eval"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.besselY0Y1Series_wronskian"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (z : ℂ),\n  BesselSecondKind.besselY1HarmonicCorrection z =\n    ∑' (n : ℕ), (PowerSeries.coeff n) BesselFormal.besselFormalH1 * (-(z / 2) ^ 2) ^ n",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.besselY1HarmonicCorrection_eq_formalTsum",
-    "module": "LeanCondensedMatter.Transport.Analysis.BesselYFormalAnalyticBridge",
-    "externalAxioms": [],
-    "docString": "The actual absolutely convergent Y₁ correction\nis the precise coefficientwise evaluation of its formal series. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.besselY0Y1_harmonicIdentity"
-    ],
-    "dependencies": [
-      "QuantumTheory.Transport.besselY1HarmonicTerm_eq_formal"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.besselY0Y1_harmonicIdentity"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (z : ℂ) (n : ℕ),\n  BesselSecondKind.besselY1HarmonicTerm z n = (PowerSeries.coeff n) BesselFormal.besselFormalH1 * (-(z / 2) ^ 2) ^ n",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.besselY1HarmonicTerm_eq_formal",
-    "module": "LeanCondensedMatter.Transport.Analysis.BesselYFormalAnalyticBridge",
-    "externalAxioms": [],
-    "docString": "The n-th actual Y₁ harmonic correction summand is the\ncorresponding order-one formal coefficient. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.besselY1HarmonicCorrection_eq_formalTsum"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.besselY1HarmonicCorrection_eq_formalTsum"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -98178,19 +98448,19 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "QuantumTheory.Transport.crossedXBesselWronskian_concreteSeries",
-    "module": "LeanCondensedMatter.Transport.Analysis.BesselYAnalyticWronskian",
+    "module": "LeanCondensedMatter.Transport.Analysis.BesselCrossedXMoment",
     "externalAxioms": [],
     "docString": "No abstract Y₀/Y₁ Wronskian premise is required for the\nspecific convergent Bessel-Y implementations used in the\nGaussian crossed-X reference moment. ",
-    "directWrapperTargetModule": "LeanCondensedMatter.Transport.Analysis.BesselYAnalyticWronskian",
-    "directWrapperOf": "QuantumTheory.Transport.besselY0Y1Series_wronskian",
+    "directWrapperTargetModule": "LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.AnalyticWronskian",
+    "directWrapperOf": "BesselSecondKind.besselY0Y1Series_wronskian",
     "dependents": [
       "QuantumTheory.Models.MassiveDirac.adoCrossedXConcreteBesselReference_integral_eq_endpoints",
       "QuantumTheory.Models.MassiveDirac.adoCrossedXConcreteBesselReference_tendsto_benchmark"
     ],
     "dependencies": [
-      "QuantumTheory.Transport.besselY0Y1Series_wronskian"
+      "BesselSecondKind.besselY0Y1Series_wronskian"
     ],
-    "crossModuleDirectWrapper": false,
+    "crossModuleDirectWrapper": true,
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.Models.MassiveDirac.adoCrossedXConcreteBesselReference_integral_eq_endpoints",
@@ -100170,50 +100440,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (z : ℂ), Complex.besselJ 0 z = ∑' (n : ℕ), Complex.regularizedHGFunCoeff 0 {1} n * (-(z / 2) ^ 2) ^ n",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.polarFourierBesselJZero_eq_tsum",
-    "module": "LeanCondensedMatter.Transport.Analysis.PolarFourier",
-    "externalAxioms": [],
-    "docString": "Mathlib's integer-order Bessel function has the expected coefficient expansion. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.besselJZero_eq_formalTsum",
-      "QuantumTheory.Transport.polarFourierZerothAngularKernel_eq_besselJ"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.besselJZero_eq_formalTsum",
-      "QuantumTheory.Transport.polarFourierZerothAngularKernel_eq_besselJ"
-    ],
-    "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ (n : ℕ),\n  QuantumTheory.Transport.polarFourierCosineMoment (n + 2) =\n    (↑n + 1) / (↑n + 2) * QuantumTheory.Transport.polarFourierCosineMoment n",
     "standardAxioms": [
       "Classical.choice",
@@ -101307,7 +101533,7 @@
       "_private.LeanCondensedMatter.Transport.Analysis.BesselRadialMoments.0.QuantumTheory.Transport.polarFourierHarmonicEnergy_eq_besselJ"
     ],
     "dependencies": [
-      "QuantumTheory.Transport.polarFourierBesselJZero_eq_tsum",
+      "BesselHypergeometric.besselJZero_eq_regularizedHGTsum",
       "QuantumTheory.Transport.polarFourierCosineMoment_odd",
       "QuantumTheory.Transport.polarFourierZerothAngularKernel_eq_tsum_moments",
       "QuantumTheory.Transport.polarFourierZerothMoment_even_eq_bessel",
@@ -101637,8 +101863,8 @@
       "QuantumTheory.Transport.polarFourierZerothAngularKernel_eq_besselJ"
     ],
     "dependencies": [
-      "QuantumTheory.Transport.polarFourierCosineMoment_even_factorial",
-      "QuantumTheory.Transport.regularizedHGFunCoeff_zero_singleton_nat_add_one"
+      "BesselHypergeometric.regularizedHGFunCoeff_zero_singleton_nat_add_one",
+      "QuantumTheory.Transport.polarFourierCosineMoment_even_factorial"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -102096,56 +102322,6 @@
       "SecondQuantization.Fermionic.Validation.twoLevel_zeroCurrent_streda_sum_zero"
     ],
     "compiledConsumerCount": 3,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (k n : ℕ), Complex.regularizedHGFunCoeff 0 {↑(k + 1)} n = 1 / (↑n.factorial * ↑(n + k).factorial)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.regularizedHGFunCoeff_zero_singleton_nat_add_one",
-    "module": "LeanCondensedMatter.Transport.Analysis.PolarFourier",
-    "externalAxioms": [],
-    "docString": "The coefficient of the regularized hypergeometric series with lower parameter `k + 1`. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.besselFormalJ0_coeff_eq_regularizedHGFun",
-      "QuantumTheory.Transport.besselFormalJ0_derivative_coeff_eq_regularizedHGFun",
-      "QuantumTheory.Transport.polarFourierZerothMoment_even_eq_bessel",
-      "_private.LeanCondensedMatter.Transport.Analysis.PolarFourier.0.QuantumTheory.Transport.regularizedHGFun_one_sub_two_eq_mul_three",
-      "_private.LeanCondensedMatter.Transport.Analysis.PolarFourier.0.QuantumTheory.Transport.regularizedHGFun_zero_one_hasDerivAt"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.besselFormalJ0_coeff_eq_regularizedHGFun",
-      "QuantumTheory.Transport.besselFormalJ0_derivative_coeff_eq_regularizedHGFun",
-      "QuantumTheory.Transport.polarFourierZerothMoment_even_eq_bessel",
-      "_private.LeanCondensedMatter.Transport.Analysis.PolarFourier.0.QuantumTheory.Transport.regularizedHGFun_one_sub_two_eq_mul_three",
-      "_private.LeanCondensedMatter.Transport.Analysis.PolarFourier.0.QuantumTheory.Transport.regularizedHGFun_zero_one_hasDerivAt"
-    ],
-    "compiledConsumerCount": 5,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -103626,182 +103802,6 @@
       "QuantumTheory.Transport.star_spectralParameter"
     ],
     "compiledConsumerCount": 3,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (z : ℂ), Summable fun n => (PowerSeries.coeff n) BesselFormal.besselFormalH0 * (-(z / 2) ^ 2) ^ n",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.summable_besselFormalH0_eval",
-    "module": "LeanCondensedMatter.Transport.Analysis.BesselYFormalAnalyticBridge",
-    "externalAxioms": [],
-    "docString": "The coefficientwise evaluation of the formal H₀ series converges\nabsolutely at every complex argument, by the already proved concrete\nY₀ harmonic-term bound. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.besselY0Y1_harmonicIdentity"
-    ],
-    "dependencies": [
-      "BesselSecondKind.summable_besselY0HarmonicTerm"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.besselY0Y1_harmonicIdentity"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (z : ℂ), Summable fun n => (PowerSeries.coeff n) BesselFormal.besselFormalH1 * (-(z / 2) ^ 2) ^ n",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.summable_besselFormalH1_eval",
-    "module": "LeanCondensedMatter.Transport.Analysis.BesselYFormalAnalyticBridge",
-    "externalAxioms": [],
-    "docString": "The coefficientwise evaluation of the formal H₁ series also\nconverges absolutely at every complex argument. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.besselY0Y1_harmonicIdentity"
-    ],
-    "dependencies": [
-      "BesselSecondKind.summable_besselY1HarmonicTerm"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.besselY0Y1_harmonicIdentity"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (z : ℂ),\n  Summable fun n => (PowerSeries.coeff n) (PowerSeries.derivative BesselFormal.besselFormalJ0) * (-(z / 2) ^ 2) ^ n",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.summable_besselFormalJ0_derivative_eval",
-    "module": "LeanCondensedMatter.Transport.Analysis.BesselJFormalAnalyticBridge",
-    "externalAxioms": [],
-    "docString": "Formal J₀ derivative coefficients also have an everywhere\nconvergent complex evaluation. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.besselY0Y1_harmonicIdentity"
-    ],
-    "dependencies": [
-      "QuantumTheory.Transport.besselFormalJ0_derivative_coeff_eq_regularizedHGFun"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.besselY0Y1_harmonicIdentity"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (z : ℂ), Summable fun n => (PowerSeries.coeff n) BesselFormal.besselFormalJ0 * (-(z / 2) ^ 2) ^ n",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.summable_besselFormalJ0_eval",
-    "module": "LeanCondensedMatter.Transport.Analysis.BesselJFormalAnalyticBridge",
-    "externalAxioms": [],
-    "docString": "Formal J₀ coefficients have an everywhere convergent complex\npower-series evaluation, by the known entire hypergeometric series. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.besselY0Y1_harmonicIdentity"
-    ],
-    "dependencies": [
-      "QuantumTheory.Transport.besselFormalJ0_coeff_eq_regularizedHGFun"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.besselY0Y1_harmonicIdentity"
-    ],
-    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -185347,6 +185347,185 @@
   },
   {
     "terminal": false,
+    "statement": "∀ (m probeEnergy : ℝ), |m| < probeEnergy → m ^ 2 < probeEnergy ^ 2",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.Boundary.0.QuantumTheory.Models.MassiveDirac.mass_sq_lt_probe_sq",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.Boundary",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.Boundary.0.QuantumTheory.Models.MassiveDirac.tendsto_arg_pauliGreenDenominator_zero_radial_broadening_zero"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.Boundary.0.QuantumTheory.Models.MassiveDirac.tendsto_arg_pauliGreenDenominator_zero_radial_broadening_zero"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (side : QuantumTheory.Transport.SpectralSide) (v m probeEnergy pMax : ℝ),\n  0 < probeEnergy →\n    probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2 →\n      Filter.Tendsto\n        (fun broadening =>\n          (QuantumTheory.Models.MassiveDirac.pauliGreenDenominator side v m pMax 0 probeEnergy broadening).arg)\n        (nhdsWithin 0 (Set.Ioi 0)) (nhds (side.sign * Real.pi))",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.Boundary.0.QuantumTheory.Models.MassiveDirac.tendsto_arg_pauliGreenDenominator_cutoff_broadening_zero",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.Boundary",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDenominatorIntegral_im_broadening_zero"
+    ],
+    "dependencies": [
+      "QuantumTheory.Models.MassiveDirac.pauliGreenDenominator_radial_im",
+      "QuantumTheory.Models.MassiveDirac.pauliGreenDenominator_radial_re",
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.Boundary.0.QuantumTheory.Models.MassiveDirac.tendsto_pauliGreenDenominator_radial_broadening_zero"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDenominatorIntegral_im_broadening_zero"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (side : QuantumTheory.Transport.SpectralSide) (v m probeEnergy : ℝ),\n  |m| < probeEnergy →\n    Filter.Tendsto\n      (fun broadening =>\n        (QuantumTheory.Models.MassiveDirac.pauliGreenDenominator side v m 0 0 probeEnergy broadening).arg)\n      (nhdsWithin 0 (Set.Ioi 0)) (nhds 0)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.Boundary.0.QuantumTheory.Models.MassiveDirac.tendsto_arg_pauliGreenDenominator_zero_radial_broadening_zero",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.Boundary",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDenominatorIntegral_im_broadening_zero"
+    ],
+    "dependencies": [
+      "QuantumTheory.Models.MassiveDirac.pauliGreenDenominator_radial_im",
+      "QuantumTheory.Models.MassiveDirac.pauliGreenDenominator_radial_re",
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.Boundary.0.QuantumTheory.Models.MassiveDirac.mass_sq_lt_probe_sq",
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.Boundary.0.QuantumTheory.Models.MassiveDirac.tendsto_pauliGreenDenominator_radial_broadening_zero"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDenominatorIntegral_im_broadening_zero"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (side : QuantumTheory.Transport.SpectralSide) (v m probeEnergy p : ℝ),\n  Filter.Tendsto\n    (fun broadening => QuantumTheory.Models.MassiveDirac.pauliGreenDenominator side v m p 0 probeEnergy broadening)\n    (nhdsWithin 0 (Set.Ioi 0))\n    (nhds (QuantumTheory.Models.MassiveDirac.pauliGreenDenominator side v m p 0 probeEnergy 0))",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.Boundary.0.QuantumTheory.Models.MassiveDirac.tendsto_pauliGreenDenominator_radial_broadening_zero",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.Boundary",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.Boundary.0.QuantumTheory.Models.MassiveDirac.tendsto_arg_pauliGreenDenominator_cutoff_broadening_zero",
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.Boundary.0.QuantumTheory.Models.MassiveDirac.tendsto_arg_pauliGreenDenominator_zero_radial_broadening_zero"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.Boundary.0.QuantumTheory.Models.MassiveDirac.tendsto_arg_pauliGreenDenominator_cutoff_broadening_zero",
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.Boundary.0.QuantumTheory.Models.MassiveDirac.tendsto_arg_pauliGreenDenominator_zero_radial_broadening_zero"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ (v m probeEnergy regulator pMax : ℝ),\n  v ≠ 0 →\n    probeEnergy ≠ 0 →\n      regulator ≠ 0 →\n        QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDenominatorIntegralOfRegulator v m probeEnergy\n            regulator pMax =\n          -(2 * ↑v ^ 2)⁻¹ *\n            (Complex.log\n                (QuantumTheory.Models.MassiveDirac.pauliGreenDenominatorOfRegulator v m pMax 0 probeEnergy regulator) -\n              Complex.log\n                (QuantumTheory.Models.MassiveDirac.pauliGreenDenominatorOfRegulator v m 0 0 probeEnergy regulator))",
     "standardAxioms": [
       "Classical.choice",
@@ -185472,48 +185651,6 @@
       "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDenominatorIntegralOfRegulator_re_atTop"
     ],
     "compiledConsumerCount": 3,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (m probeEnergy : ℝ), |m| < probeEnergy → m ^ 2 < probeEnergy ^ 2",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.Denominator.0.QuantumTheory.Models.MassiveDirac.mass_sq_lt_probe_sq",
-    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.Denominator",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.Denominator.0.QuantumTheory.Models.MassiveDirac.tendsto_arg_pauliGreenDenominator_zero_radial_broadening_zero"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.Denominator.0.QuantumTheory.Models.MassiveDirac.tendsto_arg_pauliGreenDenominator_zero_radial_broadening_zero"
-    ],
-    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -185713,99 +185850,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (side : QuantumTheory.Transport.SpectralSide) (v m probeEnergy pMax : ℝ),\n  0 < probeEnergy →\n    probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2 →\n      Filter.Tendsto\n        (fun broadening =>\n          (QuantumTheory.Models.MassiveDirac.pauliGreenDenominator side v m pMax 0 probeEnergy broadening).arg)\n        (nhdsWithin 0 (Set.Ioi 0)) (nhds (side.sign * Real.pi))",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.Denominator.0.QuantumTheory.Models.MassiveDirac.tendsto_arg_pauliGreenDenominator_cutoff_broadening_zero",
-    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.Denominator",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDenominatorIntegral_im_broadening_zero"
-    ],
-    "dependencies": [
-      "QuantumTheory.Models.MassiveDirac.pauliGreenDenominator_radial_im",
-      "QuantumTheory.Models.MassiveDirac.pauliGreenDenominator_radial_re",
-      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.Denominator.0.QuantumTheory.Models.MassiveDirac.tendsto_pauliGreenDenominator_radial_broadening_zero"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDenominatorIntegral_im_broadening_zero"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (side : QuantumTheory.Transport.SpectralSide) (v m probeEnergy : ℝ),\n  |m| < probeEnergy →\n    Filter.Tendsto\n      (fun broadening =>\n        (QuantumTheory.Models.MassiveDirac.pauliGreenDenominator side v m 0 0 probeEnergy broadening).arg)\n      (nhdsWithin 0 (Set.Ioi 0)) (nhds 0)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.Denominator.0.QuantumTheory.Models.MassiveDirac.tendsto_arg_pauliGreenDenominator_zero_radial_broadening_zero",
-    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.Denominator",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDenominatorIntegral_im_broadening_zero"
-    ],
-    "dependencies": [
-      "QuantumTheory.Models.MassiveDirac.pauliGreenDenominator_radial_im",
-      "QuantumTheory.Models.MassiveDirac.pauliGreenDenominator_radial_re",
-      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.Denominator.0.QuantumTheory.Models.MassiveDirac.mass_sq_lt_probe_sq",
-      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.Denominator.0.QuantumTheory.Models.MassiveDirac.tendsto_pauliGreenDenominator_radial_broadening_zero"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDenominatorIntegral_im_broadening_zero"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ (v m probeEnergy regulator : ℝ),\n  v ≠ 0 →\n    Filter.Tendsto\n      (fun p => (probeEnergy ^ 2 - regulator ^ 2 - m ^ 2 - v ^ 2 * p ^ 2) ^ 2 + (2 * probeEnergy * regulator) ^ 2)\n      Filter.atTop Filter.atTop",
     "standardAxioms": [
       "Classical.choice",
@@ -185848,94 +185892,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (side : QuantumTheory.Transport.SpectralSide) (v m probeEnergy p : ℝ),\n  Filter.Tendsto\n    (fun broadening => QuantumTheory.Models.MassiveDirac.pauliGreenDenominator side v m p 0 probeEnergy broadening)\n    (nhdsWithin 0 (Set.Ioi 0))\n    (nhds (QuantumTheory.Models.MassiveDirac.pauliGreenDenominator side v m p 0 probeEnergy 0))",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.Denominator.0.QuantumTheory.Models.MassiveDirac.tendsto_pauliGreenDenominator_radial_broadening_zero",
-    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.Denominator",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.Denominator.0.QuantumTheory.Models.MassiveDirac.tendsto_arg_pauliGreenDenominator_cutoff_broadening_zero",
-      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.Denominator.0.QuantumTheory.Models.MassiveDirac.tendsto_arg_pauliGreenDenominator_zero_radial_broadening_zero"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.Denominator.0.QuantumTheory.Models.MassiveDirac.tendsto_arg_pauliGreenDenominator_cutoff_broadening_zero",
-      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.Denominator.0.QuantumTheory.Models.MassiveDirac.tendsto_arg_pauliGreenDenominator_zero_radial_broadening_zero"
-    ],
-    "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (v m probeEnergy regulator p : ℝ),\n  QuantumTheory.Models.MassiveDirac.continuumBornPolarRadialKernelOfRegulator✝ v m probeEnergy regulator p =\n    (2 * Real.pi) •\n      QuantumTheory.Models.MassiveDirac.continuumBornRadialGreenKernelOfRegulator v m probeEnergy regulator p",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.SelfEnergy.0.QuantumTheory.Models.MassiveDirac.continuumBornPolarRadialKernelOfRegulator_eq",
-    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.SelfEnergy",
-    "externalAxioms": [],
-    "docString": "The explicit angularly integrated polar kernel is exactly `2π` times the radial kernel used by\nthe continuum Born self-energy. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.SelfEnergy.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornPolarGreenIntegralOfRegulator_eq"
-    ],
-    "dependencies": [
-      "QuantumTheory.Models.MassiveDirac.continuumAngularGreenIntegralOfRegulator_eq"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.SelfEnergy.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornPolarGreenIntegralOfRegulator_eq"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ (v m probeEnergy regulator p : ℝ),\n  QuantumTheory.Models.MassiveDirac.continuumBornRadialGreenKernelOfRegulator v m probeEnergy regulator p =\n    QuantumTheory.Models.MassiveDirac.continuumBornRadialIntegrandOfRegulator\n          QuantumTheory.Models.MassiveDirac.BornSelfEnergyChannel.scalar v m probeEnergy regulator p •\n        1 +\n      QuantumTheory.Models.MassiveDirac.continuumBornRadialIntegrandOfRegulator\n          QuantumTheory.Models.MassiveDirac.BornSelfEnergyChannel.z v m probeEnergy regulator p •\n        QuantumTheory.Models.MassiveDirac.matrixOperator QuantumTheory.Models.MassiveDirac.sigmaZ",
     "standardAxioms": [
       "Classical.choice",
@@ -185948,8 +185904,8 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.SelfEnergy.0.QuantumTheory.Models.MassiveDirac.continuumBornRadialGreenKernelOfRegulator_eq",
-    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.SelfEnergy",
+    "name": "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.SelfEnergy.Core.0.QuantumTheory.Models.MassiveDirac.continuumBornRadialGreenKernelOfRegulator_eq",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.SelfEnergy.Core",
     "externalAxioms": [],
     "docString": "Pointwise arbitrary-regulator radial kernel decomposition into the two surviving Pauli channels. ",
     "directWrapperTargetModule": null,
@@ -185982,132 +185938,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (channel : QuantumTheory.Models.MassiveDirac.BornSelfEnergyChannel) (v m probeEnergy regulator p : ℝ),\n  QuantumTheory.Models.MassiveDirac.continuumBornRadialIntegrandOfRegulator channel v m probeEnergy regulator p =\n    QuantumTheory.Models.MassiveDirac.bornSelfEnergyChannelWeightOfRegulator channel m probeEnergy regulator *\n      QuantumTheory.Models.MassiveDirac.continuumBornRadialDenominatorIntegrandOfRegulator v m probeEnergy regulator p",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.SelfEnergy.0.QuantumTheory.Models.MassiveDirac.continuumBornRadialIntegrandOfRegulator_eq_weight_mul_denominatorIntegrand",
-    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.SelfEnergy",
-    "externalAxioms": [],
-    "docString": "Either surviving Born self-energy radial integrand is its channel numerator times the common\ndenominator integrand. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.SelfEnergy.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornIntegralOfRegulator_eq_weight_mul_denominatorIntegral"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.SelfEnergy.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornIntegralOfRegulator_eq_weight_mul_denominatorIntegral"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (channel : QuantumTheory.Models.MassiveDirac.BornSelfEnergyChannel) (v m probeEnergy regulator pMax : ℝ),\n  QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornIntegralOfRegulator channel v m probeEnergy regulator\n      pMax =\n    QuantumTheory.Models.MassiveDirac.bornSelfEnergyChannelWeightOfRegulator channel m probeEnergy regulator *\n      QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDenominatorIntegralOfRegulator v m probeEnergy\n        regulator pMax",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.SelfEnergy.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornIntegralOfRegulator_eq_weight_mul_denominatorIntegral",
-    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.SelfEnergy",
-    "externalAxioms": [],
-    "docString": "Arbitrary-regulator factorization of either surviving Born self-energy channel. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornIntegral_eq_weight_mul_denominatorIntegral"
-    ],
-    "dependencies": [
-      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.SelfEnergy.0.QuantumTheory.Models.MassiveDirac.continuumBornRadialIntegrandOfRegulator_eq_weight_mul_denominatorIntegrand"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornIntegral_eq_weight_mul_denominatorIntegral"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ (v m probeEnergy regulator pMax : ℝ),\n  QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornPolarGreenIntegralOfRegulator✝ v m probeEnergy regulator\n      pMax =\n    (2 * Real.pi) •\n      QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornGreenIntegralOfRegulator v m probeEnergy regulator pMax",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.SelfEnergy.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornPolarGreenIntegralOfRegulator_eq",
-    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.SelfEnergy",
-    "externalAxioms": [],
-    "docString": "Explicit angular reduction commutes with the finite radial integration and produces exactly the\nfactor `2π`. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.SelfEnergy.0.QuantumTheory.Models.MassiveDirac.continuumBornPolarRadialKernelOfRegulator_eq"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ (v m probeEnergy regulator disorderStrength hbar pMax : ℝ),\n  regulator ≠ 0 →\n    QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornSelfEnergyOfRegulator v m probeEnergy regulator\n        disorderStrength hbar pMax =\n      QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornSelfEnergyCoefficientOfRegulator\n            QuantumTheory.Models.MassiveDirac.BornSelfEnergyChannel.scalar v m probeEnergy regulator disorderStrength\n            hbar pMax •\n          1 +\n        QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornSelfEnergyCoefficientOfRegulator\n            QuantumTheory.Models.MassiveDirac.BornSelfEnergyChannel.z v m probeEnergy regulator disorderStrength hbar\n            pMax •\n          QuantumTheory.Models.MassiveDirac.matrixOperator QuantumTheory.Models.MassiveDirac.sigmaZ",
     "standardAxioms": [
       "Classical.choice",
@@ -186120,8 +185950,8 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.SelfEnergy.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornSelfEnergyOfRegulator_eq",
-    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.SelfEnergy",
+    "name": "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.SelfEnergy.Core.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornSelfEnergyOfRegulator_eq",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.SelfEnergy.Core",
     "externalAxioms": [],
     "docString": "The arbitrary-regulator continuum Born self-energy contains only scalar and `σ_z` channels. ",
     "directWrapperTargetModule": null,
@@ -186164,14 +185994,14 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.SelfEnergy.0.QuantumTheory.Models.MassiveDirac.star_continuumBornRadialGreenKernelOfRegulator",
-    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.SelfEnergy",
+    "name": "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.SelfEnergy.Core.0.QuantumTheory.Models.MassiveDirac.star_continuumBornRadialGreenKernelOfRegulator",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.SelfEnergy.Core",
     "externalAxioms": [],
     "docString": null,
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.SelfEnergy.0.QuantumTheory.Models.MassiveDirac.star_finiteCutoffContinuumBornGreenIntegralOfRegulator"
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.SelfEnergy.Core.0.QuantumTheory.Models.MassiveDirac.star_finiteCutoffContinuumBornGreenIntegralOfRegulator"
     ],
     "dependencies": [
       "QuantumTheory.Models.MassiveDirac.star_pauliGreenOperatorOfRegulator"
@@ -186179,7 +186009,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.SelfEnergy.0.QuantumTheory.Models.MassiveDirac.star_finiteCutoffContinuumBornGreenIntegralOfRegulator"
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.SelfEnergy.Core.0.QuantumTheory.Models.MassiveDirac.star_finiteCutoffContinuumBornGreenIntegralOfRegulator"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -186208,23 +186038,23 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.SelfEnergy.0.QuantumTheory.Models.MassiveDirac.star_finiteCutoffContinuumBornGreenIntegralOfRegulator",
-    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.SelfEnergy",
+    "name": "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.SelfEnergy.Core.0.QuantumTheory.Models.MassiveDirac.star_finiteCutoffContinuumBornGreenIntegralOfRegulator",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.SelfEnergy.Core",
     "externalAxioms": [],
     "docString": null,
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.SelfEnergy.0.QuantumTheory.Models.MassiveDirac.star_finiteCutoffContinuumBornSelfEnergyOfRegulator"
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.SelfEnergy.Core.0.QuantumTheory.Models.MassiveDirac.star_finiteCutoffContinuumBornSelfEnergyOfRegulator"
     ],
     "dependencies": [
       "QuantumTheory.Models.MassiveDirac.continuous_continuumBornRadialGreenKernelOfRegulator",
-      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.SelfEnergy.0.QuantumTheory.Models.MassiveDirac.star_continuumBornRadialGreenKernelOfRegulator"
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.SelfEnergy.Core.0.QuantumTheory.Models.MassiveDirac.star_continuumBornRadialGreenKernelOfRegulator"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.SelfEnergy.0.QuantumTheory.Models.MassiveDirac.star_finiteCutoffContinuumBornSelfEnergyOfRegulator"
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.SelfEnergy.Core.0.QuantumTheory.Models.MassiveDirac.star_finiteCutoffContinuumBornSelfEnergyOfRegulator"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -186253,8 +186083,8 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.SelfEnergy.0.QuantumTheory.Models.MassiveDirac.star_finiteCutoffContinuumBornSelfEnergyOfRegulator",
-    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.SelfEnergy",
+    "name": "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.SelfEnergy.Core.0.QuantumTheory.Models.MassiveDirac.star_finiteCutoffContinuumBornSelfEnergyOfRegulator",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.SelfEnergy.Core",
     "externalAxioms": [],
     "docString": "Adjointing the arbitrary-regulator continuum Born self-energy reverses the regulator. ",
     "directWrapperTargetModule": null,
@@ -186263,7 +186093,7 @@
       "QuantumTheory.Models.MassiveDirac.star_finiteCutoffContinuumBornSelfEnergy"
     ],
     "dependencies": [
-      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.SelfEnergy.0.QuantumTheory.Models.MassiveDirac.star_finiteCutoffContinuumBornGreenIntegralOfRegulator"
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.SelfEnergy.Core.0.QuantumTheory.Models.MassiveDirac.star_finiteCutoffContinuumBornGreenIntegralOfRegulator"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -186271,6 +186101,176 @@
       "QuantumTheory.Models.MassiveDirac.star_finiteCutoffContinuumBornSelfEnergy"
     ],
     "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (channel : QuantumTheory.Models.MassiveDirac.BornSelfEnergyChannel) (v m probeEnergy regulator p : ℝ),\n  QuantumTheory.Models.MassiveDirac.continuumBornRadialIntegrandOfRegulator channel v m probeEnergy regulator p =\n    QuantumTheory.Models.MassiveDirac.bornSelfEnergyChannelWeightOfRegulator channel m probeEnergy regulator *\n      QuantumTheory.Models.MassiveDirac.continuumBornRadialDenominatorIntegrandOfRegulator v m probeEnergy regulator p",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.SelfEnergy.DenominatorIntegral.0.QuantumTheory.Models.MassiveDirac.continuumBornRadialIntegrandOfRegulator_eq_weight_mul_denominatorIntegrand",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.SelfEnergy.DenominatorIntegral",
+    "externalAxioms": [],
+    "docString": "Either surviving Born self-energy radial integrand is its channel numerator times the common\ndenominator integrand. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.SelfEnergy.DenominatorIntegral.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornIntegralOfRegulator_eq_weight_mul_denominatorIntegral"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.SelfEnergy.DenominatorIntegral.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornIntegralOfRegulator_eq_weight_mul_denominatorIntegral"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (channel : QuantumTheory.Models.MassiveDirac.BornSelfEnergyChannel) (v m probeEnergy regulator pMax : ℝ),\n  QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornIntegralOfRegulator channel v m probeEnergy regulator\n      pMax =\n    QuantumTheory.Models.MassiveDirac.bornSelfEnergyChannelWeightOfRegulator channel m probeEnergy regulator *\n      QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDenominatorIntegralOfRegulator v m probeEnergy\n        regulator pMax",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.SelfEnergy.DenominatorIntegral.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornIntegralOfRegulator_eq_weight_mul_denominatorIntegral",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.SelfEnergy.DenominatorIntegral",
+    "externalAxioms": [],
+    "docString": "Arbitrary-regulator factorization of either surviving Born self-energy channel. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornIntegral_eq_weight_mul_denominatorIntegral"
+    ],
+    "dependencies": [
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.SelfEnergy.DenominatorIntegral.0.QuantumTheory.Models.MassiveDirac.continuumBornRadialIntegrandOfRegulator_eq_weight_mul_denominatorIntegrand"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornIntegral_eq_weight_mul_denominatorIntegral"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (v m probeEnergy regulator p : ℝ),\n  QuantumTheory.Models.MassiveDirac.continuumBornPolarRadialKernelOfRegulator✝ v m probeEnergy regulator p =\n    (2 * Real.pi) •\n      QuantumTheory.Models.MassiveDirac.continuumBornRadialGreenKernelOfRegulator v m probeEnergy regulator p",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.SelfEnergy.PolarProvenance.0.QuantumTheory.Models.MassiveDirac.continuumBornPolarRadialKernelOfRegulator_eq",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.SelfEnergy.PolarProvenance",
+    "externalAxioms": [],
+    "docString": "The explicit angularly integrated polar kernel is exactly `2π` times the radial kernel used by\nthe continuum Born self-energy. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.SelfEnergy.PolarProvenance.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornPolarGreenIntegralOfRegulator_eq"
+    ],
+    "dependencies": [
+      "QuantumTheory.Models.MassiveDirac.continuumAngularGreenIntegralOfRegulator_eq"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.SelfEnergy.PolarProvenance.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornPolarGreenIntegralOfRegulator_eq"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (v m probeEnergy regulator pMax : ℝ),\n  QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornPolarGreenIntegralOfRegulator✝ v m probeEnergy regulator\n      pMax =\n    (2 * Real.pi) •\n      QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornGreenIntegralOfRegulator v m probeEnergy regulator pMax",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.SelfEnergy.PolarProvenance.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornPolarGreenIntegralOfRegulator_eq",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.SelfEnergy.PolarProvenance",
+    "externalAxioms": [],
+    "docString": "Explicit angular reduction commutes with the finite radial integration and produces exactly the\nfactor `2π`. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.SelfEnergy.PolarProvenance.0.QuantumTheory.Models.MassiveDirac.continuumBornPolarRadialKernelOfRegulator_eq"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -208914,7 +208914,7 @@
       "_private.LeanCondensedMatter.Transport.Analysis.PolarFourier.0.QuantumTheory.Transport.besselJ_zero_one_two_recurrence"
     ],
     "dependencies": [
-      "QuantumTheory.Transport.regularizedHGFunCoeff_zero_singleton_nat_add_one"
+      "BesselHypergeometric.regularizedHGFunCoeff_zero_singleton_nat_add_one"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -208958,7 +208958,7 @@
       "_private.LeanCondensedMatter.Transport.Analysis.PolarFourier.0.QuantumTheory.Transport.besselJ_zero_hasDerivAt"
     ],
     "dependencies": [
-      "QuantumTheory.Transport.regularizedHGFunCoeff_zero_singleton_nat_add_one"
+      "BesselHypergeometric.regularizedHGFunCoeff_zero_singleton_nat_add_one"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
