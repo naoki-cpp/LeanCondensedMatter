@@ -27,54 +27,83 @@ import LeanCondensedMatter.Models.MassiveDirac.Disorder.Vertex.Born.InfiniteCuto
 set_option linter.style.header false
 
 /-!
-# Massive-Dirac disorder transport
+# Massive-Dirac scalar-disorder transport
 
-Disorder-dependent transport for the massive-Dirac benchmark. The continuum Born
-chain is organized by physical and analytic responsibility: `ContinuumMeasurePrefactor` owns one
-scalar-disorder line together with exactly one physical-momentum-measure factor, independently of
-where a consumer performs angular reduction; `Born.SelfEnergy` owns the finite-cutoff self-energy and
-its polar provenance; `Born.Denominator` owns exact denominator evaluation and the branch-oriented
-imaginary boundary analysis; `Born.Boundary` owns the finite metallic boundary value as a complex
-number together with its scalar and `σ_z` propagation; `Born.Damping` projects that complex API to
-the physical damping observables; `Disorder.Propagator.Born.WeakDisorder` feeds those damping channels into the
-weak-disorder propagator and owns its retarded-advanced radial denominator pair;
-`ScalarAngularWeights` owns the angular overlap and current-relaxation integrals;
-`SingleParticleRate` owns the Born single-particle rate and lifetime; and `TransportRate` owns
-the corresponding transport scattering rate and lifetime. The finite-`η`
-Born-Dyson layer propagates the same fixed-cutoff boundary through its effective energy, effective
-mass, and radial denominator before any weak-disorder or ultraviolet limit is taken.
-`Disorder.Propagator.BornDyson.RadialMoments` owns the single-pole logarithmic integral,
-arbitrary-weight RA double-pole spectral difference, and its logarithmic specialization.
-These analytic identities are independent of the longitudinal same-side Středa
-remainder and are consumed by Gaussian-crossed harmonics.
-`Disorder.Propagator.BornDyson.RegulatorBoundary` owns that propagator boundary together with the real Born
-renormalization and the denominator nonvanishing guarantee protected by the renormalization bound.
+Umbrella import for scalar disorder in the two-dimensional massive-Dirac model. It collects
+finite-ensemble covariance, continuum Born scattering, finite-regulator Born-Dyson Green
+functions and current vertices, scalar-impurity T-matrices, and the radial Fourier tools
+needed for their real-space representations. Definitions and proofs belong to the imported
+modules; this file introduces no additional approximation or limit theorem.
 
-`Disorder.Propagator.BornDyson.Green` owns the finite-broadening Dyson Green and its
-Cartesian-to-polar representation; `Disorder.Propagator.BornDyson.DysonShift` proves inverse and adjoint
-identities for the Dyson shift, consumed by the dissipative invertibility analysis. `Disorder.Propagator.BornDyson.RealSpace.RadialGreen` owns the one-dimensional radial Green kernels,
-integrals, and signed-radius inversion; `Disorder.Propagator.BornDyson.RealSpace.Green` owns the
-full-angle Fourier representation and its exact radial-axis identification, using the generic
-physical-momentum polar Fourier transform from `Transport.Analysis`. `Disorder.Vertex.BornDyson.CurrentVertex` owns the direction-indexed
-in-plane rung, its common RA denominator form, radial normalization, solved coefficient pair, and the
-determinant condition that licenses interpreting that pair as the actual ladder fixed point.
-`Disorder.Vertex.BornDyson.DressedCurrent` owns the source-indexed dressed current insertion and the
-reduced longitudinal factor consumed by response modules, while keeping ladder regularity as a
-separate interpretation condition. Its
-fixed-radial-momentum positive-broadening boundary is exposed separately, under the explicit nonzero
-boundary denominator hypothesis needed by the inverse. The zero-broadening integral bridge uses
-dominated convergence and consumes propagator regularity from the common Born-Dyson boundary. At
-fixed positive disorder, an explicit real-renormalization bound below one makes the boundary RA
-denominator nonzero and discharges the compact radial regularity needed for the integrated limit. The
-resulting integrated-rung boundary is propagated through the canonical two-component ladder under an
-explicit nonzero boundary determinant. The subsequent fixed-cutoff weak-disorder limit is taken only
-after this zero-broadening boundary is formed, retaining both the finite longitudinal rung and the
-first nonvanishing disorder-scaled transverse coefficient needed by ordered Hall response. For the
-zero-external-broadening Born route, `BornCurrentVertexRung` owns the exact normalized finite-cutoff
-longitudinal rung while consuming the same shared disorder/measure factor; its fixed-cutoff
-weak-disorder and infinite-cutoff limits remain separate downstream routes.
+## Disorder input and scattering times
 
-Physical charge-current conversion and Kubo/Středa insertion are downstream. SCBA/Ward closure,
-crossed diagrams, and simultaneous thermodynamic, UV, disorder, and zero-broadening limits are not
-asserted here.
+* `Disorder.ScalarCovariance` proves the exact second-moment identity for an explicitly
+  supplied finite ensemble of scalar potentials. It does not assume continuum white noise
+  or identify a Born Green function with an exact disorder average.
+* `Disorder.ContinuumMeasurePrefactor` combines one continuum scalar-disorder line
+  with one physical two-dimensional momentum-measure factor. Angular reduction and
+  conductivity normalization are separate operations.
+* `Disorder.ScalarAngularWeights` evaluates upper-band overlap and
+  `1 - cos θ` current-relaxation weights. `Disorder.SingleParticleRate` derives the
+  Born single-particle rate from damping, whereas `Disorder.TransportRate` supplies
+  the distinct transport rate and lifetime.
+
+## Continuum Born and Born-Dyson propagators
+
+* `Disorder.Born.SelfEnergy` packages finite-cutoff radial self-energy integrals and
+  their polar normalization; `Born.Denominator` evaluates the common integral,
+  `Born.Boundary` gives its fixed-cutoff complex `η → 0⁺` boundary, and
+  `Born.Damping` extracts the physical upper-band width. These modules are reached
+  through the imports below. `Born.UltravioletSelfEnergy` records the separate
+  logarithmic UV behavior of the unrenormalized self-energy.
+* `Disorder.Propagator.BornDyson.Green` constructs the finite-broadening,
+  finite-cutoff Green function from the Born self-energy, not from a self-consistent
+  closure. `BornDyson.DysonShift` and `BornDyson.Invertibility` establish its
+  inverse and nonvanishing-denominator properties; `BornDyson.RadialMoments`
+  supplies regulated radial resolvent identities.
+* `BornDyson.RegulatorBoundary` takes the external-broadening boundary at fixed
+  disorder strength and cutoff, subject to its stated regularity hypotheses.
+  This boundary is distinct from the subsequent weak-disorder limit.
+
+## Real-space Green functions and radial Fourier analysis
+
+* `BornDyson.RealSpace.RadialGreen` defines the radial Green integrals;
+  `ScalarGenerator` and `ScalarTail` reduce their components to a scalar Fourier
+  generator and a tail identity. `RealSpace.Green` supplies the full two-dimensional
+  Fourier representation, and `ScalarGrid` gives a finite radial discretization
+  without a convergence claim.
+* `RealSpace.FrozenCutoffUV` and `FrozenCutoffBesselJ` remove an **outer Fourier**
+  cutoff while the **Born self-energy cutoff remains fixed**. They do not take
+  an unrenormalized diagonal cutoff limit with running Born parameters.
+* `MassiveDirac.Propagator.RadialFourier.FinitePart`, `ResolventDifference`,
+  `HankelReduction`, and `HankelScaling` are fixed-spectral-center Fourier
+  analysis, not new disorder approximations. In particular, `HankelReduction`
+  reduces the proposed outgoing Hankel evaluation to a further transform
+  identity; it does not prove that identity unconditionally.
+
+## Current vertices and T-matrices
+
+* `Disorder.Vertex.BornDyson.CurrentVertex` reduces the finite-regulator
+  retarded-advanced rung to the two-component in-plane ladder;
+  `BornDyson.DressedCurrent` exposes its current-operator insertion. The algebraic
+  solution represents a ladder fixed point only under the required nonzero
+  determinant hypothesis.
+* `Vertex.Ladder.RegulatorBoundary` first propagates the fixed-disorder
+  zero-broadening boundary. `RegulatorBoundaryWeakDisorder` then takes the
+  fixed-cutoff weak-disorder limit, while
+  `RegulatorBoundaryTransverseWeakDisorder` retains the first nonzero
+  disorder-scaled transverse term for ordered Hall response.
+* The separate `Vertex.Born.Rung` route has a normalized finite-cutoff
+  retarded-advanced current rung; `Born.WeakDisorder` and
+  `Born.InfiniteCutoff` study different, explicitly ordered limits.
+  Neither route supplies a Kubo conductivity theorem by itself.
+* `Disorder.TMatrix` exports the supplied-loop scalar-impurity T-matrix
+  algebra and its finite-cutoff Born-Dyson loop specialization. The
+  small-impurity-strength Born identification is not an SCBA or
+  self-consistent T-matrix equation.
+
+Physical current conversion, Kubo/Středa traces, conductivity and crossed-diagram
+assembly are downstream of this umbrella. No exact disorder-averaged propagator,
+SCBA/Ward closure, unconditional outgoing Hankel identity, or interchange of
+zero-broadening, weak-disorder, ultraviolet and thermodynamic limits is asserted here.
 -/
