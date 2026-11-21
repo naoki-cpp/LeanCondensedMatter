@@ -124,6 +124,24 @@ theorem besselY0Y1Series_wronskian (z : ℂ) (hz : z ≠ 0) :
   besselY0Y1Wronskian_of_harmonicIdentity z hz
     (besselY0Y1_harmonicIdentity z)
 
+/-- The first/second-kind Wronskian condition at nonzero real arguments.
+The normalization is independent of any particular transport integral.
+No singular value at zero is demanded. -/
+def RealWronskianCondition (Y0 Y1 : ℝ → ℂ) : Prop :=
+  ∀ r : ℝ, r ≠ 0 →
+    Complex.besselJ 1 (r : ℂ) * Y0 r -
+      Complex.besselJ 0 (r : ℂ) * Y1 r =
+      (((2 / Real.pi : ℝ) : ℂ)) * (r : ℂ)⁻¹
+
+/-- The concrete absolutely convergent second-kind Bessel series
+satisfy the real-argument normalization condition by restricting
+the proved complex Wronskian to the real axis. -/
+theorem realWronskianCondition_concreteSeries :
+    RealWronskianCondition
+      (fun r : ℝ => besselY0Series (r : ℂ))
+      (fun r : ℝ => besselY1Series (r : ℂ)) := by
+  intro r hr
+  exact besselY0Y1Series_wronskian (r : ℂ) (by exact_mod_cast hr)
 end
 
 end BesselSecondKind
