@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.SelfEnergy
+import LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.SelfEnergy.Core
 import Mathlib.LinearAlgebra.Matrix.NonsingularInverse
 import Mathlib.Tactic.Linarith
 import Mathlib.Tactic.Ring
