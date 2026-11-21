@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Models.MassiveDirac.Propagator.Basic
+import LeanCondensedMatter.Models.MassiveDirac.Propagator.RadialDenominator
 import LeanCondensedMatter.Models.MassiveDirac.Propagator.Symmetry
 import LeanCondensedMatter.Models.MassiveDirac.Propagator.AngularReduction
 import LeanCondensedMatter.Models.MassiveDirac.Propagator.RadialFourier.HankelScaling
@@ -10,7 +11,8 @@ set_option linter.style.header false
 # Massive-Dirac propagator and radial Fourier analysis
 
 The clean massive-Dirac Green operator, its momentum-inversion symmetry, and exact polar-angle
-reduction. The `RadialFourier` modules own fixed-complex-center quadratic Fourier resolvent
+reduction. The `RadialDenominator` core owns complex radial Green-function denominators
+without a Born or Fourier-integral dependency. The `RadialFourier` modules own fixed-complex-center quadratic Fourier resolvent
 identities, ultraviolet estimates, Bessel-J representations, and conditional outgoing Hankel
 reductions. These general results do not import disorder-specific Born or Dyson data.
 
