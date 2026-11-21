@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Models.MassiveDirac.Disorder.Vertex.FiniteBroadening.ZeroBroadeningWeakDisorder
+import LeanCondensedMatter.Models.MassiveDirac.Disorder.Vertex.BornDyson.RegulatorBoundaryWeakDisorder
 import Mathlib.Tactic.FieldSimp
 import Mathlib.Tactic.FunProp
 import Mathlib.Tactic.Linarith
@@ -7,7 +7,7 @@ import Mathlib.Tactic.Ring
 set_option linter.style.header false
 
 /-!
-# Scaled transverse weak-disorder limit of the zero-broadening current rung
+# Transverse weak-disorder limit after current-rung regulator removal
 
 The raw transverse component of the fixed-cutoff zero-broadening source-`x` Born-Dyson current rung
 vanishes as `W → 0⁺`. The ordered Hall response consumes the first nonvanishing coefficient instead,

@@ -5,7 +5,7 @@ import Mathlib.Tactic.Ring
 set_option linter.style.header false
 
 /-!
-# Finite-broadening Born-Dyson current vertex
+# Finite-external-regulator Born-Dyson current vertex
 
 This module owns the finite-cutoff finite-external-broadening Born-Dyson current-vertex chain from
 fixed-radius angular reduction through radial normalization to the algebraic in-plane ladder

@@ -1,6 +1,6 @@
 import LeanCondensedMatter.Analysis.Lorentzian.RadialQuadratic
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.Vertex.Born.Rung
-import LeanCondensedMatter.Models.MassiveDirac.Disorder.Vertex.FiniteBroadening.ZeroBroadeningIntegral
+import LeanCondensedMatter.Models.MassiveDirac.Disorder.Vertex.BornDyson.RegulatorBoundaryIntegral
 import Mathlib.Tactic.FieldSimp
 import Mathlib.Tactic.FunProp
 import Mathlib.Tactic.Linarith
@@ -10,7 +10,7 @@ import Mathlib.Tactic.Ring
 set_option linter.style.header false
 
 /-!
-# Weak-disorder limit of the zero-broadening Born-Dyson current rung
+# Weak-disorder limit after current-rung regulator removal
 
 The canonical fixed-cutoff zero-broadening source-`x` rung is reduced privately to the shared
 quadratic Lorentzian and then sent through the separate one-sided `W → 0⁺` limit. No exact radial

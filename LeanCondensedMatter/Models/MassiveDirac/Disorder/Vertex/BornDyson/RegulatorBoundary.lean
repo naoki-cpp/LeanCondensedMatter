@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornZeroBroadening
-import LeanCondensedMatter.Models.MassiveDirac.Disorder.Vertex.FiniteBroadening.Current
+import LeanCondensedMatter.Models.MassiveDirac.Disorder.Vertex.BornDyson.CurrentVertex
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.ContinuumMeasurePrefactor
 import Mathlib.Tactic.FieldSimp
 import Mathlib.Tactic.Ring
@@ -7,7 +7,7 @@ import Mathlib.Tactic.Ring
 set_option linter.style.header false
 
 /-!
-# Zero-broadening boundary of the finite-eta Born-Dyson current rung
+# External-regulator boundary of the Born-Dyson current rung
 
 This module propagates the fixed-cutoff, fixed-disorder positive-broadening boundary through every
 entry of the retarded-advanced in-plane current-rung matrix at fixed radial momentum. The boundary

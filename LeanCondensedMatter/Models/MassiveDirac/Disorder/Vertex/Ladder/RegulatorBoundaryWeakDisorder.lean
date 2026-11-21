@@ -1,11 +1,11 @@
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.Vertex.Born.WeakDisorder
-import LeanCondensedMatter.Models.MassiveDirac.Disorder.Vertex.FiniteBroadening.ZeroBroadeningWeakDisorder
-import LeanCondensedMatter.Models.MassiveDirac.Disorder.Vertex.Ladder.ZeroBroadening
+import LeanCondensedMatter.Models.MassiveDirac.Disorder.Vertex.BornDyson.RegulatorBoundaryWeakDisorder
+import LeanCondensedMatter.Models.MassiveDirac.Disorder.Vertex.Ladder.RegulatorBoundary
 
 set_option linter.style.header false
 
 /-!
-# Weak-disorder limit of the zero-broadening Born-Dyson ladder
+# Weak-disorder limit after ladder regulator removal
 
 The source-`x` rung-vector limit is propagated directly through the generic in-plane ladder API.
 The solved vector exposes the weak-disorder dressed-current factor before downstream conductivity

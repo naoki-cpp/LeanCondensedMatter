@@ -56,10 +56,10 @@ Cartesian-to-polar representation; `FiniteBroadeningBornDysonShift` proves inver
 identities for the Dyson shift, consumed by the dissipative invertibility analysis. `FiniteBroadeningBornRadialRealSpacePropagator` owns the one-dimensional radial Green kernels,
 integrals, and signed-radius inversion; `FiniteBroadeningBornRealSpacePropagator` owns the
 full-angle Fourier representation and its exact radial-axis identification, using the generic
-physical-momentum polar Fourier transform from `Transport.Analysis`. `FiniteBroadeningCurrentVertex` owns the direction-indexed
+physical-momentum polar Fourier transform from `Transport.Analysis`. `Disorder.Vertex.BornDyson.CurrentVertex` owns the direction-indexed
 in-plane rung, its common RA denominator form, radial normalization, solved coefficient pair, and the
 determinant condition that licenses interpreting that pair as the actual ladder fixed point.
-`FiniteBroadeningCurrentVertexResponse` owns the source-indexed dressed current insertion and the
+`Disorder.Vertex.BornDyson.DressedCurrent` owns the source-indexed dressed current insertion and the
 reduced longitudinal factor consumed by response modules, while keeping ladder regularity as a
 separate interpretation condition. Its
 fixed-radial-momentum positive-broadening boundary is exposed separately, under the explicit nonzero

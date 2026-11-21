@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Models.MassiveDirac.Disorder.Vertex.FiniteBroadening.ZeroBroadening
+import LeanCondensedMatter.Models.MassiveDirac.Disorder.Vertex.BornDyson.RegulatorBoundary
 import LeanCondensedMatter.Models.MassiveDirac.TransportDomain
 import Mathlib.MeasureTheory.Integral.Bochner.Basic
 import Mathlib.Tactic.FunProp
@@ -9,10 +9,10 @@ import Mathlib.Tactic.Ring
 set_option linter.style.header false
 
 /-!
-# Zero-broadening finite-cutoff Born-Dyson current-rung integrals
+# Integrated external-regulator boundary of the Born-Dyson current rung
 
 The fixed-radial-momentum `η → 0⁺` limits are owned upstream by
-`FiniteBroadeningCurrentVertexZeroBroadening`. This module owns the integrated boundary: an internal
+`Disorder.Vertex.BornDyson.RegulatorBoundary`. This module owns the integrated boundary: an internal
 dominated-convergence bridge, shared radial factorization of the current-rung entries, and
 compact domination from a nonvanishing boundary denominator. The
 model-specific real-renormalization condition and the denominator nonvanishing result it protects

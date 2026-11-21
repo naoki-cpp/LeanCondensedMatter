@@ -1,6 +1,6 @@
 import LeanCondensedMatter.Analysis.Fourier.AngularHarmonics
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornRealSpacePropagator
-import LeanCondensedMatter.Models.MassiveDirac.Disorder.Vertex.FiniteBroadening.Response
+import LeanCondensedMatter.Models.MassiveDirac.Disorder.Vertex.BornDyson.DressedCurrent
 import LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.Trace
 
 set_option linter.style.header false

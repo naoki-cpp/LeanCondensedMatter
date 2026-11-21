@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Models.MassiveDirac.Disorder.Vertex.FiniteBroadening.Response
+import LeanCondensedMatter.Models.MassiveDirac.Disorder.Vertex.BornDyson.DressedCurrent
 import LeanCondensedMatter.Transport.Streda.RetardedAdvanced
 
 set_option linter.style.header false
