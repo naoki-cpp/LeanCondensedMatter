@@ -248,29 +248,20 @@ theorem isSelfEnergy_iff_eq_exactSelfEnergyOfRegulator
         (ensemble.averagedGreenOfRegulator energy regulator)
         selfEnergy ↔
       selfEnergy = freeInverse - averagedInverse
-  have hfreeLeft :
-      freeInverse * ensemble.freeGreenOfRegulator energy regulator = 1 := by
-    simpa [freeInverse, FiniteDisorderEnsemble.freeGreenOfRegulator] using
-      spectralShift_mul_resolvent_spectralParameterOfRegulator
-        ensemble.baseHamiltonian.1 ensemble.baseHamiltonian.2 energy regulator hregulator
-  have hfreeRight :
-      ensemble.freeGreenOfRegulator energy regulator * freeInverse = 1 := by
-    simpa [freeInverse, FiniteDisorderEnsemble.freeGreenOfRegulator] using
-      resolvent_spectralParameterOfRegulator_mul_spectralShift
-        ensemble.baseHamiltonian.1 ensemble.baseHamiltonian.2 energy regulator hregulator
-  have haveragedLeft :
-      averagedInverse * ensemble.averagedGreenOfRegulator energy regulator = 1 := by
-    simpa [averagedInverse, averagedUnit] using hunit.val_inv_mul
-  have haveragedRight :
-      ensemble.averagedGreenOfRegulator energy regulator * averagedInverse = 1 := by
-    simpa [averagedInverse, averagedUnit] using hunit.mul_val_inv
-  exact IsSelfEnergy.iff_eq_inverse_sub_inverse
+  refine IsSelfEnergy.iff_eq_inverse_sub_inverse
     (freeGreen := ensemble.freeGreenOfRegulator energy regulator)
     (dressedGreen := ensemble.averagedGreenOfRegulator energy regulator)
     (selfEnergy := selfEnergy)
     (freeInverse := freeInverse)
-    (dressedInverse := averagedInverse)
-    hfreeLeft hfreeRight haveragedLeft haveragedRight
+    (dressedInverse := averagedInverse) ?_ ?_ ?_ ?_
+  · simpa [freeInverse, FiniteDisorderEnsemble.freeGreenOfRegulator] using
+      spectralShift_mul_resolvent_spectralParameterOfRegulator
+        ensemble.baseHamiltonian.1 ensemble.baseHamiltonian.2 energy regulator hregulator
+  · simpa [freeInverse, FiniteDisorderEnsemble.freeGreenOfRegulator] using
+      resolvent_spectralParameterOfRegulator_mul_spectralShift
+        ensemble.baseHamiltonian.1 ensemble.baseHamiltonian.2 energy regulator hregulator
+  · simpa [averagedInverse, averagedUnit] using hunit.val_inv_mul
+  · simpa [averagedInverse, averagedUnit] using hunit.mul_val_inv
 
 /-- The canonical exact finite-disorder self-energy satisfies the exact two-sided Dyson relation at
 any nonzero signed regulator. -/
