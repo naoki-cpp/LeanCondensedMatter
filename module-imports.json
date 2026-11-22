@@ -230,6 +230,12 @@
       "externalImportCount": 2
     },
     {
+      "name": "LeanCondensedMatter.Analysis.Fourier.FullAngleCosineMoments",
+      "sourceFile": "LeanCondensedMatter/Analysis/Fourier/FullAngleCosineMoments.lean",
+      "imports": [],
+      "externalImportCount": 3
+    },
+    {
       "name": "LeanCondensedMatter.Analysis.FunctionalCalculus.CFC",
       "sourceFile": "LeanCondensedMatter/Analysis/FunctionalCalculus/CFC.lean",
       "imports": [],
@@ -8599,6 +8605,7 @@
       "sourceFile": "LeanCondensedMatter/Transport/Analysis/PolarFourier.lean",
       "imports": [
         "LeanCondensedMatter.Analysis.Fourier.AngularHarmonics",
+        "LeanCondensedMatter.Analysis.Fourier.FullAngleCosineMoments",
         "LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.HypergeometricSeries",
         "LeanCondensedMatter.Transport.Analysis.ContinuumMeasure",
         "LeanCondensedMatter.Transport.Analysis.FourierGeometry"

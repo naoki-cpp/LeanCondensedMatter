@@ -233,6 +233,310 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
+    "terminal": false,
+    "statement": "∀ (n : ℕ),\n  AngularHarmonics.fullAngleCosineMoment (n + 2) = (↑n + 1) / (↑n + 2) * AngularHarmonics.fullAngleCosineMoment n",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "AngularHarmonics.fullAngleCosineMoment_add_two",
+    "module": "LeanCondensedMatter.Analysis.Fourier.FullAngleCosineMoments",
+    "externalAxioms": [],
+    "docString": "The full-period cosine moments satisfy the standard reduction formula. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "AngularHarmonics.fullAngleCosineMoment_even",
+      "AngularHarmonics.fullAngleCosineMoment_odd"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "AngularHarmonics.fullAngleCosineMoment_even",
+      "AngularHarmonics.fullAngleCosineMoment_odd"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (n : ℕ),\n  AngularHarmonics.fullAngleCosineMoment (2 * n) = 2 * Real.pi * ∏ k ∈ Finset.range n, (2 * ↑k + 1) / (2 * ↑k + 2)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "AngularHarmonics.fullAngleCosineMoment_even",
+    "module": "LeanCondensedMatter.Analysis.Fourier.FullAngleCosineMoments",
+    "externalAxioms": [],
+    "docString": "Closed finite-product formula for every even full-angle cosine moment. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "AngularHarmonics.fullAngleCosineMoment_even_factorial"
+    ],
+    "dependencies": [
+      "AngularHarmonics.fullAngleCosineMoment_add_two",
+      "AngularHarmonics.fullAngleCosineMoment_zero"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "AngularHarmonics.fullAngleCosineMoment_even_factorial"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (n : ℕ),\n  AngularHarmonics.fullAngleCosineMoment (2 * n) = 2 * Real.pi * ↑(2 * n).factorial / (4 ^ n * ↑n.factorial ^ 2)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "AngularHarmonics.fullAngleCosineMoment_even_factorial",
+    "module": "LeanCondensedMatter.Analysis.Fourier.FullAngleCosineMoments",
+    "externalAxioms": [],
+    "docString": "The even full-angle cosine moment in factorial form, ready for the\ncoefficient comparison with Mathlib's regularized hypergeometric Bessel series. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.polarFourierZerothMoment_even_eq_bessel"
+    ],
+    "dependencies": [
+      "AngularHarmonics.fullAngleCosineMoment_even"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.polarFourierZerothMoment_even_eq_bessel"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (n : ℕ), ‖AngularHarmonics.fullAngleCosineMoment n‖ ≤ 2 * Real.pi",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "AngularHarmonics.fullAngleCosineMoment_norm_le",
+    "module": "LeanCondensedMatter.Analysis.Fourier.FullAngleCosineMoments",
+    "externalAxioms": [],
+    "docString": "A full-period cosine moment is bounded by the length of its integration interval. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.polarFourierZerothMoments_summable"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.polarFourierZerothMoments_summable"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (n : ℕ), AngularHarmonics.fullAngleCosineMoment (2 * n + 1) = 0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "AngularHarmonics.fullAngleCosineMoment_odd",
+    "module": "LeanCondensedMatter.Analysis.Fourier.FullAngleCosineMoments",
+    "externalAxioms": [],
+    "docString": "Every odd full-angle cosine moment vanishes. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.polarFourierZerothAngularKernel_eq_besselJ"
+    ],
+    "dependencies": [
+      "AngularHarmonics.fullAngleCosineMoment_add_two",
+      "AngularHarmonics.fullAngleCosineMoment_one"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.polarFourierZerothAngularKernel_eq_besselJ"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "AngularHarmonics.fullAngleCosineMoment 1 = 0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "AngularHarmonics.fullAngleCosineMoment_one",
+    "module": "LeanCondensedMatter.Analysis.Fourier.FullAngleCosineMoments",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "AngularHarmonics.fullAngleCosineMoment_odd"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "AngularHarmonics.fullAngleCosineMoment_odd"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "AngularHarmonics.fullAngleCosineMoment 0 = 2 * Real.pi",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "AngularHarmonics.fullAngleCosineMoment_zero",
+    "module": "LeanCondensedMatter.Analysis.Fourier.FullAngleCosineMoments",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "AngularHarmonics.fullAngleCosineMoment_even"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "AngularHarmonics.fullAngleCosineMoment_even"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
     "terminal": true,
     "statement": "∀ (cCos cSin : ℂ), ∫ (θ : ℝ) in 0..2 * Real.pi, ↑(Real.cos θ) * cCos + ↑(Real.sin θ) * cSin = 0",
     "standardAxioms": [
@@ -64392,6 +64696,54 @@
   },
   {
     "terminal": false,
+    "statement": "∀ (side : QuantumTheory.Transport.SpectralSide) (v m probeEnergy broadening disorderStrength hbar pMax : ℝ),\n  broadening ≠ 0 →\n    0 ≤ disorderStrength →\n      0 ≤ pMax →\n        Continuous fun p =>\n          (QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominator side v m p 0 probeEnergy\n              broadening disorderStrength hbar pMax)⁻¹",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.MassiveDirac.continuous_finiteCutoffContinuumBornDysonDenominator_inv_radial",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.BornDyson.RealSpace.RadialGreen",
+    "externalAxioms": [],
+    "docString": "The inverse finite-cutoff Born-Dyson denominator is continuous on the radial momentum axis. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.MassiveDirac.continuous_finiteCutoffContinuumBornDysonPauliCoefficient_radial",
+      "QuantumTheory.Models.MassiveDirac.continuous_finiteCutoffContinuumBornDysonScalarCoefficient_radial",
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialScalarGreenGenerator_hasDerivAt"
+    ],
+    "dependencies": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominator_ne_zero"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.continuous_finiteCutoffContinuumBornDysonPauliCoefficient_radial",
+      "QuantumTheory.Models.MassiveDirac.continuous_finiteCutoffContinuumBornDysonScalarCoefficient_radial",
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialScalarGreenGenerator_hasDerivAt"
+    ],
+    "compiledConsumerCount": 3,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ (source : Fin 2) (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ),\n  broadening ≠ 0 →\n    0 ≤ disorderStrength →\n      0 ≤ pMax →\n        ∀ (i j : Fin 2),\n          Continuous fun p =>\n            QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel\n              source v m probeEnergy broadening disorderStrength hbar pMax radius p i j",
     "standardAxioms": [
       "Classical.choice",
@@ -64465,7 +64817,7 @@
       "QuantumTheory.Models.MassiveDirac.continuous_finiteCutoffContinuumBornDysonRadialGreenEntryKernel"
     ],
     "dependencies": [
-      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.BornDyson.RealSpace.RadialGreen.0.QuantumTheory.Models.MassiveDirac.continuous_finiteCutoffContinuumBornDysonDenominator_inv_radial"
+      "QuantumTheory.Models.MassiveDirac.continuous_finiteCutoffContinuumBornDysonDenominator_inv_radial"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -64558,7 +64910,7 @@
       "QuantumTheory.Models.MassiveDirac.continuous_finiteCutoffContinuumBornDysonRadialGreenEntryKernel"
     ],
     "dependencies": [
-      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.BornDyson.RealSpace.RadialGreen.0.QuantumTheory.Models.MassiveDirac.continuous_finiteCutoffContinuumBornDysonDenominator_inv_radial"
+      "QuantumTheory.Models.MassiveDirac.continuous_finiteCutoffContinuumBornDysonDenominator_inv_radial"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -65350,7 +65702,6 @@
     "dependents": [
       "QuantumTheory.Models.MassiveDirac.continuumBornUpperBandSingleParticleScatteringRate_eq_prefactor_mul_angularWeight",
       "QuantumTheory.Models.MassiveDirac.continuumBornUpperBandSingleParticleScatteringRate_ne_zero",
-      "QuantumTheory.Models.MassiveDirac.continuumBornUpperBandTransportLifetime_eq_factor_mul_singleParticleLifetime",
       "QuantumTheory.Models.MassiveDirac.continuumBornUpperBandTransportRate_div_singleParticleRate"
     ],
     "dependencies": [],
@@ -65359,10 +65710,9 @@
     "compiledConsumers": [
       "QuantumTheory.Models.MassiveDirac.continuumBornUpperBandSingleParticleScatteringRate_eq_prefactor_mul_angularWeight",
       "QuantumTheory.Models.MassiveDirac.continuumBornUpperBandSingleParticleScatteringRate_ne_zero",
-      "QuantumTheory.Models.MassiveDirac.continuumBornUpperBandTransportLifetime_eq_factor_mul_singleParticleLifetime",
       "QuantumTheory.Models.MassiveDirac.continuumBornUpperBandTransportRate_div_singleParticleRate"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -65417,7 +65767,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ (v m fermiEnergy disorderStrength hbar : ℝ),\n  v ≠ 0 →\n    hbar ≠ 0 →\n      disorderStrength ≠ 0 →\n        fermiEnergy ≠ 0 →\n          QuantumTheory.Models.MassiveDirac.continuumBornUpperBandSingleParticleScatteringRate v m fermiEnergy\n              disorderStrength hbar ≠\n            0",
     "standardAxioms": [
       "Classical.choice",
@@ -65425,7 +65775,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -65436,14 +65786,18 @@
     "docString": "The Born single-particle scattering rate is nonzero whenever its algebraic prefactors and Fermi\nenergy are nonzero. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "QuantumTheory.Models.MassiveDirac.continuumBornUpperBandTransportLifetime_eq_factor_mul_singleParticleLifetime"
+    ],
     "dependencies": [
       "QuantumTheory.Models.MassiveDirac.continuumBornUpperBandSingleParticleScatteringRate_eq"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.continuumBornUpperBandTransportLifetime_eq_factor_mul_singleParticleLifetime"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -65521,8 +65875,8 @@
       "QuantumTheory.Models.MassiveDirac.continuumBornUpperBandTransportLifetime_eq_weakDisorderCurrentRungFactor_mul_singleParticleLifetime"
     ],
     "dependencies": [
-      "QuantumTheory.Models.MassiveDirac.continuumBornUpperBandSingleParticleScatteringRate_eq",
-      "QuantumTheory.Models.MassiveDirac.continuumBornUpperBandTransportScatteringRate_eq"
+      "QuantumTheory.Models.MassiveDirac.continuumBornUpperBandSingleParticleScatteringRate_ne_zero",
+      "QuantumTheory.Models.MassiveDirac.continuumBornUpperBandTransportRate_div_singleParticleRate"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -65626,7 +65980,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ (v m fermiEnergy disorderStrength hbar : ℝ),\n  v ≠ 0 →\n    hbar ≠ 0 →\n      disorderStrength ≠ 0 →\n        fermiEnergy ≠ 0 →\n          QuantumTheory.Models.MassiveDirac.continuumBornUpperBandTransportScatteringRate v m fermiEnergy\n                disorderStrength hbar /\n              QuantumTheory.Models.MassiveDirac.continuumBornUpperBandSingleParticleScatteringRate v m fermiEnergy\n                disorderStrength hbar =\n            (fermiEnergy ^ 2 + 3 * m ^ 2) / (2 * (fermiEnergy ^ 2 + m ^ 2))",
     "standardAxioms": [
       "Classical.choice",
@@ -65634,7 +65988,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -65645,15 +65999,19 @@
     "docString": "The transport rate relative to the single-particle rate is fixed entirely by the massive-Dirac\nFermi-circle angular structure whenever the common rate prefactors and Fermi energy are nonzero. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "QuantumTheory.Models.MassiveDirac.continuumBornUpperBandTransportLifetime_eq_factor_mul_singleParticleLifetime"
+    ],
     "dependencies": [
       "QuantumTheory.Models.MassiveDirac.continuumBornUpperBandSingleParticleScatteringRate_eq",
       "QuantumTheory.Models.MassiveDirac.continuumBornUpperBandTransportScatteringRate_eq"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.continuumBornUpperBandTransportLifetime_eq_factor_mul_singleParticleLifetime"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -65687,7 +66045,6 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Models.MassiveDirac.continuumBornUpperBandTransportLifetime_eq_factor_mul_singleParticleLifetime",
       "QuantumTheory.Models.MassiveDirac.continuumBornUpperBandTransportRate_div_singleParticleRate",
       "QuantumTheory.Models.MassiveDirac.continuumBornUpperBandTransportScatteringRate_pos",
       "_private.LeanCondensedMatter.Models.MassiveDirac.Conductivity.Longitudinal.BornRelaxationTime.0.QuantumTheory.Models.MassiveDirac.continuumBornUpperBandTransportLifetime_eq_closed"
@@ -65698,12 +66055,11 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Models.MassiveDirac.continuumBornUpperBandTransportLifetime_eq_factor_mul_singleParticleLifetime",
       "QuantumTheory.Models.MassiveDirac.continuumBornUpperBandTransportRate_div_singleParticleRate",
       "QuantumTheory.Models.MassiveDirac.continuumBornUpperBandTransportScatteringRate_pos",
       "_private.LeanCondensedMatter.Models.MassiveDirac.Conductivity.Longitudinal.BornRelaxationTime.0.QuantumTheory.Models.MassiveDirac.continuumBornUpperBandTransportLifetime_eq_closed"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -67387,6 +67743,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "QuantumTheory.Models.MassiveDirac.continuous_finiteCutoffContinuumBornDysonDenominator_inv_radial",
       "QuantumTheory.Models.MassiveDirac.finiteBroadeningBornDyson_singlePoleRadialIntegral_eq_log_of_center_re_pos",
       "QuantumTheory.Models.MassiveDirac.finiteBroadeningSameSide_integrable_and_integral_eq_endpoint",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRAFirstHarmonicDifferenceMoment_eq_gradient",
@@ -67398,8 +67755,6 @@
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadial_ra_pole_moment_mul_center_gap_eq_log",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadial_ra_weighted_moment_mul_center_gap",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct_ne_zero",
-      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.BornDyson.RealSpace.RadialGreen.0.QuantumTheory.Models.MassiveDirac.continuous_finiteCutoffContinuumBornDysonDenominator_inv_radial",
-      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.BornDyson.RealSpace.ScalarGenerator.0.QuantumTheory.Models.MassiveDirac.continuous_finiteCutoffContinuumBornDysonScalarGreenWeight",
       "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.CurrentInPlaneResolvent.0.QuantumTheory.Models.MassiveDirac.gaussianCrossed_GreenGenerator_sub_eq_K0_integral"
     ],
     "dependencies": [
@@ -67410,6 +67765,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.continuous_finiteCutoffContinuumBornDysonDenominator_inv_radial",
       "QuantumTheory.Models.MassiveDirac.finiteBroadeningBornDyson_singlePoleRadialIntegral_eq_log_of_center_re_pos",
       "QuantumTheory.Models.MassiveDirac.finiteBroadeningSameSide_integrable_and_integral_eq_endpoint",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRAFirstHarmonicDifferenceMoment_eq_gradient",
@@ -67421,11 +67777,9 @@
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadial_ra_pole_moment_mul_center_gap_eq_log",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadial_ra_weighted_moment_mul_center_gap",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct_ne_zero",
-      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.BornDyson.RealSpace.RadialGreen.0.QuantumTheory.Models.MassiveDirac.continuous_finiteCutoffContinuumBornDysonDenominator_inv_radial",
-      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.BornDyson.RealSpace.ScalarGenerator.0.QuantumTheory.Models.MassiveDirac.continuous_finiteCutoffContinuumBornDysonScalarGreenWeight",
       "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.CurrentInPlaneResolvent.0.QuantumTheory.Models.MassiveDirac.gaussianCrossed_GreenGenerator_sub_eq_K0_integral"
     ],
-    "compiledConsumerCount": 14,
+    "compiledConsumerCount": 13,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -71331,8 +71685,7 @@
     "dependencies": [
       "InternalSpace.pauliVectorCoefficient_prefactor_intervalIntegral",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenEntryKernel_pauliVectorCoefficient",
-      "QuantumTheory.Models.MassiveDirac.intervalIntegrable_finiteCutoffContinuumBornDysonRadialGreenEntryKernel",
-      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.BornDyson.RealSpace.RadialGreen.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix_eq_entryKernel_integral"
+      "QuantumTheory.Models.MassiveDirac.intervalIntegrable_finiteCutoffContinuumBornDysonRadialGreenEntryKernel"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -71666,8 +72019,7 @@
     "dependencies": [
       "InternalSpace.pauliScalarCoefficient_prefactor_intervalIntegral",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenEntryKernel_pauliScalarCoefficient",
-      "QuantumTheory.Models.MassiveDirac.intervalIntegrable_finiteCutoffContinuumBornDysonRadialGreenEntryKernel",
-      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.BornDyson.RealSpace.RadialGreen.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix_eq_entryKernel_integral"
+      "QuantumTheory.Models.MassiveDirac.intervalIntegrable_finiteCutoffContinuumBornDysonRadialGreenEntryKernel"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -71844,8 +72196,7 @@
     "dependents": [
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGreenLoopMatrix_apply_eq_radial_integral",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix_neg_radius",
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRealSpaceGreenMatrix_radialAxis_eq",
-      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.BornDyson.RealSpace.RadialGreen.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix_eq_entryKernel_integral"
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRealSpaceGreenMatrix_radialAxis_eq"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
@@ -71853,10 +72204,9 @@
     "compiledConsumers": [
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGreenLoopMatrix_apply_eq_radial_integral",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix_neg_radius",
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRealSpaceGreenMatrix_radialAxis_eq",
-      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.BornDyson.RealSpace.RadialGreen.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix_eq_entryKernel_integral"
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRealSpaceGreenMatrix_radialAxis_eq"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -72077,8 +72427,8 @@
       "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.CurrentGradientDerivative.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonScalarGenerator_scaled_deriv"
     ],
     "dependencies": [
-      "QuantumTheory.Transport.hasDerivAt_integral_polarFourierZerothAngularKernel",
-      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.BornDyson.RealSpace.ScalarGenerator.0.QuantumTheory.Models.MassiveDirac.continuous_finiteCutoffContinuumBornDysonScalarGreenWeight"
+      "QuantumTheory.Models.MassiveDirac.continuous_finiteCutoffContinuumBornDysonDenominator_inv_radial",
+      "QuantumTheory.Transport.hasDerivAt_integral_polarFourierZerothAngularKernel"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -100529,310 +100879,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (n : ℕ),\n  QuantumTheory.Transport.polarFourierCosineMoment (n + 2) =\n    (↑n + 1) / (↑n + 2) * QuantumTheory.Transport.polarFourierCosineMoment n",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.polarFourierCosineMoment_add_two",
-    "module": "LeanCondensedMatter.Transport.Analysis.PolarFourier",
-    "externalAxioms": [],
-    "docString": "The full-period cosine moments satisfy the standard reduction formula. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.polarFourierCosineMoment_even",
-      "QuantumTheory.Transport.polarFourierCosineMoment_odd"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.polarFourierCosineMoment_even",
-      "QuantumTheory.Transport.polarFourierCosineMoment_odd"
-    ],
-    "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (n : ℕ),\n  QuantumTheory.Transport.polarFourierCosineMoment (2 * n) =\n    2 * Real.pi * ∏ k ∈ Finset.range n, (2 * ↑k + 1) / (2 * ↑k + 2)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.polarFourierCosineMoment_even",
-    "module": "LeanCondensedMatter.Transport.Analysis.PolarFourier",
-    "externalAxioms": [],
-    "docString": "Closed finite-product formula for every even full-angle cosine moment. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.polarFourierCosineMoment_even_factorial"
-    ],
-    "dependencies": [
-      "QuantumTheory.Transport.polarFourierCosineMoment_add_two",
-      "QuantumTheory.Transport.polarFourierCosineMoment_zero"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.polarFourierCosineMoment_even_factorial"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (n : ℕ),\n  QuantumTheory.Transport.polarFourierCosineMoment (2 * n) =\n    2 * Real.pi * ↑(2 * n).factorial / (4 ^ n * ↑n.factorial ^ 2)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.polarFourierCosineMoment_even_factorial",
-    "module": "LeanCondensedMatter.Transport.Analysis.PolarFourier",
-    "externalAxioms": [],
-    "docString": "The even full-angle cosine moment in factorial form, ready for the\ncoefficient comparison with Mathlib's regularized hypergeometric Bessel series. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.polarFourierZerothMoment_even_eq_bessel"
-    ],
-    "dependencies": [
-      "QuantumTheory.Transport.polarFourierCosineMoment_even"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.polarFourierZerothMoment_even_eq_bessel"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (n : ℕ), ‖QuantumTheory.Transport.polarFourierCosineMoment n‖ ≤ 2 * Real.pi",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.polarFourierCosineMoment_norm_le",
-    "module": "LeanCondensedMatter.Transport.Analysis.PolarFourier",
-    "externalAxioms": [],
-    "docString": "A full-period cosine moment is bounded by the length of its integration interval. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.polarFourierZerothMoments_summable"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.polarFourierZerothMoments_summable"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (n : ℕ), QuantumTheory.Transport.polarFourierCosineMoment (2 * n + 1) = 0",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.polarFourierCosineMoment_odd",
-    "module": "LeanCondensedMatter.Transport.Analysis.PolarFourier",
-    "externalAxioms": [],
-    "docString": "Every odd full-angle cosine moment vanishes. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.polarFourierZerothAngularKernel_eq_besselJ"
-    ],
-    "dependencies": [
-      "QuantumTheory.Transport.polarFourierCosineMoment_add_two",
-      "QuantumTheory.Transport.polarFourierCosineMoment_one"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.polarFourierZerothAngularKernel_eq_besselJ"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "QuantumTheory.Transport.polarFourierCosineMoment 1 = 0",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.polarFourierCosineMoment_one",
-    "module": "LeanCondensedMatter.Transport.Analysis.PolarFourier",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.polarFourierCosineMoment_odd"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.polarFourierCosineMoment_odd"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "QuantumTheory.Transport.polarFourierCosineMoment 0 = 2 * Real.pi",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.polarFourierCosineMoment_zero",
-    "module": "LeanCondensedMatter.Transport.Analysis.PolarFourier",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.polarFourierCosineMoment_even"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.polarFourierCosineMoment_even"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ (z : ℝ),\n  (starRingEnd ℂ) (QuantumTheory.Transport.polarFourierFirstCosineAngularKernel z) =\n    -QuantumTheory.Transport.polarFourierFirstCosineAngularKernel z",
     "standardAxioms": [
       "Classical.choice",
@@ -101622,8 +101668,8 @@
       "_private.LeanCondensedMatter.Transport.Analysis.BesselRadialMoments.0.QuantumTheory.Transport.polarFourierHarmonicEnergy_eq_besselJ"
     ],
     "dependencies": [
+      "AngularHarmonics.fullAngleCosineMoment_odd",
       "BesselHypergeometric.besselJZero_eq_regularizedHGTsum",
-      "QuantumTheory.Transport.polarFourierCosineMoment_odd",
       "QuantumTheory.Transport.polarFourierZerothAngularKernel_eq_tsum_moments",
       "QuantumTheory.Transport.polarFourierZerothMoment_even_eq_bessel",
       "QuantumTheory.Transport.polarFourierZerothMoments_summable"
@@ -101698,7 +101744,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (z : ℝ),\n  QuantumTheory.Transport.polarFourierZerothAngularKernel z =\n    ∑' (n : ℕ), (Complex.I * ↑z) ^ n / ↑n.factorial * ↑(QuantumTheory.Transport.polarFourierCosineMoment n)",
+    "statement": "∀ (z : ℝ),\n  QuantumTheory.Transport.polarFourierZerothAngularKernel z =\n    ∑' (n : ℕ), (Complex.I * ↑z) ^ n / ↑n.factorial * ↑(AngularHarmonics.fullAngleCosineMoment n)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -101930,7 +101976,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (z : ℝ) (n : ℕ),\n  (Complex.I * ↑z) ^ (2 * n) / ↑(2 * n).factorial * ↑(QuantumTheory.Transport.polarFourierCosineMoment (2 * n)) =\n    ↑(2 * Real.pi) * (Complex.regularizedHGFunCoeff 0 {1} n * (-(↑z / 2) ^ 2) ^ n)",
+    "statement": "∀ (z : ℝ) (n : ℕ),\n  (Complex.I * ↑z) ^ (2 * n) / ↑(2 * n).factorial * ↑(AngularHarmonics.fullAngleCosineMoment (2 * n)) =\n    ↑(2 * Real.pi) * (Complex.regularizedHGFunCoeff 0 {1} n * (-(↑z / 2) ^ 2) ^ n)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -101952,8 +101998,8 @@
       "QuantumTheory.Transport.polarFourierZerothAngularKernel_eq_besselJ"
     ],
     "dependencies": [
-      "BesselHypergeometric.regularizedHGFunCoeff_zero_singleton_nat_add_one",
-      "QuantumTheory.Transport.polarFourierCosineMoment_even_factorial"
+      "AngularHarmonics.fullAngleCosineMoment_even_factorial",
+      "BesselHypergeometric.regularizedHGFunCoeff_zero_singleton_nat_add_one"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -101975,7 +102021,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (z : ℝ), Summable fun n => (Complex.I * ↑z) ^ n / ↑n.factorial * ↑(QuantumTheory.Transport.polarFourierCosineMoment n)",
+    "statement": "∀ (z : ℝ), Summable fun n => (Complex.I * ↑z) ^ n / ↑n.factorial * ↑(AngularHarmonics.fullAngleCosineMoment n)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -101997,7 +102043,7 @@
       "QuantumTheory.Transport.polarFourierZerothAngularKernel_eq_besselJ"
     ],
     "dependencies": [
-      "QuantumTheory.Transport.polarFourierCosineMoment_norm_le"
+      "AngularHarmonics.fullAngleCosineMoment_norm_le"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -186805,52 +186851,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (side : QuantumTheory.Transport.SpectralSide) (v m probeEnergy broadening disorderStrength hbar pMax : ℝ),\n  broadening ≠ 0 →\n    0 ≤ disorderStrength →\n      0 ≤ pMax →\n        Continuous fun p =>\n          (QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominator side v m p 0 probeEnergy\n              broadening disorderStrength hbar pMax)⁻¹",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.BornDyson.RealSpace.RadialGreen.0.QuantumTheory.Models.MassiveDirac.continuous_finiteCutoffContinuumBornDysonDenominator_inv_radial",
-    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.BornDyson.RealSpace.RadialGreen",
-    "externalAxioms": [],
-    "docString": "The inverse finite-cutoff Born-Dyson denominator is continuous on the radial momentum axis. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Models.MassiveDirac.continuous_finiteCutoffContinuumBornDysonPauliCoefficient_radial",
-      "QuantumTheory.Models.MassiveDirac.continuous_finiteCutoffContinuumBornDysonScalarCoefficient_radial"
-    ],
-    "dependencies": [
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominator_ne_zero"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Models.MassiveDirac.continuous_finiteCutoffContinuumBornDysonPauliCoefficient_radial",
-      "QuantumTheory.Models.MassiveDirac.continuous_finiteCutoffContinuumBornDysonScalarCoefficient_radial"
-    ],
-    "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ (side : QuantumTheory.Transport.SpectralSide) (v m probeEnergy broadening disorderStrength hbar pMax radius p : ℝ)\n  (i j : Fin 2),\n  QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenEntryKernel side v m probeEnergy broadening\n      disorderStrength hbar pMax (-radius) p i j =\n    QuantumTheory.Models.MassiveDirac.sigmaZ i i *\n        QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenEntryKernel side v m probeEnergy\n          broadening disorderStrength hbar pMax radius p i j *\n      QuantumTheory.Models.MassiveDirac.sigmaZ j j",
     "standardAxioms": [
       "Classical.choice",
@@ -186880,96 +186880,6 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix_neg_radius"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (side : QuantumTheory.Transport.SpectralSide) (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ),\n  QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix side v m probeEnergy\n      broadening disorderStrength hbar pMax radius =\n    fun i j =>\n    ↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n      ∫ (p : ℝ) in 0..pMax,\n        QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenEntryKernel side v m probeEnergy\n          broadening disorderStrength hbar pMax radius p i j",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.BornDyson.RealSpace.RadialGreen.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix_eq_entryKernel_integral",
-    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.BornDyson.RealSpace.RadialGreen",
-    "externalAxioms": [],
-    "docString": "Entrywise radial integration determines the finite-cutoff Born-Dyson Green matrix. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient_eq_radialKernel_integral",
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenScalarCoefficient_eq_radialKernel_integral"
-    ],
-    "dependencies": [
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix_apply_eq_entryKernel_integral"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient_eq_radialKernel_integral",
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenScalarCoefficient_eq_radialKernel_integral"
-    ],
-    "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (side : QuantumTheory.Transport.SpectralSide) (v m probeEnergy broadening disorderStrength hbar pMax : ℝ),\n  broadening ≠ 0 →\n    0 ≤ disorderStrength →\n      0 ≤ pMax →\n        Continuous fun p =>\n          ↑p *\n            (QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominator side v m p 0 probeEnergy\n                broadening disorderStrength hbar pMax)⁻¹",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.BornDyson.RealSpace.ScalarGenerator.0.QuantumTheory.Models.MassiveDirac.continuous_finiteCutoffContinuumBornDysonScalarGreenWeight",
-    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.BornDyson.RealSpace.ScalarGenerator",
-    "externalAxioms": [],
-    "docString": "At finite broadening, the scalar Dyson resolvent weight is a continuous\nfunction of the radial momentum, including both endpoints of the cutoff\nintegral. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialScalarGreenGenerator_hasDerivAt"
-    ],
-    "dependencies": [
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominator_ne_zero"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialScalarGreenGenerator_hasDerivAt"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
