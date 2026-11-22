@@ -752,14 +752,11 @@ theorem ExternalInsertionBlockLayout.ofFamilyShuffle_ownerShuffleEquiv_reference
   intro v
   have hphysical := layout.interactionOrderDecomposition_owner
     ((Finset.univ : Finset (Fin N)).orderIsoOfFin rfl).toEquiv v
-  calc
-    ((e σ).slotEquiv.symm v).1 =
-        (σ.slotEquiv.symm (Fin.cast ht.symm v)).1 := howner v
-    _ = (layout.interactionAssignmentShuffle.slotEquiv.symm v).1 := by
-      rw [hcanon] at hphysical
-      change (layout.interactionAssignmentShuffle.slotEquiv.symm v).1 =
-        (σ.slotEquiv.symm (Fin.cast ht.symm v)).1 at hphysical
-      exact hphysical.symm
+  rw [howner v]
+  rw [hcanon v] at hphysical
+  change (σ.slotEquiv.symm (Fin.cast ht.symm v)).1 =
+    (layout.interactionAssignmentShuffle.slotEquiv.symm v).1
+  exact hphysical.symm
 
 /-- All physical owner-shuffle relabelings transport to the actual
 canonical layout's owner-shuffle type by conjugation of the ambient
@@ -843,9 +840,12 @@ theorem ExternalInsertionBlockLayout.ofFamilyShuffle_ownerOrderedDysonOrder
   intro v
   apply Subtype.ext
   simp only [Equiv.trans_apply]
-  rw [hcanon, hcanon]
-  change Fin.cast ht.symm (((e σ).ambientRelabel (e τ)).symm v) =
-    (σ.ambientRelabel τ).symm (Fin.cast ht.symm v)
+  change
+    (((S.orderIsoOfFin rfl).toEquiv
+      (((e σ).ambientRelabel (e τ)).symm v)).1 =
+      (σ.ambientRelabel τ).symm
+        (((S.orderIsoOfFin rfl).toEquiv v).1)
+  rw [hcanon (((e σ).ambientRelabel (e τ)).symm v), hcanon v]
   rw [hperm]
   simp [Equiv.trans_apply, Fin.castOrderIso]
 
