@@ -1,5 +1,5 @@
 import LeanCondensedMatter.QuantumTheory.PlanckConstant
-import LeanCondensedMatter.Transport.Analysis.BesselCrossedXMoment
+import LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.WronskianMoments
 import LeanCondensedMatter.Models.MassiveDirac.Conductivity.Hall.NonCrossingMechanismClassification
 import Mathlib.Tactic.FieldSimp
 import Mathlib.Tactic.Linarith
@@ -27,7 +27,7 @@ namespace QuantumTheory.Models.MassiveDirac
 
 noncomputable section
 
-open QuantumTheory.Transport BesselSecondKind
+open QuantumTheory.Transport BesselSecondKind BesselRadialMoments
 open MeasureTheory
 open scoped Interval
 
@@ -186,7 +186,7 @@ theorem adoCrossedXBesselReference_tendsto_benchmark
       _ = factor * ((((Real.pi : ℝ) : ℂ)) * (((1 / Real.pi : ℝ) : ℂ))) := by ring
       _ = factor := by rw [hpi]; ring
   have hlimit :=
-    (tendsto_integral_crossedXBesselIntegrand_one_div_pi Y0 Y1 hW).const_mul
+    (tendsto_integral_wronskianBesselIntegrand_one_div_pi Y0 Y1 hW).const_mul
       ((((Real.pi : ℝ) : ℂ)) * factor)
   change Filter.Tendsto
     (fun R : ℝ => (((Real.pi : ℝ) : ℂ)) * factor *
@@ -212,7 +212,7 @@ theorem adoCrossedXConcreteBesselReference_integral_eq_endpoints (R : ℝ) :
       (((2 / Real.pi : ℝ) : ℂ)) *
         ((1 - (Complex.besselJ 0 (R : ℂ) ^ 2 +
             Complex.besselJ 1 (R : ℂ) ^ 2)) / 2) := by
-  exact integral_crossedXBesselIntegrand_eq_endpoints
+  exact integral_wronskianBesselIntegrand_eq_endpoints
     (fun r : ℝ => besselY0Series (r : ℂ))
     (fun r : ℝ => besselY1Series (r : ℂ))
     realWronskianCondition_concreteSeries R

@@ -4,31 +4,24 @@ import LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.AnalyticWronskian
 set_option linter.style.header false
 
 /-!
-# Wronskian-reduced crossed-X Bessel radial moment
+# Wronskian-weighted Bessel radial moments
 
-The standard massive-Dirac Gaussian-crossed X benchmark contains the
-scalar Bessel integral
+The scalar radial integrand is
 
-  ∫₀^R J₁(s)² (J₁(s) Y₀(s) - J₀(s) Y₁(s)) ds.
+  J₁(r)² (J₁(r) Y₀(r) - J₀(r) Y₁(r)).
 
-The first/second-kind Bessel Wronskian reduces its parenthesis to
-2 / (π s) for every positive `s`. The existing project theorem
-`integral_besselJ_one_sq_div` then evaluates the full finite interval
-*exactly*, and `tendsto_integral_besselJ_one_sq_div` proves the large-
-radius limit, without an assumption of absolute integrability at infinity.
+For functions satisfying `BesselSecondKind.RealWronskianCondition`,
+the Wronskian reduces the integrand to `(2/π) J₁(r)²/r`, including
+the origin by the natural zero extension. The finite interval integral
+has an exact endpoint expression and its cutoff limit is `1/π`.
 
-Mathlib v4.35.0 currently supplies `Complex.besselJ` but not a canonical
-second-kind Bessel-Y API. Accordingly `Y0` and `Y1` are parameters,
-and their Wronskian is an *explicit theorem hypothesis* (not an axiom).
-Identifying the finite-regulator physical X Hall integral with this
-Bessel moment, including weak disorder and the renormalized spectral
-boundary, is a separate and presently unproved obligation.
+These are special-function identities independent of any transport
+model, physical cutoff, disorder approximation, or conductivity claim.
 -/
 
-namespace QuantumTheory
-namespace Transport
+namespace BesselRadialMoments
 
-open BesselSecondKind BesselRadialMoments
+open BesselSecondKind
 
 noncomputable section
 
@@ -37,7 +30,7 @@ open scoped Interval
 
 /-- Exact Wronskian reduction of the X radial integrand, including the
 origin via the continuous J₁²/r extension. -/
-theorem crossedXBesselIntegrand_eq_one_sq_div
+theorem wronskianBesselIntegrand_eq_one_sq_div
     (Y0 Y1 : ℝ → ℂ) (hW : RealWronskianCondition Y0 Y1)
     (r : ℝ) :
     Complex.besselJ 1 (r : ℂ) ^ 2 *
@@ -51,10 +44,10 @@ theorem crossedXBesselIntegrand_eq_one_sq_div
   · rw [hW r hr]
     ring
 
-/-- The finite-radius Gaussian crossed X Bessel integral is an explicit
+/-- The finite-radius Gaussian Wronskian-weighted Bessel integral is an explicit
 endpoint expression, under only the standard Wronskian condition.
 The Y functions never need values or continuity at r=0. -/
-theorem integral_crossedXBesselIntegrand_eq_endpoints
+theorem integral_wronskianBesselIntegrand_eq_endpoints
     (Y0 Y1 : ℝ → ℂ) (hW : RealWronskianCondition Y0 Y1)
     (R : ℝ) :
     (∫ r in (0 : ℝ)..R,
@@ -70,7 +63,7 @@ theorem integral_crossedXBesselIntegrand_eq_endpoints
             (Complex.besselJ 1 (r : ℂ) ^ 2 / (r : ℂ))) := by
         apply intervalIntegral.integral_congr
         intro r _
-        exact crossedXBesselIntegrand_eq_one_sq_div Y0 Y1 hW r
+        exact wronskianBesselIntegrand_eq_one_sq_div Y0 Y1 hW r
     _ = (((2 / Real.pi : ℝ) : ℂ)) *
           (∫ r in (0 : ℝ)..R,
             Complex.besselJ 1 (r : ℂ) ^ 2 / (r : ℂ)) := by
@@ -79,13 +72,12 @@ theorem integral_crossedXBesselIntegrand_eq_endpoints
         rw [integral_besselJ_one_sq_div]
         simp [Complex.besselJ_zero]
 
-/-- The entire Wronskian-reduced Bessel part of the Ado X diagram is
+/-- The entire Wronskian-reduced Bessel part of the Bessel radial moment is
 evaluated: the radial-cutoff limit is exactly 1/π.
 
-This theorem does not identify the physical finite-Born X diagram with
-the Bessel integrand; in particular no ultraviolet, zero-broadening,
-weak-disorder or real-space Fourier limit is smuggled into the statement. -/
-theorem tendsto_integral_crossedXBesselIntegrand
+This statement concerns only the mathematical radial integral; it does
+not identify a regulated physical integral or any disorder limit. -/
+theorem tendsto_integral_wronskianBesselIntegrand
     (Y0 Y1 : ℝ → ℂ) (hW : RealWronskianCondition Y0 Y1) :
     Filter.Tendsto
       (fun R : ℝ => ∫ r in (0 : ℝ)..R,
@@ -105,14 +97,14 @@ theorem tendsto_integral_crossedXBesselIntegrand
               Complex.besselJ 0 (r : ℂ) * Y1 r) := by
     rw [integral_besselJ_one_sq_div]
     simpa [Complex.besselJ_zero] using
-      (integral_crossedXBesselIntegrand_eq_endpoints Y0 Y1 hW R).symm
+      (integral_wronskianBesselIntegrand_eq_endpoints Y0 Y1 hW R).symm
   exact hlimit.congr' (Filter.Eventually.of_forall hpoint)
 
 
-/-- The Wronskian-reduced crossed-X Bessel moment has the exact
+/-- The Wronskian-reduced Wronskian-weighted Bessel moment has the exact
 universal limit `1/π`, independently of the concrete Y-Bessel
 implementation, as soon as the Wronskian condition is established. -/
-theorem tendsto_integral_crossedXBesselIntegrand_one_div_pi
+theorem tendsto_integral_wronskianBesselIntegrand_one_div_pi
     (Y0 Y1 : ℝ → ℂ) (hW : RealWronskianCondition Y0 Y1) :
     Filter.Tendsto
       (fun R : ℝ => ∫ r in (0 : ℝ)..R,
@@ -125,10 +117,9 @@ theorem tendsto_integral_crossedXBesselIntegrand_one_div_pi
     push_cast
     ring
   simpa only [hscale] using
-    (tendsto_integral_crossedXBesselIntegrand Y0 Y1 hW)
+    (tendsto_integral_wronskianBesselIntegrand Y0 Y1 hW)
 
 
 end
 
-end Transport
-end QuantumTheory
+end BesselRadialMoments
