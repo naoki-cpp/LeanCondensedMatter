@@ -1,6 +1,5 @@
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.SelfEnergy.Core
 import Mathlib.LinearAlgebra.Matrix.NonsingularInverse
-import Mathlib.Tactic.Linarith
 import Mathlib.Tactic.Ring
 
 set_option linter.style.header false
@@ -167,15 +166,12 @@ theorem finiteCutoffContinuumBornDysonGreenOperator_polar_eq
           side v m p 0 probeEnergy broadening disorderStrength hbar pMax)
         (finiteCutoffContinuumBornDysonPauliCoefficient .z
           side v m p 0 probeEnergy broadening disorderStrength hbar pMax) θ := by
-  have htrig : Real.cos θ ^ 2 + Real.sin θ ^ 2 = 1 := by
-    nlinarith [Real.sin_sq_add_cos_sq θ]
   have hradial :
       (p * Real.cos θ) ^ 2 + (p * Real.sin θ) ^ 2 = p ^ 2 + 0 ^ 2 := by
     calc
       (p * Real.cos θ) ^ 2 + (p * Real.sin θ) ^ 2 =
-          p ^ 2 * (Real.cos θ ^ 2 + Real.sin θ ^ 2) := by ring
-      _ = p ^ 2 := by rw [htrig]; ring
-      _ = p ^ 2 + 0 ^ 2 := by ring
+          p ^ 2 * (Real.sin θ ^ 2 + Real.cos θ ^ 2) := by ring
+      _ = p ^ 2 + 0 ^ 2 := by rw [Real.sin_sq_add_cos_sq]; ring
   have hden :
       finiteCutoffContinuumBornDysonDenominator
           side v m (p * Real.cos θ) (p * Real.sin θ)
