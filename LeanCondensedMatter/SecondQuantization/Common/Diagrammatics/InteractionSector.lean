@@ -94,6 +94,25 @@ theorem interactionSectorComponentEquiv_symm_val
     ((interactionSectorComponentEquiv G).symm x : ↥S).1 = x.2.1 :=
   rfl
 
+/-- Projecting an interaction vertex into the component-indexed
+interaction-sector decomposition recovers exactly its graph connected
+component. The owner is the actual component, not a chosen abstract
+family label. -/
+theorem interactionSectorComponentEquiv_fst
+    [DecidableEq External] [Fintype External] [DecidableEq Vertex]
+    {S : Finset Vertex} (G : SimpleGraph (External ⊕ ↥S))
+    (v : ↥S) :
+    ((interactionSectorComponentEquiv G v).1 :
+      G.componentPartition.parts).1 = G.componentBlock (Sum.inr v) := by
+  let C := (interactionSectorComponentEquiv G v).1
+  have hsector :
+      v.1 ∈ interactionSector (C.1 : Finset (External ⊕ ↥S)) :=
+    (interactionSectorComponentEquiv G v).2.2
+  have hmem : (Sum.inr v : External ⊕ ↥S) ∈ C.1 :=
+    (mem_interactionSector_subtype C.1 v).1 hsector
+  change C.1 = G.componentBlock (Sum.inr v)
+  exact ((G.componentBlock_eq_iff_mem C.2 (Sum.inr v)).2 hmem).symm
+
 /-- The component interaction sectors exhaust the ambient interaction vertices. -/
 theorem sum_interactionSector_card_eq
     [DecidableEq External] [Fintype External] [DecidableEq Vertex]
