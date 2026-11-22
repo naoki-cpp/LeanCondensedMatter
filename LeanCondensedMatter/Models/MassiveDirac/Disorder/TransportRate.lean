@@ -145,12 +145,9 @@ theorem continuumBornUpperBandTransportLifetime_eq_factor_mul_singleParticleLife
           (fermiEnergy ^ 2 + 3 * m ^ 2)) *
         lifetimeOfDamping hbar (continuumBornUpperBandDampingEnergy
           v m fermiEnergy disorderStrength hbar) := by
-  let tr := continuumBornUpperBandTransportScatteringRate
-    v m fermiEnergy disorderStrength hbar
-  let sp := continuumBornUpperBandSingleParticleScatteringRate
-    v m fermiEnergy disorderStrength hbar
-  change tr⁻¹ =
-    (2 * (fermiEnergy ^ 2 + m ^ 2) / (fermiEnergy ^ 2 + 3 * m ^ 2)) * sp⁻¹
+  let tr := continuumBornUpperBandTransportScatteringRate v m fermiEnergy disorderStrength hbar
+  let sp := continuumBornUpperBandSingleParticleScatteringRate v m fermiEnergy disorderStrength hbar
+  change tr⁻¹ = (2 * (fermiEnergy ^ 2 + m ^ 2) / (fermiEnergy ^ 2 + 3 * m ^ 2)) * sp⁻¹
   have hsp : sp ≠ 0 :=
     continuumBornUpperBandSingleParticleScatteringRate_ne_zero
       v m fermiEnergy disorderStrength hbar hvelocity hhbar hdisorder hfermiEnergy
