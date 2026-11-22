@@ -327,27 +327,6 @@ theorem ExternalInsertionBlockLayout.assembleDiagram_partner_at_externalLeg
   exact layout.assembleDiagram_partner
     (Finset.univ : Finset (Fin N)) F B _
 
-/-- Reindex a finite sum over every ambient interaction order by the
-independent local block orders and their interleavings, with no
-multiplicity or omission even for zero-interaction blocks. -/
-theorem ExternalInsertionBlockLayout.sum_interactionOrders_eq_sum_blockOrders_shuffles
-    (layout : ExternalInsertionBlockLayout E N)
-    {M : Type*} [AddCommMonoid M]
-    (weight : QuarticVertexOrder (Finset.univ : Finset (Fin N)) → M) :
-    (∑ order : QuarticVertexOrder (Finset.univ : Finset (Fin N)), weight order) =
-      ∑ data : FamilyOrdersOf
-          (fun B : layout.partition.parts =>
-            ↥(layout.interactionBlock (Finset.univ : Finset (Fin N)) B))
-          (fun B => (layout.interactionBlock
-            (Finset.univ : Finset (Fin N)) B).card) ×
-          FamilySlotShuffleTo
-            (fun B : layout.partition.parts =>
-              (layout.interactionBlock (Finset.univ : Finset (Fin N)) B).card)
-            (Finset.univ : Finset (Fin N)).card,
-        weight (layout.interactionOrderDecompositionEquiv.symm data) := by
-  classical
-  exact (Equiv.sum_comp layout.interactionOrderDecompositionEquiv.symm weight).symm
-
 /-- Extract the canonical interaction-slot shuffle of an independently
 assigned external-block layout from the already proved global-order
 decomposition. This retains all zero-size interaction fibers and avoids
