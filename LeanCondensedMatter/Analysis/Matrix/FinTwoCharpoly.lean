@@ -38,7 +38,7 @@ theorem pow_three_eq_one_of_trace_neg_one_det_one (M : Matrix (Fin 2) (Fin 2) R)
     M ^ 3 = (M ^ 2 + M + 1) * (M - 1) + 1 := by noncomm_ring
     _ = 1 := by rw [hquad]; simp
 
-/-- A determinant-one real `2 × 2` matrix with trace `1` has sixth power one. -/
+/-- A determinant-one `2 × 2` matrix over a commutative ring with trace `1` has sixth power one. -/
 theorem pow_six_eq_one_of_trace_one_det_one (M : Matrix (Fin 2) (Fin 2) R)
     (htrace : M.trace = 1) (hdet : M.det = 1) : M ^ 6 = 1 := by
   have hquad : M ^ 2 - M + 1 = 0 := by
