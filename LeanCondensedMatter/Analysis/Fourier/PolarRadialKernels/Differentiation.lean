@@ -38,23 +38,8 @@ private theorem polarFourierWeightedAngularKernel_hasDerivAt
       polarFourierRadialPhase x θ) * weight θ
   have hdiff (x θ : ℝ) :
       HasDerivAt (fun t : ℝ => polarFourierRadialPhase t θ * weight θ)
-        (derivative x θ) x := by
-    have hmul : HasDerivAt (fun t : ℝ => t * Real.cos θ)
-        (Real.cos θ) x := by
-      simpa using (hasDerivAt_id x).mul_const (Real.cos θ)
-    have harg : HasDerivAt
-        (fun t : ℝ => Complex.I * ((t * Real.cos θ : ℝ) : ℂ))
-        (Complex.I * ((Real.cos θ : ℝ) : ℂ)) x :=
-      hmul.ofReal_comp |>.const_mul Complex.I
-    have hphase := (Complex.hasDerivAt_exp _).comp x harg
-    have hbase : HasDerivAt (fun t : ℝ => polarFourierRadialPhase t θ)
-        (Complex.I * ((Real.cos θ : ℝ) : ℂ) *
-          polarFourierRadialPhase x θ) x := by
-      convert hphase using 1
-      · rfl
-      · dsimp [polarFourierRadialPhase]
-        ring
-    exact hbase.mul_const (weight θ)
+        (derivative x θ) x :=
+    (polarFourierRadialPhase_hasDerivAt_radius x θ).mul_const (weight θ)
   have hcont (x : ℝ) : Continuous (fun θ : ℝ =>
       polarFourierRadialPhase x θ * weight θ) := by
     apply Continuous.mul
