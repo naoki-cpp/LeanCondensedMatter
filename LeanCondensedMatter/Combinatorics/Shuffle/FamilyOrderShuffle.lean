@@ -242,6 +242,22 @@ private theorem familyOrder_eq_of_strictMono {total : ℕ} (size : ι → ℕ)
   have h₂ := ambientEquiv.symm.injective h₁
   exact eq_of_heq (Sigma.mk.inj_iff.mp h₂).2
 
+/-- The canonical local orders extracted from a global order are
+uniquely characterized by increasing ambient positions. This makes
+the decomposition reusable for physical component shuffles without
+reconstructing the local order representation. -/
+theorem familyOrdersOfOrder_eq_of_strictMono {total : ℕ} (size : ι → ℕ)
+    (hcard : ∀ i, Fintype.card (F i) = size i)
+    (ambientEquiv : α ≃ Σ i, F i)
+    (order : Fin total ≃ α)
+    (orders : FamilyOrdersOf F size)
+    (hmono : ∀ i, StrictMono
+      (fun j => order.symm (ambientEquiv.symm ⟨i, orders i j⟩))) :
+    familyOrdersOfOrder F size hcard ambientEquiv order = orders := by
+  funext i
+  exact (familyOrder_eq_of_strictMono
+    F size hcard ambientEquiv order i (orders i) (hmono i)).symm
+
 /-- A global order on a finite family is equivalent to local fiber orders together with an
 order-preserving family shuffle. Empty fibers are retained as zero-size shuffle blocks. -/
 noncomputable def familyOrderDecompositionEquivOfSize {total : ℕ} (size : ι → ℕ)
