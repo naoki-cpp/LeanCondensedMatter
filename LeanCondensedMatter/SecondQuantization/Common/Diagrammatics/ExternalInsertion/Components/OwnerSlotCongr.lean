@@ -92,18 +92,6 @@ theorem externalInsertionLegCongr_interactionLeg
   apply (externalInsertionLegEquiv E U).injective
   simp [externalInsertionLegCongr, externalInsertionInteractionLeg]
 
-/-- The local interaction-fiber equivalence acts as the ambient
-permutation on its underlying vertex label. -/
-@[simp]
-theorem ExternalInsertionBlockLayout.interactionBlockOwnerSlotCongrEquiv_val
-    (layout : ExternalInsertionBlockLayout E N)
-    (e : Fin N ≃ Fin N) (B : layout.partition.parts)
-    (v : ↥(layout.interactionBlock (Finset.univ : Finset (Fin N)) B)) :
-    ((layout.interactionBlockOwnerSlotCongrEquiv e B v :
-        ↥((layout.ownerSlotCongr e).interactionBlock
-          (Finset.univ : Finset (Fin N)) B)) : Fin N) = e v.1 := rfl
-
-
 /-- A physical layout whose owner of each ambient vertex is prescribed
 by the block of the corresponding shuffled local slot. -/
 noncomputable def ExternalInsertionBlockLayout.ofFamilyShuffle
@@ -280,12 +268,6 @@ def fullInteractionSlotEquiv (e : Fin N ≃ Fin N) :
   invFun v := ⟨e.symm v.1, Finset.mem_univ _⟩
   left_inv v := by apply Subtype.ext; simp
   right_inv v := by apply Subtype.ext; simp
-
-@[simp]
-theorem fullInteractionSlotEquiv_val (e : Fin N ≃ Fin N)
-    (v : ↥(Finset.univ : Finset (Fin N))) :
-    (fullInteractionSlotEquiv e v).1 = e v.1 := rfl
-
 
 /-- The physical block and local vertex selected by the interaction
 equivalence commute with the global slot relabeling. All local labels
