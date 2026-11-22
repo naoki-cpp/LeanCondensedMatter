@@ -710,10 +710,15 @@ theorem ExternalInsertionBlockLayout.sum_physicalFixedSizeDyson_eq_signedProduct
           intro F _
           exact if_congr (hlabels F) (hOrbit F) rfl
     _ = _ := by
-          simpa only [assembled, S, layout,
-            ExternalInsertionBlockLayout.ofFamilyShuffle_interactionBlock_card] using
-            (ExternalInsertionBlockLayout.sum_signedDysonShuffleOrbits_eq_prod_standardized
-              layout ε β g labels times)
+          have hsize (B : π.parts) :
+              (layout.interactionBlock S B).card = size B :=
+            ExternalInsertionBlockLayout.ofFamilyShuffle_interactionBlock_card
+              π heven σ B
+          have hstandard :=
+            ExternalInsertionBlockLayout.sum_signedDysonShuffleOrbits_eq_prod_standardized
+              layout ε β g labels times
+          simp only [hsize] at hstandard
+          exact hstandard
 
 end Fermionic
 end SecondQuantization
