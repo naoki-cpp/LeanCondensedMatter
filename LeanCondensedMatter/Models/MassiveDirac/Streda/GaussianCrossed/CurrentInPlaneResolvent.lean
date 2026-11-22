@@ -1,5 +1,6 @@
 import LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.CurrentGradientSourceY
 import LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.RadialHarmonics
+import LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.BornDyson.DysonShift
 import Mathlib.Tactic.FunProp
 import Mathlib.Tactic.Ring
 
@@ -420,6 +421,107 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedInPlaneK2_gap_eq_tracelessH
           have hx := congrArg (fun z : ℂ => -2 * (v : ℂ) ^ 2 * factor * z) hdiff
           convert hx.symm using 1 <;> ring
 
+
+
+/-- The *actual* R/A Dyson propagator product at finite broadening is a
+real radial Lorentzian denominator. The spectral center and width are
+defined by the real/imaginary parts of the retarded Dyson denominator
+at zero momentum, not by postulating clean or renormalized parameters. -/
+private theorem gaussianCrossed_radialRAProduct_eq_realLorentzian
+    (v m probeEnergy broadening disorderStrength hbar pMax p : ℝ)
+    (hbroadening : broadening ≠ 0) :
+    let D0 := finiteCutoffContinuumBornDysonDenominator
+      .retarded v m 0 0 probeEnergy broadening disorderStrength hbar pMax
+    finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct
+      v m p probeEnergy broadening disorderStrength hbar pMax =
+      (((D0.re - v ^ 2 * p ^ 2) ^ 2 + D0.im ^ 2 : ℝ) : ℂ) := by
+  dsimp only
+  let D0 := finiteCutoffContinuumBornDysonDenominator
+    .retarded v m 0 0 probeEnergy broadening disorderStrength hbar pMax
+  let D := finiteCutoffContinuumBornDysonDenominator
+    .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax
+  have hradial : D = D0 - ((v ^ 2 * p ^ 2 : ℝ) : ℂ) := by
+    dsimp [D, D0]
+    unfold finiteCutoffContinuumBornDysonDenominator
+    push_cast
+    ring
+  have hstar : star D =
+      finiteCutoffContinuumBornDysonDenominator
+        .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax := by
+    dsimp [D]
+    simpa only [SpectralSide.opposite] using
+      (star_finiteCutoffContinuumBornDysonDenominator
+        .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax
+        hbroadening)
+  calc
+    _ = D * star D := by
+      rw [finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct_eq_mul,
+        ← hstar]
+      rfl
+    _ = (Complex.normSq D : ℂ) := by
+      simpa using (Complex.mul_conj D)
+    _ = _ := by
+      rw [hradial, Complex.normSq_apply]
+      simp only [Complex.sub_re, Complex.sub_im,
+        Complex.ofReal_re, Complex.ofReal_im, sub_zero]
+      push_cast
+      ring
+
+/-- The *physical* finite-broadening Gaussian-crossed K2 current is a
+nonconstant Bessel-weighted **real Lorentzian radial integral**. The
+effective center and width retain the actual cutoff-dependent Born-Dyson
+self energy. This is the form needed before any on-shell concentration
+argument; it does not silently take a regulator/disorder limit. -/
+theorem finiteCutoffContinuumBornDysonGaussianCrossedInPlaneK2_eq_realLorentzian
+    (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ)
+    (hbroadening : broadening ≠ 0)
+    (hdisorder : 0 ≤ disorderStrength) (hpMax : 0 ≤ pMax) :
+    let D0 := finiteCutoffContinuumBornDysonDenominator
+      .retarded v m 0 0 probeEnergy broadening disorderStrength hbar pMax
+    let factor := finiteCutoffContinuumBornDysonGaussianCrossedCurrentFactor
+      v m probeEnergy broadening disorderStrength hbar pMax
+    let measure := (((momentumMeasurePrefactor hbar : ℝ) : ℂ))
+    let jxx := finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient
+      .x 0 v m probeEnergy broadening disorderStrength hbar pMax radius
+    let jyy := finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient
+      .y 1 v m probeEnergy broadening disorderStrength hbar pMax radius
+    jxx - jyy =
+      (2 * measure * (v : ℂ) ^ 2 * factor) *
+        ∫ p in (0 : ℝ)..pMax,
+          (p : ℂ) ^ 3 *
+            polarFourierSecondCosineAngularKernel (p * radius / hbar) *
+            (((D0.re - v ^ 2 * p ^ 2) ^ 2 + D0.im ^ 2 : ℝ) : ℂ)⁻¹ := by
+  dsimp only
+  let D0 := finiteCutoffContinuumBornDysonDenominator
+    .retarded v m 0 0 probeEnergy broadening disorderStrength hbar pMax
+  let factor := finiteCutoffContinuumBornDysonGaussianCrossedCurrentFactor
+    v m probeEnergy broadening disorderStrength hbar pMax
+  let measure : ℂ := ((momentumMeasurePrefactor hbar : ℝ) : ℂ)
+  let kernel := fun p : ℝ =>
+    (p : ℂ) ^ 3 * polarFourierSecondCosineAngularKernel (p * radius / hbar) *
+      (((D0.re - v ^ 2 * p ^ 2) ^ 2 + D0.im ^ 2 : ℝ) : ℂ)⁻¹
+  have hdiag :=
+    (finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient_diagonal_ra_denominator_harmonics
+      v m probeEnergy broadening disorderStrength hbar pMax radius
+      hbroadening hdisorder hpMax).2
+  dsimp only at hdiag
+  calc
+    _ = measure * ∫ p in (0 : ℝ)..pMax,
+        (2 * (v : ℂ) ^ 2 * factor) * kernel p := by
+          rw [hdiag]
+          congr 1
+          apply intervalIntegral.integral_congr
+          intro p _
+          rw [gaussianCrossed_radialRAProduct_eq_realLorentzian
+            v m probeEnergy broadening disorderStrength hbar pMax p hbroadening]
+          dsimp [D0, kernel, factor]
+          push_cast
+          ring
+    _ = (2 * measure * (v : ℂ) ^ 2 * factor) *
+          ∫ p in (0 : ℝ)..pMax, kernel p := by
+            rw [intervalIntegral.integral_const_mul]
+            ring
+    _ = _ := rfl
 
 end
 
