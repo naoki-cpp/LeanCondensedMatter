@@ -37,15 +37,6 @@
       "externalImportCount": 1
     },
     {
-      "name": "LeanCondensedMatter.Analysis.Calculus",
-      "sourceFile": "LeanCondensedMatter/Analysis/Calculus.lean",
-      "imports": [
-        "LeanCondensedMatter.Analysis.Calculus.AlgebraicDerivative",
-        "LeanCondensedMatter.Analysis.Calculus.IntervalLocalization"
-      ],
-      "externalImportCount": 0
-    },
-    {
       "name": "LeanCondensedMatter.Analysis.ConservationLaw.BalanceLaw",
       "sourceFile": "LeanCondensedMatter/Analysis/ConservationLaw/BalanceLaw.lean",
       "imports": [
@@ -304,15 +295,6 @@
         "LeanCondensedMatter.Analysis.Inequalities.PeierlsBogoliubov"
       ],
       "externalImportCount": 1
-    },
-    {
-      "name": "LeanCondensedMatter.Analysis.Inequalities",
-      "sourceFile": "LeanCondensedMatter/Analysis/Inequalities.lean",
-      "imports": [
-        "LeanCondensedMatter.Analysis.Inequalities.PeierlsBogoliubov",
-        "LeanCondensedMatter.Analysis.Inequalities.PeierlsBogoliubovEquality"
-      ],
-      "externalImportCount": 0
     },
     {
       "name": "LeanCondensedMatter.Analysis.InfiniteSum.Fiberwise",
@@ -832,16 +814,6 @@
       "externalImportCount": 8
     },
     {
-      "name": "LeanCondensedMatter.Analysis.Operator.Unbounded",
-      "sourceFile": "LeanCondensedMatter/Analysis/Operator/Unbounded.lean",
-      "imports": [
-        "LeanCondensedMatter.Analysis.Operator.Unbounded.Adjoint",
-        "LeanCondensedMatter.Analysis.Operator.Unbounded.Composition",
-        "LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution"
-      ],
-      "externalImportCount": 0
-    },
-    {
       "name": "LeanCondensedMatter.Analysis.Operator.Unitary",
       "sourceFile": "LeanCondensedMatter/Analysis/Operator/Unitary.lean",
       "imports": [
@@ -873,7 +845,9 @@
         "LeanCondensedMatter.Analysis.Operator.Spectral.Resolvent",
         "LeanCondensedMatter.Analysis.Operator.SymmetrizedProduct",
         "LeanCondensedMatter.Analysis.Operator.TraceClass",
-        "LeanCondensedMatter.Analysis.Operator.Unbounded",
+        "LeanCondensedMatter.Analysis.Operator.Unbounded.Adjoint",
+        "LeanCondensedMatter.Analysis.Operator.Unbounded.Composition",
+        "LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution",
         "LeanCondensedMatter.Analysis.Operator.Unitary"
       ],
       "externalImportCount": 0
@@ -1004,14 +978,6 @@
       "externalImportCount": 4
     },
     {
-      "name": "LeanCondensedMatter.Analysis.PowerSeries.LowOrderLog",
-      "sourceFile": "LeanCondensedMatter/Analysis/PowerSeries/LowOrderLog.lean",
-      "imports": [
-        "LeanCondensedMatter.Analysis.PowerSeries.Cumulant"
-      ],
-      "externalImportCount": 0
-    },
-    {
       "name": "LeanCondensedMatter.Analysis.PowerSeries.Moment",
       "sourceFile": "LeanCondensedMatter/Analysis/PowerSeries/Moment.lean",
       "imports": [
@@ -1080,15 +1046,6 @@
         "LeanCondensedMatter.Analysis.ScalarExchange.Basic"
       ],
       "externalImportCount": 2
-    },
-    {
-      "name": "LeanCondensedMatter.Analysis.ScalarExchange",
-      "sourceFile": "LeanCondensedMatter/Analysis/ScalarExchange.lean",
-      "imports": [
-        "LeanCondensedMatter.Analysis.ScalarExchange.Basic",
-        "LeanCondensedMatter.Analysis.ScalarExchange.Peel"
-      ],
-      "externalImportCount": 0
     },
     {
       "name": "LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.AnalyticWronskian",
@@ -1193,7 +1150,8 @@
       "sourceFile": "LeanCondensedMatter/Analysis.lean",
       "imports": [
         "LeanCondensedMatter.Analysis.Algebra.QuadraticNormalization",
-        "LeanCondensedMatter.Analysis.Calculus",
+        "LeanCondensedMatter.Analysis.Calculus.AlgebraicDerivative",
+        "LeanCondensedMatter.Analysis.Calculus.IntervalLocalization",
         "LeanCondensedMatter.Analysis.ConservationLaw",
         "LeanCondensedMatter.Analysis.DiscreteLattice",
         "LeanCondensedMatter.Analysis.Dyson",
@@ -1202,7 +1160,8 @@
         "LeanCondensedMatter.Analysis.Fourier.FiniteCyclic",
         "LeanCondensedMatter.Analysis.FunctionalCalculus.CFC",
         "LeanCondensedMatter.Analysis.Geometry.SphericalMoments",
-        "LeanCondensedMatter.Analysis.Inequalities",
+        "LeanCondensedMatter.Analysis.Inequalities.PeierlsBogoliubov",
+        "LeanCondensedMatter.Analysis.Inequalities.PeierlsBogoliubovEquality",
         "LeanCondensedMatter.Analysis.InfiniteSum.FinsuppProduct",
         "LeanCondensedMatter.Analysis.InternalSpace.Pauli",
         "LeanCondensedMatter.Analysis.LatticeGeometry",
@@ -1217,7 +1176,8 @@
         "LeanCondensedMatter.Analysis.OscillatoryIntegral",
         "LeanCondensedMatter.Analysis.PowerSeries",
         "LeanCondensedMatter.Analysis.PowerSeries.FrobeniusWronskian",
-        "LeanCondensedMatter.Analysis.ScalarExchange",
+        "LeanCondensedMatter.Analysis.ScalarExchange.Basic",
+        "LeanCondensedMatter.Analysis.ScalarExchange.Peel",
         "LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.AnalyticWronskian",
         "LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.FormalAnalyticBridgeJ",
         "LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.FormalAnalyticBridgeY",
@@ -3852,7 +3812,7 @@
       "name": "LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Evolution.Stone1D",
       "sourceFile": "LeanCondensedMatter/QuantumMechanics/SingleParticle/Continuum/Evolution/Stone1D.lean",
       "imports": [
-        "LeanCondensedMatter.Analysis.Operator.Unbounded",
+        "LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution",
         "LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Evolution.Interface1D",
         "LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Hamiltonian.SelfAdjoint1D"
       ],
