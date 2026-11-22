@@ -92,6 +92,7 @@ theorem ScalarImpurityParameters.norm_matrixOperator_tMatrix_sub_bare_le
     unfold ScalarImpurityParameters.tMatrix QuantumTheory.Transport.scalarImpurityTMatrix
       ScalarImpurityParameters.inverseShiftMatrix matrixOperator
     rw [map_smul]
+    rfl
   have hrewrite :
       params.tMatrix greenLoop hinvertible -
           (((params.impurityStrength : ℝ) : ℂ)) • (1 : Matrix2) =
@@ -192,7 +193,10 @@ theorem ScalarImpurityParameters.matrixOperator_tMatrix_eq_ringInverse_shift
     matrixOperator (params.tMatrix greenLoop hinvertible) =
         (((params.impurityStrength : ℝ) : ℂ)) •
           matrixOperator (params.inverseShiftMatrix greenLoop hinvertible) := by
-      simp only [ScalarImpurityParameters.tMatrix, matrixOperator, map_smul]
+      unfold ScalarImpurityParameters.tMatrix QuantumTheory.Transport.scalarImpurityTMatrix
+        ScalarImpurityParameters.inverseShiftMatrix matrixOperator
+      rw [map_smul]
+      rfl
     _ = (((params.impurityStrength : ℝ) : ℂ)) •
           Ring.inverse (matrixOperator (params.shiftMatrix greenLoop)) := by
       rw [hinverse]
