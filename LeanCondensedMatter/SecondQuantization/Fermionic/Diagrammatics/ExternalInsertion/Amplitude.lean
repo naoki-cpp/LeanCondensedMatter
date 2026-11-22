@@ -77,16 +77,6 @@ noncomputable def externalInsertionStandardSlotPerm
   (finCongr (by simp)).symm.permCongr
     (externalInsertionLegCongr (E := E) e)
 
-/-- Every fixed flattened atomic permutation from relabeling
-four-leg interaction vertices is even, for any number of external legs. -/
-theorem externalInsertionStandardSlotPerm_sign_eq_one
-    {E n : ℕ}
-    (e : ↥(Finset.univ : Finset (Fin n)) ≃
-      ↥(Finset.univ : Finset (Fin n))) :
-    Equiv.Perm.sign (externalInsertionStandardSlotPerm (E := E) e) = 1 := by
-  rw [externalInsertionStandardSlotPerm, Equiv.Perm.sign_permCongr]
-  exact externalInsertionLegCongr_sign_eq_one e
-
 /-- The original fixed-to-mixed atomic ordering map is obtained by
 first permuting the fixed flattened legs and then sorting using the
 relabelled interaction times. On injective-time chambers, the
@@ -145,8 +135,8 @@ theorem externalInsertionMixedAtomicOrderSign_slotCongr_of_injective
   have h := congrArg Equiv.Perm.sign
     (externalInsertionStandardToMixedAtomicPositionEquiv_slotCongr
       e externalTime σ hσ)
-  rw [Equiv.Perm.sign_trans,
-    externalInsertionStandardSlotPerm_sign_eq_one] at h
+  rw [Equiv.Perm.sign_trans, externalInsertionStandardSlotPerm,
+    Equiv.Perm.sign_permCongr, externalInsertionLegCongr_sign_eq_one] at h
   simp only [mul_one] at h
   exact congrArg (fun u : ℤˣ => (u : ℂ)) h
 
