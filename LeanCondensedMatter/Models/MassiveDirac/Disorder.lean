@@ -9,10 +9,8 @@ import LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.BornDyson.Dys
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.BornDyson.RadialMoments
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.BornDyson.RealSpace.RadialGreen
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.BornDyson.RealSpace.ScalarGenerator
-import LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.BornDyson.RealSpace.ScalarTail
 import LeanCondensedMatter.Models.MassiveDirac.Propagator.RadialFourier.FinitePart
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.BornDyson.RealSpace.FrozenCutoffUV
-import LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.BornDyson.RealSpace.FrozenCutoffBesselJ
 import LeanCondensedMatter.Models.MassiveDirac.Propagator.RadialFourier.HankelScaling
 import LeanCondensedMatter.Models.MassiveDirac.Propagator.RadialFourier.HankelReduction
 import LeanCondensedMatter.Models.MassiveDirac.Propagator.RadialFourier.ResolventDifference
