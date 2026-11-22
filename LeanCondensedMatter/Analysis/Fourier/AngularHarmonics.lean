@@ -155,18 +155,6 @@ theorem AngularHarmonicCoefficients.intervalIntegral_weighted_integral_eval
       simp; ring
     _ = _ := by rw [intervalIntegral.integral_const_mul]
 
-/-- A complex linear combination of the first sine and cosine harmonics integrates to zero. -/
-theorem integral_complex_cos_mul_add_sin_mul_zero_two_pi (cCos cSin : ℂ) :
-    (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi),
-      ((Real.cos θ : ℝ) : ℂ) * cCos + ((Real.sin θ : ℝ) : ℂ) * cSin) = 0 := by
-  let coefficients : AngularHarmonicCoefficients ℂ :=
-    { constant := 0
-      firstCosine := cCos
-      firstSine := cSin
-      secondCosine := 0
-      secondMixed := 0 }
-  simpa [coefficients, AngularHarmonicCoefficients.eval, smul_eq_mul] using coefficients.integral_eval
-
 /-- Full-angle integral of a real quadratic polynomial in the first cosine harmonic. -/
 theorem integral_quadratic_cos_zero_two_pi (a b c : ℝ) :
     (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi),
