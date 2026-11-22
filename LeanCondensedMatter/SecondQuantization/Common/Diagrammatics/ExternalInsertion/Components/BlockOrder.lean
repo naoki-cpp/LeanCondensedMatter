@@ -33,17 +33,17 @@ noncomputable def ExternalInsertionDiagram.physicalBlockInteractionShuffleEquiv
           ((d.externalBlockLayout hVac anchor).interactionBlock S P).card)
         S.card := by
   classical
-  let f : (externalComponentPartition d.vertexGraph).parts → ℕ :=
-    fun P => (interactionSector
-      (((d.vacuumFreeComponentsEquivExternalBlocks hVac).symm P).1 :
-        Finset (ExternalInsertionVertex E S))).card
+  let e := d.vacuumFreeComponentsEquivExternalBlocks hVac
+  let f : d.vertexGraph.componentPartition.parts → ℕ :=
+    fun C => (interactionSector
+      (C : Finset (ExternalInsertionVertex E S))).card
   let g : (externalComponentPartition d.vertexGraph).parts → ℕ :=
     fun P => ((d.externalBlockLayout hVac anchor).interactionBlock S P).card
-  have hfg : f = g := by
+  have hfg : (fun P => f (e.symm P)) = g := by
     funext P
     exact (congrArg Finset.card
       (d.externalBlockLayout_interactionBlock hVac anchor P)).symm
-  exact (d.vacuumFreeExternalBlockInteractionShuffleEquiv hVac).trans
+  exact (FamilySlotShuffleTo.reindexEquiv (total := S.card) e.symm f).trans
     (Equiv.cast (congrArg (fun s => FamilySlotShuffleTo s S.card) hfg))
 
 /-- Reindexing component shuffles by the *actual physical* external
