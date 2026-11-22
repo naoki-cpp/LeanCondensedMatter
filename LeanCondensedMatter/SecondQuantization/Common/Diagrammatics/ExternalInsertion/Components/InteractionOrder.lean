@@ -106,6 +106,79 @@ theorem ExternalInsertionDiagram.assembleInteractionOrder_symm_apply
   rw [hambient]
   simpa [ExternalInsertionDiagram.assembleInteractionOrder] using h
 
+/-- The canonical interleaving of the actual component interaction
+fibers is the shuffle extracted from the canonical increasing ambient
+vertex order. It retains components without interaction vertices. -/
+noncomputable def ExternalInsertionDiagram.canonicalComponentInteractionShuffle
+    {S : Finset (Fin N)}
+    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S) :
+    d.ComponentInteractionOrderShuffle := by
+  classical
+  exact ((familyOrderDecompositionEquivOfSize
+    (fun B : d.vertexGraph.componentPartition.parts =>
+      ↥(interactionSector (B : Finset (ExternalInsertionVertex E S))))
+    (fun B : d.vertexGraph.componentPartition.parts =>
+      (interactionSector (B : Finset (ExternalInsertionVertex E S))).card)
+    (fun _ => rfl)
+    (interactionSectorComponentEquiv d.vertexGraph))
+    ((S.orderIsoOfFin rfl).toEquiv)).2
+
+/-- An arbitrary component shuffle with canonical increasing local
+vertex orders is exactly a relabeling of the canonical global vertex
+order. The relabeling changes only the interleaving, not the ordered
+slots inside a connected component; no individual Dyson integral
+invariance is asserted. -/
+theorem ExternalInsertionDiagram.assembleInteractionOrder_eq_canonicalRelabel
+    {S : Finset (Fin N)}
+    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
+    (ρ : d.ComponentInteractionOrderShuffle) :
+    d.assembleInteractionOrder d.canonicalComponentInteractionOrders ρ =
+      (d.canonicalComponentInteractionShuffle.ambientRelabel ρ).symm.trans
+        (S.orderIsoOfFin rfl).toEquiv := by
+  classical
+  let family : d.vertexGraph.componentPartition.parts → Type :=
+    fun B => ↥(interactionSector (B : Finset (ExternalInsertionVertex E S)))
+  let size : d.vertexGraph.componentPartition.parts → ℕ :=
+    fun B => (interactionSector (B : Finset (ExternalInsertionVertex E S))).card
+  let ambient := interactionSectorComponentEquiv d.vertexGraph
+  let order : QuarticVertexOrder S := (S.orderIsoOfFin rfl).toEquiv
+  let e := familyOrderDecompositionEquivOfSize family size
+    (fun _ => rfl) ambient
+  have hmono (B : d.vertexGraph.componentPartition.parts) :
+      StrictMono (fun j : Fin (size B) =>
+        order.symm (ambient.symm ⟨B, d.canonicalComponentInteractionOrders B j⟩)) := by
+    intro a b hab
+    apply (S.orderIsoOfFin rfl).symm.strictMono
+    change (ambient.symm ⟨B, d.canonicalComponentInteractionOrders B a⟩).1 <
+      (ambient.symm ⟨B, d.canonicalComponentInteractionOrders B b⟩).1
+    rw [interactionSectorComponentEquiv_symm_val,
+      interactionSectorComponentEquiv_symm_val]
+    exact ((interactionSector (B : Finset (ExternalInsertionVertex E S))).orderIsoOfFin
+      rfl).strictMono hab
+  have hlocal : (e order).1 = d.canonicalComponentInteractionOrders := by
+    change familyOrdersOfOrder family size (fun _ => rfl) ambient order =
+      d.canonicalComponentInteractionOrders
+    exact familyOrdersOfOrder_eq_of_strictMono family size (fun _ => rfl)
+      ambient order d.canonicalComponentInteractionOrders hmono
+  have hbase :
+      d.assembleInteractionOrder d.canonicalComponentInteractionOrders
+        d.canonicalComponentInteractionShuffle = order := by
+    have h := e.symm_apply_apply order
+    change assembleFamilyOrderOfSize family size ambient (e order).1
+      (e order).2 = order at h
+    change assembleFamilyOrderOfSize family size ambient
+      d.canonicalComponentInteractionOrders (e order).2 = order
+    rw [← hlocal]
+    exact h
+  have hrelab := assembleFamilyOrderOfSize_ambientRelabel family size ambient
+    d.canonicalComponentInteractionOrders
+    d.canonicalComponentInteractionShuffle ρ
+  change (assembleFamilyOrderOfSize family size ambient
+      d.canonicalComponentInteractionOrders ρ) =
+      (d.canonicalComponentInteractionShuffle.ambientRelabel ρ).symm.trans order
+  rw [← hbase]
+  exact hrelab.symm
+
 /-- A vacuum-free diagram's total interaction order is the sum of the local
 interaction orders indexed by *external partition blocks*.
 
