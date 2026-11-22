@@ -841,7 +841,7 @@ theorem ExternalInsertionBlockLayout.ofFamilyShuffle_ownerOrderedDysonOrder
   apply Subtype.ext
   simp only [Equiv.trans_apply]
   change
-    (((S.orderIsoOfFin rfl).toEquiv
+    ((S.orderIsoOfFin rfl).toEquiv
       (((e σ).ambientRelabel (e τ)).symm v)).1 =
       (σ.ambientRelabel τ).symm
         (((S.orderIsoOfFin rfl).toEquiv v).1)
