@@ -209,13 +209,8 @@ theorem continuumBornUpperBandDampingEnergy_pos
   have hfermi : 0 < fermiEnergy := lt_of_le_of_lt (abs_nonneg m) hmF
   have hhbarSq : 0 < hbar ^ 2 := sq_pos_of_ne_zero hhbar
   have hvelocitySq : 0 < v ^ 2 := sq_pos_of_ne_zero hvelocity
-  have hden : 0 < 4 * hbar ^ 2 * v ^ 2 := by positivity
-  have hmassTerm : 0 < fermiEnergy + m ^ 2 / fermiEnergy := by
-    have hratio : 0 ≤ m ^ 2 / fermiEnergy :=
-      div_nonneg (sq_nonneg m) hfermi.le
-    linarith
   unfold continuumBornUpperBandDampingEnergy
-  exact mul_pos (div_pos hdisorder hden) hmassTerm
+  positivity
 
 /-- At fixed finite cutoff beyond the upper-band Fermi circle, the projected retarded Born
 self-energy has the metallic zero-broadening imaginary limit before simplifying the continuum
