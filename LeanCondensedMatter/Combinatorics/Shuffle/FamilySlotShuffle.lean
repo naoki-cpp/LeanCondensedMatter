@@ -237,10 +237,22 @@ noncomputable def FamilySlotShuffleTo.reindexEquiv
     { slotEquiv :=
         (e.sigmaCongrLeft (β := fun j => Fin (size j))).symm.trans τ.slotEquiv
       strictMono := by
-        intro j a b hab
+        intro j
         obtain ⟨i, rfl⟩ := e.surjective j
-        simpa [Equiv.sigmaCongrLeft, Equiv.trans_apply] using
-          τ.strictMono i hab }
+        intro a b hab
+        let localEquiv : (Σ k : ι, Fin (size (e k))) ≃
+            (Σ k : κ, Fin (size k)) :=
+          e.sigmaCongrLeft (β := fun k => Fin (size k))
+        have ha : localEquiv.symm ⟨e i, a⟩ = ⟨i, a⟩ := by
+          apply localEquiv.injective
+          simp [localEquiv]
+        have hb : localEquiv.symm ⟨e i, b⟩ = ⟨i, b⟩ := by
+          apply localEquiv.injective
+          simp [localEquiv]
+        change τ.slotEquiv (localEquiv.symm ⟨e i, a⟩) <
+          τ.slotEquiv (localEquiv.symm ⟨e i, b⟩)
+        rw [ha, hb]
+        exact τ.strictMono i hab }
   left_inv σ := by
     apply FamilySlotShuffleTo.ext
     apply Equiv.ext
