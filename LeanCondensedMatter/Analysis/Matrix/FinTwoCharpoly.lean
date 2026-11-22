@@ -17,8 +17,10 @@ This specializes to useful finite-order relations for determinant-one matrices.
 
 namespace Matrix
 
-/-- A real `2 × 2` matrix with determinant one and trace zero has fourth power one. -/
-theorem pow_four_eq_one_of_trace_zero_det_one (M : Matrix (Fin 2) (Fin 2) ℝ)
+variable {R : Type*} [CommRing R] [Nontrivial R]
+
+/-- A `2 × 2` matrix over a nontrivial commutative ring with determinant one and trace zero has fourth power one. -/
+theorem pow_four_eq_one_of_trace_zero_det_one (M : Matrix (Fin 2) (Fin 2) R)
     (htrace : M.trace = 0) (hdet : M.det = 1) : M ^ 4 = 1 := by
   have hquad : M ^ 2 + 1 = 0 := by
     simpa [Matrix.charpoly_fin_two, htrace, hdet] using M.aeval_self_charpoly
@@ -27,8 +29,8 @@ theorem pow_four_eq_one_of_trace_zero_det_one (M : Matrix (Fin 2) (Fin 2) ℝ)
     _ = 1 := by rw [hquad]; simp
 
 
-/-- A determinant-one real `2 × 2` matrix with trace `-1` has cube one. -/
-theorem pow_three_eq_one_of_trace_neg_one_det_one (M : Matrix (Fin 2) (Fin 2) ℝ)
+/-- A determinant-one `2 × 2` matrix over a commutative ring with trace `-1` has cube one. -/
+theorem pow_three_eq_one_of_trace_neg_one_det_one (M : Matrix (Fin 2) (Fin 2) R)
     (htrace : M.trace = -1) (hdet : M.det = 1) : M ^ 3 = 1 := by
   have hquad : M ^ 2 + M + 1 = 0 := by
     simpa [Matrix.charpoly_fin_two, htrace, hdet] using M.aeval_self_charpoly
@@ -37,7 +39,7 @@ theorem pow_three_eq_one_of_trace_neg_one_det_one (M : Matrix (Fin 2) (Fin 2) �
     _ = 1 := by rw [hquad]; simp
 
 /-- A determinant-one real `2 × 2` matrix with trace `1` has sixth power one. -/
-theorem pow_six_eq_one_of_trace_one_det_one (M : Matrix (Fin 2) (Fin 2) ℝ)
+theorem pow_six_eq_one_of_trace_one_det_one (M : Matrix (Fin 2) (Fin 2) R)
     (htrace : M.trace = 1) (hdet : M.det = 1) : M ^ 6 = 1 := by
   have hquad : M ^ 2 - M + 1 = 0 := by
     simpa [Matrix.charpoly_fin_two, htrace, hdet] using M.aeval_self_charpoly
@@ -51,9 +53,9 @@ theorem pow_six_eq_one_of_trace_one_det_one (M : Matrix (Fin 2) (Fin 2) ℝ)
     _ = 1 := by simp
 
 
-/-- The trace of a real orthogonal `2 × 2` matrix with determinant minus one is zero. -/
+/-- A `2 × 2` matrix satisfying `M * Mᵀ = 1` and `det M = -1` has trace zero. -/
 theorem trace_eq_zero_of_mul_transpose_eq_one_det_neg_one
-    (M : Matrix (Fin 2) (Fin 2) ℝ)
+    (M : Matrix (Fin 2) (Fin 2) R)
     (horth : M * Mᵀ = 1) (hdet : M.det = -1) : M.trace = 0 := by
   let a := M 0 0
   let b := M 0 1
@@ -71,9 +73,9 @@ theorem trace_eq_zero_of_mul_transpose_eq_one_det_neg_one
   change a + d = 0
   linear_combination -d * h00 + b * h01 + a * hd
 
-/-- An orientation-reversing real orthogonal `2 × 2` matrix is an involution. -/
+/-- A transpose-orthogonal `2 × 2` matrix with determinant `-1` is an involution. -/
 theorem sq_eq_one_of_mul_transpose_eq_one_det_neg_one
-    (M : Matrix (Fin 2) (Fin 2) ℝ)
+    (M : Matrix (Fin 2) (Fin 2) R)
     (horth : M * Mᵀ = 1) (hdet : M.det = -1) : M ^ 2 = 1 := by
   have htrace := M.trace_eq_zero_of_mul_transpose_eq_one_det_neg_one horth hdet
   simpa [Matrix.charpoly_fin_two, htrace, hdet, add_neg_eq_zero] using
