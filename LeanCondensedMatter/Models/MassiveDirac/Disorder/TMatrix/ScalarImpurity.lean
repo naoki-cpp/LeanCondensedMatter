@@ -51,8 +51,8 @@ noncomputable def ScalarImpurityParameters.inverseShiftMatrix
 noncomputable def ScalarImpurityParameters.tMatrix
     (params : ScalarImpurityParameters) (greenLoop : Matrix2)
     (hinvertible : IsUnit (params.shiftMatrix greenLoop)) : Matrix2 :=
-  (((params.impurityStrength : ℝ) : ℂ)) •
-    params.inverseShiftMatrix greenLoop hinvertible
+  QuantumTheory.Transport.scalarImpurityTMatrix
+    ((params.impurityStrength : ℝ) : ℂ) greenLoop hinvertible
 
 /-- T-matrix self-energy `Σ_T = n_imp T`, with density and single-impurity strength kept distinct. -/
 noncomputable def ScalarImpurityParameters.selfEnergy
@@ -89,29 +89,16 @@ theorem ScalarImpurityParameters.norm_matrixOperator_tMatrix_sub_bare_le
       matrixOperator (params.tMatrix greenLoop hinvertible) =
         (((params.impurityStrength : ℝ) : ℂ)) •
           matrixOperator (params.inverseShiftMatrix greenLoop hinvertible) := by
-    unfold ScalarImpurityParameters.tMatrix matrixOperator
+    unfold ScalarImpurityParameters.tMatrix QuantumTheory.Transport.scalarImpurityTMatrix
+      ScalarImpurityParameters.inverseShiftMatrix matrixOperator
     rw [map_smul]
-  have hunit : IsUnit (1 - (((params.impurityStrength : ℝ) : ℂ)) • greenLoop) := by
-    simpa only [ScalarImpurityParameters.shiftMatrix] using hinvertible
-  have hrem := QuantumTheory.Transport.scalarImpurityTMatrix_sub_bare
-    ((params.impurityStrength : ℝ) : ℂ) greenLoop hunit
-  have hunitEq : hunit.unit = hinvertible.unit := by
-    apply Units.ext
-    calc
-      (hunit.unit : Matrix2) =
-          1 - (((params.impurityStrength : ℝ) : ℂ)) • greenLoop :=
-        hunit.unit_spec.symm
-      _ = params.shiftMatrix greenLoop := rfl
-      _ = (hinvertible.unit : Matrix2) := hinvertible.unit_spec
-  simp only [QuantumTheory.Transport.scalarImpurityTMatrix] at hrem
-  rw [hunitEq] at hrem
   have hrewrite :
       params.tMatrix greenLoop hinvertible -
           (((params.impurityStrength : ℝ) : ℂ)) • (1 : Matrix2) =
         (((params.impurityStrength : ℝ) : ℂ)) •
-          (greenLoop * params.tMatrix greenLoop hinvertible) := by
-    simpa only [ScalarImpurityParameters.tMatrix,
-      ScalarImpurityParameters.inverseShiftMatrix] using hrem
+          (greenLoop * params.tMatrix greenLoop hinvertible) :=
+    QuantumTheory.Transport.scalarImpurityTMatrix_sub_bare
+      ((params.impurityStrength : ℝ) : ℂ) greenLoop hinvertible
   rw [hrewrite]
   simp only [matrixOperator, map_smul, map_mul]
   rw [norm_smul]
