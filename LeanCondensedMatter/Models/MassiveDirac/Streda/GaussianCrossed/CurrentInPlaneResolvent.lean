@@ -671,6 +671,76 @@ theorem tendsto_finiteCutoffContinuumBornDysonGaussianCrossedK2_offShell_width_i
   change Tendsto tail l (nhds 0)
   exact (tendsto_zero_iff_norm_tendsto_zero).2 hnorm
 
+
+/-- The off-shell part of the *dressed physical K2 crossed current* has
+zero width-normalized limit whenever the actual ladder factor approaches
+a finite value. This keeps the original Fourier measure and v² factor.
+The needed finite-ladder limit is stated explicitly rather than silently
+inferred from the spectral width limit. -/
+theorem tendsto_finiteCutoffContinuumBornDysonGaussianCrossedK2_offShell_dressedCurrent_zero
+    {ι : Type*} {l : Filter ι}
+    (v m probeEnergy hbar pMax radius a b δ : ℝ)
+    (broadening disorderStrength : ι → ℝ) (factorLimit : ℂ)
+    (ha : 0 ≤ a) (hab : a ≤ b) (hb : b ≤ pMax)
+    (hδ : 0 < δ)
+    (hwidth : Tendsto
+      (fun t =>
+        (finiteCutoffContinuumBornDysonDenominator
+          .retarded v m 0 0 probeEnergy (broadening t) (disorderStrength t)
+          hbar pMax).im)
+      l (nhds 0))
+    (hsep : ∀ᶠ t in l, ∀ p ∈ Set.Icc a b,
+      δ ≤ |(finiteCutoffContinuumBornDysonDenominator
+        .retarded v m 0 0 probeEnergy (broadening t) (disorderStrength t)
+        hbar pMax).re - v ^ 2 * p ^ 2|)
+    (hfactor : Tendsto
+      (fun t => finiteCutoffContinuumBornDysonGaussianCrossedCurrentFactor
+        v m probeEnergy (broadening t) (disorderStrength t) hbar pMax)
+      l (nhds factorLimit)) :
+    Tendsto
+      (fun t =>
+        let factor := finiteCutoffContinuumBornDysonGaussianCrossedCurrentFactor
+          v m probeEnergy (broadening t) (disorderStrength t) hbar pMax
+        let D0 := finiteCutoffContinuumBornDysonDenominator
+          .retarded v m 0 0 probeEnergy (broadening t) (disorderStrength t)
+          hbar pMax
+        ((D0.im : ℂ) *
+            (2 * (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) * (v : ℂ) ^ 2 * factor)) *
+          ∫ p in a..b,
+            (p : ℂ) ^ 3 *
+              polarFourierSecondCosineAngularKernel (p * radius / hbar) *
+              (((D0.re - v ^ 2 * p ^ 2) ^ 2 + D0.im ^ 2 : ℝ) : ℂ)⁻¹)
+      l (nhds 0) := by
+  let D0 : ι → ℂ := fun t =>
+    finiteCutoffContinuumBornDysonDenominator
+      .retarded v m 0 0 probeEnergy (broadening t) (disorderStrength t)
+      hbar pMax
+  let tail : ι → ℂ := fun t =>
+    ((D0 t).im : ℂ) *
+      ∫ p in a..b,
+        (p : ℂ) ^ 3 *
+          polarFourierSecondCosineAngularKernel (p * radius / hbar) *
+          ((((D0 t).re - v ^ 2 * p ^ 2) ^ 2 + (D0 t).im ^ 2 : ℝ) : ℂ)⁻¹
+  let dressed : ι → ℂ := fun t =>
+    (2 * (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) * (v : ℂ) ^ 2) *
+      finiteCutoffContinuumBornDysonGaussianCrossedCurrentFactor
+        v m probeEnergy (broadening t) (disorderStrength t) hbar pMax
+  have htail :
+      Tendsto tail l (nhds 0) := by
+    exact tendsto_finiteCutoffContinuumBornDysonGaussianCrossedK2_offShell_width_integral_zero
+      v m probeEnergy hbar pMax radius a b δ broadening disorderStrength
+      ha hab hb hδ hwidth hsep
+  have hdressed : Tendsto dressed l
+      (nhds ((2 * (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
+        (v : ℂ) ^ 2) * factorLimit)) :=
+    tendsto_const_nhds.mul hfactor
+  have hresult : Tendsto (fun t => dressed t * tail t) l (nhds 0) := by
+    simpa using hdressed.mul htail
+  apply hresult.congr'
+  exact Filter.Eventually.of_forall fun t => by
+    dsimp [tail, dressed, D0]
+    ring
+
 end
 
 end QuantumTheory.Models.MassiveDirac
