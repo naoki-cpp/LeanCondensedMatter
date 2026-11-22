@@ -184,5 +184,51 @@ theorem ExternalInsertionBlockLayout.assembleConnectedBlocks_signedDysonShuffleO
   rw [← hsign, hpart] at horbit
   exact horbit
 
+open Classical in
+/-- The complete physical interaction-owner shuffle orbit of a
+vacuum-free diagram is exactly its true graph-component interaction
+shuffle orbit. The two sides range over the same ordered-simplex
+integrals by an explicit finite equivalence of shuffle indices.
+
+No equality of individually re-labeled *canonical* Dyson integrals or
+factorial/symmetry assumption is used. -/
+theorem ExternalInsertionWickDiagram.sum_physicalOwnerShuffle_orderedDysonAmplitude_eq_componentOrbit
+    {E n : ℕ} (d : ExternalInsertionWickDiagram Mode E n)
+    (hVac : HasNoVacuumComponent d.vertexGraph)
+    (anchor : Fin (2 * E))
+    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
+    (externalTime : Fin (2 * E) → ℝ) :
+    (∑ τ : FamilySlotShuffleTo
+        (fun B : (d.externalBlockLayout hVac anchor).partition.parts =>
+          ((d.externalBlockLayout hVac anchor).interactionBlock
+            (Finset.univ : Finset (Fin n)) B).card)
+        (Finset.univ : Finset (Fin n)).card,
+      d.orderedDysonAmplitude ε β g externalTime
+        (((d.externalBlockLayout hVac anchor).interactionAssignmentShuffle.ambientRelabel
+          τ).symm.trans
+            ((Finset.univ : Finset (Fin n)).orderIsoOfFin rfl).toEquiv)) =
+      (∑ ρ : d.ComponentInteractionOrderShuffle,
+        d.orderedDysonAmplitude ε β g externalTime
+          (d.assembleInteractionOrder d.canonicalComponentInteractionOrders ρ)) := by
+  classical
+  let e := d.physicalBlockInteractionShuffleEquiv hVac anchor
+  let w : FamilySlotShuffleTo
+      (fun B : (d.externalBlockLayout hVac anchor).partition.parts =>
+        ((d.externalBlockLayout hVac anchor).interactionBlock
+          (Finset.univ : Finset (Fin n)) B).card)
+      (Finset.univ : Finset (Fin n)).card → ℂ :=
+    fun τ => d.orderedDysonAmplitude ε β g externalTime
+      (((d.externalBlockLayout hVac anchor).interactionAssignmentShuffle.ambientRelabel
+        τ).symm.trans ((Finset.univ : Finset (Fin n)).orderIsoOfFin rfl).toEquiv)
+  change (∑ τ, w τ) = _
+  calc
+    _ = ∑ ρ : d.ComponentInteractionOrderShuffle, w (e ρ) :=
+      Equiv.sum_comp e w
+    _ = _ := by
+      apply Finset.sum_congr rfl
+      intro ρ _
+      exact congrArg (d.orderedDysonAmplitude ε β g externalTime)
+        (d.assembleInteractionOrder_eq_physicalOwnerRelabel hVac anchor ρ).symm
+
 end Fermionic
 end SecondQuantization
