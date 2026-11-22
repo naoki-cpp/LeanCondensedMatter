@@ -746,6 +746,7 @@ theorem ExternalInsertionBlockLayout.ofFamilyShuffle_ownerShuffleEquiv_reference
       (f := fun j : Fin S.card => Fin.cast ht.symm j)
       (fun _ => Finset.mem_univ _)
       ((Fin.castOrderIso ht.symm).strictMono)
+    change (S.orderIsoOfFin rfl v).1 = Fin.cast ht.symm v
     simpa only [Finset.coe_orderIsoOfFin_apply] using (congrFun huniq v).symm
   apply Combinatorics.FamilySlotShuffleTo.eq_of_same_owner
   intro v
@@ -754,9 +755,10 @@ theorem ExternalInsertionBlockLayout.ofFamilyShuffle_ownerShuffleEquiv_reference
   calc
     ((e σ).slotEquiv.symm v).1 =
         (σ.slotEquiv.symm (Fin.cast ht.symm v)).1 := howner v
-    _ = layout.interactionOwner (Fin.cast ht.symm v) := rfl
     _ = (layout.interactionAssignmentShuffle.slotEquiv.symm v).1 := by
-      rw [← hcanon]
+      rw [hcanon] at hphysical
+      change (layout.interactionAssignmentShuffle.slotEquiv.symm v).1 =
+        (σ.slotEquiv.symm (Fin.cast ht.symm v)).1 at hphysical
       exact hphysical.symm
 
 /-- All physical owner-shuffle relabelings transport to the actual
@@ -769,8 +771,8 @@ theorem ExternalInsertionBlockLayout.ofFamilyShuffle_ownerShuffleEquiv_ambientRe
     (σ τ : Combinatorics.FamilySlotShuffleTo size N) :
     let e := ExternalInsertionBlockLayout.ofFamilyShuffle_ownerShuffleEquiv π heven σ
     ((e σ).ambientRelabel (e τ)) =
-      (Fin.castOrderIso (by simp : N = (Finset.univ : Finset (Fin N)).card)).symm.toEquiv.trans
-        (σ.ambientRelabel τ).trans
+      ((Fin.castOrderIso (by simp : N = (Finset.univ : Finset (Fin N)).card)).symm.toEquiv.trans
+        (σ.ambientRelabel τ)).trans
           (Fin.castOrderIso (by simp : N =
             (Finset.univ : Finset (Fin N)).card)).toEquiv := by
   classical
@@ -790,8 +792,8 @@ theorem ExternalInsertionBlockLayout.ofFamilyShuffle_ownerShuffleEquiv_ambientRe
   calc
     _ = ((Combinatorics.FamilySlotShuffleTo.castTotalEquiv ht (castSize σ)).ambientRelabel
         (Combinatorics.FamilySlotShuffleTo.castTotalEquiv ht (castSize τ))) := rfl
-    _ = (Fin.castOrderIso ht).symm.toEquiv.trans
-        ((castSize σ).ambientRelabel (castSize τ)).trans
+    _ = ((Fin.castOrderIso ht).symm.toEquiv.trans
+        ((castSize σ).ambientRelabel (castSize τ))).trans
           (Fin.castOrderIso ht).toEquiv :=
       Combinatorics.FamilySlotShuffleTo.castTotalEquiv_ambientRelabel
         ht (castSize σ) (castSize τ)
@@ -825,12 +827,17 @@ theorem ExternalInsertionBlockLayout.ofFamilyShuffle_ownerOrderedDysonOrder
       (f := fun j : Fin S.card => Fin.cast ht.symm j)
       (fun _ => Finset.mem_univ _)
       ((Fin.castOrderIso ht.symm).strictMono)
+    change (S.orderIsoOfFin rfl v).1 = Fin.cast ht.symm v
     simpa only [Finset.coe_orderIsoOfFin_apply] using (congrFun huniq v).symm
   have hreference :=
     ExternalInsertionBlockLayout.ofFamilyShuffle_ownerShuffleEquiv_reference π heven σ
   have hperm :=
     ExternalInsertionBlockLayout.ofFamilyShuffle_ownerShuffleEquiv_ambientRelabel
       π heven σ τ
+  change
+    (((ExternalInsertionBlockLayout.ofFamilyShuffle π heven σ).interactionAssignmentShuffle
+      .ambientRelabel (e τ)).symm.trans
+        ((Finset.univ : Finset (Fin N)).orderIsoOfFin rfl).toEquiv) = _
   rw [← hreference]
   apply Equiv.ext
   intro v
