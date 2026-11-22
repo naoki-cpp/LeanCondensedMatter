@@ -115,8 +115,11 @@ theorem tendsto_inPlaneLadderAction
       (nhds (inPlaneLadderAction rung₀ coefficients₀)) := by
   have haction : Continuous
       (fun p : InPlaneCoefficientVector × InPlaneCoefficientVector =>
-        inPlaneLadderAction p.1 p.2) :=
+        (inPlaneRotationMatrix p.1).mulVec p.2) :=
     (continuous_inPlaneRotationMatrix.comp continuous_fst).matrix_mulVec continuous_snd
+  change Tendsto
+    (fun a => (inPlaneRotationMatrix (rung a)).mulVec (coefficients a)) l
+    (nhds ((inPlaneRotationMatrix rung₀).mulVec coefficients₀))
   exact (haction.tendsto (rung₀, coefficients₀)).comp
     (hrung.prodMk_nhds hcoefficients)
 
@@ -173,16 +176,20 @@ endomorphism to be a unit on the represented in-plane coefficient space. -/
 theorem inPlaneLadderShift_isUnit
     (rung : InPlaneCoefficientVector) (hdet : inPlaneLadderDeterminant rung ≠ 0) :
     IsUnit (1 - inPlaneLadderCLM rung) := by
-  have hinjective : Function.Injective (1 - inPlaneLadderCLM rung) := by
+  let shift : InPlaneCoefficientVector →L[ℂ] InPlaneCoefficientVector :=
+    1 - inPlaneLadderCLM rung
+  have hinjective : Function.Injective shift := by
     have hmatrix : Function.Injective (inPlaneShiftMatrix rung).mulVec :=
       Matrix.mulVec_injective_of_det_ne_zero (by simpa using hdet)
     intro left right h
     apply hmatrix
-    simpa only [inPlaneShiftMatrix_mulVec, sub_apply, one_apply_eq_self,
+    simpa only [shift, inPlaneShiftMatrix_mulVec, sub_apply, one_apply_eq_self,
       inPlaneLadderCLM_apply] using h
-  exact ContinuousLinearMap.isUnit_iff_bijective.mpr
-    ⟨hinjective, LinearMap.surjective_of_injective
-      (f := (1 - inPlaneLadderCLM rung).toLinearMap) hinjective⟩
+  have hunit : IsUnit shift :=
+    ContinuousLinearMap.isUnit_iff_bijective.mpr
+      ⟨hinjective, LinearMap.surjective_of_injective
+        (f := shift.toLinearMap) hinjective⟩
+  simpa only [shift] using hunit
 
 /-- Convergence of rung vectors propagates to the shifted-ladder determinant. -/
 theorem tendsto_inPlaneLadderDeterminant
