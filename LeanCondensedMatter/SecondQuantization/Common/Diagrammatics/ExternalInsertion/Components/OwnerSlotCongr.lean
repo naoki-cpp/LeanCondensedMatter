@@ -131,6 +131,58 @@ theorem ExternalInsertionBlockLayout.fixedPartitionSizeShuffleEquiv_symm_layout
       ExternalInsertionBlockLayout.ofFamilyShuffle π heven σ := by
   rfl
 
+/-- The actual physical fixed-external-partition Wick-diagram fiber,
+restricted to one realized interaction-size vector, is in exact
+bijection with a physical owner shuffle and a connected family on its
+assigned interaction blocks. This is a restriction of the existing
+physical size/shuffle equivalence, not a second enumeration. -/
+noncomputable def ExternalInsertionBlockLayout.fixedPartitionPhysicalFixedSizeEquiv
+    {ExternalLabel InternalLabel : Type*}
+    (anchor : Fin (2 * E))
+    (π : Finpartition (Finset.univ : Finset (Fin (2 * E))))
+    (heven : ∀ B : π.parts, Even (B : Finset (Fin (2 * E))).card)
+    (size : π.parts → ℕ) :
+    {d : {d : {d : ExternalInsertionDiagram ExternalLabel InternalLabel E N
+        (Finset.univ : Finset (Fin N)) //
+        HasNoVacuumComponent d.vertexGraph} //
+        externalComponentPartition d.1.vertexGraph = π} //
+      ((ExternalInsertionBlockLayout.fixedPartitionPhysicalSizeShuffleEquiv
+        (E := E) (N := N) (ExternalLabel := ExternalLabel)
+        (InternalLabel := InternalLabel) anchor π heven) d.1).1.1 = size} ≃
+      Σ τ : Combinatorics.FamilySlotShuffleTo size N,
+        (ExternalInsertionBlockLayout.ofFamilyShuffle π heven τ).ConnectedBlockFamily
+          (ExternalLabel := ExternalLabel) (InternalLabel := InternalLabel) := by
+  classical
+  let e := ExternalInsertionBlockLayout.fixedPartitionPhysicalSizeShuffleEquiv
+    (E := E) (N := N) (ExternalLabel := ExternalLabel)
+    (InternalLabel := InternalLabel) anchor π heven
+  let slice :
+      {p : (Σ data : (Σ s : π.parts → ℕ,
+          Combinatorics.FamilySlotShuffleTo s N),
+          (((ExternalInsertionBlockLayout.fixedPartitionSizeShuffleEquiv
+              (E := E) (N := N) π heven).symm data).1).ConnectedBlockFamily
+            (ExternalLabel := ExternalLabel) (InternalLabel := InternalLabel)) //
+        p.1.1 = size} ≃
+        Σ τ : Combinatorics.FamilySlotShuffleTo size N,
+          (ExternalInsertionBlockLayout.ofFamilyShuffle π heven τ).ConnectedBlockFamily
+            (ExternalLabel := ExternalLabel) (InternalLabel := InternalLabel) where
+    toFun := by
+      rintro ⟨⟨⟨s, τ⟩, F⟩, hs⟩
+      subst s
+      exact ⟨τ, F⟩
+    invFun := by
+      rintro ⟨τ, F⟩
+      exact ⟨⟨⟨size, τ⟩, F⟩, rfl⟩
+    left_inv := by
+      rintro ⟨⟨⟨s, τ⟩, F⟩, hs⟩
+      cases hs
+      rfl
+    right_inv := by
+      rintro ⟨τ, F⟩
+      rfl
+  exact (Equiv.subtypeEquiv e (q := fun p => p.1.1 = size)
+    (fun _ => Iff.rfl)).trans slice
+
 /-- Switching a fixed-size physical owner shuffle is exactly
 transporting the interaction owner function by the ambient permutation.
 The external source partition remains literally the same. -/
