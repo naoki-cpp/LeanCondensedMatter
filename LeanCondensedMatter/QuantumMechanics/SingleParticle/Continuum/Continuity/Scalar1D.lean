@@ -155,13 +155,6 @@ theorem oneDimensional_schrodinger_continuity
   exact probability_continuity_balance_of_schrodinger
     ℏ κ potential (ψSpace x) ψt ψxx hℏ hschrodinger
 
-/-- Probability-current balance immediately implies charge-current balance. -/
-theorem charge_continuity_balance_of_probability
-    (q densityTimeDerivative currentDivergence : ℝ)
-    (hcontinuity : densityTimeDerivative + currentDivergence = 0) :
-    q * densityTimeDerivative + q * currentDivergence = 0 := by
-  rw [← mul_add, hcontinuity, mul_zero]
-
 end
 end Continuum
 end SingleParticle

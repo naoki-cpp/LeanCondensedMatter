@@ -261,12 +261,10 @@ theorem oneDimensional_electromagnetic_charge_continuity
           q ℏ mass (vectorPotential x) vectorPotentialDerivative
           (ψSpace x) (ψx x) ψxx) x := by
     simpa [electromagneticChargeCurrentValue1D] using hcurrent.const_mul q
-  rw [hchargeDensity.deriv, hchargeCurrent.deriv]
-  apply charge_continuity_balance_of_probability
-  rw [hsame]
-  exact electromagnetic_probability_continuity_balance_of_schrodinger
+  rw [hchargeDensity.deriv, hchargeCurrent.deriv, hsame, ← mul_add]
+  rw [electromagnetic_probability_continuity_balance_of_schrodinger
     q ℏ mass (vectorPotential x) vectorPotentialDerivative scalarPotential
-    (ψSpace x) ψt (ψx x) ψxx hℏ hmass hschrodinger
+    (ψSpace x) ψt (ψx x) ψxx hℏ hmass hschrodinger, mul_zero]
 
 end
 end Continuum
