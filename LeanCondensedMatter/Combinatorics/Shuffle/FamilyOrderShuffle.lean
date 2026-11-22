@@ -315,6 +315,27 @@ noncomputable def familyOrderDecompositionEquiv {total : ℕ}
       FamilyOrders F × FamilySlotShuffleTo (fun i => Fintype.card (F i)) total :=
   familyOrderDecompositionEquivOfSize F (fun i => Fintype.card (F i)) (fun _ => rfl) ambientEquiv
 
+/-- The canonical increasing enumeration of the ambient positions owned
+by one family block is exactly its slot map in the order-preserving
+shuffle. This identifies the local order used by component Dyson
+integrals with the local order already contained in a physical owner
+shuffle, including zero-size blocks. -/
+theorem FamilySlotShuffleTo.orderEmbOfFin_ownerFiber
+    {ι : Type*} {size : ι → ℕ} {total : ℕ}
+    (σ : FamilySlotShuffleTo size total) (i : ι) :
+    let s := (Finset.univ : Finset (Fin total)).filter
+      (fun v => (σ.slotEquiv.symm v).1 = i)
+    ∀ (h : s.card = size i) (j : Fin (size i)),
+      ((s.orderEmbOfFin h) j : Fin total) = σ.slotEquiv ⟨i, j⟩ := by
+  classical
+  intro s h j
+  have hmem (k : Fin (size i)) : σ.slotEquiv ⟨i, k⟩ ∈ s := by
+    simp [s]
+  have hunique := Finset.orderEmbOfFin_unique
+    (s := s) (h := h) (f := fun k : Fin (size i) => σ.slotEquiv ⟨i, k⟩)
+    hmem (σ.strictMono i)
+  exact (congrFun hunique j).symm
+
 /-- An order-preserving family shuffle is uniquely determined by the
 ambient owner of each slot. Indeed, each block is necessarily enumerated
 in increasing ambient-slot order. Empty blocks cause no exception. -/
