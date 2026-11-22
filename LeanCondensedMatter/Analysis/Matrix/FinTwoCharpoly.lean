@@ -43,13 +43,13 @@ theorem pow_six_eq_one_of_trace_one_det_one (M : Matrix (Fin 2) (Fin 2) R)
     (htrace : M.trace = 1) (hdet : M.det = 1) : M ^ 6 = 1 := by
   have hquad : M ^ 2 - M + 1 = 0 := by
     simpa [Matrix.charpoly_fin_two, htrace, hdet] using M.aeval_self_charpoly
-  have hcube : M ^ 3 = -(1 : Matrix (Fin 2) (Fin 2) ℝ) := by
+  have hcube : M ^ 3 = -(1 : Matrix (Fin 2) (Fin 2) R) := by
     calc
       M ^ 3 = (M ^ 2 - M + 1) * (M + 1) - 1 := by noncomm_ring
       _ = -1 := by rw [hquad]; simp
   calc
     M ^ 6 = (M ^ 3) ^ 2 := by rw [show (6 : ℕ) = 3 * 2 by decide, pow_mul]
-    _ = (-1 : Matrix (Fin 2) (Fin 2) ℝ) ^ 2 := by rw [hcube]
+    _ = (-1 : Matrix (Fin 2) (Fin 2) R) ^ 2 := by rw [hcube]
     _ = 1 := by simp
 
 
@@ -62,10 +62,10 @@ theorem trace_eq_zero_of_mul_transpose_eq_one_det_neg_one
   let c := M 1 0
   let d := M 1 1
   have h00 : a * a + b * b = 1 := by
-    have h := congrArg (fun N : Matrix (Fin 2) (Fin 2) ℝ => N 0 0) horth
+    have h := congrArg (fun N : Matrix (Fin 2) (Fin 2) R => N 0 0) horth
     simpa [a, b, Matrix.mul_apply, Fin.sum_univ_two] using h
   have h01 : a * c + b * d = 0 := by
-    have h := congrArg (fun N : Matrix (Fin 2) (Fin 2) ℝ => N 0 1) horth
+    have h := congrArg (fun N : Matrix (Fin 2) (Fin 2) R => N 0 1) horth
     simpa [a, b, c, d, Matrix.mul_apply, Fin.sum_univ_two] using h
   have hd : a * d - b * c = -1 := by
     simpa [a, b, c, d, Matrix.det_fin_two] using hdet
