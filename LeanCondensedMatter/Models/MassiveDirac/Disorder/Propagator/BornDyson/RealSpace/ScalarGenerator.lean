@@ -269,7 +269,20 @@ theorem finiteCutoffContinuumBornDysonRadialScalarGreenGenerator_tracelessHessia
           intro p _
           exact hpoint p
     _ = _ := by
-      rw [intervalIntegral.integral_const_mul]
+      have hconst :
+          (∫ p in (0 : ℝ)..pMax,
+              -(radius : ℂ) * (p : ℂ) ^ 3 * k2 p * denInv p) =
+            -(radius : ℂ) *
+              ∫ p in (0 : ℝ)..pMax,
+                (p : ℂ) ^ 3 * k2 p * denInv p := by
+        calc
+          _ = ∫ p in (0 : ℝ)..pMax,
+              (-(radius : ℂ)) * ((p : ℂ) ^ 3 * k2 p * denInv p) := by
+                apply intervalIntegral.integral_congr
+                intro p _
+                ring
+          _ = _ := by rw [intervalIntegral.integral_const_mul]
+      rw [hconst]
       dsimp [measure, denInv, k2]
       ring
 
