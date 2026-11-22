@@ -44,15 +44,12 @@ theorem polarFourierFirstCosineAngularKernel_eq_besselJ (z : ℝ) :
   rw [hfun] at hJ
   have hderiv := (polarFourierZerothAngularKernel_hasDerivAt z).unique hJ
   have hI : (-Complex.I) * Complex.I = (1 : ℂ) := by
-    calc
-      _ = -(Complex.I ^ 2) := by ring
-      _ = 1 := by rw [Complex.I_sq]; ring
+    rw [← neg_mul, ← pow_two, Complex.I_sq]
+    ring
   calc
     polarFourierFirstCosineAngularKernel z =
-        ((-Complex.I) * Complex.I) * polarFourierFirstCosineAngularKernel z := by
-      rw [hI, one_mul]
-    _ = (-Complex.I) * (Complex.I * polarFourierFirstCosineAngularKernel z) := by
-      ring
+        (-Complex.I) * (Complex.I * polarFourierFirstCosineAngularKernel z) := by
+      rw [← mul_assoc, hI, one_mul]
     _ = ((2 * Real.pi : ℝ) : ℂ) * Complex.I * Complex.besselJ 1 (z : ℂ) := by
       rw [hderiv]
       ring
@@ -101,12 +98,6 @@ theorem polarFourierFirstCosineAngularKernel_two_mul_eq_zeroth_sub_second (z : �
       (hccos.intervalIntegrable _ _)
       (hcvprime.intervalIntegrable _ _)
     simpa [sine, cosine] using h
-  have hcosInt : IntervalIntegrable (fun θ : ℝ => cosine θ * phase θ)
-      volume 0 (2 * Real.pi) :=
-    (hccos.mul hcphase).intervalIntegrable _ _
-  have hsinSqInt : IntervalIntegrable
-      (fun θ : ℝ => phase θ * sine θ ^ 2) volume 0 (2 * Real.pi) :=
-    (hcphase.mul (hcsin.pow 2)).intervalIntegrable _ _
   have hfirst :
       (∫ θ in (0 : ℝ)..(2 * Real.pi), cosine θ * phase θ) =
         (Complex.I * (z : ℂ)) *
@@ -118,7 +109,9 @@ theorem polarFourierFirstCosineAngularKernel_two_mul_eq_zeroth_sub_second (z : �
       apply intervalIntegral.integral_congr
       intro θ _
       ring
-    rw [intervalIntegral.integral_sub hcosInt (hsinSqInt.const_mul _),
+    rw [intervalIntegral.integral_sub
+      ((hccos.mul hcphase).intervalIntegrable _ _)
+      (((hcphase.mul (hcsin.pow 2)).intervalIntegrable _ _).const_mul _),
       intervalIntegral.integral_const_mul, sub_eq_zero] at h'
     exact h'
   have htrig (θ : ℝ) :
