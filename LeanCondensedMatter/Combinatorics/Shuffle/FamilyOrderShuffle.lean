@@ -209,7 +209,9 @@ private noncomputable def familyShuffleOfOrder {total : ℕ} (size : ι → ℕ)
   strictMono := familyOrdersOfOrder_strictMono F size hcard ambientEquiv order
 
 omit [Fintype ι] [Fintype α] in
-private theorem familyOrder_eq_of_strictMono {total : ℕ} (size : ι → ℕ)
+/-- Uniqueness of an increasing local fiber order under an ambient
+global vertex order. Reused directly by component-order decomposition. -/
+theorem familyOrder_eq_of_strictMono {total : ℕ} (size : ι → ℕ)
     (hcard : ∀ i, Fintype.card (F i) = size i)
     (ambientEquiv : α ≃ Σ i, F i)
     (order : Fin total ≃ α) (i : ι)
