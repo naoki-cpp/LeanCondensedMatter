@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.SelfEnergy
+import LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.SelfEnergy.DenominatorIntegral
 import LeanCondensedMatter.Models.MassiveDirac.Propagator.RadialFourier.LogIntegral
 import Mathlib.Analysis.SpecificLimits.Basic
 import Mathlib.Analysis.SpecialFunctions.Complex.Arg

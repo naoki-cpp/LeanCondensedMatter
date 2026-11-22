@@ -116,21 +116,6 @@ noncomputable def ExternalInsertionBlockLayout.ofFamilyShuffle
   evenBlocks := heven
   interactionOwner v := (σ.slotEquiv.symm v).1
 
-/-- The layout reconstructed by the *actual physical fixed-partition
-size/shuffle equivalence* is precisely the one obtained by directly
-assigning each interaction vertex to its shuffled owner. This connects
-owner transport to the domain of the genuine fixed-partition Dyson sum. -/
-@[simp]
-theorem ExternalInsertionBlockLayout.fixedPartitionSizeShuffleEquiv_symm_layout
-    (π : Finpartition (Finset.univ : Finset (Fin (2 * E))))
-    (heven : ∀ B : π.parts, Even (B : Finset (Fin (2 * E))).card)
-    {size : π.parts → ℕ}
-    (σ : Combinatorics.FamilySlotShuffleTo size N) :
-    ((ExternalInsertionBlockLayout.fixedPartitionSizeShuffleEquiv
-      (E := E) (N := N) π heven).symm ⟨size, σ⟩).1 =
-      ExternalInsertionBlockLayout.ofFamilyShuffle π heven σ := by
-  rfl
-
 /-- The actual physical fixed-external-partition Wick-diagram fiber,
 restricted to one realized interaction-size vector, is in exact
 bijection with a physical owner shuffle and a connected family on its
@@ -377,35 +362,6 @@ noncomputable def ExternalInsertionBlockLayout.ofFamilyShuffleFixedSizeStandardi
               (Finset.univ : Finset (Fin N)) B)
             (ExternalInsertionBlockLayout.ofFamilyShuffle_interactionBlock_card
               π heven σ B))))
-
-/-- The fixed-size standardized family maps the actual physical
-labelled Wick diagram on each owner fiber to its increasing-slot
-standardization, retaining the pairing and all labels. -/
-@[simp]
-theorem ExternalInsertionBlockLayout.ofFamilyShuffleFixedSizeStandardizedFamilyEquiv_apply
-    {ExternalLabel InternalLabel : Type*}
-    (π : Finpartition (Finset.univ : Finset (Fin (2 * E))))
-    (heven : ∀ B : π.parts, Even (B : Finset (Fin (2 * E))).card)
-    {size : π.parts → ℕ}
-    (σ : Combinatorics.FamilySlotShuffleTo size N)
-    (F : (ExternalInsertionBlockLayout.ofFamilyShuffle π heven σ).ConnectedBlockFamily
-      (ExternalLabel := ExternalLabel) (InternalLabel := InternalLabel))
-    (B : π.parts) :
-    ((ExternalInsertionBlockLayout.ofFamilyShuffleFixedSizeStandardizedFamilyEquiv
-      π heven σ F) B).1 =
-      (F.1 B).slotCongr
-        (Combinatorics.standardSlotEquivOfCardEq
-          ((ExternalInsertionBlockLayout.ofFamilyShuffle π heven σ).interactionBlock
-            (Finset.univ : Finset (Fin N)) B)
-          (ExternalInsertionBlockLayout.ofFamilyShuffle_interactionBlock_card
-            π heven σ B)) := by
-  classical
-  dsimp [ExternalInsertionBlockLayout.ofFamilyShuffleFixedSizeStandardizedFamilyEquiv,
-    ExternalInsertionBlockLayout.connectedBlockFamilyEquivPi,
-    Equiv.trans, Equiv.piCongrRight, Pi.map,
-    ExternalInsertionDiagram.preconnectedSlotCongrEquiv,
-    ExternalInsertionDiagram.slotCongrEquiv]
-  all_goals rfl
 
 /-- View an ambient permutation on the full Fin N slot set as a
 permutation of its corresponding full interaction slot subtype. -/

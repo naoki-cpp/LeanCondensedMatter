@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Analysis.ODE.RadialEnergyDecay
-import LeanCondensedMatter.Analysis.Fourier.PolarRadialKernels
+import LeanCondensedMatter.Analysis.Fourier.PolarRadialKernels.HigherHarmonics
 import Mathlib.Analysis.Calculus.Deriv.MeanValue
 
 set_option linter.style.header false
@@ -12,7 +12,7 @@ Fourier–Bessel kernels in Analysis: finite-interval Bessel-square integrals, t
 radial first-order system, an elementary Lyapunov decay bound, and the
 large-radius limit of the J₁²/r moment.
 
-The upstream `Analysis.Fourier.PolarRadialKernels` module owns the canonical angular
+The upstream `Analysis.Fourier.PolarRadialKernels.HigherHarmonics` module owns the canonical angular
 kernels and their differential/recurrence identities. This module does not alter
 any physical momentum normalization, propagator, disorder approximation,
 or regulator prescription. Its final theorem is a limit of finite interval
@@ -40,31 +40,13 @@ theorem integral_polarFourierHarmonicEnergy (a b : ℝ) :
         polarFourierFirstCosineAngularKernel b ^ 2) -
       (polarFourierZerothAngularKernel a ^ 2 -
         polarFourierFirstCosineAngularKernel a ^ 2) := by
-  have hc0 : Continuous polarFourierZerothAngularKernel :=
-    continuous_iff_continuousAt.mpr fun z =>
-      (polarFourierZerothAngularKernel_hasDerivAt z).continuousAt
-  have hc1 : Continuous polarFourierFirstCosineAngularKernel :=
-    continuous_iff_continuousAt.mpr fun z =>
-      (polarFourierFirstCosineAngularKernel_hasDerivAt z).continuousAt
-  have hJ2 : Continuous (fun z : ℝ => Complex.besselJ 2 (z : ℂ)) := by
-    have h : Continuous (Complex.besselJ (2 : ℂ)) := by
-      rw [continuous_iff_continuousAt]
-      intro w
-      simpa using (Complex.analyticAt_besselJ_int (2 : ℤ) w).continuousAt
-    exact h.comp Complex.continuous_ofReal
-  have hc2 : Continuous polarFourierSecondCosineAngularKernel := by
-    have hfun : polarFourierSecondCosineAngularKernel =
-        fun z : ℝ =>
-          -(((2 * Real.pi : ℝ) : ℂ) * Complex.besselJ 2 (z : ℂ)) := by
-      funext z
-      exact polarFourierSecondCosineAngularKernel_eq_besselJ z
-    rw [hfun]
-    exact (continuous_const.mul hJ2).neg
   have hint : IntervalIntegrable (fun z : ℝ =>
       Complex.I * polarFourierFirstCosineAngularKernel z *
         (polarFourierZerothAngularKernel z -
           polarFourierSecondCosineAngularKernel z)) volume a b :=
-    ((continuous_const.mul hc1).mul (hc0.sub hc2)).intervalIntegrable a b
+    ((continuous_const.mul continuous_polarFourierFirstCosineAngularKernel).mul
+      (continuous_polarFourierZerothAngularKernel.sub
+        continuous_polarFourierSecondCosineAngularKernel)).intervalIntegrable a b
   exact intervalIntegral.integral_eq_sub_of_hasDerivAt
     (fun z _ => polarFourierHarmonicEnergy_hasDerivAt z) hint
 
@@ -203,20 +185,6 @@ private theorem polarFourierBesselY_hasDerivAt (r : ℝ) (hr : r ≠ 0) :
       ContinuousLinearMap.compSL] using (hcoeff.symm.trans hs.symm)
 
 
-/-- The real scalar/vector channels of the exact radial Fourier kernel decay
-jointly, by the Lyapunov bound for their proved first-order radial system. -/
-private theorem polarFourierBesselEnergy_tendsto_zero :
-    Filter.Tendsto (fun r : ℝ =>
-      polarFourierBesselX r ^ 2 + polarFourierBesselY r ^ 2)
-      Filter.atTop (nhds 0) := by
-  apply RadialODE.energy_tendsto_zero_of_firstOrderSystem
-    polarFourierBesselX polarFourierBesselY
-  · intro r _
-    exact polarFourierBesselX_hasDerivAt r
-  · intro r hr
-    exact polarFourierBesselY_hasDerivAt r (by linarith)
-
-
 /-- The zeroth Fourier harmonic is real, and equals the real embedding of its
 radial Lyapunov-system coordinate. -/
 private theorem polarFourierZerothAngularKernel_eq_ofReal_re (r : ℝ) :
@@ -242,31 +210,6 @@ private theorem polarFourierFirstCosineAngularKernel_eq_I_ofReal_im (r : ℝ) :
   · simp [Complex.mul_re, hre]
   · simp [Complex.mul_im, polarFourierBesselY]
 
-/-- The squared Fourier harmonics have a vanishing limit at large positive
-radius. This is a consequence of the explicit radial ODE energy bound, not a
-postulated Bessel-function asymptotic. -/
-theorem polarFourierHarmonicEnergy_tendsto_zero :
-    Filter.Tendsto (fun r : ℝ =>
-      polarFourierZerothAngularKernel r ^ 2 -
-        polarFourierFirstCosineAngularKernel r ^ 2)
-      Filter.atTop (nhds (0 : ℂ)) := by
-  have hcast : Filter.Tendsto (fun r : ℝ =>
-      ((polarFourierBesselX r ^ 2 + polarFourierBesselY r ^ 2 : ℝ) : ℂ))
-      Filter.atTop (nhds (0 : ℂ)) := by
-    simpa only [Function.comp_def, Complex.ofReal_zero] using
-      (Complex.continuous_ofReal.tendsto 0).comp
-        polarFourierBesselEnergy_tendsto_zero
-  apply hcast.congr'
-  exact Filter.Eventually.of_forall fun r => by
-    change ((polarFourierBesselX r ^ 2 + polarFourierBesselY r ^ 2 : ℝ) : ℂ) =
-      polarFourierZerothAngularKernel r ^ 2 -
-        polarFourierFirstCosineAngularKernel r ^ 2
-    rw [polarFourierZerothAngularKernel_eq_ofReal_re,
-      polarFourierFirstCosineAngularKernel_eq_I_ofReal_im]
-    push_cast
-    rw [mul_pow, Complex.I_sq]
-    ring
-
 /-- The squared sum of the canonical integer-order Bessel functions decays
 at infinity, following from the proved Fourier--Bessel identities and
 the Lyapunov bound. -/
@@ -287,19 +230,40 @@ theorem besselJ_zero_sq_add_one_sq_tendsto_zero :
       c ^ 2 * (Complex.besselJ 0 (r : ℂ) ^ 2 +
         Complex.besselJ 1 (r : ℂ) ^ 2) := by
     simpa only [c] using polarFourierHarmonicEnergy_eq_besselJ r
-  have hscaled : Filter.Tendsto (fun r : ℝ =>
-      (c ^ 2)⁻¹ * (polarFourierZerothAngularKernel r ^ 2 -
-        polarFourierFirstCosineAngularKernel r ^ 2))
+  have henergy : Filter.Tendsto (fun r : ℝ =>
+      polarFourierBesselX r ^ 2 + polarFourierBesselY r ^ 2)
+      Filter.atTop (nhds 0) := by
+    apply RadialODE.energy_tendsto_zero_of_firstOrderSystem
+      polarFourierBesselX polarFourierBesselY
+    · intro r _
+      exact polarFourierBesselX_hasDerivAt r
+    · intro r hr
+      exact polarFourierBesselY_hasDerivAt r (by linarith)
+  have hcast : Filter.Tendsto (fun r : ℝ =>
+      ((polarFourierBesselX r ^ 2 + polarFourierBesselY r ^ 2 : ℝ) : ℂ))
       Filter.atTop (nhds (0 : ℂ)) := by
-    simpa only [mul_zero] using
-      (polarFourierHarmonicEnergy_tendsto_zero.const_mul (c ^ 2)⁻¹)
+    simpa only [Function.comp_def, Complex.ofReal_zero] using
+      (Complex.continuous_ofReal.tendsto 0).comp henergy
+  have hscaled : Filter.Tendsto (fun r : ℝ =>
+      (c ^ 2)⁻¹ *
+        ((polarFourierBesselX r ^ 2 + polarFourierBesselY r ^ 2 : ℝ) : ℂ))
+      Filter.atTop (nhds (0 : ℂ)) := by
+    simpa only [mul_zero] using hcast.const_mul (c ^ 2)⁻¹
   apply hscaled.congr'
   exact Filter.Eventually.of_forall fun r => by
     change (c ^ 2)⁻¹ *
-      (polarFourierZerothAngularKernel r ^ 2 -
-        polarFourierFirstCosineAngularKernel r ^ 2) =
+      ((polarFourierBesselX r ^ 2 + polarFourierBesselY r ^ 2 : ℝ) : ℂ) =
       Complex.besselJ 0 (r : ℂ) ^ 2 + Complex.besselJ 1 (r : ℂ) ^ 2
-    rw [hbridge r]
+    have hkernel :
+        ((polarFourierBesselX r ^ 2 + polarFourierBesselY r ^ 2 : ℝ) : ℂ) =
+          polarFourierZerothAngularKernel r ^ 2 -
+            polarFourierFirstCosineAngularKernel r ^ 2 := by
+      rw [polarFourierZerothAngularKernel_eq_ofReal_re,
+        polarFourierFirstCosineAngularKernel_eq_I_ofReal_im]
+      push_cast
+      rw [mul_pow, Complex.I_sq]
+      ring
+    rw [hkernel, hbridge r]
     field_simp [pow_ne_zero 2 hc]
 
 /-- The large-cutoff limit of the finite-interval first-order Bessel radial

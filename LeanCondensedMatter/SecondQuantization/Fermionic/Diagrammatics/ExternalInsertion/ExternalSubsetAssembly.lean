@@ -629,12 +629,10 @@ theorem ExternalInsertionBlockLayout.standardizedOwnerFamily_externalLabel_iff
   let F := e.symm Q
   have hQ (B : π.parts) :
       (Q B).1.externalLabel = (F.1 B).externalLabel := by
-    have h := ExternalInsertionBlockLayout.ofFamilyShuffleFixedSizeStandardizedFamilyEquiv_apply
-      π heven σ F B
-    have hEF : e F = Q := e.apply_symm_apply Q
-    rw [hEF] at h
-    simpa only [ExternalInsertionDiagram.slotCongr_externalLabel] using
-      congrArg (fun d => d.externalLabel) h
+    have h :=
+      congrArg (fun G => (G B).1.externalLabel) (e.apply_symm_apply Q)
+    change (F.1 B).externalLabel = (Q B).1.externalLabel at h
+    exact h.symm
   change (layout.assembleDiagram (Finset.univ : Finset (Fin n)) F.1).externalLabel =
       labels ↔ _
   rw [layout.assembleDiagram_externalLabel_eq_iff

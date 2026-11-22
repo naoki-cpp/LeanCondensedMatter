@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.BornDyson.Green
+import LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.BornDyson.Green.RadialPauli
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.ScalarCovariance
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.ScalarAngularWeights
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.SingleParticleRate
@@ -19,7 +19,7 @@ import LeanCondensedMatter.Models.MassiveDirac.Propagator.RadialFourier.Resolven
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.BornDyson.RealSpace.ScalarGrid
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.BornDyson.RealSpace.Green
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.Vertex.BornDyson.DressedCurrent
-import LeanCondensedMatter.Models.MassiveDirac.Disorder.TMatrix
+import LeanCondensedMatter.Models.MassiveDirac.Disorder.TMatrix.BornDysonLoop
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.Vertex.Ladder.RegulatorBoundaryWeakDisorder
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.Vertex.Ladder.RegulatorBoundaryTransverseWeakDisorder
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.Vertex.Born.WeakDisorder
