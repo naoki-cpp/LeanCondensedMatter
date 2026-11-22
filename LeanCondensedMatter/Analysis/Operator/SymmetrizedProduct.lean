@@ -112,7 +112,7 @@ theorem symmetrizedProduct_smul_id {W : Type*} [AddCommGroup W] [Module K W]
   simp [symmetrizedProduct_apply]
   rw [← two_smul K, smul_smul]
   have h2 : (2 : K) * (2 : K)⁻¹ = 1 := mul_inv_cancel₀ (NeZero.ne (2 : K))
-  simp only [← mul_assoc, h2, one_mul]
+  simp only [h2, one_smul]
 
 /-- If two operators commute, their symmetrized product reduces to ordinary composition. -/
 theorem symmetrizedProduct_eq_comp_of_commutes {W : Type*} [AddCommGroup W] [Module K W]
@@ -143,7 +143,7 @@ theorem symmetrizedProduct_nested {W : Type*} [AddCommGroup W] [Module K W]
         (1 / 4 : K) • ⁅v, ⁅A, m⁆⁆ := by
   have hquarter : (1 / 4 : K) = (1 / 2 : K) * (1 / 2 : K) := by
     rw [show (4 : K) = (2 : K) ^ 2 by ring]
-    simp only [one_div, inv_pow, pow_two]
+    simp only [one_div, pow_two, mul_inv_rev]
   rw [hquarter]
   ext x
   simp [symmetrizedProduct_apply, LieRing.of_associative_ring_bracket,
