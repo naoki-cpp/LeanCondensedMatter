@@ -154,14 +154,10 @@ theorem continuumBornUpperBandTransportLifetime_eq_factor_mul_singleParticleLife
   have hsp : sp ≠ 0 :=
     continuumBornUpperBandSingleParticleScatteringRate_ne_zero
       v m fermiEnergy disorderStrength hbar hvelocity hhbar hdisorder hfermiEnergy
-  have hratio : tr / sp =
-      (fermiEnergy ^ 2 + 3 * m ^ 2) /
-        (2 * (fermiEnergy ^ 2 + m ^ 2)) :=
-    continuumBornUpperBandTransportRate_div_singleParticleRate
-      v m fermiEnergy disorderStrength hbar hvelocity hhbar hdisorder hfermiEnergy
-  have hscaled := congrArg (fun x : ℝ => x⁻¹ * sp⁻¹) hratio
-  simpa [inv_div, div_eq_mul_inv, mul_comm, mul_left_comm, mul_assoc, hsp]
-    using hscaled
+  simpa [inv_div, div_eq_mul_inv, mul_comm, mul_left_comm, mul_assoc, hsp] using
+    congrArg (fun r : ℝ => r⁻¹ * sp⁻¹)
+      (continuumBornUpperBandTransportRate_div_singleParticleRate
+        v m fermiEnergy disorderStrength hbar hvelocity hhbar hdisorder hfermiEnergy)
 
 /-- Package the microscopic Born transport lifetime as the generic positive current-relaxation datum
 consumed by the longitudinal RTA benchmark. This bridge does not identify the derivation with a
