@@ -148,7 +148,7 @@ noncomputable def ExternalInsertionBlockLayout.fixedPartitionPhysicalFixedSizeEq
         externalComponentPartition d.1.vertexGraph = π} //
       ((ExternalInsertionBlockLayout.fixedPartitionPhysicalSizeShuffleEquiv
         (E := E) (N := N) (ExternalLabel := ExternalLabel)
-        (InternalLabel := InternalLabel) anchor π heven) d.1).1.1 = size} ≃
+        (InternalLabel := InternalLabel) anchor π heven) d).1.1 = size} ≃
       Σ τ : Combinatorics.FamilySlotShuffleTo size N,
         (ExternalInsertionBlockLayout.ofFamilyShuffle π heven τ).ConnectedBlockFamily
           (ExternalLabel := ExternalLabel) (InternalLabel := InternalLabel) := by
@@ -165,7 +165,7 @@ noncomputable def ExternalInsertionBlockLayout.fixedPartitionPhysicalFixedSizeEq
         p.1.1 = size} ≃
         Σ τ : Combinatorics.FamilySlotShuffleTo size N,
           (ExternalInsertionBlockLayout.ofFamilyShuffle π heven τ).ConnectedBlockFamily
-            (ExternalLabel := ExternalLabel) (InternalLabel := InternalLabel) where
+            (ExternalLabel := ExternalLabel) (InternalLabel := InternalLabel) := {
     toFun := by
       rintro ⟨⟨⟨s, τ⟩, F⟩, hs⟩
       subst s
@@ -180,6 +180,7 @@ noncomputable def ExternalInsertionBlockLayout.fixedPartitionPhysicalFixedSizeEq
     right_inv := by
       rintro ⟨τ, F⟩
       rfl
+  }
   exact (Equiv.subtypeEquiv e (q := fun p => p.1.1 = size)
     (fun _ => Iff.rfl)).trans slice
 
