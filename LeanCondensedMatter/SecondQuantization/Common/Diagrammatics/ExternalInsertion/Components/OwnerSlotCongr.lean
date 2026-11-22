@@ -755,6 +755,130 @@ theorem ExternalInsertionBlockLayout.ofFamilyShuffle_connectedFamily_standardiza
   exact ExternalInsertionBlockLayout.ofFamilyShuffle_localDiagram_standardization
     π heven σ τ B hσ hτ (F.1 B)
 
+/-- The owner-shuffle indices of a fixed-size physical block layout are
+the same family shuffles as the prescribed interaction-size vector,
+with only the proven size and ambient-cardinality equalities cast. -/
+noncomputable def ExternalInsertionBlockLayout.ofFamilyShuffle_ownerShuffleEquiv
+    (π : Finpartition (Finset.univ : Finset (Fin (2 * E))))
+    (heven : ∀ B : π.parts, Even (B : Finset (Fin (2 * E))).card)
+    {size : π.parts → ℕ}
+    (σ : Combinatorics.FamilySlotShuffleTo size N) :
+    Combinatorics.FamilySlotShuffleTo size N ≃
+      Combinatorics.FamilySlotShuffleTo
+        (fun B : π.parts =>
+          ((ExternalInsertionBlockLayout.ofFamilyShuffle π heven σ).interactionBlock
+            (Finset.univ : Finset (Fin N)) B).card)
+        (Finset.univ : Finset (Fin N)).card := by
+  classical
+  let layout := ExternalInsertionBlockLayout.ofFamilyShuffle π heven σ
+  have hs : size =
+      (fun B : π.parts =>
+        (layout.interactionBlock (Finset.univ : Finset (Fin N)) B).card) := by
+    funext B
+    exact (ExternalInsertionBlockLayout.ofFamilyShuffle_interactionBlock_card
+      π heven σ B).symm
+  have ht : N = (Finset.univ : Finset (Fin N)).card := by simp
+  exact
+    (Equiv.cast (congrArg
+      (fun s => Combinatorics.FamilySlotShuffleTo s N) hs)).trans
+      (Combinatorics.FamilySlotShuffleTo.castTotalEquiv ht)
+
+/-- The specified reference physical owner shuffle is exactly the
+canonical assignment shuffle extracted from its own physical layout.
+The proof uses strict monotone uniqueness, not permutations of local
+vertex orderings. -/
+theorem ExternalInsertionBlockLayout.ofFamilyShuffle_ownerShuffleEquiv_reference
+    (π : Finpartition (Finset.univ : Finset (Fin (2 * E))))
+    (heven : ∀ B : π.parts, Even (B : Finset (Fin (2 * E))).card)
+    {size : π.parts → ℕ}
+    (σ : Combinatorics.FamilySlotShuffleTo size N) :
+    (ExternalInsertionBlockLayout.ofFamilyShuffle_ownerShuffleEquiv π heven σ) σ =
+      (ExternalInsertionBlockLayout.ofFamilyShuffle π heven σ).interactionAssignmentShuffle := by
+  classical
+  let layout := ExternalInsertionBlockLayout.ofFamilyShuffle π heven σ
+  let e := ExternalInsertionBlockLayout.ofFamilyShuffle_ownerShuffleEquiv π heven σ
+  have hs : size =
+      (fun B : π.parts =>
+        (layout.interactionBlock (Finset.univ : Finset (Fin N)) B).card) := by
+    funext B
+    exact (ExternalInsertionBlockLayout.ofFamilyShuffle_interactionBlock_card
+      π heven σ B).symm
+  have ht : N = (Finset.univ : Finset (Fin N)).card := by simp
+  let castSize : Combinatorics.FamilySlotShuffleTo size N ≃
+      Combinatorics.FamilySlotShuffleTo
+        (fun B : π.parts => (layout.interactionBlock
+          (Finset.univ : Finset (Fin N)) B).card) N :=
+    Equiv.cast (congrArg (fun s => Combinatorics.FamilySlotShuffleTo s N) hs)
+  let castTotal := Combinatorics.FamilySlotShuffleTo.castTotalEquiv ht
+    (size := fun B : π.parts =>
+      (layout.interactionBlock (Finset.univ : Finset (Fin N)) B).card)
+  have howner (v : Fin (Finset.univ : Finset (Fin N)).card) :
+      ((e σ).slotEquiv.symm v).1 =
+        (σ.slotEquiv.symm (Fin.cast ht.symm v)).1 := by
+    change ((castTotal (castSize σ)).slotEquiv.symm v).1 = _
+    rw [Combinatorics.FamilySlotShuffleTo.castTotalEquiv_owner]
+    exact Combinatorics.FamilySlotShuffleTo.castSize_owner hs σ _
+  have hcanon (v : Fin (Finset.univ : Finset (Fin N)).card) :
+      (((Finset.univ : Finset (Fin N)).orderIsoOfFin rfl).toEquiv v).1 =
+        Fin.cast ht.symm v := by
+    let S : Finset (Fin N) := Finset.univ
+    have huniq := Finset.orderEmbOfFin_unique
+      (s := S) (h := rfl)
+      (f := fun j : Fin S.card => Fin.cast ht.symm j)
+      (fun _ => Finset.mem_univ _)
+      ((Fin.castOrderIso ht.symm).strictMono)
+    simpa only [Finset.coe_orderIsoOfFin_apply] using (congrFun huniq v).symm
+  apply Combinatorics.FamilySlotShuffleTo.eq_of_same_owner
+  intro v
+  have hphysical := layout.interactionOrderDecomposition_owner
+    ((Finset.univ : Finset (Fin N)).orderIsoOfFin rfl).toEquiv v
+  calc
+    ((e σ).slotEquiv.symm v).1 =
+        (σ.slotEquiv.symm (Fin.cast ht.symm v)).1 := howner v
+    _ = layout.interactionOwner (Fin.cast ht.symm v) := rfl
+    _ = (layout.interactionAssignmentShuffle.slotEquiv.symm v).1 := by
+      rw [← hcanon]
+      exact hphysical.symm
+
+/-- All physical owner-shuffle relabelings transport to the actual
+canonical layout's owner-shuffle type by conjugation of the ambient
+cardinality cast. -/
+theorem ExternalInsertionBlockLayout.ofFamilyShuffle_ownerShuffleEquiv_ambientRelabel
+    (π : Finpartition (Finset.univ : Finset (Fin (2 * E))))
+    (heven : ∀ B : π.parts, Even (B : Finset (Fin (2 * E))).card)
+    {size : π.parts → ℕ}
+    (σ τ : Combinatorics.FamilySlotShuffleTo size N) :
+    let e := ExternalInsertionBlockLayout.ofFamilyShuffle_ownerShuffleEquiv π heven σ
+    ((e σ).ambientRelabel (e τ)) =
+      (Fin.castOrderIso (by simp : N = (Finset.univ : Finset (Fin N)).card)).symm.toEquiv.trans
+        (σ.ambientRelabel τ).trans
+          (Fin.castOrderIso (by simp : N =
+            (Finset.univ : Finset (Fin N)).card)).toEquiv := by
+  classical
+  let layout := ExternalInsertionBlockLayout.ofFamilyShuffle π heven σ
+  have hs : size =
+      (fun B : π.parts =>
+        (layout.interactionBlock (Finset.univ : Finset (Fin N)) B).card) := by
+    funext B
+    exact (ExternalInsertionBlockLayout.ofFamilyShuffle_interactionBlock_card
+      π heven σ B).symm
+  have ht : N = (Finset.univ : Finset (Fin N)).card := by simp
+  let castSize : Combinatorics.FamilySlotShuffleTo size N ≃
+      Combinatorics.FamilySlotShuffleTo
+        (fun B : π.parts => (layout.interactionBlock
+          (Finset.univ : Finset (Fin N)) B).card) N :=
+    Equiv.cast (congrArg (fun s => Combinatorics.FamilySlotShuffleTo s N) hs)
+  calc
+    _ = ((Combinatorics.FamilySlotShuffleTo.castTotalEquiv ht (castSize σ)).ambientRelabel
+        (Combinatorics.FamilySlotShuffleTo.castTotalEquiv ht (castSize τ))) := rfl
+    _ = (Fin.castOrderIso ht).symm.toEquiv.trans
+        ((castSize σ).ambientRelabel (castSize τ)).trans
+          (Fin.castOrderIso ht).toEquiv :=
+      Combinatorics.FamilySlotShuffleTo.castTotalEquiv_ambientRelabel
+        ht (castSize σ) (castSize τ)
+    _ = _ := by
+      rw [Combinatorics.FamilySlotShuffleTo.castSize_ambientRelabel hs σ τ]
+
 
 end Common
 end SecondQuantization
