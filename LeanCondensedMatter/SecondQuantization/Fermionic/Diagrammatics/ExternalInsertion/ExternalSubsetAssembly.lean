@@ -336,7 +336,6 @@ theorem ExternalInsertionBlockLayout.assembleConnectedBlocks_signedDysonShuffleO
         (Finset.prod_congr rfl (fun B _ => hlocal B))))
 
 open Classical in
-open Classical in
 /-- At one fixed physical owner assignment, summing all genuine
 transported-order Dyson amplitudes over the independent owner
 shuffles is exactly the signed product of connected local Dyson
