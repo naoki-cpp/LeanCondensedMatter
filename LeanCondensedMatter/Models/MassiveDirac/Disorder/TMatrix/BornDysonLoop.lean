@@ -11,8 +11,8 @@ The concrete loop evaluates the Born-Dyson real-space Green matrix at the spatia
 Its regulator, finite cutoff, and physical momentum measure belong to this realization.
 The zero-disorder identity relates the loop to the clean radial Green integral; under
 W = n_imp v_imp², its quadratic self-energy coefficient is the continuum Born self-energy.
-The linear mean-potential term remains separate. The supplied-loop scalar-impurity construction
-is specialized here without asserting a self-consistent T-matrix or exact disorder average.
+The linear mean-potential term remains separate. The loop and its Born coefficient identities do not assert a self-consistent T-matrix
+or an exact disorder average.
 -/
 
 namespace QuantumTheory.Models.MassiveDirac
@@ -179,37 +179,6 @@ theorem ScalarImpurityParameters.quadraticCleanLoopSelfEnergy_eq_finiteCutoffCon
   push_cast
   ring
 
-/-- Born-Dyson approximation specialization of the scalar-impurity T-matrix. The supplied loop is
-the explicit finite-cutoff finite-broadening Born-Dyson loop above, not a self-consistent T-matrix
-closure. -/
-noncomputable def finiteCutoffContinuumBornDysonScalarImpurityTMatrix
-    (params : ScalarImpurityParameters)
-    (side : SpectralSide)
-    (v m probeEnergy broadening disorderStrength hbar pMax : ℝ)
-    (hinvertible :
-      IsUnit
-        (params.shiftMatrix
-          (finiteCutoffContinuumBornDysonGreenLoopMatrix
-            side v m probeEnergy broadening disorderStrength hbar pMax))) : Matrix2 :=
-  params.tMatrix
-    (finiteCutoffContinuumBornDysonGreenLoopMatrix
-      side v m probeEnergy broadening disorderStrength hbar pMax)
-    hinvertible
-
-/-- Born-Dyson approximation specialization of the T-matrix self-energy. -/
-noncomputable def finiteCutoffContinuumBornDysonScalarImpuritySelfEnergy
-    (params : ScalarImpurityParameters)
-    (side : SpectralSide)
-    (v m probeEnergy broadening disorderStrength hbar pMax : ℝ)
-    (hinvertible :
-      IsUnit
-        (params.shiftMatrix
-          (finiteCutoffContinuumBornDysonGreenLoopMatrix
-            side v m probeEnergy broadening disorderStrength hbar pMax))) : Matrix2 :=
-  params.selfEnergy
-    (finiteCutoffContinuumBornDysonGreenLoopMatrix
-      side v m probeEnergy broadening disorderStrength hbar pMax)
-    hinvertible
 
 end
 

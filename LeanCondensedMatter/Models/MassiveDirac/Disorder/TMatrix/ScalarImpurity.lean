@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Transport.Disorder.TMatrix.NormBound
+import LeanCondensedMatter.Transport.Disorder.TMatrix
 import LeanCondensedMatter.Models.MassiveDirac.Model.Operator
 import Mathlib.Algebra.Group.Units.Basic
 import Mathlib.Analysis.Normed.Ring.Units
@@ -11,7 +11,7 @@ set_option linter.style.header false
 
 The scalar-impurity construction is T = v_imp (1 - v_imp G_loop)⁻¹ and Σ_T = n_imp T.
 The loop is an explicit 2×2 matrix argument. Invertibility is supplied through IsUnit;
-operator-norm estimates and the quadratic small-strength remainder use the same fixed loop.
+the quadratic small-strength remainder uses the same fixed loop.
 
 The impurity-density and single-impurity-strength convention follows Onoda, Sugimoto, and Nagaosa,
 Phys. Rev. Lett. 97, 126602 (2006), Eqs. (12)–(15), doi:10.1103/PhysRevLett.97.126602.
