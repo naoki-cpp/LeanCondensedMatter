@@ -220,4 +220,58 @@ theorem FamilySlotShuffleTo.ambientRelabel_strictMono_ownerFiber
   exact (τ.strictMono i) hj
 
 
+/-- Relabel the *names* of the blocks in an order-preserving
+shuffle without changing any ambient slot. Unlike reindexing a shuffle
+with an ambient size equal to a finite sum, this works for an arbitrary
+fixed ambient cardinality and introduces no cast on the global slots. -/
+noncomputable def FamilySlotShuffleTo.reindexEquiv
+    {κ : Type*} (e : ι ≃ κ) (size : κ → ℕ) {total : ℕ} :
+    FamilySlotShuffleTo size total ≃
+      FamilySlotShuffleTo (fun i => size (e i)) total where
+  toFun σ :=
+    { slotEquiv := (e.sigmaCongrLeft (β := fun j => Fin (size j))).trans σ.slotEquiv
+      strictMono := by
+        intro i a b hab
+        simpa only [Equiv.trans_apply] using σ.strictMono (e i) hab }
+  invFun τ :=
+    { slotEquiv :=
+        (e.sigmaCongrLeft (β := fun j => Fin (size j))).symm.trans τ.slotEquiv
+      strictMono := by
+        intro j a b hab
+        obtain ⟨i, rfl⟩ := e.surjective j
+        simpa only [Equiv.trans_apply, Equiv.symm_apply_apply] using
+          τ.strictMono i hab }
+  left_inv σ := by
+    apply FamilySlotShuffleTo.ext
+    apply Equiv.ext
+    intro v
+    simp only [Equiv.trans_apply, Equiv.apply_symm_apply]
+  right_inv τ := by
+    apply FamilySlotShuffleTo.ext
+    apply Equiv.ext
+    intro v
+    simp only [Equiv.trans_apply, Equiv.symm_apply_apply]
+
+/-- Renaming the block-index type of both shuffles leaves their ambient
+slot relabeling literally unchanged. Thus all ordered integrals are
+transported by the same permutation, independently of block names. -/
+theorem FamilySlotShuffleTo.reindexEquiv_ambientRelabel
+    {κ : Type*} (e : ι ≃ κ) (size : κ → ℕ) {total : ℕ}
+    (σ τ : FamilySlotShuffleTo size total) :
+    ((FamilySlotShuffleTo.reindexEquiv e size) σ).ambientRelabel
+        ((FamilySlotShuffleTo.reindexEquiv e size) τ) =
+      σ.ambientRelabel τ := by
+  ext v
+  simp [FamilySlotShuffleTo.ambientRelabel,
+    FamilySlotShuffleTo.reindexEquiv, Equiv.trans_apply]
+
+/-- After a block renaming the inverse shuffle returns the renamed
+owner at each fixed global slot. -/
+theorem FamilySlotShuffleTo.reindexEquiv_owner
+    {κ : Type*} (e : ι ≃ κ) (size : κ → ℕ) {total : ℕ}
+    (σ : FamilySlotShuffleTo size total) (v : Fin total) :
+    (((FamilySlotShuffleTo.reindexEquiv e size) σ).slotEquiv.symm v).1 =
+      e.symm ((σ.slotEquiv.symm v).1) := by
+  simp [FamilySlotShuffleTo.reindexEquiv, Equiv.trans_apply]
+
 end Combinatorics
