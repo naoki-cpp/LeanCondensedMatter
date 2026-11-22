@@ -71,6 +71,24 @@ theorem polarFourierRadialPhase_hasDerivAt (z θ : ℝ) :
   · simp [polarFourierRadialPhase]
     ring
 
+/-- Derivative of the dimensionless Fourier phase with respect to its radial argument. -/
+theorem polarFourierRadialPhase_hasDerivAt_radius (z θ : ℝ) :
+    HasDerivAt (fun t : ℝ => polarFourierRadialPhase t θ)
+      (Complex.I * ((Real.cos θ : ℝ) : ℂ) *
+        polarFourierRadialPhase z θ) z := by
+  have hmul : HasDerivAt (fun t : ℝ => t * Real.cos θ)
+      (Real.cos θ) z := by
+    simpa using (hasDerivAt_id z).mul_const (Real.cos θ)
+  have harg : HasDerivAt
+      (fun t : ℝ => Complex.I * ((t * Real.cos θ : ℝ) : ℂ))
+      (Complex.I * ((Real.cos θ : ℝ) : ℂ)) z :=
+    hmul.ofReal_comp |>.const_mul Complex.I
+  have hphase := (Complex.hasDerivAt_exp _).comp z harg
+  convert hphase using 1
+  · rfl
+  · dsimp [polarFourierRadialPhase]
+    ring
+
 /-- Complex conjugation of the angular Fourier phase reverses its radial argument. -/
 theorem polarFourierRadialPhase_conj (z θ : ℝ) :
     conj (polarFourierRadialPhase z θ) =
