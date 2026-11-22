@@ -351,20 +351,14 @@ theorem tendsto_finiteCutoffContinuumBornIntegral_broadening_zero
           bornSelfEnergyChannelWeight channel side m probeEnergy broadening)
         (nhdsWithin 0 (Set.Ioi 0))
         (nhds (bornSelfEnergyChannelWeight channel side m probeEnergy 0)) := by
-    cases channel with
-    | scalar =>
-        have hcontinuous :
-            ContinuousAt
-              (fun broadening : ℝ =>
-                bornSelfEnergyChannelWeight .scalar side m probeEnergy broadening) 0 := by
-          unfold bornSelfEnergyChannelWeight bornSelfEnergyChannelWeightOfRegulator
-            spectralParameterOfRegulator SpectralSide.regulator
-          fun_prop
-        exact hcontinuous.tendsto.mono_left inf_le_left
-    | z =>
-        simpa [bornSelfEnergyChannelWeight, bornSelfEnergyChannelWeightOfRegulator] using
-          (tendsto_const_nhds : Tendsto (fun _ : ℝ => (m : ℂ))
-            (nhdsWithin 0 (Set.Ioi 0)) (nhds (m : ℂ)))
+    have hcontinuous : ContinuousAt
+        (fun broadening : ℝ =>
+          bornSelfEnergyChannelWeight channel side m probeEnergy broadening) 0 := by
+      cases channel <;>
+        (unfold bornSelfEnergyChannelWeight bornSelfEnergyChannelWeightOfRegulator
+          spectralParameterOfRegulator SpectralSide.regulator
+         fun_prop)
+    exact hcontinuous.tendsto.mono_left inf_le_left
   refine (hweight.mul hJ).congr' ?_
   filter_upwards with broadening
   rw [finiteCutoffContinuumBornIntegral_eq_weight_mul_denominatorIntegral]
