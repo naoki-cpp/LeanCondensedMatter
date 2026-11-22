@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Transport.Disorder.TMatrix
+import LeanCondensedMatter.Transport.Disorder.TMatrix.NormBound
 import LeanCondensedMatter.Models.MassiveDirac.Model.Operator
 import Mathlib.Algebra.Group.Units.Basic
 import Mathlib.Algebra.GroupWithZero.Units.Lemmas
@@ -75,8 +75,8 @@ theorem ScalarImpurityParameters.selfEnergy_eq_meanPotential_add_tMatrix_remaind
   unfold ScalarImpurityParameters.selfEnergy
   module
 
-/-- In operator norm, the exact T-matrix remainder carries two powers of the impurity strength, up
-to the norm of the supplied Green loop and inverse shift. -/
+/-- In operator norm, the exact T-matrix remainder is quadratic in the impurity strength.
+This is the Dirac-operator specialization of the generic normed-algebra bound. -/
 theorem ScalarImpurityParameters.norm_matrixOperator_tMatrix_sub_bare_le
     (params : ScalarImpurityParameters) (greenLoop : Matrix2)
     (hinvertible : IsUnit (params.shiftMatrix greenLoop)) :
@@ -85,35 +85,30 @@ theorem ScalarImpurityParameters.norm_matrixOperator_tMatrix_sub_bare_le
           (((params.impurityStrength : ℝ) : ℂ)) • (1 : Matrix2))‖ ≤
       ‖((params.impurityStrength : ℝ) : ℂ)‖ ^ 2 * ‖matrixOperator greenLoop‖ *
         ‖matrixOperator (params.inverseShiftMatrix greenLoop hinvertible)‖ := by
-  have ht :
-      matrixOperator (params.tMatrix greenLoop hinvertible) =
-        (((params.impurityStrength : ℝ) : ℂ)) •
-          matrixOperator (params.inverseShiftMatrix greenLoop hinvertible) := by
+  let strength : ℂ := (params.impurityStrength : ℝ)
+  let t := params.tMatrix greenLoop hinvertible
+  let inverseShift := params.inverseShiftMatrix greenLoop hinvertible
+  have ht : matrixOperator t = strength • matrixOperator inverseShift := by
+    dsimp [t, inverseShift, strength]
     unfold ScalarImpurityParameters.tMatrix QuantumTheory.Transport.scalarImpurityTMatrix
       ScalarImpurityParameters.inverseShiftMatrix matrixOperator
     rw [map_smul]
     rfl
-  have hrewrite :
-      params.tMatrix greenLoop hinvertible -
-          (((params.impurityStrength : ℝ) : ℂ)) • (1 : Matrix2) =
-        (((params.impurityStrength : ℝ) : ℂ)) •
-          (greenLoop * params.tMatrix greenLoop hinvertible) :=
-    QuantumTheory.Transport.scalarImpurityTMatrix_sub_bare
-      ((params.impurityStrength : ℝ) : ℂ) greenLoop hinvertible
-  rw [hrewrite]
-  simp only [matrixOperator, map_smul, map_mul]
-  rw [norm_smul]
-  calc
-    ‖((params.impurityStrength : ℝ) : ℂ)‖ *
-        ‖matrixOperator greenLoop * matrixOperator (params.tMatrix greenLoop hinvertible)‖ ≤
-      ‖((params.impurityStrength : ℝ) : ℂ)‖ *
-        (‖matrixOperator greenLoop‖ *
-          ‖matrixOperator (params.tMatrix greenLoop hinvertible)‖) :=
-      mul_le_mul_of_nonneg_left (norm_mul_le _ _) (norm_nonneg _)
-    _ = ‖((params.impurityStrength : ℝ) : ℂ)‖ ^ 2 * ‖matrixOperator greenLoop‖ *
-        ‖matrixOperator (params.inverseShiftMatrix greenLoop hinvertible)‖ := by
-      rw [ht, norm_smul]
-      ring
+  have hfixed :
+      matrixOperator t - strength • (1 : DiracHilbert →L[ℂ] DiracHilbert) =
+        strength • (matrixOperator greenLoop * matrixOperator t) := by
+    have hbare :
+        t - strength • (1 : Matrix2) =
+          strength • (greenLoop * t) :=
+      QuantumTheory.Transport.scalarImpurityTMatrix_sub_bare
+        strength greenLoop hinvertible
+    have hm := congrArg matrixOperator hbare
+    simpa only [matrixOperator, map_sub, map_one, map_smul, map_mul] using hm
+  have hnorm := QuantumTheory.Transport.scalarImpurityRemainder_norm_le
+    strength (matrixOperator greenLoop) (matrixOperator inverseShift)
+    (matrixOperator t) hfixed ht
+  simpa only [t, inverseShift, strength, matrixOperator, map_sub, map_one, map_smul]
+    using hnorm
 
 /-- For a fixed Green loop, the scalar-impurity shift is a unit for all impurity strengths
 sufficiently close to zero. This is a family-level statement in the raw scalar strength, so the
