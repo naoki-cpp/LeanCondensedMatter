@@ -40,21 +40,16 @@ private theorem polarFourierWeightedAngularKernel_hasDerivAt
       HasDerivAt (fun t : ℝ => polarFourierRadialPhase t θ * weight θ)
         (derivative x θ) x :=
     (polarFourierRadialPhase_hasDerivAt_radius x θ).mul_const (weight θ)
+  have hcos : Continuous (fun θ : ℝ => ((Real.cos θ : ℝ) : ℂ)) := by
+    fun_prop
+  have hphase (x : ℝ) : Continuous (polarFourierRadialPhase x) := by
+    unfold polarFourierRadialPhase
+    fun_prop
   have hcont (x : ℝ) : Continuous (fun θ : ℝ =>
-      polarFourierRadialPhase x θ * weight θ) := by
-    apply Continuous.mul
-    · change Continuous (fun θ : ℝ =>
-        Complex.exp (Complex.I * (((x * Real.cos θ : ℝ) : ℂ))))
-      fun_prop
-    · exact hweight
-  have hcont' (x : ℝ) : Continuous (derivative x) := by
-    dsimp only [derivative]
-    apply Continuous.mul
-    · change Continuous (fun θ : ℝ =>
-        Complex.I * ((Real.cos θ : ℝ) : ℂ) *
-          Complex.exp (Complex.I * (((x * Real.cos θ : ℝ) : ℂ))))
-      fun_prop
-    · exact hweight
+      polarFourierRadialPhase x θ * weight θ) :=
+    (hphase x).mul hweight
+  have hcont' (x : ℝ) : Continuous (derivative x) :=
+    (((continuous_const.mul hcos).mul (hphase x)).mul hweight)
   have hderivBound (x θ : ℝ) : ‖derivative x θ‖ ≤ (1 : ℝ) := by
     have hnorm : ‖derivative x θ‖ = |Real.cos θ| * ‖weight θ‖ := by
       simp only [derivative, norm_mul, Complex.norm_I, Complex.norm_real,
