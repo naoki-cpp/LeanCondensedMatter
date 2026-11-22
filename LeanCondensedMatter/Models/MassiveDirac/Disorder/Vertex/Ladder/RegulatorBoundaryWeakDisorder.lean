@@ -121,10 +121,8 @@ theorem tendsto_finiteCutoffContinuumBornDysonLadderSolvedVectorZeroBroadeningBo
         inPlaneCoefficientVector
           (((2 * (probeEnergy ^ 2 + m ^ 2) /
             (probeEnergy ^ 2 + 3 * m ^ 2) : ℝ) : ℂ)) 0 := by
-    rw [show targetRung = inPlaneCoefficientVector κ 0 by rfl]
-    rw [inPlaneLadderSolvedVector_zero_transverse κ hκ, hfactor]
-  rw [htarget] at hsolved
-  exact hsolved
+    simpa only [targetRung, inPlaneLadderSolvedVector_zero_transverse κ hκ, hfactor]
+  simpa only [htarget] using hsolved
 
 /-- The longitudinal action of the canonical zero-broadening solved ladder has the explicit
 weak-disorder coefficient needed by the downstream scaled Středa conductivity limit. -/
@@ -155,12 +153,11 @@ theorem tendsto_finiteCutoffContinuumBornDysonLongitudinalLadderActionZeroBroade
         (probeEnergy ^ 2 + 3 * m ^ 2) : ℝ) : ℂ)) - 1 =
         (((probeEnergy ^ 2 - m ^ 2) /
           (probeEnergy ^ 2 + 3 * m ^ 2) : ℝ) : ℂ) := by
-    have hreal : 2 * (probeEnergy ^ 2 + m ^ 2) /
-        (probeEnergy ^ 2 + 3 * m ^ 2) - 1 =
-        (probeEnergy ^ 2 - m ^ 2) / (probeEnergy ^ 2 + 3 * m ^ 2) := by
+    exact_mod_cast (show
+      2 * (probeEnergy ^ 2 + m ^ 2) / (probeEnergy ^ 2 + 3 * m ^ 2) - 1 =
+        (probeEnergy ^ 2 - m ^ 2) / (probeEnergy ^ 2 + 3 * m ^ 2) by
       field_simp [hden]
-      ring
-    exact_mod_cast hreal
+      ring)
   have hlimit := (tendsto_pi_nhds.mp hsolved 0).sub_const (1 : ℂ)
   simp only [inPlaneCoefficientVector, Matrix.cons_val_zero, htarget] at hlimit
   apply Tendsto.congr' ?_ hlimit
