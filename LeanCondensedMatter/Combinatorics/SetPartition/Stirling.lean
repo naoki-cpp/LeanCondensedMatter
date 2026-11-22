@@ -30,9 +30,10 @@ private theorem sum_choose_mul_stirlingSecond (n k : ℕ) :
             (fun i => (n + 1).choose i * Nat.stirlingSecond i 0) (n + 1)]
           simp [Nat.stirlingSecond_one_right]
       | succ k =>
-          rw [show n + 1 + 1 = n + 2 by omega,
-            Finset.sum_choose_succ_mul (R := ℕ)
-              (fun i _ => Nat.stirlingSecond i (k + 1)) n]
+          have hsplit := Finset.sum_choose_succ_mul
+            (R := ℕ) (fun i _ => Nat.stirlingSecond i (k + 1)) n
+          simp only [Nat.cast_id] at hsplit
+          rw [show n + 1 + 1 = n + 2 by omega, hsplit]
           have hrec :
               (∑ i ∈ Finset.range (n + 1),
                 n.choose i * Nat.stirlingSecond (i + 1) (k + 1)) =
