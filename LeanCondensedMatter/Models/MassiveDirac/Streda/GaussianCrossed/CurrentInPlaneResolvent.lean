@@ -447,12 +447,19 @@ private theorem gaussianCrossed_radialRAProduct_eq_realLorentzian
     unfold finiteCutoffContinuumBornDysonDenominator
     push_cast
     ring
+  have hstar : star D =
+      finiteCutoffContinuumBornDysonDenominator
+        .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax := by
+    dsimp [D]
+    simpa [SpectralSide.opposite] using
+      (star_finiteCutoffContinuumBornDysonDenominator
+        .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax
+        hbroadening)
   calc
     _ = D * star D := by
       rw [finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct_eq_mul,
-        ← star_finiteCutoffContinuumBornDysonDenominator
-          .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax
-          hbroadening]
+        ← hstar]
+      rfl
     _ = (Complex.normSq D : ℂ) := by
       simpa using (Complex.mul_conj D)
     _ = _ := by
@@ -559,16 +566,19 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedK2_offShell_width_integral_
     let d : ℝ := (D0.re - v ^ 2 * p ^ 2) ^ 2 + D0.im ^ 2
     have hsepAt : δ ≤ |D0.re - v ^ 2 * p ^ 2| := hsep p hp
     have hsquared : δ ^ 2 ≤ (D0.re - v ^ 2 * p ^ 2) ^ 2 := by
-      have hprod := mul_nonneg
-        (sub_nonneg.mpr hsepAt)
-        (add_nonneg (abs_nonneg _) hδ.le)
+      have hprod : 0 ≤
+          (|D0.re - v ^ 2 * p ^ 2| - δ) *
+            (|D0.re - v ^ 2 * p ^ 2| + δ) :=
+        mul_nonneg
+          (sub_nonneg.mpr hsepAt)
+          (add_nonneg (abs_nonneg (D0.re - v ^ 2 * p ^ 2)) hδ.le)
       nlinarith [sq_abs (D0.re - v ^ 2 * p ^ 2)]
     have hd : δ ^ 2 ≤ d := by
       dsimp [d]
       nlinarith [sq_nonneg D0.im]
     have hdPos : 0 < d := lt_of_lt_of_le hδsq hd
     have hinv : d⁻¹ ≤ (δ ^ 2)⁻¹ :=
-      (inv_le_inv₀ hδsq hdPos).2 hd
+      (inv_le_inv₀ hdPos hδsq).2 hd
     have hkernel :
         ‖polarFourierSecondCosineAngularKernel (p * radius / hbar)‖ ≤
           2 * Real.pi :=
@@ -577,10 +587,15 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedK2_offShell_width_integral_
         ‖(D0.im : ℂ) * weight p‖ =
           |D0.im| * p ^ 3 *
             ‖polarFourierSecondCosineAngularKernel (p * radius / hbar)‖ * d⁻¹ := by
-      dsimp [weight, d]
-      simp only [norm_mul, norm_pow, Complex.norm_real, Real.norm_eq_abs, norm_inv,
-        abs_of_nonneg hp0, abs_of_pos hdPos]
-      ring
+      change ‖(D0.im : ℂ) *
+          ((p : ℂ) ^ 3 *
+            polarFourierSecondCosineAngularKernel (p * radius / hbar) *
+            (d : ℂ)⁻¹)‖ =
+            |D0.im| * p ^ 3 *
+              ‖polarFourierSecondCosineAngularKernel (p * radius / hbar)‖ * d⁻¹
+      simp only [norm_mul, norm_pow, Complex.norm_real, Real.norm_eq_abs,
+        norm_inv, abs_of_nonneg hp0, abs_of_pos hdPos]
+      ring_nf
     rw [hnorm]
     dsimp [C]
     calc
@@ -655,7 +670,8 @@ theorem tendsto_finiteCutoffContinuumBornDysonGaussianCrossedK2_offShell_width_i
   have hupper : Tendsto (fun t => |(D0 t).im| * C) l (nhds 0) := by
     simpa using hw.mul_const C
   have hnorm : Tendsto (fun t => ‖tail t‖) l (nhds 0) := by
-    refine squeeze_zero (fun t => norm_nonneg (tail t)) ?_ hupper
+    refine squeeze_zero' (fun t => Filter.Eventually.of_forall
+      (fun _ => norm_nonneg (tail _))) ?_ hupper
     filter_upwards [hsep] with t ht
     have hbound :=
       finiteCutoffContinuumBornDysonGaussianCrossedK2_offShell_width_integral_norm_le
