@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Analysis.ODE.RadialEnergyDecay
-import LeanCondensedMatter.Analysis.Fourier.PolarRadialKernels
+import LeanCondensedMatter.Analysis.Fourier.PolarRadialKernels.HigherHarmonics
 import Mathlib.Analysis.Calculus.Deriv.MeanValue
 
 set_option linter.style.header false
@@ -12,7 +12,7 @@ Fourier–Bessel kernels in Analysis: finite-interval Bessel-square integrals, t
 radial first-order system, an elementary Lyapunov decay bound, and the
 large-radius limit of the J₁²/r moment.
 
-The upstream `Analysis.Fourier.PolarRadialKernels` module owns the canonical angular
+The upstream `Analysis.Fourier.PolarRadialKernels.HigherHarmonics` module owns the canonical angular
 kernels and their differential/recurrence identities. This module does not alter
 any physical momentum normalization, propagator, disorder approximation,
 or regulator prescription. Its final theorem is a limit of finite interval

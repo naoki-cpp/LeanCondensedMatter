@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Analysis.Fourier.PolarRadialKernels
+import LeanCondensedMatter.Analysis.Fourier.PolarRadialKernels.AngularReduction
 import LeanCondensedMatter.Transport.Analysis.ContinuumMeasure
 import LeanCondensedMatter.Transport.Analysis.FourierGeometry
 
@@ -8,7 +8,7 @@ set_option linter.style.header false
 # Physical two-dimensional polar Fourier transform
 
 The angular Fourier–Bessel kernel and its analytic identities are provided by
-`Analysis.Fourier.PolarRadialKernels`. This physical adapter relates polar
+`Analysis.Fourier.PolarRadialKernels.AngularReduction`. This physical adapter relates polar
 momenta to Cartesian Fourier phases and defines the finite-cutoff transform
 with the continuum momentum measure `d²p / (2πℏ)²`.
 -/

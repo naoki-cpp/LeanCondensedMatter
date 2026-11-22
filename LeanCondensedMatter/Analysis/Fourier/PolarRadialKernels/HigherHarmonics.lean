@@ -99,6 +99,12 @@ theorem polarFourierFirstCosineAngularKernel_two_mul_eq_zeroth_sub_second (z : �
       (hccos.intervalIntegrable _ _)
       (hcvprime.intervalIntegrable _ _)
     simpa [sine, cosine] using h
+  have hcosInt : IntervalIntegrable (fun θ : ℝ => cosine θ * phase θ)
+      volume 0 (2 * Real.pi) :=
+    (hccos.mul hcphase).intervalIntegrable _ _
+  have hsinSqInt : IntervalIntegrable
+      (fun θ : ℝ => phase θ * sine θ ^ 2) volume 0 (2 * Real.pi) :=
+    (hcphase.mul (hcsin.pow 2)).intervalIntegrable _ _
   have hfirst :
       (∫ θ in (0 : ℝ)..(2 * Real.pi), cosine θ * phase θ) =
         (Complex.I * (z : ℂ)) *
@@ -110,9 +116,7 @@ theorem polarFourierFirstCosineAngularKernel_two_mul_eq_zeroth_sub_second (z : �
       apply intervalIntegral.integral_congr
       intro θ _
       ring
-    rw [intervalIntegral.integral_sub
-      ((hccos.mul hcphase).intervalIntegrable _ _)
-      (((hcphase.mul (hcsin.pow 2)).intervalIntegrable _ _).const_mul _),
+    rw [intervalIntegral.integral_sub hcosInt (hsinSqInt.const_mul _),
       intervalIntegral.integral_const_mul, sub_eq_zero] at h'
     exact h'
   have htrig (θ : ℝ) :
