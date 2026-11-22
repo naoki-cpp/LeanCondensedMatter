@@ -336,6 +336,54 @@ theorem ExternalInsertionBlockLayout.assembleConnectedBlocks_signedDysonShuffleO
         (Finset.prod_congr rfl (fun B _ => hlocal B))))
 
 open Classical in
+/-- At one *actual physical* external-block layout, integrating over
+all increasing interaction-owner shuffles factors the genuinely
+assembled Wick diagram into its connected Dyson blocks. The global
+Dyson orders are actual owner relabelings, identified pointwise with
+the graph-component orders; no individual canonical simplex is
+declared permutation-invariant. -/
+theorem ExternalInsertionBlockLayout.sum_assignmentOwnerShuffle_eq_signedProduct
+    {n : ℕ} (layout : ExternalInsertionBlockLayout E n)
+    (F : ∀ B : layout.partition.parts,
+      ExternalInsertionDiagram (ExternalFieldLabel Mode) (QuarticVertexLabel Mode)
+        ((B : Finset (Fin (2 * E))).card / 2) n
+        (layout.interactionBlock (Finset.univ : Finset (Fin n)) B))
+    (hconnected : ∀ B, (F B).vertexGraph.Preconnected)
+    (anchor : Fin (2 * E))
+    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
+    (externalTime : Fin (2 * E) → ℝ) :
+    let d : ExternalInsertionWickDiagram Mode E n :=
+      layout.assembleDiagram (Finset.univ : Finset (Fin n)) F
+    (∑ τ : Combinatorics.FamilySlotShuffleTo
+        (fun B : layout.partition.parts =>
+          (layout.interactionBlock (Finset.univ : Finset (Fin n)) B).card)
+        (Finset.univ : Finset (Fin n)).card,
+      d.orderedDysonAmplitude ε β g externalTime
+        ((layout.interactionAssignmentShuffle.ambientRelabel τ).symm.trans
+          ((Finset.univ : Finset (Fin n)).orderIsoOfFin rfl).toEquiv)) =
+      externalPartitionSourceSign layout.partition *
+        ∏ B : layout.partition.parts,
+          ExternalInsertionWickDiagram.dysonAmplitude
+            ((F B).slotCongr (Combinatorics.standardSlotEquiv
+              (layout.interactionBlock (Finset.univ : Finset (Fin n)) B)))
+            ε β g (evenExternalSubsetTimes externalTime
+              (B : Finset (Fin (2 * E))) (layout.evenBlocks B)) := by
+  classical
+  let d : ExternalInsertionWickDiagram Mode E n :=
+    layout.assembleDiagram (Finset.univ : Finset (Fin n)) F
+  let hVac : HasNoVacuumComponent d.vertexGraph :=
+    layout.hasNoVacuumComponent_assembleDiagram
+      (Finset.univ : Finset (Fin n)) F hconnected
+  have hLayout : d.externalBlockLayout hVac anchor = layout :=
+    layout.externalBlockLayout_assembleDiagram_eq F hconnected anchor
+  have hOrbit := d.sum_physicalOwnerShuffle_orderedDysonAmplitude_eq_componentOrbit
+    hVac anchor ε β g externalTime
+  rw [hLayout] at hOrbit
+  exact hOrbit.trans
+    (layout.assembleConnectedBlocks_signedDysonShuffleOrbit_eq_subsetTimes
+      F hconnected ε β g externalTime)
+
+open Classical in
 /-- Canonically standardizing the interaction vertices of one connected
 external-source block reindexes the *entire finite local Wick diagram sum*,
 including its prescribed external field labels and actual integrated
