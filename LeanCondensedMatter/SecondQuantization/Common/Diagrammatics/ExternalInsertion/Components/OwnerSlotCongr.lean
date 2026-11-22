@@ -879,6 +879,50 @@ theorem ExternalInsertionBlockLayout.ofFamilyShuffle_ownerShuffleEquiv_ambientRe
     _ = _ := by
       rw [Combinatorics.FamilySlotShuffleTo.castSize_ambientRelabel hs σ τ]
 
+/-- The ordered Dyson integrals indexed by physical owner shuffles
+use *exactly* the global orders of the canonical interaction assignment
+of the reference layout. The only difference between the two
+representations is the harmless `Fin N`/full-subtype cardinality cast. -/
+theorem ExternalInsertionBlockLayout.ofFamilyShuffle_ownerOrderedDysonOrder
+    (π : Finpartition (Finset.univ : Finset (Fin (2 * E))))
+    (heven : ∀ B : π.parts, Even (B : Finset (Fin (2 * E))).card)
+    {size : π.parts → ℕ}
+    (σ τ : Combinatorics.FamilySlotShuffleTo size N) :
+    let layout := ExternalInsertionBlockLayout.ofFamilyShuffle π heven σ
+    let e := ExternalInsertionBlockLayout.ofFamilyShuffle_ownerShuffleEquiv π heven σ
+    ((layout.interactionAssignmentShuffle.ambientRelabel (e τ)).symm.trans
+        ((Finset.univ : Finset (Fin N)).orderIsoOfFin rfl).toEquiv) =
+      ((Finset.univ : Finset (Fin N)).orderIsoOfFin rfl).toEquiv.trans
+        (fullInteractionSlotEquiv (σ.ambientRelabel τ)).symm := by
+  classical
+  let S : Finset (Fin N) := Finset.univ
+  let layout := ExternalInsertionBlockLayout.ofFamilyShuffle π heven σ
+  let e := ExternalInsertionBlockLayout.ofFamilyShuffle_ownerShuffleEquiv π heven σ
+  have ht : N = S.card := by simp [S]
+  have hcanon (v : Fin S.card) :
+      ((S.orderIsoOfFin rfl).toEquiv v).1 = Fin.cast ht.symm v := by
+    have huniq := Finset.orderEmbOfFin_unique
+      (s := S) (h := rfl)
+      (f := fun j : Fin S.card => Fin.cast ht.symm j)
+      (fun _ => Finset.mem_univ _)
+      ((Fin.castOrderIso ht.symm).strictMono)
+    simpa only [Finset.coe_orderIsoOfFin_apply] using (congrFun huniq v).symm
+  have hreference :=
+    ExternalInsertionBlockLayout.ofFamilyShuffle_ownerShuffleEquiv_reference π heven σ
+  have hperm :=
+    ExternalInsertionBlockLayout.ofFamilyShuffle_ownerShuffleEquiv_ambientRelabel
+      π heven σ τ
+  rw [← hreference]
+  apply Equiv.ext
+  intro v
+  apply Subtype.ext
+  simp only [Equiv.trans_apply]
+  rw [hcanon, hcanon]
+  change Fin.cast ht.symm (((e σ).ambientRelabel (e τ)).symm v) =
+    (σ.ambientRelabel τ).symm (Fin.cast ht.symm v)
+  rw [hperm]
+  simp [Equiv.trans_apply, Fin.castOrderIso]
+
 
 end Common
 end SecondQuantization
