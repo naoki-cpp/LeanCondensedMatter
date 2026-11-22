@@ -210,26 +210,10 @@ theorem finiteCutoffContinuumBornDysonRadial_ra_pole_moment_mul_center_gap_eq_lo
     .advanced v m probeEnergy broadening disorderStrength hbar pMax
     hvelocity hbroadening hdisorder hpMax hcenterA
   dsimp only at hmoment ⊢
-  calc
-    _ = ∫ p in (0 : ℝ)..pMax, (p : ℂ) *
-        ((finiteCutoffContinuumBornDysonDenominator
-            .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax)⁻¹ -
-         (finiteCutoffContinuumBornDysonDenominator
-            .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax)⁻¹) :=
-      hmoment
-    _ = (∫ p in (0 : ℝ)..pMax, (p : ℂ) *
-        (finiteCutoffContinuumBornDysonDenominator
-          .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax)⁻¹) -
-      (∫ p in (0 : ℝ)..pMax, (p : ℂ) *
-        (finiteCutoffContinuumBornDysonDenominator
-          .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax)⁻¹) := by
-      rw [← intervalIntegral.integral_sub (hint .retarded) (hint .advanced)]
-      apply intervalIntegral.integral_congr
-      intro p _
-      ring
-    _ = _ := by
-      rw [hR, hA]
-      ring
+  rw [hmoment]
+  simp_rw [mul_sub]
+  rw [intervalIntegral.integral_sub (hint .retarded) (hint .advanced), hR, hA]
+  ring
 
 end
 
