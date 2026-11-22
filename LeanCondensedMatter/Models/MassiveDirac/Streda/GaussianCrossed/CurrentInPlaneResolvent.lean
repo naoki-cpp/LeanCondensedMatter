@@ -253,6 +253,174 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedInPlaneTrace_gap_eq_Green_d
   rw [← hgap]
   ring
 
+
+/-- **Physical traceless K2 current = radial Green Hessian.**
+At any finite momentum cutoff and nonzero external broadening, the
+retarded/advanced spectral-gap-multiplied difference of the two
+diagonal Gaussian-crossed current components is exactly the traceless
+Hessian of the actual scalar Dyson Green generators. The radius is
+multiplied rather than divided, so this also holds at the origin.
+
+In particular, the anisotropic K2 current is *part* of the physical
+matrix-gradient relation; it is not assumed to vanish or be subleading.
+No disorder/broadening/UV/radius limit is taken. -/
+theorem finiteCutoffContinuumBornDysonGaussianCrossedInPlaneK2_gap_eq_tracelessHessian
+    (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ)
+    (hhbar : hbar ≠ 0) (hbroadening : broadening ≠ 0)
+    (hdisorder : 0 ≤ disorderStrength) (hpMax : 0 ≤ pMax) :
+    let gap := finiteCutoffContinuumBornDysonRASpectralGap
+      v m probeEnergy broadening disorderStrength hbar pMax
+    let factor := finiteCutoffContinuumBornDysonGaussianCrossedCurrentFactor
+      v m probeEnergy broadening disorderStrength hbar pMax
+    let jxx := finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient
+      .x 0 v m probeEnergy broadening disorderStrength hbar pMax radius
+    let jyy := finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient
+      .y 1 v m probeEnergy broadening disorderStrength hbar pMax radius
+    let FR := fun r : ℝ => finiteCutoffContinuumBornDysonRadialScalarGreenGenerator
+      .retarded v m probeEnergy broadening disorderStrength hbar pMax r
+    let FA := fun r : ℝ => finiteCutoffContinuumBornDysonRadialScalarGreenGenerator
+      .advanced v m probeEnergy broadening disorderStrength hbar pMax r
+    (radius : ℂ) * gap * (jxx - jyy) =
+      -2 * (v : ℂ) ^ 2 * factor * (hbar : ℂ) ^ 2 *
+        ((radius : ℂ) * (deriv (deriv FR) radius - deriv (deriv FA) radius) -
+          (deriv FR radius - deriv FA radius)) := by
+  dsimp only
+  let measure : ℂ := ((momentumMeasurePrefactor hbar : ℝ) : ℂ)
+  let factor := finiteCutoffContinuumBornDysonGaussianCrossedCurrentFactor
+    v m probeEnergy broadening disorderStrength hbar pMax
+  let k2 : ℝ → ℂ := fun p =>
+    polarFourierSecondCosineAngularKernel (p * radius / hbar)
+  let invR : ℝ → ℂ := fun p =>
+    (finiteCutoffContinuumBornDysonDenominator
+      .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax)⁻¹
+  let invA : ℝ → ℂ := fun p =>
+    (finiteCutoffContinuumBornDysonDenominator
+      .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax)⁻¹
+  let momentR : ℝ → ℂ := fun p => (p : ℂ) ^ 3 * k2 p * invR p
+  let momentA : ℝ → ℂ := fun p => (p : ℂ) ^ 3 * k2 p * invA p
+  have hk2 := (finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient_diagonal_spectral_difference
+    v m probeEnergy broadening disorderStrength hbar pMax radius
+    hbroadening hdisorder hpMax).2
+  dsimp only [finiteCutoffContinuumBornDysonRASpectralGap] at hk2
+  have hkernel (p : ℝ) :
+      (2 * (p : ℂ) *
+        (-(((2 * Real.pi : ℝ) : ℂ) *
+          Complex.besselJ 2 ((p * radius / hbar : ℝ) : ℂ))) *
+        ((((v * p : ℝ) : ℂ) ^ 2) * factor)) * (invR p - invA p) =
+        (2 * (v : ℂ) ^ 2 * factor) *
+          ((p : ℂ) ^ 3 * k2 p * (invR p - invA p)) := by
+    dsimp [k2, factor]
+    rw [polarFourierSecondCosineAngularKernel_eq_besselJ]
+    push_cast
+    ring
+  have hk :
+      finiteCutoffContinuumBornDysonRASpectralGap
+          v m probeEnergy broadening disorderStrength hbar pMax *
+        (finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient
+            .x 0 v m probeEnergy broadening disorderStrength hbar pMax radius -
+         finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient
+            .y 1 v m probeEnergy broadening disorderStrength hbar pMax radius) =
+        2 * (v : ℂ) ^ 2 * factor * measure *
+          ∫ p in (0 : ℝ)..pMax,
+            (p : ℂ) ^ 3 * k2 p * (invR p - invA p) := by
+    calc
+      _ = measure * ∫ p in (0 : ℝ)..pMax,
+            (2 * (v : ℂ) ^ 2 * factor) *
+              ((p : ℂ) ^ 3 * k2 p * (invR p - invA p)) := by
+            unfold finiteCutoffContinuumBornDysonRASpectralGap
+            rw [hk2]
+            congr 1
+            apply intervalIntegral.integral_congr
+            intro p _
+            exact hkernel p
+      _ = _ := by
+            rw [intervalIntegral.integral_const_mul]
+            ring
+  have hcK2 : Continuous k2 :=
+    continuous_polarFourierSecondCosineAngularKernel.comp (by fun_prop)
+  have hcInvR : Continuous invR :=
+    continuous_finiteCutoffContinuumBornDysonDenominator_inv_radial
+      .retarded v m probeEnergy broadening disorderStrength hbar pMax
+      hbroadening hdisorder hpMax
+  have hcInvA : Continuous invA :=
+    continuous_finiteCutoffContinuumBornDysonDenominator_inv_radial
+      .advanced v m probeEnergy broadening disorderStrength hbar pMax
+      hbroadening hdisorder hpMax
+  have hcR : Continuous momentR := by
+    dsimp [momentR]
+    exact ((Complex.continuous_ofReal.pow 3).mul hcK2).mul hcInvR
+  have hcA : Continuous momentA := by
+    dsimp [momentA]
+    exact ((Complex.continuous_ofReal.pow 3).mul hcK2).mul hcInvA
+  have hsplit :
+      (∫ p in (0 : ℝ)..pMax,
+        (p : ℂ) ^ 3 * k2 p * (invR p - invA p)) =
+      (∫ p in (0 : ℝ)..pMax, momentR p) -
+        ∫ p in (0 : ℝ)..pMax, momentA p := by
+    calc
+      _ = ∫ p in (0 : ℝ)..pMax, momentR p - momentA p := by
+        apply intervalIntegral.integral_congr
+        intro p _
+        dsimp [momentR, momentA]
+        ring
+      _ = _ := intervalIntegral.integral_sub
+        (hcR.intervalIntegrable 0 pMax) (hcA.intervalIntegrable 0 pMax)
+  have hR := finiteCutoffContinuumBornDysonRadialScalarGreenGenerator_tracelessHessian
+    .retarded v m probeEnergy broadening disorderStrength hbar pMax radius
+    hhbar hbroadening hdisorder hpMax
+  have hA := finiteCutoffContinuumBornDysonRadialScalarGreenGenerator_tracelessHessian
+    .advanced v m probeEnergy broadening disorderStrength hbar pMax radius
+    hhbar hbroadening hdisorder hpMax
+  have hdiff :
+      (hbar : ℂ) ^ 2 *
+        ((radius : ℂ) *
+          (deriv (deriv (fun r : ℝ => finiteCutoffContinuumBornDysonRadialScalarGreenGenerator
+            .retarded v m probeEnergy broadening disorderStrength hbar pMax r)) radius -
+           deriv (deriv (fun r : ℝ => finiteCutoffContinuumBornDysonRadialScalarGreenGenerator
+            .advanced v m probeEnergy broadening disorderStrength hbar pMax r)) radius) -
+         (deriv (fun r : ℝ => finiteCutoffContinuumBornDysonRadialScalarGreenGenerator
+            .retarded v m probeEnergy broadening disorderStrength hbar pMax r) radius -
+          deriv (fun r : ℝ => finiteCutoffContinuumBornDysonRadialScalarGreenGenerator
+            .advanced v m probeEnergy broadening disorderStrength hbar pMax r) radius)) =
+      -(radius : ℂ) * measure *
+        ((∫ p in (0 : ℝ)..pMax, momentR p) -
+          ∫ p in (0 : ℝ)..pMax, momentA p) := by
+    calc
+      _ = (hbar : ℂ) ^ 2 *
+          ((radius : ℂ) *
+            deriv (deriv (fun r : ℝ => finiteCutoffContinuumBornDysonRadialScalarGreenGenerator
+              .retarded v m probeEnergy broadening disorderStrength hbar pMax r)) radius -
+            deriv (fun r : ℝ => finiteCutoffContinuumBornDysonRadialScalarGreenGenerator
+              .retarded v m probeEnergy broadening disorderStrength hbar pMax r) radius) -
+        (hbar : ℂ) ^ 2 *
+          ((radius : ℂ) *
+            deriv (deriv (fun r : ℝ => finiteCutoffContinuumBornDysonRadialScalarGreenGenerator
+              .advanced v m probeEnergy broadening disorderStrength hbar pMax r)) radius -
+            deriv (fun r : ℝ => finiteCutoffContinuumBornDysonRadialScalarGreenGenerator
+              .advanced v m probeEnergy broadening disorderStrength hbar pMax r) radius) := by ring
+      _ = (-(radius : ℂ) * measure * ∫ p in (0 : ℝ)..pMax, momentR p) -
+          (-(radius : ℂ) * measure * ∫ p in (0 : ℝ)..pMax, momentA p) := by
+          rw [hR, hA]
+      _ = _ := by ring
+  calc
+    (radius : ℂ) *
+        finiteCutoffContinuumBornDysonRASpectralGap
+          v m probeEnergy broadening disorderStrength hbar pMax *
+        (finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient
+            .x 0 v m probeEnergy broadening disorderStrength hbar pMax radius -
+         finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient
+            .y 1 v m probeEnergy broadening disorderStrength hbar pMax radius) =
+      (radius : ℂ) * (2 * (v : ℂ) ^ 2 * factor * measure) *
+        ((∫ p in (0 : ℝ)..pMax, momentR p) -
+          ∫ p in (0 : ℝ)..pMax, momentA p) := by
+          have hx := congrArg (fun z : ℂ => (radius : ℂ) * z) hk
+          rw [hsplit] at hx
+          convert hx using 1 <;> ring
+    _ = _ := by
+          have hx := congrArg (fun z : ℂ => -2 * (v : ℂ) ^ 2 * factor * z) hdiff
+          convert hx.symm using 1 <;> ring
+
+
 end
 
 end QuantumTheory.Models.MassiveDirac
