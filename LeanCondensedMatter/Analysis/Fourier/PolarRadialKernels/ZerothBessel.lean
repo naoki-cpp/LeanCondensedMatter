@@ -106,12 +106,7 @@ theorem polarFourierZerothAngularKernel_eq_tsum_moments (z : ℝ) :
           (Nat.factorial n : ℂ) =
         ((Complex.I * (z : ℂ)) ^ n / (Nat.factorial n : ℂ)) *
           (((Real.cos θ : ℝ) : ℂ) ^ n) := by
-    have heq :
-        Complex.I * (((z * Real.cos θ : ℝ) : ℂ)) =
-          (Complex.I * (z : ℂ)) * ((Real.cos θ : ℝ) : ℂ) := by
-      push_cast
-      ring
-    rw [heq, mul_pow]
+    rw [Complex.ofReal_mul, ← mul_assoc, mul_pow]
     ring
   calc
     (∫ θ in (0 : ℝ)..(2 * Real.pi),
@@ -195,15 +190,13 @@ theorem polarFourierZerothAngularKernel_eq_besselJ (z : ℝ) :
       intro a b hab
       change 2 * a + 1 = 2 * b + 1 at hab
       omega)
-  have hodd (n : ℕ) : f (2 * n + 1) = 0 := by
-    simp [f]
   calc
     polarFourierZerothAngularKernel z = ∑' n : ℕ, f n := by
       exact polarFourierZerothAngularKernel_eq_tsum_moments z
     _ = (∑' n : ℕ, f (2 * n)) + ∑' n : ℕ, f (2 * n + 1) :=
       (tsum_even_add_odd he ho).symm
     _ = ∑' n : ℕ, f (2 * n) := by
-      simp only [hodd, tsum_zero, add_zero]
+      simp [f]
     _ = ∑' n : ℕ, ((2 * Real.pi : ℝ) : ℂ) *
         (Complex.regularizedHGFunCoeff 0 {(1 : ℂ)} n *
           (-((z : ℂ) / 2) ^ 2) ^ n) := by
