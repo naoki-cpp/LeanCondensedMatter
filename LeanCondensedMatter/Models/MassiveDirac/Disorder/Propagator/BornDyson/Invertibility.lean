@@ -251,17 +251,14 @@ theorem finiteCutoffContinuumBornDysonDenominator_ne_zero
     finiteCutoffContinuumBornDysonShiftOperator_injective
       side v m px py probeEnergy broadening disorderStrength hbar pMax
       hbroadening hdisorder hpMax
-  have hshiftUnit : IsUnit shift :=
-    ContinuousLinearMap.isUnit_iff_bijective.mpr
-      ⟨hinj, LinearMap.surjective_of_injective (f := shift.toLinearMap) hinj⟩
-  have hoperatorUnit : IsUnit (matrixOperator M) := by
-    rw [← finiteCutoffContinuumBornDysonShiftOperator_eq_matrix
-      side v m px py probeEnergy broadening disorderStrength hbar pMax hbroadening]
-    exact hshiftUnit
   let φ : Matrix2 ≃⋆ₐ[ℂ] (DiracHilbert →L[ℂ] DiracHilbert) := Matrix.toEuclideanCLM
   have hmatrixUnit : IsUnit M := by
     apply (isUnit_map_iff φ M).mp
-    simpa [φ, matrixOperator] using hoperatorUnit
+    change IsUnit (matrixOperator M)
+    rw [← finiteCutoffContinuumBornDysonShiftOperator_eq_matrix
+      side v m px py probeEnergy broadening disorderStrength hbar pMax hbroadening]
+    exact ContinuousLinearMap.isUnit_iff_bijective.mpr
+      ⟨hinj, LinearMap.surjective_of_injective (f := shift.toLinearMap) hinj⟩
   have hdet : M.det ≠ 0 :=
     isUnit_iff_ne_zero.mp ((Matrix.isUnit_iff_isUnit_det M).mp hmatrixUnit)
   simpa only [M, finiteCutoffContinuumBornDysonShiftMatrix_det] using hdet
@@ -313,16 +310,9 @@ theorem finiteCutoffContinuumBornDysonRadial_center_gap_ne_zero_of_re_pos
     simpa [finiteCutoffContinuumBornDysonDenominator, SpectralSide.opposite,
       energyR, energyA, massR, massA] using hx
   intro hgap
-  have heq : energyA ^ 2 - massA ^ 2 = energyR ^ 2 - massR ^ 2 :=
-    sub_eq_zero.mp hgap
-  have hs : star (energyR ^ 2 - massR ^ 2) = energyR ^ 2 - massR ^ 2 :=
-    hstar.trans heq
-  have hstarIm (z : ℂ) : (star z).im = -z.im := by simp
-  have himZero : (energyR ^ 2 - massR ^ 2).im = 0 := by
-    have h := congrArg Complex.im hs
-    rw [hstarIm] at h
-    linarith
-  exact him himZero
+  apply him
+  apply Complex.conj_eq_iff_im.mp
+  exact hstar.trans (sub_eq_zero.mp hgap)
 
 end
 
