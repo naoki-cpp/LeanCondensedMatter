@@ -212,7 +212,8 @@ theorem ExternalInsertionDiagram.canonicalComponentInteractionShuffle_owner
         ⟨C, d.canonicalComponentInteractionOrders C j⟩ := by
     apply Subtype.ext
     have h := congrArg order hlocal
-    simpa only [Equiv.apply_symm_apply] using h.symm
+    simpa only [Equiv.apply_symm_apply, interactionSectorComponentEquiv_symm_val]
+      using congrArg Subtype.val h.symm
   have howner :
       (interactionSectorComponentEquiv d.vertexGraph (order v)).1 = C := by
     rw [hvertex]
