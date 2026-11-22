@@ -89,17 +89,8 @@ private theorem finiteCutoffContinuumBornDyson_radialKernel_eq_scaledGenerator
       (∫ p in (0 : ℝ)..pMax, kernel p) =
       coeff * finiteCutoffContinuumBornDysonRadialScalarGreenGenerator
         side v m probeEnergy broadening disorderStrength hbar pMax radius := by
-  have hpoint :
-      (∫ p in (0 : ℝ)..pMax, kernel p) =
-        ∫ p in (0 : ℝ)..pMax, coeff *
-          ((p : ℂ) *
-            (finiteCutoffContinuumBornDysonDenominator
-              side v m p 0 probeEnergy broadening disorderStrength hbar pMax)⁻¹ *
-            polarFourierZerothAngularKernel (p * radius / hbar)) := by
-    apply intervalIntegral.integral_congr
-    intro p _
-    exact hkernel p
-  rw [hpoint, intervalIntegral.integral_const_mul]
+  simp_rw [hkernel]
+  rw [intervalIntegral.integral_const_mul]
   dsimp [finiteCutoffContinuumBornDysonRadialScalarGreenGenerator]
   ring
 
