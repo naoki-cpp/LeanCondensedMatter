@@ -18,27 +18,28 @@ infrastructure.
 
 noncomputable section
 
-variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
+variable {𝕜 H : Type*} [RCLike 𝕜] [NormedAddCommGroup H]
+  [InnerProductSpace 𝕜 H] [CompleteSpace H]
 
 namespace ContinuousLinearMap
 
 /-- Package the two-sided adjoint inverse laws as Mathlib's unitary subtype. -/
-@[expose] def unitaryOfAdjointInverse (U : H →L[ℂ] H)
+@[expose] def unitaryOfAdjointInverse (U : H →L[𝕜] H)
     (hleft : star U * U = 1) (hright : U * star U = 1) :
-    unitary (H →L[ℂ] H) :=
+    unitary (H →L[𝕜] H) :=
   ⟨U, Unitary.mem_iff.mpr ⟨hleft, hright⟩⟩
 
 /-- Unitary conjugation maps each eigenspace to the corresponding eigenspace with the same
 eigenvalue. -/
-theorem eigenspace_adjointConjugate (U T : H →L[ℂ] H)
-    (hleft : star U * U = 1) (hright : U * star U = 1) (μ : ℂ) :
-    Module.End.eigenspace ((adjointConjugate U T : H →L[ℂ] H) : H →ₗ[ℂ] H) μ =
+theorem eigenspace_adjointConjugate (U T : H →L[𝕜] H)
+    (hleft : star U * U = 1) (hright : U * star U = 1) (μ : 𝕜) :
+    Module.End.eigenspace ((adjointConjugate U T : H →L[𝕜] H) : H →ₗ[𝕜] H) μ =
       Submodule.map
         (Unitary.linearIsometryEquiv (unitaryOfAdjointInverse U hleft hright)).toLinearEquiv.toLinearMap
-        (Module.End.eigenspace (T : H →ₗ[ℂ] H) μ) := by
+        (Module.End.eigenspace (T : H →ₗ[𝕜] H) μ) := by
   have hleft_apply (y : H) : (star U) (U y) = y := by
     simpa [mul_apply_eq_comp] using
-      congrArg (fun A : H →L[ℂ] H => A y) hleft
+      congrArg (fun A : H →L[𝕜] H => A y) hleft
   ext x
   constructor
   · intro hx
@@ -49,7 +50,7 @@ theorem eigenspace_adjointConjugate (U T : H →L[ℂ] H)
       have h := congrArg (fun y : H => (star U) y) hx
       simpa [hleft_apply] using h
     · change U ((star U) x) = x
-      have h := congrArg (fun A : H →L[ℂ] H => A x) hright
+      have h := congrArg (fun A : H →L[𝕜] H => A x) hright
       simpa [mul_apply_eq_comp] using h
   · intro hx
     rw [Submodule.mem_map] at hx
@@ -59,11 +60,11 @@ theorem eigenspace_adjointConjugate (U T : H →L[ℂ] H)
     simpa [hleft_apply] using congrArg (fun z : H => U z) hy
 
 /-- Corresponding eigenspaces have the same finite dimension under unitary conjugation. -/
-theorem finrank_eigenspace_adjointConjugate (U T : H →L[ℂ] H)
-    (hleft : star U * U = 1) (hright : U * star U = 1) (μ : ℂ) :
-    Module.finrank ℂ
-        (Module.End.eigenspace ((adjointConjugate U T : H →L[ℂ] H) : H →ₗ[ℂ] H) μ) =
-      Module.finrank ℂ (Module.End.eigenspace (T : H →ₗ[ℂ] H) μ) := by
+theorem finrank_eigenspace_adjointConjugate (U T : H →L[𝕜] H)
+    (hleft : star U * U = 1) (hright : U * star U = 1) (μ : 𝕜) :
+    Module.finrank 𝕜
+        (Module.End.eigenspace ((adjointConjugate U T : H →L[𝕜] H) : H →ₗ[𝕜] H) μ) =
+      Module.finrank 𝕜 (Module.End.eigenspace (T : H →ₗ[𝕜] H) μ) := by
   rw [eigenspace_adjointConjugate U T hleft hright μ]
   exact (Unitary.linearIsometryEquiv
     (unitaryOfAdjointInverse U hleft hright)).toLinearEquiv.finrank_map_eq _
