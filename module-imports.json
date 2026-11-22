@@ -19,6 +19,12 @@
       "externalImportCount": 4
     },
     {
+      "name": "LeanCondensedMatter.Analysis.Calculus.CompactSupportInterval",
+      "sourceFile": "LeanCondensedMatter/Analysis/Calculus/CompactSupportInterval.lean",
+      "imports": [],
+      "externalImportCount": 2
+    },
+    {
       "name": "LeanCondensedMatter.Analysis.Calculus.ExponentialConjugation",
       "sourceFile": "LeanCondensedMatter/Analysis/Calculus/ExponentialConjugation.lean",
       "imports": [],
@@ -101,8 +107,10 @@
     {
       "name": "LeanCondensedMatter.Analysis.ConservationLaw.WeakConservation1D",
       "sourceFile": "LeanCondensedMatter/Analysis/ConservationLaw/WeakConservation1D.lean",
-      "imports": [],
-      "externalImportCount": 4
+      "imports": [
+        "LeanCondensedMatter.Analysis.Calculus.CompactSupportInterval"
+      ],
+      "externalImportCount": 3
     },
     {
       "name": "LeanCondensedMatter.Analysis.ConservationLaw",
@@ -763,6 +771,12 @@
       "externalImportCount": 0
     },
     {
+      "name": "LeanCondensedMatter.Analysis.Operator.Unbounded.Adjoint",
+      "sourceFile": "LeanCondensedMatter/Analysis/Operator/Unbounded/Adjoint.lean",
+      "imports": [],
+      "externalImportCount": 2
+    },
+    {
       "name": "LeanCondensedMatter.Analysis.Operator.Unbounded.BoundedResolvent",
       "sourceFile": "LeanCondensedMatter/Analysis/Operator/Unbounded/BoundedResolvent.lean",
       "imports": [
@@ -834,6 +848,7 @@
       "name": "LeanCondensedMatter.Analysis.Operator.Unbounded",
       "sourceFile": "LeanCondensedMatter/Analysis/Operator/Unbounded.lean",
       "imports": [
+        "LeanCondensedMatter.Analysis.Operator.Unbounded.Adjoint",
         "LeanCondensedMatter.Analysis.Operator.Unbounded.Composition",
         "LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution"
       ],
@@ -2380,17 +2395,34 @@
       "name": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.BornDyson.DysonShift",
       "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Disorder/Propagator/BornDyson/DysonShift.lean",
       "imports": [
-        "LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.BornDyson.Green"
+        "LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.BornDyson.Green.Basic"
+      ],
+      "externalImportCount": 1
+    },
+    {
+      "name": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.BornDyson.Green.Basic",
+      "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Disorder/Propagator/BornDyson/Green/Basic.lean",
+      "imports": [
+        "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.SelfEnergy.Core"
       ],
       "externalImportCount": 2
+    },
+    {
+      "name": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.BornDyson.Green.RadialPauli",
+      "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Disorder/Propagator/BornDyson/Green/RadialPauli.lean",
+      "imports": [
+        "LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.BornDyson.Green.Basic"
+      ],
+      "externalImportCount": 1
     },
     {
       "name": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.BornDyson.Green",
       "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Disorder/Propagator/BornDyson/Green.lean",
       "imports": [
-        "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.SelfEnergy"
+        "LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.BornDyson.Green.Basic",
+        "LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.BornDyson.Green.RadialPauli"
       ],
-      "externalImportCount": 3
+      "externalImportCount": 0
     },
     {
       "name": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.BornDyson.Invertibility",
@@ -2454,6 +2486,7 @@
       "name": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.BornDyson.RealSpace.RadialGreen",
       "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Disorder/Propagator/BornDyson/RealSpace/RadialGreen.lean",
       "imports": [
+        "LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.BornDyson.Green.RadialPauli",
         "LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.BornDyson.Invertibility",
         "LeanCondensedMatter.Transport.Analysis.PolarFourier"
       ],
@@ -2490,7 +2523,7 @@
       "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Disorder/Propagator/BornDyson/RegulatorBoundary.lean",
       "imports": [
         "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.Boundary",
-        "LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.BornDyson.Green",
+        "LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.BornDyson.Green.Basic",
         "LeanCondensedMatter.Transport.Analysis.ContinuumMeasure"
       ],
       "externalImportCount": 4
@@ -2680,6 +2713,7 @@
         "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.UltravioletSelfEnergy",
         "LeanCondensedMatter.Models.MassiveDirac.Disorder.ContinuumMeasurePrefactor",
         "LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.BornDyson.DysonShift",
+        "LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.BornDyson.Green",
         "LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.BornDyson.RadialMoments",
         "LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.BornDyson.RealSpace.FrozenCutoffBesselJ",
         "LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.BornDyson.RealSpace.FrozenCutoffUV",
@@ -3174,6 +3208,7 @@
       "name": "LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.RadialHarmonics",
       "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Streda/GaussianCrossed/RadialHarmonics.lean",
       "imports": [
+        "LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.BornDyson.Green.RadialPauli",
         "LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.BornDyson.RadialMoments",
         "LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.RealSpace",
         "LeanCondensedMatter.Transport.Analysis.ContinuumMeasure"
@@ -3629,6 +3664,7 @@
       "name": "LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Continuity.CompactSupport1D",
       "sourceFile": "LeanCondensedMatter/QuantumMechanics/SingleParticle/Continuum/Continuity/CompactSupport1D.lean",
       "imports": [
+        "LeanCondensedMatter.Analysis.Calculus.CompactSupportInterval",
         "LeanCondensedMatter.Analysis.ConservationLaw.WeakConservation1D",
         "LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Continuity.Smeared1D",
         "LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Probability.Integral1D"
@@ -5059,6 +5095,7 @@
       "name": "LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.LadderAnalytic",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Bosonic/CompletedSpace/LadderAnalytic.lean",
       "imports": [
+        "LeanCondensedMatter.Analysis.Operator.Unbounded.Adjoint",
         "LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.Ladder",
         "LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.DiagonalAnalytic"
       ],

@@ -1759,7 +1759,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Transport.crossedXBesselWronskian_concreteSeries"
+      "BesselSecondKind.realWronskianCondition_concreteSeries"
     ],
     "dependencies": [
       "BesselSecondKind.besselY0Y1Wronskian_of_harmonicIdentity",
@@ -1768,7 +1768,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Transport.crossedXBesselWronskian_concreteSeries"
+      "BesselSecondKind.realWronskianCondition_concreteSeries"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -2219,6 +2219,52 @@
       "BesselSecondKind.summable_besselY1HarmonicTerm"
     ],
     "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "BesselSecondKind.RealWronskianCondition (fun r => BesselSecondKind.besselY0Series ↑r) fun r =>\n  BesselSecondKind.besselY1Series ↑r",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "BesselSecondKind.realWronskianCondition_concreteSeries",
+    "module": "LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.AnalyticWronskian",
+    "externalAxioms": [],
+    "docString": "The concrete absolutely convergent second-kind Bessel series\nsatisfy the real-argument normalization condition by restricting\nthe proved complex Wronskian to the real axis. ",
+    "directWrapperTargetModule": "LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.AnalyticWronskian",
+    "directWrapperOf": "BesselSecondKind.besselY0Y1Series_wronskian",
+    "dependents": [
+      "QuantumTheory.Models.MassiveDirac.adoCrossedXConcreteBesselReference_integral_eq_endpoints",
+      "QuantumTheory.Models.MassiveDirac.adoCrossedXConcreteBesselReference_tendsto_benchmark"
+    ],
+    "dependencies": [
+      "BesselSecondKind.besselY0Y1Series_wronskian"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.adoCrossedXConcreteBesselReference_integral_eq_endpoints",
+      "QuantumTheory.Models.MassiveDirac.adoCrossedXConcreteBesselReference_tendsto_benchmark"
+    ],
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -14216,142 +14262,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {a b : ℝ} {f : ℝ → ℝ}, tsupport f ⊆ Set.Ioo a b → f a = 0 ∧ f b = 0",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "ConservationLaw.endpoint_values_eq_zero_of_tsupport_subset_Ioo",
-    "module": "LeanCondensedMatter.Analysis.ConservationLaw.WeakConservation1D",
-    "externalAxioms": [],
-    "docString": "A function whose topological support is strictly inside an interval vanishes at both\nendpoints. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "ConservationLaw.weak_continuity_wholeSpace_of_pointwise",
-      "QuantumMechanics.SingleParticle.Continuum.hasDerivAt_wholeSpaceSmearedProbabilityDensity1D_of_interval",
-      "QuantumMechanics.SingleParticle.Continuum.weak_continuity_wholeSpace_of_interval"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "ConservationLaw.weak_continuity_wholeSpace_of_pointwise",
-      "QuantumMechanics.SingleParticle.Continuum.hasDerivAt_wholeSpaceSmearedProbabilityDensity1D_of_interval",
-      "QuantumMechanics.SingleParticle.Continuum.weak_continuity_wholeSpace_of_interval"
-    ],
-    "compiledConsumerCount": 3,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {a b : ℝ} {f g : ℝ → ℝ}, tsupport f ⊆ Set.Ioo a b → ∫ (x : ℝ) in a..b, deriv f x * g x = ∫ (x : ℝ), deriv f x * g x",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "ConservationLaw.integral_deriv_mul_eq_integral_of_tsupport_subset_Ioo",
-    "module": "LeanCondensedMatter.Analysis.ConservationLaw.WeakConservation1D",
-    "externalAxioms": [],
-    "docString": "The derivative of a function supported strictly inside an interval has the same support\nwindow for the purpose of multiplying by an arbitrary function. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "ConservationLaw.weak_continuity_wholeSpace_of_pointwise",
-      "QuantumMechanics.SingleParticle.Continuum.intervalSmearedCurrentPairing1D_deriv_eq_wholeSpace"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "ConservationLaw.weak_continuity_wholeSpace_of_pointwise",
-      "QuantumMechanics.SingleParticle.Continuum.intervalSmearedCurrentPairing1D_deriv_eq_wholeSpace"
-    ],
-    "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {a b : ℝ} {f g : ℝ → ℝ}, tsupport f ⊆ Set.Ioo a b → ∫ (x : ℝ) in a..b, f x * g x = ∫ (x : ℝ), f x * g x",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "ConservationLaw.integral_mul_eq_integral_of_tsupport_subset_Ioo",
-    "module": "LeanCondensedMatter.Analysis.ConservationLaw.WeakConservation1D",
-    "externalAxioms": [],
-    "docString": "A function supported strictly inside an interval makes its product with any function\ninterval-integrable and whole-space integrable through the interval support theorem. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "ConservationLaw.weak_continuity_wholeSpace_of_pointwise",
-      "QuantumMechanics.SingleParticle.Continuum.intervalSmearedDensityRate1D_eq_wholeSpace",
-      "QuantumMechanics.SingleParticle.Continuum.intervalSmearedProbabilityDensity1D_eq_wholeSpace"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "ConservationLaw.weak_continuity_wholeSpace_of_pointwise",
-      "QuantumMechanics.SingleParticle.Continuum.intervalSmearedDensityRate1D_eq_wholeSpace",
-      "QuantumMechanics.SingleParticle.Continuum.intervalSmearedProbabilityDensity1D_eq_wholeSpace"
-    ],
-    "compiledConsumerCount": 3,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ {Test : Type u_1} [inst : AddCommGroup Test] [inst_1 : _root_.Module ℂ Test] (V : Type u_2) [inst_2 : AddCommGroup V]\n  [inst_3 : _root_.Module ℂ V] (h : V →ₗ[ℂ] V) (M : Test →ₗ[ℂ] V →ₗ[ℂ] V) (m : V →ₗ[ℂ] V) (f : Test),\n  ⁅h, ConservationLaw.localizedQuantity V M m f⁆ =\n    ConservationLaw.transportCommutator V h M m f + ConservationLaw.sourceCommutator V h M m f",
     "standardAxioms": [
       "Classical.choice",
@@ -15780,10 +15690,10 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "ConservationLaw.endpoint_values_eq_zero_of_tsupport_subset_Ioo",
-      "ConservationLaw.integral_deriv_mul_eq_integral_of_tsupport_subset_Ioo",
-      "ConservationLaw.integral_mul_eq_integral_of_tsupport_subset_Ioo",
-      "ConservationLaw.weak_continuity_interval_of_pointwise_zero_boundary"
+      "ConservationLaw.weak_continuity_interval_of_pointwise_zero_boundary",
+      "MeasureTheory.endpoint_values_eq_zero_of_tsupport_subset_Ioo",
+      "MeasureTheory.integral_deriv_mul_eq_integral_of_tsupport_subset_Ioo",
+      "MeasureTheory.integral_mul_eq_integral_of_tsupport_subset_Ioo"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -34082,6 +33992,95 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (A : H →ₗ.[ℂ] H), Dense ↑A.domain → A.IsClosed → A.adjoint.adjoint = A",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "LinearPMap.adjoint_adjoint_eq_of_isClosed",
+    "module": "LeanCondensedMatter.Analysis.Operator.Unbounded.Adjoint",
+    "externalAxioms": [],
+    "docString": "A densely defined closed operator equals its double adjoint. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Bosonic.completedAnnihilate_adjoint_eq_completedCreate"
+    ],
+    "dependencies": [
+      "LinearPMap.adjoint_denseDomain_of_isClosed",
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.Adjoint.0.Submodule.adjoint_adjoint_eq_of_isClosed"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Bosonic.completedAnnihilate_adjoint_eq_completedCreate"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (A : H →ₗ.[ℂ] H), Dense ↑A.domain → A.IsClosed → Dense ↑A.adjoint.domain",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "LinearPMap.adjoint_denseDomain_of_isClosed",
+    "module": "LeanCondensedMatter.Analysis.Operator.Unbounded.Adjoint",
+    "externalAxioms": [],
+    "docString": "The adjoint of a densely defined closed operator is densely defined. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "LinearPMap.adjoint_adjoint_eq_of_isClosed"
+    ],
+    "dependencies": [
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.Adjoint.0.Submodule.adjoint_adjoint_eq_of_isClosed"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "LinearPMap.adjoint_adjoint_eq_of_isClosed"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (z : ℂ) (hz : z.im ≠ 0) (y : H),\n  ↑A ⟨(A.nonrealResolvent hA z hz) y, ⋯⟩ - z • (A.nonrealResolvent hA z hz) y = y",
     "standardAxioms": [
       "Classical.choice",
@@ -39312,6 +39311,52 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {a b : ℝ} {f : ℝ → ℝ}, tsupport f ⊆ Set.Ioo a b → f a = 0 ∧ f b = 0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "MeasureTheory.endpoint_values_eq_zero_of_tsupport_subset_Ioo",
+    "module": "LeanCondensedMatter.Analysis.Calculus.CompactSupportInterval",
+    "externalAxioms": [],
+    "docString": "A function whose topological support is strictly inside an interval vanishes at both\nendpoints. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "ConservationLaw.weak_continuity_wholeSpace_of_pointwise",
+      "QuantumMechanics.SingleParticle.Continuum.hasDerivAt_wholeSpaceSmearedProbabilityDensity1D_of_interval",
+      "QuantumMechanics.SingleParticle.Continuum.weak_continuity_wholeSpace_of_interval"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "ConservationLaw.weak_continuity_wholeSpace_of_pointwise",
+      "QuantumMechanics.SingleParticle.Continuum.hasDerivAt_wholeSpaceSmearedProbabilityDensity1D_of_interval",
+      "QuantumMechanics.SingleParticle.Continuum.weak_continuity_wholeSpace_of_interval"
+    ],
+    "compiledConsumerCount": 3,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ (f : ℝ → ℂ) (a b : ℝ),\n  IntervalIntegrable f MeasureTheory.volume a b →\n    MeasureTheory.Integrable (MeasureTheory.orientedIntervalIntegrand f a b) MeasureTheory.volume",
     "standardAxioms": [
       "Classical.choice",
@@ -39340,6 +39385,96 @@
       "QuantumTheory.Transport.integrable_eigenbasisKuboBastinCommonVertexTransitionIntegrand"
     ],
     "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {a b : ℝ} {f g : ℝ → ℝ}, tsupport f ⊆ Set.Ioo a b → ∫ (x : ℝ) in a..b, deriv f x * g x = ∫ (x : ℝ), deriv f x * g x",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "MeasureTheory.integral_deriv_mul_eq_integral_of_tsupport_subset_Ioo",
+    "module": "LeanCondensedMatter.Analysis.Calculus.CompactSupportInterval",
+    "externalAxioms": [],
+    "docString": "The derivative of a function supported strictly inside an interval has the same support\nwindow for the purpose of multiplying by an arbitrary function. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "ConservationLaw.weak_continuity_wholeSpace_of_pointwise",
+      "QuantumMechanics.SingleParticle.Continuum.intervalSmearedCurrentPairing1D_deriv_eq_wholeSpace"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "ConservationLaw.weak_continuity_wholeSpace_of_pointwise",
+      "QuantumMechanics.SingleParticle.Continuum.intervalSmearedCurrentPairing1D_deriv_eq_wholeSpace"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {a b : ℝ} {f g : ℝ → ℝ}, tsupport f ⊆ Set.Ioo a b → ∫ (x : ℝ) in a..b, f x * g x = ∫ (x : ℝ), f x * g x",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "MeasureTheory.integral_mul_eq_integral_of_tsupport_subset_Ioo",
+    "module": "LeanCondensedMatter.Analysis.Calculus.CompactSupportInterval",
+    "externalAxioms": [],
+    "docString": "A function supported strictly inside an interval makes its product with any function\ninterval-integrable and whole-space integrable through the interval support theorem. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "ConservationLaw.weak_continuity_wholeSpace_of_pointwise",
+      "QuantumMechanics.SingleParticle.Continuum.intervalSmearedDensityRate1D_eq_wholeSpace",
+      "QuantumMechanics.SingleParticle.Continuum.intervalSmearedProbabilityDensity1D_eq_wholeSpace"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "ConservationLaw.weak_continuity_wholeSpace_of_pointwise",
+      "QuantumMechanics.SingleParticle.Continuum.intervalSmearedDensityRate1D_eq_wholeSpace",
+      "QuantumMechanics.SingleParticle.Continuum.intervalSmearedProbabilityDensity1D_eq_wholeSpace"
+    ],
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -45369,7 +45504,7 @@
       "QuantumMechanics.SingleParticle.Continuum.hasDerivAt_wholeSpaceSmearedProbabilityDensity1D_of_schrodinger"
     ],
     "dependencies": [
-      "ConservationLaw.endpoint_values_eq_zero_of_tsupport_subset_Ioo",
+      "MeasureTheory.endpoint_values_eq_zero_of_tsupport_subset_Ioo",
       "QuantumMechanics.SingleParticle.Continuum.intervalSmearedCurrentPairing1D_deriv_eq_wholeSpace",
       "QuantumMechanics.SingleParticle.Continuum.intervalSmearedProbabilityDensity1D_eq_wholeSpace"
     ],
@@ -45684,7 +45819,7 @@
       "QuantumMechanics.SingleParticle.Continuum.weak_continuity_wholeSpace_of_interval"
     ],
     "dependencies": [
-      "ConservationLaw.integral_deriv_mul_eq_integral_of_tsupport_subset_Ioo"
+      "MeasureTheory.integral_deriv_mul_eq_integral_of_tsupport_subset_Ioo"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -45729,7 +45864,7 @@
       "QuantumMechanics.SingleParticle.Continuum.weak_continuity_wholeSpace_of_interval"
     ],
     "dependencies": [
-      "ConservationLaw.integral_mul_eq_integral_of_tsupport_subset_Ioo"
+      "MeasureTheory.integral_mul_eq_integral_of_tsupport_subset_Ioo"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -45773,7 +45908,7 @@
       "QuantumMechanics.SingleParticle.Continuum.hasDerivAt_wholeSpaceSmearedProbabilityDensity1D_of_interval"
     ],
     "dependencies": [
-      "ConservationLaw.integral_mul_eq_integral_of_tsupport_subset_Ioo"
+      "MeasureTheory.integral_mul_eq_integral_of_tsupport_subset_Ioo"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -48115,7 +48250,7 @@
       "QuantumMechanics.SingleParticle.Continuum.schrodinger_weak_continuity_wholeSpace"
     ],
     "dependencies": [
-      "ConservationLaw.endpoint_values_eq_zero_of_tsupport_subset_Ioo",
+      "MeasureTheory.endpoint_values_eq_zero_of_tsupport_subset_Ioo",
       "QuantumMechanics.SingleParticle.Continuum.intervalSmearedCurrentPairing1D_deriv_eq_wholeSpace",
       "QuantumMechanics.SingleParticle.Continuum.intervalSmearedDensityRate1D_eq_wholeSpace"
     ],
@@ -62397,7 +62532,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (Y0 Y1 : ℝ → ℂ),\n  QuantumTheory.Transport.CrossedXBesselWronskian Y0 Y1 →\n    ∀ (e hbar m probeEnergy : ℝ),\n      Filter.Tendsto\n        (fun R =>\n          ↑Real.pi *\n              ↑(4 * e ^ 2 / QuantumTheory.planckConstantFromReduced hbar *\n                  (probeEnergy * m * (probeEnergy ^ 2 - m ^ 2) / (probeEnergy ^ 2 + 3 * m ^ 2) ^ 2)) *\n            ∫ (r : ℝ) in 0..R, Complex.besselJ 1 ↑r ^ 2 * (Complex.besselJ 1 ↑r * Y0 r - Complex.besselJ 0 ↑r * Y1 r))\n        Filter.atTop\n        (nhds\n          ↑(4 * e ^ 2 / QuantumTheory.planckConstantFromReduced hbar *\n              (probeEnergy * m * (probeEnergy ^ 2 - m ^ 2) / (probeEnergy ^ 2 + 3 * m ^ 2) ^ 2)))",
+    "statement": "∀ (Y0 Y1 : ℝ → ℂ),\n  BesselSecondKind.RealWronskianCondition Y0 Y1 →\n    ∀ (e hbar m probeEnergy : ℝ),\n      Filter.Tendsto\n        (fun R =>\n          ↑Real.pi *\n              ↑(4 * e ^ 2 / QuantumTheory.planckConstantFromReduced hbar *\n                  (probeEnergy * m * (probeEnergy ^ 2 - m ^ 2) / (probeEnergy ^ 2 + 3 * m ^ 2) ^ 2)) *\n            ∫ (r : ℝ) in 0..R, Complex.besselJ 1 ↑r ^ 2 * (Complex.besselJ 1 ↑r * Y0 r - Complex.besselJ 0 ↑r * Y1 r))\n        Filter.atTop\n        (nhds\n          ↑(4 * e ^ 2 / QuantumTheory.planckConstantFromReduced hbar *\n              (probeEnergy * m * (probeEnergy ^ 2 - m ^ 2) / (probeEnergy ^ 2 + 3 * m ^ 2) ^ 2)))",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -62461,7 +62596,7 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "QuantumTheory.Transport.crossedXBesselWronskian_concreteSeries",
+      "BesselSecondKind.realWronskianCondition_concreteSeries",
       "QuantumTheory.Transport.integral_crossedXBesselIntegrand_eq_endpoints"
     ],
     "crossModuleDirectWrapper": false,
@@ -62502,8 +62637,8 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "QuantumTheory.Models.MassiveDirac.adoCrossedXBesselReference_tendsto_benchmark",
-      "QuantumTheory.Transport.crossedXBesselWronskian_concreteSeries"
+      "BesselSecondKind.realWronskianCondition_concreteSeries",
+      "QuantumTheory.Models.MassiveDirac.adoCrossedXBesselReference_tendsto_benchmark"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -67192,7 +67327,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominator_eq_radial",
-    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.BornDyson.Green",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.BornDyson.Green.Basic",
     "externalAxioms": [],
     "docString": "The model's radial Dyson denominator is the canonical massive-Dirac\nradial polynomial evaluated at the Born-renormalized spectral parameters. ",
     "directWrapperTargetModule": null,
@@ -67318,7 +67453,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominator_zero_disorder",
-    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.BornDyson.Green",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.BornDyson.Green.Basic",
     "externalAxioms": [],
     "docString": "At zero disorder strength the finite-`η` Born-Dyson denominator reduces to the clean Pauli Green\ndenominator. ",
     "directWrapperTargetModule": null,
@@ -70512,7 +70647,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGreenMatrix_polar_eq",
-    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.BornDyson.Green",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.BornDyson.Green.Basic",
     "externalAxioms": [],
     "docString": "Matrix-valued polar Born-Dyson Green identity, shared by momentum-space spinor\nrotation and the full-angle real-space Fourier constructions. ",
     "directWrapperTargetModule": null,
@@ -70601,7 +70736,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGreenOperator_polar_eq",
-    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.BornDyson.Green",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.BornDyson.Green.Basic",
     "externalAxioms": [],
     "docString": "The Cartesian finite-`η` Born-Dyson propagator reduces exactly to the shared polar Pauli form. ",
     "directWrapperTargetModule": null,
@@ -70649,7 +70784,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGreenOperator_zero_disorder",
-    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.BornDyson.Green",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.BornDyson.Green.Basic",
     "externalAxioms": [],
     "docString": "At zero disorder strength the finite-`η` Born-Dyson propagator candidate is exactly the clean\nmassive-Dirac Pauli Green operator. ",
     "directWrapperTargetModule": null,
@@ -72161,7 +72296,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadial_ra_scalar_sub_z_product_eq",
-    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.BornDyson.Green",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.BornDyson.Green.RadialPauli",
     "externalAxioms": [],
     "docString": "At fixed finite broadening and cutoff, the radial RA scalar-minus-mass\ncoefficient product has the common physical Dyson denominator. This is a\npointwise algebraic identity; no denominator nonvanishing or regulator limit\nis assumed. ",
     "directWrapperTargetModule": null,
@@ -72252,7 +72387,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadial_ra_x_product_eq",
-    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.BornDyson.Green",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.BornDyson.Green.RadialPauli",
     "externalAxioms": [],
     "docString": "The radial RA in-plane Pauli product has the same common Dyson\ndenominator and its numerator is the squared Dirac momentum. ",
     "directWrapperTargetModule": null,
@@ -72674,7 +72809,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct_eq_mul",
-    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.BornDyson.Green",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.BornDyson.Green.Basic",
     "externalAxioms": [],
     "docString": "The shared radial RA product is exactly the product of the radial retarded and advanced\nfinite-`η` Born-Dyson denominators. ",
     "directWrapperTargetModule": null,
@@ -98393,7 +98528,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (Y0 Y1 : ℝ → ℂ),\n  QuantumTheory.Transport.CrossedXBesselWronskian Y0 Y1 →\n    ∀ (r : ℝ),\n      Complex.besselJ 1 ↑r ^ 2 * (Complex.besselJ 1 ↑r * Y0 r - Complex.besselJ 0 ↑r * Y1 r) =\n        ↑(2 / Real.pi) * (Complex.besselJ 1 ↑r ^ 2 / ↑r)",
+    "statement": "∀ (Y0 Y1 : ℝ → ℂ),\n  BesselSecondKind.RealWronskianCondition Y0 Y1 →\n    ∀ (r : ℝ),\n      Complex.besselJ 1 ↑r ^ 2 * (Complex.besselJ 1 ↑r * Y0 r - Complex.besselJ 0 ↑r * Y1 r) =\n        ↑(2 / Real.pi) * (Complex.besselJ 1 ↑r ^ 2 / ↑r)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -98421,52 +98556,6 @@
       "QuantumTheory.Transport.integral_crossedXBesselIntegrand_eq_endpoints"
     ],
     "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "QuantumTheory.Transport.CrossedXBesselWronskian (fun r => BesselSecondKind.besselY0Series ↑r) fun r =>\n  BesselSecondKind.besselY1Series ↑r",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.crossedXBesselWronskian_concreteSeries",
-    "module": "LeanCondensedMatter.Transport.Analysis.BesselCrossedXMoment",
-    "externalAxioms": [],
-    "docString": "No abstract Y₀/Y₁ Wronskian premise is required for the\nspecific convergent Bessel-Y implementations used in the\nGaussian crossed-X reference moment. ",
-    "directWrapperTargetModule": "LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.AnalyticWronskian",
-    "directWrapperOf": "BesselSecondKind.besselY0Y1Series_wronskian",
-    "dependents": [
-      "QuantumTheory.Models.MassiveDirac.adoCrossedXConcreteBesselReference_integral_eq_endpoints",
-      "QuantumTheory.Models.MassiveDirac.adoCrossedXConcreteBesselReference_tendsto_benchmark"
-    ],
-    "dependencies": [
-      "BesselSecondKind.besselY0Y1Series_wronskian"
-    ],
-    "crossModuleDirectWrapper": true,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Models.MassiveDirac.adoCrossedXConcreteBesselReference_integral_eq_endpoints",
-      "QuantumTheory.Models.MassiveDirac.adoCrossedXConcreteBesselReference_tendsto_benchmark"
-    ],
-    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -99523,7 +99612,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (Y0 Y1 : ℝ → ℂ),\n  QuantumTheory.Transport.CrossedXBesselWronskian Y0 Y1 →\n    ∀ (R : ℝ),\n      ∫ (r : ℝ) in 0..R, Complex.besselJ 1 ↑r ^ 2 * (Complex.besselJ 1 ↑r * Y0 r - Complex.besselJ 0 ↑r * Y1 r) =\n        ↑(2 / Real.pi) * ((1 - (Complex.besselJ 0 ↑R ^ 2 + Complex.besselJ 1 ↑R ^ 2)) / 2)",
+    "statement": "∀ (Y0 Y1 : ℝ → ℂ),\n  BesselSecondKind.RealWronskianCondition Y0 Y1 →\n    ∀ (R : ℝ),\n      ∫ (r : ℝ) in 0..R, Complex.besselJ 1 ↑r ^ 2 * (Complex.besselJ 1 ↑r * Y0 r - Complex.besselJ 0 ↑r * Y1 r) =\n        ↑(2 / Real.pi) * ((1 - (Complex.besselJ 0 ↑R ^ 2 + Complex.besselJ 1 ↑R ^ 2)) / 2)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -103905,7 +103994,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (Y0 Y1 : ℝ → ℂ),\n  QuantumTheory.Transport.CrossedXBesselWronskian Y0 Y1 →\n    Filter.Tendsto\n      (fun R =>\n        ∫ (r : ℝ) in 0..R, Complex.besselJ 1 ↑r ^ 2 * (Complex.besselJ 1 ↑r * Y0 r - Complex.besselJ 0 ↑r * Y1 r))\n      Filter.atTop (nhds (↑(2 / Real.pi) * (1 / 2)))",
+    "statement": "∀ (Y0 Y1 : ℝ → ℂ),\n  BesselSecondKind.RealWronskianCondition Y0 Y1 →\n    Filter.Tendsto\n      (fun R =>\n        ∫ (r : ℝ) in 0..R, Complex.besselJ 1 ↑r ^ 2 * (Complex.besselJ 1 ↑r * Y0 r - Complex.besselJ 0 ↑r * Y1 r))\n      Filter.atTop (nhds (↑(2 / Real.pi) * (1 / 2)))",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -103951,7 +104040,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (Y0 Y1 : ℝ → ℂ),\n  QuantumTheory.Transport.CrossedXBesselWronskian Y0 Y1 →\n    Filter.Tendsto\n      (fun R =>\n        ∫ (r : ℝ) in 0..R, Complex.besselJ 1 ↑r ^ 2 * (Complex.besselJ 1 ↑r * Y0 r - Complex.besselJ 0 ↑r * Y1 r))\n      Filter.atTop (nhds ↑(1 / Real.pi))",
+    "statement": "∀ (Y0 Y1 : ℝ → ℂ),\n  BesselSecondKind.RealWronskianCondition Y0 Y1 →\n    Filter.Tendsto\n      (fun R =>\n        ∫ (r : ℝ) in 0..R, Complex.besselJ 1 ↑r ^ 2 * (Complex.besselJ 1 ↑r * Y0 r - Complex.besselJ 0 ↑r * Y1 r))\n      Filter.atTop (nhds ↑(1 / Real.pi))",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -112485,7 +112574,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": false,
+    "terminal": true,
     "statement": "∀ {Mode : Type u_1} (i : Mode),\n  (SecondQuantization.Bosonic.completedAnnihilate i).adjoint = SecondQuantization.Bosonic.completedCreate i",
     "standardAxioms": [
       "Classical.choice",
@@ -112493,7 +112582,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -112501,25 +112590,20 @@
     "name": "SecondQuantization.Bosonic.completedAnnihilate_adjoint_eq_completedCreate",
     "module": "LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.LadderAnalytic",
     "externalAxioms": [],
-    "docString": "The adjoint of completed annihilation is exactly completed creation. ",
+    "docString": "The adjoint of completed annihilation is completed creation, by double adjunction. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Bosonic.completedCreate_isClosed"
-    ],
+    "dependents": [],
     "dependencies": [
-      "SecondQuantization.Bosonic.completedAnnihilate_denseDomain",
-      "SecondQuantization.Bosonic.completedCreate_apply",
-      "SecondQuantization.Bosonic.completedCreate_isFormalAdjoint_completedAnnihilate",
-      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.LadderAnalytic.0.SecondQuantization.Bosonic.completedAnnihilate_adjoint_apply",
-      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.LadderAnalytic.0.SecondQuantization.Bosonic.completedAnnihilate_adjoint_domain_le_createDomain"
+      "LinearPMap.adjoint_adjoint_eq_of_isClosed",
+      "SecondQuantization.Bosonic.completedCreate_adjoint_eq_completedAnnihilate",
+      "SecondQuantization.Bosonic.completedCreate_denseDomain",
+      "SecondQuantization.Bosonic.completedCreate_isClosed"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Bosonic.completedCreate_isClosed"
-    ],
-    "compiledConsumerCount": 1,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -112595,7 +112679,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": true,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -112607,8 +112691,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Bosonic.completedAnnihilate_comp_algebraicCore",
-      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.LadderAnalytic.0.SecondQuantization.Bosonic.completedAnnihilate_adjoint_apply"
+      "SecondQuantization.Bosonic.completedAnnihilate_comp_algebraicCore"
     ],
     "dependencies": [
       "SecondQuantization.Bosonic.createOccupation_injective",
@@ -112619,10 +112702,9 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Bosonic.completedAnnihilate_comp_algebraicCore",
-      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.LadderAnalytic.0.SecondQuantization.Bosonic.completedAnnihilate_adjoint_apply"
+      "SecondQuantization.Bosonic.completedAnnihilate_comp_algebraicCore"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -112684,7 +112766,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": false,
+    "terminal": true,
     "statement": "∀ {Mode : Type u_1} (i : Mode), Dense ↑(SecondQuantization.Bosonic.completedAnnihilate i).domain",
     "standardAxioms": [
       "Classical.choice",
@@ -112703,22 +112785,14 @@
     "docString": "The completed annihilation operator is densely defined. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Bosonic.completedAnnihilate_adjoint_eq_completedCreate",
-      "SecondQuantization.Bosonic.completedCreate_isClosed",
-      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.LadderAnalytic.0.SecondQuantization.Bosonic.completedAnnihilate_adjoint_apply"
-    ],
+    "dependents": [],
     "dependencies": [
       "SecondQuantization.Common.completedDiagonalOperator_denseDomain"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Bosonic.completedAnnihilate_adjoint_eq_completedCreate",
-      "SecondQuantization.Bosonic.completedCreate_isClosed",
-      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.LadderAnalytic.0.SecondQuantization.Bosonic.completedAnnihilate_adjoint_apply"
-    ],
-    "compiledConsumerCount": 3,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -112834,7 +112908,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -112846,8 +112920,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Bosonic.completedAnnihilate_comp_algebraicCore",
-      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.LadderAnalytic.0.SecondQuantization.Bosonic.completedAnnihilate_adjoint_apply"
+      "SecondQuantization.Bosonic.completedAnnihilate_comp_algebraicCore"
     ],
     "dependencies": [
       "SecondQuantization.Common.completedBasisState_mem_completedDiagonalDomain"
@@ -112855,10 +112928,9 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Bosonic.completedAnnihilate_comp_algebraicCore",
-      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.LadderAnalytic.0.SecondQuantization.Bosonic.completedAnnihilate_adjoint_apply"
+      "SecondQuantization.Bosonic.completedAnnihilate_comp_algebraicCore"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -113017,7 +113089,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -113029,6 +113101,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "SecondQuantization.Bosonic.completedAnnihilate_adjoint_eq_completedCreate",
       "SecondQuantization.Bosonic.completedAnnihilate_isClosed"
     ],
     "dependencies": [
@@ -113041,9 +113114,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "SecondQuantization.Bosonic.completedAnnihilate_adjoint_eq_completedCreate",
       "SecondQuantization.Bosonic.completedAnnihilate_isClosed"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -113078,7 +113152,6 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Bosonic.completedAnnihilateAfterCreate_eq_id_add_numberOperator",
-      "SecondQuantization.Bosonic.completedAnnihilate_adjoint_eq_completedCreate",
       "SecondQuantization.Bosonic.completedCreateAfterAnnihilate_eq_numberOperator",
       "SecondQuantization.Bosonic.completedCreate_mem_completedAnnihilateDomain_of_mem_completedNumberOperatorDomain",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.ProductDomain.0.SecondQuantization.Bosonic.mem_completedNumberOperatorDomain_of_create_mem_annihilateDomain"
@@ -113094,12 +113167,11 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Bosonic.completedAnnihilateAfterCreate_eq_id_add_numberOperator",
-      "SecondQuantization.Bosonic.completedAnnihilate_adjoint_eq_completedCreate",
       "SecondQuantization.Bosonic.completedCreateAfterAnnihilate_eq_numberOperator",
       "SecondQuantization.Bosonic.completedCreate_mem_completedAnnihilateDomain_of_mem_completedNumberOperatorDomain",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.ProductDomain.0.SecondQuantization.Bosonic.mem_completedNumberOperatorDomain_of_create_mem_annihilateDomain"
     ],
-    "compiledConsumerCount": 5,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -113229,6 +113301,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "SecondQuantization.Bosonic.completedAnnihilate_adjoint_eq_completedCreate",
       "SecondQuantization.Bosonic.completedAnnihilate_isClosed",
       "SecondQuantization.Bosonic.completedCreate_adjoint_eq_completedAnnihilate",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.LadderAnalytic.0.SecondQuantization.Bosonic.completedCreate_adjoint_apply"
@@ -113239,11 +113312,12 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "SecondQuantization.Bosonic.completedAnnihilate_adjoint_eq_completedCreate",
       "SecondQuantization.Bosonic.completedAnnihilate_isClosed",
       "SecondQuantization.Bosonic.completedCreate_adjoint_eq_completedAnnihilate",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.LadderAnalytic.0.SecondQuantization.Bosonic.completedCreate_adjoint_apply"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -113257,7 +113331,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ {Mode : Type u_1} (i : Mode), (SecondQuantization.Bosonic.completedCreate i).IsClosed",
     "standardAxioms": [
       "Classical.choice",
@@ -113265,7 +113339,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -113273,18 +113347,22 @@
     "name": "SecondQuantization.Bosonic.completedCreate_isClosed",
     "module": "LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.LadderAnalytic",
     "externalAxioms": [],
-    "docString": "Completed bosonic creation is closed on its maximal weighted-shift domain. ",
+    "docString": "Completed bosonic creation is closed: its graph is the image of the closed\ndiagonal-operator graph under an isometric coordinate embedding. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "SecondQuantization.Bosonic.completedAnnihilate_adjoint_eq_completedCreate"
+    ],
     "dependencies": [
-      "SecondQuantization.Bosonic.completedAnnihilate_adjoint_eq_completedCreate",
-      "SecondQuantization.Bosonic.completedAnnihilate_denseDomain"
+      "SecondQuantization.Bosonic.createOccupation_injective",
+      "SecondQuantization.Common.completedDiagonalOperator_isClosed"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "SecondQuantization.Bosonic.completedAnnihilate_adjoint_eq_completedCreate"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -113306,7 +113384,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -113318,7 +113396,6 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Bosonic.completedAnnihilate_adjoint_eq_completedCreate",
       "SecondQuantization.Bosonic.completedCreate_adjoint_eq_completedAnnihilate"
     ],
     "dependencies": [
@@ -113330,10 +113407,9 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Bosonic.completedAnnihilate_adjoint_eq_completedCreate",
       "SecondQuantization.Bosonic.completedCreate_adjoint_eq_completedAnnihilate"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -114161,7 +114237,6 @@
       "_private.LeanCondensedMatter.Models.HolsteinPrimakoff.0.Models.HolsteinPrimakoff.spinPlus_spinMinus_basisState",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.LadderTraceCyclicity.0.SecondQuantization.Bosonic.annihilate_apply_coord",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.LadderTraceCyclicity.0.SecondQuantization.Bosonic.create_apply_coord",
-      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.LadderAnalytic.0.SecondQuantization.Bosonic.completedAnnihilate_adjoint_domain_le_createDomain",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.LadderAnalytic.0.SecondQuantization.Bosonic.completedCoordinatePullback_mem_completedCreateDomain",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.LadderAnalytic.0.SecondQuantization.Bosonic.completedCreateDiagonal_pullback_eq",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.ProductDomain.0.SecondQuantization.Bosonic.mem_completedNumberOperatorDomain_of_create_mem_annihilateDomain",
@@ -114189,7 +114264,6 @@
       "_private.LeanCondensedMatter.Models.HolsteinPrimakoff.0.Models.HolsteinPrimakoff.spinPlus_spinMinus_basisState",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.LadderTraceCyclicity.0.SecondQuantization.Bosonic.annihilate_apply_coord",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.LadderTraceCyclicity.0.SecondQuantization.Bosonic.create_apply_coord",
-      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.LadderAnalytic.0.SecondQuantization.Bosonic.completedAnnihilate_adjoint_domain_le_createDomain",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.LadderAnalytic.0.SecondQuantization.Bosonic.completedCoordinatePullback_mem_completedCreateDomain",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.LadderAnalytic.0.SecondQuantization.Bosonic.completedCreateDiagonal_pullback_eq",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.ProductDomain.0.SecondQuantization.Bosonic.mem_completedNumberOperatorDomain_of_create_mem_annihilateDomain",
@@ -114197,7 +114271,7 @@
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.TwoPoint.0.SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_comp_create_mul_matrixCoeff_annihilate_of_ne",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.TwoPoint.0.SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_comp_create_removeOccupation"
     ],
-    "compiledConsumerCount": 23,
+    "compiledConsumerCount": 22,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -114280,9 +114354,9 @@
       "SecondQuantization.Bosonic.completedAnnihilate_mem_completedCreateDomain_of_mem_completedNumberOperatorDomain",
       "SecondQuantization.Bosonic.completedCreate_apply",
       "SecondQuantization.Bosonic.completedCreate_basisState",
+      "SecondQuantization.Bosonic.completedCreate_isClosed",
       "SecondQuantization.Bosonic.completedCreate_isFormalAdjoint_completedAnnihilate",
       "SecondQuantization.Bosonic.completedCreate_mem_completedAnnihilateDomain_of_mem_completedNumberOperatorDomain",
-      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.LadderAnalytic.0.SecondQuantization.Bosonic.completedAnnihilate_adjoint_domain_le_createDomain",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.LadderAnalytic.0.SecondQuantization.Bosonic.completedCoordinatePullback_mem_completedCreateDomain",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.LadderAnalytic.0.SecondQuantization.Bosonic.completedCreateDiagonal_pullback_eq",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.LadderAnalytic.0.SecondQuantization.Bosonic.completedCreate_adjoint_domain_le_annihilateDomain",
@@ -114302,9 +114376,9 @@
       "SecondQuantization.Bosonic.completedCreate",
       "SecondQuantization.Bosonic.completedCreate_apply",
       "SecondQuantization.Bosonic.completedCreate_basisState",
+      "SecondQuantization.Bosonic.completedCreate_isClosed",
       "SecondQuantization.Bosonic.completedCreate_isFormalAdjoint_completedAnnihilate",
       "SecondQuantization.Bosonic.completedCreate_mem_completedAnnihilateDomain_of_mem_completedNumberOperatorDomain",
-      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.LadderAnalytic.0.SecondQuantization.Bosonic.completedAnnihilate_adjoint_domain_le_createDomain",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.LadderAnalytic.0.SecondQuantization.Bosonic.completedCoordinatePullback_mem_completedCreateDomain",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.LadderAnalytic.0.SecondQuantization.Bosonic.completedCreateDiagonal_pullback_eq",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.LadderAnalytic.0.SecondQuantization.Bosonic.completedCreate_adjoint_domain_le_annihilateDomain",
@@ -117709,7 +117783,6 @@
       "_private.LeanCondensedMatter.Models.HolsteinPrimakoff.0.Models.HolsteinPrimakoff.spinPlus_spinMinus_basisState",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.LadderTraceCyclicity.0.SecondQuantization.Bosonic.annihilate_apply_coord",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.LadderTraceCyclicity.0.SecondQuantization.Bosonic.create_apply_coord",
-      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.LadderAnalytic.0.SecondQuantization.Bosonic.completedAnnihilate_adjoint_domain_le_createDomain",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.ProductDomain.0.SecondQuantization.Bosonic.mem_completedNumberOperatorDomain_of_create_mem_annihilateDomain"
     ],
     "dependencies": [
@@ -117730,10 +117803,9 @@
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.LadderTraceCyclicity.0.SecondQuantization.Bosonic.annihilate_apply_coord",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.LadderTraceCyclicity.0.SecondQuantization.Bosonic.createOccupationEquivPositive",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.LadderTraceCyclicity.0.SecondQuantization.Bosonic.create_apply_coord",
-      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.LadderAnalytic.0.SecondQuantization.Bosonic.completedAnnihilate_adjoint_domain_le_createDomain",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.ProductDomain.0.SecondQuantization.Bosonic.mem_completedNumberOperatorDomain_of_create_mem_annihilateDomain"
     ],
-    "compiledConsumerCount": 11,
+    "compiledConsumerCount": 10,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -131394,50 +131466,6 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": false,
-    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel N S),\n  d.vertexGraph.Preconnected → d.IsExternallyConnected",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.TwoPointDiagram.isExternallyConnected_of_preconnected",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.Diagram",
-    "externalAxioms": [],
-    "docString": "Global preconnectedness implies connectedness relative to the two external vertices. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.TwoPointDiagram.preconnected_iff_isExternallyConnected"
-    ],
-    "dependencies": [
-      "SecondQuantization.Common.hasNoVacuumComponent_of_preconnected"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.TwoPointDiagram.preconnected_iff_isExternallyConnected"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
     "terminal": true,
     "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel N S)\n  (earlier later cut leg : Fin (2 * (2 * S.card + 1))),\n  cut = earlier ∨ cut = later → d.IsInteriorLeg earlier later leg → leg ≠ d.intervalFacingLeg earlier later cut",
     "standardAxioms": [
@@ -133065,7 +133093,7 @@
     ],
     "dependencies": [
       "SecondQuantization.Common.TwoPointDiagram.externalVerticesConnected",
-      "SecondQuantization.Common.TwoPointDiagram.isExternallyConnected_of_preconnected",
+      "SecondQuantization.Common.hasNoVacuumComponent_of_preconnected",
       "SecondQuantization.Common.preconnected_iff_hasNoVacuumComponent_and_allExternalVerticesConnected"
     ],
     "crossModuleDirectWrapper": false,
@@ -136999,7 +137027,6 @@
       "SecondQuantization.Common.completedCoordinatePullback_basisState_of_image",
       "SecondQuantization.Common.completedCoordinatePullback_basisState_of_not_mem",
       "SecondQuantization.Common.inner_completedBasisState_coordinatePullback_comp",
-      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.LadderAnalytic.0.SecondQuantization.Bosonic.completedAnnihilate_adjoint_domain_le_createDomain",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.LadderAnalytic.0.SecondQuantization.Bosonic.completedCoordinatePullback_mem_completedCreateDomain",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.LadderAnalytic.0.SecondQuantization.Bosonic.completedCreateDiagonal_pullback_eq",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.ProductDomain.0.SecondQuantization.Bosonic.mem_completedNumberOperatorDomain_of_create_mem_annihilateDomain"
@@ -137016,12 +137043,11 @@
       "SecondQuantization.Common.completedCoordinatePullback_basisState_of_image",
       "SecondQuantization.Common.completedCoordinatePullback_basisState_of_not_mem",
       "SecondQuantization.Common.inner_completedBasisState_coordinatePullback_comp",
-      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.LadderAnalytic.0.SecondQuantization.Bosonic.completedAnnihilate_adjoint_domain_le_createDomain",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.LadderAnalytic.0.SecondQuantization.Bosonic.completedCoordinatePullback_mem_completedCreateDomain",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.LadderAnalytic.0.SecondQuantization.Bosonic.completedCreateDiagonal_pullback_eq",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.ProductDomain.0.SecondQuantization.Bosonic.mem_completedNumberOperatorDomain_of_create_mem_annihilateDomain"
     ],
-    "compiledConsumerCount": 9,
+    "compiledConsumerCount": 8,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -137605,7 +137631,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ {Config : Type u_1} (w : Config → ℂ), (SecondQuantization.Common.completedDiagonalOperator w).IsClosed",
     "standardAxioms": [
       "Classical.choice",
@@ -137613,7 +137639,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -137624,15 +137650,19 @@
     "docString": "A maximal diagonal multiplication operator is closed for an arbitrary complex weight. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "SecondQuantization.Bosonic.completedCreate_isClosed"
+    ],
     "dependencies": [
       "SecondQuantization.Common.completedDiagonalOperator_apply",
       "SecondQuantization.Common.mem_completedDiagonalDomain_iff"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "SecondQuantization.Bosonic.completedCreate_isClosed"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -144571,14 +144601,14 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Common.TwoPointDiagram.isExternallyConnected_of_preconnected",
+      "SecondQuantization.Common.TwoPointDiagram.preconnected_iff_isExternallyConnected",
       "SecondQuantization.Common.preconnected_iff_hasNoVacuumComponent_and_allExternalVerticesConnected"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Common.TwoPointDiagram.isExternallyConnected_of_preconnected",
+      "SecondQuantization.Common.TwoPointDiagram.preconnected_iff_isExternallyConnected",
       "SecondQuantization.Common.preconnected_iff_hasNoVacuumComponent_and_allExternalVerticesConnected"
     ],
     "compiledConsumerCount": 2,
@@ -146777,7 +146807,6 @@
       "SecondQuantization.Common.completedDiagonalOperator_adjoint_eq",
       "SecondQuantization.Common.completedDiagonalOperator_isClosed",
       "SecondQuantization.Common.mem_completedDiagonalDomain_add_const",
-      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.LadderAnalytic.0.SecondQuantization.Bosonic.completedAnnihilate_adjoint_domain_le_createDomain",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.LadderAnalytic.0.SecondQuantization.Bosonic.completedCoordinatePullback_mem_completedCreateDomain",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.LadderAnalytic.0.SecondQuantization.Bosonic.completedCreate_adjoint_domain_le_annihilateDomain",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.ProductDomain.0.SecondQuantization.Bosonic.completedNumberOperatorDomain_le_weightDomain",
@@ -146795,7 +146824,6 @@
       "SecondQuantization.Common.completedDiagonalOperator_adjoint_eq",
       "SecondQuantization.Common.completedDiagonalOperator_isClosed",
       "SecondQuantization.Common.mem_completedDiagonalDomain_add_const",
-      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.LadderAnalytic.0.SecondQuantization.Bosonic.completedAnnihilate_adjoint_domain_le_createDomain",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.LadderAnalytic.0.SecondQuantization.Bosonic.completedCoordinatePullback_mem_completedCreateDomain",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.LadderAnalytic.0.SecondQuantization.Bosonic.completedCreate_adjoint_domain_le_annihilateDomain",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.ProductDomain.0.SecondQuantization.Bosonic.completedNumberOperatorDomain_le_weightDomain",
@@ -146803,7 +146831,7 @@
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.ProductDomain.0.SecondQuantization.Bosonic.mem_completedNumberOperatorDomain_of_create_mem_annihilateDomain",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.ProductDomain.0.SecondQuantization.Fermionic.mem_completedFreeHamiltonianDomain_of_toggle_bound"
     ],
-    "compiledConsumerCount": 13,
+    "compiledConsumerCount": 12,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -178617,6 +178645,50 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [CompleteSpace H]\n  (g : Submodule ℂ (H × H)), IsClosed ↑g → g.adjoint.adjoint = g",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.Adjoint.0.Submodule.adjoint_adjoint_eq_of_isClosed",
+    "module": "LeanCondensedMatter.Analysis.Operator.Unbounded.Adjoint",
+    "externalAxioms": [],
+    "docString": "A closed linear subspace of the product Hilbert space equals its double graph-adjoint. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "LinearPMap.adjoint_adjoint_eq_of_isClosed",
+      "LinearPMap.adjoint_denseDomain_of_isClosed"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "LinearPMap.adjoint_adjoint_eq_of_isClosed",
+      "LinearPMap.adjoint_denseDomain_of_isClosed"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (z : ℂ) (hz : z.im ≠ 0) (y : H),\n  ‖(A.nonrealShiftLinearEquiv hA z hz).symm y‖ ≤ |z.im|⁻¹ * ‖y‖",
     "standardAxioms": [
       "Classical.choice",
@@ -195111,8 +195183,8 @@
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -195124,7 +195196,6 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.LadderAnalytic.0.SecondQuantization.Bosonic.completedAnnihilate_adjoint_apply",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.LadderAnalytic.0.SecondQuantization.Bosonic.completedCreate_adjoint_apply"
     ],
     "dependencies": [
@@ -195133,106 +195204,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.LadderAnalytic.0.SecondQuantization.Bosonic.completedAnnihilate_adjoint_apply",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.LadderAnalytic.0.SecondQuantization.Bosonic.completedCreate_adjoint_apply"
-    ],
-    "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Mode : Type u_1} (i : Mode) (y : ↥(SecondQuantization.Bosonic.completedAnnihilate i).adjoint.domain)\n  (n : SecondQuantization.Bosonic.Occupation Mode),\n  ↑(↑(SecondQuantization.Bosonic.completedAnnihilate i).adjoint y) n =\n    ↑√↑(n i) * ↑↑y (SecondQuantization.Bosonic.removeOccupation i n)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.LadderAnalytic.0.SecondQuantization.Bosonic.completedAnnihilate_adjoint_apply",
-    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.LadderAnalytic",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Bosonic.completedAnnihilate_adjoint_eq_completedCreate",
-      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.LadderAnalytic.0.SecondQuantization.Bosonic.completedAnnihilate_adjoint_domain_le_createDomain"
-    ],
-    "dependencies": [
-      "SecondQuantization.Bosonic.completedAnnihilate_basisState",
-      "SecondQuantization.Bosonic.completedAnnihilate_denseDomain",
-      "SecondQuantization.Bosonic.completedBasisState_mem_completedAnnihilateDomain",
-      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.LadderAnalytic.0.SecondQuantization.Bosonic.adjoint_apply_of_basisState"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Bosonic.completedAnnihilate_adjoint_eq_completedCreate",
-      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.LadderAnalytic.0.SecondQuantization.Bosonic.completedAnnihilate_adjoint_domain_le_createDomain"
-    ],
-    "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Mode : Type u_1} (i : Mode),\n  (SecondQuantization.Bosonic.completedAnnihilate i).adjoint.domain ≤ SecondQuantization.Bosonic.completedCreateDomain i",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.LadderAnalytic.0.SecondQuantization.Bosonic.completedAnnihilate_adjoint_domain_le_createDomain",
-    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.LadderAnalytic",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Bosonic.completedAnnihilate_adjoint_eq_completedCreate"
-    ],
-    "dependencies": [
-      "SecondQuantization.Bosonic.createOccupation_apply_same",
-      "SecondQuantization.Bosonic.createOccupation_injective",
-      "SecondQuantization.Bosonic.removeOccupation_createOccupation",
-      "SecondQuantization.Common.completedCoordinatePullback_apply",
-      "SecondQuantization.Common.mem_completedDiagonalDomain_iff",
-      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.LadderAnalytic.0.SecondQuantization.Bosonic.completedAnnihilate_adjoint_apply"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Bosonic.completedAnnihilate_adjoint_eq_completedCreate"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
