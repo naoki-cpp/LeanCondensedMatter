@@ -179,6 +179,46 @@ theorem ExternalInsertionDiagram.assembleInteractionOrder_eq_canonicalRelabel
   rw [← hbase]
   exact hrelab.symm
 
+/-- The owner of an ambient canonical interaction slot under the
+canonical component shuffle is precisely its *actual graph component*.
+This is the ownership identity needed to compare a physical owner
+assignment with the graph-component shuffle, without modifying any
+local vertex numbering. -/
+theorem ExternalInsertionDiagram.canonicalComponentInteractionShuffle_owner
+    {S : Finset (Fin N)}
+    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
+    (v : Fin S.card) :
+    (d.canonicalComponentInteractionShuffle.slotEquiv.symm v).1 =
+      (interactionSectorComponentEquiv d.vertexGraph
+        ((S.orderIsoOfFin rfl).toEquiv v)).1 := by
+  classical
+  let σ := d.canonicalComponentInteractionShuffle
+  let order : QuarticVertexOrder S := (S.orderIsoOfFin rfl).toEquiv
+  have hglobal : d.assembleInteractionOrder
+      d.canonicalComponentInteractionOrders σ = order := by
+    simpa [σ, order, FamilySlotShuffleTo.ambientRelabel] using
+      d.assembleInteractionOrder_eq_canonicalRelabel σ
+  rcases hslot : σ.slotEquiv.symm v with ⟨C, j⟩
+  have hback : σ.slotEquiv ⟨C, j⟩ = v := by
+    calc
+      σ.slotEquiv ⟨C, j⟩ = σ.slotEquiv (σ.slotEquiv.symm v) :=
+        congrArg σ.slotEquiv hslot.symm
+      _ = v := σ.slotEquiv.apply_symm_apply v
+  have hlocal := d.assembleInteractionOrder_symm_apply
+    d.canonicalComponentInteractionOrders σ C j
+  rw [hglobal, hback] at hlocal
+  have hvertex :
+      order v = (interactionSectorComponentEquiv d.vertexGraph).symm
+        ⟨C, d.canonicalComponentInteractionOrders C j⟩ := by
+    apply Subtype.ext
+    have h := congrArg order hlocal
+    simpa only [Equiv.apply_symm_apply] using h.symm
+  have howner :
+      (interactionSectorComponentEquiv d.vertexGraph (order v)).1 = C := by
+    rw [hvertex]
+    simp
+  simpa only [hslot] using howner.symm
+
 /-- A vacuum-free diagram's total interaction order is the sum of the local
 interaction orders indexed by *external partition blocks*.
 
