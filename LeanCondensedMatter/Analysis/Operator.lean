@@ -1,5 +1,7 @@
 import LeanCondensedMatter.Analysis.Operator.BoundedUnitaryEvolution
-import LeanCondensedMatter.Analysis.Operator.Unbounded
+import LeanCondensedMatter.Analysis.Operator.Unbounded.Adjoint
+import LeanCondensedMatter.Analysis.Operator.Unbounded.Composition
+import LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution
 import LeanCondensedMatter.Analysis.Operator.Spectral.ComplexEigenvectorFamily
 import LeanCondensedMatter.Analysis.Operator.Spectral.EigenvectorFamily
 import LeanCondensedMatter.Analysis.Operator.Spectral.Resolvent
