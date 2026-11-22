@@ -242,6 +242,7 @@ private theorem familyOrder_eq_of_strictMono {total : ℕ} (size : ι → ℕ)
   have h₂ := ambientEquiv.symm.injective h₁
   exact eq_of_heq (Sigma.mk.inj_iff.mp h₂).2
 
+omit [Fintype ι] [Fintype α] in
 /-- The canonical local orders extracted from a global order are
 uniquely characterized by increasing ambient positions. This makes
 the decomposition reusable for physical component shuffles without
@@ -330,27 +331,6 @@ noncomputable def familyOrderDecompositionEquiv {total : ℕ}
     (Fin total ≃ α) ≃
       FamilyOrders F × FamilySlotShuffleTo (fun i => Fintype.card (F i)) total :=
   familyOrderDecompositionEquivOfSize F (fun i => Fintype.card (F i)) (fun _ => rfl) ambientEquiv
-
-/-- The canonical increasing enumeration of the ambient positions owned
-by one family block is exactly its slot map in the order-preserving
-shuffle. This identifies the local order used by component Dyson
-integrals with the local order already contained in a physical owner
-shuffle, including zero-size blocks. -/
-theorem FamilySlotShuffleTo.orderEmbOfFin_ownerFiber
-    {ι : Type*} {size : ι → ℕ} {total : ℕ}
-    (σ : FamilySlotShuffleTo size total) (i : ι) :
-    let s := (Finset.univ : Finset (Fin (size i))).image
-      (fun j => σ.slotEquiv ⟨i, j⟩)
-    ∀ (h : s.card = size i) (j : Fin (size i)),
-      ((s.orderEmbOfFin h) j : Fin total) = σ.slotEquiv ⟨i, j⟩ := by
-  classical
-  intro s h j
-  have hmem (k : Fin (size i)) : σ.slotEquiv ⟨i, k⟩ ∈ s :=
-    Finset.mem_image.mpr ⟨k, Finset.mem_univ _, rfl⟩
-  have hunique := Finset.orderEmbOfFin_unique
-    (s := s) (h := h) (f := fun k : Fin (size i) => σ.slotEquiv ⟨i, k⟩)
-    hmem (σ.strictMono i)
-  exact (congrFun hunique j).symm
 
 /-- An order-preserving family shuffle is uniquely determined by the
 ambient owner of each slot. Indeed, each block is necessarily enumerated
