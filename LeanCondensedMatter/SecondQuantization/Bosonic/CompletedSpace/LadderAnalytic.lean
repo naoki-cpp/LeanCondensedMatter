@@ -1,4 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.Ladder
+import LeanCondensedMatter.Analysis.Operator.Unbounded.Adjoint
 import LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.DiagonalAnalytic
 import Mathlib.Analysis.InnerProductSpace.LinearPMap
 
@@ -190,57 +191,49 @@ theorem completedCreate_adjoint_eq_completedAnnihilate (i : Mode) :
       (completedCreate_isFormalAdjoint_completedAnnihilate i).le_adjoint
         (completedCreate_denseDomain i)
 
-private theorem completedAnnihilate_adjoint_apply
-    (i : Mode) (y : (completedAnnihilate i).adjoint.domain) (n : Occupation Mode) :
-    (completedAnnihilate i).adjoint y n =
-      (Real.sqrt (n i : ℝ) : ℂ) *
-        (y : CompletedFockSpace Mode) (removeOccupation i n) := by
-  simpa using
-    (adjoint_apply_of_basisState (completedAnnihilate i) (completedAnnihilate_denseDomain i)
-      (removeOccupation i) (fun n => (Real.sqrt (n i : ℝ) : ℂ))
-      (fun n => completedBasisState_mem_completedAnnihilateDomain i n)
-      (fun n => completedAnnihilate_basisState i n _) y n)
-
-private theorem completedAnnihilate_adjoint_domain_le_createDomain (i : Mode) :
-    (completedAnnihilate i).adjoint.domain ≤ completedCreateDomain i := by
-  intro y hy
-  rw [Common.mem_completedDiagonalDomain_iff]
-  let yAdj : (completedAnnihilate i).adjoint.domain := ⟨y, hy⟩
-  have hmem :=
-    lp.memℓp
-      (Common.completedCoordinatePullback
-        (createOccupation i) (createOccupation_injective i)
-        ((completedAnnihilate i).adjoint yAdj))
-  convert hmem using 1
-  funext n
-  rw [Common.completedCoordinatePullback_apply,
-    completedAnnihilate_adjoint_apply,
-    createOccupation_apply_same,
-    removeOccupation_createOccupation,
-    Nat.cast_add, Nat.cast_one]
-
-/-- The adjoint of completed annihilation is exactly completed creation. -/
-theorem completedAnnihilate_adjoint_eq_completedCreate (i : Mode) :
-    (completedAnnihilate i).adjoint = completedCreate i := by
-  apply le_antisymm
-  · refine ⟨completedAnnihilate_adjoint_domain_le_createDomain i, ?_⟩
-    intro x y hxy
-    ext n
-    rw [completedAnnihilate_adjoint_apply, completedCreate_apply]
-    by_cases hni : n i = 0
-    · rw [ite_eq_left hni, hni]
-      simp
-    · rw [ite_eq_right hni]
-      rw [hxy]
-  · exact
-      ((completedCreate_isFormalAdjoint_completedAnnihilate i).symm).le_adjoint
-        (completedAnnihilate_denseDomain i)
-
-/-- Completed bosonic creation is closed on its maximal weighted-shift domain. -/
+/-- Completed bosonic creation is closed: its graph is the image of the closed
+diagonal-operator graph under an isometric coordinate embedding. -/
 theorem completedCreate_isClosed (i : Mode) :
     (completedCreate i).IsClosed := by
-  rw [← completedAnnihilate_adjoint_eq_completedCreate i]
-  exact LinearPMap.adjoint_isClosed (completedAnnihilate_denseDomain i)
+  let D := Common.completedDiagonalOperator
+    (fun n : Occupation Mode => (Real.sqrt (n i + 1 : ℝ) : ℂ))
+  let J := Common.completedCoordinateEmbedding
+    (createOccupation i) (createOccupation_injective i)
+  let f : (CompletedFockSpace Mode × CompletedFockSpace Mode) →
+      CompletedFockSpace Mode × CompletedFockSpace Mode :=
+    Prod.map id J
+  have hf : Isometry f := by
+    exact (isometry_id :
+      Isometry (id : CompletedFockSpace Mode → CompletedFockSpace Mode)).prodMap J.isometry
+  have hgraph :
+      ((completedCreate i).graph : Set
+        (CompletedFockSpace Mode × CompletedFockSpace Mode)) =
+        f '' (D.graph : Set (CompletedFockSpace Mode × CompletedFockSpace Mode)) := by
+    ext z
+    constructor
+    · intro hz
+      obtain ⟨x, hx⟩ := ((completedCreate i).mem_graph_iff').1 hz
+      refine ⟨((x : CompletedFockSpace Mode), D x), ?_, ?_⟩
+      · exact (D.mem_graph_iff').2 ⟨x, rfl⟩
+      · change ((x : CompletedFockSpace Mode), J (D x)) = z
+        exact hx
+    · rintro ⟨p, hp, rfl⟩
+      obtain ⟨x, hx⟩ := (D.mem_graph_iff').1 hp
+      apply ((completedCreate i).mem_graph_iff').2
+      refine ⟨x, ?_⟩
+      change ((x : CompletedFockSpace Mode), J (D x)) = f p
+      rw [← hx]
+      rfl
+  rw [LinearPMap.IsClosed, hgraph]
+  exact hf.isClosedEmbedding.isClosedMap _
+    (Common.completedDiagonalOperator_isClosed _)
+
+/-- The adjoint of completed annihilation is completed creation, by double adjunction. -/
+theorem completedAnnihilate_adjoint_eq_completedCreate (i : Mode) :
+    (completedAnnihilate i).adjoint = completedCreate i := by
+  rw [← completedCreate_adjoint_eq_completedAnnihilate i]
+  exact (completedCreate i).adjoint_adjoint_eq_of_isClosed
+    (completedCreate_denseDomain i) (completedCreate_isClosed i)
 
 /-- Completed bosonic annihilation is closed on its maximal weighted-shift domain. -/
 theorem completedAnnihilate_isClosed (i : Mode) :
