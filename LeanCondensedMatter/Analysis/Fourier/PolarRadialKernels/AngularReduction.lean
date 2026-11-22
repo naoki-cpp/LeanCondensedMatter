@@ -98,26 +98,6 @@ theorem integral_polarFourierRadialPhase_harmonicCoefficients
       simp [polarFourierZerothAngularKernel, polarFourierFirstCosineAngularKernel,
         polarFourierSecondCosineAngularKernel]
 
-/-- Full-angle reduction for a scalar field containing only constant and first sine/cosine
-harmonics. The sine harmonic drops out on the radial axis, leaving the zeroth and first-cosine
-kernels that later become the `J₀` and `J₁` channels. -/
-theorem integral_polarFourierRadialPhase_first_harmonics
-    (z p : ℝ) (a b c : ℂ) :
-    (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi),
-      ((p : ℂ) * polarFourierRadialPhase z θ) *
-        (a + ((Real.cos θ : ℝ) : ℂ) * b + ((Real.sin θ : ℝ) : ℂ) * c)) =
-      (p : ℂ) *
-        (polarFourierZerothAngularKernel z * a +
-          polarFourierFirstCosineAngularKernel z * b) := by
-  let coefficients : AngularHarmonicCoefficients ℂ :=
-    { constant := a
-      firstCosine := b
-      firstSine := c
-      secondCosine := 0
-      secondMixed := 0 }
-  simpa [coefficients, AngularHarmonicCoefficients.eval, smul_eq_mul] using
-    integral_polarFourierRadialPhase_harmonicCoefficients coefficients z p
-
 private theorem integral_polarFourierRadialPhase_shifted_second_harmonics
     (z p angle : ℝ) (a b c d e : ℂ) :
     (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi),
