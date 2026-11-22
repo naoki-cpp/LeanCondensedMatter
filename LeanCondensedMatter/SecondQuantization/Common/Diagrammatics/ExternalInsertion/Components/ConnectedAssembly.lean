@@ -218,7 +218,7 @@ theorem ExternalInsertionBlockLayout.assembleConnectedBlockFamily_injective
         (layoutY.assembleDiagram (Finset.univ : Finset (Fin N)) FY).externalBlockLayout
           (layoutY.hasNoVacuumComponent_assembleDiagram
             (Finset.univ : Finset (Fin N)) FY hY) anchor :=
-    by cases hdiagram; rfl
+    ExternalInsertionDiagram.externalBlockLayout_congr hdiagram _ _ anchor
   have hlayout : layoutX = layoutY := by
     calc
       layoutX =
