@@ -201,7 +201,7 @@ theorem hasDerivAt_integral_polarFourierFirstCosineAngularKernel
       _ = (1 / 2 : ℝ) *
           ‖polarFourierZerothAngularKernel z +
             polarFourierSecondCosineAngularKernel z‖ := by
-          simp [norm_mul, norm_div, Complex.norm_I]
+          simp [Complex.norm_I]
       _ ≤ (1 / 2 : ℝ) *
           (‖polarFourierZerothAngularKernel z‖ +
             ‖polarFourierSecondCosineAngularKernel z‖) := by
