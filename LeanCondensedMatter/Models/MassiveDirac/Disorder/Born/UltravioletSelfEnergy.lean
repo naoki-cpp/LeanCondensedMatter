@@ -107,16 +107,10 @@ theorem tendsto_finiteCutoffContinuumBornEffectiveEnergy_shift_normalized_re_atB
           (((disorderStrength * fullAngleMomentumMeasurePrefactor hbar : ℝ) : ℂ) *
             bornSelfEnergyChannelWeight .scalar side m probeEnergy broadening)).re)
       atTop atBot := by
-  have h :=
-    tendsto_finiteCutoffContinuumBornSelfEnergyCoefficient_normalized_re_atBot
+  simpa [finiteCutoffContinuumBornEffectiveEnergy] using
+    (tendsto_finiteCutoffContinuumBornSelfEnergyCoefficient_normalized_re_atBot
       .scalar side v m probeEnergy broadening disorderStrength hbar
-      hv henergy hbroadening hfactor
-  convert h using 1
-  funext pMax
-  congr 1
-  congr 1
-  unfold finiteCutoffContinuumBornEffectiveEnergy
-  ring
+      hv henergy hbroadening hfactor)
 
 /-- The mass channel shifts the Dyson effective Dirac mass by the same
 ultraviolet-divergent Born coefficient, with the channel factor removed. -/
@@ -134,16 +128,10 @@ theorem tendsto_finiteCutoffContinuumBornEffectiveMass_shift_normalized_re_atBot
           (((disorderStrength * fullAngleMomentumMeasurePrefactor hbar : ℝ) : ℂ) *
             bornSelfEnergyChannelWeight .z side m probeEnergy broadening)).re)
       atTop atBot := by
-  have h :=
-    tendsto_finiteCutoffContinuumBornSelfEnergyCoefficient_normalized_re_atBot
+  simpa [finiteCutoffContinuumBornEffectiveMass] using
+    (tendsto_finiteCutoffContinuumBornSelfEnergyCoefficient_normalized_re_atBot
       .z side v m probeEnergy broadening disorderStrength hbar
-      hv henergy hbroadening hfactor
-  convert h using 1
-  funext pMax
-  congr 1
-  congr 1
-  unfold finiteCutoffContinuumBornEffectiveMass
-  ring
+      hv henergy hbroadening hfactor)
 
 /-- The scalar and z components of the finite-cutoff Born self-energy
 have exactly the same radial logarithm. Their numerators are therefore
