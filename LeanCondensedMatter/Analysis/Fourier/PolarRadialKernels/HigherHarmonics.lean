@@ -44,8 +44,9 @@ theorem polarFourierFirstCosineAngularKernel_eq_besselJ (z : ℝ) :
   rw [hfun] at hJ
   have hderiv := (polarFourierZerothAngularKernel_hasDerivAt z).unique hJ
   have hI : (-Complex.I) * Complex.I = (1 : ℂ) := by
-    rw [neg_mul, ← pow_two, Complex.I_sq]
-    ring
+    calc
+      _ = -(Complex.I ^ 2) := by ring
+      _ = 1 := by rw [Complex.I_sq]; ring
   calc
     polarFourierFirstCosineAngularKernel z =
         (-Complex.I) * (Complex.I * polarFourierFirstCosineAngularKernel z) := by
