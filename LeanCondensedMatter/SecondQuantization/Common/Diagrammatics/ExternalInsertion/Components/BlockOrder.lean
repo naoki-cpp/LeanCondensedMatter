@@ -69,7 +69,7 @@ theorem ExternalInsertionDiagram.physicalBlockInteractionShuffleEquiv_ambientRel
     funext P
     exact (congrArg Finset.card
       (d.externalBlockLayout_interactionBlock hVac anchor P)).symm
-  let rename := FamilySlotShuffleTo.reindexEquiv e.symm f
+  let rename := FamilySlotShuffleTo.reindexEquiv (total := S.card) e.symm f
   let cast : FamilySlotShuffleTo (fun P => f (e.symm P)) S.card ≃
       FamilySlotShuffleTo g S.card :=
     Equiv.cast (congrArg (fun s => FamilySlotShuffleTo s S.card) hfg)
@@ -106,7 +106,7 @@ theorem ExternalInsertionDiagram.physicalBlockInteractionShuffleEquiv_owner
     funext P
     exact (congrArg Finset.card
       (d.externalBlockLayout_interactionBlock hVac anchor P)).symm
-  let rename := FamilySlotShuffleTo.reindexEquiv e.symm f
+  let rename := FamilySlotShuffleTo.reindexEquiv (total := S.card) e.symm f
   let cast : FamilySlotShuffleTo (fun P => f (e.symm P)) S.card ≃
       FamilySlotShuffleTo g S.card :=
     Equiv.cast (congrArg (fun s => FamilySlotShuffleTo s S.card) hfg)
