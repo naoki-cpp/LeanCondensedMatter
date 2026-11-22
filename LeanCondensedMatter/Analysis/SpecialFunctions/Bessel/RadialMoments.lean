@@ -1,26 +1,27 @@
 import LeanCondensedMatter.Analysis.ODE.RadialEnergyDecay
-import LeanCondensedMatter.Transport.Analysis.PolarFourier
+import LeanCondensedMatter.Analysis.Fourier.PolarRadialKernels
 import Mathlib.Analysis.Calculus.Deriv.MeanValue
 
 set_option linter.style.header false
 
 /-!
-# Radial Bessel moments from the polar Fourier kernel
+# Radial Bessel moments and Fourier–Bessel decay
 
-This module owns the analytic radial-moment calculations needed after polar
-angular Fourier reduction: finite-interval Bessel-square integrals, the
+This mathematical module proves radial-moment identities using the angular
+Fourier–Bessel kernels in Analysis: finite-interval Bessel-square integrals, the
 radial first-order system, an elementary Lyapunov decay bound, and the
 large-radius limit of the J₁²/r moment.
 
-The upstream `PolarFourier` module retains the canonical angular kernels
-and their differential/recurrence identities. This module does not alter
+The upstream `Analysis.Fourier.PolarRadialKernels` module owns the canonical angular
+kernels and their differential/recurrence identities. This module does not alter
 any physical momentum normalization, propagator, disorder approximation,
 or regulator prescription. Its final theorem is a limit of finite interval
 integrals, not an assertion about a regulated crossed diagram.
 -/
 
-namespace QuantumTheory
-namespace Transport
+namespace BesselRadialMoments
+
+open QuantumTheory.Transport
 
 noncomputable section
 
@@ -326,5 +327,4 @@ theorem tendsto_integral_besselJ_one_sq_div :
 
 end
 
-end Transport
-end QuantumTheory
+end BesselRadialMoments
