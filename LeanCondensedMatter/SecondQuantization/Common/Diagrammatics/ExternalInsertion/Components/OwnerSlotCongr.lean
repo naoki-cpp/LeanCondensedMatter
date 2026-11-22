@@ -186,6 +186,43 @@ noncomputable def ExternalInsertionBlockLayout.fixedPartitionPhysicalFixedSizeEq
   exact (Equiv.subtypeEquiv e (q := fun p => p.1.1 = size)
     (fun _ => Iff.rfl)).trans slice
 
+/-- In a physically assembled preconnected block family, the owner
+of a canonical component-shuffle slot is the owner of the *same
+physical interaction vertex* under the reference family shuffle.
+The equality is stated on underlying external subsets, avoiding
+an artificial identification of distinct dependent partition types. -/
+theorem ExternalInsertionBlockLayout.ofFamilyShuffle_assembledCanonicalOwner
+    {ExternalLabel InternalLabel : Type*}
+    (π : Finpartition (Finset.univ : Finset (Fin (2 * E))))
+    (heven : ∀ B : π.parts, Even (B : Finset (Fin (2 * E))).card)
+    {size : π.parts → ℕ}
+    (σ : FamilySlotShuffleTo size N)
+    (F : (ExternalInsertionBlockLayout.ofFamilyShuffle π heven σ).ConnectedBlockFamily
+      (ExternalLabel := ExternalLabel) (InternalLabel := InternalLabel))
+    (anchor : Fin (2 * E))
+    (v : Fin (Finset.univ : Finset (Fin N)).card) :
+    let layout := ExternalInsertionBlockLayout.ofFamilyShuffle π heven σ
+    let d := layout.assembleDiagram (Finset.univ : Finset (Fin N)) F.1
+    let hVac := layout.hasNoVacuumComponent_assembleDiagram
+      (Finset.univ : Finset (Fin N)) F.1 F.2
+    ((d.vacuumFreeComponentsEquivExternalBlocks hVac
+        (d.canonicalComponentInteractionShuffle.slotEquiv.symm v).1 :
+      (externalComponentPartition d.vertexGraph).parts) : Finset (Fin (2 * E))) =
+      ((σ.slotEquiv.symm
+        (((Finset.univ : Finset (Fin N)).orderIsoOfFin rfl).toEquiv v).1).1 :
+        Finset (Fin (2 * E))) := by
+  classical
+  let layout := ExternalInsertionBlockLayout.ofFamilyShuffle π heven σ
+  let d := layout.assembleDiagram (Finset.univ : Finset (Fin N)) F.1
+  let hVac := layout.hasNoVacuumComponent_assembleDiagram
+    (Finset.univ : Finset (Fin N)) F.1 F.2
+  have ho := d.canonicalComponentInteractionShuffle_physicalOwner hVac anchor v
+  have hLayout : d.externalBlockLayout hVac anchor = layout :=
+    layout.externalBlockLayout_assembleDiagram_eq F.1 F.2 anchor
+  have hv := congrArg Subtype.val ho
+  rw [hLayout] at hv
+  exact hv
+
 /-- Switching a fixed-size physical owner shuffle is exactly
 transporting the interaction owner function by the ambient permutation.
 The external source partition remains literally the same. -/
