@@ -7,12 +7,8 @@ set_option linter.style.header false
 /-!
 # Isotropic angular scattering means
 
-The single-particle angular mean integrates an arbitrary real scattering weight over a
-full circle. The transport mean includes the current-relaxation factor `1 - cos θ`.
-For affine cosine weights `a + b cos θ`, the means are `a` and `a - b/2`.
-
-These angular identities do not assume a Hamiltonian, impurity model, Born prefactor,
-weight positivity, or a relaxation-time approximation.
+Normalized full-circle scattering means, with or without the transport factor
+`1 - cos θ`. Affine-cosine identities require no Hamiltonian or impurity model.
 -/
 
 namespace QuantumTheory.Transport
@@ -38,8 +34,7 @@ theorem isotropicSingleParticleAngularMean_affineCosine (a b : ℝ) :
   have hmean := integral_quadratic_cos_zero_two_pi a b 0
   simp only [zero_mul, add_zero] at hmean
   rw [hmean]
-  have hpi : Real.pi ≠ 0 := ne_of_gt Real.pi_pos
-  field_simp [hpi]
+  field_simp [ne_of_gt Real.pi_pos]
   ring
 
 /-- A first cosine harmonic subtracts `b/2` from the transport mean. -/
@@ -54,8 +49,7 @@ theorem isotropicTransportAngularMean_affineCosine (a b : ℝ) :
     funext θ
     ring
   rw [hrewrite, integral_quadratic_cos_zero_two_pi]
-  have hpi : Real.pi ≠ 0 := ne_of_gt Real.pi_pos
-  field_simp [hpi]
+  field_simp [ne_of_gt Real.pi_pos]
   ring
 
 end
