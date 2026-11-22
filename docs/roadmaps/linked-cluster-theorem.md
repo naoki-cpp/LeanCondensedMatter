@@ -118,9 +118,12 @@ insertions and higher-point source consumers give it independent semantics.
 
 ## Low-order identities
 
-The explicit order-`1`, order-`2`, and order-`3` formal-log formulas are the generic theorems in
-`Analysis/PowerSeries/LowOrderLog.lean`, applied to the normalized fermionic Dyson trace series.
-They are illustrated in [the low-order example](../examples/fermionic-lct-low-order.md).
+The order-`1`, order-`2`, and order-`3` formal-log formulas follow from
+`PowerSeries.coeff_one_logOf` and the generic
+`Combinatorics.powerSeriesMomentCoeff_succ_recurrence` in `Analysis/PowerSeries/`.
+Their specializations to the normalized fermionic Dyson trace series are illustrated in
+[the low-order example](../examples/fermionic-lct-low-order.md); no dedicated low-order theorem
+or module is maintained.
 Connected-diagram and analytic low-order statements follow by specializing the canonical
 general formal and analytic endpoints.
 

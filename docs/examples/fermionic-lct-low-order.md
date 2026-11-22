@@ -2,8 +2,8 @@
 
 The finite-mode fermionic Linked Cluster Theorem is available for every nonzero perturbation order.
 The orders `1`, `2`, and `3` make the factorial and disconnected-subtraction conventions readable
-without unfolding the general moment-cumulant machinery. The explicit identities below are examples
-of generic power-series theorems, not separate fermionic diagrammatic API declarations.
+without unfolding the general moment-cumulant machinery. The explicit identities below are low-order consequences of the generic moment–cumulant
+recurrence, not separate exported low-order or fermionic diagrammatic declarations.
 
 Write
 
@@ -23,14 +23,15 @@ The first identity fixes the normalization. The second displays cancellation of 
 single-vertex components. The third displays both one-plus-two decompositions and the partition into
 three singletons.
 
-The generic, kernel-checked first-order formula is `PowerSeries.coeff_one_logOf` in
-`Analysis/PowerSeries/Normalization.lean`. The second- and third-order formulas are
-`Combinatorics.factorial_mul_coeff_logOf_two_eq` and
-`Combinatorics.factorial_mul_coeff_logOf_three_eq` in
-`Analysis/PowerSeries/LowOrderLog.lean`.
-They apply directly to the normalized fermionic `Common.dysonTraceSeries`, whose constant coefficient
-is one by `PowerSeries.constantCoeff_normalizeByConstantCoeff` and
-`Common.constantCoeff_dysonTraceSeries_ne_zero`. No specialized fermionic wrappers are maintained.
+The first-order identity is the kernel-checked `PowerSeries.coeff_one_logOf` in
+`Analysis/PowerSeries/Normalization.lean`. The second- and third-order identities are
+algebraic specializations of the kernel-checked
+`Combinatorics.powerSeriesMomentCoeff_succ_recurrence` in
+`Analysis/PowerSeries/MomentCumulantRecurrence.lean`; the displayed equations are not
+dedicated Lean theorem declarations. The recurrence applies to the normalized fermionic
+`Common.dysonTraceSeries`, whose constant coefficient is one by
+`PowerSeries.constantCoeff_normalizeByConstantCoeff` and
+`Common.constantCoeff_dysonTraceSeries_ne_zero`.
 
 Connected-diagram statements at orders `1`, `2`, and `3` are obtained by specializing the
 general fermionic linked-cluster theorem. Analytic low-order statements similarly follow by

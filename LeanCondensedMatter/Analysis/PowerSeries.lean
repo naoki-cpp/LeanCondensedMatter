@@ -15,8 +15,8 @@ Public package boundary for the reusable formal power-series workflow used by
 linked-cluster and thermal consumers. It exports constant-coefficient normalization,
 factorial-normalized finite-set moments, formal-log derivative identities, and the finite-set cumulant
 bridge, together with coefficientwise complex sums and their convergence-sensitive algebraic laws.
-Consumers who need order-specific logarithm formulas can import
-`Analysis.PowerSeries.LowOrderLog`.
+Specializing the generic moment–cumulant recurrence gives low-order logarithm formulas without
+requiring separate order-specific theorems.
 
 Coefficientwise complex sums keep explicit summability hypotheses for addition, subtraction, and
 Cauchy multiplication. Constant multiplication and multiplication by X hold for the total sum;
