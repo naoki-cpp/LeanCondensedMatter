@@ -25,7 +25,7 @@ open scoped Matrix
 variable {ι R : Type*} [Fintype ι] [CommRing R]
 
 /-- Coordinate squared norm, defined as an ordinary finite dot product. -/
-def normSq (k : ι → R) : ℝ := (k ⬝ᵥ k)
+def normSq (k : ι → R) : R := (k ⬝ᵥ k)
 
 /-- The unnormalized rank-one longitudinal matrix `k kᵀ`. -/
 def outer (k : ι → R) : Matrix ι ι R := Matrix.vecMulVec k k
