@@ -28,28 +28,6 @@ noncomputable section
 open MeasureTheory
 open scoped Interval ComplexConjugate
 
-/-- The first-harmonic radial product has an exact finite-interval primitive.
-This is the finite-radius endpoint identity needed before an improper
-Bessel-square integral and its regulator limits can be established. -/
-theorem integral_polarFourierHarmonicEnergy (a b : ℝ) :
-    (∫ z in a..b,
-      Complex.I * polarFourierFirstCosineAngularKernel z *
-        (polarFourierZerothAngularKernel z -
-          polarFourierSecondCosineAngularKernel z)) =
-      (polarFourierZerothAngularKernel b ^ 2 -
-        polarFourierFirstCosineAngularKernel b ^ 2) -
-      (polarFourierZerothAngularKernel a ^ 2 -
-        polarFourierFirstCosineAngularKernel a ^ 2) := by
-  have hint : IntervalIntegrable (fun z : ℝ =>
-      Complex.I * polarFourierFirstCosineAngularKernel z *
-        (polarFourierZerothAngularKernel z -
-          polarFourierSecondCosineAngularKernel z)) volume a b :=
-    ((continuous_const.mul continuous_polarFourierFirstCosineAngularKernel).mul
-      (continuous_polarFourierZerothAngularKernel.sub
-        continuous_polarFourierSecondCosineAngularKernel)).intervalIntegrable a b
-  exact intervalIntegral.integral_eq_sub_of_hasDerivAt
-    (fun z _ => polarFourierHarmonicEnergy_hasDerivAt z) hint
-
 /-- The Fourier normalization of the squared J₀/J₁ energy, shared by the
 finite-interval moment and its large-radius limit. -/
 private theorem polarFourierHarmonicEnergy_eq_besselJ (r : ℝ) :
@@ -117,7 +95,24 @@ theorem integral_besselJ_one_sq_div (a b : ℝ) :
     apply intervalIntegral.integral_congr
     intro z _
     exact hpoint z
-  have hftc := integral_polarFourierHarmonicEnergy a b
+  have hftc :
+    (∫ z in a..b,
+      Complex.I * polarFourierFirstCosineAngularKernel z *
+        (polarFourierZerothAngularKernel z -
+          polarFourierSecondCosineAngularKernel z)) =
+      (polarFourierZerothAngularKernel b ^ 2 -
+        polarFourierFirstCosineAngularKernel b ^ 2) -
+      (polarFourierZerothAngularKernel a ^ 2 -
+        polarFourierFirstCosineAngularKernel a ^ 2) := by
+    have hint : IntervalIntegrable (fun z : ℝ =>
+        Complex.I * polarFourierFirstCosineAngularKernel z *
+          (polarFourierZerothAngularKernel z -
+            polarFourierSecondCosineAngularKernel z)) volume a b :=
+      ((continuous_const.mul continuous_polarFourierFirstCosineAngularKernel).mul
+        (continuous_polarFourierZerothAngularKernel.sub
+          continuous_polarFourierSecondCosineAngularKernel)).intervalIntegrable a b
+    exact intervalIntegral.integral_eq_sub_of_hasDerivAt
+      (fun z _ => polarFourierHarmonicEnergy_hasDerivAt z) hint
   rw [hLin, hbridge b, hbridge a] at hftc
   have hc2 : c ^ 2 ≠ 0 := pow_ne_zero 2 hc
   have hfactor :
