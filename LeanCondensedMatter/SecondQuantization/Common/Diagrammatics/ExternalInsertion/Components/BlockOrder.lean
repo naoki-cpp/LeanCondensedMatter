@@ -46,6 +46,79 @@ noncomputable def ExternalInsertionDiagram.physicalBlockInteractionShuffleEquiv
   exact (d.vacuumFreeExternalBlockInteractionShuffleEquiv hVac).trans
     (Equiv.cast (congrArg (fun s => FamilySlotShuffleTo s S.card) hfg))
 
+/-- Reindexing component shuffles by the *actual physical* external
+blocks preserves the ambient interaction-time permutation between any
+two interleavings. No local order or numerical time is changed. -/
+theorem ExternalInsertionDiagram.physicalBlockInteractionShuffleEquiv_ambientRelabel
+    {ExternalLabel InternalLabel : Type*} {S : Finset (Fin N)}
+    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
+    (hVac : HasNoVacuumComponent d.vertexGraph)
+    (anchor : Fin (2 * E))
+    (ρ τ : d.ComponentInteractionOrderShuffle) :
+    ((d.physicalBlockInteractionShuffleEquiv hVac anchor) ρ).ambientRelabel
+        ((d.physicalBlockInteractionShuffleEquiv hVac anchor) τ) =
+      ρ.ambientRelabel τ := by
+  classical
+  let e := d.vacuumFreeComponentsEquivExternalBlocks hVac
+  let f : d.vertexGraph.componentPartition.parts → ℕ :=
+    fun C => (interactionSector
+      (C : Finset (ExternalInsertionVertex E S))).card
+  let g : (externalComponentPartition d.vertexGraph).parts → ℕ :=
+    fun P => ((d.externalBlockLayout hVac anchor).interactionBlock S P).card
+  have hfg : (fun P => f (e.symm P)) = g := by
+    funext P
+    exact (congrArg Finset.card
+      (d.externalBlockLayout_interactionBlock hVac anchor P)).symm
+  let rename := FamilySlotShuffleTo.reindexEquiv e.symm f
+  let cast : FamilySlotShuffleTo (fun P => f (e.symm P)) S.card ≃
+      FamilySlotShuffleTo g S.card :=
+    Equiv.cast (congrArg (fun s => FamilySlotShuffleTo s S.card) hfg)
+  have hcast :
+      ((cast (rename ρ)).ambientRelabel (cast (rename τ))) =
+        (rename ρ).ambientRelabel (rename τ) := by
+    cases hfg
+    rfl
+  calc
+    _ = (rename ρ).ambientRelabel (rename τ) := by
+      change (cast (rename ρ)).ambientRelabel (cast (rename τ)) = _
+      exact hcast
+    _ = _ := FamilySlotShuffleTo.reindexEquiv_ambientRelabel e.symm f ρ τ
+
+/-- The actual physical owner of an ambient slot in a component shuffle
+is the external-partition block of the graph component owning that slot. -/
+theorem ExternalInsertionDiagram.physicalBlockInteractionShuffleEquiv_owner
+    {ExternalLabel InternalLabel : Type*} {S : Finset (Fin N)}
+    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
+    (hVac : HasNoVacuumComponent d.vertexGraph)
+    (anchor : Fin (2 * E))
+    (ρ : d.ComponentInteractionOrderShuffle) (v : Fin S.card) :
+    (((d.physicalBlockInteractionShuffleEquiv hVac anchor) ρ).slotEquiv.symm v).1 =
+      d.vacuumFreeComponentsEquivExternalBlocks hVac
+        (ρ.slotEquiv.symm v).1 := by
+  classical
+  let e := d.vacuumFreeComponentsEquivExternalBlocks hVac
+  let f : d.vertexGraph.componentPartition.parts → ℕ :=
+    fun C => (interactionSector
+      (C : Finset (ExternalInsertionVertex E S))).card
+  let g : (externalComponentPartition d.vertexGraph).parts → ℕ :=
+    fun P => ((d.externalBlockLayout hVac anchor).interactionBlock S P).card
+  have hfg : (fun P => f (e.symm P)) = g := by
+    funext P
+    exact (congrArg Finset.card
+      (d.externalBlockLayout_interactionBlock hVac anchor P)).symm
+  let rename := FamilySlotShuffleTo.reindexEquiv e.symm f
+  let cast : FamilySlotShuffleTo (fun P => f (e.symm P)) S.card ≃
+      FamilySlotShuffleTo g S.card :=
+    Equiv.cast (congrArg (fun s => FamilySlotShuffleTo s S.card) hfg)
+  have hcast :
+      ((cast (rename ρ)).slotEquiv.symm v).1 =
+        ((rename ρ).slotEquiv.symm v).1 := by
+    cases hfg
+    rfl
+  change ((cast (rename ρ)).slotEquiv.symm v).1 = _
+  rw [hcast]
+  exact FamilySlotShuffleTo.reindexEquiv_owner e.symm f ρ v
+
 /-- The canonical graph-component shuffle of a vacuum-free physical
 diagram has exactly the interaction owner prescribed by its physical
 external-block layout at each ambient vertex position. -/
