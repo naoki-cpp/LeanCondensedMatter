@@ -847,7 +847,8 @@ theorem ExternalInsertionBlockLayout.ofFamilyShuffle_ownerOrderedDysonOrder
         (((S.orderIsoOfFin rfl).toEquiv v).1)
   rw [hcanon (((e σ).ambientRelabel (e τ)).symm v), hcanon v]
   rw [hperm]
-  simp [Equiv.trans_apply, Fin.castOrderIso]
+  apply Fin.ext
+  rfl
 
 
 end Common
