@@ -1037,39 +1037,6 @@ noncomputable def ExternalInsertionBlockLayout.assemblyEquivBlockRespecting
     apply Subtype.ext
     exact layout.assembleDiagram_restrictBlock S d.1 d.2
 
-/-- The block-assembly equivalence recovers the *exact* original physical
-diagram from the inverse image, rather than only its connected partition. -/
-@[simp]
-theorem ExternalInsertionBlockLayout.assemblyEquivBlockRespecting_apply
-    {ExternalLabel InternalLabel : Type*}
-    (layout : ExternalInsertionBlockLayout E N) (S : Finset (Fin N))
-    (F : ∀ B : layout.partition.parts,
-      ExternalInsertionDiagram ExternalLabel InternalLabel
-        ((B : Finset (Fin (2 * E))).card / 2) N (layout.interactionBlock S B)) :
-    (layout.assemblyEquivBlockRespecting S F).1 = layout.assembleDiagram S F :=
-  rfl
-
-/-- Reindex *any* finite weighted sum of block-respecting physical
-diagrams by their independent local labelled diagrams. This is the
-diagram-pairing sum conversion underlying fixed-order Dyson-fiber sums;
-the integrand can be the physical integrated amplitude itself. -/
-theorem ExternalInsertionBlockLayout.sum_blockRespecting_eq_sum_local
-    {ExternalLabel InternalLabel M : Type*}
-    [Fintype ExternalLabel] [Fintype InternalLabel] [AddCommMonoid M]
-    (layout : ExternalInsertionBlockLayout E N) (S : Finset (Fin N))
-    (weight : ExternalInsertionDiagram ExternalLabel InternalLabel E N S → M) :
-    (∑ d : {d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S //
-        ∀ leg, (layout.legEquiv S (d.pairing.partner leg)).1 =
-          (layout.legEquiv S leg).1}, weight d.1) =
-      ∑ F : ∀ B : layout.partition.parts,
-          ExternalInsertionDiagram ExternalLabel InternalLabel
-            ((B : Finset (Fin (2 * E))).card / 2) N (layout.interactionBlock S B),
-        weight (layout.assembleDiagram S F) := by
-  classical
-  simpa only [layout.assemblyEquivBlockRespecting_apply] using
-    (Equiv.sum_comp (layout.assemblyEquivBlockRespecting S)
-      (fun d => weight d.1)).symm
-
 /-- The assembled diagram has prescribed external field labels exactly
 when every local block carries the induced increasing-order restriction
 of those labels. No relative ordering of the numerical times is used. -/
@@ -1132,47 +1099,6 @@ noncomputable def ExternalInsertionBlockLayout.assemblyEquivBlockRespectingFixed
   right_inv d := by
     apply Subtype.ext
     exact layout.assembleDiagram_restrictBlock S d.1 d.2.1
-
-/-- The fixed-label equivalence preserves the assembled diagram itself. -/
-@[simp]
-theorem ExternalInsertionBlockLayout.assemblyEquivBlockRespectingFixedLabels_apply
-    {ExternalLabel InternalLabel : Type*}
-    (layout : ExternalInsertionBlockLayout E N) (S : Finset (Fin N))
-    (labels : Fin (2 * E) → ExternalLabel)
-    (F : {F : ∀ B : layout.partition.parts,
-      ExternalInsertionDiagram ExternalLabel InternalLabel
-        ((B : Finset (Fin (2 * E))).card / 2) N (layout.interactionBlock S B) //
-      ∀ B : layout.partition.parts,
-        (F B).externalLabel =
-          fun i => labels (layout.sourceEquiv.symm ⟨B, i⟩)}) :
-    (layout.assemblyEquivBlockRespectingFixedLabels S labels F).1 =
-      layout.assembleDiagram S F.1 := rfl
-
-open Classical in
-/-- Finite weighted fixed-external-label diagram sums can be reindexed
-over independently chosen local labels and pairings with those exact
-external field labels. In particular, the weight may be the integrated
-Dyson amplitude at one fixed perturbative order. -/
-theorem ExternalInsertionBlockLayout.sum_blockRespectingFixedLabels_eq_sum_local
-    {ExternalLabel InternalLabel M : Type*}
-    [Fintype ExternalLabel] [Fintype InternalLabel] [AddCommMonoid M]
-    (layout : ExternalInsertionBlockLayout E N) (S : Finset (Fin N))
-    (labels : Fin (2 * E) → ExternalLabel)
-    (weight : ExternalInsertionDiagram ExternalLabel InternalLabel E N S → M) :
-    (∑ d : {d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S //
-      (∀ leg, (layout.legEquiv S (d.pairing.partner leg)).1 =
-        (layout.legEquiv S leg).1) ∧ d.externalLabel = labels}, weight d.1) =
-    ∑ F : {F : ∀ B : layout.partition.parts,
-        ExternalInsertionDiagram ExternalLabel InternalLabel
-          ((B : Finset (Fin (2 * E))).card / 2) N (layout.interactionBlock S B) //
-      ∀ B : layout.partition.parts,
-        (F B).externalLabel =
-          fun i => labels (layout.sourceEquiv.symm ⟨B, i⟩)},
-        weight (layout.assembleDiagram S F.1) := by
-  classical
-  simpa only [layout.assemblyEquivBlockRespectingFixedLabels_apply] using
-    (Equiv.sum_comp (layout.assemblyEquivBlockRespectingFixedLabels S labels)
-      (fun d => weight d.1)).symm
 
 /-- A vacuum-free *physical* external-insertion diagram canonically determines
 an independent external-block layout. For occupied interaction vertices the
