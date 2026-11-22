@@ -113,20 +113,15 @@ theorem tendsto_inPlaneLadderAction
     (hcoefficients : Tendsto coefficients l (nhds coefficients₀)) :
     Tendsto (fun a => inPlaneLadderAction (rung a) (coefficients a)) l
       (nhds (inPlaneLadderAction rung₀ coefficients₀)) := by
-  have hrungMatrix :
-      Tendsto (inPlaneRotationMatrix ∘ rung) l
-        (nhds (inPlaneRotationMatrix rung₀)) :=
-    (continuous_inPlaneRotationMatrix.tendsto rung₀).comp hrung
-  have hmul :
-      Continuous fun p :
-        Matrix (Fin 2) (Fin 2) ℂ × InPlaneCoefficientVector => p.1.mulVec p.2 :=
-    continuous_fst.matrix_mulVec continuous_snd
-  change Tendsto
-    ((fun p : Matrix (Fin 2) (Fin 2) ℂ × InPlaneCoefficientVector => p.1.mulVec p.2) ∘
-      fun a => (inPlaneRotationMatrix (rung a), coefficients a))
-    l (nhds ((inPlaneRotationMatrix rung₀).mulVec coefficients₀))
-  exact (hmul.tendsto (inPlaneRotationMatrix rung₀, coefficients₀)).comp
-    (hrungMatrix.prodMk_nhds hcoefficients)
+  rw [tendsto_pi_nhds]
+  intro direction
+  fin_cases direction
+  · simpa only [Fin.zero_eta, inPlaneLadderAction_apply_x] using
+      ((tendsto_pi_nhds.mp hrung 0).mul (tendsto_pi_nhds.mp hcoefficients 0)).sub
+        ((tendsto_pi_nhds.mp hrung 1).mul (tendsto_pi_nhds.mp hcoefficients 1))
+  · simpa only [Fin.mk_one, inPlaneLadderAction_apply_y] using
+      ((tendsto_pi_nhds.mp hrung 1).mul (tendsto_pi_nhds.mp hcoefficients 0)).add
+        ((tendsto_pi_nhds.mp hrung 0).mul (tendsto_pi_nhds.mp hcoefficients 1))
 
 /-- Integrating the in-plane ladder action against a fixed coefficient vector amounts to
 integrating its rung vector. Integrability and the integral identity share the same hypotheses. -/
@@ -190,11 +185,11 @@ theorem inPlaneLadderShift_isUnit
     apply hmatrix
     simpa only [shift, inPlaneShiftMatrix_mulVec, sub_apply, one_apply_eq_self,
       inPlaneLadderCLM_apply] using h
-  have hsurjective : Function.Surjective shift :=
-    LinearMap.surjective_of_injective (f := shift.toLinearMap) hinjective
   have hunit : IsUnit shift :=
-    ContinuousLinearMap.isUnit_iff_bijective.mpr ⟨hinjective, hsurjective⟩
-  simpa [shift] using hunit
+    ContinuousLinearMap.isUnit_iff_bijective.mpr
+      ⟨hinjective, LinearMap.surjective_of_injective
+        (f := shift.toLinearMap) hinjective⟩
+  simpa only [shift] using hunit
 
 /-- Convergence of rung vectors propagates to the shifted-ladder determinant. -/
 theorem tendsto_inPlaneLadderDeterminant
