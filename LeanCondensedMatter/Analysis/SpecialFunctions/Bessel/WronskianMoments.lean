@@ -72,19 +72,18 @@ theorem integral_wronskianBesselIntegrand_eq_endpoints
         rw [integral_besselJ_one_sq_div]
         simp [Complex.besselJ_zero]
 
-/-- The entire Wronskian-reduced Bessel part of the Bessel radial moment is
-evaluated: the radial-cutoff limit is exactly 1/π.
-
-This statement concerns only the mathematical radial integral; it does
-not identify a regulated physical integral or any disorder limit. -/
-theorem tendsto_integral_wronskianBesselIntegrand
+/-- The Wronskian-weighted Bessel radial integral has universal cutoff
+limit `1/π` for any pair of functions satisfying the normalized real-axis
+Wronskian. This proves a special-function identity, not a physical
+disorder or crossed-diagram limit. -/
+theorem tendsto_integral_wronskianBesselIntegrand_one_div_pi
     (Y0 Y1 : ℝ → ℂ) (hW : RealWronskianCondition Y0 Y1) :
     Filter.Tendsto
       (fun R : ℝ => ∫ r in (0 : ℝ)..R,
         Complex.besselJ 1 (r : ℂ) ^ 2 *
           (Complex.besselJ 1 (r : ℂ) * Y0 r -
             Complex.besselJ 0 (r : ℂ) * Y1 r))
-      Filter.atTop (nhds ((((2 / Real.pi : ℝ) : ℂ)) * (1 / 2 : ℂ))) := by
+      Filter.atTop (nhds (((1 / Real.pi : ℝ) : ℂ))) := by
   have hlimit := (tendsto_integral_besselJ_one_sq_div).const_mul
     (((2 / Real.pi : ℝ) : ℂ))
   have hpoint (R : ℝ) :
@@ -98,26 +97,12 @@ theorem tendsto_integral_wronskianBesselIntegrand
     rw [integral_besselJ_one_sq_div]
     simpa [Complex.besselJ_zero] using
       (integral_wronskianBesselIntegrand_eq_endpoints Y0 Y1 hW R).symm
-  exact hlimit.congr' (Filter.Eventually.of_forall hpoint)
-
-
-/-- The Wronskian-reduced Wronskian-weighted Bessel moment has the exact
-universal limit `1/π`, independently of the concrete Y-Bessel
-implementation, as soon as the Wronskian condition is established. -/
-theorem tendsto_integral_wronskianBesselIntegrand_one_div_pi
-    (Y0 Y1 : ℝ → ℂ) (hW : RealWronskianCondition Y0 Y1) :
-    Filter.Tendsto
-      (fun R : ℝ => ∫ r in (0 : ℝ)..R,
-        Complex.besselJ 1 (r : ℂ) ^ 2 *
-          (Complex.besselJ 1 (r : ℂ) * Y0 r -
-            Complex.besselJ 0 (r : ℂ) * Y1 r))
-      Filter.atTop (nhds (((1 / Real.pi : ℝ) : ℂ))) := by
   have hscale : (((2 / Real.pi : ℝ) : ℂ)) * (1 / 2 : ℂ) =
       ((1 / Real.pi : ℝ) : ℂ) := by
     push_cast
     ring
   simpa only [hscale] using
-    (tendsto_integral_wronskianBesselIntegrand Y0 Y1 hW)
+    hlimit.congr' (Filter.Eventually.of_forall hpoint)
 
 
 end
