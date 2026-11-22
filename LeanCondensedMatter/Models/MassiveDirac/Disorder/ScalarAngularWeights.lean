@@ -7,13 +7,8 @@ set_option linter.style.header false
 /-!
 # Scalar-disorder Fermi-circle angular weights
 
-The massive-Dirac upper-band projector overlap specializes the model-independent
-full-circle scattering means in `Transport.Scattering.IsotropicAngularWeights`.
-The resulting dimensionless angular factors depend on the clean Fermi-circle
-overlap, not the Born disorder strength or scattering-rate normalization.
-
-The microscopic Born rate prefactor and resulting lifetimes are downstream
-in `Disorder.TransportRate`.
+Specialize the Hamiltonian-independent angular means to the upper-band
+projector overlap. Born rate prefactors and lifetimes remain in `TransportRate`.
 -/
 
 namespace QuantumTheory.Models.MassiveDirac
@@ -33,8 +28,7 @@ private theorem upperBandFermiSurfaceScalarOverlapWeight_eq_affineCosine
   unfold upperBandFermiSurfaceScalarOverlapWeight
   ring
 
-/-- Full-circle mean of the upper-band scalar-disorder overlap; the angular factor in the
-single-particle Born rate. -/
+/-- Upper-band overlap factor in the single-particle Born rate. -/
 def isotropicUpperBandSingleParticleAngularWeight
     (v m fermiEnergy : ℝ) : ℝ :=
   isotropicSingleParticleAngularMean
@@ -49,8 +43,7 @@ theorem isotropicUpperBandSingleParticleAngularWeight_eq
   rw [upperBandFermiSurfaceScalarOverlapWeight_eq_affineCosine,
     isotropicSingleParticleAngularMean_affineCosine]
 
-/-- Full-circle transport angular weight. The factor `1 - cos θ` suppresses
-forward scattering because it does not relax the current direction. -/
+/-- Upper-band transport mean, weighted by `1 - cos θ`. -/
 def isotropicUpperBandTransportAngularWeight
     (v m fermiEnergy : ℝ) : ℝ :=
   isotropicTransportAngularMean
