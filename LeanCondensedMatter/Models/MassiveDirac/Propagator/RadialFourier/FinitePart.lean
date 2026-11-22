@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Analysis.Fourier.PolarRadialKernels.HigherHarmonics
 import LeanCondensedMatter.Models.MassiveDirac.Propagator.RadialFourier.QuadraticKernel
 import LeanCondensedMatter.Models.MassiveDirac.Propagator.RadialFourier.UVEstimates
 import Mathlib.Tactic.FunProp

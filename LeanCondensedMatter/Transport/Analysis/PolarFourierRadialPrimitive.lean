@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Analysis.Fourier.PolarRadialKernels.HigherHarmonics
 import LeanCondensedMatter.Transport.Analysis.PolarFourierRadialDerivative
 import Mathlib.Tactic.Ring
 
