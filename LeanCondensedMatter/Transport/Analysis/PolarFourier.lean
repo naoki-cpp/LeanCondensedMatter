@@ -1,5 +1,6 @@
 import LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.HypergeometricSeries
 import LeanCondensedMatter.Analysis.Fourier.AngularHarmonics
+import LeanCondensedMatter.Analysis.Fourier.FullAngleCosineMoments
 import LeanCondensedMatter.Transport.Analysis.ContinuumMeasure
 import LeanCondensedMatter.Transport.Analysis.FourierGeometry
 import Mathlib.Analysis.Calculus.ParametricIntervalIntegral
@@ -115,81 +116,6 @@ noncomputable def polarFourierSecondCosineAngularKernel (z : ℝ) : ℂ :=
     polarFourierRadialPhase z θ *
       ((((Real.cos θ : ℝ) : ℂ) ^ 2) - (((Real.sin θ : ℝ) : ℂ) ^ 2))
 
-/-- The real cosine moment over a full polar revolution. Its explicit even moments
-are the coefficients in the Fourier--Bessel expansion of the zeroth kernel. -/
-noncomputable def polarFourierCosineMoment (n : ℕ) : ℝ :=
-  ∫ θ in (0 : ℝ)..(2 * Real.pi), Real.cos θ ^ n
-
-@[simp] theorem polarFourierCosineMoment_zero :
-    polarFourierCosineMoment 0 = 2 * Real.pi := by
-  simp [polarFourierCosineMoment]
-
-@[simp] theorem polarFourierCosineMoment_one :
-    polarFourierCosineMoment 1 = 0 := by
-  simp [polarFourierCosineMoment]
-
-/-- The full-period cosine moments satisfy the standard reduction formula. -/
-theorem polarFourierCosineMoment_add_two (n : ℕ) :
-    polarFourierCosineMoment (n + 2) =
-      ((n : ℝ) + 1) / ((n : ℝ) + 2) * polarFourierCosineMoment n := by
-  simpa [polarFourierCosineMoment] using
-    (integral_cos_pow (a := (0 : ℝ)) (b := 2 * Real.pi) n)
-
-/-- Closed finite-product formula for every even full-angle cosine moment. -/
-theorem polarFourierCosineMoment_even (n : ℕ) :
-    polarFourierCosineMoment (2 * n) =
-      (2 * Real.pi) *
-        ∏ k ∈ Finset.range n, ((2 * (k : ℝ) + 1) / (2 * (k : ℝ) + 2)) := by
-  induction n with
-  | zero => simp
-  | succ n ih =>
-      have hindex : 2 * (n + 1) = 2 * n + 2 := by omega
-      rw [hindex, polarFourierCosineMoment_add_two, ih, Finset.prod_range_succ]
-      push_cast
-      ring
-
-/-- The even full-angle cosine moment in factorial form, ready for the
-coefficient comparison with Mathlib's regularized hypergeometric Bessel series. -/
-theorem polarFourierCosineMoment_even_factorial (n : ℕ) :
-    polarFourierCosineMoment (2 * n) =
-      (2 * Real.pi) * (Nat.factorial (2 * n) : ℝ) / ((4 : ℝ) ^ n * (Nat.factorial n : ℝ) ^ 2) := by
-  rw [polarFourierCosineMoment_even]
-  have hprod (n : ℕ) :
-      (∏ k ∈ Finset.range n, ((2 * (k : ℝ) + 1) / (2 * (k : ℝ) + 2))) =
-        (Nat.factorial (2 * n) : ℝ) / ((4 : ℝ) ^ n * (Nat.factorial n : ℝ) ^ 2) := by
-    induction n with
-    | zero => norm_num
-    | succ n ih =>
-        have hfac2 :
-            (Nat.factorial (2 * (n + 1)) : ℝ) =
-              (2 * (n : ℝ) + 2) * (2 * (n : ℝ) + 1) * (Nat.factorial (2 * n) : ℝ) := by
-          have hindex : 2 * (n + 1) = (2 * n + 1) + 1 := by omega
-          rw [hindex, Nat.factorial_succ, Nat.factorial_succ]
-          push_cast
-          ring
-        have hfacn : (Nat.factorial (n + 1) : ℝ) = ((n : ℝ) + 1) * (Nat.factorial n : ℝ) := by
-          rw [Nat.factorial_succ]
-          push_cast
-          ring
-        rw [Finset.prod_range_succ, ih, hfac2, hfacn, pow_succ]
-        have hfact : (Nat.factorial n : ℝ) ≠ 0 := by exact_mod_cast Nat.factorial_ne_zero n
-        have hpow : (4 : ℝ) ^ n ≠ 0 := pow_ne_zero _ (by norm_num)
-        have hden : 2 * (n : ℝ) + 2 ≠ 0 := by positivity
-        have hsucc : (n : ℝ) + 1 ≠ 0 := by positivity
-        field_simp [hfact, hpow, hden, hsucc]
-        ring
-  rw [hprod]
-  ring
-
-/-- Every odd full-angle cosine moment vanishes. -/
-@[simp] theorem polarFourierCosineMoment_odd (n : ℕ) :
-    polarFourierCosineMoment (2 * n + 1) = 0 := by
-  induction n with
-  | zero => simpa using polarFourierCosineMoment_one
-  | succ n ih =>
-      have hindex : 2 * (n + 1) + 1 = (2 * n + 1) + 2 := by omega
-      rw [hindex, polarFourierCosineMoment_add_two, ih, mul_zero]
-
 /-- Expand the radial Fourier phase in its exponential series and commute the
 uniformly dominated series with integration over the finite angular interval.
 This is the analytic step in the Fourier--Bessel integral representation. -/
@@ -251,16 +177,16 @@ multiplied by the scalar Fourier coefficient. -/
 theorem polarFourierZerothAngularKernel_eq_tsum_moments (z : ℝ) :
     polarFourierZerothAngularKernel z =
       ∑' n : ℕ, (Complex.I * (z : ℂ)) ^ n / (Nat.factorial n : ℂ) *
-        (polarFourierCosineMoment n : ℂ) := by
+        (fullAngleCosineMoment n : ℂ) := by
   rw [polarFourierZerothAngularKernel_eq_tsum_exp_integrals]
   congr 1
   funext n
   have hcos :
       (∫ θ in (0 : ℝ)..(2 * Real.pi),
         (((Real.cos θ : ℝ) : ℂ) ^ n)) =
-        (polarFourierCosineMoment n : ℂ) := by
+        (fullAngleCosineMoment n : ℂ) := by
     simp only [← Complex.ofReal_pow, intervalIntegral.integral_ofReal,
-      polarFourierCosineMoment]
+      fullAngleCosineMoment]
   have hterm (θ : ℝ) :
       (Complex.I * (((z * Real.cos θ : ℝ) : ℂ))) ^ n /
           (Nat.factorial n : ℂ) =
@@ -289,35 +215,22 @@ theorem polarFourierZerothAngularKernel_eq_tsum_moments (z : ℝ) :
       rw [intervalIntegral.integral_const_mul]
     _ = _ := by rw [hcos]
 
-/-- A full-period cosine moment is bounded by the length of its integration interval. -/
-theorem polarFourierCosineMoment_norm_le (n : ℕ) :
-    ‖polarFourierCosineMoment n‖ ≤ 2 * Real.pi := by
-  have h := intervalIntegral.norm_integral_le_of_norm_le_const
-    (a := (0 : ℝ)) (b := 2 * Real.pi) (C := (1 : ℝ))
-    (f := fun θ : ℝ => Real.cos θ ^ n) (by
-      intro θ _
-      simp only [Real.norm_eq_abs, abs_pow]
-      exact pow_le_one₀ (abs_nonneg _) (Real.abs_cos_le_one θ))
-  simpa only [polarFourierCosineMoment, one_mul, sub_zero,
-    abs_of_nonneg (mul_nonneg (by norm_num : (0 : ℝ) ≤ 2) Real.pi_pos.le)]
-    using h
-
 /-- The moment expansion of the full-angle Fourier kernel is absolutely summable. -/
 theorem polarFourierZerothMoments_summable (z : ℝ) :
     Summable (fun n : ℕ =>
       (Complex.I * (z : ℂ)) ^ n / (Nat.factorial n : ℂ) *
-        (polarFourierCosineMoment n : ℂ)) := by
+        (fullAngleCosineMoment n : ℂ)) := by
   have hs := (Real.summable_pow_div_factorial |z|).mul_left (2 * Real.pi)
   apply Summable.of_norm_bounded hs
   intro n
   have hfact : (0 : ℝ) ≤ (Nat.factorial n : ℝ) := by positivity
   have hpow : (0 : ℝ) ≤ |z| ^ n := pow_nonneg (abs_nonneg z) _
-  have hmoment := polarFourierCosineMoment_norm_le n
+  have hmoment := fullAngleCosineMoment_norm_le n
   calc
     ‖(Complex.I * (z : ℂ)) ^ n / (Nat.factorial n : ℂ) *
-        (polarFourierCosineMoment n : ℂ)‖ =
+        (fullAngleCosineMoment n : ℂ)‖ =
         (|z| ^ n / (Nat.factorial n : ℝ)) *
-          ‖polarFourierCosineMoment n‖ := by
+          ‖fullAngleCosineMoment n‖ := by
       simp only [norm_mul, norm_div, norm_pow, Complex.norm_I,
         Complex.norm_real, Complex.norm_natCast, Real.norm_eq_abs,
         one_mul]
@@ -329,13 +242,13 @@ theorem polarFourierZerothMoments_summable (z : ℝ) :
 coefficient in the zeroth Bessel series. -/
 theorem polarFourierZerothMoment_even_eq_bessel (z : ℝ) (n : ℕ) :
     (Complex.I * (z : ℂ)) ^ (2 * n) / (Nat.factorial (2 * n) : ℂ) *
-      (polarFourierCosineMoment (2 * n) : ℂ) =
+      (fullAngleCosineMoment (2 * n) : ℂ) =
       ((2 * Real.pi : ℝ) : ℂ) *
         (Complex.regularizedHGFunCoeff 0 {(1 : ℂ)} n *
           (-((z : ℂ) / 2) ^ 2) ^ n) := by
   have hcoeff := regularizedHGFunCoeff_zero_singleton_nat_add_one 0 n
   norm_num only [Nat.add_zero] at hcoeff
-  rw [polarFourierCosineMoment_even_factorial, hcoeff, ← pow_two]
+  rw [fullAngleCosineMoment_even_factorial, hcoeff, ← pow_two]
   push_cast
   have hI : (Complex.I * (z : ℂ)) ^ (2 * n) = (-(z : ℂ) ^ 2) ^ n := by
     rw [pow_mul, mul_pow, Complex.I_sq]
@@ -360,7 +273,7 @@ theorem polarFourierZerothAngularKernel_eq_besselJ (z : ℝ) :
       ((2 * Real.pi : ℝ) : ℂ) * Complex.besselJ 0 (z : ℂ) := by
   let f : ℕ → ℂ := fun n =>
     (Complex.I * (z : ℂ)) ^ n / (Nat.factorial n : ℂ) *
-      (polarFourierCosineMoment n : ℂ)
+      (fullAngleCosineMoment n : ℂ)
   have hf : Summable f := polarFourierZerothMoments_summable z
   have he : Summable (fun n : ℕ => f (2 * n)) :=
     hf.comp_injective (by intro a b hab; omega)
