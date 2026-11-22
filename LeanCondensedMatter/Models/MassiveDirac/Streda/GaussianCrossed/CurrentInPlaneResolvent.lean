@@ -445,19 +445,12 @@ private theorem gaussianCrossed_radialRAProduct_eq_realLorentzian
     unfold finiteCutoffContinuumBornDysonDenominator
     push_cast
     ring
-  have hstar : star D =
-      finiteCutoffContinuumBornDysonDenominator
-        .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax := by
-    dsimp [D]
-    simpa only [SpectralSide.opposite] using
-      (star_finiteCutoffContinuumBornDysonDenominator
-        .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax
-        hbroadening)
   calc
     _ = D * star D := by
       rw [finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct_eq_mul,
-        ← hstar]
-      rfl
+        ← star_finiteCutoffContinuumBornDysonDenominator
+          .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax
+          hbroadening]
     _ = (Complex.normSq D : ℂ) := by
       simpa using (Complex.mul_conj D)
     _ = _ := by
@@ -512,6 +505,7 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedInPlaneK2_eq_realLorentzian
           congr 1
           apply intervalIntegral.integral_congr
           intro p _
+          dsimp only
           rw [gaussianCrossed_radialRAProduct_eq_realLorentzian
             v m probeEnergy broadening disorderStrength hbar pMax p hbroadening]
           dsimp [D0, kernel, factor]
