@@ -116,29 +116,10 @@ private theorem tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRun
         hvelocity hmetal hcutoff (hden p hp))
   have hset := tendsto_integral_filter_of_dominated_convergence
     bound hMeasurable hBound hBoundIntegrable hpointwise
-  have hfinite :
-      (fun broadening : ℝ =>
-        finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficient
-          i j v m probeEnergy broadening disorderStrength hbar pMax) =
-      (fun broadening : ℝ =>
-        ∫ p in Set.Icc (0 : ℝ) pMax,
-          finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungRadialIntegrand
-            i j v m p probeEnergy broadening disorderStrength hbar pMax) := by
-    funext broadening
-    unfold finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficient
-    rw [intervalIntegral.integral_of_le hpMax]
-    rw [← MeasureTheory.integral_Icc_eq_integral_Ioc]
-  have hboundary :
-      finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficientZeroBroadeningBoundary
-          i j v m probeEnergy disorderStrength hbar pMax =
-        ∫ p in Set.Icc (0 : ℝ) pMax,
-          finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungRadialIntegrandZeroBroadeningBoundary
-            i j v m p probeEnergy disorderStrength hbar pMax := by
-    unfold finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficientZeroBroadeningBoundary
-    rw [intervalIntegral.integral_of_le hpMax]
-    rw [← MeasureTheory.integral_Icc_eq_integral_Ioc]
-  rw [hfinite, hboundary]
-  exact hset
+  simpa only [finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficient,
+    finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficientZeroBroadeningBoundary,
+    intervalIntegral.integral_of_le hpMax,
+    ← MeasureTheory.integral_Icc_eq_integral_Ioc] using hset
 
 theorem continuous_finiteBroadeningBornCurrentRungRadialIntegrand
     (i j : Fin 2)
