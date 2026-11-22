@@ -197,21 +197,8 @@ theorem finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient_x_eq_deriv_gen
       InternalSpace.pauliAxisComponent]
     rw [show (((v * p : ℝ) : ℂ)) =
       (((hbar * v : ℝ) : ℂ)) * ((p / hbar : ℝ) : ℂ) from (hratio p).symm]
-    have hunit : (-Complex.I) * Complex.I = (1 : ℂ) := by
-      calc
-        _ = -(Complex.I ^ 2) := by ring
-        _ = 1 := by rw [Complex.I_sq]; ring
-    calc
-      _ = ((-Complex.I) * Complex.I) *
-          ((p : ℂ) *
-            (finiteCutoffContinuumBornDysonDenominator
-              side v m p 0 probeEnergy broadening disorderStrength hbar pMax)⁻¹ *
-            (((hbar * v : ℝ) : ℂ)) *
-            ((p / hbar : ℝ) : ℂ) *
-            polarFourierFirstCosineAngularKernel (p * radius / hbar)) := by
-        rw [hunit]
-        ring
-      _ = _ := by ring
+    ring_nf
+    simp only [Complex.I_sq]
   have hderiv := finiteCutoffContinuumBornDysonRadialScalarGreenGenerator_hasDerivAt
     side v m probeEnergy broadening disorderStrength hbar pMax radius
     hbroadening hdisorder hpMax
