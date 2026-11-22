@@ -197,11 +197,8 @@ theorem inv_one_sub_continuumBornRetardedAdvancedPauliXWeakDisorderCurrentRungCo
         (probeEnergy ^ 2 + 3 * m ^ 2) := by
   have hsum : probeEnergy ^ 2 + m ^ 2 ≠ 0 := by
     intro hzero
-    have hE : probeEnergy = 0 := by
-      nlinarith [sq_nonneg probeEnergy, sq_nonneg m]
-    have hm : m = 0 := by
-      nlinarith [sq_nonneg probeEnergy, sq_nonneg m]
-    exact hden (by simp [hE, hm])
+    apply hden
+    nlinarith [sq_nonneg probeEnergy, sq_nonneg m]
   rw [one_sub_continuumBornRetardedAdvancedPauliXWeakDisorderCurrentRungCoefficient
     m probeEnergy hsum]
   field_simp [hden, hsum]

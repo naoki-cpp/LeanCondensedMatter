@@ -110,26 +110,19 @@ private theorem finiteCutoffContinuumBornDysonGreenLoopMatrix_zero_disorder_eq_c
             .z v m probeEnergy (side.regulator broadening) pMax) • sigmaZ := by
   have hregulator : side.regulator broadening ≠ 0 :=
     side.regulator_ne_zero hbroadening
-  have hscalar :
+  have hchannel (channel : BornSelfEnergyChannel) :
       IntervalIntegrable
         (continuumBornRadialIntegrandOfRegulator
-          .scalar v m probeEnergy (side.regulator broadening))
+          channel v m probeEnergy (side.regulator broadening))
         MeasureTheory.volume 0 pMax :=
     (continuous_continuumBornRadialIntegrandOfRegulator
-      .scalar v m probeEnergy (side.regulator broadening) hregulator).intervalIntegrable 0 pMax
-  have hz :
-      IntervalIntegrable
-        (continuumBornRadialIntegrandOfRegulator
-          .z v m probeEnergy (side.regulator broadening))
-        MeasureTheory.volume 0 pMax :=
-    (continuous_continuumBornRadialIntegrandOfRegulator
-      .z v m probeEnergy (side.regulator broadening) hregulator).intervalIntegrable 0 pMax
+      channel v m probeEnergy (side.regulator broadening) hregulator).intervalIntegrable 0 pMax
   funext i j
   rw [finiteCutoffContinuumBornDysonGreenLoopMatrix_apply_eq_radial_integral]
   simp_rw [finiteCutoffContinuumBornDysonRadialGreenEntryKernel_zero_disorder_zero_radius]
   simp only [Matrix.add_apply, Matrix.smul_apply, smul_eq_mul]
   rw [intervalIntegral.integral_const_mul,
-    intervalIntegral.integral_add (hscalar.mul_const _) (hz.mul_const _),
+    intervalIntegral.integral_add ((hchannel .scalar).mul_const _) ((hchannel .z).mul_const _),
     intervalIntegral.integral_mul_const, intervalIntegral.integral_mul_const]
   unfold finiteCutoffContinuumBornIntegralOfRegulator fullAngleMomentumMeasurePrefactor
   push_cast
