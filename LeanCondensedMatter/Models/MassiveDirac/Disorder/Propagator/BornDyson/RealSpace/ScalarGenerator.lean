@@ -199,6 +199,7 @@ theorem finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient_x_eq_deriv_gen
       (((hbar * v : ℝ) : ℂ)) * ((p / hbar : ℝ) : ℂ) from (hratio p).symm]
     ring_nf
     simp only [Complex.I_sq]
+    ring
   have hderiv := finiteCutoffContinuumBornDysonRadialScalarGreenGenerator_hasDerivAt
     side v m probeEnergy broadening disorderStrength hbar pMax radius
     hbroadening hdisorder hpMax
