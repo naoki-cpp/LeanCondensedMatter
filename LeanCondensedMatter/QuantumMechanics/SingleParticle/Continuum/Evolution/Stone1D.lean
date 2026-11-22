@@ -1,6 +1,6 @@
 import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Evolution.Interface1D
 import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Hamiltonian.SelfAdjoint1D
-import LeanCondensedMatter.Analysis.Operator.Unbounded
+import LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution
 import Mathlib.Analysis.Calculus.Deriv.Comp
 import Mathlib.Tactic.Ring
 
