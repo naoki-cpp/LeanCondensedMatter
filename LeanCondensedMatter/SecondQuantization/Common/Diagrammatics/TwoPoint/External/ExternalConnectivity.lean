@@ -116,7 +116,8 @@ theorem TwoPointDiagram.preconnected_iff_isExternallyConnected
     {S : Finset (Fin N)} (d : TwoPointDiagram ExternalLabel InternalLabel N S) :
     d.vertexGraph.Preconnected ↔ d.IsExternallyConnected := by
   constructor
-  · exact d.isExternallyConnected_of_preconnected
+  · intro h
+    exact ⟨hasNoVacuumComponent_of_preconnected d.vertexGraph h, h _ _⟩
   · intro h
     apply (preconnected_iff_hasNoVacuumComponent_and_allExternalVerticesConnected
       d.vertexGraph).2
