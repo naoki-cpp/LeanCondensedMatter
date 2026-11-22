@@ -1017,26 +1017,6 @@ theorem ExternalInsertionBlockLayout.restrictBlock_assembleDiagram
     (layout.assembleDiagram S F) (layout.assembleDiagram_partner_block S F)
 
 
-/-- The complete family of block-local labelled pairings is equivalent
-to the global labelled diagrams whose propagators respect the prescribed
-external-block layout. Both sides retain every external/interaction label
-and every pairing partner. -/
-noncomputable def ExternalInsertionBlockLayout.assemblyEquivBlockRespecting
-    {ExternalLabel InternalLabel : Type*}
-    (layout : ExternalInsertionBlockLayout E N) (S : Finset (Fin N)) :
-    (∀ B : layout.partition.parts,
-      ExternalInsertionDiagram ExternalLabel InternalLabel
-        ((B : Finset (Fin (2 * E))).card / 2) N (layout.interactionBlock S B)) ≃
-    {d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S //
-      ∀ leg, (layout.legEquiv S (d.pairing.partner leg)).1 =
-        (layout.legEquiv S leg).1} where
-  toFun F := ⟨layout.assembleDiagram S F, layout.assembleDiagram_partner_block S F⟩
-  invFun d := layout.restrictBlock S d.1 d.2
-  left_inv F := layout.restrictBlock_assembleDiagram S F
-  right_inv d := by
-    apply Subtype.ext
-    exact layout.assembleDiagram_restrictBlock S d.1 d.2
-
 /-- The assembled diagram has prescribed external field labels exactly
 when every local block carries the induced increasing-order restriction
 of those labels. No relative ordering of the numerical times is used. -/
@@ -1066,39 +1046,6 @@ theorem ExternalInsertionBlockLayout.assembleDiagram_externalLabel_eq_iff
       (layout.sourceEquiv e).2 =
         labels (layout.sourceEquiv.symm (layout.sourceEquiv e)) at he
     simpa only [Equiv.symm_apply_apply] using he
-
-/-- Blockwise assembly remains an exact equivalence after *fixing* the
-external field labels. Only internal vertex labels and the Wick pairing
-are allowed to vary in each finite Dyson coefficient. -/
-noncomputable def ExternalInsertionBlockLayout.assemblyEquivBlockRespectingFixedLabels
-    {ExternalLabel InternalLabel : Type*}
-    (layout : ExternalInsertionBlockLayout E N) (S : Finset (Fin N))
-    (labels : Fin (2 * E) → ExternalLabel) :
-    {F : ∀ B : layout.partition.parts,
-      ExternalInsertionDiagram ExternalLabel InternalLabel
-        ((B : Finset (Fin (2 * E))).card / 2) N (layout.interactionBlock S B) //
-      ∀ B : layout.partition.parts,
-        (F B).externalLabel =
-          fun i => labels (layout.sourceEquiv.symm ⟨B, i⟩)} ≃
-    {d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S //
-      (∀ leg, (layout.legEquiv S (d.pairing.partner leg)).1 =
-        (layout.legEquiv S leg).1) ∧ d.externalLabel = labels} where
-  toFun F :=
-    ⟨layout.assembleDiagram S F.1,
-      layout.assembleDiagram_partner_block S F.1,
-      (layout.assembleDiagram_externalLabel_eq_iff S F.1 labels).2 F.2⟩
-  invFun d :=
-    ⟨layout.restrictBlock S d.1 d.2.1,
-      (layout.assembleDiagram_externalLabel_eq_iff S
-        (layout.restrictBlock S d.1 d.2.1) labels).1 (by
-          rw [layout.assembleDiagram_restrictBlock S d.1 d.2.1]
-          exact d.2.2)⟩
-  left_inv F := by
-    apply Subtype.ext
-    exact layout.restrictBlock_assembleDiagram S F.1
-  right_inv d := by
-    apply Subtype.ext
-    exact layout.assembleDiagram_restrictBlock S d.1 d.2.1
 
 /-- A vacuum-free *physical* external-insertion diagram canonically determines
 an independent external-block layout. For occupied interaction vertices the
@@ -1393,30 +1340,6 @@ theorem ExternalInsertionDiagram.restrictPhysicalBlocks_preconnected
     (layout.vertexEquiv S
       ((layout.vertexEquiv S).symm ⟨B, v⟩)).1
   simp
-
-
-
-/-- Constructive decomposition of every vacuum-free physical diagram
-(with a chosen external anchor) into a family of *preconnected* local
-diagrams over its actual external-component partition. Their exact
-independent assembly returns the original diagram, including labels
-and Wick-pairing partners. This establishes the diagram-level
-surjectivity needed before summing Dyson amplitudes over fibers. -/
-theorem ExternalInsertionDiagram.exists_preconnectedPhysicalBlockAssembly
-    {ExternalLabel InternalLabel : Type*} {S : Finset (Fin N)}
-    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
-    (hVac : HasNoVacuumComponent d.vertexGraph)
-    (anchor : Fin (2 * E)) :
-    ∃ F : ∀ B : (d.externalBlockLayout hVac anchor).partition.parts,
-        ExternalInsertionDiagram ExternalLabel InternalLabel
-          ((B : Finset (Fin (2 * E))).card / 2) N
-          ((d.externalBlockLayout hVac anchor).interactionBlock S B),
-      (∀ B, (F B).vertexGraph.Preconnected) ∧
-        (d.externalBlockLayout hVac anchor).assembleDiagram S F = d := by
-  refine ⟨(d.externalBlockLayout hVac anchor).restrictBlock S d
-    (d.externalBlockLayout_partner_block hVac anchor), ?_, ?_⟩
-  · exact d.restrictPhysicalBlocks_preconnected hVac anchor
-  · exact d.assembleDiagram_restrictPhysicalBlocks hVac anchor
 
 
 

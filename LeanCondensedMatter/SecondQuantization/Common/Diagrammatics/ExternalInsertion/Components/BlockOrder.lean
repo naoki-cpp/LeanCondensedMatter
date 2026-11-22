@@ -129,22 +129,6 @@ theorem ExternalInsertionBlockLayout.interactionOrderDecomposition_owner
   change layout.interactionOwner (order (σ.slotEquiv ⟨B, j⟩)).1 = B at howner
   simpa only [hback] using howner.symm
 
-/-- The shuffle part of any physical global interaction order is
-characterized uniquely by the owners encountered along that order. -/
-theorem ExternalInsertionBlockLayout.interactionOrderDecomposition_shuffle_unique
-    (layout : ExternalInsertionBlockLayout E N)
-    (order : QuarticVertexOrder (Finset.univ : Finset (Fin N)))
-    (shuffle : FamilySlotShuffleTo
-      (fun B : layout.partition.parts =>
-        (layout.interactionBlock (Finset.univ : Finset (Fin N)) B).card)
-      (Finset.univ : Finset (Fin N)).card)
-    (howner : ∀ v : Fin (Finset.univ : Finset (Fin N)).card,
-      (shuffle.slotEquiv.symm v).1 = layout.interactionOwner (order v).1) :
-    shuffle = (layout.interactionOrderDecompositionEquiv order).2 := by
-  apply FamilySlotShuffleTo.eq_of_same_owner
-  intro v
-  rw [howner v, layout.interactionOrderDecomposition_owner order v]
-
 /-- An assembled Wick diagram retains the *actual quartic interaction
 label* at each local vertex when the ambient order is decomposed into
 block-local orders and its order-preserving shuffle. This is the
