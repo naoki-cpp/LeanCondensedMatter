@@ -110,7 +110,8 @@ theorem symmetrizedProduct_smul_id {W : Type*} [AddCommGroup W] [Module K W]
     (A : W →ₗ[K] W) (q : K) :
     symmetrizedProduct A (q • LinearMap.id) = q • A := by
   ext v
-  simp [symmetrizedProduct_apply]
+  simp only [symmetrizedProduct_apply, one_div, smul_apply, id_coe, id_eq, map_smul,
+    smul_add]
   rw [← two_smul K, smul_smul]
   have h2 : (2 : K) * (2 : K)⁻¹ = 1 := mul_inv_cancel₀ (NeZero.ne (2 : K))
   simp only [h2, one_smul]
@@ -132,6 +133,8 @@ theorem symmetrizedProduct_eq_comp_of_commutes {W : Type*} [AddCommGroup W] [Mod
   have h2 : (1 / 2 : K) * 2 = 1 := by
     simpa only [one_div] using (inv_mul_cancel₀ (NeZero.ne (2 : K)))
   rw [h2, one_smul]
+
+end Half
 
 /-- Reassociating two symmetrized products produces a double-commutator correction.
 
@@ -161,8 +164,6 @@ theorem symmetrizedProduct_nested_eq_of_commutes
       symmetrizedProduct A (symmetrizedProduct v m) := by
   rw [symmetrizedProduct_nested A v m, hAm]
   simp
-
-end Half
 
 /-- The commutator acts as a derivation on the symmetrized product. -/
 theorem lie_symmetrizedProduct {W : Type*} [AddCommGroup W] [Module K W]
