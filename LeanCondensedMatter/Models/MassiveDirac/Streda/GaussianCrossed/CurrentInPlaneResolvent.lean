@@ -602,7 +602,8 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedK2_offShell_width_integral_
     _ ≤ C * |b - a| := hnorm
     _ = (b - a) * (|D0.im| * pMax ^ 3 * (2 * Real.pi) / δ ^ 2) := by
       rw [abs_of_nonneg (sub_nonneg.mpr hab)]
-      rfl
+      dsimp [C]
+      ring
 
 end
 
