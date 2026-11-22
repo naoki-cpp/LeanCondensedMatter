@@ -141,6 +141,141 @@ theorem hasDerivAt_integral_polarFourierZerothAngularKernel
     (∫ p in (0 : ℝ)..pMax, F' radius p) radius
   exact hmain
 
+
+/-- The second cosine harmonic is uniformly bounded on the real Fourier
+axis. This also controls a second derivative of a finite radial Fourier
+transform, without a Bessel asymptotic expansion. -/
+theorem polarFourierSecondCosineAngularKernel_norm_le (z : ℝ) :
+    ‖polarFourierSecondCosineAngularKernel z‖ ≤ 2 * Real.pi := by
+  have h := intervalIntegral.norm_integral_le_of_norm_le_const
+    (a := (0 : ℝ)) (b := 2 * Real.pi) (C := (1 : ℝ))
+    (f := fun θ : ℝ =>
+      polarFourierRadialPhase z θ *
+        ((((Real.cos θ : ℝ) : ℂ) ^ 2) - (((Real.sin θ : ℝ) : ℂ) ^ 2))) (by
+      intro θ _
+      have hreal : |Real.cos θ ^ 2 - Real.sin θ ^ 2| ≤ 1 := by
+        apply abs_le.mpr
+        constructor <;>
+          nlinarith [Real.sin_sq_add_cos_sq θ, sq_nonneg (Real.cos θ),
+            sq_nonneg (Real.sin θ)]
+      have hcast :
+          (((Real.cos θ : ℝ) : ℂ) ^ 2) - (((Real.sin θ : ℝ) : ℂ) ^ 2) =
+            ((Real.cos θ ^ 2 - Real.sin θ ^ 2 : ℝ) : ℂ) := by push_cast; ring
+      rw [norm_mul, norm_polarFourierRadialPhase, one_mul, hcast,
+        Complex.norm_real, Real.norm_eq_abs]
+      exact hreal)
+  simpa only [polarFourierSecondCosineAngularKernel, one_mul, sub_zero,
+    abs_of_nonneg (mul_nonneg (by norm_num : (0 : ℝ) ≤ 2) Real.pi_pos.le)]
+    using h
+
+/-- A second finite-cutoff radial Fourier derivative. Unlike the first
+derivative, the derivative of K1 contains *both* the isotropic K0 and
+traceless K2 angular harmonics. No improper-integral differentiation or
+nonzero-radius assumption is used. -/
+theorem hasDerivAt_integral_polarFourierFirstCosineAngularKernel
+    (weight : ℝ → ℂ) (hweight : Continuous weight)
+    (pMax hbar radius : ℝ) :
+    HasDerivAt
+      (fun r : ℝ => ∫ p in (0 : ℝ)..pMax,
+        weight p * polarFourierFirstCosineAngularKernel (p * r / hbar))
+      (∫ p in (0 : ℝ)..pMax,
+        weight p * (((p / hbar : ℝ) : ℂ) *
+          ((Complex.I / 2) *
+            (polarFourierZerothAngularKernel (p * radius / hbar) +
+              polarFourierSecondCosineAngularKernel (p * radius / hbar)))))
+      radius := by
+  let F : ℝ → ℝ → ℂ := fun r p =>
+    weight p * polarFourierFirstCosineAngularKernel (p * r / hbar)
+  let F' : ℝ → ℝ → ℂ := fun r p =>
+    weight p * (((p / hbar : ℝ) : ℂ) *
+      ((Complex.I / 2) *
+        (polarFourierZerothAngularKernel (p * r / hbar) +
+          polarFourierSecondCosineAngularKernel (p * r / hbar))))
+  let bound : ℝ → ℝ := fun p =>
+    (‖weight p‖ * |p / hbar|) * (3 * Real.pi)
+  have hboundAngle (z : ℝ) :
+      ‖(Complex.I / 2) *
+          (polarFourierZerothAngularKernel z +
+            polarFourierSecondCosineAngularKernel z)‖ ≤ 3 * Real.pi := by
+    calc
+      _ = (1 / 2 : ℝ) *
+          ‖polarFourierZerothAngularKernel z +
+            polarFourierSecondCosineAngularKernel z‖ := by
+          simp [norm_mul, norm_div, Complex.norm_I]
+      _ ≤ (1 / 2 : ℝ) *
+          (‖polarFourierZerothAngularKernel z‖ +
+            ‖polarFourierSecondCosineAngularKernel z‖) := by
+          gcongr
+          exact norm_add_le _ _
+      _ ≤ (1 / 2 : ℝ) * (2 * Real.pi + 2 * Real.pi) := by
+          gcongr
+          · exact polarFourierZerothAngularKernel_norm_le z
+          · exact polarFourierSecondCosineAngularKernel_norm_le z
+      _ ≤ 3 * Real.pi := by
+          nlinarith [Real.pi_pos]
+  have hderiv (r p : ℝ) :
+      HasDerivAt (fun t : ℝ => F t p) (F' r p) r := by
+    have harg : HasDerivAt (fun t : ℝ => p * t / hbar) (p / hbar) r := by
+      convert (((hasDerivAt_id r).const_mul p).div_const hbar) using 1 <;>
+        first | rfl | ring
+    have hk := ((polarFourierFirstCosineAngularKernel_hasDerivAt
+      (p * r / hbar)).hasFDerivAt.comp r harg.hasFDerivAt).hasDerivAt
+    have h := hk.const_mul (weight p)
+    convert h using 1
+    · rfl
+    · dsimp [F']
+      push_cast
+      ring
+  have hc0 : Continuous polarFourierZerothAngularKernel :=
+    continuous_polarFourierZerothAngularKernel
+  have hc1 : Continuous polarFourierFirstCosineAngularKernel :=
+    continuous_polarFourierFirstCosineAngularKernel
+  have hc2 : Continuous polarFourierSecondCosineAngularKernel :=
+    continuous_polarFourierSecondCosineAngularKernel
+  have hcontArg (r : ℝ) : Continuous (fun p : ℝ => p * r / hbar) := by
+    fun_prop
+  have hcontRatio : Continuous (fun p : ℝ => p / hbar) := by fun_prop
+  have hcont (r : ℝ) : Continuous (F r) := by
+    dsimp [F]
+    exact hweight.mul (hc1.comp (hcontArg r))
+  have hcont' (r : ℝ) : Continuous (F' r) := by
+    dsimp [F']
+    exact hweight.mul
+      ((Complex.continuous_ofReal.comp hcontRatio).mul
+        (continuous_const.mul
+          ((hc0.comp (hcontArg r)).add (hc2.comp (hcontArg r)))))
+  have hbound (r p : ℝ) : ‖F' r p‖ ≤ bound p := by
+    have hn : ‖F' r p‖ =
+        (‖weight p‖ * |p / hbar|) *
+          ‖(Complex.I / 2) *
+            (polarFourierZerothAngularKernel (p * r / hbar) +
+              polarFourierSecondCosineAngularKernel (p * r / hbar))‖ := by
+      dsimp [F']
+      simp only [norm_mul, Complex.norm_real, Real.norm_eq_abs]
+      ring
+    rw [hn]
+    exact mul_le_mul_of_nonneg_left (hboundAngle _) (by positivity)
+  have hboundCont : Continuous bound := by
+    dsimp [bound]
+    exact (hweight.norm.mul hcontRatio.abs).mul continuous_const
+  have hboundInt : IntervalIntegrable bound volume 0 pMax :=
+    hboundCont.intervalIntegrable 0 pMax
+  have hmain :=
+    (intervalIntegral.hasDerivAt_integral_of_dominated_loc_of_deriv_le
+      (F := F) (F' := F') (bound := bound)
+      (s := Set.univ) (x₀ := radius) (a := (0 : ℝ)) (b := pMax)
+      Filter.univ_mem
+      (Filter.Eventually.of_forall fun r => (hcont r).aestronglyMeasurable)
+      ((hcont radius).intervalIntegrable _ _)
+      ((hcont' radius).aestronglyMeasurable)
+      (Filter.Eventually.of_forall fun p _ r _ => hbound r p)
+      hboundInt
+      (Filter.Eventually.of_forall fun p _ r _ => hderiv r p)).2
+  change HasDerivAt
+    (fun r : ℝ => ∫ p in (0 : ℝ)..pMax, F r p)
+    (∫ p in (0 : ℝ)..pMax, F' radius p) radius
+  exact hmain
+
 end
 
 end Transport
