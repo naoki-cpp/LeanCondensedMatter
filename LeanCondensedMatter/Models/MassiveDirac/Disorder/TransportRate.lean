@@ -145,44 +145,28 @@ theorem continuumBornUpperBandTransportLifetime_eq_factor_mul_singleParticleLife
           (fermiEnergy ^ 2 + 3 * m ^ 2)) *
         lifetimeOfDamping hbar (continuumBornUpperBandDampingEnergy
           v m fermiEnergy disorderStrength hbar) := by
-  change (continuumBornUpperBandTransportScatteringRate
-      v m fermiEnergy disorderStrength hbar)⁻¹ =
-    (2 * (fermiEnergy ^ 2 + m ^ 2) / (fermiEnergy ^ 2 + 3 * m ^ 2)) *
-      (continuumBornUpperBandSingleParticleScatteringRate
-        v m fermiEnergy disorderStrength hbar)⁻¹
-  have hsp :=
+  let tr := continuumBornUpperBandTransportScatteringRate
+    v m fermiEnergy disorderStrength hbar
+  let sp := continuumBornUpperBandSingleParticleScatteringRate
+    v m fermiEnergy disorderStrength hbar
+  change tr⁻¹ =
+    (2 * (fermiEnergy ^ 2 + m ^ 2) / (fermiEnergy ^ 2 + 3 * m ^ 2)) * sp⁻¹
+  have hsp : sp ≠ 0 :=
     continuumBornUpperBandSingleParticleScatteringRate_ne_zero
-      v m fermiEnergy disorderStrength hbar
-      hvelocity hhbar hdisorder hfermiEnergy
-  have hratio :=
+      v m fermiEnergy disorderStrength hbar hvelocity hhbar hdisorder hfermiEnergy
+  have hratio : tr / sp =
+      (fermiEnergy ^ 2 + 3 * m ^ 2) /
+        (2 * (fermiEnergy ^ 2 + m ^ 2)) :=
     continuumBornUpperBandTransportRate_div_singleParticleRate
-      v m fermiEnergy disorderStrength hbar
-      hvelocity hhbar hdisorder hfermiEnergy
-  have hratioInv :
-      continuumBornUpperBandSingleParticleScatteringRate
-          v m fermiEnergy disorderStrength hbar /
-        continuumBornUpperBandTransportScatteringRate
-          v m fermiEnergy disorderStrength hbar =
-      2 * (fermiEnergy ^ 2 + m ^ 2) /
-        (fermiEnergy ^ 2 + 3 * m ^ 2) := by
+      v m fermiEnergy disorderStrength hbar hvelocity hhbar hdisorder hfermiEnergy
+  have hinv : sp / tr =
+      2 * (fermiEnergy ^ 2 + m ^ 2) / (fermiEnergy ^ 2 + 3 * m ^ 2) := by
     simpa only [inv_div] using congrArg Inv.inv hratio
   calc
-    (continuumBornUpperBandTransportScatteringRate
-        v m fermiEnergy disorderStrength hbar)⁻¹ =
-      (continuumBornUpperBandSingleParticleScatteringRate
-          v m fermiEnergy disorderStrength hbar /
-        continuumBornUpperBandTransportScatteringRate
-          v m fermiEnergy disorderStrength hbar) *
-        (continuumBornUpperBandSingleParticleScatteringRate
-          v m fermiEnergy disorderStrength hbar)⁻¹ := by
-      rw [div_eq_mul_inv, mul_assoc,
-        mul_comm
-          ((continuumBornUpperBandTransportScatteringRate
-            v m fermiEnergy disorderStrength hbar)⁻¹)
-          ((continuumBornUpperBandSingleParticleScatteringRate
-            v m fermiEnergy disorderStrength hbar)⁻¹),
+    tr⁻¹ = (sp / tr) * sp⁻¹ := by
+      rw [div_eq_mul_inv, mul_assoc, mul_comm tr⁻¹ sp⁻¹,
         ← mul_assoc, mul_inv_cancel₀ hsp, one_mul]
-    _ = _ := by rw [hratioInv]
+    _ = _ := by rw [hinv]
 
 /-- Package the microscopic Born transport lifetime as the generic positive current-relaxation datum
 consumed by the longitudinal RTA benchmark. This bridge does not identify the derivation with a
