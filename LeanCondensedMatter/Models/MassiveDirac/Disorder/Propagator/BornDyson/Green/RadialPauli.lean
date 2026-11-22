@@ -16,6 +16,8 @@ namespace QuantumTheory.Models.MassiveDirac
 
 noncomputable section
 
+open QuantumTheory.Transport
+
 /-- Nonzero Pauli coefficients of the Born-Dyson Green propagator on the radial
 momentum axis `(p, 0)`. The remaining Pauli-y coefficient vanishes on this axis. -/
 structure FiniteCutoffBornDysonRadialPauliData where
