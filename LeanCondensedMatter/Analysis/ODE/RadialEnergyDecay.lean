@@ -22,8 +22,8 @@ namespace RadialODE
 /-- A quantitative Lyapunov argument for the two-component radial first-order system.
 The corrected energy `F = x² + y² - xy/r` obeys
 `d/dr (r F²) = F (-x²-y²+3xy/r) ≤ 0` for `r ≥ 2`.
-Consequently the energy tends to zero without invoking an asymptotic
-special-function asymptotics. -/
+Consequently the energy tends to zero without assuming any
+special-function asymptotic expansion. -/
 theorem energy_tendsto_zero_of_firstOrderSystem
     (x y : ℝ → ℝ)
     (hx : ∀ r : ℝ, 2 ≤ r → HasDerivAt x (-y r) r)
