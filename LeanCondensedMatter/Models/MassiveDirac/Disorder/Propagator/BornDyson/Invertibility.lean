@@ -161,15 +161,7 @@ private theorem regulator_mul_im_inner_self_finiteCutoffContinuumBornGreenIntegr
         v m probeEnergy regulator ψ hp.1
   rw [im_inner_self_finiteCutoffContinuumBornGreenIntegralOfRegulator_apply
     v m probeEnergy regulator pMax hregulator ψ]
-  calc
-    regulator *
-        (-regulator *
-          ∫ p in (0 : ℝ)..pMax,
-            continuumBornRadialDissipationDensity v m probeEnergy regulator ψ p) =
-      -(regulator ^ 2 *
-        ∫ p in (0 : ℝ)..pMax,
-          continuumBornRadialDissipationDensity v m probeEnergy regulator ψ p) := by ring
-    _ ≤ 0 := neg_nonpos.mpr (mul_nonneg (sq_nonneg regulator) hdensity)
+  nlinarith [mul_nonneg (sq_nonneg regulator) hdensity]
 
 /-- The arbitrary-regulator finite-cutoff continuum Born self-energy is dissipative: in the
 physicists' quadratic-form orientation `⟪ψ,Σψ⟫`, its imaginary part has sign opposite to the signed
@@ -193,18 +185,8 @@ theorem finiteCutoffContinuumBornSelfEnergyOfRegulator_dissipative
   unfold finiteCutoffContinuumBornSelfEnergyOfRegulator
   simp only [smul_apply, inner_smul_right, Complex.mul_im,
     Complex.ofReal_re, Complex.ofReal_im, zero_mul, add_zero]
-  calc
-    regulator *
-        ((disorderStrength * fullAngleMomentumMeasurePrefactor hbar) *
-          (inner ℂ ψ
-            (finiteCutoffContinuumBornGreenIntegralOfRegulator
-              v m probeEnergy regulator pMax ψ)).im) =
-      (disorderStrength * fullAngleMomentumMeasurePrefactor hbar) *
-        (regulator *
-          (inner ℂ ψ
-            (finiteCutoffContinuumBornGreenIntegralOfRegulator
-              v m probeEnergy regulator pMax ψ)).im) := by ring
-    _ ≤ 0 := mul_nonpos_of_nonneg_of_nonpos hscale hgreen
+  simpa only [mul_assoc, mul_comm, mul_left_comm] using
+    (mul_nonpos_of_nonneg_of_nonpos hscale hgreen)
 
 private theorem finiteCutoffContinuumBornDysonShiftOperator_injective
     (side : SpectralSide)
