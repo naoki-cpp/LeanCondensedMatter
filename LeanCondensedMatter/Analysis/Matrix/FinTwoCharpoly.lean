@@ -54,6 +54,7 @@ theorem pow_six_eq_one_of_trace_one_det_one (M : Matrix (Fin 2) (Fin 2) R)
 
 
 /-- A `2 × 2` matrix satisfying `M * Mᵀ = 1` and `det M = -1` has trace zero. -/
+omit [Nontrivial R] in
 theorem trace_eq_zero_of_mul_transpose_eq_one_det_neg_one
     (M : Matrix (Fin 2) (Fin 2) R)
     (horth : M * Mᵀ = 1) (hdet : M.det = -1) : M.trace = 0 := by
