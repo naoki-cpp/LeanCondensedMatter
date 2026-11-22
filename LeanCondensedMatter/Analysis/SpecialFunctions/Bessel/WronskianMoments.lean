@@ -47,6 +47,11 @@ theorem integral_wronskianBesselIntegrand_eq_endpoints
             (Complex.besselJ 1 (r : ℂ) ^ 2 / (r : ℂ))) := by
         apply intervalIntegral.integral_congr
         intro r _
+        change Complex.besselJ 1 (r : ℂ) ^ 2 *
+            (Complex.besselJ 1 (r : ℂ) * Y0 r -
+              Complex.besselJ 0 (r : ℂ) * Y1 r) =
+          (((2 / Real.pi : ℝ) : ℂ)) *
+            (Complex.besselJ 1 (r : ℂ) ^ 2 / (r : ℂ))
         by_cases hr : r = 0
         · subst r
           simp [Complex.besselJ_zero]
