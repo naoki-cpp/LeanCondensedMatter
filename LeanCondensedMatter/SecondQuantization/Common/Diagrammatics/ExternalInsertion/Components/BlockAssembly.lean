@@ -3,6 +3,7 @@ import LeanCondensedMatter.Combinatorics.Shuffle.SlotShuffle
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ExternalPartition
 import LeanCondensedMatter.Combinatorics.Shuffle.FamilyOrderShuffle
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Ordered
+import Mathlib.Logic.Equiv.Sum
 import Mathlib.Order.Partition.Finpartition
 import Mathlib.Data.Finset.Sort
 
@@ -107,23 +108,6 @@ noncomputable def ExternalInsertionBlockLayout.interactionEquiv
     (fun v : ↥S => layout.interactionOwner v.1)).symm.trans
       (Equiv.sigmaCongrRight fiberEquiv)
 
-/-- Distribute a disjoint union of dependent families across their common
-index. This is the sum analogue of `Equiv.sigmaProdDistrib`. -/
-private def sumSigmaEquiv {ι : Type*} {α β : ι → Type*} :
-    ((Σ i, α i) ⊕ (Σ i, β i)) ≃ Σ i, α i ⊕ β i where
-  toFun
-    | Sum.inl ⟨i, x⟩ => ⟨i, Sum.inl x⟩
-    | Sum.inr ⟨i, x⟩ => ⟨i, Sum.inr x⟩
-  invFun
-    | ⟨i, Sum.inl x⟩ => Sum.inl ⟨i, x⟩
-    | ⟨i, Sum.inr x⟩ => Sum.inr ⟨i, x⟩
-  left_inv := by
-    intro x
-    rcases x with (⟨i, x⟩ | ⟨i, x⟩) <;> rfl
-  right_inv := by
-    intro x
-    rcases x with ⟨i, (x | x)⟩ <;> rfl
-
 /-- A **concrete** equivalence between the full flattened legs and the
 disjoint union of each independently specified external block's flattened
 legs. Both external-slot order and interaction-vertex identity are retained. -/
@@ -148,7 +132,7 @@ noncomputable def ExternalInsertionBlockLayout.legEquiv
         ↥(layout.interactionBlock S B) × Fin 4)) ≃
       Σ B : layout.partition.parts,
         Fin (2 * ((B : Finset (Fin (2 * E))).card / 2)) ⊕
-          (↥(layout.interactionBlock S B) × Fin 4) := sumSigmaEquiv
+          (↥(layout.interactionBlock S B) × Fin 4) := (Equiv.sigmaSumDistrib _ _).symm
   exact ((externalInsertionLegEquiv E S).trans eSum).trans <|
     eSigma.trans (Equiv.sigmaCongrRight (fun B =>
       (externalInsertionLegEquiv
@@ -165,7 +149,7 @@ noncomputable def ExternalInsertionBlockLayout.vertexEquiv
         ExternalInsertionVertex
           ((B : Finset (Fin (2 * E))).card / 2) (layout.interactionBlock S B) :=
   (Equiv.sumCongr layout.sourceEquiv (layout.interactionEquiv S)).trans
-    sumSigmaEquiv
+    (Equiv.sigmaSumDistrib _ _).symm
 
 @[simp]
 theorem ExternalInsertionBlockLayout.vertexEquiv_external
@@ -197,7 +181,7 @@ theorem ExternalInsertionBlockLayout.legEquiv_externalLeg
           (layout.interactionBlock S (layout.sourceEquiv e).1)
           (layout.sourceEquiv e).2⟩ := by
   simp [ExternalInsertionBlockLayout.legEquiv, externalInsertionExternalLeg,
-    sumSigmaEquiv]
+    Equiv.sigmaSumDistrib, Sigma.map]
 
 /-- The leg equivalence assigns each quartic leg to its vertex's block,
 without changing the quartic local leg index. -/
@@ -211,7 +195,7 @@ theorem ExternalInsertionBlockLayout.legEquiv_interactionLeg
           (E := ((layout.interactionEquiv S v).1.1.card / 2))
           (layout.interactionEquiv S v).2 i⟩ := by
   simp [ExternalInsertionBlockLayout.legEquiv, externalInsertionInteractionLeg,
-    sumSigmaEquiv]
+    Equiv.sigmaSumDistrib, Sigma.map]
 
 /-- An independently assigned local external leg is embedded at its
 original ambient source slot, in increasing source-partition order. -/
@@ -2793,31 +2777,6 @@ noncomputable def ExternalInsertionBlockLayout.fixedPartitionOwnerEquiv
   right_inv owner := by
     rfl
 
-open Classical in
-/-- An interaction-owner assignment is uniquely specified by its
-complete family of fiber cardinalities and an order-preserving slot
-shuffle. All zero-size blocks remain in the domain. -/
-noncomputable def ownerFiberSizesEquiv
-    {ι : Type*} :
-    (Fin N → ι) ≃
-      Σ size : ι → ℕ,
-        {owner : Fin N → ι //
-          ∀ i, Fintype.card {v : Fin N // owner v = i} = size i} := by
-  classical
-  refine {
-    toFun := fun owner =>
-      ⟨fun i => Fintype.card {v : Fin N // owner v = i},
-        ⟨owner, fun _ => rfl⟩⟩
-    invFun := fun x => x.2.1
-    left_inv := fun _ => rfl
-    right_inv := ?_
-  }
-  rintro ⟨size, ⟨owner, hsize⟩⟩
-  have hs : size = fun i => Fintype.card {v : Fin N // owner v = i} :=
-    funext (fun i => (hsize i).symm)
-  cases hs
-  rfl
-
 /-- For a **fixed physical external-source partition**, layouts of all
 ambient interaction vertices are in exact bijection with a variable
 family of local vertex cardinalities and the shuffle interleaving those
@@ -2834,10 +2793,7 @@ noncomputable def ExternalInsertionBlockLayout.fixedPartitionSizeShuffleEquiv
       Σ size : π.parts → ℕ, FamilySlotShuffleTo size N := by
   classical
   exact (ExternalInsertionBlockLayout.fixedPartitionOwnerEquiv π heven).trans
-    ((ownerFiberSizesEquiv (N := N)).trans
-      (Equiv.sigmaCongrRight (fun size =>
-        (familyShuffleOwnerEquiv (ι := π.parts) (size := size)
-          (total := N)).symm)))
+    (ownerSizeShuffleEquiv (ι := π.parts) (total := N))
 
 /-- A connected physical assembly of a fixed external partition is
 equivalent to a unique family of local interaction sizes, one
