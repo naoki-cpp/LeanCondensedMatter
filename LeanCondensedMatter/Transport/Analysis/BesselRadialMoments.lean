@@ -218,14 +218,14 @@ private theorem besselRadialSystem_energy_tendsto_zero
   have hE_nonneg (r : ℝ) : 0 ≤ E r := by
     dsimp [E]
     positivity
+  have hxy_le_E (r : ℝ) : 2 * (x r * y r) ≤ E r := by
+    dsimp [E]
+    nlinarith [sq_nonneg (x r - y r)]
   have hE_le_two_F (r : ℝ) (hr : 2 ≤ r) : E r ≤ 2 * F r := by
-    have hxy : 2 * (x r * y r) ≤ E r := by
-      dsimp [E]
-      nlinarith [sq_nonneg (x r - y r)]
     have hrE : 0 ≤ (r - 1) * E r :=
       mul_nonneg (by linarith) (hE_nonneg r)
     have hxy' : 2 * (x r * y r) ≤ r * E r := by
-      nlinarith [hxy, hrE]
+      nlinarith [hxy_le_E r, hrE]
     have hdiv : 2 * (x r * y r) / r ≤ E r :=
       (div_le_iff₀ (by linarith : 0 < r)).2 (by nlinarith [hxy'])
     have hrewrite : 2 * (x r * y r / r) = 2 * (x r * y r) / r := by ring
@@ -251,13 +251,10 @@ private theorem besselRadialSystem_energy_tendsto_zero
       ring
   have hH_deriv_nonpos (r : ℝ) (hr : 2 ≤ r) :
       F r * (-E r + 3 * (x r * y r) / r) ≤ 0 := by
-    have hxy : 2 * (x r * y r) ≤ E r := by
-      dsimp [E]
-      nlinarith [sq_nonneg (x r - y r)]
     have hrE : 0 ≤ (r - 2) * E r :=
       mul_nonneg (by linarith) (hE_nonneg r)
     have hxy' : 3 * (x r * y r) ≤ r * E r := by
-      nlinarith [hxy, hrE, hE_nonneg r]
+      nlinarith [hxy_le_E r, hrE, hE_nonneg r]
     have hdiv : 3 * (x r * y r) / r ≤ E r :=
       (div_le_iff₀ (by linarith : 0 < r)).2 (by nlinarith [hxy'])
     exact mul_nonpos_of_nonneg_of_nonpos (hF_nonneg r hr) (by linarith)
@@ -266,16 +263,12 @@ private theorem besselRadialSystem_energy_tendsto_zero
     · intro r hr
       exact (hH_hasDerivAt r hr).continuousAt.continuousWithinAt
     · intro r hr
-      have hr' : 2 ≤ r := by
-        have hgt : 2 < r := by
-          simpa only [interior_Ici, Set.mem_Ioi] using hr
-        linarith
+      have hr' : 2 ≤ r :=
+        le_of_lt (by simpa only [interior_Ici, Set.mem_Ioi] using hr)
       exact (hH_hasDerivAt r hr').differentiableAt.differentiableWithinAt
     · intro r hr
-      have hr' : 2 ≤ r := by
-        have hgt : 2 < r := by
-          simpa only [interior_Ici, Set.mem_Ioi] using hr
-        linarith
+      have hr' : 2 ≤ r :=
+        le_of_lt (by simpa only [interior_Ici, Set.mem_Ioi] using hr)
       rw [(hH_hasDerivAt r hr').deriv]
       exact hH_deriv_nonpos r hr'
   have hSqBound (r : ℝ) (hr : 2 ≤ r) :
@@ -305,18 +298,15 @@ private theorem besselRadialSystem_energy_tendsto_zero
     apply hroot.congr'
     filter_upwards [Filter.eventually_ge_atTop (2 : ℝ)] with r hr
     rw [Real.sqrt_sq_eq_abs, abs_of_nonneg (hF_nonneg r hr)]
-  have hDouble : Filter.Tendsto (fun r : ℝ => 2 * F r)
-      Filter.atTop (nhds 0) := by
-    convert (tendsto_const_nhds.mul hFLim) using 1
-    norm_num
-  have hELim : Filter.Tendsto E Filter.atTop (nhds 0) := by
-    apply squeeze_zero'
-    · filter_upwards [Filter.eventually_ge_atTop (2 : ℝ)] with r hr
-      exact hE_nonneg r
-    · filter_upwards [Filter.eventually_ge_atTop (2 : ℝ)] with r hr
-      exact hE_le_two_F r hr
-    · exact hDouble
-  exact hELim
+  apply squeeze_zero'
+  · filter_upwards [Filter.eventually_ge_atTop (2 : ℝ)] with r hr
+    exact hE_nonneg r
+  · filter_upwards [Filter.eventually_ge_atTop (2 : ℝ)] with r hr
+    exact hE_le_two_F r hr
+  · simpa using
+      (tendsto_const_nhds.mul hFLim :
+        Filter.Tendsto (fun r : ℝ => (2 : ℝ) * F r)
+          Filter.atTop (nhds (2 * 0)))
 
 
 /-- The real scalar/vector channels of the exact radial Fourier kernel decay
