@@ -39,7 +39,8 @@ theorem isotropicSingleParticleAngularMean_affineCosine (a b : ℝ) :
   simp only [zero_mul, add_zero] at hmean
   rw [hmean]
   have hpi : Real.pi ≠ 0 := ne_of_gt Real.pi_pos
-  field_simp [hpi] <;> ring
+  field_simp [hpi]
+  ring
 
 /-- A first cosine harmonic subtracts `b/2` from the transport mean. -/
 theorem isotropicTransportAngularMean_affineCosine (a b : ℝ) :
@@ -54,7 +55,8 @@ theorem isotropicTransportAngularMean_affineCosine (a b : ℝ) :
     ring
   rw [hrewrite, integral_quadratic_cos_zero_two_pi]
   have hpi : Real.pi ≠ 0 := ne_of_gt Real.pi_pos
-  field_simp [hpi] <;> ring
+  field_simp [hpi]
+  ring
 
 end
 
