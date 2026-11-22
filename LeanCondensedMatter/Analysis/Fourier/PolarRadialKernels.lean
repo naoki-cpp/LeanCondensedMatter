@@ -1,4 +1,6 @@
 import LeanCondensedMatter.Analysis.Fourier.PolarRadialKernels.ZerothBessel
+import LeanCondensedMatter.Analysis.Fourier.PolarRadialKernels.Differentiation
+import LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.ZerothDerivative
 import LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.HypergeometricSeries
 import LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.ThreeTermRecurrence
 import LeanCondensedMatter.Analysis.Fourier.AngularHarmonics
@@ -25,7 +27,9 @@ The core definitions and elementary properties live in
 `Analysis.Fourier.PolarRadialKernels.Core`; the zeroth Bessel bridge is in
 `Analysis.Fourier.PolarRadialKernels.ZerothBessel`. This module develops angular harmonics,
 higher-harmonic Bessel identities, symmetries, differentiation formulas,
-and full-period harmonic reduction. It assumes no momentum measure, Planck
+and full-period harmonic reduction. Differential identities for the kernels
+are provided by `PolarRadialKernels.Differentiation` and the independent
+`Bessel.ZerothDerivative` module. It assumes no momentum measure, Planck
 constant, physical Fourier normalization, transport mechanism, or Hamiltonian.
 
 The existing declaration namespace is preserved during the first file-ownership
@@ -44,181 +48,6 @@ noncomputable section
 
 open MeasureTheory
 open scoped Interval ComplexConjugate
-
-/-- Differentiate a polar Fourier angular integral with any continuous weight bounded by one.
-The common domination estimate also covers higher bounded angular harmonics. -/
-private theorem polarFourierWeightedAngularKernel_hasDerivAt
-    (weight : ℝ → ℂ) (hweight : Continuous weight)
-    (hbound : ∀ θ : ℝ, ‖weight θ‖ ≤ 1) (z : ℝ) :
-    HasDerivAt
-      (fun x : ℝ => ∫ θ in (0 : ℝ)..(2 * Real.pi),
-        polarFourierRadialPhase x θ * weight θ)
-      (∫ θ in (0 : ℝ)..(2 * Real.pi),
-        (Complex.I * ((Real.cos θ : ℝ) : ℂ) *
-          polarFourierRadialPhase z θ) * weight θ) z := by
-  let derivative : ℝ → ℝ → ℂ := fun x θ =>
-    (Complex.I * ((Real.cos θ : ℝ) : ℂ) *
-      polarFourierRadialPhase x θ) * weight θ
-  have hdiff (x θ : ℝ) :
-      HasDerivAt (fun t : ℝ => polarFourierRadialPhase t θ * weight θ)
-        (derivative x θ) x := by
-    have hmul : HasDerivAt (fun t : ℝ => t * Real.cos θ)
-        (Real.cos θ) x := by
-      simpa using (hasDerivAt_id x).mul_const (Real.cos θ)
-    have harg : HasDerivAt
-        (fun t : ℝ => Complex.I * ((t * Real.cos θ : ℝ) : ℂ))
-        (Complex.I * ((Real.cos θ : ℝ) : ℂ)) x :=
-      hmul.ofReal_comp |>.const_mul Complex.I
-    have hphase := (Complex.hasDerivAt_exp _).comp x harg
-    have hbase : HasDerivAt (fun t : ℝ => polarFourierRadialPhase t θ)
-        (Complex.I * ((Real.cos θ : ℝ) : ℂ) *
-          polarFourierRadialPhase x θ) x := by
-      convert hphase using 1
-      · rfl
-      · dsimp [polarFourierRadialPhase]
-        ring
-    exact hbase.mul_const (weight θ)
-  have hcont (x : ℝ) : Continuous (fun θ : ℝ =>
-      polarFourierRadialPhase x θ * weight θ) := by
-    apply Continuous.mul
-    · change Continuous (fun θ : ℝ =>
-        Complex.exp (Complex.I * (((x * Real.cos θ : ℝ) : ℂ))))
-      fun_prop
-    · exact hweight
-  have hcont' (x : ℝ) : Continuous (derivative x) := by
-    dsimp only [derivative]
-    apply Continuous.mul
-    · change Continuous (fun θ : ℝ =>
-        Complex.I * ((Real.cos θ : ℝ) : ℂ) *
-          Complex.exp (Complex.I * (((x * Real.cos θ : ℝ) : ℂ))))
-      fun_prop
-    · exact hweight
-  have hderivBound (x θ : ℝ) : ‖derivative x θ‖ ≤ (1 : ℝ) := by
-    have hnorm : ‖derivative x θ‖ = |Real.cos θ| * ‖weight θ‖ := by
-      simp only [derivative, norm_mul, Complex.norm_I, Complex.norm_real,
-        Real.norm_eq_abs, norm_polarFourierRadialPhase, one_mul, mul_one]
-    rw [hnorm]
-    calc
-      |Real.cos θ| * ‖weight θ‖ ≤ 1 * ‖weight θ‖ :=
-        mul_le_mul_of_nonneg_right (Real.abs_cos_le_one θ) (norm_nonneg _)
-      _ = ‖weight θ‖ := one_mul _
-      _ ≤ 1 := hbound θ
-  exact (intervalIntegral.hasDerivAt_integral_of_dominated_loc_of_deriv_le
-    (F := fun x θ => polarFourierRadialPhase x θ * weight θ)
-    (F' := derivative)
-    (bound := fun _θ : ℝ => (1 : ℝ))
-    (s := Set.univ) (x₀ := z) (a := (0 : ℝ)) (b := 2 * Real.pi)
-    Filter.univ_mem
-    (Filter.Eventually.of_forall fun x => (hcont x).aestronglyMeasurable)
-    ((hcont z).intervalIntegrable _ _)
-    ((hcont' z).aestronglyMeasurable)
-    (Filter.Eventually.of_forall fun θ _ x _ => hderivBound x θ)
-    (intervalIntegrable_const)
-    (Filter.Eventually.of_forall fun θ _ x _ => hdiff x θ)).2
-
-/-- The first nonzero-argument differential relation of the radial Fourier
-harmonics: the derivative of the zeroth angular kernel is `i` times the
-first-cosine kernel.
-
-Unlike an origin-only normalization, this holds for every real Fourier
-argument. Together with the J₀ Bessel bridge and the hypergeometric-series
-derivative, it yields the first-harmonic Bessel identity. -/
-theorem polarFourierZerothAngularKernel_hasDerivAt (z : ℝ) :
-    HasDerivAt polarFourierZerothAngularKernel
-      (Complex.I * polarFourierFirstCosineAngularKernel z) z := by
-  have h := polarFourierWeightedAngularKernel_hasDerivAt
-    (fun _ : ℝ => (1 : ℂ)) continuous_const (by intro θ; simp) z
-  have hrew :
-      (∫ θ in (0 : ℝ)..(2 * Real.pi),
-        (Complex.I * ((Real.cos θ : ℝ) : ℂ) *
-          polarFourierRadialPhase z θ) * (1 : ℂ)) =
-        Complex.I * polarFourierFirstCosineAngularKernel z := by
-    unfold polarFourierFirstCosineAngularKernel
-    rw [← intervalIntegral.integral_const_mul]
-    apply intervalIntegral.integral_congr
-    intro θ _
-    ring
-  rw [hrew] at h
-  change HasDerivAt
-    (fun x : ℝ => ∫ θ in (0 : ℝ)..(2 * Real.pi),
-      polarFourierRadialPhase x θ)
-    (Complex.I * polarFourierFirstCosineAngularKernel z) z
-  simpa only [mul_one] using h
-
-/-- The derivative of the regularized hypergeometric series with bottom parameter 1
-has bottom parameter 2. This is the coefficient identity behind `J₀' = -J₁`. -/
-private theorem regularizedHGFun_zero_one_hasDerivAt (w : ℂ) :
-    HasDerivAt (Complex.regularizedHGFun 0 {(1 : ℂ)})
-      (Complex.regularizedHGFun 0 {(2 : ℂ)} w) w := by
-  let p := Complex.regularizedHGFunSeries 0 {(1 : ℂ)}
-  have hcoeff (n : ℕ) :
-      ((n + 1 : ℕ) : ℂ) * Complex.regularizedHGFunCoeff 0 {(1 : ℂ)} (n + 1) =
-        Complex.regularizedHGFunCoeff 0 {(2 : ℂ)} n := by
-    have h0 := regularizedHGFunCoeff_zero_singleton_nat_add_one 0 (n + 1)
-    have h1 := regularizedHGFunCoeff_zero_singleton_nat_add_one 1 n
-    norm_num only [Nat.add_zero] at h0 h1
-    rw [h0, h1, ← pow_two, Nat.factorial_succ]
-    push_cast
-    have hn : (n + 1 : ℂ) ≠ 0 := by exact_mod_cast Nat.succ_ne_zero n
-    have hf : (Nat.factorial n : ℂ) ≠ 0 := by
-      exact_mod_cast Nat.factorial_ne_zero n
-    field_simp
-  have hradius : ‖w‖ₑ < p.radius := by
-    simp [p]
-  have hderivRadius : p.derivSeries.radius = ⊤ := by
-    apply top_unique
-    simpa [p] using p.radius_le_radius_derivSeries
-  have hsummable : Summable (fun n : ℕ => p.derivSeries n (fun _ => w)) :=
-    p.derivSeries.summable (by simp [hderivRadius])
-  have hsum :
-      (p.derivSeries.sum w) (1 : ℂ) =
-        Complex.regularizedHGFun 0 {(2 : ℂ)} w := by
-    calc
-      (p.derivSeries.sum w) (1 : ℂ) =
-          ∑' n : ℕ, (p.derivSeries n (fun _ => w)) (1 : ℂ) := by
-        exact tsum_apply hsummable 1
-      _ = ∑' n : ℕ,
-          (((n + 1 : ℕ) : ℂ) *
-            Complex.regularizedHGFunCoeff 0 {(1 : ℂ)} (n + 1)) * w ^ n := by
-        apply tsum_congr
-        intro n
-        simp only [FormalMultilinearSeries.apply_eq_pow_smul_coeff,
-          smul_apply, FormalMultilinearSeries.derivSeries_coeff_one,
-          smul_eq_mul, nsmul_eq_mul, Nat.cast_add, Nat.cast_one]
-        simp only [p, Complex.regularizedHGFunSeries_coeff]
-        ring_nf
-      _ = ∑' n : ℕ, Complex.regularizedHGFunCoeff 0 {(2 : ℂ)} n * w ^ n := by
-        apply tsum_congr
-        intro n
-        rw [hcoeff]
-      _ = Complex.regularizedHGFun 0 {(2 : ℂ)} w := by
-        rw [Complex.regularizedHGFun, Complex.regularizedHGFunSeries,
-          ← FormalMultilinearSeries.ofScalarsSum,
-          FormalMultilinearSeries.ofScalars_sum_eq]
-        simp only [smul_eq_mul]
-  have hderiv : HasDerivAt (Complex.regularizedHGFun 0 {(1 : ℂ)})
-      ((p.derivSeries.sum w) 1) w := by
-    change HasDerivAt p.sum ((p.derivSeries.sum w) 1) w
-    exact (p.hasFDerivAt_sum hradius).hasDerivAt
-  rw [hsum] at hderiv
-  exact hderiv
-
-/-- Derivative of the zeroth complex Bessel function obtained from its
-regularized hypergeometric coefficients. -/
-private theorem besselJ_zero_hasDerivAt (w : ℂ) :
-    HasDerivAt (Complex.besselJ 0) (-Complex.besselJ 1 w) w := by
-  have harg : HasDerivAt (fun t : ℂ => -(t / 2) ^ 2) (-(w / 2)) w := by
-    convert (((hasDerivAt_id w).div_const (2 : ℂ)).pow 2).neg using 1
-    · funext t
-      simp only [Pi.neg_apply, Pi.pow_apply, id_eq]
-    · simp only [id_eq]
-      ring_nf
-  have h := (regularizedHGFun_zero_one_hasDerivAt (-(w / 2) ^ 2)).comp w harg
-  convert h using 1
-  · funext t
-    simp [Complex.besselJ_def]
-  · simp [Complex.besselJ_def]
-    ring
 
 /-- The first angular Fourier harmonic is the correctly normalized Bessel function
 `J₁`, for every real radial Fourier argument. -/
@@ -716,103 +545,6 @@ theorem integral_polarFourierRadialPhase_harmonicCoefficients_shifted
     (integral_polarFourierRadialPhase_shifted_second_harmonics
       z p angle coefficients.constant coefficients.firstCosine coefficients.firstSine
       coefficients.secondCosine coefficients.secondMixed)
-
-/-- Differentiating the first polar Fourier harmonic produces precisely the
-isotropic plus second-harmonic channels. This is an all-real-argument
-differential identity, not an origin-only or asymptotic statement. -/
-theorem polarFourierFirstCosineAngularKernel_hasDerivAt (z : ℝ) :
-    HasDerivAt polarFourierFirstCosineAngularKernel
-      ((Complex.I / 2) *
-        (polarFourierZerothAngularKernel z +
-          polarFourierSecondCosineAngularKernel z)) z := by
-  let derivative : ℝ → ℝ → ℂ := fun x θ =>
-    Complex.I * ((((Real.cos θ : ℝ) : ℂ)) ^ 2) * polarFourierRadialPhase x θ
-  have h := polarFourierWeightedAngularKernel_hasDerivAt
-    (fun θ : ℝ => ((Real.cos θ : ℝ) : ℂ))
-    (by fun_prop)
-    (by
-      intro θ
-      simpa only [Complex.norm_real, Real.norm_eq_abs] using Real.abs_cos_le_one θ)
-    z
-  have hderiv :
-      (∫ θ in (0 : ℝ)..(2 * Real.pi),
-        (Complex.I * ((Real.cos θ : ℝ) : ℂ) *
-          polarFourierRadialPhase z θ) * ((Real.cos θ : ℝ) : ℂ)) =
-        (∫ θ in (0 : ℝ)..(2 * Real.pi), derivative z θ) := by
-    apply intervalIntegral.integral_congr
-    intro θ _
-    dsimp [derivative]
-    ring
-  have hrew :
-      (∫ θ in (0 : ℝ)..(2 * Real.pi), derivative z θ) =
-        (Complex.I / 2) *
-          (polarFourierZerothAngularKernel z +
-            polarFourierSecondCosineAngularKernel z) := by
-    calc
-      (∫ θ in (0 : ℝ)..(2 * Real.pi), derivative z θ) =
-          ∫ θ in (0 : ℝ)..(2 * Real.pi),
-            (Complex.I / 2) *
-              (polarFourierRadialPhase z θ +
-                polarFourierRadialPhase z θ *
-                  (((Real.cos θ : ℝ) : ℂ) ^ 2 -
-                    ((Real.sin θ : ℝ) : ℂ) ^ 2)) := by
-        apply intervalIntegral.integral_congr
-        intro θ _
-        have hs : (((Real.sin θ : ℝ) : ℂ) ^ 2) +
-            (((Real.cos θ : ℝ) : ℂ) ^ 2) = 1 := by
-          exact_mod_cast Real.sin_sq_add_cos_sq θ
-        dsimp [derivative]
-        linear_combination (Complex.I / 2 * polarFourierRadialPhase z θ) * hs
-      _ = (Complex.I / 2) *
-          (∫ θ in (0 : ℝ)..(2 * Real.pi),
-            polarFourierRadialPhase z θ +
-              polarFourierRadialPhase z θ *
-                (((Real.cos θ : ℝ) : ℂ) ^ 2 -
-                  ((Real.sin θ : ℝ) : ℂ) ^ 2)) := by
-        rw [intervalIntegral.integral_const_mul]
-      _ = _ := by
-        rw [intervalIntegral.integral_add]
-        · rfl
-        · have hc : Continuous (polarFourierRadialPhase z) := by
-            change Continuous (fun θ : ℝ =>
-              Complex.exp (Complex.I * (((z * Real.cos θ : ℝ) : ℂ))))
-            fun_prop
-          exact hc.intervalIntegrable _ _
-        · have hc : Continuous (fun θ : ℝ =>
-              polarFourierRadialPhase z θ *
-                (((Real.cos θ : ℝ) : ℂ) ^ 2 -
-                  ((Real.sin θ : ℝ) : ℂ) ^ 2)) := by
-            change Continuous (fun θ : ℝ =>
-              Complex.exp (Complex.I * (((z * Real.cos θ : ℝ) : ℂ))) *
-                (((Real.cos θ : ℝ) : ℂ) ^ 2 -
-                  ((Real.sin θ : ℝ) : ℂ) ^ 2))
-            fun_prop
-          exact hc.intervalIntegrable _ _
-  rw [hderiv, hrew] at h
-  change HasDerivAt
-    (fun x : ℝ => ∫ θ in (0 : ℝ)..(2 * Real.pi),
-      polarFourierRadialPhase x θ * ((Real.cos θ : ℝ) : ℂ))
-    ((Complex.I / 2) *
-      (polarFourierZerothAngularKernel z +
-        polarFourierSecondCosineAngularKernel z)) z
-  exact h
-
-/-- A finite-radius conservation-law primitive for the first two radial Fourier
-harmonics. Its derivative involves the same K0-minus-K2 channel that occurs in
-the Gaussian-crossed current moments; the identity is valid including z = 0. -/
-theorem polarFourierHarmonicEnergy_hasDerivAt (z : ℝ) :
-    HasDerivAt
-      (fun t : ℝ =>
-        polarFourierZerothAngularKernel t ^ 2 -
-          polarFourierFirstCosineAngularKernel t ^ 2)
-      (Complex.I * polarFourierFirstCosineAngularKernel z *
-        (polarFourierZerothAngularKernel z -
-          polarFourierSecondCosineAngularKernel z)) z := by
-  have h0 := (polarFourierZerothAngularKernel_hasDerivAt z).pow 2
-  have h1 := (polarFourierFirstCosineAngularKernel_hasDerivAt z).pow 2
-  convert h0.sub h1 using 1
-  ring
-
 
 
 end
