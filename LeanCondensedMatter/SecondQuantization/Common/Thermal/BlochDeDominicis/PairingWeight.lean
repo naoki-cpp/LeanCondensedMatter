@@ -177,11 +177,14 @@ theorem Pairing.weight_eraseZeroPair (s : Statistics) {n : ℕ} (pairing : Pairi
 /-- Four-position sanity check: the three structural pairings have weights `1`, `ζ`, and `1`.
 This is the combinatorial sign pattern used by the four-point Bloch--de Dominicis formula. -/
 theorem four_position_pairings_and_weights (s : Statistics) :
-    allPairings 2 = {pairingAdjacent, pairingCrossing, pairingNested} ∧
+    (Finset.univ : Finset (Pairing 2)) =
+        {pairingAdjacent, pairingCrossing, pairingNested} ∧
       pairingAdjacent.weight s = 1 ∧
       pairingCrossing.weight s = (s.zetaInt : ℂ) ∧
       pairingNested.weight s = 1 := by
-  simp [allPairings_two, Pairing.weight]
+  constructor
+  · decide
+  · simp [Pairing.weight]
 
 end BlochDeDominicis
 end Common

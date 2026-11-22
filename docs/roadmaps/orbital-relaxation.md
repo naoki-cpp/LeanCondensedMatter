@@ -175,11 +175,23 @@ for the mechanism, not consequences of the finite kinetic benchmark.
 
 ## Existing repository boundary
 
+`Analysis.Matrix.CartesianProjectors` owns finite-dimensional rank-one outer products
+and their unnormalized transverse complements. The spherical `t₂g` realization
+under `Models.OrbitalRelaxation.T2gProjectors` supplies only the Hamiltonian
+identification and spectral-parameter specialization.
+
+
+The normalized continuous spherical-coordinate average and its Cartesian fourth moments
+live in `Analysis.Geometry.SphericalMoments`. The orbital module proves only the finite
+cubature comparison and the double-commutator specialization; it does not identify the
+spherical chart integral with an arbitrary probability measure on a Fermi surface.
+
+
 `QuantumTheory.DensityOperator` and finite-dimensional expectations provide
 state-level foundations. `QuantumTheory.SpinHalf.spinMatrix` provides the
 physical spin-1/2 normalization, while `Analysis.InternalSpace.Pauli` provides
 dimensionless representation matrices. The existing
-`Transport.Analysis.AngularHarmonics` API concerns a two-dimensional polar
+`Analysis.Fourier.AngularHarmonics` API concerns a two-dimensional polar
 angle; it does not supply the three-dimensional sphere moments needed here.
 The finite disorder and transport response APIs describe different observables
 and should only be connected by a separate identification theorem. The finite

@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Transport.Analysis.BesselRadialMoments
+import LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.AnalyticWronskian
 
 set_option linter.style.header false
 
@@ -27,24 +28,17 @@ boundary, is a separate and presently unproved obligation.
 namespace QuantumTheory
 namespace Transport
 
+open BesselSecondKind
+
 noncomputable section
 
 open MeasureTheory
 open scoped Interval
 
-/-- The first/second-kind Wronskian condition at nonzero real arguments.
-This is the exact input needed to eliminate the Y-Bessel functions from
-the Ado crossed-X radial moment; no singular value at zero is demanded. -/
-def CrossedXBesselWronskian (Y0 Y1 : ℝ → ℂ) : Prop :=
-  ∀ r : ℝ, r ≠ 0 →
-    Complex.besselJ 1 (r : ℂ) * Y0 r -
-      Complex.besselJ 0 (r : ℂ) * Y1 r =
-      (((2 / Real.pi : ℝ) : ℂ)) * (r : ℂ)⁻¹
-
 /-- Exact Wronskian reduction of the X radial integrand, including the
 origin via the continuous J₁²/r extension. -/
 theorem crossedXBesselIntegrand_eq_one_sq_div
-    (Y0 Y1 : ℝ → ℂ) (hW : CrossedXBesselWronskian Y0 Y1)
+    (Y0 Y1 : ℝ → ℂ) (hW : RealWronskianCondition Y0 Y1)
     (r : ℝ) :
     Complex.besselJ 1 (r : ℂ) ^ 2 *
         (Complex.besselJ 1 (r : ℂ) * Y0 r -
@@ -61,7 +55,7 @@ theorem crossedXBesselIntegrand_eq_one_sq_div
 endpoint expression, under only the standard Wronskian condition.
 The Y functions never need values or continuity at r=0. -/
 theorem integral_crossedXBesselIntegrand_eq_endpoints
-    (Y0 Y1 : ℝ → ℂ) (hW : CrossedXBesselWronskian Y0 Y1)
+    (Y0 Y1 : ℝ → ℂ) (hW : RealWronskianCondition Y0 Y1)
     (R : ℝ) :
     (∫ r in (0 : ℝ)..R,
         Complex.besselJ 1 (r : ℂ) ^ 2 *
@@ -92,7 +86,7 @@ This theorem does not identify the physical finite-Born X diagram with
 the Bessel integrand; in particular no ultraviolet, zero-broadening,
 weak-disorder or real-space Fourier limit is smuggled into the statement. -/
 theorem tendsto_integral_crossedXBesselIntegrand
-    (Y0 Y1 : ℝ → ℂ) (hW : CrossedXBesselWronskian Y0 Y1) :
+    (Y0 Y1 : ℝ → ℂ) (hW : RealWronskianCondition Y0 Y1) :
     Filter.Tendsto
       (fun R : ℝ => ∫ r in (0 : ℝ)..R,
         Complex.besselJ 1 (r : ℂ) ^ 2 *
@@ -119,7 +113,7 @@ theorem tendsto_integral_crossedXBesselIntegrand
 universal limit `1/π`, independently of the concrete Y-Bessel
 implementation, as soon as the Wronskian condition is established. -/
 theorem tendsto_integral_crossedXBesselIntegrand_one_div_pi
-    (Y0 Y1 : ℝ → ℂ) (hW : CrossedXBesselWronskian Y0 Y1) :
+    (Y0 Y1 : ℝ → ℂ) (hW : RealWronskianCondition Y0 Y1) :
     Filter.Tendsto
       (fun R : ℝ => ∫ r in (0 : ℝ)..R,
         Complex.besselJ 1 (r : ℂ) ^ 2 *
@@ -132,6 +126,7 @@ theorem tendsto_integral_crossedXBesselIntegrand_one_div_pi
     ring
   simpa only [hscale] using
     (tendsto_integral_crossedXBesselIntegrand Y0 Y1 hW)
+
 
 end
 

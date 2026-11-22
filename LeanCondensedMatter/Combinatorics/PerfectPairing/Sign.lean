@@ -6,13 +6,13 @@ import Mathlib.Algebra.BigOperators.ModEq
 set_option linter.style.header false
 
 /-!
-# A perfect pairing as a permutation of its ambient positions
+# Permutation signs of pair presentations
 
-Listing the normalized pairs of a perfect pairing one after another turns the pairing into a
-permutation of `Fin (2 * n)`: the block of positions `2 * k` and `2 * k + 1` receives the two
-endpoints of the `k`-th pair, first endpoint first.
+A permutation of `Fin (2 * n)` presents a perfect pairing when its two-element blocks list
+every normalized pair, possibly with reversed endpoints. Its sign is the product of the
+within-block reversal parity and the pairing crossing parity.
 
-The enumeration of the pairs is arbitrary; nothing here depends on the choice.
+The statement applies to any presentation and does not choose a canonical enumeration.
 -/
 
 namespace Combinatorics
@@ -22,18 +22,6 @@ variable {n : ℕ}
 /-- Local shorthand for the generic finite-index block equivalence with block width two. -/
 private def pairSlotIndexEquiv (n : ℕ) : Fin (2 * n) ≃ Fin n × Fin 2 :=
   FiniteIndex.blockEquiv (by ring)
-
-private noncomputable def Pairing.pairIndexEquiv (pairing : Pairing n) :
-    Fin n ≃ pairing.NormalizedPair :=
-  (Fintype.equivFinOfCardEq pairing.card_normalizedPair).symm
-
-private noncomputable def Pairing.pairSlotEquiv (pairing : Pairing n) :
-    Fin n × Fin 2 ≃ Fin (2 * n) :=
-  (pairing.pairIndexEquiv.prodCongr (Equiv.refl (Fin 2))).trans pairing.pairEndpointEquiv
-
-/-- The permutation of ambient positions that lists the normalized pairs one after another. -/
-noncomputable def Pairing.pairPerm (pairing : Pairing n) : Equiv.Perm (Fin (2 * n)) :=
-  (pairSlotIndexEquiv n).trans pairing.pairSlotEquiv
 
 private theorem sign_eq_prod_prod_blockSlots (σ : Equiv.Perm (Fin (2 * n))) :
     Equiv.Perm.sign σ =
@@ -221,14 +209,6 @@ private theorem sign_eq_pow_blockInversions (τ : Equiv.Perm (Fin (2 * n))) :
       rw [← Finset.prod_pow_eq_pow_sum]
       exact Finset.prod_congr rfl fun k _ => Finset.prod_pow_eq_pow_sum _ _ _
 
-private theorem blockPair_pairPerm (pairing : Pairing n) (k : Fin n) :
-    blockPair pairing.pairPerm k = (pairing.pairIndexEquiv k).1 := by
-  simp only [blockPair, blockPos, Pairing.pairPerm, Equiv.trans_apply,
-    Equiv.apply_symm_apply]
-  change (pairing.pairEndpoint (pairing.pairIndexEquiv k, 0),
-    pairing.pairEndpoint (pairing.pairIndexEquiv k, 1)) = _
-  rw [pairing.pairEndpoint_zero, pairing.pairEndpoint_one]
-
 private noncomputable def crossIndicator (pairing : Pairing n) (e : Fin n ≃ pairing.NormalizedPair)
     (k l : Fin n) : ℕ :=
   if Crosses (e k).1 (e l).1 then 1 else 0
@@ -319,10 +299,6 @@ theorem Pairing.sign_eq_of_presentsPairs (pairing : Pairing n) (τ : Equiv.Perm 
   rw [heq]
   exact sum_Ioi_pairEndpointInversionCount_mod_two_eq_crossingCount pairing e
 
-private theorem Pairing.pairPerm_presentsPairs (pairing : Pairing n) :
-    pairing.PresentsPairs pairing.pairPerm :=
-  ⟨pairing.pairIndexEquiv, fun k => Or.inl (blockPair_pairPerm pairing k)⟩
-
 /-- **Criterion for presenting a pairing.** A permutation presents a pairing as soon as each of its
 two-element blocks carries a pair of partners. No enumeration has to be supplied: the blocks are
 disjoint and there are as many of them as there are pairs, so they exhaust the pairs. -/
@@ -343,17 +319,5 @@ theorem Pairing.presentsPairs_of_partner_blockPair (pairing : Pairing n)
   rcases horient with hk | hk
   · exact Or.inl hk.symm
   · exact Or.inr (by rw [hk, Prod.swap_swap])
-
-/-- **Crossing parity is a permutation sign.** The sign of the permutation listing the normalized
-pairs of a perfect pairing is `-1` raised to its crossing count. -/
-theorem Pairing.sign_pairPerm (pairing : Pairing n) :
-    Equiv.Perm.sign pairing.pairPerm = (-1) ^ pairing.crossingCount := by
-  have hzero : (∑ k : Fin n,
-      if (blockPair pairing.pairPerm k).2 < (blockPair pairing.pairPerm k).1 then 1 else 0) = 0 :=
-    Finset.sum_eq_zero fun k _ => ite_eq_right (by
-      rw [blockPair_pairPerm]
-      exact asymm (pairing.pairs_normalized (pairing.pairIndexEquiv k).2))
-  rw [pairing.sign_eq_of_presentsPairs pairing.pairPerm pairing.pairPerm_presentsPairs, hzero,
-    pow_zero, one_mul]
 
 end Combinatorics

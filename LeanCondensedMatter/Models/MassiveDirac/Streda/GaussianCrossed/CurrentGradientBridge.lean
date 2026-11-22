@@ -1,6 +1,6 @@
 import LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.RealSpace
-import LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVResolventDifference
-import LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornInvertibility
+import LeanCondensedMatter.Models.MassiveDirac.Propagator.RadialFourier.ResolventDifference
+import LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.BornDyson.Invertibility
 import Mathlib.Tactic.Ring
 
 set_option linter.style.header false

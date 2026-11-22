@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.CurrentGradientBridge
-import LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornRadialScalarGenerator
+import LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.BornDyson.RealSpace.ScalarGenerator
 import Mathlib.Tactic.FunProp
 import Mathlib.Tactic.FieldSimp
 import Mathlib.Tactic.Ring

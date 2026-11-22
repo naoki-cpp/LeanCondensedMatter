@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.SelfEnergy
+import LeanCondensedMatter.Models.MassiveDirac.Propagator.RadialFourier.LogIntegral
 import Mathlib.Analysis.SpecificLimits.Basic
 import Mathlib.Analysis.SpecialFunctions.Complex.Arg
 import Mathlib.Analysis.SpecialFunctions.Complex.LogDeriv
@@ -15,13 +16,14 @@ set_option linter.style.header false
 # Continuum Born denominator analysis
 
 This module owns the exact finite-cutoff evaluation of the common massive-Dirac Born denominator,
-its fixed-regulator ultraviolet behavior, and its positive-broadening boundary values. The analytic
+its fixed-regulator ultraviolet behavior. The positive-broadening boundary is owned by
+`Born.Boundary`. The analytic
 calculation is stated at arbitrary signed regulator where possible; physical spectral-side limits
 are introduced only where the branch orientation matters.
 
 The exact finite-cutoff integral is expressed through the principal complex logarithm. At fixed
-nonzero regulator its real part has the logarithmic ultraviolet divergence, while at fixed finite
-cutoff in the metallic regime its imaginary part has the retarded/advanced `η → 0⁺` boundary value.
+nonzero regulator its real part has the logarithmic ultraviolet divergence, The retarded/advanced `η → 0⁺` boundary value at fixed cutoff is established in
+`Born.Boundary`.
 -/
 
 namespace QuantumTheory.Models.MassiveDirac
@@ -105,118 +107,6 @@ theorem pauliGreenDenominator_radial_im
       pauliGreenDenominatorOfRegulator_radial_im]
     simp only [SpectralSide.sign_advanced]
     ring
-
-/-- Exact finite-cutoff radial primitive for a massive-Dirac propagator with
-arbitrary complex effective energy and mass. The nonzero imaginary part of
-the squared-energy-minus-mass center keeps the whole radial path off the
-principal logarithm's branch cut. This extends the clean-regulator Born
-primitive to the complex Dyson parameters used by crossed RA diagrams,
-without taking any disorder, broadening, or cutoff limit. -/
-theorem integral_massiveDiracRadialDenominatorKernel_eq_log
-    (v pMax : ℝ) (energy mass : ℂ)
-    (hvelocity : v ≠ 0) (hcenter : (energy ^ 2 - mass ^ 2).im ≠ 0) :
-    (∫ p in (0 : ℝ)..pMax,
-      massiveDiracRadialDenominatorKernel v p energy mass) =
-      -(((2 : ℂ) * (v : ℂ) ^ 2)⁻¹) *
-        (Complex.log (massiveDiracRadialDenominator v pMax energy mass) -
-          Complex.log (massiveDiracRadialDenominator v 0 energy mass)) := by
-  have hdenIm (p : ℝ) :
-      (massiveDiracRadialDenominator v p energy mass).im =
-        (energy ^ 2 - mass ^ 2).im := by
-    unfold massiveDiracRadialDenominator
-    simp only [Complex.sub_im, Complex.ofReal_im, sub_zero]
-  have hdenNe (p : ℝ) :
-      massiveDiracRadialDenominator v p energy mass ≠ 0 := by
-    intro hz
-    have hzIm := congrArg Complex.im hz
-    rw [hdenIm] at hzIm
-    exact hcenter (by simpa using hzIm)
-  have hdenCont :
-      Continuous (fun p : ℝ => massiveDiracRadialDenominator v p energy mass) := by
-    unfold massiveDiracRadialDenominator
-    fun_prop
-  have hkernelCont :
-      Continuous (fun p : ℝ => massiveDiracRadialDenominatorKernel v p energy mass) := by
-    unfold massiveDiracRadialDenominatorKernel
-    exact (Complex.continuous_ofReal.comp continuous_id).mul
-      (hdenCont.inv₀ hdenNe)
-  have hdenDeriv (p : ℝ) :
-      HasDerivAt
-        (fun q : ℝ => massiveDiracRadialDenominator v q energy mass)
-        (-2 * (v : ℂ) ^ 2 * (p : ℂ)) p := by
-    have hcomplex :
-        HasDerivAt
-          (fun z : ℂ => energy ^ 2 - mass ^ 2 - (v : ℂ) ^ 2 * z ^ 2)
-          (-2 * (v : ℂ) ^ 2 * (p : ℂ)) (p : ℂ) := by
-      convert (hasDerivAt_const (p : ℂ) (energy ^ 2 - mass ^ 2)).sub
-          (((hasDerivAt_id (p : ℂ)).pow 2).const_mul ((v : ℂ) ^ 2)) using 1 <;>
-        first | rfl | (simp only [id]; ring)
-    have hreal := hcomplex.comp_ofReal
-    convert hreal using 1
-    funext q
-    unfold massiveDiracRadialDenominator
-    push_cast
-    ring
-  have hlogDeriv (p : ℝ) :
-      HasDerivAt
-        (fun q : ℝ => Complex.log (massiveDiracRadialDenominator v q energy mass))
-        ((-2 : ℂ) * (v : ℂ) ^ 2 *
-          massiveDiracRadialDenominatorKernel v p energy mass) p := by
-    have hslit :
-        massiveDiracRadialDenominator v p energy mass ∈ Complex.slitPlane := by
-      rw [Complex.mem_slitPlane_iff]
-      right
-      rw [hdenIm]
-      exact hcenter
-    have hlog := (hdenDeriv p).clog_real hslit
-    convert hlog using 1
-    unfold massiveDiracRadialDenominatorKernel
-    rw [div_eq_mul_inv]
-    ring
-  have hint : IntervalIntegrable
-      (fun p : ℝ =>
-        ((-2 : ℂ) * (v : ℂ) ^ 2) *
-          massiveDiracRadialDenominatorKernel v p energy mass)
-      volume 0 pMax :=
-    (hkernelCont.const_mul ((-2 : ℂ) * (v : ℂ) ^ 2)).intervalIntegrable 0 pMax
-  have hmain :
-      ((-2 : ℂ) * (v : ℂ) ^ 2) *
-          (∫ p in (0 : ℝ)..pMax,
-            massiveDiracRadialDenominatorKernel v p energy mass) =
-        Complex.log (massiveDiracRadialDenominator v pMax energy mass) -
-          Complex.log (massiveDiracRadialDenominator v 0 energy mass) := by
-    have hftc := intervalIntegral.integral_eq_sub_of_hasDerivAt
-      (fun p _ => hlogDeriv p) hint
-    rw [← hftc]
-    rw [intervalIntegral.integral_const_mul]
-  have hv : (v : ℂ) ≠ 0 := Complex.ofReal_ne_zero.mpr hvelocity
-  have hcoeff : ((-2 : ℂ) * (v : ℂ) ^ 2) ≠ 0 :=
-    mul_ne_zero (by norm_num) (pow_ne_zero 2 hv)
-  apply mul_left_cancel₀ hcoeff
-  rw [hmain]
-  field_simp
-
-/-- A pole-free quadratic radial denominator with positive real spectral
-parameter has nonzero imaginary part. This uses only the radial pole
-parameter, not a particular effective-energy/mass decomposition. -/
-theorem massiveDiracRadialCenter_im_ne_zero_of_re_pos
-    (v : ℝ) (center : ℂ) (hvelocity : v ≠ 0)
-    (hcenterRe : 0 < center.re)
-    (hden : ∀ p : ℝ, center - ((v ^ 2 * p ^ 2 : ℝ) : ℂ) ≠ 0) :
-    center.im ≠ 0 := by
-  intro him
-  let p : ℝ := Real.sqrt center.re / v
-  have hp : v ^ 2 * p ^ 2 = center.re := by
-    dsimp [p]
-    rw [div_pow, Real.sq_sqrt (le_of_lt hcenterRe)]
-    field_simp
-  have hzero : center - ((v ^ 2 * p ^ 2 : ℝ) : ℂ) = 0 := by
-    apply Complex.ext
-    · simp only [Complex.sub_re, Complex.ofReal_re, Complex.zero_re]
-      linarith
-    · simpa only [Complex.sub_im, Complex.ofReal_im, sub_zero, Complex.zero_im]
-        using him
-  exact hden p hzero
 
 /-- Explicit arbitrary-regulator finite-cutoff evaluation of the shared denominator integral. -/
 private theorem finiteCutoffContinuumBornDenominatorIntegralOfRegulator_eq_log_sub_log
@@ -419,149 +309,6 @@ theorem tendsto_finiteCutoffContinuumBornDenominatorIntegralOfRegulator_re_atTop
     (Eventually.of_forall fun pMax => ?_)
   exact (finiteCutoffContinuumBornDenominatorIntegralOfRegulator_re_eq
     v m probeEnergy regulator pMax hvelocity hprobeEnergy hregulator).symm
-
-end
-
-end QuantumTheory.Models.MassiveDirac
-
-set_option linter.style.header false
-
-namespace QuantumTheory.Models.MassiveDirac
-
-noncomputable section
-
-open Filter
-open QuantumTheory.Transport
-
-private theorem mass_sq_lt_probe_sq
-    (m probeEnergy : ℝ) (hmetal : |m| < probeEnergy) :
-    m ^ 2 < probeEnergy ^ 2 := by
-  rw [← sq_abs m]
-  nlinarith [abs_nonneg m]
-
-private theorem tendsto_pauliGreenDenominator_radial_broadening_zero
-    (side : SpectralSide) (v m probeEnergy p : ℝ) :
-    Tendsto
-      (fun broadening : ℝ => pauliGreenDenominator side v m p 0 probeEnergy broadening)
-      (nhdsWithin 0 (Set.Ioi 0))
-      (nhds (pauliGreenDenominator side v m p 0 probeEnergy 0)) := by
-  have hcontinuous :
-      ContinuousAt
-        (fun broadening : ℝ => pauliGreenDenominator side v m p 0 probeEnergy broadening) 0 := by
-    unfold pauliGreenDenominator pauliGreenDenominatorOfRegulator energySq
-      spectralParameterOfRegulator SpectralSide.regulator
-    fun_prop
-  exact hcontinuous.tendsto.mono_left inf_le_left
-
-private theorem tendsto_arg_pauliGreenDenominator_zero_radial_broadening_zero
-    (side : SpectralSide) (v m probeEnergy : ℝ)
-    (hmetal : |m| < probeEnergy) :
-    Tendsto
-      (fun broadening : ℝ =>
-        (pauliGreenDenominator side v m 0 0 probeEnergy broadening).arg)
-      (nhdsWithin 0 (Set.Ioi 0)) (nhds 0) := by
-  have hre : 0 < (pauliGreenDenominator side v m 0 0 probeEnergy 0).re := by
-    rw [pauliGreenDenominator_radial_re]
-    nlinarith [mass_sq_lt_probe_sq m probeEnergy hmetal]
-  have him : (pauliGreenDenominator side v m 0 0 probeEnergy 0).im = 0 := by
-    simp
-  have hslit : pauliGreenDenominator side v m 0 0 probeEnergy 0 ∈ Complex.slitPlane := by
-    rw [Complex.mem_slitPlane_iff]
-    exact Or.inl hre
-  have harg :=
-    (Complex.continuousAt_arg hslit).tendsto.comp
-      (tendsto_pauliGreenDenominator_radial_broadening_zero side v m probeEnergy 0)
-  have hargZero : (pauliGreenDenominator side v m 0 0 probeEnergy 0).arg = 0 := by
-    rw [Complex.arg_eq_zero_iff]
-    exact ⟨hre.le, him⟩
-  rw [hargZero] at harg
-  exact harg
-
-private theorem tendsto_arg_pauliGreenDenominator_cutoff_broadening_zero
-    (side : SpectralSide) (v m probeEnergy pMax : ℝ)
-    (hprobe : 0 < probeEnergy)
-    (hcutoff : probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2) :
-    Tendsto
-      (fun broadening : ℝ =>
-        (pauliGreenDenominator side v m pMax 0 probeEnergy broadening).arg)
-      (nhdsWithin 0 (Set.Ioi 0)) (nhds (side.sign * Real.pi)) := by
-  have hre : (pauliGreenDenominator side v m pMax 0 probeEnergy 0).re < 0 := by
-    rw [pauliGreenDenominator_radial_re]
-    nlinarith
-  have him : (pauliGreenDenominator side v m pMax 0 probeEnergy 0).im = 0 := by
-    simp
-  have hden := tendsto_pauliGreenDenominator_radial_broadening_zero
-    side v m probeEnergy pMax
-  cases side with
-  | retarded =>
-      have hwithin :
-          Tendsto
-            (fun broadening : ℝ =>
-              pauliGreenDenominator .retarded v m pMax 0 probeEnergy broadening)
-            (nhdsWithin 0 (Set.Ioi 0))
-            (nhdsWithin
-              (pauliGreenDenominator .retarded v m pMax 0 probeEnergy 0)
-              {z : ℂ | 0 ≤ z.im}) := by
-        rw [tendsto_nhdsWithin_iff]
-        refine ⟨hden, ?_⟩
-        filter_upwards [self_mem_nhdsWithin] with broadening hbroadening
-        rw [pauliGreenDenominator_radial_im]
-        simp only [SpectralSide.sign_retarded]
-        nlinarith [mul_pos hprobe hbroadening]
-      have harg :=
-        (Complex.tendsto_arg_nhdsWithin_im_nonneg_of_re_neg_of_im_zero hre him).comp hwithin
-      simpa [Function.comp_def, SpectralSide.sign] using harg
-  | advanced =>
-      have hwithin :
-          Tendsto
-            (fun broadening : ℝ =>
-              pauliGreenDenominator .advanced v m pMax 0 probeEnergy broadening)
-            (nhdsWithin 0 (Set.Ioi 0))
-            (nhdsWithin
-              (pauliGreenDenominator .advanced v m pMax 0 probeEnergy 0)
-              {z : ℂ | z.im < 0}) := by
-        rw [tendsto_nhdsWithin_iff]
-        refine ⟨hden, ?_⟩
-        filter_upwards [self_mem_nhdsWithin] with broadening hbroadening
-        rw [pauliGreenDenominator_radial_im]
-        simp only [SpectralSide.sign_advanced]
-        nlinarith [mul_pos hprobe hbroadening]
-      have harg :=
-        (Complex.tendsto_arg_nhdsWithin_im_neg_of_re_neg_of_im_zero hre him).comp hwithin
-      simpa [Function.comp_def, SpectralSide.sign] using harg
-
-/-- At fixed finite cutoff beyond the on-shell circle, `Im J_s → -sπ/(2v²)` as `η → 0⁺`. -/
-theorem tendsto_finiteCutoffContinuumBornDenominatorIntegral_im_broadening_zero
-    (side : SpectralSide) (v m probeEnergy pMax : ℝ)
-    (hvelocity : v ≠ 0) (hmetal : |m| < probeEnergy)
-    (hcutoff : probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2) :
-    Tendsto
-      (fun broadening : ℝ =>
-        (finiteCutoffContinuumBornDenominatorIntegral
-          side v m probeEnergy broadening pMax).im)
-      (nhdsWithin 0 (Set.Ioi 0))
-      (nhds (-(((2 : ℝ) * v ^ 2)⁻¹) * (side.sign * Real.pi))) := by
-  have hprobe : 0 < probeEnergy := lt_of_le_of_lt (abs_nonneg m) hmetal
-  have hprobeEnergy : probeEnergy ≠ 0 := ne_of_gt hprobe
-  have hargCutoff := tendsto_arg_pauliGreenDenominator_cutoff_broadening_zero
-    side v m probeEnergy pMax hprobe hcutoff
-  have hargZero := tendsto_arg_pauliGreenDenominator_zero_radial_broadening_zero
-    side v m probeEnergy hmetal
-  have hdiff :
-      Tendsto
-        (fun broadening : ℝ =>
-          (pauliGreenDenominator side v m pMax 0 probeEnergy broadening).arg -
-            (pauliGreenDenominator side v m 0 0 probeEnergy broadening).arg)
-        (nhdsWithin 0 (Set.Ioi 0)) (nhds (side.sign * Real.pi)) := by
-    simpa using hargCutoff.sub hargZero
-  refine ((tendsto_const_nhds : Tendsto
-    (fun _ : ℝ => -(((2 : ℝ) * v ^ 2)⁻¹))
-    (nhdsWithin 0 (Set.Ioi 0))
-    (nhds (-(((2 : ℝ) * v ^ 2)⁻¹)))).mul hdiff).congr' ?_
-  filter_upwards [self_mem_nhdsWithin] with broadening hbroadening
-  have hbroadening_ne : broadening ≠ 0 := ne_of_gt hbroadening
-  exact (finiteCutoffContinuumBornDenominatorIntegral_im_eq
-    side v m probeEnergy broadening pMax hvelocity hprobeEnergy hbroadening_ne).symm
 
 end
 

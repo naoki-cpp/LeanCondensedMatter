@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Analysis.Fourier.AngularHarmonics
 import LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.RadialTrace
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic
 
@@ -32,6 +33,8 @@ Bessel-function reduction, or closed crossed conductivity is claimed here.
 -/
 
 namespace QuantumTheory.Models.MassiveDirac
+
+open AngularHarmonics
 
 noncomputable section
 

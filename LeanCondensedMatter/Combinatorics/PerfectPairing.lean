@@ -17,7 +17,6 @@ import LeanCondensedMatter.Combinatorics.PerfectPairing.Embedding
 import LeanCondensedMatter.Combinatorics.PerfectPairing.CrossingParity
 import LeanCondensedMatter.Combinatorics.PerfectPairing.CrossingEraseZero
 import LeanCondensedMatter.Combinatorics.PerfectPairing.InsertFirstPair
-import LeanCondensedMatter.Combinatorics.PerfectPairing.FirstPairDecomposition
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Transport
 import LeanCondensedMatter.Combinatorics.PerfectPairing.InvolutionCard
 

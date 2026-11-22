@@ -1,4 +1,5 @@
-import LeanCondensedMatter.Transport.Analysis.AngularHarmonics
+import LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.HypergeometricSeries
+import LeanCondensedMatter.Analysis.Fourier.AngularHarmonics
 import LeanCondensedMatter.Transport.Analysis.ContinuumMeasure
 import LeanCondensedMatter.Transport.Analysis.FourierGeometry
 import Mathlib.Analysis.Calculus.ParametricIntervalIntegral
@@ -38,7 +39,11 @@ conductivity normalization is introduced here.
 -/
 
 namespace QuantumTheory
+
+open AngularHarmonics
 namespace Transport
+
+open BesselHypergeometric
 
 noncomputable section
 
@@ -284,18 +289,6 @@ theorem polarFourierZerothAngularKernel_eq_tsum_moments (z : ℝ) :
       rw [intervalIntegral.integral_const_mul]
     _ = _ := by rw [hcos]
 
-/-- The coefficient of the regularized hypergeometric series with lower parameter `k + 1`. -/
-theorem regularizedHGFunCoeff_zero_singleton_nat_add_one (k n : ℕ) :
-    Complex.regularizedHGFunCoeff 0 {((k + 1 : ℕ) : ℂ)} n =
-      1 / ((Nat.factorial n : ℂ) * (Nat.factorial (n + k) : ℂ)) := by
-  have hgamma : Complex.Gamma (((k : ℂ) + 1) + (n : ℂ)) =
-      (Nat.factorial (n + k) : ℂ) := by
-    rw [show ((k : ℂ) + 1) + (n : ℂ) = ((n + k : ℕ) : ℂ) + 1 by
-      simp only [Nat.cast_add]
-      ring]
-    exact Complex.Gamma_nat_eq_factorial (n + k)
-  simp [Complex.regularizedHGFunCoeff, Nat.cast_add, hgamma]
-
 /-- A full-period cosine moment is bounded by the length of its integration interval. -/
 theorem polarFourierCosineMoment_norm_le (n : ℕ) :
     ‖polarFourierCosineMoment n‖ ≤ 2 * Real.pi := by
@@ -331,18 +324,6 @@ theorem polarFourierZerothMoments_summable (z : ℝ) :
     _ ≤ (|z| ^ n / (Nat.factorial n : ℝ)) * (2 * Real.pi) :=
       mul_le_mul_of_nonneg_left hmoment (div_nonneg hpow hfact)
     _ = (2 * Real.pi) * (|z| ^ n / (Nat.factorial n : ℝ)) := by ring
-
-/-- Mathlib's integer-order Bessel function has the expected coefficient expansion. -/
-theorem polarFourierBesselJZero_eq_tsum (z : ℂ) :
-    Complex.besselJ 0 z =
-      ∑' n : ℕ, Complex.regularizedHGFunCoeff 0 {(1 : ℂ)} n *
-        (-(z / 2) ^ 2) ^ n := by
-  rw [Complex.besselJ_def]
-  simp only [Complex.cpow_zero, one_mul, zero_add]
-  change (Complex.regularizedHGFunSeries 0 {(1 : ℂ)}).sum (-(z / 2) ^ 2) = _
-  rw [Complex.regularizedHGFunSeries, ← FormalMultilinearSeries.ofScalarsSum,
-    FormalMultilinearSeries.ofScalars_sum_eq]
-  simp only [smul_eq_mul]
 
 /-- The coefficient of each even Fourier moment agrees with the corresponding
 coefficient in the zeroth Bessel series. -/
@@ -408,7 +389,7 @@ theorem polarFourierZerothAngularKernel_eq_besselJ (z : ℝ) :
           (-((z : ℂ) / 2) ^ 2) ^ n) := by
       rw [tsum_mul_left]
     _ = ((2 * Real.pi : ℝ) : ℂ) * Complex.besselJ 0 (z : ℂ) := by
-      rw [polarFourierBesselJZero_eq_tsum]
+      rw [besselJZero_eq_regularizedHGTsum]
 
 /-- The zeroth radial Fourier kernel is normalized by the full polar angle at the origin. -/
 @[simp] theorem polarFourierZerothAngularKernel_zero :
@@ -899,37 +880,12 @@ theorem polarFourierSecondCosineAngularKernel_eq_besselJ (z : ℝ) :
   · subst z
     simp [Complex.besselJ_zero]
   · have hzc : (z : ℂ) ≠ 0 := by exact_mod_cast hz
-    have hfactor : Complex.I * (z : ℂ) ≠ 0 :=
-      mul_ne_zero Complex.I_ne_zero hzc
     have hK := polarFourierFirstCosineAngularKernel_two_mul_eq_zeroth_sub_second z
     rw [polarFourierFirstCosineAngularKernel_eq_besselJ,
       polarFourierZerothAngularKernel_eq_besselJ] at hK
     have hJ := besselJ_zero_one_two_recurrence (z : ℂ)
-    have hmain :
-        (Complex.I * (z : ℂ)) * polarFourierSecondCosineAngularKernel z =
-          (Complex.I * (z : ℂ)) *
-            (-(((2 * Real.pi : ℝ) : ℂ) * Complex.besselJ 2 (z : ℂ))) := by
-      calc
-        (Complex.I * (z : ℂ)) * polarFourierSecondCosineAngularKernel z =
-            (Complex.I * (z : ℂ)) *
-                (((2 * Real.pi : ℝ) : ℂ) * Complex.besselJ 0 (z : ℂ)) -
-              2 * (((2 * Real.pi : ℝ) : ℂ) * Complex.I *
-                Complex.besselJ 1 (z : ℂ)) := by
-            linear_combination hK
-        _ = (Complex.I * (z : ℂ)) *
-            (((2 * Real.pi : ℝ) : ℂ) * Complex.besselJ 0 (z : ℂ)) -
-              (((2 * Real.pi : ℝ) : ℂ) * Complex.I) *
-                (2 * Complex.besselJ 1 (z : ℂ)) := by ring
-        _ = (Complex.I * (z : ℂ)) *
-            (((2 * Real.pi : ℝ) : ℂ) * Complex.besselJ 0 (z : ℂ)) -
-              (((2 * Real.pi : ℝ) : ℂ) * Complex.I) *
-                ((z : ℂ) *
-                  (Complex.besselJ 0 (z : ℂ) + Complex.besselJ 2 (z : ℂ))) := by
-            rw [hJ]
-        _ = (Complex.I * (z : ℂ)) *
-            (-(((2 * Real.pi : ℝ) : ℂ) * Complex.besselJ 2 (z : ℂ))) := by
-          ring
-    exact (mul_left_cancel₀ hfactor) hmain
+    apply mul_left_cancel₀ (mul_ne_zero Complex.I_ne_zero hzc)
+    linear_combination hK - (((2 * Real.pi : ℝ) : ℂ) * Complex.I) * hJ
 
 /-- The unnormalized first-harmonic recurrence also holds after finite radial
 momentum integration. This reduces any weighted K1 moment to K0/K2 moments
@@ -1029,7 +985,7 @@ theorem integral_polarFourierRadialPhase_mul_cos_mul_sin_zero (z : ℝ) :
 
 /-- Phase-weighted full-angle integration of the canonical constant/first/second harmonic
 decomposition. The first-sine and mixed-second channels vanish on the radial axis. -/
-theorem AngularHarmonicCoefficients.integral_polarFourierRadialPhase
+theorem integral_polarFourierRadialPhase_harmonicCoefficients
     (coefficients : AngularHarmonicCoefficients ℂ) (z p : ℝ) :
     (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi),
       ((p : ℂ) * polarFourierRadialPhase z θ) * coefficients.eval θ) =
@@ -1078,7 +1034,7 @@ theorem integral_polarFourierRadialPhase_first_harmonics
       secondCosine := 0
       secondMixed := 0 }
   simpa [coefficients, AngularHarmonicCoefficients.eval, smul_eq_mul] using
-    coefficients.integral_polarFourierRadialPhase z p
+    integral_polarFourierRadialPhase_harmonicCoefficients coefficients z p
 
 /-- The zeroth full-angle radial Fourier kernel is even in its radial argument. -/
 @[simp] theorem polarFourierZerothAngularKernel_neg (z : ℝ) :
@@ -1264,11 +1220,11 @@ private theorem integral_polarFourierRadialPhase_shifted_second_harmonics
             -4 * (((Real.cos angle : ℝ) : ℂ) * ((Real.sin angle : ℝ) : ℂ)) * d +
               (((Real.cos angle : ℝ) : ℂ) ^ 2 - ((Real.sin angle : ℝ) : ℂ) ^ 2) * e }
       simpa [coefficients, AngularHarmonicCoefficients.eval, smul_eq_mul] using
-        coefficients.integral_polarFourierRadialPhase z p
+        integral_polarFourierRadialPhase_harmonicCoefficients coefficients z p
 
 /-- Phase-weighted full-angle reduction of canonical harmonic coefficients at an arbitrary
 real-space polar angle. -/
-theorem AngularHarmonicCoefficients.integral_polarFourierRadialPhase_shifted
+theorem integral_polarFourierRadialPhase_harmonicCoefficients_shifted
     (coefficients : AngularHarmonicCoefficients ℂ) (z p angle : ℝ) :
     (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi),
       ((p : ℂ) * polarFourierRadialPhase z (θ - angle)) * coefficients.eval θ) =
@@ -1319,7 +1275,7 @@ theorem finiteCutoffPhysicalMomentumPolarFourier_polarPoint2D_harmonics
   apply intervalIntegral.integral_congr
   intro p _
   simp_rw [physicalMomentumPolarFourierPhase_polarPoint2D]
-  exact (coefficients p).integral_polarFourierRadialPhase_shifted
+  exact integral_polarFourierRadialPhase_harmonicCoefficients_shifted (coefficients p)
     (p * radius / hbar) p angle
 
 /-- Differentiating the first polar Fourier harmonic produces precisely the

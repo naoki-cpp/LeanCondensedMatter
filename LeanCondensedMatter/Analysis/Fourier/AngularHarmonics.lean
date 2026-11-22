@@ -1,0 +1,195 @@
+import Mathlib.Analysis.SpecialFunctions.Integrals.Basic
+import Mathlib.Tactic.FunProp
+import Mathlib.Tactic.Linarith
+import Mathlib.Tactic.Ring
+
+set_option linter.style.header false
+
+/-!
+# Full-angle harmonic integrals
+
+Model-independent real- and complex-valued trigonometric integrals. Constant, first, and
+second harmonics share one coefficient representation suitable for scalars, matrices, or bounded
+operators. The ordinary full-angle integration laws are independent of physical momentum
+measures and Fourier phases.
+-/
+
+namespace AngularHarmonics
+
+noncomputable section
+
+open MeasureTheory
+open scoped Interval
+
+/-- Coefficients of the constant, first, and second polar-angle harmonics used by harmonic decompositions. The value type is generic so the same decomposition can describe scalars, matrices, or
+bounded operators. -/
+structure AngularHarmonicCoefficients (E : Type*) where
+  /-- Constant angular harmonic. -/
+  constant : E
+  /-- First cosine angular harmonic. -/
+  firstCosine : E
+  /-- First sine angular harmonic. -/
+  firstSine : E
+  /-- Second cosine harmonic `cos² θ - sin² θ`. -/
+  secondCosine : E
+  /-- Mixed second harmonic `cos θ sin θ`. -/
+  secondMixed : E
+
+namespace AngularHarmonicCoefficients
+
+/-- Evaluate constant, first, and second angular-harmonic coefficients at angle `θ`. -/
+def eval {E : Type*} [AddCommMonoid E] [Module ℂ E]
+    (coefficients : AngularHarmonicCoefficients E) (θ : ℝ) : E :=
+  coefficients.constant +
+    ((Real.cos θ : ℝ) : ℂ) • coefficients.firstCosine +
+    ((Real.sin θ : ℝ) : ℂ) • coefficients.firstSine +
+    ((((Real.cos θ : ℝ) : ℂ) ^ 2) - (((Real.sin θ : ℝ) : ℂ) ^ 2)) •
+      coefficients.secondCosine +
+    (((Real.cos θ : ℝ) : ℂ) * ((Real.sin θ : ℝ) : ℂ)) • coefficients.secondMixed
+
+end AngularHarmonicCoefficients
+
+/-- Full-angle integral of the complexified first cosine harmonic. -/
+private theorem integral_complex_cos_zero_two_pi :
+    (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi), ((Real.cos θ : ℝ) : ℂ)) = 0 := by
+  simpa using
+    (@intervalIntegral.integral_ofReal (0 : ℝ) (2 * Real.pi) volume Real.cos)
+
+/-- Full-angle integral of the complexified first sine harmonic. -/
+private theorem integral_complex_sin_zero_two_pi :
+    (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi), ((Real.sin θ : ℝ) : ℂ)) = 0 := by
+  simpa using
+    (@intervalIntegral.integral_ofReal (0 : ℝ) (2 * Real.pi) volume Real.sin)
+
+/-- The complexified second cosine harmonic integrates to zero over a full polar angle. -/
+private theorem integral_complex_cos_sq_sub_sin_sq_zero_two_pi :
+    (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi),
+      ((Real.cos θ : ℂ) ^ 2) - ((Real.sin θ : ℂ) ^ 2)) = 0 := by
+  have hreal :
+      (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi), Real.cos θ ^ 2 - Real.sin θ ^ 2) = 0 := by
+    rw [integral_cos_sq_sub_sin_sq]
+    simp
+  simpa only [Complex.ofReal_zero, Complex.ofReal_sub, Complex.ofReal_pow] using
+    (@intervalIntegral.integral_ofReal (0 : ℝ) (2 * Real.pi) volume
+      (fun θ : ℝ => Real.cos θ ^ 2 - Real.sin θ ^ 2)).trans
+        (congrArg (fun x : ℝ => (x : ℂ)) hreal)
+
+/-- The complexified mixed second harmonic integrates to zero over a full polar angle. -/
+private theorem integral_complex_cos_mul_sin_zero_two_pi :
+    (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi),
+      ((Real.cos θ : ℝ) : ℂ) * ((Real.sin θ : ℝ) : ℂ)) = 0 := by
+  have hreal :
+      (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi), Real.sin θ * Real.cos θ) = 0 := by
+    simpa using
+      (integral_sin_pow_mul_cos_pow_odd (a := (0 : ℝ)) (b := 2 * Real.pi) 1 0)
+  simpa only [Complex.ofReal_zero, Complex.ofReal_mul, mul_comm] using
+    (@intervalIntegral.integral_ofReal (0 : ℝ) (2 * Real.pi) volume
+      (fun θ : ℝ => Real.sin θ * Real.cos θ)).trans
+        (congrArg (fun x : ℝ => (x : ℂ)) hreal)
+
+/-- Ordinary full-angle integration of the canonical constant/first/second harmonic decomposition.
+All nonconstant channels vanish. -/
+theorem AngularHarmonicCoefficients.integral_eval
+    {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] [CompleteSpace E]
+    (coefficients : AngularHarmonicCoefficients E) :
+    (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi), coefficients.eval θ) =
+      (2 * Real.pi : ℝ) • coefficients.constant := by
+  have hconst : IntervalIntegrable (fun _θ : ℝ => coefficients.constant) volume 0 (2 * Real.pi) :=
+    continuous_const.intervalIntegrable 0 (2 * Real.pi)
+  have hcos : IntervalIntegrable
+      (fun θ : ℝ => ((Real.cos θ : ℝ) : ℂ) • coefficients.firstCosine)
+      volume 0 (2 * Real.pi) := by
+    apply Continuous.intervalIntegrable
+    fun_prop
+  have hsin : IntervalIntegrable
+      (fun θ : ℝ => ((Real.sin θ : ℝ) : ℂ) • coefficients.firstSine)
+      volume 0 (2 * Real.pi) := by
+    apply Continuous.intervalIntegrable
+    fun_prop
+  have hsecond : IntervalIntegrable
+      (fun θ : ℝ =>
+        ((((Real.cos θ : ℝ) : ℂ) ^ 2) - (((Real.sin θ : ℝ) : ℂ) ^ 2)) •
+          coefficients.secondCosine) volume 0 (2 * Real.pi) := by
+    apply Continuous.intervalIntegrable
+    fun_prop
+  have hmixed : IntervalIntegrable
+      (fun θ : ℝ =>
+        (((Real.cos θ : ℝ) : ℂ) * ((Real.sin θ : ℝ) : ℂ)) • coefficients.secondMixed)
+      volume 0 (2 * Real.pi) := by
+    apply Continuous.intervalIntegrable
+    fun_prop
+  unfold AngularHarmonicCoefficients.eval
+  rw [intervalIntegral.integral_add (((hconst.add hcos).add hsin).add hsecond) hmixed,
+    intervalIntegral.integral_add ((hconst.add hcos).add hsin) hsecond,
+    intervalIntegral.integral_add (hconst.add hcos) hsin,
+    intervalIntegral.integral_add hconst hcos,
+    intervalIntegral.integral_smul_const,
+    intervalIntegral.integral_smul_const,
+    intervalIntegral.integral_smul_const,
+    intervalIntegral.integral_smul_const,
+    integral_complex_cos_zero_two_pi,
+    integral_complex_sin_zero_two_pi,
+    integral_complex_cos_sq_sub_sin_sq_zero_two_pi,
+    integral_complex_cos_mul_sin_zero_two_pi]
+  simp
+
+/-- Full angular projection inside an arbitrary weighted radial interval integral.
+Only the constant harmonic survives, with no assumptions on the radial weight or
+coefficients beyond those used by ordinary interval integration. -/
+theorem AngularHarmonicCoefficients.intervalIntegral_weighted_integral_eval
+    (a b : ℝ) (weight : ℝ → ℂ)
+    (coefficients : ℝ → AngularHarmonicCoefficients ℂ) :
+    (∫ radius in a..b,
+        ∫ angle in (0 : ℝ)..(2 * Real.pi),
+          weight radius * (coefficients radius).eval angle) =
+      (((2 * Real.pi : ℝ) : ℂ)) *
+        ∫ radius in a..b, weight radius * (coefficients radius).constant := by
+  calc
+    _ = ∫ radius in a..b,
+          (((2 * Real.pi : ℝ) : ℂ)) *
+            (weight radius * (coefficients radius).constant) := by
+      apply intervalIntegral.integral_congr
+      intro radius _
+      dsimp only
+      rw [intervalIntegral.integral_const_mul, (coefficients radius).integral_eval]
+      simp; ring
+    _ = _ := by rw [intervalIntegral.integral_const_mul]
+
+/-- A complex linear combination of the first sine and cosine harmonics integrates to zero. -/
+theorem integral_complex_cos_mul_add_sin_mul_zero_two_pi (cCos cSin : ℂ) :
+    (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi),
+      ((Real.cos θ : ℝ) : ℂ) * cCos + ((Real.sin θ : ℝ) : ℂ) * cSin) = 0 := by
+  let coefficients : AngularHarmonicCoefficients ℂ :=
+    { constant := 0
+      firstCosine := cCos
+      firstSine := cSin
+      secondCosine := 0
+      secondMixed := 0 }
+  simpa [coefficients, AngularHarmonicCoefficients.eval, smul_eq_mul] using coefficients.integral_eval
+
+/-- Full-angle integral of a real quadratic polynomial in the first cosine harmonic. -/
+theorem integral_quadratic_cos_zero_two_pi (a b c : ℝ) :
+    (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi),
+      a + b * Real.cos θ + c * Real.cos θ ^ 2) =
+      2 * Real.pi * a + Real.pi * c := by
+  have hconst : IntervalIntegrable (fun _θ : ℝ => a) volume 0 (2 * Real.pi) :=
+    continuous_const.intervalIntegrable 0 (2 * Real.pi)
+  have hcos : IntervalIntegrable (fun θ : ℝ => b * Real.cos θ) volume 0 (2 * Real.pi) :=
+    (continuous_const.mul Real.continuous_cos).intervalIntegrable 0 (2 * Real.pi)
+  have hcosSq : IntervalIntegrable
+      (fun θ : ℝ => c * Real.cos θ ^ 2) volume 0 (2 * Real.pi) :=
+    (continuous_const.mul (Real.continuous_cos.pow 2)).intervalIntegrable 0 (2 * Real.pi)
+  rw [intervalIntegral.integral_add (hconst.add hcos) hcosSq,
+    intervalIntegral.integral_add hconst hcos,
+    intervalIntegral.integral_const_mul, intervalIntegral.integral_const_mul,
+    integral_cos]
+  have hcosSqIntegral :
+      (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi), Real.cos θ ^ 2) = Real.pi := by
+    simpa using (integral_cos_sq (a := (0 : ℝ)) (b := 2 * Real.pi))
+  rw [hcosSqIntegral]
+  simp
+  ring
+
+end
+
+end AngularHarmonics

@@ -54,7 +54,6 @@ using a zero-consumer signal as grounds for changing its retention.
 - `QuantumTheory.Transport.SpectralSide.sign_opposite` — canonical `[simp]` law for the retarded/advanced spectral-side involution; retaining the sign reversal provides a stable normalization rule independently of its current regulator consumer.
 - `QuantumTheory.Transport.spectralParameter_im` — canonical `[simp]` evaluation of the imaginary part of a side-indexed complex spectral parameter as its signed regulator; this is the physical-to-analytic boundary even with a single compiled private consumer.
 - `Combinatorics.PairingOn.transport_symm_transport` — retain public `[simp]`: canonical inverse law for transporting a pairing along an equivalence and then back along its inverse.
-- `Combinatorics.PairingOn.transport_transport_symm` — retain public `[simp]`: canonical inverse law for transporting first along an inverse equivalence and then along the original equivalence.
 - `Combinatorics.SumEquiv.leftSubtypeEquiv_val` — retain public `[simp]`: canonical evaluation rule for the equivalence from the left summand to its image subtype.
 - `Combinatorics.Pairing.pairEndpointEquiv_apply` — canonical `[simp]` evaluation rule exposing the semantic endpoint-selection map of `pairEndpointEquiv`.
 - `Combinatorics.Pairing.partner_sideMatching` — canonical `[simp]` characterization of the permutation extracted from a bipartite pairing: its image is exactly the right-side partner of each left position.
@@ -114,9 +113,6 @@ using a zero-consumer signal as grounds for changing its retention.
 - `QuantumTheory.LinearResponse.hasStaticLimit_lehmannTerm` — reusable scalar Lehmann-term continuity result at fixed nonzero switching rate.
 - `QuantumTheory.LinearResponse.hasStaticLimit_lehmannTerm_zero_rate` — reusable zero-rate scalar Lehmann-term static-limit result under the explicit nonresonance/zero-weight condition.
 - `QuantumTheory.Models.MassiveDirac.continuumAngularGreenIntegralOfRegulator_eq` — model-level angular-reduction identity removing the in-plane Pauli channels and producing the physical `2π` factor.
-- `QuantumTheory.Models.RashbaExchange.hamiltonianOperator_mul_bandProjectorOperator` — canonical band-projector eigenoperator identity for the Rashba-exchange Hamiltonian.
-- `QuantumTheory.Models.RashbaExchange.spinHamiltonian_mul_self` — canonical spectral identity that the traceless Rashba-exchange spin Hamiltonian squares to `E² I`.
-- `QuantumTheory.Models.RashbaExchange.bandProjectorOperator_completeOrthogonalIdempotents` — canonical complete orthogonal idempotent family for the nondegenerate Rashba-exchange band projectors.
 - `QuantumTheory.Transport.adiabaticFrequencyDomainSusceptibility_eq_bastinSpectralVertexSum` — physical finite-system endpoint identifying the causal susceptibility with the Kubo–Bastin spectral vertex sum at positive switching rate.
 - `SecondQuantization.Common.twoPointOrderSignature_eq_iff` — agreement of strict event-time comparisons is equivalent to equality of finite signatures, including tied-time configurations.
 - `QuantumMechanics.SingleParticle.Continuum.realL2MultiplicationOperator1D_symmetric` — deliberate continuum-quantum-mechanics specialization of the measure-space-independent `L2Multiplication.realMultiplicationOperator_symmetric`; the named one-dimensional Lebesgue-space statement is the stable API used by Hamiltonian symmetry and self-adjointness proofs.
@@ -126,9 +122,6 @@ using a zero-consumer signal as grounds for changing its retention.
 - `QuantumMechanics.SingleParticle.symmetrizedVelocityTransport_decomposition` — canonical algebraic
   decomposition of nested symmetrized transport into the symmetrized current term and the
   double-commutator correction.
-- `ConservationLaw.localizationCorrectionCurrentFlux_apply` — canonical identification of
-  the localization correction with the double commutator; it is also the simplification boundary
-  for the corrected-current API.
 - `ConservationLaw.localizationCorrectionCurrentFlux_smul_id` — independently useful
   charge-like specialization stating that the localization correction vanishes for a scalar
   multiple of the identity.
@@ -171,9 +164,6 @@ using a zero-consumer signal as grounds for changing its retention.
 - `QuantumMechanics.SingleParticle.exists_current_eq_symmetrized_add_correction_add_invisible` —
   physics-facing representation theorem `J = J_sym + J_corr + K` with `K` invisible on exact
   differentials; it is the explicit extension-ambiguity endpoint of the corrected-current API.
-- `SecondQuantization.Fermionic.timeOrderedExternalFields_swap` — canonical fermionic exchange law
-  for the named time-ordered external-field construction: swapping both fields and times produces
-  the fermionic statistics sign.
 - `QuantumMechanics.SingleParticle.lie_orbitalAngularMomentum_continuum_sign` — physics-facing
   directional continuum specialization fixing the derivative-localizer coefficient to `iℏ`;
   it records the orbital-localization commutator in an arbitrary oriented plane.
@@ -184,9 +174,6 @@ using a zero-consumer signal as grounds for changing its retention.
   every bosonic annihilation operator kills the Fock vacuum.
 - `SecondQuantization.Bosonic.particleNumber_vacuum` — canonical `[simp]` statement that the bosonic
   vacuum has zero total occupation number.
-- `SecondQuantization.Common.finiteGibbsExpectation_comp_eq_div_of_exchangeCommutator` — deliberate
-  `Statistics`-indexed Gibbs two-point API for callers that already work with `exchangeCommutator`,
-  rather than the lower-level raw-`ζ` presentation.
 - `SecondQuantization.Fermionic.annihilate_fockVacuum` — canonical `[simp]` CAR vacuum identity that
   every fermionic annihilation operator kills the Fock vacuum.
 - `ContinuousLinearMap.adjointConjugate_rankOne` — canonical rank-one covariance identity under
@@ -239,8 +226,6 @@ using a zero-consumer signal as grounds for changing its retention.
   resolvent commutation; downstream proofs use the `Commute` combinator API directly.
 - `LinearPMap.resolventApproximationEvolution_zero` — standard zero-time normalization of the named
   bounded resolvent-approximation evolution and part of its one-parameter evolution API.
-- `SecondQuantization.Bosonic.create_basisState_eq` — canonical occupation-basis creation law
-  `a†ᵢ|n⟩ = √(nᵢ+1)|n+eᵢ⟩`; its direct proof routing does not make this textbook-level API redundant.
 - `SecondQuantization.Fermionic.timedFieldOperator_eq_smul` — canonical normal form expressing a
   time-labelled external field as its scalar imaginary-time factor times the bare field operator.
 - `SecondQuantization.Fermionic.twoPointTimeOrderedProduct_of_gt` — canonical later-first branch of
@@ -286,20 +271,11 @@ using a zero-consumer signal as grounds for changing its retention.
 - `SecondQuantization.Fermionic.continuous_matrixCoeff_quarticVertexSequenceInteractionPicture` — joint continuity of
   matrix coefficients of the quartic vertex sequence for arbitrary mode types; this follows from
   the Common scalar-time-factor decomposition without finite intermediate-state sums.
-- `Combinatorics.Pairing.sign_pairPerm` — canonical parity endpoint identifying the sign of the
-  permutation that lists normalized pairs blockwise with `(-1)` raised to the pairing crossing
-  count. It records the intrinsic bridge between crossing parity and permutation sign independently
-  of downstream bridge implementations.
 - `Combinatorics.Pairing.insertFirstPair_eraseZeroPair` — canonical erase/insert round-trip law:
   erasing the pair containing position zero and reinserting it recovers the original pairing. It is
   the left-inverse law underlying `Pairing.equivSigma`, not merely one-use proof routing.
-- `SecondQuantization.Common.ExternalInsertionDiagram.legInComponent_iff_vertex_mem` — semantic
-  normalization rule for the external-insertion flattened-leg component predicate, identifying it
-  with membership of the incident vertex in the component part.
 - `LeanCondensedMatter.Crystal.reciprocalPairing_isSymm` — canonical symmetry property of the
   normalized reciprocal pairing used to construct crystallographic reciprocal bases and lattices.
-- `LinearPMap.stoneEvolution_apply_hasDerivAt_zero` — Stone-generator endpoint identifying the
-  derivative at zero of the strong Stone evolution with `-iA` on the operator domain.
 - `QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGreenLoopMatrix_apply_eq_radial_integral`
   — model-level T-matrix provenance theorem exposing the finite-cutoff radial Green-loop integral
   and its single physical momentum-measure prefactor.
@@ -327,9 +303,6 @@ using a zero-consumer signal as grounds for changing its retention.
 - `Equiv.Perm.isCycleOn_univ_iff_cycleType_eq_singleton_card` — On a nontrivial finite type, a
   permutation is a single orbit on the whole type exactly when its cycle type is the singleton
   containing the ambient cardinality.
-- `List.idxOf_flatMap_lt_of_idxOf_lt` — If one event occurs before another in a duplicate-free event
-  list, every element in the first block occurs before every element in the second block of the
-  duplicate-free flattened list.
 - `QuantumMechanics.SingleParticle.Continuum.minimallyCoupledSchrodingerRhsValue1D_eq_expanded` —
   Explicit physical expansion of the minimally coupled Schrödinger right-hand side.
 - `QuantumMechanics.SingleParticle.Continuum.probabilityDensityTimeDerivativeValue_eq_coordinates` —
@@ -455,10 +428,6 @@ using a zero-consumer signal as grounds for changing its retention.
 - `SecondQuantization.Fermionic.Lattice.discrete_continuity` — canonical algebraic local continuity
   equation on an arbitrary locally finite lattice and the source theorem for the bounded
   finite-lattice continuity equation.
-- `SecondQuantization.Fermionic.coe_grandCanonicalPartitionFunction_eq_prod` — The
-  existing shared grand-canonical partition sum on finite fermionic occupation Fock space
-  factorizes into `∏ᵢ (1 + exp(-β(εᵢ-μ)))` for explicit chemical potential `μ`.
-  It is a physical factorization endpoint, not a duplicate partition constructor.
 - `SecondQuantization.Fermionic.eigenbasisGibbsEnergyExpectation_fermionEnergy_eq_sum_fermiDirac` — canonical
   finite free-fermion mean-energy identity `⟨E⟩ = ∑ᵢ εᵢ fᵢ`; its current single consumer is the
   entropy endpoint, but the thermodynamic statement is independently meaningful.
@@ -477,7 +446,6 @@ using a zero-consumer signal as grounds for changing its retention.
 - `SecondQuantization.Bosonic.completedAnnihilate_comp_algebraicCore` — Compatibility of completed bosonic annihilation with the finite-support algebraic core, an independent domain-and-operator bridge.
 - `SecondQuantization.Bosonic.completedCreate_comp_algebraicCore` — Compatibility of completed bosonic creation with the finite-support algebraic core; keep separate from annihilation because its weighted domain differs.
 - `SecondQuantization.Common.ExternalInsertionDiagram.hasNoVacuumComponent_externalBearingDiagram` — External-bearing restriction removes purely vacuum components without requiring different external insertions to be connected; it is the structural guarantee of the slot-split API.
-- `SecondQuantization.Common.QuarticDiagram.pairingInOrder_partner_componentOrderedLeg` — The global pairing partner agrees with the embedded component-local partner after assembling ordered vertices; retain this reusable pairing compatibility law.
 - `SecondQuantization.Common.continuousInteractionPicture_eq_conj` — Canonical conjugation formula connecting the interaction picture to transported continuous free evolution; it states the operator-level semantics of the construction.
 - `SecondQuantization.Common.continuousOperatorIntervalIntegral_eq` — Identifies the coefficientwise algebraic interval integral with the Bochner interval integral of its continuous-operator realization; this is a reusable analytic bridge.
 - `SecondQuantization.Common.hasFPowerSeriesAt_analyticDysonPartitionFunction` — The actual finite-configuration interacting Dyson partition function has the prescribed Taylor expansion at zero coupling, serving as a stable analytic endpoint for logarithmic derivatives.
@@ -495,7 +463,6 @@ using a zero-consumer signal as grounds for changing its retention.
 - `Combinatorics.MultiplicativeWeight.normalizedObjectMoment_apply` — canonical `[simp]` evaluation rule connecting the normalized object-moment bundle to the original weighted object sum; it is the stable boundary between the connected-decomposition construction and the normalized finite-set function interface.
 - `Combinatorics.Pairing.prod_pairs_ofSplit` — general factorization theorem for contraction products on pairings assembled from two independent parts. Its comparison hypotheses explicitly account for possible endpoint reversal when the position splitting is not order preserving.
 - `Combinatorics.Pairing.isSplit_inr` — intrinsic closure of the right part of a split pairing, derived from the left-closure definition and the involutive partner map; retain this symmetric mathematical consequence as an independently usable split-pairing fact.
-- `Combinatorics.Pairing.cast_partner` — general transport law for the pairing partner permutation across an equality of pair counts. Its present private consumer lies in fermionic external-insertion diagrammatics, but the theorem belongs to the reusable combinatorial pairing layer.
 - `Combinatorics.singleCycleContribution_univ_eq_sum_isCycleOn` — intrinsic finite-permutation formula identifying the connected contribution on the full index set with the sum over full cycles. Retain the combinatorial identity independently of its current private assignment-to-trace bridge.
 - `QuantumTheory.Transport.Topology.PeriodicBlochProjector.berryCurvatureComplex_isSelfAdjoint` — geometric realness statement for the gauge-invariant complex projector-curvature trace, using self-adjointness and finite trace cyclicity. Its private scalar-wrapper consumer does not make the mathematically meaningful reality theorem proof-only plumbing.
 - `SecondQuantization.Common.TwoPointDiagram.slotCongr_partner` — canonical transport compatibility for a two-point diagram's paired legs under interaction-slot relabeling. Retain as a reusable geometric law rather than restricting it to the private external-piece compatibility proof.
@@ -554,7 +521,6 @@ using a zero-consumer signal as grounds for changing its retention.
 - `List.idxOf_flatMap_block_lt_uniform` — generic uniformity of comparisons with an outside element across one block of a duplicate-free flattened list. The inductive ordering argument is reusable outside the present mixed-event proof.
 - `Finpartition.card_parts_eq_stirlingSecond` — canonical enumerative endpoint counting finite set partitions with exactly `k` blocks by the second-kind Stirling number; its lack of additional external consumers does not make the enumeration a proof helper.
 - `Finpartition.card_coarsenings_parts_eq_stirlingSecond` — count of `k`-block coarsenings of an existing finite partition, obtained by transporting to a partition of its block set; retain this distinct relative-enumeration theorem.
-- `SimpleGraph.componentBlock_eq_iff_reachable` — canonical equivalence between equality of graph component blocks and reachability of their base vertices; it is the set-valued component API's characteristic theorem.
 - `SimpleGraph.reachable_sum_inr_iff` — general reflection and preservation of reachability in the right summand of a graph disjoint union. The no-cross-summand walk proof is substantive generic graph infrastructure, not diagram-specific.
 
 - `Finpartition.card_parts_coarseningsEquivBlockPartitions` — cardinality preservation under the equivalence from coarsenings to partitions of the original block set; it is the reusable enumeration boundary used by the Stirling count of coarsenings.
@@ -584,7 +550,6 @@ using a zero-consumer signal as grounds for changing its retention.
 - `Combinatorics.Pairing.crossingCount_eq_sum_localCrossingCount_add_inter` — additive crossing decomposition into local pairing counts and an inter-component residual, under strict local position monotonicity.
 - `Combinatorics.Pairing.prod_pairs_eq_prod_components` — generic product factorization over normalized pairing components, assuming kernel compatibility; independent of scalar evaluation weights.
 - `Finpartition.assembleOrder_shuffleOfOrder` — reconstruction equation for a global order from its compatible local block orders and induced shuffle.
-- `Finpartition.partOrdersCompatible_partOrdersOfOrder` — compatibility of local orders extracted from a global ordering with the partition's original parts.
 - `Finpartition.sum_order_eq_mul_prod_sum_partOrders` — general finite-order sum factorization into a scalar, shuffle contribution, and block-local order sums under weight factorization.
 - `Combinatorics.Pairing.ofSplitInterSectorCrossingCount_mod_two_eq_positionInversions` — terminal binary pairing-split parity formula reducing inter-sector crossing parity to position inversions; used by thermal pairing weights.
 - `Combinatorics.Pairing.ofSplit_crossingCount_eq_left_add_right_add_inter` — terminal exact crossing-count decomposition for an order-preserving binary pairing split, retaining local counts and the residual.
@@ -599,7 +564,6 @@ using a zero-consumer signal as grounds for changing its retention.
 - `Combinatorics.FamilySlotShuffle.outerSlotEquiv_apply_inl` — simp evaluation of the binary head/tail outer equivalence on the head component, connecting the extracted and original shuffle coordinates.
 - `Combinatorics.FamilySlotShuffle.outerSlotEquiv_apply_inr` — simp evaluation of the same outer equivalence on the tail component through its increasing finite-set enumeration.
 - `Combinatorics.FamilySlotShuffleTo.blockInversionCount_add_swap` — pairwise inversion-complement identity: the two block orientations together count every cross-block slot pair exactly once.
-- `Combinatorics.FamilySlotShuffleTo.orderedBlockInversionCount_modEq_of_even_sizes` — parity independence of arbitrary component ordering when every component has even size, derived from the orientation-complement identity; used in fermionic component signs.
 - `Finpartition.bind_le` — independently refining every block always yields a refinement of the starting partition; this defines the inverse of the refinement-fiber equivalence.
 - `Combinatorics.Pairing.normalizedPairSubtypeEndpointEquiv_apply_val` — simp projection formula for the endpoint equivalence restricted to partner-invariant position subsets; used by mixed diagram components.
 
@@ -612,8 +576,6 @@ using a zero-consumer signal as grounds for changing its retention.
 - `SecondQuantization.Fermionic.AlgebraicFock.star_finiteHilbertOperator_create` — orthonormal-basis adjointness of the finite-Hilbert realizations of creation and annihilation, a substantive operator-theoretic endpoint used by the isometry construction.
 - `SecondQuantization.Common.twoPointLegDataCongr_inl` — canonical `@[simp]` evaluation of vertex relabeling on an external two-point leg; paired with the interaction-leg rule.
 - `SecondQuantization.Common.twoPointLegDataCongr_inr` — canonical `@[simp]` evaluation of vertex relabeling on an interaction leg, preserving its local slot while applying the vertex equivalence.
-- `SecondQuantization.Common.externalInsertionVertexOfLeg_externalLeg` — canonical `@[simp]` identification of the vertex of a labelled external insertion leg, part of the public diagram-incidence API.
-- `SecondQuantization.Common.externalInsertionVertexOfLeg_interactionLeg` — canonical `@[simp]` identification of the interaction vertex of a quartic leg, dual to the external-insertion rule.
 - `SecondQuantization.Common.slotSplitVertexEquiv_inl` — canonical `@[simp]` evaluation of the slot-splitting vertex equivalence on the retained component, compatible with the public `slotSplitVertex` embedding.
 
 - `SecondQuantization.Common.TwoPointDiagram.ofSlotSplitVacuumNormalizedPairEmbedding_component` — identifies the connected-component block of an embedded normalized vacuum pair with the block of its vacuum-side vertex; a geometric endpoint used by the mixed-pair component decomposition.

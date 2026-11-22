@@ -76,8 +76,7 @@ noncomputable def leftSubtypeEquiv [Fintype α] [DecidableEq γ]
   (Equiv.ofInjective (fun a : α => e (Sum.inl a))
       (fun _ _ h => Sum.inl.inj (e.injective h))).trans
     (Equiv.subtypeEquivProp (by
-      funext x
-      apply propext
+      ext x
       simp [leftImage]))
 
 /-- The right summand is equivalent to the subtype of target points in its image. -/
@@ -86,8 +85,7 @@ noncomputable def rightSubtypeEquiv [Fintype β] [DecidableEq γ]
   (Equiv.ofInjective (fun b : β => e (Sum.inr b))
       (fun _ _ h => Sum.inr.inj (e.injective h))).trans
     (Equiv.subtypeEquivProp (by
-      funext x
-      apply propext
+      ext x
       simp [rightImage]))
 
 @[simp]

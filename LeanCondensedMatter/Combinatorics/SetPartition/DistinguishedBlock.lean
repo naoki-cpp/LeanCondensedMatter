@@ -2,6 +2,7 @@ import Mathlib.Order.Partition.Finpartition
 import Mathlib.Algebra.BigOperators.Group.Finset.Powerset
 import Mathlib.Algebra.BigOperators.Ring.Finset
 import Mathlib.Data.Fintype.BigOperators
+import Mathlib.Data.Nat.Choose.Sum
 
 set_option linter.style.header false
 
@@ -26,12 +27,8 @@ def BlockContaining (s : Finset α) (a : α) :=
 noncomputable instance blockContainingFintype (s : Finset α) (a : α) :
     Fintype (BlockContaining s a) := by
   classical
-  let f : BlockContaining s a → {T : Finset α // T ∈ s.powerset} :=
-    fun B => ⟨B.1, Finset.mem_powerset.mpr B.2.1⟩
-  exact Fintype.ofInjective f (by
-    intro B C h
-    apply Subtype.ext
-    exact congrArg (fun T : {T : Finset α // T ∈ s.powerset} => T.1) h)
+  exact Set.Finite.fintype <|
+    s.powerset.finite_toSet.subset (fun B hB => Finset.mem_powerset.mpr hB.1)
 
 /-- Blocks containing `a` correspond to subsets of `s.erase a`. -/
 def blockContainingEquivPowerset (s : Finset α) (a : α) (ha : a ∈ s) :
@@ -54,14 +51,10 @@ private theorem insert_part_parts_avoid {s : Finset α} (P : Finpartition s) {a 
   have hp : P.part a ∈ P.parts := P.part_mem.mpr ha
   have hmap :
       (P.parts.erase (P.part a)).image (· \ P.part a) =
-        P.parts.erase (P.part a) := by
-    calc
-      _ = (P.parts.erase (P.part a)).image id := by
-        apply Finset.image_congr
-        intro B hB
-        exact (P.disjoint (Finset.mem_of_mem_erase hB) hp
-          (Finset.ne_of_mem_erase hB)).sdiff_eq_left
-      _ = _ := Finset.image_id
+        P.parts.erase (P.part a) :=
+    (Finset.image_congr (g := id) (fun B hB =>
+      (P.disjoint (Finset.mem_of_mem_erase hB) hp
+        (Finset.ne_of_mem_erase hB)).sdiff_eq_left)).trans Finset.image_id
   change insert (P.part a) ((P.parts.image (· \ P.part a)).erase ∅) = P.parts
   rw [← Finset.insert_erase hp, Finset.image_insert, hmap]
   simp [hp]
@@ -71,11 +64,10 @@ private theorem avoid_extend_eq {s B : Finset α} {a : α}
     (Q.extend (Finset.ne_empty_of_mem haB) disjoint_sdiff_self_left
       (Finset.sdiff_union_of_subset hBsub)).avoid B = Q := by
   classical
-  have hmap : Q.parts.image (· \ B) = Q.parts := by
-    calc
-      _ = Q.parts.image id := Finset.image_congr (fun D hD =>
-        (disjoint_sdiff_self_left.mono_left (Q.le hD)).sdiff_eq_left)
-      _ = _ := Finset.image_id
+  have hmap : Q.parts.image (· \ B) = Q.parts :=
+    (Finset.image_congr (g := id) (fun D hD =>
+      (disjoint_sdiff_self_left.mono_left (Q.le hD)).sdiff_eq_left)).trans
+      Finset.image_id
   apply Finpartition.ext
   change ((insert B Q.parts).image (· \ B)).erase ∅ = Q.parts
   simp [Finset.image_insert, hmap]
@@ -112,18 +104,6 @@ private theorem card_parts_distinguishedBlockEquiv_symm
       (Finset.sdiff_union_of_subset B.2.1)).parts.card = Q.parts.card + 1
   exact card_extend Q B.1 s
 
-private def subtypeSigmaSndEquiv {ι : Type*} {β : ι → Type*}
-    (q : (i : ι) → β i → Prop) :
-    {x : Σ i, β i // q x.1 x.2} ≃ Σ i, {b : β i // q i b} where
-  toFun x := ⟨x.1.1, ⟨x.1.2, x.2⟩⟩
-  invFun x := ⟨⟨x.1, x.2.1⟩, x.2.2⟩
-  left_inv x := by
-    rcases x with ⟨⟨i, b⟩, hb⟩
-    rfl
-  right_inv x := by
-    rcases x with ⟨i, ⟨b, hb⟩⟩
-    rfl
-
 /-- Partitions of `s` with `k + 1` blocks are equivalent to a choice of the block containing
 `a` together with a `k`-block partition of its complement. -/
 def partsCardSuccEquiv
@@ -132,9 +112,16 @@ def partsCardSuccEquiv
       Σ B : BlockContaining s a,
         {Q : Finpartition (s \ B.1) // Q.parts.card = k} := by
   let e := distinguishedBlockEquiv s a ha
-  refine (Equiv.subtypeEquiv e ?_).trans
-    (subtypeSigmaSndEquiv
-      (fun B : BlockContaining s a => fun Q : Finpartition (s \ B.1) => Q.parts.card = k))
+  refine (Equiv.subtypeEquiv e (q := fun x => x.2.parts.card = k) ?_).trans {
+    toFun := fun x => ⟨x.1.1, ⟨x.1.2, x.2⟩⟩
+    invFun := fun x => ⟨⟨x.1, x.2.1⟩, x.2.2⟩
+    left_inv := by
+      rintro ⟨⟨i, b⟩, hb⟩
+      rfl
+    right_inv := by
+      rintro ⟨i, ⟨b, hb⟩⟩
+      rfl
+  }
   intro P
   have hcard : P.parts.card = (e P).2.parts.card + 1 := by
     simpa [e] using card_parts_distinguishedBlockEquiv_symm ha (e P)
@@ -157,26 +144,19 @@ theorem sum_blockContaining_card (s : Finset α) (a : α) (ha : a ∈ s)
       f (insert a T.1).card) = _
   rw [← Finset.sum_subtype (s.erase a).powerset (fun _ => Iff.rfl)
     (fun T => f (insert a T).card)]
-  have hcard : (s.erase a).card + 1 = s.card := Finset.card_erase_add_one ha
-  rw [Finset.sum_powerset, hcard]
-  apply Finset.sum_congr rfl
-  intro k hk
   calc
-    (∑ T ∈ (s.erase a).powersetCard k, f (insert a T).card) =
-        ∑ T ∈ (s.erase a).powersetCard k, f (k + 1) := by
+    (∑ T ∈ (s.erase a).powerset, f (insert a T).card) =
+        ∑ T ∈ (s.erase a).powerset, f (T.card + 1) := by
       apply Finset.sum_congr rfl
       intro T hT
-      have hTa : a ∉ T := by
-        intro hTa
-        have hsub := (Finset.mem_powersetCard.mp hT).1 hTa
-        exact (Finset.mem_erase.mp hsub).1 rfl
-      have hTk : T.card = k := (Finset.mem_powersetCard.mp hT).2
-      rw [Finset.card_insert_of_notMem hTa, hTk]
-    _ = (Nat.choose (s.card - 1) k : R) * f (k + 1) := by
-      rw [Finset.sum_const, Finset.card_powersetCard]
-      have herase : (s.erase a).card = s.card - 1 := Finset.card_erase_of_mem ha
-      rw [herase]
-      simp [nsmul_eq_mul]
+      rw [Finset.card_insert_of_notMem (fun haT =>
+        Finset.notMem_erase a s ((Finset.mem_powerset.mp hT) haT))]
+    _ = _ := by
+      have hcard : s.card - 1 + 1 = s.card := by
+        simpa only [Finset.card_erase_of_mem ha] using Finset.card_erase_add_one ha
+      rw [Finset.sum_powerset_apply_card (f := fun n => f (n + 1)),
+        Finset.card_erase_of_mem ha, hcard]
+      simp only [nsmul_eq_mul]
 
 end Semiring
 

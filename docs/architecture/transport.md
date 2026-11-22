@@ -13,6 +13,7 @@ LeanCondensedMatter.Transport
         ├── Resolvent
         ├── KuboBastin
         ├── Streda
+        ├── Scattering
         └── Disorder
 
 LeanCondensedMatter.Transport.Analysis   (opt-in analytical utilities)
@@ -40,9 +41,10 @@ Transport/
 ├── FiniteConductivityTable/Eigenbasis.lean
 │                  statistics-independent eigenbasis/channel-to-scalar adapter
 ├── Reciprocity/   operator time-reversal covariance and finite-time Kubo conductivity
+├── Scattering/    finite-state collision operators and angular-mode eigenvalue laws
 ├── Resolvent/     signed spectral regulator, physical spectral sides, self-energy algebra
 ├── Spectral/      response-neutral adapters from supplied spectral data to resolvent algebra
-├── Analysis/      occupations, 2D continuum measure, angular harmonics, polar Fourier, relaxation time
+├── Analysis/      occupations, 2D continuum measure, polar Fourier, relaxation time
 ├── KuboBastin/    Lehmann-to-resolvent response algebra and finite spectral sums
 ├── Streda/        static response kernels, traces, integration, response matrices
 └── Disorder/      exact finite disorder, Green operators, Born, SCBA, ladder algebra
@@ -118,9 +120,9 @@ isolated-pole weights.
 
 `Analysis.ContinuumMeasure` owns the opt-in two-dimensional physical-momentum convention
 `d²p/(2πℏ)²` and its exact full-angle radial prefactor `2π/(2πℏ)²`; these are continuum conventions,
-not dimension-independent transport invariants. `Analysis.AngularHarmonics`
+not dimension-independent transport invariants. `LeanCondensedMatter.Analysis.Fourier.AngularHarmonics`
 owns the reusable constant/first/second harmonic
-coefficient decomposition and ordinary full-angle cancellation laws. `Analysis.PolarFourier`
+coefficient decomposition and ordinary full-angle cancellation laws. `Transport.Analysis.PolarFourier`
 consumes the same coefficient data for phase-weighted radial-axis reduction while keeping the
 zeroth, first-cosine, and second-cosine kernels explicit. Model layers supply coefficient values;
 Pauli algebra, propagator data, and radial physics remain model-owned.
@@ -364,7 +366,7 @@ from the generic Born–Dyson denominator and radial-moment laws owned by `Disor
 `MassiveDirac.Streda` is the public umbrella for these leaves alongside
 the independent `Streda.GaussianCrossed` package.
 
-`Disorder.FiniteBroadeningBornRadialMoments` owns the finite-cutoff Born–Dyson single-pole
+`Disorder.Propagator.BornDyson.RadialMoments` owns the finite-cutoff Born–Dyson single-pole
 logarithmic integral, the arbitrary-weight retarded–advanced double-pole spectral difference,
 and its logarithmic specialization. These are model-level denominator identities independent
 of a particular response channel. The Gaussian-crossed K0/K2 current harmonics
@@ -372,13 +374,13 @@ consume the common owner directly, rather than importing the longitudinal same-s
 Středa remainder merely to obtain a radial logarithmic primitive. The RR/AA
 same-side remainder stays in its own response-specific module.
 
-`Disorder.FiniteBroadeningCurrentVertexResponse` owns the source-indexed dressed current,
+`Disorder.Vertex.BornDyson.DressedCurrent` owns the source-indexed dressed current,
 its source evaluations, and its fixed-disorder zero-broadening insertion. Continuity of the
 in-plane rotation and current realization belongs to `Vertex.InPlaneLadder` and `Model.Operator`.
 Středa trace adapters consume these results; the same-side remainder and conductivity normalization
 remain separate.
 
-`Disorder.FiniteBroadeningCurrentVertexZeroBroadeningIntegral` owns the common radial
+`Disorder.Vertex.BornDyson.RegulatorBoundaryIntegral` owns the common radial
 factorization of the zero-broadening current-rung entries. The weak-disorder Lorentzian reduction
 and the scaled transverse limit consume that identity, while keeping their distinct limit arguments
 and assumptions local.
@@ -406,7 +408,7 @@ kernels remain distinct from the antisymmetric trace used for Hall conductivity.
 `Analysis.InternalSpace.Pauli` owns coefficient extraction through entrywise interval
 integrals with a complex prefactor. These laws use Mathlib's integral addition,
 subtraction, division, and constant-multiplication results; no additional linear-map
-representation is needed. `Disorder.FiniteBroadeningBornRadialRealSpacePropagator`
+representation is needed. `Disorder.Propagator.BornDyson.RealSpace.RadialGreen`
 owns the radial Green coefficient integration laws, while
 `Streda.GaussianCrossed.RealSpace` owns the crossed-current coefficient integration laws
 alongside their pointwise kernels. Both models use the same model-independent Pauli

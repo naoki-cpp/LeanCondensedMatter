@@ -115,17 +115,22 @@ theorem mul_prod_eq_peelSum
   mul_prod_eq_peelSum_of_mem element exchangeCoeff ζ C l
     (fun D _ => hExchange C D)
 
-/-- The exchange contributions generated while pushing one fixed algebra element through a list
-of factors paired with their scalar exchange coefficients. -/
+/-- The coefficient-paired view of the generic exchange sum. Both APIs use the same
+recursion, so their finite-position expansions cannot diverge. -/
 noncomputable def peelSumWithCoefficients {A : Type*} [Semiring A] [Algebra ℂ A]
-    (ζ : ℂ) : List (A × ℂ) → A
-  | [] => 0
-  | (B, c) :: t =>
-      c • (t.map Prod.fst).prod + ζ • (B * peelSumWithCoefficients ζ t)
+    (ζ : ℂ) : List (A × ℂ) → A :=
+  peelSum Prod.fst (fun _ p => p.2) ζ (0, 0)
 
 @[simp]
 theorem peelSumWithCoefficients_nil {A : Type*} [Semiring A] [Algebra ℂ A]
     (ζ : ℂ) : peelSumWithCoefficients (A := A) ζ [] = 0 := rfl
+
+/-- Computation on a nonempty coefficient-paired list, derived from the canonical peel recursion. -/
+@[simp]
+theorem peelSumWithCoefficients_cons {A : Type*} [Semiring A] [Algebra ℂ A]
+    (ζ : ℂ) (B : A) (c : ℂ) (t : List (A × ℂ)) :
+    peelSumWithCoefficients ζ ((B, c) :: t) =
+      c • (t.map Prod.fst).prod + ζ • (B * peelSumWithCoefficients ζ t) := rfl
 
 /-- Both peel sums encode the same recursion; the first label is only used to select
 its coefficients, which the paired representation already stores in each list element. -/
@@ -133,11 +138,12 @@ private theorem peelSumWithCoefficients_eq_peelSum {A : Type*} [Semiring A] [Alg
     (ζ : ℂ) (C : A) (l : List (A × ℂ)) :
     peelSumWithCoefficients ζ l =
       peelSum Prod.fst (fun _ p => p.2) ζ (C, 0) l := by
+  unfold peelSumWithCoefficients
   induction l with
   | nil => rfl
   | cons p t ih =>
       obtain ⟨B, c⟩ := p
-      simp only [peelSumWithCoefficients, peelSum, ih]
+      simpa only [peelSumWithCoefficients, peelSum, ih]
 
 /-- Position-indexed expansion when each factor carries its exchange coefficient. -/
 theorem peelSumWithCoefficients_eq_sum {A : Type*} [Semiring A] [Algebra ℂ A]

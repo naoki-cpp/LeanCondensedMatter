@@ -1,5 +1,6 @@
-import LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornRealSpacePropagator
-import LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexResponse
+import LeanCondensedMatter.Analysis.Fourier.AngularHarmonics
+import LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.BornDyson.RealSpace.Green
+import LeanCondensedMatter.Models.MassiveDirac.Disorder.Vertex.BornDyson.DressedCurrent
 import LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.Trace
 
 set_option linter.style.header false
@@ -30,6 +31,8 @@ momentum-measure prefactor.
 -/
 
 namespace QuantumTheory.Models.MassiveDirac
+
+open AngularHarmonics
 
 noncomputable section
 

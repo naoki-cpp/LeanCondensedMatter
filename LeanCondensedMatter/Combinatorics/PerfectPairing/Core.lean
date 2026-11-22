@@ -124,9 +124,6 @@ theorem PairingOn.sigmaCongrRight_partner {ι : Type*} {β : ι → Type*}
     (PairingOn.sigmaCongrRight F).partner ⟨i, x⟩ = ⟨i, (F i).partner x⟩ := by
   rfl
 
-/-- The finite enumeration of all perfect pairings of `Fin (2 * n)`. -/
-def allPairings (n : ℕ) : Finset (Pairing n) := Finset.univ
-
 /-- The normalized ordered pairs `(i, partner i)` with `i < partner i`, one per partner orbit. -/
 def Pairing.pairs {n : ℕ} (pairing : Pairing n) :
     Finset (Fin (2 * n) × Fin (2 * n)) :=

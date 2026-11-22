@@ -1,6 +1,6 @@
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.TMatrix.ScalarImpurity
 import LeanCondensedMatter.Transport.Analysis.ContinuumMeasure
-import LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornRealSpacePropagator
+import LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.BornDyson.RealSpace.Green
 
 set_option linter.style.header false
 

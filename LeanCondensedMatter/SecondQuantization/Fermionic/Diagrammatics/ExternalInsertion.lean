@@ -7,7 +7,6 @@ import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalIn
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.DiagramRegularity
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalVacuumShuffleIntegral
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalVacuumPairing
-import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalVacuumAmplitude
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalVacuumStandalone
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalVacuumFiberShuffleIntegral
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentIntegral
@@ -18,11 +17,9 @@ import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalIn
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalSubsetMoment
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalComponentReplicaPolynomial
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.FixedExternalFiberSum
-import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalVacuumFiberCauchySum
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.CauchySeries
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.FreeGibbsWickExpansion
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.MixedAtomicDysonIntegral
-import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.InteractionPictureVertexProduct
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.InteractionPictureVertexDyson
 
 set_option linter.style.header false
@@ -34,8 +31,8 @@ Fermionic semantics for arbitrary even families of external insertions: componen
 and the concrete timed-field pair kernel in mixed imaginary-time order. Statistics-independent
 diagrams, component restrictions, and ordering remain owned by `SecondQuantization.Common`.
 `FreeGibbsWickExpansion` proves the atomic free-Gibbs pairing identity;
-`MixedAtomicDysonIntegral` integrates that identity; `InteractionPictureVertexProduct`
-expands quartic vertices into atomic legs; and `InteractionPictureVertexDyson` identifies
-the resulting free-Gibbs Dyson coefficients with diagrammatic coefficients.
+`MixedAtomicDysonIntegral` integrates that identity; and `InteractionPictureVertexDyson`
+expands quartic vertices into atomic legs and identifies the resulting free-Gibbs
+Dyson coefficients with diagrammatic coefficients.
 These are formal perturbative identities, not interacting-state convergence claims.
 -/

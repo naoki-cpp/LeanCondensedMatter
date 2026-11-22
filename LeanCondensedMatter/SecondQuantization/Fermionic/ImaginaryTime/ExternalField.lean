@@ -54,13 +54,5 @@ noncomputable def timeOrderedExternalFields (ε : Mode → ℝ)
   Common.timeOrderedProduct Common.Statistics.fermion
     (externalFieldOperator ε τA A) (externalFieldOperator ε τB B) τA τB
 
-/-- Swapping both external fields and their times produces the fermionic exchange sign. -/
-theorem timeOrderedExternalFields_swap (ε : Mode → ℝ)
-    (A B : ExternalFieldLabel Mode) (τA τB : ℝ) :
-    timeOrderedExternalFields ε B A τB τA =
-      (Common.Statistics.fermion.zetaInt : ℂ) •
-        timeOrderedExternalFields ε A B τA τB := by
-  exact Common.timeOrderedProduct_swap Common.Statistics.fermion _ _ τA τB
-
 end Fermionic
 end SecondQuantization

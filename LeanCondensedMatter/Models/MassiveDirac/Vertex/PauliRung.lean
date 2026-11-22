@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Transport.Analysis.AngularHarmonics
+import LeanCondensedMatter.Analysis.Fourier.AngularHarmonics
 import LeanCondensedMatter.Models.MassiveDirac.Model.Operator
 import LeanCondensedMatter.Models.MassiveDirac.Vertex.InPlaneLadder
 import Mathlib.Tactic.Ring
@@ -24,6 +24,8 @@ supplying the radial coefficients.
 -/
 
 namespace QuantumTheory.Models.MassiveDirac
+
+open AngularHarmonics
 
 noncomputable section
 

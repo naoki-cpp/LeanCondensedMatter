@@ -37,27 +37,6 @@ namespace FiniteDisorderEnsemble
 
 variable (ensemble : FiniteDisorderEnsemble (H := H) (Ω := Ω))
 
-/-- A normalized finite nonnegative probability weight has at least one strictly positive entry. -/
-private theorem exists_probability_pos : ∃ ω : Ω, 0 < ensemble.probability ω := by
-  have hsum : 0 < ∑ ω, ensemble.probability ω := by
-    rw [ensemble.probability_sum]
-    norm_num
-  simpa using (Finset.sum_pos_iff_of_nonneg
-    (fun ω _ => ensemble.probability_nonneg ω)).mp hsum
-
-/-- Taking an inner product after an exact finite operator average is the corresponding weighted
-finite average of inner products. -/
-private theorem inner_average_apply
-    (operator : Ω → H →L[ℂ] H) (v w : H) :
-    inner ℂ (ensemble.average operator v) w =
-      ∑ ω, (ensemble.probability ω : ℂ) * inner ℂ (operator ω v) w := by
-  change inner ℂ ((∑ ω, (ensemble.probability ω : ℂ) • operator ω) v) w = _
-  rw [sum_apply, sum_inner]
-  apply Finset.sum_congr rfl
-  intro ω _
-  simpa [Algebra.smul_def] using
-    (inner_smul_real_left (𝕜 := ℂ) (operator ω v) w (ensemble.probability ω))
-
 /-- The exact finite disorder average inherits the signed-regulator Herglotz identity. -/
 private theorem im_inner_averagedGreenOfRegulator_apply_self
     (energy regulator : ℝ) (hregulator : regulator ≠ 0) (v : H) :
@@ -65,13 +44,20 @@ private theorem im_inner_averagedGreenOfRegulator_apply_self
       regulator *
         ∑ ω, ensemble.probability ω *
           ‖ensemble.configurationGreenOfRegulator energy regulator ω v‖ ^ 2 := by
-  change
-    (inner ℂ
-      (ensemble.average
-        (fun ω => ensemble.configurationGreenOfRegulator energy regulator ω) v) v).im = _
-  rw [ensemble.inner_average_apply
-    (fun ω => ensemble.configurationGreenOfRegulator energy regulator ω) v v]
-  rw [Complex.im_sum]
+  have hinner :
+      inner ℂ (ensemble.averagedGreenOfRegulator energy regulator v) v =
+        ∑ ω, (ensemble.probability ω : ℂ) *
+          inner ℂ (ensemble.configurationGreenOfRegulator energy regulator ω v) v := by
+    change inner ℂ ((∑ ω, (ensemble.probability ω : ℂ) •
+      ensemble.configurationGreenOfRegulator energy regulator ω) v) v = _
+    rw [sum_apply, sum_inner]
+    apply Finset.sum_congr rfl
+    intro ω _
+    simpa [Algebra.smul_def] using
+      (inner_smul_real_left (𝕜 := ℂ)
+        (ensemble.configurationGreenOfRegulator energy regulator ω v) v
+        (ensemble.probability ω))
+  rw [hinner, Complex.im_sum]
   have him (ω : Ω) :
       (inner ℂ (ensemble.configurationGreenOfRegulator energy regulator ω v) v).im =
         regulator * ‖ensemble.configurationGreenOfRegulator energy regulator ω v‖ ^ 2 := by
@@ -90,7 +76,10 @@ private theorem averagedGreenOfRegulator_antilipschitz
     (energy regulator : ℝ) (hregulator : regulator ≠ 0) :
     ∃ c : NNReal, AntilipschitzWith c (ensemble.averagedGreenOfRegulator energy regulator) := by
   classical
-  obtain ⟨ω, hprobability⟩ := ensemble.exists_probability_pos
+  obtain ⟨ω, _, hprobability⟩ :=
+    (Finset.sum_pos_iff_of_nonneg
+      (fun ω _ => ensemble.probability_nonneg ω)).mp
+      (by rw [ensemble.probability_sum]; norm_num)
   let shift : H →L[ℂ] H :=
     algebraMap ℂ (H →L[ℂ] H) (spectralParameterOfRegulator energy regulator) -
       (ensemble.configurationHamiltonian ω).1
@@ -123,21 +112,19 @@ private theorem averagedGreenOfRegulator_antilipschitz
       ‖v‖ = ‖shift (green v)‖ := by rw [hshiftApply]
       _ ≤ ‖shift‖ * ‖green v‖ := ContinuousLinearMap.le_opNorm shift (green v)
   have hvSqLe : ‖v‖ ^ 2 ≤ ‖shift‖ ^ 2 * ‖green v‖ ^ 2 := by
-    have hsq : ‖v‖ ^ 2 ≤ (‖shift‖ * ‖green v‖) ^ 2 :=
-      (sq_le_sq₀ (norm_nonneg v)
-        (mul_nonneg (norm_nonneg shift) (norm_nonneg (green v)))).2 hvLe
     calc
-      ‖v‖ ^ 2 ≤ (‖shift‖ * ‖green v‖) ^ 2 := hsq
-      _ = ‖shift‖ ^ 2 * ‖green v‖ ^ 2 := by ring
-  have hterm_nonneg : ∀ ξ : Ω,
+      _ ≤ (‖shift‖ * ‖green v‖) ^ 2 :=
+        (sq_le_sq₀ (norm_nonneg v)
+          (mul_nonneg (norm_nonneg shift) (norm_nonneg (green v)))).2 hvLe
+      _ = _ := by ring
+  have hterm_nonneg (ξ : Ω) :
       0 ≤ ensemble.probability ξ *
-        ‖ensemble.configurationGreenOfRegulator energy regulator ξ v‖ ^ 2 := by
-    intro ξ
-    exact mul_nonneg (ensemble.probability_nonneg ξ) (sq_nonneg _)
+        ‖ensemble.configurationGreenOfRegulator energy regulator ξ v‖ ^ 2 :=
+    mul_nonneg (ensemble.probability_nonneg ξ) (sq_nonneg _)
   have hsumNonneg :
       0 ≤ ∑ ξ, ensemble.probability ξ *
-        ‖ensemble.configurationGreenOfRegulator energy regulator ξ v‖ ^ 2 := by
-    exact Finset.sum_nonneg fun ξ _ => hterm_nonneg ξ
+        ‖ensemble.configurationGreenOfRegulator energy regulator ξ v‖ ^ 2 :=
+    Finset.sum_nonneg fun ξ _ => hterm_nonneg ξ
   have htermLe :
       ensemble.probability ω * ‖green v‖ ^ 2 ≤
         ∑ ξ, ensemble.probability ξ *
@@ -169,73 +156,53 @@ private theorem averagedGreenOfRegulator_antilipschitz
         ‖averaged v‖ * ‖v‖ := by
     rw [← himAbs]
     exact himLe
-  have hscaledVSq :
-      |regulator| * ensemble.probability ω * ‖v‖ ^ 2 ≤
-        ‖shift‖ ^ 2 *
-          (|regulator| *
-            ∑ ξ, ensemble.probability ξ *
-              ‖ensemble.configurationGreenOfRegulator energy regulator ξ v‖ ^ 2) := by
-    calc
-      |regulator| * ensemble.probability ω * ‖v‖ ^ 2 ≤
-          |regulator| * ensemble.probability ω *
-            (‖shift‖ ^ 2 * ‖green v‖ ^ 2) :=
-        mul_le_mul_of_nonneg_left hvSqLe
-          (mul_nonneg (abs_nonneg regulator) hprobability.le)
-      _ = ‖shift‖ ^ 2 *
-          (|regulator| *
-            (ensemble.probability ω * ‖green v‖ ^ 2)) := by ring
-      _ ≤ ‖shift‖ ^ 2 *
-          (|regulator| *
-            ∑ ξ, ensemble.probability ξ *
-              ‖ensemble.configurationGreenOfRegulator energy regulator ξ v‖ ^ 2) := by
-        apply mul_le_mul_of_nonneg_left _ (sq_nonneg _)
-        exact mul_le_mul_of_nonneg_left htermLe (abs_nonneg regulator)
   have hcore :
       |regulator| * ensemble.probability ω * ‖v‖ ^ 2 ≤
-        ‖shift‖ ^ 2 * (‖averaged v‖ * ‖v‖) :=
-    hscaledVSq.trans (mul_le_mul_of_nonneg_left hsumLe (sq_nonneg _))
+        ‖shift‖ ^ 2 * (‖averaged v‖ * ‖v‖) := by
+    calc
+      _ ≤ |regulator| * ensemble.probability ω *
+            (‖shift‖ ^ 2 * ‖green v‖ ^ 2) :=
+        mul_le_mul_of_nonneg_left hvSqLe hdenomPos.le
+      _ = ‖shift‖ ^ 2 *
+            (|regulator| * (ensemble.probability ω * ‖green v‖ ^ 2)) := by ring
+      _ ≤ ‖shift‖ ^ 2 *
+            (|regulator| *
+              ∑ ξ, ensemble.probability ξ *
+                ‖ensemble.configurationGreenOfRegulator energy regulator ξ v‖ ^ 2) :=
+        mul_le_mul_of_nonneg_left
+          (mul_le_mul_of_nonneg_left htermLe (abs_nonneg _)) (sq_nonneg _)
+      _ ≤ ‖shift‖ ^ 2 * (‖averaged v‖ * ‖v‖) :=
+        mul_le_mul_of_nonneg_left hsumLe (sq_nonneg _)
   have hcancel :
       (|regulator| * ensemble.probability ω) * ‖v‖ ≤
         ‖shift‖ ^ 2 * ‖averaged v‖ := by
     apply (mul_le_mul_iff_right₀ hvnormPos).mp
     simpa [pow_two, mul_assoc, mul_left_comm, mul_comm] using hcore
-  have hbound : ‖v‖ ≤ Kreal * ‖averaged v‖ := by
-    have hdiv :
-        ‖v‖ ≤ (‖shift‖ ^ 2 * ‖averaged v‖) /
-            (|regulator| * ensemble.probability ω) := by
-      apply (le_div_iff₀ hdenomPos).2
-      simpa [mul_comm] using hcancel
-    calc
-      ‖v‖ ≤ (‖shift‖ ^ 2 * ‖averaged v‖) /
-          (|regulator| * ensemble.probability ω) := hdiv
-      _ = Kreal * ‖averaged v‖ := by
-        dsimp [Kreal]
-        ring
-  exact hbound
+  calc
+    ‖v‖ ≤ (‖shift‖ ^ 2 * ‖averaged v‖) /
+        (|regulator| * ensemble.probability ω) :=
+      (le_div_iff₀ hdenomPos).2 (by simpa [mul_comm] using hcancel)
+    _ = Kreal * ‖averaged v‖ := by dsimp [Kreal]; ring
 
 private theorem averagedGreenOfRegulator_denseRange
     (energy regulator : ℝ) (hregulator : regulator ≠ 0) :
     (ensemble.averagedGreenOfRegulator energy regulator).range.topologicalClosure = ⊤ := by
   let averaged : H →L[ℂ] H := ensemble.averagedGreenOfRegulator energy regulator
-  let averagedStar : H →L[ℂ] H := star averaged
-  have hstarInjective : Function.Injective averagedStar := by
+  have hstarInjective : Function.Injective
+      (star averaged : H →L[ℂ] H) := by
     obtain ⟨_, hanti⟩ :=
       ensemble.averagedGreenOfRegulator_antilipschitz
         energy (-regulator) (neg_ne_zero.mpr hregulator)
-    simpa only [averagedStar, averaged, ensemble.star_averagedGreenOfRegulator] using
+    simpa only [averaged, ensemble.star_averagedGreenOfRegulator] using
       hanti.injective
-  have hker : averagedStar.ker = ⊥ := by
-    rw [LinearMap.ker_eq_bot]
-    exact hstarInjective
-  have hadjoint : ContinuousLinearMap.adjoint averagedStar = averaged := by
-    change star (star averaged) = averaged
-    exact star_star averaged
   change averaged.range.topologicalClosure = ⊤
   calc
-    averaged.range.topologicalClosure = averagedStar.kerᗮ := by
-      rw [← hadjoint]
-      exact (ContinuousLinearMap.orthogonal_ker averagedStar).symm
-    _ = ⊤ := by rw [hker]; simp
+    averaged.range.topologicalClosure = (star averaged).kerᗮ := by
+      simpa only [← ContinuousLinearMap.star_eq_adjoint, star_star] using
+        (ContinuousLinearMap.orthogonal_ker (star averaged)).symm
+    _ = ⊤ := by
+      rw [LinearMap.ker_eq_bot.mpr hstarInjective]
+      simp
 
 /-- At any nonzero signed regulator the exact averaged Green operator is a unit in arbitrary
 Hilbert-space dimension. -/
@@ -250,14 +217,10 @@ theorem averagedGreenOfRegulator_isUnit
 
 /-- Canonical exact finite-disorder self-energy at an arbitrary nonzero signed regulator. -/
 noncomputable def exactSelfEnergyOfRegulator
-    (energy regulator : ℝ) (hregulator : regulator ≠ 0) : H →L[ℂ] H := by
-  let hunit : IsUnit (ensemble.averagedGreenOfRegulator energy regulator) :=
-    ensemble.averagedGreenOfRegulator_isUnit energy regulator hregulator
-  let averagedUnit : (H →L[ℂ] H)ˣ := hunit.unit
-  let averagedInverse : H →L[ℂ] H := ↑(averagedUnit⁻¹)
-  exact
-    (algebraMap ℂ (H →L[ℂ] H) (spectralParameterOfRegulator energy regulator) -
-        ensemble.baseHamiltonian.1) - averagedInverse
+    (energy regulator : ℝ) (hregulator : regulator ≠ 0) : H →L[ℂ] H :=
+  let hunit := ensemble.averagedGreenOfRegulator_isUnit energy regulator hregulator
+  (algebraMap ℂ (H →L[ℂ] H) (spectralParameterOfRegulator energy regulator) -
+      ensemble.baseHamiltonian.1) - (↑(hunit.unit⁻¹) : H →L[ℂ] H)
 
 /-- At a nonzero signed regulator, the canonical exact self-energy is the unique self-energy
 satisfying the exact two-sided Dyson relation for the clean and disorder-averaged Green operators. -/
@@ -270,8 +233,7 @@ theorem isSelfEnergy_iff_eq_exactSelfEnergyOfRegulator
       selfEnergy = ensemble.exactSelfEnergyOfRegulator energy regulator hregulator := by
   let hunit : IsUnit (ensemble.averagedGreenOfRegulator energy regulator) :=
     ensemble.averagedGreenOfRegulator_isUnit energy regulator hregulator
-  let averagedUnit : (H →L[ℂ] H)ˣ := hunit.unit
-  let averagedInverse : H →L[ℂ] H := ↑(averagedUnit⁻¹)
+  let averagedInverse : H →L[ℂ] H := ↑(hunit.unit⁻¹)
   let freeInverse : H →L[ℂ] H :=
     algebraMap ℂ (H →L[ℂ] H) (spectralParameterOfRegulator energy regulator) -
       ensemble.baseHamiltonian.1
@@ -281,29 +243,20 @@ theorem isSelfEnergy_iff_eq_exactSelfEnergyOfRegulator
         (ensemble.averagedGreenOfRegulator energy regulator)
         selfEnergy ↔
       selfEnergy = freeInverse - averagedInverse
-  have hfreeLeft :
-      freeInverse * ensemble.freeGreenOfRegulator energy regulator = 1 := by
-    simpa [freeInverse, FiniteDisorderEnsemble.freeGreenOfRegulator] using
-      spectralShift_mul_resolvent_spectralParameterOfRegulator
-        ensemble.baseHamiltonian.1 ensemble.baseHamiltonian.2 energy regulator hregulator
-  have hfreeRight :
-      ensemble.freeGreenOfRegulator energy regulator * freeInverse = 1 := by
-    simpa [freeInverse, FiniteDisorderEnsemble.freeGreenOfRegulator] using
-      resolvent_spectralParameterOfRegulator_mul_spectralShift
-        ensemble.baseHamiltonian.1 ensemble.baseHamiltonian.2 energy regulator hregulator
-  have haveragedLeft :
-      averagedInverse * ensemble.averagedGreenOfRegulator energy regulator = 1 := by
-    simpa [averagedInverse, averagedUnit] using hunit.val_inv_mul
-  have haveragedRight :
-      ensemble.averagedGreenOfRegulator energy regulator * averagedInverse = 1 := by
-    simpa [averagedInverse, averagedUnit] using hunit.mul_val_inv
-  exact IsSelfEnergy.iff_eq_inverse_sub_inverse
+  refine IsSelfEnergy.iff_eq_inverse_sub_inverse
     (freeGreen := ensemble.freeGreenOfRegulator energy regulator)
     (dressedGreen := ensemble.averagedGreenOfRegulator energy regulator)
     (selfEnergy := selfEnergy)
     (freeInverse := freeInverse)
-    (dressedInverse := averagedInverse)
-    hfreeLeft hfreeRight haveragedLeft haveragedRight
+    (dressedInverse := averagedInverse) ?_ ?_ ?_ ?_
+  · simpa [freeInverse, FiniteDisorderEnsemble.freeGreenOfRegulator] using
+      spectralShift_mul_resolvent_spectralParameterOfRegulator
+        ensemble.baseHamiltonian.1 ensemble.baseHamiltonian.2 energy regulator hregulator
+  · simpa [freeInverse, FiniteDisorderEnsemble.freeGreenOfRegulator] using
+      resolvent_spectralParameterOfRegulator_mul_spectralShift
+        ensemble.baseHamiltonian.1 ensemble.baseHamiltonian.2 energy regulator hregulator
+  · simpa [averagedInverse] using hunit.val_inv_mul
+  · simpa [averagedInverse] using hunit.mul_val_inv
 
 /-- The canonical exact finite-disorder self-energy satisfies the exact two-sided Dyson relation at
 any nonzero signed regulator. -/

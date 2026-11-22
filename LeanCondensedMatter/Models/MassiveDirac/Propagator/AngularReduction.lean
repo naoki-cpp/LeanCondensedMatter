@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Transport.Analysis.AngularHarmonics
+import LeanCondensedMatter.Analysis.Fourier.AngularHarmonics
 import LeanCondensedMatter.Models.MassiveDirac.Model.Kinematics
 import LeanCondensedMatter.Models.MassiveDirac.Propagator.Symmetry
 import Mathlib.Analysis.SpecialFunctions.Integrals.Basic
@@ -32,6 +32,8 @@ limit is introduced here.
 -/
 
 namespace QuantumTheory.Models.MassiveDirac
+
+open AngularHarmonics
 
 noncomputable section
 
