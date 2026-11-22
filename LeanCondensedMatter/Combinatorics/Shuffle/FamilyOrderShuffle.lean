@@ -339,14 +339,14 @@ shuffle, including zero-size blocks. -/
 theorem FamilySlotShuffleTo.orderEmbOfFin_ownerFiber
     {ι : Type*} {size : ι → ℕ} {total : ℕ}
     (σ : FamilySlotShuffleTo size total) (i : ι) :
-    let s := (Finset.univ : Finset (Fin total)).filter
-      (fun v => (σ.slotEquiv.symm v).1 = i)
+    let s := (Finset.univ : Finset (Fin (size i))).image
+      (fun j => σ.slotEquiv ⟨i, j⟩)
     ∀ (h : s.card = size i) (j : Fin (size i)),
       ((s.orderEmbOfFin h) j : Fin total) = σ.slotEquiv ⟨i, j⟩ := by
   classical
   intro s h j
-  have hmem (k : Fin (size i)) : σ.slotEquiv ⟨i, k⟩ ∈ s := by
-    simp [s]
+  have hmem (k : Fin (size i)) : σ.slotEquiv ⟨i, k⟩ ∈ s :=
+    Finset.mem_image.mpr ⟨k, Finset.mem_univ _, rfl⟩
   have hunique := Finset.orderEmbOfFin_unique
     (s := s) (h := h) (f := fun k : Fin (size i) => σ.slotEquiv ⟨i, k⟩)
     hmem (σ.strictMono i)
