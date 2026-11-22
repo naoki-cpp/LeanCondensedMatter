@@ -1154,6 +1154,14 @@
       "externalImportCount": 2
     },
     {
+      "name": "LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.ThreeTermRecurrence",
+      "sourceFile": "LeanCondensedMatter/Analysis/SpecialFunctions/Bessel/ThreeTermRecurrence.lean",
+      "imports": [
+        "LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.HypergeometricSeries"
+      ],
+      "externalImportCount": 2
+    },
+    {
       "name": "LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.Y0Series",
       "sourceFile": "LeanCondensedMatter/Analysis/SpecialFunctions/Bessel/Y0Series.lean",
       "imports": [],
@@ -1202,6 +1210,7 @@
         "LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.FormalCoefficients",
         "LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.FormalOrderOne",
         "LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.HypergeometricSeries",
+        "LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.ThreeTermRecurrence",
         "LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.Y0Series",
         "LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.Y1Series"
       ],
@@ -8607,6 +8616,7 @@
         "LeanCondensedMatter.Analysis.Fourier.AngularHarmonics",
         "LeanCondensedMatter.Analysis.Fourier.FullAngleCosineMoments",
         "LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.HypergeometricSeries",
+        "LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.ThreeTermRecurrence",
         "LeanCondensedMatter.Transport.Analysis.ContinuumMeasure",
         "LeanCondensedMatter.Transport.Analysis.FourierGeometry"
       ],

@@ -1794,6 +1794,96 @@
   },
   {
     "terminal": false,
+    "statement": "∀ (z : ℝ), Complex.besselJ 1 ↑z ^ 2 / ↑z = Complex.besselJ 1 ↑z * (Complex.besselJ 0 ↑z + Complex.besselJ 2 ↑z) / 2",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "BesselHypergeometric.besselJ_one_sq_div_eq_half_product",
+    "module": "LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.ThreeTermRecurrence",
+    "externalAxioms": [],
+    "docString": "The Bessel recurrence eliminates the apparent singularity of J₁(z)²/z\nat the origin, with the convention that division by zero is zero. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.integral_besselJ_one_sq_div"
+    ],
+    "dependencies": [
+      "BesselHypergeometric.besselJ_zero_one_two_recurrence"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.integral_besselJ_one_sq_div"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (z : ℂ), 2 * Complex.besselJ 1 z = z * (Complex.besselJ 0 z + Complex.besselJ 2 z)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "BesselHypergeometric.besselJ_zero_one_two_recurrence",
+    "module": "LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.ThreeTermRecurrence",
+    "externalAxioms": [],
+    "docString": "The Bessel three-term recurrence at orders zero, one, and two.\nThis is formulated without dividing by the argument, so it includes the origin. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "BesselHypergeometric.besselJ_one_sq_div_eq_half_product",
+      "QuantumTheory.Transport.polarFourierSecondCosineAngularKernel_eq_besselJ"
+    ],
+    "dependencies": [
+      "_private.LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.ThreeTermRecurrence.0.BesselHypergeometric.regularizedHGFun_one_sub_two_eq_mul_three"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "BesselHypergeometric.besselJ_one_sq_div_eq_half_product",
+      "QuantumTheory.Transport.polarFourierSecondCosineAngularKernel_eq_besselJ"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ (k n : ℕ), Complex.regularizedHGFunCoeff 0 {↑(k + 1)} n = 1 / (↑n.factorial * ↑(n + k).factorial)",
     "standardAxioms": [
       "Classical.choice",
@@ -1816,7 +1906,7 @@
       "BesselFormal.besselFormalJ0_coeff_eq_regularizedHGFun",
       "BesselFormal.besselFormalJ0_derivative_coeff_eq_regularizedHGFun",
       "QuantumTheory.Transport.polarFourierZerothMoment_even_eq_bessel",
-      "_private.LeanCondensedMatter.Transport.Analysis.PolarFourier.0.QuantumTheory.Transport.regularizedHGFun_one_sub_two_eq_mul_three",
+      "_private.LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.ThreeTermRecurrence.0.BesselHypergeometric.regularizedHGFun_one_sub_two_eq_mul_three",
       "_private.LeanCondensedMatter.Transport.Analysis.PolarFourier.0.QuantumTheory.Transport.regularizedHGFun_zero_one_hasDerivAt"
     ],
     "dependencies": [],
@@ -1826,7 +1916,7 @@
       "BesselFormal.besselFormalJ0_coeff_eq_regularizedHGFun",
       "BesselFormal.besselFormalJ0_derivative_coeff_eq_regularizedHGFun",
       "QuantumTheory.Transport.polarFourierZerothMoment_even_eq_bessel",
-      "_private.LeanCondensedMatter.Transport.Analysis.PolarFourier.0.QuantumTheory.Transport.regularizedHGFun_one_sub_two_eq_mul_three",
+      "_private.LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.ThreeTermRecurrence.0.BesselHypergeometric.regularizedHGFun_one_sub_two_eq_mul_three",
       "_private.LeanCondensedMatter.Transport.Analysis.PolarFourier.0.QuantumTheory.Transport.regularizedHGFun_zero_one_hasDerivAt"
     ],
     "compiledConsumerCount": 5,
@@ -42915,48 +43005,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (q densityTimeDerivative currentDivergence : ℝ),\n  densityTimeDerivative + currentDivergence = 0 → q * densityTimeDerivative + q * currentDivergence = 0",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumMechanics.SingleParticle.Continuum.charge_continuity_balance_of_probability",
-    "module": "LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Continuity.Scalar1D",
-    "externalAxioms": [],
-    "docString": "Probability-current balance immediately implies charge-current balance. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumMechanics.SingleParticle.Continuum.oneDimensional_electromagnetic_charge_continuity"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumMechanics.SingleParticle.Continuum.oneDimensional_electromagnetic_charge_continuity"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "Dense ↑QuantumMechanics.SingleParticle.Continuum.continuumH2Domain1D",
     "standardAxioms": [
       "Classical.choice",
@@ -46895,7 +46943,6 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "QuantumMechanics.SingleParticle.Continuum.charge_continuity_balance_of_probability",
       "QuantumMechanics.SingleParticle.Continuum.electromagnetic_probability_continuity_balance_of_schrodinger",
       "QuantumMechanics.SingleParticle.Continuum.hasDerivAt_electromagneticProbabilityCurrentValue1D",
       "QuantumMechanics.SingleParticle.Continuum.hasDerivAt_probabilityDensityValue"
@@ -98341,50 +98388,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (z : ℝ), Complex.besselJ 1 ↑z ^ 2 / ↑z = Complex.besselJ 1 ↑z * (Complex.besselJ 0 ↑z + Complex.besselJ 2 ↑z) / 2",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.besselJ_one_sq_div_eq_half_product",
-    "module": "LeanCondensedMatter.Transport.Analysis.PolarFourier",
-    "externalAxioms": [],
-    "docString": "The Bessel recurrence eliminates the apparent singularity of J₁(z)²/z\nat the origin, with the convention that division by zero is zero. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.integral_besselJ_one_sq_div"
-    ],
-    "dependencies": [
-      "_private.LeanCondensedMatter.Transport.Analysis.PolarFourier.0.QuantumTheory.Transport.besselJ_zero_one_two_recurrence"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.integral_besselJ_one_sq_div"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "Filter.Tendsto (fun r => Complex.besselJ 0 ↑r ^ 2 + Complex.besselJ 1 ↑r ^ 2) Filter.atTop (nhds 0)",
     "standardAxioms": [
       "Classical.choice",
@@ -99933,7 +99936,7 @@
       "QuantumTheory.Transport.tendsto_integral_crossedXBesselIntegrand"
     ],
     "dependencies": [
-      "QuantumTheory.Transport.besselJ_one_sq_div_eq_half_product",
+      "BesselHypergeometric.besselJ_one_sq_div_eq_half_product",
       "QuantumTheory.Transport.integral_polarFourierHarmonicEnergy",
       "QuantumTheory.Transport.polarFourierFirstCosineAngularKernel_eq_besselJ",
       "QuantumTheory.Transport.polarFourierSecondCosineAngularKernel_eq_besselJ",
@@ -101467,11 +101470,11 @@
       "QuantumTheory.Transport.polarFourierSecondCosineAngularKernel_neg"
     ],
     "dependencies": [
+      "BesselHypergeometric.besselJ_zero_one_two_recurrence",
       "QuantumTheory.Transport.polarFourierFirstCosineAngularKernel_eq_besselJ",
       "QuantumTheory.Transport.polarFourierFirstCosineAngularKernel_two_mul_eq_zeroth_sub_second",
       "QuantumTheory.Transport.polarFourierSecondCosineAngularKernel_zero",
-      "QuantumTheory.Transport.polarFourierZerothAngularKernel_eq_besselJ",
-      "_private.LeanCondensedMatter.Transport.Analysis.PolarFourier.0.QuantumTheory.Transport.besselJ_zero_one_two_recurrence"
+      "QuantumTheory.Transport.polarFourierZerothAngularKernel_eq_besselJ"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -180935,6 +180938,50 @@
   },
   {
     "terminal": false,
+    "statement": "∀ (w : ℂ), Complex.regularizedHGFun 0 {1} w - Complex.regularizedHGFun 0 {2} w = w * Complex.regularizedHGFun 0 {3} w",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.ThreeTermRecurrence.0.BesselHypergeometric.regularizedHGFun_one_sub_two_eq_mul_three",
+    "module": "LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.ThreeTermRecurrence",
+    "externalAxioms": [],
+    "docString": "The adjacent bottom-parameter regularized hypergeometric series obey the\ncoefficient-shift relation needed for the Bessel recurrence of orders zero to two. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "BesselHypergeometric.besselJ_zero_one_two_recurrence"
+    ],
+    "dependencies": [
+      "BesselHypergeometric.regularizedHGFunCoeff_zero_singleton_nat_add_one"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "BesselHypergeometric.besselJ_zero_one_two_recurrence"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {α : Type u_1} {R : Type u_2} [inst : DecidableEq α] [inst_1 : CommRing R] {m : Finset α → R} {A B : Finset α},\n  Finpartition.IsIndependentAcross m A B →\n    ∀ T ⊆ A ⊔ B, Finpartition.momentFromCumulant (Finpartition.splitCumulant m A B) T = m T",
     "standardAxioms": [
       "Classical.choice",
@@ -208374,52 +208421,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (z : ℂ), 2 * Complex.besselJ 1 z = z * (Complex.besselJ 0 z + Complex.besselJ 2 z)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Transport.Analysis.PolarFourier.0.QuantumTheory.Transport.besselJ_zero_one_two_recurrence",
-    "module": "LeanCondensedMatter.Transport.Analysis.PolarFourier",
-    "externalAxioms": [],
-    "docString": "The Bessel three-term recurrence at orders zero, one, and two.\nThis is formulated without dividing by the argument, so it includes the origin. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.besselJ_one_sq_div_eq_half_product",
-      "QuantumTheory.Transport.polarFourierSecondCosineAngularKernel_eq_besselJ"
-    ],
-    "dependencies": [
-      "_private.LeanCondensedMatter.Transport.Analysis.PolarFourier.0.QuantumTheory.Transport.regularizedHGFun_one_sub_two_eq_mul_three"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.besselJ_one_sq_div_eq_half_product",
-      "QuantumTheory.Transport.polarFourierSecondCosineAngularKernel_eq_besselJ"
-    ],
-    "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ (f : ℝ → ℂ), (∀ (θ : ℝ), f (2 * Real.pi - θ) = -f θ) → ∫ (θ : ℝ) in 0..2 * Real.pi, f θ = 0",
     "standardAxioms": [
       "Classical.choice",
@@ -208760,50 +208761,6 @@
       "QuantumTheory.Transport.polarFourierZerothAngularKernel_hasDerivAt"
     ],
     "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (w : ℂ), Complex.regularizedHGFun 0 {1} w - Complex.regularizedHGFun 0 {2} w = w * Complex.regularizedHGFun 0 {3} w",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Transport.Analysis.PolarFourier.0.QuantumTheory.Transport.regularizedHGFun_one_sub_two_eq_mul_three",
-    "module": "LeanCondensedMatter.Transport.Analysis.PolarFourier",
-    "externalAxioms": [],
-    "docString": "The adjacent bottom-parameter regularized hypergeometric series obey the\ncoefficient-shift relation needed for the Bessel recurrence of orders zero to two. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.Transport.Analysis.PolarFourier.0.QuantumTheory.Transport.besselJ_zero_one_two_recurrence"
-    ],
-    "dependencies": [
-      "BesselHypergeometric.regularizedHGFunCoeff_zero_singleton_nat_add_one"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.Transport.Analysis.PolarFourier.0.QuantumTheory.Transport.besselJ_zero_one_two_recurrence"
-    ],
-    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
