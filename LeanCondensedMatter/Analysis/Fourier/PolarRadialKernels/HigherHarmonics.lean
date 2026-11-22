@@ -131,22 +131,15 @@ theorem polarFourierFirstCosineAngularKernel_two_mul_eq_zeroth_sub_second (z : �
       2 * (∫ θ in (0 : ℝ)..(2 * Real.pi), phase θ * sine θ ^ 2) =
         polarFourierZerothAngularKernel z -
           polarFourierSecondCosineAngularKernel z := by
-    calc
-      2 * (∫ θ in (0 : ℝ)..(2 * Real.pi), phase θ * sine θ ^ 2) =
-          ∫ θ in (0 : ℝ)..(2 * Real.pi),
-            2 * (phase θ * sine θ ^ 2) := by
-        rw [intervalIntegral.integral_const_mul]
-      _ = ∫ θ in (0 : ℝ)..(2 * Real.pi),
-            phase θ - phase θ * (cosine θ ^ 2 - sine θ ^ 2) := by
-        apply intervalIntegral.integral_congr
-        intro θ _
-        exact htrig θ
-      _ = polarFourierZerothAngularKernel z -
-            polarFourierSecondCosineAngularKernel z := by
-        rw [intervalIntegral.integral_sub]
-        · rfl
-        · exact hcphase.intervalIntegrable _ _
-        · exact (hcphase.mul ((hccos.pow 2).sub (hcsin.pow 2))).intervalIntegrable _ _
+    change 2 * (∫ θ in (0 : ℝ)..(2 * Real.pi), phase θ * sine θ ^ 2) =
+      (∫ θ in (0 : ℝ)..(2 * Real.pi), phase θ) -
+        (∫ θ in (0 : ℝ)..(2 * Real.pi),
+          phase θ * (cosine θ ^ 2 - sine θ ^ 2))
+    rw [← intervalIntegral.integral_const_mul,
+      ← intervalIntegral.integral_sub
+        (hcphase.intervalIntegrable _ _)
+        ((hcphase.mul ((hccos.pow 2).sub (hcsin.pow 2))).intervalIntegrable _ _)]
+    exact intervalIntegral.integral_congr (fun θ _ => htrig θ)
   have hfirstKernel :
       polarFourierFirstCosineAngularKernel z =
         (Complex.I * (z : ℂ)) *
