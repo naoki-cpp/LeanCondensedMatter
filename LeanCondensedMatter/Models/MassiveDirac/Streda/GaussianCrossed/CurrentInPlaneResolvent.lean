@@ -323,12 +323,18 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedInPlaneK2_gap_eq_tracelessH
         2 * (v : ℂ) ^ 2 * factor * measure *
           ∫ p in (0 : ℝ)..pMax,
             (p : ℂ) ^ 3 * k2 p * (invR p - invA p) := by
-    rw [hk2]
-    rw [intervalIntegral.integral_const_mul]
-    congr 1
-    apply intervalIntegral.integral_congr
-    intro p _
-    exact hkernel p
+    calc
+      _ = measure * ∫ p in (0 : ℝ)..pMax,
+            (2 * (v : ℂ) ^ 2 * factor) *
+              ((p : ℂ) ^ 3 * k2 p * (invR p - invA p)) := by
+            rw [hk2]
+            congr 1
+            apply intervalIntegral.integral_congr
+            intro p _
+            exact hkernel p
+      _ = _ := by
+            rw [intervalIntegral.integral_const_mul]
+            ring
   have hcK2 : Continuous k2 :=
     continuous_polarFourierSecondCosineAngularKernel.comp (by fun_prop)
   have hcInvR : Continuous invR :=
