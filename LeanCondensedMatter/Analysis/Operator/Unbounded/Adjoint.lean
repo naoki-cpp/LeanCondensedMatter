@@ -48,13 +48,15 @@ private theorem Submodule.adjoint_adjoint_eq_of_isClosed
         simpa only [neg_neg, toLp_ofLp] using hw)
       have hh := h q.1 q.2 hq
       change inner ℂ (ofLp w).1 z.1 + inner ℂ (ofLp w).2 z.2 = 0
-      simpa only [q, inner_neg_left, sub_eq_add_neg, add_comm, neg_add_rev, neg_neg] using
+      simpa only [q, inner_neg_left, sub_eq_add_neg, add_comm, neg_add_rev, neg_neg,
+        neg_zero] using
         congrArg Neg.neg hh
     · intro h u v huv
       have hw := (hchar u v).1 huv
       have hh := h (toLp 2 (-v, u)) hw
       change inner ℂ (-v) z.1 + inner ℂ u z.2 = 0 at hh
-      simpa only [inner_neg_left, sub_eq_add_neg, neg_add_rev, neg_neg] using
+      simpa only [inner_neg_left, sub_eq_add_neg, neg_add_rev, neg_neg, neg_zero,
+        add_comm] using
         congrArg Neg.neg hh
   have hclosedW : IsClosed (gw : Set (WithLp 2 (H × H))) := by
     exact hg.preimage (WithLp.prod_continuous_ofLp 2 H H)
