@@ -274,4 +274,50 @@ theorem FamilySlotShuffleTo.reindexEquiv_owner
       e.symm ((σ.slotEquiv.symm v).1) := by
   simp [FamilySlotShuffleTo.reindexEquiv, Equiv.trans_apply]
 
+/-- Casting only the type-level family-size function does not alter
+which block owns an ambient slot. -/
+theorem FamilySlotShuffleTo.castSize_owner
+    {size₁ size₂ : ι → ℕ} {total : ℕ}
+    (h : size₁ = size₂) (σ : FamilySlotShuffleTo size₁ total)
+    (v : Fin total) :
+    (((Equiv.cast (congrArg (fun s => FamilySlotShuffleTo s total) h)) σ).slotEquiv.symm v).1 =
+      (σ.slotEquiv.symm v).1 := by
+  cases h
+  rfl
+
+/-- Casting only the type-level family-size function preserves the
+ambient permutation between two family shuffles. -/
+theorem FamilySlotShuffleTo.castSize_ambientRelabel
+    {size₁ size₂ : ι → ℕ} {total : ℕ}
+    (h : size₁ = size₂)
+    (σ τ : FamilySlotShuffleTo size₁ total) :
+    (((Equiv.cast (congrArg (fun s => FamilySlotShuffleTo s total) h)) σ).ambientRelabel
+      ((Equiv.cast (congrArg (fun s => FamilySlotShuffleTo s total) h)) τ)) =
+      σ.ambientRelabel τ := by
+  cases h
+  rfl
+
+/-- Changing the ambient cardinality proof only casts slot numbers;
+it does not modify the family owner of an ambient slot. -/
+theorem FamilySlotShuffleTo.castTotalEquiv_owner
+    {size : ι → ℕ} {m n : ℕ} (h : m = n)
+    (σ : FamilySlotShuffleTo size m) (v : Fin n) :
+    (((FamilySlotShuffleTo.castTotalEquiv h) σ).slotEquiv.symm v).1 =
+      (σ.slotEquiv.symm (Fin.cast h.symm v)).1 := by
+  cases h
+  rfl
+
+/-- Simultaneously casting both shuffles' ambient cardinalities
+conjugates their ambient permutation by the same Fin cast. -/
+theorem FamilySlotShuffleTo.castTotalEquiv_ambientRelabel
+    {size : ι → ℕ} {m n : ℕ} (h : m = n)
+    (σ τ : FamilySlotShuffleTo size m) :
+    (((FamilySlotShuffleTo.castTotalEquiv h) σ).ambientRelabel
+      ((FamilySlotShuffleTo.castTotalEquiv h) τ)) =
+      (Fin.castOrderIso h).symm.toEquiv.trans
+        (σ.ambientRelabel τ).trans (Fin.castOrderIso h).toEquiv := by
+  cases h
+  ext v
+  simp [FamilySlotShuffleTo.ambientRelabel, FamilySlotShuffleTo.castTotalEquiv]
+
 end Combinatorics
