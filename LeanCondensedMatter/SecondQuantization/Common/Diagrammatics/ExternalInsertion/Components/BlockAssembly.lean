@@ -181,7 +181,7 @@ theorem ExternalInsertionBlockLayout.legEquiv_externalLeg
           (layout.interactionBlock S (layout.sourceEquiv e).1)
           (layout.sourceEquiv e).2⟩ := by
   simp [ExternalInsertionBlockLayout.legEquiv, externalInsertionExternalLeg,
-    Equiv.sigmaSumDistrib]
+    Equiv.sigmaSumDistrib, Sigma.map]
 
 /-- The leg equivalence assigns each quartic leg to its vertex's block,
 without changing the quartic local leg index. -/
@@ -195,7 +195,7 @@ theorem ExternalInsertionBlockLayout.legEquiv_interactionLeg
           (E := ((layout.interactionEquiv S v).1.1.card / 2))
           (layout.interactionEquiv S v).2 i⟩ := by
   simp [ExternalInsertionBlockLayout.legEquiv, externalInsertionInteractionLeg,
-    Equiv.sigmaSumDistrib]
+    Equiv.sigmaSumDistrib, Sigma.map]
 
 /-- An independently assigned local external leg is embedded at its
 original ambient source slot, in increasing source-partition order. -/
