@@ -3,10 +3,11 @@ import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInser
 set_option linter.style.header false
 
 /-!
-# Connectivity and restriction of assembled external-insertion blocks
+# Graph connectivity of assembled external-insertion blocks
 
-Physical graph-component recovery, canonical leg and pairing restriction, and
-reconstruction from block-respecting labelled diagrams.
+Local block graphs embed into the physical assembled graph, with exactly the
+same reachability inside each block. Connected local diagrams determine the
+physical external-component partition and its external and interaction sectors.
 -/
 
 namespace SecondQuantization
