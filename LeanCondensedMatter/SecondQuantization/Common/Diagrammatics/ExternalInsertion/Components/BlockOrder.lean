@@ -1,4 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.BlockConnectivity
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.InteractionOrder
 
 set_option linter.style.header false
 
@@ -15,6 +16,35 @@ namespace Common
 open Combinatorics
 
 variable {E N : ℕ}
+
+/-- Reindex a vacuum-free diagram's actual graph-component
+interaction shuffles by the physical interaction-owner fibers of its
+canonical external block layout. This composes the existing component
+reindexing with the proved equality of each physical interaction block
+and graph interaction sector, without introducing additional orders. -/
+noncomputable def ExternalInsertionDiagram.physicalBlockInteractionShuffleEquiv
+    {ExternalLabel InternalLabel : Type*} {S : Finset (Fin N)}
+    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
+    (hVac : HasNoVacuumComponent d.vertexGraph)
+    (anchor : Fin (2 * E)) :
+    d.ComponentInteractionOrderShuffle ≃
+      FamilySlotShuffleTo
+        (fun P : (d.externalBlockLayout hVac anchor).partition.parts =>
+          ((d.externalBlockLayout hVac anchor).interactionBlock S P).card)
+        S.card := by
+  classical
+  let f : (externalComponentPartition d.vertexGraph).parts → ℕ :=
+    fun P => (interactionSector
+      (((d.vacuumFreeComponentsEquivExternalBlocks hVac).symm P).1 :
+        Finset (ExternalInsertionVertex E S))).card
+  let g : (externalComponentPartition d.vertexGraph).parts → ℕ :=
+    fun P => ((d.externalBlockLayout hVac anchor).interactionBlock S P).card
+  have hfg : f = g := by
+    funext P
+    exact (congrArg Finset.card
+      (d.externalBlockLayout_interactionBlock hVac anchor P)).symm
+  exact (d.vacuumFreeExternalBlockInteractionShuffleEquiv hVac).trans
+    (Equiv.cast (congrArg (fun s => FamilySlotShuffleTo s S.card) hfg))
 
 /-- The active interaction sectors assigned to an external partition form
 an exact disjoint decomposition of the global interaction sector. In
