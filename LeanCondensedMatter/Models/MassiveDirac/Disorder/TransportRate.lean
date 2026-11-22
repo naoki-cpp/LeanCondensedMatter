@@ -89,12 +89,10 @@ theorem continuumBornUpperBandTransportScatteringRate_pos
     0 < continuumBornUpperBandTransportScatteringRate
       v m fermiEnergy disorderStrength hbar := by
   have hfermiPos : 0 < fermiEnergy := lt_of_le_of_lt (abs_nonneg m) hmF
-  have hfermiNe : fermiEnergy ≠ 0 := ne_of_gt hfermiPos
   rw [continuumBornUpperBandTransportScatteringRate_eq
-    v m fermiEnergy disorderStrength hbar hvelocity (ne_of_gt hhbar) hfermiNe]
-  have hnum : 0 < fermiEnergy + 3 * m ^ 2 / fermiEnergy := by positivity
-  have hden : 0 < 4 * hbar ^ 3 * v ^ 2 := by positivity
-  exact mul_pos (div_pos hdisorder hden) hnum
+    v m fermiEnergy disorderStrength hbar hvelocity (ne_of_gt hhbar)
+    (ne_of_gt hfermiPos)]
+  positivity
 
 /-- The transport rate relative to the single-particle rate is fixed entirely by the massive-Dirac
 Fermi-circle angular structure whenever the common rate prefactors and Fermi energy are nonzero. -/

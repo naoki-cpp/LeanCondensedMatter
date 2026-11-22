@@ -1,7 +1,6 @@
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.Damping
 import LeanCondensedMatter.QuantumTheory.ScatteringRate
 import Mathlib.Tactic.FieldSimp
-import Mathlib.Tactic.NormNum
 import Mathlib.Tactic.Ring
 
 set_option linter.style.header false
@@ -54,19 +53,14 @@ theorem continuumBornUpperBandSingleParticleScatteringRate_ne_zero
       v m fermiEnergy disorderStrength hbar ≠ 0 := by
   rw [continuumBornUpperBandSingleParticleScatteringRate_eq
     v m fermiEnergy disorderStrength hbar hvelocity hhbar hfermiEnergy]
-  apply mul_ne_zero
-  · exact div_ne_zero hdisorder
-      (mul_ne_zero (mul_ne_zero (by norm_num) (pow_ne_zero 3 hhbar))
-        (pow_ne_zero 2 hvelocity))
-  · have hsum : fermiEnergy ^ 2 + m ^ 2 ≠ 0 := by
-      exact ne_of_gt
-        (add_pos_of_pos_of_nonneg (sq_pos_of_ne_zero hfermiEnergy) (sq_nonneg m))
-    have hterm :
-        fermiEnergy + m ^ 2 / fermiEnergy =
-          (fermiEnergy ^ 2 + m ^ 2) / fermiEnergy := by
-      field_simp [hfermiEnergy]
-    rw [hterm]
+  have hsum : fermiEnergy ^ 2 + m ^ 2 ≠ 0 :=
+    ne_of_gt (add_pos_of_pos_of_nonneg
+      (sq_pos_of_ne_zero hfermiEnergy) (sq_nonneg m))
+  have hterm : fermiEnergy + m ^ 2 / fermiEnergy ≠ 0 := by
+    rw [show fermiEnergy + m ^ 2 / fermiEnergy =
+      (fermiEnergy ^ 2 + m ^ 2) / fermiEnergy by field_simp [hfermiEnergy]]
     exact div_ne_zero hsum hfermiEnergy
+  exact mul_ne_zero (div_ne_zero hdisorder (by positivity)) hterm
 
 /-- The Born single-particle scattering rate is positive for positive `ℏ` and positive disorder
 strength in the strict metallic regime `|m| < εF`. -/
