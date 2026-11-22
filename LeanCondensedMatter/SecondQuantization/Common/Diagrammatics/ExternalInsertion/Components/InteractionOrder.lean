@@ -119,7 +119,7 @@ noncomputable def ExternalInsertionDiagram.canonicalComponentInteractionShuffle
       ↥(interactionSector (B : Finset (ExternalInsertionVertex E S))))
     (fun B : d.vertexGraph.componentPartition.parts =>
       (interactionSector (B : Finset (ExternalInsertionVertex E S))).card)
-    (fun _ => rfl)
+    (fun _ => by simp)
     (interactionSectorComponentEquiv d.vertexGraph))
     ((S.orderIsoOfFin rfl).toEquiv)).2
 
@@ -143,7 +143,7 @@ theorem ExternalInsertionDiagram.assembleInteractionOrder_eq_canonicalRelabel
   let ambient := interactionSectorComponentEquiv d.vertexGraph
   let order : QuarticVertexOrder S := (S.orderIsoOfFin rfl).toEquiv
   let e := familyOrderDecompositionEquivOfSize family size
-    (fun _ => rfl) ambient
+    (fun _ => by simp) ambient
   have hmono (B : d.vertexGraph.componentPartition.parts) :
       StrictMono (fun j : Fin (size B) =>
         order.symm (ambient.symm ⟨B, d.canonicalComponentInteractionOrders B j⟩)) := by
@@ -156,9 +156,9 @@ theorem ExternalInsertionDiagram.assembleInteractionOrder_eq_canonicalRelabel
     exact ((interactionSector (B : Finset (ExternalInsertionVertex E S))).orderIsoOfFin
       rfl).strictMono hab
   have hlocal : (e order).1 = d.canonicalComponentInteractionOrders := by
-    change familyOrdersOfOrder family size (fun _ => rfl) ambient order =
+    change familyOrdersOfOrder family size (fun _ => by simp) ambient order =
       d.canonicalComponentInteractionOrders
-    exact familyOrdersOfOrder_eq_of_strictMono family size (fun _ => rfl)
+    exact familyOrdersOfOrder_eq_of_strictMono family size (fun _ => by simp)
       ambient order d.canonicalComponentInteractionOrders hmono
   have hbase :
       d.assembleInteractionOrder d.canonicalComponentInteractionOrders
