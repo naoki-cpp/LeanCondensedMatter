@@ -2,7 +2,6 @@ import LeanCondensedMatter.Analysis.ConservationLaw.CurrentRepresentation
 import LeanCondensedMatter.Analysis.ConservationLaw.CurrentEquivalence
 import LeanCondensedMatter.Analysis.ConservationLaw.FluxBalanceLaw
 import LeanCondensedMatter.Analysis.ConservationLaw.BalanceLaw
-import LeanCondensedMatter.Analysis.ConservationLaw.BalanceLawAdapter
 import LeanCondensedMatter.Analysis.ConservationLaw.SymmetricLocalizationAlgebra
 import LeanCondensedMatter.Analysis.ConservationLaw.CorrectedCurrentFlux
 

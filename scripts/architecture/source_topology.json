@@ -142,14 +142,12 @@
         {"id": "currentRepresentation", "modulePrefixes": ["LeanCondensedMatter.Analysis.ConservationLaw.CurrentRepresentation"]},
         {"id": "fluxBalanceLaw", "modulePrefixes": ["LeanCondensedMatter.Analysis.ConservationLaw.FluxBalanceLaw"]},
         {"id": "balanceLaw", "modulePrefixes": ["LeanCondensedMatter.Analysis.ConservationLaw.BalanceLaw"]},
-        {"id": "balanceLawAdapter", "modulePrefixes": ["LeanCondensedMatter.Analysis.ConservationLaw.BalanceLawAdapter"]},
         {"id": "symmetricLocalizationAlgebra", "modulePrefixes": ["LeanCondensedMatter.Analysis.ConservationLaw.SymmetricLocalizationAlgebra"]},
         {"id": "correctedCurrentFlux", "modulePrefixes": ["LeanCondensedMatter.Analysis.ConservationLaw.CorrectedCurrentFlux"]}
       ],
       "edges": [
         {"upstream": "currentRepresentation", "downstream": "balanceLaw"},
-        {"upstream": "fluxBalanceLaw", "downstream": "balanceLawAdapter"},
-        {"upstream": "balanceLaw", "downstream": "balanceLawAdapter"},
+        {"upstream": "fluxBalanceLaw", "downstream": "balanceLaw"},
         {"upstream": "symmetrizedProduct", "downstream": "symmetricLocalizationAlgebra"},
         {"upstream": "symmetricLocalizationAlgebra", "downstream": "correctedCurrentFlux"}
       ]
@@ -167,7 +165,6 @@
           "LeanCondensedMatter.Analysis.ConservationLaw.CurrentRepresentation",
           "LeanCondensedMatter.Analysis.ConservationLaw.FluxBalanceLaw",
           "LeanCondensedMatter.Analysis.ConservationLaw.BalanceLaw",
-          "LeanCondensedMatter.Analysis.ConservationLaw.BalanceLawAdapter",
           "LeanCondensedMatter.Analysis.ConservationLaw.SymmetricLocalizationAlgebra",
           "LeanCondensedMatter.Analysis.ConservationLaw.CorrectedCurrentFlux"
         ]},
