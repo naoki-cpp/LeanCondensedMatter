@@ -372,5 +372,20 @@ theorem ExternalInsertionBlockLayout.externalBlockLayout_assembleDiagram_eq
 
 
 
+/-- The physical block layout depends only on the labelled diagram,
+not on which proof of absence of vacuum components is supplied. -/
+theorem ExternalInsertionDiagram.externalBlockLayout_congr
+    {ExternalLabel InternalLabel : Type*}
+    {d e : ExternalInsertionDiagram ExternalLabel InternalLabel E N
+      (Finset.univ : Finset (Fin N))}
+    (h : d = e)
+    (hVacD : HasNoVacuumComponent d.vertexGraph)
+    (hVacE : HasNoVacuumComponent e.vertexGraph)
+    (anchor : Fin (2 * E)) :
+    d.externalBlockLayout hVacD anchor = e.externalBlockLayout hVacE anchor := by
+  subst e
+  rfl
+
+
 end Common
 end SecondQuantization
