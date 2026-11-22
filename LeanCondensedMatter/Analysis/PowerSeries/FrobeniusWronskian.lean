@@ -1,5 +1,5 @@
 import Mathlib.RingTheory.PowerSeries.Derivative
-import Mathlib.Algebra.Algebra.Rat
+import Mathlib.Algebra.Module.Rat
 import Mathlib.Tactic.Ring
 import Mathlib.Tactic.LinearCombination
 
