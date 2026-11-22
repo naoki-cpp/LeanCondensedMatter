@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Analysis.Fourier.PolarRadialKernels.HigherHarmonics
 import LeanCondensedMatter.Transport.Analysis.PolarFourier
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.BornDyson.Invertibility
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.BornDyson.Green.RadialPauli
