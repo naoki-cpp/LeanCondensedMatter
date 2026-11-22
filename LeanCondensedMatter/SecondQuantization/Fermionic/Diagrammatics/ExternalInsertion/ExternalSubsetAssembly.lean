@@ -693,8 +693,8 @@ theorem ExternalInsertionBlockLayout.sum_physicalFixedSizeDyson_eq_signedProduct
           apply Finset.sum_congr rfl
           intro F _
           by_cases h : (assembled F).externalLabel = labels
-          · simp only [if_pos h]
-          · simp only [if_neg h, Finset.sum_const_zero]
+          · simp [h]
+          · simp [h]
     _ = ∑ F : layout.ConnectedBlockFamily
             (ExternalLabel := ExternalFieldLabel Mode)
             (InternalLabel := QuarticVertexLabel Mode),
@@ -710,7 +710,7 @@ theorem ExternalInsertionBlockLayout.sum_physicalFixedSizeDyson_eq_signedProduct
           intro F _
           exact if_congr (hlabels F) (hOrbit F) rfl
     _ = _ := by
-          simpa only [layout,
+          simpa only [assembled, S, layout,
             ExternalInsertionBlockLayout.ofFamilyShuffle_interactionBlock_card] using
             (ExternalInsertionBlockLayout.sum_signedDysonShuffleOrbits_eq_prod_standardized
               layout ε β g labels times)
