@@ -130,12 +130,6 @@ def TwoPointDiagram.IsExternallyConnected {S : Finset (Fin N)}
     (d : TwoPointDiagram ExternalLabel InternalLabel N S) : Prop :=
   HasNoVacuumComponent d.vertexGraph ∧ d.ExternalVerticesConnected
 
-/-- Global preconnectedness implies connectedness relative to the two external vertices. -/
-theorem TwoPointDiagram.isExternallyConnected_of_preconnected {S : Finset (Fin N)}
-    (d : TwoPointDiagram ExternalLabel InternalLabel N S) (h : d.vertexGraph.Preconnected) :
-    d.IsExternallyConnected :=
-  ⟨hasNoVacuumComponent_of_preconnected d.vertexGraph h, h _ _⟩
-
 /-- Two-point diagrams with no vacuum component. -/
 def VacuumFreeTwoPointDiagram (ExternalLabel InternalLabel : Type*) (N : ℕ)
     (S : Finset (Fin N)) : Type _ :=
