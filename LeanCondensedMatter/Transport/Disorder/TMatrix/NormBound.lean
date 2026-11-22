@@ -7,9 +7,8 @@ set_option linter.style.header false
 /-!
 # Scalar-impurity T-matrix norm bound
 
-An algebraic T-matrix fixed-point identity and its scalar inverse-shift
-representation imply a quadratic bound on the bare-potential remainder.
-No Hamiltonian, matrix dimension, or disorder ensemble is fixed.
+The exact T-matrix fixed-point relation bounds the correction beyond the bare
+impurity by two powers of its strength in any complex normed algebra.
 -/
 
 namespace QuantumTheory.Transport
@@ -18,22 +17,20 @@ noncomputable section
 
 variable {R : Type*} [NormedRing R] [NormedAlgebra ℂ R]
 
-/-- The remainder of a scalar-impurity T-matrix carries two powers of its
-strength, given its exact fixed-point equation and inverse-shift factorization. -/
-theorem scalarImpurityRemainder_norm_le
-    (strength : ℂ) (greenLoop inverseShift tMatrix : R)
-    (hfixed : tMatrix - strength • (1 : R) =
-      strength • (greenLoop * tMatrix))
-    (ht : tMatrix = strength • inverseShift) :
-    ‖tMatrix - strength • (1 : R)‖ ≤
-      ‖strength‖ ^ 2 * ‖greenLoop‖ * ‖inverseShift‖ := by
-  rw [hfixed, norm_smul]
+/-- A scalar impurity with a unit shift has a quadratic bare-potential remainder.
+The bound keeps the full inverse-shift norm without a Born approximation. -/
+theorem norm_scalarImpurityTMatrix_sub_bare_le
+    (strength : ℂ) (greenLoop : R)
+    (hinvertible : IsUnit (1 - strength • greenLoop)) :
+    ‖scalarImpurityTMatrix strength greenLoop hinvertible - strength • (1 : R)‖ ≤
+      ‖strength‖ ^ 2 * ‖greenLoop‖ * ‖(↑(hinvertible.unit⁻¹) : R)‖ := by
+  rw [scalarImpurityTMatrix_sub_bare, norm_smul]
   calc
-    ‖strength‖ * ‖greenLoop * tMatrix‖ ≤
-        ‖strength‖ * (‖greenLoop‖ * ‖tMatrix‖) :=
+    ‖strength‖ * ‖greenLoop * scalarImpurityTMatrix strength greenLoop hinvertible‖ ≤
+        ‖strength‖ * (‖greenLoop‖ * ‖scalarImpurityTMatrix strength greenLoop hinvertible‖) :=
       mul_le_mul_of_nonneg_left (norm_mul_le _ _) (norm_nonneg _)
-    _ = ‖strength‖ ^ 2 * ‖greenLoop‖ * ‖inverseShift‖ := by
-      rw [ht, norm_smul]
+    _ = ‖strength‖ ^ 2 * ‖greenLoop‖ * ‖(↑(hinvertible.unit⁻¹) : R)‖ := by
+      rw [scalarImpurityTMatrix, norm_smul]
       ring
 
 end
