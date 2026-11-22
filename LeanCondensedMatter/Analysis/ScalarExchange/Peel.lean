@@ -27,26 +27,28 @@ theorem eq_div_mul_of_eq_add_mul_of_eq_mul {F : Type*} [Field F]
       (eq_div_iff hne).2 (by simpa only [mul_comm] using h)
     _ = (q / (q - s)) * P := by ring
 
+variable {R : Type*} [CommSemiring R]
+
 /-- The exchange terms generated while pushing one labelled algebra element through a finite tail. -/
-noncomputable def peelSum {Label A : Type*} [Semiring A] [Algebra ℂ A]
-    (element : Label → A) (exchangeCoeff : Label → Label → ℂ)
-    (ζ : ℂ) (C : Label) : List Label → A
+noncomputable def peelSum {Label A : Type*} [Semiring A] [Algebra R A]
+    (element : Label → A) (exchangeCoeff : Label → Label → R)
+    (ζ : R) (C : Label) : List Label → A
   | [] => 0
   | D :: t =>
       exchangeCoeff C D • (t.map element).prod +
         ζ • (element D * peelSum element exchangeCoeff ζ C t)
 
 @[simp]
-theorem peelSum_nil {Label A : Type*} [Semiring A] [Algebra ℂ A]
-    (element : Label → A) (exchangeCoeff : Label → Label → ℂ)
-    (ζ : ℂ) (C : Label) :
+theorem peelSum_nil {Label A : Type*} [Semiring A] [Algebra R A]
+    (element : Label → A) (exchangeCoeff : Label → Label → R)
+    (ζ : R) (C : Label) :
     peelSum element exchangeCoeff ζ C [] = 0 := rfl
 
 /-- The recursive exchange sum is a finite sum over the removed position. The remaining factors
 retain their original order; no commutativity or exchange relation is required. -/
-theorem peelSum_eq_sum {Label A : Type*} [Semiring A] [Algebra ℂ A]
-    (element : Label → A) (exchangeCoeff : Label → Label → ℂ)
-    (ζ : ℂ) (C : Label) (l : List Label) :
+theorem peelSum_eq_sum {Label A : Type*} [Semiring A] [Algebra R A]
+    (element : Label → A) (exchangeCoeff : Label → Label → R)
+    (ζ : R) (C : Label) (l : List Label) :
     peelSum element exchangeCoeff ζ C l =
       ∑ j : Fin l.length,
         (ζ ^ (j : ℕ) * exchangeCoeff C (l[(j : ℕ)]'j.isLt)) •
@@ -71,8 +73,8 @@ theorem peelSum_eq_sum {Label A : Type*} [Semiring A] [Algebra ℂ A]
 /-- Peel a fixed element through a finite product when the exchange relation holds only
 for factors appearing in the given list. No relations between the tail factors are needed. -/
 theorem mul_prod_eq_peelSum_of_mem
-    {Label A : Type*} [Semiring A] [Algebra ℂ A]
-    (element : Label → A) (exchangeCoeff : Label → Label → ℂ) (ζ : ℂ)
+    {Label A : Type*} [Semiring A] [Algebra R A]
+    (element : Label → A) (exchangeCoeff : Label → Label → R) (ζ : R)
     (C : Label) (l : List Label) :
     (∀ D ∈ l,
       element C * element D =
@@ -103,8 +105,8 @@ theorem mul_prod_eq_peelSum_of_mem
 element through a finite ordered product. This is the global-hypothesis specialization of
 `mul_prod_eq_peelSum_of_mem`. -/
 theorem mul_prod_eq_peelSum
-    {Label A : Type*} [Semiring A] [Algebra ℂ A]
-    (element : Label → A) (exchangeCoeff : Label → Label → ℂ) (ζ : ℂ)
+    {Label A : Type*} [Semiring A] [Algebra R A]
+    (element : Label → A) (exchangeCoeff : Label → Label → R) (ζ : R)
     (hExchange : ∀ C D,
       element C * element D =
         exchangeCoeff C D • (1 : A) + ζ • (element D * element C))
@@ -117,25 +119,25 @@ theorem mul_prod_eq_peelSum
 
 /-- The coefficient-paired view of the generic exchange sum. Both APIs use the same
 recursion, so their finite-position expansions cannot diverge. -/
-noncomputable def peelSumWithCoefficients {A : Type*} [Semiring A] [Algebra ℂ A]
-    (ζ : ℂ) : List (A × ℂ) → A :=
+noncomputable def peelSumWithCoefficients {A : Type*} [Semiring A] [Algebra R A]
+    (ζ : R) : List (A × R) → A :=
   peelSum Prod.fst (fun _ p => p.2) ζ (0, 0)
 
 @[simp]
-theorem peelSumWithCoefficients_nil {A : Type*} [Semiring A] [Algebra ℂ A]
-    (ζ : ℂ) : peelSumWithCoefficients (A := A) ζ [] = 0 := rfl
+theorem peelSumWithCoefficients_nil {A : Type*} [Semiring A] [Algebra R A]
+    (ζ : R) : peelSumWithCoefficients (A := A) ζ [] = 0 := rfl
 
 /-- Computation on a nonempty coefficient-paired list, derived from the canonical peel recursion. -/
 @[simp]
-theorem peelSumWithCoefficients_cons {A : Type*} [Semiring A] [Algebra ℂ A]
-    (ζ : ℂ) (B : A) (c : ℂ) (t : List (A × ℂ)) :
+theorem peelSumWithCoefficients_cons {A : Type*} [Semiring A] [Algebra R A]
+    (ζ : R) (B : A) (c : R) (t : List (A × R)) :
     peelSumWithCoefficients ζ ((B, c) :: t) =
       c • (t.map Prod.fst).prod + ζ • (B * peelSumWithCoefficients ζ t) := rfl
 
 /-- Both peel sums encode the same recursion; the first label is only used to select
 its coefficients, which the paired representation already stores in each list element. -/
-private theorem peelSumWithCoefficients_eq_peelSum {A : Type*} [Semiring A] [Algebra ℂ A]
-    (ζ : ℂ) (C : A) (l : List (A × ℂ)) :
+private theorem peelSumWithCoefficients_eq_peelSum {A : Type*} [Semiring A] [Algebra R A]
+    (ζ : R) (C : A) (l : List (A × R)) :
     peelSumWithCoefficients ζ l =
       peelSum Prod.fst (fun _ p => p.2) ζ (C, 0) l := by
   unfold peelSumWithCoefficients
@@ -146,8 +148,8 @@ private theorem peelSumWithCoefficients_eq_peelSum {A : Type*} [Semiring A] [Alg
       simpa only [peelSumWithCoefficients, peelSum, ih]
 
 /-- Position-indexed expansion when each factor carries its exchange coefficient. -/
-theorem peelSumWithCoefficients_eq_sum {A : Type*} [Semiring A] [Algebra ℂ A]
-    (ζ : ℂ) (l : List (A × ℂ)) :
+theorem peelSumWithCoefficients_eq_sum {A : Type*} [Semiring A] [Algebra R A]
+    (ζ : R) (l : List (A × R)) :
     peelSumWithCoefficients ζ l =
       ∑ j : Fin l.length,
         (ζ ^ (j : ℕ) * (l[(j : ℕ)]'j.isLt).2) •
@@ -158,8 +160,8 @@ theorem peelSumWithCoefficients_eq_sum {A : Type*} [Semiring A] [Algebra ℂ A]
 coefficient-paired list. This form is useful when the exchange coefficients depend on the fixed
 element, so no relations between the factors themselves are required. -/
 theorem mul_prod_eq_peelSumWithCoefficients
-    {A : Type*} [Semiring A] [Algebra ℂ A]
-    (ζ : ℂ) (C : A) (l : List (A × ℂ))
+    {A : Type*} [Semiring A] [Algebra R A]
+    (ζ : R) (C : A) (l : List (A × R))
     (hExchange : ∀ p ∈ l,
       C * p.1 = p.2 • (1 : A) + ζ • (p.1 * C)) :
     C * (l.map Prod.fst).prod =
