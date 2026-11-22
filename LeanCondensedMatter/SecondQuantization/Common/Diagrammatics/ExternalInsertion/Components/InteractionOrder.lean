@@ -161,9 +161,11 @@ theorem ExternalInsertionDiagram.assembleInteractionOrder_eq_canonicalRelabel
     change familyOrdersOfOrder family size (fun B => Fintype.card_coe
       (interactionSector (B : Finset (ExternalInsertionVertex E S)))) ambient order =
       d.canonicalComponentInteractionOrders
-    exact familyOrdersOfOrder_eq_of_strictMono family size (fun B => Fintype.card_coe
-      (interactionSector (B : Finset (ExternalInsertionVertex E S))))
-      ambient order d.canonicalComponentInteractionOrders hmono
+    funext B
+    exact (familyOrder_eq_of_strictMono family size
+      (fun C => Fintype.card_coe
+        (interactionSector (C : Finset (ExternalInsertionVertex E S))))
+      ambient order B (d.canonicalComponentInteractionOrders B) (hmono B)).symm
   have hbase :
       d.assembleInteractionOrder d.canonicalComponentInteractionOrders
         d.canonicalComponentInteractionShuffle = order := by
