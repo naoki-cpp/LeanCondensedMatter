@@ -174,6 +174,7 @@ theorem finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient_y_eq_zero
         .y side v m probeEnergy broadening disorderStrength hbar pMax radius = 0 := by
   simp [finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient,
     finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix,
+    finiteCutoffContinuumBornDysonRadialGreenEntryKernel,
     InternalSpace.pauliVectorCoefficient]
 
 /-- Pointwise scalar Pauli kernel of the positive-axis radial Born-Dyson Green integrand. -/
