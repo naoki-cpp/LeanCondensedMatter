@@ -1,5 +1,4 @@
 import Mathlib.RingTheory.PowerSeries.Derivative
-import Mathlib.Analysis.Complex.Basic
 import Mathlib.Tactic.Ring
 import Mathlib.Tactic.LinearCombination
 
@@ -8,7 +7,7 @@ set_option linter.style.header false
 /-!
 # Formal Frobenius Wronskian conservation
 
-For two complex formal power series A and B satisfying
+For two formal power series A and B over a commutative rational algebra satisfying
 
   X A'' + A' = A,
   X B'' + B' = B + A',
@@ -17,7 +16,7 @@ the polynomial first integral
 
   A² + 2X(A'B - AB')
 
-is constant. When A(0) = 1, the constant is 1, independently of B(0).
+is constant and equal to A(0)², independently of B(0). In particular, it is 1 when A(0) = 1.
 The proof is purely algebraic in the ring of formal power series:
 no convergence, integration, or analytic Bessel-function theory is required.
 
@@ -31,25 +30,27 @@ noncomputable section
 
 open scoped PowerSeries
 
+variable {R : Type*} [CommRing R]
+
 /-- The algebraic first integral for the paired homogeneous/inhomogeneous
 Frobenius equations. -/
 noncomputable def invariant
-    (A B : ℂ⟦X⟧) : ℂ⟦X⟧ :=
+    (A B : R⟦X⟧) : R⟦X⟧ :=
   A * A +
     PowerSeries.X *
       (PowerSeries.derivative A * B - A * PowerSeries.derivative B) +
     PowerSeries.X *
       (PowerSeries.derivative A * B - A * PowerSeries.derivative B)
 
-/-- Universal conservation of the formal Frobenius first integral. -/
-theorem invariant_eq_one
-    (A B : ℂ⟦X⟧)
+/-- The formal first integral equals the square of the initial constant coefficient.
+Only commutative rational-algebra structure is needed, not complex analysis or convergence. -/
+theorem invariant_eq_C_square [Algebra ℚ R]
+    (A B : R⟦X⟧)
     (hA : PowerSeries.X * PowerSeries.derivative (PowerSeries.derivative A) +
         PowerSeries.derivative A = A)
     (hB : PowerSeries.X * PowerSeries.derivative (PowerSeries.derivative B) +
-        PowerSeries.derivative B = B + PowerSeries.derivative A)
-    (hA0 : PowerSeries.constantCoeff A = 1) :
-    invariant A B = 1 := by
+        PowerSeries.derivative B = B + PowerSeries.derivative A) :
+    invariant A B = PowerSeries.C ((PowerSeries.constantCoeff A) ^ 2) := by
   have hderiv :
       PowerSeries.derivative (invariant A B) = 0 := by
     unfold invariant
@@ -58,13 +59,24 @@ theorem invariant_eq_one
     linear_combination
       (2 * B) * hA - (2 * A) * hB
   have hconst :
-      PowerSeries.constantCoeff
-        (invariant A B) =
-          PowerSeries.constantCoeff (1 : ℂ⟦X⟧) := by
-    unfold invariant
-    simp [hA0, PowerSeries.constantCoeff_X]
+      PowerSeries.constantCoeff (invariant A B) =
+        PowerSeries.constantCoeff (PowerSeries.C ((PowerSeries.constantCoeff A) ^ 2)) := by
+    simp [invariant, PowerSeries.constantCoeff_X, pow_two]
+  letI : HasUniqueDiv R := .of_module_rat R
   exact PowerSeries.derivative.ext
-    (by simpa only [PowerSeries.derivative_one] using hderiv) hconst
+    (by simpa only [PowerSeries.derivative_C] using hderiv) hconst
+
+/-- Unit normalization of the generic formal Frobenius invariant. -/
+theorem invariant_eq_one [Algebra ℚ R]
+    (A B : R⟦X⟧)
+    (hA : PowerSeries.X * PowerSeries.derivative (PowerSeries.derivative A) +
+        PowerSeries.derivative A = A)
+    (hB : PowerSeries.X * PowerSeries.derivative (PowerSeries.derivative B) +
+        PowerSeries.derivative B = B + PowerSeries.derivative A)
+    (hA0 : PowerSeries.constantCoeff A = 1) :
+    invariant A B = 1 := by
+  rw [invariant_eq_C_square A B hA hB, hA0]
+  simp
 
 end
 
