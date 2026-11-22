@@ -1,6 +1,9 @@
 import LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.CurrentGradientSourceY
 import LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.RadialHarmonics
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.BornDyson.DysonShift
+import LeanCondensedMatter.Analysis.Lorentzian.Kernel
+import Mathlib.MeasureTheory.Integral.IntervalIntegral.IntegrationByParts
+import Mathlib.Tactic.FieldSimp
 import Mathlib.Tactic.FunProp
 import Mathlib.Tactic.GCongr
 import Mathlib.Tactic.Linarith
@@ -755,6 +758,163 @@ theorem tendsto_finiteCutoffContinuumBornDysonGaussianCrossedK2_offShell_dressed
   exact Filter.Eventually.of_forall fun t => by
     dsimp [tail, dressed, D0]
     ring
+
+
+/-- Exact finite-interval *energy-shell* substitution for the physical
+traceless crossed-current harmonic. Unlike a reference Bessel integral,
+this is the specific \(p^3 K_2\) density obtained from the real Dyson
+R/A product; it retains the Jacobian of \(u=v²p²-A\).
+
+The factor \(2v⁴\) has deliberately not been canceled: this version
+requires no division by a regulator-dependent width. -/
+private theorem gaussianCrossed_K2_radialLorentzian_eq_energyShell
+    (v hbar pMax radius A B : ℝ)
+    (hv : v ≠ 0) (hpMax : 0 ≤ pMax) (hB : B ≠ 0) :
+    (((2 * v ^ 4 : ℝ) : ℂ)) * (B : ℂ) *
+        ∫ p in (0 : ℝ)..pMax,
+          (p : ℂ) ^ 3 *
+            polarFourierSecondCosineAngularKernel (p * radius / hbar) *
+            ((((A - v ^ 2 * p ^ 2) ^ 2 + B ^ 2 : ℝ) : ℂ))⁻¹ =
+      ∫ offset in -A..(v ^ 2 * pMax ^ 2 - A),
+        (Lorentzian.spectralKernel offset B : ℂ) *
+          ((A + offset : ℝ) : ℂ) *
+          polarFourierSecondCosineAngularKernel
+            (Real.sqrt ((A + offset) / v ^ 2) * radius / hbar) := by
+  let f : ℝ → ℝ := fun p => v ^ 2 * p ^ 2 - A
+  let df : ℝ → ℝ := fun p => 2 * v ^ 2 * p
+  let g : ℝ → ℂ := fun offset =>
+    (Lorentzian.spectralKernel offset B : ℂ) *
+      ((A + offset : ℝ) : ℂ) *
+      polarFourierSecondCosineAngularKernel
+        (Real.sqrt ((A + offset) / v ^ 2) * radius / hbar)
+  have hg : Continuous g := by
+    dsimp [g]
+    apply Continuous.mul
+    · exact (Complex.continuous_ofReal.comp
+        (Lorentzian.continuous_spectralKernel_fixed_broadening B hB)).mul
+        (Complex.continuous_ofReal.comp (by fun_prop))
+    · exact continuous_polarFourierSecondCosineAngularKernel.comp (by fun_prop)
+  have hdf : Continuous df := by
+    dsimp [df]
+    fun_prop
+  have hderiv (p : ℝ) : HasDerivAt f (df p) p := by
+    dsimp [f, df]
+    convert ((((hasDerivAt_id p).pow 2).const_mul (v ^ 2)).sub_const A) using 1 <;>
+      ring
+  have hsub := intervalIntegral.integral_comp_smul_deriv
+    (a := (0 : ℝ)) (b := pMax) (f := f) (f' := df) (g := g)
+    (fun p _ => hderiv p) hdf.continuousOn hg
+  have hv2 : v ^ 2 ≠ 0 := pow_ne_zero 2 hv
+  have hpoint (p : ℝ) (hp : 0 ≤ p) :
+      (df p) • g (f p) =
+        (((2 * v ^ 4 : ℝ) : ℂ)) * (B : ℂ) *
+          ((p : ℂ) ^ 3 *
+            polarFourierSecondCosineAngularKernel (p * radius / hbar) *
+            ((((A - v ^ 2 * p ^ 2) ^ 2 + B ^ 2 : ℝ) : ℂ))⁻¹) := by
+    have hsquare : (A + (v ^ 2 * p ^ 2 - A)) / v ^ 2 = p ^ 2 := by
+      field_simp [hv2]
+      ring
+    have hsqrt :
+        Real.sqrt ((A + (v ^ 2 * p ^ 2 - A)) / v ^ 2) = p := by
+      rw [hsquare, Real.sqrt_sq_eq_abs, abs_of_nonneg hp]
+    have hden :
+        B ^ 2 + (v ^ 2 * p ^ 2 - A) ^ 2 =
+          (A - v ^ 2 * p ^ 2) ^ 2 + B ^ 2 := by ring
+    rw [Complex.real_smul]
+    dsimp [df, g, f, Lorentzian.spectralKernel]
+    rw [hsqrt, hden]
+    push_cast
+    simp only [div_eq_mul_inv]
+    ring
+  calc
+    (((2 * v ^ 4 : ℝ) : ℂ)) * (B : ℂ) *
+        ∫ p in (0 : ℝ)..pMax,
+          (p : ℂ) ^ 3 *
+            polarFourierSecondCosineAngularKernel (p * radius / hbar) *
+            ((((A - v ^ 2 * p ^ 2) ^ 2 + B ^ 2 : ℝ) : ℂ))⁻¹ =
+      ∫ p in (0 : ℝ)..pMax,
+        (((2 * v ^ 4 : ℝ) : ℂ)) * (B : ℂ) *
+          ((p : ℂ) ^ 3 *
+            polarFourierSecondCosineAngularKernel (p * radius / hbar) *
+            ((((A - v ^ 2 * p ^ 2) ^ 2 + B ^ 2 : ℝ) : ℂ))⁻¹) := by
+              rw [intervalIntegral.integral_const_mul]
+              ring
+    _ = ∫ p in (0 : ℝ)..pMax, (df p) • g (f p) := by
+      apply intervalIntegral.integral_congr
+      intro p hp
+      have hpNonneg : 0 ≤ p := by
+        have hi : p ∈ Set.Icc (0 : ℝ) pMax := by
+          simpa [Set.uIcc_of_le hpMax] using (Set.uIoc_subset_uIcc hp)
+        exact hi.1
+      exact (hpoint p hpNonneg).symm
+    _ = ∫ offset in f 0..f pMax, g offset := by
+      simpa only [Function.comp_apply] using hsub
+    _ = _ := by
+      dsimp [f, g]
+      simp only [mul_zero, zero_pow (by norm_num : 2 ≠ 0), sub_zero]
+
+/-- The **actual finite-cutoff dressed crossed K2 current**, multiplied by
+the actual Dyson width, is *exactly* a spectral Lorentzian convolution
+on the physical energy shell. It is this integral, not an independently
+declared reference kernel, whose eventual on-shell limit must be proved.
+
+No clean-spectrum replacement or order interchange is made. -/
+theorem finiteCutoffContinuumBornDysonGaussianCrossedInPlaneK2_width_eq_energyShell
+    (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ)
+    (hv : v ≠ 0) (hbroadening : broadening ≠ 0)
+    (hdisorder : 0 ≤ disorderStrength) (hpMax : 0 ≤ pMax)
+    (hwidth : (finiteCutoffContinuumBornDysonDenominator
+      .retarded v m 0 0 probeEnergy broadening disorderStrength hbar pMax).im ≠ 0) :
+    let D0 := finiteCutoffContinuumBornDysonDenominator
+      .retarded v m 0 0 probeEnergy broadening disorderStrength hbar pMax
+    let factor := finiteCutoffContinuumBornDysonGaussianCrossedCurrentFactor
+      v m probeEnergy broadening disorderStrength hbar pMax
+    let measure := (((momentumMeasurePrefactor hbar : ℝ) : ℂ))
+    let jxx := finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient
+      .x 0 v m probeEnergy broadening disorderStrength hbar pMax radius
+    let jyy := finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient
+      .y 1 v m probeEnergy broadening disorderStrength hbar pMax radius
+    (((2 * v ^ 4 : ℝ) : ℂ)) * (D0.im : ℂ) * (jxx - jyy) =
+      (2 * measure * (v : ℂ) ^ 2 * factor) *
+        ∫ offset in -D0.re..(v ^ 2 * pMax ^ 2 - D0.re),
+          (Lorentzian.spectralKernel offset D0.im : ℂ) *
+            ((D0.re + offset : ℝ) : ℂ) *
+            polarFourierSecondCosineAngularKernel
+              (Real.sqrt ((D0.re + offset) / v ^ 2) * radius / hbar) := by
+  dsimp only
+  let D0 := finiteCutoffContinuumBornDysonDenominator
+    .retarded v m 0 0 probeEnergy broadening disorderStrength hbar pMax
+  let factor := finiteCutoffContinuumBornDysonGaussianCrossedCurrentFactor
+    v m probeEnergy broadening disorderStrength hbar pMax
+  let measure : ℂ := ((momentumMeasurePrefactor hbar : ℝ) : ℂ)
+  have hj := finiteCutoffContinuumBornDysonGaussianCrossedInPlaneK2_eq_realLorentzian
+    v m probeEnergy broadening disorderStrength hbar pMax radius
+    hbroadening hdisorder hpMax
+  have hsub := gaussianCrossed_K2_radialLorentzian_eq_energyShell
+    v hbar pMax radius D0.re D0.im hv hpMax hwidth
+  dsimp only at hj hsub
+  calc
+    (((2 * v ^ 4 : ℝ) : ℂ)) * (D0.im : ℂ) *
+        (finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient
+            .x 0 v m probeEnergy broadening disorderStrength hbar pMax radius -
+         finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient
+            .y 1 v m probeEnergy broadening disorderStrength hbar pMax radius) =
+      (2 * measure * (v : ℂ) ^ 2 * factor) *
+        (((2 * v ^ 4 : ℝ) : ℂ)) * (D0.im : ℂ) *
+          ∫ p in (0 : ℝ)..pMax,
+            (p : ℂ) ^ 3 *
+              polarFourierSecondCosineAngularKernel (p * radius / hbar) *
+              (((D0.re - v ^ 2 * p ^ 2) ^ 2 + D0.im ^ 2 : ℝ) : ℂ)⁻¹ := by
+            rw [hj]
+            ring
+    _ = (2 * measure * (v : ℂ) ^ 2 * factor) *
+          ∫ offset in -D0.re..(v ^ 2 * pMax ^ 2 - D0.re),
+            (Lorentzian.spectralKernel offset D0.im : ℂ) *
+              ((D0.re + offset : ℝ) : ℂ) *
+              polarFourierSecondCosineAngularKernel
+                (Real.sqrt ((D0.re + offset) / v ^ 2) * radius / hbar) := by
+            rw [← hsub]
+            ring
 
 end
 
