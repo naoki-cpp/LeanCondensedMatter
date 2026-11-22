@@ -670,20 +670,20 @@ theorem tendsto_finiteCutoffContinuumBornDysonGaussianCrossedK2_offShell_width_i
   have hupper : Tendsto (fun t => |(D0 t).im| * C) l (nhds 0) := by
     simpa using hw.mul_const C
   have hnorm : Tendsto (fun t => ‖tail t‖) l (nhds 0) := by
-    refine squeeze_zero' (fun t => Filter.Eventually.of_forall
-      (fun _ => norm_nonneg (tail _))) ?_ hupper
-    filter_upwards [hsep] with t ht
-    have hbound :=
-      finiteCutoffContinuumBornDysonGaussianCrossedK2_offShell_width_integral_norm_le
-        v m probeEnergy (broadening t) (disorderStrength t)
-        hbar pMax radius a b δ ha hab hb hδ ht
-    calc
-      ‖tail t‖ ≤
-          (b - a) * (|(D0 t).im| * pMax ^ 3 * (2 * Real.pi) / δ ^ 2) := by
-            simpa only [tail, D0] using hbound
-      _ = |(D0 t).im| * C := by
-        dsimp [C]
-        ring
+    refine squeeze_zero' ?_ ?_ hupper
+    · exact Filter.Eventually.of_forall (fun t => norm_nonneg (tail t))
+    · filter_upwards [hsep] with t ht
+      have hbound :=
+        finiteCutoffContinuumBornDysonGaussianCrossedK2_offShell_width_integral_norm_le
+          v m probeEnergy (broadening t) (disorderStrength t)
+          hbar pMax radius a b δ ha hab hb hδ ht
+      calc
+        ‖tail t‖ ≤
+            (b - a) * (|(D0 t).im| * pMax ^ 3 * (2 * Real.pi) / δ ^ 2) := by
+              simpa only [tail, D0] using hbound
+        _ = |(D0 t).im| * C := by
+          dsimp [C]
+          ring
   change Tendsto tail l (nhds 0)
   exact (tendsto_zero_iff_norm_tendsto_zero).2 hnorm
 
