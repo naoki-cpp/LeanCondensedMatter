@@ -80,21 +80,6 @@ noncomputable def ExternalInsertionBlockLayout.standardizedConnectedBlockFamilyE
           (Combinatorics.standardSlotEquiv
             (layout.interactionBlock (Finset.univ : Finset (Fin N)) B))))
 
-/-- Evaluating a standardized connected-block family on a block
-recovers the original local Wick diagram with its interaction vertices
-relabeled by increasing ambient-slot enumeration. -/
-@[simp]
-theorem ExternalInsertionBlockLayout.standardizedConnectedBlockFamilyEquiv_apply
-    {ExternalLabel InternalLabel : Type*}
-    (layout : ExternalInsertionBlockLayout E N)
-    (F : layout.ConnectedBlockFamily (ExternalLabel := ExternalLabel)
-      (InternalLabel := InternalLabel))
-    (B : layout.partition.parts) :
-    ((layout.standardizedConnectedBlockFamilyEquiv F) B).1 =
-      (F.1 B).slotCongr (Combinatorics.standardSlotEquiv
-        (layout.interactionBlock (Finset.univ : Finset (Fin N)) B)) := by
-  rfl
-
 open Classical in
 /-- Summing a multiplicative weight over all independent connected-block
 families gives the product of the individual block sums. This is a
