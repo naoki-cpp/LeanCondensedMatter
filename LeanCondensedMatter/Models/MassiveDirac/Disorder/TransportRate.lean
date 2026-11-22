@@ -145,22 +145,19 @@ theorem continuumBornUpperBandTransportLifetime_eq_factor_mul_singleParticleLife
           (fermiEnergy ^ 2 + 3 * m ^ 2)) *
         lifetimeOfDamping hbar (continuumBornUpperBandDampingEnergy
           v m fermiEnergy disorderStrength hbar) := by
-  change (continuumBornUpperBandTransportScatteringRate
-      v m fermiEnergy disorderStrength hbar)⁻¹ =
-    (2 * (fermiEnergy ^ 2 + m ^ 2) / (fermiEnergy ^ 2 + 3 * m ^ 2)) *
-      (continuumBornUpperBandSingleParticleScatteringRate
-        v m fermiEnergy disorderStrength hbar)⁻¹
-  rw [continuumBornUpperBandTransportScatteringRate_eq
-      v m fermiEnergy disorderStrength hbar hvelocity hhbar hfermiEnergy,
-    continuumBornUpperBandSingleParticleScatteringRate_eq
-      v m fermiEnergy disorderStrength hbar hvelocity hhbar hfermiEnergy]
-  have hfermiSq : 0 < fermiEnergy ^ 2 := sq_pos_of_ne_zero hfermiEnergy
-  have hsum1 : fermiEnergy ^ 2 + m ^ 2 ≠ 0 :=
-    ne_of_gt (add_pos_of_pos_of_nonneg hfermiSq (sq_nonneg m))
-  have hsum3 : fermiEnergy ^ 2 + 3 * m ^ 2 ≠ 0 :=
-    ne_of_gt (add_pos_of_pos_of_nonneg hfermiSq
-      (mul_nonneg (by norm_num) (sq_nonneg m)))
-  (field_simp [hvelocity, hhbar, hfermiEnergy, hdisorder, hsum1, hsum3]; ring)
+  let tr := continuumBornUpperBandTransportScatteringRate v m fermiEnergy disorderStrength hbar
+  let sp := continuumBornUpperBandSingleParticleScatteringRate v m fermiEnergy disorderStrength hbar
+  change tr⁻¹ = (2 * (fermiEnergy ^ 2 + m ^ 2) / (fermiEnergy ^ 2 + 3 * m ^ 2)) * sp⁻¹
+  have hsp : sp ≠ 0 :=
+    continuumBornUpperBandSingleParticleScatteringRate_ne_zero
+      v m fermiEnergy disorderStrength hbar hvelocity hhbar hdisorder hfermiEnergy
+  have hratio : tr / sp =
+      (fermiEnergy ^ 2 + 3 * m ^ 2) /
+        (2 * (fermiEnergy ^ 2 + m ^ 2)) :=
+    continuumBornUpperBandTransportRate_div_singleParticleRate
+      v m fermiEnergy disorderStrength hbar hvelocity hhbar hdisorder hfermiEnergy
+  simpa [inv_div, div_eq_mul_inv, mul_comm, mul_left_comm, mul_assoc, hsp] using
+    congrArg (fun r : ℝ => r⁻¹ * sp⁻¹) hratio
 
 /-- Package the microscopic Born transport lifetime as the generic positive current-relaxation datum
 consumed by the longitudinal RTA benchmark. This bridge does not identify the derivation with a
