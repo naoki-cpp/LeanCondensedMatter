@@ -124,6 +124,157 @@ theorem finiteCutoffContinuumBornDysonRadialScalarGreenGenerator_hasDerivAt_deri
     dsimp [weight]
     ring
 
+/-- The traceless radial Hessian of the actual Dyson scalar generator
+is precisely its K2 Fourier harmonic. Multiplication by the signed
+radius avoids an artificial r ≠ 0 hypothesis; no asymptotic radial or
+momentum integral is differentiated. -/
+theorem finiteCutoffContinuumBornDysonRadialScalarGreenGenerator_tracelessHessian
+    (side : SpectralSide)
+    (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ)
+    (hhbar : hbar ≠ 0) (hbroadening : broadening ≠ 0)
+    (hdisorder : 0 ≤ disorderStrength) (hpMax : 0 ≤ pMax) :
+    (hbar : ℂ) ^ 2 *
+      ((radius : ℂ) *
+          deriv (deriv (fun r : ℝ => finiteCutoffContinuumBornDysonRadialScalarGreenGenerator
+            side v m probeEnergy broadening disorderStrength hbar pMax r)) radius -
+        deriv (fun r : ℝ => finiteCutoffContinuumBornDysonRadialScalarGreenGenerator
+          side v m probeEnergy broadening disorderStrength hbar pMax r) radius) =
+      -(radius : ℂ) * (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
+        ∫ p in (0 : ℝ)..pMax,
+          (p : ℂ) ^ 3 * polarFourierSecondCosineAngularKernel (p * radius / hbar) *
+            (finiteCutoffContinuumBornDysonDenominator
+              side v m p 0 probeEnergy broadening disorderStrength hbar pMax)⁻¹ := by
+  let denInv : ℝ → ℂ := fun p =>
+    (finiteCutoffContinuumBornDysonDenominator
+      side v m p 0 probeEnergy broadening disorderStrength hbar pMax)⁻¹
+  let ratio : ℝ → ℂ := fun p => ((p / hbar : ℝ) : ℂ)
+  let k0 : ℝ → ℂ := fun p => polarFourierZerothAngularKernel (p * radius / hbar)
+  let k1 : ℝ → ℂ := fun p => polarFourierFirstCosineAngularKernel (p * radius / hbar)
+  let k2 : ℝ → ℂ := fun p => polarFourierSecondCosineAngularKernel (p * radius / hbar)
+  let first : ℝ → ℂ := fun p =>
+    ((p : ℂ) * denInv p) * (Complex.I * ratio p * k1 p)
+  let second : ℝ → ℂ := fun p =>
+    (((p : ℂ) * denInv p) * (Complex.I * ratio p)) *
+      (ratio p * ((Complex.I / 2) * (k0 p + k2 p)))
+  let measure : ℂ := ((momentumMeasurePrefactor hbar : ℝ) : ℂ)
+  have hden : Continuous denInv :=
+    continuous_finiteCutoffContinuumBornDysonDenominator_inv_radial
+      side v m probeEnergy broadening disorderStrength hbar pMax
+      hbroadening hdisorder hpMax
+  have hratio : Continuous ratio :=
+    Complex.continuous_ofReal.comp (by fun_prop)
+  have hk0 : Continuous k0 :=
+    continuous_polarFourierZerothAngularKernel.comp (by fun_prop)
+  have hk1 : Continuous k1 :=
+    continuous_polarFourierFirstCosineAngularKernel.comp (by fun_prop)
+  have hk2 : Continuous k2 :=
+    continuous_polarFourierSecondCosineAngularKernel.comp (by fun_prop)
+  have hfirst : Continuous first := by
+    dsimp [first]
+    exact (Complex.continuous_ofReal.mul hden).mul
+      ((continuous_const.mul hratio).mul hk1)
+  have hsecond : Continuous second := by
+    dsimp [second]
+    exact ((Complex.continuous_ofReal.mul hden).mul
+      (continuous_const.mul hratio)).mul
+        (hratio.mul (continuous_const.mul (hk0.add hk2)))
+  have hfirstInt : IntervalIntegrable first volume 0 pMax :=
+    hfirst.intervalIntegrable 0 pMax
+  have hsecondInt : IntervalIntegrable second volume 0 pMax :=
+    hsecond.intervalIntegrable 0 pMax
+  have h1 :
+      deriv (fun r : ℝ => finiteCutoffContinuumBornDysonRadialScalarGreenGenerator
+        side v m probeEnergy broadening disorderStrength hbar pMax r) radius =
+        measure * ∫ p in (0 : ℝ)..pMax, first p := by
+    simpa only [first, denInv, ratio, k1, measure] using
+      (finiteCutoffContinuumBornDysonRadialScalarGreenGenerator_hasDerivAt
+        side v m probeEnergy broadening disorderStrength hbar pMax radius
+        hbroadening hdisorder hpMax).deriv
+  have h2 :
+      deriv (deriv (fun r : ℝ => finiteCutoffContinuumBornDysonRadialScalarGreenGenerator
+        side v m probeEnergy broadening disorderStrength hbar pMax r)) radius =
+        measure * ∫ p in (0 : ℝ)..pMax, second p := by
+    simpa only [second, denInv, ratio, k0, k2, measure] using
+      (finiteCutoffContinuumBornDysonRadialScalarGreenGenerator_hasDerivAt_deriv
+        side v m probeEnergy broadening disorderStrength hbar pMax radius
+        hbroadening hdisorder hpMax).deriv
+  have hcombine :
+      (radius : ℂ) * (∫ p in (0 : ℝ)..pMax, second p) -
+          ∫ p in (0 : ℝ)..pMax, first p =
+        ∫ p in (0 : ℝ)..pMax, (radius : ℂ) * second p - first p := by
+    rw [intervalIntegral.integral_sub
+      ((continuous_const.mul hsecond).intervalIntegrable 0 pMax) hfirstInt]
+    rw [intervalIntegral.integral_const_mul]
+  have hpoint (p : ℝ) :
+      (hbar : ℂ) ^ 2 * ((radius : ℂ) * second p - first p) =
+        -(radius : ℂ) * (p : ℂ) ^ 3 * k2 p * denInv p := by
+    have hrat : (hbar : ℂ) * ratio p = (p : ℂ) := by
+      dsimp [ratio]
+      push_cast
+      field_simp [Complex.ofReal_ne_zero.mpr hhbar]
+    have hz : ((p * radius / hbar : ℝ) : ℂ) = (radius : ℂ) * ratio p := by
+      dsimp [ratio]
+      push_cast
+      ring
+    have hrec :=
+      polarFourierFirstCosineAngularKernel_two_mul_eq_zeroth_sub_second
+        (p * radius / hbar)
+    have hk1val : k1 p =
+        (Complex.I * (radius : ℂ) * ratio p * (k0 p - k2 p)) / 2 := by
+      apply (eq_div_iff (by norm_num : (2 : ℂ) ≠ 0)).2
+      calc
+        k1 p * 2 = 2 * polarFourierFirstCosineAngularKernel (p * radius / hbar) := by
+          dsimp [k1]
+          ring
+        _ = Complex.I * ((p * radius / hbar : ℝ) : ℂ) *
+              (polarFourierZerothAngularKernel (p * radius / hbar) -
+                polarFourierSecondCosineAngularKernel (p * radius / hbar)) := hrec
+        _ = Complex.I * (radius : ℂ) * ratio p * (k0 p - k2 p) := by
+          rw [hz]
+          dsimp [k0, k2]
+          ring
+    have hrat2 : (hbar : ℂ) ^ 2 * ratio p ^ 2 = (p : ℂ) ^ 2 := by
+      calc
+        _ = ((hbar : ℂ) * ratio p) ^ 2 := by ring
+        _ = (p : ℂ) ^ 2 := by rw [hrat]
+    dsimp only [first, second]
+    rw [hk1val]
+    calc
+      _ = (hbar : ℂ) ^ 2 * (-(radius : ℂ) * ratio p ^ 2 *
+            k2 p * ((p : ℂ) * denInv p)) := by
+          ring_nf
+          simp only [Complex.I_sq]
+          ring
+      _ = _ := by
+          calc
+            _ = -(radius : ℂ) * ((hbar : ℂ) ^ 2 * ratio p ^ 2) *
+                  k2 p * ((p : ℂ) * denInv p) := by ring
+            _ = _ := by rw [hrat2]; ring
+  rw [h1, h2]
+  calc
+    (hbar : ℂ) ^ 2 *
+        ((radius : ℂ) * (measure * ∫ p in (0 : ℝ)..pMax, second p) -
+          measure * ∫ p in (0 : ℝ)..pMax, first p) =
+      measure * ((hbar : ℂ) ^ 2 *
+        ((radius : ℂ) * (∫ p in (0 : ℝ)..pMax, second p) -
+          ∫ p in (0 : ℝ)..pMax, first p)) := by ring
+    _ = measure * ((hbar : ℂ) ^ 2 *
+          ∫ p in (0 : ℝ)..pMax, (radius : ℂ) * second p - first p) := by rw [hcombine]
+    _ = measure * ∫ p in (0 : ℝ)..pMax,
+          (hbar : ℂ) ^ 2 * ((radius : ℂ) * second p - first p) := by
+          rw [intervalIntegral.integral_const_mul]
+          ring
+    _ = measure * ∫ p in (0 : ℝ)..pMax,
+          -(radius : ℂ) * (p : ℂ) ^ 3 * k2 p * denInv p := by
+          congr 1
+          apply intervalIntegral.integral_congr
+          intro p _
+          exact hpoint p
+    _ = _ := by
+      rw [← intervalIntegral.integral_const_mul]
+      dsimp [measure, denInv, k2]
+      ring
+
 /-- A model-local linearity bridge for radial Green coefficients. The
 normalization is carried once by the scalar generator, while a constant
 effective spectral coefficient factors outside the *finite* momentum
