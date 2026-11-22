@@ -18,7 +18,7 @@ This module intentionally carries no localization, transport, conservation-law, 
 or particle-statistics interpretation. Those meanings belong to downstream layers.
 -/
 
-namespace ConservationLaw
+namespace LinearMap
 
 attribute [local instance 100] LieRing.ofAssociativeRing
 
@@ -154,4 +154,4 @@ theorem lie_symmetrizedProduct {W : Type*} [AddCommGroup W] [Module ℂ W]
   simp [LieRing.of_associative_ring_bracket, Module.End.mul_eq_comp,
     symmetrizedProduct_apply]; module
 
-end ConservationLaw
+end LinearMap

@@ -34,14 +34,14 @@ variable (V : Type*) [AddCommGroup V] [Module ℂ V]
 noncomputable def localizedQuantity
     (M : Test →ₗ[ℂ] (V →ₗ[ℂ] V))
     (m : V →ₗ[ℂ] V) (f : Test) : V →ₗ[ℂ] V :=
-  symmetrizedProduct (M f) m
+  LinearMap.symmetrizedProduct (M f) m
 
 /-- Symmetric localization packaged linearly in the test object. -/
 noncomputable def localizedQuantityFunctional
     (M : Test →ₗ[ℂ] (V →ₗ[ℂ] V))
     (m : V →ₗ[ℂ] V) :
     Test →ₗ[ℂ] (V →ₗ[ℂ] V) :=
-  (symmetrizedProductRightLinear V m).comp M
+  (LinearMap.symmetrizedProductRightLinear V m).comp M
 
 @[simp]
 theorem localizedQuantityFunctional_apply
@@ -76,7 +76,7 @@ noncomputable def transportCommutator
     (h : V →ₗ[ℂ] V)
     (M : Test →ₗ[ℂ] (V →ₗ[ℂ] V))
     (m : V →ₗ[ℂ] V) (f : Test) : V →ₗ[ℂ] V :=
-  symmetrizedProduct ⁅h, M f⁆ m
+  LinearMap.symmetrizedProduct ⁅h, M f⁆ m
 
 /-- The transport contribution packaged linearly in the test object. -/
 noncomputable def transportFunctional
@@ -84,7 +84,7 @@ noncomputable def transportFunctional
     (M : Test →ₗ[ℂ] (V →ₗ[ℂ] V))
     (m : V →ₗ[ℂ] V) :
     Test →ₗ[ℂ] (V →ₗ[ℂ] V) :=
-  (symmetrizedProductRightLinear V m).comp
+  (LinearMap.symmetrizedProductRightLinear V m).comp
     (localizationCommutatorFunctional V h M)
 
 @[simp]
@@ -100,7 +100,7 @@ noncomputable def sourceCommutator
     (h : V →ₗ[ℂ] V)
     (M : Test →ₗ[ℂ] (V →ₗ[ℂ] V))
     (m : V →ₗ[ℂ] V) (f : Test) : V →ₗ[ℂ] V :=
-  symmetrizedProduct (M f) ⁅h, m⁆
+  LinearMap.symmetrizedProduct (M f) ⁅h, m⁆
 
 /-- The source/torque contribution packaged linearly in the test object. -/
 noncomputable def sourceFunctional
@@ -108,7 +108,7 @@ noncomputable def sourceFunctional
     (M : Test →ₗ[ℂ] (V →ₗ[ℂ] V))
     (m : V →ₗ[ℂ] V) :
     Test →ₗ[ℂ] (V →ₗ[ℂ] V) :=
-  (symmetrizedProductRightLinear V ⁅h, m⁆).comp M
+  (LinearMap.symmetrizedProductRightLinear V ⁅h, m⁆).comp M
 
 @[simp]
 theorem sourceFunctional_apply
@@ -126,7 +126,7 @@ theorem lie_localizedQuantity
     ⁅h, localizedQuantity V M m f⁆ =
       transportCommutator V h M m f + sourceCommutator V h M m f := by
   simpa [localizedQuantity, transportCommutator, sourceCommutator] using
-    lie_symmetrizedProduct h (M f) m
+    LinearMap.lie_symmetrizedProduct h (M f) m
 
 /-- A conserved one-body quantity has no local source/torque contribution. -/
 @[simp]

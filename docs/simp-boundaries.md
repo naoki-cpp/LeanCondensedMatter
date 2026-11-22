@@ -60,8 +60,8 @@ homomorphic normalization rules:
 - `diagonalDet_zero`
 - `SchwartzKinetic1D.derivative_apply`
 - `SchwartzKinetic1D.multiplicationOperator_apply`
-- `ConservationLaw.symmetrizedProductRightLinear_apply`
-- `ConservationLaw.symmetrizedProductLeftLinear_apply`
+- `LinearMap.symmetrizedProductRightLinear_apply`
+- `LinearMap.symmetrizedProductLeftLinear_apply`
 - `ConservationLaw.localizedQuantityFunctional_apply`
 - `ConservationLaw.localizedQuantity_smul_id`
 - `ConservationLaw.localizationCommutatorFunctional_apply`
@@ -323,7 +323,7 @@ a substantive proof step, a coordinate/representation expansion, or a nontrivial
 
 - `SecondQuantization.Common.finiteDimensionalOperatorTrace_finiteAnalyticBasis` — occupation-basis coordinate expansion; the generic trace evaluation remains the global normal form.
 
-- `ConservationLaw.symmetrizedProductBilinear_apply` — explicit bridge from the bilinear owner to the pointwise wrapper; keeping it out of the global simp set avoids a rewrite cycle.
+- `LinearMap.symmetrizedProductBilinear_apply` — explicit bridge from the bilinear owner to the pointwise wrapper; keeping it out of the global simp set avoids a rewrite cycle.
 - `InternalSpace.dotProduct_pauliAxis` — explicit x/y/z coordinate expansion.
 - `eigenbasisBoltzmannWeight_pos` — positivity fact, not normalization.
 - `eigenbasisBoltzmannWeight_nonneg` — positivity fact, not normalization.
