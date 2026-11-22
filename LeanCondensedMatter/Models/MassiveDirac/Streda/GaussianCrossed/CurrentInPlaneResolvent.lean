@@ -797,7 +797,7 @@ private theorem gaussianCrossed_K2_radialLorentzian_eq_energyShell
   have harg : Continuous (fun offset : ℝ =>
       Real.sqrt ((A + offset) / v ^ 2) * radius / hbar) := by fun_prop
   have hcontinuousK2 : Continuous k2Real :=
-    continuous_polarFourierSecondCosineAngularKernel.re
+    Complex.continuous_re.comp continuous_polarFourierSecondCosineAngularKernel
   have hg : Continuous g := by
     dsimp [g]
     exact ((Lorentzian.continuous_spectralKernel_fixed_broadening B hB).mul
@@ -849,14 +849,14 @@ private theorem gaussianCrossed_K2_radialLorentzian_eq_energyShell
         intro p hp
         have hpNonneg : 0 ≤ p := by
           have hi : p ∈ Set.Icc (0 : ℝ) pMax := by
-            simpa [Set.uIcc_of_le hpMax] using (Set.uIoc_subset_uIcc hp)
+            simpa [Set.uIcc_of_le hpMax] using hp
           exact hi.1
         exact (hpoint p hpNonneg).symm
       _ = ∫ offset in f 0..f pMax, g offset := by
         simpa only [Function.comp_apply] using hsub
       _ = _ := by
         dsimp [f, g]
-        simp only [mul_zero, zero_pow (by norm_num : 2 ≠ 0), sub_zero]
+        simp only [mul_zero, zero_pow (by norm_num : 2 ≠ 0), zero_sub]
   have hcastP :
       (∫ p in (0 : ℝ)..pMax,
         (p : ℂ) ^ 3 *
@@ -871,6 +871,7 @@ private theorem gaussianCrossed_K2_radialLorentzian_eq_energyShell
               ((A - v ^ 2 * p ^ 2) ^ 2 + B ^ 2) : ℝ) : ℂ) := by
         apply intervalIntegral.integral_congr
         intro p _
+        dsimp only
         rw [hrealK2]
         push_cast
         ring
@@ -893,6 +894,7 @@ private theorem gaussianCrossed_K2_radialLorentzian_eq_energyShell
             k2Real (Real.sqrt ((A + offset) / v ^ 2) * radius / hbar) : ℝ) : ℂ) := by
         apply intervalIntegral.integral_congr
         intro offset _
+        dsimp only
         rw [hrealK2]
         push_cast
         ring
