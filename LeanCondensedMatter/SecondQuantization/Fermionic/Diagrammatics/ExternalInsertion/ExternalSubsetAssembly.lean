@@ -491,5 +491,59 @@ theorem ExternalInsertionBlockLayout.sum_signedDysonShuffleOrbits_eq_prod_standa
         (ExternalInsertionBlockLayout.sum_preconnectedDysonBlock_eq_standardized
           layout B ε β g labels times)
 
+open Classical in
+/-- For the fixed-size standardized owner-shuffle family, imposing the
+external source labels on the *actual assembled Wick diagram* is
+equivalent to imposing them on every standardized connected block.
+In particular, the label indicator is independent of the owner
+shuffle and cannot produce an additional multiplicity. -/
+theorem ExternalInsertionBlockLayout.standardizedOwnerFamily_externalLabel_iff
+    {n : ℕ}
+    (π : Finpartition (Finset.univ : Finset (Fin (2 * E))))
+    (heven : ∀ B : π.parts, Even (B : Finset (Fin (2 * E))).card)
+    {size : π.parts → ℕ}
+    (σ : Combinatorics.FamilySlotShuffleTo size n)
+    (Q : ∀ B : π.parts,
+      {d : ExternalInsertionWickDiagram Mode
+          ((B : Finset (Fin (2 * E))).card / 2) (size B) //
+        d.vertexGraph.Preconnected})
+    (labels : Fin (2 * E) → ExternalFieldLabel Mode) :
+    let layout := ExternalInsertionBlockLayout.ofFamilyShuffle π heven σ
+    let F := (ExternalInsertionBlockLayout.ofFamilyShuffleFixedSizeStandardizedFamilyEquiv
+      (ExternalLabel := ExternalFieldLabel Mode)
+      (InternalLabel := QuarticVertexLabel Mode) π heven σ).symm Q
+    (layout.assembleDiagram (Finset.univ : Finset (Fin n)) F.1).externalLabel =
+        labels ↔
+      ∀ B : π.parts,
+        (Q B).1.externalLabel =
+          evenExternalSubsetLabels labels (B : Finset (Fin (2 * E))) (heven B) := by
+  classical
+  let layout := ExternalInsertionBlockLayout.ofFamilyShuffle π heven σ
+  let e := ExternalInsertionBlockLayout.ofFamilyShuffleFixedSizeStandardizedFamilyEquiv
+    (ExternalLabel := ExternalFieldLabel Mode)
+    (InternalLabel := QuarticVertexLabel Mode) π heven σ
+  let F := e.symm Q
+  have hQ (B : π.parts) :
+      (Q B).1.externalLabel = (F.1 B).externalLabel := by
+    have h := ExternalInsertionBlockLayout.ofFamilyShuffleFixedSizeStandardizedFamilyEquiv_apply
+      π heven σ F B
+    have hEF : e F = Q := e.apply_symm_apply Q
+    rw [hEF] at h
+    simpa only [ExternalInsertionDiagram.slotCongr_externalLabel] using
+      congrArg (fun d => d.externalLabel) h
+  change (layout.assembleDiagram (Finset.univ : Finset (Fin n)) F.1).externalLabel =
+      labels ↔ _
+  rw [layout.assembleDiagram_externalLabel_eq_iff
+    (Finset.univ : Finset (Fin n)) F.1 labels]
+  constructor
+  · intro h B
+    rw [hQ B]
+    simpa only [evenExternalSubsetLabels, evenExternalSubsetOrderIso,
+      layout.sourceEquiv_symm_apply] using h B
+  · intro h B
+    rw [← hQ B]
+    simpa only [evenExternalSubsetLabels, evenExternalSubsetOrderIso,
+      layout.sourceEquiv_symm_apply] using h B
+
 end Fermionic
 end SecondQuantization
