@@ -1,7 +1,7 @@
 import LeanCondensedMatter.Analysis.Fourier.AngularHarmonics
 import Mathlib.Analysis.Calculus.ParametricIntervalIntegral
 import Mathlib.Analysis.SpecialFunctions.Integrals.Basic
-import Mathlib.Tactic.FunProp
+import Mathlib.Tactic
 
 set_option linter.style.header false
 
@@ -22,7 +22,7 @@ open AngularHarmonics
 noncomputable section
 
 open MeasureTheory
-open scoped Interval
+open scoped Interval ComplexConjugate
 
 /-- Dimensionless radial phase `exp(i z cos θ)` that appears after aligning the real-space point with
 the polar axis. -/
@@ -40,11 +40,6 @@ noncomputable def polarFourierFirstCosineAngularKernel (z : ℝ) : ℂ :=
   ∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi),
     polarFourierRadialPhase z θ * ((Real.cos θ : ℝ) : ℂ)
 
-/-- The zeroth full-angle Fourier phase has vanishing first cosine harmonic. -/
-@[simp] theorem polarFourierFirstCosineAngularKernel_zero :
-    polarFourierFirstCosineAngularKernel 0 = 0 := by
-  have h := integral_cos_mul_complex (z := (1 : ℂ)) one_ne_zero (0 : ℝ) (2 * Real.pi)
-  simpa [polarFourierFirstCosineAngularKernel, polarFourierRadialPhase] using h
 /-- Second cosine full-angle radial Fourier kernel, written as the `cos(2θ)`
 polynomial for quadratic angular products and identified with `-2π J₂(z)`
 by `polarFourierSecondCosineAngularKernel_eq_besselJ`. -/
@@ -53,10 +48,63 @@ noncomputable def polarFourierSecondCosineAngularKernel (z : ℝ) : ℂ :=
     polarFourierRadialPhase z θ *
       ((((Real.cos θ : ℝ) : ℂ) ^ 2) - (((Real.sin θ : ℝ) : ℂ) ^ 2))
 
+/-- The Fourier phase has unit norm for every real argument. -/
+theorem norm_polarFourierRadialPhase (z θ : ℝ) :
+    ‖polarFourierRadialPhase z θ‖ = 1 := by
+  simp [polarFourierRadialPhase, Complex.norm_exp, Complex.mul_re]
+
+/-- Derivative of the dimensionless radial Fourier phase with respect to the polar angle. -/
+theorem polarFourierRadialPhase_hasDerivAt (z θ : ℝ) :
+    HasDerivAt (polarFourierRadialPhase z)
+      ((-Complex.I * (z : ℂ) * ((Real.sin θ : ℝ) : ℂ)) *
+        polarFourierRadialPhase z θ) θ := by
+  have hcos : HasDerivAt (fun t : ℝ => ((z * Real.cos t : ℝ) : ℂ))
+      ((-z * Real.sin θ : ℝ) : ℂ) θ := by
+    simpa using ((Real.hasDerivAt_cos θ).const_mul z).ofReal_comp
+  have harg : HasDerivAt
+      (fun t : ℝ => Complex.I * ((z * Real.cos t : ℝ) : ℂ))
+      (Complex.I * ((-z * Real.sin θ : ℝ) : ℂ)) θ :=
+    hcos.const_mul Complex.I
+  have hphase := (Complex.hasDerivAt_exp _).comp θ harg
+  convert hphase using 1
+  · rfl
+  · simp [polarFourierRadialPhase]
+    ring
+
+/-- Complex conjugation of the angular Fourier phase reverses its radial argument. -/
+theorem polarFourierRadialPhase_conj (z θ : ℝ) :
+    conj (polarFourierRadialPhase z θ) =
+      polarFourierRadialPhase (-z) θ := by
+  unfold polarFourierRadialPhase
+  rw [← Complex.exp_conj]
+  congr 1
+  simp only [map_mul, Complex.conj_I, Complex.conj_ofReal]
+  push_cast
+  ring
+
 /-- The zeroth radial Fourier kernel is normalized by the full polar angle at the origin. -/
 @[simp] theorem polarFourierZerothAngularKernel_zero :
     polarFourierZerothAngularKernel 0 = ((2 * Real.pi : ℝ) : ℂ) := by
   simp [polarFourierZerothAngularKernel, polarFourierRadialPhase]
+
+/-- The zeroth full-angle Fourier phase has vanishing first cosine harmonic. -/
+@[simp] theorem polarFourierFirstCosineAngularKernel_zero :
+    polarFourierFirstCosineAngularKernel 0 = 0 := by
+  simpa [polarFourierFirstCosineAngularKernel, polarFourierRadialPhase] using
+    (integral_cos_mul_complex (z := (1 : ℂ)) one_ne_zero (0 : ℝ) (2 * Real.pi))
+
+/-- The second-cosine angular Fourier kernel vanishes at zero radial argument. -/
+@[simp] theorem polarFourierSecondCosineAngularKernel_zero :
+    polarFourierSecondCosineAngularKernel 0 = 0 := by
+  let coefficients : AngularHarmonicCoefficients ℂ :=
+    { constant := 0
+      firstCosine := 0
+      firstSine := 0
+      secondCosine := 1
+      secondMixed := 0 }
+  simpa [coefficients, AngularHarmonicCoefficients.eval,
+    polarFourierSecondCosineAngularKernel, polarFourierRadialPhase,
+    smul_eq_mul] using coefficients.integral_eval
 
 @[fun_prop]
 theorem continuous_polarFourierZerothAngularKernel :
@@ -82,19 +130,6 @@ theorem continuous_polarFourierSecondCosineAngularKernel :
   unfold Function.uncurry polarFourierRadialPhase
   fun_prop
 
-/-- The second-cosine angular Fourier kernel vanishes at zero radial argument. -/
-@[simp] theorem polarFourierSecondCosineAngularKernel_zero :
-    polarFourierSecondCosineAngularKernel 0 = 0 := by
-  let coefficients : AngularHarmonicCoefficients ℂ :=
-    { constant := 0
-      firstCosine := 0
-      firstSine := 0
-      secondCosine := 1
-      secondMixed := 0 }
-  have h := coefficients.integral_eval
-  simpa [coefficients, AngularHarmonicCoefficients.eval,
-    polarFourierSecondCosineAngularKernel, polarFourierRadialPhase,
-    smul_eq_mul] using h
 
 end
 end Transport

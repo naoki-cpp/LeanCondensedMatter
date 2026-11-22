@@ -232,11 +232,6 @@ theorem polarFourierZerothAngularKernel_eq_besselJ (z : ℝ) :
     _ = ((2 * Real.pi : ℝ) : ℂ) * Complex.besselJ 0 (z : ℂ) := by
       rw [besselJZero_eq_regularizedHGTsum]
 
-/-- The Fourier phase has unit norm for every real argument. -/
-private theorem norm_polarFourierRadialPhase (z θ : ℝ) :
-    ‖polarFourierRadialPhase z θ‖ = 1 := by
-  simp [polarFourierRadialPhase, Complex.norm_exp, Complex.mul_re]
-
 /-- Differentiate a polar Fourier angular integral with any continuous weight bounded by one.
 The common domination estimate also covers higher bounded angular harmonics. -/
 private theorem polarFourierWeightedAngularKernel_hasDerivAt
@@ -442,24 +437,6 @@ theorem polarFourierFirstCosineAngularKernel_eq_besselJ (z : ℝ) :
     _ = ((2 * Real.pi : ℝ) : ℂ) * Complex.I * Complex.besselJ 1 (z : ℂ) := by
       rw [hderiv]
       ring
-
-/-- Derivative of the dimensionless radial Fourier phase with respect to the polar angle. -/
-private theorem polarFourierRadialPhase_hasDerivAt (z θ : ℝ) :
-    HasDerivAt (polarFourierRadialPhase z)
-      ((-Complex.I * (z : ℂ) * ((Real.sin θ : ℝ) : ℂ)) *
-        polarFourierRadialPhase z θ) θ := by
-  have hcos : HasDerivAt (fun t : ℝ => ((z * Real.cos t : ℝ) : ℂ))
-      ((-z * Real.sin θ : ℝ) : ℂ) θ := by
-    simpa using ((Real.hasDerivAt_cos θ).const_mul z).ofReal_comp
-  have harg : HasDerivAt
-      (fun t : ℝ => Complex.I * ((z * Real.cos t : ℝ) : ℂ))
-      (Complex.I * ((-z * Real.sin θ : ℝ) : ℂ)) θ :=
-    hcos.const_mul Complex.I
-  have hphase := (Complex.hasDerivAt_exp _).comp θ harg
-  convert hphase using 1
-  · rfl
-  · simp [polarFourierRadialPhase]
-    ring
 
 /-- Angular integration by parts: the first Fourier harmonic is constrained by the
 zeroth and second harmonics without assuming nonzero radial argument.
@@ -761,17 +738,6 @@ theorem integral_polarFourierRadialPhase_first_harmonics
     simpa using (Complex.even_besselJ (a := (2 : ℤ)) (by norm_num)) (z : ℂ)
   simp only [polarFourierSecondCosineAngularKernel_eq_besselJ, Complex.ofReal_neg,
     heven]
-
-/-- Complex conjugation of the angular Fourier phase reverses its radial argument. -/
-private theorem polarFourierRadialPhase_conj (z θ : ℝ) :
-    conj (polarFourierRadialPhase z θ) =
-      polarFourierRadialPhase (-z) θ := by
-  unfold polarFourierRadialPhase
-  rw [← Complex.exp_conj]
-  congr 1
-  simp only [map_mul, Complex.conj_I, Complex.conj_ofReal]
-  push_cast
-  ring
 
 /-- Complex conjugation commutes with full-angle integration. -/
 private theorem integral_polarFourier_conj (f : ℝ → ℂ) :
