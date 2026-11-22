@@ -327,6 +327,7 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedInPlaneK2_gap_eq_tracelessH
       _ = measure * ∫ p in (0 : ℝ)..pMax,
             (2 * (v : ℂ) ^ 2 * factor) *
               ((p : ℂ) ^ 3 * k2 p * (invR p - invA p)) := by
+            unfold finiteCutoffContinuumBornDysonRASpectralGap
             rw [hk2]
             congr 1
             apply intervalIntegral.integral_congr
@@ -400,7 +401,6 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedInPlaneK2_gap_eq_tracelessH
       _ = (-(radius : ℂ) * measure * ∫ p in (0 : ℝ)..pMax, momentR p) -
           (-(radius : ℂ) * measure * ∫ p in (0 : ℝ)..pMax, momentA p) := by
           rw [hR, hA]
-          rfl
       _ = _ := by ring
   calc
     (radius : ℂ) *
@@ -412,8 +412,13 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedInPlaneK2_gap_eq_tracelessH
             .y 1 v m probeEnergy broadening disorderStrength hbar pMax radius) =
       (radius : ℂ) * (2 * (v : ℂ) ^ 2 * factor * measure) *
         ((∫ p in (0 : ℝ)..pMax, momentR p) -
-          ∫ p in (0 : ℝ)..pMax, momentA p) := by rw [hk, hsplit]
-    _ = _ := by rw [hdiff]; ring
+          ∫ p in (0 : ℝ)..pMax, momentA p) := by
+          have hx := congrArg (fun z : ℂ => (radius : ℂ) * z) hk
+          rw [hsplit] at hx
+          convert hx using 1 <;> ring
+    _ = _ := by
+          have hx := congrArg (fun z : ℂ => -2 * (v : ℂ) ^ 2 * factor * z) hdiff
+          convert hx.symm using 1 <;> ring
 
 
 end
