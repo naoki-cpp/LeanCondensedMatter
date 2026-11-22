@@ -228,8 +228,10 @@ private theorem besselRadialSystem_energy_tendsto_zero
       nlinarith [hxy_le_E r, hrE]
     have hdiv : 2 * (x r * y r) / r ≤ E r :=
       (div_le_iff₀ (by linarith : 0 < r)).2 (by nlinarith [hxy'])
+    have hrewrite : 2 * (x r * y r / r) = 2 * (x r * y r) / r := by ring
+    rw [← hrewrite] at hdiv
     dsimp [F]
-    nlinarith [hdiv]
+    linarith
   have hF_nonneg (r : ℝ) (hr : 2 ≤ r) : 0 ≤ F r := by
     linarith [hE_nonneg r, hE_le_two_F r hr]
   have hH_hasDerivAt (r : ℝ) (hr : 2 ≤ r) :
