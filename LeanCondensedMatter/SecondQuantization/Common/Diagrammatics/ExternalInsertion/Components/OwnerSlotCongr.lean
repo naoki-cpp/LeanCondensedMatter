@@ -168,6 +168,7 @@ noncomputable def ExternalInsertionBlockLayout.fixedPartitionPhysicalFixedSizeEq
             (ExternalLabel := ExternalLabel) (InternalLabel := InternalLabel) := {
     toFun := by
       rintro ⟨⟨⟨s, τ⟩, F⟩, hs⟩
+      change s = size at hs
       subst s
       exact ⟨τ, F⟩
     invFun := by
@@ -175,6 +176,7 @@ noncomputable def ExternalInsertionBlockLayout.fixedPartitionPhysicalFixedSizeEq
       exact ⟨⟨⟨size, τ⟩, F⟩, rfl⟩
     left_inv := by
       rintro ⟨⟨⟨s, τ⟩, F⟩, hs⟩
+      change s = size at hs
       cases hs
       rfl
     right_inv := by
