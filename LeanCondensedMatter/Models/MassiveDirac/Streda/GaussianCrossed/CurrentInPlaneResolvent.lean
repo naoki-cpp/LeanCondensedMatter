@@ -459,7 +459,7 @@ private theorem gaussianCrossed_radialRAProduct_eq_realLorentzian
     _ = D * star D := by
       rw [finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct_eq_mul,
         ← hstar]
-      rfl
+      all_goals rfl
     _ = (Complex.normSq D : ℂ) := by
       simpa using (Complex.mul_conj D)
     _ = _ := by
