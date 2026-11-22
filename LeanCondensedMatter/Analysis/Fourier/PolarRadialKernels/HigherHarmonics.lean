@@ -135,11 +135,15 @@ theorem polarFourierFirstCosineAngularKernel_two_mul_eq_zeroth_sub_second (z : �
       (∫ θ in (0 : ℝ)..(2 * Real.pi), phase θ) -
         (∫ θ in (0 : ℝ)..(2 * Real.pi),
           phase θ * (cosine θ ^ 2 - sine θ ^ 2))
-    rw [← intervalIntegral.integral_const_mul,
-      ← intervalIntegral.integral_sub
-        (hcphase.intervalIntegrable _ _)
-        ((hcphase.mul ((hccos.pow 2).sub (hcsin.pow 2))).intervalIntegrable _ _)]
-    exact intervalIntegral.integral_congr (fun θ _ => htrig θ)
+    rw [← intervalIntegral.integral_const_mul]
+    calc
+      _ = ∫ θ in (0 : ℝ)..(2 * Real.pi),
+          phase θ - phase θ * (cosine θ ^ 2 - sine θ ^ 2) :=
+        intervalIntegral.integral_congr (fun θ _ => htrig θ)
+      _ = _ := by
+        rw [intervalIntegral.integral_sub
+          (hcphase.intervalIntegrable _ _)
+          ((hcphase.mul ((hccos.pow 2).sub (hcsin.pow 2))).intervalIntegrable _ _)]
   have hfirstKernel :
       polarFourierFirstCosineAngularKernel z =
         (Complex.I * (z : ℂ)) *
