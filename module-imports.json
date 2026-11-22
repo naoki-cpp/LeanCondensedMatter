@@ -3138,10 +3138,11 @@
       "name": "LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.CurrentInPlaneResolvent",
       "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Streda/GaussianCrossed/CurrentInPlaneResolvent.lean",
       "imports": [
+        "LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.BornDyson.DysonShift",
         "LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.CurrentGradientSourceY",
         "LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.RadialHarmonics"
       ],
-      "externalImportCount": 2
+      "externalImportCount": 4
     },
     {
       "name": "LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.ExplicitMoments",

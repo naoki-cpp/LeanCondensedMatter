@@ -68208,6 +68208,47 @@
   },
   {
     "terminal": true,
+    "statement": "∀ (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ),\n  broadening ≠ 0 →\n    0 ≤ disorderStrength →\n      0 ≤ pMax →\n        have D0 :=\n          QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominator\n            QuantumTheory.Transport.SpectralSide.retarded v m 0 0 probeEnergy broadening disorderStrength hbar pMax;\n        have factor :=\n          QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedCurrentFactor v m probeEnergy\n            broadening disorderStrength hbar pMax;\n        have measure := ↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar);\n        have jxx :=\n          QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient\n            InternalSpace.PauliAxis.x 0 v m probeEnergy broadening disorderStrength hbar pMax radius;\n        have jyy :=\n          QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient\n            InternalSpace.PauliAxis.y 1 v m probeEnergy broadening disorderStrength hbar pMax radius;\n        jxx - jyy =\n          2 * measure * ↑v ^ 2 * factor *\n            ∫ (p : ℝ) in 0..pMax,\n              ↑p ^ 3 * QuantumTheory.Transport.polarFourierSecondCosineAngularKernel (p * radius / hbar) *\n                (↑((D0.re - v ^ 2 * p ^ 2) ^ 2 + D0.im ^ 2))⁻¹",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedInPlaneK2_eq_realLorentzian",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.CurrentInPlaneResolvent",
+    "externalAxioms": [],
+    "docString": "The *physical* finite-broadening Gaussian-crossed K2 current is a\nnonconstant Bessel-weighted **real Lorentzian radial integral**. The\neffective center and width retain the actual cutoff-dependent Born-Dyson\nself energy. This is the form needed before any on-shell concentration\nargument; it does not silently take a regulator/disorder limit. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient_diagonal_ra_denominator_harmonics",
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.CurrentInPlaneResolvent.0.QuantumTheory.Models.MassiveDirac.gaussianCrossed_radialRAProduct_eq_realLorentzian"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
     "statement": "∀ (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ),\n  hbar ≠ 0 →\n    broadening ≠ 0 →\n      0 ≤ disorderStrength →\n        0 ≤ pMax →\n          have gap :=\n            QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRASpectralGap v m probeEnergy broadening\n              disorderStrength hbar pMax;\n          have factor :=\n            QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedCurrentFactor v m probeEnergy\n              broadening disorderStrength hbar pMax;\n          have jxx :=\n            QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient\n              InternalSpace.PauliAxis.x 0 v m probeEnergy broadening disorderStrength hbar pMax radius;\n          have jyy :=\n            QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient\n              InternalSpace.PauliAxis.y 1 v m probeEnergy broadening disorderStrength hbar pMax radius;\n          have FR := fun r =>\n            QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialScalarGreenGenerator\n              QuantumTheory.Transport.SpectralSide.retarded v m probeEnergy broadening disorderStrength hbar pMax r;\n          have FA := fun r =>\n            QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialScalarGreenGenerator\n              QuantumTheory.Transport.SpectralSide.advanced v m probeEnergy broadening disorderStrength hbar pMax r;\n          ↑radius * gap * (jxx - jyy) =\n            -2 * ↑v ^ 2 * factor * ↑hbar ^ 2 *\n              (↑radius * (deriv (deriv FR) radius - deriv (deriv FA) radius) - (deriv FR radius - deriv FA radius))",
     "standardAxioms": [
       "Classical.choice",
@@ -68322,6 +68363,50 @@
     "completedMention": false,
     "compiledConsumers": [],
     "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (v m probeEnergy broadening disorderStrength hbar pMax radius a b δ : ℝ),\n  0 ≤ a →\n    a ≤ b →\n      b ≤ pMax →\n        0 < δ →\n          (∀ p ∈ Set.Icc a b,\n              δ ≤\n                |(QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominator\n                        QuantumTheory.Transport.SpectralSide.retarded v m 0 0 probeEnergy broadening disorderStrength\n                        hbar pMax).re -\n                    v ^ 2 * p ^ 2|) →\n            have D0 :=\n              QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominator\n                QuantumTheory.Transport.SpectralSide.retarded v m 0 0 probeEnergy broadening disorderStrength hbar pMax;\n            ‖↑D0.im *\n                  ∫ (p : ℝ) in a..b,\n                    ↑p ^ 3 * QuantumTheory.Transport.polarFourierSecondCosineAngularKernel (p * radius / hbar) *\n                      (↑((D0.re - v ^ 2 * p ^ 2) ^ 2 + D0.im ^ 2))⁻¹‖ ≤\n              (b - a) * (|D0.im| * pMax ^ 3 * (2 * Real.pi) / δ ^ 2)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedK2_offShell_width_integral_norm_le",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.CurrentInPlaneResolvent",
+    "externalAxioms": [],
+    "docString": "A quantitative **off-shell** estimate for the physical Gaussian-crossed\nK2 Fourier kernel. If the radial momenta in [a,b] stay a fixed spectral\ndistance δ from the *actual finite-regulator* Dyson shell, the width-scaled\nK2 contribution is bounded linearly by the imaginary Dyson width.\nThis is the needed tail estimate before using an on-shell Lorentzian\nconcentration theorem; no clean-spectrum substitution is made. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonGaussianCrossedK2_offShell_width_integral_zero"
+    ],
+    "dependencies": [
+      "QuantumTheory.Transport.polarFourierSecondCosineAngularKernel_norm_le"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonGaussianCrossedK2_offShell_width_integral_zero"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -69046,6 +69131,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedInPlaneK2_eq_realLorentzian",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient_diagonal_spectral_difference",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient_origin_diagonal_mul_center_gap_eq_log"
     ],
@@ -69057,10 +69143,11 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedInPlaneK2_eq_realLorentzian",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient_diagonal_spectral_difference",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient_origin_diagonal_mul_center_gap_eq_log"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -73646,7 +73733,8 @@
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct_ne_zero",
       "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficient_broadening_zero_of_boundary_denominator_nonzero",
       "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct_broadening_zero",
-      "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.LongitudinalZeroBroadeningIntegral.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral_x_eq_endpointForm"
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.LongitudinalZeroBroadeningIntegral.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral_x_eq_endpointForm",
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.CurrentInPlaneResolvent.0.QuantumTheory.Models.MassiveDirac.gaussianCrossed_radialRAProduct_eq_realLorentzian"
     ],
     "dependencies": [
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominator_eq_radial"
@@ -73661,9 +73749,10 @@
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct_ne_zero",
       "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficient_broadening_zero_of_boundary_denominator_nonzero",
       "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct_broadening_zero",
-      "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.LongitudinalZeroBroadeningIntegral.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral_x_eq_endpointForm"
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.LongitudinalZeroBroadeningIntegral.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral_x_eq_endpointForm",
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.CurrentInPlaneResolvent.0.QuantumTheory.Models.MassiveDirac.gaussianCrossed_radialRAProduct_eq_realLorentzian"
     ],
-    "compiledConsumerCount": 8,
+    "compiledConsumerCount": 9,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -82530,7 +82619,8 @@
     "dependents": [
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialScalarGreenGenerator_conj",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadial_center_gap_ne_zero_of_re_pos",
-      "QuantumTheory.Models.MassiveDirac.star_finiteCutoffContinuumBornDysonGreenOperator"
+      "QuantumTheory.Models.MassiveDirac.star_finiteCutoffContinuumBornDysonGreenOperator",
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.CurrentInPlaneResolvent.0.QuantumTheory.Models.MassiveDirac.gaussianCrossed_radialRAProduct_eq_realLorentzian"
     ],
     "dependencies": [
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonShiftMatrix_det",
@@ -82541,9 +82631,10 @@
     "compiledConsumers": [
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialScalarGreenGenerator_conj",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadial_center_gap_ne_zero_of_re_pos",
-      "QuantumTheory.Models.MassiveDirac.star_finiteCutoffContinuumBornDysonGreenOperator"
+      "QuantumTheory.Models.MassiveDirac.star_finiteCutoffContinuumBornDysonGreenOperator",
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.CurrentInPlaneResolvent.0.QuantumTheory.Models.MassiveDirac.gaussianCrossed_radialRAProduct_eq_realLorentzian"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -84027,6 +84118,90 @@
       "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Vertex.BornDyson.RegulatorBoundaryIntegral.0.QuantumTheory.Models.MassiveDirac.eventually_norm_finiteCutoffContinuumBornDysonDenominator_lower_bound"
     ],
     "compiledConsumerCount": 3,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {ι : Type u_1} {l : Filter ι} (v m probeEnergy hbar pMax radius a b δ : ℝ) (broadening disorderStrength : ι → ℝ)\n  (factorLimit : ℂ),\n  0 ≤ a →\n    a ≤ b →\n      b ≤ pMax →\n        0 < δ →\n          Filter.Tendsto\n              (fun t =>\n                (QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominator\n                    QuantumTheory.Transport.SpectralSide.retarded v m 0 0 probeEnergy (broadening t)\n                    (disorderStrength t) hbar pMax).im)\n              l (nhds 0) →\n            (∀ᶠ (t : ι) in l,\n                ∀ p ∈ Set.Icc a b,\n                  δ ≤\n                    |(QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominator\n                            QuantumTheory.Transport.SpectralSide.retarded v m 0 0 probeEnergy (broadening t)\n                            (disorderStrength t) hbar pMax).re -\n                        v ^ 2 * p ^ 2|) →\n              Filter.Tendsto\n                  (fun t =>\n                    QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedCurrentFactor v m\n                      probeEnergy (broadening t) (disorderStrength t) hbar pMax)\n                  l (nhds factorLimit) →\n                Filter.Tendsto\n                  (fun t =>\n                    have factor :=\n                      QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedCurrentFactor v m\n                        probeEnergy (broadening t) (disorderStrength t) hbar pMax;\n                    have D0 :=\n                      QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominator\n                        QuantumTheory.Transport.SpectralSide.retarded v m 0 0 probeEnergy (broadening t)\n                        (disorderStrength t) hbar pMax;\n                    ↑D0.im * (2 * ↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) * ↑v ^ 2 * factor) *\n                      ∫ (p : ℝ) in a..b,\n                        ↑p ^ 3 * QuantumTheory.Transport.polarFourierSecondCosineAngularKernel (p * radius / hbar) *\n                          (↑((D0.re - v ^ 2 * p ^ 2) ^ 2 + D0.im ^ 2))⁻¹)\n                  l (nhds 0)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonGaussianCrossedK2_offShell_dressedCurrent_zero",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.CurrentInPlaneResolvent",
+    "externalAxioms": [],
+    "docString": "The off-shell part of the *dressed physical K2 crossed current* has\nzero width-normalized limit whenever the actual ladder factor approaches\na finite value. This keeps the original Fourier measure and v² factor.\nThe needed finite-ladder limit is stated explicitly rather than silently\ninferred from the spectral width limit. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonGaussianCrossedK2_offShell_width_integral_zero"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {ι : Type u_1} {l : Filter ι} (v m probeEnergy hbar pMax radius a b δ : ℝ) (broadening disorderStrength : ι → ℝ),\n  0 ≤ a →\n    a ≤ b →\n      b ≤ pMax →\n        0 < δ →\n          Filter.Tendsto\n              (fun t =>\n                (QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominator\n                    QuantumTheory.Transport.SpectralSide.retarded v m 0 0 probeEnergy (broadening t)\n                    (disorderStrength t) hbar pMax).im)\n              l (nhds 0) →\n            (∀ᶠ (t : ι) in l,\n                ∀ p ∈ Set.Icc a b,\n                  δ ≤\n                    |(QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominator\n                            QuantumTheory.Transport.SpectralSide.retarded v m 0 0 probeEnergy (broadening t)\n                            (disorderStrength t) hbar pMax).re -\n                        v ^ 2 * p ^ 2|) →\n              Filter.Tendsto\n                (fun t =>\n                  have D0 :=\n                    QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominator\n                      QuantumTheory.Transport.SpectralSide.retarded v m 0 0 probeEnergy (broadening t)\n                      (disorderStrength t) hbar pMax;\n                  ↑D0.im *\n                    ∫ (p : ℝ) in a..b,\n                      ↑p ^ 3 * QuantumTheory.Transport.polarFourierSecondCosineAngularKernel (p * radius / hbar) *\n                        (↑((D0.re - v ^ 2 * p ^ 2) ^ 2 + D0.im ^ 2))⁻¹)\n                l (nhds 0)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonGaussianCrossedK2_offShell_width_integral_zero",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.CurrentInPlaneResolvent",
+    "externalAxioms": [],
+    "docString": "The **actual Dyson K2 off-shell spectral contribution vanishes in the\nzero-width limit** on any fixed radial interval uniformly separated from\nthe moving Dyson shell. This is a genuine asymptotic statement: the\nLorentzian width and center may both depend on arbitrary regulators,\nincluding the ordered broadening/disorder trajectory. Only their\nexplicitly stated width convergence and spectral separation are used. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonGaussianCrossedK2_offShell_dressedCurrent_zero"
+    ],
+    "dependencies": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedK2_offShell_width_integral_norm_le"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonGaussianCrossedK2_offShell_dressedCurrent_zero"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -101997,7 +102172,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -102009,6 +102184,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedK2_offShell_width_integral_norm_le",
       "QuantumTheory.Transport.hasDerivAt_integral_polarFourierFirstCosineAngularKernel"
     ],
     "dependencies": [
@@ -102017,9 +102193,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedK2_offShell_width_integral_norm_le",
       "QuantumTheory.Transport.hasDerivAt_integral_polarFourierFirstCosineAngularKernel"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -189924,6 +190101,51 @@
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedInPlaneTransverse_gap_eq_Green_difference"
     ],
     "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (v m probeEnergy broadening disorderStrength hbar pMax p : ℝ),\n  broadening ≠ 0 →\n    have D0 :=\n      QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominator\n        QuantumTheory.Transport.SpectralSide.retarded v m 0 0 probeEnergy broadening disorderStrength hbar pMax;\n    QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct v m p probeEnergy\n        broadening disorderStrength hbar pMax =\n      ↑((D0.re - v ^ 2 * p ^ 2) ^ 2 + D0.im ^ 2)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.CurrentInPlaneResolvent.0.QuantumTheory.Models.MassiveDirac.gaussianCrossed_radialRAProduct_eq_realLorentzian",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.CurrentInPlaneResolvent",
+    "externalAxioms": [],
+    "docString": "The *actual* R/A Dyson propagator product at finite broadening is a\nreal radial Lorentzian denominator. The spectral center and width are\ndefined by the real/imaginary parts of the retarded Dyson denominator\nat zero momentum, not by postulating clean or renormalized parameters. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedInPlaneK2_eq_realLorentzian"
+    ],
+    "dependencies": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct_eq_mul",
+      "QuantumTheory.Models.MassiveDirac.star_finiteCutoffContinuumBornDysonDenominator"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedInPlaneK2_eq_realLorentzian"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
