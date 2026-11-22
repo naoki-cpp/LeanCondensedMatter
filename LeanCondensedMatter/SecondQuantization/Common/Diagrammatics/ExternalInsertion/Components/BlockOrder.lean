@@ -46,6 +46,29 @@ noncomputable def ExternalInsertionDiagram.physicalBlockInteractionShuffleEquiv
   exact (d.vacuumFreeExternalBlockInteractionShuffleEquiv hVac).trans
     (Equiv.cast (congrArg (fun s => FamilySlotShuffleTo s S.card) hfg))
 
+/-- The canonical graph-component shuffle of a vacuum-free physical
+diagram has exactly the interaction owner prescribed by its physical
+external-block layout at each ambient vertex position. -/
+theorem ExternalInsertionDiagram.canonicalComponentInteractionShuffle_physicalOwner
+    {ExternalLabel InternalLabel : Type*} {S : Finset (Fin N)}
+    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
+    (hVac : HasNoVacuumComponent d.vertexGraph)
+    (anchor : Fin (2 * E)) (v : Fin S.card) :
+    d.vacuumFreeComponentsEquivExternalBlocks hVac
+        (d.canonicalComponentInteractionShuffle.slotEquiv.symm v).1 =
+      (d.externalBlockLayout hVac anchor).interactionOwner
+        (((S.orderIsoOfFin rfl).toEquiv v).1) := by
+  classical
+  let w : ↥S := (S.orderIsoOfFin rfl).toEquiv v
+  have hC :
+      (interactionSectorComponentEquiv d.vertexGraph w).1 =
+        ⟨d.vertexGraph.componentBlock (Sum.inr w),
+          d.vertexGraph.componentBlock_mem_componentPartition (Sum.inr w)⟩ := by
+    apply Subtype.ext
+    exact interactionSectorComponentEquiv_fst d.vertexGraph w
+  rw [d.canonicalComponentInteractionShuffle_owner v, hC]
+  exact (d.externalBlockLayout_interactionOwner hVac anchor w).symm
+
 /-- The active interaction sectors assigned to an external partition form
 an exact disjoint decomposition of the global interaction sector. In
 particular, empty local interaction blocks contribute zero to this sum. -/
