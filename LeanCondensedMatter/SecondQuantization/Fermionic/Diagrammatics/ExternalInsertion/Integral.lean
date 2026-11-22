@@ -783,5 +783,103 @@ theorem ExternalInsertionBlockLayout.sum_allOwnerShuffles_connectedDyson_eq_stan
   change (∑ F, w F) = ∑ Q, w (e.symm Q)
   exact (Equiv.sum_comp e.symm w).symm
 
+open Classical in
+/-- The actual finite physical Dyson coefficient in a prescribed
+external-component partition and a prescribed interaction-size vector
+equals the complete standardized connected-family owner-shuffle orbit.
+The left side is the genuine physical Wick-diagram fiber, not a
+definition in terms of separately assembled blocks.
+
+The right side retains the true integrated, transported global orders:
+there is no symmetry assumption on an individual canonical ordered
+simplex. This is the fixed-size physical coefficient identity; summing
+all size vectors and comparing with the graph-component shuffle orbit
+remain separate operations. -/
+theorem ExternalInsertionBlockLayout.sum_physicalFixedSizeDyson_eq_standardizedOrbit
+    {E n : ℕ}
+    (anchor : Fin (2 * E))
+    (π : Finpartition (Finset.univ : Finset (Fin (2 * E))))
+    (heven : ∀ B : π.parts, Even (B : Finset (Fin (2 * E))).card)
+    {size : π.parts → ℕ}
+    (σ : Combinatorics.FamilySlotShuffleTo size n)
+    (labels : Fin (2 * E) → ExternalFieldLabel Mode)
+    (ε : Mode → ℝ) (β : ℝ) (hβ : 0 ≤ β)
+    (g : QuarticVertexLabel Mode → ℂ)
+    (externalTime : Fin (2 * E) → ℝ) :
+    (∑ d : {d : {d : {d : ExternalInsertionWickDiagram Mode E n //
+          HasNoVacuumComponent d.vertexGraph} //
+          externalComponentPartition d.1.vertexGraph = π} //
+        ((ExternalInsertionBlockLayout.fixedPartitionPhysicalSizeShuffleEquiv
+          (E := E) (N := n) (ExternalLabel := ExternalFieldLabel Mode)
+          (InternalLabel := QuarticVertexLabel Mode) anchor π heven) d.1).1.1 = size},
+      if d.1.1.1.externalLabel = labels then
+        d.1.1.1.dysonAmplitude ε β g externalTime else 0) =
+      ∑ τ : Combinatorics.FamilySlotShuffleTo size n,
+        ∑ Q : (∀ B : π.parts,
+            {d : ExternalInsertionDiagram (ExternalFieldLabel Mode)
+                (QuarticVertexLabel Mode)
+                ((B : Finset (Fin (2 * E))).card / 2) (size B)
+                (Finset.univ : Finset (Fin (size B))) //
+              d.vertexGraph.Preconnected}),
+          let F := (ExternalInsertionBlockLayout.ofFamilyShuffleFixedSizeStandardizedFamilyEquiv
+              (ExternalLabel := ExternalFieldLabel Mode)
+              (InternalLabel := QuarticVertexLabel Mode) π heven σ).symm Q
+          if ((ExternalInsertionBlockLayout.ofFamilyShuffle π heven σ).assembleDiagram
+              (Finset.univ : Finset (Fin n)) F.1).externalLabel = labels then
+            ExternalInsertionWickDiagram.orderedDysonAmplitude
+              ((ExternalInsertionBlockLayout.ofFamilyShuffle π heven σ).assembleDiagram
+                (Finset.univ : Finset (Fin n)) F.1)
+              ε β g externalTime
+              (((Finset.univ : Finset (Fin n)).orderIsoOfFin rfl).toEquiv.trans
+                (fullInteractionSlotEquiv (σ.ambientRelabel τ)).symm)
+          else 0 := by
+  classical
+  let e := ExternalInsertionBlockLayout.fixedPartitionPhysicalFixedSizeEquiv
+    (E := E) (N := n) (ExternalLabel := ExternalFieldLabel Mode)
+    (InternalLabel := QuarticVertexLabel Mode) anchor π heven size
+  let weight : {d : {d : {d : ExternalInsertionWickDiagram Mode E n //
+      HasNoVacuumComponent d.vertexGraph} //
+      externalComponentPartition d.1.vertexGraph = π} //
+    ((ExternalInsertionBlockLayout.fixedPartitionPhysicalSizeShuffleEquiv
+      (E := E) (N := n) (ExternalLabel := ExternalFieldLabel Mode)
+      (InternalLabel := QuarticVertexLabel Mode) anchor π heven) d.1).1.1 = size} → ℂ :=
+    fun d => if d.1.1.1.externalLabel = labels then
+      d.1.1.1.dysonAmplitude ε β g externalTime else 0
+  have hdiagram (τ : Combinatorics.FamilySlotShuffleTo size n)
+      (F : (ExternalInsertionBlockLayout.ofFamilyShuffle π heven τ).ConnectedBlockFamily
+        (ExternalLabel := ExternalFieldLabel Mode)
+        (InternalLabel := QuarticVertexLabel Mode)) :
+      (e.symm ⟨τ, F⟩).1.1.1 =
+        (ExternalInsertionBlockLayout.ofFamilyShuffle π heven τ).assembleDiagram
+          (Finset.univ : Finset (Fin n)) F.1 := by
+    rfl
+  calc
+    _ = ∑ z : Σ τ : Combinatorics.FamilySlotShuffleTo size n,
+          (ExternalInsertionBlockLayout.ofFamilyShuffle π heven τ).ConnectedBlockFamily
+            (ExternalLabel := ExternalFieldLabel Mode)
+            (InternalLabel := QuarticVertexLabel Mode),
+          weight (e.symm z) := by
+        exact (Equiv.sum_comp e.symm weight).symm
+    _ = ∑ τ : Combinatorics.FamilySlotShuffleTo size n,
+          ∑ F : (ExternalInsertionBlockLayout.ofFamilyShuffle π heven τ).ConnectedBlockFamily
+              (ExternalLabel := ExternalFieldLabel Mode)
+              (InternalLabel := QuarticVertexLabel Mode),
+            if ((ExternalInsertionBlockLayout.ofFamilyShuffle π heven τ).assembleDiagram
+                (Finset.univ : Finset (Fin n)) F.1).externalLabel = labels then
+              ExternalInsertionWickDiagram.dysonAmplitude
+                ((ExternalInsertionBlockLayout.ofFamilyShuffle π heven τ).assembleDiagram
+                  (Finset.univ : Finset (Fin n)) F.1)
+                ε β g externalTime
+            else 0 := by
+        rw [Fintype.sum_sigma]
+        apply Finset.sum_congr rfl
+        intro τ _
+        apply Finset.sum_congr rfl
+        intro F _
+        dsimp only [weight]
+        rw [hdiagram τ F]
+    _ = _ := ExternalInsertionBlockLayout.sum_allOwnerShuffles_connectedDyson_eq_standardizedOrbit
+      π heven σ labels ε β hβ g externalTime
+
 end Fermionic
 end SecondQuantization
