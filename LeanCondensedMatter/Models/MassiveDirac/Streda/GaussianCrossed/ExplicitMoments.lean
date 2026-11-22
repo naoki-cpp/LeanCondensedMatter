@@ -6,7 +6,10 @@ set_option linter.style.header false
 # Explicit harmonic moments of the Gaussian-crossed Hall traces
 
 Pointwise antisymmetric X and Psi radial trace tensors reduce to their
-finite-cutoff K0/K1/K2 Fourier-moment channels. The preceding
+finite-cutoff K0/K1/K2 Fourier-moment channels. Both physical X and Psi
+kernels now isolate the independent anisotropic K2 current moment as an exact
+linear and quadratic polynomial correction to the K2-free part, rather
+than silently identifying it with zero. The preceding
 `GaussianCrossedRealSpaceIntegral` module owns the rotation, angular projection,
 and regulated position-space integral boundaries; this module specializes
 the resulting antisymmetric trace tensors to explicit harmonic moments.
@@ -91,18 +94,25 @@ noncomputable def finiteCutoffContinuumBornDysonGaussianCrossedXFourierMomentKer
      finiteCutoffContinuumBornDysonPauliCoefficient .z
        .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax)
   let transverseX := currentMoments.transverse
-  let diagonalY := (isotropic - anisotropic) / 2
   let greenXZ := greenFirst *
      (greenSecondMoment greenBR * greenZerothMoment greenDA -
        greenZerothMoment greenDR * greenSecondMoment greenBA)
   let greenScalarX := greenFirst *
      (greenScalarA * greenSecondMoment greenBR - greenScalarR * greenSecondMoment greenBA)
-  2 * Complex.I *
-    ((firstX * diagonalY - firstY * transverseX) *
-        greenXZ +
+  /- The independent K2 current channel is not set to zero: the exact
+  antisymmetric X trace contains both its linear and quadratic powers. -/
+  let diagonalY0 := isotropic / 2
+  let isotropicPart :=
+    (firstX * diagonalY0 - firstY * transverseX) * greenXZ +
       (greenScalarR * greenZA - greenScalarA * greenZR) *
-        ((isotropic ^ 2 - anisotropic ^ 2) / 4 + transverseX ^ 2) +
-      greenScalarX * (first * (diagonalY * zX - transverseX * zY)))
+        (isotropic ^ 2 / 4 + transverseX ^ 2) +
+      greenScalarX * (first * (diagonalY0 * zX - transverseX * zY))
+  let linearK2 :=
+    -Complex.I * anisotropic * (firstX * greenXZ + greenScalarX * first * zX)
+  let quadraticK2 :=
+    -(Complex.I / 2) * (greenScalarR * greenZA - greenScalarA * greenZR) *
+      anisotropic ^ 2
+  2 * Complex.I * isotropicPart + linearK2 + quadraticK2
 
 /-- Explicit finite-regulator Psi Fourier-moment radial amplitude. Each
 moment retains its own physical momentum-measure factor; no cutoff or
@@ -126,9 +136,15 @@ noncomputable def finiteCutoffContinuumBornDysonGaussianCrossedPsiFourierMomentK
      finiteCutoffContinuumBornDysonPauliCoefficient .z
        .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax)
   let transverse := currentMoments.transverse
-  let minor := (greenFirst * greenSecondMoment) *
-     (firstX * ((isotropic - anisotropic) / 2) - firstY * transverse) -
-     greenScalar * (transverse ^ 2 + (isotropic ^ 2 - anisotropic ^ 2) / 4)
+  /- In the physical Psi minor the K2 channel appears linearly through
+  the source-y diagonal current and quadratically through its determinant.
+  The final real-part projection is retained; no Psi cancellation is assumed. -/
+  let isotropicMinor := (greenFirst * greenSecondMoment) *
+     (firstX * (isotropic / 2) - firstY * transverse) -
+     greenScalar * (transverse ^ 2 + isotropic ^ 2 / 4)
+  let linearK2 := -(greenFirst * greenSecondMoment) * firstX * anisotropic / 2
+  let quadraticK2 := greenScalar * anisotropic ^ 2 / 4
+  let minor := isotropicMinor + linearK2 + quadraticK2
   ((-8 * (greenZ.re * minor.im + greenZ.im * minor.re) : ℝ) : ℂ)
 
 /-- The finite-regulator X antisymmetric radial trace in explicit K0/K1/K2 moments.
