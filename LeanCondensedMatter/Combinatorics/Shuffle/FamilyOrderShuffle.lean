@@ -501,6 +501,37 @@ noncomputable def familyShuffleOwnerEquiv
     exact assignmentShuffleOfSize_symm_owner o.1 o.2 v
 
 open Classical in
+/-- Any assignment of a finite sequence of slots to named blocks is uniquely
+encoded by its realized fiber sizes and their increasing interleaving shuffle.
+The equivalence also retains blocks whose fiber has size zero. -/
+noncomputable def ownerSizeShuffleEquiv
+    {ι : Type*} [Fintype ι] {total : ℕ} :
+    (Fin total → ι) ≃
+      Σ size : ι → ℕ, FamilySlotShuffleTo size total := by
+  classical
+  let ownerSizeEquiv :
+      (Fin total → ι) ≃
+        Σ size : ι → ℕ,
+          {owner : Fin total → ι //
+            ∀ i, Fintype.card {v : Fin total // owner v = i} = size i} := by
+    refine {
+      toFun := fun owner =>
+        ⟨fun i => Fintype.card {v : Fin total // owner v = i},
+          ⟨owner, fun _ => rfl⟩⟩
+      invFun := fun x => x.2.1
+      left_inv := fun _ => rfl
+      right_inv := ?_
+    }
+    rintro ⟨size, ⟨owner, hsize⟩⟩
+    have hs : size = fun i => Fintype.card {v : Fin total // owner v = i} :=
+      funext (fun i => (hsize i).symm)
+    cases hs
+    rfl
+  exact ownerSizeEquiv.trans
+    (Equiv.sigmaCongrRight (fun size =>
+      (familyShuffleOwnerEquiv (size := size) (total := total)).symm))
+
+open Classical in
 /-- Canonical finite enumeration of fixed-size owner assignments.
 Keeping the finite set explicit avoids selecting an unrelated subtype
 enumeration in the type of a theorem about weighted sums. -/
