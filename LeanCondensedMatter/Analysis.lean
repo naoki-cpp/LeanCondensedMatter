@@ -10,7 +10,8 @@ import LeanCondensedMatter.Analysis.Fourier.CyclicLaplacian
 import LeanCondensedMatter.Analysis.LatticeGeometry
 import LeanCondensedMatter.Analysis.Matrix.CartesianProjectors
 import LeanCondensedMatter.Analysis.Matrix.FinTwoCharpoly
-import LeanCondensedMatter.Analysis.ScalarExchange
+import LeanCondensedMatter.Analysis.ScalarExchange.Basic
+import LeanCondensedMatter.Analysis.ScalarExchange.Peel
 import LeanCondensedMatter.Analysis.InternalSpace.Pauli
 import LeanCondensedMatter.Analysis.PowerSeries
 import LeanCondensedMatter.Analysis.PowerSeries.FrobeniusWronskian
@@ -32,9 +33,11 @@ import LeanCondensedMatter.Analysis.FunctionalCalculus.CFC
 import LeanCondensedMatter.Analysis.Lorentzian
 import LeanCondensedMatter.Analysis.Operator
 import LeanCondensedMatter.Analysis.InfiniteSum.FinsuppProduct
-import LeanCondensedMatter.Analysis.Calculus
+import LeanCondensedMatter.Analysis.Calculus.AlgebraicDerivative
+import LeanCondensedMatter.Analysis.Calculus.IntervalLocalization
 import LeanCondensedMatter.Analysis.ConservationLaw
-import LeanCondensedMatter.Analysis.Inequalities
+import LeanCondensedMatter.Analysis.Inequalities.PeierlsBogoliubov
+import LeanCondensedMatter.Analysis.Inequalities.PeierlsBogoliubovEquality
 
 set_option linter.style.header false
 
