@@ -232,14 +232,14 @@ noncomputable def FamilySlotShuffleTo.reindexEquiv
     { slotEquiv := (e.sigmaCongrLeft (β := fun j => Fin (size j))).trans σ.slotEquiv
       strictMono := by
         intro i a b hab
-        simpa only [Equiv.trans_apply] using σ.strictMono (e i) hab }
+        simpa [Equiv.sigmaCongrLeft, Equiv.trans_apply] using σ.strictMono (e i) hab }
   invFun τ :=
     { slotEquiv :=
         (e.sigmaCongrLeft (β := fun j => Fin (size j))).symm.trans τ.slotEquiv
       strictMono := by
         intro j a b hab
         obtain ⟨i, rfl⟩ := e.surjective j
-        simpa only [Equiv.trans_apply, Equiv.symm_apply_apply] using
+        simpa [Equiv.sigmaCongrLeft, Equiv.trans_apply] using
           τ.strictMono i hab }
   left_inv σ := by
     apply FamilySlotShuffleTo.ext
@@ -272,7 +272,8 @@ theorem FamilySlotShuffleTo.reindexEquiv_owner
     (σ : FamilySlotShuffleTo size total) (v : Fin total) :
     (((FamilySlotShuffleTo.reindexEquiv e size) σ).slotEquiv.symm v).1 =
       e.symm ((σ.slotEquiv.symm v).1) := by
-  simp [FamilySlotShuffleTo.reindexEquiv, Equiv.trans_apply]
+  simp [FamilySlotShuffleTo.reindexEquiv, Equiv.sigmaCongrLeft,
+    Equiv.trans_apply]
 
 /-- Casting only the type-level family-size function does not alter
 which block owns an ambient slot. -/
@@ -314,8 +315,8 @@ theorem FamilySlotShuffleTo.castTotalEquiv_ambientRelabel
     (σ τ : FamilySlotShuffleTo size m) :
     (((FamilySlotShuffleTo.castTotalEquiv h) σ).ambientRelabel
       ((FamilySlotShuffleTo.castTotalEquiv h) τ)) =
-      (Fin.castOrderIso h).symm.toEquiv.trans
-        (σ.ambientRelabel τ).trans (Fin.castOrderIso h).toEquiv := by
+      ((Fin.castOrderIso h).symm.toEquiv.trans
+        (σ.ambientRelabel τ)).trans (Fin.castOrderIso h).toEquiv := by
   cases h
   ext v
   simp [FamilySlotShuffleTo.ambientRelabel, FamilySlotShuffleTo.castTotalEquiv]
