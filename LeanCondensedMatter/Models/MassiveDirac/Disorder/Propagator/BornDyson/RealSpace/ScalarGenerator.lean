@@ -40,32 +40,6 @@ noncomputable def finiteCutoffContinuumBornDysonRadialScalarGreenGenerator
           side v m p 0 probeEnergy broadening disorderStrength hbar pMax)⁻¹ *
         polarFourierZerothAngularKernel (p * radius / hbar)
 
-/-- At finite broadening, the scalar Dyson resolvent weight is a continuous
-function of the radial momentum, including both endpoints of the cutoff
-integral. -/
-private theorem continuous_finiteCutoffContinuumBornDysonScalarGreenWeight
-    (side : SpectralSide)
-    (v m probeEnergy broadening disorderStrength hbar pMax : ℝ)
-    (hbroadening : broadening ≠ 0) (hdisorder : 0 ≤ disorderStrength)
-    (hpMax : 0 ≤ pMax) :
-    Continuous fun p : ℝ =>
-      (p : ℂ) *
-        (finiteCutoffContinuumBornDysonDenominator
-          side v m p 0 probeEnergy broadening disorderStrength hbar pMax)⁻¹ := by
-  have hden : ∀ p : ℝ,
-      finiteCutoffContinuumBornDysonDenominator
-        side v m p 0 probeEnergy broadening disorderStrength hbar pMax ≠ 0 := by
-    intro p
-    exact finiteCutoffContinuumBornDysonDenominator_ne_zero
-      side v m p 0 probeEnergy broadening disorderStrength hbar pMax
-      hbroadening hdisorder hpMax
-  have hcont : Continuous fun p : ℝ =>
-      finiteCutoffContinuumBornDysonDenominator
-        side v m p 0 probeEnergy broadening disorderStrength hbar pMax := by
-    unfold finiteCutoffContinuumBornDysonDenominator
-    fun_prop
-  exact (Complex.continuous_ofReal.comp continuous_id).mul (hcont.inv₀ hden)
-
 /-- Differentiation in the signed radial coordinate commutes with the
 regulated scalar Green Fourier integral; the resulting channel is K₁. -/
 theorem finiteCutoffContinuumBornDysonRadialScalarGreenGenerator_hasDerivAt
@@ -88,9 +62,10 @@ theorem finiteCutoffContinuumBornDysonRadialScalarGreenGenerator_hasDerivAt
     (fun p : ℝ => (p : ℂ) *
       (finiteCutoffContinuumBornDysonDenominator
         side v m p 0 probeEnergy broadening disorderStrength hbar pMax)⁻¹)
-    (continuous_finiteCutoffContinuumBornDysonScalarGreenWeight
-      side v m probeEnergy broadening disorderStrength hbar pMax
-      hbroadening hdisorder hpMax) pMax hbar radius
+    ((Complex.continuous_ofReal.comp continuous_id).mul
+      (continuous_finiteCutoffContinuumBornDysonDenominator_inv_radial
+        side v m probeEnergy broadening disorderStrength hbar pMax
+        hbroadening hdisorder hpMax)) pMax hbar radius
   convert h.const_mul (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) using 1
   · funext r
     rfl

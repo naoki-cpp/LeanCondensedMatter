@@ -25,7 +25,7 @@ noncomputable section
 open QuantumTheory.Transport
 
 /-- The inverse finite-cutoff Born-Dyson denominator is continuous on the radial momentum axis. -/
-private theorem continuous_finiteCutoffContinuumBornDysonDenominator_inv_radial
+theorem continuous_finiteCutoffContinuumBornDysonDenominator_inv_radial
     (side : SpectralSide)
     (v m probeEnergy broadening disorderStrength hbar pMax : ℝ)
     (hbroadening : broadening ≠ 0) (hdisorder : 0 ≤ disorderStrength)
