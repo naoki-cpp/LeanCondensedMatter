@@ -30,7 +30,7 @@ namespace QuantumTheory.Models.MassiveDirac
 noncomputable section
 
 open QuantumTheory.Transport
-open MeasureTheory
+open MeasureTheory Filter
 open scoped Interval
 
 /-- The difference of the *actual* two finite-cutoff R/A scalar
@@ -604,6 +604,72 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedK2_offShell_width_integral_
       rw [abs_of_nonneg (sub_nonneg.mpr hab)]
       dsimp [C]
       ring
+
+
+/-- The **actual Dyson K2 off-shell spectral contribution vanishes in the
+zero-width limit** on any fixed radial interval uniformly separated from
+the moving Dyson shell. This is a genuine asymptotic statement: the
+Lorentzian width and center may both depend on arbitrary regulators,
+including the ordered broadening/disorder trajectory. Only their
+explicitly stated width convergence and spectral separation are used. -/
+theorem tendsto_finiteCutoffContinuumBornDysonGaussianCrossedK2_offShell_width_integral_zero
+    {ι : Type*} {l : Filter ι}
+    (v m probeEnergy hbar pMax radius a b δ : ℝ)
+    (broadening disorderStrength : ι → ℝ)
+    (ha : 0 ≤ a) (hab : a ≤ b) (hb : b ≤ pMax)
+    (hδ : 0 < δ)
+    (hwidth : Tendsto
+      (fun t =>
+        (finiteCutoffContinuumBornDysonDenominator
+          .retarded v m 0 0 probeEnergy (broadening t) (disorderStrength t)
+          hbar pMax).im)
+      l (nhds 0))
+    (hsep : ∀ᶠ t in l, ∀ p ∈ Set.Icc a b,
+      δ ≤ |(finiteCutoffContinuumBornDysonDenominator
+        .retarded v m 0 0 probeEnergy (broadening t) (disorderStrength t)
+        hbar pMax).re - v ^ 2 * p ^ 2|) :
+    Tendsto
+      (fun t =>
+        let D0 := finiteCutoffContinuumBornDysonDenominator
+          .retarded v m 0 0 probeEnergy (broadening t) (disorderStrength t)
+          hbar pMax
+        (D0.im : ℂ) *
+          ∫ p in a..b,
+            (p : ℂ) ^ 3 *
+              polarFourierSecondCosineAngularKernel (p * radius / hbar) *
+              (((D0.re - v ^ 2 * p ^ 2) ^ 2 + D0.im ^ 2 : ℝ) : ℂ)⁻¹)
+      l (nhds 0) := by
+  let D0 : ι → ℂ := fun t =>
+    finiteCutoffContinuumBornDysonDenominator
+      .retarded v m 0 0 probeEnergy (broadening t) (disorderStrength t)
+      hbar pMax
+  let tail : ι → ℂ := fun t =>
+    ((D0 t).im : ℂ) *
+      ∫ p in a..b,
+        (p : ℂ) ^ 3 *
+          polarFourierSecondCosineAngularKernel (p * radius / hbar) *
+          ((((D0 t).re - v ^ 2 * p ^ 2) ^ 2 + (D0 t).im ^ 2 : ℝ) : ℂ)⁻¹
+  have hw : Tendsto (fun t => |(D0 t).im|) l (nhds 0) := by
+    simpa only [D0, abs_zero] using hwidth.abs
+  let C : ℝ := (b - a) * (pMax ^ 3 * (2 * Real.pi) / δ ^ 2)
+  have hupper : Tendsto (fun t => |(D0 t).im| * C) l (nhds 0) := by
+    simpa using hw.mul_const C
+  have hnorm : Tendsto (fun t => ‖tail t‖) l (nhds 0) := by
+    refine squeeze_zero (fun t => norm_nonneg (tail t)) ?_ hupper
+    filter_upwards [hsep] with t ht
+    have hbound :=
+      finiteCutoffContinuumBornDysonGaussianCrossedK2_offShell_width_integral_norm_le
+        v m probeEnergy (broadening t) (disorderStrength t)
+        hbar pMax radius a b δ ha hab hb hδ ht
+    calc
+      ‖tail t‖ ≤
+          (b - a) * (|(D0 t).im| * pMax ^ 3 * (2 * Real.pi) / δ ^ 2) := by
+            simpa only [tail, D0] using hbound
+      _ = |(D0 t).im| * C := by
+        dsimp [C]
+        ring
+  change Tendsto tail l (nhds 0)
+  exact (tendsto_zero_iff_norm_tendsto_zero).2 hnorm
 
 end
 
