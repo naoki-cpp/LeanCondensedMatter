@@ -118,11 +118,6 @@ theorem finiteCutoffContinuumBornDysonRadialScalarGreenGenerator_hasDerivAt_deri
     intro p _
     dsimp [weight]
     ring
-  · congr 1
-    apply intervalIntegral.integral_congr
-    intro p _
-    dsimp [weight]
-    ring
 
 /-- The traceless radial Hessian of the actual Dyson scalar generator
 is precisely its K2 Fourier harmonic. Multiplication by the signed
@@ -202,9 +197,13 @@ theorem finiteCutoffContinuumBornDysonRadialScalarGreenGenerator_tracelessHessia
       (radius : ℂ) * (∫ p in (0 : ℝ)..pMax, second p) -
           ∫ p in (0 : ℝ)..pMax, first p =
         ∫ p in (0 : ℝ)..pMax, (radius : ℂ) * second p - first p := by
-    rw [intervalIntegral.integral_sub
-      ((continuous_const.mul hsecond).intervalIntegrable 0 pMax) hfirstInt]
-    rw [intervalIntegral.integral_const_mul]
+    calc
+      _ = (∫ p in (0 : ℝ)..pMax, (radius : ℂ) * second p) -
+            ∫ p in (0 : ℝ)..pMax, first p := by
+              rw [intervalIntegral.integral_const_mul]
+      _ = _ := (intervalIntegral.integral_sub
+        ((continuous_const.mul hsecond).intervalIntegrable 0 pMax)
+        hfirstInt).symm
   have hpoint (p : ℝ) :
       (hbar : ℂ) ^ 2 * ((radius : ℂ) * second p - first p) =
         -(radius : ℂ) * (p : ℂ) ^ 3 * k2 p * denInv p := by
@@ -263,7 +262,6 @@ theorem finiteCutoffContinuumBornDysonRadialScalarGreenGenerator_tracelessHessia
     _ = measure * ∫ p in (0 : ℝ)..pMax,
           (hbar : ℂ) ^ 2 * ((radius : ℂ) * second p - first p) := by
           rw [intervalIntegral.integral_const_mul]
-          ring
     _ = measure * ∫ p in (0 : ℝ)..pMax,
           -(radius : ℂ) * (p : ℂ) ^ 3 * k2 p * denInv p := by
           congr 1
@@ -271,7 +269,7 @@ theorem finiteCutoffContinuumBornDysonRadialScalarGreenGenerator_tracelessHessia
           intro p _
           exact hpoint p
     _ = _ := by
-      rw [← intervalIntegral.integral_const_mul]
+      rw [intervalIntegral.integral_const_mul]
       dsimp [measure, denInv, k2]
       ring
 
