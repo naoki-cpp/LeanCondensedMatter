@@ -75,9 +75,8 @@ theorem ExternalInsertionDiagram.physicalBlockInteractionShuffleEquiv_ambientRel
     Equiv.cast (congrArg (fun s => FamilySlotShuffleTo s S.card) hfg)
   have hcast :
       ((cast (rename ρ)).ambientRelabel (cast (rename τ))) =
-        (rename ρ).ambientRelabel (rename τ) := by
-    cases hfg
-    rfl
+        (rename ρ).ambientRelabel (rename τ) :=
+    FamilySlotShuffleTo.castSize_ambientRelabel hfg (rename ρ) (rename τ)
   calc
     _ = (rename ρ).ambientRelabel (rename τ) := by
       change (cast (rename ρ)).ambientRelabel (cast (rename τ)) = _
@@ -112,9 +111,8 @@ theorem ExternalInsertionDiagram.physicalBlockInteractionShuffleEquiv_owner
     Equiv.cast (congrArg (fun s => FamilySlotShuffleTo s S.card) hfg)
   have hcast :
       ((cast (rename ρ)).slotEquiv.symm v).1 =
-        ((rename ρ).slotEquiv.symm v).1 := by
-    cases hfg
-    rfl
+        ((rename ρ).slotEquiv.symm v).1 :=
+    FamilySlotShuffleTo.castSize_owner hfg (rename ρ) v
   change ((cast (rename ρ)).slotEquiv.symm v).1 = _
   rw [hcast]
   exact FamilySlotShuffleTo.reindexEquiv_owner e.symm f ρ v
