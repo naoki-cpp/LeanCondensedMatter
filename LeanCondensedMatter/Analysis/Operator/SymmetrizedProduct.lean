@@ -19,7 +19,7 @@ or particle-statistics interpretation. Those meanings belong to downstream layer
 
 namespace LinearMap
 
-variable {K : Type*} [Field K] [NeZero (2 : K)]
+variable {K : Type*} [Field K]
 
 attribute [local instance 100] LieRing.ofAssociativeRing
 
@@ -99,13 +99,17 @@ theorem symmetrizedProduct_zero_right {W : Type*} [AddCommGroup W] [Module K W]
   rw [symmetrizedProduct_comm]
   exact symmetrizedProduct_zero_left A
 
+variable [NeZero (2 : K)]
+
 /-- Scalar multiples of the identity behave as scalar quantities under symmetrization. -/
 @[simp]
 theorem symmetrizedProduct_smul_id {W : Type*} [AddCommGroup W] [Module K W]
     (A : W →ₗ[K] W) (q : K) :
     symmetrizedProduct A (q • LinearMap.id) = q • A := by
   ext v
-  simp [symmetrizedProduct_apply]; module
+  simp [symmetrizedProduct_apply]
+  try module
+  field_simp <;> ring
 
 /-- If two operators commute, their symmetrized product reduces to ordinary composition. -/
 theorem symmetrizedProduct_eq_comp_of_commutes {W : Type*} [AddCommGroup W] [Module K W]
@@ -119,7 +123,8 @@ theorem symmetrizedProduct_eq_comp_of_commutes {W : Type*} [AddCommGroup W] [Mod
   have hcomm : A (B v) = B (A v) := sub_eq_zero.mp hzero
   rw [symmetrizedProduct_apply]
   rw [← hcomm]
-  module
+  try module
+  field_simp <;> ring
 
 /-- Reassociating two symmetrized products produces a double-commutator correction.
 
@@ -132,7 +137,9 @@ theorem symmetrizedProduct_nested {W : Type*} [AddCommGroup W] [Module K W]
         (1 / 4 : K) • ⁅v, ⁅A, m⁆⁆ := by
   ext x
   simp [symmetrizedProduct_apply, LieRing.of_associative_ring_bracket,
-    Module.End.mul_eq_comp]; module
+    Module.End.mul_eq_comp]
+  try module
+  field_simp <;> ring
 
 /-- If the outer localizer commutes with the transported quantity, nested symmetrization
 reassociates without a correction. -/
