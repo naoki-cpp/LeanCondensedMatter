@@ -70,6 +70,60 @@ theorem finiteCutoffContinuumBornDysonRadialScalarGreenGenerator_hasDerivAt
   · funext r
     rfl
 
+/-- The second derivative of the *physical* finite-cutoff radial Dyson
+Green generator contains both the K0 and K2 Fourier harmonics. This
+derivative is taken before removing cutoff or broadening. -/
+theorem finiteCutoffContinuumBornDysonRadialScalarGreenGenerator_hasDerivAt_deriv
+    (side : SpectralSide)
+    (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ)
+    (hbroadening : broadening ≠ 0) (hdisorder : 0 ≤ disorderStrength)
+    (hpMax : 0 ≤ pMax) :
+    HasDerivAt
+      (deriv (fun r : ℝ => finiteCutoffContinuumBornDysonRadialScalarGreenGenerator
+        side v m probeEnergy broadening disorderStrength hbar pMax r))
+      ((((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
+        ∫ p in (0 : ℝ)..pMax,
+          ((p : ℂ) *
+            (finiteCutoffContinuumBornDysonDenominator
+              side v m p 0 probeEnergy broadening disorderStrength hbar pMax)⁻¹ *
+            (Complex.I * ((p / hbar : ℝ) : ℂ))) *
+            (((p / hbar : ℝ) : ℂ) *
+              ((Complex.I / 2) *
+                (polarFourierZerothAngularKernel (p * radius / hbar) +
+                  polarFourierSecondCosineAngularKernel (p * radius / hbar)))))
+      radius := by
+  let weight : ℝ → ℂ := fun p =>
+    ((p : ℂ) *
+      (finiteCutoffContinuumBornDysonDenominator
+        side v m p 0 probeEnergy broadening disorderStrength hbar pMax)⁻¹) *
+      (Complex.I * ((p / hbar : ℝ) : ℂ))
+  have hcont : Continuous weight := by
+    dsimp [weight]
+    exact ((Complex.continuous_ofReal.mul
+      (continuous_finiteCutoffContinuumBornDysonDenominator_inv_radial
+        side v m probeEnergy broadening disorderStrength hbar pMax
+        hbroadening hdisorder hpMax)).mul
+      (continuous_const.mul
+        (Complex.continuous_ofReal.comp (by fun_prop : Continuous (fun p : ℝ => p / hbar)))))
+  have h := (hasDerivAt_integral_polarFourierFirstCosineAngularKernel
+    weight hcont pMax hbar radius).const_mul
+      (((momentumMeasurePrefactor hbar : ℝ) : ℂ))
+  convert h using 1
+  · funext r
+    rw [(finiteCutoffContinuumBornDysonRadialScalarGreenGenerator_hasDerivAt
+      side v m probeEnergy broadening disorderStrength hbar pMax r
+      hbroadening hdisorder hpMax).deriv]
+    congr 1
+    apply intervalIntegral.integral_congr
+    intro p _
+    dsimp [weight]
+    ring
+  · congr 1
+    apply intervalIntegral.integral_congr
+    intro p _
+    dsimp [weight]
+    ring
+
 /-- A model-local linearity bridge for radial Green coefficients. The
 normalization is carried once by the scalar generator, while a constant
 effective spectral coefficient factors outside the *finite* momentum
