@@ -399,7 +399,8 @@ theorem ExternalInsertionBlockLayout.ofFamilyShuffle_signedDysonOwnerOrbit_eq_pr
           hVac anchor ε β g externalTime
       rw [hLayout] at hOrbit
       exact hOrbit.trans
-        (layout.assembleConnectedBlocks_signedDysonShuffleOrbit_eq_subsetTimes
+        (ExternalInsertionBlockLayout.assembleConnectedBlocks_signedDysonShuffleOrbit_eq_subsetTimes
+          layout
           F.1 F.2 ε β g externalTime)
 
 open Classical in
@@ -613,6 +614,12 @@ theorem ExternalInsertionBlockLayout.sum_physicalFixedSizeDyson_eq_signedProduct
   let order : Combinatorics.FamilySlotShuffleTo size n → QuarticVertexOrder S :=
     fun τ => (S.orderIsoOfFin rfl).toEquiv.trans
       (fullInteractionSlotEquiv (σ.ambientRelabel τ)).symm
+  have hsource (B : π.parts) :
+      (fun i : Fin (2 * ((B : Finset (Fin (2 * E))).card / 2)) =>
+        labels (layout.sourceEquiv.symm ⟨B, i⟩)) =
+        evenExternalSubsetLabels labels (B : Finset (Fin (2 * E))) (heven B) := by
+    funext i
+    exact congrArg labels (layout.sourceEquiv_symm_apply B i)
   have hlabels (F : layout.ConnectedBlockFamily
       (ExternalLabel := ExternalFieldLabel Mode)
       (InternalLabel := QuarticVertexLabel Mode)) :
@@ -623,11 +630,11 @@ theorem ExternalInsertionBlockLayout.sum_physicalFixedSizeDyson_eq_signedProduct
     rw [layout.assembleDiagram_externalLabel_eq_iff S F.1 labels]
     constructor
     · intro h B
-      simpa only [evenExternalSubsetLabels, evenExternalSubsetOrderIso,
-        layout.sourceEquiv_symm_apply] using h B
+      rw [← hsource B]
+      exact h B
     · intro h B
-      simpa only [evenExternalSubsetLabels, evenExternalSubsetOrderIso,
-        layout.sourceEquiv_symm_apply] using h B
+      rw [hsource B]
+      exact h B
   have hOrbit (F : layout.ConnectedBlockFamily
       (ExternalLabel := ExternalFieldLabel Mode)
       (InternalLabel := QuarticVertexLabel Mode)) :
@@ -641,7 +648,8 @@ theorem ExternalInsertionBlockLayout.sum_physicalFixedSizeDyson_eq_signedProduct
       ExternalInsertionBlockLayout.ofFamilyShuffle_signedDysonOwnerOrbit_eq_prod
         π heven σ F anchor ε β g times
     have hComponents :=
-      layout.assembleConnectedBlocks_signedDysonShuffleOrbit_eq_subsetTimes
+      ExternalInsertionBlockLayout.assembleConnectedBlocks_signedDysonShuffleOrbit_eq_subsetTimes
+          layout
         F.1 F.2 ε β g times
     exact hOwner.trans hComponents.symm
   have hPhysical :=
@@ -704,8 +712,8 @@ theorem ExternalInsertionBlockLayout.sum_physicalFixedSizeDyson_eq_signedProduct
     _ = _ := by
           simpa only [layout,
             ExternalInsertionBlockLayout.ofFamilyShuffle_interactionBlock_card] using
-            (layout.sum_signedDysonShuffleOrbits_eq_prod_standardized
-              ε β g labels times)
+            (ExternalInsertionBlockLayout.sum_signedDysonShuffleOrbits_eq_prod_standardized
+              layout ε β g labels times)
 
 end Fermionic
 end SecondQuantization
