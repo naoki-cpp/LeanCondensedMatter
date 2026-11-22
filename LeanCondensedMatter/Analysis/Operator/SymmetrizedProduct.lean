@@ -99,6 +99,8 @@ theorem symmetrizedProduct_zero_right {W : Type*} [AddCommGroup W] [Module K W]
   rw [symmetrizedProduct_comm]
   exact symmetrizedProduct_zero_left A
 
+section Half
+
 variable [NeZero (2 : K)]
 
 /-- Scalar multiples of the identity behave as scalar quantities under symmetrization. -/
@@ -108,8 +110,9 @@ theorem symmetrizedProduct_smul_id {W : Type*} [AddCommGroup W] [Module K W]
     symmetrizedProduct A (q • LinearMap.id) = q • A := by
   ext v
   simp [symmetrizedProduct_apply]
-  try module
-  field_simp <;> ring
+  rw [← two_smul K, smul_smul]
+  have h2 : (2 : K) * (2 : K)⁻¹ = 1 := mul_inv_cancel₀ (NeZero.ne (2 : K))
+  simp only [← mul_assoc, h2, one_mul]
 
 /-- If two operators commute, their symmetrized product reduces to ordinary composition. -/
 theorem symmetrizedProduct_eq_comp_of_commutes {W : Type*} [AddCommGroup W] [Module K W]
@@ -123,8 +126,11 @@ theorem symmetrizedProduct_eq_comp_of_commutes {W : Type*} [AddCommGroup W] [Mod
   have hcomm : A (B v) = B (A v) := sub_eq_zero.mp hzero
   rw [symmetrizedProduct_apply]
   rw [← hcomm]
-  try module
-  field_simp <;> ring
+  change (1 / 2 : K) • (A (B v) + A (B v)) = A (B v)
+  rw [← two_smul K (A (B v)), smul_smul]
+  have h2 : (1 / 2 : K) * 2 = 1 := by
+    simpa only [one_div] using (inv_mul_cancel₀ (NeZero.ne (2 : K)))
+  rw [h2, one_smul]
 
 /-- Reassociating two symmetrized products produces a double-commutator correction.
 
@@ -135,11 +141,14 @@ theorem symmetrizedProduct_nested {W : Type*} [AddCommGroup W] [Module K W]
     symmetrizedProduct (symmetrizedProduct A v) m =
       symmetrizedProduct A (symmetrizedProduct v m) +
         (1 / 4 : K) • ⁅v, ⁅A, m⁆⁆ := by
+  have hquarter : (1 / 4 : K) = (1 / 2 : K) * (1 / 2 : K) := by
+    rw [show (4 : K) = (2 : K) ^ 2 by ring]
+    simp only [one_div, inv_pow, pow_two]
+  rw [hquarter]
   ext x
   simp [symmetrizedProduct_apply, LieRing.of_associative_ring_bracket,
     Module.End.mul_eq_comp]
-  try module
-  field_simp <;> ring
+  module
 
 /-- If the outer localizer commutes with the transported quantity, nested symmetrization
 reassociates without a correction. -/
@@ -151,6 +160,8 @@ theorem symmetrizedProduct_nested_eq_of_commutes
       symmetrizedProduct A (symmetrizedProduct v m) := by
   rw [symmetrizedProduct_nested A v m, hAm]
   simp
+
+end Half
 
 /-- The commutator acts as a derivation on the symmetrized product. -/
 theorem lie_symmetrizedProduct {W : Type*} [AddCommGroup W] [Module K W]
