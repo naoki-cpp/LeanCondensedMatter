@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Analysis.Fourier.PolarRadialKernels.HigherHarmonics
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.BornDyson.RealSpace.ScalarGenerator
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.BornDyson.DysonShift
 import Mathlib.Analysis.Calculus.Deriv.Star
