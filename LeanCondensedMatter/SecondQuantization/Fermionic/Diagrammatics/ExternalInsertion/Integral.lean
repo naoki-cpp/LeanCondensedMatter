@@ -811,7 +811,7 @@ theorem ExternalInsertionBlockLayout.sum_physicalFixedSizeDyson_eq_standardizedO
           externalComponentPartition d.1.vertexGraph = π} //
         ((ExternalInsertionBlockLayout.fixedPartitionPhysicalSizeShuffleEquiv
           (E := E) (N := n) (ExternalLabel := ExternalFieldLabel Mode)
-          (InternalLabel := QuarticVertexLabel Mode) anchor π heven) d.1).1.1 = size},
+          (InternalLabel := QuarticVertexLabel Mode) anchor π heven) d).1.1 = size},
       if d.1.1.1.externalLabel = labels then
         d.1.1.1.dysonAmplitude ε β g externalTime else 0) =
       ∑ τ : Combinatorics.FamilySlotShuffleTo size n,
@@ -842,7 +842,7 @@ theorem ExternalInsertionBlockLayout.sum_physicalFixedSizeDyson_eq_standardizedO
       externalComponentPartition d.1.vertexGraph = π} //
     ((ExternalInsertionBlockLayout.fixedPartitionPhysicalSizeShuffleEquiv
       (E := E) (N := n) (ExternalLabel := ExternalFieldLabel Mode)
-      (InternalLabel := QuarticVertexLabel Mode) anchor π heven) d.1).1.1 = size} → ℂ :=
+      (InternalLabel := QuarticVertexLabel Mode) anchor π heven) d).1.1 = size} → ℂ :=
     fun d => if d.1.1.1.externalLabel = labels then
       d.1.1.1.dysonAmplitude ε β g externalTime else 0
   have hdiagram (τ : Combinatorics.FamilySlotShuffleTo size n)
