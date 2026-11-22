@@ -2,6 +2,8 @@ import LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.CurrentGra
 import LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.RadialHarmonics
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.BornDyson.DysonShift
 import Mathlib.Tactic.FunProp
+import Mathlib.Tactic.GCongr
+import Mathlib.Tactic.Linarith
 import Mathlib.Tactic.Ring
 
 set_option linter.style.header false
@@ -516,6 +518,91 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedInPlaneK2_eq_realLorentzian
             rw [intervalIntegral.integral_const_mul]
             ring
     _ = _ := rfl
+
+
+/-- A quantitative **off-shell** estimate for the physical Gaussian-crossed
+K2 Fourier kernel. If the radial momenta in [a,b] stay a fixed spectral
+distance δ from the *actual finite-regulator* Dyson shell, the width-scaled
+K2 contribution is bounded linearly by the imaginary Dyson width.
+This is the needed tail estimate before using an on-shell Lorentzian
+concentration theorem; no clean-spectrum substitution is made. -/
+theorem finiteCutoffContinuumBornDysonGaussianCrossedK2_offShell_width_integral_norm_le
+    (v m probeEnergy broadening disorderStrength hbar pMax radius a b δ : ℝ)
+    (ha : 0 ≤ a) (hab : a ≤ b) (hb : b ≤ pMax)
+    (hδ : 0 < δ)
+    (hsep : ∀ p ∈ Set.Icc a b,
+      δ ≤ |(finiteCutoffContinuumBornDysonDenominator
+        .retarded v m 0 0 probeEnergy broadening disorderStrength hbar pMax).re -
+        v ^ 2 * p ^ 2|) :
+    let D0 := finiteCutoffContinuumBornDysonDenominator
+      .retarded v m 0 0 probeEnergy broadening disorderStrength hbar pMax
+    ‖(D0.im : ℂ) *
+        ∫ p in a..b,
+          (p : ℂ) ^ 3 *
+            polarFourierSecondCosineAngularKernel (p * radius / hbar) *
+            (((D0.re - v ^ 2 * p ^ 2) ^ 2 + D0.im ^ 2 : ℝ) : ℂ)⁻¹‖ ≤
+      (b - a) * (|D0.im| * pMax ^ 3 * (2 * Real.pi) / δ ^ 2) := by
+  dsimp only
+  let D0 := finiteCutoffContinuumBornDysonDenominator
+    .retarded v m 0 0 probeEnergy broadening disorderStrength hbar pMax
+  let weight : ℝ → ℂ := fun p =>
+    (p : ℂ) ^ 3 * polarFourierSecondCosineAngularKernel (p * radius / hbar) *
+      (((D0.re - v ^ 2 * p ^ 2) ^ 2 + D0.im ^ 2 : ℝ) : ℂ)⁻¹
+  let C : ℝ := |D0.im| * pMax ^ 3 * (2 * Real.pi) / δ ^ 2
+  have hpMax : 0 ≤ pMax := le_trans (le_trans ha hab) hb
+  have hδsq : 0 < δ ^ 2 := sq_pos_of_pos hδ
+  have hpoint (p : ℝ) (hp : p ∈ Set.Icc a b) :
+      ‖(D0.im : ℂ) * weight p‖ ≤ C := by
+    have hp0 : 0 ≤ p := le_trans ha hp.1
+    have hpUpper : p ≤ pMax := le_trans hp.2 hb
+    have hpow : p ^ 3 ≤ pMax ^ 3 := by gcongr
+    let d : ℝ := (D0.re - v ^ 2 * p ^ 2) ^ 2 + D0.im ^ 2
+    have hsepAt : δ ≤ |D0.re - v ^ 2 * p ^ 2| := hsep p hp
+    have hsquared : δ ^ 2 ≤ (D0.re - v ^ 2 * p ^ 2) ^ 2 := by
+      have hprod := mul_nonneg
+        (sub_nonneg.mpr hsepAt)
+        (add_nonneg (abs_nonneg _) hδ.le)
+      nlinarith [sq_abs (D0.re - v ^ 2 * p ^ 2)]
+    have hd : δ ^ 2 ≤ d := by
+      dsimp [d]
+      nlinarith [sq_nonneg D0.im]
+    have hdPos : 0 < d := lt_of_lt_of_le hδsq hd
+    have hinv : d⁻¹ ≤ (δ ^ 2)⁻¹ :=
+      (inv_le_inv₀ hδsq hdPos).2 hd
+    have hkernel :
+        ‖polarFourierSecondCosineAngularKernel (p * radius / hbar)‖ ≤
+          2 * Real.pi :=
+      polarFourierSecondCosineAngularKernel_norm_le _
+    have hnorm :
+        ‖(D0.im : ℂ) * weight p‖ =
+          |D0.im| * p ^ 3 *
+            ‖polarFourierSecondCosineAngularKernel (p * radius / hbar)‖ * d⁻¹ := by
+      dsimp [weight, d]
+      simp only [norm_mul, norm_pow, Complex.norm_real, Real.norm_eq_abs, norm_inv,
+        abs_of_nonneg hp0, abs_of_pos hdPos]
+      ring
+    rw [hnorm]
+    dsimp [C]
+    calc
+      _ ≤ |D0.im| * pMax ^ 3 * (2 * Real.pi) * (δ ^ 2)⁻¹ := by
+        gcongr
+      _ = _ := by ring
+  have hnorm :=
+    intervalIntegral.norm_integral_le_of_norm_le_const
+      (a := a) (b := b) (C := C)
+      (f := fun p => (D0.im : ℂ) * weight p)
+      (by
+        intro p hp
+        apply hpoint p
+        simpa [Set.uIcc_of_le hab] using (Set.uIoc_subset_uIcc hp))
+  calc
+    ‖(D0.im : ℂ) * ∫ p in a..b, weight p‖ =
+      ‖∫ p in a..b, (D0.im : ℂ) * weight p‖ := by
+        rw [intervalIntegral.integral_const_mul]
+    _ ≤ C * |b - a| := hnorm
+    _ = (b - a) * (|D0.im| * pMax ^ 3 * (2 * Real.pi) / δ ^ 2) := by
+      rw [abs_of_nonneg (sub_nonneg.mpr hab)]
+      rfl
 
 end
 
