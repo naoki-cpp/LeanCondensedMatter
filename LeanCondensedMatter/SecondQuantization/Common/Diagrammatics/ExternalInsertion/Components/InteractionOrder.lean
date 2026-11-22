@@ -143,7 +143,7 @@ theorem ExternalInsertionDiagram.assembleInteractionOrder_eq_canonicalRelabel
     fun B => (interactionSector (B : Finset (ExternalInsertionVertex E S))).card
   let ambient := interactionSectorComponentEquiv d.vertexGraph
   let order : QuarticVertexOrder S := (S.orderIsoOfFin rfl).toEquiv
-  let e := familyOrderDecompositionEquivOfSize family size
+  let e := familyOrderDecompositionEquivOfSize (total := S.card) family size
     (fun B => Fintype.card_coe
       (interactionSector (B : Finset (ExternalInsertionVertex E S)))) ambient
   have hmono (B : d.vertexGraph.componentPartition.parts) :
