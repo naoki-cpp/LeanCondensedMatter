@@ -143,19 +143,11 @@ the off-diagonal in-plane channel carries the first-cosine kernel. -/
 noncomputable def finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix
     (side : SpectralSide)
     (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ) : Matrix2 :=
-  let data := fun p : ℝ =>
-    finiteCutoffContinuumBornDysonRadialPauliData
-      side v m p probeEnergy broadening disorderStrength hbar pMax
-  let prefactor : ℂ := ((momentumMeasurePrefactor hbar : ℝ) : ℂ)
-  let k0 : ℝ → ℂ := fun p =>
-    polarFourierZerothAngularKernel (p * radius / hbar)
-  let k1 : ℝ → ℂ := fun p =>
-    polarFourierFirstCosineAngularKernel (p * radius / hbar)
-  !![
-    prefactor * ∫ p in (0 : ℝ)..pMax, (p : ℂ) * (k0 p * ((data p).scalar + (data p).z)),
-    prefactor * ∫ p in (0 : ℝ)..pMax, (p : ℂ) * (k1 p * (data p).x);
-    prefactor * ∫ p in (0 : ℝ)..pMax, (p : ℂ) * (k1 p * (data p).x),
-    prefactor * ∫ p in (0 : ℝ)..pMax, (p : ℂ) * (k0 p * ((data p).scalar - (data p).z))]
+  fun i j =>
+    (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
+      ∫ p in (0 : ℝ)..pMax,
+        finiteCutoffContinuumBornDysonRadialGreenEntryKernel
+          side v m probeEnergy broadening disorderStrength hbar pMax radius p i j
 
 /-- Scalar Pauli coefficient of the positive-axis radial Born-Dyson Green matrix. -/
 noncomputable def finiteCutoffContinuumBornDysonRadialGreenScalarCoefficient
@@ -251,7 +243,7 @@ theorem finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix_apply_eq_entryK
         ∫ p in (0 : ℝ)..pMax,
           finiteCutoffContinuumBornDysonRadialGreenEntryKernel
             side v m probeEnergy broadening disorderStrength hbar pMax radius p i j := by
-  fin_cases i <;> fin_cases j <;> rfl
+  rfl
 
 /-- Entrywise radial integration determines the finite-cutoff Born-Dyson Green matrix. -/
 private theorem finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix_eq_entryKernel_integral
