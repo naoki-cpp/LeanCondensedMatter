@@ -118,40 +118,6 @@ theorem integral_polarFourierRadialPhase_first_harmonics
   simpa [coefficients, AngularHarmonicCoefficients.eval, smul_eq_mul] using
     integral_polarFourierRadialPhase_harmonicCoefficients coefficients z p
 
-private theorem angular_second_harmonics_add
-    (angle θ : ℝ) (a b c d e : ℂ) :
-    a + ((Real.cos (θ + angle) : ℝ) : ℂ) * b +
-          ((Real.sin (θ + angle) : ℝ) : ℂ) * c +
-          ((((Real.cos (θ + angle) : ℝ) : ℂ) ^ 2) -
-            (((Real.sin (θ + angle) : ℝ) : ℂ) ^ 2)) * d +
-          (((Real.cos (θ + angle) : ℝ) : ℂ) *
-            ((Real.sin (θ + angle) : ℝ) : ℂ)) * e =
-      a + ((Real.cos θ : ℝ) : ℂ) *
-            (((Real.cos angle : ℝ) : ℂ) * b + ((Real.sin angle : ℝ) : ℂ) * c) +
-          ((Real.sin θ : ℝ) : ℂ) *
-            (-((Real.sin angle : ℝ) : ℂ) * b + ((Real.cos angle : ℝ) : ℂ) * c) +
-          ((((Real.cos θ : ℝ) : ℂ) ^ 2) - (((Real.sin θ : ℝ) : ℂ) ^ 2)) *
-            (((((Real.cos angle : ℝ) : ℂ) ^ 2) -
-                (((Real.sin angle : ℝ) : ℂ) ^ 2)) * d +
-              (((Real.cos angle : ℝ) : ℂ) * ((Real.sin angle : ℝ) : ℂ)) * e) +
-          (((Real.cos θ : ℝ) : ℂ) * ((Real.sin θ : ℝ) : ℂ)) *
-            ((-4 * (((Real.cos angle : ℝ) : ℂ) * ((Real.sin angle : ℝ) : ℂ))) * d +
-              (((((Real.cos angle : ℝ) : ℂ) ^ 2) -
-                (((Real.sin angle : ℝ) : ℂ) ^ 2)) * e)) := by
-  rw [Real.cos_add, Real.sin_add]
-  push_cast
-  ring
-
-/-- Full-period integrals are unchanged by translating a periodic integrand.
-This is also needed for Fourier harmonics at arbitrary polar angles. -/
-private theorem intervalIntegral_fullPeriod_comp_sub_eq
-    (f : ℝ → ℂ) (hf : Function.Periodic f (2 * Real.pi)) (angle : ℝ) :
-    (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi), f (θ - angle)) =
-      ∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi), f θ := by
-  rw [intervalIntegral.integral_comp_sub_right]
-  have h := hf.intervalIntegral_add_eq (-angle) 0
-  simpa [sub_eq_add_neg, add_comm, add_left_comm, add_assoc] using h
-
 private theorem integral_polarFourierRadialPhase_shifted_second_harmonics
     (z p angle : ℝ) (a b c d e : ℂ) :
     (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi),
@@ -192,8 +158,10 @@ private theorem integral_polarFourierRadialPhase_shifted_second_harmonics
           apply intervalIntegral.integral_congr
           intro θ _
           simp [f]
-    _ = ∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi), f θ :=
-      intervalIntegral_fullPeriod_comp_sub_eq f hf angle
+    _ = ∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi), f θ := by
+      rw [intervalIntegral.integral_comp_sub_right]
+      simpa [sub_eq_add_neg, add_comm, add_left_comm, add_assoc] using
+        hf.intervalIntegral_add_eq (-angle) 0
     _ = (p : ℂ) *
         (polarFourierZerothAngularKernel z * a +
           polarFourierFirstCosineAngularKernel z *
@@ -202,7 +170,6 @@ private theorem integral_polarFourierRadialPhase_shifted_second_harmonics
             (((((Real.cos angle : ℝ) : ℂ) ^ 2) -
                 (((Real.sin angle : ℝ) : ℂ) ^ 2)) * d +
               (((Real.cos angle : ℝ) : ℂ) * ((Real.sin angle : ℝ) : ℂ)) * e)) := by
-      simp_rw [f, angular_second_harmonics_add]
       let coefficients : AngularHarmonicCoefficients ℂ :=
         { constant := a
           firstCosine :=
@@ -215,6 +182,17 @@ private theorem integral_polarFourierRadialPhase_shifted_second_harmonics
           secondMixed :=
             -4 * (((Real.cos angle : ℝ) : ℂ) * ((Real.sin angle : ℝ) : ℂ)) * d +
               (((Real.cos angle : ℝ) : ℂ) ^ 2 - ((Real.sin angle : ℝ) : ℂ) ^ 2) * e }
+      have hchange :
+          (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi), f θ) =
+            ∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi),
+              ((p : ℂ) * polarFourierRadialPhase z θ) * coefficients.eval θ := by
+        apply intervalIntegral.integral_congr
+        intro θ _
+        simp only [f, coefficients, AngularHarmonicCoefficients.eval, smul_eq_mul]
+        rw [Real.cos_add, Real.sin_add]
+        push_cast
+        ring
+      rw [hchange]
       simpa [coefficients, AngularHarmonicCoefficients.eval, smul_eq_mul] using
         integral_polarFourierRadialPhase_harmonicCoefficients coefficients z p
 
