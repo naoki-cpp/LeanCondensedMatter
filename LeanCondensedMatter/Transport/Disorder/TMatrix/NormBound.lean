@@ -1,6 +1,5 @@
 import LeanCondensedMatter.Transport.Disorder.TMatrix
-import Mathlib.Analysis.Normed.Ring.Units
-import Mathlib.Analysis.Complex.Trigonometric
+import Mathlib.Analysis.Normed.Algebra.Exponential
 import Mathlib.Tactic.Ring
 
 set_option linter.style.header false
