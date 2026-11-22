@@ -1,16 +1,18 @@
 import LeanCondensedMatter.Analysis.Operator.TraceClass.General
 import LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.Norm
+import LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.Compact
 import LeanCondensedMatter.Analysis.Operator.Polar
 
 set_option linter.style.header false
 
 /-!
-# Basic Hilbert--Schmidt factorization of trace-class operators
+# Factorization and compactness of trace-class operators
 
 This module owns the trace-norm-independent factorization layer. A trace-class bounded operator
 factors as `A† B` with Hilbert--Schmidt factors, and conversely every such product is trace class.
 The forward construction also controls both squared Hilbert--Schmidt norms by the squared
-Hilbert--Schmidt norm of `sqrt(|T|)`, without depending on the trace-norm API.
+Hilbert--Schmidt norm of `sqrt(|T|)`, without depending on the trace-norm API. The resulting Hilbert--Schmidt factorization
+also implies compactness of every trace-class operator.
 -/
 
 noncomputable section
@@ -86,5 +88,20 @@ theorem isTraceClass_iff_exists_hilbertSchmidt_factorization {T : H →L[ℂ] H}
     apply (isTraceClass_iff_isTraceClassWrt d T).mpr
     rw [IsTraceClassWrt]
     exact Complex.summable_ofReal.mp hcast
+
+namespace IsTraceClass
+
+/-- Every trace-class operator is compact. -/
+theorem isCompact {T : H →L[ℂ] H} (hT : IsTraceClass T) :
+    IsCompactOperator T := by
+  obtain ⟨A, B, -, hB, hfactor⟩ :=
+    (isTraceClass_iff_exists_hilbertSchmidt_factorization (T := T)).mp hT
+  rw [← hfactor]
+  change IsCompactOperator
+    (⇑(ContinuousLinearMap.adjoint A) ∘ ⇑B)
+  exact hB.isCompact.clm_comp (ContinuousLinearMap.adjoint A)
+
+
+end IsTraceClass
 
 end ContinuousLinearMap
