@@ -450,6 +450,56 @@ noncomputable def ExternalInsertionBlockLayout.interactionAssignmentShuffle
   (layout.interactionOrderDecompositionEquiv
     ((Finset.univ : Finset (Fin N)).orderIsoOfFin rfl).toEquiv).2
 
+/-- The canonical component interleaving of a vacuum-free physical
+diagram becomes exactly the canonical interaction-assignment shuffle
+of its true external-block layout. This is a consequence of the
+*physical owner* identity and uniqueness of increasing family shuffles,
+not a new combinatorial enumeration. -/
+theorem ExternalInsertionDiagram.physicalBlockInteractionShuffleEquiv_canonical
+    {ExternalLabel InternalLabel : Type*}
+    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N
+      (Finset.univ : Finset (Fin N)))
+    (hVac : HasNoVacuumComponent d.vertexGraph)
+    (anchor : Fin (2 * E)) :
+    (d.physicalBlockInteractionShuffleEquiv hVac anchor)
+        d.canonicalComponentInteractionShuffle =
+      (d.externalBlockLayout hVac anchor).interactionAssignmentShuffle := by
+  classical
+  apply FamilySlotShuffleTo.eq_of_same_owner
+  intro v
+  rw [d.physicalBlockInteractionShuffleEquiv_owner
+    hVac anchor d.canonicalComponentInteractionShuffle v]
+  rw [d.canonicalComponentInteractionShuffle_physicalOwner hVac anchor v]
+  exact ((d.externalBlockLayout hVac anchor).interactionOrderDecomposition_owner
+    ((Finset.univ : Finset (Fin N)).orderIsoOfFin rfl).toEquiv v).symm
+
+/-- The component-order Dyson orbit of a genuine vacuum-free diagram
+uses precisely the transported global orders of the *physical*
+interaction-assignment shuffles. The identity is pointwise in the
+shuffle, including empty local interaction blocks, so it preserves the
+entire signed ordered-simplex amplitude. -/
+theorem ExternalInsertionDiagram.assembleInteractionOrder_eq_physicalOwnerRelabel
+    {ExternalLabel InternalLabel : Type*}
+    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N
+      (Finset.univ : Finset (Fin N)))
+    (hVac : HasNoVacuumComponent d.vertexGraph)
+    (anchor : Fin (2 * E))
+    (ρ : d.ComponentInteractionOrderShuffle) :
+    d.assembleInteractionOrder d.canonicalComponentInteractionOrders ρ =
+      (((d.externalBlockLayout hVac anchor).interactionAssignmentShuffle.ambientRelabel
+        ((d.physicalBlockInteractionShuffleEquiv hVac anchor) ρ)).symm.trans
+          ((Finset.univ : Finset (Fin N)).orderIsoOfFin rfl).toEquiv) := by
+  classical
+  have hrelab := d.physicalBlockInteractionShuffleEquiv_ambientRelabel
+    hVac anchor d.canonicalComponentInteractionShuffle ρ
+  rw [d.physicalBlockInteractionShuffleEquiv_canonical hVac anchor] at hrelab
+  calc
+    _ = (d.canonicalComponentInteractionShuffle.ambientRelabel ρ).symm.trans
+          ((Finset.univ : Finset (Fin N)).orderIsoOfFin rfl).toEquiv :=
+      d.assembleInteractionOrder_eq_canonicalRelabel ρ
+    _ = _ := by
+      rw [← hrelab]
+
 /-- Two external block layouts are equal if their source partitions and
 underlying interaction-owner blocks coincide. The evenness witnesses are
 propositions, so they carry no additional data. -/
