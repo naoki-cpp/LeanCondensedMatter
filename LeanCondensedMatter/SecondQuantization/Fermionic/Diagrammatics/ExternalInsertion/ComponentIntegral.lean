@@ -223,7 +223,7 @@ theorem ExternalInsertionWickDiagram.sum_physicalOwnerShuffle_orderedDysonAmplit
   change (∑ τ, w τ) = _
   calc
     _ = ∑ ρ : d.ComponentInteractionOrderShuffle, w (e ρ) :=
-      Equiv.sum_comp e w
+      (Equiv.sum_comp e w).symm
     _ = _ := by
       apply Finset.sum_congr rfl
       intro ρ _
