@@ -111,7 +111,7 @@ theorem integral_besselJ_one_sq_div (a b : ℝ) :
     rw [polarFourierFirstCosineAngularKernel_eq_besselJ,
       polarFourierZerothAngularKernel_eq_besselJ,
       polarFourierSecondCosineAngularKernel_eq_besselJ,
-      besselJ_one_sq_div_eq_half_product]
+      BesselHypergeometric.besselJ_one_sq_div_eq_half_product]
     change Complex.I * (c * Complex.I * Complex.besselJ 1 (z : ℂ)) *
         (c * Complex.besselJ 0 (z : ℂ) -
           -(c * Complex.besselJ 2 (z : ℂ))) =
