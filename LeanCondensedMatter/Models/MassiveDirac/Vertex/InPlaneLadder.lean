@@ -113,15 +113,15 @@ theorem tendsto_inPlaneLadderAction
     (hcoefficients : Tendsto coefficients l (nhds coefficients₀)) :
     Tendsto (fun a => inPlaneLadderAction (rung a) (coefficients a)) l
       (nhds (inPlaneLadderAction rung₀ coefficients₀)) := by
-  have haction : Continuous
-      (fun p : InPlaneCoefficientVector × InPlaneCoefficientVector =>
-        (inPlaneRotationMatrix p.1).mulVec p.2) :=
-    (continuous_inPlaneRotationMatrix.comp continuous_fst).matrix_mulVec continuous_snd
-  change Tendsto
-    (fun a => (inPlaneRotationMatrix (rung a)).mulVec (coefficients a)) l
-    (nhds ((inPlaneRotationMatrix rung₀).mulVec coefficients₀))
-  exact (haction.tendsto (rung₀, coefficients₀)).comp
-    (hrung.prodMk_nhds hcoefficients)
+  rw [tendsto_pi_nhds]
+  intro direction
+  fin_cases direction
+  · simpa only [Fin.zero_eta, inPlaneLadderAction_apply_x] using
+      ((tendsto_pi_nhds.mp hrung 0).mul (tendsto_pi_nhds.mp hcoefficients 0)).sub
+        ((tendsto_pi_nhds.mp hrung 1).mul (tendsto_pi_nhds.mp hcoefficients 1))
+  · simpa only [Fin.mk_one, inPlaneLadderAction_apply_y] using
+      ((tendsto_pi_nhds.mp hrung 1).mul (tendsto_pi_nhds.mp hcoefficients 0)).add
+        ((tendsto_pi_nhds.mp hrung 0).mul (tendsto_pi_nhds.mp hcoefficients 1))
 
 /-- Integrating the in-plane ladder action against a fixed coefficient vector amounts to
 integrating its rung vector. Integrability and the integral identity share the same hypotheses. -/
