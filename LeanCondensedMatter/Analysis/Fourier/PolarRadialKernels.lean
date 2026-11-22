@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Analysis.Fourier.PolarRadialKernels.Core
 import LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.HypergeometricSeries
 import LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.ThreeTermRecurrence
 import LeanCondensedMatter.Analysis.Fourier.AngularHarmonics
@@ -18,9 +19,10 @@ import Mathlib.Tactic.Ring
 set_option linter.style.header false
 
 /-!
-# Model-independent polar Fourier–Bessel kernels
+# Polar Fourier–Bessel kernel analysis
 
-This module develops the dimensionless polar Fourier phase, angular harmonics,
+The core definitions and elementary properties live in
+`Analysis.Fourier.PolarRadialKernels.Core`. This module develops angular harmonics,
 Bessel-function representations, symmetry identities, differentiation formulas,
 and full-period harmonic reduction. It assumes no momentum measure, Planck
 constant, physical Fourier normalization, transport mechanism, or Hamiltonian.
@@ -41,35 +43,6 @@ noncomputable section
 
 open MeasureTheory
 open scoped Interval ComplexConjugate
-
-/-- Dimensionless radial phase `exp(i z cos θ)` that appears after aligning the real-space point with
-the polar axis. -/
-def polarFourierRadialPhase (z θ : ℝ) : ℂ :=
-  Complex.exp (Complex.I * (((z * Real.cos θ : ℝ) : ℂ)))
-
-/-- Zeroth full-angle radial Fourier kernel, identified with `2π J₀(z)` by
-`polarFourierZerothAngularKernel_eq_besselJ`. -/
-noncomputable def polarFourierZerothAngularKernel (z : ℝ) : ℂ :=
-  ∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi), polarFourierRadialPhase z θ
-
-/-- First cosine full-angle radial Fourier kernel, identified with `2π i J₁(z)`
-by `polarFourierFirstCosineAngularKernel_eq_besselJ`. -/
-noncomputable def polarFourierFirstCosineAngularKernel (z : ℝ) : ℂ :=
-  ∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi),
-    polarFourierRadialPhase z θ * ((Real.cos θ : ℝ) : ℂ)
-
-/-- The zeroth full-angle Fourier phase has vanishing first cosine harmonic. -/
-@[simp] theorem polarFourierFirstCosineAngularKernel_zero :
-    polarFourierFirstCosineAngularKernel 0 = 0 := by
-  have h := integral_cos_mul_complex (z := (1 : ℂ)) one_ne_zero (0 : ℝ) (2 * Real.pi)
-  simpa [polarFourierFirstCosineAngularKernel, polarFourierRadialPhase] using h
-/-- Second cosine full-angle radial Fourier kernel, written as the `cos(2θ)`
-polynomial for quadratic angular products and identified with `-2π J₂(z)`
-by `polarFourierSecondCosineAngularKernel_eq_besselJ`. -/
-noncomputable def polarFourierSecondCosineAngularKernel (z : ℝ) : ℂ :=
-  ∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi),
-    polarFourierRadialPhase z θ *
-      ((((Real.cos θ : ℝ) : ℂ) ^ 2) - (((Real.sin θ : ℝ) : ℂ) ^ 2))
 
 /-- Expand the radial Fourier phase in its exponential series and commute the
 uniformly dominated series with integration over the finite angular interval.
@@ -258,35 +231,6 @@ theorem polarFourierZerothAngularKernel_eq_besselJ (z : ℝ) :
       rw [tsum_mul_left]
     _ = ((2 * Real.pi : ℝ) : ℂ) * Complex.besselJ 0 (z : ℂ) := by
       rw [besselJZero_eq_regularizedHGTsum]
-
-/-- The zeroth radial Fourier kernel is normalized by the full polar angle at the origin. -/
-@[simp] theorem polarFourierZerothAngularKernel_zero :
-    polarFourierZerothAngularKernel 0 = ((2 * Real.pi : ℝ) : ℂ) := by
-  simp [polarFourierZerothAngularKernel, polarFourierRadialPhase]
-
-@[fun_prop]
-theorem continuous_polarFourierZerothAngularKernel :
-    Continuous polarFourierZerothAngularKernel := by
-  unfold polarFourierZerothAngularKernel
-  apply intervalIntegral.continuous_parametric_intervalIntegral_of_continuous'
-  unfold Function.uncurry polarFourierRadialPhase
-  fun_prop
-
-@[fun_prop]
-theorem continuous_polarFourierFirstCosineAngularKernel :
-    Continuous polarFourierFirstCosineAngularKernel := by
-  unfold polarFourierFirstCosineAngularKernel
-  apply intervalIntegral.continuous_parametric_intervalIntegral_of_continuous'
-  unfold Function.uncurry polarFourierRadialPhase
-  fun_prop
-
-@[fun_prop]
-theorem continuous_polarFourierSecondCosineAngularKernel :
-    Continuous polarFourierSecondCosineAngularKernel := by
-  unfold polarFourierSecondCosineAngularKernel
-  apply intervalIntegral.continuous_parametric_intervalIntegral_of_continuous'
-  unfold Function.uncurry polarFourierRadialPhase
-  fun_prop
 
 /-- The Fourier phase has unit norm for every real argument. -/
 private theorem norm_polarFourierRadialPhase (z θ : ℝ) :
@@ -621,20 +565,6 @@ theorem polarFourierFirstCosineAngularKernel_two_mul_eq_zeroth_sub_second (z : �
       rw [hfirstKernel]
       ring
     _ = _ := by rw [hsecond]
-
-/-- The second-cosine angular Fourier kernel vanishes at zero radial argument. -/
-@[simp] theorem polarFourierSecondCosineAngularKernel_zero :
-    polarFourierSecondCosineAngularKernel 0 = 0 := by
-  let coefficients : AngularHarmonicCoefficients ℂ :=
-    { constant := 0
-      firstCosine := 0
-      firstSine := 0
-      secondCosine := 1
-      secondMixed := 0 }
-  have h := coefficients.integral_eval
-  simpa [coefficients, AngularHarmonicCoefficients.eval,
-    polarFourierSecondCosineAngularKernel, polarFourierRadialPhase,
-    smul_eq_mul] using h
 
 /-- The second cosine angular Fourier kernel is the normalized Bessel function
 `-2π J₂`, for every real radial argument. -/
