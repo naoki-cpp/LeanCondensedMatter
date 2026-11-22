@@ -835,8 +835,8 @@ theorem ExternalInsertionBlockLayout.ofFamilyShuffle_ownerOrderedDysonOrder
     ExternalInsertionBlockLayout.ofFamilyShuffle_ownerShuffleEquiv_ambientRelabel
       π heven σ τ
   change
-    (((ExternalInsertionBlockLayout.ofFamilyShuffle π heven σ).interactionAssignmentShuffle
-      .ambientRelabel (e τ)).symm.trans
+    (((ExternalInsertionBlockLayout.ofFamilyShuffle π heven σ).interactionAssignmentShuffle.ambientRelabel
+      (e τ)).symm.trans
         ((Finset.univ : Finset (Fin N)).orderIsoOfFin rfl).toEquiv) = _
   rw [← hreference]
   apply Equiv.ext
