@@ -1,4 +1,3 @@
-import LeanCondensedMatter.Transport.Analysis.BesselRadialMoments
 import LeanCondensedMatter.Transport.Analysis.BesselCrossedXMoment
 import LeanCondensedMatter.Transport.Analysis.ContinuumMeasure
 import LeanCondensedMatter.Transport.Analysis.FourierGeometry

@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Transport.Analysis.BesselRadialMoments
+import LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.RadialMoments
 import LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.AnalyticWronskian
 
 set_option linter.style.header false
@@ -28,7 +28,7 @@ boundary, is a separate and presently unproved obligation.
 namespace QuantumTheory
 namespace Transport
 
-open BesselSecondKind
+open BesselSecondKind BesselRadialMoments
 
 noncomputable section
 
