@@ -291,14 +291,15 @@ The remaining steps are recorded in [the scattering-theory roadmap](../roadmaps/
 ## Scalar-impurity T-matrix ownership
 
 MassiveDirac.Disorder.TMatrix.ScalarImpurity owns the scalar-impurity parameters, unit-guarded
-T-matrix and self-energy algebra, operator-norm bounds, and the quadratic small-strength remainder
-for an explicitly supplied 2×2 Green loop. It depends on the model's matrix/operator realization,
-without importing continuum measures or real-space propagators.
+T-matrix and self-energy algebra, and the quadratic small-strength remainder for a supplied
+2×2 Green loop. The dimension-independent T-matrix norm bound lives in
+Transport.Disorder.TMatrix.NormBound.
 
-TMatrix.BornDysonLoop owns the finite-cutoff Born-Dyson loop at the spatial origin, its zero-disorder
-clean-loop identity, and the Born self-energy coefficient under W = n_imp v_imp². The physical
-momentum measure is attached by the loop realization exactly once; the mean-potential term remains
-separate. TMatrix is the package entry point for these two responsibilities.
+MassiveDirac.Disorder.TMatrix.BornDysonLoop owns the finite-cutoff Born-Dyson loop at the
+spatial origin, its zero-disorder clean-loop identity, and the Born self-energy coefficient
+under W = n_imp v_imp². The physical momentum measure is attached once by the loop
+realization; the mean-potential term remains separate. The MassiveDirac.Disorder umbrella
+imports BornDysonLoop directly.
 ## Concrete models
 
 The `Models.RashbaExchange` family owns its clean Rashba-exchange Hamiltonian and spectral
