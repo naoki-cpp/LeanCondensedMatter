@@ -153,23 +153,10 @@
       ],
       "layers": [
         {"id": "lattice", "modulePrefixes": ["LeanCondensedMatter.SecondQuantization.Fermionic.Lattice"]},
-        {"id": "response", "modulePrefixes": ["LeanCondensedMatter.QuantumTheory.LinearResponse", "LeanCondensedMatter.QuantumTheory.Transport"]}
+        {"id": "response", "modulePrefixes": ["LeanCondensedMatter.QuantumTheory.LinearResponse"]}
       ],
       "edges": [
         {"upstream": "lattice", "downstream": "response"}
-      ]
-    },
-    {
-      "id": "algebraicFockTransportBoundary",
-      "sourceRoots": [
-        "LeanCondensedMatter/SecondQuantization/Fermionic/Algebra/AlgebraicFock"
-      ],
-      "layers": [
-        {"id": "algebraicFock", "modulePrefixes": ["LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock"]},
-        {"id": "quantumTransport", "modulePrefixes": ["LeanCondensedMatter.QuantumTheory.Transport"]}
-      ],
-      "edges": [
-        {"upstream": "algebraicFock", "downstream": "quantumTransport"}
       ]
     },
     {
