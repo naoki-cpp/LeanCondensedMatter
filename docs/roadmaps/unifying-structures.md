@@ -111,7 +111,7 @@ suggests treating time-order decompositions as a product law, rather than
 reproving each ordering split. The repository already owns slot shuffles,
 ambient time-coordinate selection, and regularity of shuffled integrands.
 
-Current anchor: [family shuffle integrands](../../LeanCondensedMatter/Analysis/OrderedSimplex/FamilyShuffleIntegrand.lean).
+Current anchor: [family shuffle integrands](../../LeanCondensedMatter/Analysis/OrderedSimplex/FamilyShuffle.lean).
 
 Implementation gate: audit existing shuffle/ordered-simplex theorems before
 introducing an algebra object. Show a concrete product identity for scalar,
