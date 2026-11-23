@@ -211,10 +211,11 @@ before the static electric-field normalization is cancelled. This differs from t
 representation consumed by `Streda.GeneralizedStatic`. Nonzero switching rate suffices for
 normalization cancellation; the spectral integral identification requires positive switching rate.
 
-`Fermionic.Transport.FiniteDisorderConductivity` averages the spectral conductivity at zero driving
-frequency and applies the generic conditional identification separately in each configuration.
-It keeps the averaged conductivity as the physical endpoint rather than introducing a second
-configuration-conductivity interface.
+For finite disorder ensembles, apply `FiniteDisorderEnsemble.average` directly to the
+configuration-wise `finiteKuboBastinSpectralDirectionalConductivity` at zero driving frequency.
+A per-configuration `StaticChannelTracedBastinIdentity`, if available, can be applied under that
+finite average without a second-quantization-specific averaging wrapper. The Ward/f-sum identity
+is still a model-dependent assumption, not established by ensemble averaging.
 
 ## Disorder boundary
 
