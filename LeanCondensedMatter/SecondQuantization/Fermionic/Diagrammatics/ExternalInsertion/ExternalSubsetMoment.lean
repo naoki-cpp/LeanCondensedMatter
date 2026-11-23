@@ -1880,14 +1880,15 @@ theorem externalSubsetMomentSeries_eq_signedConnected_two
         (externalSubsetConnectedDiagramSeries (E := 1) ε β g labels times)
         S hEmpty hproper).symm
 
-/-- The precise remaining physical bridge for Phase 5: once the actual
-vacuum-normalized Wick/Dyson moments satisfy the signed external-partition
-identity, the recursively defined fermionic *source cumulant* is the fully
-externally connected integrated diagram sum.
+/-- Conditional weighted-inversion bridge: if the physical
+vacuum-normalized Dyson moments obey the Koszul-signed external-partition
+identity, their fermionic source cumulant is the fully externally connected
+integrated diagram series.
 
-This theorem uses genuine signed moment inversion; it does not assume
-unsigned Möbius inversion or conflate vacuum-freeness with connectivity.
-Its hypothesis is the still-required diagram-assembly/shuffle identity. -/
+The diagrammatic premise is established unconditionally by
+`externalSubsetMomentSeries_eq_signedConnected` (Phase 5C), and is discharged
+in `externalSubsetSourceCumulantSeries_eq_connectedDiagramSeries` below.
+This uses genuine signed inversion, not an unsigned moment identity. -/
 theorem externalSubsetSourceCumulantSeries_eq_connectedDiagramSeries_of_signedMoments
     (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
     (labels : Fin (2 * E) → ExternalFieldLabel Mode)
@@ -1905,11 +1906,32 @@ theorem externalSubsetSourceCumulantSeries_eq_connectedDiagramSeries_of_signedMo
       (externalSubsetMomentSeries ε β g labels times) (by simp) S).trans (hDiagram S)
 
 
+/-- Phase 5D: for an arbitrary finite number of fermionic external
+insertions, the *physical* source cumulant of vacuum-normalized
+Dyson moments equals the fully externally connected integrated diagram
+series, coefficientwise at every perturbative order.
+
+The physical Koszul-signed moment identity is proved in Phase 5C;
+here we only discharge the hypothesis of the existing signed-inversion
+theorem. In particular, the vacuum-free moment itself need not be
+fully externally connected. -/
+theorem externalSubsetSourceCumulantSeries_eq_connectedDiagramSeries
+    (ε : Mode → ℝ) (β : ℝ) (hβ : 0 ≤ β)
+    (g : QuarticVertexLabel Mode → ℂ)
+    (labels : Fin (2 * E) → ExternalFieldLabel Mode)
+    (times : Fin (2 * E) → ℝ) :
+    externalSubsetSourceCumulantSeries
+        (externalSubsetMomentSeries ε β g labels times) =
+      externalSubsetConnectedDiagramSeries ε β g labels times := by
+  exact externalSubsetSourceCumulantSeries_eq_connectedDiagramSeries_of_signedMoments
+    ε β g labels times
+    (externalSubsetMomentSeries_eq_signedConnected ε β hβ g labels times)
+
+
 /-- The actual two-insertion source cumulant equals the fully
 externally connected physical Dyson series at all perturbative
-orders, with no signed-moment hypothesis. This is the two-insertion
-specialization; higher external sectors still need the shuffle
-covariance theorem. -/
+orders, with no signed-moment hypothesis. This independently proved
+special case remains available without assuming nonnegative β. -/
 theorem externalSubsetSourceCumulantSeries_eq_connectedDiagramSeries_two
     (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
     (labels : Fin 2 → ExternalFieldLabel Mode)
