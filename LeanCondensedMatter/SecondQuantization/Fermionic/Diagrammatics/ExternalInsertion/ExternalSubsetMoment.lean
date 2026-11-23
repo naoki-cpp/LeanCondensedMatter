@@ -1124,6 +1124,38 @@ private noncomputable def externalSubsetPartitionEquiv
       exact Finset.mem_image.mpr
         ⟨g T, Finset.mem_image.mpr ⟨T, hT, rfl⟩, hfg T (σ.le hT)⟩
 
+/-- Corresponding blocks under the source-subset partition
+equivalence. It is the restriction of the partition equivalence to
+the actual finite block families, so finite products reindex
+without introducing a block multiplicity. -/
+private noncomputable def externalSubsetPartsEquiv
+    (S : Finset (Fin (2 * E))) (heven : Even S.card)
+    (π : Finpartition (Finset.univ : Finset (Fin (2 * (S.card / 2))))) :
+    π.parts ≃ (externalSubsetPartitionEquiv S heven π).parts := by
+  classical
+  let e := evenExternalSubsetOrderIso S heven
+  let emb : Fin (2 * (S.card / 2)) ↪ Fin (2 * E) :=
+    ⟨fun i => (e i).1, fun i j hij => e.injective (Subtype.ext hij)⟩
+  let σ := externalSubsetPartitionEquiv S heven π
+  have hparts : σ.parts =
+      π.parts.image (fun B => B.map emb) := rfl
+  let f : π.parts → σ.parts := fun B =>
+    ⟨B.1.map emb, by
+      rw [hparts]
+      exact Finset.mem_image.mpr ⟨B.1, B.2, rfl⟩⟩
+  have hf : Function.Injective f := by
+    intro B C hBC
+    apply Subtype.ext
+    exact (Finset.map_injective emb) (congrArg Subtype.val hBC)
+  have hg : Function.Surjective f := by
+    intro T
+    have hT : T.1 ∈ π.parts.image (fun B => B.map emb) := by
+      rw [← hparts]
+      exact T.2
+    obtain ⟨B, hB, hBT⟩ := Finset.mem_image.mp hT
+    exact ⟨⟨B, hB⟩, Subtype.ext hBT⟩
+  exact Equiv.ofBijective f ⟨hf, hg⟩
+
 /-- In the increasing-order partition shuffle of a source subset,
 the ambient shuffle positions occupied by a block are exactly the
 positions whose source labels belong to that block. This is the
