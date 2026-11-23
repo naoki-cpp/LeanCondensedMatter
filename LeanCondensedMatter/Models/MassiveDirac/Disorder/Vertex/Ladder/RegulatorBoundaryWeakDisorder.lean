@@ -27,10 +27,8 @@ private theorem weakDisorderTargetOneMinusRung_ne_zero
     1 - (continuumBornRetardedAdvancedPauliXWeakDisorderCurrentRungCoefficient
       m probeEnergy : ℂ) ≠ 0 := by
   have hprobe : 0 < probeEnergy := lt_of_le_of_lt (abs_nonneg m) hmetal
-  have hsum : 0 < probeEnergy ^ 2 + m ^ 2 := by
-    nlinarith [sq_pos_of_ne_zero (ne_of_gt hprobe), sq_nonneg m]
-  have hden : 0 < probeEnergy ^ 2 + 3 * m ^ 2 := by
-    nlinarith [sq_pos_of_ne_zero (ne_of_gt hprobe), sq_nonneg m]
+  have hsum : 0 < probeEnergy ^ 2 + m ^ 2 := by positivity
+  have hden : 0 < probeEnergy ^ 2 + 3 * m ^ 2 := by positivity
   have hreal :
       1 - continuumBornRetardedAdvancedPauliXWeakDisorderCurrentRungCoefficient
           m probeEnergy ≠ 0 := by
@@ -102,8 +100,8 @@ theorem tendsto_finiteCutoffContinuumBornDysonLadderSolvedVectorZeroBroadeningBo
     simpa [finiteCutoffContinuumBornDysonLadderSolvedVectorZeroBroadeningBoundary,
       targetRung, κ] using tendsto_inPlaneLadderSolvedVector hrung hdet
   have hprobe : 0 < probeEnergy := lt_of_le_of_lt (abs_nonneg m) hmetal
-  have hden : probeEnergy ^ 2 + 3 * m ^ 2 ≠ 0 := by
-    nlinarith [sq_pos_of_ne_zero (ne_of_gt hprobe), sq_nonneg m]
+  have hden : probeEnergy ^ 2 + 3 * m ^ 2 ≠ 0 :=
+    ne_of_gt (by positivity)
   have hκ : 1 - κ ≠ 0 := by
     simpa [κ] using weakDisorderTargetOneMinusRung_ne_zero m probeEnergy hmetal
   have hfactorReal :=
@@ -146,8 +144,8 @@ theorem tendsto_finiteCutoffContinuumBornDysonLongitudinalLadderActionZeroBroade
     tendsto_finiteCutoffContinuumBornDysonLadderSolvedVectorZeroBroadeningBoundary_disorder_zero
       v m probeEnergy hbar pMax hvelocity hhbar hmetal hcutoff
   have hprobe : 0 < probeEnergy := lt_of_le_of_lt (abs_nonneg m) hmetal
-  have hden : probeEnergy ^ 2 + 3 * m ^ 2 ≠ 0 := by
-    nlinarith [sq_pos_of_ne_zero (ne_of_gt hprobe), sq_nonneg m]
+  have hden : probeEnergy ^ 2 + 3 * m ^ 2 ≠ 0 :=
+    ne_of_gt (by positivity)
   have htarget :
       (((2 * (probeEnergy ^ 2 + m ^ 2) /
         (probeEnergy ^ 2 + 3 * m ^ 2) : ℝ) : ℂ)) - 1 =
