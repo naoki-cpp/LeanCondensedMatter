@@ -76,7 +76,6 @@ theorem tendsto_disorder_mul_momentum_integral
     continuumBornDisorderMeasurePrefactor]
   push_cast
   dsimp [q, measure] at hmeasure ⊢
-  push_cast
   field_simp [hdisorderC, hmeasure]
 
 end FiniteCutoffBornDyson.Longitudinal.ZeroBroadeningWeakDisorder
