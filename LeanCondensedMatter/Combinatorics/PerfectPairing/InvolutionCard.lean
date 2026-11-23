@@ -59,13 +59,14 @@ from interaction vertices with an even number of local legs forces an even exter
 This is a combinatorial property of perfect pairings, independent of vertex graphs or diagrams. -/
 theorem PairingOn.even_card_left_of_invariant_subtype
     {Leg ExternalData InteractionData LocalData : Type*}
-    [Fintype Leg] [Fintype ExternalData] [Finite InteractionData] [Fintype LocalData]
+    [Finite Leg] [Fintype ExternalData] [Finite InteractionData] [Fintype LocalData]
     (pairing : PairingOn Leg) (p : Leg → Prop)
     (hPartner : ∀ leg, p leg ↔ p (pairing.partner leg))
     (legEquiv : {leg : Leg // p leg} ≃ ExternalData ⊕ (InteractionData × LocalData))
     (hLocal : Even (Fintype.card LocalData)) :
     Even (Fintype.card ExternalData) := by
   classical
+  letI := Fintype.ofFinite Leg
   letI := Fintype.ofFinite InteractionData
   have hcard :
       Fintype.card {leg : Leg // p leg} =
