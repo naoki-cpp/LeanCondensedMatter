@@ -37,8 +37,8 @@ theorem twoPointExternalInsertionLegEquiv_vertexOfLeg (S : Finset (Fin N))
   simp only [externalInsertionVertexOfLeg, twoPointVertexOfLeg,
     twoPointExternalInsertionLegEquiv, Equiv.trans_apply, Equiv.apply_symm_apply]
   cases h : twoPointLegEquiv S p with
-  | inl e => simp [h]
-  | inr v => simp [h]
+  | inl e => simp
+  | inr v => simp
 
 /-- Exactly the same labelled-and-paired combinatorial data, with its pairing
 transported between the two flattened-leg conventions. -/
