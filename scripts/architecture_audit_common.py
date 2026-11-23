@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import json
 import sys
-from collections.abc import Iterable, Iterator
+from collections.abc import Iterator
 from dataclasses import dataclass
 from functools import lru_cache
 from pathlib import Path
@@ -187,16 +187,6 @@ def _numbered_imports(path: Path) -> tuple[tuple[int, str], ...]:
     return tuple(imports)
 
 
-@lru_cache(maxsize=None)
-def _invalid_import_commands(path: Path) -> tuple[tuple[int, str], ...]:
-    errors: list[tuple[int, str]] = []
-    for line_no, line in enumerate(lean_source(path).splitlines(), start=1):
-        _, error = _parse_import_line(line)
-        if error is not None:
-            errors.append((line_no, error))
-    return tuple(errors)
-
-
 def numbered_imports(path: Path) -> Iterator[tuple[int, str]]:
     """Yield cached direct Lean imports with source line numbers after removing comments."""
     yield from _numbered_imports(path)
@@ -208,19 +198,8 @@ def lean_imports(path: Path) -> tuple[str, ...]:
     return tuple(imported for _, imported in _numbered_imports(path))
 
 
-def check_lean_import_syntax(errors: list[str], *, root: Path, source_root: Path) -> None:
-    """Fail closed on import-looking commands not understood by the source audit parser."""
-    source_files = list(lean_files(source_root))
-    public_umbrella = root / "LeanCondensedMatter.lean"
-    if public_umbrella.is_file():
-        source_files.append(public_umbrella)
-    for path in source_files:
-        for line_no, error in _invalid_import_commands(path):
-            errors.append(f"{relative(root, path)}:{line_no}: {error}")
-
-
 def check_direct_import_hygiene(errors: list[str], *, root: Path, source_root: Path) -> None:
-    """Reject duplicate commands, self imports, and unresolved project source imports.
+    """Reject unsupported syntax, duplicate commands, self imports, and unresolved imports.
 
     Import modifiers matter: `public import A` and `import all A` can both be needed.
     Neither transitive reachability nor a plain `import A` makes a direct import unnecessary
@@ -235,8 +214,11 @@ def check_direct_import_hygiene(errors: list[str], *, root: Path, source_root: P
         first_seen: dict[str, int] = {}
         for line_no, line in enumerate(lean_source(path).splitlines(), start=1):
             imported, error = _parse_import_line(line)
-            if imported is None or error is not None:
-                continue  # Unsupported syntax is reported by check_lean_import_syntax.
+            if error is not None:
+                errors.append(f"{relative(root, path)}:{line_no}: {error}")
+                continue
+            if imported is None:
+                continue
             command = " ".join(line.split())
             if command in first_seen:
                 errors.append(
@@ -259,35 +241,6 @@ def check_direct_import_hygiene(errors: list[str], *, root: Path, source_root: P
 def module_matches_prefix(module: str, prefix: str) -> bool:
     """Match a Lean module prefix without conflating siblings such as Foo and FooExtra."""
     return module == prefix or module.startswith(prefix + ".")
-
-
-def require_files(
-    errors: list[str],
-    paths: Iterable[Path],
-    *,
-    root: Path,
-    description: str,
-) -> None:
-    """Require canonical owner files to exist."""
-    for path in paths:
-        if not path.is_file():
-            errors.append(f"missing {description}: {relative(root, path)}")
-
-
-def require_import(
-    errors: list[str],
-    path: Path,
-    imported: str,
-    *,
-    root: Path,
-    description: str = "module",
-) -> None:
-    """Require one direct Lean import from an existing source file."""
-    if not path.is_file():
-        errors.append(f"missing {description}: {relative(root, path)}")
-        return
-    if imported not in lean_imports(path):
-        errors.append(f"{relative(root, path)} must import `{imported}`")
 
 
 def load_architecture_graph(path: Path) -> ArchitectureGraph:
