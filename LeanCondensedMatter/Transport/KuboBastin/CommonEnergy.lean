@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Analysis.Calculus.IntervalLocalization
+import LeanCondensedMatter.Analysis.Calculus.CompactSupportInterval
 import LeanCondensedMatter.Transport.KuboBastin.Eigenbasis
 import LeanCondensedMatter.Transport.KuboBastin.Occupation
 
@@ -9,7 +9,7 @@ set_option linter.style.header false
 
 Finite transition intervals are localized on the full energy axis and summed into one integrable
 piecewise kernel. The representation-independent full-line interval localization is owned upstream
-by `Analysis.Calculus.IntervalLocalization`; this module owns its Kubo–Bastin specialization. The
+by `Analysis.Calculus.CompactSupportInterval`; this module owns its Kubo–Bastin specialization. The
 transition-level construction is eigenbasis and does not require a finite spectral index; finite
 sums first enter at the common-energy kernel.
 
