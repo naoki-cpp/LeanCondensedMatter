@@ -21,11 +21,13 @@ dimensionless spin-1 orbital matrices and set
 Hₒₘ(k) = c₁ ∑ᵢ kᵢ² Lᵢ² + c₂ ∑_{i ≠ j} kᵢ kⱼ {Lᵢ, Lⱼ}.
 ```
 
-The sum convention for the off-diagonal term must be fixed before proving a
-coefficient: an ordered `i ≠ j` sum counts each pair twice. With real `c₁,c₂`,
-this Hamiltonian is Hermitian and even in momentum. The scalar `c₀|k|² I`
-does not affect the commutator dynamics. These finite-matrix statements are
-exact targets.
+The off-diagonal sum uses **one term per unordered pair**; an ordered
+`i ≠ j` sum would count each pair twice. With real `c₁,c₂`, the
+Cartesian orbital Hamiltonian is real symmetric and even in momentum:
+`orbitalHamiltonian_transpose` and `orbitalHamiltonian_neg` in
+[`Models/OrbitalRelaxation/Finite.lean`](../../LeanCondensedMatter/Models/OrbitalRelaxation/Finite.lean)
+prove these finite-matrix properties. The scalar `c₀|k|² I` does not affect
+the commutator dynamics.
 
 For a nonnegative rotationally invariant elastic-scattering kernel `W`, define
 
@@ -43,10 +45,13 @@ endpoint is the conditional orbital rate
       = (2 k⁴ / (15 ℏ² γ)) (2 c₁² + 3 c₂²) τₘ,
 ```
 
-with `ℏ > 0`, fixed `|k|`, and the stated perturbative closure. A theorem
-should identify the exact matrix and angular-average calculation that produces
-the coefficient. Positivity of the rate and the inverse dependence of the
-relaxation time on `τₘ` then follow under nonzero coupling.
+with `ℏ > 0`, fixed `|k|`, and the stated perturbative closure. The exact matrix and continuous spherical-angular coefficient are
+proved by `orbitalDoubleCommutator_eq_polynomial`,
+`sphericalAverage_orbitalDoubleCommutator`, and
+`orbitalRate_eq_sphericalAverage`. Under the stated kinetic closure the
+corresponding exponential decay is also proved. Positivity and any inference
+about the inverse dependence of the relaxation time on `τₘ` require the
+appropriate nonzero-coupling and positive-scattering assumptions.
 
 This is a conditional second-order result for its stated regime, not a uniform
 law for every disorder strength. It must not be extrapolated to the clean
