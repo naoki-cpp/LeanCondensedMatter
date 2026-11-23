@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Analysis.Operator.Unbounded.SelfAdjointCriterion
+import LeanCondensedMatter.Analysis.Operator.Unbounded.Adjoint
 import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Hamiltonian.Closed1D
 import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Hamiltonian.DenseDomain1D
 import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Hamiltonian.LaplacianSymmetry1D

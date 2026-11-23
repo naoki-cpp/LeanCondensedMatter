@@ -116,3 +116,35 @@ theorem adjoint_adjoint_eq_of_isClosed
     _ = A.graph := Submodule.adjoint_adjoint_eq_of_isClosed A.graph hClosed
 
 end LinearPMap
+
+/-! ## Generic self-adjointness criterion -/
+
+namespace LinearPMap
+
+noncomputable section
+
+open Set
+open scoped InnerProductSpace
+
+variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
+variable {A : H →ₗ.[ℂ] H}
+
+/-- For a densely defined symmetric partial operator, self-adjointness is equivalent to the reverse
+adjoint-domain inclusion. The forward inclusion is already supplied by symmetry. -/
+theorem isSelfAdjoint_iff_adjoint_domain_le_of_isFormalAdjoint
+    (hdense : Dense ((A.domain : Submodule ℂ H) : Set H))
+    (hsymm : A.IsFormalAdjoint A) :
+    IsSelfAdjoint A ↔ A.adjoint.domain ≤ A.domain := by
+  constructor
+  · intro hself
+    have hadj : A.adjoint = A := LinearPMap.isSelfAdjoint_def.mp hself
+    rw [hadj]
+  · intro hdom
+    rw [LinearPMap.isSelfAdjoint_def]
+    have hle : A ≤ A.adjoint := hsymm.le_adjoint hdense
+    have hdomain : A.domain = A.adjoint.domain := le_antisymm hle.1 hdom
+    exact (LinearPMap.eq_of_le_of_domain_eq hle hdomain).symm
+
+end
+
+end LinearPMap
