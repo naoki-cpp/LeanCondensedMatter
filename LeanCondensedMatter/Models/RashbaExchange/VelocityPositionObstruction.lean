@@ -33,9 +33,9 @@ theorem trace_velocityOperator
         else py / params.effectiveMass : ℝ)) : ℂ) := by
   fin_cases direction
   · simp [velocityOperator, Matrix.trace, Fin.sum_univ_two,
-      InternalSpace.pauliX, InternalSpace.pauliY]
+      InternalSpace.pauliY]
   · simp [velocityOperator, Matrix.trace, Fin.sum_univ_two,
-      InternalSpace.pauliX, InternalSpace.pauliY]
+      InternalSpace.pauliX]
     ring
 
 /-- A nonzero parabolic velocity component gives a nonzero finite matrix trace. -/
