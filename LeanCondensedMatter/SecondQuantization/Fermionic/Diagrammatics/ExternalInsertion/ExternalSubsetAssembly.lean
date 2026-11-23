@@ -709,16 +709,27 @@ theorem ExternalInsertionBlockLayout.sum_physicalFixedSizeDyson_eq_signedProduct
           apply Finset.sum_congr rfl
           intro F _
           exact if_congr (hlabels F) (hOrbit F) rfl
+    _ = externalPartitionSourceSign π *
+          ∏ B : π.parts,
+            ∑ d : {d : ExternalInsertionWickDiagram Mode
+                ((B : Finset (Fin (2 * E))).card / 2)
+                (layout.interactionBlock S B).card //
+                d.vertexGraph.Preconnected},
+              if d.1.externalLabel =
+                  evenExternalSubsetLabels labels (B : Finset (Fin (2 * E))) (heven B)
+              then d.1.dysonAmplitude ε β g
+                (evenExternalSubsetTimes times
+                  (B : Finset (Fin (2 * E))) (heven B))
+              else 0 := by
+          simpa only [assembled, S, layout] using
+            (ExternalInsertionBlockLayout.sum_signedDysonShuffleOrbits_eq_prod_standardized
+              layout ε β g labels times)
     _ = _ := by
-          have hsize (B : π.parts) :
-              (layout.interactionBlock S B).card = size B :=
-            ExternalInsertionBlockLayout.ofFamilyShuffle_interactionBlock_card
-              π heven σ B
-          have hstandard :=
-            ExternalInsertionBlockLayout.sum_signedDysonShuffleOrbits_eq_prod_standardized
-              layout ε β g labels times
-          simp only [hsize] at hstandard
-          exact hstandard
+          apply congrArg (fun z : ℂ => externalPartitionSourceSign π * z)
+          apply Finset.prod_congr rfl
+          intro B _
+          rw [ExternalInsertionBlockLayout.ofFamilyShuffle_interactionBlock_card
+            π heven σ B]
 
 end Fermionic
 end SecondQuantization
