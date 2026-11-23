@@ -1,4 +1,5 @@
 import Mathlib.Basic.Complex.Basic
+import Mathlib.Data.Matrix.Mul
 import Mathlib.LinearAlgebra.Matrix.GeneralLinearGroup.Defs
 import Mathlib.Tactic.Ring
 
