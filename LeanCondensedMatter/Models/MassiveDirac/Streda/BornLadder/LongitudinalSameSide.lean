@@ -246,15 +246,12 @@ theorem tendsto_disorderStrength_mul_zeroBroadeningSameSideRadialEndpoint_disord
           zeroBroadeningSameSideRadialEndpoint
             side v m probeEnergy disorderStrength hbar pMax)
       (nhdsWithin 0 (Set.Ioi 0)) (nhds 0) := by
-  have hl : nhdsWithin (0 : ℝ) (Set.Ioi 0) ≤ nhds 0 := by
-    exact inf_le_left
-  have hWReal : Tendsto (fun disorderStrength : ℝ => disorderStrength)
+  have hW : Tendsto (fun disorderStrength : ℝ => (disorderStrength : ℂ))
       (nhdsWithin 0 (Set.Ioi 0)) (nhds 0) :=
-    continuousAt_id.tendsto.mono_left hl
-  have hW := hWReal.ofReal
+    (tendsto_id.mono_left inf_le_left).ofReal
   simpa using hW.mul
     ((continuousAt_zeroBroadeningSameSideRadialEndpoint_disorder_zero
-      side v m probeEnergy hbar pMax hmetal hcutoff).tendsto.mono_left hl)
+      side v m probeEnergy hbar pMax hmetal hcutoff).tendsto.mono_left inf_le_left)
 
 end
 
