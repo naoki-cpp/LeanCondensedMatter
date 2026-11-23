@@ -911,6 +911,45 @@ theorem vacuumFreeExternalInsertionDysonSeries_eq_connected_of_single_pair
   subst K
   exact vacuumFreeExternalInsertionDysonSeries_eq_connected_two ε β g labels times
 
+set_option maxHeartbeats 4000000 in
+-- The finite partition sum and dependent connected-block series elaborate at each coefficient.
+open Classical in
+/-- Phase 5C, full external source family: the actual vacuum-free
+integrated Dyson series is the finite Koszul-signed partition sum of
+products of existing connected Dyson series. This lifts the physical
+fixed-order coefficient theorem of Phase 5B to a genuine identity in
+`PowerSeries ℂ`, without defining the connected sector by inversion.
+
+The arbitrary *subset* statement additionally needs transport of the
+canonical increasing source order and its fermionic partition signs. -/
+theorem vacuumFreeExternalInsertionDysonSeries_eq_sum_evenPartitionConnectedSeries
+    {K : ℕ} (anchor : Fin (2 * K))
+    (ε : Mode → ℝ) (β : ℝ) (hβ : 0 ≤ β)
+    (g : QuarticVertexLabel Mode → ℂ)
+    (labels : Fin (2 * K) → ExternalFieldLabel Mode)
+    (times : Fin (2 * K) → ℝ) :
+    vacuumFreeExternalInsertionDysonSeries ε β g labels times =
+      ∑ π : Finpartition (Finset.univ : Finset (Fin (2 * K))),
+        if heven : ∀ B : π.parts, Even (B : Finset (Fin (2 * K))).card then
+          PowerSeries.C (externalPartitionSourceSign π) *
+            ∏ B : π.parts,
+              connectedExternalInsertionDysonSeries ε β g
+                (evenExternalSubsetLabels labels (B : Finset (Fin (2 * K))) (heven B))
+                (evenExternalSubsetTimes times (B : Finset (Fin (2 * K))) (heven B))
+        else 0 := by
+  classical
+  apply PowerSeries.ext
+  intro n
+  simp only [vacuumFreeExternalInsertionDysonSeries, PowerSeries.coeff_mk]
+  rw [vacuumFreeExternalInsertionDysonCoefficient_eq_sum_evenPartitionConnectedSeries
+    anchor ε β hβ g labels times]
+  rw [map_sum]
+  apply Finset.sum_congr rfl
+  intro π _
+  split_ifs with heven
+  · simp only [PowerSeries.coeff_C_mul]
+  · simp
+
 /-- Physical, vacuum-normalized moment assigned to an external subset.
 For odd subsets the operator expectation vanishes by fermion parity; for the
 empty subset the normalized moment is one. -/
