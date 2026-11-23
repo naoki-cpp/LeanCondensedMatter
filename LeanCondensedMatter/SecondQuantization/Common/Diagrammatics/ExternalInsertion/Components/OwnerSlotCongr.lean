@@ -104,6 +104,61 @@ noncomputable def ExternalInsertionBlockLayout.ofFamilyShuffle
   evenBlocks := heven
   interactionOwner v := (σ.slotEquiv.symm v).1
 
+/-- The actual physical fixed-external-partition Wick-diagram fiber,
+restricted to one realized interaction-size vector, is in exact
+bijection with a physical owner shuffle and a connected family on its
+assigned interaction blocks. This is a restriction of the existing
+physical size/shuffle equivalence, not a second enumeration. -/
+noncomputable def ExternalInsertionBlockLayout.fixedPartitionPhysicalFixedSizeEquiv
+    {ExternalLabel InternalLabel : Type*}
+    (anchor : Fin (2 * E))
+    (π : Finpartition (Finset.univ : Finset (Fin (2 * E))))
+    (heven : ∀ B : π.parts, Even (B : Finset (Fin (2 * E))).card)
+    (size : π.parts → ℕ) :
+    {d : {d : {d : ExternalInsertionDiagram ExternalLabel InternalLabel E N
+        (Finset.univ : Finset (Fin N)) //
+        HasNoVacuumComponent d.vertexGraph} //
+        externalComponentPartition d.1.vertexGraph = π} //
+      ((ExternalInsertionBlockLayout.fixedPartitionPhysicalSizeShuffleEquiv
+        (E := E) (N := N) (ExternalLabel := ExternalLabel)
+        (InternalLabel := InternalLabel) anchor π heven) d).1.1 = size} ≃
+      Σ τ : Combinatorics.FamilySlotShuffleTo size N,
+        (ExternalInsertionBlockLayout.ofFamilyShuffle π heven τ).ConnectedBlockFamily
+          (ExternalLabel := ExternalLabel) (InternalLabel := InternalLabel) := by
+  classical
+  let e := ExternalInsertionBlockLayout.fixedPartitionPhysicalSizeShuffleEquiv
+    (E := E) (N := N) (ExternalLabel := ExternalLabel)
+    (InternalLabel := InternalLabel) anchor π heven
+  let slice :
+      {p : (Σ data : (Σ s : π.parts → ℕ,
+          Combinatorics.FamilySlotShuffleTo s N),
+          (((ExternalInsertionBlockLayout.fixedPartitionSizeShuffleEquiv
+              (E := E) (N := N) π heven).symm data).1).ConnectedBlockFamily
+            (ExternalLabel := ExternalLabel) (InternalLabel := InternalLabel)) //
+        p.1.1 = size} ≃
+        Σ τ : Combinatorics.FamilySlotShuffleTo size N,
+          (ExternalInsertionBlockLayout.ofFamilyShuffle π heven τ).ConnectedBlockFamily
+            (ExternalLabel := ExternalLabel) (InternalLabel := InternalLabel) := {
+    toFun := by
+      rintro ⟨⟨⟨s, τ⟩, F⟩, hs⟩
+      change s = size at hs
+      subst s
+      exact ⟨τ, F⟩
+    invFun := by
+      rintro ⟨τ, F⟩
+      exact ⟨⟨⟨size, τ⟩, F⟩, rfl⟩
+    left_inv := by
+      rintro ⟨⟨⟨s, τ⟩, F⟩, hs⟩
+      change s = size at hs
+      cases hs
+      rfl
+    right_inv := by
+      rintro ⟨τ, F⟩
+      rfl
+  }
+  exact (Equiv.subtypeEquiv e (q := fun p => p.1.1 = size)
+    (fun _ => Iff.rfl)).trans slice
+
 /-- Switching a fixed-size physical owner shuffle is exactly
 transporting the interaction owner function by the ambient permutation.
 The external source partition remains literally the same. -/
@@ -600,6 +655,182 @@ theorem ExternalInsertionBlockLayout.ofFamilyShuffle_connectedFamily_standardiza
             (Finset.univ : Finset (Fin N)) B) hσ)
   exact ExternalInsertionBlockLayout.ofFamilyShuffle_localDiagram_standardization
     π heven σ τ B hσ hτ (F.1 B)
+
+/-- The owner-shuffle indices of a fixed-size physical block layout are
+the same family shuffles as the prescribed interaction-size vector,
+with only the proven size and ambient-cardinality equalities cast. -/
+noncomputable def ExternalInsertionBlockLayout.ofFamilyShuffleOwnerShuffleEquiv
+    (π : Finpartition (Finset.univ : Finset (Fin (2 * E))))
+    (heven : ∀ B : π.parts, Even (B : Finset (Fin (2 * E))).card)
+    {size : π.parts → ℕ}
+    (σ : Combinatorics.FamilySlotShuffleTo size N) :
+    Combinatorics.FamilySlotShuffleTo size N ≃
+      Combinatorics.FamilySlotShuffleTo
+        (fun B : π.parts =>
+          ((ExternalInsertionBlockLayout.ofFamilyShuffle π heven σ).interactionBlock
+            (Finset.univ : Finset (Fin N)) B).card)
+        (Finset.univ : Finset (Fin N)).card := by
+  classical
+  let layout := ExternalInsertionBlockLayout.ofFamilyShuffle π heven σ
+  have hs : size =
+      (fun B : π.parts =>
+        (layout.interactionBlock (Finset.univ : Finset (Fin N)) B).card) := by
+    funext B
+    exact (ExternalInsertionBlockLayout.ofFamilyShuffle_interactionBlock_card
+      π heven σ B).symm
+  have ht : N = (Finset.univ : Finset (Fin N)).card := by simp
+  exact
+    (Equiv.cast (congrArg
+      (fun s => Combinatorics.FamilySlotShuffleTo s N) hs)).trans
+      (Combinatorics.FamilySlotShuffleTo.castTotalEquiv ht)
+
+/-- The specified reference physical owner shuffle is exactly the
+canonical assignment shuffle extracted from its own physical layout.
+The proof uses strict monotone uniqueness, not permutations of local
+vertex orderings. -/
+theorem ExternalInsertionBlockLayout.ofFamilyShuffle_ownerShuffleEquiv_reference
+    (π : Finpartition (Finset.univ : Finset (Fin (2 * E))))
+    (heven : ∀ B : π.parts, Even (B : Finset (Fin (2 * E))).card)
+    {size : π.parts → ℕ}
+    (σ : Combinatorics.FamilySlotShuffleTo size N) :
+    (ExternalInsertionBlockLayout.ofFamilyShuffleOwnerShuffleEquiv π heven σ) σ =
+      (ExternalInsertionBlockLayout.ofFamilyShuffle π heven σ).interactionAssignmentShuffle := by
+  classical
+  let layout := ExternalInsertionBlockLayout.ofFamilyShuffle π heven σ
+  let e := ExternalInsertionBlockLayout.ofFamilyShuffleOwnerShuffleEquiv π heven σ
+  have hs : size =
+      (fun B : π.parts =>
+        (layout.interactionBlock (Finset.univ : Finset (Fin N)) B).card) := by
+    funext B
+    exact (ExternalInsertionBlockLayout.ofFamilyShuffle_interactionBlock_card
+      π heven σ B).symm
+  have ht : N = (Finset.univ : Finset (Fin N)).card := by simp
+  let castSize : Combinatorics.FamilySlotShuffleTo size N ≃
+      Combinatorics.FamilySlotShuffleTo
+        (fun B : π.parts => (layout.interactionBlock
+          (Finset.univ : Finset (Fin N)) B).card) N :=
+    Equiv.cast (congrArg (fun s => Combinatorics.FamilySlotShuffleTo s N) hs)
+  let castTotal := Combinatorics.FamilySlotShuffleTo.castTotalEquiv ht
+    (size := fun B : π.parts =>
+      (layout.interactionBlock (Finset.univ : Finset (Fin N)) B).card)
+  have howner (v : Fin (Finset.univ : Finset (Fin N)).card) :
+      ((e σ).slotEquiv.symm v).1 =
+        (σ.slotEquiv.symm (Fin.cast ht.symm v)).1 := by
+    change ((castTotal (castSize σ)).slotEquiv.symm v).1 = _
+    rw [Combinatorics.FamilySlotShuffleTo.castTotalEquiv_owner]
+    exact Combinatorics.FamilySlotShuffleTo.castSize_owner hs σ _
+  have hcanon (v : Fin (Finset.univ : Finset (Fin N)).card) :
+      (((Finset.univ : Finset (Fin N)).orderIsoOfFin rfl).toEquiv v).1 =
+        Fin.cast ht.symm v := by
+    let S : Finset (Fin N) := Finset.univ
+    have huniq := Finset.orderEmbOfFin_unique
+      (s := S) (h := rfl)
+      (f := fun j : Fin S.card => Fin.cast ht.symm j)
+      (fun _ => Finset.mem_univ _)
+      ((Fin.castOrderIso ht.symm).strictMono)
+    change (S.orderIsoOfFin rfl v).1 = Fin.cast ht.symm v
+    simpa only [Finset.coe_orderIsoOfFin_apply] using (congrFun huniq v).symm
+  apply Combinatorics.FamilySlotShuffleTo.eq_of_same_owner
+  intro v
+  have hphysical := layout.interactionOrderDecomposition_owner
+    ((Finset.univ : Finset (Fin N)).orderIsoOfFin rfl).toEquiv v
+  rw [howner v]
+  rw [hcanon v] at hphysical
+  change (σ.slotEquiv.symm (Fin.cast ht.symm v)).1 =
+    (layout.interactionAssignmentShuffle.slotEquiv.symm v).1
+  exact hphysical.symm
+
+/-- All physical owner-shuffle relabelings transport to the actual
+canonical layout's owner-shuffle type by conjugation of the ambient
+cardinality cast. -/
+theorem ExternalInsertionBlockLayout.ofFamilyShuffle_ownerShuffleEquiv_ambientRelabel
+    (π : Finpartition (Finset.univ : Finset (Fin (2 * E))))
+    (heven : ∀ B : π.parts, Even (B : Finset (Fin (2 * E))).card)
+    {size : π.parts → ℕ}
+    (σ τ : Combinatorics.FamilySlotShuffleTo size N) :
+    let e := ExternalInsertionBlockLayout.ofFamilyShuffleOwnerShuffleEquiv π heven σ
+    ((e σ).ambientRelabel (e τ)) =
+      ((Fin.castOrderIso (by simp : N = (Finset.univ : Finset (Fin N)).card)).symm.toEquiv.trans
+        (σ.ambientRelabel τ)).trans
+          (Fin.castOrderIso (by simp : N =
+            (Finset.univ : Finset (Fin N)).card)).toEquiv := by
+  classical
+  let layout := ExternalInsertionBlockLayout.ofFamilyShuffle π heven σ
+  have hs : size =
+      (fun B : π.parts =>
+        (layout.interactionBlock (Finset.univ : Finset (Fin N)) B).card) := by
+    funext B
+    exact (ExternalInsertionBlockLayout.ofFamilyShuffle_interactionBlock_card
+      π heven σ B).symm
+  have ht : N = (Finset.univ : Finset (Fin N)).card := by simp
+  let castSize : Combinatorics.FamilySlotShuffleTo size N ≃
+      Combinatorics.FamilySlotShuffleTo
+        (fun B : π.parts => (layout.interactionBlock
+          (Finset.univ : Finset (Fin N)) B).card) N :=
+    Equiv.cast (congrArg (fun s => Combinatorics.FamilySlotShuffleTo s N) hs)
+  calc
+    _ = ((Combinatorics.FamilySlotShuffleTo.castTotalEquiv ht (castSize σ)).ambientRelabel
+        (Combinatorics.FamilySlotShuffleTo.castTotalEquiv ht (castSize τ))) := rfl
+    _ = ((Fin.castOrderIso ht).symm.toEquiv.trans
+        ((castSize σ).ambientRelabel (castSize τ))).trans
+          (Fin.castOrderIso ht).toEquiv :=
+      Combinatorics.FamilySlotShuffleTo.castTotalEquiv_ambientRelabel
+        ht (castSize σ) (castSize τ)
+    _ = _ := by
+      rw [Combinatorics.FamilySlotShuffleTo.castSize_ambientRelabel hs σ τ]
+
+/-- The ordered Dyson integrals indexed by physical owner shuffles
+use *exactly* the global orders of the canonical interaction assignment
+of the reference layout. The only difference between the two
+representations is the harmless `Fin N`/full-subtype cardinality cast. -/
+theorem ExternalInsertionBlockLayout.ofFamilyShuffle_ownerOrderedDysonOrder
+    (π : Finpartition (Finset.univ : Finset (Fin (2 * E))))
+    (heven : ∀ B : π.parts, Even (B : Finset (Fin (2 * E))).card)
+    {size : π.parts → ℕ}
+    (σ τ : Combinatorics.FamilySlotShuffleTo size N) :
+    let layout := ExternalInsertionBlockLayout.ofFamilyShuffle π heven σ
+    let e := ExternalInsertionBlockLayout.ofFamilyShuffleOwnerShuffleEquiv π heven σ
+    ((layout.interactionAssignmentShuffle.ambientRelabel (e τ)).symm.trans
+        ((Finset.univ : Finset (Fin N)).orderIsoOfFin rfl).toEquiv) =
+      ((Finset.univ : Finset (Fin N)).orderIsoOfFin rfl).toEquiv.trans
+        (fullInteractionSlotEquiv (σ.ambientRelabel τ)).symm := by
+  classical
+  let S : Finset (Fin N) := Finset.univ
+  let layout := ExternalInsertionBlockLayout.ofFamilyShuffle π heven σ
+  let e := ExternalInsertionBlockLayout.ofFamilyShuffleOwnerShuffleEquiv π heven σ
+  have ht : N = S.card := by simp [S]
+  have hcanon (v : Fin S.card) :
+      ((S.orderIsoOfFin rfl).toEquiv v).1 = Fin.cast ht.symm v := by
+    have huniq := Finset.orderEmbOfFin_unique
+      (s := S) (h := rfl)
+      (f := fun j : Fin S.card => Fin.cast ht.symm j)
+      (fun _ => Finset.mem_univ _)
+      ((Fin.castOrderIso ht.symm).strictMono)
+    change (S.orderIsoOfFin rfl v).1 = Fin.cast ht.symm v
+    simpa only [Finset.coe_orderIsoOfFin_apply] using (congrFun huniq v).symm
+  have hreference :=
+    ExternalInsertionBlockLayout.ofFamilyShuffle_ownerShuffleEquiv_reference π heven σ
+  have hperm :=
+    ExternalInsertionBlockLayout.ofFamilyShuffle_ownerShuffleEquiv_ambientRelabel
+      π heven σ τ
+  change
+    (((ExternalInsertionBlockLayout.ofFamilyShuffle π heven σ).interactionAssignmentShuffle.ambientRelabel
+      (e τ)).symm.trans
+        ((Finset.univ : Finset (Fin N)).orderIsoOfFin rfl).toEquiv) = _
+  rw [← hreference]
+  apply Equiv.ext
+  intro v
+  apply Subtype.ext
+  simp only [Equiv.trans_apply]
+  change
+    ((S.orderIsoOfFin rfl).toEquiv
+      (((e σ).ambientRelabel (e τ)).symm v)).1 =
+      (σ.ambientRelabel τ).symm
+        (((S.orderIsoOfFin rfl).toEquiv v).1)
+  rw [hcanon (((e σ).ambientRelabel (e τ)).symm v), hcanon v]
+  rw [hperm]
+  apply Fin.ext
+  rfl
 
 
 end Common

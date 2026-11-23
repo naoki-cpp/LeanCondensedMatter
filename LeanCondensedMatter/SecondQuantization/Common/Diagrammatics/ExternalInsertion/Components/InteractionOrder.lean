@@ -106,63 +106,126 @@ theorem ExternalInsertionDiagram.assembleInteractionOrder_symm_apply
   rw [hambient]
   simpa [ExternalInsertionDiagram.assembleInteractionOrder] using h
 
-/-- A vacuum-free diagram's total interaction order is the sum of the local
-interaction orders indexed by *external partition blocks*.
+/-- The canonical interleaving of the actual component interaction
+fibers is the shuffle extracted from the canonical increasing ambient
+vertex order. It retains components without interaction vertices. -/
+noncomputable def ExternalInsertionDiagram.canonicalComponentInteractionShuffle
+    {S : Finset (Fin N)}
+    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S) :
+    d.ComponentInteractionOrderShuffle := by
+  classical
+  exact ((familyOrderDecompositionEquivOfSize
+    (fun B : d.vertexGraph.componentPartition.parts =>
+      ↥(interactionSector (B : Finset (ExternalInsertionVertex E S))))
+    (fun B : d.vertexGraph.componentPartition.parts =>
+      (interactionSector (B : Finset (ExternalInsertionVertex E S))).card)
+    (fun B => Fintype.card_coe
+      (interactionSector (B : Finset (ExternalInsertionVertex E S))))
+    (interactionSectorComponentEquiv d.vertexGraph))
+    ((S.orderIsoOfFin rfl).toEquiv)).2
 
-This is the cardinality identity that makes external-block shuffle
-decomposition possible, including blocks carrying zero interaction vertices. -/
-theorem ExternalInsertionDiagram.sum_externalBlockInteractionSector_card_eq
+/-- An arbitrary component shuffle with canonical increasing local
+vertex orders is exactly a relabeling of the canonical global vertex
+order. The relabeling changes only the interleaving, not the ordered
+slots inside a connected component; no individual Dyson integral
+invariance is asserted. -/
+theorem ExternalInsertionDiagram.assembleInteractionOrder_eq_canonicalRelabel
     {S : Finset (Fin N)}
     (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
-    (hVac : HasNoVacuumComponent d.vertexGraph) :
-    (∑ P : (externalComponentPartition d.vertexGraph).parts,
-      (interactionSector
-        (((d.vacuumFreeComponentsEquivExternalBlocks hVac).symm P).1 :
-          Finset (ExternalInsertionVertex E S))).card) = S.card := by
+    (ρ : d.ComponentInteractionOrderShuffle) :
+    d.assembleInteractionOrder d.canonicalComponentInteractionOrders ρ =
+      (d.canonicalComponentInteractionShuffle.ambientRelabel ρ).symm.trans
+        (S.orderIsoOfFin rfl).toEquiv := by
   classical
-  let e := d.vacuumFreeComponentsEquivExternalBlocks hVac
+  let family : d.vertexGraph.componentPartition.parts → Type :=
+    fun B => ↥(interactionSector (B : Finset (ExternalInsertionVertex E S)))
   let size : d.vertexGraph.componentPartition.parts → ℕ :=
-    fun B => (interactionSector (B.1 : Finset (ExternalInsertionVertex E S))).card
-  calc
-    (∑ P : (externalComponentPartition d.vertexGraph).parts,
-      (interactionSector
-        (((d.vacuumFreeComponentsEquivExternalBlocks hVac).symm P).1 :
-          Finset (ExternalInsertionVertex E S))).card) =
-      ∑ B : d.vertexGraph.componentPartition.parts, size B := by
-        exact Equiv.sum_comp e.symm size
-    _ = S.card := by
-      simpa [size] using sum_interactionSector_card_eq d.vertexGraph
+    fun B => (interactionSector (B : Finset (ExternalInsertionVertex E S))).card
+  let ambient := interactionSectorComponentEquiv d.vertexGraph
+  let order : QuarticVertexOrder S := (S.orderIsoOfFin rfl).toEquiv
+  let e := familyOrderDecompositionEquivOfSize (total := S.card) family size
+    (fun B => Fintype.card_coe
+      (interactionSector (B : Finset (ExternalInsertionVertex E S)))) ambient
+  have hmono (B : d.vertexGraph.componentPartition.parts) :
+      StrictMono (fun j : Fin (size B) =>
+        order.symm (ambient.symm ⟨B, d.canonicalComponentInteractionOrders B j⟩)) := by
+    intro a b hab
+    apply (S.orderIsoOfFin rfl).symm.strictMono
+    change (ambient.symm ⟨B, d.canonicalComponentInteractionOrders B a⟩).1 <
+      (ambient.symm ⟨B, d.canonicalComponentInteractionOrders B b⟩).1
+    rw [interactionSectorComponentEquiv_symm_val,
+      interactionSectorComponentEquiv_symm_val]
+    exact ((interactionSector (B : Finset (ExternalInsertionVertex E S))).orderIsoOfFin
+      rfl).strictMono hab
+  have hlocal : (e order).1 = d.canonicalComponentInteractionOrders := by
+    change familyOrdersOfOrder family size (fun B => Fintype.card_coe
+      (interactionSector (B : Finset (ExternalInsertionVertex E S)))) ambient order =
+      d.canonicalComponentInteractionOrders
+    funext B
+    exact (familyOrder_eq_of_strictMono family size
+      (fun C => Fintype.card_coe
+        (interactionSector (C : Finset (ExternalInsertionVertex E S))))
+      ambient order B (d.canonicalComponentInteractionOrders B) (hmono B)).symm
+  have hbase :
+      d.assembleInteractionOrder d.canonicalComponentInteractionOrders
+        d.canonicalComponentInteractionShuffle = order := by
+    have h := e.symm_apply_apply order
+    change assembleFamilyOrderOfSize family size ambient (e order).1
+      (e order).2 = order at h
+    change assembleFamilyOrderOfSize family size ambient
+      d.canonicalComponentInteractionOrders (e order).2 = order
+    rw [← hlocal]
+    exact h
+  have hrelab := assembleFamilyOrderOfSize_ambientRelabel family size ambient
+    d.canonicalComponentInteractionOrders
+    d.canonicalComponentInteractionShuffle ρ
+  change (assembleFamilyOrderOfSize family size ambient
+      d.canonicalComponentInteractionOrders ρ) =
+      (d.canonicalComponentInteractionShuffle.ambientRelabel ρ).symm.trans order
+  rw [← hbase]
+  exact hrelab.symm
 
-/-- The actual interaction-order shuffle family of a vacuum-free diagram,
-initially indexed by full graph components, is equivalent to a family
-indexed by the external insertion partition.
-
-This transports the *whole finite shuffle index type*, not just its
-cardinality or an arbitrary representative. In particular, zero-interaction
-external blocks remain present in the family. -/
-noncomputable def ExternalInsertionDiagram.vacuumFreeExternalBlockInteractionShuffleEquiv
+/-- The owner of an ambient canonical interaction slot under the
+canonical component shuffle is precisely its *actual graph component*.
+This is the ownership identity needed to compare a physical owner
+assignment with the graph-component shuffle, without modifying any
+local vertex numbering. -/
+theorem ExternalInsertionDiagram.canonicalComponentInteractionShuffle_owner
     {S : Finset (Fin N)}
     (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
-    (hVac : HasNoVacuumComponent d.vertexGraph) :
-    d.ComponentInteractionOrderShuffle ≃
-      FamilySlotShuffleTo
-        (fun P : (externalComponentPartition d.vertexGraph).parts =>
-          (interactionSector
-            (((d.vacuumFreeComponentsEquivExternalBlocks hVac).symm P).1 :
-              Finset (ExternalInsertionVertex E S))).card)
-        S.card := by
+    (v : Fin S.card) :
+    (d.canonicalComponentInteractionShuffle.slotEquiv.symm v).1 =
+      (interactionSectorComponentEquiv d.vertexGraph
+        ((S.orderIsoOfFin rfl).toEquiv v)).1 := by
   classical
-  let e := d.vacuumFreeComponentsEquivExternalBlocks hVac
-  let size : d.vertexGraph.componentPartition.parts → ℕ :=
-    fun B => (interactionSector (B.1 : Finset (ExternalInsertionVertex E S))).card
-  have hs : (∑ B, size B) = S.card := by
-    simpa [size] using sum_interactionSector_card_eq d.vertexGraph
-  have hsP : (∑ P, size (e.symm P)) = S.card :=
-    d.sum_externalBlockInteractionSector_card_eq hVac
-  exact
-    ((FamilySlotShuffleTo.castTotalEquiv hs.symm).trans
-      (FamilySlotShuffle.reindexEquiv e.symm size)).trans
-      (FamilySlotShuffleTo.castTotalEquiv hsP)
+  let σ := d.canonicalComponentInteractionShuffle
+  let order : QuarticVertexOrder S := (S.orderIsoOfFin rfl).toEquiv
+  have hglobal : d.assembleInteractionOrder
+      d.canonicalComponentInteractionOrders σ = order := by
+    simpa [σ, order, FamilySlotShuffleTo.ambientRelabel] using
+      d.assembleInteractionOrder_eq_canonicalRelabel σ
+  rcases hslot : σ.slotEquiv.symm v with ⟨C, j⟩
+  have hback : σ.slotEquiv ⟨C, j⟩ = v := by
+    calc
+      σ.slotEquiv ⟨C, j⟩ = σ.slotEquiv (σ.slotEquiv.symm v) :=
+        congrArg σ.slotEquiv hslot.symm
+      _ = v := σ.slotEquiv.apply_symm_apply v
+  have hlocal := d.assembleInteractionOrder_symm_apply
+    d.canonicalComponentInteractionOrders σ C j
+  rw [hglobal, hback] at hlocal
+  have hvertex :
+      order v = (interactionSectorComponentEquiv d.vertexGraph).symm
+        ⟨C, d.canonicalComponentInteractionOrders C j⟩ := by
+    apply Subtype.ext
+    have h := congrArg order hlocal
+    simpa only [Equiv.apply_symm_apply, interactionSectorComponentEquiv_symm_val]
+      using congrArg Subtype.val h.symm
+  have howner :
+      (interactionSectorComponentEquiv d.vertexGraph (order v)).1 = C := by
+    rw [hvertex]
+    simp
+  simpa only [hslot] using howner.symm
+
 
 
 end Common

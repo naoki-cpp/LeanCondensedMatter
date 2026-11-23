@@ -220,4 +220,117 @@ theorem FamilySlotShuffleTo.ambientRelabel_strictMono_ownerFiber
   exact (τ.strictMono i) hj
 
 
+/-- Relabel the *names* of the blocks in an order-preserving
+shuffle without changing any ambient slot. Unlike reindexing a shuffle
+with an ambient size equal to a finite sum, this works for an arbitrary
+fixed ambient cardinality and introduces no cast on the global slots. -/
+noncomputable def FamilySlotShuffleTo.reindexEquiv
+    {κ : Type*} (e : ι ≃ κ) (size : κ → ℕ) {total : ℕ} :
+    FamilySlotShuffleTo size total ≃
+      FamilySlotShuffleTo (fun i => size (e i)) total where
+  toFun σ :=
+    { slotEquiv := (e.sigmaCongrLeft (β := fun j => Fin (size j))).trans σ.slotEquiv
+      strictMono := by
+        intro i a b hab
+        simpa [Equiv.sigmaCongrLeft, Equiv.trans_apply] using σ.strictMono (e i) hab }
+  invFun τ :=
+    { slotEquiv :=
+        (e.sigmaCongrLeft (β := fun j => Fin (size j))).symm.trans τ.slotEquiv
+      strictMono := by
+        intro j
+        obtain ⟨i, rfl⟩ := e.surjective j
+        intro a b hab
+        let localEquiv : (Σ k : ι, Fin (size (e k))) ≃
+            (Σ k : κ, Fin (size k)) :=
+          e.sigmaCongrLeft (β := fun k => Fin (size k))
+        have ha : localEquiv.symm ⟨e i, a⟩ = ⟨i, a⟩ := by
+          apply localEquiv.injective
+          simp [localEquiv]
+        have hb : localEquiv.symm ⟨e i, b⟩ = ⟨i, b⟩ := by
+          apply localEquiv.injective
+          simp [localEquiv]
+        change τ.slotEquiv (localEquiv.symm ⟨e i, a⟩) <
+          τ.slotEquiv (localEquiv.symm ⟨e i, b⟩)
+        rw [ha, hb]
+        exact τ.strictMono i hab }
+  left_inv σ := by
+    apply FamilySlotShuffleTo.ext
+    apply Equiv.ext
+    intro v
+    simp only [Equiv.trans_apply, Equiv.apply_symm_apply]
+  right_inv τ := by
+    apply FamilySlotShuffleTo.ext
+    apply Equiv.ext
+    intro v
+    simp only [Equiv.trans_apply, Equiv.symm_apply_apply]
+
+/-- Renaming the block-index type of both shuffles leaves their ambient
+slot relabeling literally unchanged. Thus all ordered integrals are
+transported by the same permutation, independently of block names. -/
+theorem FamilySlotShuffleTo.reindexEquiv_ambientRelabel
+    {κ : Type*} (e : ι ≃ κ) (size : κ → ℕ) {total : ℕ}
+    (σ τ : FamilySlotShuffleTo size total) :
+    ((FamilySlotShuffleTo.reindexEquiv e size) σ).ambientRelabel
+        ((FamilySlotShuffleTo.reindexEquiv e size) τ) =
+      σ.ambientRelabel τ := by
+  ext v
+  simp [FamilySlotShuffleTo.ambientRelabel,
+    FamilySlotShuffleTo.reindexEquiv, Equiv.trans_apply]
+
+/-- After a block renaming the inverse shuffle returns the renamed
+owner at each fixed global slot. -/
+theorem FamilySlotShuffleTo.reindexEquiv_owner
+    {κ : Type*} (e : ι ≃ κ) (size : κ → ℕ) {total : ℕ}
+    (σ : FamilySlotShuffleTo size total) (v : Fin total) :
+    (((FamilySlotShuffleTo.reindexEquiv e size) σ).slotEquiv.symm v).1 =
+      e.symm ((σ.slotEquiv.symm v).1) := by
+  simp [FamilySlotShuffleTo.reindexEquiv, Equiv.sigmaCongrLeft,
+    Equiv.trans_apply]
+
+/-- Casting only the type-level family-size function does not alter
+which block owns an ambient slot. -/
+theorem FamilySlotShuffleTo.castSize_owner
+    {size₁ size₂ : ι → ℕ} {total : ℕ}
+    (h : size₁ = size₂) (σ : FamilySlotShuffleTo size₁ total)
+    (v : Fin total) :
+    (((Equiv.cast (congrArg (fun s => FamilySlotShuffleTo s total) h)) σ).slotEquiv.symm v).1 =
+      (σ.slotEquiv.symm v).1 := by
+  cases h
+  rfl
+
+/-- Casting only the type-level family-size function preserves the
+ambient permutation between two family shuffles. -/
+theorem FamilySlotShuffleTo.castSize_ambientRelabel
+    {size₁ size₂ : ι → ℕ} {total : ℕ}
+    (h : size₁ = size₂)
+    (σ τ : FamilySlotShuffleTo size₁ total) :
+    (((Equiv.cast (congrArg (fun s => FamilySlotShuffleTo s total) h)) σ).ambientRelabel
+      ((Equiv.cast (congrArg (fun s => FamilySlotShuffleTo s total) h)) τ)) =
+      σ.ambientRelabel τ := by
+  cases h
+  rfl
+
+/-- Changing the ambient cardinality proof only casts slot numbers;
+it does not modify the family owner of an ambient slot. -/
+theorem FamilySlotShuffleTo.castTotalEquiv_owner
+    {size : ι → ℕ} {m n : ℕ} (h : m = n)
+    (σ : FamilySlotShuffleTo size m) (v : Fin n) :
+    (((FamilySlotShuffleTo.castTotalEquiv h) σ).slotEquiv.symm v).1 =
+      (σ.slotEquiv.symm (Fin.cast h.symm v)).1 := by
+  cases h
+  rfl
+
+/-- Simultaneously casting both shuffles' ambient cardinalities
+conjugates their ambient permutation by the same Fin cast. -/
+theorem FamilySlotShuffleTo.castTotalEquiv_ambientRelabel
+    {size : ι → ℕ} {m n : ℕ} (h : m = n)
+    (σ τ : FamilySlotShuffleTo size m) :
+    (((FamilySlotShuffleTo.castTotalEquiv h) σ).ambientRelabel
+      ((FamilySlotShuffleTo.castTotalEquiv h) τ)) =
+      ((Fin.castOrderIso h).symm.toEquiv.trans
+        (σ.ambientRelabel τ)).trans (Fin.castOrderIso h).toEquiv := by
+  cases h
+  ext v
+  simp [FamilySlotShuffleTo.ambientRelabel, FamilySlotShuffleTo.castTotalEquiv]
+
 end Combinatorics
