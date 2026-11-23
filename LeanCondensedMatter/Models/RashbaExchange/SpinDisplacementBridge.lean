@@ -36,7 +36,7 @@ attribute [local instance 100] LieRing.ofAssociativeRing
 
 noncomputable section
 
-variable {Grid : Type*} [LinearOrder Grid] [Fintype Grid]
+variable {Grid : Type*} [Fintype Grid]
 
 /-- Symmetric spin displacement for a supplied position-like one-body observable.
 The localization operation is owned by the existing general conservation-law layer. -/
@@ -143,6 +143,7 @@ theorem finiteRashbaMomentumSpinDisplacement_eq_spinCurrent_add_torque
 Fock lift. The conventional contribution is the *existing* boundedSpinCurrentLinear,
 and the remaining observable is a bounded torque dipole. -/
 theorem finiteRashbaMomentumSpinDisplacement_fock_decomposition
+    [LinearOrder Grid]
     (params : HamiltonianParameters) (momentum : Grid → ℝ × ℝ)
     (hbar spinScale : ℝ) (component : QuantumTheory.SpinHalf.SpinSpace)
     (direction : Fin 2)
