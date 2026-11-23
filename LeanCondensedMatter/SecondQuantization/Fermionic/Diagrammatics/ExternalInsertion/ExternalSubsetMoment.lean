@@ -1124,6 +1124,42 @@ private noncomputable def externalSubsetPartitionEquiv
       exact Finset.mem_image.mpr
         ⟨g T, Finset.mem_image.mpr ⟨T, hT, rfl⟩, hfg T (σ.le hT)⟩
 
+/-- A source partition has only even-sized blocks if and only if its
+image under the canonical order-preserving reindexing does. This permits
+restricting both signed connected-partition sums to the same physical
+even-block sector, without changing block multiplicities. -/
+private theorem externalSubsetPartitionEquiv_evenBlocks
+    (S : Finset (Fin (2 * E))) (heven : Even S.card)
+    (π : Finpartition (Finset.univ : Finset (Fin (2 * (S.card / 2))))) :
+    (∀ B : π.parts, Even (B : Finset (Fin (2 * (S.card / 2)))).card) ↔
+      ∀ T : (externalSubsetPartitionEquiv S heven π).parts,
+        Even (T : Finset (Fin (2 * E))).card := by
+  classical
+  let e := evenExternalSubsetOrderIso S heven
+  let emb : Fin (2 * (S.card / 2)) ↪ Fin (2 * E) :=
+    ⟨fun i => (e i).1, fun i j hij => e.injective (Subtype.ext hij)⟩
+  have hparts :
+      (externalSubsetPartitionEquiv S heven π).parts =
+        π.parts.image (fun B => B.map emb) := rfl
+  constructor
+  · intro hEven T
+    have hT : (T : Finset (Fin (2 * E))) ∈
+        π.parts.image (fun B => B.map emb) := by
+      rw [← hparts]
+      exact T.2
+    obtain ⟨B, hB, hBT⟩ := Finset.mem_image.mp hT
+    have hEvenB := hEven ⟨B, hB⟩
+    change Even (T : Finset (Fin (2 * E))).card
+    rw [← hBT]
+    simpa using hEvenB
+  · intro hEven B
+    have hB : (B : Finset (Fin (2 * (S.card / 2)))).map emb ∈
+        (externalSubsetPartitionEquiv S heven π).parts := by
+      rw [hparts]
+      exact Finset.mem_image.mpr ⟨B.1, B.2, rfl⟩
+    have hEvenT := hEven ⟨B.1.map emb, hB⟩
+    simpa using hEvenT
+
 set_option maxHeartbeats 4000000 in
 -- The connected series of a source subset has an index depending on its cardinality.
 open Classical in
