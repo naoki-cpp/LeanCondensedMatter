@@ -1,4 +1,5 @@
 import Mathlib.Basic.Complex.Basic
+import Mathlib.LinearAlgebra.Matrix.GeneralLinearGroup.Defs
 import Mathlib.Tactic.Ring
 
 set_option linter.style.header false
@@ -90,6 +91,61 @@ completed conductivity, not an assumption about its microscopic response represe
 def IsPlanarIsotropic (conductivity : ConductivityTensor (Fin 2)) : Prop :=
   conductivity.component 1 1 = conductivity.component 0 0 ∧
     conductivity.component 1 0 = -conductivity.component 0 1
+
+/-- The completed planar conductivity is invariant under the quarter-turn
+`R = [[0,-1],[1,0]]` acting on both its measured and source directions.
+This is a spatial-symmetry constraint, not a microscopic Kubo hypothesis or
+an assertion that the Hall component vanishes. -/
+def IsQuarterTurnInvariant (conductivity : ConductivityTensor (Fin 2)) : Prop :=
+  let R : Matrix (Fin 2) (Fin 2) ℂ := !![0, -1; 1, 0]
+  R * conductivity.component * R.transpose = conductivity.component
+
+/-- Quarter-turn invariance is exactly the existing planar isotropy condition:
+equal longitudinal components and antisymmetric off-diagonal components.
+The antisymmetric Hall response is permitted by this proper rotation. -/
+theorem isQuarterTurnInvariant_iff_isPlanarIsotropic
+    (conductivity : ConductivityTensor (Fin 2)) :
+    conductivity.IsQuarterTurnInvariant ↔ conductivity.IsPlanarIsotropic := by
+  constructor
+  · intro h
+    dsimp [IsQuarterTurnInvariant] at h
+    have h00 := congrArg
+      (fun M : Matrix (Fin 2) (Fin 2) ℂ => M 0 0) h
+    have h01 := congrArg
+      (fun M : Matrix (Fin 2) (Fin 2) ℂ => M 0 1) h
+    simp [Matrix.mul_apply, Fin.sum_univ_two] at h00 h01
+    constructor
+    · exact h00
+    · calc
+        conductivity.component 1 0 =
+            -(-conductivity.component 1 0) := by ring
+        _ = -conductivity.component 0 1 := by rw [h01]
+  · intro h
+    rcases h with ⟨hdiag, hoffdiag⟩
+    dsimp [IsQuarterTurnInvariant]
+    ext i j
+    fin_cases i <;> fin_cases j <;>
+      simp [Matrix.mul_apply, Fin.sum_univ_two, hdiag, hoffdiag]
+
+/-- Quarter-turn symmetry forces the symmetric xy conductivity to vanish,
+even though it does not force the full xy (Hall) component to vanish. -/
+theorem symmetricComponent_zero_one_eq_zero_of_isQuarterTurnInvariant
+    (conductivity : ConductivityTensor (Fin 2))
+    (h : conductivity.IsQuarterTurnInvariant) :
+    conductivity.symmetricComponent 0 1 = 0 := by
+  have hiso := (isQuarterTurnInvariant_iff_isPlanarIsotropic conductivity).mp h
+  change (conductivity.component 0 1 + conductivity.component 1 0) / 2 = 0
+  rw [hiso.2]
+  ring
+
+/-- Quarter-turn symmetry makes the two in-plane longitudinal
+conductivities equal, independently of the Hall part. -/
+theorem longitudinal_zero_eq_one_of_isQuarterTurnInvariant
+    (conductivity : ConductivityTensor (Fin 2))
+    (h : conductivity.IsQuarterTurnInvariant) :
+    conductivity.longitudinal 0 = conductivity.longitudinal 1 := by
+  change conductivity.component 0 0 = conductivity.component 1 1
+  exact ((isQuarterTurnInvariant_iff_isPlanarIsotropic conductivity).mp h).1.symm
 
 /-- For a planar-isotropic tensor, the Hall projection equals the ordered xy component. -/
 theorem hallComponent_zero_one_eq_of_isPlanarIsotropic
