@@ -1217,6 +1217,7 @@ theorem tendsto_finiteCutoffContinuumBornDysonGaussianCrossedK2_movingCenterWind
         ‖F (D0 W).re offset - F E0 offset‖ ≤ tol := by
       intro offset hoffset
       have hdist := hW offset hoffset
+      rw [norm_sub_rev]
       simpa only [dist_eq_norm] using hdist.le
     have hKernelInt := Lorentzian.intervalIntegrable_spectralKernel
       (-windowRadius) windowRadius (D0 W).im hB.ne'
@@ -1245,8 +1246,8 @@ theorem tendsto_finiteCutoffContinuumBornDysonGaussianCrossedK2_movingCenterWind
               tol * Lorentzian.spectralKernel offset (D0 W).im := by
         apply intervalIntegral.norm_integral_le_of_norm_le hρ
         · filter_upwards with offset hoffset
-          have hmem : offset ∈ Set.Icc (-windowRadius) windowRadius := by
-            simpa [Set.uIcc_of_le hρ] using (Set.uIoc_subset_uIcc hoffset)
+          have hmem : offset ∈ Set.Icc (-windowRadius) windowRadius :=
+            ⟨hoffset.1.le, hoffset.2⟩
           exact hpoint offset hmem
         · exact hKernelInt.const_mul tol
       rw [intervalIntegral.integral_const_mul] at hbound
