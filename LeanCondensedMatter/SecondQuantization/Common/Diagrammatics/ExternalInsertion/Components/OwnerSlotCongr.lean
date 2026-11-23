@@ -677,7 +677,7 @@ theorem ExternalInsertionBlockLayout.ofFamilyShuffle_connectedFamily_standardiza
 /-- The owner-shuffle indices of a fixed-size physical block layout are
 the same family shuffles as the prescribed interaction-size vector,
 with only the proven size and ambient-cardinality equalities cast. -/
-noncomputable def ExternalInsertionBlockLayout.ofFamilyShuffle_ownerShuffleEquiv
+noncomputable def ExternalInsertionBlockLayout.ofFamilyShuffleOwnerShuffleEquiv
     (π : Finpartition (Finset.univ : Finset (Fin (2 * E))))
     (heven : ∀ B : π.parts, Even (B : Finset (Fin (2 * E))).card)
     {size : π.parts → ℕ}
@@ -711,11 +711,11 @@ theorem ExternalInsertionBlockLayout.ofFamilyShuffle_ownerShuffleEquiv_reference
     (heven : ∀ B : π.parts, Even (B : Finset (Fin (2 * E))).card)
     {size : π.parts → ℕ}
     (σ : Combinatorics.FamilySlotShuffleTo size N) :
-    (ExternalInsertionBlockLayout.ofFamilyShuffle_ownerShuffleEquiv π heven σ) σ =
+    (ExternalInsertionBlockLayout.ofFamilyShuffleOwnerShuffleEquiv π heven σ) σ =
       (ExternalInsertionBlockLayout.ofFamilyShuffle π heven σ).interactionAssignmentShuffle := by
   classical
   let layout := ExternalInsertionBlockLayout.ofFamilyShuffle π heven σ
-  let e := ExternalInsertionBlockLayout.ofFamilyShuffle_ownerShuffleEquiv π heven σ
+  let e := ExternalInsertionBlockLayout.ofFamilyShuffleOwnerShuffleEquiv π heven σ
   have hs : size =
       (fun B : π.parts =>
         (layout.interactionBlock (Finset.univ : Finset (Fin N)) B).card) := by
@@ -766,7 +766,7 @@ theorem ExternalInsertionBlockLayout.ofFamilyShuffle_ownerShuffleEquiv_ambientRe
     (heven : ∀ B : π.parts, Even (B : Finset (Fin (2 * E))).card)
     {size : π.parts → ℕ}
     (σ τ : Combinatorics.FamilySlotShuffleTo size N) :
-    let e := ExternalInsertionBlockLayout.ofFamilyShuffle_ownerShuffleEquiv π heven σ
+    let e := ExternalInsertionBlockLayout.ofFamilyShuffleOwnerShuffleEquiv π heven σ
     ((e σ).ambientRelabel (e τ)) =
       ((Fin.castOrderIso (by simp : N = (Finset.univ : Finset (Fin N)).card)).symm.toEquiv.trans
         (σ.ambientRelabel τ)).trans
@@ -807,7 +807,7 @@ theorem ExternalInsertionBlockLayout.ofFamilyShuffle_ownerOrderedDysonOrder
     {size : π.parts → ℕ}
     (σ τ : Combinatorics.FamilySlotShuffleTo size N) :
     let layout := ExternalInsertionBlockLayout.ofFamilyShuffle π heven σ
-    let e := ExternalInsertionBlockLayout.ofFamilyShuffle_ownerShuffleEquiv π heven σ
+    let e := ExternalInsertionBlockLayout.ofFamilyShuffleOwnerShuffleEquiv π heven σ
     ((layout.interactionAssignmentShuffle.ambientRelabel (e τ)).symm.trans
         ((Finset.univ : Finset (Fin N)).orderIsoOfFin rfl).toEquiv) =
       ((Finset.univ : Finset (Fin N)).orderIsoOfFin rfl).toEquiv.trans
@@ -815,7 +815,7 @@ theorem ExternalInsertionBlockLayout.ofFamilyShuffle_ownerOrderedDysonOrder
   classical
   let S : Finset (Fin N) := Finset.univ
   let layout := ExternalInsertionBlockLayout.ofFamilyShuffle π heven σ
-  let e := ExternalInsertionBlockLayout.ofFamilyShuffle_ownerShuffleEquiv π heven σ
+  let e := ExternalInsertionBlockLayout.ofFamilyShuffleOwnerShuffleEquiv π heven σ
   have ht : N = S.card := by simp [S]
   have hcanon (v : Fin S.card) :
       ((S.orderIsoOfFin rfl).toEquiv v).1 = Fin.cast ht.symm v := by
