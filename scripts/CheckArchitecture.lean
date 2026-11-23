@@ -248,8 +248,8 @@ private def pictureEquivalenceOwnerRequirements : Array OwnerRequirement :=
   let pictureModule := `LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.PictureEquivalence
   let adjointConjugationModule := `LeanCondensedMatter.Analysis.Operator.AdjointConjugation
   let unitaryModule := `LeanCondensedMatter.Analysis.Operator.Unitary
-  let traceClassAdjointConjugationModule :=
-    `LeanCondensedMatter.Analysis.Operator.TraceClass.AdjointConjugation
+  let traceClassOpsModule :=
+    `LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Basic
   #[
     { declaration := `QuantumTheory.LinearResponse.heisenbergObservable, moduleName := pictureModule },
     { declaration := `QuantumTheory.LinearResponse.expValue_evolveState_eq_heisenberg, moduleName := pictureModule },
@@ -263,9 +263,9 @@ private def pictureEquivalenceOwnerRequirements : Array OwnerRequirement :=
     { declaration := `ContinuousLinearMap.eigenspace_adjointConjugate, moduleName := unitaryModule },
     { declaration := `ContinuousLinearMap.finrank_eigenspace_adjointConjugate, moduleName := unitaryModule },
     { declaration := `ContinuousLinearMap.IsTraceClass.adjointConjugate,
-      moduleName := traceClassAdjointConjugationModule },
+      moduleName := traceClassOpsModule },
     { declaration := `ContinuousLinearMap.IsTraceClass.trace_adjointConjugate,
-      moduleName := traceClassAdjointConjugationModule },
+      moduleName := traceClassOpsModule },
     { declaration := `QuantumTheory.DensityOperator.exists_diagonal_hilbertBasis,
       moduleName := `LeanCondensedMatter.QuantumTheory.DensityOperator.Diagonal },
   ]

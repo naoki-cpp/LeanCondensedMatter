@@ -80,7 +80,7 @@ evolution.
 Reusable bounded adjoint conjugation lives in `Analysis/Operator/AdjointConjugation.lean`, while
 unitary-specific eigenspace transport lives in `Analysis/Operator/Unitary.lean`. General trace-class
 closure and trace invariance under adjoint conjugation live in
-`Analysis/Operator/TraceClass/AdjointConjugation.lean`. The physics layer consumes these
+`Analysis/Operator/TraceClass/Ops/Basic.lean`. The physics layer consumes these
 analysis-owned APIs.
 
 The reusable Hilbert-basis diagonal operator construction lives under

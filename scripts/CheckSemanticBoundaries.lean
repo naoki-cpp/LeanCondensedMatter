@@ -62,7 +62,7 @@ private def boundedDimensionIndependentModules : Array Name := #[
   `LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.PictureEquivalence,
   `LeanCondensedMatter.Analysis.Operator.AdjointConjugation,
   `LeanCondensedMatter.Analysis.Operator.Unitary,
-  `LeanCondensedMatter.Analysis.Operator.TraceClass.AdjointConjugation,
+  `LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Basic,
   `LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Unitary,
   `LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.EquationsOfMotion,
   `LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.ConservationLaws,
