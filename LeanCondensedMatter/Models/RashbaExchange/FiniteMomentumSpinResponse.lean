@@ -122,30 +122,6 @@ noncomputable def finiteRashbaMomentumSpinChargeChannel
       (charge • finiteRashbaMomentumVelocity params momentum source)
   observableVariation := observableVariation
 
-/-- The measured current remains linear in the physical real spin-polarization vector.
-The charge-driving vertex and observable variation are held fixed. -/
-theorem finiteRashbaMomentumSpinChargeChannel_measured_add
-    (params : HamiltonianParameters) (momentum : Grid → ℝ × ℝ)
-    (spinScale : ℝ) (u v : QuantumTheory.SpinHalf.SpinSpace)
-    (measured source : Fin 2) (charge : ℂ)
-    (contact :
-      FiniteLatticeHilbertFock (SpinfulSite Grid) →L[ℂ]
-        FiniteLatticeHilbertFock (SpinfulSite Grid)) :
-    (finiteRashbaMomentumSpinChargeChannel params momentum spinScale
-      (u + v) measured source charge contact).measured =
-      (finiteRashbaMomentumSpinChargeChannel params momentum spinScale
-        u measured source charge contact).measured +
-      (finiteRashbaMomentumSpinChargeChannel params momentum spinScale
-        v measured source charge contact).measured := by
-  change
-    boundedSpinCurrentLinear (finiteRashbaMomentumVelocity params momentum measured)
-        spinScale (u + v) =
-      boundedSpinCurrentLinear (finiteRashbaMomentumVelocity params momentum measured)
-        spinScale u +
-      boundedSpinCurrentLinear (finiteRashbaMomentumVelocity params momentum measured)
-        spinScale v
-  exact map_add _ u v
-
 /-- Bounded free dynamics from the directly second-quantized Rashba Hamiltonian,
 using the proved self-adjointness of each momentum block. -/
 noncomputable def finiteRashbaMomentumFreeSystem
@@ -156,54 +132,6 @@ noncomputable def finiteRashbaMomentumFreeSystem
     finiteRashbaMomentumFockHamiltonian_selfAdjoint params momentum⟩
   hbar := hbar
   hbar_pos := hhbar
-
-/-- Exact causal Kubo kernel for the finite momentum-grid Fock response channel. -/
-noncomputable def finiteRashbaMomentumSpinChargeRetardedKernel
-    (params : HamiltonianParameters) (momentum : Grid → ℝ × ℝ)
-    (hbar : ℝ) (hhbar : 0 < hbar)
-    (spinScale : ℝ) (component : QuantumTheory.SpinHalf.SpinSpace)
-    (measured source : Fin 2) (charge : ℂ)
-    (contact :
-      FiniteLatticeHilbertFock (SpinfulSite Grid) →L[ℂ]
-        FiniteLatticeHilbertFock (SpinfulSite Grid))
-    (expectation : NormalizedExpectation (FiniteLatticeHilbertFock (SpinfulSite Grid)))
-    (t s : ℝ) : ℂ :=
-  (finiteRashbaMomentumSpinChargeChannel params momentum spinScale component
-    measured source charge contact).retardedKernel
-      (freePropagatorGroup
-        (finiteRashbaMomentumFreeSystem params momentum hbar hhbar))
-      hbar expectation t s
-
-/-- Exact finite-grid Kubo response is additive in the physical spin polarization, with
-the same Hamiltonian, electric source, and expectation on all three terms. -/
-theorem finiteRashbaMomentumSpinChargeRetardedKernel_add
-    (params : HamiltonianParameters) (momentum : Grid → ℝ × ℝ)
-    (hbar : ℝ) (hhbar : 0 < hbar)
-    (spinScale : ℝ) (u v : QuantumTheory.SpinHalf.SpinSpace)
-    (measured source : Fin 2) (charge : ℂ)
-    (contact :
-      FiniteLatticeHilbertFock (SpinfulSite Grid) →L[ℂ]
-        FiniteLatticeHilbertFock (SpinfulSite Grid))
-    (expectation : NormalizedExpectation (FiniteLatticeHilbertFock (SpinfulSite Grid)))
-    (t s : ℝ) :
-    finiteRashbaMomentumSpinChargeRetardedKernel params momentum hbar hhbar
-        spinScale (u + v) measured source charge contact expectation t s =
-      finiteRashbaMomentumSpinChargeRetardedKernel params momentum hbar hhbar
-        spinScale u measured source charge contact expectation t s +
-      finiteRashbaMomentumSpinChargeRetardedKernel params momentum hbar hhbar
-        spinScale v measured source charge contact expectation t s := by
-  let U := freePropagatorGroup
-    (finiteRashbaMomentumFreeSystem params momentum hbar hhbar)
-  let J := boundedSpinCurrentLinear
-    (finiteRashbaMomentumVelocity params momentum measured) spinScale
-  let B := boundedOneBodyOperator
-    (charge • finiteRashbaMomentumVelocity params momentum source)
-  change retardedSusceptibility U hbar expectation (J (u + v)) B t s =
-    retardedSusceptibility U hbar expectation (J u) B t s +
-      retardedSusceptibility U hbar expectation (J v) B t s
-  rw [map_add]
-  exact (retardedSusceptibilityMeasuredLinearMap U hbar expectation B t s).map_add
-    (J u) (J v)
 
 end
 end QuantumTheory.Models.RashbaExchange
