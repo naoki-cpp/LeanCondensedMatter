@@ -68,6 +68,23 @@ noncomputable def finiteRashbaMomentumHopping
     intro x y hy
     exact (hy (Finset.mem_univ y)).elim
 
+/-- The finite-hopping columns reconstruct exactly the block-diagonal Rashba
+one-body Hamiltonian; no surrogate Hamiltonian is introduced by the hopping bridge. -/
+theorem finiteRashbaMomentumHopping_operator
+    (params : HamiltonianParameters) (momentum : Grid → ℝ × ℝ) :
+    (finiteRashbaMomentumHopping params momentum).operator =
+      finiteRashbaMomentumHamiltonian params momentum := by
+  apply Finsupp.lhom_ext
+  intro x c
+  rw [LocallyFiniteHopping.operator_single]
+  change c • finiteRashbaMomentumHamiltonian params momentum (latticeKet x) =
+    finiteRashbaMomentumHamiltonian params momentum (Finsupp.single x c)
+  have hc :
+      (Finsupp.single x c : SpinfulSite Grid →₀ ℂ) =
+        c • latticeKet x :=
+    (Finsupp.smul_single_one x c).symm
+  rw [hc, map_smul]
+
 /-- The full-Fock Hamiltonian of the sampled Rashba model, obtained with the
 preexisting bounded fermionic second-quantization machinery. -/
 noncomputable def finiteRashbaMomentumFockHamiltonian
