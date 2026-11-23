@@ -1140,6 +1140,126 @@ theorem tendstoUniformlyOn_finiteCutoffContinuumBornDysonGaussianCrossedK2_movin
   intro entourage hEntourage
   exact hCenterWithin (hUniform entourage hEntourage)
 
+
+/-- The actual moving Dyson-center correction to the Gaussian-crossed
+second-harmonic K2 energy-shell convolution vanishes in the ordered
+zero-external-broadening, weak-disorder limit, on any positive fixed
+symmetric energy-offset window.
+
+The previous physical uniform-convergence theorem controls the moving
+regular factor under the singular Lorentzian kernel through its
+uniform pi mass bound. No off-shell contribution is discarded. -/
+theorem tendsto_finiteCutoffContinuumBornDysonGaussianCrossedK2_movingCenterWindowError_zero
+    (v m probeEnergy hbar pMax radius windowRadius : ℝ)
+    (hvelocity : v ≠ 0) (hhbar : hbar ≠ 0)
+    (hmetal : |m| < probeEnergy)
+    (hcutoff : probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2)
+    (hwindowPos : 0 < windowRadius) :
+    let E0 := probeEnergy ^ 2 - m ^ 2
+    let D0 := fun W : ℝ =>
+      finiteCutoffContinuumBornDysonDenominatorZeroBroadeningBoundary
+        .retarded v m 0 probeEnergy W hbar pMax
+    Tendsto
+      (fun W : ℝ =>
+        ∫ offset in -windowRadius..windowRadius,
+          (Lorentzian.spectralKernel offset (D0 W).im : ℂ) *
+            (((((D0 W).re + offset : ℝ) : ℂ) *
+                polarFourierSecondCosineAngularKernel
+                  (Real.sqrt (((D0 W).re + offset) / v ^ 2) * radius / hbar)) -
+              (((E0 + offset : ℝ) : ℂ) *
+                polarFourierSecondCosineAngularKernel
+                  (Real.sqrt ((E0 + offset) / v ^ 2) * radius / hbar))))
+      (nhdsWithin 0 (Set.Ioi 0))
+      (nhds 0) := by
+  dsimp only
+  let l := nhdsWithin (0 : ℝ) (Set.Ioi 0)
+  let E0 : ℝ := probeEnergy ^ 2 - m ^ 2
+  let D0 : ℝ → ℂ := fun W =>
+    finiteCutoffContinuumBornDysonDenominatorZeroBroadeningBoundary
+      .retarded v m 0 probeEnergy W hbar pMax
+  let F : ℝ → ℝ → ℂ := fun a offset =>
+    ((a + offset : ℝ) : ℂ) *
+      polarFourierSecondCosineAngularKernel
+        (Real.sqrt ((a + offset) / v ^ 2) * radius / hbar)
+  have hUniform :
+      TendstoUniformlyOn (fun W offset => F (D0 W).re offset)
+        (F E0) l (Set.Icc (-windowRadius) windowRadius) := by
+    exact tendstoUniformlyOn_finiteCutoffContinuumBornDysonGaussianCrossedK2_movingCenterFactor
+      v m probeEnergy hbar pMax radius windowRadius
+      hvelocity hhbar hmetal hcutoff
+  have hWidth :
+      Tendsto (fun W => (D0 W).im) l (nhdsWithin 0 (Set.Ioi 0)) :=
+    (tendsto_finiteCutoffContinuumBornDysonBoundarySpectralShell_disorder_zero
+      v m probeEnergy hbar pMax hvelocity hhbar hmetal hcutoff).2.1
+  have hWidthPos : ∀ᶠ W in l, 0 < (D0 W).im :=
+    (tendsto_nhdsWithin_iff.mp hWidth).2
+  have hρ : -windowRadius ≤ windowRadius := by linarith
+  have hConverge : Tendsto
+      (fun W : ℝ =>
+        ∫ offset in -windowRadius..windowRadius,
+          (Lorentzian.spectralKernel offset (D0 W).im : ℂ) *
+            (F (D0 W).re offset - F E0 offset)) l (nhds 0) := by
+    apply Metric.tendsto_nhds.2
+    intro ε hε
+    let tol := ε / (Real.pi + 1)
+    have hpi : 0 < Real.pi + 1 := by positivity
+    have htol : 0 < tol := div_pos hε hpi
+    have hclose := (Metric.tendstoUniformlyOn_iff.mp hUniform) tol htol
+    have htolπ : tol * Real.pi < ε := by
+      calc
+        tol * Real.pi < tol * (Real.pi + 1) :=
+          mul_lt_mul_of_pos_left (by linarith) htol
+        _ = ε := by
+          dsimp [tol]
+          field_simp
+    filter_upwards [hclose, hWidthPos] with W hW hB
+    have herror : ∀ offset ∈ Set.Icc (-windowRadius) windowRadius,
+        ‖F (D0 W).re offset - F E0 offset‖ ≤ tol := by
+      intro offset hoffset
+      have hdist := hW offset hoffset
+      simpa only [dist_eq_norm] using hdist.le
+    have hKernelInt := Lorentzian.intervalIntegrable_spectralKernel
+      (-windowRadius) windowRadius (D0 W).im hB.ne'
+    have hpoint (offset : ℝ) (hoffset : offset ∈ Set.Icc (-windowRadius) windowRadius) :
+        ‖(Lorentzian.spectralKernel offset (D0 W).im : ℂ) *
+            (F (D0 W).re offset - F E0 offset)‖ ≤
+          tol * Lorentzian.spectralKernel offset (D0 W).im := by
+      have hk := Lorentzian.spectralKernel_nonneg offset (D0 W).im hB.le
+      rw [norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg hk]
+      calc
+        Lorentzian.spectralKernel offset (D0 W).im *
+            ‖F (D0 W).re offset - F E0 offset‖ ≤
+          Lorentzian.spectralKernel offset (D0 W).im * tol :=
+            mul_le_mul_of_nonneg_left (herror offset hoffset) hk
+        _ = tol * Lorentzian.spectralKernel offset (D0 W).im := by ring
+    have hnorm :
+        ‖∫ offset in -windowRadius..windowRadius,
+          (Lorentzian.spectralKernel offset (D0 W).im : ℂ) *
+            (F (D0 W).re offset - F E0 offset)‖ ≤
+          tol * Real.pi := by
+      have hbound :
+          ‖∫ offset in -windowRadius..windowRadius,
+            (Lorentzian.spectralKernel offset (D0 W).im : ℂ) *
+              (F (D0 W).re offset - F E0 offset)‖ ≤
+            ∫ offset in -windowRadius..windowRadius,
+              tol * Lorentzian.spectralKernel offset (D0 W).im := by
+        apply intervalIntegral.norm_integral_le_of_norm_le hρ
+        · filter_upwards with offset hoffset
+          have hmem : offset ∈ Set.Icc (-windowRadius) windowRadius := by
+            simpa [Set.uIcc_of_le hρ] using (Set.uIoc_subset_uIcc hoffset)
+          exact hpoint offset hmem
+        · exact hKernelInt.const_mul tol
+      rw [intervalIntegral.integral_const_mul] at hbound
+      exact hbound.trans (mul_le_mul_of_nonneg_left
+        (Lorentzian.integral_spectralKernel_symmetric_le_pi
+          windowRadius (D0 W).im) htol.le)
+    have hless : ‖∫ offset in -windowRadius..windowRadius,
+          (Lorentzian.spectralKernel offset (D0 W).im : ℂ) *
+            (F (D0 W).re offset - F E0 offset)‖ < ε :=
+      lt_of_le_of_lt hnorm htolπ
+    simpa only [dist_eq_norm, sub_zero] using hless
+  convert hConverge using 1
+
 end
 
 end QuantumTheory.Models.MassiveDirac
