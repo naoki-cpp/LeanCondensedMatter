@@ -1161,6 +1161,58 @@ private theorem externalSubsetShuffle_blockSlotSet
     rw [ht]
     exact o.symm_apply_apply i
 
+/-- The inversion count of the canonical shuffle of a partition
+of a subset is the number of cross-block inversions of the *actual
+ambient labels*. The canonical source-order map is increasing, so
+the result does not depend on gaps in the source subset. -/
+private theorem externalSubsetShuffle_blockInversionCount
+    (S : Finset (Fin (2 * E)))
+    (σ : Finpartition S) (C D : σ.parts) (hCD : C ≠ D) :
+    σ.shuffleOfIncreasingOrder.blockInversionCount C D =
+      ∑ x ∈ (C : Finset (Fin (2 * E))),
+        ∑ y ∈ (D : Finset (Fin (2 * E))),
+          if y < x then (1 : ℕ) else 0 := by
+  classical
+  let o := S.orderIsoOfFin rfl
+  let emb : Fin S.card ↪ Fin (2 * E) :=
+    ⟨fun i => (o i).1, fun i j h => o.injective (Subtype.ext h)⟩
+  let idx (T : Finset (Fin (2 * E))) : Finset (Fin S.card) :=
+    Finset.univ.filter (fun i => emb i ∈ T)
+  have hmem (T : σ.parts) :
+      (idx T.1).map emb = (T : Finset (Fin (2 * E))) := by
+    ext x
+    constructor
+    · intro hx
+      obtain ⟨i, hi, hix⟩ := Finset.mem_map.mp hx
+      exact hix ▸ (Finset.mem_filter.mp hi).2
+    · intro hx
+      let i := o.symm ⟨x, σ.le T.2 hx⟩
+      apply Finset.mem_map.mpr
+      refine ⟨i, ?_, ?_⟩
+      · simp [idx, emb, i, hx]
+      · change (o (o.symm ⟨x, σ.le T.2 hx⟩)).1 = x
+        simp
+  have horder (i j : Fin S.card) :
+      (emb j < emb i) ↔ j < i := by
+    change (o j).1 < (o i).1 ↔ j < i
+    exact o.lt_iff_lt
+  rw [σ.shuffleOfIncreasingOrder.blockInversionCount_eq_sum_blockSlotSet hCD,
+    externalSubsetShuffle_blockSlotSet S σ C,
+    externalSubsetShuffle_blockSlotSet S σ D]
+  change (∑ x ∈ idx C.1, ∑ y ∈ idx D.1, if y < x then 1 else 0) = _
+  calc
+    _ = ∑ x ∈ idx C.1, ∑ y ∈ idx D.1,
+          if emb y < emb x then 1 else 0 := by
+      apply Finset.sum_congr rfl
+      intro x _
+      apply Finset.sum_congr rfl
+      intro y _
+      simp only [horder]
+    _ = ∑ x ∈ (idx C.1).map emb,
+          ∑ y ∈ (idx D.1).map emb, if y < x then 1 else 0 := by
+      simp only [Finset.sum_map]
+    _ = _ := by rw [hmem C, hmem D]
+
 /-- A source partition has only even-sized blocks if and only if its
 image under the canonical order-preserving reindexing does. This permits
 restricting both signed connected-partition sums to the same physical
