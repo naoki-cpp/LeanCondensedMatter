@@ -22,19 +22,13 @@
       "name": "LeanCondensedMatter.Analysis.Calculus.CompactSupportInterval",
       "sourceFile": "LeanCondensedMatter/Analysis/Calculus/CompactSupportInterval.lean",
       "imports": [],
-      "externalImportCount": 2
+      "externalImportCount": 3
     },
     {
       "name": "LeanCondensedMatter.Analysis.Calculus.ExponentialConjugation",
       "sourceFile": "LeanCondensedMatter/Analysis/Calculus/ExponentialConjugation.lean",
       "imports": [],
       "externalImportCount": 3
-    },
-    {
-      "name": "LeanCondensedMatter.Analysis.Calculus.IntervalLocalization",
-      "sourceFile": "LeanCondensedMatter/Analysis/Calculus/IntervalLocalization.lean",
-      "imports": [],
-      "externalImportCount": 1
     },
     {
       "name": "LeanCondensedMatter.Analysis.ConservationLaw.BalanceLaw",
@@ -203,12 +197,6 @@
       "externalImportCount": 2
     },
     {
-      "name": "LeanCondensedMatter.Analysis.Fourier.FullAngleCosineMoments",
-      "sourceFile": "LeanCondensedMatter/Analysis/Fourier/FullAngleCosineMoments.lean",
-      "imports": [],
-      "externalImportCount": 3
-    },
-    {
       "name": "LeanCondensedMatter.Analysis.Fourier.PolarRadialKernels.AngularReduction",
       "sourceFile": "LeanCondensedMatter/Analysis/Fourier/PolarRadialKernels/AngularReduction.lean",
       "imports": [
@@ -249,11 +237,10 @@
       "name": "LeanCondensedMatter.Analysis.Fourier.PolarRadialKernels.ZerothBessel",
       "sourceFile": "LeanCondensedMatter/Analysis/Fourier/PolarRadialKernels/ZerothBessel.lean",
       "imports": [
-        "LeanCondensedMatter.Analysis.Fourier.FullAngleCosineMoments",
         "LeanCondensedMatter.Analysis.Fourier.PolarRadialKernels.Core",
         "LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.HypergeometricSeries"
       ],
-      "externalImportCount": 5
+      "externalImportCount": 7
     },
     {
       "name": "LeanCondensedMatter.Analysis.FunctionalCalculus.CFC",
@@ -338,7 +325,7 @@
       "name": "LeanCondensedMatter.Analysis.Lorentzian.Kernel",
       "sourceFile": "LeanCondensedMatter/Analysis/Lorentzian/Kernel.lean",
       "imports": [],
-      "externalImportCount": 6
+      "externalImportCount": 7
     },
     {
       "name": "LeanCondensedMatter.Analysis.Lorentzian.Pole",
@@ -355,21 +342,12 @@
       "externalImportCount": 6
     },
     {
-      "name": "LeanCondensedMatter.Analysis.Lorentzian.Weighted",
-      "sourceFile": "LeanCondensedMatter/Analysis/Lorentzian/Weighted.lean",
-      "imports": [
-        "LeanCondensedMatter.Analysis.Lorentzian.Kernel"
-      ],
-      "externalImportCount": 2
-    },
-    {
       "name": "LeanCondensedMatter.Analysis.Lorentzian",
       "sourceFile": "LeanCondensedMatter/Analysis/Lorentzian.lean",
       "imports": [
         "LeanCondensedMatter.Analysis.Lorentzian.Kernel",
         "LeanCondensedMatter.Analysis.Lorentzian.Pole",
-        "LeanCondensedMatter.Analysis.Lorentzian.RadialQuadratic",
-        "LeanCondensedMatter.Analysis.Lorentzian.Weighted"
+        "LeanCondensedMatter.Analysis.Lorentzian.RadialQuadratic"
       ],
       "externalImportCount": 0
     },
@@ -535,12 +513,6 @@
       "externalImportCount": 2
     },
     {
-      "name": "LeanCondensedMatter.Analysis.Operator.Spectral.DissipativeShift",
-      "sourceFile": "LeanCondensedMatter/Analysis/Operator/Spectral/DissipativeShift.lean",
-      "imports": [],
-      "externalImportCount": 4
-    },
-    {
       "name": "LeanCondensedMatter.Analysis.Operator.Spectral.EigenvectorFamily",
       "sourceFile": "LeanCondensedMatter/Analysis/Operator/Spectral/EigenvectorFamily.lean",
       "imports": [],
@@ -550,7 +522,7 @@
       "name": "LeanCondensedMatter.Analysis.Operator.Spectral.Resolvent",
       "sourceFile": "LeanCondensedMatter/Analysis/Operator/Spectral/Resolvent.lean",
       "imports": [],
-      "externalImportCount": 4
+      "externalImportCount": 7
     },
     {
       "name": "LeanCondensedMatter.Analysis.Operator.SymmetrizedProduct",
@@ -892,7 +864,7 @@
       "name": "LeanCondensedMatter.Analysis.PowerSeries.AnalyticLog",
       "sourceFile": "LeanCondensedMatter/Analysis/PowerSeries/AnalyticLog.lean",
       "imports": [
-        "LeanCondensedMatter.Analysis.PowerSeries.MomentCumulantRecurrence"
+        "LeanCondensedMatter.Analysis.PowerSeries.Moment"
       ],
       "externalImportCount": 4
     },
@@ -906,7 +878,7 @@
       "name": "LeanCondensedMatter.Analysis.PowerSeries.Cumulant",
       "sourceFile": "LeanCondensedMatter/Analysis/PowerSeries/Cumulant.lean",
       "imports": [
-        "LeanCondensedMatter.Analysis.PowerSeries.MomentCumulantRecurrence",
+        "LeanCondensedMatter.Analysis.PowerSeries.Moment",
         "LeanCondensedMatter.Combinatorics.Cumulant.ConnectedDecompositionInversion",
         "LeanCondensedMatter.Combinatorics.Cumulant.Moment",
         "LeanCondensedMatter.Combinatorics.SetPartition.DistinguishedBlock"
@@ -925,15 +897,6 @@
       "imports": [
         "LeanCondensedMatter.Analysis.PowerSeries.Normalization",
         "LeanCondensedMatter.Combinatorics.Cumulant.NormalizedCore"
-      ],
-      "externalImportCount": 0
-    },
-    {
-      "name": "LeanCondensedMatter.Analysis.PowerSeries.MomentCumulantRecurrence",
-      "sourceFile": "LeanCondensedMatter/Analysis/PowerSeries/MomentCumulantRecurrence.lean",
-      "imports": [
-        "LeanCondensedMatter.Analysis.PowerSeries.Moment",
-        "LeanCondensedMatter.Analysis.PowerSeries.Normalization"
       ],
       "externalImportCount": 1
     },
@@ -1093,7 +1056,7 @@
       "imports": [
         "LeanCondensedMatter.Analysis.Algebra.QuadraticNormalization",
         "LeanCondensedMatter.Analysis.Calculus.AlgebraicDerivative",
-        "LeanCondensedMatter.Analysis.Calculus.IntervalLocalization",
+        "LeanCondensedMatter.Analysis.Calculus.CompactSupportInterval",
         "LeanCondensedMatter.Analysis.ConservationLaw",
         "LeanCondensedMatter.Analysis.DiscreteLattice",
         "LeanCondensedMatter.Analysis.Dyson",
@@ -2343,7 +2306,7 @@
       "name": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.BornDyson.Invertibility",
       "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Disorder/Propagator/BornDyson/Invertibility.lean",
       "imports": [
-        "LeanCondensedMatter.Analysis.Operator.Spectral.DissipativeShift",
+        "LeanCondensedMatter.Analysis.Operator.Spectral.Resolvent",
         "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.Denominator",
         "LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.BornDyson.DysonShift",
         "LeanCondensedMatter.Transport.Analysis.ContinuumMeasure"
@@ -3396,6 +3359,17 @@
       "externalImportCount": 0
     },
     {
+      "name": "LeanCondensedMatter.Models.RashbaExchange.FiniteMomentumSpinResponse",
+      "sourceFile": "LeanCondensedMatter/Models/RashbaExchange/FiniteMomentumSpinResponse.lean",
+      "imports": [
+        "LeanCondensedMatter.Models.RashbaExchange.Operator",
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.Free",
+        "LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.BoundedMatrixUnitAdjoint",
+        "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.SpinCurrentResponse"
+      ],
+      "externalImportCount": 0
+    },
+    {
       "name": "LeanCondensedMatter.Models.RashbaExchange.Model.Interband",
       "sourceFile": "LeanCondensedMatter/Models/RashbaExchange/Model/Interband.lean",
       "imports": [
@@ -3460,6 +3434,15 @@
       "externalImportCount": 0
     },
     {
+      "name": "LeanCondensedMatter.Models.RashbaExchange.SpinDisplacementBridge",
+      "sourceFile": "LeanCondensedMatter/Models/RashbaExchange/SpinDisplacementBridge.lean",
+      "imports": [
+        "LeanCondensedMatter.Models.RashbaExchange.FiniteMomentumSpinResponse",
+        "LeanCondensedMatter.QuantumMechanics.SingleParticle.LocalizedTransport"
+      ],
+      "externalImportCount": 0
+    },
+    {
       "name": "LeanCondensedMatter.Models.RashbaExchange",
       "sourceFile": "LeanCondensedMatter/Models/RashbaExchange.lean",
       "imports": [
@@ -3468,13 +3451,15 @@
         "LeanCondensedMatter.Models.RashbaExchange.Bastin.Pole",
         "LeanCondensedMatter.Models.RashbaExchange.Bastin.ResponseBridge",
         "LeanCondensedMatter.Models.RashbaExchange.Current",
+        "LeanCondensedMatter.Models.RashbaExchange.FiniteMomentumSpinResponse",
         "LeanCondensedMatter.Models.RashbaExchange.Model",
         "LeanCondensedMatter.Models.RashbaExchange.Model.Interband",
         "LeanCondensedMatter.Models.RashbaExchange.Model.OperatorSpectral",
         "LeanCondensedMatter.Models.RashbaExchange.Model.Spectral",
         "LeanCondensedMatter.Models.RashbaExchange.Operator",
         "LeanCondensedMatter.Models.RashbaExchange.Response",
-        "LeanCondensedMatter.Models.RashbaExchange.ResponseParameters"
+        "LeanCondensedMatter.Models.RashbaExchange.ResponseParameters",
+        "LeanCondensedMatter.Models.RashbaExchange.SpinDisplacementBridge"
       ],
       "externalImportCount": 0
     },
@@ -4684,6 +4669,14 @@
       "externalImportCount": 1
     },
     {
+      "name": "LeanCondensedMatter.QuantumTheory.LinearResponse.Response.Symmetry",
+      "sourceFile": "LeanCondensedMatter/QuantumTheory/LinearResponse/Response/Symmetry.lean",
+      "imports": [
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.Response.Channel"
+      ],
+      "externalImportCount": 1
+    },
+    {
       "name": "LeanCondensedMatter.QuantumTheory.LinearResponse.Response",
       "sourceFile": "LeanCondensedMatter/QuantumTheory/LinearResponse/Response.lean",
       "imports": [
@@ -4692,7 +4685,8 @@
         "LeanCondensedMatter.QuantumTheory.LinearResponse.Response.KuboFormula",
         "LeanCondensedMatter.QuantumTheory.LinearResponse.Response.ObservableVariation",
         "LeanCondensedMatter.QuantumTheory.LinearResponse.Response.RetardedSusceptibility",
-        "LeanCondensedMatter.QuantumTheory.LinearResponse.Response.SourceCoupling"
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.Response.SourceCoupling",
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.Response.Symmetry"
       ],
       "externalImportCount": 0
     },
@@ -8034,7 +8028,7 @@
         "LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.Bounded",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.RankOneSecondQuantization"
       ],
-      "externalImportCount": 0
+      "externalImportCount": 1
     },
     {
       "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.DiscreteLattice",
@@ -8552,7 +8546,7 @@
       "name": "LeanCondensedMatter.Transport.Analysis.ZeroTemperatureLorentzian",
       "sourceFile": "LeanCondensedMatter/Transport/Analysis/ZeroTemperatureLorentzian.lean",
       "imports": [
-        "LeanCondensedMatter.Analysis.Lorentzian.Weighted",
+        "LeanCondensedMatter.Analysis.Lorentzian.Kernel",
         "LeanCondensedMatter.QuantumTheory.Occupation.ZeroTemperature"
       ],
       "externalImportCount": 2
@@ -8823,7 +8817,7 @@
       "name": "LeanCondensedMatter.Transport.KuboBastin.CommonEnergy",
       "sourceFile": "LeanCondensedMatter/Transport/KuboBastin/CommonEnergy.lean",
       "imports": [
-        "LeanCondensedMatter.Analysis.Calculus.IntervalLocalization",
+        "LeanCondensedMatter.Analysis.Calculus.CompactSupportInterval",
         "LeanCondensedMatter.Transport.KuboBastin.Eigenbasis",
         "LeanCondensedMatter.Transport.KuboBastin.Occupation"
       ],

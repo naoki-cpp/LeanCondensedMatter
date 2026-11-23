@@ -245,7 +245,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "AngularHarmonics.fullAngleCosineMoment_add_two",
-    "module": "LeanCondensedMatter.Analysis.Fourier.FullAngleCosineMoments",
+    "module": "LeanCondensedMatter.Analysis.Fourier.PolarRadialKernels.ZerothBessel",
     "externalAxioms": [],
     "docString": "The full-period cosine moments satisfy the standard reduction formula. ",
     "directWrapperTargetModule": null,
@@ -291,7 +291,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "AngularHarmonics.fullAngleCosineMoment_even",
-    "module": "LeanCondensedMatter.Analysis.Fourier.FullAngleCosineMoments",
+    "module": "LeanCondensedMatter.Analysis.Fourier.PolarRadialKernels.ZerothBessel",
     "externalAxioms": [],
     "docString": "Closed finite-product formula for every even full-angle cosine moment. ",
     "directWrapperTargetModule": null,
@@ -332,7 +332,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "AngularHarmonics.fullAngleCosineMoment_even_factorial",
-    "module": "LeanCondensedMatter.Analysis.Fourier.FullAngleCosineMoments",
+    "module": "LeanCondensedMatter.Analysis.Fourier.PolarRadialKernels.ZerothBessel",
     "externalAxioms": [],
     "docString": "The even full-angle cosine moment in factorial form, ready for the\ncoefficient comparison with Mathlib's regularized hypergeometric Bessel series. ",
     "directWrapperTargetModule": null,
@@ -377,7 +377,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "AngularHarmonics.fullAngleCosineMoment_norm_le",
-    "module": "LeanCondensedMatter.Analysis.Fourier.FullAngleCosineMoments",
+    "module": "LeanCondensedMatter.Analysis.Fourier.PolarRadialKernels.ZerothBessel",
     "externalAxioms": [],
     "docString": "A full-period cosine moment is bounded by the length of its integration interval. ",
     "directWrapperTargetModule": null,
@@ -419,7 +419,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "AngularHarmonics.fullAngleCosineMoment_odd",
-    "module": "LeanCondensedMatter.Analysis.Fourier.FullAngleCosineMoments",
+    "module": "LeanCondensedMatter.Analysis.Fourier.PolarRadialKernels.ZerothBessel",
     "externalAxioms": [],
     "docString": "Every odd full-angle cosine moment vanishes. ",
     "directWrapperTargetModule": null,
@@ -464,7 +464,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "AngularHarmonics.fullAngleCosineMoment_one",
-    "module": "LeanCondensedMatter.Analysis.Fourier.FullAngleCosineMoments",
+    "module": "LeanCondensedMatter.Analysis.Fourier.PolarRadialKernels.ZerothBessel",
     "externalAxioms": [],
     "docString": null,
     "directWrapperTargetModule": null,
@@ -506,7 +506,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "AngularHarmonics.fullAngleCosineMoment_zero",
-    "module": "LeanCondensedMatter.Analysis.Fourier.FullAngleCosineMoments",
+    "module": "LeanCondensedMatter.Analysis.Fourier.PolarRadialKernels.ZerothBessel",
     "externalAxioms": [],
     "docString": null,
     "directWrapperTargetModule": null,
@@ -13623,7 +13623,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "Combinatorics.powerSeriesMomentCoeff_succ_recurrence",
-    "module": "LeanCondensedMatter.Analysis.PowerSeries.MomentCumulantRecurrence",
+    "module": "LeanCondensedMatter.Analysis.PowerSeries.Moment",
     "externalAxioms": [],
     "docString": "The factorial-normalized moment and formal-log coefficients satisfy the triangular\nmoment-cumulant recurrence. ",
     "directWrapperTargetModule": null,
@@ -15079,6 +15079,7 @@
     "directWrapperOf": null,
     "dependents": [
       "ConservationLaw.lie_localizedQuantity_of_commutes",
+      "QuantumTheory.Models.RashbaExchange.finiteRashbaMomentumSpinDisplacement_balance",
       "SecondQuantization.Fermionic.Field.dGamma_lie_manyBodyLocalizedQuantity"
     ],
     "dependencies": [
@@ -15088,9 +15089,10 @@
     "completedMention": false,
     "compiledConsumers": [
       "ConservationLaw.lie_localizedQuantity_of_commutes",
+      "QuantumTheory.Models.RashbaExchange.finiteRashbaMomentumSpinDisplacement_balance",
       "SecondQuantization.Fermionic.Field.dGamma_lie_manyBodyLocalizedQuantity"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -39501,7 +39503,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "Lorentzian.integral_weight_mul_spectralKernel_of_ae_eq_const_on",
-    "module": "LeanCondensedMatter.Analysis.Lorentzian.Weighted",
+    "module": "LeanCondensedMatter.Analysis.Lorentzian.Kernel",
     "externalAxioms": [],
     "docString": "If a weight is almost everywhere constant on the centered integration window, it factors out\nexactly and the remaining energy integral is the centered Lorentzian mass. ",
     "directWrapperTargetModule": null,
@@ -39860,7 +39862,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "Lorentzian.tendsto_integral_weight_mul_spectralKernel_of_ae_eq_const_on",
-    "module": "LeanCondensedMatter.Analysis.Lorentzian.Weighted",
+    "module": "LeanCondensedMatter.Analysis.Lorentzian.Kernel",
     "externalAxioms": [],
     "docString": "Almost-everywhere constant weights inherit the `π` Lorentzian mass in the positive\nzero-broadening limit. ",
     "directWrapperTargetModule": null,
@@ -40203,7 +40205,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "MeasureTheory.integrable_orientedIntervalIntegrand",
-    "module": "LeanCondensedMatter.Analysis.Calculus.IntervalLocalization",
+    "module": "LeanCondensedMatter.Analysis.Calculus.CompactSupportInterval",
     "externalAxioms": [],
     "docString": null,
     "directWrapperTargetModule": null,
@@ -40335,7 +40337,7 @@
     "retainedMention": true,
     "projectAxioms": [],
     "name": "MeasureTheory.integral_orientedIntervalIntegrand",
-    "module": "LeanCondensedMatter.Analysis.Calculus.IntervalLocalization",
+    "module": "LeanCondensedMatter.Analysis.Calculus.CompactSupportInterval",
     "externalAxioms": [],
     "docString": null,
     "directWrapperTargetModule": null,
@@ -40373,8 +40375,8 @@
     "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": false,
     "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "Models.Heisenberg.QuadraticMagnon.comm_fourier_annihilate_create",
     "module": "LeanCondensedMatter.Models.Heisenberg.QuadraticMagnonFourier",
@@ -40510,8 +40512,8 @@
     "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": false,
     "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "Models.Heisenberg.QuadraticMagnon.excitationHamiltonian_eq_sum_fourier",
     "module": "LeanCondensedMatter.Models.Heisenberg.QuadraticMagnonFourier",
@@ -40552,8 +40554,8 @@
     "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": false,
     "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "Models.Heisenberg.QuadraticMagnon.excitationHamiltonian_oneParticle_fourierBasis",
     "module": "LeanCondensedMatter.Models.Heisenberg.QuadraticMagnonFourier",
@@ -40633,8 +40635,8 @@
     "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": false,
     "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "Models.Heisenberg.QuadraticMagnon.sum_transverseReplacedBond",
     "module": "LeanCondensedMatter.Models.Heisenberg.QuadraticMagnon.TransverseReplacement",
@@ -40798,8 +40800,8 @@
     "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": false,
     "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "Models.Heisenberg.excitationHamiltonian_fourierMode",
     "module": "LeanCondensedMatter.Models.Heisenberg.SpinWaveSpectrum",
@@ -41088,8 +41090,8 @@
     "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": false,
     "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "Models.Heisenberg.tendsto_dispersion_div_sq",
     "module": "LeanCondensedMatter.Models.Heisenberg.SpinWaveSpectrum",
@@ -41126,8 +41128,8 @@
     "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": false,
     "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "Models.HolsteinPrimakoff.comm_spinPlus_spinMinus",
     "module": "LeanCondensedMatter.Models.HolsteinPrimakoff",
@@ -41169,8 +41171,8 @@
     "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": false,
     "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "Models.HolsteinPrimakoff.comm_spinZ_spinMinus",
     "module": "LeanCondensedMatter.Models.HolsteinPrimakoff",
@@ -41213,8 +41215,8 @@
     "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": false,
     "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "Models.HolsteinPrimakoff.comm_spinZ_spinPlus",
     "module": "LeanCondensedMatter.Models.HolsteinPrimakoff",
@@ -41307,8 +41309,8 @@
     "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": false,
     "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "Models.HolsteinPrimakoff.commute_spinRepresentation_of_ne",
     "module": "LeanCondensedMatter.Models.HolsteinPrimakoff.MultiSite",
@@ -41790,8 +41792,8 @@
     "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": false,
     "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "Models.HolsteinPrimakoff.spinRepresentation_intertwines",
     "module": "LeanCondensedMatter.Models.HolsteinPrimakoff.MultiSite",
@@ -53793,6 +53795,47 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
+    "terminal": true,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (U : Multiplicative ℝ →* ↥(unitary (H →L[ℂ] H))) (Φ : (H →L[ℂ] H) ≃⋆ₐ[ℂ] H →L[ℂ] H)\n  (channel : QuantumTheory.LinearResponse.ResponseChannel H),\n  (∀ (t : ℝ), Φ ↑(U (Multiplicative.ofAdd t)) = ↑(U (Multiplicative.ofAdd t))) →\n    ∀ (hbar : ℝ) (expectation : QuantumTheory.LinearResponse.NormalizedExpectation H),\n      (∀ (A : H →L[ℂ] H), expectation.toContinuousLinearMap (Φ A) = expectation.toContinuousLinearMap A) →\n        ∀ (f : ℝ → ℝ) (t : ℝ),\n          { measured := Φ channel.measured, source := Φ channel.source,\n                  observableVariation := Φ channel.observableVariation }.causalResponse\n              U hbar expectation f t =\n            channel.causalResponse U hbar expectation f t",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.LinearResponse.ResponseChannel.causalResponse_symmetry",
+    "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.Response.Symmetry",
+    "externalAxioms": [],
+    "docString": "The *full* scalar Kubo response is invariant under a unitary symmetry,\nincluding the observable-variation/contact contribution. A source profile\nis held fixed, and no assumption about zero contact or conductivity units\nis made. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.LinearResponse.expectation_heisenbergEvolution_symmetry",
+      "QuantumTheory.LinearResponse.retardedSusceptibility_symmetry"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
     "terminal": false,
     "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (channel : QuantumTheory.LinearResponse.ResponseChannel H) (U : Multiplicative ℝ →* ↥(unitary (H →L[ℂ] H))) (hbar : ℝ)\n  (expectation : QuantumTheory.LinearResponse.NormalizedExpectation H),\n  QuantumTheory.LinearResponse.IsStationary U expectation →\n    ∀ (ω η : ℝ) {T : ℝ},\n      0 ≤ T →\n        channel.finiteTimeAdiabaticResponse U hbar expectation ω η T =\n          QuantumTheory.LinearResponse.finiteTimeAdiabaticTransform\n              (fun τ =>\n                QuantumTheory.LinearResponse.commutatorSusceptibility U hbar expectation channel.measured channel.source\n                  τ 0)\n              ω η T +\n            expectation.toContinuousLinearMap channel.observableVariation",
     "standardAxioms": [
@@ -54814,6 +54857,50 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.LinearResponse.retardedSusceptibility_eq_timeDifference_of_stationary"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (U : Multiplicative ℝ →* ↥(unitary (H →L[ℂ] H))) (Φ : (H →L[ℂ] H) ≃⋆ₐ[ℂ] H →L[ℂ] H),\n  (∀ (t : ℝ), Φ ↑(U (Multiplicative.ofAdd t)) = ↑(U (Multiplicative.ofAdd t))) →\n    ∀ (hbar : ℝ) (expectation : QuantumTheory.LinearResponse.NormalizedExpectation H),\n      (∀ (A : H →L[ℂ] H), expectation.toContinuousLinearMap (Φ A) = expectation.toContinuousLinearMap A) →\n        ∀ (A B : H →L[ℂ] H) (t s : ℝ),\n          QuantumTheory.LinearResponse.commutatorSusceptibility U hbar expectation (Φ A) (Φ B) t s =\n            QuantumTheory.LinearResponse.commutatorSusceptibility U hbar expectation A B t s",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.LinearResponse.commutatorSusceptibility_symmetry",
+    "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.Response.Symmetry",
+    "externalAxioms": [],
+    "docString": "A symmetry-invariant equilibrium expectation has invariant commutator\nsusceptibility when *both* measured and source operators are transformed. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.LinearResponse.retardedSusceptibility_symmetry"
+    ],
+    "dependencies": [
+      "QuantumTheory.LinearResponse.heisenbergEvolution_symmetry"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.LinearResponse.retardedSusceptibility_symmetry"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -56492,6 +56579,50 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (U : Multiplicative ℝ →* ↥(unitary (H →L[ℂ] H))) (Φ : (H →L[ℂ] H) ≃⋆ₐ[ℂ] H →L[ℂ] H),\n  (∀ (t : ℝ), Φ ↑(U (Multiplicative.ofAdd t)) = ↑(U (Multiplicative.ofAdd t))) →\n    ∀ (expectation : QuantumTheory.LinearResponse.NormalizedExpectation H),\n      (∀ (A : H →L[ℂ] H), expectation.toContinuousLinearMap (Φ A) = expectation.toContinuousLinearMap A) →\n        ∀ (C : H →L[ℂ] H) (t : ℝ),\n          expectation.toContinuousLinearMap ((QuantumTheory.LinearResponse.heisenbergEvolution U t) (Φ C)) =\n            expectation.toContinuousLinearMap ((QuantumTheory.LinearResponse.heisenbergEvolution U t) C)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.LinearResponse.expectation_heisenbergEvolution_symmetry",
+    "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.Response.Symmetry",
+    "externalAxioms": [],
+    "docString": "The explicit contact expectation transforms covariantly under the same\nmicroscopic symmetry as the retarded kernel. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.LinearResponse.ResponseChannel.causalResponse_symmetry"
+    ],
+    "dependencies": [
+      "QuantumTheory.LinearResponse.heisenbergEvolution_symmetry"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.LinearResponse.ResponseChannel.causalResponse_symmetry"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {H : Type u_1} {ι : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] [inst_3 : Fintype ι] (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (data : QuantumTheory.LinearResponse.EnergyEigenbasisLehmannData system ι) (A B : H →L[ℂ] H) (omega eta : ℝ),\n  QuantumTheory.LinearResponse.finiteLehmannTableResponse system.hbar omega eta\n      (QuantumTheory.LinearResponse.finiteLehmannTableOfEigenbasis system data A B) =\n    QuantumTheory.LinearResponse.eigenbasisLehmannSeries system data A B omega eta",
     "standardAxioms": [
       "Classical.choice",
@@ -58016,6 +58147,7 @@
       "QuantumTheory.LinearResponse.hasDerivAt_affinePerturbedExpectation_zero_of_bound_kubo",
       "QuantumTheory.LinearResponse.heisenbergEvolution_freePropagatorGroup_apply",
       "QuantumTheory.LinearResponse.heisenbergEvolution_heisenbergEvolution",
+      "QuantumTheory.LinearResponse.heisenbergEvolution_symmetry",
       "QuantumTheory.LinearResponse.norm_heisenbergEvolution",
       "QuantumTheory.LinearResponse.timeDependentPerturbedObservableMap_apply",
       "SecondQuantization.Common.isStationary_grandCanonicalGibbsDensityOperator"
@@ -58030,11 +58162,12 @@
       "QuantumTheory.LinearResponse.hasDerivAt_affinePerturbedExpectation_zero_of_bound_kubo",
       "QuantumTheory.LinearResponse.heisenbergEvolution_freePropagatorGroup_apply",
       "QuantumTheory.LinearResponse.heisenbergEvolution_heisenbergEvolution",
+      "QuantumTheory.LinearResponse.heisenbergEvolution_symmetry",
       "QuantumTheory.LinearResponse.norm_heisenbergEvolution",
       "QuantumTheory.LinearResponse.timeDependentPerturbedObservableMap_apply",
       "SecondQuantization.Common.isStationary_grandCanonicalGibbsDensityOperator"
     ],
-    "compiledConsumerCount": 9,
+    "compiledConsumerCount": 10,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -58189,6 +58322,52 @@
     "compiledConsumers": [
       "QuantumTheory.LinearResponse.lie_heisenbergEvolution_eq_relativeTime",
       "QuantumTheory.Transport.KuboTimeReversalData.correlation_reverse_of_odd"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (U : Multiplicative ℝ →* ↥(unitary (H →L[ℂ] H))) (Φ : (H →L[ℂ] H) ≃⋆ₐ[ℂ] H →L[ℂ] H),\n  (∀ (t : ℝ), Φ ↑(U (Multiplicative.ofAdd t)) = ↑(U (Multiplicative.ofAdd t))) →\n    ∀ (t : ℝ) (A : H →L[ℂ] H),\n      (QuantumTheory.LinearResponse.heisenbergEvolution U t) (Φ A) =\n        Φ ((QuantumTheory.LinearResponse.heisenbergEvolution U t) A)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.LinearResponse.heisenbergEvolution_symmetry",
+    "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.Response.Symmetry",
+    "externalAxioms": [],
+    "docString": "A star-algebra symmetry fixing every free propagator commutes with\nHeisenberg evolution. This is derived from multiplicativity and\npreservation of the star operation, not assumed on the evolved operators. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.LinearResponse.commutatorSusceptibility_symmetry",
+      "QuantumTheory.LinearResponse.expectation_heisenbergEvolution_symmetry"
+    ],
+    "dependencies": [
+      "QuantumTheory.LinearResponse.heisenbergEvolution_apply"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.LinearResponse.commutatorSusceptibility_symmetry",
+      "QuantumTheory.LinearResponse.expectation_heisenbergEvolution_symmetry"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -60280,6 +60459,50 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.LinearResponse.retardedTimeDifferenceKernel_eq_zero_of_neg"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (U : Multiplicative ℝ →* ↥(unitary (H →L[ℂ] H))) (Φ : (H →L[ℂ] H) ≃⋆ₐ[ℂ] H →L[ℂ] H),\n  (∀ (t : ℝ), Φ ↑(U (Multiplicative.ofAdd t)) = ↑(U (Multiplicative.ofAdd t))) →\n    ∀ (hbar : ℝ) (expectation : QuantumTheory.LinearResponse.NormalizedExpectation H),\n      (∀ (A : H →L[ℂ] H), expectation.toContinuousLinearMap (Φ A) = expectation.toContinuousLinearMap A) →\n        ∀ (A B : H →L[ℂ] H) (t s : ℝ),\n          QuantumTheory.LinearResponse.retardedSusceptibility U hbar expectation (Φ A) (Φ B) t s =\n            QuantumTheory.LinearResponse.retardedSusceptibility U hbar expectation A B t s",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.LinearResponse.retardedSusceptibility_symmetry",
+    "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.Response.Symmetry",
+    "externalAxioms": [],
+    "docString": "The same microscopic invariance descends to the retarded causal kernel.\nThe causal support condition is untouched by a unitary spatial symmetry. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.LinearResponse.ResponseChannel.causalResponse_symmetry"
+    ],
+    "dependencies": [
+      "QuantumTheory.LinearResponse.commutatorSusceptibility_symmetry"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.LinearResponse.ResponseChannel.causalResponse_symmetry"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -64632,8 +64855,8 @@
     "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": false,
     "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "QuantumTheory.Models.MassiveDirac.berryCurvature_massless",
     "module": "LeanCondensedMatter.Models.MassiveDirac.Model.Berry.Symmetry",
@@ -64798,8 +65021,8 @@
     "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": true,
     "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "QuantumTheory.Models.MassiveDirac.cleanBandFockHallDensity_eq_neg_chargeSq_berryCurvature",
     "module": "LeanCondensedMatter.Models.MassiveDirac.ManyBody.PointwiseHall",
@@ -78220,8 +78443,8 @@
     "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": true,
     "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "QuantumTheory.Models.MassiveDirac.intrinsicHallPrefactorFromMomentumMeasure_eq",
     "module": "LeanCondensedMatter.Models.MassiveDirac.Conductivity.Hall.Intrinsic.Conductivity",
@@ -84006,8 +84229,8 @@
     "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": false,
     "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "QuantumTheory.Models.MassiveDirac.tendsto_disorderStrength_mul_bornRtaLongitudinalConductivityClosedForm",
     "module": "LeanCondensedMatter.Models.MassiveDirac.Scaling.Longitudinal",
@@ -86600,8 +86823,8 @@
     "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": true,
     "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "QuantumTheory.Models.MassiveDirac.tendsto_intrinsicHallConductivityCutoff_atTop",
     "module": "LeanCondensedMatter.Models.MassiveDirac.Conductivity.Hall.Intrinsic.Conductivity",
@@ -86734,7 +86957,7 @@
     "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "QuantumTheory.Models.MassiveDirac.tendsto_pointwiseDiagonalFockHallResponse_re",
     "module": "LeanCondensedMatter.Models.MassiveDirac.ManyBody.PointwiseHall",
@@ -86783,8 +87006,8 @@
     "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": true,
     "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "QuantumTheory.Models.MassiveDirac.tendsto_pointwiseFockHallResponse_re",
     "module": "LeanCondensedMatter.Models.MassiveDirac.ManyBody.PointwiseHall",
@@ -86828,8 +87051,8 @@
     "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": true,
     "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "QuantumTheory.Models.MassiveDirac.tendsto_pointwiseGrandCanonicalFockHallResponse_re",
     "module": "LeanCondensedMatter.Models.MassiveDirac.ManyBody.PointwiseHall",
@@ -86970,8 +87193,8 @@
     "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": true,
     "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "QuantumTheory.Models.MassiveDirac.tendsto_zeroTemperatureOccupiedBerryWeightCutoff_atTop",
     "module": "LeanCondensedMatter.Models.MassiveDirac.Conductivity.Hall.Intrinsic.Conductivity",
@@ -89526,8 +89749,8 @@
     "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": true,
     "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "QuantumTheory.Models.Parabolic2DEG.angularIntegratedCurrentProduct_eq_zero_of_ne",
     "module": "LeanCondensedMatter.Models.Parabolic2DEG.Response",
@@ -89728,8 +89951,8 @@
     "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": false,
     "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "QuantumTheory.Models.Parabolic2DEG.currentOperator_isSelfAdjoint",
     "module": "LeanCondensedMatter.Models.Parabolic2DEG.Response",
@@ -91019,6 +91242,93 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {Grid : Type u_1} [inst : LinearOrder Grid] [inst_1 : Fintype Grid] (blocks : Grid → InternalSpace.PauliMatrix),\n  SecondQuantization.Fermionic.Lattice.boundedOneBodyOperator\n      (QuantumTheory.Models.RashbaExchange.finiteMomentumBlockOneBody blocks) =\n    ∑ k,\n      ∑ a,\n        ∑ b,\n          blocks k a b •\n            SecondQuantization.Fermionic.Lattice.boundedDgammaMatrixUnit (QuantumTheory.SpinfulLattice.spinfulSite k a)\n              (QuantumTheory.SpinfulLattice.spinfulSite k b)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.RashbaExchange.boundedFiniteMomentumBlockOneBody_eq_sum",
+    "module": "LeanCondensedMatter.Models.RashbaExchange.FiniteMomentumSpinResponse",
+    "externalAxioms": [],
+    "docString": "The canonical finite-Hilbert second quantization of block-diagonal\none-particle matrices expands into the same bounded matrix units. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.RashbaExchange.boundedFiniteMomentumBlockOneBody_selfAdjoint"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.RashbaExchange.boundedFiniteMomentumBlockOneBody_selfAdjoint"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Grid : Type u_1} [inst : LinearOrder Grid] [inst_1 : Fintype Grid] (blocks : Grid → InternalSpace.PauliMatrix),\n  (∀ (k : Grid), Matrix.IsHermitian (blocks k)) →\n    IsSelfAdjoint\n      (SecondQuantization.Fermionic.Lattice.boundedOneBodyOperator\n        (QuantumTheory.Models.RashbaExchange.finiteMomentumBlockOneBody blocks))",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.RashbaExchange.boundedFiniteMomentumBlockOneBody_selfAdjoint",
+    "module": "LeanCondensedMatter.Models.RashbaExchange.FiniteMomentumSpinResponse",
+    "externalAxioms": [],
+    "docString": "Hermitian momentum blocks yield a self-adjoint full-Fock observable\nby the shared bounded matrix-unit theorem. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.RashbaExchange.finiteRashbaMomentumFockHamiltonian_selfAdjoint"
+    ],
+    "dependencies": [
+      "QuantumTheory.Models.RashbaExchange.boundedFiniteMomentumBlockOneBody_eq_sum",
+      "SecondQuantization.Fermionic.Lattice.isSelfAdjoint_sum_boundedDgammaMatrixUnit_blocks"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.RashbaExchange.finiteRashbaMomentumFockHamiltonian_selfAdjoint"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ (params : QuantumTheory.Models.RashbaExchange.Parameters) (μ ν : Fin 2) (px py lowerEnergy upperEnergy : ℝ)\n  (occupation : ℝ → ℂ),\n  QuantumTheory.Models.RashbaExchange.spinOrbitEnergy params.toHamiltonianParameters px py ≠ 0 →\n    params.broadening ≠ 0 →\n      QuantumTheory.Models.RashbaExchange.cleanBastinPointResponse params μ ν px py lowerEnergy upperEnergy occupation =\n        ∫ (probeEnergy : ℝ) in lowerEnergy..upperEnergy,\n          occupation probeEnergy *\n            ∑ source,\n              ∑ target,\n                QuantumTheory.Models.RashbaExchange.bastinBandPairContribution params μ ν source target px py\n                  probeEnergy params.broadening",
     "standardAxioms": [
       "Classical.choice",
@@ -91778,6 +92088,221 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
+    "terminal": true,
+    "statement": "∀ {Grid : Type u_1} [inst : LinearOrder Grid] [inst_1 : Fintype Grid]\n  (params : QuantumTheory.Models.RashbaExchange.HamiltonianParameters) (momentum : Grid → ℝ × ℝ),\n  IsSelfAdjoint (QuantumTheory.Models.RashbaExchange.finiteRashbaMomentumFockHamiltonian params momentum)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.RashbaExchange.finiteRashbaMomentumFockHamiltonian_selfAdjoint",
+    "module": "LeanCondensedMatter.Models.RashbaExchange.FiniteMomentumSpinResponse",
+    "externalAxioms": [],
+    "docString": "The sampled Rashba Hamiltonian is self-adjoint on the entire finite\nFock space, for arbitrary real Rashba, exchange, and mass parameters. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.Models.RashbaExchange.boundedFiniteMomentumBlockOneBody_selfAdjoint",
+      "QuantumTheory.Models.RashbaExchange.hamiltonian_isHermitian"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.RashbaExchange.finiteRashbaMomentumFreeSystem"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Grid : Type u_1} [inst : Fintype Grid] (params : QuantumTheory.Models.RashbaExchange.HamiltonianParameters)\n  (momentum : Grid → ℝ × ℝ) (hbar spinScale : ℝ) (component : QuantumTheory.SpinHalf.SpinSpace)\n  (position :\n    (QuantumTheory.SpinfulLattice.SpinfulSite Grid →₀ ℂ) →ₗ[ℂ] QuantumTheory.SpinfulLattice.SpinfulSite Grid →₀ ℂ),\n  (QuantumTheory.ConservationLaw.heisenbergEvolution (QuantumTheory.SpinfulLattice.SpinfulSite Grid →₀ ℂ) hbar\n        (QuantumTheory.Models.RashbaExchange.finiteRashbaMomentumHamiltonian params momentum))\n      (QuantumTheory.Models.RashbaExchange.finiteRashbaMomentumSpinDisplacement spinScale component position) =\n    (QuantumMechanics.SingleParticle.heisenbergTransportFunctional (QuantumTheory.SpinfulLattice.SpinfulSite Grid →₀ ℂ)\n          hbar (QuantumTheory.Models.RashbaExchange.finiteRashbaMomentumHamiltonian params momentum) LinearMap.id\n          ((QuantumTheory.SpinfulLattice.spinOneBodyLinear spinScale) component))\n        position +\n      (QuantumMechanics.SingleParticle.heisenbergSourceFunctional (QuantumTheory.SpinfulLattice.SpinfulSite Grid →₀ ℂ)\n          hbar (QuantumTheory.Models.RashbaExchange.finiteRashbaMomentumHamiltonian params momentum) LinearMap.id\n          ((QuantumTheory.SpinfulLattice.spinOneBodyLinear spinScale) component))\n        position",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.RashbaExchange.finiteRashbaMomentumSpinDisplacement_balance",
+    "module": "LeanCondensedMatter.Models.RashbaExchange.SpinDisplacementBridge",
+    "externalAxioms": [],
+    "docString": "The existing general local-quantity identity, specialized to the finite Rashba\nHamiltonian and physical spin operator, gives transport plus spin torque. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.RashbaExchange.finiteRashbaMomentumSpinDisplacement_heisenberg_decomposition"
+    ],
+    "dependencies": [
+      "ConservationLaw.lie_localizedQuantity"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.RashbaExchange.finiteRashbaMomentumSpinDisplacement_heisenberg_decomposition"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Grid : Type u_1} [inst : Fintype Grid] (params : QuantumTheory.Models.RashbaExchange.HamiltonianParameters)\n  (momentum : Grid → ℝ × ℝ) (hbar spinScale : ℝ) (component : QuantumTheory.SpinHalf.SpinSpace) (direction : Fin 2)\n  (position :\n    (QuantumTheory.SpinfulLattice.SpinfulSite Grid →₀ ℂ) →ₗ[ℂ] QuantumTheory.SpinfulLattice.SpinfulSite Grid →₀ ℂ),\n  (QuantumTheory.ConservationLaw.heisenbergEvolution (QuantumTheory.SpinfulLattice.SpinfulSite Grid →₀ ℂ) hbar\n          (QuantumTheory.Models.RashbaExchange.finiteRashbaMomentumHamiltonian params momentum))\n        position =\n      QuantumTheory.Models.RashbaExchange.finiteRashbaMomentumVelocity params momentum direction →\n    (QuantumTheory.ConservationLaw.heisenbergEvolution (QuantumTheory.SpinfulLattice.SpinfulSite Grid →₀ ℂ) hbar\n          (QuantumTheory.Models.RashbaExchange.finiteRashbaMomentumHamiltonian params momentum))\n        (QuantumTheory.Models.RashbaExchange.finiteRashbaMomentumSpinDisplacement spinScale component position) =\n      (QuantumTheory.Models.RashbaExchange.finiteRashbaMomentumVelocity params momentum direction).symmetrizedProduct\n          ((QuantumTheory.SpinfulLattice.spinOneBodyLinear spinScale) component) +\n        position.symmetrizedProduct\n          ((QuantumTheory.ConservationLaw.heisenbergEvolution (QuantumTheory.SpinfulLattice.SpinfulSite Grid →₀ ℂ) hbar\n              (QuantumTheory.Models.RashbaExchange.finiteRashbaMomentumHamiltonian params momentum))\n            ((QuantumTheory.SpinfulLattice.spinOneBodyLinear spinScale) component))",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.RashbaExchange.finiteRashbaMomentumSpinDisplacement_eq_spinCurrent_add_torque",
+    "module": "LeanCondensedMatter.Models.RashbaExchange.SpinDisplacementBridge",
+    "externalAxioms": [],
+    "docString": "If an independently justified position representation has the *same*\nHeisenberg velocity as the Rashba momentum derivative, the spin-displacement\nderivative is conventional spin current plus the torque dipole. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.RashbaExchange.finiteRashbaMomentumSpinDisplacement_fock_decomposition"
+    ],
+    "dependencies": [
+      "QuantumTheory.Models.RashbaExchange.finiteRashbaMomentumSpinDisplacement_heisenberg_decomposition"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.RashbaExchange.finiteRashbaMomentumSpinDisplacement_fock_decomposition"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {Grid : Type u_1} [inst : Fintype Grid] [inst_1 : LinearOrder Grid]\n  (params : QuantumTheory.Models.RashbaExchange.HamiltonianParameters) (momentum : Grid → ℝ × ℝ) (hbar spinScale : ℝ)\n  (component : QuantumTheory.SpinHalf.SpinSpace) (direction : Fin 2)\n  (position :\n    (QuantumTheory.SpinfulLattice.SpinfulSite Grid →₀ ℂ) →ₗ[ℂ] QuantumTheory.SpinfulLattice.SpinfulSite Grid →₀ ℂ),\n  (QuantumTheory.ConservationLaw.heisenbergEvolution (QuantumTheory.SpinfulLattice.SpinfulSite Grid →₀ ℂ) hbar\n          (QuantumTheory.Models.RashbaExchange.finiteRashbaMomentumHamiltonian params momentum))\n        position =\n      QuantumTheory.Models.RashbaExchange.finiteRashbaMomentumVelocity params momentum direction →\n    SecondQuantization.Fermionic.Lattice.boundedOneBodyOperator\n        ((QuantumTheory.ConservationLaw.heisenbergEvolution (QuantumTheory.SpinfulLattice.SpinfulSite Grid →₀ ℂ) hbar\n            (QuantumTheory.Models.RashbaExchange.finiteRashbaMomentumHamiltonian params momentum))\n          (QuantumTheory.Models.RashbaExchange.finiteRashbaMomentumSpinDisplacement spinScale component position)) =\n      (SecondQuantization.Fermionic.Transport.boundedSpinCurrentLinear\n            (QuantumTheory.Models.RashbaExchange.finiteRashbaMomentumVelocity params momentum direction) spinScale)\n          component +\n        SecondQuantization.Fermionic.Lattice.boundedOneBodyOperator\n          (position.symmetrizedProduct\n            ((QuantumTheory.ConservationLaw.heisenbergEvolution (QuantumTheory.SpinfulLattice.SpinfulSite Grid →₀ ℂ)\n                hbar (QuantumTheory.Models.RashbaExchange.finiteRashbaMomentumHamiltonian params momentum))\n              ((QuantumTheory.SpinfulLattice.spinOneBodyLinear spinScale) component)))",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.RashbaExchange.finiteRashbaMomentumSpinDisplacement_fock_decomposition",
+    "module": "LeanCondensedMatter.Models.RashbaExchange.SpinDisplacementBridge",
+    "externalAxioms": [],
+    "docString": "The conditional proper-current decomposition survives the canonical finite\nFock lift. The conventional contribution is the *existing* boundedSpinCurrentLinear,\nand the remaining observable is a bounded torque dipole. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.Models.RashbaExchange.finiteRashbaMomentumSpinDisplacement_eq_spinCurrent_add_torque"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Grid : Type u_1} [inst : Fintype Grid] (params : QuantumTheory.Models.RashbaExchange.HamiltonianParameters)\n  (momentum : Grid → ℝ × ℝ) (hbar spinScale : ℝ) (component : QuantumTheory.SpinHalf.SpinSpace)\n  (position :\n    (QuantumTheory.SpinfulLattice.SpinfulSite Grid →₀ ℂ) →ₗ[ℂ] QuantumTheory.SpinfulLattice.SpinfulSite Grid →₀ ℂ),\n  (QuantumTheory.ConservationLaw.heisenbergEvolution (QuantumTheory.SpinfulLattice.SpinfulSite Grid →₀ ℂ) hbar\n        (QuantumTheory.Models.RashbaExchange.finiteRashbaMomentumHamiltonian params momentum))\n      (QuantumTheory.Models.RashbaExchange.finiteRashbaMomentumSpinDisplacement spinScale component position) =\n    ((QuantumTheory.ConservationLaw.heisenbergEvolution (QuantumTheory.SpinfulLattice.SpinfulSite Grid →₀ ℂ) hbar\n              (QuantumTheory.Models.RashbaExchange.finiteRashbaMomentumHamiltonian params momentum))\n            position).symmetrizedProduct\n        ((QuantumTheory.SpinfulLattice.spinOneBodyLinear spinScale) component) +\n      position.symmetrizedProduct\n        ((QuantumTheory.ConservationLaw.heisenbergEvolution (QuantumTheory.SpinfulLattice.SpinfulSite Grid →₀ ℂ) hbar\n            (QuantumTheory.Models.RashbaExchange.finiteRashbaMomentumHamiltonian params momentum))\n          ((QuantumTheory.SpinfulLattice.spinOneBodyLinear spinScale) component))",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.RashbaExchange.finiteRashbaMomentumSpinDisplacement_heisenberg_decomposition",
+    "module": "LeanCondensedMatter.Models.RashbaExchange.SpinDisplacementBridge",
+    "externalAxioms": [],
+    "docString": "Heisenberg evolution of a spin displacement separates velocity-generated\nspin transport from the explicitly nonconserved spin-torque contribution.\nNo position/velocity identification is assumed here. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.RashbaExchange.finiteRashbaMomentumSpinDisplacement_eq_spinCurrent_add_torque"
+    ],
+    "dependencies": [
+      "QuantumTheory.Models.RashbaExchange.finiteRashbaMomentumSpinDisplacement_balance"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.RashbaExchange.finiteRashbaMomentumSpinDisplacement_eq_spinCurrent_add_torque"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
     "terminal": false,
     "statement": "∀ (params : QuantumTheory.Models.RashbaExchange.HamiltonianParameters) (band : QuantumTheory.Models.RashbaExchange.Band)\n  (px py : ℝ),\n  QuantumTheory.Models.RashbaExchange.spinOrbitEnergy params px py ≠ 0 →\n    QuantumTheory.Models.RashbaExchange.forceMatrixBerryCurvature params band px py =\n      QuantumTheory.Models.RashbaExchange.berryCurvature params band px py",
     "standardAxioms": [
@@ -92014,7 +92539,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -92026,6 +92551,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "QuantumTheory.Models.RashbaExchange.finiteRashbaMomentumFockHamiltonian_selfAdjoint",
       "QuantumTheory.Models.RashbaExchange.hamiltonianOperator_isSelfAdjoint"
     ],
     "dependencies": [
@@ -92034,9 +92560,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "QuantumTheory.Models.RashbaExchange.finiteRashbaMomentumFockHamiltonian_selfAdjoint",
       "QuantumTheory.Models.RashbaExchange.hamiltonianOperator_isSelfAdjoint"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -92106,8 +92633,8 @@
     "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": true,
     "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "QuantumTheory.Models.RashbaExchange.interbandBlockDifference_im_div_gap_sq_eq_neg_chargeSq_berryCurvature",
     "module": "LeanCondensedMatter.Models.RashbaExchange.Bastin.Berry",
@@ -92700,8 +93227,8 @@
     "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": true,
     "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "QuantumTheory.Models.RashbaExchange.regularizedBastinTraceIntegrand_eq_projectorBastinTraceIntegrand",
     "module": "LeanCondensedMatter.Models.RashbaExchange.Bastin.Berry",
@@ -93232,8 +93759,8 @@
     "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": true,
     "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "QuantumTheory.Models.RashbaExchange.two_mul_currentBandBlockTrace_interband_im_div_gap_sq_eq_chargeSq_berryCurvature",
     "module": "LeanCondensedMatter.Models.RashbaExchange.Bastin.Berry",
@@ -105974,7 +106501,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "QuantumTheory.dissipativeSpectralShift_injective",
-    "module": "LeanCondensedMatter.Analysis.Operator.Spectral.DissipativeShift",
+    "module": "LeanCondensedMatter.Analysis.Operator.Spectral.Resolvent",
     "externalAxioms": [],
     "docString": "A self-adjoint Hamiltonian and a self-energy with the opposite signed\nimaginary quadratic form cannot cancel a nonreal spectral shift. ",
     "directWrapperTargetModule": null,
@@ -159176,6 +159703,94 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {Site : Type u_1} [inst : LinearOrder Site] [inst_1 : Fintype Site] (A : Matrix Site Site ℂ),\n  A.IsHermitian → IsSelfAdjoint (∑ i, ∑ j, A i j • SecondQuantization.Fermionic.Lattice.boundedDgammaMatrixUnit i j)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Fermionic.Lattice.isSelfAdjoint_sum_boundedDgammaMatrixUnit",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.BoundedMatrixUnitAdjoint",
+    "externalAxioms": [],
+    "docString": "A Hermitian finite one-particle coefficient matrix lifts to a self-adjoint\nobservable on the entire fermionic Fock space. The proof uses only the canonical\nadjoint reversal of the second-quantized matrix units. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Fermionic.Validation.TwoSiteOrbitalResponse.boundedOrbitalMatrix_selfAdjoint"
+    ],
+    "dependencies": [
+      "SecondQuantization.Fermionic.Lattice.star_boundedDgammaMatrixUnit"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.Validation.TwoSiteOrbitalResponse.boundedOrbitalMatrix_selfAdjoint"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Site : Type u_1} [inst : LinearOrder Site] [inst_1 : Fintype Site] {Block : Type u_2} {Label : Type u_3}\n  [inst_2 : Fintype Block] [inst_3 : Fintype Label] (site : Block → Label → Site)\n  (blocks : Block → Matrix Label Label ℂ),\n  (∀ (k : Block), (blocks k).IsHermitian) →\n    IsSelfAdjoint\n      (∑ k, ∑ a, ∑ b, blocks k a b • SecondQuantization.Fermionic.Lattice.boundedDgammaMatrixUnit (site k a) (site k b))",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Fermionic.Lattice.isSelfAdjoint_sum_boundedDgammaMatrixUnit_blocks",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.BoundedMatrixUnitAdjoint",
+    "externalAxioms": [],
+    "docString": "A finite collection of Hermitian internal matrix blocks yields a self-adjoint\nfull-Fock observable, even when the block-to-mode labels are supplied abstractly. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.RashbaExchange.boundedFiniteMomentumBlockOneBody_selfAdjoint"
+    ],
+    "dependencies": [
+      "SecondQuantization.Fermionic.Lattice.star_boundedDgammaMatrixUnit"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.RashbaExchange.boundedFiniteMomentumBlockOneBody_selfAdjoint"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {Site : Type u_1} [inst : LinearOrder Site] [Finite Site] (a : Site → ℂ),\n  (SecondQuantization.Fermionic.AlgebraicFock.occupationConjugate Finsupp.basisSingleOne)\n      (SecondQuantization.Fermionic.AlgebraicFock.dGamma (Site →₀ ℂ) (SecondQuantization.Common.diagonalOperator a)) =\n    SecondQuantization.Common.diagonalOperator fun n => ∑ i ∈ n, a i",
     "standardAxioms": [
       "Classical.choice",
@@ -159295,7 +159910,8 @@
     "directWrapperOf": null,
     "dependents": [
       "LocallyFiniteHopping.star_boundedBondOperator",
-      "SecondQuantization.Fermionic.Validation.TwoSiteOrbitalResponse.boundedOrbitalMatrix_selfAdjoint",
+      "SecondQuantization.Fermionic.Lattice.isSelfAdjoint_sum_boundedDgammaMatrixUnit",
+      "SecondQuantization.Fermionic.Lattice.isSelfAdjoint_sum_boundedDgammaMatrixUnit_blocks",
       "SecondQuantization.Fermionic.Validation.twoSiteDimerHamiltonian_selfAdjoint"
     ],
     "dependencies": [
@@ -159307,10 +159923,11 @@
     "completedMention": false,
     "compiledConsumers": [
       "LocallyFiniteHopping.star_boundedBondOperator",
-      "SecondQuantization.Fermionic.Validation.TwoSiteOrbitalResponse.boundedOrbitalMatrix_selfAdjoint",
+      "SecondQuantization.Fermionic.Lattice.isSelfAdjoint_sum_boundedDgammaMatrixUnit",
+      "SecondQuantization.Fermionic.Lattice.isSelfAdjoint_sum_boundedDgammaMatrixUnit_blocks",
       "SecondQuantization.Fermionic.Validation.twoSiteDimerHamiltonian_selfAdjoint"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -160374,12 +160991,12 @@
     "name": "SecondQuantization.Fermionic.Validation.TwoSiteOrbitalResponse.boundedOrbitalMatrix_selfAdjoint",
     "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Validation.TwoSiteOrbitalResponse",
     "externalAxioms": [],
-    "docString": "A Hermitian four-state matrix gives a self-adjoint Fock observable. ",
+    "docString": "A Hermitian four-state matrix gives a self-adjoint Fock observable.\nThis is an instance of the shared finite-Fock Hermitian matrix-unit lift. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "SecondQuantization.Fermionic.Lattice.star_boundedDgammaMatrixUnit",
+      "SecondQuantization.Fermionic.Lattice.isSelfAdjoint_sum_boundedDgammaMatrixUnit",
       "SecondQuantization.Fermionic.Validation.TwoSiteOrbitalResponse.boundedOrbitalMatrix_eq_sum"
     ],
     "crossModuleDirectWrapper": false,
@@ -168904,7 +169521,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -168916,7 +169533,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.externalSubsetSourceCumulantSeries_eq_connectedDiagramSeries_of_signedMoments"
+      "SecondQuantization.Fermionic.externalSubsetSourceCumulantSeries_eq_connectedDiagramSeries",
+      "SecondQuantization.Fermionic.externalSubsetSourceCumulantSeries_eq_connectedDiagramSeries_two"
     ],
     "dependencies": [
       "Finpartition.weightedMomentFromCumulant_injective",
@@ -168925,9 +169543,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.externalSubsetSourceCumulantSeries_eq_connectedDiagramSeries_of_signedMoments"
+      "SecondQuantization.Fermionic.externalSubsetSourceCumulantSeries_eq_connectedDiagramSeries",
+      "SecondQuantization.Fermionic.externalSubsetSourceCumulantSeries_eq_connectedDiagramSeries_two"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -168949,7 +169568,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": true,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -168961,15 +169580,17 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.externalSubsetSourceCumulantSeries_eq_connectedDiagramSeries_of_signedMoments"
+      "SecondQuantization.Fermionic.externalSubsetSourceCumulantSeries_eq_connectedDiagramSeries",
+      "SecondQuantization.Fermionic.externalSubsetSourceCumulantSeries_eq_connectedDiagramSeries_two"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.externalSubsetSourceCumulantSeries_eq_connectedDiagramSeries_of_signedMoments"
+      "SecondQuantization.Fermionic.externalSubsetSourceCumulantSeries_eq_connectedDiagramSeries",
+      "SecondQuantization.Fermionic.externalSubsetSourceCumulantSeries_eq_connectedDiagramSeries_two"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -169004,16 +169625,18 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Fermionic.externalSubsetMomentSeries_eq_signedConnected_of_nonempty_even",
-      "SecondQuantization.Fermionic.externalSubsetSourceCumulantSeries_eq_connectedDiagramSeries_of_signedMoments"
+      "SecondQuantization.Fermionic.externalSubsetSourceCumulantSeries_eq_connectedDiagramSeries",
+      "SecondQuantization.Fermionic.externalSubsetSourceCumulantSeries_eq_connectedDiagramSeries_two"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Fermionic.externalSubsetMomentSeries_eq_signedConnected_of_nonempty_even",
-      "SecondQuantization.Fermionic.externalSubsetSourceCumulantSeries_eq_connectedDiagramSeries_of_signedMoments"
+      "SecondQuantization.Fermionic.externalSubsetSourceCumulantSeries_eq_connectedDiagramSeries",
+      "SecondQuantization.Fermionic.externalSubsetSourceCumulantSeries_eq_connectedDiagramSeries_two"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -169027,7 +169650,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] {E : ℕ} (ε : Mode → ℝ) (β : ℝ),\n  0 ≤ β →\n    ∀ (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ)\n      (labels : Fin (2 * E) → SecondQuantization.Fermionic.ExternalFieldLabel Mode) (times : Fin (2 * E) → ℝ)\n      (S : Finset (Fin (2 * E))),\n      SecondQuantization.Fermionic.externalSubsetMomentSeries ε β g labels times S =\n        SecondQuantization.Fermionic.externalSubsetSignedConnectedMomentSeries ε β g labels times S",
     "standardAxioms": [
       "Classical.choice",
@@ -169035,7 +169658,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -169043,18 +169666,22 @@
     "name": "SecondQuantization.Fermionic.externalSubsetMomentSeries_eq_signedConnected",
     "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalSubsetMoment",
     "externalAxioms": [],
-    "docString": "Phase 5C: the vacuum-normalized physical Dyson moment of\nevery finite external source subset is exactly the fermionic\nKoszul-signed moment transform of the fully connected physical\ndiagram series. Empty and odd subsets are handled by parity and\nnormalization, not by redefining the connected contribution. ",
+    "docString": "Every vacuum-normalized physical Dyson moment is the fermionic\nKoszul-signed partition transform of fully connected diagram series.\nEmpty and odd subsets follow from normalization and fermion parity. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "SecondQuantization.Fermionic.externalSubsetSourceCumulantSeries_eq_connectedDiagramSeries"
+    ],
     "dependencies": [
       "SecondQuantization.Fermionic.externalSubsetMomentSeries_eq_signedConnected_nonempty_even",
       "SecondQuantization.Fermionic.externalSubsetMomentSeries_eq_signedConnected_of_nonempty_even"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.externalSubsetSourceCumulantSeries_eq_connectedDiagramSeries"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -169084,7 +169711,7 @@
     "name": "SecondQuantization.Fermionic.externalSubsetMomentSeries_eq_signedConnectedSum_localIndices",
     "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalSubsetMoment",
     "externalAxioms": [],
-    "docString": "The physical moment of any nonempty even external source subset has\nan explicit signed connected-partition expansion on its *canonically\nrenumbered* external slots. This is the full-series 5B result applied to\nthe increasing source-subset order; the subsequent identification with\npartitions of the original ambient subset requires order/sign transport. ",
+    "docString": "The physical moment of any nonempty even external source subset has\nan explicit signed connected-partition expansion on its *canonically\nrenumbered* external slots. Block signs and amplitudes use the\ncanonical increasing source-subset order. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
@@ -169128,7 +169755,7 @@
     "name": "SecondQuantization.Fermionic.externalSubsetMomentSeries_eq_signedConnected_nonempty_even",
     "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalSubsetMoment",
     "externalAxioms": [],
-    "docString": "Phase 5C physical signed moment identity for every nonempty\neven external source subset: the actual vacuum-free integrated\nDyson moment is the Koszul-signed source partition transform\nof the actual fully connected diagram series. ",
+    "docString": "For every nonempty even external source subset, the physical\nvacuum-free Dyson moment equals the Koszul-signed partition transform\nof fully connected diagram series. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
@@ -169174,7 +169801,7 @@
     "name": "SecondQuantization.Fermionic.externalSubsetMomentSeries_eq_signedConnected_of_nonempty_even",
     "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalSubsetMoment",
     "externalAxioms": [],
-    "docString": "Empty and odd external subsets already satisfy the physical\nsigned partition identity, unconditionally. Thus completing Phase 5\nrequires proving that identity **only for nonempty even subsets**.\n\nThe remaining hypothesis is genuinely diagrammatic: it is not replaced\nby an unsigned moment inversion or by defining the connected weights\nfrom the moments. ",
+    "docString": "The physical signed partition identity for nonempty even external\nsubsets extends to all subsets by vacuum normalization for the empty\nsubset and fermion parity for odd subsets. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
@@ -169437,7 +170064,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": true,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -169449,7 +170076,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.externalSubsetSourceCumulantSeries_eq_connectedDiagramSeries_of_signedMoments"
+      "SecondQuantization.Fermionic.externalSubsetSourceCumulantSeries_eq_connectedDiagramSeries",
+      "SecondQuantization.Fermionic.externalSubsetSourceCumulantSeries_eq_connectedDiagramSeries_two"
     ],
     "dependencies": [
       "Finpartition.weightedCumulantFromMoment_empty"
@@ -169457,9 +170085,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.externalSubsetSourceCumulantSeries_eq_connectedDiagramSeries_of_signedMoments"
+      "SecondQuantization.Fermionic.externalSubsetSourceCumulantSeries_eq_connectedDiagramSeries",
+      "SecondQuantization.Fermionic.externalSubsetSourceCumulantSeries_eq_connectedDiagramSeries_two"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -169473,41 +170102,38 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] {E : ℕ} (ε : Mode → ℝ) (β : ℝ)\n  (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ)\n  (labels : Fin (2 * E) → SecondQuantization.Fermionic.ExternalFieldLabel Mode) (times : Fin (2 * E) → ℝ),\n  (∀ (S : Finset (Fin (2 * E))),\n      SecondQuantization.Fermionic.externalSubsetMomentSeries ε β g labels times S =\n        SecondQuantization.Fermionic.externalSubsetSignedConnectedMomentSeries ε β g labels times S) →\n    SecondQuantization.Fermionic.externalSubsetSourceCumulantSeries\n        (SecondQuantization.Fermionic.externalSubsetMomentSeries ε β g labels times) =\n      SecondQuantization.Fermionic.externalSubsetConnectedDiagramSeries ε β g labels times",
+    "terminal": true,
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] {E : ℕ} (ε : Mode → ℝ) (β : ℝ),\n  0 ≤ β →\n    ∀ (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ)\n      (labels : Fin (2 * E) → SecondQuantization.Fermionic.ExternalFieldLabel Mode) (times : Fin (2 * E) → ℝ),\n      SecondQuantization.Fermionic.externalSubsetSourceCumulantSeries\n          (SecondQuantization.Fermionic.externalSubsetMomentSeries ε β g labels times) =\n        SecondQuantization.Fermionic.externalSubsetConnectedDiagramSeries ε β g labels times",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.externalSubsetSourceCumulantSeries_eq_connectedDiagramSeries_of_signedMoments",
+    "name": "SecondQuantization.Fermionic.externalSubsetSourceCumulantSeries_eq_connectedDiagramSeries",
     "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalSubsetMoment",
     "externalAxioms": [],
-    "docString": "The precise remaining physical bridge for Phase 5: once the actual\nvacuum-normalized Wick/Dyson moments satisfy the signed external-partition\nidentity, the recursively defined fermionic *source cumulant* is the fully\nexternally connected integrated diagram sum.\n\nThis theorem uses genuine signed moment inversion; it does not assume\nunsigned Möbius inversion or conflate vacuum-freeness with connectivity.\nIts hypothesis is the still-required diagram-assembly/shuffle identity. ",
+    "docString": "The source cumulant of physical vacuum-normalized Dyson moments\nequals the fully externally connected diagram series for any finite\nnumber of external insertions.\n\nThe proof applies signed moment reconstruction and injectivity to the\nphysical Koszul-signed partition identity. Vacuum normalization alone\ndoes not require all external insertions to be connected. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.externalSubsetSourceCumulantSeries_eq_connectedDiagramSeries_two"
-    ],
+    "dependents": [],
     "dependencies": [
       "SecondQuantization.Fermionic.externalPartitionWeightedMoment_injective",
       "SecondQuantization.Fermionic.externalSubsetConnectedDiagramSeries_empty",
       "SecondQuantization.Fermionic.externalSubsetMomentSeries_empty",
+      "SecondQuantization.Fermionic.externalSubsetMomentSeries_eq_signedConnected",
       "SecondQuantization.Fermionic.externalSubsetSourceCumulantSeries_empty",
       "SecondQuantization.Fermionic.externalSubsetSourceCumulantSeries_reconstruct"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.externalSubsetSourceCumulantSeries_eq_connectedDiagramSeries_two"
-    ],
-    "compiledConsumerCount": 1,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -169537,13 +170163,17 @@
     "name": "SecondQuantization.Fermionic.externalSubsetSourceCumulantSeries_eq_connectedDiagramSeries_two",
     "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalSubsetMoment",
     "externalAxioms": [],
-    "docString": "The actual two-insertion source cumulant equals the fully\nexternally connected physical Dyson series at all perturbative\norders, with no signed-moment hypothesis. This is the two-insertion\nspecialization; higher external sectors still need the shuffle\ncovariance theorem. ",
+    "docString": "For two external insertions, the source cumulant equals the\nconnected physical Dyson series without a sign restriction on β. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
+      "SecondQuantization.Fermionic.externalPartitionWeightedMoment_injective",
+      "SecondQuantization.Fermionic.externalSubsetConnectedDiagramSeries_empty",
+      "SecondQuantization.Fermionic.externalSubsetMomentSeries_empty",
       "SecondQuantization.Fermionic.externalSubsetMomentSeries_eq_signedConnected_two",
-      "SecondQuantization.Fermionic.externalSubsetSourceCumulantSeries_eq_connectedDiagramSeries_of_signedMoments"
+      "SecondQuantization.Fermionic.externalSubsetSourceCumulantSeries_empty",
+      "SecondQuantization.Fermionic.externalSubsetSourceCumulantSeries_reconstruct"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -169610,7 +170240,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -169622,7 +170252,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.externalSubsetSourceCumulantSeries_eq_connectedDiagramSeries_of_signedMoments"
+      "SecondQuantization.Fermionic.externalSubsetSourceCumulantSeries_eq_connectedDiagramSeries",
+      "SecondQuantization.Fermionic.externalSubsetSourceCumulantSeries_eq_connectedDiagramSeries_two"
     ],
     "dependencies": [
       "Finpartition.weightedMomentFromCumulant_weightedCumulantFromMoment",
@@ -169631,9 +170262,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.externalSubsetSourceCumulantSeries_eq_connectedDiagramSeries_of_signedMoments"
+      "SecondQuantization.Fermionic.externalSubsetSourceCumulantSeries_eq_connectedDiagramSeries",
+      "SecondQuantization.Fermionic.externalSubsetSourceCumulantSeries_eq_connectedDiagramSeries_two"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -174026,7 +174658,7 @@
     "name": "SecondQuantization.Fermionic.sum_fixedExternalPartitionDysonFiber_eq_signedCoeffConnectedSeries",
     "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalSubsetMoment",
     "externalAxioms": [],
-    "docString": "Phase 5B: at each fixed Dyson order and physical external partition,\nthe actual integrated diagram coefficient is the Koszul-signed Cauchy\ncoefficient of the product of the already-defined *connected* Dyson\ndiagram series, not merely an auxiliary preconnected series. ",
+    "docString": "The integrated Dyson coefficient at a fixed external partition and\ninteraction order is the Koszul-signed Cauchy coefficient of the product\nof connected Dyson diagram series. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
@@ -174116,7 +174748,7 @@
     "name": "SecondQuantization.Fermionic.sum_fixedExternalPartitionDysonFiber_eq_sizes_shuffles_localLabels",
     "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalSubsetMoment",
     "externalAxioms": [],
-    "docString": "A physical, integrated fixed-label Dyson partition fiber is a finite\nsum over the unique owner size/shuffle data and independently connected\nlocal Wick diagrams, with the source-label predicate imposed *blockwise*\nin the canonical increasing external-slot order. This is the form needed\nto compare the physical owner-shuffle sum with the previously proved\nsummed connected-block Dyson shuffle orbit. No amplitude has been\nfactorized at the level of an individual ordered-simplex integral. ",
+    "docString": "A physical, integrated fixed-label Dyson partition fiber is a finite\nsum over the unique owner size/shuffle data and independently connected\nlocal Wick diagrams, with the source-label predicate imposed *blockwise*\nin the canonical increasing external-slot order. The expression\nretains the physical owner-shuffle sum and connected-block Dyson\namplitudes without factorizing individual ordered-simplex integrals. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
@@ -174163,7 +174795,7 @@
     "name": "SecondQuantization.Fermionic.sum_fixedExternalPartitionDysonFiber_eq_sum_realizableSizes_signedProduct",
     "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalSubsetMoment",
     "externalAxioms": [],
-    "docString": "Phase 5B (size summation): the genuine fixed-partition physical\norder-`n` Dyson fiber equals the signed sum, counted once per realizable\ninteraction-size vector, of products of independently connected physical\nDyson coefficients. The fixed-size integral/shuffle factorization is reused\nwhole; no extra shuffle multiplicity or pointwise integral invariance\nis introduced. ",
+    "docString": "The fixed-partition physical order-`n` Dyson fiber is the\nKoszul-signed sum over realizable interaction-size vectors of products\nof connected Dyson coefficients. The integrated interaction-shuffle\nweights are preserved without an additional multiplicity. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
@@ -175937,7 +176569,7 @@
     "name": "SecondQuantization.Fermionic.vacuumFreeExternalInsertionDysonCoefficient_eq_sum_connectedBlockFamilies",
     "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalSubsetMoment",
     "externalAxioms": [],
-    "docString": "The actual order-`n` vacuum-free Dyson coefficient, with the external\nfield labels fixed, is an explicit finite sum over all independent\npreconnected local external-block diagrams and their interaction-vertex\nassignments. The canonical assembly equivalence ensures that each physical\nWick diagram appears exactly once; the external-label indicator excludes\nprecisely the assembled diagrams with different prescribed insertions.\nThe shuffle/integral product decomposition is a separate subsequent step. ",
+    "docString": "The actual order-`n` vacuum-free Dyson coefficient, with the external\nfield labels fixed, is an explicit finite sum over all independent\npreconnected local external-block diagrams and their interaction-vertex\nassignments. The canonical assembly equivalence ensures that each physical\nWick diagram appears exactly once; the external-label indicator excludes\nprecisely the assembled diagrams with different prescribed insertions.\nThe identity retains the original Dyson amplitudes and interaction ordering. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [],
@@ -176070,7 +176702,7 @@
     "name": "SecondQuantization.Fermionic.vacuumFreeExternalInsertionDysonCoefficient_eq_sum_evenPartitions_localLabelFamilies",
     "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalSubsetMoment",
     "externalAxioms": [],
-    "docString": "The full fixed-order physical Dyson coefficient is reindexed by even\nexternal-component partitions and independently labelled connected blocks.\nThe owner assignments and genuine assembled Dyson amplitudes are retained:\nthe remaining factorization must still sum those assignments and their\nordered interaction shuffles. ",
+    "docString": "The full fixed-order physical Dyson coefficient is reindexed by even\nexternal-component partitions and independently labelled connected blocks.\nThe owner assignments, genuine assembled Dyson amplitudes, and ordered\ninteraction shuffles are kept explicitly. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [],
@@ -176111,7 +176743,7 @@
     "name": "SecondQuantization.Fermionic.vacuumFreeExternalInsertionDysonCoefficient_eq_sum_externalPartitionFibers",
     "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalSubsetMoment",
     "externalAxioms": [],
-    "docString": "Reindex the actual vacuum-free fixed-label Dyson-diagram coefficient by its\ninduced external-component partition. The indicator selects precisely the\nfiber over each partition; retaining the ambient finite type avoids creating\nadditional dependent-fiber `Fintype` instances in a theorem statement.\n\nThis is a finite reindexing, not yet the connected-component amplitude\nfactorization or the physical signed partition identity. ",
+    "docString": "Reindex the actual vacuum-free fixed-label Dyson-diagram coefficient by its\ninduced external-component partition. The indicator selects precisely the\nfiber over each partition; retaining the ambient finite type avoids creating\nadditional dependent-fiber `Fintype` instances in a theorem statement.\n\nThis identity only partitions the sum into physical diagram fibers;\nit makes no amplitude factorization assumption. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
@@ -176287,7 +176919,7 @@
     "name": "SecondQuantization.Fermionic.vacuumFreeExternalInsertionDysonSeries_eq_sum_evenPartitionConnectedSeries",
     "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalSubsetMoment",
     "externalAxioms": [],
-    "docString": "Phase 5C, full external source family: the actual vacuum-free\nintegrated Dyson series is the finite Koszul-signed partition sum of\nproducts of existing connected Dyson series. This lifts the physical\nfixed-order coefficient theorem of Phase 5B to a genuine identity in\n`PowerSeries ℂ`, without defining the connected sector by inversion.\n\nThe arbitrary *subset* statement additionally needs transport of the\ncanonical increasing source order and its fermionic partition signs. ",
+    "docString": "The physical vacuum-free Dyson series is the finite Koszul-signed\nexternal-partition sum of products of connected Dyson series in\n`PowerSeries ℂ`. The equality preserves canonical source order and\nthe physical Dyson coefficients. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
@@ -177269,8 +177901,8 @@
     "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": false,
     "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "ZMod.cyclicLaplacianEigenvalue_pos",
     "module": "LeanCondensedMatter.Analysis.Fourier.CyclicLaplacian",
