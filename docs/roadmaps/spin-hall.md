@@ -151,8 +151,12 @@ self-adjointness from Hermitian Rashba 2×2 blocks.
 Its mixed response channel consumes the existing
 `Fermionic.Transport.boundedSpinCurrentLinear` API and a signed charge
 velocity source `dΓ(q v_j)`. An observable-variation/contact operator is an
-explicit input rather than implicitly set to zero. The finite-grid retarded
-kernel and its exact additivity in real spin polarization are provided.
+explicit input rather than implicitly set to zero. The finite-grid retarded Kubo
+kernel is evaluated directly with the existing `ResponseChannel.retardedKernel`
+and `freePropagatorGroup` APIs. Spin-polarization linearity follows from the
+existing `boundedSpinCurrentLinear` and
+`retardedSusceptibilityMeasuredLinearMap`; redundant model-local wrappers were
+deleted instead of introducing duplicate theorems.
 
 This is a momentum-grid (not real-space) realization, so the electric source is
 the momentum-velocity vertex rather than a fictitious inter-spin Peierls
