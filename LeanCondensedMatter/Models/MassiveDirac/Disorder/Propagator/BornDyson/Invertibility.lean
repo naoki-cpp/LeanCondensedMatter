@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Analysis.Operator.Spectral.DissipativeShift
+import LeanCondensedMatter.Analysis.Operator.Spectral.Resolvent
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.Denominator
 import LeanCondensedMatter.Transport.Analysis.ContinuumMeasure
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.BornDyson.DysonShift
