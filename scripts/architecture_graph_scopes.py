@@ -102,32 +102,42 @@ def _validate_edge_list(errors: list[str], *, context: str, value: object) -> No
             seen.add(key)
 
 
-def _validate_primary_graph(errors: list[str], raw: dict[str, object], *, context: str) -> None:
-    layers = raw.get("layers")
+def _validate_layers(
+    errors: list[str], layers: object, *, context: str, primary: bool
+) -> None:
+    """Validate common layer fields, allowing primary-graph namespace metadata."""
     if not isinstance(layers, list):
-        errors.append(f"{context}.layers must be a list")
-    else:
-        for index, raw_layer in enumerate(layers):
-            layer_context = f"{context}.layers[{index}]"
-            layer = _validate_object_fields(
-                errors,
-                context=layer_context,
-                value=raw_layer,
-                required={"id", "modulePrefixes", "namespacePrefixes", "forbiddenNameFragments"},
-            )
-            if layer is None:
-                continue
-            for field in ("id",):
-                if field in layer:
-                    _validate_string(errors, context=f"{layer_context}.{field}", value=layer[field])
-            for field in ("modulePrefixes", "namespacePrefixes", "forbiddenNameFragments"):
-                if field in layer:
-                    _validate_string_list(
-                        errors,
-                        context=f"{layer_context}.{field}",
-                        value=layer[field],
-                        allow_empty=field != "modulePrefixes",
-                    )
+        errors.append(f"{context} must be a list" if primary else f"{context} must be a nonempty list")
+        return
+    if not primary and not layers:
+        errors.append(f"{context} must be a nonempty list")
+        return
+
+    fields = (
+        ("id", "modulePrefixes", "namespacePrefixes", "forbiddenNameFragments")
+        if primary else ("id", "modulePrefixes")
+    )
+    for index, raw_layer in enumerate(layers):
+        layer_context = f"{context}[{index}]"
+        layer = _validate_object_fields(
+            errors, context=layer_context, value=raw_layer, required=set(fields)
+        )
+        if layer is None:
+            continue
+        if "id" in layer:
+            _validate_string(errors, context=f"{layer_context}.id", value=layer["id"])
+        for field in fields[1:]:
+            if field in layer:
+                _validate_string_list(
+                    errors,
+                    context=f"{layer_context}.{field}",
+                    value=layer[field],
+                    allow_empty=primary and field != "modulePrefixes",
+                )
+
+
+def _validate_primary_graph(errors: list[str], raw: dict[str, object], *, context: str) -> None:
+    _validate_layers(errors, raw.get("layers"), context=f"{context}.layers", primary=True)
 
     _validate_edge_list(errors, context=f"{context}.edges", value=raw.get("edges"))
 
@@ -192,28 +202,9 @@ def _validate_scoped_graphs(
                 value=graph["coveragePrefixes"],
             )
 
-        layers = graph.get("layers")
-        if not isinstance(layers, list) or not layers:
-            errors.append(f"{graph_context}.layers must be a nonempty list")
-        else:
-            for layer_index, raw_layer in enumerate(layers):
-                layer_context = f"{graph_context}.layers[{layer_index}]"
-                layer = _validate_object_fields(
-                    errors,
-                    context=layer_context,
-                    value=raw_layer,
-                    required={"id", "modulePrefixes"},
-                )
-                if layer is None:
-                    continue
-                if "id" in layer:
-                    _validate_string(errors, context=f"{layer_context}.id", value=layer["id"])
-                if "modulePrefixes" in layer:
-                    _validate_string_list(
-                        errors,
-                        context=f"{layer_context}.modulePrefixes",
-                        value=layer["modulePrefixes"],
-                    )
+        _validate_layers(
+            errors, graph.get("layers"), context=f"{graph_context}.layers", primary=False
+        )
 
         _validate_edge_list(errors, context=f"{graph_context}.edges", value=graph.get("edges"))
 
