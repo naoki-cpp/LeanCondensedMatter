@@ -157,7 +157,7 @@ Avoid changing an existing public endpoint merely to improve this proxy.
 `check_architecture_graphs.py` owns dependency direction and reachability. Its data lives here:
 
 - `second_quantization.json` — the shared primary layer graph and SecondQuantization-focused DAGs;
-- `source_topology.json` — Transport, current, QuantumTheory state/Gibbs/response to Common thermal, and other source DAGs;
+- `source_topology.json` — Transport, current, QuantumTheory state/Gibbs/response to Common thermal, Expectation–Dynamics, and other source DAGs;
 - `ahe_topology.json` — Massive-Dirac Model–Propagator–Conductivity and Vertex–Disorder–Streda–Conductivity package boundaries.
 
 Edges are written **upstream -> downstream**. A source layer may import itself or an ancestor. Scoped
