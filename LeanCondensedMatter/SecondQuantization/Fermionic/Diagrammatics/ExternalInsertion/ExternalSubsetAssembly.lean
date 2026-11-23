@@ -577,7 +577,7 @@ theorem ExternalInsertionBlockLayout.sum_physicalFixedSizeDyson_eq_signedProduct
           ((assembled F).assembleInteractionOrder
             (assembled F).canonicalComponentInteractionOrders shuffle) := by
     let d : ExternalInsertionWickDiagram Mode E n := assembled F
-    let eOwner := ExternalInsertionBlockLayout.ofFamilyShuffle_ownerShuffleEquiv
+    let eOwner := ExternalInsertionBlockLayout.ofFamilyShuffleOwnerShuffleEquiv
       π heven σ
     let w : Combinatorics.FamilySlotShuffleTo
         (fun B : π.parts => (layout.interactionBlock S B).card) S.card → ℂ :=
