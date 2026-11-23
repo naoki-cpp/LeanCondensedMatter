@@ -72,7 +72,8 @@ theorem tendsto_disorder_mul_momentum_integral
     exact_mod_cast ne_of_gt hdisorder
   unfold finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceMomentumIntegralZeroBroadeningBoundary
   simp only [inPlaneLadderAction_apply_x,
-    finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary]
+    finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary,
+    continuumBornDisorderMeasurePrefactor]
   push_cast
   dsimp [q, measure] at hmeasure ⊢
   push_cast
