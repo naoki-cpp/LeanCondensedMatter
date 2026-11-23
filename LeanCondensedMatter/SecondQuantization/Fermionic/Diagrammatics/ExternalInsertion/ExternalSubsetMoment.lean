@@ -1250,6 +1250,121 @@ private theorem externalSubsetPartitionEquiv_evenBlocks
     simpa using hEvenT
 
 set_option maxHeartbeats 4000000 in
+-- Relabelled blocks have dependent local sizes, so compare their inversion counts via ambient sets.
+open Classical in
+/-- The canonical fermionic source sign is unchanged when the
+canonically increasing local external slots of an even source subset
+are relabelled by their actual ambient source positions. The
+even-block condition removes any dependence on arbitrary block order. -/
+private theorem externalSubsetPartitionEquiv_sourceSign
+    (S : Finset (Fin (2 * E))) (heven : Even S.card)
+    (π : Finpartition (Finset.univ : Finset (Fin (2 * (S.card / 2)))))
+    (hEven : ∀ B : π.parts, Even (B : Finset (Fin (2 * (S.card / 2)))).card) :
+    externalPartitionSourceSign π =
+      externalPartitionSourceSign (externalSubsetPartitionEquiv S heven π) := by
+  classical
+  let σ := externalSubsetPartitionEquiv S heven π
+  let e := evenExternalSubsetOrderIso S heven
+  let emb : Fin (2 * (S.card / 2)) ↪ Fin (2 * E) :=
+    ⟨fun i => (e i).1, fun i j hij => e.injective (Subtype.ext hij)⟩
+  have hparts : σ.parts =
+      π.parts.image (fun B => B.map emb) := rfl
+  let blocks : π.parts → σ.parts := fun B =>
+    ⟨B.1.map emb, by
+      rw [hparts]
+      exact Finset.mem_image.mpr ⟨B.1, B.2, rfl⟩⟩
+  have hinj : Function.Injective blocks := by
+    intro B C hBC
+    apply Subtype.ext
+    exact (Finset.map_injective emb) (congrArg Subtype.val hBC)
+  have hsurj : Function.Surjective blocks := by
+    intro T
+    have hT : T.1 ∈ π.parts.image (fun B => B.map emb) := by
+      rw [← hparts]
+      exact T.2
+    obtain ⟨B, hB, hBT⟩ := Finset.mem_image.mp hT
+    refine ⟨⟨B, hB⟩, Subtype.ext ?_⟩
+    exact hBT
+  let be : π.parts ≃ σ.parts := Equiv.ofBijective blocks ⟨hinj, hsurj⟩
+  let hc : Fintype.card π.parts = Fintype.card σ.parts := Fintype.card_congr be
+  let orderπ : π.parts ≃ Fin (Fintype.card π.parts) := Fintype.equivFin _
+  let orderσ : σ.parts ≃ Fin (Fintype.card σ.parts) :=
+    (be.symm.trans orderπ).trans (finCongr hc)
+  have horder (B C : π.parts) :
+      orderπ B < orderπ C ↔ orderσ (be B) < orderσ (be C) := by
+    change orderπ B < orderπ C ↔
+      Fin.cast hc (orderπ B) < Fin.cast hc (orderπ C)
+    constructor
+    · exact (Fin.castOrderIso hc).strictMono
+    · intro h
+      exact (Fin.castOrderIso hc).symm.strictMono (by simpa using h)
+  have hsource (B C : π.parts) (hBC : B ≠ C) :
+      π.shuffleOfIncreasingOrder.blockInversionCount B C =
+        ∑ x ∈ (B : Finset (Fin (2 * (S.card / 2)))),
+          ∑ y ∈ (C : Finset (Fin (2 * (S.card / 2)))),
+            if y < x then (1 : ℕ) else 0 := by
+    calc
+      _ = (externalPartitionShuffleFull π).blockInversionCount B C :=
+        ((π.shuffleOfIncreasingOrder).castTotalEquiv_blockInversionCount (by simp) B C).symm
+      _ = _ := by
+        rw [(externalPartitionShuffleFull π).blockInversionCount_eq_sum_blockSlotSet hBC,
+          π.shuffleOfIncreasingOrderFull_blockSlotSet B,
+          π.shuffleOfIncreasingOrderFull_blockSlotSet C]
+  have hlocalOrder (i j : Fin (2 * (S.card / 2))) :
+      emb i < emb j ↔ i < j := by
+    change (e i).1 < (e j).1 ↔ i < j
+    exact e.lt_iff_lt
+  have hInv (B C : π.parts) :
+      π.shuffleOfIncreasingOrder.blockInversionCount B C =
+        σ.shuffleOfIncreasingOrder.blockInversionCount (be B) (be C) := by
+    by_cases hBC : B = C
+    · subst C
+      simp
+    · rw [hsource B C hBC,
+        externalSubsetShuffle_blockInversionCount S σ (be B) (be C) (be.injective.ne hBC)]
+      change (∑ x ∈ B.1, ∑ y ∈ C.1, if y < x then (1 : ℕ) else 0) =
+        ∑ x ∈ B.1.map emb, ∑ y ∈ C.1.map emb, if y < x then 1 else 0
+      simp only [Finset.sum_map, hlocalOrder]
+  have hcount :
+      π.shuffleOfIncreasingOrder.orderedBlockInversionCount orderπ =
+        σ.shuffleOfIncreasingOrder.orderedBlockInversionCount orderσ := by
+    classical
+    unfold Combinatorics.FamilySlotShuffleTo.orderedBlockInversionCount
+    refine Finset.sum_bij (fun p _ => (be p.1, be p.2)) ?_ ?_ ?_ ?_
+    · intro p hp
+      exact Finset.mem_offDiag.mpr
+        ⟨Finset.mem_univ _, Finset.mem_univ _, be.injective.ne (Finset.mem_offDiag.mp hp).2.2⟩
+    · intro p _ q _ hpq
+      exact Prod.ext (be.injective (congrArg Prod.fst hpq))
+        (be.injective (congrArg Prod.snd hpq))
+    · intro q hq
+      refine ⟨(be.symm q.1, be.symm q.2), ?_, ?_⟩
+      · exact Finset.mem_offDiag.mpr
+          ⟨Finset.mem_univ _, Finset.mem_univ _, by
+            intro h
+            apply (Finset.mem_offDiag.mp hq).2.2
+            simpa using congrArg be h⟩
+      · ext <;> simp
+    · intro p _
+      by_cases hp : orderπ p.1 < orderπ p.2
+      · have hq : orderσ (be p.1) < orderσ (be p.2) := (horder p.1 p.2).mp hp
+        simp only [hp, hq, ite_true]
+        exact hInv p.1 p.2
+      · have hq : ¬ orderσ (be p.1) < orderσ (be p.2) :=
+          fun h => hp ((horder p.1 p.2).mpr h)
+        simp [hp, hq]
+  calc
+    externalPartitionSourceSign π = externalPartitionOrderSign π orderπ := rfl
+    _ = externalPartitionOrderSign σ orderσ := by
+      unfold externalPartitionOrderSign
+      exact congrArg (fun k : ℕ => (Common.Statistics.fermion.zetaInt : ℂ) ^ k)
+        hcount
+    _ = externalPartitionSourceSign σ :=
+      externalPartitionOrderSign_eq_of_blockOrder σ
+        ((externalSubsetPartitionEquiv_evenBlocks S heven π).mp hEven)
+        orderσ (Fintype.equivFin _)
+
+set_option maxHeartbeats 4000000 in
 -- The connected series of a source subset has an index depending on its cardinality.
 open Classical in
 /-- The physical moment of any nonempty even external source subset has
