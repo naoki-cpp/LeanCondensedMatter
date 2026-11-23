@@ -479,9 +479,9 @@ inferred from formal permutation or power-series identities.
 ## Bosonic boundary
 
 Bosonic results may reuse Common infrastructure, but finite-fermion trace arguments do not apply
-merely because the bosonic mode type is finite: its occupation basis is still infinite. Completed
-operators require explicit product domains, and free Gibbs expectations require summability and
-KMS hypotheses. Fixed-order Dyson identities do not supply all-order interacting convergence.
+merely because the bosonic mode type is finite: any **nonempty** finite bosonic mode type has an
+infinite occupation basis (the empty mode type has only the vacuum). Completed operators require
+explicit product domains, and free Gibbs expectations require summability and KMS hypotheses. Fixed-order Dyson identities do not supply all-order interacting convergence.
 
 ## Refactoring rule
 
