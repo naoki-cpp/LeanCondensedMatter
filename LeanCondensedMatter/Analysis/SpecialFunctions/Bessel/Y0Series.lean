@@ -131,16 +131,6 @@ noncomputable def besselY0Series (z : ℂ) : ℂ :=
     ((Complex.log (z / 2) + (Real.eulerMascheroniConstant : ℂ)) *
         Complex.besselJ 0 z - besselY0HarmonicCorrection z)
 
-/-- The correction coefficients are zero at n=0, and the
-first harmonic coefficient has its standard value H₁=1. -/
-@[simp] theorem besselY0HarmonicTerm_zero (z : ℂ) :
-    besselY0HarmonicTerm z 0 = 0 := by
-  simp [besselY0HarmonicTerm, harmonic_zero]
-
-@[simp] theorem besselY0HarmonicTerm_one (z : ℂ) :
-    besselY0HarmonicTerm z 1 = -(z / 2) ^ 2 := by
-  norm_num [besselY0HarmonicTerm, harmonic_succ, harmonic_zero]
-
 end
 
 end BesselSecondKind
