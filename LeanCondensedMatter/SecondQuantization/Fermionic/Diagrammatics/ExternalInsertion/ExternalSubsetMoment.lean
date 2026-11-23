@@ -34,8 +34,8 @@ induced external-component partition. The indicator selects precisely the
 fiber over each partition; retaining the ambient finite type avoids creating
 additional dependent-fiber `Fintype` instances in a theorem statement.
 
-This is a finite reindexing, not yet the connected-component amplitude
-factorization or the physical signed partition identity. -/
+This identity only partitions the sum into physical diagram fibers;
+it makes no amplitude factorization assumption. -/
 theorem vacuumFreeExternalInsertionDysonCoefficient_eq_sum_externalPartitionFibers
     {K : ℕ} (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
     (labels : Fin (2 * K) → ExternalFieldLabel Mode)
@@ -104,7 +104,7 @@ preconnected local external-block diagrams and their interaction-vertex
 assignments. The canonical assembly equivalence ensures that each physical
 Wick diagram appears exactly once; the external-label indicator excludes
 precisely the assembled diagrams with different prescribed insertions.
-The shuffle/integral product decomposition is a separate subsequent step. -/
+The identity retains the original Dyson amplitudes and interaction ordering. -/
 theorem vacuumFreeExternalInsertionDysonCoefficient_eq_sum_connectedBlockFamilies
     {K n : ℕ} (anchor : Fin (2 * K))
     (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
@@ -1445,8 +1445,8 @@ open Classical in
 /-- The physical moment of any nonempty even external source subset has
 an explicit signed connected-partition expansion on its *canonically
 renumbered* external slots. This is the full-series 5B result applied to
-the increasing source-subset order; the subsequent identification with
-partitions of the original ambient subset requires order/sign transport. -/
+the increasing source-subset order. Block signs and amplitudes use the
+induced canonical source ordering. -/
 theorem externalSubsetMomentSeries_eq_signedConnectedSum_localIndices
     (ε : Mode → ℝ) (β : ℝ) (hβ : 0 ≤ β)
     (g : QuarticVertexLabel Mode → ℂ)
