@@ -877,10 +877,10 @@ theorem sum_fixedExternalPartitionDysonFiber_eq_signedCoeffConnectedSeries
 
 set_option maxHeartbeats 4000000 in
 -- The even-partition sum contains dependent blockwise connected series.
+open Classical in
 /-- The full genuine vacuum-free physical Dyson coefficient is the sum
 over even external-component partitions of Koszul-signed coefficients
 of products of physically connected external-block Dyson series. -/
-open Classical in
 theorem vacuumFreeExternalInsertionDysonCoefficient_eq_sum_evenPartitionConnectedSeries
     {K n : ℕ} (anchor : Fin (2 * K))
     (ε : Mode → ℝ) (β : ℝ) (hβ : 0 ≤ β)
