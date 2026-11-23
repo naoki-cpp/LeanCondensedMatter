@@ -351,6 +351,7 @@ theorem ExternalInsertionBlockLayout.mem_realizableInteractionSizeVectors
     exact congrArg Sigma.fst (e.apply_symm_apply ⟨size, σ⟩)
 
 set_option maxHeartbeats 4000000 in
+-- Dependent diagram fibers require a larger elaboration budget for fixed-size summation.
 open Classical in
 /-- Phase 5B (size summation): the genuine fixed-partition physical
 order-`n` Dyson fiber equals the signed sum, counted once per realizable
@@ -433,7 +434,7 @@ theorem sum_fixedExternalPartitionDysonFiber_eq_sum_realizableSizes_signedProduc
       (Finset.sum_subtype
         (p := fun d : P => sizeOf d = size)
         ((Finset.univ : Finset P).filter (fun d => sizeOf d = size))
-        (fun _ => by simp) weight).symm
+        (fun _ => by simp) weight)
   calc
     _ = ∑ d : P, weight d := hphysical
     _ = ∑ size ∈ sizes,
@@ -447,6 +448,7 @@ theorem sum_fixedExternalPartitionDysonFiber_eq_sum_realizableSizes_signedProduc
         anchor π heven σ labels ε β hβ g times
 
 set_option maxHeartbeats 4000000 in
+-- The nested even-partition and connected-family products are dependent types.
 open Classical in
 /-- Coefficientwise physical signed external-partition expansion at a
 fixed interaction order. Odd external-component partitions vanish, while
