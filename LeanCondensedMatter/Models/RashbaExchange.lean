@@ -11,6 +11,7 @@ import LeanCondensedMatter.Models.RashbaExchange.Bastin.Bands
 import LeanCondensedMatter.Models.RashbaExchange.Bastin.ResponseBridge
 import LeanCondensedMatter.Models.RashbaExchange.Bastin.Pole
 import LeanCondensedMatter.Models.RashbaExchange.FiniteMomentumSpinResponse
+import LeanCondensedMatter.Models.RashbaExchange.SpinDisplacementBridge
 
 set_option linter.style.header false
 

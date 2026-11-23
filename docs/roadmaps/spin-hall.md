@@ -171,6 +171,39 @@ Lehmann transition data, a verified *nonzero* transverse spin response, and an
 identified source/contact variation are still needed to complete R1.
 The proper-current/torque-dipole equivalence is deliberately left to R4.
 
+## Spin displacement and torque-dipole specialization (partial R4)
+
+`Models.RashbaExchange.SpinDisplacementBridge` reuses
+`ConservationLaw.lie_localizedQuantity` and
+`SingleParticle.heisenbergTransportFunctional` /
+`heisenbergSourceFunctional` instead of defining another generic
+proper-current algebra. For the existing finite momentum-grid Rashba
+Hamiltonian and physical spin operator `S(n)`, it proves the exact
+Heisenberg identity for a **supplied** one-body position-like observable
+`X_i`:
+
+```text
+δ_H({X_i,S(n)}/2) = {δ_H(X_i),S(n)}/2 + {X_i,δ_H(S(n))}/2.
+```
+
+If a position representation also satisfies the *explicit* assumption
+`δ_H(X_i) = v_i`, the first term is the existing conventional spin current;
+the second term is the torque dipole. The model-specific theorem
+`finiteRashbaMomentumSpinDisplacement_fock_decomposition` lifts this identity
+to the full finite fermionic Fock space, reusing `boundedSpinCurrentLinear`.
+It does not introduce another Kubo stack.
+
+**Important limitation:** a finite set of sampled momenta alone does not
+instantiate the physical position operator `iℏ∂_p`, and a finite-dimensional
+commutator does not automatically equal the momentum derivative of a band
+Hamiltonian. A concrete spatial/position representation, its boundary and
+gauge conventions, and the compatibility condition are still open. The
+identity is **conditional**, not an unconditional construction of a physical
+proper spin Hall conductivity. A local source-free continuity law additionally
+requires a justified torque-divergence representation; the generic
+`ConservationLaw.localizationCorrectionCurrentFlux` is a *different*
+correction and must not be identified with `{X_i,τ}/2` without proof.
+
 ## References
 
 See the annotated entries in [`../references.md`](../references.md) for full
