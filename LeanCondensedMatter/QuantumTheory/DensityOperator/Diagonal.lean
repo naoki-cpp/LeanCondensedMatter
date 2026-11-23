@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Analysis.InfiniteSum.Normalization
-import LeanCondensedMatter.Analysis.Operator.TraceClass.Diagonal
+import LeanCondensedMatter.Analysis.Operator.TraceClass.Positive
 import LeanCondensedMatter.QuantumTheory.DensityOperator.Basic
 
 /-!

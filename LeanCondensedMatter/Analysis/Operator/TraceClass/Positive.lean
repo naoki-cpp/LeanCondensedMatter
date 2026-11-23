@@ -3,6 +3,7 @@ import LeanCondensedMatter.Analysis.Operator.TraceClass.Trace
 import LeanCondensedMatter.Analysis.Operator.TraceClass.Factorization.Basic
 import LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Basic
 import LeanCondensedMatter.Analysis.HilbertBasis
+import LeanCondensedMatter.Analysis.Operator.Diagonal
 
 set_option linter.style.header false
 
@@ -10,7 +11,8 @@ set_option linter.style.header false
 # Positive trace-class operators
 
 For a positive trace-class operator, the lossless real trace agrees with the trace norm and
-is strictly positive when the operator is nonzero.
+is strictly positive when the operator is nonzero. Positive diagonal operators with absolutely
+summable weights are trace class through the Hilbert-basis diagonal criterion.
 -/
 
 noncomputable section
@@ -85,3 +87,32 @@ theorem realTrace_pos {T : H →L[ℂ] H}
 end IsTraceClass
 
 end ContinuousLinearMap
+
+/-! ## Positive diagonal operators -/
+
+namespace HilbertBasis
+
+open ContinuousLinearMap
+
+variable {ι H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
+
+/-- A diagonal operator with absolutely summable nonnegative real coefficients is trace class. -/
+theorem diagonalOp_isTraceClass (b : HilbertBasis ι ℂ H) (a : ι → ℝ)
+    (ha : Summable fun i => ‖a i‖) (ha_nonneg : ∀ i, 0 ≤ a i) :
+    IsTraceClass (diagonalOp b (fun i => (a i : ℂ))) := by
+  let T : H →L[ℂ] H := diagonalOp b (fun i => (a i : ℂ))
+  let hpos : T.IsPositive := diagonalOp_isPositive b a ha ha_nonneg
+  have hdiag :
+      Summable (fun i => diagonalExpectationValue T hpos.isSelfAdjoint (b i)) := by
+    have hpoint :
+        (fun i => diagonalExpectationValue T hpos.isSelfAdjoint (b i)) = a := by
+      funext i
+      simpa [T] using diagonalExpectationValue_diagonalOp b a ha ha_nonneg i
+    rw [hpoint]
+    exact Summable.of_norm ha
+  apply (isTraceClass_iff_isTraceClassWrt b T).mpr
+  have hnonneg : 0 ≤ T := nonneg_iff_isPositive.mpr hpos
+  have habs : CFC.abs T = T := CFC.abs_of_nonneg T hnonneg
+  simpa [IsTraceClassWrt, habs] using hdiag
+
+end HilbertBasis

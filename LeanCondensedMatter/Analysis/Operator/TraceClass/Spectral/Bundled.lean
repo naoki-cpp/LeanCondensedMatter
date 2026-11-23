@@ -1,5 +1,4 @@
 import LeanCondensedMatter.Analysis.Operator.TraceClass.Positive
-import LeanCondensedMatter.Analysis.Operator.TraceClass.Diagonal
 import LeanCondensedMatter.Analysis.Operator.TraceClass.Factorization.Basic
 import LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Ops
 import LeanCondensedMatter.Analysis.FunctionalCalculus.CFC
