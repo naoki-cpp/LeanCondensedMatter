@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Analysis.PowerSeries.MomentCumulantRecurrence
+import LeanCondensedMatter.Analysis.PowerSeries.Moment
 import LeanCondensedMatter.Combinatorics.Cumulant.ConnectedDecompositionInversion
 import LeanCondensedMatter.Combinatorics.Cumulant.Moment
 import LeanCondensedMatter.Combinatorics.SetPartition.DistinguishedBlock

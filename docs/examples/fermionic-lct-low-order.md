@@ -27,7 +27,7 @@ The first-order identity is the kernel-checked `PowerSeries.coeff_one_logOf` in
 `Analysis/PowerSeries/Normalization.lean`. The second- and third-order identities are
 algebraic specializations of the kernel-checked
 `Combinatorics.powerSeriesMomentCoeff_succ_recurrence` in
-`Analysis/PowerSeries/MomentCumulantRecurrence.lean`; the displayed equations are not
+`Analysis/PowerSeries/Moment.lean`; the displayed equations are not
 dedicated Lean theorem declarations. The recurrence applies to the normalized fermionic
 `Common.dysonTraceSeries`, whose constant coefficient is one by
 `PowerSeries.constantCoeff_normalizeByConstantCoeff` and
