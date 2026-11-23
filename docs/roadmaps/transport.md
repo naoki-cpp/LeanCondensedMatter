@@ -231,6 +231,58 @@ together with finite iteration and conditional resummation/uniqueness under the 
 `IsUnit (1 - L_RA)` hypothesis. Separate inverse-data, one-rung, and residual-routing wrappers are
 not public APIs. Convergence and Ward identities are separate targets.
 
+## Proved model-specific checkpoints
+
+These Lean endpoints make physical content of the clean and finite-response
+models directly discoverable. They concern the **stated model or supplied
+spectral data**; none alone establishes an integrated Hall conductivity,
+an exact disorder-averaged transport coefficient, or an unrestricted
+thermodynamic/DC limit.
+
+- **Periodic projector topology** ([source](../../LeanCondensedMatter/Transport/Topology.lean)).
+  `QuantumTheory.Transport.Topology.PeriodicBlochProjector.berryCurvature_periodic`
+  proves `Ω(k + G; u, v) = Ω(k; u, v)` for a supplied smooth, reciprocal-lattice-periodic
+  orthogonal-projector family on a finite-dimensional complex Hilbert space.
+  `QuantumTheory.Transport.Topology.PeriodicBlochProjector.berryCurvature_eq_pointwiseBerryCurvature_of_rankOne`
+  identifies `i Tr(P [∂ᵤP, ∂ᵥP])` with the eigenvector Berry curvature when
+  the **local** rank-one projector and its two derivative identities are supplied;
+  it needs no global eigenvector gauge. Neither theorem constructs an occupied
+  projector from a gapped Hamiltonian or proves Chern-number integrality.
+- **Massive Dirac Berry curvature**
+  ([symmetries](../../LeanCondensedMatter/Models/MassiveDirac/Model/Berry/Symmetry.lean),
+  [eigenbasis bridge](../../LeanCondensedMatter/Models/MassiveDirac/Model/Berry/Bridge.lean)).
+  `QuantumTheory.Models.MassiveDirac.berryCurvature_oppositeBand` and
+  `QuantumTheory.Models.MassiveDirac.berryCurvature_neg_mass` respectively
+  reverse the closed-form curvature on band exchange and mass reversal.
+  `QuantumTheory.Models.MassiveDirac.pointwiseBerryCurvature_xy_eq_berryCurvature`
+  identifies the geometric and closed-form `-s_b m v²/(2 E³)` curvature,
+  **assuming `E ≠ 0`**. Unconditional closed-form algebra at `E = 0` is not
+  an eigenbundle-curvature assertion at a degeneracy.
+- **Rashba–exchange curvature**
+  ([source](../../LeanCondensedMatter/Models/RashbaExchange/Model/Interband.lean)).
+  `QuantumTheory.Models.RashbaExchange.forceMatrixBerryCurvature_eq_berryCurvature`
+  matches the interband force-matrix formula with
+  `-s_b Δ α_R²/(2 |d|³)` when the spin-orbit energy **does not vanish**.
+- **Isotropic parabolic 2DEG**
+  ([source](../../LeanCondensedMatter/Models/Parabolic2DEG/Response.lean)).
+  `QuantumTheory.Models.Parabolic2DEG.finiteCutoffConductivityTensor_hallComponent_eq_zero_of_ne`
+  shows the finite-cutoff isotropic model's off-diagonal Hall projection is
+  zero for unequal Cartesian directions. The finite-parameter normalization
+  `τ_η (η/π) = ℏ/(2π)` is
+  `QuantumTheory.Models.Parabolic2DEG.broadeningTransportLifetime_mul_lorentzianNormalization_eq_bastinStredaTracePrefactor`
+  under `params.IsRegular`, including positive broadening. Neither result
+  removes the cutoff or broadening.
+- **Massive Dirac Born transport lifetime in RTA**
+  ([source](../../LeanCondensedMatter/Models/MassiveDirac/Conductivity/Longitudinal/BornRelaxationTime.lean)).
+  `QuantumTheory.Models.MassiveDirac.zeroTemperatureRelaxationTimeLongitudinalConductivity_bornTransportLifetime_eq`
+  proves the benchmark
+  `σₓₓ = e² ℏ v²(ε_F²-m²) / [π W(ε_F²+3m²)]`;
+  `QuantumTheory.Models.MassiveDirac.disorderStrength_mul_zeroTemperatureRelaxationTimeLongitudinalConductivity_bornTransportLifetime_eq`
+  proves the corresponding finite `W σₓₓ` coefficient.
+  Assumptions include `v ≠ 0`, `ℏ > 0`, `W > 0`, and `|m| < ε_F`.
+  These are Born-lifetime **RTA benchmark** identities, not an equality with
+  exact disorder-averaged Kubo–Středa conductivity.
+
 ## Open targets
 
 - bridge response-level Středa data to a physical conductivity tensor with explicit normalization;
