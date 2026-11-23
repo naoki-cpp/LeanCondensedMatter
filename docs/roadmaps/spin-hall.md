@@ -145,9 +145,13 @@ reciprocity, and bulk/device limits require additional model-specific hypotheses
 2×2 Hamiltonian and velocity blocks in the one-particle space on a **finite momentum
 grid with two spin modes per sampled momentum**, then constructs the finite fermionic
 Fock Hamiltonian **directly** via `boundedOneBodyOperator`, without a
-fictitious real-space hopping adapter. `boundedFiniteMomentumBlockOneBody_selfAdjoint`
-and `finiteRashbaMomentumFockHamiltonian_selfAdjoint` derive full-Fock
-self-adjointness from Hermitian Rashba 2×2 blocks.
+fictitious real-space hopping adapter. The shared finite-Fock
+`Lattice.isSelfAdjoint_sum_boundedDgammaMatrixUnit_blocks` proves self-adjointness
+for arbitrary Hermitian internal matrix blocks and is consumed by
+`boundedFiniteMomentumBlockOneBody_selfAdjoint` and
+`finiteRashbaMomentumFockHamiltonian_selfAdjoint`. The related
+`Lattice.isSelfAdjoint_sum_boundedDgammaMatrixUnit` also replaces the
+older, repeated proof in `Validation.TwoSiteOrbitalResponse`.
 Its mixed response channel consumes the existing
 `Fermionic.Transport.boundedSpinCurrentLinear` API and a signed charge
 velocity source `dΓ(q v_j)`. An observable-variation/contact operator is an
