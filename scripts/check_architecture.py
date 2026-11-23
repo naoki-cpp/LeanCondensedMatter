@@ -23,7 +23,7 @@ class ArchitectureCheck:
 # optional local filters and must not become a second architecture model. A checker with scope
 # `all` participates in both focused scopes.
 CHECKS: tuple[ArchitectureCheck, ...] = (
-    ArchitectureCheck("declarative architecture graphs", "check_architecture_graphs.py", "core"),
+    ArchitectureCheck("declarative architecture graphs", "check_architecture_graphs.py", "all"),
     ArchitectureCheck("declarative source contracts", "check_source_contracts.py", "all"),
     ArchitectureCheck("transport physical hierarchy", "check_transport_hierarchy.py", "core"),
     ArchitectureCheck("diagrammatics umbrella boundaries", "check_diagrammatics_umbrella_boundaries.py", "second-quantization"),
