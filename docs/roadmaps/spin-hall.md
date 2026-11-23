@@ -204,6 +204,34 @@ requires a justified torque-divergence representation; the generic
 `ConservationLaw.localizationCorrectionCurrentFlux` is a *different*
 correction and must not be identified with `{X_i,τ}/2` without proof.
 
+## Conditional spin-displacement Kubo response (partial R4)
+
+`Models.RashbaExchange.SpinDisplacementBridge` also supplies
+`finiteRashbaMomentumSpinDisplacementResponseChannel`. It replaces only the
+measured observable of the existing finite-grid Rashba spin/charge
+`ResponseChannel` by the Fock second quantization of `δ_H({X_i,S(n)}/2)`,
+while **preserving the same charge-driving source and supplied contact
+observable**.
+
+The model-level
+`finiteRashbaMomentumSpinDisplacement_retardedKernel_eq_conventional_add_torque`
+applies the established `finiteRashbaMomentumSpinDisplacement_fock_decomposition`
+and `retardedSusceptibilityMeasuredLinearMap.map_add`. Conditional on
+`δ_H(X_i) = v_i`, it proves the exact finite-Fock *retarded* identity
+
+```text
+χᴿ_(dΓ δ_H{X_i,S(n)}/2, dΓ q v_j)
+  = χᴿ_(J_conventional, dΓ q v_j)
+  + χᴿ_(J_torque-dipole, dΓ q v_j).
+```
+
+No independent Kubo machinery or generic response-linearity theorem is
+introduced. The result does not include the explicit contact variation
+in `ResponseChannel.causalResponse`: the contact for each physical current
+must be derived from its own source dependence before a full-response
+decomposition is claimed. A finite momentum-grid position realization
+and local torque-divergence/boundary conditions also remain unresolved.
+
 ## References
 
 See the annotated entries in [`../references.md`](../references.md) for full
