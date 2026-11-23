@@ -19,6 +19,11 @@ queues represent unresolved audit work.
 This list is not a compatibility promise. Reassess an entry if its statement, ownership, attributes,
 or consumer structure changes.
 
+During a physics-facing documentation audit, record a physically meaningful terminal theorem
+here when it is not already protected by a `docs/completed.md` mention. The same applies to
+independently useful physical endpoints with a single-consumer or direct-wrapper review signal;
+do not list routine proof-routing lemmas or declarations without a current structural signal.
+
 Entries with no current structural review signal are ordinary retained public APIs, not
 exceptions requiring catalog suppression; they are omitted from this registry without
 removing their declarations or changing their visibility.
