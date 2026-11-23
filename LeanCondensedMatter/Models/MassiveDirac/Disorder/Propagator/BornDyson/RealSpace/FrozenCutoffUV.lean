@@ -135,45 +135,28 @@ theorem finiteCutoffContinuumBornDysonRadialScalarGreenGenerator_zero_disorder_t
       (fun pMax : ℝ => finiteCutoffContinuumBornDysonRadialScalarGreenGenerator
         side v m probeEnergy broadening 0 hbar pMax radius)
       Filter.atTop (nhds value) := by
-  have hden (p : ℝ) :
-      massiveDiracRadialDenominator v p
-        (spectralParameter side probeEnergy broadening) (m : ℂ) ≠ 0 := by
-    have hphysical := finiteCutoffContinuumBornDysonDenominator_ne_zero
-      side v m p 0 probeEnergy broadening 0 hbar 0
-      hbroadening (le_refl (0 : ℝ)) (le_refl (0 : ℝ))
-    rw [← finiteCutoffContinuumBornDysonDenominator_eq_radial] at hphysical
-    simpa [finiteCutoffContinuumBornEffectiveEnergy,
-      finiteCutoffContinuumBornEffectiveMass] using hphysical
-  obtain ⟨limit, hlimit⟩ :=
-    massiveDiracRadialFourierKernel_tendsto_atTop v (radius / hbar)
-      (spectralParameter side probeEnergy broadening) (m : ℂ)
-      hv (div_ne_zero hradius hhbar) hden
+  let value := finiteCutoffContinuumBornDysonRadialFrozenUVValue
+    side v m probeEnergy broadening 0 hbar 0 radius
+  refine ⟨value, ?_⟩
+  have hlimit :=
+    finiteCutoffContinuumBornDysonRadialFrozenKernel_tendsto_uvValue
+      side v m probeEnergy broadening 0 hbar 0 radius
+      hv hhbar hradius hbroadening (le_refl (0 : ℝ)) (le_refl (0 : ℝ))
   have heq (pMax : ℝ) :
       finiteCutoffContinuumBornDysonRadialScalarGreenGenerator
         side v m probeEnergy broadening 0 hbar pMax radius =
       (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
         ∫ p in (0 : ℝ)..pMax,
-          (p : ℂ) * polarFourierZerothAngularKernel (p * (radius / hbar)) *
-            (massiveDiracRadialDenominator v p
-              (spectralParameter side probeEnergy broadening) (m : ℂ))⁻¹ := by
+          (p : ℂ) * polarFourierZerothAngularKernel (p * radius / hbar) *
+            (finiteCutoffContinuumBornDysonDenominator
+              side v m p 0 probeEnergy broadening 0 hbar 0)⁻¹ := by
     unfold finiteCutoffContinuumBornDysonRadialScalarGreenGenerator
     congr 1
     apply intervalIntegral.integral_congr
     intro p _
-    dsimp only
-    rw [← finiteCutoffContinuumBornDysonDenominator_eq_radial]
-    simp only [finiteCutoffContinuumBornEffectiveEnergy,
-      finiteCutoffContinuumBornEffectiveMass,
-      finiteCutoffContinuumBornSelfEnergyCoefficient_zero_disorder,
-      sub_zero, add_zero]
-    rw [show p * radius / hbar = p * (radius / hbar) by ring]
+    simp only [finiteCutoffContinuumBornDysonDenominator_zero_disorder]
     ring
-  have hconstant : Filter.Tendsto
-      (fun _ : ℝ => (((momentumMeasurePrefactor hbar : ℝ) : ℂ)))
-      Filter.atTop (nhds (((momentumMeasurePrefactor hbar : ℝ) : ℂ))) :=
-    tendsto_const_nhds
-  refine ⟨(((momentumMeasurePrefactor hbar : ℝ) : ℂ)) * limit, ?_⟩
-  exact (hconstant.mul hlimit).congr'
+  exact hlimit.congr'
     (Filter.Eventually.of_forall fun pMax => (heq pMax).symm)
 
 
