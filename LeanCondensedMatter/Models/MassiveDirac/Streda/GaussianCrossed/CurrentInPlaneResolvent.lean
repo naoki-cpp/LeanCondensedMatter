@@ -10,6 +10,8 @@ import Mathlib.Tactic.FunProp
 import Mathlib.Tactic.GCongr
 import Mathlib.Tactic.Linarith
 import Mathlib.Tactic.Ring
+import Mathlib.Topology.UniformSpace.HeineCantor
+import Mathlib.Topology.UniformSpace.UniformConvergence
 
 set_option linter.style.header false
 
@@ -1064,6 +1066,79 @@ theorem tendsto_finiteCutoffContinuumBornDysonGaussianCrossedK2_cleanCenteredWin
       v m probeEnergy hbar pMax hvelocity hhbar hmetal hcutoff).2.1
   have hResult := hPole.comp hWidth
   simpa only [factor, width, E0, add_zero, Function.comp_def, mul_assoc] using hResult
+
+
+/-- The **physical moving-center K2 regular factor** converges
+*uniformly on every fixed energy-offset window* to the clean-shell
+regular factor when the external regulator has first been removed.
+
+The actual spectral center is the real part of the retarded
+Born-Dyson zero-broadening boundary; its convergence is furnished by
+the physical Dyson-shell theorem. Uniformity (not merely pointwise
+convergence) is needed before inserting the difference under the
+singular Lorentzian kernel. No new reference spectral model is used. -/
+theorem tendstoUniformlyOn_finiteCutoffContinuumBornDysonGaussianCrossedK2_movingCenterFactor
+    (v m probeEnergy hbar pMax radius windowRadius : ℝ)
+    (hvelocity : v ≠ 0) (hhbar : hbar ≠ 0)
+    (hmetal : |m| < probeEnergy)
+    (hcutoff : probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2) :
+    let E0 := probeEnergy ^ 2 - m ^ 2
+    let center := fun W : ℝ =>
+      (finiteCutoffContinuumBornDysonDenominatorZeroBroadeningBoundary
+        .retarded v m 0 probeEnergy W hbar pMax).re
+    TendstoUniformlyOn
+      (fun W offset =>
+        ((center W + offset : ℝ) : ℂ) *
+          polarFourierSecondCosineAngularKernel
+            (Real.sqrt ((center W + offset) / v ^ 2) * radius / hbar))
+      (fun offset =>
+        ((E0 + offset : ℝ) : ℂ) *
+          polarFourierSecondCosineAngularKernel
+            (Real.sqrt ((E0 + offset) / v ^ 2) * radius / hbar))
+      (nhdsWithin 0 (Set.Ioi 0))
+      (Set.Icc (-windowRadius) windowRadius) := by
+  dsimp only
+  let l := nhdsWithin (0 : ℝ) (Set.Ioi 0)
+  let E0 : ℝ := probeEnergy ^ 2 - m ^ 2
+  let center : ℝ → ℝ := fun W =>
+    (finiteCutoffContinuumBornDysonDenominatorZeroBroadeningBoundary
+      .retarded v m 0 probeEnergy W hbar pMax).re
+  let F : ℝ → ℝ → ℂ := fun a offset =>
+    ((a + offset : ℝ) : ℂ) *
+      polarFourierSecondCosineAngularKernel
+        (Real.sqrt ((a + offset) / v ^ 2) * radius / hbar)
+  let U : Set ℝ := Set.Icc (E0 - 1) (E0 + 1)
+  let V : Set ℝ := Set.Icc (-windowRadius) windowRadius
+  have hcont : Continuous (fun q : ℝ × ℝ => F q.1 q.2) := by
+    dsimp only [F]
+    have harg : Continuous (fun q : ℝ × ℝ =>
+        Real.sqrt ((q.1 + q.2) / v ^ 2) * radius / hbar) := by
+      fun_prop
+    exact (Complex.continuous_ofReal.comp (by fun_prop)).mul
+      (continuous_polarFourierSecondCosineAngularKernel.comp harg)
+  have huniformContinuous : UniformContinuousOn (Function.uncurry F) (U ×ˢ V) :=
+    (isCompact_Icc.prod isCompact_Icc).uniformContinuousOn_of_continuous
+      hcont.continuousOn
+  have hE0 : E0 ∈ U := by
+    dsimp [U]
+    constructor <;> linarith
+  have hUniform : TendstoUniformlyOn F (F E0) (nhdsWithin E0 U) V :=
+    huniformContinuous.tendstoUniformlyOn hE0
+  have hCenter : Tendsto center l (nhds E0) :=
+    (tendsto_finiteCutoffContinuumBornDysonBoundarySpectralShell_disorder_zero
+      v m probeEnergy hbar pMax hvelocity hhbar hmetal hcutoff).1
+  have hCenterWithin : Tendsto center l (nhdsWithin E0 U) := by
+    apply tendsto_nhdsWithin_iff.mpr
+    refine ⟨hCenter, ?_⟩
+    have hinside := hCenter.eventually
+      (Ioo_mem_nhds (by dsimp [E0]; linarith : E0 - 1 < E0)
+        (by dsimp [E0]; linarith : E0 < E0 + 1))
+    filter_upwards [hinside] with W hW
+    dsimp only [U] 
+    exact ⟨hW.1.le, hW.2.le⟩
+  change TendstoUniformlyOn (fun W offset => F (center W) offset) (F E0) l V
+  intro entourage hEntourage
+  exact hCenterWithin (hUniform entourage hEntourage)
 
 end
 
