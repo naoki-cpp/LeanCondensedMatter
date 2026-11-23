@@ -31,9 +31,12 @@ theorem trace_velocityOperator
     Matrix.trace (velocityOperator params direction px py) =
       (2 : ℂ) * (((if direction = 0 then px / params.effectiveMass
         else py / params.effectiveMass : ℝ)) : ℂ) := by
-  fin_cases direction <;>
-    simp [velocityOperator, Matrix.trace, Fin.sum_univ_two,
+  fin_cases direction
+  · simp [velocityOperator, Matrix.trace, Fin.sum_univ_two,
       InternalSpace.pauliX, InternalSpace.pauliY]
+  · simp [velocityOperator, Matrix.trace, Fin.sum_univ_two,
+      InternalSpace.pauliX, InternalSpace.pauliY]
+    ring
 
 /-- A nonzero parabolic velocity component gives a nonzero finite matrix trace. -/
 theorem trace_velocityOperator_ne_zero
