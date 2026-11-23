@@ -147,9 +147,11 @@ and transport-normalization assumptions.
    near-Γ spherical reduction as an explicit hypothesis or prove it with a
    remainder bound. Until this is available, label model-specific matrix
    results as conditional.
-2. **Finite orbital benchmark.** Define the spin-1 matrices and `Hₒₘ`, fix
-   units and the off-diagonal sum convention, and prove Hermiticity, inversion
-   symmetry, trace identities, and the relevant double-commutator identity.
+2. **Finite orbital benchmark (proved).** The Cartesian orbital generators,
+   real-symmetric and inversion-even Hamiltonian, and exact matrix
+   double-commutator polynomial are implemented in `Finite.lean`.
+   These are identities of the specified matrix model; deriving the model
+   from a crystal belongs to step 1.
 3. **Angular and collision benchmark.** The normalized continuous sphere moments
    (including fourth-order moments), six-direction collision eigenvalues, and
    continuous zonal `P₂` loss rate at a reference pole are proved. The
@@ -186,7 +188,6 @@ for the mechanism, not consequences of the finite kinetic benchmark.
 and their unnormalized transverse complements. The spherical `t₂g` realization
 under `Models.OrbitalRelaxation.T2gProjectors` supplies only the Hamiltonian
 identification and spectral-parameter specialization.
-
 
 The normalized continuous spherical-coordinate average and its Cartesian fourth moments
 live in `Analysis.Geometry.SphericalMoments`.
