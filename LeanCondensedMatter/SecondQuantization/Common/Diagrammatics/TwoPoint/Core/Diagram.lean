@@ -55,9 +55,7 @@ noncomputable def twoPointInteractionLeg {S : Finset (Fin N)} (v : ↥S) (l : Fi
 /-- The vertex incident to a flattened two-point leg. -/
 noncomputable def twoPointVertexOfLeg {S : Finset (Fin N)}
     (leg : Fin (2 * (2 * S.card + 1))) : TwoPointVertex S :=
-  match twoPointLegEquiv S leg with
-  | Sum.inl e => Sum.inl e
-  | Sum.inr p => Sum.inr p.1
+  externalInsertionVertexOfLeg (E := 1) leg
 
 @[simp]
 theorem twoPointVertexOfLeg_externalLeg (S : Finset (Fin N)) (e : Fin 2) :
