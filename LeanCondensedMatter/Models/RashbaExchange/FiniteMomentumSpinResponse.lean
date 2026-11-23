@@ -68,23 +68,15 @@ theorem boundedFiniteMomentumBlockOneBody_eq_sum
   simp only [finiteMomentumBlockOneBody, map_sum, map_smul,
     boundedOneBodyOperator_eq, boundedDgammaMatrixUnit]
 
-/-- Hermitian momentum blocks yield a self-adjoint operator on the full finite
-fermionic Fock space, by adjoint reversal of bounded matrix units. -/
+/-- Hermitian momentum blocks yield a self-adjoint full-Fock observable
+by the shared bounded matrix-unit theorem. -/
 theorem boundedFiniteMomentumBlockOneBody_selfAdjoint
     (blocks : Grid → InternalSpace.PauliMatrix)
     (hblocks : ∀ k, (blocks k).IsHermitian) :
     IsSelfAdjoint (boundedOneBodyOperator (finiteMomentumBlockOneBody blocks)) := by
-  have hentry (k : Grid) (a b : Fin 2) :
-      star (blocks k b a) = blocks k a b := by
-    have h := congrArg (fun A : InternalSpace.PauliMatrix => A a b) (hblocks k).star_eq
-    simpa [Matrix.conjTranspose_apply] using h
-  rw [isSelfAdjoint_iff]
-  simp only [boundedFiniteMomentumBlockOneBody_eq_sum,
-    star_sum, star_smul, star_boundedDgammaMatrixUnit]
-  apply Finset.sum_congr rfl
-  intro k _
-  rw [Finset.sum_comm]
-  simp_rw [hentry k]
+  rw [boundedFiniteMomentumBlockOneBody_eq_sum]
+  exact isSelfAdjoint_sum_boundedDgammaMatrixUnit_blocks
+    (fun k a => spinfulSite k a) blocks hblocks
 
 /-- The full-Fock Rashba Hamiltonian is the direct second quantization of
 its sampled one-body Hamiltonian; no artificial hopping representation is needed. -/
