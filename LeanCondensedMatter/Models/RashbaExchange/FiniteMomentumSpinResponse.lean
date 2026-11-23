@@ -1,4 +1,5 @@
-import LeanCondensedMatter.Models.RashbaExchange.Model
+import LeanCondensedMatter.Models.RashbaExchange.Operator
+import LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.BoundedMatrixUnitAdjoint
 import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.SpinCurrentResponse
 import LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.Free
 
@@ -10,15 +11,16 @@ set_option linter.style.header false
 A finite index set supplies explicitly selected physical two-momenta. At each momentum the
 one-particle Hamiltonian and in-plane velocity are the actual Rashba-exchange Pauli matrices.
 Their block-diagonal direct sum acts on `SpinfulSite Grid`, whose mode type includes the spin
-index. The standard finite-lattice second-quantization lift produces full-Fock operators;
+index. The canonical bounded one-body second-quantization lift produces full-Fock operators;
 the measured conventional spin current reuses `Fermionic.Transport.boundedSpinCurrentLinear`
 and the electric source is the bounded lift of the signed charge velocity `q v_j`.
 
 Unlike a real-space Peierls-bond source, the electric source in the momentum representation is
 `q v_j`. The explicit first-order variation of the measured current is supplied independently.
-This model is finite but does not derive a Ward identity, a stationary Gibbs state, a
-nonzero transverse Kubo value, or the proper/torque-dipole current. A self-adjointness witness
-for the block-diagonal full-Fock Hamiltonian is required when constructing its free dynamics.
+The assembled Fock Hamiltonian is self-adjoint because every Rashba block is Hermitian,
+without an additional model-level Hermiticity assumption. This model is finite but does not
+derive a Ward identity, a stationary Gibbs state, a nonzero transverse Kubo value, or the
+proper/torque-dipole current.
 -/
 
 namespace QuantumTheory.Models.RashbaExchange
@@ -56,42 +58,50 @@ noncomputable def finiteRashbaMomentumVelocity
   finiteMomentumBlockOneBody (fun k =>
     velocityOperator params direction (momentum k).1 (momentum k).2)
 
-/-- Finite-hopping presentation of the same block-diagonal Hamiltonian. The entire
-finite set is an allowed incident set; this is not a claim of spatial locality. -/
-noncomputable def finiteRashbaMomentumHopping
-    (params : HamiltonianParameters) (momentum : Grid → ℝ × ℝ) :
-    LocallyFiniteHopping (SpinfulSite Grid) where
-  column := fun x => finiteRashbaMomentumHamiltonian params momentum (latticeKet x)
-  incident := fun _ => Finset.univ
-  self_mem := by intro x; simp
-  outside_incident := by
-    intro x y hy
-    exact (hy (Finset.mem_univ y)).elim
+/-- The canonical finite-Hilbert second quantization of block-diagonal
+one-particle matrices expands into the same bounded matrix units. -/
+theorem boundedFiniteMomentumBlockOneBody_eq_sum
+    (blocks : Grid → InternalSpace.PauliMatrix) :
+    boundedOneBodyOperator (finiteMomentumBlockOneBody blocks) =
+      ∑ k : Grid, ∑ a : Fin 2, ∑ b : Fin 2,
+        blocks k a b • boundedDgammaMatrixUnit (spinfulSite k a) (spinfulSite k b) := by
+  simp only [finiteMomentumBlockOneBody, map_sum, map_smul,
+    boundedOneBodyOperator_eq, boundedDgammaMatrixUnit]
 
-/-- The finite-hopping columns reconstruct exactly the block-diagonal Rashba
-one-body Hamiltonian; no surrogate Hamiltonian is introduced by the hopping bridge. -/
-theorem finiteRashbaMomentumHopping_operator
-    (params : HamiltonianParameters) (momentum : Grid → ℝ × ℝ) :
-    (finiteRashbaMomentumHopping params momentum).operator =
-      finiteRashbaMomentumHamiltonian params momentum := by
-  apply Finsupp.lhom_ext
-  intro x c
-  rw [LocallyFiniteHopping.operator_single]
-  change c • finiteRashbaMomentumHamiltonian params momentum (latticeKet x) =
-    finiteRashbaMomentumHamiltonian params momentum (Finsupp.single x c)
-  have hc :
-      (Finsupp.single x c : SpinfulSite Grid →₀ ℂ) =
-        c • latticeKet x :=
-    (Finsupp.smul_single_one x c).symm
-  rw [hc, map_smul]
+/-- Hermitian momentum blocks yield a self-adjoint operator on the full finite
+fermionic Fock space, by adjoint reversal of bounded matrix units. -/
+theorem boundedFiniteMomentumBlockOneBody_selfAdjoint
+    (blocks : Grid → InternalSpace.PauliMatrix)
+    (hblocks : ∀ k, (blocks k).IsHermitian) :
+    IsSelfAdjoint (boundedOneBodyOperator (finiteMomentumBlockOneBody blocks)) := by
+  have hentry (k : Grid) (a b : Fin 2) :
+      star (blocks k b a) = blocks k a b := by
+    have h := congrArg (fun A : InternalSpace.PauliMatrix => A a b) (hblocks k).star_eq
+    simpa [Matrix.conjTranspose_apply] using h
+  rw [isSelfAdjoint_iff]
+  simp only [boundedFiniteMomentumBlockOneBody_eq_sum,
+    star_sum, star_smul, star_boundedDgammaMatrixUnit]
+  apply Finset.sum_congr rfl
+  intro k _
+  rw [Finset.sum_comm]
+  simp_rw [hentry k]
 
-/-- The full-Fock Hamiltonian of the sampled Rashba model, obtained with the
-preexisting bounded fermionic second-quantization machinery. -/
+/-- The full-Fock Rashba Hamiltonian is the direct second quantization of
+its sampled one-body Hamiltonian; no artificial hopping representation is needed. -/
 noncomputable def finiteRashbaMomentumFockHamiltonian
     (params : HamiltonianParameters) (momentum : Grid → ℝ × ℝ) :
     FiniteLatticeHilbertFock (SpinfulSite Grid) →L[ℂ]
       FiniteLatticeHilbertFock (SpinfulSite Grid) :=
-  boundedHoppingHamiltonian (finiteRashbaMomentumHopping params momentum)
+  boundedOneBodyOperator (finiteRashbaMomentumHamiltonian params momentum)
+
+/-- The sampled Rashba Hamiltonian is self-adjoint on the entire finite
+Fock space, for arbitrary real Rashba, exchange, and mass parameters. -/
+theorem finiteRashbaMomentumFockHamiltonian_selfAdjoint
+    (params : HamiltonianParameters) (momentum : Grid → ℝ × ℝ) :
+    IsSelfAdjoint (finiteRashbaMomentumFockHamiltonian params momentum) := by
+  exact boundedFiniteMomentumBlockOneBody_selfAdjoint
+    (fun k => hamiltonian params (momentum k).1 (momentum k).2)
+    (fun k => hamiltonian_isHermitian params (momentum k).1 (momentum k).2)
 
 /-- Finite-momentum spin/charge response channel: conventional spin current
 `dΓ({v_i,S(n)}/2)`, signed electric source `dΓ(q v_j)`, and a supplied
@@ -136,15 +146,14 @@ theorem finiteRashbaMomentumSpinChargeChannel_measured_add
         spinScale v
   exact map_add _ u v
 
-/-- Conditional bounded free dynamics with the actual full-Fock Rashba Hamiltonian.
-The self-adjointness bridge is kept as an explicit obligation, not assumed by the
-finite momentum-grid construction alone. -/
+/-- Bounded free dynamics from the directly second-quantized Rashba Hamiltonian,
+using the proved self-adjointness of each momentum block. -/
 noncomputable def finiteRashbaMomentumFreeSystem
     (params : HamiltonianParameters) (momentum : Grid → ℝ × ℝ)
-    (hbar : ℝ) (hhbar : 0 < hbar)
-    (hself : IsSelfAdjoint (finiteRashbaMomentumFockHamiltonian params momentum)) :
+    (hbar : ℝ) (hhbar : 0 < hbar) :
     BoundedFreeSystem (FiniteLatticeHilbertFock (SpinfulSite Grid)) where
-  hamiltonian := ⟨finiteRashbaMomentumFockHamiltonian params momentum, hself⟩
+  hamiltonian := ⟨finiteRashbaMomentumFockHamiltonian params momentum,
+    finiteRashbaMomentumFockHamiltonian_selfAdjoint params momentum⟩
   hbar := hbar
   hbar_pos := hhbar
 
@@ -152,7 +161,6 @@ noncomputable def finiteRashbaMomentumFreeSystem
 noncomputable def finiteRashbaMomentumSpinChargeRetardedKernel
     (params : HamiltonianParameters) (momentum : Grid → ℝ × ℝ)
     (hbar : ℝ) (hhbar : 0 < hbar)
-    (hself : IsSelfAdjoint (finiteRashbaMomentumFockHamiltonian params momentum))
     (spinScale : ℝ) (component : QuantumTheory.SpinHalf.SpinSpace)
     (measured source : Fin 2) (charge : ℂ)
     (contact :
@@ -163,7 +171,7 @@ noncomputable def finiteRashbaMomentumSpinChargeRetardedKernel
   (finiteRashbaMomentumSpinChargeChannel params momentum spinScale component
     measured source charge contact).retardedKernel
       (freePropagatorGroup
-        (finiteRashbaMomentumFreeSystem params momentum hbar hhbar hself))
+        (finiteRashbaMomentumFreeSystem params momentum hbar hhbar))
       hbar expectation t s
 
 /-- Exact finite-grid Kubo response is additive in the physical spin polarization, with
@@ -171,7 +179,6 @@ the same Hamiltonian, electric source, and expectation on all three terms. -/
 theorem finiteRashbaMomentumSpinChargeRetardedKernel_add
     (params : HamiltonianParameters) (momentum : Grid → ℝ × ℝ)
     (hbar : ℝ) (hhbar : 0 < hbar)
-    (hself : IsSelfAdjoint (finiteRashbaMomentumFockHamiltonian params momentum))
     (spinScale : ℝ) (u v : QuantumTheory.SpinHalf.SpinSpace)
     (measured source : Fin 2) (charge : ℂ)
     (contact :
@@ -179,14 +186,14 @@ theorem finiteRashbaMomentumSpinChargeRetardedKernel_add
         FiniteLatticeHilbertFock (SpinfulSite Grid))
     (expectation : NormalizedExpectation (FiniteLatticeHilbertFock (SpinfulSite Grid)))
     (t s : ℝ) :
-    finiteRashbaMomentumSpinChargeRetardedKernel params momentum hbar hhbar hself
+    finiteRashbaMomentumSpinChargeRetardedKernel params momentum hbar hhbar
         spinScale (u + v) measured source charge contact expectation t s =
-      finiteRashbaMomentumSpinChargeRetardedKernel params momentum hbar hhbar hself
+      finiteRashbaMomentumSpinChargeRetardedKernel params momentum hbar hhbar
         spinScale u measured source charge contact expectation t s +
-      finiteRashbaMomentumSpinChargeRetardedKernel params momentum hbar hhbar hself
+      finiteRashbaMomentumSpinChargeRetardedKernel params momentum hbar hhbar
         spinScale v measured source charge contact expectation t s := by
   let U := freePropagatorGroup
-    (finiteRashbaMomentumFreeSystem params momentum hbar hhbar hself)
+    (finiteRashbaMomentumFreeSystem params momentum hbar hhbar)
   let J := boundedSpinCurrentLinear
     (finiteRashbaMomentumVelocity params momentum measured) spinScale
   let B := boundedOneBodyOperator
