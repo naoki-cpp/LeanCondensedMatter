@@ -174,5 +174,105 @@ theorem finiteRashbaMomentumSpinDisplacement_fock_decomposition
       boundedOneBodyOperator _
   exact map_add (boundedOneBodyOperator (Site := SpinfulSite Grid)).toLinearMap _ _
 
+/-- The physical spin-displacement derivative, supplied at the same momentum
+grid as the conventional Rashba spin/charge channel, is a candidate measured
+proper current. Its source and contact observable are inherited unchanged from
+the existing channel; no separate Kubo infrastructure is introduced.
+
+The supplied `position` is not derived from the finite momentum labels. -/
+noncomputable def finiteRashbaMomentumSpinDisplacementResponseChannel
+    [LinearOrder Grid]
+    (params : HamiltonianParameters) (momentum : Grid → ℝ × ℝ)
+    (hbar spinScale : ℝ) (component : QuantumTheory.SpinHalf.SpinSpace)
+    (measured source : Fin 2) (charge : ℂ)
+    (position : (SpinfulSite Grid →₀ ℂ) →ₗ[ℂ] (SpinfulSite Grid →₀ ℂ))
+    (contact :
+      FiniteLatticeHilbertFock (SpinfulSite Grid) →L[ℂ]
+        FiniteLatticeHilbertFock (SpinfulSite Grid)) :
+    QuantumTheory.LinearResponse.ResponseChannel
+      (FiniteLatticeHilbertFock (SpinfulSite Grid)) :=
+  { finiteRashbaMomentumSpinChargeChannel params momentum spinScale component
+        measured source charge contact with
+    measured :=
+      boundedOneBodyOperator
+        (heisenbergEvolution (SpinfulSite Grid →₀ ℂ) hbar
+          (finiteRashbaMomentumHamiltonian params momentum)
+          (finiteRashbaMomentumSpinDisplacement spinScale component position)) }
+
+/-- At finite momentum-grid/Fock cutoff, under the explicitly assumed
+`δ_H X_i = v_i` identity, the *retarded* spin-displacement/charge kernel
+is the conventional spin/charge kernel plus the torque-dipole/charge kernel.
+This is a model-level consequence of the already-proved Fock observable
+decomposition and the existing measured-observable linearity of Kubo response.
+
+Contact terms are separate: this identity concerns the retarded kernel, not
+a full electric-field conductivity or the source-dependent observable variation.
+No finite-grid position operator or local torque-divergence law is asserted. -/
+theorem finiteRashbaMomentumSpinDisplacement_retardedKernel_eq_conventional_add_torque
+    [LinearOrder Grid]
+    (params : HamiltonianParameters) (momentum : Grid → ℝ × ℝ)
+    (hbar : ℝ) (hhbar : 0 < hbar)
+    (spinScale : ℝ) (component : QuantumTheory.SpinHalf.SpinSpace)
+    (measured source : Fin 2) (charge : ℂ)
+    (position : (SpinfulSite Grid →₀ ℂ) →ₗ[ℂ] (SpinfulSite Grid →₀ ℂ))
+    (hvelocity :
+      heisenbergEvolution (SpinfulSite Grid →₀ ℂ) hbar
+        (finiteRashbaMomentumHamiltonian params momentum) position =
+      finiteRashbaMomentumVelocity params momentum measured)
+    (contact :
+      FiniteLatticeHilbertFock (SpinfulSite Grid) →L[ℂ]
+        FiniteLatticeHilbertFock (SpinfulSite Grid))
+    (expectation :
+      QuantumTheory.LinearResponse.NormalizedExpectation
+        (FiniteLatticeHilbertFock (SpinfulSite Grid)))
+    (t s : ℝ) :
+    (finiteRashbaMomentumSpinDisplacementResponseChannel
+        params momentum hbar spinScale component measured source charge position contact).
+      retardedKernel
+        (QuantumTheory.LinearResponse.freePropagatorGroup
+          (finiteRashbaMomentumFreeSystem params momentum hbar hhbar))
+        hbar expectation t s =
+      (finiteRashbaMomentumSpinChargeChannel
+          params momentum spinScale component measured source charge contact).
+        retardedKernel
+          (QuantumTheory.LinearResponse.freePropagatorGroup
+            (finiteRashbaMomentumFreeSystem params momentum hbar hhbar))
+          hbar expectation t s +
+      QuantumTheory.LinearResponse.retardedSusceptibility
+        (QuantumTheory.LinearResponse.freePropagatorGroup
+          (finiteRashbaMomentumFreeSystem params momentum hbar hhbar))
+        hbar expectation
+        (boundedOneBodyOperator
+          (LinearMap.symmetrizedProduct position
+            (heisenbergEvolution (SpinfulSite Grid →₀ ℂ) hbar
+              (finiteRashbaMomentumHamiltonian params momentum)
+              (spinOneBodyLinear spinScale component))))
+        (boundedOneBodyOperator
+          (charge • finiteRashbaMomentumVelocity params momentum source))
+        t s := by
+  let U := QuantumTheory.LinearResponse.freePropagatorGroup
+    (finiteRashbaMomentumFreeSystem params momentum hbar hhbar)
+  let B := boundedOneBodyOperator
+    (charge • finiteRashbaMomentumVelocity params momentum source)
+  let J := SecondQuantization.Fermionic.Transport.boundedSpinCurrentLinear
+    (finiteRashbaMomentumVelocity params momentum measured) spinScale component
+  let T := boundedOneBodyOperator
+    (LinearMap.symmetrizedProduct position
+      (heisenbergEvolution (SpinfulSite Grid →₀ ℂ) hbar
+        (finiteRashbaMomentumHamiltonian params momentum)
+        (spinOneBodyLinear spinScale component)))
+  change QuantumTheory.LinearResponse.retardedSusceptibility U hbar expectation
+      (boundedOneBodyOperator
+        (heisenbergEvolution (SpinfulSite Grid →₀ ℂ) hbar
+          (finiteRashbaMomentumHamiltonian params momentum)
+          (finiteRashbaMomentumSpinDisplacement spinScale component position)))
+      B t s =
+    QuantumTheory.LinearResponse.retardedSusceptibility U hbar expectation J B t s +
+      QuantumTheory.LinearResponse.retardedSusceptibility U hbar expectation T B t s
+  rw [finiteRashbaMomentumSpinDisplacement_fock_decomposition
+    params momentum hbar spinScale component measured position hvelocity]
+  exact (QuantumTheory.LinearResponse.retardedSusceptibilityMeasuredLinearMap
+    U hbar expectation B t s).map_add J T
+
 end
 end QuantumTheory.Models.RashbaExchange
