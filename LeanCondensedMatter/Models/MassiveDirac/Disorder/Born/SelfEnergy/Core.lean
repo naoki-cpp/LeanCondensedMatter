@@ -99,19 +99,17 @@ theorem continuous_continuumBornRadialIntegrandOfRegulator
     (v m probeEnergy regulator : ℝ) (hregulator : regulator ≠ 0) :
     Continuous (continuumBornRadialIntegrandOfRegulator
       channel v m probeEnergy regulator) := by
+  have hcommon :=
+    (Complex.continuous_ofReal.comp continuous_id).mul
+      ((continuous_inv_pauliGreenDenominatorOfRegulator_radial
+        v m probeEnergy regulator hregulator).mul continuous_const)
   cases channel with
   | scalar =>
-      unfold continuumBornRadialIntegrandOfRegulator
-        pauliGreenScalarCoefficientOfRegulator
-      exact (Complex.continuous_ofReal.comp continuous_id).mul
-        ((continuous_inv_pauliGreenDenominatorOfRegulator_radial
-          v m probeEnergy regulator hregulator).mul continuous_const)
+      simpa [continuumBornRadialIntegrandOfRegulator,
+        pauliGreenScalarCoefficientOfRegulator] using hcommon
   | z =>
-      unfold continuumBornRadialIntegrandOfRegulator pauliGreenPauliCoefficientOfRegulator
-      simp only [InternalSpace.pauliAxisComponent]
-      exact (Complex.continuous_ofReal.comp continuous_id).mul
-        ((continuous_inv_pauliGreenDenominatorOfRegulator_radial
-          v m probeEnergy regulator hregulator).mul continuous_const)
+      simpa [continuumBornRadialIntegrandOfRegulator,
+        pauliGreenPauliCoefficientOfRegulator, InternalSpace.pauliAxisComponent] using hcommon
 
 /-- The operator-valued radial Born Green kernel is continuous away from zero regulator. -/
 theorem continuous_continuumBornRadialGreenKernelOfRegulator
@@ -161,23 +159,14 @@ theorem finiteCutoffContinuumBornGreenIntegralOfRegulator_eq
           v m probeEnergy regulator pMax • 1 +
         finiteCutoffContinuumBornIntegralOfRegulator .z
           v m probeEnergy regulator pMax • matrixOperator sigmaZ := by
-  have hscalarOp :
+  have hchannelOp (channel : BornSelfEnergyChannel)
+      (op : DiracHilbert →L[ℂ] DiracHilbert) :
       IntervalIntegrable
-        (fun p : ℝ =>
-          continuumBornRadialIntegrandOfRegulator .scalar v m probeEnergy regulator p •
-            (1 : DiracHilbert →L[ℂ] DiracHilbert))
-        volume 0 pMax :=
+        (fun p : ℝ => continuumBornRadialIntegrandOfRegulator
+          channel v m probeEnergy regulator p • op) volume 0 pMax :=
     ((continuous_continuumBornRadialIntegrandOfRegulator
-      .scalar v m probeEnergy regulator hregulator).smul continuous_const).intervalIntegrable
+      channel v m probeEnergy regulator hregulator).smul continuous_const).intervalIntegrable
         0 pMax
-  have hzOp :
-      IntervalIntegrable
-        (fun p : ℝ =>
-          continuumBornRadialIntegrandOfRegulator .z v m probeEnergy regulator p •
-            matrixOperator sigmaZ)
-        volume 0 pMax :=
-    ((continuous_continuumBornRadialIntegrandOfRegulator
-      .z v m probeEnergy regulator hregulator).smul continuous_const).intervalIntegrable 0 pMax
   unfold finiteCutoffContinuumBornGreenIntegralOfRegulator
   have hkernel :
       (fun p : ℝ => continuumBornRadialGreenKernelOfRegulator v m probeEnergy regulator p) =
@@ -189,7 +178,8 @@ theorem finiteCutoffContinuumBornGreenIntegralOfRegulator_eq
     funext p
     exact continuumBornRadialGreenKernelOfRegulator_eq v m probeEnergy regulator p
   rw [hkernel]
-  rw [intervalIntegral.integral_add hscalarOp hzOp]
+  rw [intervalIntegral.integral_add (hchannelOp .scalar 1)
+    (hchannelOp .z (matrixOperator sigmaZ))]
   rw [intervalIntegral.integral_smul_const, intervalIntegral.integral_smul_const]
   rfl
 
