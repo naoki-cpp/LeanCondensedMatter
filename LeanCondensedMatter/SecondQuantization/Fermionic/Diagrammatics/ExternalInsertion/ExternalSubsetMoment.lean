@@ -314,6 +314,305 @@ theorem sum_fixedExternalPartitionDysonFiber_eq_assignmentOrderedDyson
     anchor π heven ε β g labels times]
   simp only [ExternalInsertionBlockLayout.assembleDiagram_dysonAmplitude_eq_assignmentOrdered]
 
+/-- The finite set of interaction-size vectors realizable by an actual
+assignment of the `n` ambient interaction slots to the blocks of `π`.
+Each vector is counted once, independently of the number of shuffles
+realizing it. Zero-interaction blocks are retained. -/
+noncomputable def ExternalInsertionBlockLayout.realizableInteractionSizeVectors
+    {K n : ℕ}
+    (π : Finpartition (Finset.univ : Finset (Fin (2 * K)))) :
+    Finset (π.parts → ℕ) := by
+  classical
+  exact (Finset.univ : Finset (Fin n → π.parts)).image
+    (fun owner =>
+      ((Combinatorics.ownerSizeShuffleEquiv (ι := π.parts) (total := n)) owner).1)
+
+/-- A size vector occurs in the finite owner-assignment domain precisely
+when at least one order-preserving owner shuffle realizes it. -/
+theorem ExternalInsertionBlockLayout.mem_realizableInteractionSizeVectors
+    {K n : ℕ}
+    (π : Finpartition (Finset.univ : Finset (Fin (2 * K))))
+    (size : π.parts → ℕ) :
+    size ∈ ExternalInsertionBlockLayout.realizableInteractionSizeVectors (n := n) π ↔
+      Nonempty (Combinatorics.FamilySlotShuffleTo size n) := by
+  classical
+  let e := Combinatorics.ownerSizeShuffleEquiv (ι := π.parts) (total := n)
+  change size ∈ (Finset.univ : Finset (Fin n → π.parts)).image
+      (fun owner => (e owner).1) ↔ _
+  constructor
+  · intro hs
+    obtain ⟨owner, _, howner⟩ := Finset.mem_image.mp hs
+    change (e owner).1 = size at howner
+    cases howner
+    exact ⟨(e owner).2⟩
+  · rintro ⟨σ⟩
+    apply Finset.mem_image.mpr
+    refine ⟨e.symm ⟨size, σ⟩, Finset.mem_univ _, ?_⟩
+    exact congrArg Sigma.fst (e.apply_symm_apply ⟨size, σ⟩)
+
+/-- A realizable family of interaction orders is exactly a natural
+degree distribution whose sum is the total Dyson order. The converse
+uses the existing canonical family-order decomposition, including
+zero-size fibers; it does not choose an extra shuffle in the sum. -/
+theorem ExternalInsertionBlockLayout.mem_realizableInteractionSizeVectors_iff_sum
+    {K n : ℕ}
+    (π : Finpartition (Finset.univ : Finset (Fin (2 * K))))
+    (size : π.parts → ℕ) :
+    size ∈ ExternalInsertionBlockLayout.realizableInteractionSizeVectors (n := n) π ↔
+      ∑ B : π.parts, size B = n := by
+  classical
+  rw [ExternalInsertionBlockLayout.mem_realizableInteractionSizeVectors]
+  constructor
+  · rintro ⟨σ⟩
+    simpa [Fintype.card_sigma] using (Fintype.card_congr σ.slotEquiv)
+  · intro hsum
+    let α := Σ B : π.parts, Fin (size B)
+    have hcard : Fintype.card (Fin n) = Fintype.card α := by
+      simpa [α] using hsum.symm
+    let order : Fin n ≃ α := Fintype.equivOfCardEq hcard
+    let dec := Combinatorics.familyOrderDecompositionEquivOfSize
+      (F := fun B : π.parts => Fin (size B)) (α := α) (total := n)
+      size (fun B => by simp) (Equiv.refl α)
+    exact ⟨(dec order).2⟩
+
+/-- The physically realizable interaction-size sum is exactly the
+coefficient of the formal product of independent block series.
+This is the finite Cauchy convolution of Mathlib's `PowerSeries.coeff_prod`,
+transported from finitely supported degree assignments to the owner's
+realizable size vectors. No factorials or per-shuffle weights occur. -/
+theorem ExternalInsertionBlockLayout.sum_realizableSize_coeff_prod
+    {K n : ℕ}
+    (π : Finpartition (Finset.univ : Finset (Fin (2 * K))))
+    (f : π.parts → PowerSeries ℂ) :
+    (∑ size ∈ ExternalInsertionBlockLayout.realizableInteractionSizeVectors (n := n) π,
+      ∏ B : π.parts, PowerSeries.coeff (size B) (f B)) =
+        PowerSeries.coeff n (∏ B : π.parts, f B) := by
+  classical
+  let e : (π.parts →₀ ℕ) ≃ (π.parts → ℕ) := Finsupp.equivFunOnFinite
+  have hmem (l : π.parts →₀ ℕ) :
+      e l ∈ ExternalInsertionBlockLayout.realizableInteractionSizeVectors (n := n) π ↔
+        l ∈ (Finset.univ : Finset π.parts).finsuppAntidiag n := by
+    rw [ExternalInsertionBlockLayout.mem_realizableInteractionSizeVectors_iff_sum,
+      Finset.mem_finsuppAntidiag]
+    constructor
+    · intro hs
+      refine ⟨?_, Finset.subset_univ _⟩
+      simpa only [e, Finsupp.equivFunOnFinite_apply] using hs
+    · rintro ⟨hs, _⟩
+      simpa only [e, Finsupp.equivFunOnFinite_apply] using hs
+  have himage :
+      ((Finset.univ : Finset π.parts).finsuppAntidiag n).image e =
+        ExternalInsertionBlockLayout.realizableInteractionSizeVectors (n := n) π := by
+    ext size
+    constructor
+    · intro hs
+      obtain ⟨l, hl, hls⟩ := Finset.mem_image.mp hs
+      rw [← hls]
+      exact (hmem l).2 hl
+    · intro hs
+      apply Finset.mem_image.mpr
+      refine ⟨e.symm size, ?_, e.apply_symm_apply size⟩
+      apply (hmem _).1
+      simpa using hs
+  calc
+    _ = ∑ l ∈ (Finset.univ : Finset π.parts).finsuppAntidiag n,
+          ∏ B : π.parts, PowerSeries.coeff ((e l) B) (f B) := by
+      rw [← himage, Finset.sum_image]
+      intro a _ b _ hab
+      exact e.injective hab
+    _ = ∑ l ∈ (Finset.univ : Finset π.parts).finsuppAntidiag n,
+          ∏ B : π.parts, PowerSeries.coeff (l B) (f B) := by
+      apply Finset.sum_congr rfl
+      intro l _
+      apply Finset.prod_congr rfl
+      intro B _
+      simp [e]
+    _ = _ := (PowerSeries.coeff_prod f n Finset.univ).symm
+
+set_option maxHeartbeats 4000000 in
+-- Dependent diagram fibers require a larger elaboration budget for fixed-size summation.
+open Classical in
+/-- Phase 5B (size summation): the genuine fixed-partition physical
+order-`n` Dyson fiber equals the signed sum, counted once per realizable
+interaction-size vector, of products of independently connected physical
+Dyson coefficients. The fixed-size integral/shuffle factorization is reused
+whole; no extra shuffle multiplicity or pointwise integral invariance
+is introduced. -/
+theorem sum_fixedExternalPartitionDysonFiber_eq_sum_realizableSizes_signedProduct
+    {K n : ℕ} (anchor : Fin (2 * K))
+    (π : Finpartition (Finset.univ : Finset (Fin (2 * K))))
+    (heven : ∀ B : π.parts, Even (B : Finset (Fin (2 * K))).card)
+    (ε : Mode → ℝ) (β : ℝ) (hβ : 0 ≤ β)
+    (g : QuarticVertexLabel Mode → ℂ)
+    (labels : Fin (2 * K) → ExternalFieldLabel Mode)
+    (times : Fin (2 * K) → ℝ) :
+    (∑ d : VacuumFreeFixedExternalInsertionWickDiagram Mode K n labels,
+      if externalComponentPartition d.1.1.vertexGraph = π then
+        d.1.1.dysonAmplitude ε β g times else 0) =
+      ∑ size ∈ ExternalInsertionBlockLayout.realizableInteractionSizeVectors (n := n) π,
+        externalPartitionSourceSign π *
+          ∏ B : π.parts,
+            ∑ d : {d : ExternalInsertionWickDiagram Mode
+                ((B : Finset (Fin (2 * K))).card / 2) (size B) //
+                d.vertexGraph.Preconnected},
+              if d.1.externalLabel =
+                  evenExternalSubsetLabels labels (B : Finset (Fin (2 * K))) (heven B)
+              then d.1.dysonAmplitude ε β g
+                (evenExternalSubsetTimes times (B : Finset (Fin (2 * K))) (heven B))
+              else 0 := by
+  classical
+  let P := {d : {d : ExternalInsertionWickDiagram Mode K n //
+      HasNoVacuumComponent d.vertexGraph} //
+      externalComponentPartition d.1.vertexGraph = π}
+  let e := ExternalInsertionBlockLayout.fixedPartitionPhysicalSizeShuffleEquiv
+    (E := K) (N := n) (ExternalLabel := ExternalFieldLabel Mode)
+    (InternalLabel := QuarticVertexLabel Mode) anchor π heven
+  let sizeOf : P → π.parts → ℕ := fun d => (e d).1.1
+  let sizes := ExternalInsertionBlockLayout.realizableInteractionSizeVectors (n := n) π
+  let weight : P → ℂ := fun d =>
+    if d.1.1.externalLabel = labels then d.1.1.dysonAmplitude ε β g times else 0
+  have hmem (d : P) : sizeOf d ∈ sizes := by
+    let ownerEquiv := Combinatorics.ownerSizeShuffleEquiv
+      (ι := π.parts) (total := n)
+    change (e d).1.1 ∈ (Finset.univ : Finset (Fin n → π.parts)).image
+      (fun owner => (ownerEquiv owner).1)
+    apply Finset.mem_image.mpr
+    refine ⟨ownerEquiv.symm (e d).1, Finset.mem_univ _, ?_⟩
+    exact congrArg Sigma.fst (ownerEquiv.apply_symm_apply (e d).1)
+  have hphysical :
+      (∑ d : VacuumFreeFixedExternalInsertionWickDiagram Mode K n labels,
+        if externalComponentPartition d.1.1.vertexGraph = π then
+          d.1.1.dysonAmplitude ε β g times else 0) =
+        ∑ d : P, weight d := by
+    rw [sum_vacuumFreeFixedExternalInsertionWickDiagram_partition
+      π labels (fun d : ExternalInsertionWickDiagram Mode K n =>
+        d.dysonAmplitude ε β g times)]
+    simpa only [P, weight, Finset.sum_filter] using
+      (Finset.sum_subtype
+        (p := fun d : {d : ExternalInsertionWickDiagram Mode K n //
+          HasNoVacuumComponent d.vertexGraph} =>
+          externalComponentPartition d.1.vertexGraph = π)
+        ((Finset.univ : Finset
+          {d : ExternalInsertionWickDiagram Mode K n //
+            HasNoVacuumComponent d.vertexGraph}).filter
+          (fun d => externalComponentPartition d.1.vertexGraph = π))
+        (fun _ => by simp)
+        (fun d : {d : ExternalInsertionWickDiagram Mode K n //
+          HasNoVacuumComponent d.vertexGraph} =>
+          if d.1.externalLabel = labels then
+            d.1.dysonAmplitude ε β g times else 0))
+  have hgroup :
+      (∑ d : P, weight d) =
+        ∑ size ∈ sizes, ∑ d : {d : P // sizeOf d = size}, weight d.1 := by
+    rw [(Finset.sum_fiberwise_of_maps_to
+      (s := (Finset.univ : Finset P)) (t := sizes) (g := sizeOf)
+      (fun d _ => hmem d) weight).symm]
+    apply Finset.sum_congr rfl
+    intro size _
+    simpa only [Finset.sum_filter] using
+      (Finset.sum_subtype
+        (p := fun d : P => sizeOf d = size)
+        ((Finset.univ : Finset P).filter (fun d => sizeOf d = size))
+        (fun _ => by simp) weight)
+  calc
+    _ = ∑ d : P, weight d := hphysical
+    _ = ∑ size ∈ sizes,
+          ∑ d : {d : P // sizeOf d = size}, weight d.1 := hgroup
+    _ = _ := by
+      apply Finset.sum_congr rfl
+      intro size hs
+      obtain ⟨σ⟩ :=
+        (ExternalInsertionBlockLayout.mem_realizableInteractionSizeVectors π size).mp hs
+      exact ExternalInsertionBlockLayout.sum_physicalFixedSizeDyson_eq_signedProduct
+        anchor π heven σ labels ε β hβ g times
+
+set_option maxHeartbeats 4000000 in
+-- The dependent local diagram enumerations expand inside a finite series product.
+open Classical in
+/-- The genuine fixed-external-partition physical Dyson coefficient is
+the Koszul-signed coefficient of the product of *local preconnected Wick
+diagram series*. This uses the realizable-size Cauchy bridge directly,
+without introducing a separately defined generating-function model or
+claiming invariance of an individual ordered-simplex integral. -/
+theorem sum_fixedExternalPartitionDysonFiber_eq_signedCoeffPreconnectedSeries
+    {K n : ℕ} (anchor : Fin (2 * K))
+    (π : Finpartition (Finset.univ : Finset (Fin (2 * K))))
+    (heven : ∀ B : π.parts, Even (B : Finset (Fin (2 * K))).card)
+    (ε : Mode → ℝ) (β : ℝ) (hβ : 0 ≤ β)
+    (g : QuarticVertexLabel Mode → ℂ)
+    (labels : Fin (2 * K) → ExternalFieldLabel Mode)
+    (times : Fin (2 * K) → ℝ) :
+    (∑ d : VacuumFreeFixedExternalInsertionWickDiagram Mode K n labels,
+      if externalComponentPartition d.1.1.vertexGraph = π then
+        d.1.1.dysonAmplitude ε β g times else 0) =
+      externalPartitionSourceSign π *
+        PowerSeries.coeff n
+          (∏ B : π.parts,
+            PowerSeries.mk (fun m : ℕ =>
+              ∑ d : {d : ExternalInsertionWickDiagram Mode
+                  ((B : Finset (Fin (2 * K))).card / 2) m //
+                  d.vertexGraph.Preconnected},
+                if d.1.externalLabel =
+                    evenExternalSubsetLabels labels (B : Finset (Fin (2 * K))) (heven B)
+                then d.1.dysonAmplitude ε β g
+                  (evenExternalSubsetTimes times (B : Finset (Fin (2 * K))) (heven B))
+                else 0)) := by
+  classical
+  let blockSeries : π.parts → PowerSeries ℂ := fun B =>
+    PowerSeries.mk (fun m : ℕ =>
+      ∑ d : {d : ExternalInsertionWickDiagram Mode
+          ((B : Finset (Fin (2 * K))).card / 2) m //
+          d.vertexGraph.Preconnected},
+        if d.1.externalLabel =
+            evenExternalSubsetLabels labels (B : Finset (Fin (2 * K))) (heven B)
+        then d.1.dysonAmplitude ε β g
+          (evenExternalSubsetTimes times (B : Finset (Fin (2 * K))) (heven B))
+        else 0)
+  have hcauchy :=
+    ExternalInsertionBlockLayout.sum_realizableSize_coeff_prod (n := n) π blockSeries
+  have hfactor :
+      (∑ size ∈ ExternalInsertionBlockLayout.realizableInteractionSizeVectors (n := n) π,
+        ∏ B : π.parts,
+          ∑ d : {d : ExternalInsertionWickDiagram Mode
+              ((B : Finset (Fin (2 * K))).card / 2) (size B) //
+              d.vertexGraph.Preconnected},
+            if d.1.externalLabel =
+                evenExternalSubsetLabels labels (B : Finset (Fin (2 * K))) (heven B)
+            then d.1.dysonAmplitude ε β g
+              (evenExternalSubsetTimes times (B : Finset (Fin (2 * K))) (heven B))
+            else 0) =
+        PowerSeries.coeff n (∏ B : π.parts, blockSeries B) := by
+    simpa only [blockSeries, PowerSeries.coeff_mk] using hcauchy
+  calc
+    _ = ∑ size ∈ ExternalInsertionBlockLayout.realizableInteractionSizeVectors (n := n) π,
+          externalPartitionSourceSign π *
+            ∏ B : π.parts,
+              ∑ d : {d : ExternalInsertionWickDiagram Mode
+                  ((B : Finset (Fin (2 * K))).card / 2) (size B) //
+                  d.vertexGraph.Preconnected},
+                if d.1.externalLabel =
+                    evenExternalSubsetLabels labels (B : Finset (Fin (2 * K))) (heven B)
+                then d.1.dysonAmplitude ε β g
+                  (evenExternalSubsetTimes times (B : Finset (Fin (2 * K))) (heven B))
+                else 0 :=
+      sum_fixedExternalPartitionDysonFiber_eq_sum_realizableSizes_signedProduct
+        anchor π heven ε β hβ g labels times
+    _ = externalPartitionSourceSign π *
+          (∑ size ∈ ExternalInsertionBlockLayout.realizableInteractionSizeVectors (n := n) π,
+            ∏ B : π.parts,
+              ∑ d : {d : ExternalInsertionWickDiagram Mode
+                  ((B : Finset (Fin (2 * K))).card / 2) (size B) //
+                  d.vertexGraph.Preconnected},
+                if d.1.externalLabel =
+                    evenExternalSubsetLabels labels (B : Finset (Fin (2 * K))) (heven B)
+                then d.1.dysonAmplitude ε β g
+                  (evenExternalSubsetTimes times (B : Finset (Fin (2 * K))) (heven B))
+                else 0) := by rw [Finset.mul_sum]
+    _ = externalPartitionSourceSign π *
+          PowerSeries.coeff n (∏ B : π.parts, blockSeries B) :=
+      congrArg (fun z : ℂ => externalPartitionSourceSign π * z) hfactor
+    _ = _ := rfl
+
 /-- The full fixed-order physical Dyson coefficient is reindexed by even
 external-component partitions and independently labelled connected blocks.
 The owner assignments and genuine assembled Dyson amplitudes are retained:
@@ -355,6 +654,85 @@ noncomputable def connectedExternalInsertionDysonCoefficient {K : ℕ}
     if AllExternalVerticesConnected d.1.1.vertexGraph then
       d.1.1.dysonAmplitude ε β g times else 0
 
+set_option maxHeartbeats 4000000 in
+-- The subtype reindexing traverses a dependent fixed-label Wick diagram domain.
+open Classical in
+/-- For a nonempty external sector, summing all preconnected physical Wick
+diagrams with a fixed label indicator is the established fully externally
+connected Dyson coefficient. This uses graph connectivity and finite
+subtype reindexing, not an additional diagram model. -/
+theorem sum_preconnectedDyson_eq_connectedCoefficient
+    {K n : ℕ} (hK : 0 < K)
+    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
+    (labels : Fin (2 * K) → ExternalFieldLabel Mode)
+    (times : Fin (2 * K) → ℝ) :
+    (∑ d : {d : ExternalInsertionWickDiagram Mode K n //
+        d.vertexGraph.Preconnected},
+      if d.1.externalLabel = labels then
+        d.1.dysonAmplitude ε β g times else 0) =
+      connectedExternalInsertionDysonCoefficient ε β g labels times n := by
+  classical
+  letI : Nonempty (Fin (2 * K)) := ⟨⟨0, by omega⟩⟩
+  have hpre (d : ExternalInsertionWickDiagram Mode K n) :
+      d.vertexGraph.Preconnected ↔
+        HasNoVacuumComponent d.vertexGraph ∧
+          AllExternalVerticesConnected d.vertexGraph :=
+    preconnected_iff_hasNoVacuumComponent_and_allExternalVerticesConnected d.vertexGraph
+  unfold connectedExternalInsertionDysonCoefficient
+  calc
+    _ = ∑ d : ExternalInsertionWickDiagram Mode K n,
+          if d.vertexGraph.Preconnected then
+            if d.externalLabel = labels then d.dysonAmplitude ε β g times else 0
+          else 0 := by
+      simpa only [Finset.sum_filter] using
+        (Finset.sum_subtype
+          (p := fun d : ExternalInsertionWickDiagram Mode K n =>
+            d.vertexGraph.Preconnected)
+          ((Finset.univ : Finset (ExternalInsertionWickDiagram Mode K n)).filter
+            (fun d => d.vertexGraph.Preconnected))
+          (fun _ => by simp)
+          (fun d : ExternalInsertionWickDiagram Mode K n =>
+            if d.externalLabel = labels then d.dysonAmplitude ε β g times else 0)).symm
+    _ = ∑ d : ExternalInsertionWickDiagram Mode K n,
+          if HasNoVacuumComponent d.vertexGraph then
+            if d.externalLabel = labels then
+              if AllExternalVerticesConnected d.vertexGraph then
+                d.dysonAmplitude ε β g times else 0
+            else 0
+          else 0 := by
+      apply Finset.sum_congr rfl
+      intro d _
+      have hp := hpre d
+      by_cases hv : HasNoVacuumComponent d.vertexGraph
+      · by_cases hc : AllExternalVerticesConnected d.vertexGraph
+        · simp [hp, hv, hc]
+        · simp [hp, hv, hc]
+      · simp [hp, hv]
+    _ = ∑ d : {d : ExternalInsertionWickDiagram Mode K n //
+          HasNoVacuumComponent d.vertexGraph},
+          if d.1.externalLabel = labels then
+            if AllExternalVerticesConnected d.1.vertexGraph then
+              d.1.dysonAmplitude ε β g times else 0
+          else 0 := by
+      simpa only [Finset.sum_filter] using
+        (Finset.sum_subtype
+          (p := fun d : ExternalInsertionWickDiagram Mode K n =>
+            HasNoVacuumComponent d.vertexGraph)
+          ((Finset.univ : Finset (ExternalInsertionWickDiagram Mode K n)).filter
+            (fun d => HasNoVacuumComponent d.vertexGraph))
+          (fun _ => by simp)
+          (fun d : ExternalInsertionWickDiagram Mode K n =>
+            if d.externalLabel = labels then
+              if AllExternalVerticesConnected d.vertexGraph then
+                d.dysonAmplitude ε β g times else 0
+            else 0))
+    _ = _ :=
+      (sum_vacuumFreeFixedExternalInsertionWickDiagram_eq_sum_if
+        labels
+        (fun d : ExternalInsertionWickDiagram Mode K n =>
+          if AllExternalVerticesConnected d.vertexGraph then
+            d.dysonAmplitude ε β g times else 0)).symm
+
 /-- For any nonempty family of external insertions, the **actual**
 fixed-label connected Dyson coefficient is exactly the top external-partition
 fiber of the vacuum-free diagram sum.
@@ -384,6 +762,110 @@ noncomputable def connectedExternalInsertionDysonSeries {K : ℕ}
     (labels : Fin (2 * K) → ExternalFieldLabel Mode)
     (times : Fin (2 * K) → ℝ) : PowerSeries ℂ :=
   PowerSeries.mk (connectedExternalInsertionDysonCoefficient ε β g labels times)
+
+set_option maxHeartbeats 4000000 in
+-- The blockwise series equality elaborates dependent even external subsets.
+open Classical in
+/-- Phase 5B: at each fixed Dyson order and physical external partition,
+the actual integrated diagram coefficient is the Koszul-signed Cauchy
+coefficient of the product of the already-defined *connected* Dyson
+diagram series, not merely an auxiliary preconnected series. -/
+theorem sum_fixedExternalPartitionDysonFiber_eq_signedCoeffConnectedSeries
+    {K n : ℕ} (anchor : Fin (2 * K))
+    (π : Finpartition (Finset.univ : Finset (Fin (2 * K))))
+    (heven : ∀ B : π.parts, Even (B : Finset (Fin (2 * K))).card)
+    (ε : Mode → ℝ) (β : ℝ) (hβ : 0 ≤ β)
+    (g : QuarticVertexLabel Mode → ℂ)
+    (labels : Fin (2 * K) → ExternalFieldLabel Mode)
+    (times : Fin (2 * K) → ℝ) :
+    (∑ d : VacuumFreeFixedExternalInsertionWickDiagram Mode K n labels,
+      if externalComponentPartition d.1.1.vertexGraph = π then
+        d.1.1.dysonAmplitude ε β g times else 0) =
+      externalPartitionSourceSign π *
+        PowerSeries.coeff n
+          (∏ B : π.parts,
+            connectedExternalInsertionDysonSeries ε β g
+              (evenExternalSubsetLabels labels (B : Finset (Fin (2 * K))) (heven B))
+              (evenExternalSubsetTimes times (B : Finset (Fin (2 * K))) (heven B))) := by
+  classical
+  have hpositive (B : π.parts) :
+      0 < (B : Finset (Fin (2 * K))).card / 2 := by
+    have hp : 0 < (B : Finset (Fin (2 * K))).card :=
+      Finset.card_pos.mpr (π.nonempty_of_mem_parts B.2)
+    obtain ⟨k, hk⟩ := heven B
+    omega
+  have hblock (B : π.parts) :
+      PowerSeries.mk (fun m : ℕ =>
+        ∑ d : {d : ExternalInsertionWickDiagram Mode
+            ((B : Finset (Fin (2 * K))).card / 2) m //
+            d.vertexGraph.Preconnected},
+          if d.1.externalLabel =
+              evenExternalSubsetLabels labels (B : Finset (Fin (2 * K))) (heven B)
+          then d.1.dysonAmplitude ε β g
+            (evenExternalSubsetTimes times (B : Finset (Fin (2 * K))) (heven B))
+          else 0) =
+        connectedExternalInsertionDysonSeries ε β g
+          (evenExternalSubsetLabels labels (B : Finset (Fin (2 * K))) (heven B))
+          (evenExternalSubsetTimes times (B : Finset (Fin (2 * K))) (heven B)) := by
+    apply PowerSeries.ext
+    intro m
+    simpa only [connectedExternalInsertionDysonSeries, PowerSeries.coeff_mk] using
+      (sum_preconnectedDyson_eq_connectedCoefficient
+        (n := m) (hpositive B) ε β g
+        (evenExternalSubsetLabels labels (B : Finset (Fin (2 * K))) (heven B))
+        (evenExternalSubsetTimes times (B : Finset (Fin (2 * K))) (heven B)))
+  calc
+    _ = externalPartitionSourceSign π *
+          PowerSeries.coeff n
+            (∏ B : π.parts,
+              PowerSeries.mk (fun m : ℕ =>
+                ∑ d : {d : ExternalInsertionWickDiagram Mode
+                    ((B : Finset (Fin (2 * K))).card / 2) m //
+                    d.vertexGraph.Preconnected},
+                  if d.1.externalLabel =
+                      evenExternalSubsetLabels labels (B : Finset (Fin (2 * K))) (heven B)
+                  then d.1.dysonAmplitude ε β g
+                    (evenExternalSubsetTimes times (B : Finset (Fin (2 * K))) (heven B))
+                  else 0)) :=
+      sum_fixedExternalPartitionDysonFiber_eq_signedCoeffPreconnectedSeries
+        anchor π heven ε β hβ g labels times
+    _ = _ := by
+      apply congrArg (fun z : ℂ => externalPartitionSourceSign π * z)
+      apply congrArg (PowerSeries.coeff n)
+      apply Finset.prod_congr rfl
+      intro B _
+      exact hblock B
+
+set_option maxHeartbeats 4000000 in
+-- The even-partition sum contains dependent blockwise connected series.
+open Classical in
+/-- The full genuine vacuum-free physical Dyson coefficient is the sum
+over even external-component partitions of Koszul-signed coefficients
+of products of physically connected external-block Dyson series. -/
+theorem vacuumFreeExternalInsertionDysonCoefficient_eq_sum_evenPartitionConnectedSeries
+    {K n : ℕ} (anchor : Fin (2 * K))
+    (ε : Mode → ℝ) (β : ℝ) (hβ : 0 ≤ β)
+    (g : QuarticVertexLabel Mode → ℂ)
+    (labels : Fin (2 * K) → ExternalFieldLabel Mode)
+    (times : Fin (2 * K) → ℝ) :
+    vacuumFreeExternalInsertionDysonCoefficient ε β g labels times n =
+      ∑ π : Finpartition (Finset.univ : Finset (Fin (2 * K))),
+        if heven : ∀ B : π.parts, Even (B : Finset (Fin (2 * K))).card then
+          externalPartitionSourceSign π *
+            PowerSeries.coeff n
+              (∏ B : π.parts,
+                connectedExternalInsertionDysonSeries ε β g
+                  (evenExternalSubsetLabels labels (B : Finset (Fin (2 * K))) (heven B))
+                  (evenExternalSubsetTimes times (B : Finset (Fin (2 * K))) (heven B)))
+        else 0 := by
+  classical
+  rw [vacuumFreeExternalInsertionDysonCoefficient_eq_sum_evenPartitionFibers]
+  apply Finset.sum_congr rfl
+  intro π _
+  split_ifs with heven
+  · exact sum_fixedExternalPartitionDysonFiber_eq_signedCoeffConnectedSeries
+      anchor π heven ε β hβ g labels times
+  · rfl
 
 /-- With exactly two external fermion insertions, every physical Wick pairing
 connects both external vertices. Removing vacuum components therefore already
