@@ -613,45 +613,6 @@ theorem sum_fixedExternalPartitionDysonFiber_eq_signedCoeffPreconnectedSeries
       congrArg (fun z : ℂ => externalPartitionSourceSign π * z) hfactor
     _ = _ := rfl
 
-set_option maxHeartbeats 4000000 in
--- The nested even-partition and connected-family products are dependent types.
-open Classical in
-/-- Coefficientwise physical signed external-partition expansion at a
-fixed interaction order. Odd external-component partitions vanish, while
-every even partition contributes the sum of connected-block products
-over realizable interaction-size distributions. This is a finite-order
-identity on actual integrated Wick diagrams, before taking the formal
-power-series product over all perturbative orders. -/
-theorem vacuumFreeExternalInsertionDysonCoefficient_eq_sum_signedPartitionProducts
-    {K n : ℕ} (anchor : Fin (2 * K))
-    (ε : Mode → ℝ) (β : ℝ) (hβ : 0 ≤ β)
-    (g : QuarticVertexLabel Mode → ℂ)
-    (labels : Fin (2 * K) → ExternalFieldLabel Mode)
-    (times : Fin (2 * K) → ℝ) :
-    vacuumFreeExternalInsertionDysonCoefficient ε β g labels times n =
-      ∑ π : Finpartition (Finset.univ : Finset (Fin (2 * K))),
-        if heven : ∀ B : π.parts, Even (B : Finset (Fin (2 * K))).card then
-          ∑ size ∈ ExternalInsertionBlockLayout.realizableInteractionSizeVectors (n := n) π,
-            externalPartitionSourceSign π *
-              ∏ B : π.parts,
-                ∑ d : {d : ExternalInsertionWickDiagram Mode
-                    ((B : Finset (Fin (2 * K))).card / 2) (size B) //
-                    d.vertexGraph.Preconnected},
-                  if d.1.externalLabel =
-                      evenExternalSubsetLabels labels (B : Finset (Fin (2 * K))) (heven B)
-                  then d.1.dysonAmplitude ε β g
-                    (evenExternalSubsetTimes times (B : Finset (Fin (2 * K))) (heven B))
-                  else 0
-        else 0 := by
-  classical
-  rw [vacuumFreeExternalInsertionDysonCoefficient_eq_sum_evenPartitionFibers]
-  apply Finset.sum_congr rfl
-  intro π _
-  split_ifs with heven
-  · exact sum_fixedExternalPartitionDysonFiber_eq_sum_realizableSizes_signedProduct
-      anchor π heven ε β hβ g labels times
-  · rfl
-
 /-- The full fixed-order physical Dyson coefficient is reindexed by even
 external-component partitions and independently labelled connected blocks.
 The owner assignments and genuine assembled Dyson amplitudes are retained:
