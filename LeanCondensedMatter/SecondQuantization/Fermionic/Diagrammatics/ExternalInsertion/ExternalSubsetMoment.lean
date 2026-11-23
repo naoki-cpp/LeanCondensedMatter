@@ -1082,7 +1082,8 @@ private noncomputable def externalSubsetPartitionEquiv
       apply Finset.mem_map.mpr
       refine ⟨i, ?_, ?_⟩
       · simp [g, i, hx]
-      · simp [emb, i]
+      · change (e (e.symm ⟨x, hT hx⟩)).1 = x
+        simp
   refine
     { toFun := externalSubsetReindexPartition S heven
       invFun := externalSubsetLocalPartition S heven
