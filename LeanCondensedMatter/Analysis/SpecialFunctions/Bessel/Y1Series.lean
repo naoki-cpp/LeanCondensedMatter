@@ -98,11 +98,6 @@ theorem summable_besselY1HarmonicTerm (z : ℂ) :
 noncomputable def besselY1HarmonicCorrection (z : ℂ) : ℂ :=
   ∑' n : ℕ, besselY1HarmonicTerm z n
 
-/-- The leading power-series coefficient is H₀+H₁=1. -/
-@[simp] theorem besselY1HarmonicTerm_zero (z : ℂ) :
-    besselY1HarmonicTerm z 0 = 1 := by
-  norm_num [besselY1HarmonicTerm, harmonic_succ, harmonic_zero]
-
 /-- DLMF 10.8.1 specialized to order one, including the full
 negative `2/(π z)` pole and the correct `z/(2π)` series prefactor. -/
 noncomputable def besselY1Series (z : ℂ) : ℂ :=
