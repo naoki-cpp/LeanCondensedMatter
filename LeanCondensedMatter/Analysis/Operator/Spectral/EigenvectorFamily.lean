@@ -1,6 +1,6 @@
 module
 
-public import LeanCondensedMatter.Analysis.Operator.Spectral.ComplexEigenvectorFamily
+public import Mathlib.Analysis.InnerProductSpace.Spectrum
 public import Mathlib.Analysis.InnerProductSpace.PiL2
 public import Mathlib.Analysis.InnerProductSpace.l2Space
 public import Mathlib.Analysis.InnerProductSpace.Positive
@@ -10,22 +10,86 @@ public section
 set_option linter.style.header false
 
 /-!
-# A countable orthonormal family of eigenvectors for a compact self-adjoint operator
+# Nonzero eigenvector families for compact operators
 
-For a compact self-adjoint operator, this module packages the nonzero eigenspaces into a countable
-indexed orthonormal family by choosing an orthonormal basis in each nonzero eigenspace and combining
-the families.
+The nonzero complex eigenspaces of any compact operator are finite-dimensional, giving a
+family indexed by complex eigenvalues and a basis within each eigenspace.
 
-The eigenvalue-`0` eigenspace, namely the kernel, is excluded because it contributes nothing to
-spectral trace sums even when it is infinite-dimensional or non-separable. The module proves
-countability of the nonzero-eigenvector index, identifies the closed nonzero-eigenspace component
-relative to the kernel, and establishes the `tsum` reconstruction of the operator.
-
-`TraceClass.Basic` builds spectral summability and trace on this family, while the scalar and
-operator trace modules establish the corresponding algebraic laws and bounds.
+For compact self-adjoint operators, real eigenvalues admit a countable orthonormal family
+that reconstructs the operator and supports spectral trace sums. Both the general complex
+foundation and the real self-adjoint specialization are kept in this shared owner module.
 -/
 
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
+
+namespace ContinuousLinearMap
+
+variable {T : H →L[ℂ] H}
+
+/-- The index type formed from every nonzero complex eigenvalue of `T` and a basis index in its
+finite-dimensional eigenspace. -/
+@[expose] def ComplexEigenvectorIndex (T : H →L[ℂ] H) : Type :=
+  Σ z : { z : ℂ // z ≠ 0 },
+    Fin (Module.finrank ℂ (Module.End.eigenspace (T : H →ₗ[ℂ] H) z.1))
+
+/-- Every nonzero complex eigenspace of a compact operator is finite-dimensional. -/
+theorem finiteDimensional_complexEigenspace_ne_zero (hT : IsCompactOperator T)
+    (z : { z : ℂ // z ≠ 0 }) :
+    FiniteDimensional ℂ (Module.End.eigenspace (T : H →ₗ[ℂ] H) z.1) :=
+  finite_dimensional_eigenspace hT z.1 z.2
+
+/-- A chosen basis vector from each nonzero complex eigenspace of a compact operator. -/
+noncomputable def complexEigenvectorFamily (hT : IsCompactOperator T) :
+    ComplexEigenvectorIndex T → H :=
+  fun a =>
+    haveI := finiteDimensional_complexEigenspace_ne_zero hT a.1
+    ((Module.finBasis ℂ
+      (Module.End.eigenspace (T : H →ₗ[ℂ] H) a.1.1)) a.2 : H)
+
+/-- Each vector in `complexEigenvectorFamily` is an eigenvector with the eigenvalue stored in its
+index. -/
+theorem apply_complexEigenvectorFamily (hT : IsCompactOperator T) (a : ComplexEigenvectorIndex T) :
+    (T : H →ₗ[ℂ] H) (complexEigenvectorFamily hT a) =
+      a.1.1 • complexEigenvectorFamily hT a := by
+  apply Module.End.mem_eigenspace_iff.mp
+  haveI := finiteDimensional_complexEigenspace_ne_zero hT a.1
+  exact Submodule.coe_mem _
+
+/-- The span of `complexEigenvectorFamily` is the sum of all nonzero complex eigenspaces. -/
+theorem span_complexEigenvectorFamily (hT : IsCompactOperator T) :
+    Submodule.span ℂ (Set.range (complexEigenvectorFamily hT)) =
+      ⨆ z : { z : ℂ // z ≠ 0 },
+        Module.End.eigenspace (T : H →ₗ[ℂ] H) z.1 := by
+  apply le_antisymm
+  · rw [Submodule.span_le]
+    rintro x ⟨a, rfl⟩
+    exact Submodule.mem_iSup_of_mem a.1 (by
+      haveI := finiteDimensional_complexEigenspace_ne_zero hT a.1
+      exact Submodule.coe_mem _)
+  · apply iSup_le
+    intro z
+    haveI := finiteDimensional_complexEigenspace_ne_zero hT z
+    have hbasis : Submodule.span ℂ
+        (Set.range (Module.finBasis ℂ
+          (Module.End.eigenspace (T : H →ₗ[ℂ] H) z.1))) =
+        (⊤ : Submodule ℂ (Module.End.eigenspace (T : H →ₗ[ℂ] H) z.1)) :=
+      (Module.finBasis ℂ
+        (Module.End.eigenspace (T : H →ₗ[ℂ] H) z.1)).span_eq
+    have hmap : Submodule.map
+        (Module.End.eigenspace (T : H →ₗ[ℂ] H) z.1).subtype
+        (Submodule.span ℂ
+          (Set.range (Module.finBasis ℂ
+            (Module.End.eigenspace (T : H →ₗ[ℂ] H) z.1)))) =
+        Module.End.eigenspace (T : H →ₗ[ℂ] H) z.1 := by
+      rw [hbasis, Submodule.map_top, Submodule.range_subtype]
+    rw [← hmap, Submodule.map_span]
+    apply Submodule.span_mono
+    rintro x ⟨v, ⟨y, rfl⟩, rfl⟩
+    exact ⟨⟨z, y⟩, rfl⟩
+
+end ContinuousLinearMap
+
+/-! ## Real eigenvector families of compact self-adjoint operators -/
 
 namespace ContinuousLinearMap
 
