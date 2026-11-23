@@ -70,19 +70,10 @@ places every interaction vertex in that same component. -/
 theorem TwoPointDiagram.preconnected_iff_isExternallyConnected
     {S : Finset (Fin N)} (d : TwoPointDiagram ExternalLabel InternalLabel N S) :
     d.vertexGraph.Preconnected ↔ d.IsExternallyConnected := by
-  constructor
-  · intro h
-    exact ⟨hasNoVacuumComponent_of_preconnected d.vertexGraph h, h _ _⟩
-  · intro h
-    apply (preconnected_iff_hasNoVacuumComponent_and_allExternalVerticesConnected
-      d.vertexGraph).2
-    refine ⟨h.1, ?_⟩
-    intro a b
-    fin_cases a <;> fin_cases b
-    · exact SimpleGraph.Reachable.refl _
-    · exact d.externalVerticesConnected
-    · exact d.externalVerticesConnected.symm
-    · exact SimpleGraph.Reachable.refl _
+  rw [d.isExternallyConnected_iff_hasNoVacuumComponent]
+  let general : ExternalInsertionDiagram ExternalLabel InternalLabel 1 N S :=
+    ⟨d.externalLabel, d.vertexLabel, d.pairing⟩
+  exact general.preconnected_iff_hasNoVacuumComponent_two
 
 end Common
 end SecondQuantization
