@@ -1893,11 +1893,13 @@ theorem externalSubsetSourceCumulantSeries_eq_connectedDiagramSeries_two
     externalSubsetSourceCumulantSeries (E := 1)
         (externalSubsetMomentSeries (E := 1) ε β g labels times) =
       externalSubsetConnectedDiagramSeries (E := 1) ε β g labels times := by
-  apply externalPartitionWeightedMoment_injective
-  · simp
+  apply externalPartitionWeightedMoment_injective (E := 1)
+  · simp only [externalSubsetSourceCumulantSeries_empty,
+      externalSubsetConnectedDiagramSeries_empty]
   · intro S
-    exact (externalSubsetSourceCumulantSeries_reconstruct
-      (externalSubsetMomentSeries (E := 1) ε β g labels times) (by simp) S).trans
+    exact (externalSubsetSourceCumulantSeries_reconstruct (E := 1)
+      (externalSubsetMomentSeries (E := 1) ε β g labels times)
+      (externalSubsetMomentSeries_empty (E := 1) ε β g labels times) S).trans
       (externalSubsetMomentSeries_eq_signedConnected_two ε β g labels times S)
 
 
