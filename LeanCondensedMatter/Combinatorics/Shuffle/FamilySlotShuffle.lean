@@ -16,7 +16,7 @@ specializes the ambient cardinality to `∑ i, size i` when the index type is fi
 This module owns the shuffle structure, finite instances, index reindexing, and cardinality transport.
 Inter-block inversion counts live in `FamilySlotShuffleInversions`; permutation signs live in
 `FamilySlotShuffleSign`. Shuffled integrands and continuity live in
-`Analysis/OrderedSimplex/FamilyShuffleIntegrand.lean`.
+`Analysis/OrderedSimplex/FamilyShuffle.lean`.
 -/
 
 open scoped BigOperators
