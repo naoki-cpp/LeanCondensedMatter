@@ -124,8 +124,9 @@ observables and unbounded `dΓ(A)` still require their own realization and integ
 ## Completed bosonic free thermal representation
 
 `SecondQuantization.Bosonic.CompletedFockSpace Mode := ℓ²(Bosonic.Occupation Mode, ℂ)` specializes
-the same Common completed occupation-space infrastructure. The free heat operator
-`exp (-βH₀)` is bounded for arbitrary mode types with nonnegative one-particle energies.
+the same Common completed occupation-space infrastructure. For **`β > 0`** and
+nonnegative one-particle energies, the free heat operator `exp (-βH₀)` is
+bounded for arbitrary mode types.
 For arbitrary `Mode`, an explicit `EigenbasisGibbsSummable (freeEigenvalue ε) β` hypothesis
 supplies:
 
@@ -135,7 +136,8 @@ supplies:
   is supplied directly by the Common API, not a bosonic zero-μ constructor.
 
 For finite `Mode`, the geometric-series theorem `eigenbasisGibbsSummable_freeEigenvalue`
-supplies occupation summability under positive mode energies. For arbitrary `Mode`, the theorem
+supplies occupation summability under explicit **`β > 0`** and **`ε i > 0`**
+for every mode. For arbitrary `Mode`, the theorem
 `eigenbasisGibbsSummable_freeEigenvalue_of_mode` derives the same conclusion from strict
 positive mode gaps and the one-particle `EigenbasisGibbsSummable ε β` condition. It uses
 `Finsupp.graph` and Mathlib's summability of finite-subset products, without finiteness or

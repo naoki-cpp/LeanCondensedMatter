@@ -289,9 +289,10 @@ by `H`. A sharp-`N` canonical state is not generally KMS for charged
 creation/annihilation fields on the full field algebra; any KMS assertion
 restricted to the number-preserving subalgebra needs its own domain and
 hypotheses. Such restricted KMS conditions do not determine the sector
-weights `p_N` or imply thermalization. A finite-mode bosonic Fock occupation
-type is still infinite, so a finite-configuration theorem never justifies
-omitting its summability hypotheses.
+weights `p_N` or imply thermalization. A nonempty finite bosonic mode type still has an infinite Fock occupation
+space (the empty mode type has only the vacuum). Finiteness of the mode
+type alone therefore cannot justify omitting occupation-space summability
+hypotheses.
 
 The fixed-`N` canonical and explicit-`μ` grand-canonical state constructions are
 available. The finite-mode **bosonic coefficientwise formal** quartic Dyson
