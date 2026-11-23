@@ -224,10 +224,9 @@ open Classical in
 /-- A physical, integrated fixed-label Dyson partition fiber is a finite
 sum over the unique owner size/shuffle data and independently connected
 local Wick diagrams, with the source-label predicate imposed *blockwise*
-in the canonical increasing external-slot order. This is the form needed
-to compare the physical owner-shuffle sum with the previously proved
-summed connected-block Dyson shuffle orbit. No amplitude has been
-factorized at the level of an individual ordered-simplex integral. -/
+in the canonical increasing external-slot order. The expression
+retains the physical owner-shuffle sum and connected-block Dyson
+amplitudes without factorizing individual ordered-simplex integrals. -/
 theorem sum_fixedExternalPartitionDysonFiber_eq_sizes_shuffles_localLabels
     {K n : ℕ} (anchor : Fin (2 * K))
     (π : Finpartition (Finset.univ : Finset (Fin (2 * K))))
@@ -1444,9 +1443,8 @@ set_option maxHeartbeats 4000000 in
 open Classical in
 /-- The physical moment of any nonempty even external source subset has
 an explicit signed connected-partition expansion on its *canonically
-renumbered* external slots. This is the full-series 5B result applied to
-the increasing source-subset order. Block signs and amplitudes use the
-induced canonical source ordering. -/
+renumbered* external slots. Block signs and amplitudes use the
+canonical increasing source-subset order. -/
 theorem externalSubsetMomentSeries_eq_signedConnectedSum_localIndices
     (ε : Mode → ℝ) (β : ℝ) (hβ : 0 ≤ β)
     (g : QuarticVertexLabel Mode → ℂ)
