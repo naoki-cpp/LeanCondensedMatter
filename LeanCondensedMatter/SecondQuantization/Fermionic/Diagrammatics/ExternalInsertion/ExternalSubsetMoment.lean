@@ -1181,7 +1181,7 @@ private theorem externalSubsetShuffle_blockSlotSet
     rw [← hj, hslot]
     change (o (o.symm (σ.equivSigmaParts.symm ⟨B, orders B j⟩))).1 ∈
       (B : Finset (Fin (2 * E)))
-    simpa only [Equiv.apply_symm_apply] using (orders B j).2
+    simpa [Finpartition.equivSigmaParts] using (orders B j).2
   · intro hi
     let t : ↥(B : Finset (Fin (2 * E))) :=
       ⟨((S.orderIsoOfFin rfl) i).1, hi⟩
@@ -1619,7 +1619,8 @@ private theorem externalSubsetConnectedSeries_comp
       (evenExternalSubsetLabels labels (be B).1 hEvenT) := by
     apply externalSubsetFunctions_heq_of_cast hK
     intro i
-    simpa only [evenExternalSubsetLabels] using
+    simpa only [evenExternalSubsetLabels, hImage, evenExternalSubsetOrderIso,
+      Finset.orderEmbOfFin] using
       congrArg labels (externalSubsetOrderIso_comp S heven B.1 (hEven B) hEvenT i)
   have hTimes : HEq
       (evenExternalSubsetTimes
@@ -1627,7 +1628,8 @@ private theorem externalSubsetConnectedSeries_comp
       (evenExternalSubsetTimes times (be B).1 hEvenT) := by
     apply externalSubsetFunctions_heq_of_cast hK
     intro i
-    simpa only [evenExternalSubsetTimes] using
+    simpa only [evenExternalSubsetTimes, hImage, evenExternalSubsetOrderIso,
+      Finset.orderEmbOfFin] using
       congrArg times (externalSubsetOrderIso_comp S heven B.1 (hEven B) hEvenT i)
   have hSeries : HEq
       (connectedExternalInsertionDysonSeries ε β g
@@ -1719,7 +1721,17 @@ theorem externalSubsetMomentSeries_eq_signedConnected_nonempty_even
     have hprod : Finpartition.partitionProduct κ σ = 0 := by
       unfold Finpartition.partitionProduct
       exact Finset.prod_eq_zero (be B).2 hzero
-    simp [hEven, hprod]
+    have hnot : ¬ (∀ a ∈ π.parts, Even a.card) := by
+      intro hf
+      exact hEven (fun B => hf B.1 B.2)
+    have hrhs :
+        PowerSeries.C (externalPartitionSourceSign σ) *
+          Finpartition.partitionProduct κ σ = 0 := by
+      rw [hprod]
+      simp
+    change (if h : ∀ a ∈ π.parts, Even a.card then _ else 0) = _
+    simp only [dite_eq_right hnot]
+    exact hrhs.symm
 
 @[simp]
 theorem externalSubsetMomentSeries_empty
