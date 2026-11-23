@@ -110,8 +110,7 @@
         {"id": "factorization", "modulePrefixes": ["LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Factorization"]},
         {"id": "analysis", "modulePrefixes": ["LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Analysis"]},
         {"id": "integration", "modulePrefixes": ["LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration"]},
-        {"id": "series", "modulePrefixes": ["LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Series"]},
-        {"id": "linkedCluster", "modulePrefixes": ["LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.LinkedCluster"]}
+        {"id": "series", "modulePrefixes": ["LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Series"]}
       ],
       "edges": [
         {"upstream": "semantics", "downstream": "factorization"},
