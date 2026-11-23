@@ -96,9 +96,9 @@ owns the direct diagonal `Summable`/`HasSum`/`tsum` API, basis independence, and
 complex trace; there is no separate basis-relative trace-series wrapper. The compactness
 corollary lives directly in `TraceClass/Factorization/Basic.lean`.
 `Analysis/Operator/TraceClass/Ops/Basic.lean` owns additive/scalar/adjoint closure, bounded left/right
-ideal closure, and complex-trace linearity. `TraceClass/Ops/Norm.lean` owns trace-norm identities,
-the left/right operator-norm bounds, the triangle inequality, and the trace-versus-trace-norm bound. `TraceClass/AdjointConjugation.lean` owns adjoint-conjugation closure and trace invariance derived
-from general cyclicity.
+ideal closure, complex-trace linearity, and adjoint-conjugation closure with trace invariance
+derived from general cyclicity. `TraceClass/Ops/Norm.lean` owns trace-norm identities,
+the left/right operator-norm bounds, the triangle inequality, and the trace-versus-trace-norm bound.
 `Analysis/Operator/TraceClass/Spectral/` owns spectral summability, the bundled self-adjoint
 specialization, spectral trace identities, and spectral equality criteria. `Spectral/Bundled.lean` also exposes the compact self-adjoint characterizations
 of general trace-class membership, trace norm, and complex trace.

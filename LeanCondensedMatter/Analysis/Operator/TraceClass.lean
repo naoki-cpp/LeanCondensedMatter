@@ -7,7 +7,6 @@ import LeanCondensedMatter.Analysis.Operator.TraceClass.Trace
 import LeanCondensedMatter.Analysis.Operator.TraceClass.Positive
 import LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Basic
 import LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Norm
-import LeanCondensedMatter.Analysis.Operator.TraceClass.AdjointConjugation
 import LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Basic
 import LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Bundled
 import LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Diagonal

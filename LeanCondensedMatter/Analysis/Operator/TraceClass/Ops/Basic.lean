@@ -1,5 +1,6 @@
 import LeanCondensedMatter.Analysis.Operator.TraceClass.Factorization.Basic
 import LeanCondensedMatter.Analysis.Operator.TraceClass.Trace
+import LeanCondensedMatter.Analysis.Operator.AdjointConjugation
 
 set_option linter.style.header false
 
@@ -9,6 +10,8 @@ set_option linter.style.header false
 Trace-class membership is closed under the standard linear and bounded-composition operations.
 The canonical complex trace is linear under the corresponding additive and scalar operations,
 and cyclic when one factor is trace class and the other is bounded.
+Bounded adjoint conjugation preserves trace-class membership; if `U† U = 1`, it preserves
+trace without requiring surjectivity of `U`.
 -/
 
 noncomputable section
@@ -168,6 +171,21 @@ theorem trace_comp_comm {T : H →L[ℂ] H} (hT : IsTraceClass T) (W : H →L[�
       innerHS_comp_right d hA hB W
     _ = (hT.comp_left W).trace :=
       (trace_eq_innerHS_of_factorization (hT.comp_left W) hfactorLeft d).symm
+
+/-! ## Adjoint-conjugation closure and trace invariance -/
+
+/-- Bounded adjoint conjugation preserves trace-class membership. -/
+theorem adjointConjugate {T : H →L[ℂ] H} (hT : IsTraceClass T) (U : H →L[ℂ] H) :
+    IsTraceClass (ContinuousLinearMap.adjointConjugate U T) := by
+  simpa [ContinuousLinearMap.adjointConjugate, mul_assoc] using
+    (hT.comp_left U).comp_right (star U)
+
+/-- If `U† U = 1`, then `Tr(U T U†) = Tr(T)` for every trace-class `T`. -/
+theorem trace_adjointConjugate {T : H →L[ℂ] H} (hT : IsTraceClass T) (U : H →L[ℂ] H)
+    (hleft : star U * U = 1) :
+    (hT.adjointConjugate U).trace = hT.trace := by
+  simpa only [ContinuousLinearMap.adjointConjugate, ← mul_assoc, hleft, one_mul] using
+    (hT.comp_left U).trace_comp_comm (star U)
 
 end IsTraceClass
 

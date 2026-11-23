@@ -86,7 +86,7 @@
         "LeanCondensedMatter/QuantumTheory/LinearResponse/Dynamics/PictureEquivalence.lean",
         "LeanCondensedMatter/Analysis/Operator/AdjointConjugation.lean",
         "LeanCondensedMatter/Analysis/Operator/Unitary.lean",
-        "LeanCondensedMatter/Analysis/Operator/TraceClass/AdjointConjugation.lean",
+        "LeanCondensedMatter/Analysis/Operator/TraceClass/Ops/Basic.lean",
         "LeanCondensedMatter/QuantumTheory/DensityOperator/Diagonal.lean"
       ]
     },
