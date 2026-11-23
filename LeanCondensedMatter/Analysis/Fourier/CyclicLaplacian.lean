@@ -45,10 +45,8 @@ def cyclicLaplacianEigenvalue (w : ℝ) (q : ZMod N) : ℝ :=
 private theorem phase_sum (q : ZMod N) :
     ZMod.stdAddChar q + ZMod.stdAddChar (-q) =
       (2 * Real.cos (2 * Real.pi * (q.val / N)) : ℝ) := by
-  let θ : ℝ := 2 * Real.pi * (q.val / N)
-  have he : ZMod.stdAddChar q = Complex.exp ((θ : ℂ) * Complex.I) := by
-    rw [ZMod.stdAddChar_apply, ZMod.toCircle_eq_circleExp, Circle.coe_exp]
-  rw [← ZMod.stdAddChar_conj, he, Complex.exp_mul_I]
+  rw [← ZMod.stdAddChar_conj, ZMod.stdAddChar_apply,
+    ZMod.toCircle_eq_circleExp, Circle.coe_exp, Complex.exp_mul_I]
   rw [← Complex.ofReal_cos, ← Complex.ofReal_sin]
   simp only [map_add, map_mul, Complex.conj_ofReal, Complex.conj_I,
     Complex.ofReal_mul, Complex.ofReal_ofNat]
