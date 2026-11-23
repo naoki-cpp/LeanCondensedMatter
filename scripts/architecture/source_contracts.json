@@ -27,9 +27,7 @@
       "paths": ["LeanCondensedMatter/QuantumTheory/LinearResponse/Response.lean"]
     }
   ],
-  "requiredDirectories": [
-
-  ],
+  "requiredDirectories": [],
   "requiredImports": [
     {
       "id": "quantumTheoryDensityUmbrella",
