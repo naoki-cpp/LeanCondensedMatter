@@ -1364,6 +1364,27 @@ private theorem externalSubsetPartitionEquiv_sourceSign
         ((externalSubsetPartitionEquiv_evenBlocks S heven π).mp hEven)
         orderσ (Fintype.equivFin _)
 
+/-- An increasing source-slot enumeration restricted to an
+increasing subfamily agrees with the canonical enumeration of
+the corresponding ambient image. -/
+private theorem externalSubsetOrderEmb_image
+    {n m k : ℕ} (S : Finset (Fin n)) (hS : S.card = m)
+    (B : Finset (Fin m)) (hB : B.card = k) (i : Fin k) :
+    (S.orderEmbOfFin hS) (B.orderEmbOfFin hB i) =
+      ((B.map (S.orderEmbOfFin hS).toEmbedding).orderEmbOfFin
+        (by simp [hB])) i := by
+  classical
+  let e := S.orderEmbOfFin hS
+  let T := B.map e.toEmbedding
+  have hcard : T.card = k := by simp [T, hB]
+  have hmem (j : Fin k) : e (B.orderEmbOfFin hB j) ∈ T := by
+    exact Finset.mem_map.mpr
+      ⟨B.orderEmbOfFin hB j, Finset.orderEmbOfFin_mem B hB j, rfl⟩
+  have hmono : StrictMono (fun j : Fin k => e (B.orderEmbOfFin hB j)) :=
+    e.strictMono.comp (B.orderEmbOfFin hB).strictMono
+  have hu := Finset.orderEmbOfFin_unique hcard hmem hmono
+  exact congrFun hu i
+
 set_option maxHeartbeats 4000000 in
 -- The connected series of a source subset has an index depending on its cardinality.
 open Classical in
