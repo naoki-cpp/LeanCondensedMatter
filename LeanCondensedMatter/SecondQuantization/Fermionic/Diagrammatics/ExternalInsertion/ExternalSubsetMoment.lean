@@ -693,6 +693,85 @@ noncomputable def connectedExternalInsertionDysonCoefficient {K : ℕ}
     if AllExternalVerticesConnected d.1.1.vertexGraph then
       d.1.1.dysonAmplitude ε β g times else 0
 
+set_option maxHeartbeats 4000000 in
+-- The subtype reindexing traverses a dependent fixed-label Wick diagram domain.
+open Classical in
+/-- For a nonempty external sector, summing all preconnected physical Wick
+diagrams with a fixed label indicator is the established fully externally
+connected Dyson coefficient. This uses graph connectivity and finite
+subtype reindexing, not an additional diagram model. -/
+theorem sum_preconnectedDyson_eq_connectedCoefficient
+    {K n : ℕ} (hK : 0 < K)
+    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
+    (labels : Fin (2 * K) → ExternalFieldLabel Mode)
+    (times : Fin (2 * K) → ℝ) :
+    (∑ d : {d : ExternalInsertionWickDiagram Mode K n //
+        d.vertexGraph.Preconnected},
+      if d.1.externalLabel = labels then
+        d.1.dysonAmplitude ε β g times else 0) =
+      connectedExternalInsertionDysonCoefficient ε β g labels times n := by
+  classical
+  letI : Nonempty (Fin (2 * K)) := ⟨⟨0, by omega⟩⟩
+  have hpre (d : ExternalInsertionWickDiagram Mode K n) :
+      d.vertexGraph.Preconnected ↔
+        HasNoVacuumComponent d.vertexGraph ∧
+          AllExternalVerticesConnected d.vertexGraph :=
+    preconnected_iff_hasNoVacuumComponent_and_allExternalVerticesConnected d.vertexGraph
+  unfold connectedExternalInsertionDysonCoefficient
+  calc
+    _ = ∑ d : ExternalInsertionWickDiagram Mode K n,
+          if d.vertexGraph.Preconnected then
+            if d.externalLabel = labels then d.dysonAmplitude ε β g times else 0
+          else 0 := by
+      simpa only [Finset.sum_filter] using
+        (Finset.sum_subtype
+          (p := fun d : ExternalInsertionWickDiagram Mode K n =>
+            d.vertexGraph.Preconnected)
+          ((Finset.univ : Finset (ExternalInsertionWickDiagram Mode K n)).filter
+            (fun d => d.vertexGraph.Preconnected))
+          (fun _ => by simp)
+          (fun d : ExternalInsertionWickDiagram Mode K n =>
+            if d.externalLabel = labels then d.dysonAmplitude ε β g times else 0)).symm
+    _ = ∑ d : ExternalInsertionWickDiagram Mode K n,
+          if HasNoVacuumComponent d.vertexGraph then
+            if d.externalLabel = labels then
+              if AllExternalVerticesConnected d.vertexGraph then
+                d.dysonAmplitude ε β g times else 0
+            else 0
+          else 0 := by
+      apply Finset.sum_congr rfl
+      intro d _
+      have hp := hpre d
+      by_cases hv : HasNoVacuumComponent d.vertexGraph
+      · by_cases hc : AllExternalVerticesConnected d.vertexGraph
+        · simp [hp, hv, hc]
+        · simp [hp, hv, hc]
+      · simp [hp, hv]
+    _ = ∑ d : {d : ExternalInsertionWickDiagram Mode K n //
+          HasNoVacuumComponent d.vertexGraph},
+          if d.1.externalLabel = labels then
+            if AllExternalVerticesConnected d.1.vertexGraph then
+              d.1.dysonAmplitude ε β g times else 0
+          else 0 := by
+      simpa only [Finset.sum_filter] using
+        (Finset.sum_subtype
+          (p := fun d : ExternalInsertionWickDiagram Mode K n =>
+            HasNoVacuumComponent d.vertexGraph)
+          ((Finset.univ : Finset (ExternalInsertionWickDiagram Mode K n)).filter
+            (fun d => HasNoVacuumComponent d.vertexGraph))
+          (fun _ => by simp)
+          (fun d : ExternalInsertionWickDiagram Mode K n =>
+            if d.externalLabel = labels then
+              if AllExternalVerticesConnected d.vertexGraph then
+                d.dysonAmplitude ε β g times else 0
+            else 0))
+    _ = _ :=
+      (sum_vacuumFreeFixedExternalInsertionWickDiagram_eq_sum_if
+        labels
+        (fun d : ExternalInsertionWickDiagram Mode K n =>
+          if AllExternalVerticesConnected d.vertexGraph then
+            d.dysonAmplitude ε β g times else 0)).symm
+
 /-- For any nonempty family of external insertions, the **actual**
 fixed-label connected Dyson coefficient is exactly the top external-partition
 fiber of the vacuum-free diagram sum.
