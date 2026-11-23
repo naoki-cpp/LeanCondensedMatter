@@ -1385,6 +1385,43 @@ private theorem externalSubsetOrderEmb_image
   have hu := Finset.orderEmbOfFin_unique hcard hmem hmono
   exact congrFun hu i
 
+/-- Restricting the increasing source order to a connected
+subblock agrees with the increasing enumeration of that block in the
+original ambient source coordinates. This is the order-level
+compatibility needed for both labels and insertion times. -/
+private theorem externalSubsetOrderIso_comp
+    (S : Finset (Fin (2 * E))) (heven : Even S.card)
+    (B : Finset (Fin (2 * (S.card / 2)))) (hB : Even B.card)
+    (hT : Even (B.map
+      (S.orderEmbOfFin (Nat.two_mul_div_two_of_even heven).symm).toEmbedding).card)
+    (i : Fin (2 * (B.card / 2))) :
+    ((evenExternalSubsetOrderIso S heven)
+      ((evenExternalSubsetOrderIso B hB i).1)).1 =
+    ((evenExternalSubsetOrderIso
+        (B.map (S.orderEmbOfFin
+          (Nat.two_mul_div_two_of_even heven).symm).toEmbedding) hT)
+        (Fin.cast (by simp) i)).1 := by
+  classical
+  let hcardS : S.card = 2 * (S.card / 2) :=
+    (Nat.two_mul_div_two_of_even heven).symm
+  let emb := (S.orderEmbOfFin hcardS).toEmbedding
+  let T := B.map emb
+  have hcardB : B.card = 2 * (B.card / 2) :=
+    (Nat.two_mul_div_two_of_even hB).symm
+  have hcardT : T.card = 2 * (B.card / 2) := by simpa [T] using hcardB
+  have hsize : 2 * (B.card / 2) = 2 * (T.card / 2) := by simp [T]
+  have hg := externalSubsetOrderEmb_image S hcardS B hcardB i
+  have hcanon : T.orderIsoOfFin hcardT =
+      (Fin.castOrderIso hsize).trans (evenExternalSubsetOrderIso T hT) :=
+    Subsingleton.elim _ _
+  have ht : (T.orderEmbOfFin hcardT) i =
+      ((evenExternalSubsetOrderIso T hT) (Fin.cast hsize i)).1 := by
+    exact congrArg
+      (fun iso : Fin (2 * (B.card / 2)) ≃o ↥T => (iso i).1) hcanon
+  calc
+    _ = (T.orderEmbOfFin hcardT) i := hg
+    _ = _ := ht
+
 set_option maxHeartbeats 4000000 in
 -- The connected series of a source subset has an index depending on its cardinality.
 open Classical in
