@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Combinatorics.PerfectPairing.VertexGraph
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Core.Diagram
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalComponents
 import Mathlib.Combinatorics.SimpleGraph.Connectivity.Connected
 import Mathlib.Data.Fintype.EquivFin
@@ -39,9 +40,7 @@ abbrev TwoPointLeg (S : Finset (Fin N)) : Type := Fin 2 ⊕ (↥S × Fin 4)
 by `Pairing`. -/
 noncomputable def twoPointLegEquiv (S : Finset (Fin N)) :
     Fin (2 * (2 * S.card + 1)) ≃ TwoPointLeg S :=
-  Fintype.equivOfCardEq (by
-    simp [TwoPointLeg]
-    omega)
+  externalInsertionLegEquiv 1 S
 
 /-- The flattened leg belonging to external vertex `e`. -/
 noncomputable def twoPointExternalLeg (S : Finset (Fin N)) (e : Fin 2) :
