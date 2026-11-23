@@ -1,6 +1,6 @@
 import LeanCondensedMatter.Analysis.Operator.TraceClass.Norm
 import LeanCondensedMatter.Analysis.Operator.TraceClass.Trace
-import LeanCondensedMatter.Analysis.Operator.TraceClass.Compact
+import LeanCondensedMatter.Analysis.Operator.TraceClass.Factorization.Basic
 import LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Basic
 import LeanCondensedMatter.Analysis.HilbertBasis
 

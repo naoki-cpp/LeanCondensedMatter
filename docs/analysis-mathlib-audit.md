@@ -87,13 +87,14 @@ compact self-adjoint characterization. Its associated `spectralTrace` is the rea
 `Analysis/Operator/TraceClass/Norm.lean` owns the canonical basis-independent real trace norm,
 its Hilbert-basis diagonal formula, and the absolute diagonal formula induced by a left polar
 factor. `Analysis/Operator/TraceClass/Factorization/Basic.lean` owns the trace-norm-independent
-characterization of trace class as `T = A† B` with Hilbert--Schmidt factors.
+characterization of trace class as `T = A† B` with Hilbert--Schmidt factors, and the
+compactness corollary `IsTraceClass.isCompact`.
 `Analysis/Operator/TraceClass/Factorization/Norm.lean` owns the general bound
 `‖T‖₁ ≤ (‖A‖²_HS + ‖B‖²_HS) / 2` and a factorization with both squared
 Hilbert--Schmidt norms equal to the trace norm. `TraceClass/Trace.lean`
 owns the direct diagonal `Summable`/`HasSum`/`tsum` API, basis independence, and the canonical
-complex trace; there is no separate basis-relative trace-series wrapper. `TraceClass/Compact.lean`
-derives compactness directly from the factorization layer.
+complex trace; there is no separate basis-relative trace-series wrapper. The compactness
+corollary lives directly in `TraceClass/Factorization/Basic.lean`.
 `Analysis/Operator/TraceClass/Ops/Basic.lean` owns additive/scalar/adjoint closure, bounded left/right
 ideal closure, and complex-trace linearity. `TraceClass/Ops/Norm.lean` owns trace-norm identities,
 the left/right operator-norm bounds, the triangle inequality, and the trace-versus-trace-norm bound. `TraceClass/AdjointConjugation.lean` owns adjoint-conjugation closure and trace invariance derived
