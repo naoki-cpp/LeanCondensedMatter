@@ -57,8 +57,7 @@
       "id": "generalizedCurrentTransportUmbrella",
       "path": "LeanCondensedMatter/SecondQuantization/Fermionic/Transport.lean",
       "modules": [
-        "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.SymmetrizedVelocityCurrent",
-        "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.CorrectedCurrentResponse"
+        "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.SymmetrizedVelocityCurrent"
       ]
     },
     {
