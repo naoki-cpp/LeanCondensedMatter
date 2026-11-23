@@ -1124,6 +1124,43 @@ private noncomputable def externalSubsetPartitionEquiv
       exact Finset.mem_image.mpr
         ⟨g T, Finset.mem_image.mpr ⟨T, hT, rfl⟩, hfg T (σ.le hT)⟩
 
+/-- In the increasing-order partition shuffle of a source subset,
+the ambient shuffle positions occupied by a block are exactly the
+positions whose source labels belong to that block. This is the
+subset counterpart of `shuffleOfIncreasingOrderFull_blockSlotSet`. -/
+private theorem externalSubsetShuffle_blockSlotSet
+    (S : Finset (Fin (2 * E)))
+    (σ : Finpartition S) (B : σ.parts) :
+    σ.shuffleOfIncreasingOrder.blockSlotSet B =
+      Finset.univ.filter (fun i : Fin S.card =>
+        ((S.orderIsoOfFin rfl) i).1 ∈ (B : Finset (Fin (2 * E)))) := by
+  classical
+  let o : Fin S.card ≃ ↥S := (S.orderIsoOfFin rfl).toEquiv
+  let orders := σ.partOrdersOfOrder o
+  have hslot (j : Fin (B : Finset (Fin (2 * E))).card) :
+      σ.shuffleOfIncreasingOrder.slotEquiv ⟨B, j⟩ =
+        o.symm (σ.equivSigmaParts.symm ⟨B, orders B j⟩) := by
+    rfl
+  ext i
+  simp only [Combinatorics.FamilySlotShuffleTo.blockSlotSet, Finset.mem_image,
+    Finset.mem_filter, Finset.mem_univ, true_and]
+  constructor
+  · rintro ⟨j, hj⟩
+    rw [← hj, hslot]
+    change ((σ.equivSigmaParts.symm ⟨B, orders B j⟩) : ↥S).1 ∈
+      (B : Finset (Fin (2 * E)))
+    exact (orders B j).2
+  · intro hi
+    let t : ↥(B : Finset (Fin (2 * E))) :=
+      ⟨((S.orderIsoOfFin rfl) i).1, hi⟩
+    let j := (orders B).symm t
+    refine ⟨j, ?_⟩
+    rw [hslot]
+    change o.symm ⟨t.1, σ.le B.2 t.2⟩ = i
+    have ht : ⟨t.1, σ.le B.2 t.2⟩ = o i := Subtype.ext rfl
+    rw [ht]
+    exact o.symm_apply_apply i
+
 /-- A source partition has only even-sized blocks if and only if its
 image under the canonical order-preserving reindexing does. This permits
 restricting both signed connected-partition sums to the same physical
