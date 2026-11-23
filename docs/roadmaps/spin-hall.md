@@ -68,6 +68,27 @@ response, thermodynamic limits, DC limits, and crossed/side-jump/skew work.
 This roadmap specifies spin-Hall model and observable choices; the generic
 current/source architecture remains in the transport and linear-response layers.
 
+## First finite Rashba momentum-sector benchmark (partial R1)
+
+`Models.RashbaExchange.SpinCurrent` now defines a finite **single-momentum two-level**
+spin/charge response channel built from the physical spin-space polarization
+`SpinHalf.SpinSpace`, the clean Rashba velocity `velocityOperator`, and the
+signed charge-current vertex `currentBoundedOperator`.
+
+The theorem `conventionalSpinCurrentMatrix_z_eq` derives the operator identity
+`{v_i, S_z}/2 = (ℏ_spin/2) (p_i/m_eff) σ_z`: the Rashba velocity term
+anticommutes with `σ_z`. The `rashbaSpinChargePointChannel_z_origin_retardedKernel`
+theorem then proves that the exact causal Kubo kernel vanishes at the
+momentum origin for arbitrary normalized expectations and positive `ℏ`.
+
+**Scope:** this supplies a physically nontrivial single-sector selection rule,
+not the full finite 2D spinful lattice or momentum-grid mixed Kubo/Lehmann
+calculation requested by R1. The point channel uses the fixed-observable
+convention (zero explicit contact variation); it does not identify the
+conventional current with the proper/torque-dipole current. A nontrivial
+transverse response away from the origin, finite grid assembly, source/contact
+identification, and R4 localization bridge remain outstanding.
+
 ## Open targets
 
 ### Finite Rashba response
