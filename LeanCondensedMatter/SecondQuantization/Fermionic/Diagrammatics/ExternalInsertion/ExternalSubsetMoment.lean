@@ -1601,6 +1601,13 @@ private theorem externalSubsetConnectedSeries_comp
   let emb : Fin (2 * (S.card / 2)) ↪ Fin (2 * E) :=
     ⟨fun i => (e i).1, fun i j hij => e.injective (Subtype.ext hij)⟩
   have hImage : (be B).1 = B.1.map emb := rfl
+  have hImageOrder :
+      B.1.map (S.orderEmbOfFin
+        ((Nat.two_mul_div_two_of_even heven).symm)).toEmbedding =
+          (be B).1 := by
+    calc
+      _ = B.1.map emb := rfl
+      _ = (be B).1 := hImage.symm
   have hEvenT : Even ((be B).1).card :=
     (externalSubsetPartitionEquiv_evenBlocks S heven π).mp hEven (be B)
   have hNotEmpty : (be B).1 ≠ ∅ := σ.ne_empty (be B).2
@@ -1619,8 +1626,7 @@ private theorem externalSubsetConnectedSeries_comp
       (evenExternalSubsetLabels labels (be B).1 hEvenT) := by
     apply externalSubsetFunctions_heq_of_cast hK
     intro i
-    simpa only [evenExternalSubsetLabels, hImage, evenExternalSubsetOrderIso,
-      Finset.orderEmbOfFin] using
+    simpa only [evenExternalSubsetLabels, hImageOrder] using
       congrArg labels (externalSubsetOrderIso_comp S heven B.1 (hEven B) hEvenT i)
   have hTimes : HEq
       (evenExternalSubsetTimes
@@ -1628,8 +1634,7 @@ private theorem externalSubsetConnectedSeries_comp
       (evenExternalSubsetTimes times (be B).1 hEvenT) := by
     apply externalSubsetFunctions_heq_of_cast hK
     intro i
-    simpa only [evenExternalSubsetTimes, hImage, evenExternalSubsetOrderIso,
-      Finset.orderEmbOfFin] using
+    simpa only [evenExternalSubsetTimes, hImageOrder] using
       congrArg times (externalSubsetOrderIso_comp S heven B.1 (hEven B) hEvenT i)
   have hSeries : HEq
       (connectedExternalInsertionDysonSeries ε β g
@@ -1721,17 +1726,11 @@ theorem externalSubsetMomentSeries_eq_signedConnected_nonempty_even
     have hprod : Finpartition.partitionProduct κ σ = 0 := by
       unfold Finpartition.partitionProduct
       exact Finset.prod_eq_zero (be B).2 hzero
-    have hnot : ¬ (∀ a ∈ π.parts, Even a.card) := by
-      intro hf
-      exact hEven (fun B => hf B.1 B.2)
-    have hrhs :
-        PowerSeries.C (externalPartitionSourceSign σ) *
-          Finpartition.partitionProduct κ σ = 0 := by
-      rw [hprod]
-      simp
-    change (if h : ∀ a ∈ π.parts, Even a.card then _ else 0) = _
-    simp only [dite_eq_right hnot]
-    exact hrhs.symm
+    simp only [dite_eq_right hEven]
+    change (0 : PowerSeries ℂ) =
+      PowerSeries.C (externalPartitionSourceSign σ) * Finpartition.partitionProduct κ σ
+    rw [hprod]
+    simp
 
 @[simp]
 theorem externalSubsetMomentSeries_empty
