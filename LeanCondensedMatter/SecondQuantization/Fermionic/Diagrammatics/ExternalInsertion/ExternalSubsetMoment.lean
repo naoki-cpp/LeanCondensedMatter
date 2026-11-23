@@ -432,12 +432,10 @@ theorem ExternalInsertionBlockLayout.sum_realizableSize_coeff_prod
 set_option maxHeartbeats 4000000 in
 -- Dependent diagram fibers require a larger elaboration budget for fixed-size summation.
 open Classical in
-/-- Phase 5B (size summation): the genuine fixed-partition physical
-order-`n` Dyson fiber equals the signed sum, counted once per realizable
-interaction-size vector, of products of independently connected physical
-Dyson coefficients. The fixed-size integral/shuffle factorization is reused
-whole; no extra shuffle multiplicity or pointwise integral invariance
-is introduced. -/
+/-- The fixed-partition physical order-`n` Dyson fiber is the
+Koszul-signed sum over realizable interaction-size vectors of products
+of connected Dyson coefficients. The integrated interaction-shuffle
+weights are preserved without an additional multiplicity. -/
 theorem sum_fixedExternalPartitionDysonFiber_eq_sum_realizableSizes_signedProduct
     {K n : ℕ} (anchor : Fin (2 * K))
     (π : Finpartition (Finset.univ : Finset (Fin (2 * K))))
@@ -615,9 +613,8 @@ theorem sum_fixedExternalPartitionDysonFiber_eq_signedCoeffPreconnectedSeries
 
 /-- The full fixed-order physical Dyson coefficient is reindexed by even
 external-component partitions and independently labelled connected blocks.
-The owner assignments and genuine assembled Dyson amplitudes are retained:
-the remaining factorization must still sum those assignments and their
-ordered interaction shuffles. -/
+The owner assignments, genuine assembled Dyson amplitudes, and ordered
+interaction shuffles are kept explicitly. -/
 theorem vacuumFreeExternalInsertionDysonCoefficient_eq_sum_evenPartitions_localLabelFamilies
     {K n : ℕ} (anchor : Fin (2 * K))
     (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
@@ -755,8 +752,8 @@ theorem connectedExternalInsertionDysonCoefficient_eq_topPartitionFiber
   intro d _
   simp only [← (d.1.1.allExternalVerticesConnected_iff_externalComponentPartition_eq_top anchor)]
 
-/-- The formal Dyson series of the fully external-connected diagram sector.
-It is not identified with a source cumulant without the signed moment theorem. -/
+/-- The formal Dyson series of the fully externally connected diagram sector,
+defined from its physical connected-diagram coefficients. -/
 noncomputable def connectedExternalInsertionDysonSeries {K : ℕ}
     (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
     (labels : Fin (2 * K) → ExternalFieldLabel Mode)
@@ -766,10 +763,9 @@ noncomputable def connectedExternalInsertionDysonSeries {K : ℕ}
 set_option maxHeartbeats 4000000 in
 -- The blockwise series equality elaborates dependent even external subsets.
 open Classical in
-/-- Phase 5B: at each fixed Dyson order and physical external partition,
-the actual integrated diagram coefficient is the Koszul-signed Cauchy
-coefficient of the product of the already-defined *connected* Dyson
-diagram series, not merely an auxiliary preconnected series. -/
+/-- The integrated Dyson coefficient at a fixed external partition and
+interaction order is the Koszul-signed Cauchy coefficient of the product
+of connected Dyson diagram series. -/
 theorem sum_fixedExternalPartitionDysonFiber_eq_signedCoeffConnectedSeries
     {K n : ℕ} (anchor : Fin (2 * K))
     (π : Finpartition (Finset.univ : Finset (Fin (2 * K))))
@@ -914,14 +910,10 @@ theorem vacuumFreeExternalInsertionDysonSeries_eq_connected_of_single_pair
 set_option maxHeartbeats 4000000 in
 -- The finite partition sum and dependent connected-block series elaborate at each coefficient.
 open Classical in
-/-- Phase 5C, full external source family: the actual vacuum-free
-integrated Dyson series is the finite Koszul-signed partition sum of
-products of existing connected Dyson series. This lifts the physical
-fixed-order coefficient theorem of Phase 5B to a genuine identity in
-`PowerSeries ℂ`, without defining the connected sector by inversion.
-
-The arbitrary *subset* statement additionally needs transport of the
-canonical increasing source order and its fermionic partition signs. -/
+/-- The physical vacuum-free Dyson series is the finite Koszul-signed
+external-partition sum of products of connected Dyson series in
+`PowerSeries ℂ`. The equality preserves canonical source order and
+the physical Dyson coefficients. -/
 theorem vacuumFreeExternalInsertionDysonSeries_eq_sum_evenPartitionConnectedSeries
     {K : ℕ} (anchor : Fin (2 * K))
     (ε : Mode → ℝ) (β : ℝ) (hβ : 0 ≤ β)
@@ -1641,10 +1633,8 @@ private theorem externalSubsetConnectedSeries_comp
       hK ε β g _ _ _ _ hLabels hTimes
   exact eq_of_heq hSeries
 
-/-- The signed partition expansion predicted by the source/cumulant identity,
-formed from the actual fully connected diagrammatic contributions.
-The remaining Phase 5 theorem must identify this with
-`externalSubsetMomentSeries`, coefficientwise at every Dyson order. -/
+/-- The Koszul-signed external-partition moment transform of fully
+connected physical Dyson diagram contributions. -/
 noncomputable def externalSubsetSignedConnectedMomentSeries
     (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
     (labels : Fin (2 * E) → ExternalFieldLabel Mode)
@@ -1657,10 +1647,9 @@ noncomputable def externalSubsetSignedConnectedMomentSeries
 set_option maxHeartbeats 4000000 in
 -- The outer partition and its blockwise connected products reindex dependently.
 open Classical in
-/-- Phase 5C physical signed moment identity for every nonempty
-even external source subset: the actual vacuum-free integrated
-Dyson moment is the Koszul-signed source partition transform
-of the actual fully connected diagram series. -/
+/-- For every nonempty even external source subset, the physical
+vacuum-free Dyson moment equals the Koszul-signed partition transform
+of fully connected diagram series. -/
 theorem externalSubsetMomentSeries_eq_signedConnected_nonempty_even
     (ε : Mode → ℝ) (β : ℝ) (hβ : 0 ≤ β)
     (g : QuarticVertexLabel Mode → ℂ)
@@ -1790,13 +1779,9 @@ theorem externalSubsetSignedConnectedMomentSeries_eq_zero_of_odd
       (externalSubsetSeries_eq_zero_of_odd ε β g labels times B hBodd).2,
     mul_zero]
 
-/-- Empty and odd external subsets already satisfy the physical
-signed partition identity, unconditionally. Thus completing Phase 5
-requires proving that identity **only for nonempty even subsets**.
-
-The remaining hypothesis is genuinely diagrammatic: it is not replaced
-by an unsigned moment inversion or by defining the connected weights
-from the moments. -/
+/-- The physical signed partition identity for nonempty even external
+subsets extends to all subsets by vacuum normalization for the empty
+subset and fermion parity for odd subsets. -/
 theorem externalSubsetMomentSeries_eq_signedConnected_of_nonempty_even
     (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
     (labels : Fin (2 * E) → ExternalFieldLabel Mode)
@@ -1816,11 +1801,9 @@ theorem externalSubsetMomentSeries_eq_signedConnected_of_nonempty_even
       externalSubsetSignedConnectedMomentSeries_eq_zero_of_odd
         ε β g labels times S hParity]
 
-/-- Phase 5C: the vacuum-normalized physical Dyson moment of
-every finite external source subset is exactly the fermionic
-Koszul-signed moment transform of the fully connected physical
-diagram series. Empty and odd subsets are handled by parity and
-normalization, not by redefining the connected contribution. -/
+/-- Every vacuum-normalized physical Dyson moment is the fermionic
+Koszul-signed partition transform of fully connected diagram series.
+Empty and odd subsets follow from normalization and fermion parity. -/
 theorem externalSubsetMomentSeries_eq_signedConnected
     (ε : Mode → ℝ) (β : ℝ) (hβ : 0 ≤ β)
     (g : QuarticVertexLabel Mode → ℂ)
@@ -1880,41 +1863,13 @@ theorem externalSubsetMomentSeries_eq_signedConnected_two
         (externalSubsetConnectedDiagramSeries (E := 1) ε β g labels times)
         S hEmpty hproper).symm
 
-/-- Conditional weighted-inversion bridge: if the physical
-vacuum-normalized Dyson moments obey the Koszul-signed external-partition
-identity, their fermionic source cumulant is the fully externally connected
-integrated diagram series.
+/-- The source cumulant of physical vacuum-normalized Dyson moments
+equals the fully externally connected diagram series for any finite
+number of external insertions.
 
-The diagrammatic premise is established unconditionally by
-`externalSubsetMomentSeries_eq_signedConnected` (Phase 5C), and is discharged
-in `externalSubsetSourceCumulantSeries_eq_connectedDiagramSeries` below.
-This uses genuine signed inversion, not an unsigned moment identity. -/
-theorem externalSubsetSourceCumulantSeries_eq_connectedDiagramSeries_of_signedMoments
-    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
-    (labels : Fin (2 * E) → ExternalFieldLabel Mode)
-    (times : Fin (2 * E) → ℝ)
-    (hDiagram : ∀ S : Finset (Fin (2 * E)),
-      externalSubsetMomentSeries ε β g labels times S =
-        externalSubsetSignedConnectedMomentSeries ε β g labels times S) :
-    externalSubsetSourceCumulantSeries
-        (externalSubsetMomentSeries ε β g labels times) =
-      externalSubsetConnectedDiagramSeries ε β g labels times := by
-  apply externalPartitionWeightedMoment_injective
-  · simp
-  · intro S
-    exact (externalSubsetSourceCumulantSeries_reconstruct
-      (externalSubsetMomentSeries ε β g labels times) (by simp) S).trans (hDiagram S)
-
-
-/-- Phase 5D: for an arbitrary finite number of fermionic external
-insertions, the *physical* source cumulant of vacuum-normalized
-Dyson moments equals the fully externally connected integrated diagram
-series, coefficientwise at every perturbative order.
-
-The physical Koszul-signed moment identity is proved in Phase 5C;
-here we only discharge the hypothesis of the existing signed-inversion
-theorem. In particular, the vacuum-free moment itself need not be
-fully externally connected. -/
+The proof applies signed moment reconstruction and injectivity to the
+physical Koszul-signed partition identity. Vacuum normalization alone
+does not require all external insertions to be connected. -/
 theorem externalSubsetSourceCumulantSeries_eq_connectedDiagramSeries
     (ε : Mode → ℝ) (β : ℝ) (hβ : 0 ≤ β)
     (g : QuarticVertexLabel Mode → ℂ)
@@ -1923,15 +1878,16 @@ theorem externalSubsetSourceCumulantSeries_eq_connectedDiagramSeries
     externalSubsetSourceCumulantSeries
         (externalSubsetMomentSeries ε β g labels times) =
       externalSubsetConnectedDiagramSeries ε β g labels times := by
-  exact externalSubsetSourceCumulantSeries_eq_connectedDiagramSeries_of_signedMoments
-    ε β g labels times
-    (externalSubsetMomentSeries_eq_signedConnected ε β hβ g labels times)
+  apply externalPartitionWeightedMoment_injective
+  · simp
+  · intro S
+    exact (externalSubsetSourceCumulantSeries_reconstruct
+      (externalSubsetMomentSeries ε β g labels times) (by simp) S).trans
+      (externalSubsetMomentSeries_eq_signedConnected ε β hβ g labels times S)
 
 
-/-- The actual two-insertion source cumulant equals the fully
-externally connected physical Dyson series at all perturbative
-orders, with no signed-moment hypothesis. This independently proved
-special case remains available without assuming nonnegative β. -/
+/-- For two external insertions, the source cumulant equals the
+connected physical Dyson series without a sign restriction on β. -/
 theorem externalSubsetSourceCumulantSeries_eq_connectedDiagramSeries_two
     (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
     (labels : Fin 2 → ExternalFieldLabel Mode)
@@ -1939,9 +1895,12 @@ theorem externalSubsetSourceCumulantSeries_eq_connectedDiagramSeries_two
     externalSubsetSourceCumulantSeries (E := 1)
         (externalSubsetMomentSeries (E := 1) ε β g labels times) =
       externalSubsetConnectedDiagramSeries (E := 1) ε β g labels times := by
-  exact externalSubsetSourceCumulantSeries_eq_connectedDiagramSeries_of_signedMoments
-    (E := 1) ε β g labels times
-    (externalSubsetMomentSeries_eq_signedConnected_two ε β g labels times)
+  apply externalPartitionWeightedMoment_injective
+  · simp
+  · intro S
+    exact (externalSubsetSourceCumulantSeries_reconstruct
+      (externalSubsetMomentSeries (E := 1) ε β g labels times) (by simp) S).trans
+      (externalSubsetMomentSeries_eq_signedConnected_two ε β g labels times S)
 
 
 end Fermionic
