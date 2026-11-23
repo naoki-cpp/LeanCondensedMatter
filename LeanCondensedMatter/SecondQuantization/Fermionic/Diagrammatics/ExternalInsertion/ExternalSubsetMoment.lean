@@ -1304,25 +1304,7 @@ private theorem externalSubsetPartitionEquiv_sourceSign
   let e := evenExternalSubsetOrderIso S heven
   let emb : Fin (2 * (S.card / 2)) ↪ Fin (2 * E) :=
     ⟨fun i => (e i).1, fun i j hij => e.injective (Subtype.ext hij)⟩
-  have hparts : σ.parts =
-      π.parts.image (fun B => B.map emb) := rfl
-  let blocks : π.parts → σ.parts := fun B =>
-    ⟨B.1.map emb, by
-      rw [hparts]
-      exact Finset.mem_image.mpr ⟨B.1, B.2, rfl⟩⟩
-  have hinj : Function.Injective blocks := by
-    intro B C hBC
-    apply Subtype.ext
-    exact (Finset.map_injective emb) (congrArg Subtype.val hBC)
-  have hsurj : Function.Surjective blocks := by
-    intro T
-    have hT : T.1 ∈ π.parts.image (fun B => B.map emb) := by
-      rw [← hparts]
-      exact T.2
-    obtain ⟨B, hB, hBT⟩ := Finset.mem_image.mp hT
-    refine ⟨⟨B, hB⟩, Subtype.ext ?_⟩
-    exact hBT
-  let be : π.parts ≃ σ.parts := Equiv.ofBijective blocks ⟨hinj, hsurj⟩
+  let be : π.parts ≃ σ.parts := externalSubsetPartsEquiv S heven π
   let hc : Fintype.card π.parts = Fintype.card σ.parts := Fintype.card_congr be
   let orderπ : π.parts ≃ Fin (Fintype.card π.parts) := Fintype.equivFin _
   let orderσ : σ.parts ≃ Fin (Fintype.card σ.parts) :=
