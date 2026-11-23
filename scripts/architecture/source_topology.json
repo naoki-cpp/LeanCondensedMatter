@@ -157,28 +157,33 @@
       ]
     },
     {
-      "id": "linearResponseLayers",
-      "sourceRoots": ["LeanCondensedMatter/QuantumTheory/LinearResponse"],
+      "id": "linearResponsePackageBoundary",
+      "sourceRoots": [
+        "LeanCondensedMatter/QuantumTheory/LinearResponse"
+      ],
+      "coveragePrefixes": [
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.Expectation",
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics"
+      ],
       "layers": [
-        {"id": "expectation", "modulePrefixes": ["LeanCondensedMatter.QuantumTheory.LinearResponse.Expectation.Basic"]},
-        {"id": "freeDynamics", "modulePrefixes": ["LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.Free"]},
-        {"id": "pureStateDynamics", "modulePrefixes": ["LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.PureState"]},
-        {"id": "densityExpectation", "modulePrefixes": ["LeanCondensedMatter.QuantumTheory.LinearResponse.Expectation.Density"]},
-        {"id": "stationarity", "modulePrefixes": ["LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.Stationarity"]},
-        {"id": "pictureEquivalence", "modulePrefixes": ["LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.PictureEquivalence"]},
-        {"id": "conservationLaws", "modulePrefixes": ["LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.ConservationLaws"]},
-        {"id": "equationsOfMotion", "modulePrefixes": ["LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.EquationsOfMotion"]}
+        {
+          "id": "expectation",
+          "modulePrefixes": [
+            "LeanCondensedMatter.QuantumTheory.LinearResponse.Expectation"
+          ]
+        },
+        {
+          "id": "dynamics",
+          "modulePrefixes": [
+            "LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics"
+          ]
+        }
       ],
       "edges": [
-        {"upstream": "expectation", "downstream": "densityExpectation"},
-        {"upstream": "expectation", "downstream": "stationarity"},
-        {"upstream": "freeDynamics", "downstream": "pureStateDynamics"},
-        {"upstream": "freeDynamics", "downstream": "stationarity"},
-        {"upstream": "pureStateDynamics", "downstream": "pictureEquivalence"},
-        {"upstream": "densityExpectation", "downstream": "conservationLaws"},
-        {"upstream": "stationarity", "downstream": "conservationLaws"},
-        {"upstream": "pictureEquivalence", "downstream": "conservationLaws"},
-        {"upstream": "pictureEquivalence", "downstream": "equationsOfMotion"}
+        {
+          "upstream": "expectation",
+          "downstream": "dynamics"
+        }
       ]
     },
     {
