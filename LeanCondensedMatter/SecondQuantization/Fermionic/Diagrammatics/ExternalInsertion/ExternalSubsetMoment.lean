@@ -1179,17 +1179,19 @@ private theorem externalSubsetShuffle_blockSlotSet
   constructor
   · rintro ⟨j, hj⟩
     rw [← hj, hslot]
-    change ((σ.equivSigmaParts.symm ⟨B, orders B j⟩) : ↥S).1 ∈
+    change (o (o.symm (σ.equivSigmaParts.symm ⟨B, orders B j⟩))).1 ∈
       (B : Finset (Fin (2 * E)))
-    exact (orders B j).2
+    simpa only [Equiv.apply_symm_apply] using (orders B j).2
   · intro hi
     let t : ↥(B : Finset (Fin (2 * E))) :=
       ⟨((S.orderIsoOfFin rfl) i).1, hi⟩
     let j := (orders B).symm t
     refine ⟨j, ?_⟩
     rw [hslot]
-    change o.symm ⟨t.1, σ.le B.2 t.2⟩ = i
-    have ht : ⟨t.1, σ.le B.2 t.2⟩ = o i := Subtype.ext rfl
+    have ht : σ.equivSigmaParts.symm ⟨B, orders B j⟩ = o i := by
+      apply Subtype.ext
+      change (orders B j).1 = (o i).1
+      simp [j, t, o]
     rw [ht]
     exact o.symm_apply_apply i
 
@@ -1221,7 +1223,10 @@ private theorem externalSubsetShuffle_blockInversionCount
       let i := o.symm ⟨x, σ.le T.2 hx⟩
       apply Finset.mem_map.mpr
       refine ⟨i, ?_, ?_⟩
-      · simp [idx, emb, i, hx]
+      · have hiEq : emb i = x := by
+          change (o (o.symm ⟨x, σ.le T.2 hx⟩)).1 = x
+          simp
+        exact Finset.mem_filter.mpr ⟨Finset.mem_univ _, hiEq ▸ hx⟩
       · change (o (o.symm ⟨x, σ.le T.2 hx⟩)).1 = x
         simp
   have horder (i j : Fin S.card) :
@@ -1324,12 +1329,7 @@ private theorem externalSubsetPartitionEquiv_sourceSign
     (be.symm.trans orderπ).trans (finCongr hc)
   have horder (B C : π.parts) :
       orderπ B < orderπ C ↔ orderσ (be B) < orderσ (be C) := by
-    change orderπ B < orderπ C ↔
-      Fin.cast hc (orderπ B) < Fin.cast hc (orderπ C)
-    constructor
-    · exact (Fin.castOrderIso hc).strictMono
-    · intro h
-      exact (Fin.castOrderIso hc).symm.strictMono (by simpa using h)
+    simp [orderσ, Fin.cast_lt_cast]
   have hsource (B C : π.parts) (hBC : B ≠ C) :
       π.shuffleOfIncreasingOrder.blockInversionCount B C =
         ∑ x ∈ (B : Finset (Fin (2 * (S.card / 2)))),
@@ -1339,8 +1339,13 @@ private theorem externalSubsetPartitionEquiv_sourceSign
       _ = (externalPartitionShuffleFull π).blockInversionCount B C :=
         ((π.shuffleOfIncreasingOrder).castTotalEquiv_blockInversionCount (by simp) B C).symm
       _ = _ := by
-        rw [(externalPartitionShuffleFull π).blockInversionCount_eq_sum_blockSlotSet hBC,
-          π.shuffleOfIncreasingOrderFull_blockSlotSet B,
+        rw [(externalPartitionShuffleFull π).blockInversionCount_eq_sum_blockSlotSet hBC]
+        change
+          (∑ x ∈ ((Combinatorics.FamilySlotShuffleTo.castTotalEquiv (by simp))
+              π.shuffleOfIncreasingOrder).blockSlotSet B,
+            ∑ y ∈ ((Combinatorics.FamilySlotShuffleTo.castTotalEquiv (by simp))
+              π.shuffleOfIncreasingOrder).blockSlotSet C, if y < x then 1 else 0) = _
+        rw [π.shuffleOfIncreasingOrderFull_blockSlotSet B,
           π.shuffleOfIncreasingOrderFull_blockSlotSet C]
   have hlocalOrder (i j : Fin (2 * (S.card / 2))) :
       emb i < emb j ↔ i < j := by
@@ -1351,7 +1356,7 @@ private theorem externalSubsetPartitionEquiv_sourceSign
         σ.shuffleOfIncreasingOrder.blockInversionCount (be B) (be C) := by
     by_cases hBC : B = C
     · subst C
-      simp
+      simp only [Combinatorics.FamilySlotShuffleTo.blockInversionCount_self]
     · rw [hsource B C hBC,
         externalSubsetShuffle_blockInversionCount S σ (be B) (be C) (be.injective.ne hBC)]
       change (∑ x ∈ B.1, ∑ y ∈ C.1, if y < x then (1 : ℕ) else 0) =
@@ -1533,6 +1538,39 @@ noncomputable def externalSubsetConnectedDiagramSeries
       (evenExternalSubsetTimes times S heven)
   else exact 0
 
+/-- A pair of functions on finite slot families with equal
+cardinalities can be compared heterogeneously without eliminating
+dependent equations between fixed expressions. -/
+private theorem externalSubsetFunctions_heq_of_cast
+    {α : Type*} {n m : ℕ} (h : n = m)
+    (f : Fin (2 * n) → α) (g : Fin (2 * m) → α)
+    (hfg : ∀ i, f i = g (Fin.cast (congrArg (2 * ·) h) i)) :
+    HEq f g := by
+  cases h
+  apply heq_of_eq
+  funext i
+  simpa using hfg i
+
+/-- A connected Dyson series is unchanged by heterogeneous equality
+of the ordered external fields and insertion times across equal pair counts. -/
+private theorem connectedExternalInsertionDysonSeries_heq_of_fields
+    {K L : ℕ} (hKL : K = L)
+    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
+    (labelsK : Fin (2 * K) → ExternalFieldLabel Mode)
+    (labelsL : Fin (2 * L) → ExternalFieldLabel Mode)
+    (timesK : Fin (2 * K) → ℝ)
+    (timesL : Fin (2 * L) → ℝ)
+    (hLabels : HEq labelsK labelsL)
+    (hTimes : HEq timesK timesL) :
+    HEq (connectedExternalInsertionDysonSeries ε β g labelsK timesK)
+      (connectedExternalInsertionDysonSeries ε β g labelsL timesL) := by
+  cases hKL
+  have hL : labelsK = labelsL := eq_of_heq hLabels
+  have hT : timesK = timesL := eq_of_heq hTimes
+  cases hL
+  cases hT
+  rfl
+
 set_option maxHeartbeats 4000000 in
 -- Source-subset local labels and times have cardinality-dependent index types.
 open Classical in
@@ -1579,18 +1617,16 @@ private theorem externalSubsetConnectedSeries_comp
       (evenExternalSubsetLabels
         (evenExternalSubsetLabels labels S heven) B.1 (hEven B))
       (evenExternalSubsetLabels labels (be B).1 hEvenT) := by
-    cases hK
-    apply heq_of_eq
-    funext i
+    apply externalSubsetFunctions_heq_of_cast hK
+    intro i
     simpa only [evenExternalSubsetLabels] using
       congrArg labels (externalSubsetOrderIso_comp S heven B.1 (hEven B) hEvenT i)
   have hTimes : HEq
       (evenExternalSubsetTimes
         (evenExternalSubsetTimes times S heven) B.1 (hEven B))
       (evenExternalSubsetTimes times (be B).1 hEvenT) := by
-    cases hK
-    apply heq_of_eq
-    funext i
+    apply externalSubsetFunctions_heq_of_cast hK
+    intro i
     simpa only [evenExternalSubsetTimes] using
       congrArg times (externalSubsetOrderIso_comp S heven B.1 (hEven B) hEvenT i)
   have hSeries : HEq
@@ -1601,10 +1637,9 @@ private theorem externalSubsetConnectedSeries_comp
           (evenExternalSubsetTimes times S heven) B.1 (hEven B)))
       (connectedExternalInsertionDysonSeries ε β g
         (evenExternalSubsetLabels labels (be B).1 hEvenT)
-        (evenExternalSubsetTimes times (be B).1 hEvenT)) := by
-    cases hLabels
-    cases hTimes
-    rfl
+        (evenExternalSubsetTimes times (be B).1 hEvenT)) :=
+    connectedExternalInsertionDysonSeries_heq_of_fields
+      hK ε β g _ _ _ _ hLabels hTimes
   exact eq_of_heq hSeries
 
 /-- The signed partition expansion predicted by the source/cumulant identity,
@@ -1663,11 +1698,11 @@ theorem externalSubsetMomentSeries_eq_signedConnected_nonempty_even
           exact externalSubsetConnectedSeries_comp
             ε β g labels times S heven π hEven B
         _ = ∏ T : σ.parts, κ T.1 := by
-          exact (Equiv.prod_comp be (fun T : σ.parts => κ T.1)).symm
+          exact Equiv.prod_comp be (fun T : σ.parts => κ T.1)
         _ = _ := by
           rw [Finpartition.partitionProduct]
           exact (Finset.prod_coe_sort σ.parts κ)
-    simp only [dif_pos hEven]
+    simp only [dite_eq_left hEven]
     rw [hsign, hprod]
   · obtain ⟨B, hBodd⟩ := not_forall.mp hEven
     have hImage :
@@ -1678,8 +1713,9 @@ theorem externalSubsetMomentSeries_eq_signedConnected_nonempty_even
                 (Subtype.ext h)⟩ := rfl
     have hOdd : ¬ Even ((be B).1 : Finset (Fin (2 * E))).card := by
       simpa [hImage] using hBodd
-    have hzero : κ (be B).1 = 0 :=
-      (externalSubsetSeries_eq_zero_of_odd ε β g labels times (be B).1 hOdd).2
+    have hzero : κ (be B).1 = 0 := by
+      change externalSubsetConnectedDiagramSeries ε β g labels times (be B).1 = 0
+      simp [externalSubsetConnectedDiagramSeries, hOdd]
     have hprod : Finpartition.partitionProduct κ σ = 0 := by
       unfold Finpartition.partitionProduct
       exact Finset.prod_eq_zero (be B).2 hzero
