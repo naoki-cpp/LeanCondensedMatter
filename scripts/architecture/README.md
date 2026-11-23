@@ -158,7 +158,7 @@ Avoid changing an existing public endpoint merely to improve this proxy.
 
 - `second_quantization.json` — the shared primary layer graph and SecondQuantization-focused DAGs;
 - `source_topology.json` — Transport, current, QuantumTheory state/Gibbs/response to Common thermal, and other source DAGs;
-- `ahe_topology.json` — Massive-Dirac Model/Intrinsic and Bastin stage DAGs.
+- `ahe_topology.json` — Massive-Dirac Model/Intrinsic and finite-broadening transport DAGs.
 
 Edges are written **upstream -> downstream**. A source layer may import itself or an ancestor. Scoped
 DAGs may use `coveragePrefixes` when every source module in a subtree must be classified.
