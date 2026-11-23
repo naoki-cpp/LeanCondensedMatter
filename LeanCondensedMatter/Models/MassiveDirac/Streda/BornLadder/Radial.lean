@@ -53,20 +53,6 @@ private theorem continuous_polarPauliOperator (a b d : ℂ) :
   unfold polarPauliMatrix
   fun_prop
 
-private theorem intervalIntegrable_polarPauli_rung
-    (aL aR bL bR dL dR : ℂ) (coefficients : InPlaneCoefficientVector) :
-    IntervalIntegrable
-      (fun θ : ℝ =>
-        polarPauliOperator aL bL dL θ *
-          (coefficients 0 • matrixOperator sigmaX +
-            coefficients 1 • matrixOperator sigmaY) *
-          polarPauliOperator aR bR dR θ)
-      volume 0 (2 * Real.pi) := by
-  apply Continuous.intervalIntegrable
-  exact
-    ((continuous_polarPauliOperator aL bL dL).mul continuous_const).mul
-      (continuous_polarPauliOperator aR bR dR)
-
 private theorem intervalIntegrable_polarPauli_directionTrace
     (measured : Fin 2) (q aL aR bL bR dL dR : ℂ)
     (coefficients : InPlaneCoefficientVector) :
@@ -141,8 +127,9 @@ private theorem integral_polarPauli_directionTrace_eq
         coefficients 1 • matrixOperator sigmaY) *
       polarPauliOperator aR bR dR θ
   have hrungIntegrable : IntervalIntegrable rung volume 0 (2 * Real.pi) := by
-    simpa [rung] using
-      intervalIntegrable_polarPauli_rung aL aR bL bR dL dR coefficients
+    apply Continuous.intervalIntegrable
+    exact ((continuous_polarPauliOperator aL bL dL).mul continuous_const).mul
+      (continuous_polarPauliOperator aR bR dR)
   let L : DiracOperator →L[ℂ] ℂ :=
     finiteDimensionalOperatorTrace.comp
       ((ContinuousLinearMap.mulLeftRight ℂ DiracOperator)
