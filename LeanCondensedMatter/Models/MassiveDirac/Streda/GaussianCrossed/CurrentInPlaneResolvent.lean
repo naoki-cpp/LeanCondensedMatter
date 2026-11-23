@@ -2,6 +2,8 @@ import LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.CurrentGra
 import LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.RadialHarmonics
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.BornDyson.DysonShift
 import LeanCondensedMatter.Analysis.Lorentzian.Kernel
+import LeanCondensedMatter.Analysis.Lorentzian.Pole
+import LeanCondensedMatter.Models.MassiveDirac.Disorder.Vertex.BornDyson.RegulatorBoundaryWeakDisorder
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.IntegrationByParts
 import Mathlib.Tactic.FieldSimp
 import Mathlib.Tactic.FunProp
@@ -967,6 +969,102 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedInPlaneK2_width_eq_energySh
                 (Real.sqrt ((D0.re + offset) / v ^ 2) * radius / hbar) := by
             rw [← hsub]
             ring
+
+
+/-- A fixed positive offset window eventually lies strictly inside the
+actual moving Born-Dyson spectral interval after the external broadening
+boundary, for sufficiently weak positive disorder.
+
+The clean on-shell energy is E0 = ε²−m². This is the endpoint control
+needed to split the physical finite-cutoff energy-shell integral into a
+centered window and two off-shell tails. -/
+theorem eventually_finiteCutoffContinuumBornDysonGaussianCrossedK2_cleanWindow_in_boundaryShell
+    (v m probeEnergy hbar pMax windowRadius : ℝ)
+    (hvelocity : v ≠ 0) (hhbar : hbar ≠ 0)
+    (hmetal : |m| < probeEnergy)
+    (hcutoff : probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2)
+    (hwindowPos : 0 < windowRadius)
+    (hwindowLower : windowRadius < probeEnergy ^ 2 - m ^ 2)
+    (hwindowUpper :
+      windowRadius < v ^ 2 * pMax ^ 2 - (probeEnergy ^ 2 - m ^ 2)) :
+    ∀ᶠ W : ℝ in nhdsWithin 0 (Set.Ioi 0),
+      -(finiteCutoffContinuumBornDysonDenominatorZeroBroadeningBoundary
+        .retarded v m 0 probeEnergy W hbar pMax).re < -windowRadius ∧
+      windowRadius < v ^ 2 * pMax ^ 2 -
+        (finiteCutoffContinuumBornDysonDenominatorZeroBroadeningBoundary
+          .retarded v m 0 probeEnergy W hbar pMax).re := by
+  let l := nhdsWithin (0 : ℝ) (Set.Ioi 0)
+  let A : ℝ → ℝ := fun W =>
+    (finiteCutoffContinuumBornDysonDenominatorZeroBroadeningBoundary
+      .retarded v m 0 probeEnergy W hbar pMax).re
+  have hcenter : Tendsto A l (nhds (probeEnergy ^ 2 - m ^ 2)) :=
+    (tendsto_finiteCutoffContinuumBornDysonBoundarySpectralShell_disorder_zero
+      v m probeEnergy hbar pMax hvelocity hhbar hmetal hcutoff).1
+  have hright : probeEnergy ^ 2 - m ^ 2 <
+      v ^ 2 * pMax ^ 2 - windowRadius := by linarith
+  have hinside := hcenter.eventually (Ioo_mem_nhds hwindowLower hright)
+  filter_upwards [hinside] with W hW
+  have hA : windowRadius < A W ∧ A W < v ^ 2 * pMax ^ 2 - windowRadius := by
+    simpa only [Set.mem_Ioo] using hW
+  dsimp only [A] at hA
+  constructor <;> linarith
+
+/-- The actual positive Born-Dyson width, along the physical
+zero-external-broadening then weak-disorder trajectory, concentrates
+the nonconstant second Fourier harmonic in a fixed centered window.
+
+The Bessel weight is evaluated at the clean shell E0=ε²−m² in this
+theorem; the distinct moving-center correction and asymmetric tails
+still need to be controlled for the full crossed-current limit. -/
+theorem tendsto_finiteCutoffContinuumBornDysonGaussianCrossedK2_cleanCenteredWindow
+    (v m probeEnergy hbar pMax radius windowRadius : ℝ)
+    (hvelocity : v ≠ 0) (hhbar : hbar ≠ 0)
+    (hmetal : |m| < probeEnergy)
+    (hcutoff : probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2)
+    (hwindowPos : 0 < windowRadius) :
+    let E0 := probeEnergy ^ 2 - m ^ 2
+    let width := fun W : ℝ =>
+      (finiteCutoffContinuumBornDysonDenominatorZeroBroadeningBoundary
+        .retarded v m 0 probeEnergy W hbar pMax).im
+    Tendsto
+      (fun W : ℝ =>
+        ∫ offset in -windowRadius..windowRadius,
+          (Lorentzian.spectralKernel offset (width W) : ℂ) *
+            ((E0 + offset : ℝ) : ℂ) *
+            polarFourierSecondCosineAngularKernel
+              (Real.sqrt ((E0 + offset) / v ^ 2) * radius / hbar))
+      (nhdsWithin 0 (Set.Ioi 0))
+      (nhds (Real.pi •
+        ((E0 : ℂ) *
+          polarFourierSecondCosineAngularKernel
+            (Real.sqrt (E0 / v ^ 2) * radius / hbar)))) := by
+  dsimp only
+  let E0 : ℝ := probeEnergy ^ 2 - m ^ 2
+  let width : ℝ → ℝ := fun W =>
+    (finiteCutoffContinuumBornDysonDenominatorZeroBroadeningBoundary
+      .retarded v m 0 probeEnergy W hbar pMax).im
+  let factor : ℝ × ℝ → ℂ := fun q =>
+    ((E0 + q.1 : ℝ) : ℂ) *
+      polarFourierSecondCosineAngularKernel
+        (Real.sqrt ((E0 + q.1) / v ^ 2) * radius / hbar)
+  have harg : Continuous (fun q : ℝ × ℝ =>
+      Real.sqrt ((E0 + q.1) / v ^ 2) * radius / hbar) := by
+    fun_prop
+  have hfactor : Continuous factor := by
+    dsimp only [factor]
+    exact (Complex.continuous_ofReal.comp (by fun_prop)).mul
+      (continuous_polarFourierSecondCosineAngularKernel.comp harg)
+  have hrectangle : ∃ etaMax : ℝ, 0 < etaMax ∧ ContinuousOn factor
+      (Set.Icc (-windowRadius) windowRadius ×ˢ Set.Icc (0 : ℝ) etaMax) :=
+    ⟨1, by norm_num, hfactor.continuousOn⟩
+  have hPole := Lorentzian.tendsto_integral_spectralKernel_mul
+    factor windowRadius hwindowPos hrectangle
+  have hWidth : Tendsto width
+      (nhdsWithin 0 (Set.Ioi 0)) (nhdsWithin 0 (Set.Ioi 0)) :=
+    (tendsto_finiteCutoffContinuumBornDysonBoundarySpectralShell_disorder_zero
+      v m probeEnergy hbar pMax hvelocity hhbar hmetal hcutoff).2.1
+  have hResult := hPole.comp hWidth
+  simpa only [factor, width, E0, add_zero] using hResult
 
 end
 
