@@ -478,23 +478,6 @@ theorem ExternalInsertionDiagram.assembleComponentPairing_partner
   rw [Combinatorics.PairingOn.transport_partner, Equiv.symm_apply_apply,
     Combinatorics.PairingOn.sigmaCongrRight_partner, Equiv.symm_symm]
 
-/-- No information about the independent family of componentPairings pairings is lost by
-assembling it into an ambient perfect pairing. -/
-theorem ExternalInsertionDiagram.assembleComponentPairing_injective
-    {S : Finset (Fin N)}
-    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S) :
-    Function.Injective (d.assembleComponentPairing) := by
-  intro left right h
-  funext B
-  apply Combinatorics.PairingOn.ext
-  apply Equiv.ext
-  intro p
-  have hpartner := congrArg (fun q : Pairing (2 * S.card + E) =>
-    q.partner (d.componentDiagramLeg B p)) h
-  rw [d.assembleComponentPairing_partner left B p,
-    d.assembleComponentPairing_partner right B p] at hpartner
-  exact (d.componentDiagramLeg_strictMono B).injective hpartner
-
 /-- Rebuild the full pairing of an external-insertion diagram from the
 pairings restricted to **all of its actual connected components**.
 
