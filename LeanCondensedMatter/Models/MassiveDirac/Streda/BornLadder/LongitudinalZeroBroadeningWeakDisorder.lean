@@ -70,28 +70,12 @@ theorem tendsto_disorder_mul_momentum_integral
   filter_upwards [self_mem_nhdsWithin] with disorderStrength hdisorder
   have hdisorderC : (disorderStrength : ℂ) ≠ 0 := by
     exact_mod_cast ne_of_gt hdisorder
-  have hboundary :
-      finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceMomentumIntegralZeroBroadeningBoundary
-          e v m probeEnergy disorderStrength hbar pMax =
-        2 * q ^ 2 *
-            (((disorderStrength * momentumMeasurePrefactor hbar : ℝ) : ℂ))⁻¹ *
-            inPlaneLadderAction
-              (finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary
-                v m probeEnergy disorderStrength hbar pMax)
-              (finiteCutoffContinuumBornDysonLadderSolvedVectorZeroBroadeningBoundary
-                v m probeEnergy disorderStrength hbar pMax) 0 -
-          (((2 * Real.pi : ℝ) : ℂ)) * q ^ 2 *
-            (zeroBroadeningSameSideRadialEndpoint
-                .retarded v m probeEnergy disorderStrength hbar pMax +
-              zeroBroadeningSameSideRadialEndpoint
-                .advanced v m probeEnergy disorderStrength hbar pMax) := by
-    rfl
-  rw [hboundary]
+  unfold finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceMomentumIntegralZeroBroadeningBoundary
   simp only [inPlaneLadderAction_apply_x,
-    finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary]
+    finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary,
+    continuumBornDisorderMeasurePrefactor]
   push_cast
   dsimp [q, measure] at hmeasure ⊢
-  push_cast
   field_simp [hdisorderC, hmeasure]
 
 end FiniteCutoffBornDyson.Longitudinal.ZeroBroadeningWeakDisorder
