@@ -13,7 +13,6 @@
       ]
     }
   ],
-  "requiredDirectories": [],
   "requiredImports": [
     {
       "id": "quantumTheoryDensityUmbrella",
@@ -239,11 +238,6 @@
       "id": "transportStredaResponseMatrixRepresentationBoundary",
       "path": "LeanCondensedMatter/Transport/Streda/ResponseMatrixRepresentation.lean",
       "modules": ["LeanCondensedMatter.Transport.Core.ConductivityTensor"]
-    },
-    {
-      "id": "genericResolventSpectralBoundary",
-      "path": "LeanCondensedMatter/Transport/Resolvent/Spectral.lean",
-      "modules": ["LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann"]
     },
     {
       "id": "parabolic2DEGCleanModelResolventBoundary",

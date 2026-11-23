@@ -15,7 +15,6 @@ SPEC = ROOT / "scripts" / "architecture" / "source_contracts.json"
 
 CONTRACT_FIELDS = {
     "requiredFiles": ("id", "paths"),
-    "requiredDirectories": ("id", "paths"),
     "requiredImports": ("id", "path", "modules"),
     "exactImports": ("id", "path", "modules"),
     "forbiddenImports": ("id", "path", "modules"),
@@ -91,15 +90,6 @@ def check_required_files(errors: list[str], raw: dict[str, object]) -> None:
             path = ROOT / relative
             if not path.is_file():
                 errors.append(f"source contract `{contract_id}` missing file: {relative}")
-
-
-def check_required_directories(errors: list[str], raw: dict[str, object]) -> None:
-    for contract in raw.get("requiredDirectories", []):
-        contract_id = contract["id"]
-        for relative in contract["paths"]:
-            path = ROOT / relative
-            if not path.is_dir():
-                errors.append(f"source contract `{contract_id}` missing directory: {relative}")
 
 
 def imports_for_contract(errors: list[str], contract_id: str, relative: str) -> tuple[str, ...] | None:
@@ -186,7 +176,6 @@ def main() -> int:
         validate_spec(errors, raw)
         if not errors:
             check_required_files(errors, raw)
-            check_required_directories(errors, raw)
             check_required_imports(errors, raw)
             check_exact_imports(errors, raw)
             check_forbidden_imports(errors, raw)
