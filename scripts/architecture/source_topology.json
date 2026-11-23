@@ -134,25 +134,6 @@
       ]
     },
     {
-      "id": "analysisCurrentLayers",
-      "sourceRoots": ["LeanCondensedMatter/Analysis"],
-      "layers": [
-        {"id": "zetaCommutator", "modulePrefixes": ["LeanCondensedMatter.Analysis.ScalarExchange"]},
-        {"id": "symmetrizedProduct", "modulePrefixes": ["LeanCondensedMatter.Analysis.Operator.SymmetrizedProduct"]},
-        {"id": "currentRepresentation", "modulePrefixes": ["LeanCondensedMatter.Analysis.ConservationLaw.CurrentRepresentation"]},
-        {"id": "fluxBalanceLaw", "modulePrefixes": ["LeanCondensedMatter.Analysis.ConservationLaw.FluxBalanceLaw"]},
-        {"id": "balanceLaw", "modulePrefixes": ["LeanCondensedMatter.Analysis.ConservationLaw.BalanceLaw"]},
-        {"id": "symmetricLocalizationAlgebra", "modulePrefixes": ["LeanCondensedMatter.Analysis.ConservationLaw.SymmetricLocalizationAlgebra"]},
-        {"id": "correctedCurrentFlux", "modulePrefixes": ["LeanCondensedMatter.Analysis.ConservationLaw.CorrectedCurrentFlux"]}
-      ],
-      "edges": [
-        {"upstream": "currentRepresentation", "downstream": "balanceLaw"},
-        {"upstream": "fluxBalanceLaw", "downstream": "balanceLaw"},
-        {"upstream": "symmetrizedProduct", "downstream": "symmetricLocalizationAlgebra"},
-        {"upstream": "symmetricLocalizationAlgebra", "downstream": "correctedCurrentFlux"}
-      ]
-    },
-    {
       "id": "generalizedCurrentCrossBoundary",
       "sourceRoots": [
         "LeanCondensedMatter/Analysis",
@@ -173,41 +154,6 @@
       ],
       "edges": [
         {"upstream": "analysisCurrent", "downstream": "fermionicFieldBridge"}
-      ]
-    },
-    {
-      "id": "singleParticleCurrentLayers",
-      "sourceRoots": ["LeanCondensedMatter/QuantumMechanics/SingleParticle"],
-      "layers": [
-        {"id": "generalizedCurrent", "modulePrefixes": ["LeanCondensedMatter.QuantumMechanics.SingleParticle.GeneralizedCurrent"]},
-        {"id": "localizedTransport", "modulePrefixes": ["LeanCondensedMatter.QuantumMechanics.SingleParticle.LocalizedTransport"]},
-        {"id": "symmetrizedVelocity", "modulePrefixes": ["LeanCondensedMatter.QuantumMechanics.SingleParticle.SymmetrizedVelocityCurrent"]},
-        {"id": "correctedCurrent", "modulePrefixes": ["LeanCondensedMatter.QuantumMechanics.SingleParticle.CorrectedCurrent"]},
-        {"id": "correctedCurrentAmbiguity", "modulePrefixes": ["LeanCondensedMatter.QuantumMechanics.SingleParticle.CorrectedCurrentAmbiguity"]},
-        {"id": "chargeLikeCurrent", "modulePrefixes": ["LeanCondensedMatter.QuantumMechanics.SingleParticle.ChargeLikeCurrent"]},
-        {"id": "schwartzCurrent", "modulePrefixes": ["LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Continuity.SchwartzCurrent1D"]},
-        {"id": "schwartzSpinCurrent", "modulePrefixes": ["LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Continuity.SchwartzSpinCurrent1D"]}
-      ],
-      "edges": [
-        {"upstream": "generalizedCurrent", "downstream": "symmetrizedVelocity"},
-        {"upstream": "localizedTransport", "downstream": "symmetrizedVelocity"},
-        {"upstream": "localizedTransport", "downstream": "correctedCurrent"},
-        {"upstream": "correctedCurrent", "downstream": "correctedCurrentAmbiguity"},
-        {"upstream": "correctedCurrent", "downstream": "chargeLikeCurrent"},
-        {"upstream": "symmetrizedVelocity", "downstream": "schwartzCurrent"},
-        {"upstream": "symmetrizedVelocity", "downstream": "schwartzSpinCurrent"}
-      ]
-    },
-    {
-      "id": "fermionicTransportCurrentAdapters",
-      "sourceRoots": ["LeanCondensedMatter/SecondQuantization/Fermionic/Transport"],
-      "layers": [
-        {"id": "symmetrizedVelocity", "modulePrefixes": ["LeanCondensedMatter.SecondQuantization.Fermionic.Transport.SymmetrizedVelocityCurrent"]},
-        {"id": "correctedCurrentResponse", "modulePrefixes": ["LeanCondensedMatter.SecondQuantization.Fermionic.Transport.CorrectedCurrentResponse"]},
-        {"id": "spinCurrentResponse", "modulePrefixes": ["LeanCondensedMatter.SecondQuantization.Fermionic.Transport.SpinCurrentResponse"]}
-      ],
-      "edges": [
-        {"upstream": "symmetrizedVelocity", "downstream": "spinCurrentResponse"}
       ]
     },
     {
