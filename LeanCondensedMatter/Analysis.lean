@@ -17,7 +17,6 @@ import LeanCondensedMatter.Analysis.PowerSeries
 import LeanCondensedMatter.Analysis.PowerSeries.FrobeniusWronskian
 import LeanCondensedMatter.Analysis.ODE.RadialEnergyDecay
 import LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.FormalCoefficients
-import LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.FormalOrderOne
 import LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.HypergeometricSeries
 import LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.ThreeTermRecurrence
 import LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.RadialMoments
