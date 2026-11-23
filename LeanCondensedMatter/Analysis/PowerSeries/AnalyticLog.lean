@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Analysis.PowerSeries.MomentCumulantRecurrence
+import LeanCondensedMatter.Analysis.PowerSeries.Moment
 import Mathlib.Analysis.Analytic.Uniqueness
 import Mathlib.Analysis.Calculus.IteratedDeriv.Lemmas
 import Mathlib.Analysis.SpecialFunctions.Complex.Analytic
