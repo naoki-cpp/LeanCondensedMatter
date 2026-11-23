@@ -5,12 +5,12 @@ import LeanCondensedMatter.Models.RashbaExchange.Model.Interband
 import LeanCondensedMatter.Models.RashbaExchange.Model.OperatorSpectral
 import LeanCondensedMatter.Models.RashbaExchange.Operator
 import LeanCondensedMatter.Models.RashbaExchange.Current
-import LeanCondensedMatter.Models.RashbaExchange.FiniteMomentumSpinResponse
 import LeanCondensedMatter.Models.RashbaExchange.Response
 import LeanCondensedMatter.Models.RashbaExchange.Bastin.Berry
 import LeanCondensedMatter.Models.RashbaExchange.Bastin.Bands
 import LeanCondensedMatter.Models.RashbaExchange.Bastin.ResponseBridge
 import LeanCondensedMatter.Models.RashbaExchange.Bastin.Pole
+import LeanCondensedMatter.Models.RashbaExchange.FiniteMomentumSpinResponse
 
 set_option linter.style.header false
 
