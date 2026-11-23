@@ -350,6 +350,79 @@ theorem ExternalInsertionBlockLayout.mem_realizableInteractionSizeVectors
     refine ⟨e.symm ⟨size, σ⟩, Finset.mem_univ _, ?_⟩
     exact congrArg Sigma.fst (e.apply_symm_apply ⟨size, σ⟩)
 
+/-- A realizable family of interaction orders is exactly a natural
+degree distribution whose sum is the total Dyson order. The converse
+uses the existing canonical family-order decomposition, including
+zero-size fibers; it does not choose an extra shuffle in the sum. -/
+theorem ExternalInsertionBlockLayout.mem_realizableInteractionSizeVectors_iff_sum
+    {K n : ℕ}
+    (π : Finpartition (Finset.univ : Finset (Fin (2 * K))))
+    (size : π.parts → ℕ) :
+    size ∈ ExternalInsertionBlockLayout.realizableInteractionSizeVectors (n := n) π ↔
+      ∑ B : π.parts, size B = n := by
+  classical
+  rw [ExternalInsertionBlockLayout.mem_realizableInteractionSizeVectors]
+  constructor
+  · rintro ⟨σ⟩
+    simpa [Fintype.card_sigma] using (Fintype.card_congr σ.slotEquiv)
+  · intro hsum
+    let α := Σ B : π.parts, Fin (size B)
+    have hcard : Fintype.card (Fin n) = Fintype.card α := by
+      simpa [α] using hsum.symm
+    let order : Fin n ≃ α := Fintype.equivOfCardEq hcard
+    let dec := Combinatorics.familyOrderDecompositionEquivOfSize
+      (F := fun B : π.parts => Fin (size B)) (α := α) (total := n)
+      size (fun B => by simp) (Equiv.refl α)
+    exact ⟨(dec order).2⟩
+
+/-- The physically realizable interaction-size sum is exactly the
+coefficient of the formal product of independent block series.
+This is the finite Cauchy convolution of Mathlib's `PowerSeries.coeff_prod`,
+transported from finitely supported degree assignments to the owner's
+realizable size vectors. No factorials or per-shuffle weights occur. -/
+theorem ExternalInsertionBlockLayout.sum_realizableSize_coeff_prod
+    {K n : ℕ}
+    (π : Finpartition (Finset.univ : Finset (Fin (2 * K))))
+    (f : π.parts → PowerSeries ℂ) :
+    (∑ size ∈ ExternalInsertionBlockLayout.realizableInteractionSizeVectors (n := n) π,
+      ∏ B : π.parts, PowerSeries.coeff (size B) (f B)) =
+        PowerSeries.coeff n (∏ B : π.parts, f B) := by
+  classical
+  let e : (π.parts →₀ ℕ) ≃ (π.parts → ℕ) := Finsupp.equivFunOnFinite
+  have hmem (l : π.parts →₀ ℕ) :
+      e l ∈ ExternalInsertionBlockLayout.realizableInteractionSizeVectors (n := n) π ↔
+        l ∈ (Finset.univ : Finset π.parts).finsuppAntidiag n := by
+    rw [ExternalInsertionBlockLayout.mem_realizableInteractionSizeVectors_iff_sum,
+      Finset.mem_finsuppAntidiag]
+    simp [e]
+  have himage :
+      ((Finset.univ : Finset π.parts).finsuppAntidiag n).image e =
+        ExternalInsertionBlockLayout.realizableInteractionSizeVectors (n := n) π := by
+    ext size
+    constructor
+    · rintro ⟨l, hl, hls⟩
+      rw [← hls]
+      exact (hmem l).2 hl
+    · intro hs
+      apply Finset.mem_image.mpr
+      refine ⟨e.symm size, ?_, e.apply_symm_apply size⟩
+      apply (hmem _).1
+      simpa using hs
+  calc
+    _ = ∑ l ∈ (Finset.univ : Finset π.parts).finsuppAntidiag n,
+          ∏ B : π.parts, PowerSeries.coeff ((e l) B) (f B) := by
+      rw [← himage, Finset.sum_image]
+      intro a _ b _ hab
+      exact e.injective hab
+    _ = ∑ l ∈ (Finset.univ : Finset π.parts).finsuppAntidiag n,
+          ∏ B : π.parts, PowerSeries.coeff (l B) (f B) := by
+      apply Finset.sum_congr rfl
+      intro l _
+      apply Finset.prod_congr rfl
+      intro B _
+      simp [e]
+    _ = _ := (PowerSeries.coeff_prod f n Finset.univ).symm
+
 set_option maxHeartbeats 4000000 in
 -- Dependent diagram fibers require a larger elaboration budget for fixed-size summation.
 open Classical in
