@@ -7,24 +7,10 @@
         "LeanCondensedMatter/Combinatorics.lean",
         "LeanCondensedMatter/Crystal.lean",
         "LeanCondensedMatter/Permutation.lean",
-        "LeanCondensedMatter/QuantumTheory.lean",
         "LeanCondensedMatter/QuantumMechanics.lean",
-        "LeanCondensedMatter/Transport.lean",
         "LeanCondensedMatter/Models/KronigPenney.lean",
-        "LeanCondensedMatter/Models/MassiveDirac.lean",
-        "LeanCondensedMatter/Models/Parabolic2DEG.lean",
-        "LeanCondensedMatter/Models/RashbaExchange.lean",
-        "LeanCondensedMatter/Models.lean",
         "LeanCondensedMatter/SecondQuantization.lean"
       ]
-    },
-    {
-      "id": "quantumPovmPublicEntry",
-      "paths": ["LeanCondensedMatter/QuantumTheory/POVM.lean"]
-    },
-    {
-      "id": "linearResponseResponsePackageEntry",
-      "paths": ["LeanCondensedMatter/QuantumTheory/LinearResponse/Response.lean"]
     }
   ],
   "requiredDirectories": [],
