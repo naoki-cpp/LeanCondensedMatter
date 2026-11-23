@@ -201,9 +201,8 @@ theorem tendsto_finiteCutoffContinuumBornSelfEnergyCoefficient_scalar_normalized
           (((disorderStrength * fullAngleMomentumMeasurePrefactor hbar : ℝ) : ℂ) *
             bornSelfEnergyChannelWeight .scalar side m probeEnergy broadening)).re))
       atTop atBot := by
-  have hmeasure : 0 < fullAngleMomentumMeasurePrefactor hbar := by
-    unfold fullAngleMomentumMeasurePrefactor momentumMeasurePrefactor
-    positivity
+  have hmeasure : 0 < fullAngleMomentumMeasurePrefactor hbar :=
+    fullAngleMomentumMeasurePrefactor_pos hbar (ne_of_gt hhbar)
   have hfactor :
       ((disorderStrength * fullAngleMomentumMeasurePrefactor hbar : ℝ) : ℂ) *
         bornSelfEnergyChannelWeight .scalar side m probeEnergy broadening ≠ 0 :=
@@ -229,9 +228,8 @@ theorem tendsto_finiteCutoffContinuumBornSelfEnergyCoefficient_z_normalized_re_a
           (((disorderStrength * fullAngleMomentumMeasurePrefactor hbar : ℝ) : ℂ) *
             bornSelfEnergyChannelWeight .z side m probeEnergy broadening)).re))
       atTop atBot := by
-  have hmeasure : 0 < fullAngleMomentumMeasurePrefactor hbar := by
-    unfold fullAngleMomentumMeasurePrefactor momentumMeasurePrefactor
-    positivity
+  have hmeasure : 0 < fullAngleMomentumMeasurePrefactor hbar :=
+    fullAngleMomentumMeasurePrefactor_pos hbar (ne_of_gt hhbar)
   have hweight :
       bornSelfEnergyChannelWeight .z side m probeEnergy broadening ≠ 0 := by
     simpa [bornSelfEnergyChannelWeight,
