@@ -314,6 +314,136 @@ theorem sum_fixedExternalPartitionDysonFiber_eq_assignmentOrderedDyson
     anchor π heven ε β g labels times]
   simp only [ExternalInsertionBlockLayout.assembleDiagram_dysonAmplitude_eq_assignmentOrdered]
 
+/-- The finite set of interaction-size vectors realizable by an actual
+assignment of the `n` ambient interaction slots to the blocks of `π`.
+Each vector is counted once, independently of the number of shuffles
+realizing it. Zero-interaction blocks are retained. -/
+noncomputable def ExternalInsertionBlockLayout.realizableInteractionSizeVectors
+    {K n : ℕ}
+    (π : Finpartition (Finset.univ : Finset (Fin (2 * K)))) :
+    Finset (π.parts → ℕ) := by
+  classical
+  exact (Finset.univ : Finset (Fin n → π.parts)).image
+    (fun owner =>
+      ((Combinatorics.ownerSizeShuffleEquiv (ι := π.parts) (total := n)) owner).1)
+
+/-- A size vector occurs in the finite owner-assignment domain precisely
+when at least one order-preserving owner shuffle realizes it. -/
+theorem ExternalInsertionBlockLayout.mem_realizableInteractionSizeVectors
+    {K n : ℕ}
+    (π : Finpartition (Finset.univ : Finset (Fin (2 * K))))
+    (size : π.parts → ℕ) :
+    size ∈ ExternalInsertionBlockLayout.realizableInteractionSizeVectors (n := n) π ↔
+      Nonempty (Combinatorics.FamilySlotShuffleTo size n) := by
+  classical
+  let e := Combinatorics.ownerSizeShuffleEquiv (ι := π.parts) (total := n)
+  change size ∈ (Finset.univ : Finset (Fin n → π.parts)).image
+      (fun owner => (e owner).1) ↔ _
+  constructor
+  · rintro ⟨owner, _, howner⟩
+    change (e owner).1 = size at howner
+    cases howner
+    exact ⟨(e owner).2⟩
+  · rintro ⟨σ⟩
+    apply Finset.mem_image.mpr
+    refine ⟨e.symm ⟨size, σ⟩, Finset.mem_univ _, ?_⟩
+    exact congrArg Sigma.fst (e.apply_symm_apply ⟨size, σ⟩)
+
+open Classical in
+/-- Phase 5B (size summation): the genuine fixed-partition physical
+order-`n` Dyson fiber equals the signed sum, counted once per realizable
+interaction-size vector, of products of independently connected physical
+Dyson coefficients. The fixed-size integral/shuffle factorization is reused
+whole; no extra shuffle multiplicity or pointwise integral invariance
+is introduced. -/
+theorem sum_fixedExternalPartitionDysonFiber_eq_sum_realizableSizes_signedProduct
+    {K n : ℕ} (anchor : Fin (2 * K))
+    (π : Finpartition (Finset.univ : Finset (Fin (2 * K))))
+    (heven : ∀ B : π.parts, Even (B : Finset (Fin (2 * K))).card)
+    (ε : Mode → ℝ) (β : ℝ) (hβ : 0 ≤ β)
+    (g : QuarticVertexLabel Mode → ℂ)
+    (labels : Fin (2 * K) → ExternalFieldLabel Mode)
+    (times : Fin (2 * K) → ℝ) :
+    (∑ d : VacuumFreeFixedExternalInsertionWickDiagram Mode K n labels,
+      if externalComponentPartition d.1.1.vertexGraph = π then
+        d.1.1.dysonAmplitude ε β g times else 0) =
+      ∑ size ∈ ExternalInsertionBlockLayout.realizableInteractionSizeVectors (n := n) π,
+        externalPartitionSourceSign π *
+          ∏ B : π.parts,
+            ∑ d : {d : ExternalInsertionWickDiagram Mode
+                ((B : Finset (Fin (2 * K))).card / 2) (size B) //
+                d.vertexGraph.Preconnected},
+              if d.1.externalLabel =
+                  evenExternalSubsetLabels labels (B : Finset (Fin (2 * K))) (heven B)
+              then d.1.dysonAmplitude ε β g
+                (evenExternalSubsetTimes times (B : Finset (Fin (2 * K))) (heven B))
+              else 0 := by
+  classical
+  let P := {d : {d : ExternalInsertionWickDiagram Mode K n //
+      HasNoVacuumComponent d.vertexGraph} //
+      externalComponentPartition d.1.vertexGraph = π}
+  let e := ExternalInsertionBlockLayout.fixedPartitionPhysicalSizeShuffleEquiv
+    (E := K) (N := n) (ExternalLabel := ExternalFieldLabel Mode)
+    (InternalLabel := QuarticVertexLabel Mode) anchor π heven
+  let sizeOf : P → π.parts → ℕ := fun d => (e d).1.1
+  let sizes := ExternalInsertionBlockLayout.realizableInteractionSizeVectors (n := n) π
+  let weight : P → ℂ := fun d =>
+    if d.1.1.externalLabel = labels then d.1.1.dysonAmplitude ε β g times else 0
+  have hmem (d : P) : sizeOf d ∈ sizes := by
+    let ownerEquiv := Combinatorics.ownerSizeShuffleEquiv
+      (ι := π.parts) (total := n)
+    change (e d).1.1 ∈ (Finset.univ : Finset (Fin n → π.parts)).image
+      (fun owner => (ownerEquiv owner).1)
+    apply Finset.mem_image.mpr
+    refine ⟨ownerEquiv.symm (e d).1, Finset.mem_univ _, ?_⟩
+    exact congrArg Sigma.fst (ownerEquiv.apply_symm_apply (e d).1)
+  have hphysical :
+      (∑ d : VacuumFreeFixedExternalInsertionWickDiagram Mode K n labels,
+        if externalComponentPartition d.1.1.vertexGraph = π then
+          d.1.1.dysonAmplitude ε β g times else 0) =
+        ∑ d : P, weight d := by
+    rw [sum_vacuumFreeFixedExternalInsertionWickDiagram_partition
+      π labels (fun d : ExternalInsertionWickDiagram Mode K n =>
+        d.dysonAmplitude ε β g times)]
+    simpa only [P, weight, Finset.sum_filter] using
+      (Finset.sum_subtype
+        (p := fun d : {d : ExternalInsertionWickDiagram Mode K n //
+          HasNoVacuumComponent d.vertexGraph} =>
+          externalComponentPartition d.1.vertexGraph = π)
+        ((Finset.univ : Finset
+          {d : ExternalInsertionWickDiagram Mode K n //
+            HasNoVacuumComponent d.vertexGraph}).filter
+          (fun d => externalComponentPartition d.1.vertexGraph = π))
+        (fun _ => by simp)
+        (fun d : {d : ExternalInsertionWickDiagram Mode K n //
+          HasNoVacuumComponent d.vertexGraph} =>
+          if d.1.externalLabel = labels then
+            d.1.dysonAmplitude ε β g times else 0)).symm
+  have hgroup :
+      (∑ d : P, weight d) =
+        ∑ size ∈ sizes, ∑ d : {d : P // sizeOf d = size}, weight d.1 := by
+    rw [(Finset.sum_fiberwise_of_maps_to
+      (s := (Finset.univ : Finset P)) (t := sizes) (g := sizeOf)
+      (fun d _ => hmem d) weight).symm]
+    apply Finset.sum_congr rfl
+    intro size _
+    simpa only [Finset.sum_filter] using
+      (Finset.sum_subtype
+        (p := fun d : P => sizeOf d = size)
+        ((Finset.univ : Finset P).filter (fun d => sizeOf d = size))
+        (fun _ => by simp) weight).symm
+  calc
+    _ = ∑ d : P, weight d := hphysical
+    _ = ∑ size ∈ sizes,
+          ∑ d : {d : P // sizeOf d = size}, weight d.1 := hgroup
+    _ = _ := by
+      apply Finset.sum_congr rfl
+      intro size hs
+      obtain ⟨σ⟩ :=
+        (ExternalInsertionBlockLayout.mem_realizableInteractionSizeVectors π size).mp hs
+      exact ExternalInsertionBlockLayout.sum_physicalFixedSizeDyson_eq_signedProduct
+        anchor π heven σ labels ε β hβ g times
+
 /-- The full fixed-order physical Dyson coefficient is reindexed by even
 external-component partitions and independently labelled connected blocks.
 The owner assignments and genuine assembled Dyson amplitudes are retained:
