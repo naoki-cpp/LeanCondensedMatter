@@ -1043,6 +1043,86 @@ private noncomputable def externalSubsetLocalPartition
     rw [hTEmpty] at hiT
     simpa using hiT
 
+/-- Reindexing external-source partitions along the canonical increasing
+order isomorphism is a genuine equivalence, not a mere relabeling of
+the number of blocks. Its two directions preserve all source supports. -/
+private noncomputable def externalSubsetPartitionEquiv
+    (S : Finset (Fin (2 * E))) (heven : Even S.card) :
+    Finpartition (Finset.univ : Finset (Fin (2 * (S.card / 2)))) ≃
+      Finpartition S := by
+  classical
+  let e := evenExternalSubsetOrderIso S heven
+  let emb : Fin (2 * (S.card / 2)) ↪ Fin (2 * E) :=
+    ⟨fun i => (e i).1, fun i j hij => e.injective (Subtype.ext hij)⟩
+  let f : Finset (Fin (2 * (S.card / 2))) → Finset (Fin (2 * E)) :=
+    fun B => B.map emb
+  let g : Finset (Fin (2 * E)) → Finset (Fin (2 * (S.card / 2))) :=
+    fun T => Finset.univ.filter (fun i => (e i).1 ∈ T)
+  have hgf (B : Finset (Fin (2 * (S.card / 2)))) :
+      g (f B) = B := by
+    ext i
+    constructor
+    · intro hi
+      obtain ⟨j, hj, hji⟩ := Finset.mem_map.mp (Finset.mem_filter.mp hi).2
+      have h : j = i := emb.injective hji
+      simpa [h] using hj
+    · intro hi
+      exact Finset.mem_filter.mpr
+        ⟨Finset.mem_univ _, Finset.mem_map.mpr ⟨i, hi, rfl⟩⟩
+  have hfg (T : Finset (Fin (2 * E))) (hT : T ⊆ S) :
+      f (g T) = T := by
+    ext x
+    constructor
+    · intro hx
+      obtain ⟨i, hi, hix⟩ := Finset.mem_map.mp hx
+      have hmem : (e i).1 ∈ T := (Finset.mem_filter.mp hi).2
+      exact hix ▸ hmem
+    · intro hx
+      let i := e.symm ⟨x, hT hx⟩
+      apply Finset.mem_map.mpr
+      refine ⟨i, ?_, ?_⟩
+      · simp [g, i, hx]
+      · simp [emb, i]
+  refine
+    { toFun := externalSubsetReindexPartition S heven
+      invFun := externalSubsetLocalPartition S heven
+      left_inv := ?_
+      right_inv := ?_ }
+  · intro π
+    apply Finpartition.ext
+    change (π.parts.image f).image g = π.parts
+    ext B
+    constructor
+    · intro hB
+      obtain ⟨T, hT, hTB⟩ := Finset.mem_image.mp hB
+      obtain ⟨C, hC, hCT⟩ := Finset.mem_image.mp hT
+      have hBC : B = C := by
+        calc
+          B = g T := hTB.symm
+          _ = g (f C) := congrArg g hCT.symm
+          _ = C := hgf C
+      simpa [hBC] using hC
+    · intro hB
+      exact Finset.mem_image.mpr
+        ⟨f B, Finset.mem_image.mpr ⟨B, hB, rfl⟩, hgf B⟩
+  · intro σ
+    apply Finpartition.ext
+    change (σ.parts.image g).image f = σ.parts
+    ext T
+    constructor
+    · intro hT
+      obtain ⟨B, hB, hBT⟩ := Finset.mem_image.mp hT
+      obtain ⟨C, hC, hCB⟩ := Finset.mem_image.mp hB
+      have hTC : T = C := by
+        calc
+          T = f B := hBT.symm
+          _ = f (g C) := congrArg f hCB.symm
+          _ = C := hfg C (σ.le hC)
+      simpa [hTC] using hC
+    · intro hT
+      exact Finset.mem_image.mpr
+        ⟨g T, Finset.mem_image.mpr ⟨T, hT, rfl⟩, hfg T (σ.le hT)⟩
+
 set_option maxHeartbeats 4000000 in
 -- The connected series of a source subset has an index depending on its cardinality.
 open Classical in
