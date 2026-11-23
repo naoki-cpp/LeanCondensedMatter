@@ -394,13 +394,19 @@ theorem ExternalInsertionBlockLayout.sum_realizableSize_coeff_prod
         l ∈ (Finset.univ : Finset π.parts).finsuppAntidiag n := by
     rw [ExternalInsertionBlockLayout.mem_realizableInteractionSizeVectors_iff_sum,
       Finset.mem_finsuppAntidiag]
-    simp [e]
+    constructor
+    · intro hs
+      refine ⟨?_, Finset.subset_univ _⟩
+      simpa only [e, Finsupp.equivFunOnFinite_apply] using hs
+    · rintro ⟨hs, _⟩
+      simpa only [e, Finsupp.equivFunOnFinite_apply] using hs
   have himage :
       ((Finset.univ : Finset π.parts).finsuppAntidiag n).image e =
         ExternalInsertionBlockLayout.realizableInteractionSizeVectors (n := n) π := by
     ext size
     constructor
-    · rintro ⟨l, hl, hls⟩
+    · intro hs
+      obtain ⟨l, hl, hls⟩ := Finset.mem_image.mp hs
       rw [← hls]
       exact (hmem l).2 hl
     · intro hs
@@ -522,12 +528,12 @@ theorem sum_fixedExternalPartitionDysonFiber_eq_sum_realizableSizes_signedProduc
 
 set_option maxHeartbeats 4000000 in
 -- The dependent local diagram enumerations expand inside a finite series product.
+open Classical in
 /-- The genuine fixed-external-partition physical Dyson coefficient is
 the Koszul-signed coefficient of the product of *local preconnected Wick
 diagram series*. This uses the realizable-size Cauchy bridge directly,
 without introducing a separately defined generating-function model or
 claiming invariance of an individual ordered-simplex integral. -/
-open Classical in
 theorem sum_fixedExternalPartitionDysonFiber_eq_signedCoeffPreconnectedSeries
     {K n : ℕ} (anchor : Fin (2 * K))
     (π : Finpartition (Finset.univ : Finset (Fin (2 * K))))
