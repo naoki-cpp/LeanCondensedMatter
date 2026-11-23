@@ -276,20 +276,6 @@
         {"upstream": "entropy", "downstream": "freeEntropy"},
         {"upstream": "eigenbasis", "downstream": "freeEntropy"}
       ]
-    },
-    {
-      "id": "completedThermalBoundary",
-      "sourceRoots": [
-        "LeanCondensedMatter/SecondQuantization/Fermionic/CompletedSpace",
-        "LeanCondensedMatter/SecondQuantization/Fermionic/Thermal/Completed"
-      ],
-      "layers": [
-        {"id": "completedSpace", "modulePrefixes": ["LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace"]},
-        {"id": "completedThermal", "modulePrefixes": ["LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed"]}
-      ],
-      "edges": [
-        {"upstream": "completedSpace", "downstream": "completedThermal"}
-      ]
     }
   ],
   "forbiddenReachability": [
