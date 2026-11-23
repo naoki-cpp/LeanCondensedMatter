@@ -1,20 +1,104 @@
 import LeanCondensedMatter.Analysis.PowerSeries.CoefficientSum
 import LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.FormalAnalyticBridgeJ
-import LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.FormalAnalyticBridgeY
+import LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.FormalOrderOne
+import LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.Y1Series
 
 set_option linter.style.header false
 
 /-!
-# Unconditional analytic Bessel J/Y Wronskian
+# Formal Y-series bridge and unconditional analytic Bessel J/Y Wronskian
 
 Transport the normalized formal J₀/H₀/H₁ harmonic identity from ℂ⟦X⟧
 to absolutely convergent complex series using coefficientwise evaluations
 and the proven power-series Cauchy-product theorems. The result is the
 unconditional J/Y Wronskian for the concrete DLMF second-kind series
-at nonzero complex arguments.
+at nonzero complex arguments. The exact termwise Y-series bridge is proved first.
 
 This module does not depend on transport, Fourier geometry or physical models.
 -/
+
+/-!
+# Formal-to-analytic bridge between formal and convergent Y harmonic series
+
+The formal coefficient calculations in FormalOrderOne are for
+power-series coefficients `A,B,C`. This module verifies that the
+realized DLMF harmonic corrections from merged PR #4529 are **exactly**
+the coefficientwise `tsum` evaluations of `B` and `C` at
+`x=-(z/2)²`. No change of analytic functions, no new hypothesis,
+and no shortcut using a topologically nilpotent formal-power-series
+evaluation at arbitrary complex arguments.
+
+The equivalence is a termwise identity with absolutely convergent sums.
+Polynomial products and formal Wronskian identities are transported
+through these evaluations in the analytic Wronskian results below.
+-/
+
+namespace BesselSecondKind
+
+open BesselFormal
+
+noncomputable section
+
+/-- The n-th actual Y₀ harmonic correction summand is the
+corresponding formal coefficient evaluated at x=-(z/2)². -/
+theorem besselY0HarmonicTerm_eq_formal (z : ℂ) (n : ℕ) :
+    besselY0HarmonicTerm z n =
+      PowerSeries.coeff n besselFormalH0 * (-(z / 2) ^ 2) ^ n := by
+  simp only [besselY0HarmonicTerm, besselFormalH0, PowerSeries.coeff_mk]
+  simp only [div_eq_mul_inv, Complex.ofReal_ratCast]
+  ring_nf
+
+/-- A real, absolutely convergent second-kind Y₀ correction is
+the termwise sum of the **proved formal** harmonic coefficients. -/
+theorem besselY0HarmonicCorrection_eq_formalTsum (z : ℂ) :
+    besselY0HarmonicCorrection z =
+      ∑' n : ℕ, PowerSeries.coeff n besselFormalH0 *
+        (-(z / 2) ^ 2) ^ n := by
+  unfold besselY0HarmonicCorrection
+  apply tsum_congr
+  intro n
+  exact besselY0HarmonicTerm_eq_formal z n
+
+/-- The coefficientwise evaluation of the formal H₀ series converges
+absolutely at every complex argument, by the already proved concrete
+Y₀ harmonic-term bound. -/
+theorem summable_besselFormalH0_eval (z : ℂ) :
+    Summable (fun n : ℕ =>
+      PowerSeries.coeff n besselFormalH0 * (-(z / 2) ^ 2) ^ n) := by
+  simpa only [← besselY0HarmonicTerm_eq_formal] using
+    (summable_besselY0HarmonicTerm z)
+
+/-- The n-th actual Y₁ harmonic correction summand is the
+corresponding order-one formal coefficient. -/
+theorem besselY1HarmonicTerm_eq_formal (z : ℂ) (n : ℕ) :
+    besselY1HarmonicTerm z n =
+      PowerSeries.coeff n besselFormalH1 * (-(z / 2) ^ 2) ^ n := by
+  simp only [besselY1HarmonicTerm, besselFormalH1, PowerSeries.coeff_mk]
+  simp only [div_eq_mul_inv, Complex.ofReal_ratCast]
+  ring_nf
+
+/-- The actual absolutely convergent Y₁ correction
+is the precise coefficientwise evaluation of its formal series. -/
+theorem besselY1HarmonicCorrection_eq_formalTsum (z : ℂ) :
+    besselY1HarmonicCorrection z =
+      ∑' n : ℕ, PowerSeries.coeff n besselFormalH1 *
+        (-(z / 2) ^ 2) ^ n := by
+  unfold besselY1HarmonicCorrection
+  apply tsum_congr
+  intro n
+  exact besselY1HarmonicTerm_eq_formal z n
+
+/-- The coefficientwise evaluation of the formal H₁ series also
+converges absolutely at every complex argument. -/
+theorem summable_besselFormalH1_eval (z : ℂ) :
+    Summable (fun n : ℕ =>
+      PowerSeries.coeff n besselFormalH1 * (-(z / 2) ^ 2) ^ n) := by
+  simpa only [← besselY1HarmonicTerm_eq_formal] using
+    (summable_besselY1HarmonicTerm z)
+
+end
+
+end BesselSecondKind
 
 namespace BesselSecondKind
 
