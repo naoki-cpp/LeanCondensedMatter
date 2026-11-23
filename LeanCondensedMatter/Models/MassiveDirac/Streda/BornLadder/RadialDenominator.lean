@@ -63,11 +63,7 @@ theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTrace
     finiteCutoffContinuumBornDysonScalarCoefficient
     finiteCutoffContinuumBornDysonPauliCoefficient InternalSpace.pauliAxisComponent
   simp only [Matrix.cons_val_zero, Matrix.cons_val_one, mul_zero, mul_one, sub_zero]
-  have hpi : (((4 * Real.pi : ℝ) : ℂ)) =
-      (2 : ℂ) * (((2 * Real.pi : ℝ) : ℂ)) := by
-    push_cast
-    ring
-  rw [hpi]
+  push_cast
   ring
 
 /-- Numerator multiplying the common finite-`η` RA Born-Dyson denominator in the ordered `xy`
@@ -127,11 +123,7 @@ private theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngu
             1 0 v m p probeEnergy broadening disorderStrength hbar pMax]
       unfold finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceRadialNumerator
       dsimp only
-      have hpi : (((4 * Real.pi : ℝ) : ℂ)) =
-          (2 : ℂ) * (((2 * Real.pi : ℝ) : ℂ)) := by
-        push_cast
-        ring
-      rw [hpi]
+      push_cast
       ring
 
 /-- The ordered `xy` radial Hall-surface integrand is the measured-`x`, source-`y` Středa radial
