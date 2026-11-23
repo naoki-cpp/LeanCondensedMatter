@@ -966,6 +966,47 @@ noncomputable def externalSubsetMomentSeries
       (evenExternalSubsetTimes times S heven)
   else exact 0
 
+set_option maxHeartbeats 4000000 in
+-- The connected series of a source subset has an index depending on its cardinality.
+open Classical in
+/-- The physical moment of any nonempty even external source subset has
+an explicit signed connected-partition expansion on its *canonically
+renumbered* external slots. This is the full-series 5B result applied to
+the increasing source-subset order; the subsequent identification with
+partitions of the original ambient subset requires order/sign transport. -/
+theorem externalSubsetMomentSeries_eq_signedConnectedSum_localIndices
+    (ε : Mode → ℝ) (β : ℝ) (hβ : 0 ≤ β)
+    (g : QuarticVertexLabel Mode → ℂ)
+    (labels : Fin (2 * E) → ExternalFieldLabel Mode)
+    (times : Fin (2 * E) → ℝ)
+    (S : Finset (Fin (2 * E))) (hS : S ≠ ∅) (heven : Even S.card) :
+    externalSubsetMomentSeries ε β g labels times S =
+      ∑ π : Finpartition
+          (Finset.univ : Finset (Fin (2 * (S.card / 2)))),
+        if hevenBlocks : ∀ B : π.parts,
+            Even (B : Finset (Fin (2 * (S.card / 2)))).card then
+          PowerSeries.C (externalPartitionSourceSign π) *
+            ∏ B : π.parts,
+              connectedExternalInsertionDysonSeries ε β g
+                (evenExternalSubsetLabels
+                  (evenExternalSubsetLabels labels S heven)
+                  (B : Finset (Fin (2 * (S.card / 2)))) (hevenBlocks B))
+                (evenExternalSubsetTimes
+                  (evenExternalSubsetTimes times S heven)
+                  (B : Finset (Fin (2 * (S.card / 2)))) (hevenBlocks B))
+        else 0 := by
+  classical
+  have hpositive : 0 < 2 * (S.card / 2) := by
+    have hsCard : 0 < S.card :=
+      Finset.card_pos.mpr (Finset.nonempty_iff_ne_empty.mpr hS)
+    obtain ⟨k, hk⟩ := heven
+    omega
+  have hfull := vacuumFreeExternalInsertionDysonSeries_eq_sum_evenPartitionConnectedSeries
+    (anchor := (⟨0, hpositive⟩ : Fin (2 * (S.card / 2))))
+    ε β hβ g (evenExternalSubsetLabels labels S heven)
+      (evenExternalSubsetTimes times S heven)
+  simpa [externalSubsetMomentSeries, hS, heven] using hfull
+
 /-- The source-subset moment is the vacuum-normalized *physical* vertex-Dyson
 correlator for every nonempty even external subset. Multiplication by the
 normalized vacuum partition series recovers the operator insertion series.
