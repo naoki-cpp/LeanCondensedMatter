@@ -340,7 +340,8 @@ theorem ExternalInsertionBlockLayout.mem_realizableInteractionSizeVectors
   change size ∈ (Finset.univ : Finset (Fin n → π.parts)).image
       (fun owner => (e owner).1) ↔ _
   constructor
-  · rintro ⟨owner, _, howner⟩
+  · intro hs
+    obtain ⟨owner, _, howner⟩ := Finset.mem_image.mp hs
     change (e owner).1 = size at howner
     cases howner
     exact ⟨(e owner).2⟩
@@ -349,6 +350,7 @@ theorem ExternalInsertionBlockLayout.mem_realizableInteractionSizeVectors
     refine ⟨e.symm ⟨size, σ⟩, Finset.mem_univ _, ?_⟩
     exact congrArg Sigma.fst (e.apply_symm_apply ⟨size, σ⟩)
 
+set_option maxHeartbeats 4000000 in
 open Classical in
 /-- Phase 5B (size summation): the genuine fixed-partition physical
 order-`n` Dyson fiber equals the signed sum, counted once per realizable
@@ -418,7 +420,7 @@ theorem sum_fixedExternalPartitionDysonFiber_eq_sum_realizableSizes_signedProduc
         (fun d : {d : ExternalInsertionWickDiagram Mode K n //
           HasNoVacuumComponent d.vertexGraph} =>
           if d.1.externalLabel = labels then
-            d.1.dysonAmplitude ε β g times else 0)).symm
+            d.1.dysonAmplitude ε β g times else 0))
   have hgroup :
       (∑ d : P, weight d) =
         ∑ size ∈ sizes, ∑ d : {d : P // sizeOf d = size}, weight d.1 := by
@@ -444,6 +446,8 @@ theorem sum_fixedExternalPartitionDysonFiber_eq_sum_realizableSizes_signedProduc
       exact ExternalInsertionBlockLayout.sum_physicalFixedSizeDyson_eq_signedProduct
         anchor π heven σ labels ε β hβ g times
 
+set_option maxHeartbeats 4000000 in
+open Classical in
 /-- Coefficientwise physical signed external-partition expansion at a
 fixed interaction order. Odd external-component partitions vanish, while
 every even partition contributes the sum of connected-block products
