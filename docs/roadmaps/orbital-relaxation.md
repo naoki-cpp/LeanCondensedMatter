@@ -145,15 +145,17 @@ and transport-normalization assumptions.
 2. **Finite orbital benchmark.** Define the spin-1 matrices and `Hₒₘ`, fix
    units and the off-diagonal sum convention, and prove Hermiticity, inversion
    symmetry, trace identities, and the relevant double-commutator identity.
-3. **Angular and collision benchmark.** Prove the needed moments of the
-   normalized sphere measure, including fourth-order moments. Specify an
-   isotropic elastic collision operator and show its action on the degree-two
-   polynomial subspace is multiplication by `-I₂`; distinguish this from the
-   momentum relaxation mode `I₁`.
-4. **Orbital relaxation endpoint.** Under a stated second-order closure,
-   derive the averaged orbital equation, its rate `Γₒ(k)`, and exponential
-   decay. Keep a fixed-radius result separate from any Fermi-surface or
-   finite-temperature average.
+3. **Angular and collision benchmark.** The normalized continuous sphere moments
+   (including fourth-order moments), six-direction collision eigenvalues, and
+   continuous zonal `P₂` loss rate at a reference pole are proved. The
+   **all-directions** isotropic collision operator and its full degree-two
+   eigenfunction/Funk–Hecke theorem remain to be established; distinguish
+   that target from the momentum mode `I₁`.
+4. **Orbital relaxation endpoint.** The rate `Γₒ(k)` and exponential
+   polarization decay are proved **conditional on a supplied quasistationary
+   second-order kinetic closure**; they do not derive that closure from
+   microscopic dynamics. A controlled closure derivation, Fermi-surface
+   average, and finite-temperature extension remain open.
 5. **Multipolar finite benchmark.** Define the traceless quadrupole sector;
    prove the `t₂g` projector and resolvent identities; identify invariant
    dipole/quadrupole blocks of a specified kinetic generator; and prove the
@@ -182,9 +184,23 @@ identification and spectral-parameter specialization.
 
 
 The normalized continuous spherical-coordinate average and its Cartesian fourth moments
-live in `Analysis.Geometry.SphericalMoments`. The orbital module proves only the finite
-cubature comparison and the double-commutator specialization; it does not identify the
-spherical chart integral with an arbitrary probability measure on a Fermi surface.
+live in `Analysis.Geometry.SphericalMoments`.
+[`Models/OrbitalRelaxation/SphereMoments.lean`](../../LeanCondensedMatter/Models/OrbitalRelaxation/SphereMoments.lean)
+proves `sphericalAverage_orbitalDoubleCommutator` and
+`orbitalRate_eq_sphericalAverage`: the physical double commutator has its
+continuous spherical-coordinate average, and the finite-cubature rate agrees
+with it **for this quartic integrand**. These results do not identify the
+spherical chart measure with an arbitrary Fermi-surface probability measure.
+
+[`Models/OrbitalRelaxation/ContinuousZonalScattering.lean`](../../LeanCondensedMatter/Models/OrbitalRelaxation/ContinuousZonalScattering.lean)
+proves `sphericalAverage_zonal` for continuous polar-angle profiles,
+`continuousDegreeTwoRate_eq_sphericalAverage` for continuous `W`, and
+`continuousZonalCollisionAtNorth_P2` for the reference incoming north-pole
+direction. The concrete nonconstant kernel `W(μ) = a + cμ²` has the exact
+`quadraticZonal_degreeTwoRate` value `I₂ = a + c/5`.
+These are genuine continuous angular **integrals**, but they do not prove an
+SO(3)-equivariant collision operator, degree-two eigenfunctions for all
+incoming directions, or a microscopic kinetic closure.
 
 
 `QuantumTheory.DensityOperator` and finite-dimensional expectations provide
