@@ -262,20 +262,13 @@ theorem tendsto_finiteCutoffContinuumBornDenominatorIntegral_broadening_zero
         (pauliGreenDenominator side v m pMax 0 probeEnergy 0).re < 0 := by
       rw [pauliGreenDenominator_radial_re]
       nlinarith
-    have hzeroDen :
-        pauliGreenDenominator side v m 0 0 probeEnergy 0 ≠ 0 := by
-      intro hzero
-      have hreZero :
-          (pauliGreenDenominator side v m 0 0 probeEnergy 0).re = 0 := by
-        simpa using congrArg Complex.re hzero
-      linarith
-    have hcutoffDen :
-        pauliGreenDenominator side v m pMax 0 probeEnergy 0 ≠ 0 := by
-      intro hzero
-      have hreZero :
-          (pauliGreenDenominator side v m pMax 0 probeEnergy 0).re = 0 := by
-        simpa using congrArg Complex.re hzero
-      linarith
+    have hnonzero {p : ℝ}
+        (hre : (pauliGreenDenominator side v m p 0 probeEnergy 0).re ≠ 0) :
+        pauliGreenDenominator side v m p 0 probeEnergy 0 ≠ 0 := by
+      intro hz
+      exact hre (by simpa using congrArg Complex.re hz)
+    have hzeroDen := hnonzero (ne_of_gt hzeroRe)
+    have hcutoffDen := hnonzero (ne_of_lt hcutoffRe)
     have hnorm (p : ℝ) :
         Tendsto
           (fun broadening : ℝ =>
