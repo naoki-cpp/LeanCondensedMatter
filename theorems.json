@@ -2149,7 +2149,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "BesselSecondKind.besselY0HarmonicCorrection_eq_formalTsum",
-    "module": "LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.FormalAnalyticBridgeY",
+    "module": "LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.AnalyticWronskian",
     "externalAxioms": [],
     "docString": "A real, absolutely convergent second-kind Y₀ correction is\nthe termwise sum of the **proved formal** harmonic coefficients. ",
     "directWrapperTargetModule": null,
@@ -2231,7 +2231,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "BesselSecondKind.besselY0HarmonicTerm_eq_formal",
-    "module": "LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.FormalAnalyticBridgeY",
+    "module": "LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.AnalyticWronskian",
     "externalAxioms": [],
     "docString": "The n-th actual Y₀ harmonic correction summand is the\ncorresponding formal coefficient evaluated at x=-(z/2)². ",
     "directWrapperTargetModule": null,
@@ -2466,7 +2466,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "BesselSecondKind.besselY1HarmonicCorrection_eq_formalTsum",
-    "module": "LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.FormalAnalyticBridgeY",
+    "module": "LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.AnalyticWronskian",
     "externalAxioms": [],
     "docString": "The actual absolutely convergent Y₁ correction\nis the precise coefficientwise evaluation of its formal series. ",
     "directWrapperTargetModule": null,
@@ -2510,7 +2510,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "BesselSecondKind.besselY1HarmonicTerm_eq_formal",
-    "module": "LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.FormalAnalyticBridgeY",
+    "module": "LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.AnalyticWronskian",
     "externalAxioms": [],
     "docString": "The n-th actual Y₁ harmonic correction summand is the\ncorresponding order-one formal coefficient. ",
     "directWrapperTargetModule": null,
@@ -2774,7 +2774,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "BesselSecondKind.summable_besselFormalH0_eval",
-    "module": "LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.FormalAnalyticBridgeY",
+    "module": "LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.AnalyticWronskian",
     "externalAxioms": [],
     "docString": "The coefficientwise evaluation of the formal H₀ series converges\nabsolutely at every complex argument, by the already proved concrete\nY₀ harmonic-term bound. ",
     "directWrapperTargetModule": null,
@@ -2818,7 +2818,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "BesselSecondKind.summable_besselFormalH1_eval",
-    "module": "LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.FormalAnalyticBridgeY",
+    "module": "LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.AnalyticWronskian",
     "externalAxioms": [],
     "docString": "The coefficientwise evaluation of the formal H₁ series also\nconverges absolutely at every complex argument. ",
     "directWrapperTargetModule": null,
@@ -5635,14 +5635,14 @@
     "retainedMention": true,
     "projectAxioms": [],
     "name": "Combinatorics.FamilySlotShuffleTo.continuous_ambientIntegrand",
-    "module": "LeanCondensedMatter.Analysis.OrderedSimplex.FamilyShuffleIntegrand",
+    "module": "LeanCondensedMatter.Analysis.OrderedSimplex.FamilyShuffle",
     "externalAxioms": [],
     "docString": "A finite product of continuous local integrands remains continuous after embedding their\ncoordinates by an arbitrary-total family shuffle. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "_private.LeanCondensedMatter.Analysis.OrderedSimplex.FamilyShuffleIntegrand.0.Combinatorics.FamilySlotShuffleTo.continuous_timeAssignment"
+      "_private.LeanCondensedMatter.Analysis.OrderedSimplex.FamilyShuffle.0.Combinatorics.FamilySlotShuffleTo.continuous_timeAssignment"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -5810,7 +5810,7 @@
     "retainedMention": true,
     "projectAxioms": [],
     "name": "Combinatorics.FamilySlotShuffleTo.measurableLocallyBounded_ambientIntegrand",
-    "module": "LeanCondensedMatter.Analysis.OrderedSimplex.FamilyShuffleIntegrand",
+    "module": "LeanCondensedMatter.Analysis.OrderedSimplex.FamilyShuffle",
     "externalAxioms": [],
     "docString": "A finite product of measurable locally bounded local integrands remains measurable locally\nbounded after embedding their coordinates by an arbitrary-total family shuffle. ",
     "directWrapperTargetModule": null,
@@ -6207,7 +6207,7 @@
     "retainedMention": true,
     "projectAxioms": [],
     "name": "Combinatorics.FamilySlotShuffleTo.timeAssignment_apply",
-    "module": "LeanCondensedMatter.Analysis.OrderedSimplex.FamilyShuffleIntegrand",
+    "module": "LeanCondensedMatter.Analysis.OrderedSimplex.FamilyShuffle",
     "externalAxioms": [],
     "docString": null,
     "directWrapperTargetModule": null,
@@ -10147,7 +10147,6 @@
       "Combinatorics.moment_eq_pairing_sum_of_first_pair_recursion",
       "SecondQuantization.Common.ExternalInsertionBlockLayout.assembleDiagram_injective",
       "SecondQuantization.Common.ExternalInsertionBlockLayout.physicalComponentPairing_eq_local",
-      "SecondQuantization.Common.ExternalInsertionDiagram.assembleComponentPairing_injective",
       "SecondQuantization.Common.ExternalInsertionDiagram.componentOrderedDiagram_eq_slotCongr",
       "SecondQuantization.Common.ExternalInsertionDiagram.reassembleComponentPairing_eq",
       "SecondQuantization.Common.ExternalInsertionDiagram.slotCongr_pairingInMixedOrder_eq_of_injective",
@@ -10175,7 +10174,6 @@
       "Combinatorics.moment_eq_pairing_sum_of_first_pair_recursion",
       "SecondQuantization.Common.ExternalInsertionBlockLayout.assembleDiagram_injective",
       "SecondQuantization.Common.ExternalInsertionBlockLayout.physicalComponentPairing_eq_local",
-      "SecondQuantization.Common.ExternalInsertionDiagram.assembleComponentPairing_injective",
       "SecondQuantization.Common.ExternalInsertionDiagram.componentOrderedDiagram_eq_slotCongr",
       "SecondQuantization.Common.ExternalInsertionDiagram.reassembleComponentPairing_eq",
       "SecondQuantization.Common.ExternalInsertionDiagram.slotCongr_pairingInMixedOrder_eq_of_injective",
@@ -10185,7 +10183,7 @@
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.restrictComponent_reassemble_pairing",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalSubsetAssembly.0.SecondQuantization.Fermionic.pairing_heq_of_finCongr_transport"
     ],
-    "compiledConsumerCount": 23,
+    "compiledConsumerCount": 22,
     "axioms": [
       "Quot.sound"
     ],
@@ -92263,7 +92261,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ {Grid : Type u_1} [inst : Fintype Grid] [inst_1 : LinearOrder Grid]\n  (params : QuantumTheory.Models.RashbaExchange.HamiltonianParameters) (momentum : Grid → ℝ × ℝ) (hbar spinScale : ℝ)\n  (component : QuantumTheory.SpinHalf.SpinSpace) (direction : Fin 2)\n  (position :\n    (QuantumTheory.SpinfulLattice.SpinfulSite Grid →₀ ℂ) →ₗ[ℂ] QuantumTheory.SpinfulLattice.SpinfulSite Grid →₀ ℂ),\n  (QuantumTheory.ConservationLaw.heisenbergEvolution (QuantumTheory.SpinfulLattice.SpinfulSite Grid →₀ ℂ) hbar\n          (QuantumTheory.Models.RashbaExchange.finiteRashbaMomentumHamiltonian params momentum))\n        position =\n      QuantumTheory.Models.RashbaExchange.finiteRashbaMomentumVelocity params momentum direction →\n    SecondQuantization.Fermionic.Lattice.boundedOneBodyOperator\n        ((QuantumTheory.ConservationLaw.heisenbergEvolution (QuantumTheory.SpinfulLattice.SpinfulSite Grid →₀ ℂ) hbar\n            (QuantumTheory.Models.RashbaExchange.finiteRashbaMomentumHamiltonian params momentum))\n          (QuantumTheory.Models.RashbaExchange.finiteRashbaMomentumSpinDisplacement spinScale component position)) =\n      (SecondQuantization.Fermionic.Transport.boundedSpinCurrentLinear\n            (QuantumTheory.Models.RashbaExchange.finiteRashbaMomentumVelocity params momentum direction) spinScale)\n          component +\n        SecondQuantization.Fermionic.Lattice.boundedOneBodyOperator\n          (position.symmetrizedProduct\n            ((QuantumTheory.ConservationLaw.heisenbergEvolution (QuantumTheory.SpinfulLattice.SpinfulSite Grid →₀ ℂ)\n                hbar (QuantumTheory.Models.RashbaExchange.finiteRashbaMomentumHamiltonian params momentum))\n              ((QuantumTheory.SpinfulLattice.spinOneBodyLinear spinScale) component)))",
     "standardAxioms": [
       "Classical.choice",
@@ -92271,7 +92269,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -92282,14 +92280,18 @@
     "docString": "The conditional proper-current decomposition survives the canonical finite\nFock lift. The conventional contribution is the *existing* boundedSpinCurrentLinear,\nand the remaining observable is a bounded torque dipole. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "QuantumTheory.Models.RashbaExchange.finiteRashbaMomentumSpinDisplacement_retardedKernel_eq_conventional_add_torque"
+    ],
     "dependencies": [
       "QuantumTheory.Models.RashbaExchange.finiteRashbaMomentumSpinDisplacement_eq_spinCurrent_add_torque"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "QuantumTheory.Models.RashbaExchange.finiteRashbaMomentumSpinDisplacement_retardedKernel_eq_conventional_add_torque"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -92334,6 +92336,46 @@
       "QuantumTheory.Models.RashbaExchange.finiteRashbaMomentumSpinDisplacement_eq_spinCurrent_add_torque"
     ],
     "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {Grid : Type u_1} [inst : Fintype Grid] [inst_1 : LinearOrder Grid]\n  (params : QuantumTheory.Models.RashbaExchange.HamiltonianParameters) (momentum : Grid → ℝ × ℝ) (hbar : ℝ)\n  (hhbar : 0 < hbar) (spinScale : ℝ) (component : QuantumTheory.SpinHalf.SpinSpace) (measured source : Fin 2)\n  (charge : ℂ)\n  (position :\n    (QuantumTheory.SpinfulLattice.SpinfulSite Grid →₀ ℂ) →ₗ[ℂ] QuantumTheory.SpinfulLattice.SpinfulSite Grid →₀ ℂ),\n  (QuantumTheory.ConservationLaw.heisenbergEvolution (QuantumTheory.SpinfulLattice.SpinfulSite Grid →₀ ℂ) hbar\n          (QuantumTheory.Models.RashbaExchange.finiteRashbaMomentumHamiltonian params momentum))\n        position =\n      QuantumTheory.Models.RashbaExchange.finiteRashbaMomentumVelocity params momentum measured →\n    ∀\n      (contact :\n        SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock\n            (QuantumTheory.SpinfulLattice.SpinfulSite Grid) →L[ℂ]\n          SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock (QuantumTheory.SpinfulLattice.SpinfulSite Grid))\n      (expectation :\n        QuantumTheory.LinearResponse.NormalizedExpectation\n          (SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock\n            (QuantumTheory.SpinfulLattice.SpinfulSite Grid)))\n      (t s : ℝ),\n      (QuantumTheory.Models.RashbaExchange.finiteRashbaMomentumSpinDisplacementResponseChannel params momentum hbar\n              spinScale component measured source charge position contact).retardedKernel\n          (QuantumTheory.LinearResponse.freePropagatorGroup\n            (QuantumTheory.Models.RashbaExchange.finiteRashbaMomentumFreeSystem params momentum hbar hhbar))\n          hbar expectation t s =\n        (QuantumTheory.Models.RashbaExchange.finiteRashbaMomentumSpinChargeChannel params momentum spinScale component\n                measured source charge contact).retardedKernel\n            (QuantumTheory.LinearResponse.freePropagatorGroup\n              (QuantumTheory.Models.RashbaExchange.finiteRashbaMomentumFreeSystem params momentum hbar hhbar))\n            hbar expectation t s +\n          QuantumTheory.LinearResponse.retardedSusceptibility\n            (QuantumTheory.LinearResponse.freePropagatorGroup\n              (QuantumTheory.Models.RashbaExchange.finiteRashbaMomentumFreeSystem params momentum hbar hhbar))\n            hbar expectation\n            (SecondQuantization.Fermionic.Lattice.boundedOneBodyOperator\n              (position.symmetrizedProduct\n                ((QuantumTheory.ConservationLaw.heisenbergEvolution (QuantumTheory.SpinfulLattice.SpinfulSite Grid →₀ ℂ)\n                    hbar (QuantumTheory.Models.RashbaExchange.finiteRashbaMomentumHamiltonian params momentum))\n                  ((QuantumTheory.SpinfulLattice.spinOneBodyLinear spinScale) component))))\n            (SecondQuantization.Fermionic.Lattice.boundedOneBodyOperator\n              (charge • QuantumTheory.Models.RashbaExchange.finiteRashbaMomentumVelocity params momentum source))\n            t s",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.RashbaExchange.finiteRashbaMomentumSpinDisplacement_retardedKernel_eq_conventional_add_torque",
+    "module": "LeanCondensedMatter.Models.RashbaExchange.SpinDisplacementBridge",
+    "externalAxioms": [],
+    "docString": "At finite momentum-grid/Fock cutoff, under the explicitly assumed\n`δ_H X_i = v_i` identity, the *retarded* spin-displacement/charge kernel\nis the conventional spin/charge kernel plus the torque-dipole/charge kernel.\nThis is a model-level consequence of the already-proved Fock observable\ndecomposition and the existing measured-observable linearity of Kubo response.\n\nContact terms are separate: this identity concerns the retarded kernel, not\na full electric-field conductivity or the source-dependent observable variation.\nNo finite-grid position operator or local torque-divergence law is asserted. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.Models.RashbaExchange.finiteRashbaMomentumSpinDisplacement_fock_decomposition"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -121637,7 +121679,6 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Common.ExternalInsertionBlockLayout.assembleDiagram_restrictComponent_vertexLabel_heq",
-      "SecondQuantization.Common.ExternalInsertionBlockLayout.assembleDiagram_restrictComponent_vertexWeight_external",
       "SecondQuantization.Common.ExternalInsertionBlockLayout.physicalComponentCanonicalLegEquiv_eq_finCongr",
       "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleConnectedBlocks_componentDysonAmplitude_eq_local",
       "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleDiagram_restrictComponent_heq_local"
@@ -121652,12 +121693,11 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Common.ExternalInsertionBlockLayout.assembleDiagram_restrictComponent_vertexLabel_heq",
-      "SecondQuantization.Common.ExternalInsertionBlockLayout.assembleDiagram_restrictComponent_vertexWeight_external",
       "SecondQuantization.Common.ExternalInsertionBlockLayout.physicalComponentCanonicalLegEquiv_eq_finCongr",
       "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleConnectedBlocks_componentDysonAmplitude_eq_local",
       "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleDiagram_restrictComponent_heq_local"
     ],
-    "compiledConsumerCount": 5,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -121752,47 +121792,6 @@
       "SecondQuantization.Fermionic.sum_fixedExternalPartitionFiber_eq_sum_localLabelConnectedBlockFamilies"
     ],
     "compiledConsumerCount": 3,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {E N : ℕ} {ExternalLabel : Type u_1} {InternalLabel : Type u_2}\n  (layout : SecondQuantization.Common.ExternalInsertionBlockLayout E N) (S : Finset (Fin N))\n  (F :\n    (B : ↥layout.partition.parts) →\n      SecondQuantization.Common.ExternalInsertionDiagram ExternalLabel InternalLabel ((↑B).card / 2) N\n        (layout.interactionBlock S B))\n  {e f : Fin (2 * E)},\n  (layout.assembleDiagram S F).vertexGraph.Reachable (Sum.inl e) (Sum.inl f) →\n    (layout.sourceEquiv e).fst = (layout.sourceEquiv f).fst",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.ExternalInsertionBlockLayout.assembleDiagram_external_reachable_same_block",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.BlockConnectivity",
-    "externalAxioms": [],
-    "docString": "In particular, different prescribed external partition blocks never\nbecome connected through the assembled pairing. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "SecondQuantization.Common.ExternalInsertionBlockLayout.assembleDiagram_reachable_same_block",
-      "SecondQuantization.Common.ExternalInsertionBlockLayout.vertexEquiv_external"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -122200,7 +122199,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -122212,7 +122211,6 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Common.ExternalInsertionBlockLayout.assembleDiagram_external_reachable_same_block",
       "SecondQuantization.Common.ExternalInsertionBlockLayout.assembleDiagram_reachable_iff_same_block"
     ],
     "dependencies": [
@@ -122221,10 +122219,9 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Common.ExternalInsertionBlockLayout.assembleDiagram_external_reachable_same_block",
       "SecondQuantization.Common.ExternalInsertionBlockLayout.assembleDiagram_reachable_iff_same_block"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -122295,7 +122292,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -122307,8 +122304,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Common.ExternalInsertionBlockLayout.assembleDiagram_restrictComponent_vertexLabel_heq",
-      "SecondQuantization.Common.ExternalInsertionBlockLayout.assembleDiagram_restrictComponent_vertexWeight_external"
+      "SecondQuantization.Common.ExternalInsertionBlockLayout.assembleDiagram_restrictComponent_vertexLabel_heq"
     ],
     "dependencies": [
       "SecondQuantization.Common.ExternalInsertionBlockLayout.assembleDiagram_vertexLabel"
@@ -122316,10 +122312,9 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Common.ExternalInsertionBlockLayout.assembleDiagram_restrictComponent_vertexLabel_heq",
-      "SecondQuantization.Common.ExternalInsertionBlockLayout.assembleDiagram_restrictComponent_vertexWeight_external"
+      "SecondQuantization.Common.ExternalInsertionBlockLayout.assembleDiagram_restrictComponent_vertexLabel_heq"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -122367,48 +122362,6 @@
       "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleDiagram_restrictComponent_heq_local"
     ],
     "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {E N : ℕ} {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {M : Type u_3} [inst : CommMonoid M]\n  (layout : SecondQuantization.Common.ExternalInsertionBlockLayout E N) (S : Finset (Fin N))\n  (F :\n    (B : ↥layout.partition.parts) →\n      SecondQuantization.Common.ExternalInsertionDiagram ExternalLabel InternalLabel ((↑B).card / 2) N\n        (layout.interactionBlock S B)),\n  (∀ (B : ↥layout.partition.parts), (F B).vertexGraph.Preconnected) →\n    ∀ (g : InternalLabel → M) (e : Fin (2 * E)),\n      ((layout.assembleDiagram S F).restrictComponent\n              ⟨(layout.assembleDiagram S F).vertexGraph.componentBlock (Sum.inl e), ⋯⟩).vertexWeight\n          g =\n        (F (layout.sourceEquiv e).fst).vertexWeight g",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.ExternalInsertionBlockLayout.assembleDiagram_restrictComponent_vertexWeight_external",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.BlockConnectivity",
-    "externalAxioms": [],
-    "docString": "Every actual connected component of an independently assembled\ndiagram has exactly the interaction-vertex weight of its supplied local\nWick block. The equality uses physical graph-component restriction and\nthe equality of its *actual* interaction-label family, rather than a\npostulated split of the vertex product. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "SecondQuantization.Common.ExternalInsertionBlockLayout.assembleDiagram_componentInteractionSector_external",
-      "SecondQuantization.Common.ExternalInsertionBlockLayout.assembleDiagram_restrictComponent_vertexLabel_external",
-      "SimpleGraph.componentBlock_mem_componentPartition"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -124765,7 +124718,6 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Common.ExternalInsertionBlockLayout.assembleDiagram_componentBlock_external",
-      "SecondQuantization.Common.ExternalInsertionBlockLayout.assembleDiagram_external_reachable_same_block",
       "SecondQuantization.Common.ExternalInsertionBlockLayout.assembleDiagram_legInComponent_iff_legEquiv_fst",
       "SecondQuantization.Common.ExternalInsertionBlockLayout.externalBlockLayout_assembleDiagram_interactionOwner",
       "SecondQuantization.Common.ExternalInsertionBlockLayout.externalComponentPartition_assembleDiagram",
@@ -124777,14 +124729,13 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Common.ExternalInsertionBlockLayout.assembleDiagram_componentBlock_external",
-      "SecondQuantization.Common.ExternalInsertionBlockLayout.assembleDiagram_external_reachable_same_block",
       "SecondQuantization.Common.ExternalInsertionBlockLayout.assembleDiagram_legInComponent_iff_legEquiv_fst",
       "SecondQuantization.Common.ExternalInsertionBlockLayout.externalBlockLayout_assembleDiagram_interactionOwner",
       "SecondQuantization.Common.ExternalInsertionBlockLayout.externalComponentPartition_assembleDiagram",
       "SecondQuantization.Common.ExternalInsertionBlockLayout.hasNoVacuumComponent_assembleDiagram",
       "SecondQuantization.Common.ExternalInsertionBlockLayout.vertexEquiv_vertexOfLeg"
     ],
-    "compiledConsumerCount": 7,
+    "compiledConsumerCount": 6,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -125039,7 +124990,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {E N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.ExternalInsertionDiagram ExternalLabel InternalLabel E N S),\n  Function.Injective d.assembleComponentPairing",
+    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {E N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.ExternalInsertionDiagram ExternalLabel InternalLabel E N S)\n  (componentPairings :\n    (B : ↥d.vertexGraph.componentPartition.parts) →\n      Combinatorics.Pairing (2 * (SecondQuantization.Common.interactionSector ↑B).card + d.externalPairCount B))\n  (B : ↥d.vertexGraph.componentPartition.parts)\n  (p : Fin (2 * (2 * (SecondQuantization.Common.interactionSector ↑B).card + d.externalPairCount B))),\n  (d.assembleComponentPairing componentPairings).partner (d.componentDiagramLeg B p) =\n    d.componentDiagramLeg B ((componentPairings B).partner p)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -125051,57 +125002,13 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "SecondQuantization.Common.ExternalInsertionDiagram.assembleComponentPairing_injective",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentRestriction",
-    "externalAxioms": [],
-    "docString": "No information about the independent family of componentPairings pairings is lost by\nassembling it into an ambient perfect pairing. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "Combinatorics.PairingOn.ext",
-      "SecondQuantization.Common.ExternalInsertionDiagram.assembleComponentPairing_partner",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentRestriction.0.SecondQuantization.Common.ExternalInsertionDiagram.componentDiagramLeg_strictMono"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {E N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.ExternalInsertionDiagram ExternalLabel InternalLabel E N S)\n  (componentPairings :\n    (B : ↥d.vertexGraph.componentPartition.parts) →\n      Combinatorics.Pairing (2 * (SecondQuantization.Common.interactionSector ↑B).card + d.externalPairCount B))\n  (B : ↥d.vertexGraph.componentPartition.parts)\n  (p : Fin (2 * (2 * (SecondQuantization.Common.interactionSector ↑B).card + d.externalPairCount B))),\n  (d.assembleComponentPairing componentPairings).partner (d.componentDiagramLeg B p) =\n    d.componentDiagramLeg B ((componentPairings B).partner p)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
     "name": "SecondQuantization.Common.ExternalInsertionDiagram.assembleComponentPairing_partner",
     "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentRestriction",
     "externalAxioms": [],
     "docString": "A pairing assembled from independent components preserves the block index\nof every flattened leg and applies precisely the chosen componentPairings pairing inside\nthat block. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.ExternalInsertionDiagram.assembleComponentPairing_injective"
-    ],
+    "dependents": [],
     "dependencies": [
       "Combinatorics.PairingOn.sigmaCongrRight_partner",
       "Combinatorics.PairingOn.transport_partner",
@@ -125109,10 +125016,8 @@
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.ExternalInsertionDiagram.assembleComponentPairing_injective"
-    ],
-    "compiledConsumerCount": 1,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -177300,7 +177205,6 @@
       "SecondQuantization.Common.ExternalInsertionBlockLayout.assembleDiagram_componentExternalPairCount_external",
       "SecondQuantization.Common.ExternalInsertionBlockLayout.assembleDiagram_legInComponent_iff_legEquiv_fst",
       "SecondQuantization.Common.ExternalInsertionBlockLayout.assembleDiagram_restrictComponent_vertexLabel_heq",
-      "SecondQuantization.Common.ExternalInsertionBlockLayout.assembleDiagram_restrictComponent_vertexWeight_external",
       "SecondQuantization.Common.ExternalInsertionBlockLayout.physicalComponentCanonicalLegEquiv_eq_finCongr",
       "SecondQuantization.Common.ExternalInsertionBlockLayout.physicalComponentCanonicalLegEquiv_strictMono",
       "SecondQuantization.Common.ExternalInsertionBlockLayout.physicalComponentCanonicalPairing_eq_local",
@@ -177332,7 +177236,6 @@
       "SecondQuantization.Common.ExternalInsertionBlockLayout.assembleDiagram_componentExternalPairCount_external",
       "SecondQuantization.Common.ExternalInsertionBlockLayout.assembleDiagram_legInComponent_iff_legEquiv_fst",
       "SecondQuantization.Common.ExternalInsertionBlockLayout.assembleDiagram_restrictComponent_vertexLabel_heq",
-      "SecondQuantization.Common.ExternalInsertionBlockLayout.assembleDiagram_restrictComponent_vertexWeight_external",
       "SecondQuantization.Common.ExternalInsertionBlockLayout.physicalComponentCanonicalLegEquiv_eq_finCongr",
       "SecondQuantization.Common.ExternalInsertionBlockLayout.physicalComponentCanonicalLegEquiv_strictMono",
       "SecondQuantization.Common.ExternalInsertionBlockLayout.physicalComponentCanonicalPairing_eq_local",
@@ -177357,7 +177260,7 @@
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumComponentPair.0.SecondQuantization.Common.slotSplitVacuumNormalizedPairEmbedding_pairComponent",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumComponents.0.SecondQuantization.Common.not_mem_left_of_mem_vacuumComponentPart"
     ],
-    "compiledConsumerCount": 27,
+    "compiledConsumerCount": 26,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -182737,8 +182640,8 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Analysis.OrderedSimplex.FamilyShuffleIntegrand.0.Combinatorics.FamilySlotShuffleTo.continuous_timeAssignment",
-    "module": "LeanCondensedMatter.Analysis.OrderedSimplex.FamilyShuffleIntegrand",
+    "name": "_private.LeanCondensedMatter.Analysis.OrderedSimplex.FamilyShuffle.0.Combinatorics.FamilySlotShuffleTo.continuous_timeAssignment",
+    "module": "LeanCondensedMatter.Analysis.OrderedSimplex.FamilyShuffle",
     "externalAxioms": [],
     "docString": "Coordinate restriction to one local block is continuous. ",
     "directWrapperTargetModule": null,
@@ -199894,7 +199797,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": false,
+    "terminal": true,
     "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {E N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.ExternalInsertionDiagram ExternalLabel InternalLabel E N S)\n  (B : ↥d.vertexGraph.componentPartition.parts), StrictMono (d.componentDiagramLeg B)",
     "standardAxioms": [
       "Classical.choice",
@@ -199902,7 +199805,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -199913,9 +199816,7 @@
     "docString": "The component-local flattened-leg embedding preserves the canonical external-insertion leg\norder. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.ExternalInsertionDiagram.assembleComponentPairing_injective"
-    ],
+    "dependents": [],
     "dependencies": [
       "SecondQuantization.Common.ExternalInsertionDiagram.componentDiagramLeg_external",
       "SecondQuantization.Common.ExternalInsertionDiagram.componentDiagramLeg_interaction",
@@ -199926,10 +199827,8 @@
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.ExternalInsertionDiagram.assembleComponentPairing_injective"
-    ],
-    "compiledConsumerCount": 1,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",

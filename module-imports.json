@@ -760,18 +760,10 @@
       "sourceFile": "LeanCondensedMatter/Analysis/OrderedSimplex/FamilyShuffle.lean",
       "imports": [
         "LeanCondensedMatter.Analysis.OrderedSimplex.BinarySlotShuffle",
-        "LeanCondensedMatter.Analysis.OrderedSimplex.FamilyShuffleIntegrand",
-        "LeanCondensedMatter.Combinatorics.Shuffle.FamilyOrderShuffle",
-        "LeanCondensedMatter.Combinatorics.Shuffle.FamilySlotShuffleDecomposition"
-      ],
-      "externalImportCount": 0
-    },
-    {
-      "name": "LeanCondensedMatter.Analysis.OrderedSimplex.FamilyShuffleIntegrand",
-      "sourceFile": "LeanCondensedMatter/Analysis/OrderedSimplex/FamilyShuffleIntegrand.lean",
-      "imports": [
         "LeanCondensedMatter.Analysis.OrderedSimplex.MeasurableRegularity",
-        "LeanCondensedMatter.Combinatorics.Shuffle.FamilySlotShuffle"
+        "LeanCondensedMatter.Combinatorics.Shuffle.FamilyOrderShuffle",
+        "LeanCondensedMatter.Combinatorics.Shuffle.FamilySlotShuffle",
+        "LeanCondensedMatter.Combinatorics.Shuffle.FamilySlotShuffleDecomposition"
       ],
       "externalImportCount": 1
     },
@@ -946,7 +938,8 @@
       "imports": [
         "LeanCondensedMatter.Analysis.PowerSeries.CoefficientSum",
         "LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.FormalAnalyticBridgeJ",
-        "LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.FormalAnalyticBridgeY"
+        "LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.FormalOrderOne",
+        "LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.Y1Series"
       ],
       "externalImportCount": 0
     },
@@ -958,15 +951,6 @@
         "LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.HypergeometricSeries"
       ],
       "externalImportCount": 3
-    },
-    {
-      "name": "LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.FormalAnalyticBridgeY",
-      "sourceFile": "LeanCondensedMatter/Analysis/SpecialFunctions/Bessel/FormalAnalyticBridgeY.lean",
-      "imports": [
-        "LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.FormalOrderOne",
-        "LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.Y1Series"
-      ],
-      "externalImportCount": 0
     },
     {
       "name": "LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.FormalCoefficients",
@@ -1073,7 +1057,6 @@
         "LeanCondensedMatter.Analysis.ScalarExchange.Peel",
         "LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.AnalyticWronskian",
         "LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.FormalAnalyticBridgeJ",
-        "LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.FormalAnalyticBridgeY",
         "LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.FormalCoefficients",
         "LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.FormalOrderOne",
         "LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.HypergeometricSeries",
