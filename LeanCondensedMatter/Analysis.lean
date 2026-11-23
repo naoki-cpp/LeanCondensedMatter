@@ -35,7 +35,7 @@ import LeanCondensedMatter.Analysis.Lorentzian
 import LeanCondensedMatter.Analysis.Operator
 import LeanCondensedMatter.Analysis.InfiniteSum.FinsuppProduct
 import LeanCondensedMatter.Analysis.Calculus.AlgebraicDerivative
-import LeanCondensedMatter.Analysis.Calculus.IntervalLocalization
+import LeanCondensedMatter.Analysis.Calculus.CompactSupportInterval
 import LeanCondensedMatter.Analysis.ConservationLaw
 import LeanCondensedMatter.Analysis.Inequalities.PeierlsBogoliubov
 import LeanCondensedMatter.Analysis.Inequalities.PeierlsBogoliubovEquality
