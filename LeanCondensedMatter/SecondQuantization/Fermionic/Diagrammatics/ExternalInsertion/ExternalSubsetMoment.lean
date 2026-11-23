@@ -1533,6 +1533,80 @@ noncomputable def externalSubsetConnectedDiagramSeries
       (evenExternalSubsetTimes times S heven)
   else exact 0
 
+set_option maxHeartbeats 4000000 in
+-- Source-subset local labels and times have cardinality-dependent index types.
+open Classical in
+/-- The physical fully connected Dyson series of a locally numbered
+external block agrees with the connected series of that block in the
+original ambient source coordinates. This is a genuine equality of
+external fields and times, not a permutation-invariance assumption
+about individual Dyson integrals. -/
+private theorem externalSubsetConnectedSeries_comp
+    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
+    (labels : Fin (2 * E) → ExternalFieldLabel Mode)
+    (times : Fin (2 * E) → ℝ)
+    (S : Finset (Fin (2 * E))) (heven : Even S.card)
+    (π : Finpartition (Finset.univ : Finset (Fin (2 * (S.card / 2)))))
+    (hEven : ∀ B : π.parts, Even (B : Finset (Fin (2 * (S.card / 2)))).card)
+    (B : π.parts) :
+    connectedExternalInsertionDysonSeries ε β g
+        (evenExternalSubsetLabels
+          (evenExternalSubsetLabels labels S heven) B.1 (hEven B))
+        (evenExternalSubsetTimes
+          (evenExternalSubsetTimes times S heven) B.1 (hEven B)) =
+      externalSubsetConnectedDiagramSeries ε β g labels times
+        ((externalSubsetPartsEquiv S heven π B).1) := by
+  classical
+  let σ := externalSubsetPartitionEquiv S heven π
+  let be := externalSubsetPartsEquiv S heven π
+  let e := evenExternalSubsetOrderIso S heven
+  let emb : Fin (2 * (S.card / 2)) ↪ Fin (2 * E) :=
+    ⟨fun i => (e i).1, fun i j hij => e.injective (Subtype.ext hij)⟩
+  have hImage : (be B).1 = B.1.map emb := rfl
+  have hEvenT : Even ((be B).1).card :=
+    (externalSubsetPartitionEquiv_evenBlocks S heven π).mp hEven (be B)
+  have hNotEmpty : (be B).1 ≠ ∅ := σ.ne_empty (be B).2
+  have hTarget :
+      externalSubsetConnectedDiagramSeries ε β g labels times (be B).1 =
+        connectedExternalInsertionDysonSeries ε β g
+          (evenExternalSubsetLabels labels (be B).1 hEvenT)
+          (evenExternalSubsetTimes times (be B).1 hEvenT) := by
+    simp [externalSubsetConnectedDiagramSeries, hNotEmpty, hEvenT]
+  rw [hTarget]
+  have hK : B.1.card / 2 = ((be B).1).card / 2 := by
+    simp [hImage]
+  have hLabels : HEq
+      (evenExternalSubsetLabels
+        (evenExternalSubsetLabels labels S heven) B.1 (hEven B))
+      (evenExternalSubsetLabels labels (be B).1 hEvenT) := by
+    cases hK
+    apply heq_of_eq
+    funext i
+    simpa only [evenExternalSubsetLabels] using
+      congrArg labels (externalSubsetOrderIso_comp S heven B.1 (hEven B) hEvenT i)
+  have hTimes : HEq
+      (evenExternalSubsetTimes
+        (evenExternalSubsetTimes times S heven) B.1 (hEven B))
+      (evenExternalSubsetTimes times (be B).1 hEvenT) := by
+    cases hK
+    apply heq_of_eq
+    funext i
+    simpa only [evenExternalSubsetTimes] using
+      congrArg times (externalSubsetOrderIso_comp S heven B.1 (hEven B) hEvenT i)
+  have hSeries : HEq
+      (connectedExternalInsertionDysonSeries ε β g
+        (evenExternalSubsetLabels
+          (evenExternalSubsetLabels labels S heven) B.1 (hEven B))
+        (evenExternalSubsetTimes
+          (evenExternalSubsetTimes times S heven) B.1 (hEven B)))
+      (connectedExternalInsertionDysonSeries ε β g
+        (evenExternalSubsetLabels labels (be B).1 hEvenT)
+        (evenExternalSubsetTimes times (be B).1 hEvenT)) := by
+    cases hLabels
+    cases hTimes
+    rfl
+  exact eq_of_heq hSeries
+
 /-- The signed partition expansion predicted by the source/cumulant identity,
 formed from the actual fully connected diagrammatic contributions.
 The remaining Phase 5 theorem must identify this with
