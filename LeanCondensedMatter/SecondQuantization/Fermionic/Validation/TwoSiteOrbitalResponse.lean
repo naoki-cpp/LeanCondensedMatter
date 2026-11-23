@@ -58,18 +58,13 @@ theorem boundedOrbitalMatrix_neg (A : OrbitalMatrix) :
   rw [boundedOrbitalMatrix_eq_sum, boundedOrbitalMatrix_eq_sum]
   simp [Finset.sum_neg_distrib, neg_smul]
 
-/-- A Hermitian four-state matrix gives a self-adjoint Fock observable. -/
+/-- A Hermitian four-state matrix gives a self-adjoint Fock observable.
+This is an instance of the shared finite-Fock Hermitian matrix-unit lift. -/
 theorem boundedOrbitalMatrix_selfAdjoint (A : OrbitalMatrix)
     (hA : A.IsHermitian) :
     IsSelfAdjoint (boundedOrbitalMatrix A) := by
-  have hEntry (i j : Fin 4) : star (A j i) = A i j := by
-    have h := congrArg (fun B : OrbitalMatrix => B i j) hA.star_eq
-    simpa [Matrix.conjTranspose_apply] using h
-  rw [isSelfAdjoint_iff]
-  simp only [boundedOrbitalMatrix_eq_sum, star_sum, star_smul,
-    star_boundedDgammaMatrixUnit]
-  rw [Finset.sum_comm]
-  simp_rw [hEntry]
+  rw [boundedOrbitalMatrix_eq_sum]
+  exact isSelfAdjoint_sum_boundedDgammaMatrixUnit A hA
 
 /-- Explicit two-site Hamiltonian is Hermitian for real hopping and splitting. -/
 theorem orbitalHamiltonian_isHermitian (Δ hoppingStrength : ℝ) :

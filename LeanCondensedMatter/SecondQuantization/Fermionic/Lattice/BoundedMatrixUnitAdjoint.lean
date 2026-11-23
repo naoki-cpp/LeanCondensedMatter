@@ -1,6 +1,7 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.Bounded
 import LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.RankOneSecondQuantization
 import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.FiniteHilbertCreationAnnihilation
+import Mathlib.Analysis.Matrix.Hermitian
 
 set_option linter.style.header false
 
@@ -105,6 +106,42 @@ theorem star_boundedDgammaMatrixUnit (x y : Site) :
     star (finiteHilbertCreate x * finiteHilbertAnnihilate y) =
       finiteHilbertCreate y * finiteHilbertAnnihilate x
   rw [star_mul, star_finiteHilbertAnnihilate, star_finiteHilbertCreate]
+
+/-- A Hermitian finite one-particle coefficient matrix lifts to a self-adjoint
+observable on the entire fermionic Fock space. The proof uses only the canonical
+adjoint reversal of the second-quantized matrix units. -/
+theorem isSelfAdjoint_sum_boundedDgammaMatrixUnit
+    (A : Matrix Site Site ℂ) (hA : A.IsHermitian) :
+    IsSelfAdjoint
+      (∑ i : Site, ∑ j : Site, A i j • boundedDgammaMatrixUnit i j) := by
+  have hentry (i j : Site) : star (A j i) = A i j := by
+    have h := congrArg (fun B : Matrix Site Site ℂ => B i j) hA.star_eq
+    simpa [Matrix.conjTranspose_apply] using h
+  rw [isSelfAdjoint_iff]
+  simp only [star_sum, star_smul, star_boundedDgammaMatrixUnit]
+  rw [Finset.sum_comm]
+  simp_rw [hentry]
+
+/-- A finite collection of Hermitian internal matrix blocks yields a self-adjoint
+full-Fock observable, even when the block-to-mode labels are supplied abstractly. -/
+theorem isSelfAdjoint_sum_boundedDgammaMatrixUnit_blocks
+    {Block Label : Type*} [Fintype Block] [Fintype Label]
+    (site : Block → Label → Site)
+    (blocks : Block → Matrix Label Label ℂ)
+    (hblocks : ∀ k, (blocks k).IsHermitian) :
+    IsSelfAdjoint
+      (∑ k : Block, ∑ a : Label, ∑ b : Label,
+        blocks k a b • boundedDgammaMatrixUnit (site k a) (site k b)) := by
+  have hentry (k : Block) (a b : Label) :
+      star (blocks k b a) = blocks k a b := by
+    have h := congrArg (fun B : Matrix Label Label ℂ => B a b) (hblocks k).star_eq
+    simpa [Matrix.conjTranspose_apply] using h
+  rw [isSelfAdjoint_iff]
+  simp only [star_sum, star_smul, star_boundedDgammaMatrixUnit]
+  apply Finset.sum_congr rfl
+  intro k _
+  rw [Finset.sum_comm]
+  simp_rw [hentry k]
 
 end Finite
 

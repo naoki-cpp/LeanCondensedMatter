@@ -139,6 +139,38 @@ Establish finite Rashba response and proper-current semantics first; then addres
 clean intrinsic identities and disorder vertices. Extrinsic mechanisms, inverse
 reciprocity, and bulk/device limits require additional model-specific hypotheses.
 
+## Finite momentum-grid full-Fock construction (partial R1)
+
+`Models.RashbaExchange.FiniteMomentumSpinResponse` embeds momentum-resolved Rashba
+2×2 Hamiltonian and velocity blocks in the one-particle space on a **finite momentum
+grid with two spin modes per sampled momentum**, then constructs the finite fermionic
+Fock Hamiltonian **directly** via `boundedOneBodyOperator`, without a
+fictitious real-space hopping adapter. The shared finite-Fock
+`Lattice.isSelfAdjoint_sum_boundedDgammaMatrixUnit_blocks` proves self-adjointness
+for arbitrary Hermitian internal matrix blocks and is consumed by
+`boundedFiniteMomentumBlockOneBody_selfAdjoint` and
+`finiteRashbaMomentumFockHamiltonian_selfAdjoint`. The related
+`Lattice.isSelfAdjoint_sum_boundedDgammaMatrixUnit` also replaces the
+older, repeated proof in `Validation.TwoSiteOrbitalResponse`.
+Its mixed response channel consumes the existing
+`Fermionic.Transport.boundedSpinCurrentLinear` API and a signed charge
+velocity source `dΓ(q v_j)`. An observable-variation/contact operator is an
+explicit input rather than implicitly set to zero. The finite-grid retarded Kubo
+kernel is evaluated directly with the existing `ResponseChannel.retardedKernel`
+and `freePropagatorGroup` APIs. Spin-polarization linearity follows from the
+existing `boundedSpinCurrentLinear` and
+`retardedSusceptibilityMeasuredLinearMap`; redundant model-local wrappers were
+deleted instead of introducing duplicate theorems.
+
+This is a momentum-grid (not real-space) realization, so the electric source is
+the momentum-velocity vertex rather than a fictitious inter-spin Peierls
+bond. Free dynamics now uses the proved self-adjointness of the
+assembled full-Fock Hamiltonian, with only positive `ℏ` required. A concrete
+stationary state, its physical
+Lehmann transition data, a verified *nonzero* transverse spin response, and an
+identified source/contact variation are still needed to complete R1.
+The proper-current/torque-dipole equivalence is deliberately left to R4.
+
 ## References
 
 See the annotated entries in [`../references.md`](../references.md) for full
