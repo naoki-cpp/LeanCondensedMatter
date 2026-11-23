@@ -95,28 +95,6 @@ theorem besselJZero_eq_formalTsum (z : ℂ) :
   intro n
   rw [besselFormalJ0_coeff_eq_regularizedHGFun]
 
-/-- The order-one J function in Mathlib, in its bottom-parameter-2
-hypergeometric series representation. -/
-theorem besselJOne_eq_regularizedHGTsum (z : ℂ) :
-    Complex.besselJ 1 z =
-      (z / 2) * (∑' n : ℕ,
-        Complex.regularizedHGFunCoeff 0 {(2 : ℂ)} n *
-          (-(z / 2) ^ 2) ^ n) := by
-  calc
-    Complex.besselJ 1 z =
-        (z / 2) * Complex.regularizedHGFun 0 {(2 : ℂ)} (-(z / 2) ^ 2) := by
-      simp only [Complex.besselJ_def, Complex.cpow_one]
-      congr 1
-      norm_num
-    _ = (z / 2) * (∑' n : ℕ,
-          Complex.regularizedHGFunCoeff 0 {(2 : ℂ)} n *
-            (-(z / 2) ^ 2) ^ n) := by
-      congr 1
-      rw [Complex.regularizedHGFun, Complex.regularizedHGFunSeries,
-        ← FormalMultilinearSeries.ofScalarsSum,
-        FormalMultilinearSeries.ofScalars_sum_eq]
-      simp only [smul_eq_mul]
-
 /-- Analytic J₁ is the complex evaluation of the *formal derivative*
 of the normalized J₀ factorial series, multiplied by z/2. No analytic
 derivative-of-sum exchange is postulated. -/
@@ -125,11 +103,23 @@ theorem besselJOne_eq_formalDerivativeTsum (z : ℂ) :
       (z / 2) * (∑' n : ℕ,
         PowerSeries.coeff n (PowerSeries.derivative besselFormalJ0) *
           (-(z / 2) ^ 2) ^ n) := by
-  rw [besselJOne_eq_regularizedHGTsum]
-  congr 1
-  apply tsum_congr
-  intro n
-  rw [besselFormalJ0_derivative_coeff_eq_regularizedHGFun]
+  calc
+    Complex.besselJ 1 z =
+        (z / 2) * Complex.regularizedHGFun 0 {(2 : ℂ)} (-(z / 2) ^ 2) := by
+      simp only [Complex.besselJ_def, Complex.cpow_one]
+      congr 1
+      norm_num
+    _ = (z / 2) * (∑' n : ℕ,
+          PowerSeries.coeff n (PowerSeries.derivative besselFormalJ0) *
+            (-(z / 2) ^ 2) ^ n) := by
+      congr 1
+      rw [Complex.regularizedHGFun, Complex.regularizedHGFunSeries,
+        ← FormalMultilinearSeries.ofScalarsSum,
+        FormalMultilinearSeries.ofScalars_sum_eq]
+      simp only [smul_eq_mul]
+      apply tsum_congr
+      intro n
+      rw [besselFormalJ0_derivative_coeff_eq_regularizedHGFun]
 
 end
 
