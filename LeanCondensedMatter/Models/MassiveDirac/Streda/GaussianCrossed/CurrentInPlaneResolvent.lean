@@ -1001,7 +1001,7 @@ theorem eventually_finiteCutoffContinuumBornDysonGaussianCrossedK2_cleanWindow_i
     (tendsto_finiteCutoffContinuumBornDysonBoundarySpectralShell_disorder_zero
       v m probeEnergy hbar pMax hvelocity hhbar hmetal hcutoff).1
   have hright : probeEnergy ^ 2 - m ^ 2 <
-      v ^ 2 * pMax ^ 2 - windowRadius := by linarith
+      v ^ 2 * pMax ^ 2 - windowRadius := by linarith [hwindowPos]
   have hinside := hcenter.eventually (Ioo_mem_nhds hwindowLower hright)
   filter_upwards [hinside] with W hW
   have hA : windowRadius < A W ∧ A W < v ^ 2 * pMax ^ 2 - windowRadius := by
@@ -1064,7 +1064,7 @@ theorem tendsto_finiteCutoffContinuumBornDysonGaussianCrossedK2_cleanCenteredWin
     (tendsto_finiteCutoffContinuumBornDysonBoundarySpectralShell_disorder_zero
       v m probeEnergy hbar pMax hvelocity hhbar hmetal hcutoff).2.1
   have hResult := hPole.comp hWidth
-  simpa only [factor, width, E0, add_zero] using hResult
+  simpa only [factor, width, E0, add_zero, Function.comp_def, mul_assoc] using hResult
 
 end
 
