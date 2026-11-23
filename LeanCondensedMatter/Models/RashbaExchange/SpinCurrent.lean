@@ -60,7 +60,8 @@ theorem conventionalSpinCurrentMatrix_z_eq
       QuantumTheory.SpinHalf.spinMatrix_cartesianBasisVector,
       velocityOperator, InternalSpace.pauliBasis,
       InternalSpace.pauliX, InternalSpace.pauliY, InternalSpace.pauliZ,
-      Matrix.mul_apply, Fin.sum_univ_two, smul_eq_mul] <;>
+      Matrix.mul_apply, Matrix.vecMul, dotProduct,
+      Fin.sum_univ_two, smul_eq_mul] <;>
     ring
 
 /-- At the momentum origin, the conventional z-polarized spin current vanishes
