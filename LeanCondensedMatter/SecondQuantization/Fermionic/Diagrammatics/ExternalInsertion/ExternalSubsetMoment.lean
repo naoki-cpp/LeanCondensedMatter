@@ -1777,6 +1777,25 @@ theorem externalSubsetMomentSeries_eq_signedConnected_of_nonempty_even
       externalSubsetSignedConnectedMomentSeries_eq_zero_of_odd
         ε β g labels times S hParity]
 
+/-- Phase 5C: the vacuum-normalized physical Dyson moment of
+every finite external source subset is exactly the fermionic
+Koszul-signed moment transform of the fully connected physical
+diagram series. Empty and odd subsets are handled by parity and
+normalization, not by redefining the connected contribution. -/
+theorem externalSubsetMomentSeries_eq_signedConnected
+    (ε : Mode → ℝ) (β : ℝ) (hβ : 0 ≤ β)
+    (g : QuarticVertexLabel Mode → ℂ)
+    (labels : Fin (2 * E) → ExternalFieldLabel Mode)
+    (times : Fin (2 * E) → ℝ) :
+    ∀ S : Finset (Fin (2 * E)),
+      externalSubsetMomentSeries ε β g labels times S =
+        externalSubsetSignedConnectedMomentSeries ε β g labels times S := by
+  apply externalSubsetMomentSeries_eq_signedConnected_of_nonempty_even
+    ε β g labels times
+  intro S hS heven
+  exact externalSubsetMomentSeries_eq_signedConnected_nonempty_even
+    ε β hβ g labels times S hS heven
+
 /-- The *physical* signed external-source moment identity holds
 unconditionally for two external fermion insertions. A nonempty even
 subset of two slots has cardinality two, and every proper nonempty
