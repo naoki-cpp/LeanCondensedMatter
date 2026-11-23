@@ -99,17 +99,21 @@ theorem continuous_continuumBornRadialIntegrandOfRegulator
     (v m probeEnergy regulator : ℝ) (hregulator : regulator ≠ 0) :
     Continuous (continuumBornRadialIntegrandOfRegulator
       channel v m probeEnergy regulator) := by
-  have hcommon :=
+  have hcommon (coeff : ℂ) :
+      Continuous (fun p : ℝ => (p : ℂ) *
+        ((pauliGreenDenominatorOfRegulator v m p 0 probeEnergy regulator)⁻¹ * coeff)) :=
     (Complex.continuous_ofReal.comp continuous_id).mul
       ((continuous_inv_pauliGreenDenominatorOfRegulator_radial
         v m probeEnergy regulator hregulator).mul continuous_const)
   cases channel with
   | scalar =>
-      simpa [continuumBornRadialIntegrandOfRegulator,
-        pauliGreenScalarCoefficientOfRegulator] using hcommon
+      simpa only [continuumBornRadialIntegrandOfRegulator,
+        pauliGreenScalarCoefficientOfRegulator] using
+          hcommon (spectralParameterOfRegulator probeEnergy regulator)
   | z =>
-      simpa [continuumBornRadialIntegrandOfRegulator,
-        pauliGreenPauliCoefficientOfRegulator, InternalSpace.pauliAxisComponent] using hcommon
+      simpa only [continuumBornRadialIntegrandOfRegulator,
+        pauliGreenPauliCoefficientOfRegulator, InternalSpace.pauliAxisComponent] using
+          hcommon (m : ℂ)
 
 /-- The operator-valued radial Born Green kernel is continuous away from zero regulator. -/
 theorem continuous_continuumBornRadialGreenKernelOfRegulator
