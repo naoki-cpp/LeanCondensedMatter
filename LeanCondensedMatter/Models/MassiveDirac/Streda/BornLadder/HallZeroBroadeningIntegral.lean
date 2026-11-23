@@ -86,10 +86,7 @@ private theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMome
     unfold finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceRadialNumerator
     dsimp only
     simp only [finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentCoefficientVector_x]
-    have hprefEq :
-        (continuumBornDisorderMeasurePrefactor disorderStrength hbar : ℂ) = pref := by
-      rfl
-    rw [hprefEq]
+    dsimp only [pref] at hpref ⊢
     have hdenp :
         finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct
           v m p probeEnergy broadening disorderStrength hbar pMax ≠ 0 :=

@@ -102,10 +102,7 @@ private theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMome
       inPlaneRotationMatrix_apply_x_x, inPlaneRotationMatrix_apply_y_x,
       inPlaneCoefficientVector]
     rw [finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct_eq_mul, mul_inv_rev]
-    have hprefEq :
-        (continuumBornDisorderMeasurePrefactor disorderStrength hbar : ℂ) = pref := by
-      rfl
-    rw [hprefEq]
+    dsimp only [pref] at hpref ⊢
     set dRinv : ℂ :=
       (finiteCutoffContinuumBornDysonDenominator
         .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax)⁻¹
