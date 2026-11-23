@@ -56,15 +56,6 @@ private theorem finiteCutoffContinuumBornPolarGreenIntegralOfRegulator_eq
   simp_rw [continuumBornPolarRadialKernelOfRegulator_eq]
   rw [intervalIntegral.integral_smul]
 
-/-- Continuum Born self-energy written directly from the explicit polar-angle Green integral and the
-canonical external disorder-line × physical-momentum-measure prefactor. -/
-private noncomputable def finiteCutoffContinuumBornSelfEnergyFromPolarIntegralOfRegulator
-    (v m probeEnergy regulator disorderStrength hbar pMax : ℝ) :
-    DiracHilbert →L[ℂ] DiracHilbert :=
-  (continuumBornDisorderMeasurePrefactor disorderStrength hbar : ℂ) •
-    finiteCutoffContinuumBornPolarGreenIntegralOfRegulator
-      v m probeEnergy regulator pMax
-
 end
 
 end QuantumTheory.Models.MassiveDirac
