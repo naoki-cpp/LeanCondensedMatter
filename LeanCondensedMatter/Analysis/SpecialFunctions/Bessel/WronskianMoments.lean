@@ -28,22 +28,6 @@ noncomputable section
 open MeasureTheory
 open scoped Interval
 
-/-- Exact Wronskian reduction of the X radial integrand, including the
-origin via the continuous J₁²/r extension. -/
-theorem wronskianBesselIntegrand_eq_one_sq_div
-    (Y0 Y1 : ℝ → ℂ) (hW : RealWronskianCondition Y0 Y1)
-    (r : ℝ) :
-    Complex.besselJ 1 (r : ℂ) ^ 2 *
-        (Complex.besselJ 1 (r : ℂ) * Y0 r -
-          Complex.besselJ 0 (r : ℂ) * Y1 r) =
-      (((2 / Real.pi : ℝ) : ℂ)) *
-        (Complex.besselJ 1 (r : ℂ) ^ 2 / (r : ℂ)) := by
-  by_cases hr : r = 0
-  · subst r
-    simp [Complex.besselJ_zero]
-  · rw [hW r hr]
-    ring
-
 /-- The finite-radius Gaussian Wronskian-weighted Bessel integral is an explicit
 endpoint expression, under only the standard Wronskian condition.
 The Y functions never need values or continuity at r=0. -/
@@ -63,7 +47,16 @@ theorem integral_wronskianBesselIntegrand_eq_endpoints
             (Complex.besselJ 1 (r : ℂ) ^ 2 / (r : ℂ))) := by
         apply intervalIntegral.integral_congr
         intro r _
-        exact wronskianBesselIntegrand_eq_one_sq_div Y0 Y1 hW r
+        change Complex.besselJ 1 (r : ℂ) ^ 2 *
+            (Complex.besselJ 1 (r : ℂ) * Y0 r -
+              Complex.besselJ 0 (r : ℂ) * Y1 r) =
+          (((2 / Real.pi : ℝ) : ℂ)) *
+            (Complex.besselJ 1 (r : ℂ) ^ 2 / (r : ℂ))
+        by_cases hr : r = 0
+        · subst r
+          simp [Complex.besselJ_zero]
+        · rw [hW r hr]
+          ring
     _ = (((2 / Real.pi : ℝ) : ℂ)) *
           (∫ r in (0 : ℝ)..R,
             Complex.besselJ 1 (r : ℂ) ^ 2 / (r : ℂ)) := by
