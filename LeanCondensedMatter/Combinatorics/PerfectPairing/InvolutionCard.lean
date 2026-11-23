@@ -65,6 +65,7 @@ theorem PairingOn.even_card_left_of_invariant_subtype
     (legEquiv : {leg : Leg // p leg} ≃ ExternalData ⊕ (InteractionData × LocalData))
     (hLocal : Even (Fintype.card LocalData)) :
     Even (Fintype.card ExternalData) := by
+  classical
   letI := Fintype.ofFinite InteractionData
   have hcard :
       Fintype.card {leg : Leg // p leg} =
