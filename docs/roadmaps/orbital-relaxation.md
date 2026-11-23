@@ -204,6 +204,27 @@ fermionic lattice modules supply one-body hopping. They do not currently
 provide the local `t₂g` orbital fiber, its physical `l = 2` projection, or a
 Bloch-transform theorem for orbital-indexed hopping.
 
+The explicit six-direction cubic scattering benchmark in
+[`Models/OrbitalRelaxation/OctahedralScattering.lean`](../../LeanCondensedMatter/Models/OrbitalRelaxation/OctahedralScattering.lean)
+has proved, physically interpretable endpoints:
+
+- `QuantumTheory.Models.OrbitalRelaxation.octahedral_momentumRate`:
+  the degree-one collision rate is `I₁ = 2 W(-1) + 4 W(0)`.
+- `QuantumTheory.Models.OrbitalRelaxation.octahedral_degreeTwoRate`:
+  the diagonal quadrupole rate is `I₂ = 6 W(0)`;
+  `QuantumTheory.Models.OrbitalRelaxation.octahedral_degreeTwoRate_eq_legendre`
+  identifies it with the **six-direction finite** `W(1 - P₂(cos θ))`
+  collision sum, not a continuous spherical integral.
+- `QuantumTheory.Models.OrbitalRelaxation.octahedral_polarization_eq_exp`:
+  `P(t) = P(0) exp[-Γₒ t]` with
+  `Γₒ = orbitalRate(axis, ℏ, (6 W(0))⁻¹, c₁, c₂, r)`.
+  This requires an explicitly **supplied quasistationary kinetic closure**;
+  the finite collision kernel alone does not derive that closure.
+
+The kernel samples `±e₁, ±e₂, ±e₃`, with `W(-1), W(0), W(1) ≥ 0`.
+It does not establish the continuous, rotationally invariant
+scattering result or the full disorder-to-kinetics approximation.
+
 ## Source checks before stating the endpoint
 
 - The supplement defines `1/τₘ = I₁` and `1/τ* = I₂`, but prints
