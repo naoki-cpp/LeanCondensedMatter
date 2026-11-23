@@ -134,8 +134,6 @@ private theorem currentRungBoundary_eq_lorentzianIntegral
   simp_rw [hintegrand]
   rw [hcast, intervalIntegral.integral_const_mul]
 
-/-- At fixed cutoff beyond the metallic shell, the canonical zero-broadening source-`x` rung tends
-as one in-plane vector to `(κ, 0)`. -/
 /-- The physical retarded Born-Dyson spectral shell has a **positive**
 imaginary width approaching zero from above, and a real center converging
 inside the finite-cutoff metallic interval, after taking the external
@@ -188,24 +186,40 @@ theorem tendsto_finiteCutoffContinuumBornDysonBoundarySpectralShell_disorder_zer
       fun_prop
     convert hcont.tendsto.mono_left hl using 1
     all_goals simp [Q, finiteCutoffContinuumBornBoundaryRealRenormalization]
-  have hshell := tendsto_finiteCutoffContinuumBornDysonBoundarySpectralShell_disorder_zero
-    v m probeEnergy hbar pMax hvelocity hhbar hmetal hcutoff
-  dsimp only at hshell
-  have hwidth : Tendsto width l (nhdsWithin 0 (Set.Ioi 0)) := by
-    have hfun : width = (fun W =>
-        (finiteCutoffContinuumBornDysonDenominatorZeroBroadeningBoundary
-          .retarded v m 0 probeEnergy W hbar pMax).im) := by
-      funext W
-      exact (boundaryRetardedDenominator_im_eq_width
-        v m probeEnergy W hbar pMax hvelocity hhbar).symm
-    rw [hfun]
-    exact hshell.2.1
+  have hwidth0 : Tendsto width l (nhds 0) := by
+    have hcont : ContinuousAt width 0 := by
+      dsimp [width]
+      unfold boundaryRAWidth finiteCutoffContinuumBornBoundaryRealRenormalization
+        continuumBornDampingScale
+      fun_prop
+    convert hcont.tendsto.mono_left hl using 1
+    all_goals simp [width, boundaryRAWidth, finiteCutoffContinuumBornBoundaryRealRenormalization,
+      continuumBornDampingScale]
+  have hwidthPos : ∀ᶠ disorderStrength : ℝ in l, 0 < width disorderStrength := by
+    filter_upwards [self_mem_nhdsWithin,
+      hQ.eventually (Ioi_mem_nhds hsum)] with disorderStrength hdisorder hQPos
+    have hgammaPos : 0 < continuumBornDampingScale v disorderStrength hbar := by
+      unfold continuumBornDampingScale
+      exact div_pos hdisorder
+        (mul_pos (mul_pos (by norm_num) (sq_pos_of_ne_zero hhbar))
+          (sq_pos_of_ne_zero hvelocity))
+    simpa [width, Q, boundaryRAWidth] using
+      mul_pos (mul_pos (by norm_num : (0 : ℝ) < 2) hgammaPos) hQPos
+  have hwidth : Tendsto width l (nhdsWithin 0 (Set.Ioi 0)) :=
+    tendsto_nhdsWithin_iff.mpr ⟨hwidth0, hwidthPos⟩
   have hcenter0 : Tendsto center l (nhds (probeEnergy ^ 2 - m ^ 2)) := by
-    change Tendsto (fun W =>
-      (finiteCutoffContinuumBornDysonDenominatorZeroBroadeningBoundary
-        .retarded v m 0 probeEnergy W hbar pMax).re) l
-        (nhds (probeEnergy ^ 2 - m ^ 2))
-    exact hshell.1
+    have hcont : ContinuousAt center 0 := by
+      dsimp [center]
+      unfold boundaryRACenter finiteCutoffContinuumBornDysonDenominatorZeroBroadeningBoundary
+        finiteCutoffContinuumBornEffectiveEnergyZeroBroadeningBoundary
+        finiteCutoffContinuumBornEffectiveMassZeroBroadeningBoundary
+      fun_prop
+    convert hcont.tendsto.mono_left hl using 1
+    all_goals simp [center, boundaryRACenter,
+      finiteCutoffContinuumBornDysonDenominatorZeroBroadeningBoundary,
+      finiteCutoffContinuumBornEffectiveEnergyZeroBroadeningBoundary,
+      finiteCutoffContinuumBornEffectiveMassZeroBroadeningBoundary,
+      pow_two, Complex.mul_re]
   have hcenterPhysical :
       Tendsto (fun W => (D0 W).re) l (nhds (probeEnergy ^ 2 - m ^ 2)) := by
     change Tendsto center l (nhds (probeEnergy ^ 2 - m ^ 2))
@@ -227,6 +241,8 @@ theorem tendsto_finiteCutoffContinuumBornDysonBoundarySpectralShell_disorder_zer
     simpa only [D0, center, boundaryRACenter] using hinsideCenter
   exact ⟨hcenterPhysical, hwidthPhysical, hinside⟩
 
+/-- At fixed cutoff beyond the metallic shell, the canonical zero-broadening source-`x` rung tends
+as one in-plane vector to `(κ, 0)`. -/
 theorem tendsto_finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary_disorder_zero
     (v m probeEnergy hbar pMax : ℝ)
     (hvelocity : v ≠ 0) (hhbar : hbar ≠ 0)
@@ -268,40 +284,24 @@ theorem tendsto_finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBou
       fun_prop
     convert hcont.tendsto.mono_left hl using 1
     all_goals simp [Q, finiteCutoffContinuumBornBoundaryRealRenormalization]
-  have hwidth0 : Tendsto width l (nhds 0) := by
-    have hcont : ContinuousAt width 0 := by
-      dsimp [width]
-      unfold boundaryRAWidth finiteCutoffContinuumBornBoundaryRealRenormalization
-        continuumBornDampingScale
-      fun_prop
-    convert hcont.tendsto.mono_left hl using 1
-    all_goals simp [width, boundaryRAWidth, finiteCutoffContinuumBornBoundaryRealRenormalization,
-      continuumBornDampingScale]
-  have hwidthPos : ∀ᶠ disorderStrength : ℝ in l, 0 < width disorderStrength := by
-    filter_upwards [self_mem_nhdsWithin,
-      hQ.eventually (Ioi_mem_nhds hsum)] with disorderStrength hdisorder hQPos
-    have hgammaPos : 0 < continuumBornDampingScale v disorderStrength hbar := by
-      unfold continuumBornDampingScale
-      exact div_pos hdisorder
-        (mul_pos (mul_pos (by norm_num) (sq_pos_of_ne_zero hhbar))
-          (sq_pos_of_ne_zero hvelocity))
-    simpa [width, Q, boundaryRAWidth] using
-      mul_pos (mul_pos (by norm_num : (0 : ℝ) < 2) hgammaPos) hQPos
-  have hwidth : Tendsto width l (nhdsWithin 0 (Set.Ioi 0)) :=
-    tendsto_nhdsWithin_iff.mpr ⟨hwidth0, hwidthPos⟩
+  have hshell := tendsto_finiteCutoffContinuumBornDysonBoundarySpectralShell_disorder_zero
+    v m probeEnergy hbar pMax hvelocity hhbar hmetal hcutoff
+  dsimp only at hshell
+  have hwidth : Tendsto width l (nhdsWithin 0 (Set.Ioi 0)) := by
+    have hfun : width = (fun W =>
+        (finiteCutoffContinuumBornDysonDenominatorZeroBroadeningBoundary
+          .retarded v m 0 probeEnergy W hbar pMax).im) := by
+      funext W
+      exact (boundaryRetardedDenominator_im_eq_width
+        v m probeEnergy W hbar pMax hvelocity hhbar).symm
+    rw [hfun]
+    exact hshell.2.1
   have hcenter0 : Tendsto center l (nhds (probeEnergy ^ 2 - m ^ 2)) := by
-    have hcont : ContinuousAt center 0 := by
-      dsimp [center]
-      unfold boundaryRACenter finiteCutoffContinuumBornDysonDenominatorZeroBroadeningBoundary
-        finiteCutoffContinuumBornEffectiveEnergyZeroBroadeningBoundary
-        finiteCutoffContinuumBornEffectiveMassZeroBroadeningBoundary
-      fun_prop
-    convert hcont.tendsto.mono_left hl using 1
-    all_goals simp [center, boundaryRACenter,
-      finiteCutoffContinuumBornDysonDenominatorZeroBroadeningBoundary,
-      finiteCutoffContinuumBornEffectiveEnergyZeroBroadeningBoundary,
-      finiteCutoffContinuumBornEffectiveMassZeroBroadeningBoundary,
-      pow_two, Complex.mul_re]
+    change Tendsto (fun W =>
+      (finiteCutoffContinuumBornDysonDenominatorZeroBroadeningBoundary
+        .retarded v m 0 probeEnergy W hbar pMax).re) l
+        (nhds (probeEnergy ^ 2 - m ^ 2))
+    exact hshell.1
   have hdenNe : 2 * Real.pi * (probeEnergy ^ 2 + m ^ 2) ≠ 0 :=
     mul_ne_zero (mul_ne_zero (by norm_num) Real.pi_ne_zero) (ne_of_gt hsum)
   have hscaleClosed := (tendsto_const_nhds.mul hQ).inv₀ hdenNe
