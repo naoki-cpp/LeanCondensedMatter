@@ -1,4 +1,5 @@
 import Mathlib.Basic.Complex.Basic
+import Mathlib.Basic.Real.Basic
 import Mathlib.Algebra.Lie.OfAssociative
 import Mathlib.LinearAlgebra.Finsupp.LSum
 import Mathlib.Tactic.Abel
@@ -6,11 +7,13 @@ import Mathlib.Tactic.Abel
 set_option linter.style.header false
 
 /-!
-# Algebraic locally finite lattice operators
+# Algebraic lattice geometry and locally finite operators
 
 The free complex vector space on a discrete site type, its matrix units, locally finite hopping
 model, bond operators, and local commutator identity do not depend on particle statistics.
 The fermionic Fock-space `dGamma` implementation is a downstream specialization.
+Site positions and real bond coordinates are likewise statistics-independent, and keep
+their generic `LatticeGeometry` namespace and signatures below.
 -/
 
 open scoped BigOperators
@@ -208,3 +211,26 @@ theorem lie_siteProjector (K : LocallyFiniteHopping Site) (x : Site) :
 
 end LocallyFiniteHopping
 
+/-! ## Site geometry and bond coordinates -/
+
+/-- Positions of lattice sites in a real vector space. -/
+structure LatticeGeometry (Site E : Type*) where
+  /-- Position of each site. -/
+  position : Site → E
+
+namespace LatticeGeometry
+
+variable {Site E : Type*} [AddCommGroup E]
+
+/-- Oriented displacement from `x` to `y`. -/
+def bondDisplacement (geometry : LatticeGeometry Site E) (x y : Site) : E :=
+  geometry.position y - geometry.position x
+
+variable [Module ℝ E]
+
+/-- Scalar bond coordinate measured by a real linear functional. -/
+def bondCoordinate (geometry : LatticeGeometry Site E)
+    (direction : E →ₗ[ℝ] ℝ) (x y : Site) : ℝ :=
+  direction (geometry.bondDisplacement x y)
+
+end LatticeGeometry

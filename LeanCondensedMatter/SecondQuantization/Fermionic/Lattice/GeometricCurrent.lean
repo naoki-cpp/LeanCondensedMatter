@@ -1,5 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.HermitianBondCurrent
-import LeanCondensedMatter.Analysis.LatticeGeometry
+import LeanCondensedMatter.Analysis.DiscreteLattice
 
 set_option linter.style.header false
 

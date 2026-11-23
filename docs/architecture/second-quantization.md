@@ -40,7 +40,7 @@ index and finite one-particle spin-1/2 observables are owned by `QuantumTheory.S
 Fermionic
 `dGamma` Hamiltonians, charge densities, and bond currents remain in `Fermionic.Lattice`.
 
-Particle-statistics-independent site geometry and bond coordinates are owned by `Analysis.LatticeGeometry`, whereas bounded current/contact aggregation over a fermionic Fock representation remains in `Fermionic.Lattice`.
+Particle-statistics-independent site geometry and bond coordinates are owned by `Analysis.DiscreteLattice`, alongside its abstract one-particle hopping operators; bounded current/contact aggregation over a fermionic Fock representation remains in `Fermionic.Lattice`.
 
 Particle-statistics-independent one-body current semantics are not second-quantization declarations.
 They live upstream under `Analysis` and `QuantumTheory.ConservationLaw`; second-quantized layers only

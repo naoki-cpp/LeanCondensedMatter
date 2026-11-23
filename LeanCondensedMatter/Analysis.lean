@@ -8,7 +8,6 @@ import LeanCondensedMatter.Analysis.Fourier.AngularHarmonics
 import LeanCondensedMatter.Analysis.Geometry.SphericalMoments
 import LeanCondensedMatter.Analysis.Fourier.FiniteCyclic
 import LeanCondensedMatter.Analysis.Fourier.CyclicLaplacian
-import LeanCondensedMatter.Analysis.LatticeGeometry
 import LeanCondensedMatter.Analysis.Matrix.CartesianProjectors
 import LeanCondensedMatter.Analysis.Matrix.FinTwoCharpoly
 import LeanCondensedMatter.Analysis.ScalarExchange.Basic
