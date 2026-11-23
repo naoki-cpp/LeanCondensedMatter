@@ -21,11 +21,13 @@ dimensionless spin-1 orbital matrices and set
 Hₒₘ(k) = c₁ ∑ᵢ kᵢ² Lᵢ² + c₂ ∑_{i ≠ j} kᵢ kⱼ {Lᵢ, Lⱼ}.
 ```
 
-The sum convention for the off-diagonal term must be fixed before proving a
-coefficient: an ordered `i ≠ j` sum counts each pair twice. With real `c₁,c₂`,
-this Hamiltonian is Hermitian and even in momentum. The scalar `c₀|k|² I`
-does not affect the commutator dynamics. These finite-matrix statements are
-exact targets.
+The off-diagonal sum uses **one term per unordered pair**; an ordered
+`i ≠ j` sum would count each pair twice. With real `c₁,c₂`, the
+Cartesian orbital Hamiltonian is real symmetric and even in momentum:
+`orbitalHamiltonian_transpose` and `orbitalHamiltonian_neg` in
+[`Models/OrbitalRelaxation/Finite.lean`](../../LeanCondensedMatter/Models/OrbitalRelaxation/Finite.lean)
+prove these finite-matrix properties. The scalar `c₀|k|² I` does not affect
+the commutator dynamics.
 
 For a nonnegative rotationally invariant elastic-scattering kernel `W`, define
 
@@ -43,10 +45,13 @@ endpoint is the conditional orbital rate
       = (2 k⁴ / (15 ℏ² γ)) (2 c₁² + 3 c₂²) τₘ,
 ```
 
-with `ℏ > 0`, fixed `|k|`, and the stated perturbative closure. A theorem
-should identify the exact matrix and angular-average calculation that produces
-the coefficient. Positivity of the rate and the inverse dependence of the
-relaxation time on `τₘ` then follow under nonzero coupling.
+with `ℏ > 0`, fixed `|k|`, and the stated perturbative closure. The exact matrix and continuous spherical-angular coefficient are
+proved by `orbitalDoubleCommutator_eq_polynomial`,
+`sphericalAverage_orbitalDoubleCommutator`, and
+`orbitalRate_eq_sphericalAverage`. Under the stated kinetic closure the
+corresponding exponential decay is also proved. Positivity and any inference
+about the inverse dependence of the relaxation time on `τₘ` require the
+appropriate nonzero-coupling and positive-scattering assumptions.
 
 This is a conditional second-order result for its stated regime, not a uniform
 law for every disorder strength. It must not be extrapolated to the clean
@@ -142,18 +147,22 @@ and transport-normalization assumptions.
    near-Γ spherical reduction as an explicit hypothesis or prove it with a
    remainder bound. Until this is available, label model-specific matrix
    results as conditional.
-2. **Finite orbital benchmark.** Define the spin-1 matrices and `Hₒₘ`, fix
-   units and the off-diagonal sum convention, and prove Hermiticity, inversion
-   symmetry, trace identities, and the relevant double-commutator identity.
-3. **Angular and collision benchmark.** Prove the needed moments of the
-   normalized sphere measure, including fourth-order moments. Specify an
-   isotropic elastic collision operator and show its action on the degree-two
-   polynomial subspace is multiplication by `-I₂`; distinguish this from the
-   momentum relaxation mode `I₁`.
-4. **Orbital relaxation endpoint.** Under a stated second-order closure,
-   derive the averaged orbital equation, its rate `Γₒ(k)`, and exponential
-   decay. Keep a fixed-radius result separate from any Fermi-surface or
-   finite-temperature average.
+2. **Finite orbital benchmark (proved).** The Cartesian orbital generators,
+   real-symmetric and inversion-even Hamiltonian, and exact matrix
+   double-commutator polynomial are implemented in `Finite.lean`.
+   These are identities of the specified matrix model; deriving the model
+   from a crystal belongs to step 1.
+3. **Angular and collision benchmark.** The normalized continuous sphere moments
+   (including fourth-order moments), six-direction collision eigenvalues, and
+   continuous zonal `P₂` loss rate at a reference pole are proved. The
+   **all-directions** isotropic collision operator and its full degree-two
+   eigenfunction/Funk–Hecke theorem remain to be established; distinguish
+   that target from the momentum mode `I₁`.
+4. **Orbital relaxation endpoint.** The rate `Γₒ(k)` and exponential
+   polarization decay are proved **conditional on a supplied quasistationary
+   second-order kinetic closure**; they do not derive that closure from
+   microscopic dynamics. A controlled closure derivation, Fermi-surface
+   average, and finite-temperature extension remain open.
 5. **Multipolar finite benchmark.** Define the traceless quadrupole sector;
    prove the `t₂g` projector and resolvent identities; identify invariant
    dipole/quadrupole blocks of a specified kinetic generator; and prove the
@@ -180,11 +189,24 @@ and their unnormalized transverse complements. The spherical `t₂g` realization
 under `Models.OrbitalRelaxation.T2gProjectors` supplies only the Hamiltonian
 identification and spectral-parameter specialization.
 
-
 The normalized continuous spherical-coordinate average and its Cartesian fourth moments
-live in `Analysis.Geometry.SphericalMoments`. The orbital module proves only the finite
-cubature comparison and the double-commutator specialization; it does not identify the
-spherical chart integral with an arbitrary probability measure on a Fermi surface.
+live in `Analysis.Geometry.SphericalMoments`.
+[`Models/OrbitalRelaxation/SphereMoments.lean`](../../LeanCondensedMatter/Models/OrbitalRelaxation/SphereMoments.lean)
+proves `sphericalAverage_orbitalDoubleCommutator` and
+`orbitalRate_eq_sphericalAverage`: the physical double commutator has its
+continuous spherical-coordinate average, and the finite-cubature rate agrees
+with it **for this quartic integrand**. These results do not identify the
+spherical chart measure with an arbitrary Fermi-surface probability measure.
+
+[`Models/OrbitalRelaxation/ContinuousZonalScattering.lean`](../../LeanCondensedMatter/Models/OrbitalRelaxation/ContinuousZonalScattering.lean)
+proves `sphericalAverage_zonal` for continuous polar-angle profiles,
+`continuousDegreeTwoRate_eq_sphericalAverage` for continuous `W`, and
+`continuousZonalCollisionAtNorth_P2` for the reference incoming north-pole
+direction. The concrete nonconstant kernel `W(μ) = a + cμ²` has the exact
+`quadraticZonal_degreeTwoRate` value `I₂ = a + c/5`.
+These are genuine continuous angular **integrals**, but they do not prove an
+SO(3)-equivariant collision operator, degree-two eigenfunctions for all
+incoming directions, or a microscopic kinetic closure.
 
 
 `QuantumTheory.DensityOperator` and finite-dimensional expectations provide
