@@ -68,8 +68,8 @@ theorem retardedSusceptibility_symmetry
     retardedSusceptibility U hbar expectation (Φ A) (Φ B) t s =
       retardedSusceptibility U hbar expectation A B t s := by
   by_cases hs : s ≤ t
-  · simp only [retardedSusceptibility, if_pos hs]
-    exact commutatorSusceptibility_symmetry U Φ hU hbar expectation hω A B t s
+  · simpa [retardedSusceptibility, hs] using
+      commutatorSusceptibility_symmetry U Φ hU hbar expectation hω A B t s
   · simp [retardedSusceptibility, hs]
 
 /-- The explicit contact expectation transforms covariantly under the same
@@ -112,6 +112,10 @@ theorem ResponseChannel.causalResponse_symmetry
   congr 1
   apply intervalIntegral.integral_congr
   intro s hs
+  change (f s : ℂ) *
+      retardedSusceptibility U hbar expectation (Φ channel.measured) (Φ channel.source) t s =
+    (f s : ℂ) *
+      retardedSusceptibility U hbar expectation channel.measured channel.source t s
   rw [retardedSusceptibility_symmetry U Φ hU hbar expectation hω
     channel.measured channel.source t s]
 
