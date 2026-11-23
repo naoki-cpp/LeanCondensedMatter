@@ -229,7 +229,7 @@ L_RA(Γ) = C₂(Gᴿ Γ Gᴬ)
 
 together with finite iteration and conditional resummation/uniqueness under the canonical
 `IsUnit (1 - L_RA)` hypothesis. Separate inverse-data, one-rung, and residual-routing wrappers are
-not public APIs. Convergence and Ward identities are separate targets.
+not public APIs. Ladder convergence remains open. A **finite, conditional charge-vertex Ward-consistency identity** is already proved in `Disorder.Ward` from supplied SCBA inverse/fixed-point data, a charge symmetry of the common second-moment action, and `IsUnit (1 - L_RA)`; see the [impurity vertex-correction roadmap](impurity-vertex-correction.md#conservation-bridge). This is not a full electromagnetic Ward–Takahashi identity, a derivation of nonlinear SCBA existence, or a conductivity/DC-limit theorem.
 
 ## Proved model-specific checkpoints
 
