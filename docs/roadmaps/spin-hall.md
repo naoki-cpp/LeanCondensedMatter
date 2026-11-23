@@ -68,26 +68,6 @@ response, thermodynamic limits, DC limits, and crossed/side-jump/skew work.
 This roadmap specifies spin-Hall model and observable choices; the generic
 current/source architecture remains in the transport and linear-response layers.
 
-## Finite momentum-grid full-Fock construction (partial R1)
-
-`Models.RashbaExchange.FiniteMomentumSpinResponse` embeds momentum-resolved Rashba
-2×2 Hamiltonian and velocity blocks in the one-particle space on a **finite momentum
-grid with two spin modes per sampled momentum**, then constructs the finite fermionic
-Fock Hamiltonian via the canonical bounded second-quantization route.
-Its mixed response channel consumes the existing
-`Fermionic.Transport.boundedSpinCurrentLinear` API and a signed charge
-velocity source `dΓ(q v_j)`. An observable-variation/contact operator is an
-explicit input rather than implicitly set to zero. The finite-grid retarded
-kernel and its exact additivity in real spin polarization are provided.
-
-This is a momentum-grid (not real-space) realization, so the electric source is
-the momentum-velocity vertex rather than a fictitious inter-spin Peierls
-bond. Free dynamics requires a separately supplied self-adjointness proof for
-the assembled full-Fock Hamiltonian. A concrete stationary state, its physical
-Lehmann transition data, a verified *nonzero* transverse spin response, and an
-identified source/contact variation are still needed to complete R1.
-The proper-current/torque-dipole equivalence is deliberately left to R4.
-
 ## Open targets
 
 ### Finite Rashba response
@@ -158,6 +138,26 @@ finite algebraic theorems.
 Establish finite Rashba response and proper-current semantics first; then address
 clean intrinsic identities and disorder vertices. Extrinsic mechanisms, inverse
 reciprocity, and bulk/device limits require additional model-specific hypotheses.
+
+## Finite momentum-grid full-Fock construction (partial R1)
+
+`Models.RashbaExchange.FiniteMomentumSpinResponse` embeds momentum-resolved Rashba
+2×2 Hamiltonian and velocity blocks in the one-particle space on a **finite momentum
+grid with two spin modes per sampled momentum**, then constructs the finite fermionic
+Fock Hamiltonian via the canonical bounded second-quantization route.
+Its mixed response channel consumes the existing
+`Fermionic.Transport.boundedSpinCurrentLinear` API and a signed charge
+velocity source `dΓ(q v_j)`. An observable-variation/contact operator is an
+explicit input rather than implicitly set to zero. The finite-grid retarded
+kernel and its exact additivity in real spin polarization are provided.
+
+This is a momentum-grid (not real-space) realization, so the electric source is
+the momentum-velocity vertex rather than a fictitious inter-spin Peierls
+bond. Free dynamics requires a separately supplied self-adjointness proof for
+the assembled full-Fock Hamiltonian. A concrete stationary state, its physical
+Lehmann transition data, a verified *nonzero* transverse spin response, and an
+identified source/contact variation are still needed to complete R1.
+The proper-current/torque-dipole equivalence is deliberately left to R4.
 
 ## References
 
