@@ -145,7 +145,6 @@
       ],
       "edges": [
         {"upstream": "vertexCore", "downstream": "disorderFiniteBroadening"},
-        {"upstream": "vertexCore", "downstream": "stredaFiniteBroadening"},
         {"upstream": "disorderFiniteBroadening", "downstream": "stredaFiniteBroadening"},
         {"upstream": "stredaFiniteBroadening", "downstream": "conductivityFiniteBroadening"},
         {"upstream": "disorderScalarAngularWeights", "downstream": "disorderTransportRate"},

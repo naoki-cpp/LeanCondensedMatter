@@ -59,10 +59,6 @@
       "downstream": "quantumTheory"
     },
     {
-      "upstream": "math",
-      "downstream": "common"
-    },
-    {
       "upstream": "quantumTheory",
       "downstream": "common"
     },
