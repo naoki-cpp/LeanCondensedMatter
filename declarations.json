@@ -2125,6 +2125,7 @@
   "directWrapperOf": null,
   "dependents":
   ["AngularHarmonics.fullAngleCosineMoment_even",
+   "AngularHarmonics.fullAngleCosineMoment_even_factorial",
    "AngularHarmonics.fullAngleCosineMoment_odd"],
   "dependencies": ["AngularHarmonics.fullAngleCosineMoment"],
   "declarationStartLine": 35,
@@ -2132,8 +2133,9 @@
   "completedMention": false,
   "compiledConsumers":
   ["AngularHarmonics.fullAngleCosineMoment_even",
+   "AngularHarmonics.fullAngleCosineMoment_even_factorial",
    "AngularHarmonics.fullAngleCosineMoment_odd"],
-  "compiledConsumerCount": 2,
+  "compiledConsumerCount": 3,
   "axioms": ["Classical.choice", "Quot.sound", "propext"]},
  {"valueDependencies":
   ["AngularHarmonics.fullAngleCosineMoment",
@@ -2141,7 +2143,7 @@
    "AngularHarmonics.fullAngleCosineMoment_even._proof_1_1",
    "AngularHarmonics.fullAngleCosineMoment_zero"],
   "typeDependencies": ["AngularHarmonics.fullAngleCosineMoment"],
-  "terminal": false,
+  "terminal": true,
   "structuredStatement":
   {"version": 1,
    "fields": [],
@@ -2214,7 +2216,7 @@
   "sourceEndColumn": 10,
   "sourceColumn": 8,
   "soleCompiledConsumerPrivate": false,
-  "singleCompiledConsumer": true,
+  "singleCompiledConsumer": false,
   "simpLemma": false,
   "retainedNeedsReview": false,
   "retainedMention": false,
@@ -2229,7 +2231,7 @@
   "Closed finite-product formula for every even full-angle cosine moment. ",
   "directWrapperTargetModule": null,
   "directWrapperOf": null,
-  "dependents": ["AngularHarmonics.fullAngleCosineMoment_even_factorial"],
+  "dependents": [],
   "dependencies":
   ["AngularHarmonics.fullAngleCosineMoment",
    "AngularHarmonics.fullAngleCosineMoment_add_two",
@@ -2238,9 +2240,8 @@
   "declarationStartLine": 42,
   "crossModuleDirectWrapper": false,
   "completedMention": false,
-  "compiledConsumers":
-  ["AngularHarmonics.fullAngleCosineMoment_even_factorial"],
-  "compiledConsumerCount": 1,
+  "compiledConsumers": [],
+  "compiledConsumerCount": 0,
   "axioms": ["Classical.choice", "Quot.sound", "propext"]},
  {"valueDependencies": [],
   "typeDependencies": [],
@@ -2263,8 +2264,10 @@
   "declarationStartLine": null},
  {"valueDependencies":
   ["AngularHarmonics.fullAngleCosineMoment",
-   "AngularHarmonics.fullAngleCosineMoment_even",
-   "AngularHarmonics.fullAngleCosineMoment_even_factorial._proof_1_1"],
+   "AngularHarmonics.fullAngleCosineMoment_add_two",
+   "AngularHarmonics.fullAngleCosineMoment_even_factorial._proof_1_1",
+   "AngularHarmonics.fullAngleCosineMoment_even_factorial._proof_1_2",
+   "AngularHarmonics.fullAngleCosineMoment_zero"],
   "typeDependencies": ["AngularHarmonics.fullAngleCosineMoment"],
   "terminal": false,
   "structuredStatement":
@@ -2386,8 +2389,8 @@
   "sourceLine": 57,
   "sourceFile":
   "LeanCondensedMatter/Analysis/Fourier/FullAngleCosineMoments.lean",
-  "sourceEndLine": 86,
-  "sourceEndColumn": 6,
+  "sourceEndLine": 80,
+  "sourceEndColumn": 10,
   "sourceColumn": 8,
   "soleCompiledConsumerPrivate": false,
   "singleCompiledConsumer": true,
@@ -2409,8 +2412,10 @@
   ["QuantumTheory.Transport.polarFourierZerothMoment_even_eq_bessel"],
   "dependencies":
   ["AngularHarmonics.fullAngleCosineMoment",
-   "AngularHarmonics.fullAngleCosineMoment_even",
-   "AngularHarmonics.fullAngleCosineMoment_even_factorial._proof_1_1"],
+   "AngularHarmonics.fullAngleCosineMoment_add_two",
+   "AngularHarmonics.fullAngleCosineMoment_even_factorial._proof_1_1",
+   "AngularHarmonics.fullAngleCosineMoment_even_factorial._proof_1_2",
+   "AngularHarmonics.fullAngleCosineMoment_zero"],
   "declarationStartLine": 55,
   "crossModuleDirectWrapper": false,
   "completedMention": false,
@@ -2430,6 +2435,25 @@
   "sourceColumn": null,
   "projection": false,
   "name": "AngularHarmonics.fullAngleCosineMoment_even_factorial._proof_1_1",
+  "module": "LeanCondensedMatter.Analysis.Fourier.FullAngleCosineMoments",
+  "kind": "theorem",
+  "generated": true,
+  "docString": null,
+  "dependents": ["AngularHarmonics.fullAngleCosineMoment_even_factorial"],
+  "dependencies": [],
+  "declarationStartLine": null},
+ {"valueDependencies": [],
+  "typeDependencies": [],
+  "structuredStatement": null,
+  "statement": "∀ (n : ℕ), ¬2 * (n + 1) = 2 * n + 2 → False",
+  "sourceLine": null,
+  "sourceFile":
+  "LeanCondensedMatter/Analysis/Fourier/FullAngleCosineMoments.lean",
+  "sourceEndLine": null,
+  "sourceEndColumn": null,
+  "sourceColumn": null,
+  "projection": false,
+  "name": "AngularHarmonics.fullAngleCosineMoment_even_factorial._proof_1_2",
   "module": "LeanCondensedMatter.Analysis.Fourier.FullAngleCosineMoments",
   "kind": "theorem",
   "generated": true,
@@ -2483,10 +2507,10 @@
   "statement":
   "∀ (n : ℕ), ‖AngularHarmonics.fullAngleCosineMoment n‖ ≤ 2 * Real.pi",
   "standardAxioms": ["Classical.choice", "Quot.sound", "propext"],
-  "sourceLine": 98,
+  "sourceLine": 92,
   "sourceFile":
   "LeanCondensedMatter/Analysis/Fourier/FullAngleCosineMoments.lean",
-  "sourceEndLine": 108,
+  "sourceEndLine": 102,
   "sourceEndColumn": 11,
   "sourceColumn": 8,
   "soleCompiledConsumerPrivate": false,
@@ -2507,7 +2531,7 @@
   "directWrapperOf": null,
   "dependents": ["QuantumTheory.Transport.polarFourierZerothMoments_summable"],
   "dependencies": ["AngularHarmonics.fullAngleCosineMoment"],
-  "declarationStartLine": 97,
+  "declarationStartLine": 91,
   "crossModuleDirectWrapper": false,
   "completedMention": false,
   "compiledConsumers":
@@ -2573,10 +2597,10 @@
   "statement":
   "∀ (n : ℕ), AngularHarmonics.fullAngleCosineMoment (2 * n + 1) = 0",
   "standardAxioms": ["Classical.choice", "Quot.sound", "propext"],
-  "sourceLine": 89,
+  "sourceLine": 83,
   "sourceFile":
   "LeanCondensedMatter/Analysis/Fourier/FullAngleCosineMoments.lean",
-  "sourceEndLine": 95,
+  "sourceEndLine": 89,
   "sourceEndColumn": 62,
   "sourceColumn": 16,
   "soleCompiledConsumerPrivate": false,
@@ -2601,7 +2625,7 @@
    "AngularHarmonics.fullAngleCosineMoment_add_two",
    "AngularHarmonics.fullAngleCosineMoment_odd._proof_1_1",
    "AngularHarmonics.fullAngleCosineMoment_one"],
-  "declarationStartLine": 88,
+  "declarationStartLine": 82,
   "crossModuleDirectWrapper": false,
   "completedMention": false,
   "compiledConsumers":
@@ -2737,7 +2761,7 @@
   "sourceEndColumn": 30,
   "sourceColumn": 16,
   "soleCompiledConsumerPrivate": false,
-  "singleCompiledConsumer": true,
+  "singleCompiledConsumer": false,
   "simpLemma": true,
   "retainedNeedsReview": false,
   "retainedMention": false,
@@ -2751,15 +2775,19 @@
   "docString": null,
   "directWrapperTargetModule": null,
   "directWrapperOf": null,
-  "dependents": ["AngularHarmonics.fullAngleCosineMoment_even"],
+  "dependents":
+  ["AngularHarmonics.fullAngleCosineMoment_even",
+   "AngularHarmonics.fullAngleCosineMoment_even_factorial"],
   "dependencies":
   ["AngularHarmonics.fullAngleCosineMoment",
    "AngularHarmonics.fullAngleCosineMoment._proof_1"],
   "declarationStartLine": 27,
   "crossModuleDirectWrapper": false,
   "completedMention": false,
-  "compiledConsumers": ["AngularHarmonics.fullAngleCosineMoment_even"],
-  "compiledConsumerCount": 1,
+  "compiledConsumers":
+  ["AngularHarmonics.fullAngleCosineMoment_even",
+   "AngularHarmonics.fullAngleCosineMoment_even_factorial"],
+  "compiledConsumerCount": 2,
   "axioms": ["Classical.choice", "Quot.sound", "propext"]},
  {"valueDependencies": [],
   "typeDependencies": [],
@@ -120478,10 +120506,10 @@
   "statement":
   "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {T : H →L[ℂ] H} (hT : T.IsTraceClass),\n  ∃ A B,\n    ∃ (hA : A.IsHilbertSchmidt) (hB : B.IsHilbertSchmidt),\n      ContinuousLinearMap.adjoint A * B = T ∧\n        hA.normSq ≤ ContinuousLinearMap.IsHilbertSchmidt.normSq hT ∧\n          hB.normSq ≤ ContinuousLinearMap.IsHilbertSchmidt.normSq hT",
   "standardAxioms": ["Classical.choice", "Quot.sound", "propext"],
-  "sourceLine": 26,
+  "sourceLine": 28,
   "sourceFile":
   "LeanCondensedMatter/Analysis/Operator/TraceClass/Factorization/Basic.lean",
-  "sourceEndLine": 55,
+  "sourceEndLine": 57,
   "sourceEndColumn": 53,
   "sourceColumn": 8,
   "soleCompiledConsumerPrivate": false,
@@ -120520,7 +120548,7 @@
    "ContinuousLinearMap.IsTraceClassWrt._proof_8",
    "ContinuousLinearMap.exists_leftPolarFactor",
    "ContinuousLinearMap.isHilbertSchmidt_comp_right"],
-  "declarationStartLine": 24,
+  "declarationStartLine": 26,
   "crossModuleDirectWrapper": false,
   "completedMention": false,
   "compiledConsumers":
@@ -121547,9 +121575,10 @@
   "statement":
   "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {T : H →L[ℂ] H}, T.IsTraceClass → IsCompactOperator ⇑T",
   "standardAxioms": ["Classical.choice", "Quot.sound", "propext"],
-  "sourceLine": 23,
-  "sourceFile": "LeanCondensedMatter/Analysis/Operator/TraceClass/Compact.lean",
-  "sourceEndLine": 30,
+  "sourceLine": 95,
+  "sourceFile":
+  "LeanCondensedMatter/Analysis/Operator/TraceClass/Factorization/Basic.lean",
+  "sourceEndLine": 102,
   "sourceEndColumn": 61,
   "sourceColumn": 8,
   "soleCompiledConsumerPrivate": false,
@@ -121560,7 +121589,8 @@
   "projection": false,
   "projectAxioms": [],
   "name": "ContinuousLinearMap.IsTraceClass.isCompact",
-  "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Compact",
+  "module":
+  "LeanCondensedMatter.Analysis.Operator.TraceClass.Factorization.Basic",
   "kind": "theorem",
   "generated": false,
   "externalAxioms": [],
@@ -121583,7 +121613,7 @@
    "ContinuousLinearMap.IsHilbertSchmidt.isCompact",
    "ContinuousLinearMap.IsTraceClass",
    "ContinuousLinearMap.isTraceClass_iff_exists_hilbertSchmidt_factorization"],
-  "declarationStartLine": 22,
+  "declarationStartLine": 94,
   "crossModuleDirectWrapper": false,
   "completedMention": false,
   "compiledConsumers":
@@ -130212,7 +130242,7 @@
   "docString":
   "Every bundled spectral-trace-class operator is compact, by general trace-class compactness. ",
   "directWrapperTargetModule":
-  "LeanCondensedMatter.Analysis.Operator.TraceClass.Compact",
+  "LeanCondensedMatter.Analysis.Operator.TraceClass.Factorization.Basic",
   "directWrapperOf": "ContinuousLinearMap.IsTraceClass.isCompact",
   "dependents":
   ["ContinuousLinearMap.SpectralTraceClass.hasSum_diagonalExpectationValue",
@@ -138288,10 +138318,10 @@
   "statement":
   "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {T : H →L[ℂ] H},\n  IsCompactOperator ⇑T →\n    ∀ (hTself : IsSelfAdjoint T),\n      T.HasSummableRealEigenvalues →\n        ∀ {ι : Type u_2} (d : HilbertBasis ι ℂ H),\n          HasSum (fun i => T.diagonalExpectationValue hTself (d i)) T.spectralTrace",
   "standardAxioms": ["Classical.choice", "Quot.sound", "propext"],
-  "sourceLine": 52,
+  "sourceLine": 56,
   "sourceFile":
   "LeanCondensedMatter/Analysis/Operator/TraceClass/Spectral/Ops.lean",
-  "sourceEndLine": 96,
+  "sourceEndLine": 100,
   "sourceEndColumn": 29,
   "sourceColumn": 8,
   "soleCompiledConsumerPrivate": false,
@@ -138324,7 +138354,7 @@
    "ContinuousLinearMap.orthonormal_eigenvectorFamily",
    "ContinuousLinearMap.spectralTrace",
    "HilbertBasis.hasSum_norm_sq_inner"],
-  "declarationStartLine": 50,
+  "declarationStartLine": 54,
   "crossModuleDirectWrapper": false,
   "completedMention": false,
   "compiledConsumers":
@@ -138481,10 +138511,10 @@
   "statement":
   "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {T : H →L[ℂ] H} (hT : IsCompactOperator ⇑T) (hTself : IsSelfAdjoint T) (x : H),\n  HasSum (fun a => ↑a.fst * ‖inner ℂ (ContinuousLinearMap.eigenvectorFamily hT a) x‖ ^ 2)\n    (T.diagonalExpectationValue hTself x)",
   "standardAxioms": ["Classical.choice", "Quot.sound", "propext"],
-  "sourceLine": 27,
+  "sourceLine": 31,
   "sourceFile":
   "LeanCondensedMatter/Analysis/Operator/TraceClass/Spectral/Ops.lean",
-  "sourceEndLine": 48,
+  "sourceEndLine": 52,
   "sourceEndColumn": 36,
   "sourceColumn": 8,
   "soleCompiledConsumerPrivate": false,
@@ -138511,7 +138541,7 @@
    "ContinuousLinearMap.diagonalExpectationValue",
    "ContinuousLinearMap.eigenvectorFamily",
    "ContinuousLinearMap.hasSum_eigenvectorFamily"],
-  "declarationStartLine": 25,
+  "declarationStartLine": 29,
   "crossModuleDirectWrapper": false,
   "completedMention": false,
   "compiledConsumers":
@@ -140632,10 +140662,10 @@
   "statement":
   "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {T : H →L[ℂ] H},\n  T.IsTraceClass ↔ ∃ A B, A.IsHilbertSchmidt ∧ B.IsHilbertSchmidt ∧ ContinuousLinearMap.adjoint A * B = T",
   "standardAxioms": ["Classical.choice", "Quot.sound", "propext"],
-  "sourceLine": 61,
+  "sourceLine": 63,
   "sourceFile":
   "LeanCondensedMatter/Analysis/Operator/TraceClass/Factorization/Basic.lean",
-  "sourceEndLine": 88,
+  "sourceEndLine": 90,
   "sourceEndColumn": 42,
   "sourceColumn": 8,
   "soleCompiledConsumerPrivate": false,
@@ -140685,7 +140715,7 @@
    "ContinuousLinearMap.exists_leftPolarFactor",
    "ContinuousLinearMap.isHilbertSchmidt_comp_right",
    "ContinuousLinearMap.isTraceClass_iff_isTraceClassWrt"],
-  "declarationStartLine": 59,
+  "declarationStartLine": 61,
   "crossModuleDirectWrapper": false,
   "completedMention": false,
   "compiledConsumers":
@@ -142441,7 +142471,7 @@
       "argumentType": "Bot",
       "args": []}]},
    "binders":
-   [{"typeText": "Type u_1",
+   [{"typeText": "Type u_2",
      "type": {"kind": "sort", "isProp": false},
      "role": "type",
      "name": "H",
@@ -142548,7 +142578,7 @@
      "instanceRoots": ["_uniq.72063", "_uniq.72064"],
      "implicit": false,
      "id": "_uniq.72069"},
-    {"typeText": "Type u_2",
+    {"typeText": "Type u_3",
      "type": {"kind": "sort", "isProp": false},
      "role": "type",
      "name": "ι",
@@ -142616,12 +142646,12 @@
      "implicit": false,
      "id": "_uniq.72074"}]},
   "statement":
-  "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {T : H →L[ℂ] H},\n  IsCompactOperator ⇑T →\n    ∀ (hTpos : T.IsPositive),\n      T.HasSummableRealEigenvalues →\n        ∀ {ι : Type u_2} {d : ι → H},\n          Orthonormal ℂ d →\n            (∀ (v : H), ‖v‖ = 1 → 0 < T.diagonalExpectationValue ⋯ v) →\n              ∑' (i : ι), T.diagonalExpectationValue ⋯ (d i) = T.spectralTrace → (Submodule.span ℂ (Set.range d))ᗮ = ⊥",
+  "∀ {H : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {T : H →L[ℂ] H},\n  IsCompactOperator ⇑T →\n    ∀ (hTpos : T.IsPositive),\n      T.HasSummableRealEigenvalues →\n        ∀ {ι : Type u_3} {d : ι → H},\n          Orthonormal ℂ d →\n            (∀ (v : H), ‖v‖ = 1 → 0 < T.diagonalExpectationValue ⋯ v) →\n              ∑' (i : ι), T.diagonalExpectationValue ⋯ (d i) = T.spectralTrace → (Submodule.span ℂ (Set.range d))ᗮ = ⊥",
   "standardAxioms": ["Classical.choice", "Quot.sound", "propext"],
-  "sourceLine": 20,
+  "sourceLine": 134,
   "sourceFile":
-  "LeanCondensedMatter/Analysis/Operator/TraceClass/Spectral/Equality.lean",
-  "sourceEndLine": 84,
+  "LeanCondensedMatter/Analysis/Operator/TraceClass/Spectral/Ops.lean",
+  "sourceEndLine": 198,
   "sourceEndColumn": 16,
   "sourceColumn": 8,
   "soleCompiledConsumerPrivate": true,
@@ -142633,8 +142663,7 @@
   "projectAxioms": [],
   "name":
   "ContinuousLinearMap.orthogonal_span_eq_bot_of_sum_diagonalExpectationValue_eq_spectralTrace",
-  "module":
-  "LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Equality",
+  "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Ops",
   "kind": "theorem",
   "generated": false,
   "externalAxioms": [],
@@ -142653,7 +142682,7 @@
    "ContinuousLinearMap.orthogonal_span_eq_bot_of_sum_diagonalExpectationValue_eq_spectralTrace._simp_1_2",
    "ContinuousLinearMap.spectralTrace",
    "Summable.tsum_comp_injective_lt_of_exists_not_mem"],
-  "declarationStartLine": 17,
+  "declarationStartLine": 131,
   "crossModuleDirectWrapper": false,
   "completedMention": false,
   "compiledConsumers":
@@ -142666,15 +142695,14 @@
   "statement": "∀ {α : Sort u_1} {p : α → Prop}, (¬∀ (x : α), p x) = ∃ x, ¬p x",
   "sourceLine": null,
   "sourceFile":
-  "LeanCondensedMatter/Analysis/Operator/TraceClass/Spectral/Equality.lean",
+  "LeanCondensedMatter/Analysis/Operator/TraceClass/Spectral/Ops.lean",
   "sourceEndLine": null,
   "sourceEndColumn": null,
   "sourceColumn": null,
   "projection": false,
   "name":
   "ContinuousLinearMap.orthogonal_span_eq_bot_of_sum_diagonalExpectationValue_eq_spectralTrace._simp_1_1",
-  "module":
-  "LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Equality",
+  "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Ops",
   "kind": "theorem",
   "generated": true,
   "docString": null,
@@ -142688,15 +142716,14 @@
   "statement": "∀ {α : Sort u_1} {p : α → Prop}, (¬∃ x, p x) = ∀ (x : α), ¬p x",
   "sourceLine": null,
   "sourceFile":
-  "LeanCondensedMatter/Analysis/Operator/TraceClass/Spectral/Equality.lean",
+  "LeanCondensedMatter/Analysis/Operator/TraceClass/Spectral/Ops.lean",
   "sourceEndLine": null,
   "sourceEndColumn": null,
   "sourceColumn": null,
   "projection": false,
   "name":
   "ContinuousLinearMap.orthogonal_span_eq_bot_of_sum_diagonalExpectationValue_eq_spectralTrace._simp_1_2",
-  "module":
-  "LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Equality",
+  "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Ops",
   "kind": "theorem",
   "generated": true,
   "docString": null,
@@ -143919,10 +143946,10 @@
   "statement":
   "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [CompleteSpace H] {T T' : H →L[ℂ] H},\n  (↑T).IsSymmetric → (↑T').IsSymmetric → (↑(T * T')).IsSymmetric → (T * T').spectralTrace = (T' * T).spectralTrace",
   "standardAxioms": ["Classical.choice", "Quot.sound", "propext"],
-  "sourceLine": 100,
+  "sourceLine": 104,
   "sourceFile":
   "LeanCondensedMatter/Analysis/Operator/TraceClass/Spectral/Ops.lean",
-  "sourceEndLine": 117,
+  "sourceEndLine": 121,
   "sourceEndColumn": 36,
   "sourceColumn": 8,
   "soleCompiledConsumerPrivate": false,
@@ -143943,7 +143970,7 @@
   "directWrapperOf": null,
   "dependents": [],
   "dependencies": ["ContinuousLinearMap.spectralTrace"],
-  "declarationStartLine": 98,
+  "declarationStartLine": 102,
   "crossModuleDirectWrapper": false,
   "completedMention": false,
   "compiledConsumers": [],
@@ -416921,7 +416948,8 @@
    "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.SelfEnergy.DenominatorIntegral.0.QuantumTheory.Models.MassiveDirac.bornSelfEnergyChannelWeightOfRegulator.match_1.eq_2",
    "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.SelfEnergy.DenominatorIntegral.0.QuantumTheory.Models.MassiveDirac.bornSelfEnergyChannelWeightOfRegulator.match_1.splitter",
    "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.SelfEnergy.DenominatorIntegral.0.QuantumTheory.Models.MassiveDirac.continuumBornRadialIntegrandOfRegulator_eq_weight_mul_denominatorIntegrand",
-   "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.SelfEnergy.DenominatorIntegral.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornIntegralOfRegulator_eq_weight_mul_denominatorIntegral"],
+   "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.SelfEnergy.DenominatorIntegral.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornIntegralOfRegulator_eq_weight_mul_denominatorIntegral",
+   "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.TMatrix.BornDysonLoop.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGreenLoopMatrix_zero_disorder_eq_channels"],
   "dependencies": [],
   "declarationStartLine": 37},
  {"valueDependencies":
@@ -428465,10 +428493,10 @@
   "statement":
   "∀ (params : QuantumTheory.Models.MassiveDirac.ScalarImpurityParameters) (side : QuantumTheory.Transport.SpectralSide)\n  (v m probeEnergy broadening disorderStrength hbar pMax : ℝ),\n  broadening ≠ 0 →\n    disorderStrength = params.impurityDensity * params.impurityStrength ^ 2 →\n      ↑(params.impurityDensity * params.impurityStrength ^ 2) •\n          QuantumTheory.Models.MassiveDirac.matrixOperator\n            (QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGreenLoopMatrix side v m probeEnergy\n              broadening 0 hbar pMax) =\n        QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornSelfEnergyOfRegulator v m probeEnergy\n          (side.regulator broadening) disorderStrength hbar pMax",
   "standardAxioms": ["Classical.choice", "Quot.sound", "propext"],
-  "sourceLine": 161,
+  "sourceLine": 154,
   "sourceFile":
   "LeanCondensedMatter/Models/MassiveDirac/Disorder/TMatrix/BornDysonLoop.lean",
-  "sourceEndLine": 180,
+  "sourceEndLine": 173,
   "sourceEndColumn": 6,
   "sourceColumn": 8,
   "soleCompiledConsumerPrivate": false,
@@ -428505,7 +428533,7 @@
    "QuantumTheory.Transport.SpectralSide",
    "QuantumTheory.Transport.SpectralSide.regulator",
    "QuantumTheory.Transport.fullAngleMomentumMeasurePrefactor"],
-  "declarationStartLine": 158,
+  "declarationStartLine": 151,
   "crossModuleDirectWrapper": false,
   "completedMention": false,
   "compiledConsumers": [],
@@ -448633,10 +448661,10 @@
   "statement":
   "∀ (v m fermiEnergy disorderStrength hbar : ℝ),\n  v ≠ 0 →\n    hbar ≠ 0 →\n      disorderStrength ≠ 0 →\n        fermiEnergy ≠ 0 →\n          QuantumTheory.Models.MassiveDirac.continuumBornUpperBandTransportLifetime v m fermiEnergy disorderStrength\n              hbar =\n            (1 -\n                  QuantumTheory.Models.MassiveDirac.continuumBornRetardedAdvancedPauliXWeakDisorderCurrentRungCoefficient\n                    m fermiEnergy)⁻¹ *\n              QuantumTheory.lifetimeOfDamping hbar\n                (QuantumTheory.Models.MassiveDirac.continuumBornUpperBandDampingEnergy v m fermiEnergy disorderStrength\n                  hbar)",
   "standardAxioms": ["Classical.choice", "Quot.sound", "propext"],
-  "sourceLine": 211,
+  "sourceLine": 208,
   "sourceFile":
   "LeanCondensedMatter/Models/MassiveDirac/Disorder/Vertex/Born/WeakDisorder.lean",
-  "sourceEndLine": 228,
+  "sourceEndLine": 223,
   "sourceEndColumn": 23,
   "sourceColumn": 8,
   "soleCompiledConsumerPrivate": false,
@@ -448665,7 +448693,7 @@
    "QuantumTheory.Models.MassiveDirac.continuumBornUpperBandTransportLifetime_eq_factor_mul_singleParticleLifetime",
    "QuantumTheory.Models.MassiveDirac.inv_one_sub_continuumBornRetardedAdvancedPauliXWeakDisorderCurrentRungCoefficient",
    "QuantumTheory.lifetimeOfDamping"],
-  "declarationStartLine": 209,
+  "declarationStartLine": 206,
   "crossModuleDirectWrapper": false,
   "completedMention": false,
   "compiledConsumers": [],
@@ -454115,10 +454143,10 @@
   "statement":
   "∀ (v m probeEnergy hbar pMax : ℝ),\n  v ≠ 0 →\n    hbar ≠ 0 →\n      |m| < probeEnergy →\n        probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2 →\n          ∀ᶠ (disorderStrength : ℝ) in nhdsWithin 0 (Set.Ioi 0),\n            QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonLadderDeterminantZeroBroadeningBoundary v m\n                probeEnergy disorderStrength hbar pMax ≠\n              0",
   "standardAxioms": ["Classical.choice", "Quot.sound", "propext"],
-  "sourceLine": 54,
+  "sourceLine": 52,
   "sourceFile":
   "LeanCondensedMatter/Models/MassiveDirac/Disorder/Vertex/Ladder/RegulatorBoundaryWeakDisorder.lean",
-  "sourceEndLine": 67,
+  "sourceEndLine": 65,
   "sourceEndColumn": 89,
   "sourceColumn": 8,
   "soleCompiledConsumerPrivate": false,
@@ -454151,7 +454179,7 @@
    "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary_disorder_zero",
    "QuantumTheory.Models.MassiveDirac.tendsto_inPlaneLadderDeterminant",
    "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Vertex.Ladder.RegulatorBoundaryWeakDisorder.0.QuantumTheory.Models.MassiveDirac.weakDisorderTargetLadderDeterminant_ne_zero"],
-  "declarationStartLine": 52,
+  "declarationStartLine": 50,
   "crossModuleDirectWrapper": false,
   "completedMention": false,
   "compiledConsumers":
@@ -487837,10 +487865,10 @@
   "statement":
   "∀ (side : QuantumTheory.Transport.SpectralSide) (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ),\n  hbar ≠ 0 →\n    broadening ≠ 0 →\n      0 ≤ disorderStrength →\n        0 ≤ pMax →\n          QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient\n              InternalSpace.PauliAxis.x side v m probeEnergy broadening disorderStrength hbar pMax radius =\n            -Complex.I * ↑(hbar * v) *\n              deriv\n                (fun r =>\n                  QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialScalarGreenGenerator side v m\n                    probeEnergy broadening disorderStrength hbar pMax r)\n                radius",
   "standardAxioms": ["Classical.choice", "Quot.sound", "propext"],
-  "sourceLine": 383,
+  "sourceLine": 368,
   "sourceFile":
   "LeanCondensedMatter/Models/MassiveDirac/Disorder/Propagator/BornDyson/RealSpace/ScalarGenerator.lean",
-  "sourceEndLine": 440,
+  "sourceEndLine": 425,
   "sourceEndColumn": 10,
   "sourceColumn": 8,
   "soleCompiledConsumerPrivate": false,
@@ -487876,7 +487904,7 @@
    "QuantumTheory.Transport.SpectralSide",
    "QuantumTheory.Transport.momentumMeasurePrefactor",
    "QuantumTheory.Transport.polarFourierFirstCosineAngularKernel"],
-  "declarationStartLine": 378,
+  "declarationStartLine": 363,
   "crossModuleDirectWrapper": false,
   "completedMention": false,
   "compiledConsumers":
@@ -488615,10 +488643,10 @@
   "statement":
   "∀ (side : QuantumTheory.Transport.SpectralSide) (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ),\n  broadening ≠ 0 →\n    0 ≤ disorderStrength →\n      0 ≤ pMax →\n        QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient\n            InternalSpace.PauliAxis.z side v m probeEnergy broadening disorderStrength hbar pMax radius =\n          QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornEffectiveMass side v m probeEnergy broadening\n              disorderStrength hbar pMax *\n            QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialScalarGreenGenerator side v m\n              probeEnergy broadening disorderStrength hbar pMax radius",
   "standardAxioms": ["Classical.choice", "Quot.sound", "propext"],
-  "sourceLine": 347,
+  "sourceLine": 332,
   "sourceFile":
   "LeanCondensedMatter/Models/MassiveDirac/Disorder/Propagator/BornDyson/RealSpace/ScalarGenerator.lean",
-  "sourceEndLine": 376,
+  "sourceEndLine": 361,
   "sourceEndColumn": 10,
   "sourceColumn": 8,
   "soleCompiledConsumerPrivate": false,
@@ -488655,7 +488683,7 @@
    "QuantumTheory.Transport.momentumMeasurePrefactor",
    "QuantumTheory.Transport.polarFourierZerothAngularKernel",
    "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.BornDyson.RealSpace.ScalarGenerator.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDyson_radialKernel_eq_scaledGenerator"],
-  "declarationStartLine": 345,
+  "declarationStartLine": 330,
   "crossModuleDirectWrapper": false,
   "completedMention": false,
   "compiledConsumers":
@@ -489537,10 +489565,10 @@
   "statement":
   "∀ (side : QuantumTheory.Transport.SpectralSide) (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ),\n  broadening ≠ 0 →\n    0 ≤ disorderStrength →\n      0 ≤ pMax →\n        QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenScalarCoefficient side v m\n            probeEnergy broadening disorderStrength hbar pMax radius =\n          QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornEffectiveEnergy side v m probeEnergy broadening\n              disorderStrength hbar pMax *\n            QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialScalarGreenGenerator side v m\n              probeEnergy broadening disorderStrength hbar pMax radius",
   "standardAxioms": ["Classical.choice", "Quot.sound", "propext"],
-  "sourceLine": 315,
+  "sourceLine": 300,
   "sourceFile":
   "LeanCondensedMatter/Models/MassiveDirac/Disorder/Propagator/BornDyson/RealSpace/ScalarGenerator.lean",
-  "sourceEndLine": 343,
+  "sourceEndLine": 328,
   "sourceEndColumn": 10,
   "sourceColumn": 8,
   "soleCompiledConsumerPrivate": false,
@@ -489576,7 +489604,7 @@
    "QuantumTheory.Transport.momentumMeasurePrefactor",
    "QuantumTheory.Transport.polarFourierZerothAngularKernel",
    "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.BornDyson.RealSpace.ScalarGenerator.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDyson_radialKernel_eq_scaledGenerator"],
-  "declarationStartLine": 313,
+  "declarationStartLine": 298,
   "crossModuleDirectWrapper": false,
   "completedMention": false,
   "compiledConsumers":
@@ -491511,10 +491539,10 @@
   "statement":
   "∀ (side : QuantumTheory.Transport.SpectralSide) (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ),\n  hbar ≠ 0 →\n    broadening ≠ 0 →\n      0 ≤ disorderStrength →\n        0 ≤ pMax →\n          QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix side v m\n              probeEnergy broadening disorderStrength hbar pMax radius =\n            (QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornEffectiveEnergy side v m probeEnergy broadening\n                      disorderStrength hbar pMax *\n                    QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialScalarGreenGenerator side v m\n                      probeEnergy broadening disorderStrength hbar pMax radius) •\n                  1 +\n                (-Complex.I * ↑(hbar * v) *\n                    deriv\n                      (fun r =>\n                        QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialScalarGreenGenerator side\n                          v m probeEnergy broadening disorderStrength hbar pMax r)\n                      radius) •\n                  InternalSpace.pauliX +\n              (QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornEffectiveMass side v m probeEnergy broadening\n                    disorderStrength hbar pMax *\n                  QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialScalarGreenGenerator side v m\n                    probeEnergy broadening disorderStrength hbar pMax radius) •\n                InternalSpace.pauliZ",
   "standardAxioms": ["Classical.choice", "Quot.sound", "propext"],
-  "sourceLine": 447,
+  "sourceLine": 432,
   "sourceFile":
   "LeanCondensedMatter/Models/MassiveDirac/Disorder/Propagator/BornDyson/RealSpace/ScalarGenerator.lean",
-  "sourceEndLine": 503,
+  "sourceEndLine": 488,
   "sourceEndColumn": 10,
   "sourceColumn": 8,
   "soleCompiledConsumerPrivate": false,
@@ -491562,7 +491590,7 @@
    "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornEffectiveEnergy",
    "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornEffectiveMass",
    "QuantumTheory.Transport.SpectralSide"],
-  "declarationStartLine": 442,
+  "declarationStartLine": 427,
   "crossModuleDirectWrapper": false,
   "completedMention": false,
   "compiledConsumers": [],
@@ -493029,7 +493057,7 @@
   "sourceLine": 126,
   "sourceFile":
   "LeanCondensedMatter/Models/MassiveDirac/Disorder/Propagator/BornDyson/RealSpace/ScalarGenerator.lean",
-  "sourceEndLine": 287,
+  "sourceEndLine": 272,
   "sourceEndColumn": 10,
   "sourceColumn": 8,
   "soleCompiledConsumerPrivate": false,
@@ -506034,10 +506062,10 @@
   "statement":
   "∀ (side : QuantumTheory.Transport.SpectralSide) (v probeEnergy broadening disorderStrength hbar pMax : ℝ),\n  QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornEffectiveMass side v 0 probeEnergy broadening\n      disorderStrength hbar pMax =\n    0",
   "standardAxioms": ["Classical.choice", "Quot.sound", "propext"],
-  "sourceLine": 308,
+  "sourceLine": 306,
   "sourceFile":
   "LeanCondensedMatter/Models/MassiveDirac/Disorder/Born/UltravioletSelfEnergy.lean",
-  "sourceEndLine": 313,
+  "sourceEndLine": 311,
   "sourceEndColumn": 47,
   "sourceColumn": 16,
   "soleCompiledConsumerPrivate": false,
@@ -506067,7 +506095,7 @@
    "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornSelfEnergyCoefficient",
    "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornSelfEnergyCoefficient_z_zero_mass",
    "QuantumTheory.Transport.SpectralSide"],
-  "declarationStartLine": 306,
+  "declarationStartLine": 304,
   "crossModuleDirectWrapper": false,
   "completedMention": false,
   "compiledConsumers":
@@ -509158,10 +509186,10 @@
   "statement":
   "∀ (channel : QuantumTheory.Models.MassiveDirac.BornSelfEnergyChannel) (side : QuantumTheory.Transport.SpectralSide)\n  (v m probeEnergy broadening disorderStrength hbar : ℝ),\n  v ≠ 0 →\n    probeEnergy ≠ 0 →\n      broadening ≠ 0 →\n        ↑(disorderStrength * QuantumTheory.Transport.fullAngleMomentumMeasurePrefactor hbar) *\n              QuantumTheory.Models.MassiveDirac.bornSelfEnergyChannelWeight channel side m probeEnergy broadening ≠\n            0 →\n          ¬∃ limit,\n              Filter.Tendsto\n                (fun pMax =>\n                  QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornSelfEnergyCoefficient channel side v m\n                    probeEnergy broadening disorderStrength hbar pMax)\n                Filter.atTop (nhds limit)",
   "standardAxioms": ["Classical.choice", "Quot.sound", "propext"],
-  "sourceLine": 254,
+  "sourceLine": 252,
   "sourceFile":
   "LeanCondensedMatter/Models/MassiveDirac/Disorder/Born/UltravioletSelfEnergy.lean",
-  "sourceEndLine": 291,
+  "sourceEndLine": 289,
   "sourceEndColumn": 10,
   "sourceColumn": 8,
   "soleCompiledConsumerPrivate": false,
@@ -509190,7 +509218,7 @@
    "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornSelfEnergyCoefficient_normalized_re_atBot",
    "QuantumTheory.Transport.SpectralSide",
    "QuantumTheory.Transport.fullAngleMomentumMeasurePrefactor"],
-  "declarationStartLine": 250,
+  "declarationStartLine": 248,
   "crossModuleDirectWrapper": false,
   "completedMention": false,
   "compiledConsumers": [],
@@ -509496,10 +509524,10 @@
   "statement":
   "∀ (side : QuantumTheory.Transport.SpectralSide) (v probeEnergy broadening disorderStrength hbar pMax : ℝ),\n  QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornSelfEnergyCoefficient\n      QuantumTheory.Models.MassiveDirac.BornSelfEnergyChannel.z side v 0 probeEnergy broadening disorderStrength hbar\n      pMax =\n    0",
   "standardAxioms": ["Classical.choice", "Quot.sound", "propext"],
-  "sourceLine": 298,
+  "sourceLine": 296,
   "sourceFile":
   "LeanCondensedMatter/Models/MassiveDirac/Disorder/Born/UltravioletSelfEnergy.lean",
-  "sourceEndLine": 304,
+  "sourceEndLine": 302,
   "sourceEndColumn": 76,
   "sourceColumn": 16,
   "soleCompiledConsumerPrivate": false,
@@ -509530,7 +509558,7 @@
    "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornSelfEnergyCoefficient_eq_denominatorIntegral",
    "QuantumTheory.Transport.SpectralSide",
    "QuantumTheory.Transport.fullAngleMomentumMeasurePrefactor"],
-  "declarationStartLine": 294,
+  "declarationStartLine": 292,
   "crossModuleDirectWrapper": false,
   "completedMention": false,
   "compiledConsumers":
@@ -526308,7 +526336,7 @@
   "sourceLine": 191,
   "sourceFile":
   "LeanCondensedMatter/Models/MassiveDirac/Disorder/Vertex/Born/WeakDisorder.lean",
-  "sourceEndLine": 207,
+  "sourceEndLine": 204,
   "sourceEndColumn": 25,
   "sourceColumn": 8,
   "soleCompiledConsumerPrivate": false,
@@ -535991,10 +536019,10 @@
   "statement":
   "∀ (side : QuantumTheory.Transport.SpectralSide) (v m probeEnergy broadening hbar pMax : ℝ),\n  broadening ≠ 0 →\n    QuantumTheory.Models.MassiveDirac.matrixOperator\n        (QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGreenLoopMatrix side v m probeEnergy broadening\n          0 hbar pMax) =\n      ↑(QuantumTheory.Transport.fullAngleMomentumMeasurePrefactor hbar) •\n        QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornGreenIntegralOfRegulator v m probeEnergy\n          (side.regulator broadening) pMax",
   "standardAxioms": ["Classical.choice", "Quot.sound", "propext"],
-  "sourceLine": 140,
+  "sourceLine": 133,
   "sourceFile":
   "LeanCondensedMatter/Models/MassiveDirac/Disorder/TMatrix/BornDysonLoop.lean",
-  "sourceEndLine": 156,
+  "sourceEndLine": 149,
   "sourceEndColumn": 8,
   "sourceColumn": 8,
   "soleCompiledConsumerPrivate": false,
@@ -536037,7 +536065,7 @@
    "QuantumTheory.Transport.SpectralSide.regulator_ne_zero",
    "QuantumTheory.Transport.fullAngleMomentumMeasurePrefactor",
    "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.TMatrix.BornDysonLoop.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGreenLoopMatrix_zero_disorder_eq_channels"],
-  "declarationStartLine": 138,
+  "declarationStartLine": 131,
   "crossModuleDirectWrapper": false,
   "completedMention": false,
   "compiledConsumers":
@@ -560329,7 +560357,7 @@
   "sourceLine": 220,
   "sourceFile":
   "LeanCondensedMatter/Models/MassiveDirac/Disorder/Born/Boundary.lean",
-  "sourceEndLine": 327,
+  "sourceEndLine": 320,
   "sourceEndColumn": 47,
   "sourceColumn": 8,
   "soleCompiledConsumerPrivate": false,
@@ -563408,10 +563436,10 @@
   "statement":
   "∀ (v m probeEnergy hbar pMax : ℝ),\n  v ≠ 0 →\n    hbar ≠ 0 →\n      |m| < probeEnergy →\n        probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2 →\n          Filter.Tendsto\n            (fun disorderStrength =>\n              QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonLadderSolvedVectorZeroBroadeningBoundary v\n                m probeEnergy disorderStrength hbar pMax)\n            (nhdsWithin 0 (Set.Ioi 0))\n            (nhds\n              (QuantumTheory.Models.MassiveDirac.inPlaneCoefficientVector\n                (↑(2 * (probeEnergy ^ 2 + m ^ 2) / (probeEnergy ^ 2 + 3 * m ^ 2))) 0))",
   "standardAxioms": ["Classical.choice", "Quot.sound", "propext"],
-  "sourceLine": 74,
+  "sourceLine": 72,
   "sourceFile":
   "LeanCondensedMatter/Models/MassiveDirac/Disorder/Vertex/Ladder/RegulatorBoundaryWeakDisorder.lean",
-  "sourceEndLine": 125,
+  "sourceEndLine": 123,
   "sourceEndColumn": 36,
   "sourceColumn": 8,
   "soleCompiledConsumerPrivate": false,
@@ -563449,7 +563477,7 @@
    "QuantumTheory.Models.MassiveDirac.tendsto_inPlaneLadderSolvedVector",
    "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Vertex.Ladder.RegulatorBoundaryWeakDisorder.0.QuantumTheory.Models.MassiveDirac.weakDisorderTargetLadderDeterminant_ne_zero",
    "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Vertex.Ladder.RegulatorBoundaryWeakDisorder.0.QuantumTheory.Models.MassiveDirac.weakDisorderTargetOneMinusRung_ne_zero"],
-  "declarationStartLine": 69,
+  "declarationStartLine": 67,
   "crossModuleDirectWrapper": false,
   "completedMention": false,
   "compiledConsumers":
@@ -564510,10 +564538,10 @@
   "statement":
   "∀ (v m probeEnergy hbar pMax : ℝ),\n  v ≠ 0 →\n    hbar ≠ 0 →\n      |m| < probeEnergy →\n        probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2 →\n          Filter.Tendsto\n            (fun disorderStrength =>\n              QuantumTheory.Models.MassiveDirac.inPlaneLadderAction\n                (QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary\n                  v m probeEnergy disorderStrength hbar pMax)\n                (QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonLadderSolvedVectorZeroBroadeningBoundary\n                  v m probeEnergy disorderStrength hbar pMax)\n                0)\n            (nhdsWithin 0 (Set.Ioi 0)) (nhds ↑((probeEnergy ^ 2 - m ^ 2) / (probeEnergy ^ 2 + 3 * m ^ 2)))",
   "standardAxioms": ["Classical.choice", "Quot.sound", "propext"],
-  "sourceLine": 129,
+  "sourceLine": 127,
   "sourceFile":
   "LeanCondensedMatter/Models/MassiveDirac/Disorder/Vertex/Ladder/RegulatorBoundaryWeakDisorder.lean",
-  "sourceEndLine": 175,
+  "sourceEndLine": 173,
   "sourceEndColumn": 26,
   "sourceColumn": 8,
   "soleCompiledConsumerPrivate": false,
@@ -564548,7 +564576,7 @@
    "QuantumTheory.Models.MassiveDirac.inPlaneLadderSolvedVector",
    "QuantumTheory.Models.MassiveDirac.inPlaneLadderSolvedVector_fixedPoint",
    "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonLadderSolvedVectorZeroBroadeningBoundary_disorder_zero"],
-  "declarationStartLine": 127,
+  "declarationStartLine": 125,
   "crossModuleDirectWrapper": false,
   "completedMention": false,
   "compiledConsumers":
@@ -571223,10 +571251,10 @@
   "statement":
   "∀ (channel : QuantumTheory.Models.MassiveDirac.BornSelfEnergyChannel) (side : QuantumTheory.Transport.SpectralSide)\n  (v m probeEnergy pMax : ℝ),\n  v ≠ 0 →\n    |m| < probeEnergy →\n      probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2 →\n        Filter.Tendsto\n          (fun broadening =>\n            QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornIntegral channel side v m probeEnergy broadening\n              pMax)\n          (nhdsWithin 0 (Set.Ioi 0))\n          (nhds\n            (QuantumTheory.Models.MassiveDirac.bornSelfEnergyChannelWeight channel side m probeEnergy 0 *\n              QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDenominatorIntegralBoundaryValue side v m\n                probeEnergy pMax))",
   "standardAxioms": ["Classical.choice", "Quot.sound", "propext"],
-  "sourceLine": 331,
+  "sourceLine": 324,
   "sourceFile":
   "LeanCondensedMatter/Models/MassiveDirac/Disorder/Born/Boundary.lean",
-  "sourceEndLine": 364,
+  "sourceEndLine": 357,
   "sourceEndColumn": 74,
   "sourceColumn": 8,
   "soleCompiledConsumerPrivate": false,
@@ -571267,7 +571295,7 @@
    "QuantumTheory.Transport.SpectralSide.regulator",
    "QuantumTheory.Transport.SpectralSide.sign",
    "QuantumTheory.Transport.spectralParameterOfRegulator"],
-  "declarationStartLine": 329,
+  "declarationStartLine": 322,
   "crossModuleDirectWrapper": false,
   "completedMention": false,
   "compiledConsumers":
@@ -573417,10 +573445,10 @@
   "statement":
   "∀ (channel : QuantumTheory.Models.MassiveDirac.BornSelfEnergyChannel) (side : QuantumTheory.Transport.SpectralSide)\n  (v m probeEnergy disorderStrength hbar pMax : ℝ),\n  v ≠ 0 →\n    |m| < probeEnergy →\n      probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2 →\n        Filter.Tendsto\n          (fun broadening =>\n            QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornSelfEnergyCoefficient channel side v m\n              probeEnergy broadening disorderStrength hbar pMax)\n          (nhdsWithin 0 (Set.Ioi 0))\n          (nhds\n            (↑(disorderStrength * QuantumTheory.Transport.fullAngleMomentumMeasurePrefactor hbar) *\n              (QuantumTheory.Models.MassiveDirac.bornSelfEnergyChannelWeight channel side m probeEnergy 0 *\n                QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDenominatorIntegralBoundaryValue side v m\n                  probeEnergy pMax)))",
   "standardAxioms": ["Classical.choice", "Quot.sound", "propext"],
-  "sourceLine": 368,
+  "sourceLine": 361,
   "sourceFile":
   "LeanCondensedMatter/Models/MassiveDirac/Disorder/Born/Boundary.lean",
-  "sourceEndLine": 392,
+  "sourceEndLine": 385,
   "sourceEndColumn": 96,
   "sourceColumn": 8,
   "soleCompiledConsumerPrivate": false,
@@ -573456,7 +573484,7 @@
    "QuantumTheory.Transport.SpectralSide",
    "QuantumTheory.Transport.SpectralSide.regulator",
    "QuantumTheory.Transport.fullAngleMomentumMeasurePrefactor"],
-  "declarationStartLine": 366,
+  "declarationStartLine": 359,
   "crossModuleDirectWrapper": false,
   "completedMention": false,
   "compiledConsumers":
@@ -573740,8 +573768,7 @@
    "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornSelfEnergyCoefficient_normalized_re_atBot",
    "QuantumTheory.Transport.SpectralSide",
    "QuantumTheory.Transport.fullAngleMomentumMeasurePrefactor",
-   "QuantumTheory.Transport.momentumMeasurePrefactor",
-   "QuantumTheory.Transport.momentumMeasurePrefactor._proof_1",
+   "QuantumTheory.Transport.fullAngleMomentumMeasurePrefactor_pos",
    "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.UltravioletSelfEnergy.0.QuantumTheory.Models.MassiveDirac.bornSelfEnergyScalarWeight_ne_zero"],
   "typeDependencies":
   ["QuantumTheory.Models.MassiveDirac.BornSelfEnergyChannel.scalar",
@@ -573920,7 +573947,7 @@
   "sourceLine": 191,
   "sourceFile":
   "LeanCondensedMatter/Models/MassiveDirac/Disorder/Born/UltravioletSelfEnergy.lean",
-  "sourceEndLine": 215,
+  "sourceEndLine": 214,
   "sourceEndColumn": 34,
   "sourceColumn": 8,
   "soleCompiledConsumerPrivate": false,
@@ -573949,8 +573976,7 @@
    "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornSelfEnergyCoefficient_normalized_re_atBot",
    "QuantumTheory.Transport.SpectralSide",
    "QuantumTheory.Transport.fullAngleMomentumMeasurePrefactor",
-   "QuantumTheory.Transport.momentumMeasurePrefactor",
-   "QuantumTheory.Transport.momentumMeasurePrefactor._proof_1",
+   "QuantumTheory.Transport.fullAngleMomentumMeasurePrefactor_pos",
    "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.UltravioletSelfEnergy.0.QuantumTheory.Models.MassiveDirac.bornSelfEnergyScalarWeight_ne_zero"],
   "declarationStartLine": 187,
   "crossModuleDirectWrapper": false,
@@ -573964,8 +573990,7 @@
    "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornSelfEnergyCoefficient_normalized_re_atBot",
    "QuantumTheory.Transport.SpectralSide",
    "QuantumTheory.Transport.fullAngleMomentumMeasurePrefactor",
-   "QuantumTheory.Transport.momentumMeasurePrefactor",
-   "QuantumTheory.Transport.momentumMeasurePrefactor._proof_1"],
+   "QuantumTheory.Transport.fullAngleMomentumMeasurePrefactor_pos"],
   "typeDependencies":
   ["QuantumTheory.Models.MassiveDirac.BornSelfEnergyChannel.z",
    "QuantumTheory.Models.MassiveDirac.bornSelfEnergyChannelWeight",
@@ -574158,10 +574183,10 @@
   "statement":
   "∀ (side : QuantumTheory.Transport.SpectralSide) (v m probeEnergy broadening disorderStrength hbar : ℝ),\n  v ≠ 0 →\n    m ≠ 0 →\n      probeEnergy ≠ 0 →\n        broadening ≠ 0 →\n          0 < disorderStrength →\n            0 < hbar →\n              Filter.Tendsto\n                (fun pMax =>\n                  (QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornSelfEnergyCoefficient\n                        QuantumTheory.Models.MassiveDirac.BornSelfEnergyChannel.z side v m probeEnergy broadening\n                        disorderStrength hbar pMax /\n                      (↑(disorderStrength * QuantumTheory.Transport.fullAngleMomentumMeasurePrefactor hbar) *\n                        QuantumTheory.Models.MassiveDirac.bornSelfEnergyChannelWeight\n                          QuantumTheory.Models.MassiveDirac.BornSelfEnergyChannel.z side m probeEnergy broadening)).re)\n                Filter.atTop Filter.atBot",
   "standardAxioms": ["Classical.choice", "Quot.sound", "propext"],
-  "sourceLine": 219,
+  "sourceLine": 218,
   "sourceFile":
   "LeanCondensedMatter/Models/MassiveDirac/Disorder/Born/UltravioletSelfEnergy.lean",
-  "sourceEndLine": 248,
+  "sourceEndLine": 246,
   "sourceEndColumn": 34,
   "sourceColumn": 8,
   "soleCompiledConsumerPrivate": false,
@@ -574190,9 +574215,8 @@
    "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornSelfEnergyCoefficient_normalized_re_atBot",
    "QuantumTheory.Transport.SpectralSide",
    "QuantumTheory.Transport.fullAngleMomentumMeasurePrefactor",
-   "QuantumTheory.Transport.momentumMeasurePrefactor",
-   "QuantumTheory.Transport.momentumMeasurePrefactor._proof_1"],
-  "declarationStartLine": 217,
+   "QuantumTheory.Transport.fullAngleMomentumMeasurePrefactor_pos"],
+  "declarationStartLine": 216,
   "crossModuleDirectWrapper": false,
   "completedMention": false,
   "compiledConsumers": [],
@@ -710959,7 +710983,7 @@
   "sourceEndColumn": 45,
   "sourceColumn": 8,
   "soleCompiledConsumerPrivate": false,
-  "singleCompiledConsumer": true,
+  "singleCompiledConsumer": false,
   "simpLemma": false,
   "retainedNeedsReview": false,
   "retainedMention": false,
@@ -710975,7 +710999,9 @@
   "directWrapperTargetModule": null,
   "directWrapperOf": null,
   "dependents":
-  ["QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominatorZeroBroadeningBoundary_ne_zero"],
+  ["QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominatorZeroBroadeningBoundary_ne_zero",
+   "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornSelfEnergyCoefficient_scalar_normalized_re_atBot",
+   "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornSelfEnergyCoefficient_z_normalized_re_atBot"],
   "dependencies":
   ["QuantumTheory.Transport.fullAngleMomentumMeasurePrefactor",
    "QuantumTheory.Transport.momentumMeasurePrefactor",
@@ -710985,8 +711011,10 @@
   "crossModuleDirectWrapper": false,
   "completedMention": false,
   "compiledConsumers":
-  ["QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominatorZeroBroadeningBoundary_ne_zero"],
-  "compiledConsumerCount": 1,
+  ["QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominatorZeroBroadeningBoundary_ne_zero",
+   "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornSelfEnergyCoefficient_scalar_normalized_re_atBot",
+   "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornSelfEnergyCoefficient_z_normalized_re_atBot"],
+  "compiledConsumerCount": 3,
   "axioms": ["Classical.choice", "Quot.sound", "propext"]},
  {"valueDependencies":
   ["QuantumTheory.Transport.continuous_polarFourierFirstCosineAngularKernel",
@@ -716684,8 +716712,6 @@
    "QuantumTheory.Models.MassiveDirac.intrinsicHallPrefactorFromMomentumMeasure_eq",
    "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonGaussianCrossedK2_offShell_dressedCurrent_zero",
    "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonOrderedXYRungSolvedProvenanceConductivity_disorder_zero",
-   "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornSelfEnergyCoefficient_scalar_normalized_re_atBot",
-   "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornSelfEnergyCoefficient_z_normalized_re_atBot",
    "QuantumTheory.Models.MassiveDirac.upperBandFermiSurfaceDensityOfStates",
    "QuantumTheory.Models.MassiveDirac.upperBandFermiSurfaceDensityOfStates_eq",
    "QuantumTheory.Models.Parabolic2DEG.UsesCanonicalMomentumMeasure",
@@ -716738,8 +716764,6 @@
    "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornSelfEnergyOfRegulator_dissipative",
    "QuantumTheory.Models.MassiveDirac.intrinsicHallPrefactorFromMomentumMeasure_eq",
    "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonOrderedXYRungSolvedProvenanceConductivity_disorder_zero",
-   "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornSelfEnergyCoefficient_scalar_normalized_re_atBot",
-   "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornSelfEnergyCoefficient_z_normalized_re_atBot",
    "QuantumTheory.Models.MassiveDirac.upperBandFermiSurfaceDensityOfStates_eq",
    "QuantumTheory.Models.Parabolic2DEG.UsesCanonicalMomentumMeasure.mul_two_pi_eq_fullAngleMomentumMeasurePrefactor",
    "QuantumTheory.Transport.bastinStredaTrace_mul_fullAngleMomentumMeasurePrefactor_eq",
@@ -718414,10 +718438,10 @@
   "statement":
   "∀ (z : ℝ),\n  HasDerivAt QuantumTheory.Transport.polarFourierFirstCosineAngularKernel\n    (Complex.I / 2 *\n      (QuantumTheory.Transport.polarFourierZerothAngularKernel z +\n        QuantumTheory.Transport.polarFourierSecondCosineAngularKernel z))\n    z",
   "standardAxioms": ["Classical.choice", "Quot.sound", "propext"],
-  "sourceLine": 113,
+  "sourceLine": 108,
   "sourceFile":
   "LeanCondensedMatter/Analysis/Fourier/PolarRadialKernels/Differentiation.lean",
-  "sourceEndLine": 159,
+  "sourceEndLine": 154,
   "sourceEndColumn": 9,
   "sourceColumn": 8,
   "soleCompiledConsumerPrivate": false,
@@ -718451,7 +718475,7 @@
    "QuantumTheory.Transport.polarFourierSecondCosineAngularKernel",
    "QuantumTheory.Transport.polarFourierZerothAngularKernel",
    "_private.LeanCondensedMatter.Analysis.Fourier.PolarRadialKernels.Differentiation.0.QuantumTheory.Transport.polarFourierWeightedAngularKernel_hasDerivAt"],
-  "declarationStartLine": 110,
+  "declarationStartLine": 105,
   "crossModuleDirectWrapper": false,
   "completedMention": false,
   "compiledConsumers":
@@ -719152,10 +719176,10 @@
   "statement":
   "∀ (z : ℝ),\n  HasDerivAt\n    (fun t =>\n      QuantumTheory.Transport.polarFourierZerothAngularKernel t ^ 2 -\n        QuantumTheory.Transport.polarFourierFirstCosineAngularKernel t ^ 2)\n    (Complex.I * QuantumTheory.Transport.polarFourierFirstCosineAngularKernel z *\n      (QuantumTheory.Transport.polarFourierZerothAngularKernel z -\n        QuantumTheory.Transport.polarFourierSecondCosineAngularKernel z))\n    z",
   "standardAxioms": ["Classical.choice", "Quot.sound", "propext"],
-  "sourceLine": 164,
+  "sourceLine": 159,
   "sourceFile":
   "LeanCondensedMatter/Analysis/Fourier/PolarRadialKernels/Differentiation.lean",
-  "sourceEndLine": 175,
+  "sourceEndLine": 170,
   "sourceEndColumn": 6,
   "sourceColumn": 8,
   "soleCompiledConsumerPrivate": false,
@@ -719182,7 +719206,7 @@
    "QuantumTheory.Transport.polarFourierSecondCosineAngularKernel",
    "QuantumTheory.Transport.polarFourierZerothAngularKernel",
    "QuantumTheory.Transport.polarFourierZerothAngularKernel_hasDerivAt"],
-  "declarationStartLine": 161,
+  "declarationStartLine": 156,
   "crossModuleDirectWrapper": false,
   "completedMention": false,
   "compiledConsumers":
@@ -720967,10 +720991,10 @@
   "statement":
   "∀ (z : ℝ),\n  HasDerivAt QuantumTheory.Transport.polarFourierZerothAngularKernel\n    (Complex.I * QuantumTheory.Transport.polarFourierFirstCosineAngularKernel z) z",
   "standardAxioms": ["Classical.choice", "Quot.sound", "propext"],
-  "sourceLine": 88,
+  "sourceLine": 83,
   "sourceFile":
   "LeanCondensedMatter/Analysis/Fourier/PolarRadialKernels/Differentiation.lean",
-  "sourceEndLine": 108,
+  "sourceEndLine": 103,
   "sourceEndColumn": 30,
   "sourceColumn": 8,
   "soleCompiledConsumerPrivate": false,
@@ -721001,7 +721025,7 @@
    "QuantumTheory.Transport.polarFourierZerothAngularKernel",
    "QuantumTheory.Transport.polarFourierZerothAngularKernel._proof_1",
    "_private.LeanCondensedMatter.Analysis.Fourier.PolarRadialKernels.Differentiation.0.QuantumTheory.Transport.polarFourierWeightedAngularKernel_hasDerivAt"],
-  "declarationStartLine": 81,
+  "declarationStartLine": 76,
   "crossModuleDirectWrapper": false,
   "completedMention": false,
   "compiledConsumers":
@@ -1222107,7 +1222131,7 @@
   "sourceLine": 27,
   "sourceFile":
   "LeanCondensedMatter/Analysis/Fourier/PolarRadialKernels/Differentiation.lean",
-  "sourceEndLine": 79,
+  "sourceEndLine": 74,
   "sourceEndColumn": 61,
   "sourceColumn": 16,
   "soleCompiledConsumerPrivate": false,
@@ -1277570,10 +1277594,10 @@
   "statement":
   "∀ (side : QuantumTheory.Transport.SpectralSide) (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ)\n  (coeff : ℂ) (kernel : ℝ → ℂ),\n  (∀ (p : ℝ),\n      kernel p =\n        coeff *\n          (↑p *\n              (QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominator side v m p 0 probeEnergy\n                  broadening disorderStrength hbar pMax)⁻¹ *\n            QuantumTheory.Transport.polarFourierZerothAngularKernel (p * radius / hbar))) →\n    ↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) * ∫ (p : ℝ) in 0..pMax, kernel p =\n      coeff *\n        QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialScalarGreenGenerator side v m probeEnergy\n          broadening disorderStrength hbar pMax radius",
   "standardAxioms": ["Classical.choice", "Quot.sound", "propext"],
-  "sourceLine": 294,
+  "sourceLine": 279,
   "sourceFile":
   "LeanCondensedMatter/Models/MassiveDirac/Disorder/Propagator/BornDyson/RealSpace/ScalarGenerator.lean",
-  "sourceEndLine": 311,
+  "sourceEndLine": 296,
   "sourceEndColumn": 6,
   "sourceColumn": 16,
   "soleCompiledConsumerPrivate": false,
@@ -1277603,7 +1277627,7 @@
    "QuantumTheory.Transport.SpectralSide",
    "QuantumTheory.Transport.momentumMeasurePrefactor",
    "QuantumTheory.Transport.polarFourierZerothAngularKernel"],
-  "declarationStartLine": 289,
+  "declarationStartLine": 274,
   "crossModuleDirectWrapper": false,
   "completedMention": false,
   "compiledConsumers":
@@ -1278189,7 +1278213,8 @@
   "compiledConsumerCount": 2,
   "axioms": ["Classical.choice", "Quot.sound", "propext"]},
  {"valueDependencies":
-  ["QuantumTheory.Models.MassiveDirac.BornSelfEnergyChannel.scalar",
+  ["QuantumTheory.Models.MassiveDirac.BornSelfEnergyChannel",
+   "QuantumTheory.Models.MassiveDirac.BornSelfEnergyChannel.scalar",
    "QuantumTheory.Models.MassiveDirac.BornSelfEnergyChannel.z",
    "QuantumTheory.Models.MassiveDirac.Matrix2",
    "QuantumTheory.Models.MassiveDirac.continuous_continuumBornRadialIntegrandOfRegulator",
@@ -1278428,7 +1278453,7 @@
   "sourceLine": 99,
   "sourceFile":
   "LeanCondensedMatter/Models/MassiveDirac/Disorder/TMatrix/BornDysonLoop.lean",
-  "sourceEndLine": 136,
+  "sourceEndLine": 129,
   "sourceEndColumn": 6,
   "sourceColumn": 16,
   "soleCompiledConsumerPrivate": false,
@@ -1278451,7 +1278476,8 @@
   "dependents":
   ["QuantumTheory.Models.MassiveDirac.matrixOperator_finiteCutoffContinuumBornDysonGreenLoopMatrix_zero_disorder_eq"],
   "dependencies":
-  ["QuantumTheory.Models.MassiveDirac.BornSelfEnergyChannel.scalar",
+  ["QuantumTheory.Models.MassiveDirac.BornSelfEnergyChannel",
+   "QuantumTheory.Models.MassiveDirac.BornSelfEnergyChannel.scalar",
    "QuantumTheory.Models.MassiveDirac.BornSelfEnergyChannel.z",
    "QuantumTheory.Models.MassiveDirac.Matrix2",
    "QuantumTheory.Models.MassiveDirac.continuous_continuumBornRadialIntegrandOfRegulator",
@@ -1285382,10 +1285408,10 @@
   "statement":
   "∀ (m probeEnergy : ℝ),\n  |m| < probeEnergy →\n    QuantumTheory.Models.MassiveDirac.inPlaneLadderDeterminant\n        (QuantumTheory.Models.MassiveDirac.inPlaneCoefficientVector\n          (↑(QuantumTheory.Models.MassiveDirac.continuumBornRetardedAdvancedPauliXWeakDisorderCurrentRungCoefficient m\n              probeEnergy))\n          0) ≠\n      0",
   "standardAxioms": ["Classical.choice", "Quot.sound", "propext"],
-  "sourceLine": 43,
+  "sourceLine": 41,
   "sourceFile":
   "LeanCondensedMatter/Models/MassiveDirac/Disorder/Vertex/Ladder/RegulatorBoundaryWeakDisorder.lean",
-  "sourceEndLine": 50,
+  "sourceEndLine": 48,
   "sourceEndColumn": 79,
   "sourceColumn": 16,
   "soleCompiledConsumerPrivate": false,
@@ -1285414,7 +1285440,7 @@
    "QuantumTheory.Models.MassiveDirac.inPlaneLadderDeterminant",
    "QuantumTheory.Models.MassiveDirac.inPlaneRotationMatrix._proof_1",
    "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Vertex.Ladder.RegulatorBoundaryWeakDisorder.0.QuantumTheory.Models.MassiveDirac.weakDisorderTargetOneMinusRung_ne_zero"],
-  "declarationStartLine": 43,
+  "declarationStartLine": 41,
   "crossModuleDirectWrapper": false,
   "completedMention": false,
   "compiledConsumers":
@@ -1285508,7 +1285534,7 @@
   "sourceLine": 25,
   "sourceFile":
   "LeanCondensedMatter/Models/MassiveDirac/Disorder/Vertex/Ladder/RegulatorBoundaryWeakDisorder.lean",
-  "sourceEndLine": 41,
+  "sourceEndLine": 39,
   "sourceEndColumn": 46,
   "sourceColumn": 16,
   "soleCompiledConsumerPrivate": false,

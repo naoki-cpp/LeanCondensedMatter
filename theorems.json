@@ -252,6 +252,7 @@
     "directWrapperOf": null,
     "dependents": [
       "AngularHarmonics.fullAngleCosineMoment_even",
+      "AngularHarmonics.fullAngleCosineMoment_even_factorial",
       "AngularHarmonics.fullAngleCosineMoment_odd"
     ],
     "dependencies": [],
@@ -259,9 +260,10 @@
     "completedMention": false,
     "compiledConsumers": [
       "AngularHarmonics.fullAngleCosineMoment_even",
+      "AngularHarmonics.fullAngleCosineMoment_even_factorial",
       "AngularHarmonics.fullAngleCosineMoment_odd"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -275,7 +277,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": false,
+    "terminal": true,
     "statement": "∀ (n : ℕ),\n  AngularHarmonics.fullAngleCosineMoment (2 * n) = 2 * Real.pi * ∏ k ∈ Finset.range n, (2 * ↑k + 1) / (2 * ↑k + 2)",
     "standardAxioms": [
       "Classical.choice",
@@ -283,7 +285,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -294,19 +296,15 @@
     "docString": "Closed finite-product formula for every even full-angle cosine moment. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [
-      "AngularHarmonics.fullAngleCosineMoment_even_factorial"
-    ],
+    "dependents": [],
     "dependencies": [
       "AngularHarmonics.fullAngleCosineMoment_add_two",
       "AngularHarmonics.fullAngleCosineMoment_zero"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [
-      "AngularHarmonics.fullAngleCosineMoment_even_factorial"
-    ],
-    "compiledConsumerCount": 1,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -343,7 +341,8 @@
       "QuantumTheory.Transport.polarFourierZerothMoment_even_eq_bessel"
     ],
     "dependencies": [
-      "AngularHarmonics.fullAngleCosineMoment_even"
+      "AngularHarmonics.fullAngleCosineMoment_add_two",
+      "AngularHarmonics.fullAngleCosineMoment_zero"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -501,7 +500,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": true,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -513,15 +512,17 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "AngularHarmonics.fullAngleCosineMoment_even"
+      "AngularHarmonics.fullAngleCosineMoment_even",
+      "AngularHarmonics.fullAngleCosineMoment_even_factorial"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "AngularHarmonics.fullAngleCosineMoment_even"
+      "AngularHarmonics.fullAngleCosineMoment_even",
+      "AngularHarmonics.fullAngleCosineMoment_even_factorial"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -17105,7 +17106,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "ContinuousLinearMap.IsTraceClass.isCompact",
-    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Compact",
+    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Factorization.Basic",
     "externalAxioms": [],
     "docString": "Every trace-class operator is compact. ",
     "directWrapperTargetModule": null,
@@ -18772,7 +18773,7 @@
     "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Bundled",
     "externalAxioms": [],
     "docString": "Every bundled spectral-trace-class operator is compact, by general trace-class compactness. ",
-    "directWrapperTargetModule": "LeanCondensedMatter.Analysis.Operator.TraceClass.Compact",
+    "directWrapperTargetModule": "LeanCondensedMatter.Analysis.Operator.TraceClass.Factorization.Basic",
     "directWrapperOf": "ContinuousLinearMap.IsTraceClass.isCompact",
     "dependents": [
       "ContinuousLinearMap.SpectralTraceClass.hasSum_diagonalExpectationValue",
@@ -21554,7 +21555,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {T : H →L[ℂ] H},\n  IsCompactOperator ⇑T →\n    ∀ (hTpos : T.IsPositive),\n      T.HasSummableRealEigenvalues →\n        ∀ {ι : Type u_2} {d : ι → H},\n          Orthonormal ℂ d →\n            (∀ (v : H), ‖v‖ = 1 → 0 < T.diagonalExpectationValue ⋯ v) →\n              ∑' (i : ι), T.diagonalExpectationValue ⋯ (d i) = T.spectralTrace → (Submodule.span ℂ (Set.range d))ᗮ = ⊥",
+    "statement": "∀ {H : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {T : H →L[ℂ] H},\n  IsCompactOperator ⇑T →\n    ∀ (hTpos : T.IsPositive),\n      T.HasSummableRealEigenvalues →\n        ∀ {ι : Type u_3} {d : ι → H},\n          Orthonormal ℂ d →\n            (∀ (v : H), ‖v‖ = 1 → 0 < T.diagonalExpectationValue ⋯ v) →\n              ∑' (i : ι), T.diagonalExpectationValue ⋯ (d i) = T.spectralTrace → (Submodule.span ℂ (Set.range d))ᗮ = ⊥",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -21567,7 +21568,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "ContinuousLinearMap.orthogonal_span_eq_bot_of_sum_diagonalExpectationValue_eq_spectralTrace",
-    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Equality",
+    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Ops",
     "externalAxioms": [],
     "docString": "If a positive operator has strictly positive diagonal value on every unit vector, an\northonormal family can saturate its spectral trace only when its span has trivial orthogonal\ncomplement. ",
     "directWrapperTargetModule": null,
@@ -85662,6 +85663,7 @@
     "dependents": [],
     "dependencies": [
       "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornSelfEnergyCoefficient_normalized_re_atBot",
+      "QuantumTheory.Transport.fullAngleMomentumMeasurePrefactor_pos",
       "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.UltravioletSelfEnergy.0.QuantumTheory.Models.MassiveDirac.bornSelfEnergyScalarWeight_ne_zero"
     ],
     "crossModuleDirectWrapper": false,
@@ -85702,7 +85704,8 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornSelfEnergyCoefficient_normalized_re_atBot"
+      "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornSelfEnergyCoefficient_normalized_re_atBot",
+      "QuantumTheory.Transport.fullAngleMomentumMeasurePrefactor_pos"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -100104,7 +100107,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -100116,7 +100119,9 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominatorZeroBroadeningBoundary_ne_zero"
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominatorZeroBroadeningBoundary_ne_zero",
+      "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornSelfEnergyCoefficient_scalar_normalized_re_atBot",
+      "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornSelfEnergyCoefficient_z_normalized_re_atBot"
     ],
     "dependencies": [
       "QuantumTheory.Transport.momentumMeasurePrefactor_pos"
@@ -100124,9 +100129,11 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominatorZeroBroadeningBoundary_ne_zero"
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominatorZeroBroadeningBoundary_ne_zero",
+      "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornSelfEnergyCoefficient_scalar_normalized_re_atBot",
+      "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornSelfEnergyCoefficient_z_normalized_re_atBot"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
