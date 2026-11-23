@@ -1,5 +1,5 @@
 import LeanCondensedMatter.QuantumTheory.Gibbs.EqualityComponents
-import LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Equality
+import LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Ops
 import LeanCondensedMatter.QuantumTheory.Gibbs.Variational
 
 /-!
