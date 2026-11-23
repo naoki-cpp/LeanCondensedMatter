@@ -134,22 +134,33 @@ private theorem currentRungBoundary_eq_lorentzianIntegral
   simp_rw [hintegrand]
   rw [hcast, intervalIntegral.integral_const_mul]
 
-/-- At fixed cutoff beyond the metallic shell, the canonical zero-broadening source-`x` rung tends
-as one in-plane vector to `(κ, 0)`. -/
-theorem tendsto_finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary_disorder_zero
+/-- The physical retarded Born-Dyson spectral shell has a **positive**
+imaginary width approaching zero from above, and a real center converging
+inside the finite-cutoff metallic interval, after taking the external
+broadening boundary at fixed disorder strength.
+
+This exposes the model-specific hypotheses needed to apply an on-shell
+Lorentzian approximate identity to the *physical* crossed K2 current.
+It is a sequential weak-disorder statement; no simultaneous η/W or
+UV cutoff limit is claimed. -/
+theorem tendsto_finiteCutoffContinuumBornDysonBoundarySpectralShell_disorder_zero
     (v m probeEnergy hbar pMax : ℝ)
     (hvelocity : v ≠ 0) (hhbar : hbar ≠ 0)
     (hmetal : |m| < probeEnergy)
     (hcutoff : probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2) :
-    Tendsto
-      (fun disorderStrength =>
-        finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary
-          v m probeEnergy disorderStrength hbar pMax)
-      (nhdsWithin 0 (Set.Ioi 0))
-      (nhds
-        (inPlaneCoefficientVector
-          (continuumBornRetardedAdvancedPauliXWeakDisorderCurrentRungCoefficient
-            m probeEnergy : ℂ) 0)) := by
+    let l := nhdsWithin (0 : ℝ) (Set.Ioi 0)
+    let D0 := fun W : ℝ =>
+      finiteCutoffContinuumBornDysonDenominatorZeroBroadeningBoundary
+        .retarded v m 0 probeEnergy W hbar pMax
+    Tendsto (fun W => (D0 W).re) l
+      (nhds (probeEnergy ^ 2 - m ^ 2)) ∧
+    Tendsto (fun W => (D0 W).im) l
+      (nhdsWithin 0 (Set.Ioi 0)) ∧
+    ∀ᶠ W in l, 0 < (D0 W).re ∧ (D0 W).re < v ^ 2 * pMax ^ 2 := by
+  dsimp only
+  let D0 : ℝ → ℂ := fun W =>
+    finiteCutoffContinuumBornDysonDenominatorZeroBroadeningBoundary
+      .retarded v m 0 probeEnergy W hbar pMax
   let l := nhdsWithin (0 : ℝ) (Set.Ioi 0)
   let Q := fun disorderStrength : ℝ =>
     probeEnergy ^ 2 + m ^ 2 -
@@ -159,8 +170,6 @@ theorem tendsto_finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBou
     boundaryRACenter v m probeEnergy disorderStrength hbar pMax
   let width := fun disorderStrength : ℝ =>
     boundaryRAWidth v m probeEnergy disorderStrength hbar pMax
-  let scale := fun disorderStrength : ℝ =>
-    2 * Real.pi * continuumBornDisorderMeasurePrefactor disorderStrength hbar
   have hl : l ≤ nhds 0 := by
     dsimp [l, nhdsWithin]
     exact inf_le_left
@@ -211,6 +220,88 @@ theorem tendsto_finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBou
       finiteCutoffContinuumBornEffectiveEnergyZeroBroadeningBoundary,
       finiteCutoffContinuumBornEffectiveMassZeroBroadeningBoundary,
       pow_two, Complex.mul_re]
+  have hcenterPhysical :
+      Tendsto (fun W => (D0 W).re) l (nhds (probeEnergy ^ 2 - m ^ 2)) := by
+    change Tendsto center l (nhds (probeEnergy ^ 2 - m ^ 2))
+    exact hcenter0
+  have hwidthPhysical :
+      Tendsto (fun W => (D0 W).im) l (nhdsWithin 0 (Set.Ioi 0)) := by
+    have hfun : (fun W => (D0 W).im) = width := by
+      funext W
+      exact boundaryRetardedDenominator_im_eq_width
+        v m probeEnergy W hbar pMax hvelocity hhbar
+    rw [hfun]
+    exact hwidth
+  have hinside :
+      ∀ᶠ W in l, 0 < (D0 W).re ∧ (D0 W).re < v ^ 2 * pMax ^ 2 := by
+    have hinsideCenter :
+        ∀ᶠ W in l, 0 < center W ∧ center W < v ^ 2 * pMax ^ 2 := by
+      simpa only [Set.mem_Ioo] using
+        hcenter0.eventually (Ioo_mem_nhds hgap hcutoff)
+    simpa only [D0, center, boundaryRACenter] using hinsideCenter
+  exact ⟨hcenterPhysical, hwidthPhysical, hinside⟩
+
+/-- At fixed cutoff beyond the metallic shell, the canonical zero-broadening source-`x` rung tends
+as one in-plane vector to `(κ, 0)`. -/
+theorem tendsto_finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary_disorder_zero
+    (v m probeEnergy hbar pMax : ℝ)
+    (hvelocity : v ≠ 0) (hhbar : hbar ≠ 0)
+    (hmetal : |m| < probeEnergy)
+    (hcutoff : probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2) :
+    Tendsto
+      (fun disorderStrength =>
+        finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary
+          v m probeEnergy disorderStrength hbar pMax)
+      (nhdsWithin 0 (Set.Ioi 0))
+      (nhds
+        (inPlaneCoefficientVector
+          (continuumBornRetardedAdvancedPauliXWeakDisorderCurrentRungCoefficient
+            m probeEnergy : ℂ) 0)) := by
+  let l := nhdsWithin (0 : ℝ) (Set.Ioi 0)
+  let Q := fun disorderStrength : ℝ =>
+    probeEnergy ^ 2 + m ^ 2 -
+      finiteCutoffContinuumBornBoundaryRealRenormalization
+        v m probeEnergy disorderStrength hbar pMax * (probeEnergy ^ 2 - m ^ 2)
+  let center := fun disorderStrength : ℝ =>
+    boundaryRACenter v m probeEnergy disorderStrength hbar pMax
+  let width := fun disorderStrength : ℝ =>
+    boundaryRAWidth v m probeEnergy disorderStrength hbar pMax
+  let scale := fun disorderStrength : ℝ =>
+    2 * Real.pi * continuumBornDisorderMeasurePrefactor disorderStrength hbar
+  have hl : l ≤ nhds 0 := by
+    dsimp [l, nhdsWithin]
+    exact inf_le_left
+  have hprobe : 0 < probeEnergy := lt_of_le_of_lt (abs_nonneg m) hmetal
+  have hgap : 0 < probeEnergy ^ 2 - m ^ 2 := by
+    rw [← sq_abs m]
+    nlinarith [abs_nonneg m]
+  have hsum : 0 < probeEnergy ^ 2 + m ^ 2 := by
+    nlinarith [sq_pos_of_ne_zero (ne_of_gt hprobe), sq_nonneg m]
+  have hQ : Tendsto Q l (nhds (probeEnergy ^ 2 + m ^ 2)) := by
+    have hcont : ContinuousAt Q 0 := by
+      dsimp [Q]
+      unfold finiteCutoffContinuumBornBoundaryRealRenormalization
+      fun_prop
+    convert hcont.tendsto.mono_left hl using 1
+    all_goals simp [Q, finiteCutoffContinuumBornBoundaryRealRenormalization]
+  have hshell := tendsto_finiteCutoffContinuumBornDysonBoundarySpectralShell_disorder_zero
+    v m probeEnergy hbar pMax hvelocity hhbar hmetal hcutoff
+  dsimp only at hshell
+  have hwidth : Tendsto width l (nhdsWithin 0 (Set.Ioi 0)) := by
+    have hfun : width = (fun W =>
+        (finiteCutoffContinuumBornDysonDenominatorZeroBroadeningBoundary
+          .retarded v m 0 probeEnergy W hbar pMax).im) := by
+      funext W
+      exact (boundaryRetardedDenominator_im_eq_width
+        v m probeEnergy W hbar pMax hvelocity hhbar).symm
+    rw [hfun]
+    exact hshell.2.1
+  have hcenter0 : Tendsto center l (nhds (probeEnergy ^ 2 - m ^ 2)) := by
+    change Tendsto (fun W =>
+      (finiteCutoffContinuumBornDysonDenominatorZeroBroadeningBoundary
+        .retarded v m 0 probeEnergy W hbar pMax).re) l
+        (nhds (probeEnergy ^ 2 - m ^ 2))
+    exact hshell.1
   have hdenNe : 2 * Real.pi * (probeEnergy ^ 2 + m ^ 2) ≠ 0 :=
     mul_ne_zero (mul_ne_zero (by norm_num) Real.pi_ne_zero) (ne_of_gt hsum)
   have hscaleClosed := (tendsto_const_nhds.mul hQ).inv₀ hdenNe
