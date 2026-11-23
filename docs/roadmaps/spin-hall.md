@@ -144,7 +144,10 @@ reciprocity, and bulk/device limits require additional model-specific hypotheses
 `Models.RashbaExchange.FiniteMomentumSpinResponse` embeds momentum-resolved Rashba
 2×2 Hamiltonian and velocity blocks in the one-particle space on a **finite momentum
 grid with two spin modes per sampled momentum**, then constructs the finite fermionic
-Fock Hamiltonian via the canonical bounded second-quantization route.
+Fock Hamiltonian **directly** via `boundedOneBodyOperator`, without a
+fictitious real-space hopping adapter. `boundedFiniteMomentumBlockOneBody_selfAdjoint`
+and `finiteRashbaMomentumFockHamiltonian_selfAdjoint` derive full-Fock
+self-adjointness from Hermitian Rashba 2×2 blocks.
 Its mixed response channel consumes the existing
 `Fermionic.Transport.boundedSpinCurrentLinear` API and a signed charge
 velocity source `dΓ(q v_j)`. An observable-variation/contact operator is an
@@ -153,8 +156,9 @@ kernel and its exact additivity in real spin polarization are provided.
 
 This is a momentum-grid (not real-space) realization, so the electric source is
 the momentum-velocity vertex rather than a fictitious inter-spin Peierls
-bond. Free dynamics requires a separately supplied self-adjointness proof for
-the assembled full-Fock Hamiltonian. A concrete stationary state, its physical
+bond. Free dynamics now uses the proved self-adjointness of the
+assembled full-Fock Hamiltonian, with only positive `ℏ` required. A concrete
+stationary state, its physical
 Lehmann transition data, a verified *nonzero* transverse spin response, and an
 identified source/contact variation are still needed to complete R1.
 The proper-current/torque-dipole equivalence is deliberately left to R4.
