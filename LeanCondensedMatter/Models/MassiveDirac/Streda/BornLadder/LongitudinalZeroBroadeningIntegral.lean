@@ -189,23 +189,13 @@ theorem tendsto_finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDresse
         (continuumBornDisorderMeasurePrefactor disorderStrength hbar : ℂ)⁻¹)).sub
     ((hRR.add hAA).const_mul
       ((((2 * Real.pi : ℝ) : ℂ)) * ((((-e : ℝ) : ℂ)) * (((v : ℝ) : ℂ))) ^ 2))
-  have hEndpoint :
-      Tendsto
-        (fun broadening : ℝ =>
-          finiteBroadeningLongitudinalMomentumEndpointForm
-            e v m probeEnergy broadening disorderStrength hbar pMax)
-        (nhdsWithin 0 (Set.Ioi 0))
-        (nhds
-          (finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceMomentumIntegralZeroBroadeningBoundary
-            e v m probeEnergy disorderStrength hbar pMax)) := by
+  apply Tendsto.congr' ?_ (by
     simpa [finiteBroadeningLongitudinalMomentumEndpointForm,
-      finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceMomentumIntegralZeroBroadeningBoundary] using htotal
-  exact Tendsto.congr' (by
-    filter_upwards [self_mem_nhdsWithin] with broadening hbroadening
-    exact (finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral_x_eq_endpointForm
-      e v m probeEnergy broadening disorderStrength hbar pMax hpMax hvelocity hhbar
-      (ne_of_gt hbroadening) hdisorder).symm) hEndpoint
-
+      finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceMomentumIntegralZeroBroadeningBoundary] using htotal)
+  filter_upwards [self_mem_nhdsWithin] with broadening hbroadening
+  exact (finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral_x_eq_endpointForm
+    e v m probeEnergy broadening disorderStrength hbar pMax hpMax hvelocity hhbar
+    (ne_of_gt hbroadening) hdisorder).symm
 end
 
 end QuantumTheory.Models.MassiveDirac
