@@ -115,22 +115,14 @@
       "layers": [
         {"id": "finiteTrace", "modulePrefixes": ["LeanCondensedMatter.Analysis.Operator.FiniteTrace"]},
         {"id": "stredaTraceKernel", "modulePrefixes": ["LeanCondensedMatter.Transport.Streda.TraceKernel"]},
-        {"id": "finiteDisorder", "modulePrefixes": ["LeanCondensedMatter.Transport.Disorder.Finite"]},
         {"id": "resolvent", "modulePrefixes": ["LeanCondensedMatter.Transport.Resolvent.Basic"]},
-        {"id": "moments", "modulePrefixes": ["LeanCondensedMatter.Transport.Disorder.Moments"]},
-        {"id": "disorderResolvent", "modulePrefixes": ["LeanCondensedMatter.Transport.Disorder.Resolvent"]},
-        {"id": "born", "modulePrefixes": ["LeanCondensedMatter.Transport.Disorder.Born"]},
-        {"id": "scba", "modulePrefixes": ["LeanCondensedMatter.Transport.Disorder.SCBA"]}
+        {"id": "finiteDisorderCore", "modulePrefixes": ["LeanCondensedMatter.Transport.Disorder.Finite", "LeanCondensedMatter.Transport.Disorder.Moments", "LeanCondensedMatter.Transport.Disorder.Resolvent"]},
+        {"id": "bornScba", "modulePrefixes": ["LeanCondensedMatter.Transport.Disorder.Born", "LeanCondensedMatter.Transport.Disorder.SCBA"]}
       ],
       "edges": [
         {"upstream": "finiteTrace", "downstream": "stredaTraceKernel"},
-        {"upstream": "finiteDisorder", "downstream": "moments"},
-        {"upstream": "finiteDisorder", "downstream": "disorderResolvent"},
-        {"upstream": "resolvent", "downstream": "disorderResolvent"},
-        {"upstream": "moments", "downstream": "born"},
-        {"upstream": "disorderResolvent", "downstream": "born"},
-        {"upstream": "moments", "downstream": "scba"},
-        {"upstream": "resolvent", "downstream": "scba"}
+        {"upstream": "resolvent", "downstream": "finiteDisorderCore"},
+        {"upstream": "finiteDisorderCore", "downstream": "bornScba"}
       ]
     },
     {
