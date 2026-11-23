@@ -336,74 +336,6 @@ theorem ExternalInsertionBlockLayout.assembleConnectedBlocks_signedDysonShuffleO
         (Finset.prod_congr rfl (fun B _ => hlocal B))))
 
 open Classical in
-/-- At one fixed physical owner assignment, summing all genuine
-transported-order Dyson amplitudes over the independent owner
-shuffles is exactly the signed product of connected local Dyson
-amplitudes. The reference owner assignment is arbitrary; the proof
-reindexes the *entire finite orbit* through the actual graph-component
-shuffle rather than declaring any canonical integral invariant. -/
-theorem ExternalInsertionBlockLayout.ofFamilyShuffle_signedDysonOwnerOrbit_eq_prod
-    {n : ℕ}
-    (π : Finpartition (Finset.univ : Finset (Fin (2 * E))))
-    (heven : ∀ B : π.parts, Even (B : Finset (Fin (2 * E))).card)
-    {size : π.parts → ℕ}
-    (σ : Combinatorics.FamilySlotShuffleTo size n)
-    (F : (ExternalInsertionBlockLayout.ofFamilyShuffle π heven σ).ConnectedBlockFamily
-      (ExternalLabel := ExternalFieldLabel Mode)
-      (InternalLabel := QuarticVertexLabel Mode))
-    (anchor : Fin (2 * E))
-    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
-    (externalTime : Fin (2 * E) → ℝ) :
-    let layout := ExternalInsertionBlockLayout.ofFamilyShuffle π heven σ
-    let d : ExternalInsertionWickDiagram Mode E n :=
-      layout.assembleDiagram (Finset.univ : Finset (Fin n)) F.1
-    (∑ τ : Combinatorics.FamilySlotShuffleTo size n,
-      d.orderedDysonAmplitude ε β g externalTime
-        (((Finset.univ : Finset (Fin n)).orderIsoOfFin rfl).toEquiv.trans
-          (fullInteractionSlotEquiv (σ.ambientRelabel τ)).symm)) =
-      externalPartitionSourceSign π *
-        ∏ B : π.parts,
-          ExternalInsertionWickDiagram.dysonAmplitude
-            ((F.1 B).slotCongr (Combinatorics.standardSlotEquiv
-              (layout.interactionBlock (Finset.univ : Finset (Fin n)) B)))
-            ε β g (evenExternalSubsetTimes externalTime
-              (B : Finset (Fin (2 * E))) (heven B)) := by
-  classical
-  let layout := ExternalInsertionBlockLayout.ofFamilyShuffle π heven σ
-  let d : ExternalInsertionWickDiagram Mode E n :=
-    layout.assembleDiagram (Finset.univ : Finset (Fin n)) F.1
-  let e := ExternalInsertionBlockLayout.ofFamilyShuffle_ownerShuffleEquiv π heven σ
-  let w : Combinatorics.FamilySlotShuffleTo
-      (fun B : π.parts =>
-        (layout.interactionBlock (Finset.univ : Finset (Fin n)) B).card)
-      (Finset.univ : Finset (Fin n)).card → ℂ :=
-    fun ρ => d.orderedDysonAmplitude ε β g externalTime
-      ((layout.interactionAssignmentShuffle.ambientRelabel ρ).symm.trans
-        ((Finset.univ : Finset (Fin n)).orderIsoOfFin rfl).toEquiv)
-  calc
-    _ = ∑ τ : Combinatorics.FamilySlotShuffleTo size n, w (e τ) := by
-      apply Finset.sum_congr rfl
-      intro τ _
-      exact congrArg (d.orderedDysonAmplitude ε β g externalTime)
-        (ExternalInsertionBlockLayout.ofFamilyShuffle_ownerOrderedDysonOrder
-          π heven σ τ).symm
-    _ = ∑ ρ, w ρ := Equiv.sum_comp e w
-    _ = _ := by
-      let hVac : HasNoVacuumComponent d.vertexGraph :=
-        layout.hasNoVacuumComponent_assembleDiagram
-          (Finset.univ : Finset (Fin n)) F.1 F.2
-      have hLayout : d.externalBlockLayout hVac anchor = layout :=
-        layout.externalBlockLayout_assembleDiagram_eq F.1 F.2 anchor
-      have hOrbit :=
-        d.sum_physicalOwnerShuffle_orderedDysonAmplitude_eq_componentOrbit
-          hVac anchor ε β g externalTime
-      rw [hLayout] at hOrbit
-      exact hOrbit.trans
-        (ExternalInsertionBlockLayout.assembleConnectedBlocks_signedDysonShuffleOrbit_eq_subsetTimes
-          layout
-          F.1 F.2 ε β g externalTime)
-
-open Classical in
 /-- Canonically standardizing the interaction vertices of one connected
 external-source block reindexes the *entire finite local Wick diagram sum*,
 including its prescribed external field labels and actual integrated
@@ -644,14 +576,32 @@ theorem ExternalInsertionBlockLayout.sum_physicalFixedSizeDyson_eq_signedProduct
         (assembled F).orderedDysonAmplitude ε β g times
           ((assembled F).assembleInteractionOrder
             (assembled F).canonicalComponentInteractionOrders shuffle) := by
-    have hOwner :=
-      ExternalInsertionBlockLayout.ofFamilyShuffle_signedDysonOwnerOrbit_eq_prod
-        π heven σ F anchor ε β g times
-    have hComponents :=
-      ExternalInsertionBlockLayout.assembleConnectedBlocks_signedDysonShuffleOrbit_eq_subsetTimes
-          layout
-        F.1 F.2 ε β g times
-    exact hOwner.trans hComponents.symm
+    let d : ExternalInsertionWickDiagram Mode E n := assembled F
+    let eOwner := ExternalInsertionBlockLayout.ofFamilyShuffle_ownerShuffleEquiv
+      π heven σ
+    let w : Combinatorics.FamilySlotShuffleTo
+        (fun B : π.parts => (layout.interactionBlock S B).card) S.card → ℂ :=
+      fun ρ => d.orderedDysonAmplitude ε β g times
+        ((layout.interactionAssignmentShuffle.ambientRelabel ρ).symm.trans
+          (S.orderIsoOfFin rfl).toEquiv)
+    calc
+      _ = ∑ τ : Combinatorics.FamilySlotShuffleTo size n, w (eOwner τ) := by
+        apply Finset.sum_congr rfl
+        intro τ _
+        exact congrArg (d.orderedDysonAmplitude ε β g times)
+          (ExternalInsertionBlockLayout.ofFamilyShuffle_ownerOrderedDysonOrder
+            π heven σ τ).symm
+      _ = ∑ ρ, w ρ := Equiv.sum_comp eOwner w
+      _ = _ := by
+        let hVac : HasNoVacuumComponent d.vertexGraph :=
+          layout.hasNoVacuumComponent_assembleDiagram S F.1 F.2
+        have hLayout : d.externalBlockLayout hVac anchor = layout :=
+          layout.externalBlockLayout_assembleDiagram_eq F.1 F.2 anchor
+        have horbit :=
+          d.sum_physicalOwnerShuffle_orderedDysonAmplitude_eq_componentOrbit
+            hVac anchor ε β g times
+        rw [hLayout] at horbit
+        exact horbit
   have hPhysical :=
     ExternalInsertionBlockLayout.sum_physicalFixedSizeDyson_eq_standardizedOrbit
       anchor π heven σ labels ε β hβ g times
