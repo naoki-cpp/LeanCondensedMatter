@@ -9,7 +9,6 @@ import LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Basic
 import LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Norm
 import LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Basic
 import LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Bundled
-import LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Diagonal
 import LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Ops
 
 set_option linter.style.header false
