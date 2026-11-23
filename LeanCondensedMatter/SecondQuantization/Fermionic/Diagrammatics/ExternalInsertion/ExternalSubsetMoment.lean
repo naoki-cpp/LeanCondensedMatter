@@ -1264,27 +1264,16 @@ private theorem externalSubsetPartitionEquiv_evenBlocks
   let e := evenExternalSubsetOrderIso S heven
   let emb : Fin (2 * (S.card / 2)) ↪ Fin (2 * E) :=
     ⟨fun i => (e i).1, fun i j hij => e.injective (Subtype.ext hij)⟩
-  have hparts :
-      (externalSubsetPartitionEquiv S heven π).parts =
-        π.parts.image (fun B => B.map emb) := rfl
+  let be := externalSubsetPartsEquiv S heven π
+  have hcard (B : π.parts) : (be B).1.card = B.1.card := by
+    change (B.1.map emb).card = B.1.card
+    simp
   constructor
   · intro hEven T
-    have hT : (T : Finset (Fin (2 * E))) ∈
-        π.parts.image (fun B => B.map emb) := by
-      rw [← hparts]
-      exact T.2
-    obtain ⟨B, hB, hBT⟩ := Finset.mem_image.mp hT
-    have hEvenB := hEven ⟨B, hB⟩
-    change Even (T : Finset (Fin (2 * E))).card
-    rw [← hBT]
-    simpa using hEvenB
+    obtain ⟨B, rfl⟩ := be.surjective T
+    simpa only [hcard B] using hEven B
   · intro hEven B
-    have hB : (B : Finset (Fin (2 * (S.card / 2)))).map emb ∈
-        (externalSubsetPartitionEquiv S heven π).parts := by
-      rw [hparts]
-      exact Finset.mem_image.mpr ⟨B.1, B.2, rfl⟩
-    have hEvenT := hEven ⟨B.1.map emb, hB⟩
-    simpa using hEvenT
+    simpa only [hcard B] using hEven (be B)
 
 set_option maxHeartbeats 4000000 in
 -- Relabelled blocks have dependent local sizes, so compare their inversion counts via ambient sets.
