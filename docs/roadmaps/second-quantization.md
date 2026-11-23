@@ -49,15 +49,16 @@ theory and thermodynamic limits remain open; see the
 
 ## Bosonic line
 
-A finite bosonic mode type still has infinitely many occupation configurations.
+A finite **nonempty** bosonic mode type still has infinitely many occupation configurations; the
+empty-mode space has only the vacuum configuration.
 Algebraic CCR and convergence-aware free thermal states therefore retain explicit
 summability assumptions. The completed representation has self-adjoint free number
 and Hamiltonian operators, closed mutually adjoint ladder operators on their
 weighted domains, and finite quartic interactions on a dense common domain.
 
-For finite modes with positive effective gaps, every fixed-order quartic Dyson
-coefficient is Gibbs-summable and its **formal** logarithm has a connected-diagram
-expansion. This does not establish an analytic interacting partition function.
+For finite modes under the explicit condition `0 < β * (ε i - μ)` for every mode,
+every fixed-order quartic Dyson coefficient is Gibbs-summable and its **formal** logarithm
+has a connected-diagram expansion. This does not establish an analytic interacting partition function.
 Remaining tasks include explicit mixed-mode/quartic weighted-domain formulas,
 interacting-Hamiltonian control, and all-order Dyson convergence. See the
 [completed-space boundary](completed-space-and-infinite-mode.md#completed-bosonic-free-thermal-representation)
