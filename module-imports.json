@@ -106,7 +106,7 @@
       "name": "LeanCondensedMatter.Analysis.DiscreteLattice",
       "sourceFile": "LeanCondensedMatter/Analysis/DiscreteLattice.lean",
       "imports": [],
-      "externalImportCount": 4
+      "externalImportCount": 5
     },
     {
       "name": "LeanCondensedMatter.Analysis.Dyson.Basic",
@@ -314,12 +314,6 @@
         "LeanCondensedMatter.Analysis.Algebra.QuadraticNormalization"
       ],
       "externalImportCount": 11
-    },
-    {
-      "name": "LeanCondensedMatter.Analysis.LatticeGeometry",
-      "sourceFile": "LeanCondensedMatter/Analysis/LatticeGeometry.lean",
-      "imports": [],
-      "externalImportCount": 2
     },
     {
       "name": "LeanCondensedMatter.Analysis.Lorentzian.Kernel",
@@ -709,12 +703,6 @@
       "externalImportCount": 15
     },
     {
-      "name": "LeanCondensedMatter.Analysis.Operator.Unbounded.SelfAdjointCriterion",
-      "sourceFile": "LeanCondensedMatter/Analysis/Operator/Unbounded/SelfAdjointCriterion.lean",
-      "imports": [],
-      "externalImportCount": 1
-    },
-    {
       "name": "LeanCondensedMatter.Analysis.Operator.Unbounded.SelfAdjointResolvent",
       "sourceFile": "LeanCondensedMatter/Analysis/Operator/Unbounded/SelfAdjointResolvent.lean",
       "imports": [],
@@ -1069,7 +1057,6 @@
         "LeanCondensedMatter.Analysis.Inequalities.PeierlsBogoliubovEquality",
         "LeanCondensedMatter.Analysis.InfiniteSum.FinsuppProduct",
         "LeanCondensedMatter.Analysis.InternalSpace.Pauli",
-        "LeanCondensedMatter.Analysis.LatticeGeometry",
         "LeanCondensedMatter.Analysis.Lorentzian",
         "LeanCondensedMatter.Analysis.Matrix.CartesianProjectors",
         "LeanCondensedMatter.Analysis.Matrix.FinTwoCharpoly",
@@ -1366,7 +1353,7 @@
       "imports": [
         "LeanCondensedMatter.Combinatorics.PerfectPairing.Restriction"
       ],
-      "externalImportCount": 1
+      "externalImportCount": 4
     },
     {
       "name": "LeanCondensedMatter.Combinatorics.PerfectPairing.NormalizedPairRestriction",
@@ -1503,7 +1490,7 @@
       "name": "LeanCondensedMatter.Combinatorics.SetPartition.GraphComponents",
       "sourceFile": "LeanCondensedMatter/Combinatorics/SetPartition/GraphComponents.lean",
       "imports": [],
-      "externalImportCount": 3
+      "externalImportCount": 4
     },
     {
       "name": "LeanCondensedMatter.Combinatorics.SetPartition.Mobius",
@@ -3787,7 +3774,7 @@
       "name": "LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Hamiltonian.LaplacianSelfAdjoint1D",
       "sourceFile": "LeanCondensedMatter/QuantumMechanics/SingleParticle/Continuum/Hamiltonian/LaplacianSelfAdjoint1D.lean",
       "imports": [
-        "LeanCondensedMatter.Analysis.Operator.Unbounded.SelfAdjointCriterion",
+        "LeanCondensedMatter.Analysis.Operator.Unbounded.Adjoint",
         "LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Hamiltonian.Closed1D",
         "LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Hamiltonian.DenseDomain1D",
         "LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Hamiltonian.LaplacianSymmetry1D"
@@ -3822,7 +3809,7 @@
       "name": "LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Hamiltonian.SelfAdjoint1D",
       "sourceFile": "LeanCondensedMatter/QuantumMechanics/SingleParticle/Continuum/Hamiltonian/SelfAdjoint1D.lean",
       "imports": [
-        "LeanCondensedMatter.Analysis.Operator.Unbounded.SelfAdjointCriterion",
+        "LeanCondensedMatter.Analysis.Operator.Unbounded.Adjoint",
         "LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Hamiltonian.DenseDomain1D",
         "LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Hamiltonian.LaplacianSelfAdjoint1D",
         "LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Hamiltonian.Symmetry1D",
@@ -5596,7 +5583,7 @@
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalComponents",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.InteractionSector"
       ],
-      "externalImportCount": 3
+      "externalImportCount": 2
     },
     {
       "name": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalComponents",
@@ -8043,7 +8030,7 @@
       "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.GeometricCurrent",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Lattice/GeometricCurrent.lean",
       "imports": [
-        "LeanCondensedMatter.Analysis.LatticeGeometry",
+        "LeanCondensedMatter.Analysis.DiscreteLattice",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.HermitianBondCurrent"
       ],
       "externalImportCount": 0

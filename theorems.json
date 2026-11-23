@@ -10044,8 +10044,7 @@
     "directWrapperOf": "Combinatorics.even_card_of_fixedPointFreeInvolution",
     "dependents": [
       "Combinatorics.Pairing.even_card_of_partner_mem",
-      "SecondQuantization.Common.ExternalInsertionDiagram.externalSector_card_even",
-      "SecondQuantization.Common.TwoPointDiagram.externalVerticesConnected"
+      "Combinatorics.PairingOn.even_card_left_of_invariant_subtype"
     ],
     "dependencies": [
       "Combinatorics.even_card_of_fixedPointFreeInvolution"
@@ -10054,10 +10053,55 @@
     "completedMention": false,
     "compiledConsumers": [
       "Combinatorics.Pairing.even_card_of_partner_mem",
+      "Combinatorics.PairingOn.even_card_left_of_invariant_subtype"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Leg : Type u_1} {ExternalData : Type u_2} {InteractionData : Type u_3} {LocalData : Type u_4} [Finite Leg]\n  [inst : Fintype ExternalData] [Finite InteractionData] [inst_2 : Fintype LocalData]\n  (pairing : Combinatorics.PairingOn Leg) (p : Leg → Prop),\n  (∀ (leg : Leg), p leg ↔ p (pairing.partner leg)) →\n    ∀ (legEquiv : { leg // p leg } ≃ ExternalData ⊕ InteractionData × LocalData),\n      Even (Fintype.card LocalData) → Even (Fintype.card ExternalData)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "Combinatorics.PairingOn.even_card_left_of_invariant_subtype",
+    "module": "LeanCondensedMatter.Combinatorics.PerfectPairing.InvolutionCard",
+    "externalAxioms": [],
+    "docString": "For a partner-invariant family of legs, an equivalence separating one-legged external data\nfrom interaction vertices with an even number of local legs forces an even external count.\n\nThis is a combinatorial property of perfect pairings, independent of vertex graphs or diagrams. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
       "SecondQuantization.Common.ExternalInsertionDiagram.externalSector_card_even",
       "SecondQuantization.Common.TwoPointDiagram.externalVerticesConnected"
     ],
-    "compiledConsumerCount": 3,
+    "dependencies": [
+      "Combinatorics.PairingOn.even_card"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Common.ExternalInsertionDiagram.externalSector_card_even",
+      "SecondQuantization.Common.TwoPointDiagram.externalVerticesConnected"
+    ],
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -36039,7 +36083,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {A : H →ₗ.[ℂ] H}, Dense ↑A.domain → A.IsFormalAdjoint A → (IsSelfAdjoint A ↔ A.adjoint.domain ≤ A.domain)",
+    "statement": "∀ {H : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {A : H →ₗ.[ℂ] H}, Dense ↑A.domain → A.IsFormalAdjoint A → (IsSelfAdjoint A ↔ A.adjoint.domain ≤ A.domain)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -36052,7 +36096,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "LinearPMap.isSelfAdjoint_iff_adjoint_domain_le_of_isFormalAdjoint",
-    "module": "LeanCondensedMatter.Analysis.Operator.Unbounded.SelfAdjointCriterion",
+    "module": "LeanCondensedMatter.Analysis.Operator.Unbounded.Adjoint",
     "externalAxioms": [],
     "docString": "For a densely defined symmetric partial operator, self-adjointness is equivalent to the reverse\nadjoint-domain inclusion. The forward inclusion is already supplied by symmetry. ",
     "directWrapperTargetModule": null,
@@ -55060,8 +55104,8 @@
     "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": true,
     "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "QuantumTheory.LinearResponse.continuous_commutatorSusceptibility_of_diagonal_density",
     "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.Response.DensitySusceptibility",
@@ -56836,8 +56880,8 @@
     "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": false,
     "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "QuantumTheory.LinearResponse.finiteTime_eigenbasisPhysicalSusceptibility_has_both_local_three_stage_limits",
     "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann.Eigenbasis.Limits",
@@ -56883,8 +56927,8 @@
     "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": true,
     "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "QuantumTheory.LinearResponse.finset_frequencyTerm_has_both_local_iterated_limits",
     "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann.Limits",
@@ -57406,7 +57450,7 @@
     "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "QuantumTheory.LinearResponse.hasAdiabaticRemovalLimit_lehmannTerm",
     "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann.Limits",
@@ -94948,7 +94992,7 @@
     "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "QuantumTheory.Transport.ConductivityTensor.hallComponent_zero_one_eq_of_isPlanarIsotropic",
     "module": "LeanCondensedMatter.Transport.Core.ConductivityTensor",
@@ -95073,8 +95117,8 @@
     "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": false,
     "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "QuantumTheory.Transport.ConductivityTensor.longitudinal_zero_eq_one_of_isQuarterTurnInvariant",
     "module": "LeanCondensedMatter.Transport.Core.ConductivityTensor",
@@ -95227,8 +95271,8 @@
     "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": false,
     "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "QuantumTheory.Transport.ConductivityTensor.symmetricComponent_zero_one_eq_zero_of_isQuarterTurnInvariant",
     "module": "LeanCondensedMatter.Transport.Core.ConductivityTensor",
@@ -95309,8 +95353,8 @@
     "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": false,
     "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "QuantumTheory.Transport.FiniteDisorderEnsemble.ChargeSymmetry.of_impurityPotential_commute",
     "module": "LeanCondensedMatter.Transport.Disorder.Ward",
@@ -95388,8 +95432,8 @@
     "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": false,
     "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "QuantumTheory.Transport.FiniteDisorderEnsemble.FiniteSCBASolution.green_isUnit",
     "module": "LeanCondensedMatter.Transport.Disorder.SCBA",
@@ -95477,8 +95521,8 @@
     "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": false,
     "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "QuantumTheory.Transport.FiniteDisorderEnsemble.FiniteSCBASolution.isSelfEnergy",
     "module": "LeanCondensedMatter.Transport.Disorder.SCBA",
@@ -95614,8 +95658,8 @@
     "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": false,
     "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "QuantumTheory.Transport.FiniteDisorderEnsemble.FiniteSCBASolution.selfEnergy_sub_eq_secondMoment_green_sub",
     "module": "LeanCondensedMatter.Transport.Disorder.SCBA",
@@ -124972,9 +125016,7 @@
     "dependencies": [
       "SecondQuantization.Common.ExternalInsertionDiagram.externalSector_card_even",
       "SecondQuantization.Common.allExternalVerticesConnected_iff_reachable_anchor",
-      "SimpleGraph.componentBlock_mem_componentPartition",
-      "SimpleGraph.mem_componentBlock",
-      "SimpleGraph.self_mem_componentBlock"
+      "SimpleGraph.reachable_finTwo_of_even_left_components"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -126788,8 +126830,7 @@
       "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleDiagram_restrictComponent_heq_local"
     ],
     "dependencies": [
-      "Combinatorics.PairingOn.even_card",
-      "SecondQuantization.Common.externalCardEven_of_equiv_sum_prod",
+      "Combinatorics.PairingOn.even_card_left_of_invariant_subtype",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentRestriction.0.SecondQuantization.Common.ExternalInsertionDiagram.legInComponent_partner_iff"
     ],
     "crossModuleDirectWrapper": false,
@@ -131785,7 +131826,7 @@
     "name": "SecondQuantization.Common.TwoPointDiagram.externalVerticesConnected",
     "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.External.ExternalConnectivity",
     "externalAxioms": [],
-    "docString": "In every two-point diagram, the two one-legged external vertices necessarily belong to the same\nconnected component. ",
+    "docString": "In every two-point diagram the two external vertices belong to the same component,\nbecause every component has an even number of one-legged external vertices. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
@@ -131795,12 +131836,10 @@
       "SecondQuantization.Common.interactionSector_externalComponent_ofSlotSplit"
     ],
     "dependencies": [
-      "Combinatorics.PairingOn.even_card",
+      "Combinatorics.PairingOn.even_card_left_of_invariant_subtype",
       "SecondQuantization.Common.TwoPointDiagram.legInComponent_iff_unflattened",
       "SecondQuantization.Common.TwoPointDiagram.legInComponent_partner_iff",
-      "SecondQuantization.Common.externalCardEven_of_equiv_sum_prod",
-      "SimpleGraph.self_mem_componentBlock",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.External.ExternalConnectivity.0.SecondQuantization.Common.TwoPointDiagram.externalOne_not_mem_externalComponentPart"
+      "SimpleGraph.reachable_finTwo_of_even_left_components"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -141905,50 +141944,6 @@
     "completedMention": false,
     "compiledConsumers": [],
     "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Leg ExternalData InteractionData LocalData : Type} [inst : Fintype Leg] [inst_1 : Fintype ExternalData]\n  [Finite InteractionData] [inst_3 : Fintype LocalData] (legEquiv : Leg ≃ ExternalData ⊕ InteractionData × LocalData),\n  Even (Fintype.card Leg) → Even (Fintype.card LocalData) → Even (Fintype.card ExternalData)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.externalCardEven_of_equiv_sum_prod",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ComponentLegData",
-    "externalAxioms": [],
-    "docString": "If a finite leg type splits into external data and interaction-local data, and both the total\nnumber of legs and the number of local legs per interaction vertex are even, then the external\nsector has even cardinality. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.ExternalInsertionDiagram.externalSector_card_even",
-      "SecondQuantization.Common.TwoPointDiagram.externalVerticesConnected"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.ExternalInsertionDiagram.externalSector_card_even",
-      "SecondQuantization.Common.TwoPointDiagram.externalVerticesConnected"
-    ],
-    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -177309,7 +177304,6 @@
       "SecondQuantization.Common.ExternalInsertionBlockLayout.physicalComponentCanonicalLegEquiv_eq_finCongr",
       "SecondQuantization.Common.ExternalInsertionBlockLayout.physicalComponentCanonicalLegEquiv_strictMono",
       "SecondQuantization.Common.ExternalInsertionBlockLayout.physicalComponentCanonicalPairing_eq_local",
-      "SecondQuantization.Common.ExternalInsertionDiagram.allExternalVerticesConnected_two",
       "SecondQuantization.Common.ExternalInsertionDiagram.canonicalComponentInteractionShuffle_physicalOwner",
       "SecondQuantization.Common.ExternalInsertionDiagram.externalBlockLayout_interactionBlock",
       "SecondQuantization.Common.ExternalInsertionDiagram.externalBlockLayout_interactionOwner",
@@ -177327,6 +177321,7 @@
       "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleConnectedBlocks_signedDysonShuffleOrbit_eq_subsetTimes",
       "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleDiagram_restrictComponent_heq_local",
       "SecondQuantization.Fermionic.componentExternalOrderSign_eq_one_of_allExternalVerticesConnected",
+      "SimpleGraph.reachable_finTwo_of_even_left_components",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumComponentPair.0.SecondQuantization.Common.slotSplitVacuumNormalizedPairEmbedding_pairComponent",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumComponents.0.SecondQuantization.Common.not_mem_left_of_mem_vacuumComponentPart"
     ],
@@ -177341,7 +177336,6 @@
       "SecondQuantization.Common.ExternalInsertionBlockLayout.physicalComponentCanonicalLegEquiv_eq_finCongr",
       "SecondQuantization.Common.ExternalInsertionBlockLayout.physicalComponentCanonicalLegEquiv_strictMono",
       "SecondQuantization.Common.ExternalInsertionBlockLayout.physicalComponentCanonicalPairing_eq_local",
-      "SecondQuantization.Common.ExternalInsertionDiagram.allExternalVerticesConnected_two",
       "SecondQuantization.Common.ExternalInsertionDiagram.canonicalComponentInteractionShuffle_physicalOwner",
       "SecondQuantization.Common.ExternalInsertionDiagram.externalBlockLayout_interactionBlock",
       "SecondQuantization.Common.ExternalInsertionDiagram.externalBlockLayout_interactionOwner",
@@ -177359,6 +177353,7 @@
       "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleConnectedBlocks_signedDysonShuffleOrbit_eq_subsetTimes",
       "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleDiagram_restrictComponent_heq_local",
       "SecondQuantization.Fermionic.componentExternalOrderSign_eq_one_of_allExternalVerticesConnected",
+      "SimpleGraph.reachable_finTwo_of_even_left_components",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumComponentPair.0.SecondQuantization.Common.slotSplitVacuumNormalizedPairEmbedding_pairComponent",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumComponents.0.SecondQuantization.Common.not_mem_left_of_mem_vacuumComponentPart"
     ],
@@ -177399,7 +177394,6 @@
       "SecondQuantization.Common.ExternalInsertionBlockLayout.assembleDiagram_componentBlock_external",
       "SecondQuantization.Common.ExternalInsertionBlockLayout.assembleDiagram_componentInteractionSector_external",
       "SecondQuantization.Common.ExternalInsertionBlockLayout.assembleDiagram_legInComponent_iff_legEquiv_fst",
-      "SecondQuantization.Common.ExternalInsertionDiagram.allExternalVerticesConnected_two",
       "SecondQuantization.Common.ExternalInsertionDiagram.externalComponentPartition_part_eq_toLeft_componentBlock",
       "SecondQuantization.Common.ExternalInsertionDiagram.externallySupportedInteractionPart_ofSlotSplit",
       "SecondQuantization.Common.ExternalInsertionDiagram.hasNoVacuumComponent_externalBearingDiagram",
@@ -177425,9 +177419,9 @@
       "SecondQuantization.Common.isExternallyConnected_slotSplitExternal",
       "SimpleGraph.componentBlock_eq_iff_reachable",
       "SimpleGraph.componentBlock_eq_of_reachable",
+      "SimpleGraph.reachable_finTwo_of_even_left_components",
       "SimpleGraph.self_mem_componentBlock",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.CutIntervals.0.SecondQuantization.Common.sourceSide_mem_partner_iff",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.External.ExternalConnectivity.0.SecondQuantization.Common.TwoPointDiagram.externalOne_not_mem_externalComponentPart"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.CutIntervals.0.SecondQuantization.Common.sourceSide_mem_partner_iff"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
@@ -177436,7 +177430,6 @@
       "SecondQuantization.Common.ExternalInsertionBlockLayout.assembleDiagram_componentBlock_external",
       "SecondQuantization.Common.ExternalInsertionBlockLayout.assembleDiagram_componentInteractionSector_external",
       "SecondQuantization.Common.ExternalInsertionBlockLayout.assembleDiagram_legInComponent_iff_legEquiv_fst",
-      "SecondQuantization.Common.ExternalInsertionDiagram.allExternalVerticesConnected_two",
       "SecondQuantization.Common.ExternalInsertionDiagram.externalComponentPartition_part_eq_toLeft_componentBlock",
       "SecondQuantization.Common.ExternalInsertionDiagram.externallySupportedInteractionPart_ofSlotSplit",
       "SecondQuantization.Common.ExternalInsertionDiagram.hasNoVacuumComponent_externalBearingDiagram",
@@ -177462,11 +177455,11 @@
       "SecondQuantization.Common.isExternallyConnected_slotSplitExternal",
       "SimpleGraph.componentBlock_eq_iff_reachable",
       "SimpleGraph.componentBlock_eq_of_reachable",
+      "SimpleGraph.reachable_finTwo_of_even_left_components",
       "SimpleGraph.self_mem_componentBlock",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.CutIntervals.0.SecondQuantization.Common.sourceSide_mem_partner_iff",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.External.ExternalConnectivity.0.SecondQuantization.Common.TwoPointDiagram.externalOne_not_mem_externalComponentPart"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.CutIntervals.0.SecondQuantization.Common.sourceSide_mem_partner_iff"
     ],
-    "compiledConsumerCount": 32,
+    "compiledConsumerCount": 31,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -177517,6 +177510,54 @@
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_componentBlock_subset_part"
     ],
     "compiledConsumerCount": 4,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Internal : Type u_2} [inst : Fintype Internal] [inst_1 : DecidableEq Internal] (G : SimpleGraph (Fin 2 ⊕ Internal)),\n  (∀ (B : ↥G.componentPartition.parts), Even (↑B).toLeft.card) → G.Reachable (Sum.inl 0) (Sum.inl 1)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SimpleGraph.reachable_finTwo_of_even_left_components",
+    "module": "LeanCondensedMatter.Combinatorics.SetPartition.GraphComponents",
+    "externalAxioms": [],
+    "docString": "If every component of a graph with two distinguished left vertices meets the left sector\nin an even number of vertices, those two vertices must lie in the same component. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Common.ExternalInsertionDiagram.allExternalVerticesConnected_two",
+      "SecondQuantization.Common.TwoPointDiagram.externalVerticesConnected"
+    ],
+    "dependencies": [
+      "SimpleGraph.componentBlock_mem_componentPartition",
+      "SimpleGraph.mem_componentBlock",
+      "SimpleGraph.self_mem_componentBlock"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Common.ExternalInsertionDiagram.allExternalVerticesConnected_two",
+      "SecondQuantization.Common.TwoPointDiagram.externalVerticesConnected"
+    ],
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -177628,16 +177669,15 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Common.ExternalInsertionDiagram.allExternalVerticesConnected_two",
       "SecondQuantization.Common.ExternalInsertionDiagram.externalBlockLayout_interactionBlock",
       "SecondQuantization.Common.TwoPointDiagram.externalVertex_mem_externalComponentPart",
-      "SecondQuantization.Common.TwoPointDiagram.externalVerticesConnected",
       "SecondQuantization.Common.TwoPointDiagram.externalZero_not_mem_verticesBetweenCuts",
       "SecondQuantization.Common.TwoPointDiagram.ofSlotSplit_vacuumLeg_mem_right",
       "SecondQuantization.Common.allExternalVerticesConnected_iff_supportedComponentParts_eq_singleton",
       "SecondQuantization.Common.componentMeetsExternal_iff_exists_eq_componentBlock",
       "SecondQuantization.Common.hasNoVacuumComponent_iff_forall_component_meetsExternal",
       "SimpleGraph.componentBlock_eq_iff_reachable",
+      "SimpleGraph.reachable_finTwo_of_even_left_components",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.ExternalSupportSplit.0.SecondQuantization.Common.ExternalInsertionDiagram.exists_externalSupportLeftSlot_iff",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumComponentPair.0.SecondQuantization.Common.slotSplitVacuumNormalizedPairEmbedding_pairComponent",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumComponents.0.SecondQuantization.Common.not_mem_left_of_mem_vacuumComponentPart"
@@ -177648,21 +177688,20 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Common.ExternalInsertionDiagram.allExternalVerticesConnected_two",
       "SecondQuantization.Common.ExternalInsertionDiagram.externalBlockLayout_interactionBlock",
       "SecondQuantization.Common.TwoPointDiagram.externalVertex_mem_externalComponentPart",
-      "SecondQuantization.Common.TwoPointDiagram.externalVerticesConnected",
       "SecondQuantization.Common.TwoPointDiagram.externalZero_not_mem_verticesBetweenCuts",
       "SecondQuantization.Common.TwoPointDiagram.ofSlotSplit_vacuumLeg_mem_right",
       "SecondQuantization.Common.allExternalVerticesConnected_iff_supportedComponentParts_eq_singleton",
       "SecondQuantization.Common.componentMeetsExternal_iff_exists_eq_componentBlock",
       "SecondQuantization.Common.hasNoVacuumComponent_iff_forall_component_meetsExternal",
       "SimpleGraph.componentBlock_eq_iff_reachable",
+      "SimpleGraph.reachable_finTwo_of_even_left_components",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.ExternalSupportSplit.0.SecondQuantization.Common.ExternalInsertionDiagram.exists_externalSupportLeftSlot_iff",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumComponentPair.0.SecondQuantization.Common.slotSplitVacuumNormalizedPairEmbedding_pairComponent",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumComponents.0.SecondQuantization.Common.not_mem_left_of_mem_vacuumComponentPart"
     ],
-    "compiledConsumerCount": 13,
+    "compiledConsumerCount": 12,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -202620,50 +202659,6 @@
     "completedMention": false,
     "compiledConsumers": [],
     "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel N S),\n  ¬d.ExternalVerticesConnected → Sum.inl 1 ∉ ↑d.externalComponentPart",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.External.ExternalConnectivity.0.SecondQuantization.Common.TwoPointDiagram.externalOne_not_mem_externalComponentPart",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.External.ExternalConnectivity",
-    "externalAxioms": [],
-    "docString": "If the two external vertices were disconnected, external vertex `1` would not lie in the\ncomponent of external vertex `0`. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.TwoPointDiagram.externalVerticesConnected"
-    ],
-    "dependencies": [
-      "SimpleGraph.mem_componentBlock"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.TwoPointDiagram.externalVerticesConnected"
-    ],
-    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
