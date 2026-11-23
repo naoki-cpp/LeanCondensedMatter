@@ -97,12 +97,15 @@ def IsPlanarIsotropic (conductivity : ConductivityTensor (Fin 2)) : Prop :=
 
 /-- The completed planar conductivity is invariant under the quarter-turn
 `R = [[0,-1],[1,0]]` acting on both its measured and source directions.
+The finite component sum is the `(R σ Rᵀ)ᵢⱼ = σᵢⱼ` condition, spelled out
+without converting the existing function-valued tensor to a new matrix type.
 This is a spatial-symmetry constraint, not a microscopic Kubo hypothesis or
 an assertion that the Hall component vanishes. -/
 def IsQuarterTurnInvariant (conductivity : ConductivityTensor (Fin 2)) : Prop :=
   let R : Matrix (Fin 2) (Fin 2) ℂ := !![0, -1; 1, 0]
-  let S : Matrix (Fin 2) (Fin 2) ℂ := conductivity.component
-  R * S * R.transpose = S
+  ∀ i j : Fin 2,
+    (∑ k : Fin 2, ∑ l : Fin 2,
+      R i k * conductivity.component k l * R j l) = conductivity.component i j
 
 /-- Quarter-turn invariance is exactly the existing planar isotropy condition:
 equal longitudinal components and antisymmetric off-diagonal components.
@@ -113,23 +116,20 @@ theorem isQuarterTurnInvariant_iff_isPlanarIsotropic
   constructor
   · intro h
     dsimp [IsQuarterTurnInvariant] at h
-    have h00 := congrArg
-      (fun M : Matrix (Fin 2) (Fin 2) ℂ => M 0 0) h
-    have h01 := congrArg
-      (fun M : Matrix (Fin 2) (Fin 2) ℂ => M 0 1) h
-    simp [Matrix.mul_apply, Fin.sum_univ_two] at h00 h01
+    have h00 := h 0 0
+    have h01 := h 0 1
+    simp [Fin.sum_univ_two] at h00 h01
     constructor
     · exact h00
     · calc
         conductivity.component 1 0 =
             -(-conductivity.component 1 0) := by ring
         _ = -conductivity.component 0 1 := by rw [h01]
-  · intro h
-    rcases h with ⟨hdiag, hoffdiag⟩
+  · rintro ⟨hdiag, hoffdiag⟩
     dsimp [IsQuarterTurnInvariant]
-    ext i j
+    intro i j
     fin_cases i <;> fin_cases j <;>
-      simp [Matrix.mul_apply, Fin.sum_univ_two, hdiag, hoffdiag]
+      simp [Fin.sum_univ_two, hdiag, hoffdiag]
 
 /-- Quarter-turn symmetry forces the symmetric xy conductivity to vanish,
 even though it does not force the full xy (Hall) component to vanish. -/
