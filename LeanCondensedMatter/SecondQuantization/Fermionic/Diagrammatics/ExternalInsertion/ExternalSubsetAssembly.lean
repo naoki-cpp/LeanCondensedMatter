@@ -721,9 +721,8 @@ theorem ExternalInsertionBlockLayout.sum_physicalFixedSizeDyson_eq_signedProduct
                 (evenExternalSubsetTimes times
                   (B : Finset (Fin (2 * E))) (heven B))
               else 0 := by
-          simpa only [assembled, S, layout] using
-            (ExternalInsertionBlockLayout.sum_signedDysonShuffleOrbits_eq_prod_standardized
-              layout ε β g labels times)
+          exact ExternalInsertionBlockLayout.sum_signedDysonShuffleOrbits_eq_prod_standardized
+            layout ε β g labels times
     _ = _ := by
           apply congrArg (fun z : ℂ => externalPartitionSourceSign π * z)
           apply Finset.prod_congr rfl
