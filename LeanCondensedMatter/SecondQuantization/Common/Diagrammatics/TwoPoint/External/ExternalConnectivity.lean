@@ -1,15 +1,13 @@
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Components.ComponentRestriction
-import LeanCondensedMatter.Combinatorics.PerfectPairing.InvolutionCard
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ExternalConnectivity
 
 set_option linter.style.header false
 
 /-!
 # Automatic external connectivity for two-point diagrams
 
-A connected component of a two-point diagram carries a perfect matching on all of its legs, so the
-number of legs in that component is even. A component containing exactly one of the two one-legged
-external vertices would instead have `1 + 4k` legs. This parity contradiction shows that the two
-external vertices always lie in the same component.
+The general external-insertion theorem establishes this for exactly two external legs;
+we use the same canonical leg enumeration and specialize it to the two-point diagram.
 
 Consequently, for this exact two-point setup, external connectedness is equivalent to the absence of
 vacuum components. The TwoPoint-specific predicate remains `IsExternallyConnected`; vacuum-freeness is the generic
@@ -28,57 +26,14 @@ noncomputable def TwoPointDiagram.externalComponentPart {S : Finset (Fin N)}
   ⟨d.vertexGraph.componentBlock (Sum.inl 0),
     d.vertexGraph.componentBlock_mem_componentPartition (Sum.inl 0)⟩
 
-/-- If the two external vertices were disconnected, external vertex `1` would not lie in the
-component of external vertex `0`. -/
-private theorem TwoPointDiagram.externalOne_not_mem_externalComponentPart {S : Finset (Fin N)}
-    (d : TwoPointDiagram ExternalLabel InternalLabel N S)
-    (hExt : ¬ d.ExternalVerticesConnected) :
-    (Sum.inl (1 : Fin 2) : TwoPointVertex S) ∉
-      (d.externalComponentPart : Finset (TwoPointVertex S)) := by
-  intro hmem
-  apply hExt
-  change d.vertexGraph.Reachable
-    (Sum.inl (0 : Fin 2) : TwoPointVertex S)
-    (Sum.inl (1 : Fin 2) : TwoPointVertex S)
-  exact ((d.vertexGraph.mem_componentBlock
-    (Sum.inl (0 : Fin 2) : TwoPointVertex S)
-    (Sum.inl (1 : Fin 2) : TwoPointVertex S)).1 hmem).symm
-
-/-- In every two-point diagram, the two one-legged external vertices necessarily belong to the same
-connected component. -/
+/-- In every two-point diagram, the two one-legged external vertices belong to the same
+connected component. Reuse the even-external-sector theorem at `E = 1`. -/
 theorem TwoPointDiagram.externalVerticesConnected {S : Finset (Fin N)}
     (d : TwoPointDiagram ExternalLabel InternalLabel N S) :
     d.ExternalVerticesConnected := by
-  classical
-  by_contra hExt
-  have hExternalSector :
-      Finset.toLeft (d.vertexGraph.componentBlock (Sum.inl 0)) = {0} := by
-    ext e
-    fin_cases e
-    · simp [Finset.mem_toLeft, d.vertexGraph.self_mem_componentBlock]
-    · simp only [Finset.mem_toLeft, Finset.mem_singleton]
-      constructor
-      · exact fun h => False.elim (d.externalOne_not_mem_externalComponentPart hExt h)
-      · simp
-  let blockEquiv :
-      {leg : Fin (2 * (2 * S.card + 1)) //
-        d.legInComponent (d.vertexGraph.componentBlock (Sum.inl 0)) leg} ≃
-        ↥(Finset.toLeft (d.vertexGraph.componentBlock (Sum.inl 0))) ⊕
-          (↥(interactionSector (d.vertexGraph.componentBlock (Sum.inl 0))) × Fin 4) :=
-    ((twoPointLegEquiv S).subtypeEquiv fun leg =>
-        d.legInComponent_iff_unflattened d.externalComponentPart leg).trans
-      (componentLegDataEquiv
-        (External := Fin 2) (Vertex := Fin N) (Local := Fin 4)
-        (d.vertexGraph.componentBlock (Sum.inl 0)))
-  let restricted :=
-    d.pairing.restrict (d.legInComponent (d.vertexGraph.componentBlock (Sum.inl 0)))
-      (fun leg => d.legInComponent_partner_iff (d.vertexGraph.componentBlock (Sum.inl 0)) leg)
-  have hEven :
-      Even (Finset.toLeft (d.vertexGraph.componentBlock (Sum.inl 0))).card := by
-    simpa only [Fintype.card_coe] using
-      externalCardEven_of_equiv_sum_prod blockEquiv restricted.even_card (by simpa only [Fintype.card_fin] using (show Even 4 from ⟨2, rfl⟩))
-  rw [hExternalSector] at hEven
-  simp at hEven
+  let general : ExternalInsertionDiagram ExternalLabel InternalLabel 1 N S :=
+    ⟨d.externalLabel, d.vertexLabel, d.pairing⟩
+  exact general.allExternalVerticesConnected_two 0 1
 
 /-- The two external component blocks always coincide. -/
 theorem TwoPointDiagram.externalComponent_zero_eq_one {S : Finset (Fin N)}
