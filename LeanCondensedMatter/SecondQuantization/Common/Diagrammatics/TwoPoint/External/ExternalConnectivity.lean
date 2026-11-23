@@ -70,13 +70,15 @@ theorem TwoPointDiagram.externalVerticesConnected {S : Finset (Fin N)}
       (componentLegDataEquiv
         (External := Fin 2) (Vertex := Fin N) (Local := Fin 4)
         (d.vertexGraph.componentBlock (Sum.inl 0)))
-  let restricted :=
-    d.pairing.restrict (d.legInComponent (d.vertexGraph.componentBlock (Sum.inl 0)))
-      (fun leg => d.legInComponent_partner_iff (d.vertexGraph.componentBlock (Sum.inl 0)) leg)
   have hEven :
       Even (Finset.toLeft (d.vertexGraph.componentBlock (Sum.inl 0))).card := by
     simpa only [Fintype.card_coe] using
-      externalCardEven_of_equiv_sum_prod blockEquiv restricted.even_card (by simpa only [Fintype.card_fin] using (show Even 4 from ⟨2, rfl⟩))
+      d.pairing.even_card_left_of_invariant_subtype
+        (d.legInComponent (d.vertexGraph.componentBlock (Sum.inl 0)))
+        (fun leg => d.legInComponent_partner_iff
+          (d.vertexGraph.componentBlock (Sum.inl 0)) leg)
+        blockEquiv
+        (by simpa only [Fintype.card_fin] using (show Even 4 from ⟨2, rfl⟩))
   rw [hExternalSector] at hEven
   simp at hEven
 
