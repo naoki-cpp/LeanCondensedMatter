@@ -28,57 +28,31 @@ noncomputable def TwoPointDiagram.externalComponentPart {S : Finset (Fin N)}
   ⟨d.vertexGraph.componentBlock (Sum.inl 0),
     d.vertexGraph.componentBlock_mem_componentPartition (Sum.inl 0)⟩
 
-/-- If the two external vertices were disconnected, external vertex `1` would not lie in the
-component of external vertex `0`. -/
-private theorem TwoPointDiagram.externalOne_not_mem_externalComponentPart {S : Finset (Fin N)}
-    (d : TwoPointDiagram ExternalLabel InternalLabel N S)
-    (hExt : ¬ d.ExternalVerticesConnected) :
-    (Sum.inl (1 : Fin 2) : TwoPointVertex S) ∉
-      (d.externalComponentPart : Finset (TwoPointVertex S)) := by
-  intro hmem
-  apply hExt
-  change d.vertexGraph.Reachable
-    (Sum.inl (0 : Fin 2) : TwoPointVertex S)
-    (Sum.inl (1 : Fin 2) : TwoPointVertex S)
-  exact ((d.vertexGraph.mem_componentBlock
-    (Sum.inl (0 : Fin 2) : TwoPointVertex S)
-    (Sum.inl (1 : Fin 2) : TwoPointVertex S)).1 hmem).symm
-
-/-- In every two-point diagram, the two one-legged external vertices necessarily belong to the same
-connected component. -/
+/-- In every two-point diagram the two external vertices belong to the same component,
+because every component has an even number of one-legged external vertices. -/
 theorem TwoPointDiagram.externalVerticesConnected {S : Finset (Fin N)}
     (d : TwoPointDiagram ExternalLabel InternalLabel N S) :
     d.ExternalVerticesConnected := by
   classical
-  by_contra hExt
-  have hExternalSector :
-      Finset.toLeft (d.vertexGraph.componentBlock (Sum.inl 0)) = {0} := by
-    ext e
-    fin_cases e
-    · simp [Finset.mem_toLeft, d.vertexGraph.self_mem_componentBlock]
-    · simp only [Finset.mem_toLeft, Finset.mem_singleton]
-      constructor
-      · exact fun h => False.elim (d.externalOne_not_mem_externalComponentPart hExt h)
-      · simp
+  apply SimpleGraph.reachable_finTwo_of_even_left_components d.vertexGraph
+  intro B
   let blockEquiv :
       {leg : Fin (2 * (2 * S.card + 1)) //
-        d.legInComponent (d.vertexGraph.componentBlock (Sum.inl 0)) leg} ≃
-        ↥(Finset.toLeft (d.vertexGraph.componentBlock (Sum.inl 0))) ⊕
-          (↥(interactionSector (d.vertexGraph.componentBlock (Sum.inl 0))) × Fin 4) :=
+        d.legInComponent (B : Finset (TwoPointVertex S)) leg} ≃
+        ↥(Finset.toLeft (B : Finset (TwoPointVertex S))) ⊕
+          (↥(interactionSector (B : Finset (TwoPointVertex S))) × Fin 4) :=
     ((twoPointLegEquiv S).subtypeEquiv fun leg =>
-        d.legInComponent_iff_unflattened d.externalComponentPart leg).trans
+        d.legInComponent_iff_unflattened B leg).trans
       (componentLegDataEquiv
         (External := Fin 2) (Vertex := Fin N) (Local := Fin 4)
-        (d.vertexGraph.componentBlock (Sum.inl 0)))
-  let restricted :=
-    d.pairing.restrict (d.legInComponent (d.vertexGraph.componentBlock (Sum.inl 0)))
-      (fun leg => d.legInComponent_partner_iff (d.vertexGraph.componentBlock (Sum.inl 0)) leg)
-  have hEven :
-      Even (Finset.toLeft (d.vertexGraph.componentBlock (Sum.inl 0))).card := by
-    simpa only [Fintype.card_coe] using
-      externalCardEven_of_equiv_sum_prod blockEquiv restricted.even_card (by simpa only [Fintype.card_fin] using (show Even 4 from ⟨2, rfl⟩))
-  rw [hExternalSector] at hEven
-  simp at hEven
+        (B : Finset (TwoPointVertex S)))
+  simpa only [Fintype.card_coe] using
+    d.pairing.even_card_left_of_invariant_subtype
+      (d.legInComponent (B : Finset (TwoPointVertex S)))
+      (fun leg => d.legInComponent_partner_iff
+        (B : Finset (TwoPointVertex S)) leg)
+      blockEquiv
+      (by simpa only [Fintype.card_fin] using (show Even 4 from ⟨2, rfl⟩))
 
 /-- The two external component blocks always coincide. -/
 theorem TwoPointDiagram.externalComponent_zero_eq_one {S : Finset (Fin N)}

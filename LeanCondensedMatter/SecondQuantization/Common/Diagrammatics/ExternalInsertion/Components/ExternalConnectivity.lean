@@ -34,28 +34,8 @@ theorem ExternalInsertionDiagram.allExternalVerticesConnected_two
   intro e
   fin_cases e
   · exact SimpleGraph.Reachable.refl _
-  · by_contra hDisconnected
-    let B : d.vertexGraph.componentPartition.parts :=
-      ⟨d.vertexGraph.componentBlock (Sum.inl (0 : Fin 2)),
-        d.vertexGraph.componentBlock_mem_componentPartition (Sum.inl (0 : Fin 2))⟩
-    have hExternalSector :
-        Finset.toLeft (B : Finset (ExternalInsertionVertex 1 S)) =
-          {(0 : Fin 2)} := by
-      ext x
-      fin_cases x
-      · simp [B, Finset.mem_toLeft, d.vertexGraph.self_mem_componentBlock]
-      · simp only [Finset.mem_toLeft, Finset.mem_singleton]
-        constructor
-        · intro hx
-          exfalso
-          apply hDisconnected
-          exact ((d.vertexGraph.mem_componentBlock
-            (Sum.inl (0 : Fin 2)) (Sum.inl (1 : Fin 2))).1 hx).symm
-        · intro hx
-          exact False.elim (by simp at hx)
-    have hEven := d.externalSector_card_even B
-    rw [hExternalSector] at hEven
-    simp at hEven
+  · exact SimpleGraph.reachable_finTwo_of_even_left_components
+      d.vertexGraph d.externalSector_card_even
 
 /-- For exactly two external insertions, a diagram is fully connected
 if and only if it has no vacuum component. This need not hold for four

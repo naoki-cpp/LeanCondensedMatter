@@ -95,17 +95,13 @@ theorem ExternalInsertionDiagram.externalSector_card_even {S : Finset (Fin N)}
     Even (Finset.toLeft
       (B : Finset (ExternalInsertionVertex E S))).card := by
   classical
-  let restricted :=
-    d.pairing.restrict
+  simpa only [Fintype.card_coe] using
+    d.pairing.even_card_left_of_invariant_subtype
       (d.legInComponent (B : Finset (ExternalInsertionVertex E S)))
       (fun leg => d.legInComponent_partner_iff
         (B : Finset (ExternalInsertionVertex E S)) leg)
-  have hEven :
-      Even (Fintype.card {leg : Fin (2 * (2 * S.card + E)) //
-        d.legInComponent (B : Finset (ExternalInsertionVertex E S)) leg}) :=
-    restricted.even_card
-  simpa only [Fintype.card_coe] using
-    externalCardEven_of_equiv_sum_prod (d.componentBlockLegDataEquiv B) hEven (by simpa only [Fintype.card_fin] using (show Even 4 from ⟨2, rfl⟩))
+      (d.componentBlockLegDataEquiv B)
+      (by simpa only [Fintype.card_fin] using (show Even 4 from ⟨2, rfl⟩))
 
 /-- The local external-sector parameter: half the number of one-legged external insertions
 carried by one connected component. -/

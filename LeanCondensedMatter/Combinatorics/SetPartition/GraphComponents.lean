@@ -1,6 +1,7 @@
 import Mathlib.Combinatorics.SimpleGraph.Connectivity.Connected
 import Mathlib.Order.Partition.Finpartition
 import Mathlib.Combinatorics.SimpleGraph.Sum
+import Mathlib.Data.Finset.Sum
 
 set_option linter.style.header false
 
@@ -69,6 +70,37 @@ theorem componentBlock_eq_iff_mem [Fintype V] (G : SimpleGraph V) {B : Finset V}
     G.componentBlock v = B ↔ v ∈ B := by
   change G.componentPartition.part v = B ↔ v ∈ B
   exact G.componentPartition.part_eq_iff_mem hB
+
+/-- If every component of a graph with two distinguished left vertices meets the left sector
+in an even number of vertices, those two vertices must lie in the same component. -/
+theorem reachable_finTwo_of_even_left_components
+    {Internal : Type*} [Fintype Internal] [DecidableEq Internal]
+    (G : SimpleGraph (Fin 2 ⊕ Internal))
+    (hEven : ∀ B : G.componentPartition.parts,
+      Even (Finset.toLeft (B : Finset (Fin 2 ⊕ Internal))).card) :
+    G.Reachable (Sum.inl (0 : Fin 2)) (Sum.inl (1 : Fin 2)) := by
+  classical
+  by_contra hDisconnected
+  let B : G.componentPartition.parts :=
+    ⟨G.componentBlock (Sum.inl (0 : Fin 2)),
+      G.componentBlock_mem_componentPartition (Sum.inl (0 : Fin 2))⟩
+  have hExternalSector :
+      Finset.toLeft (B : Finset (Fin 2 ⊕ Internal)) = {(0 : Fin 2)} := by
+    ext e
+    fin_cases e
+    · simp [B, Finset.mem_toLeft, G.self_mem_componentBlock]
+    · simp only [Finset.mem_toLeft, Finset.mem_singleton]
+      constructor
+      · intro hx
+        apply False.elim
+        apply hDisconnected
+        exact ((G.mem_componentBlock
+          (Sum.inl (0 : Fin 2)) (Sum.inl (1 : Fin 2))).1 hx).symm
+      · intro hx
+        exact False.elim (by simp at hx)
+  have hParity := hEven B
+  rw [hExternalSector] at hParity
+  simp at hParity
 
 omit [DecidableEq V] in
 /-- Reachability between right-side vertices of a graph sum is exactly reachability
