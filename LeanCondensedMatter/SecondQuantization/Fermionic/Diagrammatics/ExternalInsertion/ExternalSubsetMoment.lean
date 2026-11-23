@@ -1009,6 +1009,40 @@ private noncomputable def externalSubsetReindexPartition
     rw [hBEmpty] at hi
     simpa using hi
 
+/-- Pull a partition of the actual source subset back to canonical
+local source-slot coordinates using the same increasing order isomorphism. -/
+private noncomputable def externalSubsetLocalPartition
+    (S : Finset (Fin (2 * E))) (heven : Even S.card)
+    (σ : Finpartition S) :
+    Finpartition (Finset.univ : Finset (Fin (2 * (S.card / 2)))) := by
+  classical
+  let e := evenExternalSubsetOrderIso S heven
+  let preimage : Finset (Fin (2 * E)) → Finset (Fin (2 * (S.card / 2))) :=
+    fun T => Finset.univ.filter (fun i => (e i).1 ∈ T)
+  refine Finpartition.ofExistsUnique (σ.parts.image preimage) ?_ ?_ ?_
+  · intro T _ i _
+    exact Finset.mem_univ i
+  · intro i _
+    obtain ⟨T, hT, hiT⟩ := σ.exists_mem (e i).2
+    refine ⟨preimage T, ⟨Finset.mem_image.mpr ⟨T, hT, rfl⟩, ?_⟩, ?_⟩
+    · simp [preimage, hiT]
+    intro U ⟨hU, hiU⟩
+    obtain ⟨V, hV, hVU⟩ := Finset.mem_image.mp hU
+    have hiV : (e i).1 ∈ V := by
+      rw [← hVU] at hiU
+      exact (Finset.mem_filter.mp hiU).2
+    calc
+      U = preimage V := hVU.symm
+      _ = preimage T := congrArg preimage (σ.eq_of_mem_parts hV hT hiV hiT)
+  · intro hEmpty
+    obtain ⟨T, hT, hTEmpty⟩ := Finset.mem_image.mp hEmpty
+    obtain ⟨x, hxT⟩ := σ.nonempty_of_mem_parts hT
+    have hxS : x ∈ S := σ.le hT hxT
+    let i := e.symm ⟨x, hxS⟩
+    have hiT : i ∈ preimage T := by simp [preimage, i, hxT]
+    rw [hTEmpty] at hiT
+    simpa using hiT
+
 set_option maxHeartbeats 4000000 in
 -- The connected series of a source subset has an index depending on its cardinality.
 open Classical in
