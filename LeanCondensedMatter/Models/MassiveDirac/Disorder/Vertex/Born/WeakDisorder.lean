@@ -217,10 +217,8 @@ theorem continuumBornUpperBandTransportLifetime_eq_weakDisorderCurrentRungFactor
           v m fermiEnergy disorderStrength hbar) := by
   rw [continuumBornUpperBandTransportLifetime_eq_factor_mul_singleParticleLifetime
     v m fermiEnergy disorderStrength hbar hvelocity hhbar hdisorder hfermiEnergy]
-  have hfermiSq : 0 < fermiEnergy ^ 2 := sq_pos_of_ne_zero hfermiEnergy
   have hden : fermiEnergy ^ 2 + 3 * m ^ 2 ≠ 0 :=
-    ne_of_gt (add_pos_of_pos_of_nonneg hfermiSq
-      (mul_nonneg (by norm_num) (sq_nonneg m)))
+    ne_of_gt (by positivity)
   rw [inv_one_sub_continuumBornRetardedAdvancedPauliXWeakDisorderCurrentRungCoefficient
     m fermiEnergy hden]
 
