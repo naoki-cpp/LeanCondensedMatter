@@ -1620,6 +1620,71 @@ noncomputable def externalSubsetSignedConnectedMomentSeries
     (fun _ π => PowerSeries.C (externalPartitionSourceSign π))
     (externalSubsetConnectedDiagramSeries ε β g labels times) S
 
+set_option maxHeartbeats 4000000 in
+-- The outer partition and its blockwise connected products reindex dependently.
+open Classical in
+/-- Phase 5C physical signed moment identity for every nonempty
+even external source subset: the actual vacuum-free integrated
+Dyson moment is the Koszul-signed source partition transform
+of the actual fully connected diagram series. -/
+theorem externalSubsetMomentSeries_eq_signedConnected_nonempty_even
+    (ε : Mode → ℝ) (β : ℝ) (hβ : 0 ≤ β)
+    (g : QuarticVertexLabel Mode → ℂ)
+    (labels : Fin (2 * E) → ExternalFieldLabel Mode)
+    (times : Fin (2 * E) → ℝ)
+    (S : Finset (Fin (2 * E))) (hS : S ≠ ∅) (heven : Even S.card) :
+    externalSubsetMomentSeries ε β g labels times S =
+      externalSubsetSignedConnectedMomentSeries ε β g labels times S := by
+  classical
+  rw [externalSubsetMomentSeries_eq_signedConnectedSum_localIndices
+    ε β hβ g labels times S hS heven]
+  unfold externalSubsetSignedConnectedMomentSeries Finpartition.weightedMomentFromCumulant
+  rw [← Equiv.sum_comp (externalSubsetPartitionEquiv S heven)]
+  apply Finset.sum_congr rfl
+  intro π _
+  let σ := externalSubsetPartitionEquiv S heven π
+  let be := externalSubsetPartsEquiv S heven π
+  let κ := externalSubsetConnectedDiagramSeries ε β g labels times
+  by_cases hEven : ∀ B : π.parts,
+      Even (B : Finset (Fin (2 * (S.card / 2)))).card
+  · have hsign := externalSubsetPartitionEquiv_sourceSign S heven π hEven
+    have hprod :
+        (∏ B : π.parts,
+            connectedExternalInsertionDysonSeries ε β g
+              (evenExternalSubsetLabels
+                (evenExternalSubsetLabels labels S heven) B.1 (hEven B))
+              (evenExternalSubsetTimes
+                (evenExternalSubsetTimes times S heven) B.1 (hEven B))) =
+          Finpartition.partitionProduct κ σ := by
+      calc
+        _ = ∏ B : π.parts, κ (be B).1 := by
+          apply Finset.prod_congr rfl
+          intro B _
+          exact externalSubsetConnectedSeries_comp
+            ε β g labels times S heven π hEven B
+        _ = ∏ T : σ.parts, κ T.1 := by
+          exact (Equiv.prod_comp be (fun T : σ.parts => κ T.1)).symm
+        _ = _ := by
+          rw [Finpartition.partitionProduct]
+          exact (Finset.prod_coe_sort σ.parts κ)
+    simp only [dif_pos hEven]
+    rw [hsign, hprod]
+  · obtain ⟨B, hBodd⟩ := not_forall.mp hEven
+    have hImage :
+        ((be B).1 : Finset (Fin (2 * E))) =
+          B.1.map
+            ⟨fun i => (evenExternalSubsetOrderIso S heven i).1,
+              fun i j h => (evenExternalSubsetOrderIso S heven).injective
+                (Subtype.ext h)⟩ := rfl
+    have hOdd : ¬ Even ((be B).1 : Finset (Fin (2 * E))).card := by
+      simpa [hImage] using hBodd
+    have hzero : κ (be B).1 = 0 :=
+      (externalSubsetSeries_eq_zero_of_odd ε β g labels times (be B).1 hOdd).2
+    have hprod : Finpartition.partitionProduct κ σ = 0 := by
+      unfold Finpartition.partitionProduct
+      exact Finset.prod_eq_zero (be B).2 hzero
+    simp [hEven, hprod]
+
 @[simp]
 theorem externalSubsetMomentSeries_empty
     (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
