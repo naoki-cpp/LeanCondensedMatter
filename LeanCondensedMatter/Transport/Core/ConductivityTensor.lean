@@ -101,8 +101,8 @@ This is a spatial-symmetry constraint, not a microscopic Kubo hypothesis or
 an assertion that the Hall component vanishes. -/
 def IsQuarterTurnInvariant (conductivity : ConductivityTensor (Fin 2)) : Prop :=
   let R : Matrix (Fin 2) (Fin 2) ℂ := !![0, -1; 1, 0]
-  R * (conductivity.component : Matrix (Fin 2) (Fin 2) ℂ) * R.transpose =
-    (conductivity.component : Matrix (Fin 2) (Fin 2) ℂ)
+  let S : Matrix (Fin 2) (Fin 2) ℂ := conductivity.component
+  R * S * R.transpose = S
 
 /-- Quarter-turn invariance is exactly the existing planar isotropy condition:
 equal longitudinal components and antisymmetric off-diagonal components.
