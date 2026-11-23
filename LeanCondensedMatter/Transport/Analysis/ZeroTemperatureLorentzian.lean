@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Analysis.Lorentzian.Weighted
+import LeanCondensedMatter.Analysis.Lorentzian.Kernel
 import LeanCondensedMatter.QuantumTheory.Occupation.ZeroTemperature
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic
 import Mathlib.Tactic.Ring
