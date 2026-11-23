@@ -227,14 +227,12 @@ theorem finiteRashbaMomentumSpinDisplacement_retardedKernel_eq_conventional_add_
         (FiniteLatticeHilbertFock (SpinfulSite Grid)))
     (t s : ℝ) :
     (finiteRashbaMomentumSpinDisplacementResponseChannel
-        params momentum hbar spinScale component measured source charge position contact).
-      retardedKernel
+        params momentum hbar spinScale component measured source charge position contact).retardedKernel
         (QuantumTheory.LinearResponse.freePropagatorGroup
           (finiteRashbaMomentumFreeSystem params momentum hbar hhbar))
         hbar expectation t s =
       (finiteRashbaMomentumSpinChargeChannel
-          params momentum spinScale component measured source charge contact).
-        retardedKernel
+          params momentum spinScale component measured source charge contact).retardedKernel
           (QuantumTheory.LinearResponse.freePropagatorGroup
             (finiteRashbaMomentumFreeSystem params momentum hbar hhbar))
           hbar expectation t s +
