@@ -29,6 +29,8 @@ python3 scripts/check_architecture.py
 ```
 
 Focused local scopes are available as `--scope core` and `--scope second-quantization`.
+The shared declarative graph audit runs in **both** scopes, since it checks all source DAGs,
+including SecondQuantization. Scopes only filter the additional focused checkers.
 
 After a successful build, two compiled architecture tools are available for focused local work:
 
@@ -167,7 +169,8 @@ module prefixes must form a non-overlapping partition. Python checks this before
 ## Fixed source contracts
 
 `source_contracts.json` contains concrete source topology that is not implied by an allowed DAG
-edge, such as:
+edge. CI pins stable public entry points and intentional public exposure, not internal owner-file
+layouts or internal implementation import choices. Supported contracts include:
 
 - required canonical files or directories;
 - required or exact direct imports;
@@ -175,7 +178,9 @@ edge, such as:
 
 An allowed dependency direction and a required direct edge are different contracts. Do not encode a
 required edge merely by adding a DAG edge. Retired-path absence is not a CI contract: removing a file
-does not create a permanent rule that the old path may never exist again.
+does not create a permanent rule that the old path may never exist again. Internal owners and
+implementation imports may move or disappear as long as the Lean build, graph boundaries, and
+public entry-point contracts remain valid.
 
 ## Source versus compiled semantics
 
