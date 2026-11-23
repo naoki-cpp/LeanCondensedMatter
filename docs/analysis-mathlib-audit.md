@@ -89,7 +89,7 @@ its Hilbert-basis diagonal formula, and the absolute diagonal formula induced by
 factor. `Analysis/Operator/TraceClass/Factorization/Basic.lean` owns the trace-norm-independent
 characterization of trace class as `T = A† B` with Hilbert--Schmidt factors, and the
 compactness corollary `IsTraceClass.isCompact`.
-`Analysis/Operator/TraceClass/Factorization/Norm.lean` owns the general bound
+`Analysis/Operator/TraceClass/Ops/Norm.lean` also owns the general bound
 `‖T‖₁ ≤ (‖A‖²_HS + ‖B‖²_HS) / 2` and a factorization with both squared
 Hilbert--Schmidt norms equal to the trace norm. `TraceClass/Trace.lean`
 owns the direct diagonal `Summable`/`HasSum`/`tsum` API, basis independence, and the canonical
