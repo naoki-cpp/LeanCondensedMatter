@@ -193,9 +193,11 @@ theorem tendsto_finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDresse
     simpa [finiteBroadeningLongitudinalMomentumEndpointForm,
       finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceMomentumIntegralZeroBroadeningBoundary] using htotal)
   filter_upwards [self_mem_nhdsWithin] with broadening hbroadening
-  exact (finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral_x_eq_endpointForm
-    e v m probeEnergy broadening disorderStrength hbar pMax hpMax hvelocity hhbar
-    (ne_of_gt hbroadening) hdisorder).symm
+  simpa [finiteBroadeningLongitudinalMomentumEndpointForm,
+    inPlaneLadderAction_apply_x] using
+    (finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral_x_eq_endpointForm
+      e v m probeEnergy broadening disorderStrength hbar pMax hpMax hvelocity hhbar
+      (ne_of_gt hbroadening) hdisorder).symm
 end
 
 end QuantumTheory.Models.MassiveDirac
