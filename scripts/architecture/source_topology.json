@@ -177,48 +177,6 @@
           "downstream": "dynamics"
         }
       ]
-    },
-    {
-      "id": "densityDiagonalConsumers",
-      "sourceRoots": [
-        "LeanCondensedMatter/QuantumTheory/Entropy",
-        "LeanCondensedMatter/QuantumTheory/LinearResponse"
-      ],
-      "layers": [
-        {"id": "diagonalFormula", "modulePrefixes": ["LeanCondensedMatter.QuantumTheory.DensityOperator.DiagonalFormula"]},
-        {"id": "entropyDiagonal", "modulePrefixes": ["LeanCondensedMatter.QuantumTheory.Entropy.Diagonal"]},
-        {"id": "eigenbasisDynamics", "modulePrefixes": ["LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann.Eigenbasis.Dynamics"]}
-      ],
-      "edges": [
-        {"upstream": "diagonalFormula", "downstream": "entropyDiagonal"},
-        {"upstream": "diagonalFormula", "downstream": "eigenbasisDynamics"}
-      ]
-    },
-    {
-      "id": "densityGibbsEntropy",
-      "sourceRoots": [
-        "LeanCondensedMatter/QuantumTheory/Gibbs",
-        "LeanCondensedMatter/SecondQuantization/Common/Algebra",
-        "LeanCondensedMatter/SecondQuantization/Common/Thermal",
-        "LeanCondensedMatter/SecondQuantization/Fermionic/Thermal"
-      ],
-      "layers": [
-        {"id": "diagonalFormula", "modulePrefixes": ["LeanCondensedMatter.QuantumTheory.DensityOperator.DiagonalFormula"]},
-        {"id": "boltzmann", "modulePrefixes": ["LeanCondensedMatter.QuantumTheory.Gibbs.Boltzmann"]},
-        {"id": "eigenbasis", "modulePrefixes": ["LeanCondensedMatter.QuantumTheory.Gibbs.Eigenbasis"]},
-        {"id": "finiteHilbert", "modulePrefixes": ["LeanCondensedMatter.SecondQuantization.Common.Algebra.FiniteHilbertOperator"]},
-        {"id": "finiteExpectation", "modulePrefixes": ["LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsExpectationBridge"]},
-        {"id": "entropy", "modulePrefixes": ["LeanCondensedMatter.QuantumTheory.Entropy"]},
-        {"id": "freeEntropy", "modulePrefixes": ["LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeEntropy"]}
-      ],
-      "edges": [
-        {"upstream": "boltzmann", "downstream": "eigenbasis"},
-        {"upstream": "diagonalFormula", "downstream": "eigenbasis"},
-        {"upstream": "eigenbasis", "downstream": "finiteExpectation"},
-        {"upstream": "finiteHilbert", "downstream": "finiteExpectation"},
-        {"upstream": "entropy", "downstream": "freeEntropy"},
-        {"upstream": "eigenbasis", "downstream": "freeEntropy"}
-      ]
     }
   ],
   "forbiddenReachability": [
