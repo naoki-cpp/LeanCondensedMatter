@@ -116,9 +116,10 @@ theorem isQuarterTurnInvariant_iff_isPlanarIsotropic
   constructor
   · intro h
     dsimp [IsQuarterTurnInvariant] at h
-    have h00 := h 0 0
-    have h01 := h 0 1
-    simp [Fin.sum_univ_two] at h00 h01
+    have h00 : conductivity.component 1 1 = conductivity.component 0 0 := by
+      simpa [Fin.sum_univ_two] using h 0 0
+    have h01 : -conductivity.component 1 0 = conductivity.component 0 1 := by
+      simpa [Fin.sum_univ_two] using h 0 1
     constructor
     · exact h00
     · calc
