@@ -113,53 +113,16 @@
         "LeanCondensedMatter/Transport"
       ],
       "layers": [
-        {
-          "id": "finiteTrace",
-          "modulePrefixes": [
-            "LeanCondensedMatter.Analysis.Operator.FiniteTrace"
-          ]
-        },
-        {
-          "id": "stredaTraceKernel",
-          "modulePrefixes": [
-            "LeanCondensedMatter.Transport.Streda.TraceKernel"
-          ]
-        },
-        {
-          "id": "resolvent",
-          "modulePrefixes": [
-            "LeanCondensedMatter.Transport.Resolvent.Basic"
-          ]
-        },
-        {
-          "id": "finiteDisorderCore",
-          "modulePrefixes": [
-            "LeanCondensedMatter.Transport.Disorder.Finite",
-            "LeanCondensedMatter.Transport.Disorder.Moments",
-            "LeanCondensedMatter.Transport.Disorder.Resolvent"
-          ]
-        },
-        {
-          "id": "bornScba",
-          "modulePrefixes": [
-            "LeanCondensedMatter.Transport.Disorder.Born",
-            "LeanCondensedMatter.Transport.Disorder.SCBA"
-          ]
-        }
+        {"id": "finiteTrace", "modulePrefixes": ["LeanCondensedMatter.Analysis.Operator.FiniteTrace"]},
+        {"id": "stredaTraceKernel", "modulePrefixes": ["LeanCondensedMatter.Transport.Streda.TraceKernel"]},
+        {"id": "resolvent", "modulePrefixes": ["LeanCondensedMatter.Transport.Resolvent.Basic"]},
+        {"id": "finiteDisorderCore", "modulePrefixes": ["LeanCondensedMatter.Transport.Disorder.Finite", "LeanCondensedMatter.Transport.Disorder.Moments", "LeanCondensedMatter.Transport.Disorder.Resolvent"]},
+        {"id": "bornScba", "modulePrefixes": ["LeanCondensedMatter.Transport.Disorder.Born", "LeanCondensedMatter.Transport.Disorder.SCBA"]}
       ],
       "edges": [
-        {
-          "upstream": "finiteTrace",
-          "downstream": "stredaTraceKernel"
-        },
-        {
-          "upstream": "resolvent",
-          "downstream": "finiteDisorderCore"
-        },
-        {
-          "upstream": "finiteDisorderCore",
-          "downstream": "bornScba"
-        }
+        {"upstream": "finiteTrace", "downstream": "stredaTraceKernel"},
+        {"upstream": "resolvent", "downstream": "finiteDisorderCore"},
+        {"upstream": "finiteDisorderCore", "downstream": "bornScba"}
       ]
     },
     {
