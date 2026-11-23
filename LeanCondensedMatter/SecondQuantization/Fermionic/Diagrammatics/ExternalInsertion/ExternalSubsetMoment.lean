@@ -1459,6 +1459,23 @@ private theorem externalSubsetOrderIso_comp
     _ = (T.orderEmbOfFin hcardT) i := hg
     _ = _ := ht
 
+/-- Transport nested canonical order enumerations to any provably
+equal ambient block, rather than relying on definitional equality of
+the two finite-set image implementations. -/
+private theorem externalSubsetOrderIso_comp_of_eq
+    (S : Finset (Fin (2 * E))) (heven : Even S.card)
+    (B : Finset (Fin (2 * (S.card / 2)))) (hB : Even B.card)
+    (T : Finset (Fin (2 * E))) (hT : Even T.card)
+    (hT_eq : T = B.map
+      (S.orderEmbOfFin (Nat.two_mul_div_two_of_even heven).symm).toEmbedding)
+    (i : Fin (2 * (B.card / 2))) :
+    ((evenExternalSubsetOrderIso S heven)
+      ((evenExternalSubsetOrderIso B hB i).1)).1 =
+    ((evenExternalSubsetOrderIso T hT)
+      (Fin.cast (by simp [hT_eq]) i)).1 := by
+  subst T
+  exact externalSubsetOrderIso_comp S heven B hB hT i
+
 set_option maxHeartbeats 4000000 in
 -- The connected series of a source subset has an index depending on its cardinality.
 open Classical in
@@ -1626,16 +1643,20 @@ private theorem externalSubsetConnectedSeries_comp
       (evenExternalSubsetLabels labels (be B).1 hEvenT) := by
     apply externalSubsetFunctions_heq_of_cast hK
     intro i
-    simpa only [evenExternalSubsetLabels, hImageOrder] using
-      congrArg labels (externalSubsetOrderIso_comp S heven B.1 (hEven B) hEvenT i)
+    simpa only [evenExternalSubsetLabels] using
+      congrArg labels
+        (externalSubsetOrderIso_comp_of_eq S heven B.1 (hEven B)
+          (be B).1 hEvenT hImageOrder.symm i)
   have hTimes : HEq
       (evenExternalSubsetTimes
         (evenExternalSubsetTimes times S heven) B.1 (hEven B))
       (evenExternalSubsetTimes times (be B).1 hEvenT) := by
     apply externalSubsetFunctions_heq_of_cast hK
     intro i
-    simpa only [evenExternalSubsetTimes, hImageOrder] using
-      congrArg times (externalSubsetOrderIso_comp S heven B.1 (hEven B) hEvenT i)
+    simpa only [evenExternalSubsetTimes] using
+      congrArg times
+        (externalSubsetOrderIso_comp_of_eq S heven B.1 (hEven B)
+          (be B).1 hEvenT hImageOrder.symm i)
   have hSeries : HEq
       (connectedExternalInsertionDysonSeries ε β g
         (evenExternalSubsetLabels
