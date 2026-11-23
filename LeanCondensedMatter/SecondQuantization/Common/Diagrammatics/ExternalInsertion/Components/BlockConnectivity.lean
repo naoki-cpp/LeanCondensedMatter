@@ -55,20 +55,6 @@ theorem ExternalInsertionBlockLayout.assembleDiagram_reachable_same_block
       (fun _ _ hadj => layout.assembleDiagram_adj_same_block S F hadj))
       v w ((SimpleGraph.reachable_iff_reflTransGen _ _).mp h)
 
-/-- In particular, different prescribed external partition blocks never
-become connected through the assembled pairing. -/
-theorem ExternalInsertionBlockLayout.assembleDiagram_external_reachable_same_block
-    {ExternalLabel InternalLabel : Type*}
-    (layout : ExternalInsertionBlockLayout E N) (S : Finset (Fin N))
-    (F : ∀ B : layout.partition.parts,
-      ExternalInsertionDiagram ExternalLabel InternalLabel
-        ((B : Finset (Fin (2 * E))).card / 2) N (layout.interactionBlock S B))
-    {e f : Fin (2 * E)}
-    (h : (layout.assembleDiagram S F).vertexGraph.Reachable (Sum.inl e) (Sum.inl f)) :
-    (layout.sourceEquiv e).1 = (layout.sourceEquiv f).1 := by
-  simpa only [layout.vertexEquiv_external] using
-    (layout.assembleDiagram_reachable_same_block S F h)
-
 /-- Undo the flattened-leg equivalence at one local leg while
 keeping its incident vertex. -/
 theorem ExternalInsertionBlockLayout.vertexOfLeg_legEquiv_symm
