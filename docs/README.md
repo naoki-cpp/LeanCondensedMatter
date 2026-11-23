@@ -18,7 +18,6 @@ design, and remaining work.
 ## Models, terminology, and examples
 
 - [Models and assumptions](model-and-assumptions.md) — physical assumptions and the physics-to-Lean dictionary.
-- [Physical theorem endpoints](physical-theorem-endpoints.md) — proved physical identities, hypotheses, and interpretation boundaries.
 - [Caveats](caveats.md) — pitfalls and boundaries.
 - [References](references.md) — annotated external sources.
 - [Second-quantization terminology](glossary/second-quantization-terminology.md).
