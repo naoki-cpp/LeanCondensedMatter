@@ -59,13 +59,13 @@ noncomputable def twoPointVertexOfLeg {S : Finset (Fin N)}
 
 @[simp]
 theorem twoPointVertexOfLeg_externalLeg (S : Finset (Fin N)) (e : Fin 2) :
-    twoPointVertexOfLeg (twoPointExternalLeg S e) = (Sum.inl e : TwoPointVertex S) := by
-  simp [twoPointVertexOfLeg, twoPointExternalLeg]
+    twoPointVertexOfLeg (twoPointExternalLeg S e) = (Sum.inl e : TwoPointVertex S) :=
+  externalInsertionVertexOfLeg_externalLeg 1 S e
 
 @[simp]
 theorem twoPointVertexOfLeg_interactionLeg {S : Finset (Fin N)} (v : ↥S) (l : Fin 4) :
-    twoPointVertexOfLeg (twoPointInteractionLeg v l) = (Sum.inr v : TwoPointVertex S) := by
-  simp [twoPointVertexOfLeg, twoPointInteractionLeg]
+    twoPointVertexOfLeg (twoPointInteractionLeg v l) = (Sum.inr v : TwoPointVertex S) :=
+  externalInsertionVertexOfLeg_interactionLeg (E := 1) v l
 
 /-- A two-point diagram with labelled external fields, labelled quartic interaction vertices, and a
 perfect pairing of all `4 |S| + 2` legs. -/
