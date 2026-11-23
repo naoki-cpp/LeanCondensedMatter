@@ -34,8 +34,9 @@ theorem twoPointExternalInsertionLegEquiv_vertexOfLeg (S : Finset (Fin N))
     (p : Fin (2 * (2 * S.card + 1))) :
     externalInsertionVertexOfLeg (E := 1) (twoPointExternalInsertionLegEquiv S p) =
       twoPointVertexOfLeg p := by
-  simp [externalInsertionVertexOfLeg, twoPointVertexOfLeg,
-    twoPointExternalInsertionLegEquiv]
+  simp only [externalInsertionVertexOfLeg, twoPointVertexOfLeg,
+    twoPointExternalInsertionLegEquiv, Equiv.trans_apply, Equiv.apply_symm_apply]
+  rfl
 
 /-- Exactly the same labelled-and-paired combinatorial data, with its pairing
 transported between the two flattened-leg conventions. -/
