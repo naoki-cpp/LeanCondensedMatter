@@ -966,6 +966,49 @@ noncomputable def externalSubsetMomentSeries
       (evenExternalSubsetTimes times S heven)
   else exact 0
 
+/-- Transport a partition of the canonically renumbered external slots
+back to its actual finite ambient source subset. The construction
+preserves whole blocks rather than merely their cardinalities. -/
+private noncomputable def externalSubsetReindexPartition
+    (S : Finset (Fin (2 * E))) (heven : Even S.card)
+    (π : Finpartition (Finset.univ : Finset (Fin (2 * (S.card / 2))))) :
+    Finpartition S := by
+  classical
+  let e := evenExternalSubsetOrderIso S heven
+  let emb : Fin (2 * (S.card / 2)) ↪ Fin (2 * E) :=
+    ⟨fun i => (e i).1, fun i j hij => e.injective (Subtype.ext hij)⟩
+  let part : Finset (Fin (2 * (S.card / 2))) → Finset (Fin (2 * E)) :=
+    fun B => B.map emb
+  refine Finpartition.ofExistsUnique (π.parts.image part) ?_ ?_ ?_
+  · intro T hT
+    obtain ⟨B, _, rfl⟩ := Finset.mem_image.mp hT
+    intro x hx
+    obtain ⟨i, _, rfl⟩ := Finset.mem_map.mp hx
+    exact (e i).2
+  · intro x hx
+    let i := e.symm ⟨x, hx⟩
+    have hi : (e i).1 = x := by simp [i]
+    obtain ⟨B, hB, hiB⟩ := π.exists_mem (Finset.mem_univ i)
+    refine ⟨part B, ⟨Finset.mem_image.mpr ⟨B, hB, rfl⟩, ?_⟩, ?_⟩
+    · exact Finset.mem_map.mpr ⟨i, hiB, hi⟩
+    intro T ⟨hT, hxT⟩
+    obtain ⟨C, hC, hCT⟩ := Finset.mem_image.mp hT
+    have hiC : i ∈ C := by
+      rw [← hCT] at hxT
+      obtain ⟨j, hjC, hjx⟩ := Finset.mem_map.mp hxT
+      have hji : j = i :=
+        e.injective (Subtype.ext (hjx.trans hi.symm))
+      simpa [hji] using hjC
+    calc
+      T = part C := hCT.symm
+      _ = part B := congrArg part (π.eq_of_mem_parts hC hB hiC hiB)
+  · intro hEmpty
+    obtain ⟨B, hB, hBEmpty⟩ := Finset.mem_image.mp hEmpty
+    obtain ⟨i, hiB⟩ := π.nonempty_of_mem_parts hB
+    have hi : (e i).1 ∈ part B := Finset.mem_map.mpr ⟨i, hiB, rfl⟩
+    rw [hBEmpty] at hi
+    simpa using hi
+
 set_option maxHeartbeats 4000000 in
 -- The connected series of a source subset has an index depending on its cardinality.
 open Classical in
