@@ -1,4 +1,3 @@
-import LeanCondensedMatter.Analysis.Algebra.QuadraticNormalization
 import Mathlib.Analysis.Matrix.Hermitian
 import Mathlib.Basic.Complex.Basic
 import Mathlib.LinearAlgebra.CrossProduct
@@ -666,61 +665,5 @@ theorem pauliShiftMatrix_mul_closedInverse
   rw [hdenEq] at hquadratic
   rw [mul_smul_comm, hquadratic, smul_smul]
   simp [hden]
-
-/-- An involution acts on the signed projector numerator by its sign. -/
-theorem involution_mul_one_add (Q : PauliMatrix) (hQ : Q * Q = 1)
-    (s : ℂ) (hs : s ^ 2 = 1) :
-    Q * ((1 : PauliMatrix) + s • Q) =
-      s • ((1 : PauliMatrix) + s • Q) := by
-  rw [mul_add, mul_one, mul_smul_comm, hQ]
-  rw [smul_add, smul_smul]
-  rw [show s * s = 1 by simpa [pow_two] using hs, one_smul]
-  module
-
-/-- The signed projector of a quadratic two-level Hamiltonian is an eigenprojector even
-after adding a scalar shift. This requires only `H² = E² I`, `E ≠ 0`, and `s² = 1`. -/
-theorem quadratic_shift_mul_projector
-    (H : PauliMatrix) (E ε s : ℂ) (hE : E ≠ 0)
-    (hquad : H * H = E ^ 2 • (1 : PauliMatrix))
-    (hs : s ^ 2 = 1) :
-    (ε • (1 : PauliMatrix) + H) *
-        ((1 / 2 : ℂ) • ((1 : PauliMatrix) + (s / E) • H)) =
-      (ε + s * E) •
-        ((1 / 2 : ℂ) • ((1 : PauliMatrix) + (s / E) • H)) := by
-  let Q : PauliMatrix := E⁻¹ • H
-  have hQ : Q * Q = 1 := Algebra.inv_smul_mul_self_eq_one H E hE hquad
-  have hH : H = E • Q := (smul_inv_smul₀ hE H).symm
-  have hP :
-      ((1 / 2 : ℂ) • ((1 : PauliMatrix) + (s / E) • H)) =
-        (1 / 2 : ℂ) • ((1 : PauliMatrix) + s • Q) := by
-    simp [Q, div_eq_mul_inv, smul_smul]
-  rw [hP, hH]
-  rw [add_mul, smul_mul_assoc, one_mul, smul_mul_assoc, mul_smul_comm,
-    involution_mul_one_add Q hQ s hs]
-  module
-
-/-- The half-sum of the identity and a signed involution is idempotent. -/
-theorem involution_projector_mul_self (Q : PauliMatrix) (hQ : Q * Q = 1)
-    (s : ℂ) (hs : s ^ 2 = 1) :
-    ((1 / 2 : ℂ) • ((1 : PauliMatrix) + s • Q)) *
-        ((1 / 2 : ℂ) • ((1 : PauliMatrix) + s • Q)) =
-      (1 / 2 : ℂ) • ((1 : PauliMatrix) + s • Q) := by
-  rw [smul_mul_assoc, mul_smul_comm, smul_smul]
-  rw [add_mul, one_mul, smul_mul_assoc,
-    involution_mul_one_add Q hQ s hs, smul_smul]
-  rw [show s * s = 1 by simpa [pow_two] using hs, one_smul]
-  module
-
-
-/-- The signed projector of an element with `H² = E² • 1` is idempotent. -/
-theorem quadratic_projector_isIdempotent
-    (H : PauliMatrix) (E s : ℂ) (hE : E ≠ 0)
-    (hquad : H * H = E ^ 2 • (1 : PauliMatrix))
-    (hs : s ^ 2 = 1) :
-    IsIdempotentElem ((1 / 2 : ℂ) • ((1 : PauliMatrix) + (s / E) • H)) := by
-  have hQ : (E⁻¹ • H) * (E⁻¹ • H) = 1 :=
-    Algebra.inv_smul_mul_self_eq_one H E hE hquad
-  simpa [IsIdempotentElem, div_eq_mul_inv, smul_smul] using
-    (involution_projector_mul_self (E⁻¹ • H) hQ s hs)
 
 end InternalSpace
