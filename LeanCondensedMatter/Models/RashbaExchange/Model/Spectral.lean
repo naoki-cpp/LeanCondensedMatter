@@ -1,4 +1,5 @@
 import Mathlib.RingTheory.Idempotents
+import LeanCondensedMatter.Analysis.Algebra.QuadraticNormalization
 import LeanCondensedMatter.Models.RashbaExchange.Model
 import Mathlib.Tactic.Linarith
 import Mathlib.Tactic.NormNum
@@ -133,7 +134,7 @@ theorem hamiltonian_mul_bandProjector
     hamiltonian params px py * bandProjector params band px py =
       (((bandEnergy params band px py : ℝ) : ℂ)) •
         bandProjector params band px py := by
-  have h := InternalSpace.quadratic_shift_mul_projector
+  have h := Algebra.quadratic_shift_mul_projector
     (spinHamiltonian params px py) (((spinOrbitEnergy params px py : ℝ) : ℂ))
     (((kineticEnergy params px py : ℝ) : ℂ)) (((bandSign band : ℝ) : ℂ))
     (by exact_mod_cast hE)
@@ -151,7 +152,7 @@ theorem bandProjector_completeOrthogonalIdempotents
       (fun band : Band => bandProjector params band px py) := by
   have hLower : IsIdempotentElem (bandProjector params .lower px py) := by
     simpa [bandProjector, Complex.ofReal_div] using
-      (InternalSpace.quadratic_projector_isIdempotent
+      (Algebra.quadratic_projector_isIdempotent
         (spinHamiltonian params px py) (((spinOrbitEnergy params px py : ℝ) : ℂ))
         (((bandSign Band.lower : ℝ) : ℂ)) (by exact_mod_cast hE)
         (by simpa only [← spinOrbitEnergy_sq, Complex.ofReal_pow] using
