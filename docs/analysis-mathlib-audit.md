@@ -250,3 +250,9 @@ The repository does not yet provide:
   fermionic diagonal/CAR and bosonic weighted-ladder/quartic partial-map constructions.
 
 These are future analysis targets rather than gaps to be hidden by compatibility wrappers.
+
+## Weak algebraic derivatives and operator restrictions
+
+- `HasAlgebraicDerivAt` and its rules require a nontrivially normed scalar field, not a complex-specific structure. The target remains purely algebraic: scalar testing uses all algebraic linear functionals, not only continuous ones. Ordinary Mathlib derivative rules supply the scalar calculus.
+- `NormedSpace.exp_apply_of_eigenvector` retains the direct series bridge between the bounded operator and its scalar eigenvalue. The power step uses the standard opposite orientations of `pow_succ` and `pow_succ'`, without ring normalization. Mathlib's `map_exp` needs a continuous ring homomorphism; evaluation on a vector is not such a homomorphism.
+- Retain `Subalgebra.restrictEnd`: the pinned Mathlib `LinearMap.restrict` handles individual maps and its source explicitly notes the missing bundled algebra-homomorphism version. The Holstein–Primakoff consumer needs multiplicative and unital restriction.
