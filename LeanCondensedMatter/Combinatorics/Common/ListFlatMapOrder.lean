@@ -12,6 +12,25 @@ list-index bookkeeping from the diagrammatic mixed-event order arguments that us
 
 namespace List
 
+/-- In a list sorted by an antisymmetric relation, the index order of two
+distinct members is equivalent to the underlying relation. -/
+theorem Pairwise.idxOf_lt_iff_of_ne {α : Type*} [DecidableEq α]
+    {r : α → α → Prop} [Std.Antisymm r] {l : List α}
+    (hs : l.Pairwise r) {a b : α} (ha : a ∈ l) (hb : b ∈ l) (hab : a ≠ b) :
+    l.idxOf a < l.idxOf b ↔ r a b := by
+  have hrel {x y : α} (hx : x ∈ l) (hy : y ∈ l)
+      (h : l.idxOf x < l.idxOf y) : r x y := by
+    have h' := hs.rel_get_of_lt
+      (i := ⟨l.idxOf x, List.idxOf_lt_length_of_mem hx⟩)
+      (j := ⟨l.idxOf y, List.idxOf_lt_length_of_mem hy⟩) h
+    rw [List.idxOf_get, List.idxOf_get] at h'
+    exact h'
+  refine ⟨hrel ha hb, fun h => ?_⟩
+  rcases lt_trichotomy (l.idxOf a) (l.idxOf b) with hlt | heq | hgt
+  · exact hlt
+  · exact (hab ((List.idxOf_inj ha).mp heq)).elim
+  · exact (hab (antisymm h (hrel hb ha hgt))).elim
+
 /-- Inside one block of a duplicate-free flattened list, global order is exactly local block order. -/
 theorem idxOf_flatMap_block_lt_iff
     {α β : Type*} [DecidableEq β] (f : α → List β)
