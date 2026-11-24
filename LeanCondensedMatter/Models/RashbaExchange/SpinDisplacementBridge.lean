@@ -44,7 +44,7 @@ noncomputable def finiteRashbaMomentumSpinDisplacement
     (spinScale : ℝ) (component : QuantumTheory.SpinHalf.SpinSpace)
     (position : (SpinfulSite Grid →₀ ℂ) →ₗ[ℂ] (SpinfulSite Grid →₀ ℂ)) :
     (SpinfulSite Grid →₀ ℂ) →ₗ[ℂ] (SpinfulSite Grid →₀ ℂ) :=
-  _root_.ConservationLaw.localizedQuantity (SpinfulSite Grid →₀ ℂ)
+  _root_.ConservationLaw.localizedQuantityFunctional (SpinfulSite Grid →₀ ℂ)
     (LinearMap.id :
       ((SpinfulSite Grid →₀ ℂ) →ₗ[ℂ] (SpinfulSite Grid →₀ ℂ)) →ₗ[ℂ]
         ((SpinfulSite Grid →₀ ℂ) →ₗ[ℂ] (SpinfulSite Grid →₀ ℂ)))
@@ -67,14 +67,14 @@ theorem finiteRashbaMomentumSpinDisplacement_balance
           LinearMap.id (spinOneBodyLinear spinScale component) position := by
   change heisenbergScale hbar •
       ⁅finiteRashbaMomentumHamiltonian params momentum,
-        _root_.ConservationLaw.localizedQuantity (SpinfulSite Grid →₀ ℂ)
+        _root_.ConservationLaw.localizedQuantityFunctional (SpinfulSite Grid →₀ ℂ)
           LinearMap.id (spinOneBodyLinear spinScale component) position⁆ =
       heisenbergScale hbar •
-        _root_.ConservationLaw.transportCommutator (SpinfulSite Grid →₀ ℂ)
+        _root_.ConservationLaw.transportFunctional (SpinfulSite Grid →₀ ℂ)
           (finiteRashbaMomentumHamiltonian params momentum)
           LinearMap.id (spinOneBodyLinear spinScale component) position +
       heisenbergScale hbar •
-        _root_.ConservationLaw.sourceCommutator (SpinfulSite Grid →₀ ℂ)
+        _root_.ConservationLaw.sourceFunctional (SpinfulSite Grid →₀ ℂ)
           (finiteRashbaMomentumHamiltonian params momentum)
           LinearMap.id (spinOneBodyLinear spinScale component) position
   rw [_root_.ConservationLaw.lie_localizedQuantity, smul_add]

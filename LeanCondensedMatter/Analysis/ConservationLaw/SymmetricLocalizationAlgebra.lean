@@ -1,5 +1,4 @@
 import LeanCondensedMatter.Analysis.Operator.SymmetrizedProduct
-import Mathlib.Tactic.Module
 
 set_option linter.style.header false
 
@@ -8,7 +7,7 @@ set_option linter.style.header false
 
 This module owns the representation-neutral operator algebra shared by intrinsic and represented
 symmetric-localization balance constructions. Given a linear localization map `M` and a one-body
-quantity `m`, define
+quantity `m`, define (over a field where 2 is nonzero for the physical interpretation)
 
 ```text
 Qₘ(f) = 1/2 {M f, m}.
@@ -26,144 +25,78 @@ namespace ConservationLaw
 
 attribute [local instance 100] LieRing.ofAssociativeRing
 
-variable {Test : Type*}
-variable [AddCommGroup Test] [Module ℂ Test]
-variable (V : Type*) [AddCommGroup V] [Module ℂ V]
+variable {K Test : Type*} [Field K]
+variable [AddCommGroup Test] [Module K Test]
+variable (V : Type*) [AddCommGroup V] [Module K V]
 
-/-- A one-body quantity localized by the supplied operator-valued test map `M`. -/
-noncomputable def localizedQuantity
-    (M : Test →ₗ[ℂ] (V →ₗ[ℂ] V))
-    (m : V →ₗ[ℂ] V) (f : Test) : V →ₗ[ℂ] V :=
-  LinearMap.symmetrizedProduct (M f) m
-
-/-- Symmetric localization packaged linearly in the test object. -/
+/-- A one-body quantity symmetrically localized by a linear test map. -/
 noncomputable def localizedQuantityFunctional
-    (M : Test →ₗ[ℂ] (V →ₗ[ℂ] V))
-    (m : V →ₗ[ℂ] V) :
-    Test →ₗ[ℂ] (V →ₗ[ℂ] V) :=
+    (M : Test →ₗ[K] (V →ₗ[K] V))
+    (m : V →ₗ[K] V) :
+    Test →ₗ[K] (V →ₗ[K] V) :=
   (LinearMap.symmetrizedProductRightLinear V m).comp M
 
 @[simp]
 theorem localizedQuantityFunctional_apply
-    (M : Test →ₗ[ℂ] (V →ₗ[ℂ] V))
-    (m : V →ₗ[ℂ] V) (f : Test) :
-    localizedQuantityFunctional V M m f = localizedQuantity V M m f :=
+    (M : Test →ₗ[K] (V →ₗ[K] V))
+    (m : V →ₗ[K] V) (f : Test) :
+    localizedQuantityFunctional V M m f = LinearMap.symmetrizedProduct (M f) m :=
   rfl
 
-/-- Charge-like quantities `q I` reduce to scalar multiplication under symmetric localization. -/
-@[simp]
-theorem localizedQuantity_smul_id
-    (M : Test →ₗ[ℂ] (V →ₗ[ℂ] V)) (q : ℂ) (f : Test) :
-    localizedQuantity V M (q • LinearMap.id) f = q • M f := by
-  simp [localizedQuantity]
-
-/-- The bare localization commutator `f ↦ [h,M(f)]`, packaged linearly. -/
+/-- The bare localization commutator as a linear map on tests. -/
 noncomputable def localizationCommutatorFunctional
-    (h : V →ₗ[ℂ] V)
-    (M : Test →ₗ[ℂ] (V →ₗ[ℂ] V)) :
-    Test →ₗ[ℂ] (V →ₗ[ℂ] V) :=
-  (LieAlgebra.ad ℂ (Module.End ℂ V) h).comp M
+    (h : V →ₗ[K] V)
+    (M : Test →ₗ[K] (V →ₗ[K] V)) :
+    Test →ₗ[K] (V →ₗ[K] V) :=
+  (LieAlgebra.ad K (Module.End K V) h).comp M
 
 @[simp]
 theorem localizationCommutatorFunctional_apply
-    (h : V →ₗ[ℂ] V)
-    (M : Test →ₗ[ℂ] (V →ₗ[ℂ] V)) (f : Test) :
-    localizationCommutatorFunctional V h M f = ⁅h, M f⁆ := by
+    (h : V →ₗ[K] V)
+    (M : Test →ₗ[K] (V →ₗ[K] V)) (f : Test) :
+    localizationCommutatorFunctional V h M f = ⁅h, M f⁆ :=
   rfl
 
-/-- Canonical transport part of the symmetric-localization commutator identity. -/
-noncomputable def transportCommutator
-    (h : V →ₗ[ℂ] V)
-    (M : Test →ₗ[ℂ] (V →ₗ[ℂ] V))
-    (m : V →ₗ[ℂ] V) (f : Test) : V →ₗ[ℂ] V :=
-  LinearMap.symmetrizedProduct ⁅h, M f⁆ m
-
-/-- The transport contribution packaged linearly in the test object. -/
+/-- The transport contribution to the symmetric-localization commutator. -/
 noncomputable def transportFunctional
-    (h : V →ₗ[ℂ] V)
-    (M : Test →ₗ[ℂ] (V →ₗ[ℂ] V))
-    (m : V →ₗ[ℂ] V) :
-    Test →ₗ[ℂ] (V →ₗ[ℂ] V) :=
+    (h : V →ₗ[K] V)
+    (M : Test →ₗ[K] (V →ₗ[K] V))
+    (m : V →ₗ[K] V) :
+    Test →ₗ[K] (V →ₗ[K] V) :=
   (LinearMap.symmetrizedProductRightLinear V m).comp
     (localizationCommutatorFunctional V h M)
 
 @[simp]
 theorem transportFunctional_apply
-    (h : V →ₗ[ℂ] V)
-    (M : Test →ₗ[ℂ] (V →ₗ[ℂ] V))
-    (m : V →ₗ[ℂ] V) (f : Test) :
-    transportFunctional V h M m f = transportCommutator V h M m f :=
+    (h : V →ₗ[K] V)
+    (M : Test →ₗ[K] (V →ₗ[K] V))
+    (m : V →ₗ[K] V) (f : Test) :
+    transportFunctional V h M m f = LinearMap.symmetrizedProduct ⁅h, M f⁆ m :=
   rfl
 
-/-- Canonical source/torque part of the symmetric-localization commutator identity. -/
-noncomputable def sourceCommutator
-    (h : V →ₗ[ℂ] V)
-    (M : Test →ₗ[ℂ] (V →ₗ[ℂ] V))
-    (m : V →ₗ[ℂ] V) (f : Test) : V →ₗ[ℂ] V :=
-  LinearMap.symmetrizedProduct (M f) ⁅h, m⁆
-
-/-- The source/torque contribution packaged linearly in the test object. -/
+/-- The source/torque contribution to the symmetric-localization commutator. -/
 noncomputable def sourceFunctional
-    (h : V →ₗ[ℂ] V)
-    (M : Test →ₗ[ℂ] (V →ₗ[ℂ] V))
-    (m : V →ₗ[ℂ] V) :
-    Test →ₗ[ℂ] (V →ₗ[ℂ] V) :=
-  (LinearMap.symmetrizedProductRightLinear V ⁅h, m⁆).comp M
+    (h : V →ₗ[K] V)
+    (M : Test →ₗ[K] (V →ₗ[K] V))
+    (m : V →ₗ[K] V) :
+    Test →ₗ[K] (V →ₗ[K] V) :=
+  localizedQuantityFunctional V M ⁅h, m⁆
 
 @[simp]
 theorem sourceFunctional_apply
-    (h : V →ₗ[ℂ] V)
-    (M : Test →ₗ[ℂ] (V →ₗ[ℂ] V))
-    (m : V →ₗ[ℂ] V) (f : Test) :
-    sourceFunctional V h M m f = sourceCommutator V h M m f :=
+    (h : V →ₗ[K] V)
+    (M : Test →ₗ[K] (V →ₗ[K] V))
+    (m : V →ₗ[K] V) (f : Test) :
+    sourceFunctional V h M m f = LinearMap.symmetrizedProduct (M f) ⁅h, m⁆ :=
   rfl
 
 /-- The commutator is a derivation on symmetric localization, giving transport plus source. -/
 theorem lie_localizedQuantity
-    (h : V →ₗ[ℂ] V)
-    (M : Test →ₗ[ℂ] (V →ₗ[ℂ] V))
-    (m : V →ₗ[ℂ] V) (f : Test) :
-    ⁅h, localizedQuantity V M m f⁆ =
-      transportCommutator V h M m f + sourceCommutator V h M m f := by
-  simpa [localizedQuantity, transportCommutator, sourceCommutator] using
-    LinearMap.lie_symmetrizedProduct h (M f) m
-
-/-- A conserved one-body quantity has no local source/torque contribution. -/
-@[simp]
-theorem sourceCommutator_eq_zero_of_commutes
-    (h : V →ₗ[ℂ] V)
-    (M : Test →ₗ[ℂ] (V →ₗ[ℂ] V))
-    (m : V →ₗ[ℂ] V) (f : Test)
-    (hm : ⁅h, m⁆ = 0) :
-    sourceCommutator V h M m f = 0 := by
-  simp [sourceCommutator, hm]
-
-/-- For a conserved quantity, the localized balance identity contains only transport. -/
-theorem lie_localizedQuantity_of_commutes
-    (h : V →ₗ[ℂ] V)
-    (M : Test →ₗ[ℂ] (V →ₗ[ℂ] V))
-    (m : V →ₗ[ℂ] V) (f : Test)
-    (hm : ⁅h, m⁆ = 0) :
-    ⁅h, localizedQuantity V M m f⁆ =
-      transportCommutator V h M m f := by
-  rw [lie_localizedQuantity]
-  simp [sourceCommutator, hm]
-
-/-- Charge-like quantities have transport `q [h,M(f)]`. -/
-@[simp]
-theorem transportCommutator_smul_id
-    (h : V →ₗ[ℂ] V)
-    (M : Test →ₗ[ℂ] (V →ₗ[ℂ] V)) (q : ℂ) (f : Test) :
-    transportCommutator V h M (q • LinearMap.id) f =
-      q • ⁅h, M f⁆ := by
-  simp [transportCommutator]
-
-/-- Charge-like quantities have no source/torque term. -/
-theorem sourceCommutator_smul_id
-    (h : V →ₗ[ℂ] V)
-    (M : Test →ₗ[ℂ] (V →ₗ[ℂ] V)) (q : ℂ) (f : Test) :
-    sourceCommutator V h M (q • LinearMap.id) f = 0 := by
-  apply sourceCommutator_eq_zero_of_commutes V h M (q • LinearMap.id) f
-  simp [LieRing.of_associative_ring_bracket, Module.End.mul_eq_comp]
+    (h : V →ₗ[K] V)
+    (M : Test →ₗ[K] (V →ₗ[K] V))
+    (m : V →ₗ[K] V) (f : Test) :
+    ⁅h, localizedQuantityFunctional V M m f⁆ =
+      transportFunctional V h M m f + sourceFunctional V h M m f :=
+  LinearMap.lie_symmetrizedProduct h (M f) m
 
 end ConservationLaw
