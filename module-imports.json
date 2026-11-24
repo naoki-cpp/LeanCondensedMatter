@@ -486,9 +486,7 @@
       "sourceFile": "LeanCondensedMatter/Analysis/Operator/TraceClass/Positive.lean",
       "imports": [
         "LeanCondensedMatter.Analysis.Operator.Diagonal",
-        "LeanCondensedMatter.Analysis.Operator.TraceClass.Factorization.Basic",
         "LeanCondensedMatter.Analysis.Operator.TraceClass.General",
-        "LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Ops",
         "LeanCondensedMatter.Analysis.Operator.TraceClass.Trace"
       ],
       "externalImportCount": 1
@@ -1057,7 +1055,6 @@
       "name": "LeanCondensedMatter.Combinatorics.PerfectPairing.ComponentDecomposition",
       "sourceFile": "LeanCondensedMatter/Combinatorics/PerfectPairing/ComponentDecomposition.lean",
       "imports": [
-        "LeanCondensedMatter.Combinatorics.Common.FintypeProduct",
         "LeanCondensedMatter.Combinatorics.PerfectPairing.Core",
         "LeanCondensedMatter.Combinatorics.PerfectPairing.PairEndpoints"
       ],
@@ -3316,6 +3313,7 @@
       "name": "LeanCondensedMatter.Permutation.ConnectedDecomposition",
       "sourceFile": "LeanCondensedMatter/Permutation/ConnectedDecomposition.lean",
       "imports": [
+        "LeanCondensedMatter.Combinatorics.Common.FintypeProduct",
         "LeanCondensedMatter.Combinatorics.Cumulant.ConnectedDecomposition",
         "LeanCondensedMatter.Permutation.OrbitPartition"
       ],
@@ -5696,6 +5694,7 @@
       "name": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.InteractionSector",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Diagrammatics/InteractionSector.lean",
       "imports": [
+        "LeanCondensedMatter.Combinatorics.Common.FintypeProduct",
         "LeanCondensedMatter.Combinatorics.SetPartition.FinpartitionProduct",
         "LeanCondensedMatter.Combinatorics.SetPartition.GraphComponents"
       ],
@@ -5791,6 +5790,7 @@
       "name": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Factorization.ComponentVertexProduct",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Diagrammatics/Quartic/Factorization/ComponentVertexProduct.lean",
       "imports": [
+        "LeanCondensedMatter.Combinatorics.Common.FintypeProduct",
         "LeanCondensedMatter.Combinatorics.SetPartition.FinpartitionProduct",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentConnected"
       ],
@@ -6130,6 +6130,7 @@
       "name": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumVertexProduct",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Diagrammatics/TwoPoint/SlotSplit/SlotSplitVacuumVertexProduct.lean",
       "imports": [
+        "LeanCondensedMatter.Combinatorics.Common.FintypeProduct",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentRestriction",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumComponents"
       ],
@@ -7499,6 +7500,7 @@
       "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Factorization.MixedComponentFixedTimeValue",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Diagrammatics/TwoPointDiagramExpansion/Factorization/MixedComponentFixedTimeValue.lean",
       "imports": [
+        "LeanCondensedMatter.Combinatorics.Common.FintypeProduct",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Semantics.Amplitude",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Semantics.PairContraction"

@@ -5836,6 +5836,50 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {ι : Type u_1} {κ : Type u_2} [inst : Fintype ι] [inst_1 : Fintype κ] {size₁ : ι → ℕ} {size₂ : κ → ℕ}\n  {total₁ total₂ : ℕ} (σ : Combinatorics.FamilySlotShuffleTo size₁ total₁)\n  (τ : Combinatorics.FamilySlotShuffleTo size₂ total₂) (e : ι ≃ κ),\n  (∀ (i j : ι), σ.blockInversionCount i j = τ.blockInversionCount (e i) (e j)) →\n    ∀ (orderσ : ι ≃ Fin (Fintype.card ι)) (orderτ : κ ≃ Fin (Fintype.card κ)),\n      (∀ (i j : ι), orderσ i < orderσ j ↔ orderτ (e i) < orderτ (e j)) →\n        σ.orderedBlockInversionCount orderσ = τ.orderedBlockInversionCount orderτ",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "Combinatorics.FamilySlotShuffleTo.orderedBlockInversionCount_eq_of_blockInversionCount",
+    "module": "LeanCondensedMatter.Combinatorics.Shuffle.FamilySlotShuffleInversions",
+    "externalAxioms": [],
+    "docString": "Transport the total ordered inter-block inversion count along a block equivalence\npreserving pairwise inversion counts and the chosen block order. The ambient slot\ncounts may differ. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "Combinatorics.FamilySlotShuffleTo.orderedBlockInversionCount_eq_of_blockSlotSet",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalSubsetMoment.0.SecondQuantization.Fermionic.externalSubsetPartitionEquiv_sourceSign"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "Combinatorics.FamilySlotShuffleTo.orderedBlockInversionCount_eq_of_blockSlotSet",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalSubsetMoment.0.SecondQuantization.Fermionic.externalSubsetPartitionEquiv_sourceSign"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {ι : Type u_1} {κ : Type u_2} [inst : Fintype ι] [inst_1 : Fintype κ] {size₁ : ι → ℕ} {size₂ : κ → ℕ} {total : ℕ}\n  (σ : Combinatorics.FamilySlotShuffleTo size₁ total) (τ : Combinatorics.FamilySlotShuffleTo size₂ total) (e : ι ≃ κ),\n  (∀ (i : ι), σ.blockSlotSet i = τ.blockSlotSet (e i)) →\n    ∀ (orderσ : ι ≃ Fin (Fintype.card ι)) (orderτ : κ ≃ Fin (Fintype.card κ)),\n      (∀ (i j : ι), orderσ i < orderσ j ↔ orderτ (e i) < orderτ (e j)) →\n        σ.orderedBlockInversionCount orderσ = τ.orderedBlockInversionCount orderτ",
     "standardAxioms": [
       "Classical.choice",
@@ -5858,7 +5902,8 @@
       "SecondQuantization.Fermionic.externalPartitionSourceSign_eq_componentExternalOrderSign_of_vacuumFree"
     ],
     "dependencies": [
-      "Combinatorics.FamilySlotShuffleTo.blockInversionCount_eq_of_blockSlotSet"
+      "Combinatorics.FamilySlotShuffleTo.blockInversionCount_eq_of_blockSlotSet",
+      "Combinatorics.FamilySlotShuffleTo.orderedBlockInversionCount_eq_of_blockInversionCount"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -8220,6 +8265,7 @@
     "terminal": true,
     "statement": "∀ {a b n : ℕ} (e : Combinatorics.PositionSplitting a b n) {P : Combinatorics.Pairing n},\n  Combinatorics.Pairing.IsSplit e P → ∀ (i : Fin (2 * b)), ∃ j, P.partner (e (Sum.inr i)) = e (Sum.inr j)",
     "standardAxioms": [
+      "Classical.choice",
       "Quot.sound",
       "propext"
     ],
@@ -8232,18 +8278,20 @@
     "name": "Combinatorics.Pairing.isSplit_inr",
     "module": "LeanCondensedMatter.Combinatorics.PerfectPairing.Split",
     "externalAxioms": [],
-    "docString": "**The right part is closed automatically.** A right position paired to a left one would make\nthat left position paired to a right one, contradicting the left closure. ",
+    "docString": "The right part is closed automatically by complement invariance. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "Combinatorics.PairingOn.partner_partner"
+      "Combinatorics.SumEquiv.mem_rightImage_iff",
+      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Split.0.Combinatorics.splitRightInvariant"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [],
     "compiledConsumerCount": 0,
     "axioms": [
+      "Classical.choice",
       "Quot.sound",
       "propext"
     ],
@@ -9671,7 +9719,7 @@
       "Combinatorics.Pairing.evaluation_eq_mul_prod_components"
     ],
     "dependencies": [
-      "Fintype.prod_equiv_sigma"
+      "Combinatorics.Pairing.prod_pairs_eq_prod_of_equiv"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -9679,6 +9727,50 @@
       "Combinatorics.Pairing.evaluation_eq_mul_prod_components"
     ],
     "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {n : ℕ} {A : Type u_1} {R : Type u_2} [inst : Fintype A] [inst_1 : CommMonoid R] (pairing : Combinatorics.Pairing n)\n  (e : A ≃ pairing.NormalizedPair) (value : Fin (2 * n) → Fin (2 * n) → R) (f : A → R),\n  (∀ (a : A), value (↑(e a)).1 (↑(e a)).2 = f a) → ∏ pr ∈ pairing.pairs, value pr.1 pr.2 = ∏ a, f a",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "Combinatorics.Pairing.prod_pairs_eq_prod_of_equiv",
+    "module": "LeanCondensedMatter.Combinatorics.PerfectPairing.PairEndpoints",
+    "externalAxioms": [],
+    "docString": "Reindex the product over a pairing's normalized pairs through any finite presentation\nof those pairs, using the corresponding local values. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "Combinatorics.Pairing.prod_pairs_eq_prod_components",
+      "Combinatorics.Pairing.prod_pairs_ofSplit"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "Combinatorics.Pairing.prod_pairs_eq_prod_components",
+      "Combinatorics.Pairing.prod_pairs_ofSplit"
+    ],
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -9714,7 +9806,9 @@
     "dependents": [
       "SecondQuantization.Common.BlochDeDominicis.Pairing.evaluation_ofSplit_eq_positionInversions_mul"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Combinatorics.Pairing.prod_pairs_eq_prod_of_equiv"
+    ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
@@ -9985,11 +10079,10 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "SecondQuantization.Common.ExternalInsertionDiagram.legInComponent_partner_iff",
       "SecondQuantization.Common.ExternalInsertionDiagram.pairing_isSplit_externallySupportedInteractionPart",
       "SecondQuantization.Common.TwoPointDiagram.legInComponent_partner_iff",
-      "SecondQuantization.Common.TwoPointDiagram.mixedPositionComponent_partner",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.BlockConnectivity.0.SecondQuantization.Common.ExternalInsertionBlockLayout.physicalComponentLeg_partner_iff",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentRestriction.0.SecondQuantization.Common.ExternalInsertionDiagram.legInComponent_partner_iff"
+      "SecondQuantization.Common.TwoPointDiagram.mixedPositionComponent_partner"
     ],
     "dependencies": [
       "Combinatorics.Pairing.vertexGraph_reachable_partner",
@@ -9998,13 +10091,12 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "SecondQuantization.Common.ExternalInsertionDiagram.legInComponent_partner_iff",
       "SecondQuantization.Common.ExternalInsertionDiagram.pairing_isSplit_externallySupportedInteractionPart",
       "SecondQuantization.Common.TwoPointDiagram.legInComponent_partner_iff",
-      "SecondQuantization.Common.TwoPointDiagram.mixedPositionComponent_partner",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.BlockConnectivity.0.SecondQuantization.Common.ExternalInsertionBlockLayout.physicalComponentLeg_partner_iff",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentRestriction.0.SecondQuantization.Common.ExternalInsertionDiagram.legInComponent_partner_iff"
+      "SecondQuantization.Common.TwoPointDiagram.mixedPositionComponent_partner"
     ],
-    "compiledConsumerCount": 5,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -10293,7 +10385,6 @@
       "Combinatorics.Pairing.crossingsWithFirstPair_mod_two",
       "Combinatorics.Pairing.even_card_of_partner_mem",
       "Combinatorics.Pairing.insertFirstPair_eraseZeroPair",
-      "Combinatorics.Pairing.isSplit_inr",
       "SecondQuantization.Common.TwoPointDiagram.intervalFacingLeg_partner",
       "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.EraseZero.0.Combinatorics.Pairing.mem_pairs_endpoints_mem_deletedPositions",
       "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Split.0.Combinatorics.splitLeftInvariant",
@@ -10307,14 +10398,13 @@
       "Combinatorics.Pairing.crossingsWithFirstPair_mod_two",
       "Combinatorics.Pairing.even_card_of_partner_mem",
       "Combinatorics.Pairing.insertFirstPair_eraseZeroPair",
-      "Combinatorics.Pairing.isSplit_inr",
       "SecondQuantization.Common.TwoPointDiagram.intervalFacingLeg_partner",
       "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.EraseZero.0.Combinatorics.Pairing.mem_pairs_endpoints_mem_deletedPositions",
       "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Split.0.Combinatorics.splitLeftInvariant",
       "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.exists_mem_pairs_inl_inl_of_not_isBipartite",
       "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.sidePairing_sideMatching"
     ],
-    "compiledConsumerCount": 9,
+    "compiledConsumerCount": 8,
     "axioms": [
       "Quot.sound"
     ],
@@ -11744,7 +11834,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": true,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -11756,6 +11846,7 @@
     "directWrapperTargetModule": "LeanCondensedMatter.Combinatorics.SetPartition.SumEquivPartition",
     "directWrapperOf": "Combinatorics.SumEquiv.mem_leftImage_iff",
     "dependents": [
+      "Combinatorics.Pairing.isSplit_inr",
       "Combinatorics.SumEquiv.mem_rightImage_iff_not_mem_leftImage"
     ],
     "dependencies": [
@@ -11764,9 +11855,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "Combinatorics.Pairing.isSplit_inr",
       "Combinatorics.SumEquiv.mem_rightImage_iff_not_mem_leftImage"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -15735,6 +15827,7 @@
       "ContinuousLinearMap.IsHilbertSchmidt.hasSum_norm_sq_apply",
       "ContinuousLinearMap.IsHilbertSchmidt.normSq_adjoint",
       "ContinuousLinearMap.IsHilbertSchmidt.normSq_comp_left_le",
+      "ContinuousLinearMap.IsHilbertSchmidt.normSq_pos",
       "ContinuousLinearMap.IsTraceClass.traceNorm_eq_tsum_diagonalExpectationValue"
     ],
     "dependencies": [
@@ -15747,9 +15840,10 @@
       "ContinuousLinearMap.IsHilbertSchmidt.hasSum_norm_sq_apply",
       "ContinuousLinearMap.IsHilbertSchmidt.normSq_adjoint",
       "ContinuousLinearMap.IsHilbertSchmidt.normSq_comp_left_le",
+      "ContinuousLinearMap.IsHilbertSchmidt.normSq_pos",
       "ContinuousLinearMap.IsTraceClass.traceNorm_eq_tsum_diagonalExpectationValue"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 5,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -15784,6 +15878,7 @@
     "directWrapperOf": null,
     "dependents": [
       "ContinuousLinearMap.IsHilbertSchmidt.normSq_comp_right_le_of_norm_le_one",
+      "ContinuousLinearMap.IsHilbertSchmidt.normSq_pos",
       "ContinuousLinearMap.IsTraceClass.traceNorm_nonneg"
     ],
     "dependencies": [],
@@ -15791,9 +15886,56 @@
     "completedMention": false,
     "compiledConsumers": [
       "ContinuousLinearMap.IsHilbertSchmidt.normSq_comp_right_le_of_norm_le_one",
+      "ContinuousLinearMap.IsHilbertSchmidt.normSq_pos",
       "ContinuousLinearMap.IsTraceClass.traceNorm_nonneg"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 3,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [CompleteSpace H] {T : H →L[ℂ] H}\n  (hT : T.IsHilbertSchmidt), T ≠ 0 → 0 < hT.normSq",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "ContinuousLinearMap.IsHilbertSchmidt.normSq_pos",
+    "module": "LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.Norm",
+    "externalAxioms": [],
+    "docString": "The squared Hilbert--Schmidt norm is strictly positive for a nonzero operator. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "ContinuousLinearMap.IsTraceClass.realTrace_pos"
+    ],
+    "dependencies": [
+      "ContinuousLinearMap.IsHilbertSchmidt.normSq_eq_tsum_norm_sq_apply",
+      "ContinuousLinearMap.IsHilbertSchmidt.normSq_nonneg",
+      "ContinuousLinearMap.IsHilbertSchmidt.summable_norm_sq_apply"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "ContinuousLinearMap.IsTraceClass.realTrace_pos"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -15928,6 +16070,7 @@
       "ContinuousLinearMap.IsHilbertSchmidt.normSq_adjoint",
       "ContinuousLinearMap.IsHilbertSchmidt.normSq_comp_left_le",
       "ContinuousLinearMap.IsHilbertSchmidt.normSq_eq_tsum_norm_sq_apply",
+      "ContinuousLinearMap.IsHilbertSchmidt.normSq_pos",
       "ContinuousLinearMap.IsHilbertSchmidt.summable_inner_apply",
       "ContinuousLinearMap.innerHS_comp_right",
       "ContinuousLinearMap.innerHS_eq_of_isHilbertSchmidt",
@@ -15943,12 +16086,13 @@
       "ContinuousLinearMap.IsHilbertSchmidt.normSq_adjoint",
       "ContinuousLinearMap.IsHilbertSchmidt.normSq_comp_left_le",
       "ContinuousLinearMap.IsHilbertSchmidt.normSq_eq_tsum_norm_sq_apply",
+      "ContinuousLinearMap.IsHilbertSchmidt.normSq_pos",
       "ContinuousLinearMap.IsHilbertSchmidt.summable_inner_apply",
       "ContinuousLinearMap.innerHS_comp_right",
       "ContinuousLinearMap.innerHS_eq_of_isHilbertSchmidt",
       "_private.LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.Compact.0.ContinuousLinearMap.IsHilbertSchmidt.norm_sub_finiteRangeApprox_sq_le"
     ],
-    "compiledConsumerCount": 8,
+    "compiledConsumerCount": 9,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -16555,7 +16699,6 @@
     "directWrapperOf": null,
     "dependents": [
       "ContinuousLinearMap.IsTraceClass.hasSummableRealEigenvalues",
-      "ContinuousLinearMap.IsTraceClass.realTrace_pos",
       "ContinuousLinearMap.IsTraceClass.traceNorm_eq_tsum_abs_eigenvalues",
       "ContinuousLinearMap.IsTraceClass.trace_eq_spectralTrace",
       "ContinuousLinearMap.SpectralTraceClass.compact",
@@ -16573,7 +16716,6 @@
     "completedMention": false,
     "compiledConsumers": [
       "ContinuousLinearMap.IsTraceClass.hasSummableRealEigenvalues",
-      "ContinuousLinearMap.IsTraceClass.realTrace_pos",
       "ContinuousLinearMap.IsTraceClass.traceNorm_eq_tsum_abs_eigenvalues",
       "ContinuousLinearMap.IsTraceClass.trace_eq_spectralTrace",
       "ContinuousLinearMap.SpectralTraceClass.compact",
@@ -16583,7 +16725,7 @@
       "QuantumTheory.entropyOp_isCompact",
       "QuantumTheory.hasSum_negMulLog_eigenvalues"
     ],
-    "compiledConsumerCount": 10,
+    "compiledConsumerCount": 9,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -16751,15 +16893,8 @@
       "ContinuousLinearMap.SpectralTraceClass.spectralTrace_pos"
     ],
     "dependencies": [
-      "ContinuousLinearMap.IsTraceClass.isCompact",
-      "ContinuousLinearMap.IsTraceClass.sum_diagonalExpectationValue_le_traceNorm",
-      "ContinuousLinearMap.IsTraceClass.traceNorm_eq_realTrace",
-      "ContinuousLinearMap.apply_eigenvectorFamily",
-      "ContinuousLinearMap.coe_diagonalExpectationValue_right",
-      "ContinuousLinearMap.diagonalExpectationValue_nonneg",
-      "ContinuousLinearMap.eigenvalue_nonneg_of_isPositive",
-      "ContinuousLinearMap.hasSum_eigenvectorFamily",
-      "ContinuousLinearMap.orthonormal_eigenvectorFamily"
+      "ContinuousLinearMap.IsHilbertSchmidt.normSq_pos",
+      "ContinuousLinearMap.IsTraceClass.traceNorm_eq_realTrace"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -16858,7 +16993,6 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "ContinuousLinearMap.IsTraceClass.realTrace_pos",
       "ContinuousLinearMap.SpectralTraceClass.sum_diagonalExpectationValue_le_spectralTrace",
       "QuantumTheory.DensityOperator.sum_diagonalExpectationValue_le_one"
     ],
@@ -16869,11 +17003,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "ContinuousLinearMap.IsTraceClass.realTrace_pos",
       "ContinuousLinearMap.SpectralTraceClass.sum_diagonalExpectationValue_le_spectralTrace",
       "QuantumTheory.DensityOperator.sum_diagonalExpectationValue_le_one"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -18790,7 +18923,6 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "ContinuousLinearMap.IsTraceClass.realTrace_pos",
       "ContinuousLinearMap.finite_large_eigenvalue_index",
       "ContinuousLinearMap.hasSum_eigenvectorFamily",
       "QuantumTheory.DensityOperator.exists_diagonal_hilbertBasis",
@@ -18804,7 +18936,6 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "ContinuousLinearMap.IsTraceClass.realTrace_pos",
       "ContinuousLinearMap.finite_large_eigenvalue_index",
       "ContinuousLinearMap.hasSum_eigenvectorFamily",
       "QuantumTheory.DensityOperator.exists_diagonal_hilbertBasis",
@@ -18814,7 +18945,7 @@
       "QuantumTheory.helmholtzFreeEnergy_eq_iff_eq_gibbsState",
       "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Bundled.0.ContinuousLinearMap.exists_abs_diagonal_hilbertBasis"
     ],
-    "compiledConsumerCount": 9,
+    "compiledConsumerCount": 8,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -18940,7 +19071,6 @@
     "dependents": [
       "ContinuousLinearMap.IsTraceClass.add",
       "ContinuousLinearMap.IsTraceClass.hasSum_realTrace",
-      "ContinuousLinearMap.IsTraceClass.realTrace_pos",
       "ContinuousLinearMap.IsTraceClass.traceNorm_eq_tsum_norm_inner_left_of_polar",
       "ContinuousLinearMap.IsTraceClass.trace_eq_spectralTrace",
       "ContinuousLinearMap.diagonalExpectationValue_abs_eq_norm_sq_sqrt_abs",
@@ -18973,7 +19103,6 @@
     "compiledConsumers": [
       "ContinuousLinearMap.IsTraceClass.add",
       "ContinuousLinearMap.IsTraceClass.hasSum_realTrace",
-      "ContinuousLinearMap.IsTraceClass.realTrace_pos",
       "ContinuousLinearMap.IsTraceClass.traceNorm_eq_tsum_norm_inner_left_of_polar",
       "ContinuousLinearMap.IsTraceClass.trace_eq_spectralTrace",
       "ContinuousLinearMap.diagonalExpectationValue_abs_eq_norm_sq_sqrt_abs",
@@ -18998,7 +19127,7 @@
       "_private.LeanCondensedMatter.QuantumTheory.POVM.Born.0.QuantumTheory.hasSum_probabilityKernel_eigenvector",
       "_private.LeanCondensedMatter.QuantumTheory.POVM.Born.0.QuantumTheory.hasSum_probabilityKernel_outcome"
     ],
-    "compiledConsumerCount": 26,
+    "compiledConsumerCount": 25,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -19205,7 +19334,6 @@
     "directWrapperOf": null,
     "dependents": [
       "ContinuousLinearMap.IsTraceClass.orthogonal_span_eq_bot_of_sum_diagonalExpectationValue_eq_traceNorm",
-      "ContinuousLinearMap.IsTraceClass.realTrace_pos",
       "ContinuousLinearMap.IsTraceClass.sum_diagonalExpectationValue_le_traceNorm",
       "ContinuousLinearMap.IsTraceClass.traceNorm_eq_tsum_norm_inner_left_of_polar",
       "QuantumTheory.hasSum_probNNReal"
@@ -19217,13 +19345,12 @@
     "completedMention": false,
     "compiledConsumers": [
       "ContinuousLinearMap.IsTraceClass.orthogonal_span_eq_bot_of_sum_diagonalExpectationValue_eq_traceNorm",
-      "ContinuousLinearMap.IsTraceClass.realTrace_pos",
       "ContinuousLinearMap.IsTraceClass.sum_diagonalExpectationValue_le_traceNorm",
       "ContinuousLinearMap.IsTraceClass.traceNorm_eq_tsum_norm_inner_left_of_polar",
       "ContinuousLinearMap.diagonalExpectationNNReal",
       "QuantumTheory.hasSum_probNNReal"
     ],
-    "compiledConsumerCount": 6,
+    "compiledConsumerCount": 5,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -19339,13 +19466,12 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "ContinuousLinearMap.eigenvalue_nonneg_of_isPositive",
-    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Ops",
+    "module": "LeanCondensedMatter.Analysis.Operator.Spectral.EigenvectorFamily",
     "externalAxioms": [],
     "docString": "Every eigenvalue of a positive operator is nonnegative. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "ContinuousLinearMap.IsTraceClass.realTrace_pos",
       "QuantumTheory.DensityOperator.eigenvalue_nonneg",
       "QuantumTheory.DensityOperator.expectation_re_nonneg_of_isPositive",
       "QuantumTheory.hasSum_probNNReal"
@@ -19354,12 +19480,11 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "ContinuousLinearMap.IsTraceClass.realTrace_pos",
       "QuantumTheory.DensityOperator.eigenvalue_nonneg",
       "QuantumTheory.DensityOperator.expectation_re_nonneg_of_isPositive",
       "QuantumTheory.hasSum_probNNReal"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -19997,7 +20122,6 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "ContinuousLinearMap.IsTraceClass.realTrace_pos",
       "ContinuousLinearMap.hasSum_eigen_expansion_diagonalExpectationValue",
       "QuantumTheory.isPureDensity_of_purity_eq_one"
     ],
@@ -20010,11 +20134,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "ContinuousLinearMap.IsTraceClass.realTrace_pos",
       "ContinuousLinearMap.hasSum_eigen_expansion_diagonalExpectationValue",
       "QuantumTheory.isPureDensity_of_purity_eq_one"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -20963,7 +21086,6 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "ContinuousLinearMap.IsTraceClass.realTrace_pos",
       "ContinuousLinearMap.finite_large_eigenvalue_index",
       "ContinuousLinearMap.hasSum_diagonalExpectationValue_eq_spectralTrace",
       "QuantumTheory.DensityOperator.entropyOp_isTraceClass",
@@ -20984,7 +21106,6 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "ContinuousLinearMap.IsTraceClass.realTrace_pos",
       "ContinuousLinearMap.finite_large_eigenvalue_index",
       "ContinuousLinearMap.hasSum_diagonalExpectationValue_eq_spectralTrace",
       "QuantumTheory.DensityOperator.entropyOp_isTraceClass",
@@ -20999,7 +21120,7 @@
       "_private.LeanCondensedMatter.Analysis.Operator.Spectral.EigenvectorFamily.0.ContinuousLinearMap.orthonormal_eigenvectorFamilyInClosure",
       "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Bundled.0.ContinuousLinearMap.exists_abs_diagonal_hilbertBasis"
     ],
-    "compiledConsumerCount": 14,
+    "compiledConsumerCount": 13,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -26031,7 +26152,6 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "Combinatorics.Pairing.prod_pairs_eq_prod_components",
       "Finpartition.prod_prod_parts",
       "SecondQuantization.Common.QuarticDiagram.dysonSign_mul_vertexWeight_eq_prod_components",
       "SecondQuantization.Common.TwoPointDiagram.prod_slotSplitVacuumComponents_eq_vacuumVertexProduct",
@@ -26043,7 +26163,6 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "Combinatorics.Pairing.prod_pairs_eq_prod_components",
       "Finpartition.prod_prod_parts",
       "SecondQuantization.Common.QuarticDiagram.dysonSign_mul_vertexWeight_eq_prod_components",
       "SecondQuantization.Common.TwoPointDiagram.prod_slotSplitVacuumComponents_eq_vacuumVertexProduct",
@@ -26051,7 +26170,7 @@
       "SecondQuantization.Fermionic.FixedExternalTwoPointWickDiagram.fixedTimeAmplitude_eq_externalSign_mul_prod_components",
       "_private.LeanCondensedMatter.Permutation.ConnectedDecomposition.0.Combinatorics.kernelProduct_eq_prod_orbitBlocks"
     ],
-    "compiledConsumerCount": 7,
+    "compiledConsumerCount": 6,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -49784,7 +49903,7 @@
     "module": "LeanCondensedMatter.QuantumTheory.DensityOperator.Basic",
     "externalAxioms": [],
     "docString": "Every nonzero spectral eigenvalue of a density operator is nonnegative. ",
-    "directWrapperTargetModule": "LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Ops",
+    "directWrapperTargetModule": "LeanCondensedMatter.Analysis.Operator.Spectral.EigenvectorFamily",
     "directWrapperOf": "ContinuousLinearMap.eigenvalue_nonneg_of_isPositive",
     "dependents": [
       "QuantumTheory.DensityOperator.eigenvalue_eq_one_of_purity_eq_one",
@@ -123450,8 +123569,8 @@
     "dependencies": [
       "Combinatorics.PairingOn.restrictAlongEquiv_change_coordinates",
       "SecondQuantization.Common.ExternalInsertionBlockLayout.physicalComponentPairing_eq_local",
-      "SimpleGraph.componentBlock_mem_componentPartition",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.BlockConnectivity.0.SecondQuantization.Common.ExternalInsertionBlockLayout.physicalComponentLeg_partner_iff"
+      "SecondQuantization.Common.ExternalInsertionDiagram.legInComponent_partner_iff",
+      "SimpleGraph.componentBlock_mem_componentPartition"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -123543,7 +123662,7 @@
       "Combinatorics.PairingOn.restrictAlongEquiv_partner_symm_val",
       "SecondQuantization.Common.ExternalInsertionBlockLayout.assembleDiagram_partner",
       "SecondQuantization.Common.ExternalInsertionBlockLayout.physicalComponentLegEquiv_symm_val",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.BlockConnectivity.0.SecondQuantization.Common.ExternalInsertionBlockLayout.physicalComponentLeg_partner_iff"
+      "SecondQuantization.Common.ExternalInsertionDiagram.legInComponent_partner_iff"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -125869,7 +125988,7 @@
     ],
     "dependencies": [
       "Combinatorics.PairingOn.even_card_left_of_invariant_subtype",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentRestriction.0.SecondQuantization.Common.ExternalInsertionDiagram.legInComponent_partner_iff"
+      "SecondQuantization.Common.ExternalInsertionDiagram.legInComponent_partner_iff"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -126114,6 +126233,54 @@
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentRestriction.0.SecondQuantization.Common.ExternalInsertionDiagram.legInComponent_iff_unflattened"
     ],
     "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {E N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.ExternalInsertionDiagram ExternalLabel InternalLabel E N S)\n  (B : Finset (SecondQuantization.Common.ExternalInsertionVertex E S)) (leg : Fin (2 * (2 * S.card + E))),\n  d.legInComponent B leg ↔ d.legInComponent B (d.pairing.partner leg)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.ExternalInsertionDiagram.legInComponent_partner_iff",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentRestriction",
+    "externalAxioms": [],
+    "docString": "Component-leg membership is invariant under the pairing partner permutation. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Common.ExternalInsertionBlockLayout.physicalComponentCanonicalPairing_eq_local",
+      "SecondQuantization.Common.ExternalInsertionBlockLayout.physicalComponentPairing_eq_local",
+      "SecondQuantization.Common.ExternalInsertionDiagram.externalSector_card_even"
+    ],
+    "dependencies": [
+      "Combinatorics.Pairing.vertexGraph_componentBlock_partner"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Common.ExternalInsertionBlockLayout.physicalComponentCanonicalPairing_eq_local",
+      "SecondQuantization.Common.ExternalInsertionBlockLayout.physicalComponentPairing_eq_local",
+      "SecondQuantization.Common.ExternalInsertionDiagram.externalSector_card_even"
+    ],
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -185457,6 +185624,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "Combinatorics.Pairing.isSplit_inr",
       "Combinatorics.Pairing.partner_splitRight"
     ],
     "dependencies": [
@@ -185466,10 +185634,11 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "Combinatorics.Pairing.isSplit_inr",
       "Combinatorics.Pairing.partner_splitRight",
       "Combinatorics.Pairing.splitRight"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -200087,53 +200256,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {E N : ℕ} {ExternalLabel : Type u_1} {InternalLabel : Type u_2}\n  (layout : SecondQuantization.Common.ExternalInsertionBlockLayout E N) (S : Finset (Fin N))\n  (F :\n    (B : ↥layout.partition.parts) →\n      SecondQuantization.Common.ExternalInsertionDiagram ExternalLabel InternalLabel ((↑B).card / 2) N\n        (layout.interactionBlock S B))\n  (e : Fin (2 * E)) (leg : Fin (2 * (2 * S.card + E))),\n  (layout.assembleDiagram S F).legInComponent ((layout.assembleDiagram S F).vertexGraph.componentBlock (Sum.inl e))\n      leg ↔\n    (layout.assembleDiagram S F).legInComponent ((layout.assembleDiagram S F).vertexGraph.componentBlock (Sum.inl e))\n      ((layout.assembleDiagram S F).pairing.partner leg)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.BlockConnectivity.0.SecondQuantization.Common.ExternalInsertionBlockLayout.physicalComponentLeg_partner_iff",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.BlockConnectivity",
-    "externalAxioms": [],
-    "docString": "Being an actual physical graph component is invariant under the\nassembled perfect pairing; this justifies physical partner restriction. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.ExternalInsertionBlockLayout.physicalComponentCanonicalPairing_eq_local",
-      "SecondQuantization.Common.ExternalInsertionBlockLayout.physicalComponentPairing_eq_local"
-    ],
-    "dependencies": [
-      "Combinatorics.Pairing.vertexGraph_componentBlock_partner"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.ExternalInsertionBlockLayout.physicalComponentCanonicalPairing_eq_local",
-      "SecondQuantization.Common.ExternalInsertionBlockLayout.physicalComponentPairing",
-      "SecondQuantization.Common.ExternalInsertionBlockLayout.physicalComponentPairing_eq_local"
-    ],
-    "compiledConsumerCount": 3,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ {α : Type u_1} {β : Type u_2} {S T : Finset α} (f : ↥S → β) (g : ↥T → β) (hST : S = T),\n  (∀ (v : ↥S), f v = g ⟨↑v, ⋯⟩) → f ≍ g",
     "standardAxioms": [
       "Classical.choice",
@@ -200254,50 +200376,6 @@
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentRestriction.0.SecondQuantization.Common.ExternalInsertionDiagram.componentBlockLegDataEquiv"
     ],
     "compiledConsumerCount": 3,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {E N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.ExternalInsertionDiagram ExternalLabel InternalLabel E N S)\n  (B : Finset (SecondQuantization.Common.ExternalInsertionVertex E S)) (leg : Fin (2 * (2 * S.card + E))),\n  d.legInComponent B leg ↔ d.legInComponent B (d.pairing.partner leg)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentRestriction.0.SecondQuantization.Common.ExternalInsertionDiagram.legInComponent_partner_iff",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentRestriction",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.ExternalInsertionDiagram.externalSector_card_even"
-    ],
-    "dependencies": [
-      "Combinatorics.Pairing.vertexGraph_componentBlock_partner"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.ExternalInsertionDiagram.externalSector_card_even"
-    ],
-    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -208001,6 +208079,7 @@
       "Combinatorics.FamilySlotShuffleTo.blockInversionCount_eq_sum_blockSlotSet",
       "Combinatorics.FamilySlotShuffleTo.blockInversionCount_self",
       "Combinatorics.FamilySlotShuffleTo.castTotalEquiv_blockInversionCount",
+      "Combinatorics.FamilySlotShuffleTo.orderedBlockInversionCount_eq_of_blockInversionCount",
       "Finpartition.shuffleOfIncreasingOrderFull_blockSlotSet",
       "SecondQuantization.Fermionic.externalPartitionOrderSign_eq_of_blockOrder",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalSubsetMoment.0.SecondQuantization.Fermionic.externalSubsetPartitionEquiv_evenBlocks",
