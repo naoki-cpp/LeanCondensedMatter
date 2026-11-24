@@ -30,8 +30,6 @@ namespace QuantumTheory.Models.MassiveDirac
 
 noncomputable section
 
-open QuantumTheory.Transport
-
 open Filter QuantumTheory.Transport
 
 /-- The completed ordered `xy` zero-broadening Středa momentum endpoint is exactly the sum of the
@@ -86,16 +84,8 @@ private theorem tendsto_orderedXYProvenance_rungYSolvedX_disorder_zero
   have hsolved :=
     tendsto_finiteCutoffContinuumBornDysonLadderSolvedVectorZeroBroadeningBoundary_disorder_zero
       v m probeEnergy hbar pMax hvelocity hhbar hmetal hcutoff
-  have hsolvedX :
-      Tendsto
-        (fun disorderStrength : ℝ =>
-          finiteCutoffContinuumBornDysonLadderSolvedVectorZeroBroadeningBoundary
-            v m probeEnergy disorderStrength hbar pMax 0)
-        (nhdsWithin 0 (Set.Ioi 0))
-        (nhds
-          (((2 * (probeEnergy ^ 2 + m ^ 2) /
-            (probeEnergy ^ 2 + 3 * m ^ 2) : ℝ) : ℂ))) := by
-    simpa [inPlaneCoefficientVector] using tendsto_pi_nhds.mp hsolved (0 : Fin 2)
+  have hsolvedX := tendsto_pi_nhds.mp hsolved (0 : Fin 2)
+  simp only [inPlaneCoefficientVector, Matrix.cons_val_zero] at hsolvedX
   have hscaled := (hslope.mul hsolvedX).const_mul ((-2 : ℂ) * q ^ 2 * measure⁻¹)
   have hprobe : 0 < probeEnergy := lt_of_le_of_lt (abs_nonneg m) hmetal
   have hsum : probeEnergy ^ 2 + m ^ 2 ≠ 0 := by
@@ -162,16 +152,8 @@ private theorem tendsto_orderedXYProvenance_rungXSolvedY_disorder_zero
   have hrung :=
     tendsto_finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary_disorder_zero
       v m probeEnergy hbar pMax hvelocity hhbar hmetal hcutoff
-  have hrungX :
-      Tendsto
-        (fun disorderStrength : ℝ =>
-          finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary
-            v m probeEnergy disorderStrength hbar pMax 0)
-        (nhdsWithin 0 (Set.Ioi 0))
-        (nhds
-          (continuumBornRetardedAdvancedPauliXWeakDisorderCurrentRungCoefficient
-            m probeEnergy : ℂ)) := by
-    simpa [inPlaneCoefficientVector] using tendsto_pi_nhds.mp hrung (0 : Fin 2)
+  have hrungX := tendsto_pi_nhds.mp hrung (0 : Fin 2)
+  simp only [inPlaneCoefficientVector, Matrix.cons_val_zero] at hrungX
   have hsolvedSlope :=
     tendsto_finiteCutoffContinuumBornDysonLadderSolvedVectorZeroBroadeningBoundary_y_div_disorder_zero
       v m probeEnergy hbar pMax hvelocity hhbar hmetal hcutoff
