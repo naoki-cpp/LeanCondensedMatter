@@ -1,4 +1,3 @@
-import LeanCondensedMatter.Analysis.Operator.TraceClass.Factorization.Basic
 import LeanCondensedMatter.Analysis.Operator.TraceClass.Trace
 import LeanCondensedMatter.Analysis.Operator.AdjointConjugation
 
