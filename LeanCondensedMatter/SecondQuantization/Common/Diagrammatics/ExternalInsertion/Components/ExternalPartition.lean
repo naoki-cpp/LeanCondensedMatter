@@ -189,22 +189,6 @@ theorem ExternalInsertionDiagram.vacuumFreeComponentsEquivExternalBlocks_apply
   simp [ExternalInsertionDiagram.vacuumFreeComponentsEquivExternalBlocks,
     ExternalInsertionDiagram.supportedComponentsEquivExternalBlocks_apply]
 
-/-- Every external partition block of a vacuum-free diagram has a unique
-full-graph component preimage. This is an actual diagrammatic inverse,
-not just a cardinality equality. -/
-theorem ExternalInsertionDiagram.vacuumFreeComponentsEquivExternalBlocks_symm_apply
-    {S : Finset (Fin N)}
-    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
-    (hVac : HasNoVacuumComponent d.vertexGraph)
-    (P : (externalComponentPartition d.vertexGraph).parts) :
-    (((d.vacuumFreeComponentsEquivExternalBlocks hVac).symm P).1 :
-      Finset (ExternalInsertionVertex E S)).toLeft =
-        (P : Finset (Fin (2 * E))) := by
-  have h := d.vacuumFreeComponentsEquivExternalBlocks_apply hVac
-    ((d.vacuumFreeComponentsEquivExternalBlocks hVac).symm P)
-  simpa using h.symm
-
-
 /-- For a diagram with at least one external insertion, all external vertices
 are mutually connected precisely when their induced external-component
 partition is the one-block (top) partition.
