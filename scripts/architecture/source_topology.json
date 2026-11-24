@@ -135,7 +135,6 @@
           "LeanCondensedMatter.Analysis.Operator.SymmetrizedProduct",
           "LeanCondensedMatter.Analysis.ConservationLaw.CurrentRepresentation",
           "LeanCondensedMatter.Analysis.ConservationLaw.FluxBalanceLaw",
-          "LeanCondensedMatter.Analysis.ConservationLaw.BalanceLaw",
           "LeanCondensedMatter.Analysis.ConservationLaw.SymmetricLocalizationAlgebra",
           "LeanCondensedMatter.Analysis.ConservationLaw.CorrectedCurrentFlux"
         ]},

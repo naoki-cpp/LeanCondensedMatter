@@ -37,9 +37,8 @@ homomorphic normalization rules:
 - `InternalSpace.pauliScalarCoefficient_neg`
 - `InternalSpace.pauliVectorCoefficient_neg`
 - `PowerSeries.coeff_normalizeByConstantCoeff`
-- `ConservationLaw.shiftCurrentSource_current`
-- `ConservationLaw.shiftCurrentSource_source`
-- `ConservationLaw.toDifferentialCurrentRepresentationOfSourceCurrent_current`
+- `ConservationLaw.FluxBalanceLaw.shiftTransportSource_transport`
+- `ConservationLaw.FluxBalanceLaw.shiftTransportSource_source`
 - `symmetrizedProduct_apply`
 - `symmetrizedProduct_zero_left`
 - `symmetrizedProduct_zero_right`
