@@ -2,8 +2,6 @@ module
 
 import Mathlib.Algebra.Star.BigOperators
 public import Mathlib.Analysis.Calculus.Deriv.Basic
-import Mathlib.Analysis.Calculus.Deriv.Comp
-import Mathlib.Analysis.Calculus.FDeriv.Linear
 public import Mathlib.Analysis.CStarAlgebra.Matrix
 public import Mathlib.Analysis.InnerProductSpace.Trace
 public import Mathlib.Analysis.Normed.Module.FiniteDimension
@@ -17,8 +15,8 @@ set_option linter.style.header false
 
 This module owns general ordinary finite-dimensional trace infrastructure for bounded endomorphisms.
 The trace is bundled as a continuous complex-linear functional, with reusable cyclicity,
-matrix/operator transport, and differentiation facts. The ordinary trace, cyclicity, and
-differentiation only require a finite-dimensional normed space; the adjoint law requires an
+and matrix/operator transport. The ordinary trace and cyclicity only require a
+finite-dimensional normed space; the adjoint law requires an
 inner-product space.
 
 Mathlib supplies the underlying `LinearMap.trace`, finite-dimensional cyclicity, the canonical
@@ -55,38 +53,16 @@ theorem finiteDimensionalOperatorTrace_apply (operator : H →L[ℂ] H) :
 /-- The finite-dimensional operator trace of a matrix transported through the canonical Euclidean
 matrix/operator equivalence is its ordinary matrix trace. -/
 theorem finiteDimensionalOperatorTrace_toEuclideanCLM
-    {n : ℕ} (M : Matrix (Fin n) (Fin n) ℂ) :
+    {ι : Type*} [Fintype ι] [DecidableEq ι] (M : Matrix ι ι ℂ) :
     finiteDimensionalOperatorTrace
         ((Matrix.toEuclideanCLM :
-          Matrix (Fin n) (Fin n) ℂ ≃⋆ₐ[ℂ]
-            (EuclideanSpace ℂ (Fin n) →L[ℂ] EuclideanSpace ℂ (Fin n))) M) =
+          Matrix ι ι ℂ ≃⋆ₐ[ℂ]
+            (EuclideanSpace ℂ ι →L[ℂ] EuclideanSpace ℂ ι)) M) =
       Matrix.trace M := by
   rw [finiteDimensionalOperatorTrace_apply]
   rw [Matrix.coe_toEuclideanCLM_eq_toEuclideanLin,
     Matrix.toEuclideanLin_eq_toLin_orthonormal]
-  exact Matrix.trace_toLin_eq M (EuclideanSpace.basisFun (Fin n) ℂ).toBasis
-
-/-- Transporting two equally scaled matrix vertices to bounded operators
-factors out the square of their common scalar. No model or current convention
-enters this finite-dimensional trace identity. -/
-theorem finiteDimensionalOperatorTrace_two_smul_toEuclideanCLM
-    {n : ℕ} (target source velocity₁ velocity₂ : Matrix (Fin n) (Fin n) ℂ)
-    (charge : ℂ) :
-    let φ : Matrix (Fin n) (Fin n) ℂ ≃⋆ₐ[ℂ]
-      (EuclideanSpace ℂ (Fin n) →L[ℂ] EuclideanSpace ℂ (Fin n)) :=
-        Matrix.toEuclideanCLM
-    finiteDimensionalOperatorTrace
-        (φ target * φ (charge • velocity₁) * φ source * φ (charge • velocity₂)) =
-      charge ^ 2 * Matrix.trace (target * velocity₁ * source * velocity₂) := by
-  dsimp only
-  calc
-    _ = Matrix.trace (target * (charge • velocity₁) * source * (charge • velocity₂)) := by
-      simpa only [map_mul] using
-        (finiteDimensionalOperatorTrace_toEuclideanCLM
-          (target * (charge • velocity₁) * source * (charge • velocity₂)))
-    _ = _ := by
-      simp only [mul_smul_comm, smul_mul_assoc, smul_smul, Matrix.trace_smul, smul_eq_mul]
-      ring
+  exact Matrix.trace_toLin_eq M (EuclideanSpace.basisFun ι ℂ).toBasis
 
 /-- Cyclicity of the bundled ordinary trace for two bounded endomorphisms. -/
 theorem finiteDimensionalOperatorTrace_mul_comm
@@ -95,23 +71,6 @@ theorem finiteDimensionalOperatorTrace_mul_comm
       finiteDimensionalOperatorTrace (H := H) (right * left) := by
   simp only [finiteDimensionalOperatorTrace_apply]
   exact LinearMap.trace_mul_comm ℂ (left : H →ₗ[ℂ] H) (right : H →ₗ[ℂ] H)
-
-/-- Applying the finite-dimensional trace to a differentiable real-energy operator path preserves
-its derivative. -/
-theorem hasDerivAt_finiteDimensionalOperatorTrace_comp
-    {operatorPath : ℝ → H →L[ℂ] H} {operatorDerivative : H →L[ℂ] H}
-    {energy : ℝ} (hoperator : HasDerivAt operatorPath operatorDerivative energy) :
-    HasDerivAt
-      (fun x : ℝ => finiteDimensionalOperatorTrace (H := H) (operatorPath x))
-      (finiteDimensionalOperatorTrace (H := H) operatorDerivative)
-      energy := by
-  change HasDerivAt
-    ((finiteDimensionalOperatorTrace (H := H)) ∘ operatorPath)
-    (finiteDimensionalOperatorTrace (H := H) operatorDerivative)
-    energy
-  simpa using
-    (((finiteDimensionalOperatorTrace (H := H)).hasFDerivAt).restrictScalars ℝ).comp_hasDerivAt
-      energy hoperator
 
 end Normed
 
