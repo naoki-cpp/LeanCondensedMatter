@@ -1,5 +1,4 @@
 import LeanCondensedMatter.Analysis.OrderedSimplex.MeasurableRegularity
-import LeanCondensedMatter.Analysis.ScalarExchange.Basic
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.FreeGibbsWickExpansion
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.DiagramRegularity
 
@@ -18,69 +17,14 @@ The operator-side coefficient is defined using the existing mixed-time atomic
 field family. The equality with the time-ordered product of full
 interaction-picture quartic vertices and external fields is established in
 `InteractionPictureVertexDyson`, downstream of this module. The physical vertex
-product and its coefficient transport are defined here so two-point consumers
-need not import the vacuum Cauchy decomposition.
+product is owned by the imaginary-time layer; its integrated coefficient
+is defined here independently of the vacuum Cauchy decomposition.
 -/
 
 namespace SecondQuantization
 namespace Fermionic
 
 open Common
-
-section VertexProduct
-
-variable {Mode : Type*} [LinearOrder Mode]
-
-/-- Signed mixed-time-ordered interaction-picture vertex product, with the fermionic sign from
-restoring the fixed external/interaction atomic order. -/
-noncomputable def externalInsertionMixedTimeOrderedVertexComp {E n : ℕ}
-    (ε : Mode → ℝ)
-    (externalLabel : Fin (2 * E) → ExternalFieldLabel Mode)
-    (externalTime : Fin (2 * E) → ℝ)
-    (q : Fin n → QuarticVertexLabel Mode) (σ : Fin n → ℝ) :
-    OccupationFock Mode →ₗ[ℂ] OccupationFock Mode :=
-  externalInsertionMixedAtomicOrderSign externalTime σ •
-    ((orderedExternalInsertionTimedEvents externalTime σ).map
-      (externalInsertionTimedEventOperator ε externalLabel externalTime q σ)).prod
-
-/-- A uniform energy shift contributes exactly the product of the external field
-factors. The number-conserving interaction vertices and the ordering sign are unchanged. -/
-theorem externalInsertionMixedTimeOrderedVertexComp_eq_shiftedDispersion {E n : ℕ}
-    (ε : Mode → ℝ) (μ : ℝ)
-    (externalLabel : Fin (2 * E) → ExternalFieldLabel Mode)
-    (externalTime : Fin (2 * E) → ℝ)
-    (q : Fin n → QuarticVertexLabel Mode) (σ : Fin n → ℝ) :
-    externalInsertionMixedTimeOrderedVertexComp ε externalLabel externalTime q σ =
-      externalFieldFamilyChemicalPotentialFactor μ externalLabel externalTime •
-        externalInsertionMixedTimeOrderedVertexComp
-          (fun k => ε k - μ) externalLabel externalTime q σ := by
-  let a : ExternalInsertionTimedEvent E n → ℂ
-    | .inl e => externalFieldChemicalPotentialFactor μ (externalTime e) (externalLabel e)
-    | .inr _ => 1
-  have hevent (e : ExternalInsertionTimedEvent E n) :
-      externalInsertionTimedEventOperator ε externalLabel externalTime q σ e =
-        a e • externalInsertionTimedEventOperator
-          (fun k => ε k - μ) externalLabel externalTime q σ e := by
-    cases e with
-    | inl e =>
-        exact externalFieldOperator_eq_shiftedDispersion ε μ
-          (externalTime e) (externalLabel e)
-    | inr v =>
-        change Common.interactionPicture (fermionEnergy ε) (quarticVertexOperator (q v))
-          (σ v) = (1 : ℂ) • Common.interactionPicture
-            (fermionEnergy (fun k => ε k - μ)) (quarticVertexOperator (q v)) (σ v)
-        rw [one_smul, interactionPicture_quarticVertexOperator_sub_chemicalPotential ε μ]
-  have hscalar :
-      ((orderedExternalInsertionTimedEvents externalTime σ).map a).prod =
-        externalFieldFamilyChemicalPotentialFactor μ externalLabel externalTime := by
-    rw [prod_orderedExternalInsertionTimedEvents, Fintype.prod_sum_type]
-    simp [a, externalFieldFamilyChemicalPotentialFactor]
-  unfold externalInsertionMixedTimeOrderedVertexComp
-  rw [funext hevent]
-  rw [ScalarExchange.list_prod_map_smul, hscalar,
-    smul_comm (externalInsertionMixedAtomicOrderSign externalTime σ)]
-
-end VertexProduct
 
 variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
 
