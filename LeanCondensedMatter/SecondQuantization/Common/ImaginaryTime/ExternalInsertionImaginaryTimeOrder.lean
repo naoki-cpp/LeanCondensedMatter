@@ -663,13 +663,16 @@ private noncomputable def externalInsertionFixedEventShuffle (E n : ℕ) :
     intro e p q hpq
     cases e with
     | inl e =>
-        exact (lt_irrefl p (Subsingleton.elim q p ▸ hpq)).elim
+        have heq : q = p := Subsingleton.elim _ _
+        subst q
+        exact (lt_irrefl _ hpq).elim
     | inr v =>
         change (externalInsertionFixedEventSlotEquiv E n ⟨.inr v, p⟩).val <
           (externalInsertionFixedEventSlotEquiv E n ⟨.inr v, q⟩).val
         rw [externalInsertionFixedEventSlotEquiv_inr_val,
           externalInsertionFixedEventSlotEquiv_inr_val]
-        exact Nat.add_lt_add_right (Nat.add_lt_add_left hpq _) _
+        have h : p.val < q.val := hpq
+        omega
 
 private theorem externalInsertionFixedEventShuffle_lt_iff {E n : ℕ}
     (a b : ExternalInsertionTimedEvent E n) (hab : a ≠ b)
@@ -691,24 +694,21 @@ private theorem externalInsertionFixedEventShuffle_lt_iff {E n : ℕ}
           rw [externalInsertionFixedEventSlotEquiv_inl_val,
             externalInsertionFixedEventSlotEquiv_inr_val]
           have ha := a.isLt
-          simp [externalInsertionTimedEventRank]
-          omega
+          simp [externalInsertionTimedEventRank] <;> omega
   | inr a =>
       cases b with
       | inl b =>
           rw [externalInsertionFixedEventSlotEquiv_inr_val,
             externalInsertionFixedEventSlotEquiv_inl_val]
           have hb := b.isLt
-          simp [externalInsertionTimedEventRank]
-          omega
+          simp [externalInsertionTimedEventRank] <;> omega
       | inr b =>
           rw [externalInsertionFixedEventSlotEquiv_inr_val,
             externalInsertionFixedEventSlotEquiv_inr_val]
           have hne : a.val ≠ b.val := fun h => hab (congrArg Sum.inr (Fin.ext h))
           have hp : p.val < 4 := p.isLt
           have hq : q.val < 4 := q.isLt
-          simp [externalInsertionTimedEventRank]
-          omega
+          simp [externalInsertionTimedEventRank] <;> omega
 
 private noncomputable def externalInsertionMixedEventSlotEquiv {E n : ℕ}
     (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ) :
@@ -736,7 +736,9 @@ private noncomputable def externalInsertionMixedEventShuffle {E n : ℕ}
     intro e p q hpq
     cases e with
     | inl e =>
-        exact (lt_irrefl p (Subsingleton.elim q p ▸ hpq)).elim
+        have heq : q = p := Subsingleton.elim _ _
+        subst q
+        exact (lt_irrefl _ hpq).elim
     | inr v =>
         change (externalInsertionMixedEventSlotEquiv externalTime σ ⟨.inr v, p⟩).val <
           (externalInsertionMixedEventSlotEquiv externalTime σ ⟨.inr v, q⟩).val
@@ -788,7 +790,7 @@ private theorem externalInsertionMixedEventShuffle_lt_iff {E n : ℕ}
     by_contra! hnot
     have hreverse := List.idxOf_flatMap_lt_of_idxOf_lt externalInsertionTimedEventAtomicLegs
       events b a y x hn hb ha hy hx (show events.idxOf b < events.idxOf a by omega)
-    exact (lt_asymm h hreverse)
+    exact lt_asymm h hreverse
   · exact List.idxOf_flatMap_lt_of_idxOf_lt externalInsertionTimedEventAtomicLegs
       events a b x y hn ha hb hx hy
 
