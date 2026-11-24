@@ -749,7 +749,7 @@ theorem connectedExternalInsertionDysonCoefficient_eq_topPartitionFiber
   unfold connectedExternalInsertionDysonCoefficient
   apply Finset.sum_congr (by ext d; simp)
   intro d _
-  simp only [← (d.1.1.allExternalVerticesConnected_iff_externalComponentPartition_eq_top anchor)]
+  simp only [← (allExternalVerticesConnected_iff_externalComponentPartition_eq_top d.1.1.vertexGraph anchor)]
 
 /-- The formal Dyson series of the fully externally connected diagram sector,
 defined from its physical connected-diagram coefficients. -/
