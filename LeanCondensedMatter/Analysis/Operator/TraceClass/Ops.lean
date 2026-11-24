@@ -128,11 +128,8 @@ theorem trace_zero :
 theorem trace_smul {T : H →L[ℂ] H} (hT : IsTraceClass T) (c : ℂ) :
     (hT.smul c).trace = c * hT.trace := by
   obtain ⟨w, d, -⟩ := exists_hilbertBasis (𝕜 := ℂ) (E := H)
-  rw [(hT.smul c).trace_eq_tsum_inner d, hT.trace_eq_tsum_inner d]
-  rw [← tsum_mul_left]
-  apply tsum_congr
-  intro i
-  simp [inner_smul_right]
+  apply ((hT.smul c).hasSum_trace d).unique
+  simpa only [smul_apply, inner_smul_right] using (hT.hasSum_trace d).mul_left c
 
 /-- The trace changes sign under negation. -/
 @[simp]
@@ -144,10 +141,8 @@ theorem trace_neg {T : H →L[ℂ] H} (hT : IsTraceClass T) :
 theorem trace_add {T R : H →L[ℂ] H} (hT : IsTraceClass T) (hR : IsTraceClass R) :
     (hT.add hR).trace = hT.trace + hR.trace := by
   obtain ⟨w, d, -⟩ := exists_hilbertBasis (𝕜 := ℂ) (E := H)
-  rw [(hT.add hR).trace_eq_tsum_inner d, hT.trace_eq_tsum_inner d, hR.trace_eq_tsum_inner d]
-  simpa [add_apply, inner_add_right] using
-    ((hT.summable_trace_diagonal d).hasSum.add
-      (hR.summable_trace_diagonal d).hasSum).tsum_eq
+  apply ((hT.add hR).hasSum_trace d).unique
+  simpa only [add_apply, inner_add_right] using (hT.hasSum_trace d).add (hR.hasSum_trace d)
 
 /-- If `T` is trace class and `W` is bounded, then `Tr(TW) = Tr(WT)`. -/
 theorem trace_comp_comm {T : H →L[ℂ] H} (hT : IsTraceClass T) (W : H →L[ℂ] H) :
@@ -241,10 +236,9 @@ theorem traceNorm_zero :
 theorem traceNorm_smul {T : H →L[ℂ] H} (hT : IsTraceClass T) (c : ℂ) :
     (hT.smul c).traceNorm = ‖c‖ * hT.traceNorm := by
   obtain ⟨w, d, -⟩ := exists_hilbertBasis (𝕜 := ℂ) (E := H)
-  rw [(hT.smul c).traceNorm_eq_tsum_diagonalExpectationValue d,
-    hT.traceNorm_eq_tsum_diagonalExpectationValue d]
-  simp_rw [diagonalExpectationValue_abs_smul c T]
-  rw [tsum_mul_left]
+  apply ((hT.smul c).hasSum_abs_diagonalExpectationValue d).unique
+  simpa only [diagonalExpectationValue_abs_smul] using
+    (hT.hasSum_abs_diagonalExpectationValue d).mul_left ‖c‖
 
 /-- Negation preserves the trace norm. -/
 @[simp]

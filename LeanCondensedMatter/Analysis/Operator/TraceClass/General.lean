@@ -88,16 +88,20 @@ namespace IsTraceClass
 noncomputable def traceNorm {T : H →L[ℂ] H} (hT : IsTraceClass T) : ℝ :=
   IsHilbertSchmidt.normSq hT
 
+/-- The diagonal series of `|T|` sums to the trace norm in every Hilbert basis. -/
+theorem hasSum_abs_diagonalExpectationValue {T : H →L[ℂ] H}
+    (hT : IsTraceClass T) {ι : Type*} (d : HilbertBasis ι ℂ H) :
+    HasSum (fun i => diagonalExpectationValue (CFC.abs T)
+      (CFC.abs_nonneg T).isSelfAdjoint (d i)) hT.traceNorm := by
+  simpa only [traceNorm, diagonalExpectationValue_abs_eq_norm_sq_sqrt_abs] using
+    IsHilbertSchmidt.hasSum_norm_sq_apply hT d
+
 /-- The trace norm is the diagonal series of `|T|` in every Hilbert basis. -/
 theorem traceNorm_eq_tsum_diagonalExpectationValue {T : H →L[ℂ] H}
     (hT : IsTraceClass T) {ι : Type*} (d : HilbertBasis ι ℂ H) :
     hT.traceNorm =
-      ∑' i, diagonalExpectationValue (CFC.abs T) (CFC.abs_nonneg T).isSelfAdjoint (d i) := by
-  unfold traceNorm
-  rw [IsHilbertSchmidt.normSq_eq_tsum_norm_sq_apply hT d]
-  apply tsum_congr
-  intro i
-  exact (diagonalExpectationValue_abs_eq_norm_sq_sqrt_abs T (d i)).symm
+      ∑' i, diagonalExpectationValue (CFC.abs T) (CFC.abs_nonneg T).isSelfAdjoint (d i) :=
+  (hT.hasSum_abs_diagonalExpectationValue d).tsum_eq.symm
 
 /-- If `U` is a left polar factor for `T`, the trace norm is the absolute diagonal
 pairing of `U` with `T` in every Hilbert basis. -/
@@ -141,16 +145,8 @@ sum to the trace norm. -/
 theorem hasSum_diagonalExpectationValue_eq_traceNorm {T : H →L[ℂ] H}
     (hT : IsTraceClass T) (hpos : T.IsPositive) {ι : Type*} (d : HilbertBasis ι ℂ H) :
     HasSum (fun i => diagonalExpectationValue T hpos.isSelfAdjoint (d i)) hT.traceNorm := by
-  have hnonneg : 0 ≤ T := nonneg_iff_isPositive.mpr hpos
-  have habs : CFC.abs T = T := CFC.abs_of_nonneg T hnonneg
-  have hsummable :
-      Summable (fun i => diagonalExpectationValue T hpos.isSelfAdjoint (d i)) := by
-    simpa [IsTraceClassWrt, habs] using (isTraceClass_iff_isTraceClassWrt d T).mp hT
-  have hnorm :
-      hT.traceNorm = ∑' i, diagonalExpectationValue T hpos.isSelfAdjoint (d i) := by
-    simpa [habs] using hT.traceNorm_eq_tsum_diagonalExpectationValue d
-  rw [hnorm]
-  exact hsummable.hasSum
+  have habs : CFC.abs T = T := CFC.abs_of_nonneg T (nonneg_iff_isPositive.mpr hpos)
+  simpa only [habs] using hT.hasSum_abs_diagonalExpectationValue d
 
 /-- For a positive trace-class operator, the diagonal sum over any orthonormal family is bounded
 by the trace norm. -/
