@@ -88,9 +88,9 @@ Current semantics are layered rather than identified with one operator formula. 
 `1/2 {v,m}` exists before any weak-current representation is chosen.
 `FluxBalanceLaw.transport` is the representation-independent exact-differential transport;
 the equality `Φ = J.comp d` states that a one-form functional `J` represents
-transport `Φ` through `d`; `DifferentialCurrentRepresentation.current` bundles one such `J` with
-its `isCurrent` proof; and `LocalCurrentDensityRepresentation.currentDensity` exists only after
-supplying a local pairing, with its representation proof exposed as `isCurrentDensity`.
+transport `Φ` through `d`; `DifferentialCurrentRepresentation` is the subtype of such `J`;
+and `LocalCurrentDensityRepresentation` is the subtype of densities representing `Φ` through a
+supplied local pairing. Both use standard subtype projections `val` and `property`.
 Under the stated localization hypotheses, the generalized operator becomes one such current-density
 representation. When localizer evolution admits the supplied velocity representation, the nested
 flux represents the test-space transport and decomposes into the symmetrized flux plus the

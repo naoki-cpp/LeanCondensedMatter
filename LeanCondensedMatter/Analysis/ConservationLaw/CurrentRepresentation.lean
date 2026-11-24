@@ -26,6 +26,7 @@ An equality `Φ = J.comp d` records a chosen linear current extension with
 `Φ(f) = J(d f)`. A strictly stronger `LocalCurrentDensityRepresentation` chooses a current
 density `j` and a supplied bilinear pairing such that `Φ(f) = pairing j (d f)`.
 
+Both representations are ordinary subtype fibers of the corresponding transport map.
 The pairing is deliberately abstract. Concrete continuum models may realize it by a zeroth-order
 pairing such as `∫ α · j`, while lattice models may use a finite bond pairing. No locality claim is
 made merely from factorization through `d`.
@@ -55,12 +56,9 @@ variable [AddCommMonoid CurrentDensity] [Module 𝕜 CurrentDensity]
 /-- Data of one chosen flux functional representing `Φ` through `d`.
 
 No locality or uniqueness claim is bundled into this structure. -/
-structure DifferentialCurrentRepresentation
-    (d : Test →ₗ[𝕜] OneForm) (Φ : Test →ₗ[𝕜] Obs) where
-  /-- The chosen flux functional on differential-like test data. -/
-  current : OneForm →ₗ[𝕜] Obs
-  /-- Proof that `current` represents the transport through the differential. -/
-  isCurrent : Φ = current.comp d
+abbrev DifferentialCurrentRepresentation
+    (d : Test →ₗ[𝕜] OneForm) (Φ : Test →ₗ[𝕜] Obs) :=
+  {J : OneForm →ₗ[𝕜] Obs // Φ = J.comp d}
 
 /-- A bilinear pairing of a current density with 1-form-like test data.
 
@@ -71,15 +69,12 @@ abbrev LocalCurrentPairing :=
 
 /-- A transport functional has a local current-density representation relative to a supplied
 pairing when one density `j` represents `Φ` through `d`. -/
-structure LocalCurrentDensityRepresentation
+abbrev LocalCurrentDensityRepresentation
     (d : Test →ₗ[𝕜] OneForm)
     (Φ : Test →ₗ[𝕜] Obs)
     (pairing : LocalCurrentPairing (𝕜 := 𝕜) (OneForm := OneForm) (Obs := Obs)
-      (CurrentDensity := CurrentDensity)) where
-  /-- The chosen local current density. -/
-  currentDensity : CurrentDensity
-  /-- Proof that `currentDensity` represents the transport through the supplied pairing. -/
-  isCurrentDensity : Φ = (pairing currentDensity).comp d
+      (CurrentDensity := CurrentDensity)) :=
+  {j : CurrentDensity // Φ = (pairing j).comp d}
 
 /-- A local current density is unique if the paired exact-differential tests separate densities. -/
 theorem localCurrentDensity_unique_of_separates
@@ -89,7 +84,7 @@ theorem localCurrentDensity_unique_of_separates
       (CurrentDensity := CurrentDensity)}
     (hsep : Function.Injective (fun j : CurrentDensity => (pairing j).comp d))
     (R₁ R₂ : LocalCurrentDensityRepresentation d Φ pairing) :
-    R₁.currentDensity = R₂.currentDensity :=
-  hsep (R₁.isCurrentDensity.symm.trans R₂.isCurrentDensity)
+    R₁.val = R₂.val :=
+  hsep (R₁.property.symm.trans R₂.property)
 
 end ConservationLaw

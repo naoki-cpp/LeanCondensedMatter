@@ -153,8 +153,8 @@ noncomputable def schwartzLocalCurrentDensityRepresentation1D
       schwartzDifferential1D
       (schwartzWeakTransportFunctional1D current)
       schwartzLocalCurrentPairing1D where
-  currentDensity := current
-  isCurrentDensity := rfl
+  val := current
+  property := rfl
 
 /-- The usual Schrödinger probability current is one concrete local current-density
 representation. -/

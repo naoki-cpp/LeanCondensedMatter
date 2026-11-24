@@ -58,8 +58,8 @@ noncomputable def correctedSymmetrizedVelocityCurrentRepresentation
       (_root_.ConservationLaw.localizedQuantityFunctional N velocity).comp d) :
     _root_.ConservationLaw.DifferentialCurrentRepresentation d
       (heisenbergTransportFunctional V ℏ h M m) where
-  current := _root_.ConservationLaw.nestedSymmetrizedCurrentFlux velocity m N
-  isCurrent := nestedSymmetrizedCurrentFlux_eq_comp
+  val := _root_.ConservationLaw.nestedSymmetrizedCurrentFlux velocity m N
+  property := nestedSymmetrizedCurrentFlux_eq_comp
     V ℏ h M m velocity d N hvelocity
 
 /-- Any other full current functional representing the same intrinsic transport is equivalent on
@@ -74,11 +74,11 @@ theorem currentEquivalent_nestedSymmetrizedCurrentFlux
       (_root_.ConservationLaw.localizedQuantityFunctional N velocity).comp d)
     (R : _root_.ConservationLaw.DifferentialCurrentRepresentation d
       (heisenbergTransportFunctional V ℏ h M m)) :
-    R.current.comp d =
+    R.val.comp d =
       (_root_.ConservationLaw.nestedSymmetrizedCurrentFlux velocity m N).comp d :=
-  R.isCurrent.symm.trans
+  R.property.symm.trans
     (correctedSymmetrizedVelocityCurrentRepresentation
-      V ℏ h M m velocity d N hvelocity).isCurrent
+      V ℏ h M m velocity d N hvelocity).property
 
 end SingleParticle
 end QuantumMechanics

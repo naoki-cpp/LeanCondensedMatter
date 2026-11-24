@@ -75,8 +75,8 @@ noncomputable def symmetrizedVelocityCurrentRepresentation
       d
       (heisenbergTransportFunctional V ℏ h M m)
       (operatorLocalCurrentPairing V N) where
-  currentDensity := symmetrizedVelocityCurrent V velocity m
-  isCurrentDensity := by
+  val := symmetrizedVelocityCurrent V velocity m
+  property := by
     apply LinearMap.ext
     intro f
     have hv := congrArg
@@ -99,7 +99,7 @@ theorem symmetrizedVelocityCurrentRepresentation_currentDensity
     (hvelocity : heisenbergLocalizationFunctional V ℏ h M =
       (_root_.ConservationLaw.localizedQuantityFunctional N velocity).comp d)
     (hcomm : ∀ α, ⁅N α, m⁆ = 0) :
-    (symmetrizedVelocityCurrentRepresentation V ℏ h M m velocity d N hvelocity hcomm).currentDensity =
+    (symmetrizedVelocityCurrentRepresentation V ℏ h M m velocity d N hvelocity hcomm).val =
       symmetrizedVelocityCurrent V velocity m :=
   rfl
 

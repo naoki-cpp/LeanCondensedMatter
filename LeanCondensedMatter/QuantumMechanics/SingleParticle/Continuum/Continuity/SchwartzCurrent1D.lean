@@ -88,7 +88,7 @@ noncomputable def schwartzOperatorProbabilityCurrentRepresentation1D
 @[simp]
 theorem schwartzOperatorProbabilityCurrentRepresentation1D_currentDensity
     (ℏ κ : ℝ) (potential : SchwartzOneParticle1D) :
-    (schwartzOperatorProbabilityCurrentRepresentation1D ℏ κ potential).currentDensity =
+    (schwartzOperatorProbabilityCurrentRepresentation1D ℏ κ potential).val =
       SchwartzSchrodinger1D.velocityOperator ℏ κ := by
   change symmetrizedVelocityCurrent SchwartzOneParticle1D
       (SchwartzSchrodinger1D.velocityOperator ℏ κ) LinearMap.id = _
@@ -120,7 +120,7 @@ noncomputable def schwartzOperatorChargeCurrentRepresentation1D
 @[simp]
 theorem schwartzOperatorChargeCurrentRepresentation1D_currentDensity
     (q : ℂ) (ℏ κ : ℝ) (potential : SchwartzOneParticle1D) :
-    (schwartzOperatorChargeCurrentRepresentation1D q ℏ κ potential).currentDensity =
+    (schwartzOperatorChargeCurrentRepresentation1D q ℏ κ potential).val =
       q • SchwartzSchrodinger1D.velocityOperator ℏ κ := by
   change _root_.LinearMap.symmetrizedProduct (K := ℂ)
       (SchwartzSchrodinger1D.velocityOperator ℏ κ) (q • LinearMap.id) = _
