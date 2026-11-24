@@ -27,11 +27,10 @@ theorem correctedChargeCurrentFlux_eq
     (velocity : V →ₗ[ℂ] V)
     (N : OneForm →ₗ[ℂ] (V →ₗ[ℂ] V))
     (q : ℂ) :
-    _root_.ConservationLaw.nestedSymmetrizedCurrentFlux
-        V velocity (q • LinearMap.id) N =
+    _root_.ConservationLaw.nestedSymmetrizedCurrentFlux velocity (q • LinearMap.id) N =
       operatorLocalCurrentPairing V N (q • velocity) := by
   rw [_root_.ConservationLaw.nestedSymmetrizedCurrentFlux_eq_symmetrized_add_correction,
-    _root_.ConservationLaw.localizationCorrectionCurrentFlux_smul_id, add_zero]
+    _root_.ConservationLaw.localizationCorrectionCurrentFlux_smul_one, add_zero]
   apply LinearMap.ext
   intro α
   rw [_root_.ConservationLaw.symmetrizedCurrentFlux_apply,
@@ -48,13 +47,12 @@ theorem correctedSymmetrizedVelocityCurrentRepresentation_smul_id_current
     (N : OneForm →ₗ[ℂ] (V →ₗ[ℂ] V))
     (q : ℂ)
     (hvelocity : heisenbergLocalizationFunctional V ℏ h M =
-      (_root_.ConservationLaw.localizedQuantityFunctional V N velocity).comp d) :
+      (_root_.ConservationLaw.localizedQuantityFunctional N velocity).comp d) :
     (correctedSymmetrizedVelocityCurrentRepresentation
       V ℏ h M (q • LinearMap.id) velocity d N hvelocity).current =
       operatorLocalCurrentPairing V N (q • velocity) := by
   change
-    _root_.ConservationLaw.nestedSymmetrizedCurrentFlux
-        V velocity (q • LinearMap.id) N =
+    _root_.ConservationLaw.nestedSymmetrizedCurrentFlux velocity (q • LinearMap.id) N =
       operatorLocalCurrentPairing V N (q • velocity)
   exact correctedChargeCurrentFlux_eq V velocity N q
 

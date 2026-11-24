@@ -174,7 +174,7 @@ using a zero-consumer signal as grounds for changing its retention.
 - `QuantumMechanics.SingleParticle.symmetrizedVelocityTransport_decomposition` — canonical algebraic
   decomposition of nested symmetrized transport into the symmetrized current term and the
   double-commutator correction.
-- `ConservationLaw.localizationCorrectionCurrentFlux_smul_id` — independently useful
+- `ConservationLaw.localizationCorrectionCurrentFlux_smul_one` — independently useful
   charge-like specialization stating that the localization correction vanishes for a scalar
   multiple of the identity.
 - `QuantumMechanics.SingleParticle.correctedChargeCurrentFlux_eq` — physical charge-current

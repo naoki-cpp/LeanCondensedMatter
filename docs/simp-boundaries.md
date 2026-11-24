@@ -55,7 +55,7 @@ homomorphic normalization rules:
 - `ConservationLaw.nestedSymmetrizedCurrentFlux_apply`
 - `ConservationLaw.symmetrizedCurrentFlux_apply`
 - `ConservationLaw.localizationCorrectionCurrentFlux_apply`
-- `ConservationLaw.localizationCorrectionCurrentFlux_smul_id`
+- `ConservationLaw.localizationCorrectionCurrentFlux_smul_one`
 - `diagonalDet_zero`
 - `SchwartzKinetic1D.derivative_apply`
 - `SchwartzKinetic1D.multiplicationOperator_apply`

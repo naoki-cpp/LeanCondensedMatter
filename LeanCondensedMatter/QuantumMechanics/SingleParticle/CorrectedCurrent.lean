@@ -38,9 +38,9 @@ theorem nestedSymmetrizedCurrentFlux_eq_comp
     (d : Test →ₗ[ℂ] OneForm)
     (N : OneForm →ₗ[ℂ] (V →ₗ[ℂ] V))
     (hvelocity : heisenbergLocalizationFunctional V ℏ h M =
-      (_root_.ConservationLaw.localizedQuantityFunctional V N velocity).comp d) :
+      (_root_.ConservationLaw.localizedQuantityFunctional N velocity).comp d) :
     heisenbergTransportFunctional V ℏ h M m =
-      (_root_.ConservationLaw.nestedSymmetrizedCurrentFlux V velocity m N).comp d := by
+      (_root_.ConservationLaw.nestedSymmetrizedCurrentFlux velocity m N).comp d := by
   rw [heisenbergTransportFunctional_eq_symmetrizedProductRight_comp V ℏ h M m, hvelocity]
   apply LinearMap.ext
   intro f
@@ -55,10 +55,10 @@ noncomputable def correctedSymmetrizedVelocityCurrentRepresentation
     (d : Test →ₗ[ℂ] OneForm)
     (N : OneForm →ₗ[ℂ] (V →ₗ[ℂ] V))
     (hvelocity : heisenbergLocalizationFunctional V ℏ h M =
-      (_root_.ConservationLaw.localizedQuantityFunctional V N velocity).comp d) :
+      (_root_.ConservationLaw.localizedQuantityFunctional N velocity).comp d) :
     _root_.ConservationLaw.DifferentialCurrentRepresentation d
       (heisenbergTransportFunctional V ℏ h M m) where
-  current := _root_.ConservationLaw.nestedSymmetrizedCurrentFlux V velocity m N
+  current := _root_.ConservationLaw.nestedSymmetrizedCurrentFlux velocity m N
   isCurrent := nestedSymmetrizedCurrentFlux_eq_comp
     V ℏ h M m velocity d N hvelocity
 
@@ -71,11 +71,11 @@ theorem currentEquivalent_nestedSymmetrizedCurrentFlux
     (d : Test →ₗ[ℂ] OneForm)
     (N : OneForm →ₗ[ℂ] (V →ₗ[ℂ] V))
     (hvelocity : heisenbergLocalizationFunctional V ℏ h M =
-      (_root_.ConservationLaw.localizedQuantityFunctional V N velocity).comp d)
+      (_root_.ConservationLaw.localizedQuantityFunctional N velocity).comp d)
     (R : _root_.ConservationLaw.DifferentialCurrentRepresentation d
       (heisenbergTransportFunctional V ℏ h M m)) :
     R.current.comp d =
-      (_root_.ConservationLaw.nestedSymmetrizedCurrentFlux V velocity m N).comp d :=
+      (_root_.ConservationLaw.nestedSymmetrizedCurrentFlux velocity m N).comp d :=
   R.isCurrent.symm.trans
     (correctedSymmetrizedVelocityCurrentRepresentation
       V ℏ h M m velocity d N hvelocity).isCurrent

@@ -76,7 +76,7 @@ theorem schwartzSpinorVelocityLocalizationFlux_eq_comp1D
     (heisenbergLocalizationFunctional SchwartzSpinorOneParticle1D ℏ
         (SchwartzTwoLevelSchrodinger1D.hamiltonian κ potential internalH)
         SchwartzTwoLevel1D.multiplicationLinear) =
-      (_root_.ConservationLaw.localizedQuantityFunctional SchwartzSpinorOneParticle1D
+      (_root_.ConservationLaw.localizedQuantityFunctional
         SchwartzTwoLevel1D.multiplicationLinear
         (SchwartzTwoLevelSchrodinger1D.velocityOperator ℏ κ)).comp SchwartzKinetic1D.derivative := by
   apply LinearMap.ext
@@ -164,7 +164,7 @@ theorem schwartzSpin_sourceCommutator_eq_internal
     (κ : ℝ) (potential : SchwartzTwoLevel1D.Spatial)
     (internalH : SchwartzTwoLevel1D.InternalMatrix)
     (ℏ : ℝ) (spinComponent : QuantumTheory.SpinHalf.SpinSpace) (f : SchwartzTwoLevel1D.Spatial) :
-    _root_.ConservationLaw.sourceFunctional SchwartzSpinorOneParticle1D
+    _root_.ConservationLaw.sourceFunctional
         (SchwartzTwoLevelSchrodinger1D.hamiltonian κ potential internalH)
         SchwartzTwoLevel1D.multiplicationLinear
         (schwartzSpinOperatorLinear ℏ spinComponent) f =
@@ -194,7 +194,7 @@ theorem schwartzSpin_sourceCommutator_eq_zero_of_internal_commutes
     (ℏ : ℝ) (spinComponent : QuantumTheory.SpinHalf.SpinSpace) (f : SchwartzTwoLevel1D.Spatial)
     (hcomm : ⁅SchwartzTwoLevel1D.internalOperator internalH,
       schwartzSpinOperatorLinear ℏ spinComponent⁆ = 0) :
-    _root_.ConservationLaw.sourceFunctional SchwartzSpinorOneParticle1D
+    _root_.ConservationLaw.sourceFunctional
         (SchwartzTwoLevelSchrodinger1D.hamiltonian κ potential internalH)
         SchwartzTwoLevel1D.multiplicationLinear
         (schwartzSpinOperatorLinear ℏ spinComponent) f = 0 := by
