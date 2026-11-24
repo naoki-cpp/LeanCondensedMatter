@@ -212,14 +212,19 @@ private theorem IsTraceClass.summable_norm_inner_left_and_tsum_le_traceNorm
     hpair.1.congr fun i => (congrArg norm (hpoint (d i))).symm
   have hsum_le :
       (∑' i, ‖inner ℂ (W (d i)) (T (d i))‖) ≤
-        (hAW.normSq + hB.normSq) / 2 := by
+        Real.sqrt hAW.normSq * Real.sqrt hB.normSq := by
     calc
       (∑' i, ‖inner ℂ (W (d i)) (T (d i))‖) =
           ∑' i, ‖inner ℂ ((A * W) (d i)) (B (d i))‖ :=
         tsum_congr fun i => congrArg norm (hpoint (d i))
-      _ ≤ (hAW.normSq + hB.normSq) / 2 := hpair.2
+      _ ≤ Real.sqrt hAW.normSq * Real.sqrt hB.normSq := hpair.2
   refine ⟨hnormSummable, hsum_le.trans ?_⟩
-  linarith
+  calc
+    Real.sqrt hAW.normSq * Real.sqrt hB.normSq ≤
+        Real.sqrt hT.traceNorm * Real.sqrt hT.traceNorm := by
+      rw [hBnorm]
+      exact mul_le_mul_of_nonneg_right (Real.sqrt_le_sqrt hAWnorm) (Real.sqrt_nonneg _)
+    _ = hT.traceNorm := by rw [← pow_two, Real.sq_sqrt hT.traceNorm_nonneg]
 
 namespace IsTraceClass
 
@@ -256,10 +261,11 @@ private theorem traceNorm_adjoint_le {T : H →L[ℂ] H} (hT : IsTraceClass T) :
     simpa only [star_mul, ContinuousLinearMap.star_eq_adjoint,
       ContinuousLinearMap.adjoint_adjoint] using congrArg star hfactor
   have hbound :=
-    hT.adjoint.traceNorm_le_half_normSq_add_of_factorization hB hA hfactorAdj
+    hT.adjoint.traceNorm_le_sqrt_normSq_mul_of_factorization hB hA hfactorAdj
   calc
-    hT.adjoint.traceNorm ≤ (hB.normSq + hA.normSq) / 2 := hbound
-    _ = hT.traceNorm := by rw [hAnorm, hBnorm]; ring
+    hT.adjoint.traceNorm ≤ Real.sqrt hB.normSq * Real.sqrt hA.normSq := hbound
+    _ = hT.traceNorm := by
+      rw [hAnorm, hBnorm, ← pow_two, Real.sq_sqrt hT.traceNorm_nonneg]
 
 /-- Taking the adjoint preserves the trace norm. -/
 theorem traceNorm_adjoint {T : H →L[ℂ] H} (hT : IsTraceClass T) :
@@ -271,73 +277,33 @@ theorem traceNorm_adjoint {T : H →L[ℂ] H} (hT : IsTraceClass T) :
   have hrev' : hTT.traceNorm ≤ hT.adjoint.traceNorm := by
     simpa only [ContinuousLinearMap.adjoint_adjoint] using hrev
   exact (hT.traceNorm_proof_irrel hTT).le.trans hrev'
-/-- Left multiplication by a contraction does not increase the trace norm. -/
-private theorem traceNorm_comp_left_le_of_norm_le_one
-    {T : H →L[ℂ] H} (hT : IsTraceClass T) (W : H →L[ℂ] H) (hW : ‖W‖ ≤ 1) :
-    (hT.comp_left W).traceNorm ≤ hT.traceNorm := by
-  obtain ⟨w, d, -⟩ := exists_hilbertBasis (𝕜 := ℂ) (E := H)
-  obtain ⟨U, -, hUright, hUnorm⟩ := exists_leftPolarFactor (W * T)
-  have hAdjWnorm : ‖ContinuousLinearMap.adjoint W‖ ≤ 1 := by
-    rw [← ContinuousLinearMap.star_eq_adjoint, norm_star]
-    exact hW
-  have hcontract : ‖ContinuousLinearMap.adjoint W * U‖ ≤ 1 := by
-    calc
-      ‖ContinuousLinearMap.adjoint W * U‖ ≤
-          ‖ContinuousLinearMap.adjoint W‖ * ‖U‖ := norm_mul_le _ _
-      _ ≤ 1 := by
-        nlinarith [norm_nonneg (ContinuousLinearMap.adjoint W), norm_nonneg U]
-  have hpair := hT.summable_norm_inner_left_and_tsum_le_traceNorm
-    (ContinuousLinearMap.adjoint W * U) hcontract d
-  rw [(hT.comp_left W).traceNorm_eq_tsum_norm_inner_left_of_polar U hUright d]
-  calc
-    (∑' i, ‖inner ℂ (U (d i)) ((W * T) (d i))‖) =
-        ∑' i, ‖inner ℂ ((ContinuousLinearMap.adjoint W * U) (d i)) (T (d i))‖ := by
-      apply tsum_congr
-      intro i
-      apply congrArg norm
-      simpa only [mul_apply_eq_comp, ContinuousLinearMap.adjoint_adjoint] using
-        (ContinuousLinearMap.adjoint_inner_right
-          (ContinuousLinearMap.adjoint W) (U (d i)) (T (d i)))
-    _ ≤ hT.traceNorm := hpair.2
 
 /-- Left multiplication by a bounded operator scales the trace norm by at most its
 operator norm. -/
 theorem traceNorm_comp_left_le
     {T : H →L[ℂ] H} (hT : IsTraceClass T) (W : H →L[ℂ] H) :
     (hT.comp_left W).traceNorm ≤ ‖W‖ * hT.traceNorm := by
-  by_cases hWzero : W = 0
-  · subst W
-    have hzero :
-        (hT.comp_left (0 : H →L[ℂ] H)).traceNorm =
-          (isTraceClass_zero (H := H)).traceNorm :=
-      traceNorm_congr (hT.comp_left (0 : H →L[ℂ] H))
-        (isTraceClass_zero (H := H)) (by simp)
-    rw [hzero, traceNorm_zero]
-    simp
-  · have hWpos : 0 < ‖W‖ := norm_pos_iff.mpr hWzero
-    let W₀ : H →L[ℂ] H := ((‖W‖ : ℂ)⁻¹) • W
-    have hW₀norm : ‖W₀‖ = 1 := by
-      simp [W₀, norm_smul, norm_inv, hWpos.ne']
-    have hcontract :
-        (hT.comp_left W₀).traceNorm ≤ hT.traceNorm :=
-      traceNorm_comp_left_le_of_norm_le_one hT W₀ hW₀norm.le
-    have hscale : (‖W‖ : ℂ) • W₀ = W := by
-      simp [W₀, smul_smul, hWpos.ne']
-    have hprod :
-        W * T = (‖W‖ : ℂ) • (W₀ * T) := by
-      calc
-        W * T = ((‖W‖ : ℂ) • W₀) * T := by rw [hscale]
-        _ = (‖W‖ : ℂ) • (W₀ * T) := by rw [smul_mul_assoc]
-    calc
-      (hT.comp_left W).traceNorm =
-          ((hT.comp_left W₀).smul (‖W‖ : ℂ)).traceNorm :=
-        traceNorm_congr (hT.comp_left W)
-          ((hT.comp_left W₀).smul (‖W‖ : ℂ)) hprod
-      _ = ‖(‖W‖ : ℂ)‖ * (hT.comp_left W₀).traceNorm :=
-        (hT.comp_left W₀).traceNorm_smul (‖W‖ : ℂ)
-      _ ≤ ‖(‖W‖ : ℂ)‖ * hT.traceNorm :=
-        mul_le_mul_of_nonneg_left hcontract (norm_nonneg (‖W‖ : ℂ))
-      _ = ‖W‖ * hT.traceNorm := by simp
+  obtain ⟨A, B, hA, hB, hfactor, hAnorm, hBnorm⟩ :=
+    hT.exists_hilbertSchmidt_factorization_normSq_eq_traceNorm
+  have hAW := isHilbertSchmidt_comp_right hA (ContinuousLinearMap.adjoint W)
+  have hf : ContinuousLinearMap.adjoint (A * ContinuousLinearMap.adjoint W) * B = W * T := by
+    have hadj : ContinuousLinearMap.adjoint (A * ContinuousLinearMap.adjoint W) =
+        W * ContinuousLinearMap.adjoint A := by
+      simp only [← ContinuousLinearMap.star_eq_adjoint, star_mul, star_star]
+    rw [hadj, mul_assoc, hfactor]
+  have hbound : hAW.normSq ≤ ‖W‖ ^ 2 * hT.traceNorm := by
+    have h := hA.normSq_comp_right_le (ContinuousLinearMap.adjoint W)
+    rw [hAnorm, ← ContinuousLinearMap.star_eq_adjoint, norm_star] at h
+    exact h
+  calc
+    (hT.comp_left W).traceNorm ≤ Real.sqrt hAW.normSq * Real.sqrt hB.normSq :=
+      (hT.comp_left W).traceNorm_le_sqrt_normSq_mul_of_factorization hAW hB hf
+    _ ≤ Real.sqrt (‖W‖ ^ 2 * hT.traceNorm) * Real.sqrt hT.traceNorm := by
+      rw [hBnorm]
+      exact mul_le_mul_of_nonneg_right (Real.sqrt_le_sqrt hbound) (Real.sqrt_nonneg _)
+    _ = ‖W‖ * hT.traceNorm := by
+      rw [Real.sqrt_mul (sq_nonneg _), Real.sqrt_sq (norm_nonneg W), mul_assoc,
+        ← pow_two, Real.sq_sqrt hT.traceNorm_nonneg]
 
 /-- Right multiplication by a bounded operator scales the trace norm by at most its
 operator norm. -/
