@@ -1903,5 +1903,154 @@ theorem externalSubsetSourceCumulantSeries_eq_connectedDiagramSeries_two
       (externalSubsetMomentSeries_eq_signedConnected_two ε β g labels times S)
 
 
+/-- Vacuum-normalized source moment at physical dispersion ε and chemical potential μ.
+The effective-dispersion diagram series is multiplied by exactly the product of
+the physical external-field factors; empty and odd subsets retain their normalization. -/
+noncomputable def grandCanonicalExternalSubsetMomentSeries
+    (ε : Mode → ℝ) (β μ : ℝ) (g : QuarticVertexLabel Mode → ℂ)
+    (labels : Fin (2 * E) → ExternalFieldLabel Mode)
+    (times : Fin (2 * E) → ℝ)
+    (S : Finset (Fin (2 * E))) : PowerSeries ℂ :=
+  (∏ i ∈ S, PowerSeries.C (externalFieldChemicalPotentialFactor μ (times i) (labels i))) *
+    externalSubsetMomentSeries (fun k => ε k - μ) β g labels times S
+
+/-- Fully connected physical-H diagrams at explicit chemical potential.
+The external factors multiply the actual effective-dispersion connected diagram
+sum, rather than defining connectivity through moment inversion. -/
+noncomputable def grandCanonicalExternalSubsetConnectedDiagramSeries
+    (ε : Mode → ℝ) (β μ : ℝ) (g : QuarticVertexLabel Mode → ℂ)
+    (labels : Fin (2 * E) → ExternalFieldLabel Mode)
+    (times : Fin (2 * E) → ℝ)
+    (S : Finset (Fin (2 * E))) : PowerSeries ℂ :=
+  (∏ i ∈ S, PowerSeries.C (externalFieldChemicalPotentialFactor μ (times i) (labels i))) *
+    externalSubsetConnectedDiagramSeries (fun k => ε k - μ) β g labels times S
+
+/-- The finite subset product of external factors agrees with the product in
+its canonical even-slot indexing. -/
+private theorem externalSubsetChemicalPotentialFactor_eq_family
+    (μ : ℝ) (labels : Fin (2 * E) → ExternalFieldLabel Mode)
+    (times : Fin (2 * E) → ℝ)
+    (S : Finset (Fin (2 * E))) (heven : Even S.card) :
+    (∏ i ∈ S, PowerSeries.C (externalFieldChemicalPotentialFactor μ (times i) (labels i))) =
+      PowerSeries.C (externalFieldFamilyChemicalPotentialFactor μ
+        (evenExternalSubsetLabels labels S heven)
+        (evenExternalSubsetTimes times S heven)) := by
+  unfold externalFieldFamilyChemicalPotentialFactor
+  rw [map_prod]
+  rw [← Finset.prod_coe_sort S
+    (fun i => PowerSeries.C (externalFieldChemicalPotentialFactor μ (times i) (labels i)))]
+  exact (Equiv.prod_comp (evenExternalSubsetOrderIso S heven).toEquiv
+    (fun i : S => PowerSeries.C
+      (externalFieldChemicalPotentialFactor μ (times i.1) (labels i.1)))).symm
+
+/-- For every nonempty even subset, the explicit-μ source moment recovers the
+physical-H operator Dyson series upon multiplication by the normalized grand-canonical
+vacuum series. This identifies the physical normalization independently of the
+signed partition formula. -/
+theorem grandCanonicalExternalSubsetMomentSeries_mul_normalizedPartition_eq_vertexDysonSeries
+    (ε : Mode → ℝ) (β μ : ℝ) (hβ : 0 ≤ β)
+    (g : QuarticVertexLabel Mode → ℂ)
+    (labels : Fin (2 * E) → ExternalFieldLabel Mode)
+    (times : Fin (2 * E) → ℝ)
+    (S : Finset (Fin (2 * E))) (hS : S ≠ ∅) (heven : Even S.card) :
+    grandCanonicalExternalSubsetMomentSeries ε β μ g labels times S *
+        PowerSeries.normalizeByConstantCoeff
+          (Common.dysonTraceSeries (fermionEnergy (fun k => ε k - μ)) β
+            (quarticInteraction g)) =
+      externalInsertionVertexDysonSeries ε β μ g
+        (evenExternalSubsetLabels labels S heven)
+        (evenExternalSubsetTimes times S heven) := by
+  unfold grandCanonicalExternalSubsetMomentSeries
+  rw [externalSubsetChemicalPotentialFactor_eq_family μ labels times S heven]
+  simp only [externalSubsetMomentSeries, hS, heven, dite_eq_left]
+  exact (externalInsertionVertexDysonSeries_eq_shiftedVacuumFree_mul_normalizedDysonPartitionSeries
+    ε β μ hβ g (evenExternalSubsetLabels labels S heven)
+      (evenExternalSubsetTimes times S heven)).symm
+
+/-- Transport the physical signed moment theorem by the product of the
+external field factors. This preserves the fermionic partition signs exactly. -/
+private theorem grandCanonicalExternalSubsetMomentSeries_eq_signedConnected_of_shifted
+    (ε : Mode → ℝ) (β μ : ℝ)
+    (g : QuarticVertexLabel Mode → ℂ)
+    (labels : Fin (2 * E) → ExternalFieldLabel Mode)
+    (times : Fin (2 * E) → ℝ)
+    (hshift : ∀ S : Finset (Fin (2 * E)),
+      externalSubsetMomentSeries (fun k => ε k - μ) β g labels times S =
+        externalSubsetSignedConnectedMomentSeries (fun k => ε k - μ) β g labels times S)
+    (S : Finset (Fin (2 * E))) :
+    grandCanonicalExternalSubsetMomentSeries ε β μ g labels times S =
+      Finpartition.weightedMomentFromCumulant
+        (fun _ π => PowerSeries.C (externalPartitionSourceSign π))
+        (grandCanonicalExternalSubsetConnectedDiagramSeries ε β μ g labels times) S := by
+  unfold grandCanonicalExternalSubsetMomentSeries grandCanonicalExternalSubsetConnectedDiagramSeries
+  rw [Finpartition.weightedMomentFromCumulant_mul_elementWeights, hshift S]
+  rfl
+
+/-- The signed physical moment identity at arbitrary real chemical potential.
+Only the pre-existing nonnegative inverse-temperature hypothesis is needed. -/
+theorem grandCanonicalExternalSubsetMomentSeries_eq_signedConnected
+    (ε : Mode → ℝ) (β μ : ℝ) (hβ : 0 ≤ β)
+    (g : QuarticVertexLabel Mode → ℂ)
+    (labels : Fin (2 * E) → ExternalFieldLabel Mode)
+    (times : Fin (2 * E) → ℝ)
+    (S : Finset (Fin (2 * E))) :
+    grandCanonicalExternalSubsetMomentSeries ε β μ g labels times S =
+      Finpartition.weightedMomentFromCumulant
+        (fun _ π => PowerSeries.C (externalPartitionSourceSign π))
+        (grandCanonicalExternalSubsetConnectedDiagramSeries ε β μ g labels times) S :=
+  grandCanonicalExternalSubsetMomentSeries_eq_signedConnected_of_shifted
+    ε β μ g labels times
+    (externalSubsetMomentSeries_eq_signedConnected (fun k => ε k - μ) β hβ g labels times) S
+
+/-- The arbitrary-μ connected source cumulant follows from the transported
+physical signed moment identity by the existing weighted inversion. -/
+private theorem grandCanonicalExternalSubsetSourceCumulantSeries_eq_connected_of_shifted
+    (ε : Mode → ℝ) (β μ : ℝ)
+    (g : QuarticVertexLabel Mode → ℂ)
+    (labels : Fin (2 * E) → ExternalFieldLabel Mode)
+    (times : Fin (2 * E) → ℝ)
+    (hshift : ∀ S : Finset (Fin (2 * E)),
+      externalSubsetMomentSeries (fun k => ε k - μ) β g labels times S =
+        externalSubsetSignedConnectedMomentSeries (fun k => ε k - μ) β g labels times S) :
+    externalSubsetSourceCumulantSeries
+        (grandCanonicalExternalSubsetMomentSeries ε β μ g labels times) =
+      grandCanonicalExternalSubsetConnectedDiagramSeries ε β μ g labels times := by
+  apply externalPartitionWeightedMoment_injective
+  · simp [grandCanonicalExternalSubsetConnectedDiagramSeries]
+  · intro S
+    exact (externalSubsetSourceCumulantSeries_reconstruct
+      (grandCanonicalExternalSubsetMomentSeries ε β μ g labels times)
+      (by simp [grandCanonicalExternalSubsetMomentSeries]) S).trans
+      (grandCanonicalExternalSubsetMomentSeries_eq_signedConnected_of_shifted
+        ε β μ g labels times hshift S)
+
+/-- Finite-mode fermionic arbitrary-external linked-cluster theorem at explicit μ:
+the physical-H vacuum-normalized source cumulant equals the fully connected
+grand-canonical diagram series. -/
+theorem grandCanonicalExternalSubsetSourceCumulantSeries_eq_connectedDiagramSeries
+    (ε : Mode → ℝ) (β μ : ℝ) (hβ : 0 ≤ β)
+    (g : QuarticVertexLabel Mode → ℂ)
+    (labels : Fin (2 * E) → ExternalFieldLabel Mode)
+    (times : Fin (2 * E) → ℝ) :
+    externalSubsetSourceCumulantSeries
+        (grandCanonicalExternalSubsetMomentSeries ε β μ g labels times) =
+      grandCanonicalExternalSubsetConnectedDiagramSeries ε β μ g labels times :=
+  grandCanonicalExternalSubsetSourceCumulantSeries_eq_connected_of_shifted
+    ε β μ g labels times
+    (externalSubsetMomentSeries_eq_signedConnected (fun k => ε k - μ) β hβ g labels times)
+
+/-- The direct two-external-insertion source-cumulant theorem retains its
+stronger absence of a sign restriction on β at arbitrary chemical potential. -/
+theorem grandCanonicalExternalSubsetSourceCumulantSeries_eq_connectedDiagramSeries_two
+    (ε : Mode → ℝ) (β μ : ℝ) (g : QuarticVertexLabel Mode → ℂ)
+    (labels : Fin 2 → ExternalFieldLabel Mode)
+    (times : Fin 2 → ℝ) :
+    externalSubsetSourceCumulantSeries (E := 1)
+        (grandCanonicalExternalSubsetMomentSeries (E := 1) ε β μ g labels times) =
+      grandCanonicalExternalSubsetConnectedDiagramSeries (E := 1) ε β μ g labels times :=
+  grandCanonicalExternalSubsetSourceCumulantSeries_eq_connected_of_shifted
+    (E := 1) ε β μ g labels times
+    (externalSubsetMomentSeries_eq_signedConnected_two (fun k => ε k - μ) β g labels times)
+
 end Fermionic
 end SecondQuantization
