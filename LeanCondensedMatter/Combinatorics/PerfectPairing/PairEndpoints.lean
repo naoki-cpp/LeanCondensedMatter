@@ -177,14 +177,10 @@ theorem Pairing.normalizedPairOfEndpointEquiv_pair_eq_or_swap
         (e (endpointEquiv (a, 1)), e (endpointEquiv (a, 0))) := by
   classical
   unfold Pairing.normalizedPairOfEndpointEquiv
-  by_cases h : e (endpointEquiv (a, 0)) < pairing.partner (e (endpointEquiv (a, 0)))
-  · have horder : e (endpointEquiv (a, 0)) < e (endpointEquiv (a, 1)) := by
-      simpa only [hpartner a] using h
-    left
+  by_cases horder : e (endpointEquiv (a, 0)) < e (endpointEquiv (a, 1))
+  · left
     simp [Pairing.pairEndpointEquiv, hpartner a, horder]
-  · have horder : ¬ e (endpointEquiv (a, 0)) < e (endpointEquiv (a, 1)) := by
-      simpa only [hpartner a] using h
-    right
+  · right
     simp [Pairing.pairEndpointEquiv, hpartner a, horder]
 
 /-- A partner-intertwining equivalence of positions induces an equivalence of normalized pairs.
