@@ -26,15 +26,20 @@ bond current, so the response kernel is genuinely mixed:
 χᴿ_{J^(S(n)), J^charge_{u→v}}.
 ```
 
-No equality between spin current and charge current is assumed. The velocity is supplied as a
-one-particle operator so later finite Rashba/Dirac models can instantiate it with the velocity derived
-from their Hamiltonian. Conductivity normalization and source-dependent contact terms remain separate
-from this causal cross-response kernel. The symmetrized-current/proper-current distinction is
-motivated by Shi, Zhang, Xiao, and Niu, *Phys. Rev. Lett.* **96**, 076604 (2006),
-[doi:10.1103/PhysRevLett.96.076604](https://doi.org/10.1103/PhysRevLett.96.076604); this module
-does not identify this symmetrized (conventional) operator with their torque-dipole-completed current. The finite
-Rashba, disorder-vertex, and inverse-response follow-ups are tracked in
-`docs/roadmaps/spin-hall.md`.
+No equality between spin current and charge current is assumed. The conventional
+current uses a supplied velocity. A separate spin-displacement channel uses
+the position and Hamiltonian of the same finite hopping lattice, with
+`D = dΓ({X,S}/2)`, `J = (i/ℏ)[H,D]`, geometric charge source `B` and
+unit-source contact `(i/ℏ)[D,B]`. Its retarded kernel splits into conventional
+and torque-dipole contributions. The equal-time displacement susceptibility
+identifies its contact expectation. Conductivity normalization and bulk/DC
+limits remain downstream. The finite global displacement derivative is not
+identified with a locally conserved bulk current without further hypotheses.
+
+The conventional/proper-current distinction is motivated by Shi, Zhang, Xiao,
+and Niu, *Phys. Rev. Lett.* **96**, 076604 (2006),
+[doi:10.1103/PhysRevLett.96.076604](https://doi.org/10.1103/PhysRevLett.96.076604).
+Follow-ups are tracked in `docs/roadmaps/spin-hall.md`.
 -/
 
 namespace SecondQuantization
@@ -89,8 +94,11 @@ noncomputable def boundedSpinCurrentBondSourceResponseChannel
 
 /-- Proper spin-displacement/charge response on any finite spinful hopping
 lattice. The contact coefficient includes the source profile at observation
-time, as required by `ResponseChannel.observableVariation`. The displacement
-is symmetrized before second quantization. -/
+time, as required by `ResponseChannel.observableVariation`. Set
+`sourceValue = f t` for `causalResponse` with profile `f` at observation time
+`t`, and `sourceValue = 1` for source-normalized frequency or Lehmann response.
+Use free dynamics from the same hopping Hamiltonian and the same positive
+physical hbar. The displacement is symmetrized before second quantization. -/
 noncomputable def boundedSpinDisplacementDirectionalResponseChannel
     {E : Type*} [AddCommGroup E] [Module ℝ E]
     (geometry : LatticeGeometry Site E) (measured source : E →ₗ[ℝ] ℝ)
@@ -150,6 +158,48 @@ theorem boundedSpinDisplacementDirectionalResponseChannel_peierls
   · rw [Complex.ofReal_one, one_smul]
     exact hasAlgebraicDerivAt_boundedDirectionalPeierlsHamiltonian_commutator_zero
       G source (hbar : ℂ) (q : ℂ) K c (boundedOneBodyOperator D)
+
+/-- The explicit contact is precisely the equal-time boundary term of the
+spin-displacement susceptibility, with the observation-time source factor.
+No stationarity or differentiability of the time-evolution group is needed
+for this algebraic identity. -/
+theorem boundedSpinDisplacementDirectionalResponseChannel_contactExpectation
+    {E : Type*} [AddCommGroup E] [Module ℝ E]
+    (geometry : LatticeGeometry Site E) (measured source : E →ₗ[ℝ] ℝ)
+    (K : LocallyFiniteHopping (SpinfulSite Site))
+    (hbar q spinScale : ℝ) (component : QuantumTheory.SpinHalf.SpinSpace)
+    (sourceValue : ℝ)
+    (U : Multiplicative ℝ →* unitary
+      (FiniteLatticeHilbertFock (SpinfulSite Site) →L[ℂ]
+        FiniteLatticeHilbertFock (SpinfulSite Site)))
+    (expectation : NormalizedExpectation (FiniteLatticeHilbertFock (SpinfulSite Site)))
+    (t : ℝ) :
+    let D := boundedOneBodyOperator (LinearMap.symmetrizedProduct (K := ℂ)
+      ((spinfulGeometry geometry).directionalPosition measured)
+      (spinOneBodyLinear (Site := Site) spinScale component))
+    let channel := boundedSpinDisplacementDirectionalResponseChannel
+      geometry measured source K hbar q spinScale component sourceValue
+    channel.contactExpectation U expectation t =
+      (sourceValue : ℂ) * retardedSusceptibility U hbar expectation D channel.source t t := by
+  let D := boundedOneBodyOperator (LinearMap.symmetrizedProduct (K := ℂ)
+    ((spinfulGeometry geometry).directionalPosition measured)
+    (spinOneBodyLinear (Site := Site) spinScale component))
+  let B := boundedDirectionalCurrent (spinfulGeometry geometry) source
+    (hbar : ℂ) (q : ℂ) K
+  change expectation (heisenbergEvolution U t ((sourceValue : ℂ) •
+    ((Complex.I / (hbar : ℂ)) • ⁅-B, D⁆))) =
+      (sourceValue : ℂ) * retardedSusceptibility U hbar expectation D B t t
+  have hcomm : ⁅-B, D⁆ = ⁅D, B⁆ := by
+    simp [LieRing.of_associative_ring_bracket, sub_eq_add_neg, add_comm]
+  rw [hcomm, retardedSusceptibility_eq_commutatorSusceptibility_of_le
+    U hbar expectation D B (le_refl t), commutatorSusceptibility,
+    lie_heisenbergEvolution_eq_relativeTime, sub_self, heisenbergEvolution_zero]
+  let L := (heisenbergEvolution U t).toAlgEquiv.toLinearEquiv
+  change expectation.toContinuousLinearMap
+    (L ((sourceValue : ℂ) • ((Complex.I / (hbar : ℂ)) • ⁅D, B⁆))) =
+      (sourceValue : ℂ) * ((Complex.I / (hbar : ℂ)) *
+        expectation.toContinuousLinearMap (L ⁅D, B⁆))
+  simp only [map_smul, smul_eq_mul]
 
 /-- The real-space mixed retarded kernel splits into the conventional
 spin-current and torque-dipole kernels without a separate position/velocity
