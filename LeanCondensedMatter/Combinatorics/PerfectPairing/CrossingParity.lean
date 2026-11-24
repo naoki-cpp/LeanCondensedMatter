@@ -6,26 +6,27 @@ set_option linter.style.header false
 # Crossing parity from endpoint inversions
 
 For two normalized pairs with disjoint endpoints, geometric crossing is equivalent to odd parity of
-the four cross-pair endpoint comparisons.
+the four cross-pair endpoint comparisons. The result depends only on the order of the endpoints,
+not on their representation as finite positions.
 -/
 
 namespace Combinatorics
 
 /-- Select endpoint `0` or endpoint `1` of an ordered pair. -/
-def pairEndpointAt {n : ℕ} (pair : Fin (2 * n) × Fin (2 * n)) (k : Fin 2) : Fin (2 * n) :=
+def pairEndpointAt {α : Type*} (pair : α × α) (k : Fin 2) : α :=
   if k = 0 then pair.1 else pair.2
 
 /-- Number of endpoints of `right` that occur before endpoints of `left`. -/
-def pairEndpointInversionCount {n : ℕ}
-    (left right : Fin (2 * n) × Fin (2 * n)) : ℕ :=
+def pairEndpointInversionCount {α : Type*} [LT α] [DecidableLT α]
+    (left right : α × α) : ℕ :=
   (if right.1 < left.1 then 1 else 0) +
     (if right.2 < left.1 then 1 else 0) +
     (if right.1 < left.2 then 1 else 0) +
     (if right.2 < left.2 then 1 else 0)
 
 /-- The four endpoint comparisons as a finite double sum. -/
-theorem pairEndpointInversionCount_eq_sum {n : ℕ}
-    (left right : Fin (2 * n) × Fin (2 * n)) :
+theorem pairEndpointInversionCount_eq_sum {α : Type*} [LT α] [DecidableLT α]
+    (left right : α × α) :
     pairEndpointInversionCount left right =
       ∑ i : Fin 2, ∑ j : Fin 2,
         if pairEndpointAt right j < pairEndpointAt left i then 1 else 0 := by
@@ -33,8 +34,8 @@ theorem pairEndpointInversionCount_eq_sum {n : ℕ}
     add_assoc, add_comm, add_left_comm]
 
 /-- Indicator-valued form of crossing parity. -/
-theorem pairEndpointInversionCount_mod_two_eq_crossesIndicator {n : ℕ}
-    (left right : Fin (2 * n) × Fin (2 * n))
+theorem pairEndpointInversionCount_mod_two_eq_crossesIndicator {α : Type*} [LinearOrder α]
+    (left right : α × α)
     (hleft : left.1 < left.2) (hright : right.1 < right.2)
     (h11 : left.1 ≠ right.1) (h12 : left.1 ≠ right.2)
     (h21 : left.2 ≠ right.1) (h22 : left.2 ≠ right.2) :
@@ -43,11 +44,28 @@ theorem pairEndpointInversionCount_mod_two_eq_crossesIndicator {n : ℕ}
   rcases left with ⟨a, b⟩
   rcases right with ⟨c, d⟩
   simp only at hleft hright h11 h12 h21 h22 ⊢
-  by_cases hca : c < a <;>
-  by_cases hda : d < a <;>
-  by_cases hcb : c < b <;>
-  by_cases hdb : d < b <;>
-  simp [pairEndpointInversionCount, Crosses, hca, hda, hcb, hdb] <;>
-  omega
+  rcases lt_or_gt_of_ne h11 with hac | hca
+  · have hca : ¬ c < a := not_lt_of_gt hac
+    have hda : ¬ d < a := not_lt_of_gt (hac.trans hright)
+    rcases lt_or_gt_of_ne h21 with hbc | hcb
+    · have hcb : ¬ c < b := not_lt_of_gt hbc
+      have hdb : ¬ d < b := not_lt_of_gt (hbc.trans hright)
+      simp [pairEndpointInversionCount, Crosses, *]
+    · rcases lt_or_gt_of_ne h22 with hbd | hdb
+      · have hdb : ¬ d < b := not_lt_of_gt hbd
+        simp [pairEndpointInversionCount, Crosses, *]
+      · have hbd : ¬ b < d := not_lt_of_gt hdb
+        simp [pairEndpointInversionCount, Crosses, *]
+  · have hac : ¬ a < c := not_lt_of_gt hca
+    have hcb : c < b := hca.trans hleft
+    rcases lt_or_gt_of_ne h12 with had | hda
+    · have hda : ¬ d < a := not_lt_of_gt had
+      rcases lt_or_gt_of_ne h22 with hbd | hdb
+      · have hdb : ¬ d < b := not_lt_of_gt hbd
+        simp [pairEndpointInversionCount, Crosses, *]
+      · simp [pairEndpointInversionCount, Crosses, *]
+    · have had : ¬ a < d := not_lt_of_gt hda
+      have hdb : d < b := hda.trans hleft
+      simp [pairEndpointInversionCount, Crosses, *]
 
 end Combinatorics
