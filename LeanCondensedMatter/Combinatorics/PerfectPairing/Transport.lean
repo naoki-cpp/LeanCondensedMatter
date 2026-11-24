@@ -33,6 +33,16 @@ theorem PairingOn.transport_partner {α β : Type*} (P : PairingOn β)
   rw [Equiv.permCongr_apply]
   rfl
 
+/-- Casting a pair count is transport along the induced equality of flattened positions. -/
+theorem Pairing.cast_eq_transport {m n : ℕ} (h : m = n) (P : Pairing m) :
+    Equiv.cast (congrArg Pairing h) P =
+      P.transport (finCongr (congrArg (fun k : ℕ => 2 * k) h)).symm := by
+  subst n
+  apply PairingOn.ext
+  apply Equiv.ext
+  intro p
+  simp only [PairingOn.transport_partner] <;> rfl
+
 /-- Casting the number of pairs transports the partner permutation through the corresponding
 cast of flattened positions. -/
 theorem Pairing.cast_partner {m n : ℕ} (h : m = n)
