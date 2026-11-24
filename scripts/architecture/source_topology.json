@@ -135,8 +135,7 @@
           "LeanCondensedMatter.Analysis.Operator.SymmetrizedProduct",
           "LeanCondensedMatter.Analysis.ConservationLaw.CurrentRepresentation",
           "LeanCondensedMatter.Analysis.ConservationLaw.FluxBalanceLaw",
-          "LeanCondensedMatter.Analysis.ConservationLaw.SymmetricLocalizationAlgebra",
-          "LeanCondensedMatter.Analysis.ConservationLaw.CorrectedCurrentFlux"
+          "LeanCondensedMatter.Analysis.ConservationLaw.SymmetricLocalizationAlgebra"
         ]},
         {"id": "fermionicFieldBridge", "modulePrefixes": ["LeanCondensedMatter.SecondQuantization.Fermionic.Field.GeneralizedQuantity"]},
         {"id": "quantumMechanics", "modulePrefixes": ["LeanCondensedMatter.QuantumMechanics"]}
