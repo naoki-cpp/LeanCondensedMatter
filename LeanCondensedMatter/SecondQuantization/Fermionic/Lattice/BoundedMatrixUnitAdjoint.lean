@@ -143,6 +143,27 @@ theorem isSelfAdjoint_sum_boundedDgammaMatrixUnit_blocks
   rw [Finset.sum_comm]
   simp_rw [hentry k]
 
+/-- The existing finite-lattice hopping Hamiltonian is self-adjoint whenever
+its one-particle hopping amplitudes are Hermitian. -/
+theorem isSelfAdjoint_boundedHoppingHamiltonian
+    (K : LocallyFiniteHopping Site) (hK : K.HasHermitianAmplitudes) :
+    IsSelfAdjoint (boundedHoppingHamiltonian K) := by
+  let A : Matrix Site Site ℂ := fun x y => K.amplitude x y
+  have hA : A.IsHermitian := by
+    change Matrix.conjTranspose A = A
+    apply Matrix.ext
+    intro x y
+    change star (K.amplitude y x) = K.amplitude x y
+    exact hK y x
+  have hsum : boundedHoppingHamiltonian K =
+      ∑ x : Site, ∑ y : Site, A x y • boundedDgammaMatrixUnit x y := by
+    change boundedOneBodyOperator K.operator = _
+    rw [K.operator_eq_sum_matrixUnit]
+    simp only [map_sum, map_smul, boundedOneBodyOperator_eq,
+      boundedDgammaMatrixUnit, A]
+  rw [hsum]
+  exact isSelfAdjoint_sum_boundedDgammaMatrixUnit A hA
+
 end Finite
 
 end
