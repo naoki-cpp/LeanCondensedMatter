@@ -71,6 +71,28 @@ private theorem orderedExternalInsertionTimedEvents_perm {E n : ℕ}
   classical
   exact List.perm_insertionSort _ _
 
+/-- Scalar products over the sorted mixed events are independent of their order. -/
+theorem prod_orderedExternalInsertionTimedEvents {R : Type*} [CommMonoid R]
+    {E n : ℕ} (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ)
+    (a : ExternalInsertionTimedEvent E n → R) :
+    ((orderedExternalInsertionTimedEvents externalTime σ).map a).prod =
+      ∏ e : ExternalInsertionTimedEvent E n, a e := by
+  classical
+  have hprod : ∀ (k : ℕ) (f : Fin k → R),
+      (List.ofFn f).prod = ∏ i, f i := by
+    intro k
+    induction k with
+    | zero =>
+        intro f
+        simp
+    | succ k ih =>
+        intro f
+        rw [List.ofFn_succ, List.prod_cons, Fin.prod_univ_succ, ih]
+  rw [((orderedExternalInsertionTimedEvents_perm externalTime σ).map a).prod_eq,
+    canonicalExternalInsertionTimedEvents, List.map_ofFn, hprod]
+  exact Equiv.prod_comp
+    (finSumFinEquiv : ExternalInsertionTimedEvent E n ≃ Fin (2 * E + n)).symm a
+
 private theorem orderedExternalInsertionTimedEvents_nodup {E n : ℕ}
     (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ) :
     (orderedExternalInsertionTimedEvents externalTime σ).Nodup :=

@@ -125,4 +125,16 @@ theorem zetaCommutator_mul_left
   rw [mul_comm ζ η]
   module
 
+/-- Extract commuting scalar factors from an ordered list product of linear endomorphisms,
+without changing the order of the endomorphisms. -/
+theorem list_prod_map_smul {ι V : Type*} [AddCommGroup V] [Module R V]
+    (l : List ι) (a : ι → R) (f : ι → Module.End R V) :
+    (l.map (fun i => a i • f i)).prod = (l.map a).prod • (l.map f).prod := by
+  induction l with
+  | nil => simp
+  | cons e l ih =>
+      simp only [List.map_cons, List.prod_cons, ih, Module.End.mul_eq_comp,
+        LinearMap.smul_comp, LinearMap.comp_smul, smul_smul]
+      rw [mul_comm (l.map a).prod (a e)]
+
 end ScalarExchange

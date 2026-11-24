@@ -3,7 +3,7 @@ import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.QuarticInteracti
 import LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTime.ExternalField
 import LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTime.TwoPoint
 import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.InteractionPicture
-import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.Quartic
+import LeanCondensedMatter.Analysis.ScalarExchange.Basic
 
 set_option linter.style.header false
 
@@ -68,26 +68,6 @@ noncomputable def mixedTimeOrderedVertexComp {n : ℕ} (ε : Mode → ℝ) (i j 
     List.prod ((orderedTwoPointTimedEvents τ τ' σ).map
       (twoPointTimedEventOperator ε i j τ τ' q σ))
 
-/-- A uniform chemical-potential shift leaves the imaginary-time evolution of a
-number-conserving quartic vertex unchanged. -/
-theorem interactionPicture_quarticVertexOperator_sub_chemicalPotential
-    (ε : Mode → ℝ) (μ τ : ℝ) (q : QuarticVertexLabel Mode) :
-    Common.interactionPicture (fermionEnergy ε) (quarticVertexOperator q) τ =
-      Common.interactionPicture (fermionEnergy (fun k => ε k - μ))
-        (quarticVertexOperator q) τ := by
-  have hevolve (η : Mode → ℝ) :
-      Common.interactionPicture (fermionEnergy η) (quarticVertexOperator q) τ =
-        Common.quarticVertexTimeFactor η q τ • quarticVertexOperator q :=
-    Common.heisenbergEvolve_quarticVertexOperator (fermionEnergy η) η
-      create annihilate q τ (imaginaryTimeEvolve_create η τ)
-      (imaginaryTimeEvolve_annihilate η τ)
-  have hshift : Common.quarticVertexEnergyShift (fun k => ε k - μ) q =
-      Common.quarticVertexEnergyShift ε q := by
-    unfold Common.quarticVertexEnergyShift
-    ring
-  rw [hevolve ε, hevolve (fun k => ε k - μ)]
-  simp only [Common.quarticVertexTimeFactor, hshift]
-
 /-- The external-field factor relating physical-H evolution to evolution at the
 effective grand-canonical dispersion ε − μ. -/
 noncomputable def twoPointChemicalPotentialFactor (μ τ τ' : ℝ) : ℂ :=
@@ -112,36 +92,16 @@ theorem mixedTimeOrderedVertexComp_eq_shiftedDispersion
         a e • twoPointTimedEventOperator (fun k => ε k - μ) i j τ τ' q σ e := by
     rcases e with e | v
     · fin_cases e
-      · change externalFieldOperator ε τ (.annihilation i) =
-          Complex.exp (-(τ : ℂ) * (μ : ℂ)) •
-            externalFieldOperator (fun k => ε k - μ) τ (.annihilation i)
-        rw [externalFieldOperator_annihilation_eq_smul,
-          externalFieldOperator_annihilation_eq_smul, smul_smul, ← Complex.exp_add]
-        congr 1
-        congr 1
-        push_cast
-        ring
-      · change externalFieldOperator ε τ' (.creation j) =
-          Complex.exp ((τ' : ℂ) * (μ : ℂ)) •
-            externalFieldOperator (fun k => ε k - μ) τ' (.creation j)
-        rw [externalFieldOperator_creation_eq_smul,
-          externalFieldOperator_creation_eq_smul, smul_smul, ← Complex.exp_add]
-        congr 1
-        congr 1
-        push_cast
-        ring
+      · exact externalFieldOperator_eq_shiftedDispersion ε μ τ (.annihilation i)
+      · exact externalFieldOperator_eq_shiftedDispersion ε μ τ' (.creation j)
     · simp only [twoPointTimedEventOperator_interaction, a, one_smul]
       exact interactionPicture_quarticVertexOperator_sub_chemicalPotential ε μ (σ v) (q v)
   have hprod (l : List (TwoPointTimedEvent n)) :
       (l.map (twoPointTimedEventOperator ε i j τ τ' q σ)).prod =
         (l.map a).prod •
           (l.map (twoPointTimedEventOperator (fun k => ε k - μ) i j τ τ' q σ)).prod := by
-    induction l with
-    | nil => simp
-    | cons e l ih =>
-        simp only [List.map_cons, List.prod_cons, hevent e, ih,
-          Module.End.mul_eq_comp, LinearMap.smul_comp, LinearMap.comp_smul, smul_smul]
-        rw [mul_comm (l.map a).prod (a e)]
+    rw [funext hevent]
+    exact ScalarExchange.list_prod_map_smul l a _
   have htail : ((twoPointInteractionEventList n).map a).prod = 1 := by
     rw [twoPointInteractionEventList, List.map_ofFn]
     simp [Function.comp_def, a]

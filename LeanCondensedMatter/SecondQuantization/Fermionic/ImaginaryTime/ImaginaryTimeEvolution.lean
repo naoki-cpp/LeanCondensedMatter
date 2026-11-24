@@ -1,5 +1,7 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.Hamiltonian
 import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.EnergyShift
+import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.Quartic
+import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.QuarticInteraction
 import Mathlib.Analysis.SpecialFunctions.Complex.Analytic
 
 set_option linter.style.header false
@@ -93,6 +95,26 @@ theorem imaginaryTimeEvolve_create (ε : Mode → ℝ) (τ : ℝ) (i : Mode) :
   simpa using
     Common.heisenbergEvolve_eq_smul_of_carriesShift
       (fermionEnergy ε) (ε i) τ (create i) (carriesEnergyShift_create ε i)
+
+/-- A uniform chemical-potential shift leaves the imaginary-time evolution of a
+number-conserving quartic vertex unchanged. -/
+theorem interactionPicture_quarticVertexOperator_sub_chemicalPotential
+    (ε : Mode → ℝ) (μ τ : ℝ) (q : QuarticVertexLabel Mode) :
+    Common.interactionPicture (fermionEnergy ε) (quarticVertexOperator q) τ =
+      Common.interactionPicture (fermionEnergy (fun k => ε k - μ))
+        (quarticVertexOperator q) τ := by
+  have hevolve (η : Mode → ℝ) :
+      Common.interactionPicture (fermionEnergy η) (quarticVertexOperator q) τ =
+        Common.quarticVertexTimeFactor η q τ • quarticVertexOperator q :=
+    Common.heisenbergEvolve_quarticVertexOperator (fermionEnergy η) η
+      create annihilate q τ (imaginaryTimeEvolve_create η τ)
+      (imaginaryTimeEvolve_annihilate η τ)
+  have hshift : Common.quarticVertexEnergyShift (fun k => ε k - μ) q =
+      Common.quarticVertexEnergyShift ε q := by
+    unfold Common.quarticVertexEnergyShift
+    ring
+  rw [hevolve ε, hevolve (fun k => ε k - μ)]
+  simp only [Common.quarticVertexTimeFactor, hshift]
 
 end Fermionic
 end SecondQuantization
