@@ -10,7 +10,6 @@ import LeanCondensedMatter.Analysis.Fourier.CyclicLaplacian
 import LeanCondensedMatter.Analysis.Matrix.CartesianProjectors
 import LeanCondensedMatter.Analysis.Matrix.FinTwoCharpoly
 import LeanCondensedMatter.Analysis.ScalarExchange.Basic
-import LeanCondensedMatter.Analysis.ScalarExchange.Peel
 import LeanCondensedMatter.Analysis.InternalSpace.Pauli
 import LeanCondensedMatter.Analysis.PowerSeries
 import LeanCondensedMatter.Analysis.PowerSeries.FrobeniusWronskian
