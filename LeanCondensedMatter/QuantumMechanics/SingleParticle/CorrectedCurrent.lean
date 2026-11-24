@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Analysis.ConservationLaw.CorrectedCurrentFlux
-import LeanCondensedMatter.Analysis.ConservationLaw.CurrentEquivalence
+import LeanCondensedMatter.Analysis.ConservationLaw.CurrentRepresentation
 import LeanCondensedMatter.QuantumMechanics.SingleParticle.LocalizedTransport
 
 set_option linter.style.header false
@@ -74,10 +74,9 @@ theorem currentEquivalent_nestedSymmetrizedCurrentFlux
       (velocityLocalizationFlux V velocity N).comp d)
     (R : _root_.ConservationLaw.DifferentialCurrentRepresentation d
       (heisenbergTransportFunctional V ℏ h M m)) :
-    _root_.ConservationLaw.DifferentialCurrentEquivalent d R.current
-      (_root_.ConservationLaw.nestedSymmetrizedCurrentFlux V velocity m N) := by
-  apply (_root_.ConservationLaw.DifferentialCurrentEquivalent.iff_comp_eq).2
-  exact R.isCurrent.symm.trans
+    R.current.comp d =
+      (_root_.ConservationLaw.nestedSymmetrizedCurrentFlux V velocity m N).comp d :=
+  R.isCurrent.symm.trans
     (correctedSymmetrizedVelocityCurrentRepresentation
       V ℏ h M m velocity d N hvelocity).isCurrent
 

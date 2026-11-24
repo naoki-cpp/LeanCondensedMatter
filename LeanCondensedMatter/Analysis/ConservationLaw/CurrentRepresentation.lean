@@ -1,4 +1,5 @@
 import Mathlib.Algebra.Module.LinearMap.Defs
+import Mathlib.Tactic.Module
 
 set_option linter.style.header false
 
@@ -34,6 +35,11 @@ model-specific charge-current vertices, and response observables may exist witho
 differential representation. The composition equality records the additional local-balance fact
 that a supplied one-form functional represents `Φ` through `d`; it is not the root definition of
 every current operator.
+
+Two currents agree on exact differential data precisely when their compositions with `d` are equal.
+Invisible extensions satisfy `K.comp d = 0`. A density is uniquely determined when the map
+`j ↦ (pairing j).comp d` is injective. These use ordinary equality and injectivity, not a separate
+current-specific equivalence relation.
 -/
 
 namespace ConservationLaw
@@ -54,6 +60,33 @@ structure DifferentialCurrentRepresentation
   current : OneForm →ₗ[𝕜] Obs
   /-- Proof that `current` represents the transport through the differential. -/
   isCurrent : Φ = current.comp d
+
+namespace DifferentialCurrentRepresentation
+
+/-- Two representations of the same transport differ by an extension vanishing on exact
+differential data. -/
+theorem exists_current_eq_add_invisible
+    {R Test' OneForm' Obs' : Type*} [CommRing R]
+    [AddCommMonoid Test'] [Module R Test']
+    [AddCommMonoid OneForm'] [Module R OneForm']
+    [AddCommGroup Obs'] [Module R Obs']
+    {d : Test' →ₗ[R] OneForm'} {Φ : Test' →ₗ[R] Obs'}
+    (R₁ R₂ : DifferentialCurrentRepresentation d Φ) :
+    ∃ K : OneForm' →ₗ[R] Obs', K.comp d = 0 ∧ R₁.current = R₂.current + K := by
+  refine ⟨R₁.current - R₂.current, ?_, ?_⟩
+  · apply LinearMap.ext
+    intro f
+    change R₁.current (d f) - R₂.current (d f) = 0
+    have h := R₁.isCurrent.symm.trans R₂.isCurrent
+    have hf := congrArg (fun L : Test' →ₗ[R] Obs' => L f) h
+    simp only [LinearMap.comp_apply] at hf
+    rw [hf, sub_self]
+  · apply LinearMap.ext
+    intro α
+    change R₁.current α = R₂.current α + (R₁.current α - R₂.current α)
+    rw [add_comm, sub_add_cancel]
+
+end DifferentialCurrentRepresentation
 
 /-- A bilinear pairing of a current density with 1-form-like test data.
 
@@ -88,5 +121,16 @@ def toDifferentialCurrentRepresentation
   isCurrent := R.isCurrentDensity
 
 end LocalCurrentDensityRepresentation
+
+/-- A local current density is unique if the paired exact-differential tests separate densities. -/
+theorem localCurrentDensity_unique_of_separates
+    {d : Test →ₗ[𝕜] OneForm}
+    {Φ : Test →ₗ[𝕜] Obs}
+    {pairing : LocalCurrentPairing (𝕜 := 𝕜) (OneForm := OneForm) (Obs := Obs)
+      (CurrentDensity := CurrentDensity)}
+    (hsep : Function.Injective (fun j : CurrentDensity => (pairing j).comp d))
+    (R₁ R₂ : LocalCurrentDensityRepresentation d Φ pairing) :
+    R₁.currentDensity = R₂.currentDensity :=
+  hsep (R₁.isCurrentDensity.symm.trans R₂.isCurrentDensity)
 
 end ConservationLaw
