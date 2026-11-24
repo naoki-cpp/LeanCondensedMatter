@@ -31,7 +31,7 @@ theorem exists_current_eq_symmetrized_add_correction_add_invisible
     (d : Test →ₗ[ℂ] OneForm)
     (N : OneForm →ₗ[ℂ] (V →ₗ[ℂ] V))
     (hvelocity : heisenbergLocalizationFunctional V ℏ h M =
-      (velocityLocalizationFlux V velocity N).comp d)
+      (_root_.ConservationLaw.localizedQuantityFunctional V N velocity).comp d)
     (R : _root_.ConservationLaw.DifferentialCurrentRepresentation d
       (heisenbergTransportFunctional V ℏ h M m)) :
     ∃ K : OneForm →ₗ[ℂ] (V →ₗ[ℂ] V),
