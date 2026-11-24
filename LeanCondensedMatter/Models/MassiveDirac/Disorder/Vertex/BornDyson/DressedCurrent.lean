@@ -37,31 +37,6 @@ noncomputable def finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCur
     (finiteCutoffContinuumBornDysonLadderSolvedVector
       v m probeEnergy broadening disorderStrength hbar pMax)) source
 
-/-- The source-`x` dressed coefficients are the canonical solved ladder vector. -/
-theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentCoefficientVector_x
-    (v m probeEnergy broadening disorderStrength hbar pMax : ℝ) :
-    finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentCoefficientVector
-        0 v m probeEnergy broadening disorderStrength hbar pMax =
-      finiteCutoffContinuumBornDysonLadderSolvedVector
-        v m probeEnergy broadening disorderStrength hbar pMax := by
-  funext direction
-  fin_cases direction <;>
-    simp [finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentCoefficientVector,
-      Matrix.transpose, inPlaneRotationMatrix]
-
-/-- The source-`y` coefficients follow the same repository rotation convention as source `x`. -/
-theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentCoefficientVector_y
-    (v m probeEnergy broadening disorderStrength hbar pMax : ℝ) :
-    finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentCoefficientVector
-        1 v m probeEnergy broadening disorderStrength hbar pMax =
-      let solved := finiteCutoffContinuumBornDysonLadderSolvedVector
-        v m probeEnergy broadening disorderStrength hbar pMax;
-      inPlaneCoefficientVector (-(solved 1)) (solved 0) := by
-  funext direction
-  fin_cases direction <;>
-    simp [finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentCoefficientVector,
-      Matrix.transpose, inPlaneRotationMatrix, inPlaneCoefficientVector]
-
 /-- Source-indexed finite-cutoff finite-`η` Born-Dyson dressed current insertion. -/
 noncomputable def finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperator
     (source : Fin 2)
@@ -145,10 +120,8 @@ theorem tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurre
       regime hrenorm hdet
   have hInsertion : Continuous fun coefficients : InPlaneCoefficientVector =>
       inPlaneCurrentOperator e regime.v (Matrix.transpose (inPlaneRotationMatrix coefficients) source) := by
-    apply (continuous_inPlaneCurrentOperator e regime.v).comp
-    refine continuous_pi fun direction => ?_
-    exact (continuous_apply source).comp
-      ((continuous_apply direction).comp continuous_inPlaneRotationMatrix)
+    exact (continuous_inPlaneCurrentOperator e regime.v).comp
+      ((continuous_apply source).comp continuous_inPlaneRotationMatrix.matrix_transpose)
   unfold finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperator
     finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentCoefficientVector
     finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperatorZeroBroadeningBoundary
