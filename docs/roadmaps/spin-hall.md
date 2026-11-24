@@ -328,6 +328,30 @@ A concrete spinful Rashba hopping model and the spin-displacement /
 torque-dipole response based on its real-space position still remain
 separate milestones. Contact terms retain the existing Peierls convention.
 
+## Open-boundary real-space Rashba hopping (partial R4)
+
+`Models.RashbaExchange.RealSpaceHopping` constructs a rectangular square
+lattice of two spin modes per site using the existing `SpinfulSite` and
+`LatticeGeometry`. With spacing `a`, `t=ℏ²/(2m_eff a²)`,
+`λ=ℏ α_R/(2a)`, the target-forward hopping blocks are
+`T_x=-t I-iλσ_y`, `T_y=-t I+iλσ_x`, with reverse adjoints and
+onsite `4t I+Δσ_z`. Natural-coordinate adjacency enforces open boundaries.
+The forward-table-plus-adjoint construction gives
+`realSpaceRashbaHopping_hasHermitianAmplitudes`, and the shared
+`isSelfAdjoint_boundedHoppingHamiltonian` yields
+`realSpaceRashbaHamiltonian_isSelfAdjoint` on full finite Fock space.
+
+The generic `LocallyFiniteHopping.ofFiniteAmplitudes` constructs incident
+sets from actual nonzero amplitude support, not a fictitious complete
+hopping graph. The position and charge current can now consume the same
+real-space geometry and Hamiltonian through
+`LatticeGeometry.directionalPosition` and
+`boundedDirectionalCurrent_eq_positionCommutator`. The signs use
+`exp(i p·r/ℏ)`; no Fourier or continuum-limit theorem is asserted.
+The real-space spin-displacement, torque-dipole and physical contact
+response remain downstream. Algebraic Hermiticity does not require
+positive mass, spacing or ℏ; physical applications do.
+
 ## References
 
 See the annotated entries in [`../references.md`](../references.md) for full
