@@ -93,7 +93,8 @@ theorem prod_orderedExternalInsertionTimedEvents {R : Type*} [CommMonoid R]
   exact Equiv.prod_comp
     (finSumFinEquiv : ExternalInsertionTimedEvent E n ≃ Fin (2 * E + n)).symm a
 
-private theorem orderedExternalInsertionTimedEvents_nodup {E n : ℕ}
+/-- Stable mixed ordering contains no duplicate events. -/
+theorem orderedExternalInsertionTimedEvents_nodup {E n : ℕ}
     (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ) :
     (orderedExternalInsertionTimedEvents externalTime σ).Nodup :=
   (orderedExternalInsertionTimedEvents_perm externalTime σ).nodup_iff.mpr (by
@@ -102,7 +103,8 @@ private theorem orderedExternalInsertionTimedEvents_nodup {E n : ℕ}
       ((finSumFinEquiv :
         ExternalInsertionTimedEvent E n ≃ Fin (2 * E + n)).symm.injective))
 
-private theorem orderedExternalInsertionTimedEvents_all_mem {E n : ℕ}
+/-- Stable mixed ordering contains every event. -/
+theorem orderedExternalInsertionTimedEvents_all_mem {E n : ℕ}
     (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ) :
     ∀ event : ExternalInsertionTimedEvent E n,
       event ∈ orderedExternalInsertionTimedEvents externalTime σ := by
@@ -114,7 +116,8 @@ private theorem orderedExternalInsertionTimedEvents_all_mem {E n : ℕ}
       ExternalInsertionTimedEvent E n ≃ Fin (2 * E + n)) event,
     by simp⟩
 
-private theorem orderedExternalInsertionTimedEvents_pairwise {E n : ℕ}
+/-- Stable mixed ordering is pairwise sorted. -/
+theorem orderedExternalInsertionTimedEvents_pairwise {E n : ℕ}
     (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ) :
     (orderedExternalInsertionTimedEvents externalTime σ).Pairwise
       (externalInsertionTimedEventBeforeOrEqual externalTime σ) := by
