@@ -395,6 +395,43 @@ takes positive ℏ, and the explicit source-dependent contact variation,
 real-space mixed retarded response, stationary benchmark and bulk/DC
 limits remain separate tasks.
 
+## Real-space spin-displacement Kubo channel and Peierls variation (partial R4)
+
+The shared `GeometricPeierls.boundedDirectionalPeierlsHamiltonian_zero`
+identifies the zero-source family with the original bounded hopping
+Hamiltonian (including onsite terms).
+`hasAlgebraicDerivAt_boundedDirectionalPeierlsHamiltonian_commutator_zero`
+transports its existing algebraic derivative through the linear
+commutator with any fixed bounded observable.
+
+For a finite spinful lattice, the existing spinful geometry gives
+`D_i^a = dΓ({X_i,S_a}/2)`. With the geometric charge current B_j
+and source convention H(A)=H_0-A B_j+O(A²), the proper current and
+its unit-source variation are
+
+```text
+J_i^a(A) = (i/ℏ)[H(A),D_i^a]
+J_i^a(0) = dΓ(δ_H({X_i,S_a}/2))
+∂_A J_i^a(0) = (i/ℏ)[-B_j,D_i^a].
+```
+
+The shared `boundedSpinDisplacementDirectionalResponseChannel`
+uses this derived contact, explicitly multiplying by the source
+profile at observation time. Its `_peierls` theorem establishes
+the zero-source value and unit-source weak algebraic derivative;
+its `_retardedKernel` theorem decomposes the mixed retarded kernel
+into conventional spin and torque-dipole contributions with the
+same charge source.
+
+`realSpaceRashbaFreeSystem` and
+`realSpaceRashbaSpinDisplacementResponseChannel` instantiate these
+existing shared APIs on the actual Hermitian Rashba hopping for
+any finite planar geometry. This is a finite causal response
+construction, not yet a stationary-state benchmark, a norm
+derivative/perturbed-expectation theorem for the full Peierls
+family, a local torque-divergence law, or a bulk/DC conductivity
+limit.
+
 ## References
 
 See the annotated entries in [`../references.md`](../references.md) for full
