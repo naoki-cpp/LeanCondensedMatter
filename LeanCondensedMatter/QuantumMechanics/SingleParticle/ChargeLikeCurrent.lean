@@ -53,7 +53,7 @@ theorem correctedSymmetrizedVelocityCurrentRepresentation_smul_id_current
     (hvelocity : heisenbergLocalizationFunctional V ℏ h M =
       (_root_.ConservationLaw.localizedQuantityFunctional N velocity).comp d) :
     (correctedSymmetrizedVelocityCurrentRepresentation
-      V ℏ h M (q • LinearMap.id) velocity d N hvelocity).current =
+      V ℏ h M (q • LinearMap.id) velocity d N hvelocity).val =
       operatorLocalCurrentPairing V N (q • velocity) := by
   change
     _root_.ConservationLaw.nestedSymmetrizedCurrentFlux velocity (q • LinearMap.id) N =

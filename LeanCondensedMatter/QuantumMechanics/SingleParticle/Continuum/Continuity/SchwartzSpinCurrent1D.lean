@@ -126,7 +126,7 @@ noncomputable def schwartzSpinCurrentRepresentation1D
 theorem schwartzSpinCurrentRepresentation1D_currentDensity
     (ℏ κ : ℝ) (potential : SchwartzTwoLevel1D.Spatial)
     (internalH : SchwartzTwoLevel1D.InternalMatrix) (spinComponent : QuantumTheory.SpinHalf.SpinSpace) :
-    (schwartzSpinCurrentRepresentation1D ℏ κ potential internalH spinComponent).currentDensity =
+    (schwartzSpinCurrentRepresentation1D ℏ κ potential internalH spinComponent).val =
       schwartzSpinCurrentDensityLinear1D ℏ κ spinComponent :=
   rfl
 
@@ -151,7 +151,7 @@ theorem symmetrizedSpinCurrent_eq_velocity_comp_spin
 theorem schwartzSpinCurrentRepresentation1D_currentDensity_eq_velocity_comp_spin
     (ℏ κ : ℝ) (potential : SchwartzTwoLevel1D.Spatial)
     (internalH : SchwartzTwoLevel1D.InternalMatrix) (spinComponent : QuantumTheory.SpinHalf.SpinSpace) :
-    (schwartzSpinCurrentRepresentation1D ℏ κ potential internalH spinComponent).currentDensity =
+    (schwartzSpinCurrentRepresentation1D ℏ κ potential internalH spinComponent).val =
       (SchwartzTwoLevelSchrodinger1D.velocityOperator ℏ κ).comp
         (schwartzSpinOperatorLinear ℏ spinComponent) := by
   rw [schwartzSpinCurrentRepresentation1D_currentDensity,

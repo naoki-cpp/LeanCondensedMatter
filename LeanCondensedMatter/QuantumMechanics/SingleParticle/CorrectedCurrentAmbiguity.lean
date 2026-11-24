@@ -36,10 +36,10 @@ theorem exists_current_eq_symmetrized_add_correction_add_invisible
       (heisenbergTransportFunctional V ℏ h M m)) :
     ∃ K : OneForm →ₗ[ℂ] (V →ₗ[ℂ] V),
       K.comp d = 0 ∧
-        R.current =
+        R.val =
           (_root_.ConservationLaw.symmetrizedCurrentFlux velocity m N +
             _root_.ConservationLaw.localizationCorrectionCurrentFlux velocity m N) + K := by
-  refine ⟨R.current - _root_.ConservationLaw.nestedSymmetrizedCurrentFlux velocity m N,
+  refine ⟨R.val - _root_.ConservationLaw.nestedSymmetrizedCurrentFlux velocity m N,
     ?_, ?_⟩
   · rw [LinearMap.sub_comp,
       currentEquivalent_nestedSymmetrizedCurrentFlux V ℏ h M m velocity d N hvelocity R,
