@@ -49,7 +49,7 @@ theorem nestedSymmetrizedCurrentFlux_apply
     (velocity m : V →ₗ[K] V)
     (N : OneForm →ₗ[K] (V →ₗ[K] V)) (α : OneForm) :
     nestedSymmetrizedCurrentFlux V velocity m N α =
-      LinearMap.symmetrizedProduct (LinearMap.symmetrizedProduct (N α) velocity) m :=
+      LinearMap.symmetrizedProduct (K := K) (LinearMap.symmetrizedProduct (K := K) (N α) velocity) m :=
   rfl
 
 /-- Flux obtained from the symmetrized current `1/2 {v,m}`. -/
@@ -57,14 +57,14 @@ noncomputable def symmetrizedCurrentFlux
     (velocity m : V →ₗ[K] V)
     (N : OneForm →ₗ[K] (V →ₗ[K] V)) :
     OneForm →ₗ[K] (V →ₗ[K] V) :=
-  localizedQuantityFunctional V N (LinearMap.symmetrizedProduct velocity m)
+  localizedQuantityFunctional V N (LinearMap.symmetrizedProduct (K := K) velocity m)
 
 @[simp]
 theorem symmetrizedCurrentFlux_apply
     (velocity m : V →ₗ[K] V)
     (N : OneForm →ₗ[K] (V →ₗ[K] V)) (α : OneForm) :
     symmetrizedCurrentFlux V velocity m N α =
-      LinearMap.symmetrizedProduct (N α) (LinearMap.symmetrizedProduct velocity m) :=
+      LinearMap.symmetrizedProduct (K := K) (N α) (LinearMap.symmetrizedProduct (K := K) velocity m) :=
   rfl
 
 /-- Canonical localization correction, defined as the exact difference between the nested and
@@ -83,8 +83,8 @@ theorem localizationCorrectionCurrentFlux_apply
     localizationCorrectionCurrentFlux V velocity m N α =
       (1 / 4 : K) • ⁅velocity, ⁅N α, m⁆⁆ := by
   change
-    LinearMap.symmetrizedProduct (LinearMap.symmetrizedProduct (N α) velocity) m -
-      LinearMap.symmetrizedProduct (N α) (LinearMap.symmetrizedProduct velocity m) = _
+    LinearMap.symmetrizedProduct (K := K) (LinearMap.symmetrizedProduct (K := K) (N α) velocity) m -
+      LinearMap.symmetrizedProduct (K := K) (N α) (LinearMap.symmetrizedProduct (K := K) velocity m) = _
   rw [LinearMap.symmetrizedProduct_nested, add_comm, add_sub_cancel_right]
 
 /-- The nested flux is exactly the symmetrized flux plus localization correction. -/
