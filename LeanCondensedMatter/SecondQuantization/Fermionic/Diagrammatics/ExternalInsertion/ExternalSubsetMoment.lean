@@ -575,7 +575,7 @@ theorem sum_fixedExternalPartitionDysonFiber_eq_signedCoeffPreconnectedSeries
       sum_fixedExternalPartitionDysonFiber_eq_sum_realizableSizes_signedProduct
         anchor π heven ε β hβ g labels times
     _ = sign * (∑ size ∈ sizes, ∏ B : π.parts, blockCoeff B (size B)) :=
-      (Finset.mul_sum _ _ _).symm
+      by rw [Finset.mul_sum]
     _ = _ := congrArg (fun z : ℂ => sign * z) hfactor
 
 /-- The full fixed-order physical Dyson coefficient is reindexed by even
