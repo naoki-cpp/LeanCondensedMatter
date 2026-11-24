@@ -202,7 +202,9 @@ theorem finiteHilbertMap_apply_of_basis
         (ExteriorAlgebra.map j (ExteriorAlgebra.map f x)) := by
           have h := congrArg
             (fun L : V →ₗ[ℂ] H => finiteHilbertEquiv b.toBasis (ExteriorAlgebra.map L x)) hf
-          simpa only [ExteriorAlgebra.map_comp_map, AlgHom.comp_apply] using h
+          rw [← ExteriorAlgebra.map_comp_map j e.toLinearEquiv.toLinearMap,
+            ← ExteriorAlgebra.map_comp_map f j] at h
+          simpa only [AlgHom.comp_apply] using h
     _ = _ := finiteHilbertEquiv_map_of_basis b₀ b.toBasis j hj _
 
 end
