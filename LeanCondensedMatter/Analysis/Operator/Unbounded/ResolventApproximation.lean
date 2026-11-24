@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Analysis.Operator.Unbounded.BoundedResolvent
 import LeanCondensedMatter.Analysis.Operator.Unbounded.CayleyTransform
 import Mathlib.Tactic.Ring
 
@@ -21,7 +22,7 @@ and
 are bounded self-adjoint operators.  The first is the standard resolvent regularizer and the second
 is the corresponding bounded approximation of the unbounded generator.  On the original operator
 domain they satisfy `Aᵣ x = Jᵣ (A x)`.  This is the rational approximation layer used in the
-Stone-theorem construction.
+Stone-theorem construction. Approximants at positive scales commute by the resolvent identity.
 -/
 
 namespace LinearPMap
@@ -115,28 +116,6 @@ theorem boundedSelfAdjointApproximation_isSelfAdjoint
     hstar, star_star]
   module
 
-/-- Resolvents commute with applying the generator on its domain in the expected affine form. -/
-theorem nonrealResolvent_apply_operator
-    (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (z : ℂ) (hz : z.im ≠ 0)
-    (x : A.domain) :
-    nonrealResolvent A hA z hz (A x) =
-      (x : H) + z • nonrealResolvent A hA z hz (x : H) := by
-  have h := nonrealResolvent_shift_apply A hA z hz x
-  calc
-    nonrealResolvent A hA z hz (A x) =
-        nonrealResolvent A hA z hz ((A x - z • (x : H)) + z • (x : H)) := by
-      congr 1
-      module
-    _ = nonrealResolvent A hA z hz (A x - z • (x : H)) +
-        nonrealResolvent A hA z hz (z • (x : H)) := by
-      exact (nonrealResolvent A hA z hz).map_add _ _
-    _ = nonrealResolvent A hA z hz (A x - z • (x : H)) +
-        z • nonrealResolvent A hA z hz (x : H) := by
-      congr 1
-      exact (nonrealResolvent A hA z hz).map_smul z (x : H)
-    _ = (x : H) + z • nonrealResolvent A hA z hz (x : H) := by
-      rw [h]
-
 /-- On the original domain, the bounded generator approximation is the regularized generator:
 `Aᵣ x = Jᵣ (A x)`. -/
 theorem boundedSelfAdjointApproximation_apply_domain
@@ -151,6 +130,23 @@ theorem boundedSelfAdjointApproximation_apply_domain
       (imaginaryParameter_im_ne_zero hr) x]
   simp only [regularizerCoefficient, approximationCoefficient, imaginaryParameter]
   match_scalars <;> simp <;> ring_nf <;> simp [pow_two] <;> ring
+
+/-- Bounded self-adjoint resolvent approximants at two positive scales commute. -/
+theorem boundedSelfAdjointApproximation_commute
+    (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A)
+    (r s : ℝ) (hr : 0 < r) (hs : 0 < s) :
+    Commute (boundedSelfAdjointApproximation A hA r hr)
+      (boundedSelfAdjointApproximation A hA s hs) := by
+  unfold boundedSelfAdjointApproximation
+  apply Commute.smul_left
+  apply Commute.smul_right
+  apply Commute.add_left
+  · apply Commute.add_right
+    · apply nonrealResolvent_commute
+    · apply nonrealResolvent_commute
+  · apply Commute.add_right
+    · apply nonrealResolvent_commute
+    · apply nonrealResolvent_commute
 
 end
 
