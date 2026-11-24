@@ -86,12 +86,15 @@ theorem coefficientSum_C_mul (f : R⟦X⟧) (x c : R) :
 theorem hasSum_coefficientSum_X_mul (f : R⟦X⟧) (x : R) {a : R}
     (hf : HasSum (fun n : ℕ => PowerSeries.coeff n f * x ^ n) a) :
     HasSum (fun n : ℕ => PowerSeries.coeff n (PowerSeries.X * f) * x ^ n) (x * a) := by
-  have hshift : HasSum (fun n : ℕ =>
-      PowerSeries.coeff (n + 1) (PowerSeries.X * f) * x ^ (n + 1)) (x * a) := by
-    simp only [Nat.add_one, PowerSeries.coeff_succ_X_mul, pow_succ]
-    simpa only [mul_comm, mul_left_comm, mul_assoc] using hf.mul_left x
-  simpa only [Finset.sum_range_one, PowerSeries.coeff_zero_X_mul, zero_mul, add_zero] using
-    (hasSum_nat_add_iff 1).mp hshift
+  let g : ℕ → R := fun n => PowerSeries.coeff n (PowerSeries.X * f) * x ^ n
+  have hshift : HasSum (fun n : ℕ => g (n + 1)) (a * x) := by
+    simpa only [g, PowerSeries.coeff_succ_X_mul, pow_succ, ← mul_assoc] using hf.mul_right x
+  have hfull : HasSum g (a * x + ∑ n ∈ Finset.range 1, g n) :=
+    (hasSum_nat_add_iff (f := g) 1).mp hshift
+  have hzero : g 0 = 0 := by
+    simp only [g, PowerSeries.coeff_zero_X_mul, zero_mul]
+  rw [Finset.sum_range_one, hzero, add_zero, mul_comm a x] at hfull
+  exact hfull
 
 /-- Multiplication by X commutes with the total coefficientwise sum: its zero constant
 coefficient permits an unconditional shift of the series. -/
