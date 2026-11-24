@@ -99,20 +99,21 @@ theorem completedCoordinateProjection_tsum_diagonalTerm
     by_cases hc : P c
     · have hQψ : Q ψ c = ψ c := by
         rw [show Q ψ c = if P c then ψ c else 0 from
-          completedCoordinateProjection_apply P ψ c, if_pos hc]
-      rw [if_pos hc] at hQb
-      rw [if_pos hc]
+          completedCoordinateProjection_apply P ψ c, ite_eq_left hc]
+      rw [ite_eq_left hc] at hQb
+      rw [ite_eq_left hc]
       simp only [HilbertBasis.diagonalTerm, smul_apply, InnerProductSpace.rankOne_apply,
         map_smul, b, completedHilbertBasis_apply, inner_completedBasisState_left, hQb, hQψ]
-    · rw [if_neg hc] at hQb
-      rw [if_neg hc]
+    · rw [ite_eq_right hc] at hQb
+      rw [ite_eq_right hc]
       simp only [HilbertBasis.diagonalTerm, smul_apply, InnerProductSpace.rankOne_apply,
         map_smul, b, completedHilbertBasis_apply, hQb, smul_zero, zero_apply]
   have hindicator :
       HasSum (({c : Config | P c} : Set Config).indicator (b.diagonalTerm a)) (L A) := by
     apply (hA.mapL L).congr_fun
     intro c
-    exact hterm c
+    change (if P c then b.diagonalTerm a c else 0) = L (b.diagonalTerm a c)
+    exact (hterm c).symm
   have hsubset :
       HasSum (fun c : {c : Config // P c} => b.diagonalTerm a c.val) (L A) :=
     (hasSum_subtype_iff_indicator (s := {c : Config | P c})
