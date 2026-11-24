@@ -112,8 +112,7 @@ private theorem integral_polarPauli_directionTrace_eq
           (pauliRungAngularCoefficient aL aR dL dR) coefficients measured := by
   let rung : ℝ → DiracOperator := fun θ =>
     polarPauliOperator aL bL dL θ *
-      (coefficients 0 • matrixOperator sigmaX +
-        coefficients 1 • matrixOperator sigmaY) *
+      inPlanePauliVertexOperator coefficients *
       polarPauliOperator aR bR dR θ
   have hrungIntegrable : IntervalIntegrable rung volume 0 (2 * Real.pi) := by
     apply Continuous.intervalIntegrable
@@ -123,35 +122,13 @@ private theorem integral_polarPauli_directionTrace_eq
     finiteDimensionalOperatorTrace.comp
       ((ContinuousLinearMap.mulLeftRight ℂ DiracOperator)
         (q • matrixOperator (directionPauli measured)) 1)
-  have hfun :
-      (fun θ : ℝ =>
-        finiteDimensionalOperatorTrace
-          ((q • matrixOperator (directionPauli measured)) *
-            polarPauliOperator aL bL dL θ *
-            (coefficients 0 • matrixOperator sigmaX +
-              coefficients 1 • matrixOperator sigmaY) *
-            polarPauliOperator aR bR dR θ)) =
-        fun θ : ℝ => L (rung θ) := by
-    funext θ
-    simp [L, rung, mul_assoc]
-  rw [hfun]
+  trans (∫ θ in (0 : ℝ)..(2 * Real.pi), L (rung θ))
+  · apply intervalIntegral.integral_congr
+    intro θ _
+    simp [L, rung, inPlanePauliVertexOperator, mul_assoc]
   rw [L.intervalIntegral_comp_comm hrungIntegrable]
-  have hrungIntegral :
-      (∫ θ in (0 : ℝ)..(2 * Real.pi), rung θ) =
-        inPlanePauliVertexOperator
-          (inPlaneLadderAction
-            (pauliRungAngularCoefficient aL aR dL dR) coefficients) := by
-    simpa only [rung, inPlanePauliVertexOperator] using
-      (integral_polarPauliOperator_inPlane_eq aL aR bL bR dL dR coefficients)
-  rw [hrungIntegral]
-  change
-    finiteDimensionalOperatorTrace
-        ((q • matrixOperator (directionPauli measured)) *
-          inPlanePauliVertexOperator
-            (inPlaneLadderAction
-              (pauliRungAngularCoefficient aL aR dL dR) coefficients)) =
-      2 * q * inPlaneLadderAction
-        (pauliRungAngularCoefficient aL aR dL dR) coefficients measured
+  dsimp only [rung]
+  rw [integral_polarPauliOperator_inPlane_eq]
   exact trace_directionPauli_inPlane_eq measured q
     (inPlaneLadderAction (pauliRungAngularCoefficient aL aR dL dR) coefficients)
 
@@ -353,28 +330,12 @@ theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumInte
       -finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral
         0 1 e v m probeEnergy broadening disorderStrength hbar pMax := by
   unfold finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral
-  calc
-    (∫ p in (0 : ℝ)..pMax,
-      finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceRadialIntegrand
-        1 0 e v m p probeEnergy broadening disorderStrength hbar pMax) =
-      ∫ p in (0 : ℝ)..pMax,
-        -finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceRadialIntegrand
-          0 1 e v m p probeEnergy broadening disorderStrength hbar pMax := by
-        apply intervalIntegral.integral_congr
-        intro p _
-        change
-          finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceRadialIntegrand
-              1 0 e v m p probeEnergy broadening disorderStrength hbar pMax =
-            -finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceRadialIntegrand
-              0 1 e v m p probeEnergy broadening disorderStrength hbar pMax
-        rw [finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceRadialIntegrand_eq_radialCoefficient,
-          finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceRadialIntegrand_eq_radialCoefficient,
-          finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yx_eq_neg_xy]
-        ring
-    _ = -∫ p in (0 : ℝ)..pMax,
-        finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceRadialIntegrand
-          0 1 e v m p probeEnergy broadening disorderStrength hbar pMax := by
-        rw [intervalIntegral.integral_neg]
+  rw [← intervalIntegral.integral_neg]
+  apply intervalIntegral.integral_congr
+  intro p _
+  simp only [finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceRadialIntegrand_eq_radialCoefficient,
+    finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yx_eq_neg_xy,
+    mul_neg]
 
 /-- After radial integration, the two finite-`η` diagonal Středa responses are equal. -/
 theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral_yy_eq_xx
@@ -386,13 +347,7 @@ theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumInte
   unfold finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral
   apply intervalIntegral.integral_congr
   intro p _
-  change
-    finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceRadialIntegrand
-        1 1 e v m p probeEnergy broadening disorderStrength hbar pMax =
-      finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceRadialIntegrand
-        0 0 e v m p probeEnergy broadening disorderStrength hbar pMax
-  rw [finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceRadialIntegrand_eq_radialCoefficient,
-    finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceRadialIntegrand_eq_radialCoefficient,
+  simp only [finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceRadialIntegrand_eq_radialCoefficient,
     finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yy_eq_xx]
 
 end
