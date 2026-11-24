@@ -54,6 +54,11 @@ noncomputable def externalFieldChemicalPotentialFactor (μ τ : ℝ) :
   | .annihilation _ => Complex.exp (-(τ : ℂ) * (μ : ℂ))
   | .creation _ => Complex.exp ((τ : ℂ) * (μ : ℂ))
 
+/-- Total physical-to-effective-dispersion scalar of a finite family of external fields. -/
+noncomputable def externalFieldFamilyChemicalPotentialFactor {ι : Type*} [Fintype ι]
+    (μ : ℝ) (labels : ι → ExternalFieldLabel Mode) (times : ι → ℝ) : ℂ :=
+  ∏ i, externalFieldChemicalPotentialFactor μ (times i) (labels i)
+
 /-- A uniform energy shift contributes the scalar of the field's particle-number charge. -/
 theorem externalFieldOperator_eq_shiftedDispersion
     (ε : Mode → ℝ) (μ τ : ℝ) (label : ExternalFieldLabel Mode) :
