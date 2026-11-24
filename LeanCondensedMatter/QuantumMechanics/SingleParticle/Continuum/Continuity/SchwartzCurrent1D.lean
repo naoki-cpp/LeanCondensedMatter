@@ -90,10 +90,11 @@ theorem schwartzOperatorProbabilityCurrentRepresentation1D_currentDensity
     (ℏ κ : ℝ) (potential : SchwartzOneParticle1D) :
     (schwartzOperatorProbabilityCurrentRepresentation1D ℏ κ potential).val =
       SchwartzSchrodinger1D.velocityOperator ℏ κ := by
-  change symmetrizedVelocityCurrent SchwartzOneParticle1D
+  change _root_.LinearMap.symmetrizedProduct (K := ℂ)
       (SchwartzSchrodinger1D.velocityOperator ℏ κ) LinearMap.id = _
-  exact symmetrizedVelocityCurrent_id SchwartzOneParticle1D
-    (SchwartzSchrodinger1D.velocityOperator ℏ κ)
+  simpa only [one_smul] using
+    (_root_.LinearMap.symmetrizedProduct_smul_id
+      (SchwartzSchrodinger1D.velocityOperator ℏ κ) (1 : ℂ))
 
 /-- Charge transport (`m = q I`) on the Schwartz Schrödinger model is locally represented by
 `q v`. -/

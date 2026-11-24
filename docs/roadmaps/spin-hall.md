@@ -195,7 +195,7 @@ The proper-current/torque-dipole equivalence is deliberately left to R4.
 ## Spin displacement and torque-dipole specialization (partial R4)
 
 `Models.RashbaExchange.SpinDisplacementBridge` reuses
-`ConservationLaw.lie_localizedQuantity` and
+`QuantumTheory.ConservationLaw.heisenbergEvolution_symmetrizedProduct` and
 `SingleParticle.heisenbergTransportFunctional` /
 `heisenbergSourceFunctional` instead of defining another generic
 proper-current algebra. For the existing finite momentum-grid Rashba
