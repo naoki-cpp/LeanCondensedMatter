@@ -94,7 +94,8 @@ theorem realSpaceRashbaHopping_hasHermitianAmplitudes [Fintype Site] [DecidableE
     (onsite exchange : Site → ℝ) :
     (realSpaceRashbaHopping geometry bond onsite exchange).HasHermitianAmplitudes := by
   intro x y
-  simpa only [realSpaceRashbaHopping, LocallyFiniteHopping.ofFiniteAmplitudes_amplitude]
+  simpa only [realSpaceRashbaHopping, LocallyFiniteHopping.amplitude_eq,
+    LocallyFiniteHopping.ofFiniteAmplitudes_column_apply]
     using star_realSpaceRashbaAmplitude geometry bond onsite exchange x y
 
 /-- The full finite Fock Hamiltonian is self-adjoint for any such planar lattice. -/
