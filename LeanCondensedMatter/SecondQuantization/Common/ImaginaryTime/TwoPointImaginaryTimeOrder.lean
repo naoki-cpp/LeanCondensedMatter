@@ -242,6 +242,39 @@ theorem orderedTwoPointTimedEventPosition_lt_iff {n : ℕ}
             exact h)
           hab hba)).elim
 
+/-- At two external insertions, the full atomic permutation reverses sign
+exactly when the two external fields are exchanged. Interaction times,
+including all equal-time ties, impose no further sign. -/
+theorem externalInsertionStandardToMixedAtomicPositionEquiv_sign_twoPoint
+    {n : ℕ} (τ τ' : ℝ) (σ : Fin n → ℝ) :
+    Equiv.Perm.sign
+        (externalInsertionStandardToMixedAtomicPositionEquiv
+          (E := 1) (twoPointExternalTimes τ τ') σ) =
+      (if τ < τ' then (-1 : ℤˣ) else 1) := by
+  classical
+  have horder :
+      (orderedExternalInsertionTimedEvents (E := 1) (twoPointExternalTimes τ τ') σ).idxOf
+          (Sum.inl 1) <
+        (orderedExternalInsertionTimedEvents (E := 1) (twoPointExternalTimes τ τ') σ).idxOf
+          (Sum.inl 0) ↔ τ < τ' := by
+    rw [← orderedTwoPointTimedEvents_eq_externalInsertion τ τ' σ]
+    change orderedTwoPointTimedEventPosition τ τ' σ (Sum.inl 1) <
+      orderedTwoPointTimedEventPosition τ τ' σ (Sum.inl 0) ↔ τ < τ'
+    rw [orderedTwoPointTimedEventPosition_lt_iff]
+    simp [twoPointTimedEventBefore, twoPointTimedEventBeforeOrEqual,
+      stableTimedEventBeforeOrEqual_iff, twoPointTimedEventTime, twoPointTimedEventRank]
+  rw [externalInsertionStandardToMixedAtomicPositionEquiv_sign]
+  change (-1 : ℤˣ) ^ (∑ a : Fin 2, ∑ b : Fin 2,
+    if a.val < b.val ∧
+      (orderedExternalInsertionTimedEvents (E := 1) (twoPointExternalTimes τ τ') σ).idxOf
+        (Sum.inl b) <
+      (orderedExternalInsertionTimedEvents (E := 1) (twoPointExternalTimes τ τ') σ).idxOf
+        (Sum.inl a) then 1 else 0) = _
+  simp only [Fin.sum_univ_two]
+  by_cases h : τ < τ'
+  · simp [h, horder]
+  · simp [h, horder]
+
 /-! ## Monotone interaction-slot transport -/
 
 variable {m n : ℕ} {f : Fin m → Fin n}
