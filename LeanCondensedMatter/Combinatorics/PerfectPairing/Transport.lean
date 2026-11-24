@@ -41,7 +41,7 @@ theorem Pairing.cast_eq_transport {m n : ℕ} (h : m = n) (P : Pairing m) :
   apply PairingOn.ext
   apply Equiv.ext
   intro p
-  simp only [PairingOn.transport_partner] <;> rfl
+  rw [PairingOn.transport_partner]
 
 /-- Casting the number of pairs transports the partner permutation through the corresponding
 cast of flattened positions. -/
