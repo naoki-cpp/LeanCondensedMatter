@@ -130,7 +130,7 @@ theorem FamilySlotShuffleTo.relativePerm_sign_eq_oddBlockInversions
     have hji : j ≠ i := fun h => hij h.symm
     simp_rw [hσ i j hij, hτ j i hji]
     by_cases hr : r i < r j <;> by_cases hs : s j < s i <;>
-      simp [hr, hs, Nat.ModEq, Nat.mul_mod, Nat.mul_comm]
+      simp [hr, hs, Nat.ModEq, Nat.mul_mod]
 
 private theorem familyBlockDisagreementCount_add_swap_mod_two
     {ι : Type*} {size : ι → ℕ} {total : ℕ}
