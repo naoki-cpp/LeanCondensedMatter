@@ -1,4 +1,3 @@
-import LeanCondensedMatter.Analysis.Algebra.ScalarResolvent
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.BornDyson.Invertibility
 import Mathlib.Tactic.FunProp
 import Mathlib.Tactic.Ring
