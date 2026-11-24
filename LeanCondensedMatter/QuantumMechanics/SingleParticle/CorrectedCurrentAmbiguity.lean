@@ -39,19 +39,14 @@ theorem exists_current_eq_symmetrized_add_correction_add_invisible
         R.current =
           (_root_.ConservationLaw.symmetrizedCurrentFlux velocity m N +
             _root_.ConservationLaw.localizationCorrectionCurrentFlux velocity m N) + K := by
-  obtain ⟨K, hK, hcurrent⟩ := R.exists_current_eq_add_invisible
-    (correctedSymmetrizedVelocityCurrentRepresentation
-      V ℏ h M m velocity d N hvelocity)
-  refine ⟨K, hK, ?_⟩
-  calc
-    R.current =
-        (correctedSymmetrizedVelocityCurrentRepresentation
-          V ℏ h M m velocity d N hvelocity).current + K := hcurrent
-    _ = _root_.ConservationLaw.nestedSymmetrizedCurrentFlux velocity m N + K := rfl
-    _ =
-        (_root_.ConservationLaw.symmetrizedCurrentFlux velocity m N +
-          _root_.ConservationLaw.localizationCorrectionCurrentFlux velocity m N) + K := by
-      rw [_root_.ConservationLaw.nestedSymmetrizedCurrentFlux_eq_symmetrized_add_correction]
+  refine ⟨R.current - _root_.ConservationLaw.nestedSymmetrizedCurrentFlux velocity m N,
+    ?_, ?_⟩
+  · rw [LinearMap.sub_comp,
+      currentEquivalent_nestedSymmetrizedCurrentFlux V ℏ h M m velocity d N hvelocity R,
+      sub_self]
+  · rw [← _root_.ConservationLaw.nestedSymmetrizedCurrentFlux_eq_symmetrized_add_correction,
+      add_comm, sub_add_cancel]
+
 
 end SingleParticle
 end QuantumMechanics
