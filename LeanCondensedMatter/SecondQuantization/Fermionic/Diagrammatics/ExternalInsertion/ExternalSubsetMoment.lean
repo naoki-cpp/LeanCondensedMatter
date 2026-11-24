@@ -1167,8 +1167,6 @@ private theorem externalSubsetPartitionEquiv_evenBlocks
   · intro hEven B
     simpa only [hcard B] using hEven (be B)
 
-set_option maxHeartbeats 4000000 in
--- Relabelled blocks have dependent local sizes, so compare their inversion counts via ambient sets.
 open Classical in
 /-- The canonical fermionic source sign is unchanged when the
 canonically increasing local external slots of an even source subset
@@ -1227,32 +1225,9 @@ private theorem externalSubsetPartitionEquiv_sourceSign
       simp only [Finset.sum_map, hlocalOrder]
   have hcount :
       π.shuffleOfIncreasingOrder.orderedBlockInversionCount orderπ =
-        σ.shuffleOfIncreasingOrder.orderedBlockInversionCount orderσ := by
-    classical
-    unfold Combinatorics.FamilySlotShuffleTo.orderedBlockInversionCount
-    refine Finset.sum_bij (fun p _ => (be p.1, be p.2)) ?_ ?_ ?_ ?_
-    · intro p hp
-      exact Finset.mem_offDiag.mpr
-        ⟨Finset.mem_univ _, Finset.mem_univ _, be.injective.ne (Finset.mem_offDiag.mp hp).2.2⟩
-    · intro p _ q _ hpq
-      exact Prod.ext (be.injective (congrArg Prod.fst hpq))
-        (be.injective (congrArg Prod.snd hpq))
-    · intro q hq
-      refine ⟨(be.symm q.1, be.symm q.2), ?_, ?_⟩
-      · exact Finset.mem_offDiag.mpr
-          ⟨Finset.mem_univ _, Finset.mem_univ _, by
-            intro h
-            apply (Finset.mem_offDiag.mp hq).2.2
-            simpa using congrArg be h⟩
-      · ext <;> simp
-    · intro p _
-      by_cases hp : orderπ p.1 < orderπ p.2
-      · have hq : orderσ (be p.1) < orderσ (be p.2) := (horder p.1 p.2).mp hp
-        simp only [hp, hq, ite_true]
-        exact hInv p.1 p.2
-      · have hq : ¬ orderσ (be p.1) < orderσ (be p.2) :=
-          fun h => hp ((horder p.1 p.2).mpr h)
-        simp [hp, hq]
+        σ.shuffleOfIncreasingOrder.orderedBlockInversionCount orderσ :=
+    π.shuffleOfIncreasingOrder.orderedBlockInversionCount_eq_of_blockInversionCount
+      σ.shuffleOfIncreasingOrder be hInv orderπ orderσ horder
   calc
     externalPartitionSourceSign π = externalPartitionOrderSign π orderπ := rfl
     _ = externalPartitionOrderSign σ orderσ := by
