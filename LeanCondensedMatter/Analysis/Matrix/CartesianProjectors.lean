@@ -1,7 +1,5 @@
 import Mathlib.Basic.Real.Basic
 import Mathlib.Data.Matrix.Mul
-import Mathlib.Tactic.Abel
-import Mathlib.Tactic.Ring
 
 set_option linter.style.header false
 
@@ -34,10 +32,7 @@ theorem outer_mul_self (k : ι → R) :
     outer k * outer k = normSq k • outer k := by
   change Matrix.vecMulVec k k * Matrix.vecMulVec k k =
     (k ⬝ᵥ k) • Matrix.vecMulVec k k
-  rw [Matrix.vecMulVec_mul_vecMulVec]
-  ext i j
-  simp only [Matrix.vecMulVec_apply, Matrix.smul_apply, Pi.smul_apply, smul_eq_mul]
-  ring
+  rw [Matrix.vecMulVec_mul_vecMulVec, Matrix.vecMulVec_smul]
 
 variable [DecidableEq ι]
 
@@ -47,31 +42,20 @@ def transverse (k : ι → R) : Matrix ι ι R :=
 
 theorem outer_add_transverse (k : ι → R) :
     outer k + transverse k = normSq k • (1 : Matrix ι ι R) := by
-  unfold transverse
-  abel
+  rw [transverse, add_comm (outer k), sub_add_cancel]
 
 theorem outer_mul_transverse (k : ι → R) :
     outer k * transverse k = 0 := by
-  calc
-    outer k * transverse k =
-        outer k * (normSq k • (1 : Matrix ι ι R) - outer k) := rfl
-    _ = normSq k • outer k - outer k * outer k := by simp [mul_sub]
-    _ = 0 := by rw [outer_mul_self]; exact sub_self _
+  simp [transverse, mul_sub, outer_mul_self]
 
 theorem transverse_mul_outer (k : ι → R) :
     transverse k * outer k = 0 := by
-  calc
-    transverse k * outer k =
-        (normSq k • (1 : Matrix ι ι R) - outer k) * outer k := rfl
-    _ = normSq k • outer k - outer k * outer k := by simp [sub_mul]
-    _ = 0 := by rw [outer_mul_self]; exact sub_self _
+  simp [transverse, sub_mul, outer_mul_self]
 
 theorem transverse_mul_self (k : ι → R) :
     transverse k * transverse k = normSq k • transverse k := by
   calc
-    transverse k * transverse k =
-        transverse k * (normSq k • (1 : Matrix ι ι R) - outer k) := rfl
-    _ = normSq k • transverse k - transverse k * outer k := by simp [mul_sub]
-    _ = normSq k • transverse k := by rw [transverse_mul_outer]; simp
+    transverse k * transverse k = (normSq k • 1 - outer k) * transverse k := rfl
+    _ = _ := by simp [sub_mul, outer_mul_transverse]
 
 end CartesianProjectors

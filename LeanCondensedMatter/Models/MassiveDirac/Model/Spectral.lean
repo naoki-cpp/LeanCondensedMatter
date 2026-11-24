@@ -1,4 +1,5 @@
 import Mathlib.RingTheory.Idempotents
+import LeanCondensedMatter.Analysis.Algebra.QuadraticNormalization
 import LeanCondensedMatter.Models.MassiveDirac.Model.Basic
 
 set_option linter.style.header false
@@ -79,7 +80,7 @@ theorem hamiltonian_mul_bandProjector (band : Band) (v m px py : ℝ)
     (hE : energy v m px py ≠ 0) :
     hamiltonian v m px py * bandProjector band v m px py =
       ((bandEnergy band v m px py : ℝ) : ℂ) • bandProjector band v m px py := by
-  have h := InternalSpace.quadratic_shift_mul_projector
+  have h := Algebra.quadratic_shift_mul_projector
     (hamiltonian v m px py) (((energy v m px py : ℝ) : ℂ))
     0 (((bandSign band : ℝ) : ℂ)) (by exact_mod_cast hE)
     (by simpa only [← energy_sq, Complex.ofReal_pow] using hamiltonian_mul_self v m px py)
@@ -95,7 +96,7 @@ theorem bandProjector_completeOrthogonalIdempotents
       (fun band : Band => bandProjector band v m px py) := by
   have hLower : IsIdempotentElem (bandProjector .lower v m px py) := by
     simpa [bandProjector, Complex.ofReal_div] using
-      (InternalSpace.quadratic_projector_isIdempotent
+      (Algebra.quadratic_projector_isIdempotent
         (hamiltonian v m px py) (((energy v m px py : ℝ) : ℂ))
         (((bandSign Band.lower : ℝ) : ℂ)) (by exact_mod_cast hE)
         (by simpa only [← energy_sq, Complex.ofReal_pow] using hamiltonian_mul_self v m px py)
