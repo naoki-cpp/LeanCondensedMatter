@@ -198,24 +198,10 @@ theorem QuarticDiagram.componentPartition_reassemble {S : Finset (Fin N)}
     (π : Finpartition S)
     (F : ∀ B : π.parts, ConnectedQuarticDiagram Label N (B : Finset (Fin N))) :
     (QuarticDiagram.reassemble π F).vertexGraph.componentPartitionOn = π := by
-  apply Finpartition.ext
-  apply Finset.Subset.antisymm
-  · intro B hB
-    obtain ⟨v, hvS, hv⟩ :=
-      (QuarticDiagram.reassemble π F).vertexGraph.componentPartitionOn.part_surjOn hB
-    have hblock :
-        (QuarticDiagram.reassemble π F).vertexGraph.componentBlockOn (⟨v, hvS⟩ : ↥S) = B := by
-      simpa only [SimpleGraph.componentBlockOn] using hv
-    rw [← hblock, QuarticDiagram.reassemble_componentBlock_eq_part]
-    exact π.part_mem.2 hvS
-  · intro B hB
-    obtain ⟨v, hvS, hv⟩ := π.part_surjOn hB
-    have hmem :
-        (QuarticDiagram.reassemble π F).vertexGraph.componentBlockOn (⟨v, hvS⟩ : ↥S) ∈
-          (QuarticDiagram.reassemble π F).vertexGraph.componentPartitionOn.parts := by
-      unfold SimpleGraph.componentBlockOn
-      exact (QuarticDiagram.reassemble π F).vertexGraph.componentPartitionOn.part_mem.2 hvS
-    rwa [QuarticDiagram.reassemble_componentBlock_eq_part, hv] at hmem
+  apply Finpartition.eq_of_part_eq_on
+  intro v hv
+  simpa only [SimpleGraph.componentBlockOn] using
+    (QuarticDiagram.reassemble_componentBlock_eq_part π F ⟨v, hv⟩)
 
 private theorem QuarticDiagram.restrictComponent_reassemble_vertexLabel
     {S : Finset (Fin N)} (π : Finpartition S)
