@@ -367,34 +367,6 @@ theorem ExternalInsertionBlockLayout.physicalComponentLegEquiv_symm_val
       (layout.legEquiv S).symm ⟨(layout.sourceEquiv e).1, i⟩ := by
   rfl
 
-/-- Being an actual physical graph component is invariant under the
-assembled perfect pairing; this justifies physical partner restriction. -/
-private theorem ExternalInsertionBlockLayout.physicalComponentLeg_partner_iff
-    {ExternalLabel InternalLabel : Type*}
-    (layout : ExternalInsertionBlockLayout E N) (S : Finset (Fin N))
-    (F : ∀ B : layout.partition.parts,
-      ExternalInsertionDiagram ExternalLabel InternalLabel
-        ((B : Finset (Fin (2 * E))).card / 2) N (layout.interactionBlock S B))
-    (e : Fin (2 * E))
-    (leg : Fin (2 * (2 * S.card + E))) :
-    (layout.assembleDiagram S F).legInComponent
-      ((layout.assembleDiagram S F).vertexGraph.componentBlock (Sum.inl e)) leg ↔
-    (layout.assembleDiagram S F).legInComponent
-      ((layout.assembleDiagram S F).vertexGraph.componentBlock (Sum.inl e))
-        ((layout.assembleDiagram S F).pairing.partner leg) := by
-  unfold ExternalInsertionDiagram.legInComponent
-  change
-    ((layout.assembleDiagram S F).pairing.vertexGraph
-      (externalInsertionVertexOfLeg (E := E))).componentBlock
-        (externalInsertionVertexOfLeg leg) =
-      (layout.assembleDiagram S F).vertexGraph.componentBlock (Sum.inl e) ↔
-    ((layout.assembleDiagram S F).pairing.vertexGraph
-      (externalInsertionVertexOfLeg (E := E))).componentBlock
-        (externalInsertionVertexOfLeg ((layout.assembleDiagram S F).pairing.partner leg)) =
-      (layout.assembleDiagram S F).vertexGraph.componentBlock (Sum.inl e)
-  rw [(layout.assembleDiagram S F).pairing.vertexGraph_componentBlock_partner
-    (externalInsertionVertexOfLeg (E := E)) leg]
-
 /-- The pairing obtained by restricting the actual physical component to
 its legs, reindexed through their independent block-fiber equivalence. -/
 noncomputable def ExternalInsertionBlockLayout.physicalComponentPairing
@@ -410,7 +382,8 @@ noncomputable def ExternalInsertionBlockLayout.physicalComponentPairing
   (layout.assembleDiagram S F).pairing.restrictAlongEquiv
     ((layout.assembleDiagram S F).legInComponent
       ((layout.assembleDiagram S F).vertexGraph.componentBlock (Sum.inl e)))
-    (layout.physicalComponentLeg_partner_iff S F e)
+    ((layout.assembleDiagram S F).legInComponent_partner_iff
+      ((layout.assembleDiagram S F).vertexGraph.componentBlock (Sum.inl e)))
     (layout.physicalComponentLegEquiv S F hconnected e)
 
 /-- The *physical component-restricted* Wick pairing, not merely the
@@ -439,7 +412,7 @@ theorem ExternalInsertionBlockLayout.physicalComponentPairing_eq_local
       d.pairing.partner (T.symm i).1 := by
     exact d.pairing.restrictAlongEquiv_partner_symm_val
       (d.legInComponent (d.vertexGraph.componentBlock (Sum.inl e)))
-      (layout.physicalComponentLeg_partner_iff S F e) T i
+      (d.legInComponent_partner_iff (d.vertexGraph.componentBlock (Sum.inl e))) T i
   have hpair' :
       (layout.legEquiv S).symm ⟨B, P.partner i⟩ =
         d.pairing.partner ((layout.legEquiv S).symm ⟨B, i⟩) := by
@@ -489,7 +462,7 @@ theorem ExternalInsertionBlockLayout.physicalComponentCanonicalPairing_eq_local
           ExternalInsertionBlockLayout.physicalComponentPairing] using
           (d.pairing.restrictAlongEquiv_change_coordinates
             (d.legInComponent C.1)
-            (layout.physicalComponentLeg_partner_iff S F e)
+            (d.legInComponent_partner_iff C.1)
             (d.componentBlockLegEquiv C)
             (layout.physicalComponentLegEquiv S F hconnected e))
     _ = (F (layout.sourceEquiv e).1).pairing :=
@@ -543,11 +516,9 @@ theorem ExternalInsertionBlockLayout.physicalComponentCanonicalLegEquiv_strictMo
     simpa only [d.componentLegShuffle_slotEquiv_apply] using
       (d.componentLegShuffle.strictMono C) hij
   have hlocal := layout.blockLegEmbedding_strictMono S B
-  apply lt_of_not_ge
-  intro hge
-  have hcontra := hlocal.monotone hge
-  rw [hbridge j, hbridge i] at hcontra
-  exact (not_le_of_gt hglobal) hcontra
+  apply hlocal.lt_iff_lt.mp
+  rw [hbridge i, hbridge j]
+  exact hglobal
 
 /-- The local external-pair parameter of an actual assembled graph component
 is the half-cardinality of its assigned source-partition block. This closes
