@@ -243,28 +243,6 @@ theorem ExternalInsertionBlockLayout.interactionOrderDecomposition_owner
   change layout.interactionOwner (order (σ.slotEquiv ⟨B, j⟩)).1 = B at howner
   simpa only [hback] using howner.symm
 
-/-- An assembled Wick diagram retains the *actual quartic interaction
-label* at each local vertex when the ambient order is decomposed into
-block-local orders and its order-preserving shuffle. This is the
-vertex-label transport needed in the ordered Dyson integrand. -/
-theorem ExternalInsertionBlockLayout.assembleDiagram_vertexLabel_at_shuffledSlot
-    {ExternalLabel InternalLabel : Type*}
-    (layout : ExternalInsertionBlockLayout E N)
-    (F : ∀ B : layout.partition.parts,
-      ExternalInsertionDiagram ExternalLabel InternalLabel
-        ((B : Finset (Fin (2 * E))).card / 2) N
-        (layout.interactionBlock (Finset.univ : Finset (Fin N)) B))
-    (order : QuarticVertexOrder (Finset.univ : Finset (Fin N)))
-    (B : layout.partition.parts)
-    (j : Fin (layout.interactionBlock (Finset.univ : Finset (Fin N)) B).card) :
-    (layout.assembleDiagram (Finset.univ : Finset (Fin N)) F).vertexLabel
-      (order ((layout.interactionOrderDecompositionEquiv order).2.slotEquiv ⟨B, j⟩)) =
-        (F B).vertexLabel ((layout.interactionOrderDecompositionEquiv order).1 B j) := by
-  rw [layout.interactionOrderDecomposition_slotVertex order B j]
-  exact layout.assembleDiagram_vertexLabel
-    (Finset.univ : Finset (Fin N)) F B
-    ((layout.interactionOrderDecompositionEquiv order).1 B j)
-
 /-- Extract the canonical interaction-slot shuffle of an independently
 assigned external-block layout from the already proved global-order
 decomposition. This retains all zero-size interaction fibers and avoids
