@@ -162,45 +162,19 @@ theorem ExternalInsertionBlockLayout.blockGraphHom_reachable_iff
   · intro h
     exact h.map (layout.blockGraphHom S F B)
   · intro h
-    have hPath :
-        Relation.ReflTransGen (layout.assembleDiagram S F).vertexGraph.Adj
-          ((layout.vertexEquiv S).symm ⟨B, u⟩)
-          ((layout.vertexEquiv S).symm ⟨B, v⟩) :=
-      (SimpleGraph.reachable_iff_reflTransGen _ _).mp h
-    have hLift : ∀ {z : ExternalInsertionVertex E S},
-        Relation.ReflTransGen (layout.assembleDiagram S F).vertexGraph.Adj
-            ((layout.vertexEquiv S).symm ⟨B, u⟩) z →
-          ∃ w, z = (layout.vertexEquiv S).symm ⟨B, w⟩ ∧
-            (F B).vertexGraph.Reachable u w := by
-      intro z hz
-      induction hz with
-      | refl =>
-          exact ⟨u, rfl, SimpleGraph.Reachable.refl u⟩
-      | @tail a c _ hadj ih =>
-          obtain ⟨w, rfl, hw⟩ := ih
-          have hsame : B = (layout.vertexEquiv S c).1 := by
-            simpa only [Equiv.apply_symm_apply] using
-              (layout.assembleDiagram_adj_same_block S F hadj)
-          cases hc : layout.vertexEquiv S c with
-          | mk C w' =>
-              have hBC : B = C := by
-                simpa only [hc] using hsame
-              subst C
-              have hval : c = (layout.vertexEquiv S).symm ⟨B, w'⟩ := by
-                calc
-                  c = (layout.vertexEquiv S).symm (layout.vertexEquiv S c) :=
-                    ((layout.vertexEquiv S).symm_apply_apply c).symm
-                  _ = _ := by rw [hc]
-              have hEdge : (layout.assembleDiagram S F).vertexGraph.Adj
-                  ((layout.vertexEquiv S).symm ⟨B, w⟩)
-                  ((layout.vertexEquiv S).symm ⟨B, w'⟩) := by
-                simpa only [hval] using hadj
-              have hLocal := (layout.blockGraphHom_adj_iff S F B w w').2 hEdge
-              exact ⟨w', hval, hw.trans (SimpleGraph.Adj.reachable hLocal)⟩
-    obtain ⟨w, heq, hw⟩ := hLift hPath
-    have hSig := (layout.vertexEquiv S).symm.injective heq.symm
-    have hwv : w = v := eq_of_heq (Sigma.mk.inj_iff.mp hSig).2
-    simpa only [hwv] using hw
+    refine SimpleGraph.reachable_of_closed_image
+      (fun x => (layout.vertexEquiv S).symm ⟨B, x⟩) ?_ ?_ ?_ h
+    · intro a b he
+      exact eq_of_heq (Sigma.mk.inj_iff.mp ((layout.vertexEquiv S).symm.injective he)).2
+    · intro a b ha
+      exact (layout.blockGraphHom_adj_iff S F B a b).2 ha
+    · intro a z ha
+      obtain ⟨⟨C, w⟩, rfl⟩ := (layout.vertexEquiv S).symm.surjective z
+      have hBC : B = C := by
+        simpa only [Equiv.apply_symm_apply] using
+          (layout.assembleDiagram_adj_same_block S F ha)
+      subst C
+      exact ⟨w, rfl⟩
 
 /-- If all independently supplied local graphs are preconnected, then
 global reachability is exactly agreement of the assigned external blocks.
