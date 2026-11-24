@@ -85,13 +85,13 @@ theorem heisenbergTransportFunctional_eq_symmetrizedProductRight_comp
     (M : Test →ₗ[ℂ] (V →ₗ[ℂ] V))
     (m : V →ₗ[ℂ] V) :
     heisenbergTransportFunctional V ℏ h M m =
-      (_root_.LinearMap.symmetrizedProductRightLinear V m).comp
+      ((_root_.LinearMap.symmetrizedProductBilinear (K := ℂ) (V →ₗ[ℂ] V)).flip m).comp
         (heisenbergLocalizationFunctional V ℏ h M) := by
   ext f x
   simp [heisenbergTransportFunctional, heisenbergLocalizationFunctional,
     heisenbergScale, _root_.ConservationLaw.transportFunctional,
     _root_.ConservationLaw.localizationCommutatorFunctional,
-    _root_.LinearMap.symmetrizedProductRightLinear,
+    _root_.LinearMap.symmetrizedProductBilinear,
     LieRing.of_associative_ring_bracket, Module.End.mul_eq_comp]
 
 /-- Heisenberg evolution of a symmetrically localized one-body quantity gives the intrinsic balance
@@ -129,14 +129,14 @@ noncomputable def operatorLocalCurrentPairing
       (Obs := V →ₗ[ℂ] V)
       (CurrentDensity := V →ₗ[ℂ] V) :=
   ((LinearMap.llcomp ℂ OneForm (V →ₗ[ℂ] V) (V →ₗ[ℂ] V)).flip N).comp
-    (LinearMap.flip (_root_.LinearMap.symmetrizedProductBilinear V))
+    (LinearMap.flip (_root_.LinearMap.symmetrizedProductBilinear (K := ℂ) (V →ₗ[ℂ] V)))
 
 @[simp]
 theorem operatorLocalCurrentPairing_apply
     (N : OneForm →ₗ[ℂ] (V →ₗ[ℂ] V))
     (current : V →ₗ[ℂ] V) (α : OneForm) :
     operatorLocalCurrentPairing V N current α =
-      _root_.LinearMap.symmetrizedProduct (N α) current :=
+      _root_.LinearMap.symmetrizedProduct (K := ℂ) (N α) current :=
   rfl
 
 end SingleParticle
