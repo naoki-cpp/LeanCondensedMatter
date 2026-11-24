@@ -152,6 +152,33 @@ theorem bounded_discrete_continuity (ℏ q : ℂ)
     map_add, map_smul, map_sum, map_zero, map_sub, map_mul] using h
 
 
+/-- The finite hopping Hamiltonian is the amplitude-weighted sum of bounded
+second-quantized matrix units. -/
+theorem boundedHoppingHamiltonian_eq_sum_matrixUnit (K : LocallyFiniteHopping Site) :
+    boundedHoppingHamiltonian K =
+      ∑ x : Site, ∑ y : Site, K.amplitude x y • boundedOneBodyOperator (matrixUnit x y) := by
+  change boundedOneBodyOperator K.operator = _
+  rw [K.operator_eq_sum_matrixUnit]
+  simp only [map_sum, map_smul]
+
+/-- A site relabeling that preserves the hopping amplitudes fixes the full
+finite fermionic hopping Hamiltonian, not only its one-particle matrix. -/
+theorem boundedHoppingHamiltonian_siteCovariance
+    (K : LocallyFiniteHopping Site) (p : Equiv.Perm Site)
+    (Φ : (FiniteLatticeHilbertFock Site →L[ℂ] FiniteLatticeHilbertFock Site) →ₗ[ℂ]
+      (FiniteLatticeHilbertFock Site →L[ℂ] FiniteLatticeHilbertFock Site))
+    (hK : ∀ x y, K.amplitude (p x) (p y) = K.amplitude x y)
+    (hUnit : ∀ x y, Φ (boundedOneBodyOperator (matrixUnit x y)) =
+      boundedOneBodyOperator (matrixUnit (p x) (p y))) :
+    Φ (boundedHoppingHamiltonian K) = boundedHoppingHamiltonian K := by
+  rw [boundedHoppingHamiltonian_eq_sum_matrixUnit]
+  simp only [map_sum, map_smul, hUnit]
+  refine Fintype.sum_equiv p _ _ ?_
+  intro x
+  refine Fintype.sum_equiv p _ _ ?_
+  intro y
+  rw [hK x y]
+
 /-- Every finite site permutation has a unitary implementation on the full
 fermionic occupation Hilbert space, conjugating the bounded second quantization
 of each one-particle matrix unit to the relabeled unit. The implementation is

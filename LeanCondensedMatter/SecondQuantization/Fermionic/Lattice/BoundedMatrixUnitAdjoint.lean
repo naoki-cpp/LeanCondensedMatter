@@ -156,11 +156,8 @@ theorem isSelfAdjoint_boundedHoppingHamiltonian
     change star (K.amplitude y x) = K.amplitude x y
     exact hK y x
   have hsum : boundedHoppingHamiltonian K =
-      ∑ x : Site, ∑ y : Site, A x y • boundedDgammaMatrixUnit x y := by
-    change boundedOneBodyOperator K.operator = _
-    rw [K.operator_eq_sum_matrixUnit]
-    simp only [map_sum, map_smul, boundedOneBodyOperator_eq,
-      boundedDgammaMatrixUnit, A]
+      ∑ x : Site, ∑ y : Site, A x y • boundedDgammaMatrixUnit x y :=
+    boundedHoppingHamiltonian_eq_sum_matrixUnit K
   rw [hsum]
   exact isSelfAdjoint_sum_boundedDgammaMatrixUnit A hA
 
