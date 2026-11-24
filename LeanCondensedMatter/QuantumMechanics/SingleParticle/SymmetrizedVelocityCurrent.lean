@@ -45,10 +45,12 @@ noncomputable def symmetrizedVelocityCurrentRepresentation
       (operatorLocalCurrentPairing V N) where
   val := symmetrizedVelocityCurrent V velocity m
   property := by
+    change heisenbergTransportFunctional V ℏ h M m =
+      (_root_.ConservationLaw.symmetrizedCurrentFlux velocity m N).comp d
     rw [nestedSymmetrizedCurrentFlux_eq_comp V ℏ h M m velocity d N hvelocity,
       _root_.ConservationLaw.nestedSymmetrizedCurrentFlux_eq_symmetrized_add_correction,
       _root_.ConservationLaw.localizationCorrectionCurrentFlux_eq_zero_of_commutes
-        velocity m N hcomm, add_zero] <;> rfl
+        velocity m N hcomm, add_zero]
 
 @[simp]
 theorem symmetrizedVelocityCurrentRepresentation_currentDensity
