@@ -303,6 +303,31 @@ existing geometric Peierls current, and the spin-displacement/contact
 response specialization remain subsequent tasks. No new generic current
 framework or new source convention is introduced.
 
+## Geometric bond current equals the position-derived current (partial R4)
+
+The existing `Analysis.DiscreteLattice` and
+`Fermionic.Lattice.GeometricCurrent` now connect the finite position
+commutator to the already-defined geometric Peierls current, rather than
+introducing another velocity/current implementation.
+
+`LatticeGeometry.lie_directionalPosition_eq_bondSum` uses local continuity,
+finite support and orientation reversal to identify
+
+```text
+[H,X_i] = (1/2) Σ_xy (r_i(y) - r_i(x)) bondOperator(x,y).
+```
+
+`boundedDirectionalCurrent_eq_positionCommutator` lifts this equality by
+the existing `boundedOneBodyOperator` and bond-current bridge. In the
+existing Peierls convention, with real physical parameters, it reads
+`J_i = q dΓ((i/ℏ)[H,X_i])`. No equality with the sampled momentum
+derivative is assumed. This is a general finite real-space hopping
+identity, independent of particle spin and translation symmetry.
+
+A concrete spinful Rashba hopping model and the spin-displacement /
+torque-dipole response based on its real-space position still remain
+separate milestones. Contact terms retain the existing Peierls convention.
+
 ## References
 
 See the annotated entries in [`../references.md`](../references.md) for full

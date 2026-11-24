@@ -39,6 +39,8 @@ namespace Lattice
 
 open scoped BigOperators
 
+attribute [local instance 100] LieRing.ofAssociativeRing
+
 noncomputable section
 
 
@@ -57,6 +59,40 @@ noncomputable def boundedDirectionalCurrent
     ∑ x : Site, ∑ y : Site,
       (geometry.bondCoordinate direction x y : ℂ) •
         boundedBondCurrent ℏ q K x y
+
+/-- The existing geometric charge-current observable is precisely the bounded
+second quantization of the position commutator with Peierls normalization.
+This identifies the bond-sum and position-derived currents without assuming
+translation symmetry or an identification with a momentum derivative. -/
+theorem boundedDirectionalCurrent_eq_positionCommutator
+    (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
+    (ℏ q : ℂ) (K : LocallyFiniteHopping Site) :
+    boundedDirectionalCurrent geometry direction ℏ q K =
+      QuantumTheory.PeierlsPhase.peierlsCoupling ℏ q •
+        boundedOneBodyOperator ⁅K.operator, geometry.directionalPosition direction⁆ := by
+  rw [geometry.lie_directionalPosition_eq_bondSum direction K]
+  let D := (boundedOneBodyOperator (Site := Site)).toLinearMap
+  change (2 : ℂ)⁻¹ •
+      (∑ x : Site, ∑ y : Site,
+        (geometry.bondCoordinate direction x y : ℂ) • boundedBondCurrent ℏ q K x y) =
+    QuantumTheory.PeierlsPhase.peierlsCoupling ℏ q •
+      D ((2 : ℂ)⁻¹ • ∑ x : Site, ∑ y : Site,
+        (geometry.bondCoordinate direction x y : ℂ) • K.bondOperator x y)
+  rw [map_smul, smul_comm (QuantumTheory.PeierlsPhase.peierlsCoupling ℏ q)]
+  congr 1
+  simp only [map_sum, map_smul, Finset.smul_sum]
+  apply Finset.sum_congr rfl
+  intro x _
+  apply Finset.sum_congr rfl
+  intro y _
+  rw [smul_comm (QuantumTheory.PeierlsPhase.peierlsCoupling ℏ q)]
+  congr 1
+  change boundedBondCurrent ℏ q K x y =
+    QuantumTheory.PeierlsPhase.peierlsCoupling ℏ q •
+      boundedOneBodyOperator (K.bondOperator x y)
+  rw [← boundedOneBodyOperator_oneParticleBondCurrent K ℏ q x y]
+  change D (QuantumTheory.PeierlsPhase.peierlsCoupling ℏ q • K.bondOperator x y) = _
+  exact D.map_smul _ _
 
 /-- Geometric contact operator for a uniform source in the selected direction. The squared bond
 coordinate is the chain-rule factor from differentiating the measured current after the Peierls
