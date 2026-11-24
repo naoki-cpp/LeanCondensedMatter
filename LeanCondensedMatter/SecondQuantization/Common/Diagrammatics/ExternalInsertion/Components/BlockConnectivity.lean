@@ -1071,13 +1071,18 @@ theorem ExternalInsertionBlockLayout.externalBlockLayout_assembleDiagram_interac
   let physical := d.externalBlockLayout hVac anchor
   obtain ⟨e, hReach⟩ := hVac v
   have hsource : (layout.sourceEquiv e).1 = layout.interactionOwner v.1 := by
-    simpa only [layout.vertexEquiv_external, layout.vertexEquiv_interaction] using
-      (layout.assembleDiagram_reachable_iff_same_block S F hconnected
-        (Sum.inl e) (Sum.inr v)).mp hReach
+    have heq : (layout.sourceEquiv e).1 = (layout.interactionEquiv S v).1 := by
+      simpa only [layout.vertexEquiv_external, layout.vertexEquiv_interaction] using
+        (layout.assembleDiagram_reachable_iff_same_block S F hconnected
+          (Sum.inl e) (Sum.inr v)).mp hReach
+    exact heq.trans (by rfl)
   have hphysical : (physical.sourceEquiv e).1 = physical.interactionOwner v.1 := by
-    simpa only [physical.vertexEquiv_external, physical.vertexEquiv_interaction] using
+    have heq : (physical.vertexEquiv S (Sum.inl e)).1 =
+        (physical.vertexEquiv S (Sum.inr v)).1 :=
       (d.reachable_iff_externalBlockLayout_same_block hVac anchor
         (Sum.inl e) (Sum.inr v)).mp hReach
+    rw [physical.vertexEquiv_external, physical.vertexEquiv_interaction] at heq
+    exact heq.trans (by rfl)
   calc
     _ = physical.partition.part e :=
       (congrArg Subtype.val hphysical).symm.trans (physical.sourceEquiv_fst e)
