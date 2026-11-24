@@ -33,11 +33,9 @@ noncomputable def Pairing.normalizedPairSubtypeEndpointEquiv {n : ℕ}
       fin_cases k
       · rfl
       · have hp := ((pairing.mem_pairs_iff pr.1.1 pr.1.2).1 pr.2).2
-        simp only [Pairing.pairEndpointEquiv_apply, Pairing.pairEndpoint_one]
+        change p pr.1.1 ↔ p pr.1.2
         rw [← hp]
-        first
-        | exact hpartner pr.1.1
-        | exact (hpartner pr.1.1).symm))
+        exact hpartner pr.1.1))
 
 @[simp]
 theorem Pairing.normalizedPairSubtypeEndpointEquiv_apply_val {n : ℕ}
