@@ -41,10 +41,16 @@ theorem nestedSymmetrizedCurrentFlux_eq_comp
       (_root_.ConservationLaw.localizedQuantityFunctional N velocity).comp d) :
     heisenbergTransportFunctional V ℏ h M m =
       (_root_.ConservationLaw.nestedSymmetrizedCurrentFlux velocity m N).comp d := by
-  rw [heisenbergTransportFunctional_eq_symmetrizedProductRight_comp V ℏ h M m, hvelocity]
-  apply LinearMap.ext
-  intro f
-  rfl
+  calc
+    heisenbergTransportFunctional V ℏ h M m =
+        _root_.ConservationLaw.localizedQuantityFunctional
+          ((_root_.ConservationLaw.localizedQuantityFunctional N velocity).comp d) m :=
+      congrArg (fun L : Test →ₗ[ℂ] (V →ₗ[ℂ] V) =>
+        _root_.ConservationLaw.localizedQuantityFunctional L m) hvelocity
+    _ = _ := by
+      apply LinearMap.ext
+      intro f
+      rfl
 
 /-- The generic nested current flux is a chosen full differential-current representation of the
 intrinsic transport whenever the localized Heisenberg evolution has a velocity representation. -/

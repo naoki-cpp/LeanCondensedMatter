@@ -35,7 +35,7 @@ noncomputable def heisenbergLocalizationFunctional
     (ℏ : ℝ) (h : V →ₗ[ℂ] V)
     (M : Test →ₗ[ℂ] (V →ₗ[ℂ] V)) :
     Test →ₗ[ℂ] (V →ₗ[ℂ] V) :=
-  heisenbergScale ℏ • _root_.ConservationLaw.localizationCommutatorFunctional h M
+  (heisenbergEvolution V ℏ h).comp M
 
 /-- The symmetrically localized transport functional in Heisenberg normalization. -/
 noncomputable def heisenbergTransportFunctional
@@ -43,7 +43,7 @@ noncomputable def heisenbergTransportFunctional
     (M : Test →ₗ[ℂ] (V →ₗ[ℂ] V))
     (m : V →ₗ[ℂ] V) :
     Test →ₗ[ℂ] (V →ₗ[ℂ] V) :=
-  heisenbergScale ℏ • _root_.ConservationLaw.transportFunctional h M m
+  _root_.ConservationLaw.localizedQuantityFunctional (heisenbergLocalizationFunctional V ℏ h M) m
 
 /-- The symmetrically localized source/torque functional in Heisenberg normalization. -/
 noncomputable def heisenbergSourceFunctional
@@ -51,7 +51,7 @@ noncomputable def heisenbergSourceFunctional
     (M : Test →ₗ[ℂ] (V →ₗ[ℂ] V))
     (m : V →ₗ[ℂ] V) :
     Test →ₗ[ℂ] (V →ₗ[ℂ] V) :=
-  heisenbergScale ℏ • _root_.ConservationLaw.sourceFunctional h M m
+  _root_.ConservationLaw.localizedQuantityFunctional M (heisenbergEvolution V ℏ h m)
 
 @[simp]
 theorem heisenbergLocalizationFunctional_apply
@@ -67,7 +67,7 @@ theorem heisenbergTransportFunctional_apply
     (M : Test →ₗ[ℂ] (V →ₗ[ℂ] V))
     (m : V →ₗ[ℂ] V) (f : Test) :
     heisenbergTransportFunctional V ℏ h M m f =
-      heisenbergScale ℏ • _root_.ConservationLaw.transportFunctional h M m f :=
+      _root_.LinearMap.symmetrizedProduct (K := ℂ) (heisenbergEvolution V ℏ h (M f)) m :=
   rfl
 
 @[simp]
@@ -76,23 +76,8 @@ theorem heisenbergSourceFunctional_apply
     (M : Test →ₗ[ℂ] (V →ₗ[ℂ] V))
     (m : V →ₗ[ℂ] V) (f : Test) :
     heisenbergSourceFunctional V ℏ h M m f =
-      heisenbergScale ℏ • _root_.ConservationLaw.sourceFunctional h M m f :=
+      _root_.LinearMap.symmetrizedProduct (K := ℂ) (M f) (heisenbergEvolution V ℏ h m) :=
   rfl
-
-/-- Heisenberg scaling commutes with fixed-`m` symmetrization. -/
-theorem heisenbergTransportFunctional_eq_symmetrizedProductRight_comp
-    (ℏ : ℝ) (h : V →ₗ[ℂ] V)
-    (M : Test →ₗ[ℂ] (V →ₗ[ℂ] V))
-    (m : V →ₗ[ℂ] V) :
-    heisenbergTransportFunctional V ℏ h M m =
-      ((_root_.LinearMap.symmetrizedProductBilinear (K := ℂ) (V →ₗ[ℂ] V)).flip m).comp
-        (heisenbergLocalizationFunctional V ℏ h M) := by
-  ext f x
-  simp [heisenbergTransportFunctional, heisenbergLocalizationFunctional,
-    heisenbergScale, _root_.ConservationLaw.transportFunctional,
-    _root_.ConservationLaw.localizationCommutatorFunctional,
-    _root_.LinearMap.symmetrizedProductBilinear,
-    LieRing.of_associative_ring_bracket, Module.End.mul_eq_comp]
 
 /-- Heisenberg evolution of a symmetrically localized one-body quantity gives the intrinsic balance
 law as soon as its transport functional depends only on differential test data.  No extension of
@@ -114,10 +99,7 @@ noncomputable def heisenbergIntrinsicSymmetricLocalizationBalanceLaw
   balance := by
     apply LinearMap.ext
     intro f
-    change heisenbergScale ℏ •
-        ⁅h, _root_.ConservationLaw.localizedQuantityFunctional M m f⁆ = _
-    rw [_root_.ConservationLaw.lie_localizedQuantity]
-    simp [heisenbergSourceFunctional, heisenbergTransportFunctional, smul_add]
+    exact heisenbergEvolution_symmetrizedProduct V ℏ h (M f) m
 
 /-- A one-form-like test is paired with a one-body current-density operator by symmetric
 localization. This pairing does not choose which current density represents a given transport

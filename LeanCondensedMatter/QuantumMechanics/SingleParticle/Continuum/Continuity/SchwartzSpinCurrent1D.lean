@@ -55,7 +55,8 @@ noncomputable def schwartzSpinCurrentDensityLinear1D
     (ℏ κ : ℝ) :
     QuantumTheory.SpinHalf.SpinSpace →ₗ[ℝ]
       (SchwartzSpinorOneParticle1D →ₗ[ℂ] SchwartzSpinorOneParticle1D) :=
-  ((symmetrizedVelocityCurrentLinear SchwartzSpinorOneParticle1D
+  ((_root_.LinearMap.symmetrizedProductBilinear (K := ℂ)
+      (SchwartzSpinorOneParticle1D →ₗ[ℂ] SchwartzSpinorOneParticle1D)
       (SchwartzTwoLevelSchrodinger1D.velocityOperator ℏ κ)).restrictScalars ℝ).comp
     (schwartzSpinOperatorLinear ℏ)
 

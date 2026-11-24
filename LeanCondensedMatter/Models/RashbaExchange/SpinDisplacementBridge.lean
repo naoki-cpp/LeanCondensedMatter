@@ -66,19 +66,9 @@ theorem finiteRashbaMomentumSpinDisplacement_balance
       QuantumMechanics.SingleParticle.heisenbergSourceFunctional
           (SpinfulSite Grid →₀ ℂ) hbar (finiteRashbaMomentumHamiltonian params momentum)
           LinearMap.id (spinOneBodyLinear spinScale component) position := by
-  change heisenbergScale hbar •
-      ⁅finiteRashbaMomentumHamiltonian params momentum,
-        _root_.ConservationLaw.localizedQuantityFunctional
-          LinearMap.id (spinOneBodyLinear spinScale component) position⁆ =
-      heisenbergScale hbar •
-        _root_.ConservationLaw.transportFunctional
-          (finiteRashbaMomentumHamiltonian params momentum)
-          LinearMap.id (spinOneBodyLinear spinScale component) position +
-      heisenbergScale hbar •
-        _root_.ConservationLaw.sourceFunctional
-          (finiteRashbaMomentumHamiltonian params momentum)
-          LinearMap.id (spinOneBodyLinear spinScale component) position
-  rw [_root_.ConservationLaw.lie_localizedQuantity, smul_add]
+  exact heisenbergEvolution_symmetrizedProduct (SpinfulSite Grid →₀ ℂ)
+    hbar (finiteRashbaMomentumHamiltonian params momentum)
+    position (spinOneBodyLinear spinScale component)
 
 /-- Heisenberg evolution of a spin displacement separates velocity-generated
 spin transport from the explicitly nonconserved spin-torque contribution.
