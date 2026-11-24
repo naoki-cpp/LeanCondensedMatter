@@ -1,5 +1,6 @@
 import LeanCondensedMatter.QuantumTheory.Gibbs.EqualityComponents
-import LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Ops
+import LeanCondensedMatter.Analysis.Operator.TraceClass.General
+import LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Bundled
 import LeanCondensedMatter.QuantumTheory.Gibbs.Variational
 
 /-!
@@ -49,9 +50,13 @@ private theorem gibbsOp_orthogonal_span_eq_bot_of_tsum_eq_spectralTrace
       spectralTrace (gibbsOp Hop β)) :
     (Submodule.span ℂ (Set.range d))ᗮ = ⊥ := by
   let htrace := gibbsOp_spectralTraceClass Hop β
-  apply
-    ContinuousLinearMap.orthogonal_span_eq_bot_of_sum_diagonalExpectationValue_eq_spectralTrace
-      htrace.compact (gibbsOp_isPositive Hop β) htrace.summable hd ?_ heq
+  have heqNorm : ∑' i, diagonalExpectationValue
+      (gibbsOp Hop β) (gibbsOp_isPositive Hop β).isSelfAdjoint (d i) =
+      htrace.isTraceClass.traceNorm := by
+    rw [htrace.traceNorm_eq_spectralTrace (gibbsOp_isPositive Hop β)]
+    exact heq
+  apply htrace.isTraceClass.orthogonal_span_eq_bot_of_sum_diagonalExpectationValue_eq_traceNorm
+    (gibbsOp_isPositive Hop β) hd ?_ heqNorm
   intro v hv
   have hpos := gibbsOp_inner_pos_of_norm_eq_one Hop β v hv
   rw [← coe_diagonalExpectationValue_right

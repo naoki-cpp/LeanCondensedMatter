@@ -179,6 +179,78 @@ theorem sum_diagonalExpectationValue_le_traceNorm {T : H →L[ℂ] H}
   refine ⟨hfsum.congr hge, ?_⟩
   rwa [tsum_congr hge] at hle
 
+/-- If a positive operator has strictly positive diagonal value on every unit vector, an
+orthonormal family can saturate its trace norm only when its span has trivial orthogonal
+complement. -/
+theorem orthogonal_span_eq_bot_of_sum_diagonalExpectationValue_eq_traceNorm
+    {T : H →L[ℂ] H} (hT : IsTraceClass T) (hTpos : T.IsPositive)
+    {ι : Type*} {d : ι → H} (hd : Orthonormal ℂ d)
+    (hdiag_pos : ∀ v : H, ‖v‖ = 1 →
+      0 < diagonalExpectationValue T hTpos.isSelfAdjoint v)
+    (heq : ∑' i, diagonalExpectationValue T hTpos.isSelfAdjoint (d i) =
+      hT.traceNorm) :
+    (Submodule.span ℂ (Set.range d))ᗮ = ⊥ := by
+  classical
+  obtain ⟨w, b, hsub, hb_eq⟩ := hd.toSubtypeRange.exists_hilbertBasis_extension
+  set g : w → ℝ := fun j =>
+    diagonalExpectationValue T hTpos.isSelfAdjoint (b j) with hg_def
+  have htr : HasSum g (hT.traceNorm) :=
+    hT.hasSum_diagonalExpectationValue_eq_traceNorm hTpos b
+  have hgnonneg : ∀ j : w, 0 ≤ g j := fun j => by
+    simpa [g] using diagonalExpectationValue_nonneg T hTpos (b j)
+  have hd_inj : Function.Injective d := hd.linearIndependent.injective
+  set e : ι → w := fun i => ⟨d i, hsub ⟨i, rfl⟩⟩ with he_def
+  have he_inj : Function.Injective e := fun i j hij =>
+    hd_inj (congrArg Subtype.val hij)
+  have hge : ∀ i, g (e i) =
+      diagonalExpectationValue T hTpos.isSelfAdjoint (d i) := fun i => by
+    change diagonalExpectationValue T hTpos.isSelfAdjoint (b (e i)) = _
+    rw [show (b (e i) : H) = d i from by rw [hb_eq]]
+  have heqg : ∑' i, g (e i) = hT.traceNorm := by
+    calc
+      ∑' i, g (e i) =
+          ∑' i, diagonalExpectationValue T hTpos.isSelfAdjoint (d i) :=
+        tsum_congr hge
+      _ = hT.traceNorm := heq
+  have he_surj : Function.Surjective e := by
+    by_contra hsurj
+    have hsurj' : ∃ j, ∀ i, e i ≠ j := by
+      simpa only [Function.Surjective, not_forall, not_exists] using hsurj
+    obtain ⟨j, hj⟩ := hsurj'
+    have hjrange : j ∉ Set.range e := by
+      rintro ⟨i, hi⟩
+      exact hj i hi
+    have hgjpos : 0 < g j := by
+      simpa [g] using hdiag_pos (b j) (b.orthonormal.1 j)
+    have hsub : Summable (fun k : ↥((Set.range e)ᶜ) => g (k : w)) :=
+      htr.summable.comp_injective Subtype.val_injective
+    have hpos : 0 < ∑' k : ↥((Set.range e)ᶜ), g (k : w) :=
+      hsub.tsum_pos (fun k => hgnonneg k) ⟨j, hjrange⟩ hgjpos
+    have hrange : (∑' i, g (e i)) = ∑' k : Set.range e, g (k : w) := by
+      simpa using (Equiv.tsum_eq (Equiv.ofInjective e he_inj) (fun k : Set.range e => g (k : w)))
+    have hsplit := htr.summable.tsum_subtype_add_tsum_subtype_compl (Set.range e)
+    rw [← hrange, heqg, htr.tsum_eq] at hsplit
+    linarith
+  apply le_antisymm
+  · intro x hx
+    have hinner : ∀ j : w, inner ℂ (b j) x = 0 := by
+      intro j
+      obtain ⟨i, hi⟩ := he_surj j
+      have hbdi : b j = d i := by
+        rw [← hi]
+        rw [hb_eq]
+      rw [hbdi]
+      exact Submodule.inner_right_of_mem_orthogonal
+        (Submodule.subset_span (Set.mem_range_self i)) hx
+    have hrepr : b.repr x = 0 := by
+      ext j
+      rw [b.repr_apply_apply]
+      exact hinner j
+    have hx0 : x = 0 := b.repr.injective (by simpa using hrepr)
+    rw [hx0]
+    exact Submodule.zero_mem _
+  · exact bot_le
+
 end IsTraceClass
 
 end ContinuousLinearMap
