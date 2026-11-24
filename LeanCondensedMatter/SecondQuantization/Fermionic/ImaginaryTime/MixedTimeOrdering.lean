@@ -104,8 +104,14 @@ theorem mixedTimeOrderedVertexComp_eq_shiftedDispersion
   have hscalar : ((orderedTwoPointTimedEvents τ τ' σ).map a).prod =
       twoPointChemicalPotentialFactor μ τ τ' := by
     rw [orderedTwoPointTimedEvents_eq_externalInsertion,
-      prod_orderedExternalInsertionTimedEvents, Fintype.prod_sum_type]
-    simp [a, Fin.prod_univ_two, ← Complex.exp_add, twoPointChemicalPotentialFactor]
+      prod_orderedExternalInsertionTimedEvents (E := 1) (twoPointExternalTimes τ τ') σ a]
+    change (∏ e : Fin 2 ⊕ Fin n, a e) = _
+    rw [Fintype.prod_sum_type]
+    have htail : (∏ v : Fin n, a (Sum.inr v)) = 1 := by
+      simp [a]
+    rw [htail, mul_one, Fin.prod_univ_two]
+    change Complex.exp (-(τ : ℂ) * (μ : ℂ)) * Complex.exp ((τ' : ℂ) * (μ : ℂ)) = _
+    rw [← Complex.exp_add, twoPointChemicalPotentialFactor]
     congr 1
     ring
   unfold mixedTimeOrderedVertexComp
