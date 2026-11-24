@@ -41,7 +41,9 @@ theorem add {F G : 𝕜 → V} {F' G' : V} {A : 𝕜}
     (hF : HasAlgebraicDerivAt F F' A) (hG : HasAlgebraicDerivAt G G' A) :
     HasAlgebraicDerivAt (fun z => F z + G z) (F' + G') A := by
   intro ℓ
-  simpa only [map_add] using (hF ℓ).add (hG ℓ)
+  simp only [map_add]
+  apply ((hF ℓ).add (hG ℓ)).congr_of_eventuallyEq
+  exact Filter.Eventually.of_forall (fun _ => rfl)
 
 /-- A 𝕜-linear map transports algebraic derivatives. -/
 theorem map {F : 𝕜 → V} {F' : V} {A : 𝕜}
