@@ -93,7 +93,7 @@ theorem externalPartitionSourceSign_eq_componentExternalOrderSign_of_vacuumFree
       componentExternalOrderSign d blockOrder := by
   classical
   let π := externalComponentPartition d.vertexGraph
-  let e := d.vacuumFreeComponentsEquivExternalBlocks hVac
+  let e := vacuumFreeComponentsEquivExternalBlocks d.vertexGraph hVac
   let sourceOrder : π.parts ≃ Fin (Fintype.card π.parts) := Fintype.equivFin π.parts
   let hcard : Fintype.card d.vertexGraph.componentPartition.parts =
       Fintype.card π.parts := Fintype.card_congr e
@@ -105,7 +105,7 @@ theorem externalPartitionSourceSign_eq_componentExternalOrderSign_of_vacuumFree
         (externalPartitionShuffleFull π).blockSlotSet (e B) := by
     rw [d.componentExternalShuffle_blockSlotSet, externalPartitionShuffleFull,
       externalPartitionShuffle, π.shuffleOfIncreasingOrderFull_blockSlotSet]
-    exact (d.vacuumFreeComponentsEquivExternalBlocks_apply hVac B).symm
+    exact (vacuumFreeComponentsEquivExternalBlocks_apply d.vertexGraph hVac B).symm
   have horder (B C : d.vertexGraph.componentPartition.parts) :
       compOrder B < compOrder C ↔
         sourceOrder (e B) < sourceOrder (e C) := by
