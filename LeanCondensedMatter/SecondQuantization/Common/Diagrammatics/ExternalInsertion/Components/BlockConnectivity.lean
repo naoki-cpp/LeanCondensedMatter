@@ -987,7 +987,9 @@ theorem ExternalInsertionDiagram.externalBlockLayout_interactionBlock
   classical
   let equiv := vacuumFreeComponentsEquivExternalBlocks d.vertexGraph hVac
   ext v
-  rw [ExternalInsertionBlockLayout.interactionBlock, Finset.mem_filter, mem_interactionSector]
+  change v ∈ S.filter (fun x => (d.externalBlockLayout hVac anchor).interactionOwner x = P) ↔
+    v ∈ interactionSector ((equiv.symm P).1)
+  rw [Finset.mem_filter, mem_interactionSector]
   have howner (hv : v ∈ S) :
       (d.externalBlockLayout hVac anchor).interactionOwner v = P ↔
         (Sum.inr ⟨v, hv⟩ : ExternalInsertionVertex E S) ∈ (equiv.symm P).1 := by
