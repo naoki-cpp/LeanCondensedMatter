@@ -1,5 +1,5 @@
 import Mathlib.Analysis.Fourier.ZMod
-import Mathlib.Analysis.InnerProductSpace.PiL2
+import Mathlib.Analysis.Fourier.FiniteAbelian.Orthogonality
 
 set_option linter.style.header false
 
@@ -10,9 +10,46 @@ The positive-exponent convention uses the standard additive character of `ZMod N
 The inner product is the counting-measure inner product of `EuclideanSpace`.
 -/
 
-namespace ZMod
-
 open scoped BigOperators InnerProductSpace
+
+namespace AddChar
+
+/-- Distinct characters of a finite abelian group, normalized for the counting-measure
+inner product on Euclidean space, form an orthonormal family. Mathlib supplies the
+character orthogonality for the average inner product. -/
+theorem orthonormal_normalized_family {G ι : Type*} [AddCommGroup G] [Fintype G]
+    (χ : ι → AddChar G ℂ) (hχ : Function.Injective χ) :
+    Orthonormal ℂ (fun q => (WithLp.toLp 2 fun j : G =>
+      (Real.sqrt (Fintype.card G) : ℂ)⁻¹ * χ q j : EuclideanSpace ℂ G)) := by
+  classical
+  rw [orthonormal_iff_ite]
+  intro q r
+  have h := AddChar.wInner_cWeight_eq_boole (χ q) (χ r)
+  simp only [hχ.eq_iff] at h
+  rw [← h]
+  have hsq : (Real.sqrt (Fintype.card G) : ℂ) ^ 2 = Fintype.card G := by
+    exact_mod_cast Real.sq_sqrt (Nat.cast_nonneg (Fintype.card G))
+  have hscale : (Real.sqrt (Fintype.card G) : ℂ)⁻¹ *
+      (Real.sqrt (Fintype.card G) : ℂ)⁻¹ = (Fintype.card G : ℂ)⁻¹ := by
+    rw [← pow_two, inv_pow, hsq]
+  simp only [PiLp.inner_apply, RCLike.wInner, RCLike.cWeight, Function.const_apply,
+    RCLike.inner_apply, map_mul, map_inv₀, Complex.conj_ofReal,
+    RCLike.real_smul_eq_coe_mul]
+  apply Finset.sum_congr rfl
+  intro j _
+  calc
+    _ = ((Real.sqrt (Fintype.card G) : ℂ)⁻¹ *
+        (Real.sqrt (Fintype.card G) : ℂ)⁻¹) *
+        (χ r j * (starRingEnd ℂ) (χ q j)) := by ring
+    _ = _ := by
+      rw [hscale]
+      change _ = ((Fintype.card G : ℝ) : ℂ)⁻¹ *
+        (χ r j * (starRingEnd ℂ) (χ q j))
+      rw [Complex.ofReal_natCast]
+
+end AddChar
+
+namespace ZMod
 
 noncomputable section
 variable {N : ℕ} [NeZero N]
@@ -21,40 +58,15 @@ variable {N : ℕ} [NeZero N]
 def fourierMode (q : ZMod N) : EuclideanSpace ℂ (ZMod N) :=
   WithLp.toLp 2 fun j => (Real.sqrt N : ℂ)⁻¹ * stdAddChar (q * j)
 
-theorem stdAddChar_conj (j : ZMod N) :
-    (starRingEnd ℂ) (stdAddChar j) = stdAddChar (-j) := by
-  rw [stdAddChar_apply, stdAddChar_apply, AddChar.map_neg_eq_inv,
-    Circle.coe_inv_eq_conj]
-
 theorem orthonormal_fourierMode : Orthonormal ℂ (fourierMode (N := N)) := by
-  rw [orthonormal_iff_ite]
-  intro q r
-  have hN : (N : ℝ) > 0 := by exact_mod_cast NeZero.pos N
-  have hs : (Real.sqrt N : ℂ) ≠ 0 := by
-    exact_mod_cast (Real.sqrt_pos.2 hN).ne'
-  have hsq : (Real.sqrt N : ℂ) ^ 2 = N := by
-    exact_mod_cast Real.sq_sqrt hN.le
-  have hterm (j : ZMod N) :
-      inner ℂ (fourierMode q j) (fourierMode r j) =
-        ((Real.sqrt N : ℂ)⁻¹) ^ 2 * stdAddChar ((r - q) * j) := by
-    simp only [fourierMode, PiLp.toLp_apply, RCLike.inner_apply, map_mul,
-      map_inv₀, Complex.conj_ofReal, stdAddChar_conj, add_mul,
-      AddChar.map_add_eq_mul, sub_eq_add_neg, neg_mul]
-    ring
-  rw [PiLp.inner_apply]
-  simp_rw [hterm]
-  rw [← Finset.mul_sum]
-  have hsum : (∑ j : ZMod N, stdAddChar ((r - q) * j)) =
-      if r - q = 0 then (N : ℂ) else 0 := by
-    simpa only [mul_comm (r - q), ZMod.card, Nat.cast_ite, Nat.cast_zero] using
-      (AddChar.sum_mulShift (r - q) (isPrimitive_stdAddChar N))
-  rw [hsum]
-  by_cases h : q = r
-  · subst r
-    simp only [sub_self, ite_true]
-    field_simp
-    exact hsq.symm
-  · simp [sub_eq_zero, Ne.symm h, h]
+  have hχ : Function.Injective (fun q : ZMod N => stdAddChar.mulShift q) := by
+    intro q r h
+    apply injective_stdAddChar
+    simpa only [AddChar.mulShift_apply, mul_one] using
+      congrArg (fun ψ : AddChar (ZMod N) ℂ => ψ 1) h
+  unfold fourierMode
+  simpa only [ZMod.card, AddChar.mulShift_apply] using
+    AddChar.orthonormal_normalized_family (fun q : ZMod N => stdAddChar.mulShift q) hχ
 
 /-- The normalized Fourier modes as a complete orthonormal basis. -/
 def fourierBasis : OrthonormalBasis (ZMod N) ℂ (EuclideanSpace ℂ (ZMod N)) :=
