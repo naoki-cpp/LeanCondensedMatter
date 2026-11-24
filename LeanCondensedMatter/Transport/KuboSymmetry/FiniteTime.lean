@@ -146,17 +146,17 @@ theorem finiteTimeVectorPotentialConductivityTensor_exists_intertwiningMap
   obtain ⟨F, hF⟩ := ResponseChannel.finiteTimeAdiabaticResponse_exists_intertwiningMap
     U ρin ρout symmetry measured source variation hU hbar expectation
     hω hMeasured hSource hVariation ω η T hIntegrable
+  let X : Matrix I I ℂ := fun i j =>
+    ({ measured := measured i, source := source j,
+       observableVariation := variation i j } : ResponseChannel H).finiteTimeAdiabaticResponse
+      U hbar expectation ω η T
+  change F.toLinearMap = Matrix.toLin' X at hF
   let n := finiteVolumeConductivityNormalization volume ω η
   refine ⟨n • F, ?_⟩
   rw [Representation.IntertwiningMap.toLinearMap_smul, hF, ← map_smul]
   apply congrArg (fun M : Matrix I I ℂ => Matrix.toLin' M)
   ext i j
-  change n * (({ measured := measured i, source := source j,
-    observableVariation := variation i j } : ResponseChannel H).finiteTimeAdiabaticResponse
-      U hbar expectation ω η T) =
-    (({ measured := measured i, source := source j,
-      observableVariation := variation i j } : ResponseChannel H).finiteTimeAdiabaticResponse
-        U hbar expectation ω η T) * n
+  change n * X i j = X i j * n
   exact mul_comm _ _
 
 /-- A quarter-turn in the point group of the actual species-labeled configuration
