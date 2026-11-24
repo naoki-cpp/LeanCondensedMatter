@@ -30,10 +30,10 @@ theorem orthonormal_normalized_family {G ι : Type*} [AddCommGroup G] [Fintype G
   have hsq : (Real.sqrt (Fintype.card G) : ℂ) ^ 2 = Fintype.card G := by
     exact_mod_cast Real.sq_sqrt (Nat.cast_nonneg (Fintype.card G))
   have hscale : (Real.sqrt (Fintype.card G) : ℂ)⁻¹ *
-      (Real.sqrt (Fintype.card G) : ℂ)⁻¹ = ((Fintype.card G : ℝ)⁻¹ : ℂ) := by
-    rw [← pow_two, inv_pow, hsq, Complex.ofReal_inv, Complex.ofReal_natCast]
+      (Real.sqrt (Fintype.card G) : ℂ)⁻¹ = (Fintype.card G : ℂ)⁻¹ := by
+    rw [← pow_two, inv_pow, hsq]
   simp only [PiLp.inner_apply, RCLike.wInner, RCLike.cWeight, Function.const_apply,
-    PiLp.toLp_apply, RCLike.inner_apply, map_mul, map_inv₀, Complex.conj_ofReal,
+    RCLike.inner_apply, map_mul, map_inv₀, Complex.conj_ofReal,
     RCLike.real_smul_eq_coe_mul]
   apply Finset.sum_congr rfl
   intro j _
@@ -41,7 +41,11 @@ theorem orthonormal_normalized_family {G ι : Type*} [AddCommGroup G] [Fintype G
     _ = ((Real.sqrt (Fintype.card G) : ℂ)⁻¹ *
         (Real.sqrt (Fintype.card G) : ℂ)⁻¹) *
         (χ r j * (starRingEnd ℂ) (χ q j)) := by ring
-    _ = _ := by rw [hscale]
+    _ = _ := by
+      rw [hscale]
+      change _ = ((Fintype.card G : ℝ) : ℂ)⁻¹ *
+        (χ r j * (starRingEnd ℂ) (χ q j))
+      rw [Complex.ofReal_natCast]
 
 end AddChar
 
