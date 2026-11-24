@@ -163,16 +163,7 @@ theorem externalComponentPartition_congr_of_external_fixed
     simpa only [hext] using
       (SimpleGraph.Iso.reachable_iff
         (φ := φ) (u := Sum.inl x) (v := Sum.inl y))
-  apply Finpartition.ext
-  apply Finset.Subset.antisymm
-  · intro B hB
-    obtain ⟨x, -, hx⟩ := (externalComponentPartition H).part_surjOn hB
-    rw [← hx, hpart x]
-    exact (externalComponentPartition G).part_mem.2 (Finset.mem_univ x)
-  · intro B hB
-    obtain ⟨x, -, hx⟩ := (externalComponentPartition G).part_surjOn hB
-    rw [← hx, ← hpart x]
-    exact (externalComponentPartition H).part_mem.2 (Finset.mem_univ x)
+  exact Finpartition.eq_of_part_eq_on _ _ (fun x _ => hpart x)
 
 /-- For a nonempty external sector, mutual external connectivity means that
 the external-component partition consists of exactly the full external set.

@@ -8,10 +8,30 @@ set_option linter.style.header false
 /-!
 # Connected-component partitions of finite simple graphs
 
-This module exposes the finite partition determined by graph reachability. It provides both the
+This module exposes a supportwise extensionality criterion for finite partitions and the finite
+partition determined by graph reachability. It provides both the
 ordinary partition of a finite vertex type and an ambient-finset view for graphs whose vertex type
 is a subtype `↥s`. It also provides graph-sum reachability lemmas.
 -/
+
+namespace Finpartition
+
+/-- A finite partition is determined by the part containing each element of its support. -/
+theorem eq_of_part_eq_on {α : Type*} [DecidableEq α] {s : Finset α}
+    (π σ : Finpartition s) (h : ∀ x ∈ s, π.part x = σ.part x) : π = σ := by
+  classical
+  apply Finpartition.ext
+  apply Finset.Subset.antisymm
+  · intro B hB
+    obtain ⟨x, hx, he⟩ := π.part_surjOn hB
+    rw [← he, h x hx]
+    exact σ.part_mem.2 hx
+  · intro B hB
+    obtain ⟨x, hx, he⟩ := σ.part_surjOn hB
+    rw [← he, ← h x hx]
+    exact π.part_mem.2 hx
+
+end Finpartition
 
 namespace SimpleGraph
 

@@ -269,18 +269,7 @@ theorem ExternalInsertionBlockLayout.externalComponentPartition_assembleDiagram
     rw [mem_externalComponentPartition_part,
       layout.assembleDiagram_reachable_iff_same_block S F hconnected]
     simpa only [layout.vertexEquiv_external] using (howner e f)
-  apply Finpartition.ext
-  apply Finset.Subset.antisymm
-  · intro B hB
-    obtain ⟨e, -, he⟩ :=
-      (externalComponentPartition (layout.assembleDiagram S F).vertexGraph).part_surjOn hB
-    rw [← he, hpart e]
-    exact layout.partition.part_mem.2 (Finset.mem_univ e)
-  · intro B hB
-    obtain ⟨e, -, he⟩ := layout.partition.part_surjOn hB
-    rw [← he, ← hpart e]
-    exact (externalComponentPartition (layout.assembleDiagram S F).vertexGraph).part_mem.2
-      (Finset.mem_univ e)
+  exact Finpartition.eq_of_part_eq_on _ _ (fun e _ => hpart e)
 
 /-- The physical connected component's external sector is exactly
 the prescribed source-partition block. Together with the full-vertex
