@@ -120,7 +120,8 @@ theorem orderedExternalInsertionTimedEvents_all_mem {E n : ℕ}
 theorem orderedExternalInsertionTimedEvents_pairwise {E n : ℕ}
     (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ) :
     (orderedExternalInsertionTimedEvents externalTime σ).Pairwise
-      (externalInsertionTimedEventBeforeOrEqual externalTime σ) := by
+      (stableTimedEventBeforeOrEqual (externalInsertionTimedEventTime externalTime σ)
+        (fun e => (finSumFinEquiv e : Fin (2 * E + n)).val)) := by
   classical
   change
     (List.insertionSort
