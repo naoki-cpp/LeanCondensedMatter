@@ -26,13 +26,13 @@ variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteS
 
 namespace IsTraceClass
 
-/-- For any Hilbert--Schmidt factorization `T = A† B`, the trace norm is bounded by the arithmetic
-mean of the squared Hilbert--Schmidt norms. -/
-theorem traceNorm_le_half_normSq_add_of_factorization
+/-- For any Hilbert--Schmidt factorization `T = A† B`, the trace norm is bounded by the product
+of the Hilbert--Schmidt norms. -/
+theorem traceNorm_le_sqrt_normSq_mul_of_factorization
     {T A B : H →L[ℂ] H} (hT : IsTraceClass T)
     (hA : IsHilbertSchmidt A) (hB : IsHilbertSchmidt B)
     (hfactor : ContinuousLinearMap.adjoint A * B = T) :
-    hT.traceNorm ≤ (hA.normSq + hB.normSq) / 2 := by
+    hT.traceNorm ≤ Real.sqrt hA.normSq * Real.sqrt hB.normSq := by
   obtain ⟨w, d, -⟩ := exists_hilbertBasis (𝕜 := ℂ) (E := H)
   obtain ⟨U, -, hUright, hUnorm⟩ := exists_leftPolarFactor T
   have hAU : IsHilbertSchmidt (A * U) := isHilbertSchmidt_comp_right hA U
@@ -51,8 +51,9 @@ theorem traceNorm_le_half_normSq_add_of_factorization
       apply tsum_congr
       intro i
       rw [hterm]
-    _ ≤ (hAU.normSq + hB.normSq) / 2 := hpair.2
-    _ ≤ (hA.normSq + hB.normSq) / 2 := by linarith
+    _ ≤ Real.sqrt hAU.normSq * Real.sqrt hB.normSq := hpair.2
+    _ ≤ Real.sqrt hA.normSq * Real.sqrt hB.normSq :=
+      mul_le_mul_of_nonneg_right (Real.sqrt_le_sqrt hAUnorm_le) (Real.sqrt_nonneg _)
 
 /-- Every trace-class operator admits a Hilbert--Schmidt factorization whose two squared
 Hilbert--Schmidt norms equal the trace norm. -/
@@ -84,8 +85,12 @@ theorem exists_hilbertSchmidt_factorization_normSq_eq_traceNorm
       hA.normSq ≤ hS.normSq :=
         hS.normSq_comp_right_le_of_norm_le_one (ContinuousLinearMap.adjoint U) hAdjUnorm
       _ = hT.traceNorm := hSnorm
-  have hlower := hT.traceNorm_le_half_normSq_add_of_factorization hA hS hfactor
-  have hAnorm : hA.normSq = hT.traceNorm := by linarith
+  have hlower := hT.traceNorm_le_sqrt_normSq_mul_of_factorization hA hS hfactor
+  have hmean : Real.sqrt hA.normSq * Real.sqrt hS.normSq ≤
+      (hA.normSq + hS.normSq) / 2 := by
+    nlinarith [sq_nonneg (Real.sqrt hA.normSq - Real.sqrt hS.normSq),
+      Real.sq_sqrt hA.normSq_nonneg, Real.sq_sqrt hS.normSq_nonneg]
+  have hAnorm : hA.normSq = hT.traceNorm := by linarith [hlower.trans hmean]
   exact ⟨A, S, hA, hS, hfactor, hAnorm, hSnorm⟩
 
 end IsTraceClass
