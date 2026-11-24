@@ -183,5 +183,145 @@ theorem ResponseChannel.causalResponse_indexEquiv
   rw [hMeasured i, hSource j, hVariation i j] at h
   exact h
 
+
+/-- A microscopic spatial symmetry mixing the measured and source operators
+linearly induces the corresponding two-index transformation law for the
+retarded Kubo kernel. The two coefficient families need not agree.
+Their entries are complex because the observable space is complex-linear.
+
+This is derived using the already-owned linearity maps in *both* operator
+slots and `retardedSusceptibility_symmetry`, not assumed as a tensor law. -/
+theorem retardedSusceptibility_linearMixing
+    {I J : Type*} [Fintype I] [Fintype J]
+    (measured : I → (H →L[ℂ] H))
+    (source : J → (H →L[ℂ] H))
+    (R : I → I → ℂ) (S : J → J → ℂ)
+    (hU : ∀ t : ℝ, Φ (U (Multiplicative.ofAdd t) : H →L[ℂ] H) =
+      (U (Multiplicative.ofAdd t) : H →L[ℂ] H))
+    (hbar : ℝ) (expectation : NormalizedExpectation H)
+    (hω : ∀ A : H →L[ℂ] H, expectation (Φ A) = expectation A)
+    (hMeasured : ∀ i, Φ (measured i) = ∑ k, R i k • measured k)
+    (hSource : ∀ j, Φ (source j) = ∑ l, S j l • source l)
+    (i : I) (j : J) (t s : ℝ) :
+    (∑ k, ∑ l,
+      R i k * S j l *
+        retardedSusceptibility U hbar expectation (measured k) (source l) t s) =
+      retardedSusceptibility U hbar expectation (measured i) (source j) t s := by
+  classical
+  have hSourceLinear (k : I) :
+      retardedSusceptibility U hbar expectation (measured k)
+          (∑ l, S j l • source l) t s =
+        ∑ l, S j l *
+          retardedSusceptibility U hbar expectation (measured k) (source l) t s := by
+    change
+      (retardedSusceptibilitySourceLinearMap U hbar expectation (measured k) t s)
+          (∑ l, S j l • source l) =
+        ∑ l, S j l *
+          (retardedSusceptibilitySourceLinearMap U hbar expectation (measured k) t s)
+            (source l)
+    simp only [map_sum, map_smul, smul_eq_mul]
+  have hMeasuredLinear :
+      retardedSusceptibility U hbar expectation
+          (∑ k, R i k • measured k)
+          (∑ l, S j l • source l) t s =
+        ∑ k, R i k *
+          retardedSusceptibility U hbar expectation (measured k)
+            (∑ l, S j l • source l) t s := by
+    change
+      (retardedSusceptibilityMeasuredLinearMap U hbar expectation
+        (∑ l, S j l • source l) t s)
+          (∑ k, R i k • measured k) =
+        ∑ k, R i k *
+          (retardedSusceptibilityMeasuredLinearMap U hbar expectation
+            (∑ l, S j l • source l) t s) (measured k)
+    simp only [map_sum, map_smul, smul_eq_mul]
+  have hsym := retardedSusceptibility_symmetry U Φ hU hbar expectation hω
+    (measured i) (source j) t s
+  rw [hMeasured i, hSource j] at hsym
+  calc
+    (∑ k, ∑ l, R i k * S j l *
+        retardedSusceptibility U hbar expectation (measured k) (source l) t s) =
+      ∑ k, R i k * (∑ l, S j l *
+        retardedSusceptibility U hbar expectation (measured k) (source l) t s) := by
+          simp only [Finset.mul_sum, mul_assoc]
+    _ = ∑ k, R i k *
+        retardedSusceptibility U hbar expectation (measured k)
+          (∑ l, S j l • source l) t s := by
+            apply Finset.sum_congr rfl
+            intro k _
+            rw [hSourceLinear k]
+    _ = retardedSusceptibility U hbar expectation
+          (∑ k, R i k • measured k)
+          (∑ l, S j l • source l) t s := hMeasuredLinear.symm
+    _ = _ := hsym
+
+/-- The same mixed-index law holds for the explicitly source-dependent
+observable/contact contribution; unlike a purely paramagnetic response,
+this term cannot be discarded. -/
+theorem expectation_heisenbergEvolution_linearMixing
+    {I J : Type*} [Fintype I] [Fintype J]
+    (variation : I → J → (H →L[ℂ] H))
+    (R : I → I → ℂ) (S : J → J → ℂ)
+    (hU : ∀ t : ℝ, Φ (U (Multiplicative.ofAdd t) : H →L[ℂ] H) =
+      (U (Multiplicative.ofAdd t) : H →L[ℂ] H))
+    (expectation : NormalizedExpectation H)
+    (hω : ∀ A : H →L[ℂ] H, expectation (Φ A) = expectation A)
+    (hVariation : ∀ i j,
+      Φ (variation i j) =
+        ∑ k, ∑ l, (R i k * S j l) • variation k l)
+    (i : I) (j : J) (t : ℝ) :
+    (∑ k, ∑ l, (R i k * S j l) *
+      expectation (heisenbergEvolution U t (variation k l))) =
+      expectation (heisenbergEvolution U t (variation i j)) := by
+  classical
+  have h := expectation_heisenbergEvolution_symmetry U Φ hU expectation hω
+    (variation i j) t
+  rw [hVariation i j] at h
+  simpa only [map_sum, map_smul, smul_eq_mul] using h
+
+/-- The *completed* Kubo channel response is invariant when both operator
+families are mixed by independent finite complex matrices and the contact
+variation transforms with their product. This makes no assertion about
+exchanging finite sums and totalized integrals: componentwise tensor
+covariance for the integrated response requires integrability. -/
+theorem ResponseChannel.causalResponse_linearMixing
+    {I J : Type*} [Fintype I] [Fintype J]
+    (measured : I → (H →L[ℂ] H))
+    (source : J → (H →L[ℂ] H))
+    (variation : I → J → (H →L[ℂ] H))
+    (R : I → I → ℂ) (S : J → J → ℂ)
+    (hU : ∀ t : ℝ, Φ (U (Multiplicative.ofAdd t) : H →L[ℂ] H) =
+      (U (Multiplicative.ofAdd t) : H →L[ℂ] H))
+    (hbar : ℝ) (expectation : NormalizedExpectation H)
+    (hω : ∀ A : H →L[ℂ] H, expectation (Φ A) = expectation A)
+    (hMeasured : ∀ i, Φ (measured i) = ∑ k, R i k • measured k)
+    (hSource : ∀ j, Φ (source j) = ∑ l, S j l • source l)
+    (hVariation : ∀ i j,
+      Φ (variation i j) =
+        ∑ k, ∑ l, (R i k * S j l) • variation k l)
+    (i : I) (j : J) (f : ℝ → ℝ) (t : ℝ) :
+    ({ measured := ∑ k, R i k • measured k,
+       source := ∑ l, S j l • source l,
+       observableVariation := ∑ k, ∑ l,
+         (R i k * S j l) • variation k l } : ResponseChannel H).causalResponse
+           U hbar expectation f t =
+      ({ measured := measured i, source := source j,
+         observableVariation := variation i j } : ResponseChannel H).causalResponse
+           U hbar expectation f t := by
+  classical
+  have h := ResponseChannel.causalResponse_symmetry U Φ
+    ({ measured := measured i, source := source j,
+       observableVariation := variation i j } : ResponseChannel H)
+    hU hbar expectation hω f t
+  change
+    ({ measured := Φ (measured i), source := Φ (source j),
+       observableVariation := Φ (variation i j) } : ResponseChannel H).causalResponse
+           U hbar expectation f t =
+      ({ measured := measured i, source := source j,
+         observableVariation := variation i j } : ResponseChannel H).causalResponse
+           U hbar expectation f t at h
+  rw [hMeasured i, hSource j, hVariation i j] at h
+  exact h
+
 end
 end QuantumTheory.LinearResponse
