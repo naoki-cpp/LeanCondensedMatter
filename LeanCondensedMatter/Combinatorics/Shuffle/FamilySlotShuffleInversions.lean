@@ -174,19 +174,16 @@ theorem FamilySlotShuffleTo.orderedBlockInversionCount_modEq_of_blockInversionCo
   · simp only [hlt, ite_false]
     exact Nat.ModEq.refl 0
 
-/-- Equality of the occupied ambient slots for each block implies equality
-of the total ordered inter-block inversion counts, after reindexing the block
-names and respecting their chosen orders.
-
-This formulation avoids casts between different block-local `Fin` types
-and applies to both graph components and source-partition blocks. -/
-theorem FamilySlotShuffleTo.orderedBlockInversionCount_eq_of_blockSlotSet
+/-- Transport the total ordered inter-block inversion count along a block equivalence
+preserving pairwise inversion counts and the chosen block order. The ambient slot
+counts may differ. -/
+theorem FamilySlotShuffleTo.orderedBlockInversionCount_eq_of_blockInversionCount
     {κ : Type*} [Fintype ι] [Fintype κ]
-    {size₁ : ι → ℕ} {size₂ : κ → ℕ} {total : ℕ}
-    (σ : FamilySlotShuffleTo size₁ total)
-    (τ : FamilySlotShuffleTo size₂ total)
+    {size₁ : ι → ℕ} {size₂ : κ → ℕ} {total₁ total₂ : ℕ}
+    (σ : FamilySlotShuffleTo size₁ total₁)
+    (τ : FamilySlotShuffleTo size₂ total₂)
     (e : ι ≃ κ)
-    (hset : ∀ i, σ.blockSlotSet i = τ.blockSlotSet (e i))
+    (hInv : ∀ i j, σ.blockInversionCount i j = τ.blockInversionCount (e i) (e j))
     (orderσ : ι ≃ Fin (Fintype.card ι))
     (orderτ : κ ≃ Fin (Fintype.card κ))
     (horder : ∀ i j, orderσ i < orderσ j ↔
@@ -214,10 +211,32 @@ theorem FamilySlotShuffleTo.orderedBlockInversionCount_eq_of_blockSlotSet
     by_cases hlt : orderσ p.1 < orderσ p.2
     · have hlt' := (horder p.1 p.2).mp hlt
       simp only [hlt, hlt', ite_true]
-      exact σ.blockInversionCount_eq_of_blockSlotSet τ e hset p.1 p.2
+      exact hInv p.1 p.2
     · have hlt' : ¬ orderτ (e p.1) < orderτ (e p.2) :=
         fun h => hlt ((horder p.1 p.2).mpr h)
       simp [hlt, hlt']
+
+/-- Equality of the occupied ambient slots for each block implies equality
+of the total ordered inter-block inversion counts, after reindexing the block
+names and respecting their chosen orders.
+
+This formulation avoids casts between different block-local `Fin` types
+and applies to both graph components and source-partition blocks. -/
+theorem FamilySlotShuffleTo.orderedBlockInversionCount_eq_of_blockSlotSet
+    {κ : Type*} [Fintype ι] [Fintype κ]
+    {size₁ : ι → ℕ} {size₂ : κ → ℕ} {total : ℕ}
+    (σ : FamilySlotShuffleTo size₁ total)
+    (τ : FamilySlotShuffleTo size₂ total)
+    (e : ι ≃ κ)
+    (hset : ∀ i, σ.blockSlotSet i = τ.blockSlotSet (e i))
+    (orderσ : ι ≃ Fin (Fintype.card ι))
+    (orderτ : κ ≃ Fin (Fintype.card κ))
+    (horder : ∀ i j, orderσ i < orderσ j ↔
+      orderτ (e i) < orderτ (e j)) :
+    σ.orderedBlockInversionCount orderσ =
+      τ.orderedBlockInversionCount orderτ :=
+  σ.orderedBlockInversionCount_eq_of_blockInversionCount τ e
+    (σ.blockInversionCount_eq_of_blockSlotSet τ e hset) orderσ orderτ horder
 
 /-- For distinct blocks, the two opposite inter-block inversion counts add up
 to the total number of pairs of slots between the blocks. -/
