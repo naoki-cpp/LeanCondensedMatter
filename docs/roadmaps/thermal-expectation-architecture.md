@@ -150,11 +150,12 @@ The external-insertion mixed-atomic and interaction-picture vertex Dyson coeffic
 accept explicit μ and evaluate directly via `Common.finiteGibbsExpectation` at
 `fermionEnergy (ε - μ)`, while existing diagrammatic and vacuum-factorization theorems
 remain explicitly restricted to μ = 0 in the present diagrammatic API.
-The finite two-point operator Dyson coefficient and its unnormalized formal series now
-also use explicit μ through the generic finite Gibbs expectation. Their current
-identities with Wick diagrams, connected components and normalized partition series
-remain explicitly specialized to μ = 0; nonzero-μ linked-cluster factorization
-requires a separate extension of the diagram-side amplitudes and partition trace. Concrete ensemble-specific Dyson/Wick statements choose the Gibbs
+The finite two-point operator Dyson coefficient, connected coefficient, and
+partition-normalized formal series accept arbitrary real μ. The linked-cluster
+factorization reuses the effective-dispersion diagram expansion at ξ = ε - μ:
+number-conserving quartic vertices are invariant under the shift and the physical
+external fields supply exp (μ (τ' - τ)). The normalized vacuum trace uses ξ.
+Concrete ensemble-specific Dyson/Wick statements choose the Gibbs
 energy separately; no finite density-state adapter is required by the coefficient expansion.
 Finite fermionic contractions, one-body expectations, Wick amplitudes, and Dyson consumers
 use the generic finite Gibbs expectation or eigenbasis density operator directly, with
