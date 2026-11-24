@@ -2,6 +2,8 @@ import LeanCondensedMatter.Analysis.Operator.BoundedUnitaryEvolution
 import LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.Unitary
 import LeanCondensedMatter.QuantumTheory.Postulates
 import Mathlib.Analysis.SpecialFunctions.Exponential
+import Mathlib.Analysis.CStarAlgebra.ContinuousLinearMap
+import Mathlib.Analysis.CStarAlgebra.Hom
 
 set_option linter.style.header false
 
@@ -116,6 +118,21 @@ noncomputable def freePropagatorGroup : Multiplicative ℝ →* unitary (H →L[
 theorem freePropagatorGroup_apply (t : ℝ) :
     (freePropagatorGroup system (Multiplicative.ofAdd t) : H →L[ℂ] H) =
       freePropagator system t := rfl
+
+/-- A star-algebra symmetry fixing the bounded Hamiltonian also fixes the
+Schrödinger propagator. Continuity follows from the isometry of a complex
+C-star algebra equivalence, so no continuity assumption on the symmetry
+needs to be supplied. -/
+theorem freePropagatorGroup_fixed_of_hamiltonian_fixed
+    (Φ : (H →L[ℂ] H) ≃⋆ₐ[ℂ] (H →L[ℂ] H))
+    (hH : Φ system.hamiltonian.1 = system.hamiltonian.1) (t : ℝ) :
+    Φ (freePropagatorGroup system (Multiplicative.ofAdd t) : H →L[ℂ] H) =
+      (freePropagatorGroup system (Multiplicative.ofAdd t) : H →L[ℂ] H) := by
+  have hcontinuous : Continuous Φ :=
+    (NonUnitalStarAlgHom.isometry Φ Φ.injective).continuous
+  simp only [freePropagatorGroup_apply, freePropagator_eq_exp]
+  rw [NormedSpace.map_exp Φ hcontinuous]
+  simp only [schrodingerGenerator, map_smul, hH]
 
 /-- Applying Heisenberg evolution uses the convention `U₀(-t) A U₀(t)`. -/
 theorem heisenbergEvolution_freePropagatorGroup_apply (t : ℝ) (A : H →L[ℂ] H) :
