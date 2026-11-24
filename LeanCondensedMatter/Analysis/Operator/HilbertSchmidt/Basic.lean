@@ -386,21 +386,28 @@ theorem normSq_comp_right_le_of_norm_le_one (hT : IsHilbertSchmidt T)
         (pow_le_pow_left₀ (norm_nonneg B) hB 2) hT.normSq_nonneg
     _ = hT.normSq := by rw [one_pow, one_mul]
 
-/-- The absolute diagonal pairing of two Hilbert--Schmidt operators is summable, and its
-sum is bounded by the arithmetic mean of their squared Hilbert--Schmidt norms. -/
+/-- The absolute diagonal pairing is summable and bounded by the product of the
+Hilbert--Schmidt norms, by finite-sum Cauchy--Schwarz and passage to the limit. -/
 theorem summable_norm_inner_apply_and_tsum_le {S T : H →L[ℂ] H}
     (hS : IsHilbertSchmidt S) (hT : IsHilbertSchmidt T)
     {ι : Type*} (d : HilbertBasis ι ℂ H) :
     Summable (fun i => ‖inner ℂ (S (d i)) (T (d i))‖) ∧
-      ∑' i, ‖inner ℂ (S (d i)) (T (d i))‖ ≤ (hS.normSq + hT.normSq) / 2 := by
+      ∑' i, ‖inner ℂ (S (d i)) (T (d i))‖ ≤
+        Real.sqrt hS.normSq * Real.sqrt hT.normSq := by
   have hsum := (hS.summable_inner_apply hT d).norm
-  have hmajor :
-      HasSum (fun i => (‖S (d i)‖ ^ 2 + ‖T (d i)‖ ^ 2) / 2)
-        ((hS.normSq + hT.normSq) / 2) :=
-    ((hS.hasSum_norm_sq_apply d).add (hT.hasSum_norm_sq_apply d)).div_const 2
-  refine ⟨hsum, hasSum_le (fun i => ?_) hsum.hasSum hmajor⟩
-  exact (norm_inner_le_norm (S (d i)) (T (d i))).trans (by
-    nlinarith [sq_nonneg (‖S (d i)‖ - ‖T (d i)‖)])
+  refine ⟨hsum, hasSum_le_of_sum_le hsum.hasSum fun s => ?_⟩
+  calc
+    (∑ i ∈ s, ‖inner ℂ (S (d i)) (T (d i))‖) ≤
+        ∑ i ∈ s, ‖S (d i)‖ * ‖T (d i)‖ :=
+      Finset.sum_le_sum fun i _ => norm_inner_le_norm (S (d i)) (T (d i))
+    _ ≤ Real.sqrt (∑ i ∈ s, ‖S (d i)‖ ^ 2) *
+        Real.sqrt (∑ i ∈ s, ‖T (d i)‖ ^ 2) :=
+      Real.sum_mul_le_sqrt_mul_sqrt s _ _
+    _ ≤ Real.sqrt hS.normSq * Real.sqrt hT.normSq :=
+      mul_le_mul
+        (Real.sqrt_le_sqrt (sum_le_hasSum s (fun i _ => sq_nonneg _) (hS.hasSum_norm_sq_apply d)))
+        (Real.sqrt_le_sqrt (sum_le_hasSum s (fun i _ => sq_nonneg _) (hT.hasSum_norm_sq_apply d)))
+        (Real.sqrt_nonneg _) (Real.sqrt_nonneg _)
 
 end IsHilbertSchmidt
 
