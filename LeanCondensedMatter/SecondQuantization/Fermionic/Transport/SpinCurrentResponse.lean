@@ -186,20 +186,8 @@ theorem boundedSpinDisplacementDirectionalResponseChannel_contactExpectation
     (spinOneBodyLinear (Site := Site) spinScale component))
   let B := boundedDirectionalCurrent (spinfulGeometry geometry) source
     (hbar : ℂ) (q : ℂ) K
-  change expectation (heisenbergEvolution U t ((sourceValue : ℂ) •
-    ((Complex.I / (hbar : ℂ)) • ⁅-B, D⁆))) =
-      (sourceValue : ℂ) * retardedSusceptibility U hbar expectation D B t t
-  have hcomm : ⁅-B, D⁆ = ⁅D, B⁆ := by
-    simp [LieRing.of_associative_ring_bracket, sub_eq_add_neg, add_comm]
-  rw [hcomm, retardedSusceptibility_eq_commutatorSusceptibility_of_le
-    U hbar expectation D B (le_refl t), commutatorSusceptibility,
-    lie_heisenbergEvolution_eq_relativeTime, sub_self, heisenbergEvolution_zero]
-  let L := (heisenbergEvolution U t).toAlgEquiv.toLinearEquiv
-  change expectation.toContinuousLinearMap
-    (L ((sourceValue : ℂ) • ((Complex.I / (hbar : ℂ)) • ⁅D, B⁆))) =
-      (sourceValue : ℂ) * ((Complex.I / (hbar : ℂ)) *
-        expectation.toContinuousLinearMap (L ⁅D, B⁆))
-  simp only [map_smul, smul_eq_mul, mul_assoc]
+  exact retardedSusceptibility_sameTime_eq_commutatorVariation
+    U hbar expectation D B (sourceValue : ℂ) t
 
 /-- The real-space mixed retarded kernel splits into the conventional
 spin-current and torque-dipole kernels without a separate position/velocity
