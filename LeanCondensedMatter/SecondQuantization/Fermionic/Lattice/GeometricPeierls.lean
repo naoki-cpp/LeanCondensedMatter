@@ -145,7 +145,7 @@ theorem hasAlgebraicDerivAt_boundedMixedDirectionalPeierlsCurrent_zero
         (fun A => (geometry.bondCoordinate measured x y : ℂ) •
           boundedPeierlsBondCurrent K ℏ q x y
             ((geometry.bondCoordinate source x y : ℂ) * A))
-        ((geometry.bondCoordinate source x y : ℂ) •
+        ((geometry.bondCoordinate measured x y : ℂ) •
           ((geometry.bondCoordinate source x y : ℂ) •
             boundedBondContact K ℏ q x y)) 0 := by
     intro x y
