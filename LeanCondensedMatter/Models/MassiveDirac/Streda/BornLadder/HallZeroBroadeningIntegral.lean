@@ -23,8 +23,6 @@ namespace QuantumTheory.Models.MassiveDirac
 
 noncomputable section
 
-open QuantumTheory.Transport
-
 open Filter MeasureTheory QuantumTheory.Transport
 open scoped Interval
 
@@ -112,10 +110,10 @@ private theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMome
       intro p _
       exact hpointwise p
     _ = _ := by
-      simpa only [inPlaneLadderAction_apply_y, q, pref, solved, radialRung, finiteBroadeningOrderedXYMomentumEndpointForm,
-        finiteCutoffContinuumBornDysonCurrentRungVector,
-        finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficient] using
-        congrArg (fun z : ℂ => (-2 : ℂ) * q ^ 2 * pref⁻¹ * z) hActionEq
+      rw [hActionEq] <;>
+        simp only [q, pref, solved, radialRung, finiteBroadeningOrderedXYMomentumEndpointForm,
+          finiteCutoffContinuumBornDysonCurrentRungVector,
+          finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficient]
 
 /-- At fixed positive disorder and finite cutoff, the ordered `xy` Středa momentum integral converges
 to its zero-broadening boundary. -/
