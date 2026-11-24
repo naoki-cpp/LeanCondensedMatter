@@ -141,7 +141,7 @@ theorem retardedSusceptibility_sameTime_eq_commutatorVariation
     (L (factor • ((Complex.I / (hbar : ℂ)) • ⁅D, B⁆))) =
       factor * ((Complex.I / (hbar : ℂ)) *
         expectation.toContinuousLinearMap (L ⁅D, B⁆))
-  simp only [map_smul, smul_eq_mul, mul_assoc]
+  simp only [map_smul, smul_eq_mul]
 
 /-- The retarded susceptibility has causal support: it vanishes when `t < s`. -/
 @[simp]
