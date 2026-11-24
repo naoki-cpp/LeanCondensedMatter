@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Analysis.OrderedSimplex.MeasurableRegularityBounds
+import LeanCondensedMatter.Analysis.OrderedSimplex.MeasurableRegularity
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.DiagramIntegral
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Analysis.DiagramRegularity
 

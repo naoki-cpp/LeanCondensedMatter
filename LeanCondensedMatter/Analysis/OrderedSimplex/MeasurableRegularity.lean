@@ -13,7 +13,9 @@ weaker condition suited to finite chamber selections: global measurability toget
 boundedness on every centered finite-dimensional cube.
 
 The condition is stable under fixing the outermost coordinate and under the finite products and
-coordinate selections needed by the shuffle constructions.
+coordinate selections needed by the shuffle constructions. It also gives uniform bounds and interval
+integrability for recursively exposed boundaries, and finite-sum linearity of the oriented integral.
+The rough bound uses the cube volume scale `|β|^n`, since only finiteness is needed.
 -/
 
 namespace intervalIntegral
@@ -219,5 +221,122 @@ theorem measurableLocallyBounded_of_finite_continuous_signature
     (measurable_of_finite_continuous_signature
       signature hFiber f branch hContinuous hSelect)
     hContinuous (fun σ => ⟨signature σ, hSelect σ⟩)
+
+
+/-- A uniform norm bound on the centered cube gives a rough `|β|^n` bound for the recursively
+oriented ordered-simplex integral. -/
+private theorem norm_orderedSimplexIntegral_le_of_cube_bound :
+    ∀ (n : ℕ) (β : ℝ) (f : (Fin n → ℝ) → ℂ) (C : ℝ),
+      0 ≤ C →
+      (∀ x ∈ orderedSimplexTimeCube n |β|, ‖f x‖ ≤ C) →
+      ‖orderedSimplexIntegral n β f‖ ≤ C * |β| ^ n
+  | 0, β, f, C, _hC, hbound => by
+      have hzero : (Fin.elim0 : Fin 0 → ℝ) ∈ orderedSimplexTimeCube 0 |β| := by
+        rw [orderedSimplexTimeCube, Set.mem_Icc]
+        exact ⟨fun i => Fin.elim0 i, fun i => Fin.elim0 i⟩
+      simpa using hbound (Fin.elim0 : Fin 0 → ℝ) hzero
+  | n + 1, β, f, C, hC, hbound => by
+      rw [orderedSimplexIntegral_succ]
+      have houter : ∀ t ∈ Set.uIoc (0 : ℝ) β,
+          ‖orderedSimplexIntegral n t (fun rest => f (Fin.cons t rest))‖ ≤
+            C * |β| ^ n := by
+        intro t ht
+        have htAbs : |t| ≤ |β| := by
+          simpa using abs_sub_left_of_mem_uIcc (uIoc_subset_uIcc ht)
+        have hslice : ∀ rest ∈ orderedSimplexTimeCube n |t|,
+            ‖f (Fin.cons t rest)‖ ≤ C := by
+          intro rest hrest
+          exact hbound _ (finCons_mem_orderedSimplexTimeCube htAbs htAbs hrest)
+        have hi := norm_orderedSimplexIntegral_le_of_cube_bound n t
+          (fun rest => f (Fin.cons t rest)) C hC hslice
+        calc
+          ‖orderedSimplexIntegral n t (fun rest => f (Fin.cons t rest))‖ ≤
+              C * |t| ^ n := hi
+          _ ≤ C * |β| ^ n := by gcongr
+      calc
+        ‖∫ t in (0 : ℝ)..β,
+            orderedSimplexIntegral n t (fun rest => f (Fin.cons t rest))‖ ≤
+            (C * |β| ^ n) * |β - 0| :=
+          intervalIntegral.norm_integral_le_of_norm_le_const houter
+        _ = C * |β| ^ (n + 1) := by
+          rw [sub_zero, pow_succ]
+          ring
+
+/-- A measurable locally bounded integrand gives a uniform bound for its recursively exposed
+ordered-simplex boundary on every finite oriented interval. -/
+theorem MeasurableLocallyBounded.exists_norm_bound_orderedSimplexIntegral_boundary
+    {n : ℕ} {f : (Fin (n + 1) → ℝ) → ℂ} (hf : MeasurableLocallyBounded f)
+    (β : ℝ) :
+    ∃ D : ℝ, 0 ≤ D ∧ ∀ t ∈ Set.uIcc (0 : ℝ) β,
+      ‖orderedSimplexIntegral n t (fun rest => f (Fin.cons t rest))‖ ≤ D := by
+  obtain ⟨C, hC0, hC⟩ := hf.2 |β| (abs_nonneg β)
+  let D := C * |β| ^ n
+  have hD : 0 ≤ D := mul_nonneg hC0 (pow_nonneg (abs_nonneg β) n)
+  refine ⟨D, hD, ?_⟩
+  intro t ht
+  have htAbs : |t| ≤ |β| := by
+    simpa using abs_sub_left_of_mem_uIcc ht
+  have hslice : ∀ rest ∈ orderedSimplexTimeCube n |t|,
+      ‖f (Fin.cons t rest)‖ ≤ C := by
+    intro rest hrest
+    exact hC _ (finCons_mem_orderedSimplexTimeCube htAbs htAbs hrest)
+  have hi := norm_orderedSimplexIntegral_le_of_cube_bound n t
+    (fun rest => f (Fin.cons t rest)) C hC0 hslice
+  calc
+    ‖orderedSimplexIntegral n t (fun rest => f (Fin.cons t rest))‖ ≤
+        C * |t| ^ n := hi
+    _ ≤ C * |β| ^ n := by gcongr
+    _ = D := rfl
+
+/-- The recursively exposed outer boundary of a measurable locally bounded ordered-simplex
+integrand is interval integrable on every finite oriented interval. -/
+theorem MeasurableLocallyBounded.intervalIntegrable_orderedSimplexIntegral_boundary
+    {n : ℕ} {f : (Fin (n + 1) → ℝ) → ℂ} (hf : MeasurableLocallyBounded f)
+    (β : ℝ) :
+    IntervalIntegrable
+      (fun t : ℝ => orderedSimplexIntegral n t (fun rest => f (Fin.cons t rest)))
+      volume 0 β := by
+  let H : ℝ → ℂ := fun t =>
+    orderedSimplexIntegral n t (fun rest => f (Fin.cons t rest))
+  have hMeas : Measurable H := by
+    simpa [H] using
+      measurable_orderedSimplexIntegral_of_measurable n id
+        (fun t rest => f (Fin.cons t rest)) measurable_id
+        (hf.1.comp (Continuous.finCons continuous_fst continuous_snd).measurable)
+  obtain ⟨D, _hD, hNorm⟩ := hf.exists_norm_bound_orderedSimplexIntegral_boundary β
+  have hIntOn : IntegrableOn H (Set.uIcc (0 : ℝ) β) := by
+    exact MeasureTheory.IntegrableOn.of_bound
+      isCompact_uIcc.measure_lt_top hMeas.aestronglyMeasurable D
+      (MeasureTheory.ae_restrict_of_forall_mem measurableSet_uIcc
+        (by simpa [H] using hNorm))
+  exact hIntOn.intervalIntegrable
+
+/-- **A finite sum commutes with `orderedSimplexIntegral` under measurable local boundedness.**
+
+The continuity hypothesis of `orderedSimplexIntegral_finsetSum` is unavailable for integrands that
+are only chamberwise continuous, which is the situation every mixed-order expansion produces.  Only
+interval integrability of each recursively exposed boundary is actually needed, and that is exactly
+what `MeasurableLocallyBounded` supplies. -/
+theorem orderedSimplexIntegral_finsetSum_of_measurableLocallyBounded {ι : Type*}
+    (s : Finset ι) (n : ℕ) (β : ℝ) (f : ι → (Fin n → ℝ) → ℂ)
+    (hf : ∀ i ∈ s, MeasurableLocallyBounded (f i)) :
+    orderedSimplexIntegral n β (fun τ => ∑ i ∈ s, f i τ) =
+      ∑ i ∈ s, orderedSimplexIntegral n β (f i) := by
+  induction n generalizing β with
+  | zero => simp
+  | succ n ih =>
+    have hcons : ∀ (t : ℝ), ∀ i ∈ s,
+        MeasurableLocallyBounded (fun rest : Fin n → ℝ => f i (Fin.cons t rest)) :=
+      fun t i hi => (hf i hi).finCons t
+    have heq : ∀ t : ℝ,
+        orderedSimplexIntegral n t (fun rest => ∑ i ∈ s, f i (Fin.cons t rest)) =
+          ∑ i ∈ s, orderedSimplexIntegral n t (fun rest => f i (Fin.cons t rest)) := fun t =>
+      ih t (fun i rest => f i (Fin.cons t rest)) (hcons t)
+    rw [orderedSimplexIntegral_succ]
+    simp_rw [heq]
+    rw [intervalIntegral.integral_finsetSum]
+    · exact Finset.sum_congr rfl fun i _ => (orderedSimplexIntegral_succ n β (f i)).symm
+    · intro i hi
+      exact (hf i hi).intervalIntegrable_orderedSimplexIntegral_boundary β
 
 end intervalIntegral
