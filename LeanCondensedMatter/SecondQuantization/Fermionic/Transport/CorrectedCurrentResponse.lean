@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Analysis.ConservationLaw.CorrectedCurrentFlux
+import LeanCondensedMatter.Analysis.ConservationLaw.SymmetricLocalizationAlgebra
 import LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.Bounded
 import LeanCondensedMatter.QuantumTheory.LinearResponse.Response.RetardedSusceptibility
 import LeanCondensedMatter.QuantumTheory.LinearResponse.Response.Channel

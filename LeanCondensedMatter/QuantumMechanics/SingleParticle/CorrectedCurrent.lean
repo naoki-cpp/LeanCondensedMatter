@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Analysis.ConservationLaw.CorrectedCurrentFlux
+import LeanCondensedMatter.Analysis.ConservationLaw.SymmetricLocalizationAlgebra
 import LeanCondensedMatter.Analysis.ConservationLaw.CurrentRepresentation
 import LeanCondensedMatter.QuantumMechanics.SingleParticle.LocalizedTransport
 
@@ -9,7 +9,7 @@ set_option linter.style.header false
 
 For a general transported one-body quantity `m`, the intrinsic localized transport need not be
 represented by the symmetrized velocity current `1/2 {v,m}` alone. The representation-independent
-operator algebra is owned by `Analysis.ConservationLaw.CorrectedCurrentFlux`:
+operator algebra is owned by `Analysis.ConservationLaw.SymmetricLocalizationAlgebra`:
 
 ```text
 J_nested = J_sym + J_corr

@@ -1,7 +1,6 @@
 import LeanCondensedMatter.Analysis.ConservationLaw.CurrentRepresentation
 import LeanCondensedMatter.Analysis.ConservationLaw.FluxBalanceLaw
 import LeanCondensedMatter.Analysis.ConservationLaw.SymmetricLocalizationAlgebra
-import LeanCondensedMatter.Analysis.ConservationLaw.CorrectedCurrentFlux
 
 set_option linter.style.header false
 
