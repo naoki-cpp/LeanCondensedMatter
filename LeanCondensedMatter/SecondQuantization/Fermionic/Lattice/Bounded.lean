@@ -1,6 +1,7 @@
 import LeanCondensedMatter.QuantumTheory.PeierlsLattice
 import LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.DiscreteLattice
-import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.FiniteHilbertRealization
+import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.FiniteHilbertIsometry
+import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.SecondQuantizationNaturality
 import LeanCondensedMatter.SecondQuantization.Common.Algebra.FiniteHilbertOperator
 
 set_option linter.style.header false
@@ -150,6 +151,79 @@ theorem bounded_discrete_continuity (ℏ q : ℂ)
   simpa only [boundedLatticeOperator, boundedHoppingHamiltonian,
     boundedBondCurrent, LieRing.of_associative_ring_bracket,
     map_add, map_smul, map_sum, map_zero, map_sub, map_mul] using h
+
+
+/-- Every finite site permutation has a unitary implementation on the full
+fermionic occupation Hilbert space, conjugating the bounded second quantization
+of each one-particle matrix unit to the relabeled unit. The implementation is
+the existing exterior lift of the coordinate-basis isometry, so fermionic
+ordering signs are included rather than replaced by a bare occupation permutation. -/
+theorem exists_unitary_sitePermutation
+    (p : Equiv.Perm Site) :
+    ∃ W : FiniteLatticeHilbertFock Site ≃ₗᵢ[ℂ] FiniteLatticeHilbertFock Site,
+      ∀ x y : Site, W.conjStarAlgEquiv (boundedOneBodyOperator (matrixUnit x y)) =
+        boundedOneBodyOperator (matrixUnit (p x) (p y)) := by
+  let b₀ : Module.Basis Site ℂ (Site →₀ ℂ) := Finsupp.basisSingleOne
+  let b := Common.finiteHilbertOrthonormalBasis (Config := Site)
+  let j : (Site →₀ ℂ) ≃ₗ[ℂ] Common.FiniteHilbertFock Site :=
+    Common.finiteHilbertFockEquiv
+  let e := b.equiv b p
+  let f : (Site →₀ ℂ) →ₗ[ℂ] (Site →₀ ℂ) :=
+    j.symm.toLinearMap.comp (e.toLinearEquiv.toLinearMap.comp j.toLinearMap)
+  have hj (i : Site) : j (b₀ i) = b i := by
+    change Common.finiteHilbertFockEquiv (Common.basisState i) =
+      Common.finiteHilbertBasisState i
+    exact Common.finiteHilbertFockEquiv_basisState i
+  have hf : e.toLinearEquiv.toLinearMap.comp j.toLinearMap = j.toLinearMap.comp f := by
+    apply LinearMap.ext
+    intro v
+    change e (j v) = j (j.symm (e (j v)))
+    rw [j.apply_symm_apply]
+  have hket (i : Site) : f (latticeKet i) = latticeKet (p i) := by
+    have hk (k : Site) : j (latticeKet k) = b k := hj k
+    apply j.injective
+    change j (j.symm (e (j (latticeKet i)))) = j (latticeKet (p i))
+    rw [j.apply_symm_apply, hk i, hk (p i)]
+    exact b.equiv_apply_basis b p i
+  have hmatrix (x y : Site) :
+      f.comp (matrixUnit x y) = (matrixUnit (p x) (p y)).comp f := by
+    apply b₀.ext
+    intro z
+    change f (matrixUnit x y (latticeKet z)) =
+      matrixUnit (p x) (p y) (f (latticeKet z))
+    rw [hket z]
+    by_cases h : z = y
+    · subst z
+      simp only [matrixUnit_apply, latticeKet, Finsupp.single_eq_same]
+      exact hket x
+    · have hyz : y ≠ z := Ne.symm h
+      have hp : p y ≠ p z := fun heq => hyz (p.injective heq)
+      simp [matrixUnit_apply, latticeKet, Finsupp.single_eq_of_ne hyz,
+        Finsupp.single_eq_of_ne hp]
+  let W := AlgebraicFock.finiteHilbertMap b b e
+  have hMap (v : AlgebraicFock (Site →₀ ℂ)) :
+      W (AlgebraicFock.finiteHilbertEquiv b₀ v) =
+        AlgebraicFock.finiteHilbertEquiv b₀ (ExteriorAlgebra.map f v) :=
+    AlgebraicFock.finiteHilbertMap_apply_of_basis b₀ b j.toLinearMap hj e f hf v
+  refine ⟨W, ?_⟩
+  intro x y
+  apply ContinuousLinearMap.ext
+  intro v
+  obtain ⟨z, hz⟩ := (AlgebraicFock.finiteHilbertEquiv b₀).surjective (W.symm v)
+  have hv : v = W (AlgebraicFock.finiteHilbertEquiv b₀ z) := by
+    rw [hz, W.apply_symm_apply]
+  rw [hv, LinearIsometryEquiv.conjStarAlgEquiv_apply_apply, W.symm_apply_apply]
+  simp only [boundedOneBodyOperator_eq, boundedLatticeOperator]
+  change W (AlgebraicFock.finiteHilbertOperatorAlgEquiv b₀
+      (AlgebraicFock.dGamma _ (matrixUnit x y)) (AlgebraicFock.finiteHilbertEquiv b₀ z)) =
+    AlgebraicFock.finiteHilbertOperatorAlgEquiv b₀
+      (AlgebraicFock.dGamma _ (matrixUnit (p x) (p y)))
+      (W (AlgebraicFock.finiteHilbertEquiv b₀ z))
+  rw [AlgebraicFock.finiteHilbertOperator_apply, hMap, hMap,
+    AlgebraicFock.finiteHilbertOperator_apply]
+  exact congrArg (AlgebraicFock.finiteHilbertEquiv b₀)
+    (AlgebraicFock.map_dGamma f (matrixUnit x y) (matrixUnit (p x) (p y))
+      (fun w => DFunLike.congr_fun (hmatrix x y) w) z)
 
 end FiniteLattice
 
