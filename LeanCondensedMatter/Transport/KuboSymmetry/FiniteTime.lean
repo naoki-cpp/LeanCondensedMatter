@@ -1,8 +1,12 @@
+import LeanCondensedMatter.Crystal.PointGroup
 import LeanCondensedMatter.QuantumTheory.LinearResponse.Frequency.FiniteTime
 import LeanCondensedMatter.Transport.Core.ConductivityNormalization
 import LeanCondensedMatter.Transport.Core.ConductivityTensor
+import Mathlib.Analysis.InnerProductSpace.PiL2
 
 set_option linter.style.header false
+
+open scoped Matrix
 
 /-!
 # Finite-time Kubo conductivity under unitary spatial symmetry
@@ -16,7 +20,9 @@ The normalized tensor is a physical conductivity when the supplied operators
 realize the physical current, vector-potential coupling and contact variation,
 the observation time is nonnegative, and the driving frequency and switching
 rate are not both zero. The algebraic definition remains total; no zero-rate,
-DC, thermodynamic limit or microscopic point-group realization is asserted.
+DC or thermodynamic limit is asserted. The planar corollary uses an actual
+configuration point-group element with explicit microscopic realization
+hypotheses.
 -/
 
 namespace QuantumTheory.Transport
@@ -100,6 +106,55 @@ theorem finiteTimeVectorPotentialConductivityTensor_linearMixing
       intro l hl
       ring
     _ = _ := by rw [hX]
+
+/-- A quarter-turn in the point group of the actual species-labeled configuration
+forces planar isotropy of the finite-time, normalized conductivity if that
+geometric symmetry is realized on the microscopic dynamics, state, both polar
+current/source families, and contact variation.
+
+The matrix is read from the supplied point-group element in an orthonormal
+spatial basis, not from the potentially larger intrinsic lattice point group.
+The operator symmetry `Φ` must realize the indicated transformation laws;
+membership of the geometric point group alone does not imply that the
+Hamiltonian or a magnetic state preserves it. No Hall-vanishing constraint,
+space-group splitting, or DC limit follows from this proper rotation. -/
+theorem finiteTimeVectorPotentialConductivityTensor_isPlanarIsotropic_of_pointGroup_quarterTurn
+    {V E Species : Type*}
+    [NormedAddCommGroup V] [InnerProductSpace ℝ V]
+    [MetricSpace E] [NormedAddTorsor V E]
+    (X : LeanCondensedMatter.Crystal.AtomicConfiguration E Species)
+    (g : X.pointGroup (V := V))
+    (b : OrthonormalBasis (Fin 2) ℝ V)
+    (measured source : Fin 2 → (H →L[ℂ] H))
+    (variation : Fin 2 → Fin 2 → (H →L[ℂ] H))
+    (hU : ∀ t : ℝ, Φ (U (Multiplicative.ofAdd t) : H →L[ℂ] H) =
+      (U (Multiplicative.ofAdd t) : H →L[ℂ] H))
+    (volume : PositiveVolume)
+    (hbar ω η T : ℝ) (expectation : NormalizedExpectation H)
+    (hω : ∀ A : H →L[ℂ] H, expectation (Φ A) = expectation A)
+    (hIntegrable : ∀ k l,
+      IntervalIntegrable
+        (fun s : ℝ => adiabaticFrequencyPhase ω η (T - s) *
+          retardedSusceptibility U hbar expectation (measured k) (source l) T s)
+        MeasureTheory.volume 0 T) :
+    let R : Matrix (Fin 2) (Fin 2) ℂ := fun i k =>
+      ((b.repr ((g : V ≃ₗᵢ[ℝ] V) (b k)) i : ℝ) : ℂ)
+    R = !![0, -1; 1, 0] →
+    (∀ i, Φ (measured i) = ∑ k, R i k • measured k) →
+    (∀ j, Φ (source j) = ∑ l, R j l • source l) →
+    (∀ i j, Φ (variation i j) = ∑ k, ∑ l, (R i k * R j l) • variation k l) →
+    (finiteTimeVectorPotentialConductivityTensor U measured source variation
+      volume hbar ω η T expectation).IsPlanarIsotropic := by
+  classical
+  intro R hQuarter hMeasured hSource hVariation
+  apply (ConductivityTensor.isQuarterTurnInvariant_iff_isPlanarIsotropic _).mp
+  dsimp only [ConductivityTensor.IsQuarterTurnInvariant]
+  intro i j
+  have h := finiteTimeVectorPotentialConductivityTensor_linearMixing U Φ
+    measured source variation R R hU volume hbar ω η T expectation hω
+    hMeasured hSource hVariation hIntegrable i j
+  rw [hQuarter] at h
+  simpa only [mul_right_comm] using h
 
 end
 end QuantumTheory.Transport
