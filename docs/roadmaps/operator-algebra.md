@@ -71,15 +71,12 @@ Hilbert-basis `Summable`/`HasSum` formulas, the pairing `innerHS`, and compariso
 on the compact self-adjoint overlap.
 
 General non-self-adjoint trace-class membership and its canonical trace norm are defined from the
-Hilbert--Schmidt layer. `TraceClass/Factorization/Basic.lean` owns the trace-norm-independent
-characterization `T = A† B` with Hilbert--Schmidt factors. `TraceClass/Ops/Norm.lean`
-adds the estimate `‖T‖₁ ≤ (‖A‖²_HS + ‖B‖²_HS) / 2` and a factorization satisfying
-`‖A‖²_HS = ‖B‖²_HS = ‖T‖₁`. Compactness and trace convergence consume only the basic layer;
-trace-norm estimates are kept with the trace-norm operations. `TraceClass/Ops/Basic.lean` owns membership closure
-under addition, scalar multiplication, adjoint, and bounded left/right multiplication together with
-complex-trace linearity; `TraceClass/Ops/Norm.lean` also owns the corresponding trace-norm identities and
-inequalities. In particular, every trace-class operator is compact without depending on the trace-value
-implementation. The trace norm is adjoint-invariant and contractive under left/right multiplication by
+Hilbert--Schmidt layer in `TraceClass/General.lean`. `TraceClass/Factorization/Basic.lean` owns the
+characterization `T = A† B`, the bound `‖T‖₁ ≤ (‖A‖²_HS + ‖B‖²_HS) / 2`, and a factorization
+satisfying `‖A‖²_HS = ‖B‖²_HS = ‖T‖₁`. Every trace-class operator is compact without depending
+on the trace-value implementation. `TraceClass/Ops/Basic.lean` owns membership closure under
+addition, scalar multiplication, adjoint, and bounded multiplication, with the corresponding
+trace and trace-norm laws. The trace norm is adjoint-invariant and contractive under left/right multiplication by
 contractions. The general operator-norm-weighted left/right ideal bounds are also proved. The canonical
 complex trace is exposed through direct Hilbert-basis
 `Summable`, `HasSum`, and `tsum` theorems and is cyclic for a trace-class factor and a bounded

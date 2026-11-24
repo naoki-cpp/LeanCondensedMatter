@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Norm
+import LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Basic
 import LeanCondensedMatter.QuantumTheory.DensityOperator.Basic
 
 /-!
