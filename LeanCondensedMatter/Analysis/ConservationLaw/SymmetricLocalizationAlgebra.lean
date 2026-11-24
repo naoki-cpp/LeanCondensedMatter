@@ -5,7 +5,7 @@ set_option linter.style.header false
 /-!
 # Symmetric localization and corrected flux algebra
 
-For an operator-valued linear localization map `M` and a transported quantity `m`,
+For a linear localization map `M` valued in an associative algebra and a transported quantity `m`,
 symmetric localization is `Qₘ(f) = {M f, m}/2`. Commutation with a generator
 splits into transport and source.
 
@@ -25,123 +25,123 @@ attribute [local instance 100] LieRing.ofAssociativeRing
 variable {K Test OneForm : Type*} [Field K]
 variable [AddCommGroup Test] [Module K Test]
 variable [AddCommGroup OneForm] [Module K OneForm]
-variable (V : Type*) [AddCommGroup V] [Module K V]
+variable {A : Type*} [Ring A] [Algebra K A]
 
-/-- A one-body quantity symmetrically localized by a linear test map. -/
+/-- A quantity symmetrically localized by a linear test map. -/
 noncomputable def localizedQuantityFunctional
-    (M : Test →ₗ[K] (V →ₗ[K] V))
-    (m : V →ₗ[K] V) :
-    Test →ₗ[K] (V →ₗ[K] V) :=
-  ((LinearMap.symmetrizedProductBilinear (K := K) (V →ₗ[K] V)).flip m).comp M
+    (M : Test →ₗ[K] A)
+    (m : A) :
+    Test →ₗ[K] A :=
+  ((LinearMap.symmetrizedProductBilinear (K := K) A).flip m).comp M
 
 @[simp]
 theorem localizedQuantityFunctional_apply
-    (M : Test →ₗ[K] (V →ₗ[K] V))
-    (m : V →ₗ[K] V) (f : Test) :
-    localizedQuantityFunctional V M m f = LinearMap.symmetrizedProduct (K := K) (M f) m :=
+    (M : Test →ₗ[K] A)
+    (m : A) (f : Test) :
+    localizedQuantityFunctional M m f = LinearMap.symmetrizedProduct (K := K) (M f) m :=
   rfl
 
 /-- The bare localization commutator as a linear map on tests. -/
 noncomputable def localizationCommutatorFunctional
-    (h : V →ₗ[K] V)
-    (M : Test →ₗ[K] (V →ₗ[K] V)) :
-    Test →ₗ[K] (V →ₗ[K] V) :=
-  (LieAlgebra.ad K (Module.End K V) h).comp M
+    (h : A)
+    (M : Test →ₗ[K] A) :
+    Test →ₗ[K] A :=
+  (LieAlgebra.ad K (A) h).comp M
 
 @[simp]
 theorem localizationCommutatorFunctional_apply
-    (h : V →ₗ[K] V)
-    (M : Test →ₗ[K] (V →ₗ[K] V)) (f : Test) :
-    localizationCommutatorFunctional V h M f = ⁅h, M f⁆ :=
+    (h : A)
+    (M : Test →ₗ[K] A) (f : Test) :
+    localizationCommutatorFunctional h M f = ⁅h, M f⁆ :=
   rfl
 
 /-- The transport contribution to the symmetric-localization commutator. -/
 noncomputable def transportFunctional
-    (h : V →ₗ[K] V)
-    (M : Test →ₗ[K] (V →ₗ[K] V))
-    (m : V →ₗ[K] V) :
-    Test →ₗ[K] (V →ₗ[K] V) :=
-  localizedQuantityFunctional V (localizationCommutatorFunctional V h M) m
+    (h : A)
+    (M : Test →ₗ[K] A)
+    (m : A) :
+    Test →ₗ[K] A :=
+  localizedQuantityFunctional (localizationCommutatorFunctional h M) m
 
 @[simp]
 theorem transportFunctional_apply
-    (h : V →ₗ[K] V)
-    (M : Test →ₗ[K] (V →ₗ[K] V))
-    (m : V →ₗ[K] V) (f : Test) :
-    transportFunctional V h M m f = LinearMap.symmetrizedProduct (K := K) ⁅h, M f⁆ m :=
+    (h : A)
+    (M : Test →ₗ[K] A)
+    (m : A) (f : Test) :
+    transportFunctional h M m f = LinearMap.symmetrizedProduct (K := K) ⁅h, M f⁆ m :=
   rfl
 
 /-- The source/torque contribution to the symmetric-localization commutator. -/
 noncomputable def sourceFunctional
-    (h : V →ₗ[K] V)
-    (M : Test →ₗ[K] (V →ₗ[K] V))
-    (m : V →ₗ[K] V) :
-    Test →ₗ[K] (V →ₗ[K] V) :=
-  localizedQuantityFunctional V M ⁅h, m⁆
+    (h : A)
+    (M : Test →ₗ[K] A)
+    (m : A) :
+    Test →ₗ[K] A :=
+  localizedQuantityFunctional M ⁅h, m⁆
 
 @[simp]
 theorem sourceFunctional_apply
-    (h : V →ₗ[K] V)
-    (M : Test →ₗ[K] (V →ₗ[K] V))
-    (m : V →ₗ[K] V) (f : Test) :
-    sourceFunctional V h M m f = LinearMap.symmetrizedProduct (K := K) (M f) ⁅h, m⁆ :=
+    (h : A)
+    (M : Test →ₗ[K] A)
+    (m : A) (f : Test) :
+    sourceFunctional h M m f = LinearMap.symmetrizedProduct (K := K) (M f) ⁅h, m⁆ :=
   rfl
 
 /-- The commutator is a derivation on symmetric localization, giving transport plus source. -/
 theorem lie_localizedQuantity
-    (h : V →ₗ[K] V)
-    (M : Test →ₗ[K] (V →ₗ[K] V))
-    (m : V →ₗ[K] V) (f : Test) :
-    ⁅h, localizedQuantityFunctional V M m f⁆ =
-      transportFunctional V h M m f + sourceFunctional V h M m f :=
+    (h : A)
+    (M : Test →ₗ[K] A)
+    (m : A) (f : Test) :
+    ⁅h, localizedQuantityFunctional M m f⁆ =
+      transportFunctional h M m f + sourceFunctional h M m f :=
   LinearMap.lie_symmetrizedProduct (K := K) h (M f) m
 
 section CorrectedFlux
 
 /-- Full nested symmetrized flux on one-form-like localization data. -/
 noncomputable def nestedSymmetrizedCurrentFlux
-    (velocity m : V →ₗ[K] V)
-    (N : OneForm →ₗ[K] (V →ₗ[K] V)) :
-    OneForm →ₗ[K] (V →ₗ[K] V) :=
-  localizedQuantityFunctional V (localizedQuantityFunctional V N velocity) m
+    (velocity m : A)
+    (N : OneForm →ₗ[K] A) :
+    OneForm →ₗ[K] A :=
+  localizedQuantityFunctional (localizedQuantityFunctional N velocity) m
 
 @[simp]
 theorem nestedSymmetrizedCurrentFlux_apply
-    (velocity m : V →ₗ[K] V)
-    (N : OneForm →ₗ[K] (V →ₗ[K] V)) (α : OneForm) :
-    nestedSymmetrizedCurrentFlux V velocity m N α =
+    (velocity m : A)
+    (N : OneForm →ₗ[K] A) (α : OneForm) :
+    nestedSymmetrizedCurrentFlux velocity m N α =
       LinearMap.symmetrizedProduct (K := K) (LinearMap.symmetrizedProduct (K := K) (N α) velocity) m :=
   rfl
 
 /-- Flux obtained from the symmetrized current `1/2 {v,m}`. -/
 noncomputable def symmetrizedCurrentFlux
-    (velocity m : V →ₗ[K] V)
-    (N : OneForm →ₗ[K] (V →ₗ[K] V)) :
-    OneForm →ₗ[K] (V →ₗ[K] V) :=
-  localizedQuantityFunctional V N (LinearMap.symmetrizedProduct (K := K) velocity m)
+    (velocity m : A)
+    (N : OneForm →ₗ[K] A) :
+    OneForm →ₗ[K] A :=
+  localizedQuantityFunctional N (LinearMap.symmetrizedProduct (K := K) velocity m)
 
 @[simp]
 theorem symmetrizedCurrentFlux_apply
-    (velocity m : V →ₗ[K] V)
-    (N : OneForm →ₗ[K] (V →ₗ[K] V)) (α : OneForm) :
-    symmetrizedCurrentFlux V velocity m N α =
+    (velocity m : A)
+    (N : OneForm →ₗ[K] A) (α : OneForm) :
+    symmetrizedCurrentFlux velocity m N α =
       LinearMap.symmetrizedProduct (K := K) (N α) (LinearMap.symmetrizedProduct (K := K) velocity m) :=
   rfl
 
 /-- Canonical localization correction, defined as the exact difference between the nested and
 symmetrized fluxes. -/
 noncomputable def localizationCorrectionCurrentFlux
-    (velocity m : V →ₗ[K] V)
-    (N : OneForm →ₗ[K] (V →ₗ[K] V)) :
-    OneForm →ₗ[K] (V →ₗ[K] V) :=
-  nestedSymmetrizedCurrentFlux V velocity m N -
-    symmetrizedCurrentFlux V velocity m N
+    (velocity m : A)
+    (N : OneForm →ₗ[K] A) :
+    OneForm →ₗ[K] A :=
+  nestedSymmetrizedCurrentFlux velocity m N -
+    symmetrizedCurrentFlux velocity m N
 
 @[simp]
 theorem localizationCorrectionCurrentFlux_apply
-    (velocity m : V →ₗ[K] V)
-    (N : OneForm →ₗ[K] (V →ₗ[K] V)) (α : OneForm) :
-    localizationCorrectionCurrentFlux V velocity m N α =
+    (velocity m : A)
+    (N : OneForm →ₗ[K] A) (α : OneForm) :
+    localizationCorrectionCurrentFlux velocity m N α =
       (1 / 4 : K) • ⁅velocity, ⁅N α, m⁆⁆ := by
   change
     LinearMap.symmetrizedProduct (K := K) (LinearMap.symmetrizedProduct (K := K) (N α) velocity) m -
@@ -150,35 +150,35 @@ theorem localizationCorrectionCurrentFlux_apply
 
 /-- The nested flux is exactly the symmetrized flux plus localization correction. -/
 theorem nestedSymmetrizedCurrentFlux_eq_symmetrized_add_correction
-    (velocity m : V →ₗ[K] V)
-    (N : OneForm →ₗ[K] (V →ₗ[K] V)) :
-    nestedSymmetrizedCurrentFlux V velocity m N =
-      symmetrizedCurrentFlux V velocity m N +
-        localizationCorrectionCurrentFlux V velocity m N := by
+    (velocity m : A)
+    (N : OneForm →ₗ[K] A) :
+    nestedSymmetrizedCurrentFlux velocity m N =
+      symmetrizedCurrentFlux velocity m N +
+        localizationCorrectionCurrentFlux velocity m N := by
   unfold localizationCorrectionCurrentFlux
   rw [add_comm, sub_add_cancel]
 
 /-- If every supplied localizer commutes with `m`, the localization correction vanishes. -/
 theorem localizationCorrectionCurrentFlux_eq_zero_of_commutes
-    (velocity m : V →ₗ[K] V)
-    (N : OneForm →ₗ[K] (V →ₗ[K] V))
+    (velocity m : A)
+    (N : OneForm →ₗ[K] A)
     (hcomm : ∀ α, ⁅N α, m⁆ = 0) :
-    localizationCorrectionCurrentFlux V velocity m N = 0 := by
+    localizationCorrectionCurrentFlux velocity m N = 0 := by
   apply LinearMap.ext
   intro α
-  rw [localizationCorrectionCurrentFlux_apply V velocity m N α, hcomm α]
+  rw [localizationCorrectionCurrentFlux_apply velocity m N α, hcomm α]
   simp
 
-/-- Charge-like transported quantities `q I` have no localization correction. -/
+/-- Scalar multiples of the algebra unit have no localization correction. -/
 @[simp]
-theorem localizationCorrectionCurrentFlux_smul_id
-    (velocity : V →ₗ[K] V)
-    (N : OneForm →ₗ[K] (V →ₗ[K] V)) (q : K) :
-    localizationCorrectionCurrentFlux V velocity (q • LinearMap.id) N = 0 := by
-  apply localizationCorrectionCurrentFlux_eq_zero_of_commutes V velocity
-    (q • LinearMap.id) N
+theorem localizationCorrectionCurrentFlux_smul_one
+    (velocity : A)
+    (N : OneForm →ₗ[K] A) (q : K) :
+    localizationCorrectionCurrentFlux velocity (q • (1 : A)) N = 0 := by
+  apply localizationCorrectionCurrentFlux_eq_zero_of_commutes velocity
+    (q • (1 : A)) N
   intro α
-  simp [LieRing.of_associative_ring_bracket, Module.End.mul_eq_comp]
+  simp [LieRing.of_associative_ring_bracket, Algebra.mul_smul_comm, Algebra.smul_mul_assoc]
 
 end CorrectedFlux
 

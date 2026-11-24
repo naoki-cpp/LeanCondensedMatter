@@ -31,14 +31,14 @@ theorem exists_current_eq_symmetrized_add_correction_add_invisible
     (d : Test →ₗ[ℂ] OneForm)
     (N : OneForm →ₗ[ℂ] (V →ₗ[ℂ] V))
     (hvelocity : heisenbergLocalizationFunctional V ℏ h M =
-      (_root_.ConservationLaw.localizedQuantityFunctional V N velocity).comp d)
+      (_root_.ConservationLaw.localizedQuantityFunctional N velocity).comp d)
     (R : _root_.ConservationLaw.DifferentialCurrentRepresentation d
       (heisenbergTransportFunctional V ℏ h M m)) :
     ∃ K : OneForm →ₗ[ℂ] (V →ₗ[ℂ] V),
       K.comp d = 0 ∧
         R.current =
-          (_root_.ConservationLaw.symmetrizedCurrentFlux V velocity m N +
-            _root_.ConservationLaw.localizationCorrectionCurrentFlux V velocity m N) + K := by
+          (_root_.ConservationLaw.symmetrizedCurrentFlux velocity m N +
+            _root_.ConservationLaw.localizationCorrectionCurrentFlux velocity m N) + K := by
   obtain ⟨K, hK, hcurrent⟩ := R.exists_current_eq_add_invisible
     (correctedSymmetrizedVelocityCurrentRepresentation
       V ℏ h M m velocity d N hvelocity)
@@ -47,10 +47,10 @@ theorem exists_current_eq_symmetrized_add_correction_add_invisible
     R.current =
         (correctedSymmetrizedVelocityCurrentRepresentation
           V ℏ h M m velocity d N hvelocity).current + K := hcurrent
-    _ = _root_.ConservationLaw.nestedSymmetrizedCurrentFlux V velocity m N + K := rfl
+    _ = _root_.ConservationLaw.nestedSymmetrizedCurrentFlux velocity m N + K := rfl
     _ =
-        (_root_.ConservationLaw.symmetrizedCurrentFlux V velocity m N +
-          _root_.ConservationLaw.localizationCorrectionCurrentFlux V velocity m N) + K := by
+        (_root_.ConservationLaw.symmetrizedCurrentFlux velocity m N +
+          _root_.ConservationLaw.localizationCorrectionCurrentFlux velocity m N) + K := by
       rw [_root_.ConservationLaw.nestedSymmetrizedCurrentFlux_eq_symmetrized_add_correction]
 
 end SingleParticle

@@ -37,7 +37,7 @@ theorem orbitalAngularMomentum_localizationCorrectionCurrentFlux_apply
     (hXu : ⁅N α, X u⁆ = 0) (hXv : ⁅N α, X v⁆ = 0)
     (hPu : ⁅N α, P u⁆ = c • Du)
     (hPv : ⁅N α, P v⁆ = c • Dv) :
-    _root_.ConservationLaw.localizationCorrectionCurrentFlux V velocity
+    _root_.ConservationLaw.localizationCorrectionCurrentFlux velocity
         (orbitalAngularMomentum X P u v) N α =
       (1 / 4 : ℂ) • ⁅velocity, (X u).comp (c • Dv) - (X v).comp (c • Du)⁆ := by
   rw [_root_.ConservationLaw.localizationCorrectionCurrentFlux_apply]
@@ -54,7 +54,7 @@ theorem orbitalAngularMomentum_localizationCorrectionCurrentFlux_ne_zero_iff
     (hXu : ⁅N α, X u⁆ = 0) (hXv : ⁅N α, X v⁆ = 0)
     (hPu : ⁅N α, P u⁆ = c • Du)
     (hPv : ⁅N α, P v⁆ = c • Dv) :
-    _root_.ConservationLaw.localizationCorrectionCurrentFlux V velocity
+    _root_.ConservationLaw.localizationCorrectionCurrentFlux velocity
         (orbitalAngularMomentum X P u v) N α ≠ 0 ↔
       ⁅velocity, (X u).comp (c • Dv) - (X v).comp (c • Du)⁆ ≠ 0 := by
   rw [orbitalAngularMomentum_localizationCorrectionCurrentFlux_apply
@@ -76,16 +76,16 @@ theorem heisenbergTransportOrbitalAngularMomentum_apply
     (N : OneForm →ₗ[ℂ] (V →ₗ[ℂ] V))
     (f : Test) (Du Dv : V →ₗ[ℂ] V) (c : ℂ)
     (hvelocity : heisenbergLocalizationFunctional V ℏ h M =
-      (_root_.ConservationLaw.localizedQuantityFunctional V N velocity).comp d)
+      (_root_.ConservationLaw.localizedQuantityFunctional N velocity).comp d)
     (hXu : ⁅N (d f), X u⁆ = 0) (hXv : ⁅N (d f), X v⁆ = 0)
     (hPu : ⁅N (d f), P u⁆ = c • Du)
     (hPv : ⁅N (d f), P v⁆ = c • Dv) :
     heisenbergTransportFunctional V ℏ h M (orbitalAngularMomentum X P u v) f =
-      _root_.ConservationLaw.symmetrizedCurrentFlux V velocity
+      _root_.ConservationLaw.symmetrizedCurrentFlux velocity
           (orbitalAngularMomentum X P u v) N (d f) +
         (1 / 4 : ℂ) • ⁅velocity, (X u).comp (c • Dv) - (X v).comp (c • Du)⁆ := by
   calc
-    _ = _root_.ConservationLaw.nestedSymmetrizedCurrentFlux V velocity
+    _ = _root_.ConservationLaw.nestedSymmetrizedCurrentFlux velocity
         (orbitalAngularMomentum X P u v) N (d f) := by
           simpa only [LinearMap.comp_apply] using congrArg
             (fun Φ : Test →ₗ[ℂ] (V →ₗ[ℂ] V) => Φ f)

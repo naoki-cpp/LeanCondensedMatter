@@ -35,7 +35,7 @@ noncomputable def heisenbergLocalizationFunctional
     (ℏ : ℝ) (h : V →ₗ[ℂ] V)
     (M : Test →ₗ[ℂ] (V →ₗ[ℂ] V)) :
     Test →ₗ[ℂ] (V →ₗ[ℂ] V) :=
-  heisenbergScale ℏ • _root_.ConservationLaw.localizationCommutatorFunctional V h M
+  heisenbergScale ℏ • _root_.ConservationLaw.localizationCommutatorFunctional h M
 
 /-- The symmetrically localized transport functional in Heisenberg normalization. -/
 noncomputable def heisenbergTransportFunctional
@@ -43,7 +43,7 @@ noncomputable def heisenbergTransportFunctional
     (M : Test →ₗ[ℂ] (V →ₗ[ℂ] V))
     (m : V →ₗ[ℂ] V) :
     Test →ₗ[ℂ] (V →ₗ[ℂ] V) :=
-  heisenbergScale ℏ • _root_.ConservationLaw.transportFunctional V h M m
+  heisenbergScale ℏ • _root_.ConservationLaw.transportFunctional h M m
 
 /-- The symmetrically localized source/torque functional in Heisenberg normalization. -/
 noncomputable def heisenbergSourceFunctional
@@ -51,7 +51,7 @@ noncomputable def heisenbergSourceFunctional
     (M : Test →ₗ[ℂ] (V →ₗ[ℂ] V))
     (m : V →ₗ[ℂ] V) :
     Test →ₗ[ℂ] (V →ₗ[ℂ] V) :=
-  heisenbergScale ℏ • _root_.ConservationLaw.sourceFunctional V h M m
+  heisenbergScale ℏ • _root_.ConservationLaw.sourceFunctional h M m
 
 @[simp]
 theorem heisenbergLocalizationFunctional_apply
@@ -67,7 +67,7 @@ theorem heisenbergTransportFunctional_apply
     (M : Test →ₗ[ℂ] (V →ₗ[ℂ] V))
     (m : V →ₗ[ℂ] V) (f : Test) :
     heisenbergTransportFunctional V ℏ h M m f =
-      heisenbergScale ℏ • _root_.ConservationLaw.transportFunctional V h M m f :=
+      heisenbergScale ℏ • _root_.ConservationLaw.transportFunctional h M m f :=
   rfl
 
 @[simp]
@@ -76,7 +76,7 @@ theorem heisenbergSourceFunctional_apply
     (M : Test →ₗ[ℂ] (V →ₗ[ℂ] V))
     (m : V →ₗ[ℂ] V) (f : Test) :
     heisenbergSourceFunctional V ℏ h M m f =
-      heisenbergScale ℏ • _root_.ConservationLaw.sourceFunctional V h M m f :=
+      heisenbergScale ℏ • _root_.ConservationLaw.sourceFunctional h M m f :=
   rfl
 
 /-- Heisenberg scaling commutes with fixed-`m` symmetrization. -/
@@ -106,7 +106,7 @@ noncomputable def heisenbergIntrinsicSymmetricLocalizationBalanceLaw
       (heisenbergTransportFunctional V ℏ h M m) d) :
     _root_.ConservationLaw.FluxBalanceLaw
       (heisenbergEvolution V ℏ h)
-      (_root_.ConservationLaw.localizedQuantityFunctional V M m)
+      (_root_.ConservationLaw.localizedQuantityFunctional M m)
       d where
   transport := heisenbergTransportFunctional V ℏ h M m
   transport_depends := htransport
@@ -114,7 +114,7 @@ noncomputable def heisenbergIntrinsicSymmetricLocalizationBalanceLaw
   balance := by
     intro f
     change heisenbergScale ℏ •
-        ⁅h, _root_.ConservationLaw.localizedQuantityFunctional V M m f⁆ = _
+        ⁅h, _root_.ConservationLaw.localizedQuantityFunctional M m f⁆ = _
     rw [_root_.ConservationLaw.lie_localizedQuantity]
     simp [heisenbergSourceFunctional, heisenbergTransportFunctional, smul_add]
 

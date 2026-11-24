@@ -63,8 +63,7 @@ noncomputable def boundedCorrectedCurrentObservable
     (α : OneForm) :
     FiniteLatticeHilbertFock Site →L[ℂ] FiniteLatticeHilbertFock Site :=
   boundedOneBodyOperator
-    (_root_.ConservationLaw.nestedSymmetrizedCurrentFlux
-      ((Site →₀ ℂ)) velocity m N α)
+    (_root_.ConservationLaw.nestedSymmetrizedCurrentFlux velocity m N α)
 
 /-- Response channel for one corrected current component.
 
@@ -93,19 +92,15 @@ theorem boundedFluxRetardedResponse_eq_symmetrized_add_correction
     (Φ : Test →ₗ[ℂ] ((Site →₀ ℂ) →ₗ[ℂ] (Site →₀ ℂ)))
     (velocity m : (Site →₀ ℂ) →ₗ[ℂ] (Site →₀ ℂ))
     (N : OneForm →ₗ[ℂ] ((Site →₀ ℂ) →ₗ[ℂ] (Site →₀ ℂ)))
-    (hΦ : Φ = (_root_.ConservationLaw.nestedSymmetrizedCurrentFlux
-        ((Site →₀ ℂ)) velocity m N).comp d)
+    (hΦ : Φ = (_root_.ConservationLaw.nestedSymmetrizedCurrentFlux velocity m N).comp d)
     (t s : ℝ) :
     boundedFluxRetardedResponse system expectation source Φ t s =
       (boundedFluxRetardedResponse system expectation source
-        (_root_.ConservationLaw.symmetrizedCurrentFlux
-          ((Site →₀ ℂ)) velocity m N) t s).comp d +
+        (_root_.ConservationLaw.symmetrizedCurrentFlux velocity m N) t s).comp d +
       (boundedFluxRetardedResponse system expectation source
-        (_root_.ConservationLaw.localizationCorrectionCurrentFlux
-          ((Site →₀ ℂ)) velocity m N) t s).comp d := by
+        (_root_.ConservationLaw.localizationCorrectionCurrentFlux velocity m N) t s).comp d := by
   rw [hΦ]
-  rw [_root_.ConservationLaw.nestedSymmetrizedCurrentFlux_eq_symmetrized_add_correction
-    ((Site →₀ ℂ)) velocity m N]
+  rw [_root_.ConservationLaw.nestedSymmetrizedCurrentFlux_eq_symmetrized_add_correction velocity m N]
   ext f
   simp only [boundedFluxRetardedResponse, LinearMap.comp_apply, LinearMap.add_apply, map_add]
 
@@ -121,21 +116,17 @@ theorem boundedFluxRetardedResponse_eq_symmetrized_of_commutes
     (Φ : Test →ₗ[ℂ] ((Site →₀ ℂ) →ₗ[ℂ] (Site →₀ ℂ)))
     (velocity m : (Site →₀ ℂ) →ₗ[ℂ] (Site →₀ ℂ))
     (N : OneForm →ₗ[ℂ] ((Site →₀ ℂ) →ₗ[ℂ] (Site →₀ ℂ)))
-    (hΦ : Φ = (_root_.ConservationLaw.nestedSymmetrizedCurrentFlux
-        ((Site →₀ ℂ)) velocity m N).comp d)
+    (hΦ : Φ = (_root_.ConservationLaw.nestedSymmetrizedCurrentFlux velocity m N).comp d)
     (hcomm : ∀ α, ⁅N α, m⁆ = 0)
     (t s : ℝ) :
     boundedFluxRetardedResponse system expectation source Φ t s =
       (boundedFluxRetardedResponse system expectation source
-        (_root_.ConservationLaw.symmetrizedCurrentFlux
-          ((Site →₀ ℂ)) velocity m N) t s).comp d := by
+        (_root_.ConservationLaw.symmetrizedCurrentFlux velocity m N) t s).comp d := by
   rw [boundedFluxRetardedResponse_eq_symmetrized_add_correction
     system expectation source d Φ velocity m N hΦ t s]
   have hcorr :
-      _root_.ConservationLaw.localizationCorrectionCurrentFlux
-        ((Site →₀ ℂ)) velocity m N = 0 :=
-    _root_.ConservationLaw.localizationCorrectionCurrentFlux_eq_zero_of_commutes
-      ((Site →₀ ℂ)) velocity m N hcomm
+      _root_.ConservationLaw.localizationCorrectionCurrentFlux velocity m N = 0 :=
+    _root_.ConservationLaw.localizationCorrectionCurrentFlux_eq_zero_of_commutes velocity m N hcomm
   rw [hcorr]
   simp [boundedFluxRetardedResponse]
 
@@ -152,13 +143,11 @@ theorem boundedFluxRetardedResponse_eq_symmetrized_smul_id
     (velocity : (Site →₀ ℂ) →ₗ[ℂ] (Site →₀ ℂ))
     (N : OneForm →ₗ[ℂ] ((Site →₀ ℂ) →ₗ[ℂ] (Site →₀ ℂ)))
     (q : ℂ)
-    (hΦ : Φ = (_root_.ConservationLaw.nestedSymmetrizedCurrentFlux
-        ((Site →₀ ℂ)) velocity (q • LinearMap.id) N).comp d)
+    (hΦ : Φ = (_root_.ConservationLaw.nestedSymmetrizedCurrentFlux velocity (q • LinearMap.id) N).comp d)
     (t s : ℝ) :
     boundedFluxRetardedResponse system expectation source Φ t s =
       (boundedFluxRetardedResponse system expectation source
-        (_root_.ConservationLaw.symmetrizedCurrentFlux
-          ((Site →₀ ℂ)) velocity (q • LinearMap.id) N) t s).comp d := by
+        (_root_.ConservationLaw.symmetrizedCurrentFlux velocity (q • LinearMap.id) N) t s).comp d := by
   apply boundedFluxRetardedResponse_eq_symmetrized_of_commutes
     system expectation source d Φ velocity (q • LinearMap.id) N hΦ
   intro α

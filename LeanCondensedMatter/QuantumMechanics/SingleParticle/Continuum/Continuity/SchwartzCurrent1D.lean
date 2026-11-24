@@ -47,7 +47,7 @@ theorem schwartzVelocityLocalizationFlux_eq_comp1D
     (heisenbergLocalizationFunctional SchwartzOneParticle1D ℏ
         (SchwartzSchrodinger1D.schrodingerOperator κ potential)
         SchwartzKinetic1D.multiplicationLinear) =
-      (_root_.ConservationLaw.localizedQuantityFunctional SchwartzOneParticle1D
+      (_root_.ConservationLaw.localizedQuantityFunctional
         SchwartzKinetic1D.multiplicationLinear
         (SchwartzSchrodinger1D.velocityOperator ℏ κ)).comp SchwartzKinetic1D.derivative := by
   apply LinearMap.ext
