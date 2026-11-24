@@ -42,7 +42,7 @@ private theorem Pairing.componentPairEndpointEquiv_partner
 
 /-- Component-local normalized pairs are equivalent to the normalized pairs of a global pairing
 when the component position fibers partition the ambient positions and intertwine partner maps. -/
-noncomputable def Pairing.normalizedPairSigmaEquiv [Fintype ι]
+noncomputable def Pairing.normalizedPairSigmaEquiv
     (global : Pairing n) (componentPairing : ∀ B, Pairing (m B))
     (positionEquiv : (Σ B, Fin (2 * m B)) ≃ Fin (2 * n))
     (hpartner : ∀ B p,
@@ -55,7 +55,7 @@ noncomputable def Pairing.normalizedPairSigmaEquiv [Fintype ι]
 
 /-- If each component position map is strictly monotone, the component-pair equivalence preserves
 normalized endpoint order exactly. -/
-theorem Pairing.normalizedPairSigmaEquiv_apply_of_strictMono [Fintype ι]
+theorem Pairing.normalizedPairSigmaEquiv_apply_of_strictMono
     (global : Pairing n) (componentPairing : ∀ B, Pairing (m B))
     (positionEquiv : (Σ B, Fin (2 * m B)) ≃ Fin (2 * n))
     (hpartner : ∀ B p,
