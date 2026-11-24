@@ -153,19 +153,24 @@ private theorem twoModeFockLehmannTableResponse_eq
         M 0 0 • Common.basisState {0} + M 1 0 • Common.basisState {1} := by
     simp only [twoModeVertex, Fin.sum_univ_two, LinearMap.add_apply,
       LinearMap.smul_apply, LinearMap.comp_apply]
-    simp [ha, hc, map_smul, fermionSign, insertOccupation, removeOccupation]
+    simp [ha, hc, fermionSign, insertOccupation, removeOccupation]
   have hone (M : Matrix (Fin 2) (Fin 2) ℂ) :
       twoModeVertex M (Common.basisState {1}) =
         M 0 1 • Common.basisState {0} + M 1 1 • Common.basisState {1} := by
     simp only [twoModeVertex, Fin.sum_univ_two, LinearMap.add_apply,
       LinearMap.smul_apply, LinearMap.comp_apply]
-    simp [ha, hc, map_smul, fermionSign, insertOccupation, removeOccupation, hf]
+    simp [ha, hc, fermionSign, insertOccupation, removeOccupation, hf]
   have hfull (M : Matrix (Fin 2) (Fin 2) ℂ) :
       twoModeVertex M (Common.basisState {0, 1}) =
         M 0 0 • Common.basisState {0, 1} + M 1 1 • Common.basisState {0, 1} := by
     simp only [twoModeVertex, Fin.sum_univ_two, LinearMap.add_apply,
       LinearMap.smul_apply, LinearMap.comp_apply]
-    simp [ha, hc, map_smul, fermionSign, insertOccupation, removeOccupation, hf]
+    simp [ha, hc, map_smul, fermionSign, insertOccupation, removeOccupation]
+    have hcard : ({x ∈ ({0, 1} : Occupation (Fin 2)) | x = 0}).card = 1 := by decide
+    have hcardErase :
+        ({x ∈ (Finset.erase ({0, 1} : Occupation (Fin 2)) 1) | x = 0}).card = 1 := by decide
+    rw [hcard, hcardErase]
+    simp
   unfold finiteLehmannTableResponse
   rw [Fintype.sum_prod_type]
   simp_rw [hsum]
