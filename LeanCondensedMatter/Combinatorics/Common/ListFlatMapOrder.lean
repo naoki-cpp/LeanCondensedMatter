@@ -1,4 +1,6 @@
 import Mathlib.Data.List.Nodup
+import Mathlib.Data.List.Sort
+import Mathlib.Order.Basic
 import Lean.Elab.Tactic.Omega
 
 set_option linter.style.header false
