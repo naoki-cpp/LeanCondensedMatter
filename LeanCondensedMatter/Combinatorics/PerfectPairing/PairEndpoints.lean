@@ -104,65 +104,6 @@ noncomputable def Pairing.normalizedPairOfEndpointEquiv
     A → pairing.NormalizedPair :=
   fun a => (pairing.pairEndpointEquiv.symm (e (endpointEquiv (a, 0)))).1
 
-/-- Transport an abstract family of paired endpoint fibers to the normalized pairs of `pairing`.
-
-The source type `A` need not itself be a `Pairing`. It is enough to know that every source object has
-two endpoints, that these endpoints exhaust a finite position fiber `P`, and that after transporting
-`P` to the ambient positions of `pairing`, the partner of endpoint zero is endpoint one. -/
-noncomputable def Pairing.normalizedPairEquivOfEndpointEquiv
-    {A P : Type*} [Fintype A] [Finite P] {n : ℕ} (pairing : Pairing n)
-    (endpointEquiv : A × Fin 2 ≃ P) (e : P ≃ Fin (2 * n))
-    (hpartner : ∀ a : A,
-      pairing.partner (e (endpointEquiv (a, 0))) = e (endpointEquiv (a, 1))) :
-    A ≃ pairing.NormalizedPair := by
-  have hsurj : Function.Surjective
-      (pairing.normalizedPairOfEndpointEquiv endpointEquiv e) := by
-    intro localPr
-    let p : P := e.symm localPr.1.1
-    let x : A × Fin 2 := endpointEquiv.symm p
-    refine ⟨x.1, ?_⟩
-    have hx : endpointEquiv x = p := endpointEquiv.apply_symm_apply p
-    rcases x with ⟨a, k⟩
-    have hrecover (j : Fin 2) :
-        (pairing.pairEndpointEquiv.symm (pairing.pairEndpoint (localPr, j))).1 = localPr :=
-      congrArg Prod.fst (pairing.pairEndpointEquiv.left_inv (localPr, j))
-    fin_cases k
-    · have hfirst : e (endpointEquiv (a, 0)) = localPr.1.1 := by
-        calc
-          e (endpointEquiv (a, 0)) = e p := congrArg e (by simpa using hx)
-          _ = localPr.1.1 := e.apply_symm_apply localPr.1.1
-      unfold Pairing.normalizedPairOfEndpointEquiv
-      rw [hfirst]
-      simpa using hrecover (0 : Fin 2)
-    · have hsecond : e (endpointEquiv (a, 1)) = localPr.1.1 := by
-        calc
-          e (endpointEquiv (a, 1)) = e p := congrArg e (by simpa using hx)
-          _ = localPr.1.1 := e.apply_symm_apply localPr.1.1
-      have hlocalPartner : pairing.partner (e (endpointEquiv (a, 0))) = localPr.1.1 := by
-        rw [hpartner a, hsecond]
-      have hpair := (pairing.mem_pairs_iff localPr.1.1 localPr.1.2).1 localPr.2
-      have hfirst : e (endpointEquiv (a, 0)) = localPr.1.2 := by
-        calc
-          e (endpointEquiv (a, 0)) =
-              pairing.partner (pairing.partner (e (endpointEquiv (a, 0)))) := by
-            rw [pairing.partner_partner]
-          _ = pairing.partner localPr.1.1 := by rw [hlocalPartner]
-          _ = localPr.1.2 := hpair.2
-      unfold Pairing.normalizedPairOfEndpointEquiv
-      rw [hfirst]
-      simpa using hrecover (1 : Fin 2)
-  have hcard : Fintype.card A = Fintype.card pairing.NormalizedPair := by
-    letI : Fintype P := Fintype.ofFinite P
-    have h : Fintype.card (A × Fin 2) =
-        Fintype.card (pairing.NormalizedPair × Fin 2) :=
-      (Fintype.card_congr endpointEquiv).trans
-        ((Fintype.card_congr e).trans
-          (Fintype.card_congr pairing.pairEndpointEquiv).symm)
-    simp only [Fintype.card_prod, Fintype.card_fin] at h
-    omega
-  exact Equiv.ofBijective (pairing.normalizedPairOfEndpointEquiv endpointEquiv e)
-    ((Fintype.bijective_iff_surjective_and_card _).2 ⟨hsurj, hcard⟩)
-
 /-- Normalizing a transported endpoint-zero position preserves the two source endpoints up to the
 normalized order chosen by the target pairing. -/
 theorem Pairing.normalizedPairOfEndpointEquiv_pair_eq_or_swap
@@ -182,6 +123,53 @@ theorem Pairing.normalizedPairOfEndpointEquiv_pair_eq_or_swap
     simp [Pairing.pairEndpointEquiv, hpartner a, horder]
   · right
     simp [Pairing.pairEndpointEquiv, hpartner a, horder]
+
+/-- Transport an abstract family of paired endpoint fibers to the normalized pairs of `pairing`.
+
+The source type `A` need not itself be a `Pairing`. The endpoint equivalences exhaust the ambient
+positions, and the partner of transported endpoint zero is transported endpoint one. The inverse
+reads the source pair index of the first normalized endpoint. -/
+noncomputable def Pairing.normalizedPairEquivOfEndpointEquiv
+    {A P : Type*} {n : ℕ} (pairing : Pairing n)
+    (endpointEquiv : A × Fin 2 ≃ P) (e : P ≃ Fin (2 * n))
+    (hpartner : ∀ a : A,
+      pairing.partner (e (endpointEquiv (a, 0))) = e (endpointEquiv (a, 1))) :
+    A ≃ pairing.NormalizedPair := by
+  let E := endpointEquiv.trans e
+  refine {
+    toFun := pairing.normalizedPairOfEndpointEquiv endpointEquiv e
+    invFun := fun pr => (E.symm pr.1.1).1
+    left_inv := ?_
+    right_inv := ?_ }
+  · intro a
+    change (E.symm (pairing.normalizedPairOfEndpointEquiv endpointEquiv e a).1.1).1 = a
+    rcases pairing.normalizedPairOfEndpointEquiv_pair_eq_or_swap
+        endpointEquiv e hpartner a with h | h
+    · rw [congrArg Prod.fst h]
+      change (E.symm (E (a, 0))).1 = a
+      rw [Equiv.symm_apply_apply]
+    · rw [congrArg Prod.fst h]
+      change (E.symm (E (a, 1))).1 = a
+      rw [Equiv.symm_apply_apply]
+  · intro pr
+    obtain ⟨⟨a, k⟩, hk⟩ := E.surjective pr.1.1
+    change pairing.normalizedPairOfEndpointEquiv endpointEquiv e (E.symm pr.1.1).1 = pr
+    rw [← hk, Equiv.symm_apply_apply]
+    change (pairing.pairEndpointEquiv.symm (E (a, 0))).1 = pr
+    fin_cases k
+    · change E (a, 0) = pr.1.1 at hk
+      rw [hk]
+      exact congrArg Prod.fst (pairing.pairEndpointEquiv.left_inv (pr, 0))
+    · change E (a, 1) = pr.1.1 at hk
+      have hp : pairing.partner (E (a, 0)) = E (a, 1) := hpartner a
+      have hfirst : E (a, 0) = pr.1.2 := by
+        calc
+          E (a, 0) = pairing.partner (E (a, 1)) := by rw [← hp, pairing.partner_partner]
+          _ = pr.1.2 := by
+            rw [hk]
+            exact ((pairing.mem_pairs_iff pr.1.1 pr.1.2).1 pr.2).2
+      rw [hfirst]
+      exact congrArg Prod.fst (pairing.pairEndpointEquiv.left_inv (pr, 1))
 
 /-- A partner-intertwining equivalence of positions induces an equivalence of normalized pairs.
 The order of pair endpoints may be reversed by the position map. -/
