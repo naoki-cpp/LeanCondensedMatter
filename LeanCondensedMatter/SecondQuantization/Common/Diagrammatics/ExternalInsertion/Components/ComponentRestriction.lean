@@ -74,7 +74,8 @@ private noncomputable def ExternalInsertionDiagram.componentBlockLegDataEquiv
       (External := Fin (2 * E)) (Vertex := Fin N) (Local := Fin 4)
       (B := (B : Finset (ExternalInsertionVertex E S))))
 
-private theorem ExternalInsertionDiagram.legInComponent_partner_iff {S : Finset (Fin N)}
+/-- Component-leg membership is invariant under the pairing partner permutation. -/
+theorem ExternalInsertionDiagram.legInComponent_partner_iff {S : Finset (Fin N)}
     (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
     (B : Finset (ExternalInsertionVertex E S))
     (leg : Fin (2 * (2 * S.card + E))) :
