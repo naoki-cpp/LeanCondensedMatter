@@ -112,8 +112,7 @@ theorem mixedTimeOrderedVertexComp_eq_shiftedDispersion
         a e • twoPointTimedEventOperator (fun k => ε k - μ) i j τ τ' q σ e := by
     rcases e with e | v
     · fin_cases e
-      · simp only [twoPointTimedEventOperator_external_zero]
-        change externalFieldOperator ε τ (.annihilation i) =
+      · change externalFieldOperator ε τ (.annihilation i) =
           Complex.exp (-(τ : ℂ) * (μ : ℂ)) •
             externalFieldOperator (fun k => ε k - μ) τ (.annihilation i)
         rw [externalFieldOperator_annihilation_eq_smul,
@@ -122,8 +121,7 @@ theorem mixedTimeOrderedVertexComp_eq_shiftedDispersion
         congr 1
         push_cast
         ring
-      · simp only [twoPointTimedEventOperator_external_one]
-        change externalFieldOperator ε τ' (.creation j) =
+      · change externalFieldOperator ε τ' (.creation j) =
           Complex.exp ((τ' : ℂ) * (μ : ℂ)) •
             externalFieldOperator (fun k => ε k - μ) τ' (.creation j)
         rw [externalFieldOperator_creation_eq_smul,
@@ -143,6 +141,7 @@ theorem mixedTimeOrderedVertexComp_eq_shiftedDispersion
     | cons e l ih =>
         simp only [List.map_cons, List.prod_cons, hevent e, ih,
           Module.End.mul_eq_comp, LinearMap.smul_comp, LinearMap.comp_smul, smul_smul]
+        rw [mul_comm (l.map a).prod (a e)]
   have htail : ((twoPointInteractionEventList n).map a).prod = 1 := by
     rw [twoPointInteractionEventList, List.map_ofFn]
     simp [Function.comp_def, a]
