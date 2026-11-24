@@ -14,6 +14,7 @@ import LeanCondensedMatter.Models.RashbaExchange.Bastin.Pole
 import LeanCondensedMatter.Models.RashbaExchange.FiniteMomentumSpinResponse
 import LeanCondensedMatter.Models.RashbaExchange.SpinDisplacementBridge
 import LeanCondensedMatter.Models.RashbaExchange.VelocityPositionObstruction
+import LeanCondensedMatter.Models.RashbaExchange.RealSpaceHopping
 
 set_option linter.style.header false
 
