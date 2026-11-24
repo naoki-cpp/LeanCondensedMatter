@@ -153,10 +153,8 @@ private theorem sidePairing_partner_sideEndpoint
 
 private noncomputable def sidePairEquiv (e : SideSplitting m) (σ : Equiv.Perm (Fin m)) :
     Fin m ≃ (sidePairing e σ).NormalizedPair :=
-  Equiv.ofBijective
-    ((sidePairing e σ).normalizedPairOfEndpointEquiv (sideEndpointEquiv σ) e)
-    ((sidePairing e σ).normalizedPairEquivOfEndpointEquiv
-      (sideEndpointEquiv σ) e (sidePairing_partner_sideEndpoint e σ)).bijective
+  (sidePairing e σ).normalizedPairEquivOfEndpointEquiv
+    (sideEndpointEquiv σ) e (sidePairing_partner_sideEndpoint e σ)
 
 private noncomputable def sidePair (e : SideSplitting m) (σ : Equiv.Perm (Fin m)) (i : Fin m) :
     Fin (2 * m) × Fin (2 * m) :=
