@@ -67,7 +67,7 @@ private theorem norm_sub_finiteRangeApprox_sq_le {ι : Type*} (d : HilbertBasis 
       Summable (fun i : {j // j ∉ s} => ‖(ContinuousLinearMap.adjoint T) (d i)‖ ^ 2) :=
     ((isHilbertSchmidt_adjoint hT).summable_norm_sq_apply d).subtype _
   refine hasSum_le (fun i => ?_) htail (hadj.hasSum.mul_right (‖x‖ ^ 2))
-  rw [sub_apply, inner_sub_right, inner_finiteRangeApprox_apply, if_neg i.2, sub_zero,
+  rw [sub_apply, inner_sub_right, inner_finiteRangeApprox_apply, ite_eq_right i.2, sub_zero,
     ← ContinuousLinearMap.adjoint_inner_left T x (d i), ← mul_pow]
   exact pow_le_pow_left₀ (norm_nonneg _)
     (norm_inner_le_norm ((ContinuousLinearMap.adjoint T) (d i)) x) 2
