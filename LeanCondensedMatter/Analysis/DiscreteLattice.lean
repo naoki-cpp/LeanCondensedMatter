@@ -121,11 +121,11 @@ noncomputable def ofFiniteAmplitudes [Fintype Site] (A : Site → Site → ℂ) 
       simpa using And.intro hxy hyx }
 
 @[simp]
-theorem ofFiniteAmplitudes_amplitude [Fintype Site] (A : Site → Site → ℂ)
+theorem ofFiniteAmplitudes_column_apply [Fintype Site] (A : Site → Site → ℂ)
     (x y : Site) :
-    (ofFiniteAmplitudes A).amplitude x y = A x y := by
+    (ofFiniteAmplitudes A).column y x = A x y := by
   classical
-  simp [ofFiniteAmplitudes, amplitude]
+  simp [ofFiniteAmplitudes]
 
 /-- A finite one-body operator is reconstructed by its canonical site-basis
 matrix coefficients. -/
