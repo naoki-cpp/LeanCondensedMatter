@@ -296,11 +296,10 @@ theorem finiteTimeAdiabaticResponse_exists_intertwiningMap
     rw [← LinearMap.toMatrix'_mul, ← ρin.map_mul, inv_mul_cancel, ρin.map_one,
       LinearMap.toMatrix'_one]
   have hComm : R * X = X * P := by
-    calc
-      R * X = (R * X) * 1 := by rw [Matrix.mul_one]
-      _ = (R * X) * (S * P) := by rw [hInv]
-      _ = (R * X * S) * P := (Matrix.mul_assoc (R * X) S P).symm
-      _ = X * P := by rw [hCov]
+    have h := congrArg (fun A : Matrix I J ℂ => A * P) hCov
+    change (R * X * S) * P = X * P at h
+    rw [Matrix.mul_assoc (R * X) S P, hInv, Matrix.mul_one] at h
+    exact h
   apply LinearMap.toMatrix'.injective
   simp only [LinearMap.toMatrix'_comp, LinearMap.toMatrix'_toLin']
   exact hComm.symm
