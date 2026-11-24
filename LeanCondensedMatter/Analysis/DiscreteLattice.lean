@@ -233,4 +233,62 @@ def bondCoordinate (geometry : LatticeGeometry Site E)
     (direction : E →ₗ[ℝ] ℝ) (x y : Site) : ℝ :=
   direction (geometry.bondDisplacement x y)
 
+variable [Fintype Site]
+
+/-- The finite real-space position component acts diagonally in the site basis.
+The coordinate is supplied by the existing lattice geometry, not by a momentum label. -/
+noncomputable def directionalPosition (geometry : LatticeGeometry Site E)
+    (direction : E →ₗ[ℝ] ℝ) :
+    (Site →₀ ℂ) →ₗ[ℂ] (Site →₀ ℂ) :=
+  ∑ x : Site, (direction (geometry.position x) : ℂ) • siteProjector x
+
+/-- Position multiplies each site amplitude by its real spatial coordinate. -/
+@[simp]
+theorem directionalPosition_apply (geometry : LatticeGeometry Site E)
+    (direction : E →ₗ[ℝ] ℝ) (ψ : Site →₀ ℂ) (x : Site) :
+    geometry.directionalPosition direction ψ x =
+      (direction (geometry.position x) : ℂ) * ψ x := by
+  classical
+  rw [directionalPosition, LinearMap.sum_apply, Finsupp.finsetSum_apply,
+    Finset.sum_eq_single x]
+  · simp [smul_eq_mul]
+  · intro y _ hy
+    have hz : siteProjector y ψ x = 0 := by
+      rw [siteProjector_apply]
+      exact Finsupp.single_eq_of_ne (Ne.symm hy)
+    simp [hz]
+  · simp
+
+/-- Every localized site ket is an eigenvector of the finite position operator. -/
+theorem directionalPosition_latticeKet (geometry : LatticeGeometry Site E)
+    (direction : E →ₗ[ℝ] ℝ) (y : Site) :
+    geometry.directionalPosition direction (latticeKet y) =
+      (direction (geometry.position y) : ℂ) • latticeKet y := by
+  ext x
+  rw [directionalPosition_apply]
+  simp only [Finsupp.smul_apply, smul_eq_mul]
+  by_cases h : x = y
+  · subst x
+    rfl
+  · have hz : latticeKet y x = 0 := Finsupp.single_eq_of_ne h
+    rw [hz, mul_zero, mul_zero]
+
+/-- The position commutator of the actual hopping operator has the oriented
+bond displacement as its matrix-element multiplier:
+`[H,X]_{xy} = (X_y - X_x) H_{xy}`.
+Multiplying by `i/ℏ` gives the real-space Heisenberg velocity without
+postulating a momentum-derivative/position identity. -/
+theorem lie_directionalPosition_latticeKet [DecidableEq Site]
+    (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
+    (K : LocallyFiniteHopping Site) (x y : Site) :
+    ⁅K.operator, geometry.directionalPosition direction⁆ (latticeKet y) x =
+      (geometry.bondCoordinate direction x y : ℂ) * K.amplitude x y := by
+  change (K.operator (geometry.directionalPosition direction (latticeKet y)) -
+    geometry.directionalPosition direction (K.operator (latticeKet y))) x = _
+  rw [Finsupp.sub_apply, directionalPosition_latticeKet, map_smul,
+    Finsupp.smul_apply, directionalPosition_apply, K.operator_latticeKet]
+  change (direction (geometry.position y) : ℂ) * K.amplitude x y -
+      (direction (geometry.position x) : ℂ) * K.amplitude x y = _
+  rw [bondCoordinate, bondDisplacement, map_sub, Complex.ofReal_sub, sub_mul]
+
 end LatticeGeometry
