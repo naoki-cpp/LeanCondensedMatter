@@ -74,6 +74,24 @@ noncomputable def equivSigmaSubfinsets {β : Type*}
         left_inv := fun _ => Subtype.ext rfl
         right_inv := fun _ => Subtype.ext rfl })
 
+/-- Multiplying the products of element weights over disjoint partition blocks
+recovers the product over their full support. -/
+theorem prod_prod_parts (π : Finpartition s) (a : α → M) :
+    (∏ B ∈ π.parts, ∏ x ∈ B, a x) = ∏ x ∈ s, a x := by
+  classical
+  let e := π.equivSigmaSubfinsets s (fun x => x.1) (fun x => x.2)
+    (fun B => B.1) (fun B => π.le B.2) (fun _ _ => Iff.rfl)
+  calc
+    _ = ∏ B : π.parts, ∏ x : (B : Finset α), a x.1 := by
+      rw [← Finset.prod_coe_sort π.parts (fun B => ∏ x ∈ B, a x)]
+      apply Finset.prod_congr rfl
+      intro B _
+      exact (Finset.prod_coe_sort B.1 a).symm
+    _ = ∏ x : s, a x.1 := by
+      symm
+      exact Fintype.prod_equiv_sigma e (fun x => a x.1)
+    _ = _ := Finset.prod_coe_sort s a
+
 /-- A power indexed by `s.card` factors into powers indexed by the cardinalities of the partition
 parts. -/
 theorem pow_card_eq_prod_parts (π : Finpartition s) (a : M) :
