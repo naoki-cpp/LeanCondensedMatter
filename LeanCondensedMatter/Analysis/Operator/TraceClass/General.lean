@@ -1,12 +1,12 @@
 import LeanCondensedMatter.Analysis.Operator.DiagonalExpectation
-import LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.Basic
+import LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.Norm
 import Mathlib.Analysis.InnerProductSpace.StarOrder
 import Mathlib.Analysis.SpecialFunctions.ContinuousFunctionalCalculus.Abs
 
 set_option linter.style.header false
 
 /-!
-# General trace-class membership
+# General trace-class membership and trace norm
 
 This module defines trace-class membership for bounded operators on a complete complex Hilbert
 space. For a Hilbert basis `d`, `IsTraceClassWrt d T` means that the nonnegative diagonal
@@ -14,6 +14,8 @@ series of the canonical operator absolute value `CFC.abs T = |T|` is summable.
 
 Basis independence is reduced to the existing Hilbert--Schmidt basis-independence theorem by
 identifying the diagonal of `|T|` with the squared basis norms of `CFC.sqrt (CFC.abs T)`.
+The same identification gives the canonical trace norm as the Hilbert--Schmidt norm square
+and its basis formulas, including the positive-operator and polar-factor formulas.
 -/
 
 noncomputable section
@@ -76,5 +78,107 @@ theorem isTraceClass_iff_isTraceClassWrt {ι : Type*} (d : HilbertBasis ι ℂ H
   unfold IsTraceClass IsTraceClassWrt
   simpa only [IsHilbertSchmidtWrt, diagonalExpectationValue_abs_eq_norm_sq_sqrt_abs] using
     (isHilbertSchmidt_iff_isHilbertSchmidtWrt d (CFC.sqrt (CFC.abs T)))
+
+
+/-! ## Trace norm -/
+
+namespace IsTraceClass
+
+/-- The trace norm of a trace-class operator. -/
+noncomputable def traceNorm {T : H →L[ℂ] H} (hT : IsTraceClass T) : ℝ :=
+  IsHilbertSchmidt.normSq hT
+
+/-- The trace norm is the diagonal series of `|T|` in every Hilbert basis. -/
+theorem traceNorm_eq_tsum_diagonalExpectationValue {T : H →L[ℂ] H}
+    (hT : IsTraceClass T) {ι : Type*} (d : HilbertBasis ι ℂ H) :
+    hT.traceNorm =
+      ∑' i, diagonalExpectationValue (CFC.abs T) (CFC.abs_nonneg T).isSelfAdjoint (d i) := by
+  unfold traceNorm
+  rw [IsHilbertSchmidt.normSq_eq_tsum_norm_sq_apply hT d]
+  apply tsum_congr
+  intro i
+  exact (diagonalExpectationValue_abs_eq_norm_sq_sqrt_abs T (d i)).symm
+
+/-- If `U` is a left polar factor for `T`, the trace norm is the absolute diagonal
+pairing of `U` with `T` in every Hilbert basis. -/
+theorem traceNorm_eq_tsum_norm_inner_left_of_polar {T : H →L[ℂ] H}
+    (hT : IsTraceClass T) (U : H →L[ℂ] H)
+    (hU : ContinuousLinearMap.adjoint U * T = CFC.abs T)
+    {ι : Type*} (d : HilbertBasis ι ℂ H) :
+    hT.traceNorm = ∑' i, ‖inner ℂ (U (d i)) (T (d i))‖ := by
+  rw [hT.traceNorm_eq_tsum_diagonalExpectationValue d]
+  apply tsum_congr
+  intro i
+  have hdiag :
+      (diagonalExpectationValue (CFC.abs T) (CFC.abs_nonneg T).isSelfAdjoint (d i) : ℂ) =
+        inner ℂ (U (d i)) (T (d i)) := by
+    rw [coe_diagonalExpectationValue_right, ← hU, mul_apply_eq_comp]
+    exact ContinuousLinearMap.adjoint_inner_right U (d i) (T (d i))
+  have hnonneg := diagonalExpectationValue_nonneg
+    (CFC.abs T) (nonneg_iff_isPositive.mp (CFC.abs_nonneg T)) (d i)
+  rw [← hdiag, Complex.norm_real, Real.norm_of_nonneg hnonneg]
+
+/-- The trace norm is independent of the proof of trace-class membership. -/
+theorem traceNorm_proof_irrel {T : H →L[ℂ] H} (hT hT' : IsTraceClass T) :
+    hT.traceNorm = hT'.traceNorm := by
+  exact congrArg traceNorm (Subsingleton.elim hT hT')
+
+/-- Equal trace-class operators have equal trace norms, independently of the
+chosen proofs of trace-class membership. -/
+theorem traceNorm_congr
+    {S R : H →L[ℂ] H} (hS : IsTraceClass S) (hR : IsTraceClass R) (hSR : S = R) :
+    hS.traceNorm = hR.traceNorm := by
+  subst R
+  exact IsTraceClass.traceNorm_proof_irrel _ _
+
+/-- The trace norm is nonnegative. -/
+theorem traceNorm_nonneg {T : H →L[ℂ] H} (hT : IsTraceClass T) :
+    0 ≤ hT.traceNorm :=
+  IsHilbertSchmidt.normSq_nonneg hT
+
+/-- For a positive trace-class operator, the diagonal expectation values in every Hilbert basis
+sum to the trace norm. -/
+theorem hasSum_diagonalExpectationValue_eq_traceNorm {T : H →L[ℂ] H}
+    (hT : IsTraceClass T) (hpos : T.IsPositive) {ι : Type*} (d : HilbertBasis ι ℂ H) :
+    HasSum (fun i => diagonalExpectationValue T hpos.isSelfAdjoint (d i)) hT.traceNorm := by
+  have hnonneg : 0 ≤ T := nonneg_iff_isPositive.mpr hpos
+  have habs : CFC.abs T = T := CFC.abs_of_nonneg T hnonneg
+  have hsummable :
+      Summable (fun i => diagonalExpectationValue T hpos.isSelfAdjoint (d i)) := by
+    simpa [IsTraceClassWrt, habs] using (isTraceClass_iff_isTraceClassWrt d T).mp hT
+  have hnorm :
+      hT.traceNorm = ∑' i, diagonalExpectationValue T hpos.isSelfAdjoint (d i) := by
+    simpa [habs] using hT.traceNorm_eq_tsum_diagonalExpectationValue d
+  rw [hnorm]
+  exact hsummable.hasSum
+
+/-- For a positive trace-class operator, the diagonal sum over any orthonormal family is bounded
+by the trace norm. -/
+theorem sum_diagonalExpectationValue_le_traceNorm {T : H →L[ℂ] H}
+    (hT : IsTraceClass T) (hpos : T.IsPositive) {ι : Type*} {d : ι → H}
+    (hd : Orthonormal ℂ d) :
+    Summable (fun i => diagonalExpectationValue T hpos.isSelfAdjoint (d i)) ∧
+      ∑' i, diagonalExpectationValue T hpos.isSelfAdjoint (d i) ≤ hT.traceNorm := by
+  obtain ⟨w, b, hsub, hb_eq⟩ := hd.toSubtypeRange.exists_hilbertBasis_extension
+  set g : w → ℝ := fun j =>
+    diagonalExpectationValue T hpos.isSelfAdjoint (b j) with hg_def
+  have htr : HasSum g hT.traceNorm := by
+    simpa [g] using hT.hasSum_diagonalExpectationValue_eq_traceNorm hpos b
+  have hgsum : Summable g := htr.summable
+  have hgnonneg : ∀ j : w, 0 ≤ g j := fun j => by
+    simpa [g] using diagonalExpectationValue_nonneg T hpos (b j)
+  have hd_inj : Function.Injective d := hd.linearIndependent.injective
+  set e : ι → w := fun i => ⟨d i, hsub ⟨i, rfl⟩⟩ with he_def
+  have he_inj : Function.Injective e := fun i j hij => hd_inj (congrArg Subtype.val hij)
+  have hge : ∀ i, g (e i) = diagonalExpectationValue T hpos.isSelfAdjoint (d i) := fun i => by
+    change diagonalExpectationValue T hpos.isSelfAdjoint (b (e i)) = _
+    rw [show (b (e i) : H) = d i from by rw [hb_eq]]
+  have hfsum : Summable (fun i => g (e i)) := hgsum.comp_injective he_inj
+  have hle : ∑' i, g (e i) ≤ hT.traceNorm :=
+    hasSum_le_inj e he_inj (fun j _ => hgnonneg j) (fun _ => le_rfl) hfsum.hasSum htr
+  refine ⟨hfsum.congr hge, ?_⟩
+  rwa [tsum_congr hge] at hle
+
+end IsTraceClass
 
 end ContinuousLinearMap
