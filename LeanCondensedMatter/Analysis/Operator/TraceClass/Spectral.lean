@@ -115,19 +115,14 @@ theorem hasSum_diagonalExpectationValue_eq_spectralTrace
     rwa [(orthonormal_eigenvectorFamily hT hTself.isSymmetric).1 a, one_pow] at hsum
   have hpoint : ∀ i, HasSum (f · i) (diagonalExpectationValue T hTself (d i)) :=
     fun i => hasSum_eigen_expansion_diagonalExpectationValue hT hTself (d i)
-  have hcond1 : ∀ a : EigenvectorIndex T,
-      Summable (fun i => |a.1.1| * ‖(inner ℂ (e a) (d i) : ℂ)‖ ^ 2) :=
-    fun a => (hparseval a).summable.mul_left _
-  have hcond2 : Summable (fun a : EigenvectorIndex T =>
-      ∑' i, |a.1.1| * ‖(inner ℂ (e a) (d i) : ℂ)‖ ^ 2) := by
-    have heq2 : ∀ a : EigenvectorIndex T,
-        ∑' i, |a.1.1| * ‖(inner ℂ (e a) (d i) : ℂ)‖ ^ 2 = |a.1.1| := fun a => by
-      rw [tsum_mul_left, (hparseval a).tsum_eq, mul_one]
-    have h' : Summable (fun a : EigenvectorIndex T => |a.1.1|) := h
-    simpa only [heq2] using h'
+  have habsRow (a : EigenvectorIndex T) :
+      HasSum (fun i => |a.1.1| * ‖(inner ℂ (e a) (d i) : ℂ)‖ ^ 2) |a.1.1| := by
+    simpa only [mul_one] using (hparseval a).mul_left |a.1.1|
   have habs : Summable (fun p : EigenvectorIndex T × ι =>
       |p.1.1.1| * ‖(inner ℂ (e p.1) (d p.2) : ℂ)‖ ^ 2) :=
-    (summable_prod_of_nonneg (fun p => by positivity)).mpr ⟨hcond1, hcond2⟩
+    (summable_prod_of_nonneg (fun p => by positivity)).mpr
+      ⟨fun a => (habsRow a).summable, by
+        simpa only [fun a => (habsRow a).tsum_eq] using h⟩
   have hg : Summable (Function.uncurry f) :=
     Summable.of_abs <| habs.congr fun p => by
       symm
@@ -138,12 +133,9 @@ theorem hasSum_diagonalExpectationValue_eq_spectralTrace
     rwa [mul_one] at hsum
   have hS_eq : (∑' p, Function.uncurry f p) = ∑' a : EigenvectorIndex T, a.1.1 :=
     (hg.hasSum.prod_fiberwise hpointA).tsum_eq.symm
-  have hswap2 : Summable (fun q : ι × EigenvectorIndex T => f q.2 q.1) := hg.prod_symm
-  have hHS := hswap2.hasSum.prod_fiberwise hpoint
-  have hsymmeq : ∑' q : ι × EigenvectorIndex T, f q.2 q.1 =
-      ∑' p, Function.uncurry f p :=
-    (Equiv.prodComm ι (EigenvectorIndex T)).tsum_eq (Function.uncurry f)
-  rwa [hsymmeq, hS_eq] at hHS
+  have hfull : HasSum (Function.uncurry f) (∑' a : EigenvectorIndex T, a.1.1) :=
+    hS_eq ▸ hg.hasSum
+  exact ((Equiv.prodComm ι (EigenvectorIndex T)).hasSum_iff.mpr hfull).prod_fiberwise hpoint
 
 end ContinuousLinearMap
 
