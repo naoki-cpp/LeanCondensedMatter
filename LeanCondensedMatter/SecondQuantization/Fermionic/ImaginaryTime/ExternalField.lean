@@ -87,6 +87,17 @@ theorem externalFieldOperator_eq_shiftedDispersion
       push_cast
       ring
 
+/-- One external field or one full quartic interaction-picture vertex. -/
+noncomputable def externalInsertionTimedEventOperator {E n : ℕ}
+    (ε : Mode → ℝ)
+    (externalLabel : Fin (2 * E) → ExternalFieldLabel Mode)
+    (externalTime : Fin (2 * E) → ℝ)
+    (q : Fin n → QuarticVertexLabel Mode) (σ : Fin n → ℝ) :
+    (Fin (2 * E) ⊕ Fin n) →
+      OccupationFock Mode →ₗ[ℂ] OccupationFock Mode
+  | .inl e => externalFieldOperator ε (externalTime e) (externalLabel e)
+  | .inr v => Common.interactionPicture (fermionEnergy ε) (quarticVertexOperator (q v)) (σ v)
+
 /-- Fermionic time ordering of two labelled external fields. -/
 noncomputable def timeOrderedExternalFields (ε : Mode → ℝ)
     (A B : ExternalFieldLabel Mode) (τA τB : ℝ) :
