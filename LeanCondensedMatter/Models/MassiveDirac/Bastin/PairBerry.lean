@@ -41,7 +41,7 @@ theorem targetCenteredInterbandSpectatorCurrentFactor_zero_im_eq_neg_chargeSq_be
     (((((interbandEnergyGap band v m px py : ℝ) : ℂ))⁻¹) ^ 2 *
       bastinInterbandBlockDifference 0 1 band e v m px py).im =
         -(e ^ 2 * berryCurvature band v m px py)
-  rw [mul_comm, ← inv_pow, ← div_eq_mul_inv, ← Complex.ofReal_pow, Complex.div_ofReal_im]
+  rw [mul_comm, inv_pow, ← div_eq_mul_inv, ← Complex.ofReal_pow, Complex.div_ofReal_im]
   exact bastinInterbandBlockDifference_im_div_gap_sq_eq_neg_chargeSq_berryCurvature
     band e v m px py hE
 
