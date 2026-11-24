@@ -28,58 +28,14 @@ theorem externalInsertionSlotLegSplitting_left_strictMono
     StrictMono (fun p : Fin (2 * (2 * T.card + E)) =>
       externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T)
         (Sum.inl p)) := by
-  let localEquiv := externalInsertionLegEquiv E T
-  intro a b hab
-  let la := localEquiv a
-  let lb := localEquiv b
-  have ha : localEquiv.symm la = a := by simp [la]
-  have hb : localEquiv.symm lb = b := by simp [lb]
-  rw [← ha, ← hb] at hab ⊢
-  rcases la with e | ⟨v, l⟩ <;> rcases lb with f | ⟨w, k⟩
-  · change (externalInsertionExternalLeg E T e).val <
-        (externalInsertionExternalLeg E T f).val at hab
-    change externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T)
-        (Sum.inl (externalInsertionExternalLeg E T e)) <
-      externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T)
-        (Sum.inl (externalInsertionExternalLeg E T f))
-    unfold externalInsertionExternalLeg
-    rw [externalInsertionSlotLegSplitting_external,
-      externalInsertionSlotLegSplitting_external]
-    change (externalInsertionExternalLeg E (Finset.univ : Finset (Fin N)) e).val <
-      (externalInsertionExternalLeg E (Finset.univ : Finset (Fin N)) f).val
-    simpa only [Fin.lt_def, externalInsertionExternalLeg_val] using hab
-  · change externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T)
-        (Sum.inl (externalInsertionExternalLeg E T e)) <
-      externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T)
-        (Sum.inl (externalInsertionInteractionLeg (E := E) w k))
-    unfold externalInsertionExternalLeg externalInsertionInteractionLeg
-    rw [externalInsertionSlotLegSplitting_external,
-      externalInsertionSlotLegSplitting_left_interaction]
-    change (externalInsertionExternalLeg E (Finset.univ : Finset (Fin N)) e).val <
-      (externalInsertionInteractionLeg (E := E)
-        (⟨w.1, Finset.mem_univ _⟩ : ↥(Finset.univ : Finset (Fin N))) k).val
-    simp only [externalInsertionExternalLeg_val, externalInsertionInteractionLeg_val]
-    have he := e.isLt
-    omega
-  · change (externalInsertionInteractionLeg (E := E) v l).val <
-      (externalInsertionExternalLeg E T f).val at hab
-    simp only [externalInsertionInteractionLeg_val,
-      externalInsertionExternalLeg_val] at hab
-    have hf := f.isLt
-    omega
-  · change (externalInsertionInteractionLeg (E := E) v l).val <
-        (externalInsertionInteractionLeg (E := E) w k).val at hab
-    change externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T)
-        (Sum.inl (externalInsertionInteractionLeg (E := E) v l)) <
-      externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T)
-        (Sum.inl (externalInsertionInteractionLeg (E := E) w k))
-    unfold externalInsertionInteractionLeg
-    rw [externalInsertionSlotLegSplitting_left_interaction,
-      externalInsertionSlotLegSplitting_left_interaction]
-    exact externalInsertionInteractionLeg_lt_of_subset
-      (E := E) (E' := E) (T := T)
-      (S := (Finset.univ : Finset (Fin N)))
-      (Finset.subset_univ T) v w l k (Fin.lt_def.mpr hab)
+  refine externalInsertionLegMap_strictMono
+    (E := E) (E' := E) (T := T) (S := (Finset.univ : Finset (Fin N)))
+    (Finset.subset_univ T) _ id (fun _ _ h => h) ?_ ?_
+  · intro e
+    exact externalInsertionSlotLegSplitting_external (E := E) (Finset.subset_univ T) e
+  · intro v l
+    exact externalInsertionSlotLegSplitting_left_interaction (E := E)
+      (Finset.subset_univ T) v l
 
 /-- The canonically ordered vacuum-sector legs retain their flat order when inserted
 into the ambient fixed-order external-insertion leg array. -/
