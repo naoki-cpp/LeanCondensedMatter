@@ -76,8 +76,10 @@ private theorem norm_sub_finiteRangeApprox_sq_le {ι : Type*} (d : HilbertBasis 
   have hparse :
       HasSum
         (fun i : ι => ‖(inner ℂ ((T - finiteRangeApprox d T s) x) (d i) : ℂ)‖ ^ 2)
-        (‖(T - finiteRangeApprox d T s) x‖ ^ 2) :=
-    d.hasSum_norm_sq_inner ((T - finiteRangeApprox d T s) x)
+        (‖(T - finiteRangeApprox d T s) x‖ ^ 2) := by
+    simpa only [show (2 : ENNReal).toReal = (2 : ℝ) by norm_num, Real.rpow_two,
+      d.repr_apply_apply, d.repr.norm_map, norm_inner_symm] using
+      (lp.hasSum_norm (p := 2) (by norm_num) (d.repr ((T - finiteRangeApprox d T s) x)))
   have hzero :
       ∑ i ∈ s, ‖(inner ℂ ((T - finiteRangeApprox d T s) x) (d i) : ℂ)‖ ^ 2 = 0 := by
     apply Finset.sum_eq_zero
