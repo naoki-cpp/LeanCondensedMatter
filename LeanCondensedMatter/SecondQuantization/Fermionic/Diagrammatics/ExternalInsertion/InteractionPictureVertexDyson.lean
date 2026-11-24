@@ -32,17 +32,6 @@ section VertexProduct
 
 variable {Mode : Type*} [LinearOrder Mode]
 
-/-- One external field or one full quartic interaction-picture vertex. -/
-noncomputable def externalInsertionTimedEventOperator {E n : ℕ}
-    (ε : Mode → ℝ)
-    (externalLabel : Fin (2 * E) → ExternalFieldLabel Mode)
-    (externalTime : Fin (2 * E) → ℝ)
-    (q : Fin n → QuarticVertexLabel Mode) (σ : Fin n → ℝ) :
-    ExternalInsertionTimedEvent E n →
-      OccupationFock Mode →ₗ[ℂ] OccupationFock Mode
-  | .inl e => externalFieldOperator ε (externalTime e) (externalLabel e)
-  | .inr v => Common.interactionPicture (fermionEnergy ε) (quarticVertexOperator (q v)) (σ v)
-
 /-- Signed mixed-time-ordered interaction-picture vertex product, with the fermionic sign from
 restoring the fixed external/interaction atomic order. -/
 noncomputable def externalInsertionMixedTimeOrderedVertexComp {E n : ℕ}

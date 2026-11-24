@@ -28,24 +28,23 @@ variable {Mode : Type*} [LinearOrder Mode]
 event and an interaction-picture quartic vertex for an interaction event. -/
 noncomputable def twoPointTimedEventOperator {n : ℕ} (ε : Mode → ℝ) (i j : Mode)
     (τ τ' : ℝ) (q : Fin n → QuarticVertexLabel Mode) (σ : Fin n → ℝ) :
-    TwoPointTimedEvent n → OccupationFock Mode →ₗ[ℂ] OccupationFock Mode
-  | .inl e => externalFieldOperator ε (twoPointExternalTimes τ τ' e)
-      (twoPointExternalLabels i j e)
-  | .inr v => Common.interactionPicture (fermionEnergy ε) (quarticVertexOperator (q v)) (σ v)
+    TwoPointTimedEvent n → OccupationFock Mode →ₗ[ℂ] OccupationFock Mode :=
+  externalInsertionTimedEventOperator (E := 1) ε (twoPointExternalLabels i j)
+    (twoPointExternalTimes τ τ') q σ
 
 @[simp]
 theorem twoPointTimedEventOperator_external_zero {n : ℕ} (ε : Mode → ℝ) (i j : Mode)
     (τ τ' : ℝ) (q : Fin n → QuarticVertexLabel Mode) (σ : Fin n → ℝ) :
     twoPointTimedEventOperator ε i j τ τ' q σ (Sum.inl 0) =
       externalFieldOperator ε τ (.annihilation i) := by
-  simp [twoPointTimedEventOperator]
+  simp [twoPointTimedEventOperator, externalInsertionTimedEventOperator]
 
 @[simp]
 theorem twoPointTimedEventOperator_external_one {n : ℕ} (ε : Mode → ℝ) (i j : Mode)
     (τ τ' : ℝ) (q : Fin n → QuarticVertexLabel Mode) (σ : Fin n → ℝ) :
     twoPointTimedEventOperator ε i j τ τ' q σ (Sum.inl 1) =
       externalFieldOperator ε τ' (.creation j) := by
-  simp [twoPointTimedEventOperator]
+  simp [twoPointTimedEventOperator, externalInsertionTimedEventOperator]
 
 @[simp]
 theorem twoPointTimedEventOperator_interaction {n : ℕ} (ε : Mode → ℝ) (i j : Mode)
@@ -102,16 +101,17 @@ theorem mixedTimeOrderedVertexComp_eq_shiftedDispersion
           (l.map (twoPointTimedEventOperator (fun k => ε k - μ) i j τ τ' q σ)).prod := by
     rw [funext hevent]
     exact ScalarExchange.list_prod_map_smul l a _
-  have htail : ((twoPointInteractionEventList n).map a).prod = 1 := by
-    rw [twoPointInteractionEventList, List.map_ofFn]
-    simp [Function.comp_def, a]
   have hscalar : ((orderedTwoPointTimedEvents τ τ' σ).map a).prod =
       twoPointChemicalPotentialFactor μ τ τ' := by
-    rw [((orderedTwoPointTimedEvents_perm τ τ' σ).map a).prod_eq]
-    change Complex.exp (-(τ : ℂ) * (μ : ℂ)) *
-      (Complex.exp ((τ' : ℂ) * (μ : ℂ)) * ((twoPointInteractionEventList n).map a).prod) =
-        twoPointChemicalPotentialFactor μ τ τ'
-    rw [htail, mul_one, ← Complex.exp_add, twoPointChemicalPotentialFactor]
+    rw [orderedTwoPointTimedEvents_eq_externalInsertion,
+      prod_orderedExternalInsertionTimedEvents (E := 1) (twoPointExternalTimes τ τ') σ a]
+    change (∏ e : Fin 2 ⊕ Fin n, a e) = _
+    rw [Fintype.prod_sum_type]
+    have htail : (∏ v : Fin n, a (Sum.inr v)) = 1 := by
+      simp [a]
+    rw [htail, mul_one, Fin.prod_univ_two]
+    change Complex.exp (-(τ : ℂ) * (μ : ℂ)) * Complex.exp ((τ' : ℂ) * (μ : ℂ)) = _
+    rw [← Complex.exp_add, twoPointChemicalPotentialFactor]
     congr 1
     ring
   unfold mixedTimeOrderedVertexComp

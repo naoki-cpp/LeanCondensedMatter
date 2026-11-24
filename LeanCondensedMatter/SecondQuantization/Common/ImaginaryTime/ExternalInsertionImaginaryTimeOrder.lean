@@ -93,7 +93,8 @@ theorem prod_orderedExternalInsertionTimedEvents {R : Type*} [CommMonoid R]
   exact Equiv.prod_comp
     (finSumFinEquiv : ExternalInsertionTimedEvent E n ≃ Fin (2 * E + n)).symm a
 
-private theorem orderedExternalInsertionTimedEvents_nodup {E n : ℕ}
+/-- Stable mixed ordering contains no duplicate events. -/
+theorem orderedExternalInsertionTimedEvents_nodup {E n : ℕ}
     (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ) :
     (orderedExternalInsertionTimedEvents externalTime σ).Nodup :=
   (orderedExternalInsertionTimedEvents_perm externalTime σ).nodup_iff.mpr (by
@@ -102,7 +103,8 @@ private theorem orderedExternalInsertionTimedEvents_nodup {E n : ℕ}
       ((finSumFinEquiv :
         ExternalInsertionTimedEvent E n ≃ Fin (2 * E + n)).symm.injective))
 
-private theorem orderedExternalInsertionTimedEvents_all_mem {E n : ℕ}
+/-- Stable mixed ordering contains every event. -/
+theorem orderedExternalInsertionTimedEvents_all_mem {E n : ℕ}
     (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ) :
     ∀ event : ExternalInsertionTimedEvent E n,
       event ∈ orderedExternalInsertionTimedEvents externalTime σ := by
@@ -114,10 +116,12 @@ private theorem orderedExternalInsertionTimedEvents_all_mem {E n : ℕ}
       ExternalInsertionTimedEvent E n ≃ Fin (2 * E + n)) event,
     by simp⟩
 
-private theorem orderedExternalInsertionTimedEvents_pairwise {E n : ℕ}
+/-- Stable mixed ordering is pairwise sorted. -/
+theorem orderedExternalInsertionTimedEvents_pairwise {E n : ℕ}
     (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ) :
     (orderedExternalInsertionTimedEvents externalTime σ).Pairwise
-      (externalInsertionTimedEventBeforeOrEqual externalTime σ) := by
+      (stableTimedEventBeforeOrEqual (externalInsertionTimedEventTime externalTime σ)
+        (fun e => (finSumFinEquiv e : Fin (2 * E + n)).val)) := by
   classical
   change
     (List.insertionSort
@@ -384,7 +388,8 @@ private theorem externalInsertionMixedTimeOrderedAtomicLegs_zero_eq_flattened_of
   exact (congrArg (fun p : Fin n × Fin 4 => g p.1 p.2)
     (Combinatorics.FiniteIndex.blockEquiv_cast_mul_add hcard i j)).symm
 
-private theorem externalInsertionMixedTimeOrderedAtomicLegs_nodup {E n : ℕ}
+/-- The general mixed atomic-leg order has no duplicate identities. -/
+theorem externalInsertionMixedTimeOrderedAtomicLegs_nodup {E n : ℕ}
     (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ) :
     (externalInsertionMixedTimeOrderedAtomicLegs externalTime σ).Nodup := by
   rw [externalInsertionMixedTimeOrderedAtomicLegs, List.nodup_flatMap]
@@ -395,7 +400,8 @@ private theorem externalInsertionMixedTimeOrderedAtomicLegs_nodup {E n : ℕ}
     (orderedExternalInsertionTimedEvents_nodup externalTime σ).pairwise_of_forall_ne
       (fun _ _ _ _ h => externalInsertionTimedEventAtomicLegs_disjoint h)
 
-private theorem externalInsertionMixedTimeOrderedAtomicLegs_all_mem {E n : ℕ}
+/-- The general mixed atomic-leg order contains every canonical leg. -/
+theorem externalInsertionMixedTimeOrderedAtomicLegs_all_mem {E n : ℕ}
     (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ) :
     ∀ leg : OrderedExternalInsertionLeg E n,
       leg ∈ externalInsertionMixedTimeOrderedAtomicLegs externalTime σ := by
@@ -416,7 +422,8 @@ private theorem externalInsertionMixedTimeOrderedAtomicLegs_all_mem {E n : ℕ}
       rw [externalInsertionTimedEventAtomicLegs, List.mem_ofFn]
       exact ⟨l, rfl⟩
 
-private theorem externalInsertionMixedTimeOrderedAtomicLegs_length {E n : ℕ}
+/-- The general mixed atomic-leg order has one position per canonical leg. -/
+theorem externalInsertionMixedTimeOrderedAtomicLegs_length {E n : ℕ}
     (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ) :
     (externalInsertionMixedTimeOrderedAtomicLegs externalTime σ).length =
       2 * (2 * n + E) := by

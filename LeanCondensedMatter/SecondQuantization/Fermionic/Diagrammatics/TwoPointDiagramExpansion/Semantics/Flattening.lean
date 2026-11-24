@@ -56,7 +56,8 @@ private theorem prod_twoPointTimedEventAtomicOperators {n : ℕ} (ε : Mode → 
   cases event with
   | inl e =>
       rw [twoPointTimedEventAtomicOperators_external]
-      simp [twoPointTimedEventOperator, Module.End.mul_eq_comp, Module.End.one_eq_id]
+      simp [twoPointTimedEventOperator, externalInsertionTimedEventOperator,
+        Module.End.mul_eq_comp, Module.End.one_eq_id]
   | inr v =>
       rw [twoPointTimedEventAtomicOperators_interaction,
         twoPointTimedEventOperator_interaction]

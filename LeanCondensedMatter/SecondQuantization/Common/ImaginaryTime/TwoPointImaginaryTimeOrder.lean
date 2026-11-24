@@ -1,4 +1,4 @@
-import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.StableTimedEventOrder
+import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionImaginaryTimeOrder
 import Mathlib.Data.Fintype.Basic
 import Mathlib.Data.List.NodupEquivFin
 import Mathlib.Tactic.FinCases
@@ -125,6 +125,48 @@ theorem orderedTwoPointTimedEvents_all_mem {n : ℕ}
   cases event with
   | inl e => fin_cases e <;> simp [twoPointInteractionEventList]
   | inr v => simp [twoPointInteractionEventList]
+
+/-- The two-point and arbitrary-external stable event orders coincide for two
+external slots, including all equal-time ties. -/
+theorem orderedTwoPointTimedEvents_eq_externalInsertion {n : ℕ}
+    (τ τ' : ℝ) (σ : Fin n → ℝ) :
+    orderedTwoPointTimedEvents τ τ' σ =
+      orderedExternalInsertionTimedEvents (E := 1) (twoPointExternalTimes τ τ') σ := by
+  classical
+  let source := orderedTwoPointTimedEvents τ τ' σ
+  let target := orderedExternalInsertionTimedEvents (E := 1) (twoPointExternalTimes τ τ') σ
+  let rel := twoPointTimedEventBeforeOrEqual τ τ' σ
+  have hSubperm : List.Subperm source target :=
+    (orderedTwoPointTimedEvents_nodup τ τ' σ).subperm
+      (fun event _ => orderedExternalInsertionTimedEvents_all_mem
+        (E := 1) (twoPointExternalTimes τ τ') σ event)
+  letI : Std.Antisymm rel :=
+    ⟨fun _ _ hab hba =>
+      stableTimedEventBeforeOrEqual_antisymm
+        (twoPointTimedEventTime τ τ' σ) twoPointTimedEventRank
+        (by
+          intro a b h
+          apply (finSumFinEquiv : TwoPointTimedEvent n ≃ Fin (2 + n)).injective
+          exact Fin.ext h)
+        hab hba⟩
+  have htime : externalInsertionTimedEventTime (E := 1) (twoPointExternalTimes τ τ') σ =
+      twoPointTimedEventTime τ τ' σ := by
+    funext e
+    cases e <;> rfl
+  have ht : target.Pairwise rel := by
+    change (orderedExternalInsertionTimedEvents (E := 1) (twoPointExternalTimes τ τ') σ).Pairwise
+      (stableTimedEventBeforeOrEqual (twoPointTimedEventTime τ τ' σ)
+        (fun e : TwoPointTimedEvent n => (finSumFinEquiv e : Fin (2 + n)).val))
+    rw [← htime]
+    exact orderedExternalInsertionTimedEvents_pairwise
+      (E := 1) (twoPointExternalTimes τ τ') σ
+  have hs : source.Pairwise rel := orderedTwoPointTimedEvents_pairwise τ τ' σ
+  have hsub := List.sublist_of_subperm_of_pairwise (r := rel) hSubperm hs ht
+  have hRev : List.Subperm target source :=
+    (orderedExternalInsertionTimedEvents_nodup
+      (E := 1) (twoPointExternalTimes τ τ') σ).subperm
+      (fun event _ => orderedTwoPointTimedEvents_all_mem τ τ' σ event)
+  exact hsub.eq_of_length (le_antisymm hsub.length_le hRev.length_le)
 
 /-- Exact enumeration of all mixed events by their time-ordered positions. -/
 noncomputable def orderedTwoPointTimedEventEquiv {n : ℕ}

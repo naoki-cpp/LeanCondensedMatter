@@ -51,59 +51,43 @@ noncomputable def mixedTimeOrderedAtomicLegs {n : ℕ} (τ τ' : ℝ) (σ : Fin 
     List (OrderedTwoPointLeg n) :=
   (orderedTwoPointTimedEvents τ τ' σ).flatMap twoPointTimedEventAtomicLegs
 
-private theorem twoPointTimedEventAtomicLegs_nodup {n : ℕ}
-    (event : TwoPointTimedEvent n) :
-    (twoPointTimedEventAtomicLegs event).Nodup := by
-  cases event with
-  | inl e => simp
-  | inr v =>
-      rw [twoPointTimedEventAtomicLegs]
-      apply List.nodup_ofFn_ofInjective
-      intro a b h
-      exact congrArg Prod.snd (Sum.inr.inj h)
-
-private theorem twoPointTimedEventAtomicLegs_disjoint {n : ℕ}
-    {a b : TwoPointTimedEvent n} (h : a ≠ b) :
-    List.Disjoint (twoPointTimedEventAtomicLegs a) (twoPointTimedEventAtomicLegs b) := by
-  cases a <;> cases b <;>
-    simp_all [twoPointTimedEventAtomicLegs, ne_comm]
+/-- The legacy mixed atomic-leg list is exactly the two-external specialization
+of the general mixed order, not just a permutation of it. -/
+theorem mixedTimeOrderedAtomicLegs_eq_externalInsertion {n : ℕ}
+    (τ τ' : ℝ) (σ : Fin n → ℝ) :
+    mixedTimeOrderedAtomicLegs τ τ' σ =
+      externalInsertionMixedTimeOrderedAtomicLegs (E := 1)
+        (twoPointExternalTimes τ τ') σ := by
+  have h : twoPointTimedEventAtomicLegs (n := n) =
+      externalInsertionTimedEventAtomicLegs (E := 1) (n := n) := by
+    funext e
+    cases e <;> rfl
+  simp only [mixedTimeOrderedAtomicLegs, externalInsertionMixedTimeOrderedAtomicLegs,
+    orderedTwoPointTimedEvents_eq_externalInsertion, h]
 
 /-- The mixed-time leg list has no duplicate leg identities. -/
 theorem mixedTimeOrderedAtomicLegs_nodup {n : ℕ}
     (τ τ' : ℝ) (σ : Fin n → ℝ) :
     (mixedTimeOrderedAtomicLegs τ τ' σ).Nodup := by
-  rw [mixedTimeOrderedAtomicLegs, List.nodup_flatMap]
-  refine ⟨fun event _ => twoPointTimedEventAtomicLegs_nodup event, ?_⟩
-  exact (orderedTwoPointTimedEvents_nodup τ τ' σ).pairwise_of_forall_ne
-    (fun _ _ _ _ h => twoPointTimedEventAtomicLegs_disjoint h)
+  rw [mixedTimeOrderedAtomicLegs_eq_externalInsertion]
+  exact externalInsertionMixedTimeOrderedAtomicLegs_nodup
+    (E := 1) (twoPointExternalTimes τ τ') σ
 
 /-- Every standard external or interaction leg occurs in the mixed-time leg list. -/
 theorem mixedTimeOrderedAtomicLegs_all_mem {n : ℕ}
     (τ τ' : ℝ) (σ : Fin n → ℝ) :
     ∀ leg : OrderedTwoPointLeg n, leg ∈ mixedTimeOrderedAtomicLegs τ τ' σ := by
-  intro leg
-  rw [mixedTimeOrderedAtomicLegs, List.mem_flatMap]
-  cases leg with
-  | inl e =>
-      exact ⟨Sum.inl e, orderedTwoPointTimedEvents_all_mem τ τ' σ (Sum.inl e), by simp⟩
-  | inr p =>
-      rcases p with ⟨⟨v, hv⟩, l⟩
-      refine ⟨Sum.inr v, orderedTwoPointTimedEvents_all_mem τ τ' σ (Sum.inr v), ?_⟩
-      rw [twoPointTimedEventAtomicLegs_interaction, List.mem_ofFn]; exact ⟨l, rfl⟩
+  rw [mixedTimeOrderedAtomicLegs_eq_externalInsertion]
+  exact externalInsertionMixedTimeOrderedAtomicLegs_all_mem
+    (E := 1) (twoPointExternalTimes τ τ') σ
 
 /-- The mixed-time leg list has exactly `4n + 2` entries. -/
 theorem mixedTimeOrderedAtomicLegs_length {n : ℕ}
     (τ τ' : ℝ) (σ : Fin n → ℝ) :
     (mixedTimeOrderedAtomicLegs τ τ' σ).length = 2 * (2 * n + 1) := by
-  let l := mixedTimeOrderedAtomicLegs τ τ' σ
-  have hcard : l.length = Fintype.card (OrderedTwoPointLeg n) := by
-    simpa using Fintype.card_congr
-      (List.Nodup.getEquivOfForallMemList l
-        (mixedTimeOrderedAtomicLegs_nodup τ τ' σ)
-        (mixedTimeOrderedAtomicLegs_all_mem τ τ' σ))
-  rw [hcard]
-  simp [OrderedTwoPointLeg]
-  omega
+  rw [mixedTimeOrderedAtomicLegs_eq_externalInsertion]
+  exact externalInsertionMixedTimeOrderedAtomicLegs_length
+    (E := 1) (twoPointExternalTimes τ τ') σ
 
 /-- The exact bijection from mixed-time atomic positions to standard two-point legs. -/
 noncomputable def mixedTimeOrderedAtomicLegEquiv {n : ℕ}
