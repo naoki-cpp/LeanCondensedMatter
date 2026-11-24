@@ -199,7 +199,7 @@ theorem boundedSpinDisplacementDirectionalResponseChannel_contactExpectation
     (L ((sourceValue : ℂ) • ((Complex.I / (hbar : ℂ)) • ⁅D, B⁆))) =
       (sourceValue : ℂ) * ((Complex.I / (hbar : ℂ)) *
         expectation.toContinuousLinearMap (L ⁅D, B⁆))
-  simp only [map_smul, smul_eq_mul]
+  simp only [map_smul, smul_eq_mul, mul_assoc]
 
 /-- The real-space mixed retarded kernel splits into the conventional
 spin-current and torque-dipole kernels without a separate position/velocity
