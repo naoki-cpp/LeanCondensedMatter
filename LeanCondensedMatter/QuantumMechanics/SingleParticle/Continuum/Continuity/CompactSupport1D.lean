@@ -48,52 +48,6 @@ theorem intervalSmearedProbabilityDensity1D_eq_wholeSpace
   unfold intervalSmearedProbabilityDensity1D wholeSpaceSmearedProbabilityDensity1D
   exact MeasureTheory.integral_mul_eq_integral_of_tsupport_subset_Ioo htestSupport
 
-/-- If the test support is strictly inside `a..b`, its interval pairing with a density rate is the
-whole-space pairing. -/
-theorem intervalSmearedDensityRate1D_eq_wholeSpace
-    (a b : ℝ) {test densityTimeDerivative : ℝ → ℝ}
-    (htestSupport : tsupport test ⊆ Ioo a b) :
-    intervalSmearedDensityRate1D a b test densityTimeDerivative =
-      wholeSpaceSmearedDensityRate1D test densityTimeDerivative := by
-  unfold intervalSmearedDensityRate1D wholeSpaceSmearedDensityRate1D
-  exact MeasureTheory.integral_mul_eq_integral_of_tsupport_subset_Ioo htestSupport
-
-/-- The interval pairing with `deriv test` agrees with the whole-space pairing whenever the
-support of `test` lies strictly inside the interval. -/
-theorem intervalSmearedCurrentPairing1D_deriv_eq_wholeSpace
-    (a b : ℝ) {test current : ℝ → ℝ}
-    (htestSupport : tsupport test ⊆ Ioo a b) :
-    intervalSmearedCurrentPairing1D a b (deriv test) current =
-      wholeSpaceSmearedCurrentPairing1D (deriv test) current := by
-  unfold intervalSmearedCurrentPairing1D wholeSpaceSmearedCurrentPairing1D
-  unfold intervalSmearedDensityRate1D wholeSpaceSmearedDensityRate1D
-  exact MeasureTheory.integral_deriv_mul_eq_integral_of_tsupport_subset_Ioo htestSupport
-
-/-- A compact support window transports an interval weak balance to the corresponding whole-space
-identity. -/
-theorem weak_continuity_wholeSpace_of_interval
-    (a b : ℝ) {test current densityTimeDerivative : ℝ → ℝ}
-    (htestSupport : tsupport test ⊆ Ioo a b)
-    (hInterval :
-      intervalSmearedDensityRate1D a b test densityTimeDerivative =
-        intervalSmearedCurrentPairing1D a b (deriv test) current -
-          weightedBoundaryCurrent1D a b test current) :
-    wholeSpaceSmearedDensityRate1D test densityTimeDerivative =
-      wholeSpaceSmearedCurrentPairing1D (deriv test) current := by
-  have hDensityWindow :
-      intervalSmearedDensityRate1D a b test densityTimeDerivative =
-        wholeSpaceSmearedDensityRate1D test densityTimeDerivative :=
-    intervalSmearedDensityRate1D_eq_wholeSpace a b htestSupport
-  have hCurrentWindow :
-      intervalSmearedCurrentPairing1D a b (deriv test) current =
-        wholeSpaceSmearedCurrentPairing1D (deriv test) current :=
-    intervalSmearedCurrentPairing1D_deriv_eq_wholeSpace a b htestSupport
-  rcases MeasureTheory.endpoint_values_eq_zero_of_tsupport_subset_Ioo htestSupport with ⟨ha, hb⟩
-  have hBoundary : weightedBoundaryCurrent1D a b test current = 0 := by
-    simp [weightedBoundaryCurrent1D, ha, hb]
-  rw [hDensityWindow, hCurrentWindow, hBoundary, sub_zero] at hInterval
-  exact hInterval
-
 /-- A compact support window transports an interval smeared-density derivative theorem to the
 corresponding whole-space statement. -/
 theorem hasDerivAt_wholeSpaceSmearedProbabilityDensity1D_of_interval
@@ -115,7 +69,7 @@ theorem hasDerivAt_wholeSpaceSmearedProbabilityDensity1D_of_interval
   have hCurrentWindow :
       intervalSmearedCurrentPairing1D a b (deriv test) current =
         wholeSpaceSmearedCurrentPairing1D (deriv test) current :=
-    intervalSmearedCurrentPairing1D_deriv_eq_wholeSpace a b htestSupport
+    MeasureTheory.integral_deriv_mul_eq_integral_of_tsupport_subset_Ioo htestSupport
   rcases MeasureTheory.endpoint_values_eq_zero_of_tsupport_subset_Ioo htestSupport with ⟨ha, hb⟩
   have hBoundary : weightedBoundaryCurrent1D a b test current = 0 := by
     simp [weightedBoundaryCurrent1D, ha, hb]
@@ -146,7 +100,7 @@ theorem schrodinger_weak_continuity_wholeSpace
   have hInterval := schrodinger_weak_continuity_interval
     a b ℏ κ hℏ (fun x _ => (htestDifferentiable x).hasDerivAt)
       hψre hψim hψxre hψxim hschrodinger htestDerivIntegrable hcurrentIntegrable
-  exact weak_continuity_wholeSpace_of_interval a b htestSupport hInterval
+  exact ConservationLaw.weak_continuity_wholeSpace_of_interval a b htestSupport hInterval
 
 /-- Under the explicit dominated time-differentiation hypotheses, the scalar-potential Schrödinger
 equation gives the derivative of the whole-space compactly supported smeared density:
