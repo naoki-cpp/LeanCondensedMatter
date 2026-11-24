@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Analysis.Operator.Unbounded.BoundedResolvent
 import LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventApproximation
 import Mathlib.Tactic.FieldSimp
 import Mathlib.Tactic.GCongr

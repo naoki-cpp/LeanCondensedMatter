@@ -1,4 +1,5 @@
-import LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventCommutation
+import LeanCondensedMatter.Analysis.Operator.Unbounded.BoundedResolvent
+import LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventApproximation
 import LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventConvergence
 import LeanCondensedMatter.Analysis.Operator.BoundedUnitaryEvolution
 import Mathlib.Analysis.Normed.Operator.Completeness

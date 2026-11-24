@@ -32,18 +32,6 @@ variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteS
 private theorem star_im_ne_zero {z : ℂ} (hz : z.im ≠ 0) : (star z).im ≠ 0 := by
   simpa using neg_ne_zero.mpr hz
 
-/-- The bounded resolvent is also a left inverse of the nonreal shift on the original domain. -/
-theorem nonrealResolvent_shift_apply
-    (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (z : ℂ) (hz : z.im ≠ 0)
-    (x : A.domain) :
-    nonrealResolvent A hA z hz (A x - z • (x : H)) = (x : H) := by
-  let e := nonrealShiftLinearEquiv A hA z hz
-  have h := e.symm_apply_apply x
-  have he : e x = A x - z • (x : H) := by
-    exact nonrealShiftLinearEquiv_apply A hA z hz x
-  have hval := congrArg Subtype.val h
-  simpa [e, nonrealResolvent_apply, nonrealShiftInverseDomain_apply, he] using hval
-
 /-- The adjoint of a nonreal resolvent is the resolvent at the conjugate spectral parameter. -/
 theorem nonrealResolvent_adjoint
     (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (z : ℂ) (hz : z.im ≠ 0) :
