@@ -326,44 +326,17 @@ theorem ExternalInsertionBlockLayout.assembleDiagram_componentInteractionSector_
       layout.interactionBlock S (layout.sourceEquiv e).1 := by
   classical
   let d := layout.assembleDiagram S F
-  let B := (layout.sourceEquiv e).1
   ext v
+  rw [mem_interactionSector, ExternalInsertionBlockLayout.interactionBlock, Finset.mem_filter]
   constructor
-  · intro hv
-    have hvS : v ∈ S := interactionSector_subset _ hv
-    let V : ↥S := ⟨v, hvS⟩
-    have hmem : (Sum.inr V : ExternalInsertionVertex E S) ∈
-        d.vertexGraph.componentBlock (Sum.inl e) :=
-      (mem_interactionSector_subtype _ V).1 hv
-    have hreach : d.vertexGraph.Reachable (Sum.inl e) (Sum.inr V) := by
-      have hr := (d.vertexGraph.mem_componentBlock (Sum.inl e) (Sum.inr V)).mp hmem
-      exact hr.symm
-    have hblocks :=
-      (layout.assembleDiagram_reachable_iff_same_block S F hconnected
-        (Sum.inl e) (Sum.inr V)).1 hreach
-    have howner : layout.interactionOwner v = B := by
-      change B = layout.interactionOwner v at hblocks
-      exact hblocks.symm
-    change v ∈ S.filter (fun x => layout.interactionOwner x = B)
-    exact Finset.mem_filter.mpr ⟨hvS, howner⟩
-  · intro hv
-    have hfilter : v ∈ S ∧ layout.interactionOwner v = B := by
-      simpa only [ExternalInsertionBlockLayout.interactionBlock,
-        Finset.mem_filter] using hv
-    let V : ↥S := ⟨v, hfilter.1⟩
-    have hblocks :
-        (layout.vertexEquiv S (Sum.inl e)).1 =
-          (layout.vertexEquiv S (Sum.inr V)).1 := by
-      change B = layout.interactionOwner v
-      exact hfilter.2.symm
-    have hreach :=
-      (layout.assembleDiagram_reachable_iff_same_block S F hconnected
-        (Sum.inl e) (Sum.inr V)).2 hblocks
-    have hmem : (Sum.inr V : ExternalInsertionVertex E S) ∈
-        d.vertexGraph.componentBlock (Sum.inl e) := by
-      rw [d.vertexGraph.mem_componentBlock]
-      exact hreach.symm
-    exact (mem_interactionSector_subtype _ V).2 hmem
+  · rintro ⟨hv, hmem⟩
+    exact ⟨hv, (layout.assembleDiagram_reachable_iff_same_block S F hconnected
+      (Sum.inr ⟨v, hv⟩) (Sum.inl e)).mp
+        ((d.vertexGraph.mem_componentBlock (Sum.inl e) (Sum.inr ⟨v, hv⟩)).mp hmem)⟩
+  · rintro ⟨hv, howner⟩
+    exact ⟨hv, (d.vertexGraph.mem_componentBlock (Sum.inl e) (Sum.inr ⟨v, hv⟩)).mpr
+      ((layout.assembleDiagram_reachable_iff_same_block S F hconnected
+        (Sum.inr ⟨v, hv⟩) (Sum.inl e)).mpr howner)⟩
 
 /-- The legs of the *actual physical* connected component containing
 an external insertion are exactly the legs assigned to its independent
@@ -1014,55 +987,27 @@ theorem ExternalInsertionDiagram.externalBlockLayout_interactionBlock
   classical
   let equiv := vacuumFreeComponentsEquivExternalBlocks d.vertexGraph hVac
   ext v
-  constructor
-  · intro hv
-    have hfilter : v ∈ S ∧
-        (d.externalBlockLayout hVac anchor).interactionOwner v = P := by
-      simpa only [ExternalInsertionBlockLayout.interactionBlock,
-        Finset.mem_filter] using hv
-    let V : ↥S := ⟨v, hfilter.1⟩
+  rw [ExternalInsertionBlockLayout.interactionBlock, Finset.mem_filter, mem_interactionSector]
+  have howner (hv : v ∈ S) :
+      (d.externalBlockLayout hVac anchor).interactionOwner v = P ↔
+        (Sum.inr ⟨v, hv⟩ : ExternalInsertionVertex E S) ∈ (equiv.symm P).1 := by
+    let V : ↥S := ⟨v, hv⟩
     let C : d.vertexGraph.componentPartition.parts :=
       ⟨d.vertexGraph.componentBlock (Sum.inr V),
         d.vertexGraph.componentBlock_mem_componentPartition (Sum.inr V)⟩
-    have howner : equiv C = P := by
-      have heq : (d.externalBlockLayout hVac anchor).interactionOwner V.1 = P :=
-        hfilter.2
-      rw [d.externalBlockLayout_interactionOwner hVac anchor V] at heq
-      exact heq
-    have hC : C = equiv.symm P := by
-      apply equiv.injective
-      simpa only [howner, Equiv.apply_symm_apply]
-    apply (mem_interactionSector_subtype
-      ((equiv.symm P).1 : Finset (ExternalInsertionVertex E S)) V).2
-    have hmem : (Sum.inr V : ExternalInsertionVertex E S) ∈
-        (C.1 : Finset (ExternalInsertionVertex E S)) :=
-      d.vertexGraph.self_mem_componentBlock (Sum.inr V)
-    simpa only [hC] using hmem
-  · intro hv
-    have hvS : v ∈ S :=
-      interactionSector_subset
-        (((equiv.symm P).1 : Finset (ExternalInsertionVertex E S))) hv
-    let V : ↥S := ⟨v, hvS⟩
-    let C : d.vertexGraph.componentPartition.parts :=
-      ⟨d.vertexGraph.componentBlock (Sum.inr V),
-        d.vertexGraph.componentBlock_mem_componentPartition (Sum.inr V)⟩
-    have hmem : (Sum.inr V : ExternalInsertionVertex E S) ∈
-        ((equiv.symm P).1 : Finset (ExternalInsertionVertex E S)) :=
-      (mem_interactionSector_subtype
-        ((equiv.symm P).1 : Finset (ExternalInsertionVertex E S)) V).1 hv
-    have hC : C = equiv.symm P := by
-      apply Subtype.ext
-      exact (d.vertexGraph.componentBlock_eq_iff_mem
-        (equiv.symm P).2 (Sum.inr V)).2 hmem
-    have howner :
-        (d.externalBlockLayout hVac anchor).interactionOwner V.1 = P := by
-      rw [d.externalBlockLayout_interactionOwner hVac anchor V]
-      change equiv C = P
+    change (d.externalBlockLayout hVac anchor).interactionOwner V.1 = P ↔ _
+    rw [d.externalBlockLayout_interactionOwner hVac anchor V]
+    change equiv C = P ↔ Sum.inr V ∈ (equiv.symm P).1
+    constructor
+    · intro h
+      apply (d.vertexGraph.componentBlock_eq_iff_mem (equiv.symm P).2 (Sum.inr V)).mp
+      exact congrArg Subtype.val (equiv.injective (h.trans (equiv.apply_symm_apply P).symm))
+    · intro h
+      have hC : C = equiv.symm P := Subtype.ext
+        ((d.vertexGraph.componentBlock_eq_iff_mem (equiv.symm P).2 (Sum.inr V)).mpr h)
       rw [hC, Equiv.apply_symm_apply]
-    simpa only [ExternalInsertionBlockLayout.interactionBlock,
-      Finset.mem_filter] using (show v ∈ S ∧
-      (d.externalBlockLayout hVac anchor).interactionOwner v = P from
-        ⟨hvS, howner⟩)
+  exact ⟨fun ⟨hv, h⟩ => ⟨hv, (howner hv).mp h⟩,
+    fun ⟨hv, h⟩ => ⟨hv, (howner hv).mpr h⟩⟩
 
 
 /-- The external block owner of every physical vertex is precisely the
