@@ -122,7 +122,7 @@ theorem hasSum_diagonalExpectationValue_eq_spectralTrace
       |p.1.1.1| * ‖(inner ℂ (e p.1) (d p.2) : ℂ)‖ ^ 2) :=
     (summable_prod_of_nonneg (fun p => by positivity)).mpr
       ⟨fun a => (habsRow a).summable, by
-        simpa only [fun a => (habsRow a).tsum_eq] using h⟩
+        simpa only [fun a => (habsRow a).tsum_eq, HasSummableRealEigenvalues] using h⟩
   have hg : Summable (Function.uncurry f) :=
     Summable.of_abs <| habs.congr fun p => by
       symm
