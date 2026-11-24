@@ -23,8 +23,6 @@ namespace QuantumTheory.Models.MassiveDirac
 
 noncomputable section
 
-open QuantumTheory.Transport
-
 open Filter QuantumTheory.Transport
 
 namespace FiniteCutoffBornDyson.Longitudinal.ZeroBroadeningWeakDisorder
@@ -49,11 +47,8 @@ theorem tendsto_disorder_mul_momentum_integral
             (probeEnergy ^ 2 + 3 * m ^ 2) : ℝ) : ℂ))) := by
   let q : ℂ := (((-e : ℝ) : ℂ)) * (((v : ℝ) : ℂ))
   let measure : ℂ := ((momentumMeasurePrefactor hbar : ℝ) : ℂ)
-  have hmeasureReal : momentumMeasurePrefactor hbar ≠ 0 :=
-    (momentumMeasurePrefactor_pos hbar hhbar).ne'
-  have hmeasure : measure ≠ 0 := by
-    dsimp [measure]
-    exact_mod_cast hmeasureReal
+  have hmeasure : (momentumMeasurePrefactor hbar : ℂ) ≠ 0 := by
+    exact_mod_cast (momentumMeasurePrefactor_pos hbar hhbar).ne'
   have hRR := tendsto_disorderStrength_mul_zeroBroadeningSameSideRadialEndpoint_disorder_zero
     .retarded v m probeEnergy hbar pMax hmetal hcutoff
   have hAA := tendsto_disorderStrength_mul_zeroBroadeningSameSideRadialEndpoint_disorder_zero
@@ -61,10 +56,8 @@ theorem tendsto_disorder_mul_momentum_integral
   have haction :=
     tendsto_finiteCutoffContinuumBornDysonLongitudinalLadderActionZeroBroadeningBoundary_disorder_zero
       v m probeEnergy hbar pMax hvelocity hhbar hmetal hcutoff
-  have hRA := haction.const_mul (2 * q ^ 2 * measure⁻¹)
-  have hSame :=
-    (hRR.add hAA).const_mul ((((2 * Real.pi : ℝ) : ℂ)) * q ^ 2)
-  have hTotal := hRA.sub hSame
+  have hTotal := (haction.const_mul (2 * q ^ 2 * measure⁻¹)).sub
+    ((hRR.add hAA).const_mul ((((2 * Real.pi : ℝ) : ℂ)) * q ^ 2))
   simp only [add_zero, mul_zero, sub_zero] at hTotal
   apply Tendsto.congr' ?_ (by simpa [q, measure] using hTotal)
   filter_upwards [self_mem_nhdsWithin] with disorderStrength hdisorder
@@ -75,7 +68,7 @@ theorem tendsto_disorder_mul_momentum_integral
     finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary,
     continuumBornDisorderMeasurePrefactor]
   push_cast
-  dsimp [q, measure] at hmeasure ⊢
+  dsimp [q, measure]
   field_simp [hdisorderC, hmeasure]
 
 end FiniteCutoffBornDyson.Longitudinal.ZeroBroadeningWeakDisorder
