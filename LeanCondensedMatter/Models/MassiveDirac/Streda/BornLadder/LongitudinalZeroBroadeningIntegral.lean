@@ -89,8 +89,8 @@ private theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMome
     intro p
     rw [finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceRadialIntegrand_eq_radialCoefficient,
       finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_x_eq_denominatorForm]
-    simp only [inPlaneLadderAction_apply_x]
-    simp only [finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentCoefficientVector_x]
+    simp only [inPlaneLadderAction_apply_x, finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentCoefficientVector,
+      Matrix.transpose_apply, inPlaneRotationMatrix_apply_x_x, inPlaneRotationMatrix_apply_y_x]
     dsimp [q, solved, radialRung, same]
     rw [finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungRadialIntegrand,
       finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungRadialIntegrand,

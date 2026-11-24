@@ -83,7 +83,8 @@ private theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMome
       finiteCutoffContinuumBornDysonRetardedAdvancedAngularCoefficient_eq_denominatorForm]
     unfold finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceRadialNumerator
     dsimp only
-    simp only [finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentCoefficientVector_x]
+    simp only [finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentCoefficientVector,
+      Matrix.transpose_apply, inPlaneRotationMatrix_apply_x_x, inPlaneRotationMatrix_apply_y_x]
     dsimp only [pref] at hpref ⊢
     have hdenp :
         finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct
