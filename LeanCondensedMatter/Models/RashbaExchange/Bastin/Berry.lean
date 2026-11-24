@@ -33,7 +33,7 @@ theorem currentBandBlockTrace_interband_eq_chargeSq_forceMatrixTraceNumerator
     matrixOperator forceMatrixTraceNumerator
   rw [← map_mul, ← map_mul, ← map_mul, finiteDimensionalOperatorTrace_toEuclideanCLM]
   simp only [mul_smul_comm, smul_mul_assoc, smul_smul, Matrix.trace_smul, smul_eq_mul,
-    Complex.ofReal_pow, pow_two]
+    pow_two, Complex.ofReal_mul]
 
 /-- Normalizing the interband current block by the squared energy gap reproduces `q²` times the
 closed Rashba-exchange Berry curvature. -/
