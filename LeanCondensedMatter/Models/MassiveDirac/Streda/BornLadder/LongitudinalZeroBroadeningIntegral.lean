@@ -18,8 +18,6 @@ namespace QuantumTheory.Models.MassiveDirac
 
 noncomputable section
 
-open QuantumTheory.Transport
-
 open Filter MeasureTheory QuantumTheory.Transport
 open scoped Interval
 
@@ -140,14 +138,10 @@ private theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMome
     ((hrr.add haa).const_mul ((((2 * Real.pi : ℝ) : ℂ)) * q ^ 2)),
     intervalIntegral.integral_const_mul, hActionEq,
     intervalIntegral.integral_const_mul, intervalIntegral.integral_add hrr haa]
-  simpa only [inPlaneLadderAction_apply_x, q, pref, solved, radialRung, same, finiteBroadeningLongitudinalMomentumEndpointForm,
-    finiteCutoffContinuumBornDysonCurrentRungVector,
-    finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficient] using
-    congrArg (fun z : ℂ =>
-      2 * q ^ 2 * pref⁻¹ * inPlaneLadderAction
-          (fun output => ∫ p in (0 : ℝ)..pMax, radialRung p output) solved 0 -
-        (((2 * Real.pi : ℝ) : ℂ)) * q ^ 2 * z)
-      (congrArg₂ (· + ·) hrrEq haaEq)
+  rw [hrrEq, haaEq]
+  simp only [inPlaneLadderAction_apply_x, q, pref, solved, radialRung, finiteBroadeningLongitudinalMomentumEndpointForm,
+      finiteCutoffContinuumBornDysonCurrentRungVector,
+      finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficient]
 
 /-- At fixed positive disorder and finite cutoff, the canonical longitudinal Středa momentum
 integral converges directly to its zero-broadening boundary. -/
