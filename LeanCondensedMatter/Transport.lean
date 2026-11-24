@@ -4,6 +4,7 @@ import LeanCondensedMatter.Transport.FiniteConductivityTable
 import LeanCondensedMatter.Transport.FiniteConductivityTable.Eigenbasis
 import LeanCondensedMatter.Transport.Reciprocity.Data
 import LeanCondensedMatter.Transport.Reciprocity.Kubo
+import LeanCondensedMatter.Transport.KuboSymmetry.FiniteTime
 import LeanCondensedMatter.Transport.Scattering.AngularCollision
 import LeanCondensedMatter.Transport.Scattering.IsotropicAngularWeights
 import LeanCondensedMatter.Transport.Resolvent
