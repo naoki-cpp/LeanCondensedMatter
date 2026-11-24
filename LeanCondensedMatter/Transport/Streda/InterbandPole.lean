@@ -1,5 +1,4 @@
 import LeanCondensedMatter.Transport.Resolvent.Spectral
-import LeanCondensedMatter.Analysis.Algebra.ScalarResolvent
 import LeanCondensedMatter.Analysis.Lorentzian.Pole
 import Mathlib.Analysis.Normed.Group.Bounded
 import Mathlib.Tactic.FunProp
@@ -130,12 +129,6 @@ theorem interbandPoleRegularFactor_zero
   unfold interbandPoleRegularFactor targetCenteredSourceCoefficient
     scalarResolventCoefficient spectralParameter spectralParameterOfRegulator
   simp [SpectralSide.regulator, mul_sub]
-
-/-- A real inverse-gap square rescales the imaginary part of a complex current block. -/
-theorem inv_real_gap_sq_mul_im (gap : ℝ) (z : ℂ) (hgap : gap ≠ 0) :
-    (((((gap : ℝ) : ℂ)⁻¹) ^ 2) * z).im = z.im / gap ^ 2 := by
-  rw [Algebra.inv_real_gap_sq_mul_im]
-  field_simp [hgap]
 
 /-- The regular interband factor is jointly continuous wherever the shifted real source denominator
 does not vanish. -/
