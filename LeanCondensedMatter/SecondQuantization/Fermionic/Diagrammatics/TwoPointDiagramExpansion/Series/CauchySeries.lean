@@ -1,5 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.FiberCauchySum
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Series.DysonSeries
+import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalSubsetMoment
 import Mathlib.Algebra.BigOperators.Group.Finset.Powerset
 
 set_option linter.style.header false
@@ -125,6 +126,75 @@ theorem partitionFunctionNormalizedTwoPointDysonSeries_eq_connectedTwoPointDyson
     exact one_ne_zero
   · exact twoPointDysonSeries_eq_connectedTwoPointDysonSeries_mul_normalizedDysonPartitionSeries
       ε β μ hβ g i j τ τ'
+
+
+/-! ## Compatibility with arbitrary external insertions -/
+
+open Common in
+/-- The physical unnormalized two-point operator series is the two-external
+specialization of the arbitrary-external vertex series, at every real β and μ. -/
+theorem twoPointDysonSeries_eq_externalInsertionVertexDysonSeries
+    (ε : Mode → ℝ) (β μ : ℝ)
+    (g : QuarticVertexLabel Mode → ℂ) (i j : Mode) (τ τ' : ℝ) :
+    twoPointDysonSeries ε β μ g i j τ τ' =
+      externalInsertionVertexDysonSeries (E := 1) ε β μ g
+        (twoPointExternalLabels i j) (twoPointExternalTimes τ τ') := by
+  ext n
+  simp only [twoPointDysonSeries, externalInsertionVertexDysonSeries, PowerSeries.coeff_mk]
+  exact twoPointDysonCoefficient_eq_externalInsertionVertexDysonCoefficient
+    ε β μ g i j τ τ'
+
+open Common in
+/-- Both constructions cancel the same normalized grand-canonical vacuum
+series. The remaining physical external-field factor multiplies the actual
+vacuum-free diagram sum at effective dispersion. -/
+theorem partitionFunctionNormalizedTwoPointDysonSeries_eq_shiftedVacuumFree
+    (ε : Mode → ℝ) (β μ : ℝ) (hβ : 0 ≤ β)
+    (g : QuarticVertexLabel Mode → ℂ) (i j : Mode) (τ τ' : ℝ) :
+    partitionFunctionNormalizedTwoPointDysonSeries ε β μ g i j τ τ' =
+      PowerSeries.C (twoPointChemicalPotentialFactor μ τ τ') *
+        vacuumFreeExternalInsertionDysonSeries (E := 1) (fun k => ε k - μ) β g
+          (twoPointExternalLabels i j) (twoPointExternalTimes τ τ') := by
+  rw [partitionFunctionNormalizedTwoPointDysonSeries,
+    twoPointDysonSeries_eq_externalInsertionVertexDysonSeries]
+  apply PowerSeries.mul_inv_eq_of_eq_mul_of_constantCoeff_ne_zero
+  · rw [PowerSeries.constantCoeff_normalizeByConstantCoeff
+      (Common.constantCoeff_dysonTraceSeries_ne_zero
+        (fermionEnergy (fun k => ε k - μ)) β (quarticInteraction g))]
+    exact one_ne_zero
+  · rw [externalInsertionVertexDysonSeries_eq_shiftedVacuumFree_mul_normalizedDysonPartitionSeries
+      ε β μ hβ, externalFieldFamilyChemicalPotentialFactor_twoPoint]
+
+open Common in
+/-- The two independent physical connected diagram sums agree for two external
+fields. This follows by comparing their already-established vacuum
+normalizations; connectivity is not replaced by an operator definition. -/
+theorem connectedTwoPointDysonSeries_eq_shiftedConnectedExternalInsertion
+    (ε : Mode → ℝ) (β μ : ℝ) (hβ : 0 ≤ β)
+    (g : QuarticVertexLabel Mode → ℂ) (i j : Mode) (τ τ' : ℝ) :
+    connectedTwoPointDysonSeries ε β μ g i j τ τ' =
+      PowerSeries.C (twoPointChemicalPotentialFactor μ τ τ') *
+        connectedExternalInsertionDysonSeries (K := 1) (fun k => ε k - μ) β g
+          (twoPointExternalLabels i j) (twoPointExternalTimes τ τ') := by
+  rw [← partitionFunctionNormalizedTwoPointDysonSeries_eq_connectedTwoPointDysonSeries
+    ε β μ hβ,
+    partitionFunctionNormalizedTwoPointDysonSeries_eq_shiftedVacuumFree ε β μ hβ,
+    vacuumFreeExternalInsertionDysonSeries_eq_connected_two]
+
+open Common in
+/-- The resulting integrated connected coefficient identity is coefficientwise
+and retains the physical chemical-potential factor. -/
+theorem connectedTwoPointDysonCoefficient_eq_shiftedConnectedExternalInsertion
+    (ε : Mode → ℝ) (β μ : ℝ) (hβ : 0 ≤ β)
+    (g : QuarticVertexLabel Mode → ℂ) (i j : Mode) (τ τ' : ℝ) (n : ℕ) :
+    connectedTwoPointDysonCoefficient ε β μ g i j τ τ' n =
+      twoPointChemicalPotentialFactor μ τ τ' *
+        connectedExternalInsertionDysonCoefficient (K := 1) (fun k => ε k - μ) β g
+          (twoPointExternalLabels i j) (twoPointExternalTimes τ τ') n := by
+  simpa only [connectedTwoPointDysonSeries, connectedExternalInsertionDysonSeries,
+    PowerSeries.coeff_mk, PowerSeries.coeff_C_mul] using
+      congrArg (PowerSeries.coeff n)
+        (connectedTwoPointDysonSeries_eq_shiftedConnectedExternalInsertion ε β μ hβ g i j τ τ')
 
 end Fermionic
 end SecondQuantization
