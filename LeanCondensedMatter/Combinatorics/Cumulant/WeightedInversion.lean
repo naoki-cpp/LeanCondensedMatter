@@ -102,7 +102,7 @@ theorem weightedMomentFromCumulant_mul_elementWeights
   apply Finset.sum_congr rfl
   intro π _
   simp only [partitionProduct, Finset.prod_mul_distrib, prod_prod_parts]
-  ring
+  ac_rfl
 
 /-- A unit-top weighted moment transform is injective on connected
 set functions whose empty-set values agree. -/
