@@ -1,5 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.TimedField
-import Mathlib.GroupTheory.Perm.Sign
+import LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTime.MixedTimeOrdering
 
 set_option linter.style.header false
 
@@ -21,22 +21,6 @@ namespace Fermionic
 open Common
 
 variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
-
-/-- Fermionic sign of the permutation from fixed flattened atomic order to mixed-time atomic order. -/
-noncomputable def externalInsertionMixedAtomicOrderSign {E n : ℕ}
-    (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ) : ℂ :=
-  ((Equiv.Perm.sign
-    (externalInsertionStandardToMixedAtomicPositionEquiv externalTime σ) : ℤ) : ℂ)
-
-
-/-- The atomic ordering sign is independent of all interaction times, even
-when their order changes or they coincide. Only external inversions contribute. -/
-theorem externalInsertionMixedAtomicOrderSign_eq_of_externalTimes {E n m : ℕ}
-    (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ) (υ : Fin m → ℝ) :
-    externalInsertionMixedAtomicOrderSign externalTime σ =
-      externalInsertionMixedAtomicOrderSign externalTime υ := by
-  simp only [externalInsertionMixedAtomicOrderSign,
-    externalInsertionStandardToMixedAtomicPositionEquiv_sign]
 
 /-- Fixed-time amplitude of an arbitrary external-insertion Wick diagram. -/
 noncomputable def ExternalInsertionWickDiagram.fixedTimeAmplitude {E n : ℕ}
