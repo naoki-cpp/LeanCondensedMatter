@@ -169,21 +169,19 @@ theorem exists_unitary_sitePermutation
     Common.finiteHilbertFockEquiv
   let e := b.equiv b p
   let f : (Site →₀ ℂ) →ₗ[ℂ] (Site →₀ ℂ) :=
-    j.symm.toLinearMap.comp (e.toLinearEquiv.toLinearMap.comp j.toLinearMap)
+    (Finsupp.domLCongr p : (Site →₀ ℂ) ≃ₗ[ℂ] (Site →₀ ℂ)).toLinearMap
   have hj (i : Site) : j (b₀ i) = b i := by
     change Common.finiteHilbertFockEquiv (Common.basisState i) =
       Common.finiteHilbertBasisState i
     exact Common.finiteHilbertFockEquiv_basisState i
+  have hket (i : Site) : f (latticeKet i) = latticeKet (p i) :=
+    Finsupp.domLCongr_single p i (1 : ℂ)
   have hf : e.toLinearEquiv.toLinearMap.comp j.toLinearMap = j.toLinearMap.comp f := by
-    apply LinearMap.ext
-    intro v
-    change e (j v) = j (j.symm (e (j v)))
-    rw [j.apply_symm_apply]
-  have hket (i : Site) : f (latticeKet i) = latticeKet (p i) := by
-    have hk (k : Site) : j (latticeKet k) = b k := hj k
-    apply j.injective
-    change j (j.symm (e (j (latticeKet i)))) = j (latticeKet (p i))
-    rw [j.apply_symm_apply, hk i, hk (p i)]
+    apply b₀.ext
+    intro i
+    change e (j (b₀ i)) = j (f (b₀ i))
+    have hi : f (b₀ i) = b₀ (p i) := hket i
+    rw [hj i, hi, hj (p i)]
     exact b.equiv_apply_basis b p i
   have hmatrix (x y : Site) :
       f.comp (matrixUnit x y) = (matrixUnit (p x) (p y)).comp f := by
