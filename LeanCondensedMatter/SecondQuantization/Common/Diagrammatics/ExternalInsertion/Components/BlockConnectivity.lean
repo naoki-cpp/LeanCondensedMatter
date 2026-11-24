@@ -837,14 +837,9 @@ theorem ExternalInsertionBlockLayout.assembleDiagram_externalLabel_eq_iff
     exact congrFun h (layout.sourceEquiv.symm ⟨B, i⟩)
   · intro h
     funext e
-    have he := congrFun (h (layout.sourceEquiv e).1)
-      (layout.sourceEquiv e).2
-    change (F (layout.sourceEquiv e).1).externalLabel
-      (layout.sourceEquiv e).2 = labels e
-    change (F (layout.sourceEquiv e).1).externalLabel
-      (layout.sourceEquiv e).2 =
-        labels (layout.sourceEquiv.symm (layout.sourceEquiv e)) at he
-    simpa only [Equiv.symm_apply_apply] using he
+    obtain ⟨⟨B, i⟩, rfl⟩ := layout.sourceEquiv.symm.surjective e
+    rw [layout.assembleDiagram_externalLabel]
+    exact congrFun (h B) i
 
 /-- A vacuum-free *physical* external-insertion diagram canonically determines
 an independent external-block layout. For occupied interaction vertices the
@@ -882,27 +877,6 @@ theorem ExternalInsertionDiagram.externalBlockLayout_interactionOwner
         ⟨d.vertexGraph.componentBlock (Sum.inr v),
           d.vertexGraph.componentBlock_mem_componentPartition (Sum.inr v)⟩ := by
   simp [ExternalInsertionDiagram.externalBlockLayout, v.2]
-
-/-- If an external insertion reaches an interaction vertex, the latter's
-assigned block is exactly the external partition part of that insertion.
-This gives the physical ownership direction needed by fiber restriction. -/
-theorem ExternalInsertionDiagram.externalBlockLayout_owner_eq_part_of_reachable
-    {ExternalLabel InternalLabel : Type*} {S : Finset (Fin N)}
-    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
-    (hVac : HasNoVacuumComponent d.vertexGraph)
-    (anchor : Fin (2 * E)) (v : ↥S) (e : Fin (2 * E))
-    (h : d.vertexGraph.Reachable (Sum.inl e) (Sum.inr v)) :
-    ((d.externalBlockLayout hVac anchor).interactionOwner v.1).1 =
-      (externalComponentPartition d.vertexGraph).part e := by
-  rw [d.externalBlockLayout_interactionOwner hVac anchor v]
-  calc
-    _ = (d.vertexGraph.componentBlock (Sum.inr v)).toLeft :=
-      vacuumFreeComponentsEquivExternalBlocks_apply d.vertexGraph hVac _
-    _ = (d.vertexGraph.componentBlock (Sum.inl e)).toLeft :=
-      congrArg Finset.toLeft (d.vertexGraph.componentBlock_eq_of_reachable h.symm)
-    _ = _ := (externalComponentPartition_part_eq_toLeft_componentBlock d.vertexGraph e).symm
-
-
 
 /-- The interaction sector of an independently indexed physical block is
 *exactly* the interaction sector of the corresponding actual connected
@@ -1092,35 +1066,30 @@ theorem ExternalInsertionBlockLayout.externalBlockLayout_assembleDiagram_interac
         (layout.hasNoVacuumComponent_assembleDiagram S F hconnected) anchor).interactionOwner v.1 :
           Finset (Fin (2 * E))) =
       (layout.interactionOwner v.1 : Finset (Fin (2 * E))) := by
-  let B : layout.partition.parts := layout.interactionOwner v.1
-  have hnonempty : (B : Finset (Fin (2 * E))).Nonempty :=
-    Finset.nonempty_iff_ne_empty.mpr (layout.partition.ne_bot B.2)
-  obtain ⟨e, he⟩ := hnonempty
-  have hsource : (layout.sourceEquiv e).1 = B := by
-    apply Subtype.ext
-    simpa only [layout.sourceEquiv_fst] using
-      (layout.partition.part_eq_of_mem B.2 he)
-  have hinteraction : (layout.interactionEquiv S v).1 = B := by
-    rfl
-  have hReach :
-      (layout.assembleDiagram S F).vertexGraph.Reachable (Sum.inl e) (Sum.inr v) := by
-    apply (layout.assembleDiagram_reachable_iff_same_block S F hconnected
-      (Sum.inl e) (Sum.inr v)).2
-    simpa only [layout.vertexEquiv_external, layout.vertexEquiv_interaction] using
-      hsource.trans hinteraction.symm
+  let d := layout.assembleDiagram S F
+  let hVac := layout.hasNoVacuumComponent_assembleDiagram S F hconnected
+  let physical := d.externalBlockLayout hVac anchor
+  obtain ⟨e, hReach⟩ := hVac v
+  have hsource : (layout.sourceEquiv e).1 = layout.interactionOwner v.1 := by
+    have heq : (layout.sourceEquiv e).1 = (layout.interactionEquiv S v).1 := by
+      simpa only [layout.vertexEquiv_external, layout.vertexEquiv_interaction] using
+        (layout.assembleDiagram_reachable_iff_same_block S F hconnected
+          (Sum.inl e) (Sum.inr v)).mp hReach
+    exact heq.trans (by rfl)
+  have hphysical : (physical.sourceEquiv e).1 = physical.interactionOwner v.1 := by
+    have heq : (physical.vertexEquiv S (Sum.inl e)).1 =
+        (physical.vertexEquiv S (Sum.inr v)).1 :=
+      (d.reachable_iff_externalBlockLayout_same_block hVac anchor
+        (Sum.inl e) (Sum.inr v)).mp hReach
+    rw [physical.vertexEquiv_external, physical.vertexEquiv_interaction] at heq
+    exact heq.trans (by rfl)
   calc
-    (((layout.assembleDiagram S F).externalBlockLayout
-        (layout.hasNoVacuumComponent_assembleDiagram S F hconnected) anchor).interactionOwner v.1 :
-          Finset (Fin (2 * E))) =
-        (externalComponentPartition (layout.assembleDiagram S F).vertexGraph).part e :=
-      (layout.assembleDiagram S F).externalBlockLayout_owner_eq_part_of_reachable
-        (layout.hasNoVacuumComponent_assembleDiagram S F hconnected) anchor v e hReach
+    _ = physical.partition.part e :=
+      (congrArg Subtype.val hphysical).symm.trans (physical.sourceEquiv_fst e)
     _ = layout.partition.part e := by
+      change (externalComponentPartition d.vertexGraph).part e = _
       rw [layout.externalComponentPartition_assembleDiagram S F hconnected]
-    _ = (layout.interactionOwner v.1 : Finset (Fin (2 * E))) := by
-      exact layout.partition.part_eq_of_mem B.2 he
-
-
+    _ = _ := (layout.sourceEquiv_fst e).symm.trans (congrArg Subtype.val hsource)
 
 
 end Common
