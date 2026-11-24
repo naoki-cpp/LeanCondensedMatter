@@ -113,7 +113,7 @@ theorem interbandPoleRegularFactor_zero_im_eq_neg_chargeSq_berryCurvature
       (0, 0)).im =
       -(params.signedCharge ^ 2 * berryCurvature params band px py) := by
   rw [interbandPoleRegularFactor_zero]
-  rw [mul_comm, ← inv_pow, ← div_eq_mul_inv, ← Complex.ofReal_pow, Complex.div_ofReal_im]
+  rw [mul_comm, inv_pow, ← div_eq_mul_inv, ← Complex.ofReal_pow, Complex.div_ofReal_im]
   exact interbandBlockDifference_im_div_gap_sq_eq_neg_chargeSq_berryCurvature
     params band px py hE
 
