@@ -103,6 +103,22 @@ theorem ExternalInsertionDiagram.externalSector_card_even {S : Finset (Fin N)}
       (d.componentBlockLegDataEquiv B)
       (by simpa only [Fintype.card_fin] using (show Even 4 from ⟨2, rfl⟩))
 
+/-- All blocks of the induced external partition have even cardinality. -/
+theorem ExternalInsertionDiagram.externalComponentPartition_block_card_even
+    {S : Finset (Fin N)}
+    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
+    (B : Finset (Fin (2 * E)))
+    (hB : B ∈ (externalComponentPartition d.vertexGraph).parts) :
+    Even B.card := by
+  classical
+  obtain ⟨e, -, he⟩ :=
+    (externalComponentPartition d.vertexGraph).part_surjOn hB
+  rw [← he]
+  rw [externalComponentPartition_part_eq_toLeft_componentBlock d.vertexGraph e]
+  exact d.externalSector_card_even
+    ⟨d.vertexGraph.componentBlock (Sum.inl e),
+      d.vertexGraph.componentBlock_mem_componentPartition (Sum.inl e)⟩
+
 /-- The local external-sector parameter: half the number of one-legged external insertions
 carried by one connected component. -/
 noncomputable def ExternalInsertionDiagram.externalPairCount {S : Finset (Fin N)}
