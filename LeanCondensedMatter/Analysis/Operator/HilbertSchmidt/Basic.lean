@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Analysis.InfiniteSum.Fiberwise
+import Mathlib.Analysis.Normed.Ring.InfiniteSum
 import Mathlib.Analysis.InnerProductSpace.l2Space
 import Mathlib.Analysis.InnerProductSpace.Adjoint
 
@@ -51,8 +51,9 @@ theorem summable_norm_sq_adjoint_apply_and_tsum_eq {ι κ : Type*} (d : HilbertB
   have hg_summable : Summable g :=
     (summable_prod_of_nonneg hg_nonneg).mpr ⟨fun i => (hrow i).summable, by
       simpa only [fun i => (hrow i).tsum_eq] using hd⟩
-  obtain ⟨_, hcol_summable, heq⟩ := tsum_fiberwise_eq_of_summable hg_summable hrow hcol
-  exact ⟨hcol_summable, heq.symm⟩
+  have hcolSum := ((Equiv.prodComm κ ι).hasSum_iff.mpr hg_summable.hasSum).prod_fiberwise hcol
+  exact ⟨hcolSum.summable, hcolSum.tsum_eq.trans
+    (hg_summable.hasSum.prod_fiberwise hrow).tsum_eq.symm⟩
 
 /-- **The same basis-independence, phrased for `T` itself rather than its adjoint.** Applying
 `summable_norm_sq_adjoint_apply_and_tsum_eq` twice — once for `T`, once for `T†` — and using
