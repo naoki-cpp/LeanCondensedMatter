@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Analysis.Dyson.Uniqueness
+import LeanCondensedMatter.Analysis.Dyson.Volterra
 import LeanCondensedMatter.SecondQuantization.Common.Perturbation.ContinuousDyson
 import LeanCondensedMatter.Analysis.Operator.ExponentialEigenvector
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.FundThmCalculus

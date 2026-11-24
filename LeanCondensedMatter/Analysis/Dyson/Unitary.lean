@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Analysis.Dyson.Uniqueness
+import LeanCondensedMatter.Analysis.Dyson.Volterra
 import Mathlib.Analysis.CStarAlgebra.Classes
 import Mathlib.Analysis.Calculus.Deriv.Star
 

@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Analysis.Dyson.Uniqueness
+import LeanCondensedMatter.Analysis.Dyson.Volterra
 import Mathlib.Analysis.SpecialFunctions.Exponential
 
 set_option linter.style.header false

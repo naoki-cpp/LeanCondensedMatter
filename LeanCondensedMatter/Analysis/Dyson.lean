@@ -2,7 +2,6 @@ import LeanCondensedMatter.Analysis.Dyson.Basic
 import LeanCondensedMatter.Analysis.Dyson.Bounds
 import LeanCondensedMatter.Analysis.Dyson.FirstVariation
 import LeanCondensedMatter.Analysis.Dyson.Volterra
-import LeanCondensedMatter.Analysis.Dyson.Uniqueness
 import LeanCondensedMatter.Analysis.Dyson.Unitary
 import LeanCondensedMatter.Analysis.Dyson.Constant
 
