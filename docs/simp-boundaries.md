@@ -60,8 +60,6 @@ homomorphic normalization rules:
 - `diagonalDet_zero`
 - `SchwartzKinetic1D.derivative_apply`
 - `SchwartzKinetic1D.multiplicationOperator_apply`
-- `LinearMap.symmetrizedProductRightLinear_apply`
-- `LinearMap.symmetrizedProductLeftLinear_apply`
 - `ConservationLaw.localizedQuantityFunctional_apply`
 - `ConservationLaw.localizationCommutatorFunctional_apply`
 - `ConservationLaw.transportFunctional_apply`
