@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Analysis.InfiniteSum.Fiberwise
-import LeanCondensedMatter.Analysis.HilbertBasis
+import Mathlib.Analysis.InnerProductSpace.l2Space
 import Mathlib.Analysis.InnerProductSpace.Adjoint
 
 /-!
@@ -37,21 +37,16 @@ theorem summable_norm_sq_adjoint_apply_and_tsum_eq {ι κ : Type*} (d : HilbertB
   set g : ι × κ → ℝ := fun p => ‖(inner ℂ (T (d p.1)) (f p.2) : ℂ)‖ ^ 2 with hg_def
   have hg_nonneg : ∀ p, 0 ≤ g p := fun p => sq_nonneg _
   -- Row sums (over `j`, fixed `i`): Parseval for `f`, applied to `T dᵢ`.
-  have hrow : ∀ i, HasSum (fun j => g (i, j)) (‖T (d i)‖ ^ 2) := fun i =>
-    f.hasSum_norm_sq_inner (T (d i))
-  -- Column sums (over `i`, fixed `j`): Parseval for `d`, applied to `T† (f j)`, after relating
-  -- `⟪T dᵢ, f j⟫` to `⟪T† (f j), dᵢ⟫` via the defining property of the adjoint.
-  have hcol_point : ∀ i j, g (i, j) =
-      ‖(inner ℂ ((ContinuousLinearMap.adjoint T) (f j)) (d i) : ℂ)‖ ^ 2 := fun i j => by
-    have heq : (inner ℂ ((ContinuousLinearMap.adjoint T) (f j)) (d i) : ℂ) =
-        starRingEnd ℂ (inner ℂ (T (d i)) (f j)) := by
-      rw [← ContinuousLinearMap.adjoint_inner_right T (d i) (f j)]
-      exact (inner_conj_symm ((ContinuousLinearMap.adjoint T) (f j)) (d i)).symm
-    rw [hg_def, heq, RCLike.norm_conj]
+  have hrow : ∀ i, HasSum (fun j => g (i, j)) (‖T (d i)‖ ^ 2) := fun i => by
+    simpa only [show (2 : ENNReal).toReal = (2 : ℝ) by norm_num, Real.rpow_two,
+      f.repr_apply_apply, f.repr.norm_map, norm_inner_symm, hg_def] using
+      (lp.hasSum_norm (p := 2) (by norm_num) (f.repr (T (d i))))
+  -- Column sums use the adjoint identity to identify the same matrix coefficients.
   have hcol : ∀ j, HasSum (fun i => g (i, j)) (‖(ContinuousLinearMap.adjoint T) (f j)‖ ^ 2) :=
     fun j => by
-      simp_rw [hcol_point]
-      exact d.hasSum_norm_sq_inner ((ContinuousLinearMap.adjoint T) (f j))
+      simpa only [show (2 : ENNReal).toReal = (2 : ℝ) by norm_num, Real.rpow_two,
+        d.repr_apply_apply, d.repr.norm_map, hg_def, ContinuousLinearMap.adjoint_inner_right] using
+        (lp.hasSum_norm (p := 2) (by norm_num) (d.repr ((ContinuousLinearMap.adjoint T) (f j))))
   -- Assemble the uncurried summability of `g` from the (nonnegative) row data.
   have hg_summable : Summable g :=
     (summable_prod_of_nonneg hg_nonneg).mpr ⟨fun i => (hrow i).summable, by

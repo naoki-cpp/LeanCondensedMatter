@@ -67,13 +67,14 @@ private theorem summable_inner_resolution_product {ι κ : Type*} (d : HilbertBa
       ‖(inner ℂ (f p.2) (T (d p.1)) : ℂ)‖)]
   have hbd_row : ∀ i, HasSum (fun j => bd (i, j)) ((‖S (d i)‖ ^ 2 + ‖T (d i)‖ ^ 2) / 2) := by
     intro i
-    have h1 : HasSum (fun j => ‖(inner ℂ (S (d i)) (f j) : ℂ)‖ ^ 2) (‖S (d i)‖ ^ 2) :=
-      f.hasSum_norm_sq_inner (S (d i))
+    have h1 : HasSum (fun j => ‖(inner ℂ (S (d i)) (f j) : ℂ)‖ ^ 2) (‖S (d i)‖ ^ 2) := by
+      simpa only [show (2 : ENNReal).toReal = (2 : ℝ) by norm_num, Real.rpow_two,
+        f.repr_apply_apply, f.repr.norm_map, norm_inner_symm] using
+        (lp.hasSum_norm (p := 2) (by norm_num) (f.repr (S (d i))))
     have h2 : HasSum (fun j => ‖(inner ℂ (f j) (T (d i)) : ℂ)‖ ^ 2) (‖T (d i)‖ ^ 2) := by
-      have heq : ∀ j, ‖(inner ℂ (f j) (T (d i)) : ℂ)‖ = ‖(inner ℂ (T (d i)) (f j) : ℂ)‖ :=
-        fun j => by rw [← inner_conj_symm, RCLike.norm_conj]
-      simp_rw [heq]
-      exact f.hasSum_norm_sq_inner (T (d i))
+      simpa only [show (2 : ENNReal).toReal = (2 : ℝ) by norm_num, Real.rpow_two,
+        f.repr_apply_apply, f.repr.norm_map] using
+        (lp.hasSum_norm (p := 2) (by norm_num) (f.repr (T (d i))))
     simpa only [hbd_def, add_div] using h1.div_const 2 |>.add (h2.div_const 2)
   have hbd_summable : Summable bd :=
     (summable_prod_of_nonneg hbd_nonneg).mpr ⟨fun i => (hbd_row i).summable, by

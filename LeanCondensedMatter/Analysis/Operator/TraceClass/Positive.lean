@@ -2,7 +2,7 @@ import LeanCondensedMatter.Analysis.Operator.TraceClass.Norm
 import LeanCondensedMatter.Analysis.Operator.TraceClass.Trace
 import LeanCondensedMatter.Analysis.Operator.TraceClass.Factorization.Basic
 import LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Ops
-import LeanCondensedMatter.Analysis.HilbertBasis
+import Mathlib.Analysis.InnerProductSpace.l2Space
 import LeanCondensedMatter.Analysis.Operator.Diagonal
 
 set_option linter.style.header false
@@ -38,8 +38,12 @@ theorem isTraceClass_rankOne_self (x : H) :
   apply (isTraceClass_iff_isTraceClassWrt b T).mpr
   have habs : CFC.abs T = T :=
     CFC.abs_of_nonneg T (nonneg_iff_isPositive.mpr hpos)
+  have hsum : HasSum (fun i => ‖(inner ℂ x (b i) : ℂ)‖ ^ 2) (‖x‖ ^ 2) := by
+    simpa only [show (2 : ENNReal).toReal = (2 : ℝ) by norm_num, Real.rpow_two,
+      b.repr_apply_apply, b.repr.norm_map, norm_inner_symm] using
+      (lp.hasSum_norm (p := 2) (by norm_num) (b.repr x))
   simpa only [IsTraceClassWrt, habs] using
-    ((b.hasSum_norm_sq_inner x).summable.congr fun i => (hdiag i).symm)
+    (hsum.summable.congr fun i => (hdiag i).symm)
 
 namespace IsTraceClass
 

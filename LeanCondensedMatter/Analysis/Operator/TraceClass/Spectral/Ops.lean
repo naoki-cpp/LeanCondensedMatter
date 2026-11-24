@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Analysis.HilbertBasis
+import Mathlib.Analysis.InnerProductSpace.l2Space
 import LeanCondensedMatter.Analysis.InfiniteSum.Order
 import LeanCondensedMatter.Analysis.Operator.Spectral.EigenvectorFamily
 import LeanCondensedMatter.Analysis.Operator.DiagonalExpectation
@@ -135,7 +135,10 @@ theorem hasSum_diagonalExpectationValue_eq_spectralTrace
     fun a i => a.1.1 * ‖(inner ℂ (e a) (d i) : ℂ)‖ ^ 2 with hf_def
   have hparseval : ∀ a : EigenvectorIndex T,
       HasSum (fun i => ‖(inner ℂ (e a) (d i) : ℂ)‖ ^ 2) (1 : ℝ) := fun a => by
-    have hsum := d.hasSum_norm_sq_inner (e a)
+    have hsum : HasSum (fun i => ‖(inner ℂ (e a) (d i) : ℂ)‖ ^ 2) (‖e a‖ ^ 2) := by
+      simpa only [show (2 : ENNReal).toReal = (2 : ℝ) by norm_num, Real.rpow_two,
+        d.repr_apply_apply, d.repr.norm_map, norm_inner_symm] using
+        (lp.hasSum_norm (p := 2) (by norm_num) (d.repr (e a)))
     rwa [(orthonormal_eigenvectorFamily hT hTself.isSymmetric).1 a, one_pow] at hsum
   have hpoint : ∀ i, HasSum (f · i) (diagonalExpectationValue T hTself (d i)) :=
     fun i => hasSum_eigen_expansion_diagonalExpectationValue hT hTself (d i)

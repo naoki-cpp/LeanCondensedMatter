@@ -18,6 +18,7 @@ The project uses Mathlib directly for:
 - compactness under bounded composition through `IsCompactOperator.comp_clm` and `IsCompactOperator.clm_comp`;
 - positivity under adjoint conjugation through `ContinuousLinearMap.IsPositive.conj_adjoint`;
 - finite-dimensional matrix trace and orthonormal-basis formulas;
+- Hilbert-basis norm-square Parseval via `lp.hasSum_norm` and `HilbertBasis.repr_apply_apply`;
 - finite-dimensional determinants through `ContinuousLinearMap.det`;
 - infinite products through `HasProd`, `Multipliable`, and `tprod`;
 - convergence of `∏' i, (1 + coeff i)` from `Summable (fun i => ‖coeff i‖)` through
@@ -39,7 +40,6 @@ The following remain because their statements match recurring project boundaries
 | Project declaration | Mathlib basis | Purpose |
 |---|---|---|
 | `cfc_apply_eigenvector` | continuous functional calculus and spectral mapping | Evaluate a continuous scalar function on an eigenvector. |
-| `HilbertBasis.hasSum_norm_sq_inner` | Hilbert-basis Parseval identities | Provide the norm-squared form used by spectral trace proofs. |
 | `tsum_fiberwise_eq_of_summable` | product-sum rearrangement and `HasSum.prod_fiberwise` | Package an absolutely summable fiberwise exchange. |
 
 ## Project-specific infinite-sum infrastructure
@@ -178,8 +178,7 @@ Current general-purpose candidates include:
 - `Finsupp.hasSum_prod_nonneg`;
 - `Finsupp.hasSum_prod`;
 - `Finsupp.hasSum_prod_geometric`;
-- `tsum_fiberwise_eq_of_summable`;
-- `HilbertBasis.hasSum_norm_sq_inner`.
+- `tsum_fiberwise_eq_of_summable`.
 
 Each candidate must be rechecked against the then-current Mathlib API before submission.
 
@@ -193,7 +192,7 @@ canonical project API; the statements, hypotheses, and in-repository consumers m
 |---|---|---|
 | `Finset.prod_extend`, `Finset.prod_extend_one_of_injective`, `Finset.prod_eq_prod_extend` | `Combinatorics/Common/FintypeProduct` and finite-product factorization clients | **Inspect as a possible simplification**, not a direct deletion: the new results extend functions along injections with a unit default, while `Fintype.prod_equiv_sigma` reindexes an equivalence and splits a dependent sum. |
 | `List.Interleaves` and its order lemmas | `Combinatorics/Common/ListFlatMapOrder` and shuffle/order modules | **Different interface**: interleaving two lists with a relation is not automatically the ordering of arbitrary blocks of a duplicate-free `List.flatMap`. A reusable bridge would be needed before dropping the existing theorems. |
-| `HilbertBasis.hasSum_inner_mul_inner` | `Analysis/HilbertBasis` | **Retain** `hasSum_norm_sq_inner`: Mathlib provides the complex-valued inner-product identity, while consumers need a real-valued norm-square `HasSum`. No identical directly usable norm-square lemma was found in the pinned `l2Space` source. |
+| `lp.hasSum_norm`, `HilbertBasis.repr_apply_apply` | Hilbert-basis Parseval | **Use directly**: the Hilbert basis representation is a linear isometric equivalence with `ℓ²`; its norm-square sum is Mathlib's `lp.hasSum_norm` at `p = 2`. Consumers normalize inner-product orientation with `norm_inner_symm` as needed. |
 | `HasSum.prod_fiberwise`, `Summable.prod_symm` | `Analysis/InfiniteSum/Fiberwise` | **Retain provisionally**: the local theorem bundles row/column summability and equality in one API used by trace and measurement proofs. Replacing it at each consumer must reduce proof code rather than duplicate the same steps. |
 | Existing product-of-series primitives | `Analysis/InfiniteSum/FinsuppProduct` | **Retain** `Finsupp.hasSum_prod_nonneg`, `Finsupp.hasSum_prod`, and the geometric specialization: no theorem with their finite-`Finsupp` multisum statement was found in the pinned Mathlib product/sum APIs surveyed. |
 
