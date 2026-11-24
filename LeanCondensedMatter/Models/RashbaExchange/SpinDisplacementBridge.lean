@@ -274,5 +274,40 @@ theorem realSpaceRashbaSpinDisplacement_fock_decomposition
     ((spinfulGeometry geometry).directionalPosition direction)
     (spinOneBodyLinear spinScale component)
 
+/-- Free dynamics for the same finite real-space Rashba Hamiltonian used in
+the displacement and Peierls source. Hermiticity is proved by the hopping
+construction, not assumed independently. -/
+noncomputable def realSpaceRashbaFreeSystem
+    {Site : Type*} [LinearOrder Site] [Fintype Site]
+    (geometry : LatticeGeometry Site (ℝ × ℝ))
+    (bond : Site → Site → Option (ℝ × ℝ))
+    (onsite exchange : Site → ℝ)
+    (hbar : ℝ) (hhbar : 0 < hbar) :
+    QuantumTheory.LinearResponse.BoundedFreeSystem
+      (FiniteLatticeHilbertFock (SpinfulSite Site)) where
+  hamiltonian := ⟨boundedHoppingHamiltonian (realSpaceRashbaHopping geometry bond onsite exchange),
+    realSpaceRashbaHamiltonian_isSelfAdjoint geometry bond onsite exchange⟩
+  hbar := hbar
+  hbar_pos := hhbar
+
+/-- The real-space Rashba proper-current/charge channel uses the generic
+finite-lattice spin-displacement response with the actual Rashba hopping.
+Set `sourceValue = f t` for a causal response to profile `f` at time `t`,
+or `sourceValue = 1` for source-normalized frequency/Lehmann response.
+Use `realSpaceRashbaFreeSystem` with the same hopping inputs and hbar. -/
+noncomputable def realSpaceRashbaSpinDisplacementResponseChannel
+    {Site : Type*} [LinearOrder Site] [Fintype Site]
+    (geometry : LatticeGeometry Site (ℝ × ℝ))
+    (bond : Site → Site → Option (ℝ × ℝ))
+    (onsite exchange : Site → ℝ)
+    (measured source : (ℝ × ℝ) →ₗ[ℝ] ℝ)
+    (hbar q spinScale : ℝ) (component : QuantumTheory.SpinHalf.SpinSpace)
+    (sourceValue : ℝ) :
+    QuantumTheory.LinearResponse.ResponseChannel
+      (FiniteLatticeHilbertFock (SpinfulSite Site)) :=
+  SecondQuantization.Fermionic.Transport.boundedSpinDisplacementDirectionalResponseChannel
+    geometry measured source (realSpaceRashbaHopping geometry bond onsite exchange)
+    hbar q spinScale component sourceValue
+
 end
 end QuantumTheory.Models.RashbaExchange
