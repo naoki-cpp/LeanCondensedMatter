@@ -71,8 +71,7 @@ the generic ladder resummation API. -/
 noncomputable def inPlaneLadderCLM
     (rung : InPlaneCoefficientVector) :
     InPlaneCoefficientVector →L[ℂ] InPlaneCoefficientVector :=
-  ⟨Matrix.mulVecLin (inPlaneRotationMatrix rung),
-    (Matrix.mulVecLin (inPlaneRotationMatrix rung)).continuous_of_finiteDimensional⟩
+  LinearMap.toContinuousLinearMap (Matrix.mulVecLin (inPlaneRotationMatrix rung))
 
 @[simp]
 theorem inPlaneLadderCLM_apply
@@ -165,17 +164,16 @@ endomorphism to be a unit on the represented in-plane coefficient space. -/
 theorem inPlaneLadderShift_isUnit
     (rung : InPlaneCoefficientVector) (hdet : inPlaneLadderDeterminant rung ≠ 0) :
     IsUnit (1 - inPlaneLadderCLM rung) := by
-  let shift : InPlaneCoefficientVector →L[ℂ] InPlaneCoefficientVector :=
-    1 - inPlaneLadderCLM rung
-  have hinjective : Function.Injective shift := by
-    have hmatrix : Function.Injective (inPlaneShiftMatrix rung).mulVec :=
-      Matrix.mulVec_injective_of_det_ne_zero (by simpa using hdet)
-    simpa only [Function.Injective, shift, inPlaneShiftMatrix, Matrix.sub_mulVec,
-      Matrix.one_mulVec, sub_apply, one_apply_eq_self, inPlaneLadderCLM_apply,
-      inPlaneLadderAction] using hmatrix
-  exact ContinuousLinearMap.isUnit_iff_bijective.mpr
-    ⟨hinjective, LinearMap.surjective_of_injective
-      (f := shift.toLinearMap) hinjective⟩
+  let E : Matrix (Fin 2) (Fin 2) ℂ ≃ₐ[ℂ]
+      (InPlaneCoefficientVector →L[ℂ] InPlaneCoefficientVector) :=
+    Matrix.toLinAlgEquiv'.trans (Module.End.toContinuousLinearMap InPlaneCoefficientVector)
+  have hmatrix : IsUnit (inPlaneShiftMatrix rung) :=
+    (Matrix.isUnit_iff_isUnit_det _).2 (by
+      rw [inPlaneShiftMatrix_det]
+      exact isUnit_iff_ne_zero.mpr hdet)
+  change IsUnit (1 - E (inPlaneRotationMatrix rung))
+  rw [← map_one E, ← map_sub E]
+  exact (isUnit_map_iff E _).2 hmatrix
 
 /-- Convergence of rung vectors propagates to the shifted-ladder determinant. -/
 theorem tendsto_inPlaneLadderDeterminant
