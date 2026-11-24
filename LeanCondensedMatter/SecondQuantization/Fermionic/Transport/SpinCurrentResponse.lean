@@ -140,14 +140,14 @@ theorem boundedSpinDisplacementDirectionalResponseChannel_peierls
     HasAlgebraicDerivAt
       (fun A => c • ⁅boundedDirectionalPeierlsHamiltonian G source
         (hbar : ℂ) (q : ℂ) K A, boundedOneBodyOperator D⁆)
-      ((1 : ℂ) • (c • ⁅-B, boundedOneBodyOperator D⁆)) 0
+      (((1 : ℝ) : ℂ) • (c • ⁅-B, boundedOneBodyOperator D⁆)) 0
   constructor
   · rw [boundedDirectionalPeierlsHamiltonian_zero,
       QuantumTheory.ConservationLaw.heisenbergEvolution_apply]
     change c • ⁅boundedOneBodyOperator K.operator, boundedOneBodyOperator D⁆ =
       boundedOneBodyOperator (c • ⁅K.operator, D⁆)
     rw [map_smul, LieHom.map_lie]
-  · rw [one_smul]
+  · rw [Complex.ofReal_one, one_smul]
     exact hasAlgebraicDerivAt_boundedDirectionalPeierlsHamiltonian_commutator_zero
       G source (hbar : ℂ) (q : ℂ) K c (boundedOneBodyOperator D)
 
