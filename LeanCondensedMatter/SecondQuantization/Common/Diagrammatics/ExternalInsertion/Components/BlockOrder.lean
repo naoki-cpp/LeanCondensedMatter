@@ -33,7 +33,7 @@ noncomputable def ExternalInsertionDiagram.physicalBlockInteractionShuffleEquiv
           ((d.externalBlockLayout hVac anchor).interactionBlock S P).card)
         S.card := by
   classical
-  let e := d.vacuumFreeComponentsEquivExternalBlocks hVac
+  let e := vacuumFreeComponentsEquivExternalBlocks d.vertexGraph hVac
   let f : d.vertexGraph.componentPartition.parts → ℕ :=
     fun C => (interactionSector
       (C : Finset (ExternalInsertionVertex E S))).card
@@ -59,7 +59,7 @@ theorem ExternalInsertionDiagram.physicalBlockInteractionShuffleEquiv_ambientRel
         ((d.physicalBlockInteractionShuffleEquiv hVac anchor) τ) =
       ρ.ambientRelabel τ := by
   classical
-  let e := d.vacuumFreeComponentsEquivExternalBlocks hVac
+  let e := vacuumFreeComponentsEquivExternalBlocks d.vertexGraph hVac
   let f : d.vertexGraph.componentPartition.parts → ℕ :=
     fun C => (interactionSector
       (C : Finset (ExternalInsertionVertex E S))).card
@@ -92,10 +92,10 @@ theorem ExternalInsertionDiagram.physicalBlockInteractionShuffleEquiv_owner
     (anchor : Fin (2 * E))
     (ρ : d.ComponentInteractionOrderShuffle) (v : Fin S.card) :
     (((d.physicalBlockInteractionShuffleEquiv hVac anchor) ρ).slotEquiv.symm v).1 =
-      d.vacuumFreeComponentsEquivExternalBlocks hVac
+      vacuumFreeComponentsEquivExternalBlocks d.vertexGraph hVac
         (ρ.slotEquiv.symm v).1 := by
   classical
-  let e := d.vacuumFreeComponentsEquivExternalBlocks hVac
+  let e := vacuumFreeComponentsEquivExternalBlocks d.vertexGraph hVac
   let f : d.vertexGraph.componentPartition.parts → ℕ :=
     fun C => (interactionSector
       (C : Finset (ExternalInsertionVertex E S))).card
@@ -125,7 +125,7 @@ theorem ExternalInsertionDiagram.canonicalComponentInteractionShuffle_physicalOw
     (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
     (hVac : HasNoVacuumComponent d.vertexGraph)
     (anchor : Fin (2 * E)) (v : Fin S.card) :
-    d.vacuumFreeComponentsEquivExternalBlocks hVac
+    vacuumFreeComponentsEquivExternalBlocks d.vertexGraph hVac
         (d.canonicalComponentInteractionShuffle.slotEquiv.symm v).1 =
       (d.externalBlockLayout hVac anchor).interactionOwner
         (((S.orderIsoOfFin rfl).toEquiv v).1) := by
