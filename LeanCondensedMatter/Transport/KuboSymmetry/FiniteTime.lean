@@ -79,9 +79,15 @@ theorem finiteTimeAdiabaticResponse_linearMixing
   have hInner (k : I) :
       IntervalIntegrable (fun s : ℝ =>
         ∑ l : J, (R i k * S j l) * K k l s) MeasureTheory.volume 0 T := by
-    simpa only [Finset.sum_apply] using
-      (IntervalIntegrable.sum (Finset.univ : Finset J)
-        (by intro l hl; exact hWeighted k l))
+    have hsum := IntervalIntegrable.sum (Finset.univ : Finset J)
+      (by intro l hl; exact hWeighted k l)
+    have hfun :
+        (∑ l : J, fun s : ℝ => (R i k * S j l) * K k l s) =
+          (fun s : ℝ => ∑ l : J, (R i k * S j l) * K k l s) := by
+      funext s
+      simp only [Finset.sum_apply]
+    rw [hfun] at hsum
+    exact hsum
   have hIntegral :
       (∫ s in (0 : ℝ)..T, ∑ k : I, ∑ l : J,
         (R i k * S j l) * K k l s) =
