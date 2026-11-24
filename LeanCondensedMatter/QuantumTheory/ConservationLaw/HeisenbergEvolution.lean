@@ -1,4 +1,4 @@
-import Mathlib.Algebra.Lie.OfAssociative
+import LeanCondensedMatter.Analysis.Operator.SymmetrizedProduct
 import Mathlib.Basic.Complex.Basic
 
 set_option linter.style.header false
@@ -39,6 +39,22 @@ theorem heisenbergEvolution_apply
     heisenbergEvolution V ℏ h A =
       heisenbergScale ℏ • ⁅h, A⁆ :=
   rfl
+
+/-- Heisenberg evolution satisfies the symmetric-product Leibniz rule.
+This is the scaled form of the existing associative-algebra commutator identity. -/
+theorem heisenbergEvolution_symmetrizedProduct
+    (ℏ : ℝ) (h A B : V →ₗ[ℂ] V) :
+    heisenbergEvolution V ℏ h (LinearMap.symmetrizedProduct (K := ℂ) A B) =
+      LinearMap.symmetrizedProduct (K := ℂ) (heisenbergEvolution V ℏ h A) B +
+        LinearMap.symmetrizedProduct (K := ℂ) A (heisenbergEvolution V ℏ h B) := by
+  simp only [heisenbergEvolution_apply, LinearMap.lie_symmetrizedProduct, smul_add]
+  have hleft :=
+    (((LinearMap.symmetrizedProductBilinear (K := ℂ) (V →ₗ[ℂ] V)).flip B).map_smul
+      (heisenbergScale ℏ) ⁅h, A⁆).symm
+  have hright :=
+    ((LinearMap.symmetrizedProductBilinear (K := ℂ) (V →ₗ[ℂ] V) A).map_smul
+      (heisenbergScale ℏ) ⁅h, B⁆).symm
+  exact congrArg₂ (· + ·) hleft hright
 
 end ConservationLaw
 end QuantumTheory
