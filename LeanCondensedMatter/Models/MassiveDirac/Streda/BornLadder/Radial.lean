@@ -50,8 +50,7 @@ private theorem intervalIntegrable_polarPauli_directionTrace
         finiteDimensionalOperatorTrace
           ((q • matrixOperator (directionPauli measured)) *
             polarPauliOperator aL bL dL θ *
-            (coefficients 0 • matrixOperator sigmaX +
-              coefficients 1 • matrixOperator sigmaY) *
+            inPlanePauliVertexOperator coefficients *
             polarPauliOperator aR bR dR θ))
       volume 0 (2 * Real.pi) := by
   apply Continuous.intervalIntegrable
@@ -99,8 +98,7 @@ private theorem integral_polarPauli_directionTrace_eq
       finiteDimensionalOperatorTrace
         ((q • matrixOperator (directionPauli measured)) *
           polarPauliOperator aL bL dL θ *
-          (coefficients 0 • matrixOperator sigmaX +
-            coefficients 1 • matrixOperator sigmaY) *
+          inPlanePauliVertexOperator coefficients *
           polarPauliOperator aR bR dR θ)) =
       2 * q *
         inPlaneLadderAction
@@ -120,7 +118,7 @@ private theorem integral_polarPauli_directionTrace_eq
   trans (∫ θ in (0 : ℝ)..(2 * Real.pi), L (rung θ))
   · apply intervalIntegral.integral_congr
     intro θ _
-    simp [L, rung, inPlanePauliVertexOperator, mul_assoc]
+    simp [L, rung, mul_assoc]
   rw [L.intervalIntegral_comp_comm hrungIntegrable]
   dsimp only [rung]
   rw [integral_polarPauliOperator_inPlane_eq]
@@ -183,39 +181,26 @@ theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTrace
     .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax
   have hmeasured : currentOperator measured e v =
       q • matrixOperator (directionPauli measured) := by
-    rw [currentOperator_eq_charge_smul_velocityOperator]
-    unfold velocityOperator velocity matrixOperator
-    rw [map_smul]
-    dsimp [q]
-    module
-  have hsource :
-      finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperator
-          source e v m probeEnergy broadening disorderStrength hbar pMax =
-        (q • dressed) 0 • matrixOperator sigmaX +
-          (q • dressed) 1 • matrixOperator sigmaY := by
-    unfold finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperator
+    simp only [currentOperator_eq_charge_smul_velocityOperator, velocityOperator,
+      velocity, matrixOperator, map_smul, smul_smul, q]
+  have hcurrent (coefficients : InPlaneCoefficientVector) :
+      inPlaneCurrentOperator e v coefficients =
+        inPlanePauliVertexOperator (q • coefficients) := by
     rw [inPlaneCurrentOperator_eq_chargeVelocity_smul_inPlanePauliVertexOperator]
-    simp [q, dressed, inPlanePauliVertexOperator, smul_add, smul_smul]
+    change q • inPlanePauliVertexCLM coefficients = inPlanePauliVertexCLM (q • coefficients)
+    rw [map_smul]
   have hbareInPlane :
       currentOperator source e v = inPlaneCurrentOperator e v bare := by
     fin_cases source <;>
       simp [bare, inPlaneLadderBareXSource, Matrix.transpose, inPlaneRotationMatrix,
         inPlaneCoefficientVector, inPlaneCurrentOperator]
-  have hbare :
-      currentOperator source e v =
-        (q • bare) 0 • matrixOperator sigmaX +
-          (q • bare) 1 • matrixOperator sigmaY := by
-    rw [hbareInPlane,
-      inPlaneCurrentOperator_eq_chargeVelocity_smul_inPlanePauliVertexOperator]
-    simp [q, inPlanePauliVertexOperator, smul_add, smul_smul]
   let angularTrace (aL aR bL bR dL dR : ℂ)
       (coefficients : InPlaneCoefficientVector) : ℝ → ℂ :=
     fun θ =>
       finiteDimensionalOperatorTrace
         ((q • matrixOperator (directionPauli measured)) *
           polarPauliOperator aL bL dL θ *
-          (coefficients 0 • matrixOperator sigmaX +
-            coefficients 1 • matrixOperator sigmaY) *
+          inPlanePauliVertexOperator coefficients *
           polarPauliOperator aR bR dR θ)
   let ra := angularTrace aR aA bR bA dR dA (q • dressed)
   let rr := angularTrace aR aR bR bR dR dR (q • bare)
@@ -229,7 +214,9 @@ theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTrace
     funext θ
     unfold finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceTraceBridge
       retardedAdvancedVertexTraceKernel sameSideVertexTraceRemainder twoGreenVertexTraceKernel
-    rw [hmeasured, hsource, hbare]
+    rw [hmeasured, hbareInPlane]
+    unfold finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperator
+    simp only [hcurrent]
     rw [finiteCutoffContinuumBornDysonGreenOperator_polar_eq,
       finiteCutoffContinuumBornDysonGreenOperator_polar_eq]
     have hcyclic (J B A : DiracOperator) :
@@ -239,8 +226,7 @@ theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTrace
         (finiteDimensionalOperatorTrace_mul_comm (B * A) (J * A))
     rw [hcyclic
       (q • matrixOperator (directionPauli measured))
-      ((q • bare) 0 • matrixOperator sigmaX +
-        (q • bare) 1 • matrixOperator sigmaY)
+      (inPlanePauliVertexOperator (q • bare))
       (polarPauliOperator aA bA dA θ)]
   have hraIntegrable : IntervalIntegrable ra volume 0 (2 * Real.pi) := by
     simpa [ra, angularTrace] using intervalIntegrable_polarPauli_directionTrace
