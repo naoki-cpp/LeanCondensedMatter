@@ -116,7 +116,10 @@ theorem tendsto_inPlaneLadderAction
   have h : Continuous (fun x : InPlaneCoefficientVector × InPlaneCoefficientVector =>
       inPlaneLadderAction x.1 x.2) :=
     (continuous_inPlaneRotationMatrix.comp continuous_fst).matrix_mulVec continuous_snd
-  exact (h.tendsto (rung₀, coefficients₀)).comp (hrung.prodMk_nhds hcoefficients)
+  have hpair : Tendsto (fun a => (rung a, coefficients a)) l
+      (nhds (rung₀, coefficients₀)) := hrung.prodMk_nhds hcoefficients
+  have hcomp := (h.tendsto (rung₀, coefficients₀)).comp hpair
+  simpa only [Function.comp_def] using hcomp
 
 /-- Integrating the in-plane ladder action against a fixed coefficient vector amounts to
 integrating its rung vector. Integrability and the integral identity share the same hypotheses. -/
@@ -229,10 +232,10 @@ theorem tendsto_inPlaneLadderSolvedVector
   rw [tendsto_pi_nhds]
   intro output
   fin_cases output
-  · simpa [inPlaneLadderSolvedVector, inPlaneCoefficientVector] using
-      (hOne.sub (hcoord 0)).div hdetLimit hdet
-  · simpa [inPlaneLadderSolvedVector, inPlaneCoefficientVector] using
-      (hcoord 1).div hdetLimit hdet
+  · simpa [inPlaneLadderSolvedVector, inPlaneCoefficientVector, div_eq_mul_inv] using
+      (hOne.sub (hcoord 0)).mul (hdetLimit.inv₀ hdet)
+  · simpa [inPlaneLadderSolvedVector, inPlaneCoefficientVector, div_eq_mul_inv] using
+      (hcoord 1).mul (hdetLimit.inv₀ hdet)
 
 /-- The explicit two-component solution is the generic algebraically resummed ladder vertex. -/
 theorem inPlaneLadderSolvedVector_eq_resummedLadderVertex
