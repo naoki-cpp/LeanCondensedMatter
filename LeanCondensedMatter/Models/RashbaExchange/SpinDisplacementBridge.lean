@@ -302,7 +302,9 @@ noncomputable def realSpaceRashbaFreeSystem
 
 /-- The real-space Rashba proper-current/charge channel uses the generic
 finite-lattice spin-displacement response with the actual Rashba hopping.
-The profile factor at the observation time is explicit. -/
+Set `sourceValue = f t` for a causal response to profile `f` at time `t`,
+or `sourceValue = 1` for source-normalized frequency/Lehmann response.
+Use `realSpaceRashbaFreeSystem` with the same hopping inputs and hbar. -/
 noncomputable def realSpaceRashbaSpinDisplacementResponseChannel
     {Site : Type*} [LinearOrder Site] [Fintype Site]
     (geometry : LatticeGeometry Site (ℝ × ℝ))
