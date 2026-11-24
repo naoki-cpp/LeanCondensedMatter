@@ -182,7 +182,12 @@ independently proved for arbitrary real `μ`, `0 ≤ β`. The diagrammatic core 
 `ξ = ε - μ`; the physical-H two-point amplitudes have the external factor
 `exp (μ (τ' - τ))`, while the number-conserving quartic interaction-picture
 vertices are invariant under the uniform shift. The vacuum series uses `ξ`.
-The arbitrary-external source-cumulant endpoint currently remains at `μ = 0`. Its `TwoPointDiagram` uses a distinct flattened-leg
+The arbitrary-external physical-H source-cumulant endpoint also accepts arbitrary real `μ`:
+`grandCanonicalExternalSubsetSourceCumulantSeries_eq_connectedDiagramSeries` reuses the
+effective-dispersion theorem by multiplying each block by the product of its external-field
+factors. The independent operator normalization bridge identifies the physical subset moments.
+The direct two-external source-cumulant endpoint preserves its stronger absence of a sign
+restriction on `β`. The legacy `TwoPointDiagram` uses a distinct flattened-leg
 enumeration; identifying the two physical power series still requires transporting Wick
 pairings, mixed-time signs and oriented Gibbs contractions, and Dyson amplitudes. The
 statistics-independent `twoPointDiagramExternalInsertionEquiv` supplies the diagram-data

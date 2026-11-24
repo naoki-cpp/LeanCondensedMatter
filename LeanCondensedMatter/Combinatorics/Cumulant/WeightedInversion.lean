@@ -86,6 +86,24 @@ theorem weightedMomentFromCumulant_eq_of_proper_zero
     rw [hprod, mul_zero]
   rw [hrest, zero_add]
 
+/-- Multiplying each connected block by the product of its element weights
+multiplies the entire weighted moment by the product over its support.
+The partition weight is arbitrary; no restriction on the element weights
+(such as nonvanishing) is needed. -/
+theorem weightedMomentFromCumulant_mul_elementWeights
+    (w : ∀ S : Finset α, Finpartition S → R)
+    (a : α → R) (κ : Finset α → R) (S : Finset α) :
+    weightedMomentFromCumulant w
+        (fun B => (∏ x ∈ B, a x) * κ B) S =
+      (∏ x ∈ S, a x) * weightedMomentFromCumulant w κ S := by
+  classical
+  unfold weightedMomentFromCumulant
+  rw [Finset.mul_sum]
+  apply Finset.sum_congr rfl
+  intro π _
+  simp only [partitionProduct, Finset.prod_mul_distrib, prod_prod_parts]
+  ac_rfl
+
 /-- A unit-top weighted moment transform is injective on connected
 set functions whose empty-set values agree. -/
 theorem weightedMomentFromCumulant_injective
