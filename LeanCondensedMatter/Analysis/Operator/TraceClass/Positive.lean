@@ -1,7 +1,5 @@
 import LeanCondensedMatter.Analysis.Operator.TraceClass.General
 import LeanCondensedMatter.Analysis.Operator.TraceClass.Trace
-import LeanCondensedMatter.Analysis.Operator.TraceClass.Factorization.Basic
-import LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Ops
 import Mathlib.Analysis.InnerProductSpace.l2Space
 import LeanCondensedMatter.Analysis.Operator.Diagonal
 
@@ -60,33 +58,15 @@ theorem traceNorm_eq_realTrace {T : H →L[ℂ] H}
 theorem realTrace_pos {T : H →L[ℂ] H}
     (hT : IsTraceClass T) (hpos : T.IsPositive) (hne : T ≠ 0) :
     0 < hT.realTrace hpos.isSelfAdjoint := by
-  classical
-  let hc := hT.isCompact
-  have he := orthonormal_eigenvectorFamily hc hpos.isSelfAdjoint.isSymmetric
-  have hnonempty : Nonempty (EigenvectorIndex T) := by
-    by_contra hidx
-    haveI : IsEmpty (EigenvectorIndex T) := ⟨fun a => hidx ⟨a⟩⟩
-    apply hne
-    ext x
-    have hsum := hasSum_eigenvectorFamily hc hpos.isSelfAdjoint.isSymmetric x
-    simpa using hsum.tsum_eq.symm
-  let a : EigenvectorIndex T := Classical.choice hnonempty
-  have hapos : 0 < a.1.1 :=
-    lt_of_le_of_ne (eigenvalue_nonneg_of_isPositive hpos.toLinearMap a) (Ne.symm a.1.2)
-  have hdiag : diagonalExpectationValue T hpos.isSelfAdjoint
-      (eigenvectorFamily hc a) = a.1.1 := by
-    apply Complex.ofReal_injective
-    rw [coe_diagonalExpectationValue_right]
-    change inner ℂ (eigenvectorFamily hc a)
-      ((T : H →ₗ[ℂ] H) (eigenvectorFamily hc a)) = _
-    rw [apply_eigenvectorFamily, inner_smul_right, inner_self_eq_norm_sq_to_K, he.1 a]
-    simp
-  have hbound := hT.sum_diagonalExpectationValue_le_traceNorm hpos he
-  have hle := hbound.1.le_tsum a
-    (fun b _ => diagonalExpectationValue_nonneg T hpos (eigenvectorFamily hc b))
-  rw [hdiag] at hle
   rw [← hT.traceNorm_eq_realTrace hpos]
-  exact hapos.trans_le (hle.trans hbound.2)
+  have habs : CFC.abs T = T :=
+    CFC.abs_of_nonneg T (nonneg_iff_isPositive.mpr hpos)
+  have hsne : CFC.sqrt (CFC.abs T) ≠ 0 := by
+    intro hz
+    have hsq := CFC.sqrt_mul_sqrt_self (CFC.abs T) (CFC.abs_nonneg T)
+    rw [hz, zero_mul, habs] at hsq
+    exact hne hsq.symm
+  exact IsHilbertSchmidt.normSq_pos hT hsne
 
 end IsTraceClass
 

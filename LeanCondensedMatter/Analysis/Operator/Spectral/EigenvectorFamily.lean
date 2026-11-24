@@ -101,6 +101,19 @@ nonzero real eigenvalue `μ`, together with an index into a chosen orthonormal b
 @[expose] def EigenvectorIndex (T : H →L[ℂ] H) : Type :=
   Σ μ : { μ : ℝ // μ ≠ 0 }, Fin (Module.finrank ℂ (Module.End.eigenspace (T : H →ₗ[ℂ] H) (μ.1 : ℂ)))
 
+omit [CompleteSpace H] in
+/-- Every eigenvalue of a positive operator is nonnegative. -/
+theorem eigenvalue_nonneg_of_isPositive {T : H →L[ℂ] H} (hpos : (T : H →ₗ[ℂ] H).IsPositive)
+    (a : EigenvectorIndex T) : 0 ≤ a.1.1 := by
+  have hpos_finrank : 0 < Module.finrank ℂ (Module.End.eigenspace (T : H →ₗ[ℂ] H) (a.1.1 : ℂ)) :=
+    Nat.lt_of_le_of_lt (Nat.zero_le _) a.2.isLt
+  have hne : Module.End.eigenspace (T : H →ₗ[ℂ] H) (a.1.1 : ℂ) ≠ ⊥ := by
+    intro hbot
+    rw [hbot, finrank_bot ℂ H] at hpos_finrank
+    exact absurd hpos_finrank (lt_irrefl 0)
+  exact eigenvalue_nonneg_of_nonneg hne hpos.re_inner_nonneg_right
+
+
 /-- A nonzero real eigenspace of a compact operator is finite-dimensional. -/
 theorem finiteDimensional_eigenspace_ne_zero (hT : IsCompactOperator T)
     (μ : { μ : ℝ // μ ≠ 0 }) :
