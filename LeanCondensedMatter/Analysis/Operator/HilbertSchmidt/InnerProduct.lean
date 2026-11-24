@@ -47,7 +47,7 @@ omit [CompleteSpace H] in
 `f`. Established via the AM–GM bound `|ab| ≤ (|a|² + |b|²) / 2` (rather than
 `summable_prod_of_nonneg` applied to the family itself, since the summands here are complex, not
 nonnegative). The absolute-summability half of
-`summable_inner_adjoint_apply_and_tsum_eq`'s argument, isolated since it doesn't need the
+`hasSum_inner_adjoint_apply`'s argument, isolated since it doesn't need the
 row/column identification that follows it. -/
 private theorem summable_inner_resolution_product {ι κ : Type*} (d : HilbertBasis ι ℂ H)
     (f : HilbertBasis κ ℂ H) {S T : H →L[ℂ] H} (hSd : IsHilbertSchmidtWrt d S)
@@ -87,14 +87,12 @@ Hilbert–Schmidt with respect to a basis `d`, and *any* other basis `f`, the do
 (giving `Σᵢ ⟪S dᵢ, T dᵢ⟫`, via the resolution of the identity along `f`) or column-first (giving
 `Σⱼ ⟪T† fⱼ, S† fⱼ⟫`, via the resolution of the identity along `d`, after rewriting each factor
 with the adjoint). -/
-private theorem summable_inner_adjoint_apply_and_tsum_eq {ι κ : Type*} (d : HilbertBasis ι ℂ H)
+private theorem hasSum_inner_adjoint_apply {ι κ : Type*} (d : HilbertBasis ι ℂ H)
     (f : HilbertBasis κ ℂ H) {S T : H →L[ℂ] H} (hSd : IsHilbertSchmidtWrt d S)
     (hTd : IsHilbertSchmidtWrt d T) :
-    Summable (fun j => (inner ℂ (ContinuousLinearMap.adjoint T (f j))
-        (ContinuousLinearMap.adjoint S (f j)) : ℂ)) ∧
-      ∑' j, (inner ℂ (ContinuousLinearMap.adjoint T (f j))
-          (ContinuousLinearMap.adjoint S (f j)) : ℂ) =
-        ∑' i, (inner ℂ (S (d i)) (T (d i)) : ℂ) := by
+    HasSum (fun j => (inner ℂ (ContinuousLinearMap.adjoint T (f j))
+        (ContinuousLinearMap.adjoint S (f j)) : ℂ))
+      (∑' i, (inner ℂ (S (d i)) (T (d i)) : ℂ)) := by
   classical
   set g : ι × κ → ℂ :=
     fun p => (inner ℂ (S (d p.1)) (f p.2) : ℂ) * (inner ℂ (f p.2) (T (d p.1)) : ℂ) with hg_def
@@ -117,11 +115,10 @@ private theorem summable_inner_adjoint_apply_and_tsum_eq {ι κ : Type*} (d : Hi
     exact d.hasSum_inner_mul_inner (ContinuousLinearMap.adjoint T (f j))
       (ContinuousLinearMap.adjoint S (f j))
   have hcolSum := ((Equiv.prodComm κ ι).hasSum_iff.mpr hg_summable.hasSum).prod_fiberwise hcol
-  exact ⟨hcolSum.summable, hcolSum.tsum_eq.trans
-    (hg_summable.hasSum.prod_fiberwise hrow).tsum_eq.symm⟩
+  rwa [← (hg_summable.hasSum.prod_fiberwise hrow).tsum_eq] at hcolSum
 
 /-- **`innerHS` is independent of the choice of Hilbert basis.** Applying
-`summable_inner_adjoint_apply_and_tsum_eq` with the same basis for both arguments identifies
+`hasSum_inner_adjoint_apply` with the same basis for both arguments identifies
 `innerHS d S T` with `Σᵢ ⟪T† dᵢ, S† dᵢ⟫`; applying it again with `d` and `f` swapped identifies
 the latter with `innerHS f S T`. -/
 theorem innerHS_eq_of_isHilbertSchmidt {ι κ : Type*} (d : HilbertBasis ι ℂ H)
@@ -131,9 +128,9 @@ theorem innerHS_eq_of_isHilbertSchmidt {ι κ : Type*} (d : HilbertBasis ι ℂ 
   have hTd := hT.summable_norm_sq_apply d
   have hSf := hS.summable_norm_sq_apply f
   have hTf := hT.summable_norm_sq_apply f
-  have h2 := summable_inner_adjoint_apply_and_tsum_eq d d hSd hTd
-  have h3 := summable_inner_adjoint_apply_and_tsum_eq f d hSf hTf
-  exact h2.2.symm.trans h3.2
+  have h2 := hasSum_inner_adjoint_apply d d hSd hTd
+  have h3 := hasSum_inner_adjoint_apply f d hSf hTf
+  exact h2.tsum_eq.symm.trans h3.tsum_eq
 
 /-- Right composition can be transferred between the two Hilbert--Schmidt factors by taking the
 adjoint:
@@ -146,10 +143,10 @@ theorem innerHS_comp_right {ι : Type*} (d : HilbertBasis ι ℂ H)
   have hTW : IsHilbertSchmidt (T * W) := isHilbertSchmidt_comp_right hT W
   have hSW : IsHilbertSchmidt (S * ContinuousLinearMap.adjoint W) :=
     isHilbertSchmidt_comp_right hS (ContinuousLinearMap.adjoint W)
-  have hleft := summable_inner_adjoint_apply_and_tsum_eq d d
+  have hleft := hasSum_inner_adjoint_apply d d
     (hS.summable_norm_sq_apply d)
     (hTW.summable_norm_sq_apply d)
-  have hright := summable_inner_adjoint_apply_and_tsum_eq d d
+  have hright := hasSum_inner_adjoint_apply d d
     (hSW.summable_norm_sq_apply d)
     (hT.summable_norm_sq_apply d)
   have hAdjTW :
@@ -164,7 +161,7 @@ theorem innerHS_comp_right {ι : Type*} (d : HilbertBasis ι ℂ H)
   calc
     (∑' i, (inner ℂ (S (d i)) ((T * W) (d i)) : ℂ)) =
         ∑' i, (inner ℂ (ContinuousLinearMap.adjoint (T * W) (d i))
-          (ContinuousLinearMap.adjoint S (d i)) : ℂ) := hleft.2.symm
+          (ContinuousLinearMap.adjoint S (d i)) : ℂ) := hleft.tsum_eq.symm
     _ = ∑' i, (inner ℂ (ContinuousLinearMap.adjoint T (d i))
           (ContinuousLinearMap.adjoint (S * ContinuousLinearMap.adjoint W) (d i)) : ℂ) := by
       apply tsum_congr
@@ -174,6 +171,6 @@ theorem innerHS_comp_right {ι : Type*} (d : HilbertBasis ι ℂ H)
         (ContinuousLinearMap.adjoint S (d i))
         (ContinuousLinearMap.adjoint T (d i))
     _ = ∑' i, (inner ℂ ((S * ContinuousLinearMap.adjoint W) (d i)) (T (d i)) : ℂ) :=
-      hright.2
+      hright.tsum_eq
 
 end ContinuousLinearMap

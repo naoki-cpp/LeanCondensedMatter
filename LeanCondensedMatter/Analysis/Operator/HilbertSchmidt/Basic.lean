@@ -6,7 +6,7 @@ import Mathlib.Analysis.InnerProductSpace.Adjoint
 # Hilbert–Schmidt operators: predicate and basis independence
 
 This module defines Hilbert–Schmidt bounded operators on a Hilbert space and proves that
-`Σᵢ ‖T dᵢ‖²` has the same value, finite or infinite, for every Hilbert basis `d`. It also proves
+`Σᵢ ‖T dᵢ‖²`, when summable, has the same value for every Hilbert basis `d`. It also proves
 closure of the Hilbert–Schmidt property under adjoints and composition with bounded operators.
 
 The basis-independent square-summability condition supports the Hilbert–Schmidt inner product and
@@ -28,10 +28,10 @@ def IsHilbertSchmidtWrt {ι : Type*} (d : HilbertBasis ι ℂ H) (T : H →L[ℂ
 basis `d`, then its adjoint `T†` is Hilbert–Schmidt with respect to *any* basis `f`, with the same
 sum of squared norms. This is what makes `IsHilbertSchmidtWrt` (and, applying this twice via
 `T†† = T`, comparisons between *any* two bases for `T` itself) basis-independent. -/
-theorem summable_norm_sq_adjoint_apply_and_tsum_eq {ι κ : Type*} (d : HilbertBasis ι ℂ H)
-    (f : HilbertBasis κ ℂ H) (T : H →L[ℂ] H) (hd : Summable (fun i => ‖T (d i)‖ ^ 2)) :
-    Summable (fun j => ‖(ContinuousLinearMap.adjoint T) (f j)‖ ^ 2) ∧
-      ∑' j, ‖(ContinuousLinearMap.adjoint T) (f j)‖ ^ 2 = ∑' i, ‖T (d i)‖ ^ 2 := by
+theorem hasSum_norm_sq_adjoint_apply {ι κ : Type*} (d : HilbertBasis ι ℂ H)
+    (f : HilbertBasis κ ℂ H) (T : H →L[ℂ] H) {a : ℝ}
+    (hd : HasSum (fun i => ‖T (d i)‖ ^ 2) a) :
+    HasSum (fun j => ‖(ContinuousLinearMap.adjoint T) (f j)‖ ^ 2) a := by
   classical
   -- The nonnegative double family `g (i, j) := ‖⟪T dᵢ, f j⟫‖ ^ 2`.
   set g : ι × κ → ℝ := fun p => ‖(inner ℂ (T (d p.1)) (f p.2) : ℂ)‖ ^ 2 with hg_def
@@ -50,22 +50,21 @@ theorem summable_norm_sq_adjoint_apply_and_tsum_eq {ι κ : Type*} (d : HilbertB
   -- Assemble the uncurried summability of `g` from the (nonnegative) row data.
   have hg_summable : Summable g :=
     (summable_prod_of_nonneg hg_nonneg).mpr ⟨fun i => (hrow i).summable, by
-      simpa only [fun i => (hrow i).tsum_eq] using hd⟩
+      simpa only [fun i => (hrow i).tsum_eq] using hd.summable⟩
   have hcolSum := ((Equiv.prodComm κ ι).hasSum_iff.mpr hg_summable.hasSum).prod_fiberwise hcol
-  exact ⟨hcolSum.summable, hcolSum.tsum_eq.trans
-    (hg_summable.hasSum.prod_fiberwise hrow).tsum_eq.symm⟩
+  rwa [(hg_summable.hasSum.prod_fiberwise hrow).unique hd] at hcolSum
 
 /-- **The same basis-independence, phrased for `T` itself rather than its adjoint.** Applying
-`summable_norm_sq_adjoint_apply_and_tsum_eq` twice — once for `T`, once for `T†` — and using
+`hasSum_norm_sq_adjoint_apply` twice — once for `T`, once for `T†` — and using
 `T†† = T` transports the sum of squared norms of `T` from any one basis to any other. This
 value-level result underlies the canonical basis-independent characterization below. -/
-theorem summable_norm_sq_apply_and_tsum_eq {ι κ : Type*} (d : HilbertBasis ι ℂ H)
-    (f : HilbertBasis κ ℂ H) (T : H →L[ℂ] H) (hd : Summable (fun i => ‖T (d i)‖ ^ 2)) :
-    Summable (fun j => ‖T (f j)‖ ^ 2) ∧ ∑' j, ‖T (f j)‖ ^ 2 = ∑' i, ‖T (d i)‖ ^ 2 := by
-  have h1 := summable_norm_sq_adjoint_apply_and_tsum_eq d f T hd
-  have h2 := summable_norm_sq_adjoint_apply_and_tsum_eq f f (ContinuousLinearMap.adjoint T) h1.1
-  rw [ContinuousLinearMap.adjoint_adjoint] at h2
-  exact ⟨h2.1, h2.2.trans h1.2⟩
+theorem hasSum_norm_sq_apply_of_hasSum {ι κ : Type*} (d : HilbertBasis ι ℂ H)
+    (f : HilbertBasis κ ℂ H) (T : H →L[ℂ] H) {a : ℝ}
+    (hd : HasSum (fun i => ‖T (d i)‖ ^ 2) a) :
+    HasSum (fun j => ‖T (f j)‖ ^ 2) a := by
+  simpa only [ContinuousLinearMap.adjoint_adjoint] using
+    hasSum_norm_sq_adjoint_apply f f (ContinuousLinearMap.adjoint T)
+      (hasSum_norm_sq_adjoint_apply d f T hd)
 
 /-- **`T` is Hilbert–Schmidt**, independently of any particular choice of Hilbert basis. -/
 def IsHilbertSchmidt (T : H →L[ℂ] H) : Prop :=
@@ -75,10 +74,10 @@ theorem isHilbertSchmidt_iff_isHilbertSchmidtWrt {ι : Type*} (d : HilbertBasis 
     (T : H →L[ℂ] H) : IsHilbertSchmidt T ↔ IsHilbertSchmidtWrt d T := by
   constructor
   · rintro ⟨ι', d', hd'⟩
-    exact (summable_norm_sq_apply_and_tsum_eq d' d T hd').1
+    exact (hasSum_norm_sq_apply_of_hasSum d' d T hd'.hasSum).summable
   · intro hd
     obtain ⟨w, e, -⟩ := exists_hilbertBasis (𝕜 := ℂ) (E := H)
-    exact ⟨w, e, (summable_norm_sq_apply_and_tsum_eq d e T hd).1⟩
+    exact ⟨w, e, (hasSum_norm_sq_apply_of_hasSum d e T hd.hasSum).summable⟩
 
 namespace IsHilbertSchmidt
 
@@ -97,7 +96,7 @@ direction). -/
 theorem isHilbertSchmidt_adjoint {T : H →L[ℂ] H} (hT : IsHilbertSchmidt T) :
     IsHilbertSchmidt (ContinuousLinearMap.adjoint T) := by
   obtain ⟨w, d, hd⟩ := hT
-  exact ⟨w, d, (summable_norm_sq_adjoint_apply_and_tsum_eq d d T hd).1⟩
+  exact ⟨w, d, (hasSum_norm_sq_adjoint_apply d d T hd.hasSum).summable⟩
 
 omit [CompleteSpace H] in
 /-- Left composition by a bounded operator preserves Hilbert–Schmidt membership, using
@@ -108,12 +107,8 @@ theorem isHilbertSchmidt_comp_left (B : H →L[ℂ] H) {T : H →L[ℂ] H}
   refine ⟨w, d, ?_⟩
   refine Summable.of_nonneg_of_le (fun i => sq_nonneg _) (fun i => ?_)
     (hd.mul_left (‖B‖ ^ 2))
-  have hle : ‖(B * T) (d i)‖ ≤ ‖B‖ * ‖T (d i)‖ := by
-    rw [mul_apply_eq_comp]
-    exact B.le_opNorm (T (d i))
-  calc ‖(B * T) (d i)‖ ^ 2 ≤ (‖B‖ * ‖T (d i)‖) ^ 2 :=
-        pow_le_pow_left₀ (norm_nonneg _) hle 2
-    _ = ‖B‖ ^ 2 * ‖T (d i)‖ ^ 2 := by ring
+  rw [mul_apply_eq_comp, ← mul_pow]
+  exact pow_le_pow_left₀ (norm_nonneg _) (B.le_opNorm (T (d i))) 2
 
 /-- **Composing a Hilbert–Schmidt operator with a bounded operator on the right stays
 Hilbert–Schmidt.** Reduced to the left-composition case via the adjoint identity
