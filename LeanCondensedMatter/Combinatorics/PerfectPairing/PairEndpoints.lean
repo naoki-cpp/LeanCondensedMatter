@@ -16,6 +16,23 @@ namespace Combinatorics
 abbrev Pairing.NormalizedPair {n : ℕ} (pairing : Pairing n) :=
   {pair : Fin (2 * n) × Fin (2 * n) // pair ∈ pairing.pairs}
 
+/-- Reindex the product over a pairing's normalized pairs through any finite presentation
+of those pairs, using the corresponding local values. -/
+theorem Pairing.prod_pairs_eq_prod_of_equiv {n : ℕ} {A R : Type*}
+    [Fintype A] [CommMonoid R] (pairing : Pairing n)
+    (e : A ≃ pairing.NormalizedPair) (value : Fin (2 * n) → Fin (2 * n) → R)
+    (f : A → R) (hvalue : ∀ a, value (e a).1.1 (e a).1.2 = f a) :
+    (∏ pr ∈ pairing.pairs, value pr.1 pr.2) = ∏ a, f a := by
+  classical
+  calc
+    _ = ∏ pr : pairing.NormalizedPair, value pr.1.1 pr.1.2 :=
+      Finset.prod_subtype _ (fun _ => Iff.rfl) _
+    _ = ∏ a : A, value (e a).1.1 (e a).1.2 :=
+      (Equiv.prod_comp e (fun pr => value pr.1.1 pr.1.2)).symm
+    _ = _ := by
+      apply Fintype.prod_congr
+      exact hvalue
+
 /-- Select endpoint `0` or endpoint `1` of a normalized pair. -/
 def Pairing.pairEndpoint {n : ℕ} (pairing : Pairing n) :
     pairing.NormalizedPair × Fin 2 → Fin (2 * n) :=

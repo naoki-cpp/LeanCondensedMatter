@@ -1,6 +1,5 @@
 import LeanCondensedMatter.Combinatorics.PerfectPairing.PairEndpoints
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Core
-import LeanCondensedMatter.Combinatorics.Common.FintypeProduct
 
 set_option linter.style.header false
 
@@ -93,20 +92,12 @@ theorem Pairing.prod_pairs_eq_prod_components [Fintype ι]
         localPairValue B pr.1 pr.2 := by
   classical
   calc
-    (∏ pr ∈ global.pairs, pairValue pr.1 pr.2) =
-        ∏ pr : global.NormalizedPair, pairValue pr.1.1 pr.1.2 :=
-      Finset.prod_subtype _ (fun _ => Iff.rfl) _
-    _ = ∏ B, ∏ pr : (componentPairing B).NormalizedPair,
-          pairValue (componentPairEquiv ⟨B, pr⟩).1.1
-            (componentPairEquiv ⟨B, pr⟩).1.2 := by
-      simpa using
-        (Fintype.prod_equiv_sigma componentPairEquiv.symm
-          (fun pr => pairValue pr.1.1 pr.1.2))
-    _ = ∏ B, ∏ pr : (componentPairing B).NormalizedPair,
-          localPairValue B pr.1.1 pr.1.2 := by
-      simp only [hvalue]
-    _ = ∏ B, ∏ pr ∈ (componentPairing B).pairs,
-          localPairValue B pr.1 pr.2 := by
+    _ = ∏ pr : (Σ B, (componentPairing B).NormalizedPair),
+        localPairValue pr.1 pr.2.1.1 pr.2.1.2 :=
+      global.prod_pairs_eq_prod_of_equiv componentPairEquiv pairValue _
+        (fun pr => hvalue pr.1 pr.2)
+    _ = _ := by
+      rw [Fintype.prod_sigma]
       apply Fintype.prod_congr
       intro B
       exact (Finset.prod_subtype
