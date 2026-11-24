@@ -329,6 +329,132 @@ theorem mem_externallySupportedComponentParts
       ComponentMeetsExternal (B : Finset (External ⊕ Internal)) := by
   simp [externallySupportedComponentParts]
 
+/-- The external block of a vertex is the left sector of its full graph component. -/
+theorem externalComponentPartition_part_eq_toLeft_componentBlock
+    (G : SimpleGraph (External ⊕ Internal)) (e : External) :
+    (externalComponentPartition G).part e =
+      Finset.toLeft (G.componentBlock (Sum.inl e)) := by
+  classical
+  ext b
+  rw [mem_externalComponentPartition_part, Finset.mem_toLeft, G.mem_componentBlock]
+  exact G.reachable_comm
+
+/-- Every connected component with external support determines a block of
+the induced partition of external insertions. -/
+private theorem toLeft_mem_externalComponentPartition_parts
+    (G : SimpleGraph (External ⊕ Internal))
+    (B : G.componentPartition.parts)
+    (hB : B ∈ externallySupportedComponentParts G) :
+    (B : Finset (External ⊕ Internal)).toLeft ∈
+      (externalComponentPartition G).parts := by
+  classical
+  obtain ⟨e, hEq⟩ :=
+    (componentMeetsExternal_iff_exists_eq_componentBlock G B).mp
+      ((mem_externallySupportedComponentParts G B).mp hB)
+  rw [hEq, ← externalComponentPartition_part_eq_toLeft_componentBlock G e]
+  exact (externalComponentPartition G).part_mem.2 (Finset.mem_univ e)
+
+/-- The full-graph connected components meeting external insertions correspond
+bijectively to the blocks of the induced external partition.
+
+The map forgets the internal vertices but loses no component information:
+each supported component contains an external vertex, and each external block
+comes from exactly one full-graph connected component. -/
+noncomputable def supportedComponentsEquivExternalBlocks
+    (G : SimpleGraph (External ⊕ Internal)) :
+    {B : G.componentPartition.parts //
+      B ∈ externallySupportedComponentParts G} ≃
+      (externalComponentPartition G).parts := by
+  classical
+  let π := externalComponentPartition G
+  let toBlock :
+      {B : G.componentPartition.parts // B ∈ externallySupportedComponentParts G} →
+        π.parts := fun B =>
+    ⟨(B.1.1 : Finset (External ⊕ Internal)).toLeft,
+      toLeft_mem_externalComponentPartition_parts G B.1 B.2⟩
+  apply Equiv.ofBijective toBlock
+  constructor
+  · intro B C h
+    have hLeft :
+        (B.1.1 : Finset (External ⊕ Internal)).toLeft =
+          (C.1.1 : Finset (External ⊕ Internal)).toLeft :=
+      congrArg Subtype.val h
+    obtain ⟨e, heB⟩ :=
+      (mem_externallySupportedComponentParts G B.1).mp B.2
+    have heC : (Sum.inl e : External ⊕ Internal) ∈
+        (C.1.1 : Finset (External ⊕ Internal)) := by
+      apply Finset.mem_toLeft.mp
+      rw [← hLeft]
+      exact Finset.mem_toLeft.mpr heB
+    have hBeq : (B.1.1 : Finset (External ⊕ Internal)) =
+        G.componentBlock (Sum.inl e) :=
+      ((G.componentBlock_eq_iff_mem B.1.2 (Sum.inl e)).2 heB).symm
+    have hCeq : (C.1.1 : Finset (External ⊕ Internal)) =
+        G.componentBlock (Sum.inl e) :=
+      ((G.componentBlock_eq_iff_mem C.1.2 (Sum.inl e)).2 heC).symm
+    apply Subtype.ext
+    apply Subtype.ext
+    exact hBeq.trans hCeq.symm
+  · intro P
+    obtain ⟨e, -, he⟩ := π.part_surjOn P.2
+    let B : G.componentPartition.parts :=
+      ⟨G.componentBlock (Sum.inl e),
+        G.componentBlock_mem_componentPartition (Sum.inl e)⟩
+    have hB : B ∈ externallySupportedComponentParts G :=
+      (mem_externallySupportedComponentParts G B).2
+        ⟨e, G.self_mem_componentBlock (Sum.inl e)⟩
+    refine ⟨⟨B, hB⟩, ?_⟩
+    apply Subtype.ext
+    change (G.componentBlock (Sum.inl e)).toLeft = (P : Finset External)
+    rw [← externalComponentPartition_part_eq_toLeft_componentBlock G e]
+    exact he
+
+/-- The supported-component/external-block bijection sends a component to
+precisely its external vertices. -/
+@[simp]
+theorem supportedComponentsEquivExternalBlocks_apply
+    (G : SimpleGraph (External ⊕ Internal))
+    (B : {B : G.componentPartition.parts //
+      B ∈ externallySupportedComponentParts G}) :
+    ((supportedComponentsEquivExternalBlocks G B : 
+      (externalComponentPartition G).parts) : Finset External) =
+      (B.1.1 : Finset (External ⊕ Internal)).toLeft := by
+  rfl
+
+/-- In a graph with no vacuum components, *all* graph components are
+externally supported. Consequently, the full connected-component partition
+is canonically equivalent to the partition of external insertions.
+
+Unlike the unrestricted supported-component equivalence, this does not retain
+any vacuum-only component: the equivalence is defined on every connected component. -/
+noncomputable def vacuumFreeComponentsEquivExternalBlocks
+    (G : SimpleGraph (External ⊕ Internal))
+    (hVac : HasNoVacuumComponent G) :
+    G.componentPartition.parts ≃
+      (externalComponentPartition G).parts := by
+  classical
+  have hall :
+      ∀ B : G.componentPartition.parts,
+        B ∈ externallySupportedComponentParts G := by
+    intro B
+    exact (mem_externallySupportedComponentParts G B).2
+      ((hasNoVacuumComponent_iff_forall_component_meetsExternal G).1 hVac B)
+  exact (Equiv.subtypeUnivEquiv hall).symm.trans
+    (supportedComponentsEquivExternalBlocks G)
+
+/-- The external block of a vacuum-free graph component consists of precisely
+the external vertices of that full component. -/
+@[simp]
+theorem vacuumFreeComponentsEquivExternalBlocks_apply
+    (G : SimpleGraph (External ⊕ Internal))
+    (hVac : HasNoVacuumComponent G)
+    (B : G.componentPartition.parts) :
+    (((vacuumFreeComponentsEquivExternalBlocks G hVac B :
+      (externalComponentPartition G).parts) :
+        Finset External)) =
+      (B.1 : Finset (External ⊕ Internal)).toLeft := by
+  rfl
+
 /-- All external vertices are mutually reachable exactly when there is one
 externally supported component, namely the component containing a chosen external anchor.
 

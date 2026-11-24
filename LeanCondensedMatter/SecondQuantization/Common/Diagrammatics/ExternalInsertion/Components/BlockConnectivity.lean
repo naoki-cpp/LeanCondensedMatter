@@ -301,7 +301,7 @@ theorem ExternalInsertionBlockLayout.assembleDiagram_componentExternalSector_ext
   calc
     (d.vertexGraph.componentBlock (Sum.inl e)).toLeft =
         (externalComponentPartition d.vertexGraph).part e :=
-      (d.externalComponentPartition_part_eq_toLeft_componentBlock e).symm
+      (externalComponentPartition_part_eq_toLeft_componentBlock d.vertexGraph e).symm
     _ = layout.partition.part e :=
       congrArg (fun π : Finpartition (Finset.univ : Finset (Fin (2 * E))) =>
         π.part e) (layout.externalComponentPartition_assembleDiagram S F hconnected)
@@ -954,7 +954,7 @@ noncomputable def ExternalInsertionDiagram.externalBlockLayout
     d.externalComponentPartition_block_card_even B.1 B.2
   interactionOwner := fun v =>
     if hv : v ∈ S then
-      d.vacuumFreeComponentsEquivExternalBlocks hVac
+      vacuumFreeComponentsEquivExternalBlocks d.vertexGraph hVac
         ⟨d.vertexGraph.componentBlock (Sum.inr (⟨v, hv⟩ : ↥S)),
           d.vertexGraph.componentBlock_mem_componentPartition
             (Sum.inr (⟨v, hv⟩ : ↥S))⟩
@@ -971,7 +971,7 @@ theorem ExternalInsertionDiagram.externalBlockLayout_interactionOwner
     (hVac : HasNoVacuumComponent d.vertexGraph)
     (anchor : Fin (2 * E)) (v : ↥S) :
     (d.externalBlockLayout hVac anchor).interactionOwner v.1 =
-      d.vacuumFreeComponentsEquivExternalBlocks hVac
+      vacuumFreeComponentsEquivExternalBlocks d.vertexGraph hVac
         ⟨d.vertexGraph.componentBlock (Sum.inr v),
           d.vertexGraph.componentBlock_mem_componentPartition (Sum.inr v)⟩ := by
   simp [ExternalInsertionDiagram.externalBlockLayout, v.2]
@@ -990,10 +990,10 @@ theorem ExternalInsertionDiagram.externalBlockLayout_owner_eq_part_of_reachable
   rw [d.externalBlockLayout_interactionOwner hVac anchor v]
   calc
     _ = (d.vertexGraph.componentBlock (Sum.inr v)).toLeft :=
-      d.vacuumFreeComponentsEquivExternalBlocks_apply hVac _
+      vacuumFreeComponentsEquivExternalBlocks_apply d.vertexGraph hVac _
     _ = (d.vertexGraph.componentBlock (Sum.inl e)).toLeft :=
       congrArg Finset.toLeft (d.vertexGraph.componentBlock_eq_of_reachable h.symm)
-    _ = _ := (d.externalComponentPartition_part_eq_toLeft_componentBlock e).symm
+    _ = _ := (externalComponentPartition_part_eq_toLeft_componentBlock d.vertexGraph e).symm
 
 
 
@@ -1009,10 +1009,10 @@ theorem ExternalInsertionDiagram.externalBlockLayout_interactionBlock
     (P : (externalComponentPartition d.vertexGraph).parts) :
     (d.externalBlockLayout hVac anchor).interactionBlock S P =
       interactionSector
-        (((d.vacuumFreeComponentsEquivExternalBlocks hVac).symm P).1 :
+        (((vacuumFreeComponentsEquivExternalBlocks d.vertexGraph hVac).symm P).1 :
           Finset (ExternalInsertionVertex E S)) := by
   classical
-  let equiv := d.vacuumFreeComponentsEquivExternalBlocks hVac
+  let equiv := vacuumFreeComponentsEquivExternalBlocks d.vertexGraph hVac
   ext v
   constructor
   · intro hv
@@ -1079,12 +1079,12 @@ theorem ExternalInsertionDiagram.externalBlockLayout_vertexPart
   | inl e =>
       change (d.externalBlockLayout hVac anchor).partition.part e =
         (d.vertexGraph.componentBlock (Sum.inl e)).toLeft
-      exact d.externalComponentPartition_part_eq_toLeft_componentBlock e
+      exact externalComponentPartition_part_eq_toLeft_componentBlock d.vertexGraph e
   | inr w =>
       change ((d.externalBlockLayout hVac anchor).interactionOwner w.1).1 =
         (d.vertexGraph.componentBlock (Sum.inr w)).toLeft
       rw [d.externalBlockLayout_interactionOwner hVac anchor w]
-      exact d.vacuumFreeComponentsEquivExternalBlocks_apply hVac _
+      exact vacuumFreeComponentsEquivExternalBlocks_apply d.vertexGraph hVac _
 
 /-- In a vacuum-free physical diagram, two vertices are reachable
 precisely when their canonical external-block owners agree. This uses the
@@ -1123,25 +1123,25 @@ theorem ExternalInsertionDiagram.reachable_iff_externalBlockLayout_same_block
             Finset (Fin (2 * E))) := congrArg Subtype.val h
         _ = _ := d.externalBlockLayout_vertexPart hVac anchor w
     have hEquiv :
-        d.vacuumFreeComponentsEquivExternalBlocks hVac
+        vacuumFreeComponentsEquivExternalBlocks d.vertexGraph hVac
             ⟨d.vertexGraph.componentBlock v,
               d.vertexGraph.componentBlock_mem_componentPartition v⟩ =
-          d.vacuumFreeComponentsEquivExternalBlocks hVac
+          vacuumFreeComponentsEquivExternalBlocks d.vertexGraph hVac
             ⟨d.vertexGraph.componentBlock w,
               d.vertexGraph.componentBlock_mem_componentPartition w⟩ := by
       apply Subtype.ext
       calc
         _ = (d.vertexGraph.componentBlock v).toLeft :=
-          d.vacuumFreeComponentsEquivExternalBlocks_apply hVac _
+          vacuumFreeComponentsEquivExternalBlocks_apply d.vertexGraph hVac _
         _ = (d.vertexGraph.componentBlock w).toLeft := hBlocks
         _ = _ :=
-          (d.vacuumFreeComponentsEquivExternalBlocks_apply hVac
+          (vacuumFreeComponentsEquivExternalBlocks_apply d.vertexGraph hVac
             ⟨d.vertexGraph.componentBlock w,
               d.vertexGraph.componentBlock_mem_componentPartition w⟩).symm
     have hComp : d.vertexGraph.componentBlock v =
         d.vertexGraph.componentBlock w :=
       congrArg Subtype.val
-        ((d.vacuumFreeComponentsEquivExternalBlocks hVac).injective hEquiv)
+        ((vacuumFreeComponentsEquivExternalBlocks d.vertexGraph hVac).injective hEquiv)
     exact (d.vertexGraph.componentBlock_eq_iff_reachable v w).mp hComp
 
 /-- The physical component layout does not split a paired propagator
