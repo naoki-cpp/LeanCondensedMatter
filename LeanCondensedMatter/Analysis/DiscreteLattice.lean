@@ -251,12 +251,13 @@ theorem directionalPosition_apply (geometry : LatticeGeometry Site E)
   classical
   rw [directionalPosition, LinearMap.sum_apply, Finsupp.finsetSum_apply,
     Finset.sum_eq_single x]
-  · simp [smul_eq_mul]
+  · rw [LinearMap.smul_apply, Finsupp.smul_apply, siteProjector_apply,
+      Finsupp.single_eq_same, smul_eq_mul]
   · intro y _ hy
     have hz : siteProjector y ψ x = 0 := by
       rw [siteProjector_apply]
       exact Finsupp.single_eq_of_ne (Ne.symm hy)
-    simp [hz]
+    rw [LinearMap.smul_apply, Finsupp.smul_apply, hz, smul_zero]
   · simp
 
 /-- Every localized site ket is an eigenvector of the finite position operator. -/
