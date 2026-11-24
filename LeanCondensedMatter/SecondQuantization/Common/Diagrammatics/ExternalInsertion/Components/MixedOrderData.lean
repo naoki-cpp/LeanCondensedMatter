@@ -73,7 +73,7 @@ theorem ExternalInsertionDiagram.componentOrderedDiagram_eq_slotCongr
           (externalInsertionLegCongr (E := d.externalPairCount B)
             (standardSlotEquiv T)).symm
     rw [externalInsertionLegCongr_standardize (E := d.externalPairCount B) T]
-    exact Pairing.cast_eq_transport (by simp) r.pairing
+    exact Pairing.cast_eq_transport (by simp [T]) r.pairing
 
 
 open Combinatorics in
