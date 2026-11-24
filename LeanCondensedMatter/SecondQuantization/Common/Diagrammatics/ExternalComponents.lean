@@ -239,6 +239,27 @@ theorem allExternalVerticesConnected_iff_externalComponentPartition_parts_card_e
       simpa [hB] using (externalComponentPartition G).sup_parts
     simpa [hBS] using hB
 
+/-- For a nonempty external sector, mutual external connectivity is equivalent
+to the indiscrete external-component partition, independently of vacuum components. -/
+theorem allExternalVerticesConnected_iff_externalComponentPartition_eq_top
+    (G : SimpleGraph (External ⊕ Internal)) (anchor : External) :
+    AllExternalVerticesConnected G ↔ externalComponentPartition G = ⊤ := by
+  classical
+  letI : Nonempty External := ⟨anchor⟩
+  have htop : (⊤ : Finpartition (Finset.univ : Finset External)).parts =
+      {(Finset.univ : Finset External)} := by
+    apply Finset.eq_singleton_iff_unique_mem.2
+    refine ⟨?_, fun B hB => Finset.mem_singleton.mp (Finpartition.parts_top_subset _ hB)⟩
+    have hmem := (⊤ : Finpartition (Finset.univ : Finset External)).part_mem.2
+      (Finset.mem_univ anchor)
+    rwa [Finset.mem_singleton.mp (Finpartition.parts_top_subset _ hmem)] at hmem
+  rw [allExternalVerticesConnected_iff_externalComponentPartition_parts_eq_singleton]
+  constructor
+  · intro h
+    exact Finpartition.ext (h.trans htop.symm)
+  · intro h
+    rw [h, htop]
+
 end ExternalPartition
 
 section Finite
