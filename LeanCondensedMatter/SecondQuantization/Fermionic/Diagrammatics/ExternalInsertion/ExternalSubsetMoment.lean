@@ -650,8 +650,6 @@ noncomputable def connectedExternalInsertionDysonCoefficient {K : ℕ}
     if AllExternalVerticesConnected d.1.1.vertexGraph then
       d.1.1.dysonAmplitude ε β g times else 0
 
-set_option maxHeartbeats 4000000 in
--- The subtype reindexing traverses a dependent fixed-label Wick diagram domain.
 open Classical in
 /-- For a nonempty external sector, summing all preconnected physical Wick
 diagrams with a fixed label indicator is the established fully externally
@@ -669,65 +667,34 @@ theorem sum_preconnectedDyson_eq_connectedCoefficient
       connectedExternalInsertionDysonCoefficient ε β g labels times n := by
   classical
   letI : Nonempty (Fin (2 * K)) := ⟨⟨0, by omega⟩⟩
-  have hpre (d : ExternalInsertionWickDiagram Mode K n) :
-      d.vertexGraph.Preconnected ↔
-        HasNoVacuumComponent d.vertexGraph ∧
-          AllExternalVerticesConnected d.vertexGraph :=
+  let X := ExternalInsertionWickDiagram Mode K n
+  let P : X → Prop := fun d => d.vertexGraph.Preconnected
+  let V : X → Prop := fun d => HasNoVacuumComponent d.vertexGraph
+  let C : X → Prop := fun d => AllExternalVerticesConnected d.vertexGraph
+  let L : X → Prop := fun d => d.externalLabel = labels
+  let w : X → ℂ := fun d => d.dysonAmplitude ε β g times
+  have hpre (d : X) : P d ↔ V d ∧ C d :=
     preconnected_iff_hasNoVacuumComponent_and_allExternalVerticesConnected d.vertexGraph
   unfold connectedExternalInsertionDysonCoefficient
   calc
-    _ = ∑ d : ExternalInsertionWickDiagram Mode K n,
-          if d.vertexGraph.Preconnected then
-            if d.externalLabel = labels then d.dysonAmplitude ε β g times else 0
-          else 0 := by
+    _ = ∑ d : X, if P d then (if L d then w d else 0) else 0 := by
       simpa only [Finset.sum_filter] using
-        (Finset.sum_subtype
-          (p := fun d : ExternalInsertionWickDiagram Mode K n =>
-            d.vertexGraph.Preconnected)
-          ((Finset.univ : Finset (ExternalInsertionWickDiagram Mode K n)).filter
-            (fun d => d.vertexGraph.Preconnected))
-          (fun _ => by simp)
-          (fun d : ExternalInsertionWickDiagram Mode K n =>
-            if d.externalLabel = labels then d.dysonAmplitude ε β g times else 0)).symm
-    _ = ∑ d : ExternalInsertionWickDiagram Mode K n,
-          if HasNoVacuumComponent d.vertexGraph then
-            if d.externalLabel = labels then
-              if AllExternalVerticesConnected d.vertexGraph then
-                d.dysonAmplitude ε β g times else 0
-            else 0
-          else 0 := by
+        (Finset.sum_subtype (p := P) ((Finset.univ : Finset X).filter P)
+          (fun d => by simp only [Finset.mem_filter, Finset.mem_univ, true_and])
+          (fun d => if L d then w d else 0)).symm
+    _ = ∑ d : X, if V d then (if L d then (if C d then w d else 0) else 0) else 0 := by
       apply Finset.sum_congr rfl
       intro d _
-      have hp := hpre d
-      by_cases hv : HasNoVacuumComponent d.vertexGraph
-      · by_cases hc : AllExternalVerticesConnected d.vertexGraph
-        · simp [hp, hv, hc]
-        · simp [hp, hv, hc]
-      · simp [hp, hv]
-    _ = ∑ d : {d : ExternalInsertionWickDiagram Mode K n //
-          HasNoVacuumComponent d.vertexGraph},
-          if d.1.externalLabel = labels then
-            if AllExternalVerticesConnected d.1.vertexGraph then
-              d.1.dysonAmplitude ε β g times else 0
-          else 0 := by
+      by_cases hv : V d <;> by_cases hc : C d <;> by_cases hl : L d <;>
+        simp only [hpre d, hv, hc, hl, true_and, false_and, and_false, ↓reduceIte]
+    _ = ∑ d : {d : X // V d}, if L d.1 then (if C d.1 then w d.1 else 0) else 0 := by
       simpa only [Finset.sum_filter] using
-        (Finset.sum_subtype
-          (p := fun d : ExternalInsertionWickDiagram Mode K n =>
-            HasNoVacuumComponent d.vertexGraph)
-          ((Finset.univ : Finset (ExternalInsertionWickDiagram Mode K n)).filter
-            (fun d => HasNoVacuumComponent d.vertexGraph))
-          (fun _ => by simp)
-          (fun d : ExternalInsertionWickDiagram Mode K n =>
-            if d.externalLabel = labels then
-              if AllExternalVerticesConnected d.vertexGraph then
-                d.dysonAmplitude ε β g times else 0
-            else 0))
+        (Finset.sum_subtype (p := V) ((Finset.univ : Finset X).filter V)
+          (fun d => by simp only [Finset.mem_filter, Finset.mem_univ, true_and])
+          (fun d => if L d then (if C d then w d else 0) else 0))
     _ = _ :=
       (sum_vacuumFreeFixedExternalInsertionWickDiagram_eq_sum_if
-        labels
-        (fun d : ExternalInsertionWickDiagram Mode K n =>
-          if AllExternalVerticesConnected d.vertexGraph then
-            d.dysonAmplitude ε β g times else 0)).symm
+        labels (fun d : X => if C d then w d else 0)).symm
 
 /-- For any nonempty family of external insertions, the **actual**
 fixed-label connected Dyson coefficient is exactly the top external-partition
