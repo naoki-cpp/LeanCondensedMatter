@@ -151,10 +151,16 @@ theorem hasDerivAt_regularizedStredaSurfacePrimitiveTrace
       energy := by
   unfold regularizedStredaSurfacePrimitiveTrace
     regularizedStredaSurfacePrimitiveTraceDerivative
+  change HasDerivAt
+    (finiteDimensionalOperatorTrace (H := H) ∘ fun x : ℝ =>
+      regularizedStredaSurfacePrimitiveOperator hamiltonian current₁ current₂ x broadening)
+    (finiteDimensionalOperatorTrace (H := H)
+      (regularizedStredaSurfacePrimitiveOperatorDerivative
+        hamiltonian current₁ current₂ energy broadening)) energy
   simpa using
     (((finiteDimensionalOperatorTrace (H := H)).hasFDerivAt).restrictScalars ℝ).comp_hasDerivAt
       energy (hasDerivAt_regularizedStredaSurfacePrimitiveOperator
-      hamiltonian hself current₁ current₂ energy broadening hbroadening)
+        hamiltonian hself current₁ current₂ energy broadening hbroadening)
 
 /-- At fixed positive broadening, the traced surface-primitive derivative is continuous in energy. -/
 theorem continuous_regularizedStredaSurfacePrimitiveTraceDerivative_energy
