@@ -1,21 +1,17 @@
+import Mathlib.Algebra.Algebra.Bilinear
 import Mathlib.Algebra.Lie.OfAssociative
 import Mathlib.Basic.Complex.Basic
-import Mathlib.LinearAlgebra.BilinearMap
 import Mathlib.Tactic.Module
+import Mathlib.Tactic.Ring
 
 set_option linter.style.header false
 
 /-!
-# Symmetrized products of linear operators
+# Symmetrized products in associative algebras
 
-Pure algebra for the symmetric product over any field with `2 ≠ 0`
-
-```text
-1/2 {A,B} = 1/2 (AB + BA).
-```
-
-This module intentionally carries no localization, transport, conservation-law, quantum-mechanical,
-or particle-statistics interpretation. Those meanings belong to downstream layers.
+The bilinear product `(1 / 2) • (a * b + b * a)` is defined on arbitrary
+associative ring algebras over a field. Operator evaluation and identity lemmas
+express its endomorphism representation.
 -/
 
 namespace LinearMap
@@ -24,81 +20,83 @@ variable {K : Type*} [Field K]
 
 attribute [local instance 100] LieRing.ofAssociativeRing
 
-/-- The symmetrized product as a bilinear operator-valued map. This is the algebraic owner of
-the construction; pointwise symmetrized products are obtained by evaluation. -/
+/-- The symmetric product as a bilinear map on an algebra. -/
 noncomputable def symmetrizedProductBilinear
-    (W : Type*) [AddCommGroup W] [Module K W] :
-    (W →ₗ[K] W) →ₗ[K] (W →ₗ[K] W) →ₗ[K] (W →ₗ[K] W) :=
-  (1 / 2 : K) •
-    (LinearMap.llcomp K W W W + (LinearMap.llcomp K W W W).flip)
+    (A : Type*) [Ring A] [Algebra K A] :
+    A →ₗ[K] A →ₗ[K] A :=
+  (1 / 2 : K) • (LinearMap.mul K A + (LinearMap.mul K A).flip)
 
-/-- Symmetrized composition `1/2 {A, B}` of two K-linear endomorphisms, obtained by
-evaluating the bilinear symmetrized-product map. -/
-noncomputable def symmetrizedProduct {W : Type*} [AddCommGroup W] [Module K W]
-    (A B : W →ₗ[K] W) : W →ₗ[K] W :=
-  symmetrizedProductBilinear W A B
+/-- Symmetric multiplication obtained by evaluating the bilinear map. -/
+noncomputable def symmetrizedProduct {A : Type*} [Ring A] [Algebra K A]
+    (a b : A) : A :=
+  symmetrizedProductBilinear (K := K) A a b
 
 theorem symmetrizedProductBilinear_apply
-    {W : Type*} [AddCommGroup W] [Module K W]
-    (A B : W →ₗ[K] W) :
-    symmetrizedProductBilinear W A B = symmetrizedProduct A B :=
+    {A : Type*} [Ring A] [Algebra K A] (a b : A) :
+    symmetrizedProductBilinear (K := K) A a b = symmetrizedProduct (K := K) a b :=
+  rfl
+
+theorem symmetrizedProduct_eq {A : Type*} [Ring A] [Algebra K A] (a b : A) :
+    symmetrizedProduct (K := K) a b = (1 / 2 : K) • (a * b + b * a) :=
   rfl
 
 @[simp]
 theorem symmetrizedProduct_apply {W : Type*} [AddCommGroup W] [Module K W]
     (A B : W →ₗ[K] W) (v : W) :
-    symmetrizedProduct A B v = (1 / 2 : K) • (A (B v) + B (A v)) := by
+    symmetrizedProduct (K := K) A B v = (1 / 2 : K) • (A (B v) + B (A v)) :=
   rfl
 
-/-- Symmetrization with a fixed right-hand operator is linear in the left operator. -/
-noncomputable def symmetrizedProductRightLinear
-    (W : Type*) [AddCommGroup W] [Module K W]
-    (B : W →ₗ[K] W) :
-    (W →ₗ[K] W) →ₗ[K] (W →ₗ[K] W) :=
-  LinearMap.flip (symmetrizedProductBilinear W) B
+section Algebra
+
+variable {A : Type*} [Ring A] [Algebra K A]
+
+/-- Symmetric multiplication is commutative. -/
+theorem symmetrizedProduct_comm (a b : A) :
+    symmetrizedProduct (K := K) a b = symmetrizedProduct (K := K) b a := by
+  simp only [symmetrizedProduct_eq, add_comm]
 
 @[simp]
-theorem symmetrizedProductRightLinear_apply
-    {W : Type*} [AddCommGroup W] [Module K W]
-    (B A : W →ₗ[K] W) :
-    symmetrizedProductRightLinear W B A = symmetrizedProduct A B :=
-  rfl
-
-/-- Symmetrization with a fixed left-hand operator is linear in the right operator. -/
-noncomputable def symmetrizedProductLeftLinear
-    (W : Type*) [AddCommGroup W] [Module K W]
-    (A : W →ₗ[K] W) :
-    (W →ₗ[K] W) →ₗ[K] (W →ₗ[K] W) :=
-  symmetrizedProductBilinear W A
+theorem symmetrizedProduct_zero_left (a : A) :
+    symmetrizedProduct (K := K) 0 a = 0 := by
+  simp [symmetrizedProduct_eq]
 
 @[simp]
-theorem symmetrizedProductLeftLinear_apply
-    {W : Type*} [AddCommGroup W] [Module K W]
-    (A B : W →ₗ[K] W) :
-    symmetrizedProductLeftLinear W A B = symmetrizedProduct A B :=
-  rfl
+theorem symmetrizedProduct_zero_right (a : A) :
+    symmetrizedProduct (K := K) a 0 = 0 := by
+  simp [symmetrizedProduct_eq]
 
-/-- The symmetrized product is symmetric in its two arguments. -/
-theorem symmetrizedProduct_comm {W : Type*} [AddCommGroup W] [Module K W]
-    (A B : W →ₗ[K] W) :
-    symmetrizedProduct A B = symmetrizedProduct B A := by
-  ext v
-  simp only [symmetrizedProduct_apply]
-  rw [add_comm]
+/-- Reassociating symmetric multiplication produces a double commutator. -/
+theorem symmetrizedProduct_nested (a v m : A) :
+    symmetrizedProduct (K := K) (symmetrizedProduct (K := K) a v) m =
+      symmetrizedProduct (K := K) a (symmetrizedProduct (K := K) v m) +
+        (1 / 4 : K) • ⁅v, ⁅a, m⁆⁆ := by
+  have hquarter : (1 / 4 : K) = (1 / 2 : K) * (1 / 2 : K) := by
+    rw [show (4 : K) = (2 : K) ^ 2 by ring]
+    simp only [one_div, pow_two, mul_inv_rev]
+  rw [hquarter]
+  simp only [symmetrizedProduct_eq, LieRing.of_associative_ring_bracket, mul_add,
+    add_mul, mul_sub, sub_mul, smul_mul_assoc, mul_smul_comm, smul_add,
+    smul_sub, smul_smul, mul_assoc]
+  module
 
-@[simp]
-theorem symmetrizedProduct_zero_left {W : Type*} [AddCommGroup W] [Module K W]
-    (A : W →ₗ[K] W) :
-    symmetrizedProduct (0 : W →ₗ[K] W) A = 0 := by
-  ext v
+/-- If the outer factors commute, symmetric multiplication reassociates. -/
+theorem symmetrizedProduct_nested_eq_of_commutes (a v m : A) (ham : ⁅a, m⁆ = 0) :
+    symmetrizedProduct (K := K) (symmetrizedProduct (K := K) a v) m =
+      symmetrizedProduct (K := K) a (symmetrizedProduct (K := K) v m) := by
+  rw [symmetrizedProduct_nested, ham]
   simp
 
-@[simp]
-theorem symmetrizedProduct_zero_right {W : Type*} [AddCommGroup W] [Module K W]
-    (A : W →ₗ[K] W) :
-    symmetrizedProduct A (0 : W →ₗ[K] W) = 0 := by
-  rw [symmetrizedProduct_comm]
-  exact symmetrizedProduct_zero_left A
+/-- The commutator is a derivation of the symmetric product. -/
+theorem lie_symmetrizedProduct (h a b : A) :
+    ⁅h, symmetrizedProduct (K := K) a b⁆ =
+      symmetrizedProduct (K := K) ⁅h, a⁆ b +
+        symmetrizedProduct (K := K) a ⁅h, b⁆ := by
+  simp only [symmetrizedProduct_eq, LieRing.of_associative_ring_bracket, mul_add,
+    add_mul, mul_sub, sub_mul, smul_mul_assoc, mul_smul_comm, smul_add,
+    smul_sub, mul_assoc]
+  module
+
+end Algebra
 
 section Half
 
@@ -108,7 +106,7 @@ variable [NeZero (2 : K)]
 @[simp]
 theorem symmetrizedProduct_smul_id {W : Type*} [AddCommGroup W] [Module K W]
     (A : W →ₗ[K] W) (q : K) :
-    symmetrizedProduct A (q • LinearMap.id) = q • A := by
+    symmetrizedProduct (K := K) A (q • LinearMap.id) = q • A := by
   ext v
   simp only [symmetrizedProduct_apply, one_div, smul_apply, id_coe, id_eq, map_smul,
     smul_add]
@@ -120,7 +118,7 @@ theorem symmetrizedProduct_smul_id {W : Type*} [AddCommGroup W] [Module K W]
 theorem symmetrizedProduct_eq_comp_of_commutes {W : Type*} [AddCommGroup W] [Module K W]
     (A B : W →ₗ[K] W)
     (hAB : ⁅A, B⁆ = 0) :
-    symmetrizedProduct A B = A.comp B := by
+    symmetrizedProduct (K := K) A B = A.comp B := by
   ext v
   have hzero : A (B v) - B (A v) = 0 := by
     have h := congrArg (fun T : W →ₗ[K] W => T v) hAB
@@ -135,44 +133,5 @@ theorem symmetrizedProduct_eq_comp_of_commutes {W : Type*} [AddCommGroup W] [Mod
   rw [h2, one_smul]
 
 end Half
-
-/-- Reassociating two symmetrized products produces a double-commutator correction.
-
-This identity is the representation-independent algebra behind the distinction between a generic
-localized transport functional and a current density of the form `1/2 {v,m}`. -/
-theorem symmetrizedProduct_nested {W : Type*} [AddCommGroup W] [Module K W]
-    (A v m : W →ₗ[K] W) :
-    symmetrizedProduct (symmetrizedProduct A v) m =
-      symmetrizedProduct A (symmetrizedProduct v m) +
-        (1 / 4 : K) • ⁅v, ⁅A, m⁆⁆ := by
-  have hquarter : (1 / 4 : K) = (1 / 2 : K) * (1 / 2 : K) := by
-    rw [show (4 : K) = (2 : K) ^ 2 by ring]
-    simp only [one_div, pow_two, mul_inv_rev]
-  rw [hquarter]
-  ext x
-  simp [symmetrizedProduct_apply, LieRing.of_associative_ring_bracket,
-    Module.End.mul_eq_comp]
-  module
-
-/-- If the outer localizer commutes with the transported quantity, nested symmetrization
-reassociates without a correction. -/
-theorem symmetrizedProduct_nested_eq_of_commutes
-    {W : Type*} [AddCommGroup W] [Module K W]
-    (A v m : W →ₗ[K] W)
-    (hAm : ⁅A, m⁆ = 0) :
-    symmetrizedProduct (symmetrizedProduct A v) m =
-      symmetrizedProduct A (symmetrizedProduct v m) := by
-  rw [symmetrizedProduct_nested A v m, hAm]
-  simp
-
-/-- The commutator acts as a derivation on the symmetrized product. -/
-theorem lie_symmetrizedProduct {W : Type*} [AddCommGroup W] [Module K W]
-    (h A B : W →ₗ[K] W) :
-    ⁅h, symmetrizedProduct A B⁆ =
-      symmetrizedProduct ⁅h, A⁆ B +
-        symmetrizedProduct A ⁅h, B⁆ := by
-  ext v
-  simp [LieRing.of_associative_ring_bracket, Module.End.mul_eq_comp,
-    symmetrizedProduct_apply]; module
 
 end LinearMap

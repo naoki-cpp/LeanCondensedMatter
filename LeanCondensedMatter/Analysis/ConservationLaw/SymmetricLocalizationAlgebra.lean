@@ -34,13 +34,13 @@ noncomputable def localizedQuantityFunctional
     (M : Test →ₗ[K] (V →ₗ[K] V))
     (m : V →ₗ[K] V) :
     Test →ₗ[K] (V →ₗ[K] V) :=
-  (LinearMap.symmetrizedProductRightLinear V m).comp M
+  ((LinearMap.symmetrizedProductBilinear (K := K) (V →ₗ[K] V)).flip m).comp M
 
 @[simp]
 theorem localizedQuantityFunctional_apply
     (M : Test →ₗ[K] (V →ₗ[K] V))
     (m : V →ₗ[K] V) (f : Test) :
-    localizedQuantityFunctional V M m f = LinearMap.symmetrizedProduct (M f) m :=
+    localizedQuantityFunctional V M m f = LinearMap.symmetrizedProduct (K := K) (M f) m :=
   rfl
 
 /-- The bare localization commutator as a linear map on tests. -/
@@ -63,7 +63,7 @@ noncomputable def transportFunctional
     (M : Test →ₗ[K] (V →ₗ[K] V))
     (m : V →ₗ[K] V) :
     Test →ₗ[K] (V →ₗ[K] V) :=
-  (LinearMap.symmetrizedProductRightLinear V m).comp
+  ((LinearMap.symmetrizedProductBilinear (K := K) (V →ₗ[K] V)).flip m).comp
     (localizationCommutatorFunctional V h M)
 
 @[simp]
@@ -71,7 +71,7 @@ theorem transportFunctional_apply
     (h : V →ₗ[K] V)
     (M : Test →ₗ[K] (V →ₗ[K] V))
     (m : V →ₗ[K] V) (f : Test) :
-    transportFunctional V h M m f = LinearMap.symmetrizedProduct ⁅h, M f⁆ m :=
+    transportFunctional V h M m f = LinearMap.symmetrizedProduct (K := K) ⁅h, M f⁆ m :=
   rfl
 
 /-- The source/torque contribution to the symmetric-localization commutator. -/
@@ -87,7 +87,7 @@ theorem sourceFunctional_apply
     (h : V →ₗ[K] V)
     (M : Test →ₗ[K] (V →ₗ[K] V))
     (m : V →ₗ[K] V) (f : Test) :
-    sourceFunctional V h M m f = LinearMap.symmetrizedProduct (M f) ⁅h, m⁆ :=
+    sourceFunctional V h M m f = LinearMap.symmetrizedProduct (K := K) (M f) ⁅h, m⁆ :=
   rfl
 
 /-- The commutator is a derivation on symmetric localization, giving transport plus source. -/
@@ -97,6 +97,6 @@ theorem lie_localizedQuantity
     (m : V →ₗ[K] V) (f : Test) :
     ⁅h, localizedQuantityFunctional V M m f⁆ =
       transportFunctional V h M m f + sourceFunctional V h M m f :=
-  LinearMap.lie_symmetrizedProduct h (M f) m
+  LinearMap.lie_symmetrizedProduct (K := K) h (M f) m
 
 end ConservationLaw

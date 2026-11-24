@@ -38,7 +38,7 @@ noncomputable def boundedSymmetrizedVelocityCurrentLinear
     ((Site →₀ ℂ) →ₗ[ℂ] (Site →₀ ℂ)) →ₗ[ℂ]
       (FiniteLatticeHilbertFock Site →L[ℂ] FiniteLatticeHilbertFock Site) :=
   (boundedOneBodyOperator (Site := Site)).toLinearMap.comp
-    (_root_.LinearMap.symmetrizedProductLeftLinear ((Site →₀ ℂ)) velocity)
+    (_root_.LinearMap.symmetrizedProductBilinear (K := ℂ) ((Site →₀ ℂ) →ₗ[ℂ] (Site →₀ ℂ)) velocity)
 
 
 end

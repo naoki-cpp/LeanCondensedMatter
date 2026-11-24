@@ -30,7 +30,7 @@ one-body quantity. -/
 noncomputable def symmetrizedVelocityCurrentLinear
     (velocity : V →ₗ[ℂ] V) :
     (V →ₗ[ℂ] V) →ₗ[ℂ] (V →ₗ[ℂ] V) :=
-  _root_.LinearMap.symmetrizedProductLeftLinear V velocity
+  _root_.LinearMap.symmetrizedProductBilinear (K := ℂ) (V →ₗ[ℂ] V) velocity
 
 /-- The generalized one-particle current operator `jᵐ = 1/2 {v,m}`. -/
 noncomputable def symmetrizedVelocityCurrent
@@ -49,7 +49,7 @@ theorem symmetrizedVelocityCurrentLinear_apply
 theorem symmetrizedVelocityCurrent_smul_id
     (velocity : V →ₗ[ℂ] V) (q : ℂ) :
     symmetrizedVelocityCurrent V velocity (q • LinearMap.id) = q • velocity := by
-  change _root_.LinearMap.symmetrizedProduct velocity (q • LinearMap.id) = q • velocity
+  change _root_.LinearMap.symmetrizedProduct (K := ℂ) velocity (q • LinearMap.id) = q • velocity
   exact _root_.LinearMap.symmetrizedProduct_smul_id velocity q
 
 @[simp]
