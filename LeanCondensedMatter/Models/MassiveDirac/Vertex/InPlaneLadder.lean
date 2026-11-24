@@ -160,15 +160,6 @@ def inPlaneShiftMatrix (rung : InPlaneCoefficientVector) : Matrix (Fin 2) (Fin 2
   simp [inPlaneShiftMatrix, inPlaneRotationMatrix, inPlaneLadderDeterminant]
   ring
 
-/-- Acting with `I - L` is vector subtraction by the ladder action. -/
-theorem inPlaneShiftMatrix_mulVec
-    (rung coefficients : InPlaneCoefficientVector) :
-    (inPlaneShiftMatrix rung).mulVec coefficients =
-      coefficients - inPlaneLadderAction rung coefficients := by
-  simpa [inPlaneShiftMatrix, inPlaneLadderAction] using
-    (Matrix.sub_mulVec
-      (1 : Matrix (Fin 2) (Fin 2) ℂ) (inPlaneRotationMatrix rung) coefficients)
-
 /-- The model determinant condition is exactly sufficient for the generic shifted-ladder
 endomorphism to be a unit on the represented in-plane coefficient space. -/
 theorem inPlaneLadderShift_isUnit
@@ -179,8 +170,9 @@ theorem inPlaneLadderShift_isUnit
   have hinjective : Function.Injective shift := by
     have hmatrix : Function.Injective (inPlaneShiftMatrix rung).mulVec :=
       Matrix.mulVec_injective_of_det_ne_zero (by simpa using hdet)
-    simpa only [Function.Injective, shift, inPlaneShiftMatrix_mulVec, sub_apply,
-      one_apply_eq_self, inPlaneLadderCLM_apply] using hmatrix
+    simpa only [Function.Injective, shift, inPlaneShiftMatrix, Matrix.sub_mulVec,
+      Matrix.one_mulVec, sub_apply, one_apply_eq_self, inPlaneLadderCLM_apply,
+      inPlaneLadderAction] using hmatrix
   exact ContinuousLinearMap.isUnit_iff_bijective.mpr
     ⟨hinjective, LinearMap.surjective_of_injective
       (f := shift.toLinearMap) hinjective⟩
@@ -237,6 +229,21 @@ theorem tendsto_inPlaneLadderSolvedVector
   · simpa [inPlaneLadderSolvedVector, inPlaneCoefficientVector, div_eq_mul_inv] using
       (hcoord 1).mul (hdetLimit.inv₀ hdet)
 
+/-- The explicit coefficient vector solves the two-component ladder fixed-point equation. -/
+theorem inPlaneLadderSolvedVector_fixedPoint
+    (rung : InPlaneCoefficientVector) (hdet : inPlaneLadderDeterminant rung ≠ 0) :
+    inPlaneLadderSolvedVector rung =
+      inPlaneLadderBareXSource + inPlaneLadderAction rung (inPlaneLadderSolvedVector rung) := by
+  funext direction
+  fin_cases direction
+  · simp [inPlaneLadderBareXSource, inPlaneCoefficientVector, inPlaneLadderAction_apply_x]
+    field_simp [hdet]
+    unfold inPlaneLadderDeterminant
+    ring
+  · simp [inPlaneLadderBareXSource, inPlaneCoefficientVector, inPlaneLadderAction_apply_y]
+    field_simp [hdet]
+    ring
+
 /-- The explicit two-component solution is the generic algebraically resummed ladder vertex. -/
 theorem inPlaneLadderSolvedVector_eq_resummedLadderVertex
     (rung : InPlaneCoefficientVector) (hdet : inPlaneLadderDeterminant rung ≠ 0) :
@@ -244,53 +251,10 @@ theorem inPlaneLadderSolvedVector_eq_resummedLadderVertex
       resummedLadderVertex
         (inPlaneLadderCLM rung) (inPlaneLadderShift_isUnit rung hdet)
         inPlaneLadderBareXSource := by
-  have hfixed :
-      inPlaneLadderSolvedVector rung =
-        inPlaneLadderBareXSource +
-          inPlaneLadderCLM rung (inPlaneLadderSolvedVector rung) := by
-    funext direction
-    fin_cases direction
-    · simp [inPlaneLadderBareXSource, inPlaneCoefficientVector,
-        inPlaneLadderCLM_apply, inPlaneLadderAction_apply_x]
-      field_simp [hdet]
-      unfold inPlaneLadderDeterminant
-      ring
-    · simp [inPlaneLadderBareXSource, inPlaneCoefficientVector,
-        inPlaneLadderCLM_apply, inPlaneLadderAction_apply_y]
-      field_simp [hdet]
-      ring
-  exact
-    eq_resummedLadderVertex_of_fixedPoint
-      (inPlaneLadderCLM rung) (inPlaneLadderShift_isUnit rung hdet)
-      inPlaneLadderBareXSource (inPlaneLadderSolvedVector rung) hfixed
-
-/-- The explicit coefficient vector solves `Γ = eₓ + L Γ` as a corollary of the generic resummed
-ladder fixed-point theorem. -/
-theorem inPlaneLadderSolvedVector_fixedPoint
-    (rung : InPlaneCoefficientVector) (hdet : inPlaneLadderDeterminant rung ≠ 0) :
-    inPlaneLadderSolvedVector rung =
-      inPlaneLadderBareXSource + inPlaneLadderAction rung (inPlaneLadderSolvedVector rung) := by
-  have hgeneric :=
-    resummedLadderVertex_fixedPoint
-      (inPlaneLadderCLM rung) (inPlaneLadderShift_isUnit rung hdet)
-      inPlaneLadderBareXSource
-  rw [← inPlaneLadderSolvedVector_eq_resummedLadderVertex rung hdet] at hgeneric
-  simpa only [inPlaneLadderCLM_apply] using hgeneric
-
-/-- The in-plane fixed point is unique under the same nonzero-determinant hypothesis, by generic
-ladder uniqueness. -/
-theorem inPlaneLadder_fixedPoint_unique
-    (rung : InPlaneCoefficientVector) (hdet : inPlaneLadderDeterminant rung ≠ 0)
-    (coefficients : InPlaneCoefficientVector)
-    (hfixed : coefficients =
-      inPlaneLadderBareXSource + inPlaneLadderAction rung coefficients) :
-    coefficients = inPlaneLadderSolvedVector rung := by
-  rw [inPlaneLadderSolvedVector_eq_resummedLadderVertex rung hdet]
-  exact
-    eq_resummedLadderVertex_of_fixedPoint
-      (inPlaneLadderCLM rung) (inPlaneLadderShift_isUnit rung hdet)
-      inPlaneLadderBareXSource coefficients
-      (by simpa only [inPlaneLadderCLM_apply] using hfixed)
+  exact eq_resummedLadderVertex_of_fixedPoint
+    (inPlaneLadderCLM rung) (inPlaneLadderShift_isUnit rung hdet)
+    inPlaneLadderBareXSource (inPlaneLadderSolvedVector rung)
+    (by simpa only [inPlaneLadderCLM_apply] using inPlaneLadderSolvedVector_fixedPoint rung hdet)
 
 /-- With no transverse rung mixing, the vector solution reduces to the scalar ladder factor in the
 longitudinal component and zero in the transverse component. -/
