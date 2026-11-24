@@ -168,7 +168,7 @@ private theorem twoModeFockLehmannTableResponse_eq
     have hcard : ({x ∈ ({0, 1} : Occupation (Fin 2)) | x = 0}).card = 1 := by decide
     have hcardErase :
         ({x ∈ (Finset.erase ({0, 1} : Occupation (Fin 2)) 1) | x = 0}).card = 1 := by decide
-    simp [ha, hc, map_smul, fermionSign, insertOccupation, removeOccupation, hcard, hcardErase]
+    simp [ha, hc, fermionSign, insertOccupation, removeOccupation, hcard, hcardErase]
   unfold finiteLehmannTableResponse
   rw [Fintype.sum_prod_type]
   simp_rw [hsum]
