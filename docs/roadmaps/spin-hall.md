@@ -259,6 +259,29 @@ momentum-derivative representation (with boundary/gauge conditions) is
 still needed before using the R4 Kubo identity as a proper spin Hall
 conductivity.
 
+## Finite real-space position and hopping commutator (partial R4)
+
+Rather than introduce a second lattice geometry or assume a momentum-block
+position, the existing `Analysis.DiscreteLattice` module provides
+`LatticeGeometry.directionalPosition`. It uses the physical site coordinates
+and the existing site projectors,
+
+```text
+X_i = Σ_x r_i(x) |x><x|.
+[H,X_i]_{xy} = (r_i(y) - r_i(x)) H_{xy}.
+```
+
+The latter identity is proved by
+`LatticeGeometry.lie_directionalPosition_latticeKet` for any finite
+`LocallyFiniteHopping` model and direction. This fixes the algebraic
+real-space velocity as `(i/ℏ)[H,X_i]` with the same oriented displacement
+used by geometric bond currents. It does not assert equality with the
+momentum-derivative velocity of the previously sampled clean Rashba model.
+A concrete Hermitian Rashba hopping discretization, connection to the
+existing geometric Peierls current, and the spin-displacement/contact
+response specialization remain subsequent tasks. No new generic current
+framework or new source convention is introduced.
+
 ## References
 
 See the annotated entries in [`../references.md`](../references.md) for full
