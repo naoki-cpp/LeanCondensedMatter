@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Analysis.OrderedSimplex.StrictAntiCongr
+import LeanCondensedMatter.Analysis.OrderedSimplex.Integral
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.FiberShuffleOrderedData
 
 set_option linter.style.header false
