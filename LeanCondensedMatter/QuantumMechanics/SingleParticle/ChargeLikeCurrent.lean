@@ -29,8 +29,12 @@ theorem correctedChargeCurrentFlux_eq
     (q : ℂ) :
     _root_.ConservationLaw.nestedSymmetrizedCurrentFlux velocity (q • LinearMap.id) N =
       operatorLocalCurrentPairing V N (q • velocity) := by
+  have hcorr : _root_.ConservationLaw.localizationCorrectionCurrentFlux
+      velocity (q • LinearMap.id) N = 0 := by
+    simpa only [Module.End.one_eq_id] using
+      (_root_.ConservationLaw.localizationCorrectionCurrentFlux_smul_one velocity N q)
   rw [_root_.ConservationLaw.nestedSymmetrizedCurrentFlux_eq_symmetrized_add_correction,
-    _root_.ConservationLaw.localizationCorrectionCurrentFlux_smul_one, add_zero]
+    hcorr, add_zero]
   apply LinearMap.ext
   intro α
   rw [_root_.ConservationLaw.symmetrizedCurrentFlux_apply,
