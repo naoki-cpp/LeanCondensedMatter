@@ -1,4 +1,3 @@
-import LeanCondensedMatter.Analysis.Operator.TraceClass.Positive
 import LeanCondensedMatter.Analysis.Operator.TraceClass.Trace
 import LeanCondensedMatter.Analysis.FunctionalCalculus.CFC
 import Mathlib.Analysis.InnerProductSpace.l2Space
