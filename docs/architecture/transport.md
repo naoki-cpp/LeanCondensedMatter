@@ -425,12 +425,13 @@ not expose a second trace representation to downstream consumers.
 The canonical top-level owner of all three concrete benchmark families is `Models`;
 `Transport` contains only reusable model-independent theory.
 
-The total coefficientwise complex infinite sum and its algebraic laws belong to
+The total coefficientwise infinite sum over a normed field and its algebraic laws belong to
 `Analysis.PowerSeries.CoefficientSum`. The pinned Mathlib provides the underlying norm-summable
 Cauchy-product theorems; its `PowerSeries.eval₂` requires topological nilpotence through `HasEval`,
-so it does not replace coefficientwise evaluation at arbitrary complex arguments under explicit
-summability hypotheses. Addition, subtraction, and Cauchy multiplication keep those hypotheses;
-complex constant multiplication and multiplication by X use unconditional total-sum laws.
+so it does not replace coefficientwise evaluation at arbitrary arguments under explicit
+convergence hypotheses. Addition, subtraction, constant and X multiplication compose `HasSum`
+witnesses; Cauchy multiplication additionally requires completeness and absolute summability.
+Constant and X multiplication also have unconditional total-sum laws.
 These laws do not assert convergence. The Bessel analytic Wronskian consumes them alongside the
 Bessel J/Y formal-to-analytic bridges; the generic module imports neither bridge.
 
