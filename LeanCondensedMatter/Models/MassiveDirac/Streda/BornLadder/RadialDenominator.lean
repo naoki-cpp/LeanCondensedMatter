@@ -78,21 +78,23 @@ def finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceRadialNumera
     finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumerator
       1 0 v m probeEnergy broadening disorderStrength hbar pMax * solved 0
 
-/-- The ordered `xy` finite-`η` dressed angular coefficient has one explicit common RA Born-Dyson
-denominator. -/
-private theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_y_eq_denominatorForm
+/-- The ordered `xy` radial Hall-surface integrand is the measured-`x`, source-`y` Středa radial
+response in explicit common RA Born-Dyson denominator form. -/
+theorem finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceRadialIntegrand_eq_denominatorForm
     (e v m p probeEnergy broadening disorderStrength hbar pMax : ℝ) :
-    finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient
+    finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceRadialIntegrand
         0 1 e v m p probeEnergy broadening disorderStrength hbar pMax =
       let q : ℂ := (((-e : ℝ) : ℂ)) * (((v : ℝ) : ℂ));
-      -(((4 * Real.pi : ℝ) : ℂ)) * q ^ 2 *
-        (finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct
-          v m p probeEnergy broadening disorderStrength hbar pMax)⁻¹ *
-        finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceRadialNumerator
-          v m probeEnergy broadening disorderStrength hbar pMax := by
+      (p : ℂ) *
+        (-(((4 * Real.pi : ℝ) : ℂ)) * q ^ 2 *
+          (finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct
+            v m p probeEnergy broadening disorderStrength hbar pMax)⁻¹ *
+          finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceRadialNumerator
+            v m probeEnergy broadening disorderStrength hbar pMax) := by
+  rw [finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceRadialIntegrand_eq_radialCoefficient]
+  apply congrArg (fun z : ℂ => (p : ℂ) * z)
   calc
-    finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient
-        0 1 e v m p probeEnergy broadening disorderStrength hbar pMax =
+    _ =
       (let q : ℂ := (((-e : ℝ) : ℂ)) * (((v : ℝ) : ℂ));
        let solved :=
          finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentCoefficientVector
@@ -124,22 +126,6 @@ private theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngu
       dsimp only
       push_cast
       ring
-
-/-- The ordered `xy` radial Hall-surface integrand is the measured-`x`, source-`y` Středa radial
-response in explicit common RA Born-Dyson denominator form. -/
-theorem finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceRadialIntegrand_eq_denominatorForm
-    (e v m p probeEnergy broadening disorderStrength hbar pMax : ℝ) :
-    finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceRadialIntegrand
-        0 1 e v m p probeEnergy broadening disorderStrength hbar pMax =
-      let q : ℂ := (((-e : ℝ) : ℂ)) * (((v : ℝ) : ℂ));
-      (p : ℂ) *
-        (-(((4 * Real.pi : ℝ) : ℂ)) * q ^ 2 *
-          (finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct
-            v m p probeEnergy broadening disorderStrength hbar pMax)⁻¹ *
-          finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceRadialNumerator
-            v m probeEnergy broadening disorderStrength hbar pMax) := by
-  rw [finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceRadialIntegrand_eq_radialCoefficient,
-    finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_y_eq_denominatorForm]
 
 end
 
