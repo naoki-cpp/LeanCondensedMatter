@@ -1314,8 +1314,6 @@ private theorem externalSubsetOrderIso_comp_of_eq
   subst T
   exact externalSubsetOrderIso_comp S heven B hB hT i
 
-set_option maxHeartbeats 4000000 in
--- The connected series of a source subset has an index depending on its cardinality.
 open Classical in
 /-- The physical moment of any nonempty even external source subset has
 an explicit signed connected-partition expansion on its *canonically
@@ -1344,15 +1342,13 @@ theorem externalSubsetMomentSeries_eq_signedConnectedSum_localIndices
         else 0 := by
   classical
   have hpositive : 0 < 2 * (S.card / 2) := by
-    have hsCard : 0 < S.card :=
-      Finset.card_pos.mpr (Finset.nonempty_iff_ne_empty.mpr hS)
-    obtain ⟨k, hk⟩ := heven
-    omega
-  have hfull := vacuumFreeExternalInsertionDysonSeries_eq_sum_evenPartitionConnectedSeries
+    rw [Nat.two_mul_div_two_of_even heven]
+    exact Finset.card_pos.mpr (Finset.nonempty_iff_ne_empty.mpr hS)
+  simp only [externalSubsetMomentSeries, hS, heven, dite_eq_left]
+  exact vacuumFreeExternalInsertionDysonSeries_eq_sum_evenPartitionConnectedSeries
     (anchor := (⟨0, hpositive⟩ : Fin (2 * (S.card / 2))))
     ε β hβ g (evenExternalSubsetLabels labels S heven)
       (evenExternalSubsetTimes times S heven)
-  simpa [externalSubsetMomentSeries, hS, heven] using hfull
 
 /-- The source-subset moment is the vacuum-normalized *physical* vertex-Dyson
 correlator for every nonempty even external subset. Multiplication by the
