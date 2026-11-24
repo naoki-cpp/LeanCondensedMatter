@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Analysis.OrderedSimplex.MeasurableRegularityBounds
+import LeanCondensedMatter.Analysis.OrderedSimplex.MeasurableRegularity
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.AbsolutelyContinuousFun
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.LebesgueDifferentiationThm
 
