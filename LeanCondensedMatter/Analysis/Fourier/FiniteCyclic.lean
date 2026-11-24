@@ -25,7 +25,7 @@ theorem orthonormal_normalized_family {G ι : Type*} [AddCommGroup G] [Fintype G
   rw [orthonormal_iff_ite]
   intro q r
   have h := AddChar.wInner_cWeight_eq_boole (χ q) (χ r)
-  rw [hχ.eq_iff] at h
+  simp only [hχ.eq_iff] at h
   rw [← h]
   have hsq : (Real.sqrt (Fintype.card G) : ℂ) ^ 2 = Fintype.card G := by
     exact_mod_cast Real.sq_sqrt (Nat.cast_nonneg (Fintype.card G))
@@ -60,7 +60,8 @@ theorem orthonormal_fourierMode : Orthonormal ℂ (fourierMode (N := N)) := by
     apply injective_stdAddChar
     simpa only [AddChar.mulShift_apply, mul_one] using
       congrArg (fun ψ : AddChar (ZMod N) ℂ => ψ 1) h
-  simpa only [fourierMode, ZMod.card, AddChar.mulShift_apply] using
+  unfold fourierMode
+  simpa only [ZMod.card, AddChar.mulShift_apply] using
     AddChar.orthonormal_normalized_family (fun q : ZMod N => stdAddChar.mulShift q) hχ
 
 /-- The normalized Fourier modes as a complete orthonormal basis. -/
