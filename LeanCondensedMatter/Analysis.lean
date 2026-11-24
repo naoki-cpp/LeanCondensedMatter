@@ -21,7 +21,6 @@ import LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.HypergeometricSeries
 import LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.ThreeTermRecurrence
 import LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.RadialMoments
 import LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.WronskianMoments
-import LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.FormalAnalyticBridgeJ
 import LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.AnalyticWronskian
 import LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.Y0Series
 import LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.Y1Series
