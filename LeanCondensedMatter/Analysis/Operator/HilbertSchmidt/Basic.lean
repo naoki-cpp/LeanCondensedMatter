@@ -382,8 +382,11 @@ theorem summable_norm_inner_apply_and_tsum_le {S T : H →L[ℂ] H}
       (fun _ => norm_nonneg _) (fun _ => norm_nonneg _)
       (by simpa only [Real.rpow_two, Real.sq_sqrt hS.normSq_nonneg] using hS.hasSum_norm_sq_apply d)
       (by simpa only [Real.rpow_two, Real.sq_sqrt hT.normSq_nonneg] using hT.hasSum_norm_sq_apply d)
-  have hle (i : ι) := norm_inner_le_norm (S (d i)) (T (d i))
-  have hinner := Summable.of_nonneg_of_le (fun i => norm_nonneg _) hle hsum.summable
+  have hle (i : ι) : ‖inner ℂ (S (d i)) (T (d i))‖ ≤
+      ‖S (d i)‖ * ‖T (d i)‖ :=
+    norm_inner_le_norm (S (d i)) (T (d i))
+  have hinner : Summable (fun i => ‖inner ℂ (S (d i)) (T (d i))‖) :=
+    Summable.of_nonneg_of_le (fun i => norm_nonneg _) hle hsum.summable
   rw [← hsum.tsum_eq] at hC
   exact ⟨hinner, (hinner.tsum_le_tsum hle hsum.summable).trans hC⟩
 
