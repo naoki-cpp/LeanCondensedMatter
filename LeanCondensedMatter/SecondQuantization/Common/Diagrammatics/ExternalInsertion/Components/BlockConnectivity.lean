@@ -225,48 +225,6 @@ theorem ExternalInsertionBlockLayout.assembleDiagram_reachable_iff_same_block
     subst C
     exact ((hconnected B) u w').map (layout.blockGraphHom S F B)
 
-/-- The actual physical connected component containing an external
-insertion is *exactly* the image of its prescribed block's local
-vertices under the assembly vertex equivalence. This includes every
-quartic vertex, not only the external legs, and does not refer to a
-relabelled diagram or to an assumed component decomposition. -/
-theorem ExternalInsertionBlockLayout.assembleDiagram_componentBlock_external
-    {ExternalLabel InternalLabel : Type*}
-    (layout : ExternalInsertionBlockLayout E N) (S : Finset (Fin N))
-    (F : ∀ B : layout.partition.parts,
-      ExternalInsertionDiagram ExternalLabel InternalLabel
-        ((B : Finset (Fin (2 * E))).card / 2) N (layout.interactionBlock S B))
-    (hconnected : ∀ B, (F B).vertexGraph.Preconnected)
-    (e : Fin (2 * E)) :
-    (layout.assembleDiagram S F).vertexGraph.componentBlock (Sum.inl e) =
-      (Finset.univ : Finset
-        (ExternalInsertionVertex ((layout.sourceEquiv e).1.1.card / 2)
-          (layout.interactionBlock S (layout.sourceEquiv e).1))).image
-        (fun v => (layout.vertexEquiv S).symm ⟨(layout.sourceEquiv e).1, v⟩) := by
-  classical
-  let B := (layout.sourceEquiv e).1
-  let d := layout.assembleDiagram S F
-  ext v
-  rw [d.vertexGraph.mem_componentBlock]
-  rw [layout.assembleDiagram_reachable_iff_same_block S F hconnected]
-  simp only [layout.vertexEquiv_external, Finset.mem_image,
-    Finset.mem_univ, true_and]
-  constructor
-  · intro h
-    rcases hq : layout.vertexEquiv S v with ⟨C, w⟩
-    have hCB : C = B := by
-      simpa only [hq] using h
-    subst C
-    refine ⟨w, ?_⟩
-    calc
-      (layout.vertexEquiv S).symm ⟨B, w⟩ =
-          (layout.vertexEquiv S).symm (layout.vertexEquiv S v) :=
-        congrArg (layout.vertexEquiv S).symm hq.symm
-      _ = v := (layout.vertexEquiv S).symm_apply_apply v
-  · rintro ⟨w, hw⟩
-    subst v
-    simpa only [Equiv.apply_symm_apply]
-
 /-- The block selected by the increasing source-slot equivalence is
 precisely the part of the prescribed partition containing that source. -/
 @[simp]
@@ -326,7 +284,7 @@ theorem ExternalInsertionBlockLayout.externalComponentPartition_assembleDiagram
 
 /-- The physical connected component's external sector is exactly
 the prescribed source-partition block. Together with the full-vertex
-component identity, this identifies both sectors of the assembled
+component identity, this identifies the external sector of the assembled
 component without changing the fermionic source order. -/
 theorem ExternalInsertionBlockLayout.assembleDiagram_componentExternalSector_external
     {ExternalLabel InternalLabel : Type*}
@@ -1004,17 +962,6 @@ noncomputable def ExternalInsertionDiagram.externalBlockLayout
       ⟨(externalComponentPartition d.vertexGraph).part anchor,
         (externalComponentPartition d.vertexGraph).part_mem.2
           (Finset.mem_univ anchor)⟩
-
-/-- The constructed layout uses the exact physical external-component
-partition, with no coarsening or formal proxy partition. -/
-@[simp]
-theorem ExternalInsertionDiagram.externalBlockLayout_partition
-    {ExternalLabel InternalLabel : Type*} {S : Finset (Fin N)}
-    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
-    (hVac : HasNoVacuumComponent d.vertexGraph)
-    (anchor : Fin (2 * E)) :
-    (d.externalBlockLayout hVac anchor).partition =
-      externalComponentPartition d.vertexGraph := rfl
 
 /-- On active interaction vertices the layout assignment is the unique
 actual connected component, identified with its external block. -/
