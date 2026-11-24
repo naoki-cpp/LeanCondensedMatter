@@ -29,34 +29,34 @@ variable (V : Type*) [AddCommGroup V] [Module ℂ V]
 localized one-form operator to commute with the transported quantity. -/
 theorem symmetrizedVelocityTransport_decomposition
     (localizer velocity m : V →ₗ[ℂ] V) :
-    _root_.LinearMap.symmetrizedProduct
-        (_root_.LinearMap.symmetrizedProduct localizer velocity) m =
-      _root_.LinearMap.symmetrizedProduct localizer
+    _root_.LinearMap.symmetrizedProduct (K := ℂ)
+        (_root_.LinearMap.symmetrizedProduct (K := ℂ) localizer velocity) m =
+      _root_.LinearMap.symmetrizedProduct (K := ℂ) localizer
         (symmetrizedVelocityCurrent V velocity m) +
       (1 / 4 : ℂ) • ⁅velocity, ⁅localizer, m⁆⁆ := by
   change
-    _root_.LinearMap.symmetrizedProduct
-        (_root_.LinearMap.symmetrizedProduct localizer velocity) m =
-      _root_.LinearMap.symmetrizedProduct localizer
-        (_root_.LinearMap.symmetrizedProduct velocity m) +
+    _root_.LinearMap.symmetrizedProduct (K := ℂ)
+        (_root_.LinearMap.symmetrizedProduct (K := ℂ) localizer velocity) m =
+      _root_.LinearMap.symmetrizedProduct (K := ℂ) localizer
+        (_root_.LinearMap.symmetrizedProduct (K := ℂ) velocity m) +
       (1 / 4 : ℂ) • ⁅velocity, ⁅localizer, m⁆⁆
-  exact _root_.LinearMap.symmetrizedProduct_nested localizer velocity m
+  exact _root_.LinearMap.symmetrizedProduct_nested (K := ℂ) localizer velocity m
 
 /-- If localization commutes with the transported quantity, the correction vanishes and the
 transport is represented by the symmetrized velocity current density. -/
 theorem symmetrizedVelocityTransport_eq_of_localizer_commutes
     (localizer velocity m : V →ₗ[ℂ] V)
     (hcomm : ⁅localizer, m⁆ = 0) :
-    _root_.LinearMap.symmetrizedProduct
-        (_root_.LinearMap.symmetrizedProduct localizer velocity) m =
-      _root_.LinearMap.symmetrizedProduct localizer
+    _root_.LinearMap.symmetrizedProduct (K := ℂ)
+        (_root_.LinearMap.symmetrizedProduct (K := ℂ) localizer velocity) m =
+      _root_.LinearMap.symmetrizedProduct (K := ℂ) localizer
         (symmetrizedVelocityCurrent V velocity m) := by
   change
-    _root_.LinearMap.symmetrizedProduct
-        (_root_.LinearMap.symmetrizedProduct localizer velocity) m =
-      _root_.LinearMap.symmetrizedProduct localizer
-        (_root_.LinearMap.symmetrizedProduct velocity m)
-  exact _root_.LinearMap.symmetrizedProduct_nested_eq_of_commutes
+    _root_.LinearMap.symmetrizedProduct (K := ℂ)
+        (_root_.LinearMap.symmetrizedProduct (K := ℂ) localizer velocity) m =
+      _root_.LinearMap.symmetrizedProduct (K := ℂ) localizer
+        (_root_.LinearMap.symmetrizedProduct (K := ℂ) velocity m)
+  exact _root_.LinearMap.symmetrizedProduct_nested_eq_of_commutes (K := ℂ)
     localizer velocity m hcomm
 
 /-- The symmetrized velocity current supplies a local current-density representation whenever the
