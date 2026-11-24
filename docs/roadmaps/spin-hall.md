@@ -368,6 +368,33 @@ position operator, Fourier equivalence or physical spin contact response
 is asserted. Physical square-lattice parameters take positive mass,
 spacing and ℏ, though Hermiticity itself requires no positivity.
 
+## Unconditional finite real-space spin-displacement identity (partial R4)
+
+The common `QuantumTheory.ConservationLaw.heisenbergEvolution_symmetrizedProduct`
+is obtained from the existing symmetric-product commutator rule.
+`Fermionic.Transport.boundedHeisenbergSymmetrizedProduct_eq` lifts it through
+the existing bounded one-body and symmetrized-current maps, forming the
+symmetric products **before** second quantization. The earlier momentum
+spin-displacement proofs consume these shared results rather than repeat
+their algebra.
+
+`Models.RashbaExchange.SpinDisplacementBridge.realSpaceRashbaSpinDisplacement_fock_decomposition`
+now specializes this to the actual `realSpaceRashbaHopping` Hamiltonian and
+`(spinfulGeometry geometry).directionalPosition direction` on an arbitrary
+finite planar lattice. With `v_i = δ_H X_i` and `τ_a = δ_H S_a` it proves
+
+```text
+dΓ(δ_H({X_i,S_a}/2)) = J_conventional + dΓ({X_i,τ_a}/2).
+```
+
+There is no separate hypothesis identifying a momentum derivative with a
+position commutator; the velocity is derived from the same real-space
+Hamiltonian. The statement is a finite global spin-displacement operator
+identity, not a local source-free continuity law. A physical interpretation
+takes positive ℏ, and the explicit source-dependent contact variation,
+real-space mixed retarded response, stationary benchmark and bulk/DC
+limits remain separate tasks.
+
 ## References
 
 See the annotated entries in [`../references.md`](../references.md) for full

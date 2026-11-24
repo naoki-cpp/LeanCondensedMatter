@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Models.RashbaExchange.FiniteMomentumSpinResponse
+import LeanCondensedMatter.Models.RashbaExchange.RealSpaceHopping
 import LeanCondensedMatter.QuantumMechanics.SingleParticle.LocalizedTransport
 
 set_option linter.style.header false
@@ -97,23 +98,9 @@ theorem finiteRashbaMomentumSpinDisplacement_heisenberg_decomposition
         (heisenbergEvolution (SpinfulSite Grid →₀ ℂ) hbar
           (finiteRashbaMomentumHamiltonian params momentum)
           (spinOneBodyLinear spinScale component)) := by
-  rw [finiteRashbaMomentumSpinDisplacement_balance]
-  let H := finiteRashbaMomentumHamiltonian params momentum
-  let S := spinOneBodyLinear (Site := Grid) spinScale component
-  let c := heisenbergScale hbar
-  change c • LinearMap.symmetrizedProduct (K := ℂ) ⁅H, position⁆ S +
-      c • LinearMap.symmetrizedProduct (K := ℂ) position ⁅H, S⁆ =
-    LinearMap.symmetrizedProduct (K := ℂ) (c • ⁅H, position⁆) S +
-      LinearMap.symmetrizedProduct (K := ℂ) position (c • ⁅H, S⁆)
-  have hleft :=
-    (((LinearMap.symmetrizedProductBilinear (K := ℂ)
-      ((SpinfulSite Grid →₀ ℂ) →ₗ[ℂ] (SpinfulSite Grid →₀ ℂ))).flip S).map_smul
-      c ⁅H, position⁆).symm
-  have hright :=
-    ((LinearMap.symmetrizedProductBilinear (K := ℂ)
-      ((SpinfulSite Grid →₀ ℂ) →ₗ[ℂ] (SpinfulSite Grid →₀ ℂ)) position).map_smul
-      c ⁅H, S⁆).symm
-  exact congrArg₂ (· + ·) hleft hright
+  exact heisenbergEvolution_symmetrizedProduct (SpinfulSite Grid →₀ ℂ)
+    hbar (finiteRashbaMomentumHamiltonian params momentum)
+    position (spinOneBodyLinear spinScale component)
 
 /-- If an independently justified position representation has the *same*
 Heisenberg velocity as the Rashba momentum derivative, the spin-displacement
@@ -164,15 +151,10 @@ theorem finiteRashbaMomentumSpinDisplacement_fock_decomposition
             (heisenbergEvolution (SpinfulSite Grid →₀ ℂ) hbar
               (finiteRashbaMomentumHamiltonian params momentum)
               (spinOneBodyLinear spinScale component))) := by
-  rw [finiteRashbaMomentumSpinDisplacement_eq_spinCurrent_add_torque
-    params momentum hbar spinScale component direction position hvelocity]
-  change boundedOneBodyOperator (_ + _) =
-    boundedOneBodyOperator
-        (LinearMap.symmetrizedProduct (K := ℂ)
-          (finiteRashbaMomentumVelocity params momentum direction)
-          (spinOneBodyLinear spinScale component)) +
-      boundedOneBodyOperator _
-  exact map_add (boundedOneBodyOperator (Site := SpinfulSite Grid)).toLinearMap _ _
+  rw [← hvelocity]
+  exact SecondQuantization.Fermionic.Transport.boundedHeisenbergSymmetrizedProduct_eq
+    hbar (finiteRashbaMomentumHamiltonian params momentum) position
+    (spinOneBodyLinear spinScale component)
 
 /-- The physical spin-displacement derivative, supplied at the same momentum
 grid as the conventional Rashba spin/charge channel, is a candidate measured
@@ -271,6 +253,36 @@ theorem finiteRashbaMomentumSpinDisplacement_retardedKernel_eq_conventional_add_
     params momentum hbar spinScale component measured position hvelocity]
   exact (QuantumTheory.LinearResponse.retardedSusceptibilityMeasuredLinearMap
     U hbar expectation B t s).map_add J T
+
+/-! ## Real-space proper-current bridge -/
+
+/-- On an arbitrary finite planar Rashba lattice, the spin-displacement
+derivative is the conventional spin current plus torque dipole, with position
+and velocity supplied by the same physical geometry and hopping Hamiltonian.
+No momentum-derivative/position compatibility hypothesis is required.
+This is a global operator identity, not a local source-free continuity law. -/
+theorem realSpaceRashbaSpinDisplacement_fock_decomposition
+    {Site : Type*} [LinearOrder Site] [Fintype Site]
+    (geometry : LatticeGeometry Site (ℝ × ℝ))
+    (bond : Site → Site → Option (ℝ × ℝ))
+    (onsite exchange : Site → ℝ)
+    (direction : (ℝ × ℝ) →ₗ[ℝ] ℝ)
+    (hbar spinScale : ℝ) (component : QuantumTheory.SpinHalf.SpinSpace) :
+    let H := (realSpaceRashbaHopping geometry bond onsite exchange).operator
+    let X := (spinfulGeometry geometry).directionalPosition direction
+    let S := spinOneBodyLinear (Site := Site) spinScale component
+    boundedOneBodyOperator
+        (heisenbergEvolution (SpinfulSite Site →₀ ℂ) hbar H
+          (LinearMap.symmetrizedProduct (K := ℂ) X S)) =
+      SecondQuantization.Fermionic.Transport.boundedSpinCurrentLinear
+          (heisenbergEvolution (SpinfulSite Site →₀ ℂ) hbar H X) spinScale component +
+        boundedOneBodyOperator
+          (LinearMap.symmetrizedProduct (K := ℂ) X
+            (heisenbergEvolution (SpinfulSite Site →₀ ℂ) hbar H S)) := by
+  exact SecondQuantization.Fermionic.Transport.boundedHeisenbergSymmetrizedProduct_eq
+    hbar (realSpaceRashbaHopping geometry bond onsite exchange).operator
+    ((spinfulGeometry geometry).directionalPosition direction)
+    (spinOneBodyLinear spinScale component)
 
 end
 end QuantumTheory.Models.RashbaExchange

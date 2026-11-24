@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Analysis.Operator.SymmetrizedProduct
+import LeanCondensedMatter.QuantumTheory.ConservationLaw.HeisenbergEvolution
 import LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.Bounded
 
 set_option linter.style.header false
@@ -26,6 +26,7 @@ namespace Transport
 attribute [local instance 100] LieRing.ofAssociativeRing
 
 open _root_.SecondQuantization.Fermionic.Lattice
+open QuantumTheory.ConservationLaw
 
 noncomputable section
 
@@ -40,6 +41,22 @@ noncomputable def boundedSymmetrizedVelocityCurrentLinear
   (boundedOneBodyOperator (Site := Site)).toLinearMap.comp
     (_root_.LinearMap.symmetrizedProductBilinear (K := ℂ) ((Site →₀ ℂ) →ₗ[ℂ] (Site →₀ ℂ)) velocity)
 
+
+/-- The derivative of a symmetrically localized one-body quantity lifts to
+the conventional velocity current plus the position-weighted source term.
+The symmetric product is formed before second quantization; no multiplicative
+property of the one-body Fock lift is assumed. -/
+theorem boundedHeisenbergSymmetrizedProduct_eq
+    (hbar : ℝ) (H X m : (Site →₀ ℂ) →ₗ[ℂ] (Site →₀ ℂ)) :
+    boundedOneBodyOperator
+        (heisenbergEvolution (Site →₀ ℂ) hbar H
+          (LinearMap.symmetrizedProduct (K := ℂ) X m)) =
+      boundedSymmetrizedVelocityCurrentLinear
+          (heisenbergEvolution (Site →₀ ℂ) hbar H X) m +
+        boundedSymmetrizedVelocityCurrentLinear X
+          (heisenbergEvolution (Site →₀ ℂ) hbar H m) := by
+  rw [heisenbergEvolution_symmetrizedProduct]
+  exact map_add (boundedOneBodyOperator (Site := Site)).toLinearMap _ _
 
 end
 end Transport
