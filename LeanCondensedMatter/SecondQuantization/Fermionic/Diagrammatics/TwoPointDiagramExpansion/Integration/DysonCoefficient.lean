@@ -110,9 +110,9 @@ theorem twoPointDysonCoefficient_eq_shiftedDispersion {n : ℕ}
         twoPointDysonCoefficient (n := n) (fun k => ε k - μ) β 0 g i j τ τ' := by
   unfold twoPointDysonCoefficient
   simp only [sub_zero]
-  rw [mul_left_comm (twoPointChemicalPotentialFactor μ τ τ') ((-1 : ℂ) ^ n),
-    ← intervalIntegral.orderedSimplexIntegral_smul]
+  rw [mul_left_comm (twoPointChemicalPotentialFactor μ τ τ') ((-1 : ℂ) ^ n)]
   apply congrArg (fun z : ℂ => (-1 : ℂ) ^ n * z)
+  rw [← intervalIntegral.orderedSimplexIntegral_smul]
   apply intervalIntegral.orderedSimplexIntegral_congr
   intro σ
   rw [Finset.mul_sum]
