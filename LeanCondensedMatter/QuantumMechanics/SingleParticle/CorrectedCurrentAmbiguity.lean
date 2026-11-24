@@ -35,7 +35,7 @@ theorem exists_current_eq_symmetrized_add_correction_add_invisible
     (R : _root_.ConservationLaw.DifferentialCurrentRepresentation d
       (heisenbergTransportFunctional V ℏ h M m)) :
     ∃ K : OneForm →ₗ[ℂ] (V →ₗ[ℂ] V),
-      _root_.ConservationLaw.DifferentialCurrentInvisible d K ∧
+      K.comp d = 0 ∧
         R.current =
           (_root_.ConservationLaw.symmetrizedCurrentFlux V velocity m N +
             _root_.ConservationLaw.localizationCorrectionCurrentFlux V velocity m N) + K := by

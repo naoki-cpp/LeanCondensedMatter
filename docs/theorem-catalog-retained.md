@@ -210,6 +210,7 @@ using a zero-consumer signal as grounds for changing its retention.
 - `QuantumTheory.Transport.FiniteDisorderEnsemble.retardedAdvancedLadderCLM_apply` — canonical
   evaluation rule identifying the bundled retarded-advanced ladder action with the physical
   covariance insertion `C₂(Gᴿ Γ Gᴬ)`; it is the stable simplification boundary for the ladder API.
+- `ConservationLaw.localCurrentDensity_unique_of_separates` — Local current-density uniqueness when the paired differential-test map is injective; this is a physical identifiability criterion, not an unconditional locality or uniqueness claim.
 - `QuantumMechanics.SingleParticle.currentEquivalent_nestedSymmetrizedCurrentFlux` — canonical
   corrected-current equivalence theorem: any full current representing the intrinsic transport is
   equivalent on exact differentials to the canonical nested current flux.
