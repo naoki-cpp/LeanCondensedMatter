@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Combinatorics.Common.FintypeProduct
 import LeanCondensedMatter.Combinatorics.SetPartition.FinpartitionProduct
 import LeanCondensedMatter.Combinatorics.SetPartition.GraphComponents
 import Mathlib.Data.Finset.Image

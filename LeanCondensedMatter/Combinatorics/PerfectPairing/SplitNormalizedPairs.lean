@@ -138,34 +138,22 @@ theorem Pairing.prod_pairs_ofSplit
       (∏ pr ∈ P.pairs, leftValue pr.1 pr.2) *
       ∏ pr ∈ Q.pairs, rightValue pr.1 pr.2 := by
   classical
-  let split := Pairing.ofSplitNormalizedPairEquiv e P Q
   calc
-    _ = ∏ pr : (Pairing.ofSplit e P Q).NormalizedPair,
-          value pr.1.1 pr.1.2 :=
-      Finset.prod_subtype _ (fun _ => Iff.rfl) _
     _ = ∏ pr : P.NormalizedPair ⊕ Q.NormalizedPair,
-          value (split pr).1.1 (split pr).1.2 :=
-      (Equiv.prod_comp split (fun pr => value pr.1.1 pr.1.2)).symm
-    _ = (∏ pr : P.NormalizedPair,
-          value (Pairing.ofSplitNormalizedPairEquiv e P Q (Sum.inl pr)).1.1
-            (Pairing.ofSplitNormalizedPairEquiv e P Q (Sum.inl pr)).1.2) *
-        ∏ pr : Q.NormalizedPair,
-          value (Pairing.ofSplitNormalizedPairEquiv e P Q (Sum.inr pr)).1.1
-            (Pairing.ofSplitNormalizedPairEquiv e P Q (Sum.inr pr)).1.2 :=
-      Fintype.prod_sum_type _
-    _ = (∏ pr : P.NormalizedPair, leftValue pr.1.1 pr.1.2) *
-        ∏ pr : Q.NormalizedPair, rightValue pr.1.1 pr.1.2 := by
-      congr 1
-      · apply Fintype.prod_congr
-        intro pr
-        exact hleft pr
-      · apply Fintype.prod_congr
-        intro pr
-        exact hright pr
+        Sum.elim (fun p => leftValue p.1.1 p.1.2)
+          (fun q => rightValue q.1.1 q.1.2) pr := by
+      apply (Pairing.ofSplit e P Q).prod_pairs_eq_prod_of_equiv
+        (Pairing.ofSplitNormalizedPairEquiv e P Q) value
+      intro pr
+      cases pr with
+      | inl p => exact hleft p
+      | inr q => exact hright q
     _ = _ := by
-      rw [← Finset.prod_subtype P.pairs (fun _ => Iff.rfl)
-        (fun pr => leftValue pr.1 pr.2),
-        ← Finset.prod_subtype Q.pairs (fun _ => Iff.rfl)
-        (fun pr => rightValue pr.1 pr.2)]
+      rw [Fintype.prod_sum_type]
+      exact congrArg₂ (· * ·)
+        (Finset.prod_subtype P.pairs (fun _ => Iff.rfl)
+          (fun pr => leftValue pr.1 pr.2)).symm
+        (Finset.prod_subtype Q.pairs (fun _ => Iff.rfl)
+          (fun pr => rightValue pr.1 pr.2)).symm
 
 end Combinatorics

@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Combinatorics.Common.FintypeProduct
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumComponents
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentRestriction
 
