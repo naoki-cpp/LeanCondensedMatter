@@ -25,20 +25,19 @@ noncomputable def normSq {T : H →L[ℂ] H} (hT : IsHilbertSchmidt T) : ℝ :=
   let d : HilbertBasis w ℂ H := Classical.choose hw
   ∑' i, ‖T (d i)‖ ^ 2
 
-/-- The squared Hilbert--Schmidt norm is the square-norm sum in every Hilbert basis. -/
-theorem normSq_eq_tsum_norm_sq_apply {T : H →L[ℂ] H} (hT : IsHilbertSchmidt T)
-    {ι : Type*} (d : HilbertBasis ι ℂ H) :
-    hT.normSq = ∑' i, ‖T (d i)‖ ^ 2 := by
-  unfold normSq
-  exact (summable_norm_sq_apply_and_tsum_eq _ d T (hT.summable_norm_sq_apply _)).2.symm
-
 /-- The square-norm family in every Hilbert basis sums to the canonical Hilbert--Schmidt norm
 square. -/
 theorem hasSum_norm_sq_apply {T : H →L[ℂ] H} (hT : IsHilbertSchmidt T)
     {ι : Type*} (d : HilbertBasis ι ℂ H) :
     HasSum (fun i => ‖T (d i)‖ ^ 2) hT.normSq := by
-  rw [hT.normSq_eq_tsum_norm_sq_apply d]
-  exact (hT.summable_norm_sq_apply d).hasSum
+  unfold normSq
+  exact hasSum_norm_sq_apply_of_hasSum _ d T (hT.summable_norm_sq_apply _).hasSum
+
+/-- The squared Hilbert--Schmidt norm is the square-norm sum in every Hilbert basis. -/
+theorem normSq_eq_tsum_norm_sq_apply {T : H →L[ℂ] H} (hT : IsHilbertSchmidt T)
+    {ι : Type*} (d : HilbertBasis ι ℂ H) :
+    hT.normSq = ∑' i, ‖T (d i)‖ ^ 2 :=
+  (hT.hasSum_norm_sq_apply d).tsum_eq.symm
 
 omit [CompleteSpace H] in
 /-- The squared Hilbert--Schmidt norm is nonnegative. -/
@@ -68,35 +67,19 @@ theorem normSq_pos {T : H →L[ℂ] H} (hT : IsHilbertSchmidt T) (hne : T ≠ 0)
 theorem normSq_adjoint {T : H →L[ℂ] H} (hT : IsHilbertSchmidt T) :
     (isHilbertSchmidt_adjoint hT).normSq = hT.normSq := by
   obtain ⟨w, d, -⟩ := exists_hilbertBasis (𝕜 := ℂ) (E := H)
-  rw [(isHilbertSchmidt_adjoint hT).normSq_eq_tsum_norm_sq_apply d, hT.normSq_eq_tsum_norm_sq_apply d]
-  exact (summable_norm_sq_adjoint_apply_and_tsum_eq d d T
-    (hT.summable_norm_sq_apply d)).2
+  exact ((isHilbertSchmidt_adjoint hT).hasSum_norm_sq_apply d).unique
+    (hasSum_norm_sq_adjoint_apply d d T (hT.hasSum_norm_sq_apply d))
 
 /-- Left composition by a bounded operator increases the squared Hilbert--Schmidt norm by at most
 the square of the operator norm. -/
 theorem normSq_comp_left_le (hT : IsHilbertSchmidt T) (B : H →L[ℂ] H) :
     (isHilbertSchmidt_comp_left B hT).normSq ≤ ‖B‖ ^ 2 * hT.normSq := by
   obtain ⟨w, d, -⟩ := exists_hilbertBasis (𝕜 := ℂ) (E := H)
-  rw [(isHilbertSchmidt_comp_left B hT).normSq_eq_tsum_norm_sq_apply d,
-    hT.normSq_eq_tsum_norm_sq_apply d]
-  have hTsum : Summable (fun i => ‖T (d i)‖ ^ 2) :=
-    hT.summable_norm_sq_apply d
-  have hBTsum : Summable (fun i => ‖(B * T) (d i)‖ ^ 2) :=
-    (isHilbertSchmidt_comp_left B hT).summable_norm_sq_apply d
-  have hscaled : Summable (fun i => ‖B‖ ^ 2 * ‖T (d i)‖ ^ 2) :=
-    hTsum.mul_left (‖B‖ ^ 2)
-  calc
-    (∑' i, ‖(B * T) (d i)‖ ^ 2) ≤ ∑' i, ‖B‖ ^ 2 * ‖T (d i)‖ ^ 2 := by
-      exact hBTsum.tsum_le_tsum (fun i => by
-        have hle : ‖(B * T) (d i)‖ ≤ ‖B‖ * ‖T (d i)‖ := by
-          rw [mul_apply_eq_comp]
-          exact B.le_opNorm (T (d i))
-        calc
-          ‖(B * T) (d i)‖ ^ 2 ≤ (‖B‖ * ‖T (d i)‖) ^ 2 :=
-            pow_le_pow_left₀ (norm_nonneg _) hle 2
-          _ = ‖B‖ ^ 2 * ‖T (d i)‖ ^ 2 := by ring) hscaled
-    _ = ‖B‖ ^ 2 * ∑' i, ‖T (d i)‖ ^ 2 := by
-      rw [tsum_mul_left]
+  refine hasSum_le (fun i => ?_)
+    ((isHilbertSchmidt_comp_left B hT).hasSum_norm_sq_apply d)
+    ((hT.hasSum_norm_sq_apply d).mul_left (‖B‖ ^ 2))
+  rw [mul_apply_eq_comp, ← mul_pow]
+  exact pow_le_pow_left₀ (norm_nonneg _) (B.le_opNorm (T (d i))) 2
 
 /-- Right composition by a bounded operator increases the squared Hilbert--Schmidt norm by at most
 the square of the operator norm. -/
