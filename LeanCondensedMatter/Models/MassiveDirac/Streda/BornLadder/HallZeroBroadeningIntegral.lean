@@ -111,7 +111,7 @@ private theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMome
       exact hpointwise p
     _ = _ := by
       rw [hActionEq] <;>
-        simp only [q, pref, solved, radialRung, finiteBroadeningOrderedXYMomentumEndpointForm,
+        simp only [inPlaneLadderAction_apply_y, q, pref, solved, radialRung, finiteBroadeningOrderedXYMomentumEndpointForm,
           finiteCutoffContinuumBornDysonCurrentRungVector,
           finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficient]
 
