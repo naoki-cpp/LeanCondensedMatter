@@ -113,9 +113,7 @@ theorem interbandPoleRegularFactor_zero_im_eq_neg_chargeSq_berryCurvature
       (0, 0)).im =
       -(params.signedCharge ^ 2 * berryCurvature params band px py) := by
   rw [interbandPoleRegularFactor_zero]
-  have hgap : interbandEnergyGap params band px py ≠ 0 :=
-    interbandEnergyGap_ne_zero_of_spinOrbitEnergy_ne_zero params band px py hE
-  rw [inv_real_gap_sq_mul_im _ _ hgap]
+  rw [mul_comm, ← inv_pow, ← div_eq_mul_inv, ← Complex.ofReal_pow, Complex.div_ofReal_im]
   exact interbandBlockDifference_im_div_gap_sq_eq_neg_chargeSq_berryCurvature
     params band px py hE
 
