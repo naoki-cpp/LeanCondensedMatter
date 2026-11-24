@@ -1,5 +1,4 @@
 import LeanCondensedMatter.Analysis.Operator.Unbounded.BoundedResolvent
-import LeanCondensedMatter.Analysis.Operator.Unbounded.CayleyTransform
 import Mathlib.Tactic.Ring
 import Mathlib.Tactic.FieldSimp
 import Mathlib.Tactic.GCongr
