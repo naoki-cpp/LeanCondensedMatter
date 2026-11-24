@@ -107,6 +107,58 @@ theorem finiteTimeVectorPotentialConductivityTensor_linearMixing
       ring
     _ = _ := by rw [hX]
 
+/-- The physically normalized finite-time conductivity inherits the general
+input/output intertwiner of the complete response, including its contact term.
+Normalization by a common complex scalar preserves equivariance, even for
+distinct or nonorthogonal representations on the coordinate space.
+
+The underlying map is exactly the existing conductivity tensor interpreted as
+a matrix acting on input fields. The physical domain and operator realization
+requirements are those of `finiteTimeVectorPotentialConductivityTensor`;
+in particular, this is not a zero-regulator or DC limit. -/
+theorem finiteTimeVectorPotentialConductivityTensor_exists_intertwiningMap
+    {G I : Type*} [Group G] [Fintype I] [DecidableEq I]
+    (ρin ρout : Representation ℂ G (I → ℂ))
+    (symmetry : G → ((H →L[ℂ] H) ≃⋆ₐ[ℂ] (H →L[ℂ] H)))
+    (measured source : I → (H →L[ℂ] H))
+    (variation : I → I → (H →L[ℂ] H))
+    (hU : ∀ g t, symmetry g (U (Multiplicative.ofAdd t) : H →L[ℂ] H) =
+      (U (Multiplicative.ofAdd t) : H →L[ℂ] H))
+    (volume : PositiveVolume)
+    (hbar ω η T : ℝ) (expectation : NormalizedExpectation H)
+    (hω : ∀ g A, expectation (symmetry g A) = expectation A)
+    (hMeasured : ∀ g i, symmetry g (measured i) =
+      ∑ k, LinearMap.toMatrix' (ρout g) i k • measured k)
+    (hSource : ∀ g j, symmetry g (source j) =
+      ∑ l, LinearMap.toMatrix' (ρin g⁻¹) l j • source l)
+    (hVariation : ∀ g i j, symmetry g (variation i j) =
+      ∑ k, ∑ l, (LinearMap.toMatrix' (ρout g) i k *
+        LinearMap.toMatrix' (ρin g⁻¹) l j) • variation k l)
+    (hIntegrable : ∀ k l,
+      IntervalIntegrable
+        (fun s : ℝ => adiabaticFrequencyPhase ω η (T - s) *
+          retardedSusceptibility U hbar expectation (measured k) (source l) T s)
+        MeasureTheory.volume 0 T) :
+    ∃ F : Representation.IntertwiningMap ρin ρout,
+      F.toLinearMap = Matrix.toLin'
+        (finiteTimeVectorPotentialConductivityTensor U measured source variation
+          volume hbar ω η T expectation).component := by
+  obtain ⟨F, hF⟩ := ResponseChannel.finiteTimeAdiabaticResponse_exists_intertwiningMap
+    U ρin ρout symmetry measured source variation hU hbar expectation
+    hω hMeasured hSource hVariation ω η T hIntegrable
+  let X : Matrix I I ℂ := fun i j =>
+    ({ measured := measured i, source := source j,
+       observableVariation := variation i j } : ResponseChannel H).finiteTimeAdiabaticResponse
+      U hbar expectation ω η T
+  change F.toLinearMap = Matrix.toLin' X at hF
+  let n := finiteVolumeConductivityNormalization volume ω η
+  refine ⟨n • F, ?_⟩
+  rw [Representation.IntertwiningMap.toLinearMap_smul, hF, ← map_smul]
+  apply congrArg (fun M : Matrix I I ℂ => Matrix.toLin' M)
+  ext i j
+  change n * X i j = X i j * n
+  exact mul_comm _ _
+
 /-- A quarter-turn in the point group of the actual species-labeled configuration
 forces planar isotropy of the finite-time, normalized conductivity if that
 geometric symmetry is realized on the microscopic dynamics, state, both polar
