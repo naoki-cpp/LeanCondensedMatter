@@ -23,7 +23,7 @@ def leftImage [Fintype α] [DecidableEq γ] (e : α ⊕ β ≃ γ) : Finset γ :
 
 /-- Target points occupied by the right summand of an equivalence. -/
 def rightImage [Fintype β] [DecidableEq γ] (e : α ⊕ β ≃ γ) : Finset γ :=
-  Finset.univ.image (fun b => e (Sum.inr b))
+  leftImage ((Equiv.sumComm β α).trans e)
 
 @[simp]
 theorem card_leftImage [Fintype α] [DecidableEq γ] (e : α ⊕ β ≃ γ) :
@@ -34,10 +34,8 @@ theorem card_leftImage [Fintype α] [DecidableEq γ] (e : α ⊕ β ≃ γ) :
 
 @[simp]
 theorem card_rightImage [Fintype β] [DecidableEq γ] (e : α ⊕ β ≃ γ) :
-    (rightImage e).card = Fintype.card β := by
-  rw [rightImage, Finset.card_image_of_injective _
-    (fun _ _ h => Sum.inr.inj (e.injective h))]
-  simp
+    (rightImage e).card = Fintype.card β :=
+  card_leftImage ((Equiv.sumComm β α).trans e)
 
 @[simp]
 theorem mem_leftImage_iff [Fintype α] [DecidableEq γ]
@@ -49,7 +47,7 @@ theorem mem_leftImage_iff [Fintype α] [DecidableEq γ]
 theorem mem_rightImage_iff [Fintype β] [DecidableEq γ]
     (e : α ⊕ β ≃ γ) (x : γ) :
     x ∈ rightImage e ↔ ∃ b : β, e (Sum.inr b) = x := by
-  simp [rightImage]
+  exact mem_leftImage_iff ((Equiv.sumComm β α).trans e) x
 
 /-- The right image is exactly the complement of the left image. -/
 theorem mem_rightImage_iff_not_mem_leftImage
@@ -82,11 +80,7 @@ noncomputable def leftSubtypeEquiv [Fintype α] [DecidableEq γ]
 /-- The right summand is equivalent to the subtype of target points in its image. -/
 noncomputable def rightSubtypeEquiv [Fintype β] [DecidableEq γ]
     (e : α ⊕ β ≃ γ) : β ≃ ↥(rightImage e) :=
-  (Equiv.ofInjective (fun b : β => e (Sum.inr b))
-      (fun _ _ h => Sum.inr.inj (e.injective h))).trans
-    (Equiv.subtypeEquivProp (by
-      ext x
-      simp [rightImage]))
+  leftSubtypeEquiv ((Equiv.sumComm β α).trans e)
 
 @[simp]
 theorem leftSubtypeEquiv_val [Fintype α] [DecidableEq γ]
