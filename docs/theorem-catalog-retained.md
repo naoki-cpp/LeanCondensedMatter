@@ -34,6 +34,8 @@ using a zero-consumer signal as grounds for changing its retention.
 
 ## Retained declarations
 
+- `SecondQuantization.Fermionic.Field.dGamma_lie_manyBodyLocalizedQuantity` — physical many-body transport/source decomposition for a localized one-body quantity under the fermionic `dΓ` lift; uses preservation of the Lie bracket and linearity, not multiplicativity.
+
 - `Combinatorics.BinaryShuffle.leftSlot_consRight` — canonical `@[simp]` recursion for left-slot coordinates when a right slot is prepended; it completes the public constructor computation rules of `BinaryShuffle`.
 - `Combinatorics.BinaryShuffle.rightSlot_consRight_zero` — canonical `@[simp]` evaluation of the new right-slot head at ambient position zero in `consRight`.
 - `Combinatorics.BinaryShuffle.rightSlot_consRight_succ` — canonical `@[simp]` successor recursion for right-slot coordinates of `consRight`; it is a stable shuffle normalization rule.
