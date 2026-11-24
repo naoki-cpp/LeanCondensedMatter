@@ -32,6 +32,12 @@ abbrev SpinfulSite (Site : Type*) := Site ×ₗ Fin 2
 def spinfulSite {Site : Type*} (x : Site) (s : Fin 2) : SpinfulSite Site :=
   toLex (x, s)
 
+/-- Lift spatial geometry to the spinful lattice: the two spin modes at a
+spatial site have identical coordinates. -/
+def spinfulGeometry {Site E : Type*} (geometry : LatticeGeometry Site E) :
+    LatticeGeometry (SpinfulSite Site) E where
+  position x := geometry.position (ofLex x).1
+
 /-- Applying an internal matrix identically at every site is complex-linear in that matrix. -/
 noncomputable def internalOneBodyLinear
     {Site : Type*} [Fintype Site] :
