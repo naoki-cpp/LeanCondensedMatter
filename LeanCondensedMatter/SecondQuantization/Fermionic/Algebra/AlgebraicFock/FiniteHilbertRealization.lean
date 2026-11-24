@@ -27,6 +27,30 @@ def finiteHilbertEquiv (b : Module.Basis Mode ℂ V) :
     AlgebraicFock V ≃ₗ[ℂ] Common.FiniteHilbertFock (Occupation Mode) :=
   (occupationEquiv b).symm.trans Common.finiteHilbertFockEquiv
 
+/-- Transport along a one-particle map carrying one indexed basis to another does
+not change the occupation-Hilbert coordinates of an exterior vector. This
+also applies to an algebraic one-particle space without an inner product. -/
+theorem finiteHilbertEquiv_map_of_basis
+    {W : Type*} [AddCommGroup W] [Module ℂ W]
+    (b : Module.Basis Mode ℂ V) (c : Module.Basis Mode ℂ W)
+    (j : V →ₗ[ℂ] W) (hj : ∀ i, j (b i) = c i) (x : AlgebraicFock V) :
+    finiteHilbertEquiv c (ExteriorAlgebra.map j x) = finiteHilbertEquiv b x := by
+  have h : (finiteHilbertEquiv c).toLinearMap.comp (ExteriorAlgebra.map j).toLinearMap =
+      (finiteHilbertEquiv b).toLinearMap := by
+    apply b.ExteriorAlgebra.ext
+    intro n
+    change finiteHilbertEquiv c (ExteriorAlgebra.map j (b.ExteriorAlgebra n)) =
+      finiteHilbertEquiv b (b.ExteriorAlgebra n)
+    have hn : ExteriorAlgebra.map j (b.ExteriorAlgebra n) = c.ExteriorAlgebra n := by
+      rw [ExteriorAlgebra.basis_apply b n, ExteriorAlgebra.basis_apply c n,
+        ExteriorAlgebra.map_apply_ιMulti]
+      congr 1
+      funext i
+      exact hj _
+    rw [hn]
+    simp only [finiteHilbertEquiv, LinearEquiv.trans_apply, occupationEquiv_symm_exteriorBasis]
+  exact DFunLike.congr_fun h x
+
 /-- The operator realization in finite occupation-Hilbert coordinates determined by a
 one-particle basis. No inner product on the one-particle space is needed for this transport. -/
 def finiteHilbertOperatorAlgEquiv (b : Module.Basis Mode ℂ V) :
