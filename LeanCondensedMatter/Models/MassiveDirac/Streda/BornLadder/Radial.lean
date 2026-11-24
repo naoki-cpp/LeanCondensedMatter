@@ -78,13 +78,8 @@ private theorem trace_directionPauli_inPlane_eq
     simp [inPlanePauliVertexOperator, matrixOperator,
       InternalSpace.pauliCombination_eq_components, sigmaX, sigmaY, u]
   rw [hmatrix]
-  have hop :
-      (q • matrixOperator (directionPauli measured)) *
-          matrixOperator (InternalSpace.pauliCombination u) =
-        matrixOperator
-          ((q • directionPauli measured) * InternalSpace.pauliCombination u) := by
-    simp [matrixOperator]
-  rw [hop, matrixOperator, finiteDimensionalOperatorTrace_toEuclideanCLM]
+  unfold matrixOperator
+  rw [← map_smul, ← map_mul, finiteDimensionalOperatorTrace_toEuclideanCLM]
   rw [smul_mul_assoc, Matrix.trace_smul]
   change
     q * Matrix.trace
@@ -286,41 +281,27 @@ theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceRadialIntegr
   unfold finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceRadialIntegrand
   rw [finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceIntegral_eq_radialCoefficient]
 
-/-- Rotational closure makes the ordered `yx` radial coefficient the negative of `xy`. -/
-private theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yx_eq_neg_xy
+/-- Rotational closure gives the two in-plane tensor symmetries of the radial coefficient. -/
+private theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_symmetry
     (e v m p probeEnergy broadening disorderStrength hbar pMax : ℝ) :
-    finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient
+    (finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient
         1 0 e v m p probeEnergy broadening disorderStrength hbar pMax =
       -finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient
-        0 1 e v m p probeEnergy broadening disorderStrength hbar pMax := by
-  unfold finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient
-  dsimp only
-  simp only [finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentCoefficientVector_x,
-    finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentCoefficientVector_y,
-    Matrix.transpose_apply, inPlaneLadderAction_apply_x,
-    inPlaneLadderAction_apply_y, inPlaneRotationMatrix_apply_x_x,
-    inPlaneRotationMatrix_apply_x_y, inPlaneRotationMatrix_apply_y_x,
-    inPlaneRotationMatrix_apply_y_y, inPlaneLadderBareXSource, inPlaneCoefficientVector,
-    Matrix.cons_val_zero, Matrix.cons_val_one]
-  ring
-
-/-- Rotational closure makes the two diagonal radial coefficients equal. -/
-private theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yy_eq_xx
-    (e v m p probeEnergy broadening disorderStrength hbar pMax : ℝ) :
-    finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient
+        0 1 e v m p probeEnergy broadening disorderStrength hbar pMax) ∧
+    (finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient
         1 1 e v m p probeEnergy broadening disorderStrength hbar pMax =
       finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient
-        0 0 e v m p probeEnergy broadening disorderStrength hbar pMax := by
-  unfold finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient
-  dsimp only
-  simp only [finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentCoefficientVector_x,
-    finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentCoefficientVector_y,
-    Matrix.transpose_apply, inPlaneLadderAction_apply_x,
-    inPlaneLadderAction_apply_y, inPlaneRotationMatrix_apply_x_x,
-    inPlaneRotationMatrix_apply_x_y, inPlaneRotationMatrix_apply_y_x,
-    inPlaneRotationMatrix_apply_y_y, inPlaneLadderBareXSource, inPlaneCoefficientVector,
-    Matrix.cons_val_zero, Matrix.cons_val_one]
-  ring
+        0 0 e v m p probeEnergy broadening disorderStrength hbar pMax) := by
+  constructor <;>
+    unfold finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient <;>
+    dsimp only <;>
+    simp only [finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentCoefficientVector,
+      Matrix.transpose_apply, inPlaneLadderAction_apply_x,
+      inPlaneLadderAction_apply_y, inPlaneRotationMatrix_apply_x_x,
+      inPlaneRotationMatrix_apply_x_y, inPlaneRotationMatrix_apply_y_x,
+      inPlaneRotationMatrix_apply_y_y, inPlaneLadderBareXSource, inPlaneCoefficientVector,
+      Matrix.cons_val_zero, Matrix.cons_val_one] <;>
+    ring
 
 /-- After radial integration, the finite-`η` ordered `yx` Středa response is the negative of `xy`. -/
 theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral_yx_eq_neg_xy
@@ -334,7 +315,8 @@ theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumInte
   apply intervalIntegral.integral_congr
   intro p _
   simp only [finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceRadialIntegrand_eq_radialCoefficient,
-    finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yx_eq_neg_xy,
+    (finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_symmetry
+      e v m p probeEnergy broadening disorderStrength hbar pMax).1,
     mul_neg]
 
 /-- After radial integration, the two finite-`η` diagonal Středa responses are equal. -/
@@ -348,7 +330,8 @@ theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumInte
   apply intervalIntegral.integral_congr
   intro p _
   simp only [finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceRadialIntegrand_eq_radialCoefficient,
-    finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yy_eq_xx]
+    (finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_symmetry
+      e v m p probeEnergy broadening disorderStrength hbar pMax).2]
 
 end
 
