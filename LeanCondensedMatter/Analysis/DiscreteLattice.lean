@@ -319,8 +319,15 @@ theorem lie_directionalPosition_eq_bondSum [DecidableEq Site]
     change (∑ x : Site, r x • ⁅K.operator, siteProjector x⁆) = -A
     simp only [hlocal, smul_neg, Finset.smul_sum, Finset.sum_neg_distrib, A]
   have hswap : (∑ x : Site, ∑ y : Site, r y • K.bondOperator x y) = -A := by
-    rw [Finset.sum_comm]
-    simp only [K.bondOperator_swap, smul_neg, Finset.sum_neg_distrib, A]
+    calc
+      _ = ∑ x : Site, ∑ y : Site, r x • K.bondOperator y x := Finset.sum_comm
+      _ = ∑ x : Site, ∑ y : Site, -(r x • K.bondOperator x y) := by
+        apply Finset.sum_congr rfl
+        intro x _
+        apply Finset.sum_congr rfl
+        intro y _
+        rw [K.bondOperator_swap x y, smul_neg]
+      _ = -A := by simp only [Finset.sum_neg_distrib, A]
   have hweight (x y : Site) :
       (geometry.bondCoordinate direction x y : ℂ) = r y - r x := by
     simp only [bondCoordinate, bondDisplacement, map_sub, Complex.ofReal_sub, r]
