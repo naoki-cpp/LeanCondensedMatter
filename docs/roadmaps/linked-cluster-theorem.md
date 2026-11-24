@@ -161,19 +161,44 @@ specialization from reaching `Combinatorics.Cumulant.Inversion`,
 the power-series or finite-set replica modules. Thus neither concrete proof route can silently
 depend on the other.
 
+## Arbitrary finite external insertions and source cumulants
+
+For even numbers of external fermionic insertions, the finite-mode physical Dyson coefficients
+are represented by `ExternalInsertionDiagram`, with their field labels and ordered interaction
+times fixed. Vacuum normalization removes components with **no** external vertices, but does not
+force all external vertices into the same component. The physical signed partition identity
+(`externalSubsetMomentSeries_eq_signedConnected`) expresses these vacuum-free moments as a
+Koszul-signed partition sum of connected Dyson series, including the empty and odd source subsets.
+The unrestricted cumulant endpoint
+(`externalSubsetSourceCumulantSeries_eq_connectedDiagramSeries`) uses the physical signed
+moment identity and weighted moment reconstruction/injectivity to select diagrams in which
+**all** external insertions are connected. Both are kernel-checked on `main` (#5074, #5095).
+
+For precisely two external insertions, the general construction already proves
+`vacuumFreeExternalInsertionDysonSeries_eq_connected_two` and the corresponding
+source-cumulant identity without a sign restriction on `β`. The mature two-point
+`partitionFunctionNormalizedTwoPointDysonSeries_eq_connectedTwoPointDysonSeries` is
+independently proved for `μ = 0`, `0 ≤ β`. Its `TwoPointDiagram` uses a distinct flattened-leg
+enumeration; identifying the two physical power series still requires transporting Wick
+pairings, mixed-time signs and oriented Gibbs contractions, and Dyson amplitudes. The
+statistics-independent `twoPointDiagramExternalInsertionEquiv` supplies the diagram-data
+and vertex-graph bridge without replacing or duplicating the mature two-point API.
+
 ## Higher-point diagram-selection boundary
 
-For arbitrary fixed external fields, `ExternalComponentReplicaPolynomial.lean` defines a
-finite-order polynomial weighted by the number of externally supported connected components.
-Its linear coefficient selects fully externally connected signed diagram amplitudes, starting
-from vacuum-free diagrams. This is an exact combinatorial selection statement, **not** a
-source-functional generating identity, an analytic replica-number continuation, or a general
-higher-point cumulant expansion. The latter bridges remain open.
+`ExternalComponentReplicaPolynomial.lean` separately defines a finite-order polynomial
+weighted by the number of externally supported components. Its linear coefficient selects
+fully externally connected signed diagram amplitudes starting from vacuum-free diagrams.
+This is a combinatorial replica-selection statement, **not** itself a physical source
+generating-functional identity or an analytic replica-number continuation. The physical
+finite-mode higher-point cumulant identity above is proved by signed moments instead.
 
 ## Open work
 
-- source-functional realizations of higher-point moments and their connected/cumulant normalization;
-- arbitrary higher-point and source-insertion connected expansions, including a source-functional layer if required by concrete consumers;
+- identifying the general two-external and legacy two-point *physical series* through their
+  independently enumerated Wick pairings, time-order conventions, signs, and Dyson integrals;
+- analytic/source generating-functional realization beyond the proved finite-mode formal
+  Dyson-series moment/cumulant identities;
 - bosonic interacting Dyson convergence and analytic linked-cluster theory;
 - interacting completed-space perturbation theory with explicit product domains;
 - infinite-mode and thermodynamic limits under explicit analytic hypotheses.
