@@ -119,5 +119,69 @@ theorem ResponseChannel.causalResponse_symmetry
   rw [retardedSusceptibility_symmetry U Φ hU hbar expectation hω
     channel.measured channel.source t s]
 
+
+/-- Microscopic unitary symmetry transports a retarded Kubo kernel along
+independent reindexings of the measured and source observables. The
+reindexings need not agree; no tensor covariance is postulated. -/
+theorem retardedSusceptibility_indexEquiv
+    {I J : Type*}
+    (measured : I → (H →L[ℂ] H))
+    (source : J → (H →L[ℂ] H))
+    (p : I ≃ I) (q : J ≃ J)
+    (hU : ∀ t : ℝ, Φ (U (Multiplicative.ofAdd t) : H →L[ℂ] H) =
+      (U (Multiplicative.ofAdd t) : H →L[ℂ] H))
+    (hbar : ℝ) (expectation : NormalizedExpectation H)
+    (hω : ∀ A : H →L[ℂ] H, expectation (Φ A) = expectation A)
+    (hMeasured : ∀ i, Φ (measured i) = measured (p i))
+    (hSource : ∀ j, Φ (source j) = source (q j))
+    (i : I) (j : J) (t s : ℝ) :
+    retardedSusceptibility U hbar expectation (measured (p i)) (source (q j)) t s =
+      retardedSusceptibility U hbar expectation (measured i) (source j) t s := by
+  simpa only [hMeasured i, hSource j] using
+    retardedSusceptibility_symmetry U Φ hU hbar expectation hω (measured i) (source j) t s
+
+/-- Complete indexed Kubo response under distinct measured/source
+reindexings. The first-order observable variation transforms in the
+corresponding pair of indices; its contact expectation is retained.
+
+This applies to symmetries acting by index permutations. A general linear
+representation that mixes observable components requires the separate
+bilinear response theorem, and is not asserted here. -/
+theorem ResponseChannel.causalResponse_indexEquiv
+    {I J : Type*}
+    (measured : I → (H →L[ℂ] H))
+    (source : J → (H →L[ℂ] H))
+    (variation : I → J → (H →L[ℂ] H))
+    (p : I ≃ I) (q : J ≃ J)
+    (hU : ∀ t : ℝ, Φ (U (Multiplicative.ofAdd t) : H →L[ℂ] H) =
+      (U (Multiplicative.ofAdd t) : H →L[ℂ] H))
+    (hbar : ℝ) (expectation : NormalizedExpectation H)
+    (hω : ∀ A : H →L[ℂ] H, expectation (Φ A) = expectation A)
+    (hMeasured : ∀ i, Φ (measured i) = measured (p i))
+    (hSource : ∀ j, Φ (source j) = source (q j))
+    (hVariation : ∀ i j, Φ (variation i j) = variation (p i) (q j))
+    (i : I) (j : J) (f : ℝ → ℝ) (t : ℝ) :
+    ({ measured := measured (p i),
+       source := source (q j),
+       observableVariation := variation (p i) (q j) } : ResponseChannel H).causalResponse
+         U hbar expectation f t =
+      ({ measured := measured i,
+         source := source j,
+         observableVariation := variation i j } : ResponseChannel H).causalResponse
+         U hbar expectation f t := by
+  have h := ResponseChannel.causalResponse_symmetry U Φ
+    ({ measured := measured i, source := source j,
+       observableVariation := variation i j } : ResponseChannel H)
+    hU hbar expectation hω f t
+  change
+    ({ measured := Φ (measured i), source := Φ (source j),
+       observableVariation := Φ (variation i j) } : ResponseChannel H).causalResponse
+         U hbar expectation f t =
+      ({ measured := measured i, source := source j,
+         observableVariation := variation i j } : ResponseChannel H).causalResponse
+         U hbar expectation f t at h
+  rw [hMeasured i, hSource j, hVariation i j] at h
+  exact h
+
 end
 end QuantumTheory.LinearResponse
