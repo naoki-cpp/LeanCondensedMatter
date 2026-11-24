@@ -421,7 +421,18 @@ profile at observation time. Its `_peierls` theorem establishes
 the zero-source value and unit-source weak algebraic derivative;
 its `_retardedKernel` theorem decomposes the mixed retarded kernel
 into conventional spin and torque-dipole contributions with the
-same charge source.
+same charge source. Its `_contactExpectation` theorem identifies the
+contact expectation exactly with the equal-time displacement susceptibility,
+including the observation-time source factor:
+
+```text
+contactExpectation(t) = f(t) χ^R_{D_i^a,B_j}(t,t).
+```
+
+Use `sourceValue = f(t)` for a causal response to profile f, and
+`sourceValue = 1` when the frequency/Lehmann API has factored out the
+observation-time source. Both require the same physical hbar and free
+Hamiltonian as the measured current.
 
 `realSpaceRashbaFreeSystem` and
 `realSpaceRashbaSpinDisplacementResponseChannel` instantiate these
@@ -430,7 +441,21 @@ any finite planar geometry. This is a finite causal response
 construction, not yet a stationary-state benchmark, a norm
 derivative/perturbed-expectation theorem for the full Peierls
 family, a local torque-divergence law, or a bulk/DC conductivity
-limit.
+limit. For affine source perturbations, reuse
+`ResponseChannel.hasDerivAt_affineSourceCoupledExpectation_zero_of_bound_retarded`
+under its stated self-adjointness and analytic hypotheses.
+
+**Finite-volume DC caution.** The global displacement is bounded on
+each finite lattice. In a stationary state of the same finite closed
+Hamiltonian, the expectation of its Heisenberg derivative vanishes.
+Moreover, a spatially uniform static Peierls potential defined by
+actual coordinate differences is pure gauge on an open finite lattice.
+These are physical consequences to formalize as separate follow-ups,
+not additional theorems proved by this channel. A nonzero fixed-volume
+stationary DC proper-current expectation is therefore not a valid
+acceptance criterion. Prefer a nonzero finite-frequency mixed response
+benchmark and a displacement-response boundary/contact identity before
+studying the order of thermodynamic and DC limits.
 
 ## References
 
