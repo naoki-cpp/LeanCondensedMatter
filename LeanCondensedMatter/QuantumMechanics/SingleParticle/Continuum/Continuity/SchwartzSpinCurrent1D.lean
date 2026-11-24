@@ -168,18 +168,18 @@ theorem schwartzSpin_sourceCommutator_eq_internal
         (SchwartzTwoLevelSchrodinger1D.hamiltonian κ potential internalH)
         SchwartzTwoLevel1D.multiplicationLinear
         (schwartzSpinOperatorLinear ℏ spinComponent) f =
-      _root_.LinearMap.symmetrizedProduct
+      _root_.LinearMap.symmetrizedProduct (K := ℂ)
         (SchwartzTwoLevel1D.multiplicationOperator f)
         ⁅SchwartzTwoLevel1D.internalOperator internalH,
           schwartzSpinOperatorLinear ℏ spinComponent⁆ := by
   rw [_root_.ConservationLaw.sourceFunctional_apply]
   change
-    _root_.LinearMap.symmetrizedProduct
+    _root_.LinearMap.symmetrizedProduct (K := ℂ)
         (SchwartzTwoLevel1D.multiplicationOperator f)
         ⁅SchwartzTwoLevelSchrodinger1D.hamiltonian κ potential internalH,
           SchwartzTwoLevel1D.internalOperator
             (QuantumTheory.SpinHalf.spinMatrix ℏ spinComponent)⁆ =
-      _root_.LinearMap.symmetrizedProduct
+      _root_.LinearMap.symmetrizedProduct (K := ℂ)
         (SchwartzTwoLevel1D.multiplicationOperator f)
         ⁅SchwartzTwoLevel1D.internalOperator internalH,
           SchwartzTwoLevel1D.internalOperator
