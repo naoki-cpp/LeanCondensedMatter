@@ -789,16 +789,8 @@ private theorem externalInsertionMixedEventShuffle_lt_iff {E n : ℕ}
   have hy : y ∈ externalInsertionTimedEventAtomicLegs b :=
     externalInsertionEventBlockLegEquiv_mem b q
   have hn := externalInsertionMixedTimeOrderedAtomicLegs_nodup externalTime σ
-  constructor
-  · intro h
-    have hne : events.idxOf a ≠ events.idxOf b :=
-      fun heq => hab ((List.idxOf_inj ha).mp heq)
-    by_contra! hnot
-    have hreverse := List.idxOf_flatMap_lt_of_idxOf_lt externalInsertionTimedEventAtomicLegs
-      events b a y x hn hb ha hy hx (show events.idxOf b < events.idxOf a by omega)
-    exact lt_asymm h hreverse
-  · exact List.idxOf_flatMap_lt_of_idxOf_lt externalInsertionTimedEventAtomicLegs
-      events a b x y hn ha hb hx hy
+  exact List.idxOf_flatMap_lt_iff_idxOf_lt externalInsertionTimedEventAtomicLegs
+    events a b x y hn ha hb hx hy hab
 
 /-- The full mixed atomic permutation has the sign of the inversions among
 the one-legged external events alone. Interactions contribute four consecutive
