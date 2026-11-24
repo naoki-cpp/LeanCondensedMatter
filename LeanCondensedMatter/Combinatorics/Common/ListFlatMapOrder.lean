@@ -112,6 +112,26 @@ theorem idxOf_flatMap_lt_of_idxOf_lt
             ih (a := a) (b := b) (x := x) (y := y)
               hFlatNodupTail ha hb hx hy habTail
 
+/-- For distinct event blocks, global flattened order is exactly event order.
+The same lemma applies to arbitrary nonuniform block lengths. -/
+theorem idxOf_flatMap_lt_iff_idxOf_lt
+    {α β : Type*} [DecidableEq α] [DecidableEq β]
+    (f : α → List β) (events : List α) (a b : α) (x y : β)
+    (hFlatNodup : (events.flatMap f).Nodup)
+    (ha : a ∈ events) (hb : b ∈ events) (hx : x ∈ f a) (hy : y ∈ f b)
+    (hab : a ≠ b) :
+    (events.flatMap f).idxOf x < (events.flatMap f).idxOf y ↔
+      events.idxOf a < events.idxOf b := by
+  constructor
+  · intro h
+    have hne : events.idxOf a ≠ events.idxOf b :=
+      fun heq => hab ((List.idxOf_inj ha).mp heq)
+    by_contra! hnot
+    have hreverse := idxOf_flatMap_lt_of_idxOf_lt f events b a y x
+      hFlatNodup hb ha hy hx (show events.idxOf b < events.idxOf a by omega)
+    exact lt_asymm h hreverse
+  · exact idxOf_flatMap_lt_of_idxOf_lt f events a b x y hFlatNodup ha hb hx hy
+
 /-- In a duplicate-free flattened list, two elements of one block have the same order relation to an
 element outside that block. -/
 theorem idxOf_flatMap_block_lt_uniform
