@@ -831,8 +831,6 @@ theorem sum_fixedExternalPartitionDysonFiber_eq_signedCoeffConnectedSeries
       intro B _
       exact hblock B
 
-set_option maxHeartbeats 4000000 in
--- The even-partition sum contains dependent blockwise connected series.
 open Classical in
 /-- The full genuine vacuum-free physical Dyson coefficient is the sum
 over even external-component partitions of Koszul-signed coefficients
@@ -906,8 +904,6 @@ theorem vacuumFreeExternalInsertionDysonSeries_eq_connected_of_single_pair
   subst K
   exact vacuumFreeExternalInsertionDysonSeries_eq_connected_two ε β g labels times
 
-set_option maxHeartbeats 4000000 in
--- The finite partition sum and dependent connected-block series elaborate at each coefficient.
 open Classical in
 /-- The physical vacuum-free Dyson series is the finite Koszul-signed
 external-partition sum of products of connected Dyson series in
@@ -939,7 +935,7 @@ theorem vacuumFreeExternalInsertionDysonSeries_eq_sum_evenPartitionConnectedSeri
   intro π _
   split_ifs with heven
   · simp only [PowerSeries.coeff_C_mul]
-  · simp
+  · simp only [map_zero]
 
 /-- Physical, vacuum-normalized moment assigned to an external subset.
 For odd subsets the operator expectation vanishes by fermion parity; for the
