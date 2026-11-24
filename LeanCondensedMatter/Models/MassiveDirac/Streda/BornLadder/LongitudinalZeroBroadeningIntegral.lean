@@ -139,7 +139,7 @@ private theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMome
     intervalIntegral.integral_const_mul, hActionEq,
     intervalIntegral.integral_const_mul, intervalIntegral.integral_add hrr haa]
   rw [hrrEq, haaEq] <;>
-    simp only [q, pref, solved, radialRung, finiteBroadeningLongitudinalMomentumEndpointForm,
+    simp only [inPlaneLadderAction_apply_x, q, pref, solved, radialRung, finiteBroadeningLongitudinalMomentumEndpointForm,
       finiteCutoffContinuumBornDysonCurrentRungVector,
       finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficient]
 
