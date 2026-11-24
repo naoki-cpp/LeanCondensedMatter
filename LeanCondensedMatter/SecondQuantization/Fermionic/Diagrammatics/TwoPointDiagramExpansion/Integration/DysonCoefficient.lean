@@ -1,7 +1,7 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.DiagramIntegral
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.TimedFieldContraction
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsExpectationBridge
-import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.InteractionPictureVertexDyson
+import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.MixedAtomicDysonIntegral
 
 set_option linter.style.header false
 
@@ -149,19 +149,19 @@ theorem twoPointDysonCoefficient_eq_shiftedDispersion {n : ℕ}
     twoPointDysonCoefficient (n := n) ε β μ g i j τ τ' =
       twoPointChemicalPotentialFactor μ τ τ' *
         twoPointDysonCoefficient (n := n) (fun k => ε k - μ) β 0 g i j τ τ' := by
-  unfold twoPointDysonCoefficient
-  simp only [sub_zero]
-  rw [mul_left_comm (twoPointChemicalPotentialFactor μ τ τ') ((-1 : ℂ) ^ n)]
-  apply congrArg (fun z : ℂ => (-1 : ℂ) ^ n * z)
-  rw [← intervalIntegral.orderedSimplexIntegral_smul]
-  apply intervalIntegral.orderedSimplexIntegral_congr
-  intro σ
-  rw [Finset.mul_sum]
-  apply Finset.sum_congr rfl
-  intro q _
-  rw [mixedTimeOrderedVertexComp_eq_shiftedDispersion ε μ]
-  simp only [Common.finiteGibbsExpectation, map_smul, smul_eq_mul]
-  ring
+  have hfactor : externalFieldFamilyChemicalPotentialFactor μ
+      (twoPointExternalLabels i j) (twoPointExternalTimes τ τ') =
+        twoPointChemicalPotentialFactor μ τ τ' := by
+    rw [externalFieldFamilyChemicalPotentialFactor, Fin.prod_univ_two,
+      twoPointExternalLabels_zero, twoPointExternalLabels_one,
+      twoPointExternalTimes_zero, twoPointExternalTimes_one]
+    change Complex.exp (-(τ : ℂ) * (μ : ℂ)) * Complex.exp ((τ' : ℂ) * (μ : ℂ)) = _
+    rw [← Complex.exp_add, twoPointChemicalPotentialFactor]
+    congr 1
+    ring
+  rw [twoPointDysonCoefficient_eq_externalInsertionVertexDysonCoefficient,
+    externalInsertionVertexDysonCoefficient_eq_shiftedDispersion, hfactor,
+    ← twoPointDysonCoefficient_eq_externalInsertionVertexDysonCoefficient]
 
 /-- The ordered-simplex external-leg diagram coefficient equals the mixed time-ordered Dyson
 coefficient at every perturbation order. -/
