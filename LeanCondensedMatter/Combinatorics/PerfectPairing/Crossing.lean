@@ -6,24 +6,25 @@ set_option linter.style.header false
 # Crossings and crossing counts
 
 Two normalized pairs `(a, b)` and `(c, d)` cross when `a < c < b < d`. The canonical public
-crossing representation uses `Pairing.NormalizedPair`.
+crossing representation uses `Pairing.NormalizedPair`, but the crossing relation itself only
+requires an order on the endpoint type.
 -/
 
 namespace Combinatorics
 
 /-- The normalized pair `(a, b)` crosses `(c, d)` when `a < c < b < d`. -/
-def Crosses {n : ℕ} (left right : Fin (2 * n) × Fin (2 * n)) : Prop :=
+def Crosses {α : Type*} [LT α] (left right : α × α) : Prop :=
   left.1 < right.1 ∧ right.1 < left.2 ∧ left.2 < right.2
 
-instance decidableCrosses {n : ℕ}
-    (left right : Fin (2 * n) × Fin (2 * n)) : Decidable (Crosses left right) :=
+instance decidableCrosses {α : Type*} [LT α] [DecidableLT α]
+    (left right : α × α) : Decidable (Crosses left right) :=
   inferInstanceAs (Decidable (
     left.1 < right.1 ∧ right.1 < left.2 ∧ left.2 < right.2))
 
 /-- The two oriented crossing indicators are disjoint, so their sum counts geometric crossings
 without double counting. -/
-theorem crossesIndicator_add {n : ℕ}
-    (left right : Fin (2 * n) × Fin (2 * n)) :
+theorem crossesIndicator_add {α : Type*} [Preorder α] [DecidableLT α]
+    (left right : α × α) :
     (if Crosses left right then (1 : ℕ) else 0) +
       (if Crosses right left then 1 else 0) =
         (if Crosses left right ∨ Crosses right left then 1 else 0) := by
@@ -33,29 +34,15 @@ theorem crossesIndicator_add {n : ℕ}
   · simp [hleft]
 
 /-- A strictly monotone embedding preserves and reflects the crossing relation. -/
-theorem crosses_map_iff {n m : ℕ} (f : Fin (2 * n) → Fin (2 * m)) (hf : StrictMono f)
-    (a b c e : Fin (2 * n)) :
+theorem crosses_map_iff {α β : Type*} [LinearOrder α] [Preorder β]
+    (f : α → β) (hf : StrictMono f) (a b c e : α) :
     Crosses (f a, f b) (f c, f e) ↔ Crosses (a, b) (c, e) := by
-  constructor
-  · rintro ⟨hac, hcb, hbe⟩
-    refine ⟨?_, ?_, ?_⟩
-    · apply lt_of_not_ge
-      intro hca
-      exact (not_lt_of_ge (hf.monotone hca)) hac
-    · apply lt_of_not_ge
-      intro hbc
-      exact (not_lt_of_ge (hf.monotone hbc)) hcb
-    · apply lt_of_not_ge
-      intro heb
-      exact (not_lt_of_ge (hf.monotone heb)) hbe
-  · rintro ⟨hac, hcb, hbe⟩
-    exact ⟨hf hac, hf hcb, hf hbe⟩
+  simp only [Crosses, hf.lt_iff_lt]
 
 /-- A crossing-preserving equivalence of finite pair families preserves the double crossing count. -/
-theorem sum_sum_crosses_eq_of_equiv {n m : ℕ} {A B : Type*}
-    [Fintype A] [Fintype B]
-    (pairA : A → Fin (2 * n) × Fin (2 * n))
-    (pairB : B → Fin (2 * m) × Fin (2 * m))
+theorem sum_sum_crosses_eq_of_equiv {α β A B : Type*}
+    [LT α] [DecidableLT α] [LT β] [DecidableLT β] [Fintype A] [Fintype B]
+    (pairA : A → α × α) (pairB : B → β × β)
     (e : A ≃ B)
     (hcross : ∀ p q, Crosses (pairA p) (pairA q) ↔
       Crosses (pairB (e p)) (pairB (e q))) :
@@ -160,7 +147,7 @@ theorem Pairing.crossingCount_eq_of_partnerEquiv_strictMono
 def Pairing.crossingsWithFirstPair {n : ℕ} (pairing : Pairing (n + 1)) : ℕ :=
   (pairing.pairs.filter fun p => Crosses pairing.firstPair p).card
 
-theorem not_crosses_self {n : ℕ} (p : Fin (2 * n) × Fin (2 * n)) : ¬ Crosses p p := by
+theorem not_crosses_self {α : Type*} [Preorder α] (p : α × α) : ¬ Crosses p p := by
   rintro ⟨h, -, -⟩
   exact absurd h (lt_irrefl _)
 
