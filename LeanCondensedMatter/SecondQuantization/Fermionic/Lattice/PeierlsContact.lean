@@ -83,6 +83,37 @@ theorem hasAlgebraicDerivAt_boundedPeierlsBondCurrent_zero
   exact (K.hasAlgebraicDerivAt_peierlsBondCurrentOperator_zero ℏ q x y).map
     (boundedOneBodyOperator (Site := Site)).toLinearMap
 
+/-- A complex-linear implementation of site relabeling on bounded one-body matrix
+units carries the oriented bond current to the relabeled bond, provided the hopping
+amplitudes are invariant. No independent bond-current covariance is assumed. -/
+theorem boundedBondCurrent_siteCovariance
+    (K : LocallyFiniteHopping Site) (ℏ q : ℂ) (e : Equiv.Perm Site)
+    (Φ : (FiniteLatticeHilbertFock Site →L[ℂ] FiniteLatticeHilbertFock Site) →ₗ[ℂ]
+      (FiniteLatticeHilbertFock Site →L[ℂ] FiniteLatticeHilbertFock Site))
+    (hK : ∀ x y, K.amplitude (e x) (e y) = K.amplitude x y)
+    (hUnit : ∀ x y, Φ (boundedOneBodyOperator (matrixUnit x y)) =
+      boundedOneBodyOperator (matrixUnit (e x) (e y)))
+    (x y : Site) :
+    Φ (boundedBondCurrent ℏ q K x y) = boundedBondCurrent ℏ q K (e x) (e y) := by
+  rw [← boundedOneBodyOperator_oneParticleBondCurrent K ℏ q x y,
+    ← boundedOneBodyOperator_oneParticleBondCurrent K ℏ q (e x) (e y)]
+  simp only [LocallyFiniteHopping.oneParticleBondCurrent,
+    LocallyFiniteHopping.bondOperator, map_smul, map_sub, hUnit, hK]
+
+/-- The same matrix-unit relabeling transports the Peierls contact, including both
+hopping orientations, without assuming the contact transformation separately. -/
+theorem boundedBondContact_siteCovariance
+    (K : LocallyFiniteHopping Site) (ℏ q : ℂ) (e : Equiv.Perm Site)
+    (Φ : (FiniteLatticeHilbertFock Site →L[ℂ] FiniteLatticeHilbertFock Site) →ₗ[ℂ]
+      (FiniteLatticeHilbertFock Site →L[ℂ] FiniteLatticeHilbertFock Site))
+    (hK : ∀ x y, K.amplitude (e x) (e y) = K.amplitude x y)
+    (hUnit : ∀ x y, Φ (boundedOneBodyOperator (matrixUnit x y)) =
+      boundedOneBodyOperator (matrixUnit (e x) (e y)))
+    (x y : Site) :
+    Φ (boundedBondContact K ℏ q x y) = boundedBondContact K ℏ q (e x) (e y) := by
+  simp only [boundedBondContact, LocallyFiniteHopping.oneParticleBondContact,
+    map_add, map_smul, hUnit, hK]
+
 end Bounded
 
 end Lattice
