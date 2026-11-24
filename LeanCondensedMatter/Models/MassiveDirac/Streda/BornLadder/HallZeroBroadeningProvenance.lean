@@ -102,19 +102,11 @@ private theorem tendsto_orderedXYProvenance_rungYSolvedX_disorder_zero
           (probeEnergy ^ 2 + 3 * m ^ 2) := by
     unfold fullAngleMomentumMeasurePrefactor
     (field_simp [hvelocity, hmeasureReal, hsum, hden]; ring)
-  have htargetCast := congrArg Complex.ofReal htargetReal
-  push_cast at htargetCast
-  have htarget :
-      ((-2 : ℂ) * q ^ 2 * measure⁻¹) *
-          ((((Real.pi * fullAngleMomentumMeasurePrefactor hbar * probeEnergy * m /
-            (v ^ 2 * (probeEnergy ^ 2 + m ^ 2)) : ℝ) : ℂ)) *
-            (((2 * (probeEnergy ^ 2 + m ^ 2) /
-              (probeEnergy ^ 2 + 3 * m ^ 2) : ℝ) : ℂ))) =
-        (((-8 * Real.pi ^ 2 * e ^ 2 * probeEnergy * m /
-          (probeEnergy ^ 2 + 3 * m ^ 2) : ℝ) : ℂ)) := by
-    simpa [q, measure] using htargetCast
-  rw [htarget] at hscaled
-  apply Tendsto.congr' ?_ hscaled
+  apply Tendsto.congr' ?_ (by
+    rw [← htargetReal]
+    dsimp only [q, measure] at hscaled
+    push_cast at hscaled ⊢
+    simpa only [neg_mul, mul_neg, neg_sq] using hscaled)
   filter_upwards [self_mem_nhdsWithin] with disorderStrength hdisorder
   have hdisorderC : (disorderStrength : ℂ) ≠ 0 := by
     exact_mod_cast ne_of_gt hdisorder
@@ -176,21 +168,11 @@ private theorem tendsto_orderedXYProvenance_rungXSolvedY_disorder_zero
     unfold continuumBornRetardedAdvancedPauliXWeakDisorderCurrentRungCoefficient
       fullAngleMomentumMeasurePrefactor
     (field_simp [hvelocity, hmeasureReal, hsum, hden]; ring)
-  have htargetCast := congrArg Complex.ofReal htargetReal
-  push_cast at htargetCast
-  have htarget :
-      ((-2 : ℂ) * q ^ 2 * measure⁻¹) *
-          ((continuumBornRetardedAdvancedPauliXWeakDisorderCurrentRungCoefficient
-              m probeEnergy : ℂ) *
-            (((4 * Real.pi * fullAngleMomentumMeasurePrefactor hbar * probeEnergy * m *
-              (probeEnergy ^ 2 + m ^ 2) /
-              (v ^ 2 * (probeEnergy ^ 2 + 3 * m ^ 2) ^ 2) : ℝ) : ℂ))) =
-        (((-8 * Real.pi ^ 2 * e ^ 2 * probeEnergy * m *
-          (probeEnergy ^ 2 - m ^ 2) /
-          (probeEnergy ^ 2 + 3 * m ^ 2) ^ 2 : ℝ) : ℂ)) := by
-    simpa [q, measure] using htargetCast
-  rw [htarget] at hscaled
-  apply Tendsto.congr' ?_ hscaled
+  apply Tendsto.congr' ?_ (by
+    rw [← htargetReal]
+    dsimp only [q, measure] at hscaled
+    push_cast at hscaled ⊢
+    simpa only [neg_mul, mul_neg, neg_sq] using hscaled)
   filter_upwards [self_mem_nhdsWithin] with disorderStrength hdisorder
   have hdisorderC : (disorderStrength : ℂ) ≠ 0 := by
     exact_mod_cast ne_of_gt hdisorder
