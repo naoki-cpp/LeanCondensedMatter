@@ -1537,8 +1537,8 @@ theorem externalSubsetMomentSeries_eq_signedConnected_nonempty_even
     have hNotEmpty : T.1 ≠ ∅ := σ.ne_empty T.2
     have hzero : κ T.1 = 0 := by
       change externalSubsetConnectedDiagramSeries ε β g labels times T.1 = 0
-      simp only [externalSubsetConnectedDiagramSeries, hNotEmpty, hOdd, dite_eq_left,
-        dite_eq_right]
+      unfold externalSubsetConnectedDiagramSeries
+      rw [dif_neg hNotEmpty, dif_neg hOdd]
     have hprod : Finpartition.partitionProduct κ σ = 0 :=
       Finset.prod_eq_zero T.2 hzero
     simp only [dite_eq_right hEven]
