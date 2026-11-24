@@ -28,106 +28,49 @@ private noncomputable def finiteRangeApprox {ι : Type*} (d : HilbertBasis ι �
 private theorem finiteRangeApprox_isCompact {ι : Type*} (d : HilbertBasis ι ℂ H)
     (T : H →L[ℂ] H) (s : Finset ι) :
     IsCompactOperator (finiteRangeApprox d T s) := by
-  classical
-  unfold finiteRangeApprox
-  induction s using Finset.induction_on with
-  | empty =>
-      simpa using (isCompactOperator_zero : IsCompactOperator (0 : H →L[ℂ] H))
-  | @insert i s hi ih =>
-      rw [Finset.sum_insert hi]
-      exact (InnerProductSpace.isCompactOperator_rankOne
-        (d i) ((ContinuousLinearMap.adjoint T) (d i))).add ih
+  change finiteRangeApprox d T s ∈ compactOperator (RingHom.id ℂ) H H
+  exact Submodule.sum_mem _ fun i _ =>
+    InnerProductSpace.isCompactOperator_rankOne (d i) ((ContinuousLinearMap.adjoint T) (d i))
 
-private theorem inner_finiteRangeApprox_apply_of_mem {ι : Type*} (d : HilbertBasis ι ℂ H)
-    (T : H →L[ℂ] H) (s : Finset ι) (x : H) {j : ι} (hj : j ∈ s) :
-    inner ℂ ((finiteRangeApprox d T s) x) (d j) = inner ℂ (T x) (d j) := by
-  classical
+private theorem inner_finiteRangeApprox_apply {ι : Type*} [DecidableEq ι]
+    (d : HilbertBasis ι ℂ H) (T : H →L[ℂ] H) (s : Finset ι) (x : H) (j : ι) :
+    inner ℂ (d j) ((finiteRangeApprox d T s) x) =
+      if j ∈ s then inner ℂ (d j) (T x) else 0 := by
   have happ :
       (finiteRangeApprox d T s) x =
         ∑ i ∈ s, inner ℂ ((ContinuousLinearMap.adjoint T) (d i)) x • d i := by
     simp [finiteRangeApprox, InnerProductSpace.rankOne_apply]
-  rw [happ, d.orthonormal.inner_left_sum
-    (fun i => inner ℂ ((ContinuousLinearMap.adjoint T) (d i)) x) hj]
-  simpa only [inner_conj_symm] using
-    (ContinuousLinearMap.adjoint_inner_right T x (d j))
-
-private theorem inner_finiteRangeApprox_apply_of_not_mem {ι : Type*}
-    (d : HilbertBasis ι ℂ H) (T : H →L[ℂ] H) (s : Finset ι) (x : H)
-    {j : ι} (hj : j ∉ s) :
-    inner ℂ ((finiteRangeApprox d T s) x) (d j) = 0 := by
-  classical
-  have happ :
-      (finiteRangeApprox d T s) x =
-        ∑ i ∈ s, inner ℂ ((ContinuousLinearMap.adjoint T) (d i)) x • d i := by
-    simp [finiteRangeApprox, InnerProductSpace.rankOne_apply]
-  rw [happ, sum_inner]
-  apply Finset.sum_eq_zero
-  intro i hi
-  have hij : i ≠ j := fun h => hj (h ▸ hi)
-  rw [inner_smul_left, d.orthonormal.2 hij, mul_zero]
+  rw [happ]
+  simp [inner_sum, inner_smul_right, orthonormal_iff_ite.mp d.orthonormal,
+    ContinuousLinearMap.adjoint_inner_left]
 
 private theorem norm_sub_finiteRangeApprox_sq_le {ι : Type*} (d : HilbertBasis ι ℂ H)
     {T : H →L[ℂ] H} (hT : IsHilbertSchmidt T) (s : Finset ι) (x : H) :
     ‖(T - finiteRangeApprox d T s) x‖ ^ 2 ≤
       (∑' i : {j // j ∉ s}, ‖(ContinuousLinearMap.adjoint T) (d i)‖ ^ 2) * ‖x‖ ^ 2 := by
   classical
-  let hTadj : IsHilbertSchmidt (ContinuousLinearMap.adjoint T) :=
-    isHilbertSchmidt_adjoint hT
   have hparse :
       HasSum
-        (fun i : ι => ‖(inner ℂ ((T - finiteRangeApprox d T s) x) (d i) : ℂ)‖ ^ 2)
+        (fun i : ι => ‖(inner ℂ (d i) ((T - finiteRangeApprox d T s) x) : ℂ)‖ ^ 2)
         (‖(T - finiteRangeApprox d T s) x‖ ^ 2) := by
     simpa only [show (2 : ENNReal).toReal = (2 : ℝ) by norm_num, Real.rpow_two,
-      d.repr_apply_apply, d.repr.norm_map, norm_inner_symm] using
+      d.repr_apply_apply, d.repr.norm_map] using
       (lp.hasSum_norm (p := 2) (by norm_num) (d.repr ((T - finiteRangeApprox d T s) x)))
   have hzero :
-      ∑ i ∈ s, ‖(inner ℂ ((T - finiteRangeApprox d T s) x) (d i) : ℂ)‖ ^ 2 = 0 := by
+      ∑ i ∈ s, ‖(inner ℂ (d i) ((T - finiteRangeApprox d T s) x) : ℂ)‖ ^ 2 = 0 := by
     apply Finset.sum_eq_zero
     intro i hi
-    rw [sub_apply, inner_sub_left,
-      inner_finiteRangeApprox_apply_of_mem d T s x hi, sub_self, norm_zero, zero_pow]
-    norm_num
-  have hsplit := hparse.summable.sum_add_tsum_subtype_compl s
-  rw [hzero, zero_add] at hsplit
-  rw [← hparse.tsum_eq, ← hsplit]
-  have hcoeff :
-      Summable (fun i : {j // j ∉ s} =>
-        ‖(inner ℂ ((T - finiteRangeApprox d T s) x) (d i) : ℂ)‖ ^ 2) :=
-    hparse.summable.subtype _
+    simp [sub_apply, inner_sub_right, inner_finiteRangeApprox_apply, hi]
+  have htail := s.hasSum_iff_compl.mp hparse
+  rw [hzero, sub_zero] at htail
   have hadj :
-      Summable (fun i : ι => ‖(ContinuousLinearMap.adjoint T) (d i)‖ ^ 2) :=
-    hTadj.summable_norm_sq_apply d
-  have hadjCompl :
-      Summable (fun i : {j // j ∉ s} =>
-        ‖(ContinuousLinearMap.adjoint T) (d i)‖ ^ 2) :=
-    hadj.subtype _
-  have hmajor :
-      Summable (fun i : {j // j ∉ s} =>
-        ‖x‖ ^ 2 * ‖(ContinuousLinearMap.adjoint T) (d i)‖ ^ 2) :=
-    hadjCompl.mul_left (‖x‖ ^ 2)
-  calc
-    (∑' i : {j // j ∉ s},
-        ‖(inner ℂ ((T - finiteRangeApprox d T s) x) (d i) : ℂ)‖ ^ 2) ≤
-        ∑' i : {j // j ∉ s},
-          ‖x‖ ^ 2 * ‖(ContinuousLinearMap.adjoint T) (d i)‖ ^ 2 := by
-      exact hcoeff.tsum_le_tsum (fun i => by
-        rw [sub_apply, inner_sub_left,
-          inner_finiteRangeApprox_apply_of_not_mem d T s x i.2, sub_zero]
-        have hi :
-            ‖(inner ℂ (T x) (d i) : ℂ)‖ ≤
-              ‖x‖ * ‖(ContinuousLinearMap.adjoint T) (d i)‖ := by
-          rw [← ContinuousLinearMap.adjoint_inner_right T x (d i)]
-          exact norm_inner_le_norm x ((ContinuousLinearMap.adjoint T) (d i))
-        calc
-          ‖(inner ℂ (T x) (d i) : ℂ)‖ ^ 2 ≤
-              (‖x‖ * ‖(ContinuousLinearMap.adjoint T) (d i)‖) ^ 2 :=
-            pow_le_pow_left₀ (norm_nonneg _) hi 2
-          _ = ‖x‖ ^ 2 * ‖(ContinuousLinearMap.adjoint T) (d i)‖ ^ 2 := by ring) hmajor
-    _ = ‖x‖ ^ 2 *
-        ∑' i : {j // j ∉ s}, ‖(ContinuousLinearMap.adjoint T) (d i)‖ ^ 2 := by
-      rw [tsum_mul_left]
-    _ = (∑' i : {j // j ∉ s}, ‖(ContinuousLinearMap.adjoint T) (d i)‖ ^ 2) *
-        ‖x‖ ^ 2 := by ring
+      Summable (fun i : {j // j ∉ s} => ‖(ContinuousLinearMap.adjoint T) (d i)‖ ^ 2) :=
+    ((isHilbertSchmidt_adjoint hT).summable_norm_sq_apply d).subtype _
+  refine hasSum_le (fun i => ?_) htail (hadj.hasSum.mul_right (‖x‖ ^ 2))
+  rw [sub_apply, inner_sub_right, inner_finiteRangeApprox_apply, if_neg i.2, sub_zero,
+    ← ContinuousLinearMap.adjoint_inner_left T x (d i), ← mul_pow]
+  exact pow_le_pow_left₀ (norm_nonneg _)
+    (norm_inner_le_norm ((ContinuousLinearMap.adjoint T) (d i)) x) 2
 
 private theorem norm_sub_finiteRangeApprox_le {ι : Type*} (d : HilbertBasis ι ℂ H)
     {T : H →L[ℂ] H} (hT : IsHilbertSchmidt T) (s : Finset ι) :
