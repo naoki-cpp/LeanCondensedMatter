@@ -1,6 +1,6 @@
 import LeanCondensedMatter.Analysis.OrderedSimplex.BinarySlotShuffle
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.ExternalSupportFiber
-import LeanCondensedMatter.Analysis.OrderedSimplex.StrictAntiCongr
+import LeanCondensedMatter.Analysis.OrderedSimplex.Integral
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalVacuumStandalone
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.Integral
 
