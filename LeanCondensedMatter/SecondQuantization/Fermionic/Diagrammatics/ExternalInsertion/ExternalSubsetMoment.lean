@@ -1488,8 +1488,6 @@ noncomputable def externalSubsetSignedConnectedMomentSeries
     (fun _ π => PowerSeries.C (externalPartitionSourceSign π))
     (externalSubsetConnectedDiagramSeries ε β g labels times) S
 
-set_option maxHeartbeats 4000000 in
--- The outer partition and its blockwise connected products reindex dependently.
 open Classical in
 /-- For every nonempty even external source subset, the physical
 vacuum-free Dyson moment equals the Koszul-signed partition transform
@@ -1514,48 +1512,39 @@ theorem externalSubsetMomentSeries_eq_signedConnected_nonempty_even
   let κ := externalSubsetConnectedDiagramSeries ε β g labels times
   by_cases hEven : ∀ B : π.parts,
       Even (B : Finset (Fin (2 * (S.card / 2)))).card
-  · have hsign := externalSubsetPartitionEquiv_sourceSign S heven π hEven
-    have hprod :
-        (∏ B : π.parts,
-            connectedExternalInsertionDysonSeries ε β g
-              (evenExternalSubsetLabels
-                (evenExternalSubsetLabels labels S heven) B.1 (hEven B))
-              (evenExternalSubsetTimes
-                (evenExternalSubsetTimes times S heven) B.1 (hEven B))) =
-          Finpartition.partitionProduct κ σ := by
-      calc
-        _ = ∏ B : π.parts, κ (be B).1 := by
-          apply Finset.prod_congr rfl
-          intro B _
-          exact externalSubsetConnectedSeries_comp
-            ε β g labels times S heven π hEven B
-        _ = ∏ T : σ.parts, κ T.1 := by
-          exact Equiv.prod_comp be (fun T : σ.parts => κ T.1)
-        _ = _ := by
-          rw [Finpartition.partitionProduct]
-          exact (Finset.prod_coe_sort σ.parts κ)
+  · let blockSeries (B : π.parts) : PowerSeries ℂ :=
+      connectedExternalInsertionDysonSeries ε β g
+        (evenExternalSubsetLabels
+          (evenExternalSubsetLabels labels S heven) B.1 (hEven B))
+        (evenExternalSubsetTimes
+          (evenExternalSubsetTimes times S heven) B.1 (hEven B))
     simp only [dite_eq_left hEven]
-    rw [hsign, hprod]
-  · obtain ⟨B, hBodd⟩ := not_forall.mp hEven
-    have hImage :
-        ((be B).1 : Finset (Fin (2 * E))) =
-          B.1.map
-            ⟨fun i => (evenExternalSubsetOrderIso S heven i).1,
-              fun i j h => (evenExternalSubsetOrderIso S heven).injective
-                (Subtype.ext h)⟩ := rfl
-    have hOdd : ¬ Even ((be B).1 : Finset (Fin (2 * E))).card := by
-      simpa [hImage] using hBodd
-    have hzero : κ (be B).1 = 0 := by
-      change externalSubsetConnectedDiagramSeries ε β g labels times (be B).1 = 0
-      simp [externalSubsetConnectedDiagramSeries, hOdd]
-    have hprod : Finpartition.partitionProduct κ σ = 0 := by
-      unfold Finpartition.partitionProduct
-      exact Finset.prod_eq_zero (be B).2 hzero
+    change PowerSeries.C (externalPartitionSourceSign π) * (∏ B : π.parts, blockSeries B) =
+      PowerSeries.C (externalPartitionSourceSign σ) * Finpartition.partitionProduct κ σ
+    rw [externalSubsetPartitionEquiv_sourceSign S heven π hEven]
+    apply congrArg (fun z : PowerSeries ℂ => PowerSeries.C (externalPartitionSourceSign σ) * z)
+    calc
+      (∏ B : π.parts, blockSeries B) = ∏ B : π.parts, κ (be B).1 :=
+        Finset.prod_congr rfl (fun B _ =>
+          externalSubsetConnectedSeries_comp ε β g labels times S heven π hEven B)
+      _ = ∏ T : σ.parts, κ T.1 := Equiv.prod_comp be (fun T : σ.parts => κ T.1)
+      _ = _ := by
+        rw [Finpartition.partitionProduct]
+        exact Finset.prod_coe_sort σ.parts κ
+  · have hOddBlocks : ¬ ∀ T : σ.parts, Even (T : Finset (Fin (2 * E))).card :=
+      fun h => hEven ((externalSubsetPartitionEquiv_evenBlocks S heven π).mpr h)
+    obtain ⟨T, hOdd⟩ := not_forall.mp hOddBlocks
+    have hNotEmpty : T.1 ≠ ∅ := σ.ne_empty T.2
+    have hzero : κ T.1 = 0 := by
+      change externalSubsetConnectedDiagramSeries ε β g labels times T.1 = 0
+      unfold externalSubsetConnectedDiagramSeries
+      rw [dite_eq_right hNotEmpty, dite_eq_right hOdd]
+    have hprod : Finpartition.partitionProduct κ σ = 0 :=
+      Finset.prod_eq_zero T.2 hzero
     simp only [dite_eq_right hEven]
     change (0 : PowerSeries ℂ) =
       PowerSeries.C (externalPartitionSourceSign σ) * Finpartition.partitionProduct κ σ
-    rw [hprod]
-    simp
+    rw [hprod, mul_zero]
 
 @[simp]
 theorem externalSubsetMomentSeries_empty
