@@ -1,6 +1,7 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.DiagramIntegral
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.TimedFieldContraction
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsExpectationBridge
+import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.InteractionPictureVertexDyson
 
 set_option linter.style.header false
 
@@ -98,6 +99,46 @@ noncomputable def twoPointDysonCoefficient {n : ℕ}
         orderedTwoPointVertexWeight g q *
           Common.finiteGibbsExpectation (fermionEnergy (fun k => ε k - μ)) β
             (mixedTimeOrderedVertexComp ε i j τ τ' q σ))
+
+/-- The general atomic-order sign specializes to the two-point external-field
+exchange sign, independently of the interaction times. -/
+theorem externalInsertionMixedAtomicOrderSign_twoPoint
+    {n : ℕ} (τ τ' : ℝ) (σ : Fin n → ℝ) :
+    externalInsertionMixedAtomicOrderSign (E := 1) (twoPointExternalTimes τ τ') σ =
+      twoPointExternalOrderSign τ τ' := by
+  classical
+  rw [externalInsertionMixedAtomicOrderSign,
+    externalInsertionStandardToMixedAtomicPositionEquiv_sign_twoPoint]
+  by_cases h : τ < τ'
+  · simp [h, twoPointExternalOrderSign, Common.Statistics.zetaInt]
+  · simp [h, twoPointExternalOrderSign]
+
+omit [Fintype Mode] in
+/-- The two physical mixed vertex products coincide, including at equal times.
+Both definitions use the same event operators and the same stable order. -/
+theorem mixedTimeOrderedVertexComp_eq_externalInsertion
+    {n : ℕ} (ε : Mode → ℝ) (i j : Mode) (τ τ' : ℝ)
+    (q : Fin n → QuarticVertexLabel Mode) (σ : Fin n → ℝ) :
+    mixedTimeOrderedVertexComp ε i j τ τ' q σ =
+      externalInsertionMixedTimeOrderedVertexComp (E := 1) ε
+        (twoPointExternalLabels i j) (twoPointExternalTimes τ τ') q σ := by
+  simp only [mixedTimeOrderedVertexComp, externalInsertionMixedTimeOrderedVertexComp,
+    orderedTwoPointTimedEvents_eq_externalInsertion,
+    externalInsertionMixedAtomicOrderSign_twoPoint, twoPointTimedEventOperator]
+
+/-- The physical two-point Dyson coefficient is the two-external specialization
+of the general vertex Dyson coefficient at arbitrary real μ and β. -/
+theorem twoPointDysonCoefficient_eq_externalInsertionVertexDysonCoefficient
+    {n : ℕ} (ε : Mode → ℝ) (β μ : ℝ) (g : QuarticVertexLabel Mode → ℂ)
+    (i j : Mode) (τ τ' : ℝ) :
+    twoPointDysonCoefficient (n := n) ε β μ g i j τ τ' =
+      externalInsertionVertexDysonCoefficient (E := 1) ε β μ g
+        (twoPointExternalLabels i j) (twoPointExternalTimes τ τ') n := by
+  unfold twoPointDysonCoefficient externalInsertionVertexDysonCoefficient
+  rw [← intervalIntegral.orderedSimplexIntegral_smul]
+  apply intervalIntegral.orderedSimplexIntegral_congr
+  intro σ
+  simp only [mixedTimeOrderedVertexComp_eq_externalInsertion, orderedTwoPointVertexWeight]
 
 /-- At every perturbative order, the physical-H explicit-μ two-point
 coefficient equals its effective-dispersion zero-μ coefficient times the
