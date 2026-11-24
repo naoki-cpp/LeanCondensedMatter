@@ -292,4 +292,42 @@ theorem lie_directionalPosition_latticeKet [DecidableEq Site]
       (direction (geometry.position x) : ℂ) * K.amplitude x y = _
   rw [bondCoordinate, bondDisplacement, map_sub, Complex.ofReal_sub, sub_mul]
 
+/-- The position commutator equals the displacement-weighted sum of oriented
+bond operators. The half removes the double counting of opposite orientations. -/
+theorem lie_directionalPosition_eq_bondSum [DecidableEq Site]
+    (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
+    (K : LocallyFiniteHopping Site) :
+    ⁅K.operator, geometry.directionalPosition direction⁆ =
+      (2 : ℂ)⁻¹ • ∑ x : Site, ∑ y : Site,
+        (geometry.bondCoordinate direction x y : ℂ) • K.bondOperator x y := by
+  let r : Site → ℂ := fun x => (direction (geometry.position x) : ℂ)
+  let A := ∑ x : Site, ∑ y : Site, r x • K.bondOperator x y
+  have hlocal (x : Site) :
+      ⁅K.operator, siteProjector x⁆ = -∑ y : Site, K.bondOperator x y := by
+    rw [K.lie_siteProjector]
+    congr 1
+    apply Finset.sum_subset (Finset.subset_univ _)
+    intro y _ hy
+    rw [LocallyFiniteHopping.bondOperator,
+      K.amplitude_eq_zero_of_not_mem hy, K.amplitude_swap_eq_zero_of_not_mem hy]
+    simp
+  have hcomm : ⁅K.operator, geometry.directionalPosition direction⁆ = -A := by
+    change (LieAlgebra.ad ℂ (Module.End ℂ (Site →₀ ℂ)) K.operator)
+      (∑ x : Site, r x • siteProjector x) = -A
+    rw [map_sum]
+    simp only [map_smul]
+    change (∑ x : Site, r x • ⁅K.operator, siteProjector x⁆) = -A
+    simp only [hlocal, smul_neg, Finset.smul_sum, Finset.sum_neg_distrib, A]
+  have hswap : (∑ x : Site, ∑ y : Site, r y • K.bondOperator x y) = -A := by
+    rw [Finset.sum_comm]
+    simp only [K.bondOperator_swap, smul_neg, Finset.sum_neg_distrib, A]
+  have hweight (x y : Site) :
+      (geometry.bondCoordinate direction x y : ℂ) = r y - r x := by
+    simp only [bondCoordinate, bondDisplacement, map_sub, Complex.ofReal_sub, r]
+  rw [hcomm]
+  simp only [hweight, sub_smul, Finset.sum_sub_distrib, hswap]
+  change -A = (2 : ℂ)⁻¹ • (-A - A)
+  rw [sub_eq_add_neg, ← two_smul ℂ (-A), smul_smul]
+  norm_num
+
 end LatticeGeometry
