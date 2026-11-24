@@ -149,9 +149,14 @@ theorem orderedTwoPointTimedEvents_eq_externalInsertion {n : ℕ}
           apply (finSumFinEquiv : TwoPointTimedEvent n ≃ Fin (2 + n)).injective
           exact Fin.ext h)
         hab hba⟩
-  have ht : target.Pairwise rel :=
-    orderedExternalInsertionTimedEvents_pairwise
-      (E := 1) (twoPointExternalTimes τ τ') σ
+  have htime : externalInsertionTimedEventTime (E := 1) (twoPointExternalTimes τ τ') σ =
+      twoPointTimedEventTime τ τ' σ := by
+    funext e
+    cases e <;> rfl
+  have ht : target.Pairwise rel := by
+    simpa only [target, rel, twoPointTimedEventBeforeOrEqual, twoPointTimedEventRank, htime] using
+      (orderedExternalInsertionTimedEvents_pairwise
+        (E := 1) (twoPointExternalTimes τ τ') σ)
   have hs : source.Pairwise rel := orderedTwoPointTimedEvents_pairwise τ τ' σ
   have hsub := List.sublist_of_subperm_of_pairwise (r := rel) hSubperm hs ht
   have hRev : List.Subperm target source :=
