@@ -67,7 +67,7 @@ theorem heisenbergTransportFunctional_apply
     (M : Test →ₗ[ℂ] (V →ₗ[ℂ] V))
     (m : V →ₗ[ℂ] V) (f : Test) :
     heisenbergTransportFunctional V ℏ h M m f =
-      heisenbergScale ℏ • _root_.ConservationLaw.transportCommutator V h M m f :=
+      heisenbergScale ℏ • _root_.ConservationLaw.transportFunctional V h M m f :=
   rfl
 
 @[simp]
@@ -76,7 +76,7 @@ theorem heisenbergSourceFunctional_apply
     (M : Test →ₗ[ℂ] (V →ₗ[ℂ] V))
     (m : V →ₗ[ℂ] V) (f : Test) :
     heisenbergSourceFunctional V ℏ h M m f =
-      heisenbergScale ℏ • _root_.ConservationLaw.sourceCommutator V h M m f :=
+      heisenbergScale ℏ • _root_.ConservationLaw.sourceFunctional V h M m f :=
   rfl
 
 /-- Heisenberg scaling commutes with fixed-`m` symmetrization. -/
@@ -114,7 +114,7 @@ noncomputable def heisenbergIntrinsicSymmetricLocalizationBalanceLaw
   balance := by
     intro f
     change heisenbergScale ℏ •
-        ⁅h, _root_.ConservationLaw.localizedQuantity V M m f⁆ = _
+        ⁅h, _root_.ConservationLaw.localizedQuantityFunctional V M m f⁆ = _
     rw [_root_.ConservationLaw.lie_localizedQuantity]
     simp [heisenbergSourceFunctional, heisenbergTransportFunctional, smul_add]
 

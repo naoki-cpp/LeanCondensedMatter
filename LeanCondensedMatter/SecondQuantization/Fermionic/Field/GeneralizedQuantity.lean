@@ -42,7 +42,7 @@ theorem manyBodyLocalizedQuantity_apply
     (M : Test →ₗ[ℂ] (𝓗₁ →ₗ[ℂ] 𝓗₁))
     (m : 𝓗₁ →ₗ[ℂ] 𝓗₁) (f : Test) :
     manyBodyLocalizedQuantity 𝓗₁ M m f =
-      AlgebraicFock.dGamma 𝓗₁ (_root_.ConservationLaw.localizedQuantity 𝓗₁ M m f) :=
+      AlgebraicFock.dGamma 𝓗₁ (_root_.ConservationLaw.localizedQuantityFunctional 𝓗₁ M m f) :=
   rfl
 
 /-- Second quantization preserves the generalized balance decomposition. -/
@@ -51,14 +51,14 @@ theorem dGamma_lie_manyBodyLocalizedQuantity
     (M : Test →ₗ[ℂ] (𝓗₁ →ₗ[ℂ] 𝓗₁))
     (m : 𝓗₁ →ₗ[ℂ] 𝓗₁) (f : Test) :
     ⁅AlgebraicFock.dGamma 𝓗₁ h, manyBodyLocalizedQuantity 𝓗₁ M m f⁆ =
-      AlgebraicFock.dGamma 𝓗₁ (_root_.ConservationLaw.transportCommutator 𝓗₁ h M m f) +
-        AlgebraicFock.dGamma 𝓗₁ (_root_.ConservationLaw.sourceCommutator 𝓗₁ h M m f) := by
+      AlgebraicFock.dGamma 𝓗₁ (_root_.ConservationLaw.transportFunctional 𝓗₁ h M m f) +
+        AlgebraicFock.dGamma 𝓗₁ (_root_.ConservationLaw.sourceFunctional 𝓗₁ h M m f) := by
   rw [manyBodyLocalizedQuantity_apply, AlgebraicFock.dGamma_lie,
     _root_.ConservationLaw.lie_localizedQuantity]
   simpa only [AlgebraicFock.dGammaLinear_apply] using
     (AlgebraicFock.dGammaLinear 𝓗₁).map_add
-      (_root_.ConservationLaw.transportCommutator 𝓗₁ h M m f)
-      (_root_.ConservationLaw.sourceCommutator 𝓗₁ h M m f)
+      (_root_.ConservationLaw.transportFunctional 𝓗₁ h M m f)
+      (_root_.ConservationLaw.sourceFunctional 𝓗₁ h M m f)
 
 end Field
 end Fermionic
