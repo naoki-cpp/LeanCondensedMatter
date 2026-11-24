@@ -100,7 +100,7 @@ theorem mixedTimeOrderedVertexComp_eq_shiftedDispersion
       (l.map (twoPointTimedEventOperator ε i j τ τ' q σ)).prod =
         (l.map a).prod •
           (l.map (twoPointTimedEventOperator (fun k => ε k - μ) i j τ τ' q σ)).prod := by
-    simp_rw [hevent]
+    rw [funext hevent]
     exact ScalarExchange.list_prod_map_smul l a _
   have htail : ((twoPointInteractionEventList n).map a).prod = 1 := by
     rw [twoPointInteractionEventList, List.map_ofFn]
