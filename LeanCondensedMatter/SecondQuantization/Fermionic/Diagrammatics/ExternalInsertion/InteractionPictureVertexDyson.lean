@@ -1,5 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.MixedAtomicDysonIntegral
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.CauchySeries
+import LeanCondensedMatter.Analysis.ScalarExchange.Basic
 
 set_option linter.style.header false
 
@@ -53,6 +54,43 @@ noncomputable def externalInsertionMixedTimeOrderedVertexComp {E n : ℕ}
   externalInsertionMixedAtomicOrderSign externalTime σ •
     ((orderedExternalInsertionTimedEvents externalTime σ).map
       (externalInsertionTimedEventOperator ε externalLabel externalTime q σ)).prod
+
+/-- A uniform energy shift contributes exactly the product of the external field
+factors. The number-conserving interaction vertices and the ordering sign are unchanged. -/
+theorem externalInsertionMixedTimeOrderedVertexComp_eq_shiftedDispersion {E n : ℕ}
+    (ε : Mode → ℝ) (μ : ℝ)
+    (externalLabel : Fin (2 * E) → ExternalFieldLabel Mode)
+    (externalTime : Fin (2 * E) → ℝ)
+    (q : Fin n → QuarticVertexLabel Mode) (σ : Fin n → ℝ) :
+    externalInsertionMixedTimeOrderedVertexComp ε externalLabel externalTime q σ =
+      externalFieldFamilyChemicalPotentialFactor μ externalLabel externalTime •
+        externalInsertionMixedTimeOrderedVertexComp
+          (fun k => ε k - μ) externalLabel externalTime q σ := by
+  let a : ExternalInsertionTimedEvent E n → ℂ
+    | .inl e => externalFieldChemicalPotentialFactor μ (externalTime e) (externalLabel e)
+    | .inr _ => 1
+  have hevent (e : ExternalInsertionTimedEvent E n) :
+      externalInsertionTimedEventOperator ε externalLabel externalTime q σ e =
+        a e • externalInsertionTimedEventOperator
+          (fun k => ε k - μ) externalLabel externalTime q σ e := by
+    cases e with
+    | inl e =>
+        exact externalFieldOperator_eq_shiftedDispersion ε μ
+          (externalTime e) (externalLabel e)
+    | inr v =>
+        change Common.interactionPicture (fermionEnergy ε) (quarticVertexOperator (q v))
+          (σ v) = (1 : ℂ) • Common.interactionPicture
+            (fermionEnergy (fun k => ε k - μ)) (quarticVertexOperator (q v)) (σ v)
+        rw [one_smul, interactionPicture_quarticVertexOperator_sub_chemicalPotential ε μ]
+  have hscalar :
+      ((orderedExternalInsertionTimedEvents externalTime σ).map a).prod =
+        externalFieldFamilyChemicalPotentialFactor μ externalLabel externalTime := by
+    rw [prod_orderedExternalInsertionTimedEvents, Fintype.prod_sum_type]
+    simp [a, externalFieldFamilyChemicalPotentialFactor]
+  unfold externalInsertionMixedTimeOrderedVertexComp
+  simp_rw [hevent]
+  rw [ScalarExchange.list_prod_map_smul, hscalar,
+    smul_comm (externalInsertionMixedAtomicOrderSign externalTime σ)]
 
 /-- One event flattened into the atomic evolved operators in its canonical
 external-leg or quartic-leg order. -/
@@ -185,6 +223,31 @@ noncomputable def externalInsertionVertexDysonCoefficient {E : ℕ}
             (externalInsertionMixedTimeOrderedVertexComp
               ε externalLabel externalTime q σ))
 
+/-- Physical-H Dyson coefficients at explicit μ are transported to the effective
+dispersion with a scalar independent of the integration coordinates and order. -/
+theorem externalInsertionVertexDysonCoefficient_eq_shiftedDispersion {E : ℕ}
+    (ε : Mode → ℝ) (β μ : ℝ) (g : QuarticVertexLabel Mode → ℂ)
+    (externalLabel : Fin (2 * E) → ExternalFieldLabel Mode)
+    (externalTime : Fin (2 * E) → ℝ) (n : ℕ) :
+    externalInsertionVertexDysonCoefficient ε β μ g externalLabel externalTime n =
+      externalFieldFamilyChemicalPotentialFactor μ externalLabel externalTime *
+        externalInsertionVertexDysonCoefficient
+          (fun k => ε k - μ) β 0 g externalLabel externalTime n := by
+  unfold externalInsertionVertexDysonCoefficient
+  simp only [sub_zero]
+  rw [← intervalIntegral.orderedSimplexIntegral_smul]
+  apply intervalIntegral.orderedSimplexIntegral_congr
+  intro σ
+  rw [mul_left_comm (externalFieldFamilyChemicalPotentialFactor μ externalLabel externalTime)
+    ((-1 : ℂ) ^ n)]
+  apply congrArg (fun z : ℂ => (-1 : ℂ) ^ n * z)
+  rw [Finset.mul_sum]
+  apply Finset.sum_congr rfl
+  intro q _
+  rw [externalInsertionMixedTimeOrderedVertexComp_eq_shiftedDispersion ε μ]
+  simp only [Common.finiteGibbsExpectation, map_smul, smul_eq_mul]
+  ring
+
 /-- At μ = 0, the interaction-picture vertex Dyson coefficient equals the
 integrated Wick-diagram coefficient at each finite perturbative order. -/
 theorem externalInsertionVertexDysonCoefficient_eq_externalInsertionDysonCoefficient
@@ -224,6 +287,20 @@ noncomputable def externalInsertionVertexDysonSeries {E : ℕ}
   PowerSeries.mk (externalInsertionVertexDysonCoefficient
     ε β μ g externalLabel externalTime)
 
+/-- Series-level physical-H transport at arbitrary chemical potential. -/
+theorem externalInsertionVertexDysonSeries_eq_shiftedDispersion {E : ℕ}
+    (ε : Mode → ℝ) (β μ : ℝ) (g : QuarticVertexLabel Mode → ℂ)
+    (externalLabel : Fin (2 * E) → ExternalFieldLabel Mode)
+    (externalTime : Fin (2 * E) → ℝ) :
+    externalInsertionVertexDysonSeries ε β μ g externalLabel externalTime =
+      PowerSeries.C (externalFieldFamilyChemicalPotentialFactor μ externalLabel externalTime) *
+        externalInsertionVertexDysonSeries
+          (fun k => ε k - μ) β 0 g externalLabel externalTime := by
+  ext n
+  simp only [PowerSeries.coeff_C_mul, externalInsertionVertexDysonSeries, PowerSeries.coeff_mk]
+  exact externalInsertionVertexDysonCoefficient_eq_shiftedDispersion
+    ε β μ g externalLabel externalTime n
+
 /-- At μ = 0, the interaction-picture vertex Dyson formal series is the already-proved
 diagrammatic external-insertion series. -/
 theorem externalInsertionVertexDysonSeries_eq_externalInsertionDysonSeries
@@ -254,6 +331,25 @@ theorem externalInsertionVertexDysonSeries_eq_vacuumFree_mul_normalizedDysonPart
   rw [externalInsertionVertexDysonSeries_eq_externalInsertionDysonSeries]
   exact externalInsertionDysonSeries_eq_vacuumFree_mul_normalizedDysonPartitionSeries
     ε β hβ g externalLabel externalTime
+
+/-- The physical-H vertex series at arbitrary μ factors into its effective-dispersion
+vacuum-free diagram series (with the physical external-field scalar) and normalized
+grand-canonical vacuum series. No new Wick or shuffle expansion is required. -/
+theorem externalInsertionVertexDysonSeries_eq_shiftedVacuumFree_mul_normalizedDysonPartitionSeries
+    {E : ℕ} (ε : Mode → ℝ) (β μ : ℝ) (hβ : 0 ≤ β)
+    (g : QuarticVertexLabel Mode → ℂ)
+    (externalLabel : Fin (2 * E) → ExternalFieldLabel Mode)
+    (externalTime : Fin (2 * E) → ℝ) :
+    externalInsertionVertexDysonSeries ε β μ g externalLabel externalTime =
+      (PowerSeries.C (externalFieldFamilyChemicalPotentialFactor μ externalLabel externalTime) *
+        vacuumFreeExternalInsertionDysonSeries (fun k => ε k - μ) β g
+          externalLabel externalTime) *
+        PowerSeries.normalizeByConstantCoeff
+          (Common.dysonTraceSeries (fermionEnergy (fun k => ε k - μ)) β
+            (quarticInteraction g)) := by
+  rw [externalInsertionVertexDysonSeries_eq_shiftedDispersion,
+    externalInsertionVertexDysonSeries_eq_vacuumFree_mul_normalizedDysonPartitionSeries
+      (fun k => ε k - μ) β hβ, mul_assoc]
 
 end Fermionic
 end SecondQuantization
