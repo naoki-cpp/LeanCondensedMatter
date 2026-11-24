@@ -113,15 +113,10 @@ theorem tendsto_inPlaneLadderAction
     (hcoefficients : Tendsto coefficients l (nhds coefficients₀)) :
     Tendsto (fun a => inPlaneLadderAction (rung a) (coefficients a)) l
       (nhds (inPlaneLadderAction rung₀ coefficients₀)) := by
-  rw [tendsto_pi_nhds]
-  intro direction
-  fin_cases direction
-  · simpa only [Fin.zero_eta, inPlaneLadderAction_apply_x] using
-      ((tendsto_pi_nhds.mp hrung 0).mul (tendsto_pi_nhds.mp hcoefficients 0)).sub
-        ((tendsto_pi_nhds.mp hrung 1).mul (tendsto_pi_nhds.mp hcoefficients 1))
-  · simpa only [Fin.mk_one, inPlaneLadderAction_apply_y] using
-      ((tendsto_pi_nhds.mp hrung 1).mul (tendsto_pi_nhds.mp hcoefficients 0)).add
-        ((tendsto_pi_nhds.mp hrung 0).mul (tendsto_pi_nhds.mp hcoefficients 1))
+  have h : Continuous (fun x : InPlaneCoefficientVector × InPlaneCoefficientVector =>
+      inPlaneLadderAction x.1 x.2) :=
+    (continuous_inPlaneRotationMatrix.comp continuous_fst).matrix_mulVec continuous_snd
+  exact (h.tendsto (rung₀, coefficients₀)).comp (hrung.prodMk_nhds hcoefficients)
 
 /-- Integrating the in-plane ladder action against a fixed coefficient vector amounts to
 integrating its rung vector. Integrability and the integral identity share the same hypotheses. -/
@@ -181,15 +176,11 @@ theorem inPlaneLadderShift_isUnit
   have hinjective : Function.Injective shift := by
     have hmatrix : Function.Injective (inPlaneShiftMatrix rung).mulVec :=
       Matrix.mulVec_injective_of_det_ne_zero (by simpa using hdet)
-    intro left right h
-    apply hmatrix
-    simpa only [shift, inPlaneShiftMatrix_mulVec, sub_apply, one_apply_eq_self,
-      inPlaneLadderCLM_apply] using h
-  have hunit : IsUnit shift :=
-    ContinuousLinearMap.isUnit_iff_bijective.mpr
-      ⟨hinjective, LinearMap.surjective_of_injective
-        (f := shift.toLinearMap) hinjective⟩
-  simpa only [shift] using hunit
+    simpa only [Function.Injective, shift, inPlaneShiftMatrix_mulVec, sub_apply,
+      one_apply_eq_self, inPlaneLadderCLM_apply] using hmatrix
+  exact ContinuousLinearMap.isUnit_iff_bijective.mpr
+    ⟨hinjective, LinearMap.surjective_of_injective
+      (f := shift.toLinearMap) hinjective⟩
 
 /-- Convergence of rung vectors propagates to the shifted-ladder determinant. -/
 theorem tendsto_inPlaneLadderDeterminant
@@ -232,18 +223,16 @@ theorem tendsto_inPlaneLadderSolvedVector
     Tendsto
       (fun a => inPlaneLadderSolvedVector (rung a))
       l (nhds (inPlaneLadderSolvedVector rung₀)) := by
-  have hx := (tendsto_pi_nhds.mp hrung) (0 : Fin 2)
-  have hy := (tendsto_pi_nhds.mp hrung) (1 : Fin 2)
+  have hcoord := tendsto_pi_nhds.mp hrung
   have hOne : Tendsto (fun _ : ι => (1 : ℂ)) l (nhds 1) := tendsto_const_nhds
-  have hOneMinusX := hOne.sub hx
   have hdetLimit := tendsto_inPlaneLadderDeterminant hrung
   rw [tendsto_pi_nhds]
   intro output
   fin_cases output
-  · simpa [inPlaneLadderSolvedVector, inPlaneCoefficientVector, div_eq_mul_inv] using
-      hOneMinusX.mul (hdetLimit.inv₀ hdet)
-  · simpa [inPlaneLadderSolvedVector, inPlaneCoefficientVector, div_eq_mul_inv] using
-      hy.mul (hdetLimit.inv₀ hdet)
+  · simpa [inPlaneLadderSolvedVector, inPlaneCoefficientVector] using
+      (hOne.sub (hcoord 0)).div hdetLimit hdet
+  · simpa [inPlaneLadderSolvedVector, inPlaneCoefficientVector] using
+      (hcoord 1).div hdetLimit hdet
 
 /-- The explicit two-component solution is the generic algebraically resummed ladder vertex. -/
 theorem inPlaneLadderSolvedVector_eq_resummedLadderVertex
