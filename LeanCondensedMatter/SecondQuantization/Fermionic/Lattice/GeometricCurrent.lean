@@ -46,8 +46,21 @@ noncomputable section
 
 
 variable {Site E : Type*}
-variable [LinearOrder Site] [Fintype Site]
 variable [AddCommGroup E] [Module ℝ E]
+
+/-- Under affine site relabeling the translation cancels from each displacement.
+The transformed directional functional is a pullback by the linear part. -/
+private theorem bondCoordinate_comp_sitePermutation
+    (geometry : LatticeGeometry Site E) (e : Equiv.Perm Site)
+    (L : E →ₗ[ℝ] E) (a : E)
+    (hposition : ∀ x, geometry.position (e x) = L (geometry.position x) + a)
+    (direction : E →ₗ[ℝ] ℝ) (x y : Site) :
+    geometry.bondCoordinate (direction.comp L) x y =
+      geometry.bondCoordinate direction (e x) (e y) := by
+  simp [LatticeGeometry.bondCoordinate, LatticeGeometry.bondDisplacement,
+    LinearMap.comp_apply, hposition, map_sub]
+
+variable [LinearOrder Site] [Fintype Site]
 
 /-- Spatial current component obtained by summing all directed bond currents with their oriented
 geometric coordinates. The factor `1/2` removes the duplicate orientation in the all-pairs sum. -/
@@ -125,6 +138,55 @@ theorem boundedMixedDirectionalContact_swap
   apply Finset.sum_congr rfl
   intro y _
   rw [mul_comm]
+
+/-- A hopping-preserving affine permutation transports the physical directional
+current by the pullback of the measurement direction. The only operator-level
+assumption is the implementation of site relabeling on bounded matrix units. -/
+theorem boundedDirectionalCurrent_siteCovariance
+    (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
+    (ℏ q : ℂ) (K : LocallyFiniteHopping Site) (e : Equiv.Perm Site)
+    (L : E →ₗ[ℝ] E) (a : E)
+    (hposition : ∀ x, geometry.position (e x) = L (geometry.position x) + a)
+    (Φ : (FiniteLatticeHilbertFock Site →L[ℂ] FiniteLatticeHilbertFock Site) →ₗ[ℂ]
+      (FiniteLatticeHilbertFock Site →L[ℂ] FiniteLatticeHilbertFock Site))
+    (hK : ∀ x y, K.amplitude (e x) (e y) = K.amplitude x y)
+    (hUnit : ∀ x y, Φ (boundedOneBodyOperator (matrixUnit x y)) =
+      boundedOneBodyOperator (matrixUnit (e x) (e y))) :
+    Φ (boundedDirectionalCurrent geometry (direction.comp L) ℏ q K) =
+      boundedDirectionalCurrent geometry direction ℏ q K := by
+  unfold boundedDirectionalCurrent
+  simp only [map_smul, map_sum, boundedBondCurrent_siteCovariance K ℏ q e Φ hK hUnit]
+  congr 1
+  refine Fintype.sum_equiv e _ _ ?_
+  intro x
+  refine Fintype.sum_equiv e _ _ ?_
+  intro y
+  rw [bondCoordinate_comp_sitePermutation geometry e L a hposition direction x y]
+
+/-- The mixed Peierls contact transforms by the pullback in both directions.
+Both geometric weights are transported by the same site permutation, while
+the bond contact covariance follows from the hopping amplitudes and matrix units. -/
+theorem boundedMixedDirectionalContact_siteCovariance
+    (geometry : LatticeGeometry Site E) (measured source : E →ₗ[ℝ] ℝ)
+    (ℏ q : ℂ) (K : LocallyFiniteHopping Site) (e : Equiv.Perm Site)
+    (L : E →ₗ[ℝ] E) (a : E)
+    (hposition : ∀ x, geometry.position (e x) = L (geometry.position x) + a)
+    (Φ : (FiniteLatticeHilbertFock Site →L[ℂ] FiniteLatticeHilbertFock Site) →ₗ[ℂ]
+      (FiniteLatticeHilbertFock Site →L[ℂ] FiniteLatticeHilbertFock Site))
+    (hK : ∀ x y, K.amplitude (e x) (e y) = K.amplitude x y)
+    (hUnit : ∀ x y, Φ (boundedOneBodyOperator (matrixUnit x y)) =
+      boundedOneBodyOperator (matrixUnit (e x) (e y))) :
+    Φ (boundedMixedDirectionalContact geometry (measured.comp L) (source.comp L) ℏ q K) =
+      boundedMixedDirectionalContact geometry measured source ℏ q K := by
+  unfold boundedMixedDirectionalContact
+  simp only [map_smul, map_sum, boundedBondContact_siteCovariance K ℏ q e Φ hK hUnit]
+  congr 1
+  refine Fintype.sum_equiv e _ _ ?_
+  intro x
+  refine Fintype.sum_equiv e _ _ ?_
+  intro y
+  rw [bondCoordinate_comp_sitePermutation geometry e L a hposition measured x y,
+    bondCoordinate_comp_sitePermutation geometry e L a hposition source x y]
 
 /-- Hermitian hopping and real physical parameters make every geometric current component
 self-adjoint. -/
