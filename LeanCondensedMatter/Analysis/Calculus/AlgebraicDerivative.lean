@@ -7,9 +7,9 @@ set_option linter.style.header false
 /-!
 # Weak algebraic derivatives
 
-A family valued in an algebraic vector space over a nontrivially normed field has an algebraic derivative when every
-𝕜-linear scalar functional sees the corresponding ordinary scalar derivative. This gives a
-calculus for vector spaces with no chosen topology.
+A family valued in an algebraic vector space over a nontrivially normed field has an
+algebraic derivative when every scalar linear functional sees the corresponding ordinary
+scalar derivative. This gives a calculus for vector spaces with no chosen topology.
 -/
 
 open scoped BigOperators
@@ -18,7 +18,7 @@ variable {𝕜 V W : Type*} [NontriviallyNormedField 𝕜]
 variable [AddCommGroup V] [Module 𝕜 V]
 variable [AddCommGroup W] [Module 𝕜 W]
 
-/-- Weak derivative for a family valued in an algebraic complex vector space.
+/-- Weak derivative for a family valued in an algebraic vector space.
 
 No topology is imposed on `V`. Instead, every algebraic 𝕜-linear functional `V →ₗ[𝕜] 𝕜`
 must turn the family into an ordinarily differentiable scalar function with the stated
