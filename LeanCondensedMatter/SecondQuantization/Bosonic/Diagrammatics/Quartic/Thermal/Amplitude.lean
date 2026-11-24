@@ -1,7 +1,7 @@
 import LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.ThermalField
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Ordered
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.PairingWeight
-import LeanCondensedMatter.Combinatorics.PerfectPairing.Evaluation
+import LeanCondensedMatter.Combinatorics.PerfectPairing.Core
 
 set_option linter.style.header false
 set_option linter.unusedFintypeInType false

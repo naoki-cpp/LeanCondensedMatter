@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Combinatorics.PerfectPairing.PairEndpoints
-import LeanCondensedMatter.Combinatorics.PerfectPairing.Evaluation
+import LeanCondensedMatter.Combinatorics.PerfectPairing.Core
 import LeanCondensedMatter.Combinatorics.Common.FintypeProduct
 
 set_option linter.style.header false

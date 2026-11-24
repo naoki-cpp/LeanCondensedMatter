@@ -152,6 +152,14 @@ theorem Pairing.pairs_normalized {n : ℕ} (pairing : Pairing n)
   rcases Finset.mem_image.mp hpair with ⟨i, hi, rfl⟩
   exact (Finset.mem_filter.mp hi).2
 
+open scoped BigOperators
+
+/-- Evaluate a perfect pairing from a global scalar weight and a scalar kernel on its pair
+endpoints. -/
+def Pairing.evaluation {R : Type*} [CommMonoid R] {n : ℕ} (pairing : Pairing n) (weight : R)
+    (pairValue : Fin (2 * n) → Fin (2 * n) → R) : R :=
+  weight * ∏ pr ∈ pairing.pairs, pairValue pr.1 pr.2
+
 /-- The pair containing position `0`, i.e. `(0, partner 0)`. -/
 def Pairing.firstPair {n : ℕ} (pairing : Pairing (n + 1)) :
     Fin (2 * (n + 1)) × Fin (2 * (n + 1)) :=
