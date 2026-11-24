@@ -165,12 +165,10 @@ private theorem twoModeFockLehmannTableResponse_eq
         M 0 0 • Common.basisState {0, 1} + M 1 1 • Common.basisState {0, 1} := by
     simp only [twoModeVertex, Fin.sum_univ_two, LinearMap.add_apply,
       LinearMap.smul_apply, LinearMap.comp_apply]
-    simp [ha, hc, map_smul, fermionSign, insertOccupation, removeOccupation]
     have hcard : ({x ∈ ({0, 1} : Occupation (Fin 2)) | x = 0}).card = 1 := by decide
     have hcardErase :
         ({x ∈ (Finset.erase ({0, 1} : Occupation (Fin 2)) 1) | x = 0}).card = 1 := by decide
-    rw [hcard, hcardErase]
-    simp
+    simp [ha, hc, map_smul, fermionSign, insertOccupation, removeOccupation, hcard, hcardErase]
   unfold finiteLehmannTableResponse
   rw [Fintype.sum_prod_type]
   simp_rw [hsum]
