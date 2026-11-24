@@ -131,19 +131,19 @@ theorem inPlaneLadderAction_integrable_and_integral_eq
       MeasureTheory.volume a b ∧
     (∫ p in a..b, inPlaneLadderAction (rung p) coefficients direction) =
       inPlaneLadderAction (fun i => ∫ p in a..b, rung p i) coefficients direction := by
-  fin_cases direction
-  · simp only [Fin.zero_eta, inPlaneLadderAction_apply_x]
-    constructor
-    · exact ((hrung 0).mul_const (coefficients 0)).sub ((hrung 1).mul_const (coefficients 1))
-    · rw [intervalIntegral.integral_sub ((hrung 0).mul_const (coefficients 0))
-          ((hrung 1).mul_const (coefficients 1)),
-        intervalIntegral.integral_mul_const, intervalIntegral.integral_mul_const]
-  · simp only [Fin.mk_one, inPlaneLadderAction_apply_y]
-    constructor
-    · exact ((hrung 1).mul_const (coefficients 0)).add ((hrung 0).mul_const (coefficients 1))
-    · rw [intervalIntegral.integral_add ((hrung 1).mul_const (coefficients 0))
-          ((hrung 0).mul_const (coefficients 1)),
-        intervalIntegral.integral_mul_const, intervalIntegral.integral_mul_const]
+  have hcomm (r : InPlaneCoefficientVector) :
+      inPlaneLadderAction r coefficients direction = inPlaneLadderAction coefficients r direction := by
+    fin_cases direction <;> simp only [Fin.zero_eta, Fin.mk_one,
+      inPlaneLadderAction_apply_x, inPlaneLadderAction_apply_y] <;> ring
+  simp_rw [hcomm]
+  simp only [inPlaneLadderAction, Matrix.mulVec, dotProduct]
+  have hint (i : Fin 2) : IntervalIntegrable
+      (fun p => inPlaneRotationMatrix coefficients direction i * rung p i)
+      MeasureTheory.volume a b := (hrung i).const_mul _
+  exact ⟨by simpa only [Finset.sum_fn] using
+    (IntervalIntegrable.sum Finset.univ (fun i _ => hint i)), by
+    rw [intervalIntegral.integral_finsetSum (fun i _ => hint i)]
+    simp only [intervalIntegral.integral_const_mul]⟩
 
 /-- Determinant of the shifted two-component ladder equation `I - L`. -/
 def inPlaneLadderDeterminant (rung : InPlaneCoefficientVector) : ℂ :=
