@@ -387,7 +387,8 @@ private theorem externalInsertionMixedTimeOrderedAtomicLegs_zero_eq_flattened_of
   exact (congrArg (fun p : Fin n × Fin 4 => g p.1 p.2)
     (Combinatorics.FiniteIndex.blockEquiv_cast_mul_add hcard i j)).symm
 
-private theorem externalInsertionMixedTimeOrderedAtomicLegs_nodup {E n : ℕ}
+/-- The general mixed atomic-leg order has no duplicate identities. -/
+theorem externalInsertionMixedTimeOrderedAtomicLegs_nodup {E n : ℕ}
     (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ) :
     (externalInsertionMixedTimeOrderedAtomicLegs externalTime σ).Nodup := by
   rw [externalInsertionMixedTimeOrderedAtomicLegs, List.nodup_flatMap]
@@ -398,7 +399,8 @@ private theorem externalInsertionMixedTimeOrderedAtomicLegs_nodup {E n : ℕ}
     (orderedExternalInsertionTimedEvents_nodup externalTime σ).pairwise_of_forall_ne
       (fun _ _ _ _ h => externalInsertionTimedEventAtomicLegs_disjoint h)
 
-private theorem externalInsertionMixedTimeOrderedAtomicLegs_all_mem {E n : ℕ}
+/-- The general mixed atomic-leg order contains every canonical leg. -/
+theorem externalInsertionMixedTimeOrderedAtomicLegs_all_mem {E n : ℕ}
     (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ) :
     ∀ leg : OrderedExternalInsertionLeg E n,
       leg ∈ externalInsertionMixedTimeOrderedAtomicLegs externalTime σ := by
@@ -419,7 +421,8 @@ private theorem externalInsertionMixedTimeOrderedAtomicLegs_all_mem {E n : ℕ}
       rw [externalInsertionTimedEventAtomicLegs, List.mem_ofFn]
       exact ⟨l, rfl⟩
 
-private theorem externalInsertionMixedTimeOrderedAtomicLegs_length {E n : ℕ}
+/-- The general mixed atomic-leg order has one position per canonical leg. -/
+theorem externalInsertionMixedTimeOrderedAtomicLegs_length {E n : ℕ}
     (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ) :
     (externalInsertionMixedTimeOrderedAtomicLegs externalTime σ).length =
       2 * (2 * n + E) := by
