@@ -123,6 +123,27 @@ theorem reachable_finTwo_of_even_left_components
   simp at hParity
 
 omit [DecidableEq V] in
+/-- Reachability in the image of an injective, adjacency-reflecting map lifts to the
+domain graph when the image is closed under taking adjacent vertices. -/
+theorem reachable_of_closed_image
+    {W : Type*} {G : SimpleGraph V} {H : SimpleGraph W}
+    (f : V → W) (hf : Function.Injective f)
+    (hreflect : ∀ a b, H.Adj (f a) (f b) → G.Adj a b)
+    (hclosed : ∀ a z, H.Adj (f a) z → ∃ b, z = f b)
+    {u v : V} (h : H.Reachable (f u) (f v)) : G.Reachable u v := by
+  have lift : ∀ {z : W}, Relation.ReflTransGen H.Adj (f u) z →
+      ∃ w, z = f w ∧ G.Reachable u w := by
+    intro z hz
+    induction hz with
+    | refl => exact ⟨u, rfl, SimpleGraph.Reachable.refl u⟩
+    | @tail a c _ hadj ih =>
+        obtain ⟨w, rfl, hw⟩ := ih
+        obtain ⟨w', rfl⟩ := hclosed w c hadj
+        exact ⟨w', rfl, hw.trans (SimpleGraph.Adj.reachable (hreflect w w' hadj))⟩
+  obtain ⟨w, he, hw⟩ := lift ((SimpleGraph.reachable_iff_reflTransGen _ _).mp h)
+  exact (hf he).symm ▸ hw
+
+omit [DecidableEq V] in
 /-- Reachability between right-side vertices of a graph sum is exactly reachability
 inside the right summand. -/
 theorem reachable_sum_inr_iff
@@ -131,26 +152,14 @@ theorem reachable_sum_inr_iff
   classical
   constructor
   · intro h
-    have path :
-        Relation.ReflTransGen (G ⊕g H).Adj (Sum.inr x) (Sum.inr y) :=
-      (SimpleGraph.reachable_iff_reflTransGen _ _).mp h
-    have lift : ∀ {z : V ⊕ W},
-        Relation.ReflTransGen (G ⊕g H).Adj (Sum.inr x) z →
-          ∃ w : W, z = Sum.inr w ∧ H.Reachable x w := by
-      intro z hz
-      induction hz with
-      | refl => exact ⟨x, rfl, SimpleGraph.Reachable.refl x⟩
-      | @tail b c _ hadj ih =>
-          obtain ⟨w, rfl, hw⟩ := ih
-          cases c with
-          | inl a =>
-              exact False.elim
-                (SimpleGraph.not_adj_sum_inl_inr a w ((G ⊕g H).adj_symm hadj))
-          | inr v =>
-              exact ⟨v, rfl, hw.trans
-                (SimpleGraph.Adj.reachable ((SimpleGraph.sum_adj_inr).1 hadj))⟩
-    obtain ⟨w, hw, hreach⟩ := lift path
-    exact (Sum.inr.inj hw).symm ▸ hreach
+    refine reachable_of_closed_image (G := H) (H := G ⊕g H)
+      Sum.inr (fun _ _ he => Sum.inr.inj he)
+      (fun _ _ ha => SimpleGraph.sum_adj_inr.1 ha) ?_ h
+    intro a z ha
+    cases z with
+    | inl b =>
+        exact False.elim (SimpleGraph.not_adj_sum_inl_inr b a ((G ⊕g H).adj_symm ha))
+    | inr b => exact ⟨b, rfl⟩
   · intro hreach
     exact hreach.map SimpleGraph.Embedding.sumInr.toHom
 
