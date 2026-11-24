@@ -245,6 +245,7 @@ theorem ExternalInsertionBlockLayout.blockLegEmbedding_strictMono
     (fun p => (layout.legEquiv S).symm ⟨B, p⟩)
     (fun e => layout.sourceEquiv.symm ⟨B, e⟩) ?_ ?_ ?_
   · intro e f hef
+    change layout.sourceEquiv.symm ⟨B, e⟩ < layout.sourceEquiv.symm ⟨B, f⟩
     rw [layout.sourceEquiv_symm_apply B e, layout.sourceEquiv_symm_apply B f]
     exact (B.1.orderIsoOfFin
       (Nat.two_mul_div_two_of_even (layout.evenBlocks B)).symm).strictMono hef
