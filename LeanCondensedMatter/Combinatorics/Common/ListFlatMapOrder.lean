@@ -1,6 +1,5 @@
 import Mathlib.Data.List.Nodup
 import Mathlib.Data.List.Pairwise
-import Mathlib.Order.Basic
 import Lean.Elab.Tactic.Omega
 
 set_option linter.style.header false
@@ -26,10 +25,11 @@ theorem Pairwise.idxOf_lt_iff_of_ne {α : Type*} [DecidableEq α]
         ⟨l.idxOf y, List.idxOf_lt_length_of_mem hy⟩ := h
     simpa only [List.idxOf_get] using hs.rel_get_of_lt hp
   refine ⟨hrel (x := a) (y := b) ha hb, fun h => ?_⟩
-  rcases lt_trichotomy (l.idxOf a) (l.idxOf b) with hlt | heq | hgt
-  · exact hlt
-  · exact (hab ((List.idxOf_inj ha).mp heq)).elim
-  · exact (hab (Std.Antisymm.antisymm h (hrel (x := b) (y := a) hb ha hgt))).elim
+  by_contra! hn
+  have hne : l.idxOf a ≠ l.idxOf b :=
+    fun heq => hab ((List.idxOf_inj ha).mp heq)
+  have hgt : l.idxOf b < l.idxOf a := by omega
+  exact hab (Std.Antisymm.antisymm h (hrel (x := b) (y := a) hb ha hgt))
 
 /-- Inside one block of a duplicate-free flattened list, global order is exactly local block order. -/
 theorem idxOf_flatMap_block_lt_iff
@@ -148,7 +148,7 @@ theorem idxOf_flatMap_lt_iff_idxOf_lt
     by_contra! hnot
     have hreverse := idxOf_flatMap_lt_of_idxOf_lt f events b a y x
       hFlatNodup hb ha hy hx (show events.idxOf b < events.idxOf a by omega)
-    exact lt_asymm h hreverse
+    omega
   · exact idxOf_flatMap_lt_of_idxOf_lt f events a b x y hFlatNodup ha hb hx hy
 
 /-- In a duplicate-free flattened list, two elements of one block have the same order relation to an
