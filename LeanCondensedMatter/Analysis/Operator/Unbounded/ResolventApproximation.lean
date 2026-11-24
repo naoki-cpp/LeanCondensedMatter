@@ -45,13 +45,16 @@ variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteS
 private noncomputable def imaginaryParameter (r : ℝ) : ℂ :=
   (r : ℂ) * I
 
+private theorem imaginaryParameter_im (r : ℝ) : (imaginaryParameter r).im = r := by
+  simp [imaginaryParameter]
+
 private theorem imaginaryParameter_im_ne_zero {r : ℝ} (hr : 0 < r) :
-    (((r : ℂ) * I).im) ≠ 0 := by
-  simpa using ne_of_gt hr
+    (imaginaryParameter r).im ≠ 0 := by
+  simpa [imaginaryParameter_im] using ne_of_gt hr
 
 private theorem star_imaginaryParameter_im_ne_zero {r : ℝ} (hr : 0 < r) :
-    ((star ((r : ℂ) * I)).im) ≠ 0 := by
-  simpa using neg_ne_zero.mpr (ne_of_gt hr)
+    (star (imaginaryParameter r)).im ≠ 0 := by
+  simpa [imaginaryParameter, mul_comm] using neg_ne_zero.mpr (ne_of_gt hr)
 
 private noncomputable def regularizerCoefficient (r : ℝ) : ℂ :=
   ((r / 2 : ℝ) : ℂ) * I
@@ -86,8 +89,11 @@ theorem resolventRegularizer_isSelfAdjoint
     simp [regularizerCoefficient]
   rw [isSelfAdjoint_iff]
   simp only [resolventRegularizer, star_smul, star_sub,
-    ContinuousLinearMap.star_eq_adjoint, nonrealResolvent_adjoint,
-    hstar, star_star]
+    ContinuousLinearMap.star_eq_adjoint, hstar]
+  rw [nonrealResolvent_adjoint A hA (imaginaryParameter r) (imaginaryParameter_im_ne_zero hr),
+    nonrealResolvent_adjoint A hA (star (imaginaryParameter r))
+      (star_imaginaryParameter_im_ne_zero hr)]
+  simp only [star_star]
   module
 
 /-- The bounded self-adjoint resolvent approximation
@@ -117,8 +123,11 @@ theorem boundedSelfAdjointApproximation_isSelfAdjoint
     simp [approximationCoefficient]
   rw [isSelfAdjoint_iff]
   simp only [boundedSelfAdjointApproximation, star_smul, star_add,
-    ContinuousLinearMap.star_eq_adjoint, nonrealResolvent_adjoint,
-    hstar, star_star]
+    ContinuousLinearMap.star_eq_adjoint, hstar]
+  rw [nonrealResolvent_adjoint A hA (imaginaryParameter r) (imaginaryParameter_im_ne_zero hr),
+    nonrealResolvent_adjoint A hA (star (imaginaryParameter r))
+      (star_imaginaryParameter_im_ne_zero hr)]
+  simp only [star_star]
   module
 
 /-- On the original domain, the bounded generator approximation is the regularized generator:
