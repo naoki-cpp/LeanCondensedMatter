@@ -47,13 +47,13 @@ theorem schwartzVelocityLocalizationFlux_eq_comp1D
     (heisenbergLocalizationFunctional SchwartzOneParticle1D ℏ
         (SchwartzSchrodinger1D.schrodingerOperator κ potential)
         SchwartzKinetic1D.multiplicationLinear) =
-      (velocityLocalizationFlux SchwartzOneParticle1D
-        (SchwartzSchrodinger1D.velocityOperator ℏ κ)
-        SchwartzKinetic1D.multiplicationLinear).comp SchwartzKinetic1D.derivative := by
+      (_root_.ConservationLaw.localizedQuantityFunctional SchwartzOneParticle1D
+        SchwartzKinetic1D.multiplicationLinear
+        (SchwartzSchrodinger1D.velocityOperator ℏ κ)).comp SchwartzKinetic1D.derivative := by
   apply LinearMap.ext
   intro f
   rw [heisenbergLocalizationFunctional_apply]
-  simp only [LinearMap.comp_apply, velocityLocalizationFlux_apply]
+  simp only [LinearMap.comp_apply, _root_.ConservationLaw.localizedQuantityFunctional_apply]
   apply LinearMap.ext
   intro ψ
   have h := congrArg

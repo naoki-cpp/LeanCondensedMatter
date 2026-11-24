@@ -21,21 +21,6 @@ variable [AddCommGroup Test] [Module ℂ Test]
 variable [AddCommGroup OneForm] [Module ℂ OneForm]
 variable (V : Type*) [AddCommGroup V] [Module ℂ V]
 
-/-- For a scalar transported quantity, the generic symmetrized flux is the local pairing with
-`q • velocity`. -/
-theorem symmetrizedCurrentFlux_smul_id_eq_localPairing
-    (velocity : V →ₗ[ℂ] V)
-    (N : OneForm →ₗ[ℂ] (V →ₗ[ℂ] V))
-    (q : ℂ) :
-    _root_.ConservationLaw.symmetrizedCurrentFlux
-        V velocity (q • LinearMap.id) N =
-      operatorLocalCurrentPairing V N (q • velocity) := by
-  apply LinearMap.ext
-  intro α
-  rw [_root_.ConservationLaw.symmetrizedCurrentFlux_apply,
-    operatorLocalCurrentPairing_apply,
-    _root_.LinearMap.symmetrizedProduct_smul_id]
-
 /-- The canonical corrected current functional for a charge-like quantity is exactly the local
 pairing with the charge current density `q v`. -/
 theorem correctedChargeCurrentFlux_eq
@@ -47,7 +32,11 @@ theorem correctedChargeCurrentFlux_eq
       operatorLocalCurrentPairing V N (q • velocity) := by
   rw [_root_.ConservationLaw.nestedSymmetrizedCurrentFlux_eq_symmetrized_add_correction,
     _root_.ConservationLaw.localizationCorrectionCurrentFlux_smul_id, add_zero]
-  exact symmetrizedCurrentFlux_smul_id_eq_localPairing V velocity N q
+  apply LinearMap.ext
+  intro α
+  rw [_root_.ConservationLaw.symmetrizedCurrentFlux_apply,
+    operatorLocalCurrentPairing_apply,
+    _root_.LinearMap.symmetrizedProduct_smul_id]
 
 /-- The chosen corrected differential-current representation reduces to the charge-current pairing
 `q v` when the transported quantity is `q I`. -/
@@ -59,7 +48,7 @@ theorem correctedSymmetrizedVelocityCurrentRepresentation_smul_id_current
     (N : OneForm →ₗ[ℂ] (V →ₗ[ℂ] V))
     (q : ℂ)
     (hvelocity : heisenbergLocalizationFunctional V ℏ h M =
-      (velocityLocalizationFlux V velocity N).comp d) :
+      (_root_.ConservationLaw.localizedQuantityFunctional V N velocity).comp d) :
     (correctedSymmetrizedVelocityCurrentRepresentation
       V ℏ h M (q • LinearMap.id) velocity d N hvelocity).current =
       operatorLocalCurrentPairing V N (q • velocity) := by

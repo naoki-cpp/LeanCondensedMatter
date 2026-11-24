@@ -76,13 +76,13 @@ theorem schwartzSpinorVelocityLocalizationFlux_eq_comp1D
     (heisenbergLocalizationFunctional SchwartzSpinorOneParticle1D ℏ
         (SchwartzTwoLevelSchrodinger1D.hamiltonian κ potential internalH)
         SchwartzTwoLevel1D.multiplicationLinear) =
-      (velocityLocalizationFlux SchwartzSpinorOneParticle1D
-        (SchwartzTwoLevelSchrodinger1D.velocityOperator ℏ κ)
-        SchwartzTwoLevel1D.multiplicationLinear).comp SchwartzKinetic1D.derivative := by
+      (_root_.ConservationLaw.localizedQuantityFunctional SchwartzSpinorOneParticle1D
+        SchwartzTwoLevel1D.multiplicationLinear
+        (SchwartzTwoLevelSchrodinger1D.velocityOperator ℏ κ)).comp SchwartzKinetic1D.derivative := by
   apply LinearMap.ext
   intro f
   rw [heisenbergLocalizationFunctional_apply]
-  simp only [LinearMap.comp_apply, velocityLocalizationFlux_apply]
+  simp only [LinearMap.comp_apply, _root_.ConservationLaw.localizedQuantityFunctional_apply]
   apply LinearMap.ext
   intro ψ
   have h := congrArg

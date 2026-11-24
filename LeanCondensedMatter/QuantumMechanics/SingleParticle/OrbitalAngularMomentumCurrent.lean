@@ -76,7 +76,7 @@ theorem heisenbergTransportOrbitalAngularMomentum_apply
     (N : OneForm →ₗ[ℂ] (V →ₗ[ℂ] V))
     (f : Test) (Du Dv : V →ₗ[ℂ] V) (c : ℂ)
     (hvelocity : heisenbergLocalizationFunctional V ℏ h M =
-      (velocityLocalizationFlux V velocity N).comp d)
+      (_root_.ConservationLaw.localizedQuantityFunctional V N velocity).comp d)
     (hXu : ⁅N (d f), X u⁆ = 0) (hXv : ⁅N (d f), X v⁆ = 0)
     (hPu : ⁅N (d f), P u⁆ = c • Du)
     (hPv : ⁅N (d f), P v⁆ = c • Dv) :
