@@ -4,7 +4,7 @@ import LeanCondensedMatter.QuantumTheory.Gibbs.State
 import LeanCondensedMatter.QuantumTheory.Entropy.Basic
 import LeanCondensedMatter.Analysis.Inequalities.PeierlsBogoliubov
 import Mathlib.Topology.Algebra.InfiniteSum.Real
-import LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Bundled
+import LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral
 
 /-!
 # Helmholtz free-energy inequality

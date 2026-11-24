@@ -1,7 +1,7 @@
 import LeanCondensedMatter.Analysis.Operator.TraceClass.General
 import LeanCondensedMatter.Analysis.Operator.TraceClass.Trace
-import LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Basic
-import LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Bundled
+import LeanCondensedMatter.Analysis.Operator.TraceClass.Ops
+import LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral
 
 set_option linter.style.header false
 

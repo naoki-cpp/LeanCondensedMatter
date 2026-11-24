@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Bundled
+import LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral
 import LeanCondensedMatter.QuantumTheory.DensityOperator.DiagonalFormula
 import LeanCondensedMatter.QuantumTheory.Entropy.Basic
 
