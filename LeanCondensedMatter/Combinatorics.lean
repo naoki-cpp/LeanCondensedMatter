@@ -1,5 +1,6 @@
 import LeanCondensedMatter.Combinatorics.FiniteIndex
 import LeanCondensedMatter.Combinatorics.FiniteSumModEq
+import LeanCondensedMatter.Combinatorics.FiniteAntisymmetricSum
 import LeanCondensedMatter.Combinatorics.Shuffle.SlotShuffle
 import LeanCondensedMatter.Combinatorics.Shuffle.BinaryShuffle
 import LeanCondensedMatter.Combinatorics.Shuffle.BinaryShuffleSlots
