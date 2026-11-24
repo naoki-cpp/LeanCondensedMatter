@@ -1,6 +1,7 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.DiagramIntegral
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.TimedFieldContraction
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsExpectationBridge
+import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.MixedAtomicDysonIntegral
 
 set_option linter.style.header false
 
@@ -99,6 +100,20 @@ noncomputable def twoPointDysonCoefficient {n : ℕ}
           Common.finiteGibbsExpectation (fermionEnergy (fun k => ε k - μ)) β
             (mixedTimeOrderedVertexComp ε i j τ τ' q σ))
 
+/-- The physical two-point Dyson coefficient is the two-external specialization
+of the general vertex Dyson coefficient at arbitrary real μ and β. -/
+theorem twoPointDysonCoefficient_eq_externalInsertionVertexDysonCoefficient
+    {n : ℕ} (ε : Mode → ℝ) (β μ : ℝ) (g : QuarticVertexLabel Mode → ℂ)
+    (i j : Mode) (τ τ' : ℝ) :
+    twoPointDysonCoefficient (n := n) ε β μ g i j τ τ' =
+      externalInsertionVertexDysonCoefficient (E := 1) ε β μ g
+        (twoPointExternalLabels i j) (twoPointExternalTimes τ τ') n := by
+  unfold twoPointDysonCoefficient externalInsertionVertexDysonCoefficient
+  rw [← intervalIntegral.orderedSimplexIntegral_smul]
+  apply intervalIntegral.orderedSimplexIntegral_congr
+  intro σ
+  simp only [mixedTimeOrderedVertexComp_eq_externalInsertion, orderedTwoPointVertexWeight]
+
 /-- At every perturbative order, the physical-H explicit-μ two-point
 coefficient equals its effective-dispersion zero-μ coefficient times the
 external-field factor. No sign or positivity assumption on μ or β is needed. -/
@@ -108,19 +123,10 @@ theorem twoPointDysonCoefficient_eq_shiftedDispersion {n : ℕ}
     twoPointDysonCoefficient (n := n) ε β μ g i j τ τ' =
       twoPointChemicalPotentialFactor μ τ τ' *
         twoPointDysonCoefficient (n := n) (fun k => ε k - μ) β 0 g i j τ τ' := by
-  unfold twoPointDysonCoefficient
-  simp only [sub_zero]
-  rw [mul_left_comm (twoPointChemicalPotentialFactor μ τ τ') ((-1 : ℂ) ^ n)]
-  apply congrArg (fun z : ℂ => (-1 : ℂ) ^ n * z)
-  rw [← intervalIntegral.orderedSimplexIntegral_smul]
-  apply intervalIntegral.orderedSimplexIntegral_congr
-  intro σ
-  rw [Finset.mul_sum]
-  apply Finset.sum_congr rfl
-  intro q _
-  rw [mixedTimeOrderedVertexComp_eq_shiftedDispersion ε μ]
-  simp only [Common.finiteGibbsExpectation, map_smul, smul_eq_mul]
-  ring
+  rw [twoPointDysonCoefficient_eq_externalInsertionVertexDysonCoefficient,
+    externalInsertionVertexDysonCoefficient_eq_shiftedDispersion,
+    externalFieldFamilyChemicalPotentialFactor_twoPoint,
+    ← twoPointDysonCoefficient_eq_externalInsertionVertexDysonCoefficient]
 
 /-- The ordered-simplex external-leg diagram coefficient equals the mixed time-ordered Dyson
 coefficient at every perturbation order. -/

@@ -101,6 +101,37 @@ private theorem familyBlockDisagreementCount_self
     simp [hσ, asymm hτ]
   · simp [hσ]
 
+/-- For two orders of contiguous blocks, only exchanges between odd-sized
+blocks affect the relative permutation sign. The rank functions describe the
+two block orders; no assumption is needed on ranks of empty blocks. -/
+theorem FamilySlotShuffleTo.relativePerm_sign_eq_oddBlockInversions
+    {ι : Type*} [Fintype ι] {size : ι → ℕ} {total : ℕ}
+    (σ τ : FamilySlotShuffleTo size total) (r s : ι → ℕ)
+    (hσ : ∀ i j : ι, i ≠ j → ∀ (p : Fin (size i)) (q : Fin (size j)),
+      (σ.slotEquiv ⟨i, p⟩ < σ.slotEquiv ⟨j, q⟩) ↔ r i < r j)
+    (hτ : ∀ i j : ι, i ≠ j → ∀ (p : Fin (size i)) (q : Fin (size j)),
+      (τ.slotEquiv ⟨i, p⟩ < τ.slotEquiv ⟨j, q⟩) ↔ s i < s j) :
+    Equiv.Perm.sign (σ.relativePerm τ) =
+      (-1 : ℤˣ) ^ (∑ i : ι, ∑ j : ι,
+        if r i < r j ∧ s j < s i then (size i % 2) * (size j % 2) else 0) := by
+  classical
+  rw [sign_eq_neg_one_pow_permInversionCount,
+    relativePerm_inversionCount_eq_sum_blockDisagreementCount]
+  apply pow_eq_of_mod_two_eq (by decide)
+  change Nat.ModEq 2 _ _
+  refine Nat.ModEq.sum ?_
+  intro i _
+  refine Nat.ModEq.sum ?_
+  intro j _
+  by_cases hij : i = j
+  · subst j
+    simp [familyBlockDisagreementCount_self, Nat.ModEq]
+  · unfold familyBlockDisagreementCount
+    have hji : j ≠ i := fun h => hij h.symm
+    simp_rw [hσ i j hij, hτ j i hji]
+    by_cases hr : r i < r j <;> by_cases hs : s j < s i <;>
+      simp [hr, hs, Nat.ModEq, Nat.mul_mod]
+
 private theorem familyBlockDisagreementCount_add_swap_mod_two
     {ι : Type*} {size : ι → ℕ} {total : ℕ}
     (σ τ : FamilySlotShuffleTo size total) (i j : ι) (hij : i ≠ j) :

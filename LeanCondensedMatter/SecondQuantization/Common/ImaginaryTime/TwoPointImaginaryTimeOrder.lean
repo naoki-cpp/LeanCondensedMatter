@@ -183,64 +183,47 @@ noncomputable def orderedTwoPointTimedEventPosition {n : ℕ}
     (τ τ' : ℝ) (σ : Fin n → ℝ) (event : TwoPointTimedEvent n) : Fin (n + 2) :=
   (orderedTwoPointTimedEventEquiv τ τ' σ).symm event
 
-private theorem twoPointTimedEventBeforeOrEqual_of_position_lt {n : ℕ}
-    (τ τ' : ℝ) (σ : Fin n → ℝ) {a b : TwoPointTimedEvent n}
-    (h : orderedTwoPointTimedEventPosition τ τ' σ a <
-      orderedTwoPointTimedEventPosition τ τ' σ b) :
-    twoPointTimedEventBeforeOrEqual τ τ' σ a b := by
-  let l := orderedTwoPointTimedEvents τ τ' σ
-  let pa : Fin l.length :=
-    Fin.cast (orderedTwoPointTimedEvents_length τ τ' σ).symm
-      (orderedTwoPointTimedEventPosition τ τ' σ a)
-  let pb : Fin l.length :=
-    Fin.cast (orderedTwoPointTimedEvents_length τ τ' σ).symm
-      (orderedTwoPointTimedEventPosition τ τ' σ b)
-  have hp : pa < pb := by
-    simpa [pa, pb] using h
-  have hrel := (orderedTwoPointTimedEvents_pairwise τ τ' σ).rel_get_of_lt hp
-  have ha : l.get pa = a := by
-    simpa [l, pa, orderedTwoPointTimedEventPosition,
-      orderedTwoPointTimedEventEquiv] using
-      (List.idxOf_get
-        ((List.idxOf_lt_length_iff).2
-          (orderedTwoPointTimedEvents_all_mem τ τ' σ a)))
-  have hb : l.get pb = b := by
-    simpa [l, pb, orderedTwoPointTimedEventPosition,
-      orderedTwoPointTimedEventEquiv] using
-      (List.idxOf_get
-        ((List.idxOf_lt_length_iff).2
-          (orderedTwoPointTimedEvents_all_mem τ τ' σ b)))
-  rw [ha, hb] at hrel
-  exact hrel
-
 /-- Event-position comparison is exactly strict stable time precedence. -/
 theorem orderedTwoPointTimedEventPosition_lt_iff {n : ℕ}
     (τ τ' : ℝ) (σ : Fin n → ℝ) (a b : TwoPointTimedEvent n) :
     orderedTwoPointTimedEventPosition τ τ' σ a <
         orderedTwoPointTimedEventPosition τ τ' σ b ↔
       twoPointTimedEventBefore τ τ' σ a b := by
-  constructor
-  · intro h
-    refine ⟨twoPointTimedEventBeforeOrEqual_of_position_lt τ τ' σ h, ?_⟩
-    intro hab
-    subst b
-    exact (lt_irrefl _ h)
-  · rintro ⟨hab, hne⟩
-    rcases lt_trichotomy
-        (orderedTwoPointTimedEventPosition τ τ' σ a)
-        (orderedTwoPointTimedEventPosition τ τ' σ b) with h | h | h
-    · exact h
-    · exact (hne ((orderedTwoPointTimedEventEquiv τ τ' σ).symm.injective h)).elim
-    · have hba := twoPointTimedEventBeforeOrEqual_of_position_lt τ τ' σ h
-      exact (hne
-        (stableTimedEventBeforeOrEqual_antisymm
-          (twoPointTimedEventTime τ τ' σ) twoPointTimedEventRank
-          (by
-            intro a b h
-            apply (finSumFinEquiv : TwoPointTimedEvent n ≃ Fin (2 + n)).injective
-            apply Fin.ext
-            exact h)
-          hab hba)).elim
+  classical
+  letI : BEq (TwoPointTimedEvent n) := instBEqOfDecidableEq
+  by_cases hab : a = b
+  · subst b
+    simp [twoPointTimedEventBefore]
+  · letI : Std.Antisymm (twoPointTimedEventBeforeOrEqual τ τ' σ) :=
+      ⟨fun _ _ h₁ h₂ => stableTimedEventBeforeOrEqual_antisymm
+        (twoPointTimedEventTime τ τ' σ) twoPointTimedEventRank
+        (by
+          intro x y h
+          exact (finSumFinEquiv : TwoPointTimedEvent n ≃ Fin (2 + n)).injective (Fin.ext h))
+        h₁ h₂⟩
+    have h := (orderedTwoPointTimedEvents_pairwise τ τ' σ).idxOf_lt_iff_of_ne
+      (orderedTwoPointTimedEvents_all_mem τ τ' σ a)
+      (orderedTwoPointTimedEvents_all_mem τ τ' σ b) hab
+    simpa [hab, twoPointTimedEventBefore, orderedTwoPointTimedEventPosition,
+      orderedTwoPointTimedEventEquiv, List.Nodup.getEquivOfForallMemList] using h
+
+/-- At two external insertions, the full atomic permutation reverses sign
+exactly when the two external fields are exchanged. Interaction times,
+including all equal-time ties, impose no further sign. -/
+theorem externalInsertionStandardToMixedAtomicPositionEquiv_sign_twoPoint
+    {n : ℕ} (τ τ' : ℝ) (σ : Fin n → ℝ) :
+    Equiv.Perm.sign
+        (externalInsertionStandardToMixedAtomicPositionEquiv
+          (E := 1) (twoPointExternalTimes τ τ') σ) =
+      (if τ < τ' then (-1 : ℤˣ) else 1) := by
+  classical
+  rw [externalInsertionStandardToMixedAtomicPositionEquiv_sign]
+  change (-1 : ℤˣ) ^ (∑ a : Fin 2, ∑ b : Fin 2,
+    if a.val < b.val ∧ twoPointExternalTimes τ τ' a < twoPointExternalTimes τ τ' b
+    then 1 else 0) = _
+  simp only [Fin.sum_univ_two]
+  by_cases h : τ < τ' <;> simp [h]
+
 
 /-! ## Monotone interaction-slot transport -/
 
