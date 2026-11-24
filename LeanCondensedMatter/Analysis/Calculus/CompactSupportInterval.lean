@@ -19,39 +19,22 @@ noncomputable section
 open Set
 open scoped Interval
 
-/-- A function supported strictly inside an interval makes its product with any function
-interval-integrable and whole-space integrable through the interval support theorem. -/
+/-- A product supported inside the interval has the same interval and full-line integrals.
+No integrability assertion is needed for this equality of total integrals. -/
 theorem integral_mul_eq_integral_of_tsupport_subset_Ioo
     {a b : ℝ} {f g : ℝ → ℝ}
     (hf : tsupport f ⊆ Ioo a b) :
     (∫ x in a..b, f x * g x) = ∫ x, f x * g x := by
-  exact intervalIntegral.integral_eq_integral_of_support_subset
-    (by
-      intro x hx
-      have hfx : f x ≠ 0 := by
-        intro hzero
-        apply hx
-        simp [hzero]
-      have hxTop : x ∈ tsupport f := subset_closure hfx
-      have hxab := hf hxTop
-      exact ⟨hxab.1, hxab.2.le⟩)
+  apply intervalIntegral.integral_eq_integral_of_support_subset
+  exact (Function.support_mul_subset_left f g).trans
+    (subset_closure.trans (hf.trans fun _ hx => ⟨hx.1, hx.2.le⟩))
 
-/-- The derivative of a function supported strictly inside an interval has the same support
-window for the purpose of multiplying by an arbitrary function. -/
+/-- The derivative has topological support contained in that of the original function. -/
 theorem integral_deriv_mul_eq_integral_of_tsupport_subset_Ioo
     {a b : ℝ} {f g : ℝ → ℝ}
     (hf : tsupport f ⊆ Ioo a b) :
-    (∫ x in a..b, deriv f x * g x) = ∫ x, deriv f x * g x := by
-  exact intervalIntegral.integral_eq_integral_of_support_subset
-    (by
-      intro x hx
-      have hdx : deriv f x ≠ 0 := by
-        intro hzero
-        apply hx
-        simp [hzero]
-      have hxTop : x ∈ tsupport f := support_deriv_subset hdx
-      have hxab := hf hxTop
-      exact ⟨hxab.1, hxab.2.le⟩)
+    (∫ x in a..b, deriv f x * g x) = ∫ x, deriv f x * g x :=
+  integral_mul_eq_integral_of_tsupport_subset_Ioo (tsupport_deriv_subset.trans hf)
 
 /-- A function whose topological support is strictly inside an interval vanishes at both
 endpoints. -/
@@ -87,19 +70,19 @@ open Set
 noncomputable section
 
 /-- A full-line function encoding the oriented interval integral from `a` to `b`. -/
-noncomputable def orientedIntervalIntegrand
-    (f : ℝ → ℂ) (a b energy : ℝ) : ℂ :=
+noncomputable def orientedIntervalIntegrand {E : Type*} [AddGroup E]
+    (f : ℝ → E) (a b energy : ℝ) : E :=
   (Ioc a b).indicator f energy - (Ioc b a).indicator f energy
 
-theorem integrable_orientedIntervalIntegrand
-    (f : ℝ → ℂ) (a b : ℝ) (hf : IntervalIntegrable f volume a b) :
+theorem integrable_orientedIntervalIntegrand {E : Type*} [NormedAddCommGroup E]
+    (f : ℝ → E) (a b : ℝ) (hf : IntervalIntegrable f volume a b) :
     Integrable (orientedIntervalIntegrand f a b) := by
   unfold orientedIntervalIntegrand
   exact (hf.1.integrable_indicator measurableSet_Ioc).sub
     (hf.2.integrable_indicator measurableSet_Ioc)
 
-theorem integral_orientedIntervalIntegrand
-    (f : ℝ → ℂ) (a b : ℝ) (hf : IntervalIntegrable f volume a b) :
+theorem integral_orientedIntervalIntegrand {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    (f : ℝ → E) (a b : ℝ) (hf : IntervalIntegrable f volume a b) :
     (∫ energy : ℝ, orientedIntervalIntegrand f a b energy) =
       ∫ energy in a..b, f energy := by
   unfold orientedIntervalIntegrand

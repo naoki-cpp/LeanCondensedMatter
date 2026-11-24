@@ -24,9 +24,10 @@ theorem pow_four_eq_one_of_trace_zero_det_one (M : Matrix (Fin 2) (Fin 2) R)
     (htrace : M.trace = 0) (hdet : M.det = 1) : M ^ 4 = 1 := by
   have hquad : M ^ 2 + 1 = 0 := by
     simpa [Matrix.charpoly_fin_two, htrace, hdet] using M.aeval_self_charpoly
-  calc
-    M ^ 4 = (M ^ 2 + 1) * (M ^ 2 - 1) + 1 := by noncomm_ring
-    _ = 1 := by rw [hquad]; simp
+  have hsq := congrArg (fun A : Matrix (Fin 2) (Fin 2) R => A - 1) hquad
+  simp only [add_sub_cancel_right, zero_sub] at hsq
+  rw [show (4 : ℕ) = 2 * 2 by decide, pow_mul, hsq]
+  simp
 
 
 /-- A determinant-one `2 × 2` matrix over a commutative ring with trace `-1` has cube one. -/

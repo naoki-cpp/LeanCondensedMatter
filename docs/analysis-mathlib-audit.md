@@ -250,3 +250,8 @@ These are future analysis targets rather than gaps to be hidden by compatibility
 - `HasAlgebraicDerivAt` and its rules require a nontrivially normed scalar field, not a complex-specific structure. The target remains purely algebraic: scalar testing uses all algebraic linear functionals, not only continuous ones. Ordinary Mathlib derivative rules supply the scalar calculus.
 - `NormedSpace.exp_apply_of_eigenvector` retains the direct series bridge between the bounded operator and its scalar eigenvalue. The power step uses the standard opposite orientations of `pow_succ` and `pow_succ'`, without ring normalization. Mathlib's `map_exp` needs a continuous ring homomorphism; evaluation on a vector is not such a homomorphism.
 - Retain `Subalgebra.restrictEnd`: the pinned Mathlib `LinearMap.restrict` handles individual maps and its source explicitly notes the missing bundled algebra-homomorphism version. The Holstein–Primakoff consumer needs multiplicative and unital restriction.
+
+## Matrix characteristic polynomials and interval support
+
+- `Analysis/Matrix/FinTwoCharpoly` already uses Mathlib's `Matrix.charpoly_fin_two` and `Matrix.aeval_self_charpoly` for the crystallographic finite-order identities. Keep the specialized conclusions used by the crystal classification; the fourth-power step can use a squared negative identity directly.
+- `Analysis/Calculus/CompactSupportInterval` uses `Function.support_mul_subset_left` and `tsupport_deriv_subset` rather than reconstructing pointwise support arguments. The oriented full-line indicator construction and its integral laws are no longer complex-specific. Equality of total integrals does not itself imply integrability.
