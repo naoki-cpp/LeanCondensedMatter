@@ -95,8 +95,8 @@ and the canonical complex trace.
 `Analysis/Operator/TraceClass/Ops/Basic.lean` owns additive/scalar/adjoint closure, bounded left/right
 ideal closure, complex-trace linearity and cyclicity, adjoint-conjugation invariance, and the
 corresponding trace-norm identities, ideal bounds, triangle inequality, and trace modulus bound.
-`Analysis/Operator/TraceClass/Spectral/` owns spectral summability, the bundled self-adjoint
-specialization, spectral trace identities, and spectral equality criteria. `Spectral/Bundled.lean` also exposes the compact self-adjoint characterizations
+`Analysis/Operator/TraceClass/Spectral/Bundled.lean` owns spectral summability, the bundled
+self-adjoint specialization, spectral trace identities, and the compact self-adjoint characterizations
 of general trace-class membership, trace norm, and complex trace.
 
 `Analysis/Operator/Diagonal.lean` owns the neutral Hilbert-basis diagonal construction, including
