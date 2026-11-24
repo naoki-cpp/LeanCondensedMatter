@@ -156,5 +156,53 @@ theorem finiteHilbertMap_apply (b : OrthonormalBasis Mode ℂ H)
       ((finiteHilbertEquiv b.toBasis).symm (finiteHilbertEquiv b.toBasis x))) = _
   rw [LinearEquiv.symm_apply_apply]
 
+/-- Transport along a one-particle map carrying one indexed basis to another does
+not change the occupation-Hilbert coordinates of an exterior vector. This
+also applies to an algebraic one-particle space without an inner product. -/
+theorem finiteHilbertEquiv_map_of_basis
+    {V W : Type*} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
+    (b : Module.Basis Mode ℂ V) (c : Module.Basis Mode ℂ W)
+    (j : V →ₗ[ℂ] W) (hj : ∀ i, j (b i) = c i) (x : AlgebraicFock V) :
+    finiteHilbertEquiv c (ExteriorAlgebra.map j x) = finiteHilbertEquiv b x := by
+  have h : (finiteHilbertEquiv c).toLinearMap.comp (ExteriorAlgebra.map j).toLinearMap =
+      (finiteHilbertEquiv b).toLinearMap := by
+    apply b.ExteriorAlgebra.ext
+    intro n
+    change finiteHilbertEquiv c (ExteriorAlgebra.map j (b.ExteriorAlgebra n)) =
+      finiteHilbertEquiv b (b.ExteriorAlgebra n)
+    have hn : ExteriorAlgebra.map j (b.ExteriorAlgebra n) = c.ExteriorAlgebra n := by
+      rw [ExteriorAlgebra.basis_apply b n, ExteriorAlgebra.basis_apply c n,
+        ExteriorAlgebra.map_apply_ιMulti]
+      congr 1
+      funext i
+      exact hj _
+    rw [hn]
+    simp only [finiteHilbertEquiv, LinearEquiv.trans_apply, occupationEquiv_symm_exteriorBasis]
+  exact DFunLike.congr_fun h x
+
+/-- The existing unitary exterior lift acts on arbitrary algebraic coordinates
+when their one-particle embedding intertwines the supplied maps. No Hilbert
+space structure on the algebraic coordinate space is required. -/
+theorem finiteHilbertMap_apply_of_basis
+    {V : Type*} [AddCommGroup V] [Module ℂ V]
+    (b₀ : Module.Basis Mode ℂ V) (b : OrthonormalBasis Mode ℂ H)
+    (j : V →ₗ[ℂ] H) (hj : ∀ i, j (b₀ i) = b i)
+    (e : H ≃ₗᵢ[ℂ] H) (f : V →ₗ[ℂ] V)
+    (hf : e.toLinearEquiv.toLinearMap.comp j = j.comp f) (x : AlgebraicFock V) :
+    finiteHilbertMap b b e (finiteHilbertEquiv b₀ x) =
+      finiteHilbertEquiv b₀ (ExteriorAlgebra.map f x) := by
+  calc
+    _ = finiteHilbertMap b b e
+        (finiteHilbertEquiv b.toBasis (ExteriorAlgebra.map j x)) := by
+          rw [finiteHilbertEquiv_map_of_basis b₀ b.toBasis j hj]
+    _ = finiteHilbertEquiv b.toBasis
+        (ExteriorAlgebra.map e.toLinearEquiv.toLinearMap (ExteriorAlgebra.map j x)) :=
+          finiteHilbertMap_apply b b e _
+    _ = finiteHilbertEquiv b.toBasis
+        (ExteriorAlgebra.map j (ExteriorAlgebra.map f x)) := by
+          rw [← AlgHom.comp_apply, ← ExteriorAlgebra.map_comp_map, hf,
+            ExteriorAlgebra.map_comp_map, AlgHom.comp_apply]
+    _ = _ := finiteHilbertEquiv_map_of_basis b₀ b.toBasis j hj _
+
 end
 end SecondQuantization.Fermionic.AlgebraicFock
