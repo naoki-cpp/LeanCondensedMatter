@@ -482,15 +482,6 @@
       "externalImportCount": 0
     },
     {
-      "name": "LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Norm",
-      "sourceFile": "LeanCondensedMatter/Analysis/Operator/TraceClass/Ops/Norm.lean",
-      "imports": [
-        "LeanCondensedMatter.Analysis.Operator.TraceClass.Factorization.Basic",
-        "LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Basic"
-      ],
-      "externalImportCount": 0
-    },
-    {
       "name": "LeanCondensedMatter.Analysis.Operator.TraceClass.Positive",
       "sourceFile": "LeanCondensedMatter/Analysis/Operator/TraceClass/Positive.lean",
       "imports": [
@@ -537,7 +528,6 @@
         "LeanCondensedMatter.Analysis.Operator.TraceClass.Factorization.Basic",
         "LeanCondensedMatter.Analysis.Operator.TraceClass.General",
         "LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Basic",
-        "LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Norm",
         "LeanCondensedMatter.Analysis.Operator.TraceClass.Positive",
         "LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Bundled",
         "LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Ops",
@@ -1068,7 +1058,7 @@
       "sourceFile": "LeanCondensedMatter/Combinatorics/PerfectPairing/ComponentDecomposition.lean",
       "imports": [
         "LeanCondensedMatter.Combinatorics.Common.FintypeProduct",
-        "LeanCondensedMatter.Combinatorics.PerfectPairing.Evaluation",
+        "LeanCondensedMatter.Combinatorics.PerfectPairing.Core",
         "LeanCondensedMatter.Combinatorics.PerfectPairing.PairEndpoints"
       ],
       "externalImportCount": 0
@@ -1118,14 +1108,6 @@
       "imports": [
         "LeanCondensedMatter.Combinatorics.FiniteIndex.DeletedPositions",
         "LeanCondensedMatter.Combinatorics.PerfectPairing.Restriction"
-      ],
-      "externalImportCount": 0
-    },
-    {
-      "name": "LeanCondensedMatter.Combinatorics.PerfectPairing.Evaluation",
-      "sourceFile": "LeanCondensedMatter/Combinatorics/PerfectPairing/Evaluation.lean",
-      "imports": [
-        "LeanCondensedMatter.Combinatorics.PerfectPairing.Core"
       ],
       "externalImportCount": 0
     },
@@ -1221,7 +1203,7 @@
       "name": "LeanCondensedMatter.Combinatorics.PerfectPairing.SplitNormalizedPairs",
       "sourceFile": "LeanCondensedMatter/Combinatorics/PerfectPairing/SplitNormalizedPairs.lean",
       "imports": [
-        "LeanCondensedMatter.Combinatorics.PerfectPairing.Evaluation",
+        "LeanCondensedMatter.Combinatorics.PerfectPairing.Core",
         "LeanCondensedMatter.Combinatorics.PerfectPairing.PairEndpoints",
         "LeanCondensedMatter.Combinatorics.PerfectPairing.Split"
       ],
@@ -1258,7 +1240,6 @@
         "LeanCondensedMatter.Combinatorics.PerfectPairing.CrossingParity",
         "LeanCondensedMatter.Combinatorics.PerfectPairing.Embedding",
         "LeanCondensedMatter.Combinatorics.PerfectPairing.EraseZero",
-        "LeanCondensedMatter.Combinatorics.PerfectPairing.Evaluation",
         "LeanCondensedMatter.Combinatorics.PerfectPairing.InsertFirstPair",
         "LeanCondensedMatter.Combinatorics.PerfectPairing.InvolutionCard",
         "LeanCondensedMatter.Combinatorics.PerfectPairing.NormalizedPairRestriction",
@@ -3209,6 +3190,16 @@
       "externalImportCount": 3
     },
     {
+      "name": "LeanCondensedMatter.Models.RashbaExchange.RealSpaceHopping",
+      "sourceFile": "LeanCondensedMatter/Models/RashbaExchange/RealSpaceHopping.lean",
+      "imports": [
+        "LeanCondensedMatter.Models.RashbaExchange.Model",
+        "LeanCondensedMatter.QuantumTheory.SpinfulLattice",
+        "LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.BoundedMatrixUnitAdjoint"
+      ],
+      "externalImportCount": 0
+    },
+    {
       "name": "LeanCondensedMatter.Models.RashbaExchange.Response",
       "sourceFile": "LeanCondensedMatter/Models/RashbaExchange/Response.lean",
       "imports": [
@@ -3273,6 +3264,7 @@
         "LeanCondensedMatter.Models.RashbaExchange.Model.OperatorSpectral",
         "LeanCondensedMatter.Models.RashbaExchange.Model.Spectral",
         "LeanCondensedMatter.Models.RashbaExchange.Operator",
+        "LeanCondensedMatter.Models.RashbaExchange.RealSpaceHopping",
         "LeanCondensedMatter.Models.RashbaExchange.Response",
         "LeanCondensedMatter.Models.RashbaExchange.ResponseParameters",
         "LeanCondensedMatter.Models.RashbaExchange.SpinCurrent",
@@ -3341,7 +3333,7 @@
       "imports": [
         "LeanCondensedMatter.Combinatorics.ExchangeSign",
         "LeanCondensedMatter.Combinatorics.PerfectPairing.Bipartite",
-        "LeanCondensedMatter.Combinatorics.PerfectPairing.Evaluation",
+        "LeanCondensedMatter.Combinatorics.PerfectPairing.Core",
         "LeanCondensedMatter.Combinatorics.PerfectPairing.Sign",
         "LeanCondensedMatter.Permutation.ConnectedDecomposition"
       ],
@@ -3839,7 +3831,7 @@
       "name": "LeanCondensedMatter.QuantumTheory.DensityOperator.Expectation",
       "sourceFile": "LeanCondensedMatter/QuantumTheory/DensityOperator/Expectation.lean",
       "imports": [
-        "LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Norm",
+        "LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Basic",
         "LeanCondensedMatter.QuantumTheory.DensityOperator.Basic"
       ],
       "externalImportCount": 0
@@ -4073,7 +4065,8 @@
       "name": "LeanCondensedMatter.QuantumTheory.Gibbs.MinimizerUniqueness",
       "sourceFile": "LeanCondensedMatter/QuantumTheory/Gibbs/MinimizerUniqueness.lean",
       "imports": [
-        "LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Ops",
+        "LeanCondensedMatter.Analysis.Operator.TraceClass.General",
+        "LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Bundled",
         "LeanCondensedMatter.QuantumTheory.Gibbs.EqualityComponents",
         "LeanCondensedMatter.QuantumTheory.Gibbs.Variational"
       ],
@@ -4879,7 +4872,7 @@
       "name": "LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.Amplitude",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Bosonic/Diagrammatics/Quartic/Thermal/Amplitude.lean",
       "imports": [
-        "LeanCondensedMatter.Combinatorics.PerfectPairing.Evaluation",
+        "LeanCondensedMatter.Combinatorics.PerfectPairing.Core",
         "LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.ThermalField",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Ordered",
         "LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.PairingWeight"
@@ -4919,7 +4912,7 @@
       "name": "LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion.Pairing",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Bosonic/Diagrammatics/Quartic/Thermal/DysonExpansion/Pairing.lean",
       "imports": [
-        "LeanCondensedMatter.Combinatorics.PerfectPairing.Evaluation",
+        "LeanCondensedMatter.Combinatorics.PerfectPairing.Core",
         "LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion.DysonAmplitude",
         "LeanCondensedMatter.SecondQuantization.Bosonic.Perturbation.DysonGibbsSeries",
         "LeanCondensedMatter.SecondQuantization.Bosonic.Perturbation.QuarticDysonExpansion",
