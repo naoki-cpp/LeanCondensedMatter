@@ -255,3 +255,7 @@ These are future analysis targets rather than gaps to be hidden by compatibility
 
 - `Analysis/Matrix/FinTwoCharpoly` already uses Mathlib's `Matrix.charpoly_fin_two` and `Matrix.aeval_self_charpoly` for the crystallographic finite-order identities. Keep the specialized conclusions used by the crystal classification; the fourth-power step can use a squared negative identity directly.
 - `Analysis/Calculus/CompactSupportInterval` uses `Function.support_mul_subset_left` and `tsupport_deriv_subset` rather than reconstructing pointwise support arguments. The oriented full-line indicator construction and its integral laws are no longer complex-specific. Equality of total integrals does not itself imply integrability.
+
+## Finite Fourier character orthogonality
+
+Mathlib's `AddChar.wInner_cWeight_eq_boole` already proves orthogonality of complex characters of arbitrary finite abelian groups for the average inner product. `AddChar.orthonormal_normalized_family` converts this to the counting-measure `EuclideanSpace` normalization for any injective indexing family; the cyclic Fourier modes specialize it via `stdAddChar.mulShift`. Downstream use `AddChar.map_neg_eq_conj` and the orthonormality of the Fourier basis directly. The positive-exponent convention is unchanged.
