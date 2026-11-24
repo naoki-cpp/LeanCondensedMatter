@@ -113,8 +113,6 @@ private theorem twoModeFockLehmannTableResponse_eq_kubo
       (Common.finiteHilbertOperatorAlgEquiv (twoModeVertex A))
       (Common.finiteHilbertOperatorAlgEquiv (twoModeVertex B)) omega eta heta).symm
 
-set_option maxHeartbeats 800000 in
--- Expanding the four occupation states evaluates the creation-annihilation signs explicitly.
 /-- Summing all many-body transitions leaves exactly the two one-particle transfer terms.
 No normalization or thermal assumption is needed for this algebraic reduction. -/
 private theorem twoModeFockLehmannTableResponse_eq
@@ -145,18 +143,37 @@ private theorem twoModeFockLehmannTableResponse_eq
     simpa only [basisState, createBasis] using create_basisState i n
   have hf : ({1} : Occupation (Fin 2)).filter (fun i => i = 0) = ∅ := by decide
   have hn : ({0} : Occupation (Fin 2)) ≠ {0, 1} := by decide
+  have hvac (M : Matrix (Fin 2) (Fin 2) ℂ) :
+      twoModeVertex M (Common.basisState ∅) = 0 := by
+    simp only [twoModeVertex, Fin.sum_univ_two, LinearMap.add_apply,
+      LinearMap.smul_apply, LinearMap.comp_apply]
+    simp [ha]
+  have hzero (M : Matrix (Fin 2) (Fin 2) ℂ) :
+      twoModeVertex M (Common.basisState {0}) =
+        M 0 0 • Common.basisState {0} + M 1 0 • Common.basisState {1} := by
+    simp only [twoModeVertex, Fin.sum_univ_two, LinearMap.add_apply,
+      LinearMap.smul_apply, LinearMap.comp_apply]
+    simp [ha, hc, map_smul, fermionSign, insertOccupation, removeOccupation]
+  have hone (M : Matrix (Fin 2) (Fin 2) ℂ) :
+      twoModeVertex M (Common.basisState {1}) =
+        M 0 1 • Common.basisState {0} + M 1 1 • Common.basisState {1} := by
+    simp only [twoModeVertex, Fin.sum_univ_two, LinearMap.add_apply,
+      LinearMap.smul_apply, LinearMap.comp_apply]
+    simp [ha, hc, map_smul, fermionSign, insertOccupation, removeOccupation, hf]
+  have hfull (M : Matrix (Fin 2) (Fin 2) ℂ) :
+      twoModeVertex M (Common.basisState {0, 1}) =
+        M 0 0 • Common.basisState {0, 1} + M 1 1 • Common.basisState {0, 1} := by
+    simp only [twoModeVertex, Fin.sum_univ_two, LinearMap.add_apply,
+      LinearMap.smul_apply, LinearMap.comp_apply]
+    simp [ha, hc, map_smul, fermionSign, insertOccupation, removeOccupation, hf]
   unfold finiteLehmannTableResponse
   rw [Fintype.sum_prod_type]
   simp_rw [hsum]
+  simp only [LehmannTransitionData.frequencyTerm, lehmannTerm,
+    finiteLehmannTableTransitionData_weight_diag, zero_mul]
   simp only [twoModeFockLehmannTable, finiteLehmannTableTransitionData,
-    LehmannTransitionData.frequencyTerm, orderedLehmannTransitionData,
-    lehmannTerm, twoModeVertex, Common.matrixCoeff,
-    Fin.sum_univ_two, LinearMap.add_apply,
-    LinearMap.smul_apply, LinearMap.comp_apply]
-  simp [ha, hc,
-    map_smul, fermionSign, insertOccupation, removeOccupation,
-    fermionEnergy_eq_sum]
-  simp [Common.basisState, hf, hn, Ne.symm hn]
+    orderedLehmannTransitionData, Common.matrixCoeff, hvac, hzero, hone, hfull]
+  simp [Common.basisState, fermionEnergy_eq_sum, hn, Ne.symm hn]
 
 /-- Real clean Hall coefficient obtained from the full Fock response. The imaginary part is
 the antisymmetric spectral current numerator, not a real-valued conversion of an operator. -/
