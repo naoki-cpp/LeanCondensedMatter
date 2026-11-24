@@ -149,7 +149,11 @@ remains `fermionEnergy ε`.
 The external-insertion mixed-atomic and interaction-picture vertex Dyson coefficient APIs
 accept explicit μ and evaluate directly via `Common.finiteGibbsExpectation` at
 `fermionEnergy (ε - μ)`, while existing diagrammatic and vacuum-factorization theorems
-remain explicitly restricted to μ = 0 in the present diagrammatic API.
+use the effective-dispersion diagrammatic core. The physical vertex Dyson series at arbitrary μ
+factors into the normalized vacuum series at ε − μ and the vacuum-free diagram series times
+the product of the external-field factors. The explicit-μ subset moment and connected-source
+cumulant endpoints use the same factor; its multiplicativity over disjoint partition blocks
+preserves the signed partition identity.
 The finite two-point operator Dyson coefficient, connected coefficient, and
 partition-normalized formal series accept arbitrary real μ. The linked-cluster
 factorization reuses the effective-dispersion diagram expansion at ξ = ε - μ:
