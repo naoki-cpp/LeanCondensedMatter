@@ -29,7 +29,7 @@ theorem Pairwise.idxOf_lt_iff_of_ne {α : Type*} [DecidableEq α]
   have hne : l.idxOf a ≠ l.idxOf b :=
     fun heq => hab ((List.idxOf_inj ha).mp heq)
   have hgt : l.idxOf b < l.idxOf a := by omega
-  exact hab (Std.Antisymm.antisymm h (hrel (x := b) (y := a) hb ha hgt))
+  exact hab (Std.Antisymm.antisymm (r := r) a b h (hrel (x := b) (y := a) hb ha hgt))
 
 /-- Inside one block of a duplicate-free flattened list, global order is exactly local block order. -/
 theorem idxOf_flatMap_block_lt_iff
