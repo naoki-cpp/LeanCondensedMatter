@@ -33,23 +33,12 @@ open scoped Interval
 
 private abbrev DiracOperator := DiracHilbert →L[ℂ] DiracHilbert
 
-private theorem continuous_matrixOperator :
-    Continuous (matrixOperator : Matrix2 → DiracOperator) := by
-  let linearMatrixOperator : Matrix2 →ₗ[ℂ] DiracOperator :=
-    { toFun := matrixOperator
-      map_add' := by
-        intro A B
-        simp [matrixOperator]
-      map_smul' := by
-        intro c A
-        simp [matrixOperator] }
-  exact linearMatrixOperator.continuous_of_finiteDimensional
-
 /-- Continuity of the shared polar Pauli operator as a function of its angle. -/
 private theorem continuous_polarPauliOperator (a b d : ℂ) :
     Continuous (fun θ : ℝ => polarPauliOperator a b d θ) := by
-  unfold polarPauliOperator
-  apply continuous_matrixOperator.comp
+  let L := (Matrix.toEuclideanCLM : Matrix2 ≃⋆ₐ[ℂ] DiracOperator).toAlgEquiv.toLinearEquiv.toLinearMap
+  change Continuous (fun θ : ℝ => L (polarPauliMatrix a b d θ))
+  apply L.continuous_of_finiteDimensional.comp
   unfold polarPauliMatrix
   fun_prop
 
@@ -302,16 +291,9 @@ theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTrace
     ((hrrIntegrable.add haaIntegrable).const_mul (1 / 2 : ℂ))]
   rw [intervalIntegral.integral_const_mul,
     intervalIntegral.integral_add hrrIntegrable haaIntegrable, hra, hrr, haa]
-  have hsmul (rung coefficients : InPlaneCoefficientVector) :
-      inPlaneLadderAction rung (q • coefficients) measured =
-        q * inPlaneLadderAction rung coefficients measured := by
-    change (inPlaneLadderCLM rung (q • coefficients)) measured =
-      q * (inPlaneLadderCLM rung coefficients) measured
-    rw [map_smul]
-    rfl
   unfold finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient
   dsimp only
-  simp only [hsmul]
+  simp only [← inPlaneLadderCLM_apply, map_smul, Pi.smul_apply, smul_eq_mul]
   ring
 
 /-- The pair-indexed finite-`η` radial integrand is the polar Jacobian `p` multiplying the canonical
