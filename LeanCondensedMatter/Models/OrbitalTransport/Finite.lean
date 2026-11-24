@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Analysis.ConservationLaw.FiniteBondFlux
+import LeanCondensedMatter.Combinatorics.FiniteAntisymmetricSum
 import LeanCondensedMatter.Analysis.InternalSpace.Pauli
 import Mathlib.Tactic.FinCases
 import Mathlib.Tactic.NormNum
@@ -61,8 +61,18 @@ theorem singleton_crystalFieldOrbitalTorque_not_bondFlux :
     ¬ ∃ J : Fin 1 → Fin 1 → InternalSpace.PauliMatrix,
       (∀ x y, J x y = -J y x) ∧
         (∀ x, crystalFieldOrbitalTorque 1 = ∑ y : Fin 1, J x y) := by
-  apply ConservationLaw.nonzero_totalSource_not_bondFlux
-    (source := fun _ : Fin 1 => crystalFieldOrbitalTorque 1)
-  simpa using crystalFieldOrbitalTorque_one_ne_zero
+  rintro ⟨J, hantisym, hbalance⟩
+  have hdiag (x : Fin 1) : J x x = 0 := by
+    have htwo : (2 : ℂ) • J x x = 0 := by
+      calc
+        (2 : ℂ) • J x x = J x x + J x x := two_smul ℂ _
+        _ = J x x + -J x x := congrArg (fun z => J x x + z) (hantisym x x)
+        _ = 0 := add_neg_cancel _
+    exact (smul_eq_zero.mp htwo).resolve_left (by norm_num)
+  apply crystalFieldOrbitalTorque_one_ne_zero
+  calc
+    crystalFieldOrbitalTorque 1 = ∑ x : Fin 1, ∑ y : Fin 1, J x y := by
+      simpa using hbalance (0 : Fin 1)
+    _ = 0 := Combinatorics.sum_antisymmetric_eq_zero J hantisym hdiag
 
 end QuantumTheory.Models.OrbitalTransport
