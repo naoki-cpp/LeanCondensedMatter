@@ -24,35 +24,42 @@ images on the basis vectors are summable. Its relation to the basis-independent 
 def IsHilbertSchmidtWrt {ι : Type*} (d : HilbertBasis ι ℂ H) (T : H →L[ℂ] H) : Prop :=
   Summable (fun i => ‖T (d i)‖ ^ 2)
 
+omit [CompleteSpace H] in
+/-- The squared matrix coefficients over any two Hilbert bases sum to the
+square-norm sum of the operator images on the domain basis. -/
+theorem hasSum_norm_sq_matrix_coeff {ι κ : Type*} (d : HilbertBasis ι ℂ H)
+    (f : HilbertBasis κ ℂ H) (T : H →L[ℂ] H) {a : ℝ}
+    (hd : HasSum (fun i => ‖T (d i)‖ ^ 2) a) :
+    HasSum (fun p : ι × κ => ‖(inner ℂ (T (d p.1)) (f p.2) : ℂ)‖ ^ 2) a := by
+  classical
+  set g : ι × κ → ℝ := fun p => ‖(inner ℂ (T (d p.1)) (f p.2) : ℂ)‖ ^ 2 with hg_def
+  have hg_nonneg : ∀ p, 0 ≤ g p := fun p => sq_nonneg _
+  have hrow : ∀ i, HasSum (fun j => g (i, j)) (‖T (d i)‖ ^ 2) := fun i => by
+    simpa only [show (2 : ENNReal).toReal = (2 : ℝ) by norm_num, Real.rpow_two,
+      f.repr_apply_apply, f.repr.norm_map, norm_inner_symm, hg_def] using
+      (lp.hasSum_norm (p := 2) (by norm_num) (f.repr (T (d i))))
+  have hg_summable : Summable g :=
+    (summable_prod_of_nonneg hg_nonneg).mpr ⟨fun i => (hrow i).summable, by
+      simpa only [fun i => (hrow i).tsum_eq] using hd.summable⟩
+  rw [← (hg_summable.hasSum.prod_fiberwise hrow).unique hd]
+  exact hg_summable.hasSum
+
 /-- **The core basis-independence computation.** If `T` is Hilbert–Schmidt with respect to a
 basis `d`, then its adjoint `T†` is Hilbert–Schmidt with respect to *any* basis `f`, with the same
-sum of squared norms. This is what makes `IsHilbertSchmidtWrt` (and, applying this twice via
-`T†† = T`, comparisons between *any* two bases for `T` itself) basis-independent. -/
+sum of squared norms. -/
 theorem hasSum_norm_sq_adjoint_apply {ι κ : Type*} (d : HilbertBasis ι ℂ H)
     (f : HilbertBasis κ ℂ H) (T : H →L[ℂ] H) {a : ℝ}
     (hd : HasSum (fun i => ‖T (d i)‖ ^ 2) a) :
     HasSum (fun j => ‖(ContinuousLinearMap.adjoint T) (f j)‖ ^ 2) a := by
   classical
-  -- The nonnegative double family `g (i, j) := ‖⟪T dᵢ, f j⟫‖ ^ 2`.
   set g : ι × κ → ℝ := fun p => ‖(inner ℂ (T (d p.1)) (f p.2) : ℂ)‖ ^ 2 with hg_def
-  have hg_nonneg : ∀ p, 0 ≤ g p := fun p => sq_nonneg _
-  -- Row sums (over `j`, fixed `i`): Parseval for `f`, applied to `T dᵢ`.
-  have hrow : ∀ i, HasSum (fun j => g (i, j)) (‖T (d i)‖ ^ 2) := fun i => by
-    simpa only [show (2 : ENNReal).toReal = (2 : ℝ) by norm_num, Real.rpow_two,
-      f.repr_apply_apply, f.repr.norm_map, norm_inner_symm, hg_def] using
-      (lp.hasSum_norm (p := 2) (by norm_num) (f.repr (T (d i))))
-  -- Column sums use the adjoint identity to identify the same matrix coefficients.
+  have hg : HasSum g a := hasSum_norm_sq_matrix_coeff d f T hd
   have hcol : ∀ j, HasSum (fun i => g (i, j)) (‖(ContinuousLinearMap.adjoint T) (f j)‖ ^ 2) :=
     fun j => by
       simpa only [show (2 : ENNReal).toReal = (2 : ℝ) by norm_num, Real.rpow_two,
         d.repr_apply_apply, d.repr.norm_map, hg_def, ContinuousLinearMap.adjoint_inner_right] using
         (lp.hasSum_norm (p := 2) (by norm_num) (d.repr ((ContinuousLinearMap.adjoint T) (f j))))
-  -- Assemble the uncurried summability of `g` from the (nonnegative) row data.
-  have hg_summable : Summable g :=
-    (summable_prod_of_nonneg hg_nonneg).mpr ⟨fun i => (hrow i).summable, by
-      simpa only [fun i => (hrow i).tsum_eq] using hd.summable⟩
-  have hcolSum := ((Equiv.prodComm κ ι).hasSum_iff.mpr hg_summable.hasSum).prod_fiberwise hcol
-  rwa [(hg_summable.hasSum.prod_fiberwise hrow).unique hd] at hcolSum
+  exact ((Equiv.prodComm κ ι).hasSum_iff.mpr hg).prod_fiberwise hcol
 
 /-- **The same basis-independence, phrased for `T` itself rather than its adjoint.** Applying
 `hasSum_norm_sq_adjoint_apply` twice — once for `T`, once for `T†` — and using

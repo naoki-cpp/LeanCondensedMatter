@@ -125,7 +125,7 @@ theorem summable_norm_inner_apply_and_tsum_le {S T : H →L[ℂ] H}
       HasSum (fun i => (‖S (d i)‖ ^ 2 + ‖T (d i)‖ ^ 2) / 2)
         ((hS.normSq + hT.normSq) / 2) :=
     ((hS.hasSum_norm_sq_apply d).add (hT.hasSum_norm_sq_apply d)).div_const 2
-  refine ⟨hsum, (hsum.tsum_le_tsum (fun i => ?_) hmajor.summable).trans_eq hmajor.tsum_eq⟩
+  refine ⟨hsum, hasSum_le (fun i => ?_) hsum.hasSum hmajor⟩
   exact (norm_inner_le_norm (S (d i)) (T (d i))).trans (by
     nlinarith [sq_nonneg (‖S (d i)‖ - ‖T (d i)‖)])
 

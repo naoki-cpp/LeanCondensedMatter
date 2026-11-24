@@ -42,44 +42,25 @@ theorem hasSum_innerHS {S T : H →L[ℂ] H} (hS : IsHilbertSchmidt S)
 end IsHilbertSchmidt
 
 omit [CompleteSpace H] in
-/-- **Absolute summability of the "resolution of the identity" double product**
-`⟪S dᵢ, fⱼ⟫⟪fⱼ, T dᵢ⟫`, for `S`, `T` Hilbert–Schmidt with respect to `d` and *any* other basis
-`f`. Established via the AM–GM bound `|ab| ≤ (|a|² + |b|²) / 2` (rather than
-`summable_prod_of_nonneg` applied to the family itself, since the summands here are complex, not
-nonnegative). The absolute-summability half of
-`hasSum_inner_adjoint_apply`'s argument, isolated since it doesn't need the
-row/column identification that follows it. -/
+/-- The resolution-of-identity product is absolutely summable by Hölder's inequality
+for the two square-summable matrix coefficient families. -/
 private theorem summable_inner_resolution_product {ι κ : Type*} (d : HilbertBasis ι ℂ H)
     (f : HilbertBasis κ ℂ H) {S T : H →L[ℂ] H} (hSd : IsHilbertSchmidtWrt d S)
     (hTd : IsHilbertSchmidtWrt d T) :
     Summable (fun p : ι × κ =>
       (inner ℂ (S (d p.1)) (f p.2) : ℂ) * (inner ℂ (f p.2) (T (d p.1)) : ℂ)) := by
-  classical
-  set bd : ι × κ → ℝ :=
-    fun p => (‖(inner ℂ (S (d p.1)) (f p.2) : ℂ)‖ ^ 2 +
-      ‖(inner ℂ (f p.2) (T (d p.1)) : ℂ)‖ ^ 2) / 2 with hbd_def
-  have hbd_nonneg : ∀ p, 0 ≤ bd p := fun p => by positivity
-  have hg_le : ∀ p, ‖(inner ℂ (S (d p.1)) (f p.2) : ℂ) * (inner ℂ (f p.2) (T (d p.1)) : ℂ)‖ ≤
-      bd p := fun p => by
-    rw [hbd_def]
-    simp only [norm_mul]
-    nlinarith [sq_nonneg (‖(inner ℂ (S (d p.1)) (f p.2) : ℂ)‖ -
-      ‖(inner ℂ (f p.2) (T (d p.1)) : ℂ)‖)]
-  have hbd_row : ∀ i, HasSum (fun j => bd (i, j)) ((‖S (d i)‖ ^ 2 + ‖T (d i)‖ ^ 2) / 2) := by
-    intro i
-    have h1 : HasSum (fun j => ‖(inner ℂ (S (d i)) (f j) : ℂ)‖ ^ 2) (‖S (d i)‖ ^ 2) := by
-      simpa only [show (2 : ENNReal).toReal = (2 : ℝ) by norm_num, Real.rpow_two,
-        f.repr_apply_apply, f.repr.norm_map, norm_inner_symm] using
-        (lp.hasSum_norm (p := 2) (by norm_num) (f.repr (S (d i))))
-    have h2 : HasSum (fun j => ‖(inner ℂ (f j) (T (d i)) : ℂ)‖ ^ 2) (‖T (d i)‖ ^ 2) := by
-      simpa only [show (2 : ENNReal).toReal = (2 : ℝ) by norm_num, Real.rpow_two,
-        f.repr_apply_apply, f.repr.norm_map] using
-        (lp.hasSum_norm (p := 2) (by norm_num) (f.repr (T (d i))))
-    simpa only [hbd_def, add_div] using h1.div_const 2 |>.add (h2.div_const 2)
-  have hbd_summable : Summable bd :=
-    (summable_prod_of_nonneg hbd_nonneg).mpr ⟨fun i => (hbd_row i).summable, by
-      simpa only [fun i => (hbd_row i).tsum_eq] using (hSd.add hTd).div_const 2⟩
-  exact Summable.of_norm_bounded hbd_summable hg_le
+  let coeff (A : H →L[ℂ] H) (hA : IsHilbertSchmidtWrt d A) : lp (fun _ : ι × κ => ℂ) 2 :=
+    ⟨fun p => inner ℂ (A (d p.1)) (f p.2), by
+      change Memℓp (fun p : ι × κ => inner ℂ (A (d p.1)) (f p.2)) 2
+      refine (memℓp_gen_iff (p := 2) (by norm_num)).2 ?_
+      simpa only [show (2 : ENNReal).toReal = (2 : ℝ) by norm_num, Real.rpow_two] using
+        (hasSum_norm_sq_matrix_coeff d f A hA.hasSum).summable⟩
+  have h := lp.summable_mul (p := 2) (q := 2)
+    (by rw [Real.holderConjugate_iff]; norm_num) (coeff S hSd) (coeff T hTd)
+  refine Summable.of_norm_bounded h fun p => ?_
+  change ‖(inner ℂ (S (d p.1)) (f p.2) : ℂ) * inner ℂ (f p.2) (T (d p.1))‖ ≤
+    ‖inner ℂ (S (d p.1)) (f p.2)‖ * ‖inner ℂ (T (d p.1)) (f p.2)‖
+  rw [norm_mul, norm_inner_symm (𝕜 := ℂ) (f p.2) (T (d p.1))]
 
 /-- **The core Fubini computation underlying basis-independence of `innerHS`.** For `S`, `T`
 Hilbert–Schmidt with respect to a basis `d`, and *any* other basis `f`, the double sum
