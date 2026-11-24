@@ -596,7 +596,7 @@ noncomputable def externalInsertionStandardToMixedAtomicPositionEquiv {E n : ℕ
 
 /-! ## Event-block permutation parity -/
 
-private def externalInsertionEventBlockSize (E n : ℕ) :
+private abbrev externalInsertionEventBlockSize (E n : ℕ) :
     ExternalInsertionTimedEvent E n → ℕ
   | .inl _ => 1
   | .inr _ => 4
@@ -736,8 +736,9 @@ private theorem externalInsertionMixedEventSlotEquiv_val {E n : ℕ}
     (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ)
     (e : ExternalInsertionTimedEvent E n) (p : Fin (externalInsertionEventBlockSize E n e)) :
     (externalInsertionMixedEventSlotEquiv externalTime σ ⟨e, p⟩).val =
-      (externalInsertionMixedTimeOrderedAtomicLegs externalTime σ).idxOf
-        (externalInsertionEventBlockLegEquiv E n ⟨e, p⟩) := by
+      @List.idxOf (OrderedExternalInsertionLeg E n) instBEqOfDecidableEq
+        (externalInsertionEventBlockLegEquiv E n ⟨e, p⟩)
+        (externalInsertionMixedTimeOrderedAtomicLegs externalTime σ) := by
   classical
   rfl
 
@@ -747,6 +748,7 @@ private noncomputable def externalInsertionMixedEventShuffle {E n : ℕ}
       (2 * (2 * n + E)) :=
   externalInsertionEventShuffle (externalInsertionMixedEventSlotEquiv externalTime σ) (by
     classical
+    letI : BEq (OrderedExternalInsertionLeg E n) := instBEqOfDecidableEq
     intro v p q hpq
     change (externalInsertionMixedEventSlotEquiv externalTime σ ⟨.inr v, p⟩).val <
       (externalInsertionMixedEventSlotEquiv externalTime σ ⟨.inr v, q⟩).val
@@ -772,9 +774,13 @@ private theorem externalInsertionMixedEventShuffle_lt_iff {E n : ℕ}
     (q : Fin (externalInsertionEventBlockSize E n b)) :
     ((externalInsertionMixedEventShuffle externalTime σ).slotEquiv ⟨a, p⟩ <
         (externalInsertionMixedEventShuffle externalTime σ).slotEquiv ⟨b, q⟩) ↔
-      (orderedExternalInsertionTimedEvents externalTime σ).idxOf a <
-        (orderedExternalInsertionTimedEvents externalTime σ).idxOf b := by
+      @List.idxOf (ExternalInsertionTimedEvent E n) instBEqOfDecidableEq
+          a (orderedExternalInsertionTimedEvents externalTime σ) <
+        @List.idxOf (ExternalInsertionTimedEvent E n) instBEqOfDecidableEq
+          b (orderedExternalInsertionTimedEvents externalTime σ) := by
   classical
+  letI : BEq (ExternalInsertionTimedEvent E n) := instBEqOfDecidableEq
+  letI : BEq (OrderedExternalInsertionLeg E n) := instBEqOfDecidableEq
   change (externalInsertionMixedEventSlotEquiv externalTime σ ⟨a, p⟩).val <
     (externalInsertionMixedEventSlotEquiv externalTime σ ⟨b, q⟩).val ↔ _
   rw [externalInsertionMixedEventSlotEquiv_val, externalInsertionMixedEventSlotEquiv_val]
@@ -796,6 +802,7 @@ theorem externalInsertionStandardToMixedAtomicPositionEquiv_sign
       (-1 : ℤˣ) ^ (∑ a : Fin (2 * E), ∑ b : Fin (2 * E),
         if a.val < b.val ∧ externalTime a < externalTime b then 1 else 0) := by
   classical
+  letI : BEq (ExternalInsertionTimedEvent E n) := instBEqOfDecidableEq
   let f := externalInsertionFixedEventShuffle E n
   let m := externalInsertionMixedEventShuffle externalTime σ
   have hrel : f.relativePerm m =
@@ -805,7 +812,7 @@ theorem externalInsertionStandardToMixedAtomicPositionEquiv_sign
     simp [f, m, Combinatorics.FamilySlotShuffleTo.relativePerm,
       externalInsertionFixedEventShuffle, externalInsertionMixedEventShuffle,
       externalInsertionEventShuffle, externalInsertionFixedEventSlotEquiv, externalInsertionMixedEventSlotEquiv,
-      externalInsertionStandardToMixedAtomicPositionEquiv]
+      externalInsertionStandardToMixedAtomicPositionEquiv, Equiv.trans_apply]
   rw [← hrel, Combinatorics.FamilySlotShuffleTo.relativePerm_sign_eq_oddBlockInversions
     f m externalInsertionTimedEventRank
     (fun e => (orderedExternalInsertionTimedEvents externalTime σ).idxOf e)
@@ -814,7 +821,7 @@ theorem externalInsertionStandardToMixedAtomicPositionEquiv_sign
   congr 1
   simp_rw [Fintype.sum_sum_type]
   simp only [externalInsertionEventBlockSize, Nat.reduceMod, Nat.mul_one, Nat.mul_zero,
-    Nat.zero_mul, ite_self, Finset.sum_const_zero, add_zero, zero_add]
+    ite_self, Finset.sum_const_zero, add_zero]
   apply Finset.sum_congr rfl
   intro a _
   apply Finset.sum_congr rfl
@@ -822,20 +829,22 @@ theorem externalInsertionStandardToMixedAtomicPositionEquiv_sign
   by_cases hab : a.val < b.val
   · have hne : (Sum.inl b : ExternalInsertionTimedEvent E n) ≠ Sum.inl a :=
       fun h => (ne_of_lt hab) (congrArg Fin.val (Sum.inl.inj h).symm)
-    let rel := stableTimedEventBeforeOrEqual
-      (externalInsertionTimedEventTime externalTime σ)
-      (externalInsertionTimedEventRank (E := E) (n := n))
-    letI : Std.Antisymm rel := ⟨fun _ _ h₁ h₂ =>
-      stableTimedEventBeforeOrEqual_antisymm _ _
+    letI : Std.Antisymm
+        (stableTimedEventBeforeOrEqual (externalInsertionTimedEventTime externalTime σ)
+          (fun e => (finSumFinEquiv e : Fin (2 * E + n)).val)) :=
+      ⟨fun _ _ h₁ h₂ => stableTimedEventBeforeOrEqual_antisymm _ _
         (fun _ _ h => finSumFinEquiv.injective (Fin.ext h)) h₁ h₂⟩
-    have horder := (orderedExternalInsertionTimedEvents_pairwise externalTime σ
-      : (orderedExternalInsertionTimedEvents externalTime σ).Pairwise rel)
-    have hidx := horder.idxOf_lt_iff_of_ne
+    have hidx := (orderedExternalInsertionTimedEvents_pairwise externalTime σ).idxOf_lt_iff_of_ne
       (orderedExternalInsertionTimedEvents_all_mem externalTime σ (.inl b))
       (orderedExternalInsertionTimedEvents_all_mem externalTime σ (.inl a)) hne
     have hnot : ¬ b.val ≤ a.val := not_le_of_gt hab
-    simp [externalInsertionTimedEventRank, hab, hidx, rel,
-      stableTimedEventBeforeOrEqual_iff, externalInsertionTimedEventTime, hnot]
+    have htime :
+        (orderedExternalInsertionTimedEvents externalTime σ).idxOf (.inl b) <
+          (orderedExternalInsertionTimedEvents externalTime σ).idxOf (.inl a) ↔
+          externalTime a < externalTime b := by
+      rw [hidx, stableTimedEventBeforeOrEqual_iff]
+      simp [externalInsertionTimedEventTime, hnot]
+    simp [externalInsertionTimedEventRank, hab, htime]
   · simp [externalInsertionTimedEventRank, hab]
 
 /-- The fixed flattened diagram position underlying a mixed-time atomic position. -/
