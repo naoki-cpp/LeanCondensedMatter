@@ -2,6 +2,8 @@ import LeanCondensedMatter.Analysis.PowerSeries.CoefficientSum
 import LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.HypergeometricSeries
 import LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.FormalCoefficients
 import LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.Y1Series
+import Mathlib.LinearAlgebra.Complex.FiniteDimensional
+import Mathlib.Analysis.Normed.Module.FiniteDimension
 import Mathlib.Tactic.FieldSimp
 import Mathlib.Tactic.NormNum
 import Mathlib.Tactic.Ring
@@ -252,42 +254,23 @@ theorem besselY0Y1_harmonicIdentity (z : ℂ) :
     summable_besselFormalH1_eval z
   have htwo : PowerSeries.C (2 : ℂ) = (2 : ℂ⟦X⟧) :=
     map_natCast (PowerSeries.C : ℂ →+* ℂ⟦X⟧) 2
-  have h2D : Summable (fun n : ℕ =>
-      PowerSeries.coeff n (2 * PowerSeries.derivative besselFormalJ0) * x ^ n) := by
-    simpa only [htwo] using PowerSeries.summable_coefficientSum_C_mul
-      (PowerSeries.derivative besselFormalJ0) x 2 hD
-  have h2DEval :
-      PowerSeries.coefficientSum (2 * PowerSeries.derivative besselFormalJ0) x =
-        2 * PowerSeries.coefficientSum (PowerSeries.derivative besselFormalJ0) x := by
-    simpa only [htwo] using PowerSeries.coefficientSum_C_mul (PowerSeries.derivative besselFormalJ0) x 2
-  have h2DB :=
-    PowerSeries.summable_coefficientSum_mul
-      (2 * PowerSeries.derivative besselFormalJ0) besselFormalH0 x h2D hB
-  have hAC :=
-    PowerSeries.summable_coefficientSum_mul
-      besselFormalJ0 besselFormalH1 x hA hC
-  have hX2DB :=
-    PowerSeries.summable_coefficientSum_X_mul
-      (2 * PowerSeries.derivative besselFormalJ0 * besselFormalH0) x h2DB
-  have hXAC :=
-    PowerSeries.summable_coefficientSum_X_mul
-      (besselFormalJ0 * besselFormalH1) x hAC
-  have hAplus :=
-    PowerSeries.summable_coefficientSum_add besselFormalJ0
-      (PowerSeries.X * (2 * PowerSeries.derivative besselFormalJ0 *
-        besselFormalH0)) x hA hX2DB
-  have hFormal := congrArg
-    (fun f : ℂ⟦X⟧ => PowerSeries.coefficientSum f x)
-    besselFormalJ0H0H1_harmonicIdentity
-  rw [PowerSeries.coefficientSum_sub _ _ x hAplus hXAC,
-      PowerSeries.coefficientSum_add _ _ x hA hX2DB,
-      PowerSeries.coefficientSum_X_mul
-        (2 * PowerSeries.derivative besselFormalJ0 * besselFormalH0) x,
-      PowerSeries.coefficientSum_X_mul (besselFormalJ0 * besselFormalH1) x,
-      PowerSeries.coefficientSum_mul _ _ x h2D hB,
-      PowerSeries.coefficientSum_mul _ _ x hA hC,
-      h2DEval,
-      PowerSeries.coefficientSum_one] at hFormal
+  have h2D : HasSum (fun n : ℕ =>
+      PowerSeries.coeff n (2 * PowerSeries.derivative besselFormalJ0) * x ^ n)
+      (2 * PowerSeries.coefficientSum (PowerSeries.derivative besselFormalJ0) x) := by
+    simpa only [htwo] using PowerSeries.hasSum_coefficientSum_C_mul
+      (PowerSeries.derivative besselFormalJ0) x 2 hD.hasSum
+  have h2DB := PowerSeries.hasSum_coefficientSum_mul
+    (2 * PowerSeries.derivative besselFormalJ0) besselFormalH0 x
+    h2D hB.hasSum h2D.summable.norm hB.norm
+  have hAC := PowerSeries.hasSum_coefficientSum_mul
+    besselFormalJ0 besselFormalH1 x hA.hasSum hC.hasSum hA.norm hC.norm
+  have hX2DB := PowerSeries.hasSum_coefficientSum_X_mul _ x h2DB
+  have hXAC := PowerSeries.hasSum_coefficientSum_X_mul _ x hAC
+  have hAplus := PowerSeries.hasSum_coefficientSum_add _ _ x hA.hasSum hX2DB
+  have hFormal := PowerSeries.hasSum_coefficientSum_sub _ _ x hAplus hXAC
+  rw [besselFormalJ0H0H1_harmonicIdentity] at hFormal
+  have hEval : PowerSeries.coefficientSum (1 : ℂ⟦X⟧) x = _ := hFormal.tsum_eq
+  rw [PowerSeries.coefficientSum_one] at hEval
   have hJ0 :
       PowerSeries.coefficientSum besselFormalJ0 x =
         Complex.besselJ 0 z :=
@@ -319,7 +302,7 @@ theorem besselY0Y1_harmonicIdentity (z : ℂ) :
         rw [← hJ0, ← hJ1, ← hY0, ← hY1]
         dsimp [x]
         ring
-    _ = 1 := hFormal
+    _ = 1 := hEval.symm
 
 /-- The actual convergent DLMF Y₀/Y₁ series satisfy the standard
 normalized J/Y Wronskian for every nonzero complex argument. -/
