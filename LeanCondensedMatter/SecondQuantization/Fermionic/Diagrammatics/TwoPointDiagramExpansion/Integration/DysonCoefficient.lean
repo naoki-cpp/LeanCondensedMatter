@@ -99,6 +99,29 @@ noncomputable def twoPointDysonCoefficient {n : ℕ}
           Common.finiteGibbsExpectation (fermionEnergy (fun k => ε k - μ)) β
             (mixedTimeOrderedVertexComp ε i j τ τ' q σ))
 
+/-- At every perturbative order, the physical-H explicit-μ two-point
+coefficient equals its effective-dispersion zero-μ coefficient times the
+external-field factor. No sign or positivity assumption on μ or β is needed. -/
+theorem twoPointDysonCoefficient_eq_shiftedDispersion {n : ℕ}
+    (ε : Mode → ℝ) (β μ : ℝ) (g : QuarticVertexLabel Mode → ℂ)
+    (i j : Mode) (τ τ' : ℝ) :
+    twoPointDysonCoefficient (n := n) ε β μ g i j τ τ' =
+      twoPointChemicalPotentialFactor μ τ τ' *
+        twoPointDysonCoefficient (n := n) (fun k => ε k - μ) β 0 g i j τ τ' := by
+  unfold twoPointDysonCoefficient
+  simp only [sub_zero]
+  rw [mul_left_comm (twoPointChemicalPotentialFactor μ τ τ') ((-1 : ℂ) ^ n)]
+  apply congrArg (fun z : ℂ => (-1 : ℂ) ^ n * z)
+  rw [← intervalIntegral.orderedSimplexIntegral_smul]
+  apply intervalIntegral.orderedSimplexIntegral_congr
+  intro σ
+  rw [Finset.mul_sum]
+  apply Finset.sum_congr rfl
+  intro q _
+  rw [mixedTimeOrderedVertexComp_eq_shiftedDispersion ε μ]
+  simp only [Common.finiteGibbsExpectation, map_smul, smul_eq_mul]
+  ring
+
 /-- The ordered-simplex external-leg diagram coefficient equals the mixed time-ordered Dyson
 coefficient at every perturbation order. -/
 theorem twoPointDiagramCoefficient_eq_twoPointDysonCoefficient {n : ℕ}

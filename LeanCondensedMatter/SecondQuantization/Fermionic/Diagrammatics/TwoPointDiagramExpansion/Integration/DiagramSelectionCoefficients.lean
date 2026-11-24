@@ -22,12 +22,14 @@ variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
 
 open Classical in
 /-- The order-`n` coefficient of the connected two-point series: the integrated Dyson amplitudes of
-the externally connected diagrams only. -/
-noncomputable def connectedTwoPointDysonCoefficient (ε : Mode → ℝ) (β : ℝ)
+the externally connected diagrams only. The Gibbs state uses ε − μ; the
+external-field factor restores physical-H evolution from the effective dispersion. -/
+noncomputable def connectedTwoPointDysonCoefficient (ε : Mode → ℝ) (β μ : ℝ)
     (g : QuarticVertexLabel Mode → ℂ) (i j : Mode) (τ τ' : ℝ) (n : ℕ) : ℂ :=
-  ∑ d ∈ (Finset.univ : Finset (FixedExternalTwoPointWickDiagram Mode n i j)).filter
-      fun d => d.1.IsExternallyConnected,
-    d.dysonAmplitude ε β g τ τ'
+  twoPointChemicalPotentialFactor μ τ τ' *
+    ∑ d ∈ (Finset.univ : Finset (FixedExternalTwoPointWickDiagram Mode n i j)).filter
+        fun d => d.1.IsExternallyConnected,
+      d.dysonAmplitude (fun k => ε k - μ) β g τ τ'
 
 open Classical in
 /-- The order-`n` integrated two-point contribution from proper 1PI pairing diagrams. -/
