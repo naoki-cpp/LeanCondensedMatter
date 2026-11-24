@@ -252,28 +252,13 @@ theorem externalInsertionStandardToMixedAtomicPositionEquiv_sign_twoPoint
           (E := 1) (twoPointExternalTimes τ τ') σ) =
       (if τ < τ' then (-1 : ℤˣ) else 1) := by
   classical
-  have horder :
-      (orderedExternalInsertionTimedEvents (E := 1) (twoPointExternalTimes τ τ') σ).idxOf
-          (Sum.inl 1) <
-        (orderedExternalInsertionTimedEvents (E := 1) (twoPointExternalTimes τ τ') σ).idxOf
-          (Sum.inl 0) ↔ τ < τ' := by
-    rw [← orderedTwoPointTimedEvents_eq_externalInsertion τ τ' σ]
-    change orderedTwoPointTimedEventPosition τ τ' σ (Sum.inl 1) <
-      orderedTwoPointTimedEventPosition τ τ' σ (Sum.inl 0) ↔ τ < τ'
-    rw [orderedTwoPointTimedEventPosition_lt_iff]
-    simp [twoPointTimedEventBefore, twoPointTimedEventBeforeOrEqual,
-      stableTimedEventBeforeOrEqual_iff, twoPointTimedEventTime, twoPointTimedEventRank]
   rw [externalInsertionStandardToMixedAtomicPositionEquiv_sign]
   change (-1 : ℤˣ) ^ (∑ a : Fin 2, ∑ b : Fin 2,
-    if a.val < b.val ∧
-      (orderedExternalInsertionTimedEvents (E := 1) (twoPointExternalTimes τ τ') σ).idxOf
-        (Sum.inl b) <
-      (orderedExternalInsertionTimedEvents (E := 1) (twoPointExternalTimes τ τ') σ).idxOf
-        (Sum.inl a) then 1 else 0) = _
+    if a.val < b.val ∧ twoPointExternalTimes τ τ' a < twoPointExternalTimes τ τ' b
+    then 1 else 0) = _
   simp only [Fin.sum_univ_two]
-  by_cases h : τ < τ'
-  · simp [h, horder]
-  · simp [h, horder]
+  by_cases h : τ < τ' <;> simp [h]
+
 
 /-! ## Monotone interaction-slot transport -/
 
