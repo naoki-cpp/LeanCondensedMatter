@@ -679,7 +679,7 @@ theorem sum_preconnectedDyson_eq_connectedCoefficient
   calc
     _ = ∑ d : X, if P d then (if L d then w d else 0) else 0 := by
       simpa only [Finset.sum_filter] using
-        (Finset.sum_subtype ((Finset.univ : Finset X).filter P)
+        (Finset.sum_subtype (p := P) ((Finset.univ : Finset X).filter P)
           (fun d => by simp only [Finset.mem_filter, Finset.mem_univ, true_and])
           (fun d => if L d then w d else 0)).symm
     _ = ∑ d : X, if V d then (if L d then (if C d then w d else 0) else 0) else 0 := by
@@ -689,7 +689,7 @@ theorem sum_preconnectedDyson_eq_connectedCoefficient
         simp only [hpre d, hv, hc, hl, true_and, false_and, and_false, ↓reduceIte]
     _ = ∑ d : {d : X // V d}, if L d.1 then (if C d.1 then w d.1 else 0) else 0 := by
       simpa only [Finset.sum_filter] using
-        (Finset.sum_subtype ((Finset.univ : Finset X).filter V)
+        (Finset.sum_subtype (p := V) ((Finset.univ : Finset X).filter V)
           (fun d => by simp only [Finset.mem_filter, Finset.mem_univ, true_and])
           (fun d => if L d then (if C d then w d else 0) else 0))
     _ = _ :=
