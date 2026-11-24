@@ -1,6 +1,6 @@
 import LeanCondensedMatter.Analysis.PowerSeries.CoefficientSum
 import LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.FormalAnalyticBridgeJ
-import LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.FormalOrderOne
+import LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.FormalCoefficients
 import LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.Y1Series
 
 set_option linter.style.header false
@@ -20,7 +20,7 @@ This module does not depend on transport, Fourier geometry or physical models.
 /-!
 # Formal-to-analytic bridge between formal and convergent Y harmonic series
 
-The formal coefficient calculations in FormalOrderOne are for
+The formal coefficient calculations in FormalCoefficients are for
 power-series coefficients `A,B,C`. This module verifies that the
 realized DLMF harmonic corrections from merged PR #4529 are **exactly**
 the coefficientwise `tsum` evaluations of `B` and `C` at
