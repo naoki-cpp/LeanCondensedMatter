@@ -100,32 +100,6 @@ noncomputable def twoPointDysonCoefficient {n : ℕ}
           Common.finiteGibbsExpectation (fermionEnergy (fun k => ε k - μ)) β
             (mixedTimeOrderedVertexComp ε i j τ τ' q σ))
 
-/-- The general atomic-order sign specializes to the two-point external-field
-exchange sign, independently of the interaction times. -/
-theorem externalInsertionMixedAtomicOrderSign_twoPoint
-    {n : ℕ} (τ τ' : ℝ) (σ : Fin n → ℝ) :
-    externalInsertionMixedAtomicOrderSign (E := 1) (twoPointExternalTimes τ τ') σ =
-      twoPointExternalOrderSign τ τ' := by
-  classical
-  rw [externalInsertionMixedAtomicOrderSign,
-    externalInsertionStandardToMixedAtomicPositionEquiv_sign_twoPoint]
-  by_cases h : τ < τ'
-  · simp [h, twoPointExternalOrderSign, Common.Statistics.zetaInt]
-  · simp [h, twoPointExternalOrderSign]
-
-omit [Fintype Mode] in
-/-- The two physical mixed vertex products coincide, including at equal times.
-Both definitions use the same event operators and the same stable order. -/
-theorem mixedTimeOrderedVertexComp_eq_externalInsertion
-    {n : ℕ} (ε : Mode → ℝ) (i j : Mode) (τ τ' : ℝ)
-    (q : Fin n → QuarticVertexLabel Mode) (σ : Fin n → ℝ) :
-    mixedTimeOrderedVertexComp ε i j τ τ' q σ =
-      externalInsertionMixedTimeOrderedVertexComp (E := 1) ε
-        (twoPointExternalLabels i j) (twoPointExternalTimes τ τ') q σ := by
-  simp only [mixedTimeOrderedVertexComp, externalInsertionMixedTimeOrderedVertexComp,
-    orderedTwoPointTimedEvents_eq_externalInsertion,
-    externalInsertionMixedAtomicOrderSign_twoPoint, twoPointTimedEventOperator]
-
 /-- The physical two-point Dyson coefficient is the two-external specialization
 of the general vertex Dyson coefficient at arbitrary real μ and β. -/
 theorem twoPointDysonCoefficient_eq_externalInsertionVertexDysonCoefficient
@@ -149,18 +123,9 @@ theorem twoPointDysonCoefficient_eq_shiftedDispersion {n : ℕ}
     twoPointDysonCoefficient (n := n) ε β μ g i j τ τ' =
       twoPointChemicalPotentialFactor μ τ τ' *
         twoPointDysonCoefficient (n := n) (fun k => ε k - μ) β 0 g i j τ τ' := by
-  have hfactor : externalFieldFamilyChemicalPotentialFactor μ
-      (twoPointExternalLabels i j) (twoPointExternalTimes τ τ') =
-        twoPointChemicalPotentialFactor μ τ τ' := by
-    rw [externalFieldFamilyChemicalPotentialFactor, Fin.prod_univ_two,
-      twoPointExternalLabels_zero, twoPointExternalLabels_one,
-      twoPointExternalTimes_zero, twoPointExternalTimes_one]
-    change Complex.exp (-(τ : ℂ) * (μ : ℂ)) * Complex.exp ((τ' : ℂ) * (μ : ℂ)) = _
-    rw [← Complex.exp_add, twoPointChemicalPotentialFactor]
-    congr 1
-    ring
   rw [twoPointDysonCoefficient_eq_externalInsertionVertexDysonCoefficient,
-    externalInsertionVertexDysonCoefficient_eq_shiftedDispersion, hfactor,
+    externalInsertionVertexDysonCoefficient_eq_shiftedDispersion,
+    externalFieldFamilyChemicalPotentialFactor_twoPoint,
     ← twoPointDysonCoefficient_eq_externalInsertionVertexDysonCoefficient]
 
 /-- The ordered-simplex external-leg diagram coefficient equals the mixed time-ordered Dyson
