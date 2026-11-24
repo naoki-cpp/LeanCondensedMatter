@@ -1,5 +1,5 @@
 import Mathlib.Analysis.InnerProductSpace.l2Space
-import LeanCondensedMatter.Analysis.InfiniteSum.Order
+import Mathlib.Topology.Algebra.InfiniteSum.Real
 import LeanCondensedMatter.Analysis.Operator.Spectral.EigenvectorFamily
 import LeanCondensedMatter.Analysis.Operator.DiagonalExpectation
 
@@ -245,11 +245,15 @@ theorem orthogonal_span_eq_bot_of_sum_diagonalExpectationValue_eq_spectralTrace
       exact hj i hi
     have hgjpos : 0 < g j := by
       simpa [g] using hdiag_pos (b j) (b.orthonormal.1 j)
-    have hlt := htr.summable.tsum_comp_injective_lt_of_exists_not_mem
-      hgnonneg e he_inj hjrange hgjpos
-    have hlt_trace : ∑' i, g (e i) < spectralTrace T := by
-      rwa [htr.tsum_eq] at hlt
-    exact (ne_of_lt hlt_trace) heqg
+    have hsub : Summable (fun k : ↥((Set.range e)ᶜ) => g (k : w)) :=
+      htr.summable.comp_injective Subtype.val_injective
+    have hpos : 0 < ∑' k : ↥((Set.range e)ᶜ), g (k : w) :=
+      hsub.tsum_pos (fun k => hgnonneg k) ⟨j, hjrange⟩ hgjpos
+    have hrange : (∑' i, g (e i)) = ∑' k : Set.range e, g (k : w) := by
+      simpa using (Equiv.tsum_eq (Equiv.ofInjective e he_inj) (fun k : Set.range e => g (k : w)))
+    have hsplit := htr.summable.tsum_subtype_add_tsum_subtype_compl (Set.range e)
+    rw [← hrange, heqg, htr.tsum_eq] at hsplit
+    linarith
   apply le_antisymm
   · intro x hx
     have hinner : ∀ j : w, inner ℂ (b j) x = 0 := by

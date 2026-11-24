@@ -116,8 +116,9 @@ private theorem summable_inner_adjoint_apply_and_tsum_eq {ι κ : Type*} (d : Hi
     simp_rw [hcol_point]
     exact d.hasSum_inner_mul_inner (ContinuousLinearMap.adjoint T (f j))
       (ContinuousLinearMap.adjoint S (f j))
-  obtain ⟨_, hcolSummable, heq⟩ := tsum_fiberwise_eq_of_summable hg_summable hrow hcol
-  exact ⟨hcolSummable, heq.symm⟩
+  have hcolSum := ((Equiv.prodComm κ ι).hasSum_iff.mpr hg_summable.hasSum).prod_fiberwise hcol
+  exact ⟨hcolSum.summable, hcolSum.tsum_eq.trans
+    (hg_summable.hasSum.prod_fiberwise hrow).tsum_eq.symm⟩
 
 /-- **`innerHS` is independent of the choice of Hilbert basis.** Applying
 `summable_inner_adjoint_apply_and_tsum_eq` with the same basis for both arguments identifies

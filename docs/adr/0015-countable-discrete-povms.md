@@ -10,4 +10,4 @@ Use the canonical density-operator expectation for each Born probability. Establ
 
 This API covers discrete countable outcomes and bounded effects. General measurable-outcome POVMs, unbounded observables, and Naimark dilation require separate foundations.
 
-Evidence: [POVM definition](../../LeanCondensedMatter/QuantumTheory/POVM/Basic.lean), [Born probabilities](../../LeanCondensedMatter/QuantumTheory/POVM/Born.lean), and [fiberwise infinite-sum lemmas](../../LeanCondensedMatter/Analysis/InfiniteSum/Fiberwise.lean).
+Evidence: [POVM definition](../../LeanCondensedMatter/QuantumTheory/POVM/Basic.lean), [Born probabilities](../../LeanCondensedMatter/QuantumTheory/POVM/Born.lean), using Mathlib's `Equiv.hasSum_iff` and `HasSum.prod_fiberwise`.

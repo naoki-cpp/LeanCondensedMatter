@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Analysis.InfiniteSum.Fiberwise
+import Mathlib.Analysis.Normed.Ring.InfiniteSum
 import LeanCondensedMatter.QuantumTheory.DensityOperator.ExpectationOrder
 import LeanCondensedMatter.QuantumTheory.POVM.Basic
 import Mathlib.LinearAlgebra.Complex.Module
@@ -115,11 +115,10 @@ theorem hasSum_probNNReal (P : POVM H M) (ρ : DensityOperator H) :
         ρ.hasSum_eigenvalues_eq_one.summable⟩
   have hcol : ∀ m, HasSum (fun a => g (a, m)) (probNNReal P ρ m : ℝ) := fun m => by
     simpa [g] using hasSum_probabilityKernel_eigenvector P ρ m
-  obtain ⟨_, hprob, htot⟩ :=
-    tsum_fiberwise_eq_of_summable hg_summable hrow hcol
-  have hreal : HasSum (fun m => (probNNReal P ρ m : ℝ)) 1 := by
-    rw [← htot.symm.trans ρ.tsum_eigenvalues_eq_one]
-    exact hprob.hasSum
+  have hreal := ((Equiv.prodComm M (EigenvectorIndex ρ.op)).hasSum_iff.mpr
+    hg_summable.hasSum).prod_fiberwise hcol
+  rw [← (hg_summable.hasSum.prod_fiberwise hrow).tsum_eq,
+    ρ.tsum_eigenvalues_eq_one] at hreal
   exact (NNReal.hasSum_coe).mp hreal
 
 /-- The normalized countable Born distribution associated with a POVM and density state. -/

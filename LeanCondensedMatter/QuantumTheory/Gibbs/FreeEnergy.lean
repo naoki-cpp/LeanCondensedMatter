@@ -3,7 +3,7 @@ import LeanCondensedMatter.QuantumTheory.Gibbs.EnergyExpectation
 import LeanCondensedMatter.QuantumTheory.Gibbs.State
 import LeanCondensedMatter.QuantumTheory.Entropy.Basic
 import LeanCondensedMatter.Analysis.Inequalities.PeierlsBogoliubov
-import LeanCondensedMatter.Analysis.InfiniteSum.Order
+import Mathlib.Topology.Algebra.InfiniteSum.Real
 import LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Bundled
 
 /-!
