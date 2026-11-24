@@ -33,7 +33,7 @@ theorem inv_smul_mul_self_eq_one
 
 section Projectors
 
-variable {K A : Type*} [Field K] [CharZero K] [Ring A] [Algebra K A]
+variable {K A : Type*} [Field K] [Ring A] [Algebra K A]
 
 /-- An involution acts on the signed projector numerator by its sign. -/
 private theorem involution_mul_one_add (Q : A) (hQ : Q * Q = 1)
@@ -44,6 +44,8 @@ private theorem involution_mul_one_add (Q : A) (hQ : Q * Q = 1)
   rw [smul_add, smul_smul]
   rw [show s * s = 1 by simpa [pow_two] using hs, one_smul]
   module
+
+variable [CharZero K]
 
 /-- The signed projector of a quadratic algebra element is an eigenprojector even
 after adding a scalar shift. This requires only `H² = E² I`, `E ≠ 0`, and `s² = 1`. -/
