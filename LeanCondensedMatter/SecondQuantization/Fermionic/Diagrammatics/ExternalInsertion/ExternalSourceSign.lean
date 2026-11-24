@@ -71,7 +71,7 @@ theorem externalPartitionSourceSign_eq_componentExternalOrderSign_of_connected
       Fin (Fintype.card d.vertexGraph.componentPartition.parts)) :
     externalPartitionSourceSign (externalComponentPartition d.vertexGraph) =
       componentExternalOrderSign d blockOrder := by
-  rw [(d.allExternalVerticesConnected_iff_externalComponentPartition_eq_top anchor).mp
+  rw [(allExternalVerticesConnected_iff_externalComponentPartition_eq_top d.vertexGraph anchor).mp
     hconnected, externalPartitionSourceSign_top,
     componentExternalOrderSign_eq_one_of_allExternalVerticesConnected
       d anchor hconnected blockOrder]
