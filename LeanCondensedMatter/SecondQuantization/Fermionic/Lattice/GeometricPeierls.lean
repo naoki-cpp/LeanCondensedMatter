@@ -30,6 +30,8 @@ namespace Lattice
 
 open scoped BigOperators
 
+attribute [local instance 100] LieRing.ofAssociativeRing
+
 noncomputable section
 
 variable {Site E : Type*}
@@ -46,6 +48,31 @@ noncomputable def boundedDirectionalPeierlsHamiltonian
     ∑ x : Site, ∑ y : Site,
       boundedPeierlsBondHamiltonian K ℏ q x y
         ((geometry.bondCoordinate direction x y : ℂ) * A)
+
+/-- The zero-source geometric Peierls family is exactly the original hopping
+Hamiltonian, including onsite contributions. -/
+@[simp]
+theorem boundedDirectionalPeierlsHamiltonian_zero
+    (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
+    (ℏ q : ℂ) (K : LocallyFiniteHopping Site) :
+    boundedDirectionalPeierlsHamiltonian geometry direction ℏ q K 0 =
+      boundedHoppingHamiltonian K := by
+  let D := (boundedOneBodyOperator (Site := Site)).toLinearMap
+  let A := fun x y : Site => D (K.amplitude x y • matrixUnit x y)
+  have hswap : (∑ x : Site, ∑ y : Site, A y x) =
+      ∑ x : Site, ∑ y : Site, A x y := Finset.sum_comm
+  have hH : boundedHoppingHamiltonian K = ∑ x : Site, ∑ y : Site, A x y := by
+    change D K.operator = _
+    rw [K.operator_eq_sum_matrixUnit]
+    simp only [map_sum, A]
+  unfold boundedDirectionalPeierlsHamiltonian
+  simp only [mul_zero, boundedPeierlsBondHamiltonian, LocallyFiniteHopping.peierlsBondHamiltonian_zero,
+    map_add]
+  change (2 : ℂ)⁻¹ • (∑ x : Site, ∑ y : Site, (A x y + A y x)) = _
+  rw [hH]
+  simp only [Finset.sum_add_distrib, hswap]
+  rw [← two_smul ℂ, smul_smul]
+  norm_num
 
 /-- Source-dependent current measured in one direction while the uniform Peierls
 source couples along another direction. -/
@@ -132,6 +159,26 @@ theorem hasAlgebraicDerivAt_boundedDirectionalPeierlsHamiltonian_zero
   have hscaled := hsum.const_smul ((2 : ℂ)⁻¹)
   unfold boundedDirectionalPeierlsHamiltonian boundedDirectionalCurrent
   simpa [smul_neg, Finset.sum_neg_distrib] using hscaled
+
+/-- The Heisenberg derivative of a source-independent bounded observable has
+an explicit Peierls-source variation given by the same commutator with the
+negative charge-current source. This holds for spin displacement and any
+other fixed observable. -/
+theorem hasAlgebraicDerivAt_boundedDirectionalPeierlsHamiltonian_commutator_zero
+    (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
+    (ℏ q : ℂ) (K : LocallyFiniteHopping Site) (c : ℂ)
+    (D : FiniteLatticeHilbertFock Site →L[ℂ] FiniteLatticeHilbertFock Site) :
+    HasAlgebraicDerivAt
+      (fun A => c • ⁅boundedDirectionalPeierlsHamiltonian geometry direction ℏ q K A, D⁆)
+      (c • ⁅-boundedDirectionalCurrent geometry direction ℏ q K, D⁆) 0 := by
+  let L : (FiniteLatticeHilbertFock Site →L[ℂ] FiniteLatticeHilbertFock Site) →ₗ[ℂ]
+      (FiniteLatticeHilbertFock Site →L[ℂ] FiniteLatticeHilbertFock Site) :=
+    c • ((LinearMap.mul ℂ _).flip D - LinearMap.mul ℂ _ D)
+  change HasAlgebraicDerivAt
+    (fun A => L (boundedDirectionalPeierlsHamiltonian geometry direction ℏ q K A))
+    (L (-boundedDirectionalCurrent geometry direction ℏ q K)) 0
+  exact (hasAlgebraicDerivAt_boundedDirectionalPeierlsHamiltonian_zero
+    geometry direction ℏ q K).map L
 
 /-- Differentiating a measured current along an independent Peierls source gives the mixed contact. -/
 theorem hasAlgebraicDerivAt_boundedMixedDirectionalPeierlsCurrent_zero
