@@ -189,7 +189,7 @@ theorem electromagnetic_schrodinger_weak_continuity_wholeSpace
   have hInterval := electromagnetic_schrodinger_weak_continuity_interval
     a b q ℏ mass hℏ hmass (fun x _ => (htestDifferentiable x).hasDerivAt)
       hA hψre hψim hψxre hψxim hschrodinger htestDerivIntegrable hcurrentIntegrable
-  exact weak_continuity_wholeSpace_of_interval a b htestSupport hInterval
+  exact ConservationLaw.weak_continuity_wholeSpace_of_interval a b htestSupport hInterval
 
 /-- Under the existing dominated time-differentiation hypotheses, the electromagnetic equation gives
 `d/dt ∫ test ρ = ∫ test' j` for a compactly supported spatial test function. -/
@@ -316,7 +316,7 @@ theorem electromagnetic_schrodinger_weak_continuity_wholeSpace_of_schwartz
   have hInterval := electromagnetic_schrodinger_weak_continuity_interval_of_schwartz
     a b q ℏ mass hℏ hmass ψ (fun x _ => (htestDifferentiable x).hasDerivAt)
       hA hschrodinger htestDerivIntegrable hcurrentIntegrable
-  exact weak_continuity_wholeSpace_of_interval a b htestSupport hInterval
+  exact ConservationLaw.weak_continuity_wholeSpace_of_interval a b htestSupport hInterval
 
 end
 end Continuum
