@@ -37,19 +37,6 @@ that no pair joins the two parts. -/
 def Pairing.IsSplit (e : PositionSplitting a b n) (P : Pairing n) : Prop :=
   ∀ i : Fin (2 * a), ∃ j : Fin (2 * a), P.partner (e (Sum.inl i)) = e (Sum.inl j)
 
-/-- **The right part is closed automatically.** A right position paired to a left one would make
-that left position paired to a right one, contradicting the left closure. -/
-theorem Pairing.isSplit_inr (e : PositionSplitting a b n) {P : Pairing n} (h : P.IsSplit e)
-    (i : Fin (2 * b)) : ∃ j : Fin (2 * b), P.partner (e (Sum.inr i)) = e (Sum.inr j) := by
-  obtain ⟨y, hy⟩ := e.surjective (P.partner (e (Sum.inr i)))
-  cases y with
-  | inr j => exact ⟨j, hy.symm⟩
-  | inl k =>
-      obtain ⟨j, hj⟩ := h k
-      have hback : P.partner (e (Sum.inl k)) = e (Sum.inr i) := by
-        rw [hy, P.partner_partner]
-      exact absurd (hback.symm.trans hj) (fun h => by simpa using e.injective h)
-
 private theorem splitLeftInvariant (e : PositionSplitting a b n) {P : Pairing n}
     (h : P.IsSplit e) (i : Fin (2 * n)) :
     i ∈ SumEquiv.leftImage e ↔ P.partner i ∈ SumEquiv.leftImage e := by
@@ -70,6 +57,14 @@ private theorem splitRightInvariant (e : PositionSplitting a b n) {P : Pairing n
   rw [SumEquiv.mem_rightImage_iff_not_mem_leftImage,
     SumEquiv.mem_rightImage_iff_not_mem_leftImage]
   exact not_congr (splitLeftInvariant e h i)
+
+/-- The right part is closed automatically by complement invariance. -/
+theorem Pairing.isSplit_inr (e : PositionSplitting a b n) {P : Pairing n} (h : P.IsSplit e)
+    (i : Fin (2 * b)) : ∃ j : Fin (2 * b), P.partner (e (Sum.inr i)) = e (Sum.inr j) := by
+  have hi := (SumEquiv.mem_rightImage_iff e _).2 ⟨i, rfl⟩
+  obtain ⟨j, hj⟩ := (SumEquiv.mem_rightImage_iff e _).1
+    ((splitRightInvariant e h _).1 hi)
+  exact ⟨j, hj.symm⟩
 
 section Left
 
@@ -146,25 +141,15 @@ theorem Pairing.ofSplit_reindex
   obtain ⟨x, rfl⟩ := ((Equiv.sumCongr left right).trans e).surjective z
   cases x with
   | inl i =>
-      change
-        (Pairing.ofSplit ((Equiv.sumCongr left right).trans e)
-          (P.transport left) (Q.transport right)).partner
-          (((Equiv.sumCongr left right).trans e) (Sum.inl i)) =
-        (Pairing.ofSplit e P Q).partner (e (Sum.inl (left i)))
-      simp only [Pairing.ofSplit_partner_inl]
+      rw [Pairing.ofSplit_partner_inl]
       change e (Sum.inl (left ((P.transport left).partner i))) =
-        e (Sum.inl (P.partner (left i)))
-      rw [PairingOn.transport_partner, Equiv.apply_symm_apply]
+        (Pairing.ofSplit e P Q).partner (e (Sum.inl (left i)))
+      rw [Pairing.ofSplit_partner_inl, PairingOn.transport_partner, Equiv.apply_symm_apply]
   | inr j =>
-      change
-        (Pairing.ofSplit ((Equiv.sumCongr left right).trans e)
-          (P.transport left) (Q.transport right)).partner
-          (((Equiv.sumCongr left right).trans e) (Sum.inr j)) =
-        (Pairing.ofSplit e P Q).partner (e (Sum.inr (right j)))
-      simp only [Pairing.ofSplit_partner_inr]
+      rw [Pairing.ofSplit_partner_inr]
       change e (Sum.inr (right ((Q.transport right).partner j))) =
-        e (Sum.inr (Q.partner (right j)))
-      rw [PairingOn.transport_partner, Equiv.apply_symm_apply]
+        (Pairing.ofSplit e P Q).partner (e (Sum.inr (right j)))
+      rw [Pairing.ofSplit_partner_inr, PairingOn.transport_partner, Equiv.apply_symm_apply]
 
 /-- An assembled pairing is split by the splitting it was assembled along. -/
 theorem Pairing.isSplit_ofSplit (e : PositionSplitting a b n) (P : Pairing a) (Q : Pairing b) :
