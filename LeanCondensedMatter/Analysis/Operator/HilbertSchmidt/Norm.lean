@@ -47,6 +47,23 @@ theorem normSq_nonneg {T : H →L[ℂ] H} (hT : IsHilbertSchmidt T) :
   unfold normSq
   exact tsum_nonneg fun _ => sq_nonneg _
 
+/-- The squared Hilbert--Schmidt norm is strictly positive for a nonzero operator. -/
+theorem normSq_pos {T : H →L[ℂ] H} (hT : IsHilbertSchmidt T) (hne : T ≠ 0) :
+    0 < hT.normSq := by
+  by_contra! hle
+  have hzero : hT.normSq = 0 := le_antisymm hle hT.normSq_nonneg
+  obtain ⟨w, b, -⟩ := exists_hilbertBasis (𝕜 := ℂ) (E := H)
+  have hb (i : w) : T (b i) = 0 := by
+    have hterm := (hT.summable_norm_sq_apply b).le_tsum i
+      (fun j _ => sq_nonneg ‖T (b j)‖)
+    rw [← hT.normSq_eq_tsum_norm_sq_apply b, hzero] at hterm
+    by_contra hi
+    exact (not_lt_of_ge hterm) (pow_pos (norm_pos_iff.mpr hi) 2)
+  apply hne
+  ext x
+  have hsum := (b.hasSum_repr x).mapL T
+  simpa [hb] using hsum.tsum_eq.symm
+
 /-- Taking the adjoint preserves the squared Hilbert--Schmidt norm. -/
 theorem normSq_adjoint {T : H →L[ℂ] H} (hT : IsHilbertSchmidt T) :
     (isHilbertSchmidt_adjoint hT).normSq = hT.normSq := by
