@@ -113,6 +113,47 @@ theorem externalInsertionInteractionLeg_lt_of_subset
     have hk := k.isLt
     omega
 
+/-- A flattened-leg map preserving increasing external slots and including interaction
+vertices into the ambient support preserves the entire canonical leg order. -/
+theorem externalInsertionLegMap_strictMono
+    {E' : ℕ} {T S : Finset (Fin N)} (hTS : T ⊆ S)
+    (f : Fin (2 * (2 * T.card + E)) → Fin (2 * (2 * S.card + E')))
+    (g : Fin (2 * E) → Fin (2 * E')) (hg : StrictMono g)
+    (hext : ∀ e, f (externalInsertionExternalLeg E T e) =
+      externalInsertionExternalLeg E' S (g e))
+    (hint : ∀ (v : ↥T) (l : Fin 4), f (externalInsertionInteractionLeg (E := E) v l) =
+      externalInsertionInteractionLeg (E := E') (⟨v.1, hTS v.2⟩ : ↥S) l) :
+    StrictMono f := by
+  let localEquiv := externalInsertionLegEquiv E T
+  intro a b hab
+  obtain ⟨la, rfl⟩ := localEquiv.symm.surjective a
+  obtain ⟨lb, rfl⟩ := localEquiv.symm.surjective b
+  rcases la with e | ⟨v, l⟩ <;> rcases lb with e' | ⟨w, k⟩
+  · change (externalInsertionExternalLeg E T e).val <
+      (externalInsertionExternalLeg E T e').val at hab
+    change f (externalInsertionExternalLeg E T e) <
+      f (externalInsertionExternalLeg E T e')
+    rw [hext, hext]
+    change (externalInsertionExternalLeg E' S (g e)).val <
+      (externalInsertionExternalLeg E' S (g e')).val
+    have hef : e < e' := by simpa using hab
+    simpa using hg hef
+  · change f (externalInsertionExternalLeg E T e) <
+      f (externalInsertionInteractionLeg (E := E) w k)
+    rw [hext, hint]
+    simp only [Fin.lt_def, externalInsertionExternalLeg_val, externalInsertionInteractionLeg_val]
+    have hbound := (g e).isLt
+    omega
+  · change (externalInsertionInteractionLeg (E := E) v l).val <
+      (externalInsertionExternalLeg E T e').val at hab
+    simp only [externalInsertionInteractionLeg_val, externalInsertionExternalLeg_val] at hab
+    have hbound := e'.isLt
+    omega
+  · change f (externalInsertionInteractionLeg (E := E) v l) <
+      f (externalInsertionInteractionLeg (E := E) w k)
+    rw [hint, hint]
+    exact externalInsertionInteractionLeg_lt_of_subset hTS v w l k hab
+
 /-- The vertex incident to a flattened external-insertion diagram leg. -/
 noncomputable def externalInsertionVertexOfLeg {E : ℕ} {S : Finset (Fin N)}
     (leg : Fin (2 * (2 * S.card + E))) : ExternalInsertionVertex E S :=
