@@ -206,33 +206,24 @@ private theorem continuousAt_zeroBroadeningSameSideRadialEndpoint_disorder_zero
       finiteCutoffContinuumBornEffectiveMassZeroBroadeningBoundary] using
       (show (((probeEnergy ^ 2 - m ^ 2 - v ^ 2 * pMax ^ 2 : ℝ) : ℂ)) ≠ 0 by
         exact_mod_cast hreal)
-  have hE : ContinuousAt
+  have hA : ContinuousAt
       (fun disorderStrength : ℝ =>
         finiteCutoffContinuumBornEffectiveEnergyZeroBroadeningBoundary
-          side v m probeEnergy disorderStrength hbar pMax) 0 := by
-    unfold finiteCutoffContinuumBornEffectiveEnergyZeroBroadeningBoundary
-    fun_prop
-  have hM : ContinuousAt
-      (fun disorderStrength : ℝ =>
+          side v m probeEnergy disorderStrength hbar pMax ^ 2 -
         finiteCutoffContinuumBornEffectiveMassZeroBroadeningBoundary
-          side v m probeEnergy disorderStrength hbar pMax) 0 := by
-    unfold finiteCutoffContinuumBornEffectiveMassZeroBroadeningBoundary
+          side v m probeEnergy disorderStrength hbar pMax ^ 2) 0 := by
+    unfold finiteCutoffContinuumBornEffectiveEnergyZeroBroadeningBoundary
+      finiteCutoffContinuumBornEffectiveMassZeroBroadeningBoundary
     fun_prop
-  have hD0 : ContinuousAt
+  have hD (p : ℝ) : ContinuousAt
       (fun disorderStrength : ℝ =>
         finiteCutoffContinuumBornDysonDenominatorZeroBroadeningBoundary
-          side v m 0 probeEnergy disorderStrength hbar pMax) 0 := by
-    unfold finiteCutoffContinuumBornDysonDenominatorZeroBroadeningBoundary
-    fun_prop
-  have hDMax : ContinuousAt
-      (fun disorderStrength : ℝ =>
-        finiteCutoffContinuumBornDysonDenominatorZeroBroadeningBoundary
-          side v m pMax probeEnergy disorderStrength hbar pMax) 0 := by
+          side v m p probeEnergy disorderStrength hbar pMax) 0 := by
     unfold finiteCutoffContinuumBornDysonDenominatorZeroBroadeningBoundary
     fun_prop
   unfold zeroBroadeningSameSideRadialEndpoint
-  exact (continuousAt_const.mul ((hE.pow 2).sub (hM.pow 2))).mul
-    ((hDMax.inv₀ hdenMax).sub (hD0.inv₀ hden0))
+  exact (continuousAt_const.mul hA).mul
+    (((hD pMax).inv₀ hdenMax).sub ((hD 0).inv₀ hden0))
 
 /-- The zero-broadening same-side endpoint stays finite as disorder vanishes, so multiplying it by
 the disorder strength sends it to zero. -/
