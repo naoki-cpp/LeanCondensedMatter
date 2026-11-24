@@ -128,6 +128,8 @@ theorem freePropagatorGroup_fixed_of_hamiltonian_fixed
     (hH : Φ system.hamiltonian.1 = system.hamiltonian.1) (t : ℝ) :
     Φ (freePropagatorGroup system (Multiplicative.ofAdd t) : H →L[ℂ] H) =
       (freePropagatorGroup system (Multiplicative.ofAdd t) : H →L[ℂ] H) := by
+  letI : NormedAlgebra ℚ (H →L[ℂ] H) :=
+    NormedAlgebra.restrictScalars ℚ ℂ _
   have hcontinuous : Continuous Φ :=
     (NonUnitalStarAlgHom.isometry Φ Φ.injective).continuous
   simp only [freePropagatorGroup_apply, freePropagator_eq_exp]
