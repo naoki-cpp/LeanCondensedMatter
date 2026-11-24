@@ -508,16 +508,11 @@ theorem ExternalInsertionDiagram.reassembleComponentPairing_eq
   intro leg
   obtain ⟨⟨B, i⟩, rfl⟩ := d.componentLegShuffle.slotEquiv.surjective leg
   change
-    ((Combinatorics.PairingOn.sigmaCongrRight
-        (fun C : d.vertexGraph.componentPartition.parts =>
-          (d.restrictComponent C).pairing)).transport
-       d.componentLegShuffle.slotEquiv.symm).partner
-        (d.componentLegShuffle.slotEquiv ⟨B, i⟩) =
-      d.pairing.partner (d.componentLegShuffle.slotEquiv ⟨B, i⟩)
-  rw [Combinatorics.PairingOn.transport_partner,
-    Equiv.symm_apply_apply, Combinatorics.PairingOn.sigmaCongrRight_partner]
-  simpa only [Equiv.symm_symm, d.componentLegShuffle_slotEquiv_apply] using
-    d.componentDiagramLeg_restrictComponent_pairing_partner B i
+    (d.assembleComponentPairing (fun C => (d.restrictComponent C).pairing)).partner
+      (d.componentLegShuffle.slotEquiv ⟨B, i⟩) =
+    d.pairing.partner (d.componentLegShuffle.slotEquiv ⟨B, i⟩)
+  rw [d.componentLegShuffle_slotEquiv_apply, d.assembleComponentPairing_partner]
+  exact d.componentDiagramLeg_restrictComponent_pairing_partner B i
 
 
 end Common
