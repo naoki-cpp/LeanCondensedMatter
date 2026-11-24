@@ -104,8 +104,9 @@ private theorem tendsto_orderedXYProvenance_rungYSolvedX_disorder_zero
     (field_simp [hvelocity, hmeasureReal, hsum, hden]; ring)
   apply Tendsto.congr' ?_ (by
     rw [← htargetReal]
-    push_cast
-    simpa [q, measure] using hscaled)
+    dsimp only [q, measure] at hscaled
+    push_cast at hscaled ⊢
+    simpa only [neg_mul, mul_neg, neg_sq] using hscaled)
   filter_upwards [self_mem_nhdsWithin] with disorderStrength hdisorder
   have hdisorderC : (disorderStrength : ℂ) ≠ 0 := by
     exact_mod_cast ne_of_gt hdisorder
@@ -169,8 +170,9 @@ private theorem tendsto_orderedXYProvenance_rungXSolvedY_disorder_zero
     (field_simp [hvelocity, hmeasureReal, hsum, hden]; ring)
   apply Tendsto.congr' ?_ (by
     rw [← htargetReal]
-    push_cast
-    simpa [q, measure] using hscaled)
+    dsimp only [q, measure] at hscaled
+    push_cast at hscaled ⊢
+    simpa only [neg_mul, mul_neg, neg_sq] using hscaled)
   filter_upwards [self_mem_nhdsWithin] with disorderStrength hdisorder
   have hdisorderC : (disorderStrength : ℂ) ≠ 0 := by
     exact_mod_cast ne_of_gt hdisorder
