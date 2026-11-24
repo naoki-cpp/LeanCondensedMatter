@@ -178,7 +178,11 @@ For precisely two external insertions, the general construction already proves
 `vacuumFreeExternalInsertionDysonSeries_eq_connected_two` and the corresponding
 source-cumulant identity without a sign restriction on `β`. The mature two-point
 `partitionFunctionNormalizedTwoPointDysonSeries_eq_connectedTwoPointDysonSeries` is
-independently proved for `μ = 0`, `0 ≤ β`. Its `TwoPointDiagram` uses a distinct flattened-leg
+independently proved for arbitrary real `μ`, `0 ≤ β`. The diagrammatic core uses
+`ξ = ε - μ`; the physical-H two-point amplitudes have the external factor
+`exp (μ (τ' - τ))`, while the number-conserving quartic interaction-picture
+vertices are invariant under the uniform shift. The vacuum series uses `ξ`.
+The arbitrary-external source-cumulant endpoint currently remains at `μ = 0`. Its `TwoPointDiagram` uses a distinct flattened-leg
 enumeration; identifying the two physical power series still requires transporting Wick
 pairings, mixed-time signs and oriented Gibbs contractions, and Dyson amplitudes. The
 statistics-independent `twoPointDiagramExternalInsertionEquiv` supplies the diagram-data
