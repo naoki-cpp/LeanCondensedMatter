@@ -90,7 +90,7 @@ theorem externalInsertionSlotLegSplitting_orderedRight_strictMono
       apply Fin.ext
       rw [externalInsertionInteractionLeg_val]
       simpa only [Fin.val_cast, Fin.val_mk, Prod.fst, Prod.snd,
-        Nat.zero_mul, Nat.zero_add, Nat.mul_comm, Nat.add_comm, i] using hv
+        Nat.zero_mul, Nat.zero_add, Nat.add_zero, Nat.mul_comm, Nat.add_comm, i] using hv
     change externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T)
       (Sum.inr (orderedLegToDiagramLeg S order
         (externalInsertionInteractionLeg (E := 0) v l))) = _
