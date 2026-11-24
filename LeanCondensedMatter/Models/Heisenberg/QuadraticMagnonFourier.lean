@@ -29,8 +29,7 @@ theorem comm_fourier_annihilate_create (q r : ZMod N) :
       if q = r then LinearMap.id else 0 := by
   classical
   rw [comm_annihilateVector_createVector]
-  rw [ZMod.fourierBasis_apply, ZMod.fourierBasis_apply,
-    orthonormal_iff_ite.mp ZMod.orthonormal_fourierMode]
+  rw [orthonormal_iff_ite.mp (ZMod.fourierBasis (N := N)).orthonormal]
   split_ifs <;> simp
 
 private theorem sum_shift {A : Type*} [AddCommMonoid A] (f : ZMod N → A) :
