@@ -190,23 +190,21 @@ theorem orderedTwoPointTimedEventPosition_lt_iff {n : ℕ}
         orderedTwoPointTimedEventPosition τ τ' σ b ↔
       twoPointTimedEventBefore τ τ' σ a b := by
   classical
+  letI : BEq (TwoPointTimedEvent n) := instBEqOfDecidableEq
   by_cases hab : a = b
   · subst b
     simp [twoPointTimedEventBefore]
-  · let rel := twoPointTimedEventBeforeOrEqual τ τ' σ
-    letI : Std.Antisymm rel :=
+  · letI : Std.Antisymm (twoPointTimedEventBeforeOrEqual τ τ' σ) :=
       ⟨fun _ _ h₁ h₂ => stableTimedEventBeforeOrEqual_antisymm
         (twoPointTimedEventTime τ τ' σ) twoPointTimedEventRank
         (by
           intro x y h
           exact (finSumFinEquiv : TwoPointTimedEvent n ≃ Fin (2 + n)).injective (Fin.ext h))
         h₁ h₂⟩
-    have hs : (orderedTwoPointTimedEvents τ τ' σ).Pairwise rel :=
-      orderedTwoPointTimedEvents_pairwise τ τ' σ
-    have h := hs.idxOf_lt_iff_of_ne
+    have h := (orderedTwoPointTimedEvents_pairwise τ τ' σ).idxOf_lt_iff_of_ne
       (orderedTwoPointTimedEvents_all_mem τ τ' σ a)
       (orderedTwoPointTimedEvents_all_mem τ τ' σ b) hab
-    simpa [rel, hab, twoPointTimedEventBefore, orderedTwoPointTimedEventPosition,
+    simpa [hab, twoPointTimedEventBefore, orderedTwoPointTimedEventPosition,
       orderedTwoPointTimedEventEquiv, List.Nodup.getEquivOfForallMemList] using h
 
 /-- At two external insertions, the full atomic permutation reverses sign
