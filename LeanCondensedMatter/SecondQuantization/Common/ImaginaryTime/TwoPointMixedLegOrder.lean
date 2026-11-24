@@ -58,13 +58,12 @@ theorem mixedTimeOrderedAtomicLegs_eq_externalInsertion {n : ℕ}
     mixedTimeOrderedAtomicLegs τ τ' σ =
       externalInsertionMixedTimeOrderedAtomicLegs (E := 1)
         (twoPointExternalTimes τ τ') σ := by
-  unfold mixedTimeOrderedAtomicLegs externalInsertionMixedTimeOrderedAtomicLegs
-  rw [orderedTwoPointTimedEvents_eq_externalInsertion]
   have h : twoPointTimedEventAtomicLegs (n := n) =
       externalInsertionTimedEventAtomicLegs (E := 1) (n := n) := by
     funext e
     cases e <;> rfl
-  rw [h]
+  simp only [mixedTimeOrderedAtomicLegs, externalInsertionMixedTimeOrderedAtomicLegs,
+    orderedTwoPointTimedEvents_eq_externalInsertion, h]
 
 /-- The mixed-time leg list has no duplicate leg identities. -/
 theorem mixedTimeOrderedAtomicLegs_nodup {n : ℕ}
