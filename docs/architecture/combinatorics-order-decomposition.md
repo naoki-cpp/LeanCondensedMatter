@@ -89,7 +89,7 @@ component crossings do not replace those laws directly.
 
 The quartic diagram data module imports only `PerfectPairing.Core`; the two-point diagram data
 module imports `PerfectPairing.VertexGraph`. Thermal pairing weights import the split-crossing,
-first-pair crossing, and evaluation leaves they use. The full `PerfectPairing` umbrella remains
+first-pair crossing, and the pairing core for scalar evaluation. The full `PerfectPairing` umbrella remains
 an aggregate entry point rather than a dependency of these foundational consumers.
 
 `PerfectPairing.Embedding` owns normalized-pair embeddings induced by partner-intertwining order
