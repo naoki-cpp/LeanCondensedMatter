@@ -276,7 +276,7 @@ theorem IsTraceClass.traceNorm_eq_tsum_abs_eigenvalues
     simpa [g] using hzero x hx
   have hg : HasSum g hT.traceNorm := hT.hasSum_abs_diagonalExpectationValue b
   have hrestricted : HasSum (g ∘ j) hT.traceNorm := (hj.hasSum_iff hg_zero).mpr hg
-  exact (hrestricted.congr_fun hg_point).tsum_eq.symm
+  exact (hrestricted.congr_fun fun a => (hg_point a).symm).tsum_eq.symm
 
 namespace SpectralTraceClass
 
