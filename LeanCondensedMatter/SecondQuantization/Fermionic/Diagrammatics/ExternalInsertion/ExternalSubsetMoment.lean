@@ -428,8 +428,6 @@ theorem ExternalInsertionBlockLayout.sum_realizableSize_coeff_prod
       simp [e]
     _ = _ := (PowerSeries.coeff_prod f n Finset.univ).symm
 
-set_option maxHeartbeats 4000000 in
--- Dependent diagram fibers require a larger elaboration budget for fixed-size summation.
 open Classical in
 /-- The fixed-partition physical order-`n` Dyson fiber is the
 Koszul-signed sum over realizable interaction-size vectors of products
@@ -458,46 +456,30 @@ theorem sum_fixedExternalPartitionDysonFiber_eq_sum_realizableSizes_signedProduc
                 (evenExternalSubsetTimes times (B : Finset (Fin (2 * K))) (heven B))
               else 0 := by
   classical
-  let P := {d : {d : ExternalInsertionWickDiagram Mode K n //
-      HasNoVacuumComponent d.vertexGraph} //
-      externalComponentPartition d.1.vertexGraph = π}
+  let X := ExternalInsertionWickDiagram Mode K n
+  let V := {d : X // HasNoVacuumComponent d.vertexGraph}
+  let Q : V → Prop := fun d => externalComponentPartition d.1.vertexGraph = π
+  let P := {d : V // Q d}
   let e := ExternalInsertionBlockLayout.fixedPartitionPhysicalSizeShuffleEquiv
     (E := K) (N := n) (ExternalLabel := ExternalFieldLabel Mode)
     (InternalLabel := QuarticVertexLabel Mode) anchor π heven
   let sizeOf : P → π.parts → ℕ := fun d => (e d).1.1
   let sizes := ExternalInsertionBlockLayout.realizableInteractionSizeVectors (n := n) π
-  let weight : P → ℂ := fun d =>
-    if d.1.1.externalLabel = labels then d.1.1.dysonAmplitude ε β g times else 0
-  have hmem (d : P) : sizeOf d ∈ sizes := by
-    let ownerEquiv := Combinatorics.ownerSizeShuffleEquiv
-      (ι := π.parts) (total := n)
-    change (e d).1.1 ∈ (Finset.univ : Finset (Fin n → π.parts)).image
-      (fun owner => (ownerEquiv owner).1)
-    apply Finset.mem_image.mpr
-    refine ⟨ownerEquiv.symm (e d).1, Finset.mem_univ _, ?_⟩
-    exact congrArg Sigma.fst (ownerEquiv.apply_symm_apply (e d).1)
+  let amplitude : X → ℂ := fun d => d.dysonAmplitude ε β g times
+  let w : V → ℂ := fun d => if d.1.externalLabel = labels then amplitude d.1 else 0
+  let weight : P → ℂ := fun d => w d.1
+  have hmem (d : P) : sizeOf d ∈ sizes :=
+    (ExternalInsertionBlockLayout.mem_realizableInteractionSizeVectors π (sizeOf d)).2
+      ⟨(e d).1.2⟩
   have hphysical :
       (∑ d : VacuumFreeFixedExternalInsertionWickDiagram Mode K n labels,
-        if externalComponentPartition d.1.1.vertexGraph = π then
-          d.1.1.dysonAmplitude ε β g times else 0) =
+        if externalComponentPartition d.1.1.vertexGraph = π then amplitude d.1.1 else 0) =
         ∑ d : P, weight d := by
-    rw [sum_vacuumFreeFixedExternalInsertionWickDiagram_partition
-      π labels (fun d : ExternalInsertionWickDiagram Mode K n =>
-        d.dysonAmplitude ε β g times)]
-    simpa only [P, weight, Finset.sum_filter] using
-      (Finset.sum_subtype
-        (p := fun d : {d : ExternalInsertionWickDiagram Mode K n //
-          HasNoVacuumComponent d.vertexGraph} =>
-          externalComponentPartition d.1.vertexGraph = π)
-        ((Finset.univ : Finset
-          {d : ExternalInsertionWickDiagram Mode K n //
-            HasNoVacuumComponent d.vertexGraph}).filter
-          (fun d => externalComponentPartition d.1.vertexGraph = π))
-        (fun _ => by simp)
-        (fun d : {d : ExternalInsertionWickDiagram Mode K n //
-          HasNoVacuumComponent d.vertexGraph} =>
-          if d.1.externalLabel = labels then
-            d.1.dysonAmplitude ε β g times else 0))
+    rw [sum_vacuumFreeFixedExternalInsertionWickDiagram_partition π labels amplitude]
+    change (∑ d : V, if Q d then w d else 0) = ∑ d : P, weight d
+    simpa only [Finset.sum_filter] using
+      (Finset.sum_subtype (p := Q) ((Finset.univ : Finset V).filter Q)
+        (fun _ => by simp only [Finset.mem_filter, Finset.mem_univ, true_and]) w)
   have hgroup :
       (∑ d : P, weight d) =
         ∑ size ∈ sizes, ∑ d : {d : P // sizeOf d = size}, weight d.1 := by
@@ -510,7 +492,7 @@ theorem sum_fixedExternalPartitionDysonFiber_eq_sum_realizableSizes_signedProduc
       (Finset.sum_subtype
         (p := fun d : P => sizeOf d = size)
         ((Finset.univ : Finset P).filter (fun d => sizeOf d = size))
-        (fun _ => by simp) weight)
+        (fun _ => by simp only [Finset.mem_filter, Finset.mem_univ, true_and]) weight)
   calc
     _ = ∑ d : P, weight d := hphysical
     _ = ∑ size ∈ sizes,
