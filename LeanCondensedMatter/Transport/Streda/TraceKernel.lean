@@ -1,5 +1,7 @@
 import LeanCondensedMatter.Analysis.Operator.FiniteTrace
 import LeanCondensedMatter.Transport.Streda.OperatorKernel
+import Mathlib.Analysis.Calculus.Deriv.Comp
+import Mathlib.Analysis.Calculus.FDeriv.Linear
 import Mathlib.Tactic.Ring
 
 set_option linter.style.header false
@@ -149,9 +151,16 @@ theorem hasDerivAt_regularizedStredaSurfacePrimitiveTrace
       energy := by
   unfold regularizedStredaSurfacePrimitiveTrace
     regularizedStredaSurfacePrimitiveTraceDerivative
-  exact hasDerivAt_finiteDimensionalOperatorTrace_comp
-    (hasDerivAt_regularizedStredaSurfacePrimitiveOperator
-      hamiltonian hself current₁ current₂ energy broadening hbroadening)
+  change HasDerivAt
+    (finiteDimensionalOperatorTrace (H := H) ∘ fun x : ℝ =>
+      regularizedStredaSurfacePrimitiveOperator hamiltonian current₁ current₂ x broadening)
+    (finiteDimensionalOperatorTrace (H := H)
+      (regularizedStredaSurfacePrimitiveOperatorDerivative
+        hamiltonian current₁ current₂ energy broadening)) energy
+  simpa using
+    (((finiteDimensionalOperatorTrace (H := H)).hasFDerivAt).restrictScalars ℝ).comp_hasDerivAt
+      energy (hasDerivAt_regularizedStredaSurfacePrimitiveOperator
+        hamiltonian hself current₁ current₂ energy broadening hbroadening)
 
 /-- At fixed positive broadening, the traced surface-primitive derivative is continuous in energy. -/
 theorem continuous_regularizedStredaSurfacePrimitiveTraceDerivative_energy

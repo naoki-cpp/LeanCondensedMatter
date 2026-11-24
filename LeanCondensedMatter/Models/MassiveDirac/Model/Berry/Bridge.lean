@@ -1,5 +1,6 @@
 import LeanCondensedMatter.Analysis.Operator.BerryGeometry.Curvature
-import LeanCondensedMatter.Analysis.Algebra.ScalarResolvent
+import Mathlib.Tactic.FieldSimp
+import Mathlib.Tactic.Ring
 import LeanCondensedMatter.Models.MassiveDirac.Model.Interband
 import LeanCondensedMatter.Models.MassiveDirac.Model.OperatorSpectral.BerryPointwise
 
@@ -108,16 +109,13 @@ theorem pointwiseBerryCurvature_xy_eq_forceMatrixBerryCurvature
       data.energy band - data.energy (oppositeBand band) =
         interbandEnergyGap band v m px py := by
     rfl
-  have hgap : data.energy band - data.energy (oppositeBand band) ≠ 0 := by
-    rw [hgapEq]
-    exact interbandEnergyGap_ne_zero_of_energy_ne_zero band v m px py hE
   rw [data.berryCurvature_eq_sum_hamiltonianDerivativeMatrixElements
     0 1 band hself hnondegenerate]
   rw [sum_band]
   cases band <;>
     simp only [reduceCtorEq, ↓reduceIte, oppositeBand_lower, oppositeBand_upper,
-      zero_add, add_zero] at hgap hgapEq ⊢ <;>
-    rw [Algebra.mul_div_real_gap_im _ _ _ hgap, hgapEq] <;>
+      zero_add, add_zero] at hgapEq ⊢ <;>
+    rw [div_mul_div_comm, ← Complex.ofReal_mul, Complex.div_ofReal_im, ← pow_two, hgapEq] <;>
     ring
 
 /-- The projector/force-matrix expression equals the closed massive-Dirac Berry curvature away

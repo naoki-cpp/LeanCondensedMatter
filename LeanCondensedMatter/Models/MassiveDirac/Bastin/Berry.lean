@@ -1,5 +1,6 @@
 import LeanCondensedMatter.Models.MassiveDirac.Model.Berry.Bridge
 import LeanCondensedMatter.Transport.Streda.FiniteProjectorBastin
+import Mathlib.Tactic.Ring
 
 set_option linter.style.header false
 
@@ -40,12 +41,12 @@ theorem currentBandBlockTrace_interband_eq_chargeSq_forceMatrixTraceNumerator
     (μ ν : Fin 2) (band : Band) (e v m px py : ℝ) :
     currentBandBlockTrace μ ν band (oppositeBand band) e v m px py =
       (((e ^ 2 : ℝ) : ℂ)) * forceMatrixTraceNumerator μ ν band v m px py := by
-  have htrace := finiteDimensionalOperatorTrace_two_smul_toEuclideanCLM
-    (bandProjector (oppositeBand band) v m px py)
-    (bandProjector band v m px py)
-    (velocity μ v) (velocity ν v) (((-e : ℝ) : ℂ))
-  simpa [currentBandBlockTrace, bandProjectorOperator, currentOperator,
-    matrixOperator, current, forceMatrixTraceNumerator, neg_sq] using htrace
+  unfold currentBandBlockTrace bandProjectorOperator currentOperator matrixOperator current
+    forceMatrixTraceNumerator
+  rw [← map_mul, ← map_mul, ← map_mul, finiteDimensionalOperatorTrace_toEuclideanCLM]
+  simp only [mul_smul_comm, smul_mul_assoc, smul_smul, Matrix.trace_smul, smul_eq_mul,
+    Complex.ofReal_pow, Complex.ofReal_neg]
+  ring
 
 /-- Normalizing the Hall interband current block by the squared interband gap reproduces
 `e²` times the generic pointwise Berry curvature. This is the transport consumer of the canonical

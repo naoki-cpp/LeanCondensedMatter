@@ -29,13 +29,11 @@ theorem currentBandBlockTrace_interband_eq_chargeSq_forceMatrixTraceNumerator
     currentBandBlockTrace params μ ν band (oppositeBand band) px py =
       (((params.signedCharge ^ 2 : ℝ) : ℂ)) *
         forceMatrixTraceNumerator params μ ν band px py := by
-  have htrace := finiteDimensionalOperatorTrace_two_smul_toEuclideanCLM
-    (bandProjector params (oppositeBand band) px py)
-    (bandProjector params band px py)
-    (velocityOperator params μ px py) (velocityOperator params ν px py)
-    (((params.signedCharge : ℝ) : ℂ))
-  simpa [currentBandBlockTrace, bandProjectorOperator, currentBoundedOperator,
-    currentOperator, matrixOperator, forceMatrixTraceNumerator] using htrace
+  unfold currentBandBlockTrace bandProjectorOperator currentBoundedOperator currentOperator
+    matrixOperator forceMatrixTraceNumerator
+  rw [← map_mul, ← map_mul, ← map_mul, finiteDimensionalOperatorTrace_toEuclideanCLM]
+  simp only [mul_smul_comm, smul_mul_assoc, smul_smul, Matrix.trace_smul, smul_eq_mul,
+    pow_two, Complex.ofReal_mul]
 
 /-- Normalizing the interband current block by the squared energy gap reproduces `q²` times the
 closed Rashba-exchange Berry curvature. -/
