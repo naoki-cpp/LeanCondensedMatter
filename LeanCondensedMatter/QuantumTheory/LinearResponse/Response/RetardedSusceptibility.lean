@@ -121,6 +121,28 @@ theorem retardedSusceptibility_eq_commutatorSusceptibility_of_le
       commutatorSusceptibility U hbar expectation A B t s := by
   simp [retardedSusceptibility, h]
 
+/-- The equal-time retarded kernel is the expectation of the source-induced
+commutator variation of a fixed observable, with an arbitrary source factor.
+The sign corresponds to a Hamiltonian perturbation `-f B`. -/
+theorem retardedSusceptibility_sameTime_eq_commutatorVariation
+    (expectation : NormalizedExpectation H)
+    (D B : H →L[ℂ] H) (factor : ℂ) (t : ℝ) :
+    expectation (heisenbergEvolution U t
+      (factor • ((Complex.I / (hbar : ℂ)) • ⁅-B, D⁆))) =
+      factor * retardedSusceptibility U hbar expectation D B t t := by
+  have hcomm : ⁅-B, D⁆ = ⁅D, B⁆ := by
+    simp only [LieRing.of_associative_ring_bracket, neg_mul, mul_neg]
+    abel
+  rw [hcomm, retardedSusceptibility_eq_commutatorSusceptibility_of_le
+    U hbar expectation D B (le_refl t), commutatorSusceptibility,
+    lie_heisenbergEvolution_eq_relativeTime, sub_self, heisenbergEvolution_zero]
+  let L := (heisenbergEvolution U t).toAlgEquiv.toLinearEquiv
+  change expectation.toContinuousLinearMap
+    (L (factor • ((Complex.I / (hbar : ℂ)) • ⁅D, B⁆))) =
+      factor * ((Complex.I / (hbar : ℂ)) *
+        expectation.toContinuousLinearMap (L ⁅D, B⁆))
+  simp only [map_smul, smul_eq_mul, mul_assoc]
+
 /-- The retarded susceptibility has causal support: it vanishes when `t < s`. -/
 @[simp]
 theorem retardedSusceptibility_eq_zero_of_lt
