@@ -294,11 +294,11 @@ theorem ExternalInsertionBlockLayout.assembleConnectedBlocks_signedDysonShuffleO
       (externalComponentPartition d.vertexGraph).parts ≃ layout.partition.parts :=
     Equiv.subtypeEquiv (Equiv.refl _) (fun _ => by simp only [Equiv.refl_apply, hpart])
   let reindex : d.vertexGraph.componentPartition.parts ≃ layout.partition.parts :=
-    (d.vacuumFreeComponentsEquivExternalBlocks hVac).trans partsEquiv
+    (vacuumFreeComponentsEquivExternalBlocks d.vertexGraph hVac).trans partsEquiv
   have hblock (C : d.vertexGraph.componentPartition.parts) :
       (reindex C : Finset (Fin (2 * E))) =
         (C.1 : Finset (ExternalInsertionVertex E S)).toLeft :=
-    d.vacuumFreeComponentsEquivExternalBlocks_apply hVac C
+    vacuumFreeComponentsEquivExternalBlocks_apply d.vertexGraph hVac C
   have hlocal (B : layout.partition.parts) :
       ExternalInsertionWickDiagram.dysonAmplitude
           (d.componentOrderedDiagram (reindex.symm B)) ε β g
