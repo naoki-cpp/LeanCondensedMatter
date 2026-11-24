@@ -91,10 +91,10 @@ the canonical trace norm, and its diagonal and polar-factor formulas.
 the bound `‖T‖₁ ≤ (‖A‖²_HS + ‖B‖²_HS) / 2`, the sharp factorization with both squared
 Hilbert--Schmidt norms equal to the trace norm, and compactness, together with the direct diagonal
 `Summable`/`HasSum`/`tsum` API, basis independence, and the canonical complex trace.
-`Analysis/Operator/TraceClass/Ops/Basic.lean` owns additive/scalar/adjoint closure, bounded left/right
+`Analysis/Operator/TraceClass/Ops.lean` owns additive/scalar/adjoint closure, bounded left/right
 ideal closure, complex-trace linearity and cyclicity, adjoint-conjugation invariance, and the
 corresponding trace-norm identities, ideal bounds, triangle inequality, and trace modulus bound.
-`Analysis/Operator/TraceClass/Spectral/Bundled.lean` owns spectral summability, the bundled
+`Analysis/Operator/TraceClass/Spectral.lean` owns spectral summability, the bundled
 self-adjoint specialization, spectral trace identities, and the compact self-adjoint characterizations
 of general trace-class membership, trace norm, and complex trace.
 

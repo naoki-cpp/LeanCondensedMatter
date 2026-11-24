@@ -73,7 +73,7 @@ on the compact self-adjoint overlap.
 General non-self-adjoint trace-class membership and its canonical trace norm are defined from the
 Hilbert--Schmidt layer in `TraceClass/General.lean`. `TraceClass/Trace.lean` owns the
 characterization `T = A† B`, the bound `‖T‖₁ ≤ (‖A‖²_HS + ‖B‖²_HS) / 2`, and a factorization
-satisfying `‖A‖²_HS = ‖B‖²_HS = ‖T‖₁`. Compactness follows from factorization independently of the trace-value definition. `TraceClass/Ops/Basic.lean` owns membership closure under
+satisfying `‖A‖²_HS = ‖B‖²_HS = ‖T‖₁`. Compactness follows from factorization independently of the trace-value definition. `TraceClass/Ops.lean` owns membership closure under
 addition, scalar multiplication, adjoint, and bounded multiplication, with the corresponding
 trace and trace-norm laws. The trace norm is adjoint-invariant and contractive under left/right multiplication by
 contractions. The general operator-norm-weighted left/right ideal bounds are also proved. The canonical

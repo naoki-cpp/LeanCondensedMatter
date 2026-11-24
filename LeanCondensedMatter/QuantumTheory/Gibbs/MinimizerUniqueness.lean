@@ -1,6 +1,6 @@
 import LeanCondensedMatter.QuantumTheory.Gibbs.EqualityComponents
 import LeanCondensedMatter.Analysis.Operator.TraceClass.General
-import LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Bundled
+import LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral
 import LeanCondensedMatter.QuantumTheory.Gibbs.Variational
 
 /-!

@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Analysis.Operator.TraceClass.Trace
-import LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Bundled
+import LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral
 import LeanCondensedMatter.QuantumTheory.Postulates
 import Mathlib.Analysis.InnerProductSpace.Positive
 

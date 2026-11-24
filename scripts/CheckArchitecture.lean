@@ -249,7 +249,7 @@ private def pictureEquivalenceOwnerRequirements : Array OwnerRequirement :=
   let adjointConjugationModule := `LeanCondensedMatter.Analysis.Operator.AdjointConjugation
   let unitaryModule := `LeanCondensedMatter.Analysis.Operator.Unitary
   let traceClassOpsModule :=
-    `LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Basic
+    `LeanCondensedMatter.Analysis.Operator.TraceClass.Ops
   #[
     { declaration := `QuantumTheory.LinearResponse.heisenbergObservable, moduleName := pictureModule },
     { declaration := `QuantumTheory.LinearResponse.expValue_evolveState_eq_heisenberg, moduleName := pictureModule },
