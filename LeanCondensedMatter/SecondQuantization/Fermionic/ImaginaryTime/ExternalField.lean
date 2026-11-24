@@ -47,6 +47,41 @@ theorem externalFieldOperator_creation_eq_smul (ε : Mode → ℝ) (τ : ℝ) (i
       Complex.exp ((τ : ℂ) * (ε i : ℂ)) • create i :=
   imaginaryTimeEvolve_create ε τ i
 
+/-- Scalar relating the physical dispersion to the dispersion shifted by μ for one
+charged external field. -/
+noncomputable def externalFieldChemicalPotentialFactor (μ τ : ℝ) :
+    ExternalFieldLabel Mode → ℂ
+  | .annihilation _ => Complex.exp (-(τ : ℂ) * (μ : ℂ))
+  | .creation _ => Complex.exp ((τ : ℂ) * (μ : ℂ))
+
+/-- A uniform energy shift contributes the scalar of the field's particle-number charge. -/
+theorem externalFieldOperator_eq_shiftedDispersion
+    (ε : Mode → ℝ) (μ τ : ℝ) (label : ExternalFieldLabel Mode) :
+    externalFieldOperator ε τ label =
+      externalFieldChemicalPotentialFactor μ τ label •
+        externalFieldOperator (fun k => ε k - μ) τ label := by
+  cases label with
+  | annihilation i =>
+      change externalFieldOperator ε τ (.annihilation i) =
+        Complex.exp (-(τ : ℂ) * (μ : ℂ)) •
+          externalFieldOperator (fun k => ε k - μ) τ (.annihilation i)
+      rw [externalFieldOperator_annihilation_eq_smul,
+        externalFieldOperator_annihilation_eq_smul, smul_smul, ← Complex.exp_add]
+      congr 1
+      congr 1
+      push_cast
+      ring
+  | creation i =>
+      change externalFieldOperator ε τ (.creation i) =
+        Complex.exp ((τ : ℂ) * (μ : ℂ)) •
+          externalFieldOperator (fun k => ε k - μ) τ (.creation i)
+      rw [externalFieldOperator_creation_eq_smul,
+        externalFieldOperator_creation_eq_smul, smul_smul, ← Complex.exp_add]
+      congr 1
+      congr 1
+      push_cast
+      ring
+
 /-- Fermionic time ordering of two labelled external fields. -/
 noncomputable def timeOrderedExternalFields (ε : Mode → ℝ)
     (A B : ExternalFieldLabel Mode) (τA τB : ℝ) :
