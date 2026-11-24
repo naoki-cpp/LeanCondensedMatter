@@ -232,6 +232,33 @@ must be derived from its own source dependence before a full-response
 decomposition is claimed. A finite momentum-grid position realization
 and local torque-divergence/boundary conditions also remain unresolved.
 
+## Finite momentum-block position obstruction (partial R4)
+
+`Models.RashbaExchange.VelocityPositionObstruction` records a concrete
+limitation of the pointwise momentum-grid construction. For either direction
+the clean Rashba 2×2 velocity vertex has
+
+```text
+Tr(v_i(p)) = 2 p_i / m_eff.
+```
+
+By the existing finite-matrix trace cyclicity,
+`Tr((i/ℏ)[H(p),X_i(p)]) = 0` for **every** pointwise 2×2 matrix
+`X_i(p)`. Consequently, whenever `p_i/m_eff ≠ 0`,
+`no_pointwise_rashba_position_of_nonzero_parabolic_velocity` proves
+that no such matrix can realize the Rashba velocity via a Heisenberg
+commutator. The no-go holds without any Hermiticity assumption on `X_i`.
+
+This obstruction concerns **pointwise spin matrices**, not an operator
+on a momentum-wavefunction space that differentiates in momentum or
+mixes different grid points. It does not exclude a suitable real-space
+position operator. It is an explicit reason **not** to discharge
+`SpinDisplacementBridge`'s conditional `δ_H(X_i)=v_i` assumption by
+inventing a momentum-diagonal localizer. A physical spatial or covariant
+momentum-derivative representation (with boundary/gauge conditions) is
+still needed before using the R4 Kubo identity as a proper spin Hall
+conductivity.
+
 ## References
 
 See the annotated entries in [`../references.md`](../references.md) for full
