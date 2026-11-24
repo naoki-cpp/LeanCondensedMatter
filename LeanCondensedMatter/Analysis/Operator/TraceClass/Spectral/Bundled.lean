@@ -14,7 +14,7 @@ attribute [local instance] IsStarNormal.instContinuousFunctionalCalculus
 from general trace-class compactness, while absolute summability of the indexed nonzero real
 eigenvalues follows from the compact self-adjoint spectral characterization. This module is the
 public spectral operator API and owns the bridge between the general and spectral presentations.
-The lower-level spectral theorems in `Basic` and `Ops` remain implementation infrastructure.
+The lower-level spectral theorems in `Ops` remain implementation infrastructure.
 
 The diagonal-expectation API transports self-adjoint matrix elements to `ℝ` only after proving that
 they are real. Both the public API and its trace-series implementation use this lossless path.
