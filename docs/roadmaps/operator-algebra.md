@@ -8,8 +8,10 @@ second quantization.
 `Analysis/Algebra/QuadraticNormalization.lean` owns
 `Algebra.inv_smul_mul_self_eq_one`: if `H * H = E ^ 2 • 1` and `E ≠ 0`,
 then `E⁻¹ • H` squares to the identity in a semiring algebra over a field.
-Massive Dirac and Rashba-exchange models supply their respective
-quadratic-energy identities as hypotheses.
+The same module owns `Algebra.quadratic_shift_mul_projector` and
+`Algebra.quadratic_projector_isIdempotent` for associative ring algebras over
+characteristic-zero fields. Massive Dirac and Rashba-exchange models supply
+their respective quadratic-energy identities as hypotheses, without a Pauli-specific wrapper.
 
 ## Fixed-sign commutator algebra
 
