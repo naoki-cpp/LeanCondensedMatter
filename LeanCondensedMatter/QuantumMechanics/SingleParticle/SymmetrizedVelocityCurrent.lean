@@ -1,5 +1,5 @@
 import LeanCondensedMatter.QuantumMechanics.SingleParticle.GeneralizedCurrent
-import LeanCondensedMatter.QuantumMechanics.SingleParticle.LocalizedTransport
+import LeanCondensedMatter.QuantumMechanics.SingleParticle.CorrectedCurrent
 
 set_option linter.style.header false
 
@@ -11,7 +11,9 @@ The operator-level generalized current `jᵐ = 1/2 {v,m}` is owned independently
 operator represents the exact-differential transport supplied by a Heisenberg balance law.
 
 Without commutation between the localized one-form operator and `m`, nested symmetrization carries
-a double-commutator correction. Thus the symmetrized velocity current is a special current-density
+a double-commutator correction (`LinearMap.symmetrizedProduct_nested`). The general
+representation is supplied by `nestedSymmetrizedCurrentFlux_eq_comp`; here the vanishing
+correction gives a special current-density
 representation, not a universal transport law.
 -/
 
@@ -24,40 +26,6 @@ variable {Test OneForm : Type*}
 variable [AddCommGroup Test] [Module ℂ Test]
 variable [AddCommGroup OneForm] [Module ℂ OneForm]
 variable (V : Type*) [AddCommGroup V] [Module ℂ V]
-
-/-- General localized-transport decomposition. The second term measures the failure of the
-localized one-form operator to commute with the transported quantity. -/
-theorem symmetrizedVelocityTransport_decomposition
-    (localizer velocity m : V →ₗ[ℂ] V) :
-    _root_.LinearMap.symmetrizedProduct (K := ℂ)
-        (_root_.LinearMap.symmetrizedProduct (K := ℂ) localizer velocity) m =
-      _root_.LinearMap.symmetrizedProduct (K := ℂ) localizer
-        (symmetrizedVelocityCurrent V velocity m) +
-      (1 / 4 : ℂ) • ⁅velocity, ⁅localizer, m⁆⁆ := by
-  change
-    _root_.LinearMap.symmetrizedProduct (K := ℂ)
-        (_root_.LinearMap.symmetrizedProduct (K := ℂ) localizer velocity) m =
-      _root_.LinearMap.symmetrizedProduct (K := ℂ) localizer
-        (_root_.LinearMap.symmetrizedProduct (K := ℂ) velocity m) +
-      (1 / 4 : ℂ) • ⁅velocity, ⁅localizer, m⁆⁆
-  exact _root_.LinearMap.symmetrizedProduct_nested (K := ℂ) localizer velocity m
-
-/-- If localization commutes with the transported quantity, the correction vanishes and the
-transport is represented by the symmetrized velocity current density. -/
-theorem symmetrizedVelocityTransport_eq_of_localizer_commutes
-    (localizer velocity m : V →ₗ[ℂ] V)
-    (hcomm : ⁅localizer, m⁆ = 0) :
-    _root_.LinearMap.symmetrizedProduct (K := ℂ)
-        (_root_.LinearMap.symmetrizedProduct (K := ℂ) localizer velocity) m =
-      _root_.LinearMap.symmetrizedProduct (K := ℂ) localizer
-        (symmetrizedVelocityCurrent V velocity m) := by
-  change
-    _root_.LinearMap.symmetrizedProduct (K := ℂ)
-        (_root_.LinearMap.symmetrizedProduct (K := ℂ) localizer velocity) m =
-      _root_.LinearMap.symmetrizedProduct (K := ℂ) localizer
-        (_root_.LinearMap.symmetrizedProduct (K := ℂ) velocity m)
-  exact _root_.LinearMap.symmetrizedProduct_nested_eq_of_commutes (K := ℂ)
-    localizer velocity m hcomm
 
 /-- The symmetrized velocity current supplies a local current-density representation whenever the
 Heisenberg localization transport is first-order in `d` and the localized one-form operators
@@ -77,17 +45,10 @@ noncomputable def symmetrizedVelocityCurrentRepresentation
       (operatorLocalCurrentPairing V N) where
   val := symmetrizedVelocityCurrent V velocity m
   property := by
-    apply LinearMap.ext
-    intro f
-    have hv := congrArg
-      (fun L : Test →ₗ[ℂ] (V →ₗ[ℂ] V) => L f) hvelocity
-    simp only [LinearMap.comp_apply] at hv
-    rw [heisenbergTransportFunctional_eq_symmetrizedProductRight_comp]
-    simp only [LinearMap.comp_apply]
-    rw [hv]
-    rw [_root_.ConservationLaw.localizedQuantityFunctional_apply, operatorLocalCurrentPairing_apply]
-    exact symmetrizedVelocityTransport_eq_of_localizer_commutes
-      V (N (d f)) velocity m (hcomm (d f))
+    rw [nestedSymmetrizedCurrentFlux_eq_comp V ℏ h M m velocity d N hvelocity,
+      _root_.ConservationLaw.nestedSymmetrizedCurrentFlux_eq_symmetrized_add_correction,
+      _root_.ConservationLaw.localizationCorrectionCurrentFlux_eq_zero_of_commutes
+        velocity m N hcomm, add_zero] <;> rfl
 
 @[simp]
 theorem symmetrizedVelocityCurrentRepresentation_currentDensity
