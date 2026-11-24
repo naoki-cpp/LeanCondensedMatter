@@ -2,6 +2,8 @@ import LeanCondensedMatter.QuantumTheory.LinearResponse.Frequency.AdiabaticSwitc
 import LeanCondensedMatter.QuantumTheory.LinearResponse.Frequency.LimitOrder
 import LeanCondensedMatter.QuantumTheory.LinearResponse.Response.Symmetry
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.FundThmCalculus
+import Mathlib.LinearAlgebra.Matrix.ToLin
+import Mathlib.RepresentationTheory.Intertwining
 
 set_option linter.style.header false
 
@@ -216,6 +218,91 @@ theorem finiteTimeAdiabaticResponse_linearMixing
           simp_rw [mul_add]
           simp only [Finset.sum_add_distrib]
     _ = _ := by rw [hIntegralEq, hContact]
+
+/-- The complete finite-time Kubo response is an intertwiner between independent
+input-field and output-coordinate representations, with no restriction to
+orthogonal or identical representations.
+
+For each group element the supplied microscopic symmetry must transform the
+measured family with the rows of the output matrix and the source family with
+the rows of the *inverse transpose* input matrix. The latter is the dual action
+required by the source-field pairing, not an identification of the source
+operator representation with the input-field representation. The explicit
+contact operators transform with the corresponding two factors. The microscopic
+symmetries are supplied pointwise (for instance by inverse conjugation of a
+unitary group action); no claim of a group action on observables is inferred
+from these pointwise hypotheses.
+
+The existing integrated response covariance gives `R X S = X`, where
+`S` is the matrix of the inverse input action. The representation law then
+gives `R X = X P`. The resulting map is Mathlib's intertwining map, not a
+new response or representation structure. -/
+theorem finiteTimeAdiabaticResponse_exists_intertwiningMap
+    {G I J : Type*} [Group G] [Fintype I] [Fintype J] [DecidableEq I] [DecidableEq J]
+    (ρin : Representation ℂ G (J → ℂ))
+    (ρout : Representation ℂ G (I → ℂ))
+    (symmetry : G → ((H →L[ℂ] H) ≃⋆ₐ[ℂ] (H →L[ℂ] H)))
+    (measured : I → (H →L[ℂ] H))
+    (source : J → (H →L[ℂ] H))
+    (variation : I → J → (H →L[ℂ] H))
+    (hU : ∀ g t, symmetry g (U (Multiplicative.ofAdd t) : H →L[ℂ] H) =
+      (U (Multiplicative.ofAdd t) : H →L[ℂ] H))
+    (hbar : ℝ) (expectation : NormalizedExpectation H)
+    (hω : ∀ g A, expectation (symmetry g A) = expectation A)
+    (hMeasured : ∀ g i, symmetry g (measured i) =
+      ∑ k, LinearMap.toMatrix' (ρout g) i k • measured k)
+    (hSource : ∀ g j, symmetry g (source j) =
+      ∑ l, LinearMap.toMatrix' (ρin g⁻¹) l j • source l)
+    (hVariation : ∀ g i j, symmetry g (variation i j) =
+      ∑ k, ∑ l, (LinearMap.toMatrix' (ρout g) i k *
+        LinearMap.toMatrix' (ρin g⁻¹) l j) • variation k l)
+    (ω η T : ℝ)
+    (hIntegrable : ∀ k l,
+      IntervalIntegrable
+        (fun s : ℝ => adiabaticFrequencyPhase ω η (T - s) *
+          retardedSusceptibility U hbar expectation (measured k) (source l) T s)
+        MeasureTheory.volume 0 T) :
+    ∃ F : Representation.IntertwiningMap ρin ρout,
+      F.toLinearMap = Matrix.toLin' (fun i j =>
+        ({ measured := measured i, source := source j,
+           observableVariation := variation i j } : ResponseChannel H).finiteTimeAdiabaticResponse
+          U hbar expectation ω η T) := by
+  let X : Matrix I J ℂ := fun i j =>
+    ({ measured := measured i, source := source j,
+       observableVariation := variation i j } : ResponseChannel H).finiteTimeAdiabaticResponse
+      U hbar expectation ω η T
+  change ∃ F : Representation.IntertwiningMap ρin ρout, F.toLinearMap = Matrix.toLin' X
+  refine ⟨⟨Matrix.toLin' X, ?_⟩, rfl⟩
+  intro g
+  let R := LinearMap.toMatrix' (ρout g)
+  let P := LinearMap.toMatrix' (ρin g)
+  let S := LinearMap.toMatrix' (ρin g⁻¹)
+  have hCov : R * X * S = X := by
+    rw [Matrix.mul_assoc]
+    ext i j
+    have h := finiteTimeAdiabaticResponse_linearMixing U (symmetry g)
+      measured source variation R (fun j l => S l j) (hU g) hbar expectation
+      (hω g) (hMeasured g) (hSource g) (hVariation g) ω η T hIntegrable i j
+    change (∑ k, ∑ l, (R i k * S l j) * X k l) = X i j at h
+    rw [← h]
+    simp only [Matrix.mul_apply, Finset.mul_sum]
+    apply Finset.sum_congr rfl
+    intro k hk
+    apply Finset.sum_congr rfl
+    intro l hl
+    ring
+  have hInv : S * P = 1 := by
+    dsimp only [S, P]
+    rw [← LinearMap.toMatrix'_mul, ← ρin.map_mul, inv_mul_cancel, ρin.map_one,
+      LinearMap.toMatrix'_one]
+  have hComm : R * X = X * P := by
+    have h := congrArg (fun A : Matrix I J ℂ => A * P) hCov
+    change (R * X * S) * P = X * P at h
+    rw [Matrix.mul_assoc (R * X) S P, hInv, Matrix.mul_one] at h
+    exact h
+  apply LinearMap.toMatrix'.injective
+  simp only [LinearMap.toMatrix'_comp, LinearMap.toMatrix'_toLin']
+  exact hComm.symm
 
 end ResponseChannel
 
