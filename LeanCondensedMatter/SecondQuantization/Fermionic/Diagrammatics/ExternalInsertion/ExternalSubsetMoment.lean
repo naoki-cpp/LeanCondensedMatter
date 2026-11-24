@@ -1388,18 +1388,17 @@ noncomputable def externalSubsetConnectedDiagramSeries
       (evenExternalSubsetTimes times S heven)
   else exact 0
 
-/-- A pair of functions on finite slot families with equal
-cardinalities can be compared heterogeneously without eliminating
-dependent equations between fixed expressions. -/
+/-- Postcomposition preserves heterogeneous equality of reindexed
+finite-slot families when their indices agree after a cardinality cast. -/
 private theorem externalSubsetFunctions_heq_of_cast
-    {α : Type*} {n m : ℕ} (h : n = m)
-    (f : Fin (2 * n) → α) (g : Fin (2 * m) → α)
+    {α ι : Type*} {n m : ℕ} (h : n = m) (F : ι → α)
+    (f : Fin (2 * n) → ι) (g : Fin (2 * m) → ι)
     (hfg : ∀ i, f i = g (Fin.cast (congrArg (2 * ·) h) i)) :
-    HEq f g := by
+    HEq (fun i => F (f i)) (fun i => F (g i)) := by
   cases h
   apply heq_of_eq
   funext i
-  simpa using hfg i
+  exact congrArg F (by simpa using hfg i)
 
 /-- A connected Dyson series is unchanged by heterogeneous equality
 of the ordered external fields and insertion times across equal pair counts. -/
@@ -1421,8 +1420,6 @@ private theorem connectedExternalInsertionDysonSeries_heq_of_fields
   cases hT
   rfl
 
-set_option maxHeartbeats 4000000 in
--- Source-subset local labels and times have cardinality-dependent index types.
 open Classical in
 /-- The physical fully connected Dyson series of a locally numbered
 external block agrees with the connected series of that block in the
@@ -1450,58 +1447,35 @@ private theorem externalSubsetConnectedSeries_comp
   let e := evenExternalSubsetOrderIso S heven
   let emb : Fin (2 * (S.card / 2)) ↪ Fin (2 * E) :=
     ⟨fun i => (e i).1, fun i j hij => e.injective (Subtype.ext hij)⟩
-  have hImage : (be B).1 = B.1.map emb := rfl
+  let T := (be B).1
+  have hImage : T = B.1.map emb := rfl
   have hImageOrder :
-      B.1.map (S.orderEmbOfFin
-        ((Nat.two_mul_div_two_of_even heven).symm)).toEmbedding =
-          (be B).1 := by
-    calc
-      _ = B.1.map emb := rfl
-      _ = (be B).1 := hImage.symm
-  have hEvenT : Even ((be B).1).card :=
+      T = B.1.map (S.orderEmbOfFin
+        (Nat.two_mul_div_two_of_even heven).symm).toEmbedding := by
+    exact hImage
+  have hEvenT : Even T.card :=
     (externalSubsetPartitionEquiv_evenBlocks S heven π).mp hEven (be B)
-  have hNotEmpty : (be B).1 ≠ ∅ := σ.ne_empty (be B).2
-  have hTarget :
-      externalSubsetConnectedDiagramSeries ε β g labels times (be B).1 =
-        connectedExternalInsertionDysonSeries ε β g
-          (evenExternalSubsetLabels labels (be B).1 hEvenT)
-          (evenExternalSubsetTimes times (be B).1 hEvenT) := by
-    simp [externalSubsetConnectedDiagramSeries, hNotEmpty, hEvenT]
-  rw [hTarget]
-  have hK : B.1.card / 2 = ((be B).1).card / 2 := by
-    simp [hImage]
-  have hLabels : HEq
-      (evenExternalSubsetLabels
-        (evenExternalSubsetLabels labels S heven) B.1 (hEven B))
-      (evenExternalSubsetLabels labels (be B).1 hEvenT) := by
-    apply externalSubsetFunctions_heq_of_cast hK
-    intro i
-    simpa only [evenExternalSubsetLabels] using
-      congrArg labels
-        (externalSubsetOrderIso_comp_of_eq S heven B.1 (hEven B)
-          (be B).1 hEvenT hImageOrder.symm i)
-  have hTimes : HEq
-      (evenExternalSubsetTimes
-        (evenExternalSubsetTimes times S heven) B.1 (hEven B))
-      (evenExternalSubsetTimes times (be B).1 hEvenT) := by
-    apply externalSubsetFunctions_heq_of_cast hK
-    intro i
-    simpa only [evenExternalSubsetTimes] using
-      congrArg times
-        (externalSubsetOrderIso_comp_of_eq S heven B.1 (hEven B)
-          (be B).1 hEvenT hImageOrder.symm i)
-  have hSeries : HEq
-      (connectedExternalInsertionDysonSeries ε β g
-        (evenExternalSubsetLabels
-          (evenExternalSubsetLabels labels S heven) B.1 (hEven B))
-        (evenExternalSubsetTimes
-          (evenExternalSubsetTimes times S heven) B.1 (hEven B)))
-      (connectedExternalInsertionDysonSeries ε β g
-        (evenExternalSubsetLabels labels (be B).1 hEvenT)
-        (evenExternalSubsetTimes times (be B).1 hEvenT)) :=
-    connectedExternalInsertionDysonSeries_heq_of_fields
-      hK ε β g _ _ _ _ hLabels hTimes
-  exact eq_of_heq hSeries
+  have hNotEmpty : T ≠ ∅ := σ.ne_empty (be B).2
+  change _ = externalSubsetConnectedDiagramSeries ε β g labels times T
+  simp only [externalSubsetConnectedDiagramSeries, hNotEmpty, hEvenT, dite_eq_left]
+  have hK : B.1.card / 2 = T.card / 2 := by
+    simp only [hImage, Finset.card_map]
+  let localIndex (i : Fin (2 * (B.1.card / 2))) : Fin (2 * E) :=
+    (e ((evenExternalSubsetOrderIso B.1 (hEven B)) i).1).1
+  let ambientIndex (i : Fin (2 * (T.card / 2))) : Fin (2 * E) :=
+    (evenExternalSubsetOrderIso T hEvenT i).1
+  have horder (i : Fin (2 * (B.1.card / 2))) :
+      localIndex i = ambientIndex (Fin.cast (congrArg (2 * ·) hK) i) :=
+    externalSubsetOrderIso_comp_of_eq S heven B.1 (hEven B)
+      T hEvenT hImageOrder i
+  change connectedExternalInsertionDysonSeries ε β g
+      (fun i => labels (localIndex i)) (fun i => times (localIndex i)) =
+    connectedExternalInsertionDysonSeries ε β g
+      (fun i => labels (ambientIndex i)) (fun i => times (ambientIndex i))
+  exact eq_of_heq (connectedExternalInsertionDysonSeries_heq_of_fields
+    hK ε β g _ _ _ _
+    (externalSubsetFunctions_heq_of_cast hK labels localIndex ambientIndex horder)
+    (externalSubsetFunctions_heq_of_cast hK times localIndex ambientIndex horder))
 
 /-- The Koszul-signed external-partition moment transform of fully
 connected physical Dyson diagram contributions. -/
