@@ -364,37 +364,20 @@ theorem orthogonal_closure_span_eigenvectorFamily (hT : IsCompactOperator T)
   have hE'G : E' ≤ Gᗮ := span_eigenvectorFamily_le_kernel_orthogonal hT hT'
   -- `G` is closed (it's the kernel of the continuous map `T`), hence complete.
   have hGclosed : IsClosed (G : Set H) := by
-    have heq : G = LinearMap.ker (T : H →ₗ[ℂ] H) := by
-      ext x
-      rw [hG_def, Module.End.mem_eigenspace_iff, LinearMap.mem_ker, zero_smul]
-    rw [heq]; exact T.isClosed_ker
+    rw [hG_def, Module.End.eigenspace_zero]
+    exact T.isClosed_ker
   haveI : CompleteSpace G := hGclosed.completeSpace_coe
   -- `F ⊆ Gᗮ`, hence `G ⊆ Fᗮ`.
   have hFG : F ≤ Gᗮ := hF_def ▸ E'.topologicalClosure_minimal hE'G G.isClosed_orthogonal
   have hGF : G ≤ Fᗮ := Submodule.le_orthogonal_iff_le_orthogonal.mpr hFG
   have hdense : (G ⊔ E').topologicalClosure = ⊤ := kernel_sup_span_eigenvectorFamily_dense hT hT'
-  -- Combine: `G ⊆ Fᗮ`, and `G ⊔ F` is dense (since it contains `G ⊔ E'`), so `Fᗮ ⊆ G`.
-  have hFGdense : (F ⊔ G).topologicalClosure = ⊤ := by
-    have hle : G ⊔ E' ≤ F ⊔ G := by
-      have h1 : E' ≤ F := hF_def ▸ E'.le_topologicalClosure
-      calc G ⊔ E' ≤ G ⊔ F := sup_le_sup_left h1 G
-        _ = F ⊔ G := sup_comm ..
-    have hmono := Submodule.topologicalClosure_mono hle
-    rw [hdense] at hmono
-    exact top_le_iff.mp hmono
   have hFGbot : Fᗮ ⊓ Gᗮ = ⊥ := by
-    rw [Submodule.inf_orthogonal, ← Submodule.orthogonal_closure, hFGdense]
-    exact Submodule.top_orthogonal_eq_bot
-  refine le_antisymm ?_ hGF
-  intro v hv
-  obtain ⟨g, hg, g', hg', rfl⟩ := G.exists_add_mem_mem_orthogonal (v := v)
-  have hg'F : g' ∈ Fᗮ := by
-    have : g' = (g + g') - g := by abel
-    rw [this]
-    exact Fᗮ.sub_mem hv (hGF hg)
-  have : g' ∈ Fᗮ ⊓ Gᗮ := ⟨hg'F, hg'⟩
-  rw [hFGbot, Submodule.mem_bot] at this
-  rwa [this, add_zero]
+    rw [hF_def, Submodule.orthogonal_closure, Submodule.inf_orthogonal, sup_comm,
+      ← Submodule.orthogonal_closure, hdense, Submodule.top_orthogonal_eq_bot]
+  calc
+    Fᗮ = G ⊔ Gᗮ ⊓ Fᗮ :=
+      (Submodule.sup_orthogonal_inf_of_hasOrthogonalProjection hGF).symm
+    _ = G := by rw [inf_comm, hFGbot, sup_bot_eq]
 
 /-- A Hilbert-basis vector outside the embedded canonical nonzero-eigenvector family lies in the
 kernel of a compact symmetric operator. -/
@@ -517,12 +500,8 @@ theorem hasSum_eigenvectorFamily (hT : IsCompactOperator T) (hT' : T.IsSymmetric
     have hmem : x - F.starProjection x ∈ Fᗮ := F.sub_starProjection_mem_orthogonal x
     have hFG : Fᗮ = G := orthogonal_closure_span_eigenvectorFamily hT hT'
     rw [hFG] at hmem
-    have : (T : H →ₗ[ℂ] H) (x - F.starProjection x) = 0 := by
-      rw [Module.End.mem_eigenspace_iff, zero_smul] at hmem; exact hmem
-    have hTlin : (T : H →ₗ[ℂ] H) x - (T : H →ₗ[ℂ] H) (F.starProjection x) = 0 := by
-      rw [← map_sub]; exact this
-    have := sub_eq_zero.mp hTlin
-    exact this.symm
+    rw [Module.End.mem_eigenspace_iff, zero_smul, map_sub] at hmem
+    exact (sub_eq_zero.mp hmem).symm
   have hstep2 := hstep1.mapL T
   rw [hTproj] at hstep2
   have heq : ∀ a, T ((inner ℂ (b a : H) x : ℂ) • (b a : H)) =
