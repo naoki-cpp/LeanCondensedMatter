@@ -417,58 +417,6 @@ theorem ExternalInsertionBlockLayout.physicalComponentCanonicalPairing_eq_local
   have hsigma := (layout.legEquiv S).symm.injective hpair'
   exact eq_of_heq (Sigma.mk.inj_iff.mp hsigma).2
 
-/-- The **actual physical graph component** and its independently assigned
-connected Wick block have the same increasing flattened-leg order.  The
-comparison passes through the physically restricted component-leg fiber,
-not a formal replacement of the component by an assumed local diagram.
-This proves strict monotonicity of the specific equivalence used in
-`physicalComponentCanonicalPairing_eq_local`. -/
-theorem ExternalInsertionBlockLayout.physicalComponentCanonicalLegEquiv_strictMono
-    {ExternalLabel InternalLabel : Type*}
-    (layout : ExternalInsertionBlockLayout E N) (S : Finset (Fin N))
-    (F : ∀ B : layout.partition.parts,
-      ExternalInsertionDiagram ExternalLabel InternalLabel
-        ((B : Finset (Fin (2 * E))).card / 2) N (layout.interactionBlock S B))
-    (hconnected : ∀ B, (F B).vertexGraph.Preconnected)
-    (e : Fin (2 * E)) :
-    (let d := layout.assembleDiagram S F
-     let C : d.vertexGraph.componentPartition.parts :=
-       ⟨d.vertexGraph.componentBlock (Sum.inl e),
-         d.vertexGraph.componentBlock_mem_componentPartition (Sum.inl e)⟩
-     StrictMono ((d.componentBlockLegEquiv C).symm.trans
-       (layout.physicalComponentLegEquiv S F hconnected e))) := by
-  classical
-  let B := (layout.sourceEquiv e).1
-  let d := layout.assembleDiagram S F
-  let C : d.vertexGraph.componentPartition.parts :=
-    ⟨d.vertexGraph.componentBlock (Sum.inl e),
-      d.vertexGraph.componentBlock_mem_componentPartition (Sum.inl e)⟩
-  let c := (d.componentBlockLegEquiv C).symm.trans
-    (layout.physicalComponentLegEquiv S F hconnected e)
-  change StrictMono c
-  have hbridge (p : Fin (2 * (2 * (interactionSector
-      (C : Finset (ExternalInsertionVertex E S))).card + d.externalPairCount C))) :
-      (layout.legEquiv S).symm ⟨B, c p⟩ =
-        d.componentDiagramLeg C p := by
-    calc
-      (layout.legEquiv S).symm ⟨B, c p⟩ =
-          ((layout.physicalComponentLegEquiv S F hconnected e).symm (c p)).1 :=
-        (layout.physicalComponentLegEquiv_symm_val S F hconnected e (c p)).symm
-      _ = ((d.componentBlockLegEquiv C).symm p).1 := by
-        change ((layout.physicalComponentLegEquiv S F hconnected e).symm
-          ((layout.physicalComponentLegEquiv S F hconnected e)
-            ((d.componentBlockLegEquiv C).symm p))).1 = _
-        rw [Equiv.symm_apply_apply]
-      _ = d.componentDiagramLeg C p := rfl
-  intro i j hij
-  have hglobal : d.componentDiagramLeg C i < d.componentDiagramLeg C j := by
-    simpa only [d.componentLegShuffle_slotEquiv_apply] using
-      (d.componentLegShuffle.strictMono C) hij
-  have hlocal := layout.blockLegEmbedding_strictMono S B
-  apply hlocal.lt_iff_lt.mp
-  rw [hbridge i, hbridge j]
-  exact hglobal
-
 /-- The local external-pair parameter of an actual assembled graph component
 is the half-cardinality of its assigned source-partition block. This closes
 the dependent external-size index needed to identify physical component
@@ -493,7 +441,7 @@ theorem ExternalInsertionBlockLayout.assembleDiagram_componentExternalPairCount_
 
 /-- The particular physical component-to-independent-block leg equivalence
 is just the equality cast of *ordered flattened-leg indices*.  There is
-no residual permutation: the earlier strict-monotonicity proof and the
+no residual permutation: strict monotonicity and the
 uniqueness of increasing equivalences between finite initial segments
 force the full coordinate identification, even for zero interaction
 vertices.  This is the cast-level bridge for comparing timed fields
@@ -534,8 +482,29 @@ theorem ExternalInsertionBlockLayout.physicalComponentCanonicalLegEquiv_eq_finCo
   let c := (d.componentBlockLegEquiv C).symm.trans
     (layout.physicalComponentLegEquiv S F hconnected e)
   change c = finCongr hlegs
-  have hc : StrictMono c :=
-    layout.physicalComponentCanonicalLegEquiv_strictMono S F hconnected e
+  have hc : StrictMono c := by
+    have hbridge (p : Fin (2 * (2 * (interactionSector
+        (C : Finset (ExternalInsertionVertex E S))).card + d.externalPairCount C))) :
+        (layout.legEquiv S).symm ⟨B, c p⟩ =
+          d.componentDiagramLeg C p := by
+      calc
+        (layout.legEquiv S).symm ⟨B, c p⟩ =
+            ((layout.physicalComponentLegEquiv S F hconnected e).symm (c p)).1 :=
+          (layout.physicalComponentLegEquiv_symm_val S F hconnected e (c p)).symm
+        _ = ((d.componentBlockLegEquiv C).symm p).1 := by
+          change ((layout.physicalComponentLegEquiv S F hconnected e).symm
+            ((layout.physicalComponentLegEquiv S F hconnected e)
+              ((d.componentBlockLegEquiv C).symm p))).1 = _
+          rw [Equiv.symm_apply_apply]
+        _ = d.componentDiagramLeg C p := rfl
+    intro i j hij
+    have hglobal : d.componentDiagramLeg C i < d.componentDiagramLeg C j := by
+      simpa only [d.componentLegShuffle_slotEquiv_apply] using
+        (d.componentLegShuffle.strictMono C) hij
+    have hlocal := layout.blockLegEmbedding_strictMono S B
+    apply hlocal.lt_iff_lt.mp
+    rw [hbridge i, hbridge j]
+    exact hglobal
   let iso : Fin (2 * (2 * (interactionSector
       (C : Finset (ExternalInsertionVertex E S))).card + d.externalPairCount C)) ≃o
       Fin (2 * (2 * (layout.interactionBlock S B).card + B.1.card / 2)) :=
