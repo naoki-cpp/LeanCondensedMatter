@@ -1925,6 +1925,7 @@ noncomputable def grandCanonicalExternalSubsetConnectedDiagramSeries
   (∏ i ∈ S, PowerSeries.C (externalFieldChemicalPotentialFactor μ (times i) (labels i))) *
     externalSubsetConnectedDiagramSeries (fun k => ε k - μ) β g labels times S
 
+omit [LinearOrder Mode] [Fintype Mode] in
 /-- The finite subset product of external factors agrees with the product in
 its canonical even-slot indexing. -/
 private theorem externalSubsetChemicalPotentialFactor_eq_family
@@ -1984,7 +1985,6 @@ private theorem grandCanonicalExternalSubsetMomentSeries_eq_signedConnected_of_s
         (grandCanonicalExternalSubsetConnectedDiagramSeries ε β μ g labels times) S := by
   unfold grandCanonicalExternalSubsetMomentSeries grandCanonicalExternalSubsetConnectedDiagramSeries
   rw [Finpartition.weightedMomentFromCumulant_mul_elementWeights, hshift S]
-  <;> rfl
 
 /-- The signed physical moment identity at arbitrary real chemical potential.
 Only the pre-existing nonnegative inverse-temperature hypothesis is needed. -/
