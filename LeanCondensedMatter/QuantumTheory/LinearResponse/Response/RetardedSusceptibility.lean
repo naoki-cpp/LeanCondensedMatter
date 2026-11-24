@@ -212,6 +212,30 @@ noncomputable def retardedSusceptibilityMeasuredLinearMap
       ring
     · simp [retardedSusceptibility, h]
 
+
+/-- With the measured observable and times fixed, the retarded kernel is also
+complex-linear in the source-coupling operator. Together with
+`retardedSusceptibilityMeasuredLinearMap`, this supplies the two independent
+linear slots needed for spatial symmetries mixing current components. -/
+noncomputable def retardedSusceptibilitySourceLinearMap
+    (expectation : NormalizedExpectation H)
+    (measured : H →L[ℂ] H) (t s : ℝ) :
+    (H →L[ℂ] H) →ₗ[ℂ] ℂ where
+  toFun := fun source =>
+    retardedSusceptibility U hbar expectation measured source t s
+  map_add' := fun B₁ B₂ => by
+    by_cases h : s ≤ t
+    · simp [retardedSusceptibility, commutatorSusceptibility,
+        LieRing.of_associative_ring_bracket, h, mul_add, add_mul]
+      ring
+    · simp [retardedSusceptibility, h]
+  map_smul' := fun c B => by
+    by_cases h : s ≤ t
+    · simp [retardedSusceptibility, commutatorSusceptibility,
+        LieRing.of_associative_ring_bracket, h, smul_eq_mul]
+      ring
+    · simp [retardedSusceptibility, h]
+
 end
 end LinearResponse
 end QuantumTheory
