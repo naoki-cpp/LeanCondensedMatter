@@ -26,22 +26,29 @@ variable {Site E : Type*}
 variable [LinearOrder Site] [Fintype Site]
 variable [AddCommGroup E] [Module ℝ E]
 
-/-- Neutral response channel for the finite-lattice directional charge current.
+/-- Mixed charge-current response channel: independent measured and Peierls-source
+directions, with the contact fixed by the mixed Peierls derivative. -/
+noncomputable def boundedMixedDirectionalResponseChannel
+    (system : QuantumTheory.LinearResponse.BoundedFreeSystem
+      (FiniteLatticeHilbertFock Site))
+    (geometry : LatticeGeometry Site E) (measured source : E →ₗ[ℝ] ℝ)
+    (K : LocallyFiniteHopping Site) (q : ℝ) :
+    QuantumTheory.LinearResponse.ResponseChannel (FiniteLatticeHilbertFock Site) where
+  measured := boundedDirectionalCurrent geometry measured
+    (system.hbar : ℂ) (q : ℂ) K
+  source := boundedDirectionalCurrent geometry source
+    (system.hbar : ℂ) (q : ℂ) K
+  observableVariation := boundedMixedDirectionalContact geometry measured source
+    (system.hbar : ℂ) (q : ℂ) K
 
-The measured and source operators are the same directional current, while the explicit first-order
-observable variation is the Peierls contact operator. -/
+/-- The existing directional channel is the diagonal mixed channel. -/
 noncomputable def boundedDirectionalResponseChannel
     (system : QuantumTheory.LinearResponse.BoundedFreeSystem
       (FiniteLatticeHilbertFock Site))
     (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
     (K : LocallyFiniteHopping Site) (q : ℝ) :
-    QuantumTheory.LinearResponse.ResponseChannel (FiniteLatticeHilbertFock Site) where
-  measured := boundedDirectionalCurrent geometry direction
-    (system.hbar : ℂ) (q : ℂ) K
-  source := boundedDirectionalCurrent geometry direction
-    (system.hbar : ℂ) (q : ℂ) K
-  observableVariation := boundedDirectionalContact geometry direction
-    (system.hbar : ℂ) (q : ℂ) K
+    QuantumTheory.LinearResponse.ResponseChannel (FiniteLatticeHilbertFock Site) :=
+  boundedMixedDirectionalResponseChannel system geometry direction direction K q
 
 end
 end Transport

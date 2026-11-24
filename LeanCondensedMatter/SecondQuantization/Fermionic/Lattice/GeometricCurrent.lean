@@ -94,17 +94,37 @@ theorem boundedDirectionalCurrent_eq_positionCommutator
   change D (QuantumTheory.PeierlsPhase.peierlsCoupling ℏ q • K.bondOperator x y) = _
   exact D.map_smul _ _
 
-/-- Geometric contact operator for a uniform source in the selected direction. The squared bond
-coordinate is the chain-rule factor from differentiating the measured current after the Peierls
-phase has already been differentiated once. -/
-noncomputable def boundedDirectionalContact
-    (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
+/-- Mixed geometric contact operator: one bond coordinate comes from the measured
+current, the other from differentiation with respect to the source direction. -/
+noncomputable def boundedMixedDirectionalContact
+    (geometry : LatticeGeometry Site E) (measured source : E →ₗ[ℝ] ℝ)
     (ℏ q : ℂ) (K : LocallyFiniteHopping Site) :
     FiniteLatticeHilbertFock Site →L[ℂ] FiniteLatticeHilbertFock Site :=
   (2 : ℂ)⁻¹ •
     ∑ x : Site, ∑ y : Site,
-      ((geometry.bondCoordinate direction x y) ^ 2 : ℂ) •
-        boundedBondContact K ℏ q x y
+      ((geometry.bondCoordinate measured x y : ℂ) *
+        (geometry.bondCoordinate source x y : ℂ)) • boundedBondContact K ℏ q x y
+
+/-- The original same-direction contact is the diagonal mixed contact. -/
+noncomputable def boundedDirectionalContact
+    (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
+    (ℏ q : ℂ) (K : LocallyFiniteHopping Site) :
+    FiniteLatticeHilbertFock Site →L[ℂ] FiniteLatticeHilbertFock Site :=
+  boundedMixedDirectionalContact geometry direction direction ℏ q K
+
+/-- Mixed Peierls contacts are symmetric in their geometric directions. -/
+theorem boundedMixedDirectionalContact_swap
+    (geometry : LatticeGeometry Site E) (measured source : E →ₗ[ℝ] ℝ)
+    (ℏ q : ℂ) (K : LocallyFiniteHopping Site) :
+    boundedMixedDirectionalContact geometry measured source ℏ q K =
+      boundedMixedDirectionalContact geometry source measured ℏ q K := by
+  unfold boundedMixedDirectionalContact
+  congr 1
+  apply Finset.sum_congr rfl
+  intro x _
+  apply Finset.sum_congr rfl
+  intro y _
+  rw [mul_comm]
 
 /-- Hermitian hopping and real physical parameters make every geometric current component
 self-adjoint. -/
