@@ -174,31 +174,6 @@ theorem mixedTimeOrderedAtomicLegPosition_lt_uniform {n : ℕ}
   simpa only [Fin.lt_def, mixedTimeOrderedAtomicLegPosition_val,
     mixedTimeOrderedAtomicLegs] using h
 
-private theorem mixedTimeOrderedAtomicLegPosition_lt_of_eventPosition_lt {n : ℕ}
-    (τ τ' : ℝ) (σ : Fin n → ℝ) (x y : OrderedTwoPointLeg n)
-    (hEvent : orderedTwoPointTimedEventPosition τ τ' σ (orderedTwoPointLegEvent x) <
-      orderedTwoPointTimedEventPosition τ τ' σ (orderedTwoPointLegEvent y)) :
-    mixedTimeOrderedAtomicLegPosition τ τ' σ x <
-      mixedTimeOrderedAtomicLegPosition τ τ' σ y := by
-  classical
-  letI : BEq (TwoPointTimedEvent n) := instBEqOfDecidableEq
-  letI : BEq (OrderedTwoPointLeg n) := instBEqOfDecidableEq
-  have hEventIdx :
-      (orderedTwoPointTimedEvents τ τ' σ).idxOf (orderedTwoPointLegEvent x) <
-        (orderedTwoPointTimedEvents τ τ' σ).idxOf (orderedTwoPointLegEvent y) := by
-    simpa [orderedTwoPointTimedEventPosition, orderedTwoPointTimedEventEquiv,
-      List.Nodup.getEquivOfForallMemList] using hEvent
-  have h := List.idxOf_flatMap_lt_of_idxOf_lt twoPointTimedEventAtomicLegs
-    (orderedTwoPointTimedEvents τ τ' σ)
-    (orderedTwoPointLegEvent x) (orderedTwoPointLegEvent y) x y
-    (mixedTimeOrderedAtomicLegs_nodup τ τ' σ)
-    (orderedTwoPointTimedEvents_all_mem τ τ' σ (orderedTwoPointLegEvent x))
-    (orderedTwoPointTimedEvents_all_mem τ τ' σ (orderedTwoPointLegEvent y))
-    (orderedTwoPointLeg_mem_eventAtomicLegs x)
-    (orderedTwoPointLeg_mem_eventAtomicLegs y) hEventIdx
-  simpa only [Fin.lt_def, mixedTimeOrderedAtomicLegPosition_val,
-    mixedTimeOrderedAtomicLegs] using h
-
 /-- For legs supported on distinct events, flattened atomic-leg order is exactly event order. -/
 theorem mixedTimeOrderedAtomicLegPosition_lt_iff_eventPosition_lt {n : ℕ}
     (τ τ' : ℝ) (σ : Fin n → ℝ) (x y : OrderedTwoPointLeg n)
@@ -207,18 +182,20 @@ theorem mixedTimeOrderedAtomicLegPosition_lt_iff_eventPosition_lt {n : ℕ}
         mixedTimeOrderedAtomicLegPosition τ τ' σ y) ↔
       (orderedTwoPointTimedEventPosition τ τ' σ (orderedTwoPointLegEvent x) <
         orderedTwoPointTimedEventPosition τ τ' σ (orderedTwoPointLegEvent y)) := by
-  constructor
-  · intro hLeg
-    rcases lt_trichotomy
-        (orderedTwoPointTimedEventPosition τ τ' σ (orderedTwoPointLegEvent x))
-        (orderedTwoPointTimedEventPosition τ τ' σ (orderedTwoPointLegEvent y)) with
-      hEvent | hEvent | hEvent
-    · exact hEvent
-    · exact (hxy ((orderedTwoPointTimedEventEquiv τ τ' σ).symm.injective hEvent)).elim
-    · have hReverse :=
-        mixedTimeOrderedAtomicLegPosition_lt_of_eventPosition_lt τ τ' σ y x hEvent
-      exact (lt_asymm hLeg hReverse).elim
-  · exact mixedTimeOrderedAtomicLegPosition_lt_of_eventPosition_lt τ τ' σ x y
+  classical
+  letI : BEq (TwoPointTimedEvent n) := instBEqOfDecidableEq
+  letI : BEq (OrderedTwoPointLeg n) := instBEqOfDecidableEq
+  have h := List.idxOf_flatMap_lt_iff_idxOf_lt twoPointTimedEventAtomicLegs
+    (orderedTwoPointTimedEvents τ τ' σ)
+    (orderedTwoPointLegEvent x) (orderedTwoPointLegEvent y) x y
+    (mixedTimeOrderedAtomicLegs_nodup τ τ' σ)
+    (orderedTwoPointTimedEvents_all_mem τ τ' σ (orderedTwoPointLegEvent x))
+    (orderedTwoPointTimedEvents_all_mem τ τ' σ (orderedTwoPointLegEvent y))
+    (orderedTwoPointLeg_mem_eventAtomicLegs x)
+    (orderedTwoPointLeg_mem_eventAtomicLegs y) hxy
+  simpa [Fin.lt_def, mixedTimeOrderedAtomicLegPosition_val, mixedTimeOrderedAtomicLegs,
+    orderedTwoPointTimedEventPosition, orderedTwoPointTimedEventEquiv,
+    List.Nodup.getEquivOfForallMemList] using h
 
 /-- The flattened atomic-leg order of two legs is determined by the relative order of their two
 supporting events. -/
