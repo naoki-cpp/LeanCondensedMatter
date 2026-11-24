@@ -614,7 +614,9 @@ private def externalInsertionEventBlockLegEquiv (E n : ℕ) :
     rintro ⟨e, l⟩
     cases e with
     | inl e =>
-        have hl : l = 0 := Subsingleton.elim _ _
+        have hl : l = 0 := by
+          change (l : Fin 1) = 0
+          exact Subsingleton.elim _ _
         subst l
         rfl
     | inr v => rfl
@@ -663,7 +665,9 @@ private noncomputable def externalInsertionFixedEventShuffle (E n : ℕ) :
     intro e p q hpq
     cases e with
     | inl e =>
-        have heq : q = p := Subsingleton.elim _ _
+        have heq : q = p := by
+          change (q : Fin 1) = p
+          exact Subsingleton.elim _ _
         subst q
         exact (lt_irrefl _ hpq).elim
     | inr v =>
@@ -736,7 +740,9 @@ private noncomputable def externalInsertionMixedEventShuffle {E n : ℕ}
     intro e p q hpq
     cases e with
     | inl e =>
-        have heq : q = p := Subsingleton.elim _ _
+        have heq : q = p := by
+          change (q : Fin 1) = p
+          exact Subsingleton.elim _ _
         subst q
         exact (lt_irrefl _ hpq).elim
     | inr v =>
