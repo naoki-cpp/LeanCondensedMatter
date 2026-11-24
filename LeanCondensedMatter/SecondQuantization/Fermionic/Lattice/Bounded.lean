@@ -1,6 +1,6 @@
 import LeanCondensedMatter.QuantumTheory.PeierlsLattice
 import LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.DiscreteLattice
-import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.FiniteHilbertRealization
+import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.FiniteHilbertIsometry
 import LeanCondensedMatter.SecondQuantization.Common.Algebra.FiniteHilbertOperator
 
 set_option linter.style.header false
@@ -150,6 +150,59 @@ theorem bounded_discrete_continuity (ℏ q : ℂ)
   simpa only [boundedLatticeOperator, boundedHoppingHamiltonian,
     boundedBondCurrent, LieRing.of_associative_ring_bracket,
     map_add, map_smul, map_sum, map_zero, map_sub, map_mul] using h
+
+
+/-- Every finite site permutation has a unitary implementation on the full
+fermionic occupation Hilbert space, conjugating the bounded second quantization
+of each one-particle matrix unit to the relabeled unit. The implementation is
+the existing exterior lift of the coordinate-basis isometry, so fermionic
+ordering signs are included rather than replaced by a bare occupation permutation. -/
+theorem exists_unitary_sitePermutation
+    (p : Equiv.Perm Site) :
+    ∃ W : FiniteLatticeHilbertFock Site ≃ₗᵢ[ℂ] FiniteLatticeHilbertFock Site,
+      ∀ x y : Site, W.conjStarAlgEquiv (boundedOneBodyOperator (matrixUnit x y)) =
+        boundedOneBodyOperator (matrixUnit (p x) (p y)) := by
+  let b₀ : Module.Basis Site ℂ (Site →₀ ℂ) := Finsupp.basisSingleOne
+  let b := Common.finiteHilbertOrthonormalBasis (Config := Site)
+  let j : (Site →₀ ℂ) ≃ₗ[ℂ] Common.FiniteHilbertFock Site :=
+    Common.finiteHilbertFockEquiv
+  let e := b.equiv b p
+  let f : (Site →₀ ℂ) →ₗ[ℂ] (Site →₀ ℂ) :=
+    (Finsupp.domLCongr p : (Site →₀ ℂ) ≃ₗ[ℂ] (Site →₀ ℂ)).toLinearMap
+  have hj (i : Site) : j (b₀ i) = b i := by
+    change Common.finiteHilbertFockEquiv (Common.basisState i) =
+      Common.finiteHilbertBasisState i
+    exact Common.finiteHilbertFockEquiv_basisState i
+  have hket (i : Site) : f (latticeKet i) = latticeKet (p i) :=
+    Finsupp.domLCongr_single p i (1 : ℂ)
+  have hf : e.toLinearEquiv.toLinearMap.comp j.toLinearMap = j.toLinearMap.comp f := by
+    apply b₀.ext
+    intro i
+    change e (j (b₀ i)) = j (f (b₀ i))
+    have hi : f (b₀ i) = b₀ (p i) := hket i
+    rw [hj i, hi, hj (p i)]
+    exact b.equiv_apply_basis b p i
+  have hmatrix (x y : Site) :
+      f.comp (matrixUnit x y) = (matrixUnit (p x) (p y)).comp f := by
+    apply b₀.ext
+    intro z
+    change f (matrixUnit x y (latticeKet z)) =
+      matrixUnit (p x) (p y) (f (latticeKet z))
+    rw [hket z]
+    by_cases h : z = y
+    · subst z
+      simp only [matrixUnit_apply, latticeKet, Finsupp.single_eq_same]
+      exact hket x
+    · have hyz : y ≠ z := Ne.symm h
+      have hp : p y ≠ p z := fun heq => hyz (p.injective heq)
+      simp [matrixUnit_apply, latticeKet, Finsupp.single_eq_of_ne hyz,
+        Finsupp.single_eq_of_ne hp]
+  refine ⟨AlgebraicFock.finiteHilbertMap b b e, ?_⟩
+  intro x y
+  exact AlgebraicFock.finiteHilbertMap_conj_dGamma_of_basis b₀ b j.toLinearMap hj
+    e f hf (matrixUnit x y) (matrixUnit (p x) (p y))
+    (fun w => DFunLike.congr_fun (hmatrix x y) w)
+
 
 end FiniteLattice
 
