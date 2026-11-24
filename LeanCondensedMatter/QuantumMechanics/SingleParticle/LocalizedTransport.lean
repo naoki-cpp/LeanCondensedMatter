@@ -112,6 +112,7 @@ noncomputable def heisenbergIntrinsicSymmetricLocalizationBalanceLaw
   transport_depends := htransport
   source := heisenbergSourceFunctional V ℏ h M m
   balance := by
+    apply LinearMap.ext
     intro f
     change heisenbergScale ℏ •
         ⁅h, _root_.ConservationLaw.localizedQuantityFunctional M m f⁆ = _

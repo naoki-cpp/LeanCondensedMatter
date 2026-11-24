@@ -65,22 +65,10 @@ structure FluxBalanceLaw
   transport_depends : Function.FactorsThrough transport d
   /-- Local source, sink, or torque functional. -/
   source : Test →ₗ[𝕜] Obs
-  /-- The local balance identity. -/
-  balance : ∀ f, δ (Q f) = transport f + source f
+  /-- The local balance identity as an equality of linear maps on tests. -/
+  balance : δ.comp Q = transport + source
 
 namespace FluxBalanceLaw
-
-/-- Representation-independent transport vanishes on test objects annihilated by the differential. -/
-theorem transport_eq_zero_of_differential_eq_zero
-    {δ : Obs →ₗ[𝕜] Obs}
-    {Q : Test →ₗ[𝕜] Obs}
-    {d : Test →ₗ[𝕜] OneForm}
-    (B : FluxBalanceLaw δ Q d) {f : Test} (hf : d f = 0) :
-    B.transport f = 0 :=
-  calc
-    B.transport f = B.transport 0 :=
-      B.transport_depends (by simpa only [map_zero] using hf)
-    _ = 0 := map_zero B.transport
 
 /-- If the differential test vanishes, only the source can change the localized quantity. -/
 theorem evolution_eq_source_of_differential_eq_zero
@@ -89,7 +77,13 @@ theorem evolution_eq_source_of_differential_eq_zero
     {d : Test →ₗ[𝕜] OneForm}
     (B : FluxBalanceLaw δ Q d) {f : Test} (hf : d f = 0) :
     δ (Q f) = B.source f := by
-  rw [B.balance f, B.transport_eq_zero_of_differential_eq_zero hf, zero_add]
+  have hz : B.transport f = 0 := by
+    calc
+      B.transport f = B.transport 0 :=
+        B.transport_depends (by simpa only [map_zero] using hf)
+      _ = 0 := map_zero B.transport
+  simpa only [LinearMap.comp_apply, LinearMap.add_apply, hz, zero_add] using
+    congrArg (fun L : Test →ₗ[𝕜] Obs => L f) B.balance
 
 /-- A test object in the kernel of `d` gives a conserved quantity when its source also vanishes. -/
 theorem evolution_eq_zero_of_differential_eq_zero_of_source_eq_zero
@@ -101,17 +95,6 @@ theorem evolution_eq_zero_of_differential_eq_zero_of_source_eq_zero
     δ (Q f) = 0 := by
   rw [B.evolution_eq_source_of_differential_eq_zero hf, hsource]
 
-/-- In a source-free law, transport flux is exactly the localized evolution. -/
-theorem sourceFreeFlux_eq_evolution
-    {δ : Obs →ₗ[𝕜] Obs}
-    {Q : Test →ₗ[𝕜] Obs}
-    {d : Test →ₗ[𝕜] OneForm}
-    (B : FluxBalanceLaw δ Q d) (hsource : B.source = 0) (f : Test) :
-    B.transport f = δ (Q f) := by
-  have h := B.balance f
-  rw [hsource] at h
-  simpa using h.symm
-
 /-- Source-free transport flux is unique for fixed evolution, localized quantity, and differential. -/
 theorem sourceFreeFlux_unique
     {δ : Obs →ₗ[𝕜] Obs}
@@ -120,9 +103,11 @@ theorem sourceFreeFlux_unique
     (B₁ B₂ : FluxBalanceLaw δ Q d)
     (hsource₁ : B₁.source = 0) (hsource₂ : B₂.source = 0) (f : Test) :
     B₁.transport f = B₂.transport f := by
-  calc
-    B₁.transport f = δ (Q f) := B₁.sourceFreeFlux_eq_evolution hsource₁ f
-    _ = B₂.transport f := (B₂.sourceFreeFlux_eq_evolution hsource₂ f).symm
+  have h₁ : δ.comp Q = B₁.transport := by
+    simpa only [hsource₁, add_zero] using B₁.balance
+  have h₂ : δ.comp Q = B₂.transport := by
+    simpa only [hsource₂, add_zero] using B₂.balance
+  exact congrArg (fun L : Test →ₗ[𝕜] Obs => L f) (h₁.symm.trans h₂)
 
 /-- Scaling the evolution scales representation-independent transport and source. -/
 noncomputable def scaleEvolution
@@ -132,16 +117,9 @@ noncomputable def scaleEvolution
     (B : FluxBalanceLaw δ Q d) (c : 𝕜) :
     FluxBalanceLaw (c • δ) Q d where
   transport := c • B.transport
-  transport_depends := by
-    intro f g hfg
-    simpa only [LinearMap.smul_apply] using
-      congrArg (fun y : Obs => c • y) (B.transport_depends hfg)
+  transport_depends := B.transport_depends.comp_left (fun y : Obs => c • y)
   source := c • B.source
-  balance := by
-    intro f
-    simp only [LinearMap.smul_apply]
-    rw [B.balance f]
-    exact smul_add c (B.transport f) (B.source f)
+  balance := by rw [LinearMap.smul_comp, B.balance, smul_add]
 
 section TransportSourceAmbiguity
 
@@ -164,9 +142,7 @@ noncomputable def shiftTransportSource
     rw [B.transport_depends hfg, hK hfg]
   source := B.source + (-1 : R) • K
   balance := by
-    intro f
-    rw [B.balance f]
-    simp only [LinearMap.add_apply, LinearMap.smul_apply]
+    rw [B.balance]
     module
 
 @[simp]
@@ -202,10 +178,7 @@ noncomputable def absorbSource
     simp only [LinearMap.add_apply]
     rw [B.transport_depends hfg, hsource hfg]
   source := 0
-  balance := by
-    intro f
-    rw [B.balance f]
-    simp
+  balance := by simpa only [add_zero] using B.balance
 
 end FluxBalanceLaw
 
