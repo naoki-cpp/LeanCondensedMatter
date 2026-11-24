@@ -260,16 +260,9 @@ theorem ExternalInsertionBlockLayout.assembleDiagram_componentExternalSector_ext
     Finset.toLeft ((layout.assembleDiagram S F).vertexGraph.componentBlock
         (Sum.inl e)) =
       ((layout.sourceEquiv e).1 : Finset (Fin (2 * E))) := by
-  let d := layout.assembleDiagram S F
-  calc
-    (d.vertexGraph.componentBlock (Sum.inl e)).toLeft =
-        (externalComponentPartition d.vertexGraph).part e :=
-      (externalComponentPartition_part_eq_toLeft_componentBlock d.vertexGraph e).symm
-    _ = layout.partition.part e :=
-      congrArg (fun π : Finpartition (Finset.univ : Finset (Fin (2 * E))) =>
-        π.part e) (layout.externalComponentPartition_assembleDiagram S F hconnected)
-    _ = ((layout.sourceEquiv e).1 : Finset (Fin (2 * E))) :=
-      (layout.sourceEquiv_fst e).symm
+  rw [← externalComponentPartition_part_eq_toLeft_componentBlock,
+    layout.externalComponentPartition_assembleDiagram S F hconnected,
+    layout.sourceEquiv_fst]
 
 /-- The interaction sector of the actual physical component containing
 an external insertion is exactly the set of ambient quartic vertices
@@ -600,40 +593,6 @@ theorem ExternalInsertionBlockLayout.physicalComponentCanonicalLegEquiv_eq_finCo
   change (c p).val = p.val
   exact Fin.coe_orderIso_apply iso p
 
-/-- Restricting an assembled physical connected component preserves
-the original interaction-vertex label at every assigned ambient vertex.
-The membership in the *actual* graph-component interaction sector is
-derived from preconnected local blocks, not postulated. This is the
-vertex-label half of physical component/local Wick-block compatibility. -/
-theorem ExternalInsertionBlockLayout.assembleDiagram_restrictComponent_vertexLabel_external
-    {ExternalLabel InternalLabel : Type*}
-    (layout : ExternalInsertionBlockLayout E N) (S : Finset (Fin N))
-    (F : ∀ B : layout.partition.parts,
-      ExternalInsertionDiagram ExternalLabel InternalLabel
-        ((B : Finset (Fin (2 * E))).card / 2) N (layout.interactionBlock S B))
-    (hconnected : ∀ B, (F B).vertexGraph.Preconnected)
-    (e : Fin (2 * E))
-    (v : ↥(layout.interactionBlock S (layout.sourceEquiv e).1)) :
-    ((layout.assembleDiagram S F).restrictComponent
-      ⟨(layout.assembleDiagram S F).vertexGraph.componentBlock (Sum.inl e),
-        (layout.assembleDiagram S F).vertexGraph.componentBlock_mem_componentPartition
-          (Sum.inl e)⟩).vertexLabel
-      ⟨v.1, by
-        rw [layout.assembleDiagram_componentInteractionSector_external S F hconnected e]
-        exact v.2⟩ =
-      (F (layout.sourceEquiv e).1).vertexLabel v := by
-  classical
-  have hidx :
-      ((layout.interactionEquiv S).symm
-        ⟨(layout.sourceEquiv e).1, v⟩ : ↥S) =
-        ⟨v.1, (Finset.mem_filter.mp v.2).1⟩ := by
-    apply Subtype.ext
-    rfl
-  have hlabel :=
-    layout.assembleDiagram_vertexLabel S F (layout.sourceEquiv e).1 v
-  rw [hidx] at hlabel
-  exact hlabel
-
 /-- Equal finite supports allow pointwise equality of dependent subtype
 functions to be promoted to heterogeneous equality of the functions. -/
 private theorem heq_subtypeFunctions_of_finset_eq
@@ -674,8 +633,14 @@ theorem ExternalInsertionBlockLayout.assembleDiagram_restrictComponent_vertexLab
     (F B).vertexLabel (d.restrictComponent C).vertexLabel
     (layout.assembleDiagram_componentInteractionSector_external S F hconnected e).symm ?_
   intro v
-  exact (layout.assembleDiagram_restrictComponent_vertexLabel_external
-    S F hconnected e v).symm
+  have hidx :
+      ((layout.interactionEquiv S).symm ⟨B, v⟩ : ↥S) =
+        ⟨v.1, (Finset.mem_filter.mp v.2).1⟩ := by
+    apply Subtype.ext
+    rfl
+  have hlabel := layout.assembleDiagram_vertexLabel S F B v
+  rw [hidx] at hlabel
+  exact hlabel.symm
 
 /-- Connected local blocks also ensure that no internal-only vacuum
 component survives the assembly. Each prescribed partition part is
