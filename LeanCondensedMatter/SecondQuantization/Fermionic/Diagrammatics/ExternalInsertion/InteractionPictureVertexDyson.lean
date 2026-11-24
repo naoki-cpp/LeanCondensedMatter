@@ -88,7 +88,7 @@ theorem externalInsertionMixedTimeOrderedVertexComp_eq_shiftedDispersion {E n : 
     rw [prod_orderedExternalInsertionTimedEvents, Fintype.prod_sum_type]
     simp [a, externalFieldFamilyChemicalPotentialFactor]
   unfold externalInsertionMixedTimeOrderedVertexComp
-  simp_rw [hevent]
+  rw [funext hevent]
   rw [ScalarExchange.list_prod_map_smul, hscalar,
     smul_comm (externalInsertionMixedAtomicOrderSign externalTime σ)]
 
