@@ -31,7 +31,7 @@ theorem pairEndpointInversionCount_eq_sum {α : Type*} [LT α] [DecidableLT α]
       ∑ i : Fin 2, ∑ j : Fin 2,
         if pairEndpointAt right j < pairEndpointAt left i then 1 else 0 := by
   simp [pairEndpointInversionCount, pairEndpointAt, Fin.sum_univ_two,
-    add_assoc, add_comm, add_left_comm]
+    add_comm, add_left_comm]
 
 /-- Indicator-valued form of crossing parity. -/
 theorem pairEndpointInversionCount_mod_two_eq_crossesIndicator {α : Type*} [LinearOrder α]
