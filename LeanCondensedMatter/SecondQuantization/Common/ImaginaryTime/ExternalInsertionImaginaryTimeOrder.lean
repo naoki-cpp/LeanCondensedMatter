@@ -657,10 +657,15 @@ private theorem externalInsertionFixedEventSlotEquiv_inr_val {E n : ℕ}
   rw [externalInsertionInteractionLeg_val]
   rw [Finset.orderIsoOfFin_symm_apply, Fin.sort_univ, List.idxOf_finRange]
 
-private noncomputable def externalInsertionFixedEventShuffle (E n : ℕ) :
+/-- Both fixed and mixed event orders have singleton external blocks. Only the
+quartic-block local monotonicity requires an order-specific proof. -/
+private noncomputable def externalInsertionEventShuffle {E n : ℕ}
+    (slot : (Σ e : ExternalInsertionTimedEvent E n,
+      Fin (externalInsertionEventBlockSize E n e)) ≃ Fin (2 * (2 * n + E)))
+    (h : ∀ v : Fin n, StrictMono (fun p : Fin 4 => slot ⟨.inr v, p⟩)) :
     Combinatorics.FamilySlotShuffleTo (externalInsertionEventBlockSize E n)
       (2 * (2 * n + E)) where
-  slotEquiv := externalInsertionFixedEventSlotEquiv E n
+  slotEquiv := slot
   strictMono := by
     intro e p q hpq
     cases e with
@@ -670,13 +675,19 @@ private noncomputable def externalInsertionFixedEventShuffle (E n : ℕ) :
           exact Subsingleton.elim _ _
         subst q
         exact (lt_irrefl _ hpq).elim
-    | inr v =>
-        change (externalInsertionFixedEventSlotEquiv E n ⟨.inr v, p⟩).val <
-          (externalInsertionFixedEventSlotEquiv E n ⟨.inr v, q⟩).val
-        rw [externalInsertionFixedEventSlotEquiv_inr_val,
-          externalInsertionFixedEventSlotEquiv_inr_val]
-        have h : p.val < q.val := hpq
-        omega
+    | inr v => exact h v hpq
+
+private noncomputable def externalInsertionFixedEventShuffle (E n : ℕ) :
+    Combinatorics.FamilySlotShuffleTo (externalInsertionEventBlockSize E n)
+      (2 * (2 * n + E)) :=
+  externalInsertionEventShuffle (externalInsertionFixedEventSlotEquiv E n) (by
+    intro v p q hpq
+    change (externalInsertionFixedEventSlotEquiv E n ⟨.inr v, p⟩).val <
+      (externalInsertionFixedEventSlotEquiv E n ⟨.inr v, q⟩).val
+    rw [externalInsertionFixedEventSlotEquiv_inr_val,
+      externalInsertionFixedEventSlotEquiv_inr_val]
+    have h : p.val < q.val := hpq
+    omega)
 
 private theorem externalInsertionFixedEventShuffle_lt_iff {E n : ℕ}
     (a b : ExternalInsertionTimedEvent E n) (hab : a ≠ b)
@@ -733,35 +744,26 @@ private theorem externalInsertionMixedEventSlotEquiv_val {E n : ℕ}
 private noncomputable def externalInsertionMixedEventShuffle {E n : ℕ}
     (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ) :
     Combinatorics.FamilySlotShuffleTo (externalInsertionEventBlockSize E n)
-      (2 * (2 * n + E)) where
-  slotEquiv := externalInsertionMixedEventSlotEquiv externalTime σ
-  strictMono := by
+      (2 * (2 * n + E)) :=
+  externalInsertionEventShuffle (externalInsertionMixedEventSlotEquiv externalTime σ) (by
     classical
-    intro e p q hpq
-    cases e with
-    | inl e =>
-        have heq : q = p := by
-          change (q : Fin 1) = p
-          exact Subsingleton.elim _ _
-        subst q
-        exact (lt_irrefl _ hpq).elim
-    | inr v =>
-        change (externalInsertionMixedEventSlotEquiv externalTime σ ⟨.inr v, p⟩).val <
-          (externalInsertionMixedEventSlotEquiv externalTime σ ⟨.inr v, q⟩).val
-        rw [externalInsertionMixedEventSlotEquiv_val, externalInsertionMixedEventSlotEquiv_val]
-        apply (List.idxOf_flatMap_block_lt_iff externalInsertionTimedEventAtomicLegs
-          (orderedExternalInsertionTimedEvents externalTime σ) (.inr v) _ _
-          (externalInsertionMixedTimeOrderedAtomicLegs_nodup externalTime σ)
-          (orderedExternalInsertionTimedEvents_all_mem externalTime σ (.inr v))
-          (externalInsertionEventBlockLegEquiv_mem (.inr v) p)
-          (externalInsertionEventBlockLegEquiv_mem (.inr v) q)).mpr
-        have hlocal (l : Fin 4) :
-            (externalInsertionTimedEventAtomicLegs (E := E) (.inr v)).idxOf
-              (externalInsertionEventBlockLegEquiv E n ⟨.inr v, l⟩) = l.val := by
-          fin_cases l <;> simp [externalInsertionTimedEventAtomicLegs,
-            externalInsertionEventBlockLegEquiv]
-        rw [hlocal, hlocal]
-        exact hpq
+    intro v p q hpq
+    change (externalInsertionMixedEventSlotEquiv externalTime σ ⟨.inr v, p⟩).val <
+      (externalInsertionMixedEventSlotEquiv externalTime σ ⟨.inr v, q⟩).val
+    rw [externalInsertionMixedEventSlotEquiv_val, externalInsertionMixedEventSlotEquiv_val]
+    apply (List.idxOf_flatMap_block_lt_iff externalInsertionTimedEventAtomicLegs
+      (orderedExternalInsertionTimedEvents externalTime σ) (.inr v) _ _
+      (externalInsertionMixedTimeOrderedAtomicLegs_nodup externalTime σ)
+      (orderedExternalInsertionTimedEvents_all_mem externalTime σ (.inr v))
+      (externalInsertionEventBlockLegEquiv_mem (.inr v) p)
+      (externalInsertionEventBlockLegEquiv_mem (.inr v) q)).mpr
+    have hlocal (l : Fin 4) :
+        (externalInsertionTimedEventAtomicLegs (E := E) (.inr v)).idxOf
+          (externalInsertionEventBlockLegEquiv E n ⟨.inr v, l⟩) = l.val := by
+      fin_cases l <;> simp [externalInsertionTimedEventAtomicLegs,
+        externalInsertionEventBlockLegEquiv]
+    rw [hlocal, hlocal]
+    exact hpq)
 
 private theorem externalInsertionMixedEventShuffle_lt_iff {E n : ℕ}
     (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ)
@@ -773,24 +775,16 @@ private theorem externalInsertionMixedEventShuffle_lt_iff {E n : ℕ}
       (orderedExternalInsertionTimedEvents externalTime σ).idxOf a <
         (orderedExternalInsertionTimedEvents externalTime σ).idxOf b := by
   classical
-  let events := orderedExternalInsertionTimedEvents externalTime σ
-  let x := externalInsertionEventBlockLegEquiv E n ⟨a, p⟩
-  let y := externalInsertionEventBlockLegEquiv E n ⟨b, q⟩
   change (externalInsertionMixedEventSlotEquiv externalTime σ ⟨a, p⟩).val <
     (externalInsertionMixedEventSlotEquiv externalTime σ ⟨b, q⟩).val ↔ _
   rw [externalInsertionMixedEventSlotEquiv_val, externalInsertionMixedEventSlotEquiv_val]
-  change (events.flatMap externalInsertionTimedEventAtomicLegs).idxOf x <
-    (events.flatMap externalInsertionTimedEventAtomicLegs).idxOf y ↔
-      events.idxOf a < events.idxOf b
-  have ha : a ∈ events := orderedExternalInsertionTimedEvents_all_mem externalTime σ a
-  have hb : b ∈ events := orderedExternalInsertionTimedEvents_all_mem externalTime σ b
-  have hx : x ∈ externalInsertionTimedEventAtomicLegs a :=
-    externalInsertionEventBlockLegEquiv_mem a p
-  have hy : y ∈ externalInsertionTimedEventAtomicLegs b :=
-    externalInsertionEventBlockLegEquiv_mem b q
-  have hn := externalInsertionMixedTimeOrderedAtomicLegs_nodup externalTime σ
   exact List.idxOf_flatMap_lt_iff_idxOf_lt externalInsertionTimedEventAtomicLegs
-    events a b x y hn ha hb hx hy hab
+    (orderedExternalInsertionTimedEvents externalTime σ) a b _ _
+    (externalInsertionMixedTimeOrderedAtomicLegs_nodup externalTime σ)
+    (orderedExternalInsertionTimedEvents_all_mem externalTime σ a)
+    (orderedExternalInsertionTimedEvents_all_mem externalTime σ b)
+    (externalInsertionEventBlockLegEquiv_mem a p)
+    (externalInsertionEventBlockLegEquiv_mem b q) hab
 
 /-- The full mixed atomic permutation has the sign of the inversions among
 the one-legged external events alone. Interactions contribute four consecutive
@@ -813,7 +807,7 @@ theorem externalInsertionStandardToMixedAtomicPositionEquiv_sign
     intro i
     simp [f, m, Combinatorics.FamilySlotShuffleTo.relativePerm,
       externalInsertionFixedEventShuffle, externalInsertionMixedEventShuffle,
-      externalInsertionFixedEventSlotEquiv, externalInsertionMixedEventSlotEquiv,
+      externalInsertionEventShuffle, externalInsertionFixedEventSlotEquiv, externalInsertionMixedEventSlotEquiv,
       externalInsertionStandardToMixedAtomicPositionEquiv]
   rw [← hrel, Combinatorics.FamilySlotShuffleTo.relativePerm_sign_eq_oddBlockInversions
     f m externalInsertionTimedEventRank
