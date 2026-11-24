@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Analysis.Operator.Compact
-import LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.Norm
+import LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.Basic
 import Mathlib.Analysis.Normed.Group.FunctionSeries
 
 set_option linter.style.header false
