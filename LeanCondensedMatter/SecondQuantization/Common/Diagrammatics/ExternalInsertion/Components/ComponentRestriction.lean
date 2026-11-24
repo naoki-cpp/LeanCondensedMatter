@@ -119,6 +119,32 @@ theorem ExternalInsertionDiagram.externalComponentPartition_block_card_even
     ⟨d.vertexGraph.componentBlock (Sum.inl e),
       d.vertexGraph.componentBlock_mem_componentPartition (Sum.inl e)⟩
 
+/-- In a quartic diagram with exactly two one-legged external insertions,
+the two external vertices necessarily lie in the same component.
+
+This holds even if separate pure-vacuum components are present. -/
+theorem ExternalInsertionDiagram.allExternalVerticesConnected_two
+    {S : Finset (Fin N)}
+    (d : ExternalInsertionDiagram ExternalLabel InternalLabel 1 N S) :
+    AllExternalVerticesConnected d.vertexGraph := by
+  apply (allExternalVerticesConnected_iff_reachable_anchor
+    d.vertexGraph (0 : Fin 2)).2
+  intro e
+  fin_cases e
+  · exact SimpleGraph.Reachable.refl _
+  · exact SimpleGraph.reachable_finTwo_of_even_left_components
+      d.vertexGraph d.externalSector_card_even
+
+/-- For exactly two external insertions, a diagram is fully connected
+if and only if it has no vacuum component. This need not hold for four
+or more external insertions. -/
+theorem ExternalInsertionDiagram.preconnected_iff_hasNoVacuumComponent_two
+    {S : Finset (Fin N)}
+    (d : ExternalInsertionDiagram ExternalLabel InternalLabel 1 N S) :
+    d.vertexGraph.Preconnected ↔ HasNoVacuumComponent d.vertexGraph := by
+  rw [preconnected_iff_hasNoVacuumComponent_and_allExternalVerticesConnected]
+  simp [d.allExternalVerticesConnected_two]
+
 /-- The local external-sector parameter: half the number of one-legged external insertions
 carried by one connected component. -/
 noncomputable def ExternalInsertionDiagram.externalPairCount {S : Finset (Fin N)}

@@ -2,7 +2,7 @@ import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalIn
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.InteractionPictureVertexDyson
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentIntegral
 import Mathlib.Data.Fintype.EquivFin
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ExternalConnectivity
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentRestriction
 
 set_option linter.style.header false
 
