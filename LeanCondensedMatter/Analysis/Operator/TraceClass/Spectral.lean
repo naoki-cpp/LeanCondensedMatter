@@ -227,12 +227,9 @@ theorem isTraceClass_iff_hasSummableRealEigenvalues
     simpa [g] using hzero x hx
   constructor
   · intro htrace
-    have hg : Summable g := by
-      have hbtrace := (isTraceClass_iff_isTraceClassWrt b T).mp htrace
-      simpa [IsTraceClassWrt, g] using hbtrace
     rw [HasSummableRealEigenvalues]
-    have hrestricted : Summable (g ∘ j) := hg.comp_injective hj
-    exact hrestricted.congr fun a => hg_point a
+    have hg : HasSum g htrace.traceNorm := htrace.hasSum_abs_diagonalExpectationValue b
+    exact (hg.summable.comp_injective hj).congr hg_point
   · intro hspec
     have hweights : Summable (fun a : EigenvectorIndex T => |a.1.1|) := hspec
     have hrestricted :
@@ -256,15 +253,12 @@ theorem IsTraceClass.trace_eq_spectralTrace
     (hT : IsTraceClass T) (hself : IsSelfAdjoint T) :
     hT.trace = (spectralTrace T : ℂ) := by
   obtain ⟨w, d, -⟩ := exists_hilbertBasis (𝕜 := ℂ) (E := H)
-  rw [hT.trace_eq_tsum_inner d]
-  have hspec : HasSummableRealEigenvalues T := hT.hasSummableRealEigenvalues hself
   have hcast :=
-    (hasSum_diagonalExpectationValue_eq_spectralTrace hT.isCompact hself hspec d).mapL
-      Complex.ofRealCLM
+    (hasSum_diagonalExpectationValue_eq_spectralTrace hT.isCompact hself
+      (hT.hasSummableRealEigenvalues hself) d).mapL Complex.ofRealCLM
   simp only [Complex.ofRealCLM_apply] at hcast
-  exact
-    (HasSum.congr_fun hcast fun i =>
-      (coe_diagonalExpectationValue_right T hself (d i)).symm).tsum_eq
+  exact (hT.hasSum_trace d).unique
+    (hcast.congr_fun fun i => (coe_diagonalExpectationValue_right T hself (d i)).symm)
 
 /-- On self-adjoint trace-class operators, the canonical trace norm is the absolute eigenvalue sum
 with multiplicity. -/
@@ -280,16 +274,9 @@ theorem IsTraceClass.traceNorm_eq_tsum_abs_eigenvalues
     simpa [g] using hpoint a
   have hg_zero (x : u) (hx : x ∉ Set.range j) : g x = 0 := by
     simpa [g] using hzero x hx
-  have hg : Summable g := by
-    have hbtrace := (isTraceClass_iff_isTraceClassWrt b T).mp hT
-    simpa [IsTraceClassWrt, g] using hbtrace
-  have htrace : hT.traceNorm = ∑' i, g i := by
-    simpa [g] using hT.traceNorm_eq_tsum_diagonalExpectationValue b
-  have hrestricted : HasSum (g ∘ j) (∑' i, g i) :=
-    (hj.hasSum_iff hg_zero).mpr hg.hasSum
-  have habs : HasSum (fun a : EigenvectorIndex T => |a.1.1|) (∑' i, g i) :=
-    HasSum.congr_fun hrestricted fun a => (hg_point a).symm
-  exact htrace.trans habs.tsum_eq.symm
+  have hg : HasSum g hT.traceNorm := hT.hasSum_abs_diagonalExpectationValue b
+  have hrestricted : HasSum (g ∘ j) hT.traceNorm := (hj.hasSum_iff hg_zero).mpr hg
+  exact (hrestricted.congr_fun hg_point).tsum_eq.symm
 
 namespace SpectralTraceClass
 
