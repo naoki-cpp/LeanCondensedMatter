@@ -16,4 +16,4 @@ witness for `1 + diagonalOp`. Finite-dimensional agreement is a theorem about th
 proved through the diagonal matrix representation; it is not a second determinant definition.
 Reindexing invariance alone does not establish independence from arbitrary diagonalizing bases.
 
-Evidence: [Hilbert–Schmidt API](../../LeanCondensedMatter/Analysis/Operator/HilbertSchmidt/Basic.lean), [Hilbert–Schmidt pairing](../../LeanCondensedMatter/Analysis/Operator/HilbertSchmidt/InnerProduct.lean), [diagonal Fredholm determinant](../../LeanCondensedMatter/Analysis/Operator/Fredholm/Diagonal.lean), and [Fredholm determinant roadmap](../roadmaps/fredholm-determinant.md).
+Evidence: [Hilbert–Schmidt membership, pairing, and norm](../../LeanCondensedMatter/Analysis/Operator/HilbertSchmidt/Basic.lean), [diagonal Fredholm determinant](../../LeanCondensedMatter/Analysis/Operator/Fredholm/Diagonal.lean), and [Fredholm determinant roadmap](../roadmaps/fredholm-determinant.md).

@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Analysis.Operator.TraceClass.General
-import LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.Norm
+import LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.Basic
 import LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.Compact
 import LeanCondensedMatter.Analysis.Operator.Polar
 import Mathlib.Analysis.InnerProductSpace.Trace
