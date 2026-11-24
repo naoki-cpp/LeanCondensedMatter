@@ -121,8 +121,8 @@ theorem externalInsertionLegMap_strictMono
     (g : Fin (2 * E) → Fin (2 * E')) (hg : StrictMono g)
     (hext : ∀ e, f (externalInsertionExternalLeg E T e) =
       externalInsertionExternalLeg E' S (g e))
-    (hint : ∀ v l, f (externalInsertionInteractionLeg (E := E) v l) =
-      externalInsertionInteractionLeg (E := E') ⟨v.1, hTS v.2⟩ l) :
+    (hint : ∀ (v : ↥T) (l : Fin 4), f (externalInsertionInteractionLeg (E := E) v l) =
+      externalInsertionInteractionLeg (E := E') (⟨v.1, hTS v.2⟩ : ↥S) l) :
     StrictMono f := by
   let localEquiv := externalInsertionLegEquiv E T
   intro a b hab
