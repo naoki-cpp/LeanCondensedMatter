@@ -34,9 +34,10 @@ A full current functional `J : OneForm → Obs` is downstream representation dat
 `Φ f = J (d f)`.  This distinction matters because the balance equation determines only the flux
 on exact differential data; an extension of that flux away from `range d` need not be unique.
 
-`ConservationLaw.BalanceLaw` is retained as the represented form carrying such a chosen `J`.
-`FluxBalanceLaw` records the representation-independent transport and source split and owns
-the generic evolution, source-free, uniqueness, and scaling results.
+A chosen full current is supplied independently by `DifferentialCurrentRepresentation d Φ`;
+no second balance-law structure is needed. `FluxBalanceLaw` records the representation-independent
+transport and source split and owns the generic evolution, source-free, uniqueness, scaling,
+and current/source redistribution results.
 
 The word *flux* describes a term in the balance equation, not an intrinsic
 (Berry-curvature or disorder-independent) transport mechanism.
@@ -141,6 +142,50 @@ noncomputable def scaleEvolution
     simp only [LinearMap.smul_apply]
     rw [B.balance f]
     exact smul_add c (B.transport f) (B.source f)
+
+section TransportSourceAmbiguity
+
+variable {R T F O : Type*} [CommRing R]
+variable [AddCommMonoid T] [Module R T]
+variable [AddCommMonoid F] [Module R F]
+variable [AddCommMonoid O] [Module R O]
+
+/-- Redistribute a differential-dependent functional from source to transport without changing
+the localized evolution. A shift of a full current by `J` is the special case
+`K = J.comp d`; no full current extension is required. -/
+noncomputable def shiftTransportSource
+    {δ : O →ₗ[R] O} {Q : T →ₗ[R] O} {d : T →ₗ[R] F}
+    (B : FluxBalanceLaw δ Q d) (K : T →ₗ[R] O)
+    (hK : Function.FactorsThrough K d) : FluxBalanceLaw δ Q d where
+  transport := B.transport + K
+  transport_depends := by
+    intro f g hfg
+    simp only [LinearMap.add_apply]
+    rw [B.transport_depends hfg, hK hfg]
+  source := B.source + (-1 : R) • K
+  balance := by
+    intro f
+    rw [B.balance f]
+    simp only [LinearMap.add_apply, LinearMap.smul_apply]
+    module
+
+@[simp]
+theorem shiftTransportSource_transport
+    {δ : O →ₗ[R] O} {Q : T →ₗ[R] O} {d : T →ₗ[R] F}
+    (B : FluxBalanceLaw δ Q d) (K : T →ₗ[R] O)
+    (hK : Function.FactorsThrough K d) :
+    (B.shiftTransportSource K hK).transport = B.transport + K :=
+  rfl
+
+@[simp]
+theorem shiftTransportSource_source
+    {δ : O →ₗ[R] O} {Q : T →ₗ[R] O} {d : T →ₗ[R] F}
+    (B : FluxBalanceLaw δ Q d) (K : T →ₗ[R] O)
+    (hK : Function.FactorsThrough K d) :
+    (B.shiftTransportSource K hK).source = B.source + (-1 : R) • K :=
+  rfl
+
+end TransportSourceAmbiguity
 
 /-- If the source itself depends only on differential data, it may be absorbed into transport.
 The resulting law is source-free without choosing any full current functional. -/
