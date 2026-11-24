@@ -151,10 +151,10 @@ theorem finiteRashbaMomentumSpinDisplacement_fock_decomposition
             (heisenbergEvolution (SpinfulSite Grid →₀ ℂ) hbar
               (finiteRashbaMomentumHamiltonian params momentum)
               (spinOneBodyLinear spinScale component))) := by
-  simpa only [hvelocity] using
-    SecondQuantization.Fermionic.Transport.boundedHeisenbergSymmetrizedProduct_eq
-      hbar (finiteRashbaMomentumHamiltonian params momentum) position
-      (spinOneBodyLinear spinScale component)
+  rw [← hvelocity]
+  exact SecondQuantization.Fermionic.Transport.boundedHeisenbergSymmetrizedProduct_eq
+    hbar (finiteRashbaMomentumHamiltonian params momentum) position
+    (spinOneBodyLinear spinScale component)
 
 /-- The physical spin-displacement derivative, supplied at the same momentum
 grid as the conventional Rashba spin/charge channel, is a candidate measured
