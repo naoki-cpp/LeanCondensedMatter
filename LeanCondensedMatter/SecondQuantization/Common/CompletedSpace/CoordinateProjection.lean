@@ -67,10 +67,6 @@ theorem completedCoordinateProjection_basisState (P : Config → Prop)
   classical
   by_cases hc : P c <;> simp [completedCoordinateProjection, hc]
 
-
-set_option maxHeartbeats 1000000 in
--- The nested subtype HasSum reindexing and continuous-linear-map composition need more
--- elaboration heartbeats than the default budget; restrict the increase to this lemma.
 /-- Compressing a summable diagonal series to a coordinate subset keeps exactly the
 diagonal terms indexed by that subset. This holds for any configuration predicate,
 independently of the origin of the diagonal weights. -/
@@ -98,19 +94,26 @@ theorem completedCoordinateProjection_tsum_diagonalTerm
     intro ψ
     change Q ((b.diagonalTerm a c) (Q ψ)) =
       (if P c then b.diagonalTerm a c else 0) ψ
-    simp only [HilbertBasis.diagonalTerm, smul_apply,
-      InnerProductSpace.rankOne_apply, map_smul, b, completedHilbertBasis_apply]
+    have hQb : Q (completedBasisState c) = if P c then completedBasisState c else 0 :=
+      completedCoordinateProjection_basisState P c
     by_cases hc : P c
-    · simp [Q, hc, inner_completedBasisState_left,
-        completedCoordinateProjection_apply, completedCoordinateProjection_basisState]
-    · simp [Q, hc, inner_completedBasisState_left,
-        completedCoordinateProjection_apply, completedCoordinateProjection_basisState]
+    · have hQψ : Q ψ c = ψ c := by
+        rw [show Q ψ c = if P c then ψ c else 0 from
+          completedCoordinateProjection_apply P ψ c, ite_eq_left hc]
+      rw [ite_eq_left hc] at hQb
+      rw [ite_eq_left hc]
+      simp only [HilbertBasis.diagonalTerm, smul_apply, InnerProductSpace.rankOne_apply,
+        map_smul, b, completedHilbertBasis_apply, inner_completedBasisState_left, hQb, hQψ]
+    · rw [ite_eq_right hc] at hQb
+      rw [ite_eq_right hc]
+      simp only [HilbertBasis.diagonalTerm, smul_apply, InnerProductSpace.rankOne_apply,
+        map_smul, b, completedHilbertBasis_apply, hQb, smul_zero, zero_apply]
   have hindicator :
       HasSum (({c : Config | P c} : Set Config).indicator (b.diagonalTerm a)) (L A) := by
     apply (hA.mapL L).congr_fun
     intro c
-    rw [hterm]
-    by_cases hc : P c <;> simp [Set.indicator, hc]
+    change (if P c then b.diagonalTerm a c else 0) = L (b.diagonalTerm a c)
+    exact (hterm c).symm
   have hsubset :
       HasSum (fun c : {c : Config // P c} => b.diagonalTerm a c.val) (L A) :=
     (hasSum_subtype_iff_indicator (s := {c : Config | P c})
