@@ -46,8 +46,21 @@ noncomputable section
 
 
 variable {Site E : Type*}
-variable [LinearOrder Site] [Fintype Site]
 variable [AddCommGroup E] [Module ℝ E]
+
+/-- Under affine site relabeling the translation cancels from each displacement.
+The transformed directional functional is a pullback by the linear part. -/
+private theorem bondCoordinate_comp_sitePermutation
+    (geometry : LatticeGeometry Site E) (e : Equiv.Perm Site)
+    (L : E →ₗ[ℝ] E) (a : E)
+    (hposition : ∀ x, geometry.position (e x) = L (geometry.position x) + a)
+    (direction : E →ₗ[ℝ] ℝ) (x y : Site) :
+    geometry.bondCoordinate (direction.comp L) x y =
+      geometry.bondCoordinate direction (e x) (e y) := by
+  simp [LatticeGeometry.bondCoordinate, LatticeGeometry.bondDisplacement,
+    LinearMap.comp_apply, hposition, map_sub]
+
+variable [LinearOrder Site] [Fintype Site]
 
 /-- Spatial current component obtained by summing all directed bond currents with their oriented
 geometric coordinates. The factor `1/2` removes the duplicate orientation in the all-pairs sum. -/
@@ -125,18 +138,6 @@ theorem boundedMixedDirectionalContact_swap
   apply Finset.sum_congr rfl
   intro y _
   rw [mul_comm]
-
-/-- Under affine site relabeling the translation cancels from each displacement.
-The transformed directional functional is a pullback by the linear part. -/
-private theorem bondCoordinate_comp_sitePermutation
-    (geometry : LatticeGeometry Site E) (e : Equiv.Perm Site)
-    (L : E →ₗ[ℝ] E) (a : E)
-    (hposition : ∀ x, geometry.position (e x) = L (geometry.position x) + a)
-    (direction : E →ₗ[ℝ] ℝ) (x y : Site) :
-    geometry.bondCoordinate (direction.comp L) x y =
-      geometry.bondCoordinate direction (e x) (e y) := by
-  simp [LatticeGeometry.bondCoordinate, LatticeGeometry.bondDisplacement,
-    LinearMap.comp_apply, hposition, map_sub]
 
 /-- A hopping-preserving affine permutation transports the physical directional
 current by the pullback of the measurement direction. The only operator-level
