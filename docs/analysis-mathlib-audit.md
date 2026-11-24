@@ -85,22 +85,16 @@ which bundles general trace-class membership and symmetry. Compactness is derive
 `IsTraceClass.isCompact`, and summability of the nonzero real eigenvalues is derived from the
 compact self-adjoint characterization. Its associated `spectralTrace` is the real spectral sum.
 
-`Analysis/Operator/TraceClass/General.lean` owns general membership and the Hilbert-basis criterion.
-`Analysis/Operator/TraceClass/Norm.lean` owns the canonical basis-independent real trace norm,
-its Hilbert-basis diagonal formula, and the absolute diagonal formula induced by a left polar
-factor. `Analysis/Operator/TraceClass/Factorization/Basic.lean` owns the trace-norm-independent
-characterization of trace class as `T = A† B` with Hilbert--Schmidt factors, and the
-compactness corollary `IsTraceClass.isCompact`.
-`Analysis/Operator/TraceClass/Ops/Norm.lean` also owns the general bound
-`‖T‖₁ ≤ (‖A‖²_HS + ‖B‖²_HS) / 2` and a factorization with both squared
-Hilbert--Schmidt norms equal to the trace norm. `TraceClass/Trace.lean`
-owns the direct diagonal `Summable`/`HasSum`/`tsum` API, basis independence, and the canonical
-complex trace; there is no separate basis-relative trace-series wrapper. The compactness
-corollary lives directly in `TraceClass/Factorization/Basic.lean`.
+`Analysis/Operator/TraceClass/General.lean` owns general membership, the Hilbert-basis criterion,
+the canonical trace norm, and its diagonal and polar-factor formulas.
+`Analysis/Operator/TraceClass/Factorization/Basic.lean` owns the characterization `T = A† B`,
+the bound `‖T‖₁ ≤ (‖A‖²_HS + ‖B‖²_HS) / 2`, the sharp factorization with both squared
+Hilbert--Schmidt norms equal to the trace norm, and compactness.
+`TraceClass/Trace.lean` owns the direct diagonal `Summable`/`HasSum`/`tsum` API, basis independence,
+and the canonical complex trace.
 `Analysis/Operator/TraceClass/Ops/Basic.lean` owns additive/scalar/adjoint closure, bounded left/right
-ideal closure, complex-trace linearity, and adjoint-conjugation closure with trace invariance
-derived from general cyclicity. `TraceClass/Ops/Norm.lean` owns trace-norm identities,
-the left/right operator-norm bounds, the triangle inequality, and the trace-versus-trace-norm bound.
+ideal closure, complex-trace linearity and cyclicity, adjoint-conjugation invariance, and the
+corresponding trace-norm identities, ideal bounds, triangle inequality, and trace modulus bound.
 `Analysis/Operator/TraceClass/Spectral/` owns spectral summability, the bundled self-adjoint
 specialization, spectral trace identities, and spectral equality criteria. `Spectral/Bundled.lean` also exposes the compact self-adjoint characterizations
 of general trace-class membership, trace norm, and complex trace.
