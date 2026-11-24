@@ -1,11 +1,10 @@
-import LeanCondensedMatter.Analysis.ConservationLaw.BalanceLaw
 import Mathlib.Algebra.Lie.OfAssociative
 import Mathlib.Basic.Complex.Basic
 
 set_option linter.style.header false
 
 /-!
-# Heisenberg evolution for abstract balance laws
+# Algebraic Heisenberg evolution
 
 This module supplies only the quantum-mechanical normalization of algebraic commutator evolution:
 
@@ -14,9 +13,7 @@ This module supplies only the quantum-mechanical normalization of algebraic comm
 ```
 
 It does not choose a localization map, transported quantity, position observable, velocity, or
-current representation. An existing represented balance law is normalized directly, scaling its
-chosen current and source together with the evolution. No temporary intrinsic representation is
-required for this operation.
+current representation or balance law.
 -/
 
 namespace QuantumTheory
@@ -42,30 +39,6 @@ theorem heisenbergEvolution_apply
     heisenbergEvolution V ℏ h A =
       heisenbergScale ℏ • ⁅h, A⁆ :=
   rfl
-
-/-- Normalize a represented algebraic balance law to physical Heisenberg evolution by scaling
-its chosen current and source directly. -/
-noncomputable def heisenbergBalanceLaw
-    {Test OneForm : Type*}
-    [AddCommGroup Test] [Module ℂ Test]
-    [AddCommGroup OneForm] [Module ℂ OneForm]
-    (ℏ : ℝ) (h : V →ₗ[ℂ] V)
-    (Q : Test →ₗ[ℂ] (V →ₗ[ℂ] V))
-    (d : Test →ₗ[ℂ] OneForm)
-    (B : _root_.ConservationLaw.BalanceLaw
-      (LieAlgebra.ad ℂ (Module.End ℂ V) h) Q d) :
-    _root_.ConservationLaw.BalanceLaw (heisenbergEvolution V ℏ h) Q d where
-  current := heisenbergScale ℏ • B.current
-  source := heisenbergScale ℏ • B.source
-  balance := by
-    intro f
-    change
-      (heisenbergScale ℏ • LieAlgebra.ad ℂ (Module.End ℂ V) h) (Q f) =
-        (heisenbergScale ℏ • B.current) (d f) +
-          (heisenbergScale ℏ • B.source) f
-    simp only [LinearMap.smul_apply]
-    rw [B.balance f]
-    exact smul_add (heisenbergScale ℏ) (B.current (d f)) (B.source f)
 
 end ConservationLaw
 end QuantumTheory

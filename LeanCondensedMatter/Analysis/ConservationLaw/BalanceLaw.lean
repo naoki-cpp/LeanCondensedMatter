@@ -133,20 +133,6 @@ theorem shiftCurrentSource_source
     (B.shiftCurrentSource K).source = B.source + (-1 : R) • K.comp d :=
   rfl
 
-/-- The current/source shift leaves the total right-hand side of the balance equation unchanged. -/
-theorem shiftCurrentSource_total
-    {δ : Obs' →ₗ[R] Obs'}
-    {Q : Test' →ₗ[R] Obs'}
-    {d : Test' →ₗ[R] OneForm'}
-    (B : BalanceLaw δ Q d)
-    (K : OneForm' →ₗ[R] Obs') (f : Test') :
-    (B.shiftCurrentSource K).current (d f) + (B.shiftCurrentSource K).source f =
-      B.current (d f) + B.source f := by
-  change (B.current + K) (d f) +
-      (B.source + (-1 : R) • K.comp d) f = B.current (d f) + B.source f
-  simp only [LinearMap.add_apply, LinearMap.smul_apply, LinearMap.comp_apply]
-  module
-
 /-- If the source itself factors through the differential, it can be absorbed completely into the
 current. The resulting current is `B.current + sourceCurrent` and represents the full localized
 evolution `δ ∘ Q` with no remaining source term. -/
@@ -189,8 +175,7 @@ end ConservationLaw
 # Flux/represented balance-law adapters
 
 This module owns conversions between the representation-independent `FluxBalanceLaw` and the
-represented `BalanceLaw`, together with the operation that chooses a full differential-current
-representation for representation-independent transport.  The flux-balance semantic owner does not import this module.
+represented `BalanceLaw`. The flux-balance semantic owner does not import this module.
 -/
 
 namespace ConservationLaw
@@ -238,18 +223,6 @@ noncomputable def toRepresented
     have hf := congrArg (fun L : Test →ₗ[𝕜] Obs => L f) hJ
     simp only [LinearMap.comp_apply] at hf
     rw [hf]
-
-/-- A chosen extension of representation-independent transport is precisely a differential current representation. -/
-def toDifferentialCurrentRepresentation
-    {δ : Obs →ₗ[𝕜] Obs}
-    {Q : Test →ₗ[𝕜] Obs}
-    {d : Test →ₗ[𝕜] OneForm}
-    (B : FluxBalanceLaw δ Q d)
-    (J : OneForm →ₗ[𝕜] Obs)
-    (hJ : B.transport = J.comp d) :
-    DifferentialCurrentRepresentation d B.transport where
-  current := J
-  isCurrent := hJ
 
 end FluxBalanceLaw
 
