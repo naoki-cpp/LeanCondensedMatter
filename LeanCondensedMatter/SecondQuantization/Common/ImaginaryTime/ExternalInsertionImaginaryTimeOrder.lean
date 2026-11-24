@@ -794,10 +794,7 @@ theorem externalInsertionStandardToMixedAtomicPositionEquiv_sign
     {E n : ℕ} (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ) :
     Equiv.Perm.sign (externalInsertionStandardToMixedAtomicPositionEquiv externalTime σ) =
       (-1 : ℤˣ) ^ (∑ a : Fin (2 * E), ∑ b : Fin (2 * E),
-        if a.val < b.val ∧
-          (orderedExternalInsertionTimedEvents externalTime σ).idxOf (.inl b) <
-            (orderedExternalInsertionTimedEvents externalTime σ).idxOf (.inl a)
-        then 1 else 0) := by
+        if a.val < b.val ∧ externalTime a < externalTime b then 1 else 0) := by
   classical
   let f := externalInsertionFixedEventShuffle E n
   let m := externalInsertionMixedEventShuffle externalTime σ
@@ -816,7 +813,30 @@ theorem externalInsertionStandardToMixedAtomicPositionEquiv_sign
     (externalInsertionMixedEventShuffle_lt_iff externalTime σ)]
   congr 1
   simp_rw [Fintype.sum_sum_type]
-  simp [externalInsertionEventBlockSize, externalInsertionTimedEventRank]
+  simp only [externalInsertionEventBlockSize, Nat.reduceMod, Nat.mul_one, Nat.mul_zero,
+    Nat.zero_mul, ite_self, Finset.sum_const_zero, add_zero, zero_add]
+  apply Finset.sum_congr rfl
+  intro a _
+  apply Finset.sum_congr rfl
+  intro b _
+  by_cases hab : a.val < b.val
+  · have hne : (Sum.inl b : ExternalInsertionTimedEvent E n) ≠ Sum.inl a :=
+      fun h => (ne_of_lt hab) (congrArg Fin.val (Sum.inl.inj h).symm)
+    let rel := stableTimedEventBeforeOrEqual
+      (externalInsertionTimedEventTime externalTime σ)
+      (externalInsertionTimedEventRank (E := E) (n := n))
+    letI : Std.Antisymm rel := ⟨fun _ _ h₁ h₂ =>
+      stableTimedEventBeforeOrEqual_antisymm _ _
+        (fun _ _ h => finSumFinEquiv.injective (Fin.ext h)) h₁ h₂⟩
+    have horder := (orderedExternalInsertionTimedEvents_pairwise externalTime σ
+      : (orderedExternalInsertionTimedEvents externalTime σ).Pairwise rel)
+    have hidx := horder.idxOf_lt_iff_of_ne
+      (orderedExternalInsertionTimedEvents_all_mem externalTime σ (.inl b))
+      (orderedExternalInsertionTimedEvents_all_mem externalTime σ (.inl a)) hne
+    have hnot : ¬ b.val ≤ a.val := not_le_of_gt hab
+    simp [externalInsertionTimedEventRank, hab, hidx, rel,
+      stableTimedEventBeforeOrEqual_iff, externalInsertionTimedEventTime, hnot]
+  · simp [externalInsertionTimedEventRank, hab]
 
 /-- The fixed flattened diagram position underlying a mixed-time atomic position. -/
 noncomputable def externalInsertionMixedTimeAmbientPositionEquiv {E n : ℕ}
