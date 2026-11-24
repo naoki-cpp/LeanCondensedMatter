@@ -232,8 +232,11 @@ theorem trace_im_eq_zero_of_isSelfAdjoint {T : H →L[ℂ] H}
     hT.trace.im = 0 := by
   obtain ⟨w, d, -⟩ := exists_hilbertBasis (𝕜 := ℂ) (E := H)
   rw [hT.trace_eq_tsum_inner d, Complex.im_tsum (hT.summable_trace_diagonal d)]
-  simp only [(ContinuousLinearMap.isSelfAdjoint_iff_isSymmetric.mp hself).im_inner_self_apply,
-    tsum_zero]
+  calc
+    (∑' i, (inner ℂ (d i) (T (d i)) : ℂ).im) = ∑' _i, (0 : ℝ) :=
+      tsum_congr fun i =>
+        (ContinuousLinearMap.isSelfAdjoint_iff_isSymmetric.mp hself).im_inner_self_apply (d i)
+    _ = 0 := tsum_zero
 
 /-- The trace of a self-adjoint trace-class operator, bundled as a self-adjoint complex scalar. -/
 noncomputable def traceSelfAdjoint {T : H →L[ℂ] H}
