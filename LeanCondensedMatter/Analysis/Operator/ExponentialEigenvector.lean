@@ -1,5 +1,5 @@
-import Mathlib.Analysis.SpecialFunctions.Exponential
-import Mathlib.Tactic.Ring
+import Mathlib.Analysis.Normed.Algebra.Exponential
+import Mathlib.Analysis.Normed.Operator.Basic
 
 set_option linter.style.header false
 
@@ -23,10 +23,8 @@ theorem exp_apply_of_eigenvector (T : H →L[𝕜] H) (v : H) (c : 𝕜)
     induction n with
     | zero => simp
     | succ n ih =>
-        rw [pow_succ]
-        simp only [mul_apply_eq_comp, ih, map_smul, heigen, smul_smul]
-        congr 1
-        ring
+        rw [pow_succ T, pow_succ' c]
+        simp only [mul_apply_eq_comp, heigen, map_smul, ih, smul_smul]
   let eval : (H →L[𝕜] H) →L[𝕜] H := ContinuousLinearMap.apply 𝕜 H v
   let span : 𝕜 →L[𝕜] H := ContinuousLinearMap.toSpanSingleton 𝕜 v
   have hop := (NormedSpace.exp_series_hasSum_exp' (𝕂 := 𝕜) T).map
