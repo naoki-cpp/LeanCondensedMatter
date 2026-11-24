@@ -100,6 +100,44 @@ theorem amplitude_eq (K : LocallyFiniteHopping Site) (x y : Site) :
     K.amplitude x y = K.column y x :=
   rfl
 
+/-- A finite table of hopping amplitudes determines a locally finite hopping
+operator. Its incident set contains the site and precisely the pairs with a
+nonzero amplitude in at least one orientation. -/
+noncomputable def ofFiniteAmplitudes [Fintype Site] (A : Site → Site → ℂ) :
+    LocallyFiniteHopping Site := by
+  classical
+  exact {
+    column := fun y => Finsupp.equivFunOnFinite.symm (fun x => A x y)
+    incident := fun x => insert x (Finset.univ.filter (fun y => A x y ≠ 0 ∨ A y x ≠ 0))
+    self_mem := by intro x; simp
+    outside_incident := by
+      intro x y hy
+      have hxy : A x y = 0 := by
+        by_contra h
+        exact hy (by simp [h])
+      have hyx : A y x = 0 := by
+        by_contra h
+        exact hy (by simp [h])
+      simpa using And.intro hxy hyx }
+
+@[simp]
+theorem ofFiniteAmplitudes_column_apply [Fintype Site] (A : Site → Site → ℂ)
+    (x y : Site) :
+    (ofFiniteAmplitudes A).column y x = A x y := by
+  classical
+  simp [ofFiniteAmplitudes]
+
+/-- A finite one-body operator is reconstructed by its canonical site-basis
+matrix coefficients. -/
+theorem operator_eq_sum_matrixUnit [Fintype Site] (K : LocallyFiniteHopping Site) :
+    K.operator = ∑ x : Site, ∑ y : Site, K.amplitude x y • matrixUnit x y := by
+  classical
+  apply linearMap_ext_latticeKet
+  intro y
+  ext x
+  simp [LinearMap.sum_apply, Finsupp.finsetSum_apply, matrixUnit_apply, latticeKet,
+    Finsupp.single_apply]
+
 /-- Coefficient-level Hermiticity of a lattice hopping model. -/
 def HasHermitianAmplitudes (K : LocallyFiniteHopping Site) : Prop :=
   ∀ x y : Site, star (K.amplitude x y) = K.amplitude y x
