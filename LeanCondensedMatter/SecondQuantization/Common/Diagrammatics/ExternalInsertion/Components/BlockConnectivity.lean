@@ -360,60 +360,6 @@ theorem ExternalInsertionBlockLayout.physicalComponentLegEquiv_symm_val
       (layout.legEquiv S).symm ⟨(layout.sourceEquiv e).1, i⟩ := by
   rfl
 
-/-- The pairing obtained by restricting the actual physical component to
-its legs, reindexed through their independent block-fiber equivalence. -/
-noncomputable def ExternalInsertionBlockLayout.physicalComponentPairing
-    {ExternalLabel InternalLabel : Type*}
-    (layout : ExternalInsertionBlockLayout E N) (S : Finset (Fin N))
-    (F : ∀ B : layout.partition.parts,
-      ExternalInsertionDiagram ExternalLabel InternalLabel
-        ((B : Finset (Fin (2 * E))).card / 2) N (layout.interactionBlock S B))
-    (hconnected : ∀ B, (F B).vertexGraph.Preconnected)
-    (e : Fin (2 * E)) :
-    PairingOn (Fin (2 * (2 * (layout.interactionBlock S (layout.sourceEquiv e).1).card +
-      ((layout.sourceEquiv e).1.1.card / 2)))) :=
-  (layout.assembleDiagram S F).pairing.restrictAlongEquiv
-    ((layout.assembleDiagram S F).legInComponent
-      ((layout.assembleDiagram S F).vertexGraph.componentBlock (Sum.inl e)))
-    ((layout.assembleDiagram S F).legInComponent_partner_iff
-      ((layout.assembleDiagram S F).vertexGraph.componentBlock (Sum.inl e)))
-    (layout.physicalComponentLegEquiv S F hconnected e)
-
-/-- The *physical component-restricted* Wick pairing, not merely the
-global assembled pairing, equals the independently supplied local
-perfect pairing on each leg. No local pairing data are lost or changed
-by building and then restricting the actual connected graph. -/
-theorem ExternalInsertionBlockLayout.physicalComponentPairing_eq_local
-    {ExternalLabel InternalLabel : Type*}
-    (layout : ExternalInsertionBlockLayout E N) (S : Finset (Fin N))
-    (F : ∀ B : layout.partition.parts,
-      ExternalInsertionDiagram ExternalLabel InternalLabel
-        ((B : Finset (Fin (2 * E))).card / 2) N (layout.interactionBlock S B))
-    (hconnected : ∀ B, (F B).vertexGraph.Preconnected)
-    (e : Fin (2 * E)) :
-    layout.physicalComponentPairing S F hconnected e =
-      (F (layout.sourceEquiv e).1).pairing := by
-  classical
-  let B := (layout.sourceEquiv e).1
-  let d := layout.assembleDiagram S F
-  let P := layout.physicalComponentPairing S F hconnected e
-  let T := layout.physicalComponentLegEquiv S F hconnected e
-  apply PairingOn.ext
-  apply Equiv.ext
-  intro i
-  have hpair : (T.symm (P.partner i)).1 =
-      d.pairing.partner (T.symm i).1 := by
-    exact d.pairing.restrictAlongEquiv_partner_symm_val
-      (d.legInComponent (d.vertexGraph.componentBlock (Sum.inl e)))
-      (d.legInComponent_partner_iff (d.vertexGraph.componentBlock (Sum.inl e))) T i
-  have hpair' :
-      (layout.legEquiv S).symm ⟨B, P.partner i⟩ =
-        d.pairing.partner ((layout.legEquiv S).symm ⟨B, i⟩) := by
-    simpa only [T, layout.physicalComponentLegEquiv_symm_val] using hpair
-  rw [layout.assembleDiagram_partner S F B i] at hpair'
-  have hsigma := (layout.legEquiv S).symm.injective hpair'
-  exact eq_of_heq (Sigma.mk.inj_iff.mp hsigma).2
-
 /-- The canonical connected-component pairing agrees with the original
 independent Wick block pairing after the *explicit* change from canonical
 physical component-leg coordinates to assigned block-leg coordinates.
@@ -438,28 +384,38 @@ theorem ExternalInsertionBlockLayout.physicalComponentCanonicalPairing_eq_local
          (layout.physicalComponentLegEquiv S F hconnected e)).symm) =
       (F (layout.sourceEquiv e).1).pairing := by
   classical
+  let B := (layout.sourceEquiv e).1
   let d := layout.assembleDiagram S F
   let C : d.vertexGraph.componentPartition.parts :=
     ⟨d.vertexGraph.componentBlock (Sum.inl e),
       d.vertexGraph.componentBlock_mem_componentPartition (Sum.inl e)⟩
+  let T := layout.physicalComponentLegEquiv S F hconnected e
+  let P := d.pairing.restrictAlongEquiv (d.legInComponent C.1)
+    (d.legInComponent_partner_iff C.1) T
   change (d.restrictComponent C).pairing.transport
-      ((d.componentBlockLegEquiv C).symm.trans
-        (layout.physicalComponentLegEquiv S F hconnected e)).symm =
-      (F (layout.sourceEquiv e).1).pairing
-  calc
-    (d.restrictComponent C).pairing.transport
-        ((d.componentBlockLegEquiv C).symm.trans
-          (layout.physicalComponentLegEquiv S F hconnected e)).symm =
-      layout.physicalComponentPairing S F hconnected e := by
-        simpa [ExternalInsertionDiagram.restrictComponent,
-          ExternalInsertionBlockLayout.physicalComponentPairing] using
-          (d.pairing.restrictAlongEquiv_change_coordinates
-            (d.legInComponent C.1)
-            (d.legInComponent_partner_iff C.1)
-            (d.componentBlockLegEquiv C)
-            (layout.physicalComponentLegEquiv S F hconnected e))
-    _ = (F (layout.sourceEquiv e).1).pairing :=
-      layout.physicalComponentPairing_eq_local S F hconnected e
+      ((d.componentBlockLegEquiv C).symm.trans T).symm =
+      (F B).pairing
+  have htransport : (d.restrictComponent C).pairing.transport
+      ((d.componentBlockLegEquiv C).symm.trans T).symm = P := by
+    simpa [ExternalInsertionDiagram.restrictComponent, P] using
+      (d.pairing.restrictAlongEquiv_change_coordinates
+        (d.legInComponent C.1) (d.legInComponent_partner_iff C.1)
+        (d.componentBlockLegEquiv C) T)
+  rw [htransport]
+  apply PairingOn.ext
+  apply Equiv.ext
+  intro i
+  have hpair : (T.symm (P.partner i)).1 =
+      d.pairing.partner (T.symm i).1 :=
+    d.pairing.restrictAlongEquiv_partner_symm_val
+      (d.legInComponent C.1) (d.legInComponent_partner_iff C.1) T i
+  have hpair' :
+      (layout.legEquiv S).symm ⟨B, P.partner i⟩ =
+        d.pairing.partner ((layout.legEquiv S).symm ⟨B, i⟩) := by
+    simpa only [T, layout.physicalComponentLegEquiv_symm_val] using hpair
+  rw [layout.assembleDiagram_partner S F B i] at hpair'
+  have hsigma := (layout.legEquiv S).symm.injective hpair'
+  exact eq_of_heq (Sigma.mk.inj_iff.mp hsigma).2
 
 /-- The **actual physical graph component** and its independently assigned
 connected Wick block have the same increasing flattened-leg order.  The
