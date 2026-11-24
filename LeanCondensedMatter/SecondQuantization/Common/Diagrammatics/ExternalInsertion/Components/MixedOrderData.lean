@@ -73,26 +73,7 @@ theorem ExternalInsertionDiagram.componentOrderedDiagram_eq_slotCongr
           (externalInsertionLegCongr (E := d.externalPairCount B)
             (standardSlotEquiv T)).symm
     rw [externalInsertionLegCongr_standardize (E := d.externalPairCount B) T]
-    apply PairingOn.ext
-    apply Equiv.ext
-    intro p
-    simp only [PairingOn.transport_partner]
-    have hcard : 2 * T.card + d.externalPairCount B =
-        2 * (Finset.univ : Finset (Fin T.card)).card +
-          d.externalPairCount B := by
-      simp
-    have hback := Pairing.cast_partner hcard r.pairing p
-    have hforward :=
-      congrArg (finCongr (congrArg (fun k : ℕ => 2 * k) hcard)) hback
-    have hsymm :
-        finCongr (congrArg (fun k : ℕ => 2 * k) hcard.symm) =
-          (finCongr (congrArg (fun k : ℕ => 2 * k) hcard)).symm := by
-      apply Equiv.ext
-      intro x
-      apply Fin.ext
-      rfl
-    rw [hsymm] at hforward
-    simpa only [Equiv.symm_symm, Equiv.apply_symm_apply] using hforward
+    exact Pairing.cast_eq_transport (by simp) r.pairing
 
 
 open Combinatorics in
