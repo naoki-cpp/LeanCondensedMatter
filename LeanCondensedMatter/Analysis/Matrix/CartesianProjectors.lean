@@ -42,7 +42,7 @@ def transverse (k : ι → R) : Matrix ι ι R :=
 
 theorem outer_add_transverse (k : ι → R) :
     outer k + transverse k = normSq k • (1 : Matrix ι ι R) := by
-  exact add_sub_cancel_comm _ _
+  rw [transverse, add_comm (outer k), sub_add_cancel]
 
 theorem outer_mul_transverse (k : ι → R) :
     outer k * transverse k = 0 := by
