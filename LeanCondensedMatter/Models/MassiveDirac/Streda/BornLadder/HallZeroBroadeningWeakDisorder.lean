@@ -25,8 +25,6 @@ namespace QuantumTheory.Models.MassiveDirac
 
 noncomputable section
 
-open QuantumTheory.Transport
-
 open Filter QuantumTheory.Transport
 
 namespace FiniteCutoffBornDyson.Hall.ZeroBroadeningWeakDisorder
@@ -49,11 +47,8 @@ theorem tendsto_orderedXY_momentumIntegral
           (probeEnergy ^ 2 + 3 * m ^ 2) ^ 2 : ℝ) : ℂ))) := by
   let q : ℂ := (((-e : ℝ) : ℂ)) * (((v : ℝ) : ℂ))
   let measure : ℂ := ((momentumMeasurePrefactor hbar : ℝ) : ℂ)
-  have hmeasureReal : momentumMeasurePrefactor hbar ≠ 0 :=
-    (momentumMeasurePrefactor_pos hbar hhbar).ne'
-  have hmeasure : measure ≠ 0 := by
-    dsimp [measure]
-    exact_mod_cast hmeasureReal
+  have hmeasure : (momentumMeasurePrefactor hbar : ℂ) ≠ 0 := by
+    exact_mod_cast (momentumMeasurePrefactor_pos hbar hhbar).ne'
   have haction :=
     tendsto_finiteCutoffContinuumBornDysonTransverseLadderActionZeroBroadeningBoundary_div_disorder_zero
       v m probeEnergy hbar pMax hvelocity hhbar hmetal hcutoff
@@ -72,7 +67,7 @@ theorem tendsto_orderedXY_momentumIntegral
     dsimp [q, measure]
     unfold fullAngleMomentumMeasurePrefactor
     push_cast
-    field_simp [hvelocity, hmeasureReal, hden]
+    field_simp [hvelocity, hmeasure, hden]
     ring
   rw [htarget] at hscaled
   apply Tendsto.congr' ?_ hscaled
