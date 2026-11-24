@@ -8,13 +8,12 @@ import LeanCondensedMatter.Analysis.ScalarExchange.Basic
 set_option linter.style.header false
 
 /-!
-# Fermionic realization of the mixed two-point event order
+# Fermionic realization of mixed event order
 
 `SecondQuantization.Common` owns the statistics-independent event type, stable time order, sorted
 event list, and event positions. This module supplies the fermionic operator represented by each
-event and the exchange sign contributed when the two odd external fields are reversed. Moving an
-external field past a quartic interaction vertex contributes no sign because the quartic vertex is
-even.
+event, the atomic permutation sign and the mixed interaction-picture product. The two-point
+operators specialize the arbitrary-external product, including its chemical-potential transport.
 -/
 
 namespace SecondQuantization
@@ -23,6 +22,71 @@ namespace Fermionic
 open Common
 
 variable {Mode : Type*} [LinearOrder Mode]
+
+/-- Fermionic sign of the permutation from fixed flattened atomic order to mixed-time atomic order. -/
+noncomputable def externalInsertionMixedAtomicOrderSign {E n : ℕ}
+    (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ) : ℂ :=
+  ((Equiv.Perm.sign
+    (externalInsertionStandardToMixedAtomicPositionEquiv externalTime σ) : ℤ) : ℂ)
+
+
+/-- The atomic ordering sign is independent of all interaction times, even
+when their order changes or they coincide. Only external inversions contribute. -/
+theorem externalInsertionMixedAtomicOrderSign_eq_of_externalTimes {E n m : ℕ}
+    (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ) (υ : Fin m → ℝ) :
+    externalInsertionMixedAtomicOrderSign externalTime σ =
+      externalInsertionMixedAtomicOrderSign externalTime υ := by
+  simp only [externalInsertionMixedAtomicOrderSign,
+    externalInsertionStandardToMixedAtomicPositionEquiv_sign]
+
+/-- Signed mixed-time-ordered interaction-picture vertex product, with the fermionic sign from
+restoring the fixed external/interaction atomic order. -/
+noncomputable def externalInsertionMixedTimeOrderedVertexComp {E n : ℕ}
+    (ε : Mode → ℝ)
+    (externalLabel : Fin (2 * E) → ExternalFieldLabel Mode)
+    (externalTime : Fin (2 * E) → ℝ)
+    (q : Fin n → QuarticVertexLabel Mode) (σ : Fin n → ℝ) :
+    OccupationFock Mode →ₗ[ℂ] OccupationFock Mode :=
+  externalInsertionMixedAtomicOrderSign externalTime σ •
+    ((orderedExternalInsertionTimedEvents externalTime σ).map
+      (externalInsertionTimedEventOperator ε externalLabel externalTime q σ)).prod
+
+/-- A uniform energy shift contributes exactly the product of the external field
+factors. The number-conserving interaction vertices and the ordering sign are unchanged. -/
+theorem externalInsertionMixedTimeOrderedVertexComp_eq_shiftedDispersion {E n : ℕ}
+    (ε : Mode → ℝ) (μ : ℝ)
+    (externalLabel : Fin (2 * E) → ExternalFieldLabel Mode)
+    (externalTime : Fin (2 * E) → ℝ)
+    (q : Fin n → QuarticVertexLabel Mode) (σ : Fin n → ℝ) :
+    externalInsertionMixedTimeOrderedVertexComp ε externalLabel externalTime q σ =
+      externalFieldFamilyChemicalPotentialFactor μ externalLabel externalTime •
+        externalInsertionMixedTimeOrderedVertexComp
+          (fun k => ε k - μ) externalLabel externalTime q σ := by
+  let a : ExternalInsertionTimedEvent E n → ℂ
+    | .inl e => externalFieldChemicalPotentialFactor μ (externalTime e) (externalLabel e)
+    | .inr _ => 1
+  have hevent (e : ExternalInsertionTimedEvent E n) :
+      externalInsertionTimedEventOperator ε externalLabel externalTime q σ e =
+        a e • externalInsertionTimedEventOperator
+          (fun k => ε k - μ) externalLabel externalTime q σ e := by
+    cases e with
+    | inl e =>
+        exact externalFieldOperator_eq_shiftedDispersion ε μ
+          (externalTime e) (externalLabel e)
+    | inr v =>
+        change Common.interactionPicture (fermionEnergy ε) (quarticVertexOperator (q v))
+          (σ v) = (1 : ℂ) • Common.interactionPicture
+            (fermionEnergy (fun k => ε k - μ)) (quarticVertexOperator (q v)) (σ v)
+        rw [one_smul, interactionPicture_quarticVertexOperator_sub_chemicalPotential ε μ]
+  have hscalar :
+      ((orderedExternalInsertionTimedEvents externalTime σ).map a).prod =
+        externalFieldFamilyChemicalPotentialFactor μ externalLabel externalTime := by
+    rw [prod_orderedExternalInsertionTimedEvents, Fintype.prod_sum_type]
+    simp [a, externalFieldFamilyChemicalPotentialFactor]
+  unfold externalInsertionMixedTimeOrderedVertexComp
+  rw [funext hevent]
+  rw [ScalarExchange.list_prod_map_smul, hscalar,
+    smul_comm (externalInsertionMixedAtomicOrderSign externalTime σ)]
 
 /-- Fermionic operator represented by one Common mixed event: an external field for a distinguished
 event and an interaction-picture quartic vertex for an interaction event. -/
@@ -67,10 +131,50 @@ noncomputable def mixedTimeOrderedVertexComp {n : ℕ} (ε : Mode → ℝ) (i j 
     List.prod ((orderedTwoPointTimedEvents τ τ' σ).map
       (twoPointTimedEventOperator ε i j τ τ' q σ))
 
+/-- The general atomic-order sign specializes to the two-point external-field
+exchange sign, independently of the interaction times. -/
+theorem externalInsertionMixedAtomicOrderSign_twoPoint
+    {n : ℕ} (τ τ' : ℝ) (σ : Fin n → ℝ) :
+    externalInsertionMixedAtomicOrderSign (E := 1) (twoPointExternalTimes τ τ') σ =
+      twoPointExternalOrderSign τ τ' := by
+  classical
+  rw [externalInsertionMixedAtomicOrderSign,
+    externalInsertionStandardToMixedAtomicPositionEquiv_sign_twoPoint]
+  by_cases h : τ < τ'
+  · simp [h, twoPointExternalOrderSign, Common.Statistics.zetaInt]
+  · simp [h, twoPointExternalOrderSign]
+
+/-- The two physical mixed vertex products coincide, including at equal times.
+Both definitions use the same event operators and the same stable order. -/
+theorem mixedTimeOrderedVertexComp_eq_externalInsertion
+    {n : ℕ} (ε : Mode → ℝ) (i j : Mode) (τ τ' : ℝ)
+    (q : Fin n → QuarticVertexLabel Mode) (σ : Fin n → ℝ) :
+    mixedTimeOrderedVertexComp ε i j τ τ' q σ =
+      externalInsertionMixedTimeOrderedVertexComp (E := 1) ε
+        (twoPointExternalLabels i j) (twoPointExternalTimes τ τ') q σ := by
+  simp only [mixedTimeOrderedVertexComp, externalInsertionMixedTimeOrderedVertexComp,
+    orderedTwoPointTimedEvents_eq_externalInsertion,
+    externalInsertionMixedAtomicOrderSign_twoPoint, twoPointTimedEventOperator]
+
 /-- The external-field factor relating physical-H evolution to evolution at the
 effective grand-canonical dispersion ε − μ. -/
 noncomputable def twoPointChemicalPotentialFactor (μ τ τ' : ℝ) : ℂ :=
   Complex.exp ((μ : ℂ) * ((τ' : ℂ) - (τ : ℂ)))
+
+/-- The two-point chemical potential factor is exactly the product of the
+two physical external-field factors. -/
+theorem externalFieldFamilyChemicalPotentialFactor_twoPoint {M : Type*}
+    (μ τ τ' : ℝ) (i j : M) :
+    externalFieldFamilyChemicalPotentialFactor μ
+      (twoPointExternalLabels i j) (twoPointExternalTimes τ τ') =
+        twoPointChemicalPotentialFactor μ τ τ' := by
+  rw [externalFieldFamilyChemicalPotentialFactor, Fin.prod_univ_two,
+    twoPointExternalLabels_zero, twoPointExternalLabels_one,
+    twoPointExternalTimes_zero, twoPointExternalTimes_one]
+  change Complex.exp (-(τ : ℂ) * (μ : ℂ)) * Complex.exp ((τ' : ℂ) * (μ : ℂ)) = _
+  rw [← Complex.exp_add, twoPointChemicalPotentialFactor]
+  congr 1
+  ring
 
 /-- Shifting the free dispersion by μ changes the complete mixed-event operator
 product only by the two external field factors. In particular, interaction times
@@ -81,41 +185,10 @@ theorem mixedTimeOrderedVertexComp_eq_shiftedDispersion
     mixedTimeOrderedVertexComp ε i j τ τ' q σ =
       twoPointChemicalPotentialFactor μ τ τ' •
         mixedTimeOrderedVertexComp (fun k => ε k - μ) i j τ τ' q σ := by
-  let a : TwoPointTimedEvent n → ℂ := fun e =>
-    match e with
-    | .inl e => if e = 0 then Complex.exp (-(τ : ℂ) * (μ : ℂ))
-        else Complex.exp ((τ' : ℂ) * (μ : ℂ))
-    | .inr _ => 1
-  have hevent (e : TwoPointTimedEvent n) :
-      twoPointTimedEventOperator ε i j τ τ' q σ e =
-        a e • twoPointTimedEventOperator (fun k => ε k - μ) i j τ τ' q σ e := by
-    rcases e with e | v
-    · fin_cases e
-      · exact externalFieldOperator_eq_shiftedDispersion ε μ τ (.annihilation i)
-      · exact externalFieldOperator_eq_shiftedDispersion ε μ τ' (.creation j)
-    · simp only [twoPointTimedEventOperator_interaction, a, one_smul]
-      exact interactionPicture_quarticVertexOperator_sub_chemicalPotential ε μ (σ v) (q v)
-  have hprod (l : List (TwoPointTimedEvent n)) :
-      (l.map (twoPointTimedEventOperator ε i j τ τ' q σ)).prod =
-        (l.map a).prod •
-          (l.map (twoPointTimedEventOperator (fun k => ε k - μ) i j τ τ' q σ)).prod := by
-    rw [funext hevent]
-    exact ScalarExchange.list_prod_map_smul l a _
-  have hscalar : ((orderedTwoPointTimedEvents τ τ' σ).map a).prod =
-      twoPointChemicalPotentialFactor μ τ τ' := by
-    rw [orderedTwoPointTimedEvents_eq_externalInsertion,
-      prod_orderedExternalInsertionTimedEvents (E := 1) (twoPointExternalTimes τ τ') σ a]
-    change (∏ e : Fin 2 ⊕ Fin n, a e) = _
-    rw [Fintype.prod_sum_type]
-    have htail : (∏ v : Fin n, a (Sum.inr v)) = 1 := by
-      simp [a]
-    rw [htail, mul_one, Fin.prod_univ_two]
-    change Complex.exp (-(τ : ℂ) * (μ : ℂ)) * Complex.exp ((τ' : ℂ) * (μ : ℂ)) = _
-    rw [← Complex.exp_add, twoPointChemicalPotentialFactor]
-    congr 1
-    ring
-  unfold mixedTimeOrderedVertexComp
-  rw [hprod, hscalar, smul_comm (twoPointExternalOrderSign τ τ')]
+  rw [mixedTimeOrderedVertexComp_eq_externalInsertion,
+    externalInsertionMixedTimeOrderedVertexComp_eq_shiftedDispersion,
+    externalFieldFamilyChemicalPotentialFactor_twoPoint,
+    ← mixedTimeOrderedVertexComp_eq_externalInsertion]
 
 set_option linter.unusedSimpArgs false in
 private theorem orderedTwoPointTimedEvents_zero_of_gt (σ : Fin 0 → ℝ)
