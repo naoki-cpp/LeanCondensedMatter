@@ -1,7 +1,8 @@
 import LeanCondensedMatter.QuantumTheory.LinearResponse.Frequency.AdiabaticSwitching
 import LeanCondensedMatter.QuantumTheory.LinearResponse.Frequency.LimitOrder
 import LeanCondensedMatter.QuantumTheory.LinearResponse.Response.Symmetry
-import Mathlib.MeasureTheory.Integral.IntervalIntegral.FundThmCalculus
+import Mathlib.MeasureTheory.Integral.IntervalIntegral.IntegrationByParts
+import LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.EquationsOfMotion
 import Mathlib.LinearAlgebra.Matrix.ToLin
 import Mathlib.RepresentationTheory.Intertwining
 
@@ -47,7 +48,69 @@ theorem finiteTimeAdiabaticTransform_zero_time
     finiteTimeAdiabaticTransform kernel ω η 0 = 0 := by
   simp [finiteTimeAdiabaticTransform]
 
+/-- Integration by parts for a continuously differentiable lag kernel. The
+equal-time term cancels the lower endpoint, leaving the finite-time boundary
+and the phase derivative. No infinite observation-time limit is taken. -/
+theorem finiteTimeAdiabaticTransform_derivative_add_initial
+    (K K' : ℝ → ℂ) (ω η T : ℝ)
+    (hK : ∀ t, HasDerivAt K (K' t) t) (hK' : Continuous K') :
+    finiteTimeAdiabaticTransform K' ω η T + K 0 =
+      adiabaticFrequencyPhase ω η T * K T -
+        (Complex.I * (ω : ℂ) - (η : ℂ)) *
+          finiteTimeAdiabaticTransform K ω η T := by
+  let z := Complex.I * (ω : ℂ) - (η : ℂ)
+  let P := adiabaticFrequencyPhase ω η
+  have hP (t : ℝ) : HasDerivAt P (z * P t) t := by
+    have hz : HasDerivAt (fun s : ℝ => z * (s : ℂ)) z t := by
+      have hcast : HasDerivAt (fun s : ℝ => (s : ℂ)) 1 t :=
+        (hasDerivAt_id (x := t)).ofReal_comp
+      simpa only [mul_one] using hcast.const_mul z
+    change HasDerivAt (fun s : ℝ => Complex.exp (z * (s : ℂ)))
+      (z * Complex.exp (z * (t : ℂ))) t
+    rw [mul_comm z (Complex.exp (z * (t : ℂ)))]
+    exact hz.cexp
+  have hPc : Continuous P := continuous_iff_continuousAt.mpr
+    fun t => (hP t).continuousAt
+  have hKc : Continuous K := continuous_iff_continuousAt.mpr
+    fun t => (hK t).continuousAt
+  have hparts := intervalIntegral.integral_mul_deriv_eq_deriv_mul_of_hasDerivAt
+    (a := (0 : ℝ)) (b := T) hPc.continuousOn hKc.continuousOn
+    (fun t _ => hP t) (fun t _ => hK t)
+    ((continuous_const.mul hPc).intervalIntegrable 0 T)
+    (hK'.intervalIntegrable 0 T)
+  change (∫ t in (0 : ℝ)..T, P t * K' t) =
+    P T * K T - P 0 * K 0 -
+      ∫ t in (0 : ℝ)..T, (z * P t) * K t at hparts
+  simp only [mul_assoc, intervalIntegral.integral_const_mul] at hparts
+  have hzero : P 0 = 1 := adiabaticFrequencyPhase_zero_time ω η
+  rw [hzero, one_mul] at hparts
+  change (∫ t in (0 : ℝ)..T, P t * K' t) + K 0 =
+    P T * K T - z * ∫ t in (0 : ℝ)..T, P t * K t
+  rw [hparts]
+  abel
+
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
+
+attribute [local instance 100] LieRing.ofAssociativeRing
+
+/-- The lag susceptibility of a displacement differentiates to the lag
+susceptibility of its Hamiltonian time derivative. This uses bounded free
+dynamics, not a stationarity or spectral-basis hypothesis. -/
+theorem hasDerivAt_commutatorSusceptibility_lag
+    (system : BoundedFreeSystem H) (expectation : NormalizedExpectation H)
+    (D B : H →L[ℂ] H) (t : ℝ) :
+    HasDerivAt
+      (fun s => commutatorSusceptibility (freePropagatorGroup system)
+        system.hbar expectation D B s 0)
+      (commutatorSusceptibility (freePropagatorGroup system) system.hbar expectation
+        ((Complex.I / (system.hbar : ℂ)) • ⁅system.hamiltonian.1, D⁆) B t 0) t := by
+  have h := heisenbergEquation_initial system D t
+  have hcomm := (h.mul_const B).sub (h.const_mul B)
+  have hexpect :=
+    (expectation.toContinuousLinearMap.restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt t hcomm
+  simp only [commutatorSusceptibility, heisenbergEvolution_zero,
+    LieRing.of_associative_ring_bracket]
+  exact hexpect.const_mul (Complex.I / (system.hbar : ℂ))
 
 namespace ResponseChannel
 
@@ -117,6 +180,51 @@ theorem finiteTimeAdiabaticResponse_eq_stationaryLag
     _ = ∫ τ in (0 : ℝ)..T, g τ := by
       simpa using intervalIntegral.integral_comp_sub_left
         (a := (0 : ℝ)) (b := T) g T
+
+/-- For a fixed displacement D, the channel measuring its time derivative
+has an explicit source variation (i/ℏ)[-B,D]. In a stationary state, its
+source-normalized finite-time response is the upper boundary minus the
+phase derivative times the displacement transform. The equal-time contact
+cancels the lower integration-by-parts boundary exactly. -/
+theorem finiteTimeAdiabaticResponse_of_displacement
+    (channel : ResponseChannel H) (system : BoundedFreeSystem H)
+    (expectation : NormalizedExpectation H)
+    (hstationary : IsStationary (freePropagatorGroup system) expectation)
+    (D : H →L[ℂ] H)
+    (hJ : channel.measured =
+      (Complex.I / (system.hbar : ℂ)) • ⁅system.hamiltonian.1, D⁆)
+    (hC : channel.observableVariation =
+      (Complex.I / (system.hbar : ℂ)) • ⁅-channel.source, D⁆)
+    (ω η : ℝ) {T : ℝ} (hT : 0 ≤ T) :
+    let K := fun τ => commutatorSusceptibility (freePropagatorGroup system)
+      system.hbar expectation D channel.source τ 0
+    channel.finiteTimeAdiabaticResponse (freePropagatorGroup system)
+      system.hbar expectation ω η T =
+      adiabaticFrequencyPhase ω η T * K T -
+        (Complex.I * (ω : ℂ) - (η : ℂ)) *
+          finiteTimeAdiabaticTransform K ω η T := by
+  let U := freePropagatorGroup system
+  let K := fun τ => commutatorSusceptibility U system.hbar expectation D channel.source τ 0
+  let K' := fun τ => commutatorSusceptibility U system.hbar expectation
+    channel.measured channel.source τ 0
+  have hK (t : ℝ) : HasDerivAt K (K' t) t := by
+    dsimp only [K, K']
+    rw [hJ]
+    exact hasDerivAt_commutatorSusceptibility_lag system expectation D channel.source t
+  have hK' : Continuous K' :=
+    continuous_commutatorSusceptibility_timeDifference U system.hbar expectation
+      channel.measured channel.source (continuous_heisenbergEvolution system channel.measured)
+  have hcontact : expectation channel.observableVariation = K 0 := by
+    have heq := retardedSusceptibility_sameTime_eq_commutatorVariation U system.hbar
+      expectation D channel.source 1 0
+    rw [one_smul, one_mul, heisenbergEvolution_zero,
+      retardedSusceptibility_eq_commutatorSusceptibility_of_le U system.hbar
+        expectation D channel.source (le_refl (0 : ℝ))] at heq
+    rw [hC]
+    exact heq
+  rw [channel.finiteTimeAdiabaticResponse_eq_stationaryLag U system.hbar
+    expectation hstationary ω η hT, hcontact]
+  exact finiteTimeAdiabaticTransform_derivative_add_initial K K' ω η T hK hK'
 
 variable (U : Multiplicative ℝ →* unitary (H →L[ℂ] H))
 variable (Φ : (H →L[ℂ] H) ≃⋆ₐ[ℂ] (H →L[ℂ] H))

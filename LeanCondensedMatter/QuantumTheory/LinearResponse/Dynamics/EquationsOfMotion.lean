@@ -76,6 +76,25 @@ theorem heisenbergEquation (A : H →L[ℂ] H) (t : ℝ) :
   rw [hasDerivAt_iff_tendsto] at h ⊢
   simpa only [hfun, hderiv] using h
 
+/-- The bounded Heisenberg derivative is the evolution of the initial
+commutator with the same Hamiltonian. -/
+theorem heisenbergEquation_initial (A : H →L[ℂ] H) (t : ℝ) :
+    HasDerivAt (fun s : ℝ => heisenbergEvolution (freePropagatorGroup system) s A)
+      (heisenbergEvolution (freePropagatorGroup system) t
+        ((Complex.I / (system.hbar : ℂ)) • ⁅system.hamiltonian.1, A⁆)) t := by
+  have hc (s : ℝ) : Commute system.hamiltonian.1 (freePropagator system s) := by
+    rw [freePropagator_eq_exp]
+    apply Commute.exp_right
+    change system.hamiltonian.1 * ((s : ℂ) • schrodingerGenerator system) =
+      ((s : ℂ) • schrodingerGenerator system) * system.hamiltonian.1
+    simp only [schrodingerGenerator, mul_smul_comm, smul_mul_assoc]
+  have hH : heisenbergEvolution (freePropagatorGroup system) t system.hamiltonian.1 =
+      system.hamiltonian.1 := by
+    rw [heisenbergEvolution_freePropagatorGroup_apply, ← (hc (-t)).eq, mul_assoc,
+      ← freePropagator_add, neg_add_cancel, freePropagator_zero, mul_one]
+  simpa only [map_smul, LieRing.of_associative_ring_bracket, map_sub, map_mul, hH] using
+    (heisenbergEquation system A t)
+
 /-- Explicit bounded von Neumann equation
 `dρ/dt = -(i/ℏ) [H₀, ρ]`. -/
 theorem vonNeumannEquation (ρ : DensityOperator H) (t : ℝ) :
