@@ -196,7 +196,10 @@ private theorem ExternalInsertionDiagram.componentOrderedLeg_fixedPosition {E n 
     (externalInsertionLegEquiv E (Finset.univ : Finset (Fin n))).symm
         (d.componentOrderedLeg B leg) =
       d.componentDiagramLeg B
-        ((finCongr (by simp))
+        ((externalInsertionLegCongr (E := d.externalPairCount B)
+          (Combinatorics.standardSlotEquiv
+            (interactionSector
+              (B : Finset (ExternalInsertionVertex E (Finset.univ : Finset (Fin n))))))).symm
           ((externalInsertionLegEquiv (d.externalPairCount B)
             (Finset.univ : Finset (Fin
               (interactionSector
@@ -205,15 +208,7 @@ private theorem ExternalInsertionDiagram.componentOrderedLeg_fixedPosition {E n 
   let T :=
     interactionSector
       (B : Finset (ExternalInsertionVertex E (Finset.univ : Finset (Fin n))))
-  have hcast :
-      (finCongr (by simp) :
-        Fin (2 * (2 * (Finset.univ : Finset (Fin T.card)).card + d.externalPairCount B)) ≃
-          Fin (2 * (2 * T.card + d.externalPairCount B))) =
-        externalInsertionLegCongr (E := d.externalPairCount B)
-          (Combinatorics.standardSlotEquiv T).symm := by
-    rw [externalInsertionLegCongr_symm, externalInsertionLegCongr_standardize]
-    rfl
-  rw [hcast]
+  rw [← externalInsertionLegCongr_symm]
   cases leg with
   | inl e =>
       simp only [externalInsertionLegCongr, Equiv.trans_apply, Equiv.apply_symm_apply,
@@ -242,23 +237,6 @@ private theorem ExternalInsertionDiagram.atomicLegPartner_componentOrderedLeg {E
         (B : Finset (ExternalInsertionVertex E (Finset.univ : Finset (Fin n))))).card) :
     d.atomicLegPartner (d.componentOrderedLeg B leg) =
       d.componentOrderedLeg B ((d.componentOrderedDiagram B).atomicLegPartner leg) := by
-  let T :=
-    interactionSector
-      (B : Finset (ExternalInsertionVertex E (Finset.univ : Finset (Fin n))))
-  let r := d.restrictComponent B
-  let h : 2 * T.card + d.externalPairCount B =
-      2 * (Finset.univ : Finset (Fin T.card)).card + d.externalPairCount B := by
-    simp
-  have hpair : (d.componentOrderedDiagram B).pairing =
-      Equiv.cast (congrArg Combinatorics.Pairing h) r.pairing := by
-    unfold ExternalInsertionDiagram.componentOrderedDiagram
-    dsimp [T, r]
-  have hfin : (finCongr (by simp) :
-      Fin (2 * (2 * (Finset.univ : Finset (Fin T.card)).card +
-        d.externalPairCount B)) ≃
-      Fin (2 * (2 * T.card + d.externalPairCount B))) =
-      finCongr (congrArg (fun k : ℕ => 2 * k) h.symm) := by
-    congr
   apply (externalInsertionLegEquiv E
     (Finset.univ : Finset (Fin n))).symm.injective
   rw [ExternalInsertionDiagram.atomicLegPartner, Equiv.symm_apply_apply]
@@ -267,7 +245,9 @@ private theorem ExternalInsertionDiagram.atomicLegPartner_componentOrderedLeg {E
       ((d.componentOrderedDiagram B).atomicLegPartner leg)]
   unfold ExternalInsertionDiagram.atomicLegPartner
   simp only [Equiv.symm_apply_apply]
-  rw [hpair, hfin, Combinatorics.Pairing.cast_partner h r.pairing]
+  rw [d.componentOrderedDiagram_eq_slotCongr B]
+  simp only [ExternalInsertionDiagram.slotCongr, Combinatorics.PairingOn.transport_partner,
+    Equiv.symm_symm, Equiv.symm_apply_apply]
   exact (d.componentDiagramLeg_restrictComponent_pairing_partner B _).symm
 
 /-- The ambient mixed-order pairing partner of an embedded component position is the embedding of
@@ -424,7 +404,9 @@ theorem ExternalInsertionDiagram.componentMixedPositionEquiv_apply
                   (Finset.univ : Finset (Fin n))))).card))).symm localLeg)
       exact (Equiv.apply_symm_apply _ localLeg).symm
     exact congrArg Fin.val hpos
-  rw [hlocal, ← hfixed]
+  rw [hlocal]
+  rw [externalInsertionLegCongr_standardize] at hfixed
+  refine hfixed.symm.trans ?_
   have hambient :
       externalInsertionMixedTimeAmbientPositionEquiv externalTime σ
           (externalInsertionMixedTimeOrderedAtomicLegPosition externalTime σ
