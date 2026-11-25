@@ -1,6 +1,7 @@
 import LeanCondensedMatter.Models.RashbaExchange.FiniteMomentumSpinResponse
 import LeanCondensedMatter.Models.RashbaExchange.RealSpaceHopping
 import LeanCondensedMatter.QuantumTheory.ConservationLaw.LocalizedTransport
+import LeanCondensedMatter.QuantumTheory.LinearResponse.Frequency.FiniteTime
 
 set_option linter.style.header false
 
@@ -306,6 +307,62 @@ noncomputable def realSpaceRashbaSpinDisplacementResponseChannel
   SecondQuantization.Fermionic.Transport.boundedSpinDisplacementDirectionalResponseChannel
     geometry measured source (realSpaceRashbaHopping geometry bond onsite exchange)
     hbar q spinScale component sourceValue
+
+/-- The stationary, source-normalized finite-time Rashba proper-current
+response is the displacement susceptibility's upper boundary minus its
+phase-weighted transform multiplied by the adiabatic exponent.
+The physical contact cancels the equal-time lower boundary. -/
+theorem realSpaceRashbaSpinDisplacement_finiteTimeAdiabaticResponse
+    {Site : Type*} [LinearOrder Site] [Fintype Site]
+    (geometry : LatticeGeometry Site (ℝ × ℝ))
+    (bond : Site → Site → Option (ℝ × ℝ))
+    (onsite exchange : Site → ℝ)
+    (measured source : (ℝ × ℝ) →ₗ[ℝ] ℝ)
+    (hbar q spinScale : ℝ) (hhbar : 0 < hbar)
+    (component : QuantumTheory.SpinHalf.SpinSpace)
+    (expectation : QuantumTheory.LinearResponse.NormalizedExpectation
+      (FiniteLatticeHilbertFock (SpinfulSite Site)))
+    (hstationary : QuantumTheory.LinearResponse.IsStationary
+      (QuantumTheory.LinearResponse.freePropagatorGroup
+        (realSpaceRashbaFreeSystem geometry bond onsite exchange hbar hhbar)) expectation)
+    (ω η : ℝ) {T : ℝ} (hT : 0 ≤ T) :
+    let system := realSpaceRashbaFreeSystem geometry bond onsite exchange hbar hhbar
+    let channel := realSpaceRashbaSpinDisplacementResponseChannel
+      geometry bond onsite exchange measured source hbar q spinScale component 1
+    let D := boundedOneBodyOperator (LinearMap.symmetrizedProduct (K := ℂ)
+      ((spinfulGeometry geometry).directionalPosition measured)
+      (spinOneBodyLinear (Site := Site) spinScale component))
+    let K := fun τ => QuantumTheory.LinearResponse.commutatorSusceptibility
+      (QuantumTheory.LinearResponse.freePropagatorGroup system) hbar
+      expectation D channel.source τ 0
+    channel.finiteTimeAdiabaticResponse (QuantumTheory.LinearResponse.freePropagatorGroup system)
+      hbar expectation ω η T =
+      QuantumTheory.LinearResponse.adiabaticFrequencyPhase ω η T * K T -
+        (Complex.I * (ω : ℂ) - (η : ℂ)) *
+          QuantumTheory.LinearResponse.finiteTimeAdiabaticTransform K ω η T := by
+  let system := realSpaceRashbaFreeSystem geometry bond onsite exchange hbar hhbar
+  let channel := realSpaceRashbaSpinDisplacementResponseChannel
+    geometry bond onsite exchange measured source hbar q spinScale component 1
+  let D := LinearMap.symmetrizedProduct (K := ℂ)
+    ((spinfulGeometry geometry).directionalPosition measured)
+    (spinOneBodyLinear (Site := Site) spinScale component)
+  have hJ : channel.measured =
+      (Complex.I / (system.hbar : ℂ)) •
+        ⁅system.hamiltonian.1, boundedOneBodyOperator D⁆ := by
+    let H := (realSpaceRashbaHopping geometry bond onsite exchange).operator
+    change boundedOneBodyOperator
+        (QuantumTheory.ConservationLaw.heisenbergEvolution hbar H D) =
+      (Complex.I / (hbar : ℂ)) • ⁅boundedOneBodyOperator H, boundedOneBodyOperator D⁆
+    simp only [QuantumTheory.ConservationLaw.heisenbergEvolution_apply,
+      map_smul, LieHom.map_lie, QuantumTheory.ConservationLaw.heisenbergScale]
+  have hC : channel.observableVariation =
+      (Complex.I / (system.hbar : ℂ)) • ⁅-channel.source, boundedOneBodyOperator D⁆ := by
+    change (((1 : ℝ) : ℂ) • ((Complex.I / (hbar : ℂ)) •
+      ⁅-channel.source, boundedOneBodyOperator D⁆)) =
+        (Complex.I / (hbar : ℂ)) • ⁅-channel.source, boundedOneBodyOperator D⁆
+    rw [Complex.ofReal_one, one_smul]
+  exact channel.finiteTimeAdiabaticResponse_of_displacement system expectation
+    hstationary (boundedOneBodyOperator D) hJ hC ω η hT
 
 end
 end QuantumTheory.Models.RashbaExchange
