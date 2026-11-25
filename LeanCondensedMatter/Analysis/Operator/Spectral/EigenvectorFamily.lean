@@ -55,37 +55,38 @@ theorem apply_complexEigenvectorFamily (hT : IsCompactOperator T) (a : ComplexEi
   haveI := finiteDimensional_complexEigenspace_ne_zero hT a.1
   exact Submodule.coe_mem _
 
+/-- A family of spanning families in submodules spans their supremum when indexed
+by the dependent sum of the individual index types. -/
+private theorem span_sigma_submodule_family {R M J : Type*} [Semiring R]
+    [AddCommMonoid M] [Module R M] {ι : J → Type*}
+    (V : J → Submodule R M) (v : ∀ j, ι j → V j)
+    (hv : ∀ j, Submodule.span R (Set.range (v j)) = ⊤) :
+    Submodule.span R (Set.range fun a : Σ j, ι j => (v a.1 a.2 : M)) = ⨆ j, V j := by
+  apply le_antisymm
+  · rw [Submodule.span_le]
+    rintro _ ⟨a, rfl⟩
+    exact Submodule.mem_iSup_of_mem a.1 (v a.1 a.2).property
+  · refine iSup_le fun j => ?_
+    have hs : Submodule.span R (Subtype.val '' Set.range (v j)) = V j :=
+      ((V j).span_val_image_eq_iff _).2 (hv j)
+    rw [← hs]
+    apply Submodule.span_mono
+    rintro _ ⟨_, ⟨i, rfl⟩, rfl⟩
+    exact ⟨⟨j, i⟩, rfl⟩
+
 /-- The span of `complexEigenvectorFamily` is the sum of all nonzero complex eigenspaces. -/
 theorem span_complexEigenvectorFamily (hT : IsCompactOperator T) :
     Submodule.span ℂ (Set.range (complexEigenvectorFamily hT)) =
       ⨆ z : { z : ℂ // z ≠ 0 },
         Module.End.eigenspace (T : H →ₗ[ℂ] H) z.1 := by
-  apply le_antisymm
-  · rw [Submodule.span_le]
-    rintro x ⟨a, rfl⟩
-    exact Submodule.mem_iSup_of_mem a.1 (by
-      haveI := finiteDimensional_complexEigenspace_ne_zero hT a.1
-      exact Submodule.coe_mem _)
-  · apply iSup_le
-    intro z
-    haveI := finiteDimensional_complexEigenspace_ne_zero hT z
-    have hbasis : Submodule.span ℂ
-        (Set.range (Module.finBasis ℂ
-          (Module.End.eigenspace (T : H →ₗ[ℂ] H) z.1))) =
-        (⊤ : Submodule ℂ (Module.End.eigenspace (T : H →ₗ[ℂ] H) z.1)) :=
-      (Module.finBasis ℂ
-        (Module.End.eigenspace (T : H →ₗ[ℂ] H) z.1)).span_eq
-    have hmap : Submodule.map
-        (Module.End.eigenspace (T : H →ₗ[ℂ] H) z.1).subtype
-        (Submodule.span ℂ
-          (Set.range (Module.finBasis ℂ
-            (Module.End.eigenspace (T : H →ₗ[ℂ] H) z.1)))) =
-        Module.End.eigenspace (T : H →ₗ[ℂ] H) z.1 := by
-      rw [hbasis, Submodule.map_top, Submodule.range_subtype]
-    rw [← hmap, Submodule.map_span]
-    apply Submodule.span_mono
-    rintro x ⟨v, ⟨y, rfl⟩, rfl⟩
-    exact ⟨⟨z, y⟩, rfl⟩
+  exact span_sigma_submodule_family
+    (fun z : { z : ℂ // z ≠ 0 } => Module.End.eigenspace (T : H →ₗ[ℂ] H) z.1)
+    (fun z =>
+      haveI := finiteDimensional_complexEigenspace_ne_zero hT z
+      (Module.finBasis ℂ (Module.End.eigenspace (T : H →ₗ[ℂ] H) z.1) : _ → _))
+    (fun z =>
+      haveI := finiteDimensional_complexEigenspace_ne_zero hT z
+      (Module.finBasis ℂ (Module.End.eigenspace (T : H →ₗ[ℂ] H) z.1)).span_eq)
 
 end ContinuousLinearMap
 
@@ -229,34 +230,19 @@ theorem countable_eigenvectorIndex (hT : IsCompactOperator T) (hT' : T.IsSymmetr
   rw [← Set.countable_univ_iff, hcov]
   exact Set.countable_iUnion fun n => (hfin n).countable
 
-/-- The (algebraic) span of `eigenvectorFamily` is exactly the sum of all the nonzero
-eigenspaces: each per-eigenspace `stdOrthonormalBasis` spans its own (finite-dimensional)
-eigenspace, and these are glued together in the same way as the index type. -/
+/-- The span of `eigenvectorFamily` is the sum of all nonzero real eigenspaces. -/
 theorem span_eigenvectorFamily (hT : IsCompactOperator T) :
     Submodule.span ℂ (Set.range (eigenvectorFamily hT)) =
       ⨆ μ : { μ : ℝ // μ ≠ 0 }, Module.End.eigenspace (T : H →ₗ[ℂ] H) (μ.1 : ℂ) := by
-  apply le_antisymm
-  · rw [Submodule.span_le]
-    rintro x ⟨a, rfl⟩
-    exact Submodule.mem_iSup_of_mem a.1 (by
-      haveI := finiteDimensional_eigenspace_ne_zero hT a.1
-      exact Submodule.coe_mem _)
-  · apply iSup_le
-    intro μ
-    haveI := finiteDimensional_eigenspace_ne_zero hT μ
-    have hbasis : Submodule.span ℂ
-        (Set.range (stdOrthonormalBasis ℂ (Module.End.eigenspace (T : H →ₗ[ℂ] H) (μ.1 : ℂ)))) =
-        (⊤ : Submodule ℂ (Module.End.eigenspace (T : H →ₗ[ℂ] H) (μ.1 : ℂ))) :=
-      (stdOrthonormalBasis ℂ (Module.End.eigenspace (T : H →ₗ[ℂ] H) (μ.1 : ℂ))).toBasis.span_eq
-    have hmap : Submodule.map (Module.End.eigenspace (T : H →ₗ[ℂ] H) (μ.1 : ℂ)).subtype
-        (Submodule.span ℂ
-          (Set.range (stdOrthonormalBasis ℂ (Module.End.eigenspace (T : H →ₗ[ℂ] H) (μ.1 : ℂ))))) =
-        Module.End.eigenspace (T : H →ₗ[ℂ] H) (μ.1 : ℂ) := by
-      rw [hbasis, Submodule.map_top, Submodule.range_subtype]
-    rw [← hmap, Submodule.map_span]
-    apply Submodule.span_mono
-    rintro x ⟨v, ⟨y, rfl⟩, rfl⟩
-    exact ⟨⟨μ, y⟩, rfl⟩
+  exact span_sigma_submodule_family
+    (fun μ : { μ : ℝ // μ ≠ 0 } => Module.End.eigenspace (T : H →ₗ[ℂ] H) (μ.1 : ℂ))
+    (fun μ =>
+      haveI := finiteDimensional_eigenspace_ne_zero hT μ
+      (stdOrthonormalBasis ℂ (Module.End.eigenspace (T : H →ₗ[ℂ] H) (μ.1 : ℂ)) : _ → _))
+    (fun μ =>
+      haveI := finiteDimensional_eigenspace_ne_zero hT μ
+      (stdOrthonormalBasis ℂ
+        (Module.End.eigenspace (T : H →ₗ[ℂ] H) (μ.1 : ℂ))).toBasis.span_eq)
 
 /-- For a symmetric operator, the nonzero complex spectral span equals the nonzero real
 spectral span. -/
