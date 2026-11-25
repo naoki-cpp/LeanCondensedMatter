@@ -225,7 +225,7 @@ private theorem ExternalInsertionDiagram.componentOrderedLeg_fixedPosition {E n 
   | inr vl =>
       rcases vl with ⟨v, l⟩
       simp only [externalInsertionLegCongr, Equiv.trans_apply, Equiv.apply_symm_apply,
-        Equiv.sumCongr_apply, Sum.map_inr, Equiv.prodCongr_apply, Equiv.refl_apply]
+        Equiv.sumCongr_apply, Sum.map_inr, Equiv.prodCongr_apply]
       change _ = d.componentDiagramLeg B
         (externalInsertionInteractionLeg (E := d.externalPairCount B)
           (T.orderIsoOfFin rfl v.1) l)
