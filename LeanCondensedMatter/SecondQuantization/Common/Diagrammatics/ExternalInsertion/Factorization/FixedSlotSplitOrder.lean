@@ -195,10 +195,17 @@ theorem externalInsertionSlotLegSplitting_fixedInversionCount_mod_two_eq_zero
       let vl := orderedQuarticLegEquiv S.card j
       have hj : (orderedQuarticLegEquiv S.card).symm vl = j := by simp [vl]
       rw [← hj]
-      have hnot := externalInsertionSlotLegSplitting_fixedRight_not_lt_leftExternal
-        (E := E) T e vl.1 vl.2
-      dsimp only at hnot
-      rw [if_neg hnot]
+      have hzero :
+          (if externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T)
+                (Sum.inr (orderedLegToDiagramLeg S order
+                  ((orderedQuarticLegEquiv S.card).symm vl))) <
+              externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T)
+                (Sum.inl ((externalInsertionLegEquiv E T).symm (Sum.inl e)))
+            then (1 : ℕ) else 0) = 0 :=
+        ite_eq_right
+          (externalInsertionSlotLegSplitting_fixedRight_not_lt_leftExternal
+            (E := E) T e vl.1 vl.2)
+      rw [hzero]
       exact dvd_zero 2
   | inr vl =>
       rcases vl with ⟨v, l⟩
@@ -232,7 +239,7 @@ theorem externalInsertionSlotLegSplitting_fixedInversionCount_mod_two_eq_zero
               (Sum.inl ((externalInsertionLegEquiv E T).symm (Sum.inr (v, l)))) ↔
             (order wk.1).1 < v.1 at hiff
         exact hiff
-      rw [hiff']
+      simp only [hiff']
 
 
 end Common
