@@ -157,6 +157,66 @@ theorem annihilate_algebraMap (v : 𝓗₁) (a : ℂ) :
     (innerDual 𝓗₁ v) (algebraMap ℂ _ a) = 0
   rw [CliffordAlgebra.contractLeft_algebraMap]
 
+/-- Scalar exterior expressions are orthogonal to created vectors whenever the
+realization identifies creation and annihilation as adjoints. -/
+private theorem inner_realization_scalar_create
+    {V E : Type*} [NormedAddCommGroup V] [InnerProductSpace ℂ V]
+    [NormedAddCommGroup E] [InnerProductSpace ℂ E]
+    (R : AlgebraicFock V →ₗ[ℂ] E)
+    (hR : ∀ v x y, inner ℂ (R (create V v x)) (R y) =
+      inner ℂ (R x) (R (annihilate V v y)))
+    (a : ℂ) (v : V) (x : AlgebraicFock V) :
+    inner ℂ (R (algebraMap ℂ _ a)) (R (create V v x)) = 0 := by
+  have h := congrArg (starRingEnd ℂ) (hR v x (algebraMap ℂ _ a))
+  simpa only [annihilate_algebraMap, map_zero, inner_zero_right, inner_conj_symm] using h
+
+/-- Two linear Hilbert-space realizations of exterior Fock space have compatible
+inner products along a one-particle isometry if creation and annihilation are
+adjoints in each realization and their scalar-sector inner products agree.
+Neither realization needs to be injective, surjective, or dense. -/
+theorem inner_realization_map_eq
+    {V W E F : Type*}
+    [NormedAddCommGroup V] [InnerProductSpace ℂ V]
+    [NormedAddCommGroup W] [InnerProductSpace ℂ W]
+    [NormedAddCommGroup E] [InnerProductSpace ℂ E]
+    [NormedAddCommGroup F] [InnerProductSpace ℂ F]
+    (R : AlgebraicFock V →ₗ[ℂ] E) (S : AlgebraicFock W →ₗ[ℂ] F)
+    (e : V →ₗᵢ[ℂ] W)
+    (hR : ∀ v x y, inner ℂ (R (create V v x)) (R y) =
+      inner ℂ (R x) (R (annihilate V v y)))
+    (hS : ∀ v x y, inner ℂ (S (create W v x)) (S y) =
+      inner ℂ (S x) (S (annihilate W v y)))
+    (hscalarPair : ∀ a d : ℂ, inner ℂ (S (algebraMap ℂ _ a)) (S (algebraMap ℂ _ d)) =
+      inner ℂ (R (algebraMap ℂ _ a)) (R (algebraMap ℂ _ d)))
+    (x y : AlgebraicFock V) :
+    inner ℂ (S (ExteriorAlgebra.map e.toLinearMap x))
+        (S (ExteriorAlgebra.map e.toLinearMap y)) = inner ℂ (R x) (R y) := by
+  have hscalar (a : ℂ) (z : AlgebraicFock V) :
+      inner ℂ (S (ExteriorAlgebra.map e.toLinearMap (algebraMap ℂ _ a)))
+        (S (ExteriorAlgebra.map e.toLinearMap z)) =
+        inner ℂ (R (algebraMap ℂ _ a)) (R z) := by
+    induction z using CliffordAlgebra.left_induction with
+    | algebraMap d => simpa only [AlgHom.commutes] using hscalarPair a d
+    | add z w hz hw => simp only [map_add, inner_add_right, hz, hw]
+    | ι_mul z v _ =>
+        change inner ℂ (S (ExteriorAlgebra.map e.toLinearMap (algebraMap ℂ _ a)))
+          (S (ExteriorAlgebra.map e.toLinearMap (create V v z))) =
+          inner ℂ (R (algebraMap ℂ _ a)) (R (create V v z))
+        rw [map_create_apply]
+        simp only [AlgHom.commutes, inner_realization_scalar_create S hS,
+          inner_realization_scalar_create R hR]
+  induction x using CliffordAlgebra.left_induction generalizing y with
+  | algebraMap a => exact hscalar a y
+  | add x z hx hz => simp only [map_add, inner_add_left, hx, hz]
+  | ι_mul x v hx =>
+      change inner ℂ (S (ExteriorAlgebra.map e.toLinearMap (create V v x)))
+          (S (ExteriorAlgebra.map e.toLinearMap y)) =
+        inner ℂ (R (create V v x)) (R y)
+      have hc : ExteriorAlgebra.map e.toLinearMap (create V v x) =
+          create W (e v) (ExteriorAlgebra.map e.toLinearMap x) :=
+        map_create_apply e.toLinearMap v x
+      rw [hc, hS, annihilate_map, hx, hR]
+
 /-- Annihilation of a one-particle state returns its inner product with the smearing vector. -/
 @[simp]
 theorem annihilate_oneParticle (f g : 𝓗₁) :
