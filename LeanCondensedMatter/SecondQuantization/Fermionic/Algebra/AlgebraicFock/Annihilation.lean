@@ -97,18 +97,14 @@ theorem annihilateDual_map
     (f : V →ₗ[ℂ] W) (d : Module.Dual ℂ W) (Ψ : AlgebraicFock V) :
     annihilateDual W d (ExteriorAlgebra.map f Ψ) =
       ExteriorAlgebra.map f (annihilateDual V (d.comp f) Ψ) := by
-  have hcreate (v : V) (x : AlgebraicFock V) :
-      ExteriorAlgebra.map f (create V v x) =
-        create W (f v) (ExteriorAlgebra.map f x) := by
-    simp only [create_apply, oneParticle, map_mul, ExteriorAlgebra.map_apply_ι]
   induction Ψ using CliffordAlgebra.left_induction with
   | algebraMap c => simp [annihilateDual]
   | add x y hx hy => simp only [map_add, hx, hy]
   | ι_mul x v hx =>
       change annihilateDual W d (ExteriorAlgebra.map f (create V v x)) =
         ExteriorAlgebra.map f (annihilateDual V (d.comp f) (create V v x))
-      rw [hcreate, annihilateDual_create_apply, annihilateDual_create_apply,
-        map_sub, map_smul, hcreate, hx]
+      rw [map_create_apply, annihilateDual_create_apply, annihilateDual_create_apply,
+        map_sub, map_smul, map_create_apply, hx]
       rfl
 
 end Dual
@@ -153,6 +149,13 @@ theorem annihilate_map
 theorem annihilate_vacuum (f : 𝓗₁) :
     annihilate 𝓗₁ f (vacuum 𝓗₁) = 0 := by
   simpa [annihilate] using annihilateDual_vacuum 𝓗₁ (innerDual 𝓗₁ f)
+
+/-- A smeared annihilation field also kills every scalar exterior expression. -/
+theorem annihilate_algebraMap (v : 𝓗₁) (a : ℂ) :
+    annihilate 𝓗₁ v (algebraMap ℂ (AlgebraicFock 𝓗₁) a) = 0 := by
+  change CliffordAlgebra.contractLeft (Q := (0 : QuadraticForm ℂ 𝓗₁))
+    (innerDual 𝓗₁ v) (algebraMap ℂ _ a) = 0
+  rw [CliffordAlgebra.contractLeft_algebraMap]
 
 /-- Annihilation of a one-particle state returns its inner product with the smearing vector. -/
 @[simp]
