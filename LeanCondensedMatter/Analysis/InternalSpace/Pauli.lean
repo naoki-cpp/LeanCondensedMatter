@@ -543,6 +543,39 @@ theorem trace_parity_antisymmetric_xz_pauliCoefficients
   simp only [hI]
   ring
 
+/-- Parity-antisymmetric trace for a symmetric middle matrix and the transverse
+relation between the two current coefficients. All coefficients are extracted
+from the supplied matrices; no Hermiticity or model-specific hypotheses enter. -/
+theorem trace_parity_antisymmetric_xz_eq_transverse_minors
+    (A B C : PauliMatrix) (hsym : B 0 1 = B 1 0)
+    (htrans : pauliVectorCoefficient C .x = -pauliVectorCoefficient A .y) :
+    let a := pauliScalarCoefficient A
+    let b := pauliScalarCoefficient B
+    let c := pauliScalarCoefficient C
+    let gx := pauliVectorCoefficient B .x
+    let gz := pauliVectorCoefficient B .z
+    let u := pauliVectorCoefficient A
+    let w := pauliVectorCoefficient C
+    Matrix.trace
+        (A * (pauliZ * B * pauliZ) * B * (-(pauliZ * C * pauliZ))) -
+      Matrix.trace
+        (C * (pauliZ * B * pauliZ) * B * (-(pauliZ * A * pauliZ))) =
+      8 * Complex.I * gz *
+        (gx * (a * w .y - c * u .y) -
+          b * ((u .y) ^ 2 + u .x * w .y)) := by
+  let b := pauliScalarCoefficient B
+  let gx := pauliVectorCoefficient B .x
+  let gz := pauliVectorCoefficient B .z
+  have hB : B = (!![b + gz, gx; gx, b - gz] : PauliMatrix) := by
+    ext i j
+    fin_cases i <;> fin_cases j <;>
+      simp [b, gx, gz, pauliScalarCoefficient, pauliVectorCoefficient, hsym] <;> ring
+  have h := trace_parity_antisymmetric_xz_pauliCoefficients A C b gx gz
+  dsimp only at h ⊢
+  rw [← hB, htrans] at h
+  rw [h]
+  ring
+
 /-- Trace of four arbitrary complex two-level matrices expressed only through their canonical
 Pauli scalar/vector coefficients. -/
 theorem trace_four_eq_pauliCoefficients (A B C D : PauliMatrix) :
