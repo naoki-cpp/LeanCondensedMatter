@@ -70,6 +70,7 @@ private theorem norm_sub_finiteRangeApprox_le {ι : Type*} (d : HilbertBasis ι 
     exact pow_le_pow_left₀ (norm_nonneg _)
       (norm_inner_le_norm ((ContinuousLinearMap.adjoint T) (d i)) x) 2)
     htail ((hd.subtype {j | j ∉ s}).hasSum.mul_right (‖x‖ ^ 2))
+
 /-- Every Hilbert--Schmidt operator is compact. -/
 theorem isCompact {T : H →L[ℂ] H} (hT : IsHilbertSchmidt T) :
     IsCompactOperator T := by
