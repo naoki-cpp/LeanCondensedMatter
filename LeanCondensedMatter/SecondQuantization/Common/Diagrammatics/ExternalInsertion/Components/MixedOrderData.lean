@@ -404,7 +404,9 @@ theorem ExternalInsertionDiagram.componentMixedPositionEquiv_apply
                   (Finset.univ : Finset (Fin n))))).card))).symm localLeg)
       exact (Equiv.apply_symm_apply _ localLeg).symm
     exact congrArg Fin.val hpos
-  rw [hlocal, ← hfixed]
+  rw [hlocal]
+  rw [externalInsertionLegCongr_standardize] at hfixed
+  refine hfixed.symm.trans ?_
   have hambient :
       externalInsertionMixedTimeAmbientPositionEquiv externalTime σ
           (externalInsertionMixedTimeOrderedAtomicLegPosition externalTime σ
