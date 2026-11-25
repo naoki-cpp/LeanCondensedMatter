@@ -196,42 +196,36 @@ theorem orthogonal_span_eq_bot_of_sum_diagonalExpectationValue_eq_traceNorm
           ∑' i, diagonalExpectationValue T hTpos.isSelfAdjoint (d i) :=
         tsum_congr hge
       _ = hT.traceNorm := heq
+  have hrestricted : HasSum (fun i => g (e i)) hT.traceNorm := by
+    rw [← heqg]
+    exact (htr.summable.comp_injective he_inj).hasSum
+  have hext : HasSum (Function.extend e (fun i => g (e i)) 0) hT.traceNorm :=
+    (hasSum_extend_zero he_inj).mpr hrestricted
+  have hle : Function.extend e (fun i => g (e i)) 0 ≤ g := by
+    intro j
+    by_cases hj : j ∈ Set.range e
+    · obtain ⟨i, rfl⟩ := hj
+      rw [he_inj.extend_apply]
+    · rw [Function.extend_apply' _ _ _ hj]
+      exact hgnonneg j
   have he_surj : Function.Surjective e := by
-    by_contra hsurj
-    have hsurj' : ∃ j, ∀ i, e i ≠ j := by
-      simpa only [Function.Surjective, not_forall, not_exists] using hsurj
-    obtain ⟨j, hj⟩ := hsurj'
-    have hjrange : j ∉ Set.range e := by
-      rintro ⟨i, hi⟩
-      exact hj i hi
-    have hgjpos : 0 < g j := by
-      simpa [g] using hdiag_pos (b j) (b.orthonormal.1 j)
-    have hsub : Summable (fun k : ↥((Set.range e)ᶜ) => g (k : w)) :=
-      htr.summable.comp_injective Subtype.val_injective
-    have hpos : 0 < ∑' k : ↥((Set.range e)ᶜ), g (k : w) :=
-      hsub.tsum_pos (fun k => hgnonneg k) ⟨j, hjrange⟩ hgjpos
-    have hrange : (∑' i, g (e i)) = ∑' k : Set.range e, g (k : w) := by
-      simpa using (Equiv.tsum_eq (Equiv.ofInjective e he_inj) (fun k : Set.range e => g (k : w)))
-    have hsplit := htr.summable.tsum_subtype_add_tsum_subtype_compl (Set.range e)
-    rw [← hrange, heqg, htr.tsum_eq] at hsplit
-    linarith
-  apply le_antisymm
-  · intro x hx
-    have hinner : ∀ j : w, inner ℂ (b j) x = 0 := by
-      intro j
-      obtain ⟨i, hi⟩ := he_surj j
-      have hbdi : b j = d i := by rw [← hi, hbe]
-      rw [hbdi]
-      exact Submodule.inner_right_of_mem_orthogonal
-        (Submodule.subset_span (Set.mem_range_self i)) hx
-    have hrepr : b.repr x = 0 := by
-      ext j
-      rw [b.repr_apply_apply]
-      exact hinner j
-    have hx0 : x = 0 := b.repr.injective (by simpa using hrepr)
-    rw [hx0]
-    exact Submodule.zero_mem _
-  · exact bot_le
+    intro j
+    by_contra hj
+    have hjrange : j ∉ Set.range e := hj
+    have hlt : Function.extend e (fun i => g (e i)) 0 j < g j := by
+      rw [Function.extend_apply' _ _ _ hjrange]
+      exact hdiag_pos (b j) (b.orthonormal.1 j)
+    exact (lt_irrefl hT.traceNorm) (hasSum_lt hle hlt hext htr)
+  have hrange : Set.range (⇑b) = Set.range d := by
+    ext x
+    constructor
+    · rintro ⟨j, rfl⟩
+      obtain ⟨i, rfl⟩ := he_surj j
+      exact ⟨i, (hbe i).symm⟩
+    · rintro ⟨i, rfl⟩
+      exact ⟨e i, hbe i⟩
+  rw [← hrange, ← Submodule.orthogonal_closure, b.dense_span,
+    Submodule.top_orthogonal_eq_bot]
 
 end IsTraceClass
 
