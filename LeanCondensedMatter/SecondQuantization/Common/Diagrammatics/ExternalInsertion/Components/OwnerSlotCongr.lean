@@ -1,4 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ConnectedAssembly
+import LeanCondensedMatter.Combinatorics.PerfectPairing.Transport
 
 set_option linter.style.header false
 
@@ -395,27 +396,6 @@ noncomputable def ExternalInsertionBlockLayout.ownerSlotCongrBlockFamily
 
 
 
-/-- Conjugating each local perfect pairing by its own slot equivalence
-commutes with assembling the complete independent block pairing. -/
-private theorem sigmaPairing_transport
-    {ι : Type*} {β γ : ι → Type*}
-    (P : ∀ i, Combinatorics.PairingOn (β i))
-    (e : ∀ i, β i ≃ γ i) :
-    Combinatorics.PairingOn.sigmaCongrRight
-        (fun i => (P i).transport (e i).symm) =
-      (Combinatorics.PairingOn.sigmaCongrRight P).transport
-        (Equiv.sigmaCongrRight e).symm := by
-  apply Combinatorics.PairingOn.ext
-  apply Equiv.ext
-  rintro ⟨i, x⟩
-  have hsymm :
-      (Equiv.sigmaCongrRight e).symm ⟨i, x⟩ =
-        ⟨i, (e i).symm x⟩ := by
-    apply (Equiv.sigmaCongrRight e).injective
-    simp only [Equiv.apply_symm_apply, Equiv.sigmaCongrRight_apply]
-  simp [Combinatorics.PairingOn.transport_partner,
-    Combinatorics.PairingOn.sigmaCongrRight_partner, hsymm]
-
 /-- The complete physically assembled labelled Wick diagram commutes
 with changing the actual ambient interaction owner assignment and
 transporting all local pairings. This is an *equality of diagrams*, not
@@ -485,7 +465,7 @@ theorem ExternalInsertionBlockLayout.assembleDiagram_ownerSlotCongr
           (fun B => ((F B).slotCongr
             (layout.interactionBlockOwnerSlotCongrEquiv e B)).pairing) =
         Q.transport h.symm
-      exact sigmaPairing_transport (fun B => (F B).pairing)
+      exact Combinatorics.PairingOn.sigmaCongrRight_transport (fun B => (F B).pairing)
         (fun B => externalInsertionLegCongr
           (E := (B : Finset (Fin (2 * E))).card / 2)
           (layout.interactionBlockOwnerSlotCongrEquiv e B))
