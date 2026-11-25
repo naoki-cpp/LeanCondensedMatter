@@ -66,7 +66,7 @@ private theorem norm_sub_finiteRangeApprox_le {ι : Type*} (d : HilbertBasis ι 
   rw [hzero, sub_zero] at htail
   exact hasSum_le (fun i => by
     rw [sub_apply, inner_sub_right, inner_finiteRangeApprox_apply, ite_eq_right i.2, sub_zero,
-      ← ContinuousLinearMap.adjoint_inner_left T x (d i), ← mul_pow]
+      ← ContinuousLinearMap.adjoint_inner_left T x (d i), Function.comp_apply, ← mul_pow]
     exact pow_le_pow_left₀ (norm_nonneg _)
       (norm_inner_le_norm ((ContinuousLinearMap.adjoint T) (d i)) x) 2)
     htail ((hd.subtype {j | j ∉ s}).hasSum.mul_right (‖x‖ ^ 2))
