@@ -33,11 +33,9 @@ theorem Pairing.insertFirstPair_partner_zero {n : ℕ} (pairing : Pairing n)
     (j : Fin (2 * (n + 1))) (hj : j ≠ (0 : Fin (2 * (n + 1)))) :
     (pairing.insertFirstPair j hj).partner 0 = j := by
   let e := deletedPositionsSumEquiv (2 * n) j hj
-  change (pairing.insertFirstPair j hj).partner (e (Sum.inl false)) = e (Sum.inl true)
   change ((boolPairing.sumCongr pairing).transport e.symm).partner
     (e (Sum.inl false)) = e (Sum.inl true)
   rw [PairingOn.transport_partner, Equiv.symm_apply_apply, PairingOn.sumCongr_partner_inl]
-  rfl
 
 private theorem Pairing.insertFirstPair_partner_orderIso {n : ℕ} (pairing : Pairing n)
     (j : Fin (2 * (n + 1))) (hj : j ≠ (0 : Fin (2 * (n + 1)))) (i : Fin (2 * n)) :
@@ -48,7 +46,6 @@ private theorem Pairing.insertFirstPair_partner_orderIso {n : ℕ} (pairing : Pa
   change ((boolPairing.sumCongr pairing).transport e.symm).partner
     (e (Sum.inr i)) = e (Sum.inr (pairing.partner i))
   rw [PairingOn.transport_partner, Equiv.symm_apply_apply, PairingOn.sumCongr_partner_inr]
-  rfl
 
 /-- Inserting and then erasing the new first pair recovers the smaller pairing. -/
 theorem Pairing.eraseZeroPair_insertFirstPair {n : ℕ} (pairing : Pairing n)
