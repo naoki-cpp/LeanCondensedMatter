@@ -67,28 +67,11 @@ theorem diagonalOp_apply_basis (b : HilbertBasis ι ℂ H) (a : ι → ℂ)
 /-- A diagonal operator with absolutely summable coefficients is compact. -/
 theorem diagonalOp_isCompact (b : HilbertBasis ι ℂ H) (a : ι → ℂ)
     (ha : Summable fun i => ‖a i‖) : IsCompactOperator (diagonalOp b a) := by
-  classical
-  have hfinite (s : Finset ι) :
-      IsCompactOperator ⇑(∑ i ∈ s, diagonalTerm b a i : H →L[ℂ] H) := by
-    induction s using Finset.induction_on with
-    | empty =>
-        change IsCompactOperator (fun _ : H => (0 : H))
-        exact isCompactOperator_zero
-    | @insert i s hi ih =>
-        simp only [Finset.sum_insert hi]
-        change IsCompactOperator (fun x : H =>
-          diagonalTerm b a i x + (∑ j ∈ s, diagonalTerm b a j) x)
-        have hiCompact :
-            IsCompactOperator (diagonalTerm b a i) := by
-          change IsCompactOperator (a i • InnerProductSpace.rankOne ℂ (b i) (b i))
-          exact (InnerProductSpace.isCompactOperator_rankOne (b i) (b i)).smul (a i)
-        exact hiCompact.add ih
-  refine isCompactOperator_of_tendsto
-    (l := Filter.atTop)
-    (F := fun s : Finset ι => ∑ i ∈ s, diagonalTerm b a i)
-    (f := diagonalOp b a) ?_ ?_
-  · exact hasSum_diagonalTerm b a ha
-  · exact Filter.Eventually.of_forall hfinite
+  refine isCompactOperator_of_tendsto (hasSum_diagonalTerm b a ha)
+    (Filter.Eventually.of_forall fun s : Finset ι => ?_)
+  change (∑ i ∈ s, diagonalTerm b a i) ∈ compactOperator (RingHom.id ℂ) H H
+  exact Submodule.sum_mem _ fun i _ =>
+    (InnerProductSpace.isCompactOperator_rankOne (b i) (b i)).smul (a i)
 
 /-- A diagonal operator with summable real nonnegative coefficients is positive. -/
 theorem diagonalOp_isPositive (b : HilbertBasis ι ℂ H) (a : ι → ℝ)
@@ -124,5 +107,13 @@ theorem diagonalExpectationValue_diagonalOp (b : HilbertBasis ι ℂ H) (a : ι 
   rw [diagonalOp_apply_basis b (fun j => (a j : ℂ)) hac i]
   rw [inner_smul_right, inner_self_eq_norm_sq_to_K, b.orthonormal.1 i]
   simp
+
+/-- `1 + diagonalOp b coeff` acts diagonally with factors `1 + coeff i`. -/
+theorem one_add_diagonalOp_apply_basis (b : HilbertBasis ι ℂ H) (coeff : ι → ℂ)
+    (hcoeff : Summable fun i => ‖coeff i‖) (i : ι) :
+    ((1 : H →L[ℂ] H) + diagonalOp b coeff) (b i) = (1 + coeff i) • b i := by
+  change b i + diagonalOp b coeff (b i) = (1 + coeff i) • b i
+  rw [diagonalOp_apply_basis b coeff hcoeff i]
+  simp [add_smul]
 
 end HilbertBasis
