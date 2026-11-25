@@ -196,7 +196,7 @@
       "name": "LeanCondensedMatter.Analysis.FunctionalCalculus.CFC",
       "sourceFile": "LeanCondensedMatter/Analysis/FunctionalCalculus/CFC.lean",
       "imports": [],
-      "externalImportCount": 8
+      "externalImportCount": 9
     },
     {
       "name": "LeanCondensedMatter.Analysis.Geometry.SphericalMoments",
@@ -3312,14 +3312,6 @@
       "externalImportCount": 0
     },
     {
-      "name": "LeanCondensedMatter.QuantumMechanics.SingleParticle.ChargeLikeCurrent",
-      "sourceFile": "LeanCondensedMatter/QuantumMechanics/SingleParticle/ChargeLikeCurrent.lean",
-      "imports": [
-        "LeanCondensedMatter.QuantumTheory.ConservationLaw.LocalizedTransport"
-      ],
-      "externalImportCount": 0
-    },
-    {
       "name": "LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Continuity.CompactSupport1D",
       "sourceFile": "LeanCondensedMatter/QuantumMechanics/SingleParticle/Continuum/Continuity/CompactSupport1D.lean",
       "imports": [
@@ -3398,7 +3390,7 @@
       "sourceFile": "LeanCondensedMatter/QuantumMechanics/SingleParticle/Continuum/Continuity/SchwartzCurrent1D.lean",
       "imports": [
         "LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.SchwartzSchrodinger1D",
-        "LeanCondensedMatter.QuantumMechanics.SingleParticle.SymmetrizedVelocityCurrent"
+        "LeanCondensedMatter.QuantumTheory.ConservationLaw.LocalizedTransport"
       ],
       "externalImportCount": 1
     },
@@ -3415,7 +3407,8 @@
       "sourceFile": "LeanCondensedMatter/QuantumMechanics/SingleParticle/Continuum/Continuity/SchwartzSpinCurrent1D.lean",
       "imports": [
         "LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.SchwartzTwoLevelSchrodinger1D",
-        "LeanCondensedMatter.QuantumMechanics.SingleParticle.SymmetrizedVelocityCurrent",
+        "LeanCondensedMatter.QuantumMechanics.SingleParticle.GeneralizedCurrent",
+        "LeanCondensedMatter.QuantumTheory.ConservationLaw.LocalizedTransport",
         "LeanCondensedMatter.QuantumTheory.SpinHalf"
       ],
       "externalImportCount": 0
@@ -3682,24 +3675,13 @@
       "externalImportCount": 0
     },
     {
-      "name": "LeanCondensedMatter.QuantumMechanics.SingleParticle.SymmetrizedVelocityCurrent",
-      "sourceFile": "LeanCondensedMatter/QuantumMechanics/SingleParticle/SymmetrizedVelocityCurrent.lean",
-      "imports": [
-        "LeanCondensedMatter.QuantumMechanics.SingleParticle.GeneralizedCurrent",
-        "LeanCondensedMatter.QuantumTheory.ConservationLaw.LocalizedTransport"
-      ],
-      "externalImportCount": 0
-    },
-    {
       "name": "LeanCondensedMatter.QuantumMechanics.SingleParticle",
       "sourceFile": "LeanCondensedMatter/QuantumMechanics/SingleParticle.lean",
       "imports": [
-        "LeanCondensedMatter.QuantumMechanics.SingleParticle.ChargeLikeCurrent",
         "LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum",
         "LeanCondensedMatter.QuantumMechanics.SingleParticle.GeneralizedCurrent",
         "LeanCondensedMatter.QuantumMechanics.SingleParticle.OrbitalAngularMomentum",
-        "LeanCondensedMatter.QuantumMechanics.SingleParticle.OrbitalAngularMomentumCurrent",
-        "LeanCondensedMatter.QuantumMechanics.SingleParticle.SymmetrizedVelocityCurrent"
+        "LeanCondensedMatter.QuantumMechanics.SingleParticle.OrbitalAngularMomentumCurrent"
       ],
       "externalImportCount": 0
     },
@@ -5349,6 +5331,7 @@
       "name": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.BlockConnectivity",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Diagrammatics/ExternalInsertion/Components/BlockConnectivity.lean",
       "imports": [
+        "LeanCondensedMatter.Combinatorics.PerfectPairing.Transport",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.BlockLayout"
       ],
       "externalImportCount": 0
@@ -5664,6 +5647,7 @@
       "name": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Diagrammatics/Quartic/Components/Reassemble.lean",
       "imports": [
+        "LeanCondensedMatter.Combinatorics.PerfectPairing.Transport",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentConnected"
       ],
       "externalImportCount": 0

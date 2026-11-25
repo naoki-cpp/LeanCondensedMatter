@@ -10662,10 +10662,9 @@
     "dependents": [
       "Combinatorics.PairingOn.sigmaCongrRight_sigmaFiberPairing",
       "Combinatorics.PairingOn.sigmaCongrRight_transport",
+      "Combinatorics.PairingOn.sigmaCongrRight_transport_partner_fst",
       "SecondQuantization.Common.ExternalInsertionBlockLayout.assembleDiagram_partner",
-      "SecondQuantization.Common.ExternalInsertionBlockLayout.assembleDiagram_partner_block",
       "SecondQuantization.Common.ExternalInsertionDiagram.assembleComponentPairing_partner",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_partner_bigLegEquiv_fst",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_partner_bigLegEquiv_symm_sigma_mk"
     ],
     "dependencies": [],
@@ -10674,13 +10673,12 @@
     "compiledConsumers": [
       "Combinatorics.PairingOn.sigmaCongrRight_sigmaFiberPairing",
       "Combinatorics.PairingOn.sigmaCongrRight_transport",
+      "Combinatorics.PairingOn.sigmaCongrRight_transport_partner_fst",
       "SecondQuantization.Common.ExternalInsertionBlockLayout.assembleDiagram_partner",
-      "SecondQuantization.Common.ExternalInsertionBlockLayout.assembleDiagram_partner_block",
       "SecondQuantization.Common.ExternalInsertionDiagram.assembleComponentPairing_partner",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_partner_bigLegEquiv_fst",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_partner_bigLegEquiv_symm_sigma_mk"
     ],
-    "compiledConsumerCount": 7,
+    "compiledConsumerCount": 6,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -10773,6 +10771,55 @@
       "SecondQuantization.Common.ExternalInsertionBlockLayout.assembleDiagram_ownerSlotCongr"
     ],
     "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {α : Type u_1} {ι : Type u_2} {β : ι → Type u_3} (P : (i : ι) → Combinatorics.PairingOn (β i)) (e : α ≃ (i : ι) × β i)\n  (x : α), (e (((Combinatorics.PairingOn.sigmaCongrRight P).transport e).partner x)).fst = (e x).fst",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "Combinatorics.PairingOn.sigmaCongrRight_transport_partner_fst",
+    "module": "LeanCondensedMatter.Combinatorics.PerfectPairing.Transport",
+    "externalAxioms": [],
+    "docString": "Transporting independent fiber pairings to an ambient type preserves the fiber index\nof each partner. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Common.ExternalInsertionBlockLayout.assembleDiagram_adj_same_block",
+      "SecondQuantization.Common.ExternalInsertionBlockLayout.restrictBlock_assembleDiagram",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_vertexGraph_adj_same_part"
+    ],
+    "dependencies": [
+      "Combinatorics.PairingOn.sigmaCongrRight_partner",
+      "Combinatorics.PairingOn.transport_partner"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Common.ExternalInsertionBlockLayout.assembleDiagram_adj_same_block",
+      "SecondQuantization.Common.ExternalInsertionBlockLayout.restrictBlock_assembleDiagram",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_vertexGraph_adj_same_part"
+    ],
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -10941,11 +10988,11 @@
       "Combinatorics.Pairing.ofSplit_reindex",
       "Combinatorics.PairingOn.restrictAlongEquiv_partner",
       "Combinatorics.PairingOn.sigmaCongrRight_transport",
+      "Combinatorics.PairingOn.sigmaCongrRight_transport_partner_fst",
       "Combinatorics.PairingOn.transport_symm_transport",
       "Combinatorics.PairingOn.transport_trans",
       "Combinatorics.PairingOn.transport_transport_symm",
       "SecondQuantization.Common.ExternalInsertionBlockLayout.assembleDiagram_partner",
-      "SecondQuantization.Common.ExternalInsertionBlockLayout.assembleDiagram_partner_block",
       "SecondQuantization.Common.ExternalInsertionDiagram.assembleComponentPairing_partner",
       "SecondQuantization.Common.ExternalInsertionDiagram.pairingInMixedOrder_partner_legPosition",
       "SecondQuantization.Common.ExternalInsertionDiagram.slotCongr_pairing_partner",
@@ -10960,7 +11007,6 @@
       "SecondQuantization.Common.twoPointDiagramExternalInsertionEquiv_partner",
       "SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_left_normalizedPair",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.BlockConnectivity.0.SecondQuantization.Common.ExternalInsertionBlockLayout.pairingTransport_preserves_block",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_partner_bigLegEquiv_fst",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_partner_bigLegEquiv_symm_sigma_mk",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalSubsetAssembly.0.SecondQuantization.Fermionic.pairing_heq_of_finCongr_transport"
     ],
@@ -10975,11 +11021,11 @@
       "Combinatorics.Pairing.ofSplit_reindex",
       "Combinatorics.PairingOn.restrictAlongEquiv_partner",
       "Combinatorics.PairingOn.sigmaCongrRight_transport",
+      "Combinatorics.PairingOn.sigmaCongrRight_transport_partner_fst",
       "Combinatorics.PairingOn.transport_symm_transport",
       "Combinatorics.PairingOn.transport_trans",
       "Combinatorics.PairingOn.transport_transport_symm",
       "SecondQuantization.Common.ExternalInsertionBlockLayout.assembleDiagram_partner",
-      "SecondQuantization.Common.ExternalInsertionBlockLayout.assembleDiagram_partner_block",
       "SecondQuantization.Common.ExternalInsertionDiagram.assembleComponentPairing_partner",
       "SecondQuantization.Common.ExternalInsertionDiagram.pairingInMixedOrder_partner_legPosition",
       "SecondQuantization.Common.ExternalInsertionDiagram.slotCongr_pairing_partner",
@@ -10994,11 +11040,10 @@
       "SecondQuantization.Common.twoPointDiagramExternalInsertionEquiv_partner",
       "SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_left_normalizedPair",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.BlockConnectivity.0.SecondQuantization.Common.ExternalInsertionBlockLayout.pairingTransport_preserves_block",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_partner_bigLegEquiv_fst",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_partner_bigLegEquiv_symm_sigma_mk",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalSubsetAssembly.0.SecondQuantization.Fermionic.pairing_heq_of_finCongr_transport"
     ],
-    "compiledConsumerCount": 29,
+    "compiledConsumerCount": 28,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -15091,7 +15136,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumMechanics.SingleParticle.correctedChargeCurrentFlux_eq"
+      "QuantumTheory.ConservationLaw.correctedChargeCurrentFlux_eq"
     ],
     "dependencies": [
       "ConservationLaw.localizationCorrectionCurrentFlux_eq_zero_of_commutes"
@@ -15099,7 +15144,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumMechanics.SingleParticle.correctedChargeCurrentFlux_eq"
+      "QuantumTheory.ConservationLaw.correctedChargeCurrentFlux_eq"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -15210,8 +15255,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumMechanics.SingleParticle.correctedChargeCurrentFlux_eq",
       "QuantumMechanics.SingleParticle.heisenbergTransportOrbitalAngularMomentum_apply",
+      "QuantumTheory.ConservationLaw.correctedChargeCurrentFlux_eq",
       "QuantumTheory.ConservationLaw.exists_current_eq_symmetrized_add_correction_add_invisible",
       "SecondQuantization.Fermionic.Transport.boundedFluxRetardedResponse_eq_symmetrized_add_correction"
     ],
@@ -15219,8 +15264,8 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumMechanics.SingleParticle.correctedChargeCurrentFlux_eq",
       "QuantumMechanics.SingleParticle.heisenbergTransportOrbitalAngularMomentum_apply",
+      "QuantumTheory.ConservationLaw.correctedChargeCurrentFlux_eq",
       "QuantumTheory.ConservationLaw.exists_current_eq_symmetrized_add_correction_add_invisible",
       "SecondQuantization.Fermionic.Transport.boundedFluxRetardedResponse_eq_symmetrized_add_correction"
     ],
@@ -15256,13 +15301,13 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumMechanics.SingleParticle.correctedChargeCurrentFlux_eq"
+      "QuantumTheory.ConservationLaw.correctedChargeCurrentFlux_eq"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumMechanics.SingleParticle.correctedChargeCurrentFlux_eq"
+      "QuantumTheory.ConservationLaw.correctedChargeCurrentFlux_eq"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -15975,7 +16020,7 @@
       "ContinuousLinearMap.coe_diagonalExpectationValue_right",
       "ContinuousLinearMap.exists_leftPolarFactor",
       "ContinuousLinearMap.isTraceClass_iff_isTraceClassWrt",
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.IsTraceClass.summable_inner_left"
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.IsTraceClass.summable_norm_inner_left_and_tsum_le_traceNorm"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -16165,8 +16210,7 @@
       "ContinuousLinearMap.IsTraceClass.trace_adjointConjugate",
       "ContinuousLinearMap.IsTraceClass.trace_comp_comm",
       "QuantumTheory.LinearResponse.expectation_evolveDensityOperator_eq_heisenberg",
-      "SecondQuantization.Fermionic.CompletedThermalLadder.grandCanonicalGibbsExpectation_operator_comp",
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.IsTraceClass.summable_inner_left"
+      "SecondQuantization.Fermionic.CompletedThermalLadder.grandCanonicalGibbsExpectation_operator_comp"
     ],
     "dependencies": [
       "ContinuousLinearMap.isHilbertSchmidt_comp_right",
@@ -16182,10 +16226,9 @@
       "ContinuousLinearMap.IsTraceClass.trace_adjointConjugate",
       "ContinuousLinearMap.IsTraceClass.trace_comp_comm",
       "QuantumTheory.LinearResponse.expectation_evolveDensityOperator_eq_heisenberg",
-      "SecondQuantization.Fermionic.CompletedThermalLadder.grandCanonicalGibbsExpectation_operator_comp",
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.IsTraceClass.summable_inner_left"
+      "SecondQuantization.Fermionic.CompletedThermalLadder.grandCanonicalGibbsExpectation_operator_comp"
     ],
-    "compiledConsumerCount": 9,
+    "compiledConsumerCount": 8,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -16941,8 +16984,7 @@
     "dependents": [
       "ContinuousLinearMap.IsTraceClass.hasSum_trace",
       "ContinuousLinearMap.IsTraceClass.norm_trace_le_traceNorm",
-      "ContinuousLinearMap.IsTraceClass.trace_im_eq_zero_of_isSelfAdjoint",
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.IsTraceClass.summable_inner_left"
+      "ContinuousLinearMap.IsTraceClass.trace_im_eq_zero_of_isSelfAdjoint"
     ],
     "dependencies": [
       "ContinuousLinearMap.IsHilbertSchmidt.summable_inner_apply",
@@ -16954,10 +16996,9 @@
     "compiledConsumers": [
       "ContinuousLinearMap.IsTraceClass.hasSum_trace",
       "ContinuousLinearMap.IsTraceClass.norm_trace_le_traceNorm",
-      "ContinuousLinearMap.IsTraceClass.trace_im_eq_zero_of_isSelfAdjoint",
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.IsTraceClass.summable_inner_left"
+      "ContinuousLinearMap.IsTraceClass.trace_im_eq_zero_of_isSelfAdjoint"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -28890,6 +28931,50 @@
   },
   {
     "terminal": false,
+    "statement": "∀ (A B C : InternalSpace.PauliMatrix),\n  B 0 1 = B 1 0 →\n    InternalSpace.pauliVectorCoefficient C InternalSpace.PauliAxis.x =\n        -InternalSpace.pauliVectorCoefficient A InternalSpace.PauliAxis.y →\n      have a := InternalSpace.pauliScalarCoefficient A;\n      have b := InternalSpace.pauliScalarCoefficient B;\n      have c := InternalSpace.pauliScalarCoefficient C;\n      have gx := InternalSpace.pauliVectorCoefficient B InternalSpace.PauliAxis.x;\n      have gz := InternalSpace.pauliVectorCoefficient B InternalSpace.PauliAxis.z;\n      have u := InternalSpace.pauliVectorCoefficient A;\n      have w := InternalSpace.pauliVectorCoefficient C;\n      (A * (InternalSpace.pauliZ * B * InternalSpace.pauliZ) * B *\n              -(InternalSpace.pauliZ * C * InternalSpace.pauliZ)).trace -\n          (C * (InternalSpace.pauliZ * B * InternalSpace.pauliZ) * B *\n              -(InternalSpace.pauliZ * A * InternalSpace.pauliZ)).trace =\n        8 * Complex.I * gz *\n          (gx * (a * w InternalSpace.PauliAxis.y - c * u InternalSpace.PauliAxis.y) -\n            b * (u InternalSpace.PauliAxis.y ^ 2 + u InternalSpace.PauliAxis.x * w InternalSpace.PauliAxis.y))",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "InternalSpace.trace_parity_antisymmetric_xz_eq_transverse_minors",
+    "module": "LeanCondensedMatter.Analysis.InternalSpace.Pauli",
+    "externalAxioms": [],
+    "docString": "Parity-antisymmetric trace for a symmetric middle matrix and the transverse\nrelation between the two current coefficients. All coefficients are extracted\nfrom the supplied matrices; no Hermiticity or model-specific hypotheses enter. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_psi_antisymmetric_eq_transverse_minors"
+    ],
+    "dependencies": [
+      "InternalSpace.trace_parity_antisymmetric_xz_pauliCoefficients"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_psi_antisymmetric_eq_transverse_minors"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ (A C : InternalSpace.PauliMatrix) (b gx gz : ℂ),\n  have B := !![b + gz, gx; gx, b - gz];\n  (A * (InternalSpace.pauliZ * B * InternalSpace.pauliZ) * B *\n          -(InternalSpace.pauliZ * C * InternalSpace.pauliZ)).trace -\n      (C * (InternalSpace.pauliZ * B * InternalSpace.pauliZ) * B *\n          -(InternalSpace.pauliZ * A * InternalSpace.pauliZ)).trace =\n    8 * Complex.I * gz *\n      (gx *\n          (InternalSpace.pauliScalarCoefficient A * InternalSpace.pauliVectorCoefficient C InternalSpace.PauliAxis.y -\n            InternalSpace.pauliScalarCoefficient C * InternalSpace.pauliVectorCoefficient A InternalSpace.PauliAxis.y) +\n        b *\n          (InternalSpace.pauliVectorCoefficient A InternalSpace.PauliAxis.y *\n              InternalSpace.pauliVectorCoefficient C InternalSpace.PauliAxis.x -\n            InternalSpace.pauliVectorCoefficient A InternalSpace.PauliAxis.x *\n              InternalSpace.pauliVectorCoefficient C InternalSpace.PauliAxis.y))",
     "standardAxioms": [
       "Classical.choice",
@@ -28909,7 +28994,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_psi_antisymmetric_eq_transverse_minors"
+      "InternalSpace.trace_parity_antisymmetric_xz_eq_transverse_minors"
     ],
     "dependencies": [
       "InternalSpace.trace_parity_antisymmetric_xz_entries"
@@ -28917,7 +29002,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_psi_antisymmetric_eq_transverse_minors"
+      "InternalSpace.trace_parity_antisymmetric_xz_eq_transverse_minors"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -33893,9 +33978,8 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {K : Type u_1} [inst : Field K] [NeZero 2] {W : Type u_2} [inst_2 : AddCommGroup W] [inst_3 : _root_.Module K W]\n  (A : W →ₗ[K] W) (q : K), LinearMap.symmetrizedProduct A (q • LinearMap.id) = q • A",
+    "statement": "∀ {K : Type u_1} [inst : Field K] [NeZero 2] {A : Type u_2} [inst_2 : Ring A] [inst_3 : Algebra K A] (a : A) (q : K),\n  LinearMap.symmetrizedProduct a (q • 1) = q • a",
     "standardAxioms": [
-      "Classical.choice",
       "Quot.sound",
       "propext"
     ],
@@ -33905,24 +33989,23 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "LinearMap.symmetrizedProduct_smul_id",
+    "name": "LinearMap.symmetrizedProduct_smul_one",
     "module": "LeanCondensedMatter.Analysis.Operator.SymmetrizedProduct",
     "externalAxioms": [],
-    "docString": "Scalar multiples of the identity behave as scalar quantities under symmetrization. ",
+    "docString": "Scalar multiples of the algebra unit behave as scalar quantities under symmetrization. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumMechanics.SingleParticle.correctedChargeCurrentFlux_eq"
+      "QuantumTheory.ConservationLaw.correctedChargeCurrentFlux_eq"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumMechanics.SingleParticle.correctedChargeCurrentFlux_eq"
+      "QuantumTheory.ConservationLaw.correctedChargeCurrentFlux_eq"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
-      "Classical.choice",
       "Quot.sound",
       "propext"
     ],
@@ -41730,48 +41813,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] {T : H →L[ℂ] H},\n  IsCompactOperator ⇑T → ∀ (p : Polynomial ℝ), p.coeff 0 = 0 → IsCompactOperator ⇑((Polynomial.aeval T) p)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "Polynomial.isCompactOperator_aeval_of_coeff_zero",
-    "module": "LeanCondensedMatter.Analysis.FunctionalCalculus.CFC",
-    "externalAxioms": [],
-    "docString": "Evaluating a real polynomial with zero constant coefficient at a compact operator gives a\ncompact operator. Algebraically, such a polynomial is divisible by `X`, so its evaluation factors\nthrough the original compact operator. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "isCompactOperator_cfc_of_zero"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "isCompactOperator_cfc_of_zero"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ {R : Type u_1} [inst : Field R] (Z : PowerSeries R) (n : ℕ),\n  (PowerSeries.coeff n) Z.normalizeByConstantCoeff = (PowerSeries.constantCoeff Z)⁻¹ * (PowerSeries.coeff n) Z",
     "standardAxioms": [
       "Classical.choice",
@@ -48475,94 +48516,6 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": false,
-    "statement": "∀ {OneForm : Type u_2} [inst : AddCommGroup OneForm] [inst_1 : _root_.Module ℂ OneForm] (V : Type u_3)\n  [inst_2 : AddCommGroup V] [inst_3 : _root_.Module ℂ V] (velocity : V →ₗ[ℂ] V) (N : OneForm →ₗ[ℂ] V →ₗ[ℂ] V) (q : ℂ),\n  ConservationLaw.nestedSymmetrizedCurrentFlux velocity (q • LinearMap.id) N =\n    (QuantumTheory.ConservationLaw.operatorLocalCurrentPairing N) (q • velocity)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": true,
-    "retainedMention": true,
-    "projectAxioms": [],
-    "name": "QuantumMechanics.SingleParticle.correctedChargeCurrentFlux_eq",
-    "module": "LeanCondensedMatter.QuantumMechanics.SingleParticle.ChargeLikeCurrent",
-    "externalAxioms": [],
-    "docString": "The canonical corrected current functional for a charge-like quantity is exactly the local\npairing with the charge current density `q v`. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumMechanics.SingleParticle.correctedSymmetrizedVelocityCurrentRepresentation_smul_id_current"
-    ],
-    "dependencies": [
-      "ConservationLaw.localizationCorrectionCurrentFlux_smul_one",
-      "ConservationLaw.nestedSymmetrizedCurrentFlux_eq_symmetrized_add_correction",
-      "ConservationLaw.symmetrizedCurrentFlux_apply",
-      "LinearMap.symmetrizedProduct_smul_id",
-      "QuantumTheory.ConservationLaw.operatorLocalCurrentPairing_apply"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumMechanics.SingleParticle.correctedSymmetrizedVelocityCurrentRepresentation_smul_id_current"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {Test : Type u_1} {OneForm : Type u_2} [inst : AddCommGroup Test] [inst_1 : _root_.Module ℂ Test]\n  [inst_2 : AddCommGroup OneForm] [inst_3 : _root_.Module ℂ OneForm] (V : Type u_3) [inst_4 : AddCommGroup V]\n  [inst_5 : _root_.Module ℂ V] (ℏ : ℝ) (h : V →ₗ[ℂ] V) (M : Test →ₗ[ℂ] V →ₗ[ℂ] V) (velocity : V →ₗ[ℂ] V)\n  (d : Test →ₗ[ℂ] OneForm) (N : OneForm →ₗ[ℂ] V →ₗ[ℂ] V) (q : ℂ)\n  (hvelocity :\n    QuantumTheory.ConservationLaw.heisenbergLocalizationFunctional ℏ h M =\n      ConservationLaw.localizedQuantityFunctional N velocity ∘ₗ d),\n  ↑(QuantumTheory.ConservationLaw.correctedSymmetrizedVelocityCurrentRepresentation ℏ h M (q • LinearMap.id) velocity d\n        N hvelocity) =\n    (QuantumTheory.ConservationLaw.operatorLocalCurrentPairing N) (q • velocity)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumMechanics.SingleParticle.correctedSymmetrizedVelocityCurrentRepresentation_smul_id_current",
-    "module": "LeanCondensedMatter.QuantumMechanics.SingleParticle.ChargeLikeCurrent",
-    "externalAxioms": [],
-    "docString": "The chosen corrected differential-current representation reduces to the charge-current pairing\n`q v` when the transported quantity is `q I`. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "QuantumMechanics.SingleParticle.correctedChargeCurrentFlux_eq"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
     "terminal": true,
     "statement": "∀ {E : Type u_1} {V : Type u_2} {OneForm : Type u_3} [inst : AddCommGroup E] [inst_1 : _root_.Module ℂ E]\n  [inst_2 : AddCommGroup V] [inst_3 : _root_.Module ℂ V] [inst_4 : AddCommGroup OneForm]\n  [inst_5 : _root_.Module ℂ OneForm] {Test : Type u_4} [inst_6 : AddCommGroup Test] [inst_7 : _root_.Module ℂ Test]\n  (ℏ : ℝ) (h : V →ₗ[ℂ] V) (M : Test →ₗ[ℂ] V →ₗ[ℂ] V) (X P : E →ₗ[ℂ] V →ₗ[ℂ] V) (u v : E) (velocity : V →ₗ[ℂ] V)\n  (d : Test →ₗ[ℂ] OneForm) (N : OneForm →ₗ[ℂ] V →ₗ[ℂ] V) (f : Test) (Du Dv : V →ₗ[ℂ] V) (c : ℂ),\n  QuantumTheory.ConservationLaw.heisenbergLocalizationFunctional ℏ h M =\n      ConservationLaw.localizedQuantityFunctional N velocity ∘ₗ d →\n    ⁅N (d f), X u⁆ = 0 →\n      ⁅N (d f), X v⁆ = 0 →\n        ⁅N (d f), P u⁆ = c • Du →\n          ⁅N (d f), P v⁆ = c • Dv →\n            (QuantumTheory.ConservationLaw.heisenbergTransportFunctional ℏ h M\n                  (QuantumMechanics.SingleParticle.orbitalAngularMomentum X P u v))\n                f =\n              (ConservationLaw.symmetrizedCurrentFlux velocity\n                    (QuantumMechanics.SingleParticle.orbitalAngularMomentum X P u v) N)\n                  (d f) +\n                (1 / 4) • ⁅velocity, X u ∘ₗ (c • Dv) - X v ∘ₗ (c • Du)⁆",
     "standardAxioms": [
@@ -49021,7 +48974,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {Test : Type u_1} {OneForm : Type u_2} [inst : AddCommGroup Test] [inst_1 : _root_.Module ℂ Test]\n  [inst_2 : AddCommGroup OneForm] [inst_3 : _root_.Module ℂ OneForm] (V : Type u_3) [inst_4 : AddCommGroup V]\n  [inst_5 : _root_.Module ℂ V] (ℏ : ℝ) (h : V →ₗ[ℂ] V) (M : Test →ₗ[ℂ] V →ₗ[ℂ] V) (m velocity : V →ₗ[ℂ] V)\n  (d : Test →ₗ[ℂ] OneForm) (N : OneForm →ₗ[ℂ] V →ₗ[ℂ] V)\n  (hvelocity :\n    QuantumTheory.ConservationLaw.heisenbergLocalizationFunctional ℏ h M =\n      ConservationLaw.localizedQuantityFunctional N velocity ∘ₗ d)\n  (hcomm : ∀ (α : OneForm), ⁅N α, m⁆ = 0),\n  ↑(QuantumMechanics.SingleParticle.symmetrizedVelocityCurrentRepresentation V ℏ h M m velocity d N hvelocity hcomm) =\n    QuantumMechanics.SingleParticle.symmetrizedVelocityCurrent V velocity m",
+    "statement": "∀ {OneForm : Type u_2} [inst : AddCommGroup OneForm] [inst_1 : _root_.Module ℂ OneForm] {𝒜 : Type u_3} [inst_2 : Ring 𝒜]\n  [inst_3 : Algebra ℂ 𝒜] (velocity : 𝒜) (N : OneForm →ₗ[ℂ] 𝒜) (q : ℂ),\n  ConservationLaw.nestedSymmetrizedCurrentFlux velocity (q • 1) N =\n    (QuantumTheory.ConservationLaw.operatorLocalCurrentPairing N) (q • velocity)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -49029,18 +48982,24 @@
     ],
     "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": false,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "simpLemma": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
-    "name": "QuantumMechanics.SingleParticle.symmetrizedVelocityCurrentRepresentation_currentDensity",
-    "module": "LeanCondensedMatter.QuantumMechanics.SingleParticle.SymmetrizedVelocityCurrent",
+    "name": "QuantumTheory.ConservationLaw.correctedChargeCurrentFlux_eq",
+    "module": "LeanCondensedMatter.QuantumTheory.ConservationLaw.LocalizedTransport",
     "externalAxioms": [],
-    "docString": null,
+    "docString": "The canonical corrected flux for a scalar quantity `q • 1` is the local pairing\nwith charge-current density `q • velocity`. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [],
-    "dependencies": [],
+    "dependencies": [
+      "ConservationLaw.localizationCorrectionCurrentFlux_smul_one",
+      "ConservationLaw.nestedSymmetrizedCurrentFlux_eq_symmetrized_add_correction",
+      "ConservationLaw.symmetrizedCurrentFlux_apply",
+      "LinearMap.symmetrizedProduct_smul_one",
+      "QuantumTheory.ConservationLaw.operatorLocalCurrentPairing_apply"
+    ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [],
@@ -49408,15 +49367,53 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumMechanics.SingleParticle.correctedChargeCurrentFlux_eq"
+      "QuantumTheory.ConservationLaw.correctedChargeCurrentFlux_eq"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumMechanics.SingleParticle.correctedChargeCurrentFlux_eq"
+      "QuantumTheory.ConservationLaw.correctedChargeCurrentFlux_eq"
     ],
     "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {Test : Type u_1} {OneForm : Type u_2} [inst : AddCommGroup Test] [inst_1 : _root_.Module ℂ Test]\n  [inst_2 : AddCommGroup OneForm] [inst_3 : _root_.Module ℂ OneForm] {𝒜 : Type u_3} [inst_4 : Ring 𝒜]\n  [inst_5 : Algebra ℂ 𝒜] (ℏ : ℝ) (h : 𝒜) (M : Test →ₗ[ℂ] 𝒜) (m velocity : 𝒜) (d : Test →ₗ[ℂ] OneForm)\n  (N : OneForm →ₗ[ℂ] 𝒜)\n  (hvelocity :\n    QuantumTheory.ConservationLaw.heisenbergLocalizationFunctional ℏ h M =\n      ConservationLaw.localizedQuantityFunctional N velocity ∘ₗ d)\n  (hcomm : ∀ (α : OneForm), ⁅N α, m⁆ = 0),\n  ↑(QuantumTheory.ConservationLaw.symmetrizedVelocityCurrentRepresentation ℏ h M m velocity d N hvelocity hcomm) =\n    LinearMap.symmetrizedProduct velocity m",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.ConservationLaw.symmetrizedVelocityCurrentRepresentation_currentDensity",
+    "module": "LeanCondensedMatter.QuantumTheory.ConservationLaw.LocalizedTransport",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -70140,7 +70137,7 @@
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_psi_antisymmetric_eq_real_minor"
     ],
     "dependencies": [
-      "InternalSpace.trace_parity_antisymmetric_xz_pauliCoefficients",
+      "InternalSpace.trace_parity_antisymmetric_xz_eq_transverse_minors",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient_y_zero_eq_neg_x_one",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock_neg_radius",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_antisymmetric_eq",
@@ -121237,7 +121234,7 @@
       "SecondQuantization.Common.ExternalInsertionBlockLayout.blockGraphHom_reachable_iff"
     ],
     "dependencies": [
-      "SecondQuantization.Common.ExternalInsertionBlockLayout.assembleDiagram_partner_block",
+      "Combinatorics.PairingOn.sigmaCongrRight_transport_partner_fst",
       "SecondQuantization.Common.ExternalInsertionBlockLayout.vertexEquiv_vertexOfLeg"
     ],
     "crossModuleDirectWrapper": false,
@@ -121692,53 +121689,6 @@
       "SecondQuantization.Common.ExternalInsertionBlockLayout.physicalComponentCanonicalPairing_eq_local"
     ],
     "compiledConsumerCount": 3,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {E N : ℕ} {ExternalLabel : Type u_1} {InternalLabel : Type u_2}\n  (layout : SecondQuantization.Common.ExternalInsertionBlockLayout E N) (S : Finset (Fin N))\n  (F :\n    (B : ↥layout.partition.parts) →\n      SecondQuantization.Common.ExternalInsertionDiagram ExternalLabel InternalLabel ((↑B).card / 2) N\n        (layout.interactionBlock S B))\n  (leg : Fin (2 * (2 * S.card + E))),\n  ((layout.legEquiv S) ((layout.assembleDiagram S F).pairing.partner leg)).fst = ((layout.legEquiv S) leg).fst",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.ExternalInsertionBlockLayout.assembleDiagram_partner_block",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.BlockLayout",
-    "externalAxioms": [],
-    "docString": "A paired leg in the assembled diagram remains in its original\nexternal block. This rules out propagators between independently assembled\nblocks, including blocks with no interaction vertices. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.ExternalInsertionBlockLayout.assembleDiagram_adj_same_block",
-      "SecondQuantization.Common.ExternalInsertionBlockLayout.restrictBlock_assembleDiagram"
-    ],
-    "dependencies": [
-      "Combinatorics.PairingOn.sigmaCongrRight_partner",
-      "Combinatorics.PairingOn.transport_partner"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.ExternalInsertionBlockLayout.assembleDiagram_adj_same_block",
-      "SecondQuantization.Common.ExternalInsertionBlockLayout.restrictBlock_assembleDiagram"
-    ],
-    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -123354,8 +123304,8 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
+      "Combinatorics.PairingOn.sigmaCongrRight_transport_partner_fst",
       "SecondQuantization.Common.ExternalInsertionBlockLayout.assembleDiagram_injective",
-      "SecondQuantization.Common.ExternalInsertionBlockLayout.assembleDiagram_partner_block",
       "SecondQuantization.Common.ExternalInsertionBlockLayout.assembleDiagram_restrictBlock"
     ],
     "crossModuleDirectWrapper": false,
@@ -140749,7 +140699,6 @@
     "dependents": [
       "SecondQuantization.Common.externalInsertionLegCongr_standardize",
       "SecondQuantization.Common.externalInsertionLegMap_strictMono",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.MixedOrderData.0.SecondQuantization.Common.ExternalInsertionDiagram.componentOrderedLeg_fixedPosition",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Factorization.ComponentShuffleParity.0.SecondQuantization.Common.ExternalInsertionDiagram.componentExternal_lt_interaction",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Factorization.ComponentShuffleParity.0.SecondQuantization.Common.ExternalInsertionDiagram.componentInteraction_not_lt_external",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Factorization.FixedSlotSplitOrder.0.SecondQuantization.Common.externalInsertionSlotLegSplitting_fixedRight_not_lt_leftExternal",
@@ -140762,14 +140711,13 @@
     "compiledConsumers": [
       "SecondQuantization.Common.externalInsertionLegCongr_standardize",
       "SecondQuantization.Common.externalInsertionLegMap_strictMono",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.MixedOrderData.0.SecondQuantization.Common.ExternalInsertionDiagram.componentOrderedLeg_fixedPosition",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Factorization.ComponentShuffleParity.0.SecondQuantization.Common.ExternalInsertionDiagram.componentExternal_lt_interaction",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Factorization.ComponentShuffleParity.0.SecondQuantization.Common.ExternalInsertionDiagram.componentInteraction_not_lt_external",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Factorization.FixedSlotSplitOrder.0.SecondQuantization.Common.externalInsertionSlotLegSplitting_fixedRight_not_lt_leftExternal",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Pairing.SlotSplitMixedOrder.0.SecondQuantization.Common.externalInsertionSupportMixedPosition_eq_standard",
       "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionImaginaryTimeOrder.0.SecondQuantization.Common.externalInsertionFixedEventSlotEquiv_inl_val"
     ],
-    "compiledConsumerCount": 8,
+    "compiledConsumerCount": 7,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -140851,7 +140799,6 @@
       "SecondQuantization.Common.externalInsertionLegCongr_standardize",
       "SecondQuantization.Common.externalInsertionLegMap_strictMono",
       "SecondQuantization.Common.externalInsertionSlotLegSplitting_orderedRight_strictMono",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.MixedOrderData.0.SecondQuantization.Common.ExternalInsertionDiagram.componentOrderedLeg_fixedPosition",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Factorization.ComponentShuffleParity.0.SecondQuantization.Common.ExternalInsertionDiagram.componentExternal_lt_interaction",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Factorization.ComponentShuffleParity.0.SecondQuantization.Common.ExternalInsertionDiagram.componentInteractionLeg_lt_iff",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Factorization.ComponentShuffleParity.0.SecondQuantization.Common.ExternalInsertionDiagram.componentInteraction_not_lt_external",
@@ -140868,7 +140815,6 @@
       "SecondQuantization.Common.externalInsertionLegCongr_standardize",
       "SecondQuantization.Common.externalInsertionLegMap_strictMono",
       "SecondQuantization.Common.externalInsertionSlotLegSplitting_orderedRight_strictMono",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.MixedOrderData.0.SecondQuantization.Common.ExternalInsertionDiagram.componentOrderedLeg_fixedPosition",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Factorization.ComponentShuffleParity.0.SecondQuantization.Common.ExternalInsertionDiagram.componentExternal_lt_interaction",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Factorization.ComponentShuffleParity.0.SecondQuantization.Common.ExternalInsertionDiagram.componentInteractionLeg_lt_iff",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Factorization.ComponentShuffleParity.0.SecondQuantization.Common.ExternalInsertionDiagram.componentInteraction_not_lt_external",
@@ -140877,7 +140823,7 @@
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Pairing.SlotSplitMixedOrder.0.SecondQuantization.Common.externalInsertionSupportMixedPosition_eq_standard",
       "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionImaginaryTimeOrder.0.SecondQuantization.Common.externalInsertionFixedEventSlotEquiv_inr_val"
     ],
-    "compiledConsumerCount": 12,
+    "compiledConsumerCount": 11,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -141142,7 +141088,8 @@
     "dependents": [
       "SecondQuantization.Common.ExternalInsertionDiagram.componentOrderedDiagram_eq_slotCongr",
       "SecondQuantization.Common.ExternalInsertionDiagram.supportSlotCongr_pairingInMixedOrder",
-      "SecondQuantization.Common.externalInsertionLegCongr_standardize_lt_iff"
+      "SecondQuantization.Common.externalInsertionLegCongr_standardize_lt_iff",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.MixedOrderData.0.SecondQuantization.Common.ExternalInsertionDiagram.componentOrderedLeg_fixedPosition"
     ],
     "dependencies": [
       "SecondQuantization.Common.externalInsertionExternalLeg_val",
@@ -141153,9 +141100,10 @@
     "compiledConsumers": [
       "SecondQuantization.Common.ExternalInsertionDiagram.componentOrderedDiagram_eq_slotCongr",
       "SecondQuantization.Common.ExternalInsertionDiagram.supportSlotCongr_pairingInMixedOrder",
-      "SecondQuantization.Common.externalInsertionLegCongr_standardize_lt_iff"
+      "SecondQuantization.Common.externalInsertionLegCongr_standardize_lt_iff",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.MixedOrderData.0.SecondQuantization.Common.ExternalInsertionDiagram.componentOrderedLeg_fixedPosition"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -141209,15 +141157,15 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ {E N M : ℕ} {T : Finset (Fin N)} {U : Finset (Fin M)} (e : ↥T ≃ ↥U),\n  SecondQuantization.Common.externalInsertionLegCongr e.symm =\n    (SecondQuantization.Common.externalInsertionLegCongr e).symm",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -141228,12 +141176,16 @@
     "docString": "The inverse relabeling of legs is the relabeling along the inverse. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.MixedOrderData.0.SecondQuantization.Common.ExternalInsertionDiagram.componentOrderedLeg_fixedPosition"
+    ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.MixedOrderData.0.SecondQuantization.Common.ExternalInsertionDiagram.componentOrderedLeg_fixedPosition"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -182186,51 +182138,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {T : H →L[ℂ] H},\n  T.IsTraceClass →\n    ∀ (W : H →L[ℂ] H) {ι : Type u_2} (d : HilbertBasis ι ℂ H), Summable fun i => inner ℂ (W (d i)) (T (d i))",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.0.ContinuousLinearMap.IsTraceClass.summable_inner_left",
-    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Ops",
-    "externalAxioms": [],
-    "docString": "Pairing the image of a Hilbert basis by a bounded operator with a trace-class operator gives an\nabsolutely summable complex series. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "ContinuousLinearMap.IsTraceClass.add"
-    ],
-    "dependencies": [
-      "ContinuousLinearMap.IsTraceClass.comp_left",
-      "ContinuousLinearMap.IsTraceClass.summable_trace_diagonal"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "ContinuousLinearMap.IsTraceClass.add"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {T : H →L[ℂ] H} (hT : T.IsTraceClass) (W : H →L[ℂ] H),\n  ‖W‖ ≤ 1 →\n    ∀ {ι : Type u_2} (d : HilbertBasis ι ℂ H),\n      (Summable fun i => ‖inner ℂ (W (d i)) (T (d i))‖) ∧ ∑' (i : ι), ‖inner ℂ (W (d i)) (T (d i))‖ ≤ hT.traceNorm",
     "standardAxioms": [
       "Classical.choice",
@@ -182250,6 +182157,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "ContinuousLinearMap.IsTraceClass.add",
       "ContinuousLinearMap.IsTraceClass.norm_trace_le_traceNorm",
       "ContinuousLinearMap.IsTraceClass.traceNorm_add_le"
     ],
@@ -182263,10 +182171,11 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "ContinuousLinearMap.IsTraceClass.add",
       "ContinuousLinearMap.IsTraceClass.norm_trace_le_traceNorm",
       "ContinuousLinearMap.IsTraceClass.traceNorm_add_le"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -201174,8 +201083,8 @@
     "dependencies": [
       "SecondQuantization.Common.ExternalInsertionDiagram.componentDiagramLeg_external",
       "SecondQuantization.Common.ExternalInsertionDiagram.componentDiagramLeg_interaction",
-      "SecondQuantization.Common.externalInsertionExternalLeg_val",
-      "SecondQuantization.Common.externalInsertionInteractionLeg_val",
+      "SecondQuantization.Common.externalInsertionLegCongr_standardize",
+      "SecondQuantization.Common.externalInsertionLegCongr_symm",
       "SecondQuantization.Common.interactionSector_subset"
     ],
     "crossModuleDirectWrapper": false,
@@ -202904,51 +202813,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Label : Type u_1} {N : ℕ} {S : Finset (Fin N)} (π : Finpartition S)\n  (F : (B : ↥π.parts) → SecondQuantization.Common.ConnectedQuarticDiagram Label N ↑B) (leg : Fin (2 * (2 * S.card))),\n  ((SecondQuantization.Common.QuarticDiagram.bigLegEquiv π)\n        ((SecondQuantization.Common.QuarticDiagram.reassemble π F).pairing.partner leg)).fst =\n    ((SecondQuantization.Common.QuarticDiagram.bigLegEquiv π) leg).fst",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_partner_bigLegEquiv_fst",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_vertexGraph_adj_same_part"
-    ],
-    "dependencies": [
-      "Combinatorics.PairingOn.sigmaCongrRight_partner",
-      "Combinatorics.PairingOn.transport_partner"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_vertexGraph_adj_same_part"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ {Label : Type u_1} {N : ℕ} {S : Finset (Fin N)} (π : Finpartition S)\n  (F : (B : ↥π.parts) → SecondQuantization.Common.ConnectedQuarticDiagram Label N ↑B) (B : ↥π.parts)\n  (leg : Fin (2 * (2 * (↑B).card))),\n  (SecondQuantization.Common.QuarticDiagram.reassemble π F).pairing.partner\n      ((SecondQuantization.Common.QuarticDiagram.bigLegEquiv π).symm ⟨B, leg⟩) =\n    (SecondQuantization.Common.QuarticDiagram.bigLegEquiv π).symm ⟨B, (↑(F B)).pairing.partner leg⟩",
     "standardAxioms": [
       "Classical.choice",
@@ -203018,8 +202882,8 @@
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_componentBlock_subset_part"
     ],
     "dependencies": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.bigLegEquiv_fst_eq_part",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_partner_bigLegEquiv_fst"
+      "Combinatorics.PairingOn.sigmaCongrRight_transport_partner_fst",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.bigLegEquiv_fst_eq_part"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -214779,16 +214643,14 @@
     "name": "isCompactOperator_cfc_of_zero",
     "module": "LeanCondensedMatter.Analysis.FunctionalCalculus.CFC",
     "externalAxioms": [],
-    "docString": "If `T` is a compact self-adjoint operator and a continuous real function vanishes at zero,\nthen its continuous functional calculus `cfc f T` is compact.\n\nThe proof approximates `f` uniformly on `[-‖T‖, ‖T‖]` by polynomials and subtracts each\napproximant's value at zero. The resulting polynomials still converge uniformly to `f`, have zero\nconstant coefficient, and therefore evaluate to compact operators. Compact operators are closed in\nthe operator norm, so the CFC limit is compact. ",
+    "docString": "If `T` is a compact self-adjoint operator and a continuous real function vanishes at zero,\nthen its continuous functional calculus is compact. The non-unital CFC induction principle\nreduces the proof to algebraic closure and norm-closedness of the compact operators. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
       "ContinuousLinearMap.SpectralTraceClass.ofCFC",
       "QuantumTheory.entropyOp_isCompact"
     ],
-    "dependencies": [
-      "Polynomial.isCompactOperator_aeval_of_coeff_zero"
-    ],
+    "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
