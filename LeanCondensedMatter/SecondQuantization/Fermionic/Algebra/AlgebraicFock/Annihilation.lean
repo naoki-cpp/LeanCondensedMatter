@@ -172,7 +172,7 @@ private theorem inner_realization_scalar_create
 
 /-- Two linear Hilbert-space realizations of exterior Fock space have compatible
 inner products along a one-particle isometry if creation and annihilation are
-adjoints in each realization and their scalar-sector inner products agree.
+adjoints in each realization and the realized vacua have equal norms.
 Neither realization needs to be injective, surjective, or dense. -/
 theorem inner_realization_map_eq
     {V W E F : Type*}
@@ -186,8 +186,7 @@ theorem inner_realization_map_eq
       inner ℂ (R x) (R (annihilate V v y)))
     (hS : ∀ v x y, inner ℂ (S (create W v x)) (S y) =
       inner ℂ (S x) (S (annihilate W v y)))
-    (hscalarPair : ∀ a d : ℂ, inner ℂ (S (algebraMap ℂ _ a)) (S (algebraMap ℂ _ d)) =
-      inner ℂ (R (algebraMap ℂ _ a)) (R (algebraMap ℂ _ d)))
+    (hvac : ‖S 1‖ = ‖R 1‖)
     (x y : AlgebraicFock V) :
     inner ℂ (S (ExteriorAlgebra.map e.toLinearMap x))
         (S (ExteriorAlgebra.map e.toLinearMap y)) = inner ℂ (R x) (R y) := by
@@ -196,7 +195,10 @@ theorem inner_realization_map_eq
         (S (ExteriorAlgebra.map e.toLinearMap z)) =
         inner ℂ (R (algebraMap ℂ _ a)) (R z) := by
     induction z using CliffordAlgebra.left_induction with
-    | algebraMap d => simpa only [AlgHom.commutes] using hscalarPair a d
+    | algebraMap d =>
+        simp only [AlgHom.commutes]
+        simp only [Algebra.algebraMap_eq_smul_one, map_smul, inner_smul_left,
+          inner_smul_right, inner_self_eq_norm_sq_to_K, hvac]
     | add z w hz hw => simp only [map_add, inner_add_right, hz, hw]
     | ι_mul z v _ =>
         change inner ℂ (S (ExteriorAlgebra.map e.toLinearMap (algebraMap ℂ _ a)))
