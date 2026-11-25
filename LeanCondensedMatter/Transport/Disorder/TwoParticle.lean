@@ -1,7 +1,5 @@
 import LeanCondensedMatter.Transport.Disorder.Resolvent
-import Mathlib.Analysis.Normed.Operator.Mul
-import Mathlib.Tactic.Abel
-import Mathlib.Tactic.NoncommRing
+import Mathlib.Algebra.Algebra.Bilinear
 
 set_option linter.style.header false
 
@@ -58,64 +56,10 @@ theorem averagedOperatorInsertion_eq_mean_add_connected
     ensemble.averagedOperatorInsertion left right vertex =
       ensemble.average left * vertex * ensemble.average right +
         ensemble.connectedOperatorInsertion left right vertex := by
-  let meanLeft : H →L[ℂ] H := ensemble.average left
-  let meanRight : H →L[ℂ] H := ensemble.average right
-  have hpoint (ω : Ω) :
-      (left ω - meanLeft) * vertex * (right ω - meanRight) =
-        left ω * vertex * right ω -
-          left ω * (vertex * meanRight) -
-          (meanLeft * vertex) * right ω +
-          meanLeft * vertex * meanRight := by
-    noncomm_ring
-  have hright :
-      ensemble.average (fun ω => left ω * (vertex * meanRight)) =
-        ensemble.average left * (vertex * meanRight) := by
-    simpa using (ensemble.map_average
-      ((ContinuousLinearMap.mulLeftRight ℂ (H →L[ℂ] H) 1 (vertex * meanRight)).toLinearMap)
-      left).symm
-  have hleft :
-      ensemble.average (fun ω => (meanLeft * vertex) * right ω) =
-        (meanLeft * vertex) * ensemble.average right := by
-    simpa using (ensemble.map_average
-      ((ContinuousLinearMap.mulLeftRight ℂ (H →L[ℂ] H) (meanLeft * vertex) 1).toLinearMap)
-      right).symm
-  have hconnected :
-      ensemble.connectedOperatorInsertion left right vertex =
-        ensemble.averagedOperatorInsertion left right vertex -
-          meanLeft * vertex * meanRight := by
-    calc
-      ensemble.connectedOperatorInsertion left right vertex =
-          ensemble.average (fun ω =>
-            left ω * vertex * right ω -
-              left ω * (vertex * meanRight) -
-              (meanLeft * vertex) * right ω +
-              meanLeft * vertex * meanRight) := by
-        change ensemble.average (fun ω =>
-          (left ω - meanLeft) * vertex * (right ω - meanRight)) = _
-        apply congrArg ensemble.average
-        funext ω
-        exact hpoint ω
-      _ = ensemble.averagedOperatorInsertion left right vertex -
-          meanLeft * vertex * meanRight := by
-        change ensemble.average
-          ((fun ω => left ω * vertex * right ω) -
-            (fun ω => left ω * (vertex * meanRight)) -
-            (fun ω => (meanLeft * vertex) * right ω) +
-            (fun _ => meanLeft * vertex * meanRight)) = _
-        rw [map_add, map_sub, map_sub, hright, hleft, ensemble.average_const]
-        change ensemble.averagedOperatorInsertion left right vertex -
-          meanLeft * (vertex * meanRight) -
-          (meanLeft * vertex) * meanRight +
-          meanLeft * vertex * meanRight =
-            ensemble.averagedOperatorInsertion left right vertex -
-              meanLeft * vertex * meanRight
-        noncomm_ring
-  rw [hconnected]
-  change ensemble.averagedOperatorInsertion left right vertex =
-    meanLeft * vertex * meanRight +
-      (ensemble.averagedOperatorInsertion left right vertex -
-        meanLeft * vertex * meanRight)
-  abel
+  let B : (H →L[ℂ] H) →ₗ[ℂ] (H →L[ℂ] H) →ₗ[ℂ] (H →L[ℂ] H) :=
+    (LinearMap.mul ℂ (H →L[ℂ] H)).comp
+      ((LinearMap.mul ℂ (H →L[ℂ] H)).flip vertex)
+  exact ensemble.average_bilinear_eq_mean_add_centered B left right
 
 /-- Exact two-Green insertion at independently supplied energies and signed regulators. -/
 noncomputable def averagedTwoGreenInsertionOfRegulators
