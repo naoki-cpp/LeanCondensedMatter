@@ -407,48 +407,20 @@ private noncomputable def eigenvectorFamilyInClosure (hT : IsCompactOperator T) 
 private theorem orthonormal_eigenvectorFamilyInClosure
     (hT : IsCompactOperator T) (hT' : T.IsSymmetric) :
     Orthonormal ℂ (eigenvectorFamilyInClosure hT) := by
-  constructor
-  · intro a
-    simpa [eigenvectorFamilyInClosure] using (orthonormal_eigenvectorFamily hT hT').1 a
-  · intro a b hab
-    simpa [eigenvectorFamilyInClosure, Submodule.coe_inner] using
-      (orthonormal_eigenvectorFamily hT hT').2 hab
+  let F := (Submodule.span ℂ (Set.range (eigenvectorFamily hT))).topologicalClosure
+  exact F.subtypeₗᵢ.orthonormal_comp_iff.mp (orthonormal_eigenvectorFamily hT hT')
 
 private theorem dense_eigenvectorFamilyInClosure (hT : IsCompactOperator T) :
     ⊤ ≤ (Submodule.span ℂ (Set.range (eigenvectorFamilyInClosure hT))).topologicalClosure := by
+  let F := (Submodule.span ℂ (Set.range (eigenvectorFamily hT))).topologicalClosure
   rw [← eq_top_iff]
   apply Submodule.dense_iff_topologicalClosure_eq_top.mp
-  rw [((Submodule.span ℂ (Set.range (eigenvectorFamily hT))).topologicalClosure).subtypeₗᵢ.isometry.isEmbedding.isInducing.dense_iff]
+  rw [F.subtypeₗᵢ.isometry.isEmbedding.isInducing.dense_iff]
   intro y
-  have hspaneq :
-      Submodule.map
-          ((Submodule.span ℂ (Set.range (eigenvectorFamily hT))).topologicalClosure).subtypeₗᵢ.toLinearMap
-          (Submodule.span ℂ (Set.range (eigenvectorFamilyInClosure hT))) =
-        Submodule.span ℂ (Set.range (eigenvectorFamily hT)) := by
-    rw [Submodule.map_span]
-    congr 1
-    ext z
-    constructor
-    · rintro ⟨-, ⟨a, rfl⟩, rfl⟩
-      exact ⟨a, rfl⟩
-    · rintro ⟨a, rfl⟩
-      exact ⟨_, ⟨a, rfl⟩, rfl⟩
-  have himg :
-      ((Submodule.span ℂ (Set.range (eigenvectorFamily hT))).topologicalClosure).subtypeₗᵢ ''
-          (Submodule.span ℂ (Set.range (eigenvectorFamilyInClosure hT)) :
-            Set (Submodule.span ℂ (Set.range (eigenvectorFamily hT))).topologicalClosure) =
-        (Submodule.span ℂ (Set.range (eigenvectorFamily hT)) : Set H) := by
-    calc
-      ((Submodule.span ℂ (Set.range (eigenvectorFamily hT))).topologicalClosure).subtypeₗᵢ ''
-            (Submodule.span ℂ (Set.range (eigenvectorFamilyInClosure hT)) :
-              Set (Submodule.span ℂ (Set.range (eigenvectorFamily hT))).topologicalClosure) =
-          (Submodule.map
-              ((Submodule.span ℂ (Set.range (eigenvectorFamily hT))).topologicalClosure).subtypeₗᵢ.toLinearMap
-              (Submodule.span ℂ (Set.range (eigenvectorFamilyInClosure hT))) : Set H) :=
-        (Submodule.map_coe _ _).symm
-      _ = (Submodule.span ℂ (Set.range (eigenvectorFamily hT)) : Set H) :=
-        congrArg (fun M : Submodule ℂ H => (M : Set H)) hspaneq
-  rw [himg, ← Submodule.topologicalClosure_coe]
+  change (y : H) ∈ closure (F.subtype ''
+    (Submodule.span ℂ (Set.range (eigenvectorFamilyInClosure hT)) : Set F))
+  rw [← Submodule.map_coe, Submodule.map_span, ← Set.range_comp]
+  change (y : H) ∈ closure (Submodule.span ℂ (Set.range (eigenvectorFamily hT)) : Set H)
   exact y.2
 
 /-- `eigenvectorFamily`, recast as a `HilbertBasis` of the closed subspace it spans, using
