@@ -1,4 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentPosition
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.ExternalInsertionBridge
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Pairing.MixedOrder
 
 set_option linter.style.header false
 
@@ -48,6 +50,30 @@ theorem TwoPointDiagram.pairingInMixedOrder_partner_legPosition
     Equiv.apply_symm_apply,
     mixedTimeAmbientPositionEquiv_mixedTimeOrderedAtomicLegPosition,
     TwoPointDiagram.atomicLegPartner]
+
+/-- Transport through the fixed-leg coordinate bridge leaves the actual
+mixed-time pairing unchanged, not merely its unoriented edges. -/
+theorem twoPointDiagramExternalInsertionEquiv_pairingInMixedOrder
+    {ExternalLabel InternalLabel : Type*} {n : ℕ}
+    (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
+    (τ τ' : ℝ) (σ : Fin n → ℝ) :
+    (twoPointDiagramExternalInsertionEquiv Finset.univ d).pairingInMixedOrder
+        (twoPointExternalTimes τ τ') σ =
+      d.pairingInMixedOrder τ τ' σ := by
+  change (d.pairing.transport (twoPointExternalInsertionLegEquiv Finset.univ).symm).transport
+      (externalInsertionMixedTimeAmbientPositionEquiv (twoPointExternalTimes τ τ') σ) =
+    d.pairing.transport (mixedTimeAmbientPositionEquiv τ τ' σ)
+  rw [PairingOn.transport_trans]
+  congr 1
+  apply Equiv.ext
+  intro p
+  apply (twoPointLegEquiv (Finset.univ : Finset (Fin n))).injective
+  simp only [Equiv.trans_apply, twoPointExternalInsertionLegEquiv,
+    Equiv.symm_trans_apply, Equiv.symm_symm, Equiv.apply_symm_apply,
+    twoPointLegEquiv_mixedTimeAmbientPositionEquiv,
+    mixedTimeOrderedAtomicLegEquiv_eq_externalInsertion]
+  exact externalInsertionLegEquiv_mixedTimeAmbientPositionEquiv
+    (E := 1) (n := n) (twoPointExternalTimes τ τ') σ p
 
 end Common
 end SecondQuantization

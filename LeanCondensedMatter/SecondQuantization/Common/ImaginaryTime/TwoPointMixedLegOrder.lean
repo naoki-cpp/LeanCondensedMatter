@@ -98,6 +98,30 @@ noncomputable def mixedTimeOrderedAtomicLegEquiv {n : ℕ}
       (mixedTimeOrderedAtomicLegs_nodup τ τ' σ)
       (mixedTimeOrderedAtomicLegs_all_mem τ τ' σ))
 
+/-- Both mixed enumerations read the same semantic leg at every position,
+including all equal-time ties. -/
+theorem mixedTimeOrderedAtomicLegEquiv_eq_externalInsertion {n : ℕ}
+    (τ τ' : ℝ) (σ : Fin n → ℝ) :
+    mixedTimeOrderedAtomicLegEquiv τ τ' σ =
+      externalInsertionMixedTimeOrderedAtomicLegEquiv (E := 1)
+        (twoPointExternalTimes τ τ') σ := by
+  apply Equiv.ext
+  intro p
+  have hp : p.val < (mixedTimeOrderedAtomicLegs τ τ' σ).length := by
+    rw [mixedTimeOrderedAtomicLegs_length]
+    exact p.isLt
+  have hq : p.val <
+      (externalInsertionMixedTimeOrderedAtomicLegs (E := 1)
+        (twoPointExternalTimes τ τ') σ).length := by
+    rw [externalInsertionMixedTimeOrderedAtomicLegs_length]
+    exact p.isLt
+  change (mixedTimeOrderedAtomicLegs τ τ' σ)[p.val]'hp =
+    (externalInsertionMixedTimeOrderedAtomicLegs (E := 1)
+      (twoPointExternalTimes τ τ') σ)[p.val]'hq
+  have h := congrArg (fun xs : List (OrderedTwoPointLeg n) => xs[p.val]?)
+    (mixedTimeOrderedAtomicLegs_eq_externalInsertion τ τ' σ)
+  simpa [hp, hq] using h
+
 /-- The ambient permutation mapping a standard diagram-leg position to the corresponding
 mixed-time atomic position. -/
 noncomputable def standardToMixedAtomicPositionEquiv {n : ℕ}

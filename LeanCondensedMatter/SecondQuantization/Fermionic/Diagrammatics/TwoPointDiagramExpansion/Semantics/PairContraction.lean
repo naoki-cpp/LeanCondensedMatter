@@ -1,4 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Semantics.Reindexing
+import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.TimedField
 
 set_option linter.style.header false
 
@@ -116,6 +117,22 @@ theorem mixedTimeOrderedAtomicFieldFamily_eq_orderedTwoPointLegField
     _ = orderedTwoPointLegField i j τ τ' q σ
         (mixedTimeOrderedAtomicLegEquiv τ τ' σ p) := by
       rfl
+
+omit [LinearOrder Mode] [Fintype Mode] in
+/-- The two-point mixed-time fields coincide with the general external family
+at each position, preserving the oriented Gibbs contraction. -/
+theorem mixedTimeOrderedAtomicFieldFamily_eq_externalInsertion
+    {n : ℕ} (i j : Mode) (τ τ' : ℝ)
+    (q : Fin n → QuarticVertexLabel Mode) (σ : Fin n → ℝ) :
+    mixedTimeOrderedAtomicFieldFamily i j τ τ' q σ =
+      externalInsertionMixedTimeOrderedAtomicFieldFamily (E := 1)
+        (twoPointExternalLabels i j) (twoPointExternalTimes τ τ') q σ := by
+  funext p
+  rw [mixedTimeOrderedAtomicFieldFamily_eq_orderedTwoPointLegField,
+    mixedTimeOrderedAtomicLegEquiv_eq_externalInsertion]
+  unfold externalInsertionMixedTimeOrderedAtomicFieldFamily
+  cases externalInsertionMixedTimeOrderedAtomicLegEquiv
+      (twoPointExternalTimes τ τ') σ p <;> rfl
 
 /-- Density-state contraction associated with two fixed standard two-point legs. -/
 noncomputable def orderedTwoPointLegPairContraction
