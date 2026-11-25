@@ -196,7 +196,7 @@
       "name": "LeanCondensedMatter.Analysis.FunctionalCalculus.CFC",
       "sourceFile": "LeanCondensedMatter/Analysis/FunctionalCalculus/CFC.lean",
       "imports": [],
-      "externalImportCount": 9
+      "externalImportCount": 8
     },
     {
       "name": "LeanCondensedMatter.Analysis.Geometry.SphericalMoments",
@@ -3185,7 +3185,8 @@
       "imports": [
         "LeanCondensedMatter.Models.RashbaExchange.FiniteMomentumSpinResponse",
         "LeanCondensedMatter.Models.RashbaExchange.RealSpaceHopping",
-        "LeanCondensedMatter.QuantumTheory.ConservationLaw.LocalizedTransport"
+        "LeanCondensedMatter.QuantumTheory.ConservationLaw.LocalizedTransport",
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.Frequency.FiniteTime"
       ],
       "externalImportCount": 0
     },
@@ -4149,6 +4150,7 @@
       "name": "LeanCondensedMatter.QuantumTheory.LinearResponse.Frequency.FiniteTime",
       "sourceFile": "LeanCondensedMatter/QuantumTheory/LinearResponse/Frequency/FiniteTime.lean",
       "imports": [
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.EquationsOfMotion",
         "LeanCondensedMatter.QuantumTheory.LinearResponse.Frequency.AdiabaticSwitching",
         "LeanCondensedMatter.QuantumTheory.LinearResponse.Frequency.LimitOrder",
         "LeanCondensedMatter.QuantumTheory.LinearResponse.Response.Symmetry"
@@ -5435,6 +5437,7 @@
       "name": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Factorization.ComponentShuffleParity",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Diagrammatics/ExternalInsertion/Factorization/ComponentShuffleParity.lean",
       "imports": [
+        "LeanCondensedMatter.Combinatorics.Common.FintypeProduct",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentRestriction"
       ],
       "externalImportCount": 1
@@ -5977,6 +5980,8 @@
       "name": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedOrderPairing",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Diagrammatics/TwoPoint/Mixed/MixedOrderPairing.lean",
       "imports": [
+        "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Pairing.MixedOrder",
+        "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.ExternalInsertionBridge",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentPosition"
       ],
       "externalImportCount": 0
@@ -7439,7 +7444,9 @@
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Diagrammatics/TwoPointDiagramExpansion/Integration/DiagramIntegral.lean",
       "imports": [
         "LeanCondensedMatter.Analysis.OrderedSimplex.Integral",
-        "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Semantics.Amplitude"
+        "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.Integral",
+        "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Semantics.Amplitude",
+        "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Semantics.PairContraction"
       ],
       "externalImportCount": 0
     },
@@ -7537,6 +7544,7 @@
       "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Semantics.PairContraction",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Diagrammatics/TwoPointDiagramExpansion/Semantics/PairContraction.lean",
       "imports": [
+        "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.TimedField",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Semantics.Reindexing"
       ],
       "externalImportCount": 0
