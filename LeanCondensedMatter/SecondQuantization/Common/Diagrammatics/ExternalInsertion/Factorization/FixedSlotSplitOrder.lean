@@ -37,75 +37,6 @@ theorem externalInsertionSlotLegSplitting_left_strictMono
     exact externalInsertionSlotLegSplitting_left_interaction (E := E)
       (Finset.subset_univ T) v l
 
-/-- The canonically ordered vacuum-sector legs retain their flat order when inserted
-into the ambient fixed-order external-insertion leg array. -/
-theorem externalInsertionSlotLegSplitting_orderedRight_strictMono
-    {E N : ℕ} (T : Finset (Fin N)) :
-    let S := (Finset.univ : Finset (Fin N)) \ T
-    let order : QuarticVertexOrder S := (S.orderIsoOfFin rfl).toEquiv
-    StrictMono (fun p : Fin (2 * (2 * S.card)) =>
-      externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T)
-        (Sum.inr (orderedLegToDiagramLeg S order p))) := by
-  intro S order
-  let vertex : Fin S.card → Fin N := fun i => (S.orderIsoOfFin rfl i).1
-  have hvertex : StrictMono vertex := by
-    intro i j hij
-    exact (S.orderIsoOfFin rfl).strictMono hij
-  let hsource : 2 * (2 * S.card) = S.card * 4 := by omega
-  let htarget : 2 * (2 * N) = N * 4 := by omega
-  let block := FiniteIndex.blockMap hsource htarget vertex
-  have hblock : StrictMono block :=
-    FiniteIndex.blockMap_strictMono hsource htarget vertex hvertex
-  have huniv (v : Fin N) :
-      (((Finset.univ : Finset (Fin N)).orderIsoOfFin rfl).symm
-        ⟨v, Finset.mem_univ v⟩).val = v.val := by
-    rw [Finset.orderIsoOfFin_symm_apply, Fin.sort_univ, List.idxOf_finRange]
-  have hblock_val (p : Fin (2 * (2 * S.card))) :
-      (block p).val =
-        4 * (vertex (orderedQuarticLegEquiv S.card p).1).val +
-          (orderedQuarticLegEquiv S.card p).2.val := by
-    have h := FiniteIndex.eq_cast_mul_add_blockEquiv htarget (block p)
-    have hv := congrArg Fin.val h
-    have hmap : FiniteIndex.blockEquiv htarget (block p) =
-        (vertex (orderedQuarticLegEquiv S.card p).1,
-          (orderedQuarticLegEquiv S.card p).2) := by
-      change FiniteIndex.blockEquiv htarget
-        (FiniteIndex.blockMap hsource htarget vertex p) = _
-      exact FiniteIndex.blockEquiv_blockMap hsource htarget vertex p
-    rw [hmap] at hv
-    simpa only [Fin.val_cast, Fin.val_mk, Prod.fst, Prod.snd,
-      Nat.mul_comm] using hv
-  have hslot_val (p : Fin (2 * (2 * S.card))) :
-      (externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T)
-        (Sum.inr (orderedLegToDiagramLeg S order p))).val =
-      2 * E + (orderedQuarticLegEquiv S.card p).2.val +
-        4 * (vertex (orderedQuarticLegEquiv S.card p).1).val := by
-    let leg := orderedQuarticLegEquiv S.card p
-    have hleg : orderedLegToDiagramLeg S order p =
-        (quarticLegEquiv S).symm (order leg.1, leg.2) := by
-      simp [orderedLegToDiagramLeg, leg, Prod.map]
-    rw [hleg]
-    have hright := externalInsertionSlotLegSplitting_right_interaction
-      (E := E) (Finset.subset_univ T) (order leg.1) leg.2
-    rw [hright]
-    change (externalInsertionInteractionLeg (E := E)
-      ⟨(order leg.1).1, Finset.mem_univ _⟩ leg.2).val = _
-    rw [externalInsertionInteractionLeg_val]
-    rw [huniv]
-    rfl
-  intro p q hpq
-  have hp := hslot_val p
-  have hq := hslot_val q
-  have hbp := hblock_val p
-  have hbq := hblock_val q
-  have hh := hblock hpq
-  change
-    (externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T)
-      (Sum.inr (orderedLegToDiagramLeg S order p))).val <
-    (externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T)
-      (Sum.inr (orderedLegToDiagramLeg S order q))).val
-  omega
-
 /-- A sorted vacuum leg, inserted into the full fixed-order array, occupies
 the interaction-leg position of its original vertex. -/
 private theorem externalInsertionSlotLegSplitting_fixedRight_apply
@@ -128,6 +59,50 @@ private theorem externalInsertionSlotLegSplitting_fixedRight_apply
   rw [hleg]
   exact externalInsertionSlotLegSplitting_right_interaction
     (E := E) (Finset.subset_univ T) (order v) l
+
+/-- The canonically ordered vacuum-sector legs retain their flat order when inserted
+into the ambient fixed-order external-insertion leg array. -/
+theorem externalInsertionSlotLegSplitting_orderedRight_strictMono
+    {E N : ℕ} (T : Finset (Fin N)) :
+    let S := (Finset.univ : Finset (Fin N)) \ T
+    let order : QuarticVertexOrder S := (S.orderIsoOfFin rfl).toEquiv
+    StrictMono (fun p : Fin (2 * (2 * S.card)) =>
+      externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T)
+        (Sum.inr (orderedLegToDiagramLeg S order p))) := by
+  intro S order
+  refine externalInsertionLegMap_strictMono
+    (E := 0) (E' := E) (T := S) (S := (Finset.univ : Finset (Fin N)))
+    (Finset.subset_univ S) _ (fun e => Fin.elim0 e) ?_ ?_ ?_
+  · intro e
+    exact Fin.elim0 e
+  · intro e
+    exact Fin.elim0 e
+  · intro v l
+    let i := (S.orderIsoOfFin rfl).symm v
+    let h : 2 * (2 * S.card) = S.card * 4 := by omega
+    let p := (orderedQuarticLegEquiv S.card).symm (i, l)
+    have hcoord : FiniteIndex.blockEquiv h p = (i, l) := by
+      change orderedQuarticLegEquiv S.card p = (i, l)
+      exact Equiv.apply_symm_apply _ _
+    have hp : p = externalInsertionInteractionLeg (E := 0) v l := by
+      have hv := congrArg Fin.val (FiniteIndex.eq_cast_mul_add_blockEquiv h p)
+      rw [hcoord] at hv
+      apply Fin.ext
+      rw [externalInsertionInteractionLeg_val]
+      simpa only [Fin.val_cast, Fin.val_mk, Prod.fst, Prod.snd,
+        Nat.zero_mul, Nat.zero_add, Nat.add_zero, Nat.mul_comm, Nat.add_comm, i] using hv
+    change externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T)
+      (Sum.inr (orderedLegToDiagramLeg S order
+        (externalInsertionInteractionLeg (E := 0) v l))) = _
+    rw [← hp]
+    have hright := externalInsertionSlotLegSplitting_fixedRight_apply (E := E) T i l
+    change externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T)
+      (Sum.inr (orderedLegToDiagramLeg S order p)) =
+        externalInsertionInteractionLeg (E := E)
+          (⟨(order i).1, Finset.mem_univ _⟩ : ↥(Finset.univ : Finset (Fin N))) l at hright
+    have hi : order i = v := (S.orderIsoOfFin rfl).apply_symm_apply v
+    rw [hi] at hright
+    exact hright
 
 /-- A vacuum interaction leg precedes a support interaction leg precisely when
 its ambient vertex precedes the support vertex; local quartic indices do not matter. -/
