@@ -94,17 +94,10 @@ theorem diagonalDet_eq_det_one_add_diagonalOp
   classical
   letI := Fintype.ofFinite ι
   let B : Module.Basis ι ℂ H := b.toOrthonormalBasis.toBasis
-  have hB (i : ι) : B i = b i := by
-    simp [B]
-  have hcoeff : Summable fun i => ‖coeff i‖ := Summable.of_finite
   have happly (j : ι) :
-      ((↑(1 : H →L[ℂ] H) +
-          ↑(HilbertBasis.diagonalOp b coeff) : H →ₗ[ℂ] H) (B j)) =
-        (1 + coeff j) • B j := by
-    rw [hB j]
-    change b j + HilbertBasis.diagonalOp b coeff (b j) = _
-    rw [HilbertBasis.diagonalOp_apply_basis b coeff hcoeff j]
-    simp [add_smul]
+      (((1 : H →L[ℂ] H) + HilbertBasis.diagonalOp b coeff : H →L[ℂ] H) : H →ₗ[ℂ] H)
+        (B j) = (1 + coeff j) • B j := by
+    simpa [B] using b.one_add_diagonalOp_apply_basis coeff Summable.of_finite j
   rw [diagonalDet_fintype]
   change (∏ i, (1 + coeff i)) =
     LinearMap.det
@@ -116,10 +109,7 @@ theorem diagonalDet_eq_det_one_add_diagonalOp
         Matrix.diagonal (fun i => 1 + coeff i) := by
     ext i j
     rw [LinearMap.toMatrix_apply, happly j]
-    by_cases hij : i = j
-    · subst i
-      simp
-    · simp [hij]
+    by_cases hij : i = j <;> simp [hij]
   rw [hmatrix, Matrix.det_diagonal]
 
 end Fredholm
@@ -128,14 +118,6 @@ namespace HilbertBasis
 
 variable {ι H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
 
-/-- `1 + diagonalOp b coeff` acts diagonally with factors `1 + coeff i`. -/
-theorem one_add_diagonalOp_apply_basis (b : HilbertBasis ι ℂ H) (coeff : ι → ℂ)
-    (hcoeff : Summable fun i => ‖coeff i‖) (i : ι) :
-    ((1 : H →L[ℂ] H) + diagonalOp b coeff) (b i) = (1 + coeff i) • b i := by
-  change b i + diagonalOp b coeff (b i) = (1 + coeff i) • b i
-  rw [diagonalOp_apply_basis b coeff hcoeff i]
-  simp [add_smul]
-
 /-- A coefficient `coeff i = -1` produces a nonzero kernel vector of
 `1 + diagonalOp b coeff`. -/
 theorem one_add_diagonalOp_has_nonzero_kernel_vector_of_coeff_eq_neg_one
@@ -143,9 +125,7 @@ theorem one_add_diagonalOp_has_nonzero_kernel_vector_of_coeff_eq_neg_one
     (hcoeff : Summable fun i => ‖coeff i‖) (i : ι) (hi : coeff i = -1) :
     ∃ x : H, x ≠ 0 ∧ ((1 : H →L[ℂ] H) + diagonalOp b coeff) x = 0 := by
   refine ⟨b i, ?_, ?_⟩
-  · intro hzero
-    have hnorm := b.orthonormal.1 i
-    simp [hzero] at hnorm
+  · exact b.orthonormal.ne_zero i
   · rw [one_add_diagonalOp_apply_basis b coeff hcoeff i, hi]
     simp
 
