@@ -2,7 +2,6 @@ import Mathlib.Basic.Real.Basic
 import Mathlib.Basic.Complex.Basic
 import Mathlib.Tactic.NormNum
 import Mathlib.Tactic.FieldSimp
-import Mathlib.Tactic.Ring
 
 set_option linter.style.header false
 
@@ -89,7 +88,7 @@ theorem finiteVolumeConductivityFromVectorPotential_neg_factor
     exact finiteVolumeConductivityDenominator_ne_zero volume ω η hrate
       (by rw [hz, mul_zero])
   unfold finiteVolumeConductivityFromVectorPotential finiteVolumeConductivityNormalization
-  field_simp [hV, hz] <;> ring
+  field_simp [hV, hz]
 
 /-- At zero frequency, the electric-field normalization keeps the finite switching rate and volume
 explicit. -/
