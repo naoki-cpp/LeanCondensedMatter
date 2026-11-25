@@ -269,7 +269,9 @@ private theorem ExternalInsertionDiagram.componentLegInversionInner_interaction_
     convert hdiv using 1
     apply Finset.sum_congr rfl
     rintro ⟨w, k⟩ _
-    simp only [Equiv.refl_apply, d.componentInteractionLeg_lt_iff B C hBC v l w k]
+    simp only [Equiv.refl_apply, d.componentInteractionLeg_lt_iff B C hBC v l w k] <;>
+      by_cases hlt : d.ambientInteractionVertex C w < d.ambientInteractionVertex B v <;>
+      simp [hlt]
 
 private theorem ExternalInsertionDiagram.componentLegShuffle_blockInversionCount_eq_sum
     {S : Finset (Fin N)}
