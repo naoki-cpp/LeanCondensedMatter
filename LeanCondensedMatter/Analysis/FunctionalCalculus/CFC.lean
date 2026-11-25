@@ -60,7 +60,7 @@ theorem cfc_apply_eigenvector {T : H →L[ℂ] H} (hT : IsSelfAdjoint T) {v : H}
       rw [map_star, cfcHom_id hT, hT.star_eq]
       exact hv
     | add g k hg hk =>
-      rw [map_add, ContinuousLinearMap.add_apply, hg, hk]
+      rw [map_add, add_apply, hg, hk]
       simp [add_smul]
     | mul g k hg hk =>
       rw [map_mul]
@@ -70,12 +70,14 @@ theorem cfc_apply_eigenvector {T : H →L[ℂ] H} (hT : IsSelfAdjoint T) {v : H}
     | frequently g hg =>
       have hleft : Continuous (fun k : C(spectrum ℝ T, ℝ) => cfcHom hT k v) :=
         (ContinuousLinearMap.apply ℂ H v).continuous.comp (cfcHom_continuous hT)
+      have heval : Continuous (fun k : C(spectrum ℝ T, ℝ) => (k z : ℂ)) :=
+        Complex.continuous_ofReal.comp (continuous_eval_const z)
       have hright : Continuous (fun k : C(spectrum ℝ T, ℝ) => (k z : ℂ) • v) :=
-        (Complex.continuous_ofReal.comp (continuous_eval_const z)).smul_const v
+        heval.smul continuous_const
       have hclosed := isClosed_eq hleft hright
-      have hm := mem_closure_iff_frequently.mpr hg
-      rw [hclosed.closure_eq] at hm
-      exact hm
+      change g ∈ {k : C(spectrum ℝ T, ℝ) | cfcHom hT k v = (k z : ℂ) • v}
+      rw [← hclosed.closure_eq]
+      exact mem_closure_iff_frequently.mpr hg
   rw [cfc_apply f T hT hf.continuousOn]
   exact h _
 
