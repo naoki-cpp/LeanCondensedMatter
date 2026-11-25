@@ -377,6 +377,8 @@ theorem ExternalInsertionDiagram.componentMixedPositionEquiv_apply
         (finCongr (by simp [T])) (e.symm localLeg) := by
     unfold ExternalInsertionDiagram.componentMixedToFixedPositionEquiv
     apply Fin.ext
+    change (externalInsertionMixedTimeAmbientPositionEquiv
+      localExternalTime localInteractionTime p).val = (e.symm localLeg).val
     exact congrArg Fin.val hpos
   rw [hlocal]
   rw [externalInsertionLegCongr_standardize] at hfixed
