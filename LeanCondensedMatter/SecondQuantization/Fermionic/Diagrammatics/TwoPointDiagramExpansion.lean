@@ -7,9 +7,6 @@ import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDi
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Semantics.ExternalPiece
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Factorization.ExternalPieceAmplitude
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Series.DysonSeries
-import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Factorization.FiberDecomposition
-import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Factorization.FiberVacuumIntegrand
-import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.FiberShuffleOrderedData
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Series.CauchySeries
 
 set_option linter.style.header false
@@ -19,8 +16,9 @@ set_option linter.style.header false
 
 Finite-mode imaginary-time two-point Wick diagrams with quartic interaction vertices: Common-owned
 mixed event/leg ordering, quartic-to-two-point leg embeddings, slot-split vacuum pairing and
-vacuum-pair image transport, and binary slot-shuffle coordinates; fermionic flattening and
+vacuum-pair image transport; fermionic flattening and
 fixed-external amplitudes; external/vacuum component restriction and factorization;
-external-component restriction; exchange of the finite diagram sum with the ordered-simplex
-integral; and the perturbative two-point series assembled from the order-`n` coefficients.
+exchange of the finite diagram sum with the ordered-simplex integral; and the perturbative
+two-point series. The physical Cauchy factorization now specializes the arbitrary-external
+insertion theory rather than maintaining a separate two-point fiber/shuffle proof chain.
 -/
