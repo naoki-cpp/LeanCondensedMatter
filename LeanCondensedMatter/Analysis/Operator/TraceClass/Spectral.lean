@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Analysis.Operator.HilbertBasis
 import LeanCondensedMatter.Analysis.Operator.TraceClass.Trace
 import LeanCondensedMatter.Analysis.FunctionalCalculus.CFC
 import Mathlib.Analysis.InnerProductSpace.l2Space
@@ -178,14 +179,7 @@ private theorem exists_abs_diagonal_hilbertBasis
   let e : EigenvectorIndex T → H := eigenvectorFamily hcompact
   have he : Orthonormal ℂ e := by
     simpa [e] using orthonormal_eigenvectorFamily hcompact hsym
-  obtain ⟨u, b, hsub, hb⟩ := he.toSubtypeRange.exists_hilbertBasis_extension
-  let j : EigenvectorIndex T → u := fun a => ⟨e a, hsub ⟨a, rfl⟩⟩
-  have hj : Function.Injective j := by
-    intro a a' haa'
-    apply he.linearIndependent.injective
-    exact congrArg Subtype.val haa'
-  have hb_j (a : EigenvectorIndex T) : b (j a) = e a := by
-    rw [hb]
+  obtain ⟨u, b, j, hj, hb_j⟩ := he.exists_hilbertBasis_extension_injective
   refine ⟨u, b, j, hj, ?_, ?_⟩
   · intro a
     apply Complex.ofReal_injective

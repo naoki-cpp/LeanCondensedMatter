@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Analysis.Operator.HilbertBasis
 import LeanCondensedMatter.Analysis.Operator.BoundedUnitaryEvolution
 import LeanCondensedMatter.Analysis.Operator.Unbounded.Adjoint
 import LeanCondensedMatter.Analysis.Operator.Unbounded.Composition

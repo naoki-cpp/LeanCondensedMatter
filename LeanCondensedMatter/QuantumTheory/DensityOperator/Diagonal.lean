@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Analysis.Operator.HilbertBasis
 import LeanCondensedMatter.Analysis.InfiniteSum.Normalization
 import LeanCondensedMatter.Analysis.Operator.TraceClass.Trace
 import LeanCondensedMatter.QuantumTheory.DensityOperator.Basic
@@ -58,10 +59,7 @@ theorem DensityOperator.exists_diagonal_hilbertBasis (ρ : DensityOperator H) :
   let e : EigenvectorIndex ρ.op → H := eigenvectorFamily hρcompact
   have he : Orthonormal ℂ e := by
     simpa [e] using orthonormal_eigenvectorFamily hρcompact hρsym
-  obtain ⟨u, b, hsub, hb⟩ := he.toSubtypeRange.exists_hilbertBasis_extension
-  let j : EigenvectorIndex ρ.op → u := fun a => ⟨e a, hsub ⟨a, rfl⟩⟩
-  have hb_j (a : EigenvectorIndex ρ.op) : b (j a) = e a := by
-    rw [hb]
+  obtain ⟨u, b, j, -, hb_j⟩ := he.exists_hilbertBasis_extension_injective
   have heigen (x : u) : ∃ c : ℝ, ρ.op (b x) = (c : ℂ) • b x := by
     by_cases hx : x ∈ Set.range j
     · rcases hx with ⟨a, rfl⟩
