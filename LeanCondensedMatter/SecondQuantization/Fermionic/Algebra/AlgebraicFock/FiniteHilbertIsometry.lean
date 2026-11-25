@@ -71,14 +71,6 @@ private theorem inner_finiteHilbert_create (b : OrthonormalBasis Mode ℂ H)
     finiteHilbertOperator_apply] at h
   exact h
 
-private theorem inner_finiteHilbert_algebraMap_create (b : OrthonormalBasis Mode ℂ H)
-    (a : ℂ) (v : H) (x : AlgebraicFock H) :
-    inner ℂ (finiteHilbertEquiv b.toBasis (algebraMap ℂ (AlgebraicFock H) a))
-      (finiteHilbertEquiv b.toBasis (create H v x)) = 0 := by
-  have h := congrArg (starRingEnd ℂ)
-    (inner_finiteHilbert_create b v x (algebraMap ℂ (AlgebraicFock H) a))
-  simpa only [annihilate_algebraMap, map_zero, inner_zero_right, inner_conj_symm] using h
-
 variable {N : Type*} [LinearOrder N] [Fintype N]
 variable {K : Type*} [NormedAddCommGroup K] [InnerProductSpace ℂ K]
 
@@ -89,36 +81,12 @@ theorem inner_finiteHilbertEquiv_map (b : OrthonormalBasis Mode ℂ H)
     inner ℂ (finiteHilbertEquiv c.toBasis (ExteriorAlgebra.map e.toLinearMap x))
         (finiteHilbertEquiv c.toBasis (ExteriorAlgebra.map e.toLinearMap y)) =
       inner ℂ (finiteHilbertEquiv b.toBasis x) (finiteHilbertEquiv b.toBasis y) := by
-  have hscalar (a : ℂ) (z : AlgebraicFock H) :
-      inner ℂ (finiteHilbertEquiv c.toBasis
-          (ExteriorAlgebra.map e.toLinearMap (algebraMap ℂ (AlgebraicFock H) a)))
-        (finiteHilbertEquiv c.toBasis (ExteriorAlgebra.map e.toLinearMap z)) =
-      inner ℂ (finiteHilbertEquiv b.toBasis (algebraMap ℂ (AlgebraicFock H) a))
-        (finiteHilbertEquiv b.toBasis z) := by
-    induction z using CliffordAlgebra.left_induction with
-    | algebraMap d => simp only [AlgHom.commutes, inner_finiteHilbert_algebraMap]
-    | add z w hz hw => simp only [map_add, inner_add_right, hz, hw]
-    | ι_mul z v _ =>
-        change inner ℂ (finiteHilbertEquiv c.toBasis
-            (ExteriorAlgebra.map e.toLinearMap (algebraMap ℂ (AlgebraicFock H) a)))
-          (finiteHilbertEquiv c.toBasis (ExteriorAlgebra.map e.toLinearMap (create H v z))) =
-          inner ℂ (finiteHilbertEquiv b.toBasis (algebraMap ℂ (AlgebraicFock H) a))
-            (finiteHilbertEquiv b.toBasis (create H v z))
-        rw [map_create_apply]
-        simp only [AlgHom.commutes, inner_finiteHilbert_algebraMap_create]
-  induction x using CliffordAlgebra.left_induction generalizing y with
-  | algebraMap a => exact hscalar a y
-  | add x z hx hz => simp only [map_add, inner_add_left, hx, hz]
-  | ι_mul x v hx =>
-      change inner ℂ (finiteHilbertEquiv c.toBasis
-          (ExteriorAlgebra.map e.toLinearMap (create H v x)))
-        (finiteHilbertEquiv c.toBasis (ExteriorAlgebra.map e.toLinearMap y)) =
-        inner ℂ (finiteHilbertEquiv b.toBasis (create H v x)) (finiteHilbertEquiv b.toBasis y)
-      have hc : ExteriorAlgebra.map e.toLinearMap (create H v x) =
-          create K (e v) (ExteriorAlgebra.map e.toLinearMap x) :=
-        map_create_apply e.toLinearMap v x
-      rw [hc, inner_finiteHilbert_create c (e v), annihilate_map, hx,
-        inner_finiteHilbert_create b v]
+  apply inner_realization_map_eq (finiteHilbertEquiv b.toBasis).toLinearMap
+    (finiteHilbertEquiv c.toBasis).toLinearMap e
+    (inner_finiteHilbert_create b) (inner_finiteHilbert_create c)
+  intro a d
+  exact (inner_finiteHilbert_algebraMap c.toBasis a d).trans
+    (inner_finiteHilbert_algebraMap b.toBasis a d).symm
 
 /-- The unitary exterior lift of a one-particle unitary, expressed in finite occupation-Hilbert
 coordinates. The source and target orthonormal bases are arbitrary. -/
