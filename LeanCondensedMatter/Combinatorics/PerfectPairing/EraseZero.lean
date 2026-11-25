@@ -22,28 +22,14 @@ noncomputable def Pairing.eraseZeroPair {n : ℕ} (pairing : Pairing (n + 1)) : 
     i ∈ deletedPositions (2 * n) (pairing.partner 0)
   have hpartner : ∀ i, p i ↔ p (pairing.partner i) := by
     intro i
-    simp only [p, deletedPositions, Finset.mem_erase, Finset.mem_univ, and_true]
-    constructor
-    · rintro ⟨hpartner0, hzero⟩
-      constructor
-      · intro h
-        exact hzero (pairing.partner.injective h)
-      · intro h
-        apply hpartner0
-        calc
-          i = pairing.partner (pairing.partner i) := (pairing.partner_partner i).symm
-          _ = pairing.partner 0 := congrArg pairing.partner h
-    · rintro ⟨hpartner0, hzero⟩
-      constructor
-      · intro h
-        apply hzero
-        calc
-          pairing.partner i = pairing.partner (pairing.partner 0) :=
-            congrArg pairing.partner h
-          _ = 0 := pairing.partner_partner 0
-      · intro h
-        apply hpartner0
-        simpa [h]
+    have hzero : pairing.partner i = 0 ↔ i = pairing.partner 0 :=
+      ⟨fun h => by rw [← pairing.partner_partner i, h],
+        fun h => by rw [h, pairing.partner_partner]⟩
+    have hj : pairing.partner i = pairing.partner 0 ↔ i = 0 :=
+      pairing.partner.injective.eq_iff
+    simp only [p, deletedPositions, Finset.mem_erase, Finset.mem_univ, and_true,
+      ne_eq, hzero, hj]
+    exact and_comm
   let e :=
     deletedPositionsOrderIso (2 * n) (pairing.partner 0) (pairing.partner_ne 0)
   exact pairing.restrictAlongEquiv p hpartner e.symm.toEquiv
