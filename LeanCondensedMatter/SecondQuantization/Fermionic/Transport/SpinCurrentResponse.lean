@@ -112,8 +112,7 @@ noncomputable def boundedSpinDisplacementDirectionalResponseChannel
   let B := boundedDirectionalCurrent (spinfulGeometry geometry) source
     (hbar : ℂ) (q : ℂ) K
   { measured := boundedOneBodyOperator
-      (QuantumTheory.ConservationLaw.heisenbergEvolution
-        (SpinfulSite Site →₀ ℂ) hbar K.operator D)
+      (QuantumTheory.ConservationLaw.heisenbergEvolution hbar K.operator D)
     source := B
     observableVariation := (sourceValue : ℂ) •
       (QuantumTheory.ConservationLaw.heisenbergScale hbar • ⁅-B, boundedOneBodyOperator D⁆) }
@@ -143,8 +142,7 @@ theorem boundedSpinDisplacementDirectionalResponseChannel_peierls
   let B := boundedDirectionalCurrent G source (hbar : ℂ) (q : ℂ) K
   change c • ⁅boundedDirectionalPeierlsHamiltonian G source
       (hbar : ℂ) (q : ℂ) K 0, boundedOneBodyOperator D⁆ =
-    boundedOneBodyOperator (QuantumTheory.ConservationLaw.heisenbergEvolution
-      (SpinfulSite Site →₀ ℂ) hbar K.operator D) ∧
+    boundedOneBodyOperator (QuantumTheory.ConservationLaw.heisenbergEvolution hbar K.operator D) ∧
     HasAlgebraicDerivAt
       (fun A => c • ⁅boundedDirectionalPeierlsHamiltonian G source
         (hbar : ℂ) (q : ℂ) K A, boundedOneBodyOperator D⁆)
@@ -205,10 +203,8 @@ theorem boundedSpinDisplacementDirectionalResponseChannel_retardedKernel
     (t s : ℝ) :
     let X := (spinfulGeometry geometry).directionalPosition measured
     let S := spinOneBodyLinear (Site := Site) spinScale component
-    let v := QuantumTheory.ConservationLaw.heisenbergEvolution
-      (SpinfulSite Site →₀ ℂ) hbar K.operator X
-    let torque := QuantumTheory.ConservationLaw.heisenbergEvolution
-      (SpinfulSite Site →₀ ℂ) hbar K.operator S
+    let v := QuantumTheory.ConservationLaw.heisenbergEvolution hbar K.operator X
+    let torque := QuantumTheory.ConservationLaw.heisenbergEvolution hbar K.operator S
     let B := boundedDirectionalCurrent (spinfulGeometry geometry) source
       (hbar : ℂ) (q : ℂ) K
     (boundedSpinDisplacementDirectionalResponseChannel geometry measured source K
@@ -219,17 +215,14 @@ theorem boundedSpinDisplacementDirectionalResponseChannel_retardedKernel
         (boundedOneBodyOperator (LinearMap.symmetrizedProduct (K := ℂ) X torque)) B t s := by
   let X := (spinfulGeometry geometry).directionalPosition measured
   let S := spinOneBodyLinear (Site := Site) spinScale component
-  let v := QuantumTheory.ConservationLaw.heisenbergEvolution
-    (SpinfulSite Site →₀ ℂ) hbar K.operator X
-  let torque := QuantumTheory.ConservationLaw.heisenbergEvolution
-    (SpinfulSite Site →₀ ℂ) hbar K.operator S
+  let v := QuantumTheory.ConservationLaw.heisenbergEvolution hbar K.operator X
+  let torque := QuantumTheory.ConservationLaw.heisenbergEvolution hbar K.operator S
   let B := boundedDirectionalCurrent (spinfulGeometry geometry) source
     (hbar : ℂ) (q : ℂ) K
   let J := boundedSymmetrizedVelocityCurrentLinear v S
   let T := boundedSymmetrizedVelocityCurrentLinear X torque
   change retardedSusceptibility U hbar expectation
-    (boundedOneBodyOperator (QuantumTheory.ConservationLaw.heisenbergEvolution
-      (SpinfulSite Site →₀ ℂ) hbar K.operator
+    (boundedOneBodyOperator (QuantumTheory.ConservationLaw.heisenbergEvolution hbar K.operator
       (LinearMap.symmetrizedProduct (K := ℂ) X S))) B t s =
     retardedSusceptibility U hbar expectation J B t s +
       retardedSusceptibility U hbar expectation T B t s

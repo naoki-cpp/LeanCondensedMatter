@@ -49,12 +49,12 @@ property of the one-body Fock lift is assumed. -/
 theorem boundedHeisenbergSymmetrizedProduct_eq
     (hbar : ℝ) (H X m : (Site →₀ ℂ) →ₗ[ℂ] (Site →₀ ℂ)) :
     boundedOneBodyOperator
-        (heisenbergEvolution (Site →₀ ℂ) hbar H
+        (heisenbergEvolution hbar H
           (LinearMap.symmetrizedProduct (K := ℂ) X m)) =
       boundedSymmetrizedVelocityCurrentLinear
-          (heisenbergEvolution (Site →₀ ℂ) hbar H X) m +
+          (heisenbergEvolution hbar H X) m +
         boundedSymmetrizedVelocityCurrentLinear X
-          (heisenbergEvolution (Site →₀ ℂ) hbar H m) := by
+          (heisenbergEvolution hbar H m) := by
   rw [heisenbergEvolution_symmetrizedProduct]
   exact map_add (boundedOneBodyOperator (Site := Site)).toLinearMap _ _
 
