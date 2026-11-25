@@ -81,8 +81,9 @@ theorem diagonalOp_isPositive (b : HilbertBasis ι ℂ H) (a : ι → ℝ)
     (diagonalOp b (fun i => (a i : ℂ))).IsPositive := by
   apply ContinuousLinearMap.nonneg_iff_isPositive.mp
   have hac : Summable fun i => ‖(a i : ℂ)‖ := by simpa using ha
-  apply (hasSum_diagonalTerm b (fun i => (a i : ℂ)) hac).nonneg
-  intro i
+  refine hasSum_le (fun i => ?_)
+    (hasSum_zero : HasSum (fun _ : ι => (0 : H →L[ℂ] H)) 0)
+    (hasSum_diagonalTerm b (fun i => (a i : ℂ)) hac)
   apply ContinuousLinearMap.nonneg_iff_isPositive.mpr
   have hcoeff : 0 ≤ (a i : ℂ) :=
     (RCLike.ofReal_nonneg (K := ℂ)).mpr (ha_nonneg i)
