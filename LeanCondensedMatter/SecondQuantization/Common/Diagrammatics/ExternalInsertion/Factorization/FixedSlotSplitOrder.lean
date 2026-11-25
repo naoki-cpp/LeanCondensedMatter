@@ -190,28 +190,15 @@ theorem externalInsertionSlotLegSplitting_fixedInversionCount_mod_two_eq_zero
   rw [← hi]
   cases leg with
   | inl e =>
-      have hzero :
-          (∑ j : Fin (2 * (2 * S.card)),
-            if externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T)
-                (Sum.inr (orderedLegToDiagramLeg S order j)) <
-              externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T)
-                (Sum.inl (externalInsertionExternalLeg E T e))
-              then 1 else 0) = 0 := by
-        apply Finset.sum_eq_zero
-        intro j _
-        let vl := orderedQuarticLegEquiv S.card j
-        have hj : (orderedQuarticLegEquiv S.card).symm vl = j := by simp [vl]
-        rw [← hj]
-        exact ite_eq_right
-          (externalInsertionSlotLegSplitting_fixedRight_not_lt_leftExternal
-            (E := E) T e vl.1 vl.2)
-      change 2 ∣ (∑ j : Fin (2 * (2 * S.card)),
-        if externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T)
-              (Sum.inr (orderedLegToDiagramLeg S order j)) <
-            externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T)
-              (Sum.inl (externalInsertionExternalLeg E T e))
-          then 1 else 0)
-      rw [hzero]
+      apply Finset.dvd_sum
+      intro j _
+      let vl := orderedQuarticLegEquiv S.card j
+      have hj : (orderedQuarticLegEquiv S.card).symm vl = j := by simp [vl]
+      rw [← hj]
+      have hnot := externalInsertionSlotLegSplitting_fixedRight_not_lt_leftExternal
+        (E := E) T e vl.1 vl.2
+      dsimp only at hnot
+      rw [if_neg hnot]
       exact dvd_zero 2
   | inr vl =>
       rcases vl with ⟨v, l⟩
@@ -245,15 +232,8 @@ theorem externalInsertionSlotLegSplitting_fixedInversionCount_mod_two_eq_zero
               (Sum.inl ((externalInsertionLegEquiv E T).symm (Sum.inr (v, l)))) ↔
             (order wk.1).1 < v.1 at hiff
         exact hiff
-      by_cases hlt : externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T)
-          (Sum.inr (orderedLegToDiagramLeg S order
-            ((orderedQuarticLegEquiv S.card).symm wk))) <
-          externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T)
-            (Sum.inl ((externalInsertionLegEquiv E T).symm (Sum.inr (v, l))))
-      · have horder := hiff'.mp hlt
-        simpa [horder] using hlt
-      · have horder : ¬ (order wk.1).1 < v.1 := fun h => hlt (hiff'.mpr h)
-        simpa [horder] using hlt
+      rw [hiff']
+
 
 end Common
 end SecondQuantization
