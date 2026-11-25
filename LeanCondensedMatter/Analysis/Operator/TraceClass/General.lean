@@ -158,12 +158,16 @@ theorem sum_diagonalExpectationValue_le_traceNorm {T : H →L[ℂ] H}
       ∑' i, diagonalExpectationValue T hpos.isSelfAdjoint (d i) ≤ hT.traceNorm := by
   obtain ⟨w, b, e, he_inj, hbe⟩ := hd.exists_hilbertBasis_extension_injective
   have htr := hT.hasSum_diagonalExpectationValue_eq_traceNorm hpos b
-  have hfsum := htr.summable.comp_injective he_inj
+  have hfsum : Summable (fun i => diagonalExpectationValue T hpos.isSelfAdjoint (b (e i))) :=
+    htr.summable.comp_injective he_inj
   have hle := hasSum_le_inj e he_inj
     (fun j _ => diagonalExpectationValue_nonneg T hpos (b j))
     (fun _ => le_rfl) hfsum.hasSum htr
-  exact ⟨by simpa only [Function.comp_apply, hbe] using hfsum,
-    by simpa only [Function.comp_apply, hbe] using hle⟩
+  have hpoint (i : ι) :
+      diagonalExpectationValue T hpos.isSelfAdjoint (b (e i)) =
+        diagonalExpectationValue T hpos.isSelfAdjoint (d i) := by rw [hbe]
+  refine ⟨hfsum.congr hpoint, ?_⟩
+  rwa [tsum_congr hpoint] at hle
 
 /-- If a positive operator has strictly positive diagonal value on every unit vector, an
 orthonormal family can saturate its trace norm only when its span has trivial orthogonal
