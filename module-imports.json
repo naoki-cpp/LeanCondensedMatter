@@ -1080,9 +1080,11 @@
       "sourceFile": "LeanCondensedMatter/Combinatorics/PerfectPairing/InsertFirstPair.lean",
       "imports": [
         "LeanCondensedMatter.Combinatorics.FiniteIndex.DeletedPositions",
-        "LeanCondensedMatter.Combinatorics.PerfectPairing.EraseZero"
+        "LeanCondensedMatter.Combinatorics.PerfectPairing.Core",
+        "LeanCondensedMatter.Combinatorics.PerfectPairing.EraseZero",
+        "LeanCondensedMatter.Combinatorics.PerfectPairing.Transport"
       ],
-      "externalImportCount": 2
+      "externalImportCount": 1
     },
     {
       "name": "LeanCondensedMatter.Combinatorics.PerfectPairing.InvolutionCard",
@@ -3186,7 +3188,7 @@
         "LeanCondensedMatter.Models.RashbaExchange.FiniteMomentumSpinResponse",
         "LeanCondensedMatter.Models.RashbaExchange.RealSpaceHopping",
         "LeanCondensedMatter.QuantumTheory.ConservationLaw.LocalizedTransport",
-        "LeanCondensedMatter.QuantumTheory.LinearResponse.Frequency.FiniteTime"
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.Frequency.InfiniteTime"
       ],
       "externalImportCount": 0
     },
@@ -3408,7 +3410,6 @@
       "sourceFile": "LeanCondensedMatter/QuantumMechanics/SingleParticle/Continuum/Continuity/SchwartzSpinCurrent1D.lean",
       "imports": [
         "LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.SchwartzTwoLevelSchrodinger1D",
-        "LeanCondensedMatter.QuantumMechanics.SingleParticle.GeneralizedCurrent",
         "LeanCondensedMatter.QuantumTheory.ConservationLaw.LocalizedTransport",
         "LeanCondensedMatter.QuantumTheory.SpinHalf"
       ],
@@ -3653,14 +3654,6 @@
       "externalImportCount": 0
     },
     {
-      "name": "LeanCondensedMatter.QuantumMechanics.SingleParticle.GeneralizedCurrent",
-      "sourceFile": "LeanCondensedMatter/QuantumMechanics/SingleParticle/GeneralizedCurrent.lean",
-      "imports": [
-        "LeanCondensedMatter.Analysis.Operator.SymmetrizedProduct"
-      ],
-      "externalImportCount": 0
-    },
-    {
       "name": "LeanCondensedMatter.QuantumMechanics.SingleParticle.OrbitalAngularMomentum",
       "sourceFile": "LeanCondensedMatter/QuantumMechanics/SingleParticle/OrbitalAngularMomentum.lean",
       "imports": [],
@@ -3680,7 +3673,6 @@
       "sourceFile": "LeanCondensedMatter/QuantumMechanics/SingleParticle.lean",
       "imports": [
         "LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum",
-        "LeanCondensedMatter.QuantumMechanics.SingleParticle.GeneralizedCurrent",
         "LeanCondensedMatter.QuantumMechanics.SingleParticle.OrbitalAngularMomentum",
         "LeanCondensedMatter.QuantumMechanics.SingleParticle.OrbitalAngularMomentumCurrent"
       ],

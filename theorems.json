@@ -7322,15 +7322,15 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": false,
+    "terminal": true,
     "statement": "∀ {m n : ℕ} (h : m = n) (pairing : Combinatorics.Pairing m) (p : Fin (2 * n)),\n  (finCongr ⋯) (((Equiv.cast ⋯) pairing).partner p) = pairing.partner ((finCongr ⋯) p)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -7341,16 +7341,12 @@
     "docString": "Casting the number of pairs transports the partner permutation through the corresponding\ncast of flattened positions. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.MixedOrderData.0.SecondQuantization.Common.ExternalInsertionDiagram.atomicLegPartner_componentOrderedLeg"
-    ],
+    "dependents": [],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.MixedOrderData.0.SecondQuantization.Common.ExternalInsertionDiagram.atomicLegPartner_componentOrderedLeg"
-    ],
-    "compiledConsumerCount": 1,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -8322,7 +8318,10 @@
       "Combinatorics.Pairing.insertFirstPair_eraseZeroPair",
       "Combinatorics.moment_eq_pairing_sum_of_first_pair_recursion"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Combinatorics.PairingOn.sumCongr_partner_inl",
+      "Combinatorics.PairingOn.transport_partner"
+    ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
@@ -10896,6 +10895,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "Combinatorics.Pairing.insertFirstPair_partner_zero",
       "Combinatorics.Pairing.ofSplit_partner_inl",
       "SecondQuantization.Common.TwoPointDiagram.intervalAugmentedPairing_partner_external"
     ],
@@ -10903,10 +10903,11 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "Combinatorics.Pairing.insertFirstPair_partner_zero",
       "Combinatorics.Pairing.ofSplit_partner_inl",
       "SecondQuantization.Common.TwoPointDiagram.intervalAugmentedPairing_partner_external"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Quot.sound",
       "propext"
@@ -10939,16 +10940,18 @@
     "directWrapperOf": null,
     "dependents": [
       "Combinatorics.Pairing.ofSplit_partner_inr",
-      "SecondQuantization.Common.TwoPointDiagram.intervalAugmentedPairing_partner_interior"
+      "SecondQuantization.Common.TwoPointDiagram.intervalAugmentedPairing_partner_interior",
+      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.InsertFirstPair.0.Combinatorics.Pairing.insertFirstPair_partner_orderIso"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
       "Combinatorics.Pairing.ofSplit_partner_inr",
-      "SecondQuantization.Common.TwoPointDiagram.intervalAugmentedPairing_partner_interior"
+      "SecondQuantization.Common.TwoPointDiagram.intervalAugmentedPairing_partner_interior",
+      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.InsertFirstPair.0.Combinatorics.Pairing.insertFirstPair_partner_orderIso"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Quot.sound",
       "propext"
@@ -10983,6 +10986,7 @@
     "dependents": [
       "Combinatorics.Pairing.cast_eq_transport",
       "Combinatorics.Pairing.eraseZeroOrderIso_partner",
+      "Combinatorics.Pairing.insertFirstPair_partner_zero",
       "Combinatorics.Pairing.ofSplit_partner_inl",
       "Combinatorics.Pairing.ofSplit_partner_inr",
       "Combinatorics.Pairing.ofSplit_reindex",
@@ -11006,7 +11010,9 @@
       "SecondQuantization.Common.TwoPointDiagram.slotCongr_partner",
       "SecondQuantization.Common.twoPointDiagramExternalInsertionEquiv_partner",
       "SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_left_normalizedPair",
+      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.InsertFirstPair.0.Combinatorics.Pairing.insertFirstPair_partner_orderIso",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.BlockConnectivity.0.SecondQuantization.Common.ExternalInsertionBlockLayout.pairingTransport_preserves_block",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.MixedOrderData.0.SecondQuantization.Common.ExternalInsertionDiagram.atomicLegPartner_componentOrderedLeg",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_partner_bigLegEquiv_symm_sigma_mk",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalSubsetAssembly.0.SecondQuantization.Fermionic.pairing_heq_of_finCongr_transport"
     ],
@@ -11016,6 +11022,7 @@
     "compiledConsumers": [
       "Combinatorics.Pairing.cast_eq_transport",
       "Combinatorics.Pairing.eraseZeroOrderIso_partner",
+      "Combinatorics.Pairing.insertFirstPair_partner_zero",
       "Combinatorics.Pairing.ofSplit_partner_inl",
       "Combinatorics.Pairing.ofSplit_partner_inr",
       "Combinatorics.Pairing.ofSplit_reindex",
@@ -11039,11 +11046,13 @@
       "SecondQuantization.Common.TwoPointDiagram.slotCongr_partner",
       "SecondQuantization.Common.twoPointDiagramExternalInsertionEquiv_partner",
       "SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_left_normalizedPair",
+      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.InsertFirstPair.0.Combinatorics.Pairing.insertFirstPair_partner_orderIso",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.BlockConnectivity.0.SecondQuantization.Common.ExternalInsertionBlockLayout.pairingTransport_preserves_block",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.MixedOrderData.0.SecondQuantization.Common.ExternalInsertionDiagram.atomicLegPartner_componentOrderedLeg",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_partner_bigLegEquiv_symm_sigma_mk",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalSubsetAssembly.0.SecondQuantization.Fermionic.pairing_heq_of_finCongr_transport"
     ],
-    "compiledConsumerCount": 28,
+    "compiledConsumerCount": 31,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -15494,6 +15503,7 @@
       "ContinuousLinearMap.IsTraceClass.isCompact"
     ],
     "dependencies": [
+      "ContinuousLinearMap.isHilbertSchmidt_adjoint",
       "_private.LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.Compact.0.ContinuousLinearMap.IsHilbertSchmidt.finiteRangeApprox_isCompact",
       "_private.LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.Compact.0.ContinuousLinearMap.IsHilbertSchmidt.norm_sub_finiteRangeApprox_le"
     ],
@@ -15966,8 +15976,7 @@
       "ContinuousLinearMap.IsHilbertSchmidt.hasSum_norm_sq_apply",
       "ContinuousLinearMap.IsHilbertSchmidt.normSq_pos",
       "ContinuousLinearMap.innerHS_comp_right",
-      "ContinuousLinearMap.innerHS_eq_of_isHilbertSchmidt",
-      "_private.LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.Compact.0.ContinuousLinearMap.IsHilbertSchmidt.norm_sub_finiteRangeApprox_sq_le"
+      "ContinuousLinearMap.innerHS_eq_of_isHilbertSchmidt"
     ],
     "dependencies": [
       "ContinuousLinearMap.isHilbertSchmidt_iff_isHilbertSchmidtWrt"
@@ -15978,10 +15987,9 @@
       "ContinuousLinearMap.IsHilbertSchmidt.hasSum_norm_sq_apply",
       "ContinuousLinearMap.IsHilbertSchmidt.normSq_pos",
       "ContinuousLinearMap.innerHS_comp_right",
-      "ContinuousLinearMap.innerHS_eq_of_isHilbertSchmidt",
-      "_private.LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.Compact.0.ContinuousLinearMap.IsHilbertSchmidt.norm_sub_finiteRangeApprox_sq_le"
+      "ContinuousLinearMap.innerHS_eq_of_isHilbertSchmidt"
     ],
-    "compiledConsumerCount": 5,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -20410,10 +20418,10 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "ContinuousLinearMap.IsHilbertSchmidt.isCompact",
       "ContinuousLinearMap.IsHilbertSchmidt.normSq_adjoint",
       "ContinuousLinearMap.IsHilbertSchmidt.normSq_comp_right_le",
-      "ContinuousLinearMap.isHilbertSchmidt_comp_right",
-      "_private.LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.Compact.0.ContinuousLinearMap.IsHilbertSchmidt.norm_sub_finiteRangeApprox_sq_le"
+      "ContinuousLinearMap.isHilbertSchmidt_comp_right"
     ],
     "dependencies": [
       "ContinuousLinearMap.hasSum_norm_sq_adjoint_apply"
@@ -20421,10 +20429,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "ContinuousLinearMap.IsHilbertSchmidt.isCompact",
       "ContinuousLinearMap.IsHilbertSchmidt.normSq_adjoint",
       "ContinuousLinearMap.IsHilbertSchmidt.normSq_comp_right_le",
-      "ContinuousLinearMap.isHilbertSchmidt_comp_right",
-      "_private.LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.Compact.0.ContinuousLinearMap.IsHilbertSchmidt.norm_sub_finiteRangeApprox_sq_le"
+      "ContinuousLinearMap.isHilbertSchmidt_comp_right"
     ],
     "compiledConsumerCount": 4,
     "axioms": [
@@ -52133,6 +52141,7 @@
     "directWrapperOf": null,
     "dependents": [
       "QuantumTheory.LinearResponse.ResponseChannel.hasInfiniteObservationTimeLimit_finiteTimeAdiabaticResponse_of_stationary_pos",
+      "QuantumTheory.LinearResponse.adiabaticLagIntegrable_commutator_of_pos",
       "QuantumTheory.LinearResponse.finiteTime_eigenbasisPhysicalSusceptibility_has_both_local_three_stage_limits"
     ],
     "dependencies": [],
@@ -52140,9 +52149,10 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.LinearResponse.ResponseChannel.hasInfiniteObservationTimeLimit_finiteTimeAdiabaticResponse_of_stationary_pos",
+      "QuantumTheory.LinearResponse.adiabaticLagIntegrable_commutator_of_pos",
       "QuantumTheory.LinearResponse.finiteTime_eigenbasisPhysicalSusceptibility_has_both_local_three_stage_limits"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -53064,7 +53074,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -53076,6 +53086,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "QuantumTheory.LinearResponse.ResponseChannel.infiniteTimeAdiabaticResponse_of_displacement",
       "QuantumTheory.Models.RashbaExchange.realSpaceRashbaSpinDisplacement_finiteTimeAdiabaticResponse"
     ],
     "dependencies": [
@@ -53091,9 +53102,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "QuantumTheory.LinearResponse.ResponseChannel.infiniteTimeAdiabaticResponse_of_displacement",
       "QuantumTheory.Models.RashbaExchange.realSpaceRashbaSpinDisplacement_finiteTimeAdiabaticResponse"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -53242,7 +53254,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -53254,7 +53266,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.LinearResponse.ResponseChannel.hasInfiniteObservationTimeLimit_finiteTimeAdiabaticResponse_of_stationary_pos"
+      "QuantumTheory.LinearResponse.ResponseChannel.hasInfiniteObservationTimeLimit_finiteTimeAdiabaticResponse_of_stationary_pos",
+      "QuantumTheory.LinearResponse.ResponseChannel.infiniteTimeAdiabaticResponse_eq_of_displacement_boundary"
     ],
     "dependencies": [
       "QuantumTheory.LinearResponse.ResponseChannel.finiteTimeAdiabaticResponse_eq_stationaryLag",
@@ -53263,9 +53276,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.LinearResponse.ResponseChannel.hasInfiniteObservationTimeLimit_finiteTimeAdiabaticResponse_of_stationary_pos"
+      "QuantumTheory.LinearResponse.ResponseChannel.hasInfiniteObservationTimeLimit_finiteTimeAdiabaticResponse_of_stationary_pos",
+      "QuantumTheory.LinearResponse.ResponseChannel.infiniteTimeAdiabaticResponse_eq_of_displacement_boundary"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -53313,6 +53327,98 @@
       "SecondQuantization.Fermionic.Transport.hasInfiniteObservationTimeLimit_directionalConductivity_of_stationary_pos"
     ],
     "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (channel : QuantumTheory.LinearResponse.ResponseChannel H) (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (expectation : QuantumTheory.LinearResponse.NormalizedExpectation H),\n  QuantumTheory.LinearResponse.IsStationary (QuantumTheory.LinearResponse.freePropagatorGroup system) expectation →\n    ∀ (D : H →L[ℂ] H) (ω η : ℝ),\n      0 < η →\n        (∀ (T : ℝ),\n            0 ≤ T →\n              have K := fun τ =>\n                QuantumTheory.LinearResponse.commutatorSusceptibility\n                  (QuantumTheory.LinearResponse.freePropagatorGroup system) system.hbar expectation D channel.source τ\n                  0;\n              channel.finiteTimeAdiabaticResponse (QuantumTheory.LinearResponse.freePropagatorGroup system) system.hbar\n                  expectation ω η T =\n                QuantumTheory.LinearResponse.adiabaticFrequencyPhase ω η T * K T -\n                  (Complex.I * ↑ω - ↑η) * QuantumTheory.LinearResponse.finiteTimeAdiabaticTransform K ω η T) →\n          channel.infiniteTimeAdiabaticResponse (QuantumTheory.LinearResponse.freePropagatorGroup system) system.hbar\n              expectation ω η =\n            -(Complex.I * ↑ω - ↑η) *\n              QuantumTheory.LinearResponse.adiabaticFrequencyDomainSusceptibility\n                (QuantumTheory.LinearResponse.freePropagatorGroup system) system.hbar expectation D channel.source ω η",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.LinearResponse.ResponseChannel.infiniteTimeAdiabaticResponse_eq_of_displacement_boundary",
+    "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.Frequency.InfiniteTime",
+    "externalAxioms": [],
+    "docString": "A stationary bounded response satisfying the finite displacement boundary\nidentity has a fixed-positive-rate infinite-time value equal to minus the\nadiabatic exponent times the displacement susceptibility. This consumes\nthe finite-time identity, so model-level realizations do not have to repeat\ntheir measured-operator and contact proofs. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.LinearResponse.ResponseChannel.infiniteTimeAdiabaticResponse_of_displacement",
+      "QuantumTheory.Models.RashbaExchange.realSpaceRashbaSpinDisplacement_infiniteTimeAdiabaticResponse"
+    ],
+    "dependencies": [
+      "QuantumTheory.LinearResponse.ResponseChannel.hasInfiniteObservationTimeLimit_finiteTimeAdiabaticResponse_of_stationary",
+      "QuantumTheory.LinearResponse.adiabaticLagIntegrable_commutator_of_pos",
+      "QuantumTheory.LinearResponse.hasInfiniteObservationTimeLimit_finiteTimeAdiabaticTransform",
+      "QuantumTheory.LinearResponse.infiniteTimeAdiabaticTransform_commutator_eq_susceptibility",
+      "QuantumTheory.LinearResponse.norm_commutatorSusceptibility_le",
+      "QuantumTheory.LinearResponse.tendsto_adiabaticFrequencyPhase_mul_of_bounded"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.LinearResponse.ResponseChannel.infiniteTimeAdiabaticResponse_of_displacement",
+      "QuantumTheory.Models.RashbaExchange.realSpaceRashbaSpinDisplacement_infiniteTimeAdiabaticResponse"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (channel : QuantumTheory.LinearResponse.ResponseChannel H) (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (expectation : QuantumTheory.LinearResponse.NormalizedExpectation H),\n  QuantumTheory.LinearResponse.IsStationary (QuantumTheory.LinearResponse.freePropagatorGroup system) expectation →\n    ∀ (D : H →L[ℂ] H),\n      channel.measured = (Complex.I / ↑system.hbar) • ⁅↑system.hamiltonian, D⁆ →\n        channel.observableVariation = (Complex.I / ↑system.hbar) • ⁅-channel.source, D⁆ →\n          ∀ (ω η : ℝ),\n            0 < η →\n              channel.infiniteTimeAdiabaticResponse (QuantumTheory.LinearResponse.freePropagatorGroup system)\n                  system.hbar expectation ω η =\n                -(Complex.I * ↑ω - ↑η) *\n                  QuantumTheory.LinearResponse.adiabaticFrequencyDomainSusceptibility\n                    (QuantumTheory.LinearResponse.freePropagatorGroup system) system.hbar expectation D channel.source ω\n                    η",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.LinearResponse.ResponseChannel.infiniteTimeAdiabaticResponse_of_displacement",
+    "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.Frequency.InfiniteTime",
+    "externalAxioms": [],
+    "docString": "The full stationary response of a bounded displacement derivative, with\nits physical source contact, is minus the adiabatic exponent times the\ndisplacement susceptibility at positive switching rate. This is the\ninfinite-observation-time limit, not the zero-rate or DC limit. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.LinearResponse.ResponseChannel.finiteTimeAdiabaticResponse_of_displacement",
+      "QuantumTheory.LinearResponse.ResponseChannel.infiniteTimeAdiabaticResponse_eq_of_displacement_boundary"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -53820,6 +53926,7 @@
     "directWrapperOf": null,
     "dependents": [
       "QuantumTheory.LinearResponse.ResponseChannel.hasInfiniteObservationTimeLimit_finiteTimeAdiabaticResponse_of_stationary_pos",
+      "QuantumTheory.LinearResponse.adiabaticLagIntegrable_commutator_of_pos",
       "QuantumTheory.LinearResponse.finiteTime_eigenbasisPhysicalSusceptibility_has_both_local_three_stage_limits",
       "SecondQuantization.Common.adiabaticIntegrable_grandCanonicalGibbsDensityOperator"
     ],
@@ -53832,10 +53939,60 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.LinearResponse.ResponseChannel.hasInfiniteObservationTimeLimit_finiteTimeAdiabaticResponse_of_stationary_pos",
+      "QuantumTheory.LinearResponse.adiabaticLagIntegrable_commutator_of_pos",
       "QuantumTheory.LinearResponse.finiteTime_eigenbasisPhysicalSusceptibility_has_both_local_three_stage_limits",
       "SecondQuantization.Common.adiabaticIntegrable_grandCanonicalGibbsDensityOperator"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 4,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (expectation : QuantumTheory.LinearResponse.NormalizedExpectation H) (A B : H →L[ℂ] H) (ω η : ℝ),\n  0 < η →\n    QuantumTheory.LinearResponse.AdiabaticLagIntegrable\n      (fun τ =>\n        QuantumTheory.LinearResponse.commutatorSusceptibility (QuantumTheory.LinearResponse.freePropagatorGroup system)\n          system.hbar expectation A B τ 0)\n      ω η",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.LinearResponse.adiabaticLagIntegrable_commutator_of_pos",
+    "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.Frequency.InfiniteTime",
+    "externalAxioms": [],
+    "docString": "For bounded free dynamics, every commutator lag kernel is automatically\nintegrable at positive switching rate. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.LinearResponse.ResponseChannel.infiniteTimeAdiabaticResponse_eq_of_displacement_boundary"
+    ],
+    "dependencies": [
+      "QuantumTheory.LinearResponse.AdiabaticIntegrable.integrable",
+      "QuantumTheory.LinearResponse.adiabaticIntegrable_of_pos",
+      "QuantumTheory.LinearResponse.continuous_commutatorSusceptibility_timeDifference",
+      "QuantumTheory.LinearResponse.continuous_heisenbergEvolution",
+      "QuantumTheory.LinearResponse.measurable_retardedTimeDifferenceKernel",
+      "QuantumTheory.LinearResponse.retardedTimeDifferenceKernel_eq_commutatorSusceptibility_of_nonneg"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.LinearResponse.ResponseChannel.infiniteTimeAdiabaticResponse_eq_of_displacement_boundary"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -54309,6 +54466,7 @@
     "directWrapperOf": null,
     "dependents": [
       "QuantumTheory.LinearResponse.ResponseChannel.finiteTimeAdiabaticResponse_of_displacement",
+      "QuantumTheory.LinearResponse.adiabaticLagIntegrable_commutator_of_pos",
       "QuantumTheory.LinearResponse.finiteTime_eigenbasisPhysicalSusceptibility_has_both_local_three_stage_limits",
       "SecondQuantization.Fermionic.Transport.hasInfiniteObservationTimeLimit_directionalConductivity_of_stationary_pos"
     ],
@@ -54319,10 +54477,11 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.LinearResponse.ResponseChannel.finiteTimeAdiabaticResponse_of_displacement",
+      "QuantumTheory.LinearResponse.adiabaticLagIntegrable_commutator_of_pos",
       "QuantumTheory.LinearResponse.finiteTime_eigenbasisPhysicalSusceptibility_has_both_local_three_stage_limits",
       "SecondQuantization.Fermionic.Transport.hasInfiniteObservationTimeLimit_directionalConductivity_of_stationary_pos"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -54401,6 +54560,7 @@
     "directWrapperOf": null,
     "dependents": [
       "QuantumTheory.LinearResponse.ResponseChannel.finiteTimeAdiabaticResponse_of_displacement",
+      "QuantumTheory.LinearResponse.adiabaticLagIntegrable_commutator_of_pos",
       "QuantumTheory.LinearResponse.finiteTime_eigenbasisPhysicalSusceptibility_has_both_local_three_stage_limits",
       "QuantumTheory.LinearResponse.staticTransitionFirstVariation_eq_timeIntegral",
       "SecondQuantization.Fermionic.Transport.hasInfiniteObservationTimeLimit_directionalConductivity_of_stationary_pos"
@@ -54413,11 +54573,12 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.LinearResponse.ResponseChannel.finiteTimeAdiabaticResponse_of_displacement",
+      "QuantumTheory.LinearResponse.adiabaticLagIntegrable_commutator_of_pos",
       "QuantumTheory.LinearResponse.finiteTime_eigenbasisPhysicalSusceptibility_has_both_local_three_stage_limits",
       "QuantumTheory.LinearResponse.staticTransitionFirstVariation_eq_timeIntegral",
       "SecondQuantization.Fermionic.Transport.hasInfiniteObservationTimeLimit_directionalConductivity_of_stationary_pos"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 5,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -57331,7 +57492,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -57343,15 +57504,17 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.LinearResponse.ResponseChannel.hasInfiniteObservationTimeLimit_finiteTimeAdiabaticResponse_of_stationary"
+      "QuantumTheory.LinearResponse.ResponseChannel.hasInfiniteObservationTimeLimit_finiteTimeAdiabaticResponse_of_stationary",
+      "QuantumTheory.LinearResponse.ResponseChannel.infiniteTimeAdiabaticResponse_eq_of_displacement_boundary"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.LinearResponse.ResponseChannel.hasInfiniteObservationTimeLimit_finiteTimeAdiabaticResponse_of_stationary"
+      "QuantumTheory.LinearResponse.ResponseChannel.hasInfiniteObservationTimeLimit_finiteTimeAdiabaticResponse_of_stationary",
+      "QuantumTheory.LinearResponse.ResponseChannel.infiniteTimeAdiabaticResponse_eq_of_displacement_boundary"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -57931,7 +58094,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -57943,6 +58106,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "QuantumTheory.LinearResponse.ResponseChannel.infiniteTimeAdiabaticResponse_eq_of_displacement_boundary",
       "SecondQuantization.Fermionic.Transport.infiniteTimeAdiabaticDirectionalConductivity_eq_finiteKuboGreenwood"
     ],
     "dependencies": [
@@ -57952,9 +58116,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "QuantumTheory.LinearResponse.ResponseChannel.infiniteTimeAdiabaticResponse_eq_of_displacement_boundary",
       "SecondQuantization.Fermionic.Transport.infiniteTimeAdiabaticDirectionalConductivity_eq_finiteKuboGreenwood"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -58704,6 +58869,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "QuantumTheory.LinearResponse.adiabaticLagIntegrable_commutator_of_pos",
       "QuantumTheory.LinearResponse.finiteTime_eigenbasisPhysicalSusceptibility_has_both_local_three_stage_limits",
       "SecondQuantization.Common.adiabaticIntegrable_grandCanonicalGibbsDensityOperator",
       "SecondQuantization.Fermionic.Transport.hasInfiniteObservationTimeLimit_directionalConductivity_of_stationary_pos"
@@ -58712,11 +58878,12 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "QuantumTheory.LinearResponse.adiabaticLagIntegrable_commutator_of_pos",
       "QuantumTheory.LinearResponse.finiteTime_eigenbasisPhysicalSusceptibility_has_both_local_three_stage_limits",
       "SecondQuantization.Common.adiabaticIntegrable_grandCanonicalGibbsDensityOperator",
       "SecondQuantization.Fermionic.Transport.hasInfiniteObservationTimeLimit_directionalConductivity_of_stationary_pos"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -58738,7 +58905,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -58750,6 +58917,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "QuantumTheory.LinearResponse.ResponseChannel.infiniteTimeAdiabaticResponse_eq_of_displacement_boundary",
       "QuantumTheory.LinearResponse.norm_retardedTimeDifferenceKernel_le"
     ],
     "dependencies": [
@@ -58758,9 +58926,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "QuantumTheory.LinearResponse.ResponseChannel.infiniteTimeAdiabaticResponse_eq_of_displacement_boundary",
       "QuantumTheory.LinearResponse.norm_retardedTimeDifferenceKernel_le"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -60211,6 +60380,7 @@
     "directWrapperOf": null,
     "dependents": [
       "QuantumTheory.LinearResponse.ResponseChannel.hasInfiniteObservationTimeLimit_finiteTimeAdiabaticResponse_of_stationary_pos",
+      "QuantumTheory.LinearResponse.adiabaticLagIntegrable_commutator_of_pos",
       "QuantumTheory.LinearResponse.infiniteTimeAdiabaticTransform_commutator_eq_susceptibility",
       "QuantumTheory.LinearResponse.norm_retardedTimeDifferenceKernel_le",
       "QuantumTheory.LinearResponse.retardedTimeDifferenceKernel_eigenbasis_eq_timeDomainSeries_of_nonneg"
@@ -60220,11 +60390,12 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.LinearResponse.ResponseChannel.hasInfiniteObservationTimeLimit_finiteTimeAdiabaticResponse_of_stationary_pos",
+      "QuantumTheory.LinearResponse.adiabaticLagIntegrable_commutator_of_pos",
       "QuantumTheory.LinearResponse.infiniteTimeAdiabaticTransform_commutator_eq_susceptibility",
       "QuantumTheory.LinearResponse.norm_retardedTimeDifferenceKernel_le",
       "QuantumTheory.LinearResponse.retardedTimeDifferenceKernel_eigenbasis_eq_timeDomainSeries_of_nonneg"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 5,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -60817,6 +60988,48 @@
     "completedMention": false,
     "compiledConsumers": [],
     "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (K : ℝ → ℂ) (ω η : ℝ),\n  0 < η →\n    ∀ (C : ℝ),\n      (∀ (t : ℝ), ‖K t‖ ≤ C) →\n        Filter.Tendsto (fun T => QuantumTheory.LinearResponse.adiabaticFrequencyPhase ω η T * K T) Filter.atTop (nhds 0)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.LinearResponse.tendsto_adiabaticFrequencyPhase_mul_of_bounded",
+    "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.Frequency.InfiniteTime",
+    "externalAxioms": [],
+    "docString": "A bounded scalar kernel has a vanishing upper adiabatic boundary\nat strictly positive switching rate. No decay of the kernel itself is assumed. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.LinearResponse.ResponseChannel.infiniteTimeAdiabaticResponse_eq_of_displacement_boundary"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.LinearResponse.ResponseChannel.infiniteTimeAdiabaticResponse_eq_of_displacement_boundary"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -92892,7 +93105,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ {Site : Type u_2} [inst : LinearOrder Site] [inst_1 : Fintype Site] (geometry : LatticeGeometry Site (ℝ × ℝ))\n  (bond : Site → Site → Option (ℝ × ℝ)) (onsite exchange : Site → ℝ) (measured source : ℝ × ℝ →ₗ[ℝ] ℝ)\n  (hbar q spinScale : ℝ) (hhbar : 0 < hbar) (component : QuantumTheory.SpinHalf.SpinSpace)\n  (expectation :\n    QuantumTheory.LinearResponse.NormalizedExpectation\n      (SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock (QuantumTheory.SpinfulLattice.SpinfulSite Site))),\n  QuantumTheory.LinearResponse.IsStationary\n      (QuantumTheory.LinearResponse.freePropagatorGroup\n        (QuantumTheory.Models.RashbaExchange.realSpaceRashbaFreeSystem geometry bond onsite exchange hbar hhbar))\n      expectation →\n    ∀ (ω η : ℝ) {T : ℝ},\n      0 ≤ T →\n        have system :=\n          QuantumTheory.Models.RashbaExchange.realSpaceRashbaFreeSystem geometry bond onsite exchange hbar hhbar;\n        have channel :=\n          QuantumTheory.Models.RashbaExchange.realSpaceRashbaSpinDisplacementResponseChannel geometry bond onsite\n            exchange measured source hbar q spinScale component 1;\n        have D :=\n          SecondQuantization.Fermionic.Lattice.boundedOneBodyOperator\n            (LinearMap.symmetrizedProduct\n              ((QuantumTheory.SpinfulLattice.spinfulGeometry geometry).directionalPosition measured)\n              ((QuantumTheory.SpinfulLattice.spinOneBodyLinear spinScale) component));\n        have K := fun τ =>\n          QuantumTheory.LinearResponse.commutatorSusceptibility\n            (QuantumTheory.LinearResponse.freePropagatorGroup system) hbar expectation D channel.source τ 0;\n        channel.finiteTimeAdiabaticResponse (QuantumTheory.LinearResponse.freePropagatorGroup system) hbar expectation ω\n            η T =\n          QuantumTheory.LinearResponse.adiabaticFrequencyPhase ω η T * K T -\n            (Complex.I * ↑ω - ↑η) * QuantumTheory.LinearResponse.finiteTimeAdiabaticTransform K ω η T",
     "standardAxioms": [
       "Classical.choice",
@@ -92900,7 +93113,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -92911,14 +93124,18 @@
     "docString": "The stationary, source-normalized finite-time Rashba proper-current\nresponse is the displacement susceptibility's upper boundary minus its\nphase-weighted transform multiplied by the adiabatic exponent.\nThe physical contact cancels the equal-time lower boundary. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "QuantumTheory.Models.RashbaExchange.realSpaceRashbaSpinDisplacement_infiniteTimeAdiabaticResponse"
+    ],
     "dependencies": [
       "QuantumTheory.LinearResponse.ResponseChannel.finiteTimeAdiabaticResponse_of_displacement"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "QuantumTheory.Models.RashbaExchange.realSpaceRashbaSpinDisplacement_infiniteTimeAdiabaticResponse"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -92954,6 +93171,47 @@
     "dependents": [],
     "dependencies": [
       "SecondQuantization.Fermionic.Transport.boundedHeisenbergSymmetrizedProduct_eq"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {Site : Type u_2} [inst : LinearOrder Site] [inst_1 : Fintype Site] (geometry : LatticeGeometry Site (ℝ × ℝ))\n  (bond : Site → Site → Option (ℝ × ℝ)) (onsite exchange : Site → ℝ) (measured source : ℝ × ℝ →ₗ[ℝ] ℝ)\n  (hbar q spinScale : ℝ) (hhbar : 0 < hbar) (component : QuantumTheory.SpinHalf.SpinSpace)\n  (expectation :\n    QuantumTheory.LinearResponse.NormalizedExpectation\n      (SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock (QuantumTheory.SpinfulLattice.SpinfulSite Site))),\n  QuantumTheory.LinearResponse.IsStationary\n      (QuantumTheory.LinearResponse.freePropagatorGroup\n        (QuantumTheory.Models.RashbaExchange.realSpaceRashbaFreeSystem geometry bond onsite exchange hbar hhbar))\n      expectation →\n    ∀ (ω η : ℝ),\n      0 < η →\n        have system :=\n          QuantumTheory.Models.RashbaExchange.realSpaceRashbaFreeSystem geometry bond onsite exchange hbar hhbar;\n        have channel :=\n          QuantumTheory.Models.RashbaExchange.realSpaceRashbaSpinDisplacementResponseChannel geometry bond onsite\n            exchange measured source hbar q spinScale component 1;\n        have D :=\n          SecondQuantization.Fermionic.Lattice.boundedOneBodyOperator\n            (LinearMap.symmetrizedProduct\n              ((QuantumTheory.SpinfulLattice.spinfulGeometry geometry).directionalPosition measured)\n              ((QuantumTheory.SpinfulLattice.spinOneBodyLinear spinScale) component));\n        channel.infiniteTimeAdiabaticResponse (QuantumTheory.LinearResponse.freePropagatorGroup system) hbar expectation\n            ω η =\n          -(Complex.I * ↑ω - ↑η) *\n            QuantumTheory.LinearResponse.adiabaticFrequencyDomainSusceptibility\n              (QuantumTheory.LinearResponse.freePropagatorGroup system) hbar expectation D channel.source ω η",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.RashbaExchange.realSpaceRashbaSpinDisplacement_infiniteTimeAdiabaticResponse",
+    "module": "LeanCondensedMatter.Models.RashbaExchange.SpinDisplacementBridge",
+    "externalAxioms": [],
+    "docString": "At fixed positive switching rate the stationary proper-current/charge\nresponse of the actual finite planar Rashba hopping is the displacement\nsusceptibility multiplied by minus the adiabatic exponent. This takes the\nobservation-time limit only, with no zero-rate or bulk/DC assertion. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.LinearResponse.ResponseChannel.infiniteTimeAdiabaticResponse_eq_of_displacement_boundary",
+      "QuantumTheory.Models.RashbaExchange.realSpaceRashbaSpinDisplacement_finiteTimeAdiabaticResponse"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -125147,6 +125405,7 @@
       "SecondQuantization.Common.ExternalInsertionDiagram.componentMixedPositionShuffle_slotEquiv_apply"
     ],
     "dependencies": [
+      "SecondQuantization.Common.externalInsertionLegCongr_standardize",
       "SecondQuantization.Common.externalInsertionLegEquiv_mixedTimeAmbientPositionEquiv",
       "SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegEquiv_position",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.MixedOrderData.0.SecondQuantization.Common.ExternalInsertionDiagram.componentOrderedLeg_fixedPosition"
@@ -125269,7 +125528,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -125281,7 +125540,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleConnectedBlocks_componentDysonAmplitude_eq_local"
+      "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleConnectedBlocks_componentDysonAmplitude_eq_local",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.MixedOrderData.0.SecondQuantization.Common.ExternalInsertionDiagram.atomicLegPartner_componentOrderedLeg"
     ],
     "dependencies": [
       "Combinatorics.Pairing.cast_eq_transport",
@@ -125291,9 +125551,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleConnectedBlocks_componentDysonAmplitude_eq_local"
+      "SecondQuantization.Fermionic.ExternalInsertionBlockLayout.assembleConnectedBlocks_componentDysonAmplitude_eq_local",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.MixedOrderData.0.SecondQuantization.Common.ExternalInsertionDiagram.atomicLegPartner_componentOrderedLeg"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -141393,10 +141654,10 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "SecondQuantization.Common.ExternalInsertionDiagram.componentMixedPositionEquiv_apply",
       "SecondQuantization.Common.ExternalInsertionDiagram.componentOrderedDiagram_eq_slotCongr",
       "SecondQuantization.Common.ExternalInsertionDiagram.supportSlotCongr_pairingInMixedOrder",
-      "SecondQuantization.Common.externalInsertionLegCongr_standardize_lt_iff",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.MixedOrderData.0.SecondQuantization.Common.ExternalInsertionDiagram.componentOrderedLeg_fixedPosition"
+      "SecondQuantization.Common.externalInsertionLegCongr_standardize_lt_iff"
     ],
     "dependencies": [
       "SecondQuantization.Common.externalInsertionExternalLeg_val",
@@ -141405,10 +141666,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "SecondQuantization.Common.ExternalInsertionDiagram.componentMixedPositionEquiv_apply",
       "SecondQuantization.Common.ExternalInsertionDiagram.componentOrderedDiagram_eq_slotCongr",
       "SecondQuantization.Common.ExternalInsertionDiagram.supportSlotCongr_pairingInMixedOrder",
-      "SecondQuantization.Common.externalInsertionLegCongr_standardize_lt_iff",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.MixedOrderData.0.SecondQuantization.Common.ExternalInsertionDiagram.componentOrderedLeg_fixedPosition"
+      "SecondQuantization.Common.externalInsertionLegCongr_standardize_lt_iff"
     ],
     "compiledConsumerCount": 4,
     "axioms": [
@@ -153488,7 +153749,8 @@
       "SecondQuantization.Fermionic.AlgebraicFock.annihilate_map"
     ],
     "dependencies": [
-      "SecondQuantization.Fermionic.AlgebraicFock.annihilateDual_create_apply"
+      "SecondQuantization.Fermionic.AlgebraicFock.annihilateDual_create_apply",
+      "SecondQuantization.Fermionic.AlgebraicFock.map_create_apply"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -153582,6 +153844,52 @@
       "SecondQuantization.Fermionic.AlgebraicFock.occupationConjugate_annihilateDual"
     ],
     "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (𝓗₁ : Type u_1) [inst : NormedAddCommGroup 𝓗₁] [inst_1 : InnerProductSpace ℂ 𝓗₁] (v : 𝓗₁) (a : ℂ),\n  ((SecondQuantization.Fermionic.AlgebraicFock.annihilate 𝓗₁) v)\n      ((algebraMap ℂ (SecondQuantization.Fermionic.AlgebraicFock 𝓗₁)) a) =\n    0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Fermionic.AlgebraicFock.annihilate_algebraMap",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.Annihilation",
+    "externalAxioms": [],
+    "docString": "A smeared annihilation field also kills every scalar exterior expression. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.FiniteHilbertIsometry.0.SecondQuantization.Fermionic.AlgebraicFock.inner_finiteHilbert_algebraMap_create",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.UnitaryLift.0.SecondQuantization.Fermionic.completedExterior_annihilate",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.UnitaryLift.0.SecondQuantization.Fermionic.inner_completedExterior_scalar_create"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.FiniteHilbertIsometry.0.SecondQuantization.Fermionic.AlgebraicFock.inner_finiteHilbert_algebraMap_create",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.UnitaryLift.0.SecondQuantization.Fermionic.completedExterior_annihilate",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.UnitaryLift.0.SecondQuantization.Fermionic.inner_completedExterior_scalar_create"
+    ],
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -154711,6 +155019,7 @@
     "dependents": [],
     "dependencies": [
       "SecondQuantization.Fermionic.AlgebraicFock.annihilate_map",
+      "SecondQuantization.Fermionic.AlgebraicFock.map_create_apply",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.FiniteHilbertIsometry.0.SecondQuantization.Fermionic.AlgebraicFock.inner_finiteHilbert_algebraMap",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.FiniteHilbertIsometry.0.SecondQuantization.Fermionic.AlgebraicFock.inner_finiteHilbert_algebraMap_create",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.FiniteHilbertIsometry.0.SecondQuantization.Fermionic.AlgebraicFock.inner_finiteHilbert_create"
@@ -154719,6 +155028,56 @@
     "completedMention": false,
     "compiledConsumers": [],
     "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {V : Type u_2} {W : Type u_3} [inst : AddCommGroup V] [inst_1 : _root_.Module ℂ V] [inst_2 : AddCommGroup W]\n  [inst_3 : _root_.Module ℂ W] (f : V →ₗ[ℂ] W) (v : V) (x : SecondQuantization.Fermionic.AlgebraicFock V),\n  (ExteriorAlgebra.map f) (((SecondQuantization.Fermionic.AlgebraicFock.create V) v) x) =\n    ((SecondQuantization.Fermionic.AlgebraicFock.create W) (f v)) ((ExteriorAlgebra.map f) x)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Fermionic.AlgebraicFock.map_create_apply",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.Creation",
+    "externalAxioms": [],
+    "docString": "Exterior transport intertwines creation for any one-particle linear map. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Fermionic.AlgebraicFock.annihilateDual_map",
+      "SecondQuantization.Fermionic.AlgebraicFock.inner_finiteHilbertEquiv_map",
+      "SecondQuantization.Fermionic.completedExterior_map_denseRange",
+      "SecondQuantization.Fermionic.completedFockUnitary_createField",
+      "SecondQuantization.Fermionic.inner_completedExterior_map"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.AlgebraicFock.annihilateDual_map",
+      "SecondQuantization.Fermionic.AlgebraicFock.inner_finiteHilbertEquiv_map",
+      "SecondQuantization.Fermionic.completedExterior_map_denseRange",
+      "SecondQuantization.Fermionic.completedFockUnitary_createField",
+      "SecondQuantization.Fermionic.inner_completedExterior_map"
+    ],
+    "compiledConsumerCount": 5,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -166685,6 +167044,7 @@
       "SecondQuantization.Fermionic.completedFockHamiltonianOn_dense_domain"
     ],
     "dependencies": [
+      "SecondQuantization.Fermionic.AlgebraicFock.map_create_apply",
       "SecondQuantization.Fermionic.completedExterior_create",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.UnitaryLift.0.SecondQuantization.Fermionic.completedExterior_denseRange"
     ],
@@ -167041,6 +167401,7 @@
       "SecondQuantization.Fermionic.completedFockUnitary_joint_continuous"
     ],
     "dependencies": [
+      "SecondQuantization.Fermionic.AlgebraicFock.map_create_apply",
       "SecondQuantization.Fermionic.completedExterior_create",
       "SecondQuantization.Fermionic.completedFockUnitary_completedExterior",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.UnitaryLift.0.SecondQuantization.Fermionic.completedExterior_denseRange"
@@ -174294,6 +174655,7 @@
     ],
     "dependencies": [
       "SecondQuantization.Fermionic.AlgebraicFock.annihilate_map",
+      "SecondQuantization.Fermionic.AlgebraicFock.map_create_apply",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.UnitaryLift.0.SecondQuantization.Fermionic.inner_completedExterior_create",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.UnitaryLift.0.SecondQuantization.Fermionic.inner_completedExterior_scalar_create"
     ],
@@ -182355,13 +182717,13 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "_private.LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.Compact.0.ContinuousLinearMap.IsHilbertSchmidt.norm_sub_finiteRangeApprox_sq_le"
+      "_private.LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.Compact.0.ContinuousLinearMap.IsHilbertSchmidt.norm_sub_finiteRangeApprox_le"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "_private.LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.Compact.0.ContinuousLinearMap.IsHilbertSchmidt.norm_sub_finiteRangeApprox_sq_le"
+      "_private.LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.Compact.0.ContinuousLinearMap.IsHilbertSchmidt.norm_sub_finiteRangeApprox_le"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -182378,7 +182740,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {ι : Type u_2} (d : HilbertBasis ι ℂ H) {T : H →L[ℂ] H},\n  T.IsHilbertSchmidt →\n    ∀ (s : Finset ι),\n      ‖T - ContinuousLinearMap.IsHilbertSchmidt.finiteRangeApprox✝ d T s‖ ≤\n        √(∑' (i : { j // j ∉ s }), ‖(ContinuousLinearMap.adjoint T) (d ↑i)‖ ^ 2)",
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {ι : Type u_2} (d : HilbertBasis ι ℂ H) {T : H →L[ℂ] H},\n  (Summable fun i => ‖(ContinuousLinearMap.adjoint T) (d i)‖ ^ 2) →\n    ∀ (s : Finset ι),\n      ‖T - ContinuousLinearMap.IsHilbertSchmidt.finiteRangeApprox✝ d T s‖ ≤\n        √(∑' (i : { j // j ∉ s }), ‖(ContinuousLinearMap.adjoint T) (d ↑i)‖ ^ 2)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -182400,58 +182762,12 @@
       "ContinuousLinearMap.IsHilbertSchmidt.isCompact"
     ],
     "dependencies": [
-      "_private.LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.Compact.0.ContinuousLinearMap.IsHilbertSchmidt.norm_sub_finiteRangeApprox_sq_le"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "ContinuousLinearMap.IsHilbertSchmidt.isCompact"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {ι : Type u_2} (d : HilbertBasis ι ℂ H) {T : H →L[ℂ] H},\n  T.IsHilbertSchmidt →\n    ∀ (s : Finset ι) (x : H),\n      ‖(T - ContinuousLinearMap.IsHilbertSchmidt.finiteRangeApprox✝ d T s) x‖ ^ 2 ≤\n        (∑' (i : { j // j ∉ s }), ‖(ContinuousLinearMap.adjoint T) (d ↑i)‖ ^ 2) * ‖x‖ ^ 2",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.Compact.0.ContinuousLinearMap.IsHilbertSchmidt.norm_sub_finiteRangeApprox_sq_le",
-    "module": "LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.Compact",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.Compact.0.ContinuousLinearMap.IsHilbertSchmidt.norm_sub_finiteRangeApprox_le"
-    ],
-    "dependencies": [
-      "ContinuousLinearMap.IsHilbertSchmidt.summable_norm_sq_apply",
-      "ContinuousLinearMap.isHilbertSchmidt_adjoint",
       "_private.LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.Compact.0.ContinuousLinearMap.IsHilbertSchmidt.inner_finiteRangeApprox_apply"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "_private.LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.Compact.0.ContinuousLinearMap.IsHilbertSchmidt.norm_sub_finiteRangeApprox_le"
+      "ContinuousLinearMap.IsHilbertSchmidt.isCompact"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -186163,7 +186479,10 @@
       "Combinatorics.Pairing.eraseZeroPair_insertFirstPair",
       "Combinatorics.Pairing.insertFirstPair_eraseZeroPair"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Combinatorics.PairingOn.sumCongr_partner_inr",
+      "Combinatorics.PairingOn.transport_partner"
+    ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
@@ -201582,8 +201901,9 @@
       "SecondQuantization.Common.ExternalInsertionDiagram.pairingInMixedOrder_partner_componentMixedPosition"
     ],
     "dependencies": [
-      "Combinatorics.Pairing.cast_partner",
+      "Combinatorics.PairingOn.transport_partner",
       "SecondQuantization.Common.ExternalInsertionDiagram.componentDiagramLeg_restrictComponent_pairing_partner",
+      "SecondQuantization.Common.ExternalInsertionDiagram.componentOrderedDiagram_eq_slotCongr",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.MixedOrderData.0.SecondQuantization.Common.ExternalInsertionDiagram.componentOrderedLeg_fixedPosition"
     ],
     "crossModuleDirectWrapper": false,
@@ -201606,7 +201926,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {E n : ℕ}\n  (d : SecondQuantization.Common.ExternalInsertionDiagram ExternalLabel InternalLabel E n Finset.univ)\n  (B : ↥d.vertexGraph.componentPartition.parts)\n  (leg :\n    SecondQuantization.Common.OrderedExternalInsertionLeg (d.externalPairCount B)\n      (SecondQuantization.Common.interactionSector ↑B).card),\n  (SecondQuantization.Common.externalInsertionLegEquiv E Finset.univ).symm (d.componentOrderedLeg B leg) =\n    d.componentDiagramLeg B\n      ((finCongr ⋯)\n        ((SecondQuantization.Common.externalInsertionLegEquiv (d.externalPairCount B) Finset.univ).symm leg))",
+    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {E n : ℕ}\n  (d : SecondQuantization.Common.ExternalInsertionDiagram ExternalLabel InternalLabel E n Finset.univ)\n  (B : ↥d.vertexGraph.componentPartition.parts)\n  (leg :\n    SecondQuantization.Common.OrderedExternalInsertionLeg (d.externalPairCount B)\n      (SecondQuantization.Common.interactionSector ↑B).card),\n  (SecondQuantization.Common.externalInsertionLegEquiv E Finset.univ).symm (d.componentOrderedLeg B leg) =\n    d.componentDiagramLeg B\n      ((SecondQuantization.Common.externalInsertionLegCongr\n            (Combinatorics.standardSlotEquiv (SecondQuantization.Common.interactionSector ↑B))).symm\n        ((SecondQuantization.Common.externalInsertionLegEquiv (d.externalPairCount B) Finset.univ).symm leg))",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -201631,7 +201951,6 @@
     "dependencies": [
       "SecondQuantization.Common.ExternalInsertionDiagram.componentDiagramLeg_external",
       "SecondQuantization.Common.ExternalInsertionDiagram.componentDiagramLeg_interaction",
-      "SecondQuantization.Common.externalInsertionLegCongr_standardize",
       "SecondQuantization.Common.externalInsertionLegCongr_symm",
       "SecondQuantization.Common.interactionSector_subset"
     ],
@@ -206962,48 +207281,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] (v : H) (a : ℂ),\n  ((SecondQuantization.Fermionic.AlgebraicFock.annihilate H) v)\n      ((algebraMap ℂ (SecondQuantization.Fermionic.AlgebraicFock H)) a) =\n    0",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.FiniteHilbertIsometry.0.SecondQuantization.Fermionic.AlgebraicFock.annihilate_algebraMap",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.FiniteHilbertIsometry",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.FiniteHilbertIsometry.0.SecondQuantization.Fermionic.AlgebraicFock.inner_finiteHilbert_algebraMap_create"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.FiniteHilbertIsometry.0.SecondQuantization.Fermionic.AlgebraicFock.inner_finiteHilbert_algebraMap_create"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] {H : Type u_2} [inst_2 : NormedAddCommGroup H]\n  [inst_3 : InnerProductSpace ℂ H] (b : Module.Basis Mode ℂ H) (a : ℂ),\n  (SecondQuantization.Fermionic.AlgebraicFock.finiteHilbertEquiv b)\n      ((algebraMap ℂ (SecondQuantization.Fermionic.AlgebraicFock H)) a) =\n    a • SecondQuantization.Common.finiteHilbertBasisState ∅",
     "standardAxioms": [
       "Classical.choice",
@@ -207159,7 +207436,7 @@
       "SecondQuantization.Fermionic.AlgebraicFock.inner_finiteHilbertEquiv_map"
     ],
     "dependencies": [
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.FiniteHilbertIsometry.0.SecondQuantization.Fermionic.AlgebraicFock.annihilate_algebraMap",
+      "SecondQuantization.Fermionic.AlgebraicFock.annihilate_algebraMap",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.FiniteHilbertIsometry.0.SecondQuantization.Fermionic.AlgebraicFock.inner_finiteHilbert_create"
     ],
     "crossModuleDirectWrapper": false,
@@ -208311,50 +208588,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} (v : ↥(SecondQuantization.Common.CompletedFock Mode)) (a : ℂ),\n  ((SecondQuantization.Fermionic.AlgebraicFock.annihilate ↥(SecondQuantization.Common.CompletedFock Mode)) v)\n      ((algebraMap ℂ (SecondQuantization.Fermionic.AlgebraicFock ↥(SecondQuantization.Common.CompletedFock Mode))) a) =\n    0",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.UnitaryLift.0.SecondQuantization.Fermionic.annihilate_scalar",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.UnitaryLift",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.UnitaryLift.0.SecondQuantization.Fermionic.completedExterior_annihilate",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.UnitaryLift.0.SecondQuantization.Fermionic.inner_completedExterior_scalar_create"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.UnitaryLift.0.SecondQuantization.Fermionic.completedExterior_annihilate",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.UnitaryLift.0.SecondQuantization.Fermionic.inner_completedExterior_scalar_create"
-    ],
-    "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (v : ↥(SecondQuantization.Common.CompletedFock Mode))\n  (x : SecondQuantization.Fermionic.AlgebraicFock ↥(SecondQuantization.Common.CompletedFock Mode)),\n  (star (SecondQuantization.Fermionic.completedCreateField v)) (SecondQuantization.Fermionic.completedExterior x) =\n    SecondQuantization.Fermionic.completedExterior\n      (((SecondQuantization.Fermionic.AlgebraicFock.annihilate ↥(SecondQuantization.Common.CompletedFock Mode)) v) x)",
     "standardAxioms": [
       "Classical.choice",
@@ -208378,11 +208611,11 @@
     ],
     "dependencies": [
       "SecondQuantization.Fermionic.AlgebraicFock.annihilateDual_create_apply",
+      "SecondQuantization.Fermionic.AlgebraicFock.annihilate_algebraMap",
       "SecondQuantization.Fermionic.adjoint_completedCreateField_vacuum",
       "SecondQuantization.Fermionic.completedAnticomm_adjoint_createField",
       "SecondQuantization.Fermionic.completedExterior_algebraMap",
-      "SecondQuantization.Fermionic.completedExterior_create",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.UnitaryLift.0.SecondQuantization.Fermionic.annihilate_scalar"
+      "SecondQuantization.Fermionic.completedExterior_create"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -208535,7 +208768,7 @@
       "SecondQuantization.Fermionic.inner_completedExterior_map"
     ],
     "dependencies": [
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.UnitaryLift.0.SecondQuantization.Fermionic.annihilate_scalar",
+      "SecondQuantization.Fermionic.AlgebraicFock.annihilate_algebraMap",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.UnitaryLift.0.SecondQuantization.Fermionic.inner_completedExterior_create"
     ],
     "crossModuleDirectWrapper": false,
