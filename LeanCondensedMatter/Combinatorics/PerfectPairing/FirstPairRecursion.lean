@@ -65,8 +65,6 @@ theorem moment_eq_pairing_sum_of_first_pair_recursion {α R : Type*} [CommSemiri
       congr 1
       rw [pow_eq_of_mod_two_eq hζ P.crossingsWithFirstPair_mod_two]
       congr 1
-      rw [Pairing.interveningPositionCount, hP0]
-      simp
     have hpred : (P.partner 0).pred (P.partner_ne 0) = j := by
       apply Fin.succ_injective
       rw [Fin.succ_pred, hP0]
@@ -79,10 +77,9 @@ theorem moment_eq_pairing_sum_of_first_pair_recursion {α R : Type*} [CommSemiri
           ∏ pr ∈ Q.pairs, pairValue (C (j.succAbove pr.1).succ) (C (j.succAbove pr.2).succ) := by
       rw [P.prod_pairs_eq_firstPair_mul]
       congr 1
-      · rw [Pairing.firstPair, hP0]
-      · rw [hPe]
-        refine Finset.prod_congr rfl fun pr _ => ?_
-        rw [heraseiso pr.1, heraseiso pr.2]
+      rw [hPe]
+      refine Finset.prod_congr rfl fun pr _ => ?_
+      rw [heraseiso pr.1, heraseiso pr.2]
     rw [hweight, hprod]
     ring
 
