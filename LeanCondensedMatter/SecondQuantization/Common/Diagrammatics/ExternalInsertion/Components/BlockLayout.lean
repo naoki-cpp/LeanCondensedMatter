@@ -359,27 +359,5 @@ theorem ExternalInsertionBlockLayout.assembleDiagram_partner
       (layout.legEquiv S).symm ⟨B, (F B).pairing.partner i⟩ := by
   simp [ExternalInsertionBlockLayout.assembleDiagram]
 
-
-/-- A paired leg in the assembled diagram remains in its original
-external block. This rules out propagators between independently assembled
-blocks, including blocks with no interaction vertices. -/
-theorem ExternalInsertionBlockLayout.assembleDiagram_partner_block
-    {ExternalLabel InternalLabel : Type*}
-    (layout : ExternalInsertionBlockLayout E N) (S : Finset (Fin N))
-    (F : ∀ B : layout.partition.parts,
-      ExternalInsertionDiagram ExternalLabel InternalLabel
-        ((B : Finset (Fin (2 * E))).card / 2) N (layout.interactionBlock S B))
-    (leg : Fin (2 * (2 * S.card + E))) :
-    (layout.legEquiv S ((layout.assembleDiagram S F).pairing.partner leg)).1 =
-      (layout.legEquiv S leg).1 := by
-  change (layout.legEquiv S
-    (((PairingOn.sigmaCongrRight (fun B => (F B).pairing)).transport
-      (layout.legEquiv S)).partner leg)).1 = _
-  rw [PairingOn.transport_partner, Equiv.apply_symm_apply]
-  cases h : layout.legEquiv S leg with
-  | mk B i =>
-    simp only [PairingOn.sigmaCongrRight_partner]
-
-
 end Common
 end SecondQuantization
