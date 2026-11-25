@@ -17,7 +17,7 @@ open FiniteIndex
 /-- Remove position `0` and its partner, reindexing the remaining positions increasingly. -/
 noncomputable def Pairing.eraseZeroPair {n : ℕ} (pairing : Pairing (n + 1)) : Pairing n := by
   let p := fun i : Fin (2 * (n + 1)) =>
-    i ∈ deletedPositions n (pairing.partner 0)
+    i ∈ deletedPositions (2 * n) (pairing.partner 0)
   have hpartner : ∀ i, p i ↔ p (pairing.partner i) := by
     intro i
     simp only [p, deletedPositions, Finset.mem_erase, Finset.mem_univ, and_true]
@@ -43,14 +43,14 @@ noncomputable def Pairing.eraseZeroPair {n : ℕ} (pairing : Pairing (n + 1)) : 
         apply hpartner0
         simpa [h]
   let e :=
-    deletedPositionsOrderIso n (pairing.partner 0) (pairing.partner_ne 0)
+    deletedPositionsOrderIso (2 * n) (pairing.partner 0) (pairing.partner_ne 0)
   exact pairing.restrictAlongEquiv p hpartner e.symm.toEquiv
 
 /-- Increasing equivalence used by `eraseZeroPair`. -/
 noncomputable def Pairing.eraseZeroOrderIso {n : ℕ} (pairing : Pairing (n + 1)) :
     Fin (2 * n) ≃o
-      deletedPositions n (pairing.partner 0) :=
-  deletedPositionsOrderIso n (pairing.partner 0) (pairing.partner_ne 0)
+      deletedPositions (2 * n) (pairing.partner 0) :=
+  deletedPositionsOrderIso (2 * n) (pairing.partner 0) (pairing.partner_ne 0)
 
 @[simp]
 theorem Pairing.eraseZeroOrderIso_partner {n : ℕ} (pairing : Pairing (n + 1))
@@ -90,8 +90,8 @@ partner. -/
 private theorem Pairing.mem_pairs_endpoints_mem_deletedPositions {n : ℕ} (pairing : Pairing (n + 1))
     {p : Fin (2 * (n + 1)) × Fin (2 * (n + 1))} (hp : p ∈ pairing.pairs)
     (hne : p ≠ pairing.firstPair) :
-    p.1 ∈ deletedPositions n (pairing.partner 0) ∧
-      p.2 ∈ deletedPositions n (pairing.partner 0) := by
+    p.1 ∈ deletedPositions (2 * n) (pairing.partner 0) ∧
+      p.2 ∈ deletedPositions (2 * n) (pairing.partner 0) := by
   obtain ⟨hlt, hpartner⟩ := (pairing.mem_pairs_iff p.1 p.2).1 (by simpa using hp)
   have h10 : p.1 ≠ 0 := by
     intro h
