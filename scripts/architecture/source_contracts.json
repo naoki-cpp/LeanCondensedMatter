@@ -39,8 +39,7 @@
       "id": "generalizedCurrentTransportUmbrella",
       "path": "LeanCondensedMatter/SecondQuantization/Fermionic/Transport.lean",
       "modules": [
-        "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.SymmetrizedVelocityCurrent",
-        "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.CorrectedCurrentResponse"
+        "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.SymmetrizedVelocityCurrent"
       ]
     },
     {
@@ -181,7 +180,8 @@
         "LeanCondensedMatter.QuantumTheory.LinearResponse.Response.RetardedSusceptibility",
         "LeanCondensedMatter.QuantumTheory.LinearResponse.Response.DensitySusceptibility",
         "LeanCondensedMatter.QuantumTheory.LinearResponse.Response.ObservableVariation",
-        "LeanCondensedMatter.QuantumTheory.LinearResponse.Response.Channel"
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.Response.Channel",
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.Response.CorrectedCurrent"
       ]
     },
     {
