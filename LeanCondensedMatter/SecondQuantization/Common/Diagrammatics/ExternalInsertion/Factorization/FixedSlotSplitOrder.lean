@@ -122,26 +122,20 @@ private theorem externalInsertionSlotLegSplitting_fixedRight_lt_leftInteraction_
   rw [externalInsertionSlotLegSplitting_fixedRight_apply]
   unfold externalInsertionInteractionLeg
   rw [externalInsertionSlotLegSplitting_left_interaction]
-  change (externalInsertionInteractionLeg (E := E)
-      (⟨(order w).1, Finset.mem_univ _⟩ :
-        ↥(Finset.univ : Finset (Fin N))) k).val <
-      (externalInsertionInteractionLeg (E := E)
-      (⟨v.1, Finset.mem_univ _⟩ :
-        ↥(Finset.univ : Finset (Fin N))) l).val ↔
+  change externalInsertionInteractionLeg (E := E)
+      (⟨(order w).1, Finset.mem_univ _⟩ : ↥(Finset.univ : Finset (Fin N))) k <
+    externalInsertionInteractionLeg (E := E)
+      (⟨v.1, Finset.mem_univ _⟩ : ↥(Finset.univ : Finset (Fin N))) l ↔
     (order w).1 < v.1
-  simp only [externalInsertionInteractionLeg_val]
-  have huniv (x : Fin N) :
-      (((Finset.univ : Finset (Fin N)).orderIsoOfFin rfl).symm
-        ⟨x, Finset.mem_univ x⟩).val = x.val := by
-    rw [Finset.orderIsoOfFin_symm_apply, Fin.sort_univ, List.idxOf_finRange]
-  rw [huniv, huniv]
+  rw [externalInsertionInteractionLeg_lt_iff]
   have hne : (order w).1 ≠ v.1 := by
     intro h
     have hw : (order w).1 ∉ T := (Finset.mem_sdiff.mp (order w).2).2
     exact hw (h.symm ▸ v.2)
-  have hk := k.isLt
-  have hl := l.isLt
-  constructor <;> intro h <;> omega
+  have hne' :
+      (⟨(order w).1, Finset.mem_univ _⟩ : ↥(Finset.univ : Finset (Fin N))) ≠
+        ⟨v.1, Finset.mem_univ _⟩ := fun h => hne (congrArg Subtype.val h)
+  simp only [hne', false_and, or_false]
 
 /-- A vacuum interaction leg never precedes an external leg in fixed flattened order. -/
 private theorem externalInsertionSlotLegSplitting_fixedRight_not_lt_leftExternal
