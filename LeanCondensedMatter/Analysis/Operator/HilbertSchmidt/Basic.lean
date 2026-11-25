@@ -1,4 +1,5 @@
 import Mathlib.Analysis.Normed.Ring.InfiniteSum
+import Mathlib.Analysis.MeanInequalities
 import Mathlib.Analysis.InnerProductSpace.l2Space
 import Mathlib.Analysis.InnerProductSpace.Adjoint
 
@@ -144,27 +145,6 @@ Convergence for basis-independent Hilbert--Schmidt operators is exposed by
 noncomputable def innerHS {ι : Type*} (d : HilbertBasis ι ℂ H) (S T : H →L[ℂ] H) : ℂ :=
   ∑' i, (inner ℂ (S (d i)) (T (d i)) : ℂ)
 
-namespace IsHilbertSchmidt
-
-/-- The Hilbert--Schmidt diagonal pairing is summable in every Hilbert basis. -/
-theorem summable_inner_apply {S T : H →L[ℂ] H} (hS : IsHilbertSchmidt S)
-    (hT : IsHilbertSchmidt T) {ι : Type*} (d : HilbertBasis ι ℂ H) :
-    Summable (fun i => (inner ℂ (S (d i)) (T (d i)) : ℂ)) := by
-  refine Summable.of_norm_bounded
-    (((hS.summable_norm_sq_apply d).add (hT.summable_norm_sq_apply d)).div_const 2)
-    fun i => ?_
-  exact (norm_inner_le_norm (S (d i)) (T (d i))).trans (by
-    nlinarith [sq_nonneg (‖S (d i)‖ - ‖T (d i)‖)])
-
-/-- The Hilbert--Schmidt diagonal pairing sums to `innerHS` in every Hilbert basis. -/
-theorem hasSum_innerHS {S T : H →L[ℂ] H} (hS : IsHilbertSchmidt S)
-    (hT : IsHilbertSchmidt T) {ι : Type*} (d : HilbertBasis ι ℂ H) :
-    HasSum (fun i => (inner ℂ (S (d i)) (T (d i)) : ℂ)) (innerHS d S T) := by
-  unfold innerHS
-  exact (hS.summable_inner_apply hT d).hasSum
-
-end IsHilbertSchmidt
-
 omit [CompleteSpace H] in
 /-- The resolution-of-identity product is absolutely summable by Hölder's inequality
 for the two square-summable matrix coefficient families. -/
@@ -173,14 +153,13 @@ private theorem summable_inner_resolution_product {ι κ : Type*} (d : HilbertBa
     (hTd : IsHilbertSchmidtWrt d T) :
     Summable (fun p : ι × κ =>
       (inner ℂ (S (d p.1)) (f p.2) : ℂ) * (inner ℂ (f p.2) (T (d p.1)) : ℂ)) := by
-  let coeff (A : H →L[ℂ] H) (hA : IsHilbertSchmidtWrt d A) : lp (fun _ : ι × κ => ℂ) 2 :=
-    ⟨fun p => inner ℂ (A (d p.1)) (f p.2), by
-      change Memℓp (fun p : ι × κ => inner ℂ (A (d p.1)) (f p.2)) 2
-      refine (memℓp_gen_iff (p := 2) (by norm_num)).2 ?_
-      simpa only [show (2 : ENNReal).toReal = (2 : ℝ) by norm_num, Real.rpow_two] using
-        (hasSum_norm_sq_matrix_coeff d f A hA.hasSum).summable⟩
-  have h := lp.summable_mul (p := 2) (q := 2)
-    (by rw [Real.holderConjugate_iff]; norm_num) (coeff S hSd) (coeff T hTd)
+  have h := Real.summable_mul_of_Lp_Lq_of_nonneg (p := 2) (q := 2)
+    (f := fun p : ι × κ => ‖inner ℂ (S (d p.1)) (f p.2)‖)
+    (g := fun p : ι × κ => ‖inner ℂ (T (d p.1)) (f p.2)‖)
+    (by rw [Real.holderConjugate_iff]; norm_num)
+    (fun _ => norm_nonneg _) (fun _ => norm_nonneg _)
+    (by simpa only [Real.rpow_two] using (hasSum_norm_sq_matrix_coeff d f S hSd.hasSum).summable)
+    (by simpa only [Real.rpow_two] using (hasSum_norm_sq_matrix_coeff d f T hTd.hasSum).summable)
   refine Summable.of_norm_bounded h fun p => ?_
   change ‖(inner ℂ (S (d p.1)) (f p.2) : ℂ) * inner ℂ (f p.2) (T (d p.1))‖ ≤
     ‖inner ℂ (S (d p.1)) (f p.2)‖ * ‖inner ℂ (T (d p.1)) (f p.2)‖
@@ -387,27 +366,42 @@ theorem normSq_comp_right_le_of_norm_le_one (hT : IsHilbertSchmidt T)
     _ = hT.normSq := by rw [one_pow, one_mul]
 
 /-- The absolute diagonal pairing is summable and bounded by the product of the
-Hilbert--Schmidt norms, by finite-sum Cauchy--Schwarz and passage to the limit. -/
+Hilbert--Schmidt norms, by Hölder's inequality for the square-summable norm families. -/
 theorem summable_norm_inner_apply_and_tsum_le {S T : H →L[ℂ] H}
     (hS : IsHilbertSchmidt S) (hT : IsHilbertSchmidt T)
     {ι : Type*} (d : HilbertBasis ι ℂ H) :
     Summable (fun i => ‖inner ℂ (S (d i)) (T (d i))‖) ∧
       ∑' i, ‖inner ℂ (S (d i)) (T (d i))‖ ≤
         Real.sqrt hS.normSq * Real.sqrt hT.normSq := by
-  have hsum := (hS.summable_inner_apply hT d).norm
-  refine ⟨hsum, hasSum_le_of_sum_le hsum.hasSum fun s => ?_⟩
-  calc
-    (∑ i ∈ s, ‖inner ℂ (S (d i)) (T (d i))‖) ≤
-        ∑ i ∈ s, ‖S (d i)‖ * ‖T (d i)‖ :=
-      Finset.sum_le_sum fun i _ => norm_inner_le_norm (S (d i)) (T (d i))
-    _ ≤ Real.sqrt (∑ i ∈ s, ‖S (d i)‖ ^ 2) *
-        Real.sqrt (∑ i ∈ s, ‖T (d i)‖ ^ 2) :=
-      Real.sum_mul_le_sqrt_mul_sqrt s _ _
-    _ ≤ Real.sqrt hS.normSq * Real.sqrt hT.normSq :=
-      mul_le_mul
-        (Real.sqrt_le_sqrt (sum_le_hasSum s (fun i _ => sq_nonneg _) (hS.hasSum_norm_sq_apply d)))
-        (Real.sqrt_le_sqrt (sum_le_hasSum s (fun i _ => sq_nonneg _) (hT.hasSum_norm_sq_apply d)))
-        (Real.sqrt_nonneg _) (Real.sqrt_nonneg _)
+  obtain ⟨C, -, hC, hsum⟩ :=
+    Real.inner_le_Lp_mul_Lq_hasSum_of_nonneg (p := 2) (q := 2)
+      (f := fun i => ‖S (d i)‖) (g := fun i => ‖T (d i)‖)
+      (A := Real.sqrt hS.normSq) (B := Real.sqrt hT.normSq)
+      (by rw [Real.holderConjugate_iff]; norm_num)
+      (Real.sqrt_nonneg _) (Real.sqrt_nonneg _)
+      (fun _ => norm_nonneg _) (fun _ => norm_nonneg _)
+      (by simpa only [Real.rpow_two, Real.sq_sqrt hS.normSq_nonneg] using hS.hasSum_norm_sq_apply d)
+      (by simpa only [Real.rpow_two, Real.sq_sqrt hT.normSq_nonneg] using hT.hasSum_norm_sq_apply d)
+  have hle (i : ι) : ‖inner ℂ (S (d i)) (T (d i))‖ ≤
+      ‖S (d i)‖ * ‖T (d i)‖ :=
+    norm_inner_le_norm (S (d i)) (T (d i))
+  have hinner : Summable (fun i => ‖inner ℂ (S (d i)) (T (d i))‖) :=
+    Summable.of_nonneg_of_le (fun i => norm_nonneg _) hle hsum.summable
+  rw [← hsum.tsum_eq] at hC
+  exact ⟨hinner, (hinner.tsum_le_tsum hle hsum.summable).trans hC⟩
+
+/-- The Hilbert--Schmidt diagonal pairing is summable in every Hilbert basis. -/
+theorem summable_inner_apply {S T : H →L[ℂ] H} (hS : IsHilbertSchmidt S)
+    (hT : IsHilbertSchmidt T) {ι : Type*} (d : HilbertBasis ι ℂ H) :
+    Summable (fun i => (inner ℂ (S (d i)) (T (d i)) : ℂ)) :=
+  Summable.of_norm (hS.summable_norm_inner_apply_and_tsum_le hT d).1
+
+/-- The Hilbert--Schmidt diagonal pairing sums to `innerHS` in every Hilbert basis. -/
+theorem hasSum_innerHS {S T : H →L[ℂ] H} (hS : IsHilbertSchmidt S)
+    (hT : IsHilbertSchmidt T) {ι : Type*} (d : HilbertBasis ι ℂ H) :
+    HasSum (fun i => (inner ℂ (S (d i)) (T (d i)) : ℂ)) (innerHS d S T) := by
+  unfold innerHS
+  exact (hS.summable_inner_apply hT d).hasSum
 
 end IsHilbertSchmidt
 
