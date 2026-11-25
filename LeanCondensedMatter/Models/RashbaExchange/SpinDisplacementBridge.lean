@@ -141,8 +141,8 @@ theorem finiteRashbaMomentumSpinDisplacement_fock_decomposition
               (finiteRashbaMomentumHamiltonian params momentum)
               (spinOneBodyLinear spinScale component))) := by
   rw [← hvelocity]
-  exact SecondQuantization.Fermionic.Transport.boundedHeisenbergSymmetrizedProduct_eq
-    hbar (finiteRashbaMomentumHamiltonian params momentum) position
+  exact map_heisenbergEvolution_symmetrizedProduct
+    (boundedOneBodyOperator (Site := SpinfulSite Grid)).toLinearMap hbar (finiteRashbaMomentumHamiltonian params momentum) position
     (spinOneBodyLinear spinScale component)
 
 /-- The physical spin-displacement derivative, supplied at the same momentum
@@ -268,8 +268,8 @@ theorem realSpaceRashbaSpinDisplacement_fock_decomposition
         boundedOneBodyOperator
           (LinearMap.symmetrizedProduct (K := ℂ) X
             (heisenbergEvolution hbar H S)) := by
-  exact SecondQuantization.Fermionic.Transport.boundedHeisenbergSymmetrizedProduct_eq
-    hbar (realSpaceRashbaHopping geometry bond onsite exchange).operator
+  exact map_heisenbergEvolution_symmetrizedProduct
+    (boundedOneBodyOperator (Site := SpinfulSite Site)).toLinearMap hbar (realSpaceRashbaHopping geometry bond onsite exchange).operator
     ((spinfulGeometry geometry).directionalPosition direction)
     (spinOneBodyLinear spinScale component)
 
@@ -353,8 +353,7 @@ theorem realSpaceRashbaSpinDisplacement_finiteTimeAdiabaticResponse
     change boundedOneBodyOperator
         (QuantumTheory.ConservationLaw.heisenbergEvolution hbar H D) =
       (Complex.I / (hbar : ℂ)) • ⁅boundedOneBodyOperator H, boundedOneBodyOperator D⁆
-    simp only [QuantumTheory.ConservationLaw.heisenbergEvolution_apply,
-      map_smul, LieHom.map_lie, QuantumTheory.ConservationLaw.heisenbergScale]
+    exact map_heisenbergEvolution (boundedOneBodyOperator (Site := SpinfulSite Site)) hbar H D
   have hC : channel.observableVariation =
       (Complex.I / (system.hbar : ℂ)) • ⁅-channel.source, boundedOneBodyOperator D⁆ := by
     change (((1 : ℝ) : ℂ) • ((Complex.I / (hbar : ℂ)) •

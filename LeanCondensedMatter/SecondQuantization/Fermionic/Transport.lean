@@ -1,5 +1,4 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.CurrentInsertions
-import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.SymmetrizedVelocityCurrent
 import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.SpinCurrentResponse
 import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.ConductivityNormalization
 import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.ChargeCurrentChannel
