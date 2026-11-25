@@ -93,7 +93,7 @@ private theorem QuarticDiagram.reassemble_vertexGraph_adj_same_part
   obtain ⟨-, leg, hu, hw⟩ := h
   rw [← hu, ← hw, ← QuarticDiagram.bigLegEquiv_fst_eq_part,
     ← QuarticDiagram.bigLegEquiv_fst_eq_part]
-  exact (PairingOn.sigmaCongrRight_transport_partner_fst
+  exact congrArg Subtype.val (PairingOn.sigmaCongrRight_transport_partner_fst
     (fun B => (F B).1.pairing) (QuarticDiagram.bigLegEquiv π) leg).symm
 
 private theorem QuarticDiagram.reassemble_componentBlock_subset_part
