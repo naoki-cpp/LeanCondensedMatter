@@ -128,7 +128,7 @@ reduces the proof to algebraic closure and norm-closedness of the compact operat
 theorem isCompactOperator_cfc_of_zero {T : H →L[ℂ] H} (hT : IsSelfAdjoint T)
     (hcompact : IsCompactOperator T) {f : ℝ → ℝ} (hf : Continuous f) (hf0 : f 0 = 0) :
     IsCompactOperator (cfc f T : H →L[ℂ] H) := by
-  open scoped NonUnitalContinuousFunctionalCalculus in
+  open scoped NonUnitalContinuousFunctionalCalculus ContinuousMapZero in
   have h (g : C(quasispectrum ℝ T, ℝ)₀) : IsCompactOperator (cfcₙHom hT g : H →L[ℂ] H) := by
     induction g using ContinuousMapZero.induction_on_of_compact with
     | zero => rw [map_zero]; exact isCompactOperator_zero
