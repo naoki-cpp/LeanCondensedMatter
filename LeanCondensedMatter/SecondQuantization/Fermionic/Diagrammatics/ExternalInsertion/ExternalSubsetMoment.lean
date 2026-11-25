@@ -1760,6 +1760,54 @@ noncomputable def grandCanonicalExternalSubsetConnectedDiagramSeries
   (∏ i ∈ S, PowerSeries.C (externalFieldChemicalPotentialFactor μ (times i) (labels i))) *
     externalSubsetConnectedDiagramSeries (fun k => ε k - μ) β g labels times S
 
+/-- On the full nonempty external sector, the local numbering agrees with
+the original numbering up to the cardinality cast. The grand-canonical
+connected subset series is therefore the scalar-weighted connected series. -/
+theorem grandCanonicalExternalSubsetConnectedDiagramSeries_univ
+    (hE : 0 < E) (ε : Mode → ℝ) (β μ : ℝ)
+    (g : QuarticVertexLabel Mode → ℂ)
+    (labels : Fin (2 * E) → ExternalFieldLabel Mode)
+    (times : Fin (2 * E) → ℝ) :
+    grandCanonicalExternalSubsetConnectedDiagramSeries ε β μ g labels times Finset.univ =
+      PowerSeries.C (externalFieldFamilyChemicalPotentialFactor μ labels times) *
+        connectedExternalInsertionDysonSeries (fun k => ε k - μ) β g labels times := by
+  classical
+  let S : Finset (Fin (2 * E)) := Finset.univ
+  have hcard : S.card = 2 * E := by simp [S]
+  have hK : S.card / 2 = E := by omega
+  have hS : S ≠ ∅ := by
+    intro h
+    have hz : S.card = 0 := by simp [h]
+    omega
+  have heven : Even S.card := ⟨E, by omega⟩
+  let e := evenExternalSubsetOrderIso S heven
+  have hidx (v : S) : (e.symm v).val = v.1.val := by
+    change ((S.orderIsoOfFin _).symm v).val = v.1.val
+    rw [Finset.orderIsoOfFin_symm_apply]
+    simp only [S, Fin.sort_univ, List.idxOf_finRange]
+  let localIndex (p : Fin (2 * (S.card / 2))) : Fin (2 * E) := (e p).1
+  have horder (p : Fin (2 * (S.card / 2))) :
+      localIndex p = id (Fin.cast (congrArg (2 * ·) hK) p) := by
+    apply Fin.ext
+    simpa only [localIndex, id_eq, Fin.val_cast, OrderIso.symm_apply_apply] using
+      (hidx (e p)).symm
+  unfold grandCanonicalExternalSubsetConnectedDiagramSeries
+  change (∏ p : Fin (2 * E), PowerSeries.C
+    (externalFieldChemicalPotentialFactor μ (times p) (labels p))) *
+      externalSubsetConnectedDiagramSeries (fun k => ε k - μ) β g labels times S = _
+  rw [← map_prod, ← externalFieldFamilyChemicalPotentialFactor]
+  apply congrArg (fun z : PowerSeries ℂ =>
+    PowerSeries.C (externalFieldFamilyChemicalPotentialFactor μ labels times) * z)
+  simp only [externalSubsetConnectedDiagramSeries, dite_eq_right hS, dite_eq_left heven]
+  change connectedExternalInsertionDysonSeries (fun k => ε k - μ) β g
+      (fun p => labels (localIndex p)) (fun p => times (localIndex p)) =
+    connectedExternalInsertionDysonSeries (fun k => ε k - μ) β g
+      (fun p => labels (id p)) (fun p => times (id p))
+  exact eq_of_heq (connectedExternalInsertionDysonSeries_heq_of_fields
+    hK (fun k => ε k - μ) β g _ _ _ _
+    (externalSubsetFunctions_heq_of_cast hK labels localIndex id horder)
+    (externalSubsetFunctions_heq_of_cast hK times localIndex id horder))
+
 omit [LinearOrder Mode] [Fintype Mode] in
 /-- The finite subset product of external factors agrees with the product in
 its canonical even-slot indexing. -/
