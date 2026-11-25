@@ -8,125 +8,15 @@ set_option linter.style.header false
 /-!
 # Cauchy convolution and power-series linked-cluster theorem
 
-The canonical external-slot fiber decomposition first identifies each order-`n` two-point Dyson
-coefficient with the Cauchy convolution of externally connected coefficients and normalized vacuum
-coefficients. That physical factorization is then lifted to formal power series; generic
-power-series division by the normalized partition function cancels the vacuum factor.
+The fixed-leg equivalence transports the actual connected two-point diagrams to the general
+external-insertion sector. The general physical vacuum factorization then gives the two-point
+series and coefficientwise Cauchy identities without a second fiber decomposition.
 -/
 
 namespace SecondQuantization
 namespace Fermionic
 
 variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
-
-/-- Effective-dispersion coefficientwise Cauchy identity.
-
-At order `n`, the complete operator-defined two-point Dyson coefficient is the Cauchy convolution of
-the connected two-point coefficients with the normalized vacuum partition coefficients. -/
-private theorem twoPointDysonCoefficient_zero_mu_cauchy
-    (ε : Mode → ℝ) (β : ℝ) (hβ : 0 ≤ β)
-    (g : QuarticVertexLabel Mode → ℂ) (i j : Mode) (τ τ' : ℝ) (n : ℕ) :
-    twoPointDysonCoefficient (n := n) ε β 0 g i j τ τ' =
-      ∑ m ∈ Finset.range (n + 1),
-        connectedTwoPointDysonCoefficient ε β 0 g i j τ τ' m *
-          PowerSeries.coeff (n - m) (PowerSeries.normalizeByConstantCoeff (Common.dysonTraceSeries (fermionEnergy ε) β (quarticInteraction g))) := by
-  rw [← twoPointDiagramCoefficient_eq_twoPointDysonCoefficient]
-  classical
-  have slice : ∀ {n m k : ℕ}, m + k = n →
-      (∑ T ∈ Finset.powersetCard m (Finset.univ : Finset (Fin n)),
-        ∑ p : {ext : FixedExternalTwoPointWickDiagramOn Mode n T i j //
-                ext.1.IsExternallyConnected} ×
-              QuarticWickDiagram Mode n
-                ((Finset.univ : Finset (Fin n)) \ T),
-          ((fixedExternalFiberEquiv T).symm p).1.dysonAmplitude ε β g τ τ') =
-        connectedTwoPointDysonCoefficient ε β 0 g i j τ τ' m *
-          PowerSeries.coeff k (PowerSeries.normalizeByConstantCoeff (Common.dysonTraceSeries (fermionEnergy ε) β (quarticInteraction g))) := by
-    intro n m k hmk
-    subst n
-    rw [Finset.sum_subtype
-      (p := fun T : Finset (Fin (m + k)) => T.card = m)
-      (Finset.powersetCard m (Finset.univ : Finset (Fin (m + k))))
-      (fun T => by simp)
-      (fun T =>
-        ∑ p : {ext : FixedExternalTwoPointWickDiagramOn Mode (m + k) T i j //
-                ext.1.IsExternallyConnected} ×
-              QuarticWickDiagram Mode (m + k)
-                ((Finset.univ : Finset (Fin (m + k))) \ T),
-          ((fixedExternalFiberEquiv T).symm p).1.dysonAmplitude ε β g τ τ')]
-    exact fixedExternalFiberSum_eq_cauchyFactor
-      ε β hβ g i j τ τ' m k
-  rw [twoPointDiagramCoefficient_eq_sum_dysonAmplitude]
-  rw [sum_eq_sum_powerset_fixedExternalFiber
-    (Mode := Mode) (i := i) (j := j)
-    (F := fun d => d.dysonAmplitude ε β g τ τ')]
-  rw [Finset.sum_powerset]
-  simp only [Finset.card_univ, Fintype.card_fin]
-  apply Finset.sum_congr rfl
-  intro m hm
-  have hmn : m ≤ n := by
-    simpa [Nat.lt_succ_iff] using hm
-  exact slice (Nat.add_sub_of_le hmn)
-
-/-- **Coefficientwise linked-cluster Cauchy identity at arbitrary chemical potential.**
-The vacuum series uses the effective grand-canonical dispersion, while the
-connected coefficients restore physical-H evolution of the external fields. -/
-theorem twoPointDysonCoefficient_eq_sum_connectedTwoPointDysonCoefficient_mul_normalizedDysonPartitionCoeff
-    (ε : Mode → ℝ) (β μ : ℝ) (hβ : 0 ≤ β)
-    (g : QuarticVertexLabel Mode → ℂ) (i j : Mode) (τ τ' : ℝ) (n : ℕ) :
-    twoPointDysonCoefficient (n := n) ε β μ g i j τ τ' =
-      ∑ m ∈ Finset.range (n + 1),
-        connectedTwoPointDysonCoefficient ε β μ g i j τ τ' m *
-          PowerSeries.coeff (n - m)
-            (PowerSeries.normalizeByConstantCoeff
-              (Common.dysonTraceSeries (fermionEnergy (fun k => ε k - μ))
-                β (quarticInteraction g))) := by
-  rw [twoPointDysonCoefficient_eq_shiftedDispersion ε β μ,
-    twoPointDysonCoefficient_zero_mu_cauchy (fun k => ε k - μ) β hβ,
-    Finset.mul_sum]
-  apply Finset.sum_congr rfl
-  intro m _
-  have hconn :
-      connectedTwoPointDysonCoefficient ε β μ g i j τ τ' m =
-        twoPointChemicalPotentialFactor μ τ τ' *
-          connectedTwoPointDysonCoefficient (fun k => ε k - μ) β 0 g i j τ τ' m := by
-    unfold connectedTwoPointDysonCoefficient
-    simp only [twoPointChemicalPotentialFactor, Complex.ofReal_zero, zero_mul,
-      Complex.exp_zero, one_mul, sub_zero]
-  rw [hconn, mul_assoc]
-
-/-- The full two-point Dyson series factors into its externally connected series and the normalized
-zero-external-leg Dyson partition series. -/
-theorem twoPointDysonSeries_eq_connectedTwoPointDysonSeries_mul_normalizedDysonPartitionSeries
-    (ε : Mode → ℝ) (β μ : ℝ) (hβ : 0 ≤ β)
-    (g : QuarticVertexLabel Mode → ℂ) (i j : Mode) (τ τ' : ℝ) :
-    twoPointDysonSeries ε β μ g i j τ τ' =
-      connectedTwoPointDysonSeries ε β μ g i j τ τ' *
-        PowerSeries.normalizeByConstantCoeff
-          (Common.dysonTraceSeries (fermionEnergy (fun k => ε k - μ)) β (quarticInteraction g)) := by
-  ext n
-  rw [PowerSeries.coeff_mul]
-  rw [Finset.Nat.sum_antidiagonal_eq_sum_range_succ_mk]
-  simp only [twoPointDysonSeries, connectedTwoPointDysonSeries, PowerSeries.coeff_mk]
-  exact twoPointDysonCoefficient_eq_sum_connectedTwoPointDysonCoefficient_mul_normalizedDysonPartitionCoeff
-    ε β μ hβ g i j τ τ' n
-
-/-- **Finite-mode fermionic two-point linked-cluster theorem.** For the imaginary-time Dyson series
-built from free Gibbs expectations and a quartic interaction, with the repository's canonical
-time-order/equal-time convention, partition-function normalization leaves exactly the sum of externally
-connected two-point diagrams. -/
-theorem partitionFunctionNormalizedTwoPointDysonSeries_eq_connectedTwoPointDysonSeries
-    (ε : Mode → ℝ) (β μ : ℝ) (hβ : 0 ≤ β)
-    (g : QuarticVertexLabel Mode → ℂ) (i j : Mode) (τ τ' : ℝ) :
-    partitionFunctionNormalizedTwoPointDysonSeries ε β μ g i j τ τ' =
-      connectedTwoPointDysonSeries ε β μ g i j τ τ' := by
-  rw [partitionFunctionNormalizedTwoPointDysonSeries]
-  apply PowerSeries.mul_inv_eq_of_eq_mul_of_constantCoeff_ne_zero
-  · rw [PowerSeries.constantCoeff_normalizeByConstantCoeff
-      (Common.constantCoeff_dysonTraceSeries_ne_zero (fermionEnergy (fun k => ε k - μ)) β (quarticInteraction g))]
-    exact one_ne_zero
-  · exact twoPointDysonSeries_eq_connectedTwoPointDysonSeries_mul_normalizedDysonPartitionSeries
-      ε β μ hβ g i j τ τ'
-
 
 /-! ## Compatibility with arbitrary external insertions -/
 
@@ -166,42 +56,116 @@ theorem partitionFunctionNormalizedTwoPointDysonSeries_eq_shiftedVacuumFree
       ε β μ hβ, externalFieldFamilyChemicalPotentialFactor_twoPoint]
 
 open Common in
-/-- The two independent physical connected diagram sums agree for two external
-fields. This follows by comparing their already-established vacuum
-normalizations; connectivity is not replaced by an operator definition. -/
-theorem connectedTwoPointDysonSeries_eq_shiftedConnectedExternalInsertion
-    (ε : Mode → ℝ) (β μ : ℝ) (hβ : 0 ≤ β)
-    (g : QuarticVertexLabel Mode → ℂ) (i j : Mode) (τ τ' : ℝ) :
-    connectedTwoPointDysonSeries ε β μ g i j τ τ' =
-      PowerSeries.C (twoPointChemicalPotentialFactor μ τ τ') *
-        connectedExternalInsertionDysonSeries (K := 1) (fun k => ε k - μ) β g
-          (twoPointExternalLabels i j) (twoPointExternalTimes τ τ') := by
-  rw [← partitionFunctionNormalizedTwoPointDysonSeries_eq_connectedTwoPointDysonSeries
-    ε β μ hβ,
-    partitionFunctionNormalizedTwoPointDysonSeries_eq_shiftedVacuumFree ε β μ hβ,
-    vacuumFreeExternalInsertionDysonSeries_eq_connected_two]
-
-open Common in
-/-- The resulting integrated connected coefficient identity is coefficientwise
-and retains the physical chemical-potential factor. -/
+/-- At every real β, the actual connected two-point sum is the E=1
+connected external-insertion sum with the physical external-field factor.
+The proof transports each diagram, rather than cancelling a vacuum series. -/
 theorem connectedTwoPointDysonCoefficient_eq_shiftedConnectedExternalInsertion
-    (ε : Mode → ℝ) (β μ : ℝ) (hβ : 0 ≤ β)
+    (ε : Mode → ℝ) (β μ : ℝ)
     (g : QuarticVertexLabel Mode → ℂ) (i j : Mode) (τ τ' : ℝ) (n : ℕ) :
     connectedTwoPointDysonCoefficient ε β μ g i j τ τ' n =
       twoPointChemicalPotentialFactor μ τ τ' *
         connectedExternalInsertionDysonCoefficient (K := 1) (fun k => ε k - μ) β g
           (twoPointExternalLabels i j) (twoPointExternalTimes τ τ') n := by
-  simpa only [connectedTwoPointDysonSeries, connectedExternalInsertionDysonSeries,
-    PowerSeries.coeff_mk, PowerSeries.coeff_C_mul] using
-      congrArg (PowerSeries.coeff n)
-        (connectedTwoPointDysonSeries_eq_shiftedConnectedExternalInsertion ε β μ hβ g i j τ τ')
+  classical
+  let S : Finset (Fin n) := Finset.univ
+  let e : FixedExternalTwoPointWickDiagram Mode n i j ≃
+      FixedExternalInsertionWickDiagram Mode 1 n (twoPointExternalLabels i j) :=
+    (twoPointDiagramExternalInsertionEquiv S).subtypeEquiv (fun d => Iff.rfl)
+  let f : {d : FixedExternalTwoPointWickDiagram Mode n i j // d.1.IsExternallyConnected} ≃
+      VacuumFreeFixedExternalInsertionWickDiagram Mode 1 n (twoPointExternalLabels i j) :=
+    e.subtypeEquiv (fun d => by
+      rw [TwoPointDiagram.isExternallyConnected_iff_hasNoVacuumComponent]
+      exact (hasNoVacuumComponent_congr_iff
+        d.1.externalInsertionGraphIso (Equiv.refl (Fin 2)) (Equiv.refl ↥S)
+        (fun _ => rfl) (fun _ => rfl)).symm)
+  rw [← vacuumFreeExternalInsertionDysonCoefficient_eq_connected_two]
+  unfold connectedTwoPointDysonCoefficient vacuumFreeExternalInsertionDysonCoefficient
+  apply congrArg (fun z : ℂ => twoPointChemicalPotentialFactor μ τ τ' * z)
+  rw [Finset.sum_subtype
+    (p := fun d : FixedExternalTwoPointWickDiagram Mode n i j => d.1.IsExternallyConnected)
+    _ (fun _ => by simp only [Finset.mem_filter, Finset.mem_univ, true_and])
+    (fun d => d.dysonAmplitude (fun k => ε k - μ) β g τ τ')]
+  calc
+    _ = ∑ d : {d : FixedExternalTwoPointWickDiagram Mode n i j //
+          d.1.IsExternallyConnected},
+        (f d).1.1.dysonAmplitude (fun k => ε k - μ) β g (twoPointExternalTimes τ τ') := by
+      apply Finset.sum_congr rfl
+      intro d _
+      exact d.1.dysonAmplitude_eq_externalInsertion (fun k => ε k - μ) β g τ τ'
+    _ = _ := Equiv.sum_comp f _
 
+open Common in
+/-- Connected-series specialization, obtained coefficientwise from diagram transport,
+with no restriction on β. -/
+theorem connectedTwoPointDysonSeries_eq_shiftedConnectedExternalInsertion
+    (ε : Mode → ℝ) (β μ : ℝ)
+    (g : QuarticVertexLabel Mode → ℂ) (i j : Mode) (τ τ' : ℝ) :
+    connectedTwoPointDysonSeries ε β μ g i j τ τ' =
+      PowerSeries.C (twoPointChemicalPotentialFactor μ τ τ') *
+        connectedExternalInsertionDysonSeries (K := 1) (fun k => ε k - μ) β g
+          (twoPointExternalLabels i j) (twoPointExternalTimes τ τ') := by
+  ext n
+  simp only [connectedTwoPointDysonSeries, connectedExternalInsertionDysonSeries,
+    PowerSeries.coeff_mk, PowerSeries.coeff_C_mul]
+  exact connectedTwoPointDysonCoefficient_eq_shiftedConnectedExternalInsertion ε β μ g i j τ τ' n
+
+open Common in
+/-- The full two-point Dyson series factors into its externally connected series and the normalized
+zero-external-leg Dyson partition series. -/
+theorem twoPointDysonSeries_eq_connectedTwoPointDysonSeries_mul_normalizedDysonPartitionSeries
+    (ε : Mode → ℝ) (β μ : ℝ) (hβ : 0 ≤ β)
+    (g : QuarticVertexLabel Mode → ℂ) (i j : Mode) (τ τ' : ℝ) :
+    twoPointDysonSeries ε β μ g i j τ τ' =
+      connectedTwoPointDysonSeries ε β μ g i j τ τ' *
+        PowerSeries.normalizeByConstantCoeff
+          (Common.dysonTraceSeries (fermionEnergy (fun k => ε k - μ)) β (quarticInteraction g)) := by
+  rw [twoPointDysonSeries_eq_externalInsertionVertexDysonSeries,
+    externalInsertionVertexDysonSeries_eq_shiftedVacuumFree_mul_normalizedDysonPartitionSeries
+      ε β μ hβ, externalFieldFamilyChemicalPotentialFactor_twoPoint,
+    vacuumFreeExternalInsertionDysonSeries_eq_connected_two,
+    ← connectedTwoPointDysonSeries_eq_shiftedConnectedExternalInsertion]
+
+/-- **Coefficientwise linked-cluster Cauchy identity at arbitrary chemical potential.**
+The vacuum series uses the effective grand-canonical dispersion, while the
+connected coefficients restore physical-H evolution of the external fields. -/
+theorem twoPointDysonCoefficient_eq_sum_connectedTwoPointDysonCoefficient_mul_normalizedDysonPartitionCoeff
+    (ε : Mode → ℝ) (β μ : ℝ) (hβ : 0 ≤ β)
+    (g : QuarticVertexLabel Mode → ℂ) (i j : Mode) (τ τ' : ℝ) (n : ℕ) :
+    twoPointDysonCoefficient (n := n) ε β μ g i j τ τ' =
+      ∑ m ∈ Finset.range (n + 1),
+        connectedTwoPointDysonCoefficient ε β μ g i j τ τ' m *
+          PowerSeries.coeff (n - m)
+            (PowerSeries.normalizeByConstantCoeff
+              (Common.dysonTraceSeries (fermionEnergy (fun k => ε k - μ))
+                β (quarticInteraction g))) := by
+  have h := congrArg (PowerSeries.coeff n)
+    (twoPointDysonSeries_eq_connectedTwoPointDysonSeries_mul_normalizedDysonPartitionSeries
+      ε β μ hβ g i j τ τ')
+  rw [PowerSeries.coeff_mul, Finset.Nat.sum_antidiagonal_eq_sum_range_succ_mk] at h
+  simpa only [twoPointDysonSeries, connectedTwoPointDysonSeries, PowerSeries.coeff_mk] using h
+
+/-- **Finite-mode fermionic two-point linked-cluster theorem.** For the imaginary-time Dyson series
+built from free Gibbs expectations and a quartic interaction, with the repository's canonical
+time-order/equal-time convention, partition-function normalization leaves exactly the sum of externally
+connected two-point diagrams. -/
+theorem partitionFunctionNormalizedTwoPointDysonSeries_eq_connectedTwoPointDysonSeries
+    (ε : Mode → ℝ) (β μ : ℝ) (hβ : 0 ≤ β)
+    (g : QuarticVertexLabel Mode → ℂ) (i j : Mode) (τ τ' : ℝ) :
+    partitionFunctionNormalizedTwoPointDysonSeries ε β μ g i j τ τ' =
+      connectedTwoPointDysonSeries ε β μ g i j τ τ' := by
+  rw [partitionFunctionNormalizedTwoPointDysonSeries]
+  apply PowerSeries.mul_inv_eq_of_eq_mul_of_constantCoeff_ne_zero
+  · rw [PowerSeries.constantCoeff_normalizeByConstantCoeff
+      (Common.constantCoeff_dysonTraceSeries_ne_zero (fermionEnergy (fun k => ε k - μ)) β (quarticInteraction g))]
+    exact one_ne_zero
+  · exact twoPointDysonSeries_eq_connectedTwoPointDysonSeries_mul_normalizedDysonPartitionSeries
+      ε β μ hβ g i j τ τ'
 
 open Common in
 /-- The physical two-point connected series is the grand-canonical source
 cumulant evaluated on the full two-element external sector. -/
 theorem connectedTwoPointDysonSeries_eq_grandCanonicalSourceCumulant
-    (ε : Mode → ℝ) (β μ : ℝ) (hβ : 0 ≤ β)
+    (ε : Mode → ℝ) (β μ : ℝ)
     (g : QuarticVertexLabel Mode → ℂ) (i j : Mode) (τ τ' : ℝ) :
     connectedTwoPointDysonSeries ε β μ g i j τ τ' =
       externalSubsetSourceCumulantSeries (E := 1)
@@ -209,7 +173,7 @@ theorem connectedTwoPointDysonSeries_eq_grandCanonicalSourceCumulant
           (twoPointExternalLabels i j) (twoPointExternalTimes τ τ'))
         Finset.univ := by
   rw [grandCanonicalExternalSubsetSourceCumulantSeries_eq_connectedDiagramSeries_two,
-    connectedTwoPointDysonSeries_eq_shiftedConnectedExternalInsertion ε β μ hβ,
+    connectedTwoPointDysonSeries_eq_shiftedConnectedExternalInsertion ε β μ,
     grandCanonicalExternalSubsetConnectedDiagramSeries_univ (by decide : 0 < 1),
     externalFieldFamilyChemicalPotentialFactor_twoPoint]
 
