@@ -11,13 +11,14 @@ set_option linter.style.header false
 
 `PairingOn α` bundles a fixed-point-free involution on an arbitrary type `α`. The traditional
 `Pairing n` is its ordered finite specialization to `Fin (2 * n)`, where the linear order supports
-normalized pairs, crossings, and recursive finite combinatorics.
+crossings and recursive finite combinatorics. Normalized pairs are available on any finite
+linear order.
 
 Mathlib supplies finite permutations but no naturally suitable bundled fixed-point-free involution
 for this use. The finite specialization enumerates permutations of `Fin (2 * n)` and filters the
 valid ones, while the generic bundle remains independent of finiteness and ordering.
 
-`Pairing.pairs` normalizes each finite ordered partner orbit to `(a, b)` with `a < b`, one per
+`PairingOn.pairs` normalizes each finite ordered partner orbit to `(a, b)` with `a < b`, one per
 orbit.
 -/
 
@@ -39,8 +40,7 @@ structure PairingOn (α : Type*) where
   partner_involutive : Function.Involutive partner
   partner_ne : ∀ i, partner i ≠ i
 
-/-- A perfect pairing of the ordered positions `Fin (2 * n)`. Ordering-dependent notions such as
-normalized pairs and crossing signs live on this finite specialization. -/
+/-- A perfect pairing of the ordered positions `Fin (2 * n)`. The finite specialization supports crossing signs and first-pair recursion. -/
 abbrev Pairing (n : ℕ) := PairingOn (Fin (2 * n))
 
 /-- The internal equivalence used to enumerate finite `PairingOn` values through permutations. -/
@@ -126,15 +126,16 @@ theorem PairingOn.sigmaCongrRight_partner {ι : Type*} {β : ι → Type*}
   rfl
 
 /-- The normalized ordered pairs `(i, partner i)` with `i < partner i`, one per partner orbit. -/
-def Pairing.pairs {n : ℕ} (pairing : Pairing n) :
-    Finset (Fin (2 * n) × Fin (2 * n)) :=
-  ((Finset.univ : Finset (Fin (2 * n))).filter fun i => i < pairing.partner i).image fun i =>
+def PairingOn.pairs {α : Type*} [Fintype α] [LinearOrder α] (pairing : PairingOn α) :
+    Finset (α × α) :=
+  ((Finset.univ : Finset α).filter fun i => i < pairing.partner i).image fun i =>
     (i, pairing.partner i)
 
 /-- Membership in `pairs` is characterized entirely through the stable `partner` interface. -/
-theorem Pairing.mem_pairs_iff {n : ℕ} (pairing : Pairing n) (i j : Fin (2 * n)) :
+theorem PairingOn.mem_pairs_iff {α : Type*} [Fintype α] [LinearOrder α]
+    (pairing : PairingOn α) (i j : α) :
     (i, j) ∈ pairing.pairs ↔ i < j ∧ pairing.partner i = j := by
-  simp only [Pairing.pairs, Finset.mem_image, Finset.mem_filter, Finset.mem_univ, true_and]
+  simp only [PairingOn.pairs, Finset.mem_image, Finset.mem_filter, Finset.mem_univ, true_and]
   constructor
   · rintro ⟨k, hk, hpair⟩
     have hki : k = i := congrArg Prod.fst hpair
@@ -148,13 +149,14 @@ theorem Pairing.mem_pairs_iff {n : ℕ} (pairing : Pairing n) (i j : Fin (2 * n)
 
 /-- If an order embedding intertwines two pairing partner maps, mapping both endpoints preserves and
 reflects normalized pair membership. -/
-theorem Pairing.mem_pairs_map_iff {n m : ℕ}
-    (small : Pairing n) (big : Pairing m)
-    (e : Fin (2 * n) ↪o Fin (2 * m))
+theorem PairingOn.mem_pairs_map_iff {α β : Type*}
+    [Fintype α] [LinearOrder α] [Fintype β] [LinearOrder β]
+    (small : PairingOn α) (big : PairingOn β)
+    (e : α ↪o β)
     (hpartner : ∀ i, big.partner (e i) = e (small.partner i))
-    (a b : Fin (2 * n)) :
+    (a b : α) :
     (e a, e b) ∈ big.pairs ↔ (a, b) ∈ small.pairs := by
-  rw [Pairing.mem_pairs_iff, Pairing.mem_pairs_iff]
+  rw [PairingOn.mem_pairs_iff, PairingOn.mem_pairs_iff]
   constructor
   · rintro ⟨hab, hp⟩
     refine ⟨e.lt_iff_lt.mp hab, ?_⟩
@@ -166,9 +168,9 @@ theorem Pairing.mem_pairs_map_iff {n m : ℕ}
     refine ⟨e.lt_iff_lt.mpr hab, ?_⟩
     rw [hpartner a, hp]
 
-/-- Every pair emitted by `Pairing.pairs` is normalized. -/
-theorem Pairing.pairs_normalized {n : ℕ} (pairing : Pairing n)
-    {pair : Fin (2 * n) × Fin (2 * n)} (hpair : pair ∈ pairing.pairs) :
+/-- Every pair emitted by `PairingOn.pairs` is normalized. -/
+theorem PairingOn.pairs_normalized {α : Type*} [Fintype α] [LinearOrder α]
+    (pairing : PairingOn α) {pair : α × α} (hpair : pair ∈ pairing.pairs) :
     pair.1 < pair.2 := by
   rcases Finset.mem_image.mp hpair with ⟨i, hi, rfl⟩
   exact (Finset.mem_filter.mp hi).2

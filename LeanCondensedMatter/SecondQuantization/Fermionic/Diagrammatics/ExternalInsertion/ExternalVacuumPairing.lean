@@ -133,7 +133,7 @@ theorem externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_left_normal
   have hmono : StrictMono embed :=
     externalInsertionLeftMixedPosition_strictMono T externalTime σ
   constructor
-  · exact (Pairing.mem_pairs_map_iff localPairing (d.pairingInMixedOrder externalTime σ)
+  · exact (PairingOn.mem_pairs_map_iff localPairing (d.pairingInMixedOrder externalTime σ)
       (OrderEmbedding.ofStrictMono embed hmono) hpartner pr.1.1 pr.1.2).2 pr.2
   · let a := externalInsertionMixedTimeOrderedAtomicLegEquiv
       externalTime (σ ∘ f) pr.1.1

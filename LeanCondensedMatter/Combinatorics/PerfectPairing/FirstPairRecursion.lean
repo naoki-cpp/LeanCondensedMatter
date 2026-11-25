@@ -41,7 +41,7 @@ theorem moment_eq_pairing_sum_of_first_pair_recursion {α R : Type*} [CommSemiri
       PairingOn.ofPartner (Equiv.refl (Fin 0)) ⟨fun i => i.elim0, fun i => i.elim0⟩
     have hUniq : ∀ pairing : Pairing 0, pairing = p0 := fun pairing =>
       PairingOn.ext (Equiv.ext fun i => i.elim0)
-    have hpairs0 : p0.pairs = (∅ : Finset (Fin 0 × Fin 0)) := by simp [Pairing.pairs]
+    have hpairs0 : p0.pairs = (∅ : Finset (Fin 0 × Fin 0)) := by simp [PairingOn.pairs]
     have hcc0 : p0.crossingCount = 0 := by simp [Pairing.crossingCount, hpairs0]
     rw [moment_zero, Fintype.sum_eq_single p0 (fun pairing hne => absurd (hUniq pairing) hne)]
     simp [hpairs0, hcc0]
