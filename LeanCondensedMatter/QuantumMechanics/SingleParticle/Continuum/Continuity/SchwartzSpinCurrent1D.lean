@@ -165,15 +165,14 @@ theorem schwartzSpin_sourceCommutator_eq_internal
     (κ : ℝ) (potential : SchwartzTwoLevel1D.Spatial)
     (internalH : SchwartzTwoLevel1D.InternalMatrix)
     (ℏ : ℝ) (spinComponent : QuantumTheory.SpinHalf.SpinSpace) (f : SchwartzTwoLevel1D.Spatial) :
-    _root_.ConservationLaw.sourceFunctional
-        (SchwartzTwoLevelSchrodinger1D.hamiltonian κ potential internalH)
-        SchwartzTwoLevel1D.multiplicationLinear
-        (schwartzSpinOperatorLinear ℏ spinComponent) f =
+    _root_.LinearMap.symmetrizedProduct (K := ℂ)
+        (SchwartzTwoLevel1D.multiplicationOperator f)
+        ⁅SchwartzTwoLevelSchrodinger1D.hamiltonian κ potential internalH,
+          schwartzSpinOperatorLinear ℏ spinComponent⁆ =
       _root_.LinearMap.symmetrizedProduct (K := ℂ)
         (SchwartzTwoLevel1D.multiplicationOperator f)
         ⁅SchwartzTwoLevel1D.internalOperator internalH,
           schwartzSpinOperatorLinear ℏ spinComponent⁆ := by
-  rw [_root_.ConservationLaw.sourceFunctional_apply]
   change
     _root_.LinearMap.symmetrizedProduct (K := ℂ)
         (SchwartzTwoLevel1D.multiplicationOperator f)
@@ -195,10 +194,10 @@ theorem schwartzSpin_sourceCommutator_eq_zero_of_internal_commutes
     (ℏ : ℝ) (spinComponent : QuantumTheory.SpinHalf.SpinSpace) (f : SchwartzTwoLevel1D.Spatial)
     (hcomm : ⁅SchwartzTwoLevel1D.internalOperator internalH,
       schwartzSpinOperatorLinear ℏ spinComponent⁆ = 0) :
-    _root_.ConservationLaw.sourceFunctional
-        (SchwartzTwoLevelSchrodinger1D.hamiltonian κ potential internalH)
-        SchwartzTwoLevel1D.multiplicationLinear
-        (schwartzSpinOperatorLinear ℏ spinComponent) f = 0 := by
+    _root_.LinearMap.symmetrizedProduct (K := ℂ)
+        (SchwartzTwoLevel1D.multiplicationOperator f)
+        ⁅SchwartzTwoLevelSchrodinger1D.hamiltonian κ potential internalH,
+          schwartzSpinOperatorLinear ℏ spinComponent⁆ = 0 := by
   rw [schwartzSpin_sourceCommutator_eq_internal]
   simp [hcomm]
 

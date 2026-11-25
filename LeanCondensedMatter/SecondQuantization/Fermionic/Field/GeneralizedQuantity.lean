@@ -51,14 +51,14 @@ theorem dGamma_lie_manyBodyLocalizedQuantity
     (M : Test →ₗ[ℂ] (𝓗₁ →ₗ[ℂ] 𝓗₁))
     (m : 𝓗₁ →ₗ[ℂ] 𝓗₁) (f : Test) :
     ⁅AlgebraicFock.dGamma 𝓗₁ h, manyBodyLocalizedQuantity 𝓗₁ M m f⁆ =
-      AlgebraicFock.dGamma 𝓗₁ (_root_.ConservationLaw.transportFunctional h M m f) +
-        AlgebraicFock.dGamma 𝓗₁ (_root_.ConservationLaw.sourceFunctional h M m f) := by
+      AlgebraicFock.dGamma 𝓗₁ (LinearMap.symmetrizedProduct (K := ℂ) ⁅h, M f⁆ m) +
+        AlgebraicFock.dGamma 𝓗₁ (LinearMap.symmetrizedProduct (K := ℂ) (M f) ⁅h, m⁆) := by
   rw [manyBodyLocalizedQuantity_apply, AlgebraicFock.dGamma_lie,
-    _root_.ConservationLaw.lie_localizedQuantity]
+    _root_.ConservationLaw.localizedQuantityFunctional_apply, LinearMap.lie_symmetrizedProduct]
   simpa only [AlgebraicFock.dGammaLinear_apply] using
     (AlgebraicFock.dGammaLinear 𝓗₁).map_add
-      (_root_.ConservationLaw.transportFunctional h M m f)
-      (_root_.ConservationLaw.sourceFunctional h M m f)
+      (LinearMap.symmetrizedProduct (K := ℂ) ⁅h, M f⁆ m)
+      (LinearMap.symmetrizedProduct (K := ℂ) (M f) ⁅h, m⁆)
 
 end Field
 end Fermionic

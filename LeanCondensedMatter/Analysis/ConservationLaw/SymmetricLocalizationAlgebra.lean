@@ -7,7 +7,7 @@ set_option linter.style.header false
 
 For a linear localization map `M` valued in an associative algebra and a transported quantity `m`,
 symmetric localization is `Qₘ(f) = {M f, m}/2`. Commutation with a generator
-splits into transport and source.
+splits into transport and source by `LinearMap.lie_symmetrizedProduct`.
 
 For a one-form localizer `N` and a distinguished operator `v`, the nested flux
 `{{N α, v}/2, m}/2` differs from the flux `{N α, {v,m}/2}/2` by
@@ -40,61 +40,6 @@ theorem localizedQuantityFunctional_apply
     (m : A) (f : Test) :
     localizedQuantityFunctional M m f = LinearMap.symmetrizedProduct (K := K) (M f) m :=
   rfl
-
-/-- The bare localization commutator as a linear map on tests. -/
-noncomputable def localizationCommutatorFunctional
-    (h : A)
-    (M : Test →ₗ[K] A) :
-    Test →ₗ[K] A :=
-  (LieAlgebra.ad K (A) h).comp M
-
-@[simp]
-theorem localizationCommutatorFunctional_apply
-    (h : A)
-    (M : Test →ₗ[K] A) (f : Test) :
-    localizationCommutatorFunctional h M f = ⁅h, M f⁆ :=
-  rfl
-
-/-- The transport contribution to the symmetric-localization commutator. -/
-noncomputable def transportFunctional
-    (h : A)
-    (M : Test →ₗ[K] A)
-    (m : A) :
-    Test →ₗ[K] A :=
-  localizedQuantityFunctional (localizationCommutatorFunctional h M) m
-
-@[simp]
-theorem transportFunctional_apply
-    (h : A)
-    (M : Test →ₗ[K] A)
-    (m : A) (f : Test) :
-    transportFunctional h M m f = LinearMap.symmetrizedProduct (K := K) ⁅h, M f⁆ m :=
-  rfl
-
-/-- The source/torque contribution to the symmetric-localization commutator. -/
-noncomputable def sourceFunctional
-    (h : A)
-    (M : Test →ₗ[K] A)
-    (m : A) :
-    Test →ₗ[K] A :=
-  localizedQuantityFunctional M ⁅h, m⁆
-
-@[simp]
-theorem sourceFunctional_apply
-    (h : A)
-    (M : Test →ₗ[K] A)
-    (m : A) (f : Test) :
-    sourceFunctional h M m f = LinearMap.symmetrizedProduct (K := K) (M f) ⁅h, m⁆ :=
-  rfl
-
-/-- The commutator is a derivation on symmetric localization, giving transport plus source. -/
-theorem lie_localizedQuantity
-    (h : A)
-    (M : Test →ₗ[K] A)
-    (m : A) (f : Test) :
-    ⁅h, localizedQuantityFunctional M m f⁆ =
-      transportFunctional h M m f + sourceFunctional h M m f :=
-  LinearMap.lie_symmetrizedProduct (K := K) h (M f) m
 
 section CorrectedFlux
 
