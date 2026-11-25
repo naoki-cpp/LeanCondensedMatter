@@ -30,51 +30,11 @@ noncomputable def ExternalInsertionDiagram.componentOrderedDiagram {E n : ℕ}
     ExternalInsertionDiagram ExternalLabel InternalLabel (d.externalPairCount B)
       (interactionSector
         (B : Finset (ExternalInsertionVertex E (Finset.univ : Finset (Fin n))))).card
-      Finset.univ := by
-  let T :=
-    interactionSector
-      (B : Finset (ExternalInsertionVertex E (Finset.univ : Finset (Fin n))))
-  let r := d.restrictComponent B
-  exact {
-    externalLabel := r.externalLabel
-    vertexLabel := fun v => r.vertexLabel (T.orderIsoOfFin rfl v.1)
-    pairing := Equiv.cast (by simp) r.pairing
-  }
-
-open Combinatorics in
-/-- The consecutive interaction-slot component diagram is exactly the
-canonical `slotCongr` relabeling of its actual connected-component
-restriction. This retains its external labels, interaction labels and
-flattened-leg Wick pairing. -/
-theorem ExternalInsertionDiagram.componentOrderedDiagram_eq_slotCongr
-    {E n : ℕ}
-    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E n
-      (Finset.univ : Finset (Fin n)))
-    (B : d.vertexGraph.componentPartition.parts) :
-    let T := interactionSector
-      (B : Finset (ExternalInsertionVertex E (Finset.univ : Finset (Fin n))))
-    d.componentOrderedDiagram B =
-      (d.restrictComponent B).slotCongr (standardSlotEquiv T) := by
-  classical
-  dsimp only
-  let T := interactionSector
-    (B : Finset (ExternalInsertionVertex E (Finset.univ : Finset (Fin n))))
-  let r := d.restrictComponent B
-  apply ExternalInsertionDiagram.ext
-  · rfl
-  · funext v
-    change r.vertexLabel (T.orderIsoOfFin rfl v.1) =
-      r.vertexLabel ((standardSlotEquiv T).symm v)
-    congr 1
-  · change (Equiv.cast (show Pairing (2 * T.card + d.externalPairCount B) =
-          PairingOn (Fin (2 * (2 * (Finset.univ : Finset (Fin T.card)).card +
-            d.externalPairCount B))) from by simp [Pairing]) r.pairing) =
-        r.pairing.transport
-          (externalInsertionLegCongr (E := d.externalPairCount B)
-            (standardSlotEquiv T)).symm
-    rw [externalInsertionLegCongr_standardize (E := d.externalPairCount B) T]
-    exact Pairing.cast_eq_transport (by simp [T]) r.pairing
-
+      Finset.univ :=
+  (d.restrictComponent B).slotCongr
+    (Combinatorics.standardSlotEquiv
+      (interactionSector
+        (B : Finset (ExternalInsertionVertex E (Finset.univ : Finset (Fin n))))))
 
 open Combinatorics in
 /-- Consecutive interaction-slot standardization of an actual connected
@@ -91,13 +51,16 @@ theorem ExternalInsertionDiagram.componentOrderedDiagram_pairing_crossingCount
   classical
   let T := interactionSector
     (B : Finset (ExternalInsertionVertex E (Finset.univ : Finset (Fin n))))
-  change (Equiv.cast (show
-      Pairing (2 * T.card + d.externalPairCount B) =
-        Pairing (2 * (Finset.univ : Finset (Fin T.card)).card +
-          d.externalPairCount B) from by simp)
-      (d.restrictComponent B).pairing).crossingCount =
-        (d.restrictComponent B).pairing.crossingCount
-  exact Pairing.cast_crossingCount (by simp) _
+  let r := d.restrictComponent B
+  have h : 2 * T.card + d.externalPairCount B =
+      2 * (Finset.univ : Finset (Fin T.card)).card + d.externalPairCount B := by simp
+  change (r.pairing.transport
+      (externalInsertionLegCongr (E := d.externalPairCount B)
+        (standardSlotEquiv T)).symm).crossingCount = r.pairing.crossingCount
+  rw [externalInsertionLegCongr_standardize (E := d.externalPairCount B) T]
+  have hcast := Pairing.cast_eq_transport h r.pairing
+  rw [← hcast]
+  exact Pairing.cast_crossingCount h r.pairing
 
 /-- External times of one component in its canonical increasing external-slot order. -/
 noncomputable def ExternalInsertionDiagram.componentExternalTime {E n : ℕ}
@@ -245,7 +208,7 @@ private theorem ExternalInsertionDiagram.atomicLegPartner_componentOrderedLeg {E
       ((d.componentOrderedDiagram B).atomicLegPartner leg)]
   unfold ExternalInsertionDiagram.atomicLegPartner
   simp only [Equiv.symm_apply_apply]
-  rw [d.componentOrderedDiagram_eq_slotCongr B]
+  unfold ExternalInsertionDiagram.componentOrderedDiagram
   simp only [ExternalInsertionDiagram.slotCongr, Combinatorics.PairingOn.transport_partner,
     Equiv.symm_symm, Equiv.symm_apply_apply]
   exact (d.componentDiagramLeg_restrictComponent_pairing_partner B _).symm
