@@ -99,7 +99,7 @@ theorem inner_completedExterior_map (e : Common.CompletedFock Mode →ₗᵢ[ℂ
       (completedExterior (ExteriorAlgebra.map e.toLinearMap y)) =
         inner ℂ (completedExterior x) (completedExterior y) := by
   exact AlgebraicFock.inner_realization_map_eq completedExterior completedExterior e
-    inner_completedExterior_create inner_completedExterior_create (fun _ _ => rfl) x y
+    inner_completedExterior_create inner_completedExterior_create rfl x y
 
 private theorem completedExterior_denseRange :
     DenseRange (completedExterior (Mode := Mode)) := by
