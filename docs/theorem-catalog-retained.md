@@ -161,7 +161,7 @@ using a zero-consumer signal as grounds for changing its retention.
 - `BerryGeometry.PointwiseEigenbasisData.hellmannFeynman` — canonical Hellmann–Feynman theorem for the pointwise eigenbasis data.
 - `BerryGeometry.PointwiseEigenbasisData.star_berryConnection` — the full band-index Berry-connection matrix is Hermitian by differentiated orthonormality; retain this physically meaningful off-diagonal statement rather than treating its single diagonal-reality consumer as proof-routing evidence.
 - `BerryGeometry.PointwiseEigenbasisData.berryCurvature_eq_sum_hamiltonianDerivativeMatrixElements` — canonical pointwise force-matrix representation of Berry curvature for a nondegenerate band, with self-adjoint directional Hamiltonian derivatives explicit; the clean massive-Dirac consumer uses this general spectral identity.
-- `Combinatorics.SlotShuffle.leftSlots_orderEmbOfFin` — canonical identification of the increasing enumeration of ambient left slots with the slot-shuffle embedding; it is used source-level by the two-point fiber shuffle integral even though the proof dependency is erased from compiled consumers.
+- `Combinatorics.SlotShuffle.leftSlots_orderEmbOfFin` — canonical identification of the increasing enumeration of ambient left slots with the slot-shuffle embedding; it identifies the canonical support-slot enumeration in binary shuffle constructions.
 - `Combinatorics.SlotShuffle.card_eq_choose` — canonical binomial-cardinality theorem for ambient order-preserving slot shuffles; it follows from the direct left-slot-set correspondence and supplies the recursive binary-shuffle equivalence.
 - `Combinatorics.BinaryShuffle.card_succ_succ` — natural Pascal recurrence for the recursively defined binary-shuffle type and the induction step underlying the closed binomial cardinality formula.
 - `Combinatorics.BinaryShuffle.card_zero_left` — canonical `[simp]` boundary stating uniqueness of a binary shuffle with no left slots.
@@ -456,13 +456,11 @@ using a zero-consumer signal as grounds for changing its retention.
   integrand is continuous.
 - `SecondQuantization.Fermionic.fermionSign_toggleOccupation` — Toggling mode `k` flips the
   fermionic sign at `i` exactly when `k` lies before `i`.
-- `SecondQuantization.Fermionic.fixedExternalFiberEquiv_symm_externalPieceOfCardEq_eq` — After
-  reindexing a fiber, the standalone external piece at any identified slot count is exactly the
-  correspondingly standardized connected external diagram, independently of the vacuum piece.
-- `SecondQuantization.Fermionic.fixedExternalOfSlotSplit_prod_vacuumDysonFixedTimeValue_eq_quarticIntegrand` —
-  For an externally connected left piece and strictly decreasing inherited vacuum times, the
-  complete product of ambient vacuum-component Dyson fixed-time values is exactly the standalone
-  fixed-order quartic vacuum integrand, including its Dyson sign and vertex-weight prefactor.
+- `SecondQuantization.Common.ExternalInsertionDiagram.sum_eq_sum_externalSupportFiber` — The finite diagram sum decomposes by the actual external-support slot fibers, with vacuum-free external pieces and complementary quartic vacuum pieces, for arbitrary external arity.
+- `SecondQuantization.Common.ExternalInsertionDiagram.sum_leftSlotSet_standardizedSupportFiber` — Fixed-cardinality external-support fibers can be reindexed by standardized external and vacuum data.
+- `SecondQuantization.Fermionic.externalInsertionSupport_dysonFactor_eq_standardizedAmplitude` — The local external-support factor is the standalone Dyson amplitude on the consecutive support slots.
+- `SecondQuantization.Fermionic.externalInsertionOfSlotSplit_dysonFixedTimeAmplitude_eq_standalone_mul_vacuum` — The full Dyson-signed amplitude factors into the standalone external-support amplitude and the ordered complementary vacuum factor on strictly antitone vacuum chambers.
+- `SecondQuantization.Fermionic.externalInsertionVacuumDysonFactor_eq_shuffleOrderedData` — The complementary vacuum factor agrees with the ordered vacuum data of the support shuffle.
 - `LocallyFiniteHopping.operator_latticeKet` — canonical
   `[simp]` evaluation of the hopping operator on a localized site ket.
 - `LocallyFiniteHopping.amplitude_eq` — canonical `[simp]`
