@@ -129,15 +129,11 @@ theorem integral_polarPauliOperator_inPlane_eq
       firstSine := matrixOperator H.firstSine
       secondCosine := matrixOperator H.secondCosine
       secondMixed := matrixOperator H.secondMixed }
-  have hVertex :
-      inPlanePauliVertexOperator coefficients =
-        matrixOperator (coefficients 0 • sigmaX + coefficients 1 • sigmaY) := by
-    simp [inPlanePauliVertexOperator, matrixOperator, map_add, map_smul]
   have hpoint (θ : ℝ) :
       polarPauliOperator aR bR dR θ *
           inPlanePauliVertexOperator coefficients *
           polarPauliOperator aA bA dA θ = HO.eval θ := by
-    rw [hVertex]
+    rw [inPlanePauliVertexOperator_eq_matrixOperator]
     unfold polarPauliOperator
     change
       (Matrix.toEuclideanCLM : Matrix2 ≃⋆ₐ[ℂ]
@@ -175,17 +171,7 @@ theorem integral_polarPauliOperator_inPlane_eq
     _ = inPlanePauliVertexOperator
         (inPlaneLadderAction
           (pauliRungAngularCoefficient aR aA dR dA) coefficients) := by
-      have hvertexAction :
-          inPlanePauliVertexOperator
-              (inPlaneLadderAction
-                (pauliRungAngularCoefficient aR aA dR dA) coefficients) =
-            matrixOperator
-              ((inPlaneLadderAction
-                (pauliRungAngularCoefficient aR aA dR dA) coefficients) 0 • sigmaX +
-               (inPlaneLadderAction
-                (pauliRungAngularCoefficient aR aA dR dA) coefficients) 1 • sigmaY) := by
-        simp [inPlanePauliVertexOperator, matrixOperator, map_add, map_smul]
-      rw [hvertexAction]
+      rw [inPlanePauliVertexOperator_eq_matrixOperator]
       change
         ((2 * Real.pi : ℝ) : ℂ) •
           (Matrix.toEuclideanCLM : Matrix2 ≃⋆ₐ[ℂ]
