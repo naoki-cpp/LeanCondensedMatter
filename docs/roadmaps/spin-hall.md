@@ -457,6 +457,39 @@ acceptance criterion. Prefer a nonzero finite-frequency mixed response
 benchmark and a displacement-response boundary/contact identity before
 studying the order of thermodynamic and DC limits.
 
+## Finite-observation-time displacement response boundary (partial R4)
+
+For bounded free dynamics, `heisenbergEquation_initial` expresses the
+norm derivative of the evolved displacement as the evolution of its
+initial Hamiltonian commutator. `hasDerivAt_commutatorSusceptibility_lag`
+therefore differentiates the lag susceptibility of a fixed displacement D
+to that of its proper-current derivative J.
+
+For z = iω−η and K(τ) = χ_{D,B}(τ,0), the common finite-time integration
+by parts theorem `finiteTimeAdiabaticTransform_derivative_add_initial`
+gives
+
+```text
+∫_0^T exp(z τ) K'(τ) dτ + K(0)
+  = exp(z T) K(T) - z ∫_0^T exp(z τ) K(τ) dτ.
+```
+
+The generic `ResponseChannel.finiteTimeAdiabaticResponse_of_displacement`
+uses the existing stationary-lag reduction and equal-time contact identity
+to identify its left side with the full source-normalized response of the
+channel measuring J, when its contact equals (i/ℏ)[-B,D].
+The real-space Rashba specialization
+`realSpaceRashbaSpinDisplacement_finiteTimeAdiabaticResponse` uses the same
+actual hopping Hamiltonian, geometric charge source, and unit source factor
+as the previously constructed channel.
+
+The upper endpoint remains at finite T. This is not a static or DC
+conductivity result. The next limit step would remove that endpoint for
+positive η using boundedness of the lag kernel and the existing
+infinite-time adiabatic convergence API; regulator removal, volume limits,
+electric-field normalization, and a concrete nonzero finite-frequency
+benchmark are still separate.
+
 ## References
 
 See the annotated entries in [`../references.md`](../references.md) for full
