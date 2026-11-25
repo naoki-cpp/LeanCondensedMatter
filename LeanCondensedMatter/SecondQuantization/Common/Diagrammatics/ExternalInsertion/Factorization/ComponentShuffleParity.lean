@@ -79,11 +79,6 @@ private theorem ExternalInsertionDiagram.componentInteractionLeg_lt_iff
         d.componentLegPosition B (Sum.inr (v, l)) ↔
       d.ambientInteractionVertex C w < d.ambientInteractionVertex B v := by
   rw [d.componentLegPosition_interaction, d.componentLegPosition_interaction]
-  change
-    (externalInsertionInteractionLeg (E := E) (d.ambientInteractionVertex C w) k).val <
-        (externalInsertionInteractionLeg (E := E) (d.ambientInteractionVertex B v) l).val ↔
-      d.ambientInteractionVertex C w < d.ambientInteractionVertex B v
-  simp only [externalInsertionInteractionLeg_val]
   have hvw :
       d.ambientInteractionVertex B v ≠ d.ambientInteractionVertex C w := by
     intro hvw
@@ -97,30 +92,8 @@ private theorem ExternalInsertionDiagram.componentInteractionLeg_lt_iff
         interactionSector (C : Finset (ExternalInsertionVertex E S))
       rw [hvwVal]
       exact w.2
-  have hrank_ne :
-      ((S.orderIsoOfFin rfl).symm (d.ambientInteractionVertex C w)).val ≠
-        ((S.orderIsoOfFin rfl).symm (d.ambientInteractionVertex B v)).val := by
-    intro h
-    apply hvw
-    apply (S.orderIsoOfFin rfl).symm.injective
-    exact Fin.ext h.symm
-  constructor
-  · intro h
-    have hk : k.val < 4 := k.isLt
-    have hl : l.val < 4 := l.isLt
-    have hrank :
-        ((S.orderIsoOfFin rfl).symm (d.ambientInteractionVertex C w)).val <
-          ((S.orderIsoOfFin rfl).symm (d.ambientInteractionVertex B v)).val := by
-      omega
-    simpa using (S.orderIsoOfFin rfl).strictMono hrank
-  · intro h
-    have hrank :
-        ((S.orderIsoOfFin rfl).symm (d.ambientInteractionVertex C w)).val <
-          ((S.orderIsoOfFin rfl).symm (d.ambientInteractionVertex B v)).val := by
-      simpa using (S.orderIsoOfFin rfl).symm.strictMono h
-    have hk : k.val < 4 := k.isLt
-    have hl : l.val < 4 := l.isLt
-    omega
+  rw [externalInsertionInteractionLeg_lt_iff]
+  simp [hvw.symm]
 
 private theorem ExternalInsertionDiagram.componentExternal_lt_interaction
     {S : Finset (Fin N)}
