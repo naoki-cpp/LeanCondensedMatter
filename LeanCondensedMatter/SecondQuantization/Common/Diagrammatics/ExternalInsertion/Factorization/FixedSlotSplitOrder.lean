@@ -136,6 +136,7 @@ private theorem externalInsertionSlotLegSplitting_fixedRight_lt_leftInteraction_
       (⟨(order w).1, Finset.mem_univ _⟩ : ↥(Finset.univ : Finset (Fin N))) ≠
         ⟨v.1, Finset.mem_univ _⟩ := fun h => hne (congrArg Subtype.val h)
   simp only [hne', false_and, or_false]
+  rfl
 
 /-- A vacuum interaction leg never precedes an external leg in fixed flattened order. -/
 private theorem externalInsertionSlotLegSplitting_fixedRight_not_lt_leftExternal
