@@ -112,6 +112,7 @@ theorem polarPauliMatrix_inPlane_sandwich_eq_harmonics
   simp [Complex.I_sq]
   module
 
+open scoped Matrix.Norms.L2Operator in
 /-- The full-angle retarded-advanced polar Pauli rung acts through the canonical in-plane ladder
 action, preserving the complete coefficient vector until the operator boundary. -/
 theorem integral_polarPauliOperator_inPlane_eq
@@ -123,71 +124,26 @@ theorem integral_polarPauliOperator_inPlane_eq
       inPlanePauliVertexOperator
         (inPlaneLadderAction (pauliRungAngularCoefficient aR aA dR dA) coefficients) := by
   let H := polarPauliInPlaneHarmonics aR bR dR aA bA dA coefficients
-  let HO : AngularHarmonicCoefficients (DiracHilbert →L[ℂ] DiracHilbert) :=
-    { constant := matrixOperator H.constant
-      firstCosine := matrixOperator H.firstCosine
-      firstSine := matrixOperator H.firstSine
-      secondCosine := matrixOperator H.secondCosine
-      secondMixed := matrixOperator H.secondMixed }
-  have hpoint (θ : ℝ) :
-      polarPauliOperator aR bR dR θ *
-          inPlanePauliVertexOperator coefficients *
-          polarPauliOperator aA bA dA θ = HO.eval θ := by
-    rw [inPlanePauliVertexOperator_eq_matrixOperator]
-    unfold polarPauliOperator
-    change
-      (Matrix.toEuclideanCLM : Matrix2 ≃⋆ₐ[ℂ]
-          (DiracHilbert →L[ℂ] DiracHilbert))
-          (polarPauliMatrix aR bR dR θ) *
-        (Matrix.toEuclideanCLM : Matrix2 ≃⋆ₐ[ℂ]
-          (DiracHilbert →L[ℂ] DiracHilbert))
-          (coefficients 0 • sigmaX + coefficients 1 • sigmaY) *
-        (Matrix.toEuclideanCLM : Matrix2 ≃⋆ₐ[ℂ]
-          (DiracHilbert →L[ℂ] DiracHilbert))
-          (polarPauliMatrix aA bA dA θ) = _
-    rw [← map_mul, ← map_mul,
-      show polarPauliMatrix aR bR dR θ *
-          (coefficients 0 • sigmaX + coefficients 1 • sigmaY) *
-          polarPauliMatrix aA bA dA θ = H.eval θ from
-        polarPauliMatrix_inPlane_sandwich_eq_harmonics
-          aR bR dR aA bA dA coefficients θ]
-    dsimp only [HO, AngularHarmonicCoefficients.eval, matrixOperator]
-    simp only [map_add, map_smul]
-  change
-    (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi),
-      polarPauliOperator aR bR dR θ *
-        inPlanePauliVertexOperator coefficients *
-        polarPauliOperator aA bA dA θ) = _
+  let L : Matrix2 →ₗᵢ[ℂ] (DiracHilbert →L[ℂ] DiracHilbert) :=
+    { (Matrix.toEuclideanCLM : Matrix2 ≃⋆ₐ[ℂ]
+        (DiracHilbert →L[ℂ] DiracHilbert)).toAlgEquiv.toLinearEquiv.toLinearMap with
+      norm_map' := fun A => Matrix.l2_opNorm_toEuclideanCLM A }
   calc
-    (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi),
-      polarPauliOperator aR bR dR θ *
-        inPlanePauliVertexOperator coefficients *
-        polarPauliOperator aA bA dA θ) =
-        ∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi), HO.eval θ := by
-          apply intervalIntegral.integral_congr
-          intro θ _
-          exact hpoint θ
-    _ = (2 * Real.pi : ℝ) • HO.constant := HO.integral_eval
-    _ = inPlanePauliVertexOperator
-        (inPlaneLadderAction
-          (pauliRungAngularCoefficient aR aA dR dA) coefficients) := by
+    _ = ∫ θ in (0 : ℝ)..(2 * Real.pi), L (H.eval θ) := by
+      apply intervalIntegral.integral_congr
+      intro θ _
+      change _ = matrixOperator (H.eval θ)
+      simp only [polarPauliOperator, inPlanePauliVertexOperator_eq_matrixOperator,
+        matrixOperator, ← map_mul]
+      rw [polarPauliMatrix_inPlane_sandwich_eq_harmonics]
+    _ = L ((2 * Real.pi : ℝ) • H.constant) := by
+      rw [L.intervalIntegral_comp_comm H.eval, H.integral_eval]
+    _ = _ := by
       rw [inPlanePauliVertexOperator_eq_matrixOperator]
-      change
-        ((2 * Real.pi : ℝ) : ℂ) •
-          (Matrix.toEuclideanCLM : Matrix2 ≃⋆ₐ[ℂ]
-            (DiracHilbert →L[ℂ] DiracHilbert)) H.constant =
-        (Matrix.toEuclideanCLM : Matrix2 ≃⋆ₐ[ℂ]
-            (DiracHilbert →L[ℂ] DiracHilbert))
-          ((inPlaneLadderAction
-              (pauliRungAngularCoefficient aR aA dR dA) coefficients) 0 • sigmaX +
-           (inPlaneLadderAction
-              (pauliRungAngularCoefficient aR aA dR dA) coefficients) 1 • sigmaY)
-      rw [← map_smul]
-      apply congrArg (Matrix.toEuclideanCLM : Matrix2 ≃⋆ₐ[ℂ]
-        (DiracHilbert →L[ℂ] DiracHilbert))
+      change L (((2 * Real.pi : ℝ) : ℂ) • H.constant) = L _
+      apply congrArg L
       simp [H, polarPauliInPlaneHarmonics, pauliRungAngularCoefficient,
-        inPlaneLadderAction_apply_x, inPlaneLadderAction_apply_y,
-        smul_add, smul_smul]
+        inPlaneLadderAction_apply_x, inPlaneLadderAction_apply_y, smul_add, smul_smul]
       module
 
 end
