@@ -54,9 +54,9 @@ theorem ExternalInsertionDiagram.componentOrderedDiagram_pairing_crossingCount
   let r := d.restrictComponent B
   have h : 2 * T.card + d.externalPairCount B =
       2 * (Finset.univ : Finset (Fin T.card)).card + d.externalPairCount B := by simp
-  change (r.pairing.transport
+  change Pairing.crossingCount (r.pairing.transport
       (externalInsertionLegCongr (E := d.externalPairCount B)
-        (standardSlotEquiv T)).symm).crossingCount = r.pairing.crossingCount
+        (standardSlotEquiv T)).symm) = r.pairing.crossingCount
   rw [externalInsertionLegCongr_standardize (E := d.externalPairCount B) T]
   have hcast := Pairing.cast_eq_transport h r.pairing
   rw [← hcast]
