@@ -1798,7 +1798,7 @@ theorem grandCanonicalExternalSubsetConnectedDiagramSeries_univ
   rw [← map_prod, ← externalFieldFamilyChemicalPotentialFactor]
   apply congrArg (fun z : PowerSeries ℂ =>
     PowerSeries.C (externalFieldFamilyChemicalPotentialFactor μ labels times) * z)
-  simp only [externalSubsetConnectedDiagramSeries, dif_neg hS, dif_pos heven]
+  simp only [externalSubsetConnectedDiagramSeries, dite_eq_right hS, dite_eq_left heven]
   change connectedExternalInsertionDysonSeries (fun k => ε k - μ) β g
       (fun p => labels (localIndex p)) (fun p => times (localIndex p)) =
     connectedExternalInsertionDysonSeries (fun k => ε k - μ) β g
