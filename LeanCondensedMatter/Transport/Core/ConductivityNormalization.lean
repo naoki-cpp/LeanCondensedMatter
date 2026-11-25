@@ -1,6 +1,7 @@
 import Mathlib.Basic.Real.Basic
 import Mathlib.Basic.Complex.Basic
 import Mathlib.Tactic.NormNum
+import Mathlib.Tactic.FieldSimp
 
 set_option linter.style.header false
 
@@ -69,6 +70,25 @@ intensive electric-field conductivity. -/
 noncomputable def finiteVolumeConductivityFromVectorPotential
     (volume : PositiveVolume) (ω η : ℝ) (response : ℂ) : ℂ :=
   response * finiteVolumeConductivityNormalization volume ω η
+
+/-- If a response carries minus the electric-field conversion factor, that
+factor cancels exactly, leaving the signed intensive susceptibility.
+In particular this is the normalization of a displacement-derivative
+response at nonzero complex driving rate. -/
+theorem finiteVolumeConductivityFromVectorPotential_neg_factor
+    (volume : PositiveVolume) (ω η : ℝ) (hrate : ω ≠ 0 ∨ η ≠ 0)
+    (χ : ℂ) :
+    finiteVolumeConductivityFromVectorPotential volume ω η
+      (-adiabaticElectricFieldFactor ω η * χ) =
+        -χ / (volume.volume : ℂ) := by
+  have hV : (volume.volume : ℂ) ≠ 0 := by
+    exact_mod_cast ne_of_gt volume.volume_pos
+  have hz : adiabaticElectricFieldFactor ω η ≠ 0 := by
+    intro hz
+    exact finiteVolumeConductivityDenominator_ne_zero volume ω η hrate
+      (by rw [hz, mul_zero])
+  unfold finiteVolumeConductivityFromVectorPotential finiteVolumeConductivityNormalization
+  field_simp
 
 /-- At zero frequency, the electric-field normalization keeps the finite switching rate and volume
 explicit. -/
