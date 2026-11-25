@@ -63,40 +63,31 @@ private theorem local_add_block_mul_lt_of_block_lt {n k : ℕ}
     _ = k * (j : ℕ) := Nat.mul_comm _ _
     _ ≤ (b : ℕ) + k * (j : ℕ) := Nat.le_add_left _ _
 
+/-- Row-major coordinates are ordered lexicographically by block and local index. -/
+theorem local_add_block_mul_lt_iff {n k : ℕ} (i j : Fin n) (a b : Fin k) :
+    (a : ℕ) + k * (i : ℕ) < (b : ℕ) + k * (j : ℕ) ↔
+      i < j ∨ (i = j ∧ a < b) := by
+  constructor
+  · intro h
+    rcases lt_trichotomy i j with hlt | heq | hgt
+    · exact Or.inl hlt
+    · subst j
+      exact Or.inr ⟨rfl, Nat.add_lt_add_iff_right.mp h⟩
+    · exact (lt_asymm h (local_add_block_mul_lt_of_block_lt j i b a hgt)).elim
+  · rintro (hlt | ⟨heq, hlocal⟩)
+    · exact local_add_block_mul_lt_of_block_lt i j a b hlt
+    · subst j
+      exact Nat.add_lt_add_right hlocal _
+
 /-- Flat order is the lexicographic order on the block index followed by the local index. -/
 theorem blockEquiv_lt_iff {total n k : ℕ} (h : total = n * k) (p q : Fin total) :
     p < q ↔
       (blockEquiv h p).1 < (blockEquiv h q).1 ∨
         ((blockEquiv h p).1 = (blockEquiv h q).1 ∧
           (blockEquiv h p).2 < (blockEquiv h q).2) := by
-  have hp := blockEquiv_reconstruct_val h p
-  have hq := blockEquiv_reconstruct_val h q
-  constructor
-  · intro hpq
-    rcases lt_trichotomy (blockEquiv h p).1 (blockEquiv h q).1 with hlt | heq | hgt
-    · exact Or.inl hlt
-    · refine Or.inr ⟨heq, ?_⟩
-      have hblock : (blockEquiv h p).1.val = (blockEquiv h q).1.val := congrArg Fin.val heq
-      have hval : p.val < q.val := hpq
-      rw [hp, hq, hblock] at hval
-      exact Nat.add_lt_add_iff_right.mp hval
-    · have hval : p.val < q.val := hpq
-      rw [hp, hq] at hval
-      have hrev := local_add_block_mul_lt_of_block_lt
-        (blockEquiv h q).1 (blockEquiv h p).1
-        (blockEquiv h q).2 (blockEquiv h p).2 hgt
-      exact (lt_asymm hval hrev).elim
-  · rintro (hlt | ⟨heq, hlocal⟩)
-    · have hcoord := local_add_block_mul_lt_of_block_lt
-        (blockEquiv h p).1 (blockEquiv h q).1
-        (blockEquiv h p).2 (blockEquiv h q).2 hlt
-      change p.val < q.val
-      rw [hp, hq]
-      exact hcoord
-    · have hblock : (blockEquiv h p).1.val = (blockEquiv h q).1.val := congrArg Fin.val heq
-      change p.val < q.val
-      rw [hp, hq, hblock]
-      exact Nat.add_lt_add_right hlocal _
+  change p.val < q.val ↔ _
+  rw [blockEquiv_reconstruct_val h p, blockEquiv_reconstruct_val h q]
+  exact local_add_block_mul_lt_iff _ _ _ _
 
 /-- Reindex the blocks of a flattened fixed-width family without changing local coordinates. -/
 def blockMap {total₁ total₂ n₁ n₂ k : ℕ}
