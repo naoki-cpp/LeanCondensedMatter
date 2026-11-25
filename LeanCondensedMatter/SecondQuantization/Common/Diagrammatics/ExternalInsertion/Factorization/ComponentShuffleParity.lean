@@ -1,4 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentRestriction
+import LeanCondensedMatter.Combinatorics.Common.FintypeProduct
 import Mathlib.Algebra.BigOperators.ModEq
 
 set_option linter.style.header false
@@ -259,38 +260,16 @@ private theorem ExternalInsertionDiagram.componentLegInversionInner_interaction_
         _ = 2 * d.externalPairCount C := by simp
     rw [hext]
     exact ⟨d.externalPairCount C, by omega⟩
-  · rw [Fintype.sum_prod_type]
-    refine Finset.dvd_sum fun w _ => ?_
-    have hcount :
-        (∑ k : Fin 4,
-          if d.componentLegPosition C (Sum.inr (w, k)) <
-            d.componentLegPosition B (Sum.inr (v, l)) then 1 else 0) =
-          4 * (if d.ambientInteractionVertex C w <
-            d.ambientInteractionVertex B v then 1 else 0) := by
-      calc
-        _ = ∑ _k : Fin 4,
-            (if d.ambientInteractionVertex C w <
-              d.ambientInteractionVertex B v then 1 else 0) := by
-          apply Finset.sum_congr rfl
-          intro k _
-          by_cases hlt :
-              d.ambientInteractionVertex C w < d.ambientInteractionVertex B v
-          · have hfull :=
-              (d.componentInteractionLeg_lt_iff B C hBC v l w k).2 hlt
-            rw [ite_eq_left hfull, ite_eq_left hlt]
-          · have hfull :
-                ¬ d.componentLegPosition C (Sum.inr (w, k)) <
-                  d.componentLegPosition B (Sum.inr (v, l)) := by
-              intro h
-              exact hlt ((d.componentInteractionLeg_lt_iff B C hBC v l w k).1 h)
-            rw [ite_eq_right hfull, ite_eq_right hlt]
-        _ = 4 * (if d.ambientInteractionVertex C w <
-              d.ambientInteractionVertex B v then 1 else 0) := by
-          simp
-    rw [hcount]
-    refine ⟨2 * (if d.ambientInteractionVertex C w <
-      d.ambientInteractionVertex B v then 1 else 0), ?_⟩
-    ring
+  · have hdiv := Fintype.dvd_sum_equiv_fst_of_dvd_card
+      (Equiv.refl (↥(interactionSector
+        (C : Finset (ExternalInsertionVertex E S))) × Fin 4))
+      (fun w => if d.ambientInteractionVertex C w <
+        d.ambientInteractionVertex B v then (1 : ℕ) else 0)
+      (by decide : 2 ∣ Fintype.card (Fin 4))
+    convert hdiv using 1
+    apply Finset.sum_congr rfl
+    rintro ⟨w, k⟩ _
+    simp only [Equiv.refl_apply, d.componentInteractionLeg_lt_iff B C hBC v l w k]
 
 private theorem ExternalInsertionDiagram.componentLegShuffle_blockInversionCount_eq_sum
     {S : Finset (Fin N)}
@@ -339,8 +318,6 @@ theorem ExternalInsertionDiagram.componentLegShuffle_orderedBlockInversionCount_
   have h :=
     d.componentLegShuffle.orderedBlockInversionCount_modEq_of_blockInversionCount_modEq
       d.componentExternalShuffle blockOrder (fun B C hBC => by
-        classical
-        
           classical
           rw [d.componentLegShuffle_blockInversionCount_eq_sum B C hBC,
             d.componentExternalShuffle_blockInversionCount_eq_sum B C hBC]
