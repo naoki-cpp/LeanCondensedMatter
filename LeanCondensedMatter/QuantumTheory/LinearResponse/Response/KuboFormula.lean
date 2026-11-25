@@ -179,9 +179,11 @@ theorem hasDerivAt_timeDependentPerturbedExpectationFunctional_apply_zero_of_bou
           heisenbergEvolution U t A *
             timeDependentPropagatorFirstVariation U hbar V t))
       0 := by
-  simpa only [timeDependentPerturbedExpectationFunctional_apply, Function.comp_def] using
-    (expectation.toContinuousLinearMap.restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt 0
-      (hasDerivAt_timeDependentPerturbedObservable_zero_of_bound U hbar A hM hV ht)
+  have h := (expectation.toContinuousLinearMap.restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt 0
+    (hasDerivAt_timeDependentPerturbedObservable_zero_of_bound U hbar A hM hV ht)
+  rw [hasDerivAt_iff_tendsto]
+  rw [hasDerivAt_iff_tendsto] at h
+  simpa [timeDependentPerturbedExpectationFunctional_apply, Function.comp_def] using h
 
 /-- For a Hermitian perturbation, the expectation first variation is the ordinary expectation of
 `[A_I(t), K_V(t)]`. -/
