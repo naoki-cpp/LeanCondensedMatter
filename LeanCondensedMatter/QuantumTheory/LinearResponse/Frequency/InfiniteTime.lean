@@ -299,7 +299,7 @@ theorem infiniteTimeAdiabaticResponse_of_displacement
   channel.infiniteTimeAdiabaticResponse_eq_of_displacement_boundary system expectation
     hstationary D ω η hη (fun T hT =>
       channel.finiteTimeAdiabaticResponse_of_displacement system expectation
-        hstationary D hJ hC ω η hT)
+        hstationary D hJ hC ω η (T := T) hT)
 
 end ResponseChannel
 
