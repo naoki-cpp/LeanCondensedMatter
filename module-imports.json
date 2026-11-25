@@ -370,6 +370,12 @@
       "externalImportCount": 2
     },
     {
+      "name": "LeanCondensedMatter.Analysis.Operator.HilbertBasis",
+      "sourceFile": "LeanCondensedMatter/Analysis/Operator/HilbertBasis.lean",
+      "imports": [],
+      "externalImportCount": 1
+    },
+    {
       "name": "LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.Basic",
       "sourceFile": "LeanCondensedMatter/Analysis/Operator/HilbertSchmidt/Basic.lean",
       "imports": [],
@@ -440,6 +446,7 @@
       "sourceFile": "LeanCondensedMatter/Analysis/Operator/TraceClass/General.lean",
       "imports": [
         "LeanCondensedMatter.Analysis.Operator.DiagonalExpectation",
+        "LeanCondensedMatter.Analysis.Operator.HilbertBasis",
         "LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.Basic"
       ],
       "externalImportCount": 2
@@ -459,6 +466,7 @@
       "imports": [
         "LeanCondensedMatter.Analysis.FunctionalCalculus.CFC",
         "LeanCondensedMatter.Analysis.Operator.DiagonalExpectation",
+        "LeanCondensedMatter.Analysis.Operator.HilbertBasis",
         "LeanCondensedMatter.Analysis.Operator.Spectral.EigenvectorFamily",
         "LeanCondensedMatter.Analysis.Operator.TraceClass.Trace"
       ],
@@ -545,6 +553,7 @@
         "LeanCondensedMatter.Analysis.Operator.DiagonalExpectation",
         "LeanCondensedMatter.Analysis.Operator.FiniteTrace",
         "LeanCondensedMatter.Analysis.Operator.Fredholm.Diagonal",
+        "LeanCondensedMatter.Analysis.Operator.HilbertBasis",
         "LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.Basic",
         "LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.Compact",
         "LeanCondensedMatter.Analysis.Operator.Polar",
@@ -3720,6 +3729,7 @@
       "sourceFile": "LeanCondensedMatter/QuantumTheory/DensityOperator/Diagonal.lean",
       "imports": [
         "LeanCondensedMatter.Analysis.InfiniteSum.Normalization",
+        "LeanCondensedMatter.Analysis.Operator.HilbertBasis",
         "LeanCondensedMatter.Analysis.Operator.TraceClass.Trace",
         "LeanCondensedMatter.QuantumTheory.DensityOperator.Basic"
       ],
@@ -3738,6 +3748,7 @@
       "name": "LeanCondensedMatter.QuantumTheory.DensityOperator.Expectation",
       "sourceFile": "LeanCondensedMatter/QuantumTheory/DensityOperator/Expectation.lean",
       "imports": [
+        "LeanCondensedMatter.Analysis.Operator.HilbertBasis",
         "LeanCondensedMatter.Analysis.Operator.TraceClass.Ops",
         "LeanCondensedMatter.QuantumTheory.DensityOperator.Basic"
       ],
@@ -3834,6 +3845,7 @@
       "sourceFile": "LeanCondensedMatter/QuantumTheory/Entropy/Basic.lean",
       "imports": [
         "LeanCondensedMatter.Analysis.FunctionalCalculus.CFC",
+        "LeanCondensedMatter.Analysis.Operator.HilbertBasis",
         "LeanCondensedMatter.QuantumTheory.DensityOperator.Basic"
       ],
       "externalImportCount": 1
@@ -4336,6 +4348,15 @@
       "externalImportCount": 0
     },
     {
+      "name": "LeanCondensedMatter.QuantumTheory.LinearResponse.Response.CorrectedCurrent",
+      "sourceFile": "LeanCondensedMatter/QuantumTheory/LinearResponse/Response/CorrectedCurrent.lean",
+      "imports": [
+        "LeanCondensedMatter.Analysis.ConservationLaw.SymmetricLocalizationAlgebra",
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.Response.Channel"
+      ],
+      "externalImportCount": 0
+    },
+    {
       "name": "LeanCondensedMatter.QuantumTheory.LinearResponse.Response.DensitySusceptibility",
       "sourceFile": "LeanCondensedMatter/QuantumTheory/LinearResponse/Response/DensitySusceptibility.lean",
       "imports": [
@@ -4396,6 +4417,7 @@
       "sourceFile": "LeanCondensedMatter/QuantumTheory/LinearResponse/Response.lean",
       "imports": [
         "LeanCondensedMatter.QuantumTheory.LinearResponse.Response.Channel",
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.Response.CorrectedCurrent",
         "LeanCondensedMatter.QuantumTheory.LinearResponse.Response.DensitySusceptibility",
         "LeanCondensedMatter.QuantumTheory.LinearResponse.Response.KuboFormula",
         "LeanCondensedMatter.QuantumTheory.LinearResponse.Response.ObservableVariation",
@@ -7992,18 +8014,6 @@
       "externalImportCount": 0
     },
     {
-      "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.CorrectedCurrentResponse",
-      "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Transport/CorrectedCurrentResponse.lean",
-      "imports": [
-        "LeanCondensedMatter.Analysis.ConservationLaw.SymmetricLocalizationAlgebra",
-        "LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.Free",
-        "LeanCondensedMatter.QuantumTheory.LinearResponse.Response.Channel",
-        "LeanCondensedMatter.QuantumTheory.LinearResponse.Response.RetardedSusceptibility",
-        "LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.Bounded"
-      ],
-      "externalImportCount": 0
-    },
-    {
       "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.CurrentInsertions",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Transport/CurrentInsertions.lean",
       "imports": [
@@ -8087,7 +8097,6 @@
       "imports": [
         "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.ChargeCurrentChannel",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.ConductivityNormalization",
-        "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.CorrectedCurrentResponse",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.CurrentInsertions",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.KuboBastinCommonEnergy",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.KuboBastinOccupation",
