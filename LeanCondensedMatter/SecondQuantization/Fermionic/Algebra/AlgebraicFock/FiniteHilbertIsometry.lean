@@ -114,7 +114,10 @@ theorem inner_finiteHilbertEquiv_map (b : OrthonormalBasis Mode ℂ H)
           (ExteriorAlgebra.map e.toLinearMap (create H v x)))
         (finiteHilbertEquiv c.toBasis (ExteriorAlgebra.map e.toLinearMap y)) =
         inner ℂ (finiteHilbertEquiv b.toBasis (create H v x)) (finiteHilbertEquiv b.toBasis y)
-      rw [map_create_apply, inner_finiteHilbert_create c (e v), annihilate_map, hx,
+      have hc : ExteriorAlgebra.map e.toLinearMap (create H v x) =
+          create K (e v) (ExteriorAlgebra.map e.toLinearMap x) :=
+        map_create_apply e.toLinearMap v x
+      rw [hc, inner_finiteHilbert_create c (e v), annihilate_map, hx,
         inner_finiteHilbert_create b v]
 
 /-- The unitary exterior lift of a one-particle unitary, expressed in finite occupation-Hilbert
