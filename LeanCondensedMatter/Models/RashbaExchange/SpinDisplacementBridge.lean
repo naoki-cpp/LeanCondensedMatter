@@ -2,6 +2,9 @@ import LeanCondensedMatter.Models.RashbaExchange.FiniteMomentumSpinResponse
 import LeanCondensedMatter.Models.RashbaExchange.RealSpaceHopping
 import LeanCondensedMatter.QuantumTheory.ConservationLaw.LocalizedTransport
 import LeanCondensedMatter.QuantumTheory.LinearResponse.Frequency.InfiniteTime
+import LeanCondensedMatter.Transport.Core.ConductivityNormalization
+import LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann.Eigenbasis.FrequencyDomain
+import LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann.Eigenbasis.Table
 
 set_option linter.style.header false
 
@@ -405,6 +408,108 @@ theorem realSpaceRashbaSpinDisplacement_infiniteTimeAdiabaticResponse
       realSpaceRashbaSpinDisplacement_finiteTimeAdiabaticResponse
         geometry bond onsite exchange measured source hbar q spinScale hhbar
         component expectation hstationary ω η hT)
+
+/-- The finite-volume electric-field response of the proper spin current.
+The same vector-potential factor that occurs in the displacement-derivative
+identity cancels the electric-field normalization, with the opposite sign.
+The directions and spin component are arbitrary; transverse components
+give the corresponding proper spin Hall conductivity. -/
+theorem realSpaceRashbaSpinDisplacement_conductivity_eq
+    {Site : Type*} [LinearOrder Site] [Fintype Site]
+    (volume : QuantumTheory.Transport.PositiveVolume)
+    (geometry : LatticeGeometry Site (ℝ × ℝ))
+    (bond : Site → Site → Option (ℝ × ℝ))
+    (onsite exchange : Site → ℝ)
+    (measured source : (ℝ × ℝ) →ₗ[ℝ] ℝ)
+    (hbar q spinScale : ℝ) (hhbar : 0 < hbar)
+    (component : QuantumTheory.SpinHalf.SpinSpace)
+    (expectation : QuantumTheory.LinearResponse.NormalizedExpectation
+      (FiniteLatticeHilbertFock (SpinfulSite Site)))
+    (hstationary : QuantumTheory.LinearResponse.IsStationary
+      (QuantumTheory.LinearResponse.freePropagatorGroup
+        (realSpaceRashbaFreeSystem geometry bond onsite exchange hbar hhbar)) expectation)
+    (ω η : ℝ) (hη : 0 < η) :
+    let system := realSpaceRashbaFreeSystem geometry bond onsite exchange hbar hhbar
+    let channel := realSpaceRashbaSpinDisplacementResponseChannel
+      geometry bond onsite exchange measured source hbar q spinScale component 1
+    let D := boundedOneBodyOperator (LinearMap.symmetrizedProduct (K := ℂ)
+      ((spinfulGeometry geometry).directionalPosition measured)
+      (spinOneBodyLinear (Site := Site) spinScale component))
+    QuantumTheory.Transport.finiteVolumeConductivityFromVectorPotential volume ω η
+      (channel.infiniteTimeAdiabaticResponse (QuantumTheory.LinearResponse.freePropagatorGroup system)
+        hbar expectation ω η) =
+      -QuantumTheory.LinearResponse.adiabaticFrequencyDomainSusceptibility
+        (QuantumTheory.LinearResponse.freePropagatorGroup system) hbar
+        expectation D channel.source ω η / (volume.volume : ℂ) := by
+  dsimp only
+  rw [realSpaceRashbaSpinDisplacement_infiniteTimeAdiabaticResponse
+    geometry bond onsite exchange measured source hbar q spinScale hhbar
+    component expectation hstationary ω η hη]
+  have hz : Complex.I * (ω : ℂ) - (η : ℂ) =
+      QuantumTheory.Transport.adiabaticElectricFieldFactor ω η := by
+    rw [QuantumTheory.Transport.adiabaticElectricFieldFactor, sub_eq_add_neg, add_comm]
+  rw [hz]
+  exact QuantumTheory.Transport.finiteVolumeConductivityFromVectorPotential_neg_factor
+    volume ω η (Or.inr (ne_of_gt hη)) _
+
+/-- The finite-volume proper spin conductivity can be evaluated using the
+existing scalar Lehmann table of the displacement and charge source. No
+separate current/contact table is needed after the exact cancellation.
+This theorem assumes supplied finite eigenbasis data; it is not a computed
+nonzero benchmark or a zero-rate/thermodynamic limit. -/
+theorem realSpaceRashbaSpinDisplacement_conductivity_eq_finiteLehmannTable
+    {Site ι : Type*} [LinearOrder Site] [Fintype Site] [Fintype ι]
+    (volume : QuantumTheory.Transport.PositiveVolume)
+    (geometry : LatticeGeometry Site (ℝ × ℝ))
+    (bond : Site → Site → Option (ℝ × ℝ))
+    (onsite exchange : Site → ℝ)
+    (measured source : (ℝ × ℝ) →ₗ[ℝ] ℝ)
+    (hbar q spinScale : ℝ) (hhbar : 0 < hbar)
+    (component : QuantumTheory.SpinHalf.SpinSpace)
+    (data : QuantumTheory.LinearResponse.EnergyEigenbasisLehmannData
+      (realSpaceRashbaFreeSystem geometry bond onsite exchange hbar hhbar) ι)
+    (ω η : ℝ) (hη : 0 < η) :
+    let system := realSpaceRashbaFreeSystem geometry bond onsite exchange hbar hhbar
+    let channel := realSpaceRashbaSpinDisplacementResponseChannel
+      geometry bond onsite exchange measured source hbar q spinScale component 1
+    let D := boundedOneBodyOperator (LinearMap.symmetrizedProduct (K := ℂ)
+      ((spinfulGeometry geometry).directionalPosition measured)
+      (spinOneBodyLinear (Site := Site) spinScale component))
+    QuantumTheory.Transport.finiteVolumeConductivityFromVectorPotential volume ω η
+      (channel.infiniteTimeAdiabaticResponse (QuantumTheory.LinearResponse.freePropagatorGroup system)
+        hbar (QuantumTheory.LinearResponse.eigenbasisNormalizedExpectation system data) ω η) =
+      -QuantumTheory.LinearResponse.finiteLehmannTableResponse hbar ω η
+        (QuantumTheory.LinearResponse.finiteLehmannTableOfEigenbasis system data D channel.source) /
+        (volume.volume : ℂ) := by
+  let system := realSpaceRashbaFreeSystem geometry bond onsite exchange hbar hhbar
+  let channel := realSpaceRashbaSpinDisplacementResponseChannel
+    geometry bond onsite exchange measured source hbar q spinScale component 1
+  let D := boundedOneBodyOperator (LinearMap.symmetrizedProduct (K := ℂ)
+    ((spinfulGeometry geometry).directionalPosition measured)
+    (spinOneBodyLinear (Site := Site) spinScale component))
+  let expectation := QuantumTheory.LinearResponse.eigenbasisNormalizedExpectation system data
+  have hstationary := QuantumTheory.LinearResponse.isStationary_eigenbasisNormalizedExpectation
+    system data
+  change QuantumTheory.Transport.finiteVolumeConductivityFromVectorPotential volume ω η
+      (channel.infiniteTimeAdiabaticResponse (QuantumTheory.LinearResponse.freePropagatorGroup system)
+        system.hbar expectation ω η) =
+    -QuantumTheory.LinearResponse.finiteLehmannTableResponse system.hbar ω η
+      (QuantumTheory.LinearResponse.finiteLehmannTableOfEigenbasis system data D channel.source) /
+      (volume.volume : ℂ)
+  have hresponse := realSpaceRashbaSpinDisplacement_conductivity_eq volume
+    geometry bond onsite exchange measured source hbar q spinScale hhbar
+    component expectation hstationary ω η hη
+  change QuantumTheory.Transport.finiteVolumeConductivityFromVectorPotential volume ω η
+      (channel.infiniteTimeAdiabaticResponse (QuantumTheory.LinearResponse.freePropagatorGroup system)
+        system.hbar expectation ω η) =
+      -QuantumTheory.LinearResponse.adiabaticFrequencyDomainSusceptibility
+        (QuantumTheory.LinearResponse.freePropagatorGroup system) system.hbar
+        expectation D channel.source ω η / (volume.volume : ℂ) at hresponse
+  rw [hresponse, QuantumTheory.LinearResponse.finiteLehmannTableResponse_ofEigenbasis,
+    QuantumTheory.LinearResponse.adiabaticFrequencyDomainSusceptibility_eigenbasis_eq_lehmannSeries
+      system data D channel.source ω η hη
+      (QuantumTheory.LinearResponse.eigenbasisTimeDomainSummable_of_finite
+        system data D channel.source)]
 
 end
 end QuantumTheory.Models.RashbaExchange
