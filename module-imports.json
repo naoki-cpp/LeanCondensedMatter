@@ -3315,7 +3315,7 @@
       "name": "LeanCondensedMatter.QuantumMechanics.SingleParticle.ChargeLikeCurrent",
       "sourceFile": "LeanCondensedMatter/QuantumMechanics/SingleParticle/ChargeLikeCurrent.lean",
       "imports": [
-        "LeanCondensedMatter.QuantumMechanics.SingleParticle.CorrectedCurrent"
+        "LeanCondensedMatter.QuantumTheory.ConservationLaw.LocalizedTransport"
       ],
       "externalImportCount": 0
     },
@@ -3659,24 +3659,6 @@
       "externalImportCount": 0
     },
     {
-      "name": "LeanCondensedMatter.QuantumMechanics.SingleParticle.CorrectedCurrent",
-      "sourceFile": "LeanCondensedMatter/QuantumMechanics/SingleParticle/CorrectedCurrent.lean",
-      "imports": [
-        "LeanCondensedMatter.Analysis.ConservationLaw.CurrentRepresentation",
-        "LeanCondensedMatter.Analysis.ConservationLaw.SymmetricLocalizationAlgebra",
-        "LeanCondensedMatter.QuantumTheory.ConservationLaw.LocalizedTransport"
-      ],
-      "externalImportCount": 0
-    },
-    {
-      "name": "LeanCondensedMatter.QuantumMechanics.SingleParticle.CorrectedCurrentAmbiguity",
-      "sourceFile": "LeanCondensedMatter/QuantumMechanics/SingleParticle/CorrectedCurrentAmbiguity.lean",
-      "imports": [
-        "LeanCondensedMatter.QuantumMechanics.SingleParticle.CorrectedCurrent"
-      ],
-      "externalImportCount": 0
-    },
-    {
       "name": "LeanCondensedMatter.QuantumMechanics.SingleParticle.GeneralizedCurrent",
       "sourceFile": "LeanCondensedMatter/QuantumMechanics/SingleParticle/GeneralizedCurrent.lean",
       "imports": [
@@ -3694,8 +3676,8 @@
       "name": "LeanCondensedMatter.QuantumMechanics.SingleParticle.OrbitalAngularMomentumCurrent",
       "sourceFile": "LeanCondensedMatter/QuantumMechanics/SingleParticle/OrbitalAngularMomentumCurrent.lean",
       "imports": [
-        "LeanCondensedMatter.QuantumMechanics.SingleParticle.CorrectedCurrent",
-        "LeanCondensedMatter.QuantumMechanics.SingleParticle.OrbitalAngularMomentum"
+        "LeanCondensedMatter.QuantumMechanics.SingleParticle.OrbitalAngularMomentum",
+        "LeanCondensedMatter.QuantumTheory.ConservationLaw.LocalizedTransport"
       ],
       "externalImportCount": 0
     },
@@ -3703,8 +3685,8 @@
       "name": "LeanCondensedMatter.QuantumMechanics.SingleParticle.SymmetrizedVelocityCurrent",
       "sourceFile": "LeanCondensedMatter/QuantumMechanics/SingleParticle/SymmetrizedVelocityCurrent.lean",
       "imports": [
-        "LeanCondensedMatter.QuantumMechanics.SingleParticle.CorrectedCurrent",
-        "LeanCondensedMatter.QuantumMechanics.SingleParticle.GeneralizedCurrent"
+        "LeanCondensedMatter.QuantumMechanics.SingleParticle.GeneralizedCurrent",
+        "LeanCondensedMatter.QuantumTheory.ConservationLaw.LocalizedTransport"
       ],
       "externalImportCount": 0
     },
@@ -3714,7 +3696,6 @@
       "imports": [
         "LeanCondensedMatter.QuantumMechanics.SingleParticle.ChargeLikeCurrent",
         "LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum",
-        "LeanCondensedMatter.QuantumMechanics.SingleParticle.CorrectedCurrentAmbiguity",
         "LeanCondensedMatter.QuantumMechanics.SingleParticle.GeneralizedCurrent",
         "LeanCondensedMatter.QuantumMechanics.SingleParticle.OrbitalAngularMomentum",
         "LeanCondensedMatter.QuantumMechanics.SingleParticle.OrbitalAngularMomentumCurrent",
@@ -5437,6 +5418,7 @@
       "name": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.OwnerSlotCongr",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Diagrammatics/ExternalInsertion/Components/OwnerSlotCongr.lean",
       "imports": [
+        "LeanCondensedMatter.Combinatorics.PerfectPairing.Transport",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ConnectedAssembly"
       ],
       "externalImportCount": 0
@@ -7599,6 +7581,7 @@
       "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Series.CauchySeries",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Diagrammatics/TwoPointDiagramExpansion/Series/CauchySeries.lean",
       "imports": [
+        "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalSubsetMoment",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.FiberCauchySum",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Series.DysonSeries"
       ],

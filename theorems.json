@@ -10300,6 +10300,7 @@
       "Combinatorics.Pairing.splitRight_ofSplit",
       "Combinatorics.PairingOn.ext_iff",
       "Combinatorics.PairingOn.sigmaCongrRight_sigmaFiberPairing",
+      "Combinatorics.PairingOn.sigmaCongrRight_transport",
       "Combinatorics.PairingOn.transport_symm_transport",
       "Combinatorics.PairingOn.transport_trans",
       "Combinatorics.PairingOn.transport_transport_symm",
@@ -10310,7 +10311,6 @@
       "SecondQuantization.Common.ExternalInsertionDiagram.slotCongr_pairingInMixedOrder_eq_of_injective",
       "SecondQuantization.Common.QuarticDiagram.reassemble_componentPartition",
       "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.sidePairing_sideMatching",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.OwnerSlotCongr.0.SecondQuantization.Common.sigmaPairing_transport",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.restrictComponent_reassemble_pairing",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalSubsetAssembly.0.SecondQuantization.Fermionic.pairing_heq_of_finCongr_transport"
     ],
@@ -10327,6 +10327,7 @@
       "Combinatorics.Pairing.splitRight_ofSplit",
       "Combinatorics.PairingOn.ext_iff",
       "Combinatorics.PairingOn.sigmaCongrRight_sigmaFiberPairing",
+      "Combinatorics.PairingOn.sigmaCongrRight_transport",
       "Combinatorics.PairingOn.transport_symm_transport",
       "Combinatorics.PairingOn.transport_trans",
       "Combinatorics.PairingOn.transport_transport_symm",
@@ -10337,7 +10338,6 @@
       "SecondQuantization.Common.ExternalInsertionDiagram.slotCongr_pairingInMixedOrder_eq_of_injective",
       "SecondQuantization.Common.QuarticDiagram.reassemble_componentPartition",
       "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.sidePairing_sideMatching",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.OwnerSlotCongr.0.SecondQuantization.Common.sigmaPairing_transport",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.restrictComponent_reassemble_pairing",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalSubsetAssembly.0.SecondQuantization.Fermionic.pairing_heq_of_finCongr_transport"
     ],
@@ -10661,10 +10661,10 @@
     "directWrapperOf": null,
     "dependents": [
       "Combinatorics.PairingOn.sigmaCongrRight_sigmaFiberPairing",
+      "Combinatorics.PairingOn.sigmaCongrRight_transport",
       "SecondQuantization.Common.ExternalInsertionBlockLayout.assembleDiagram_partner",
       "SecondQuantization.Common.ExternalInsertionBlockLayout.assembleDiagram_partner_block",
       "SecondQuantization.Common.ExternalInsertionDiagram.assembleComponentPairing_partner",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.OwnerSlotCongr.0.SecondQuantization.Common.sigmaPairing_transport",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_partner_bigLegEquiv_fst",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_partner_bigLegEquiv_symm_sigma_mk"
     ],
@@ -10673,10 +10673,10 @@
     "completedMention": false,
     "compiledConsumers": [
       "Combinatorics.PairingOn.sigmaCongrRight_sigmaFiberPairing",
+      "Combinatorics.PairingOn.sigmaCongrRight_transport",
       "SecondQuantization.Common.ExternalInsertionBlockLayout.assembleDiagram_partner",
       "SecondQuantization.Common.ExternalInsertionBlockLayout.assembleDiagram_partner_block",
       "SecondQuantization.Common.ExternalInsertionDiagram.assembleComponentPairing_partner",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.OwnerSlotCongr.0.SecondQuantization.Common.sigmaPairing_transport",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_partner_bigLegEquiv_fst",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_partner_bigLegEquiv_symm_sigma_mk"
     ],
@@ -10725,6 +10725,52 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Common.ExternalInsertionBlockLayout.assembleDiagram_restrictBlock"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {ι : Type u_1} {β : ι → Type u_2} {γ : ι → Type u_3} (P : (i : ι) → Combinatorics.PairingOn (β i))\n  (e : (i : ι) → β i ≃ γ i),\n  (Combinatorics.PairingOn.sigmaCongrRight fun i => (P i).transport (e i).symm) =\n    (Combinatorics.PairingOn.sigmaCongrRight P).transport (Equiv.sigmaCongrRight e).symm",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "Combinatorics.PairingOn.sigmaCongrRight_transport",
+    "module": "LeanCondensedMatter.Combinatorics.PerfectPairing.Transport",
+    "externalAxioms": [],
+    "docString": "Conjugating each local perfect pairing by its own slot equivalence\ncommutes with assembling the complete independent block pairing. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Common.ExternalInsertionBlockLayout.assembleDiagram_ownerSlotCongr"
+    ],
+    "dependencies": [
+      "Combinatorics.PairingOn.ext",
+      "Combinatorics.PairingOn.sigmaCongrRight_partner",
+      "Combinatorics.PairingOn.transport_partner"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Common.ExternalInsertionBlockLayout.assembleDiagram_ownerSlotCongr"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -10894,6 +10940,7 @@
       "Combinatorics.Pairing.ofSplit_partner_inr",
       "Combinatorics.Pairing.ofSplit_reindex",
       "Combinatorics.PairingOn.restrictAlongEquiv_partner",
+      "Combinatorics.PairingOn.sigmaCongrRight_transport",
       "Combinatorics.PairingOn.transport_symm_transport",
       "Combinatorics.PairingOn.transport_trans",
       "Combinatorics.PairingOn.transport_transport_symm",
@@ -10913,7 +10960,6 @@
       "SecondQuantization.Common.twoPointDiagramExternalInsertionEquiv_partner",
       "SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_left_normalizedPair",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.BlockConnectivity.0.SecondQuantization.Common.ExternalInsertionBlockLayout.pairingTransport_preserves_block",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.OwnerSlotCongr.0.SecondQuantization.Common.sigmaPairing_transport",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_partner_bigLegEquiv_fst",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_partner_bigLegEquiv_symm_sigma_mk",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalSubsetAssembly.0.SecondQuantization.Fermionic.pairing_heq_of_finCongr_transport"
@@ -10928,6 +10974,7 @@
       "Combinatorics.Pairing.ofSplit_partner_inr",
       "Combinatorics.Pairing.ofSplit_reindex",
       "Combinatorics.PairingOn.restrictAlongEquiv_partner",
+      "Combinatorics.PairingOn.sigmaCongrRight_transport",
       "Combinatorics.PairingOn.transport_symm_transport",
       "Combinatorics.PairingOn.transport_trans",
       "Combinatorics.PairingOn.transport_transport_symm",
@@ -10947,7 +10994,6 @@
       "SecondQuantization.Common.twoPointDiagramExternalInsertionEquiv_partner",
       "SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_left_normalizedPair",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.BlockConnectivity.0.SecondQuantization.Common.ExternalInsertionBlockLayout.pairingTransport_preserves_block",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.OwnerSlotCongr.0.SecondQuantization.Common.sigmaPairing_transport",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_partner_bigLegEquiv_fst",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_partner_bigLegEquiv_symm_sigma_mk",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalSubsetAssembly.0.SecondQuantization.Fermionic.pairing_heq_of_finCongr_transport"
@@ -15165,8 +15211,8 @@
     "directWrapperOf": null,
     "dependents": [
       "QuantumMechanics.SingleParticle.correctedChargeCurrentFlux_eq",
-      "QuantumMechanics.SingleParticle.exists_current_eq_symmetrized_add_correction_add_invisible",
       "QuantumMechanics.SingleParticle.heisenbergTransportOrbitalAngularMomentum_apply",
+      "QuantumTheory.ConservationLaw.exists_current_eq_symmetrized_add_correction_add_invisible",
       "SecondQuantization.Fermionic.Transport.boundedFluxRetardedResponse_eq_symmetrized_add_correction"
     ],
     "dependencies": [],
@@ -15174,8 +15220,8 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumMechanics.SingleParticle.correctedChargeCurrentFlux_eq",
-      "QuantumMechanics.SingleParticle.exists_current_eq_symmetrized_add_correction_add_invisible",
       "QuantumMechanics.SingleParticle.heisenbergTransportOrbitalAngularMomentum_apply",
+      "QuantumTheory.ConservationLaw.exists_current_eq_symmetrized_add_correction_add_invisible",
       "SecondQuantization.Fermionic.Transport.boundedFluxRetardedResponse_eq_symmetrized_add_correction"
     ],
     "compiledConsumerCount": 4,
@@ -41948,7 +41994,8 @@
       "SecondQuantization.Common.iteratedDeriv_analyticNormalizedLogPartitionFunction_eq_factorial_mul_coeff",
       "SecondQuantization.Fermionic.factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_sum_connectedQuarticWickDiagramAmplitude",
       "SecondQuantization.Fermionic.partitionFunctionNormalizedExternalInsertionDysonSeries_eq_vacuumFreeExternalInsertionDysonSeries",
-      "SecondQuantization.Fermionic.partitionFunctionNormalizedTwoPointDysonSeries_eq_connectedTwoPointDysonSeries"
+      "SecondQuantization.Fermionic.partitionFunctionNormalizedTwoPointDysonSeries_eq_connectedTwoPointDysonSeries",
+      "SecondQuantization.Fermionic.partitionFunctionNormalizedTwoPointDysonSeries_eq_shiftedVacuumFree"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
@@ -41957,9 +42004,10 @@
       "SecondQuantization.Common.iteratedDeriv_analyticNormalizedLogPartitionFunction_eq_factorial_mul_coeff",
       "SecondQuantization.Fermionic.factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_sum_connectedQuarticWickDiagramAmplitude",
       "SecondQuantization.Fermionic.partitionFunctionNormalizedExternalInsertionDysonSeries_eq_vacuumFreeExternalInsertionDysonSeries",
-      "SecondQuantization.Fermionic.partitionFunctionNormalizedTwoPointDysonSeries_eq_connectedTwoPointDysonSeries"
+      "SecondQuantization.Fermionic.partitionFunctionNormalizedTwoPointDysonSeries_eq_connectedTwoPointDysonSeries",
+      "SecondQuantization.Fermionic.partitionFunctionNormalizedTwoPointDysonSeries_eq_shiftedVacuumFree"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 5,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -42292,16 +42340,18 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Fermionic.partitionFunctionNormalizedExternalInsertionDysonSeries_eq_vacuumFreeExternalInsertionDysonSeries",
-      "SecondQuantization.Fermionic.partitionFunctionNormalizedTwoPointDysonSeries_eq_connectedTwoPointDysonSeries"
+      "SecondQuantization.Fermionic.partitionFunctionNormalizedTwoPointDysonSeries_eq_connectedTwoPointDysonSeries",
+      "SecondQuantization.Fermionic.partitionFunctionNormalizedTwoPointDysonSeries_eq_shiftedVacuumFree"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Fermionic.partitionFunctionNormalizedExternalInsertionDysonSeries_eq_vacuumFreeExternalInsertionDysonSeries",
-      "SecondQuantization.Fermionic.partitionFunctionNormalizedTwoPointDysonSeries_eq_connectedTwoPointDysonSeries"
+      "SecondQuantization.Fermionic.partitionFunctionNormalizedTwoPointDysonSeries_eq_connectedTwoPointDysonSeries",
+      "SecondQuantization.Fermionic.partitionFunctionNormalizedTwoPointDysonSeries_eq_shiftedVacuumFree"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -48474,7 +48524,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {Test : Type u_1} {OneForm : Type u_2} [inst : AddCommGroup Test] [inst_1 : _root_.Module ℂ Test]\n  [inst_2 : AddCommGroup OneForm] [inst_3 : _root_.Module ℂ OneForm] (V : Type u_3) [inst_4 : AddCommGroup V]\n  [inst_5 : _root_.Module ℂ V] (ℏ : ℝ) (h : V →ₗ[ℂ] V) (M : Test →ₗ[ℂ] V →ₗ[ℂ] V) (velocity : V →ₗ[ℂ] V)\n  (d : Test →ₗ[ℂ] OneForm) (N : OneForm →ₗ[ℂ] V →ₗ[ℂ] V) (q : ℂ)\n  (hvelocity :\n    QuantumTheory.ConservationLaw.heisenbergLocalizationFunctional ℏ h M =\n      ConservationLaw.localizedQuantityFunctional N velocity ∘ₗ d),\n  ↑(QuantumMechanics.SingleParticle.correctedSymmetrizedVelocityCurrentRepresentation V ℏ h M (q • LinearMap.id)\n        velocity d N hvelocity) =\n    (QuantumTheory.ConservationLaw.operatorLocalCurrentPairing N) (q • velocity)",
+    "statement": "∀ {Test : Type u_1} {OneForm : Type u_2} [inst : AddCommGroup Test] [inst_1 : _root_.Module ℂ Test]\n  [inst_2 : AddCommGroup OneForm] [inst_3 : _root_.Module ℂ OneForm] (V : Type u_3) [inst_4 : AddCommGroup V]\n  [inst_5 : _root_.Module ℂ V] (ℏ : ℝ) (h : V →ₗ[ℂ] V) (M : Test →ₗ[ℂ] V →ₗ[ℂ] V) (velocity : V →ₗ[ℂ] V)\n  (d : Test →ₗ[ℂ] OneForm) (N : OneForm →ₗ[ℂ] V →ₗ[ℂ] V) (q : ℂ)\n  (hvelocity :\n    QuantumTheory.ConservationLaw.heisenbergLocalizationFunctional ℏ h M =\n      ConservationLaw.localizedQuantityFunctional N velocity ∘ₗ d),\n  ↑(QuantumTheory.ConservationLaw.correctedSymmetrizedVelocityCurrentRepresentation ℏ h M (q • LinearMap.id) velocity d\n        N hvelocity) =\n    (QuantumTheory.ConservationLaw.operatorLocalCurrentPairing N) (q • velocity)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -48495,89 +48545,6 @@
     "dependents": [],
     "dependencies": [
       "QuantumMechanics.SingleParticle.correctedChargeCurrentFlux_eq"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Test : Type u_1} {OneForm : Type u_2} [inst : AddCommGroup Test] [inst_1 : _root_.Module ℂ Test]\n  [inst_2 : AddCommGroup OneForm] [inst_3 : _root_.Module ℂ OneForm] (V : Type u_3) [inst_4 : AddCommGroup V]\n  [inst_5 : _root_.Module ℂ V] (ℏ : ℝ) (h : V →ₗ[ℂ] V) (M : Test →ₗ[ℂ] V →ₗ[ℂ] V) (m velocity : V →ₗ[ℂ] V)\n  (d : Test →ₗ[ℂ] OneForm) (N : OneForm →ₗ[ℂ] V →ₗ[ℂ] V),\n  QuantumTheory.ConservationLaw.heisenbergLocalizationFunctional ℏ h M =\n      ConservationLaw.localizedQuantityFunctional N velocity ∘ₗ d →\n    ∀\n      (R :\n        ConservationLaw.DifferentialCurrentRepresentation d\n          (QuantumTheory.ConservationLaw.heisenbergTransportFunctional ℏ h M m)),\n      ↑R ∘ₗ d = ConservationLaw.nestedSymmetrizedCurrentFlux velocity m N ∘ₗ d",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": true,
-    "retainedMention": true,
-    "projectAxioms": [],
-    "name": "QuantumMechanics.SingleParticle.currentEquivalent_nestedSymmetrizedCurrentFlux",
-    "module": "LeanCondensedMatter.QuantumMechanics.SingleParticle.CorrectedCurrent",
-    "externalAxioms": [],
-    "docString": "Any other full current functional representing the same intrinsic transport is equivalent on\nexact differentials to the generic nested current flux. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumMechanics.SingleParticle.exists_current_eq_symmetrized_add_correction_add_invisible"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumMechanics.SingleParticle.exists_current_eq_symmetrized_add_correction_add_invisible"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {Test : Type u_1} {OneForm : Type u_2} [inst : AddCommGroup Test] [inst_1 : _root_.Module ℂ Test]\n  [inst_2 : AddCommGroup OneForm] [inst_3 : _root_.Module ℂ OneForm] (V : Type u_3) [inst_4 : AddCommGroup V]\n  [inst_5 : _root_.Module ℂ V] (ℏ : ℝ) (h : V →ₗ[ℂ] V) (M : Test →ₗ[ℂ] V →ₗ[ℂ] V) (m velocity : V →ₗ[ℂ] V)\n  (d : Test →ₗ[ℂ] OneForm) (N : OneForm →ₗ[ℂ] V →ₗ[ℂ] V),\n  QuantumTheory.ConservationLaw.heisenbergLocalizationFunctional ℏ h M =\n      ConservationLaw.localizedQuantityFunctional N velocity ∘ₗ d →\n    ∀\n      (R :\n        ConservationLaw.DifferentialCurrentRepresentation d\n          (QuantumTheory.ConservationLaw.heisenbergTransportFunctional ℏ h M m)),\n      ∃ K,\n        K ∘ₗ d = 0 ∧\n          ↑R =\n            ConservationLaw.symmetrizedCurrentFlux velocity m N +\n                ConservationLaw.localizationCorrectionCurrentFlux velocity m N +\n              K",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": true,
-    "retainedMention": true,
-    "projectAxioms": [],
-    "name": "QuantumMechanics.SingleParticle.exists_current_eq_symmetrized_add_correction_add_invisible",
-    "module": "LeanCondensedMatter.QuantumMechanics.SingleParticle.CorrectedCurrentAmbiguity",
-    "externalAxioms": [],
-    "docString": "Any representative of the same intrinsic transport has the form\n\n`J = J_sym + J_corr + K`\n\nwith `K (d f) = 0` for every test object `f`. Thus `K` is pure extension ambiguity invisible\nto the intrinsic flux. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "ConservationLaw.nestedSymmetrizedCurrentFlux_eq_symmetrized_add_correction",
-      "QuantumMechanics.SingleParticle.currentEquivalent_nestedSymmetrizedCurrentFlux"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -48618,8 +48585,8 @@
     "dependents": [],
     "dependencies": [
       "ConservationLaw.nestedSymmetrizedCurrentFlux_eq_symmetrized_add_correction",
-      "QuantumMechanics.SingleParticle.nestedSymmetrizedCurrentFlux_eq_comp",
-      "QuantumMechanics.SingleParticle.orbitalAngularMomentum_localizationCorrectionCurrentFlux_apply"
+      "QuantumMechanics.SingleParticle.orbitalAngularMomentum_localizationCorrectionCurrentFlux_apply",
+      "QuantumTheory.ConservationLaw.nestedSymmetrizedCurrentFlux_eq_comp"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -48837,49 +48804,6 @@
     "compiledConsumers": [
       "QuantumMechanics.SingleParticle.lie_orbitalAngularMomentum_continuum_sign",
       "QuantumMechanics.SingleParticle.orbitalAngularMomentum_localizationCorrectionCurrentFlux_apply"
-    ],
-    "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Test : Type u_1} {OneForm : Type u_2} [inst : AddCommGroup Test] [inst_1 : _root_.Module ℂ Test]\n  [inst_2 : AddCommGroup OneForm] [inst_3 : _root_.Module ℂ OneForm] (V : Type u_3) [inst_4 : AddCommGroup V]\n  [inst_5 : _root_.Module ℂ V] (ℏ : ℝ) (h : V →ₗ[ℂ] V) (M : Test →ₗ[ℂ] V →ₗ[ℂ] V) (m velocity : V →ₗ[ℂ] V)\n  (d : Test →ₗ[ℂ] OneForm) (N : OneForm →ₗ[ℂ] V →ₗ[ℂ] V),\n  QuantumTheory.ConservationLaw.heisenbergLocalizationFunctional ℏ h M =\n      ConservationLaw.localizedQuantityFunctional N velocity ∘ₗ d →\n    QuantumTheory.ConservationLaw.heisenbergTransportFunctional ℏ h M m =\n      ConservationLaw.nestedSymmetrizedCurrentFlux velocity m N ∘ₗ d",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumMechanics.SingleParticle.nestedSymmetrizedCurrentFlux_eq_comp",
-    "module": "LeanCondensedMatter.QuantumMechanics.SingleParticle.CorrectedCurrent",
-    "externalAxioms": [],
-    "docString": "A velocity representation of localizer evolution lifts to the generic nested current flux for\nan arbitrary transported operator `m`; no locality/commutation assumption on `m` is needed. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumMechanics.SingleParticle.heisenbergTransportOrbitalAngularMomentum_apply"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumMechanics.SingleParticle.correctedSymmetrizedVelocityCurrentRepresentation",
-      "QuantumMechanics.SingleParticle.heisenbergTransportOrbitalAngularMomentum_apply"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -49135,6 +49059,89 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {Test : Type u_1} {OneForm : Type u_2} [inst : AddCommGroup Test] [inst_1 : _root_.Module ℂ Test]\n  [inst_2 : AddCommGroup OneForm] [inst_3 : _root_.Module ℂ OneForm] {𝒜 : Type u_3} [inst_4 : Ring 𝒜]\n  [inst_5 : Algebra ℂ 𝒜] (ℏ : ℝ) (h : 𝒜) (M : Test →ₗ[ℂ] 𝒜) (m velocity : 𝒜) (d : Test →ₗ[ℂ] OneForm)\n  (N : OneForm →ₗ[ℂ] 𝒜),\n  QuantumTheory.ConservationLaw.heisenbergLocalizationFunctional ℏ h M =\n      ConservationLaw.localizedQuantityFunctional N velocity ∘ₗ d →\n    ∀\n      (R :\n        ConservationLaw.DifferentialCurrentRepresentation d\n          (QuantumTheory.ConservationLaw.heisenbergTransportFunctional ℏ h M m)),\n      ↑R ∘ₗ d = ConservationLaw.nestedSymmetrizedCurrentFlux velocity m N ∘ₗ d",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
+    "projectAxioms": [],
+    "name": "QuantumTheory.ConservationLaw.currentEquivalent_nestedSymmetrizedCurrentFlux",
+    "module": "LeanCondensedMatter.QuantumTheory.ConservationLaw.LocalizedTransport",
+    "externalAxioms": [],
+    "docString": "Any other full current functional representing the same intrinsic transport is equivalent on\nexact differentials to the generic nested current flux. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.ConservationLaw.exists_current_eq_symmetrized_add_correction_add_invisible"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.ConservationLaw.exists_current_eq_symmetrized_add_correction_add_invisible"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {Test : Type u_1} {OneForm : Type u_2} [inst : AddCommGroup Test] [inst_1 : _root_.Module ℂ Test]\n  [inst_2 : AddCommGroup OneForm] [inst_3 : _root_.Module ℂ OneForm] {𝒜 : Type u_3} [inst_4 : Ring 𝒜]\n  [inst_5 : Algebra ℂ 𝒜] (ℏ : ℝ) (h : 𝒜) (M : Test →ₗ[ℂ] 𝒜) (m velocity : 𝒜) (d : Test →ₗ[ℂ] OneForm)\n  (N : OneForm →ₗ[ℂ] 𝒜),\n  QuantumTheory.ConservationLaw.heisenbergLocalizationFunctional ℏ h M =\n      ConservationLaw.localizedQuantityFunctional N velocity ∘ₗ d →\n    ∀\n      (R :\n        ConservationLaw.DifferentialCurrentRepresentation d\n          (QuantumTheory.ConservationLaw.heisenbergTransportFunctional ℏ h M m)),\n      ∃ K,\n        K ∘ₗ d = 0 ∧\n          ↑R =\n            ConservationLaw.symmetrizedCurrentFlux velocity m N +\n                ConservationLaw.localizationCorrectionCurrentFlux velocity m N +\n              K",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
+    "projectAxioms": [],
+    "name": "QuantumTheory.ConservationLaw.exists_current_eq_symmetrized_add_correction_add_invisible",
+    "module": "LeanCondensedMatter.QuantumTheory.ConservationLaw.LocalizedTransport",
+    "externalAxioms": [],
+    "docString": "Any representative of the same intrinsic transport has the form\n\n`J = J_sym + J_corr + K`\n\nwith `K (d f) = 0` for every test object `f`. Thus `K` is pure extension ambiguity invisible\nto the intrinsic flux. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "ConservationLaw.nestedSymmetrizedCurrentFlux_eq_symmetrized_add_correction",
+      "QuantumTheory.ConservationLaw.currentEquivalent_nestedSymmetrizedCurrentFlux"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {𝒜 : Type u_1} [inst : Ring 𝒜] [inst_1 : Algebra ℂ 𝒜] (ℏ : ℝ) (h A : 𝒜),\n  (QuantumTheory.ConservationLaw.heisenbergEvolution ℏ h) A = QuantumTheory.ConservationLaw.heisenbergScale ℏ • ⁅h, A⁆",
     "standardAxioms": [
       "Classical.choice",
@@ -49325,6 +49332,49 @@
     "completedMention": false,
     "compiledConsumers": [],
     "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Test : Type u_1} {OneForm : Type u_2} [inst : AddCommGroup Test] [inst_1 : _root_.Module ℂ Test]\n  [inst_2 : AddCommGroup OneForm] [inst_3 : _root_.Module ℂ OneForm] {𝒜 : Type u_3} [inst_4 : Ring 𝒜]\n  [inst_5 : Algebra ℂ 𝒜] (ℏ : ℝ) (h : 𝒜) (M : Test →ₗ[ℂ] 𝒜) (m velocity : 𝒜) (d : Test →ₗ[ℂ] OneForm)\n  (N : OneForm →ₗ[ℂ] 𝒜),\n  QuantumTheory.ConservationLaw.heisenbergLocalizationFunctional ℏ h M =\n      ConservationLaw.localizedQuantityFunctional N velocity ∘ₗ d →\n    QuantumTheory.ConservationLaw.heisenbergTransportFunctional ℏ h M m =\n      ConservationLaw.nestedSymmetrizedCurrentFlux velocity m N ∘ₗ d",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.ConservationLaw.nestedSymmetrizedCurrentFlux_eq_comp",
+    "module": "LeanCondensedMatter.QuantumTheory.ConservationLaw.LocalizedTransport",
+    "externalAxioms": [],
+    "docString": "A velocity representation of localizer evolution lifts to the generic nested current flux for\nan arbitrary transported operator `m`; no locality/commutation assumption on `m` is needed. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumMechanics.SingleParticle.heisenbergTransportOrbitalAngularMomentum_apply"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumMechanics.SingleParticle.heisenbergTransportOrbitalAngularMomentum_apply",
+      "QuantumTheory.ConservationLaw.correctedSymmetrizedVelocityCurrentRepresentation"
+    ],
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -121579,11 +121629,11 @@
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.Integral.0.SecondQuantization.Fermionic.sum_ownerSlotCongr_connectedDyson_eq_ordered_of_predicates"
     ],
     "dependencies": [
+      "Combinatorics.PairingOn.sigmaCongrRight_transport",
       "Combinatorics.PairingOn.transport_trans",
       "SecondQuantization.Common.ExternalInsertionBlockLayout.ownerSlotCongr_interactionEquiv",
       "SecondQuantization.Common.ExternalInsertionBlockLayout.ownerSlotCongr_legEquiv",
-      "SecondQuantization.Common.ExternalInsertionDiagram.ext",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.OwnerSlotCongr.0.SecondQuantization.Common.sigmaPairing_transport"
+      "SecondQuantization.Common.ExternalInsertionDiagram.ext"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -138640,7 +138690,8 @@
       "SecondQuantization.Common.normalizedAnalyticDysonPartitionFunction_zero",
       "SecondQuantization.Fermionic.factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_sum_connectedQuarticWickDiagramAmplitude",
       "SecondQuantization.Fermionic.partitionFunctionNormalizedExternalInsertionDysonSeries_eq_vacuumFreeExternalInsertionDysonSeries",
-      "SecondQuantization.Fermionic.partitionFunctionNormalizedTwoPointDysonSeries_eq_connectedTwoPointDysonSeries"
+      "SecondQuantization.Fermionic.partitionFunctionNormalizedTwoPointDysonSeries_eq_connectedTwoPointDysonSeries",
+      "SecondQuantization.Fermionic.partitionFunctionNormalizedTwoPointDysonSeries_eq_shiftedVacuumFree"
     ],
     "dependencies": [
       "SecondQuantization.Common.constantCoeff_dysonTraceSeries",
@@ -138654,9 +138705,10 @@
       "SecondQuantization.Common.normalizedAnalyticDysonPartitionFunction_zero",
       "SecondQuantization.Fermionic.factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_sum_connectedQuarticWickDiagramAmplitude",
       "SecondQuantization.Fermionic.partitionFunctionNormalizedExternalInsertionDysonSeries_eq_vacuumFreeExternalInsertionDysonSeries",
-      "SecondQuantization.Fermionic.partitionFunctionNormalizedTwoPointDysonSeries_eq_connectedTwoPointDysonSeries"
+      "SecondQuantization.Fermionic.partitionFunctionNormalizedTwoPointDysonSeries_eq_connectedTwoPointDysonSeries",
+      "SecondQuantization.Fermionic.partitionFunctionNormalizedTwoPointDysonSeries_eq_shiftedVacuumFree"
     ],
-    "compiledConsumerCount": 5,
+    "compiledConsumerCount": 6,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -167365,6 +167417,137 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
+    "terminal": true,
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] (ε : Mode → ℝ) (β μ : ℝ),\n  0 ≤ β →\n    ∀ (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ) (i j : Mode) (τ τ' : ℝ) (n : ℕ),\n      SecondQuantization.Fermionic.connectedTwoPointDysonCoefficient ε β μ g i j τ τ' n =\n        SecondQuantization.Fermionic.twoPointChemicalPotentialFactor μ τ τ' *\n          SecondQuantization.Fermionic.connectedExternalInsertionDysonCoefficient (fun k => ε k - μ) β g\n            (SecondQuantization.Fermionic.twoPointExternalLabels i j)\n            (SecondQuantization.Common.twoPointExternalTimes τ τ') n",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Fermionic.connectedTwoPointDysonCoefficient_eq_shiftedConnectedExternalInsertion",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Series.CauchySeries",
+    "externalAxioms": [],
+    "docString": "The resulting integrated connected coefficient identity is coefficientwise\nand retains the physical chemical-potential factor. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "SecondQuantization.Fermionic.connectedTwoPointDysonSeries_eq_shiftedConnectedExternalInsertion"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] (ε : Mode → ℝ) (β μ : ℝ),\n  0 ≤ β →\n    ∀ (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ) (i j : Mode) (τ τ' : ℝ),\n      SecondQuantization.Fermionic.connectedTwoPointDysonSeries ε β μ g i j τ τ' =\n        SecondQuantization.Fermionic.externalSubsetSourceCumulantSeries\n          (SecondQuantization.Fermionic.grandCanonicalExternalSubsetMomentSeries ε β μ g\n            (SecondQuantization.Fermionic.twoPointExternalLabels i j)\n            (SecondQuantization.Common.twoPointExternalTimes τ τ'))\n          Finset.univ",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Fermionic.connectedTwoPointDysonSeries_eq_grandCanonicalSourceCumulant",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Series.CauchySeries",
+    "externalAxioms": [],
+    "docString": "The physical two-point connected series is the grand-canonical source\ncumulant evaluated on the full two-element external sector. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "SecondQuantization.Fermionic.connectedTwoPointDysonSeries_eq_shiftedConnectedExternalInsertion",
+      "SecondQuantization.Fermionic.externalFieldFamilyChemicalPotentialFactor_twoPoint",
+      "SecondQuantization.Fermionic.grandCanonicalExternalSubsetConnectedDiagramSeries_univ",
+      "SecondQuantization.Fermionic.grandCanonicalExternalSubsetSourceCumulantSeries_eq_connectedDiagramSeries_two"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] (ε : Mode → ℝ) (β μ : ℝ),\n  0 ≤ β →\n    ∀ (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ) (i j : Mode) (τ τ' : ℝ),\n      SecondQuantization.Fermionic.connectedTwoPointDysonSeries ε β μ g i j τ τ' =\n        PowerSeries.C (SecondQuantization.Fermionic.twoPointChemicalPotentialFactor μ τ τ') *\n          SecondQuantization.Fermionic.connectedExternalInsertionDysonSeries (fun k => ε k - μ) β g\n            (SecondQuantization.Fermionic.twoPointExternalLabels i j)\n            (SecondQuantization.Common.twoPointExternalTimes τ τ')",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Fermionic.connectedTwoPointDysonSeries_eq_shiftedConnectedExternalInsertion",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Series.CauchySeries",
+    "externalAxioms": [],
+    "docString": "The two independent physical connected diagram sums agree for two external\nfields. This follows by comparing their already-established vacuum\nnormalizations; connectivity is not replaced by an operator definition. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Fermionic.connectedTwoPointDysonCoefficient_eq_shiftedConnectedExternalInsertion",
+      "SecondQuantization.Fermionic.connectedTwoPointDysonSeries_eq_grandCanonicalSourceCumulant"
+    ],
+    "dependencies": [
+      "SecondQuantization.Fermionic.partitionFunctionNormalizedTwoPointDysonSeries_eq_connectedTwoPointDysonSeries",
+      "SecondQuantization.Fermionic.partitionFunctionNormalizedTwoPointDysonSeries_eq_shiftedVacuumFree",
+      "SecondQuantization.Fermionic.vacuumFreeExternalInsertionDysonSeries_eq_connected_two"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.connectedTwoPointDysonCoefficient_eq_shiftedConnectedExternalInsertion",
+      "SecondQuantization.Fermionic.connectedTwoPointDysonSeries_eq_grandCanonicalSourceCumulant"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
     "terminal": false,
     "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] {N : ℕ} (ε : Mode → ℝ) (β : ℝ)\n  {S : Finset (Fin N)} (d : SecondQuantization.Fermionic.QuarticWickDiagram Mode N S)\n  (order : SecondQuantization.Common.QuarticVertexOrder S),\n  Continuous (SecondQuantization.Fermionic.QuarticWickDiagram.contractionIntegrand ε β d order)",
     "standardAxioms": [
@@ -168172,7 +168355,9 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "SecondQuantization.Fermionic.connectedTwoPointDysonSeries_eq_grandCanonicalSourceCumulant",
       "SecondQuantization.Fermionic.mixedTimeOrderedVertexComp_eq_shiftedDispersion",
+      "SecondQuantization.Fermionic.partitionFunctionNormalizedTwoPointDysonSeries_eq_shiftedVacuumFree",
       "SecondQuantization.Fermionic.twoPointDysonCoefficient_eq_shiftedDispersion"
     ],
     "dependencies": [
@@ -168184,10 +168369,12 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "SecondQuantization.Fermionic.connectedTwoPointDysonSeries_eq_grandCanonicalSourceCumulant",
       "SecondQuantization.Fermionic.mixedTimeOrderedVertexComp_eq_shiftedDispersion",
+      "SecondQuantization.Fermionic.partitionFunctionNormalizedTwoPointDysonSeries_eq_shiftedVacuumFree",
       "SecondQuantization.Fermionic.twoPointDysonCoefficient_eq_shiftedDispersion"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -169759,7 +169946,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -169771,7 +169958,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.grandCanonicalExternalSubsetMomentSeries_mul_normalizedPartition_eq_vertexDysonSeries"
+      "SecondQuantization.Fermionic.grandCanonicalExternalSubsetMomentSeries_mul_normalizedPartition_eq_vertexDysonSeries",
+      "SecondQuantization.Fermionic.partitionFunctionNormalizedTwoPointDysonSeries_eq_shiftedVacuumFree"
     ],
     "dependencies": [
       "SecondQuantization.Fermionic.externalInsertionVertexDysonSeries_eq_shiftedDispersion",
@@ -169780,9 +169968,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.grandCanonicalExternalSubsetMomentSeries_mul_normalizedPartition_eq_vertexDysonSeries"
+      "SecondQuantization.Fermionic.grandCanonicalExternalSubsetMomentSeries_mul_normalizedPartition_eq_vertexDysonSeries",
+      "SecondQuantization.Fermionic.partitionFunctionNormalizedTwoPointDysonSeries_eq_shiftedVacuumFree"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -172262,6 +172451,51 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] {E : ℕ},\n  0 < E →\n    ∀ (ε : Mode → ℝ) (β μ : ℝ) (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ)\n      (labels : Fin (2 * E) → SecondQuantization.Fermionic.ExternalFieldLabel Mode) (times : Fin (2 * E) → ℝ),\n      SecondQuantization.Fermionic.grandCanonicalExternalSubsetConnectedDiagramSeries ε β μ g labels times Finset.univ =\n        PowerSeries.C (SecondQuantization.Fermionic.externalFieldFamilyChemicalPotentialFactor μ labels times) *\n          SecondQuantization.Fermionic.connectedExternalInsertionDysonSeries (fun k => ε k - μ) β g labels times",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Fermionic.grandCanonicalExternalSubsetConnectedDiagramSeries_univ",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalSubsetMoment",
+    "externalAxioms": [],
+    "docString": "On the full nonempty external sector, the local numbering agrees with\nthe original numbering up to the cardinality cast. The grand-canonical\nconnected subset series is therefore the scalar-weighted connected series. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Fermionic.connectedTwoPointDysonSeries_eq_grandCanonicalSourceCumulant"
+    ],
+    "dependencies": [
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalSubsetMoment.0.SecondQuantization.Fermionic.connectedExternalInsertionDysonSeries_heq_of_fields",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalSubsetMoment.0.SecondQuantization.Fermionic.externalSubsetFunctions_heq_of_cast"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.connectedTwoPointDysonSeries_eq_grandCanonicalSourceCumulant"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
     "terminal": true,
     "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] {E : ℕ} (ε : Mode → ℝ) (β μ : ℝ),\n  0 ≤ β →\n    ∀ (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ)\n      (labels : Fin (2 * E) → SecondQuantization.Fermionic.ExternalFieldLabel Mode) (times : Fin (2 * E) → ℝ)\n      (S : Finset (Fin (2 * E))),\n      SecondQuantization.Fermionic.grandCanonicalExternalSubsetMomentSeries ε β μ g labels times S =\n        Finpartition.weightedMomentFromCumulant\n          (fun x π => PowerSeries.C (SecondQuantization.Fermionic.externalPartitionSourceSign π))\n          (SecondQuantization.Fermionic.grandCanonicalExternalSubsetConnectedDiagramSeries ε β μ g labels times) S",
     "standardAxioms": [
@@ -172385,7 +172619,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] (ε : Mode → ℝ) (β μ : ℝ)\n  (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ)\n  (labels : Fin 2 → SecondQuantization.Fermionic.ExternalFieldLabel Mode) (times : Fin 2 → ℝ),\n  SecondQuantization.Fermionic.externalSubsetSourceCumulantSeries\n      (SecondQuantization.Fermionic.grandCanonicalExternalSubsetMomentSeries ε β μ g labels times) =\n    SecondQuantization.Fermionic.grandCanonicalExternalSubsetConnectedDiagramSeries ε β μ g labels times",
     "standardAxioms": [
       "Classical.choice",
@@ -172393,7 +172627,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -172404,15 +172638,19 @@
     "docString": "The direct two-external-insertion source-cumulant theorem retains its\nstronger absence of a sign restriction on β at arbitrary chemical potential. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "SecondQuantization.Fermionic.connectedTwoPointDysonSeries_eq_grandCanonicalSourceCumulant"
+    ],
     "dependencies": [
       "SecondQuantization.Fermionic.externalSubsetMomentSeries_eq_signedConnected_two",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalSubsetMoment.0.SecondQuantization.Fermionic.grandCanonicalExternalSubsetSourceCumulantSeries_eq_connected_of_shifted"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.connectedTwoPointDysonSeries_eq_grandCanonicalSourceCumulant"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -174948,7 +175186,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] (ε : Mode → ℝ) (β μ : ℝ),\n  0 ≤ β →\n    ∀ (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ) (i j : Mode) (τ τ' : ℝ),\n      SecondQuantization.Fermionic.partitionFunctionNormalizedTwoPointDysonSeries ε β μ g i j τ τ' =\n        SecondQuantization.Fermionic.connectedTwoPointDysonSeries ε β μ g i j τ τ'",
     "standardAxioms": [
       "Classical.choice",
@@ -174956,7 +175194,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -174967,7 +175205,9 @@
     "docString": "**Finite-mode fermionic two-point linked-cluster theorem.** For the imaginary-time Dyson series\nbuilt from free Gibbs expectations and a quartic interaction, with the repository's canonical\ntime-order/equal-time convention, partition-function normalization leaves exactly the sum of externally\nconnected two-point diagrams. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "SecondQuantization.Fermionic.connectedTwoPointDysonSeries_eq_shiftedConnectedExternalInsertion"
+    ],
     "dependencies": [
       "PowerSeries.constantCoeff_normalizeByConstantCoeff",
       "PowerSeries.mul_inv_eq_of_eq_mul_of_constantCoeff_ne_zero",
@@ -174975,9 +175215,60 @@
       "SecondQuantization.Fermionic.twoPointDysonSeries_eq_connectedTwoPointDysonSeries_mul_normalizedDysonPartitionSeries"
     ],
     "crossModuleDirectWrapper": false,
-    "completedMention": true,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.connectedTwoPointDysonSeries_eq_shiftedConnectedExternalInsertion"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] (ε : Mode → ℝ) (β μ : ℝ),\n  0 ≤ β →\n    ∀ (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ) (i j : Mode) (τ τ' : ℝ),\n      SecondQuantization.Fermionic.partitionFunctionNormalizedTwoPointDysonSeries ε β μ g i j τ τ' =\n        PowerSeries.C (SecondQuantization.Fermionic.twoPointChemicalPotentialFactor μ τ τ') *\n          SecondQuantization.Fermionic.vacuumFreeExternalInsertionDysonSeries (fun k => ε k - μ) β g\n            (SecondQuantization.Fermionic.twoPointExternalLabels i j)\n            (SecondQuantization.Common.twoPointExternalTimes τ τ')",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Fermionic.partitionFunctionNormalizedTwoPointDysonSeries_eq_shiftedVacuumFree",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Series.CauchySeries",
+    "externalAxioms": [],
+    "docString": "Both constructions cancel the same normalized grand-canonical vacuum\nseries. The remaining physical external-field factor multiplies the actual\nvacuum-free diagram sum at effective dispersion. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Fermionic.connectedTwoPointDysonSeries_eq_shiftedConnectedExternalInsertion"
+    ],
+    "dependencies": [
+      "PowerSeries.constantCoeff_normalizeByConstantCoeff",
+      "PowerSeries.mul_inv_eq_of_eq_mul_of_constantCoeff_ne_zero",
+      "SecondQuantization.Common.constantCoeff_dysonTraceSeries_ne_zero",
+      "SecondQuantization.Fermionic.externalFieldFamilyChemicalPotentialFactor_twoPoint",
+      "SecondQuantization.Fermionic.externalInsertionVertexDysonSeries_eq_shiftedVacuumFree_mul_normalizedDysonPartitionSeries",
+      "SecondQuantization.Fermionic.twoPointDysonSeries_eq_externalInsertionVertexDysonSeries"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.connectedTwoPointDysonSeries_eq_shiftedConnectedExternalInsertion"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -176917,7 +177208,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -176929,7 +177220,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.twoPointDysonCoefficient_eq_shiftedDispersion"
+      "SecondQuantization.Fermionic.twoPointDysonCoefficient_eq_shiftedDispersion",
+      "SecondQuantization.Fermionic.twoPointDysonSeries_eq_externalInsertionVertexDysonSeries"
     ],
     "dependencies": [
       "SecondQuantization.Fermionic.mixedTimeOrderedVertexComp_eq_externalInsertion",
@@ -176939,9 +177231,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.twoPointDysonCoefficient_eq_shiftedDispersion"
+      "SecondQuantization.Fermionic.twoPointDysonCoefficient_eq_shiftedDispersion",
+      "SecondQuantization.Fermionic.twoPointDysonSeries_eq_externalInsertionVertexDysonSeries"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -177075,6 +177368,50 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Fermionic.partitionFunctionNormalizedTwoPointDysonSeries_eq_connectedTwoPointDysonSeries"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] (ε : Mode → ℝ) (β μ : ℝ)\n  (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ) (i j : Mode) (τ τ' : ℝ),\n  SecondQuantization.Fermionic.twoPointDysonSeries ε β μ g i j τ τ' =\n    SecondQuantization.Fermionic.externalInsertionVertexDysonSeries ε β μ g\n      (SecondQuantization.Fermionic.twoPointExternalLabels i j) (SecondQuantization.Common.twoPointExternalTimes τ τ')",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Fermionic.twoPointDysonSeries_eq_externalInsertionVertexDysonSeries",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Series.CauchySeries",
+    "externalAxioms": [],
+    "docString": "The physical unnormalized two-point operator series is the two-external\nspecialization of the arbitrary-external vertex series, at every real β and μ. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Fermionic.partitionFunctionNormalizedTwoPointDysonSeries_eq_shiftedVacuumFree"
+    ],
+    "dependencies": [
+      "SecondQuantization.Fermionic.twoPointDysonCoefficient_eq_externalInsertionVertexDysonCoefficient"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.partitionFunctionNormalizedTwoPointDysonSeries_eq_shiftedVacuumFree"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -177844,7 +178181,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -177856,6 +178193,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "SecondQuantization.Fermionic.connectedTwoPointDysonSeries_eq_shiftedConnectedExternalInsertion",
       "SecondQuantization.Fermionic.vacuumFreeExternalInsertionDysonSeries_eq_connected_of_single_pair"
     ],
     "dependencies": [
@@ -177864,9 +178202,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "SecondQuantization.Fermionic.connectedTwoPointDysonSeries_eq_shiftedConnectedExternalInsertion",
       "SecondQuantization.Fermionic.vacuumFreeExternalInsertionDysonSeries_eq_connected_of_single_pair"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -200860,52 +201199,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {ι : Type u_1} {β : ι → Type u_2} {γ : ι → Type u_3} (P : (i : ι) → Combinatorics.PairingOn (β i))\n  (e : (i : ι) → β i ≃ γ i),\n  (Combinatorics.PairingOn.sigmaCongrRight fun i => (P i).transport (e i).symm) =\n    (Combinatorics.PairingOn.sigmaCongrRight P).transport (Equiv.sigmaCongrRight e).symm",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.OwnerSlotCongr.0.SecondQuantization.Common.sigmaPairing_transport",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.OwnerSlotCongr",
-    "externalAxioms": [],
-    "docString": "Conjugating each local perfect pairing by its own slot equivalence\ncommutes with assembling the complete independent block pairing. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.ExternalInsertionBlockLayout.assembleDiagram_ownerSlotCongr"
-    ],
-    "dependencies": [
-      "Combinatorics.PairingOn.ext",
-      "Combinatorics.PairingOn.sigmaCongrRight_partner",
-      "Combinatorics.PairingOn.transport_partner"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.ExternalInsertionBlockLayout.assembleDiagram_ownerSlotCongr"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {E N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.ExternalInsertionDiagram ExternalLabel InternalLabel E N S)\n  (B C : ↥d.vertexGraph.componentPartition.parts),\n  B ≠ C →\n    d.componentExternalShuffle.blockInversionCount B C =\n      ∑ e, SecondQuantization.Common.ExternalInsertionDiagram.componentExternalInversionInner✝ d B C e",
     "standardAxioms": [
       "Classical.choice",
@@ -208213,8 +208506,8 @@
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -208226,15 +208519,17 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "SecondQuantization.Fermionic.grandCanonicalExternalSubsetConnectedDiagramSeries_univ",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalSubsetMoment.0.SecondQuantization.Fermionic.externalSubsetConnectedSeries_comp"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "SecondQuantization.Fermionic.grandCanonicalExternalSubsetConnectedDiagramSeries_univ",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalSubsetMoment.0.SecondQuantization.Fermionic.externalSubsetConnectedSeries_comp"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -208342,8 +208637,8 @@
     "standardAxioms": [
       "Quot.sound"
     ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -208355,15 +208650,17 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "SecondQuantization.Fermionic.grandCanonicalExternalSubsetConnectedDiagramSeries_univ",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalSubsetMoment.0.SecondQuantization.Fermionic.externalSubsetConnectedSeries_comp"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "SecondQuantization.Fermionic.grandCanonicalExternalSubsetConnectedDiagramSeries_univ",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalSubsetMoment.0.SecondQuantization.Fermionic.externalSubsetConnectedSeries_comp"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Quot.sound"
     ],
