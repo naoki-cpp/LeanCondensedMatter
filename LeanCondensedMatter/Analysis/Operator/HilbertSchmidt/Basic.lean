@@ -107,13 +107,17 @@ theorem hasSum_norm_sq_adjoint_apply {ι κ : Type*} (d : HilbertBasis ι ℂ H)
     (f : HilbertBasis κ ℂ H) (T : H →L[ℂ] H) {a : ℝ}
     (hd : HasSum (fun i => ‖T (d i)‖ ^ 2) a) :
     HasSum (fun j => ‖(ContinuousLinearMap.adjoint T) (f j)‖ ^ 2) a := by
+  have hself (x : H) : (inner ℂ x x : ℂ) = ((‖x‖ ^ 2 : ℝ) : ℂ) := by
+    calc
+      inner ℂ x x = (‖x‖ : ℂ) ^ 2 := inner_self_eq_norm_sq_to_K x
+      _ = ((‖x‖ ^ 2 : ℝ) : ℂ) := (Complex.ofReal_pow _ _).symm
   have hdiag : HasSum (fun i => (inner ℂ (T (d i)) (T (d i)) : ℂ)) (a : ℂ) := by
-    simpa only [inner_self_eq_norm_sq_to_K, Complex.ofReal_pow] using
-      (Complex.hasSum_ofReal.mpr hd)
+    simp_rw [hself]
+    exact Complex.hasSum_ofReal.mpr hd
   have h := hasSum_inner_adjoint_apply d f (S := T) (T := T) hd.summable hd.summable
   rw [hdiag.tsum_eq] at h
-  apply Complex.hasSum_ofReal.mp
-  simpa only [inner_self_eq_norm_sq_to_K, Complex.ofReal_pow] using h
+  simp_rw [hself] at h
+  exact Complex.hasSum_ofReal.mp h
 
 /-- **The same basis-independence, phrased for `T` itself rather than its adjoint.** Applying
 `hasSum_norm_sq_adjoint_apply` twice — once for `T`, once for `T†` — and using
