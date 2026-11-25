@@ -260,11 +260,8 @@ theorem intervalIntegralMatrix2_spinRotation_conjugate
       inPlaneSpinRotation angle * InternalSpace.intervalIntegralPauliMatrix a b f *
         inPlaneSpinRotationInverse angle := by
   ext i j
-  fin_cases i <;> fin_cases j <;>
-    simp [InternalSpace.intervalIntegralPauliMatrix, inPlaneSpinRotation,
-      inPlaneSpinRotationInverse, Matrix.mul_apply, Matrix.vecMul_apply_eq_sum,
-      Fin.sum_univ_two, intervalIntegral.integral_const_mul,
-      intervalIntegral.integral_mul_const, mul_assoc]
+  simp only [InternalSpace.intervalIntegralPauliMatrix, inPlaneSpinRotation_conjugate_apply,
+    intervalIntegral.integral_const_mul, intervalIntegral.integral_mul_const]
 
 /-- The finite-cutoff Born-Dyson Green matrix is the SO(2) spinor conjugate
 of its canonical one-dimensional radial Green matrix. This follows from
