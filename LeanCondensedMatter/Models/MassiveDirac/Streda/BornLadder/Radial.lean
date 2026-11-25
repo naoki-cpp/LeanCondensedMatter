@@ -74,8 +74,8 @@ private theorem trace_directionPauli_inPlane_eq
   have hmatrix :
       inPlanePauliVertexOperator coefficients =
         matrixOperator (InternalSpace.pauliCombination u) := by
-    simp [inPlanePauliVertexOperator, matrixOperator,
-      InternalSpace.pauliCombination_eq_components, sigmaX, sigmaY, u]
+    rw [inPlanePauliVertexOperator_eq_matrixOperator]
+    simp [InternalSpace.pauliCombination_eq_components, sigmaX, sigmaY, u]
   rw [hmatrix]
   unfold matrixOperator
   rw [← map_smul, ← map_mul, finiteDimensionalOperatorTrace_toEuclideanCLM]
@@ -113,12 +113,11 @@ private theorem integral_polarPauli_directionTrace_eq
       (continuous_polarPauliOperator aR bR dR)
   let L : DiracOperator →L[ℂ] ℂ :=
     finiteDimensionalOperatorTrace.comp
-      ((ContinuousLinearMap.mulLeftRight ℂ DiracOperator)
-        (q • matrixOperator (directionPauli measured)) 1)
+      (ContinuousLinearMap.mul ℂ DiracOperator (q • matrixOperator (directionPauli measured)))
   trans (∫ θ in (0 : ℝ)..(2 * Real.pi), L (rung θ))
   · apply intervalIntegral.integral_congr
     intro θ _
-    simp [L, rung, mul_assoc]
+    simp only [L, rung, ContinuousLinearMap.comp_apply, ContinuousLinearMap.mul_apply', mul_assoc]
   rw [L.intervalIntegral_comp_comm hrungIntegrable]
   dsimp only [rung]
   rw [integral_polarPauliOperator_inPlane_eq]
@@ -187,8 +186,7 @@ theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTrace
       inPlaneCurrentOperator e v coefficients =
         inPlanePauliVertexOperator (q • coefficients) := by
     rw [inPlaneCurrentOperator_eq_chargeVelocity_smul_inPlanePauliVertexOperator]
-    change q • inPlanePauliVertexCLM coefficients = inPlanePauliVertexCLM (q • coefficients)
-    rw [map_smul]
+    exact (inPlanePauliVertexCLM.map_smul q coefficients).symm
   have hbareInPlane :
       currentOperator source e v = inPlaneCurrentOperator e v bare := by
     fin_cases source <;>
@@ -228,15 +226,12 @@ theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTrace
       (q • matrixOperator (directionPauli measured))
       (inPlanePauliVertexOperator (q • bare))
       (polarPauliOperator aA bA dA θ)]
-  have hraIntegrable : IntervalIntegrable ra volume 0 (2 * Real.pi) := by
-    simpa [ra, angularTrace] using intervalIntegrable_polarPauli_directionTrace
-      measured q aR aA bR bA dR dA (q • dressed)
-  have hrrIntegrable : IntervalIntegrable rr volume 0 (2 * Real.pi) := by
-    simpa [rr, angularTrace] using intervalIntegrable_polarPauli_directionTrace
-      measured q aR aR bR bR dR dR (q • bare)
-  have haaIntegrable : IntervalIntegrable aa volume 0 (2 * Real.pi) := by
-    simpa [aa, angularTrace] using intervalIntegrable_polarPauli_directionTrace
-      measured q aA aA bA bA dA dA (q • bare)
+  have hraIntegrable : IntervalIntegrable ra volume 0 (2 * Real.pi) :=
+    intervalIntegrable_polarPauli_directionTrace measured q aR aA bR bA dR dA (q • dressed)
+  have hrrIntegrable : IntervalIntegrable rr volume 0 (2 * Real.pi) :=
+    intervalIntegrable_polarPauli_directionTrace measured q aR aR bR bR dR dR (q • bare)
+  have haaIntegrable : IntervalIntegrable aa volume 0 (2 * Real.pi) :=
+    intervalIntegrable_polarPauli_directionTrace measured q aA aA bA bA dA dA (q • bare)
   have hra := integral_polarPauli_directionTrace_eq
     measured q aR aA bR bA dR dA (q • dressed)
   have hrr := integral_polarPauli_directionTrace_eq
