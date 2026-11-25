@@ -164,16 +164,22 @@ theorem isHilbertSchmidt_adjoint {T : H →L[ℂ] H} (hT : IsHilbertSchmidt T) :
   exact ⟨w, d, (hasSum_norm_sq_adjoint_apply d d T hd.hasSum).summable⟩
 
 omit [CompleteSpace H] in
+/-- Pointwise squared-norm bound used by membership and norm estimates. -/
+private theorem norm_sq_apply_le_opNorm_sq (B : H →L[ℂ] H) (x : H) :
+    ‖B x‖ ^ 2 ≤ ‖B‖ ^ 2 * ‖x‖ ^ 2 := by
+  rw [← mul_pow]
+  exact pow_le_pow_left₀ (norm_nonneg _) (B.le_opNorm x) 2
+
+omit [CompleteSpace H] in
 /-- Left composition by a bounded operator preserves Hilbert–Schmidt membership, using
 the operator-norm bound on each vector in a witnessing Hilbert basis. -/
 theorem isHilbertSchmidt_comp_left (B : H →L[ℂ] H) {T : H →L[ℂ] H}
     (hT : IsHilbertSchmidt T) : IsHilbertSchmidt (B * T) := by
   obtain ⟨w, d, hd⟩ := hT
   refine ⟨w, d, ?_⟩
-  refine Summable.of_nonneg_of_le (fun i => sq_nonneg _) (fun i => ?_)
+  exact Summable.of_nonneg_of_le (fun i => sq_nonneg _)
+    (fun i => by simpa only [mul_apply_eq_comp] using norm_sq_apply_le_opNorm_sq B (T (d i)))
     (hd.mul_left (‖B‖ ^ 2))
-  rw [mul_apply_eq_comp, ← mul_pow]
-  exact pow_le_pow_left₀ (norm_nonneg _) (B.le_opNorm (T (d i))) 2
 
 /-- **Composing a Hilbert–Schmidt operator with a bounded operator on the right stays
 Hilbert–Schmidt.** Reduced to the left-composition case via the adjoint identity
@@ -328,26 +334,20 @@ the square of the operator norm. -/
 theorem normSq_comp_left_le (hT : IsHilbertSchmidt T) (B : H →L[ℂ] H) :
     (isHilbertSchmidt_comp_left B hT).normSq ≤ ‖B‖ ^ 2 * hT.normSq := by
   obtain ⟨w, d, -⟩ := exists_hilbertBasis (𝕜 := ℂ) (E := H)
-  refine hasSum_le (fun i => ?_)
+  exact hasSum_le
+    (fun i => by simpa only [mul_apply_eq_comp] using norm_sq_apply_le_opNorm_sq B (T (d i)))
     ((isHilbertSchmidt_comp_left B hT).hasSum_norm_sq_apply d)
     ((hT.hasSum_norm_sq_apply d).mul_left (‖B‖ ^ 2))
-  rw [mul_apply_eq_comp, ← mul_pow]
-  exact pow_le_pow_left₀ (norm_nonneg _) (B.le_opNorm (T (d i))) 2
 
 /-- Right composition by a bounded operator increases the squared Hilbert--Schmidt norm by at most
 the square of the operator norm. -/
 theorem normSq_comp_right_le (hT : IsHilbertSchmidt T) (B : H →L[ℂ] H) :
     (isHilbertSchmidt_comp_right hT B).normSq ≤ ‖B‖ ^ 2 * hT.normSq := by
-  have hadj_eq :
-      ContinuousLinearMap.adjoint (T * B) =
-        ContinuousLinearMap.adjoint B * ContinuousLinearMap.adjoint T := by
-    rw [← ContinuousLinearMap.star_eq_adjoint, ← ContinuousLinearMap.star_eq_adjoint,
-      ← ContinuousLinearMap.star_eq_adjoint, star_mul]
   have hnorm :
       (isHilbertSchmidt_comp_left (ContinuousLinearMap.adjoint B)
         (isHilbertSchmidt_adjoint hT)).normSq =
         (isHilbertSchmidt_comp_right hT B).normSq := by
-    simpa only [hadj_eq] using
+    simpa only [← ContinuousLinearMap.star_eq_adjoint, star_mul] using
       (isHilbertSchmidt_comp_right hT B).normSq_adjoint
   have h := (isHilbertSchmidt_adjoint hT).normSq_comp_left_le
     (ContinuousLinearMap.adjoint B)
@@ -358,13 +358,10 @@ theorem normSq_comp_right_le (hT : IsHilbertSchmidt T) (B : H →L[ℂ] H) :
 theorem normSq_comp_right_le_of_norm_le_one (hT : IsHilbertSchmidt T)
     (B : H →L[ℂ] H) (hB : ‖B‖ ≤ 1) :
     (isHilbertSchmidt_comp_right hT B).normSq ≤ hT.normSq := by
-  calc
-    (isHilbertSchmidt_comp_right hT B).normSq ≤ ‖B‖ ^ 2 * hT.normSq :=
-      hT.normSq_comp_right_le B
-    _ ≤ 1 ^ 2 * hT.normSq :=
-      mul_le_mul_of_nonneg_right
-        (pow_le_pow_left₀ (norm_nonneg B) hB 2) hT.normSq_nonneg
-    _ = hT.normSq := by rw [one_pow, one_mul]
+  refine (hT.normSq_comp_right_le B).trans ?_
+  simpa only [one_pow, one_mul] using
+    mul_le_mul_of_nonneg_right
+      (pow_le_pow_left₀ (norm_nonneg B) hB 2) hT.normSq_nonneg
 
 /-- The absolute diagonal pairing is summable and bounded by the product of the
 Hilbert--Schmidt norms, by Hölder's inequality for the square-summable norm families. -/
@@ -396,13 +393,6 @@ theorem summable_inner_apply {S T : H →L[ℂ] H} (hS : IsHilbertSchmidt S)
     (hT : IsHilbertSchmidt T) {ι : Type*} (d : HilbertBasis ι ℂ H) :
     Summable (fun i => (inner ℂ (S (d i)) (T (d i)) : ℂ)) :=
   Summable.of_norm (hS.summable_norm_inner_apply_and_tsum_le hT d).1
-
-/-- The Hilbert--Schmidt diagonal pairing sums to `innerHS` in every Hilbert basis. -/
-theorem hasSum_innerHS {S T : H →L[ℂ] H} (hS : IsHilbertSchmidt S)
-    (hT : IsHilbertSchmidt T) {ι : Type*} (d : HilbertBasis ι ℂ H) :
-    HasSum (fun i => (inner ℂ (S (d i)) (T (d i)) : ℂ)) (innerHS d S T) := by
-  unfold innerHS
-  exact (hS.summable_inner_apply hT d).hasSum
 
 end IsHilbertSchmidt
 
