@@ -195,10 +195,10 @@ and volume limits remain distinct, and the finite stationary lag identity requir
 observation time.
 
 The charge-current channel module imports the channel and free-system interfaces directly; it
-performs no frequency transform or time integration. `Fermionic.Transport.CorrectedCurrentResponse`
-owns both `boundedFluxRetardedResponse` and its corrected-current representation laws. The intrinsic
-flux is realized as a bounded observable before applying the measured-linear retarded kernel;
-representation laws only identify it on exact differentials, not arbitrary global currents.
+performs no frequency transform or time integration. `QuantumTheory.LinearResponse.Response.CorrectedCurrent`
+owns `fluxRetardedResponse` and the corrected-current response laws for an arbitrary linear realization
+into bounded observables. The bounded fermionic one-body lift is one instance of this realization;
+the laws only identify the current on exact differentials, not arbitrary global currents.
 
 ## Static response identification
 

@@ -4,6 +4,7 @@ import LeanCondensedMatter.QuantumTheory.LinearResponse.Response.RetardedSuscept
 import LeanCondensedMatter.QuantumTheory.LinearResponse.Response.DensitySusceptibility
 import LeanCondensedMatter.QuantumTheory.LinearResponse.Response.ObservableVariation
 import LeanCondensedMatter.QuantumTheory.LinearResponse.Response.Channel
+import LeanCondensedMatter.QuantumTheory.LinearResponse.Response.CorrectedCurrent
 import LeanCondensedMatter.QuantumTheory.LinearResponse.Response.Symmetry
 
 set_option linter.style.header false
