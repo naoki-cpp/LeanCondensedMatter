@@ -85,39 +85,10 @@ theorem finiteCutoffContinuumBornDysonAngularRetardedAdvancedInPlaneRungAction_e
           (finiteCutoffContinuumBornDysonRetardedAdvancedAngularRungVector
             v m p probeEnergy broadening disorderStrength hbar pMax)
           coefficients) := by
-  let aR := finiteCutoffContinuumBornDysonScalarCoefficient
-    .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax
-  let aA := finiteCutoffContinuumBornDysonScalarCoefficient
-    .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax
-  let bR := finiteCutoffContinuumBornDysonPauliCoefficient .x
-    .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax
-  let bA := finiteCutoffContinuumBornDysonPauliCoefficient .x
-    .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax
-  let dR := finiteCutoffContinuumBornDysonPauliCoefficient .z
-    .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax
-  let dA := finiteCutoffContinuumBornDysonPauliCoefficient .z
-    .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax
   unfold finiteCutoffContinuumBornDysonAngularRetardedAdvancedInPlaneRungAction
-  have hpolar :
-      (fun θ : ℝ =>
-        finiteCutoffContinuumBornDysonGreenOperator
-            .retarded v m (p * Real.cos θ) (p * Real.sin θ)
-            probeEnergy broadening disorderStrength hbar pMax *
-          inPlanePauliVertexOperator coefficients *
-          finiteCutoffContinuumBornDysonGreenOperator
-            .advanced v m (p * Real.cos θ) (p * Real.sin θ)
-            probeEnergy broadening disorderStrength hbar pMax) =
-        fun θ : ℝ =>
-          polarPauliOperator aR bR dR θ *
-            inPlanePauliVertexOperator coefficients *
-            polarPauliOperator aA bA dA θ := by
-    funext θ
-    rw [finiteCutoffContinuumBornDysonGreenOperator_polar_eq,
-      finiteCutoffContinuumBornDysonGreenOperator_polar_eq]
-  rw [hpolar]
-  simpa [finiteCutoffContinuumBornDysonRetardedAdvancedAngularRungVector,
-    aR, aA, bR, bA, dR, dA] using
-    (integral_polarPauliOperator_inPlane_eq aR aA bR bA dR dA coefficients)
+    finiteCutoffContinuumBornDysonRetardedAdvancedAngularRungVector
+  simp_rw [finiteCutoffContinuumBornDysonGreenOperator_polar_eq]
+  rw [integral_polarPauliOperator_inPlane_eq]
 
 /-! ## Common denominator form -/
 
@@ -256,12 +227,8 @@ theorem finiteCutoffContinuumBornDysonLadderSolvedVector_zero_disorder
         v m probeEnergy broadening 0 hbar pMax =
       inPlaneLadderBareXSource := by
   funext output
-  fin_cases output
-  · simp [finiteCutoffContinuumBornDysonLadderSolvedVector,
-      finiteCutoffContinuumBornDysonCurrentRungVector,
-      inPlaneLadderSolvedVector, inPlaneLadderBareXSource, inPlaneCoefficientVector,
-      inPlaneLadderDeterminant]
-  · simp [finiteCutoffContinuumBornDysonLadderSolvedVector,
+  fin_cases output <;>
+    simp [finiteCutoffContinuumBornDysonLadderSolvedVector,
       finiteCutoffContinuumBornDysonCurrentRungVector,
       inPlaneLadderSolvedVector, inPlaneLadderBareXSource, inPlaneCoefficientVector,
       inPlaneLadderDeterminant]

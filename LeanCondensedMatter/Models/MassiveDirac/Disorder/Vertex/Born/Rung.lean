@@ -125,40 +125,13 @@ theorem continuumBornAngularRetardedAdvancedPauliXIntegral_eq
       inPlanePauliVertexOperator
         (continuumBornRetardedAdvancedPauliXAngularCoefficient
           v m p probeEnergy disorderStrength hbar) := by
-  let aR := continuumBornPauliGreenScalarCoefficient
-    .retarded v m p 0 probeEnergy disorderStrength hbar
-  let aA := continuumBornPauliGreenScalarCoefficient
-    .advanced v m p 0 probeEnergy disorderStrength hbar
-  let bR := continuumBornPauliGreenPauliCoefficient .x
-    .retarded v m p 0 probeEnergy disorderStrength hbar
-  let bA := continuumBornPauliGreenPauliCoefficient .x
-    .advanced v m p 0 probeEnergy disorderStrength hbar
-  let dR := continuumBornPauliGreenPauliCoefficient .z
-    .retarded v m p 0 probeEnergy disorderStrength hbar
-  let dA := continuumBornPauliGreenPauliCoefficient .z
-    .advanced v m p 0 probeEnergy disorderStrength hbar
+  have hbare : matrixOperator sigmaX = inPlanePauliVertexOperator inPlaneLadderBareXSource := by
+    simp [inPlanePauliVertexOperator, inPlaneLadderBareXSource, inPlaneCoefficientVector]
   unfold continuumBornAngularRetardedAdvancedPauliXIntegral
-  have hpolar :
-      (fun θ : ℝ =>
-        continuumBornPauliGreenOperator .retarded v m
-            (p * Real.cos θ) (p * Real.sin θ) probeEnergy disorderStrength hbar *
-          matrixOperator sigmaX *
-          continuumBornPauliGreenOperator .advanced v m
-            (p * Real.cos θ) (p * Real.sin θ) probeEnergy disorderStrength hbar) =
-        fun θ : ℝ =>
-          polarPauliOperator aR bR dR θ *
-            inPlanePauliVertexOperator inPlaneLadderBareXSource *
-            polarPauliOperator aA bA dA θ := by
-    funext θ
-    rw [continuumBornPauliGreenOperator_polar_eq,
-      continuumBornPauliGreenOperator_polar_eq]
-    simp [aR, aA, bR, bA, dR, dA, inPlanePauliVertexOperator,
-      inPlaneLadderBareXSource, inPlaneCoefficientVector]
-  rw [hpolar]
-  simpa [continuumBornRetardedAdvancedPauliXAngularCoefficient,
-    inPlanePauliVertexOperator, inPlaneLadderBareXSource, inPlaneCoefficientVector,
-    aR, aA, bR, bA, dR, dA] using
-    (integral_polarPauliOperator_inPlane_eq aR aA bR bA dR dA inPlaneLadderBareXSource)
+  simp_rw [continuumBornPauliGreenOperator_polar_eq, hbare]
+  rw [integral_polarPauliOperator_inPlane_eq]
+  simp [continuumBornRetardedAdvancedPauliXAngularCoefficient,
+    inPlanePauliVertexOperator, inPlaneLadderBareXSource, inPlaneCoefficientVector]
 
 /-- Real numerator multiplying the common retarded-advanced denominator product in the selected
 output direction. -/
