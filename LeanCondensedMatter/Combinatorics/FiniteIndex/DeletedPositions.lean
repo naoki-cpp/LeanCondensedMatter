@@ -57,5 +57,33 @@ theorem deletedPositionsOrderIso_apply (n : ℕ) (j : Fin (n + 2)) (hj : j ≠ 0
     Finset.coe_orderIsoOfFin_apply _ _ i
   rw [h1, ← huniq]
 
+/-- Separate the two deleted positions (false for zero, true for the other position) from the
+increasingly enumerated remaining positions. -/
+@[expose] noncomputable def deletedPositionsSumEquiv (n : ℕ) (j : Fin (n + 2)) (hj : j ≠ 0) :
+    Bool ⊕ Fin n ≃ Fin (n + 2) where
+  toFun := Sum.elim (fun b => if b then j else 0) (fun i => deletedPositionsOrderIso n j hj i)
+  invFun x :=
+    if h0 : x = 0 then Sum.inl false
+    else if hj' : x = j then Sum.inl true
+    else Sum.inr ((deletedPositionsOrderIso n j hj).symm
+      ⟨x, by simp [deletedPositions, h0, hj']⟩)
+  left_inv := by
+    rintro (b | i)
+    · cases b
+      · rfl
+      · simp [hj]
+    · have hm := Finset.mem_erase.mp (deletedPositionsOrderIso n j hj i).property
+      have h0 := (Finset.mem_erase.mp hm.2).1
+      simp [h0, hm.1]
+  right_inv := by
+    intro x
+    by_cases h0 : x = 0
+    · subst x
+      rfl
+    · by_cases hxj : x = j
+      · subst x
+        simp [hj]
+      · simp [h0, hxj]
+
 end FiniteIndex
 end Combinatorics
