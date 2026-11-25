@@ -13,8 +13,7 @@ jᵐ = 1/2 {v,m}.
 ```
 
 The construction is independent of localization, continuity equations, weak differentials, and
-response theory. Those semantics are supplied downstream by `SymmetrizedVelocityCurrent` and the
-conservation-law representation layer.
+response theory. Those semantics are supplied by the general quantum-theory conservation-law representation layer.
 
 With `v` fixed, the current is complex-linear in the transported quantity. Scalar quantities
 `q I` reduce to the charge-like form `q v`.

@@ -1,6 +1,7 @@
 import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.SchwartzTwoLevelSchrodinger1D
 import LeanCondensedMatter.QuantumTheory.SpinHalf
-import LeanCondensedMatter.QuantumMechanics.SingleParticle.SymmetrizedVelocityCurrent
+import LeanCondensedMatter.QuantumTheory.ConservationLaw.LocalizedTransport
+import LeanCondensedMatter.QuantumMechanics.SingleParticle.GeneralizedCurrent
 
 set_option linter.style.header false
 
@@ -105,7 +106,7 @@ noncomputable def schwartzSpinCurrentRepresentation1D
         (schwartzSpinOperatorLinear ℏ spinComponent))
       (operatorLocalCurrentPairing
         SchwartzTwoLevel1D.multiplicationLinear) :=
-  symmetrizedVelocityCurrentRepresentation SchwartzSpinorOneParticle1D ℏ
+  symmetrizedVelocityCurrentRepresentation ℏ
     (SchwartzTwoLevelSchrodinger1D.hamiltonian κ potential internalH)
     SchwartzTwoLevel1D.multiplicationLinear
     (schwartzSpinOperatorLinear ℏ spinComponent)

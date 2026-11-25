@@ -32,9 +32,14 @@
       "id": "generalizedCurrentSingleParticleUmbrella",
       "path": "LeanCondensedMatter/QuantumMechanics/SingleParticle.lean",
       "modules": [
-        "LeanCondensedMatter.QuantumMechanics.SingleParticle.GeneralizedCurrent",
-        "LeanCondensedMatter.QuantumMechanics.SingleParticle.SymmetrizedVelocityCurrent",
-        "LeanCondensedMatter.QuantumMechanics.SingleParticle.ChargeLikeCurrent"
+        "LeanCondensedMatter.QuantumMechanics.SingleParticle.GeneralizedCurrent"
+      ]
+    },
+    {
+      "id": "localizedCurrentQuantumTheoryUmbrella",
+      "path": "LeanCondensedMatter/QuantumTheory.lean",
+      "modules": [
+        "LeanCondensedMatter.QuantumTheory.ConservationLaw.LocalizedTransport"
       ]
     },
     {
