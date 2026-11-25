@@ -2,6 +2,7 @@ import Mathlib.Data.Finset.Filter
 import Mathlib.Data.Finset.Prod
 import Mathlib.Data.Fintype.Sets
 import Mathlib.GroupTheory.Perm.Fin
+import Mathlib.Order.Hom.Basic
 
 set_option linter.style.header false
 
@@ -144,6 +145,26 @@ theorem Pairing.mem_pairs_iff {n : ℕ} (pairing : Pairing n) (i j : Fin (2 * n)
     refine ⟨i, ?_, ?_⟩
     · simpa [hp] using hij
     · simp [hp]
+
+/-- If an order embedding intertwines two pairing partner maps, mapping both endpoints preserves and
+reflects normalized pair membership. -/
+theorem Pairing.mem_pairs_map_iff {n m : ℕ}
+    (small : Pairing n) (big : Pairing m)
+    (e : Fin (2 * n) ↪o Fin (2 * m))
+    (hpartner : ∀ i, big.partner (e i) = e (small.partner i))
+    (a b : Fin (2 * n)) :
+    (e a, e b) ∈ big.pairs ↔ (a, b) ∈ small.pairs := by
+  rw [Pairing.mem_pairs_iff, Pairing.mem_pairs_iff]
+  constructor
+  · rintro ⟨hab, hp⟩
+    refine ⟨e.lt_iff_lt.mp hab, ?_⟩
+    apply e.injective
+    calc
+      e (small.partner a) = big.partner (e a) := (hpartner a).symm
+      _ = e b := hp
+  · rintro ⟨hab, hp⟩
+    refine ⟨e.lt_iff_lt.mpr hab, ?_⟩
+    rw [hpartner a, hp]
 
 /-- Every pair emitted by `Pairing.pairs` is normalized. -/
 theorem Pairing.pairs_normalized {n : ℕ} (pairing : Pairing n)

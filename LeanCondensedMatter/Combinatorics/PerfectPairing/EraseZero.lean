@@ -1,3 +1,5 @@
+import LeanCondensedMatter.Combinatorics.PerfectPairing.Core
+import LeanCondensedMatter.Combinatorics.PerfectPairing.PairEndpoints
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Restriction
 import LeanCondensedMatter.Combinatorics.FiniteIndex.DeletedPositions
 
@@ -65,25 +67,11 @@ private theorem Pairing.eraseZeroPair_mem_pairs_iff {n : ℕ} (pairing : Pairing
     (i, k) ∈ (pairing.eraseZeroPair).pairs ↔
       ((pairing.eraseZeroOrderIso i : Fin (2 * (n + 1))),
         (pairing.eraseZeroOrderIso k : Fin (2 * (n + 1)))) ∈ pairing.pairs := by
-  rw [Pairing.mem_pairs_iff, Pairing.mem_pairs_iff]
-  constructor
-  · rintro ⟨hik, hpartner⟩
-    refine ⟨pairing.eraseZeroOrderIso.strictMono hik, ?_⟩
-    have hp := Pairing.eraseZeroOrderIso_partner pairing i
-    rw [hpartner] at hp
-    exact hp.symm
-  · rintro ⟨hik, hpartner⟩
-    have hik' : i < k := by
-      have h := pairing.eraseZeroOrderIso.symm.strictMono hik
-      simpa using h
-    refine ⟨hik', ?_⟩
-    apply pairing.eraseZeroOrderIso.injective
-    apply Subtype.ext
-    calc
-      pairing.eraseZeroOrderIso ((pairing.eraseZeroPair).partner i) =
-          pairing.partner (pairing.eraseZeroOrderIso i) :=
-        Pairing.eraseZeroOrderIso_partner pairing i
-      _ = pairing.eraseZeroOrderIso k := hpartner
+  let e : Fin (2 * n) ↪o Fin (2 * (n + 1)) :=
+    OrderEmbedding.ofStrictMono (fun i => pairing.eraseZeroOrderIso i)
+      (fun _ _ h => pairing.eraseZeroOrderIso.strictMono h)
+  exact (pairing.eraseZeroPair.mem_pairs_map_iff pairing e
+    (fun i => (pairing.eraseZeroOrderIso_partner i).symm) i k).symm
 
 /-- Every normalized pair other than `firstPair` has both endpoints away from `0` and its
 partner. -/
@@ -92,34 +80,14 @@ private theorem Pairing.mem_pairs_endpoints_mem_deletedPositions {n : ℕ} (pair
     (hne : p ≠ pairing.firstPair) :
     p.1 ∈ deletedPositions (2 * n) (pairing.partner 0) ∧
       p.2 ∈ deletedPositions (2 * n) (pairing.partner 0) := by
-  obtain ⟨hlt, hpartner⟩ := (pairing.mem_pairs_iff p.1 p.2).1 (by simpa using hp)
-  have h10 : p.1 ≠ 0 := by
-    intro h
-    apply hne
-    have h2 : p.2 = pairing.partner 0 := by rw [← hpartner, h]
-    change p = pairing.firstPair
-    rw [Pairing.firstPair]
-    exact Prod.ext h h2
-  have h1j : p.1 ≠ pairing.partner 0 := by
-    intro h
-    apply h10
-    have hp2 : p.2 = 0 := by
-      have := hpartner
-      rw [h] at this
-      rw [pairing.partner_partner] at this
-      exact this.symm
-    have : (pairing.partner 0 : Fin (2 * (n + 1))) < 0 := by rw [← h]; exact hp2 ▸ hlt
-    exact absurd this (by simp)
-  have h20 : p.2 ≠ 0 := fun h => absurd (h ▸ hlt) (by simp)
-  have h2j : p.2 ≠ pairing.partner 0 := by
-    intro h
-    apply h10
-    have hinj : Function.Injective pairing.partner := pairing.partner.injective
-    apply hinj
-    rw [hpartner, h]
-  refine ⟨?_, ?_⟩
-  · simp [deletedPositions, Finset.mem_erase, h10, h1j]
-  · simp [deletedPositions, Finset.mem_erase, h20, h2j]
+  have hne' : (⟨p, hp⟩ : pairing.NormalizedPair) ≠
+      ⟨pairing.firstPair, pairing.firstPair_mem_pairs⟩ :=
+    fun h => hne (congrArg Subtype.val h)
+  have h := pairing.normalizedPair_endpoints_ne_of_ne _ _ hne'
+  change p.1 ≠ 0 ∧ p.1 ≠ pairing.partner 0 ∧
+    p.2 ≠ 0 ∧ p.2 ≠ pairing.partner 0 at h
+  obtain ⟨h10, h1j, h20, h2j⟩ := h
+  simp [deletedPositions, h10, h1j, h20, h2j]
 
 /-- Map a pair of remaining positions to its original ambient positions. -/
 noncomputable def Pairing.eraseZeroPairEmbedding {n : ℕ} (pairing : Pairing (n + 1)) :
