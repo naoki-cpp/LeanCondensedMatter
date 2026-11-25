@@ -13,6 +13,8 @@ the canonical localization correction, up to a functional that vanishes on exact
 namespace QuantumMechanics
 namespace SingleParticle
 
+open QuantumTheory.ConservationLaw
+
 variable {Test OneForm : Type*}
 variable [AddCommGroup Test] [Module ℂ Test]
 variable [AddCommGroup OneForm] [Module ℂ OneForm]
@@ -30,10 +32,10 @@ theorem exists_current_eq_symmetrized_add_correction_add_invisible
     (m velocity : V →ₗ[ℂ] V)
     (d : Test →ₗ[ℂ] OneForm)
     (N : OneForm →ₗ[ℂ] (V →ₗ[ℂ] V))
-    (hvelocity : heisenbergLocalizationFunctional V ℏ h M =
+    (hvelocity : heisenbergLocalizationFunctional ℏ h M =
       (_root_.ConservationLaw.localizedQuantityFunctional N velocity).comp d)
     (R : _root_.ConservationLaw.DifferentialCurrentRepresentation d
-      (heisenbergTransportFunctional V ℏ h M m)) :
+      (heisenbergTransportFunctional ℏ h M m)) :
     ∃ K : OneForm →ₗ[ℂ] (V →ₗ[ℂ] V),
       K.comp d = 0 ∧
         R.val =

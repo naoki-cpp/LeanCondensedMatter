@@ -20,6 +20,8 @@ representation, not a universal transport law.
 namespace QuantumMechanics
 namespace SingleParticle
 
+open QuantumTheory.ConservationLaw
+
 attribute [local instance 100] LieRing.ofAssociativeRing
 
 variable {Test OneForm : Type*}
@@ -36,16 +38,16 @@ noncomputable def symmetrizedVelocityCurrentRepresentation
     (m velocity : V →ₗ[ℂ] V)
     (d : Test →ₗ[ℂ] OneForm)
     (N : OneForm →ₗ[ℂ] (V →ₗ[ℂ] V))
-    (hvelocity : heisenbergLocalizationFunctional V ℏ h M =
+    (hvelocity : heisenbergLocalizationFunctional ℏ h M =
       (_root_.ConservationLaw.localizedQuantityFunctional N velocity).comp d)
     (hcomm : ∀ α, ⁅N α, m⁆ = 0) :
     _root_.ConservationLaw.LocalCurrentDensityRepresentation
       d
-      (heisenbergTransportFunctional V ℏ h M m)
-      (operatorLocalCurrentPairing V N) where
+      (heisenbergTransportFunctional ℏ h M m)
+      (operatorLocalCurrentPairing N) where
   val := symmetrizedVelocityCurrent V velocity m
   property := by
-    change heisenbergTransportFunctional V ℏ h M m =
+    change heisenbergTransportFunctional ℏ h M m =
       (_root_.ConservationLaw.symmetrizedCurrentFlux velocity m N).comp d
     rw [nestedSymmetrizedCurrentFlux_eq_comp V ℏ h M m velocity d N hvelocity,
       _root_.ConservationLaw.nestedSymmetrizedCurrentFlux_eq_symmetrized_add_correction,
@@ -59,7 +61,7 @@ theorem symmetrizedVelocityCurrentRepresentation_currentDensity
     (m velocity : V →ₗ[ℂ] V)
     (d : Test →ₗ[ℂ] OneForm)
     (N : OneForm →ₗ[ℂ] (V →ₗ[ℂ] V))
-    (hvelocity : heisenbergLocalizationFunctional V ℏ h M =
+    (hvelocity : heisenbergLocalizationFunctional ℏ h M =
       (_root_.ConservationLaw.localizedQuantityFunctional N velocity).comp d)
     (hcomm : ∀ α, ⁅N α, m⁆ = 0) :
     (symmetrizedVelocityCurrentRepresentation V ℏ h M m velocity d N hvelocity hcomm).val =

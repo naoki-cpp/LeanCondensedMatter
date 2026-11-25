@@ -1,6 +1,6 @@
 import LeanCondensedMatter.Models.RashbaExchange.FiniteMomentumSpinResponse
 import LeanCondensedMatter.Models.RashbaExchange.RealSpaceHopping
-import LeanCondensedMatter.QuantumMechanics.SingleParticle.LocalizedTransport
+import LeanCondensedMatter.QuantumTheory.ConservationLaw.LocalizedTransport
 
 set_option linter.style.header false
 
@@ -60,11 +60,9 @@ theorem finiteRashbaMomentumSpinDisplacement_balance
     heisenbergEvolution hbar
         (finiteRashbaMomentumHamiltonian params momentum)
         (finiteRashbaMomentumSpinDisplacement spinScale component position) =
-      QuantumMechanics.SingleParticle.heisenbergTransportFunctional
-          (SpinfulSite Grid →₀ ℂ) hbar (finiteRashbaMomentumHamiltonian params momentum)
+      QuantumTheory.ConservationLaw.heisenbergTransportFunctional hbar (finiteRashbaMomentumHamiltonian params momentum)
           LinearMap.id (spinOneBodyLinear spinScale component) position +
-      QuantumMechanics.SingleParticle.heisenbergSourceFunctional
-          (SpinfulSite Grid →₀ ℂ) hbar (finiteRashbaMomentumHamiltonian params momentum)
+      QuantumTheory.ConservationLaw.heisenbergSourceFunctional hbar (finiteRashbaMomentumHamiltonian params momentum)
           LinearMap.id (spinOneBodyLinear spinScale component) position := by
   exact heisenbergEvolution_symmetrizedProduct
     hbar (finiteRashbaMomentumHamiltonian params momentum)

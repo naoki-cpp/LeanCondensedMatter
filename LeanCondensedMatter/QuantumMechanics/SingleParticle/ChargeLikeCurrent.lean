@@ -16,6 +16,8 @@ current-extension data away from exact differentials.
 namespace QuantumMechanics
 namespace SingleParticle
 
+open QuantumTheory.ConservationLaw
+
 variable {Test OneForm : Type*}
 variable [AddCommGroup Test] [Module ℂ Test]
 variable [AddCommGroup OneForm] [Module ℂ OneForm]
@@ -28,7 +30,7 @@ theorem correctedChargeCurrentFlux_eq
     (N : OneForm →ₗ[ℂ] (V →ₗ[ℂ] V))
     (q : ℂ) :
     _root_.ConservationLaw.nestedSymmetrizedCurrentFlux velocity (q • LinearMap.id) N =
-      operatorLocalCurrentPairing V N (q • velocity) := by
+      operatorLocalCurrentPairing N (q • velocity) := by
   have hcorr : _root_.ConservationLaw.localizationCorrectionCurrentFlux
       velocity (q • LinearMap.id) N = 0 := by
     simpa only [Module.End.one_eq_id] using
@@ -50,14 +52,14 @@ theorem correctedSymmetrizedVelocityCurrentRepresentation_smul_id_current
     (d : Test →ₗ[ℂ] OneForm)
     (N : OneForm →ₗ[ℂ] (V →ₗ[ℂ] V))
     (q : ℂ)
-    (hvelocity : heisenbergLocalizationFunctional V ℏ h M =
+    (hvelocity : heisenbergLocalizationFunctional ℏ h M =
       (_root_.ConservationLaw.localizedQuantityFunctional N velocity).comp d) :
     (correctedSymmetrizedVelocityCurrentRepresentation
       V ℏ h M (q • LinearMap.id) velocity d N hvelocity).val =
-      operatorLocalCurrentPairing V N (q • velocity) := by
+      operatorLocalCurrentPairing N (q • velocity) := by
   change
     _root_.ConservationLaw.nestedSymmetrizedCurrentFlux velocity (q • LinearMap.id) N =
-      operatorLocalCurrentPairing V N (q • velocity)
+      operatorLocalCurrentPairing N (q • velocity)
   exact correctedChargeCurrentFlux_eq V velocity N q
 
 end SingleParticle

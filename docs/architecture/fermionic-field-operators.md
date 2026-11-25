@@ -73,16 +73,16 @@ Analysis.ConservationLaw.FluxBalanceLaw           │
         ↓                                              │
 QuantumTheory.ConservationLaw.HeisenbergEvolution      │
         ↓                                              │
-SingleParticle.LocalizedTransport ─────────────────────┤
+QuantumTheory.ConservationLaw.LocalizedTransport ──────┤
                                                        ↓
                             SingleParticle.SymmetrizedVelocityCurrent
 ```
 
 `Analysis` owns representation-independent commutator/balance/current interfaces.
 `QuantumMechanics.SingleParticle.GeneralizedCurrent` owns the operator-level one-particle
-generalized current `1/2 {v,m}` independently of localization. `LocalizedTransport` and
-`SymmetrizedVelocityCurrent` add Heisenberg transport and current-density representation semantics
-downstream.
+generalized current `1/2 {v,m}` independently of localization. `QuantumTheory.ConservationLaw.LocalizedTransport` supplies algebraic Heisenberg transport and
+pairing semantics independently of particle statistics. `SymmetrizedVelocityCurrent` supplies
+the one-particle current-density representation downstream.
 
 Current semantics are layered rather than identified with one operator formula. The operator
 `1/2 {v,m}` exists before any weak-current representation is chosen.

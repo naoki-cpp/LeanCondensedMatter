@@ -196,7 +196,7 @@ The proper-current/torque-dipole equivalence is deliberately left to R4.
 
 `Models.RashbaExchange.SpinDisplacementBridge` reuses
 `QuantumTheory.ConservationLaw.heisenbergEvolution_symmetrizedProduct` and
-`SingleParticle.heisenbergTransportFunctional` /
+`QuantumTheory.ConservationLaw.heisenbergTransportFunctional` /
 `heisenbergSourceFunctional` instead of defining another generic
 proper-current algebra. For the existing finite momentum-grid Rashba
 Hamiltonian and physical spin operator `S(n)`, it proves the exact
