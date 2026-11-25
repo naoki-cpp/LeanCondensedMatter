@@ -208,38 +208,10 @@ theorem connectedTwoPointDysonSeries_eq_grandCanonicalSourceCumulant
         (grandCanonicalExternalSubsetMomentSeries (E := 1) ε β μ g
           (twoPointExternalLabels i j) (twoPointExternalTimes τ τ'))
         Finset.univ := by
-  classical
   rw [grandCanonicalExternalSubsetSourceCumulantSeries_eq_connectedDiagramSeries_two,
-    connectedTwoPointDysonSeries_eq_shiftedConnectedExternalInsertion ε β μ hβ]
-  let S : Finset (Fin 2) := Finset.univ
-  have hS : S ≠ ∅ := by simp [S]
-  have heven : Even S.card := by simp [S]
-  let e := evenExternalSubsetOrderIso (E := 1) S heven
-  have hidx (p : Fin 2) : (e p).1 = p := by
-    have h (v : S) : (e.symm v).val = v.1.val := by
-      change ((S.orderIsoOfFin _).symm v).val = v.1.val
-      rw [Finset.orderIsoOfFin_symm_apply]
-      simp [S, Fin.sort_univ, List.idxOf_finRange]
-    apply Fin.ext
-    simpa only [OrderIso.symm_apply_apply] using (h (e p)).symm
-  have hlabels : evenExternalSubsetLabels (E := 1) (twoPointExternalLabels i j) S heven =
-      twoPointExternalLabels i j := by
-    funext p
-    exact congrArg (twoPointExternalLabels i j) (hidx p)
-  have htimes : evenExternalSubsetTimes (E := 1) (twoPointExternalTimes τ τ') S heven =
-      twoPointExternalTimes τ τ' := by
-    funext p
-    exact congrArg (twoPointExternalTimes τ τ') (hidx p)
-  unfold grandCanonicalExternalSubsetConnectedDiagramSeries
-  change _ = (∏ p : Fin 2, PowerSeries.C
-    (externalFieldChemicalPotentialFactor μ (twoPointExternalTimes τ τ' p)
-      (twoPointExternalLabels i j p))) *
-      externalSubsetConnectedDiagramSeries (E := 1) (fun k => ε k - μ) β g
-        (twoPointExternalLabels i j) (twoPointExternalTimes τ τ') S
-  rw [← map_prod, ← externalFieldFamilyChemicalPotentialFactor,
+    connectedTwoPointDysonSeries_eq_shiftedConnectedExternalInsertion ε β μ hβ,
+    grandCanonicalExternalSubsetConnectedDiagramSeries_univ (by decide : 0 < 1),
     externalFieldFamilyChemicalPotentialFactor_twoPoint]
-  simp only [externalSubsetConnectedDiagramSeries, hS, heven, dite_eq_left,
-    hlabels, htimes]
 
 end Fermionic
 end SecondQuantization
