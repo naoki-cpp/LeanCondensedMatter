@@ -1,4 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentConnected
+import LeanCondensedMatter.Combinatorics.PerfectPairing.Transport
 
 set_option linter.style.header false
 
@@ -84,22 +85,6 @@ private theorem QuarticDiagram.bigLegEquiv_fst_eq_part {S : Finset (Fin N)}
   rw [QuarticDiagram.bigLegEquiv_legOfVertexLocal]
   rfl
 
-private theorem QuarticDiagram.reassemble_partner_bigLegEquiv_fst {S : Finset (Fin N)}
-    (π : Finpartition S)
-    (F : ∀ B : π.parts, ConnectedQuarticDiagram Label N (B : Finset (Fin N)))
-    (leg : Fin (2 * (2 * S.card))) :
-    (QuarticDiagram.bigLegEquiv π
-        ((QuarticDiagram.reassemble π F).pairing.partner leg)).1 =
-      (QuarticDiagram.bigLegEquiv π leg).1 := by
-  change (QuarticDiagram.bigLegEquiv π
-      (((Combinatorics.PairingOn.sigmaCongrRight fun B => (F B).1.pairing).transport
-        (QuarticDiagram.bigLegEquiv π)).partner leg)).1 =
-    (QuarticDiagram.bigLegEquiv π leg).1
-  rw [Combinatorics.PairingOn.transport_partner, Equiv.apply_symm_apply]
-  cases h : QuarticDiagram.bigLegEquiv π leg with
-  | mk B p =>
-    simp only [Combinatorics.PairingOn.sigmaCongrRight_partner]
-
 private theorem QuarticDiagram.reassemble_vertexGraph_adj_same_part
     {S : Finset (Fin N)} (π : Finpartition S)
     (F : ∀ B : π.parts, ConnectedQuarticDiagram Label N (B : Finset (Fin N)))
@@ -107,8 +92,9 @@ private theorem QuarticDiagram.reassemble_vertexGraph_adj_same_part
     π.part (u : Fin N) = π.part (w : Fin N) := by
   obtain ⟨-, leg, hu, hw⟩ := h
   rw [← hu, ← hw, ← QuarticDiagram.bigLegEquiv_fst_eq_part,
-    ← QuarticDiagram.bigLegEquiv_fst_eq_part,
-    QuarticDiagram.reassemble_partner_bigLegEquiv_fst]
+    ← QuarticDiagram.bigLegEquiv_fst_eq_part]
+  exact congrArg Subtype.val (PairingOn.sigmaCongrRight_transport_partner_fst
+    (fun B => (F B).1.pairing) (QuarticDiagram.bigLegEquiv π) leg).symm
 
 private theorem QuarticDiagram.reassemble_componentBlock_subset_part
     {S : Finset (Fin N)} (π : Finpartition S)

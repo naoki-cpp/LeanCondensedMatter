@@ -1,4 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.BlockLayout
+import LeanCondensedMatter.Combinatorics.PerfectPairing.Transport
 
 set_option linter.style.header false
 
@@ -35,8 +36,8 @@ theorem ExternalInsertionBlockLayout.assembleDiagram_adj_same_block
     (layout.vertexEquiv_vertexOfLeg S
       ((layout.assembleDiagram S F).pairing.partner leg))
   rw [hw] at htarget
-  exact hsource.trans ((layout.assembleDiagram_partner_block S F leg).symm.trans
-    htarget.symm)
+  exact hsource.trans ((PairingOn.sigmaCongrRight_transport_partner_fst
+    (fun B => (F B).pairing) (layout.legEquiv S) leg).symm.trans htarget.symm)
 
 /-- All vertices connected by a path in an independently assembled diagram
 belong to the same prescribed external block. -/
@@ -700,10 +701,13 @@ theorem ExternalInsertionBlockLayout.restrictBlock_assembleDiagram
       ExternalInsertionDiagram ExternalLabel InternalLabel
         ((B : Finset (Fin (2 * E))).card / 2) N (layout.interactionBlock S B)) :
     (fun B => layout.restrictBlock S (layout.assembleDiagram S F)
-      (layout.assembleDiagram_partner_block S F) B) = F := by
+      (PairingOn.sigmaCongrRight_transport_partner_fst (fun B => (F B).pairing)
+        (layout.legEquiv S)) B) = F := by
   apply layout.assembleDiagram_injective S
   exact layout.assembleDiagram_restrictBlock S
-    (layout.assembleDiagram S F) (layout.assembleDiagram_partner_block S F)
+    (layout.assembleDiagram S F)
+    (PairingOn.sigmaCongrRight_transport_partner_fst (fun B => (F B).pairing)
+      (layout.legEquiv S))
 
 
 /-- The assembled diagram has prescribed external field labels exactly

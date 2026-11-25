@@ -96,4 +96,15 @@ theorem PairingOn.sigmaCongrRight_transport
   simp [PairingOn.transport_partner,
     PairingOn.sigmaCongrRight_partner, hsymm]
 
+/-- Transporting independent fiber pairings to an ambient type preserves the fiber index
+of each partner. -/
+theorem PairingOn.sigmaCongrRight_transport_partner_fst
+    {α ι : Type*} {β : ι → Type*}
+    (P : ∀ i, PairingOn (β i)) (e : α ≃ (Σ i, β i)) (x : α) :
+    (e (((PairingOn.sigmaCongrRight P).transport e).partner x)).1 = (e x).1 := by
+  rw [PairingOn.transport_partner, Equiv.apply_symm_apply]
+  cases h : e x with
+  | mk i y =>
+    simp only [PairingOn.sigmaCongrRight_partner]
+
 end Combinatorics
