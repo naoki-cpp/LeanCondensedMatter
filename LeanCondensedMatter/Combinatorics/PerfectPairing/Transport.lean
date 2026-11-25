@@ -75,4 +75,25 @@ theorem PairingOn.transport_trans {α β γ : Type*} (P : PairingOn γ)
   ext i
   simp
 
+/-- Conjugating each local perfect pairing by its own slot equivalence
+commutes with assembling the complete independent block pairing. -/
+theorem PairingOn.sigmaCongrRight_transport
+    {ι : Type*} {β γ : ι → Type*}
+    (P : ∀ i, PairingOn (β i))
+    (e : ∀ i, β i ≃ γ i) :
+    PairingOn.sigmaCongrRight
+        (fun i => (P i).transport (e i).symm) =
+      (PairingOn.sigmaCongrRight P).transport
+        (Equiv.sigmaCongrRight e).symm := by
+  apply PairingOn.ext
+  apply Equiv.ext
+  rintro ⟨i, x⟩
+  have hsymm :
+      (Equiv.sigmaCongrRight e).symm ⟨i, x⟩ =
+        ⟨i, (e i).symm x⟩ := by
+    apply (Equiv.sigmaCongrRight e).injective
+    simp only [Equiv.apply_symm_apply, Equiv.sigmaCongrRight_apply]
+  simp [PairingOn.transport_partner,
+    PairingOn.sigmaCongrRight_partner, hsymm]
+
 end Combinatorics
