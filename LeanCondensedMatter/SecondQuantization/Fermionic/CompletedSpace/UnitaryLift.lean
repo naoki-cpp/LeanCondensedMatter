@@ -60,14 +60,6 @@ theorem completedExterior_create (v : Common.CompletedFock Mode)
   rw [show completedExteriorRepresentation (ExteriorAlgebra.ι ℂ v) =
     completedCreateField v from ExteriorAlgebra.lift_ι_apply ℂ _ _ v]
 
-omit [LinearOrder Mode] in
-private theorem annihilate_scalar (v : Common.CompletedFock Mode) (a : ℂ) :
-    AlgebraicFock.annihilate _ v
-      (algebraMap ℂ (AlgebraicFock (Common.CompletedFock Mode)) a) = 0 := by
-  change CliffordAlgebra.contractLeft (Q := (0 : QuadraticForm ℂ (Common.CompletedFock Mode)))
-    (AlgebraicFock.innerDual _ v) (algebraMap ℂ _ a) = 0
-  rw [CliffordAlgebra.contractLeft_algebraMap]
-
 private theorem completedExterior_annihilate (v : Common.CompletedFock Mode)
     (x : AlgebraicFock (Common.CompletedFock Mode)) :
     star (completedCreateField v) (completedExterior x) =
@@ -75,7 +67,7 @@ private theorem completedExterior_annihilate (v : Common.CompletedFock Mode)
   induction x using CliffordAlgebra.left_induction with
   | algebraMap a =>
       rw [completedExterior_algebraMap, map_smul, adjoint_completedCreateField_vacuum,
-        smul_zero, annihilate_scalar, map_zero]
+        smul_zero, AlgebraicFock.annihilate_algebraMap, map_zero]
   | add x y hx hy => simp only [map_add, hx, hy]
   | ι_mul x w hx =>
       change star (completedCreateField v)
@@ -106,7 +98,7 @@ private theorem inner_completedExterior_scalar_create (a : ℂ) (v : Common.Comp
       (completedExterior (AlgebraicFock.create _ v x)) = 0 := by
   have h := congrArg (starRingEnd ℂ)
     (inner_completedExterior_create v x (algebraMap ℂ _ a))
-  simpa only [annihilate_scalar, map_zero, inner_zero_right, inner_conj_symm] using h
+  simpa only [AlgebraicFock.annihilate_algebraMap, map_zero, inner_zero_right, inner_conj_symm] using h
 
 /-- Exterior transport by a one-particle isometry preserves the realized Fock inner product. -/
 theorem inner_completedExterior_map (e : Common.CompletedFock Mode →ₗᵢ[ℂ]
@@ -114,12 +106,6 @@ theorem inner_completedExterior_map (e : Common.CompletedFock Mode →ₗᵢ[ℂ
     inner ℂ (completedExterior (ExteriorAlgebra.map e.toLinearMap x))
       (completedExterior (ExteriorAlgebra.map e.toLinearMap y)) =
         inner ℂ (completedExterior x) (completedExterior y) := by
-  have hcreate (v : Common.CompletedFock Mode) (z : AlgebraicFock (Common.CompletedFock Mode)) :
-      ExteriorAlgebra.map e.toLinearMap (AlgebraicFock.create _ v z) =
-        AlgebraicFock.create _ (e v) (ExteriorAlgebra.map e.toLinearMap z) := by
-    simp only [AlgebraicFock.create_apply, AlgebraicFock.oneParticle, map_mul,
-      ExteriorAlgebra.map_apply_ι]
-    rfl
   have hscalar (a : ℂ) (z : AlgebraicFock (Common.CompletedFock Mode)) :
       inner ℂ (completedExterior (ExteriorAlgebra.map e.toLinearMap (algebraMap ℂ _ a)))
         (completedExterior (ExteriorAlgebra.map e.toLinearMap z)) =
@@ -132,7 +118,7 @@ theorem inner_completedExterior_map (e : Common.CompletedFock Mode →ₗᵢ[ℂ
           (completedExterior (ExteriorAlgebra.map e.toLinearMap (AlgebraicFock.create _ v z))) =
             inner ℂ (completedExterior (algebraMap ℂ _ a))
               (completedExterior (AlgebraicFock.create _ v z))
-        rw [hcreate]
+        rw [AlgebraicFock.map_create_apply]
         simp only [AlgHom.commutes, inner_completedExterior_scalar_create]
   induction x using CliffordAlgebra.left_induction generalizing y with
   | algebraMap a => exact hscalar a y
@@ -142,7 +128,10 @@ theorem inner_completedExterior_map (e : Common.CompletedFock Mode →ₗᵢ[ℂ
         (completedExterior (ExteriorAlgebra.map e.toLinearMap (AlgebraicFock.create _ v x)))
         (completedExterior (ExteriorAlgebra.map e.toLinearMap y)) =
           inner ℂ (completedExterior (AlgebraicFock.create _ v x)) (completedExterior y)
-      rw [hcreate, inner_completedExterior_create, AlgebraicFock.annihilate_map, hx,
+      have hc : ExteriorAlgebra.map e.toLinearMap (AlgebraicFock.create _ v x) =
+          AlgebraicFock.create _ (e v) (ExteriorAlgebra.map e.toLinearMap x) :=
+        AlgebraicFock.map_create_apply e.toLinearMap v x
+      rw [hc, inner_completedExterior_create, AlgebraicFock.annihilate_map, hx,
         inner_completedExterior_create]
 
 private theorem completedExterior_denseRange :
@@ -189,14 +178,12 @@ private theorem norm_completedExterior_map
     (e : Common.CompletedFock Mode ≃ₗᵢ[ℂ] Common.CompletedFock Mode)
     (x : AlgebraicFock (Common.CompletedFock Mode)) :
     ‖completedExterior (exteriorUnitary e x)‖ = ‖completedExterior x‖ := by
-  apply (sq_eq_sq₀ (norm_nonneg _) (norm_nonneg _)).mp
   have h := inner_completedExterior_map e.toLinearIsometry x x
   change inner ℂ (completedExterior (exteriorUnitary e x))
     (completedExterior (exteriorUnitary e x)) = inner ℂ (completedExterior x)
       (completedExterior x) at h
-  rw [inner_self_eq_norm_sq_to_K, inner_self_eq_norm_sq_to_K] at h
-  apply Complex.ofReal_injective
-  convert! h using 1 <;> simp only [Complex.ofReal_pow] <;> with_unfolding_all rfl
+  apply (sq_eq_sq₀ (norm_nonneg _) (norm_nonneg _)).mp
+  simpa only [inner_self_eq_norm_sq] using congrArg (RCLike.re : ℂ → ℝ) h
 
 /-- The fermionic Fock lift of a one-particle unitary on ℓ² modes, extended isometrically from
 finite exterior expressions. The mode type need not be finite or countable. -/
@@ -234,8 +221,7 @@ theorem completedFockUnitary_createField
   · intro y
     rw [← completedExterior_create, completedFockUnitary_completedExterior,
       completedFockUnitary_completedExterior]
-    simp only [AlgebraicFock.create_apply, AlgebraicFock.oneParticle, map_mul,
-      ExteriorAlgebra.map_apply_ι]
+    rw [AlgebraicFock.map_create_apply]
     exact completedExterior_create (e v) (ExteriorAlgebra.map e.toLinearEquiv.toLinearMap y)
 
 /-- The identity one-particle unitary lifts to the identity on completed Fock space. -/
@@ -276,8 +262,7 @@ theorem completedExterior_map_denseRange {V : Type*} [AddCommGroup V] [Module �
   have hcreate (v : V) (x : AlgebraicFock V) :
       J (AlgebraicFock.create V v x) = completedCreateField (j v) (J x) := by
     change completedExterior (ExteriorAlgebra.map j (AlgebraicFock.create V v x)) = _
-    simp only [AlgebraicFock.create_apply, AlgebraicFock.oneParticle, map_mul,
-      ExteriorAlgebra.map_apply_ι]
+    rw [AlgebraicFock.map_create_apply]
     exact completedExterior_create (j v) (ExteriorAlgebra.map j x)
   have hstable (v : V) (y : CompletedFockSpace Mode) (hy : y ∈ S) :
       completedCreateField (j v) y ∈ S := by

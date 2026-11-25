@@ -34,6 +34,14 @@ theorem create_apply (f : 𝓗₁) (Ψ : AlgebraicFock 𝓗₁) :
     create 𝓗₁ f Ψ = oneParticle 𝓗₁ f * Ψ :=
   rfl
 
+/-- Exterior transport intertwines creation for any one-particle linear map. -/
+theorem map_create_apply
+    {V W : Type*} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
+    (f : V →ₗ[ℂ] W) (v : V) (x : AlgebraicFock V) :
+    ExteriorAlgebra.map f (create V v x) =
+      create W (f v) (ExteriorAlgebra.map f x) := by
+  simp only [create_apply, oneParticle, map_mul, ExteriorAlgebra.map_apply_ι]
+
 /-- Two smeared creation operators satisfy the creation-creation CAR. -/
 theorem create_comp_add_swap (f g : 𝓗₁) :
     (create 𝓗₁ f).comp (create 𝓗₁ g) +
