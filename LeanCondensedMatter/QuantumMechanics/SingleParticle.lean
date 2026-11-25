@@ -1,4 +1,3 @@
-import LeanCondensedMatter.QuantumMechanics.SingleParticle.GeneralizedCurrent
 import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum
 import LeanCondensedMatter.QuantumMechanics.SingleParticle.OrbitalAngularMomentum
 import LeanCondensedMatter.QuantumMechanics.SingleParticle.OrbitalAngularMomentumCurrent
@@ -8,6 +7,6 @@ set_option linter.style.header false
 /-!
 # Single-particle quantum mechanics
 
-Single-particle observables and dynamics: symmetrized and corrected currents, charge-like current
-specializations, orbital angular momentum, and the continuum realization.
+Single-particle observables and dynamics: orbital angular momentum and concrete continuum
+realizations, including current representations supplied by the quantum-theory conservation laws.
 -/

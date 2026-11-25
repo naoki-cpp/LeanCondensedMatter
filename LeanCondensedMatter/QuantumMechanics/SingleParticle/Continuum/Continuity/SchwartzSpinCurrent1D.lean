@@ -1,7 +1,6 @@
 import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.SchwartzTwoLevelSchrodinger1D
 import LeanCondensedMatter.QuantumTheory.SpinHalf
 import LeanCondensedMatter.QuantumTheory.ConservationLaw.LocalizedTransport
-import LeanCondensedMatter.QuantumMechanics.SingleParticle.GeneralizedCurrent
 
 set_option linter.style.header false
 
@@ -65,7 +64,7 @@ noncomputable def schwartzSpinCurrentDensityLinear1D
 theorem schwartzSpinCurrentDensityLinear1D_apply
     (ℏ κ : ℝ) (spinComponent : QuantumTheory.SpinHalf.SpinSpace) :
     schwartzSpinCurrentDensityLinear1D ℏ κ spinComponent =
-      symmetrizedVelocityCurrent SchwartzSpinorOneParticle1D
+      _root_.LinearMap.symmetrizedProduct (K := ℂ)
         (SchwartzTwoLevelSchrodinger1D.velocityOperator ℏ κ)
         (schwartzSpinOperatorLinear ℏ spinComponent) :=
   rfl
@@ -135,7 +134,7 @@ theorem schwartzSpinCurrentRepresentation1D_currentDensity
 /-- The symmetrized spin current simplifies from `1/2 {v,S(n)}` to `v S(n)`. -/
 theorem symmetrizedSpinCurrent_eq_velocity_comp_spin
     (ℏ κ : ℝ) (spinComponent : QuantumTheory.SpinHalf.SpinSpace) :
-    symmetrizedVelocityCurrent SchwartzSpinorOneParticle1D
+    _root_.LinearMap.symmetrizedProduct (K := ℂ)
         (SchwartzTwoLevelSchrodinger1D.velocityOperator ℏ κ)
         (schwartzSpinOperatorLinear ℏ spinComponent) =
       (SchwartzTwoLevelSchrodinger1D.velocityOperator ℏ κ).comp

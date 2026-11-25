@@ -29,13 +29,6 @@
       ]
     },
     {
-      "id": "generalizedCurrentSingleParticleUmbrella",
-      "path": "LeanCondensedMatter/QuantumMechanics/SingleParticle.lean",
-      "modules": [
-        "LeanCondensedMatter.QuantumMechanics.SingleParticle.GeneralizedCurrent"
-      ]
-    },
-    {
       "id": "localizedCurrentQuantumTheoryUmbrella",
       "path": "LeanCondensedMatter/QuantumTheory.lean",
       "modules": [
