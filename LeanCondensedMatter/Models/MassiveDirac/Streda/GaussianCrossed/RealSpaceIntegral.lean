@@ -241,7 +241,7 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_x_antisym
         -InternalSpace.pauliVectorCoefficient
           (finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock
             1 v m probeEnergy broadening disorderStrength hbar pMax radius) .x at hxy
-    linear_combination hxy
+    rw [hxy, neg_neg]
   have hret_y :=
     finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient_y_eq_zero
       .retarded v m probeEnergy broadening disorderStrength hbar pMax (-radius)
@@ -290,66 +290,23 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_psi_antis
     1 v m probeEnergy broadening disorderStrength hbar pMax radius
   let GR := finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix
     .retarded v m probeEnergy broadening disorderStrength hbar pMax radius
-  let a := InternalSpace.pauliScalarCoefficient Jx
-  let b := InternalSpace.pauliScalarCoefficient GR
-  let c := InternalSpace.pauliScalarCoefficient Jy
-  let gx := InternalSpace.pauliVectorCoefficient GR .x
-  let gz := InternalSpace.pauliVectorCoefficient GR .z
-  let u := InternalSpace.pauliVectorCoefficient Jx
-  let w := InternalSpace.pauliVectorCoefficient Jy
   have hxy :=
     finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient_y_zero_eq_neg_x_one
       v m probeEnergy broadening disorderStrength hbar pMax radius
       hbroadening hdisorder hpMax
-  have htrans : w .x = -u .y := by
-    change u .y = -w .x at hxy
-    linear_combination hxy
-  have hsym : GR 0 1 = GR 1 0 := by
-    rfl
-  have hgreen : GR = (!![b + gz, gx; gx, b - gz] : Matrix2) := by
-    ext i j
-    fin_cases i <;> fin_cases j <;>
-      simp [b, gx, gz, InternalSpace.pauliScalarCoefficient,
-        InternalSpace.pauliVectorCoefficient, hsym] <;> ring
-  have hamp :
-      Matrix.trace
-          (Jx * (sigmaZ * GR * sigmaZ) * GR * (-(sigmaZ * Jy * sigmaZ))) -
-        Matrix.trace
-          (Jy * (sigmaZ * GR * sigmaZ) * GR * (-(sigmaZ * Jx * sigmaZ))) =
-        8 * Complex.I * gz *
-          (gx * (a * w .y - c * u .y) +
-            b * (u .y * w .x - u .x * w .y)) := by
-    rw [hgreen]
-    exact InternalSpace.trace_parity_antisymmetric_xz_pauliCoefficients
-      Jx Jy b gx gz
+  have htrans : InternalSpace.pauliVectorCoefficient Jy .x =
+      -InternalSpace.pauliVectorCoefficient Jx .y := by
+    change InternalSpace.pauliVectorCoefficient Jx .y =
+      -InternalSpace.pauliVectorCoefficient Jy .x at hxy
+    rw [hxy, neg_neg]
+  have hsym : GR 0 1 = GR 1 0 := rfl
+  have hamp := InternalSpace.trace_parity_antisymmetric_xz_eq_transverse_minors Jx GR Jy hsym htrans
   rw [finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_antisymmetric_eq
     .psi v m probeEnergy broadening disorderStrength hbar pMax radius]
   dsimp only
   simp_rw [finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix_neg_radius,
     finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock_neg_radius]
-  change
-    (Matrix.trace
-      (Jx * (sigmaZ * GR * sigmaZ) * GR * (-(sigmaZ * Jy * sigmaZ)) -
-        Jy * (sigmaZ * GR * sigmaZ) * GR * (-(sigmaZ * Jx * sigmaZ)))) +
-      (starRingEnd ℂ) (Matrix.trace
-        (Jx * (sigmaZ * GR * sigmaZ) * GR * (-(sigmaZ * Jy * sigmaZ)) -
-          Jy * (sigmaZ * GR * sigmaZ) * GR * (-(sigmaZ * Jx * sigmaZ)))) =
-    (8 * Complex.I * gz *
-      (gx * (a * w .y - c * u .y) -
-        b * ((u .y) ^ 2 + u .x * w .y))) +
-      (starRingEnd ℂ) (8 * Complex.I * gz *
-      (gx * (a * w .y - c * u .y) -
-        b * ((u .y) ^ 2 + u .x * w .y)))
-  rw [Matrix.trace_sub, hamp, htrans]
-  have hfactor :
-      8 * Complex.I * gz *
-          (gx * (a * w .y - c * u .y) +
-            b * (u .y * (-u .y) - u .x * w .y)) =
-        8 * Complex.I * gz *
-          (gx * (a * w .y - c * u .y) -
-            b * ((u .y) ^ 2 + u .x * w .y)) := by
-    ring
-  simp only [hfactor]
+  simpa only [Matrix.trace_sub] using congrArg (fun z : ℂ => z + (starRingEnd ℂ) z) hamp
 
 /-- A common in-plane spinor conjugation of the Green and current blocks
 cancels inside either Gaussian crossed trace topology, including the
