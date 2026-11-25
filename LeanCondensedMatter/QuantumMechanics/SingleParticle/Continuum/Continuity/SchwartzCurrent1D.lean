@@ -1,5 +1,5 @@
 import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.SchwartzSchrodinger1D
-import LeanCondensedMatter.QuantumMechanics.SingleParticle.SymmetrizedVelocityCurrent
+import LeanCondensedMatter.QuantumTheory.ConservationLaw.LocalizedTransport
 import Mathlib.Algebra.Lie.OfAssociative
 
 set_option linter.style.header false
@@ -74,7 +74,7 @@ noncomputable def schwartzOperatorProbabilityCurrentRepresentation1D
         SchwartzKinetic1D.multiplicationLinear LinearMap.id)
       (operatorLocalCurrentPairing
         SchwartzKinetic1D.multiplicationLinear) :=
-  symmetrizedVelocityCurrentRepresentation SchwartzOneParticle1D ℏ
+  symmetrizedVelocityCurrentRepresentation ℏ
     (SchwartzSchrodinger1D.schrodingerOperator κ potential)
     SchwartzKinetic1D.multiplicationLinear
     LinearMap.id
@@ -92,8 +92,8 @@ theorem schwartzOperatorProbabilityCurrentRepresentation1D_currentDensity
       SchwartzSchrodinger1D.velocityOperator ℏ κ := by
   change _root_.LinearMap.symmetrizedProduct (K := ℂ)
       (SchwartzSchrodinger1D.velocityOperator ℏ κ) LinearMap.id = _
-  simpa only [one_smul] using
-    (_root_.LinearMap.symmetrizedProduct_smul_id
+  simpa only [Module.End.one_eq_id, one_smul] using
+    (_root_.LinearMap.symmetrizedProduct_smul_one
       (SchwartzSchrodinger1D.velocityOperator ℏ κ) (1 : ℂ))
 
 /-- Charge transport (`m = q I`) on the Schwartz Schrödinger model is locally represented by
@@ -107,7 +107,7 @@ noncomputable def schwartzOperatorChargeCurrentRepresentation1D
         SchwartzKinetic1D.multiplicationLinear (q • LinearMap.id))
       (operatorLocalCurrentPairing
         SchwartzKinetic1D.multiplicationLinear) :=
-  symmetrizedVelocityCurrentRepresentation SchwartzOneParticle1D ℏ
+  symmetrizedVelocityCurrentRepresentation ℏ
     (SchwartzSchrodinger1D.schrodingerOperator κ potential)
     SchwartzKinetic1D.multiplicationLinear
     (q • LinearMap.id)
@@ -125,8 +125,9 @@ theorem schwartzOperatorChargeCurrentRepresentation1D_currentDensity
       q • SchwartzSchrodinger1D.velocityOperator ℏ κ := by
   change _root_.LinearMap.symmetrizedProduct (K := ℂ)
       (SchwartzSchrodinger1D.velocityOperator ℏ κ) (q • LinearMap.id) = _
-  exact _root_.LinearMap.symmetrizedProduct_smul_id
-    (SchwartzSchrodinger1D.velocityOperator ℏ κ) q
+  simpa only [Module.End.one_eq_id] using
+    (_root_.LinearMap.symmetrizedProduct_smul_one
+      (SchwartzSchrodinger1D.velocityOperator ℏ κ) q)
 
 end
 end Continuum

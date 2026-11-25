@@ -176,7 +176,7 @@ using a zero-consumer signal as grounds for changing its retention.
 - `ConservationLaw.localizationCorrectionCurrentFlux_smul_one` — independently useful
   charge-like specialization stating that the localization correction vanishes for a scalar
   multiple of the identity.
-- `QuantumMechanics.SingleParticle.correctedChargeCurrentFlux_eq` — physical charge-current
+- `QuantumTheory.ConservationLaw.correctedChargeCurrentFlux_eq` — physical charge-current
   specialization identifying the corrected current with the local pairing `q v`.
 - `Lorentzian.tendsto_spectralTailMass_zero` — model-independent analytic
   approximate-identity result for the vanishing difference of Lorentzian masses

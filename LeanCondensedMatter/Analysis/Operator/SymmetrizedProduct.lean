@@ -102,17 +102,16 @@ section Half
 
 variable [NeZero (2 : K)]
 
-/-- Scalar multiples of the identity behave as scalar quantities under symmetrization. -/
+/-- Scalar multiples of the algebra unit behave as scalar quantities under symmetrization. -/
 @[simp]
-theorem symmetrizedProduct_smul_id {W : Type*} [AddCommGroup W] [Module K W]
-    (A : W →ₗ[K] W) (q : K) :
-    symmetrizedProduct (K := K) A (q • LinearMap.id) = q • A := by
-  ext v
-  simp only [symmetrizedProduct_apply, one_div, smul_apply, id_coe, id_eq, map_smul,
-    smul_add]
-  rw [← two_smul K, smul_smul]
-  have h2 : (2 : K) * (2 : K)⁻¹ = 1 := mul_inv_cancel₀ (NeZero.ne (2 : K))
-  simp only [h2, one_smul]
+theorem symmetrizedProduct_smul_one {A : Type*} [Ring A] [Algebra K A]
+    (a : A) (q : K) :
+    symmetrizedProduct (K := K) a (q • 1) = q • a := by
+  simp only [symmetrizedProduct_eq, Algebra.mul_smul_comm, Algebra.smul_mul_assoc,
+    mul_one, one_mul]
+  have h2 : (1 / 2 : K) * 2 = 1 := by
+    simpa only [one_div] using (inv_mul_cancel₀ (NeZero.ne (2 : K)))
+  rw [← two_smul K (q • a), smul_smul, h2, one_smul]
 
 /-- If two operators commute, their symmetrized product reduces to ordinary composition. -/
 theorem symmetrizedProduct_eq_comp_of_commutes {W : Type*} [AddCommGroup W] [Module K W]

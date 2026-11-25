@@ -208,6 +208,58 @@ theorem exists_current_eq_symmetrized_add_correction_add_invisible
   · rw [← _root_.ConservationLaw.nestedSymmetrizedCurrentFlux_eq_symmetrized_add_correction,
       add_comm, sub_add_cancel]
 
+/-- The symmetrized velocity current supplies a local current-density representation whenever the
+Heisenberg localization transport is first-order in `d` and the localized one-form operators
+commute with the transported quantity. -/
+noncomputable def symmetrizedVelocityCurrentRepresentation
+    (ℏ : ℝ) (h : 𝒜)
+    (M : Test →ₗ[ℂ] 𝒜)
+    (m velocity : 𝒜)
+    (d : Test →ₗ[ℂ] OneForm)
+    (N : OneForm →ₗ[ℂ] 𝒜)
+    (hvelocity : heisenbergLocalizationFunctional ℏ h M =
+      (_root_.ConservationLaw.localizedQuantityFunctional N velocity).comp d)
+    (hcomm : ∀ α, ⁅N α, m⁆ = 0) :
+    _root_.ConservationLaw.LocalCurrentDensityRepresentation
+      d
+      (heisenbergTransportFunctional ℏ h M m)
+      (operatorLocalCurrentPairing N) where
+  val := _root_.LinearMap.symmetrizedProduct (K := ℂ) velocity m
+  property := by
+    change heisenbergTransportFunctional ℏ h M m =
+      (_root_.ConservationLaw.symmetrizedCurrentFlux velocity m N).comp d
+    rw [nestedSymmetrizedCurrentFlux_eq_comp ℏ h M m velocity d N hvelocity,
+      _root_.ConservationLaw.nestedSymmetrizedCurrentFlux_eq_symmetrized_add_correction,
+      _root_.ConservationLaw.localizationCorrectionCurrentFlux_eq_zero_of_commutes
+        velocity m N hcomm, add_zero]
+
+@[simp]
+theorem symmetrizedVelocityCurrentRepresentation_currentDensity
+    (ℏ : ℝ) (h : 𝒜)
+    (M : Test →ₗ[ℂ] 𝒜)
+    (m velocity : 𝒜)
+    (d : Test →ₗ[ℂ] OneForm)
+    (N : OneForm →ₗ[ℂ] 𝒜)
+    (hvelocity : heisenbergLocalizationFunctional ℏ h M =
+      (_root_.ConservationLaw.localizedQuantityFunctional N velocity).comp d)
+    (hcomm : ∀ α, ⁅N α, m⁆ = 0) :
+    (symmetrizedVelocityCurrentRepresentation ℏ h M m velocity d N hvelocity hcomm).val =
+      _root_.LinearMap.symmetrizedProduct (K := ℂ) velocity m :=
+  rfl
+
+/-- The canonical corrected flux for a scalar quantity `q • 1` is the local pairing
+with charge-current density `q • velocity`. -/
+theorem correctedChargeCurrentFlux_eq
+    (velocity : 𝒜) (N : OneForm →ₗ[ℂ] 𝒜) (q : ℂ) :
+    _root_.ConservationLaw.nestedSymmetrizedCurrentFlux velocity (q • 1) N =
+      operatorLocalCurrentPairing N (q • velocity) := by
+  rw [_root_.ConservationLaw.nestedSymmetrizedCurrentFlux_eq_symmetrized_add_correction,
+    _root_.ConservationLaw.localizationCorrectionCurrentFlux_smul_one velocity N q, add_zero]
+  apply LinearMap.ext
+  intro α
+  rw [_root_.ConservationLaw.symmetrizedCurrentFlux_apply,
+    operatorLocalCurrentPairing_apply, _root_.LinearMap.symmetrizedProduct_smul_one]
+
 end CorrectedCurrent
 
 end ConservationLaw

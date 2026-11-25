@@ -42,7 +42,7 @@ homomorphic normalization rules:
 - `symmetrizedProduct_apply`
 - `symmetrizedProduct_zero_left`
 - `symmetrizedProduct_zero_right`
-- `symmetrizedProduct_smul_id`
+- `symmetrizedProduct_smul_one`
 - `coe_diagonalExpectationValue_right`
 - `coe_diagonalExpectationNNReal`
 - `diagonalExpectationValue_add`
@@ -124,8 +124,6 @@ basis, and involution rules.
 
 All current `@[simp]` declarations in the following modules are Green:
 
-- `SingleParticle/SymmetrizedVelocityCurrent`
-- `SingleParticle/ChargeLikeCurrent`
 - `SingleParticle/Continuum/Hamiltonian/Basic1D`
 - `SingleParticle/Continuum/Hamiltonian/MaximalLaplacian1D`
 - `SingleParticle/Continuum/Hamiltonian/Closed1D`
@@ -172,6 +170,7 @@ The following declaration families are deliberate API normalization boundaries:
 - `QuantumTheory.ConservationLaw.heisenbergTransportFunctional_apply`
 - `QuantumTheory.ConservationLaw.heisenbergSourceFunctional_apply`
 - `QuantumTheory.ConservationLaw.operatorLocalCurrentPairing_apply`
+- `QuantumTheory.ConservationLaw.symmetrizedVelocityCurrentRepresentation_currentDensity`
 - all current simp rules in `LinearResponse/KuboFormula`
 - `DensityOperator.spectralTrace_op_eq_one`
 - `DensityOperator.realTrace_op_eq_one`
