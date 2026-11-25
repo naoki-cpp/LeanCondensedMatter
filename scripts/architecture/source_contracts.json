@@ -34,7 +34,6 @@
       "modules": [
         "LeanCondensedMatter.QuantumMechanics.SingleParticle.GeneralizedCurrent",
         "LeanCondensedMatter.QuantumMechanics.SingleParticle.SymmetrizedVelocityCurrent",
-        "LeanCondensedMatter.QuantumMechanics.SingleParticle.CorrectedCurrentAmbiguity",
         "LeanCondensedMatter.QuantumMechanics.SingleParticle.ChargeLikeCurrent"
       ]
     },

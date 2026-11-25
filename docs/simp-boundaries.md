@@ -124,7 +124,6 @@ basis, and involution rules.
 
 All current `@[simp]` declarations in the following modules are Green:
 
-- `SingleParticle/CorrectedCurrent`
 - `SingleParticle/SymmetrizedVelocityCurrent`
 - `SingleParticle/ChargeLikeCurrent`
 - `SingleParticle/Continuum/Hamiltonian/Basic1D`

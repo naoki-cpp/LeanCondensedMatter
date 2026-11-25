@@ -14,7 +14,10 @@ to one-body, many-body, and bounded observable algebras without a choice of repr
 
 No particular current-density formula is selected here. The fundamental transport object is the
 functional on differential test data. A formula such as `1/2 {v,m}` is a downstream representation
-of that functional under additional assumptions.
+of that functional under additional assumptions. When localizer evolution admits a velocity
+representation, the nested current flux represents intrinsic transport and differs from the
+symmetrized flux by the canonical double-commutator correction. Full current extensions are
+unique only on exact differential data.
 -/
 
 namespace QuantumTheory
@@ -118,6 +121,94 @@ theorem operatorLocalCurrentPairing_apply
     operatorLocalCurrentPairing N current α =
       _root_.LinearMap.symmetrizedProduct (K := ℂ) (N α) current :=
   rfl
+
+section CorrectedCurrent
+
+/-- A velocity representation of localizer evolution lifts to the generic nested current flux for
+an arbitrary transported operator `m`; no locality/commutation assumption on `m` is needed. -/
+theorem nestedSymmetrizedCurrentFlux_eq_comp
+    (ℏ : ℝ) (h : 𝒜)
+    (M : Test →ₗ[ℂ] 𝒜)
+    (m velocity : 𝒜)
+    (d : Test →ₗ[ℂ] OneForm)
+    (N : OneForm →ₗ[ℂ] 𝒜)
+    (hvelocity : heisenbergLocalizationFunctional ℏ h M =
+      (_root_.ConservationLaw.localizedQuantityFunctional N velocity).comp d) :
+    heisenbergTransportFunctional ℏ h M m =
+      (_root_.ConservationLaw.nestedSymmetrizedCurrentFlux velocity m N).comp d := by
+  calc
+    heisenbergTransportFunctional ℏ h M m =
+        _root_.ConservationLaw.localizedQuantityFunctional
+          ((_root_.ConservationLaw.localizedQuantityFunctional N velocity).comp d) m :=
+      congrArg (fun L : Test →ₗ[ℂ] 𝒜 =>
+        _root_.ConservationLaw.localizedQuantityFunctional L m) hvelocity
+    _ = _ := by
+      apply LinearMap.ext
+      intro f
+      rfl
+
+/-- The generic nested current flux is a chosen full differential-current representation of the
+intrinsic transport whenever the localized Heisenberg evolution has a velocity representation. -/
+noncomputable def correctedSymmetrizedVelocityCurrentRepresentation
+    (ℏ : ℝ) (h : 𝒜)
+    (M : Test →ₗ[ℂ] 𝒜)
+    (m velocity : 𝒜)
+    (d : Test →ₗ[ℂ] OneForm)
+    (N : OneForm →ₗ[ℂ] 𝒜)
+    (hvelocity : heisenbergLocalizationFunctional ℏ h M =
+      (_root_.ConservationLaw.localizedQuantityFunctional N velocity).comp d) :
+    _root_.ConservationLaw.DifferentialCurrentRepresentation d
+      (heisenbergTransportFunctional ℏ h M m) where
+  val := _root_.ConservationLaw.nestedSymmetrizedCurrentFlux velocity m N
+  property := nestedSymmetrizedCurrentFlux_eq_comp ℏ h M m velocity d N hvelocity
+
+/-- Any other full current functional representing the same intrinsic transport is equivalent on
+exact differentials to the generic nested current flux. -/
+theorem currentEquivalent_nestedSymmetrizedCurrentFlux
+    (ℏ : ℝ) (h : 𝒜)
+    (M : Test →ₗ[ℂ] 𝒜)
+    (m velocity : 𝒜)
+    (d : Test →ₗ[ℂ] OneForm)
+    (N : OneForm →ₗ[ℂ] 𝒜)
+    (hvelocity : heisenbergLocalizationFunctional ℏ h M =
+      (_root_.ConservationLaw.localizedQuantityFunctional N velocity).comp d)
+    (R : _root_.ConservationLaw.DifferentialCurrentRepresentation d
+      (heisenbergTransportFunctional ℏ h M m)) :
+    R.val.comp d =
+      (_root_.ConservationLaw.nestedSymmetrizedCurrentFlux velocity m N).comp d :=
+  R.property.symm.trans
+    (correctedSymmetrizedVelocityCurrentRepresentation ℏ h M m velocity d N hvelocity).property
+
+/-- Any representative of the same intrinsic transport has the form
+
+`J = J_sym + J_corr + K`
+
+with `K (d f) = 0` for every test object `f`. Thus `K` is pure extension ambiguity invisible
+to the intrinsic flux. -/
+theorem exists_current_eq_symmetrized_add_correction_add_invisible
+    (ℏ : ℝ) (h : 𝒜)
+    (M : Test →ₗ[ℂ] 𝒜)
+    (m velocity : 𝒜)
+    (d : Test →ₗ[ℂ] OneForm)
+    (N : OneForm →ₗ[ℂ] 𝒜)
+    (hvelocity : heisenbergLocalizationFunctional ℏ h M =
+      (_root_.ConservationLaw.localizedQuantityFunctional N velocity).comp d)
+    (R : _root_.ConservationLaw.DifferentialCurrentRepresentation d
+      (heisenbergTransportFunctional ℏ h M m)) :
+    ∃ K : OneForm →ₗ[ℂ] 𝒜,
+      K.comp d = 0 ∧
+        R.val =
+          (_root_.ConservationLaw.symmetrizedCurrentFlux velocity m N +
+            _root_.ConservationLaw.localizationCorrectionCurrentFlux velocity m N) + K := by
+  refine ⟨R.val - _root_.ConservationLaw.nestedSymmetrizedCurrentFlux velocity m N,
+    ?_, ?_⟩
+  · rw [LinearMap.sub_comp,
+      currentEquivalent_nestedSymmetrizedCurrentFlux ℏ h M m velocity d N hvelocity R,
+      sub_self]
+  · rw [← _root_.ConservationLaw.nestedSymmetrizedCurrentFlux_eq_symmetrized_add_correction,
+      add_comm, sub_add_cancel]
+
+end CorrectedCurrent
 
 end ConservationLaw
 end QuantumTheory
