@@ -82,7 +82,8 @@ theorem externalInsertionInteractionLeg_lt_iff {S : Finset (Fin N)}
       externalInsertionInteractionLeg (E := E) w k ↔
       v < w ∨ (v = w ∧ l < k) := by
   have heq : (S.orderIsoOfFin rfl).symm v = (S.orderIsoOfFin rfl).symm w ↔ v = w :=
-    ⟨(S.orderIsoOfFin rfl).symm.injective, congrArg (S.orderIsoOfFin rfl).symm⟩
+    ⟨fun h => (S.orderIsoOfFin rfl).symm.injective h,
+      fun h => congrArg (fun x => (S.orderIsoOfFin rfl).symm x) h⟩
   change (externalInsertionInteractionLeg (E := E) v l).val <
     (externalInsertionInteractionLeg (E := E) w k).val ↔ _
   simp only [externalInsertionInteractionLeg_val, Nat.add_assoc, Nat.add_lt_add_iff_left,
@@ -102,7 +103,8 @@ theorem externalInsertionInteractionLeg_lt_of_subset
   rw [externalInsertionInteractionLeg_lt_iff] at h ⊢
   rcases h with h | ⟨h, hlocal⟩
   · exact Or.inl h
-  · exact Or.inr ⟨Subtype.ext (congrArg Subtype.val h), hlocal⟩
+  · subst w
+    exact Or.inr ⟨rfl, hlocal⟩
 
 /-- A flattened-leg map preserving increasing external slots and including interaction
 vertices into the ambient support preserves the entire canonical leg order. -/
