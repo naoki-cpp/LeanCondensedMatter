@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Analysis.Operator.HilbertBasis
 import LeanCondensedMatter.Analysis.Operator.DiagonalExpectation
 import LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.Basic
 import Mathlib.Analysis.InnerProductSpace.StarOrder
@@ -155,25 +156,18 @@ theorem sum_diagonalExpectationValue_le_traceNorm {T : H →L[ℂ] H}
     (hd : Orthonormal ℂ d) :
     Summable (fun i => diagonalExpectationValue T hpos.isSelfAdjoint (d i)) ∧
       ∑' i, diagonalExpectationValue T hpos.isSelfAdjoint (d i) ≤ hT.traceNorm := by
-  obtain ⟨w, b, hsub, hb_eq⟩ := hd.toSubtypeRange.exists_hilbertBasis_extension
-  set g : w → ℝ := fun j =>
-    diagonalExpectationValue T hpos.isSelfAdjoint (b j) with hg_def
-  have htr : HasSum g hT.traceNorm := by
-    simpa [g] using hT.hasSum_diagonalExpectationValue_eq_traceNorm hpos b
-  have hgsum : Summable g := htr.summable
-  have hgnonneg : ∀ j : w, 0 ≤ g j := fun j => by
-    simpa [g] using diagonalExpectationValue_nonneg T hpos (b j)
-  have hd_inj : Function.Injective d := hd.linearIndependent.injective
-  set e : ι → w := fun i => ⟨d i, hsub ⟨i, rfl⟩⟩ with he_def
-  have he_inj : Function.Injective e := fun i j hij => hd_inj (congrArg Subtype.val hij)
-  have hge : ∀ i, g (e i) = diagonalExpectationValue T hpos.isSelfAdjoint (d i) := fun i => by
-    change diagonalExpectationValue T hpos.isSelfAdjoint (b (e i)) = _
-    rw [show (b (e i) : H) = d i from by rw [hb_eq]]
-  have hfsum : Summable (fun i => g (e i)) := hgsum.comp_injective he_inj
-  have hle : ∑' i, g (e i) ≤ hT.traceNorm :=
-    hasSum_le_inj e he_inj (fun j _ => hgnonneg j) (fun _ => le_rfl) hfsum.hasSum htr
-  refine ⟨hfsum.congr hge, ?_⟩
-  rwa [tsum_congr hge] at hle
+  obtain ⟨w, b, e, he_inj, hbe⟩ := hd.exists_hilbertBasis_extension_injective
+  have htr := hT.hasSum_diagonalExpectationValue_eq_traceNorm hpos b
+  have hfsum : Summable (fun i => diagonalExpectationValue T hpos.isSelfAdjoint (b (e i))) :=
+    htr.summable.comp_injective he_inj
+  have hle := hasSum_le_inj e he_inj
+    (fun j _ => diagonalExpectationValue_nonneg T hpos (b j))
+    (fun _ => le_rfl) hfsum.hasSum htr
+  have hpoint (i : ι) :
+      diagonalExpectationValue T hpos.isSelfAdjoint (b (e i)) =
+        diagonalExpectationValue T hpos.isSelfAdjoint (d i) := by rw [hbe]
+  refine ⟨hfsum.congr hpoint, ?_⟩
+  rwa [tsum_congr hpoint] at hle
 
 /-- If a positive operator has strictly positive diagonal value on every unit vector, an
 orthonormal family can saturate its trace norm only when its span has trivial orthogonal
@@ -187,21 +181,15 @@ theorem orthogonal_span_eq_bot_of_sum_diagonalExpectationValue_eq_traceNorm
       hT.traceNorm) :
     (Submodule.span ℂ (Set.range d))ᗮ = ⊥ := by
   classical
-  obtain ⟨w, b, hsub, hb_eq⟩ := hd.toSubtypeRange.exists_hilbertBasis_extension
+  obtain ⟨w, b, e, he_inj, hbe⟩ := hd.exists_hilbertBasis_extension_injective
   set g : w → ℝ := fun j =>
     diagonalExpectationValue T hTpos.isSelfAdjoint (b j) with hg_def
   have htr : HasSum g (hT.traceNorm) :=
     hT.hasSum_diagonalExpectationValue_eq_traceNorm hTpos b
   have hgnonneg : ∀ j : w, 0 ≤ g j := fun j => by
     simpa [g] using diagonalExpectationValue_nonneg T hTpos (b j)
-  have hd_inj : Function.Injective d := hd.linearIndependent.injective
-  set e : ι → w := fun i => ⟨d i, hsub ⟨i, rfl⟩⟩ with he_def
-  have he_inj : Function.Injective e := fun i j hij =>
-    hd_inj (congrArg Subtype.val hij)
-  have hge : ∀ i, g (e i) =
-      diagonalExpectationValue T hTpos.isSelfAdjoint (d i) := fun i => by
-    change diagonalExpectationValue T hTpos.isSelfAdjoint (b (e i)) = _
-    rw [show (b (e i) : H) = d i from by rw [hb_eq]]
+  have hge : ∀ i, g (e i) = diagonalExpectationValue T hTpos.isSelfAdjoint (d i) :=
+    fun i => by simp only [g, hbe]
   have heqg : ∑' i, g (e i) = hT.traceNorm := by
     calc
       ∑' i, g (e i) =
@@ -232,9 +220,7 @@ theorem orthogonal_span_eq_bot_of_sum_diagonalExpectationValue_eq_traceNorm
     have hinner : ∀ j : w, inner ℂ (b j) x = 0 := by
       intro j
       obtain ⟨i, hi⟩ := he_surj j
-      have hbdi : b j = d i := by
-        rw [← hi]
-        rw [hb_eq]
+      have hbdi : b j = d i := by rw [← hi, hbe]
       rw [hbdi]
       exact Submodule.inner_right_of_mem_orthogonal
         (Submodule.subset_span (Set.mem_range_self i)) hx

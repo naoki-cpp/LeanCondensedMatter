@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Analysis.Operator.HilbertBasis
 import LeanCondensedMatter.Analysis.Operator.TraceClass.Ops
 import LeanCondensedMatter.QuantumTheory.DensityOperator.Basic
 
@@ -78,15 +79,8 @@ theorem DensityOperator.expectation_eq_spectral_tsum
   let e : EigenvectorIndex ρ.op → H := eigenvectorFamily hρcompact
   have he : Orthonormal ℂ e := by
     simpa [e] using orthonormal_eigenvectorFamily hρcompact hρsym
-  obtain ⟨u, b, hsub, hb⟩ := he.toSubtypeRange.exists_hilbertBasis_extension
-  let j : EigenvectorIndex ρ.op → u := fun a => ⟨e a, hsub ⟨a, rfl⟩⟩
-  have hj : Function.Injective j := by
-    intro a a' haa'
-    apply he.linearIndependent.injective
-    exact congrArg Subtype.val haa'
+  obtain ⟨u, b, j, hj, hb_j⟩ := he.exists_hilbertBasis_extension_injective
   let g : u → ℂ := fun i => inner ℂ (b i) ((ρ.op * A) (b i))
-  have hb_j (a : EigenvectorIndex ρ.op) : b (j a) = e a := by
-    rw [hb]
   have heigen (a : EigenvectorIndex ρ.op) :
       ρ.op (e a) = (a.1.1 : ℂ) • e a := by
     simpa [e] using apply_eigenvectorFamily hρcompact a

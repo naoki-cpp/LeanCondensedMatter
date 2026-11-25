@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Analysis.Operator.HilbertBasis
 import LeanCondensedMatter.QuantumTheory.DensityOperator.Basic
 import LeanCondensedMatter.Analysis.FunctionalCalculus.CFC
 import Mathlib.Analysis.SpecialFunctions.Log.NegMulLog
@@ -56,18 +57,11 @@ theorem hasSum_negMulLog_eigenvalues (ρ : DensityOperator H)
   let e : EigenvectorIndex ρ.op → H := eigenvectorFamily hρcompact
   have he : Orthonormal ℂ e := by
     simpa [e] using orthonormal_eigenvectorFamily hρcompact hρsym
-  obtain ⟨w, b, hsub, hb⟩ := he.toSubtypeRange.exists_hilbertBasis_extension
-  let j : EigenvectorIndex ρ.op → w := fun a => ⟨e a, hsub ⟨a, rfl⟩⟩
-  have hj : Function.Injective j := by
-    intro a a' haa'
-    apply he.linearIndependent.injective
-    exact congrArg Subtype.val haa'
+  obtain ⟨w, b, j, hj, hb_j⟩ := he.exists_hilbertBasis_extension_injective
   let g : w → ℝ := fun i =>
     diagonalExpectationValue (entropyOp ρ) (entropyOp_isSelfAdjoint ρ) (b i)
   have hfull : HasSum g (htrace.realTrace (entropyOp_isSelfAdjoint ρ)) := by
     simpa [g] using htrace.hasSum_realTrace (entropyOp_isSelfAdjoint ρ) b
-  have hb_j (a : EigenvectorIndex ρ.op) : b (j a) = e a := by
-    rw [hb]
   have hpoint (a : EigenvectorIndex ρ.op) :
       g (j a) = Real.negMulLog a.1.1 := by
     change diagonalExpectationValue (entropyOp ρ)
