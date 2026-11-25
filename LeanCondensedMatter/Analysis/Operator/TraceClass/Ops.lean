@@ -81,23 +81,43 @@ theorem IsTraceClass.comp_right {T : H →L[ℂ] H} (hT : IsTraceClass T)
   simpa only [← ContinuousLinearMap.star_eq_adjoint, star_mul, star_star] using
     ((hT.adjoint.comp_left (ContinuousLinearMap.adjoint W)).adjoint)
 
-/-- Pairing the image of a Hilbert basis by a bounded operator with a trace-class operator gives an
-absolutely summable complex series. -/
-private theorem IsTraceClass.summable_inner_left {T : H →L[ℂ] H} (hT : IsTraceClass T)
-    (W : H →L[ℂ] H) {ι : Type*} (d : HilbertBasis ι ℂ H) :
-    Summable (fun i => inner ℂ (W (d i)) (T (d i))) := by
-  have hsum := (hT.comp_left (ContinuousLinearMap.adjoint W)).summable_trace_diagonal d
-  exact hsum.congr fun i => by
-    rw [mul_apply_eq_comp]
-    exact ContinuousLinearMap.adjoint_inner_right W (d i) (T (d i))
+/-- If `W` is a contraction, the absolute diagonal pairing with a trace-class operator is bounded
+by the trace norm. -/
+private theorem IsTraceClass.summable_norm_inner_left_and_tsum_le_traceNorm
+    {T : H →L[ℂ] H} (hT : IsTraceClass T) (W : H →L[ℂ] H) (hW : ‖W‖ ≤ 1)
+    {ι : Type*} (d : HilbertBasis ι ℂ H) :
+    Summable (fun i => ‖inner ℂ (W (d i)) (T (d i))‖) ∧
+      ∑' i, ‖inner ℂ (W (d i)) (T (d i))‖ ≤ hT.traceNorm := by
+  obtain ⟨A, B, hA, hB, hfactor, hAnorm, hBnorm⟩ :=
+    hT.exists_hilbertSchmidt_factorization_normSq_eq_traceNorm
+  have hAW : IsHilbertSchmidt (A * W) := isHilbertSchmidt_comp_right hA W
+  have hAWnorm : hAW.normSq ≤ hT.traceNorm := by
+    calc
+      hAW.normSq ≤ hA.normSq := hA.normSq_comp_right_le_of_norm_le_one W hW
+      _ = hT.traceNorm := hAnorm
+  have hpoint (x : H) :
+      inner ℂ (W x) (T x) = inner ℂ ((A * W) x) (B x) := by
+    rw [← hfactor, mul_apply_eq_comp, mul_apply_eq_comp]
+    exact ContinuousLinearMap.adjoint_inner_right A (W x) (B x)
+  simp_rw [hpoint]
+  have hpair := hAW.summable_norm_inner_apply_and_tsum_le hB d
+  refine ⟨hpair.1, hpair.2.trans ?_⟩
+  calc
+    Real.sqrt hAW.normSq * Real.sqrt hB.normSq ≤
+        Real.sqrt hT.traceNorm * Real.sqrt hT.traceNorm := by
+      rw [hBnorm]
+      exact mul_le_mul_of_nonneg_right (Real.sqrt_le_sqrt hAWnorm) (Real.sqrt_nonneg _)
+    _ = hT.traceNorm := by rw [← pow_two, Real.sq_sqrt hT.traceNorm_nonneg]
 
 /-- Trace-class membership is closed under addition. -/
 theorem IsTraceClass.add {T R : H →L[ℂ] H} (hT : IsTraceClass T) (hR : IsTraceClass R) :
     IsTraceClass (T + R) := by
   obtain ⟨w, d, -⟩ := exists_hilbertBasis (𝕜 := ℂ) (E := H)
-  obtain ⟨U, -, hUright, -⟩ := exists_leftPolarFactor (T + R)
-  have hTsum := hT.summable_inner_left U d
-  have hRsum := hR.summable_inner_left U d
+  obtain ⟨U, -, hUright, hUnorm⟩ := exists_leftPolarFactor (T + R)
+  have hTsum : Summable (fun i => inner ℂ (U (d i)) (T (d i))) :=
+    Summable.of_norm (hT.summable_norm_inner_left_and_tsum_le_traceNorm U hUnorm d).1
+  have hRsum : Summable (fun i => inner ℂ (U (d i)) (R (d i))) :=
+    Summable.of_norm (hR.summable_norm_inner_left_and_tsum_le_traceNorm U hUnorm d).1
   have hsum :
       Summable (fun i => inner ℂ (U (d i)) ((T + R) (d i))) := by
     simpa [add_apply, inner_add_right] using hTsum.add hRsum
@@ -187,44 +207,6 @@ end IsTraceClass
 
 
 /-! ## Trace-norm operations -/
-
-/-- If `W` is a contraction, the absolute diagonal pairing with a trace-class operator is bounded
-by the trace norm. -/
-private theorem IsTraceClass.summable_norm_inner_left_and_tsum_le_traceNorm
-    {T : H →L[ℂ] H} (hT : IsTraceClass T) (W : H →L[ℂ] H) (hW : ‖W‖ ≤ 1)
-    {ι : Type*} (d : HilbertBasis ι ℂ H) :
-    Summable (fun i => ‖inner ℂ (W (d i)) (T (d i))‖) ∧
-      ∑' i, ‖inner ℂ (W (d i)) (T (d i))‖ ≤ hT.traceNorm := by
-  obtain ⟨A, B, hA, hB, hfactor, hAnorm, hBnorm⟩ :=
-    hT.exists_hilbertSchmidt_factorization_normSq_eq_traceNorm
-  have hAW : IsHilbertSchmidt (A * W) := isHilbertSchmidt_comp_right hA W
-  have hAWnorm : hAW.normSq ≤ hT.traceNorm := by
-    calc
-      hAW.normSq ≤ hA.normSq := hA.normSq_comp_right_le_of_norm_le_one W hW
-      _ = hT.traceNorm := hAnorm
-  have hpoint (x : H) :
-      inner ℂ (W x) (T x) = inner ℂ ((A * W) x) (B x) := by
-    rw [← hfactor, mul_apply_eq_comp, mul_apply_eq_comp]
-    exact ContinuousLinearMap.adjoint_inner_right A (W x) (B x)
-  have hpair := hAW.summable_norm_inner_apply_and_tsum_le hB d
-  have hnormSummable :
-      Summable (fun i => ‖inner ℂ (W (d i)) (T (d i))‖) :=
-    hpair.1.congr fun i => (congrArg norm (hpoint (d i))).symm
-  have hsum_le :
-      (∑' i, ‖inner ℂ (W (d i)) (T (d i))‖) ≤
-        Real.sqrt hAW.normSq * Real.sqrt hB.normSq := by
-    calc
-      (∑' i, ‖inner ℂ (W (d i)) (T (d i))‖) =
-          ∑' i, ‖inner ℂ ((A * W) (d i)) (B (d i))‖ :=
-        tsum_congr fun i => congrArg norm (hpoint (d i))
-      _ ≤ Real.sqrt hAW.normSq * Real.sqrt hB.normSq := hpair.2
-  refine ⟨hnormSummable, hsum_le.trans ?_⟩
-  calc
-    Real.sqrt hAW.normSq * Real.sqrt hB.normSq ≤
-        Real.sqrt hT.traceNorm * Real.sqrt hT.traceNorm := by
-      rw [hBnorm]
-      exact mul_le_mul_of_nonneg_right (Real.sqrt_le_sqrt hAWnorm) (Real.sqrt_nonneg _)
-    _ = hT.traceNorm := by rw [← pow_two, Real.sq_sqrt hT.traceNorm_nonneg]
 
 namespace IsTraceClass
 
