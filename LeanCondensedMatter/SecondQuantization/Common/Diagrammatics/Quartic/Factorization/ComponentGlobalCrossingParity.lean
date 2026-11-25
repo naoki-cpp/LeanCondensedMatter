@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Combinatorics.PerfectPairing.PairEndpoints
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Pairing.ComponentPairEquiv
 import LeanCondensedMatter.Combinatorics.PerfectPairing.ComponentCrossing
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.PairingWeight
@@ -74,7 +75,7 @@ private theorem QuarticDiagram.componentGeometricCrossingCount_mod_two_eq_zero
     (fun D p k => by
       fin_cases k <;>
         simp [Combinatorics.Pairing.pairEndpointEquiv_apply,
-          Combinatorics.Pairing.pairEndpoint, Combinatorics.pairEndpointAt,
+          Combinatorics.pairEndpointAt,
           d.componentPairEquiv_apply])
     B C hBC
     fiber (fun v => fiber.symm (v, 0))

@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Combinatorics.PerfectPairing.PairEndpoints
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Components.ComponentDecomposition
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedOrderPairing
 import LeanCondensedMatter.Combinatorics.PerfectPairing.NormalizedPairRestriction
@@ -83,7 +84,7 @@ theorem TwoPointDiagram.mixedComponentPairEndpointEquiv_apply_val
     (τ τ' : ℝ) (σ : Fin n → ℝ) (B : d.vertexGraph.componentPartition.parts)
     (pr : d.MixedComponentPair τ τ' σ B) (k : Fin 2) :
     (d.mixedComponentPairEndpointEquiv τ τ' σ B (pr, k)).1 =
-      (d.pairingInMixedOrder τ τ' σ).pairEndpoint (pr.1, k) := by
+      Combinatorics.pairEndpointAt pr.1.1 k := by
   unfold TwoPointDiagram.mixedComponentPairEndpointEquiv
   exact Pairing.normalizedPairSubtypeEndpointEquiv_apply_val
     (d.pairingInMixedOrder τ τ' σ)

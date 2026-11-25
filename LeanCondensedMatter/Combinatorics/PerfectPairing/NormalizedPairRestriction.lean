@@ -43,7 +43,7 @@ theorem Pairing.normalizedPairSubtypeEndpointEquiv_apply_val {n : ℕ}
     (hpartner : ∀ i, p i ↔ p (pairing.partner i))
     (pr : pairing.NormalizedPairSubtype p) (k : Fin 2) :
     (pairing.normalizedPairSubtypeEndpointEquiv p hpartner (pr, k)).1 =
-      pairing.pairEndpoint (pr.1, k) := by
+      pairEndpointAt pr.1.1 k := by
   rfl
 
 /-- Reindex normalized pairs selected by a partner-invariant predicate into any local pairing whose

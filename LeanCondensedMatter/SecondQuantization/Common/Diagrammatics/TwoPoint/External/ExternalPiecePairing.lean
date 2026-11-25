@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Combinatorics.PerfectPairing.PairEndpoints
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.External.ExternalPiece
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossing
 
@@ -81,7 +82,7 @@ theorem TwoPointDiagram.externalPieceMixedPosition_externalPieceComponentPairEqu
     have hmono := (d.externalPieceMixedPosition_strictMono τ τ' σ).monotone
       (le_of_not_gt h)
     simp only [hf, d.mixedComponentPairEndpointEquiv_apply_val,
-      Pairing.pairEndpoint_one, Pairing.pairEndpoint_zero] at hmono
+      pairEndpointAt_one, pairEndpointAt_zero] at hmono
     exact (not_le_of_gt ((d.pairingInMixedOrder τ τ' σ).pairs_normalized pr.1.2)) hmono
   have hpair :
       (d.externalPieceComponentPairEquiv τ τ' σ pr).1 =
@@ -101,13 +102,13 @@ theorem TwoPointDiagram.externalPieceMixedPosition_externalPieceComponentPairEqu
       apply Subtype.ext
       simp only [PairingOn.restrict_partner_val,
         d.mixedComponentPairEndpointEquiv_apply_val,
-        Pairing.pairEndpoint_zero, Pairing.pairEndpoint_one]
+        pairEndpointAt_zero, pairEndpointAt_one]
       exact (((d.pairingInMixedOrder τ τ' σ).mem_pairs_iff
         q.1.1.1 q.1.1.2).1 q.1.2).2
     · exact horder
   rw [hpair]
   simp only [hf, d.mixedComponentPairEndpointEquiv_apply_val,
-    Pairing.pairEndpoint_zero, Pairing.pairEndpoint_one]
+    pairEndpointAt_zero, pairEndpointAt_one]
 
 /-- The crossing count internal to the ambient external component equals the crossing count of the
 standalone external-piece pairing. -/

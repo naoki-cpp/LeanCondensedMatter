@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Combinatorics.PerfectPairing.PairEndpoints
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Crossing
 
 set_option linter.style.header false
@@ -11,10 +12,6 @@ not on their representation as finite positions.
 -/
 
 namespace Combinatorics
-
-/-- Select endpoint `0` or endpoint `1` of an ordered pair. -/
-def pairEndpointAt {α : Type*} (pair : α × α) (k : Fin 2) : α :=
-  if k = 0 then pair.1 else pair.2
 
 /-- Number of endpoints of `right` that occur before endpoints of `left`. -/
 def pairEndpointInversionCount {α : Type*} [LT α] [DecidableLT α]
@@ -30,8 +27,9 @@ theorem pairEndpointInversionCount_eq_sum {α : Type*} [LT α] [DecidableLT α]
     pairEndpointInversionCount left right =
       ∑ i : Fin 2, ∑ j : Fin 2,
         if pairEndpointAt right j < pairEndpointAt left i then 1 else 0 := by
-  simp [pairEndpointInversionCount, pairEndpointAt, Fin.sum_univ_two,
-    add_comm, add_left_comm]
+  simp only [pairEndpointInversionCount, Fin.sum_univ_two, pairEndpointAt_zero,
+    pairEndpointAt_one]
+  ac_rfl
 
 /-- Indicator-valued form of crossing parity. -/
 theorem pairEndpointInversionCount_mod_two_eq_crossesIndicator {α : Type*} [LinearOrder α]

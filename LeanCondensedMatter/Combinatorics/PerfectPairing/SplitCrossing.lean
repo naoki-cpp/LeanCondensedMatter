@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Combinatorics.PerfectPairing.PairEndpoints
 import LeanCondensedMatter.Combinatorics.PerfectPairing.SplitNormalizedPairs
 import LeanCondensedMatter.Combinatorics.PerfectPairing.CrossingParity
 import Mathlib.Algebra.BigOperators.ModEq
@@ -129,7 +130,7 @@ private theorem Pairing.ofSplit_pairEndpointInversionCount_eq_sum_localEndpoints
     e P Q (Sum.inr q) with hq | hq
   all_goals
     simp only [hp, hq, Pairing.pairEndpointEquiv_apply]
-    simp only [Fin.sum_univ_two, Pairing.pairEndpoint_zero, Pairing.pairEndpoint_one,
+    simp only [Fin.sum_univ_two, pairEndpointAt_zero, pairEndpointAt_one,
       pairEndpointInversionCount]
     ac_rfl
 
