@@ -2,7 +2,7 @@ import LeanCondensedMatter.Analysis.Operator.AdjointConjugation
 import LeanCondensedMatter.QuantumTheory.LinearResponse.Expectation.Density
 import LeanCondensedMatter.QuantumTheory.LinearResponse.Perturbation.Hermitian
 import LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.Stationarity
-import Mathlib.Analysis.Calculus.FDeriv.Comp
+import Mathlib.Analysis.Calculus.Deriv.Comp
 import Mathlib.Analysis.Calculus.FDeriv.Linear
 import Mathlib.Analysis.Calculus.Deriv.Basic
 import Mathlib.Analysis.Normed.Operator.Mul
@@ -179,18 +179,9 @@ theorem hasDerivAt_timeDependentPerturbedExpectationFunctional_apply_zero_of_bou
           heisenbergEvolution U t A *
             timeDependentPropagatorFirstVariation U hbar V t))
       0 := by
-  have hObs := hasDerivAt_timeDependentPerturbedObservable_zero_of_bound
-    U hbar A hM hV ht
-  have hExpectation : HasFDerivAt
-      (fun X : H →L[ℂ] H => expectation X)
-      (expectation.toContinuousLinearMap.restrictScalars ℝ)
-      (timeDependentPerturbedObservable U hbar V A 0 t) :=
-    (expectation.toContinuousLinearMap.restrictScalars ℝ).hasFDerivAt
-  have hcomp := hExpectation.comp 0 hObs.hasFDerivAt
-  have hderiv := hcomp.hasDerivAt
-  rw [hasDerivAt_iff_tendsto]
-  rw [hasDerivAt_iff_tendsto] at hderiv
-  simpa [timeDependentPerturbedExpectationFunctional_apply, Function.comp_def] using hderiv
+  simpa only [timeDependentPerturbedExpectationFunctional_apply, Function.comp_def] using
+    (expectation.toContinuousLinearMap.restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt 0
+      (hasDerivAt_timeDependentPerturbedObservable_zero_of_bound U hbar A hM hV ht)
 
 /-- For a Hermitian perturbation, the expectation first variation is the ordinary expectation of
 `[A_I(t), K_V(t)]`. -/
@@ -247,31 +238,13 @@ theorem expectation_commutator_firstVariation_eq_integral
             ⁅heisenbergEvolution U t A,
               timeDependentInteractionPerturbation U V s⁆ := by
   let L := commutatorExpectation expectation (heisenbergEvolution U t A)
-  have hmap := ContinuousLinearMap.intervalIntegral_comp_comm L hInt
-  calc
-    expectation
-        ⁅heisenbergEvolution U t A,
-          timeDependentPropagatorFirstVariation U hbar V t⁆ =
-        L (timeDependentPropagatorFirstVariation U hbar V t) := by
-      simp [L, commutatorExpectation_apply]
-    _ = L ((-(Complex.I / (hbar : ℂ))) •
-        ∫ s in (0 : ℝ)..t,
-          timeDependentInteractionPerturbation U V s) := by
-      rfl
-    _ = (-(Complex.I / (hbar : ℂ))) •
-        L (∫ s in (0 : ℝ)..t,
-          timeDependentInteractionPerturbation U V s) := by
-      rw [map_smul]
-    _ = (-(Complex.I / (hbar : ℂ))) •
-        ∫ s in (0 : ℝ)..t,
-          L (timeDependentInteractionPerturbation U V s) := by
-      rw [hmap]
-    _ = (-(Complex.I / (hbar : ℂ))) •
-        ∫ s in (0 : ℝ)..t,
-          expectation
-            ⁅heisenbergEvolution U t A,
-              timeDependentInteractionPerturbation U V s⁆ := by
-      simp [L, commutatorExpectation_apply]
+  have h : L (timeDependentPropagatorFirstVariation U hbar V t) =
+      (-(Complex.I / (hbar : ℂ))) •
+        ∫ s in (0 : ℝ)..t, L (timeDependentInteractionPerturbation U V s) := by
+    change L ((-(Complex.I / (hbar : ℂ))) •
+      ∫ s in (0 : ℝ)..t, timeDependentInteractionPerturbation U V s) = _
+    rw [map_smul, ContinuousLinearMap.intervalIntegral_comp_comm L hInt]
+  simpa only [L, commutatorExpectation_apply] using h
 
 /-- The general bounded Kubo formula for the pullback of an ordinary expectation by a pointwise
 Hermitian, interval-integrable perturbation. -/
