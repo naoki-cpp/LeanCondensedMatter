@@ -91,6 +91,12 @@ noncomputable def inPlanePauliVertexOperator
     (coefficients : Fin 2 → ℂ) : DiracHilbert →L[ℂ] DiracHilbert :=
   coefficients 0 • matrixOperator sigmaX + coefficients 1 • matrixOperator sigmaY
 
+/-- The in-plane Pauli operator is the operator realization of the corresponding matrix sum. -/
+theorem inPlanePauliVertexOperator_eq_matrixOperator (coefficients : Fin 2 → ℂ) :
+    inPlanePauliVertexOperator coefficients =
+      matrixOperator (coefficients 0 • sigmaX + coefficients 1 • sigmaY) := by
+  simp [inPlanePauliVertexOperator, matrixOperator, map_add, map_smul]
+
 /-- Canonical complex-linear embedding of in-plane coefficients into the Pauli-operator subspace. -/
 noncomputable def inPlanePauliVertexCLM :
     (Fin 2 → ℂ) →L[ℂ] (DiracHilbert →L[ℂ] DiracHilbert) := by
@@ -127,7 +133,7 @@ theorem inPlanePauliVertexCLM_injective :
         (Matrix.toEuclideanCLM :
           Matrix2 ≃⋆ₐ[ℂ] (DiracHilbert →L[ℂ] DiracHilbert)).symm A)
       hoperator
-    simpa [inPlanePauliVertexOperator, matrixOperator, map_add, map_smul] using hmatrix'
+    simpa [inPlanePauliVertexOperator_eq_matrixOperator, matrixOperator] using hmatrix'
   have hAxis : Function.Injective inPlanePauliAxis := by
     intro i j hij
     fin_cases i <;> fin_cases j <;> simp [inPlanePauliAxis] at hij ⊢
