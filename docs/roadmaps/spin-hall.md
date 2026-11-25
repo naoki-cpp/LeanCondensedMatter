@@ -484,11 +484,32 @@ actual hopping Hamiltonian, geometric charge source, and unit source factor
 as the previously constructed channel.
 
 The upper endpoint remains at finite T. This is not a static or DC
-conductivity result. The next limit step would remove that endpoint for
-positive η using boundedness of the lag kernel and the existing
-infinite-time adiabatic convergence API; regulator removal, volume limits,
-electric-field normalization, and a concrete nonzero finite-frequency
-benchmark are still separate.
+conductivity result.
+
+## Fixed-positive-rate infinite-observation-time displacement response (partial R4)
+
+For η > 0, `tendsto_adiabaticFrequencyPhase_mul_of_bounded` removes
+the upper boundary exp((iω−η)T)K(T) using only a uniform norm bound,
+not decay of the commutator itself. For bounded free dynamics the
+existing adiabatic integrability and continuous Heisenberg evolution
+yield `adiabaticLagIntegrable_commutator_of_pos`.
+
+The generic `ResponseChannel.infiniteTimeAdiabaticResponse_of_displacement`
+combines the finite-time contact cancellation, observation-time convergence
+and uniqueness of limits to give
+
+```text
+R_J(ω,η) = (η−iω) χ^R_{D,B}(ω,η),    η > 0.
+```
+
+The actual finite planar Rashba specialization is
+`realSpaceRashbaSpinDisplacement_infiniteTimeAdiabaticResponse`, reusing
+its existing finite-time theorem via the common boundary-to-limit result.
+No extra spectral-basis, decay or integrability assumptions are needed
+beyond the bounded free system, stationary expectation and positive η.
+This is a response to the vector-potential source, not yet a conductivity
+with electric-field and volume normalization. Regulator removal, volume
+limits and a concrete nonzero finite-frequency benchmark remain separate.
 
 ## References
 

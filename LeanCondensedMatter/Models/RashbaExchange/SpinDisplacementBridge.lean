@@ -1,7 +1,7 @@
 import LeanCondensedMatter.Models.RashbaExchange.FiniteMomentumSpinResponse
 import LeanCondensedMatter.Models.RashbaExchange.RealSpaceHopping
 import LeanCondensedMatter.QuantumTheory.ConservationLaw.LocalizedTransport
-import LeanCondensedMatter.QuantumTheory.LinearResponse.Frequency.FiniteTime
+import LeanCondensedMatter.QuantumTheory.LinearResponse.Frequency.InfiniteTime
 
 set_option linter.style.header false
 
@@ -363,6 +363,48 @@ theorem realSpaceRashbaSpinDisplacement_finiteTimeAdiabaticResponse
     rw [Complex.ofReal_one, one_smul]
   exact channel.finiteTimeAdiabaticResponse_of_displacement system expectation
     hstationary (boundedOneBodyOperator D) hJ hC ω η hT
+
+/-- At fixed positive switching rate the stationary proper-current/charge
+response of the actual finite planar Rashba hopping is the displacement
+susceptibility multiplied by minus the adiabatic exponent. This takes the
+observation-time limit only, with no zero-rate or bulk/DC assertion. -/
+theorem realSpaceRashbaSpinDisplacement_infiniteTimeAdiabaticResponse
+    {Site : Type*} [LinearOrder Site] [Fintype Site]
+    (geometry : LatticeGeometry Site (ℝ × ℝ))
+    (bond : Site → Site → Option (ℝ × ℝ))
+    (onsite exchange : Site → ℝ)
+    (measured source : (ℝ × ℝ) →ₗ[ℝ] ℝ)
+    (hbar q spinScale : ℝ) (hhbar : 0 < hbar)
+    (component : QuantumTheory.SpinHalf.SpinSpace)
+    (expectation : QuantumTheory.LinearResponse.NormalizedExpectation
+      (FiniteLatticeHilbertFock (SpinfulSite Site)))
+    (hstationary : QuantumTheory.LinearResponse.IsStationary
+      (QuantumTheory.LinearResponse.freePropagatorGroup
+        (realSpaceRashbaFreeSystem geometry bond onsite exchange hbar hhbar)) expectation)
+    (ω η : ℝ) (hη : 0 < η) :
+    let system := realSpaceRashbaFreeSystem geometry bond onsite exchange hbar hhbar
+    let channel := realSpaceRashbaSpinDisplacementResponseChannel
+      geometry bond onsite exchange measured source hbar q spinScale component 1
+    let D := boundedOneBodyOperator (LinearMap.symmetrizedProduct (K := ℂ)
+      ((spinfulGeometry geometry).directionalPosition measured)
+      (spinOneBodyLinear (Site := Site) spinScale component))
+    channel.infiniteTimeAdiabaticResponse (QuantumTheory.LinearResponse.freePropagatorGroup system)
+      hbar expectation ω η =
+      -(Complex.I * (ω : ℂ) - (η : ℂ)) *
+        QuantumTheory.LinearResponse.adiabaticFrequencyDomainSusceptibility
+          (QuantumTheory.LinearResponse.freePropagatorGroup system) hbar
+          expectation D channel.source ω η := by
+  let system := realSpaceRashbaFreeSystem geometry bond onsite exchange hbar hhbar
+  let channel := realSpaceRashbaSpinDisplacementResponseChannel
+    geometry bond onsite exchange measured source hbar q spinScale component 1
+  let D := boundedOneBodyOperator (LinearMap.symmetrizedProduct (K := ℂ)
+    ((spinfulGeometry geometry).directionalPosition measured)
+    (spinOneBodyLinear (Site := Site) spinScale component))
+  exact channel.infiniteTimeAdiabaticResponse_eq_of_displacement_boundary system expectation
+    hstationary D ω η hη (fun T hT =>
+      realSpaceRashbaSpinDisplacement_finiteTimeAdiabaticResponse
+        geometry bond onsite exchange measured source hbar q spinScale hhbar
+        component expectation hstationary ω η hT)
 
 end
 end QuantumTheory.Models.RashbaExchange
