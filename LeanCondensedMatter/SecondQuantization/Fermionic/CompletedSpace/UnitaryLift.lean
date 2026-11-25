@@ -128,7 +128,10 @@ theorem inner_completedExterior_map (e : Common.CompletedFock Mode →ₗᵢ[ℂ
         (completedExterior (ExteriorAlgebra.map e.toLinearMap (AlgebraicFock.create _ v x)))
         (completedExterior (ExteriorAlgebra.map e.toLinearMap y)) =
           inner ℂ (completedExterior (AlgebraicFock.create _ v x)) (completedExterior y)
-      rw [AlgebraicFock.map_create_apply, inner_completedExterior_create, AlgebraicFock.annihilate_map, hx,
+      have hc : ExteriorAlgebra.map e.toLinearMap (AlgebraicFock.create _ v x) =
+          AlgebraicFock.create _ (e v) (ExteriorAlgebra.map e.toLinearMap x) :=
+        AlgebraicFock.map_create_apply e.toLinearMap v x
+      rw [hc, inner_completedExterior_create, AlgebraicFock.annihilate_map, hx,
         inner_completedExterior_create]
 
 private theorem completedExterior_denseRange :
@@ -180,7 +183,7 @@ private theorem norm_completedExterior_map
     (completedExterior (exteriorUnitary e x)) = inner ℂ (completedExterior x)
       (completedExterior x) at h
   apply (sq_eq_sq₀ (norm_nonneg _) (norm_nonneg _)).mp
-  simpa only [inner_self_eq_norm_sq] using congrArg Complex.re h
+  simpa only [inner_self_eq_norm_sq] using congrArg (RCLike.re : ℂ → ℝ) h
 
 /-- The fermionic Fock lift of a one-particle unitary on ℓ² modes, extended isometrically from
 finite exterior expressions. The mode type need not be finite or countable. -/
@@ -218,7 +221,8 @@ theorem completedFockUnitary_createField
   · intro y
     rw [← completedExterior_create, completedFockUnitary_completedExterior,
       completedFockUnitary_completedExterior]
-    rw [AlgebraicFock.map_create_apply, completedExterior_create]
+    rw [AlgebraicFock.map_create_apply]
+    exact completedExterior_create (e v) (ExteriorAlgebra.map e.toLinearEquiv.toLinearMap y)
 
 /-- The identity one-particle unitary lifts to the identity on completed Fock space. -/
 theorem completedFockUnitary_refl (x : CompletedFockSpace Mode) :
