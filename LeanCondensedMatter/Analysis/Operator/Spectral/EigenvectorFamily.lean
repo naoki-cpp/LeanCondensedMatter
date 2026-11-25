@@ -158,60 +158,44 @@ theorem apply_eigenvectorFamily (hT : IsCompactOperator T) (a : EigenvectorIndex
   haveI := finiteDimensional_eigenspace_ne_zero hT a.1
   exact Submodule.coe_mem _
 
-/-- **Only finitely many eigenvalues of a compact self-adjoint operator can exceed any fixed
-positive threshold.** Key finiteness step towards countability of `EigenvectorIndex T`: if
-infinitely many indices had eigenvalue `≥ ε` in absolute value, the corresponding eigenvectors
-would form an orthonormal sequence whose images under `T` stay pairwise at distance `≥ ε√2`,
-contradicting compactness of `T` (which forces a norm-convergent, hence Cauchy, subsequence). -/
+/-- Only finitely many eigenvector indices of a compact symmetric operator can exceed
+a positive absolute-eigenvalue threshold: their images form a uniformly separated family
+in a compact set. -/
 theorem finite_large_eigenvalue_index (hT : IsCompactOperator T) (hT' : T.IsSymmetric)
     {ε : ℝ} (hε : 0 < ε) :
     {a : EigenvectorIndex T | ε ≤ |a.1.1|}.Finite := by
-  by_contra hinf
-  rw [Set.not_finite] at hinf
   classical
-  set f : ℕ ↪ {a : EigenvectorIndex T | ε ≤ |a.1.1|} := hinf.natEmbedding _ with hf_def
-  set e : ℕ → H := fun n => eigenvectorFamily hT (f n).1 with he_def
-  have hf_inj : Function.Injective (fun n => (f n).1) := fun _ _ h => f.injective (Subtype.ext h)
-  have he_orth : Orthonormal ℂ e :=
-    (orthonormal_eigenvectorFamily hT hT').comp (fun n => (f n).1) hf_inj
-  have hTe : ∀ n, (T : H →ₗ[ℂ] H) (e n) = ((f n).1.1.1 : ℂ) • e n :=
-    fun n => apply_eigenvectorFamily hT (f n).1
-  have hsep : ∀ m n, m ≠ n → Real.sqrt 2 * ε ≤ ‖T (e m) - T (e n)‖ := by
-    intro m n hmn
-    have hinner : inner ℂ (e m) (e n) = (0 : ℂ) := he_orth.2 hmn
-    have hTinner : inner ℂ (T (e m)) (T (e n)) = (0 : ℂ) := by
-      change inner ℂ ((T : H →ₗ[ℂ] H) (e m)) ((T : H →ₗ[ℂ] H) (e n)) = (0 : ℂ)
-      rw [hTe m, hTe n, inner_smul_left, inner_smul_right, hinner]; simp
-    have hnormsq : ‖T (e m) - T (e n)‖ ^ 2 = ‖T (e m)‖ ^ 2 + ‖T (e n)‖ ^ 2 := by
-      have h0 : (inner ℂ (T (e m)) (T (e n)) : ℂ) = 0 := hTinner
-      rw [@norm_sub_sq ℂ]
-      have : RCLike.re (inner ℂ (T (e m)) (T (e n)) : ℂ) = 0 := by rw [h0]; simp
-      rw [this]; ring
-    have hTe_norm : ∀ k, ‖T (e k)‖ = |(f k).1.1.1| := by
-      intro k
-      change ‖(T : H →ₗ[ℂ] H) (e k)‖ = _
-      rw [hTe k, norm_smul, he_orth.1 k]
+  let I := {a : EigenvectorIndex T // ε ≤ |a.1.1|}
+  let e : I → H := fun a => eigenvectorFamily hT a.1
+  let g : I → H := fun a => T (e a)
+  have he : Orthonormal ℂ e :=
+    (orthonormal_eigenvectorFamily hT hT').comp Subtype.val Subtype.val_injective
+  have hg (a : I) : g a = (a.1.1.1 : ℂ) • e a :=
+    apply_eigenvectorFamily hT a.1
+  have hnorm (a : I) : ε ≤ ‖g a‖ := by
+    rw [hg, norm_smul, he.1 a]
+    simpa using a.2
+  have hsep : Pairwise fun a b : I => ε ≤ dist (g a) (g b) := by
+    intro a b hab
+    have horth : inner ℂ (g a) (g b) = 0 := by
+      rw [hg a, hg b, inner_smul_left, inner_smul_right, he.2 hab]
       simp
-    have hm_bound : ε ≤ ‖T (e m)‖ := by rw [hTe_norm]; exact (f m).2
-    have hn_bound : ε ≤ ‖T (e n)‖ := by rw [hTe_norm]; exact (f n).2
-    have hsq : 2 * ε ^ 2 ≤ ‖T (e m) - T (e n)‖ ^ 2 := by
-      rw [hnormsq]; nlinarith [sq_nonneg (‖T (e m)‖ - ε), sq_nonneg (‖T (e n)‖ - ε)]
-    have h2 : Real.sqrt (2 * ε ^ 2) ≤ ‖T (e m) - T (e n)‖ := by
-      rw [← Real.sqrt_sq (norm_nonneg (T (e m) - T (e n)))]
-      exact Real.sqrt_le_sqrt hsq
-    rwa [Real.sqrt_mul (by norm_num) (ε ^ 2), Real.sqrt_sq hε.le] at h2
+    rw [dist_eq_norm, ← sq_le_sq₀ hε.le (norm_nonneg _), @norm_sub_sq ℂ, horth]
+    simp only [map_zero, mul_zero, sub_zero]
+    exact (pow_le_pow_left₀ hε.le (hnorm a) 2).trans
+      (le_add_of_nonneg_right (sq_nonneg _))
   obtain ⟨K, hK, hKsub⟩ := hT.image_closedBall_subset_compact 1
-  have hmem : ∀ n, T (e n) ∈ K := fun n =>
-    hKsub ⟨e n, by simpa using (he_orth.1 n).le, rfl⟩
-  obtain ⟨y, -, φ, hφmono, hφtendsto⟩ := hK.tendsto_subseq hmem
-  have hcauchy : CauchySeq (fun n => T (e (φ n))) := hφtendsto.cauchySeq
-  rw [Metric.cauchySeq_iff] at hcauchy
-  obtain ⟨N, hN⟩ := hcauchy (Real.sqrt 2 * ε) (by positivity)
-  have hφinj : Function.Injective φ := hφmono.injective
-  have := hN (N + 1) (by omega) N (by omega)
-  rw [dist_eq_norm] at this
-  have hge := hsep (φ (N + 1)) (φ N) (hφinj.ne (by omega))
-  linarith
+  letI : TopologicalSpace I := ⊥
+  letI : DiscreteTopology I := ⟨rfl⟩
+  have hclosed : Topology.IsClosedEmbedding g :=
+    Metric.isClosedEmbedding_of_pairwise_le_dist hε hsep
+  have hpre : g ⁻¹' K = Set.univ := by
+    apply Set.eq_univ_of_forall
+    intro a
+    exact hKsub ⟨e a, by simpa using (he.1 a).le, rfl⟩
+  have hc := hclosed.isCompact_preimage hK
+  rw [hpre] at hc
+  exact Set.finite_coe_iff.mp (Finite.of_finite_univ hc.finite_of_discrete)
 
 /-- **The eigenvector index of a compact self-adjoint operator is countable.** `EigenvectorIndex
 T` is the union, over `n : ℕ`, of the (finite, by `finite_large_eigenvalue_index`) set of
