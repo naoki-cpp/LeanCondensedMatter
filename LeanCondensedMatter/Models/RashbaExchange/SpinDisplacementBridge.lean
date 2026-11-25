@@ -57,7 +57,7 @@ theorem finiteRashbaMomentumSpinDisplacement_balance
     (params : HamiltonianParameters) (momentum : Grid → ℝ × ℝ)
     (hbar spinScale : ℝ) (component : QuantumTheory.SpinHalf.SpinSpace)
     (position : (SpinfulSite Grid →₀ ℂ) →ₗ[ℂ] (SpinfulSite Grid →₀ ℂ)) :
-    heisenbergEvolution (SpinfulSite Grid →₀ ℂ) hbar
+    heisenbergEvolution hbar
         (finiteRashbaMomentumHamiltonian params momentum)
         (finiteRashbaMomentumSpinDisplacement spinScale component position) =
       QuantumMechanics.SingleParticle.heisenbergTransportFunctional
@@ -66,7 +66,7 @@ theorem finiteRashbaMomentumSpinDisplacement_balance
       QuantumMechanics.SingleParticle.heisenbergSourceFunctional
           (SpinfulSite Grid →₀ ℂ) hbar (finiteRashbaMomentumHamiltonian params momentum)
           LinearMap.id (spinOneBodyLinear spinScale component) position := by
-  exact heisenbergEvolution_symmetrizedProduct (SpinfulSite Grid →₀ ℂ)
+  exact heisenbergEvolution_symmetrizedProduct
     hbar (finiteRashbaMomentumHamiltonian params momentum)
     position (spinOneBodyLinear spinScale component)
 
@@ -77,18 +77,18 @@ theorem finiteRashbaMomentumSpinDisplacement_heisenberg_decomposition
     (params : HamiltonianParameters) (momentum : Grid → ℝ × ℝ)
     (hbar spinScale : ℝ) (component : QuantumTheory.SpinHalf.SpinSpace)
     (position : (SpinfulSite Grid →₀ ℂ) →ₗ[ℂ] (SpinfulSite Grid →₀ ℂ)) :
-    heisenbergEvolution (SpinfulSite Grid →₀ ℂ) hbar
+    heisenbergEvolution hbar
         (finiteRashbaMomentumHamiltonian params momentum)
         (finiteRashbaMomentumSpinDisplacement spinScale component position) =
       LinearMap.symmetrizedProduct (K := ℂ)
-        (heisenbergEvolution (SpinfulSite Grid →₀ ℂ) hbar
+        (heisenbergEvolution hbar
           (finiteRashbaMomentumHamiltonian params momentum) position)
         (spinOneBodyLinear spinScale component) +
       LinearMap.symmetrizedProduct (K := ℂ) position
-        (heisenbergEvolution (SpinfulSite Grid →₀ ℂ) hbar
+        (heisenbergEvolution hbar
           (finiteRashbaMomentumHamiltonian params momentum)
           (spinOneBodyLinear spinScale component)) := by
-  exact heisenbergEvolution_symmetrizedProduct (SpinfulSite Grid →₀ ℂ)
+  exact heisenbergEvolution_symmetrizedProduct
     hbar (finiteRashbaMomentumHamiltonian params momentum)
     position (spinOneBodyLinear spinScale component)
 
@@ -101,17 +101,17 @@ theorem finiteRashbaMomentumSpinDisplacement_eq_spinCurrent_add_torque
     (direction : Fin 2)
     (position : (SpinfulSite Grid →₀ ℂ) →ₗ[ℂ] (SpinfulSite Grid →₀ ℂ))
     (hvelocity :
-      heisenbergEvolution (SpinfulSite Grid →₀ ℂ) hbar
+      heisenbergEvolution hbar
         (finiteRashbaMomentumHamiltonian params momentum) position =
       finiteRashbaMomentumVelocity params momentum direction) :
-    heisenbergEvolution (SpinfulSite Grid →₀ ℂ) hbar
+    heisenbergEvolution hbar
         (finiteRashbaMomentumHamiltonian params momentum)
         (finiteRashbaMomentumSpinDisplacement spinScale component position) =
       LinearMap.symmetrizedProduct (K := ℂ)
         (finiteRashbaMomentumVelocity params momentum direction)
         (spinOneBodyLinear spinScale component) +
       LinearMap.symmetrizedProduct (K := ℂ) position
-        (heisenbergEvolution (SpinfulSite Grid →₀ ℂ) hbar
+        (heisenbergEvolution hbar
           (finiteRashbaMomentumHamiltonian params momentum)
           (spinOneBodyLinear spinScale component)) := by
   rw [finiteRashbaMomentumSpinDisplacement_heisenberg_decomposition, hvelocity]
@@ -126,11 +126,11 @@ theorem finiteRashbaMomentumSpinDisplacement_fock_decomposition
     (direction : Fin 2)
     (position : (SpinfulSite Grid →₀ ℂ) →ₗ[ℂ] (SpinfulSite Grid →₀ ℂ))
     (hvelocity :
-      heisenbergEvolution (SpinfulSite Grid →₀ ℂ) hbar
+      heisenbergEvolution hbar
         (finiteRashbaMomentumHamiltonian params momentum) position =
       finiteRashbaMomentumVelocity params momentum direction) :
     boundedOneBodyOperator
-        (heisenbergEvolution (SpinfulSite Grid →₀ ℂ) hbar
+        (heisenbergEvolution hbar
           (finiteRashbaMomentumHamiltonian params momentum)
           (finiteRashbaMomentumSpinDisplacement spinScale component position)) =
       SecondQuantization.Fermionic.Transport.boundedSpinCurrentLinear
@@ -138,7 +138,7 @@ theorem finiteRashbaMomentumSpinDisplacement_fock_decomposition
           spinScale component +
         boundedOneBodyOperator
           (LinearMap.symmetrizedProduct (K := ℂ) position
-            (heisenbergEvolution (SpinfulSite Grid →₀ ℂ) hbar
+            (heisenbergEvolution hbar
               (finiteRashbaMomentumHamiltonian params momentum)
               (spinOneBodyLinear spinScale component))) := by
   rw [← hvelocity]
@@ -167,7 +167,7 @@ noncomputable def finiteRashbaMomentumSpinDisplacementResponseChannel
         measured source charge contact with
     measured :=
       boundedOneBodyOperator
-        (heisenbergEvolution (SpinfulSite Grid →₀ ℂ) hbar
+        (heisenbergEvolution hbar
           (finiteRashbaMomentumHamiltonian params momentum)
           (finiteRashbaMomentumSpinDisplacement spinScale component position)) }
 
@@ -188,7 +188,7 @@ theorem finiteRashbaMomentumSpinDisplacement_retardedKernel_eq_conventional_add_
     (measured source : Fin 2) (charge : ℂ)
     (position : (SpinfulSite Grid →₀ ℂ) →ₗ[ℂ] (SpinfulSite Grid →₀ ℂ))
     (hvelocity :
-      heisenbergEvolution (SpinfulSite Grid →₀ ℂ) hbar
+      heisenbergEvolution hbar
         (finiteRashbaMomentumHamiltonian params momentum) position =
       finiteRashbaMomentumVelocity params momentum measured)
     (contact :
@@ -214,7 +214,7 @@ theorem finiteRashbaMomentumSpinDisplacement_retardedKernel_eq_conventional_add_
         hbar expectation
         (boundedOneBodyOperator
           (LinearMap.symmetrizedProduct (K := ℂ) position
-            (heisenbergEvolution (SpinfulSite Grid →₀ ℂ) hbar
+            (heisenbergEvolution hbar
               (finiteRashbaMomentumHamiltonian params momentum)
               (spinOneBodyLinear spinScale component))))
         (boundedOneBodyOperator
@@ -228,12 +228,12 @@ theorem finiteRashbaMomentumSpinDisplacement_retardedKernel_eq_conventional_add_
     (finiteRashbaMomentumVelocity params momentum measured) spinScale component
   let T := boundedOneBodyOperator
     (LinearMap.symmetrizedProduct (K := ℂ) position
-      (heisenbergEvolution (SpinfulSite Grid →₀ ℂ) hbar
+      (heisenbergEvolution hbar
         (finiteRashbaMomentumHamiltonian params momentum)
         (spinOneBodyLinear spinScale component)))
   change QuantumTheory.LinearResponse.retardedSusceptibility U hbar expectation
       (boundedOneBodyOperator
-        (heisenbergEvolution (SpinfulSite Grid →₀ ℂ) hbar
+        (heisenbergEvolution hbar
           (finiteRashbaMomentumHamiltonian params momentum)
           (finiteRashbaMomentumSpinDisplacement spinScale component position)))
       B t s =
@@ -262,13 +262,13 @@ theorem realSpaceRashbaSpinDisplacement_fock_decomposition
     let X := (spinfulGeometry geometry).directionalPosition direction
     let S := spinOneBodyLinear (Site := Site) spinScale component
     boundedOneBodyOperator
-        (heisenbergEvolution (SpinfulSite Site →₀ ℂ) hbar H
+        (heisenbergEvolution hbar H
           (LinearMap.symmetrizedProduct (K := ℂ) X S)) =
       SecondQuantization.Fermionic.Transport.boundedSpinCurrentLinear
-          (heisenbergEvolution (SpinfulSite Site →₀ ℂ) hbar H X) spinScale component +
+          (heisenbergEvolution hbar H X) spinScale component +
         boundedOneBodyOperator
           (LinearMap.symmetrizedProduct (K := ℂ) X
-            (heisenbergEvolution (SpinfulSite Site →₀ ℂ) hbar H S)) := by
+            (heisenbergEvolution hbar H S)) := by
   exact SecondQuantization.Fermionic.Transport.boundedHeisenbergSymmetrizedProduct_eq
     hbar (realSpaceRashbaHopping geometry bond onsite exchange).operator
     ((spinfulGeometry geometry).directionalPosition direction)

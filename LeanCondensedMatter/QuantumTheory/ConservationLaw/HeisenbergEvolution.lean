@@ -13,7 +13,8 @@ This module supplies only the quantum-mechanical normalization of algebraic comm
 ```
 
 It does not choose a localization map, transported quantity, position observable, velocity, or
-current representation or balance law.
+current representation or balance law. The generator acts on any unital associative complex
+algebra; an endomorphism algebra is only one realization.
 -/
 
 namespace QuantumTheory
@@ -21,38 +22,38 @@ namespace ConservationLaw
 
 attribute [local instance 100] LieRing.ofAssociativeRing
 
-variable (V : Type*) [AddCommGroup V] [Module ℂ V]
+variable {𝒜 : Type*} [Ring 𝒜] [Algebra ℂ 𝒜]
 
 /-- Scalar converting a commutator with the Hamiltonian into the Heisenberg derivative. -/
 noncomputable def heisenbergScale (ℏ : ℝ) : ℂ :=
   Complex.I / (ℏ : ℂ)
 
-/-- Heisenberg evolution as a linear endomorphism of the one-body operator space. -/
+/-- The infinitesimal Heisenberg evolution as a linear endomorphism of a complex associative algebra. -/
 noncomputable def heisenbergEvolution
-    (ℏ : ℝ) (h : V →ₗ[ℂ] V) :
-    (V →ₗ[ℂ] V) →ₗ[ℂ] (V →ₗ[ℂ] V) :=
-  heisenbergScale ℏ • LieAlgebra.ad ℂ (Module.End ℂ V) h
+    (ℏ : ℝ) (h : 𝒜) :
+    𝒜 →ₗ[ℂ] 𝒜 :=
+  heisenbergScale ℏ • LieAlgebra.ad ℂ 𝒜 h
 
 @[simp]
 theorem heisenbergEvolution_apply
-    (ℏ : ℝ) (h A : V →ₗ[ℂ] V) :
-    heisenbergEvolution V ℏ h A =
+    (ℏ : ℝ) (h A : 𝒜) :
+    heisenbergEvolution ℏ h A =
       heisenbergScale ℏ • ⁅h, A⁆ :=
   rfl
 
 /-- Heisenberg evolution satisfies the symmetric-product Leibniz rule.
 This is the scaled form of the existing associative-algebra commutator identity. -/
 theorem heisenbergEvolution_symmetrizedProduct
-    (ℏ : ℝ) (h A B : V →ₗ[ℂ] V) :
-    heisenbergEvolution V ℏ h (LinearMap.symmetrizedProduct (K := ℂ) A B) =
-      LinearMap.symmetrizedProduct (K := ℂ) (heisenbergEvolution V ℏ h A) B +
-        LinearMap.symmetrizedProduct (K := ℂ) A (heisenbergEvolution V ℏ h B) := by
+    (ℏ : ℝ) (h A B : 𝒜) :
+    heisenbergEvolution ℏ h (LinearMap.symmetrizedProduct (K := ℂ) A B) =
+      LinearMap.symmetrizedProduct (K := ℂ) (heisenbergEvolution ℏ h A) B +
+        LinearMap.symmetrizedProduct (K := ℂ) A (heisenbergEvolution ℏ h B) := by
   simp only [heisenbergEvolution_apply, LinearMap.lie_symmetrizedProduct, smul_add]
   have hleft :=
-    (((LinearMap.symmetrizedProductBilinear (K := ℂ) (V →ₗ[ℂ] V)).flip B).map_smul
+    (((LinearMap.symmetrizedProductBilinear (K := ℂ) 𝒜).flip B).map_smul
       (heisenbergScale ℏ) ⁅h, A⁆).symm
   have hright :=
-    ((LinearMap.symmetrizedProductBilinear (K := ℂ) (V →ₗ[ℂ] V) A).map_smul
+    ((LinearMap.symmetrizedProductBilinear (K := ℂ) 𝒜 A).map_smul
       (heisenbergScale ℏ) ⁅h, B⁆).symm
   exact congrArg₂ (· + ·) hleft hright
 

@@ -35,7 +35,7 @@ noncomputable def heisenbergLocalizationFunctional
     (ℏ : ℝ) (h : V →ₗ[ℂ] V)
     (M : Test →ₗ[ℂ] (V →ₗ[ℂ] V)) :
     Test →ₗ[ℂ] (V →ₗ[ℂ] V) :=
-  (heisenbergEvolution V ℏ h).comp M
+  (heisenbergEvolution ℏ h).comp M
 
 /-- The symmetrically localized transport functional in Heisenberg normalization. -/
 noncomputable def heisenbergTransportFunctional
@@ -51,7 +51,7 @@ noncomputable def heisenbergSourceFunctional
     (M : Test →ₗ[ℂ] (V →ₗ[ℂ] V))
     (m : V →ₗ[ℂ] V) :
     Test →ₗ[ℂ] (V →ₗ[ℂ] V) :=
-  _root_.ConservationLaw.localizedQuantityFunctional M (heisenbergEvolution V ℏ h m)
+  _root_.ConservationLaw.localizedQuantityFunctional M (heisenbergEvolution ℏ h m)
 
 @[simp]
 theorem heisenbergLocalizationFunctional_apply
@@ -67,7 +67,7 @@ theorem heisenbergTransportFunctional_apply
     (M : Test →ₗ[ℂ] (V →ₗ[ℂ] V))
     (m : V →ₗ[ℂ] V) (f : Test) :
     heisenbergTransportFunctional V ℏ h M m f =
-      _root_.LinearMap.symmetrizedProduct (K := ℂ) (heisenbergEvolution V ℏ h (M f)) m :=
+      _root_.LinearMap.symmetrizedProduct (K := ℂ) (heisenbergEvolution ℏ h (M f)) m :=
   rfl
 
 @[simp]
@@ -76,7 +76,7 @@ theorem heisenbergSourceFunctional_apply
     (M : Test →ₗ[ℂ] (V →ₗ[ℂ] V))
     (m : V →ₗ[ℂ] V) (f : Test) :
     heisenbergSourceFunctional V ℏ h M m f =
-      _root_.LinearMap.symmetrizedProduct (K := ℂ) (M f) (heisenbergEvolution V ℏ h m) :=
+      _root_.LinearMap.symmetrizedProduct (K := ℂ) (M f) (heisenbergEvolution ℏ h m) :=
   rfl
 
 /-- Heisenberg evolution of a symmetrically localized one-body quantity gives the intrinsic balance
@@ -90,7 +90,7 @@ noncomputable def heisenbergIntrinsicSymmetricLocalizationBalanceLaw
     (htransport : Function.FactorsThrough
       (heisenbergTransportFunctional V ℏ h M m) d) :
     _root_.ConservationLaw.FluxBalanceLaw
-      (heisenbergEvolution V ℏ h)
+      (heisenbergEvolution ℏ h)
       (_root_.ConservationLaw.localizedQuantityFunctional M m)
       d where
   transport := heisenbergTransportFunctional V ℏ h M m
@@ -99,7 +99,7 @@ noncomputable def heisenbergIntrinsicSymmetricLocalizationBalanceLaw
   balance := by
     apply LinearMap.ext
     intro f
-    exact heisenbergEvolution_symmetrizedProduct V ℏ h (M f) m
+    exact heisenbergEvolution_symmetrizedProduct ℏ h (M f) m
 
 /-- A one-form-like test is paired with a one-body current-density operator by symmetric
 localization. This pairing does not choose which current density represents a given transport
