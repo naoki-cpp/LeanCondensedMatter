@@ -69,7 +69,7 @@ theorem twoPointDiagramExternalInsertionEquiv_pairingInMixedOrder
   intro p
   apply (twoPointLegEquiv (Finset.univ : Finset (Fin n))).injective
   simp only [Equiv.trans_apply, twoPointExternalInsertionLegEquiv,
-    Equiv.symm_trans_apply, Equiv.apply_symm_apply,
+    Equiv.symm_trans_apply, Equiv.symm_symm, Equiv.apply_symm_apply,
     externalInsertionLegEquiv_mixedTimeAmbientPositionEquiv,
     twoPointLegEquiv_mixedTimeAmbientPositionEquiv,
     mixedTimeOrderedAtomicLegEquiv_eq_externalInsertion]
