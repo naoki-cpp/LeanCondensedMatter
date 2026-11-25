@@ -109,7 +109,10 @@ image of the smaller pairing's pairs. Its membership proofs reuse the core order
 and endpoint separation from `PerfectPairing.PairEndpoints`. Inverse-coordinate proofs remain
 private to that owner.
 
-`PerfectPairing.InsertFirstPair` owns both the product decomposition of the normalized
+`FiniteIndex.DeletedPositions` also supplies the sum equivalence separating the two removed
+positions from the remaining ordered positions. `PerfectPairing.InsertFirstPair` transports
+the disjoint sum of a two-element pairing and the smaller pairing along that equivalence.
+It owns both the product decomposition of the normalized
 pair set and the additive reindexing of sums through `Pairing.equivSigma`. These structural laws
 do not depend on crossing geometry, and the product law also applies when the smaller pairing has
 no pairs. `CrossingEraseZero` uses the residual structure and monotone crossing transport to
