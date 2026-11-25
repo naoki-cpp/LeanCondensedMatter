@@ -95,8 +95,11 @@ theorem diagonalDet_eq_det_one_add_diagonalOp
   letI := Fintype.ofFinite ι
   let B : Module.Basis ι ℂ H := b.toOrthonormalBasis.toBasis
   have happly (j : ι) :
-      (((1 : H →L[ℂ] H) + HilbertBasis.diagonalOp b coeff : H →L[ℂ] H) : H →ₗ[ℂ] H)
-        (B j) = (1 + coeff j) • B j := by
+      ((↑(1 : H →L[ℂ] H) +
+          ↑(HilbertBasis.diagonalOp b coeff) : H →ₗ[ℂ] H) (B j)) =
+        (1 + coeff j) • B j := by
+    change ((1 : H →L[ℂ] H) + HilbertBasis.diagonalOp b coeff) (B j) =
+      (1 + coeff j) • B j
     simpa [B] using b.one_add_diagonalOp_apply_basis coeff Summable.of_finite j
   rw [diagonalDet_fintype]
   change (∏ i, (1 + coeff i)) =
