@@ -6680,7 +6680,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (n : ℕ) (j : Fin (2 * (n + 1))), j ≠ 0 → (Combinatorics.FiniteIndex.deletedPositions n j).card = 2 * n",
+    "statement": "∀ (n : ℕ) (j : Fin (n + 2)), j ≠ 0 → (Combinatorics.FiniteIndex.deletedPositions n j).card = n",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -6699,16 +6699,60 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.FirstPairRecursion.0.Combinatorics.Pairing.eraseZeroOrderIso_eq_succ_succAbove"
+      "Combinatorics.FiniteIndex.deletedPositionsOrderIso_apply"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
       "Combinatorics.FiniteIndex.deletedPositionsOrderIso",
-      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.FirstPairRecursion.0.Combinatorics.Pairing.eraseZeroOrderIso_eq_succ_succAbove"
+      "Combinatorics.FiniteIndex.deletedPositionsOrderIso_apply"
     ],
     "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (n : ℕ) (j : Fin (n + 2)) (hj : j ≠ 0) (i : Fin n),\n  ↑((Combinatorics.FiniteIndex.deletedPositionsOrderIso n j hj) i) = ((j.pred hj).succAbove i).succ",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "Combinatorics.FiniteIndex.deletedPositionsOrderIso_apply",
+    "module": "LeanCondensedMatter.Combinatorics.FiniteIndex.DeletedPositions",
+    "externalAxioms": [],
+    "docString": "The increasing enumeration of the remaining positions first skips the deleted nonzero\nposition in the predecessor coordinates, then skips zero by taking the successor. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "Combinatorics.moment_eq_pairing_sum_of_first_pair_recursion"
+    ],
+    "dependencies": [
+      "Combinatorics.FiniteIndex.card_deletedPositions"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "Combinatorics.moment_eq_pairing_sum_of_first_pair_recursion"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -8181,7 +8225,8 @@
     "directWrapperOf": null,
     "dependents": [
       "Combinatorics.Pairing.crossingCount_eraseZeroPair",
-      "Combinatorics.Pairing.prod_pairs_eq_firstPair_mul"
+      "Combinatorics.Pairing.prod_pairs_eq_firstPair_mul",
+      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.EraseZero.0.Combinatorics.Pairing.mem_pairs_endpoints_mem_deletedPositions"
     ],
     "dependencies": [
       "Combinatorics.Pairing.mem_pairs_iff"
@@ -8190,9 +8235,10 @@
     "completedMention": false,
     "compiledConsumers": [
       "Combinatorics.Pairing.crossingCount_eraseZeroPair",
-      "Combinatorics.Pairing.prod_pairs_eq_firstPair_mul"
+      "Combinatorics.Pairing.prod_pairs_eq_firstPair_mul",
+      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.EraseZero.0.Combinatorics.Pairing.mem_pairs_endpoints_mem_deletedPositions"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -8460,8 +8506,6 @@
       "Combinatorics.Pairing.normalizedPairSigmaEquiv_apply_of_strictMono",
       "SecondQuantization.Common.TwoPointDiagram.externalPieceMixedPosition_externalPieceComponentPairEquiv",
       "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.ComponentDecomposition.0.Combinatorics.Pairing.componentPairEndpointEquiv_partner",
-      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.EraseZero.0.Combinatorics.Pairing.eraseZeroPair_mem_pairs_iff",
-      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.EraseZero.0.Combinatorics.Pairing.mem_pairs_endpoints_mem_deletedPositions",
       "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.SplitNormalizedPairs.0.Combinatorics.Pairing.ofSplit_pairEndpointEquiv_partner",
       "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.exists_mem_pairs_inl_inl_of_not_isBipartite"
     ],
@@ -8477,12 +8521,10 @@
       "Combinatorics.Pairing.normalizedPairSigmaEquiv_apply_of_strictMono",
       "SecondQuantization.Common.TwoPointDiagram.externalPieceMixedPosition_externalPieceComponentPairEquiv",
       "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.ComponentDecomposition.0.Combinatorics.Pairing.componentPairEndpointEquiv_partner",
-      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.EraseZero.0.Combinatorics.Pairing.eraseZeroPair_mem_pairs_iff",
-      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.EraseZero.0.Combinatorics.Pairing.mem_pairs_endpoints_mem_deletedPositions",
       "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.SplitNormalizedPairs.0.Combinatorics.Pairing.ofSplit_pairEndpointEquiv_partner",
       "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.exists_mem_pairs_inl_inl_of_not_isBipartite"
     ],
-    "compiledConsumerCount": 12,
+    "compiledConsumerCount": 10,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -8504,19 +8546,20 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
-    "retainedNeedsReview": true,
+    "retainedNeedsReview": false,
     "retainedMention": true,
     "projectAxioms": [],
     "name": "Combinatorics.Pairing.mem_pairs_map_iff",
-    "module": "LeanCondensedMatter.Combinatorics.PerfectPairing.Embedding",
+    "module": "LeanCondensedMatter.Combinatorics.PerfectPairing.Core",
     "externalAxioms": [],
     "docString": "If an order embedding intertwines two pairing partner maps, mapping both endpoints preserves and\nreflects normalized pair membership. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_left_normalizedPair"
+      "SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_left_normalizedPair",
+      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.EraseZero.0.Combinatorics.Pairing.eraseZeroPair_mem_pairs_iff"
     ],
     "dependencies": [
       "Combinatorics.Pairing.mem_pairs_iff"
@@ -8524,9 +8567,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_left_normalizedPair"
+      "SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_left_normalizedPair",
+      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.EraseZero.0.Combinatorics.Pairing.eraseZeroPair_mem_pairs_iff"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -8775,7 +8819,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {n : ℕ} (pairing : Combinatorics.Pairing n) (p : Fin (2 * n) → Prop)\n  (hpartner : ∀ (i : Fin (2 * n)), p i ↔ p (pairing.partner i)) (pr : pairing.NormalizedPairSubtype p) (k : Fin 2),\n  ↑((pairing.normalizedPairSubtypeEndpointEquiv p hpartner) (pr, k)) = pairing.pairEndpoint (↑pr, k)",
+    "statement": "∀ {n : ℕ} (pairing : Combinatorics.Pairing n) (p : Fin (2 * n) → Prop)\n  (hpartner : ∀ (i : Fin (2 * n)), p i ↔ p (pairing.partner i)) (pr : pairing.NormalizedPairSubtype p) (k : Fin 2),\n  ↑((pairing.normalizedPairSubtypeEndpointEquiv p hpartner) (pr, k)) = Combinatorics.pairEndpointAt (↑↑pr) k",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -8837,22 +8881,24 @@
     "directWrapperOf": null,
     "dependents": [
       "Combinatorics.Pairing.componentGeometricCrossingCount_mod_two_eq_endpointInversionCount",
+      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.EraseZero.0.Combinatorics.Pairing.mem_pairs_endpoints_mem_deletedPositions",
       "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Sign.0.Combinatorics.sum_Ioi_pairEndpointInversionCount_mod_two_eq_crossingCount",
       "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.SplitCrossing.0.Combinatorics.Pairing.ofSplitInterSectorCrossingCount_mod_two_eq_pairEndpointInversionCount"
     ],
     "dependencies": [
       "Combinatorics.Pairing.pairEndpoint_ne_of_normalizedPair_ne",
-      "Combinatorics.Pairing.pairEndpoint_one",
-      "Combinatorics.Pairing.pairEndpoint_zero"
+      "Combinatorics.pairEndpointAt_one",
+      "Combinatorics.pairEndpointAt_zero"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
       "Combinatorics.Pairing.componentGeometricCrossingCount_mod_two_eq_endpointInversionCount",
+      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.EraseZero.0.Combinatorics.Pairing.mem_pairs_endpoints_mem_deletedPositions",
       "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Sign.0.Combinatorics.sum_Ioi_pairEndpointInversionCount_mod_two_eq_crossingCount",
       "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.SplitCrossing.0.Combinatorics.Pairing.ofSplitInterSectorCrossingCount_mod_two_eq_pairEndpointInversionCount"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -8936,8 +8982,8 @@
     ],
     "dependencies": [
       "Combinatorics.Pairing.normalizedPairOfEndpointEquiv_pair_eq_of_lt",
-      "Combinatorics.Pairing.pairEndpoint_one",
-      "Combinatorics.Pairing.pairEndpoint_zero",
+      "Combinatorics.pairEndpointAt_one",
+      "Combinatorics.pairEndpointAt_zero",
       "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.SplitNormalizedPairs.0.Combinatorics.Pairing.ofSplit_pairEndpointEquiv_partner"
     ],
     "crossModuleDirectWrapper": false,
@@ -8984,8 +9030,8 @@
     ],
     "dependencies": [
       "Combinatorics.Pairing.normalizedPairOfEndpointEquiv_pair_eq_or_swap",
-      "Combinatorics.Pairing.pairEndpoint_one",
-      "Combinatorics.Pairing.pairEndpoint_zero",
+      "Combinatorics.pairEndpointAt_one",
+      "Combinatorics.pairEndpointAt_zero",
       "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.SplitNormalizedPairs.0.Combinatorics.Pairing.ofSplit_pairEndpointEquiv_partner"
     ],
     "crossModuleDirectWrapper": false,
@@ -9262,7 +9308,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {n : ℕ} (pairing : Combinatorics.Pairing n) (x : pairing.NormalizedPair × Fin 2),\n  pairing.pairEndpointEquiv x = pairing.pairEndpoint x",
+    "statement": "∀ {n : ℕ} (pairing : Combinatorics.Pairing n) (x : pairing.NormalizedPair × Fin 2),\n  pairing.pairEndpointEquiv x = Combinatorics.pairEndpointAt (↑x.1) x.2",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -9300,7 +9346,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {n : ℕ} (pairing : Combinatorics.Pairing n) (p q : pairing.NormalizedPair),\n  p ≠ q → ∀ (i j : Fin 2), pairing.pairEndpoint (p, i) ≠ pairing.pairEndpoint (q, j)",
+    "statement": "∀ {n : ℕ} (pairing : Combinatorics.Pairing n) (p q : pairing.NormalizedPair),\n  p ≠ q → ∀ (i j : Fin 2), Combinatorics.pairEndpointAt (↑p) i ≠ Combinatorics.pairEndpointAt (↑q) j",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -9328,110 +9374,6 @@
       "Combinatorics.Pairing.normalizedPair_endpoints_ne_of_ne"
     ],
     "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {n : ℕ} (pairing : Combinatorics.Pairing n) (p : pairing.NormalizedPair), pairing.pairEndpoint (p, 1) = (↑p).2",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "Combinatorics.Pairing.pairEndpoint_one",
-    "module": "LeanCondensedMatter.Combinatorics.PerfectPairing.PairEndpoints",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "Combinatorics.Pairing.normalizedPair_endpoints_ne_of_ne",
-      "Combinatorics.Pairing.ofSplitNormalizedPairEquiv_pair_eq_of_lt",
-      "Combinatorics.Pairing.ofSplitNormalizedPairEquiv_pair_eq_or_swap",
-      "SecondQuantization.Common.TwoPointDiagram.externalPieceMixedPosition_externalPieceComponentPairEquiv",
-      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.ComponentDecomposition.0.Combinatorics.Pairing.componentPairEndpointEquiv_partner",
-      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.SplitCrossing.0.Combinatorics.Pairing.ofSplit_pairEndpointInversionCount_eq_sum_localEndpoints"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "Combinatorics.Pairing.normalizedPair_endpoints_ne_of_ne",
-      "Combinatorics.Pairing.ofSplitNormalizedPairEquiv_pair_eq_of_lt",
-      "Combinatorics.Pairing.ofSplitNormalizedPairEquiv_pair_eq_or_swap",
-      "SecondQuantization.Common.TwoPointDiagram.externalPieceMixedPosition_externalPieceComponentPairEquiv",
-      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.ComponentDecomposition.0.Combinatorics.Pairing.componentPairEndpointEquiv_partner",
-      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.SplitCrossing.0.Combinatorics.Pairing.ofSplit_pairEndpointInversionCount_eq_sum_localEndpoints"
-    ],
-    "compiledConsumerCount": 6,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {n : ℕ} (pairing : Combinatorics.Pairing n) (p : pairing.NormalizedPair), pairing.pairEndpoint (p, 0) = (↑p).1",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "Combinatorics.Pairing.pairEndpoint_zero",
-    "module": "LeanCondensedMatter.Combinatorics.PerfectPairing.PairEndpoints",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "Combinatorics.Pairing.normalizedPair_endpoints_ne_of_ne",
-      "Combinatorics.Pairing.ofSplitNormalizedPairEquiv_pair_eq_of_lt",
-      "Combinatorics.Pairing.ofSplitNormalizedPairEquiv_pair_eq_or_swap",
-      "SecondQuantization.Common.TwoPointDiagram.externalPieceMixedPosition_externalPieceComponentPairEquiv",
-      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.ComponentDecomposition.0.Combinatorics.Pairing.componentPairEndpointEquiv_partner",
-      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.SplitCrossing.0.Combinatorics.Pairing.ofSplit_pairEndpointInversionCount_eq_sum_localEndpoints"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "Combinatorics.Pairing.normalizedPair_endpoints_ne_of_ne",
-      "Combinatorics.Pairing.ofSplitNormalizedPairEquiv_pair_eq_of_lt",
-      "Combinatorics.Pairing.ofSplitNormalizedPairEquiv_pair_eq_or_swap",
-      "SecondQuantization.Common.TwoPointDiagram.externalPieceMixedPosition_externalPieceComponentPairEquiv",
-      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.ComponentDecomposition.0.Combinatorics.Pairing.componentPairEndpointEquiv_partner",
-      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.SplitCrossing.0.Combinatorics.Pairing.ofSplit_pairEndpointInversionCount_eq_sum_localEndpoints"
-    ],
-    "compiledConsumerCount": 6,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -10469,7 +10411,6 @@
       "Combinatorics.Pairing.even_card_of_partner_mem",
       "Combinatorics.Pairing.insertFirstPair_eraseZeroPair",
       "SecondQuantization.Common.TwoPointDiagram.intervalFacingLeg_partner",
-      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.EraseZero.0.Combinatorics.Pairing.mem_pairs_endpoints_mem_deletedPositions",
       "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Split.0.Combinatorics.splitLeftInvariant",
       "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.exists_mem_pairs_inl_inl_of_not_isBipartite",
       "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.sidePairing_sideMatching"
@@ -10482,12 +10423,11 @@
       "Combinatorics.Pairing.even_card_of_partner_mem",
       "Combinatorics.Pairing.insertFirstPair_eraseZeroPair",
       "SecondQuantization.Common.TwoPointDiagram.intervalFacingLeg_partner",
-      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.EraseZero.0.Combinatorics.Pairing.mem_pairs_endpoints_mem_deletedPositions",
       "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Split.0.Combinatorics.splitLeftInvariant",
       "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.exists_mem_pairs_inl_inl_of_not_isBipartite",
       "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.sidePairing_sideMatching"
     ],
-    "compiledConsumerCount": 8,
+    "compiledConsumerCount": 7,
     "axioms": [
       "Quot.sound"
     ],
@@ -13408,6 +13348,7 @@
       "SecondQuantization.Common.BlochDeDominicis.ExpectationPairingRecursion.bloch_de_dominicis"
     ],
     "dependencies": [
+      "Combinatorics.FiniteIndex.deletedPositionsOrderIso_apply",
       "Combinatorics.Pairing.crossingCount_eraseZeroPair",
       "Combinatorics.Pairing.crossingsWithFirstPair_mod_two",
       "Combinatorics.Pairing.eraseZeroPair_insertFirstPair",
@@ -13415,8 +13356,7 @@
       "Combinatorics.Pairing.prod_pairs_eq_firstPair_mul",
       "Combinatorics.Pairing.sum_eq_sum_sum_insertFirstPair",
       "Combinatorics.PairingOn.ext",
-      "Combinatorics.pow_eq_of_mod_two_eq",
-      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.FirstPairRecursion.0.Combinatorics.Pairing.eraseZeroOrderIso_eq_succ_succAbove"
+      "Combinatorics.pow_eq_of_mod_two_eq"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -13552,6 +13492,108 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {α : Type u_1} (p : α × α), Combinatorics.pairEndpointAt p 1 = p.2",
+    "standardAxioms": [
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "Combinatorics.pairEndpointAt_one",
+    "module": "LeanCondensedMatter.Combinatorics.PerfectPairing.PairEndpoints",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "Combinatorics.Pairing.normalizedPair_endpoints_ne_of_ne",
+      "Combinatorics.Pairing.ofSplitNormalizedPairEquiv_pair_eq_of_lt",
+      "Combinatorics.Pairing.ofSplitNormalizedPairEquiv_pair_eq_or_swap",
+      "Combinatorics.pairEndpointInversionCount_eq_sum",
+      "SecondQuantization.Common.TwoPointDiagram.externalPieceMixedPosition_externalPieceComponentPairEquiv",
+      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.ComponentDecomposition.0.Combinatorics.Pairing.componentPairEndpointEquiv_partner",
+      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.SplitCrossing.0.Combinatorics.Pairing.ofSplit_pairEndpointInversionCount_eq_sum_localEndpoints"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "Combinatorics.Pairing.normalizedPair_endpoints_ne_of_ne",
+      "Combinatorics.Pairing.ofSplitNormalizedPairEquiv_pair_eq_of_lt",
+      "Combinatorics.Pairing.ofSplitNormalizedPairEquiv_pair_eq_or_swap",
+      "Combinatorics.pairEndpointInversionCount_eq_sum",
+      "SecondQuantization.Common.TwoPointDiagram.externalPieceMixedPosition_externalPieceComponentPairEquiv",
+      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.ComponentDecomposition.0.Combinatorics.Pairing.componentPairEndpointEquiv_partner",
+      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.SplitCrossing.0.Combinatorics.Pairing.ofSplit_pairEndpointInversionCount_eq_sum_localEndpoints"
+    ],
+    "compiledConsumerCount": 7,
+    "axioms": [
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {α : Type u_1} (p : α × α), Combinatorics.pairEndpointAt p 0 = p.1",
+    "standardAxioms": [
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "Combinatorics.pairEndpointAt_zero",
+    "module": "LeanCondensedMatter.Combinatorics.PerfectPairing.PairEndpoints",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "Combinatorics.Pairing.normalizedPair_endpoints_ne_of_ne",
+      "Combinatorics.Pairing.ofSplitNormalizedPairEquiv_pair_eq_of_lt",
+      "Combinatorics.Pairing.ofSplitNormalizedPairEquiv_pair_eq_or_swap",
+      "Combinatorics.pairEndpointInversionCount_eq_sum",
+      "SecondQuantization.Common.TwoPointDiagram.externalPieceMixedPosition_externalPieceComponentPairEquiv",
+      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.ComponentDecomposition.0.Combinatorics.Pairing.componentPairEndpointEquiv_partner",
+      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.SplitCrossing.0.Combinatorics.Pairing.ofSplit_pairEndpointInversionCount_eq_sum_localEndpoints"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "Combinatorics.Pairing.normalizedPair_endpoints_ne_of_ne",
+      "Combinatorics.Pairing.ofSplitNormalizedPairEquiv_pair_eq_of_lt",
+      "Combinatorics.Pairing.ofSplitNormalizedPairEquiv_pair_eq_or_swap",
+      "Combinatorics.pairEndpointInversionCount_eq_sum",
+      "SecondQuantization.Common.TwoPointDiagram.externalPieceMixedPosition_externalPieceComponentPairEquiv",
+      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.ComponentDecomposition.0.Combinatorics.Pairing.componentPairEndpointEquiv_partner",
+      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.SplitCrossing.0.Combinatorics.Pairing.ofSplit_pairEndpointInversionCount_eq_sum_localEndpoints"
+    ],
+    "compiledConsumerCount": 7,
+    "axioms": [
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {α : Type u_1} [inst : LT α] [inst_1 : DecidableLT α] (left right : α × α),\n  Combinatorics.pairEndpointInversionCount left right =\n    ∑ i, ∑ j, if Combinatorics.pairEndpointAt right j < Combinatorics.pairEndpointAt left i then 1 else 0",
     "standardAxioms": [
       "Classical.choice",
@@ -13573,7 +13615,10 @@
     "dependents": [
       "Combinatorics.Pairing.componentGeometricCrossingCount_mod_two_eq_endpointInversionCount"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Combinatorics.pairEndpointAt_one",
+      "Combinatorics.pairEndpointAt_zero"
+    ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
@@ -15280,46 +15325,6 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [CompleteSpace H] {S T : H →L[ℂ] H},\n  S.IsHilbertSchmidt →\n    T.IsHilbertSchmidt →\n      ∀ {ι : Type u_2} (d : HilbertBasis ι ℂ H),\n        HasSum (fun i => inner ℂ (S (d i)) (T (d i))) (ContinuousLinearMap.innerHS d S T)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "ContinuousLinearMap.IsHilbertSchmidt.hasSum_innerHS",
-    "module": "LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.Basic",
-    "externalAxioms": [],
-    "docString": "The Hilbert--Schmidt diagonal pairing sums to `innerHS` in every Hilbert basis. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "ContinuousLinearMap.IsHilbertSchmidt.summable_inner_apply"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
     "terminal": false,
     "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [CompleteSpace H] {T : H →L[ℂ] H}\n  (hT : T.IsHilbertSchmidt) {ι : Type u_2} (d : HilbertBasis ι ℂ H), HasSum (fun i => ‖T (d i)‖ ^ 2) hT.normSq",
     "standardAxioms": [
@@ -15488,7 +15493,8 @@
     ],
     "dependencies": [
       "ContinuousLinearMap.IsHilbertSchmidt.hasSum_norm_sq_apply",
-      "ContinuousLinearMap.isHilbertSchmidt_comp_left"
+      "ContinuousLinearMap.isHilbertSchmidt_comp_left",
+      "_private.LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.Basic.0.ContinuousLinearMap.norm_sq_apply_le_opNorm_sq"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -15769,7 +15775,6 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "ContinuousLinearMap.IsHilbertSchmidt.hasSum_innerHS",
       "ContinuousLinearMap.IsTraceClass.summable_trace_diagonal",
       "ContinuousLinearMap.isTraceClass_iff_exists_hilbertSchmidt_factorization"
     ],
@@ -15779,11 +15784,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "ContinuousLinearMap.IsHilbertSchmidt.hasSum_innerHS",
       "ContinuousLinearMap.IsTraceClass.summable_trace_diagonal",
       "ContinuousLinearMap.isTraceClass_iff_exists_hilbertSchmidt_factorization"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -19726,7 +19730,7 @@
     "name": "ContinuousLinearMap.finite_large_eigenvalue_index",
     "module": "LeanCondensedMatter.Analysis.Operator.Spectral.EigenvectorFamily",
     "externalAxioms": [],
-    "docString": "**Only finitely many eigenvalues of a compact self-adjoint operator can exceed any fixed\npositive threshold.** Key finiteness step towards countability of `EigenvectorIndex T`: if\ninfinitely many indices had eigenvalue `≥ ε` in absolute value, the corresponding eigenvectors\nwould form an orthonormal sequence whose images under `T` stay pairwise at distance `≥ ε√2`,\ncontradicting compactness of `T` (which forces a norm-convergent, hence Cauchy, subsequence). ",
+    "docString": "Only finitely many eigenvector indices of a compact symmetric operator can exceed\na positive absolute-eigenvalue threshold: their images form a uniformly separated family\nin a compact set. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
@@ -19996,7 +20000,7 @@
     "name": "ContinuousLinearMap.hasSum_norm_sq_adjoint_apply",
     "module": "LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.Basic",
     "externalAxioms": [],
-    "docString": "**The core basis-independence computation.** If `T` is Hilbert–Schmidt with respect to a\nbasis `d`, then its adjoint `T†` is Hilbert–Schmidt with respect to *any* basis `f`, with the same\nsum of squared norms. ",
+    "docString": "The squared-norm adjoint identity is the diagonal specialization of the mixed\nHilbert–Schmidt pairing identity, transported from complex to real sums. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
@@ -20005,7 +20009,7 @@
       "ContinuousLinearMap.isHilbertSchmidt_adjoint"
     ],
     "dependencies": [
-      "ContinuousLinearMap.hasSum_norm_sq_matrix_coeff"
+      "_private.LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.Basic.0.ContinuousLinearMap.hasSum_inner_adjoint_apply"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -20081,8 +20085,8 @@
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -20094,17 +20098,15 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "ContinuousLinearMap.hasSum_norm_sq_adjoint_apply",
       "_private.LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.Basic.0.ContinuousLinearMap.summable_inner_resolution_product"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "ContinuousLinearMap.hasSum_norm_sq_adjoint_apply",
       "_private.LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.Basic.0.ContinuousLinearMap.summable_inner_resolution_product"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -20377,7 +20379,9 @@
       "ContinuousLinearMap.IsHilbertSchmidt.normSq_comp_right_le",
       "ContinuousLinearMap.isHilbertSchmidt_comp_right"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "_private.LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.Basic.0.ContinuousLinearMap.norm_sq_apply_le_opNorm_sq"
+    ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
@@ -21122,7 +21126,8 @@
       "ContinuousLinearMap.span_complexEigenvectorFamily_eq_span_eigenvectorFamily"
     ],
     "dependencies": [
-      "ContinuousLinearMap.finiteDimensional_complexEigenspace_ne_zero"
+      "ContinuousLinearMap.finiteDimensional_complexEigenspace_ne_zero",
+      "_private.LeanCondensedMatter.Analysis.Operator.Spectral.EigenvectorFamily.0.ContinuousLinearMap.span_sigma_submodule_family"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -21205,14 +21210,15 @@
     "name": "ContinuousLinearMap.span_eigenvectorFamily",
     "module": "LeanCondensedMatter.Analysis.Operator.Spectral.EigenvectorFamily",
     "externalAxioms": [],
-    "docString": "The (algebraic) span of `eigenvectorFamily` is exactly the sum of all the nonzero\neigenspaces: each per-eigenspace `stdOrthonormalBasis` spans its own (finite-dimensional)\neigenspace, and these are glued together in the same way as the index type. ",
+    "docString": "The span of `eigenvectorFamily` is the sum of all nonzero real eigenspaces. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
       "ContinuousLinearMap.span_complexEigenvectorFamily_eq_span_eigenvectorFamily"
     ],
     "dependencies": [
-      "ContinuousLinearMap.finiteDimensional_eigenspace_ne_zero"
+      "ContinuousLinearMap.finiteDimensional_eigenspace_ne_zero",
+      "_private.LeanCondensedMatter.Analysis.Operator.Spectral.EigenvectorFamily.0.ContinuousLinearMap.span_sigma_submodule_family"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -48420,7 +48426,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {OneForm : Type u_2} [inst : AddCommGroup OneForm] [inst_1 : _root_.Module ℂ OneForm] (V : Type u_3)\n  [inst_2 : AddCommGroup V] [inst_3 : _root_.Module ℂ V] (velocity : V →ₗ[ℂ] V) (N : OneForm →ₗ[ℂ] V →ₗ[ℂ] V) (q : ℂ),\n  ConservationLaw.nestedSymmetrizedCurrentFlux velocity (q • LinearMap.id) N =\n    (QuantumMechanics.SingleParticle.operatorLocalCurrentPairing V N) (q • velocity)",
+    "statement": "∀ {OneForm : Type u_2} [inst : AddCommGroup OneForm] [inst_1 : _root_.Module ℂ OneForm] (V : Type u_3)\n  [inst_2 : AddCommGroup V] [inst_3 : _root_.Module ℂ V] (velocity : V →ₗ[ℂ] V) (N : OneForm →ₗ[ℂ] V →ₗ[ℂ] V) (q : ℂ),\n  ConservationLaw.nestedSymmetrizedCurrentFlux velocity (q • LinearMap.id) N =\n    (QuantumTheory.ConservationLaw.operatorLocalCurrentPairing N) (q • velocity)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -48446,7 +48452,7 @@
       "ConservationLaw.nestedSymmetrizedCurrentFlux_eq_symmetrized_add_correction",
       "ConservationLaw.symmetrizedCurrentFlux_apply",
       "LinearMap.symmetrizedProduct_smul_id",
-      "QuantumMechanics.SingleParticle.operatorLocalCurrentPairing_apply"
+      "QuantumTheory.ConservationLaw.operatorLocalCurrentPairing_apply"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -48468,7 +48474,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {Test : Type u_1} {OneForm : Type u_2} [inst : AddCommGroup Test] [inst_1 : _root_.Module ℂ Test]\n  [inst_2 : AddCommGroup OneForm] [inst_3 : _root_.Module ℂ OneForm] (V : Type u_3) [inst_4 : AddCommGroup V]\n  [inst_5 : _root_.Module ℂ V] (ℏ : ℝ) (h : V →ₗ[ℂ] V) (M : Test →ₗ[ℂ] V →ₗ[ℂ] V) (velocity : V →ₗ[ℂ] V)\n  (d : Test →ₗ[ℂ] OneForm) (N : OneForm →ₗ[ℂ] V →ₗ[ℂ] V) (q : ℂ)\n  (hvelocity :\n    QuantumMechanics.SingleParticle.heisenbergLocalizationFunctional V ℏ h M =\n      ConservationLaw.localizedQuantityFunctional N velocity ∘ₗ d),\n  ↑(QuantumMechanics.SingleParticle.correctedSymmetrizedVelocityCurrentRepresentation V ℏ h M (q • LinearMap.id)\n        velocity d N hvelocity) =\n    (QuantumMechanics.SingleParticle.operatorLocalCurrentPairing V N) (q • velocity)",
+    "statement": "∀ {Test : Type u_1} {OneForm : Type u_2} [inst : AddCommGroup Test] [inst_1 : _root_.Module ℂ Test]\n  [inst_2 : AddCommGroup OneForm] [inst_3 : _root_.Module ℂ OneForm] (V : Type u_3) [inst_4 : AddCommGroup V]\n  [inst_5 : _root_.Module ℂ V] (ℏ : ℝ) (h : V →ₗ[ℂ] V) (M : Test →ₗ[ℂ] V →ₗ[ℂ] V) (velocity : V →ₗ[ℂ] V)\n  (d : Test →ₗ[ℂ] OneForm) (N : OneForm →ₗ[ℂ] V →ₗ[ℂ] V) (q : ℂ)\n  (hvelocity :\n    QuantumTheory.ConservationLaw.heisenbergLocalizationFunctional ℏ h M =\n      ConservationLaw.localizedQuantityFunctional N velocity ∘ₗ d),\n  ↑(QuantumMechanics.SingleParticle.correctedSymmetrizedVelocityCurrentRepresentation V ℏ h M (q • LinearMap.id)\n        velocity d N hvelocity) =\n    (QuantumTheory.ConservationLaw.operatorLocalCurrentPairing N) (q • velocity)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -48508,7 +48514,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Test : Type u_1} {OneForm : Type u_2} [inst : AddCommGroup Test] [inst_1 : _root_.Module ℂ Test]\n  [inst_2 : AddCommGroup OneForm] [inst_3 : _root_.Module ℂ OneForm] (V : Type u_3) [inst_4 : AddCommGroup V]\n  [inst_5 : _root_.Module ℂ V] (ℏ : ℝ) (h : V →ₗ[ℂ] V) (M : Test →ₗ[ℂ] V →ₗ[ℂ] V) (m velocity : V →ₗ[ℂ] V)\n  (d : Test →ₗ[ℂ] OneForm) (N : OneForm →ₗ[ℂ] V →ₗ[ℂ] V),\n  QuantumMechanics.SingleParticle.heisenbergLocalizationFunctional V ℏ h M =\n      ConservationLaw.localizedQuantityFunctional N velocity ∘ₗ d →\n    ∀\n      (R :\n        ConservationLaw.DifferentialCurrentRepresentation d\n          (QuantumMechanics.SingleParticle.heisenbergTransportFunctional V ℏ h M m)),\n      ↑R ∘ₗ d = ConservationLaw.nestedSymmetrizedCurrentFlux velocity m N ∘ₗ d",
+    "statement": "∀ {Test : Type u_1} {OneForm : Type u_2} [inst : AddCommGroup Test] [inst_1 : _root_.Module ℂ Test]\n  [inst_2 : AddCommGroup OneForm] [inst_3 : _root_.Module ℂ OneForm] (V : Type u_3) [inst_4 : AddCommGroup V]\n  [inst_5 : _root_.Module ℂ V] (ℏ : ℝ) (h : V →ₗ[ℂ] V) (M : Test →ₗ[ℂ] V →ₗ[ℂ] V) (m velocity : V →ₗ[ℂ] V)\n  (d : Test →ₗ[ℂ] OneForm) (N : OneForm →ₗ[ℂ] V →ₗ[ℂ] V),\n  QuantumTheory.ConservationLaw.heisenbergLocalizationFunctional ℏ h M =\n      ConservationLaw.localizedQuantityFunctional N velocity ∘ₗ d →\n    ∀\n      (R :\n        ConservationLaw.DifferentialCurrentRepresentation d\n          (QuantumTheory.ConservationLaw.heisenbergTransportFunctional ℏ h M m)),\n      ↑R ∘ₗ d = ConservationLaw.nestedSymmetrizedCurrentFlux velocity m N ∘ₗ d",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -48550,7 +48556,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {Test : Type u_1} {OneForm : Type u_2} [inst : AddCommGroup Test] [inst_1 : _root_.Module ℂ Test]\n  [inst_2 : AddCommGroup OneForm] [inst_3 : _root_.Module ℂ OneForm] (V : Type u_3) [inst_4 : AddCommGroup V]\n  [inst_5 : _root_.Module ℂ V] (ℏ : ℝ) (h : V →ₗ[ℂ] V) (M : Test →ₗ[ℂ] V →ₗ[ℂ] V) (m velocity : V →ₗ[ℂ] V)\n  (d : Test →ₗ[ℂ] OneForm) (N : OneForm →ₗ[ℂ] V →ₗ[ℂ] V),\n  QuantumMechanics.SingleParticle.heisenbergLocalizationFunctional V ℏ h M =\n      ConservationLaw.localizedQuantityFunctional N velocity ∘ₗ d →\n    ∀\n      (R :\n        ConservationLaw.DifferentialCurrentRepresentation d\n          (QuantumMechanics.SingleParticle.heisenbergTransportFunctional V ℏ h M m)),\n      ∃ K,\n        K ∘ₗ d = 0 ∧\n          ↑R =\n            ConservationLaw.symmetrizedCurrentFlux velocity m N +\n                ConservationLaw.localizationCorrectionCurrentFlux velocity m N +\n              K",
+    "statement": "∀ {Test : Type u_1} {OneForm : Type u_2} [inst : AddCommGroup Test] [inst_1 : _root_.Module ℂ Test]\n  [inst_2 : AddCommGroup OneForm] [inst_3 : _root_.Module ℂ OneForm] (V : Type u_3) [inst_4 : AddCommGroup V]\n  [inst_5 : _root_.Module ℂ V] (ℏ : ℝ) (h : V →ₗ[ℂ] V) (M : Test →ₗ[ℂ] V →ₗ[ℂ] V) (m velocity : V →ₗ[ℂ] V)\n  (d : Test →ₗ[ℂ] OneForm) (N : OneForm →ₗ[ℂ] V →ₗ[ℂ] V),\n  QuantumTheory.ConservationLaw.heisenbergLocalizationFunctional ℏ h M =\n      ConservationLaw.localizedQuantityFunctional N velocity ∘ₗ d →\n    ∀\n      (R :\n        ConservationLaw.DifferentialCurrentRepresentation d\n          (QuantumTheory.ConservationLaw.heisenbergTransportFunctional ℏ h M m)),\n      ∃ K,\n        K ∘ₗ d = 0 ∧\n          ↑R =\n            ConservationLaw.symmetrizedCurrentFlux velocity m N +\n                ConservationLaw.localizationCorrectionCurrentFlux velocity m N +\n              K",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -48591,121 +48597,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {Test : Type u_1} [inst : AddCommGroup Test] [inst_1 : _root_.Module ℂ Test] (V : Type u_3) [inst_2 : AddCommGroup V]\n  [inst_3 : _root_.Module ℂ V] (ℏ : ℝ) (h : V →ₗ[ℂ] V) (M : Test →ₗ[ℂ] V →ₗ[ℂ] V) (f : Test),\n  (QuantumMechanics.SingleParticle.heisenbergLocalizationFunctional V ℏ h M) f =\n    QuantumTheory.ConservationLaw.heisenbergScale ℏ • ⁅h, M f⁆",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumMechanics.SingleParticle.heisenbergLocalizationFunctional_apply",
-    "module": "LeanCondensedMatter.QuantumMechanics.SingleParticle.LocalizedTransport",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {Test : Type u_1} [inst : AddCommGroup Test] [inst_1 : _root_.Module ℂ Test] (V : Type u_3) [inst_2 : AddCommGroup V]\n  [inst_3 : _root_.Module ℂ V] (ℏ : ℝ) (h : V →ₗ[ℂ] V) (M : Test →ₗ[ℂ] V →ₗ[ℂ] V) (m : V →ₗ[ℂ] V) (f : Test),\n  (QuantumMechanics.SingleParticle.heisenbergSourceFunctional V ℏ h M m) f =\n    LinearMap.symmetrizedProduct (M f) ((QuantumTheory.ConservationLaw.heisenbergEvolution V ℏ h) m)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumMechanics.SingleParticle.heisenbergSourceFunctional_apply",
-    "module": "LeanCondensedMatter.QuantumMechanics.SingleParticle.LocalizedTransport",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {Test : Type u_1} [inst : AddCommGroup Test] [inst_1 : _root_.Module ℂ Test] (V : Type u_3) [inst_2 : AddCommGroup V]\n  [inst_3 : _root_.Module ℂ V] (ℏ : ℝ) (h : V →ₗ[ℂ] V) (M : Test →ₗ[ℂ] V →ₗ[ℂ] V) (m : V →ₗ[ℂ] V) (f : Test),\n  (QuantumMechanics.SingleParticle.heisenbergTransportFunctional V ℏ h M m) f =\n    LinearMap.symmetrizedProduct ((QuantumTheory.ConservationLaw.heisenbergEvolution V ℏ h) (M f)) m",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumMechanics.SingleParticle.heisenbergTransportFunctional_apply",
-    "module": "LeanCondensedMatter.QuantumMechanics.SingleParticle.LocalizedTransport",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {E : Type u_1} {V : Type u_2} {OneForm : Type u_3} [inst : AddCommGroup E] [inst_1 : _root_.Module ℂ E]\n  [inst_2 : AddCommGroup V] [inst_3 : _root_.Module ℂ V] [inst_4 : AddCommGroup OneForm]\n  [inst_5 : _root_.Module ℂ OneForm] {Test : Type u_4} [inst_6 : AddCommGroup Test] [inst_7 : _root_.Module ℂ Test]\n  (ℏ : ℝ) (h : V →ₗ[ℂ] V) (M : Test →ₗ[ℂ] V →ₗ[ℂ] V) (X P : E →ₗ[ℂ] V →ₗ[ℂ] V) (u v : E) (velocity : V →ₗ[ℂ] V)\n  (d : Test →ₗ[ℂ] OneForm) (N : OneForm →ₗ[ℂ] V →ₗ[ℂ] V) (f : Test) (Du Dv : V →ₗ[ℂ] V) (c : ℂ),\n  QuantumMechanics.SingleParticle.heisenbergLocalizationFunctional V ℏ h M =\n      ConservationLaw.localizedQuantityFunctional N velocity ∘ₗ d →\n    ⁅N (d f), X u⁆ = 0 →\n      ⁅N (d f), X v⁆ = 0 →\n        ⁅N (d f), P u⁆ = c • Du →\n          ⁅N (d f), P v⁆ = c • Dv →\n            (QuantumMechanics.SingleParticle.heisenbergTransportFunctional V ℏ h M\n                  (QuantumMechanics.SingleParticle.orbitalAngularMomentum X P u v))\n                f =\n              (ConservationLaw.symmetrizedCurrentFlux velocity\n                    (QuantumMechanics.SingleParticle.orbitalAngularMomentum X P u v) N)\n                  (d f) +\n                (1 / 4) • ⁅velocity, X u ∘ₗ (c • Dv) - X v ∘ₗ (c • Du)⁆",
+    "statement": "∀ {E : Type u_1} {V : Type u_2} {OneForm : Type u_3} [inst : AddCommGroup E] [inst_1 : _root_.Module ℂ E]\n  [inst_2 : AddCommGroup V] [inst_3 : _root_.Module ℂ V] [inst_4 : AddCommGroup OneForm]\n  [inst_5 : _root_.Module ℂ OneForm] {Test : Type u_4} [inst_6 : AddCommGroup Test] [inst_7 : _root_.Module ℂ Test]\n  (ℏ : ℝ) (h : V →ₗ[ℂ] V) (M : Test →ₗ[ℂ] V →ₗ[ℂ] V) (X P : E →ₗ[ℂ] V →ₗ[ℂ] V) (u v : E) (velocity : V →ₗ[ℂ] V)\n  (d : Test →ₗ[ℂ] OneForm) (N : OneForm →ₗ[ℂ] V →ₗ[ℂ] V) (f : Test) (Du Dv : V →ₗ[ℂ] V) (c : ℂ),\n  QuantumTheory.ConservationLaw.heisenbergLocalizationFunctional ℏ h M =\n      ConservationLaw.localizedQuantityFunctional N velocity ∘ₗ d →\n    ⁅N (d f), X u⁆ = 0 →\n      ⁅N (d f), X v⁆ = 0 →\n        ⁅N (d f), P u⁆ = c • Du →\n          ⁅N (d f), P v⁆ = c • Dv →\n            (QuantumTheory.ConservationLaw.heisenbergTransportFunctional ℏ h M\n                  (QuantumMechanics.SingleParticle.orbitalAngularMomentum X P u v))\n                f =\n              (ConservationLaw.symmetrizedCurrentFlux velocity\n                    (QuantumMechanics.SingleParticle.orbitalAngularMomentum X P u v) N)\n                  (d f) +\n                (1 / 4) • ⁅velocity, X u ∘ₗ (c • Dv) - X v ∘ₗ (c • Du)⁆",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -48961,7 +48853,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Test : Type u_1} {OneForm : Type u_2} [inst : AddCommGroup Test] [inst_1 : _root_.Module ℂ Test]\n  [inst_2 : AddCommGroup OneForm] [inst_3 : _root_.Module ℂ OneForm] (V : Type u_3) [inst_4 : AddCommGroup V]\n  [inst_5 : _root_.Module ℂ V] (ℏ : ℝ) (h : V →ₗ[ℂ] V) (M : Test →ₗ[ℂ] V →ₗ[ℂ] V) (m velocity : V →ₗ[ℂ] V)\n  (d : Test →ₗ[ℂ] OneForm) (N : OneForm →ₗ[ℂ] V →ₗ[ℂ] V),\n  QuantumMechanics.SingleParticle.heisenbergLocalizationFunctional V ℏ h M =\n      ConservationLaw.localizedQuantityFunctional N velocity ∘ₗ d →\n    QuantumMechanics.SingleParticle.heisenbergTransportFunctional V ℏ h M m =\n      ConservationLaw.nestedSymmetrizedCurrentFlux velocity m N ∘ₗ d",
+    "statement": "∀ {Test : Type u_1} {OneForm : Type u_2} [inst : AddCommGroup Test] [inst_1 : _root_.Module ℂ Test]\n  [inst_2 : AddCommGroup OneForm] [inst_3 : _root_.Module ℂ OneForm] (V : Type u_3) [inst_4 : AddCommGroup V]\n  [inst_5 : _root_.Module ℂ V] (ℏ : ℝ) (h : V →ₗ[ℂ] V) (M : Test →ₗ[ℂ] V →ₗ[ℂ] V) (m velocity : V →ₗ[ℂ] V)\n  (d : Test →ₗ[ℂ] OneForm) (N : OneForm →ₗ[ℂ] V →ₗ[ℂ] V),\n  QuantumTheory.ConservationLaw.heisenbergLocalizationFunctional ℏ h M =\n      ConservationLaw.localizedQuantityFunctional N velocity ∘ₗ d →\n    QuantumTheory.ConservationLaw.heisenbergTransportFunctional ℏ h M m =\n      ConservationLaw.nestedSymmetrizedCurrentFlux velocity m N ∘ₗ d",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -48990,48 +48882,6 @@
       "QuantumMechanics.SingleParticle.heisenbergTransportOrbitalAngularMomentum_apply"
     ],
     "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {OneForm : Type u_2} [inst : AddCommGroup OneForm] [inst_1 : _root_.Module ℂ OneForm] (V : Type u_3)\n  [inst_2 : AddCommGroup V] [inst_3 : _root_.Module ℂ V] (N : OneForm →ₗ[ℂ] V →ₗ[ℂ] V) (current : V →ₗ[ℂ] V)\n  (α : OneForm),\n  ((QuantumMechanics.SingleParticle.operatorLocalCurrentPairing V N) current) α =\n    LinearMap.symmetrizedProduct (N α) current",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumMechanics.SingleParticle.operatorLocalCurrentPairing_apply",
-    "module": "LeanCondensedMatter.QuantumMechanics.SingleParticle.LocalizedTransport",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumMechanics.SingleParticle.correctedChargeCurrentFlux_eq"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumMechanics.SingleParticle.correctedChargeCurrentFlux_eq"
-    ],
-    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -49247,7 +49097,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {Test : Type u_1} {OneForm : Type u_2} [inst : AddCommGroup Test] [inst_1 : _root_.Module ℂ Test]\n  [inst_2 : AddCommGroup OneForm] [inst_3 : _root_.Module ℂ OneForm] (V : Type u_3) [inst_4 : AddCommGroup V]\n  [inst_5 : _root_.Module ℂ V] (ℏ : ℝ) (h : V →ₗ[ℂ] V) (M : Test →ₗ[ℂ] V →ₗ[ℂ] V) (m velocity : V →ₗ[ℂ] V)\n  (d : Test →ₗ[ℂ] OneForm) (N : OneForm →ₗ[ℂ] V →ₗ[ℂ] V)\n  (hvelocity :\n    QuantumMechanics.SingleParticle.heisenbergLocalizationFunctional V ℏ h M =\n      ConservationLaw.localizedQuantityFunctional N velocity ∘ₗ d)\n  (hcomm : ∀ (α : OneForm), ⁅N α, m⁆ = 0),\n  ↑(QuantumMechanics.SingleParticle.symmetrizedVelocityCurrentRepresentation V ℏ h M m velocity d N hvelocity hcomm) =\n    QuantumMechanics.SingleParticle.symmetrizedVelocityCurrent V velocity m",
+    "statement": "∀ {Test : Type u_1} {OneForm : Type u_2} [inst : AddCommGroup Test] [inst_1 : _root_.Module ℂ Test]\n  [inst_2 : AddCommGroup OneForm] [inst_3 : _root_.Module ℂ OneForm] (V : Type u_3) [inst_4 : AddCommGroup V]\n  [inst_5 : _root_.Module ℂ V] (ℏ : ℝ) (h : V →ₗ[ℂ] V) (M : Test →ₗ[ℂ] V →ₗ[ℂ] V) (m velocity : V →ₗ[ℂ] V)\n  (d : Test →ₗ[ℂ] OneForm) (N : OneForm →ₗ[ℂ] V →ₗ[ℂ] V)\n  (hvelocity :\n    QuantumTheory.ConservationLaw.heisenbergLocalizationFunctional ℏ h M =\n      ConservationLaw.localizedQuantityFunctional N velocity ∘ₗ d)\n  (hcomm : ∀ (α : OneForm), ⁅N α, m⁆ = 0),\n  ↑(QuantumMechanics.SingleParticle.symmetrizedVelocityCurrentRepresentation V ℏ h M m velocity d N hvelocity hcomm) =\n    QuantumMechanics.SingleParticle.symmetrizedVelocityCurrent V velocity m",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -49285,7 +49135,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (V : Type u_1) [inst : AddCommGroup V] [inst_1 : _root_.Module ℂ V] (ℏ : ℝ) (h A : V →ₗ[ℂ] V),\n  (QuantumTheory.ConservationLaw.heisenbergEvolution V ℏ h) A = QuantumTheory.ConservationLaw.heisenbergScale ℏ • ⁅h, A⁆",
+    "statement": "∀ {𝒜 : Type u_1} [inst : Ring 𝒜] [inst_1 : Algebra ℂ 𝒜] (ℏ : ℝ) (h A : 𝒜),\n  (QuantumTheory.ConservationLaw.heisenbergEvolution ℏ h) A = QuantumTheory.ConservationLaw.heisenbergScale ℏ • ⁅h, A⁆",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -49327,7 +49177,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (V : Type u_1) [inst : AddCommGroup V] [inst_1 : _root_.Module ℂ V] (ℏ : ℝ) (h A B : V →ₗ[ℂ] V),\n  (QuantumTheory.ConservationLaw.heisenbergEvolution V ℏ h) (LinearMap.symmetrizedProduct A B) =\n    LinearMap.symmetrizedProduct ((QuantumTheory.ConservationLaw.heisenbergEvolution V ℏ h) A) B +\n      LinearMap.symmetrizedProduct A ((QuantumTheory.ConservationLaw.heisenbergEvolution V ℏ h) B)",
+    "statement": "∀ {𝒜 : Type u_1} [inst : Ring 𝒜] [inst_1 : Algebra ℂ 𝒜] (ℏ : ℝ) (h A B : 𝒜),\n  (QuantumTheory.ConservationLaw.heisenbergEvolution ℏ h) (LinearMap.symmetrizedProduct A B) =\n    LinearMap.symmetrizedProduct ((QuantumTheory.ConservationLaw.heisenbergEvolution ℏ h) A) B +\n      LinearMap.symmetrizedProduct A ((QuantumTheory.ConservationLaw.heisenbergEvolution ℏ h) B)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -49361,6 +49211,162 @@
       "SecondQuantization.Fermionic.Transport.boundedHeisenbergSymmetrizedProduct_eq"
     ],
     "compiledConsumerCount": 3,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {Test : Type u_1} [inst : AddCommGroup Test] [inst_1 : _root_.Module ℂ Test] {𝒜 : Type u_3} [inst_2 : Ring 𝒜]\n  [inst_3 : Algebra ℂ 𝒜] (ℏ : ℝ) (h : 𝒜) (M : Test →ₗ[ℂ] 𝒜) (f : Test),\n  (QuantumTheory.ConservationLaw.heisenbergLocalizationFunctional ℏ h M) f =\n    QuantumTheory.ConservationLaw.heisenbergScale ℏ • ⁅h, M f⁆",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.ConservationLaw.heisenbergLocalizationFunctional_apply",
+    "module": "LeanCondensedMatter.QuantumTheory.ConservationLaw.LocalizedTransport",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {Test : Type u_1} [inst : AddCommGroup Test] [inst_1 : _root_.Module ℂ Test] {𝒜 : Type u_3} [inst_2 : Ring 𝒜]\n  [inst_3 : Algebra ℂ 𝒜] (ℏ : ℝ) (h : 𝒜) (M : Test →ₗ[ℂ] 𝒜) (m : 𝒜) (f : Test),\n  (QuantumTheory.ConservationLaw.heisenbergSourceFunctional ℏ h M m) f =\n    LinearMap.symmetrizedProduct (M f) ((QuantumTheory.ConservationLaw.heisenbergEvolution ℏ h) m)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.ConservationLaw.heisenbergSourceFunctional_apply",
+    "module": "LeanCondensedMatter.QuantumTheory.ConservationLaw.LocalizedTransport",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {Test : Type u_1} [inst : AddCommGroup Test] [inst_1 : _root_.Module ℂ Test] {𝒜 : Type u_3} [inst_2 : Ring 𝒜]\n  [inst_3 : Algebra ℂ 𝒜] (ℏ : ℝ) (h : 𝒜) (M : Test →ₗ[ℂ] 𝒜) (m : 𝒜) (f : Test),\n  (QuantumTheory.ConservationLaw.heisenbergTransportFunctional ℏ h M m) f =\n    LinearMap.symmetrizedProduct ((QuantumTheory.ConservationLaw.heisenbergEvolution ℏ h) (M f)) m",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.ConservationLaw.heisenbergTransportFunctional_apply",
+    "module": "LeanCondensedMatter.QuantumTheory.ConservationLaw.LocalizedTransport",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {OneForm : Type u_2} [inst : AddCommGroup OneForm] [inst_1 : _root_.Module ℂ OneForm] {𝒜 : Type u_3} [inst_2 : Ring 𝒜]\n  [inst_3 : Algebra ℂ 𝒜] (N : OneForm →ₗ[ℂ] 𝒜) (current : 𝒜) (α : OneForm),\n  ((QuantumTheory.ConservationLaw.operatorLocalCurrentPairing N) current) α = LinearMap.symmetrizedProduct (N α) current",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.ConservationLaw.operatorLocalCurrentPairing_apply",
+    "module": "LeanCondensedMatter.QuantumTheory.ConservationLaw.LocalizedTransport",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumMechanics.SingleParticle.correctedChargeCurrentFlux_eq"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumMechanics.SingleParticle.correctedChargeCurrentFlux_eq"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -90621,8 +90627,8 @@
     "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": true,
     "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "QuantumTheory.Models.RashbaExchange.conventionalSpinCurrentMatrix_z_eq",
     "module": "LeanCondensedMatter.Models.RashbaExchange.SpinCurrent",
@@ -91330,7 +91336,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {Grid : Type u_1} [inst : Fintype Grid] (params : QuantumTheory.Models.RashbaExchange.HamiltonianParameters)\n  (momentum : Grid → ℝ × ℝ) (hbar spinScale : ℝ) (component : QuantumTheory.SpinHalf.SpinSpace)\n  (position :\n    (QuantumTheory.SpinfulLattice.SpinfulSite Grid →₀ ℂ) →ₗ[ℂ] QuantumTheory.SpinfulLattice.SpinfulSite Grid →₀ ℂ),\n  (QuantumTheory.ConservationLaw.heisenbergEvolution (QuantumTheory.SpinfulLattice.SpinfulSite Grid →₀ ℂ) hbar\n        (QuantumTheory.Models.RashbaExchange.finiteRashbaMomentumHamiltonian params momentum))\n      (QuantumTheory.Models.RashbaExchange.finiteRashbaMomentumSpinDisplacement spinScale component position) =\n    (QuantumMechanics.SingleParticle.heisenbergTransportFunctional (QuantumTheory.SpinfulLattice.SpinfulSite Grid →₀ ℂ)\n          hbar (QuantumTheory.Models.RashbaExchange.finiteRashbaMomentumHamiltonian params momentum) LinearMap.id\n          ((QuantumTheory.SpinfulLattice.spinOneBodyLinear spinScale) component))\n        position +\n      (QuantumMechanics.SingleParticle.heisenbergSourceFunctional (QuantumTheory.SpinfulLattice.SpinfulSite Grid →₀ ℂ)\n          hbar (QuantumTheory.Models.RashbaExchange.finiteRashbaMomentumHamiltonian params momentum) LinearMap.id\n          ((QuantumTheory.SpinfulLattice.spinOneBodyLinear spinScale) component))\n        position",
+    "statement": "∀ {Grid : Type u_1} [inst : Fintype Grid] (params : QuantumTheory.Models.RashbaExchange.HamiltonianParameters)\n  (momentum : Grid → ℝ × ℝ) (hbar spinScale : ℝ) (component : QuantumTheory.SpinHalf.SpinSpace)\n  (position :\n    (QuantumTheory.SpinfulLattice.SpinfulSite Grid →₀ ℂ) →ₗ[ℂ] QuantumTheory.SpinfulLattice.SpinfulSite Grid →₀ ℂ),\n  (QuantumTheory.ConservationLaw.heisenbergEvolution hbar\n        (QuantumTheory.Models.RashbaExchange.finiteRashbaMomentumHamiltonian params momentum))\n      (QuantumTheory.Models.RashbaExchange.finiteRashbaMomentumSpinDisplacement spinScale component position) =\n    (QuantumTheory.ConservationLaw.heisenbergTransportFunctional hbar\n          (QuantumTheory.Models.RashbaExchange.finiteRashbaMomentumHamiltonian params momentum) LinearMap.id\n          ((QuantumTheory.SpinfulLattice.spinOneBodyLinear spinScale) component))\n        position +\n      (QuantumTheory.ConservationLaw.heisenbergSourceFunctional hbar\n          (QuantumTheory.Models.RashbaExchange.finiteRashbaMomentumHamiltonian params momentum) LinearMap.id\n          ((QuantumTheory.SpinfulLattice.spinOneBodyLinear spinScale) component))\n        position",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -91370,7 +91376,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {Grid : Type u_1} [inst : Fintype Grid] (params : QuantumTheory.Models.RashbaExchange.HamiltonianParameters)\n  (momentum : Grid → ℝ × ℝ) (hbar spinScale : ℝ) (component : QuantumTheory.SpinHalf.SpinSpace) (direction : Fin 2)\n  (position :\n    (QuantumTheory.SpinfulLattice.SpinfulSite Grid →₀ ℂ) →ₗ[ℂ] QuantumTheory.SpinfulLattice.SpinfulSite Grid →₀ ℂ),\n  (QuantumTheory.ConservationLaw.heisenbergEvolution (QuantumTheory.SpinfulLattice.SpinfulSite Grid →₀ ℂ) hbar\n          (QuantumTheory.Models.RashbaExchange.finiteRashbaMomentumHamiltonian params momentum))\n        position =\n      QuantumTheory.Models.RashbaExchange.finiteRashbaMomentumVelocity params momentum direction →\n    (QuantumTheory.ConservationLaw.heisenbergEvolution (QuantumTheory.SpinfulLattice.SpinfulSite Grid →₀ ℂ) hbar\n          (QuantumTheory.Models.RashbaExchange.finiteRashbaMomentumHamiltonian params momentum))\n        (QuantumTheory.Models.RashbaExchange.finiteRashbaMomentumSpinDisplacement spinScale component position) =\n      LinearMap.symmetrizedProduct\n          (QuantumTheory.Models.RashbaExchange.finiteRashbaMomentumVelocity params momentum direction)\n          ((QuantumTheory.SpinfulLattice.spinOneBodyLinear spinScale) component) +\n        LinearMap.symmetrizedProduct position\n          ((QuantumTheory.ConservationLaw.heisenbergEvolution (QuantumTheory.SpinfulLattice.SpinfulSite Grid →₀ ℂ) hbar\n              (QuantumTheory.Models.RashbaExchange.finiteRashbaMomentumHamiltonian params momentum))\n            ((QuantumTheory.SpinfulLattice.spinOneBodyLinear spinScale) component))",
+    "statement": "∀ {Grid : Type u_1} [inst : Fintype Grid] (params : QuantumTheory.Models.RashbaExchange.HamiltonianParameters)\n  (momentum : Grid → ℝ × ℝ) (hbar spinScale : ℝ) (component : QuantumTheory.SpinHalf.SpinSpace) (direction : Fin 2)\n  (position :\n    (QuantumTheory.SpinfulLattice.SpinfulSite Grid →₀ ℂ) →ₗ[ℂ] QuantumTheory.SpinfulLattice.SpinfulSite Grid →₀ ℂ),\n  (QuantumTheory.ConservationLaw.heisenbergEvolution hbar\n          (QuantumTheory.Models.RashbaExchange.finiteRashbaMomentumHamiltonian params momentum))\n        position =\n      QuantumTheory.Models.RashbaExchange.finiteRashbaMomentumVelocity params momentum direction →\n    (QuantumTheory.ConservationLaw.heisenbergEvolution hbar\n          (QuantumTheory.Models.RashbaExchange.finiteRashbaMomentumHamiltonian params momentum))\n        (QuantumTheory.Models.RashbaExchange.finiteRashbaMomentumSpinDisplacement spinScale component position) =\n      LinearMap.symmetrizedProduct\n          (QuantumTheory.Models.RashbaExchange.finiteRashbaMomentumVelocity params momentum direction)\n          ((QuantumTheory.SpinfulLattice.spinOneBodyLinear spinScale) component) +\n        LinearMap.symmetrizedProduct position\n          ((QuantumTheory.ConservationLaw.heisenbergEvolution hbar\n              (QuantumTheory.Models.RashbaExchange.finiteRashbaMomentumHamiltonian params momentum))\n            ((QuantumTheory.SpinfulLattice.spinOneBodyLinear spinScale) component))",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -91410,7 +91416,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Grid : Type u_1} [inst : Fintype Grid] [inst_1 : LinearOrder Grid]\n  (params : QuantumTheory.Models.RashbaExchange.HamiltonianParameters) (momentum : Grid → ℝ × ℝ) (hbar spinScale : ℝ)\n  (component : QuantumTheory.SpinHalf.SpinSpace) (direction : Fin 2)\n  (position :\n    (QuantumTheory.SpinfulLattice.SpinfulSite Grid →₀ ℂ) →ₗ[ℂ] QuantumTheory.SpinfulLattice.SpinfulSite Grid →₀ ℂ),\n  (QuantumTheory.ConservationLaw.heisenbergEvolution (QuantumTheory.SpinfulLattice.SpinfulSite Grid →₀ ℂ) hbar\n          (QuantumTheory.Models.RashbaExchange.finiteRashbaMomentumHamiltonian params momentum))\n        position =\n      QuantumTheory.Models.RashbaExchange.finiteRashbaMomentumVelocity params momentum direction →\n    SecondQuantization.Fermionic.Lattice.boundedOneBodyOperator\n        ((QuantumTheory.ConservationLaw.heisenbergEvolution (QuantumTheory.SpinfulLattice.SpinfulSite Grid →₀ ℂ) hbar\n            (QuantumTheory.Models.RashbaExchange.finiteRashbaMomentumHamiltonian params momentum))\n          (QuantumTheory.Models.RashbaExchange.finiteRashbaMomentumSpinDisplacement spinScale component position)) =\n      (SecondQuantization.Fermionic.Transport.boundedSpinCurrentLinear\n            (QuantumTheory.Models.RashbaExchange.finiteRashbaMomentumVelocity params momentum direction) spinScale)\n          component +\n        SecondQuantization.Fermionic.Lattice.boundedOneBodyOperator\n          (LinearMap.symmetrizedProduct position\n            ((QuantumTheory.ConservationLaw.heisenbergEvolution (QuantumTheory.SpinfulLattice.SpinfulSite Grid →₀ ℂ)\n                hbar (QuantumTheory.Models.RashbaExchange.finiteRashbaMomentumHamiltonian params momentum))\n              ((QuantumTheory.SpinfulLattice.spinOneBodyLinear spinScale) component)))",
+    "statement": "∀ {Grid : Type u_1} [inst : Fintype Grid] [inst_1 : LinearOrder Grid]\n  (params : QuantumTheory.Models.RashbaExchange.HamiltonianParameters) (momentum : Grid → ℝ × ℝ) (hbar spinScale : ℝ)\n  (component : QuantumTheory.SpinHalf.SpinSpace) (direction : Fin 2)\n  (position :\n    (QuantumTheory.SpinfulLattice.SpinfulSite Grid →₀ ℂ) →ₗ[ℂ] QuantumTheory.SpinfulLattice.SpinfulSite Grid →₀ ℂ),\n  (QuantumTheory.ConservationLaw.heisenbergEvolution hbar\n          (QuantumTheory.Models.RashbaExchange.finiteRashbaMomentumHamiltonian params momentum))\n        position =\n      QuantumTheory.Models.RashbaExchange.finiteRashbaMomentumVelocity params momentum direction →\n    SecondQuantization.Fermionic.Lattice.boundedOneBodyOperator\n        ((QuantumTheory.ConservationLaw.heisenbergEvolution hbar\n            (QuantumTheory.Models.RashbaExchange.finiteRashbaMomentumHamiltonian params momentum))\n          (QuantumTheory.Models.RashbaExchange.finiteRashbaMomentumSpinDisplacement spinScale component position)) =\n      (SecondQuantization.Fermionic.Transport.boundedSpinCurrentLinear\n            (QuantumTheory.Models.RashbaExchange.finiteRashbaMomentumVelocity params momentum direction) spinScale)\n          component +\n        SecondQuantization.Fermionic.Lattice.boundedOneBodyOperator\n          (LinearMap.symmetrizedProduct position\n            ((QuantumTheory.ConservationLaw.heisenbergEvolution hbar\n                (QuantumTheory.Models.RashbaExchange.finiteRashbaMomentumHamiltonian params momentum))\n              ((QuantumTheory.SpinfulLattice.spinOneBodyLinear spinScale) component)))",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -91454,7 +91460,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Grid : Type u_1} [inst : Fintype Grid] (params : QuantumTheory.Models.RashbaExchange.HamiltonianParameters)\n  (momentum : Grid → ℝ × ℝ) (hbar spinScale : ℝ) (component : QuantumTheory.SpinHalf.SpinSpace)\n  (position :\n    (QuantumTheory.SpinfulLattice.SpinfulSite Grid →₀ ℂ) →ₗ[ℂ] QuantumTheory.SpinfulLattice.SpinfulSite Grid →₀ ℂ),\n  (QuantumTheory.ConservationLaw.heisenbergEvolution (QuantumTheory.SpinfulLattice.SpinfulSite Grid →₀ ℂ) hbar\n        (QuantumTheory.Models.RashbaExchange.finiteRashbaMomentumHamiltonian params momentum))\n      (QuantumTheory.Models.RashbaExchange.finiteRashbaMomentumSpinDisplacement spinScale component position) =\n    LinearMap.symmetrizedProduct\n        ((QuantumTheory.ConservationLaw.heisenbergEvolution (QuantumTheory.SpinfulLattice.SpinfulSite Grid →₀ ℂ) hbar\n            (QuantumTheory.Models.RashbaExchange.finiteRashbaMomentumHamiltonian params momentum))\n          position)\n        ((QuantumTheory.SpinfulLattice.spinOneBodyLinear spinScale) component) +\n      LinearMap.symmetrizedProduct position\n        ((QuantumTheory.ConservationLaw.heisenbergEvolution (QuantumTheory.SpinfulLattice.SpinfulSite Grid →₀ ℂ) hbar\n            (QuantumTheory.Models.RashbaExchange.finiteRashbaMomentumHamiltonian params momentum))\n          ((QuantumTheory.SpinfulLattice.spinOneBodyLinear spinScale) component))",
+    "statement": "∀ {Grid : Type u_1} [inst : Fintype Grid] (params : QuantumTheory.Models.RashbaExchange.HamiltonianParameters)\n  (momentum : Grid → ℝ × ℝ) (hbar spinScale : ℝ) (component : QuantumTheory.SpinHalf.SpinSpace)\n  (position :\n    (QuantumTheory.SpinfulLattice.SpinfulSite Grid →₀ ℂ) →ₗ[ℂ] QuantumTheory.SpinfulLattice.SpinfulSite Grid →₀ ℂ),\n  (QuantumTheory.ConservationLaw.heisenbergEvolution hbar\n        (QuantumTheory.Models.RashbaExchange.finiteRashbaMomentumHamiltonian params momentum))\n      (QuantumTheory.Models.RashbaExchange.finiteRashbaMomentumSpinDisplacement spinScale component position) =\n    LinearMap.symmetrizedProduct\n        ((QuantumTheory.ConservationLaw.heisenbergEvolution hbar\n            (QuantumTheory.Models.RashbaExchange.finiteRashbaMomentumHamiltonian params momentum))\n          position)\n        ((QuantumTheory.SpinfulLattice.spinOneBodyLinear spinScale) component) +\n      LinearMap.symmetrizedProduct position\n        ((QuantumTheory.ConservationLaw.heisenbergEvolution hbar\n            (QuantumTheory.Models.RashbaExchange.finiteRashbaMomentumHamiltonian params momentum))\n          ((QuantumTheory.SpinfulLattice.spinOneBodyLinear spinScale) component))",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -91498,7 +91504,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {Grid : Type u_1} [inst : Fintype Grid] [inst_1 : LinearOrder Grid]\n  (params : QuantumTheory.Models.RashbaExchange.HamiltonianParameters) (momentum : Grid → ℝ × ℝ) (hbar : ℝ)\n  (hhbar : 0 < hbar) (spinScale : ℝ) (component : QuantumTheory.SpinHalf.SpinSpace) (measured source : Fin 2)\n  (charge : ℂ)\n  (position :\n    (QuantumTheory.SpinfulLattice.SpinfulSite Grid →₀ ℂ) →ₗ[ℂ] QuantumTheory.SpinfulLattice.SpinfulSite Grid →₀ ℂ),\n  (QuantumTheory.ConservationLaw.heisenbergEvolution (QuantumTheory.SpinfulLattice.SpinfulSite Grid →₀ ℂ) hbar\n          (QuantumTheory.Models.RashbaExchange.finiteRashbaMomentumHamiltonian params momentum))\n        position =\n      QuantumTheory.Models.RashbaExchange.finiteRashbaMomentumVelocity params momentum measured →\n    ∀\n      (contact :\n        SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock\n            (QuantumTheory.SpinfulLattice.SpinfulSite Grid) →L[ℂ]\n          SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock (QuantumTheory.SpinfulLattice.SpinfulSite Grid))\n      (expectation :\n        QuantumTheory.LinearResponse.NormalizedExpectation\n          (SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock\n            (QuantumTheory.SpinfulLattice.SpinfulSite Grid)))\n      (t s : ℝ),\n      (QuantumTheory.Models.RashbaExchange.finiteRashbaMomentumSpinDisplacementResponseChannel params momentum hbar\n              spinScale component measured source charge position contact).retardedKernel\n          (QuantumTheory.LinearResponse.freePropagatorGroup\n            (QuantumTheory.Models.RashbaExchange.finiteRashbaMomentumFreeSystem params momentum hbar hhbar))\n          hbar expectation t s =\n        (QuantumTheory.Models.RashbaExchange.finiteRashbaMomentumSpinChargeChannel params momentum spinScale component\n                measured source charge contact).retardedKernel\n            (QuantumTheory.LinearResponse.freePropagatorGroup\n              (QuantumTheory.Models.RashbaExchange.finiteRashbaMomentumFreeSystem params momentum hbar hhbar))\n            hbar expectation t s +\n          QuantumTheory.LinearResponse.retardedSusceptibility\n            (QuantumTheory.LinearResponse.freePropagatorGroup\n              (QuantumTheory.Models.RashbaExchange.finiteRashbaMomentumFreeSystem params momentum hbar hhbar))\n            hbar expectation\n            (SecondQuantization.Fermionic.Lattice.boundedOneBodyOperator\n              (LinearMap.symmetrizedProduct position\n                ((QuantumTheory.ConservationLaw.heisenbergEvolution (QuantumTheory.SpinfulLattice.SpinfulSite Grid →₀ ℂ)\n                    hbar (QuantumTheory.Models.RashbaExchange.finiteRashbaMomentumHamiltonian params momentum))\n                  ((QuantumTheory.SpinfulLattice.spinOneBodyLinear spinScale) component))))\n            (SecondQuantization.Fermionic.Lattice.boundedOneBodyOperator\n              (charge • QuantumTheory.Models.RashbaExchange.finiteRashbaMomentumVelocity params momentum source))\n            t s",
+    "statement": "∀ {Grid : Type u_1} [inst : Fintype Grid] [inst_1 : LinearOrder Grid]\n  (params : QuantumTheory.Models.RashbaExchange.HamiltonianParameters) (momentum : Grid → ℝ × ℝ) (hbar : ℝ)\n  (hhbar : 0 < hbar) (spinScale : ℝ) (component : QuantumTheory.SpinHalf.SpinSpace) (measured source : Fin 2)\n  (charge : ℂ)\n  (position :\n    (QuantumTheory.SpinfulLattice.SpinfulSite Grid →₀ ℂ) →ₗ[ℂ] QuantumTheory.SpinfulLattice.SpinfulSite Grid →₀ ℂ),\n  (QuantumTheory.ConservationLaw.heisenbergEvolution hbar\n          (QuantumTheory.Models.RashbaExchange.finiteRashbaMomentumHamiltonian params momentum))\n        position =\n      QuantumTheory.Models.RashbaExchange.finiteRashbaMomentumVelocity params momentum measured →\n    ∀\n      (contact :\n        SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock\n            (QuantumTheory.SpinfulLattice.SpinfulSite Grid) →L[ℂ]\n          SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock (QuantumTheory.SpinfulLattice.SpinfulSite Grid))\n      (expectation :\n        QuantumTheory.LinearResponse.NormalizedExpectation\n          (SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock\n            (QuantumTheory.SpinfulLattice.SpinfulSite Grid)))\n      (t s : ℝ),\n      (QuantumTheory.Models.RashbaExchange.finiteRashbaMomentumSpinDisplacementResponseChannel params momentum hbar\n              spinScale component measured source charge position contact).retardedKernel\n          (QuantumTheory.LinearResponse.freePropagatorGroup\n            (QuantumTheory.Models.RashbaExchange.finiteRashbaMomentumFreeSystem params momentum hbar hhbar))\n          hbar expectation t s =\n        (QuantumTheory.Models.RashbaExchange.finiteRashbaMomentumSpinChargeChannel params momentum spinScale component\n                measured source charge contact).retardedKernel\n            (QuantumTheory.LinearResponse.freePropagatorGroup\n              (QuantumTheory.Models.RashbaExchange.finiteRashbaMomentumFreeSystem params momentum hbar hhbar))\n            hbar expectation t s +\n          QuantumTheory.LinearResponse.retardedSusceptibility\n            (QuantumTheory.LinearResponse.freePropagatorGroup\n              (QuantumTheory.Models.RashbaExchange.finiteRashbaMomentumFreeSystem params momentum hbar hhbar))\n            hbar expectation\n            (SecondQuantization.Fermionic.Lattice.boundedOneBodyOperator\n              (LinearMap.symmetrizedProduct position\n                ((QuantumTheory.ConservationLaw.heisenbergEvolution hbar\n                    (QuantumTheory.Models.RashbaExchange.finiteRashbaMomentumHamiltonian params momentum))\n                  ((QuantumTheory.SpinfulLattice.spinOneBodyLinear spinScale) component))))\n            (SecondQuantization.Fermionic.Lattice.boundedOneBodyOperator\n              (charge • QuantumTheory.Models.RashbaExchange.finiteRashbaMomentumVelocity params momentum source))\n            t s",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -91507,8 +91513,8 @@
     "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": false,
     "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "QuantumTheory.Models.RashbaExchange.finiteRashbaMomentumSpinDisplacement_retardedKernel_eq_conventional_add_torque",
     "module": "LeanCondensedMatter.Models.RashbaExchange.SpinDisplacementBridge",
@@ -92093,8 +92099,8 @@
     "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": false,
     "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "QuantumTheory.Models.RashbaExchange.no_pointwise_rashba_position_of_nonzero_parabolic_velocity",
     "module": "LeanCondensedMatter.Models.RashbaExchange.VelocityPositionObstruction",
@@ -92453,8 +92459,8 @@
     "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": false,
     "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "QuantumTheory.Models.RashbaExchange.rashbaSpinChargePointChannel_z_origin_retardedKernel",
     "module": "LeanCondensedMatter.Models.RashbaExchange.SpinCurrent",
@@ -92573,7 +92579,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {Site : Type u_2} [inst : LinearOrder Site] [inst_1 : Fintype Site] (geometry : LatticeGeometry Site (ℝ × ℝ))\n  (bond : Site → Site → Option (ℝ × ℝ)) (onsite exchange : Site → ℝ) (direction : ℝ × ℝ →ₗ[ℝ] ℝ) (hbar spinScale : ℝ)\n  (component : QuantumTheory.SpinHalf.SpinSpace),\n  have H := (QuantumTheory.Models.RashbaExchange.realSpaceRashbaHopping geometry bond onsite exchange).operator;\n  have X := (QuantumTheory.SpinfulLattice.spinfulGeometry geometry).directionalPosition direction;\n  have S := (QuantumTheory.SpinfulLattice.spinOneBodyLinear spinScale) component;\n  SecondQuantization.Fermionic.Lattice.boundedOneBodyOperator\n      ((QuantumTheory.ConservationLaw.heisenbergEvolution (QuantumTheory.SpinfulLattice.SpinfulSite Site →₀ ℂ) hbar H)\n        (LinearMap.symmetrizedProduct X S)) =\n    (SecondQuantization.Fermionic.Transport.boundedSpinCurrentLinear\n          ((QuantumTheory.ConservationLaw.heisenbergEvolution (QuantumTheory.SpinfulLattice.SpinfulSite Site →₀ ℂ) hbar\n              H)\n            X)\n          spinScale)\n        component +\n      SecondQuantization.Fermionic.Lattice.boundedOneBodyOperator\n        (LinearMap.symmetrizedProduct X\n          ((QuantumTheory.ConservationLaw.heisenbergEvolution (QuantumTheory.SpinfulLattice.SpinfulSite Site →₀ ℂ) hbar\n              H)\n            S))",
+    "statement": "∀ {Site : Type u_2} [inst : LinearOrder Site] [inst_1 : Fintype Site] (geometry : LatticeGeometry Site (ℝ × ℝ))\n  (bond : Site → Site → Option (ℝ × ℝ)) (onsite exchange : Site → ℝ) (direction : ℝ × ℝ →ₗ[ℝ] ℝ) (hbar spinScale : ℝ)\n  (component : QuantumTheory.SpinHalf.SpinSpace),\n  have H := (QuantumTheory.Models.RashbaExchange.realSpaceRashbaHopping geometry bond onsite exchange).operator;\n  have X := (QuantumTheory.SpinfulLattice.spinfulGeometry geometry).directionalPosition direction;\n  have S := (QuantumTheory.SpinfulLattice.spinOneBodyLinear spinScale) component;\n  SecondQuantization.Fermionic.Lattice.boundedOneBodyOperator\n      ((QuantumTheory.ConservationLaw.heisenbergEvolution hbar H) (LinearMap.symmetrizedProduct X S)) =\n    (SecondQuantization.Fermionic.Transport.boundedSpinCurrentLinear\n          ((QuantumTheory.ConservationLaw.heisenbergEvolution hbar H) X) spinScale)\n        component +\n      SecondQuantization.Fermionic.Lattice.boundedOneBodyOperator\n        (LinearMap.symmetrizedProduct X ((QuantumTheory.ConservationLaw.heisenbergEvolution hbar H) S))",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -92582,8 +92588,8 @@
     "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": false,
     "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "QuantumTheory.Models.RashbaExchange.realSpaceRashbaSpinDisplacement_fock_decomposition",
     "module": "LeanCondensedMatter.Models.RashbaExchange.SpinDisplacementBridge",
@@ -95311,6 +95317,51 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {H : Type u_1} {Ω : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] [inst_3 : Fintype Ω] (ensemble : QuantumTheory.Transport.FiniteDisorderEnsemble)\n  {E : Type u_3} {F : Type u_4} {G : Type u_5} [inst_4 : AddCommGroup E] [inst_5 : _root_.Module ℂ E]\n  [inst_6 : AddCommGroup F] [inst_7 : _root_.Module ℂ F] [inst_8 : AddCommGroup G] [inst_9 : _root_.Module ℂ G]\n  (B : E →ₗ[ℂ] F →ₗ[ℂ] G) (left : Ω → E) (right : Ω → F),\n  (ensemble.average fun ω => (B (left ω)) (right ω)) =\n    (B (ensemble.average left)) (ensemble.average right) +\n      ensemble.average fun ω => (B (left ω - ensemble.average left)) (right ω - ensemble.average right)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.FiniteDisorderEnsemble.average_bilinear_eq_mean_add_centered",
+    "module": "LeanCondensedMatter.Transport.Disorder.Finite",
+    "externalAxioms": [],
+    "docString": "A normalized finite average of a bilinear pairing decomposes into the pairing of\nthe means and the pairing of the centered fluctuations. The modules need no norm,\nmultiplication, or inner product. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.averagedOperatorInsertion_eq_mean_add_connected"
+    ],
+    "dependencies": [
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.average_const",
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.map_average"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.averagedOperatorInsertion_eq_mean_add_connected"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {H : Type u_1} {Ω : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] [inst_3 : Fintype Ω] (ensemble : QuantumTheory.Transport.FiniteDisorderEnsemble)\n  {E : Type u_3} [inst_4 : AddCommMonoid E] [inst_5 : _root_.Module ℂ E] (value : E),\n  (ensemble.average fun x => value) = value",
     "standardAxioms": [
       "Classical.choice",
@@ -95330,8 +95381,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.average_bilinear_eq_mean_add_centered",
       "QuantumTheory.Transport.FiniteDisorderEnsemble.averagedGreenOfRegulator_eq_born_add_exactRemainder_of_centered",
-      "QuantumTheory.Transport.FiniteDisorderEnsemble.averagedOperatorInsertion_eq_mean_add_connected",
       "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_averagedGreen_sub_free_le",
       "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_configurationGreen_fluctuation_sub_firstDyson_le"
     ],
@@ -95339,8 +95390,8 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.average_bilinear_eq_mean_add_centered",
       "QuantumTheory.Transport.FiniteDisorderEnsemble.averagedGreenOfRegulator_eq_born_add_exactRemainder_of_centered",
-      "QuantumTheory.Transport.FiniteDisorderEnsemble.averagedOperatorInsertion_eq_mean_add_connected",
       "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_averagedGreen_sub_free_le",
       "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_configurationGreen_fluctuation_sub_firstDyson_le"
     ],
@@ -95686,8 +95737,7 @@
       "QuantumTheory.Transport.FiniteDisorderEnsemble.averagedTwoGreenInsertionOfRegulators_eq_mean_add_connected"
     ],
     "dependencies": [
-      "QuantumTheory.Transport.FiniteDisorderEnsemble.average_const",
-      "QuantumTheory.Transport.FiniteDisorderEnsemble.map_average"
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.average_bilinear_eq_mean_add_centered"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -96501,9 +96551,9 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.average_bilinear_eq_mean_add_centered",
       "QuantumTheory.Transport.FiniteDisorderEnsemble.average_twoGreenVertexTraceKernel_eq_trace_insertion",
       "QuantumTheory.Transport.FiniteDisorderEnsemble.averagedGreenOfRegulator_eq_born_add_exactRemainder_of_centered",
-      "QuantumTheory.Transport.FiniteDisorderEnsemble.averagedOperatorInsertion_eq_mean_add_connected",
       "QuantumTheory.Transport.FiniteDisorderEnsemble.firstBornTwoGreenRungOfRegulators_eq_average_firstDyson",
       "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_configurationGreen_fluctuation_sub_firstDyson_le"
     ],
@@ -96511,9 +96561,9 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "QuantumTheory.Transport.FiniteDisorderEnsemble.average_bilinear_eq_mean_add_centered",
       "QuantumTheory.Transport.FiniteDisorderEnsemble.average_twoGreenVertexTraceKernel_eq_trace_insertion",
       "QuantumTheory.Transport.FiniteDisorderEnsemble.averagedGreenOfRegulator_eq_born_add_exactRemainder_of_centered",
-      "QuantumTheory.Transport.FiniteDisorderEnsemble.averagedOperatorInsertion_eq_mean_add_connected",
       "QuantumTheory.Transport.FiniteDisorderEnsemble.firstBornTwoGreenRungOfRegulators_eq_average_firstDyson",
       "QuantumTheory.Transport.FiniteDisorderEnsemble.norm_configurationGreen_fluctuation_sub_firstDyson_le"
     ],
@@ -129724,10 +129774,10 @@
     "dependencies": [
       "Combinatorics.Pairing.mem_pairs_iff",
       "Combinatorics.Pairing.normalizedPairOfEndpointEquiv_pair_eq_of_lt",
-      "Combinatorics.Pairing.pairEndpoint_one",
-      "Combinatorics.Pairing.pairEndpoint_zero",
       "Combinatorics.Pairing.pairs_normalized",
       "Combinatorics.PairingOn.restrict_partner_val",
+      "Combinatorics.pairEndpointAt_one",
+      "Combinatorics.pairEndpointAt_zero",
       "SecondQuantization.Common.TwoPointDiagram.externalPieceMixedPositionEquiv_apply",
       "SecondQuantization.Common.TwoPointDiagram.externalPieceMixedPosition_strictMono",
       "SecondQuantization.Common.TwoPointDiagram.externalPiece_partner_externalPieceMixedPositionEquiv_symm",
@@ -132337,7 +132387,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {n : ℕ}\n  (d : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel n Finset.univ) (τ τ' : ℝ) (σ : Fin n → ℝ)\n  (B : ↥d.vertexGraph.componentPartition.parts) (pr : d.MixedComponentPair τ τ' σ B) (k : Fin 2),\n  ↑((d.mixedComponentPairEndpointEquiv τ τ' σ B) (pr, k)) = (d.pairingInMixedOrder τ τ' σ).pairEndpoint (↑pr, k)",
+    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {n : ℕ}\n  (d : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel n Finset.univ) (τ τ' : ℝ) (σ : Fin n → ℝ)\n  (B : ↥d.vertexGraph.componentPartition.parts) (pr : d.MixedComponentPair τ τ' σ B) (k : Fin 2),\n  ↑((d.mixedComponentPairEndpointEquiv τ τ' σ B) (pr, k)) = Combinatorics.pairEndpointAt (↑↑pr) k",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -160393,7 +160443,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Site : Type u_1} [inst : LinearOrder Site] [inst_1 : Fintype Site] (hbar : ℝ) (H X m : (Site →₀ ℂ) →ₗ[ℂ] Site →₀ ℂ),\n  SecondQuantization.Fermionic.Lattice.boundedOneBodyOperator\n      ((QuantumTheory.ConservationLaw.heisenbergEvolution (Site →₀ ℂ) hbar H) (LinearMap.symmetrizedProduct X m)) =\n    (SecondQuantization.Fermionic.Transport.boundedSymmetrizedVelocityCurrentLinear\n          ((QuantumTheory.ConservationLaw.heisenbergEvolution (Site →₀ ℂ) hbar H) X))\n        m +\n      (SecondQuantization.Fermionic.Transport.boundedSymmetrizedVelocityCurrentLinear X)\n        ((QuantumTheory.ConservationLaw.heisenbergEvolution (Site →₀ ℂ) hbar H) m)",
+    "statement": "∀ {Site : Type u_1} [inst : LinearOrder Site] [inst_1 : Fintype Site] (hbar : ℝ) (H X m : (Site →₀ ℂ) →ₗ[ℂ] Site →₀ ℂ),\n  SecondQuantization.Fermionic.Lattice.boundedOneBodyOperator\n      ((QuantumTheory.ConservationLaw.heisenbergEvolution hbar H) (LinearMap.symmetrizedProduct X m)) =\n    (SecondQuantization.Fermionic.Transport.boundedSymmetrizedVelocityCurrentLinear\n          ((QuantumTheory.ConservationLaw.heisenbergEvolution hbar H) X))\n        m +\n      (SecondQuantization.Fermionic.Transport.boundedSymmetrizedVelocityCurrentLinear X)\n        ((QuantumTheory.ConservationLaw.heisenbergEvolution hbar H) m)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -160488,8 +160538,8 @@
     "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": false,
     "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "SecondQuantization.Fermionic.Transport.boundedSpinDisplacementDirectionalResponseChannel_contactExpectation",
     "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.SpinCurrentResponse",
@@ -160528,8 +160578,8 @@
     "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": false,
     "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "SecondQuantization.Fermionic.Transport.boundedSpinDisplacementDirectionalResponseChannel_peierls",
     "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.SpinCurrentResponse",
@@ -160561,7 +160611,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {Site : Type u_1} [inst : Fintype Site] [inst_1 : LinearOrder Site] {E : Type u_2} [inst_2 : AddCommGroup E]\n  [inst_3 : _root_.Module ℝ E] (geometry : LatticeGeometry Site E) (measured source : E →ₗ[ℝ] ℝ)\n  (K : LocallyFiniteHopping (QuantumTheory.SpinfulLattice.SpinfulSite Site)) (hbar q spinScale : ℝ)\n  (component : QuantumTheory.SpinHalf.SpinSpace) (sourceValue : ℝ)\n  (U :\n    Multiplicative ℝ →*\n      ↥(unitary\n          (SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock\n              (QuantumTheory.SpinfulLattice.SpinfulSite Site) →L[ℂ]\n            SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock\n              (QuantumTheory.SpinfulLattice.SpinfulSite Site))))\n  (expectation :\n    QuantumTheory.LinearResponse.NormalizedExpectation\n      (SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock (QuantumTheory.SpinfulLattice.SpinfulSite Site)))\n  (t s : ℝ),\n  have X := (QuantumTheory.SpinfulLattice.spinfulGeometry geometry).directionalPosition measured;\n  have S := (QuantumTheory.SpinfulLattice.spinOneBodyLinear spinScale) component;\n  have v :=\n    (QuantumTheory.ConservationLaw.heisenbergEvolution (QuantumTheory.SpinfulLattice.SpinfulSite Site →₀ ℂ) hbar\n        K.operator)\n      X;\n  have torque :=\n    (QuantumTheory.ConservationLaw.heisenbergEvolution (QuantumTheory.SpinfulLattice.SpinfulSite Site →₀ ℂ) hbar\n        K.operator)\n      S;\n  have B :=\n    SecondQuantization.Fermionic.Lattice.boundedDirectionalCurrent\n      (QuantumTheory.SpinfulLattice.spinfulGeometry geometry) source (↑hbar) (↑q) K;\n  (SecondQuantization.Fermionic.Transport.boundedSpinDisplacementDirectionalResponseChannel geometry measured source K\n          hbar q spinScale component sourceValue).retardedKernel\n      U hbar expectation t s =\n    QuantumTheory.LinearResponse.retardedSusceptibility U hbar expectation\n        ((SecondQuantization.Fermionic.Transport.boundedSpinCurrentLinear v spinScale) component) B t s +\n      QuantumTheory.LinearResponse.retardedSusceptibility U hbar expectation\n        (SecondQuantization.Fermionic.Lattice.boundedOneBodyOperator (LinearMap.symmetrizedProduct X torque)) B t s",
+    "statement": "∀ {Site : Type u_1} [inst : Fintype Site] [inst_1 : LinearOrder Site] {E : Type u_2} [inst_2 : AddCommGroup E]\n  [inst_3 : _root_.Module ℝ E] (geometry : LatticeGeometry Site E) (measured source : E →ₗ[ℝ] ℝ)\n  (K : LocallyFiniteHopping (QuantumTheory.SpinfulLattice.SpinfulSite Site)) (hbar q spinScale : ℝ)\n  (component : QuantumTheory.SpinHalf.SpinSpace) (sourceValue : ℝ)\n  (U :\n    Multiplicative ℝ →*\n      ↥(unitary\n          (SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock\n              (QuantumTheory.SpinfulLattice.SpinfulSite Site) →L[ℂ]\n            SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock\n              (QuantumTheory.SpinfulLattice.SpinfulSite Site))))\n  (expectation :\n    QuantumTheory.LinearResponse.NormalizedExpectation\n      (SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock (QuantumTheory.SpinfulLattice.SpinfulSite Site)))\n  (t s : ℝ),\n  have X := (QuantumTheory.SpinfulLattice.spinfulGeometry geometry).directionalPosition measured;\n  have S := (QuantumTheory.SpinfulLattice.spinOneBodyLinear spinScale) component;\n  have v := (QuantumTheory.ConservationLaw.heisenbergEvolution hbar K.operator) X;\n  have torque := (QuantumTheory.ConservationLaw.heisenbergEvolution hbar K.operator) S;\n  have B :=\n    SecondQuantization.Fermionic.Lattice.boundedDirectionalCurrent\n      (QuantumTheory.SpinfulLattice.spinfulGeometry geometry) source (↑hbar) (↑q) K;\n  (SecondQuantization.Fermionic.Transport.boundedSpinDisplacementDirectionalResponseChannel geometry measured source K\n          hbar q spinScale component sourceValue).retardedKernel\n      U hbar expectation t s =\n    QuantumTheory.LinearResponse.retardedSusceptibility U hbar expectation\n        ((SecondQuantization.Fermionic.Transport.boundedSpinCurrentLinear v spinScale) component) B t s +\n      QuantumTheory.LinearResponse.retardedSusceptibility U hbar expectation\n        (SecondQuantization.Fermionic.Lattice.boundedOneBodyOperator (LinearMap.symmetrizedProduct X torque)) B t s",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -160570,8 +160620,8 @@
     "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": false,
     "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "SecondQuantization.Fermionic.Transport.boundedSpinDisplacementDirectionalResponseChannel_retardedKernel",
     "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.SpinCurrentResponse",
@@ -181286,6 +181336,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "ContinuousLinearMap.hasSum_norm_sq_adjoint_apply",
       "ContinuousLinearMap.innerHS_comp_right",
       "ContinuousLinearMap.innerHS_eq_of_isHilbertSchmidt"
     ],
@@ -181295,8 +181346,53 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "ContinuousLinearMap.hasSum_norm_sq_adjoint_apply",
       "ContinuousLinearMap.innerHS_comp_right",
       "ContinuousLinearMap.innerHS_eq_of_isHilbertSchmidt"
+    ],
+    "compiledConsumerCount": 3,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] (B : H →L[ℂ] H) (x : H),\n  ‖B x‖ ^ 2 ≤ ‖B‖ ^ 2 * ‖x‖ ^ 2",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.Basic.0.ContinuousLinearMap.norm_sq_apply_le_opNorm_sq",
+    "module": "LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.Basic",
+    "externalAxioms": [],
+    "docString": "Pointwise squared-norm bound used by membership and norm estimates. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "ContinuousLinearMap.IsHilbertSchmidt.normSq_comp_left_le",
+      "ContinuousLinearMap.isHilbertSchmidt_comp_left"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "ContinuousLinearMap.IsHilbertSchmidt.normSq_comp_left_le",
+      "ContinuousLinearMap.isHilbertSchmidt_comp_left"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -181691,6 +181787,50 @@
     "compiledConsumers": [
       "ContinuousLinearMap.eigenvectorHilbertBasis",
       "ContinuousLinearMap.hasSum_eigenvectorFamily"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {R : Type u_2} {M : Type u_3} {J : Type u_4} [inst : Semiring R] [inst_1 : AddCommMonoid M]\n  [inst_2 : _root_.Module R M] {ι : J → Type u_5} (V : J → Submodule R M) (v : (j : J) → ι j → ↥(V j)),\n  (∀ (j : J), Submodule.span R (Set.range (v j)) = ⊤) →\n    Submodule.span R (Set.range fun a => ↑(v a.fst a.snd)) = ⨆ j, V j",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Analysis.Operator.Spectral.EigenvectorFamily.0.ContinuousLinearMap.span_sigma_submodule_family",
+    "module": "LeanCondensedMatter.Analysis.Operator.Spectral.EigenvectorFamily",
+    "externalAxioms": [],
+    "docString": "A family of spanning families in submodules spans their supremum when indexed\nby the dependent sum of the individual index types. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "ContinuousLinearMap.span_complexEigenvectorFamily",
+      "ContinuousLinearMap.span_eigenvectorFamily"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "ContinuousLinearMap.span_complexEigenvectorFamily",
+      "ContinuousLinearMap.span_eigenvectorFamily"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -185091,8 +185231,8 @@
     ],
     "dependencies": [
       "Combinatorics.Pairing.mem_pairs_iff",
-      "Combinatorics.Pairing.pairEndpoint_one",
-      "Combinatorics.Pairing.pairEndpoint_zero"
+      "Combinatorics.pairEndpointAt_one",
+      "Combinatorics.pairEndpointAt_zero"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -185138,7 +185278,7 @@
     ],
     "dependencies": [
       "Combinatorics.Pairing.eraseZeroOrderIso_partner",
-      "Combinatorics.Pairing.mem_pairs_iff"
+      "Combinatorics.Pairing.mem_pairs_map_iff"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -185160,7 +185300,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {n : ℕ} (pairing : Combinatorics.Pairing (n + 1)) {p : Fin (2 * (n + 1)) × Fin (2 * (n + 1))},\n  p ∈ pairing.pairs →\n    p ≠ pairing.firstPair →\n      p.1 ∈ Combinatorics.FiniteIndex.deletedPositions n (pairing.partner 0) ∧\n        p.2 ∈ Combinatorics.FiniteIndex.deletedPositions n (pairing.partner 0)",
+    "statement": "∀ {n : ℕ} (pairing : Combinatorics.Pairing (n + 1)) {p : Fin (2 * (n + 1)) × Fin (2 * (n + 1))},\n  p ∈ pairing.pairs →\n    p ≠ pairing.firstPair →\n      p.1 ∈ Combinatorics.FiniteIndex.deletedPositions (2 * n) (pairing.partner 0) ∧\n        p.2 ∈ Combinatorics.FiniteIndex.deletedPositions (2 * n) (pairing.partner 0)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -185182,8 +185322,8 @@
       "Combinatorics.Pairing.pairs_erase_firstPair_eq_image"
     ],
     "dependencies": [
-      "Combinatorics.Pairing.mem_pairs_iff",
-      "Combinatorics.PairingOn.partner_partner"
+      "Combinatorics.Pairing.firstPair_mem_pairs",
+      "Combinatorics.Pairing.normalizedPair_endpoints_ne_of_ne"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -185205,51 +185345,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {n : ℕ} (pairing : Combinatorics.Pairing (n + 1)) (i : Fin (2 * n)),\n  ↑(pairing.eraseZeroOrderIso i) = (((pairing.partner 0).pred ⋯).succAbove i).succ",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.FirstPairRecursion.0.Combinatorics.Pairing.eraseZeroOrderIso_eq_succ_succAbove",
-    "module": "LeanCondensedMatter.Combinatorics.PerfectPairing.FirstPairRecursion",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "Combinatorics.moment_eq_pairing_sum_of_first_pair_recursion"
-    ],
-    "dependencies": [
-      "Combinatorics.FiniteIndex.card_deletedPositions"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "Combinatorics.moment_eq_pairing_sum_of_first_pair_recursion"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {n : ℕ} (pairing : Combinatorics.Pairing n) (j : Fin (2 * (n + 1))) (hj : j ≠ 0) (i : Fin (2 * n)),\n  (pairing.insertFirstPair j hj).partner ↑((Combinatorics.FiniteIndex.deletedPositionsOrderIso n j hj) i) =\n    ↑((Combinatorics.FiniteIndex.deletedPositionsOrderIso n j hj) (pairing.partner i))",
+    "statement": "∀ {n : ℕ} (pairing : Combinatorics.Pairing n) (j : Fin (2 * (n + 1))) (hj : j ≠ 0) (i : Fin (2 * n)),\n  (pairing.insertFirstPair j hj).partner ↑((Combinatorics.FiniteIndex.deletedPositionsOrderIso (2 * n) j hj) i) =\n    ↑((Combinatorics.FiniteIndex.deletedPositionsOrderIso (2 * n) j hj) (pairing.partner i))",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -186001,8 +186097,8 @@
     ],
     "dependencies": [
       "Combinatorics.Pairing.ofSplitNormalizedPairEquiv_pair_eq_or_swap",
-      "Combinatorics.Pairing.pairEndpoint_one",
-      "Combinatorics.Pairing.pairEndpoint_zero"
+      "Combinatorics.pairEndpointAt_one",
+      "Combinatorics.pairEndpointAt_zero"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,

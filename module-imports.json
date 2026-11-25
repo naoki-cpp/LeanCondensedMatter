@@ -945,7 +945,7 @@
       "name": "LeanCondensedMatter.Combinatorics.FiniteIndex.DeletedPositions",
       "sourceFile": "LeanCondensedMatter/Combinatorics/FiniteIndex/DeletedPositions.lean",
       "imports": [],
-      "externalImportCount": 1
+      "externalImportCount": 2
     },
     {
       "name": "LeanCondensedMatter.Combinatorics.FiniteIndex.EraseIdxOfFn",
@@ -1007,7 +1007,7 @@
       "name": "LeanCondensedMatter.Combinatorics.PerfectPairing.Core",
       "sourceFile": "LeanCondensedMatter/Combinatorics/PerfectPairing/Core.lean",
       "imports": [],
-      "externalImportCount": 4
+      "externalImportCount": 5
     },
     {
       "name": "LeanCondensedMatter.Combinatorics.PerfectPairing.Crossing",
@@ -1030,7 +1030,8 @@
       "name": "LeanCondensedMatter.Combinatorics.PerfectPairing.CrossingParity",
       "sourceFile": "LeanCondensedMatter/Combinatorics/PerfectPairing/CrossingParity.lean",
       "imports": [
-        "LeanCondensedMatter.Combinatorics.PerfectPairing.Crossing"
+        "LeanCondensedMatter.Combinatorics.PerfectPairing.Crossing",
+        "LeanCondensedMatter.Combinatorics.PerfectPairing.PairEndpoints"
       ],
       "externalImportCount": 0
     },
@@ -1038,6 +1039,7 @@
       "name": "LeanCondensedMatter.Combinatorics.PerfectPairing.Embedding",
       "sourceFile": "LeanCondensedMatter/Combinatorics/PerfectPairing/Embedding.lean",
       "imports": [
+        "LeanCondensedMatter.Combinatorics.PerfectPairing.Core",
         "LeanCondensedMatter.Combinatorics.PerfectPairing.Crossing"
       ],
       "externalImportCount": 0
@@ -1047,6 +1049,8 @@
       "sourceFile": "LeanCondensedMatter/Combinatorics/PerfectPairing/EraseZero.lean",
       "imports": [
         "LeanCondensedMatter.Combinatorics.FiniteIndex.DeletedPositions",
+        "LeanCondensedMatter.Combinatorics.PerfectPairing.Core",
+        "LeanCondensedMatter.Combinatorics.PerfectPairing.PairEndpoints",
         "LeanCondensedMatter.Combinatorics.PerfectPairing.Restriction"
       ],
       "externalImportCount": 0
@@ -1064,6 +1068,7 @@
       "sourceFile": "LeanCondensedMatter/Combinatorics/PerfectPairing/FirstPairRecursion.lean",
       "imports": [
         "LeanCondensedMatter.Combinatorics.ExchangeSign",
+        "LeanCondensedMatter.Combinatorics.FiniteIndex.DeletedPositions",
         "LeanCondensedMatter.Combinatorics.PerfectPairing.CrossingEraseZero",
         "LeanCondensedMatter.Combinatorics.PerfectPairing.EraseZero",
         "LeanCondensedMatter.Combinatorics.PerfectPairing.InsertFirstPair"
@@ -1074,6 +1079,7 @@
       "name": "LeanCondensedMatter.Combinatorics.PerfectPairing.InsertFirstPair",
       "sourceFile": "LeanCondensedMatter/Combinatorics/PerfectPairing/InsertFirstPair.lean",
       "imports": [
+        "LeanCondensedMatter.Combinatorics.FiniteIndex.DeletedPositions",
         "LeanCondensedMatter.Combinatorics.PerfectPairing.EraseZero"
       ],
       "externalImportCount": 2
@@ -1135,6 +1141,7 @@
       "sourceFile": "LeanCondensedMatter/Combinatorics/PerfectPairing/SplitCrossing.lean",
       "imports": [
         "LeanCondensedMatter.Combinatorics.PerfectPairing.CrossingParity",
+        "LeanCondensedMatter.Combinatorics.PerfectPairing.PairEndpoints",
         "LeanCondensedMatter.Combinatorics.PerfectPairing.SplitNormalizedPairs"
       ],
       "externalImportCount": 1
@@ -3178,7 +3185,7 @@
       "imports": [
         "LeanCondensedMatter.Models.RashbaExchange.FiniteMomentumSpinResponse",
         "LeanCondensedMatter.Models.RashbaExchange.RealSpaceHopping",
-        "LeanCondensedMatter.QuantumMechanics.SingleParticle.LocalizedTransport"
+        "LeanCondensedMatter.QuantumTheory.ConservationLaw.LocalizedTransport"
       ],
       "externalImportCount": 0
     },
@@ -3657,7 +3664,7 @@
       "imports": [
         "LeanCondensedMatter.Analysis.ConservationLaw.CurrentRepresentation",
         "LeanCondensedMatter.Analysis.ConservationLaw.SymmetricLocalizationAlgebra",
-        "LeanCondensedMatter.QuantumMechanics.SingleParticle.LocalizedTransport"
+        "LeanCondensedMatter.QuantumTheory.ConservationLaw.LocalizedTransport"
       ],
       "externalImportCount": 0
     },
@@ -3674,17 +3681,6 @@
       "sourceFile": "LeanCondensedMatter/QuantumMechanics/SingleParticle/GeneralizedCurrent.lean",
       "imports": [
         "LeanCondensedMatter.Analysis.Operator.SymmetrizedProduct"
-      ],
-      "externalImportCount": 0
-    },
-    {
-      "name": "LeanCondensedMatter.QuantumMechanics.SingleParticle.LocalizedTransport",
-      "sourceFile": "LeanCondensedMatter/QuantumMechanics/SingleParticle/LocalizedTransport.lean",
-      "imports": [
-        "LeanCondensedMatter.Analysis.ConservationLaw.CurrentRepresentation",
-        "LeanCondensedMatter.Analysis.ConservationLaw.FluxBalanceLaw",
-        "LeanCondensedMatter.Analysis.ConservationLaw.SymmetricLocalizationAlgebra",
-        "LeanCondensedMatter.QuantumTheory.ConservationLaw.HeisenbergEvolution"
       ],
       "externalImportCount": 0
     },
@@ -3741,6 +3737,17 @@
         "LeanCondensedMatter.Analysis.Operator.SymmetrizedProduct"
       ],
       "externalImportCount": 1
+    },
+    {
+      "name": "LeanCondensedMatter.QuantumTheory.ConservationLaw.LocalizedTransport",
+      "sourceFile": "LeanCondensedMatter/QuantumTheory/ConservationLaw/LocalizedTransport.lean",
+      "imports": [
+        "LeanCondensedMatter.Analysis.ConservationLaw.CurrentRepresentation",
+        "LeanCondensedMatter.Analysis.ConservationLaw.FluxBalanceLaw",
+        "LeanCondensedMatter.Analysis.ConservationLaw.SymmetricLocalizationAlgebra",
+        "LeanCondensedMatter.QuantumTheory.ConservationLaw.HeisenbergEvolution"
+      ],
+      "externalImportCount": 0
     },
     {
       "name": "LeanCondensedMatter.QuantumTheory.DensityOperator.Basic",
@@ -4603,6 +4610,7 @@
       "sourceFile": "LeanCondensedMatter/QuantumTheory.lean",
       "imports": [
         "LeanCondensedMatter.QuantumTheory.ConservationLaw.HeisenbergEvolution",
+        "LeanCondensedMatter.QuantumTheory.ConservationLaw.LocalizedTransport",
         "LeanCondensedMatter.QuantumTheory.DensityOperator",
         "LeanCondensedMatter.QuantumTheory.DensityOperator.Diagonal",
         "LeanCondensedMatter.QuantumTheory.Entropy.Basic",
@@ -5726,6 +5734,7 @@
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Diagrammatics/Quartic/Factorization/ComponentGlobalCrossingParity.lean",
       "imports": [
         "LeanCondensedMatter.Combinatorics.PerfectPairing.ComponentCrossing",
+        "LeanCondensedMatter.Combinatorics.PerfectPairing.PairEndpoints",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Pairing.ComponentPairEquiv",
         "LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.PairingWeight"
       ],
@@ -5937,6 +5946,7 @@
       "name": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.External.ExternalPiecePairing",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Diagrammatics/TwoPoint/External/ExternalPiecePairing.lean",
       "imports": [
+        "LeanCondensedMatter.Combinatorics.PerfectPairing.PairEndpoints",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.External.ExternalPiece",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossing"
       ],
@@ -5982,6 +5992,7 @@
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Diagrammatics/TwoPoint/Mixed/MixedComponentPairEquiv.lean",
       "imports": [
         "LeanCondensedMatter.Combinatorics.PerfectPairing.NormalizedPairRestriction",
+        "LeanCondensedMatter.Combinatorics.PerfectPairing.PairEndpoints",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Components.ComponentDecomposition",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedOrderPairing"
       ],
@@ -7055,6 +7066,7 @@
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Diagrammatics/ExternalInsertion/ComponentPairingValue.lean",
       "imports": [
         "LeanCondensedMatter.Combinatorics.PerfectPairing.ComponentCrossing",
+        "LeanCondensedMatter.Combinatorics.PerfectPairing.PairEndpoints",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Factorization.ComponentShuffleParity",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Factorization.MixedComponentShuffle",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Pairing.ComponentMixedPairEquiv",
@@ -7169,6 +7181,7 @@
       "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalVacuumPairing",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Diagrammatics/ExternalInsertion/ExternalVacuumPairing.lean",
       "imports": [
+        "LeanCondensedMatter.Combinatorics.PerfectPairing.Core",
         "LeanCondensedMatter.Combinatorics.PerfectPairing.Embedding",
         "LeanCondensedMatter.Combinatorics.PerfectPairing.SplitNormalizedPairs",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Factorization.SlotSplitMixedSign",
@@ -8390,7 +8403,7 @@
       "imports": [
         "LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.Free"
       ],
-      "externalImportCount": 1
+      "externalImportCount": 3
     },
     {
       "name": "LeanCondensedMatter.Transport.Disorder.FirstRungNormBound",
@@ -8493,7 +8506,7 @@
       "imports": [
         "LeanCondensedMatter.Transport.Disorder.Resolvent"
       ],
-      "externalImportCount": 3
+      "externalImportCount": 1
     },
     {
       "name": "LeanCondensedMatter.Transport.Disorder.TwoParticleNormBound",
