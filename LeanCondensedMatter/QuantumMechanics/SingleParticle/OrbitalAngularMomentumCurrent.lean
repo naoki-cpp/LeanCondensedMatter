@@ -1,5 +1,5 @@
 import LeanCondensedMatter.QuantumMechanics.SingleParticle.OrbitalAngularMomentum
-import LeanCondensedMatter.QuantumMechanics.SingleParticle.CorrectedCurrent
+import LeanCondensedMatter.QuantumTheory.ConservationLaw.LocalizedTransport
 
 set_option linter.style.header false
 
@@ -91,7 +91,7 @@ theorem heisenbergTransportOrbitalAngularMomentum_apply
         (orbitalAngularMomentum X P u v) N (d f) := by
           simpa only [LinearMap.comp_apply] using congrArg
             (fun Φ : Test →ₗ[ℂ] (V →ₗ[ℂ] V) => Φ f)
-            (nestedSymmetrizedCurrentFlux_eq_comp V ℏ h M
+            (nestedSymmetrizedCurrentFlux_eq_comp ℏ h M
               (orbitalAngularMomentum X P u v) velocity d N hvelocity)
     _ = _ := by
       rw [_root_.ConservationLaw.nestedSymmetrizedCurrentFlux_eq_symmetrized_add_correction]

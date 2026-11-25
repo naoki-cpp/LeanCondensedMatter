@@ -1,4 +1,4 @@
-import LeanCondensedMatter.QuantumMechanics.SingleParticle.CorrectedCurrent
+import LeanCondensedMatter.QuantumTheory.ConservationLaw.LocalizedTransport
 
 set_option linter.style.header false
 
@@ -54,8 +54,7 @@ theorem correctedSymmetrizedVelocityCurrentRepresentation_smul_id_current
     (q : ℂ)
     (hvelocity : heisenbergLocalizationFunctional ℏ h M =
       (_root_.ConservationLaw.localizedQuantityFunctional N velocity).comp d) :
-    (correctedSymmetrizedVelocityCurrentRepresentation
-      V ℏ h M (q • LinearMap.id) velocity d N hvelocity).val =
+    (correctedSymmetrizedVelocityCurrentRepresentation ℏ h M (q • LinearMap.id) velocity d N hvelocity).val =
       operatorLocalCurrentPairing N (q • velocity) := by
   change
     _root_.ConservationLaw.nestedSymmetrizedCurrentFlux velocity (q • LinearMap.id) N =

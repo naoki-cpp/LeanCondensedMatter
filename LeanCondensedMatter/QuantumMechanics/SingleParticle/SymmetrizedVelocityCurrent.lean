@@ -1,5 +1,5 @@
 import LeanCondensedMatter.QuantumMechanics.SingleParticle.GeneralizedCurrent
-import LeanCondensedMatter.QuantumMechanics.SingleParticle.CorrectedCurrent
+import LeanCondensedMatter.QuantumTheory.ConservationLaw.LocalizedTransport
 
 set_option linter.style.header false
 
@@ -49,7 +49,7 @@ noncomputable def symmetrizedVelocityCurrentRepresentation
   property := by
     change heisenbergTransportFunctional ℏ h M m =
       (_root_.ConservationLaw.symmetrizedCurrentFlux velocity m N).comp d
-    rw [nestedSymmetrizedCurrentFlux_eq_comp V ℏ h M m velocity d N hvelocity,
+    rw [nestedSymmetrizedCurrentFlux_eq_comp ℏ h M m velocity d N hvelocity,
       _root_.ConservationLaw.nestedSymmetrizedCurrentFlux_eq_symmetrized_add_correction,
       _root_.ConservationLaw.localizationCorrectionCurrentFlux_eq_zero_of_commutes
         velocity m N hcomm, add_zero]
