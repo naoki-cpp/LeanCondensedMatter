@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Combinatorics.PerfectPairing.PairEndpoints
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Factorization.MixedComponentShuffle
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Factorization.ComponentShuffleParity
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Pairing.ComponentMixedPairEquiv
@@ -70,7 +71,7 @@ theorem ExternalInsertionWickDiagram.relativeComponentShuffleSign_eq_external_mu
       (fun B p k => by
         fin_cases k <;>
           simp [ExternalInsertionDiagram.componentMixedPositionShuffle_slotEquiv_apply,
-            Pairing.pairEndpointEquiv_apply, Pairing.pairEndpoint, pairEndpointAt,
+            Pairing.pairEndpointEquiv_apply, pairEndpointAt,
             d.componentMixedPairEquiv_apply externalTime σ])
       blockOrder
   rw [pow_eq_of_mod_two_eq (show ((-1 : ℂ) * -1) = 1 by norm_num) hfixed]

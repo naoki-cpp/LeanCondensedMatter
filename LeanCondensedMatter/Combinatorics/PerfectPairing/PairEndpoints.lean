@@ -33,22 +33,19 @@ theorem Pairing.prod_pairs_eq_prod_of_equiv {n : ℕ} {A R : Type*}
       apply Fintype.prod_congr
       exact hvalue
 
-/-- Select endpoint `0` or endpoint `1` of a normalized pair. -/
-def Pairing.pairEndpoint {n : ℕ} (pairing : Pairing n) :
-    pairing.NormalizedPair × Fin 2 → Fin (2 * n) :=
-  fun x => if x.2 = 0 then x.1.1.1 else x.1.1.2
+/-- Select endpoint `0` or endpoint `1` of an ordered pair. -/
+def pairEndpointAt {α : Type*} (pair : α × α) (k : Fin 2) : α :=
+  if k = 0 then pair.1 else pair.2
 
 @[simp]
-theorem Pairing.pairEndpoint_zero {n : ℕ} (pairing : Pairing n)
-    (p : pairing.NormalizedPair) :
-    pairing.pairEndpoint (p, 0) = p.1.1 := by
-  simp [Pairing.pairEndpoint]
+theorem pairEndpointAt_zero {α : Type*} (p : α × α) :
+    pairEndpointAt p 0 = p.1 := by
+  simp [pairEndpointAt]
 
 @[simp]
-theorem Pairing.pairEndpoint_one {n : ℕ} (pairing : Pairing n)
-    (p : pairing.NormalizedPair) :
-    pairing.pairEndpoint (p, 1) = p.1.2 := by
-  simp [Pairing.pairEndpoint]
+theorem pairEndpointAt_one {α : Type*} (p : α × α) :
+    pairEndpointAt p 1 = p.2 := by
+  simp [pairEndpointAt]
 
 /-- The two endpoints of all normalized pairs are equivalent to the ambient paired positions. -/
 noncomputable def Pairing.pairEndpointEquiv {n : ℕ} (pairing : Pairing n) :
@@ -63,7 +60,7 @@ noncomputable def Pairing.pairEndpointEquiv {n : ℕ} (pairing : Pairing n) :
           ⟨lt_of_le_of_ne (le_of_not_gt h) (pairing.partner_ne i),
             pairing.partner_partner i⟩⟩, 1)
   refine
-    { toFun := pairing.pairEndpoint
+    { toFun := fun x => pairEndpointAt x.1.1 x.2
       invFun := inverse
       left_inv := ?_
       right_inv := ?_ }
@@ -74,18 +71,18 @@ noncomputable def Pairing.pairEndpointEquiv {n : ℕ} (pairing : Pairing n) :
     have hpartnerb : pairing.partner b = a := by
       rw [← hpartnera, pairing.partner_partner]
     fin_cases k
-    · simp [inverse, Pairing.pairEndpoint, hablt, hpartnera]
+    · simp [inverse, pairEndpointAt, hablt, hpartnera]
     · have hba : ¬ b < a := not_lt_of_ge (le_of_lt hablt)
-      simp [inverse, Pairing.pairEndpoint, hba, hpartnerb]
+      simp [inverse, pairEndpointAt, hba, hpartnerb]
   · intro i
     by_cases h : i < pairing.partner i
-    · simp [inverse, Pairing.pairEndpoint, h]
-    · simp [inverse, Pairing.pairEndpoint, h]
+    · simp [inverse, pairEndpointAt, h]
+    · simp [inverse, pairEndpointAt, h]
 
 @[simp]
 theorem Pairing.pairEndpointEquiv_apply {n : ℕ} (pairing : Pairing n)
     (x : pairing.NormalizedPair × Fin 2) :
-    pairing.pairEndpointEquiv x = pairing.pairEndpoint x :=
+    pairing.pairEndpointEquiv x = pairEndpointAt x.1.1 x.2 :=
   rfl
 
 /-- Counting the `2 * n` ambient positions two at a time: a perfect pairing of `Fin (2 * n)` has
@@ -231,7 +228,7 @@ theorem Pairing.normalizedPairEquivOfPartnerEquiv_apply_of_strictMono
 /-- Endpoints selected from distinct normalized pairs are distinct. -/
 theorem Pairing.pairEndpoint_ne_of_normalizedPair_ne {n : ℕ} (pairing : Pairing n)
     (p q : pairing.NormalizedPair) (hpq : p ≠ q) (i j : Fin 2) :
-    pairing.pairEndpoint (p, i) ≠ pairing.pairEndpoint (q, j) := by
+    pairEndpointAt p.1 i ≠ pairEndpointAt q.1 j := by
   intro h
   have hargs : (p, i) = (q, j) :=
     pairing.pairEndpointEquiv.injective (by

@@ -176,9 +176,7 @@ private theorem
     (Equiv.sigmaFiberEquiv (d.mixedPairComponent τ τ' σ))
     (fun D => d.mixedComponentPairEndpointEquiv τ τ' σ D)
     (fun _ p => p.1)
-    (fun D p k => by
-      simpa [Combinatorics.Pairing.pairEndpoint, Combinatorics.pairEndpointAt] using
-        d.mixedComponentPairEndpointEquiv_apply_val τ τ' σ D p k)
+    (fun D p k => d.mixedComponentPairEndpointEquiv_apply_val τ τ' σ D p k)
     B C hBC
     (d.mixedVacuumPositionDataEquiv τ τ' σ C hVac)
     (fun v => d.mixedVacuumInteractionPosition τ τ' σ C hVac v 0)
