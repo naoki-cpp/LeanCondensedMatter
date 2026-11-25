@@ -205,43 +205,31 @@ private theorem ExternalInsertionDiagram.componentOrderedLeg_fixedPosition {E n 
   let T :=
     interactionSector
       (B : Finset (ExternalInsertionVertex E (Finset.univ : Finset (Fin n))))
+  have hcast :
+      (finCongr (by simp) :
+        Fin (2 * (2 * (Finset.univ : Finset (Fin T.card)).card + d.externalPairCount B)) ≃
+          Fin (2 * (2 * T.card + d.externalPairCount B))) =
+        externalInsertionLegCongr (E := d.externalPairCount B)
+          (Combinatorics.standardSlotEquiv T).symm := by
+    rw [externalInsertionLegCongr_symm, externalInsertionLegCongr_standardize]
+    rfl
+  rw [hcast]
   cases leg with
   | inl e =>
-      have hcast :
-          (finCongr (by simp)
-              ((externalInsertionLegEquiv (d.externalPairCount B)
-                (Finset.univ : Finset (Fin T.card))).symm (Sum.inl e)) :
-            Fin (2 * (2 * T.card + d.externalPairCount B))) =
-            externalInsertionExternalLeg (d.externalPairCount B) T e := by
-        apply Fin.ext
-        change (externalInsertionExternalLeg (d.externalPairCount B)
-          (Finset.univ : Finset (Fin T.card)) e).val =
-            (externalInsertionExternalLeg (d.externalPairCount B) T e).val
-        simp
-      rw [hcast, d.componentDiagramLeg_external B]
+      simp only [externalInsertionLegCongr, Equiv.trans_apply, Equiv.apply_symm_apply,
+        Equiv.sumCongr_apply, Sum.map_inl, Equiv.refl_apply]
+      change _ = d.componentDiagramLeg B
+        (externalInsertionExternalLeg (d.externalPairCount B) T e)
+      rw [d.componentDiagramLeg_external B]
       rfl
-  | inr leg =>
-      rcases leg with ⟨v, l⟩
-      let vT : ↥T := T.orderIsoOfFin rfl v.1
-      have hcast :
-          (finCongr (by simp)
-              ((externalInsertionLegEquiv (d.externalPairCount B)
-                (Finset.univ : Finset (Fin T.card))).symm (Sum.inr (v, l))) :
-            Fin (2 * (2 * T.card + d.externalPairCount B))) =
-            externalInsertionInteractionLeg (E := d.externalPairCount B) vT l := by
-        apply Fin.ext
-        change (externalInsertionInteractionLeg (E := d.externalPairCount B)
-          (v : ↥(Finset.univ : Finset (Fin T.card))) l).val =
-            (externalInsertionInteractionLeg (E := d.externalPairCount B) vT l).val
-        rw [externalInsertionInteractionLeg_val, externalInsertionInteractionLeg_val]
-        have huniv :
-            (((Finset.univ : Finset (Fin T.card)).orderIsoOfFin rfl).symm v).val =
-              v.1.val := by
-          rw [Finset.orderIsoOfFin_symm_apply, Fin.sort_univ, List.idxOf_finRange]
-        have hT : ((T.orderIsoOfFin rfl).symm vT).val = v.1.val := by
-          simp [vT]
-        rw [huniv, hT]
-      rw [hcast, d.componentDiagramLeg_interaction B]
+  | inr vl =>
+      rcases vl with ⟨v, l⟩
+      simp only [externalInsertionLegCongr, Equiv.trans_apply, Equiv.apply_symm_apply,
+        Equiv.sumCongr_apply, Sum.map_inr, Equiv.prodCongr_apply, Equiv.refl_apply]
+      change _ = d.componentDiagramLeg B
+        (externalInsertionInteractionLeg (E := d.externalPairCount B)
+          (T.orderIsoOfFin rfl v.1) l)
+      rw [d.componentDiagramLeg_interaction B]
       rfl
 
 /-- The diagram partner map on canonical legs commutes with the canonical component-leg embedding. -/
