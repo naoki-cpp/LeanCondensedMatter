@@ -92,7 +92,8 @@ module imports `PerfectPairing.VertexGraph`. Thermal pairing weights import the 
 first-pair crossing, and the pairing core for scalar evaluation. The full `PerfectPairing` umbrella remains
 an aggregate entry point rather than a dependency of these foundational consumers.
 
-`PerfectPairing.Embedding` owns normalized-pair embeddings induced by partner-intertwining order
+`PerfectPairing.Core` owns normalized-pair membership preservation and reflection under
+partner-intertwining order embeddings. `PerfectPairing.Embedding` owns normalized-pair embeddings induced by partner-intertwining order
 embeddings, including preservation and reflection of crossings. Quartic fixed-order component pairs
 use that construction with the canonical component-local vertex orders and component shuffle.
 The equality of the assembled vertex order with the fixed order supplies the partner compatibility;
@@ -104,7 +105,8 @@ component assignment remains in the Quartic adapter.
 `PerfectPairing.EraseZero` owns the smaller pairing, its increasing position map, and the residual
 pair structure. `eraseZeroPairEmbedding` maps both endpoints back to ambient positions;
 `pairs_erase_firstPair_eq_image` identifies all ambient pairs other than the first pair with the
-image of the smaller pairing's pairs. Endpoint membership and inverse-coordinate proofs remain
+image of the smaller pairing's pairs. Its membership proofs reuse the core order-embedding law
+and endpoint separation from `PerfectPairing.PairEndpoints`. Inverse-coordinate proofs remain
 private to that owner.
 
 `PerfectPairing.InsertFirstPair` owns both the product decomposition of the normalized

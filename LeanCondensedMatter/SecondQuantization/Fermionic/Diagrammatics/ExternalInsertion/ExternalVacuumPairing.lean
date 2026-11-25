@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Combinatorics.PerfectPairing.Core
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Embedding
 import LeanCondensedMatter.Combinatorics.PerfectPairing.SplitNormalizedPairs
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Factorization.SlotSplitMixedSign

@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Combinatorics.PerfectPairing.Core
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Crossing
 
 set_option linter.style.header false
@@ -12,26 +13,6 @@ and crossing geometry is unchanged.
 -/
 
 namespace Combinatorics
-
-/-- If an order embedding intertwines two pairing partner maps, mapping both endpoints preserves and
-reflects normalized pair membership. -/
-theorem Pairing.mem_pairs_map_iff {n m : ℕ}
-    (small : Pairing n) (big : Pairing m)
-    (e : Fin (2 * n) ↪o Fin (2 * m))
-    (hpartner : ∀ i, big.partner (e i) = e (small.partner i))
-    (a b : Fin (2 * n)) :
-    (e a, e b) ∈ big.pairs ↔ (a, b) ∈ small.pairs := by
-  rw [Pairing.mem_pairs_iff, Pairing.mem_pairs_iff]
-  constructor
-  · rintro ⟨hab, hp⟩
-    refine ⟨e.lt_iff_lt.mp hab, ?_⟩
-    apply e.injective
-    calc
-      e (small.partner a) = big.partner (e a) := (hpartner a).symm
-      _ = e b := hp
-  · rintro ⟨hab, hp⟩
-    refine ⟨e.lt_iff_lt.mpr hab, ?_⟩
-    rw [hpartner a, hp]
 
 /-- A partner-intertwining order embedding sends normalized pairs injectively to normalized pairs. -/
 noncomputable def Pairing.normalizedPairEmbedding {n m : ℕ}
