@@ -92,47 +92,14 @@ private theorem inner_completedExterior_create (v : Common.CompletedFock Mode)
   rw [completedExterior_create, ← ContinuousLinearMap.adjoint_inner_right,
     ← ContinuousLinearMap.star_eq_adjoint, completedExterior_annihilate]
 
-private theorem inner_completedExterior_scalar_create (a : ℂ) (v : Common.CompletedFock Mode)
-    (x : AlgebraicFock (Common.CompletedFock Mode)) :
-    inner ℂ (completedExterior (algebraMap ℂ _ a))
-      (completedExterior (AlgebraicFock.create _ v x)) = 0 := by
-  have h := congrArg (starRingEnd ℂ)
-    (inner_completedExterior_create v x (algebraMap ℂ _ a))
-  simpa only [AlgebraicFock.annihilate_algebraMap, map_zero, inner_zero_right, inner_conj_symm] using h
-
 /-- Exterior transport by a one-particle isometry preserves the realized Fock inner product. -/
 theorem inner_completedExterior_map (e : Common.CompletedFock Mode →ₗᵢ[ℂ]
     Common.CompletedFock Mode) (x y : AlgebraicFock (Common.CompletedFock Mode)) :
     inner ℂ (completedExterior (ExteriorAlgebra.map e.toLinearMap x))
       (completedExterior (ExteriorAlgebra.map e.toLinearMap y)) =
         inner ℂ (completedExterior x) (completedExterior y) := by
-  have hscalar (a : ℂ) (z : AlgebraicFock (Common.CompletedFock Mode)) :
-      inner ℂ (completedExterior (ExteriorAlgebra.map e.toLinearMap (algebraMap ℂ _ a)))
-        (completedExterior (ExteriorAlgebra.map e.toLinearMap z)) =
-          inner ℂ (completedExterior (algebraMap ℂ _ a)) (completedExterior z) := by
-    induction z using CliffordAlgebra.left_induction with
-    | algebraMap d => simp only [AlgHom.commutes]
-    | add z w hz hw => simp only [map_add, inner_add_right, hz, hw]
-    | ι_mul z v _ =>
-        change inner ℂ (completedExterior (ExteriorAlgebra.map e.toLinearMap (algebraMap ℂ _ a)))
-          (completedExterior (ExteriorAlgebra.map e.toLinearMap (AlgebraicFock.create _ v z))) =
-            inner ℂ (completedExterior (algebraMap ℂ _ a))
-              (completedExterior (AlgebraicFock.create _ v z))
-        rw [AlgebraicFock.map_create_apply]
-        simp only [AlgHom.commutes, inner_completedExterior_scalar_create]
-  induction x using CliffordAlgebra.left_induction generalizing y with
-  | algebraMap a => exact hscalar a y
-  | add x z hx hz => simp only [map_add, inner_add_left, hx, hz]
-  | ι_mul x v hx =>
-      change inner ℂ
-        (completedExterior (ExteriorAlgebra.map e.toLinearMap (AlgebraicFock.create _ v x)))
-        (completedExterior (ExteriorAlgebra.map e.toLinearMap y)) =
-          inner ℂ (completedExterior (AlgebraicFock.create _ v x)) (completedExterior y)
-      have hc : ExteriorAlgebra.map e.toLinearMap (AlgebraicFock.create _ v x) =
-          AlgebraicFock.create _ (e v) (ExteriorAlgebra.map e.toLinearMap x) :=
-        AlgebraicFock.map_create_apply e.toLinearMap v x
-      rw [hc, inner_completedExterior_create, AlgebraicFock.annihilate_map, hx,
-        inner_completedExterior_create]
+  exact AlgebraicFock.inner_realization_map_eq completedExterior completedExterior e
+    inner_completedExterior_create inner_completedExterior_create (fun _ _ => rfl) x y
 
 private theorem completedExterior_denseRange :
     DenseRange (completedExterior (Mode := Mode)) := by
