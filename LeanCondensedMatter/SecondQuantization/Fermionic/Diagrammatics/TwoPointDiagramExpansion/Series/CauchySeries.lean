@@ -1,5 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Series.DysonSeries
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalSubsetMoment
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.External.ExternalConnectivity
 
 set_option linter.style.header false
 
@@ -90,7 +91,10 @@ theorem connectedTwoPointDysonCoefficient_eq_shiftedConnectedExternalInsertion
       apply Finset.sum_congr rfl
       intro d _
       exact d.1.dysonAmplitude_eq_externalInsertion (fun k => ε k - μ) β g τ τ'
-    _ = _ := Equiv.sum_comp f _
+    _ = _ := Equiv.sum_comp f
+      (fun d : VacuumFreeFixedExternalInsertionWickDiagram Mode 1 n
+          (twoPointExternalLabels i j) =>
+        d.1.1.dysonAmplitude (fun k => ε k - μ) β g (twoPointExternalTimes τ τ'))
 
 open Common in
 /-- Connected-series specialization, obtained coefficientwise from diagram transport,
