@@ -507,9 +507,38 @@ The actual finite planar Rashba specialization is
 its existing finite-time theorem via the common boundary-to-limit result.
 No extra spectral-basis, decay or integrability assumptions are needed
 beyond the bounded free system, stationary expectation and positive η.
-This is a response to the vector-potential source, not yet a conductivity
-with electric-field and volume normalization. Regulator removal, volume
-limits and a concrete nonzero finite-frequency benchmark remain separate.
+This identity is for the vector-potential source. The electric-field
+normalization is applied in the following step.
+
+## Finite-volume proper spin conductivity (partial R4)
+
+With the existing convention A(t) ∝ exp((η−iω)t), the electric-field
+factor E/A is z = iω−η. The common scalar theorem
+`finiteVolumeConductivityFromVectorPotential_neg_factor` cancels the
+opposite factor in R_J, provided the physical volume V is positive and
+the complex driving rate is nonzero. Thus for η > 0,
+
+```text
+σ^a_ij(ω,η) = R_J/(V z) = −χ^R_{D_i^a,B_j}(ω,η)/V.
+```
+
+`realSpaceRashbaSpinDisplacement_conductivity_eq` instantiates this
+identity using the actual finite planar Rashba Hamiltonian, the same
+spin-displacement and geometric charge source, and a stationary
+expectation. Transverse choices give the proper spin Hall component.
+The sign follows the repository's source and Fourier conventions.
+
+For supplied finite energy-eigenbasis data,
+`realSpaceRashbaSpinDisplacement_conductivity_eq_finiteLehmannTable`
+uses the existing `finiteLehmannTableOfEigenbasis` and
+`finiteLehmannTableResponse` for D and B, rather than defining another
+spectral sum or conductivity table. The contact is already accounted
+for by the displacement identity.
+
+A concrete nonzero finite-frequency benchmark, gauge-equivalence
+identification, regulator removal and thermodynamic/DC limits remain
+separate. No claim is made about the bulk spin Hall conductivity from
+this fixed-positive-rate finite-volume equality.
 
 ## References
 
