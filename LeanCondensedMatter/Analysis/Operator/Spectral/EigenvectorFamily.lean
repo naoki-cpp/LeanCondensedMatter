@@ -181,7 +181,7 @@ theorem finite_large_eigenvalue_index (hT : IsCompactOperator T) (hT' : T.IsSymm
       rw [hg a, hg b, inner_smul_left, inner_smul_right, he.2 hab]
       simp
     rw [dist_eq_norm, ← sq_le_sq₀ hε.le (norm_nonneg _), @norm_sub_sq ℂ, horth]
-    simp only [map_zero, mul_zero, sub_zero]
+    simp only [RCLike.zero_re, mul_zero, sub_zero]
     exact (pow_le_pow_left₀ hε.le (hnorm a) 2).trans
       (le_add_of_nonneg_right (sq_nonneg _))
   obtain ⟨K, hK, hKsub⟩ := hT.image_closedBall_subset_compact 1
