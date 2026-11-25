@@ -45,22 +45,79 @@ theorem hasSum_norm_sq_matrix_coeff {ι κ : Type*} (d : HilbertBasis ι ℂ H)
   rw [← (hg_summable.hasSum.prod_fiberwise hrow).unique hd]
   exact hg_summable.hasSum
 
-/-- **The core basis-independence computation.** If `T` is Hilbert–Schmidt with respect to a
-basis `d`, then its adjoint `T†` is Hilbert–Schmidt with respect to *any* basis `f`, with the same
-sum of squared norms. -/
+omit [CompleteSpace H] in
+/-- The resolution-of-identity product is absolutely summable by Hölder's inequality
+for the two square-summable matrix coefficient families. -/
+private theorem summable_inner_resolution_product {ι κ : Type*} (d : HilbertBasis ι ℂ H)
+    (f : HilbertBasis κ ℂ H) {S T : H →L[ℂ] H} (hSd : IsHilbertSchmidtWrt d S)
+    (hTd : IsHilbertSchmidtWrt d T) :
+    Summable (fun p : ι × κ =>
+      (inner ℂ (S (d p.1)) (f p.2) : ℂ) * (inner ℂ (f p.2) (T (d p.1)) : ℂ)) := by
+  have h := Real.summable_mul_of_Lp_Lq_of_nonneg (p := 2) (q := 2)
+    (f := fun p : ι × κ => ‖inner ℂ (S (d p.1)) (f p.2)‖)
+    (g := fun p : ι × κ => ‖inner ℂ (T (d p.1)) (f p.2)‖)
+    (by rw [Real.holderConjugate_iff]; norm_num)
+    (fun _ => norm_nonneg _) (fun _ => norm_nonneg _)
+    (by simpa only [Real.rpow_two] using (hasSum_norm_sq_matrix_coeff d f S hSd.hasSum).summable)
+    (by simpa only [Real.rpow_two] using (hasSum_norm_sq_matrix_coeff d f T hTd.hasSum).summable)
+  refine Summable.of_norm_bounded h fun p => ?_
+  change ‖(inner ℂ (S (d p.1)) (f p.2) : ℂ) * inner ℂ (f p.2) (T (d p.1))‖ ≤
+    ‖inner ℂ (S (d p.1)) (f p.2)‖ * ‖inner ℂ (T (d p.1)) (f p.2)‖
+  rw [norm_mul, norm_inner_symm (𝕜 := ℂ) (f p.2) (T (d p.1))]
+
+/-- **The core Fubini computation underlying basis-independence of `innerHS`.** For `S`, `T`
+Hilbert–Schmidt with respect to a basis `d`, and *any* other basis `f`, the double sum
+`Σᵢⱼ ⟪S dᵢ, fⱼ⟫ ⟪fⱼ, T dᵢ⟫` (`summable_inner_resolution_product`) can be summed either row-first
+(giving `Σᵢ ⟪S dᵢ, T dᵢ⟫`, via the resolution of the identity along `f`) or column-first (giving
+`Σⱼ ⟪T† fⱼ, S† fⱼ⟫`, via the resolution of the identity along `d`, after rewriting each factor
+with the adjoint). -/
+private theorem hasSum_inner_adjoint_apply {ι κ : Type*} (d : HilbertBasis ι ℂ H)
+    (f : HilbertBasis κ ℂ H) {S T : H →L[ℂ] H} (hSd : IsHilbertSchmidtWrt d S)
+    (hTd : IsHilbertSchmidtWrt d T) :
+    HasSum (fun j => (inner ℂ (ContinuousLinearMap.adjoint T (f j))
+        (ContinuousLinearMap.adjoint S (f j)) : ℂ))
+      (∑' i, (inner ℂ (S (d i)) (T (d i)) : ℂ)) := by
+  classical
+  set g : ι × κ → ℂ :=
+    fun p => (inner ℂ (S (d p.1)) (f p.2) : ℂ) * (inner ℂ (f p.2) (T (d p.1)) : ℂ) with hg_def
+  have hg_summable : Summable g := summable_inner_resolution_product d f hSd hTd
+  -- Row sums of `g`: the resolution of the identity along `f`, applied to `⟪S dᵢ, T dᵢ⟫`.
+  have hrow : ∀ i, HasSum (fun j => g (i, j)) ((inner ℂ (S (d i)) (T (d i)) : ℂ)) := fun i =>
+    f.hasSum_inner_mul_inner (S (d i)) (T (d i))
+  -- Column sums of `g`: rewrite via the adjoint, then the resolution of the identity along `d`.
+  have hcol_point : ∀ i j, g (i, j) =
+      (inner ℂ (ContinuousLinearMap.adjoint T (f j)) (d i) : ℂ) *
+        (inner ℂ (d i) (ContinuousLinearMap.adjoint S (f j)) : ℂ) := fun i j => by
+    rw [hg_def]
+    simp only
+    rw [← ContinuousLinearMap.adjoint_inner_right S (d i) (f j),
+      ← ContinuousLinearMap.adjoint_inner_left T (d i) (f j), mul_comm]
+  have hcol : ∀ j, HasSum (fun i => g (i, j))
+      ((inner ℂ (ContinuousLinearMap.adjoint T (f j)) (ContinuousLinearMap.adjoint S (f j)) :
+        ℂ)) := fun j => by
+    simp_rw [hcol_point]
+    exact d.hasSum_inner_mul_inner (ContinuousLinearMap.adjoint T (f j))
+      (ContinuousLinearMap.adjoint S (f j))
+  have hcolSum := ((Equiv.prodComm κ ι).hasSum_iff.mpr hg_summable.hasSum).prod_fiberwise hcol
+  rwa [← (hg_summable.hasSum.prod_fiberwise hrow).tsum_eq] at hcolSum
+
+/-- The squared-norm adjoint identity is the diagonal specialization of the mixed
+Hilbert–Schmidt pairing identity, transported from complex to real sums. -/
 theorem hasSum_norm_sq_adjoint_apply {ι κ : Type*} (d : HilbertBasis ι ℂ H)
     (f : HilbertBasis κ ℂ H) (T : H →L[ℂ] H) {a : ℝ}
     (hd : HasSum (fun i => ‖T (d i)‖ ^ 2) a) :
     HasSum (fun j => ‖(ContinuousLinearMap.adjoint T) (f j)‖ ^ 2) a := by
-  classical
-  set g : ι × κ → ℝ := fun p => ‖(inner ℂ (T (d p.1)) (f p.2) : ℂ)‖ ^ 2 with hg_def
-  have hg : HasSum g a := hasSum_norm_sq_matrix_coeff d f T hd
-  have hcol : ∀ j, HasSum (fun i => g (i, j)) (‖(ContinuousLinearMap.adjoint T) (f j)‖ ^ 2) :=
-    fun j => by
-      simpa only [show (2 : ENNReal).toReal = (2 : ℝ) by norm_num, Real.rpow_two,
-        d.repr_apply_apply, d.repr.norm_map, hg_def, ContinuousLinearMap.adjoint_inner_right] using
-        (lp.hasSum_norm (p := 2) (by norm_num) (d.repr ((ContinuousLinearMap.adjoint T) (f j))))
-  exact ((Equiv.prodComm κ ι).hasSum_iff.mpr hg).prod_fiberwise hcol
+  have hself (x : H) : (inner ℂ x x : ℂ) = ((‖x‖ ^ 2 : ℝ) : ℂ) := by
+    calc
+      inner ℂ x x = (‖x‖ : ℂ) ^ 2 := inner_self_eq_norm_sq_to_K x
+      _ = ((‖x‖ ^ 2 : ℝ) : ℂ) := (Complex.ofReal_pow _ _).symm
+  have hdiag : HasSum (fun i => (inner ℂ (T (d i)) (T (d i)) : ℂ)) (a : ℂ) := by
+    simp_rw [hself]
+    exact Complex.hasSum_ofReal.mpr hd
+  have h := hasSum_inner_adjoint_apply d f (S := T) (T := T) hd.summable hd.summable
+  rw [hdiag.tsum_eq] at h
+  simp_rw [hself] at h
+  exact Complex.hasSum_ofReal.mp h
 
 /-- **The same basis-independence, phrased for `T` itself rather than its adjoint.** Applying
 `hasSum_norm_sq_adjoint_apply` twice — once for `T`, once for `T†` — and using
@@ -144,62 +201,6 @@ Convergence for basis-independent Hilbert--Schmidt operators is exposed by
 `innerHS_eq_of_isHilbertSchmidt`. -/
 noncomputable def innerHS {ι : Type*} (d : HilbertBasis ι ℂ H) (S T : H →L[ℂ] H) : ℂ :=
   ∑' i, (inner ℂ (S (d i)) (T (d i)) : ℂ)
-
-omit [CompleteSpace H] in
-/-- The resolution-of-identity product is absolutely summable by Hölder's inequality
-for the two square-summable matrix coefficient families. -/
-private theorem summable_inner_resolution_product {ι κ : Type*} (d : HilbertBasis ι ℂ H)
-    (f : HilbertBasis κ ℂ H) {S T : H →L[ℂ] H} (hSd : IsHilbertSchmidtWrt d S)
-    (hTd : IsHilbertSchmidtWrt d T) :
-    Summable (fun p : ι × κ =>
-      (inner ℂ (S (d p.1)) (f p.2) : ℂ) * (inner ℂ (f p.2) (T (d p.1)) : ℂ)) := by
-  have h := Real.summable_mul_of_Lp_Lq_of_nonneg (p := 2) (q := 2)
-    (f := fun p : ι × κ => ‖inner ℂ (S (d p.1)) (f p.2)‖)
-    (g := fun p : ι × κ => ‖inner ℂ (T (d p.1)) (f p.2)‖)
-    (by rw [Real.holderConjugate_iff]; norm_num)
-    (fun _ => norm_nonneg _) (fun _ => norm_nonneg _)
-    (by simpa only [Real.rpow_two] using (hasSum_norm_sq_matrix_coeff d f S hSd.hasSum).summable)
-    (by simpa only [Real.rpow_two] using (hasSum_norm_sq_matrix_coeff d f T hTd.hasSum).summable)
-  refine Summable.of_norm_bounded h fun p => ?_
-  change ‖(inner ℂ (S (d p.1)) (f p.2) : ℂ) * inner ℂ (f p.2) (T (d p.1))‖ ≤
-    ‖inner ℂ (S (d p.1)) (f p.2)‖ * ‖inner ℂ (T (d p.1)) (f p.2)‖
-  rw [norm_mul, norm_inner_symm (𝕜 := ℂ) (f p.2) (T (d p.1))]
-
-/-- **The core Fubini computation underlying basis-independence of `innerHS`.** For `S`, `T`
-Hilbert–Schmidt with respect to a basis `d`, and *any* other basis `f`, the double sum
-`Σᵢⱼ ⟪S dᵢ, fⱼ⟫ ⟪fⱼ, T dᵢ⟫` (`summable_inner_resolution_product`) can be summed either row-first
-(giving `Σᵢ ⟪S dᵢ, T dᵢ⟫`, via the resolution of the identity along `f`) or column-first (giving
-`Σⱼ ⟪T† fⱼ, S† fⱼ⟫`, via the resolution of the identity along `d`, after rewriting each factor
-with the adjoint). -/
-private theorem hasSum_inner_adjoint_apply {ι κ : Type*} (d : HilbertBasis ι ℂ H)
-    (f : HilbertBasis κ ℂ H) {S T : H →L[ℂ] H} (hSd : IsHilbertSchmidtWrt d S)
-    (hTd : IsHilbertSchmidtWrt d T) :
-    HasSum (fun j => (inner ℂ (ContinuousLinearMap.adjoint T (f j))
-        (ContinuousLinearMap.adjoint S (f j)) : ℂ))
-      (∑' i, (inner ℂ (S (d i)) (T (d i)) : ℂ)) := by
-  classical
-  set g : ι × κ → ℂ :=
-    fun p => (inner ℂ (S (d p.1)) (f p.2) : ℂ) * (inner ℂ (f p.2) (T (d p.1)) : ℂ) with hg_def
-  have hg_summable : Summable g := summable_inner_resolution_product d f hSd hTd
-  -- Row sums of `g`: the resolution of the identity along `f`, applied to `⟪S dᵢ, T dᵢ⟫`.
-  have hrow : ∀ i, HasSum (fun j => g (i, j)) ((inner ℂ (S (d i)) (T (d i)) : ℂ)) := fun i =>
-    f.hasSum_inner_mul_inner (S (d i)) (T (d i))
-  -- Column sums of `g`: rewrite via the adjoint, then the resolution of the identity along `d`.
-  have hcol_point : ∀ i j, g (i, j) =
-      (inner ℂ (ContinuousLinearMap.adjoint T (f j)) (d i) : ℂ) *
-        (inner ℂ (d i) (ContinuousLinearMap.adjoint S (f j)) : ℂ) := fun i j => by
-    rw [hg_def]
-    simp only
-    rw [← ContinuousLinearMap.adjoint_inner_right S (d i) (f j),
-      ← ContinuousLinearMap.adjoint_inner_left T (d i) (f j), mul_comm]
-  have hcol : ∀ j, HasSum (fun i => g (i, j))
-      ((inner ℂ (ContinuousLinearMap.adjoint T (f j)) (ContinuousLinearMap.adjoint S (f j)) :
-        ℂ)) := fun j => by
-    simp_rw [hcol_point]
-    exact d.hasSum_inner_mul_inner (ContinuousLinearMap.adjoint T (f j))
-      (ContinuousLinearMap.adjoint S (f j))
-  have hcolSum := ((Equiv.prodComm κ ι).hasSum_iff.mpr hg_summable.hasSum).prod_fiberwise hcol
-  rwa [← (hg_summable.hasSum.prod_fiberwise hrow).tsum_eq] at hcolSum
 
 /-- **`innerHS` is independent of the choice of Hilbert basis.** Applying
 `hasSum_inner_adjoint_apply` with the same basis for both arguments identifies
