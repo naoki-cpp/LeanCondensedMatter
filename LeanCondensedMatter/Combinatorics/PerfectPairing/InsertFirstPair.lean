@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Combinatorics.FiniteIndex.DeletedPositions
 import LeanCondensedMatter.Combinatorics.PerfectPairing.EraseZero
 import Mathlib.GroupTheory.Perm.Support
 import Mathlib.Logic.Equiv.Fin.Basic
@@ -20,7 +21,7 @@ open FiniteIndex
 /-- Insert a new pair `(0, j)` ahead of a smaller pairing. -/
 noncomputable def Pairing.insertFirstPair {n : ℕ} (pairing : Pairing n) (j : Fin (2 * (n + 1)))
     (hj : j ≠ (0 : Fin (2 * (n + 1)))) : Pairing (n + 1) := by
-  let oi := deletedPositionsOrderIso n j hj
+  let oi := deletedPositionsOrderIso (2 * n) j hj
   let extended : Equiv.Perm (Fin (2 * (n + 1))) := pairing.partner.extendDomain oi.toEquiv
   have hext0 : extended (0 : Fin (2 * (n + 1))) = 0 :=
     Equiv.Perm.extendDomain_apply_not_subtype _ _ (by simp [deletedPositions])
@@ -33,7 +34,7 @@ noncomputable def Pairing.insertFirstPair {n : ℕ} (pairing : Pairing n) (j : F
   have hextSq : extended * extended = 1 := by
     change pairing.partner.extendDomain oi.toEquiv * pairing.partner.extendDomain oi.toEquiv = 1
     rw [Equiv.Perm.extendDomain_mul, hpartnerSq, Equiv.Perm.extendDomain_one]
-  have hextNe : ∀ x : Fin (2 * (n + 1)), x ∈ deletedPositions n j → extended x ≠ x := by
+  have hextNe : ∀ x : Fin (2 * (n + 1)), x ∈ deletedPositions (2 * n) j → extended x ≠ x := by
     intro x hx h
     have h1 : extended x = (oi (pairing.partner (oi.symm ⟨x, hx⟩)) : Fin (2 * (n + 1))) :=
       Equiv.Perm.extendDomain_apply_subtype _ _ hx
@@ -88,7 +89,7 @@ theorem Pairing.insertFirstPair_partner_zero {n : ℕ} (pairing : Pairing n)
     (j : Fin (2 * (n + 1))) (hj : j ≠ (0 : Fin (2 * (n + 1)))) :
     (pairing.insertFirstPair j hj).partner 0 = j := by
   change (Equiv.swap 0 j *
-    (pairing.partner.extendDomain (deletedPositionsOrderIso n j hj).toEquiv)) 0 = j
+    (pairing.partner.extendDomain (deletedPositionsOrderIso (2 * n) j hj).toEquiv)) 0 = j
   rw [Equiv.Perm.mul_apply,
     Equiv.Perm.extendDomain_apply_not_subtype _ _ (by simp [deletedPositions]),
     Equiv.swap_apply_left]
@@ -96,13 +97,13 @@ theorem Pairing.insertFirstPair_partner_zero {n : ℕ} (pairing : Pairing n)
 private theorem Pairing.insertFirstPair_partner_orderIso {n : ℕ} (pairing : Pairing n)
     (j : Fin (2 * (n + 1))) (hj : j ≠ (0 : Fin (2 * (n + 1)))) (i : Fin (2 * n)) :
     (pairing.insertFirstPair j hj).partner
-        (deletedPositionsOrderIso n j hj i : Fin (2 * (n + 1))) =
-      (deletedPositionsOrderIso n j hj (pairing.partner i) : Fin (2 * (n + 1))) := by
-  set oi := deletedPositionsOrderIso n j hj
+        (deletedPositionsOrderIso (2 * n) j hj i : Fin (2 * (n + 1))) =
+      (deletedPositionsOrderIso (2 * n) j hj (pairing.partner i) : Fin (2 * (n + 1))) := by
+  set oi := deletedPositionsOrderIso (2 * n) j hj
   change (Equiv.swap 0 j * (pairing.partner.extendDomain oi.toEquiv)) (oi i : Fin (2 * (n + 1))) =
     (oi (pairing.partner i) : Fin (2 * (n + 1)))
   rw [Equiv.Perm.mul_apply]
-  have hmem : (oi i : Fin (2 * (n + 1))) ∈ deletedPositions n j := (oi i).property
+  have hmem : (oi i : Fin (2 * (n + 1))) ∈ deletedPositions (2 * n) j := (oi i).property
   have h1 : pairing.partner.extendDomain oi.toEquiv (oi i : Fin (2 * (n + 1))) =
       (oi (pairing.partner (oi.symm ⟨(oi i : Fin (2 * (n + 1))), hmem⟩)) :
         Fin (2 * (n + 1))) :=
@@ -112,7 +113,7 @@ private theorem Pairing.insertFirstPair_partner_orderIso {n : ℕ} (pairing : Pa
     apply oi.injective
     simp
   rw [hsymm]
-  have hmem' : (oi (pairing.partner i) : Fin (2 * (n + 1))) ∈ deletedPositions n j :=
+  have hmem' : (oi (pairing.partner i) : Fin (2 * (n + 1))) ∈ deletedPositions (2 * n) j :=
     (oi (pairing.partner i)).property
   exact Equiv.swap_apply_of_ne_of_ne
     (Finset.mem_erase.mp (Finset.mem_erase.mp hmem').2).1 (Finset.mem_erase.mp hmem').1
@@ -126,13 +127,13 @@ theorem Pairing.eraseZeroPair_insertFirstPair {n : ℕ} (pairing : Pairing n)
   have orderIso_congr {a b : Fin (2 * (n + 1))} (hab : a = b)
       (ha : a ≠ (0 : Fin (2 * (n + 1)))) (hb : b ≠ (0 : Fin (2 * (n + 1))))
       (k : Fin (2 * n)) :
-      (deletedPositionsOrderIso n a ha k : Fin (2 * (n + 1))) =
-        (deletedPositionsOrderIso n b hb k : Fin (2 * (n + 1))) := by
+      (deletedPositionsOrderIso (2 * n) a ha k : Fin (2 * (n + 1))) =
+        (deletedPositionsOrderIso (2 * n) b hb k : Fin (2 * (n + 1))) := by
     cases hab
     rfl
   have hoi_eq : ∀ k : Fin (2 * n),
       (P.eraseZeroOrderIso k : Fin (2 * (n + 1))) =
-        (deletedPositionsOrderIso n j hj k : Fin (2 * (n + 1))) := by
+        (deletedPositionsOrderIso (2 * n) j hj k : Fin (2 * (n + 1))) := by
     intro k
     rw [Pairing.eraseZeroOrderIso]
     exact orderIso_congr hPj (P.partner_ne 0) hj k
@@ -163,7 +164,7 @@ theorem Pairing.insertFirstPair_eraseZeroPair {n : ℕ} (pairing : Pairing (n + 
       rw [pairing.eraseZeroPair.insertFirstPair_partner_zero (pairing.partner 0)
         (pairing.partner_ne 0)] at hpartner
       exact hpartner.trans (pairing.partner_partner 0).symm
-    · have hxmem : x ∈ deletedPositions n (pairing.partner 0) := by
+    · have hxmem : x ∈ deletedPositions (2 * n) (pairing.partner 0) := by
         simp [deletedPositions, hx0, hxj]
       set k := pairing.eraseZeroOrderIso.symm ⟨x, hxmem⟩ with hkdef
       have hxeq : (pairing.eraseZeroOrderIso k : Fin (2 * (n + 1))) = x := by simp [hkdef]
