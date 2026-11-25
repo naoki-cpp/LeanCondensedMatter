@@ -91,10 +91,13 @@ theorem connectedTwoPointDysonCoefficient_eq_shiftedConnectedExternalInsertion
       apply Finset.sum_congr rfl
       intro d _
       exact d.1.dysonAmplitude_eq_externalInsertion (fun k => ε k - μ) β g τ τ'
-    _ = _ := Equiv.sum_comp f
-      (fun d : VacuumFreeFixedExternalInsertionWickDiagram Mode 1 n
-          (twoPointExternalLabels i j) =>
-        d.1.1.dysonAmplitude (fun k => ε k - μ) β g (twoPointExternalTimes τ τ'))
+    _ = _ := by
+      have h := Equiv.sum_comp f
+        (fun d : VacuumFreeFixedExternalInsertionWickDiagram Mode 1 n
+            (twoPointExternalLabels i j) =>
+          d.1.1.dysonAmplitude (fun k => ε k - μ) β g (twoPointExternalTimes τ τ'))
+      refine h.trans ?_
+      exact Finset.sum_congr (by ext d; simp) (fun _ _ => rfl)
 
 open Common in
 /-- Connected-series specialization, obtained coefficientwise from diagram transport,
