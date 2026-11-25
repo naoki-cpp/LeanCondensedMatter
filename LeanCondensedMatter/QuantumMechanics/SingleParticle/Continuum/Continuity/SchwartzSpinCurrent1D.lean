@@ -74,7 +74,7 @@ localization transport. -/
 theorem schwartzSpinorVelocityLocalizationFlux_eq_comp1D
     (ℏ κ : ℝ) (potential : SchwartzTwoLevel1D.Spatial)
     (internalH : SchwartzTwoLevel1D.InternalMatrix) :
-    (heisenbergLocalizationFunctional SchwartzSpinorOneParticle1D ℏ
+    (heisenbergLocalizationFunctional ℏ
         (SchwartzTwoLevelSchrodinger1D.hamiltonian κ potential internalH)
         SchwartzTwoLevel1D.multiplicationLinear) =
       (_root_.ConservationLaw.localizedQuantityFunctional
@@ -99,11 +99,11 @@ noncomputable def schwartzSpinCurrentRepresentation1D
     (internalH : SchwartzTwoLevel1D.InternalMatrix) (spinComponent : QuantumTheory.SpinHalf.SpinSpace) :
     _root_.ConservationLaw.LocalCurrentDensityRepresentation
       SchwartzKinetic1D.derivative
-      (heisenbergTransportFunctional SchwartzSpinorOneParticle1D ℏ
+      (heisenbergTransportFunctional ℏ
         (SchwartzTwoLevelSchrodinger1D.hamiltonian κ potential internalH)
         SchwartzTwoLevel1D.multiplicationLinear
         (schwartzSpinOperatorLinear ℏ spinComponent))
-      (operatorLocalCurrentPairing SchwartzSpinorOneParticle1D
+      (operatorLocalCurrentPairing
         SchwartzTwoLevel1D.multiplicationLinear) :=
   symmetrizedVelocityCurrentRepresentation SchwartzSpinorOneParticle1D ℏ
     (SchwartzTwoLevelSchrodinger1D.hamiltonian κ potential internalH)

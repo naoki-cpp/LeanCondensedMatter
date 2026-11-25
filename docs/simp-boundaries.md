@@ -124,7 +124,6 @@ basis, and involution rules.
 
 All current `@[simp]` declarations in the following modules are Green:
 
-- `SingleParticle/LocalizedTransport`
 - `SingleParticle/CorrectedCurrent`
 - `SingleParticle/SymmetrizedVelocityCurrent`
 - `SingleParticle/ChargeLikeCurrent`
@@ -170,6 +169,10 @@ The following declaration families are deliberate API normalization boundaries:
 - `coe_observableExpValue`
 - `gibbsState_op`
 - `ConservationLaw.heisenbergEvolution_apply`
+- `QuantumTheory.ConservationLaw.heisenbergLocalizationFunctional_apply`
+- `QuantumTheory.ConservationLaw.heisenbergTransportFunctional_apply`
+- `QuantumTheory.ConservationLaw.heisenbergSourceFunctional_apply`
+- `QuantumTheory.ConservationLaw.operatorLocalCurrentPairing_apply`
 - all current simp rules in `LinearResponse/KuboFormula`
 - `DensityOperator.spectralTrace_op_eq_one`
 - `DensityOperator.realTrace_op_eq_one`

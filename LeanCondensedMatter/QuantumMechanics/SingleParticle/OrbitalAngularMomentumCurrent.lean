@@ -20,6 +20,8 @@ torque-dipole (proper-current) identity.
 namespace QuantumMechanics
 namespace SingleParticle
 
+open QuantumTheory.ConservationLaw
+
 attribute [local instance 100] LieRing.ofAssociativeRing
 
 variable {E V OneForm : Type*}
@@ -75,12 +77,12 @@ theorem heisenbergTransportOrbitalAngularMomentum_apply
     (d : Test →ₗ[ℂ] OneForm)
     (N : OneForm →ₗ[ℂ] (V →ₗ[ℂ] V))
     (f : Test) (Du Dv : V →ₗ[ℂ] V) (c : ℂ)
-    (hvelocity : heisenbergLocalizationFunctional V ℏ h M =
+    (hvelocity : heisenbergLocalizationFunctional ℏ h M =
       (_root_.ConservationLaw.localizedQuantityFunctional N velocity).comp d)
     (hXu : ⁅N (d f), X u⁆ = 0) (hXv : ⁅N (d f), X v⁆ = 0)
     (hPu : ⁅N (d f), P u⁆ = c • Du)
     (hPv : ⁅N (d f), P v⁆ = c • Dv) :
-    heisenbergTransportFunctional V ℏ h M (orbitalAngularMomentum X P u v) f =
+    heisenbergTransportFunctional ℏ h M (orbitalAngularMomentum X P u v) f =
       _root_.ConservationLaw.symmetrizedCurrentFlux velocity
           (orbitalAngularMomentum X P u v) N (d f) +
         (1 / 4 : ℂ) • ⁅velocity, (X u).comp (c • Dv) - (X v).comp (c • Du)⁆ := by

@@ -1,6 +1,6 @@
 import LeanCondensedMatter.Analysis.ConservationLaw.SymmetricLocalizationAlgebra
 import LeanCondensedMatter.Analysis.ConservationLaw.CurrentRepresentation
-import LeanCondensedMatter.QuantumMechanics.SingleParticle.LocalizedTransport
+import LeanCondensedMatter.QuantumTheory.ConservationLaw.LocalizedTransport
 
 set_option linter.style.header false
 
@@ -24,6 +24,8 @@ intrinsic Heisenberg transport. No duplicate current-flux algebra is defined her
 namespace QuantumMechanics
 namespace SingleParticle
 
+open QuantumTheory.ConservationLaw
+
 variable {Test OneForm : Type*}
 variable [AddCommGroup Test] [Module ℂ Test]
 variable [AddCommGroup OneForm] [Module ℂ OneForm]
@@ -37,12 +39,12 @@ theorem nestedSymmetrizedCurrentFlux_eq_comp
     (m velocity : V →ₗ[ℂ] V)
     (d : Test →ₗ[ℂ] OneForm)
     (N : OneForm →ₗ[ℂ] (V →ₗ[ℂ] V))
-    (hvelocity : heisenbergLocalizationFunctional V ℏ h M =
+    (hvelocity : heisenbergLocalizationFunctional ℏ h M =
       (_root_.ConservationLaw.localizedQuantityFunctional N velocity).comp d) :
-    heisenbergTransportFunctional V ℏ h M m =
+    heisenbergTransportFunctional ℏ h M m =
       (_root_.ConservationLaw.nestedSymmetrizedCurrentFlux velocity m N).comp d := by
   calc
-    heisenbergTransportFunctional V ℏ h M m =
+    heisenbergTransportFunctional ℏ h M m =
         _root_.ConservationLaw.localizedQuantityFunctional
           ((_root_.ConservationLaw.localizedQuantityFunctional N velocity).comp d) m :=
       congrArg (fun L : Test →ₗ[ℂ] (V →ₗ[ℂ] V) =>
@@ -60,10 +62,10 @@ noncomputable def correctedSymmetrizedVelocityCurrentRepresentation
     (m velocity : V →ₗ[ℂ] V)
     (d : Test →ₗ[ℂ] OneForm)
     (N : OneForm →ₗ[ℂ] (V →ₗ[ℂ] V))
-    (hvelocity : heisenbergLocalizationFunctional V ℏ h M =
+    (hvelocity : heisenbergLocalizationFunctional ℏ h M =
       (_root_.ConservationLaw.localizedQuantityFunctional N velocity).comp d) :
     _root_.ConservationLaw.DifferentialCurrentRepresentation d
-      (heisenbergTransportFunctional V ℏ h M m) where
+      (heisenbergTransportFunctional ℏ h M m) where
   val := _root_.ConservationLaw.nestedSymmetrizedCurrentFlux velocity m N
   property := nestedSymmetrizedCurrentFlux_eq_comp
     V ℏ h M m velocity d N hvelocity
@@ -76,10 +78,10 @@ theorem currentEquivalent_nestedSymmetrizedCurrentFlux
     (m velocity : V →ₗ[ℂ] V)
     (d : Test →ₗ[ℂ] OneForm)
     (N : OneForm →ₗ[ℂ] (V →ₗ[ℂ] V))
-    (hvelocity : heisenbergLocalizationFunctional V ℏ h M =
+    (hvelocity : heisenbergLocalizationFunctional ℏ h M =
       (_root_.ConservationLaw.localizedQuantityFunctional N velocity).comp d)
     (R : _root_.ConservationLaw.DifferentialCurrentRepresentation d
-      (heisenbergTransportFunctional V ℏ h M m)) :
+      (heisenbergTransportFunctional ℏ h M m)) :
     R.val.comp d =
       (_root_.ConservationLaw.nestedSymmetrizedCurrentFlux velocity m N).comp d :=
   R.property.symm.trans

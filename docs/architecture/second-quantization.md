@@ -395,6 +395,8 @@ Analysis.ConservationLaw.FluxBalanceLaw
         ↓
 QuantumTheory.ConservationLaw.HeisenbergEvolution
         ↓
+QuantumTheory.ConservationLaw.LocalizedTransport
+        ↓
 QuantumMechanics.SingleParticle
         ↓
 ┌───────────────────────────────┐
