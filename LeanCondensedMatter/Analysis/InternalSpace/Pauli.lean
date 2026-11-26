@@ -121,9 +121,8 @@ private theorem pauliBasis_mul_pauliBasis (a b : PauliAxis) :
             pauliCross (Pi.single a 1) (Pi.single b 1) .z • pauliBasis .z) := by
   cases a <;> cases b <;>
     ext i j <;> fin_cases i <;> fin_cases j <;>
-    simp [pauliBasis, Pi.single_apply, pauliCross, cross_apply, pauliAxisComponent,
-      Matrix.mul_apply, Fin.sum_univ_two, pauliX, pauliY, pauliZ, dotProduct_pauliAxis,
-      Complex.I_mul_I]
+    simp [pauliBasis, pauliCross, cross_apply, pauliAxisComponent,
+      Matrix.mul_apply, Fin.sum_univ_two, pauliX, pauliY, pauliZ, Complex.I_mul_I]
 
 /-- Pauli synthesis commutes with addition of indexed coefficient families. -/
 @[simp] theorem pauliCombination_add (u v : PauliAxis → ℂ) :
@@ -143,7 +142,7 @@ theorem pauliCombination_mul_pauliCombination (u v : PauliAxis → ℂ) :
       dotProduct u v • (1 : PauliMatrix) +
         Complex.I • pauliCombination (pauliCross u v) := by
   simp only [pauliCombination, sum_pauliAxis]
-  simp [add_mul, mul_add, pauliBasis_mul_pauliBasis, Pi.single_apply, pauliCross,
+  simp [add_mul, mul_add, pauliBasis_mul_pauliBasis, pauliCross,
     cross_apply, pauliAxisComponent, dotProduct_pauliAxis]
   module
 
@@ -182,9 +181,9 @@ theorem trace_pauliCombination_mul_pauliCombination (u v : PauliAxis → ℂ) :
 theorem trace_pauliBasis_mul_pauliCombination (axis : PauliAxis) (u : PauliAxis → ℂ) :
     Matrix.trace (pauliBasis axis * pauliCombination u) = 2 * u axis := by
   have h : pauliCombination (Pi.single axis (1 : ℂ)) = pauliBasis axis := by
-    cases axis <;> simp [pauliCombination, sum_pauliAxis, Pi.single_apply, pauliBasis]
+    cases axis <;> simp [pauliCombination, Pi.single_apply, pauliBasis]
   rw [← h, trace_pauliCombination_mul_pauliCombination]
-  cases axis <;> simp [Pi.single_apply, dotProduct_pauliAxis]
+  simp
 
 /-- The three Pauli matrices form a linearly independent family over `ℂ`. -/
 theorem pauliBasis_linearIndependent : LinearIndependent ℂ pauliBasis := by
