@@ -11,7 +11,6 @@ import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalComponents
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Components.ComponentRestriction
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.External.ExternalConnectivity
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Components.ComponentDecomposition
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotLegSplitting
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.External.ExternalSlotSplit
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitConnectivity
@@ -19,7 +18,6 @@ import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Slot
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.SlotCongr
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentPosition
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedOrderPairing
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.External.ExternalPiece
 
 set_option linter.style.header false
 
@@ -39,10 +37,11 @@ The subpackages separate the main combinatorial responsibilities:
 
 * `Core` defines the diagram syntax, flattened leg enumeration, vertex graph, and the semantic
   predicates for vacuum-free and externally connected diagrams.
-* `Components` restricts connected components, identifies the canonical external component and
-  vacuum components, and provides componentwise finite-sum and finite-product decompositions.
-* `External` isolates the external component, splits its interaction slots from the vacuum
-  remainder, and packages its standalone external piece and mixed-position embedding.
+* `Components` restricts connected components; the canonical external component and vacuum
+  classification use the shared graph-level component theory.
+* `External` isolates the external component and splits its interaction slots from the vacuum
+  remainder. Standalone component standardization and mixed-position embeddings are provided by
+  general external insertions.
 * `SlotSplit` compares the ambient two-point graph with its external/vacuum slot decomposition.
   Ordered vacuum pairing and component-pair factorization belong to the general external-insertion theory.
 * `Mixed` transports the fixed pairing to mixed imaginary-time order. Component-local normalized
