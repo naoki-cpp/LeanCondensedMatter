@@ -55,6 +55,7 @@ const ui = {
   searchLabel: document.querySelector("#search-form > label"),
   search: document.querySelector("#theorem-search"),
   searchResults: document.querySelector("#search-results"),
+  searchStatus: document.querySelector("#search-status"),
   direction: document.querySelector("#direction"),
   depth: document.querySelector("#depth"),
   module: document.querySelector("#module-filter"),
@@ -434,7 +435,7 @@ function setGraphModeChrome() {
   document.getElementById("kind-filter").closest("label").hidden = modules;
   document.getElementById("generated-filter").closest("label").hidden = modules;
   ui.searchLabel.textContent = modules ? "Module" : "Declaration";
-  ui.search.placeholder = modules ? "Module name" : "Name, module, or documentation";
+  ui.search.placeholder = modules ? "Module name…" : "Declaration, module, or documentation…";
   ui.moduleFilterLabel.hidden = modules;
   ui.wrapperHighlightLabel.hidden = modules;
   ui.graph.setAttribute("aria-label", modules
@@ -1050,16 +1051,23 @@ function findSearchResults(query) {
 }
 
 function updateSearchActive() {
-  [...ui.searchResults.querySelectorAll(".search-result")].forEach((button, index) => {
+  const results = [...ui.searchResults.querySelectorAll(".search-result")];
+  results.forEach((button, index) => {
     const active = index === state.searchIndex;
     button.classList.toggle("active", active);
     button.setAttribute("aria-selected", String(active));
   });
+  const active = results[state.searchIndex];
+  if (active) ui.search.setAttribute("aria-activedescendant", active.id);
+  else ui.search.removeAttribute("aria-activedescendant");
 }
 
 function renderSearchResults() {
   const query = ui.search.value.trim();
   state.searchResults = findSearchResults(query);
+  ui.searchStatus.textContent = query && state.searchResults.length === 0
+    ? "No matches. Try a declaration name, module, or another keyword."
+    : "";
   state.searchIndex = state.searchResults.length > 0 ? 0 : -1;
   ui.searchResults.replaceChildren();
   if (!query || state.searchResults.length === 0) {
@@ -1069,6 +1077,8 @@ function renderSearchResults() {
   state.searchResults.forEach((entry, index) => {
     const button = element("button", "search-result");
     button.type = "button";
+    button.id = `search-result-${index}`;
+    button.tabIndex = -1;
     button.setAttribute("role", "option");
     button.append(element("strong", "", entry.name));
     const context = entry.docString?.trim() || shortModule(entry.module);
@@ -1088,6 +1098,7 @@ function renderSearchResults() {
 function hideSearchResults() {
   ui.searchResults.hidden = true;
   ui.search.setAttribute("aria-expanded", "false");
+  ui.search.removeAttribute("aria-activedescendant");
   state.searchResults = [];
   state.searchIndex = -1;
 }
@@ -1178,6 +1189,10 @@ function bindGraphNavigation() {
 }
 
 function bindEvents() {
+  document.querySelector(".skip-link").addEventListener("click", (event) => {
+    event.preventDefault();
+    document.getElementById("explorer-content").focus();
+  });
   for (const id of ["kind-filter", "generated-filter"]) {
     document.getElementById(id).addEventListener("change", () => {
       state.kind = document.getElementById("kind-filter").value;

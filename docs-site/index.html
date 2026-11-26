@@ -6,6 +6,11 @@
   <meta name="description" content="Explore theorem dependencies and Lean module imports in LeanCondensedMatter.">
   <meta name="theme-color" content="#f8f7f2">
   <title>LeanCondensedMatter Explorer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="preconnect" href="https://raw.githubusercontent.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&amp;family=IBM+Plex+Sans:wght@400;500;600&amp;display=swap">
   <link rel="stylesheet" href="./site.css">
   <link rel="stylesheet" href="./module-overview.css">
   <script>
@@ -22,6 +27,7 @@
   <script defer data-math-renderer src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
 </head>
 <body>
+  <a class="skip-link" href="#explorer-content">Skip to explorer</a>
   <svg class="graph-definitions" width="0" height="0" aria-hidden="true" focusable="false">
     <defs>
       <marker id="dependency-arrow" viewBox="0 0 10 10" refX="19" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto" overflow="visible">
@@ -36,7 +42,7 @@
   <header class="site-header">
     <a class="brand" href="./" aria-label="LeanCondensedMatter explorer home">
       <span>
-        <strong>LeanCondensedMatter</strong>
+        <h1 translate="no">LeanCondensedMatter</h1>
         <small>Formalizing condensed matter physics in Lean 4</small>
       </span>
     </a>
@@ -53,10 +59,11 @@
       <form id="search-form" class="search-form" role="search">
         <label for="theorem-search">Declaration</label>
         <div class="search-row">
-          <input id="theorem-search" autocomplete="off" placeholder="Name, module, or documentation" aria-controls="search-results" aria-expanded="false">
+          <input id="theorem-search" name="query" type="search" role="combobox" aria-autocomplete="list" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Try a declaration or module…" aria-controls="search-results" aria-expanded="false" aria-describedby="search-status">
           <button type="submit">Go</button>
         </div>
-        <div id="search-results" class="search-results" role="listbox" hidden></div>
+        <div id="search-results" class="search-results" role="listbox" aria-label="Search matches" hidden></div>
+        <p id="search-status" class="control-help" role="status"></p>
       </form>
 
       <div class="control-grid">
@@ -121,7 +128,7 @@
 
     </aside>
 
-    <section class="graph-panel" aria-label="Declaration and module exploration panel">
+    <section id="explorer-content" class="graph-panel" tabindex="-1" aria-label="Declaration and module exploration panel">
       <div class="graph-toolbar" hidden>
         <span id="graph-status">Loading theorem catalog…</span>
       </div>

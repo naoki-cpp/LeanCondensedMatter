@@ -97,6 +97,7 @@
 }
 
 .module-direct-count {
+  font-variant-numeric: tabular-nums;
   min-width: 28px;
   padding: 4px 8px;
   color: var(--muted);
