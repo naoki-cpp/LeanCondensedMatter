@@ -24,6 +24,26 @@ noncomputable section
 
 variable {A : Type*} [NormedRing A] [NormedAlgebra ℂ A] [CompleteSpace A]
 
+/-- A solution of the interaction-picture differential equation with unit initial value
+satisfies the Volterra integral equation. This uses only the Banach-algebra structure and
+continuity of the interaction; the endpoint can have either sign. -/
+theorem eq_one_sub_integral_of_hasDerivAt {V U : ℝ → A}
+    (hV : Continuous V) (lam : ℂ) (hzero : U 0 = 1)
+    (hderiv : ∀ t : ℝ, HasDerivAt U (-(lam • (V t * U t))) t)
+    (τ : ℝ) :
+    U τ = 1 - lam • ∫ σ in (0 : ℝ)..τ, V σ * U σ := by
+  have hU : Continuous U :=
+    continuous_iff_continuousAt.2 fun t => (hderiv t).continuousAt
+  have hf : Continuous (fun σ : ℝ => -(lam • (V σ * U σ))) :=
+    (continuous_const.smul (hV.mul hU)).neg
+  have hFTC := intervalIntegral.integral_eq_sub_of_hasDerivAt
+    (fun σ _ => hderiv σ) (hf.intervalIntegrable 0 τ)
+  rw [hzero, intervalIntegral.integral_neg, intervalIntegral.integral_smul] at hFTC
+  calc
+    U τ = 1 + (U τ - 1) := by abel
+    _ = 1 + (-(lam • ∫ σ in (0 : ℝ)..τ, V σ * U σ)) := by rw [← hFTC]
+    _ = _ := by abel
+
 /-- The `n`th term in the Volterra integrand, including the external coupling. -/
 noncomputable def integrand (V : ℝ → A) (lam : ℂ) (n : ℕ) (σ : ℝ) : A :=
   lam • (V σ * term V lam σ n)

@@ -160,39 +160,12 @@ private theorem dysonExponentialCandidate_eq_one_sub_integral (energy : Config �
       1 - lam • ∫ σ in (0 : ℝ)..τ,
         continuousInteractionPicture energy V σ *
           dysonExponentialCandidate energy V σ lam := by
-  let U : ℝ → FiniteContinuousOperator Config :=
-    fun σ => dysonExponentialCandidate energy V σ lam
-  let f : ℝ → FiniteContinuousOperator Config :=
-    fun σ => -(lam • (continuousInteractionPicture energy V σ * U σ))
-  have hderiv : ∀ σ ∈ uIcc (0 : ℝ) τ, HasDerivAt U (f σ) σ := by
-    intro σ _
-    exact hasDerivAt_dysonExponentialCandidate_interactionPicture
-      energy V σ lam
-  have hUcont : Continuous U := by
-    exact continuous_iff_continuousAt.2 fun σ =>
-      (hasDerivAt_dysonExponentialCandidate_interactionPicture
-        energy V σ lam).continuousAt
-  have hf : Continuous f := by
-    have hlam : Continuous (fun _ : ℝ => lam) := continuous_const
-    exact (hlam.smul
-      ((continuous_continuousInteractionPicture energy V).mul hUcont)).neg
-  have hFTC : (∫ σ in (0 : ℝ)..τ, f σ) = U τ - U 0 :=
-    intervalIntegral.integral_eq_sub_of_hasDerivAt hderiv (hf.intervalIntegrable 0 τ)
-  have hzero : U 0 = 1 := by
-    simp [U, dysonExponentialCandidate]
-  rw [hzero] at hFTC
-  have hFTC' :
-      -(lam • ∫ σ in (0 : ℝ)..τ, continuousInteractionPicture energy V σ * U σ) =
-        U τ - 1 := by
-    simpa only [f, intervalIntegral.integral_neg, intervalIntegral.integral_smul] using hFTC
-  change U τ = 1 - lam • ∫ σ in (0 : ℝ)..τ,
-    continuousInteractionPicture energy V σ * U σ
-  calc
-    U τ = 1 + (U τ - 1) := by abel
-    _ = 1 + (-(lam • ∫ σ in (0 : ℝ)..τ,
-          continuousInteractionPicture energy V σ * U σ)) := by rw [← hFTC']
-    _ = 1 - lam • ∫ σ in (0 : ℝ)..τ,
-          continuousInteractionPicture energy V σ * U σ := by abel
+  exact Dyson.eq_one_sub_integral_of_hasDerivAt
+    (V := continuousInteractionPicture energy V)
+    (U := fun t => dysonExponentialCandidate energy V t lam)
+    (continuous_continuousInteractionPicture energy V) lam
+    (by simp [dysonExponentialCandidate])
+    (fun t => hasDerivAt_dysonExponentialCandidate_interactionPicture energy V t lam) τ
 
 /-- For nonnegative imaginary time, the interaction-picture Dyson evolution is the ordered product
 of the free and interacting operator exponentials. -/

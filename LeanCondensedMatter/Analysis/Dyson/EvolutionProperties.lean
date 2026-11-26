@@ -47,27 +47,10 @@ theorem continuous_constantExponential (K : A) (lam : ℂ) :
 theorem constantExponential_eq_one_sub_integral (K : A) (lam : ℂ) (τ : ℝ) :
     constantExponential K lam τ =
       1 - lam • ∫ σ in (0 : ℝ)..τ, K * constantExponential K lam σ := by
-  let U : ℝ → A := constantExponential K lam
-  let f : ℝ → A := fun σ => -(lam • (K * U σ))
-  have hderiv : ∀ σ ∈ uIcc (0 : ℝ) τ, HasDerivAt U (f σ) σ := by
-    intro σ _
-    exact hasDerivAt_constantExponential K lam σ
-  have hf : Continuous f := by
-    exact (continuous_const.smul
-      (continuous_const.mul (continuous_constantExponential K lam))).neg
-  have hFTC : (∫ σ in (0 : ℝ)..τ, f σ) = U τ - U 0 :=
-    intervalIntegral.integral_eq_sub_of_hasDerivAt hderiv (hf.intervalIntegrable 0 τ)
-  have hzero : U 0 = 1 := by
-    simp [U, constantExponential]
-  rw [hzero] at hFTC
-  have hFTC' :
-      -(lam • ∫ σ in (0 : ℝ)..τ, K * U σ) = U τ - 1 := by
-    simpa only [f, intervalIntegral.integral_neg, intervalIntegral.integral_smul] using hFTC
-  change U τ = 1 - lam • ∫ σ in (0 : ℝ)..τ, K * U σ
-  calc
-    U τ = 1 + (U τ - 1) := by abel
-    _ = 1 + (-(lam • ∫ σ in (0 : ℝ)..τ, K * U σ)) := by rw [← hFTC']
-    _ = 1 - lam • ∫ σ in (0 : ℝ)..τ, K * U σ := by abel
+  exact eq_one_sub_integral_of_hasDerivAt
+    (V := fun _ : ℝ => K) (U := constantExponential K lam)
+    continuous_const lam (by simp [constantExponential])
+    (hasDerivAt_constantExponential K lam) τ
 
 /-- On nonnegative time, the Dyson evolution for a constant interaction is the corresponding
 Banach-algebra exponential. -/
