@@ -36,13 +36,6 @@
       ]
     },
     {
-      "id": "generalizedCurrentTransportUmbrella",
-      "path": "LeanCondensedMatter/SecondQuantization/Fermionic/Transport.lean",
-      "modules": [
-        "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.SymmetrizedVelocityCurrent"
-      ]
-    },
-    {
       "id": "transportPublicUmbrella",
       "path": "LeanCondensedMatter/Transport.lean",
       "modules": [

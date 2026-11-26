@@ -57,5 +57,23 @@ theorem heisenbergEvolution_symmetrizedProduct
       (heisenbergScale ℏ) ⁅h, B⁆).symm
   exact congrArg₂ (· + ·) hleft hright
 
+/-- A linear observable realization preserves the additive decomposition of the
+one-body symmetric-product derivative. No multiplication or Lie-bracket preservation is needed. -/
+theorem map_heisenbergEvolution_symmetrizedProduct
+    {B : Type*} [AddCommGroup B] [Module ℂ B]
+    (L : 𝒜 →ₗ[ℂ] B) (ℏ : ℝ) (h A C : 𝒜) :
+    L (heisenbergEvolution ℏ h (LinearMap.symmetrizedProduct (K := ℂ) A C)) =
+      L (LinearMap.symmetrizedProduct (K := ℂ) (heisenbergEvolution ℏ h A) C) +
+        L (LinearMap.symmetrizedProduct (K := ℂ) A (heisenbergEvolution ℏ h C)) := by
+  rw [heisenbergEvolution_symmetrizedProduct, map_add]
+
+/-- A complex Lie algebra homomorphism intertwines the infinitesimal Heisenberg generators.
+Unlike the linear realization of a decomposition, this uses preservation of the Lie bracket. -/
+theorem map_heisenbergEvolution
+    {B : Type*} [Ring B] [Algebra ℂ B]
+    (L : 𝒜 →ₗ⁅ℂ⁆ B) (ℏ : ℝ) (h A : 𝒜) :
+    L (heisenbergEvolution ℏ h A) = heisenbergEvolution ℏ (L h) (L A) := by
+  simp only [heisenbergEvolution_apply, map_smul, LieHom.map_lie]
+
 end ConservationLaw
 end QuantumTheory

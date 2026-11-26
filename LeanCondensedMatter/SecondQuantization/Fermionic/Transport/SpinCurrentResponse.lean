@@ -1,5 +1,5 @@
 import LeanCondensedMatter.QuantumTheory.SpinfulLattice
-import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.SymmetrizedVelocityCurrent
+import LeanCondensedMatter.QuantumTheory.ConservationLaw.HeisenbergEvolution
 import LeanCondensedMatter.QuantumTheory.SpinHalf
 import LeanCondensedMatter.QuantumTheory.LinearResponse.Response.Channel
 import LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.GeometricPeierls
@@ -66,7 +66,9 @@ noncomputable def boundedSpinCurrentLinear
     QuantumTheory.SpinHalf.SpinSpace →ₗ[ℝ]
       (FiniteLatticeHilbertFock (SpinfulSite Site) →L[ℂ]
         FiniteLatticeHilbertFock (SpinfulSite Site)) :=
-  ((boundedSymmetrizedVelocityCurrentLinear velocity).restrictScalars ℝ).comp
+  (((boundedOneBodyOperator (Site := SpinfulSite Site)).toLinearMap.comp
+      (LinearMap.symmetrizedProductBilinear (K := ℂ)
+        ((SpinfulSite Site →₀ ℂ) →ₗ[ℂ] (SpinfulSite Site →₀ ℂ)) velocity)).restrictScalars ℝ).comp
     (spinOneBodyLinear spinScale)
 
 @[simp]
@@ -74,7 +76,8 @@ theorem boundedSpinCurrentLinear_apply
     (velocity : (SpinfulSite Site →₀ ℂ) →ₗ[ℂ] (SpinfulSite Site →₀ ℂ))
     (spinScale : ℝ) (spinComponent : QuantumTheory.SpinHalf.SpinSpace) :
     boundedSpinCurrentLinear velocity spinScale spinComponent =
-      boundedSymmetrizedVelocityCurrentLinear velocity (spinOneBodyLinear spinScale spinComponent) :=
+      boundedOneBodyOperator
+        (LinearMap.symmetrizedProduct (K := ℂ) velocity (spinOneBodyLinear spinScale spinComponent)) :=
   rfl
 
 /-- Neutral fixed-observable response channel for a finite spin current selected by a spin-space component vector and driven by an electric bond-current source. -/
@@ -148,11 +151,9 @@ theorem boundedSpinDisplacementDirectionalResponseChannel_peierls
         (hbar : ℂ) (q : ℂ) K A, boundedOneBodyOperator D⁆)
       (((1 : ℝ) : ℂ) • (c • ⁅-B, boundedOneBodyOperator D⁆)) 0
   constructor
-  · rw [boundedDirectionalPeierlsHamiltonian_zero,
-      QuantumTheory.ConservationLaw.heisenbergEvolution_apply]
-    change c • ⁅boundedOneBodyOperator K.operator, boundedOneBodyOperator D⁆ =
-      boundedOneBodyOperator (c • ⁅K.operator, D⁆)
-    rw [map_smul, LieHom.map_lie]
+  · rw [boundedDirectionalPeierlsHamiltonian_zero]
+    exact (QuantumTheory.ConservationLaw.map_heisenbergEvolution
+      (boundedOneBodyOperator (Site := SpinfulSite Site)) hbar K.operator D).symm
   · rw [Complex.ofReal_one, one_smul]
     exact hasAlgebraicDerivAt_boundedDirectionalPeierlsHamiltonian_commutator_zero
       G source (hbar : ℂ) (q : ℂ) K c (boundedOneBodyOperator D)
@@ -219,14 +220,18 @@ theorem boundedSpinDisplacementDirectionalResponseChannel_retardedKernel
   let torque := QuantumTheory.ConservationLaw.heisenbergEvolution hbar K.operator S
   let B := boundedDirectionalCurrent (spinfulGeometry geometry) source
     (hbar : ℂ) (q : ℂ) K
-  let J := boundedSymmetrizedVelocityCurrentLinear v S
-  let T := boundedSymmetrizedVelocityCurrentLinear X torque
+  let J := boundedOneBodyOperator (LinearMap.symmetrizedProduct (K := ℂ) v S)
+  let T := boundedOneBodyOperator (LinearMap.symmetrizedProduct (K := ℂ) X torque)
   change retardedSusceptibility U hbar expectation
     (boundedOneBodyOperator (QuantumTheory.ConservationLaw.heisenbergEvolution hbar K.operator
       (LinearMap.symmetrizedProduct (K := ℂ) X S))) B t s =
     retardedSusceptibility U hbar expectation J B t s +
       retardedSusceptibility U hbar expectation T B t s
-  rw [boundedHeisenbergSymmetrizedProduct_eq]
+  have hsplit : boundedOneBodyOperator (QuantumTheory.ConservationLaw.heisenbergEvolution
+      hbar K.operator (LinearMap.symmetrizedProduct (K := ℂ) X S)) = J + T :=
+    QuantumTheory.ConservationLaw.map_heisenbergEvolution_symmetrizedProduct
+      (boundedOneBodyOperator (Site := SpinfulSite Site)).toLinearMap hbar K.operator X S
+  rw [hsplit]
   exact (retardedSusceptibilityMeasuredLinearMap U hbar expectation B t s).map_add J T
 
 end

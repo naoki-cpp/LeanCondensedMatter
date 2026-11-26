@@ -372,11 +372,12 @@ spacing and ℏ, though Hermiticity itself requires no positivity.
 
 The common `QuantumTheory.ConservationLaw.heisenbergEvolution_symmetrizedProduct`
 is obtained from the existing symmetric-product commutator rule.
-`Fermionic.Transport.boundedHeisenbergSymmetrizedProduct_eq` lifts it through
-the existing bounded one-body and symmetrized-current maps, forming the
+`QuantumTheory.ConservationLaw.map_heisenbergEvolution_symmetrizedProduct` lifts it through
+any linear observable realization (including the bounded one-body lift), forming the
 symmetric products **before** second quantization. The earlier momentum
 spin-displacement proofs consume these shared results rather than repeat
-their algebra.
+their algebra. The separate `map_heisenbergEvolution` theorem uses a Lie homomorphism
+when the generator itself is transported.
 
 `Models.RashbaExchange.SpinDisplacementBridge.realSpaceRashbaSpinDisplacement_fock_decomposition`
 now specializes this to the actual `realSpaceRashbaHopping` Hamiltonian and
