@@ -1,5 +1,6 @@
 import LeanCondensedMatter.Combinatorics.PerfectPairing.PairEndpoints
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Crossing
+import Mathlib.Algebra.BigOperators.ModEq
 
 set_option linter.style.header false
 
@@ -65,5 +66,70 @@ theorem pairEndpointInversionCount_mod_two_eq_crossesIndicator {α : Type*} [Lin
     · have had : ¬ a < d := not_lt_of_gt hda
       have hdb : d < b := hda.trans hleft
       simp [pairEndpointInversionCount, Crosses, *]
+
+/-- Geometric crossings between disjoint families of normalized pairs have the parity of the
+inversions between their endpoint positions. Each local pair may be presented in either endpoint
+order: the inversion sum counts all four endpoint comparisons independently of that choice. -/
+theorem PairingOn.sum_geometricCrossings_mod_two_eq_positionInversions
+    {α A B L R : Type*} [Fintype α] [LinearOrder α]
+    [Fintype A] [Fintype B] [Fintype L] [Fintype R]
+    (pairing : PairingOn α) (left : A → pairing.NormalizedPair)
+    (right : B → pairing.NormalizedPair) (hdisjoint : ∀ p q, left p ≠ right q)
+    (leftEquiv : A × Fin 2 ≃ L) (rightEquiv : B × Fin 2 ≃ R)
+    (leftPos : L → α) (rightPos : R → α)
+    (hleft : ∀ p, (left p).1 =
+        (leftPos (leftEquiv (p, 0)), leftPos (leftEquiv (p, 1))) ∨
+      (left p).1 = (leftPos (leftEquiv (p, 1)), leftPos (leftEquiv (p, 0))))
+    (hright : ∀ q, (right q).1 =
+        (rightPos (rightEquiv (q, 0)), rightPos (rightEquiv (q, 1))) ∨
+      (right q).1 = (rightPos (rightEquiv (q, 1)), rightPos (rightEquiv (q, 0)))) :
+    (∑ x : A × B, if Crosses (left x.1).1 (right x.2).1 ∨
+        Crosses (right x.2).1 (left x.1).1 then 1 else 0) % 2 =
+      (∑ p : L, ∑ q : R, if rightPos q < leftPos p then 1 else 0) % 2 := by
+  classical
+  have hparity :
+      (∑ x : A × B, if Crosses (left x.1).1 (right x.2).1 ∨
+        Crosses (right x.2).1 (left x.1).1 then 1 else 0) % 2 =
+      (∑ x : A × B, pairEndpointInversionCount (left x.1).1 (right x.2).1) % 2 := by
+    symm
+    simpa [Nat.ModEq] using
+      (Nat.ModEq.sum
+        (n := 2)
+        (s := (Finset.univ : Finset (A × B)))
+        (f := fun x => pairEndpointInversionCount (left x.1).1 (right x.2).1)
+        (g := fun x =>
+          if Crosses (left x.1).1 (right x.2).1 ∨
+            Crosses (right x.2).1 (left x.1).1 then 1 else 0)
+        (fun x _ => by
+          have hEnds := pairing.normalizedPair_endpoints_ne_of_ne
+            (left x.1) (right x.2) (hdisjoint x.1 x.2)
+          exact (pairEndpointInversionCount_mod_two_eq_crossesIndicator
+            (left x.1).1 (right x.2).1
+            (pairing.pairs_normalized (left x.1).2)
+            (pairing.pairs_normalized (right x.2).2)
+            hEnds.1 hEnds.2.1 hEnds.2.2.1 hEnds.2.2.2).trans
+              (by split_ifs <;> decide)))
+  have hsum :
+      (∑ x : A × B, pairEndpointInversionCount (left x.1).1 (right x.2).1) =
+        ∑ x : (A × B) × (Fin 2 × Fin 2),
+          if rightPos (rightEquiv (x.1.2, x.2.2)) <
+            leftPos (leftEquiv (x.1.1, x.2.1)) then 1 else 0 := by
+    simp only [Fintype.sum_prod_type]
+    refine Finset.sum_congr rfl fun p _ => Finset.sum_congr rfl fun q _ => ?_
+    rcases hleft p with hp | hp <;> rcases hright q with hq | hq
+    all_goals
+      simp only [hp, hq, Fin.sum_univ_two, pairEndpointInversionCount]
+      ac_rfl
+  have hreindex :
+      (∑ x : (A × B) × (Fin 2 × Fin 2),
+        if rightPos (rightEquiv (x.1.2, x.2.2)) <
+          leftPos (leftEquiv (x.1.1, x.2.1)) then 1 else 0) =
+        ∑ x : L × R, if rightPos x.2 < leftPos x.1 then 1 else 0 := by
+    refine Fintype.sum_equiv
+      ((Equiv.prodProdProdComm _ _ _ _).trans (Equiv.prodCongr leftEquiv rightEquiv))
+      _ _ ?_
+    intro x
+    rfl
+  rw [hparity, hsum, hreindex, Fintype.sum_prod_type]
 
 end Combinatorics

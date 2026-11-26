@@ -76,54 +76,12 @@ theorem PairingOn.componentGeometricCrossingCount_mod_two_eq_endpointInversionCo
     (B C : ι) (hBC : B ≠ C) :
     pairing.componentGeometricCrossingCount e B C % 2 =
       (∑ p : P B, ∑ q : P C, if position C q < position B p then 1 else 0) % 2 := by
-  classical
-  have hparity :
-      pairing.componentGeometricCrossingCount e B C % 2 =
-        (∑ x : F B × F C,
-          pairEndpointInversionCount (e ⟨B, x.1⟩).1 (e ⟨C, x.2⟩).1) % 2 := by
-    rw [PairingOn.componentGeometricCrossingCount]
-    symm
-    simpa [Nat.ModEq] using
-      (Nat.ModEq.sum
-        (n := 2)
-        (s := (Finset.univ : Finset (F B × F C)))
-        (f := fun x => pairEndpointInversionCount (e ⟨B, x.1⟩).1 (e ⟨C, x.2⟩).1)
-        (g := fun x =>
-          if Crosses (e ⟨B, x.1⟩).1 (e ⟨C, x.2⟩).1 ∨
-            Crosses (e ⟨C, x.2⟩).1 (e ⟨B, x.1⟩).1 then 1 else 0)
-        (fun x _ => by
-          have hPairNe : e ⟨B, x.1⟩ ≠ e ⟨C, x.2⟩ :=
-            fun h => hBC (congrArg Sigma.fst (e.injective h))
-          have hEnds := pairing.normalizedPair_endpoints_ne_of_ne
-            (e ⟨B, x.1⟩) (e ⟨C, x.2⟩) hPairNe
-          exact (pairEndpointInversionCount_mod_two_eq_crossesIndicator
-            (e ⟨B, x.1⟩).1 (e ⟨C, x.2⟩).1
-            (pairing.pairs_normalized (e ⟨B, x.1⟩).2)
-            (pairing.pairs_normalized (e ⟨C, x.2⟩).2)
-            hEnds.1 hEnds.2.1 hEnds.2.2.1 hEnds.2.2.2).trans
-              (by split_ifs <;> decide)))
-  have hsum :
-      (∑ x : F B × F C,
-        pairEndpointInversionCount (e ⟨B, x.1⟩).1 (e ⟨C, x.2⟩).1) =
-        ∑ x : (F B × F C) × (Fin 2 × Fin 2),
-          if position C (endpointEquiv C (x.1.2, x.2.2)) <
-            position B (endpointEquiv B (x.1.1, x.2.1))
-          then 1 else 0 := by
-    simp only [Fintype.sum_prod_type, pairEndpointInversionCount_eq_sum, hposition]
-  have hreindex :
-      (∑ x : (F B × F C) × (Fin 2 × Fin 2),
-        if position C (endpointEquiv C (x.1.2, x.2.2)) <
-          position B (endpointEquiv B (x.1.1, x.2.1))
-        then 1 else 0) =
-        ∑ x : P B × P C,
-          if position C x.2 < position B x.1 then 1 else 0 := by
-    refine Fintype.sum_equiv
-      ((Equiv.prodProdProdComm _ _ _ _).trans
-        (Equiv.prodCongr (endpointEquiv B) (endpointEquiv C)))
-      _ _ ?_
-    intro x
-    rfl
-  rw [hparity, hsum, hreindex, Fintype.sum_prod_type]
+  exact pairing.sum_geometricCrossings_mod_two_eq_positionInversions
+    (fun p => e ⟨B, p⟩) (fun q => e ⟨C, q⟩)
+    (fun _ _ h => hBC (congrArg Sigma.fst (e.injective h)))
+    (endpointEquiv B) (endpointEquiv C) (position B) (position C)
+    (fun p => Or.inl (Prod.ext (hposition B p 0).symm (hposition B p 1).symm))
+    (fun q => Or.inl (Prod.ext (hposition C q 0).symm (hposition C q 1).symm))
 
 /-- A geometric crossing count between distinct components is even when one component's
 positions form even-sized fibers and their order relative to the other component is constant

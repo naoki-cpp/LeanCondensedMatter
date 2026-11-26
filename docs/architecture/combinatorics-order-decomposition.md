@@ -56,6 +56,10 @@ while its integrand is attached to the ambient `SlotShuffle`.
 
 ## Component crossing parity and family shuffles
 
+`PerfectPairing.CrossingParity` owns the common parity identity for two disjoint families of
+normalized pairs, allowing either local endpoint orientation. Binary splitting and component
+crossing counts use this same identity to reindex endpoint inversions into position inversions.
+
 `PerfectPairing.ComponentCrossing` owns the relation between a pairing's residual inter-component
 crossing parity and a compatible family shuffle's ordered block-inversion parity.
 `Pairing.interComponentCrossingCount_mod_two_eq_orderedBlockInversionCount` accepts the pair
