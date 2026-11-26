@@ -1,0 +1,134 @@
+name: Lean native diagnostics
+
+on:
+  workflow_dispatch:
+    inputs:
+      module:
+        description: "Module-system project module (entire import closure must use modules)"
+        type: string
+        default: LeanCondensedMatter.Combinatorics.FiniteSumModEq
+  pull_request:
+    paths:
+      - '.github/workflows/native_lean_diagnostics.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: native-lean-diagnostics-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  diagnostics:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      TARGET_MODULE: ${{ inputs.module || 'LeanCondensedMatter.Combinatorics.FiniteSumModEq' }}
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          persist-credentials: false
+
+      - name: Validate target
+        shell: bash
+        run: |
+          set -euo pipefail
+          [[ "$TARGET_MODULE" =~ ^LeanCondensedMatter(\.[A-Za-z_][A-Za-z0-9_]*)+$ ]]
+          source_file="${TARGET_MODULE//./\/}.lean"
+          test -f "$source_file"
+          grep -Eq '^module([[:space:]]|$)' "$source_file"
+          echo "TARGET_FILE=$source_file" >> "$GITHUB_ENV"
+          mkdir -p native-diagnostics
+          printf 'Module: %s\n' "$TARGET_MODULE" > native-diagnostics/target.txt
+
+      - name: Enable resilient elan downloads
+        run: bash .github/scripts/enable_curl_retry.sh
+
+      - name: Set up Lean and dependency cache
+        uses: leanprover/lean-action@50fcf42d2e460296f1a34b402e990d1b24f8b596 # v1
+        with:
+          build: false
+          test: false
+          lint: false
+          use-github-cache: false
+          use-mathlib-cache: auto
+
+      - name: Build selected module and dependencies
+        shell: bash
+        run: |
+          set -euo pipefail
+          lean --version | tee native-diagnostics/toolchain.txt
+          lake build "$TARGET_MODULE" 2>&1 | tee native-diagnostics/build.log
+
+      - name: Analyze imports without modifying sources
+        id: shake
+        timeout-minutes: 5
+        shell: bash
+        run: |
+          set -euo pipefail
+          # Lake's default freshness check targets the whole package, not the
+          # selected module. The targeted build above supplies fresh oleans.
+          rc=0
+          lake shake --force --keep-public --explain "$TARGET_MODULE" > native-diagnostics/shake.log 2>&1 || rc=$?
+          cat native-diagnostics/shake.log
+          echo "shake_exit=$rc" >> "$GITHUB_OUTPUT"
+          if [ "$rc" = 0 ]; then
+            echo 'No import edits suggested.' >> "$GITHUB_STEP_SUMMARY"
+          elif [ "$rc" = 1 ] && grep -Eq '^  (add|remove) ' native-diagnostics/shake.log; then
+            echo 'Import edits suggested; review the artifact. No changes applied.' >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo 'Import analysis failed; see the log.' >> "$GITHUB_STEP_SUMMARY"
+            exit 1
+          fi
+          git diff --exit-code
+
+      - name: Record elaboration time (Firefox Profiler)
+        if: ${{ !cancelled() && steps.shake.outcome != 'skipped' }}
+        id: time
+        timeout-minutes: 5
+        shell: bash
+        run: |
+          set -euo pipefail
+          lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -DElab.async=false \
+            -Dtrace.profiler=true -Dtrace.profiler.threshold=10 \
+            -Dtrace.profiler.output=native-diagnostics/time.json "$TARGET_FILE" \
+            2>&1 | tee native-diagnostics/time.log
+          jq -e '(.threads | type == "array" and length > 0)' native-diagnostics/time.json >/dev/null
+
+      - name: Record heartbeat traces (text)
+        if: ${{ !cancelled() && steps.shake.outcome != 'skipped' }}
+        id: heartbeats
+        timeout-minutes: 5
+        shell: bash
+        run: |
+          set -euo pipefail
+          # Raw counter threshold: 100000 internal ticks = 100 user heartbeats.
+          # Do not export heartbeat counters as a time-based Firefox profile.
+          lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -DElab.async=false \
+            -Dtrace.profiler=true -Dtrace.profiler.useHeartbeats=true \
+            -Dtrace.profiler.threshold=100000 "$TARGET_FILE" \
+            2>&1 | tee native-diagnostics/heartbeats.log
+
+      - name: Summarize diagnostics
+        if: always()
+        env:
+          SHAKE_EXIT: ${{ steps.shake.outputs.shake_exit }}
+          TIME_STATUS: ${{ steps.time.outcome }}
+          HEARTBEAT_STATUS: ${{ steps.heartbeats.outcome }}
+        shell: bash
+        run: |
+          {
+            echo '## Native Lean diagnostics'
+            printf 'Module: `%s`\n\n' "$TARGET_MODULE"
+            printf 'Shake exit: %s; time profile: %s; heartbeat trace: %s\n\n' "${SHAKE_EXIT:-not run}" "$TIME_STATUS" "$HEARTBEAT_STATUS"
+            echo 'Review shake.log for import suggestions or tool errors. Open time.json in Firefox Profiler; heartbeats.log contains a separate textual trace. Profiles cover only the selected file, with asynchronous elaboration disabled, not a full-project declaration ranking.'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload native diagnostics
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: native-lean-diagnostics
+          path: native-diagnostics/
+          if-no-files-found: warn
+          retention-days: 7
