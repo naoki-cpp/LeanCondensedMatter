@@ -49,8 +49,8 @@ noncomputable def ExternalInsertionBlockLayout.interactionBlockOwnerSlotCongrEqu
   classical
   refine e.subtypeEquiv fun v => ?_
   simp only [ExternalInsertionBlockLayout.interactionBlock, Finset.mem_filter,
-    Finset.mem_univ, true_and, ExternalInsertionBlockLayout.ownerSlotCongr_interactionOwner,
-    iff_self]
+    Finset.mem_univ, true_and, ExternalInsertionBlockLayout.ownerSlotCongr_interactionOwner]
+  exact Iff.rfl
 
 /-- Relabeling interaction vertices leaves every external source leg at
 its exact original external insertion index. -/
