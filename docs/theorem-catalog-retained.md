@@ -265,7 +265,7 @@ using a zero-consumer signal as grounds for changing its retention.
 - `QuantumTheory.bandStateOccupation_zeroTemperature_eq_one_of_isFilledBand` — canonical
   physical endpoint that every state of a filled band has unit zero-temperature occupation, paired
   with the retained empty-band theorem.
-- `SecondQuantization.Common.TwoPointDiagram.legInComponent_iff_vertex_mem` — semantic normalization
+- `SecondQuantization.Common.ExternalInsertionDiagram.legInComponent_iff_vertex_mem` — semantic normalization
   rule for the named flattened-leg component predicate, identifying it with membership of the
   incident vertex in the corresponding component part.
 - `SecondQuantization.Common.interactionPicture_zero` — canonical `[simp]` normalization that the named
@@ -514,7 +514,7 @@ using a zero-consumer signal as grounds for changing its retention.
 - `Combinatorics.Pairing.isSplit_inr` — intrinsic closure of the right part of a split pairing, derived from the left-closure definition and the involutive partner map; retain this symmetric mathematical consequence as an independently usable split-pairing fact.
 - `Combinatorics.singleCycleContribution_univ_eq_sum_isCycleOn` — intrinsic finite-permutation formula identifying the connected contribution on the full index set with the sum over full cycles. Retain the combinatorial identity independently of its current private assignment-to-trace bridge.
 - `QuantumTheory.Transport.Topology.PeriodicBlochProjector.berryCurvatureComplex_isSelfAdjoint` — geometric realness statement for the gauge-invariant complex projector-curvature trace, using self-adjointness and finite trace cyclicity. Its private scalar-wrapper consumer does not make the mathematically meaningful reality theorem proof-only plumbing.
-- `SecondQuantization.Common.TwoPointDiagram.slotCongr_partner` — canonical transport compatibility for a two-point diagram's paired legs under interaction-slot relabeling. Retain as a reusable geometric law rather than restricting it to the private external-piece compatibility proof.
+- `SecondQuantization.Common.TwoPointDiagram.slotCongr_partner` — canonical transport compatibility for a two-point diagram's paired legs under interaction-slot relabeling. Retain as a reusable geometric law of the distinct two-point leg coordinates.
 - `SecondQuantization.Common.QuarticDiagram.legOfVertexLocal_vertexOfLeg_localLegOfLeg` — canonical reconstruction identity for flattened quartic legs from vertex and local-leg coordinates. The simple proof delegates to the quartic-leg equivalence, but the named equation exposes the coordinate reconstruction law used by component restriction and reassembly.
 - `QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProductZeroBroadeningBoundary_ne_zero` — reusable fixed-cutoff RA boundary nonvanishing criterion under explicit metallic, disorder, cutoff, and renormalization assumptions. Its current private limit-proof consumer needs precisely this denominator condition.
 - `QuantumTheory.Models.MassiveDirac.star_finiteCutoffContinuumBornDysonDenominatorZeroBroadeningBoundary` — canonical complex-conjugation symmetry exchanging retarded and advanced Born–Dyson denominator boundaries; this model-level spectral-side identity is meaningful independently of its single private algebraic consumer.
