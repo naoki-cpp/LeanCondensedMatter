@@ -1,5 +1,6 @@
-import Mathlib.Data.Complex.Basic
-import Mathlib.Algebra.BigOperators.Module
+import Mathlib.Basic.Complex.BigOperators
+import Mathlib.Algebra.Module.BigOperators
+import Mathlib.Algebra.Module.Pi
 import Mathlib.LinearAlgebra.BilinearMap
 import Mathlib.Tactic.Abel
 
