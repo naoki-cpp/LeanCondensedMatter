@@ -163,31 +163,32 @@ private theorem cfcAbs_apply_eigenvector
   simpa only [Real.norm_eq_abs] using
     (cfc_apply_eigenvector (T := T) hself hv (f := fun x : ℝ => ‖x‖) continuous_norm)
 
-/-- Extend the canonical nonzero-eigenvector family of a compact self-adjoint operator to a
-Hilbert basis on which the diagonal of `|T|` is `|λ|` on spectral vectors and zero on the
-additional basis vectors lying in the kernel. -/
-private theorem exists_abs_diagonal_hilbertBasis
+/-- A Hilbert basis extending the nonzero eigenvectors identifies the full absolute diagonal
+series with the absolute eigenvalue series, including their sum when it exists. -/
+private theorem exists_abs_diagonal_hilbertBasis_hasSum_iff
     (hcompact : IsCompactOperator T) (hself : IsSelfAdjoint T) :
-    ∃ (u : Set H) (b : HilbertBasis u ℂ H) (j : EigenvectorIndex T → u),
-      Function.Injective j ∧
-      (∀ a, diagonalExpectationValue (CFC.abs T) (CFC.abs_nonneg T).isSelfAdjoint
-        (b (j a)) = |a.1.1|) ∧
-      (∀ x, x ∉ Set.range j →
-        diagonalExpectationValue (CFC.abs T) (CFC.abs_nonneg T).isSelfAdjoint (b x) = 0) := by
+    ∃ (u : Set H) (b : HilbertBasis u ℂ H), ∀ c : ℝ,
+      HasSum (fun i => diagonalExpectationValue (CFC.abs T)
+        (CFC.abs_nonneg T).isSelfAdjoint (b i)) c ↔
+      HasSum (fun a : EigenvectorIndex T => |a.1.1|) c := by
   classical
   let hsym : T.IsSymmetric := hself.isSymmetric
   let e : EigenvectorIndex T → H := eigenvectorFamily hcompact
   have he : Orthonormal ℂ e := by
     simpa [e] using orthonormal_eigenvectorFamily hcompact hsym
   obtain ⟨u, b, j, hj, hb_j⟩ := he.exists_hilbertBasis_extension_injective
-  refine ⟨u, b, j, hj, ?_, ?_⟩
-  · intro a
+  let g : u → ℝ := fun i =>
+    diagonalExpectationValue (CFC.abs T) (CFC.abs_nonneg T).isSelfAdjoint (b i)
+  have hpoint (a : EigenvectorIndex T) : g (j a) = |a.1.1| := by
+    change diagonalExpectationValue (CFC.abs T) (CFC.abs_nonneg T).isSelfAdjoint
+      (b (j a)) = |a.1.1|
     apply Complex.ofReal_injective
     rw [coe_diagonalExpectationValue_right, hb_j,
       cfcAbs_apply_eigenvector hself (apply_eigenvectorFamily hcompact a),
       inner_smul_right_eq_smul, inner_self_eq_norm_sq_to_K, he.1 a]
     simp
-  · intro x hx
+  have hzero (x : u) (hx : x ∉ Set.range j) : g x = 0 := by
+    change diagonalExpectationValue (CFC.abs T) (CFC.abs_nonneg T).isSelfAdjoint (b x) = 0
     have hxker := hilbertBasis_apply_eq_zero_of_not_mem_eigenvector_range
       hcompact hsym b j (fun a => by simpa [e] using hb_j a) x hx
     have habs_zero : CFC.abs T (b x) = 0 := by
@@ -196,36 +197,28 @@ private theorem exists_abs_diagonal_hilbertBasis
     apply Complex.ofReal_injective
     rw [coe_diagonalExpectationValue_right, habs_zero]
     simp
+  refine ⟨u, b, fun c => ?_⟩
+  change HasSum g c ↔ HasSum (fun a : EigenvectorIndex T => |a.1.1|) c
+  constructor
+  · intro hfull
+    have hrestricted : HasSum (g ∘ j) c := (hj.hasSum_iff hzero).mpr hfull
+    exact hrestricted.congr_fun fun a => (hpoint a).symm
+  · intro hweights
+    have hrestricted : HasSum (g ∘ j) c := HasSum.congr_fun hweights hpoint
+    exact (hj.hasSum_iff hzero).mp hrestricted
 
 /-- On compact self-adjoint operators, general trace-class membership is exactly absolute
 summability of the nonzero real eigenvalues with multiplicity. -/
 theorem isTraceClass_iff_hasSummableRealEigenvalues
     (hcompact : IsCompactOperator T) (hself : IsSelfAdjoint T) :
     IsTraceClass T ↔ HasSummableRealEigenvalues T := by
-  classical
-  obtain ⟨u, b, j, hj, hpoint, hzero⟩ :=
-    exists_abs_diagonal_hilbertBasis (T := T) hcompact hself
-  let g : u → ℝ := fun i =>
-    diagonalExpectationValue (CFC.abs T) (CFC.abs_nonneg T).isSelfAdjoint (b i)
-  have hg_point (a : EigenvectorIndex T) : g (j a) = |a.1.1| := by
-    simpa [g] using hpoint a
-  have hg_zero (x : u) (hx : x ∉ Set.range j) : g x = 0 := by
-    simpa [g] using hzero x hx
+  obtain ⟨u, b, hb⟩ := exists_abs_diagonal_hilbertBasis_hasSum_iff hcompact hself
   constructor
   · intro htrace
-    rw [HasSummableRealEigenvalues]
-    have hg : HasSum g htrace.traceNorm := htrace.hasSum_abs_diagonalExpectationValue b
-    exact (hg.summable.comp_injective hj).congr hg_point
+    exact ((hb _).mp (htrace.hasSum_abs_diagonalExpectationValue b)).summable
   · intro hspec
     have hweights : Summable (fun a : EigenvectorIndex T => |a.1.1|) := hspec
-    have hrestricted :
-        HasSum (g ∘ j) (∑' a : EigenvectorIndex T, |a.1.1|) := by
-      change HasSum (fun a => g (j a)) _
-      exact HasSum.congr_fun hweights.hasSum hg_point
-    have hfull : HasSum g (∑' a : EigenvectorIndex T, |a.1.1|) :=
-      (hj.hasSum_iff hg_zero).mp hrestricted
-    apply (isTraceClass_iff_isTraceClassWrt b T).mpr
-    simpa [IsTraceClassWrt, g] using hfull.summable
+    exact (isTraceClass_iff_isTraceClassWrt b T).mpr ((hb _).mpr hweights.hasSum).summable
 
 /-- A self-adjoint trace-class operator has absolutely summable nonzero real eigenvalues. -/
 theorem IsTraceClass.hasSummableRealEigenvalues
@@ -251,18 +244,8 @@ with multiplicity. -/
 theorem IsTraceClass.traceNorm_eq_tsum_abs_eigenvalues
     (hT : IsTraceClass T) (hself : IsSelfAdjoint T) :
     hT.traceNorm = ∑' a : EigenvectorIndex T, |a.1.1| := by
-  classical
-  obtain ⟨u, b, j, hj, hpoint, hzero⟩ :=
-    exists_abs_diagonal_hilbertBasis (T := T) hT.isCompact hself
-  let g : u → ℝ := fun i =>
-    diagonalExpectationValue (CFC.abs T) (CFC.abs_nonneg T).isSelfAdjoint (b i)
-  have hg_point (a : EigenvectorIndex T) : g (j a) = |a.1.1| := by
-    simpa [g] using hpoint a
-  have hg_zero (x : u) (hx : x ∉ Set.range j) : g x = 0 := by
-    simpa [g] using hzero x hx
-  have hg : HasSum g hT.traceNorm := hT.hasSum_abs_diagonalExpectationValue b
-  have hrestricted : HasSum (g ∘ j) hT.traceNorm := (hj.hasSum_iff hg_zero).mpr hg
-  exact (hrestricted.congr_fun fun a => (hg_point a).symm).tsum_eq.symm
+  obtain ⟨u, b, hb⟩ := exists_abs_diagonal_hilbertBasis_hasSum_iff hT.isCompact hself
+  exact ((hb _).mp (hT.hasSum_abs_diagonalExpectationValue b)).tsum_eq.symm
 
 namespace SpectralTraceClass
 
