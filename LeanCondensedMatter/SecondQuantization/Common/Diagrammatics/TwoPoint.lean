@@ -9,10 +9,8 @@ import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.IntervalPairing
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.IntervalConnectivity
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalComponents
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Components.ComponentRestriction
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.External.ExternalConnectivity
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.SlotCongr
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentPosition
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedOrderPairing
 
 set_option linter.style.header false
@@ -33,10 +31,8 @@ The subpackages separate the main combinatorial responsibilities:
 
 * `Core` defines the diagram syntax, flattened leg enumeration, vertex graph, and the semantic
   predicates for vacuum-free and externally connected diagrams.
-* `Components` restricts connected components; the canonical external component and vacuum
-  classification use the shared graph-level component theory.
 * `External` characterizes the connectivity of the canonical external component.
-  All external/vacuum slot splitting, reassembly and component standardization now belong to
+  Component restriction, external/vacuum slot splitting, reassembly and standardization belong to
   the general external-insertion theory.
 * `Mixed` transports the fixed pairing to mixed imaginary-time order. Component-local normalized
   pair decomposition, exchange signs and chamber locality are owned by general external insertions.
