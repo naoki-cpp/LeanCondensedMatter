@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Analysis.ConservationLaw.CurrentRepresentation
+import LeanCondensedMatter.Analysis.ConservationLaw.FluxBalanceLaw
 import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Continuity.Schwartz1D
 import Mathlib.Tactic.Linarith
 import Mathlib.Tactic.Module

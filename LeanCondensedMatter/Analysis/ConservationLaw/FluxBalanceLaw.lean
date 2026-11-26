@@ -1,46 +1,29 @@
+import Mathlib.Algebra.Module.LinearMap.Defs
 import Mathlib.Logic.Function.Basic
 import Mathlib.Tactic.Module
 
 set_option linter.style.header false
 
 /-!
-# Flux balance laws independent of the choice of current
+# Flux balance laws and current representations
 
-This module is the semantic owner of local balance identities without a chosen current extension. It
-separates the transport content of a local balance law from a chosen extension of that transport to
-all one-form-like test data.
+A representation-independent local balance is an equality of linear maps
+`δ.comp Q = Φ + S`, with `Function.FactorsThrough Φ d`. Here `d : Test →ₗ[𝕜] OneForm`
+is the differential test map; no full current extension is part of the balance data.
 
-For
+A differential current is a chosen linear map `J` satisfying `Φ = J.comp d`.
+A local current-density representation additionally chooses a density `j` with
+`Φ = (pairing j).comp d`, where the bilinear pairing is supplied by the model.
+Both representations are subtype fibers, not alternative balance-law structures.
+Factorization alone makes no claim of locality or uniqueness.
 
-```text
-d : Test → OneForm
-Q : Test → Obs
-δ : Obs → Obs
-```
+Currents agreeing on exact differential data may differ by an invisible extension
+`K.comp d = 0`, in the kernel of `(LinearMap.llcomp 𝕜 Test OneForm Obs).flip d`.
+The existing `LinearMap.sub_comp` and `LinearMap.sub_mem_ker_iff` express this ambiguity;
+injectivity of the paired differential-test map gives density uniqueness.
 
-the differential-dependent transport/flux is a linear functional
-
-```text
-Φ : Test → Obs
-```
-
-that depends only on `d f`.  A local balance law is then
-
-```text
-δ (Q f) = Φ f + S f.
-```
-
-A full current functional `J : OneForm → Obs` is downstream representation data satisfying
-`Φ f = J (d f)`.  This distinction matters because the balance equation determines only the flux
-on exact differential data; an extension of that flux away from `range d` need not be unique.
-
-A chosen full current is supplied independently by `DifferentialCurrentRepresentation d Φ`;
-no second balance-law structure is needed. `FluxBalanceLaw` records the representation-independent
-transport and source split and owns the generic evolution, source-free, uniqueness, scaling,
-and current/source redistribution results.
-
-The word *flux* describes a term in the balance equation, not an intrinsic
-(Berry-curvature or disorder-independent) transport mechanism.
+The word *flux* refers to a balance term, not an intrinsic Berry-curvature
+or disorder-independent transport mechanism.
 -/
 
 namespace ConservationLaw
@@ -181,5 +164,46 @@ noncomputable def absorbSource
   balance := by simpa only [add_zero] using B.balance
 
 end FluxBalanceLaw
+
+section CurrentRepresentation
+
+variable {CurrentDensity : Type*}
+variable [AddCommMonoid CurrentDensity] [Module 𝕜 CurrentDensity]
+
+/-- Data of one chosen flux functional representing `Φ` through `d`.
+
+No locality or uniqueness claim is bundled into this structure. -/
+abbrev DifferentialCurrentRepresentation
+    (d : Test →ₗ[𝕜] OneForm) (Φ : Test →ₗ[𝕜] Obs) :=
+  {J : OneForm →ₗ[𝕜] Obs // Φ = J.comp d}
+
+/-- A bilinear pairing of a current density with 1-form-like test data.
+
+Concrete models are responsible for showing that this supplied pairing has the intended local or
+zeroth-order meaning. -/
+abbrev LocalCurrentPairing :=
+  CurrentDensity →ₗ[𝕜] (OneForm →ₗ[𝕜] Obs)
+
+/-- A transport functional has a local current-density representation relative to a supplied
+pairing when one density `j` represents `Φ` through `d`. -/
+abbrev LocalCurrentDensityRepresentation
+    (d : Test →ₗ[𝕜] OneForm)
+    (Φ : Test →ₗ[𝕜] Obs)
+    (pairing : LocalCurrentPairing (𝕜 := 𝕜) (OneForm := OneForm) (Obs := Obs)
+      (CurrentDensity := CurrentDensity)) :=
+  {j : CurrentDensity // Φ = (pairing j).comp d}
+
+/-- A local current density is unique if the paired exact-differential tests separate densities. -/
+theorem localCurrentDensity_unique_of_separates
+    {d : Test →ₗ[𝕜] OneForm}
+    {Φ : Test →ₗ[𝕜] Obs}
+    {pairing : LocalCurrentPairing (𝕜 := 𝕜) (OneForm := OneForm) (Obs := Obs)
+      (CurrentDensity := CurrentDensity)}
+    (hsep : Function.Injective (fun j : CurrentDensity => (pairing j).comp d))
+    (R₁ R₂ : LocalCurrentDensityRepresentation d Φ pairing) :
+    R₁.val = R₂.val :=
+  hsep (R₁.property.symm.trans R₂.property)
+
+end CurrentRepresentation
 
 end ConservationLaw

@@ -1,4 +1,3 @@
-import LeanCondensedMatter.Analysis.ConservationLaw.CurrentRepresentation
 import LeanCondensedMatter.Analysis.ConservationLaw.FluxBalanceLaw
 import LeanCondensedMatter.Analysis.ConservationLaw.SymmetricLocalizationAlgebra
 
