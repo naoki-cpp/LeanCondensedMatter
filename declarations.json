@@ -12199,10 +12199,10 @@
   "statement":
   "∀ (Y0 Y1 : ℝ → ℂ),\n  BesselSecondKind.RealWronskianCondition Y0 Y1 →\n    ∀ (R : ℝ),\n      ∫ (r : ℝ) in 0..R, Complex.besselJ 1 ↑r ^ 2 * (Complex.besselJ 1 ↑r * Y0 r - Complex.besselJ 0 ↑r * Y1 r) =\n        ↑(2 / Real.pi) * ((1 - (Complex.besselJ 0 ↑R ^ 2 + Complex.besselJ 1 ↑R ^ 2)) / 2)",
   "standardAxioms": ["Classical.choice", "Quot.sound", "propext"],
-  "sourceLine": 34,
+  "sourceLine": 305,
   "sourceFile":
-  "LeanCondensedMatter/Analysis/SpecialFunctions/Bessel/WronskianMoments.lean",
-  "sourceEndLine": 66,
+  "LeanCondensedMatter/Analysis/SpecialFunctions/Bessel/RadialMoments.lean",
+  "sourceEndLine": 337,
   "sourceEndColumn": 35,
   "sourceColumn": 8,
   "soleCompiledConsumerPrivate": false,
@@ -12214,7 +12214,7 @@
   "projectAxioms": [],
   "name": "BesselRadialMoments.integral_wronskianBesselIntegrand_eq_endpoints",
   "module":
-  "LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.WronskianMoments",
+  "LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.RadialMoments",
   "kind": "theorem",
   "generated": false,
   "externalAxioms": [],
@@ -12229,7 +12229,7 @@
   ["BesselRadialMoments.integral_besselJ_one_sq_div",
    "BesselSecondKind.RealWronskianCondition",
    "BesselSecondKind.RealWronskianCondition._proof_1"],
-  "declarationStartLine": 31,
+  "declarationStartLine": 302,
   "crossModuleDirectWrapper": false,
   "completedMention": false,
   "compiledConsumers":
@@ -12399,10 +12399,10 @@
   "statement":
   "∀ (Y0 Y1 : ℝ → ℂ),\n  BesselSecondKind.RealWronskianCondition Y0 Y1 →\n    Filter.Tendsto\n      (fun R =>\n        ∫ (r : ℝ) in 0..R, Complex.besselJ 1 ↑r ^ 2 * (Complex.besselJ 1 ↑r * Y0 r - Complex.besselJ 0 ↑r * Y1 r))\n      Filter.atTop (nhds ↑(1 / Real.pi))",
   "standardAxioms": ["Classical.choice", "Quot.sound", "propext"],
-  "sourceLine": 72,
+  "sourceLine": 343,
   "sourceFile":
-  "LeanCondensedMatter/Analysis/SpecialFunctions/Bessel/WronskianMoments.lean",
-  "sourceEndLine": 98,
+  "LeanCondensedMatter/Analysis/SpecialFunctions/Bessel/RadialMoments.lean",
+  "sourceEndLine": 369,
   "sourceEndColumn": 54,
   "sourceColumn": 8,
   "soleCompiledConsumerPrivate": false,
@@ -12415,7 +12415,7 @@
   "name":
   "BesselRadialMoments.tendsto_integral_wronskianBesselIntegrand_one_div_pi",
   "module":
-  "LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.WronskianMoments",
+  "LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.RadialMoments",
   "kind": "theorem",
   "generated": false,
   "externalAxioms": [],
@@ -12430,7 +12430,7 @@
    "BesselRadialMoments.integral_wronskianBesselIntegrand_eq_endpoints",
    "BesselRadialMoments.tendsto_integral_besselJ_one_sq_div",
    "BesselSecondKind.RealWronskianCondition"],
-  "declarationStartLine": 68,
+  "declarationStartLine": 339,
   "crossModuleDirectWrapper": false,
   "completedMention": false,
   "compiledConsumers":

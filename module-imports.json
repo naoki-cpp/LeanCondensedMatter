@@ -684,7 +684,8 @@
       "sourceFile": "LeanCondensedMatter/Analysis/SpecialFunctions/Bessel/RadialMoments.lean",
       "imports": [
         "LeanCondensedMatter.Analysis.Fourier.PolarRadialKernels.HigherHarmonics",
-        "LeanCondensedMatter.Analysis.ODE.RadialEnergyDecay"
+        "LeanCondensedMatter.Analysis.ODE.RadialEnergyDecay",
+        "LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.AnalyticWronskian"
       ],
       "externalImportCount": 1
     },
@@ -695,15 +696,6 @@
         "LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.HypergeometricSeries"
       ],
       "externalImportCount": 3
-    },
-    {
-      "name": "LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.WronskianMoments",
-      "sourceFile": "LeanCondensedMatter/Analysis/SpecialFunctions/Bessel/WronskianMoments.lean",
-      "imports": [
-        "LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.AnalyticWronskian",
-        "LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.RadialMoments"
-      ],
-      "externalImportCount": 0
     },
     {
       "name": "LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.YSeries",
@@ -745,7 +737,6 @@
         "LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.HypergeometricSeries",
         "LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.RadialMoments",
         "LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.ThreeTermRecurrence",
-        "LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.WronskianMoments",
         "LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.YSeries"
       ],
       "externalImportCount": 0
@@ -1750,7 +1741,7 @@
       "name": "LeanCondensedMatter.Models.MassiveDirac.Conductivity.Hall.GaussianCrossedBenchmark",
       "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Conductivity/Hall/GaussianCrossedBenchmark.lean",
       "imports": [
-        "LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.WronskianMoments",
+        "LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.RadialMoments",
         "LeanCondensedMatter.Models.MassiveDirac.Conductivity.Hall.NonCrossingMechanismClassification",
         "LeanCondensedMatter.QuantumTheory.PlanckConstant"
       ],
