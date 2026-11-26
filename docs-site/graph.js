@@ -498,6 +498,7 @@ function setGraphModeChrome() {
   zero.nextSibling.nodeValue = modules ? " no importers" : " zero consumer";
   single.nextSibling.nodeValue = modules ? " one importer" : " single consumer";
   ui.graphLegend.querySelector(".legend-node").parentElement.lastChild.nodeValue = modules ? " module" : " theorem";
+  for (const item of ui.graphLegend.querySelectorAll("[data-declaration-only]")) item.hidden = modules;
   const edgeLegend = ui.graphLegend.querySelector(".legend-dependency");
   edgeLegend.childNodes[1].nodeValue = modules ? " import" : " dependency";
   ui.graphLegend.querySelector(".legend-edge.wrapper").parentElement.hidden = modules;
