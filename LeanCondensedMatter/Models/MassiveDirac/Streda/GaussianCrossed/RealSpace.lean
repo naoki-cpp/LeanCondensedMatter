@@ -633,8 +633,19 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceCurrentBlock_polar
             inPlaneSpinRotationInverse angle j j := by
         apply intervalIntegral.integral_congr
         intro p _
-        rw [hpoint p, inPlaneSpinRotation_conjugate_apply]
-        split_ifs <;> rfl
+        let M : Matrix2 :=
+          if source = 0 then c • radial 0 p - s • radial 1 p
+          else s • radial 0 p + c • radial 1 p
+        calc
+          angular p i j =
+              (inPlaneSpinRotation angle * M * inPlaneSpinRotationInverse angle) i j :=
+            congrArg (fun A : Matrix2 => A i j) (hpoint p)
+          _ = inPlaneSpinRotation angle i i * M i j *
+                inPlaneSpinRotationInverse angle j j :=
+            inPlaneSpinRotation_conjugate_apply angle M i j
+          _ = _ := by
+            dsimp only [M]
+            split_ifs <;> rfl
       _ = _ := by
         rw [intervalIntegral.integral_mul_const, intervalIntegral.integral_const_mul]
   rw [hint]
@@ -642,12 +653,24 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceCurrentBlock_polar
   · rw [intervalIntegral.integral_sub ((hradialInt 0 i j).const_mul c)
       ((hradialInt 1 i j).const_mul s),
       intervalIntegral.integral_const_mul, intervalIntegral.integral_const_mul]
-    simp only [Matrix.sub_apply, Matrix.smul_apply, smul_eq_mul, hradial]
+    change _ = inPlaneSpinRotation angle i i *
+      (c * finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock
+          0 v m probeEnergy broadening disorderStrength hbar pMax radius i j -
+        s * finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock
+          1 v m probeEnergy broadening disorderStrength hbar pMax radius i j) *
+      inPlaneSpinRotationInverse angle j j
+    rw [hradial 0, hradial 1]
     ring
   · rw [intervalIntegral.integral_add ((hradialInt 0 i j).const_mul s)
       ((hradialInt 1 i j).const_mul c),
       intervalIntegral.integral_const_mul, intervalIntegral.integral_const_mul]
-    simp only [Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, hradial]
+    change _ = inPlaneSpinRotation angle i i *
+      (s * finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock
+          0 v m probeEnergy broadening disorderStrength hbar pMax radius i j +
+        c * finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock
+          1 v m probeEnergy broadening disorderStrength hbar pMax radius i j) *
+      inPlaneSpinRotationInverse angle j j
+    rw [hradial 0, hradial 1]
     ring
 
 
