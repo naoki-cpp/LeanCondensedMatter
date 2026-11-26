@@ -98,12 +98,13 @@ def main():
     validate(declarations, theorems)
     retained = Path("docs/theorem-catalog-retained.md").read_text(encoding="utf-8")
     validate_retained_catalog(retained, declarations, theorems)
-    # Resolve the module through its source filename so moves do not weaken this acceptance check.
-    rows = [row for row in declarations if row["sourceFile"].endswith("/MixedComponentCrossing.lean")
-            and not row["generated"]]
-    assert len(rows) == 2, "MixedComponentCrossing must contain two source declarations"
-    assert {row["name"].split(".")[-1] for row in rows} == {
-        "mixedComponentCrossingCount", "mixedComponentWeight"}
+    # Check the actual general mixed-component APIs after retiring the two-point-only module.
+    expected = {"componentMixedPosition", "componentMixedPositionEquiv"}
+    rows = [row for row in declarations
+            if row["sourceFile"].endswith("/ExternalInsertion/Components/MixedOrderData.lean")
+            and not row["generated"] and row["name"].split(".")[-1] in expected]
+    assert len(rows) == len(expected), "missing general mixed-component definitions"
+    assert {row["name"].split(".")[-1] for row in rows} == expected
     assert all(row["kind"] == "def" for row in rows)
     assert all(row["dependencies"] for row in rows), "definitions must retain dependency edges"
     rows = [row for row in declarations if row["sourceFile"].endswith("/SchwartzTwoLevel1D.lean")

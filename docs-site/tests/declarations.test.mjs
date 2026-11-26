@@ -26,18 +26,18 @@ class Element {
     ? [...(child.tag === tag ? [child] : []), ...child.find(tag)] : []); }
 }
 
-test("MixedComponentCrossing overview counts and opens both definitions", async () => {
+test("MixedOrderData overview counts and opens both definitions", async () => {
   globalThis.document = { createElement: (tag) => new Element(tag) };
-  globalThis.fetch = async () => ({ ok: true, text: async () => "/-! # Mixed crossings -/" });
+  globalThis.fetch = async () => ({ ok: true, text: async () => "/-! # Mixed order data -/" });
   const overview = new Element("div");
-  const names = ["mixedComponentCrossingCount", "mixedComponentWeight"];
+  const names = ["componentMixedPosition", "componentMixedPositionEquiv"];
   let opened;
   const explorer = createModuleOverview({
-    catalog: names.map((name) => ({ name, module: "LeanCondensedMatter.MixedComponentCrossing",
+    catalog: names.map((name) => ({ name, module: "LeanCondensedMatter.MixedOrderData",
       kind: "def", generated: false, statement: "Nat" })), overview,
     onBrowse() {}, onOpenDeclaration(name) { opened = name; },
   });
-  await explorer.render("MixedComponentCrossing");
+  await explorer.render("MixedOrderData");
   assert.match(overview.text(), /Definitions 2/);
   assert.match(overview.text(), /Theorems 0/);
   assert.match(overview.text(), /Total 2/);
