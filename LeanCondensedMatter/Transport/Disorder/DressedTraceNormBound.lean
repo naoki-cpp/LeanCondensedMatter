@@ -69,7 +69,7 @@ theorem norm_averagedTwoGreenTrace_sub_dressed_le_residuals
     change ‖ensemble.average (fun ω =>
       ensemble.configurationGreenOfRegulator energyRight regulatorRight ω)‖ ≤ _
     apply LinearMap.norm_finiteWeightedAverage_le_of_forall ensemble.probability
-    ensemble.probability_nonneg ensemble.probability_sum _ _
+      ensemble.probability_nonneg ensemble.probability_sum _ _
     intro ω
     exact norm_resolvent_spectralParameterOfRegulator_le
       (ensemble.configurationHamiltonian ω).1
