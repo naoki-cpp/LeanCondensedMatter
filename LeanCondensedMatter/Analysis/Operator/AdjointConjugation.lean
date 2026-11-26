@@ -36,23 +36,15 @@ theorem hasDerivAt_adjointConjugate
     (hU : HasDerivAt U U' x) (T : H →L[ℂ] H) :
     HasDerivAt (fun s => adjointConjugate (U s) T)
       (U' * T * star (U x) + U x * T * star U') x := by
-  have hfun :
-      (fun s : ℝ => U s * T) * (fun s => star (U s)) =
-        fun s => adjointConjugate (U s) T := by
-    funext s
-    simp only [Pi.mul_apply, adjointConjugate]
-  rw [← hfun]
-  exact (hU.mul_const T).mul hU.star
+  simpa only [adjointConjugate, Pi.mul_apply] using (hU.mul_const T).mul hU.star
 
 /-- Adjoint conjugation transports a rank-one operator by applying the conjugating operator to both
 vectors. -/
 theorem adjointConjugate_rankOne (U : H →L[𝕜] H) (x y : H) :
     adjointConjugate U (InnerProductSpace.rankOne 𝕜 x y) =
       InnerProductSpace.rankOne 𝕜 (U x) (U y) := by
-  ext z
-  simp only [adjointConjugate, mul_apply_eq_comp, InnerProductSpace.rankOne_apply, map_smul,
-    ContinuousLinearMap.star_eq_adjoint]
-  exact congrArg (fun c : 𝕜 => c • U x)
-    (ContinuousLinearMap.adjoint_inner_right U y z)
+  change (U.comp (InnerProductSpace.rankOne 𝕜 x y)).comp (star U) = _
+  rw [InnerProductSpace.comp_rankOne, InnerProductSpace.rankOne_comp,
+    ContinuousLinearMap.star_eq_adjoint, ContinuousLinearMap.adjoint_adjoint]
 
 end ContinuousLinearMap
