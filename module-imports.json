@@ -31,22 +31,16 @@
       "externalImportCount": 3
     },
     {
-      "name": "LeanCondensedMatter.Analysis.ConservationLaw.CurrentRepresentation",
-      "sourceFile": "LeanCondensedMatter/Analysis/ConservationLaw/CurrentRepresentation.lean",
-      "imports": [],
-      "externalImportCount": 2
-    },
-    {
       "name": "LeanCondensedMatter.Analysis.ConservationLaw.FluxBalanceLaw",
       "sourceFile": "LeanCondensedMatter/Analysis/ConservationLaw/FluxBalanceLaw.lean",
       "imports": [],
-      "externalImportCount": 2
+      "externalImportCount": 3
     },
     {
       "name": "LeanCondensedMatter.Analysis.ConservationLaw.SymmetricLocalizationAlgebra",
       "sourceFile": "LeanCondensedMatter/Analysis/ConservationLaw/SymmetricLocalizationAlgebra.lean",
       "imports": [
-        "LeanCondensedMatter.Analysis.ConservationLaw.CurrentRepresentation",
+        "LeanCondensedMatter.Analysis.ConservationLaw.FluxBalanceLaw",
         "LeanCondensedMatter.Analysis.Operator.SymmetrizedProduct"
       ],
       "externalImportCount": 0
@@ -63,7 +57,6 @@
       "name": "LeanCondensedMatter.Analysis.ConservationLaw",
       "sourceFile": "LeanCondensedMatter/Analysis/ConservationLaw.lean",
       "imports": [
-        "LeanCondensedMatter.Analysis.ConservationLaw.CurrentRepresentation",
         "LeanCondensedMatter.Analysis.ConservationLaw.FluxBalanceLaw",
         "LeanCondensedMatter.Analysis.ConservationLaw.SymmetricLocalizationAlgebra"
       ],
@@ -465,10 +458,9 @@
       "name": "LeanCondensedMatter.Analysis.Operator.Unitary",
       "sourceFile": "LeanCondensedMatter/Analysis/Operator/Unitary.lean",
       "imports": [
-        "LeanCondensedMatter.Analysis.Operator.AdjointConjugation",
-        "LeanCondensedMatter.Analysis.Operator.Spectral.EigenvectorFamily"
+        "LeanCondensedMatter.Analysis.Operator.AdjointConjugation"
       ],
-      "externalImportCount": 1
+      "externalImportCount": 2
     },
     {
       "name": "LeanCondensedMatter.Analysis.Operator",
@@ -915,7 +907,7 @@
         "LeanCondensedMatter.Combinatorics.PerfectPairing.Crossing",
         "LeanCondensedMatter.Combinatorics.PerfectPairing.PairEndpoints"
       ],
-      "externalImportCount": 0
+      "externalImportCount": 1
     },
     {
       "name": "LeanCondensedMatter.Combinatorics.PerfectPairing.Embedding",
@@ -1028,7 +1020,7 @@
         "LeanCondensedMatter.Combinatorics.PerfectPairing.PairEndpoints",
         "LeanCondensedMatter.Combinatorics.PerfectPairing.SplitNormalizedPairs"
       ],
-      "externalImportCount": 1
+      "externalImportCount": 0
     },
     {
       "name": "LeanCondensedMatter.Combinatorics.PerfectPairing.SplitNormalizedPairs",
@@ -3215,7 +3207,7 @@
       "name": "LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Continuity.CurrentRepresentation1D",
       "sourceFile": "LeanCondensedMatter/QuantumMechanics/SingleParticle/Continuum/Continuity/CurrentRepresentation1D.lean",
       "imports": [
-        "LeanCondensedMatter.Analysis.ConservationLaw.CurrentRepresentation",
+        "LeanCondensedMatter.Analysis.ConservationLaw.FluxBalanceLaw",
         "LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Continuity.Schwartz1D"
       ],
       "externalImportCount": 3
@@ -3964,8 +3956,8 @@
       "name": "LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.PictureEquivalence",
       "sourceFile": "LeanCondensedMatter/QuantumTheory/LinearResponse/Dynamics/PictureEquivalence.lean",
       "imports": [
+        "LeanCondensedMatter.Analysis.Operator.AdjointConjugation",
         "LeanCondensedMatter.Analysis.Operator.TraceClass.Ops",
-        "LeanCondensedMatter.Analysis.Operator.Unitary",
         "LeanCondensedMatter.QuantumTheory.DensityOperator.ObservableExpectation",
         "LeanCondensedMatter.QuantumTheory.DensityOperator.PureState",
         "LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.PureState"
@@ -5380,6 +5372,7 @@
       "imports": [
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Pairing.MixedOrder",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.SlotLegSplitting",
+        "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.SupportStandardization",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Ordered"
       ],
       "externalImportCount": 0
@@ -7930,9 +7923,10 @@
       "sourceFile": "LeanCondensedMatter/Transport/Disorder/DressedTraceNormBound.lean",
       "imports": [
         "LeanCondensedMatter.Analysis.Algebra.FiniteAverage",
+        "LeanCondensedMatter.Analysis.Operator.FiniteTrace",
         "LeanCondensedMatter.Transport.Disorder.TraceNormBound"
       ],
-      "externalImportCount": 2
+      "externalImportCount": 1
     },
     {
       "name": "LeanCondensedMatter.Transport.Disorder.Finite",
