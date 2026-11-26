@@ -55,25 +55,19 @@ theorem derivative_logOf_mul {Z : PowerSeries R}
     (hZ : PowerSeries.constantCoeff Z = 1) :
     d⁄dX (PowerSeries.logOf Z) * Z = d⁄dX Z := by
   have hsub : PowerSeries.HasSubst (Z - 1) :=
-    PowerSeries.HasSubst.of_constantCoeff_zero' (by simp [hZ])
+    PowerSeries.HasSubst.of_constantCoeff_zero' (by
+      rw [(constantCoeff (R := R)).map_sub, constantCoeff_one, hZ, sub_self])
   have hgeom := congrArg (fun f : PowerSeries R => f.subst (Z - 1))
     derivative_log_mul_one_add_X
   have hone : (1 : PowerSeries R).subst (Z - 1) = 1 := by
     rw [show (1 : PowerSeries R) = PowerSeries.C 1 by rfl, PowerSeries.subst_C]
     rfl
-  have hgeom' :
-      (d⁄dX (PowerSeries.log R)).subst (Z - 1) * Z = 1 := by
-    rw [PowerSeries.subst_mul hsub, PowerSeries.subst_add hsub,
-      PowerSeries.subst_X hsub, hone] at hgeom
-    simpa using hgeom
-  rw [PowerSeries.logOf_eq, PowerSeries.derivative_subst hsub]
-  have hderiv : d⁄dX (Z - 1) = d⁄dX Z := by simp
-  rw [hderiv]
-  calc
-    ((d⁄dX (PowerSeries.log R)).subst (Z - 1) * d⁄dX Z) * Z =
-        ((d⁄dX (PowerSeries.log R)).subst (Z - 1) * Z) * d⁄dX Z := by
-          exact mul_right_comm _ _ _
-    _ = d⁄dX Z := by rw [hgeom', one_mul]
+  rw [PowerSeries.subst_mul hsub, PowerSeries.subst_add hsub,
+    PowerSeries.subst_X hsub, hone, add_comm (1 : PowerSeries R) (Z - 1),
+    sub_add_cancel] at hgeom
+  rw [PowerSeries.logOf_eq, PowerSeries.derivative_subst hsub,
+    (derivative (R := R)).map_sub, derivative_one, sub_zero,
+    mul_right_comm _ _ Z, hgeom, one_mul]
 
 /-- The order-one coefficient of the formal logarithm of a normalized series is unchanged. -/
 theorem coeff_one_logOf {Z : PowerSeries R} (hZ : constantCoeff Z = 1) :
