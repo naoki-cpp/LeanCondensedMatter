@@ -192,8 +192,22 @@ private theorem externalInsertionSupportMixedPosition_eq_standard
     have h := congrArg
       (fun e => e ((externalInsertionLegEquiv E
         (Finset.univ : Finset (Fin T.card))).symm leg)) hleg
+    have hslot : (standardSlotEquiv T).symm =
+        (Equiv.subtypeUnivEquiv
+          (fun i : Fin T.card => Finset.mem_univ i)).trans
+          (T.orderIsoOfFin rfl).toEquiv := by
+      rfl
+    have hcast : (finCongr (by simp :
+        2 * (2 * T.card + E) =
+          2 * (2 * (Finset.univ : Finset (Fin T.card)).card + E))).symm =
+        (finCongr (by simp) :
+          Fin (2 * (2 * (Finset.univ : Finset (Fin T.card)).card + E)) ≃
+            Fin (2 * (2 * T.card + E))) := by
+      apply Equiv.ext
+      intro p
+      rfl
     simpa only [supportFixed, standardFixed, externalInsertionLegCongr,
-      Equiv.trans_apply, Equiv.apply_symm_apply] using h
+      Equiv.trans_apply, Equiv.apply_symm_apply, hslot, hcast] using h
   apply Equiv.ext
   intro p
   change supportFixed
