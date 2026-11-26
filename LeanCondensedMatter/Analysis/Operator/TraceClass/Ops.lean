@@ -326,6 +326,11 @@ theorem norm_trace_le_traceNorm {T : H →L[ℂ] H} (hT : IsTraceClass T) :
   exact (norm_tsum_le_tsum_norm (hT.summable_trace_diagonal d).norm).trans (by
     simpa using hpair.2)
 
+/-- Trace-ideal duality bound for the product of a trace-class and a bounded operator. -/
+theorem norm_trace_comp_right_le {T : H →L[ℂ] H} (hT : IsTraceClass T)
+    (W : H →L[ℂ] H) : ‖(hT.comp_right W).trace‖ ≤ ‖W‖ * hT.traceNorm :=
+  (hT.comp_right W).norm_trace_le_traceNorm.trans (hT.traceNorm_comp_right_le W)
+
 end IsTraceClass
 
 end ContinuousLinearMap
