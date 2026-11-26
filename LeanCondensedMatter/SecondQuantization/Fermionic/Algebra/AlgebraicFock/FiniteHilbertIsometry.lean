@@ -35,23 +35,12 @@ private theorem finiteHilbertEquiv_one (b : Module.Basis Mode ℂ H) :
   simpa only [SecondQuantization.Fermionic.basisState] using
     Common.finiteHilbertFockEquiv_basisState (∅ : Occupation Mode)
 
-private theorem finiteHilbertEquiv_algebraMap (b : Module.Basis Mode ℂ H) (a : ℂ) :
-    finiteHilbertEquiv b (algebraMap ℂ (AlgebraicFock H) a) =
-      a • Common.finiteHilbertBasisState (∅ : Occupation Mode) := by
-  rw [Algebra.algebraMap_eq_smul_one, map_smul, finiteHilbertEquiv_one]
-
-private theorem inner_finiteHilbert_algebraMap (b : Module.Basis Mode ℂ H) (a d : ℂ) :
-    inner ℂ (finiteHilbertEquiv b (algebraMap ℂ (AlgebraicFock H) a))
-        (finiteHilbertEquiv b (algebraMap ℂ (AlgebraicFock H) d)) =
-      starRingEnd ℂ a * d := by
-  have hvac : inner ℂ (Common.finiteHilbertBasisState (∅ : Occupation Mode))
-      (Common.finiteHilbertBasisState (∅ : Occupation Mode)) = 1 := by
-    have h := (orthonormal_iff_ite.mp
-      (Common.finiteHilbertOrthonormalBasis (Config := Occupation Mode)).orthonormal)
-      (∅ : Occupation Mode) ∅
-    simpa only [Common.finiteHilbertOrthonormalBasis_apply, ite_true] using h
-  simp only [finiteHilbertEquiv_algebraMap, inner_smul_left, inner_smul_right, hvac, mul_one]
-  exact mul_comm _ _
+private theorem norm_finiteHilbertEquiv_one (b : Module.Basis Mode ℂ H) :
+    ‖finiteHilbertEquiv b 1‖ = 1 := by
+  rw [finiteHilbertEquiv_one]
+  simpa only [Common.finiteHilbertOrthonormalBasis_apply] using
+    (Common.finiteHilbertOrthonormalBasis (Config := Occupation Mode)).orthonormal.1
+      (∅ : Occupation Mode)
 
 private theorem inner_finiteHilbert_create (b : OrthonormalBasis Mode ℂ H)
     (v : H) (x y : AlgebraicFock H) :
@@ -84,9 +73,8 @@ theorem inner_finiteHilbertEquiv_map (b : OrthonormalBasis Mode ℂ H)
   apply inner_realization_map_eq (finiteHilbertEquiv b.toBasis).toLinearMap
     (finiteHilbertEquiv c.toBasis).toLinearMap e
     (inner_finiteHilbert_create b) (inner_finiteHilbert_create c)
-  intro a d
-  exact (inner_finiteHilbert_algebraMap c.toBasis a d).trans
-    (inner_finiteHilbert_algebraMap b.toBasis a d).symm
+  change ‖finiteHilbertEquiv c.toBasis 1‖ = ‖finiteHilbertEquiv b.toBasis 1‖
+  rw [norm_finiteHilbertEquiv_one, norm_finiteHilbertEquiv_one]
 
 /-- The unitary exterior lift of a one-particle unitary, expressed in finite occupation-Hilbert
 coordinates. The source and target orthonormal bases are arbitrary. -/
