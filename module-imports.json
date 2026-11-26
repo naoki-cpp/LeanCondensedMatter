@@ -987,7 +987,7 @@
       "imports": [
         "LeanCondensedMatter.Combinatorics.PerfectPairing.Transport"
       ],
-      "externalImportCount": 0
+      "externalImportCount": 1
     },
     {
       "name": "LeanCondensedMatter.Combinatorics.PerfectPairing.Sign",
@@ -1192,7 +1192,7 @@
       "imports": [
         "LeanCondensedMatter.Combinatorics.Shuffle.FamilySlotShuffle"
       ],
-      "externalImportCount": 1
+      "externalImportCount": 2
     },
     {
       "name": "LeanCondensedMatter.Combinatorics.Shuffle.FamilySlotShuffle",
@@ -3168,7 +3168,7 @@
       "name": "LeanCondensedMatter.Permutation.SigmaPermutationSign",
       "sourceFile": "LeanCondensedMatter/Permutation/SigmaPermutationSign.lean",
       "imports": [],
-      "externalImportCount": 3
+      "externalImportCount": 4
     },
     {
       "name": "LeanCondensedMatter.Permutation.TraceLog",
@@ -5212,7 +5212,7 @@
         "LeanCondensedMatter.Combinatorics.PerfectPairing.Transport",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.BlockLayout"
       ],
-      "externalImportCount": 0
+      "externalImportCount": 1
     },
     {
       "name": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.BlockLayout",

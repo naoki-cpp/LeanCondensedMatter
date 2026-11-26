@@ -42299,7 +42299,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {𝕜 : Type u_1} {H : Type u_2} [inst : RCLike 𝕜] [inst_1 : NormedAddCommGroup H] [inst_2 : NormedSpace 𝕜 H]\n  [CompleteSpace H] (T : H →L[𝕜] H) (v : H) (c : 𝕜), T v = c • v → (NormedSpace.exp T) v = NormedSpace.exp c • v",
+    "statement": "∀ {𝕜 : Type u_1} {H : Type u_2} [inst : NontriviallyNormedField 𝕜] [inst_1 : CharZero 𝕜] [ContinuousSMul ℚ 𝕜]\n  [CompleteSpace 𝕜] [inst_4 : NormedAddCommGroup H] [inst_5 : NormedSpace 𝕜 H] [CompleteSpace H] (T : H →L[𝕜] H) (v : H)\n  (c : 𝕜), T v = c • v → (NormedSpace.exp T) v = NormedSpace.exp c • v",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -42314,7 +42314,7 @@
     "name": "NormedSpace.exp_apply_of_eigenvector",
     "module": "LeanCondensedMatter.Analysis.Operator.Exponential",
     "externalAxioms": [],
-    "docString": "Evaluate the exponential of a bounded real- or complex-linear operator on an eigenvector. ",
+    "docString": "Evaluate the exponential of a bounded linear operator on an eigenvector over a complete\nnormed field with continuous rational scalar multiplication. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
