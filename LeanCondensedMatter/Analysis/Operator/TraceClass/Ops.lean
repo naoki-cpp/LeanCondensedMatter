@@ -78,8 +78,11 @@ theorem IsTraceClass.comp_left (W : H →L[ℂ] H) {T : H →L[ℂ] H}
 theorem IsTraceClass.comp_right {T : H →L[ℂ] H} (hT : IsTraceClass T)
     (W : H →L[ℂ] H) :
     IsTraceClass (T * W) := by
-  simpa only [← ContinuousLinearMap.star_eq_adjoint, star_mul, star_star] using
-    ((hT.adjoint.comp_left (ContinuousLinearMap.adjoint W)).adjoint)
+  obtain ⟨A, B, hA, hB, hfactor⟩ :=
+    (isTraceClass_iff_exists_hilbertSchmidt_factorization (T := T)).mp hT
+  apply (isTraceClass_iff_exists_hilbertSchmidt_factorization (T := T * W)).mpr
+  refine ⟨A, B * W, hA, isHilbertSchmidt_comp_right hB W, ?_⟩
+  rw [← mul_assoc, hfactor]
 
 /-- If `W` is a contraction, the absolute diagonal pairing with a trace-class operator is bounded
 by the trace norm. -/
@@ -292,8 +295,6 @@ theorem traceNorm_add_le {T R : H →L[ℂ] H} (hT : IsTraceClass T) (hR : IsTra
   obtain ⟨U, -, hUright, hUnorm⟩ := exists_leftPolarFactor (T + R)
   have hTpair := hT.summable_norm_inner_left_and_tsum_le_traceNorm U hUnorm d
   have hRpair := hR.summable_norm_inner_left_and_tsum_le_traceNorm U hUnorm d
-  have hsumPair :=
-    (hT.add hR).summable_norm_inner_left_and_tsum_le_traceNorm U hUnorm d
   have hrhsSum := hTpair.1.add hRpair.1
   have hpoint_le (i : w) :
       ‖inner ℂ (U (d i)) ((T + R) (d i))‖ ≤
@@ -302,12 +303,14 @@ theorem traceNorm_add_le {T R : H →L[ℂ] H} (hT : IsTraceClass T) (hR : IsTra
     simpa [add_apply, inner_add_right] using
       norm_add_le (inner ℂ (U (d i)) (T (d i)))
         (inner ℂ (U (d i)) (R (d i)))
+  have hsum := Summable.of_nonneg_of_le (fun i => norm_nonneg
+    (inner ℂ (U (d i)) ((T + R) (d i)))) hpoint_le hrhsSum
   rw [(hT.add hR).traceNorm_eq_tsum_norm_inner_left_of_polar U hUright d]
   calc
     (∑' i, ‖inner ℂ (U (d i)) ((T + R) (d i))‖) ≤
         ∑' i, (‖inner ℂ (U (d i)) (T (d i))‖ +
           ‖inner ℂ (U (d i)) (R (d i))‖) :=
-      hsumPair.1.tsum_le_tsum hpoint_le hrhsSum
+      hsum.tsum_le_tsum hpoint_le hrhsSum
     _ = (∑' i, ‖inner ℂ (U (d i)) (T (d i))‖) +
         ∑' i, ‖inner ℂ (U (d i)) (R (d i))‖ :=
       hTpair.1.tsum_add hRpair.1
