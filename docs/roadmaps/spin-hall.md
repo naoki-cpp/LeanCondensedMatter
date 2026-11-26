@@ -607,6 +607,29 @@ The concrete Rashba spectral data, normalized stationary state and
 nonzero finite-frequency conductivity still require exact certification;
 the existing numerical reference alone does not establish them in Lean.
 
+## Single-electron state and finite one-particle Lehmann response (partial R4)
+
+`DensityOperator.expectation_pure` generalizes the existing pure-observable
+expectation identity to arbitrary bounded operators, including commutators.
+`isStationary_pure_of_eigenvector` obtains a stationary normalized expectation
+from a normalized real-energy eigenvector using the existing Heisenberg
+matrix-element law.
+
+`Fermionic.Transport.oneParticleFockState` uses the isometric degree-one
+embedding, and `isStationary_oneParticleFockState` proves stationarity under
+the corresponding second-quantized Hamiltonian. The new theorem
+`adiabaticFrequencyDomainSusceptibility_oneParticleFock_eq_finiteLehmannTable`
+identifies its full-Fock retarded susceptibility with the canonical finite
+one-particle Lehmann table whenever the supplied energy eigenbasis has
+probability one on the occupied orbital and zero elsewhere. The one-body
+and many-body Hamiltonians must be related by the existing finite second
+quantization and use the same hbar; these are explicit hypotheses.
+
+This supplies the state and spectral reduction without diagonalizing the
+full Fock Hamiltonian. Concrete Rashba one-body spectral data and the
+nonzero exact conductivity evaluation remain to be certified, as do
+regulator removal and bulk/DC limits.
+
 ## References
 
 See the annotated entries in [`../references.md`](../references.md) for full
