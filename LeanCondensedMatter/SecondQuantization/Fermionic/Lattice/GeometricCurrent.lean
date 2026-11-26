@@ -154,7 +154,7 @@ private def directionalBondSumLinearMap
         intro r d
         simp only [LatticeGeometry.bondCoordinate, LinearMap.smul_apply, smul_eq_mul,
           Complex.ofReal_mul, mul_smul, RingHom.id_apply,
-          RCLike.real_smul_eq_coe_smul (K := ℂ)] }
+          RCLike.real_smul_eq_coe_smul (K := ℂ)] <;> rfl }
 
 /-- The spatial current transforms linearly under finite real direction mixing. -/
 theorem boundedDirectionalCurrent_sum
@@ -164,7 +164,7 @@ theorem boundedDirectionalCurrent_sum
     boundedDirectionalCurrent geometry (∑ i, r i • direction i) ℏ q K =
       ∑ i, (r i : ℂ) • boundedDirectionalCurrent geometry (direction i) ℏ q K := by
   let D := directionalBondSumLinearMap geometry (boundedBondCurrent ℏ q K)
-  have h := D.map_sum (fun i => r i • direction i) Finset.univ
+  have h := map_sum D (fun i => r i • direction i) Finset.univ
   simp only [map_smul, RCLike.real_smul_eq_coe_smul (K := ℂ)] at h
   simpa only [D, directionalBondSumLinearMap, LinearMap.smul_apply, LinearMap.sum_apply,
     LinearMap.coe_mk, AddHom.coe_mk, boundedDirectionalCurrent] using h
@@ -178,7 +178,7 @@ theorem boundedMixedDirectionalContact_sum_left
       ∑ i, (r i : ℂ) • boundedMixedDirectionalContact geometry (direction i) source ℏ q K := by
   let D := directionalBondSumLinearMap geometry (fun x y =>
     (geometry.bondCoordinate source x y : ℂ) • boundedBondContact K ℏ q x y)
-  have h := D.map_sum (fun i => r i • direction i) Finset.univ
+  have h := map_sum D (fun i => r i • direction i) Finset.univ
   simp only [map_smul, RCLike.real_smul_eq_coe_smul (K := ℂ)] at h
   simpa only [D, directionalBondSumLinearMap, LinearMap.smul_apply, LinearMap.sum_apply,
     LinearMap.coe_mk, AddHom.coe_mk, boundedMixedDirectionalContact, mul_smul] using h
