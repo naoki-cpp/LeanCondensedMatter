@@ -33,7 +33,7 @@ theorem supportSlotVertexEquiv_inl (h : T ⊆ S) (x : ExternalInsertionVertex E 
     supportSlotVertexEquiv h (Sum.inl x) =
       (match x with
       | Sum.inl e => Sum.inl e
-      | Sum.inr v => Sum.inr ⟨v.1, h v.2⟩ : ExternalInsertionVertex E S) := by
+      | Sum.inr v => Sum.inr ⟨v.1, h v.2⟩) := by
   cases x with
   | inl e => rfl
   | inr v =>
