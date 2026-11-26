@@ -193,20 +193,8 @@ theorem norm_resolventRegularizer_le
     simp [abs_of_pos hr]
   rw [hcoef]
   calc
-    (r / 2) *
-        ‖nonrealResolvent A hA (star ((r : ℂ) * I))
-            (star_imaginaryParameter_im_ne_zero hr) y -
-          nonrealResolvent A hA ((r : ℂ) * I)
-            (imaginaryParameter_im_ne_zero hr) y‖
-        ≤ (r / 2) *
-            (‖nonrealResolvent A hA (star ((r : ℂ) * I))
-                (star_imaginaryParameter_im_ne_zero hr) y‖ +
-              ‖nonrealResolvent A hA ((r : ℂ) * I)
-                (imaginaryParameter_im_ne_zero hr) y‖) := by
-          gcongr
-          exact norm_sub_le _ _
-    _ ≤ (r / 2) * (r⁻¹ * ‖y‖ + r⁻¹ * ‖y‖) := by
-      gcongr
+    _ ≤ (r / 2) * (_ + _) := mul_le_mul_of_nonneg_left (norm_sub_le _ _) (by positivity)
+    _ ≤ (r / 2) * (r⁻¹ * ‖y‖ + r⁻¹ * ‖y‖) := by gcongr
     _ = ‖y‖ := by
       field_simp [ne_of_gt hr]
       ring
@@ -243,36 +231,12 @@ theorem norm_resolventRegularizer_sub_le
   rw [resolventRegularizer_apply_domain A hA r hr x]
   have hminus := norm_resolvent_star_imaginaryParameter_le A hA r hr (A x)
   have hplus := norm_resolvent_imaginaryParameter_le A hA r hr (A x)
-  have hdiff :
-      (x : H) - ((1 / 2 : ℝ) : ℂ) •
-          (nonrealResolvent A hA (star ((r : ℂ) * I))
-              (star_imaginaryParameter_im_ne_zero hr) (A x) +
-            nonrealResolvent A hA ((r : ℂ) * I)
-              (imaginaryParameter_im_ne_zero hr) (A x)) - (x : H) =
-        -(((1 / 2 : ℝ) : ℂ) •
-          (nonrealResolvent A hA (star ((r : ℂ) * I))
-              (star_imaginaryParameter_im_ne_zero hr) (A x) +
-            nonrealResolvent A hA ((r : ℂ) * I)
-              (imaginaryParameter_im_ne_zero hr) (A x))) := by
-    module
-  rw [hdiff, norm_neg, norm_smul]
+  rw [sub_right_comm, sub_self, zero_sub, norm_neg, norm_smul]
   have hhalf : ‖(((1 / 2 : ℝ) : ℂ))‖ = (1 / 2 : ℝ) := by norm_num
   rw [hhalf]
   calc
-    (1 / 2 : ℝ) *
-        ‖nonrealResolvent A hA (star ((r : ℂ) * I))
-            (star_imaginaryParameter_im_ne_zero hr) (A x) +
-          nonrealResolvent A hA ((r : ℂ) * I)
-            (imaginaryParameter_im_ne_zero hr) (A x)‖
-        ≤ (1 / 2 : ℝ) *
-            (‖nonrealResolvent A hA (star ((r : ℂ) * I))
-                (star_imaginaryParameter_im_ne_zero hr) (A x)‖ +
-              ‖nonrealResolvent A hA ((r : ℂ) * I)
-                (imaginaryParameter_im_ne_zero hr) (A x)‖) := by
-          gcongr
-          exact norm_add_le _ _
-    _ ≤ (1 / 2 : ℝ) * (r⁻¹ * ‖A x‖ + r⁻¹ * ‖A x‖) := by
-      gcongr
+    _ ≤ (1 / 2 : ℝ) * (_ + _) := mul_le_mul_of_nonneg_left (norm_add_le _ _) (by norm_num)
+    _ ≤ (1 / 2 : ℝ) * (r⁻¹ * ‖A x‖ + r⁻¹ * ‖A x‖) := by gcongr
     _ = r⁻¹ * ‖A x‖ := by ring
 
 /-- Strong convergence of the resolvent regularizer, written directly in epsilon form. -/
