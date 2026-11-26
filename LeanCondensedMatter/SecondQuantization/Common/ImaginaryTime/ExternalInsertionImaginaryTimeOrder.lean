@@ -1156,15 +1156,15 @@ theorem orderedExternalInsertionTimedEvents_paired {n : ℕ}
               simp_all [block, pairedExternalEventBlock, r₁, r₂, times,
                 externalInsertionTimedEventBeforeOrEqual, stableTimedEventBeforeOrEqual_iff,
                 externalInsertionTimedEventTime, externalInsertionTimedEventRank,
-                pairedExternalTimes, Fin.le_def] <;>
-              aesop (add safe tactic omega)
+                pairedExternalTimes] <;>
+              (first | omega | aesop (add safe tactic (by omega)))
         | inr b =>
             fin_cases a <;>
               simp_all [block, pairedExternalEventBlock, r₁, r₂, times,
                 externalInsertionTimedEventBeforeOrEqual, stableTimedEventBeforeOrEqual_iff,
                 externalInsertionTimedEventTime, externalInsertionTimedEventRank,
-                pairedExternalTimes, Fin.le_def] <;>
-              aesop (add safe tactic omega)
+                pairedExternalTimes] <;>
+              (first | omega | aesop (add safe tactic (by omega)))
     | inr a =>
         cases b with
         | inl b =>
@@ -1172,8 +1172,8 @@ theorem orderedExternalInsertionTimedEvents_paired {n : ℕ}
               simp_all [block, pairedExternalEventBlock, r₁, r₂, times,
                 externalInsertionTimedEventBeforeOrEqual, stableTimedEventBeforeOrEqual_iff,
                 externalInsertionTimedEventTime, externalInsertionTimedEventRank,
-                pairedExternalTimes, Fin.le_def] <;>
-              aesop (add safe tactic omega)
+                pairedExternalTimes] <;>
+              (first | omega | aesop (add safe tactic (by omega)))
         | inr b =>
             simp_all [block, pairedExternalEventBlock, r₁, r₂,
               externalInsertionTimedEventBeforeOrEqual, stableTimedEventBeforeOrEqual_iff,
