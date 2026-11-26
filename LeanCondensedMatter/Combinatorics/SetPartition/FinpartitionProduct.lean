@@ -1,6 +1,7 @@
 import Mathlib.Order.Partition.Finpartition
 import Mathlib.Data.Fintype.BigOperators
 import LeanCondensedMatter.Combinatorics.Common.FintypeProduct
+import LeanCondensedMatter.Combinatorics.SetPartition.SubsetSplit
 
 set_option linter.style.header false
 
@@ -61,18 +62,11 @@ noncomputable def equivSigmaSubfinsets {β : Type*}
     (hfiber : ∀ B, fiber B ⊆ t)
     (hmem : ∀ (B : π.parts) (x : ↥t), (x : β) ∈ fiber B ↔ f x ∈ (B : Finset α)) :
     ↥t ≃ Σ B : π.parts, ↥(fiber B) :=
-  (Equiv.sigmaFiberEquiv fun x : ↥t =>
-      (⟨π.part (f x), (π.part_mem).2 (hf x)⟩ : π.parts)).symm.trans
-    (Equiv.sigmaCongrRight fun B =>
-      { toFun := fun x =>
-          ⟨x.1.1, (hmem B x.1).2
-            ((π.part_eq_iff_mem B.2).1 (congrArg Subtype.val x.2))⟩
-        invFun := fun x =>
-          ⟨⟨x.1, hfiber B x.2⟩, Subtype.ext
-            ((π.part_eq_iff_mem B.2).2
-              ((hmem B ⟨x.1, hfiber B x.2⟩).1 x.2))⟩
-        left_inv := fun _ => Subtype.ext rfl
-        right_inv := fun _ => Subtype.ext rfl })
+  Combinatorics.equivSigmaSubfinsets t
+    (fun x => (⟨π.part (f x), (π.part_mem).2 (hf x)⟩ : π.parts))
+    fiber hfiber (fun B x => (hmem B x).trans
+      ⟨fun h => Subtype.ext ((π.part_eq_iff_mem B.2).2 h),
+        fun h => (π.part_eq_iff_mem B.2).1 (congrArg Subtype.val h)⟩)
 
 /-- Multiplying the products of element weights over disjoint partition blocks
 recovers the product over their full support. -/
