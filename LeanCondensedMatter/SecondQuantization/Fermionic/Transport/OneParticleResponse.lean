@@ -61,8 +61,16 @@ theorem finiteSecondQuantization_heisenbergEvolution
   have hgen : schrodingerGenerator many =
       finiteSecondQuantization (schrodingerGenerator one) := by
     simp only [schrodingerGenerator, hhbar, hH, map_smul]
-  simp only [heisenbergEvolution_freePropagatorGroup_apply, freePropagator_eq_exp,
-    hgen, ← RCLike.real_smul_eq_coe_smul (K := ℂ), neg_smul]
+  simp only [heisenbergEvolution_freePropagatorGroup_apply, freePropagator_eq_exp, hgen]
+  have hone (s : ℝ) : (s : ℂ) • schrodingerGenerator one =
+      s • schrodingerGenerator one :=
+    (RCLike.real_smul_eq_coe_smul (K := ℂ) s (schrodingerGenerator one)).symm
+  have hmany (s : ℝ) :
+      (s : ℂ) • finiteSecondQuantization (schrodingerGenerator one) =
+        s • finiteSecondQuantization (schrodingerGenerator one) :=
+    (RCLike.real_smul_eq_coe_smul (K := ℂ) s
+      (finiteSecondQuantization (schrodingerGenerator one))).symm
+  rw [hone (-t), hone t, hmany (-t), hmany t]
   simpa only [neg_smul, neg_neg] using
     finiteSecondQuantization_exp_conjugate (schrodingerGenerator one) A (-t)
 
