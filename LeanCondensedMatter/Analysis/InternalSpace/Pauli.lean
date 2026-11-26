@@ -112,26 +112,17 @@ theorem dotProduct_pauliAxis (u v : PauliAxis → ℂ) :
     dotProduct u v = u .x * v .x + u .y * v .y + u .z * v .z := by
   simp [dotProduct, sum_pauliAxis]
 
-private def pauliBasisCoeff (axis : PauliAxis) : PauliAxis → ℂ :=
-  fun other => if other = axis then 1 else 0
-
-private theorem pauliCombination_pauliBasisCoeff (axis : PauliAxis) :
-    pauliCombination (pauliBasisCoeff axis) = pauliBasis axis := by
-  cases axis <;>
-    simp [pauliCombination, pauliBasisCoeff, pauliBasis]
-
 private theorem pauliBasis_mul_pauliBasis (a b : PauliAxis) :
     pauliBasis a * pauliBasis b =
-      dotProduct (pauliBasisCoeff a) (pauliBasisCoeff b) • (1 : PauliMatrix) +
+      dotProduct (Pi.single a 1) (Pi.single b 1) • (1 : PauliMatrix) +
         Complex.I •
-          (pauliCross (pauliBasisCoeff a) (pauliBasisCoeff b) .x • pauliBasis .x +
-            pauliCross (pauliBasisCoeff a) (pauliBasisCoeff b) .y • pauliBasis .y +
-            pauliCross (pauliBasisCoeff a) (pauliBasisCoeff b) .z • pauliBasis .z) := by
+          (pauliCross (Pi.single a 1) (Pi.single b 1) .x • pauliBasis .x +
+            pauliCross (Pi.single a 1) (Pi.single b 1) .y • pauliBasis .y +
+            pauliCross (Pi.single a 1) (Pi.single b 1) .z • pauliBasis .z) := by
   cases a <;> cases b <;>
     ext i j <;> fin_cases i <;> fin_cases j <;>
-    simp [pauliBasis, pauliBasisCoeff, pauliCross, cross_apply, pauliAxisComponent,
-      Matrix.mul_apply, Fin.sum_univ_two, pauliX, pauliY, pauliZ, dotProduct_pauliAxis,
-      Complex.I_mul_I]
+    simp [pauliBasis, pauliCross, cross_apply, pauliAxisComponent,
+      Matrix.mul_apply, Fin.sum_univ_two, pauliX, pauliY, pauliZ, Complex.I_mul_I]
 
 /-- Pauli synthesis commutes with addition of indexed coefficient families. -/
 @[simp] theorem pauliCombination_add (u v : PauliAxis → ℂ) :
@@ -151,7 +142,7 @@ theorem pauliCombination_mul_pauliCombination (u v : PauliAxis → ℂ) :
       dotProduct u v • (1 : PauliMatrix) +
         Complex.I • pauliCombination (pauliCross u v) := by
   simp only [pauliCombination, sum_pauliAxis]
-  simp [add_mul, mul_add, pauliBasis_mul_pauliBasis, pauliBasisCoeff, pauliCross,
+  simp [add_mul, mul_add, pauliBasis_mul_pauliBasis, pauliCross,
     cross_apply, pauliAxisComponent, dotProduct_pauliAxis]
   module
 
@@ -189,10 +180,10 @@ theorem trace_pauliCombination_mul_pauliCombination (u v : PauliAxis → ℂ) :
 /-- Tracing one Pauli basis matrix against a synthesized Pauli vector selects that coefficient. -/
 theorem trace_pauliBasis_mul_pauliCombination (axis : PauliAxis) (u : PauliAxis → ℂ) :
     Matrix.trace (pauliBasis axis * pauliCombination u) = 2 * u axis := by
-  rw [← pauliCombination_pauliBasisCoeff axis,
-    trace_pauliCombination_mul_pauliCombination]
-  cases axis <;>
-    simp [pauliBasisCoeff, dotProduct_pauliAxis]
+  have h : pauliCombination (Pi.single axis (1 : ℂ)) = pauliBasis axis := by
+    cases axis <;> simp [pauliCombination, Pi.single_apply, pauliBasis]
+  rw [← h, trace_pauliCombination_mul_pauliCombination]
+  simp
 
 /-- The three Pauli matrices form a linearly independent family over `ℂ`. -/
 theorem pauliBasis_linearIndependent : LinearIndependent ℂ pauliBasis := by
@@ -346,13 +337,7 @@ def pauliZConjugateVector (u : PauliAxis → ℂ) : PauliAxis → ℂ
 @[simp] theorem pauliVectorCoefficient_neg (M : PauliMatrix) :
     pauliVectorCoefficient (-M) = -pauliVectorCoefficient M := by
   funext axis
-  cases axis
-  · simp [pauliVectorCoefficient]
-    ring
-  · simp [pauliVectorCoefficient]
-    ring
-  · simp [pauliVectorCoefficient]
-    ring
+  cases axis <;> simp [pauliVectorCoefficient] <;> ring
 
 /-- Trace of two Pauli-affine matrices in scalar/vector coefficient form. -/
 theorem trace_pauliAffine_mul_pauliAffine
@@ -593,20 +578,14 @@ theorem trace_four_eq_pauliCoefficients (A B C D : PauliMatrix) :
           dotProduct
             (a • v + b • u + Complex.I • pauliCross u v)
             (c • x + d • w + Complex.I • pauliCross w x)) := by
-  calc
-    Matrix.trace (A * B * C * D) =
-        Matrix.trace
-          ((pauliScalarCoefficient A • (1 : PauliMatrix) +
-              pauliCombination (pauliVectorCoefficient A)) *
-            (pauliScalarCoefficient B • (1 : PauliMatrix) +
-              pauliCombination (pauliVectorCoefficient B)) *
-            (pauliScalarCoefficient C • (1 : PauliMatrix) +
-              pauliCombination (pauliVectorCoefficient C)) *
-            (pauliScalarCoefficient D • (1 : PauliMatrix) +
-              pauliCombination (pauliVectorCoefficient D))) := by
-          rw [← eq_pauliAffine_coefficients A, ← eq_pauliAffine_coefficients B,
-            ← eq_pauliAffine_coefficients C, ← eq_pauliAffine_coefficients D]
-    _ = _ := trace_four_pauliAffine _ _ _ _ _ _ _ _
+  simpa only [← eq_pauliAffine_coefficients A,
+    ← eq_pauliAffine_coefficients B, ← eq_pauliAffine_coefficients C,
+    ← eq_pauliAffine_coefficients D] using
+    (trace_four_pauliAffine
+      (pauliScalarCoefficient A) (pauliScalarCoefficient B)
+      (pauliScalarCoefficient C) (pauliScalarCoefficient D)
+      (pauliVectorCoefficient A) (pauliVectorCoefficient B)
+      (pauliVectorCoefficient C) (pauliVectorCoefficient D))
 
 
 /-- Model-independent interband x-y trace between complementary Pauli projectors.
