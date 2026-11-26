@@ -1,6 +1,6 @@
 import LeanCondensedMatter.Analysis.Operator.HilbertBasis
 import LeanCondensedMatter.Analysis.Operator.DiagonalExpectation
-import LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.Basic
+import LeanCondensedMatter.Analysis.Operator.HilbertSchmidt
 import Mathlib.Analysis.InnerProductSpace.StarOrder
 import Mathlib.Analysis.SpecialFunctions.ContinuousFunctionalCalculus.Abs
 
