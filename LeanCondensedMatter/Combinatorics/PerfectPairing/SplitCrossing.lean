@@ -18,22 +18,6 @@ namespace Combinatorics
 variable {α β γ : Type*}
   [Fintype α] [LinearOrder α] [Fintype β] [LinearOrder β] [Fintype γ] [LinearOrder γ]
 
-/-- A strictly increasing position embedding preserves the double crossing count of
-normalized pairs when their endpoints are transported in their normalized order. -/
-private theorem PairingOn.sum_sum_crosses_map_eq_crossingCount {δ ε : Type*} [Fintype δ] [LinearOrder δ] [LinearOrder ε]
-    (R : PairingOn δ) (f : δ → ε) (hmono : StrictMono f)
-    (pairImage : R.NormalizedPair → ε × ε)
-    (himage : ∀ p : R.NormalizedPair,
-      pairImage p = (f p.1.1, f p.1.2)) :
-    (∑ p : R.NormalizedPair, ∑ q : R.NormalizedPair,
-      if Crosses (pairImage p) (pairImage q) then 1 else 0) = R.crossingCount := by
-  classical
-  rw [R.crossingCount_eq_sum_crosses, Fintype.sum_prod_type]
-  exact sum_sum_crosses_eq_of_equiv pairImage (fun p : R.NormalizedPair => p.1)
-    (Equiv.refl _) (fun p q => by
-      rw [himage p, himage q]
-      exact crosses_map_iff f hmono p.1.1 p.1.2 q.1.1 q.1.2)
-
 /-- Crossings between the two independent sectors of an assembled pairing.
 Both orientations are counted because `crossingCount` uses oriented pairs. -/
 noncomputable def PairingOn.ofSplitInterSectorCrossingCount
@@ -59,19 +43,9 @@ theorem PairingOn.ofSplitInterSectorCrossingCount_mod_two_eq_positionInversions
         ∑ x : P.NormalizedPair × Q.NormalizedPair,
           if Crosses (emb (Sum.inl x.1)).1 (emb (Sum.inr x.2)).1 ∨
             Crosses (emb (Sum.inr x.2)).1 (emb (Sum.inl x.1)).1 then 1 else 0 := by
-    rw [Fintype.sum_prod_type]
-    change
-      (∑ p : P.NormalizedPair, ∑ q : Q.NormalizedPair,
-        if Crosses (emb (Sum.inl p)).1 (emb (Sum.inr q)).1 then 1 else 0) +
-      (∑ q : Q.NormalizedPair, ∑ p : P.NormalizedPair,
-        if Crosses (emb (Sum.inr q)).1 (emb (Sum.inl p)).1 then 1 else 0) = _
-    rw [Finset.sum_comm (f := fun q : Q.NormalizedPair =>
-      fun p : P.NormalizedPair =>
-        if Crosses (emb (Sum.inr q)).1 (emb (Sum.inl p)).1 then 1 else 0),
-      ← Finset.sum_add_distrib]
-    refine Finset.sum_congr rfl fun p _ => ?_
-    rw [← Finset.sum_add_distrib]
-    exact Finset.sum_congr rfl fun q _ => crossesIndicator_add _ _
+    exact sum_sum_crosses_oriented_add
+      (fun p : P.NormalizedPair => (emb (Sum.inl p)).1)
+      (fun q : Q.NormalizedPair => (emb (Sum.inr q)).1)
   rw [hsum]
   exact (PairingOn.ofSplit e P Q).sum_geometricCrossings_mod_two_eq_positionInversions
     (fun p => emb (Sum.inl p)) (fun q => emb (Sum.inr q))
@@ -123,12 +97,12 @@ theorem PairingOn.ofSplit_crossingCount_eq_left_add_right_add_inter
   rw [hdecomp,
     P.sum_sum_crosses_map_eq_crossingCount
       (fun i => e (Sum.inl i)) hleft
-      (fun p => (PairingOn.ofSplitNormalizedPairEquiv e P Q (Sum.inl p)).1)
+      (fun p => (PairingOn.ofSplitNormalizedPairEquiv e P Q (Sum.inl p)).1) (Equiv.refl _)
       (fun p => PairingOn.ofSplitNormalizedPairEquiv_pair_eq_of_lt e P Q (Sum.inl p)
         (hleft (P.pairs_normalized p.2))),
     Q.sum_sum_crosses_map_eq_crossingCount
       (fun i => e (Sum.inr i)) hright
-      (fun p => (PairingOn.ofSplitNormalizedPairEquiv e P Q (Sum.inr p)).1)
+      (fun p => (PairingOn.ofSplitNormalizedPairEquiv e P Q (Sum.inr p)).1) (Equiv.refl _)
       (fun p => PairingOn.ofSplitNormalizedPairEquiv_pair_eq_of_lt e P Q (Sum.inr p)
         (hright (Q.pairs_normalized p.2)))]
 

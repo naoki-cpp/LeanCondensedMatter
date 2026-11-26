@@ -17,6 +17,15 @@ abbrev PairingOn.NormalizedPair {α : Type*} [Fintype α] [LinearOrder α]
     (pairing : PairingOn α) :=
   {pair : α × α // pair ∈ pairing.pairs}
 
+/-- The product over the normalized-pair type equals the product over the underlying finset. -/
+theorem PairingOn.prod_normalizedPair_eq_prod_pairs {α R : Type*}
+    [Fintype α] [LinearOrder α] [CommMonoid R] (pairing : PairingOn α)
+    (value : α → α → R) :
+    (∏ pr : pairing.NormalizedPair, value pr.1.1 pr.1.2) =
+      ∏ pr ∈ pairing.pairs, value pr.1 pr.2 :=
+  (Finset.prod_subtype pairing.pairs (fun _ => Iff.rfl)
+    (fun pr => value pr.1 pr.2)).symm
+
 /-- Reindex the product over a pairing's normalized pairs through any finite presentation
 of those pairs, using the corresponding local values. -/
 theorem PairingOn.prod_pairs_eq_prod_of_equiv {α A R : Type*}
@@ -27,7 +36,7 @@ theorem PairingOn.prod_pairs_eq_prod_of_equiv {α A R : Type*}
   classical
   calc
     _ = ∏ pr : pairing.NormalizedPair, value pr.1.1 pr.1.2 :=
-      Finset.prod_subtype _ (fun _ => Iff.rfl) _
+      (pairing.prod_normalizedPair_eq_prod_pairs value).symm
     _ = ∏ a : A, value (e a).1.1 (e a).1.2 :=
       (Equiv.prod_comp e (fun pr => value pr.1.1 pr.1.2)).symm
     _ = _ := by

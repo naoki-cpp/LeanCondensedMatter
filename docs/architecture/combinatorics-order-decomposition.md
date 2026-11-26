@@ -56,6 +56,11 @@ while its integrand is attached to the ambient `SlotShuffle`.
 
 ## Component crossing parity and family shuffles
 
+`PerfectPairing.Crossing` owns the crossing-sum reindexing law for strictly monotone endpoint
+maps, and the conversion from two oriented crossing sums to a single geometric crossing sum.
+Both binary and component decompositions use these laws. `PairEndpoints` owns the product
+conversion between a normalized-pair subtype and its underlying finite set.
+
 `PerfectPairing.CrossingParity` owns the common parity identity for two disjoint families of
 normalized pairs, allowing either local endpoint orientation. Binary splitting and component
 crossing counts use this same identity to reindex endpoint inversions into position inversions.

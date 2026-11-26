@@ -100,6 +100,39 @@ theorem PairingOn.crossingCount_eq_sum_crosses {α : Type*} [Fintype α] [Linear
     _ = _ := by
       simp only [Finset.attach_eq_univ, Fintype.sum_prod_type]
 
+/-- Reindex the double crossing sum through a finite presentation of a pairing's normalized
+pairs whose endpoints are mapped by a strictly increasing position map. -/
+theorem PairingOn.sum_sum_crosses_map_eq_crossingCount
+    {α β A : Type*} [Fintype α] [LinearOrder α] [LinearOrder β] [Fintype A]
+    (pairing : PairingOn α) (f : α → β) (hmono : StrictMono f)
+    (pairImage : A → β × β) (e : A ≃ pairing.NormalizedPair)
+    (himage : ∀ p, pairImage p = (f (e p).1.1, f (e p).1.2)) :
+    (∑ p : A, ∑ q : A, if Crosses (pairImage p) (pairImage q) then 1 else 0) =
+      pairing.crossingCount := by
+  rw [pairing.crossingCount_eq_sum_crosses, Fintype.sum_prod_type]
+  exact sum_sum_crosses_eq_of_equiv pairImage (fun p : pairing.NormalizedPair => p.1)
+    e (fun p q => by
+      rw [himage p, himage q]
+      exact crosses_map_iff f hmono (e p).1.1 (e p).1.2 (e q).1.1 (e q).1.2)
+
+/-- Summing both crossing orientations over two finite families counts each geometric crossing
+once, without any disjointness or normalization assumption on the families. -/
+theorem sum_sum_crosses_oriented_add {α A B : Type*}
+    [Preorder α] [DecidableLT α] [Fintype A] [Fintype B]
+    (left : A → α × α) (right : B → α × α) :
+    (∑ p : A, ∑ q : B, if Crosses (left p) (right q) then 1 else 0) +
+      (∑ q : B, ∑ p : A, if Crosses (right q) (left p) then 1 else 0) =
+      ∑ x : A × B, if Crosses (left x.1) (right x.2) ∨
+        Crosses (right x.2) (left x.1) then 1 else 0 := by
+  classical
+  rw [Fintype.sum_prod_type,
+    Finset.sum_comm (f := fun q : B => fun p : A =>
+      if Crosses (right q) (left p) then (1 : ℕ) else 0),
+    ← Finset.sum_add_distrib]
+  refine Finset.sum_congr rfl fun p _ => ?_
+  rw [← Finset.sum_add_distrib]
+  exact Finset.sum_congr rfl fun q _ => crossesIndicator_add _ _
+
 /-- Merely changing the natural-number index of a finite perfect
 pairing by equality leaves its geometric crossing count unchanged.  In
 particular, casting the pair count during canonical interaction-slot
@@ -121,28 +154,15 @@ theorem PairingOn.crossingCount_eq_of_partnerEquiv_strictMono
     (hpartner : ∀ p, target.partner (e p) = e (source.partner p))
     (hmono : StrictMono e) :
     source.crossingCount = target.crossingCount := by
-  classical
   let pairEquiv := source.normalizedPairEquivOfPartnerEquiv target e hpartner
   have hpair (pr : source.NormalizedPair) :
       (pairEquiv pr).1 = (e pr.1.1, e pr.1.2) :=
     source.normalizedPairEquivOfPartnerEquiv_apply_of_strictMono
       target e hpartner hmono pr
-  have hcross (p q : source.NormalizedPair) :
-      Crosses p.1 q.1 ↔ Crosses (pairEquiv p).1 (pairEquiv q).1 := by
-    rw [hpair p, hpair q]
-    exact (crosses_map_iff e hmono p.1.1 p.1.2 q.1.1 q.1.2).symm
-  calc
-    source.crossingCount =
-        ∑ p : source.NormalizedPair, ∑ q : source.NormalizedPair,
-          if Crosses p.1 q.1 then 1 else 0 := by
-      simpa only [Fintype.sum_prod_type] using source.crossingCount_eq_sum_crosses
-    _ = ∑ p : target.NormalizedPair, ∑ q : target.NormalizedPair,
-          if Crosses p.1 q.1 then 1 else 0 := by
-      exact sum_sum_crosses_eq_of_equiv
-        (fun p : source.NormalizedPair => p.1)
-        (fun p : target.NormalizedPair => p.1) pairEquiv hcross
-    _ = target.crossingCount := by
-      simpa only [Fintype.sum_prod_type] using target.crossingCount_eq_sum_crosses.symm
+  rw [target.crossingCount_eq_sum_crosses, Fintype.sum_prod_type]
+  exact (source.sum_sum_crosses_map_eq_crossingCount e hmono
+    (fun p : target.NormalizedPair => p.1) pairEquiv.symm
+    (fun p => by simpa only [Equiv.apply_symm_apply] using hpair (pairEquiv.symm p))).symm
 
 /-- The number of pairs crossing `firstPair`. -/
 def Pairing.crossingsWithFirstPair {n : ℕ} (pairing : Pairing (n + 1)) : ℕ :=
