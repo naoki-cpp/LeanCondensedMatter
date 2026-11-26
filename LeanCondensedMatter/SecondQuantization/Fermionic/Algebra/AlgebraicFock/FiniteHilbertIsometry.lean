@@ -60,6 +60,53 @@ private theorem inner_finiteHilbert_create (b : OrthonormalBasis Mode ℂ H)
     finiteHilbertOperator_apply] at h
   exact h
 
+/-- The degree-one exterior embedding preserves the original Hilbert inner
+product in any orthonormal coordinate basis. The proof is the vacuum
+creation/annihilation identity, not a coordinate expansion. -/
+theorem inner_finiteHilbertEquiv_oneParticle (b : OrthonormalBasis Mode ℂ H)
+    (v w : H) :
+    inner ℂ (finiteHilbertEquiv b.toBasis (oneParticle H v))
+        (finiteHilbertEquiv b.toBasis (oneParticle H w)) = inner ℂ v w := by
+  have hc : create H v (1 : AlgebraicFock H) = oneParticle H v := by
+    rw [create_apply, mul_one]
+  have hs : algebraMap ℂ (AlgebraicFock H) (inner ℂ v w) =
+      inner ℂ v w • (1 : AlgebraicFock H) := by
+    rw [Algebra.smul_def, mul_one]
+  rw [← hc, inner_finiteHilbert_create, annihilate_oneParticle, hs,
+    map_smul, inner_smul_right, inner_self_eq_norm_sq_to_K, norm_finiteHilbertEquiv_one]
+  simp
+
+/-- Canonical isometric realization of the one-particle sector in finite Fock
+space, expressed using an orthonormal basis of the one-particle Hilbert space. -/
+def finiteHilbertOneParticleEmbedding (b : OrthonormalBasis Mode ℂ H) :
+    H →ₗᵢ[ℂ] Common.FiniteHilbertFock (Occupation Mode) :=
+  ((finiteHilbertEquiv b.toBasis).toLinearMap.comp (oneParticle H)).isometryOfInner
+    (inner_finiteHilbertEquiv_oneParticle b)
+
+@[simp]
+theorem finiteHilbertOneParticleEmbedding_apply (b : OrthonormalBasis Mode ℂ H)
+    (v : H) :
+    finiteHilbertOneParticleEmbedding b v =
+      finiteHilbertEquiv b.toBasis (oneParticle H v) := rfl
+
+/-- Restriction of the bounded exterior second quantization to the isometric
+one-particle sector is the original one-particle linear operator. -/
+theorem finiteHilbertOperator_dGamma_apply_embedding (b : OrthonormalBasis Mode ℂ H)
+    (T : H →ₗ[ℂ] H) (v : H) :
+    finiteHilbertOperatorAlgEquiv b.toBasis (dGamma H T)
+        (finiteHilbertOneParticleEmbedding b v) =
+      finiteHilbertOneParticleEmbedding b (T v) := by
+  simp only [finiteHilbertOneParticleEmbedding_apply, finiteHilbertOperator_dGamma_oneParticle]
+
+/-- Exact one-particle matrix elements in the full bounded Fock representation. -/
+theorem inner_finiteHilbertOperator_dGamma_embedding (b : OrthonormalBasis Mode ℂ H)
+    (T : H →ₗ[ℂ] H) (v w : H) :
+    inner ℂ (finiteHilbertOneParticleEmbedding b v)
+        (finiteHilbertOperatorAlgEquiv b.toBasis (dGamma H T)
+          (finiteHilbertOneParticleEmbedding b w)) = inner ℂ v (T w) := by
+  rw [finiteHilbertOperator_dGamma_apply_embedding]
+  exact (finiteHilbertOneParticleEmbedding b).inner_map_map v (T w)
+
 variable {N : Type*} [LinearOrder N] [Fintype N]
 variable {K : Type*} [NormedAddCommGroup K] [InnerProductSpace ℂ K]
 
