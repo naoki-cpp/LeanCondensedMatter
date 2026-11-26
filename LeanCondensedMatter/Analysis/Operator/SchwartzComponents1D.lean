@@ -45,6 +45,8 @@ theorem spatialLift_apply (A : Spatial →ₗ[ℂ] Spatial) (ψ : State ι) (a :
     spatialLift A ψ a = A (ψ a) :=
   rfl
 
+section FiniteComponents
+
 variable [Fintype ι]
 
 /-- A finite internal matrix acting on the internal index and leaving the spatial wavefunction intact. -/
@@ -57,7 +59,7 @@ noncomputable def internalOperator (S : Matrix ι ι ℂ) : State ι →ₗ[ℂ]
   map_smul' := by
     intro c ψ
     funext a
-    simp [smul_smul, mul_comm]
+    simp [Finset.smul_sum, smul_smul, mul_comm]
 
 @[simp]
 theorem internalOperator_apply (S : Matrix ι ι ℂ) (ψ : State ι) (a : ι) :
@@ -79,17 +81,21 @@ noncomputable def internalOperatorLinear :
     apply LinearMap.ext
     intro ψ
     funext a
-    simp [internalOperator, smul_smul]
+    simp [internalOperator, Finset.smul_sum]
 
 /-- Componentwise spatial operators Lie-commute with internal matrix operators. -/
 theorem lie_spatialLift_internalOperator_eq_zero
     (A : Spatial →ₗ[ℂ] Spatial) (S : Matrix ι ι ℂ) :
-    ⁅spatialLift A, internalOperator S⁆ = 0 := by
+    ⁅spatialLift (ι := ι) A, internalOperator S⁆ = 0 := by
   simp only [LieRing.of_associative_ring_bracket, Module.End.mul_eq_comp, sub_eq_zero]
   apply LinearMap.ext
   intro ψ
   funext a
-  simp [internalOperator]
+  change A (∑ b : ι, S a b • ψ b) = ∑ b : ι, S a b • A (ψ b)
+  rw [map_sum]
+  simp
+
+end FiniteComponents
 
 /-- Componentwise multiplication by a scalar Schwartz localizer. -/
 noncomputable def multiplicationOperator (f : Spatial) : State ι →ₗ[ℂ] State ι :=

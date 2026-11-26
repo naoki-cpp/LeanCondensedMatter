@@ -25,11 +25,11 @@ noncomputable section
 
 /-- Componentwise Schwartz velocity operator. -/
 noncomputable def velocityOperator (ℏ κ : ℝ) : State (Fin 2) →ₗ[ℂ] State (Fin 2) :=
-  spatialLift (SchwartzSchrodinger1D.velocityOperator ℏ κ)
+  spatialLift (ι := Fin 2) (SchwartzSchrodinger1D.velocityOperator ℏ κ)
 
 /-- Componentwise scalar Schrodinger Hamiltonian. -/
 noncomputable def spatialHamiltonian (κ : ℝ) (potential : Spatial) : State (Fin 2) →ₗ[ℂ] State (Fin 2) :=
-  spatialLift (SchwartzSchrodinger1D.schrodingerOperator κ potential)
+  spatialLift (ι := Fin 2) (SchwartzSchrodinger1D.schrodingerOperator κ potential)
 
 /-- State Hamiltonian consisting of scalar spatial dynamics plus an arbitrary internal matrix.
 
@@ -42,14 +42,14 @@ noncomputable def hamiltonian
 /-- The localization commutator of the two-level state Hamiltonian is unaffected by the internal matrix term. -/
 theorem lie_hamiltonian_localization_eq_spatial
     (κ : ℝ) (potential : Spatial) (internalH : InternalSpace.PauliMatrix) (f : Spatial) :
-    ⁅hamiltonian κ potential internalH, multiplicationOperator f⁆ =
-      ⁅spatialHamiltonian κ potential, multiplicationOperator f⁆ := by
+    ⁅hamiltonian κ potential internalH, multiplicationOperator (ι := Fin 2) f⁆ =
+      ⁅spatialHamiltonian κ potential, multiplicationOperator (ι := Fin 2) f⁆ := by
   rw [hamiltonian, add_lie]
   have h := lie_spatialLift_internalOperator_eq_zero
     (SchwartzKinetic1D.multiplicationOperator f) internalH
-  have hzero : ⁅internalOperator internalH, multiplicationOperator f⁆ = 0 := by
+  have hzero : ⁅internalOperator internalH, multiplicationOperator (ι := Fin 2) f⁆ = 0 := by
     change ⁅internalOperator internalH,
-      spatialLift (SchwartzKinetic1D.multiplicationOperator f)⁆ = 0
+      spatialLift (ι := Fin 2) (SchwartzKinetic1D.multiplicationOperator f)⁆ = 0
     simp only [LieRing.of_associative_ring_bracket, Module.End.mul_eq_comp,
       sub_eq_zero] at h ⊢
     exact h.symm
@@ -60,10 +60,10 @@ Schwartz model, independently of the internal Hamiltonian matrix. -/
 theorem heisenberg_localization_eq_symmetrized_velocity
     (ℏ κ : ℝ) (potential : Spatial) (internalH : InternalSpace.PauliMatrix) (f : Spatial) :
     (Complex.I / (ℏ : ℂ)) •
-        ⁅hamiltonian κ potential internalH, multiplicationOperator f⁆ =
+        ⁅hamiltonian κ potential internalH, multiplicationOperator (ι := Fin 2) f⁆ =
       (1 / 2 : ℂ) •
-        ((multiplicationOperator (SchwartzKinetic1D.derivative f)).comp (velocityOperator ℏ κ) +
-          (velocityOperator ℏ κ).comp (multiplicationOperator (SchwartzKinetic1D.derivative f))) := by
+        ((multiplicationOperator (ι := Fin 2) (SchwartzKinetic1D.derivative f)).comp (velocityOperator ℏ κ) +
+          (velocityOperator ℏ κ).comp (multiplicationOperator (ι := Fin 2) (SchwartzKinetic1D.derivative f))) := by
   rw [lie_hamiltonian_localization_eq_spatial]
   apply LinearMap.ext
   intro ψ

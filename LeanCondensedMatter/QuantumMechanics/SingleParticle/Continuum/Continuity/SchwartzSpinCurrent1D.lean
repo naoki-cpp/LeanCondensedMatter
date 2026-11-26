@@ -47,7 +47,7 @@ noncomputable def schwartzSpinOperatorLinear
     (ℏ : ℝ) :
     QuantumTheory.SpinHalf.SpinSpace →ₗ[ℝ]
       (SchwartzSpinorOneParticle1D →ₗ[ℂ] SchwartzSpinorOneParticle1D) :=
-  (SchwartzComponents1D.internalOperatorLinear.restrictScalars ℝ).comp
+  ((SchwartzComponents1D.internalOperatorLinear (ι := Fin 2)).restrictScalars ℝ).comp
     (QuantumTheory.SpinHalf.spinMatrix ℏ)
 
 /-- With velocity fixed, the one-particle symmetrized spin-current density is real-linear in the
@@ -115,7 +115,7 @@ noncomputable def schwartzSpinCurrentRepresentation1D
       ℏ κ potential internalH)
     (fun α => by
       change
-        ⁅SchwartzComponents1D.spatialLift (SchwartzKinetic1D.multiplicationOperator α),
+        ⁅SchwartzComponents1D.spatialLift (ι := Fin 2) (SchwartzKinetic1D.multiplicationOperator α),
           SchwartzComponents1D.internalOperator
             (QuantumTheory.SpinHalf.spinMatrix ℏ spinComponent)⁆ = 0
       exact SchwartzComponents1D.lie_spatialLift_internalOperator_eq_zero
@@ -140,7 +140,7 @@ theorem symmetrizedSpinCurrent_eq_velocity_comp_spin
         (schwartzSpinOperatorLinear ℏ spinComponent) := by
   apply _root_.LinearMap.symmetrizedProduct_eq_comp_of_commutes
   change
-    ⁅SchwartzComponents1D.spatialLift (SchwartzSchrodinger1D.velocityOperator ℏ κ),
+    ⁅SchwartzComponents1D.spatialLift (ι := Fin 2) (SchwartzSchrodinger1D.velocityOperator ℏ κ),
       SchwartzComponents1D.internalOperator
         (QuantumTheory.SpinHalf.spinMatrix ℏ spinComponent)⁆ = 0
   exact SchwartzComponents1D.lie_spatialLift_internalOperator_eq_zero
@@ -165,21 +165,21 @@ theorem schwartzSpin_sourceCommutator_eq_internal
     (internalH : InternalSpace.PauliMatrix)
     (ℏ : ℝ) (spinComponent : QuantumTheory.SpinHalf.SpinSpace) (f : SchwartzComponents1D.Spatial) :
     _root_.LinearMap.symmetrizedProduct (K := ℂ)
-        (SchwartzComponents1D.multiplicationOperator f)
+        (SchwartzComponents1D.multiplicationOperator (ι := Fin 2) f)
         ⁅SchwartzTwoLevelSchrodinger1D.hamiltonian κ potential internalH,
           schwartzSpinOperatorLinear ℏ spinComponent⁆ =
       _root_.LinearMap.symmetrizedProduct (K := ℂ)
-        (SchwartzComponents1D.multiplicationOperator f)
+        (SchwartzComponents1D.multiplicationOperator (ι := Fin 2) f)
         ⁅SchwartzComponents1D.internalOperator internalH,
           schwartzSpinOperatorLinear ℏ spinComponent⁆ := by
   change
     _root_.LinearMap.symmetrizedProduct (K := ℂ)
-        (SchwartzComponents1D.multiplicationOperator f)
+        (SchwartzComponents1D.multiplicationOperator (ι := Fin 2) f)
         ⁅SchwartzTwoLevelSchrodinger1D.hamiltonian κ potential internalH,
           SchwartzComponents1D.internalOperator
             (QuantumTheory.SpinHalf.spinMatrix ℏ spinComponent)⁆ =
       _root_.LinearMap.symmetrizedProduct (K := ℂ)
-        (SchwartzComponents1D.multiplicationOperator f)
+        (SchwartzComponents1D.multiplicationOperator (ι := Fin 2) f)
         ⁅SchwartzComponents1D.internalOperator internalH,
           SchwartzComponents1D.internalOperator
             (QuantumTheory.SpinHalf.spinMatrix ℏ spinComponent)⁆
@@ -194,7 +194,7 @@ theorem schwartzSpin_sourceCommutator_eq_zero_of_internal_commutes
     (hcomm : ⁅SchwartzComponents1D.internalOperator internalH,
       schwartzSpinOperatorLinear ℏ spinComponent⁆ = 0) :
     _root_.LinearMap.symmetrizedProduct (K := ℂ)
-        (SchwartzComponents1D.multiplicationOperator f)
+        (SchwartzComponents1D.multiplicationOperator (ι := Fin 2) f)
         ⁅SchwartzTwoLevelSchrodinger1D.hamiltonian κ potential internalH,
           schwartzSpinOperatorLinear ℏ spinComponent⁆ = 0 := by
   rw [schwartzSpin_sourceCommutator_eq_internal]
