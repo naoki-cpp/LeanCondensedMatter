@@ -333,19 +333,9 @@ theorem ExternalInsertionDiagram.componentMixedPositionEquiv_apply
   rw [hlocal]
   rw [externalInsertionLegCongr_standardize] at hfixed
   refine hfixed.symm.trans ?_
-  have hambient :
-      externalInsertionMixedTimeAmbientPositionEquiv externalTime σ
-          (externalInsertionMixedTimeOrderedAtomicLegPosition externalTime σ
-            (d.componentOrderedLeg B localLeg)) =
-        (externalInsertionLegEquiv E (Finset.univ : Finset (Fin n))).symm
-          (d.componentOrderedLeg B localLeg) := by
-    apply (externalInsertionLegEquiv E
-      (Finset.univ : Finset (Fin n))).injective
-    rw [externalInsertionLegEquiv_mixedTimeAmbientPositionEquiv,
-      externalInsertionMixedTimeOrderedAtomicLegEquiv_position,
-      Equiv.apply_symm_apply]
   unfold ExternalInsertionDiagram.componentMixedPosition
-  exact hambient.symm
+  exact (externalInsertionMixedTimeAmbientPositionEquiv_legPosition
+    externalTime σ (d.componentOrderedLeg B localLeg)).symm
 
 /-- The canonical family shuffle from component-local mixed atomic positions to the ambient
 mixed-time atomic positions. -/
