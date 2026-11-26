@@ -7,6 +7,15 @@ on:
         description: "Project module (shake requires a module-system import closure)"
         type: string
         default: LeanCondensedMatter.Combinatorics.FiniteSumModEq
+      heartbeat_threshold:
+        description: "Minimum heartbeat trace cost (user heartbeat units; smaller means larger logs)"
+        type: choice
+        default: '100'
+        options:
+          - '1'
+          - '10'
+          - '100'
+          - '1000'
   pull_request:
     paths:
       - '.github/workflows/native_lean_diagnostics.yml'
@@ -28,6 +37,7 @@ jobs:
         case: ${{ fromJSON(github.event_name == 'workflow_dispatch' && '["manual"]' || '["module","legacy"]') }}
     env:
       TARGET_MODULE: ${{ matrix.case == 'legacy' && 'LeanCondensedMatter.Analysis.PowerSeries.Normalization' || inputs.module || 'LeanCondensedMatter.Combinatorics.FiniteSumModEq' }}
+      HEARTBEAT_THRESHOLD: ${{ github.event_name == 'workflow_dispatch' && inputs.heartbeat_threshold || '1' }}
     steps:
       - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
         with:
@@ -41,6 +51,10 @@ jobs:
           [[ "$TARGET_MODULE" =~ ^LeanCondensedMatter(\.[A-Za-z_][A-Za-z0-9_]*)+$ ]]
           source_file="${TARGET_MODULE//./\/}.lean"
           test -f "$source_file"
+          case "$HEARTBEAT_THRESHOLD" in
+            1|10|100|1000) ;;
+            *) echo 'Unsupported heartbeat threshold' >&2; exit 1 ;;
+          esac
           if grep -Eq '^module([[:space:]]|$)' "$source_file"; then
             echo 'module_system=true' >> "$GITHUB_OUTPUT"
           else
@@ -48,7 +62,7 @@ jobs:
           fi
           echo "TARGET_FILE=$source_file" >> "$GITHUB_ENV"
           mkdir -p native-diagnostics
-          printf 'Module: %s\n' "$TARGET_MODULE" > native-diagnostics/target.txt
+          printf 'Module: %s\nHeartbeat threshold: %s\n' "$TARGET_MODULE" "$HEARTBEAT_THRESHOLD" > native-diagnostics/target.txt
 
       - name: Enable resilient elan downloads
         run: bash .github/scripts/enable_curl_retry.sh
@@ -115,11 +129,12 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          # Raw counter threshold: 100000 internal ticks = 100 user heartbeats.
+          # The native trace threshold is in raw ticks, 1000 per user heartbeat.
           # Do not export heartbeat counters as a time-based Firefox profile.
+          raw_threshold=$((HEARTBEAT_THRESHOLD * 1000))
           lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -DElab.async=false \
             -Dtrace.profiler=true -Dtrace.profiler.useHeartbeats=true \
-            -Dtrace.profiler.threshold=100000 "$TARGET_FILE" \
+            -Dtrace.profiler.threshold="$raw_threshold" "$TARGET_FILE" \
             2>&1 | tee native-diagnostics/heartbeats.log
 
       - name: Summarize diagnostics
@@ -188,12 +203,13 @@ jobs:
                           counts[name] = max(counts.get(name, 0), int(float(match[1])))
                   ranked = sorted(counts.items(), key=lambda item: (-item[1], item[0]))
                   with (reports / "heartbeat-ranking.tsv").open("w", encoding="utf-8") as table:
-                      table.write("declaration\\traw_ticks\\theartbeats\n".replace("\\t", "\t"))
+                      table.write("declaration\traw_ticks\theartbeats\n")
                       for name, ticks in ranked:
                           table.write(f"{name}\t{ticks}\t{ticks / 1000:.3f}\n")
                   summary.write("\n### Highest declaration-body heartbeat traces\n\n")
                   summary.write("Successful Elab.definition.value spans only; max per name, not a sum. "
-                                "Thresholded at 100 user heartbeats; statements and unreported spans are excluded.\n\n")
+                                f"Thresholded above {os.environ['HEARTBEAT_THRESHOLD']} user heartbeats; "
+                                "statements and unreported spans are excluded.\n\n")
                   if ranked:
                       summary.write("\x60\x60\x60text\n")
                       for name, ticks in ranked[:20]:
