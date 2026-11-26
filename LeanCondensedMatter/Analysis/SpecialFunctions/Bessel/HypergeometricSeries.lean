@@ -166,26 +166,14 @@ theorem besselJ_one_sq_div_eq_half_product (z : ℝ) :
     have hrec := besselJ_zero_one_two_recurrence (z : ℂ)
     linear_combination (Complex.besselJ 1 (z : ℂ) / 2) * hrec
 
-/-!
-## Analytic derivative of the zeroth Bessel J function
+/-! ## Analytic derivatives at natural-number orders -/
 
-The regularized hypergeometric coefficient shift proves the derivative
-identity `J₀'(z) = -J₁(z)` at every complex argument, including the origin.
-This argument is independent of Fourier kernels and transport models.
--/
-
-/-- The derivative of the regularized hypergeometric series with bottom parameter 1
-has bottom parameter 2. This is the coefficient identity behind `J₀' = -J₁`. -/
-private theorem regularizedHGFun_zero_one_hasDerivAt (w : ℂ) :
-    HasDerivAt (Complex.regularizedHGFun 0 {(1 : ℂ)})
-      (Complex.regularizedHGFun 0 {(2 : ℂ)} w) w := by
-  let p := Complex.regularizedHGFunSeries 0 {(1 : ℂ)}
-  have hcoeff (n : ℕ) :
-      ((n + 1 : ℕ) : ℂ) * Complex.regularizedHGFunCoeff 0 {(1 : ℂ)} (n + 1) =
-        Complex.regularizedHGFunCoeff 0 {(2 : ℂ)} n := by
-    have hshift := regularizedHGFunCoeff_index_shift 0 n
-    norm_num [Nat.cast_add] at hshift ⊢
-    exact hshift
+/-- Differentiating the regularized hypergeometric function with positive integer
+lower parameter shifts that parameter by one. -/
+theorem regularizedHGFun_zero_singleton_nat_hasDerivAt (k : ℕ) (w : ℂ) :
+    HasDerivAt (Complex.regularizedHGFun 0 {((k + 1 : ℕ) : ℂ)})
+      (Complex.regularizedHGFun 0 {((k + 2 : ℕ) : ℂ)} w) w := by
+  let p := Complex.regularizedHGFunSeries 0 {((k + 1 : ℕ) : ℂ)}
   have hradius : ‖w‖ₑ < p.radius := by
     simp [p]
   have hderivRadius : p.derivSeries.radius = ⊤ := by
@@ -195,14 +183,14 @@ private theorem regularizedHGFun_zero_one_hasDerivAt (w : ℂ) :
     p.derivSeries.summable (by simp [hderivRadius])
   have hsum :
       (p.derivSeries.sum w) (1 : ℂ) =
-        Complex.regularizedHGFun 0 {(2 : ℂ)} w := by
+        Complex.regularizedHGFun 0 {((k + 2 : ℕ) : ℂ)} w := by
     calc
       (p.derivSeries.sum w) (1 : ℂ) =
           ∑' n : ℕ, (p.derivSeries n (fun _ => w)) (1 : ℂ) := by
         exact tsum_apply hsummable 1
       _ = ∑' n : ℕ,
           (((n + 1 : ℕ) : ℂ) *
-            Complex.regularizedHGFunCoeff 0 {(1 : ℂ)} (n + 1)) * w ^ n := by
+            Complex.regularizedHGFunCoeff 0 {((k + 1 : ℕ) : ℂ)} (n + 1)) * w ^ n := by
         apply tsum_congr
         intro n
         simp only [FormalMultilinearSeries.apply_eq_pow_smul_coeff,
@@ -210,35 +198,56 @@ private theorem regularizedHGFun_zero_one_hasDerivAt (w : ℂ) :
           smul_eq_mul, nsmul_eq_mul, Nat.cast_add, Nat.cast_one]
         simp only [p, Complex.regularizedHGFunSeries_coeff]
         ring_nf
-      _ = ∑' n : ℕ, Complex.regularizedHGFunCoeff 0 {(2 : ℂ)} n * w ^ n := by
+      _ = ∑' n : ℕ, Complex.regularizedHGFunCoeff 0 {((k + 2 : ℕ) : ℂ)} n * w ^ n := by
         apply tsum_congr
         intro n
-        rw [hcoeff]
-      _ = Complex.regularizedHGFun 0 {(2 : ℂ)} w :=
-        (regularizedHGFun_zero_eq_tsum {(2 : ℂ)} w).symm
-  have hderiv : HasDerivAt (Complex.regularizedHGFun 0 {(1 : ℂ)})
+        rw [regularizedHGFunCoeff_index_shift]
+      _ = Complex.regularizedHGFun 0 {((k + 2 : ℕ) : ℂ)} w :=
+        (regularizedHGFun_zero_eq_tsum {((k + 2 : ℕ) : ℂ)} w).symm
+  have hderiv : HasDerivAt (Complex.regularizedHGFun 0 {((k + 1 : ℕ) : ℂ)})
       ((p.derivSeries.sum w) 1) w := by
     change HasDerivAt p.sum ((p.derivSeries.sum w) 1) w
     exact (p.hasFDerivAt_sum hradius).hasDerivAt
   rw [hsum] at hderiv
   exact hderiv
 
-/-- Derivative of the zeroth complex Bessel function obtained from its
-regularized hypergeometric coefficients. -/
-theorem besselJ_zero_hasDerivAt (w : ℂ) :
-    HasDerivAt (Complex.besselJ 0) (-Complex.besselJ 1 w) w := by
+/-- At a natural-number order the complex Bessel function uses an ordinary
+natural power, so its representation is valid also at the origin. -/
+private theorem besselJ_nat_eq (k : ℕ) (z : ℂ) :
+    Complex.besselJ (k : ℂ) z =
+      (z / 2) ^ k * Complex.regularizedHGFun 0 {((k + 1 : ℕ) : ℂ)} (-(z / 2) ^ 2) := by
+  rw [Complex.besselJ_def, Complex.cpow_natCast, Nat.cast_add, Nat.cast_one]
+
+/-- Derivative of the complex Bessel function at every nonnegative integer order.
+The expression avoids division by the argument and is valid at zero. -/
+theorem besselJ_nat_hasDerivAt (k : ℕ) (w : ℂ) :
+    HasDerivAt (Complex.besselJ (k : ℂ))
+      (((k : ℂ) * (w / 2) ^ (k - 1) * (1 / 2 : ℂ)) *
+        Complex.regularizedHGFun 0 {((k + 1 : ℕ) : ℂ)} (-(w / 2) ^ 2) -
+          Complex.besselJ ((k + 1 : ℕ) : ℂ) w) w := by
   have harg : HasDerivAt (fun t : ℂ => -(t / 2) ^ 2) (-(w / 2)) w := by
     convert (((hasDerivAt_id w).div_const (2 : ℂ)).pow 2).neg using 1
     · funext t
       simp only [Pi.neg_apply, Pi.pow_apply, id_eq]
     · simp only [id_eq]
       ring_nf
-  have h := (regularizedHGFun_zero_one_hasDerivAt (-(w / 2) ^ 2)).comp w harg
-  convert h using 1
+  have hp : HasDerivAt (fun t : ℂ => (t / 2) ^ k)
+      ((k : ℂ) * (w / 2) ^ (k - 1) * (1 / 2 : ℂ)) w :=
+    ((hasDerivAt_id w).div_const (2 : ℂ)).pow k
+  have hh : HasDerivAt
+      (fun t : ℂ => Complex.regularizedHGFun 0 {((k + 1 : ℕ) : ℂ)} (-(t / 2) ^ 2))
+      (Complex.regularizedHGFun 0 {((k + 2 : ℕ) : ℂ)} (-(w / 2) ^ 2) * (-(w / 2))) w :=
+    (regularizedHGFun_zero_singleton_nat_hasDerivAt k (-(w / 2) ^ 2)).comp w harg
+  convert hp.mul hh using 1
   · funext t
-    simp [Complex.besselJ_def]
-  · simp [Complex.besselJ_def]
+    exact besselJ_nat_eq k t
+  · rw [besselJ_nat_eq (k + 1) w, pow_succ]
     ring
+
+/-- Derivative of the zeroth complex Bessel function. -/
+theorem besselJ_zero_hasDerivAt (w : ℂ) :
+    HasDerivAt (Complex.besselJ 0) (-Complex.besselJ 1 w) w := by
+  simpa using besselJ_nat_hasDerivAt 0 w
 
 end
 end BesselHypergeometric
