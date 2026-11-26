@@ -367,6 +367,9 @@ function setBranchFocus(branch) {
     item.style.opacity = !branch || ownBranch === branch || ownBranch === "root"
       ? String(baseOpacity)
       : "0.1";
+    if (item.dataset.crossLink === "true") {
+      item.setAttribute("stroke-opacity", branch && ownBranch === branch ? "0.55" : "0.07");
+    }
   }
 }
 
@@ -443,7 +446,7 @@ function zoomGraph(factor, clientX = null, clientY = null) {
 
 function appendNodeLabel(nodes, name, position, root, selected, showLeafLabel) {
   const depth = Math.abs(position.level);
-  const offset = root ? 28 : depth === 1 ? 25 : 17;
+  const offset = root ? 32 : depth === 1 ? 22 : 16;
   const labelPoint = root
     ? { x: 0, y: offset }
     : polarPoint(0, 0, offset, position.angle);
@@ -511,23 +514,10 @@ function renderGraph({ preserveView = false } = {}) {
   const { levels, truncated } = collectNeighborhood();
   const { positions, parents, children, branchFor, branchColor, width, height, cx, cy } = radialLayout(levels);
   state.labelLayoutKey = null;
+  document.getElementById("graph-direction-left").textContent = state.direction === "both" ? "Dependencies" : "";
+  document.getElementById("graph-direction-right").textContent = state.direction === "both" ? "Used by" : "";
   ui.graph.replaceChildren();
   state.graphBounds = { x: 0, y: 0, width, height };
-
-  const guides = svg("g", { "aria-hidden": "true" });
-  const maxDepth = Math.max(1, ...[...levels.values()].map((level) => Math.abs(level)));
-  for (let depth = 1; depth <= maxDepth; depth += 1) {
-    const sample = [...positions.values()].find((position) => Math.abs(position.level) === depth);
-    if (!sample) continue;
-    guides.append(svg("circle", {
-      cx, cy, r: sample.radius,
-      fill: "none",
-      stroke: "#d7e1d8",
-      "stroke-width": 1,
-      "stroke-dasharray": "2 8",
-    }));
-  }
-  ui.graph.append(guides);
 
   const edges = svg("g", { class: "edges" });
   let edgeCount = 0;
@@ -544,17 +534,18 @@ function renderGraph({ preserveView = false } = {}) {
       const typeReference = source.typeDependencies?.includes(dependencyName);
       const valueReference = source.valueDependencies?.includes(dependencyName);
       const branch = edgeBranch(sourceName, dependencyName, levels, branchFor) ?? "cross";
-      const color = treeEdge ? branchColor.get(branch) ?? "#4c7194" : "#819287";
-      const opacity = treeEdge ? 0.8 : 0.18;
+      const color = treeEdge ? branchColor.get(branch) ?? "#648875" : "#b9c9be";
+      const opacity = treeEdge ? 0.85 : 0.07;
       const path = svg("path", {
         d: curvedEdgePath(sourcePosition, targetPosition, cx, cy),
         fill: "none",
         stroke: color,
-        "stroke-width": isWrapper ? 2.4 : treeEdge ? 1.45 : 1,
+        "stroke-width": isWrapper ? 2 : treeEdge ? 1.7 : 0.8,
         "stroke-opacity": opacity,
         "stroke-dasharray": isWrapper ? "7 5" : typeReference && !valueReference ? "2 5" : treeEdge ? "none" : "4 7",
         "stroke-linecap": "round",
-        "data-branch": treeEdge ? branch : "cross",
+        "data-branch": branch,
+        "data-cross-link": treeEdge ? "false" : "true",
         "data-base-opacity": 1,
       });
       const title = svg("title");

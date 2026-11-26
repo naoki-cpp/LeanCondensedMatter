@@ -13,12 +13,12 @@ export function graphNodeRadius({ depth = 1, root = false, selected = false } = 
 
 export function graphNodeLabelAttributes({ depth = 1, root = false } = {}) {
   return {
-    fill: root ? ROOT_LABEL_COLOR : "#354b40",
-    "font-family": "var(--code-font)",
-    "font-size": root ? 13 : depth === 1 ? 12 : 11,
+    fill: root ? ROOT_LABEL_COLOR : "#213e30",
+    "font-family": "var(--ui-font)",
+    "font-size": root ? 16 : depth === 1 ? 14 : 13,
     "font-weight": root ? 600 : 400,
     "paint-order": "stroke",
-    stroke: "#f5f7f3",
+    stroke: "#f7f9f6",
     "stroke-width": root ? 4 : 3,
     "stroke-linejoin": "round",
     "dominant-baseline": "middle",
@@ -28,8 +28,11 @@ export function graphNodeLabelAttributes({ depth = 1, root = false } = {}) {
 export function graphLabelLines(name, limit = 26) {
   const characters = Array.from(name);
   if (characters.length <= limit) return [name];
-  const separator = characters.slice(0, limit).findLastIndex((character) => character === "_" || character === ".");
-  const cut = separator >= limit / 2 && characters.length - separator - 1 <= limit ? separator + 1 : limit;
+  const breaks = characters.flatMap((character, index) =>
+    character === "_" || character === "." || (index > 0 && /[a-z]/.test(characters[index - 1]) && /[A-Z]/.test(character))
+      ? [character === "_" || character === "." ? index + 1 : index] : []);
+  const candidates = breaks.filter((cut) => cut <= limit && characters.length - cut <= limit);
+  const cut = candidates.sort((a, b) => Math.abs(a - characters.length / 2) - Math.abs(b - characters.length / 2))[0] ?? limit;
   const remainder = characters.slice(cut);
   return [characters.slice(0, cut).join(""), remainder.length <= limit ? remainder.join("") : remainder.slice(0, limit - 1).join("") + "…"];
 }
