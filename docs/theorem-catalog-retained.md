@@ -180,7 +180,7 @@ using a zero-consumer signal as grounds for changing its retention.
 - `ConservationLaw.localizationCorrectionCurrentFlux_smul_one` — independently useful
   charge-like specialization stating that the localization correction vanishes for a scalar
   multiple of the identity.
-- `QuantumTheory.ConservationLaw.correctedChargeCurrentFlux_eq` — physical charge-current
+- `ConservationLaw.correctedChargeCurrentFlux_eq` — physical charge-current
   specialization identifying the corrected current with the local pairing `q v`.
 - `Lorentzian.tendsto_spectralTailMass_zero` — model-independent analytic
   approximate-identity result for the vanishing difference of Lorentzian masses
@@ -214,10 +214,10 @@ using a zero-consumer signal as grounds for changing its retention.
   evaluation rule identifying the bundled retarded-advanced ladder action with the physical
   covariance insertion `C₂(Gᴿ Γ Gᴬ)`; it is the stable simplification boundary for the ladder API.
 - `ConservationLaw.localCurrentDensity_unique_of_separates` — Local current-density uniqueness when the paired differential-test map is injective; this is a physical identifiability criterion, not an unconditional locality or uniqueness claim.
-- `QuantumTheory.ConservationLaw.currentEquivalent_nestedSymmetrizedCurrentFlux` — canonical
+- `ConservationLaw.currentEquivalent_nestedSymmetrizedCurrentFlux` — canonical
   corrected-current equivalence theorem: any full current representing the intrinsic transport is
   equivalent on exact differentials to the canonical nested current flux.
-- `QuantumTheory.ConservationLaw.exists_current_eq_symmetrized_add_correction_add_invisible` —
+- `ConservationLaw.exists_current_eq_symmetrized_add_correction_add_invisible` —
   physics-facing representation theorem `J = J_sym + J_corr + K` with `K` invisible on exact
   differentials; it is the explicit extension-ambiguity endpoint of the corrected-current API.
 - `QuantumMechanics.SingleParticle.lie_orbitalAngularMomentum_continuum_sign` — physics-facing

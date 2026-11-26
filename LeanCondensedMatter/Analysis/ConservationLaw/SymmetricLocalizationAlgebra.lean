@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Analysis.Operator.SymmetrizedProduct
+import LeanCondensedMatter.Analysis.ConservationLaw.CurrentRepresentation
 
 set_option linter.style.header false
 
@@ -14,8 +15,8 @@ For a one-form localizer `N` and a distinguished operator `v`, the nested flux
 `[v,[N α,m]]/4`.
 
 These are algebraic identities (with the usual physical interpretation when 2 is
-nonzero). Neither a differential-current representation nor Heisenberg dynamics
-is assumed; both are supplied downstream.
+nonzero). The same algebra constructs current representations from any supplied linear
+localizer evolution with a velocity representation; no Heisenberg dynamics is assumed.
 -/
 
 namespace ConservationLaw
@@ -126,5 +127,159 @@ theorem localizationCorrectionCurrentFlux_smul_one
   simp [LieRing.of_associative_ring_bracket, Algebra.mul_smul_comm, Algebra.smul_mul_assoc]
 
 end CorrectedFlux
+
+/-- A one-form-like test is paired with an algebra-valued current density by symmetric
+localization. This pairing does not choose which current density represents a given transport
+functional. -/
+noncomputable def operatorLocalCurrentPairing
+    (N : OneForm →ₗ[K] A) :
+    LocalCurrentPairing
+      (𝕜 := K)
+      (OneForm := OneForm)
+      (Obs := A)
+      (CurrentDensity := A) :=
+  ((LinearMap.llcomp K OneForm A A).flip N).comp
+    (LinearMap.flip (LinearMapsymmetrizedProductBilinear (K := K) A))
+
+@[simp]
+theorem operatorLocalCurrentPairing_apply
+    (N : OneForm →ₗ[K] A)
+    (current : A) (α : OneForm) :
+    operatorLocalCurrentPairing N current α =
+      LinearMapsymmetrizedProduct (K := K) (N α) current :=
+  rfl
+
+section CorrectedCurrent
+
+/-- A velocity representation of localizer evolution lifts to the generic nested current flux for
+an arbitrary transported operator `m`; no locality/commutation assumption on `m` is needed. -/
+theorem nestedSymmetrizedCurrentFlux_eq_comp
+    (L : Test →ₗ[K] A)
+    (m velocity : A)
+    (d : Test →ₗ[K] OneForm)
+    (N : OneForm →ₗ[K] A)
+    (hvelocity : L =
+      (localizedQuantityFunctional N velocity).comp d) :
+    localizedQuantityFunctional L m =
+      (nestedSymmetrizedCurrentFlux velocity m N).comp d := by
+  calc
+    localizedQuantityFunctional L m =
+        localizedQuantityFunctional
+          ((localizedQuantityFunctional N velocity).comp d) m :=
+      congrArg (fun T : Test →ₗ[K] A => localizedQuantityFunctional T m) hvelocity
+    _ = _ := by
+      apply LinearMap.ext
+      intro f
+      rfl
+
+/-- The generic nested current flux is a chosen full differential-current representation of the
+intrinsic transport whenever the supplied localizer evolution has a velocity representation. -/
+noncomputable def correctedSymmetrizedVelocityCurrentRepresentation
+    (L : Test →ₗ[K] A)
+    (m velocity : A)
+    (d : Test →ₗ[K] OneForm)
+    (N : OneForm →ₗ[K] A)
+    (hvelocity : L =
+      (localizedQuantityFunctional N velocity).comp d) :
+    DifferentialCurrentRepresentation d
+      (localizedQuantityFunctional L m) where
+  val := nestedSymmetrizedCurrentFlux velocity m N
+  property := nestedSymmetrizedCurrentFlux_eq_comp L m velocity d N hvelocity
+
+/-- Any other full current functional representing the same intrinsic transport is equivalent on
+exact differentials to the generic nested current flux. -/
+theorem currentEquivalent_nestedSymmetrizedCurrentFlux
+    (L : Test →ₗ[K] A)
+    (m velocity : A)
+    (d : Test →ₗ[K] OneForm)
+    (N : OneForm →ₗ[K] A)
+    (hvelocity : L =
+      (localizedQuantityFunctional N velocity).comp d)
+    (R : DifferentialCurrentRepresentation d
+      (localizedQuantityFunctional L m)) :
+    R.val.comp d =
+      (nestedSymmetrizedCurrentFlux velocity m N).comp d :=
+  R.property.symm.trans
+    (correctedSymmetrizedVelocityCurrentRepresentation L m velocity d N hvelocity).property
+
+/-- Any representative of the same intrinsic transport has the form
+
+`J = J_sym + J_corr + K`
+
+with `K (d f) = 0` for every test object `f`. Thus `K` is pure extension ambiguity invisible
+to the intrinsic flux. -/
+theorem exists_current_eq_symmetrized_add_correction_add_invisible
+    (L : Test →ₗ[K] A)
+    (m velocity : A)
+    (d : Test →ₗ[K] OneForm)
+    (N : OneForm →ₗ[K] A)
+    (hvelocity : L =
+      (localizedQuantityFunctional N velocity).comp d)
+    (R : DifferentialCurrentRepresentation d
+      (localizedQuantityFunctional L m)) :
+    ∃ K : OneForm →ₗ[K] A,
+      K.comp d = 0 ∧
+        R.val =
+          (symmetrizedCurrentFlux velocity m N +
+            localizationCorrectionCurrentFlux velocity m N) + K := by
+  refine ⟨R.val - nestedSymmetrizedCurrentFlux velocity m N,
+    ?_, ?_⟩
+  · rw [LinearMap.sub_comp,
+      currentEquivalent_nestedSymmetrizedCurrentFlux L m velocity d N hvelocity R,
+      sub_self]
+  · rw [← nestedSymmetrizedCurrentFlux_eq_symmetrized_add_correction,
+      add_comm, sub_add_cancel]
+
+/-- The symmetrized velocity current supplies a local current-density representation whenever the
+supplied localizer evolution factors through `d` and the localized one-form operators
+commute with the transported quantity. -/
+noncomputable def symmetrizedVelocityCurrentRepresentation
+    (L : Test →ₗ[K] A)
+    (m velocity : A)
+    (d : Test →ₗ[K] OneForm)
+    (N : OneForm →ₗ[K] A)
+    (hvelocity : L =
+      (localizedQuantityFunctional N velocity).comp d)
+    (hcomm : ∀ α, ⁅N α, m⁆ = 0) :
+    LocalCurrentDensityRepresentation
+      d
+      (localizedQuantityFunctional L m)
+      (operatorLocalCurrentPairing N) where
+  val := LinearMapsymmetrizedProduct (K := K) velocity m
+  property := by
+    change localizedQuantityFunctional L m =
+      (symmetrizedCurrentFlux velocity m N).comp d
+    rw [nestedSymmetrizedCurrentFlux_eq_comp L m velocity d N hvelocity,
+      nestedSymmetrizedCurrentFlux_eq_symmetrized_add_correction,
+      localizationCorrectionCurrentFlux_eq_zero_of_commutes
+        velocity m N hcomm, add_zero]
+
+@[simp]
+theorem symmetrizedVelocityCurrentRepresentation_currentDensity
+    (L : Test →ₗ[K] A)
+    (m velocity : A)
+    (d : Test →ₗ[K] OneForm)
+    (N : OneForm →ₗ[K] A)
+    (hvelocity : L =
+      (localizedQuantityFunctional N velocity).comp d)
+    (hcomm : ∀ α, ⁅N α, m⁆ = 0) :
+    (symmetrizedVelocityCurrentRepresentation L m velocity d N hvelocity hcomm).val =
+      LinearMapsymmetrizedProduct (K := K) velocity m :=
+  rfl
+
+/-- The canonical corrected flux for a scalar quantity `q • 1` is the local pairing
+with charge-current density `q • velocity`. -/
+theorem correctedChargeCurrentFlux_eq [NeZero (2 : K)]
+    (velocity : A) (N : OneForm →ₗ[K] A) (q : K) :
+    nestedSymmetrizedCurrentFlux velocity (q • 1) N =
+      operatorLocalCurrentPairing N (q • velocity) := by
+  rw [nestedSymmetrizedCurrentFlux_eq_symmetrized_add_correction,
+    localizationCorrectionCurrentFlux_smul_one velocity N q, add_zero]
+  apply LinearMap.ext
+  intro α
+  rw [symmetrizedCurrentFlux_apply,
+    operatorLocalCurrentPairing_apply, LinearMapsymmetrizedProduct_smul_one]
+
+end CorrectedCurrent
 
 end ConservationLaw
