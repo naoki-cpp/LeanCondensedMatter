@@ -75,13 +75,7 @@ private theorem norm_resolventApproximationEvolution_sub_le
     exact boundedSelfAdjointApproximation_commute A hA r s hr hs
   have hAsD : Commute As D := by
     exact hArAs.symm.sub_right (Commute.refl As)
-  have hD : IsSelfAdjoint D := by
-    rw [isSelfAdjoint_iff]
-    have hArstar : star Ar = Ar := by
-      simpa only [isSelfAdjoint_iff] using hAr
-    have hAsstar : star As = As := by
-      simpa only [isSelfAdjoint_iff] using hAs
-    simp [D, star_sub, hArstar, hAsstar]
+  have hD : IsSelfAdjoint D := hAr.sub hAs
   have hadd : As + D = Ar := by
     simp [D]
   have hfactor :
@@ -109,58 +103,35 @@ private def resolventApproximationEvolutionAtScale
     (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (r t : ℝ) : H →L[ℂ] H :=
   boundedUnitaryEvolution (boundedSelfAdjointApproximationAtScale A hA r) t
 
+/-- The totalized bounded generators converge on the original generator domain. -/
+private theorem tendsto_boundedSelfAdjointApproximationAtScale_apply
+    (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (x : A.domain) :
+    Tendsto (fun r : ℝ => boundedSelfAdjointApproximationAtScale A hA r (x : H))
+      atTop (𝓝 (A x)) := by
+  rw [Metric.tendsto_nhds]
+  intro ε hε
+  obtain ⟨R, _, hconv⟩ :=
+    boundedSelfAdjointApproximation_strong_convergence A hA x ε hε
+  filter_upwards [eventually_ge_atTop R] with s hs
+  simpa [boundedSelfAdjointApproximationAtScale, dist_eq_norm] using
+    hconv (max 1 s) (hs.trans (le_max_right 1 s))
+      (zero_lt_one.trans_le (le_max_left 1 s))
+
 /-- On the generator domain, the totalized resolvent evolutions form a Cauchy sequence at
 positive infinity. -/
 private theorem resolventApproximationEvolutionAtScale_apply_domain_cauchySeq
     (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (t : ℝ) (x : A.domain) :
     CauchySeq (fun r : ℝ => resolventApproximationEvolutionAtScale A hA r t (x : H)) := by
-  refine Metric.cauchySeq_iff.2 ?_
-  intro ε hε
-  by_cases ht : t = 0
-  · refine ⟨0, ?_⟩
-    intro r hr s hs
-    simpa [ht, resolventApproximationEvolutionAtScale] using hε
-  · have habs : 0 < |t| := abs_pos.mpr ht
-    have hden : 0 < 2 * |t| := by positivity
-    obtain ⟨R, hR, hconv⟩ :=
-      boundedSelfAdjointApproximation_strong_convergence A hA x
-        (ε / (2 * |t|)) (by positivity)
-    refine ⟨max R 1, ?_⟩
-    intro r hr s hs
-    have hRr : R ≤ r := (le_max_left R 1).trans hr
-    have hRs : R ≤ s := (le_max_left R 1).trans hs
-    have h1r : 1 ≤ r := (le_max_right R 1).trans hr
-    have h1s : 1 ≤ s := (le_max_right R 1).trans hs
-    have hrpos : 0 < r := zero_lt_one.trans_le h1r
-    have hspos : 0 < s := zero_lt_one.trans_le h1s
-    have hrscaled :
-        ‖boundedSelfAdjointApproximation A hA r hrpos (x : H) - A x‖ *
-            (2 * |t|) < ε :=
-      (lt_div_iff₀ hden).mp (hconv r hRr hrpos)
-    have hsscaled :
-        ‖boundedSelfAdjointApproximation A hA s hspos (x : H) - A x‖ *
-            (2 * |t|) < ε :=
-      (lt_div_iff₀ hden).mp (hconv s hRs hspos)
-    have hsum :
-        (‖boundedSelfAdjointApproximation A hA r hrpos (x : H) - A x‖ +
-          ‖boundedSelfAdjointApproximation A hA s hspos (x : H) - A x‖) *
-            |t| < ε := by
-      nlinarith only [hrscaled, hsscaled]
-    have hdiff :
-        ‖(boundedSelfAdjointApproximation A hA r hrpos -
-            boundedSelfAdjointApproximation A hA s hspos) (x : H)‖ ≤
-          ‖boundedSelfAdjointApproximation A hA r hrpos (x : H) - A x‖ +
-            ‖boundedSelfAdjointApproximation A hA s hspos (x : H) - A x‖ := by
-      simpa only [_root_.sub_apply, sub_sub_sub_cancel_right] using
-        (norm_sub_le
-          (boundedSelfAdjointApproximation A hA r hrpos (x : H) - A x)
-          (boundedSelfAdjointApproximation A hA s hspos (x : H) - A x))
-    have hnorm :=
-      (norm_resolventApproximationEvolution_sub_le A hA r s hrpos hspos t (x : H)).trans_lt
-        ((mul_le_mul_of_nonneg_right hdiff (abs_nonneg t)).trans_lt hsum)
-    simpa [dist_eq_norm, resolventApproximationEvolutionAtScale,
-      boundedSelfAdjointApproximationAtScale, resolventApproximationEvolution,
-      max_eq_right h1r, max_eq_right h1s] using hnorm
+  rw [cauchySeq_iff_tendsto_dist_atTop_0]
+  have hgen := cauchySeq_iff_tendsto_dist_atTop_0.mp
+    (tendsto_boundedSelfAdjointApproximationAtScale_apply A hA x).cauchySeq
+  refine squeeze_zero (fun _ => dist_nonneg) (fun p : ℝ × ℝ => ?_) ?_
+  · simpa only [dist_eq_norm, resolventApproximationEvolutionAtScale,
+      boundedSelfAdjointApproximationAtScale, resolventApproximationEvolution, sub_apply] using
+      norm_resolventApproximationEvolution_sub_le A hA (max 1 p.1) (max 1 p.2)
+        (zero_lt_one.trans_le (le_max_left 1 p.1))
+        (zero_lt_one.trans_le (le_max_left 1 p.2)) t (x : H)
+  · simpa only [zero_mul] using hgen.mul_const |t|
 
 end
 
@@ -412,23 +383,18 @@ theorem stoneEvolution_star
     (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (t : ℝ) :
     star (stoneEvolution A hA t) =
       stoneEvolution A hA (-t) := by
-  rw [ContinuousLinearMap.star_eq_adjoint]
-  symm
-  rw [ContinuousLinearMap.eq_adjoint_iff]
-  intro x y
-  have hinner :=
-    (LinearMap.norm_map_iff_inner_map_map (stoneEvolution A hA t)).mp
-      (fun z => by
-        simpa using resolventEvolutionStrongLimit_apply_norm A hA t z)
-      (stoneEvolution A hA (-t) x) y
-  have hcancel :
-      stoneEvolution A hA t
-        (stoneEvolution A hA (-t) x) = x := by
-    have hgroup := congrArg (fun U : H →L[ℂ] H => U x)
-      (stoneEvolution_add A hA t (-t))
-    simpa [stoneEvolution_zero, mul_apply_eq_comp] using hgroup.symm
-  rw [hcancel] at hinner
-  exact hinner.symm
+  have hleft : star (stoneEvolution A hA t) * stoneEvolution A hA t = 1 := by
+    rw [ContinuousLinearMap.star_eq_adjoint]
+    exact (ContinuousLinearMap.norm_map_iff_adjoint_comp_self (stoneEvolution A hA t)).mp
+      (fun x => by simpa using resolventEvolutionStrongLimit_apply_norm A hA t x)
+  have hright : stoneEvolution A hA t * stoneEvolution A hA (-t) = 1 := by
+    rw [← stoneEvolution_add]
+    simp
+  calc
+    star (stoneEvolution A hA t) =
+        star (stoneEvolution A hA t) * (stoneEvolution A hA t * stoneEvolution A hA (-t)) := by
+      rw [hright, mul_one]
+    _ = stoneEvolution A hA (-t) := by rw [← mul_assoc, hleft, one_mul]
 
 /-- The limiting evolution is unitary, left-inverse form. -/
 theorem stoneEvolution_star_mul
@@ -732,18 +698,7 @@ private theorem norm_stoneEvolution_sub_resolventApproximationEvolution_le
         (𝓝 ‖Ur (x : H) - stoneEvolution A hA t (x : H)‖) := by
     exact (tendsto_const_nhds.sub
       (tendsto_resolventApproximationEvolutionAtScale_apply A hA t (x : H))).norm
-  have hAconv :
-      Tendsto
-        (fun s : ℝ => boundedSelfAdjointApproximationAtScale A hA s (x : H))
-        atTop (𝓝 (A x)) := by
-    rw [Metric.tendsto_nhds]
-    intro ε hε
-    obtain ⟨R, _, hconv⟩ :=
-      boundedSelfAdjointApproximation_strong_convergence A hA x ε hε
-    filter_upwards [eventually_ge_atTop R] with s hs
-    simpa [boundedSelfAdjointApproximationAtScale, dist_eq_norm] using
-      hconv (max 1 s) (hs.trans (le_max_right 1 s))
-        (zero_lt_one.trans_le (le_max_left 1 s))
+  have hAconv := tendsto_boundedSelfAdjointApproximationAtScale_apply A hA x
   have hgen :
       Tendsto
         (fun s : ℝ =>
