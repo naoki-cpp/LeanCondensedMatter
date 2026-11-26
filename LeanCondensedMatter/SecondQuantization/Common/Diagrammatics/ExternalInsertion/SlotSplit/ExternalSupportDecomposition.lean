@@ -30,6 +30,14 @@ noncomputable def ExternalInsertionDiagram.externalBearingDiagram
   d.slotSplitExternal d.externallySupportedInteractionPart_subset
     d.pairing_isSplit_externallySupportedInteractionPart
 
+/-- The canonical external-bearing restriction retains all external labels. -/
+@[simp]
+theorem ExternalInsertionDiagram.externalBearingDiagram_externalLabel
+    {S : Finset (Fin N)}
+    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
+    (e : Fin (2 * E)) :
+    d.externalBearingDiagram.externalLabel e = d.externalLabel e := rfl
+
 /-- The ordinary quartic diagram formed by the vacuum components of an external-insertion
 diagram. -/
 noncomputable def ExternalInsertionDiagram.vacuumDiagram
