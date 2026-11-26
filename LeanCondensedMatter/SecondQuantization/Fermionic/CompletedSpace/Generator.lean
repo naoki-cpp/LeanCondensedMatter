@@ -37,21 +37,10 @@ theorem completedFockUnitary_completedExterior_hasDerivAt_zero
       completedFockUnitary (e t) (completedExterior (ExteriorAlgebra.map j x)))
       ((-Complex.I) • completedExterior (ExteriorAlgebra.map j (AlgebraicFock.dGamma V T x)))
       0 := by
-  have hcreate (v : V) (y : AlgebraicFock V) :
-      completedExterior (ExteriorAlgebra.map j (AlgebraicFock.create V v y)) =
-        completedCreateField (j v) (completedExterior (ExteriorAlgebra.map j y)) := by
-    simp only [AlgebraicFock.create_apply, AlgebraicFock.oneParticle, map_mul,
-      ExteriorAlgebra.map_apply_ι]
-    exact completedExterior_create (j v) (ExteriorAlgebra.map j y)
-  have hscalar (a : ℂ) :
-      AlgebraicFock.dGamma V T (algebraMap ℂ (AlgebraicFock V) a) = 0 := by
-    rw [Algebra.algebraMap_eq_smul_one, map_smul]
-    change a • AlgebraicFock.dGamma V T (AlgebraicFock.vacuum V) = 0
-    rw [AlgebraicFock.dGamma_vacuum, smul_zero]
   induction x using CliffordAlgebra.left_induction with
   | algebraMap a =>
       simp only [AlgHom.commutes, completedExterior_algebraMap, map_smul,
-        completedFockUnitary_vacuum, hscalar, map_zero, smul_zero]
+        completedFockUnitary_vacuum, AlgebraicFock.dGamma_algebraMap, map_zero, smul_zero]
       exact hasDerivAt_const 0 _
   | add x y hx hy =>
       simp only [map_add, smul_add]
@@ -80,7 +69,8 @@ theorem completedFockUnitary_completedExterior_hasDerivAt_zero
             AlgebraicFock.create V v (AlgebraicFock.dGamma V T x) :=
         AlgebraicFock.dGamma_oneParticle_mul V T v x
       rw [hstep]
-      simp only [map_add, smul_add, hcreate, completedFockUnitary_createField]
+      simp only [map_add, smul_add, AlgebraicFock.map_create_apply,
+        completedExterior_create, completedFockUnitary_createField]
       have hid : LinearIsometryEquiv.refl ℂ (Common.CompletedFock Mode) (j v) = j v := rfl
       simpa only [hzero, hid, completedFockUnitary_refl,
         map_smul, smul_apply] using hd
