@@ -82,7 +82,7 @@ theorem coeff_one_logOf {Z : PowerSeries R} (hZ : constantCoeff Z = 1) :
   change constantCoeff (d⁄dX (logOf Z) * Z) = constantCoeff (d⁄dX Z) at h
   rw [map_mul, hZ, mul_one] at h
   simpa only [← coeff_zero_eq_constantCoeff_apply, coeff_derivative, Nat.zero_add,
-    Nat.cast_one, mul_one] using h
+    Nat.cast_zero, zero_add, mul_one] using h
 
 end LogDerivative
 
