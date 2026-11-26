@@ -61,26 +61,5 @@ theorem ExternalInsertionWickDiagram.slotCongr_fixedTimeAmplitude_eq_of_injectiv
     d.slotCongr_vertexWeight e g,
     d.slotCongr_mixedPairingValue_eq_of_injective e ε β externalTime σ hσ]
 
-/-- **Full physical Dyson-signed fixed-time amplitude covariance.**
-On every strict interaction-time chamber, arbitrary relabeling of
-quartic interaction vertices has no effect on the physical amplitude;
-the same Dyson factor `(-1)^n` multiplies both sides.
-
-No equality at coincident interaction-vertex times is asserted. Such
-collisions are excluded by the strict ordered-simplex congruence
-theorem when passing to integrated Dyson contributions. -/
-theorem ExternalInsertionWickDiagram.slotCongr_dysonFixedTimeAmplitude_eq_of_injective
-    {E n : ℕ} (d : ExternalInsertionWickDiagram Mode E n)
-    (e : ↥(Finset.univ : Finset (Fin n)) ≃
-      ↥(Finset.univ : Finset (Fin n)))
-    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
-    (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ)
-    (hσ : Function.Injective σ) :
-    ExternalInsertionWickDiagram.dysonFixedTimeAmplitude (d.slotCongr e) ε β g externalTime
-        (σ ∘ fun v => (e.symm ⟨v, Finset.mem_univ v⟩).1) =
-      d.dysonFixedTimeAmplitude ε β g externalTime σ := by
-  simp only [ExternalInsertionWickDiagram.dysonFixedTimeAmplitude,
-    d.slotCongr_fixedTimeAmplitude_eq_of_injective e ε β g externalTime σ hσ]
-
 end Fermionic
 end SecondQuantization
