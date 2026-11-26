@@ -42,10 +42,8 @@ theorem mem_naturalCompDomain_iff (g : F →ₗ.[R] G) (f : E →ₗ.[R] F) (x :
 
 /-- Compose two partially defined linear maps on their natural operator-product domain. -/
 @[expose] def compOnDomain (g : F →ₗ.[R] G) (f : E →ₗ.[R] F) : E →ₗ.[R] G := by
-  have hdomain : naturalCompDomain g f ≤ f.domain := by
-    intro x hx
-    rcases (mem_naturalCompDomain_iff g f x).1 hx with ⟨hxf, _⟩
-    exact hxf
+  have hdomain : naturalCompDomain g f ≤ f.domain :=
+    Submodule.map_subtype_le _ _
   exact {
     domain := naturalCompDomain g f
     toFun :=
