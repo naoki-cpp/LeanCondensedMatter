@@ -39,17 +39,10 @@ theorem PairingOn.componentGeometricCrossingCount_eq_oriented_add (pairing : Pai
     (e : (Σ B : ι, F B) ≃ pairing.NormalizedPair) (B C : ι) :
     pairing.componentGeometricCrossingCount e B C =
       pairing.componentCrossingCount e B C + pairing.componentCrossingCount e C B := by
-  classical
-  have hswap : pairing.componentCrossingCount e C B =
-      ∑ x : F B × F C,
-        if Crosses (e ⟨C, x.2⟩).1 (e ⟨B, x.1⟩).1 then 1 else 0 := by
-    rw [PairingOn.componentCrossingCount,
-      ← Equiv.sum_comp (Equiv.prodComm (F B) (F C))]
-    rfl
-  rw [PairingOn.componentGeometricCrossingCount, hswap,
-    PairingOn.componentCrossingCount, ← Finset.sum_add_distrib]
-  refine Finset.sum_congr rfl fun x _ => ?_
-  exact (crossesIndicator_add _ _).symm
+  simpa only [PairingOn.componentGeometricCrossingCount, PairingOn.componentCrossingCount,
+    Fintype.sum_prod_type] using
+    (sum_sum_crosses_oriented_add (fun p : F B => (e ⟨B, p⟩).1)
+      (fun q : F C => (e ⟨C, q⟩).1)).symm
 
 /-- The geometric crossing count between two components does not depend on their order. -/
 theorem PairingOn.componentGeometricCrossingCount_comm (pairing : PairingOn α)
@@ -132,19 +125,10 @@ theorem PairingOn.componentCrossingCount_self_eq
       (e ⟨B, localEquiv pr⟩).1 =
         (position pr.1.1, position pr.1.2)) :
     pairing.componentCrossingCount e B B = localPairing.crossingCount := by
-  classical
-  rw [PairingOn.componentCrossingCount, Fintype.sum_prod_type,
-    PairingOn.crossingCount_eq_sum_crosses, Fintype.sum_prod_type]
-  exact sum_sum_crosses_eq_of_equiv
-    (fun p : F B => (e ⟨B, p⟩).1)
-    (fun pr : localPairing.NormalizedPair => pr.1)
-    localEquiv.symm
-    (fun p q => by
-      rw [← localEquiv.apply_symm_apply p, ← localEquiv.apply_symm_apply q,
-        hpair, hpair]
-      simpa using crosses_map_iff position hmono
-        (localEquiv.symm p).1.1 (localEquiv.symm p).1.2
-        (localEquiv.symm q).1.1 (localEquiv.symm q).1.2)
+  rw [PairingOn.componentCrossingCount, Fintype.sum_prod_type]
+  exact localPairing.sum_sum_crosses_map_eq_crossingCount position hmono
+    (fun p : F B => (e ⟨B, p⟩).1) localEquiv.symm
+    (fun p => by simpa only [Equiv.apply_symm_apply] using hpair (localEquiv.symm p))
 
 /-- The crossing count is the double sum of the oriented component crossing counts. -/
 theorem PairingOn.crossingCount_eq_sum_componentCrossingCount [Fintype ι] (pairing : PairingOn α)

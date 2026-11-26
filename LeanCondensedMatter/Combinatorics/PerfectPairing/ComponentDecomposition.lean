@@ -102,9 +102,7 @@ theorem PairingOn.prod_pairs_eq_prod_components [Fintype ι]
       rw [Fintype.prod_sigma]
       apply Fintype.prod_congr
       intro B
-      exact (Finset.prod_subtype
-        (componentPairing B).pairs (fun _ => Iff.rfl)
-        (fun pr => localPairValue B pr.1 pr.2)).symm
+      exact (componentPairing B).prod_normalizedPair_eq_prod_pairs (localPairValue B)
 
 /-- Scalar pairing evaluation factors into a residual factor and component evaluations when both
 its weight and its pair kernel respect the component-pair decomposition. -/

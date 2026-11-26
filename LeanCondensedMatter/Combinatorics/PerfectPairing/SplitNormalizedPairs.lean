@@ -153,9 +153,7 @@ theorem PairingOn.prod_pairs_ofSplit
     _ = _ := by
       rw [Fintype.prod_sum_type]
       exact congrArg₂ (· * ·)
-        (Finset.prod_subtype P.pairs (fun _ => Iff.rfl)
-          (fun pr => leftValue pr.1 pr.2)).symm
-        (Finset.prod_subtype Q.pairs (fun _ => Iff.rfl)
-          (fun pr => rightValue pr.1 pr.2)).symm
+        (P.prod_normalizedPair_eq_prod_pairs leftValue)
+        (Q.prod_normalizedPair_eq_prod_pairs rightValue)
 
 end Combinatorics
