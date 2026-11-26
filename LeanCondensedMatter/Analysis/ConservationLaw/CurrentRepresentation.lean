@@ -38,8 +38,11 @@ that a supplied one-form functional represents `Φ` through `d`; it is not the r
 every current operator.
 
 Two currents agree on exact differential data precisely when their compositions with `d` are equal.
-Invisible extensions satisfy `K.comp d = 0`; differences of representatives are handled by
-`LinearMap.sub_comp`. A density is uniquely determined when the map
+Invisible extensions satisfy `K.comp d = 0`: they lie in the kernel of
+`(LinearMap.llcomp 𝕜 Test OneForm Obs).flip d`. Differences of representatives are
+handled by `LinearMap.sub_comp`; equivalently, membership of a difference in that kernel
+is equality of its images (`LinearMap.sub_mem_ker_iff`). No new fiber or kernel API is needed.
+A density is uniquely determined when the map
 `j ↦ (pairing j).comp d` is injective. These use ordinary equality and injectivity, not a separate
 current-specific equivalence relation.
 -/

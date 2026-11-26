@@ -215,11 +215,12 @@ using a zero-consumer signal as grounds for changing its retention.
   covariance insertion `C₂(Gᴿ Γ Gᴬ)`; it is the stable simplification boundary for the ladder API.
 - `ConservationLaw.localCurrentDensity_unique_of_separates` — Local current-density uniqueness when the paired differential-test map is injective; this is a physical identifiability criterion, not an unconditional locality or uniqueness claim.
 - `ConservationLaw.currentEquivalent_nestedSymmetrizedCurrentFlux` — canonical
-  corrected-current equivalence theorem: any full current representing the intrinsic transport is
-  equivalent on exact differentials to the canonical nested current flux.
+  corrected-current equivalence theorem for any transport represented by the nested flux;
+  no hypothesis on the origin of the transport is needed.
 - `ConservationLaw.exists_current_eq_symmetrized_add_correction_add_invisible` —
   physics-facing representation theorem `J = J_sym + J_corr + K` with `K` invisible on exact
-  differentials; it is the explicit extension-ambiguity endpoint of the corrected-current API.
+  differentials; it is the explicit extension-ambiguity endpoint of the corrected-current API,
+  following from the kernel of precomposition with the differential.
 - `QuantumMechanics.SingleParticle.lie_orbitalAngularMomentum_continuum_sign` — physics-facing
   directional continuum specialization fixing the derivative-localizer coefficient to `iℏ`;
   it records the orbital-localization commutator in an arbitrary oriented plane.
