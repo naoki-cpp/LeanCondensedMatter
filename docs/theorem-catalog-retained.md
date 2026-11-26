@@ -402,14 +402,14 @@ using a zero-consumer signal as grounds for changing its retention.
   coefficientwise bosonic ordered thermal amplitude factors over connected components.
 - `SecondQuantization.Common.QuarticDiagram.fixedOrderComponentPairEmbedding_crosses_iff` — The
   fixed-order component-pair embedding preserves and reflects crossings.
-- `SecondQuantization.Common.TwoPointDiagram.mixedComponentCrossingCount_externalComponentPart` —
-  The crossing count internal to the ambient external component equals the crossing count of the
-  standalone external-piece pairing.
-- `SecondQuantization.Common.TwoPointDiagram.mixedComponentPairTimeEquiv_endpointLegs_eq_of_comparisons` —
-  When all strict time-event comparisons agree, canonical transport of a normalized component
-  pair preserves the underlying standard atomic legs in normalized order.
-- `SecondQuantization.Common.TwoPointDiagram.mixedComponentWeight_eq_of_comparisons` —
-  Component exchange-statistics weight is unchanged when every strict time-event comparison agrees.
+- `SecondQuantization.Common.ExternalInsertionDiagram.componentMixedPosition_strictMono` —
+  The general component-local mixed-position embedding preserves endpoint order, and hence
+  normalized-pair crossing relations under the generic pairing embedding laws.
+- `SecondQuantization.Common.ExternalInsertionDiagram.pairingInMixedOrder_partner_componentMixedPosition` —
+  The component-local and ambient mixed partner maps intertwine for arbitrary external arity.
+- `SecondQuantization.Common.externalInsertionStandardToMixedAtomicPositionEquiv_eq_of_orderSignature_eq` —
+  The whole canonical mixed-position permutation is constant on each strict-comparison chamber,
+  including equal-time ties. This is the common input to chamberwise pairing and weight locality.
 - `SecondQuantization.Common.continuousDiagonalEvolution_comp_neg` — canonical right-inverse law for the transported finite-dimensional free evolution; it complements the used left-inverse rule and preserves the symmetric evolution API.
 - `SecondQuantization.Common.operatorIntervalIntegral_add` — additive linearity of coefficientwise finite-dimensional operator integration under the explicit matrix-coefficient integrability hypotheses; retain as a reusable integration law.
 - `SecondQuantization.Common.operatorIntervalIntegral_smul` — scalar-linearity of coefficientwise finite-dimensional operator integration, independent of the current call sites; retain as part of the integration API.
