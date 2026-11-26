@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Combinatorics.Shuffle.SlotShuffle
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ConnectedAssembly
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Transport
 import Mathlib.Logic.Equiv.Set
@@ -554,14 +555,7 @@ theorem ExternalInsertionBlockLayout.ofFamilyShuffle_ownerShuffleEquiv_reference
   have hcanon (v : Fin (Finset.univ : Finset (Fin N)).card) :
       (((Finset.univ : Finset (Fin N)).orderIsoOfFin rfl).toEquiv v).1 =
         Fin.cast ht.symm v := by
-    let S : Finset (Fin N) := Finset.univ
-    have huniq := Finset.orderEmbOfFin_unique
-      (s := S) (h := rfl)
-      (f := fun j : Fin S.card => Fin.cast ht.symm j)
-      (fun _ => Finset.mem_univ _)
-      ((Fin.castOrderIso ht.symm).strictMono)
-    change (S.orderIsoOfFin rfl v).1 = Fin.cast ht.symm v
-    simpa only [Finset.coe_orderIsoOfFin_apply] using (congrFun huniq v).symm
+    exact Combinatorics.univ_orderIsoOfFin_apply ht.symm v
   apply Combinatorics.FamilySlotShuffleTo.eq_of_same_owner
   intro v
   have hphysical := layout.interactionOrderDecomposition_owner
@@ -633,13 +627,7 @@ theorem ExternalInsertionBlockLayout.ofFamilyShuffle_ownerOrderedDysonOrder
   have ht : N = S.card := by simp [S]
   have hcanon (v : Fin S.card) :
       ((S.orderIsoOfFin rfl).toEquiv v).1 = Fin.cast ht.symm v := by
-    have huniq := Finset.orderEmbOfFin_unique
-      (s := S) (h := rfl)
-      (f := fun j : Fin S.card => Fin.cast ht.symm j)
-      (fun _ => Finset.mem_univ _)
-      ((Fin.castOrderIso ht.symm).strictMono)
-    change (S.orderIsoOfFin rfl v).1 = Fin.cast ht.symm v
-    simpa only [Finset.coe_orderIsoOfFin_apply] using (congrFun huniq v).symm
+    exact Combinatorics.univ_orderIsoOfFin_apply ht.symm v
   have hreference :=
     ExternalInsertionBlockLayout.ofFamilyShuffle_ownerShuffleEquiv_reference π heven σ
   have hperm :=

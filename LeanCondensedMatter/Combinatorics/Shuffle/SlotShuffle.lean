@@ -20,6 +20,23 @@ namespace Combinatorics
 
 open scoped BigOperators
 
+/-- The increasing enumeration of the full finite index set has the original index as its rank. -/
+theorem univ_orderIsoOfFin_symm_val {n m : ℕ}
+    (h : (Finset.univ : Finset (Fin n)).card = m)
+    (v : ↥(Finset.univ : Finset (Fin n))) :
+    (((Finset.univ : Finset (Fin n)).orderIsoOfFin h).symm v).val = v.val.val := by
+  rw [Finset.orderIsoOfFin_symm_apply, Fin.sort_univ, List.idxOf_finRange]
+
+/-- The canonical enumeration of all finite indices differs from the identity only by a cast. -/
+theorem univ_orderIsoOfFin_apply {n : ℕ}
+    (h : (Finset.univ : Finset (Fin n)).card = n)
+    (v : Fin (Finset.univ : Finset (Fin n)).card) :
+    ((Finset.univ : Finset (Fin n)).orderIsoOfFin rfl v).val = Fin.cast h v := by
+  apply Fin.ext
+  have hv := univ_orderIsoOfFin_symm_val rfl
+    ((Finset.univ : Finset (Fin n)).orderIsoOfFin rfl v)
+  simpa only [OrderIso.symm_apply_apply, Fin.val_cast] using hv.symm
+
 /-- The increasing enumeration of a finite slot set, viewed as a relabeling onto a standard
 full slot set whose size is identified by the supplied cardinality equality. -/
 noncomputable def standardSlotEquivOfCardEq {N : ℕ} (T : Finset (Fin N)) {m : ℕ}

@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Combinatorics.Shuffle.SlotShuffle
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Core.Diagram
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Leg
 import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.StableTimedEventOrder
@@ -653,7 +654,7 @@ private theorem externalInsertionFixedEventSlotEquiv_inr_val {E n : ℕ}
   change (externalInsertionInteractionLeg (E := E)
     (⟨v, Finset.mem_univ v⟩ : ↥(Finset.univ : Finset (Fin n))) p).val = _
   rw [externalInsertionInteractionLeg_val]
-  rw [Finset.orderIsoOfFin_symm_apply, Fin.sort_univ, List.idxOf_finRange]
+  rw [Combinatorics.univ_orderIsoOfFin_symm_val]
 
 /-- Both fixed and mixed event orders have singleton external blocks. Only the
 quartic-block local monotonicity requires an order-specific proof. -/
