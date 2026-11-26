@@ -1,6 +1,6 @@
 import LeanCondensedMatter.Models.RashbaExchange.FiniteMomentumSpinResponse
 import LeanCondensedMatter.Models.RashbaExchange.RealSpaceHopping
-import LeanCondensedMatter.QuantumTheory.ConservationLaw.LocalizedTransport
+import LeanCondensedMatter.QuantumTheory.ConservationLaw
 import LeanCondensedMatter.QuantumTheory.LinearResponse.Frequency.InfiniteTime
 import LeanCondensedMatter.Transport.Core.ConductivityNormalization
 import LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann.Eigenbasis.FrequencyDomain

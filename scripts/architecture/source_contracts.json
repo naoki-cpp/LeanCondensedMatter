@@ -32,7 +32,7 @@
       "id": "localizedCurrentQuantumTheoryUmbrella",
       "path": "LeanCondensedMatter/QuantumTheory.lean",
       "modules": [
-        "LeanCondensedMatter.QuantumTheory.ConservationLaw.LocalizedTransport"
+        "LeanCondensedMatter.QuantumTheory.ConservationLaw"
       ]
     },
     {
