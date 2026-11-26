@@ -141,20 +141,20 @@ theorem ExternalInsertionDiagram.ofSlotSplit_pairingInMixedOrder_eq_ofSplit_orde
         (externalInsertionMixedTimeAmbientPositionEquiv externalTime σ).symm
     (ExternalInsertionDiagram.ofSlotSplit (Finset.subset_univ T) ext vac).pairingInMixedOrder
         externalTime σ =
-      Pairing.ofSplit splitting ext.pairing (vac.pairingInOrder order) := by
+      PairingOn.ofSplit splitting ext.pairing (vac.pairingInOrder order) := by
   intro S order splitting
   let slot := externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T)
   let fixed := externalInsertionMixedTimeAmbientPositionEquiv externalTime σ
   let leg := orderedLegToDiagramLeg S order
   let ambient := slot.trans fixed.symm
-  change (Pairing.ofSplit slot ext.pairing vac.pairing).transport fixed =
-    Pairing.ofSplit splitting ext.pairing (vac.pairingInOrder order)
+  change (PairingOn.ofSplit slot ext.pairing vac.pairing).transport fixed =
+    PairingOn.ofSplit splitting ext.pairing (vac.pairingInOrder order)
   calc
-    _ = Pairing.ofSplit ambient ext.pairing vac.pairing := by
-      rw [Pairing.ofSplit, PairingOn.transport_trans]
+    _ = PairingOn.ofSplit ambient ext.pairing vac.pairing := by
+      rw [PairingOn.ofSplit, PairingOn.transport_trans]
       rfl
     _ = _ :=
-      (Pairing.ofSplit_reindex ambient ext.pairing vac.pairing
+      (PairingOn.ofSplit_reindex ambient ext.pairing vac.pairing
         (Equiv.refl (Fin (2 * (2 * T.card + E)))) leg).symm
 
 /-- In increasing support-slot coordinates, the external sector's mixed-to-fixed
@@ -303,15 +303,15 @@ theorem externalInsertionOfSlotSplit_pairingInMixedOrder_eq_ofSplit_mixedExterna
         (externalInsertionMixedTimeAmbientPositionEquiv externalTime σ).symm
     (ExternalInsertionDiagram.ofSlotSplit (Finset.subset_univ T) ext vac).pairingInMixedOrder
         externalTime σ =
-      Pairing.ofSplit
+      PairingOn.ofSplit
         ((Equiv.sumCongr localFixed (Equiv.refl (Fin (2 * (2 * S.card))))).trans split)
         (ext.pairing.transport localFixed) (vac.pairingInOrder order) := by
   intro S order localFixed split
   calc
-    _ = Pairing.ofSplit split ext.pairing (vac.pairingInOrder order) :=
+    _ = PairingOn.ofSplit split ext.pairing (vac.pairingInOrder order) :=
       ExternalInsertionDiagram.ofSlotSplit_pairingInMixedOrder_eq_ofSplit_orderedVacuum
         T ext vac externalTime σ
-    _ = _ := (Pairing.ofSplit_reindex split ext.pairing
+    _ = _ := (PairingOn.ofSplit_reindex split ext.pairing
       (vac.pairingInOrder order) localFixed
       (Equiv.refl (Fin (2 * (2 * S.card))))).symm
 

@@ -19,22 +19,23 @@ modulo two do the component-internal contributions alone determine the global pa
 
 namespace Combinatorics
 
-variable {n : ℕ} {ι : Type*} {F : ι → Type*} [∀ B, Fintype (F B)]
+variable {α ι : Type*} [Fintype α] [LinearOrder α]
+  {F : ι → Type*} [∀ B, Fintype (F B)]
 
 /-- Oriented crossing count from the pairs of component `B` to the pairs of component `C`. -/
-noncomputable def Pairing.componentCrossingCount (pairing : Pairing n)
+noncomputable def PairingOn.componentCrossingCount (pairing : PairingOn α)
     (e : (Σ B : ι, F B) ≃ pairing.NormalizedPair) (B C : ι) : ℕ :=
   ∑ x : F B × F C, if Crosses (e ⟨B, x.1⟩).1 (e ⟨C, x.2⟩).1 then 1 else 0
 
 /-- Unoriented geometric crossing count between two components. -/
-noncomputable def Pairing.componentGeometricCrossingCount (pairing : Pairing n)
+noncomputable def PairingOn.componentGeometricCrossingCount (pairing : PairingOn α)
     (e : (Σ B : ι, F B) ≃ pairing.NormalizedPair) (B C : ι) : ℕ :=
   ∑ x : F B × F C,
     if Crosses (e ⟨B, x.1⟩).1 (e ⟨C, x.2⟩).1 ∨
       Crosses (e ⟨C, x.2⟩).1 (e ⟨B, x.1⟩).1 then 1 else 0
 
 /-- The geometric crossing count between two components is the sum of its two orientations. -/
-theorem Pairing.componentGeometricCrossingCount_eq_oriented_add (pairing : Pairing n)
+theorem PairingOn.componentGeometricCrossingCount_eq_oriented_add (pairing : PairingOn α)
     (e : (Σ B : ι, F B) ≃ pairing.NormalizedPair) (B C : ι) :
     pairing.componentGeometricCrossingCount e B C =
       pairing.componentCrossingCount e B C + pairing.componentCrossingCount e C B := by
@@ -42,16 +43,16 @@ theorem Pairing.componentGeometricCrossingCount_eq_oriented_add (pairing : Pairi
   have hswap : pairing.componentCrossingCount e C B =
       ∑ x : F B × F C,
         if Crosses (e ⟨C, x.2⟩).1 (e ⟨B, x.1⟩).1 then 1 else 0 := by
-    rw [Pairing.componentCrossingCount,
+    rw [PairingOn.componentCrossingCount,
       ← Equiv.sum_comp (Equiv.prodComm (F B) (F C))]
     rfl
-  rw [Pairing.componentGeometricCrossingCount, hswap,
-    Pairing.componentCrossingCount, ← Finset.sum_add_distrib]
+  rw [PairingOn.componentGeometricCrossingCount, hswap,
+    PairingOn.componentCrossingCount, ← Finset.sum_add_distrib]
   refine Finset.sum_congr rfl fun x _ => ?_
   exact (crossesIndicator_add _ _).symm
 
 /-- The geometric crossing count between two components does not depend on their order. -/
-theorem Pairing.componentGeometricCrossingCount_comm (pairing : Pairing n)
+theorem PairingOn.componentGeometricCrossingCount_comm (pairing : PairingOn α)
     (e : (Σ B : ι, F B) ≃ pairing.NormalizedPair) (B C : ι) :
     pairing.componentGeometricCrossingCount e B C =
       pairing.componentGeometricCrossingCount e C B := by
@@ -65,11 +66,11 @@ The endpoint equivalences may identify each component's pair endpoints with any 
 position fiber. The compatibility hypothesis only requires that transporting such a position to the
 ambient pairing agrees with selecting the corresponding endpoint of the decomposed normalized
 pair. -/
-theorem Pairing.componentGeometricCrossingCount_mod_two_eq_endpointInversionCount
-    {P : ι → Type*} [∀ B, Fintype (P B)] (pairing : Pairing n)
+theorem PairingOn.componentGeometricCrossingCount_mod_two_eq_endpointInversionCount
+    {P : ι → Type*} [∀ B, Fintype (P B)] (pairing : PairingOn α)
     (e : (Σ B : ι, F B) ≃ pairing.NormalizedPair)
     (endpointEquiv : ∀ B, F B × Fin 2 ≃ P B)
-    (position : ∀ B, P B → Fin (2 * n))
+    (position : ∀ B, P B → α)
     (hposition : ∀ B p k,
       position B (endpointEquiv B (p, k)) = pairEndpointAt (e ⟨B, p⟩).1 k)
     (B C : ι) (hBC : B ≠ C) :
@@ -80,7 +81,7 @@ theorem Pairing.componentGeometricCrossingCount_mod_two_eq_endpointInversionCoun
       pairing.componentGeometricCrossingCount e B C % 2 =
         (∑ x : F B × F C,
           pairEndpointInversionCount (e ⟨B, x.1⟩).1 (e ⟨C, x.2⟩).1) % 2 := by
-    rw [Pairing.componentGeometricCrossingCount]
+    rw [PairingOn.componentGeometricCrossingCount]
     symm
     simpa [Nat.ModEq] using
       (Nat.ModEq.sum
@@ -127,11 +128,11 @@ theorem Pairing.componentGeometricCrossingCount_mod_two_eq_endpointInversionCoun
 /-- A geometric crossing count between distinct components is even when one component's
 positions form even-sized fibers and their order relative to the other component is constant
 within each fiber. The result is independent of how the local pairing is represented. -/
-theorem Pairing.componentGeometricCrossingCount_mod_two_eq_zero_of_even_fiber
-    {P : ι → Type*} [∀ B, Finite (P B)] (pairing : Pairing n)
+theorem PairingOn.componentGeometricCrossingCount_mod_two_eq_zero_of_even_fiber
+    {P : ι → Type*} [∀ B, Finite (P B)] (pairing : PairingOn α)
     (e : (Σ B : ι, F B) ≃ pairing.NormalizedPair)
     (endpointEquiv : ∀ B, F B × Fin 2 ≃ P B)
-    (position : ∀ B, P B → Fin (2 * n))
+    (position : ∀ B, P B → α)
     (hposition : ∀ B p k,
       position B (endpointEquiv B (p, k)) = pairEndpointAt (e ⟨B, p⟩).1 k)
     (B C : ι) (hBC : B ≠ C)
@@ -163,18 +164,19 @@ theorem Pairing.componentGeometricCrossingCount_mod_two_eq_zero_of_even_fiber
 /-- The diagonal component crossing count agrees with a local pairing's crossing count when
 the component equivalence maps local normalized pairs by a strictly monotone ambient position
 map. -/
-theorem Pairing.componentCrossingCount_self_eq
-    {m : ℕ} (pairing : Pairing n) (localPairing : Pairing m)
+theorem PairingOn.componentCrossingCount_self_eq
+    {δ : Type*} [Fintype δ] [LinearOrder δ]
+    (pairing : PairingOn α) (localPairing : PairingOn δ)
     (e : (Σ B : ι, F B) ≃ pairing.NormalizedPair) (B : ι)
     (localEquiv : localPairing.NormalizedPair ≃ F B)
-    (position : Fin (2 * m) → Fin (2 * n)) (hmono : StrictMono position)
+    (position : δ → α) (hmono : StrictMono position)
     (hpair : ∀ pr : localPairing.NormalizedPair,
       (e ⟨B, localEquiv pr⟩).1 =
         (position pr.1.1, position pr.1.2)) :
     pairing.componentCrossingCount e B B = localPairing.crossingCount := by
   classical
-  rw [Pairing.componentCrossingCount, Fintype.sum_prod_type,
-    Pairing.crossingCount_eq_sum_crosses, Fintype.sum_prod_type]
+  rw [PairingOn.componentCrossingCount, Fintype.sum_prod_type,
+    PairingOn.crossingCount_eq_sum_crosses, Fintype.sum_prod_type]
   exact sum_sum_crosses_eq_of_equiv
     (fun p : F B => (e ⟨B, p⟩).1)
     (fun pr : localPairing.NormalizedPair => pr.1)
@@ -187,20 +189,20 @@ theorem Pairing.componentCrossingCount_self_eq
         (localEquiv.symm q).1.1 (localEquiv.symm q).1.2)
 
 /-- The crossing count is the double sum of the oriented component crossing counts. -/
-theorem Pairing.crossingCount_eq_sum_componentCrossingCount [Fintype ι] (pairing : Pairing n)
+theorem PairingOn.crossingCount_eq_sum_componentCrossingCount [Fintype ι] (pairing : PairingOn α)
     (e : (Σ B : ι, F B) ≃ pairing.NormalizedPair) :
     pairing.crossingCount = ∑ B : ι, ∑ C : ι, pairing.componentCrossingCount e B C := by
   classical
   rw [pairing.crossingCount_eq_sum_crosses, Fintype.sum_prod_type,
     ← Equiv.sum_comp e, Fintype.sum_sigma]
   simp_rw [← Equiv.sum_comp e, Fintype.sum_sigma]
-  simp only [Pairing.componentCrossingCount, Fintype.sum_prod_type]
+  simp only [PairingOn.componentCrossingCount, Fintype.sum_prod_type]
   exact Finset.sum_congr rfl fun B _ => Finset.sum_comm
 
 
 open Classical in
 /-- The total oriented crossing count between distinct components. -/
-noncomputable def Pairing.interComponentCrossingCount [Fintype ι] (pairing : Pairing n)
+noncomputable def PairingOn.interComponentCrossingCount [Fintype ι] (pairing : PairingOn α)
     (e : (Σ B : ι, F B) ≃ pairing.NormalizedPair) : ℕ :=
   ∑ BC ∈ (Finset.univ : Finset ι).offDiag,
     pairing.componentCrossingCount e BC.1 BC.2
@@ -208,7 +210,7 @@ noncomputable def Pairing.interComponentCrossingCount [Fintype ι] (pairing : Pa
 /-- The residual crossing parity of a pairing decomposition is the ordered block-inversion parity
 of any family shuffle that agrees with its pair endpoints. The block order remains explicit. -/
 theorem Pairing.interComponentCrossingCount_mod_two_eq_orderedBlockInversionCount
-    [Fintype ι] {size : ι → ℕ} (pairing : Pairing n)
+    {n : ℕ} [Fintype ι] {size : ι → ℕ} (pairing : Pairing n)
     (e : (Σ B : ι, F B) ≃ pairing.NormalizedPair)
     (endpointEquiv : ∀ B, F B × Fin 2 ≃ Fin (size B))
     (shuffle : FamilySlotShuffleTo size (2 * n))
@@ -239,12 +241,12 @@ theorem Pairing.interComponentCrossingCount_mod_two_eq_orderedBlockInversionCoun
 /-- The crossing count of a pairing assembled from order-preserving local pairings is
 the sum of the local crossing counts and the residual crossings between components.
 The normalized-pair decomposition may use arbitrary component fibers. -/
-theorem Pairing.crossingCount_eq_sum_localCrossingCount_add_inter [Fintype ι]
-    {localSize : ι → ℕ} (pairing : Pairing n)
-    (localPairing : ∀ B, Pairing (localSize B))
+theorem PairingOn.crossingCount_eq_sum_localCrossingCount_add_inter [Fintype ι]
+    {δ : ι → Type*} [∀ B, Fintype (δ B)] [∀ B, LinearOrder (δ B)]
+    (pairing : PairingOn α) (localPairing : ∀ B, PairingOn (δ B))
     (e : (Σ B : ι, F B) ≃ pairing.NormalizedPair)
     (localEquiv : ∀ B, (localPairing B).NormalizedPair ≃ F B)
-    (position : ∀ B, Fin (2 * localSize B) → Fin (2 * n))
+    (position : ∀ B, δ B → α)
     (hmono : ∀ B, StrictMono (position B))
     (hpair : ∀ B (pr : (localPairing B).NormalizedPair),
       (e ⟨B, localEquiv B pr⟩).1 =
@@ -272,8 +274,8 @@ theorem Pairing.crossingCount_eq_sum_localCrossingCount_add_inter [Fintype ι]
 
 /-- When the two orientations between distinct components cancel modulo two, the crossing count has
 the parity of the sum of the component-internal crossing counts. -/
-theorem Pairing.crossingCount_mod_two_eq_sum_componentCrossingCount [Fintype ι]
-    (pairing : Pairing n) (e : (Σ B : ι, F B) ≃ pairing.NormalizedPair)
+theorem PairingOn.crossingCount_mod_two_eq_sum_componentCrossingCount [Fintype ι]
+    (pairing : PairingOn α) (e : (Σ B : ι, F B) ≃ pairing.NormalizedPair)
     (hpair : ∀ B C : ι, B ≠ C →
       (pairing.componentCrossingCount e B C + pairing.componentCrossingCount e C B) % 2 = 0) :
     pairing.crossingCount % 2 = (∑ B : ι, pairing.componentCrossingCount e B B) % 2 := by
@@ -287,8 +289,8 @@ theorem Pairing.crossingCount_mod_two_eq_sum_componentCrossingCount [Fintype ι]
 
 /-- If geometric crossing counts between distinct components are even, the crossing count
 has the same parity as the sum of the component-internal crossing counts. -/
-theorem Pairing.crossingCount_mod_two_eq_sum_componentCrossingCount_of_geometric_even
-    [Fintype ι] (pairing : Pairing n)
+theorem PairingOn.crossingCount_mod_two_eq_sum_componentCrossingCount_of_geometric_even
+    [Fintype ι] (pairing : PairingOn α)
     (e : (Σ B : ι, F B) ≃ pairing.NormalizedPair)
     (hEven : ∀ B C : ι, B ≠ C →
       pairing.componentGeometricCrossingCount e B C % 2 = 0) :

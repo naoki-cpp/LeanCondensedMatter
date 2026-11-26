@@ -5,7 +5,7 @@ set_option linter.style.header false
 /-!
 # Statistics-generic component factorization of quartic pairing evaluation
 
-`Pairing.evaluation` is the unique scalar evaluator for a perfect pairing. For an assembled quartic
+`PairingOn.evaluation` is the unique scalar evaluator for a perfect pairing. For an assembled quartic
 diagram, Common already factors both pieces entering that evaluator: the Statistics-generic exchange
 weight and an arbitrary scalar pair kernel. This module combines those two structural results into
 one semantic endpoint through the generic combinatorial evaluation factorization.
@@ -39,7 +39,7 @@ theorem QuarticDiagram.pairingInOrder_evaluation_eq_prod_components
           (((d.restrictComponent B.2).pairingInOrder (orders B)).weight s)
           (localPairValue B) := by
   classical
-  simpa only [one_mul] using Pairing.evaluation_eq_mul_prod_components
+  simpa only [one_mul] using PairingOn.evaluation_eq_mul_prod_components
     (d.pairingInOrder (d.assembleVertexOrder orders shuffle))
     (fun B => (d.restrictComponent B.2).pairingInOrder (orders B))
     (d.componentPairEquiv orders shuffle)

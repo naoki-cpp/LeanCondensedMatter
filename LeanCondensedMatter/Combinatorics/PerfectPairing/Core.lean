@@ -40,7 +40,7 @@ structure PairingOn (α : Type*) where
   partner_involutive : Function.Involutive partner
   partner_ne : ∀ i, partner i ≠ i
 
-/-- A perfect pairing of the ordered positions `Fin (2 * n)`. The finite specialization supports crossing signs and first-pair recursion. -/
+/-- A perfect pairing of the ordered positions `Fin (2 * n)`. The finite specialization supports first-pair recursion and position-indexed permutation signs. -/
 abbrev Pairing (n : ℕ) := PairingOn (Fin (2 * n))
 
 /-- The internal equivalence used to enumerate finite `PairingOn` values through permutations. -/
@@ -179,8 +179,8 @@ open scoped BigOperators
 
 /-- Evaluate a perfect pairing from a global scalar weight and a scalar kernel on its pair
 endpoints. -/
-def Pairing.evaluation {R : Type*} [CommMonoid R] {n : ℕ} (pairing : Pairing n) (weight : R)
-    (pairValue : Fin (2 * n) → Fin (2 * n) → R) : R :=
+def PairingOn.evaluation {R α : Type*} [CommMonoid R] [Fintype α] [LinearOrder α]
+    (pairing : PairingOn α) (weight : R) (pairValue : α → α → R) : R :=
   weight * ∏ pr ∈ pairing.pairs, pairValue pr.1 pr.2
 
 /-- The pair containing position `0`, i.e. `(0, partner 0)`. -/

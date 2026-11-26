@@ -53,7 +53,7 @@ private theorem ExternalInsertionWickDiagram.dysonFixedTimeChamberRepresentative
   dsimp [ExternalInsertionWickDiagram.dysonFixedTimeChamberRepresentative,
     ExternalInsertionWickDiagram.dysonFixedTimeAmplitude,
     ExternalInsertionWickDiagram.fixedTimeAmplitude,
-    ExternalInsertionWickDiagram.mixedPairingValue, Pairing.evaluation,
+    ExternalInsertionWickDiagram.mixedPairingValue, PairingOn.evaluation,
     externalInsertionMixedTimeOrderedAtomicPairValue,
     externalInsertionMixedTimeOrderedAtomicFieldFamily,
     externalInsertionMixedAtomicOrderSign,

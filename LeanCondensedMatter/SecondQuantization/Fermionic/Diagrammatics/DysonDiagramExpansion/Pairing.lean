@@ -10,7 +10,7 @@ set_option linter.style.header false
 # Dyson diagram expansion: canonical pairing evaluation
 
 The fermionic operator-flattening identity is a proof-local step of the Dyson-moment endpoint.
-Public Dyson pairing statements use the combinatorics-owned `Pairing.evaluation` boundary with
+Public Dyson pairing statements use the combinatorics-owned `PairingOn.evaluation` boundary with
 the finite Gibbs expectation pair kernel at explicit μ = 0.
 -/
 
@@ -87,7 +87,7 @@ theorem continuous_flatVertexLegPairingEvaluation {n : ℕ}
     (ε : Mode → ℝ) (β : ℝ) (q : Fin n → QuarticVertexLabel Mode)
     (pairing : Pairing (2 * n)) :
     Continuous (fun τ : Fin n → ℝ => flatVertexLegPairingEvaluation ε β q τ pairing) := by
-  simp only [flatVertexLegPairingEvaluation, Combinatorics.Pairing.evaluation]
+  simp only [flatVertexLegPairingEvaluation, Combinatorics.PairingOn.evaluation]
   exact continuous_const.mul (continuous_finsetProd _ fun pr _ => by
     simp only [flatVertexLegPairValue_eq]
     fun_prop)
@@ -127,7 +127,7 @@ theorem finiteGibbsExpectation_dysonCoeff_quarticInteraction_eq_sum_pairing_expl
           (fun a b => grandCanonicalTimedFieldPairContraction ε β μ
             (quarticLegFieldForSequence q τ a)
             (quarticLegFieldForSequence q τ b))) := by
-    simp only [Combinatorics.Pairing.evaluation]
+    simp only [Combinatorics.PairingOn.evaluation]
     exact continuous_const.mul (continuous_finsetProd _ fun pr _ => by
       simp only [grandCanonicalTimedFieldPairContraction_eq,
         quarticLegFieldForSequence]
@@ -162,7 +162,7 @@ theorem finiteGibbsExpectation_dysonCoeff_quarticInteraction_eq_sum_pairing_expl
       have hwick := grandCanonicalGibbsExpectation_prod_timedFieldOperator_eq_sum_pairing
         ε β μ (2 * S.card) (quarticLegFieldForSequence q τ)
       simpa only [grandCanonicalTimedFieldPairContraction,
-        Combinatorics.Pairing.evaluation,
+        Combinatorics.PairingOn.evaluation,
         timedFieldOperator_quarticLegFieldForSequence] using hwick
     rw [intervalIntegral.orderedSimplexIntegral_congr hpoint,
       intervalIntegral.orderedSimplexIntegral_finsetSum _ S.card β _
@@ -199,7 +199,7 @@ theorem dysonVertexMoment_quarticInteraction_eq_sum_vertexLabel_pairingEvaluatio
   apply intervalIntegral.orderedSimplexIntegral_congr
   intro τ
   simp only [flatVertexLegPairingEvaluation, flatVertexLegPairValue,
-    Combinatorics.Pairing.evaluation, grandCanonicalTimedFieldPairContraction,
+    Combinatorics.PairingOn.evaluation, grandCanonicalTimedFieldPairContraction,
     sub_zero]
 end Fermionic
 end SecondQuantization

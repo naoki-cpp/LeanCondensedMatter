@@ -69,7 +69,7 @@ theorem ExternalInsertionDiagram.componentMixedPairEquiv_apply
       d.pairingInMixedOrder_partner_componentMixedPosition externalTime σ C p
   simpa only [ExternalInsertionDiagram.componentMixedPairEquiv,
     ExternalInsertionDiagram.componentMixedPositionEquiv_apply] using
-    (Combinatorics.Pairing.normalizedPairSigmaEquiv_apply_of_strictMono
+    (Combinatorics.PairingOn.normalizedPairSigmaEquiv_apply_of_strictMono
       (d.pairingInMixedOrder externalTime σ)
       componentPairing
       (d.componentMixedPositionEquiv externalTime σ)

@@ -38,7 +38,7 @@ theorem Pairing.crossingCount_eraseZeroPair {n : ℕ} (pairing : Pairing (n + 1)
     simp_rw [Finset.card_filter]
   have hsum : pairing.crossingCount =
       (S.filter (fun q => Crosses F q)).card + ∑ p ∈ A, (S.filter (fun q => Crosses p q)).card := by
-    rw [Pairing.crossingCount, ← hS, hcount, hsplit,
+    rw [PairingOn.crossingCount, ← hS, hcount, hsplit,
       Finset.sum_insert hFnotA, ← hsplit]
   have hFterm : (S.filter (fun q => Crosses F q)).card = pairing.crossingsWithFirstPair := rfl
   have hAterm : ∀ p ∈ A, S.filter (fun q => Crosses p q) = A.filter (fun q => Crosses p q) := by
@@ -89,7 +89,7 @@ theorem Pairing.crossingCount_eraseZeroPair {n : ℕ} (pairing : Pairing (n + 1)
       exact ⟨⟨hP, hQ⟩, (crosses_map_iff
         (fun i => (pairing.eraseZeroOrderIso i : Fin (2 * (n + 1))))
         pairing.eraseZeroOrderIso.strictMono P.1 P.2 Q.1 Q.2).1 hcross⟩
-  rw [hsum', ← hAcross, Pairing.crossingCount, hbij]
+  rw [hsum', ← hAcross, PairingOn.crossingCount, hbij]
   omega
 
 /-- The number of positions strictly between `0` and its partner. -/

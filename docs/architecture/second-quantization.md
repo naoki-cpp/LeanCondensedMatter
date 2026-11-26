@@ -289,7 +289,7 @@ vacuum chambers, independently of diagram labels, thermal kernels, and particle 
 interaction-slot representation of each component (`componentOrderedDiagram`), its local times,
 and the mixed-position equivalence and order-preserving component shuffle for arbitrary labels.
 `Pairing.ComponentMixedPairEquiv` owns the normalized-pair equivalence and its ordered-endpoint
-evaluation, using the generic `Pairing.normalizedPairSigmaEquiv` construction.
+evaluation, using the generic `PairingOn.normalizedPairSigmaEquiv` construction.
 Full-slot label and leg-partner coordinates live in `Core.Ordered`; mixed-time partner coherence
 lives in `Pairing.MixedOrder`. The Fermionic `Diagram` module supplies the concrete
 `ExternalInsertionWickDiagram` label specialization, while thermal kernels, amplitudes, and exchange
@@ -299,7 +299,7 @@ identifies residual crossing parity with the ordered block-inversion parity for 
 mixed component shuffles. Fermionic `ComponentSign` defines the fixed external regrouping
 exchange sign; `ComponentPairingValue` applies the generic crossing-parity identity directly for
 the mixed pairing coordinates. Fermionic pairing evaluation applies
-`Pairing.crossingCount_eq_sum_localCrossingCount_add_inter` for the exact crossing decomposition,
+`PairingOn.crossingCount_eq_sum_localCrossingCount_add_inter` for the exact crossing decomposition,
 then uses the exchange-weight identity in `Common.Thermal.BlochDeDominicis.PairingWeight`.
 `MixedComponentShuffle` owns the relative fixed/mixed permutation and its integer-unit sign
 decomposition. The Fermionic component modules attach the concrete exchange sign and thermal
@@ -335,15 +335,15 @@ order; all component maps together form `componentLegShuffle`, the order-preserv
 onto the ambient leg set. Its generic block-inversion count measures inter-component leg exchange.
 For mixed-time pairings, `componentMixedPairEquiv` identifies the dependent sum of
 component-local normalized pairs with all ambient mixed-time normalized pairs via the generic
-`Pairing.normalizedPairSigmaEquiv`. Unlike the pure-quartic case, distinct external-insertion
+`PairingOn.normalizedPairSigmaEquiv`. Unlike the pure-quartic case, distinct external-insertion
 components can interleave in the ambient leg order, so mixed pairing evaluation retains the
-residual `Pairing.interComponentCrossingCount` exchange weight when factoring into local
+residual `PairingOn.interComponentCrossingCount` exchange weight when factoring into local
 component contributions. A vacuum component has no external legs, so Common also reindexes its
 surviving legs as ordinary quartic legs and exposes the induced `QuarticDiagram`.
 
 Ordered vacuum legs and mixed pairing transport now belong to the general external-insertion
 `Pairing.SlotSplitMixedOrder` module. Its ordered-vacuum split identity handles arbitrary
-external arity, while `Pairing.ofSplitNormalizedPairEquiv` and the general
+external arity, while `PairingOn.ofSplitNormalizedPairEquiv` and the general
 `componentMixedPairEquiv` provide normalized pair decomposition. Strict local order is only
 needed for orientation-sensitive embeddings and crossing comparisons, not for the split
 pairing identity itself. The graph-sum geometry and vacuum-component correspondence are also owned by the general

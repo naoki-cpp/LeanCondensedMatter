@@ -80,7 +80,7 @@ noncomputable def ExternalInsertionDiagram.ofSlotSplit
   vertexLabel v :=
     if hv : (v : Fin N) ∈ T then ext.vertexLabel ⟨v, hv⟩
     else vac.vertexLabel ⟨v, Finset.mem_sdiff.mpr ⟨v.2, hv⟩⟩
-  pairing := Pairing.ofSplit (externalInsertionSlotLegSplitting (E := E) h)
+  pairing := PairingOn.ofSplit (externalInsertionSlotLegSplitting (E := E) h)
     ext.pairing vac.pairing
 
 /-- Reassembly retains the external labels of the external-bearing piece. -/
@@ -98,7 +98,7 @@ theorem ExternalInsertionDiagram.ofSlotSplit_pairing
     (ext : ExternalInsertionDiagram ExternalLabel InternalLabel E N T)
     (vac : QuarticDiagram InternalLabel N (S \ T)) :
     (ExternalInsertionDiagram.ofSlotSplit h ext vac).pairing =
-      Pairing.ofSplit (externalInsertionSlotLegSplitting (E := E) h)
+      PairingOn.ofSplit (externalInsertionSlotLegSplitting (E := E) h)
         ext.pairing vac.pairing := rfl
 
 theorem ExternalInsertionDiagram.ofSlotSplit_vertexLabel_of_mem
@@ -188,7 +188,7 @@ theorem ExternalInsertionDiagram.ofSlotSplit_slotSplit
   · by_cases hv : (v : Fin N) ∈ T
     · exact ExternalInsertionDiagram.ofSlotSplit_vertexLabel_of_mem h _ _ v hv
     · exact ExternalInsertionDiagram.ofSlotSplit_vertexLabel_of_not_mem h _ _ v hv
-  · exact Pairing.ofSplit_splitLeft_splitRight
+  · exact PairingOn.ofSplit_splitLeft_splitRight
       (externalInsertionSlotLegSplitting (E := E) h) hd
 
 /-- Reassembling and reading off the external-bearing piece returns that piece. -/
@@ -202,7 +202,7 @@ theorem ExternalInsertionDiagram.slotSplitExternal_ofSlotSplit
   refine ExternalInsertionDiagram.ext rfl (funext fun v => ?_) ?_
   · exact ExternalInsertionDiagram.ofSlotSplit_vertexLabel_of_mem h ext vac
       ⟨v.1, h v.2⟩ v.2
-  · exact Pairing.splitLeft_ofSplit
+  · exact PairingOn.splitLeft_ofSplit
       (externalInsertionSlotLegSplitting (E := E) h) ext.pairing vac.pairing
 
 /-- Reassembling and reading off the quartic complementary piece returns that piece. -/
@@ -216,7 +216,7 @@ theorem ExternalInsertionDiagram.slotSplitVacuum_ofSlotSplit
   refine QuarticDiagram.ext (funext fun v => ?_) ?_
   · exact ExternalInsertionDiagram.ofSlotSplit_vertexLabel_of_not_mem h ext vac
       ⟨v.1, (Finset.mem_sdiff.mp v.2).1⟩ (Finset.mem_sdiff.mp v.2).2
-  · exact Pairing.splitRight_ofSplit
+  · exact PairingOn.splitRight_ofSplit
       (externalInsertionSlotLegSplitting (E := E) h) ext.pairing vac.pairing
 
 end Decompose

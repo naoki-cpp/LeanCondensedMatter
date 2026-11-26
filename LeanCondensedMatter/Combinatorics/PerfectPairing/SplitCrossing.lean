@@ -16,13 +16,14 @@ the splitting reverses transported pairs.
 
 namespace Combinatorics
 
-variable {a b n : ℕ}
+variable {α β γ : Type*}
+  [Fintype α] [LinearOrder α] [Fintype β] [LinearOrder β] [Fintype γ] [LinearOrder γ]
 
 /-- A strictly increasing position embedding preserves the double crossing count of
 normalized pairs when their endpoints are transported in their normalized order. -/
-private theorem Pairing.sum_sum_crosses_map_eq_crossingCount {m n : ℕ} (R : Pairing m)
-    (f : Fin (2 * m) → Fin (2 * n)) (hmono : StrictMono f)
-    (pairImage : R.NormalizedPair → Fin (2 * n) × Fin (2 * n))
+private theorem PairingOn.sum_sum_crosses_map_eq_crossingCount {δ ε : Type*} [Fintype δ] [LinearOrder δ] [LinearOrder ε]
+    (R : PairingOn δ) (f : δ → ε) (hmono : StrictMono f)
+    (pairImage : R.NormalizedPair → ε × ε)
     (himage : ∀ p : R.NormalizedPair,
       pairImage p = (f p.1.1, f p.1.2)) :
     (∑ p : R.NormalizedPair, ∑ q : R.NormalizedPair,
@@ -36,9 +37,9 @@ private theorem Pairing.sum_sum_crosses_map_eq_crossingCount {m n : ℕ} (R : Pa
 
 /-- Crossings between the two independent sectors of an assembled pairing.
 Both orientations are counted because `crossingCount` uses oriented pairs. -/
-noncomputable def Pairing.ofSplitInterSectorCrossingCount
-    (e : PositionSplitting a b n) (P : Pairing a) (Q : Pairing b) : ℕ :=
-  let emb := Pairing.ofSplitNormalizedPairEquiv e P Q
+noncomputable def PairingOn.ofSplitInterSectorCrossingCount
+    (e : α ⊕ β ≃ γ) (P : PairingOn α) (Q : PairingOn β) : ℕ :=
+  let emb := PairingOn.ofSplitNormalizedPairEquiv e P Q
   (∑ p : P.NormalizedPair, ∑ q : Q.NormalizedPair,
       if Crosses (emb (Sum.inl p)).1 (emb (Sum.inr q)).1 then 1 else 0) +
     ∑ q : Q.NormalizedPair, ∑ p : P.NormalizedPair,
@@ -48,15 +49,15 @@ noncomputable def Pairing.ofSplitInterSectorCrossingCount
 is the parity of the four endpoint-order inversions for each cross-sector
 pair of normalized pairs. The two crossing orientations are both counted;
 no order-preservation hypothesis is needed on either half. -/
-private theorem Pairing.ofSplitInterSectorCrossingCount_mod_two_eq_pairEndpointInversionCount
-    (e : PositionSplitting a b n) (P : Pairing a) (Q : Pairing b) :
-    (Pairing.ofSplitInterSectorCrossingCount e P Q) % 2 =
+private theorem PairingOn.ofSplitInterSectorCrossingCount_mod_two_eq_pairEndpointInversionCount
+    (e : α ⊕ β ≃ γ) (P : PairingOn α) (Q : PairingOn β) :
+    (PairingOn.ofSplitInterSectorCrossingCount e P Q) % 2 =
       (∑ p : P.NormalizedPair, ∑ q : Q.NormalizedPair,
         pairEndpointInversionCount
-          (Pairing.ofSplitNormalizedPairEquiv e P Q (Sum.inl p)).1
-          (Pairing.ofSplitNormalizedPairEquiv e P Q (Sum.inr q)).1) % 2 := by
+          (PairingOn.ofSplitNormalizedPairEquiv e P Q (Sum.inl p)).1
+          (PairingOn.ofSplitNormalizedPairEquiv e P Q (Sum.inr q)).1) % 2 := by
   classical
-  let emb := Pairing.ofSplitNormalizedPairEquiv e P Q
+  let emb := PairingOn.ofSplitNormalizedPairEquiv e P Q
   have hpoint (p : P.NormalizedPair) (q : Q.NormalizedPair) :
       Nat.ModEq 2
         ((if Crosses (emb (Sum.inl p)).1 (emb (Sum.inr q)).1 then 1 else 0) +
@@ -67,18 +68,18 @@ private theorem Pairing.ofSplitInterSectorCrossingCount_mod_two_eq_pairEndpointI
       intro h
       have hsum := emb.injective h
       cases hsum
-    have hEnds := (Pairing.ofSplit e P Q).normalizedPair_endpoints_ne_of_ne
+    have hEnds := (PairingOn.ofSplit e P Q).normalizedPair_endpoints_ne_of_ne
       (emb (Sum.inl p)) (emb (Sum.inr q)) hne
     have hcross := pairEndpointInversionCount_mod_two_eq_crossesIndicator
       (emb (Sum.inl p)).1 (emb (Sum.inr q)).1
-      ((Pairing.ofSplit e P Q).pairs_normalized (emb (Sum.inl p)).2)
-      ((Pairing.ofSplit e P Q).pairs_normalized (emb (Sum.inr q)).2)
+      ((PairingOn.ofSplit e P Q).pairs_normalized (emb (Sum.inl p)).2)
+      ((PairingOn.ofSplit e P Q).pairs_normalized (emb (Sum.inr q)).2)
       hEnds.1 hEnds.2.1 hEnds.2.2.1 hEnds.2.2.2
     change _ % 2 = _ % 2
     rw [crossesIndicator_add, hcross]
     split_ifs <;> decide
   have hsum :
-      Pairing.ofSplitInterSectorCrossingCount e P Q =
+      PairingOn.ofSplitInterSectorCrossingCount e P Q =
         ∑ p : P.NormalizedPair, ∑ q : Q.NormalizedPair,
           ((if Crosses (emb (Sum.inl p)).1 (emb (Sum.inr q)).1 then 1 else 0) +
             (if Crosses (emb (Sum.inr q)).1 (emb (Sum.inl p)).1 then 1 else 0)) := by
@@ -115,18 +116,18 @@ private theorem Pairing.ofSplitInterSectorCrossingCount_mod_two_eq_pairEndpointI
 /-- A cross-sector pair-endpoint inversion counts all four comparisons
 between the transported local endpoints. This remains true when ambient
 normalization reverses either transported pair. -/
-private theorem Pairing.ofSplit_pairEndpointInversionCount_eq_sum_localEndpoints
-    (e : PositionSplitting a b n) (P : Pairing a) (Q : Pairing b)
+private theorem PairingOn.ofSplit_pairEndpointInversionCount_eq_sum_localEndpoints
+    (e : α ⊕ β ≃ γ) (P : PairingOn α) (Q : PairingOn β)
     (p : P.NormalizedPair) (q : Q.NormalizedPair) :
     pairEndpointInversionCount
-        (Pairing.ofSplitNormalizedPairEquiv e P Q (Sum.inl p)).1
-        (Pairing.ofSplitNormalizedPairEquiv e P Q (Sum.inr q)).1 =
+        (PairingOn.ofSplitNormalizedPairEquiv e P Q (Sum.inl p)).1
+        (PairingOn.ofSplitNormalizedPairEquiv e P Q (Sum.inr q)).1 =
       ∑ i : Fin 2, ∑ j : Fin 2,
         if e (Sum.inr (Q.pairEndpointEquiv (q, j))) <
             e (Sum.inl (P.pairEndpointEquiv (p, i))) then 1 else 0 := by
-  rcases Pairing.ofSplitNormalizedPairEquiv_pair_eq_or_swap
+  rcases PairingOn.ofSplitNormalizedPairEquiv_pair_eq_or_swap
     e P Q (Sum.inl p) with hp | hp <;>
-  rcases Pairing.ofSplitNormalizedPairEquiv_pair_eq_or_swap
+  rcases PairingOn.ofSplitNormalizedPairEquiv_pair_eq_or_swap
     e P Q (Sum.inr q) with hq | hq
   all_goals
     simp only [hp, hq, PairingOn.pairEndpointEquiv_apply]
@@ -138,20 +139,20 @@ private theorem Pairing.ofSplit_pairEndpointInversionCount_eq_sum_localEndpoints
 number of positions from the right half that precede positions from the left
 half in an arbitrary binary position splitting. Both pair orientations and
 all pair enumeration choices disappear under endpoint reindexing. -/
-private theorem Pairing.ofSplit_sum_pairEndpointInversionCount_eq_positionInversions
-    (e : PositionSplitting a b n) (P : Pairing a) (Q : Pairing b) :
+private theorem PairingOn.ofSplit_sum_pairEndpointInversionCount_eq_positionInversions
+    (e : α ⊕ β ≃ γ) (P : PairingOn α) (Q : PairingOn β) :
     (∑ p : P.NormalizedPair, ∑ q : Q.NormalizedPair,
       pairEndpointInversionCount
-        (Pairing.ofSplitNormalizedPairEquiv e P Q (Sum.inl p)).1
-        (Pairing.ofSplitNormalizedPairEquiv e P Q (Sum.inr q)).1) =
-      ∑ i : Fin (2 * a), ∑ j : Fin (2 * b),
+        (PairingOn.ofSplitNormalizedPairEquiv e P Q (Sum.inl p)).1
+        (PairingOn.ofSplitNormalizedPairEquiv e P Q (Sum.inr q)).1) =
+      ∑ i : α, ∑ j : β,
         if e (Sum.inr j) < e (Sum.inl i) then 1 else 0 := by
   classical
   have hlocal :
       (∑ p : P.NormalizedPair, ∑ q : Q.NormalizedPair,
         pairEndpointInversionCount
-          (Pairing.ofSplitNormalizedPairEquiv e P Q (Sum.inl p)).1
-          (Pairing.ofSplitNormalizedPairEquiv e P Q (Sum.inr q)).1) =
+          (PairingOn.ofSplitNormalizedPairEquiv e P Q (Sum.inl p)).1
+          (PairingOn.ofSplitNormalizedPairEquiv e P Q (Sum.inr q)).1) =
         ∑ p : P.NormalizedPair, ∑ q : Q.NormalizedPair,
           ∑ i : Fin 2, ∑ j : Fin 2,
             if e (Sum.inr (Q.pairEndpointEquiv (q, j))) <
@@ -160,7 +161,7 @@ private theorem Pairing.ofSplit_sum_pairEndpointInversionCount_eq_positionInvers
     intro p _
     apply Finset.sum_congr rfl
     intro q _
-    exact Pairing.ofSplit_pairEndpointInversionCount_eq_sum_localEndpoints e P Q p q
+    exact PairingOn.ofSplit_pairEndpointInversionCount_eq_sum_localEndpoints e P Q p q
   rw [hlocal]
   calc
     (∑ p : P.NormalizedPair, ∑ q : Q.NormalizedPair,
@@ -171,7 +172,7 @@ private theorem Pairing.ofSplit_sum_pairEndpointInversionCount_eq_positionInvers
           if e (Sum.inr (Q.pairEndpointEquiv (x.1.2, x.2.2))) <
               e (Sum.inl (P.pairEndpointEquiv (x.1.1, x.2.1))) then 1 else 0 := by
       simp only [Fintype.sum_prod_type]
-    _ = ∑ x : Fin (2 * a) × Fin (2 * b),
+    _ = ∑ x : α × β,
           if e (Sum.inr x.2) < e (Sum.inl x.1) then 1 else 0 := by
       refine Fintype.sum_equiv
         ((Equiv.prodProdProdComm _ _ _ _).trans
@@ -184,63 +185,63 @@ private theorem Pairing.ofSplit_sum_pairEndpointInversionCount_eq_positionInvers
 /-- The only residual crossing parity of a binary split is the parity of
 the inter-sector position inversions, independently of the pairing chosen
 inside either half. -/
-theorem Pairing.ofSplitInterSectorCrossingCount_mod_two_eq_positionInversions
-    (e : PositionSplitting a b n) (P : Pairing a) (Q : Pairing b) :
-    (Pairing.ofSplitInterSectorCrossingCount e P Q) % 2 =
-      (∑ i : Fin (2 * a), ∑ j : Fin (2 * b),
+theorem PairingOn.ofSplitInterSectorCrossingCount_mod_two_eq_positionInversions
+    (e : α ⊕ β ≃ γ) (P : PairingOn α) (Q : PairingOn β) :
+    (PairingOn.ofSplitInterSectorCrossingCount e P Q) % 2 =
+      (∑ i : α, ∑ j : β,
         if e (Sum.inr j) < e (Sum.inl i) then 1 else 0) % 2 := by
-  rw [Pairing.ofSplitInterSectorCrossingCount_mod_two_eq_pairEndpointInversionCount,
-    Pairing.ofSplit_sum_pairEndpointInversionCount_eq_positionInversions]
+  rw [PairingOn.ofSplitInterSectorCrossingCount_mod_two_eq_pairEndpointInversionCount,
+    PairingOn.ofSplit_sum_pairEndpointInversionCount_eq_positionInversions]
 
 /-- With strictly increasing embeddings of both sectors, the sole extra
 crossing count is the explicitly identified inter-sector contribution. -/
-theorem Pairing.ofSplit_crossingCount_eq_left_add_right_add_inter
-    (e : PositionSplitting a b n) (P : Pairing a) (Q : Pairing b)
-    (hleft : StrictMono (fun i : Fin (2 * a) => e (Sum.inl i)))
-    (hright : StrictMono (fun i : Fin (2 * b) => e (Sum.inr i))) :
-    (Pairing.ofSplit e P Q).crossingCount =
+theorem PairingOn.ofSplit_crossingCount_eq_left_add_right_add_inter
+    (e : α ⊕ β ≃ γ) (P : PairingOn α) (Q : PairingOn β)
+    (hleft : StrictMono (fun i : α => e (Sum.inl i)))
+    (hright : StrictMono (fun i : β => e (Sum.inr i))) :
+    (PairingOn.ofSplit e P Q).crossingCount =
       P.crossingCount + Q.crossingCount +
-        Pairing.ofSplitInterSectorCrossingCount e P Q := by
+        PairingOn.ofSplitInterSectorCrossingCount e P Q := by
   have hdecomp :
-      (Pairing.ofSplit e P Q).crossingCount =
+      (PairingOn.ofSplit e P Q).crossingCount =
         (∑ p : P.NormalizedPair, ∑ q : P.NormalizedPair,
           if Crosses
-              (Pairing.ofSplitNormalizedPairEquiv e P Q (Sum.inl p)).1
-              (Pairing.ofSplitNormalizedPairEquiv e P Q (Sum.inl q)).1
+              (PairingOn.ofSplitNormalizedPairEquiv e P Q (Sum.inl p)).1
+              (PairingOn.ofSplitNormalizedPairEquiv e P Q (Sum.inl q)).1
           then 1 else 0) +
         (∑ p : Q.NormalizedPair, ∑ q : Q.NormalizedPair,
           if Crosses
-              (Pairing.ofSplitNormalizedPairEquiv e P Q (Sum.inr p)).1
-              (Pairing.ofSplitNormalizedPairEquiv e P Q (Sum.inr q)).1
+              (PairingOn.ofSplitNormalizedPairEquiv e P Q (Sum.inr p)).1
+              (PairingOn.ofSplitNormalizedPairEquiv e P Q (Sum.inr q)).1
           then 1 else 0) +
-        Pairing.ofSplitInterSectorCrossingCount e P Q := by
+        PairingOn.ofSplitInterSectorCrossingCount e P Q := by
     classical
-    let emb := Pairing.ofSplitNormalizedPairEquiv e P Q
+    let emb := PairingOn.ofSplitNormalizedPairEquiv e P Q
     have hsum :
-        (Pairing.ofSplit e P Q).crossingCount =
+        (PairingOn.ofSplit e P Q).crossingCount =
           ∑ xy : (P.NormalizedPair ⊕ Q.NormalizedPair) ×
               (P.NormalizedPair ⊕ Q.NormalizedPair),
             if Crosses (emb xy.1).1 (emb xy.2).1 then 1 else 0 := by
-      rw [Pairing.crossingCount_eq_sum_crosses]
+      rw [PairingOn.crossingCount_eq_sum_crosses]
       exact (Equiv.sum_comp (Equiv.prodCongr emb emb)
-        (fun xy : (Pairing.ofSplit e P Q).NormalizedPair ×
-            (Pairing.ofSplit e P Q).NormalizedPair =>
+        (fun xy : (PairingOn.ofSplit e P Q).NormalizedPair ×
+            (PairingOn.ofSplit e P Q).NormalizedPair =>
           if Crosses xy.1.1 xy.2.1 then (1 : ℕ) else 0)).symm
     rw [hsum, Fintype.sum_prod_type, Fintype.sum_sum_type]
     simp_rw [Fintype.sum_sum_type, Finset.sum_add_distrib]
-    unfold Pairing.ofSplitInterSectorCrossingCount
+    unfold PairingOn.ofSplitInterSectorCrossingCount
     dsimp [emb]
     omega
   rw [hdecomp,
     P.sum_sum_crosses_map_eq_crossingCount
       (fun i => e (Sum.inl i)) hleft
-      (fun p => (Pairing.ofSplitNormalizedPairEquiv e P Q (Sum.inl p)).1)
-      (fun p => Pairing.ofSplitNormalizedPairEquiv_pair_eq_of_lt e P Q (Sum.inl p)
+      (fun p => (PairingOn.ofSplitNormalizedPairEquiv e P Q (Sum.inl p)).1)
+      (fun p => PairingOn.ofSplitNormalizedPairEquiv_pair_eq_of_lt e P Q (Sum.inl p)
         (hleft (P.pairs_normalized p.2))),
     Q.sum_sum_crosses_map_eq_crossingCount
       (fun i => e (Sum.inr i)) hright
-      (fun p => (Pairing.ofSplitNormalizedPairEquiv e P Q (Sum.inr p)).1)
-      (fun p => Pairing.ofSplitNormalizedPairEquiv_pair_eq_of_lt e P Q (Sum.inr p)
+      (fun p => (PairingOn.ofSplitNormalizedPairEquiv e P Q (Sum.inr p)).1)
+      (fun p => PairingOn.ofSplitNormalizedPairEquiv_pair_eq_of_lt e P Q (Sum.inr p)
         (hright (Q.pairs_normalized p.2)))]
 
 end Combinatorics

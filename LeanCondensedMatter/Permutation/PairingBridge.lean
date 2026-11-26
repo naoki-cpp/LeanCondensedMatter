@@ -377,7 +377,7 @@ theorem pairingSum_eq_permutationSum_of_inl_vanishing {R : Type*} [CommSemiring 
     sideSplittingWeight ζ e *
       permutationSum ζ (fun i j => exchangeMatrix ζ e pv i j) Finset.univ
   rw [pairingSum]
-  simp only [Pairing.evaluation]
+  simp only [PairingOn.evaluation]
   rw [sum_pairings_eq_sum_perm_of_inl_vanishing e _ pv hpv,
     permutationSum_univ_eq_sum_perm, Finset.mul_sum]
   refine Finset.sum_congr rfl fun σ _ => ?_

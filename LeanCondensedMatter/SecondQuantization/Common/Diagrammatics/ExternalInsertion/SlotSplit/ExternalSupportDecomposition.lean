@@ -50,7 +50,7 @@ theorem ExternalInsertionDiagram.externalBearingDiagram_partner
       externalInsertionSlotLegSplitting (E := E)
         d.externallySupportedInteractionPart_subset
         (Sum.inl (d.externalBearingDiagram.pairing.partner i)) :=
-  Combinatorics.Pairing.partner_splitLeft
+  Combinatorics.PairingOn.partner_splitLeft
     (externalInsertionSlotLegSplitting (E := E) d.externallySupportedInteractionPart_subset)
     d.pairing_isSplit_externallySupportedInteractionPart i
 

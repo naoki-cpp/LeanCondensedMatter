@@ -71,7 +71,7 @@ noncomputable def Pairing.vertexGraphOfSplitIso
     (hright : ∀ i, vertexOfLeg (e (Sum.inr i)) =
       vertexEquiv (Sum.inr (rightVertex i))) :
     (P.vertexGraph leftVertex ⊕g Q.vertexGraph rightVertex) ≃g
-      (Pairing.ofSplit e P Q).vertexGraph vertexOfLeg where
+      Pairing.vertexGraph (PairingOn.ofSplit e P Q) vertexOfLeg where
   toEquiv := vertexEquiv
   map_rel_iff' := by
     intro x y
@@ -81,7 +81,7 @@ noncomputable def Pairing.vertexGraphOfSplitIso
       cases z with
       | inl i =>
           rw [hleft] at hx
-          rw [Pairing.ofSplit_partner_inl, hleft] at hy
+          rw [PairingOn.ofSplit_partner_inl, hleft] at hy
           have hx' : x = Sum.inl (leftVertex i) :=
             (vertexEquiv.injective hx).symm
           have hy' : y = Sum.inl (leftVertex (P.partner i)) :=
@@ -94,7 +94,7 @@ noncomputable def Pairing.vertexGraphOfSplitIso
           exact hne (congrArg vertexEquiv (congrArg Sum.inl hxy))
       | inr i =>
           rw [hright] at hx
-          rw [Pairing.ofSplit_partner_inr, hright] at hy
+          rw [PairingOn.ofSplit_partner_inr, hright] at hy
           have hx' : x = Sum.inr (rightVertex i) :=
             (vertexEquiv.injective hx).symm
           have hy' : y = Sum.inr (rightVertex (Q.partner i)) :=
@@ -115,7 +115,7 @@ noncomputable def Pairing.vertexGraphOfSplitIso
               · intro heq
                 exact hne (Sum.inl.inj (vertexEquiv.injective heq))
               · rw [hleft, hi]
-              · rw [Pairing.ofSplit_partner_inl, hleft, hj]
+              · rw [PairingOn.ofSplit_partner_inl, hleft, hj]
           | inr y =>
               intro hadj
               cases hadj
@@ -131,7 +131,7 @@ noncomputable def Pairing.vertexGraphOfSplitIso
               · intro heq
                 exact hne (Sum.inr.inj (vertexEquiv.injective heq))
               · rw [hright, hi]
-              · rw [Pairing.ofSplit_partner_inr, hright, hj]
+              · rw [PairingOn.ofSplit_partner_inr, hright, hj]
 
 /-- The two incident vertices of a paired leg lie in the same connected component of the pairing
 vertex graph. -/

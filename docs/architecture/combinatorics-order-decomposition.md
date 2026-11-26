@@ -62,10 +62,10 @@ crossing parity and a compatible family shuffle's ordered block-inversion parity
 decomposition, local endpoint equivalences, the shuffle, their endpoint compatibility, and an
 explicit block order. It does not assume the residual parity is zero.
 
-The generic `Pairing.crossingCount_eq_sum_localCrossingCount_add_inter` additionally
+The generic `PairingOn.crossingCount_eq_sum_localCrossingCount_add_inter` additionally
 identifies the diagonal contributions with the crossing counts of any order-preserving
 component-local pairings, while retaining the exact inter-component remainder.
-`Pairing.crossingCount_mod_two_eq_sum_componentCrossingCount_of_geometric_even`
+`PairingOn.crossingCount_mod_two_eq_sum_componentCrossingCount_of_geometric_even`
 expresses the common parity consequence of even geometric crossings between distinct
 components; Quartic and TwoPoint supply their own four-leg and mixed-time evenness proofs.
 
@@ -98,6 +98,11 @@ embeddings, including preservation and reflection of crossings. Quartic fixed-or
 use that construction with the canonical component-local vertex orders and component shuffle.
 The equality of the assembled vertex order with the fixed order supplies the partner compatibility;
 component assignment remains in the Quartic adapter.
+
+The component decomposition uses arbitrary finite linearly ordered position fibers. Binary splitting
+and its inverse laws use arbitrary sum equivalences, without finiteness or order assumptions; only
+the normalized-pair and crossing-count layers require finite linear orders. The ordered block-shuffle
+and permutation-sign statements retain their explicit finite-index coordinates.
 
 ## Removing the first pair
 

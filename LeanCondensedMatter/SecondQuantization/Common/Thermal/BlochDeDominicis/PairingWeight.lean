@@ -100,16 +100,16 @@ theorem Pairing.weight_ofSplit_eq_positionInversions_mul (s : Statistics)
     (left : Pairing a) (right : Pairing b)
     (hleft : StrictMono (fun i : Fin (2 * a) => e (Sum.inl i)))
     (hright : StrictMono (fun j : Fin (2 * b) => e (Sum.inr j))) :
-    (Pairing.ofSplit e left right).weight s =
+    Pairing.weight s (PairingOn.ofSplit e left right) =
       (s.zetaInt : ℂ) ^
         (∑ i : Fin (2 * a), ∑ j : Fin (2 * b),
           if e (Sum.inr j) < e (Sum.inl i) then 1 else 0) *
         (left.weight s * right.weight s) := by
   simp only [Pairing.weight]
-  rw [Pairing.ofSplit_crossingCount_eq_left_add_right_add_inter
+  rw [PairingOn.ofSplit_crossingCount_eq_left_add_right_add_inter
     e left right hleft hright, pow_add, pow_add]
   rw [zetaInt_pow_eq_of_mod_two_eq s
-    (Pairing.ofSplitInterSectorCrossingCount_mod_two_eq_positionInversions
+    (PairingOn.ofSplitInterSectorCrossingCount_mod_two_eq_positionInversions
       e left right)]
   ac_rfl
 
@@ -127,26 +127,26 @@ theorem Pairing.evaluation_ofSplit_eq_positionInversions_mul (s : Statistics)
     (hleftMono : StrictMono (fun i : Fin (2 * a) => e (Sum.inl i)))
     (hrightMono : StrictMono (fun j : Fin (2 * b) => e (Sum.inr j)))
     (hleft : ∀ pr : left.NormalizedPair,
-      value (Pairing.ofSplitNormalizedPairEquiv e left right (Sum.inl pr)).1.1
-        (Pairing.ofSplitNormalizedPairEquiv e left right (Sum.inl pr)).1.2 =
+      value (PairingOn.ofSplitNormalizedPairEquiv e left right (Sum.inl pr)).1.1
+        (PairingOn.ofSplitNormalizedPairEquiv e left right (Sum.inl pr)).1.2 =
       leftValue pr.1.1 pr.1.2)
     (hright : ∀ pr : right.NormalizedPair,
-      value (Pairing.ofSplitNormalizedPairEquiv e left right (Sum.inr pr)).1.1
-        (Pairing.ofSplitNormalizedPairEquiv e left right (Sum.inr pr)).1.2 =
+      value (PairingOn.ofSplitNormalizedPairEquiv e left right (Sum.inr pr)).1.1
+        (PairingOn.ofSplitNormalizedPairEquiv e left right (Sum.inr pr)).1.2 =
       rightValue pr.1.1 pr.1.2) :
-    (Pairing.ofSplit e left right).evaluation
-        ((Pairing.ofSplit e left right).weight s) value =
+    (PairingOn.ofSplit e left right).evaluation
+        (Pairing.weight s (PairingOn.ofSplit e left right)) value =
       (s.zetaInt : ℂ) ^
         (∑ i : Fin (2 * a), ∑ j : Fin (2 * b),
           if e (Sum.inr j) < e (Sum.inl i) then 1 else 0) *
         (left.evaluation (left.weight s) leftValue *
           right.evaluation (right.weight s) rightValue) := by
-  rw [Pairing.evaluation,
+  rw [PairingOn.evaluation,
     Pairing.weight_ofSplit_eq_positionInversions_mul s e left right
       hleftMono hrightMono,
-    Pairing.prod_pairs_ofSplit e left right value leftValue rightValue
+    PairingOn.prod_pairs_ofSplit e left right value leftValue rightValue
       hleft hright]
-  simp only [Pairing.evaluation]
+  simp only [PairingOn.evaluation]
   ring
 
 /-- An exact decomposition of the crossing count gives a product of local exchange weights
@@ -184,7 +184,10 @@ theorem four_position_pairings_and_weights (s : Statistics) :
       pairingNested.weight s = 1 := by
   constructor
   · decide
-  · simp [Pairing.weight]
+  · simp only [Pairing.weight]
+    rw [crossingCount_pairingAdjacent, crossingCount_pairingCrossing,
+      crossingCount_pairingNested]
+    simp
 
 end BlochDeDominicis
 end Common

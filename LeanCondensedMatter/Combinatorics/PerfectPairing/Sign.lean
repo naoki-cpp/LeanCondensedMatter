@@ -12,7 +12,9 @@ A permutation of `Fin (2 * n)` presents a perfect pairing when its two-element b
 every normalized pair, possibly with reversed endpoints. Its sign is the product of the
 within-block reversal parity and the pairing crossing parity.
 
-The statement applies to any presentation and does not choose a canonical enumeration.
+The geometric parity calculation works on any finite linear order. The permutation-sign statement
+uses the explicit consecutive two-slot block coordinates of `Fin (2 * n)` and does not choose a
+canonical enumeration of the pairs.
 -/
 
 namespace Combinatorics
@@ -62,7 +64,7 @@ private theorem pairSlotIndexEquiv_symm_lt_iff (n : ℕ) (x y : Fin n × Fin 2) 
     (FiniteIndex.blockEquiv_lt_iff (by ring : 2 * n = n * 2)
       ((pairSlotIndexEquiv n).symm x) ((pairSlotIndexEquiv n).symm y))
 
-private theorem ite_lt_eq_neg_one_pow {m : ℕ} (a b : Fin m) (hab : a ≠ b) :
+private theorem ite_lt_eq_neg_one_pow {α : Type*} [LinearOrder α] (a b : α) (hab : a ≠ b) :
     (if a < b then (1 : ℤˣ) else -1) = (-1) ^ (if b < a then 1 else 0) := by
   rcases lt_trichotomy a b with h | h | h
   · rw [ite_eq_left h, ite_eq_right (asymm h), pow_zero]
@@ -209,17 +211,21 @@ private theorem sign_eq_pow_blockInversions (τ : Equiv.Perm (Fin (2 * n))) :
       rw [← Finset.prod_pow_eq_pow_sum]
       exact Finset.prod_congr rfl fun k _ => Finset.prod_pow_eq_pow_sum _ _ _
 
-private noncomputable def crossIndicator (pairing : Pairing n) (e : Fin n ≃ pairing.NormalizedPair)
+section GeometricParity
+
+variable {α : Type*} [Fintype α] [LinearOrder α]
+
+private noncomputable def crossIndicator (pairing : PairingOn α) (e : Fin n ≃ pairing.NormalizedPair)
     (k l : Fin n) : ℕ :=
   if Crosses (e k).1 (e l).1 then 1 else 0
 
-private theorem crossingCount_eq_sum_sum_crossIndicator (pairing : Pairing n)
+private theorem crossingCount_eq_sum_sum_crossIndicator (pairing : PairingOn α)
     (e : Fin n ≃ pairing.NormalizedPair) :
     pairing.crossingCount = ∑ k : Fin n, ∑ l : Fin n, crossIndicator pairing e k l := by
   rw [pairing.crossingCount_eq_sum_crosses, Fintype.sum_prod_type, ← Equiv.sum_comp e]
   exact Finset.sum_congr rfl fun k _ => (Equiv.sum_comp e _).symm
 
-private theorem crossingCount_eq_sum_Ioi_crossIndicator (pairing : Pairing n)
+private theorem crossingCount_eq_sum_Ioi_crossIndicator (pairing : PairingOn α)
     (e : Fin n ≃ pairing.NormalizedPair) :
     pairing.crossingCount =
       ∑ k : Fin n, ∑ l ∈ Finset.Ioi k,
@@ -251,7 +257,7 @@ private theorem crossingCount_eq_sum_Ioi_crossIndicator (pairing : Pairing n)
       rw [← Finset.sum_add_distrib]
       exact Finset.sum_congr rfl fun k _ => Finset.sum_add_distrib.symm
 
-private theorem sum_Ioi_pairEndpointInversionCount_mod_two_eq_crossingCount (pairing : Pairing n)
+private theorem sum_Ioi_pairEndpointInversionCount_mod_two_eq_crossingCount (pairing : PairingOn α)
     (e : Fin n ≃ pairing.NormalizedPair) :
     (∑ k : Fin n, ∑ l ∈ Finset.Ioi k, pairEndpointInversionCount (e k).1 (e l).1) % 2 =
       pairing.crossingCount % 2 := by
@@ -270,6 +276,8 @@ private theorem sum_Ioi_pairEndpointInversionCount_mod_two_eq_crossingCount (pai
     hEnds.1 hEnds.2.1 hEnds.2.2.1 hEnds.2.2.2
   rw [hmod, crossIndicator, crossIndicator, crossesIndicator_add]
   split_ifs <;> decide
+
+end GeometricParity
 
 /-- A permutation of ambient positions **presents** a pairing when its two-element blocks are
 exactly the normalized pairs of `pairing`, each in either endpoint order. -/

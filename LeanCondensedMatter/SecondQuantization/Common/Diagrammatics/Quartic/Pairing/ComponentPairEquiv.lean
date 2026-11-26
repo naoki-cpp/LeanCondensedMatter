@@ -59,7 +59,7 @@ theorem QuarticDiagram.componentPairEquiv_apply {S : Finset (Fin N)}
     (d.componentOrderedLegEquiv shuffle ⟨B, pr.1.1⟩,
       d.componentOrderedLegEquiv shuffle ⟨B, pr.1.2⟩)
   simpa only [QuarticDiagram.componentPairEquiv] using
-    (Pairing.normalizedPairSigmaEquiv_apply_of_strictMono
+    (PairingOn.normalizedPairSigmaEquiv_apply_of_strictMono
       (d.pairingInOrder (d.assembleVertexOrder orders shuffle))
       (fun C => (d.restrictComponent C.2).pairingInOrder (orders C))
       (d.componentOrderedLegEquiv shuffle)
