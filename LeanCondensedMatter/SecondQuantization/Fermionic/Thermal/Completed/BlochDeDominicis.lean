@@ -97,14 +97,11 @@ theorem one_add_gibbsFactor_ne_zero
   cases C with
   | create i =>
       change (1 : ℂ) + Complex.exp (-(β : ℂ) * (ε i : ℂ)) ≠ 0
-      convert one_add_exp_ofReal_ne_zero (-β * ε i) using 1
-      push_cast
-      rfl
+      simpa only [Complex.ofReal_mul, Complex.ofReal_neg] using
+        one_add_exp_ofReal_ne_zero (-β * ε i)
   | annihilate i =>
       change (1 : ℂ) + Complex.exp ((β : ℂ) * (ε i : ℂ)) ≠ 0
-      convert one_add_exp_ofReal_ne_zero (β * ε i) using 1
-      push_cast
-      rfl
+      simpa only [Complex.ofReal_mul] using one_add_exp_ofReal_ne_zero (β * ε i)
 
 /-- Uniform completed free-Gibbs intertwining for a creation or annihilation operator. -/
 theorem grandCanonicalGibbsDensityOperator_comp_operator
@@ -146,24 +143,6 @@ theorem completedAnticomm_operator_operator
           rw [operator_annihilate, operator_annihilate, completedAnticomm_annihilate_annihilate]
           simp [anticommutatorValue]
 
-end CompletedThermalLadder
-
-
-
-end
-end Fermionic
-end SecondQuantization
-
-namespace SecondQuantization
-namespace Fermionic
-
-open QuantumTheory
-
-noncomputable section
-
-variable {Mode : Type*} [LinearOrder Mode]
-
-namespace CompletedThermalLadder
 
 /-- Right-associated bounded product of completed thermal ladder operators. -/
 noncomputable def operatorProduct (l : List (CompletedThermalLadder Mode)) :
@@ -238,22 +217,6 @@ theorem grandCanonicalGibbsExpectation_cons_eq_peel_add_rotated
   rw [grandCanonicalGibbsExpectation, operatorProduct_append]
   simp
 
-end CompletedThermalLadder
-
-end
-end Fermionic
-end SecondQuantization
-
-namespace SecondQuantization
-namespace Fermionic
-
-open QuantumTheory
-
-noncomputable section
-
-variable {Mode : Type*} [LinearOrder Mode]
-
-namespace CompletedThermalLadder
 
 /-- Expectation of the completed CAR peel as an indexed finite sum over the removed tail position. -/
 private theorem grandCanonicalGibbsExpectation_peelSum_eq_sum
@@ -270,22 +233,6 @@ private theorem grandCanonicalGibbsExpectation_peelSum_eq_sum
   rw [map_smul]
   simp only [smul_eq_mul, grandCanonicalGibbsExpectation, operatorProduct]
 
-end CompletedThermalLadder
-
-end
-end Fermionic
-end SecondQuantization
-
-namespace SecondQuantization
-namespace Fermionic
-
-open QuantumTheory
-
-noncomputable section
-
-variable {Mode : Type*} [LinearOrder Mode]
-
-namespace CompletedThermalLadder
 
 /-- Completed free-Gibbs KMS rotation for one thermal ladder and an arbitrary bounded operator:
 `⟨C A⟩β = gβ(C) ⟨A C⟩β`.  The scalar `gβ(C)` is the same factor appearing in
@@ -298,23 +245,10 @@ theorem grandCanonicalGibbsExpectation_operator_comp
     (Common.grandCanonicalGibbsDensityOperator (Config := Occupation Mode) ε β μ hsum).expectation (C.operator.comp A) =
       C.gibbsFactor (fun i => ε i - μ) β *
         (Common.grandCanonicalGibbsDensityOperator (Config := Occupation Mode) ε β μ hsum).expectation (A.comp C.operator) := by
-  let ρ := Common.grandCanonicalGibbsDensityOperator (Config := Occupation Mode) ε β μ hsum
-  have hcomm := grandCanonicalGibbsDensityOperator_comp_operator ε β μ hsum C
-  change ρ.op * C.operator = C.gibbsFactor (fun i => ε i - μ) β • (C.operator * ρ.op) at hcomm
-  rw [DensityOperator.expectation_apply, DensityOperator.expectation_apply]
-  calc
-    _ = (((ρ.isTraceClass.comp_right A).comp_left C.operator).smul
-        (C.gibbsFactor (fun i => ε i - μ) β)).trace := by
-      apply ContinuousLinearMap.IsTraceClass.trace_congr
-      change ρ.op * (C.operator * A) =
-        C.gibbsFactor (fun i => ε i - μ) β • (C.operator * (ρ.op * A))
-      rw [← mul_assoc, hcomm, smul_mul_assoc, mul_assoc]
-    _ = C.gibbsFactor (fun i => ε i - μ) β * ((ρ.isTraceClass.comp_right A).comp_left C.operator).trace :=
-      ((ρ.isTraceClass.comp_right A).comp_left C.operator).trace_smul _
-    _ = _ := by
-      simpa only [← ContinuousLinearMap.mul_def, mul_assoc] using
-        congrArg (fun z : ℂ => C.gibbsFactor (fun i => ε i - μ) β * z)
-          ((ρ.isTraceClass.comp_right A).trace_comp_comm C.operator).symm
+  exact DensityOperator.expectation_comp_rotate_of_intertwine
+    (Common.grandCanonicalGibbsDensityOperator (Config := Occupation Mode) ε β μ hsum)
+    C.operator A (C.gibbsFactor (fun i => ε i - μ) β)
+    (grandCanonicalGibbsDensityOperator_comp_operator ε β μ hsum C)
 
 /-- KMS rotation specialized to an ordered thermal-ladder tail. -/
 theorem grandCanonicalGibbsExpectation_cons_eq_gibbsFactor_mul_rotate
@@ -328,22 +262,6 @@ theorem grandCanonicalGibbsExpectation_cons_eq_gibbsFactor_mul_rotate
   rw [grandCanonicalGibbsExpectation, operatorProduct_append]
   simp
 
-end CompletedThermalLadder
-
-end
-end Fermionic
-end SecondQuantization
-
-namespace SecondQuantization
-namespace Fermionic
-
-open QuantumTheory
-
-noncomputable section
-
-variable {Mode : Type*} [LinearOrder Mode]
-
-namespace CompletedThermalLadder
 
 /-- For an odd tail, completed CAR exchange followed by KMS rotation solves the wrapped term.
 The coefficient `g / (1 + g)` is the Fermi thermal factor attached to the leading ladder. -/
@@ -366,11 +284,8 @@ theorem grandCanonicalGibbsExpectation_cons_eq_gibbsRatio_mul_peel
     simpa [E, R] using
       grandCanonicalGibbsExpectation_cons_eq_gibbsFactor_mul_rotate ε β μ hsum C l
   have hsign : ((-1 : ℂ) ^ l.length) = -1 := by
-    rw [hlen]
-    have hmod : (2 * n + 1) % 2 = 1 % 2 := by omega
-    have h := Common.BlochDeDominicis.zetaInt_pow_eq_of_mod_two_eq
-      Common.Statistics.fermion hmod
-    simpa using h
+    rw [hlen, pow_add, pow_mul]
+    norm_num
   simpa only [sub_neg_eq_add, add_comm] using
     ScalarExchange.eq_div_mul_of_eq_add_mul_of_eq_mul E P R (-1) (C.gibbsFactor (fun i => ε i - μ) β)
       (by simpa only [hsign] using hpeel) hkms
@@ -399,23 +314,7 @@ theorem grandCanonicalGibbsExpectation_pair_eq
   rw [hpeel] at h
   exact h
 
-end CompletedThermalLadder
-
-end
-end Fermionic
-end SecondQuantization
-
-namespace SecondQuantization
-namespace Fermionic
-
-open QuantumTheory
 open Combinatorics
-
-noncomputable section
-
-variable {Mode : Type*} [LinearOrder Mode]
-
-namespace CompletedThermalLadder
 
 /-- The completed free-fermion Gibbs expectation as an implementation of the generic
 Bloch--de Dominicis pairing-recursion contract. -/
