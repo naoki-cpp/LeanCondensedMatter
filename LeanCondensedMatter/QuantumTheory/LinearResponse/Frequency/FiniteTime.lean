@@ -112,6 +112,33 @@ theorem hasDerivAt_commutatorSusceptibility_lag
     LieRing.of_associative_ring_bracket]
   exact hexpect.const_mul (Complex.I / (system.hbar : ℂ))
 
+/-- On a nonnegative observation interval the causal kernel of a bounded free
+system is continuous, hence its phase-weighted integral exists. -/
+theorem intervalIntegrable_finiteTimeRetardedIntegrand
+    (system : BoundedFreeSystem H) (expectation : NormalizedExpectation H)
+    (A B : H →L[ℂ] H) (ω η T : ℝ) (hT : 0 ≤ T) :
+    IntervalIntegrable (fun s : ℝ => adiabaticFrequencyPhase ω η (T - s) *
+      retardedSusceptibility (freePropagatorGroup system) system.hbar expectation A B T s)
+      MeasureTheory.volume 0 T := by
+  let U := freePropagatorGroup system
+  have hB := continuous_heisenbergEvolution system B
+  have hcomm : Continuous (fun s : ℝ =>
+      commutatorSusceptibility U system.hbar expectation A B T s) := by
+    have hc : Continuous (fun s : ℝ => heisenbergEvolution U T A *
+        heisenbergEvolution U s B - heisenbergEvolution U s B * heisenbergEvolution U T A) :=
+      (continuous_const.mul hB).sub (hB.mul continuous_const)
+    simp only [commutatorSusceptibility, LieRing.of_associative_ring_bracket]
+    exact continuous_const.mul (expectation.toContinuousLinearMap.continuous.comp hc)
+  have hp : Continuous (fun s : ℝ => adiabaticFrequencyPhase ω η (T - s)) := by
+    unfold adiabaticFrequencyPhase
+    fun_prop
+  apply ContinuousOn.intervalIntegrable
+  refine (hp.mul hcomm).continuousOn.congr ?_
+  intro s hs
+  have hs' : s ∈ Set.Icc (0 : ℝ) T := by
+    simpa only [Set.uIcc_of_le hT] using hs
+  rw [retardedSusceptibility_eq_commutatorSusceptibility_of_le _ _ _ _ _ hs'.2]
+
 namespace ResponseChannel
 
 /-- Finite-observation-time adiabatic response of a neutral response channel.
