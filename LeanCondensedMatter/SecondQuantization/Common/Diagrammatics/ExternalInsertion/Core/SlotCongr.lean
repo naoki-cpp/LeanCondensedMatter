@@ -32,6 +32,28 @@ noncomputable def externalInsertionLegCongr (e : ↥T ≃ ↥U) :
     ((Equiv.sumCongr (Equiv.refl (Fin (2 * E))) (e.prodCongr (Equiv.refl (Fin 4)))).trans
       (externalInsertionLegEquiv E U).symm)
 
+/-- Relabeling interaction vertices leaves every external source leg at
+its exact original external insertion index. -/
+@[simp]
+theorem externalInsertionLegCongr_externalLeg
+    (e : ↥T ≃ ↥U) (x : Fin (2 * E)) :
+    externalInsertionLegCongr (E := E) e
+      (externalInsertionExternalLeg E T x) =
+      externalInsertionExternalLeg E U x := by
+  apply (externalInsertionLegEquiv E U).injective
+  simp [externalInsertionLegCongr, externalInsertionExternalLeg]
+
+/-- Relabeling a quartic interaction vertex does not change the
+corresponding local quartic leg number. -/
+@[simp]
+theorem externalInsertionLegCongr_interactionLeg
+    (e : ↥T ≃ ↥U) (v : ↥T) (i : Fin 4) :
+    externalInsertionLegCongr (E := E) e
+      (externalInsertionInteractionLeg (E := E) v i) =
+      externalInsertionInteractionLeg (E := E) (e v) i := by
+  apply (externalInsertionLegEquiv E U).injective
+  simp [externalInsertionLegCongr, externalInsertionInteractionLeg]
+
 /-- Composing two exact interaction-slot relabelings of the flattened
 fermionic legs is the relabeling along the composite slot equivalence.
 This keeps external insertion labels and each local quartic-leg number

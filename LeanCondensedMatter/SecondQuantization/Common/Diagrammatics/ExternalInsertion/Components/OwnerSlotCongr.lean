@@ -53,30 +53,6 @@ noncomputable def ExternalInsertionBlockLayout.interactionBlockOwnerSlotCongrEqu
     Finset.mem_univ, true_and, ExternalInsertionBlockLayout.ownerSlotCongr_interactionOwner]
   exact Iff.rfl
 
-/-- Relabeling interaction vertices leaves every external source leg at
-its exact original external insertion index. -/
-@[simp]
-theorem externalInsertionLegCongr_externalLeg
-    {M : ℕ} {T : Finset (Fin N)} {U : Finset (Fin M)}
-    (e : ↥T ≃ ↥U) (x : Fin (2 * E)) :
-    externalInsertionLegCongr (E := E) e
-      (externalInsertionExternalLeg E T x) =
-      externalInsertionExternalLeg E U x := by
-  apply (externalInsertionLegEquiv E U).injective
-  simp [externalInsertionLegCongr, externalInsertionExternalLeg]
-
-/-- Relabeling a quartic interaction vertex does not change the
-corresponding local quartic leg number. -/
-@[simp]
-theorem externalInsertionLegCongr_interactionLeg
-    {M : ℕ} {T : Finset (Fin N)} {U : Finset (Fin M)}
-    (e : ↥T ≃ ↥U) (v : ↥T) (i : Fin 4) :
-    externalInsertionLegCongr (E := E) e
-      (externalInsertionInteractionLeg (E := E) v i) =
-      externalInsertionInteractionLeg (E := E) (e v) i := by
-  apply (externalInsertionLegEquiv E U).injective
-  simp [externalInsertionLegCongr, externalInsertionInteractionLeg]
-
 /-- A physical layout whose owner of each ambient vertex is prescribed
 by the block of the corresponding shuffled local slot. -/
 noncomputable def ExternalInsertionBlockLayout.ofFamilyShuffle

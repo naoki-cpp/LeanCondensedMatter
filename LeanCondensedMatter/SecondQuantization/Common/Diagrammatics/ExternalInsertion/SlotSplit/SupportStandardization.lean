@@ -75,16 +75,15 @@ theorem externalInsertionLegCongr_standardize
     externalInsertionLegCongr (E := E)
       (standardSlotEquiv T) =
       finCongr (by simp) := by
-  dsimp only [standardSlotEquiv, standardSlotEquivOfCardEq]
   classical
   apply Equiv.ext
   intro p
   obtain ⟨x, rfl⟩ := (externalInsertionLegEquiv E T).symm.surjective p
   cases x with
   | inl e =>
-      simp only [externalInsertionLegCongr, Equiv.trans_apply,
-        Equiv.apply_symm_apply, Equiv.sumCongr_apply, Sum.map_inl,
-        Equiv.refl_apply]
+      change externalInsertionLegCongr (E := E) (standardSlotEquiv T)
+        (externalInsertionExternalLeg E T e) = _
+      rw [externalInsertionLegCongr_externalLeg]
       apply Fin.ext
       change (externalInsertionExternalLeg E
           (Finset.univ : Finset (Fin T.card)) e).val =
@@ -92,9 +91,9 @@ theorem externalInsertionLegCongr_standardize
       simp only [Fin.val_cast, externalInsertionExternalLeg_val]
   | inr vl =>
       rcases vl with ⟨v, l⟩
-      simp only [externalInsertionLegCongr, Equiv.trans_apply,
-        Equiv.apply_symm_apply, Equiv.sumCongr_apply, Sum.map_inr,
-        Equiv.prodCongr_apply]
+      change externalInsertionLegCongr (E := E) (standardSlotEquiv T)
+        (externalInsertionInteractionLeg (E := E) v l) = _
+      rw [externalInsertionLegCongr_interactionLeg]
       let vFin : Fin T.card := (T.orderIsoOfFin rfl).symm v
       apply Fin.ext
       change (externalInsertionInteractionLeg (E := E)
