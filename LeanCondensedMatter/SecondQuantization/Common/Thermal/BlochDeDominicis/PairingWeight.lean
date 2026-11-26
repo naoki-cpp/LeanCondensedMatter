@@ -186,7 +186,8 @@ theorem four_position_pairings_and_weights (s : Statistics) :
   · decide
   · simp only [Pairing.weight]
     rw [crossingCount_pairingAdjacent, crossingCount_pairingCrossing,
-      crossingCount_pairingNested] <;> simp
+      crossingCount_pairingNested]
+    simp
 
 end BlochDeDominicis
 end Common
