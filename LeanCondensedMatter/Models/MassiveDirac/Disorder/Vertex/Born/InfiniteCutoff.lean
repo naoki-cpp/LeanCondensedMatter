@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Analysis.Lorentzian.RadialQuadratic
+import LeanCondensedMatter.Analysis.Lorentzian.Kernel
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.Vertex.Born.Rung
 import Mathlib.Analysis.SpecificLimits.Basic
 import Mathlib.Tactic.FieldSimp
