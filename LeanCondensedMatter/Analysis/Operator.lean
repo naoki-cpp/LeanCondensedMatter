@@ -10,7 +10,6 @@ import LeanCondensedMatter.Analysis.Operator.BerryGeometry.Curvature
 import LeanCondensedMatter.Analysis.Operator.FiniteTrace
 import LeanCondensedMatter.Analysis.Operator.SymmetrizedProduct
 import LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.Basic
-import LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.Compact
 import LeanCondensedMatter.Analysis.Operator.Compact
 import LeanCondensedMatter.Analysis.Operator.Polar
 import LeanCondensedMatter.Analysis.Operator.Diagonal

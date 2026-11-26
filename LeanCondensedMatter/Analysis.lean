@@ -30,7 +30,6 @@ import LeanCondensedMatter.Analysis.Calculus.AlgebraicDerivative
 import LeanCondensedMatter.Analysis.Calculus.CompactSupportInterval
 import LeanCondensedMatter.Analysis.ConservationLaw
 import LeanCondensedMatter.Analysis.Inequalities.PeierlsBogoliubov
-import LeanCondensedMatter.Analysis.Inequalities.PeierlsBogoliubovEquality
 
 set_option linter.style.header false
 
