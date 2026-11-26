@@ -105,15 +105,21 @@ noncomputable def dGamma (T : 𝓗₁ →ₗ[ℂ] 𝓗₁) :
     (secondQuantizationStep 𝓗₁ T) (secondQuantizationStep_fold_condition 𝓗₁ T)
     (0 : AlgebraicFock 𝓗₁)
 
+/-- Second quantization vanishes on every scalar (zero-particle) state. -/
+@[simp]
+theorem dGamma_algebraMap (T : 𝓗₁ →ₗ[ℂ] 𝓗₁) (c : ℂ) :
+    dGamma 𝓗₁ T (algebraMap ℂ (AlgebraicFock 𝓗₁) c) = 0 := by
+  simpa [dGamma] using
+    (CliffordAlgebra.foldr'_algebraMap
+      (Q := (0 : QuadraticForm ℂ 𝓗₁))
+      (secondQuantizationStep 𝓗₁ T) (secondQuantizationStep_fold_condition 𝓗₁ T)
+      (0 : AlgebraicFock 𝓗₁) c)
+
 /-- Second quantization kills the vacuum. -/
 @[simp]
 theorem dGamma_vacuum (T : 𝓗₁ →ₗ[ℂ] 𝓗₁) :
     dGamma 𝓗₁ T (vacuum 𝓗₁) = 0 := by
-  simpa [dGamma, vacuum] using
-    (CliffordAlgebra.foldr'_algebraMap
-      (Q := (0 : QuadraticForm ℂ 𝓗₁))
-      (secondQuantizationStep 𝓗₁ T) (secondQuantizationStep_fold_condition 𝓗₁ T)
-      (0 : AlgebraicFock 𝓗₁) (1 : ℂ))
+  simpa only [vacuum, map_one] using dGamma_algebraMap 𝓗₁ T 1
 
 /-- On a one-particle state, `dΓ(T)` agrees with `T`. -/
 @[simp]
