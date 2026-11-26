@@ -6,22 +6,17 @@ import LeanCondensedMatter.Analysis.Operator.Diagonal
 import LeanCondensedMatter.Analysis.Operator.DiagonalExpectation
 import LeanCondensedMatter.Analysis.Operator.Exponential
 import LeanCondensedMatter.Analysis.Operator.FiniteTrace
-import LeanCondensedMatter.Analysis.Operator.Fredholm.Diagonal
+import LeanCondensedMatter.Analysis.Operator.Fredholm
 import LeanCondensedMatter.Analysis.Operator.HilbertBasis
-import LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.Basic
+import LeanCondensedMatter.Analysis.Operator.HilbertSchmidt
 import LeanCondensedMatter.Analysis.Operator.L2Multiplication
 import LeanCondensedMatter.Analysis.Operator.Polar
 import LeanCondensedMatter.Analysis.Operator.SchwartzKinetic1D
 import LeanCondensedMatter.Analysis.Operator.SchwartzTwoLevel1D
-import LeanCondensedMatter.Analysis.Operator.Spectral.EigenvectorFamily
-import LeanCondensedMatter.Analysis.Operator.Spectral.Resolvent
+import LeanCondensedMatter.Analysis.Operator.Spectral
 import LeanCondensedMatter.Analysis.Operator.SymmetrizedProduct
 import LeanCondensedMatter.Analysis.Operator.TraceClass
-import LeanCondensedMatter.Analysis.Operator.Unbounded.Adjoint
-import LeanCondensedMatter.Analysis.Operator.Unbounded.BoundedResolvent
-import LeanCondensedMatter.Analysis.Operator.Unbounded.Composition
-import LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventApproximation
-import LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution
+import LeanCondensedMatter.Analysis.Operator.Unbounded
 import LeanCondensedMatter.Analysis.Operator.Unitary
 
 set_option linter.style.header false

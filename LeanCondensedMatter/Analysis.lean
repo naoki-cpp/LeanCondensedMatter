@@ -1,45 +1,32 @@
-import LeanCondensedMatter.Analysis.Algebra.FiniteAverage
-import LeanCondensedMatter.Analysis.Algebra.QuadraticNormalization
-import LeanCondensedMatter.Analysis.Calculus.AlgebraicDerivative
-import LeanCondensedMatter.Analysis.Calculus.CompactSupportInterval
-import LeanCondensedMatter.Analysis.Calculus.ExponentialConjugation
+import LeanCondensedMatter.Analysis.Algebra
+import LeanCondensedMatter.Analysis.Calculus
 import LeanCondensedMatter.Analysis.ConservationLaw
 import LeanCondensedMatter.Analysis.DiscreteLattice
 import LeanCondensedMatter.Analysis.Dyson
-import LeanCondensedMatter.Analysis.Fourier.AngularHarmonics
-import LeanCondensedMatter.Analysis.Fourier.FiniteCyclic
-import LeanCondensedMatter.Analysis.FunctionalCalculus.CFC
-import LeanCondensedMatter.Analysis.Geometry.SphericalMoments
-import LeanCondensedMatter.Analysis.Inequalities.Gibbs
-import LeanCondensedMatter.Analysis.Inequalities.PeierlsBogoliubov
-import LeanCondensedMatter.Analysis.InfiniteSum.FinsuppProduct
-import LeanCondensedMatter.Analysis.InfiniteSum.Normalization
-import LeanCondensedMatter.Analysis.InternalSpace.Pauli
+import LeanCondensedMatter.Analysis.Fourier
+import LeanCondensedMatter.Analysis.FunctionalCalculus
+import LeanCondensedMatter.Analysis.Geometry
+import LeanCondensedMatter.Analysis.Inequalities
+import LeanCondensedMatter.Analysis.InfiniteSum
+import LeanCondensedMatter.Analysis.InternalSpace
 import LeanCondensedMatter.Analysis.Lorentzian
-import LeanCondensedMatter.Analysis.Matrix.CartesianProjectors
-import LeanCondensedMatter.Analysis.Matrix.FinTwoCharpoly
-import LeanCondensedMatter.Analysis.ODE.RadialEnergyDecay
+import LeanCondensedMatter.Analysis.Matrix
+import LeanCondensedMatter.Analysis.ODE
 import LeanCondensedMatter.Analysis.Operator
 import LeanCondensedMatter.Analysis.OrderedSimplex
 import LeanCondensedMatter.Analysis.OscillatoryIntegral
 import LeanCondensedMatter.Analysis.PowerSeries
-import LeanCondensedMatter.Analysis.ScalarExchange.Basic
-import LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.AnalyticWronskian
-import LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.FormalCoefficients
-import LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.HypergeometricSeries
-import LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.RadialMoments
-import LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.YSeries
+import LeanCondensedMatter.Analysis.ScalarExchange
+import LeanCondensedMatter.Analysis.SpecialFunctions
 
 set_option linter.style.header false
 
 /-!
 # Analysis
 
-General mathematical infrastructure used throughout LeanCondensedMatter. This umbrella imports
-standalone mathematical modules and the existing topic umbrellas, which own their respective
-package exports. Consumers should import the narrow canonical module they need.
-
-Polar Fourier–Bessel kernels are included through the radial Bessel moment theory.
+Public entry point for the general mathematical infrastructure used throughout LeanCondensedMatter.
+Each immediate subdirectory is represented by its topic umbrella; standalone modules at this level
+are imported directly. Consumers should import the narrow canonical module they need.
 
 The one-dimensional weak-conservation kernel is opt-in: import
 `LeanCondensedMatter.Analysis.ConservationLaw.WeakConservation1D` when needed.

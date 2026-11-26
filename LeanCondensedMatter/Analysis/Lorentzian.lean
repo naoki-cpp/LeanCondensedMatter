@@ -1,6 +1,6 @@
 import LeanCondensedMatter.Analysis.Lorentzian.Kernel
-import LeanCondensedMatter.Analysis.Lorentzian.RadialQuadratic
 import LeanCondensedMatter.Analysis.Lorentzian.Pole
+import LeanCondensedMatter.Analysis.Lorentzian.RadialQuadratic
 
 set_option linter.style.header false
 
