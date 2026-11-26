@@ -1,8 +1,6 @@
 module
 
 public import Mathlib.Algebra.BigOperators.ModEq
-public import Mathlib.Data.Finset.Prod
-import Mathlib.Algebra.BigOperators.Group.Finset.Sigma
 
 -- Used only to rewrite casts of finite sums in proofs; not part of this module's public API.
 import Mathlib.Algebra.BigOperators.Ring.Finset
