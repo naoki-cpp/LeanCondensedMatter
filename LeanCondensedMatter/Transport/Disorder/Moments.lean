@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Analysis.Algebra.FiniteAverage
 import LeanCondensedMatter.Transport.Disorder.Finite
 import Mathlib.Algebra.Star.BigOperators
 import Mathlib.Analysis.Normed.Operator.Mul
@@ -56,7 +57,7 @@ theorem exactSecondMoment_eq_average
       ensemble.average (fun ω =>
         (ensemble.impurityPotential ω).1 * kernel *
           (ensemble.impurityPotential ω).1) := by
-  simp [exactSecondMoment, exactSecondMomentCLM, average]
+  simp [exactSecondMoment, exactSecondMomentCLM, average, LinearMap.finiteWeightedAverage]
 
 /-- If every impurity potential is scalar, `Vω = uω I`, the exact second-moment action is scalar
 multiplication by `E[uω²]`. -/

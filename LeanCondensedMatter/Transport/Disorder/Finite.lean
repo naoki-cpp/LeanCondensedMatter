@@ -1,7 +1,6 @@
+import LeanCondensedMatter.Analysis.Algebra.FiniteAverage
 import LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.Free
 import Mathlib.Algebra.Star.BigOperators
-import Mathlib.LinearAlgebra.BilinearMap
-import Mathlib.Tactic.Abel
 
 set_option linter.style.header false
 
@@ -60,58 +59,14 @@ noncomputable def configurationSystem
 
 /-- Exact normalized finite disorder averaging for any complex module. -/
 noncomputable def average {E : Type*} [AddCommMonoid E] [Module ℂ E] :
-    (Ω → E) →ₗ[ℂ] E where
-  toFun response := ∑ ω, (ensemble.probability ω : ℂ) • response ω
-  map_add' left right := by simp [smul_add, Finset.sum_add_distrib]
-  map_smul' c response := by simp [Finset.smul_sum, smul_smul, mul_comm]
-
-/-- Every complex-linear map commutes with finite disorder averaging. -/
-theorem map_average {E F : Type*}
-    [AddCommMonoid E] [Module ℂ E] [AddCommMonoid F] [Module ℂ F]
-    (f : E →ₗ[ℂ] F) (response : Ω → E) :
-    f (ensemble.average response) = ensemble.average (fun ω => f (response ω)) := by
-  change f (∑ ω, (ensemble.probability ω : ℂ) • response ω) =
-    ∑ ω, (ensemble.probability ω : ℂ) • f (response ω)
-  simp only [map_sum, map_smul]
+    (Ω → E) →ₗ[ℂ] E :=
+  LinearMap.finiteWeightedAverage ensemble.probability
 
 /-- Normalization makes the finite disorder average fix constant families. -/
 @[simp]
 theorem average_const {E : Type*} [AddCommMonoid E] [Module ℂ E] (value : E) :
-    ensemble.average (fun _ => value) = value := by
-  change (∑ ω, (ensemble.probability ω : ℂ) • value) = value
-  rw [← Finset.sum_smul]
-  have hsum : (∑ ω, (ensemble.probability ω : ℂ)) = 1 := by
-    simpa using congrArg (fun x : ℝ => (x : ℂ)) ensemble.probability_sum
-  simp [hsum]
-
-/-- A normalized finite average of a bilinear pairing decomposes into the pairing of
-the means and the pairing of the centered fluctuations. The modules need no norm,
-multiplication, or inner product. -/
-theorem average_bilinear_eq_mean_add_centered {E F G : Type*}
-    [AddCommGroup E] [Module ℂ E] [AddCommGroup F] [Module ℂ F]
-    [AddCommGroup G] [Module ℂ G]
-    (B : E →ₗ[ℂ] F →ₗ[ℂ] G) (left : Ω → E) (right : Ω → F) :
-    ensemble.average (fun ω => B (left ω) (right ω)) =
-      B (ensemble.average left) (ensemble.average right) +
-        ensemble.average (fun ω =>
-          B (left ω - ensemble.average left) (right ω - ensemble.average right)) := by
-  let x := ensemble.average left
-  let y := ensemble.average right
-  have hright : ensemble.average (fun ω => B (left ω) y) = B x y :=
-    (ensemble.map_average (B.flip y) left).symm
-  have hleft : ensemble.average (fun ω => B x (right ω)) = B x y :=
-    (ensemble.map_average (B x) right).symm
-  have hcenter :
-      (fun ω => B (left ω - x) (right ω - y)) =
-        (fun ω => B (left ω) (right ω)) - (fun ω => B (left ω) y) -
-          (fun ω => B x (right ω)) + (fun _ => B x y) := by
-    funext ω
-    simp only [Pi.sub_apply, Pi.add_apply, map_sub, LinearMap.sub_apply]
-    abel
-  change ensemble.average (fun ω => B (left ω) (right ω)) =
-    B x y + ensemble.average (fun ω => B (left ω - x) (right ω - y))
-  rw [hcenter, map_add, map_sub, map_sub, hright, hleft, ensemble.average_const]
-  abel
+    ensemble.average (fun _ => value) = value :=
+  LinearMap.finiteWeightedAverage_const ensemble.probability ensemble.probability_sum value
 
 /-- A normalized finite disorder average is norm-contractive on pointwise bounded families.
 The same estimate applies to operator and scalar responses without introducing a second
