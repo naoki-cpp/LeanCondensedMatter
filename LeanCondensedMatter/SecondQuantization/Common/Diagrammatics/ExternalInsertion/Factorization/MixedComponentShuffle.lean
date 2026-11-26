@@ -73,7 +73,27 @@ theorem ExternalInsertionDiagram.relativeComponentShuffle_sign_eq_mixedAtomic_mu
           (fixedShuffle.slotEquiv.trans globalPerm) := by
     apply Equiv.ext
     rintro ⟨B, p⟩
+    let T := interactionSector
+      (B : Finset (ExternalInsertionVertex E (Finset.univ : Finset (Fin n))))
+    let e := externalInsertionLegEquiv (d.externalPairCount B)
+      (Finset.univ : Finset (Fin T.card))
+    let leg := externalInsertionMixedTimeOrderedAtomicLegEquiv
+      (d.componentExternalTime externalTime B)
+      (d.componentInteractionTime σ B) p
+    have hpos : e.symm leg =
+        externalInsertionMixedTimeAmbientPositionEquiv
+          (d.componentExternalTime externalTime B)
+          (d.componentInteractionTime σ B) p :=
+      e.symm_apply_eq.mpr
+        (externalInsertionLegEquiv_mixedTimeAmbientPositionEquiv
+          (d.componentExternalTime externalTime B)
+          (d.componentInteractionTime σ B) p).symm
     apply Fin.ext
+    change ((externalInsertionMixedTimeAmbientPositionEquiv externalTime σ).symm
+      (d.componentLegShuffle.slotEquiv ⟨B,
+        (externalInsertionLegCongr (E := d.externalPairCount B)
+          (standardSlotEquiv T)).symm (e.symm leg)⟩)).val = _
+    rw [hpos, externalInsertionLegCongr_standardize]
     rfl
   change Equiv.Perm.sign
     (fixedShuffle.slotEquiv.symm.trans

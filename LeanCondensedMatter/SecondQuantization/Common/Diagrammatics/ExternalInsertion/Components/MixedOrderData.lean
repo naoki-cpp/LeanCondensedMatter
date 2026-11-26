@@ -252,23 +252,6 @@ theorem ExternalInsertionDiagram.pairingInMixedOrder_partner_componentMixedPosit
     d.atomicLegPartner_componentOrderedLeg B localLeg,
     hLocal]
 
-private noncomputable def ExternalInsertionDiagram.componentMixedToFixedPositionEquiv
-    {E n : ℕ}
-    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E n
-      (Finset.univ : Finset (Fin n)))
-    (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ)
-    (B : d.vertexGraph.componentPartition.parts) :
-    Fin (2 * (2 * (interactionSector
-      (B : Finset (ExternalInsertionVertex E (Finset.univ : Finset (Fin n))))).card +
-        d.externalPairCount B)) ≃
-      Fin (2 * (2 * (interactionSector
-        (B : Finset (ExternalInsertionVertex E (Finset.univ : Finset (Fin n))))).card +
-          d.externalPairCount B)) :=
-  (externalInsertionMixedTimeAmbientPositionEquiv
-      (d.componentExternalTime externalTime B)
-      (d.componentInteractionTime σ B)).trans
-    (finCongr (by simp))
-
 /-- The dependent sum of all component-local mixed positions is equivalent to the ambient
 mixed-position enumeration. This is obtained only by transporting the existing fixed component
 shuffle through the local and ambient mixed/fixed position equivalences. -/
@@ -282,8 +265,16 @@ noncomputable def ExternalInsertionDiagram.componentMixedPositionEquiv
         (B : Finset (ExternalInsertionVertex E (Finset.univ : Finset (Fin n))))).card +
           d.externalPairCount B))) ≃
       Fin (2 * (2 * n + E)) :=
-  (Equiv.sigmaCongrRight fun B =>
-      d.componentMixedToFixedPositionEquiv externalTime σ B).trans
+  (Equiv.sigmaCongrRight fun B : d.vertexGraph.componentPartition.parts =>
+    let T := interactionSector
+      (B : Finset (ExternalInsertionVertex E (Finset.univ : Finset (Fin n))))
+    (externalInsertionMixedTimeOrderedAtomicLegEquiv
+      (d.componentExternalTime externalTime B)
+      (d.componentInteractionTime σ B)).trans
+      ((externalInsertionLegEquiv (d.externalPairCount B)
+        (Finset.univ : Finset (Fin T.card))).symm.trans
+        (externalInsertionLegCongr (E := d.externalPairCount B)
+          (Combinatorics.standardSlotEquiv T)).symm)).trans
     (d.componentLegShuffle.slotEquiv.trans
       (externalInsertionMixedTimeAmbientPositionEquiv externalTime σ).symm)
 
@@ -313,25 +304,6 @@ theorem ExternalInsertionDiagram.componentMixedPositionEquiv_apply
       localExternalTime localInteractionTime p
   have hfixed :=
     d.componentOrderedLeg_fixedPosition B localLeg
-  let T := interactionSector
-    (B : Finset (ExternalInsertionVertex E (Finset.univ : Finset (Fin n))))
-  let e := externalInsertionLegEquiv (d.externalPairCount B)
-    (Finset.univ : Finset (Fin T.card))
-  have hpos : externalInsertionMixedTimeAmbientPositionEquiv
-      localExternalTime localInteractionTime p = e.symm localLeg := by
-    exact (e.symm_apply_eq.mpr
-      (externalInsertionLegEquiv_mixedTimeAmbientPositionEquiv
-        localExternalTime localInteractionTime p).symm).symm
-  have hlocal :
-      d.componentMixedToFixedPositionEquiv externalTime σ B p =
-        (finCongr (by simp [T])) (e.symm localLeg) := by
-    unfold ExternalInsertionDiagram.componentMixedToFixedPositionEquiv
-    apply Fin.ext
-    change (externalInsertionMixedTimeAmbientPositionEquiv
-      localExternalTime localInteractionTime p).val = (e.symm localLeg).val
-    exact congrArg Fin.val hpos
-  rw [hlocal]
-  rw [externalInsertionLegCongr_standardize] at hfixed
   refine hfixed.symm.trans ?_
   unfold ExternalInsertionDiagram.componentMixedPosition
   exact (externalInsertionMixedTimeAmbientPositionEquiv_legPosition
