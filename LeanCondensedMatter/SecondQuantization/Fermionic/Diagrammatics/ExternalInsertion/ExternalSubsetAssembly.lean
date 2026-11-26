@@ -234,9 +234,8 @@ theorem ExternalInsertionBlockLayout.assembleConnectedBlocks_componentDysonAmpli
   have hordered : HEq (d.componentOrderedDiagram C)
       ((F B).slotCongr (Combinatorics.standardSlotEquiv
         (layout.interactionBlock S B))) :=
-    (heq_of_eq (d.componentOrderedDiagram_eq_slotCongr C)).trans
-      (externalInsertionSlotCongr_heq_of_diagram_heq
-        hcount hsector (d.restrictComponent C) (F B) hphysical)
+    externalInsertionSlotCongr_heq_of_diagram_heq
+      hcount hsector (d.restrictComponent C) (F B) hphysical
   have htimes : HEq (d.componentExternalTime externalTime C)
       (fun i : Fin (2 * (B.1.card / 2)) =>
         externalTime (layout.sourceEquiv.symm ⟨B, i⟩)) := by
