@@ -19,10 +19,12 @@ exponential of its eigenvalue. No eigenbasis or finite-dimensionality is needed.
 namespace NormedSpace
 noncomputable section
 
-variable {𝕜 H : Type*} [RCLike 𝕜] [NormedAddCommGroup H]
+variable {𝕜 H : Type*} [NontriviallyNormedField 𝕜] [CharZero 𝕜]
+  [ContinuousSMul ℚ 𝕜] [CompleteSpace 𝕜] [NormedAddCommGroup H]
   [NormedSpace 𝕜 H] [CompleteSpace H]
 
-/-- Evaluate the exponential of a bounded real- or complex-linear operator on an eigenvector. -/
+/-- Evaluate the exponential of a bounded linear operator on an eigenvector over a complete
+normed field with continuous rational scalar multiplication. -/
 theorem exp_apply_of_eigenvector (T : H →L[𝕜] H) (v : H) (c : 𝕜)
     (heigen : T v = c • v) :
     (NormedSpace.exp T) v = (NormedSpace.exp c) • v := by
@@ -38,15 +40,11 @@ theorem exp_apply_of_eigenvector (T : H →L[𝕜] H) (v : H) (c : 𝕜)
     eval eval.continuous
   have hscalar := (NormedSpace.exp_series_hasSum_exp' (𝕂 := 𝕜) c).map
     span span.continuous
-  have hterms :
-      (eval ∘ fun n : ℕ => ((Nat.factorial n : 𝕜)⁻¹) • T ^ n) =
-        (span ∘ fun n : ℕ => ((Nat.factorial n : 𝕜)⁻¹) • c ^ n) := by
-    funext n
-    change ((Nat.factorial n : 𝕜)⁻¹) • ((T ^ n) v) =
-      (((Nat.factorial n : 𝕜)⁻¹) * c ^ n) • v
-    rw [hpow, smul_smul]
-  rw [hterms] at hop
-  simpa [eval, span] using hop.unique hscalar
+  apply hop.unique
+  refine hscalar.congr_fun fun n => ?_
+  change ((Nat.factorial n : 𝕜)⁻¹) • ((T ^ n) v) =
+    (((Nat.factorial n : 𝕜)⁻¹) * c ^ n) • v
+  rw [hpow, smul_smul]
 
 end
 end NormedSpace
@@ -120,9 +118,7 @@ theorem boundedUnitaryEvolution_add_generator_of_commute
 theorem boundedUnitaryEvolution_star
     (B : H →L[ℂ] H) (hB : IsSelfAdjoint B) (t : ℝ) :
     star (boundedUnitaryEvolution B t) = boundedUnitaryEvolution B (-t) := by
-  have hBstar : star B = B := by
-    simpa only [isSelfAdjoint_iff] using hB
-  simp [boundedUnitaryEvolution, NormedSpace.star_exp, hBstar]
+  simp [boundedUnitaryEvolution, NormedSpace.star_exp, hB.star_eq]
 
 /-- The bounded exponential group is continuous in operator norm, hence in particular strongly
 continuous on every vector. -/
