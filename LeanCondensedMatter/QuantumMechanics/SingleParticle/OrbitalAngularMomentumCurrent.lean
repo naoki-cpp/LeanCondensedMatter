@@ -89,9 +89,10 @@ theorem heisenbergTransportOrbitalAngularMomentum_apply
   calc
     _ = _root_.ConservationLaw.nestedSymmetrizedCurrentFlux velocity
         (orbitalAngularMomentum X P u v) N (d f) := by
-          simpa only [LinearMap.comp_apply] using congrArg
+          simpa only [heisenbergTransportFunctional, LinearMap.comp_apply] using congrArg
             (fun Φ : Test →ₗ[ℂ] (V →ₗ[ℂ] V) => Φ f)
-            (_root_.ConservationLaw.nestedSymmetrizedCurrentFlux_eq_comp ((heisenbergEvolution ℏ h).comp M)
+            (_root_.ConservationLaw.nestedSymmetrizedCurrentFlux_eq_comp
+              ((heisenbergEvolution ℏ h).comp M)
               (orbitalAngularMomentum X P u v) velocity d N hvelocity)
     _ = _ := by
       rw [_root_.ConservationLaw.nestedSymmetrizedCurrentFlux_eq_symmetrized_add_correction]
