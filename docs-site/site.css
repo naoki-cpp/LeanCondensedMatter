@@ -236,22 +236,7 @@ select:disabled {
 
 .legend { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 12px; color: var(--muted); }
 .legend span { display: flex; gap: 7px; align-items: center; }
-.legend span[hidden] { display: none; }
-.legend-node {
-  width: 10px;
-  height: 10px;
-  flex: 0 0 auto;
-  border: 1px solid var(--muted);
-  border-radius: 50%;
-  background: var(--accent);
-}
-.legend-edge { position: relative; width: 18px; height: 0; flex: 0 0 auto; border-top: 2px solid var(--accent); }
-.legend-edge::after { content: ""; position: absolute; top: -3px; right: 0; width: 0; height: 0; border-top: 3px solid transparent; border-bottom: 3px solid transparent; border-left: 5px solid var(--accent); }
-.legend-edge.cross { border-top: 1px dashed #647067; opacity: 0.55; }
-.legend-edge.cross::after { border-left-color: #647067; }
-.legend-edge.wrapper { border-top: 2px dashed var(--accent-strong); }
-.legend-edge.wrapper::after { border-left-color: var(--accent-strong); }
-.legend-dependency { color: var(--text); }
+.legend svg { flex: 0 0 auto; }
 
 .muted { margin: 0; font-size: 12px; line-height: 1.6; color: var(--muted); }
 
@@ -334,8 +319,6 @@ select:disabled {
 .graph-directions { position: absolute; top: 18px; left: 22px; right: 22px; display: flex; justify-content: space-between; pointer-events: none; color: #648875; font: 500 12px/1.5 var(--ui-font); }
 .graph-scroll:focus-visible { outline: 2px solid var(--cyan); outline-offset: -2px; }
 #graph { display: block; width: 100%; height: 100%; min-width: 0; min-height: 0; }
-#graph .edges path { marker-end: url(#dependency-arrow); }
-#graph .edges path[data-cross-link="true"] { marker-end: url(#dependency-arrow-muted); }
 
 .node { cursor: pointer; outline: none; }
 .node:hover .node-dot {

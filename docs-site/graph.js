@@ -1,3 +1,5 @@
+import { buildGraphScene } from "./graph-layout.js";
+import { createGraphPresentation } from "./graph-presentation.js";
 import { createModuleOverview } from "./module-overview.js";
 import { declarationAllowed } from "./declaration-model.js";
 import { curvedEdgePath } from "./graph-edge.js";
@@ -5,23 +7,17 @@ import { buildModuleGraphCatalog } from "./module-import-map.js";
 import { renderLeanMath, renderLeanSourceFallback } from "./lean-math.js";
 import { renderStatement } from "./statement-view.js";
 import {
-  BRANCH_COLORS,
-  ROOT_NODE_COLOR,
-  ROOT_NODE_STROKE,
   graphNodeLabelAttributes,
   graphLabelLines,
   graphNodeRadius,
 } from "./graph-style.js";
 
 const SVG_NS = "http://www.w3.org/2000/svg";
-const MAX_NODES = 80;
 const SEARCH_LIMIT = 10;
 const CATALOG_URL = "https://raw.githubusercontent.com/naoki-cpp/LeanCondensedMatter/graph-data/declarations.json";
 const MODULES_URL = "https://raw.githubusercontent.com/naoki-cpp/LeanCondensedMatter/graph-data/module-imports.json";
 const SOURCE_BASE_URL = "https://raw.githubusercontent.com/naoki-cpp/LeanCondensedMatter/main/";
 const definitionSourceRequests = new Map();
-const MIN_BRANCH_ARC = 52;
-const MIN_LEAF_ARC = 22;
 
 const state = {
   catalog: [],
@@ -130,53 +126,6 @@ function moduleAllowed(name) {
   return state.byName.get(name)?.module === state.module;
 }
 
-function addTraversal(levels, accessor, sign) {
-  const visited = new Set([state.root]);
-  const queue = [[state.root, 0]];
-  let truncated = false;
-
-  while (queue.length > 0) {
-    const [name, depth] = queue.shift();
-    if (depth >= state.depth) continue;
-    const entry = state.byName.get(name);
-    if (!entry) continue;
-
-    const neighbors = accessor(entry)
-      .filter((neighbor) => state.byName.has(neighbor))
-      .filter((neighbor) => neighbor === state.root || moduleAllowed(neighbor))
-      .sort((a, b) => a.localeCompare(b));
-
-    for (const neighbor of neighbors) {
-      if (visited.has(neighbor)) continue;
-      if (!levels.has(neighbor) && levels.size >= MAX_NODES) {
-        truncated = true;
-        continue;
-      }
-      visited.add(neighbor);
-      const nextDepth = depth + 1;
-      const nextLevel = sign * nextDepth;
-      const previous = levels.get(neighbor);
-      if (previous === undefined || Math.abs(nextLevel) < Math.abs(previous)) {
-        levels.set(neighbor, nextLevel);
-      }
-      queue.push([neighbor, nextDepth]);
-    }
-  }
-  return truncated;
-}
-
-function collectNeighborhood() {
-  const levels = new Map([[state.root, 0]]);
-  let truncated = false;
-  if (state.direction === "dependencies" || state.direction === "both") {
-    truncated = addTraversal(levels, (entry) => entry.dependencies, -1) || truncated;
-  }
-  if (state.direction === "consumers" || state.direction === "both") {
-    truncated = addTraversal(levels, (entry) => entry.dependents, 1) || truncated;
-  }
-  return { levels, truncated };
-}
-
 function highlightMatches(entry) {
   const highlights = state.graphKind === "modules"
     ? new Set([...state.highlights].filter((name) => name !== "wrapper"))
@@ -188,163 +137,6 @@ function highlightMatches(entry) {
     (highlights.has("single") && entry.singleCompiledConsumer) ||
     (highlights.has("wrapper") && entry.directWrapperOf != null)
   );
-}
-
-function chooseTreeParents(levels) {
-  const parents = new Map();
-  const ordered = [...levels.entries()]
-    .filter(([name]) => name !== state.root)
-    .sort(([, a], [, b]) => Math.abs(a) - Math.abs(b));
-
-  for (const [name, level] of ordered) {
-    const parentLevel = level < 0 ? level + 1 : level - 1;
-    const entry = state.byName.get(name);
-    const candidates = [...levels.entries()]
-      .filter(([, candidateLevel]) => candidateLevel === parentLevel)
-      .map(([candidate]) => candidate)
-      .filter((candidate) => {
-        const candidateEntry = state.byName.get(candidate);
-        return level < 0
-          ? candidateEntry?.dependencies.includes(name)
-          : entry?.dependencies.includes(candidate);
-      })
-      .sort((a, b) => a.localeCompare(b));
-    if (candidates.length > 0) parents.set(name, candidates[0]);
-  }
-  return parents;
-}
-
-function treeChildren(levels, parents) {
-  const children = new Map();
-  for (const [name] of levels) {
-    if (name === state.root) continue;
-    const parent = parents.get(name);
-    if (!parent) continue;
-    if (!children.has(parent)) children.set(parent, []);
-    children.get(parent).push(name);
-  }
-  for (const names of children.values()) names.sort((a, b) => a.localeCompare(b));
-  return children;
-}
-
-function sideChildren(name, children, levels, sign) {
-  return (children.get(name) ?? []).filter((child) => Math.sign(levels.get(child)) === sign);
-}
-
-function subtreeWeight(name, children, levels, sign, memo) {
-  const key = `${sign}:${name}`;
-  if (memo.has(key)) return memo.get(key);
-  const descendants = sideChildren(name, children, levels, sign);
-  const weight = descendants.length === 0
-    ? 1
-    : descendants.reduce((sum, child) => sum + subtreeWeight(child, children, levels, sign, memo), 0);
-  memo.set(key, weight);
-  return weight;
-}
-
-function sideDepth(levels, sign) {
-  return Math.max(
-    1,
-    ...[...levels.values()]
-      .filter((level) => Math.sign(level) === sign)
-      .map((level) => Math.abs(level)),
-  );
-}
-
-function densityRadiusStep(roots, children, levels, sign, angularSpan, memo) {
-  if (roots.length === 0) return 0;
-  const leafCount = roots.reduce(
-    (sum, root) => sum + subtreeWeight(root, children, levels, sign, memo),
-    0,
-  );
-  const depth = sideDepth(levels, sign);
-  const firstRingRadius = (roots.length * MIN_BRANCH_ARC) / angularSpan;
-  const outerRingRadius = (leafCount * MIN_LEAF_ARC) / angularSpan;
-  return Math.max(firstRingRadius, outerRingRadius / depth);
-}
-
-function polarPoint(cx, cy, radius, angle) {
-  return { x: cx + Math.cos(angle) * radius, y: cy + Math.sin(angle) * radius };
-}
-
-function radialLayout(levels) {
-  const parents = chooseTreeParents(levels);
-  const children = treeChildren(levels, parents);
-  const maxDepth = Math.max(1, ...[...levels.values()].map((level) => Math.abs(level)));
-  const baseRadiusStep = maxDepth <= 2 ? 180 : maxDepth === 3 ? 155 : 140;
-  const branchFor = new Map([[state.root, "root"]]);
-  const branchColor = new Map([["root", ROOT_NODE_COLOR]]);
-  const weightMemo = new Map();
-
-  const dependencyRoots = sideChildren(state.root, children, levels, -1);
-  const consumerRoots = sideChildren(state.root, children, levels, 1);
-  const allRoots = [...dependencyRoots, ...consumerRoots];
-  allRoots.forEach((name, index) => branchColor.set(name, BRANCH_COLORS[index % BRANCH_COLORS.length]));
-
-  const angularSpan = state.direction === "both" ? Math.PI - 0.16 : 2 * Math.PI - 0.16;
-  const densityStep = Math.max(
-    densityRadiusStep(dependencyRoots, children, levels, -1, angularSpan, weightMemo),
-    densityRadiusStep(consumerRoots, children, levels, 1, angularSpan, weightMemo),
-  );
-  const radiusStep = Math.max(baseRadiusStep, densityStep);
-  const outerRadius = maxDepth * radiusStep;
-  const margin = 190;
-  const width = Math.max(900, outerRadius * 2 + margin * 2);
-  const height = Math.max(700, outerRadius * 2 + margin * 2);
-  const cx = width / 2;
-  const cy = height / 2;
-  const positions = new Map([[state.root, { x: cx, y: cy, angle: 0, radius: 0, level: 0 }]]);
-
-  function placeBranch(name, startAngle, endAngle, sign, branch) {
-    const level = levels.get(name);
-    const angle = (startAngle + endAngle) / 2;
-    const radius = Math.abs(level) * radiusStep;
-    const point = polarPoint(cx, cy, radius, angle);
-    positions.set(name, { ...point, angle, radius, level });
-    branchFor.set(name, branch);
-
-    const descendants = sideChildren(name, children, levels, sign);
-    if (descendants.length === 0) return;
-    const total = descendants.reduce(
-      (sum, child) => sum + subtreeWeight(child, children, levels, sign, weightMemo),
-      0,
-    );
-    let cursor = startAngle;
-    for (const child of descendants) {
-      const fraction = subtreeWeight(child, children, levels, sign, weightMemo) / total;
-      const span = (endAngle - startAngle) * fraction;
-      const pad = Math.min(0.035, Math.max(0, span * 0.06));
-      placeBranch(child, cursor + pad, cursor + span - pad, sign, branch);
-      cursor += span;
-    }
-  }
-
-  function placeSide(roots, sign, startAngle, endAngle) {
-    if (roots.length === 0) return;
-    const total = roots.reduce(
-      (sum, child) => sum + subtreeWeight(child, children, levels, sign, weightMemo),
-      0,
-    );
-    let cursor = startAngle;
-    for (const root of roots) {
-      const fraction = subtreeWeight(root, children, levels, sign, weightMemo) / total;
-      const span = (endAngle - startAngle) * fraction;
-      const pad = Math.min(0.045, Math.max(0, span * 0.045));
-      placeBranch(root, cursor + pad, cursor + span - pad, sign, root);
-      cursor += span;
-    }
-  }
-
-  if (state.direction === "both") {
-    placeSide(consumerRoots, 1, -Math.PI / 2 + 0.08, Math.PI / 2 - 0.08);
-    placeSide(dependencyRoots, -1, Math.PI / 2 + 0.08, 3 * Math.PI / 2 - 0.08);
-  } else if (state.direction === "dependencies") {
-    placeSide(dependencyRoots, -1, -Math.PI + 0.08, Math.PI - 0.08);
-  } else {
-    placeSide(consumerRoots, 1, -Math.PI + 0.08, Math.PI - 0.08);
-  }
-
-  return { positions, parents, children, branchFor, branchColor, width, height, cx, cy, radiusStep };
 }
 
 function isTreeEdge(source, target, levels, parents) {
@@ -368,7 +160,7 @@ function setBranchFocus(branch) {
       ? String(baseOpacity)
       : "0.22";
     if (item.dataset.crossLink === "true") {
-      item.setAttribute("stroke-opacity", branch && ownBranch === branch ? "0.55" : "0.07");
+      item.setAttribute("stroke-opacity", branch && ownBranch === branch ? item.dataset.focusedOpacity : item.dataset.restingOpacity);
     }
   }
 }
@@ -449,7 +241,7 @@ function appendNodeLabel(nodes, name, position, root, selected, showLeafLabel) {
   const offset = root ? 32 : depth === 1 ? 22 : 16;
   const labelPoint = root
     ? { x: 0, y: offset }
-    : polarPoint(0, 0, offset, position.angle);
+    : { x: Math.cos(position.angle) * offset, y: Math.sin(position.angle) * offset };
   const cosine = Math.cos(position.angle);
   const anchor = root || Math.abs(cosine) < 0.2 ? "middle" : cosine > 0 ? "start" : "end";
   const visible = root || selected || depth === 1 || showLeafLabel;
@@ -497,11 +289,18 @@ function setGraphModeChrome() {
   terminal.nextSibling.nodeValue = modules ? " no project imports" : " terminal";
   zero.nextSibling.nodeValue = modules ? " no importers" : " zero consumer";
   single.nextSibling.nodeValue = modules ? " one importer" : " single consumer";
-  ui.graphLegend.querySelector(".legend-node").parentElement.lastChild.nodeValue = modules ? " module" : " theorem";
-  for (const item of ui.graphLegend.querySelectorAll("[data-declaration-only]")) item.hidden = modules;
-  const edgeLegend = ui.graphLegend.querySelector(".legend-dependency");
-  edgeLegend.childNodes[1].nodeValue = modules ? " import" : " dependency";
-  ui.graphLegend.querySelector(".legend-edge.wrapper").parentElement.hidden = modules;
+  ui.graphLegend.replaceChildren(...createGraphPresentation(state.graphKind).legend().map((item) => {
+    const row = element("span");
+    const icon = svg("svg", { width: 22, height: 14, viewBox: "0 0 22 14", "aria-hidden": "true" });
+    icon.append(svg(item.shape === "node" ? "circle" : "path", {
+      ...(item.shape === "node" ? { cx: 7, cy: 7, r: 4.5 } : { d: "M 1 7 L 16 7", fill: "none" }),
+      ...item.attributes,
+      ...(item.shape === "edge" ? { "stroke-opacity": 0.85, "marker-end": "none" } : {}),
+    }));
+    if (item.shape === "edge") icon.append(svg("path", { d: "M 15 4 L 21 7 L 15 10 Z", fill: item.attributes.stroke }));
+    row.append(icon, document.createTextNode(item.label));
+    return row;
+  }));
 }
 
 function renderGraph({ preserveView = false } = {}) {
@@ -512,8 +311,11 @@ function renderGraph({ preserveView = false } = {}) {
   setModuleFilterEnabled(state.graphKind === "theorems");
 
   const previousView = preserveView ? state.viewBox : null;
-  const { levels, truncated } = collectNeighborhood();
-  const { positions, parents, children, branchFor, branchColor, width, height, cx, cy } = radialLayout(levels);
+  const { levels, truncated, positions, parents, children, branchFor, width, height, cx, cy } = buildGraphScene(state.byName, {
+    root: state.root, direction: state.direction, depth: state.depth, accepts: moduleAllowed,
+  });
+  const presentation = createGraphPresentation(state.graphKind);
+  const branchNames = [...new Set(branchFor.values())].filter((branch) => branch !== "root");
   state.labelLayoutKey = null;
   document.getElementById("graph-direction-left").textContent = state.direction === "both" ? "Dependencies" : "";
   document.getElementById("graph-direction-right").textContent = state.direction === "both" ? "Used by" : "";
@@ -535,18 +337,16 @@ function renderGraph({ preserveView = false } = {}) {
       const typeReference = source.typeDependencies?.includes(dependencyName);
       const valueReference = source.valueDependencies?.includes(dependencyName);
       const branch = edgeBranch(sourceName, dependencyName, levels, branchFor) ?? "cross";
-      const color = treeEdge ? branchColor.get(branch) ?? "#648875" : "#b9c9be";
-      const opacity = treeEdge ? 0.85 : 0.07;
       const path = svg("path", {
         d: curvedEdgePath(sourcePosition, targetPosition, cx, cy),
         fill: "none",
-        stroke: color,
-        "stroke-width": isWrapper ? 2 : treeEdge ? 1.7 : 0.8,
-        "stroke-opacity": opacity,
-        "stroke-dasharray": isWrapper ? "7 5" : typeReference && !valueReference ? "2 5" : treeEdge ? "none" : "4 7",
+        ...presentation.edge({ tree: treeEdge, wrapper: isWrapper, typeOnly: typeReference && !valueReference,
+          branchIndex: Math.max(0, branchNames.indexOf(branch)) }),
         "stroke-linecap": "round",
         "data-branch": branch,
         "data-cross-link": treeEdge ? "false" : "true",
+        "data-resting-opacity": presentation.edge({ tree: treeEdge })["stroke-opacity"],
+        "data-focused-opacity": presentation.edge({ tree: treeEdge, focused: true })["stroke-opacity"],
         "data-base-opacity": 1,
       });
       const title = svg("title");
@@ -574,7 +374,7 @@ function renderGraph({ preserveView = false } = {}) {
     const branch = branchFor.get(name) ?? "root";
     const highlight = highlightMatches(entry);
     const baseOpacity = highlight === false ? 0.25 : 1;
-    const isLeaf = depth > 1 && sideChildren(name, children, levels, sign).length === 0;
+    const isLeaf = depth > 1 && (children.get(name) ?? []).filter((child) => Math.sign(levels.get(child)) === sign).length === 0;
     const radius = graphNodeRadius({ depth, root: isRoot, selected: isSelected });
 
     const group = svg("g", {
@@ -591,17 +391,11 @@ function renderGraph({ preserveView = false } = {}) {
     if (isRoot || isSelected) group.append(svg("circle", { r: radius + 5, fill: "none", stroke: "#a7c1b0", "stroke-width": 1.5 }));
 
     const hit = svg("circle", { class: "node-hit", r: Math.max(13, radius + 7), fill: "transparent" });
-    const definition = ["def", "abbrev", "opaque"].includes(entry.kind);
     const dot = svg("circle", {
       class: "node-dot",
       r: radius,
-      stroke: isSelected ? "#173d2c" : isRoot ? ROOT_NODE_STROKE : "#496553",
-      "stroke-width": isSelected || isRoot ? 2.4 : 1,
-      "stroke-dasharray": entry.generated ? "2 2" : "none",
+      ...presentation.node(entry, { root: isRoot, selected: isSelected }),
       "data-kind": entry.kind ?? "module",
-      fill: isRoot ? ROOT_NODE_COLOR : definition ? "#a7cfbb" : entry.kind === "axiom" ? "#e5ca94"
-        : ["inductive", "constructor", "recursor", "quotient"].includes(entry.kind) ? "#c9bbd9"
-        : "#4c7194",
     });
     group.append(hit, dot);
 

@@ -1,7 +1,3 @@
-export const BRANCH_COLORS = [
-  "#648875", "#7b9484", "#537968", "#8b9d8c",
-];
-
 export const ROOT_NODE_COLOR = "#21664c";
 export const ROOT_NODE_STROKE = "#d3e3d8";
 export const ROOT_LABEL_COLOR = "#173d2c";
