@@ -1,7 +1,7 @@
 import LeanCondensedMatter.Analysis.InternalSpace.Pauli
 import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.SchwartzTwoLevelSchrodinger1D
 import LeanCondensedMatter.QuantumTheory.SpinHalf
-import LeanCondensedMatter.QuantumTheory.ConservationLaw.LocalizedTransport
+import LeanCondensedMatter.QuantumTheory.ConservationLaw
 
 set_option linter.style.header false
 

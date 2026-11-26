@@ -1,5 +1,5 @@
 import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.SchwartzSchrodinger1D
-import LeanCondensedMatter.QuantumTheory.ConservationLaw.LocalizedTransport
+import LeanCondensedMatter.QuantumTheory.ConservationLaw
 import Mathlib.Algebra.Lie.OfAssociative
 
 set_option linter.style.header false

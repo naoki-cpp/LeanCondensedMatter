@@ -1,5 +1,5 @@
 import LeanCondensedMatter.QuantumMechanics.SingleParticle.OrbitalAngularMomentum
-import LeanCondensedMatter.QuantumTheory.ConservationLaw.LocalizedTransport
+import LeanCondensedMatter.QuantumTheory.ConservationLaw
 
 set_option linter.style.header false
 

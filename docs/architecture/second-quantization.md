@@ -394,9 +394,7 @@ Analysis.ConservationLaw.CurrentRepresentation
         ↓
 Analysis.ConservationLaw.FluxBalanceLaw
         ↓
-QuantumTheory.ConservationLaw.HeisenbergEvolution
-        ↓
-QuantumTheory.ConservationLaw.LocalizedTransport
+QuantumTheory.ConservationLaw
         ↓
 QuantumMechanics.SingleParticle
         ↓
