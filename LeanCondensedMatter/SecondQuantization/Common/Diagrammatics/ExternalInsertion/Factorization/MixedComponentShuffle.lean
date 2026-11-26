@@ -94,7 +94,7 @@ theorem ExternalInsertionDiagram.relativeComponentShuffle_sign_eq_mixedAtomic_mu
         (externalInsertionLegCongr (E := d.externalPairCount B)
           (standardSlotEquiv T)).symm (e.symm leg)⟩)).val = _
     rw [hpos, externalInsertionLegCongr_standardize]
-    <;> rfl
+    rfl
   change Equiv.Perm.sign
     (fixedShuffle.slotEquiv.symm.trans
       (d.componentMixedPositionShuffle externalTime σ).slotEquiv) = _
