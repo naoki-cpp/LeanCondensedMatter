@@ -298,8 +298,21 @@ theorem finiteCutoffContinuumBornDysonRealSpaceGreenMatrix_polarPoint2D_eq_radia
       ((((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
         ∫ p in (0 : ℝ)..pMax, angular 0 p i j) *
       inPlaneSpinRotationInverse angle j j
-  simp_rw [hpoint angle, hpoint0, inPlaneSpinRotation_conjugate_apply,
-    intervalIntegral.integral_const_mul, intervalIntegral.integral_mul_const]
+  have hint :
+      (∫ p in (0 : ℝ)..pMax, angular angle p i j) =
+        inPlaneSpinRotation angle i i *
+          (∫ p in (0 : ℝ)..pMax, angular 0 p i j) *
+          inPlaneSpinRotationInverse angle j j := by
+    calc
+      _ = ∫ p in (0 : ℝ)..pMax,
+          inPlaneSpinRotation angle i i * angular 0 p i j *
+            inPlaneSpinRotationInverse angle j j := by
+        apply intervalIntegral.integral_congr
+        intro p _
+        rw [hpoint angle p, inPlaneSpinRotation_conjugate_apply, hpoint0 p]
+      _ = _ := by
+        rw [intervalIntegral.integral_mul_const, intervalIntegral.integral_const_mul]
+  rw [hint]
   ring
 
 end
