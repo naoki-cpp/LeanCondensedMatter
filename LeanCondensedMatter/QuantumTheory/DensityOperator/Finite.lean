@@ -67,7 +67,7 @@ theorem DensityOperator.expectation_conjStarAlgEquiv_of_fixed
   calc
     finiteDimensionalOperatorTrace (ρ.op * W.conjStarAlgEquiv A) =
         finiteDimensionalOperatorTrace (W.conjStarAlgEquiv (ρ.op * A)) := by
-          rw [map_mul, hρ]
+          rw [map_mul W.conjStarAlgEquiv, hρ]
     _ = finiteDimensionalOperatorTrace (ρ.op * A) :=
       finiteDimensionalOperatorTrace_conjStarAlgEquiv W (ρ.op * A)
 
