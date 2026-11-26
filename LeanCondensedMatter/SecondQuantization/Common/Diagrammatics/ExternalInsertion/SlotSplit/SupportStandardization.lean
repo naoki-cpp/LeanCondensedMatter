@@ -85,7 +85,10 @@ theorem externalInsertionLegCongr_standardize
         (externalInsertionExternalLeg E T e) = _
       rw [externalInsertionLegCongr_externalLeg]
       apply Fin.ext
-      simp only [externalInsertionExternalLeg_val, finCongr_apply, Fin.val_cast]
+      change (externalInsertionExternalLeg E
+          (Finset.univ : Finset (Fin T.card)) e).val =
+        (Fin.cast rfl (externalInsertionExternalLeg E T e)).val
+      simp only [Fin.val_cast, externalInsertionExternalLeg_val]
   | inr vl =>
       rcases vl with ⟨v, l⟩
       change externalInsertionLegCongr (E := E) (standardSlotEquiv T)
