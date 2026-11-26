@@ -11,7 +11,7 @@ set_option linter.style.header false
 # Hypergeometric series and identities for complex Bessel J functions
 
 The regularized hypergeometric coefficients give the J₀ series, the
-three-term recurrence for orders zero to two, and the derivative J₀' = -J₁.
+three-term recurrence and derivative for arbitrary natural-number orders.
 These identities hold at all complex arguments, including the origin.
 The Fourier-angular applications are separate consumers.
 -/
@@ -78,79 +78,77 @@ theorem besselJZero_eq_regularizedHGTsum (z : ℂ) :
 
 noncomputable section
 
-/-- The adjacent bottom-parameter regularized hypergeometric series obey the
-coefficient-shift relation needed for the Bessel recurrence of orders zero to two. -/
-private theorem regularizedHGFun_one_sub_two_eq_mul_three (w : ℂ) :
-    Complex.regularizedHGFun 0 {(1 : ℂ)} w -
-      Complex.regularizedHGFun 0 {(2 : ℂ)} w =
-        w * Complex.regularizedHGFun 0 {(3 : ℂ)} w := by
-  let c1 : ℕ → ℂ := Complex.regularizedHGFunCoeff 0 {(1 : ℂ)}
-  let c2 : ℕ → ℂ := Complex.regularizedHGFunCoeff 0 {(2 : ℂ)}
-  let c3 : ℕ → ℂ := Complex.regularizedHGFunCoeff 0 {(3 : ℂ)}
-  have hcoeff (n : ℕ) : c1 (n + 1) - c2 (n + 1) = c3 n := by
-    dsimp only [c1, c2, c3]
-    have h12 := regularizedHGFunCoeff_parameter_shift 0 (n + 1)
-    have h23 := regularizedHGFunCoeff_index_shift 1 n
-    norm_num [Nat.cast_add] at h12 h23
+/-- At a natural-number order the complex Bessel function uses an ordinary
+natural power, so its representation is valid also at the origin. -/
+private theorem besselJ_nat_eq (k : ℕ) (z : ℂ) :
+    Complex.besselJ (k : ℂ) z =
+      (z / 2) ^ k * Complex.regularizedHGFun 0 {((k + 1 : ℕ) : ℂ)} (-(z / 2) ^ 2) := by
+  simp only [Complex.besselJ_def, Complex.cpow_natCast, Nat.cast_add, Nat.cast_one]
+
+/-- Adjacent positive integer lower parameters satisfy the contiguous relation
+behind the natural-order Bessel recurrence. -/
+private theorem regularizedHGFun_zero_singleton_nat_recurrence (k : ℕ) (w : ℂ) :
+    Complex.regularizedHGFun 0 {((k + 1 : ℕ) : ℂ)} w -
+      ((k + 1 : ℕ) : ℂ) * Complex.regularizedHGFun 0 {((k + 2 : ℕ) : ℂ)} w =
+        w * Complex.regularizedHGFun 0 {((k + 3 : ℕ) : ℂ)} w := by
+  let c1 : ℕ → ℂ := Complex.regularizedHGFunCoeff 0 {((k + 1 : ℕ) : ℂ)}
+  let c2 : ℕ → ℂ := Complex.regularizedHGFunCoeff 0 {((k + 2 : ℕ) : ℂ)}
+  let c3 : ℕ → ℂ := Complex.regularizedHGFunCoeff 0 {((k + 3 : ℕ) : ℂ)}
+  have hcoeff (n : ℕ) :
+      c1 (n + 1) - ((k + 1 : ℕ) : ℂ) * c2 (n + 1) = c3 n := by
+    have h12 : ((n + 1 + k + 1 : ℕ) : ℂ) * c2 (n + 1) = c1 (n + 1) :=
+      regularizedHGFunCoeff_parameter_shift k (n + 1)
+    have h23 : ((n + 1 : ℕ) : ℂ) * c2 (n + 1) = c3 n :=
+      regularizedHGFunCoeff_index_shift (k + 1) n
+    simp only [Nat.cast_add, Nat.cast_one] at h12 h23 ⊢
     linear_combination -h12 + h23
-  have hzero : c1 0 = c2 0 := by
-    dsimp only [c1, c2]
-    have h0 := regularizedHGFunCoeff_zero_singleton_nat_add_one 0 0
-    have h1 := regularizedHGFunCoeff_zero_singleton_nat_add_one 1 0
-    norm_num at h0 h1
-    rw [h0, h1]
+  have hzero : c1 0 - ((k + 1 : ℕ) : ℂ) * c2 0 = 0 := by
+    apply sub_eq_zero.mpr
+    simpa only [c1, c2, Nat.zero_add] using
+      (regularizedHGFunCoeff_parameter_shift k 0).symm
   have hs1 : Summable (fun n : ℕ => c1 n * w ^ n) := by
     simpa only [c1, Complex.regularizedHGFunSeries,
       FormalMultilinearSeries.ofScalars_apply_eq, smul_eq_mul] using
-      (Complex.regularizedHGFunSeries 0 {(1 : ℂ)}).summable (by simp)
+      (Complex.regularizedHGFunSeries 0 {((k + 1 : ℕ) : ℂ)}).summable (by simp)
   have hs2 : Summable (fun n : ℕ => c2 n * w ^ n) := by
     simpa only [c2, Complex.regularizedHGFunSeries,
       FormalMultilinearSeries.ofScalars_apply_eq, smul_eq_mul] using
-      (Complex.regularizedHGFunSeries 0 {(2 : ℂ)}).summable (by simp)
-  rw [regularizedHGFun_zero_eq_tsum {(1 : ℂ)},
-    regularizedHGFun_zero_eq_tsum {(2 : ℂ)}, regularizedHGFun_zero_eq_tsum {(3 : ℂ)}]
+      (Complex.regularizedHGFunSeries 0 {((k + 2 : ℕ) : ℂ)}).summable (by simp)
+  rw [regularizedHGFun_zero_eq_tsum {((k + 1 : ℕ) : ℂ)},
+    regularizedHGFun_zero_eq_tsum {((k + 2 : ℕ) : ℂ)},
+    regularizedHGFun_zero_eq_tsum {((k + 3 : ℕ) : ℂ)}]
   change (∑' n : ℕ, c1 n * w ^ n) -
-      (∑' n : ℕ, c2 n * w ^ n) =
+      ((k + 1 : ℕ) : ℂ) * (∑' n : ℕ, c2 n * w ^ n) =
         w * ∑' n : ℕ, c3 n * w ^ n
+  have hs2' := hs2.mul_left ((k + 1 : ℕ) : ℂ)
   calc
-    (∑' n : ℕ, c1 n * w ^ n) - (∑' n : ℕ, c2 n * w ^ n) =
-        ∑' n : ℕ, (c1 n * w ^ n - c2 n * w ^ n) :=
-      (hs1.tsum_sub hs2).symm
+    _ = ∑' n : ℕ, (c1 n * w ^ n - ((k + 1 : ℕ) : ℂ) * (c2 n * w ^ n)) := by
+      rw [hs1.tsum_sub hs2', tsum_mul_left]
     _ = ∑' n : ℕ, w * (c3 n * w ^ n) := by
-      rw [(hs1.sub hs2).tsum_eq_zero_add]
-      simp only [pow_zero, mul_one, hzero, sub_self, zero_add]
+      rw [(hs1.sub hs2').tsum_eq_zero_add]
+      simp only [pow_zero, mul_one, hzero, zero_add]
       apply tsum_congr
       intro n
-      rw [← sub_mul, hcoeff]
-      ring
-    _ = w * ∑' n : ℕ, c3 n * w ^ n := by
-      rw [tsum_mul_left]
+      calc
+        _ = (c1 (n + 1) - ((k + 1 : ℕ) : ℂ) * c2 (n + 1)) * w ^ (n + 1) := by ring
+        _ = _ := by rw [hcoeff, pow_succ]; ring
+    _ = _ := by rw [tsum_mul_left]
 
-/-- The Bessel three-term recurrence at orders zero, one, and two.
-This is formulated without dividing by the argument, so it includes the origin. -/
+/-- Three-term recurrence for every nonnegative integer Bessel order.
+No division by the argument is needed, so the identity holds at zero. -/
+theorem besselJ_nat_recurrence (k : ℕ) (z : ℂ) :
+    2 * ((k + 1 : ℕ) : ℂ) * Complex.besselJ ((k + 1 : ℕ) : ℂ) z =
+      z * (Complex.besselJ (k : ℂ) z + Complex.besselJ ((k + 2 : ℕ) : ℂ) z) := by
+  rw [besselJ_nat_eq (k + 1), besselJ_nat_eq k, besselJ_nat_eq (k + 2)]
+  have h := regularizedHGFun_zero_singleton_nat_recurrence k (-(z / 2) ^ 2)
+  simp only [pow_succ] at h ⊢
+  linear_combination -z * (z / 2) ^ k * h
+
+/-- The Bessel three-term recurrence at orders zero, one, and two. -/
 theorem besselJ_zero_one_two_recurrence (z : ℂ) :
     2 * Complex.besselJ 1 z =
       z * (Complex.besselJ 0 z + Complex.besselJ 2 z) := by
-  let w : ℂ := -(z / 2) ^ 2
-  have h := regularizedHGFun_one_sub_two_eq_mul_three w
-  have h0 : Complex.besselJ 0 z =
-      Complex.regularizedHGFun 0 {(1 : ℂ)} w := by
-    simp [Complex.besselJ_def, w]
-  have h1 : Complex.besselJ 1 z =
-      (z / 2) * Complex.regularizedHGFun 0 {(2 : ℂ)} w := by
-    change (z / 2) ^ (1 : ℂ) *
-      Complex.regularizedHGFun 0 {((1 : ℂ) + 1)} (-(z / 2) ^ 2) = _
-    simp only [Complex.cpow_one, one_add_one_eq_two]
-    rfl
-  have h2 : Complex.besselJ 2 z =
-      (z / 2) ^ 2 * Complex.regularizedHGFun 0 {(3 : ℂ)} w := by
-    change (z / 2) ^ (2 : ℂ) *
-      Complex.regularizedHGFun 0 {((2 : ℂ) + 1)} (-(z / 2) ^ 2) = _
-    have ha : (2 : ℂ) + 1 = 3 := by norm_num
-    rw [ha, Complex.cpow_two]
-  rw [h0, h1, h2]
-  dsimp [w] at h ⊢
-  linear_combination -z * h
+  simpa using besselJ_nat_recurrence 0 z
 
 /-- The Bessel recurrence eliminates the apparent singularity of J₁(z)²/z
 at the origin, with the convention that division by zero is zero. -/
@@ -210,13 +208,6 @@ theorem regularizedHGFun_zero_singleton_nat_hasDerivAt (k : ℕ) (w : ℂ) :
     exact (p.hasFDerivAt_sum hradius).hasDerivAt
   rw [hsum] at hderiv
   exact hderiv
-
-/-- At a natural-number order the complex Bessel function uses an ordinary
-natural power, so its representation is valid also at the origin. -/
-private theorem besselJ_nat_eq (k : ℕ) (z : ℂ) :
-    Complex.besselJ (k : ℂ) z =
-      (z / 2) ^ k * Complex.regularizedHGFun 0 {((k + 1 : ℕ) : ℂ)} (-(z / 2) ^ 2) := by
-  simp only [Complex.besselJ_def, Complex.cpow_natCast, Nat.cast_add, Nat.cast_one]
 
 /-- Derivative of the complex Bessel function at every nonnegative integer order.
 The expression avoids division by the argument and is valid at zero. -/
