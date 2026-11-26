@@ -13,14 +13,15 @@ pair-of-pair endpoint comparisons as sums over the ambient paired positions.
 namespace Combinatorics
 
 /-- A normalized pair belonging to a fixed pairing. -/
-abbrev Pairing.NormalizedPair {n : ℕ} (pairing : Pairing n) :=
-  {pair : Fin (2 * n) × Fin (2 * n) // pair ∈ pairing.pairs}
+abbrev PairingOn.NormalizedPair {α : Type*} [Fintype α] [LinearOrder α]
+    (pairing : PairingOn α) :=
+  {pair : α × α // pair ∈ pairing.pairs}
 
 /-- Reindex the product over a pairing's normalized pairs through any finite presentation
 of those pairs, using the corresponding local values. -/
-theorem Pairing.prod_pairs_eq_prod_of_equiv {n : ℕ} {A R : Type*}
-    [Fintype A] [CommMonoid R] (pairing : Pairing n)
-    (e : A ≃ pairing.NormalizedPair) (value : Fin (2 * n) → Fin (2 * n) → R)
+theorem PairingOn.prod_pairs_eq_prod_of_equiv {α A R : Type*}
+    [Fintype α] [LinearOrder α] [Fintype A] [CommMonoid R] (pairing : PairingOn α)
+    (e : A ≃ pairing.NormalizedPair) (value : α → α → R)
     (f : A → R) (hvalue : ∀ a, value (e a).1.1 (e a).1.2 = f a) :
     (∏ pr ∈ pairing.pairs, value pr.1 pr.2) = ∏ a, f a := by
   classical
@@ -48,10 +49,10 @@ theorem pairEndpointAt_one {α : Type*} (p : α × α) :
   simp [pairEndpointAt]
 
 /-- The two endpoints of all normalized pairs are equivalent to the ambient paired positions. -/
-noncomputable def Pairing.pairEndpointEquiv {n : ℕ} (pairing : Pairing n) :
-    pairing.NormalizedPair × Fin 2 ≃ Fin (2 * n) := by
+noncomputable def PairingOn.pairEndpointEquiv {α : Type*} [Fintype α] [LinearOrder α]
+    (pairing : PairingOn α) : pairing.NormalizedPair × Fin 2 ≃ α := by
   classical
-  let inverse : Fin (2 * n) → pairing.NormalizedPair × Fin 2 := fun i => by
+  let inverse : α → pairing.NormalizedPair × Fin 2 := fun i => by
     by_cases h : i < pairing.partner i
     · exact (⟨(i, pairing.partner i),
         (pairing.mem_pairs_iff i (pairing.partner i)).2 ⟨h, rfl⟩⟩, 0)
@@ -80,32 +81,38 @@ noncomputable def Pairing.pairEndpointEquiv {n : ℕ} (pairing : Pairing n) :
     · simp [inverse, pairEndpointAt, h]
 
 @[simp]
-theorem Pairing.pairEndpointEquiv_apply {n : ℕ} (pairing : Pairing n)
+theorem PairingOn.pairEndpointEquiv_apply {α : Type*} [Fintype α] [LinearOrder α]
+    (pairing : PairingOn α)
     (x : pairing.NormalizedPair × Fin 2) :
     pairing.pairEndpointEquiv x = pairEndpointAt x.1.1 x.2 :=
   rfl
+
+/-- The normalized endpoint equivalence counts each pair exactly twice. -/
+theorem PairingOn.card_eq_two_mul_card_normalizedPair {α : Type*} [Fintype α] [LinearOrder α]
+    (pairing : PairingOn α) : Fintype.card α = 2 * Fintype.card pairing.NormalizedPair := by
+  simpa only [Fintype.card_prod, Fintype.card_fin, Nat.mul_comm] using
+    (Fintype.card_congr pairing.pairEndpointEquiv).symm
 
 /-- Counting the `2 * n` ambient positions two at a time: a perfect pairing of `Fin (2 * n)` has
 exactly `n` normalized pairs. -/
 theorem Pairing.card_normalizedPair {n : ℕ} (pairing : Pairing n) :
     Fintype.card pairing.NormalizedPair = n := by
-  have h : Fintype.card (pairing.NormalizedPair × Fin 2) = Fintype.card (Fin (2 * n)) :=
-    Fintype.card_congr pairing.pairEndpointEquiv
-  simp only [Fintype.card_prod, Fintype.card_fin] at h
+  have h := pairing.card_eq_two_mul_card_normalizedPair
+  simp only [Fintype.card_fin] at h
   omega
 
 /-- Normalize endpoint zero after transporting an abstract two-endpoint fiber into `pairing`. -/
-noncomputable def Pairing.normalizedPairOfEndpointEquiv
-    {A P : Type*} {n : ℕ} (pairing : Pairing n)
-    (endpointEquiv : A × Fin 2 ≃ P) (e : P ≃ Fin (2 * n)) :
+noncomputable def PairingOn.normalizedPairOfEndpointEquiv
+    {A P α : Type*} [Fintype α] [LinearOrder α] (pairing : PairingOn α)
+    (endpointEquiv : A × Fin 2 ≃ P) (e : P ≃ α) :
     A → pairing.NormalizedPair :=
   fun a => (pairing.pairEndpointEquiv.symm (e (endpointEquiv (a, 0)))).1
 
 /-- Normalizing a transported endpoint-zero position preserves the two source endpoints up to the
 normalized order chosen by the target pairing. -/
-theorem Pairing.normalizedPairOfEndpointEquiv_pair_eq_or_swap
-    {A P : Type*} {n : ℕ} (pairing : Pairing n)
-    (endpointEquiv : A × Fin 2 ≃ P) (e : P ≃ Fin (2 * n))
+theorem PairingOn.normalizedPairOfEndpointEquiv_pair_eq_or_swap
+    {A P α : Type*} [Fintype α] [LinearOrder α] (pairing : PairingOn α)
+    (endpointEquiv : A × Fin 2 ≃ P) (e : P ≃ α)
     (hpartner : ∀ a : A,
       pairing.partner (e (endpointEquiv (a, 0))) = e (endpointEquiv (a, 1)))
     (a : A) :
@@ -114,21 +121,21 @@ theorem Pairing.normalizedPairOfEndpointEquiv_pair_eq_or_swap
       (pairing.normalizedPairOfEndpointEquiv endpointEquiv e a).1 =
         (e (endpointEquiv (a, 1)), e (endpointEquiv (a, 0))) := by
   classical
-  unfold Pairing.normalizedPairOfEndpointEquiv
+  unfold PairingOn.normalizedPairOfEndpointEquiv
   by_cases horder : e (endpointEquiv (a, 0)) < e (endpointEquiv (a, 1))
   · left
-    simp [Pairing.pairEndpointEquiv, hpartner a, horder]
+    simp [PairingOn.pairEndpointEquiv, hpartner a, horder]
   · right
-    simp [Pairing.pairEndpointEquiv, hpartner a, horder]
+    simp [PairingOn.pairEndpointEquiv, hpartner a, horder]
 
 /-- Transport an abstract family of paired endpoint fibers to the normalized pairs of `pairing`.
 
 The source type `A` need not itself be a `Pairing`. The endpoint equivalences exhaust the ambient
 positions, and the partner of transported endpoint zero is transported endpoint one. The inverse
 reads the source pair index of the first normalized endpoint. -/
-noncomputable def Pairing.normalizedPairEquivOfEndpointEquiv
-    {A P : Type*} {n : ℕ} (pairing : Pairing n)
-    (endpointEquiv : A × Fin 2 ≃ P) (e : P ≃ Fin (2 * n))
+noncomputable def PairingOn.normalizedPairEquivOfEndpointEquiv
+    {A P α : Type*} [Fintype α] [LinearOrder α] (pairing : PairingOn α)
+    (endpointEquiv : A × Fin 2 ≃ P) (e : P ≃ α)
     (hpartner : ∀ a : A,
       pairing.partner (e (endpointEquiv (a, 0))) = e (endpointEquiv (a, 1))) :
     A ≃ pairing.NormalizedPair := by
@@ -170,9 +177,9 @@ noncomputable def Pairing.normalizedPairEquivOfEndpointEquiv
 
 /-- A partner-intertwining equivalence of positions induces an equivalence of normalized pairs.
 The order of pair endpoints may be reversed by the position map. -/
-noncomputable def Pairing.normalizedPairEquivOfPartnerEquiv
-    {m n : ℕ} (source : Pairing m) (target : Pairing n)
-    (e : Fin (2 * m) ≃ Fin (2 * n))
+noncomputable def PairingOn.normalizedPairEquivOfPartnerEquiv
+    {α β : Type*} [Fintype α] [LinearOrder α] [Fintype β] [LinearOrder β]
+    (source : PairingOn α) (target : PairingOn β) (e : α ≃ β)
     (hpartner : ∀ p, target.partner (e p) = e (source.partner p)) :
     source.NormalizedPair ≃ target.NormalizedPair :=
   target.normalizedPairEquivOfEndpointEquiv source.pairEndpointEquiv e
@@ -183,9 +190,9 @@ noncomputable def Pairing.normalizedPairEquivOfPartnerEquiv
 
 /-- If the transported endpoint order is already increasing, normalization does not swap the two
 endpoints. -/
-theorem Pairing.normalizedPairOfEndpointEquiv_pair_eq_of_lt
-    {A P : Type*} {n : ℕ} (pairing : Pairing n)
-    (endpointEquiv : A × Fin 2 ≃ P) (e : P ≃ Fin (2 * n))
+theorem PairingOn.normalizedPairOfEndpointEquiv_pair_eq_of_lt
+    {A P α : Type*} [Fintype α] [LinearOrder α] (pairing : PairingOn α)
+    (endpointEquiv : A × Fin 2 ≃ P) (e : P ≃ α)
     (hpartner : ∀ a : A,
       pairing.partner (e (endpointEquiv (a, 0))) = e (endpointEquiv (a, 1)))
     (a : A)
@@ -205,9 +212,9 @@ theorem Pairing.normalizedPairOfEndpointEquiv_pair_eq_of_lt
 Unlike a general partner-intertwining equivalence, no endpoint swap is
 needed. This is the common bridge for crossing-sign and oriented-kernel
 preservation. -/
-theorem Pairing.normalizedPairEquivOfPartnerEquiv_apply_of_strictMono
-    {m n : ℕ} (source : Pairing m) (target : Pairing n)
-    (e : Fin (2 * m) ≃ Fin (2 * n))
+theorem PairingOn.normalizedPairEquivOfPartnerEquiv_apply_of_strictMono
+    {α β : Type*} [Fintype α] [LinearOrder α] [Fintype β] [LinearOrder β]
+    (source : PairingOn α) (target : PairingOn β) (e : α ≃ β)
     (hpartner : ∀ p, target.partner (e p) = e (source.partner p))
     (hmono : StrictMono e) (pr : source.NormalizedPair) :
     (source.normalizedPairEquivOfPartnerEquiv target e hpartner pr).1 =
@@ -226,7 +233,7 @@ theorem Pairing.normalizedPairEquivOfPartnerEquiv_apply_of_strictMono
     (hmono (((source.mem_pairs_iff pr.1.1 pr.1.2).1 pr.2).1))
 
 /-- Endpoints selected from distinct normalized pairs are distinct. -/
-theorem Pairing.pairEndpoint_ne_of_normalizedPair_ne {n : ℕ} (pairing : Pairing n)
+theorem PairingOn.pairEndpoint_ne_of_normalizedPair_ne {α : Type*} [Fintype α] [LinearOrder α] (pairing : PairingOn α)
     (p q : pairing.NormalizedPair) (hpq : p ≠ q) (i j : Fin 2) :
     pairEndpointAt p.1 i ≠ pairEndpointAt q.1 j := by
   intro h
@@ -236,7 +243,7 @@ theorem Pairing.pairEndpoint_ne_of_normalizedPair_ne {n : ℕ} (pairing : Pairin
   exact hpq (congrArg Prod.fst hargs)
 
 /-- Distinct normalized pairs in one pairing cannot share an endpoint. -/
-theorem Pairing.normalizedPair_endpoints_ne_of_ne {n : ℕ} (pairing : Pairing n)
+theorem PairingOn.normalizedPair_endpoints_ne_of_ne {α : Type*} [Fintype α] [LinearOrder α] (pairing : PairingOn α)
     (p q : pairing.NormalizedPair) (hpq : p ≠ q) :
     p.1.1 ≠ q.1.1 ∧ p.1.1 ≠ q.1.2 ∧ p.1.2 ≠ q.1.1 ∧ p.1.2 ≠ q.1.2 := by
   refine ⟨?_, ?_, ?_, ?_⟩

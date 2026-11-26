@@ -74,7 +74,7 @@ private theorem QuarticDiagram.componentGeometricCrossingCount_mod_two_eq_zero
     (fun D p => d.componentOrderedLeg shuffle D p)
     (fun D p k => by
       fin_cases k <;>
-        simp [Combinatorics.Pairing.pairEndpointEquiv_apply,
+        simp [Combinatorics.PairingOn.pairEndpointEquiv_apply,
           Combinatorics.pairEndpointAt,
           d.componentPairEquiv_apply])
     B C hBC

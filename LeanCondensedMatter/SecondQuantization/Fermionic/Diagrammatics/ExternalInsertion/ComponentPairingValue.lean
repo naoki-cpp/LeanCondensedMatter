@@ -71,7 +71,7 @@ theorem ExternalInsertionWickDiagram.relativeComponentShuffleSign_eq_external_mu
       (fun B p k => by
         fin_cases k <;>
           simp [ExternalInsertionDiagram.componentMixedPositionShuffle_slotEquiv_apply,
-            Pairing.pairEndpointEquiv_apply, pairEndpointAt,
+            PairingOn.pairEndpointEquiv_apply, pairEndpointAt,
             d.componentMixedPairEquiv_apply externalTime σ])
       blockOrder
   rw [pow_eq_of_mod_two_eq (show ((-1 : ℂ) * -1) = 1 by norm_num) hfixed]
