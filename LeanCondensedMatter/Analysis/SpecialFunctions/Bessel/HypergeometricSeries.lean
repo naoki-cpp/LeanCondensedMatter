@@ -196,7 +196,7 @@ theorem regularizedHGFun_zero_singleton_nat_hasDerivAt (k : ℕ) (w : ℂ) :
         simp only [FormalMultilinearSeries.apply_eq_pow_smul_coeff,
           smul_apply, FormalMultilinearSeries.derivSeries_coeff_one,
           smul_eq_mul, nsmul_eq_mul, Nat.cast_add, Nat.cast_one]
-        simp only [p, Complex.regularizedHGFunSeries_coeff]
+        simp only [p, Complex.regularizedHGFunSeries_coeff, Nat.cast_add, Nat.cast_one]
         ring_nf
       _ = ∑' n : ℕ, Complex.regularizedHGFunCoeff 0 {((k + 2 : ℕ) : ℂ)} n * w ^ n := by
         apply tsum_congr
@@ -216,7 +216,7 @@ natural power, so its representation is valid also at the origin. -/
 private theorem besselJ_nat_eq (k : ℕ) (z : ℂ) :
     Complex.besselJ (k : ℂ) z =
       (z / 2) ^ k * Complex.regularizedHGFun 0 {((k + 1 : ℕ) : ℂ)} (-(z / 2) ^ 2) := by
-  rw [Complex.besselJ_def, Complex.cpow_natCast, Nat.cast_add, Nat.cast_one]
+  simp only [Complex.besselJ_def, Complex.cpow_natCast, Nat.cast_add, Nat.cast_one]
 
 /-- Derivative of the complex Bessel function at every nonnegative integer order.
 The expression avoids division by the argument and is valid at zero. -/
