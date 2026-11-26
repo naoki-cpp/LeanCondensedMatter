@@ -1,74 +1,23 @@
-import LeanCondensedMatter.Analysis.OrderedSimplex.MeasurableRegularity
-import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ImaginaryTimeOrderSignature
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingTimeLocality
-import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Semantics.PairContraction
+import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Semantics.Amplitude
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Factorization.MixedComponentDysonValue
+import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.DiagramRegularity
 
 set_option linter.style.header false
 
 /-!
-# Chamber regularity and measurability of two-point diagram amplitudes
+# Regularity of two-point diagram amplitudes
 
-This module owns the continuous chamber representatives of mixed-component factors and uses the
-Common-owned `TwoPointOrderSignature` finite measurable partition to upgrade chamberwise continuity
-to global measurability. Measurable local boundedness provides the regularity later consumed by the
-ordered-simplex integration layer.
+The actual two-point amplitude agrees with the arbitrary-external amplitude
+after transporting the fixed-leg pairing. Measurable local boundedness is
+therefore inherited from the general chamber theorem.
 -/
 
 namespace SecondQuantization
 namespace Fermionic
 
-open Combinatorics
 open Common
 
 variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
-
-/-- Continuous chamber representative of the Dyson-signed component fixed-time value. -/
-private noncomputable def FixedExternalTwoPointWickDiagram.mixedComponentDysonFixedTimeChamberRepresentative
-    {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
-    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
-    (τ τ' : ℝ) (σ₀ : Fin n → ℝ) (B : d.1.vertexGraph.componentPartition.parts) :
-    (Fin n → ℝ) → ℂ :=
-  fun σ => d.mixedComponentDysonSign B *
-    (d.mixedComponentVertexWeight g B *
-      (d.1.mixedComponentWeight Common.Statistics.fermion τ τ' σ₀ B *
-        ∏ pr : d.1.MixedComponentPair τ τ' σ₀ B,
-          orderedTwoPointLegPairContraction ε β i j τ τ' d.vertexLabelSequence σ
-            (mixedTimeOrderedAtomicLegEquiv τ τ' σ₀ pr.1.1.1)
-            (mixedTimeOrderedAtomicLegEquiv τ τ' σ₀ pr.1.1.2)))
-
-/-- On the base chamber, the Dyson-signed representative agrees with the actual component factor. -/
-private theorem FixedExternalTwoPointWickDiagram.mixedComponentDysonFixedTimeChamberRepresentative_eq_of_comparisons
-    {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
-    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
-    (τ τ' : ℝ) (σ₀ σ : Fin n → ℝ) (B : d.1.vertexGraph.componentPartition.parts)
-    (hSignature : twoPointOrderSignature τ τ' σ₀ =
-      twoPointOrderSignature τ τ' σ) :
-    d.mixedComponentDysonFixedTimeChamberRepresentative ε β g τ τ' σ₀ B σ =
-      d.mixedComponentDysonFixedTimeValue ε β g τ τ' σ B := by
-  classical
-  have hComparisons := (twoPointOrderSignature_eq_iff τ τ' σ₀ σ).mp hSignature
-  unfold FixedExternalTwoPointWickDiagram.mixedComponentDysonFixedTimeChamberRepresentative
-    FixedExternalTwoPointWickDiagram.mixedComponentDysonFixedTimeValue
-    FixedExternalTwoPointWickDiagram.mixedComponentFixedTimeValue
-    FixedExternalTwoPointWickDiagram.mixedComponentPairingValue
-  apply congrArg (fun z : ℂ =>
-    d.mixedComponentDysonSign B * (d.mixedComponentVertexWeight g B * z))
-  rw [d.1.mixedComponentWeight_eq_of_comparisons
-    Common.Statistics.fermion τ τ' σ₀ σ B hComparisons]
-  apply congrArg (fun z : ℂ =>
-    d.1.mixedComponentWeight Common.Statistics.fermion τ τ' σ B * z)
-  let e := d.1.mixedComponentPairTimeEquiv τ τ' σ₀ σ B
-  rw [← Equiv.prod_comp e
-    (fun q : d.1.MixedComponentPair τ τ' σ B =>
-      d.mixedPairContractionValue ε β τ τ' σ q.1)]
-  apply Fintype.prod_congr
-  intro pr
-  have hLegs :=
-    d.1.mixedComponentPairTimeEquiv_endpointLegs_eq_of_comparisons
-      τ τ' σ₀ σ B hComparisons pr
-  rw [d.mixedPairContractionValue_eq_orderedTwoPointLegPairContraction,
-    hLegs.1, hLegs.2]
 
 /-- The signed pointwise amplitude of one diagram is measurably locally bounded. -/
 theorem FixedExternalTwoPointWickDiagram.measurableLocallyBounded_dysonFixedTimeAmplitude
@@ -76,51 +25,18 @@ theorem FixedExternalTwoPointWickDiagram.measurableLocallyBounded_dysonFixedTime
     (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ) (τ τ' : ℝ) :
     intervalIntegral.MeasurableLocallyBounded
       (fun σ : Fin n → ℝ => d.dysonFixedTimeAmplitude ε β g τ τ' σ) := by
-  have hprod :
-      intervalIntegral.MeasurableLocallyBounded
-        (fun σ : Fin n → ℝ =>
-          twoPointExternalOrderSign τ τ' *
-            ∏ B : d.1.vertexGraph.componentPartition.parts,
-              d.mixedComponentDysonFixedTimeValue ε β g τ τ' σ B) :=
-    (intervalIntegral.measurableLocallyBounded_const _).mul
-      (intervalIntegral.MeasurableLocallyBounded.finsetProd Finset.univ
-        (fun B σ => d.mixedComponentDysonFixedTimeValue ε β g τ τ' σ B)
-        fun B _ => by
-          apply intervalIntegral.measurableLocallyBounded_of_finite_continuous_signature
-            (signature := twoPointOrderSignature τ τ')
-            (branch := fun s : TwoPointOrderSignature n =>
-              d.mixedComponentDysonFixedTimeChamberRepresentative ε β g τ τ'
-                (intervalIntegral.finiteSignatureBase (twoPointOrderSignature τ τ') s) B)
-          · intro s
-            simpa [twoPointOrderSignatureFiber] using
-              measurableSet_twoPointOrderSignatureFiber τ τ' s
-          · intro s
-            unfold FixedExternalTwoPointWickDiagram.mixedComponentDysonFixedTimeChamberRepresentative
-            exact continuous_const.mul
-              (continuous_const.mul
-                (continuous_const.mul
-                  (continuous_finsetProd _ fun pr _ => by
-                    simp only [orderedTwoPointLegPairContraction,
-                      orderedTwoPointLegField, orderedTwoPointLegTime,
-                      orderedTwoPointLegFieldLabel,
-                      grandCanonicalTimedFieldPairContraction_eq]
-                    split <;> split <;> fun_prop)))
-          · intro σ
-            exact
-              (d.mixedComponentDysonFixedTimeChamberRepresentative_eq_of_comparisons
-                ε β g τ τ' (intervalIntegral.finiteSignatureBase (twoPointOrderSignature τ τ')
-                  (twoPointOrderSignature τ τ' σ)) σ B
-                (intervalIntegral.finiteSignatureBase_signature_eq
-                  (twoPointOrderSignature τ τ') σ)).symm)
+  let D := twoPointDiagramExternalInsertionEquiv Finset.univ d.1
   have heq : (fun σ : Fin n → ℝ => d.dysonFixedTimeAmplitude ε β g τ τ' σ) =
       fun σ : Fin n → ℝ =>
-        twoPointExternalOrderSign τ τ' *
-          ∏ B : d.1.vertexGraph.componentPartition.parts,
-            d.mixedComponentDysonFixedTimeValue ε β g τ τ' σ B := by
+        ExternalInsertionWickDiagram.dysonFixedTimeAmplitude D ε β g
+          (twoPointExternalTimes τ τ') σ := by
     funext σ
-    exact d.dysonFixedTimeAmplitude_eq_externalSign_mul_prod_components ε β g τ τ' σ
+    unfold FixedExternalTwoPointWickDiagram.dysonFixedTimeAmplitude
+      ExternalInsertionWickDiagram.dysonFixedTimeAmplitude
+    rw [d.fixedTimeAmplitude_eq_externalInsertion]
   rw [heq]
-  exact hprod
+  exact ExternalInsertionWickDiagram.measurableLocallyBounded_dysonFixedTimeAmplitude
+    D ε β g (twoPointExternalTimes τ τ')
 
 end Fermionic
 end SecondQuantization

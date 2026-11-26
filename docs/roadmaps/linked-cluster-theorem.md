@@ -178,7 +178,7 @@ For precisely two external insertions, the general construction already proves
 `vacuumFreeExternalInsertionDysonSeries_eq_connected_two` and the corresponding
 source-cumulant identity without a sign restriction on `β`. The mature two-point
 `partitionFunctionNormalizedTwoPointDysonSeries_eq_connectedTwoPointDysonSeries` is
-independently proved for arbitrary real `μ`, `0 ≤ β`. The diagrammatic core uses
+now follows from the general vacuum factorization for arbitrary real `μ`, `0 ≤ β` (#5287). The diagrammatic core uses
 `ξ = ε - μ`; the physical-H two-point amplitudes have the external factor
 `exp (μ (τ' - τ))`, while the number-conserving quartic interaction-picture
 vertices are invariant under the uniform shift. The vacuum series uses `ξ`.
@@ -188,10 +188,15 @@ effective-dispersion theorem by multiplying each block by the product of its ext
 factors. The independent operator normalization bridge identifies the physical subset moments.
 The direct two-external source-cumulant endpoint preserves its stronger absence of a sign
 restriction on `β`. The legacy `TwoPointDiagram` uses a distinct flattened-leg
-enumeration; identifying the two physical power series still requires transporting Wick
-pairings, mixed-time signs and oriented Gibbs contractions, and Dyson amplitudes. The
-statistics-independent `twoPointDiagramExternalInsertionEquiv` supplies the diagram-data
-and vertex-graph bridge without replacing or duplicating the mature two-point API.
+enumeration. The statistics-independent `twoPointDiagramExternalInsertionEquiv` transports
+the diagram data and vertex graph. The actual mixed-time pairings, field families and
+Dyson amplitudes are identified at every real β, including equal-time ties (#5274).
+The connected coefficient and series identities and the full-sector grand-canonical
+source-cumulant identity therefore hold at arbitrary real β and μ (#5287), independently
+of vacuum cancellation. The general external-insertion Cauchy factorization supplies the
+physical two-point linked-cluster theorem, without the duplicate two-point fiber/shuffle
+integral proof chain. The distinct two-point 1PI selection and self-energy problems
+remain separate.
 
 ## Higher-point diagram-selection boundary
 
@@ -204,8 +209,6 @@ finite-mode higher-point cumulant identity above is proved by signed moments ins
 
 ## Open work
 
-- identifying the general two-external and legacy two-point *physical series* through their
-  independently enumerated Wick pairings, time-order conventions, signs, and Dyson integrals;
 - analytic/source generating-functional realization beyond the proved finite-mode formal
   Dyson-series moment/cumulant identities;
 - bosonic interacting Dyson convergence and analytic linked-cluster theory;

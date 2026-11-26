@@ -1,6 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Semantics.Amplitude
 import LeanCondensedMatter.Analysis.OrderedSimplex.Integral
-import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Semantics.PairContraction
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.Integral
 
 set_option linter.style.header false
@@ -50,44 +49,6 @@ noncomputable def twoPointDiagramCoefficient {n : ℕ}
     (i j : Mode) (τ τ' : ℝ) : ℂ :=
   (-1 : ℂ) ^ n * intervalIntegral.orderedSimplexIntegral n β
     (twoPointDiagramIntegrand ε β g i j τ τ')
-
-open Common in
-/-- The actual fixed-time amplitude of a two-point Wick diagram equals the
-general external-insertion amplitude after transporting its fixed-leg pairing.
-Both oriented contractions live at exactly the same mixed positions, even
-at coincident times. -/
-theorem FixedExternalTwoPointWickDiagram.fixedTimeAmplitude_eq_externalInsertion
-    {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
-    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
-    (τ τ' : ℝ) (σ : Fin n → ℝ) :
-    d.fixedTimeAmplitude ε β g τ τ' σ =
-      ExternalInsertionWickDiagram.fixedTimeAmplitude
-        (twoPointDiagramExternalInsertionEquiv Finset.univ d.1) ε β g
-        (twoPointExternalTimes τ τ') σ := by
-  classical
-  let D := twoPointDiagramExternalInsertionEquiv Finset.univ d.1
-  have hlabel : D.externalLabel = twoPointExternalLabels i j := d.2
-  have hvertex : D.vertexLabelSequence = d.vertexLabelSequence := rfl
-  have hweight : D.vertexWeight g = orderedTwoPointVertexWeight g d.vertexLabelSequence := by
-    unfold ExternalInsertionDiagram.vertexWeight orderedTwoPointVertexWeight
-    rw [← hvertex]
-    exact (Equiv.prod_comp
-      (Equiv.ofBijective (fun v : Fin n => (⟨v, Finset.mem_univ v⟩ :
-        ↥(Finset.univ : Finset (Fin n)))) ⟨fun a b h => congrArg Subtype.val h,
-          fun v => ⟨v.1, Subtype.ext rfl⟩⟩)
-      (fun v => g (D.vertexLabel v))).symm
-  change orderedTwoPointFixedTimeAmplitude ε β g i j τ τ' σ
-      (d.vertexLabelSequence, d.1.pairingInMixedOrder τ τ' σ) =
-    ExternalInsertionWickDiagram.fixedTimeAmplitude D ε β g
-      (twoPointExternalTimes τ τ') σ
-  unfold orderedTwoPointFixedTimeAmplitude ExternalInsertionWickDiagram.fixedTimeAmplitude
-    orderedTwoPointPairingValue ExternalInsertionWickDiagram.mixedPairingValue
-    mixedTimeOrderedAtomicPairValue externalInsertionMixedTimeOrderedAtomicPairValue
-  rw [externalInsertionMixedAtomicOrderSign_twoPoint, hweight,
-    show D.pairingInMixedOrder (twoPointExternalTimes τ τ') σ =
-      d.1.pairingInMixedOrder τ τ' σ from
-        twoPointDiagramExternalInsertionEquiv_pairingInMixedOrder d.1 τ τ' σ,
-    hlabel, hvertex, mixedTimeOrderedAtomicFieldFamily_eq_externalInsertion]
 
 open Common in
 /-- The same diagram transport preserves the integrated Dyson amplitude
