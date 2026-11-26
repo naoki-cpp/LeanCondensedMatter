@@ -1,5 +1,5 @@
 import LeanCondensedMatter.QuantumTheory.ScatteringRate
-import LeanCondensedMatter.Analysis.Lorentzian.RadialQuadratic
+import LeanCondensedMatter.Analysis.Lorentzian.Kernel
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.Vertex.Born.Rung
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.TransportRate
 import Mathlib.Topology.Algebra.Order.Field
