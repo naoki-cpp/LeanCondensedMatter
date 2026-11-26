@@ -69,15 +69,10 @@ private theorem norm_createFieldCore_le (v : Mode →₀ ℂ) :
   classical
   let C := createFieldCore v
   let u := Common.algebraicToCompleted v
-  have hcar : star C * C + C * star C = ((‖u‖ ^ (2 : ℕ) : ℝ) : ℂ) •
+  have hcar : star C * C + C * star C = inner ℂ u u •
       ContinuousLinearMap.id ℂ (CompletedFockSpace Mode) := by
-    have hnorm : inner ℂ u u = ((‖u‖ ^ (2 : ℕ) : ℝ) : ℂ) := by
-      convert! (inner_self_eq_norm_sq_to_K (𝕜 := ℂ) u) using 1
-      simp only [Complex.ofReal_pow]
-      with_unfolding_all rfl
-    have h := createFieldCore_anticomm v v
-    rw [hnorm] at h
-    simpa only [ScalarExchange.zetaCommutator, neg_one_smul, sub_neg_eq_add] using h
+    simpa only [ScalarExchange.zetaCommutator, neg_one_smul, sub_neg_eq_add] using
+      createFieldCore_anticomm v v
   apply C.opNorm_le_bound (norm_nonneg u)
   intro x
   have hinner := congrArg (fun T : CompletedFockSpace Mode →L[ℂ] CompletedFockSpace Mode =>
@@ -87,15 +82,16 @@ private theorem norm_createFieldCore_le (v : Mode →₀ ℂ) :
   simp only [ContinuousLinearMap.star_eq_adjoint] at hinner
   rw [ContinuousLinearMap.adjoint_inner_right C x (C x),
     ← ContinuousLinearMap.adjoint_inner_left C ((ContinuousLinearMap.adjoint C) x) x] at hinner
-  simp only [inner_self_eq_norm_sq_to_K] at hinner
   have hreal : ‖C x‖ ^ 2 + ‖(ContinuousLinearMap.adjoint C) x‖ ^ 2 =
       ‖u‖ ^ 2 * ‖x‖ ^ 2 := by
-    apply Complex.ofReal_injective
-    convert! hinner using 1 <;>
-      simp only [Complex.ofReal_add, Complex.ofReal_mul, Complex.ofReal_pow] <;>
-        with_unfolding_all rfl
-  nlinarith [sq_nonneg ‖(ContinuousLinearMap.adjoint C) x‖,
-    norm_nonneg (C x), mul_nonneg (norm_nonneg u) (norm_nonneg x)]
+    simpa only [map_add, RCLike.mul_re, inner_self_eq_norm_sq, inner_self_im,
+      mul_zero, sub_zero] using congrArg (RCLike.re : ℂ → ℝ) hinner
+  rw [← sq_le_sq₀ (norm_nonneg _) (mul_nonneg (norm_nonneg u) (norm_nonneg x)),
+    mul_pow]
+  calc
+    _ ≤ ‖C x‖ ^ 2 + ‖(ContinuousLinearMap.adjoint C) x‖ ^ 2 :=
+      le_add_of_nonneg_right (sq_nonneg _)
+    _ = _ := hreal
 
 /-- Creation smeared with square-summable one-particle mode coefficients. The mode type may be
 infinite. The extension is in operator norm, and its Hilbert adjoint gives annihilation. -/
