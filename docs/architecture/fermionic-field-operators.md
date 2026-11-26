@@ -130,8 +130,10 @@ the general bounded Heisenberg equation. No unbounded bosonic evolution or therm
 is inferred from this bounded result.
 
 `Fermionic.Field` is a narrow side interface for basis-independent density constructions, bounded
-`L²` multiplication density realizations, and the `dGamma` bridge for generalized localized quantities. It does not
-own generic one-body current semantics or lattice/transport models.
+`L²` multiplication density realizations. The symmetric-product commutator balance is supplied by
+`LinearMap.lie_map_symmetrizedProduct`, applied to the existing `dGammaLieHom` or bounded one-body
+Lie homomorphism. No field-specific balance adapter is needed. This layer does not own generic
+one-body current semantics or lattice/transport models.
 
 `Fermionic.Transport` is the downstream specialization layer for fermionic response. It consumes
 bounded lattice currents together with generic `QuantumTheory` linear response and the generic

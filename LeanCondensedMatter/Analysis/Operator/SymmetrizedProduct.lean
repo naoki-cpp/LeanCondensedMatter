@@ -96,6 +96,18 @@ theorem lie_symmetrizedProduct (h a b : A) :
     smul_sub, mul_assoc]
   module
 
+/-- A Lie homomorphism transports the commutator balance of a symmetric product.
+The symmetric products are formed in the source algebra: the target need not have
+an associative multiplication. In particular this applies to second quantization
+without requiring it to preserve products. -/
+theorem lie_map_symmetrizedProduct
+    {B : Type*} [LieRing B] [LieAlgebra K B]
+    (L : A →ₗ⁅K⁆ B) (h a b : A) :
+    ⁅L h, L (symmetrizedProduct (K := K) a b)⁆ =
+      L (symmetrizedProduct (K := K) ⁅h, a⁆ b) +
+        L (symmetrizedProduct (K := K) a ⁅h, b⁆) := by
+  rw [← LieHom.map_lie, lie_symmetrizedProduct, map_add]
+
 end Algebra
 
 section Half

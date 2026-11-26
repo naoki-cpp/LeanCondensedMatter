@@ -124,27 +124,6 @@
       ]
     },
     {
-      "id": "generalizedCurrentCrossBoundary",
-      "sourceRoots": [
-        "LeanCondensedMatter/Analysis",
-        "LeanCondensedMatter/SecondQuantization/Fermionic/Field"
-      ],
-      "layers": [
-        {"id": "analysisCurrent", "modulePrefixes": [
-          "LeanCondensedMatter.Analysis.ScalarExchange",
-          "LeanCondensedMatter.Analysis.Operator.SymmetrizedProduct",
-          "LeanCondensedMatter.Analysis.ConservationLaw.CurrentRepresentation",
-          "LeanCondensedMatter.Analysis.ConservationLaw.FluxBalanceLaw",
-          "LeanCondensedMatter.Analysis.ConservationLaw.SymmetricLocalizationAlgebra"
-        ]},
-        {"id": "fermionicFieldBridge", "modulePrefixes": ["LeanCondensedMatter.SecondQuantization.Fermionic.Field.GeneralizedQuantity"]},
-        {"id": "quantumMechanics", "modulePrefixes": ["LeanCondensedMatter.QuantumMechanics"]}
-      ],
-      "edges": [
-        {"upstream": "analysisCurrent", "downstream": "fermionicFieldBridge"}
-      ]
-    },
-    {
       "id": "linearResponsePackageBoundary",
       "sourceRoots": [
         "LeanCondensedMatter/QuantumTheory/LinearResponse"

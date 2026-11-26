@@ -400,15 +400,16 @@ QuantumTheory.ConservationLaw.LocalizedTransport
 QuantumMechanics.SingleParticle
         ↓
 ┌───────────────────────────────┐
-│ Fermionic.Field               │  dGamma generalized-quantity bridge
+│ Fermionic.Field               │  basis-independent densities
 │ Fermionic.Lattice             │  lattice current constructions
 └───────────────────────────────┘
         ↓
 Fermionic.Transport
 ```
 
-`Fermionic.Field` remains a narrow side interface for basis-independent density constructions and the
-fermionic `dGamma` bridge. It is not a one-body transport umbrella. Generic response, resolvent,
+`Fermionic.Field` remains a narrow side interface for basis-independent density constructions.
+The general Lie-homomorphism balance applies to `dGammaLieHom` in the algebraic Fock layer.
+It is not necessary to introduce a field-specific balance adapter. Generic response, resolvent,
 conductivity, and Středa mathematics belongs upstream under `QuantumTheory` or other reusable owners;
 `Fermionic.Transport` contains statistics/model-specific bounded adapters and physical current
 response specializations.
