@@ -129,17 +129,10 @@ theorem isSelfAdjoint_sub_smul_eq_zero_iff
 theorem isSelfAdjoint_shiftDomainMap_injective
     (hA : IsSelfAdjoint A) {z : ℂ} (hz : z.im ≠ 0) :
     Function.Injective (shiftDomainMap A z) := by
-  intro x y hxy
-  have hzero : shiftDomainMap A z (x - y) = 0 := by
-    calc
-      shiftDomainMap A z (x - y) = shiftDomainMap A z x - shiftDomainMap A z y := by
-        exact (shiftDomainMap A z).map_sub x y
-      _ = 0 := sub_eq_zero.mpr hxy
-  have hsub : A (x - y) - z • ((x - y : A.domain) : H) = 0 := by
-    simpa only [shiftDomainMap_apply] using hzero
-  have hxy0 : x - y = 0 :=
-    (isSelfAdjoint_sub_smul_eq_zero_iff hA hz (x - y)).mp hsub
-  exact sub_eq_zero.mp hxy0
+  rw [← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']
+  intro x hx
+  exact (isSelfAdjoint_sub_smul_eq_zero_iff hA hz x).mp (by
+    simpa only [shiftDomainMap_apply] using hx)
 
 /-- The range of a nonreal shift of a self-adjoint operator is closed.
 
@@ -259,16 +252,8 @@ theorem isSelfAdjoint_shiftDomainMap_range_dense
 theorem isSelfAdjoint_shiftDomainMap_surjective
     (hA : IsSelfAdjoint A) {z : ℂ} (hz : z.im ≠ 0) :
     Function.Surjective (shiftDomainMap A z) := by
-  have hclosed := isSelfAdjoint_shiftDomainMap_range_isClosed hA hz
-  have hdense := isSelfAdjoint_shiftDomainMap_range_dense hA hz
-  have hclosure : _root_.closure (Set.range (shiftDomainMap A z)) = Set.univ :=
-    dense_iff_closure_eq.mp hdense
-  have hrange : Set.range (shiftDomainMap A z) = Set.univ := by
-    calc
-      Set.range (shiftDomainMap A z) = _root_.closure (Set.range (shiftDomainMap A z)) :=
-        hclosed.closure_eq.symm
-      _ = Set.univ := hclosure
-  exact Set.range_eq_univ.mp hrange
+  rw [← Set.range_eq_univ, ← (isSelfAdjoint_shiftDomainMap_range_isClosed hA hz).closure_eq]
+  exact dense_iff_closure_eq.mp (isSelfAdjoint_shiftDomainMap_range_dense hA hz)
 
 /-- Every nonreal shift of a self-adjoint operator is bijective on its operator domain. -/
 theorem isSelfAdjoint_shiftDomainMap_bijective
@@ -405,20 +390,9 @@ theorem nonrealResolvent_apply_operator
     nonrealResolvent A hA z hz (A x) =
       (x : H) + z • nonrealResolvent A hA z hz (x : H) := by
   have h := nonrealResolvent_shift_apply A hA z hz x
-  calc
-    nonrealResolvent A hA z hz (A x) =
-        nonrealResolvent A hA z hz ((A x - z • (x : H)) + z • (x : H)) := by
-      congr 1
-      module
-    _ = nonrealResolvent A hA z hz (A x - z • (x : H)) +
-        nonrealResolvent A hA z hz (z • (x : H)) := by
-      exact (nonrealResolvent A hA z hz).map_add _ _
-    _ = nonrealResolvent A hA z hz (A x - z • (x : H)) +
-        z • nonrealResolvent A hA z hz (x : H) := by
-      congr 1
-      exact (nonrealResolvent A hA z hz).map_smul z (x : H)
-    _ = (x : H) + z • nonrealResolvent A hA z hz (x : H) := by
-      rw [h]
+  rw [(nonrealResolvent A hA z hz).map_sub,
+    (nonrealResolvent A hA z hz).map_smul] at h
+  exact sub_eq_iff_eq_add.mp h
 
 /-- Pointwise resolvent identity for the convention `R(z) = (A-z)⁻¹`. -/
 theorem nonrealResolvent_sub_nonrealResolvent_apply
