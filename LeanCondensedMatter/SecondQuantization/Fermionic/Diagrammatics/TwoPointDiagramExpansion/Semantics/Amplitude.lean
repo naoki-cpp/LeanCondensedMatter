@@ -10,8 +10,8 @@ This module packages the canonical mixed-time pairing value as an amplitude of a
 diagram with fixed external annihilation/creation labels. Pair construction and free Gibbs
 state evaluation are owned by the preceding pairing layer.
 
-The interaction times are still parameters. Ordered-simplex integration and the Dyson factor are
-deliberately left to the next layer.
+The interaction times are still parameters. The pointwise Dyson sign is included here;
+ordered-simplex integration belongs to the integration layer.
 -/
 
 namespace SecondQuantization
@@ -81,6 +81,13 @@ theorem FixedExternalTwoPointWickDiagram.fixedTimeAmplitude_eq_externalInsertion
       d.1.pairingInMixedOrder τ τ' σ from
         twoPointDiagramExternalInsertionEquiv_pairingInMixedOrder d.1 τ τ' σ,
     hlabel, hvertex, mixedTimeOrderedAtomicFieldFamily_eq_externalInsertion]
+
+/-- Pointwise fixed-time amplitude with the global order-`n` Dyson sign included. -/
+noncomputable def FixedExternalTwoPointWickDiagram.dysonFixedTimeAmplitude
+    {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
+    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
+    (τ τ' : ℝ) (σ : Fin n → ℝ) : ℂ :=
+  (-1 : ℂ) ^ n * d.fixedTimeAmplitude ε β g τ τ' σ
 
 end Fermionic
 end SecondQuantization

@@ -196,5 +196,42 @@ theorem ExternalInsertionWickDiagram.dysonFixedTimeAmplitude_eq_componentExterna
     ε β g externalTime σ blockOrder, hdyson, Finset.prod_mul_distrib]
   ring
 
+/-- If all external vertices belong to a single component, the full Dyson
+amplitude is its standalone amplitude times the standalone amplitudes of
+the vacuum components. This holds at arbitrary time assignments, including
+coincident times; no ordered chamber or injectivity assumption is needed. -/
+theorem ExternalInsertionWickDiagram.dysonFixedTimeAmplitude_eq_external_mul_prod_vacuum
+    {E n : ℕ} (d : ExternalInsertionWickDiagram Mode E n)
+    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
+    (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ)
+    (anchor : Fin (2 * E))
+    (hconnected : AllExternalVerticesConnected d.vertexGraph) :
+    let A : d.vertexGraph.componentPartition.parts :=
+      ⟨d.vertexGraph.componentBlock (Sum.inl anchor),
+        d.vertexGraph.componentBlock_mem_componentPartition (Sum.inl anchor)⟩
+    let f := fun B : d.vertexGraph.componentPartition.parts =>
+      ExternalInsertionWickDiagram.dysonFixedTimeAmplitude (d.componentOrderedDiagram B)
+        ε β g (d.componentExternalTime externalTime B) (d.componentInteractionTime σ B)
+    d.dysonFixedTimeAmplitude ε β g externalTime σ =
+      f A * (vacuumComponentParts d.vertexGraph).prod f := by
+  classical
+  intro A f
+  let order := Fintype.equivFin d.vertexGraph.componentPartition.parts
+  have hsingle : externallySupportedComponentParts d.vertexGraph = {A} :=
+    (allExternalVerticesConnected_iff_supportedComponentParts_eq_singleton
+      d.vertexGraph anchor).mp hconnected
+  calc
+    _ = ∏ B : d.vertexGraph.componentPartition.parts, f B := by
+      rw [d.dysonFixedTimeAmplitude_eq_componentExternalOrderSign_mul_prod_components
+        ε β g externalTime σ order,
+        componentExternalOrderSign_eq_one_of_allExternalVerticesConnected
+          d anchor hconnected order, one_mul]
+    _ = (externallySupportedComponentParts d.vertexGraph).prod f *
+          (vacuumComponentParts d.vertexGraph).prod f := by
+      rw [← Finset.prod_union
+        (externallySupportedComponentParts_disjoint_vacuumComponentParts d.vertexGraph),
+        ← univ_componentParts_eq_supported_union_vacuum d.vertexGraph]
+    _ = _ := by rw [hsingle, Finset.prod_singleton]
+
 end Fermionic
 end SecondQuantization
