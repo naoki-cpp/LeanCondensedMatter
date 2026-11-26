@@ -37,27 +37,16 @@ theorem eigenspace_adjointConjugate (U T : H →L[𝕜] H)
       Submodule.map
         (Unitary.linearIsometryEquiv (unitaryOfAdjointInverse U hleft hright)).toLinearEquiv.toLinearMap
         (Module.End.eigenspace (T : H →ₗ[𝕜] H) μ) := by
-  have hleft_apply (y : H) : (star U) (U y) = y := by
-    simpa [mul_apply_eq_comp] using
-      congrArg (fun A : H →L[𝕜] H => A y) hleft
+  let e : H ≃ₗ[𝕜] H :=
+    (Unitary.linearIsometryEquiv (unitaryOfAdjointInverse U hleft hright)).toLinearEquiv
+  change _ = Submodule.map e.toLinearMap _
   ext x
-  constructor
-  · intro hx
-    rw [Submodule.mem_map]
-    refine ⟨star U x, ?_, ?_⟩
-    · rw [Module.End.mem_eigenspace_iff] at hx ⊢
-      change U (T ((star U) x)) = μ • x at hx
-      have h := congrArg (fun y : H => (star U) y) hx
-      simpa [hleft_apply] using h
-    · change U ((star U) x) = x
-      have h := congrArg (fun A : H →L[𝕜] H => A x) hright
-      simpa [mul_apply_eq_comp] using h
-  · intro hx
-    rw [Submodule.mem_map] at hx
-    rcases hx with ⟨y, hy, rfl⟩
-    rw [Module.End.mem_eigenspace_iff] at hy ⊢
-    change U (T ((star U) (U y))) = μ • U y
-    simpa [hleft_apply] using congrArg (fun z : H => U z) hy
+  rw [Submodule.mem_map_equiv, Module.End.mem_eigenspace_iff, Module.End.mem_eigenspace_iff]
+  change e (T (e.symm x)) = μ • x ↔ T (e.symm x) = μ • e.symm x
+  calc
+    e (T (e.symm x)) = μ • x ↔ e (T (e.symm x)) = e (μ • e.symm x) := by
+      rw [map_smul, e.apply_symm_apply]
+    _ ↔ T (e.symm x) = μ • e.symm x := e.injective.eq_iff
 
 /-- Corresponding eigenspaces have the same finite dimension under unitary conjugation. -/
 theorem finrank_eigenspace_adjointConjugate (U T : H →L[𝕜] H)
