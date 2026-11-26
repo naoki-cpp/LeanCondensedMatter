@@ -1,6 +1,7 @@
 import LeanCondensedMatter.QuantumTheory.DensityOperator.Normalize
 import LeanCondensedMatter.Analysis.FunctionalCalculus.CFC
 import Mathlib.Analysis.CStarAlgebra.ContinuousLinearMap
+import Mathlib.Analysis.CStarAlgebra.Hom
 import Mathlib.Analysis.CStarAlgebra.ContinuousFunctionalCalculus.Basic
 import Mathlib.Analysis.CStarAlgebra.ContinuousFunctionalCalculus.Instances
 import Mathlib.Analysis.CStarAlgebra.ContinuousFunctionalCalculus.Order
@@ -39,6 +40,20 @@ theorem gibbsOp_apply_eigenvector (Hop : Observable H) (β : ℝ) {v : H} {E : �
   simpa [gibbsOp] using
     (cfc_apply_eigenvector (T := Hop.1) Hop.2 hv
       (f := fun x : ℝ => Real.exp (-β * x)) (by fun_prop))
+
+/-- A complex star-algebra symmetry fixing the Hamiltonian fixes its Gibbs
+operator by functoriality of the real continuous functional calculus. -/
+theorem gibbsOp_fixed_of_hamiltonian_fixed
+    (Hop : Observable H) (β : ℝ)
+    (Φ : (H →L[ℂ] H) ≃⋆ₐ[ℂ] (H →L[ℂ] H))
+    (hH : Φ Hop.1 = Hop.1) :
+    Φ (gibbsOp Hop β) = gibbsOp Hop β := by
+  have hcontinuous : Continuous Φ :=
+    (NonUnitalStarAlgHom.isometry Φ Φ.injective).continuous
+  unfold gibbsOp
+  rw [StarAlgHomClass.map_cfc Φ (fun x : ℝ => Real.exp (-β * x)) Hop.1
+    (hf := by fun_prop) (hφ := hcontinuous) (ha := Hop.2)
+    (hφa := by rw [hH]; exact Hop.2), hH]
 
 /-- For bounded Hamiltonians, compactness of the Gibbs operator forces finite dimension. -/
 theorem finiteDimensional_of_gibbsOp_isCompact (Hop : Observable H) (β : ℝ)
@@ -98,6 +113,18 @@ theorem gibbsState_op [Nontrivial H] [FiniteDimensional ℂ H]
   rw [gibbsState, DensityOperator.normalizePositive_op,
     ← IsTraceClass.traceNorm_eq_realTrace _ (gibbsOp_isPositive Hop β),
     (gibbsOp_spectralTraceClass Hop β).traceNorm_eq_spectralTrace (gibbsOp_isPositive Hop β)]
+
+/-- The normalized Gibbs density operator is fixed by every complex
+star-algebra symmetry fixing the Hamiltonian. The scalar normalization is
+unchanged, and no nondegeneracy of the Hamiltonian is required. -/
+theorem gibbsState_op_fixed_of_hamiltonian_fixed
+    [Nontrivial H] [FiniteDimensional ℂ H]
+    (Hop : Observable H) (β : ℝ)
+    (Φ : (H →L[ℂ] H) ≃⋆ₐ[ℂ] (H →L[ℂ] H))
+    (hH : Φ Hop.1 = Hop.1) :
+    Φ (gibbsState Hop β).op = (gibbsState Hop β).op := by
+  rw [gibbsState_op, RCLike.real_smul_eq_coe_smul (K := ℂ), map_smul,
+    gibbsOp_fixed_of_hamiltonian_fixed Hop β Φ hH]
 
 /-- The normalized Gibbs state acts diagonally on every energy eigenvector. -/
 theorem gibbsState_apply_eigenvector [Nontrivial H] [FiniteDimensional ℂ H]
