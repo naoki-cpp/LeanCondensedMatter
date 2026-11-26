@@ -869,6 +869,18 @@ theorem externalInsertionLegEquiv_mixedTimeAmbientPositionEquiv {E n : ℕ}
   rfl
 
 
+/-- Converting the mixed position of a canonical leg back to fixed order recovers
+its flattened diagram position. -/
+theorem externalInsertionMixedTimeAmbientPositionEquiv_legPosition {E n : ℕ}
+    (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ)
+    (leg : OrderedExternalInsertionLeg E n) :
+    externalInsertionMixedTimeAmbientPositionEquiv externalTime σ
+        (externalInsertionMixedTimeOrderedAtomicLegPosition externalTime σ leg) =
+      (externalInsertionLegEquiv E (Finset.univ : Finset (Fin n))).symm leg := by
+  apply (externalInsertionLegEquiv E (Finset.univ : Finset (Fin n))).injective
+  rw [externalInsertionLegEquiv_mixedTimeAmbientPositionEquiv,
+    externalInsertionMixedTimeOrderedAtomicLegEquiv_position, Equiv.apply_symm_apply]
+
 /-- The canonical mixed atomic-leg enumeration is unchanged if every strict comparison
 between external and interaction event times is unchanged. The fixed rank also resolves
 all equal-time ties identically. -/
