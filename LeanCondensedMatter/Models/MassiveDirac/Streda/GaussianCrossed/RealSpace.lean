@@ -612,24 +612,42 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceCurrentBlock_polar
   rw [finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceCurrentBlock_polarPoint2D_eq_angularKernel_integral,
     inPlaneSpinRotation_conjugate_apply]
   change prefactor * (∫ p in (0 : ℝ)..pMax, angular p i j) = _
-  simp_rw [hpoint, inPlaneSpinRotation_conjugate_apply,
-    intervalIntegral.integral_const_mul, intervalIntegral.integral_mul_const]
+  have hradial (src : Fin 2) :
+      finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock
+          src v m probeEnergy broadening disorderStrength hbar pMax radius i j =
+        prefactor * ∫ p in (0 : ℝ)..pMax, radial src p i j :=
+    finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock_apply_eq_entryKernel_integral
+      src v m probeEnergy broadening disorderStrength hbar pMax radius i j
+  have hint :
+      (∫ p in (0 : ℝ)..pMax, angular p i j) =
+        inPlaneSpinRotation angle i i *
+          (∫ p in (0 : ℝ)..pMax,
+            if source = 0 then c * radial 0 p i j - s * radial 1 p i j
+            else s * radial 0 p i j + c * radial 1 p i j) *
+          inPlaneSpinRotationInverse angle j j := by
+    calc
+      _ = ∫ p in (0 : ℝ)..pMax,
+          inPlaneSpinRotation angle i i *
+            (if source = 0 then c * radial 0 p i j - s * radial 1 p i j
+            else s * radial 0 p i j + c * radial 1 p i j) *
+            inPlaneSpinRotationInverse angle j j := by
+        apply intervalIntegral.integral_congr
+        intro p _
+        rw [hpoint p, inPlaneSpinRotation_conjugate_apply]
+        split_ifs <;> rfl
+      _ = _ := by
+        rw [intervalIntegral.integral_mul_const, intervalIntegral.integral_const_mul]
+  rw [hint]
   split_ifs with hs
-  · simp only [Matrix.sub_apply, Matrix.smul_apply, smul_eq_mul]
-    rw [intervalIntegral.integral_sub ((hradialInt 0 i j).const_mul c)
-      ((hradialInt 1 i j).const_mul s)]
-    simp only [intervalIntegral.integral_const_mul,
-      finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock_apply_eq_entryKernel_integral]
-    change prefactor * _ = _
-    dsimp only [radial, prefactor, c, s]
+  · rw [intervalIntegral.integral_sub ((hradialInt 0 i j).const_mul c)
+      ((hradialInt 1 i j).const_mul s),
+      intervalIntegral.integral_const_mul, intervalIntegral.integral_const_mul]
+    simp only [Matrix.sub_apply, Matrix.smul_apply, smul_eq_mul, hradial]
     ring
-  · simp only [Matrix.add_apply, Matrix.smul_apply, smul_eq_mul]
-    rw [intervalIntegral.integral_add ((hradialInt 0 i j).const_mul s)
-      ((hradialInt 1 i j).const_mul c)]
-    simp only [intervalIntegral.integral_const_mul,
-      finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock_apply_eq_entryKernel_integral]
-    change prefactor * _ = _
-    dsimp only [radial, prefactor, c, s]
+  · rw [intervalIntegral.integral_add ((hradialInt 0 i j).const_mul s)
+      ((hradialInt 1 i j).const_mul c),
+      intervalIntegral.integral_const_mul, intervalIntegral.integral_const_mul]
+    simp only [Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, hradial]
     ring
 
 
