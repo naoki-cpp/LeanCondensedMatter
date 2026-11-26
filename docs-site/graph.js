@@ -455,12 +455,6 @@ function appendNodeLabel(nodes, name, position, root, selected, showLeafLabel) {
     "data-x": labelPoint.x, "data-y": labelPoint.y,
     transform: `translate(${labelPoint.x}, ${labelPoint.y})` });
   const lines = graphLabelLines(displayName(name));
-  if (root || selected) {
-    const textWidth = Math.max(...lines.map((line) => Array.from(line).length)) * 8;
-    label.append(svg("rect", { x: anchor === "middle" ? -textWidth / 2 - 7 : anchor === "end" ? -textWidth - 7 : -7,
-      y: -12, width: textWidth + 14, height: lines.length * 16 + 8, rx: 4,
-      fill: "#ffffff", stroke: root ? "#9bb7a6" : "#c5d2c9", "stroke-width": 1 }));
-  }
   const text = svg("text", {
     class: "node-label",
     x: 0,
