@@ -1,6 +1,6 @@
 import LeanCondensedMatter.Analysis.Operator.Unbounded.BoundedResolvent
 import LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventApproximation
-import LeanCondensedMatter.Analysis.Operator.BoundedUnitaryEvolution
+import LeanCondensedMatter.Analysis.Operator.Exponential
 import Mathlib.Analysis.Normed.Operator.Completeness
 import Mathlib.Analysis.Calculus.Deriv.Slope
 import Mathlib.Analysis.Calculus.MeanValue

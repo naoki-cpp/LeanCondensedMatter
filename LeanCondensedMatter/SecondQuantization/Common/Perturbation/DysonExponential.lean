@@ -1,6 +1,6 @@
 import LeanCondensedMatter.Analysis.Dyson.Volterra
 import LeanCondensedMatter.SecondQuantization.Common.Perturbation.ContinuousDyson
-import LeanCondensedMatter.Analysis.Operator.ExponentialEigenvector
+import LeanCondensedMatter.Analysis.Operator.Exponential
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.FundThmCalculus
 
 set_option linter.style.header false

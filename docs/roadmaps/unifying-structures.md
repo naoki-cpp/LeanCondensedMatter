@@ -152,7 +152,7 @@ up to the chosen connection and sign convention. Such a construction does
 not require a globally smooth eigenvector frame.
 
 Current anchors: [periodic Bloch projectors](../../LeanCondensedMatter/Transport/Topology.lean)
-and [pointwise Berry curvature](../../LeanCondensedMatter/Analysis/Operator/BerryGeometry/Curvature.lean).
+and [pointwise Berry curvature](../../LeanCondensedMatter/Analysis/Operator/BerryGeometry.lean).
 
 Implementation gate: first bridge an existing projector consumer to a
 frame-independent curvature theorem, fixing signs and identifying whether

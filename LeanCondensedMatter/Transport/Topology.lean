@@ -5,7 +5,7 @@ Authors: Naoki Yano
 -/
 import LeanCondensedMatter.Crystal.Brillouin
 import LeanCondensedMatter.Analysis.Operator.FiniteTrace
-import LeanCondensedMatter.Analysis.Operator.BerryGeometry.Curvature
+import LeanCondensedMatter.Analysis.Operator.BerryGeometry
 import Mathlib.Algebra.Star.StarProjection
 import Mathlib.Analysis.Calculus.ContDiff.Basic
 import Mathlib.Analysis.Calculus.FDeriv.Star
