@@ -221,7 +221,7 @@ theorem Pairing.ofSplit_crossingCount_eq_left_add_right_add_inter
           ∑ xy : (P.NormalizedPair ⊕ Q.NormalizedPair) ×
               (P.NormalizedPair ⊕ Q.NormalizedPair),
             if Crosses (emb xy.1).1 (emb xy.2).1 then 1 else 0 := by
-      rw [Pairing.crossingCount_eq_sum_crosses]
+      rw [PairingOn.crossingCount_eq_sum_crosses]
       exact (Equiv.sum_comp (Equiv.prodCongr emb emb)
         (fun xy : (Pairing.ofSplit e P Q).NormalizedPair ×
             (Pairing.ofSplit e P Q).NormalizedPair =>

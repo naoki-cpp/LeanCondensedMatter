@@ -60,12 +60,13 @@ theorem sum_sum_crosses_eq_of_equiv {α β A B : Type*}
   exact if_congr (hcross p q) rfl rfl
 
 /-- The number of geometric crossings. -/
-def Pairing.crossingCount {n : ℕ} (pairing : Pairing n) : ℕ :=
+def PairingOn.crossingCount {α : Type*} [Fintype α] [LinearOrder α] (pairing : PairingOn α) : ℕ :=
   ((pairing.pairs.product pairing.pairs).filter fun pairPair =>
     Crosses pairPair.1 pairPair.2).card
 
 /-- `crossingCount` as a `0`-or-`1` sum over all ordered normalized-pair pairs. -/
-theorem Pairing.crossingCount_eq_sum_crosses {n : ℕ} (pairing : Pairing n) :
+theorem PairingOn.crossingCount_eq_sum_crosses {α : Type*} [Fintype α] [LinearOrder α]
+    (pairing : PairingOn α) :
     pairing.crossingCount =
       ∑ x : pairing.NormalizedPair × pairing.NormalizedPair,
         if Crosses x.1.1 x.2.1 then 1 else 0 := by
@@ -74,9 +75,9 @@ theorem Pairing.crossingCount_eq_sum_crosses {n : ℕ} (pairing : Pairing n) :
     pairing.crossingCount =
         ∑ x ∈ pairing.pairs.product pairing.pairs,
           if Crosses x.1 x.2 then 1 else 0 := by
-      simpa [Pairing.crossingCount] using
+      simpa [PairingOn.crossingCount] using
         (Finset.sum_boole (R := ℕ)
-          (fun x : (Fin (2 * n) × Fin (2 * n)) × (Fin (2 * n) × Fin (2 * n)) =>
+          (fun x : (α × α) × (α × α) =>
             Crosses x.1 x.2) (pairing.pairs.product pairing.pairs)).symm
     _ = ∑ p ∈ pairing.pairs, ∑ q ∈ pairing.pairs,
           if Crosses p q then 1 else 0 := by
@@ -114,9 +115,9 @@ theorem Pairing.cast_crossingCount {m n : ℕ} (h : m = n)
 perfect-pairing partners preserves the geometric crossing count exactly.
 The induced map on normalized pairs cannot exchange their endpoints,
 so the proof does not assume any symmetry of oriented contractions. -/
-theorem Pairing.crossingCount_eq_of_partnerEquiv_strictMono
-    {m n : ℕ} (source : Pairing m) (target : Pairing n)
-    (e : Fin (2 * m) ≃ Fin (2 * n))
+theorem PairingOn.crossingCount_eq_of_partnerEquiv_strictMono
+    {α β : Type*} [Fintype α] [LinearOrder α] [Fintype β] [LinearOrder β]
+    (source : PairingOn α) (target : PairingOn β) (e : α ≃ β)
     (hpartner : ∀ p, target.partner (e p) = e (source.partner p))
     (hmono : StrictMono e) :
     source.crossingCount = target.crossingCount := by

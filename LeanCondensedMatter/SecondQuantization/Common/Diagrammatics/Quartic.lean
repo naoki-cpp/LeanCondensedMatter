@@ -24,6 +24,6 @@ connected-component restriction, reassembly and its inverse laws, component-deco
 and generic connected-decomposition adapter, component-local orders and pairing compatibility,
 component-pair equivalence, fixed-global-order component-pair embeddings, mixed two-point leg
 embeddings, Statistics-generic crossing-parity/pairing-weight factorization, and the corresponding
-scalar `Pairing.evaluation` factorization endpoint. Ordered-simplex shuffle analysis is consumed
+scalar `PairingOn.evaluation` factorization endpoint. Ordered-simplex shuffle analysis is consumed
 directly from `Analysis/OrderedSimplex` by the fermionic amplitude layer.
 -/

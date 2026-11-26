@@ -12,7 +12,7 @@ set_option linter.unusedFintypeInType false
 This module places the free-boson thermal pair kernel from the concrete thermal layer on the existing
 ordered quartic-diagram structure.  A vertex order turns the diagram labels into a finite ordered
 list, and `pairingInOrder` selects one perfect pairing of the resulting local thermal fields.  The
-scalar diagram value is evaluated through `Combinatorics.Pairing.evaluation`.
+scalar diagram value is evaluated through `Combinatorics.PairingOn.evaluation`.
 
 The amplitude here is coefficientwise/algebraic.  It includes the quartic coupling product and Dyson
 sign, but no ordered-simplex time integration and no completed-space boundedness claim.

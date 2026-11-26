@@ -64,7 +64,7 @@ theorem grandCanonicalGibbsExpectation_prod_timedFieldOperator_eq_sum_pairing
       (fun a b _ => zetaCommutator_timedFieldOperator ε (fields a) (fields b))
       (fun p => one_sub_zetaInt_fermion_mul_exp_ne_zero
         (externalFieldLabelEnergyShift (fun i => ε i - μ) (fields p).label) β)
-  simpa only [Combinatorics.Pairing.evaluation] using hgen
+  simpa only [Combinatorics.PairingOn.evaluation] using hgen
 
 end Fermionic
 end SecondQuantization

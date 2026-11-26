@@ -141,12 +141,12 @@ theorem Pairing.evaluation_ofSplit_eq_positionInversions_mul (s : Statistics)
           if e (Sum.inr j) < e (Sum.inl i) then 1 else 0) *
         (left.evaluation (left.weight s) leftValue *
           right.evaluation (right.weight s) rightValue) := by
-  rw [Pairing.evaluation,
+  rw [PairingOn.evaluation,
     Pairing.weight_ofSplit_eq_positionInversions_mul s e left right
       hleftMono hrightMono,
     Pairing.prod_pairs_ofSplit e left right value leftValue rightValue
       hleft hright]
-  simp only [Pairing.evaluation]
+  simp only [PairingOn.evaluation]
   ring
 
 /-- An exact decomposition of the crossing count gives a product of local exchange weights

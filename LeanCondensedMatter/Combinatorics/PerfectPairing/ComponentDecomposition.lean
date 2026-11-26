@@ -121,7 +121,7 @@ theorem Pairing.evaluation_eq_mul_prod_components [Fintype ι]
     global.evaluation weight pairValue =
       factor * ∏ B, (componentPairing B).evaluation (localWeight B) (localPairValue B) := by
   classical
-  simp only [Pairing.evaluation, Finset.prod_mul_distrib]
+  simp only [PairingOn.evaluation, Finset.prod_mul_distrib]
   rw [hweight, global.prod_pairs_eq_prod_components componentPairing componentPairEquiv
     pairValue localPairValue hvalue, mul_assoc]
 
