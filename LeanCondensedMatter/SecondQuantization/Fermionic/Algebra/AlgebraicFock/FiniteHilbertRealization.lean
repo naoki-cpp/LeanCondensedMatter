@@ -68,6 +68,16 @@ theorem finiteHilbertOperator_apply (b : Module.Basis Mode ℂ V)
   change finiteHilbertEquiv b (A ((finiteHilbertEquiv b).symm (finiteHilbertEquiv b Ψ))) = _
   rw [LinearEquiv.symm_apply_apply]
 
+/-- The one-particle sector of the bounded exterior-Fock realization carries
+the original one-body operator. This transports the existing algebraic
+one-particle identity without assuming an independent matrix model. -/
+theorem finiteHilbertOperator_dGamma_oneParticle
+    (b : Module.Basis Mode ℂ V) (T : V →ₗ[ℂ] V) (v : V) :
+    finiteHilbertOperatorAlgEquiv b (dGamma V T)
+        (finiteHilbertEquiv b (oneParticle V v)) =
+      finiteHilbertEquiv b (oneParticle V (T v)) := by
+  rw [finiteHilbertOperator_apply, dGamma_oneParticle]
+
 /-- An orthonormal one-particle basis makes the finite-Hilbert realizations of smeared
 creation and annihilation mutual adjoints. -/
 theorem star_finiteHilbertOperator_create
