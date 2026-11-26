@@ -35,8 +35,8 @@
 .module-description {
   display: block;
   color: var(--muted);
-  font-size: 12px;
-  line-height: 1.55;
+  font-size: 14px;
+  line-height: 1.7;
 }
 
 .module-header-description {
@@ -78,6 +78,8 @@
 .module-tree-card strong {
   overflow-wrap: anywhere;
   font-size: 14px;
+  font-weight: 600;
+  line-height: 1.5;
 }
 
 .module-tree-card small {
@@ -104,13 +106,13 @@
   border-radius: 5px;
 }
 
-.module-declaration-card strong { font-size: 12.5px; }
+.module-declaration-card strong { font-size: 13px; }
 
 .control-help {
   display: block;
   margin-top: 6px;
   color: var(--muted);
-  font-size: 10.5px;
+  font-size: 12px;
   font-weight: 400;
   line-height: 1.45;
   letter-spacing: 0;

@@ -14,7 +14,9 @@
   --warning: #895512;
   --danger: #a33347;
   --hover: #e8eee5;
-  --heading-font: Georgia, "Times New Roman", serif;
+  --ui-font: "Segoe UI", "Yu Gothic UI", "Hiragino Kaku Gothic ProN", system-ui, sans-serif;
+  --heading-font: var(--ui-font);
+  --code-font: "Cascadia Code", "SFMono-Regular", Consolas, "Liberation Mono", monospace;
   --graph-bg: #080c18;
 }
 
@@ -24,7 +26,9 @@ html, body { min-height: 100%; }
 
 body {
   margin: 0;
-  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-family: var(--ui-font);
+  font-size: 14px;
+  line-height: 1.55;
   color: var(--text);
   background: var(--bg);
 }
@@ -33,6 +37,7 @@ body {
 
 a { color: inherit; text-decoration: none; }
 button, input, select { font: inherit; }
+code, pre { font-family: var(--code-font); font-variant-ligatures: none; }
 button, select { cursor: pointer; }
 
 .site-header {
@@ -47,7 +52,7 @@ button, select { cursor: pointer; }
 
 .brand { display: flex; gap: 0; align-items: center; }
 .brand > span { display: grid; gap: 2px; }
-.brand strong { font: 700 clamp(1.1rem, 2vw, 1.5rem)/1.1 var(--heading-font); letter-spacing: -0.035em; }
+.brand strong { font: 600 clamp(1.1rem, 2vw, 1.4rem)/1.25 var(--heading-font); letter-spacing: -0.02em; }
 .brand small { color: var(--muted); font-size: 12px; }
 
 .site-header nav { display: flex; gap: 18px; align-items: center; font-size: 13px; color: var(--muted); }
@@ -85,26 +90,26 @@ button, select { cursor: pointer; }
 
 .detail-eyebrow {
   margin: 0 0 8px;
-  font-size: 10px;
-  font-weight: 800;
+  font-size: 11px;
+  font-weight: 600;
   color: var(--cyan);
   text-transform: uppercase;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.08em;
 }
 
 h1 {
   margin: 0;
   font-size: 1.45rem;
-  line-height: 1.12;
-  letter-spacing: -0.035em;
+  line-height: 1.3;
+  letter-spacing: -0.02em;
 }
 
 label, legend {
   font-size: 12px;
-  font-weight: 700;
+  font-weight: 600;
   color: var(--muted);
   text-transform: uppercase;
-  letter-spacing: 0.07em;
+  letter-spacing: 0.04em;
 }
 
 .search-form { position: relative; display: grid; gap: 8px; }
@@ -147,7 +152,7 @@ select:disabled {
   border-color: var(--line);
   cursor: not-allowed;
 }
-.search-row button, .focus-button, .source-link { padding: 0 14px; font-weight: 750; }
+.search-row button, .focus-button, .source-link { padding: 0 14px; font-weight: 600; }
 .search-row button:hover, .focus-button:hover, .source-link:hover {
   border-color: var(--line-strong);
   background: var(--hover);
@@ -180,7 +185,7 @@ select:disabled {
   border-radius: 5px;
 }
 .search-result:hover, .search-result.active { background: var(--hover); }
-.search-result strong { overflow-wrap: anywhere; font-size: 12px; }
+.search-result strong { overflow-wrap: anywhere; font: 500 12px/1.55 var(--code-font); }
 .search-result small { overflow: hidden; color: var(--muted); font-size: 11px; text-overflow: ellipsis; white-space: nowrap; }
 
 .control-grid { display: grid; grid-template-columns: minmax(0, 1fr) 82px; gap: 10px; }
@@ -247,7 +252,7 @@ select:disabled {
   overflow: auto;
 }
 .overview-header { max-width: 780px; margin-bottom: 28px; }
-.overview-header h2 { margin: 0 0 12px; font: 700 clamp(2rem, 4vw, 3.5rem)/1.08 var(--heading-font); letter-spacing: -0.045em; overflow-wrap: anywhere; }
+.overview-header h2 { margin: 0 0 12px; font: 600 clamp(1.75rem, 3.2vw, 2.75rem)/1.2 var(--heading-font); letter-spacing: -0.025em; overflow-wrap: anywhere; }
 .overview-header p { margin: 0; color: var(--muted); line-height: 1.7; }
 .overview-summary { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
 .summary-chip {
@@ -261,7 +266,7 @@ select:disabled {
 
 .overview-section { margin-top: 32px; padding-top: 20px; border-top: 1px solid var(--line); }
 .overview-section-head { display: flex; gap: 12px; align-items: center; justify-content: space-between; margin-bottom: 12px; }
-.overview-section h3 { margin: 0; font: 700 1.25rem/1.25 var(--heading-font); color: var(--text); }
+.overview-section h3 { margin: 0; font: 600 1.125rem/1.4 var(--heading-font); color: var(--text); }
 .declaration-card {
   width: 100%;
   padding: 15px;
@@ -275,7 +280,7 @@ select:disabled {
   border-color: var(--line-strong);
   background: var(--hover);
 }
-.declaration-card strong { display: block; overflow-wrap: anywhere; font-size: 13px; }
+.declaration-card strong { display: block; overflow-wrap: anywhere; font: 500 13px/1.55 var(--code-font); }
 .declaration-card small { display: block; margin-top: 6px; color: var(--muted); font-size: 11px; line-height: 1.45; }
 .declaration-list { display: grid; gap: 8px; }
 
@@ -317,9 +322,8 @@ select:disabled {
 .detail-panel h2 {
   margin: 0 0 14px;
   overflow-wrap: anywhere;
-  font-size: 1.08rem;
-  line-height: 1.35;
-  letter-spacing: -0.02em;
+  font: 500 1rem/1.55 var(--code-font);
+  letter-spacing: 0;
 }
 .detail-panel h3 { margin: 22px 0 8px; font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; }
 .detail-panel pre {
@@ -329,7 +333,7 @@ select:disabled {
   overflow: auto;
   white-space: pre-wrap;
   overflow-wrap: anywhere;
-  font: 12.5px/1.6 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font: 13px/1.7 var(--code-font);
   color: var(--text);
   background: var(--surface-soft);
   border: 1px solid var(--line);
@@ -371,14 +375,14 @@ select:disabled {
 .definition-body { margin-top: 20px; padding-top: 4px; }
 .definition-body-content { padding: 0 8px 9px; }
 .definition-body-content .math-formula { max-height: 560px; overflow: auto; }
-.docstring, .wrapper-target { font-size: 13px; line-height: 1.65; color: var(--text); }
+.docstring, .wrapper-target { font-size: 14px; line-height: 1.75; color: var(--text); }
 .wrapper-target code { color: var(--accent-strong); overflow-wrap: anywhere; }
 
 .badges { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
 .badge {
   padding: 4px 7px;
   font-size: 10px;
-  font-weight: 800;
+  font-weight: 600;
   color: var(--muted);
   text-transform: uppercase;
   letter-spacing: 0.05em;
