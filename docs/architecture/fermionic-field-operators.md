@@ -77,8 +77,9 @@ First- and second-quantized current realizations
 `Analysis` owns representation-independent commutator/balance/current interfaces.
 The operator-level generalized current `1/2 {v,m}` uses `LinearMap.symmetrizedProduct`
 directly, independently of localization. `QuantumTheory.ConservationLaw.LocalizedTransport`
-supplies algebraic Heisenberg transport, pairing, corrected current and commuting-localizer
-current-density representation independently of particle statistics.
+supplies algebraic Heisenberg transport. The pairing, corrected current, and commuting-localizer
+current-density representation are supplied by `Analysis.ConservationLaw.SymmetricLocalizationAlgebra`
+for any linear localizer evolution independently of particle statistics.
 
 Current semantics are layered rather than identified with one operator formula. The operator
 `1/2 {v,m}` exists before any weak-current representation is chosen.

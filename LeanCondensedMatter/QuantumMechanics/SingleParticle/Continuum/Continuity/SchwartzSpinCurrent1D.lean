@@ -74,16 +74,15 @@ localization transport. -/
 theorem schwartzSpinorVelocityLocalizationFlux_eq_comp1D
     (ℏ κ : ℝ) (potential : SchwartzTwoLevel1D.Spatial)
     (internalH : SchwartzTwoLevel1D.InternalMatrix) :
-    (heisenbergLocalizationFunctional ℏ
-        (SchwartzTwoLevelSchrodinger1D.hamiltonian κ potential internalH)
+    ((heisenbergEvolution ℏ (SchwartzTwoLevelSchrodinger1D.hamiltonian κ potential internalH)).comp
         SchwartzTwoLevel1D.multiplicationLinear) =
       (_root_.ConservationLaw.localizedQuantityFunctional
         SchwartzTwoLevel1D.multiplicationLinear
         (SchwartzTwoLevelSchrodinger1D.velocityOperator ℏ κ)).comp SchwartzKinetic1D.derivative := by
   apply LinearMap.ext
   intro f
-  rw [heisenbergLocalizationFunctional_apply]
-  simp only [LinearMap.comp_apply, _root_.ConservationLaw.localizedQuantityFunctional_apply]
+  simp only [LinearMap.comp_apply, heisenbergEvolution_apply,
+    _root_.ConservationLaw.localizedQuantityFunctional_apply]
   apply LinearMap.ext
   intro ψ
   have h := congrArg
@@ -103,11 +102,10 @@ noncomputable def schwartzSpinCurrentRepresentation1D
         (SchwartzTwoLevelSchrodinger1D.hamiltonian κ potential internalH)
         SchwartzTwoLevel1D.multiplicationLinear
         (schwartzSpinOperatorLinear ℏ spinComponent))
-      (operatorLocalCurrentPairing
+      (_root_.ConservationLaw.operatorLocalCurrentPairing
         SchwartzTwoLevel1D.multiplicationLinear) :=
-  symmetrizedVelocityCurrentRepresentation ℏ
-    (SchwartzTwoLevelSchrodinger1D.hamiltonian κ potential internalH)
-    SchwartzTwoLevel1D.multiplicationLinear
+  _root_.ConservationLaw.symmetrizedVelocityCurrentRepresentation
+    ((heisenbergEvolution ℏ (SchwartzTwoLevelSchrodinger1D.hamiltonian κ potential internalH)).comp SchwartzTwoLevel1D.multiplicationLinear)
     (schwartzSpinOperatorLinear ℏ spinComponent)
     (SchwartzTwoLevelSchrodinger1D.velocityOperator ℏ κ)
     SchwartzKinetic1D.derivative

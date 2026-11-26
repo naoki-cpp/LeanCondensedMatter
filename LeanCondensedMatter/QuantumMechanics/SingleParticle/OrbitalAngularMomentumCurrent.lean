@@ -77,7 +77,7 @@ theorem heisenbergTransportOrbitalAngularMomentum_apply
     (d : Test →ₗ[ℂ] OneForm)
     (N : OneForm →ₗ[ℂ] (V →ₗ[ℂ] V))
     (f : Test) (Du Dv : V →ₗ[ℂ] V) (c : ℂ)
-    (hvelocity : heisenbergLocalizationFunctional ℏ h M =
+    (hvelocity : (heisenbergEvolution ℏ h).comp M =
       (_root_.ConservationLaw.localizedQuantityFunctional N velocity).comp d)
     (hXu : ⁅N (d f), X u⁆ = 0) (hXv : ⁅N (d f), X v⁆ = 0)
     (hPu : ⁅N (d f), P u⁆ = c • Du)
@@ -89,9 +89,10 @@ theorem heisenbergTransportOrbitalAngularMomentum_apply
   calc
     _ = _root_.ConservationLaw.nestedSymmetrizedCurrentFlux velocity
         (orbitalAngularMomentum X P u v) N (d f) := by
-          simpa only [LinearMap.comp_apply] using congrArg
+          simpa only [heisenbergTransportFunctional, LinearMap.comp_apply] using congrArg
             (fun Φ : Test →ₗ[ℂ] (V →ₗ[ℂ] V) => Φ f)
-            (nestedSymmetrizedCurrentFlux_eq_comp ℏ h M
+            (_root_.ConservationLaw.nestedSymmetrizedCurrentFlux_eq_comp
+              ((heisenbergEvolution ℏ h).comp M)
               (orbitalAngularMomentum X P u v) velocity d N hvelocity)
     _ = _ := by
       rw [_root_.ConservationLaw.nestedSymmetrizedCurrentFlux_eq_symmetrized_add_correction]
