@@ -26,9 +26,6 @@ abbrev Spatial := SchwartzKinetic1D.Space
 /-- Two-component complex Schwartz two-level states. -/
 abbrev State := Fin 2 → Spatial
 
-/-- Complex `2 × 2` matrices acting on the two-level internal index. -/
-abbrev InternalMatrix := InternalSpace.PauliMatrix
-
 /-- Lift a scalar Schwartz operator componentwise to a two-component two-level state. -/
 noncomputable def spatialLift (A : Spatial →ₗ[ℂ] Spatial) : State →ₗ[ℂ] State where
   toFun := fun ψ a => A (ψ a)
@@ -47,7 +44,7 @@ theorem spatialLift_apply (A : Spatial →ₗ[ℂ] Spatial) (ψ : State) (a : Fi
   rfl
 
 /-- A finite internal matrix acting on the internal index and leaving the spatial wavefunction intact. -/
-noncomputable def internalOperator (S : InternalMatrix) : State →ₗ[ℂ] State where
+noncomputable def internalOperator (S : InternalSpace.PauliMatrix) : State →ₗ[ℂ] State where
   toFun := fun ψ a => ∑ b : Fin 2, S a b • ψ b
   map_add' := by
     intro ψ χ
@@ -59,13 +56,13 @@ noncomputable def internalOperator (S : InternalMatrix) : State →ₗ[ℂ] Stat
     simp [smul_smul, mul_comm]
 
 @[simp]
-theorem internalOperator_apply (S : InternalMatrix) (ψ : State) (a : Fin 2) :
+theorem internalOperator_apply (S : InternalSpace.PauliMatrix) (ψ : State) (a : Fin 2) :
     internalOperator S ψ a = ∑ b : Fin 2, S a b • ψ b :=
   rfl
 
 /-- The internal-matrix action is complex-linear in the supplied two-level matrix. -/
 noncomputable def internalOperatorLinear :
-    InternalMatrix →ₗ[ℂ] (State →ₗ[ℂ] State) where
+    InternalSpace.PauliMatrix →ₗ[ℂ] (State →ₗ[ℂ] State) where
   toFun := internalOperator
   map_add' := by
     intro S T
@@ -82,7 +79,7 @@ noncomputable def internalOperatorLinear :
 
 /-- Componentwise spatial operators Lie-commute with internal matrix operators. -/
 theorem lie_spatialLift_internalOperator_eq_zero
-    (A : Spatial →ₗ[ℂ] Spatial) (S : InternalMatrix) :
+    (A : Spatial →ₗ[ℂ] Spatial) (S : InternalSpace.PauliMatrix) :
     ⁅spatialLift A, internalOperator S⁆ = 0 := by
   simp only [LieRing.of_associative_ring_bracket, Module.End.mul_eq_comp, sub_eq_zero]
   apply LinearMap.ext
