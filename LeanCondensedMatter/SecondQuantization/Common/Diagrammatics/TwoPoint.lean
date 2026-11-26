@@ -16,11 +16,6 @@ import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Slot
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.External.ExternalSlotSplit
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitConnectivity
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumComponents
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumVertexProduct
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumLegOrder
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumPairing
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumPairImage
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumComponentPair
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.SlotCongr
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentPosition
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedOrderPairing
@@ -53,8 +48,8 @@ The subpackages separate the main combinatorial responsibilities:
   vacuum components, and provides componentwise finite-sum and finite-product decompositions.
 * `External` isolates the external component, splits its interaction slots from the vacuum
   remainder, and packages the resulting standalone external piece together with pairing transport.
-* `SlotSplit` compares the ambient two-point diagram with the external/vacuum slot decomposition,
-  transporting vacuum pairings and vacuum components to the corresponding quartic diagrams.
+* `SlotSplit` compares the ambient two-point graph with its external/vacuum slot decomposition.
+  Ordered vacuum pairing and component-pair factorization belong to the general external-insertion theory.
 * `Mixed` transports the fixed pairing to mixed imaginary-time order and develops component-local
   positions, pairings, normalized-pair equivalences, crossing decompositions, parity, and
   fixed-order-chamber locality.
