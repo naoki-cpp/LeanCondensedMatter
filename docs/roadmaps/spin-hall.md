@@ -590,9 +590,11 @@ For the finite lattice realization,
 `Lattice.finiteSecondQuantization_apply_oneParticle` identifies the same
 embedding with the canonical algebraic lattice coordinates. The bounded
 one-body Lie-homomorphism property and the existing exponential
-conjugation theorem then give
-`inner_finiteSecondQuantization_exp_conjugate_lie_oneParticle`:
-for an arbitrary one-particle generator G and one-body operators A, B,
+conjugation theorem give the following equality by composing
+`finiteSecondQuantization_exp_conjugate`, `finiteSecondQuantization_lie`
+and `inner_finiteSecondQuantization_oneParticle`, without a separate
+composite wrapper: for an arbitrary one-particle generator G and
+one-body operators A, B,
 
 ```text
 ⟨jv, [exp(t dΓ(G)) dΓ(A) exp(−t dΓ(G)), dΓ(B)] jw⟩
@@ -617,13 +619,19 @@ matrix-element law.
 
 `Fermionic.Transport.oneParticleFockState` uses the isometric degree-one
 embedding, and `isStationary_oneParticleFockState` proves stationarity under
-the corresponding second-quantized Hamiltonian. The new theorem
-`adiabaticFrequencyDomainSusceptibility_oneParticleFock_eq_finiteLehmannTable`
-identifies its full-Fock retarded susceptibility with the canonical finite
-one-particle Lehmann table whenever the supplied energy eigenbasis has
-probability one on the occupied orbital and zero elsewhere. The one-body
-and many-body Hamiltonians must be related by the existing finite second
-quantization and use the same hbar; these are explicit hypotheses.
+the corresponding second-quantized Hamiltonian.
+`adiabaticFrequencyDomainSusceptibility_oneParticleFock` identifies the
+full-Fock retarded susceptibility with the original one-particle
+susceptibility for any normalized one-particle vector, without requiring
+stationarity or a spectral basis. This equality of totalized transforms
+does not require a positive switching rate. The positive-rate Lehmann
+evaluation is the specialization
+`adiabaticFrequencyDomainSusceptibility_oneParticleFock_eq_finiteLehmannTable`.
+It only requires probability one at the occupied orbital; nonnegative
+normalized probabilities force all other weights to vanish, as shown by
+`eigenbasisNormalizedExpectation_eq_pure_of_single`. The one-body and
+many-body Hamiltonians must be related by finite second quantization and
+use the same hbar; these are explicit hypotheses.
 
 This supplies the state and spectral reduction without diagonalizing the
 full Fock Hamiltonian. Concrete Rashba one-body spectral data and the
