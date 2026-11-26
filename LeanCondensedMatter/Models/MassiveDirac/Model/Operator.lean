@@ -99,18 +99,10 @@ theorem inPlanePauliVertexOperator_eq_matrixOperator (coefficients : Fin 2 → �
 
 /-- Canonical complex-linear embedding of in-plane coefficients into the Pauli-operator subspace. -/
 noncomputable def inPlanePauliVertexCLM :
-    (Fin 2 → ℂ) →L[ℂ] (DiracHilbert →L[ℂ] DiracHilbert) := by
-  let linearMap : (Fin 2 → ℂ) →ₗ[ℂ] (DiracHilbert →L[ℂ] DiracHilbert) :=
-    { toFun := inPlanePauliVertexOperator
-      map_add' := by
-        intro left right
-        simp [inPlanePauliVertexOperator, add_smul]
-        module
-      map_smul' := by
-        intro scalar coefficients
-        simp [inPlanePauliVertexOperator, smul_smul]
-        }
-  exact ⟨linearMap, linearMap.continuous_of_finiteDimensional⟩
+    (Fin 2 → ℂ) →L[ℂ] (DiracHilbert →L[ℂ] DiracHilbert) :=
+  LinearMap.toContinuousLinearMap
+    ((LinearMap.proj 0 : (Fin 2 → ℂ) →ₗ[ℂ] ℂ).smulRight (matrixOperator sigmaX) +
+      (LinearMap.proj 1 : (Fin 2 → ℂ) →ₗ[ℂ] ℂ).smulRight (matrixOperator sigmaY))
 
 @[simp]
 theorem inPlanePauliVertexCLM_apply (coefficients : Fin 2 → ℂ) :
@@ -122,18 +114,15 @@ the represented bounded operator. -/
 theorem inPlanePauliVertexCLM_injective :
     Function.Injective inPlanePauliVertexCLM := by
   intro left right h
-  have hoperator :
-      inPlanePauliVertexOperator left = inPlanePauliVertexOperator right := by
-    simpa only [inPlanePauliVertexCLM_apply] using h
   have hmatrix :
       left 0 • sigmaX + left 1 • sigmaY =
         right 0 • sigmaX + right 1 • sigmaY := by
-    have hmatrix' := congrArg
-      (fun A : DiracHilbert →L[ℂ] DiracHilbert =>
-        (Matrix.toEuclideanCLM :
-          Matrix2 ≃⋆ₐ[ℂ] (DiracHilbert →L[ℂ] DiracHilbert)).symm A)
-      hoperator
-    simpa [inPlanePauliVertexOperator_eq_matrixOperator, matrixOperator] using hmatrix'
+    apply (Matrix.toEuclideanCLM :
+      Matrix2 ≃⋆ₐ[ℂ] (DiracHilbert →L[ℂ] DiracHilbert)).injective
+    change matrixOperator (left 0 • sigmaX + left 1 • sigmaY) =
+      matrixOperator (right 0 • sigmaX + right 1 • sigmaY)
+    simpa only [inPlanePauliVertexCLM_apply,
+      inPlanePauliVertexOperator_eq_matrixOperator] using h
   have hAxis : Function.Injective inPlanePauliAxis := by
     intro i j hij
     fin_cases i <;> fin_cases j <;> simp [inPlanePauliAxis] at hij ⊢
@@ -196,10 +185,8 @@ theorem velocity_isHermitian (direction : Fin 2) (v : ℝ) :
 /-- The charge-current matrix is Hermitian in either in-plane direction. -/
 theorem current_isHermitian (direction : Fin 2) (e v : ℝ) :
     (current direction e v).IsHermitian := by
-  unfold current velocity
-  exact
-    ((InternalSpace.pauliBasis_isHermitian (inPlanePauliAxis direction)).smul (by simp [isSelfAdjoint_iff])).smul
-      (by simp [isSelfAdjoint_iff])
+  unfold current
+  exact (velocity_isHermitian direction v).smul (by simp [isSelfAdjoint_iff])
 
 /-- Transporting the Hermitian Hamiltonian through `Matrix.toEuclideanCLM` gives a self-adjoint
 bounded operator. -/
