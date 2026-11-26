@@ -217,21 +217,14 @@ theorem ExternalInsertionWickDiagram.dysonFixedTimeAmplitude_eq_external_mul_pro
   classical
   intro A f
   let order := Fintype.equivFin d.vertexGraph.componentPartition.parts
-  have hsingle : externallySupportedComponentParts d.vertexGraph = {A} :=
-    (allExternalVerticesConnected_iff_supportedComponentParts_eq_singleton
-      d.vertexGraph anchor).mp hconnected
   calc
     _ = ∏ B : d.vertexGraph.componentPartition.parts, f B := by
       rw [d.dysonFixedTimeAmplitude_eq_componentExternalOrderSign_mul_prod_components
         ε β g externalTime σ order,
         componentExternalOrderSign_eq_one_of_allExternalVerticesConnected
           d anchor hconnected order, one_mul]
-    _ = (externallySupportedComponentParts d.vertexGraph).prod f *
-          (vacuumComponentParts d.vertexGraph).prod f := by
-      rw [← Finset.prod_union
-        (externallySupportedComponentParts_disjoint_vacuumComponentParts d.vertexGraph),
-        ← univ_componentParts_eq_supported_union_vacuum d.vertexGraph]
-    _ = _ := by rw [hsingle, Finset.prod_singleton]
+    _ = _ := prod_componentParts_eq_external_mul_prod_vacuum
+      d.vertexGraph anchor hconnected f
 
 end Fermionic
 end SecondQuantization

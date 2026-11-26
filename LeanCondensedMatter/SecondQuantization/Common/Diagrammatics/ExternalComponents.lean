@@ -540,6 +540,29 @@ theorem externallySupportedComponentParts_disjoint_vacuumComponentParts
   exact ((mem_vacuumComponentParts G B).1 hVacuum)
     ((mem_externallySupportedComponentParts G B).1 hSupported)
 
+/-- When all external vertices are connected, a product of arbitrary component
+weights splits into the weight of the component containing an external anchor
+and the product over the purely internal components. No diagram or statistics
+assumption is needed. -/
+theorem prod_componentParts_eq_external_mul_prod_vacuum
+    {M : Type*} [CommMonoid M]
+    (G : SimpleGraph (External ⊕ Internal)) (anchor : External)
+    (hconnected : AllExternalVerticesConnected G)
+    (f : G.componentPartition.parts → M) :
+    (∏ B : G.componentPartition.parts, f B) =
+      f ⟨G.componentBlock (Sum.inl anchor),
+        G.componentBlock_mem_componentPartition (Sum.inl anchor)⟩ *
+        (vacuumComponentParts G).prod f := by
+  classical
+  have hsingle := (allExternalVerticesConnected_iff_supportedComponentParts_eq_singleton
+    G anchor).mp hconnected
+  calc
+    _ = (externallySupportedComponentParts G).prod f *
+          (vacuumComponentParts G).prod f := by
+      rw [← Finset.prod_union (externallySupportedComponentParts_disjoint_vacuumComponentParts G),
+        ← univ_componentParts_eq_supported_union_vacuum G]
+    _ = _ := by rw [hsingle, Finset.prod_singleton]
+
 /-- A graph has no vacuum component exactly when its finite set of vacuum component parts is empty. -/
 theorem hasNoVacuumComponent_iff_vacuumComponentParts_eq_empty
     (G : SimpleGraph (External ⊕ Internal)) :

@@ -402,6 +402,7 @@ using a zero-consumer signal as grounds for changing its retention.
   coefficientwise bosonic ordered thermal amplitude factors over connected components.
 - `SecondQuantization.Common.QuarticDiagram.fixedOrderComponentPairEmbedding_crosses_iff` — The
   fixed-order component-pair embedding preserves and reflects crossings.
+- `SecondQuantization.Common.prod_componentParts_eq_external_mul_prod_vacuum` — For any finite external/internal graph with mutually connected external vertices, a commutative-monoid product over component weights splits into the anchor component and the vacuum components, independent of the diagram representation.
 - `SecondQuantization.Common.ExternalInsertionDiagram.componentMixedPosition_strictMono` —
   The general component-local mixed-position embedding preserves endpoint order, and hence
   normalized-pair crossing relations under the generic pairing embedding laws.
