@@ -390,8 +390,6 @@ The basis-independent algebraic field architecture is documented separately in
 ```text
 Mathlib.Algebra.Lie.OfAssociative (`⁅A,B⁆`)
         ↓
-Analysis.ConservationLaw.CurrentRepresentation
-        ↓
 Analysis.ConservationLaw.FluxBalanceLaw
         ↓
 QuantumTheory.ConservationLaw

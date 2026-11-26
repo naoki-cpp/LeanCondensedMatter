@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Analysis.Operator.SymmetrizedProduct
-import LeanCondensedMatter.Analysis.ConservationLaw.CurrentRepresentation
+import LeanCondensedMatter.Analysis.ConservationLaw.FluxBalanceLaw
 
 set_option linter.style.header false
 
