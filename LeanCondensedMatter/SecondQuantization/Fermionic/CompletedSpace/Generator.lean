@@ -43,7 +43,8 @@ theorem completedFockUnitary_completedExterior_hasDerivAt_zero
         completedFockUnitary_vacuum, AlgebraicFock.dGamma_algebraMap, map_zero, smul_zero]
       exact hasDerivAt_const 0 _
   | add x y hx hy =>
-      simpa only [map_add, smul_add] using hx.add hy
+      simp only [map_add, smul_add]
+      convert! hx.add hy using 1
   | ι_mul x v hx =>
       change HasDerivAt (fun t : ℝ => completedFockUnitary (e t)
         (completedExterior (ExteriorAlgebra.map j (AlgebraicFock.create V v x))))
