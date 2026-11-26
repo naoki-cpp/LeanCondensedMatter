@@ -1,5 +1,5 @@
 import LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.Free
-import LeanCondensedMatter.Analysis.Operator.ExponentialEigenvector
+import LeanCondensedMatter.Analysis.Operator.Exponential
 
 set_option linter.style.header false
 
