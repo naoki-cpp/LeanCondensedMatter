@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Analysis.Fourier.PolarRadialKernels.HigherHarmonics
+import LeanCondensedMatter.Analysis.Fourier.PolarRadialKernels.Bessel
 import LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.RadialHarmonics
 import Mathlib.Tactic.Ring
 
