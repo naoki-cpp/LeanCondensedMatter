@@ -137,7 +137,11 @@ theorem intervalIntegrable_finiteTimeRetardedIntegrand
   intro s hs
   have hs' : s ∈ Set.Icc (0 : ℝ) T := by
     simpa only [Set.uIcc_of_le hT] using hs
-  rw [retardedSusceptibility_eq_commutatorSusceptibility_of_le _ _ _ _ _ hs'.2]
+  change adiabaticFrequencyPhase ω η (T - s) *
+      retardedSusceptibility U system.hbar expectation A B T s =
+    adiabaticFrequencyPhase ω η (T - s) *
+      commutatorSusceptibility U system.hbar expectation A B T s
+  rw [retardedSusceptibility_eq_commutatorSusceptibility_of_le U system.hbar expectation A B hs'.2]
 
 namespace ResponseChannel
 
