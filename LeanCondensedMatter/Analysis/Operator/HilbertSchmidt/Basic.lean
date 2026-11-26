@@ -2,9 +2,13 @@ import Mathlib.Analysis.Normed.Ring.InfiniteSum
 import Mathlib.Analysis.MeanInequalities
 import Mathlib.Analysis.InnerProductSpace.l2Space
 import Mathlib.Analysis.InnerProductSpace.Adjoint
+import LeanCondensedMatter.Analysis.Operator.Compact
+import Mathlib.Analysis.Normed.Group.FunctionSeries
+
+set_option linter.style.header false
 
 /-!
-# Hilbert–Schmidt operators: membership, pairing, and norm
+# Hilbert–Schmidt operators: membership, pairing, norm, and compactness
 
 This module defines Hilbert–Schmidt bounded operators on a Hilbert space and proves that
 `Σᵢ ‖T dᵢ‖²`, when summable, has the same value for every Hilbert basis `d`. It also proves
@@ -393,6 +397,97 @@ theorem summable_inner_apply {S T : H →L[ℂ] H} (hS : IsHilbertSchmidt S)
     (hT : IsHilbertSchmidt T) {ι : Type*} (d : HilbertBasis ι ℂ H) :
     Summable (fun i => (inner ℂ (S (d i)) (T (d i)) : ℂ)) :=
   Summable.of_norm (hS.summable_norm_inner_apply_and_tsum_le hT d).1
+
+end IsHilbertSchmidt
+
+end ContinuousLinearMap
+
+/-!
+## Compactness of Hilbert--Schmidt operators
+
+Hilbert--Schmidt operators are compact. The proof approximates an operator in operator norm by
+finite sums of rank-one operators obtained from a Hilbert basis.
+-/
+
+noncomputable section
+
+open Filter Topology
+
+namespace ContinuousLinearMap
+
+variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
+
+namespace IsHilbertSchmidt
+
+private noncomputable def finiteRangeApprox {ι : Type*} (d : HilbertBasis ι ℂ H)
+    (T : H →L[ℂ] H) (s : Finset ι) : H →L[ℂ] H :=
+  ∑ i ∈ s, InnerProductSpace.rankOne ℂ (d i) ((ContinuousLinearMap.adjoint T) (d i))
+
+private theorem finiteRangeApprox_isCompact {ι : Type*} (d : HilbertBasis ι ℂ H)
+    (T : H →L[ℂ] H) (s : Finset ι) :
+    IsCompactOperator (finiteRangeApprox d T s) := by
+  change finiteRangeApprox d T s ∈ compactOperator (RingHom.id ℂ) H H
+  exact Submodule.sum_mem _ fun i _ =>
+    InnerProductSpace.isCompactOperator_rankOne (d i) ((ContinuousLinearMap.adjoint T) (d i))
+
+private theorem inner_finiteRangeApprox_apply {ι : Type*} [DecidableEq ι]
+    (d : HilbertBasis ι ℂ H) (T : H →L[ℂ] H) (s : Finset ι) (x : H) (j : ι) :
+    inner ℂ (d j) ((finiteRangeApprox d T s) x) =
+      if j ∈ s then inner ℂ (d j) (T x) else 0 := by
+  simp [finiteRangeApprox, InnerProductSpace.rankOne_apply, inner_sum, inner_smul_right,
+    orthonormal_iff_ite.mp d.orthonormal, ContinuousLinearMap.adjoint_inner_left]
+
+private theorem norm_sub_finiteRangeApprox_le {ι : Type*} (d : HilbertBasis ι ℂ H)
+    {T : H →L[ℂ] H} (hd : Summable (fun i => ‖(ContinuousLinearMap.adjoint T) (d i)‖ ^ 2))
+    (s : Finset ι) :
+    ‖T - finiteRangeApprox d T s‖ ≤
+      Real.sqrt (∑' i : {j // j ∉ s}, ‖(ContinuousLinearMap.adjoint T) (d i)‖ ^ 2) := by
+  classical
+  let tail : ℝ := ∑' i : {j // j ∉ s}, ‖(ContinuousLinearMap.adjoint T) (d i)‖ ^ 2
+  have htail_nonneg : 0 ≤ tail := tsum_nonneg fun _ => sq_nonneg _
+  refine (T - finiteRangeApprox d T s).opNorm_le_bound (Real.sqrt_nonneg tail) fun x => ?_
+  rw [← sq_le_sq₀ (norm_nonneg _) (mul_nonneg (Real.sqrt_nonneg tail) (norm_nonneg x)),
+    mul_pow, Real.sq_sqrt htail_nonneg]
+  have hparse :
+      HasSum
+        (fun i : ι => ‖(inner ℂ (d i) ((T - finiteRangeApprox d T s) x) : ℂ)‖ ^ 2)
+        (‖(T - finiteRangeApprox d T s) x‖ ^ 2) := by
+    simpa only [show (2 : ENNReal).toReal = (2 : ℝ) by norm_num, Real.rpow_two,
+      d.repr_apply_apply, d.repr.norm_map] using
+      (lp.hasSum_norm (p := 2) (by norm_num) (d.repr ((T - finiteRangeApprox d T s) x)))
+  have hzero :
+      ∑ i ∈ s, ‖(inner ℂ (d i) ((T - finiteRangeApprox d T s) x) : ℂ)‖ ^ 2 = 0 := by
+    apply Finset.sum_eq_zero
+    intro i hi
+    simp [sub_apply, inner_sub_right, inner_finiteRangeApprox_apply, hi]
+  have htail := s.hasSum_iff_compl.mp hparse
+  rw [hzero, sub_zero] at htail
+  exact hasSum_le (fun i => by
+    rw [sub_apply, inner_sub_right, inner_finiteRangeApprox_apply, ite_eq_right i.2, sub_zero,
+      ← ContinuousLinearMap.adjoint_inner_left T x (d i), Function.comp_apply, ← mul_pow]
+    exact pow_le_pow_left₀ (norm_nonneg _)
+      (norm_inner_le_norm ((ContinuousLinearMap.adjoint T) (d i)) x) 2)
+    htail ((hd.subtype {j | j ∉ s}).hasSum.mul_right (‖x‖ ^ 2))
+
+/-- Every Hilbert--Schmidt operator is compact. -/
+theorem isCompact {T : H →L[ℂ] H} (hT : IsHilbertSchmidt T) :
+    IsCompactOperator T := by
+  classical
+  obtain ⟨ι, d, hd⟩ := isHilbertSchmidt_adjoint hT
+  let tail : Finset ι → ℝ := fun s =>
+    ∑' i : {j // j ∉ s}, ‖(ContinuousLinearMap.adjoint T) (d i)‖ ^ 2
+  have htail : Tendsto tail atTop (𝓝 0) := by
+    simpa [tail] using
+      (tendsto_tsum_compl_atTop_zero
+        (fun i : ι => ‖(ContinuousLinearMap.adjoint T) (d i)‖ ^ 2))
+  have hsqrt : Tendsto (fun s => Real.sqrt (tail s)) atTop (𝓝 0) := by
+    simpa using htail.sqrt
+  have happ : Tendsto (finiteRangeApprox d T) atTop (𝓝 T) := by
+    apply tendsto_iff_norm_sub_tendsto_zero.2
+    refine squeeze_zero (fun s => norm_nonneg _) (fun s => ?_) hsqrt
+    simpa [norm_sub_rev, tail] using norm_sub_finiteRangeApprox_le d hd s
+  exact isCompactOperator_of_tendsto happ
+    (Filter.Eventually.of_forall (finiteRangeApprox_isCompact d T))
 
 end IsHilbertSchmidt
 

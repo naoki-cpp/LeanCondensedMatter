@@ -1,8 +1,7 @@
 import LeanCondensedMatter.Analysis.Dyson.Basic
 import LeanCondensedMatter.Analysis.Dyson.Bounds
 import LeanCondensedMatter.Analysis.Dyson.Volterra
-import LeanCondensedMatter.Analysis.Dyson.Unitary
-import LeanCondensedMatter.Analysis.Dyson.Constant
+import LeanCondensedMatter.Analysis.Dyson.EvolutionProperties
 
 set_option linter.style.header false
 
