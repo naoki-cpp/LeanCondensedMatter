@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Combinatorics.PerfectPairing.VertexGraph
+import LeanCondensedMatter.Combinatorics.FiniteIndex.Block
 import Mathlib.Data.Finset.Sort
 
 set_option linter.style.header false
@@ -74,6 +75,20 @@ theorem externalInsertionInteractionLeg_val {E : ℕ} {S : Finset (Fin N)}
     externalInsertionInteractionLegEquiv, finProdFinEquiv]
   omega
 
+/-- The fixed interaction leg order is lexicographic in vertex and local leg. -/
+theorem externalInsertionInteractionLeg_lt_iff {S : Finset (Fin N)}
+    (v w : ↥S) (l k : Fin 4) :
+    externalInsertionInteractionLeg (E := E) v l <
+      externalInsertionInteractionLeg (E := E) w k ↔
+      v < w ∨ (v = w ∧ l < k) := by
+  have heq : (S.orderIsoOfFin rfl).symm v = (S.orderIsoOfFin rfl).symm w ↔ v = w :=
+    ⟨fun h => (S.orderIsoOfFin rfl).symm.injective h,
+      fun h => congrArg (fun x => (S.orderIsoOfFin rfl).symm x) h⟩
+  change (externalInsertionInteractionLeg (E := E) v l).val <
+    (externalInsertionInteractionLeg (E := E) w k).val ↔ _
+  simp only [externalInsertionInteractionLeg_val, Nat.add_assoc, Nat.add_lt_add_iff_left,
+    FiniteIndex.local_add_block_mul_lt_iff, (S.orderIsoOfFin rfl).symm.lt_iff_lt, heq]
+
 /-- Including interaction vertices into a larger sector preserves the order of their
 flattened quartic legs, independently of the number of external insertions. -/
 theorem externalInsertionInteractionLeg_lt_of_subset
@@ -85,33 +100,11 @@ theorem externalInsertionInteractionLeg_lt_of_subset
         (⟨v.1, hTS v.2⟩ : ↥S) l <
       externalInsertionInteractionLeg (E := E')
         (⟨w.1, hTS w.2⟩ : ↥S) k := by
-  simp only [Fin.lt_def, externalInsertionInteractionLeg_val] at h ⊢
-  by_cases hvw : v = w
+  rw [externalInsertionInteractionLeg_lt_iff] at h ⊢
+  rcases h with h | ⟨h, hlocal⟩
+  · exact Or.inl h
   · subst w
-    have hl := l.isLt
-    have hk := k.isLt
-    omega
-  · have hrank_ne :
-        ((T.orderIsoOfFin rfl).symm v).val ≠
-          ((T.orderIsoOfFin rfl).symm w).val :=
-      fun heq => hvw ((T.orderIsoOfFin rfl).symm.injective (Fin.ext heq))
-    have hrank :
-        ((T.orderIsoOfFin rfl).symm v).val <
-          ((T.orderIsoOfFin rfl).symm w).val := by
-      have hl := l.isLt
-      have hk := k.isLt
-      omega
-    have hamb :
-        ((S.orderIsoOfFin rfl).symm
-          (⟨v.1, hTS v.2⟩ : ↥S)).val <
-        ((S.orderIsoOfFin rfl).symm
-          (⟨w.1, hTS w.2⟩ : ↥S)).val := by
-      apply (S.orderIsoOfFin rfl).symm.strictMono
-      change v.1 < w.1
-      simpa using (T.orderIsoOfFin rfl).strictMono (Fin.lt_def.mpr hrank)
-    have hl := l.isLt
-    have hk := k.isLt
-    omega
+    exact Or.inr ⟨rfl, hlocal⟩
 
 /-- A flattened-leg map preserving increasing external slots and including interaction
 vertices into the ambient support preserves the entire canonical leg order. -/
