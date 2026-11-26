@@ -795,19 +795,6 @@ theorem vacuumFreeExternalInsertionDysonSeries_eq_connected_two
     vacuumFreeExternalInsertionDysonCoefficient_eq_connected_two
       ε β g labels times n)
 
-/-- The physical vacuum-free and connected Dyson series agree for any
-external pair count *proved equal* to one; this dependent form avoids
-casts in the source-subset moment theorem. -/
-theorem vacuumFreeExternalInsertionDysonSeries_eq_connected_of_single_pair
-    {K : ℕ} (hK : K = 1)
-    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
-    (labels : Fin (2 * K) → ExternalFieldLabel Mode)
-    (times : Fin (2 * K) → ℝ) :
-    vacuumFreeExternalInsertionDysonSeries ε β g labels times =
-      connectedExternalInsertionDysonSeries ε β g labels times := by
-  subst K
-  exact vacuumFreeExternalInsertionDysonSeries_eq_connected_two ε β g labels times
-
 open Classical in
 /-- The physical vacuum-free Dyson series is the finite Koszul-signed
 external-partition sum of products of connected Dyson series in
@@ -1686,8 +1673,12 @@ theorem externalSubsetMomentSeries_eq_signedConnected_two
     _ = externalSubsetConnectedDiagramSeries (E := 1) ε β g labels times S := by
       simp only [externalSubsetMomentSeries, externalSubsetConnectedDiagramSeries,
         hEmpty, hEven, dite_eq_left]
-      exact vacuumFreeExternalInsertionDysonSeries_eq_connected_of_single_pair
-        (show S.card / 2 = 1 by omega) ε β g
+      have hK : S.card / 2 = 1 := by omega
+      exact (Eq.rec (motive := fun K _ =>
+        ∀ (ls : Fin (2 * K) → ExternalFieldLabel Mode) (ts : Fin (2 * K) → ℝ),
+          vacuumFreeExternalInsertionDysonSeries ε β g ls ts =
+            connectedExternalInsertionDysonSeries ε β g ls ts)
+        (vacuumFreeExternalInsertionDysonSeries_eq_connected_two ε β g) hK.symm)
         (evenExternalSubsetLabels (E := 1) labels S hEven)
         (evenExternalSubsetTimes (E := 1) times S hEven)
     _ = _ :=
