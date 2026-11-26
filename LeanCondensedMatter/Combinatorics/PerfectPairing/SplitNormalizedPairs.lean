@@ -24,8 +24,8 @@ private noncomputable def PairingOn.splitPairEndpointEquiv (P : PairingOn α) (Q
   (Equiv.sumProdDistrib P.NormalizedPair Q.NormalizedPair (Fin 2)).trans
     (Equiv.sumCongr P.pairEndpointEquiv Q.pairEndpointEquiv)
 
-/-- Partner compatibility of the transported endpoints for a binary pairing split. -/
 omit [Fintype γ] [LinearOrder γ] in
+/-- Partner compatibility of the transported endpoints for a binary pairing split. -/
 private theorem PairingOn.ofSplit_pairEndpointEquiv_partner
     (e : α ⊕ β ≃ γ) (P : PairingOn α) (Q : PairingOn β)
     (pr : P.NormalizedPair ⊕ Q.NormalizedPair) :
