@@ -83,6 +83,15 @@ noncomputable def ExternalInsertionDiagram.ofSlotSplit
   pairing := Pairing.ofSplit (externalInsertionSlotLegSplitting (E := E) h)
     ext.pairing vac.pairing
 
+/-- Reassembly retains the external labels of the external-bearing piece. -/
+@[simp]
+theorem ExternalInsertionDiagram.ofSlotSplit_externalLabel
+    {S T : Finset (Fin N)} (h : T ⊆ S)
+    (ext : ExternalInsertionDiagram ExternalLabel InternalLabel E N T)
+    (vac : QuarticDiagram InternalLabel N (S \ T)) (e : Fin (2 * E)) :
+    (ExternalInsertionDiagram.ofSlotSplit h ext vac).externalLabel e =
+      ext.externalLabel e := rfl
+
 @[simp]
 theorem ExternalInsertionDiagram.ofSlotSplit_pairing
     {S T : Finset (Fin N)} (h : T ⊆ S)

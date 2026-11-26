@@ -30,6 +30,30 @@ noncomputable def ExternalInsertionDiagram.externalBearingDiagram
   d.slotSplitExternal d.externallySupportedInteractionPart_subset
     d.pairing_isSplit_externallySupportedInteractionPart
 
+/-- The canonical external-bearing restriction retains all external labels. -/
+@[simp]
+theorem ExternalInsertionDiagram.externalBearingDiagram_externalLabel
+    {S : Finset (Fin N)}
+    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
+    (e : Fin (2 * E)) :
+    d.externalBearingDiagram.externalLabel e = d.externalLabel e := rfl
+
+/-- Embedding the external-bearing pairing into the original leg coordinates
+intertwines its partner map with the ambient pairing partner. -/
+theorem ExternalInsertionDiagram.externalBearingDiagram_partner
+    {S : Finset (Fin N)}
+    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
+    (i : Fin (2 * (2 * d.externallySupportedInteractionPart.card + E))) :
+    d.pairing.partner
+        (externalInsertionSlotLegSplitting (E := E)
+          d.externallySupportedInteractionPart_subset (Sum.inl i)) =
+      externalInsertionSlotLegSplitting (E := E)
+        d.externallySupportedInteractionPart_subset
+        (Sum.inl (d.externalBearingDiagram.pairing.partner i)) :=
+  Combinatorics.Pairing.partner_splitLeft
+    (externalInsertionSlotLegSplitting (E := E) d.externallySupportedInteractionPart_subset)
+    d.pairing_isSplit_externallySupportedInteractionPart i
+
 /-- The ordinary quartic diagram formed by the vacuum components of an external-insertion
 diagram. -/
 noncomputable def ExternalInsertionDiagram.vacuumDiagram

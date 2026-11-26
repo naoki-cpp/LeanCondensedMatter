@@ -21,10 +21,24 @@ variable {ExternalLabel InternalLabel : Type*} {E N : ℕ}
   {S T : Finset (Fin N)}
 
 /-- The external-bearing and vacuum vertex sectors partition the ambient vertices. -/
-private noncomputable def supportSlotVertexEquiv (h : T ⊆ S) :
+noncomputable def supportSlotVertexEquiv (h : T ⊆ S) :
     (ExternalInsertionVertex E T ⊕ ↥(S \ T)) ≃ ExternalInsertionVertex E S :=
   (Equiv.sumAssoc (Fin (2 * E)) ↥T ↥(S \ T)).trans
     (Equiv.sumCongr (Equiv.refl (Fin (2 * E))) (subsetSumSdiffEquiv h))
+
+/-- The external-bearing vertex inclusion leaves external vertices unchanged and
+includes retained interaction vertices in the ambient slot set. -/
+@[simp]
+theorem supportSlotVertexEquiv_inl (h : T ⊆ S) (x : ExternalInsertionVertex E T) :
+    supportSlotVertexEquiv h (Sum.inl x) =
+      (match x with
+      | Sum.inl e => Sum.inl e
+      | Sum.inr v => Sum.inr ⟨v.1, h v.2⟩) := by
+  cases x with
+  | inl e => rfl
+  | inr v =>
+      change (Sum.inr (subsetSumSdiffEquiv h (Sum.inl v)) : ExternalInsertionVertex E S) = _
+      rw [subsetSumSdiffEquiv_inl_apply]
 
 /-- Left legs retain the corresponding vertices under the splitting. -/
 private theorem supportSlotVertex_of_left_leg (h : T ⊆ S)
@@ -65,7 +79,7 @@ variable (h : T ⊆ S)
 
 /-- A split external-insertion diagram has the disjoint sum of its external-bearing
 and vacuum vertex graphs. -/
-private noncomputable def supportSlotVertexGraphIso :
+noncomputable def supportSlotVertexGraphIso :
     (ext.vertexGraph ⊕g vac.vertexGraph) ≃g
       (ExternalInsertionDiagram.ofSlotSplit h ext vac).vertexGraph :=
   Pairing.vertexGraphOfSplitIso (externalInsertionSlotLegSplitting (E := E) h)
