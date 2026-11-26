@@ -241,21 +241,12 @@ theorem ExternalInsertionDiagram.pairingInMixedOrder_partner_componentMixedPosit
           localExternalTime localInteractionTime
           (((d.componentOrderedDiagram B).pairingInMixedOrder
             localExternalTime localInteractionTime).partner p) := by
-    have hPartner :=
-      (d.componentOrderedDiagram B).pairingInMixedOrder_partner_legPosition
-        localExternalTime localInteractionTime localLeg
-    have hPosition :
-        externalInsertionMixedTimeOrderedAtomicLegPosition
-            localExternalTime localInteractionTime localLeg = p := by
-      dsimp [localLeg, externalInsertionMixedTimeOrderedAtomicLegPosition]
-      exact
-        (externalInsertionMixedTimeOrderedAtomicLegEquiv
-          localExternalTime localInteractionTime).symm_apply_apply p
-    rw [hPosition] at hPartner
-    have h := congrArg
-      (externalInsertionMixedTimeOrderedAtomicLegEquiv
-        localExternalTime localInteractionTime) hPartner.symm
-    simpa [localLeg] using h
+    apply (externalInsertionMixedTimeOrderedAtomicLegEquiv
+      localExternalTime localInteractionTime).symm.injective
+    simpa only [externalInsertionMixedTimeOrderedAtomicLegPosition,
+      localLeg, Equiv.symm_apply_apply] using
+      ((d.componentOrderedDiagram B).pairingInMixedOrder_partner_legPosition
+        localExternalTime localInteractionTime localLeg).symm
   unfold ExternalInsertionDiagram.componentMixedPosition
   rw [d.pairingInMixedOrder_partner_legPosition,
     d.atomicLegPartner_componentOrderedLeg B localLeg,
@@ -328,13 +319,9 @@ theorem ExternalInsertionDiagram.componentMixedPositionEquiv_apply
     (Finset.univ : Finset (Fin T.card))
   have hpos : externalInsertionMixedTimeAmbientPositionEquiv
       localExternalTime localInteractionTime p = e.symm localLeg := by
-    apply e.injective
-    calc
-      e (externalInsertionMixedTimeAmbientPositionEquiv
-          localExternalTime localInteractionTime p) = localLeg :=
-        externalInsertionLegEquiv_mixedTimeAmbientPositionEquiv
-          localExternalTime localInteractionTime p
-      _ = e (e.symm localLeg) := (e.apply_symm_apply localLeg).symm
+    exact (e.symm_apply_eq.mpr
+      (externalInsertionLegEquiv_mixedTimeAmbientPositionEquiv
+        localExternalTime localInteractionTime p).symm).symm
   have hlocal :
       d.componentMixedToFixedPositionEquiv externalTime σ B p =
         (finCongr (by simp [T])) (e.symm localLeg) := by
