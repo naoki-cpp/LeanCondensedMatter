@@ -1,7 +1,7 @@
 import LeanCondensedMatter.Analysis.Algebra.FiniteAverage
+import LeanCondensedMatter.Analysis.Operator.FiniteTrace
 import LeanCondensedMatter.Transport.Disorder.TraceNormBound
 import Mathlib.Tactic.Abel
-import Mathlib.Tactic.Ring
 
 set_option linter.style.header false
 
@@ -102,17 +102,10 @@ theorem norm_averagedTwoGreenTrace_sub_dressed_le_residuals
       a + b + c by
         dsimp only [c]
         abel]
-  calc
-    ‖trace (measuredVertex * (a + b + c))‖ ≤
-        (Module.finrank ℂ H : ℝ) * ‖measuredVertex * (a + b + c)‖ :=
-      ContinuousLinearMap.norm_finiteDimensionalOperatorTrace_le_finrank_mul _
-    _ ≤ (Module.finrank ℂ H : ℝ) *
-        (‖measuredVertex‖ * ‖a + b + c‖) :=
-      mul_le_mul_of_nonneg_left (norm_mul_le _ _) (Nat.cast_nonneg _)
-    _ = ((Module.finrank ℂ H : ℝ) * ‖measuredVertex‖) * ‖a + b + c‖ := by
-      ring
-    _ ≤ _ := mul_le_mul_of_nonneg_left hsum
-      (mul_nonneg (Nat.cast_nonneg _) (norm_nonneg _))
+  exact (ContinuousLinearMap.norm_finiteDimensionalOperatorTrace_mul_le
+    measuredVertex (a + b + c)).trans
+      (mul_le_mul_of_nonneg_left hsum
+        (mul_nonneg (Nat.cast_nonneg _) (norm_nonneg _)))
 
 end FiniteDisorderEnsemble
 

@@ -105,6 +105,18 @@ theorem norm_finiteDimensionalOperatorTrace_le_finrank_mul
         _ = ‖operator‖ := by rw [hb, mul_one]
     _ = (Module.finrank ℂ H : ℝ) * ‖operator‖ := by simp
 
+/-- Dimension-explicit trace bound for a product of two bounded operators. -/
+theorem norm_finiteDimensionalOperatorTrace_mul_le
+    (left right : H →L[ℂ] H) :
+    ‖finiteDimensionalOperatorTrace (left * right)‖ ≤
+      ((Module.finrank ℂ H : ℝ) * ‖left‖) * ‖right‖ := by
+  calc
+    _ ≤ (Module.finrank ℂ H : ℝ) * ‖left * right‖ :=
+      norm_finiteDimensionalOperatorTrace_le_finrank_mul _
+    _ ≤ (Module.finrank ℂ H : ℝ) * (‖left‖ * ‖right‖) :=
+      mul_le_mul_of_nonneg_left (norm_mul_le _ _) (Nat.cast_nonneg _)
+    _ = _ := (mul_assoc _ _ _).symm
+
 /-- Ordinary finite-dimensional trace is invariant under unitary conjugation.
 Use the transported orthonormal basis rather than a separate matrix realization. -/
 theorem finiteDimensionalOperatorTrace_conjStarAlgEquiv

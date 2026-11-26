@@ -39,13 +39,8 @@ theorem DensityOperator.summable_expectation_term (ρ : DensityOperator H) (A : 
 private theorem trace_comp_right_norm_le
     (ρ : DensityOperator H) (A : H →L[ℂ] H) :
     ‖(ρ.isTraceClass.comp_right A).trace‖ ≤ ‖A‖ := by
-  calc
-    ‖(ρ.isTraceClass.comp_right A).trace‖ ≤
-        (ρ.isTraceClass.comp_right A).traceNorm :=
-      (ρ.isTraceClass.comp_right A).norm_trace_le_traceNorm
-    _ ≤ ‖A‖ * ρ.isTraceClass.traceNorm :=
-      ρ.isTraceClass.traceNorm_comp_right_le A
-    _ = ‖A‖ := by rw [ρ.traceNorm_eq_one, mul_one]
+  simpa only [ρ.traceNorm_eq_one, mul_one] using
+    ρ.isTraceClass.norm_trace_comp_right_le A
 
 /-- The normalized complex expectation functional associated with a density operator.
 Its canonical value on `A` is the general trace-class trace `Tr(ρA)`. -/

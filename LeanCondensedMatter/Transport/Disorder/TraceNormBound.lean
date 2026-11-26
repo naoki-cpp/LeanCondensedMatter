@@ -64,18 +64,10 @@ theorem norm_averagedTwoGreenTrace_sub_meanProduct_le_uniformPotential_sq
   simp only [add_sub_cancel_left]
   change ‖trace (measuredVertex * conn)‖ ≤
     ((Module.finrank ℂ H : ℝ) * ‖measuredVertex‖) * limit
-  calc
-    ‖trace (measuredVertex * conn)‖ ≤
-        (Module.finrank ℂ H : ℝ) * ‖measuredVertex * conn‖ :=
-      ContinuousLinearMap.norm_finiteDimensionalOperatorTrace_le_finrank_mul _
-    _ ≤ (Module.finrank ℂ H : ℝ) * (‖measuredVertex‖ * ‖conn‖) :=
-      mul_le_mul_of_nonneg_left (norm_mul_le _ _) (Nat.cast_nonneg _)
-    _ ≤ (Module.finrank ℂ H : ℝ) * (‖measuredVertex‖ * limit) :=
-      mul_le_mul_of_nonneg_left
-        (mul_le_mul_of_nonneg_left hconn (norm_nonneg measuredVertex))
-        (Nat.cast_nonneg _)
-    _ = ((Module.finrank ℂ H : ℝ) * ‖measuredVertex‖) * limit := by
-      ring
+  exact (ContinuousLinearMap.norm_finiteDimensionalOperatorTrace_mul_le
+    measuredVertex conn).trans
+      (mul_le_mul_of_nonneg_left hconn
+        (mul_nonneg (Nat.cast_nonneg _) (norm_nonneg _)))
 
 end FiniteDisorderEnsemble
 
