@@ -38,7 +38,7 @@ using a zero-consumer signal as grounds for changing its retention.
 - `QuantumTheory.LinearResponse.fluxRetardedResponse_eq_symmetrized_of_commutes` — physical commuting-localizer limit of the corrected-current response.
 - `QuantumTheory.LinearResponse.fluxRetardedResponse_eq_symmetrized_smul_one` — scalar transported quantity has no localization-correction contribution to the retarded response.
 
-- `SecondQuantization.Fermionic.Field.dGamma_lie_manyBodyLocalizedQuantity` — physical many-body transport/source decomposition for a localized one-body quantity under the fermionic `dΓ` lift; uses preservation of the Lie bracket and linearity, not multiplicativity.
+- `LinearMap.lie_map_symmetrizedProduct` — general Lie-homomorphism transport/source decomposition; specializing to `AlgebraicFock.dGammaLieHom` and the localizer evaluation `M f` recovers the former fermionic many-body balance theorem without any multiplicativity assumption.
 
 - `Combinatorics.BinaryShuffle.leftSlot_consRight` — canonical `@[simp]` recursion for left-slot coordinates when a right slot is prepended; it completes the public constructor computation rules of `BinaryShuffle`.
 - `Combinatorics.BinaryShuffle.rightSlot_consRight_zero` — canonical `@[simp]` evaluation of the new right-slot head at ambient position zero in `consRight`.
