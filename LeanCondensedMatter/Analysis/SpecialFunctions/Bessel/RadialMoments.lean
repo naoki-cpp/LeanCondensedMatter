@@ -1,22 +1,22 @@
 import LeanCondensedMatter.Analysis.ODE.RadialEnergyDecay
 import LeanCondensedMatter.Analysis.Fourier.PolarRadialKernels.HigherHarmonics
 import Mathlib.Analysis.Calculus.Deriv.MeanValue
+import LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.AnalyticWronskian
 
 set_option linter.style.header false
 
 /-!
 # Radial Bessel moments and Fourier–Bessel decay
 
-This mathematical module proves radial-moment identities using the angular
-Fourier–Bessel kernels in Analysis: finite-interval Bessel-square integrals, the
-radial first-order system, an elementary Lyapunov decay bound, and the
-large-radius limit of the J₁²/r moment.
+Finite-interval Bessel-square integrals, radial first-order systems, and the
+large-radius decay of the squared J₀/J₁ energy yield the J₁²/r radial moment.
+The normalized real-axis Wronskian then reduces the Wronskian-weighted radial
+moment to the same integral, with cutoff limit 1/π.
 
-The upstream `Analysis.Fourier.PolarRadialKernels.HigherHarmonics` module owns the canonical angular
-kernels and their differential/recurrence identities. This module does not alter
-any physical momentum normalization, propagator, disorder approximation,
-or regulator prescription. Its final theorem is a limit of finite interval
-integrals, not an assertion about a regulated crossed diagram.
+The angular Fourier kernels and their differential identities come from
+`Analysis.Fourier.PolarRadialKernels.HigherHarmonics`; the Wronskian condition
+comes from the analytic Bessel theory. All limits here concern finite interval
+integrals, independently of physical momentum normalization or regulators.
 -/
 
 namespace BesselRadialMoments
@@ -283,6 +283,91 @@ theorem tendsto_integral_besselJ_one_sq_div :
   · funext R
     exact hpoint R
   · norm_num
+
+end
+
+end BesselRadialMoments
+
+/-! ## Wronskian-weighted radial moments -/
+
+namespace BesselRadialMoments
+
+open BesselSecondKind
+
+noncomputable section
+
+open MeasureTheory
+open scoped Interval
+
+/-- The finite-radius Gaussian Wronskian-weighted Bessel integral is an explicit
+endpoint expression, under only the standard Wronskian condition.
+The Y functions never need values or continuity at r=0. -/
+theorem integral_wronskianBesselIntegrand_eq_endpoints
+    (Y0 Y1 : ℝ → ℂ) (hW : RealWronskianCondition Y0 Y1)
+    (R : ℝ) :
+    (∫ r in (0 : ℝ)..R,
+        Complex.besselJ 1 (r : ℂ) ^ 2 *
+          (Complex.besselJ 1 (r : ℂ) * Y0 r -
+            Complex.besselJ 0 (r : ℂ) * Y1 r)) =
+      (((2 / Real.pi : ℝ) : ℂ)) *
+        ((1 - (Complex.besselJ 0 (R : ℂ) ^ 2 +
+            Complex.besselJ 1 (R : ℂ) ^ 2)) / 2) := by
+  calc
+    _ = (∫ r in (0 : ℝ)..R,
+          (((2 / Real.pi : ℝ) : ℂ)) *
+            (Complex.besselJ 1 (r : ℂ) ^ 2 / (r : ℂ))) := by
+        apply intervalIntegral.integral_congr
+        intro r _
+        change Complex.besselJ 1 (r : ℂ) ^ 2 *
+            (Complex.besselJ 1 (r : ℂ) * Y0 r -
+              Complex.besselJ 0 (r : ℂ) * Y1 r) =
+          (((2 / Real.pi : ℝ) : ℂ)) *
+            (Complex.besselJ 1 (r : ℂ) ^ 2 / (r : ℂ))
+        by_cases hr : r = 0
+        · subst r
+          simp [Complex.besselJ_zero]
+        · rw [hW r hr]
+          ring
+    _ = (((2 / Real.pi : ℝ) : ℂ)) *
+          (∫ r in (0 : ℝ)..R,
+            Complex.besselJ 1 (r : ℂ) ^ 2 / (r : ℂ)) := by
+        rw [intervalIntegral.integral_const_mul]
+    _ = _ := by
+        rw [integral_besselJ_one_sq_div]
+        simp [Complex.besselJ_zero]
+
+/-- The Wronskian-weighted Bessel radial integral has universal cutoff
+limit `1/π` for any pair of functions satisfying the normalized real-axis
+Wronskian. This proves a special-function identity, not a physical
+disorder or crossed-diagram limit. -/
+theorem tendsto_integral_wronskianBesselIntegrand_one_div_pi
+    (Y0 Y1 : ℝ → ℂ) (hW : RealWronskianCondition Y0 Y1) :
+    Filter.Tendsto
+      (fun R : ℝ => ∫ r in (0 : ℝ)..R,
+        Complex.besselJ 1 (r : ℂ) ^ 2 *
+          (Complex.besselJ 1 (r : ℂ) * Y0 r -
+            Complex.besselJ 0 (r : ℂ) * Y1 r))
+      Filter.atTop (nhds (((1 / Real.pi : ℝ) : ℂ))) := by
+  have hlimit := (tendsto_integral_besselJ_one_sq_div).const_mul
+    (((2 / Real.pi : ℝ) : ℂ))
+  have hpoint (R : ℝ) :
+      (((2 / Real.pi : ℝ) : ℂ)) *
+          (∫ r in (0 : ℝ)..R,
+            Complex.besselJ 1 (r : ℂ) ^ 2 / (r : ℂ)) =
+        ∫ r in (0 : ℝ)..R,
+          Complex.besselJ 1 (r : ℂ) ^ 2 *
+            (Complex.besselJ 1 (r : ℂ) * Y0 r -
+              Complex.besselJ 0 (r : ℂ) * Y1 r) := by
+    rw [integral_besselJ_one_sq_div]
+    simpa [Complex.besselJ_zero] using
+      (integral_wronskianBesselIntegrand_eq_endpoints Y0 Y1 hW R).symm
+  have hscale : (((2 / Real.pi : ℝ) : ℂ)) * (1 / 2 : ℂ) =
+      ((1 / Real.pi : ℝ) : ℂ) := by
+    push_cast
+    ring
+  simpa only [hscale] using
+    hlimit.congr' (Filter.Eventually.of_forall hpoint)
+
 
 end
 
