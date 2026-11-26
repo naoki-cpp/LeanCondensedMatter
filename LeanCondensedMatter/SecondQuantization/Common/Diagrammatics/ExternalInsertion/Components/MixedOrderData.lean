@@ -267,7 +267,10 @@ private noncomputable def ExternalInsertionDiagram.componentMixedToFixedPosition
   (externalInsertionMixedTimeAmbientPositionEquiv
       (d.componentExternalTime externalTime B)
       (d.componentInteractionTime σ B)).trans
-    (finCongr (by simp))
+    (externalInsertionLegCongr (E := d.externalPairCount B)
+      (Combinatorics.standardSlotEquiv
+        (interactionSector
+          (B : Finset (ExternalInsertionVertex E (Finset.univ : Finset (Fin n))))))).symm
 
 /-- The dependent sum of all component-local mixed positions is equivalent to the ambient
 mixed-position enumeration. This is obtained only by transporting the existing fixed component
@@ -322,16 +325,12 @@ theorem ExternalInsertionDiagram.componentMixedPositionEquiv_apply
     exact (e.symm_apply_eq.mpr
       (externalInsertionLegEquiv_mixedTimeAmbientPositionEquiv
         localExternalTime localInteractionTime p).symm).symm
-  have hlocal :
-      d.componentMixedToFixedPositionEquiv externalTime σ B p =
-        (finCongr (by simp [T])) (e.symm localLeg) := by
-    unfold ExternalInsertionDiagram.componentMixedToFixedPositionEquiv
-    apply Fin.ext
-    change (externalInsertionMixedTimeAmbientPositionEquiv
-      localExternalTime localInteractionTime p).val = (e.symm localLeg).val
-    exact congrArg Fin.val hpos
-  rw [hlocal]
-  rw [externalInsertionLegCongr_standardize] at hfixed
+  change d.componentDiagramLeg B
+    ((externalInsertionLegCongr (E := d.externalPairCount B)
+      (Combinatorics.standardSlotEquiv T)).symm
+      (externalInsertionMixedTimeAmbientPositionEquiv
+        localExternalTime localInteractionTime p)) = _
+  rw [hpos]
   refine hfixed.symm.trans ?_
   unfold ExternalInsertionDiagram.componentMixedPosition
   exact (externalInsertionMixedTimeAmbientPositionEquiv_legPosition
