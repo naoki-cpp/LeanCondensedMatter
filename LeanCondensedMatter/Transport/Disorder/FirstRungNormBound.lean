@@ -194,7 +194,8 @@ theorem norm_connectedTwoGreen_sub_firstBornRung_le_cubic
     exact (map_sub ensemble.average _ _).symm.trans
       (congrArg ensemble.average (by funext ω; rfl))
   rw [hsub]
-  exact ensemble.norm_average_le_of_forall _ _ hpoint
+  exact LinearMap.norm_finiteWeightedAverage_le_of_forall ensemble.probability
+    ensemble.probability_nonneg ensemble.probability_sum _ _ hpoint
 
 end FiniteDisorderEnsemble
 

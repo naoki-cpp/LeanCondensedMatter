@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Analysis.Algebra.FiniteAverage
 import LeanCondensedMatter.Transport.Disorder.TraceNormBound
 import Mathlib.Tactic.Abel
 import Mathlib.Tactic.Ring
@@ -67,7 +68,8 @@ theorem norm_averagedTwoGreenTrace_sub_dressed_le_residuals
   have hmeanR : ‖meanR‖ ≤ |regulatorRight|⁻¹ := by
     change ‖ensemble.average (fun ω =>
       ensemble.configurationGreenOfRegulator energyRight regulatorRight ω)‖ ≤ _
-    apply ensemble.norm_average_le_of_forall _ _
+    apply LinearMap.norm_finiteWeightedAverage_le_of_forall ensemble.probability
+      ensemble.probability_nonneg ensemble.probability_sum _ _
     intro ω
     exact norm_resolvent_spectralParameterOfRegulator_le
       (ensemble.configurationHamiltonian ω).1

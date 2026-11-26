@@ -1,4 +1,5 @@
-import Mathlib.Basic.Complex.BigOperators
+import Mathlib.Analysis.Complex.Basic
+import Mathlib.Analysis.Normed.Module.Basic
 import Mathlib.Algebra.Module.BigOperators
 import Mathlib.Algebra.Module.Pi
 import Mathlib.LinearAlgebra.BilinearMap
@@ -75,6 +76,35 @@ theorem finiteWeightedAverage_bilinear_eq_mean_add_centered {E F G : Type*}
     B x y + finiteWeightedAverage w (fun ω => B (left ω - x) (right ω - y))
   rw [hcenter, map_add, map_sub, map_sub, hright, hleft, finiteWeightedAverage_const w hweight]
   abel
+
+/-- A pointwise norm bound passes to a nonnegative weighted finite sum.
+Normalization of the weights is not needed. -/
+theorem norm_finiteWeightedAverage_le_sum_of_forall {E : Type*}
+    [NormedAddCommGroup E] [NormedSpace ℂ E]
+    (hw : ∀ ω, 0 ≤ w ω) (response : Ω → E) (bound : Ω → ℝ)
+    (hpoint : ∀ ω, ‖response ω‖ ≤ bound ω) :
+    ‖finiteWeightedAverage w response‖ ≤ ∑ ω, w ω * bound ω := by
+  calc
+    ‖finiteWeightedAverage w response‖ =
+        ‖∑ ω, (w ω : ℂ) • response ω‖ := rfl
+    _ ≤ ∑ ω, ‖(w ω : ℂ) • response ω‖ := norm_sum_le _ _
+    _ = ∑ ω, w ω * ‖response ω‖ := by
+      apply Finset.sum_congr rfl
+      intro ω _
+      simp only [norm_smul, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (hw ω)]
+    _ ≤ ∑ ω, w ω * bound ω :=
+      Finset.sum_le_sum fun ω _ => mul_le_mul_of_nonneg_left (hpoint ω) (hw ω)
+
+/-- A normalized nonnegative finite weighted average preserves uniform norm bounds. -/
+theorem norm_finiteWeightedAverage_le_of_forall {E : Type*}
+    [NormedAddCommGroup E] [NormedSpace ℂ E]
+    (hw : ∀ ω, 0 ≤ w ω) (hsum : ∑ ω, w ω = 1)
+    (response : Ω → E) (bound : ℝ) (hpoint : ∀ ω, ‖response ω‖ ≤ bound) :
+    ‖finiteWeightedAverage w response‖ ≤ bound := by
+  calc
+    _ ≤ ∑ ω, w ω * bound :=
+      norm_finiteWeightedAverage_le_sum_of_forall w hw response (fun _ => bound) hpoint
+    _ = bound := by rw [← Finset.sum_mul, hsum, one_mul]
 
 end
 

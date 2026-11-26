@@ -95,7 +95,8 @@ theorem norm_configurationGreen_fluctuation_sub_firstDyson_le
         rw [map_add, map_add, ensemble.average_const, hAavg]
         simp
   have hRavg : ‖ensemble.average R‖ ≤ B ^ 3 * potentialBound ^ 2 :=
-    ensemble.norm_average_le_of_forall R _ hR
+    LinearMap.norm_finiteWeightedAverage_le_of_forall ensemble.probability
+      ensemble.probability_nonneg ensemble.probability_sum R _ hR
   have hdiff :
       (G ω - ensemble.averagedGreenOfRegulator energy regulator) - A ω =
         R ω - ensemble.average R := by

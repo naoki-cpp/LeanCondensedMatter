@@ -68,38 +68,14 @@ theorem average_const {E : Type*} [AddCommMonoid E] [Module ℂ E] (value : E) :
     ensemble.average (fun _ => value) = value :=
   LinearMap.finiteWeightedAverage_const ensemble.probability ensemble.probability_sum value
 
-/-- A normalized finite disorder average is norm-contractive on pointwise bounded families.
-The same estimate applies to operator and scalar responses without introducing a second
-probability-averaging API. -/
-theorem norm_average_le_of_forall {E : Type*}
-    [NormedAddCommGroup E] [NormedSpace ℂ E]
-    (response : Ω → E) (bound : ℝ)
-    (hpoint : ∀ ω, ‖response ω‖ ≤ bound) :
-    ‖ensemble.average response‖ ≤ bound := by
-  calc
-    ‖ensemble.average response‖ =
-        ‖∑ ω, (ensemble.probability ω : ℂ) • response ω‖ := rfl
-    _ ≤ ∑ ω, ‖(ensemble.probability ω : ℂ) • response ω‖ :=
-      norm_sum_le _ _
-    _ = ∑ ω, ensemble.probability ω * ‖response ω‖ := by
-      apply Finset.sum_congr rfl
-      intro ω _
-      simp only [norm_smul, Complex.norm_real, Real.norm_eq_abs,
-        abs_of_nonneg (ensemble.probability_nonneg ω)]
-    _ ≤ ∑ ω, ensemble.probability ω * bound := by
-      apply Finset.sum_le_sum
-      intro ω _
-      exact mul_le_mul_of_nonneg_left (hpoint ω) (ensemble.probability_nonneg ω)
-    _ = bound := by
-      rw [← Finset.sum_mul, ensemble.probability_sum, one_mul]
-
 /-- A uniform impurity-norm upper bound is automatically nonnegative in a
 normalized finite disorder ensemble. -/
 theorem uniformPotentialBound_nonneg (bound : ℝ)
     (hpotential : ∀ ω, ‖(ensemble.impurityPotential ω).1‖ ≤ bound) :
     0 ≤ bound := by
   exact (norm_nonneg _).trans
-    (ensemble.norm_average_le_of_forall _ _ hpotential)
+    (LinearMap.norm_finiteWeightedAverage_le_of_forall ensemble.probability
+      ensemble.probability_nonneg ensemble.probability_sum _ _ hpotential)
 
 /-- Finite operator averaging commutes with adjunction because ensemble weights are real. -/
 theorem average_star (operator : Ω → H →L[ℂ] H) :
