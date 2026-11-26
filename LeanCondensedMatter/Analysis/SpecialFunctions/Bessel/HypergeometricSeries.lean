@@ -30,6 +30,41 @@ theorem regularizedHGFunCoeff_zero_singleton_nat_add_one (k n : ℕ) :
     exact Complex.Gamma_nat_eq_factorial (n + k)
   simp [Complex.regularizedHGFunCoeff, Nat.cast_add, hgamma]
 
+/-- Differentiating a regularized hypergeometric coefficient shifts its lower parameter. -/
+private theorem regularizedHGFunCoeff_index_shift (k n : ℕ) :
+    ((n + 1 : ℕ) : ℂ) * Complex.regularizedHGFunCoeff 0 {((k + 1 : ℕ) : ℂ)} (n + 1) =
+      Complex.regularizedHGFunCoeff 0 {((k + 2 : ℕ) : ℂ)} n := by
+  rw [regularizedHGFunCoeff_zero_singleton_nat_add_one k (n + 1),
+    regularizedHGFunCoeff_zero_singleton_nat_add_one (k + 1) n,
+    show n + 1 + k = n + (k + 1) by ac_rfl, Nat.factorial_succ n]
+  push_cast
+  have hn : (n : ℂ) + 1 ≠ 0 := by exact_mod_cast Nat.succ_ne_zero n
+  have hf : (n.factorial : ℂ) ≠ 0 := by exact_mod_cast Nat.factorial_ne_zero n
+  have hg : ((n + (k + 1)).factorial : ℂ) ≠ 0 := by exact_mod_cast Nat.factorial_ne_zero _
+  field_simp [hn, hf, hg]
+
+/-- Shifting the lower parameter multiplies the coefficient by the corresponding factorial step. -/
+private theorem regularizedHGFunCoeff_parameter_shift (k n : ℕ) :
+    ((n + k + 1 : ℕ) : ℂ) * Complex.regularizedHGFunCoeff 0 {((k + 2 : ℕ) : ℂ)} n =
+      Complex.regularizedHGFunCoeff 0 {((k + 1 : ℕ) : ℂ)} n := by
+  rw [regularizedHGFunCoeff_zero_singleton_nat_add_one (k + 1) n,
+    regularizedHGFunCoeff_zero_singleton_nat_add_one k n]
+  change ((n + k + 1 : ℕ) : ℂ) *
+    (1 / ((n.factorial : ℂ) * ((n + k + 1).factorial : ℂ))) = _
+  rw [Nat.factorial_succ (n + k)]
+  push_cast
+  have hn : (n : ℂ) + (k : ℂ) + 1 ≠ 0 := by exact_mod_cast Nat.succ_ne_zero (n + k)
+  have hf : (n.factorial : ℂ) ≠ 0 := by exact_mod_cast Nat.factorial_ne_zero n
+  have hg : ((n + k).factorial : ℂ) ≠ 0 := by exact_mod_cast Nat.factorial_ne_zero _
+  field_simp
+
+private theorem regularizedHGFun_zero_eq_tsum (b : Multiset ℂ) (w : ℂ) :
+    Complex.regularizedHGFun 0 b w =
+      ∑' n : ℕ, Complex.regularizedHGFunCoeff 0 b n * w ^ n := by
+  rw [Complex.regularizedHGFun, Complex.regularizedHGFunSeries,
+    ← FormalMultilinearSeries.ofScalarsSum, FormalMultilinearSeries.ofScalars_sum_eq]
+  simp only [smul_eq_mul]
+
 /-- Mathlib's integer-order Bessel function has the expected coefficient expansion. -/
 theorem besselJZero_eq_regularizedHGTsum (z : ℂ) :
     Complex.besselJ 0 z =
@@ -37,16 +72,9 @@ theorem besselJZero_eq_regularizedHGTsum (z : ℂ) :
         (-(z / 2) ^ 2) ^ n := by
   rw [Complex.besselJ_def]
   simp only [Complex.cpow_zero, one_mul, zero_add]
-  change (Complex.regularizedHGFunSeries 0 {(1 : ℂ)}).sum (-(z / 2) ^ 2) = _
-  rw [Complex.regularizedHGFunSeries, ← FormalMultilinearSeries.ofScalarsSum,
-    FormalMultilinearSeries.ofScalars_sum_eq]
-  simp only [smul_eq_mul]
-
-end BesselHypergeometric
+  exact regularizedHGFun_zero_eq_tsum {(1 : ℂ)} (-(z / 2) ^ 2)
 
 /-! ## Three-term recurrence -/
-
-namespace BesselHypergeometric
 
 noncomputable section
 
@@ -61,22 +89,10 @@ private theorem regularizedHGFun_one_sub_two_eq_mul_three (w : ℂ) :
   let c3 : ℕ → ℂ := Complex.regularizedHGFunCoeff 0 {(3 : ℂ)}
   have hcoeff (n : ℕ) : c1 (n + 1) - c2 (n + 1) = c3 n := by
     dsimp only [c1, c2, c3]
-    have h0 := regularizedHGFunCoeff_zero_singleton_nat_add_one 0 (n + 1)
-    have h1 := regularizedHGFunCoeff_zero_singleton_nat_add_one 1 (n + 1)
-    have h2 := regularizedHGFunCoeff_zero_singleton_nat_add_one 2 n
-    norm_num only [Nat.add_zero] at h0 h1 h2
-    rw [h0, h1, h2, ← pow_two]
-    simp only [Nat.factorial_succ]
-    push_cast
-    have hn : (n + 1 : ℂ) ≠ 0 := by exact_mod_cast Nat.succ_ne_zero n
-    have hn2 : (n + 2 : ℂ) ≠ 0 := by exact_mod_cast Nat.succ_ne_zero (n + 1)
-    have hf : (Nat.factorial n : ℂ) ≠ 0 := by
-      exact_mod_cast Nat.factorial_ne_zero n
-    have hn2' : (2 : ℂ) + (n : ℂ) ≠ 0 := by simpa [add_comm] using hn2
-    field_simp [hn2']
-    rw [show (n : ℂ) + 1 + 1 = (n : ℂ) + 2 by ring]
-    field_simp [hn2]
-    ring
+    have h12 := regularizedHGFunCoeff_parameter_shift 0 (n + 1)
+    have h23 := regularizedHGFunCoeff_index_shift 1 n
+    norm_num [Nat.cast_add] at h12 h23
+    linear_combination -h12 + h23
   have hzero : c1 0 = c2 0 := by
     dsimp only [c1, c2]
     have h0 := regularizedHGFunCoeff_zero_singleton_nat_add_one 0 0
@@ -91,14 +107,8 @@ private theorem regularizedHGFun_one_sub_two_eq_mul_three (w : ℂ) :
     simpa only [c2, Complex.regularizedHGFunSeries,
       FormalMultilinearSeries.ofScalars_apply_eq, smul_eq_mul] using
       (Complex.regularizedHGFunSeries 0 {(2 : ℂ)}).summable (by simp)
-  have hseries (b : Multiset ℂ) :
-      Complex.regularizedHGFun 0 b w =
-        ∑' n : ℕ, Complex.regularizedHGFunCoeff 0 b n * w ^ n := by
-    rw [Complex.regularizedHGFun, Complex.regularizedHGFunSeries,
-      ← FormalMultilinearSeries.ofScalarsSum,
-      FormalMultilinearSeries.ofScalars_sum_eq]
-    simp only [smul_eq_mul]
-  rw [hseries {(1 : ℂ)}, hseries {(2 : ℂ)}, hseries {(3 : ℂ)}]
+  rw [regularizedHGFun_zero_eq_tsum {(1 : ℂ)},
+    regularizedHGFun_zero_eq_tsum {(2 : ℂ)}, regularizedHGFun_zero_eq_tsum {(3 : ℂ)}]
   change (∑' n : ℕ, c1 n * w ^ n) -
       (∑' n : ℕ, c2 n * w ^ n) =
         w * ∑' n : ℕ, c3 n * w ^ n
@@ -139,19 +149,8 @@ theorem besselJ_zero_one_two_recurrence (z : ℂ) :
     have ha : (2 : ℂ) + 1 = 3 := by norm_num
     rw [ha, Complex.cpow_two]
   rw [h0, h1, h2]
-  dsimp [w] at h
-  calc
-    2 * ((z / 2) * Complex.regularizedHGFun 0 {(2 : ℂ)} (-(z / 2) ^ 2)) =
-        z * Complex.regularizedHGFun 0 {(2 : ℂ)} (-(z / 2) ^ 2) := by ring
-    _ = z * (Complex.regularizedHGFun 0 {(1 : ℂ)} (-(z / 2) ^ 2) -
-        (-(z / 2) ^ 2) * Complex.regularizedHGFun 0 {(3 : ℂ)} (-(z / 2) ^ 2)) := by
-      rw [show Complex.regularizedHGFun 0 {(2 : ℂ)} (-(z / 2) ^ 2) =
-          Complex.regularizedHGFun 0 {(1 : ℂ)} (-(z / 2) ^ 2) -
-            (-(z / 2) ^ 2) * Complex.regularizedHGFun 0 {(3 : ℂ)} (-(z / 2) ^ 2) by
-        linear_combination -h]
-    _ = z * (Complex.regularizedHGFun 0 {(1 : ℂ)} (-(z / 2) ^ 2) +
-        (z / 2) ^ 2 * Complex.regularizedHGFun 0 {(3 : ℂ)} (-(z / 2) ^ 2)) := by
-      ring
+  dsimp [w] at h ⊢
+  linear_combination -z * h
 
 /-- The Bessel recurrence eliminates the apparent singularity of J₁(z)²/z
 at the origin, with the convention that division by zero is zero. -/
@@ -167,9 +166,6 @@ theorem besselJ_one_sq_div_eq_half_product (z : ℝ) :
     have hrec := besselJ_zero_one_two_recurrence (z : ℂ)
     linear_combination (Complex.besselJ 1 (z : ℂ) / 2) * hrec
 
-end
-end BesselHypergeometric
-
 /-!
 ## Analytic derivative of the zeroth Bessel J function
 
@@ -177,10 +173,6 @@ The regularized hypergeometric coefficient shift proves the derivative
 identity `J₀'(z) = -J₁(z)` at every complex argument, including the origin.
 This argument is independent of Fourier kernels and transport models.
 -/
-
-namespace BesselHypergeometric
-
-noncomputable section
 
 /-- The derivative of the regularized hypergeometric series with bottom parameter 1
 has bottom parameter 2. This is the coefficient identity behind `J₀' = -J₁`. -/
@@ -191,15 +183,9 @@ private theorem regularizedHGFun_zero_one_hasDerivAt (w : ℂ) :
   have hcoeff (n : ℕ) :
       ((n + 1 : ℕ) : ℂ) * Complex.regularizedHGFunCoeff 0 {(1 : ℂ)} (n + 1) =
         Complex.regularizedHGFunCoeff 0 {(2 : ℂ)} n := by
-    have h0 := regularizedHGFunCoeff_zero_singleton_nat_add_one 0 (n + 1)
-    have h1 := regularizedHGFunCoeff_zero_singleton_nat_add_one 1 n
-    norm_num only [Nat.add_zero] at h0 h1
-    rw [h0, h1, ← pow_two, Nat.factorial_succ]
-    push_cast
-    have hn : (n + 1 : ℂ) ≠ 0 := by exact_mod_cast Nat.succ_ne_zero n
-    have hf : (Nat.factorial n : ℂ) ≠ 0 := by
-      exact_mod_cast Nat.factorial_ne_zero n
-    field_simp
+    have hshift := regularizedHGFunCoeff_index_shift 0 n
+    norm_num [Nat.cast_add] at hshift ⊢
+    exact hshift
   have hradius : ‖w‖ₑ < p.radius := by
     simp [p]
   have hderivRadius : p.derivSeries.radius = ⊤ := by
@@ -228,11 +214,8 @@ private theorem regularizedHGFun_zero_one_hasDerivAt (w : ℂ) :
         apply tsum_congr
         intro n
         rw [hcoeff]
-      _ = Complex.regularizedHGFun 0 {(2 : ℂ)} w := by
-        rw [Complex.regularizedHGFun, Complex.regularizedHGFunSeries,
-          ← FormalMultilinearSeries.ofScalarsSum,
-          FormalMultilinearSeries.ofScalars_sum_eq]
-        simp only [smul_eq_mul]
+      _ = Complex.regularizedHGFun 0 {(2 : ℂ)} w :=
+        (regularizedHGFun_zero_eq_tsum {(2 : ℂ)} w).symm
   have hderiv : HasDerivAt (Complex.regularizedHGFun 0 {(1 : ℂ)})
       ((p.derivSeries.sum w) 1) w := by
     change HasDerivAt p.sum ((p.derivSeries.sum w) 1) w
