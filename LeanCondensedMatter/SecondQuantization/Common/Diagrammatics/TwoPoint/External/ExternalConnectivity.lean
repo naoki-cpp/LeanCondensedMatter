@@ -1,5 +1,5 @@
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Components.ComponentRestriction
-import LeanCondensedMatter.Combinatorics.PerfectPairing.InvolutionCard
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.ExternalInsertionBridge
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentRestriction
 
 set_option linter.style.header false
 
@@ -33,26 +33,12 @@ because every component has an even number of one-legged external vertices. -/
 theorem TwoPointDiagram.externalVerticesConnected {S : Finset (Fin N)}
     (d : TwoPointDiagram ExternalLabel InternalLabel N S) :
     d.ExternalVerticesConnected := by
-  classical
-  apply SimpleGraph.reachable_finTwo_of_even_left_components d.vertexGraph
-  intro B
-  let blockEquiv :
-      {leg : Fin (2 * (2 * S.card + 1)) //
-        d.legInComponent (B : Finset (TwoPointVertex S)) leg} ≃
-        ↥(Finset.toLeft (B : Finset (TwoPointVertex S))) ⊕
-          (↥(interactionSector (B : Finset (TwoPointVertex S))) × Fin 4) :=
-    ((twoPointLegEquiv S).subtypeEquiv fun leg =>
-        d.legInComponent_iff_unflattened B leg).trans
-      (componentLegDataEquiv
-        (External := Fin 2) (Vertex := Fin N) (Local := Fin 4)
-        (B : Finset (TwoPointVertex S)))
-  simpa only [Fintype.card_coe] using
-    d.pairing.even_card_left_of_invariant_subtype
-      (d.legInComponent (B : Finset (TwoPointVertex S)))
-      (fun leg => d.legInComponent_partner_iff
-        (B : Finset (TwoPointVertex S)) leg)
-      blockEquiv
-      (by simpa only [Fintype.card_fin] using (show Even 4 from ⟨2, rfl⟩))
+  apply (SimpleGraph.Iso.reachable_iff
+    (φ := d.externalInsertionGraphIso)
+    (u := Sum.inl (0 : Fin 2)) (v := Sum.inl (1 : Fin 2))).mp
+  change (twoPointDiagramExternalInsertionEquiv S d).vertexGraph.Reachable
+    (Sum.inl (0 : Fin 2)) (Sum.inl (1 : Fin 2))
+  exact (twoPointDiagramExternalInsertionEquiv S d).allExternalVerticesConnected_two 0 1
 
 /-- The two external component blocks always coincide. -/
 theorem TwoPointDiagram.externalComponent_zero_eq_one {S : Finset (Fin N)}
