@@ -45,25 +45,32 @@ theorem DensityOperator.expectation_observable
       DensityOperator.observableExpectationSelfAdjoint, Complex.selfAdjointEquiv] using
       ρ.expectation_im_eq_zero_of_isSymmetric A.2.isSymmetric
 
+/-- The rank-one density expectation of any bounded operator is its vector
+matrix element. Self-adjointness of the operator is not required. -/
+theorem DensityOperator.expectation_pure
+    (ψ : StateVector H) (A : H →L[ℂ] H) :
+    (pure ψ).expectation A = inner ℂ ψ.1 (A ψ.1) := by
+  have hproduct : (pure ψ).op * A =
+      InnerProductSpace.rankOne ℂ ψ.1 (ContinuousLinearMap.adjoint A ψ.1) := by
+    ext x
+    change (inner ℂ ψ.1 (A x)) • ψ.1 =
+      (inner ℂ (ContinuousLinearMap.adjoint A ψ.1) x) • ψ.1
+    rw [ContinuousLinearMap.adjoint_inner_left]
+  have htrace : IsTraceClass
+      (InnerProductSpace.rankOne ℂ ψ.1 (ContinuousLinearMap.adjoint A ψ.1)) := by
+    rw [← hproduct]
+    exact (pure ψ).isTraceClass.comp_right A
+  rw [DensityOperator.expectation_apply,
+    IsTraceClass.trace_congr ((pure ψ).isTraceClass.comp_right A) htrace hproduct,
+    htrace.trace_rankOne]
+  exact ContinuousLinearMap.adjoint_inner_left A ψ.1 ψ.1
+
 /-- The complex expectation in the rank-one density operator of a pure state agrees with the
 canonical vector-state expectation. -/
 theorem DensityOperator.expectation_pure_observable
     (ψ : StateVector H) (A : Observable H) :
-    (pure ψ).expectation A.1 = expValue A ψ := by
-  have hproduct : (pure ψ).op * A.1 =
-      InnerProductSpace.rankOne ℂ ψ.1 (ContinuousLinearMap.adjoint A.1 ψ.1) := by
-    ext x
-    change (inner ℂ ψ.1 (A.1 x)) • ψ.1 =
-      (inner ℂ (ContinuousLinearMap.adjoint A.1 ψ.1) x) • ψ.1
-    rw [ContinuousLinearMap.adjoint_inner_left]
-  have htrace : IsTraceClass
-      (InnerProductSpace.rankOne ℂ ψ.1 (ContinuousLinearMap.adjoint A.1 ψ.1)) := by
-    rw [← hproduct]
-    exact (pure ψ).isTraceClass.comp_right A.1
-  rw [DensityOperator.expectation_apply,
-    IsTraceClass.trace_congr ((pure ψ).isTraceClass.comp_right A.1) htrace hproduct,
-    htrace.trace_rankOne]
-  exact ContinuousLinearMap.adjoint_inner_left A.1 ψ.1 ψ.1
+    (pure ψ).expectation A.1 = expValue A ψ :=
+  DensityOperator.expectation_pure ψ A.1
 
 /-- The real observable expectation in a rank-one density operator agrees with the lossless real
 vector-state expectation. -/
