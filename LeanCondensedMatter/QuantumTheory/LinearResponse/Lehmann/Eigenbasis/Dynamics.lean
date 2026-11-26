@@ -101,6 +101,20 @@ theorem eigenbasisNormalizedExpectation_apply
   exact (eigenbasisDensityOperator system data).expectation_eq_tsum_diagonal
     A data.basis data.probability (eigenbasisDensityOperator_apply_basis system data)
 
+/-- When one energy-basis state has probability one and every other state
+has probability zero, the diagonal expectation is exactly its matrix element. -/
+theorem eigenbasisNormalizedExpectation_apply_of_single
+    (data : EnergyEigenbasisLehmannData system ι) (occupied : ι)
+    (hoccupied : data.probability occupied = 1)
+    (hzero : ∀ i, i ≠ occupied → data.probability i = 0)
+    (A : H →L[ℂ] H) :
+    eigenbasisNormalizedExpectation system data A =
+      inner ℂ (data.basis occupied) (A (data.basis occupied)) := by
+  rw [eigenbasisNormalizedExpectation_apply, tsum_eq_single occupied]
+  · simp [hoccupied]
+  · intro i hi
+    simp [hzero i hi]
+
 /-- The relative phase carried by a Heisenberg-picture matrix element. -/
 noncomputable def eigenbasisTransitionPhase
     (data : EnergyEigenbasisLehmannData system ι)
