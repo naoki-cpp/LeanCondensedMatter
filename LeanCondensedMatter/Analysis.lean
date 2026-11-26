@@ -6,7 +6,6 @@ import LeanCondensedMatter.Analysis.DiscreteLattice
 import LeanCondensedMatter.Analysis.Fourier.AngularHarmonics
 import LeanCondensedMatter.Analysis.Geometry.SphericalMoments
 import LeanCondensedMatter.Analysis.Fourier.FiniteCyclic
-import LeanCondensedMatter.Analysis.Fourier.CyclicLaplacian
 import LeanCondensedMatter.Analysis.Matrix.CartesianProjectors
 import LeanCondensedMatter.Analysis.Matrix.FinTwoCharpoly
 import LeanCondensedMatter.Analysis.ScalarExchange.Basic
@@ -20,8 +19,7 @@ import LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.ThreeTermRecurrence
 import LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.RadialMoments
 import LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.WronskianMoments
 import LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.AnalyticWronskian
-import LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.Y0Series
-import LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.Y1Series
+import LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.YSeries
 import LeanCondensedMatter.Analysis.Dyson
 import LeanCondensedMatter.Analysis.OrderedSimplex
 import LeanCondensedMatter.Analysis.FunctionalCalculus.CFC

@@ -196,7 +196,7 @@
     {
       "id": "replicaLinkedClusterIndependence",
       "roots": [
-        "LeanCondensedMatter.Analysis.PowerSeries.ReplicaBridge",
+        "LeanCondensedMatter.Analysis.PowerSeries.Replica",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.LinkedCluster.Theorem"
       ],
       "forbiddenPrefixes": [
@@ -212,7 +212,6 @@
       ],
       "forbiddenPrefixes": [
         "LeanCondensedMatter.Analysis.PowerSeries.Replica",
-        "LeanCondensedMatter.Analysis.PowerSeries.ReplicaBridge",
         "LeanCondensedMatter.Combinatorics.Cumulant.Replica"
       ]
     }

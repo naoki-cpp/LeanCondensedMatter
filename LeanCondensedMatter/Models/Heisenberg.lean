@@ -1,5 +1,5 @@
 import LeanCondensedMatter.QuantumTheory.SpinHalf.Finite
-import LeanCondensedMatter.Analysis.Fourier.CyclicLaplacian
+import LeanCondensedMatter.Analysis.Fourier.FiniteCyclic
 
 set_option linter.style.header false
 

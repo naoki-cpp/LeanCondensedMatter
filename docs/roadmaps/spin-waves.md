@@ -91,7 +91,7 @@ Dependency: SW1. Source: (2.90)-(2.94), pp. 48-49.
 
 `ZMod.fourierBasis` is a complete normalized Fourier basis; the shared weighted cyclic
 Laplacian and its spectrum are owned by
-[CyclicLaplacian](../../LeanCondensedMatter/Analysis/Fourier/CyclicLaplacian.lean).
+[CyclicLaplacian](../../LeanCondensedMatter/Analysis/Fourier/FiniteCyclic.lean).
 `ZMod.cyclicLaplacian_fourierBasis` proves its eigenvalue equation for LJ, with
 
 \[

@@ -214,7 +214,7 @@ Canonical increasing enumeration of finite slot sets belongs to
 `Combinatorics.Shuffle.SlotShuffle`. Two-point and external-insertion standardization both
 use these equivalences while retaining their separate leg and pairing representations.
 Finite-partition sums of ordered-simplex integrals are owned by
-`Analysis.OrderedSimplex.PartitionOrderIntegral`. Its factorization theorem requires local
+`Analysis.OrderedSimplex.FamilyShuffle`. Its factorization theorem requires local
 measurable boundedness and equality of assembled integrands with shuffled local products.
 Fermionic and Bosonic quartic amplitude proofs supply their own integrands and consume that theorem;
 local-order-fixed external-insertion shuffle sums use `FamilyShuffle` directly.

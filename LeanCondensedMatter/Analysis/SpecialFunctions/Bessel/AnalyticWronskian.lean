@@ -1,7 +1,7 @@
 import LeanCondensedMatter.Analysis.PowerSeries.CoefficientSum
 import LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.HypergeometricSeries
 import LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.FormalCoefficients
-import LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.Y1Series
+import LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.YSeries
 import Mathlib.LinearAlgebra.Complex.FiniteDimensional
 import Mathlib.Analysis.Normed.Module.FiniteDimension
 import Mathlib.Tactic.FieldSimp

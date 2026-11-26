@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Analysis.PowerSeries.ReplicaBridge
+import LeanCondensedMatter.Analysis.PowerSeries.Replica
 import LeanCondensedMatter.Analysis.PowerSeries.Moment
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Moment
 

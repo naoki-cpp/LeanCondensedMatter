@@ -2,7 +2,6 @@ import LeanCondensedMatter.Analysis.PowerSeries.CoefficientSum
 import LeanCondensedMatter.Analysis.PowerSeries.Normalization
 import LeanCondensedMatter.Analysis.PowerSeries.Moment
 import LeanCondensedMatter.Analysis.PowerSeries.Replica
-import LeanCondensedMatter.Analysis.PowerSeries.ReplicaBridge
 import LeanCondensedMatter.Analysis.PowerSeries.Cumulant
 import LeanCondensedMatter.Analysis.PowerSeries.AnalyticLog
 

@@ -1,5 +1,4 @@
 import LeanCondensedMatter.Models.Heisenberg
-import LeanCondensedMatter.Analysis.Fourier.CyclicLaplacian
 import LeanCondensedMatter.Analysis.Fourier.FiniteCyclic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Sinc
 

@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Analysis.OrderedSimplex.PartitionOrderIntegral
+import LeanCondensedMatter.Analysis.OrderedSimplex.FamilyShuffle
 import LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.ComponentFactorization
 import LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion.DysonAmplitude
 
