@@ -1078,5 +1078,161 @@ theorem externalInsertionMixedTimeOrderedAtomicLegEquiv_perm_slots
         (externalInsertionMixedTimeOrderedAtomicLegs_perm_slots externalTime σ hσ p)
   exact (congrFun (List.ofFn_injective hlist) i).symm
 
+/-! ## Two even bilinear insertions
+
+The two elementary legs of each bilinear share a time. Stable ordering keeps
+them adjacent, with their internal order unchanged, even when an interaction
+vertex has the same time. The four-field order is obtained by expanding the
+two composite events, not by treating a bilinear as an odd field.
+-/
+
+/-- The four external times of two bilinears in fixed creation-annihilation order. -/
+def pairedExternalTimes (τ τ' : ℝ) : Fin 4 → ℝ :=
+  fun e => if e.val < 2 then τ else τ'
+
+/-- Expand a composite external event into its two fixed elementary events;
+interaction events remain single full quartic vertices. -/
+def pairedExternalEventBlock {n : ℕ} :
+    ExternalInsertionTimedEvent 1 n → List (ExternalInsertionTimedEvent 2 n)
+  | .inl e => if e = 0 then [.inl 0, .inl 1] else [.inl 2, .inl 3]
+  | .inr v => [.inr v]
+
+/-- Sorting two even composite insertions and then expanding their internal
+legs gives exactly the canonical four-field stable event order. -/
+theorem orderedExternalInsertionTimedEvents_paired {n : ℕ}
+    (τ τ' : ℝ) (σ : Fin n → ℝ) :
+    orderedExternalInsertionTimedEvents (E := 2) (pairedExternalTimes τ τ') σ =
+      (orderedExternalInsertionTimedEvents (E := 1)
+        (fun e => if e = 0 then τ else τ') σ).flatMap pairedExternalEventBlock := by
+  classical
+  let times : Fin 2 → ℝ := fun e => if e = 0 then τ else τ'
+  let source := orderedExternalInsertionTimedEvents (E := 1) times σ
+  let target := orderedExternalInsertionTimedEvents (E := 2) (pairedExternalTimes τ τ') σ
+  let r₁ := externalInsertionTimedEventBeforeOrEqual times σ
+  let r₂ := externalInsertionTimedEventBeforeOrEqual (pairedExternalTimes τ τ') σ
+  let block := @pairedExternalEventBlock n
+  have hs : source.Pairwise r₁ := orderedExternalInsertionTimedEvents_pairwise times σ
+  have hn : source.Nodup := orderedExternalInsertionTimedEvents_nodup times σ
+  have ht : target.Pairwise r₂ :=
+    orderedExternalInsertionTimedEvents_pairwise (pairedExternalTimes τ τ') σ
+  have hblock (a : ExternalInsertionTimedEvent 1 n) : (block a).Nodup := by
+    cases a with
+    | inl e => fin_cases e <;> simp [block, pairedExternalEventBlock]
+    | inr v => simp [block, pairedExternalEventBlock]
+  have hdisjoint (a b : ExternalInsertionTimedEvent 1 n) (hne : a ≠ b) :
+      List.Disjoint (block a) (block b) := by
+    intro x hx hy
+    cases a with
+    | inl a =>
+        cases b with
+        | inl b =>
+            fin_cases a <;> fin_cases b <;>
+              simp_all [block, pairedExternalEventBlock]
+        | inr b =>
+            fin_cases a <;> simp_all [block, pairedExternalEventBlock]
+    | inr a =>
+        cases b with
+        | inl b =>
+            fin_cases b <;> simp_all [block, pairedExternalEventBlock]
+        | inr b => simp_all [block, pairedExternalEventBlock]
+  have hwithin (a : ExternalInsertionTimedEvent 1 n) :
+      (block a).Pairwise r₂ := by
+    cases a with
+    | inl e =>
+        fin_cases e <;>
+          simp [block, pairedExternalEventBlock, r₂,
+            externalInsertionTimedEventBeforeOrEqual, stableTimedEventBeforeOrEqual_iff,
+            externalInsertionTimedEventTime, externalInsertionTimedEventRank, pairedExternalTimes]
+    | inr v => simp [block, pairedExternalEventBlock]
+  have hcross (a b : ExternalInsertionTimedEvent 1 n) (hne : a ≠ b)
+      (hab : r₁ a b) (x y : ExternalInsertionTimedEvent 2 n)
+      (hx : x ∈ block a) (hy : y ∈ block b) : r₂ x y := by
+    cases a with
+    | inl a =>
+        cases b with
+        | inl b =>
+            fin_cases a <;> fin_cases b <;>
+              simp_all [block, pairedExternalEventBlock, r₁, r₂, times,
+                externalInsertionTimedEventBeforeOrEqual, stableTimedEventBeforeOrEqual_iff,
+                externalInsertionTimedEventTime, externalInsertionTimedEventRank,
+                pairedExternalTimes] <;> aesop
+        | inr b =>
+            fin_cases a <;>
+              simp_all [block, pairedExternalEventBlock, r₁, r₂, times,
+                externalInsertionTimedEventBeforeOrEqual, stableTimedEventBeforeOrEqual_iff,
+                externalInsertionTimedEventTime, externalInsertionTimedEventRank,
+                pairedExternalTimes] <;> aesop
+    | inr a =>
+        cases b with
+        | inl b =>
+            fin_cases b <;>
+              simp_all [block, pairedExternalEventBlock, r₁, r₂, times,
+                externalInsertionTimedEventBeforeOrEqual, stableTimedEventBeforeOrEqual_iff,
+                externalInsertionTimedEventTime, externalInsertionTimedEventRank,
+                pairedExternalTimes] <;> aesop
+        | inr b =>
+            simp_all [block, pairedExternalEventBlock, r₁, r₂,
+              externalInsertionTimedEventBeforeOrEqual, stableTimedEventBeforeOrEqual_iff,
+              externalInsertionTimedEventTime, externalInsertionTimedEventRank]
+  have hsorted (L : List (ExternalInsertionTimedEvent 1 n))
+      (hL : L.Pairwise r₁) (hN : L.Nodup) : (L.flatMap block).Pairwise r₂ := by
+    induction L with
+    | nil => simp
+    | cons a L ih =>
+        rw [List.flatMap_cons, List.pairwise_append]
+        refine ⟨hwithin a, ih (List.pairwise_cons.mp hL).2 (List.nodup_cons.mp hN).2, ?_⟩
+        intro x hx y hy
+        obtain ⟨b, hb, hyb⟩ := List.mem_flatMap.mp hy
+        exact hcross a b (fun he => (List.nodup_cons.mp hN).1 (he ▸ hb))
+          ((List.pairwise_cons.mp hL).1 b hb) x y hx hyb
+  have hflatN : (source.flatMap block).Nodup := by
+    rw [List.nodup_flatMap]
+    exact ⟨fun a _ => hblock a,
+      hn.pairwise_of_forall_ne (fun a b _ _ hne => hdisjoint a b hne)⟩
+  have hall (x : ExternalInsertionTimedEvent 2 n) : x ∈ source.flatMap block := by
+    rw [List.mem_flatMap]
+    cases x with
+    | inl e =>
+        fin_cases e
+        · exact ⟨.inl 0, orderedExternalInsertionTimedEvents_all_mem times σ _, by simp [block, pairedExternalEventBlock]⟩
+        · exact ⟨.inl 0, orderedExternalInsertionTimedEvents_all_mem times σ _, by simp [block, pairedExternalEventBlock]⟩
+        · exact ⟨.inl 1, orderedExternalInsertionTimedEvents_all_mem times σ _, by simp [block, pairedExternalEventBlock]⟩
+        · exact ⟨.inl 1, orderedExternalInsertionTimedEvents_all_mem times σ _, by simp [block, pairedExternalEventBlock]⟩
+    | inr v =>
+        exact ⟨.inr v, orderedExternalInsertionTimedEvents_all_mem times σ _, by simp [block, pairedExternalEventBlock]⟩
+  letI : Std.Antisymm r₂ :=
+    ⟨fun _ _ hab hba =>
+      stableTimedEventBeforeOrEqual_antisymm
+        (externalInsertionTimedEventTime (pairedExternalTimes τ τ') σ)
+        externalInsertionTimedEventRank
+        (by
+          intro a b h
+          apply (finSumFinEquiv : ExternalInsertionTimedEvent 2 n ≃ Fin (4 + n)).injective
+          exact Fin.ext h)
+        hab hba⟩
+  have hsub : List.Subperm target (source.flatMap block) :=
+    (orderedExternalInsertionTimedEvents_nodup (pairedExternalTimes τ τ') σ).subperm
+      (fun x _ => hall x)
+  have hrev : List.Subperm (source.flatMap block) target :=
+    hflatN.subperm (fun x _ =>
+      orderedExternalInsertionTimedEvents_all_mem (pairedExternalTimes τ τ') σ x)
+  have hlist := List.sublist_of_subperm_of_pairwise (r := r₂)
+    hsub ht (hsorted source hs hn)
+  exact hlist.eq_of_length (le_antisymm hlist.length_le hrev.length_le)
+
+/-- Exchanging two bilinear blocks has four odd-leg inversions and therefore
+no fermionic exchange sign, including at equal times. -/
+theorem externalInsertionStandardToMixedAtomicPositionEquiv_sign_paired
+    {n : ℕ} (τ τ' : ℝ) (σ : Fin n → ℝ) :
+    Equiv.Perm.sign (externalInsertionStandardToMixedAtomicPositionEquiv
+      (E := 2) (pairedExternalTimes τ τ') σ) = 1 := by
+  classical
+  rw [externalInsertionStandardToMixedAtomicPositionEquiv_sign]
+  change (-1 : ℤˣ) ^ (∑ a : Fin 4, ∑ b : Fin 4,
+    if a.val < b.val ∧ pairedExternalTimes τ τ' a < pairedExternalTimes τ τ' b
+    then 1 else 0) = _
+  simp only [Fin.sum_univ_four]
+  by_cases h : τ < τ' <;> simp [pairedExternalTimes, h]
+
 end Common
 end SecondQuantization
