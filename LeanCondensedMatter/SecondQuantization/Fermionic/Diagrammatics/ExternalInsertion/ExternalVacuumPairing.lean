@@ -119,14 +119,14 @@ theorem externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_left_normal
     rw [ExternalInsertionDiagram.pairingInMixedOrder,
       PairingOn.transport_partner, Equiv.apply_symm_apply,
       hfixed, hfixed (localPairing.partner p)]
-    change (Pairing.ofSplit
+    change (PairingOn.ofSplit
         (externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T))
         ext.pairing vac.pairing).partner
           (externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T)
             (Sum.inl (localFixed p))) =
       externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T)
         (Sum.inl (localFixed (localPairing.partner p)))
-    rw [Pairing.ofSplit_partner_inl]
+    rw [PairingOn.ofSplit_partner_inl]
     change _ = externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T)
       (Sum.inl (localFixed ((ext.pairing.transport localFixed).partner p)))
     rw [PairingOn.transport_partner, Equiv.apply_symm_apply]
@@ -254,7 +254,7 @@ theorem externalInsertionOfSlotSplit_mixedPairingEvaluation_eq_positionInversion
               rightKernel) := by
   intro S order f fT localFixed split mixedSplit localPairing d kernel
     leftKernel rightKernel htime
-  let pairEquiv := Pairing.ofSplitNormalizedPairEquiv
+  let pairEquiv := PairingOn.ofSplitNormalizedPairEquiv
     mixedSplit localPairing (vac.pairingInOrder order)
   have hleftMono :
       StrictMono (fun p : Fin (2 * (2 * T.card + E)) =>
@@ -295,7 +295,7 @@ theorem externalInsertionOfSlotSplit_mixedPairingEvaluation_eq_positionInversion
       leftKernel pr.1.1 pr.1.2 := by
     intro pr
     have hpair :=
-      Pairing.ofSplitNormalizedPairEquiv_pair_eq_of_lt
+      PairingOn.ofSplitNormalizedPairEquiv_pair_eq_of_lt
         mixedSplit localPairing (vac.pairingInOrder order) (Sum.inl pr)
         (hleftMono (localPairing.pairs_normalized pr.2))
     rw [hpair]
@@ -310,7 +310,7 @@ theorem externalInsertionOfSlotSplit_mixedPairingEvaluation_eq_positionInversion
       rightKernel pr.1.1 pr.1.2 := by
     intro pr
     have hpair :=
-      Pairing.ofSplitNormalizedPairEquiv_pair_eq_of_lt
+      PairingOn.ofSplitNormalizedPairEquiv_pair_eq_of_lt
         mixedSplit localPairing (vac.pairingInOrder order) (Sum.inr pr)
         (hrightMono ((vac.pairingInOrder order).pairs_normalized pr.2))
     rw [hpair]
@@ -321,7 +321,7 @@ theorem externalInsertionOfSlotSplit_mixedPairingEvaluation_eq_positionInversion
       ε β T ext vac externalTime σ pr.1.1 pr.1.2
   have hpairing :
       d.pairingInMixedOrder externalTime σ =
-        Pairing.ofSplit mixedSplit localPairing (vac.pairingInOrder order) :=
+        PairingOn.ofSplit mixedSplit localPairing (vac.pairingInOrder order) :=
     externalInsertionOfSlotSplit_pairingInMixedOrder_eq_ofSplit_mixedExternal
       T ext vac externalTime σ
   rw [hpairing]

@@ -14,7 +14,7 @@ set_option linter.style.header false
 The mixed-order component pair equivalence identifies every ambient normalized pair with exactly one
 component-local normalized pair. The concrete free-Gibbs pair kernel is local under the corresponding
 mixed-position embedding, as shown here by specializing timed-field transport. The canonical
-`Pairing.evaluation_eq_mul_prod_components` theorem then
+`PairingOn.evaluation_eq_mul_prod_components` theorem then
 factors the mixed pairing value into its inter-component exchange sign and local evaluations.
 The relative fixed/mixed component shuffle sign then cancels the inter-component exchange sign
 when forming the componentwise pairing factorization.
@@ -158,7 +158,7 @@ theorem ExternalInsertionWickDiagram.mixedPairingValue_eq_inter_mul_prod_compone
       (d.componentExternalTime externalTime B)
       (d.componentOrderedDiagram B).vertexLabelSequence
       (d.componentInteractionTime σ B)
-  exact Pairing.evaluation_eq_mul_prod_components
+  exact PairingOn.evaluation_eq_mul_prod_components
     pairing localPairing (d.componentMixedPairEquiv externalTime σ)
     (pairing.weight Common.Statistics.fermion)
     ((Common.Statistics.fermion.zetaInt : ℂ) ^
@@ -168,7 +168,7 @@ theorem ExternalInsertionWickDiagram.mixedPairingValue_eq_inter_mul_prod_compone
     (BlochDeDominicis.Pairing.weight_eq_inter_mul_prod_of_crossingCount_eq
       Common.Statistics.fermion pairing localPairing
       (pairing.interComponentCrossingCount (d.componentMixedPairEquiv externalTime σ))
-      (Pairing.crossingCount_eq_sum_localCrossingCount_add_inter
+      (PairingOn.crossingCount_eq_sum_localCrossingCount_add_inter
         pairing localPairing (d.componentMixedPairEquiv externalTime σ)
         (fun B => Equiv.refl _)
         (fun B => d.componentMixedPosition externalTime σ B)

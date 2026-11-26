@@ -39,7 +39,7 @@ theorem QuarticDiagram.pairingInOrder_evaluation_eq_prod_components
           (((d.restrictComponent B.2).pairingInOrder (orders B)).weight s)
           (localPairValue B) := by
   classical
-  simpa only [one_mul] using Pairing.evaluation_eq_mul_prod_components
+  simpa only [one_mul] using PairingOn.evaluation_eq_mul_prod_components
     (d.pairingInOrder (d.assembleVertexOrder orders shuffle))
     (fun B => (d.restrictComponent B.2).pairingInOrder (orders B))
     (d.componentPairEquiv orders shuffle)

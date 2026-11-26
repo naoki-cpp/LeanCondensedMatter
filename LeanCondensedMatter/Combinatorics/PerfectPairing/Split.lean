@@ -1,13 +1,12 @@
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Restriction
-import LeanCondensedMatter.Combinatorics.SetPartition.SumEquivPartition
+import Mathlib.Logic.Equiv.Set
 
 set_option linter.style.header false
 
 /-!
 # Splitting a pairing along a decomposition of its positions
 
-A *position splitting* presents the ambient positions of a pairing of `Fin (2 * n)` as two labelled
-parts carrying `a` and `b` pairs. A pairing is *split* by it when no pair crosses between the parts;
+A sum equivalence presents the ambient positions of a pairing as two labelled parts. A pairing is *split* by it when no pair crosses between the parts;
 such a pairing restricts to a pairing of each part through `PairingOn.restrictAlongEquiv`.
 
 This is the decomposition a connected-component factorization uses: the pairs of a Wick diagram
@@ -18,7 +17,7 @@ automatic, because `partner` is an involution: a right position paired to a left
 left position paired to a right one.
 
 Restricting and assembling are mutually inverse, so the pairings split by a given splitting are
-exactly the pairs of pairings of the parts (`Pairing.splitEquiv`).
+exactly the pairs of pairings of the parts (`PairingOn.splitEquiv`).
 
 Compare `Combinatorics.SideSplitting`, where the pairs all *do* cross between the two parts. The two
 are the extreme cases of the same presentation of the positions.
@@ -26,83 +25,77 @@ are the extreme cases of the same presentation of the positions.
 
 namespace Combinatorics
 
-variable {a b n : ℕ}
-
 /-- A presentation of the ambient positions of a pairing of `Fin (2 * n)` as two parts carrying `a`
 and `b` pairs. -/
 abbrev PositionSplitting (a b n : ℕ) := Fin (2 * a) ⊕ Fin (2 * b) ≃ Fin (2 * n)
 
-/-- A pairing is *split* by a position splitting when the left part is closed under `partner`, so
-that no pair joins the two parts. -/
-def Pairing.IsSplit (e : PositionSplitting a b n) (P : Pairing n) : Prop :=
-  ∀ i : Fin (2 * a), ∃ j : Fin (2 * a), P.partner (e (Sum.inl i)) = e (Sum.inl j)
+variable {α β γ : Type*}
 
-private theorem splitLeftInvariant (e : PositionSplitting a b n) {P : Pairing n}
-    (h : P.IsSplit e) (i : Fin (2 * n)) :
-    i ∈ SumEquiv.leftImage e ↔ P.partner i ∈ SumEquiv.leftImage e := by
-  have hclosed : ∀ j, j ∈ SumEquiv.leftImage e →
-      P.partner j ∈ SumEquiv.leftImage e := by
-    intro j hj
-    obtain ⟨k, rfl⟩ := (SumEquiv.mem_leftImage_iff e j).1 hj
+/-- A pairing is split by a sum equivalence when the left part is closed under the partner map. -/
+def PairingOn.IsSplit (e : α ⊕ β ≃ γ) (P : PairingOn γ) : Prop :=
+  ∀ i : α, ∃ j : α, P.partner (e (Sum.inl i)) = e (Sum.inl j)
+
+private theorem range_partner_invariant (P : PairingOn γ) (f : α → γ)
+    (h : ∀ i, ∃ j, P.partner (f i) = f j) (i : γ) :
+    i ∈ Set.range f ↔ P.partner i ∈ Set.range f := by
+  have hclosed : ∀ x, x ∈ Set.range f → P.partner x ∈ Set.range f := by
+    rintro _ ⟨k, rfl⟩
     obtain ⟨l, hl⟩ := h k
-    exact (SumEquiv.mem_leftImage_iff e _).2 ⟨l, hl.symm⟩
-  constructor
-  · exact hclosed i
-  · intro hi
-    simpa only [P.partner_partner] using hclosed (P.partner i) hi
+    exact ⟨l, hl.symm⟩
+  exact ⟨hclosed i, fun hi => by simpa only [P.partner_partner] using hclosed (P.partner i) hi⟩
 
-private theorem splitRightInvariant (e : PositionSplitting a b n) {P : Pairing n}
-    (h : P.IsSplit e) (i : Fin (2 * n)) :
-    i ∈ SumEquiv.rightImage e ↔ P.partner i ∈ SumEquiv.rightImage e := by
-  rw [SumEquiv.mem_rightImage_iff_not_mem_leftImage,
-    SumEquiv.mem_rightImage_iff_not_mem_leftImage]
-  exact not_congr (splitLeftInvariant e h i)
+/-- The right part is closed automatically by involutivity and disjointness of the summands. -/
+theorem PairingOn.isSplit_inr (e : α ⊕ β ≃ γ) {P : PairingOn γ} (h : P.IsSplit e)
+    (i : β) : ∃ j : β, P.partner (e (Sum.inr i)) = e (Sum.inr j) := by
+  obtain ⟨z, hz⟩ := e.surjective (P.partner (e (Sum.inr i)))
+  rcases z with k | j
+  · obtain ⟨l, hl⟩ := h k
+    have he : e (Sum.inr i) = e (Sum.inl l) := by
+      rw [← hl, hz, P.partner_partner]
+    have he' := e.injective he
+    cases he'
+  · exact ⟨j, hz.symm⟩
 
-/-- The right part is closed automatically by complement invariance. -/
-theorem Pairing.isSplit_inr (e : PositionSplitting a b n) {P : Pairing n} (h : P.IsSplit e)
-    (i : Fin (2 * b)) : ∃ j : Fin (2 * b), P.partner (e (Sum.inr i)) = e (Sum.inr j) := by
-  have hi := (SumEquiv.mem_rightImage_iff e _).2 ⟨i, rfl⟩
-  obtain ⟨j, hj⟩ := (SumEquiv.mem_rightImage_iff e _).1
-    ((splitRightInvariant e h _).1 hi)
-  exact ⟨j, hj.symm⟩
+private noncomputable def splitLeftRangeEquiv (e : α ⊕ β ≃ γ) :
+    α ≃ Set.range (fun i : α => e (Sum.inl i)) :=
+  Equiv.ofInjective _ (fun _ _ h => Sum.inl.inj (e.injective h))
+
+private noncomputable def splitRightRangeEquiv (e : α ⊕ β ≃ γ) :
+    β ≃ Set.range (fun i : β => e (Sum.inr i)) :=
+  Equiv.ofInjective _ (fun _ _ h => Sum.inr.inj (e.injective h))
 
 section Left
 
-variable (e : PositionSplitting a b n) {P : Pairing n} (h : P.IsSplit e)
+variable (e : α ⊕ β ≃ γ) {P : PairingOn γ} (h : P.IsSplit e)
 
-/-- The pairing induced on the left part by restricting to its invariant image. -/
-noncomputable def Pairing.splitLeft : Pairing a :=
-  P.restrictAlongEquiv (fun i => i ∈ SumEquiv.leftImage e) (splitLeftInvariant e h)
-    (SumEquiv.leftSubtypeEquiv e).symm
+/-- The pairing induced on the left part by restricting to its invariant range. -/
+noncomputable def PairingOn.splitLeft : PairingOn α :=
+  P.restrictAlongEquiv _ (range_partner_invariant P _ h) (splitLeftRangeEquiv e).symm
 
 /-- The induced left pairing is read off the ambient partner map. -/
 @[simp]
-theorem Pairing.partner_splitLeft (i : Fin (2 * a)) :
-    P.partner (e (Sum.inl i)) = e (Sum.inl ((P.splitLeft e h).partner i)) := by
-  have he : (SumEquiv.leftSubtypeEquiv e).symm.symm = SumEquiv.leftSubtypeEquiv e := rfl
-  simpa only [Pairing.splitLeft, he, SumEquiv.leftSubtypeEquiv_val] using
-    (P.restrictAlongEquiv_partner_symm_val (fun j => j ∈ SumEquiv.leftImage e)
-      (splitLeftInvariant e h) (SumEquiv.leftSubtypeEquiv e).symm i).symm
+theorem PairingOn.partner_splitLeft (i : α) :
+    P.partner (e (Sum.inl i)) = e (Sum.inl ((P.splitLeft e h).partner i)) :=
+  (P.restrictAlongEquiv_partner_symm_val _ (range_partner_invariant P _ h)
+    (splitLeftRangeEquiv e).symm i).symm
 
 end Left
 
 section Right
 
-variable (e : PositionSplitting a b n) {P : Pairing n} (h : P.IsSplit e)
+variable (e : α ⊕ β ≃ γ) {P : PairingOn γ} (h : P.IsSplit e)
 
-/-- The pairing induced on the right part by restricting to its invariant image. -/
-noncomputable def Pairing.splitRight : Pairing b :=
-  P.restrictAlongEquiv (fun i => i ∈ SumEquiv.rightImage e) (splitRightInvariant e h)
-    (SumEquiv.rightSubtypeEquiv e).symm
+/-- The pairing induced on the right part by restricting to its invariant range. -/
+noncomputable def PairingOn.splitRight : PairingOn β :=
+  P.restrictAlongEquiv _ (range_partner_invariant P _ (PairingOn.isSplit_inr e h))
+    (splitRightRangeEquiv e).symm
 
 /-- The induced right pairing is read off the ambient partner map. -/
 @[simp]
-theorem Pairing.partner_splitRight (i : Fin (2 * b)) :
-    P.partner (e (Sum.inr i)) = e (Sum.inr ((P.splitRight e h).partner i)) := by
-  have he : (SumEquiv.rightSubtypeEquiv e).symm.symm = SumEquiv.rightSubtypeEquiv e := rfl
-  simpa only [Pairing.splitRight, he, SumEquiv.rightSubtypeEquiv_val] using
-    (P.restrictAlongEquiv_partner_symm_val (fun j => j ∈ SumEquiv.rightImage e)
-      (splitRightInvariant e h) (SumEquiv.rightSubtypeEquiv e).symm i).symm
+theorem PairingOn.partner_splitRight (i : β) :
+    P.partner (e (Sum.inr i)) = e (Sum.inr ((P.splitRight e h).partner i)) :=
+  (P.restrictAlongEquiv_partner_symm_val _ (range_partner_invariant P _ (PairingOn.isSplit_inr e h))
+    (splitRightRangeEquiv e).symm i).symm
 
 end Right
 
@@ -110,51 +103,51 @@ section Assemble
 
 /-- **Assemble a pairing from a pairing on each part.** Inverse construction to `splitLeft` and
 `splitRight`: no pair joins the two parts, so the two partner maps can simply be run side by side. -/
-def Pairing.ofSplit (e : PositionSplitting a b n) (P : Pairing a) (Q : Pairing b) :
-    Pairing n :=
+def PairingOn.ofSplit (e : α ⊕ β ≃ γ) (P : PairingOn α) (Q : PairingOn β) :
+    PairingOn γ :=
   (P.sumCongr Q).transport e.symm
 
 @[simp]
-theorem Pairing.ofSplit_partner_inl (e : PositionSplitting a b n) (P : Pairing a) (Q : Pairing b)
-    (i : Fin (2 * a)) :
-    (Pairing.ofSplit e P Q).partner (e (Sum.inl i)) = e (Sum.inl (P.partner i)) := by
-  simp [Pairing.ofSplit]
+theorem PairingOn.ofSplit_partner_inl (e : α ⊕ β ≃ γ) (P : PairingOn α) (Q : PairingOn β)
+    (i : α) :
+    (PairingOn.ofSplit e P Q).partner (e (Sum.inl i)) = e (Sum.inl (P.partner i)) := by
+  simp [PairingOn.ofSplit]
 
 @[simp]
-theorem Pairing.ofSplit_partner_inr (e : PositionSplitting a b n) (P : Pairing a) (Q : Pairing b)
-    (i : Fin (2 * b)) :
-    (Pairing.ofSplit e P Q).partner (e (Sum.inr i)) = e (Sum.inr (Q.partner i)) := by
-  simp [Pairing.ofSplit]
+theorem PairingOn.ofSplit_partner_inr (e : α ⊕ β ≃ γ) (P : PairingOn α) (Q : PairingOn β)
+    (i : β) :
+    (PairingOn.ofSplit e P Q).partner (e (Sum.inr i)) = e (Sum.inr (Q.partner i)) := by
+  simp [PairingOn.ofSplit]
 
 /-- Reindexing the two local pairings and the corresponding sides of the position
 splitting leaves the assembled ambient pairing unchanged. Local permutations need not
 preserve either endpoint order. -/
-theorem Pairing.ofSplit_reindex
-    (e : PositionSplitting a b n) (P : Pairing a) (Q : Pairing b)
-    (left : Equiv.Perm (Fin (2 * a))) (right : Equiv.Perm (Fin (2 * b))) :
-    Pairing.ofSplit ((Equiv.sumCongr left right).trans e)
+theorem PairingOn.ofSplit_reindex
+    (e : α ⊕ β ≃ γ) (P : PairingOn α) (Q : PairingOn β)
+    (left : Equiv.Perm α) (right : Equiv.Perm β) :
+    PairingOn.ofSplit ((Equiv.sumCongr left right).trans e)
         (P.transport left) (Q.transport right) =
-      Pairing.ofSplit e P Q := by
+      PairingOn.ofSplit e P Q := by
   apply PairingOn.ext
   apply Equiv.ext
   intro z
   obtain ⟨x, rfl⟩ := ((Equiv.sumCongr left right).trans e).surjective z
   cases x with
   | inl i =>
-      rw [Pairing.ofSplit_partner_inl]
+      rw [PairingOn.ofSplit_partner_inl]
       change e (Sum.inl (left ((P.transport left).partner i))) =
-        (Pairing.ofSplit e P Q).partner (e (Sum.inl (left i)))
-      rw [Pairing.ofSplit_partner_inl, PairingOn.transport_partner, Equiv.apply_symm_apply]
+        (PairingOn.ofSplit e P Q).partner (e (Sum.inl (left i)))
+      rw [PairingOn.ofSplit_partner_inl, PairingOn.transport_partner, Equiv.apply_symm_apply]
   | inr j =>
-      rw [Pairing.ofSplit_partner_inr]
+      rw [PairingOn.ofSplit_partner_inr]
       change e (Sum.inr (right ((Q.transport right).partner j))) =
-        (Pairing.ofSplit e P Q).partner (e (Sum.inr (right j)))
-      rw [Pairing.ofSplit_partner_inr, PairingOn.transport_partner, Equiv.apply_symm_apply]
+        (PairingOn.ofSplit e P Q).partner (e (Sum.inr (right j)))
+      rw [PairingOn.ofSplit_partner_inr, PairingOn.transport_partner, Equiv.apply_symm_apply]
 
 /-- An assembled pairing is split by the splitting it was assembled along. -/
-theorem Pairing.isSplit_ofSplit (e : PositionSplitting a b n) (P : Pairing a) (Q : Pairing b) :
-    (Pairing.ofSplit e P Q).IsSplit e := fun i =>
-  ⟨P.partner i, Pairing.ofSplit_partner_inl e P Q i⟩
+theorem PairingOn.isSplit_ofSplit (e : α ⊕ β ≃ γ) (P : PairingOn α) (Q : PairingOn β) :
+    (PairingOn.ofSplit e P Q).IsSplit e := fun i =>
+  ⟨P.partner i, PairingOn.ofSplit_partner_inl e P Q i⟩
 
 end Assemble
 
@@ -162,48 +155,48 @@ section Inverse
 
 /-- Assembling and then restricting to the left part returns the left pairing. -/
 @[simp]
-theorem Pairing.splitLeft_ofSplit (e : PositionSplitting a b n) (P : Pairing a) (Q : Pairing b) :
-    (Pairing.ofSplit e P Q).splitLeft e (Pairing.isSplit_ofSplit e P Q) = P := by
+theorem PairingOn.splitLeft_ofSplit (e : α ⊕ β ≃ γ) (P : PairingOn α) (Q : PairingOn β) :
+    (PairingOn.ofSplit e P Q).splitLeft e (PairingOn.isSplit_ofSplit e P Q) = P := by
   refine PairingOn.ext (Equiv.ext fun i => ?_)
-  have h := Pairing.partner_splitLeft e (Pairing.isSplit_ofSplit e P Q) i
-  rw [Pairing.ofSplit_partner_inl] at h
+  have h := PairingOn.partner_splitLeft e (PairingOn.isSplit_ofSplit e P Q) i
+  rw [PairingOn.ofSplit_partner_inl] at h
   exact (Sum.inl.inj (e.injective h)).symm
 
 /-- Assembling and then restricting to the right part returns the right pairing. -/
 @[simp]
-theorem Pairing.splitRight_ofSplit (e : PositionSplitting a b n) (P : Pairing a) (Q : Pairing b) :
-    (Pairing.ofSplit e P Q).splitRight e (Pairing.isSplit_ofSplit e P Q) = Q := by
+theorem PairingOn.splitRight_ofSplit (e : α ⊕ β ≃ γ) (P : PairingOn α) (Q : PairingOn β) :
+    (PairingOn.ofSplit e P Q).splitRight e (PairingOn.isSplit_ofSplit e P Q) = Q := by
   refine PairingOn.ext (Equiv.ext fun i => ?_)
-  have h := Pairing.partner_splitRight e (Pairing.isSplit_ofSplit e P Q) i
-  rw [Pairing.ofSplit_partner_inr] at h
+  have h := PairingOn.partner_splitRight e (PairingOn.isSplit_ofSplit e P Q) i
+  rw [PairingOn.ofSplit_partner_inr] at h
   exact (Sum.inr.inj (e.injective h)).symm
 
 /-- **A split pairing is assembled from its two restrictions.** Nothing is lost by taking a split
 pairing apart: every position lies in one of the parts, and its partner lies in the same part. -/
 @[simp]
-theorem Pairing.ofSplit_splitLeft_splitRight (e : PositionSplitting a b n) {P : Pairing n}
+theorem PairingOn.ofSplit_splitLeft_splitRight (e : α ⊕ β ≃ γ) {P : PairingOn γ}
     (h : P.IsSplit e) :
-    Pairing.ofSplit e (P.splitLeft e h) (P.splitRight e h) = P := by
+    PairingOn.ofSplit e (P.splitLeft e h) (P.splitRight e h) = P := by
   refine PairingOn.ext (Equiv.ext fun i => ?_)
   obtain ⟨x, rfl⟩ := e.surjective i
   cases x with
-  | inl j => rw [Pairing.ofSplit_partner_inl, Pairing.partner_splitLeft e h]
-  | inr j => rw [Pairing.ofSplit_partner_inr, Pairing.partner_splitRight e h]
+  | inl j => rw [PairingOn.ofSplit_partner_inl, PairingOn.partner_splitLeft e h]
+  | inr j => rw [PairingOn.ofSplit_partner_inr, PairingOn.partner_splitRight e h]
 
 /-- **The pairings split by a position splitting are exactly the pairs of part pairings.**
 
 This is the combinatorial content of a binary diagram decomposition: choosing a pairing that
 respects the splitting is the same as choosing one on each part independently. A reindexing of a sum
 over diagrams as a sum over pairs of pieces goes through this equivalence. -/
-noncomputable def Pairing.splitEquiv (e : PositionSplitting a b n) :
-    {P : Pairing n // P.IsSplit e} ≃ Pairing a × Pairing b where
+noncomputable def PairingOn.splitEquiv (e : α ⊕ β ≃ γ) :
+    {P : PairingOn γ // P.IsSplit e} ≃ PairingOn α × PairingOn β where
   toFun P := (P.1.splitLeft e P.2, P.1.splitRight e P.2)
-  invFun PQ := ⟨Pairing.ofSplit e PQ.1 PQ.2, Pairing.isSplit_ofSplit e PQ.1 PQ.2⟩
-  left_inv P := Subtype.ext (Pairing.ofSplit_splitLeft_splitRight e P.2)
+  invFun PQ := ⟨PairingOn.ofSplit e PQ.1 PQ.2, PairingOn.isSplit_ofSplit e PQ.1 PQ.2⟩
+  left_inv P := Subtype.ext (PairingOn.ofSplit_splitLeft_splitRight e P.2)
   right_inv PQ := by
     obtain ⟨P, Q⟩ := PQ
     simp only [Prod.mk.injEq]
-    exact ⟨Pairing.splitLeft_ofSplit e P Q, Pairing.splitRight_ofSplit e P Q⟩
+    exact ⟨PairingOn.splitLeft_ofSplit e P Q, PairingOn.splitRight_ofSplit e P Q⟩
 
 end Inverse
 

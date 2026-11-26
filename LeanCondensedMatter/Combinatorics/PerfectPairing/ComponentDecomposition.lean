@@ -16,48 +16,49 @@ factor times the product of local weights.
 
 namespace Combinatorics
 
-variable {ι : Type*} {m : ι → ℕ} {n : ℕ}
+variable {ι α : Type*} {β : ι → Type*}
+  [Fintype α] [LinearOrder α] [∀ B, Fintype (β B)] [∀ B, LinearOrder (β B)]
 
-private noncomputable def Pairing.componentPairEndpointEquiv
-    (componentPairing : ∀ B, Pairing (m B)) :
-    (Σ B, (componentPairing B).NormalizedPair) × Fin 2 ≃ Σ B, Fin (2 * m B) :=
+private noncomputable def PairingOn.componentPairEndpointEquiv
+    (componentPairing : ∀ B, PairingOn (β B)) :
+    (Σ B, (componentPairing B).NormalizedPair) × Fin 2 ≃ Σ B, β B :=
   (Equiv.sigmaProdDistrib (fun B => (componentPairing B).NormalizedPair) (Fin 2)).trans
     (Equiv.sigmaCongrRight fun B => (componentPairing B).pairEndpointEquiv)
 
-private theorem Pairing.componentPairEndpointEquiv_partner
-    (global : Pairing n) (componentPairing : ∀ B, Pairing (m B))
-    (positionEquiv : (Σ B, Fin (2 * m B)) ≃ Fin (2 * n))
+private theorem PairingOn.componentPairEndpointEquiv_partner
+    (global : PairingOn α) (componentPairing : ∀ B, PairingOn (β B))
+    (positionEquiv : (Σ B, β B) ≃ α)
     (hpartner : ∀ B p,
       global.partner (positionEquiv ⟨B, p⟩) =
         positionEquiv ⟨B, (componentPairing B).partner p⟩)
     (x : Σ B, (componentPairing B).NormalizedPair) :
     global.partner
-        (positionEquiv (Pairing.componentPairEndpointEquiv componentPairing (x, 0))) =
-      positionEquiv (Pairing.componentPairEndpointEquiv componentPairing (x, 1)) := by
+        (positionEquiv (PairingOn.componentPairEndpointEquiv componentPairing (x, 0))) =
+      positionEquiv (PairingOn.componentPairEndpointEquiv componentPairing (x, 1)) := by
   rcases x with ⟨B, pr⟩
   have hpr := ((componentPairing B).mem_pairs_iff pr.1.1 pr.1.2).1 pr.2
-  simpa [Pairing.componentPairEndpointEquiv] using
+  simpa [PairingOn.componentPairEndpointEquiv] using
     (hpartner B pr.1.1).trans
       (congrArg (fun p => positionEquiv ⟨B, p⟩) hpr.2)
 
 /-- Component-local normalized pairs are equivalent to the normalized pairs of a global pairing
 when the component position fibers partition the ambient positions and intertwine partner maps. -/
-noncomputable def Pairing.normalizedPairSigmaEquiv
-    (global : Pairing n) (componentPairing : ∀ B, Pairing (m B))
-    (positionEquiv : (Σ B, Fin (2 * m B)) ≃ Fin (2 * n))
+noncomputable def PairingOn.normalizedPairSigmaEquiv
+    (global : PairingOn α) (componentPairing : ∀ B, PairingOn (β B))
+    (positionEquiv : (Σ B, β B) ≃ α)
     (hpartner : ∀ B p,
       global.partner (positionEquiv ⟨B, p⟩) =
         positionEquiv ⟨B, (componentPairing B).partner p⟩) :
     (Σ B, (componentPairing B).NormalizedPair) ≃ global.NormalizedPair :=
   global.normalizedPairEquivOfEndpointEquiv
-    (Pairing.componentPairEndpointEquiv componentPairing) positionEquiv
+    (PairingOn.componentPairEndpointEquiv componentPairing) positionEquiv
     (global.componentPairEndpointEquiv_partner componentPairing positionEquiv hpartner)
 
 /-- If each component position map is strictly monotone, the component-pair equivalence preserves
 normalized endpoint order exactly. -/
-theorem Pairing.normalizedPairSigmaEquiv_apply_of_strictMono
-    (global : Pairing n) (componentPairing : ∀ B, Pairing (m B))
-    (positionEquiv : (Σ B, Fin (2 * m B)) ≃ Fin (2 * n))
+theorem PairingOn.normalizedPairSigmaEquiv_apply_of_strictMono
+    (global : PairingOn α) (componentPairing : ∀ B, PairingOn (β B))
+    (positionEquiv : (Σ B, β B) ≃ α)
     (hpartner : ∀ B p,
       global.partner (positionEquiv ⟨B, p⟩) =
         positionEquiv ⟨B, (componentPairing B).partner p⟩)
@@ -67,9 +68,9 @@ theorem Pairing.normalizedPairSigmaEquiv_apply_of_strictMono
       (positionEquiv ⟨B, pr.1.1⟩, positionEquiv ⟨B, pr.1.2⟩) := by
   change
     (global.normalizedPairOfEndpointEquiv
-      (Pairing.componentPairEndpointEquiv componentPairing) positionEquiv ⟨B, pr⟩).1 = _
+      (PairingOn.componentPairEndpointEquiv componentPairing) positionEquiv ⟨B, pr⟩).1 = _
   apply global.normalizedPairOfEndpointEquiv_pair_eq_of_lt
-    (Pairing.componentPairEndpointEquiv componentPairing) positionEquiv
+    (PairingOn.componentPairEndpointEquiv componentPairing) positionEquiv
     (global.componentPairEndpointEquiv_partner componentPairing positionEquiv hpartner)
   exact hmono B (((componentPairing B).mem_pairs_iff pr.1.1 pr.1.2).1 pr.2).1
 
@@ -77,12 +78,12 @@ theorem Pairing.normalizedPairSigmaEquiv_apply_of_strictMono
 /-- A product over the pairs of a global pairing factors over component pairings whenever a
 component-pair equivalence identifies the normalized endpoints and the pair kernel is local under
 that identification. -/
-theorem Pairing.prod_pairs_eq_prod_components [Fintype ι]
-    {R : Type*} [CommMonoid R] (global : Pairing n)
-    (componentPairing : ∀ B, Pairing (m B))
+theorem PairingOn.prod_pairs_eq_prod_components [Fintype ι]
+    {R : Type*} [CommMonoid R] (global : PairingOn α)
+    (componentPairing : ∀ B, PairingOn (β B))
     (componentPairEquiv : (Σ B, (componentPairing B).NormalizedPair) ≃ global.NormalizedPair)
-    (pairValue : Fin (2 * n) → Fin (2 * n) → R)
-    (localPairValue : ∀ B, Fin (2 * m B) → Fin (2 * m B) → R)
+    (pairValue : α → α → R)
+    (localPairValue : ∀ B, β B → β B → R)
     (hvalue : ∀ B pr,
       pairValue (componentPairEquiv ⟨B, pr⟩).1.1
           (componentPairEquiv ⟨B, pr⟩).1.2 =
@@ -106,13 +107,13 @@ theorem Pairing.prod_pairs_eq_prod_components [Fintype ι]
 
 /-- Scalar pairing evaluation factors into a residual factor and component evaluations when both
 its weight and its pair kernel respect the component-pair decomposition. -/
-theorem Pairing.evaluation_eq_mul_prod_components [Fintype ι]
-    {R : Type*} [CommMonoid R] (global : Pairing n)
-    (componentPairing : ∀ B, Pairing (m B))
+theorem PairingOn.evaluation_eq_mul_prod_components [Fintype ι]
+    {R : Type*} [CommMonoid R] (global : PairingOn α)
+    (componentPairing : ∀ B, PairingOn (β B))
     (componentPairEquiv : (Σ B, (componentPairing B).NormalizedPair) ≃ global.NormalizedPair)
     (weight factor : R) (localWeight : ι → R)
-    (pairValue : Fin (2 * n) → Fin (2 * n) → R)
-    (localPairValue : ∀ B, Fin (2 * m B) → Fin (2 * m B) → R)
+    (pairValue : α → α → R)
+    (localPairValue : ∀ B, β B → β B → R)
     (hweight : weight = factor * ∏ B, localWeight B)
     (hvalue : ∀ B pr,
       pairValue (componentPairEquiv ⟨B, pr⟩).1.1

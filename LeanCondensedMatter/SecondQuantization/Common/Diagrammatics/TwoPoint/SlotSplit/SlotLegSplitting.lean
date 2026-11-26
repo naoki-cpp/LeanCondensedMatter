@@ -66,7 +66,7 @@ variable {ExternalLabel InternalLabel : Type*}
 /-- **Reconstruct a two-point diagram from an external piece and a vacuum piece.**
 
 The external labels come from the external piece, each vertex label is read off whichever side its
-vertex belongs to, and the pairing is assembled by `Pairing.ofSplit` along `slotLegSplitting`.
+vertex belongs to, and the pairing is assembled by `PairingOn.ofSplit` along `slotLegSplitting`.
 
 Nothing here inspects connectivity: the vacuum piece may be disconnected, and the external piece is
 not required to be externally connected. Those conditions belong to the statement that this is
@@ -79,7 +79,7 @@ noncomputable def TwoPointDiagram.ofSlotSplit {S T : Finset (Fin N)} (h : T ⊆ 
   vertexLabel v :=
     if hv : (v : Fin N) ∈ T then ext.vertexLabel ⟨v, hv⟩
     else vac.vertexLabel ⟨v, Finset.mem_sdiff.mpr ⟨v.2, hv⟩⟩
-  pairing := Pairing.ofSplit (slotLegSplitting h) ext.pairing vac.pairing
+  pairing := PairingOn.ofSplit (slotLegSplitting h) ext.pairing vac.pairing
 
 @[simp]
 theorem TwoPointDiagram.ofSlotSplit_externalLabel {S T : Finset (Fin N)} (h : T ⊆ S)
@@ -93,7 +93,7 @@ theorem TwoPointDiagram.ofSlotSplit_pairing {S T : Finset (Fin N)} (h : T ⊆ S)
     (ext : TwoPointDiagram ExternalLabel InternalLabel N T)
     (vac : QuarticDiagram InternalLabel N (S \ T)) :
     (TwoPointDiagram.ofSlotSplit h ext vac).pairing =
-      Pairing.ofSplit (slotLegSplitting h) ext.pairing vac.pairing :=
+      PairingOn.ofSplit (slotLegSplitting h) ext.pairing vac.pairing :=
   rfl
 
 theorem TwoPointDiagram.ofSlotSplit_vertexLabel_of_mem {S T : Finset (Fin N)} (h : T ⊆ S)
@@ -141,7 +141,7 @@ theorem TwoPointDiagram.ofSlotSplit_slotSplit (h : T ⊆ S)
   · by_cases hv : (v : Fin N) ∈ T
     · exact TwoPointDiagram.ofSlotSplit_vertexLabel_of_mem h _ _ v hv
     · exact TwoPointDiagram.ofSlotSplit_vertexLabel_of_not_mem h _ _ v hv
-  · exact Pairing.ofSplit_splitLeft_splitRight (slotLegSplitting h) hd
+  · exact PairingOn.ofSplit_splitLeft_splitRight (slotLegSplitting h) hd
 
 /-- Reconstructing and then reading off the external piece returns the external piece. -/
 theorem TwoPointDiagram.slotSplitExternal_ofSlotSplit (h : T ⊆ S)
@@ -151,7 +151,7 @@ theorem TwoPointDiagram.slotSplitExternal_ofSlotSplit (h : T ⊆ S)
     (TwoPointDiagram.ofSlotSplit h ext vac).slotSplitExternal h hd = ext := by
   refine TwoPointDiagram.ext rfl (funext fun v => ?_) ?_
   · exact TwoPointDiagram.ofSlotSplit_vertexLabel_of_mem h ext vac ⟨v.1, h v.2⟩ v.2
-  · exact Pairing.splitLeft_ofSplit (slotLegSplitting h) ext.pairing vac.pairing
+  · exact PairingOn.splitLeft_ofSplit (slotLegSplitting h) ext.pairing vac.pairing
 
 /-- Reconstructing and then reading off the vacuum piece returns the vacuum piece. -/
 theorem TwoPointDiagram.slotSplitVacuum_ofSlotSplit (h : T ⊆ S)
@@ -162,7 +162,7 @@ theorem TwoPointDiagram.slotSplitVacuum_ofSlotSplit (h : T ⊆ S)
   refine QuarticDiagram.ext (funext fun v => ?_) ?_
   · exact TwoPointDiagram.ofSlotSplit_vertexLabel_of_not_mem h ext vac
       ⟨v.1, (Finset.mem_sdiff.mp v.2).1⟩ (Finset.mem_sdiff.mp v.2).2
-  · exact Pairing.splitRight_ofSplit (slotLegSplitting h) ext.pairing vac.pairing
+  · exact PairingOn.splitRight_ofSplit (slotLegSplitting h) ext.pairing vac.pairing
 
 end Decompose
 

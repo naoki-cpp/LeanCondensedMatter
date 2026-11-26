@@ -12,7 +12,7 @@ split and proves compatibility of their pairing partners. It contains no mixed-t
 or `StrictAnti` assumption.
 
 The unordered decomposition of all normalized pairs is already provided by the generic
-`Pairing.ofSplitNormalizedPairEquiv` for `slotLegSplitting`. It is not duplicated here.
+`PairingOn.ofSplitNormalizedPairEquiv` for `slotLegSplitting`. It is not duplicated here.
 The mixed-time normalized pair embedding and its order/crossing laws live in
 `SlotSplitVacuumPairing`.
 -/
@@ -92,7 +92,7 @@ theorem TwoPointDiagram.ofSlotSplit_pairing_partner_vacuumOrderedLeg
   rw [slotSplitVacuumOrderedLeg_eq_slotSplitRight T p,
     slotSplitVacuumOrderedLeg_eq_slotSplitRight T
       ((vac.pairingInOrder (slotSplitVacuumOrder T)).partner p)]
-  rw [TwoPointDiagram.ofSlotSplit_pairing, Pairing.ofSplit_partner_inr]
+  rw [TwoPointDiagram.ofSlotSplit_pairing, PairingOn.ofSplit_partner_inr]
   apply congrArg (fun q => slotLegSplitting (Finset.subset_univ T) (Sum.inr q))
   rw [QuarticDiagram.pairingInOrder, PairingOn.transport_partner, Equiv.apply_symm_apply]
 

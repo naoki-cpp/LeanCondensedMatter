@@ -154,7 +154,7 @@ theorem TwoPointDiagram.externalVacuumSplit_fst_partner {S : Finset (Fin N)}
     (i : Fin (2 * (2 * (interactionSector (d.vertexGraph.componentBlock (Sum.inl 0))).card + 1))) :
     d.pairing.partner (d.externalSlotLegSplitting (Sum.inl i)) =
       d.externalSlotLegSplitting (Sum.inl (d.externalVacuumSplit.1.pairing.partner i)) := by
-  exact Pairing.partner_splitLeft d.externalSlotLegSplitting
+  exact PairingOn.partner_splitLeft d.externalSlotLegSplitting
     d.isSplit_externalSlotLegSplitting i
 
 /-- The canonical external leg equivalence intertwines the split pairing with the ambient restricted

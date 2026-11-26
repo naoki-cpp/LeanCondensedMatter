@@ -171,7 +171,7 @@ private theorem
     (d.pairingInMixedOrder τ τ' σ).componentGeometricCrossingCount
         (Equiv.sigmaFiberEquiv (d.mixedPairComponent τ τ' σ)) B C % 2 = 0 := by
   classical
-  exact Combinatorics.Pairing.componentGeometricCrossingCount_mod_two_eq_zero_of_even_fiber
+  exact Combinatorics.PairingOn.componentGeometricCrossingCount_mod_two_eq_zero_of_even_fiber
     (d.pairingInMixedOrder τ τ' σ)
     (Equiv.sigmaFiberEquiv (d.mixedPairComponent τ τ' σ))
     (fun D => d.mixedComponentPairEndpointEquiv τ τ' σ D)

@@ -119,7 +119,7 @@ theorem TwoPointDiagram.mixedComponentCrossingCount_externalComponentPart
       (d.externalPiece.pairingInMixedOrder τ τ' (d.externalPieceTimes σ)).crossingCount := by
   classical
   rw [TwoPointDiagram.mixedComponentCrossingCount,
-    Pairing.componentCrossingCount, Fintype.sum_prod_type,
+    PairingOn.componentCrossingCount, Fintype.sum_prod_type,
     PairingOn.crossingCount_eq_sum_crosses, Fintype.sum_prod_type]
   exact sum_sum_crosses_eq_of_equiv
     (fun p : d.MixedComponentPair τ τ' σ d.externalComponentPart => p.1.1)

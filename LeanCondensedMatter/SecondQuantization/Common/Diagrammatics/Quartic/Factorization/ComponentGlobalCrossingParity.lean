@@ -67,7 +67,7 @@ private theorem QuarticDiagram.componentGeometricCrossingCount_mod_two_eq_zero
         (d.componentPairEquiv orders shuffle) B C % 2 = 0 := by
   classical
   let fiber := orderedQuarticLegEquiv (C : Finset (Fin N)).card
-  exact Combinatorics.Pairing.componentGeometricCrossingCount_mod_two_eq_zero_of_even_fiber
+  exact Combinatorics.PairingOn.componentGeometricCrossingCount_mod_two_eq_zero_of_even_fiber
     (d.pairingInOrder (d.assembleVertexOrder orders shuffle))
     (d.componentPairEquiv orders shuffle)
     (fun D => ((d.restrictComponent D.2).pairingInOrder (orders D)).pairEndpointEquiv)
@@ -94,7 +94,7 @@ theorem QuarticDiagram.pairingInOrder_crossingCount_mod_two_eq_sum_components
     (d.pairingInOrder (d.assembleVertexOrder orders shuffle)).crossingCount % 2 =
       (∑ B : d.vertexGraph.componentPartitionOn.parts,
         ((d.restrictComponent B.2).pairingInOrder (orders B)).crossingCount) % 2 := by
-  rw [Combinatorics.Pairing.crossingCount_mod_two_eq_sum_componentCrossingCount_of_geometric_even
+  rw [Combinatorics.PairingOn.crossingCount_mod_two_eq_sum_componentCrossingCount_of_geometric_even
     (d.pairingInOrder (d.assembleVertexOrder orders shuffle))
     (d.componentPairEquiv orders shuffle)
     (fun B C hBC =>
@@ -102,7 +102,7 @@ theorem QuarticDiagram.pairingInOrder_crossingCount_mod_two_eq_sum_components
   apply congrArg (fun n : ℕ => n % 2)
   apply Finset.sum_congr rfl
   intro B _
-  exact Combinatorics.Pairing.componentCrossingCount_self_eq
+  exact Combinatorics.PairingOn.componentCrossingCount_self_eq
     (d.pairingInOrder (d.assembleVertexOrder orders shuffle))
     ((d.restrictComponent B.2).pairingInOrder (orders B))
     (d.componentPairEquiv orders shuffle) B
