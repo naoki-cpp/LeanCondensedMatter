@@ -486,25 +486,12 @@ theorem realSpaceRashbaSpinDisplacement_conductivity_eq_finiteLehmannTable
   let D := boundedOneBodyOperator (LinearMap.symmetrizedProduct (K := ℂ)
     ((spinfulGeometry geometry).directionalPosition measured)
     (spinOneBodyLinear (Site := Site) spinScale component))
-  let expectation := QuantumTheory.LinearResponse.eigenbasisNormalizedExpectation system data
-  have hstationary := QuantumTheory.LinearResponse.isStationary_eigenbasisNormalizedExpectation
-    system data
-  change QuantumTheory.Transport.finiteVolumeConductivityFromVectorPotential volume ω η
-      (channel.infiniteTimeAdiabaticResponse (QuantumTheory.LinearResponse.freePropagatorGroup system)
-        system.hbar expectation ω η) =
-    -QuantumTheory.LinearResponse.finiteLehmannTableResponse system.hbar ω η
-      (QuantumTheory.LinearResponse.finiteLehmannTableOfEigenbasis system data D channel.source) /
-      (volume.volume : ℂ)
-  have hresponse := realSpaceRashbaSpinDisplacement_conductivity_eq volume
+  dsimp only
+  rw [realSpaceRashbaSpinDisplacement_conductivity_eq volume
     geometry bond onsite exchange measured source hbar q spinScale hhbar
-    component expectation hstationary ω η hη
-  change QuantumTheory.Transport.finiteVolumeConductivityFromVectorPotential volume ω η
-      (channel.infiniteTimeAdiabaticResponse (QuantumTheory.LinearResponse.freePropagatorGroup system)
-        system.hbar expectation ω η) =
-      -QuantumTheory.LinearResponse.adiabaticFrequencyDomainSusceptibility
-        (QuantumTheory.LinearResponse.freePropagatorGroup system) system.hbar
-        expectation D channel.source ω η / (volume.volume : ℂ) at hresponse
-  rw [hresponse, QuantumTheory.LinearResponse.finiteLehmannTableResponse_ofEigenbasis,
+    component (QuantumTheory.LinearResponse.eigenbasisNormalizedExpectation system data)
+    (QuantumTheory.LinearResponse.isStationary_eigenbasisNormalizedExpectation system data) ω η hη,
+    QuantumTheory.LinearResponse.finiteLehmannTableResponse_ofEigenbasis,
     QuantumTheory.LinearResponse.adiabaticFrequencyDomainSusceptibility_eigenbasis_eq_lehmannSeries
       system data D channel.source ω η hη
       (QuantumTheory.LinearResponse.eigenbasisTimeDomainSummable_of_finite
