@@ -810,7 +810,7 @@ private theorem gaussianCrossed_K2_radialLorentzian_eq_energyShell
         B ^ 2 + (v ^ 2 * p ^ 2 - A) ^ 2 =
           (A - v ^ 2 * p ^ 2) ^ 2 + B ^ 2 := by ring
     dsimp [f, df, g, Lorentzian.spectralKernel]
-    rw [hsqrt, hden, Complex.real_smul]
+    rw [hsqrt, hden]
     push_cast
     ring
   rw [← intervalIntegral.integral_const_mul]
