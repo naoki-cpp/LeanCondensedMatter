@@ -23,8 +23,8 @@ export function renderStatement(container, entry) {
   function section(title) {
     container.append(element("h4", title));
   }
-  function row(item, { named = true, includeSource = false } = {}) {
-    const wrapper = element("div", "", "statement-row");
+  function row(item, { named = true, includeSource = false, conclusion = false } = {}) {
+    const wrapper = element("div", "", conclusion ? "statement-row statement-conclusion" : "statement-row");
     if (named) wrapper.append(element("code", item.name + " :", "statement-variable"));
     const formula = element("div", "", "statement-expression");
     renderTexMath(formula, item.tex, item.typeText ?? item.text ?? "", { includeSource });
@@ -47,7 +47,7 @@ export function renderStatement(container, entry) {
     for (const assumption of model.assumptions) row(assumption, { named: assumption.role !== "instance" });
   }
   section(entry.kind === "theorem" || entry.kind === "axiom" ? "Conclusion" : "Result type");
-  row(model.conclusion, { named: false });
+  row(model.conclusion, { named: false, conclusion: true });
   if (model.fields.length) {
     section("Structure fields");
     container.append(element("p", "Field types are shown for a value named self.", "math-fallback-note"));

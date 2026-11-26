@@ -1,3 +1,5 @@
+import { buildGraphScene } from "./graph-layout.js";
+import { createGraphPresentation } from "./graph-presentation.js";
 import { createModuleOverview } from "./module-overview.js";
 import { declarationAllowed } from "./declaration-model.js";
 import { curvedEdgePath } from "./graph-edge.js";
@@ -5,22 +7,17 @@ import { buildModuleGraphCatalog } from "./module-import-map.js";
 import { renderLeanMath, renderLeanSourceFallback } from "./lean-math.js";
 import { renderStatement } from "./statement-view.js";
 import {
-  BRANCH_COLORS,
-  ROOT_NODE_COLOR,
-  ROOT_NODE_STROKE,
   graphNodeLabelAttributes,
+  graphLabelLines,
   graphNodeRadius,
 } from "./graph-style.js";
 
 const SVG_NS = "http://www.w3.org/2000/svg";
-const MAX_NODES = 80;
 const SEARCH_LIMIT = 10;
 const CATALOG_URL = "https://raw.githubusercontent.com/naoki-cpp/LeanCondensedMatter/graph-data/declarations.json";
 const MODULES_URL = "https://raw.githubusercontent.com/naoki-cpp/LeanCondensedMatter/graph-data/module-imports.json";
 const SOURCE_BASE_URL = "https://raw.githubusercontent.com/naoki-cpp/LeanCondensedMatter/main/";
 const definitionSourceRequests = new Map();
-const MIN_BRANCH_ARC = 52;
-const MIN_LEAF_ARC = 22;
 
 const state = {
   catalog: [],
@@ -55,6 +52,7 @@ const ui = {
   searchLabel: document.querySelector("#search-form > label"),
   search: document.querySelector("#theorem-search"),
   searchResults: document.querySelector("#search-results"),
+  searchStatus: document.querySelector("#search-status"),
   direction: document.querySelector("#direction"),
   depth: document.querySelector("#depth"),
   module: document.querySelector("#module-filter"),
@@ -116,9 +114,9 @@ function displayName(name) {
   let common = 0;
   while (common < parts.length && common < rootParts.length && parts[common] === rootParts[common]) common += 1;
   const contextual = parts.slice(common).join(".");
-  if (contextual && contextual.length <= 34) return contextual;
+  if (contextual && contextual.length <= 52) return contextual;
   const base = declarationBaseName(name);
-  return base.length <= 34 ? base : `${base.slice(0, 31)}…`;
+  return base;
 }
 
 function moduleAllowed(name) {
@@ -126,53 +124,6 @@ function moduleAllowed(name) {
       !declarationAllowed(state.byName.get(name), state.kind, state.generated)) return false;
   if (state.module === "*") return true;
   return state.byName.get(name)?.module === state.module;
-}
-
-function addTraversal(levels, accessor, sign) {
-  const visited = new Set([state.root]);
-  const queue = [[state.root, 0]];
-  let truncated = false;
-
-  while (queue.length > 0) {
-    const [name, depth] = queue.shift();
-    if (depth >= state.depth) continue;
-    const entry = state.byName.get(name);
-    if (!entry) continue;
-
-    const neighbors = accessor(entry)
-      .filter((neighbor) => state.byName.has(neighbor))
-      .filter((neighbor) => neighbor === state.root || moduleAllowed(neighbor))
-      .sort((a, b) => a.localeCompare(b));
-
-    for (const neighbor of neighbors) {
-      if (visited.has(neighbor)) continue;
-      if (!levels.has(neighbor) && levels.size >= MAX_NODES) {
-        truncated = true;
-        continue;
-      }
-      visited.add(neighbor);
-      const nextDepth = depth + 1;
-      const nextLevel = sign * nextDepth;
-      const previous = levels.get(neighbor);
-      if (previous === undefined || Math.abs(nextLevel) < Math.abs(previous)) {
-        levels.set(neighbor, nextLevel);
-      }
-      queue.push([neighbor, nextDepth]);
-    }
-  }
-  return truncated;
-}
-
-function collectNeighborhood() {
-  const levels = new Map([[state.root, 0]]);
-  let truncated = false;
-  if (state.direction === "dependencies" || state.direction === "both") {
-    truncated = addTraversal(levels, (entry) => entry.dependencies, -1) || truncated;
-  }
-  if (state.direction === "consumers" || state.direction === "both") {
-    truncated = addTraversal(levels, (entry) => entry.dependents, 1) || truncated;
-  }
-  return { levels, truncated };
 }
 
 function highlightMatches(entry) {
@@ -186,163 +137,6 @@ function highlightMatches(entry) {
     (highlights.has("single") && entry.singleCompiledConsumer) ||
     (highlights.has("wrapper") && entry.directWrapperOf != null)
   );
-}
-
-function chooseTreeParents(levels) {
-  const parents = new Map();
-  const ordered = [...levels.entries()]
-    .filter(([name]) => name !== state.root)
-    .sort(([, a], [, b]) => Math.abs(a) - Math.abs(b));
-
-  for (const [name, level] of ordered) {
-    const parentLevel = level < 0 ? level + 1 : level - 1;
-    const entry = state.byName.get(name);
-    const candidates = [...levels.entries()]
-      .filter(([, candidateLevel]) => candidateLevel === parentLevel)
-      .map(([candidate]) => candidate)
-      .filter((candidate) => {
-        const candidateEntry = state.byName.get(candidate);
-        return level < 0
-          ? candidateEntry?.dependencies.includes(name)
-          : entry?.dependencies.includes(candidate);
-      })
-      .sort((a, b) => a.localeCompare(b));
-    if (candidates.length > 0) parents.set(name, candidates[0]);
-  }
-  return parents;
-}
-
-function treeChildren(levels, parents) {
-  const children = new Map();
-  for (const [name] of levels) {
-    if (name === state.root) continue;
-    const parent = parents.get(name);
-    if (!parent) continue;
-    if (!children.has(parent)) children.set(parent, []);
-    children.get(parent).push(name);
-  }
-  for (const names of children.values()) names.sort((a, b) => a.localeCompare(b));
-  return children;
-}
-
-function sideChildren(name, children, levels, sign) {
-  return (children.get(name) ?? []).filter((child) => Math.sign(levels.get(child)) === sign);
-}
-
-function subtreeWeight(name, children, levels, sign, memo) {
-  const key = `${sign}:${name}`;
-  if (memo.has(key)) return memo.get(key);
-  const descendants = sideChildren(name, children, levels, sign);
-  const weight = descendants.length === 0
-    ? 1
-    : descendants.reduce((sum, child) => sum + subtreeWeight(child, children, levels, sign, memo), 0);
-  memo.set(key, weight);
-  return weight;
-}
-
-function sideDepth(levels, sign) {
-  return Math.max(
-    1,
-    ...[...levels.values()]
-      .filter((level) => Math.sign(level) === sign)
-      .map((level) => Math.abs(level)),
-  );
-}
-
-function densityRadiusStep(roots, children, levels, sign, angularSpan, memo) {
-  if (roots.length === 0) return 0;
-  const leafCount = roots.reduce(
-    (sum, root) => sum + subtreeWeight(root, children, levels, sign, memo),
-    0,
-  );
-  const depth = sideDepth(levels, sign);
-  const firstRingRadius = (roots.length * MIN_BRANCH_ARC) / angularSpan;
-  const outerRingRadius = (leafCount * MIN_LEAF_ARC) / angularSpan;
-  return Math.max(firstRingRadius, outerRingRadius / depth);
-}
-
-function polarPoint(cx, cy, radius, angle) {
-  return { x: cx + Math.cos(angle) * radius, y: cy + Math.sin(angle) * radius };
-}
-
-function radialLayout(levels) {
-  const parents = chooseTreeParents(levels);
-  const children = treeChildren(levels, parents);
-  const maxDepth = Math.max(1, ...[...levels.values()].map((level) => Math.abs(level)));
-  const baseRadiusStep = maxDepth <= 2 ? 180 : maxDepth === 3 ? 155 : 140;
-  const branchFor = new Map([[state.root, "root"]]);
-  const branchColor = new Map([["root", ROOT_NODE_COLOR]]);
-  const weightMemo = new Map();
-
-  const dependencyRoots = sideChildren(state.root, children, levels, -1);
-  const consumerRoots = sideChildren(state.root, children, levels, 1);
-  const allRoots = [...dependencyRoots, ...consumerRoots];
-  allRoots.forEach((name, index) => branchColor.set(name, BRANCH_COLORS[index % BRANCH_COLORS.length]));
-
-  const angularSpan = state.direction === "both" ? Math.PI - 0.16 : 2 * Math.PI - 0.16;
-  const densityStep = Math.max(
-    densityRadiusStep(dependencyRoots, children, levels, -1, angularSpan, weightMemo),
-    densityRadiusStep(consumerRoots, children, levels, 1, angularSpan, weightMemo),
-  );
-  const radiusStep = Math.max(baseRadiusStep, densityStep);
-  const outerRadius = maxDepth * radiusStep;
-  const margin = 190;
-  const width = Math.max(900, outerRadius * 2 + margin * 2);
-  const height = Math.max(700, outerRadius * 2 + margin * 2);
-  const cx = width / 2;
-  const cy = height / 2;
-  const positions = new Map([[state.root, { x: cx, y: cy, angle: 0, radius: 0, level: 0 }]]);
-
-  function placeBranch(name, startAngle, endAngle, sign, branch) {
-    const level = levels.get(name);
-    const angle = (startAngle + endAngle) / 2;
-    const radius = Math.abs(level) * radiusStep;
-    const point = polarPoint(cx, cy, radius, angle);
-    positions.set(name, { ...point, angle, radius, level });
-    branchFor.set(name, branch);
-
-    const descendants = sideChildren(name, children, levels, sign);
-    if (descendants.length === 0) return;
-    const total = descendants.reduce(
-      (sum, child) => sum + subtreeWeight(child, children, levels, sign, weightMemo),
-      0,
-    );
-    let cursor = startAngle;
-    for (const child of descendants) {
-      const fraction = subtreeWeight(child, children, levels, sign, weightMemo) / total;
-      const span = (endAngle - startAngle) * fraction;
-      const pad = Math.min(0.035, Math.max(0, span * 0.06));
-      placeBranch(child, cursor + pad, cursor + span - pad, sign, branch);
-      cursor += span;
-    }
-  }
-
-  function placeSide(roots, sign, startAngle, endAngle) {
-    if (roots.length === 0) return;
-    const total = roots.reduce(
-      (sum, child) => sum + subtreeWeight(child, children, levels, sign, weightMemo),
-      0,
-    );
-    let cursor = startAngle;
-    for (const root of roots) {
-      const fraction = subtreeWeight(root, children, levels, sign, weightMemo) / total;
-      const span = (endAngle - startAngle) * fraction;
-      const pad = Math.min(0.045, Math.max(0, span * 0.045));
-      placeBranch(root, cursor + pad, cursor + span - pad, sign, root);
-      cursor += span;
-    }
-  }
-
-  if (state.direction === "both") {
-    placeSide(consumerRoots, 1, -Math.PI / 2 + 0.08, Math.PI / 2 - 0.08);
-    placeSide(dependencyRoots, -1, Math.PI / 2 + 0.08, 3 * Math.PI / 2 - 0.08);
-  } else if (state.direction === "dependencies") {
-    placeSide(dependencyRoots, -1, -Math.PI + 0.08, Math.PI - 0.08);
-  } else {
-    placeSide(consumerRoots, 1, -Math.PI + 0.08, Math.PI - 0.08);
-  }
-
-  return { positions, parents, children, branchFor, branchColor, width, height, cx, cy, radiusStep };
 }
 
 function isTreeEdge(source, target, levels, parents) {
@@ -364,18 +158,62 @@ function setBranchFocus(branch) {
     const baseOpacity = Number(item.getAttribute("data-base-opacity") ?? "1");
     item.style.opacity = !branch || ownBranch === branch || ownBranch === "root"
       ? String(baseOpacity)
-      : "0.1";
+      : "0.22";
+    if (item.dataset.crossLink === "true") {
+      item.setAttribute("stroke-opacity", branch && ownBranch === branch ? item.dataset.focusedOpacity : item.dataset.restingOpacity);
+    }
   }
 }
 
 function setGraphViewBox(viewBox) {
+  const rect = ui.viewport.getBoundingClientRect();
+  const labelScale = rect.width && rect.height
+    ? Math.max(1, Math.max(viewBox.width / rect.width, viewBox.height / rect.height))
+    : 1;
   state.viewBox = viewBox;
   ui.graph.setAttribute("viewBox", `${viewBox.x} ${viewBox.y} ${viewBox.width} ${viewBox.height}`);
+  for (const label of ui.graph.querySelectorAll(".graph-label")) {
+    label.setAttribute("transform", `translate(${label.dataset.x}, ${label.dataset.y}) scale(${labelScale})`);
+  }
+  const labelLayoutKey = [viewBox.x, viewBox.y, viewBox.width, viewBox.height, rect.width, rect.height].join(":");
+  if (state.labelLayoutKey !== labelLayoutKey) {
+    state.labelLayoutKey = labelLayoutKey;
+    declutterGraphLabels(rect);
+  }
+}
+
+function declutterGraphLabels(viewport) {
+  const labels = [...ui.graph.querySelectorAll(".graph-label:not(.graph-label-secondary)")];
+  // Batch visibility writes, then all measurements, then the resulting visibility writes.
+  labels.forEach((label) => label.classList.remove("graph-label-collapsed"));
+  const measured = labels.map((label) => ({ label, bounds: label.getBoundingClientRect(), priority: Number(label.dataset.priority) }))
+    .sort((a, b) => a.priority - b.priority);
+  const accepted = [];
+  const collapsed = [];
+  for (const item of measured) {
+    const box = item.bounds;
+    const clipped = box.left < viewport.left + 6 || box.right > viewport.right - 6 ||
+      box.top < viewport.top + 6 || box.bottom > viewport.bottom - 6;
+    const overlap = accepted.some(({ bounds }) => box.left < bounds.right + 5 && box.right + 5 > bounds.left &&
+      box.top < bounds.bottom + 5 && box.bottom + 5 > bounds.top);
+    if (item.priority > 1 && (clipped || overlap)) collapsed.push(item.label);
+    else accepted.push(item);
+  }
+  collapsed.forEach((label) => label.classList.add("graph-label-collapsed"));
 }
 
 function fitGraph() {
   if (!state.graphBounds) return;
-  setGraphViewBox({ ...state.graphBounds });
+  // Include labels in the fitted area; a second pass accounts for their minimum display scale.
+  for (let pass = 0; pass < 2; pass += 1) {
+    const content = ui.graph.getBBox();
+    if (content.width > 0 && content.height > 0) {
+      const padding = 36;
+      state.graphBounds = { x: content.x - padding, y: content.y - padding,
+        width: content.width + padding * 2, height: content.height + padding * 2 };
+    }
+    setGraphViewBox({ ...state.graphBounds });
+  }
 }
 
 function zoomGraph(factor, clientX = null, clientY = null) {
@@ -398,27 +236,34 @@ function zoomGraph(factor, clientX = null, clientY = null) {
   });
 }
 
-function appendNodeLabel(nodes, name, position, color, branch, root, selected, showLeafLabel, baseOpacity) {
+function appendNodeLabel(nodes, name, position, root, selected, showLeafLabel) {
   const depth = Math.abs(position.level);
-  if (!root && !selected && depth !== 1 && !showLeafLabel) return;
-  const offset = root ? 28 : depth === 1 ? 25 : 17;
+  const offset = root ? 32 : depth === 1 ? 22 : 16;
   const labelPoint = root
-    ? { x: position.x, y: position.y + offset }
-    : polarPoint(position.x, position.y, offset, position.angle);
+    ? { x: 0, y: offset }
+    : { x: Math.cos(position.angle) * offset, y: Math.sin(position.angle) * offset };
   const cosine = Math.cos(position.angle);
   const anchor = root || Math.abs(cosine) < 0.2 ? "middle" : cosine > 0 ? "start" : "end";
+  const visible = root || selected || depth === 1 || showLeafLabel;
+  const label = svg("g", { class: `graph-label${visible ? "" : " graph-label-secondary"}`, "aria-hidden": "true",
+    "data-priority": root ? 0 : selected ? 1 : depth === 1 ? 2 : 3,
+    "data-x": labelPoint.x, "data-y": labelPoint.y,
+    transform: `translate(${labelPoint.x}, ${labelPoint.y})` });
+  const lines = graphLabelLines(displayName(name));
   const text = svg("text", {
     class: "node-label",
-    x: labelPoint.x,
-    y: labelPoint.y,
+    x: 0,
+    y: 0,
     "text-anchor": anchor,
-    ...graphNodeLabelAttributes({ depth, root, color }),
-    "data-branch": branch,
-    "data-base-opacity": baseOpacity,
+    ...graphNodeLabelAttributes({ depth, root, selected }),
   });
-  text.style.opacity = String(baseOpacity);
-  text.textContent = displayName(name);
-  nodes.append(text);
+  lines.forEach((line, index) => {
+    const span = svg("tspan", { x: 0, y: index * (root ? 19 : 17) });
+    span.textContent = line;
+    text.append(span);
+  });
+  label.append(text);
+  nodes.append(label);
 }
 
 function setModuleFilterEnabled(enabled) {
@@ -434,7 +279,7 @@ function setGraphModeChrome() {
   document.getElementById("kind-filter").closest("label").hidden = modules;
   document.getElementById("generated-filter").closest("label").hidden = modules;
   ui.searchLabel.textContent = modules ? "Module" : "Declaration";
-  ui.search.placeholder = modules ? "Module name" : "Name, module, or documentation";
+  ui.search.placeholder = modules ? "Module name…" : "Declaration, module, or documentation…";
   ui.moduleFilterLabel.hidden = modules;
   ui.wrapperHighlightLabel.hidden = modules;
   ui.graph.setAttribute("aria-label", modules
@@ -444,10 +289,18 @@ function setGraphModeChrome() {
   terminal.nextSibling.nodeValue = modules ? " no project imports" : " terminal";
   zero.nextSibling.nodeValue = modules ? " no importers" : " zero consumer";
   single.nextSibling.nodeValue = modules ? " one importer" : " single consumer";
-  ui.graphLegend.querySelector(".legend-node").parentElement.lastChild.nodeValue = modules ? " module" : " theorem";
-  const edgeLegend = ui.graphLegend.querySelector(".legend-dependency");
-  edgeLegend.childNodes[1].nodeValue = modules ? " import" : " dependency";
-  ui.graphLegend.querySelector(".legend-edge.wrapper").parentElement.hidden = modules;
+  ui.graphLegend.replaceChildren(...createGraphPresentation(state.graphKind).legend().map((item) => {
+    const row = element("span");
+    const icon = svg("svg", { width: 22, height: 14, viewBox: "0 0 22 14", "aria-hidden": "true" });
+    icon.append(svg(item.shape === "node" ? "circle" : "path", {
+      ...(item.shape === "node" ? { cx: 7, cy: 7, r: 4.5 } : { d: "M 1 7 L 16 7", fill: "none" }),
+      ...item.attributes,
+      ...(item.shape === "edge" ? { "stroke-opacity": 0.85, "marker-end": "none" } : {}),
+    }));
+    if (item.shape === "edge") icon.append(svg("path", { d: "M 15 4 L 21 7 L 15 10 Z", fill: item.attributes.stroke }));
+    row.append(icon, document.createTextNode(item.label));
+    return row;
+  }));
 }
 
 function renderGraph({ preserveView = false } = {}) {
@@ -458,25 +311,16 @@ function renderGraph({ preserveView = false } = {}) {
   setModuleFilterEnabled(state.graphKind === "theorems");
 
   const previousView = preserveView ? state.viewBox : null;
-  const { levels, truncated } = collectNeighborhood();
-  const { positions, parents, children, branchFor, branchColor, width, height, cx, cy } = radialLayout(levels);
+  const { levels, truncated, positions, parents, children, branchFor, width, height, cx, cy } = buildGraphScene(state.byName, {
+    root: state.root, direction: state.direction, depth: state.depth, accepts: moduleAllowed,
+  });
+  const presentation = createGraphPresentation(state.graphKind);
+  const branchNames = [...new Set(branchFor.values())].filter((branch) => branch !== "root");
+  state.labelLayoutKey = null;
+  document.getElementById("graph-direction-left").textContent = state.direction === "both" ? "Dependencies" : "";
+  document.getElementById("graph-direction-right").textContent = state.direction === "both" ? "Used by" : "";
   ui.graph.replaceChildren();
   state.graphBounds = { x: 0, y: 0, width, height };
-
-  const guides = svg("g", { "aria-hidden": "true" });
-  const maxDepth = Math.max(1, ...[...levels.values()].map((level) => Math.abs(level)));
-  for (let depth = 1; depth <= maxDepth; depth += 1) {
-    const sample = [...positions.values()].find((position) => Math.abs(position.level) === depth);
-    if (!sample) continue;
-    guides.append(svg("circle", {
-      cx, cy, r: sample.radius,
-      fill: "none",
-      stroke: "rgba(169,190,255,0.08)",
-      "stroke-width": 1,
-      "stroke-dasharray": "2 8",
-    }));
-  }
-  ui.graph.append(guides);
 
   const edges = svg("g", { class: "edges" });
   let edgeCount = 0;
@@ -493,17 +337,16 @@ function renderGraph({ preserveView = false } = {}) {
       const typeReference = source.typeDependencies?.includes(dependencyName);
       const valueReference = source.valueDependencies?.includes(dependencyName);
       const branch = edgeBranch(sourceName, dependencyName, levels, branchFor) ?? "cross";
-      const color = treeEdge ? branchColor.get(branch) ?? "#91a9ff" : "#94a3b8";
-      const opacity = treeEdge ? 0.72 : 0.18;
       const path = svg("path", {
         d: curvedEdgePath(sourcePosition, targetPosition, cx, cy),
         fill: "none",
-        stroke: color,
-        "stroke-width": isWrapper ? 2.4 : treeEdge ? 1.45 : 1,
-        "stroke-opacity": opacity,
-        "stroke-dasharray": isWrapper ? "7 5" : typeReference && !valueReference ? "2 5" : treeEdge ? "none" : "4 7",
+        ...presentation.edge({ tree: treeEdge, wrapper: isWrapper, typeOnly: typeReference && !valueReference,
+          branchIndex: Math.max(0, branchNames.indexOf(branch)) }),
         "stroke-linecap": "round",
-        "data-branch": treeEdge ? branch : "cross",
+        "data-branch": branch,
+        "data-cross-link": treeEdge ? "false" : "true",
+        "data-resting-opacity": presentation.edge({ tree: treeEdge })["stroke-opacity"],
+        "data-focused-opacity": presentation.edge({ tree: treeEdge, focused: true })["stroke-opacity"],
         "data-base-opacity": 1,
       });
       const title = svg("title");
@@ -520,7 +363,7 @@ function renderGraph({ preserveView = false } = {}) {
   ui.graph.append(edges);
 
   const nodes = svg("g", { class: "nodes" });
-  const showLeafLabels = levels.size <= 32;
+  const showLeafLabels = levels.size <= 16;
   for (const [name, position] of positions) {
     const entry = state.byName.get(name);
     if (!entry) continue;
@@ -529,10 +372,9 @@ function renderGraph({ preserveView = false } = {}) {
     const depth = Math.abs(position.level);
     const sign = Math.sign(position.level);
     const branch = branchFor.get(name) ?? "root";
-    const color = branchColor.get(branch) ?? "#91a9ff";
     const highlight = highlightMatches(entry);
     const baseOpacity = highlight === false ? 0.25 : 1;
-    const isLeaf = depth > 1 && sideChildren(name, children, levels, sign).length === 0;
+    const isLeaf = depth > 1 && (children.get(name) ?? []).filter((child) => Math.sign(levels.get(child)) === sign).length === 0;
     const radius = graphNodeRadius({ depth, root: isRoot, selected: isSelected });
 
     const group = svg("g", {
@@ -541,23 +383,19 @@ function renderGraph({ preserveView = false } = {}) {
       tabindex: 0,
       role: "button",
       "aria-label": name,
+      "aria-pressed": String(isSelected),
       "data-branch": branch,
       "data-base-opacity": baseOpacity,
     });
     group.style.opacity = String(baseOpacity);
+    if (isRoot || isSelected) group.append(svg("circle", { r: radius + 5, fill: "none", stroke: "#a7c1b0", "stroke-width": 1.5 }));
 
     const hit = svg("circle", { class: "node-hit", r: Math.max(13, radius + 7), fill: "transparent" });
-    const definition = ["def", "abbrev", "opaque"].includes(entry.kind);
     const dot = svg("circle", {
       class: "node-dot",
       r: radius,
-      stroke: isSelected ? "#ffffff" : isRoot ? ROOT_NODE_STROKE : "rgba(255,255,255,0.72)",
-      "stroke-width": isSelected || isRoot ? 2.4 : 1,
-      "stroke-dasharray": entry.generated ? "2 2" : "none",
+      ...presentation.node(entry, { root: isRoot, selected: isSelected }),
       "data-kind": entry.kind ?? "module",
-      fill: definition ? "#49bda5" : entry.kind === "axiom" ? "#f2b35d"
-        : ["inductive", "constructor", "recursor", "quotient"].includes(entry.kind) ? "#b58ae8"
-        : isRoot ? ROOT_NODE_COLOR : color,
     });
     group.append(hit, dot);
 
@@ -566,9 +404,11 @@ function renderGraph({ preserveView = false } = {}) {
     group.append(title);
 
     const select = () => {
+      const hadFocus = document.activeElement === group;
       state.selected = name;
       renderDetails(name);
       renderGraph({ preserveView: true });
+      if (hadFocus) [...ui.graph.querySelectorAll(".node")].find((node) => node.getAttribute("aria-label") === name)?.focus();
     };
     const emphasize = () => {
       dot.setAttribute("r", String(radius + 2));
@@ -595,15 +435,12 @@ function renderGraph({ preserveView = false } = {}) {
     group.addEventListener("blur", relax);
     nodes.append(group);
     appendNodeLabel(
-      nodes,
+      group,
       name,
       position,
-      color,
-      branch,
       isRoot,
       isSelected,
       showLeafLabels && isLeaf,
-      baseOpacity,
     );
   }
   ui.graph.append(nodes);
@@ -1050,16 +887,23 @@ function findSearchResults(query) {
 }
 
 function updateSearchActive() {
-  [...ui.searchResults.querySelectorAll(".search-result")].forEach((button, index) => {
+  const results = [...ui.searchResults.querySelectorAll(".search-result")];
+  results.forEach((button, index) => {
     const active = index === state.searchIndex;
     button.classList.toggle("active", active);
     button.setAttribute("aria-selected", String(active));
   });
+  const active = results[state.searchIndex];
+  if (active) ui.search.setAttribute("aria-activedescendant", active.id);
+  else ui.search.removeAttribute("aria-activedescendant");
 }
 
 function renderSearchResults() {
   const query = ui.search.value.trim();
   state.searchResults = findSearchResults(query);
+  ui.searchStatus.textContent = query && state.searchResults.length === 0
+    ? "No matches. Try a declaration name, module, or another keyword."
+    : "";
   state.searchIndex = state.searchResults.length > 0 ? 0 : -1;
   ui.searchResults.replaceChildren();
   if (!query || state.searchResults.length === 0) {
@@ -1069,6 +913,8 @@ function renderSearchResults() {
   state.searchResults.forEach((entry, index) => {
     const button = element("button", "search-result");
     button.type = "button";
+    button.id = `search-result-${index}`;
+    button.tabIndex = -1;
     button.setAttribute("role", "option");
     button.append(element("strong", "", entry.name));
     const context = entry.docString?.trim() || shortModule(entry.module);
@@ -1088,6 +934,7 @@ function renderSearchResults() {
 function hideSearchResults() {
   ui.searchResults.hidden = true;
   ui.search.setAttribute("aria-expanded", "false");
+  ui.search.removeAttribute("aria-activedescendant");
   state.searchResults = [];
   state.searchIndex = -1;
 }
@@ -1149,6 +996,25 @@ function restoreLocation() {
 }
 
 function bindGraphNavigation() {
+  new ResizeObserver(() => {
+    if (state.viewBox && !ui.viewport.hidden) setGraphViewBox({ ...state.viewBox });
+  }).observe(ui.viewport);
+  document.getElementById("graph-zoom-in").addEventListener("click", () => zoomGraph(0.8));
+  document.getElementById("graph-zoom-out").addEventListener("click", () => zoomGraph(1.25));
+  document.getElementById("graph-fit").addEventListener("click", fitGraph);
+  ui.viewport.addEventListener("keydown", (event) => {
+    if (event.target !== ui.viewport || !state.viewBox) return;
+    const shifts = { ArrowLeft: [-0.1, 0], ArrowRight: [0.1, 0], ArrowUp: [0, -0.1], ArrowDown: [0, 0.1] };
+    if (shifts[event.key]) {
+      event.preventDefault();
+      const [dx, dy] = shifts[event.key];
+      setGraphViewBox({ ...state.viewBox, x: state.viewBox.x + dx * state.viewBox.width, y: state.viewBox.y + dy * state.viewBox.height });
+    } else if (["+", "=", "-", "0"].includes(event.key)) {
+      event.preventDefault();
+      if (event.key === "0") fitGraph();
+      else zoomGraph(event.key === "-" ? 1.25 : 0.8);
+    }
+  });
   ui.viewport.addEventListener("wheel", (event) => {
     if (!state.root) return;
     event.preventDefault();
@@ -1178,6 +1044,10 @@ function bindGraphNavigation() {
 }
 
 function bindEvents() {
+  document.querySelector(".skip-link").addEventListener("click", (event) => {
+    event.preventDefault();
+    document.getElementById("explorer-content").focus();
+  });
   for (const id of ["kind-filter", "generated-filter"]) {
     document.getElementById(id).addEventListener("change", () => {
       state.kind = document.getElementById("kind-filter").value;
