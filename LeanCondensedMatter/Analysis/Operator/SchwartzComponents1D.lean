@@ -81,7 +81,7 @@ noncomputable def internalOperatorLinear :
     apply LinearMap.ext
     intro ψ
     funext a
-    simp [internalOperator, Finset.smul_sum]
+    simp [internalOperator, Finset.smul_sum, smul_smul]
 
 /-- Componentwise spatial operators Lie-commute with internal matrix operators. -/
 theorem lie_spatialLift_internalOperator_eq_zero
