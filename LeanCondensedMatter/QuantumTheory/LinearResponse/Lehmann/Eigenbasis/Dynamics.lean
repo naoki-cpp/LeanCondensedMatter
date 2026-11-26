@@ -101,16 +101,33 @@ theorem eigenbasisNormalizedExpectation_apply
   exact (eigenbasisDensityOperator system data).expectation_eq_tsum_diagonal
     A data.basis data.probability (eigenbasisDensityOperator_apply_basis system data)
 
-/-- When one energy-basis state has probability one and every other state
-has probability zero, the diagonal expectation is exactly its matrix element. -/
-theorem eigenbasisNormalizedExpectation_apply_of_single
+/-- Probability one at a single basis state already forces all other weights
+to vanish. The canonical diagonal expectation is the pure vector expectation. -/
+theorem eigenbasisNormalizedExpectation_eq_pure_of_single
     (data : EnergyEigenbasisLehmannData system ι) (occupied : ι)
-    (hoccupied : data.probability occupied = 1)
-    (hzero : ∀ i, i ≠ occupied → data.probability i = 0)
-    (A : H →L[ℂ] H) :
-    eigenbasisNormalizedExpectation system data A =
-      inner ℂ (data.basis occupied) (A (data.basis occupied)) := by
-  rw [eigenbasisNormalizedExpectation_apply, tsum_eq_single occupied]
+    (hoccupied : data.probability occupied = 1) :
+    eigenbasisNormalizedExpectation system data =
+      (pure ⟨data.basis occupied, data.basis.orthonormal.1 occupied⟩).toNormalizedExpectation := by
+  classical
+  have hzero (i : ι) (hi : i ≠ occupied) : data.probability i = 0 := by
+    have hle := data.probability_hasSum.summable.sum_le_tsum
+      ({i, occupied} : Finset ι) (fun j _ => data.probability_nonneg j)
+    rw [data.probability_hasSum.tsum_eq] at hle
+    simp [hi, hoccupied] at hle
+    exact le_antisymm hle (data.probability_nonneg i)
+  have hext (p q : NormalizedExpectation H)
+      (h : p.toContinuousLinearMap = q.toContinuousLinearMap) : p = q := by
+    cases p
+    cases q
+    cases h
+    rfl
+  apply hext
+  apply ContinuousLinearMap.ext
+  intro A
+  change eigenbasisNormalizedExpectation system data A =
+    (pure ⟨data.basis occupied, data.basis.orthonormal.1 occupied⟩).toNormalizedExpectation A
+  rw [eigenbasisNormalizedExpectation_apply, DensityOperator.toNormalizedExpectation_apply,
+    DensityOperator.expectation_pure, tsum_eq_single occupied]
   · simp [hoccupied]
   · intro i hi
     simp [hzero i hi]
