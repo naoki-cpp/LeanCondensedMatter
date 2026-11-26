@@ -1108,13 +1108,13 @@ theorem orderedExternalInsertionTimedEvents_paired {n : ℕ}
   let times : Fin 2 → ℝ := fun e => if e = 0 then τ else τ'
   let source := orderedExternalInsertionTimedEvents (E := 1) times σ
   let target := orderedExternalInsertionTimedEvents (E := 2) (pairedExternalTimes τ τ') σ
-  let r₁ := externalInsertionTimedEventBeforeOrEqual times σ
-  let r₂ := externalInsertionTimedEventBeforeOrEqual (pairedExternalTimes τ τ') σ
+  let r₁ := externalInsertionTimedEventBeforeOrEqual (E := 1) times σ
+  let r₂ := externalInsertionTimedEventBeforeOrEqual (E := 2) (pairedExternalTimes τ τ') σ
   let block := @pairedExternalEventBlock n
-  have hs : source.Pairwise r₁ := orderedExternalInsertionTimedEvents_pairwise times σ
-  have hn : source.Nodup := orderedExternalInsertionTimedEvents_nodup times σ
+  have hs : source.Pairwise r₁ := orderedExternalInsertionTimedEvents_pairwise (E := 1) times σ
+  have hn : source.Nodup := orderedExternalInsertionTimedEvents_nodup (E := 1) times σ
   have ht : target.Pairwise r₂ :=
-    orderedExternalInsertionTimedEvents_pairwise (pairedExternalTimes τ τ') σ
+    orderedExternalInsertionTimedEvents_pairwise (E := 2) (pairedExternalTimes τ τ') σ
   have hblock (a : ExternalInsertionTimedEvent 1 n) : (block a).Nodup := by
     cases a with
     | inl e => fin_cases e <;> simp [block, pairedExternalEventBlock]
@@ -1194,16 +1194,16 @@ theorem orderedExternalInsertionTimedEvents_paired {n : ℕ}
     cases x with
     | inl e =>
         fin_cases e
-        · exact ⟨.inl 0, orderedExternalInsertionTimedEvents_all_mem times σ _, by simp [block, pairedExternalEventBlock]⟩
-        · exact ⟨.inl 0, orderedExternalInsertionTimedEvents_all_mem times σ _, by simp [block, pairedExternalEventBlock]⟩
-        · exact ⟨.inl 1, orderedExternalInsertionTimedEvents_all_mem times σ _, by simp [block, pairedExternalEventBlock]⟩
-        · exact ⟨.inl 1, orderedExternalInsertionTimedEvents_all_mem times σ _, by simp [block, pairedExternalEventBlock]⟩
+        · exact ⟨.inl 0, orderedExternalInsertionTimedEvents_all_mem (E := 1) times σ _, by simp [block, pairedExternalEventBlock]⟩
+        · exact ⟨.inl 0, orderedExternalInsertionTimedEvents_all_mem (E := 1) times σ _, by simp [block, pairedExternalEventBlock]⟩
+        · exact ⟨.inl 1, orderedExternalInsertionTimedEvents_all_mem (E := 1) times σ _, by simp [block, pairedExternalEventBlock]⟩
+        · exact ⟨.inl 1, orderedExternalInsertionTimedEvents_all_mem (E := 1) times σ _, by simp [block, pairedExternalEventBlock]⟩
     | inr v =>
-        exact ⟨.inr v, orderedExternalInsertionTimedEvents_all_mem times σ _, by simp [block, pairedExternalEventBlock]⟩
+        exact ⟨.inr v, orderedExternalInsertionTimedEvents_all_mem (E := 1) times σ _, by simp [block, pairedExternalEventBlock]⟩
   letI : Std.Antisymm r₂ :=
     ⟨fun _ _ hab hba =>
       stableTimedEventBeforeOrEqual_antisymm
-        (externalInsertionTimedEventTime (pairedExternalTimes τ τ') σ)
+        (externalInsertionTimedEventTime (E := 2) (pairedExternalTimes τ τ') σ)
         externalInsertionTimedEventRank
         (by
           intro a b h
@@ -1211,11 +1211,11 @@ theorem orderedExternalInsertionTimedEvents_paired {n : ℕ}
           exact Fin.ext h)
         hab hba⟩
   have hsub : List.Subperm target (source.flatMap block) :=
-    (orderedExternalInsertionTimedEvents_nodup (pairedExternalTimes τ τ') σ).subperm
+    (orderedExternalInsertionTimedEvents_nodup (E := 2) (pairedExternalTimes τ τ') σ).subperm
       (fun x _ => hall x)
   have hrev : List.Subperm (source.flatMap block) target :=
     hflatN.subperm (fun x _ =>
-      orderedExternalInsertionTimedEvents_all_mem (pairedExternalTimes τ τ') σ x)
+      orderedExternalInsertionTimedEvents_all_mem (E := 2) (pairedExternalTimes τ τ') σ x)
   have hlist := List.sublist_of_subperm_of_pairwise (r := r₂)
     hsub ht (hsorted source hs hn)
   exact hlist.eq_of_length (le_antisymm hlist.length_le hrev.length_le)
@@ -1232,7 +1232,7 @@ theorem externalInsertionStandardToMixedAtomicPositionEquiv_sign_paired
     if a.val < b.val ∧ pairedExternalTimes τ τ' a < pairedExternalTimes τ τ' b
     then 1 else 0) = _
   simp only [Fin.sum_univ_four]
-  by_cases h : τ < τ' <;> simp [pairedExternalTimes, h]
+  by_cases h : τ < τ' <;> simp [pairedExternalTimes, h] <;> decide
 
 end Common
 end SecondQuantization
