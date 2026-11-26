@@ -104,6 +104,25 @@ theorem traceNorm_eq_tsum_diagonalExpectationValue {T : H →L[ℂ] H}
       ∑' i, diagonalExpectationValue (CFC.abs T) (CFC.abs_nonneg T).isSelfAdjoint (d i) :=
   (hT.hasSum_abs_diagonalExpectationValue d).tsum_eq.symm
 
+end IsTraceClass
+
+/-- The diagonal of the operator absolute value is the absolute pairing with a left polar factor. -/
+theorem diagonalExpectationValue_abs_eq_norm_inner_left_of_polar
+    {T : H →L[ℂ] H} (U : H →L[ℂ] H)
+    (hU : ContinuousLinearMap.adjoint U * T = CFC.abs T) (x : H) :
+    diagonalExpectationValue (CFC.abs T) (CFC.abs_nonneg T).isSelfAdjoint x =
+      ‖inner ℂ (U x) (T x)‖ := by
+  have hdiag :
+      (diagonalExpectationValue (CFC.abs T) (CFC.abs_nonneg T).isSelfAdjoint x : ℂ) =
+        inner ℂ (U x) (T x) := by
+    rw [coe_diagonalExpectationValue_right, ← hU, mul_apply_eq_comp]
+    exact ContinuousLinearMap.adjoint_inner_right U x (T x)
+  have hnonneg := diagonalExpectationValue_nonneg
+    (CFC.abs T) (nonneg_iff_isPositive.mp (CFC.abs_nonneg T)) x
+  rw [← hdiag, Complex.norm_real, Real.norm_of_nonneg hnonneg]
+
+namespace IsTraceClass
+
 /-- If `U` is a left polar factor for `T`, the trace norm is the absolute diagonal
 pairing of `U` with `T` in every Hilbert basis. -/
 theorem traceNorm_eq_tsum_norm_inner_left_of_polar {T : H →L[ℂ] H}
@@ -112,16 +131,7 @@ theorem traceNorm_eq_tsum_norm_inner_left_of_polar {T : H →L[ℂ] H}
     {ι : Type*} (d : HilbertBasis ι ℂ H) :
     hT.traceNorm = ∑' i, ‖inner ℂ (U (d i)) (T (d i))‖ := by
   rw [hT.traceNorm_eq_tsum_diagonalExpectationValue d]
-  apply tsum_congr
-  intro i
-  have hdiag :
-      (diagonalExpectationValue (CFC.abs T) (CFC.abs_nonneg T).isSelfAdjoint (d i) : ℂ) =
-        inner ℂ (U (d i)) (T (d i)) := by
-    rw [coe_diagonalExpectationValue_right, ← hU, mul_apply_eq_comp]
-    exact ContinuousLinearMap.adjoint_inner_right U (d i) (T (d i))
-  have hnonneg := diagonalExpectationValue_nonneg
-    (CFC.abs T) (nonneg_iff_isPositive.mp (CFC.abs_nonneg T)) (d i)
-  rw [← hdiag, Complex.norm_real, Real.norm_of_nonneg hnonneg]
+  exact tsum_congr fun i => diagonalExpectationValue_abs_eq_norm_inner_left_of_polar U hU (d i)
 
 /-- The trace norm is independent of the proof of trace-class membership. -/
 theorem traceNorm_proof_irrel {T : H →L[ℂ] H} (hT hT' : IsTraceClass T) :

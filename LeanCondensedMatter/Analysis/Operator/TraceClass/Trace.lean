@@ -24,6 +24,27 @@ namespace ContinuousLinearMap
 
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
 
+/-- A Hilbert–Schmidt factorization controls absolute diagonal pairings against a contraction,
+without presupposing trace-class membership. -/
+theorem summable_norm_inner_left_and_tsum_le_of_factorization
+    {T A B : H →L[ℂ] H} (hA : IsHilbertSchmidt A) (hB : IsHilbertSchmidt B)
+    (hfactor : ContinuousLinearMap.adjoint A * B = T)
+    (W : H →L[ℂ] H) (hW : ‖W‖ ≤ 1) {ι : Type*} (d : HilbertBasis ι ℂ H) :
+    Summable (fun i => ‖inner ℂ (W (d i)) (T (d i))‖) ∧
+      ∑' i, ‖inner ℂ (W (d i)) (T (d i))‖ ≤
+        Real.sqrt hA.normSq * Real.sqrt hB.normSq := by
+  have hAW : IsHilbertSchmidt (A * W) := isHilbertSchmidt_comp_right hA W
+  have hpoint (x : H) :
+      inner ℂ (W x) (T x) = inner ℂ ((A * W) x) (B x) := by
+    rw [← hfactor, mul_apply_eq_comp, mul_apply_eq_comp]
+    exact ContinuousLinearMap.adjoint_inner_right A (W x) (B x)
+  simp_rw [hpoint]
+  have hpair := hAW.summable_norm_inner_apply_and_tsum_le hB d
+  exact ⟨hpair.1, hpair.2.trans
+    (mul_le_mul_of_nonneg_right
+      (Real.sqrt_le_sqrt (hA.normSq_comp_right_le_of_norm_le_one W hW))
+      (Real.sqrt_nonneg _))⟩
+
 namespace IsTraceClass
 
 /-- For any Hilbert--Schmidt factorization `T = A† B`, the trace norm is bounded by the product
@@ -35,25 +56,8 @@ theorem traceNorm_le_sqrt_normSq_mul_of_factorization
     hT.traceNorm ≤ Real.sqrt hA.normSq * Real.sqrt hB.normSq := by
   obtain ⟨w, d, -⟩ := exists_hilbertBasis (𝕜 := ℂ) (E := H)
   obtain ⟨U, -, hUright, hUnorm⟩ := exists_leftPolarFactor T
-  have hAU : IsHilbertSchmidt (A * U) := isHilbertSchmidt_comp_right hA U
-  have hAUnorm_le : hAU.normSq ≤ hA.normSq :=
-    hA.normSq_comp_right_le_of_norm_le_one U hUnorm
-  have hterm (i : w) :
-      inner ℂ (U (d i)) (T (d i)) =
-        inner ℂ ((A * U) (d i)) (B (d i)) := by
-    rw [← hfactor, mul_apply_eq_comp, mul_apply_eq_comp]
-    exact ContinuousLinearMap.adjoint_inner_right A (U (d i)) (B (d i))
-  have hpair := hAU.summable_norm_inner_apply_and_tsum_le hB d
   rw [hT.traceNorm_eq_tsum_norm_inner_left_of_polar U hUright d]
-  calc
-    (∑' i, ‖inner ℂ (U (d i)) (T (d i))‖) =
-        ∑' i, ‖inner ℂ ((A * U) (d i)) (B (d i))‖ := by
-      apply tsum_congr
-      intro i
-      rw [hterm]
-    _ ≤ Real.sqrt hAU.normSq * Real.sqrt hB.normSq := hpair.2
-    _ ≤ Real.sqrt hA.normSq * Real.sqrt hB.normSq :=
-      mul_le_mul_of_nonneg_right (Real.sqrt_le_sqrt hAUnorm_le) (Real.sqrt_nonneg _)
+  exact (summable_norm_inner_left_and_tsum_le_of_factorization hA hB hfactor U hUnorm d).2
 
 /-- Every trace-class operator admits a Hilbert--Schmidt factorization whose two squared
 Hilbert--Schmidt norms equal the trace norm. -/
@@ -108,23 +112,13 @@ theorem isTraceClass_iff_exists_hilbertSchmidt_factorization {T : H →L[ℂ] H}
     exact ⟨A, B, hA, hB, hfactor⟩
   · rintro ⟨A, B, hA, hB, hfactor⟩
     obtain ⟨w, d, -⟩ := exists_hilbertBasis (𝕜 := ℂ) (E := H)
-    obtain ⟨U, -, hUright, -⟩ := exists_leftPolarFactor T
-    have hAU : IsHilbertSchmidt (A * U) := isHilbertSchmidt_comp_right hA U
-    have hsum := hAU.summable_inner_apply hB d
-    have hpoint (i : w) :
-        ((diagonalExpectationValue (CFC.abs T) (CFC.abs_nonneg T).isSelfAdjoint (d i) : ℝ) : ℂ) =
-          inner ℂ ((A * U) (d i)) (B (d i)) := by
-      rw [coe_diagonalExpectationValue_right, ← hUright, mul_apply_eq_comp,
-        ContinuousLinearMap.adjoint_inner_right U (d i) (T (d i))]
-      rw [← hfactor, mul_apply_eq_comp, mul_apply_eq_comp]
-      exact ContinuousLinearMap.adjoint_inner_right A (U (d i)) (B (d i))
-    have hcast :
-        Summable (fun i =>
-          ((diagonalExpectationValue (CFC.abs T) (CFC.abs_nonneg T).isSelfAdjoint (d i) : ℝ) : ℂ)) :=
-      hsum.congr fun i => (hpoint i).symm
+    obtain ⟨U, -, hUright, hUnorm⟩ := exists_leftPolarFactor T
+    have hsum :=
+      (summable_norm_inner_left_and_tsum_le_of_factorization hA hB hfactor U hUnorm d).1
     apply (isTraceClass_iff_isTraceClassWrt d T).mpr
     rw [IsTraceClassWrt]
-    exact Complex.summable_ofReal.mp hcast
+    exact hsum.congr fun i =>
+      (diagonalExpectationValue_abs_eq_norm_inner_left_of_polar U hUright (d i)).symm
 
 namespace IsTraceClass
 

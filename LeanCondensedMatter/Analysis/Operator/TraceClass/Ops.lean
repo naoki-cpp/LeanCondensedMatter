@@ -90,49 +90,25 @@ private theorem IsTraceClass.summable_norm_inner_left_and_tsum_le_traceNorm
       ∑' i, ‖inner ℂ (W (d i)) (T (d i))‖ ≤ hT.traceNorm := by
   obtain ⟨A, B, hA, hB, hfactor, hAnorm, hBnorm⟩ :=
     hT.exists_hilbertSchmidt_factorization_normSq_eq_traceNorm
-  have hAW : IsHilbertSchmidt (A * W) := isHilbertSchmidt_comp_right hA W
-  have hAWnorm : hAW.normSq ≤ hT.traceNorm := by
-    calc
-      hAW.normSq ≤ hA.normSq := hA.normSq_comp_right_le_of_norm_le_one W hW
-      _ = hT.traceNorm := hAnorm
-  have hpoint (x : H) :
-      inner ℂ (W x) (T x) = inner ℂ ((A * W) x) (B x) := by
-    rw [← hfactor, mul_apply_eq_comp, mul_apply_eq_comp]
-    exact ContinuousLinearMap.adjoint_inner_right A (W x) (B x)
-  simp_rw [hpoint]
-  have hpair := hAW.summable_norm_inner_apply_and_tsum_le hB d
-  refine ⟨hpair.1, hpair.2.trans ?_⟩
-  calc
-    Real.sqrt hAW.normSq * Real.sqrt hB.normSq ≤
-        Real.sqrt hT.traceNorm * Real.sqrt hT.traceNorm := by
-      rw [hBnorm]
-      exact mul_le_mul_of_nonneg_right (Real.sqrt_le_sqrt hAWnorm) (Real.sqrt_nonneg _)
-    _ = hT.traceNorm := by rw [← pow_two, Real.sq_sqrt hT.traceNorm_nonneg]
+  have hpair := summable_norm_inner_left_and_tsum_le_of_factorization hA hB hfactor W hW d
+  refine ⟨hpair.1, hpair.2.trans_eq ?_⟩
+  rw [hAnorm, hBnorm, ← pow_two, Real.sq_sqrt hT.traceNorm_nonneg]
 
 /-- Trace-class membership is closed under addition. -/
 theorem IsTraceClass.add {T R : H →L[ℂ] H} (hT : IsTraceClass T) (hR : IsTraceClass R) :
     IsTraceClass (T + R) := by
   obtain ⟨w, d, -⟩ := exists_hilbertBasis (𝕜 := ℂ) (E := H)
   obtain ⟨U, -, hUright, hUnorm⟩ := exists_leftPolarFactor (T + R)
-  have hTsum : Summable (fun i => inner ℂ (U (d i)) (T (d i))) :=
-    Summable.of_norm (hT.summable_norm_inner_left_and_tsum_le_traceNorm U hUnorm d).1
-  have hRsum : Summable (fun i => inner ℂ (U (d i)) (R (d i))) :=
-    Summable.of_norm (hR.summable_norm_inner_left_and_tsum_le_traceNorm U hUnorm d).1
-  have hsum :
-      Summable (fun i => inner ℂ (U (d i)) ((T + R) (d i))) := by
-    simpa [add_apply, inner_add_right] using hTsum.add hRsum
-  have hcast :
-      Summable (fun i =>
-        (diagonalExpectationValue (CFC.abs (T + R))
-          (CFC.abs_nonneg (T + R)).isSelfAdjoint (d i) : ℂ)) := by
-    apply hsum.congr
-    intro i
-    symm
-    rw [coe_diagonalExpectationValue_right, ← hUright, mul_apply_eq_comp]
-    exact ContinuousLinearMap.adjoint_inner_right U (d i) ((T + R) (d i))
+  have hTsum := (hT.summable_norm_inner_left_and_tsum_le_traceNorm U hUnorm d).1
+  have hRsum := (hR.summable_norm_inner_left_and_tsum_le_traceNorm U hUnorm d).1
+  have hsum : Summable (fun i => ‖inner ℂ (U (d i)) ((T + R) (d i))‖) := by
+    refine Summable.of_nonneg_of_le (fun i => norm_nonneg _) (fun i => ?_) (hTsum.add hRsum)
+    simpa only [add_apply, inner_add_right] using
+      norm_add_le (inner ℂ (U (d i)) (T (d i))) (inner ℂ (U (d i)) (R (d i)))
   apply (isTraceClass_iff_isTraceClassWrt d (T + R)).mpr
   rw [IsTraceClassWrt]
-  exact Complex.summable_ofReal.mp hcast
+  exact hsum.congr fun i =>
+    (diagonalExpectationValue_abs_eq_norm_inner_left_of_polar U hUright (d i)).symm
 
 namespace IsTraceClass
 
