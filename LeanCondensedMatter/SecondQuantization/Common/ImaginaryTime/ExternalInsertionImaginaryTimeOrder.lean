@@ -1183,7 +1183,7 @@ theorem orderedExternalInsertionTimedEvents_paired {n : ℕ}
         refine ⟨hwithin a, ih (List.pairwise_cons.mp hL).2 (List.nodup_cons.mp hN).2, ?_⟩
         intro x hx y hy
         obtain ⟨b, hb, hyb⟩ := List.mem_flatMap.mp hy
-        exact hcross a b (fun he => (List.nodup_cons.mp hN).1 (he ▸ hb))
+        exact hcross a b (fun he => (List.nodup_cons.mp hN).1 (by simpa [he] using hb))
           ((List.pairwise_cons.mp hL).1 b hb) x y hx hyb
   have hflatN : (source.flatMap block).Nodup := by
     rw [List.nodup_flatMap]
