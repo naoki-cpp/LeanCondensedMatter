@@ -1,4 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTime.TimedField
+import LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTime.MixedTimeOrdering
 import LeanCondensedMatter.QuantumTheory.LinearResponse.Expectation.Basic
 
 set_option linter.style.header false
@@ -199,6 +200,73 @@ theorem connectedCorrelation_bilinearCurrentInsertion_eq_four_fields
   apply Finset.sum_congr rfl
   intro l _
   ring
+
+/-- The fixed elementary field labels of two number-conserving bilinears.
+The order is creation, annihilation, creation, annihilation. -/
+def pairedCurrentExternalLabels (i j k l : Mode) : Fin 4 → ExternalFieldLabel Mode :=
+  fun e => if e = 0 then .creation i else if e = 1 then .annihilation j
+    else if e = 2 then .creation k else .annihilation l
+
+/-- The elementary field pair of each composite event, or an unchanged full
+interaction vertex. This is the fixed-index integrand before summing the
+current matrix elements. -/
+noncomputable def pairedCurrentTimedEventOperator {n : ℕ}
+    (ε : Mode → ℝ) (τ τ' : ℝ) (i j k l : Mode)
+    (q : Fin n → QuarticVertexLabel Mode) (σ : Fin n → ℝ) :
+    Common.ExternalInsertionTimedEvent 1 n →
+      OccupationFock Mode →ₗ[ℂ] OccupationFock Mode
+  | .inl e =>
+      if e = 0 then
+        (externalFieldOperator ε τ (.creation i)).comp
+          (externalFieldOperator ε τ (.annihilation j))
+      else
+        (externalFieldOperator ε τ' (.creation k)).comp
+          (externalFieldOperator ε τ' (.annihilation l))
+  | .inr v => Common.interactionPicture (fermionEnergy ε)
+      (quarticVertexOperator (q v)) (σ v)
+
+private theorem pairedCurrentTimedEventOperator_eq_blockProduct {n : ℕ}
+    (ε : Mode → ℝ) (τ τ' : ℝ) (i j k l : Mode)
+    (q : Fin n → QuarticVertexLabel Mode) (σ : Fin n → ℝ)
+    (event : Common.ExternalInsertionTimedEvent 1 n) :
+    ((Common.pairedExternalEventBlock event).map
+      (externalInsertionTimedEventOperator ε (pairedCurrentExternalLabels i j k l)
+        (Common.pairedExternalTimes τ τ') q σ)).prod =
+      pairedCurrentTimedEventOperator ε τ τ' i j k l q σ event := by
+  cases event with
+  | inl e =>
+      fin_cases e <;>
+        simp [Common.pairedExternalEventBlock, pairedCurrentTimedEventOperator,
+          pairedCurrentExternalLabels, Common.pairedExternalTimes,
+          externalInsertionTimedEventOperator, Module.End.mul_eq_comp,
+          Module.End.one_eq_id]
+  | inr v =>
+      simp [Common.pairedExternalEventBlock, pairedCurrentTimedEventOperator,
+        externalInsertionTimedEventOperator]
+
+/-- At every perturbative order, the signed four-field interaction-picture
+product is the ordinary stable time-ordered product of two even bilinear
+events and the full quartic interaction vertices. No fermionic sign is
+attached to exchanging the composite events. At equal current times this
+identity uses the stable fixed-block order, not symmetric current ordering. -/
+theorem externalInsertionMixedTimeOrderedVertexComp_eq_pairedCurrentProduct
+    {n : ℕ} (ε : Mode → ℝ) (τ τ' : ℝ) (i j k l : Mode)
+    (q : Fin n → QuarticVertexLabel Mode) (σ : Fin n → ℝ) :
+    externalInsertionMixedTimeOrderedVertexComp (E := 2) ε
+        (pairedCurrentExternalLabels i j k l) (Common.pairedExternalTimes τ τ') q σ =
+      ((Common.orderedExternalInsertionTimedEvents (E := 1)
+          (fun e => if e = 0 then τ else τ') σ).map
+        (pairedCurrentTimedEventOperator ε τ τ' i j k l q σ)).prod := by
+  unfold externalInsertionMixedTimeOrderedVertexComp
+  rw [Common.orderedExternalInsertionTimedEvents_paired]
+  have hsign : externalInsertionMixedAtomicOrderSign (E := 2)
+      (Common.pairedExternalTimes τ τ') σ = 1 := by
+    simp [externalInsertionMixedAtomicOrderSign,
+      Common.externalInsertionStandardToMixedAtomicPositionEquiv_sign_paired]
+  rw [hsign, one_smul]
+  rw [List.map_flatMap]
+  simp only [List.flatMap_def, List.prod_flatten, List.map_map, Function.comp_def,
+    pairedCurrentTimedEventOperator_eq_blockProduct]
 
 end
 end Transport
