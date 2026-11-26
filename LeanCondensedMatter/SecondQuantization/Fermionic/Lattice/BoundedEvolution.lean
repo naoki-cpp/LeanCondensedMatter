@@ -26,6 +26,17 @@ def finiteSecondQuantization :
   ((boundedOneBodyOperator (Site := Site)).toLinearMap.comp
     (Common.finiteHilbertOperatorAlgEquiv (Config := Site)).symm.toLinearMap).toContinuousLinearMap
 
+/-- Second quantization of bounded one-body operators preserves the commutator,
+although it does not in general preserve operator products. -/
+theorem finiteSecondQuantization_lie
+    (A B : EuclideanSpace ℂ Site →L[ℂ] EuclideanSpace ℂ Site) :
+    finiteSecondQuantization ⁅A, B⁆ =
+      ⁅finiteSecondQuantization A, finiteSecondQuantization B⁆ := by
+  let e := Common.finiteHilbertOperatorAlgEquiv (Config := Site)
+  change boundedOneBodyOperator (e.symm (A * B - B * A)) = _
+  rw [map_sub, map_mul, map_mul]
+  exact LieHom.map_lie (boundedOneBodyOperator (Site := Site)) _ _
+
 /-- The bounded second quantization acts on the canonical isometric
 one-particle embedding as the original bounded operator. This identifies
 the actual lattice realization, not a separate occupation-sector model. -/
@@ -100,11 +111,27 @@ theorem finiteSecondQuantization_exp_conjugate
     ((finiteSecondQuantization (Site := Site)).restrictScalars ℝ) generator
     (finiteSecondQuantization generator) ?_ observable t
   intro x
-  let e := Common.finiteHilbertOperatorAlgEquiv (Config := Site)
-  change boundedOneBodyOperator (e.symm (generator * x - x * generator)) =
-    ⁅boundedOneBodyOperator (e.symm generator), boundedOneBodyOperator (e.symm x)⁆
-  rw [map_sub, map_mul, map_mul]
-  exact LieHom.map_lie (boundedOneBodyOperator (Site := Site)) _ _
+  exact finiteSecondQuantization_lie generator x
+
+/-- The full-Fock commutator of an exponentially evolved one-body observable
+with another one-body observable has the exact one-particle matrix element.
+This is the operator/kernel reduction used by a singleton-sector Kubo
+calculation; no assumption about a full Fock eigenbasis is required. -/
+theorem inner_finiteSecondQuantization_exp_conjugate_lie_oneParticle
+    (generator A B : EuclideanSpace ℂ Site →L[ℂ] EuclideanSpace ℂ Site)
+    (t : ℝ) (v w : EuclideanSpace ℂ Site) :
+    let j := AlgebraicFock.finiteHilbertOneParticleEmbedding
+      (Common.finiteHilbertOrthonormalBasis (Config := Site))
+    inner ℂ (j v)
+      (⁅NormedSpace.exp (t • finiteSecondQuantization generator) *
+          finiteSecondQuantization A *
+          NormedSpace.exp (-(t • finiteSecondQuantization generator)),
+        finiteSecondQuantization B⁆ (j w)) =
+      inner ℂ v (⁅NormedSpace.exp (t • generator) * A *
+        NormedSpace.exp (-(t • generator)), B⁆ w) := by
+  dsimp only
+  rw [← finiteSecondQuantization_exp_conjugate, ← finiteSecondQuantization_lie]
+  exact inner_finiteSecondQuantization_oneParticle _ v w
 
 end
 end SecondQuantization.Fermionic.Lattice
