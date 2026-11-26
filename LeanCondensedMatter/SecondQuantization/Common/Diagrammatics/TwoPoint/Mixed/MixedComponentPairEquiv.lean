@@ -86,7 +86,7 @@ theorem TwoPointDiagram.mixedComponentPairEndpointEquiv_apply_val
     (d.mixedComponentPairEndpointEquiv τ τ' σ B (pr, k)).1 =
       Combinatorics.pairEndpointAt pr.1.1 k := by
   unfold TwoPointDiagram.mixedComponentPairEndpointEquiv
-  exact Pairing.normalizedPairSubtypeEndpointEquiv_apply_val
+  exact PairingOn.normalizedPairSubtypeEndpointEquiv_apply_val
     (d.pairingInMixedOrder τ τ' σ)
     (fun p => d.mixedPositionComponent τ τ' σ p = B) _ pr k
 

@@ -142,7 +142,7 @@ by
           mixedTimeAmbientPositionEquiv_mixedTimeOrderedAtomicLegPosition,
           slotSplitVacuumOrderedLeg_eq_slotSplitRight]
         simpa only [p, Equiv.apply_symm_apply] using hq
-      exact Pairing.exists_normalizedPairEmbedding_eq_of_firstEndpoint
+      exact PairingOn.exists_normalizedPairEmbedding_eq_of_firstEndpoint
         (vac.pairingInOrder (slotSplitVacuumOrder T))
         (d.pairingInMixedOrder τ τ' σ) e hpartner pr.1 hfirst
     refine ⟨q, ?_⟩

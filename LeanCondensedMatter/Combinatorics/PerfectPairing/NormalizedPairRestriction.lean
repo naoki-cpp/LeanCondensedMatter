@@ -17,16 +17,16 @@ namespace Combinatorics
 
 /-- Normalized pairs whose first endpoint lies in a selected position subset. Partner invariance
 ensures that the second endpoint lies in the same subset when needed. -/
-abbrev Pairing.NormalizedPairSubtype {n : ℕ} (pairing : Pairing n)
-    (p : Fin (2 * n) → Prop) :=
+abbrev PairingOn.NormalizedPairSubtype {α : Type*} [Fintype α] [LinearOrder α]
+    (pairing : PairingOn α) (p : α → Prop) :=
   {pr : pairing.NormalizedPair // p pr.1.1}
 
 /-- The two endpoints of normalized pairs selected by a partner-invariant predicate are equivalent
 to the selected ambient positions. -/
-noncomputable def Pairing.normalizedPairSubtypeEndpointEquiv {n : ℕ}
-    (pairing : Pairing n) (p : Fin (2 * n) → Prop)
+noncomputable def PairingOn.normalizedPairSubtypeEndpointEquiv {α : Type*} [Fintype α] [LinearOrder α]
+    (pairing : PairingOn α) (p : α → Prop)
     (hpartner : ∀ i, p i ↔ p (pairing.partner i)) :
-    pairing.NormalizedPairSubtype p × Fin 2 ≃ {i : Fin (2 * n) // p i} :=
+    pairing.NormalizedPairSubtype p × Fin 2 ≃ {i : α // p i} :=
   Equiv.prodSubtypeFstEquivSubtypeProd.symm.trans
     (pairing.pairEndpointEquiv.subtypeEquiv (fun x => by
       rcases x with ⟨pr, k⟩
@@ -38,8 +38,8 @@ noncomputable def Pairing.normalizedPairSubtypeEndpointEquiv {n : ℕ}
         exact hpartner pr.1.1))
 
 @[simp]
-theorem Pairing.normalizedPairSubtypeEndpointEquiv_apply_val {n : ℕ}
-    (pairing : Pairing n) (p : Fin (2 * n) → Prop)
+theorem PairingOn.normalizedPairSubtypeEndpointEquiv_apply_val {α : Type*} [Fintype α] [LinearOrder α]
+    (pairing : PairingOn α) (p : α → Prop)
     (hpartner : ∀ i, p i ↔ p (pairing.partner i))
     (pr : pairing.NormalizedPairSubtype p) (k : Fin 2) :
     (pairing.normalizedPairSubtypeEndpointEquiv p hpartner (pr, k)).1 =
@@ -48,11 +48,12 @@ theorem Pairing.normalizedPairSubtypeEndpointEquiv_apply_val {n : ℕ}
 
 /-- Reindex normalized pairs selected by a partner-invariant predicate into any local pairing whose
 partner is intertwined by the chosen position equivalence. -/
-noncomputable def Pairing.normalizedPairSubtypeEquivOfEndpointEquiv {n m : ℕ}
-    (pairing : Pairing n) (p : Fin (2 * n) → Prop)
+noncomputable def PairingOn.normalizedPairSubtypeEquivOfEndpointEquiv {α β : Type*}
+    [Fintype α] [LinearOrder α] [Fintype β] [LinearOrder β]
+    (pairing : PairingOn α) (p : α → Prop)
     (hpartner : ∀ i, p i ↔ p (pairing.partner i))
-    (e : {i : Fin (2 * n) // p i} ≃ Fin (2 * m))
-    (localPairing : Pairing m)
+    (e : {i : α // p i} ≃ β)
+    (localPairing : PairingOn β)
     (hlocal : ∀ pos,
       localPairing.partner (e pos) = e ((pairing.restrict p hpartner).partner pos)) :
     pairing.NormalizedPairSubtype p ≃ localPairing.NormalizedPair := by
@@ -68,11 +69,11 @@ noncomputable def Pairing.normalizedPairSubtypeEquivOfEndpointEquiv {n m : ℕ}
 
 /-- Transport partner-invariant normalized-pair subsets along a partner-preserving position
 equivalence when the selection predicates agree under that equivalence. -/
-noncomputable def Pairing.normalizedPairSubtypeEquivOfPartnerEquiv
-    {m n : ℕ} (source : Pairing m) (target : Pairing n)
-    (e : Fin (2 * m) ≃ Fin (2 * n))
+noncomputable def PairingOn.normalizedPairSubtypeEquivOfPartnerEquiv
+    {α β : Type*} [Fintype α] [LinearOrder α] [Fintype β] [LinearOrder β]
+    (source : PairingOn α) (target : PairingOn β) (e : α ≃ β)
     (hpartner : ∀ i, target.partner (e i) = e (source.partner i))
-    (p : Fin (2 * m) → Prop) (q : Fin (2 * n) → Prop)
+    (p : α → Prop) (q : β → Prop)
     (hstable : ∀ i, p (source.partner i) ↔ p i)
     (hcompat : ∀ i, q (e i) ↔ p i) :
     source.NormalizedPairSubtype p ≃ target.NormalizedPairSubtype q :=
