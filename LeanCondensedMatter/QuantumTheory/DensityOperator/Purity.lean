@@ -51,8 +51,7 @@ theorem purity_le_one (ρ : DensityOperator H) : purity ρ ≤ 1 := by
 @[simp]
 theorem DensityOperator.expectation_op (ρ : DensityOperator H) :
     ρ.expectation ρ.op = (purity ρ : ℂ) := by
-  have hexpect := (ρ.summable_expectation_term ρ.op).hasSum
-  rw [← ρ.expectation_eq_spectral_tsum ρ.op] at hexpect
+  have hexpect := ρ.hasSum_expectation_term ρ.op
   have hpoint :
       (fun a : EigenvectorIndex ρ.op =>
         (a.1.1 : ℂ) * inner ℂ (eigenvectorFamily ρ.spectralTraceClass.compact a)
