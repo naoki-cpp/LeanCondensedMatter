@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Analysis.Operator.HilbertBasis
+import LeanCondensedMatter.Analysis.Operator.Spectral.EigenvectorFamily
 import LeanCondensedMatter.Analysis.Operator.TraceClass.Ops
 import LeanCondensedMatter.QuantumTheory.DensityOperator.Basic
 
@@ -75,11 +75,9 @@ theorem DensityOperator.expectation_eq_spectral_tsum
           (A (eigenvectorFamily ρ.spectralTraceClass.compact a)) : ℂ) := by
   classical
   let hρcompact : IsCompactOperator ρ.op := ρ.spectralTraceClass.compact
-  let hρsym : ρ.op.IsSymmetric := ρ.isSymmetric
   let e : EigenvectorIndex ρ.op → H := eigenvectorFamily hρcompact
-  have he : Orthonormal ℂ e := by
-    simpa [e] using orthonormal_eigenvectorFamily hρcompact hρsym
-  obtain ⟨u, b, j, hj, hb_j⟩ := he.exists_hilbertBasis_extension_injective
+  obtain ⟨u, b, j, hj, hb_j, hker⟩ :=
+    exists_hilbertBasis_extension_eigenvectorFamily hρcompact ρ.isSymmetric
   let g : u → ℂ := fun i => inner ℂ (b i) ((ρ.op * A) (b i))
   have heigen (a : EigenvectorIndex ρ.op) :
       ρ.op (e a) = (a.1.1 : ℂ) • e a := by
@@ -97,8 +95,7 @@ theorem DensityOperator.expectation_eq_spectral_tsum
         rw [heigen a, inner_smul_left]
         simp
   have hzero (x : u) (hx : x ∉ Set.range j) : g x = 0 := by
-    have hxker := hilbertBasis_apply_eq_zero_of_not_mem_eigenvector_range
-      hρcompact hρsym b j (fun a => by simpa [e] using hb_j a) x hx
+    have hxker := hker x hx
     change inner ℂ (b x) ((ρ.op * A) (b x)) = 0
     rw [mul_apply_eq_comp]
     calc
