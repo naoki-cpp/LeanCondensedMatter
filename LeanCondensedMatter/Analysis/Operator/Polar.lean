@@ -23,24 +23,14 @@ variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteS
 
 private theorem norm_cfcAbs_apply_eq (T : H →L[ℂ] H) (x : H) :
     ‖CFC.abs T x‖ = ‖T x‖ := by
-  rw [← sq_eq_sq₀ (norm_nonneg _) (norm_nonneg _)]
-  have hinner :
-      inner ℂ (CFC.abs T x) (CFC.abs T x) = inner ℂ (T x) (T x) := by
-    calc
-      inner ℂ (CFC.abs T x) (CFC.abs T x) =
-          inner ℂ x ((ContinuousLinearMap.adjoint (CFC.abs T)) (CFC.abs T x)) :=
-        (ContinuousLinearMap.adjoint_inner_right (CFC.abs T) x (CFC.abs T x)).symm
-      _ = inner ℂ x ((CFC.abs T * CFC.abs T) x) := by
-        rw [(CFC.abs_nonneg T).isSelfAdjoint.adjoint_eq, mul_apply_eq_comp]
-      _ = inner ℂ x ((ContinuousLinearMap.adjoint T * T) x) := by
-        rw [CFC.abs_mul_abs, ContinuousLinearMap.star_eq_adjoint]
-      _ = inner ℂ x ((ContinuousLinearMap.adjoint T) (T x)) := by
-        rw [mul_apply_eq_comp]
-      _ = inner ℂ (T x) (T x) :=
-        ContinuousLinearMap.adjoint_inner_right T x (T x)
-  rw [@norm_sq_eq_re_inner ℂ _ _ _ _ (CFC.abs T x),
-    @norm_sq_eq_re_inner ℂ _ _ _ _ (T x)]
-  exact congrArg Complex.re hinner
+  have h : (ContinuousLinearMap.adjoint (CFC.abs T)).comp (CFC.abs T) =
+      (ContinuousLinearMap.adjoint T).comp T := by
+    change ContinuousLinearMap.adjoint (CFC.abs T) * CFC.abs T =
+      ContinuousLinearMap.adjoint T * T
+    rw [(CFC.abs_nonneg T).isSelfAdjoint.adjoint_eq, CFC.abs_mul_abs,
+      ContinuousLinearMap.star_eq_adjoint]
+  rw [apply_norm_eq_sqrt_inner_adjoint_left (CFC.abs T),
+    apply_norm_eq_sqrt_inner_adjoint_left T, h]
 
 /-- A bounded operator has a contractive left polar factor `U` satisfying
 `U |T| = T` and `U† T = |T|`. -/
