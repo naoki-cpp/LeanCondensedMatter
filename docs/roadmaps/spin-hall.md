@@ -577,6 +577,36 @@ reference, not a Lean-certified evaluation of the concrete eigenbasis or
 a proof of nonvanishing for the actual Lean Rashba channel. That exact
 bridge and the bulk/DC limits remain open.
 
+## Exact one-particle sector bridge for the finite benchmark (partial R4)
+
+The degree-one embedding into finite occupation-Hilbert coordinates,
+`AlgebraicFock.finiteHilbertOneParticleEmbedding`, is isometric for every
+orthonormal one-particle basis. Its inner-product identity follows from the
+existing creation/annihilation adjoint and vacuum identities.
+`finiteHilbertOperator_dGamma_apply_embedding` transports the existing
+degree-one action of dΓ, preserving the original matrix elements.
+
+For the finite lattice realization,
+`Lattice.finiteSecondQuantization_apply_oneParticle` identifies the same
+embedding with the canonical algebraic lattice coordinates. The bounded
+one-body Lie-homomorphism property and the existing exponential
+conjugation theorem then give
+`inner_finiteSecondQuantization_exp_conjugate_lie_oneParticle`:
+for an arbitrary one-particle generator G and one-body operators A, B,
+
+```text
+⟨jv, [exp(t dΓ(G)) dΓ(A) exp(−t dΓ(G)), dΓ(B)] jw⟩
+  = ⟨v, [exp(t G) A exp(−t G), B] w⟩.
+```
+
+Here j is the isometric degree-one embedding. The equality is for the
+actual full-Fock operators, not a numerical approximation or a
+multiplicativity claim for dΓ. In particular, the single-electron
+commutator kernel may be computed in the original one-particle space.
+The concrete Rashba spectral data, normalized stationary state and
+nonzero finite-frequency conductivity still require exact certification;
+the existing numerical reference alone does not establish them in Lean.
+
 ## References
 
 See the annotated entries in [`../references.md`](../references.md) for full
