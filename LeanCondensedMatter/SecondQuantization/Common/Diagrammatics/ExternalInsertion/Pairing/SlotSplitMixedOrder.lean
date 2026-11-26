@@ -1,3 +1,4 @@
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.SupportStandardization
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.SlotLegSplitting
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Pairing.MixedOrder
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Ordered
@@ -184,33 +185,29 @@ private theorem externalInsertionSupportMixedPosition_eq_standard
     (externalInsertionLegEquiv E (Finset.univ : Finset (Fin T.card))).symm.trans
       (finCongr (by simp))
   have hfixed : supportFixed = standardFixed := by
+    have hleg := congrArg Equiv.symm (externalInsertionLegCongr_standardize (E := E) T)
+    rw [← externalInsertionLegCongr_symm] at hleg
     apply Equiv.ext
     intro leg
-    cases leg with
-    | inl e =>
-        apply Fin.ext
-        change (externalInsertionExternalLeg E T e).val =
-          (Fin.cast (by simp)
-            (externalInsertionExternalLeg E
-              (Finset.univ : Finset (Fin T.card)) e)).val
-        simp only [Fin.val_cast, externalInsertionExternalLeg_val]
-    | inr vl =>
-        rcases vl with ⟨v, l⟩
-        apply Fin.ext
-        change (externalInsertionInteractionLeg (E := E)
-            (T.orderIsoOfFin rfl v.1) l).val =
-          (Fin.cast (by simp)
-            (externalInsertionInteractionLeg (E := E) v l)).val
-        simp only [Fin.val_cast, externalInsertionInteractionLeg_val]
-        have huniv :
-            (((Finset.univ : Finset (Fin T.card)).orderIsoOfFin rfl).symm v).val =
-              v.1.val := by
-          rw [Finset.orderIsoOfFin_symm_apply, Fin.sort_univ, List.idxOf_finRange]
-        have hT :
-            (((T.orderIsoOfFin rfl).symm (T.orderIsoOfFin rfl v.1)).val) =
-              v.1.val := by
-          simp
-        rw [huniv, hT]
+    have h := congrArg
+      (fun e => e ((externalInsertionLegEquiv E
+        (Finset.univ : Finset (Fin T.card))).symm leg)) hleg
+    have hslot : (standardSlotEquiv T).symm =
+        (Equiv.subtypeUnivEquiv
+          (fun i : Fin T.card => Finset.mem_univ i)).trans
+          (T.orderIsoOfFin rfl).toEquiv := by
+      rfl
+    have hcast : (finCongr (by simp :
+        2 * (2 * T.card + E) =
+          2 * (2 * (Finset.univ : Finset (Fin T.card)).card + E))).symm =
+        (finCongr (by simp) :
+          Fin (2 * (2 * (Finset.univ : Finset (Fin T.card)).card + E)) ≃
+            Fin (2 * (2 * T.card + E))) := by
+      apply Equiv.ext
+      intro p
+      rfl
+    simpa only [supportFixed, standardFixed, externalInsertionLegCongr,
+      Equiv.trans_apply, Equiv.apply_symm_apply, hslot, hcast] using h
   apply Equiv.ext
   intro p
   change supportFixed
