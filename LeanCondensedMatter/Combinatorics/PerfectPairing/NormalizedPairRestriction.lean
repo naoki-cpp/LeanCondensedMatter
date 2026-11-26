@@ -81,10 +81,7 @@ noncomputable def PairingOn.normalizedPairSubtypeEquivOfPartnerEquiv
     (fun pr => by
       have hends := target.normalizedPairOfEndpointEquiv_pair_eq_or_swap
         source.pairEndpointEquiv e
-        (fun r => by
-          change target.partner (e r.1.1) = e r.1.2
-          rw [hpartner]
-          exact congrArg e (((source.mem_pairs_iff r.1.1 r.1.2).1 r.2).2))
+        (source.partner_map_normalizedPair target e hpartner)
         pr
       change (source.normalizedPairEquivOfPartnerEquiv target e hpartner pr).1 =
           (e pr.1.1, e pr.1.2) ∨
