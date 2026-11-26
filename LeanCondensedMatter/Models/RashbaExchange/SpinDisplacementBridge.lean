@@ -490,8 +490,16 @@ theorem realSpaceRashbaSpinDisplacement_conductivity_eq_finiteLehmannTable
   rw [realSpaceRashbaSpinDisplacement_conductivity_eq volume
     geometry bond onsite exchange measured source hbar q spinScale hhbar
     component (QuantumTheory.LinearResponse.eigenbasisNormalizedExpectation system data)
-    (QuantumTheory.LinearResponse.isStationary_eigenbasisNormalizedExpectation system data) ω η hη,
-    QuantumTheory.LinearResponse.finiteLehmannTableResponse_ofEigenbasis,
+    (QuantumTheory.LinearResponse.isStationary_eigenbasisNormalizedExpectation system data) ω η hη]
+  change -QuantumTheory.LinearResponse.adiabaticFrequencyDomainSusceptibility
+      (QuantumTheory.LinearResponse.freePropagatorGroup system) system.hbar
+      (QuantumTheory.LinearResponse.eigenbasisNormalizedExpectation system data)
+      D channel.source ω η / (volume.volume : ℂ) =
+    -QuantumTheory.LinearResponse.finiteLehmannTableResponse system.hbar ω η
+      (QuantumTheory.LinearResponse.finiteLehmannTableOfEigenbasis system data D channel.source) /
+      (volume.volume : ℂ)
+  rw [QuantumTheory.LinearResponse.finiteLehmannTableResponse_ofEigenbasis
+      system data D channel.source ω η,
     QuantumTheory.LinearResponse.adiabaticFrequencyDomainSusceptibility_eigenbasis_eq_lehmannSeries
       system data D channel.source ω η hη
       (QuantumTheory.LinearResponse.eigenbasisTimeDomainSummable_of_finite
