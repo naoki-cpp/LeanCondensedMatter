@@ -34812,7 +34812,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (A : H →ₗ.[ℂ] H), Dense ↑A.domain → A.IsClosed → A.adjoint.adjoint = A",
+    "statement": "∀ {𝕜 : Type u_1} {E : Type u_2} {F : Type u_3} [inst : RCLike 𝕜] [inst_1 : NormedAddCommGroup E]\n  [inst_2 : InnerProductSpace 𝕜 E] [inst_3 : CompleteSpace E] [inst_4 : NormedAddCommGroup F]\n  [inst_5 : InnerProductSpace 𝕜 F] [inst_6 : CompleteSpace F] (A : E →ₗ.[𝕜] F),\n  Dense ↑A.domain → A.IsClosed → A.adjoint.adjoint = A",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -34857,7 +34857,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (A : H →ₗ.[ℂ] H), Dense ↑A.domain → A.IsClosed → Dense ↑A.adjoint.domain",
+    "statement": "∀ {𝕜 : Type u_1} {E : Type u_2} {F : Type u_3} [inst : RCLike 𝕜] [inst_1 : NormedAddCommGroup E]\n  [inst_2 : InnerProductSpace 𝕜 E] [inst_3 : CompleteSpace E] [inst_4 : NormedAddCommGroup F]\n  [inst_5 : InnerProductSpace 𝕜 F] [CompleteSpace F] (A : E →ₗ.[𝕜] F),\n  Dense ↑A.domain → A.IsClosed → Dense ↑A.adjoint.domain",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -36028,7 +36028,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {A : H →ₗ.[ℂ] H}, Dense ↑A.domain → A.IsFormalAdjoint A → (IsSelfAdjoint A ↔ A.adjoint.domain ≤ A.domain)",
+    "statement": "∀ {𝕜 : Type u_4} {H : Type u_5} [inst : RCLike 𝕜] [inst_1 : NormedAddCommGroup H] [inst_2 : InnerProductSpace 𝕜 H]\n  [inst_3 : CompleteSpace H] {A : H →ₗ.[𝕜] H},\n  Dense ↑A.domain → A.IsFormalAdjoint A → (IsSelfAdjoint A ↔ A.adjoint.domain ≤ A.domain)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -113392,6 +113392,158 @@
   },
   {
     "terminal": true,
+    "statement": "∀ {ι : Type u_1} [inst : Fintype ι] (S : Matrix ι ι ℂ) (ψ : SchwartzComponents1D.State ι) (a : ι),\n  (SchwartzComponents1D.internalOperator S) ψ a = ∑ b, S a b • ψ b",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SchwartzComponents1D.internalOperator_apply",
+    "module": "LeanCondensedMatter.Analysis.Operator.SchwartzComponents1D",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {ι : Type u_1} [inst : Fintype ι] (A : SchwartzComponents1D.Spatial →ₗ[ℂ] SchwartzComponents1D.Spatial)\n  (S : Matrix ι ι ℂ), ⁅SchwartzComponents1D.spatialLift A, SchwartzComponents1D.internalOperator S⁆ = 0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SchwartzComponents1D.lie_spatialLift_internalOperator_eq_zero",
+    "module": "LeanCondensedMatter.Analysis.Operator.SchwartzComponents1D",
+    "externalAxioms": [],
+    "docString": "Componentwise spatial operators Lie-commute with internal matrix operators. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {ι : Type u_1} (f : SchwartzComponents1D.Spatial) (ψ : SchwartzComponents1D.State ι) (a : ι) (x : ℝ),\n  ((SchwartzComponents1D.multiplicationOperator f) ψ a) x = f x * (ψ a) x",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SchwartzComponents1D.multiplicationOperator_apply",
+    "module": "LeanCondensedMatter.Analysis.Operator.SchwartzComponents1D",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {ι : Type u_1} (A : SchwartzComponents1D.Spatial →ₗ[ℂ] SchwartzComponents1D.Spatial)\n  (ψ : SchwartzComponents1D.State ι) (a : ι), (SchwartzComponents1D.spatialLift A) ψ a = A (ψ a)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SchwartzComponents1D.spatialLift_apply",
+    "module": "LeanCondensedMatter.Analysis.Operator.SchwartzComponents1D",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
     "statement": "∀ (f : SchwartzKinetic1D.Space) (x : ℝ), (SchwartzKinetic1D.derivative f) x = deriv (⇑f) x",
     "standardAxioms": [
       "Classical.choice",
@@ -113542,158 +113694,6 @@
       "QuantumMechanics.SingleParticle.Continuum.SchwartzSchrodinger1D.heisenberg_localization_eq_symmetrized_velocity"
     ],
     "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ (S : InternalSpace.PauliMatrix) (ψ : SchwartzTwoLevel1D.State) (a : Fin 2),\n  (SchwartzTwoLevel1D.internalOperator S) ψ a = ∑ b, S a b • ψ b",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SchwartzTwoLevel1D.internalOperator_apply",
-    "module": "LeanCondensedMatter.Analysis.Operator.SchwartzTwoLevel1D",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ (A : SchwartzTwoLevel1D.Spatial →ₗ[ℂ] SchwartzTwoLevel1D.Spatial) (S : InternalSpace.PauliMatrix),\n  ⁅SchwartzTwoLevel1D.spatialLift A, SchwartzTwoLevel1D.internalOperator S⁆ = 0",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SchwartzTwoLevel1D.lie_spatialLift_internalOperator_eq_zero",
-    "module": "LeanCondensedMatter.Analysis.Operator.SchwartzTwoLevel1D",
-    "externalAxioms": [],
-    "docString": "Componentwise spatial operators Lie-commute with internal matrix operators. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ (f : SchwartzTwoLevel1D.Spatial) (ψ : SchwartzTwoLevel1D.State) (a : Fin 2) (x : ℝ),\n  ((SchwartzTwoLevel1D.multiplicationOperator f) ψ a) x = f x * (ψ a) x",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SchwartzTwoLevel1D.multiplicationOperator_apply",
-    "module": "LeanCondensedMatter.Analysis.Operator.SchwartzTwoLevel1D",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ (A : SchwartzTwoLevel1D.Spatial →ₗ[ℂ] SchwartzTwoLevel1D.Spatial) (ψ : SchwartzTwoLevel1D.State) (a : Fin 2),\n  (SchwartzTwoLevel1D.spatialLift A) ψ a = A (ψ a)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SchwartzTwoLevel1D.spatialLift_apply",
-    "module": "LeanCondensedMatter.Analysis.Operator.SchwartzTwoLevel1D",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -126293,8 +126293,6 @@
       "SecondQuantization.Common.ExternalInsertionDiagram.componentMixedPositionShuffle_slotEquiv_apply"
     ],
     "dependencies": [
-      "SecondQuantization.Common.externalInsertionLegCongr_standardize",
-      "SecondQuantization.Common.externalInsertionLegEquiv_mixedTimeAmbientPositionEquiv",
       "SecondQuantization.Common.externalInsertionMixedTimeAmbientPositionEquiv_legPosition",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.MixedOrderData.0.SecondQuantization.Common.ExternalInsertionDiagram.componentOrderedLeg_fixedPosition"
     ],
@@ -128183,7 +128181,9 @@
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentAmplitude.0.SecondQuantization.Fermionic.ExternalInsertionWickDiagram.mixedAtomicOrderSign_mul_mixedPairingValue_eq_components"
     ],
     "dependencies": [
-      "Equiv.Perm.sign_sigmaCongrRight"
+      "Equiv.Perm.sign_sigmaCongrRight",
+      "SecondQuantization.Common.externalInsertionLegCongr_standardize",
+      "SecondQuantization.Common.externalInsertionLegEquiv_mixedTimeAmbientPositionEquiv"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -140571,8 +140571,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Common.ExternalInsertionDiagram.componentMixedPositionEquiv_apply",
       "SecondQuantization.Common.ExternalInsertionDiagram.componentOrderedDiagram_pairing_crossingCount",
+      "SecondQuantization.Common.ExternalInsertionDiagram.relativeComponentShuffle_sign_eq_mixedAtomic_mul_prod_components",
       "SecondQuantization.Common.ExternalInsertionDiagram.supportSlotCongr_pairingInMixedOrder",
       "SecondQuantization.Common.externalInsertionLegCongr_standardize_lt_iff"
     ],
@@ -140586,8 +140586,8 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Common.ExternalInsertionDiagram.componentMixedPositionEquiv_apply",
       "SecondQuantization.Common.ExternalInsertionDiagram.componentOrderedDiagram_pairing_crossingCount",
+      "SecondQuantization.Common.ExternalInsertionDiagram.relativeComponentShuffle_sign_eq_mixedAtomic_mul_prod_components",
       "SecondQuantization.Common.ExternalInsertionDiagram.supportSlotCongr_pairingInMixedOrder",
       "SecondQuantization.Common.externalInsertionLegCongr_standardize_lt_iff"
     ],
@@ -140749,8 +140749,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Common.ExternalInsertionDiagram.componentMixedPositionEquiv_apply",
       "SecondQuantization.Common.ExternalInsertionDiagram.pairingInMixedOrder_partner_legPosition",
+      "SecondQuantization.Common.ExternalInsertionDiagram.relativeComponentShuffle_sign_eq_mixedAtomic_mul_prod_components",
       "SecondQuantization.Common.externalInsertionLeftMixedPosition_fixed",
       "SecondQuantization.Common.externalInsertionMixedTimeAmbientPositionEquiv_legPosition",
       "SecondQuantization.Common.twoPointDiagramExternalInsertionEquiv_pairingInMixedOrder"
@@ -140759,8 +140759,8 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Common.ExternalInsertionDiagram.componentMixedPositionEquiv_apply",
       "SecondQuantization.Common.ExternalInsertionDiagram.pairingInMixedOrder_partner_legPosition",
+      "SecondQuantization.Common.ExternalInsertionDiagram.relativeComponentShuffle_sign_eq_mixedAtomic_mul_prod_components",
       "SecondQuantization.Common.externalInsertionLeftMixedPosition_fixed",
       "SecondQuantization.Common.externalInsertionMixedTimeAmbientPositionEquiv_legPosition",
       "SecondQuantization.Common.twoPointDiagramExternalInsertionEquiv_pairingInMixedOrder"
@@ -181203,7 +181203,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [CompleteSpace H]\n  (g : Submodule ℂ (H × H)), IsClosed ↑g → g.adjoint.adjoint = g",
+    "statement": "∀ {𝕜 : Type u_1} {E : Type u_2} {F : Type u_3} [inst : RCLike 𝕜] [inst_1 : NormedAddCommGroup E]\n  [inst_2 : InnerProductSpace 𝕜 E] [CompleteSpace E] [inst_4 : NormedAddCommGroup F] [inst_5 : InnerProductSpace 𝕜 F]\n  [CompleteSpace F] (g : Submodule 𝕜 (E × F)), IsClosed ↑g → g.adjoint.adjoint = g",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
