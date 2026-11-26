@@ -1,5 +1,5 @@
+import LeanCondensedMatter.Analysis.Operator.AdjointConjugation
 import LeanCondensedMatter.Analysis.Operator.TraceClass.Ops
-import LeanCondensedMatter.Analysis.Operator.Unitary
 import LeanCondensedMatter.QuantumTheory.DensityOperator.PureState
 import LeanCondensedMatter.QuantumTheory.DensityOperator.ObservableExpectation
 import LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.PureState
