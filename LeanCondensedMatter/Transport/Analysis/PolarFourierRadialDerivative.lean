@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Analysis.Fourier.PolarRadialKernels.Differentiation
+import LeanCondensedMatter.Analysis.Fourier.PolarRadialKernels.Core
 import LeanCondensedMatter.Transport.Analysis.PolarFourier
 import Mathlib.Analysis.Calculus.ParametricIntervalIntegral
 import Mathlib.Tactic.FunProp
