@@ -30,7 +30,7 @@ private theorem Submodule.adjoint_adjoint_eq_of_isClosed
     rw [Submodule.mem_adjoint_iff, Submodule.mem_orthogonal]
     constructor
     · intro h w hw
-      have hwg : (ofLp w : H × H) ∈ g := hw
+      have hwg : (ofLp w : E × F) ∈ g := hw
       have hh := h (ofLp w).1 (ofLp w).2 hwg
       change inner 𝕜 (ofLp w).1 (-v) + inner 𝕜 (ofLp w).2 u = 0
       simpa only [inner_neg_right, sub_eq_add_neg, add_comm] using hh
@@ -88,14 +88,14 @@ theorem adjoint_denseDomain_of_isClosed
       have hmem : (u, v) ∈ A.adjoint.graph := by
         simpa only [A.adjoint_graph_eq_graph_adjoint hDense] using huv
       obtain ⟨q, hq⟩ := (A.adjoint.mem_graph_iff').1 hmem
-      have hqu : (q : H) = u := congrArg Prod.fst hq
+      have hqu : (q : F) = u := congrArg Prod.fst hq
       have horth : inner 𝕜 u y = 0 := by
         rw [← hqu]
         exact (A.adjoint.domain.mem_orthogonal y).1 hy q q.property
       simpa using horth
     rw [hgraph] at hy0
     obtain ⟨q, hq⟩ := A.mem_graph_iff'.1 hy0
-    have hq0 : (q : H) = 0 := congrArg Prod.fst hq
+    have hq0 : (q : E) = 0 := congrArg Prod.fst hq
     have hqy : A q = y := congrArg Prod.snd hq
     have hqzero : q = 0 := Subtype.ext hq0
     rw [hqzero] at hqy
