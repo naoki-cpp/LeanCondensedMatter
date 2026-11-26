@@ -20,11 +20,6 @@ import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentPosition
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedOrderPairing
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.External.ExternalPiece
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.External.ExternalPiecePairing
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentPairEquiv
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossing
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingTimeLocality
 
 set_option linter.style.header false
 
@@ -47,12 +42,11 @@ The subpackages separate the main combinatorial responsibilities:
 * `Components` restricts connected components, identifies the canonical external component and
   vacuum components, and provides componentwise finite-sum and finite-product decompositions.
 * `External` isolates the external component, splits its interaction slots from the vacuum
-  remainder, and packages the resulting standalone external piece together with pairing transport.
+  remainder, and packages its standalone external piece and mixed-position embedding.
 * `SlotSplit` compares the ambient two-point graph with its external/vacuum slot decomposition.
   Ordered vacuum pairing and component-pair factorization belong to the general external-insertion theory.
-* `Mixed` transports the fixed pairing to mixed imaginary-time order and develops component-local
-  positions, pairings, normalized-pair equivalences, crossing decompositions, parity, and
-  fixed-order-chamber locality.
+* `Mixed` transports the fixed pairing to mixed imaginary-time order. Component-local normalized
+  pair decomposition, exchange signs and chamber locality are owned by general external insertions.
 
 The representation is intentionally kept distinct from `ExternalInsertionDiagram`. The two
 families share lower-level component and leg-data machinery, while the mature two-point API keeps
