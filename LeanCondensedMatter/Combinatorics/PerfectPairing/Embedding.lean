@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Core
+import LeanCondensedMatter.Combinatorics.PerfectPairing.PairEndpoints
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Crossing
 
 set_option linter.style.header false
@@ -15,9 +16,9 @@ and crossing geometry is unchanged.
 namespace Combinatorics
 
 /-- A partner-intertwining order embedding sends normalized pairs injectively to normalized pairs. -/
-noncomputable def Pairing.normalizedPairEmbedding {n m : ℕ}
-    (small : Pairing n) (big : Pairing m)
-    (e : Fin (2 * n) ↪o Fin (2 * m))
+noncomputable def PairingOn.normalizedPairEmbedding {α β : Type*}
+    [Fintype α] [LinearOrder α] [Fintype β] [LinearOrder β]
+    (small : PairingOn α) (big : PairingOn β) (e : α ↪o β)
     (hpartner : ∀ i, big.partner (e i) = e (small.partner i)) :
     small.NormalizedPair ↪ big.NormalizedPair where
   toFun pr :=
@@ -34,9 +35,9 @@ noncomputable def Pairing.normalizedPairEmbedding {n m : ℕ}
 
 /-- A partner-intertwining order embedding preserves and reflects crossings between normalized
 pairs. -/
-theorem Pairing.normalizedPairEmbedding_crosses_iff {n m : ℕ}
-    (small : Pairing n) (big : Pairing m)
-    (e : Fin (2 * n) ↪o Fin (2 * m))
+theorem PairingOn.normalizedPairEmbedding_crosses_iff {α β : Type*}
+    [Fintype α] [LinearOrder α] [Fintype β] [LinearOrder β]
+    (small : PairingOn α) (big : PairingOn β) (e : α ↪o β)
     (hpartner : ∀ i, big.partner (e i) = e (small.partner i))
     (p q : small.NormalizedPair) :
     Crosses (small.normalizedPairEmbedding big e hpartner p).1
@@ -48,9 +49,10 @@ theorem Pairing.normalizedPairEmbedding_crosses_iff {n m : ℕ}
 /-- A normalized pair whose first endpoint lies in the range of a partner-preserving
 order embedding comes from a unique local normalized pair. This is the image
 characterization of the pairing restriction, without a cardinality argument. -/
-theorem Pairing.exists_normalizedPairEmbedding_eq_of_firstEndpoint
-    {n m : ℕ} (small : Pairing n) (big : Pairing m)
-    (e : Fin (2 * n) ↪o Fin (2 * m))
+theorem PairingOn.exists_normalizedPairEmbedding_eq_of_firstEndpoint
+    {α β : Type*}
+    [Fintype α] [LinearOrder α] [Fintype β] [LinearOrder β]
+    (small : PairingOn α) (big : PairingOn β) (e : α ↪o β)
     (hpartner : ∀ i, big.partner (e i) = e (small.partner i))
     (pr : big.NormalizedPair)
     (hfirst : ∃ i, e i = pr.1.1) :
