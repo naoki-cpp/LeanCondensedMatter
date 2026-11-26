@@ -265,7 +265,7 @@ noncomputable def ExternalInsertionDiagram.componentMixedPositionEquiv
         (B : Finset (ExternalInsertionVertex E (Finset.univ : Finset (Fin n))))).card +
           d.externalPairCount B))) ≃
       Fin (2 * (2 * n + E)) :=
-  (Equiv.sigmaCongrRight fun B =>
+  (Equiv.sigmaCongrRight fun B : d.vertexGraph.componentPartition.parts =>
     let T := interactionSector
       (B : Finset (ExternalInsertionVertex E (Finset.univ : Finset (Fin n))))
     (externalInsertionMixedTimeOrderedAtomicLegEquiv
