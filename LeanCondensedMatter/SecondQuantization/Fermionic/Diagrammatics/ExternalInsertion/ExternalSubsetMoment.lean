@@ -1,4 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalSubsetAssembly
+import Mathlib.Algebra.BigOperators.Group.Finset.Basic
+import Mathlib.Data.Finset.BooleanAlgebra
 
 set_option linter.style.header false
 
@@ -488,11 +490,7 @@ theorem sum_fixedExternalPartitionDysonFiber_eq_sum_realizableSizes_signedProduc
       (fun d _ => hmem d) weight).symm]
     apply Finset.sum_congr rfl
     intro size _
-    simpa only [Finset.sum_filter] using
-      (Finset.sum_subtype
-        (p := fun d : P => sizeOf d = size)
-        ((Finset.univ : Finset P).filter (fun d => sizeOf d = size))
-        (fun _ => by simp only [Finset.mem_filter, Finset.mem_univ, true_and]) weight)
+    rw [← Finset.sum_subtype_eq_sum_filter, Finset.subtype_univ]
   calc
     _ = ∑ d : P, weight d := hphysical
     _ = ∑ size ∈ sizes,
