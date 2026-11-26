@@ -119,8 +119,10 @@ theorem inPlanePauliVertexCLM_injective :
         right 0 • sigmaX + right 1 • sigmaY := by
     apply (Matrix.toEuclideanCLM :
       Matrix2 ≃⋆ₐ[ℂ] (DiracHilbert →L[ℂ] DiracHilbert)).injective
+    change matrixOperator (left 0 • sigmaX + left 1 • sigmaY) =
+      matrixOperator (right 0 • sigmaX + right 1 • sigmaY)
     simpa only [inPlanePauliVertexCLM_apply,
-      inPlanePauliVertexOperator_eq_matrixOperator, matrixOperator] using h
+      inPlanePauliVertexOperator_eq_matrixOperator] using h
   have hAxis : Function.Injective inPlanePauliAxis := by
     intro i j hij
     fin_cases i <;> fin_cases j <;> simp [inPlanePauliAxis] at hij ⊢
