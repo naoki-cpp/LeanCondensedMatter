@@ -15,9 +15,10 @@
   --danger: #a33347;
   --hover: #e8eee5;
   --ui-font: "IBM Plex Sans", "Segoe UI", "Yu Gothic UI", "Hiragino Kaku Gothic ProN", system-ui, sans-serif;
-  --heading-font: var(--ui-font);
+  --reading-font: "Source Serif 4", "Noto Serif JP", "Yu Mincho", Georgia, serif;
+  --heading-font: var(--reading-font);
   --code-font: "IBM Plex Mono", "Cascadia Code", "SFMono-Regular", Consolas, "Liberation Mono", monospace;
-  --graph-bg: #080c18;
+  --graph-bg: #f5f7f3;
 }
 
 * { box-sizing: border-box; }
@@ -26,9 +27,10 @@ html, body { min-height: 100%; }
 
 body {
   margin: 0;
-  font-family: var(--ui-font);
-  font-size: 14px;
-  line-height: 1.55;
+  font-family: var(--reading-font);
+  font-size: 17px;
+  line-height: 1.75;
+  font-optical-sizing: auto;
   color: var(--text);
   background: var(--bg);
 }
@@ -36,7 +38,11 @@ body {
 .graph-definitions { position: absolute; width: 0; height: 0; overflow: visible; }
 
 a { color: inherit; text-decoration: none; }
-button, input, select { font: inherit; }
+button, input, select { font: 400 14px/1.5 var(--ui-font); }
+.controls, .site-header nav, .brand small, .graph-toolbar, .module-breadcrumb,
+.overview-summary, .module-direct-count, .detail-eyebrow, .detail-panel h3,
+.math-presentation h4, .badges, .detail-actions, .lean-source summary,
+.definition-body summary, .math-fallback-note, .statement-symbols { font-family: var(--ui-font); }
 code, pre { font-family: var(--code-font); font-variant-ligatures: none; }
 button, select { cursor: pointer; }
 button, a, input, select, summary { touch-action: manipulation; -webkit-tap-highlight-color: rgba(33, 102, 76, 0.16); }
@@ -254,11 +260,25 @@ select:disabled {
   min-height: 50px;
   padding: 0 16px;
   align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
   font-size: 12px;
   color: var(--muted);
   border-bottom: 1px solid var(--line);
 }
 .graph-toolbar[hidden] { display: none; }
+.graph-view-controls { display: flex; gap: 4px; padding: 6px 0; }
+.graph-view-controls button {
+  min-width: 34px;
+  min-height: 34px;
+  padding: 2px 9px;
+  color: var(--cyan);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 5px;
+}
+.graph-view-controls button:hover { background: var(--hover); border-color: var(--cyan); }
 
 .overview-panel {
   min-height: calc(100vh - 122px);
@@ -309,25 +329,30 @@ select:disabled {
   user-select: none;
 }
 .graph-scroll.dragging { cursor: grabbing; }
+.graph-scroll:focus-visible { outline: 2px solid var(--cyan); outline-offset: -2px; }
 #graph { display: block; width: 100%; height: 100%; min-width: 0; min-height: 0; }
 #graph .edges path { marker-end: url(#dependency-arrow); }
 #graph .edges path[stroke-opacity="0.18"] { marker-end: url(#dependency-arrow-muted); }
 
 .node { cursor: pointer; outline: none; }
 .node:hover .node-dot {
-  stroke: #ffffff;
+  stroke: #173d2c;
   stroke-width: 2;
 }
 .node:focus .node-dot,
 .node:focus-visible .node-dot {
-  stroke: #ffffff;
+  stroke: #173d2c;
   stroke-width: 3;
 }
 .node-selected .node-dot {
-  stroke: #ffffff;
+  stroke: #173d2c;
   stroke-width: 2;
 }
 .node-label { transition: opacity 120ms ease; }
+.graph-label { cursor: pointer; }
+.graph-label-secondary, .graph-label-collapsed { display: none; }
+.node:hover .graph-label, .node:focus .graph-label { display: inline; }
+.node:hover .node-label, .node:focus .node-label { fill: #173d2c; font-weight: 600; }
 
 .detail-panel h2 {
   margin: 0 0 14px;
@@ -388,7 +413,7 @@ select:disabled {
 .definition-body { margin-top: 20px; padding-top: 4px; }
 .definition-body-content { padding: 0 8px 9px; }
 .definition-body-content .math-formula { max-height: 560px; overflow: auto; }
-.docstring, .wrapper-target { font-size: 14px; line-height: 1.75; color: var(--text); }
+.docstring, .wrapper-target { font-size: 16px; line-height: 1.8; color: var(--text); }
 .wrapper-target code { color: var(--accent-strong); overflow-wrap: anywhere; }
 
 .badges { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }

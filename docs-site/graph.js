@@ -9,6 +9,7 @@ import {
   ROOT_NODE_COLOR,
   ROOT_NODE_STROKE,
   graphNodeLabelAttributes,
+  graphLabelLines,
   graphNodeRadius,
 } from "./graph-style.js";
 
@@ -117,9 +118,9 @@ function displayName(name) {
   let common = 0;
   while (common < parts.length && common < rootParts.length && parts[common] === rootParts[common]) common += 1;
   const contextual = parts.slice(common).join(".");
-  if (contextual && contextual.length <= 34) return contextual;
+  if (contextual && contextual.length <= 52) return contextual;
   const base = declarationBaseName(name);
-  return base.length <= 34 ? base : `${base.slice(0, 31)}…`;
+  return base;
 }
 
 function moduleAllowed(name) {
@@ -370,13 +371,54 @@ function setBranchFocus(branch) {
 }
 
 function setGraphViewBox(viewBox) {
+  const rect = ui.viewport.getBoundingClientRect();
+  const labelScale = rect.width && rect.height
+    ? Math.max(1, Math.min(1.8, Math.max(viewBox.width / rect.width, viewBox.height / rect.height)))
+    : 1;
   state.viewBox = viewBox;
   ui.graph.setAttribute("viewBox", `${viewBox.x} ${viewBox.y} ${viewBox.width} ${viewBox.height}`);
+  for (const label of ui.graph.querySelectorAll(".graph-label")) {
+    label.setAttribute("transform", `translate(${label.dataset.x}, ${label.dataset.y}) scale(${labelScale})`);
+  }
+  const labelLayoutKey = [viewBox.x, viewBox.y, viewBox.width, viewBox.height, rect.width, rect.height].join(":");
+  if (state.labelLayoutKey !== labelLayoutKey) {
+    state.labelLayoutKey = labelLayoutKey;
+    declutterGraphLabels(rect);
+  }
+}
+
+function declutterGraphLabels(viewport) {
+  const labels = [...ui.graph.querySelectorAll(".graph-label:not(.graph-label-secondary)")];
+  // Batch visibility writes, then all measurements, then the resulting visibility writes.
+  labels.forEach((label) => label.classList.remove("graph-label-collapsed"));
+  const measured = labels.map((label) => ({ label, bounds: label.getBoundingClientRect(), priority: Number(label.dataset.priority) }))
+    .sort((a, b) => a.priority - b.priority);
+  const accepted = [];
+  const collapsed = [];
+  for (const item of measured) {
+    const box = item.bounds;
+    const clipped = box.left < viewport.left + 6 || box.right > viewport.right - 6 ||
+      box.top < viewport.top + 6 || box.bottom > viewport.bottom - 6;
+    const overlap = accepted.some(({ bounds }) => box.left < bounds.right + 5 && box.right + 5 > bounds.left &&
+      box.top < bounds.bottom + 5 && box.bottom + 5 > bounds.top);
+    if (item.priority > 1 && (clipped || overlap)) collapsed.push(item.label);
+    else accepted.push(item);
+  }
+  collapsed.forEach((label) => label.classList.add("graph-label-collapsed"));
 }
 
 function fitGraph() {
   if (!state.graphBounds) return;
-  setGraphViewBox({ ...state.graphBounds });
+  // Include labels in the fitted area; a second pass accounts for their minimum display scale.
+  for (let pass = 0; pass < 2; pass += 1) {
+    const content = ui.graph.getBBox();
+    if (content.width > 0 && content.height > 0) {
+      const padding = 36;
+      state.graphBounds = { x: content.x - padding, y: content.y - padding,
+        width: content.width + padding * 2, height: content.height + padding * 2 };
+    }
+    setGraphViewBox({ ...state.graphBounds });
+  }
 }
 
 function zoomGraph(factor, clientX = null, clientY = null) {
@@ -399,27 +441,40 @@ function zoomGraph(factor, clientX = null, clientY = null) {
   });
 }
 
-function appendNodeLabel(nodes, name, position, color, branch, root, selected, showLeafLabel, baseOpacity) {
+function appendNodeLabel(nodes, name, position, root, selected, showLeafLabel) {
   const depth = Math.abs(position.level);
-  if (!root && !selected && depth !== 1 && !showLeafLabel) return;
   const offset = root ? 28 : depth === 1 ? 25 : 17;
   const labelPoint = root
-    ? { x: position.x, y: position.y + offset }
-    : polarPoint(position.x, position.y, offset, position.angle);
+    ? { x: 0, y: offset }
+    : polarPoint(0, 0, offset, position.angle);
   const cosine = Math.cos(position.angle);
   const anchor = root || Math.abs(cosine) < 0.2 ? "middle" : cosine > 0 ? "start" : "end";
+  const visible = root || selected || depth === 1 || showLeafLabel;
+  const label = svg("g", { class: `graph-label${visible ? "" : " graph-label-secondary"}`, "aria-hidden": "true",
+    "data-priority": root ? 0 : selected ? 1 : depth === 1 ? 2 : 3,
+    "data-x": labelPoint.x, "data-y": labelPoint.y,
+    transform: `translate(${labelPoint.x}, ${labelPoint.y})` });
+  const lines = graphLabelLines(displayName(name));
+  if (root || selected) {
+    const textWidth = Math.max(...lines.map((line) => Array.from(line).length)) * 8;
+    label.append(svg("rect", { x: anchor === "middle" ? -textWidth / 2 - 7 : anchor === "end" ? -textWidth - 7 : -7,
+      y: -12, width: textWidth + 14, height: lines.length * 16 + 8, rx: 4,
+      fill: "#ffffff", stroke: root ? "#9bb7a6" : "#c5d2c9", "stroke-width": 1 }));
+  }
   const text = svg("text", {
     class: "node-label",
-    x: labelPoint.x,
-    y: labelPoint.y,
+    x: 0,
+    y: 0,
     "text-anchor": anchor,
-    ...graphNodeLabelAttributes({ depth, root, color }),
-    "data-branch": branch,
-    "data-base-opacity": baseOpacity,
+    ...graphNodeLabelAttributes({ depth, root }),
   });
-  text.style.opacity = String(baseOpacity);
-  text.textContent = displayName(name);
-  nodes.append(text);
+  lines.forEach((line, index) => {
+    const span = svg("tspan", { x: 0, y: index * 16 });
+    span.textContent = line;
+    text.append(span);
+  });
+  label.append(text);
+  nodes.append(label);
 }
 
 function setModuleFilterEnabled(enabled) {
@@ -461,6 +516,7 @@ function renderGraph({ preserveView = false } = {}) {
   const previousView = preserveView ? state.viewBox : null;
   const { levels, truncated } = collectNeighborhood();
   const { positions, parents, children, branchFor, branchColor, width, height, cx, cy } = radialLayout(levels);
+  state.labelLayoutKey = null;
   ui.graph.replaceChildren();
   state.graphBounds = { x: 0, y: 0, width, height };
 
@@ -472,7 +528,7 @@ function renderGraph({ preserveView = false } = {}) {
     guides.append(svg("circle", {
       cx, cy, r: sample.radius,
       fill: "none",
-      stroke: "rgba(169,190,255,0.08)",
+      stroke: "#d7e1d8",
       "stroke-width": 1,
       "stroke-dasharray": "2 8",
     }));
@@ -494,8 +550,8 @@ function renderGraph({ preserveView = false } = {}) {
       const typeReference = source.typeDependencies?.includes(dependencyName);
       const valueReference = source.valueDependencies?.includes(dependencyName);
       const branch = edgeBranch(sourceName, dependencyName, levels, branchFor) ?? "cross";
-      const color = treeEdge ? branchColor.get(branch) ?? "#91a9ff" : "#94a3b8";
-      const opacity = treeEdge ? 0.72 : 0.18;
+      const color = treeEdge ? branchColor.get(branch) ?? "#4c7194" : "#819287";
+      const opacity = treeEdge ? 0.8 : 0.18;
       const path = svg("path", {
         d: curvedEdgePath(sourcePosition, targetPosition, cx, cy),
         fill: "none",
@@ -521,7 +577,7 @@ function renderGraph({ preserveView = false } = {}) {
   ui.graph.append(edges);
 
   const nodes = svg("g", { class: "nodes" });
-  const showLeafLabels = levels.size <= 32;
+  const showLeafLabels = levels.size <= 16;
   for (const [name, position] of positions) {
     const entry = state.byName.get(name);
     if (!entry) continue;
@@ -546,19 +602,20 @@ function renderGraph({ preserveView = false } = {}) {
       "data-base-opacity": baseOpacity,
     });
     group.style.opacity = String(baseOpacity);
+    if (isRoot || isSelected) group.append(svg("circle", { r: radius + 5, fill: "none", stroke: "#a7c1b0", "stroke-width": 1.5 }));
 
     const hit = svg("circle", { class: "node-hit", r: Math.max(13, radius + 7), fill: "transparent" });
     const definition = ["def", "abbrev", "opaque"].includes(entry.kind);
     const dot = svg("circle", {
       class: "node-dot",
       r: radius,
-      stroke: isSelected ? "#ffffff" : isRoot ? ROOT_NODE_STROKE : "rgba(255,255,255,0.72)",
+      stroke: isSelected ? "#173d2c" : isRoot ? ROOT_NODE_STROKE : "#496553",
       "stroke-width": isSelected || isRoot ? 2.4 : 1,
       "stroke-dasharray": entry.generated ? "2 2" : "none",
       "data-kind": entry.kind ?? "module",
-      fill: definition ? "#49bda5" : entry.kind === "axiom" ? "#f2b35d"
-        : ["inductive", "constructor", "recursor", "quotient"].includes(entry.kind) ? "#b58ae8"
-        : isRoot ? ROOT_NODE_COLOR : color,
+      fill: isRoot ? ROOT_NODE_COLOR : definition ? "#a7cfbb" : entry.kind === "axiom" ? "#e5ca94"
+        : ["inductive", "constructor", "recursor", "quotient"].includes(entry.kind) ? "#c9bbd9"
+        : color,
     });
     group.append(hit, dot);
 
@@ -567,9 +624,11 @@ function renderGraph({ preserveView = false } = {}) {
     group.append(title);
 
     const select = () => {
+      const hadFocus = document.activeElement === group;
       state.selected = name;
       renderDetails(name);
       renderGraph({ preserveView: true });
+      if (hadFocus) [...ui.graph.querySelectorAll(".node")].find((node) => node.getAttribute("aria-label") === name)?.focus();
     };
     const emphasize = () => {
       dot.setAttribute("r", String(radius + 2));
@@ -596,15 +655,12 @@ function renderGraph({ preserveView = false } = {}) {
     group.addEventListener("blur", relax);
     nodes.append(group);
     appendNodeLabel(
-      nodes,
+      group,
       name,
       position,
-      color,
-      branch,
       isRoot,
       isSelected,
       showLeafLabels && isLeaf,
-      baseOpacity,
     );
   }
   ui.graph.append(nodes);
@@ -1160,6 +1216,25 @@ function restoreLocation() {
 }
 
 function bindGraphNavigation() {
+  new ResizeObserver(() => {
+    if (state.viewBox && !ui.viewport.hidden) setGraphViewBox({ ...state.viewBox });
+  }).observe(ui.viewport);
+  document.getElementById("graph-zoom-in").addEventListener("click", () => zoomGraph(0.8));
+  document.getElementById("graph-zoom-out").addEventListener("click", () => zoomGraph(1.25));
+  document.getElementById("graph-fit").addEventListener("click", fitGraph);
+  ui.viewport.addEventListener("keydown", (event) => {
+    if (event.target !== ui.viewport || !state.viewBox) return;
+    const shifts = { ArrowLeft: [-0.1, 0], ArrowRight: [0.1, 0], ArrowUp: [0, -0.1], ArrowDown: [0, 0.1] };
+    if (shifts[event.key]) {
+      event.preventDefault();
+      const [dx, dy] = shifts[event.key];
+      setGraphViewBox({ ...state.viewBox, x: state.viewBox.x + dx * state.viewBox.width, y: state.viewBox.y + dy * state.viewBox.height });
+    } else if (["+", "=", "-", "0"].includes(event.key)) {
+      event.preventDefault();
+      if (event.key === "0") fitGraph();
+      else zoomGraph(event.key === "-" ? 1.25 : 0.8);
+    }
+  });
   ui.viewport.addEventListener("wheel", (event) => {
     if (!state.root) return;
     event.preventDefault();

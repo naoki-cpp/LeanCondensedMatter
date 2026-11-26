@@ -10,7 +10,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
   <link rel="preconnect" href="https://raw.githubusercontent.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&amp;family=IBM+Plex+Sans:wght@400;500;600&amp;display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&amp;family=IBM+Plex+Sans:wght@400;500;600&amp;family=Source+Serif+4:wght@400;500;600&amp;display=swap">
   <link rel="stylesheet" href="./site.css">
   <link rel="stylesheet" href="./module-overview.css">
   <script>
@@ -31,10 +31,10 @@
   <svg class="graph-definitions" width="0" height="0" aria-hidden="true" focusable="false">
     <defs>
       <marker id="dependency-arrow" viewBox="0 0 10 10" refX="19" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto" overflow="visible">
-        <path d="M 0 1 L 8 5 L 0 9 Z" fill="#dce5ff" fill-opacity="0.72"></path>
+        <path d="M 0 1 L 8 5 L 0 9 Z" fill="#627b6c" fill-opacity="0.8"></path>
       </marker>
       <marker id="dependency-arrow-muted" viewBox="0 0 10 10" refX="19" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto" overflow="visible">
-        <path d="M 0 1 L 8 5 L 0 9 Z" fill="#94a3b8" fill-opacity="0.35"></path>
+        <path d="M 0 1 L 8 5 L 0 9 Z" fill="#819287" fill-opacity="0.3"></path>
       </marker>
     </defs>
   </svg>
@@ -117,9 +117,9 @@
 
       <div class="legend" aria-label="Graph legend">
         <span><i class="legend-node"></i> theorem</span>
-        <span><i class="legend-node" style="background:#49bda5"></i> definition</span>
-        <span><i class="legend-node" style="background:#f2b35d"></i> axiom</span>
-        <span><i class="legend-node" style="background:#b58ae8"></i> type / constructor / recursor</span>
+        <span><i class="legend-node" style="background:#a7cfbb"></i> definition</span>
+        <span><i class="legend-node" style="background:#e5ca94"></i> axiom</span>
+        <span><i class="legend-node" style="background:#c9bbd9"></i> type / constructor / recursor</span>
         <span><i class="legend-edge" style="border-style:dotted"></i> type reference</span>
         <span class="legend-dependency"><i class="legend-edge"></i> dependency</span>
         <span><i class="legend-edge cross"></i> cross-link</span>
@@ -130,12 +130,17 @@
 
     <section id="explorer-content" class="graph-panel" tabindex="-1" aria-label="Declaration and module exploration panel">
       <div class="graph-toolbar" hidden>
-        <span id="graph-status">Loading theorem catalog…</span>
+        <span id="graph-status" role="status">Loading theorem catalog…</span>
+        <div class="graph-view-controls" role="group" aria-label="Graph view">
+          <button id="graph-zoom-out" type="button" aria-label="Zoom out">−</button>
+          <button id="graph-zoom-in" type="button" aria-label="Zoom in">+</button>
+          <button id="graph-fit" type="button">Fit</button>
+        </div>
       </div>
 
       <div id="overview" class="overview-panel" aria-live="polite"></div>
-      <div id="graph-viewport" class="graph-scroll" hidden>
-        <svg id="graph" role="img" aria-label="Interactive theorem dependency graph"></svg>
+      <div id="graph-viewport" class="graph-scroll" tabindex="0" aria-label="Graph viewport. Use arrow keys to pan, plus or minus to zoom, and zero to fit." hidden>
+        <svg id="graph" role="group" aria-label="Interactive theorem dependency graph"></svg>
       </div>
     </section>
 
