@@ -1,6 +1,6 @@
 import LeanCondensedMatter.Analysis.Operator.HilbertBasis
 import LeanCondensedMatter.Analysis.Operator.TraceClass.Ops
-import LeanCondensedMatter.QuantumTheory.DensityOperator.Basic
+import LeanCondensedMatter.QuantumTheory.DensityOperator.Pure
 
 /-!
 # Expectations of bounded operators
@@ -125,6 +125,26 @@ theorem DensityOperator.expectation_eq_spectral_tsum
         inner ℂ (eigenvectorFamily ρ.spectralTraceClass.compact a)
           (A (eigenvectorFamily ρ.spectralTraceClass.compact a)) := by
       simp only [e]
+
+/-- The rank-one density expectation of any bounded operator is its vector
+matrix element. Self-adjointness of the operator is not required. -/
+theorem DensityOperator.expectation_pure
+    (ψ : StateVector H) (A : H →L[ℂ] H) :
+    (pure ψ).expectation A = inner ℂ ψ.1 (A ψ.1) := by
+  have hproduct : (pure ψ).op * A =
+      InnerProductSpace.rankOne ℂ ψ.1 (ContinuousLinearMap.adjoint A ψ.1) := by
+    ext x
+    change (inner ℂ ψ.1 (A x)) • ψ.1 =
+      (inner ℂ (ContinuousLinearMap.adjoint A ψ.1) x) • ψ.1
+    rw [ContinuousLinearMap.adjoint_inner_left]
+  have htrace : IsTraceClass
+      (InnerProductSpace.rankOne ℂ ψ.1 (ContinuousLinearMap.adjoint A ψ.1)) := by
+    rw [← hproduct]
+    exact (pure ψ).isTraceClass.comp_right A
+  rw [DensityOperator.expectation_apply,
+    IsTraceClass.trace_congr ((pure ψ).isTraceClass.comp_right A) htrace hproduct,
+    htrace.trace_rankOne]
+  exact ContinuousLinearMap.adjoint_inner_left A ψ.1 ψ.1
 
 /-- Expectations are contractive in the operator norm. -/
 theorem DensityOperator.norm_expectation_le (ρ : DensityOperator H) (A : H →L[ℂ] H) :
