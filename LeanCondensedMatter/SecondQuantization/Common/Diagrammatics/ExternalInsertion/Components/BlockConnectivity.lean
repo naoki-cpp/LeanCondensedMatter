@@ -1,3 +1,4 @@
+import Mathlib.Logic.Equiv.Basic
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.BlockLayout
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Transport
 
@@ -343,7 +344,7 @@ noncomputable def ExternalInsertionBlockLayout.physicalComponentLegEquiv
         ((layout.sourceEquiv e).1.1.card / 2))) :=
   ((layout.legEquiv S).subtypeEquiv
     (layout.assembleDiagram_legInComponent_iff_legEquiv_fst S F hconnected e)).trans
-    (Combinatorics.sigmaFiberEquiv (layout.sourceEquiv e).1)
+    (Equiv.sigmaSubtype (layout.sourceEquiv e).1)
 
 /-- A local leg embedded by the physical-component equivalence is
 exactly that same leg embedded by independent block assembly. -/

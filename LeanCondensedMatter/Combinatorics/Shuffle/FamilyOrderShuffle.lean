@@ -1,3 +1,4 @@
+import Mathlib.Logic.Equiv.Basic
 import LeanCondensedMatter.Combinatorics.Shuffle.FamilySlotShuffle
 import Mathlib.Data.Finset.Sort
 
@@ -370,27 +371,9 @@ theorem FamilySlotShuffleTo.card_ownerFiber
     (σ : FamilySlotShuffleTo size total) (i : ι) :
     Fintype.card {v : Fin total // (σ.slotEquiv.symm v).1 = i} = size i := by
   classical
-  let f : Fin (size i) →
-      {v : Fin total // (σ.slotEquiv.symm v).1 = i} :=
-    fun j => ⟨σ.slotEquiv ⟨i, j⟩, by simp⟩
-  have hinj : Function.Injective f := by
-    intro a b hab
-    have h := σ.slotEquiv.injective (congrArg Subtype.val hab)
-    exact eq_of_heq (Sigma.mk.inj_iff.mp h).2
-  have hsurj : Function.Surjective f := by
-    rintro ⟨v, hv⟩
-    rcases hslot : σ.slotEquiv.symm v with ⟨i', j⟩
-    have hi : i' = i := by simpa [hslot] using hv
-    subst i'
-    refine ⟨j, ?_⟩
-    apply Subtype.ext
-    dsimp [f]
-    calc
-      σ.slotEquiv ⟨i, j⟩ =
-          σ.slotEquiv (σ.slotEquiv.symm v) :=
-        congrArg σ.slotEquiv hslot.symm
-      _ = v := σ.slotEquiv.apply_symm_apply v
-  simpa using (Fintype.card_congr (Equiv.ofBijective f ⟨hinj, hsurj⟩)).symm
+  let e : {v : Fin total // (σ.slotEquiv.symm v).1 = i} ≃ Fin (size i) :=
+    (σ.slotEquiv.symm.subtypeEquiv (fun _ => Iff.rfl)).trans (Equiv.sigmaSubtype i)
+  simpa using Fintype.card_congr e
 
 open Classical in
 /-- Construct the unique order-preserving shuffle of a fixed prescribed

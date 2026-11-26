@@ -1,3 +1,4 @@
+import Mathlib.Logic.Equiv.Basic
 import Mathlib.Algebra.Group.End
 import Mathlib.GroupTheory.NoncommPiCoprod
 import Mathlib.GroupTheory.Perm.Sign
@@ -14,22 +15,6 @@ homogeneous `Equiv.Perm.sign_prodCongrRight` theorem.
 
 namespace Equiv.Perm
 
-private noncomputable def sigmaFiberEquiv
-    {ι : Type*} {β : ι → Type*} (i : ι) :
-    β i ≃ {x : Σ j, β j // x.1 = i} where
-  toFun x := ⟨⟨i, x⟩, rfl⟩
-  invFun x := by
-    rcases x with ⟨⟨j, x⟩, h⟩
-    have hji : j = i := h
-    subst j
-    exact x
-  left_inv _ := rfl
-  right_inv x := by
-    rcases x with ⟨⟨j, x⟩, h⟩
-    have hji : j = i := h
-    subst j
-    rfl
-
 private theorem sign_sigmaCongrRight_mulSingle
     {ι : Type*} [Fintype ι] [DecidableEq ι]
     {β : ι → Type*} [∀ i, Fintype (β i)] [∀ i, DecidableEq (β i)]
@@ -39,16 +24,16 @@ private theorem sign_sigmaCongrRight_mulSingle
   classical
   have hperm :
       Equiv.sigmaCongrRight (Pi.mulSingle (M := fun i => Equiv.Perm (β i)) i p) =
-        p.extendDomain (sigmaFiberEquiv i) := by
+        p.extendDomain (Equiv.sigmaSubtype i).symm := by
     apply Equiv.ext
     rintro ⟨j, x⟩
     by_cases hji : j = i
     · subst j
       change
         ⟨i, (Pi.mulSingle (M := fun i => Equiv.Perm (β i)) i p) i x⟩ =
-          (p.extendDomain (sigmaFiberEquiv i)) ((sigmaFiberEquiv i x).1)
+          (p.extendDomain (Equiv.sigmaSubtype i).symm) (((Equiv.sigmaSubtype i).symm x).1)
       rw [Equiv.Perm.extendDomain_apply_image]
-      simp [sigmaFiberEquiv]
+      simp [Equiv.sigmaSubtype]
     · rw [Equiv.Perm.extendDomain_apply_not_subtype _ _ (by simpa using hji)]
       simp [hji]
   rw [hperm, Equiv.Perm.sign_extendDomain]
