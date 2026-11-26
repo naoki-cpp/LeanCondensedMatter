@@ -1,7 +1,7 @@
 module
 
 public import LeanCondensedMatter.Analysis.Operator.AdjointConjugation
-public import LeanCondensedMatter.Analysis.Operator.Spectral.EigenvectorFamily
+public import Mathlib.LinearAlgebra.Eigenspace.Basic
 public import Mathlib.LinearAlgebra.Dimension.Finrank
 
 public section
