@@ -1,7 +1,7 @@
 import LeanCondensedMatter.Analysis.Fourier.PolarRadialKernels.Core
 import LeanCondensedMatter.Analysis.Fourier.PolarRadialKernels.ZerothBessel
 import LeanCondensedMatter.Analysis.Fourier.PolarRadialKernels.Differentiation
-import LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.ThreeTermRecurrence
+import LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.HypergeometricSeries
 import Mathlib.Analysis.Calculus.ParametricIntervalIntegral
 import Mathlib.Analysis.SpecialFunctions.Bessel
 import Mathlib.Tactic
