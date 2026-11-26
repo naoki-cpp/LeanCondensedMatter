@@ -65,26 +65,11 @@ private theorem gaussianCrossed_GreenGenerator_sub_eq_K0_integral
         side v m p 0 probeEnergy broadening disorderStrength hbar pMax)⁻¹ *
       polarFourierZerothAngularKernel (p * radius / hbar)
   have hcont (side : SpectralSide) : Continuous (oneSide side) := by
-    have hden (p : ℝ) :
-        finiteCutoffContinuumBornDysonDenominator
-          side v m p 0 probeEnergy broadening disorderStrength hbar pMax ≠ 0 :=
-      finiteCutoffContinuumBornDysonDenominator_ne_zero
-        side v m p 0 probeEnergy broadening disorderStrength hbar pMax
-        hbroadening hdisorder hpMax
-    have hdenCont : Continuous (fun p : ℝ =>
-        finiteCutoffContinuumBornDysonDenominator
-          side v m p 0 probeEnergy broadening disorderStrength hbar pMax) := by
-      unfold finiteCutoffContinuumBornDysonDenominator
-      fun_prop
-    have hK : Continuous (fun p : ℝ =>
-        polarFourierZerothAngularKernel (p * radius / hbar)) :=
-      continuous_polarFourierZerothAngularKernel.comp (by fun_prop)
-    change Continuous (fun p : ℝ =>
-      ((p : ℂ) *
-        (finiteCutoffContinuumBornDysonDenominator
-          side v m p 0 probeEnergy broadening disorderStrength hbar pMax)⁻¹) *
-        polarFourierZerothAngularKernel (p * radius / hbar))
-    exact (Complex.continuous_ofReal.mul (hdenCont.inv₀ hden)).mul hK
+    exact (Complex.continuous_ofReal.mul
+      (continuous_finiteCutoffContinuumBornDysonDenominator_inv_radial
+        side v m probeEnergy broadening disorderStrength hbar pMax
+        hbroadening hdisorder hpMax)).mul
+      (continuous_polarFourierZerothAngularKernel.comp (by fun_prop))
   have hRint : IntervalIntegrable (oneSide .retarded) volume 0 pMax :=
     (hcont .retarded).intervalIntegrable 0 pMax
   have hAint : IntervalIntegrable (oneSide .advanced) volume 0 pMax :=
@@ -765,9 +750,9 @@ theorem tendsto_finiteCutoffContinuumBornDysonGaussianCrossedK2_offShell_dressed
 
 
 /-- Exact finite-interval *energy-shell* substitution for the physical
-traceless crossed-current harmonic. The second-cosine angular kernel
-is real on the physical radial axis, so the real-valued interval
-substitution theorem gives the exact Jacobian of u=v²p²-A.
+traceless crossed-current harmonic. Mathlib's vector-valued interval
+substitution theorem gives the exact Jacobian of u=v²p²-A directly
+for the complex Fourier kernel, without a real-part conversion.
 
 No regulator/disorder/UV limit is taken, and no imaginary part or
 Fourier normalization is discarded. -/
@@ -784,29 +769,20 @@ private theorem gaussianCrossed_K2_radialLorentzian_eq_energyShell
           ((A + offset : ℝ) : ℂ) *
           polarFourierSecondCosineAngularKernel
             (Real.sqrt ((A + offset) / v ^ 2) * radius / hbar) := by
-  let k2Real : ℝ → ℝ :=
-    fun z => (polarFourierSecondCosineAngularKernel z).re
-  have hrealK2 (z : ℝ) :
-      polarFourierSecondCosineAngularKernel z = (k2Real z : ℂ) := by
-    have him : (polarFourierSecondCosineAngularKernel z).im = 0 :=
-      Complex.conj_eq_iff_im.mp (polarFourierSecondCosineAngularKernel_conj z)
-    apply Complex.ext
-    · rfl
-    · simpa [k2Real, him]
   let f : ℝ → ℝ := fun p => v ^ 2 * p ^ 2 - A
   let df : ℝ → ℝ := fun p => 2 * v ^ 2 * p
-  let g : ℝ → ℝ := fun offset =>
-    Lorentzian.spectralKernel offset B * (A + offset) *
-      k2Real (Real.sqrt ((A + offset) / v ^ 2) * radius / hbar)
+  let g : ℝ → ℂ := fun offset =>
+    (Lorentzian.spectralKernel offset B : ℂ) * ((A + offset : ℝ) : ℂ) *
+      polarFourierSecondCosineAngularKernel
+        (Real.sqrt ((A + offset) / v ^ 2) * radius / hbar)
   have harg : Continuous (fun offset : ℝ =>
       Real.sqrt ((A + offset) / v ^ 2) * radius / hbar) := by fun_prop
-  have hcontinuousK2 : Continuous k2Real :=
-    Complex.continuous_re.comp continuous_polarFourierSecondCosineAngularKernel
   have hg : Continuous g := by
     dsimp [g]
-    exact ((Lorentzian.continuous_spectralKernel_fixed_broadening B hB).mul
-      (continuous_const.add continuous_id)).mul
-        (hcontinuousK2.comp harg)
+    exact ((Complex.continuous_ofReal.comp
+      (Lorentzian.continuous_spectralKernel_fixed_broadening B hB)).mul
+        (Complex.continuous_ofReal.comp (continuous_const.add continuous_id))).mul
+      (continuous_polarFourierSecondCosineAngularKernel.comp harg)
   have hdf : Continuous df := by
     dsimp [df]
     fun_prop
@@ -816,17 +792,16 @@ private theorem gaussianCrossed_K2_radialLorentzian_eq_energyShell
       simp [f, Pi.pow_apply]
     · dsimp [df]
       ring
-  have hsub := intervalIntegral.integral_comp_mul_deriv'
+  have hsub := intervalIntegral.integral_deriv_smul_comp
     (a := (0 : ℝ)) (b := pMax) (f := f) (f' := df) (g := g)
-    (fun p _ => hderiv p) hdf.continuousOn hg.continuousOn
-  have hv2 : v ^ 2 ≠ 0 := pow_ne_zero 2 hv
+    (fun p _ => hderiv p) hdf.continuousOn hg
   have hpoint (p : ℝ) (hp : 0 ≤ p) :
-      g (f p) * df p =
-        (2 * v ^ 4) * B *
-          (p ^ 3 * k2Real (p * radius / hbar) /
-            ((A - v ^ 2 * p ^ 2) ^ 2 + B ^ 2)) := by
+      df p • g (f p) =
+        (((2 * v ^ 4 : ℝ) : ℂ)) * (B : ℂ) *
+          ((p : ℂ) ^ 3 * polarFourierSecondCosineAngularKernel (p * radius / hbar) *
+            ((((A - v ^ 2 * p ^ 2) ^ 2 + B ^ 2 : ℝ) : ℂ))⁻¹) := by
     have hsquare : (A + (v ^ 2 * p ^ 2 - A)) / v ^ 2 = p ^ 2 := by
-      field_simp [hv2]
+      field_simp [pow_ne_zero 2 hv]
       ring
     have hsqrt :
         Real.sqrt ((A + (v ^ 2 * p ^ 2 - A)) / v ^ 2) = p := by
@@ -836,78 +811,22 @@ private theorem gaussianCrossed_K2_radialLorentzian_eq_energyShell
           (A - v ^ 2 * p ^ 2) ^ 2 + B ^ 2 := by ring
     dsimp [f, df, g, Lorentzian.spectralKernel]
     rw [hsqrt, hden]
-    simp only [div_eq_mul_inv]
+    push_cast
     ring
-  have hreal :
-      (2 * v ^ 4) * B *
-        ∫ p in (0 : ℝ)..pMax,
-          p ^ 3 * k2Real (p * radius / hbar) /
-            ((A - v ^ 2 * p ^ 2) ^ 2 + B ^ 2) =
-        ∫ offset in -A..(v ^ 2 * pMax ^ 2 - A),
-          Lorentzian.spectralKernel offset B * (A + offset) *
-            k2Real (Real.sqrt ((A + offset) / v ^ 2) * radius / hbar) := by
-    calc
-      _ = ∫ p in (0 : ℝ)..pMax, g (f p) * df p := by
-        rw [← intervalIntegral.integral_const_mul]
-        apply intervalIntegral.integral_congr
-        intro p hp
-        have hpNonneg : 0 ≤ p := by
-          have hi : p ∈ Set.Icc (0 : ℝ) pMax := by
-            simpa [Set.uIcc_of_le hpMax] using hp
-          exact hi.1
-        exact (hpoint p hpNonneg).symm
-      _ = ∫ offset in f 0..f pMax, g offset := by
-        simpa only [Function.comp_apply] using hsub
-      _ = _ := by
-        dsimp [f, g]
-        simp only [mul_zero, zero_pow (by norm_num : 2 ≠ 0), zero_sub]
-  have hcastP :
-      (∫ p in (0 : ℝ)..pMax,
-        (p : ℂ) ^ 3 *
-          polarFourierSecondCosineAngularKernel (p * radius / hbar) *
-          ((((A - v ^ 2 * p ^ 2) ^ 2 + B ^ 2 : ℝ) : ℂ))⁻¹) =
-      ((∫ p in (0 : ℝ)..pMax,
-          p ^ 3 * k2Real (p * radius / hbar) /
-            ((A - v ^ 2 * p ^ 2) ^ 2 + B ^ 2) : ℝ) : ℂ) := by
-    calc
-      _ = ∫ p in (0 : ℝ)..pMax,
-            ((p ^ 3 * k2Real (p * radius / hbar) /
-              ((A - v ^ 2 * p ^ 2) ^ 2 + B ^ 2) : ℝ) : ℂ) := by
-        apply intervalIntegral.integral_congr
-        intro p _
-        dsimp only
-        rw [hrealK2]
-        push_cast
-        ring
-      _ = _ := RCLike.intervalIntegral_ofReal (𝕜 := ℂ) (μ := volume)
-        (f := fun p : ℝ => p ^ 3 * k2Real (p * radius / hbar) /
-          ((A - v ^ 2 * p ^ 2) ^ 2 + B ^ 2))
-        (a := 0) (b := pMax)
-  have hcastU :
-      (∫ offset in -A..(v ^ 2 * pMax ^ 2 - A),
-        (Lorentzian.spectralKernel offset B : ℂ) *
-          ((A + offset : ℝ) : ℂ) *
-          polarFourierSecondCosineAngularKernel
-            (Real.sqrt ((A + offset) / v ^ 2) * radius / hbar)) =
-      ((∫ offset in -A..(v ^ 2 * pMax ^ 2 - A),
-          Lorentzian.spectralKernel offset B * (A + offset) *
-            k2Real (Real.sqrt ((A + offset) / v ^ 2) * radius / hbar) : ℝ) : ℂ) := by
-    calc
-      _ = ∫ offset in -A..(v ^ 2 * pMax ^ 2 - A),
-          ((Lorentzian.spectralKernel offset B * (A + offset) *
-            k2Real (Real.sqrt ((A + offset) / v ^ 2) * radius / hbar) : ℝ) : ℂ) := by
-        apply intervalIntegral.integral_congr
-        intro offset _
-        dsimp only
-        rw [hrealK2]
-        push_cast
-        ring
-      _ = _ := RCLike.intervalIntegral_ofReal (𝕜 := ℂ) (μ := volume)
-        (f := fun offset : ℝ => Lorentzian.spectralKernel offset B * (A + offset) *
-          k2Real (Real.sqrt ((A + offset) / v ^ 2) * radius / hbar))
-        (a := -A) (b := v ^ 2 * pMax ^ 2 - A)
-  rw [hcastP, hcastU]
-  exact_mod_cast hreal
+  rw [← intervalIntegral.integral_const_mul]
+  calc
+    _ = ∫ p in (0 : ℝ)..pMax, df p • g (f p) := by
+      apply intervalIntegral.integral_congr
+      intro p hp
+      have hi : p ∈ Set.Icc (0 : ℝ) pMax := by
+        simpa only [Set.uIcc_of_le hpMax] using hp
+      exact (hpoint p hi.1).symm
+    _ = ∫ offset in f 0..f pMax, g offset := by
+      simpa only [Function.comp_apply] using hsub
+    _ = _ := by
+      dsimp [f, g]
+      simp only [mul_zero, zero_pow (by norm_num : 2 ≠ 0), zero_sub]
+
 
 /-- The **actual finite-cutoff dressed crossed K2 current**, multiplied by
 the actual Dyson width, is *exactly* a spectral Lorentzian convolution
