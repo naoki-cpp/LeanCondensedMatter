@@ -1,4 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.ExternalSupportFiber
+import Mathlib.Algebra.BigOperators.Group.Finset.Basic
+import Mathlib.Logic.Equiv.Basic
 
 set_option linter.style.header false
 
@@ -33,36 +35,18 @@ theorem ExternalInsertionDiagram.sum_eq_sum_externalSupportFiber
               QuarticDiagram InternalLabel N (S \ T.1),
           F ((ExternalInsertionDiagram.externalSupportFiberEquiv T.2).symm p).1 := by
   classical
-  rw [(Finset.sum_fiberwise_of_maps_to
-    (s := (Finset.univ : Finset (ExternalInsertionDiagram
-      ExternalLabel InternalLabel E N S)))
-    (t := (Finset.univ : Finset {T : Finset (Fin N) // T ⊆ S}))
-    (g := fun d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S =>
-      (⟨d.externallySupportedInteractionPart,
-        d.externallySupportedInteractionPart_subset⟩ :
-          {T : Finset (Fin N) // T ⊆ S}))
-    (fun _ _ => Finset.mem_univ _) F).symm]
+  let g (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S) :
+      {T : Finset (Fin N) // T ⊆ S} :=
+    ⟨d.externallySupportedInteractionPart, d.externallySupportedInteractionPart_subset⟩
+  rw [← Fintype.sum_fiberwise g F]
   refine Finset.sum_congr rfl fun T _ => ?_
-  have hfilter :
-      (Finset.univ : Finset (ExternalInsertionDiagram
-        ExternalLabel InternalLabel E N S)).filter
-          (fun d => (⟨d.externallySupportedInteractionPart,
-              d.externallySupportedInteractionPart_subset⟩ :
-                {T : Finset (Fin N) // T ⊆ S}) = T) =
-        (Finset.univ : Finset (ExternalInsertionDiagram
-          ExternalLabel InternalLabel E N S)).filter
-            (fun d => d.externallySupportedInteractionPart = T.1) := by
-    ext d
-    cases T with
-    | mk T hT => simp
-  rw [hfilter]
-  rw [Finset.sum_subtype
-    (p := fun d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S =>
-      d.externallySupportedInteractionPart = T.1)
-    _ (fun x => by
-      simp only [Finset.mem_filter, Finset.mem_univ, true_and]) F]
+  let e : {d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S //
+        d.externallySupportedInteractionPart = T.1} ≃ {d // g d = T} :=
+    (Equiv.refl _).subtypeEquiv (fun d => by
+      change d.externallySupportedInteractionPart = T.1 ↔ g d = T
+      exact ⟨fun h => Subtype.ext h, fun h => congrArg (fun t => t.1) h⟩)
   exact (Equiv.sum_comp
-    (ExternalInsertionDiagram.externalSupportFiberEquiv T.2).symm
+    ((ExternalInsertionDiagram.externalSupportFiberEquiv T.2).symm.trans e)
     (fun d => F d.1)).symm
 
 end Common
