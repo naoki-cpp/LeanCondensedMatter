@@ -14,7 +14,6 @@ import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Exte
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotLegSplitting
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.External.ExternalSlotSplit
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitConnectivity
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumComponents
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.SlotCongr
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentPosition
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedOrderPairing
@@ -43,7 +42,8 @@ The subpackages separate the main combinatorial responsibilities:
   remainder. Standalone component standardization and mixed-position embeddings are provided by
   general external insertions.
 * `SlotSplit` compares the ambient two-point graph with its external/vacuum slot decomposition.
-  Ordered vacuum pairing and component-pair factorization belong to the general external-insertion theory.
+  Vacuum-component correspondence, ordered vacuum pairing and component-pair factorization
+  belong to the general external-insertion theory.
 * `Mixed` transports the fixed pairing to mixed imaginary-time order. Component-local normalized
   pair decomposition, exchange signs and chamber locality are owned by general external insertions.
 
