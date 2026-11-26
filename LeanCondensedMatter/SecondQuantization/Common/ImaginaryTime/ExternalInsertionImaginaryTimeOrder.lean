@@ -1127,7 +1127,8 @@ theorem orderedExternalInsertionTimedEvents_paired {n : ℕ}
         cases b with
         | inl b =>
             fin_cases a <;> fin_cases b <;>
-              simp_all [block, pairedExternalEventBlock]
+              simp_all [block, pairedExternalEventBlock] <;>
+              (rcases hx with rfl | rfl) <;> simp_all
         | inr b =>
             fin_cases a <;> simp_all [block, pairedExternalEventBlock]
     | inr a =>
@@ -1155,13 +1156,15 @@ theorem orderedExternalInsertionTimedEvents_paired {n : ℕ}
               simp_all [block, pairedExternalEventBlock, r₁, r₂, times,
                 externalInsertionTimedEventBeforeOrEqual, stableTimedEventBeforeOrEqual_iff,
                 externalInsertionTimedEventTime, externalInsertionTimedEventRank,
-                pairedExternalTimes] <;> aesop
+                pairedExternalTimes, Fin.le_def] <;>
+              aesop (add safe tactic omega)
         | inr b =>
             fin_cases a <;>
               simp_all [block, pairedExternalEventBlock, r₁, r₂, times,
                 externalInsertionTimedEventBeforeOrEqual, stableTimedEventBeforeOrEqual_iff,
                 externalInsertionTimedEventTime, externalInsertionTimedEventRank,
-                pairedExternalTimes] <;> aesop
+                pairedExternalTimes, Fin.le_def] <;>
+              aesop (add safe tactic omega)
     | inr a =>
         cases b with
         | inl b =>
@@ -1169,7 +1172,8 @@ theorem orderedExternalInsertionTimedEvents_paired {n : ℕ}
               simp_all [block, pairedExternalEventBlock, r₁, r₂, times,
                 externalInsertionTimedEventBeforeOrEqual, stableTimedEventBeforeOrEqual_iff,
                 externalInsertionTimedEventTime, externalInsertionTimedEventRank,
-                pairedExternalTimes] <;> aesop
+                pairedExternalTimes, Fin.le_def] <;>
+              aesop (add safe tactic omega)
         | inr b =>
             simp_all [block, pairedExternalEventBlock, r₁, r₂,
               externalInsertionTimedEventBeforeOrEqual, stableTimedEventBeforeOrEqual_iff,
@@ -1188,7 +1192,7 @@ theorem orderedExternalInsertionTimedEvents_paired {n : ℕ}
   have hflatN : (source.flatMap block).Nodup := by
     rw [List.nodup_flatMap]
     exact ⟨fun a _ => hblock a,
-      hn.pairwise_of_forall_ne (fun a b _ _ hne => hdisjoint a b hne)⟩
+      hn.pairwise_of_forall_ne (fun _ _ _ _ hne => hdisjoint _ _ hne)⟩
   have hall (x : ExternalInsertionTimedEvent 2 n) : x ∈ source.flatMap block := by
     rw [List.mem_flatMap]
     cases x with
@@ -1232,7 +1236,9 @@ theorem externalInsertionStandardToMixedAtomicPositionEquiv_sign_paired
     if a.val < b.val ∧ pairedExternalTimes τ τ' a < pairedExternalTimes τ τ' b
     then 1 else 0) = _
   simp only [Fin.sum_univ_four]
-  by_cases h : τ < τ' <;> simp [pairedExternalTimes, h] <;> decide
+  by_cases h : τ < τ'
+  · simpa [pairedExternalTimes, h] using (show (-1 : ℤˣ) ^ 4 = 1 by decide)
+  · simp [pairedExternalTimes, h]
 
 end Common
 end SecondQuantization
