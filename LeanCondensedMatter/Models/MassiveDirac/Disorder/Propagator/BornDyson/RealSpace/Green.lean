@@ -309,7 +309,16 @@ theorem finiteCutoffContinuumBornDysonRealSpaceGreenMatrix_polarPoint2D_eq_radia
             inPlaneSpinRotationInverse angle j j := by
         apply intervalIntegral.integral_congr
         intro p _
-        rw [hpoint angle p, inPlaneSpinRotation_conjugate_apply, hpoint0 p]
+        calc
+          angular angle p i j =
+              (inPlaneSpinRotation angle * base p * inPlaneSpinRotationInverse angle) i j :=
+            congrArg (fun M : Matrix2 => M i j) (hpoint angle p)
+          _ = inPlaneSpinRotation angle i i * base p i j *
+                inPlaneSpinRotationInverse angle j j :=
+            inPlaneSpinRotation_conjugate_apply angle (base p) i j
+          _ = _ := congrArg
+            (fun M : Matrix2 => inPlaneSpinRotation angle i i * M i j *
+              inPlaneSpinRotationInverse angle j j) (hpoint0 p).symm
       _ = _ := by
         rw [intervalIntegral.integral_mul_const, intervalIntegral.integral_const_mul]
   rw [hint]
