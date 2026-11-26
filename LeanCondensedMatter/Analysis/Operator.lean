@@ -11,8 +11,8 @@ import LeanCondensedMatter.Analysis.Operator.HilbertBasis
 import LeanCondensedMatter.Analysis.Operator.HilbertSchmidt
 import LeanCondensedMatter.Analysis.Operator.L2Multiplication
 import LeanCondensedMatter.Analysis.Operator.Polar
+import LeanCondensedMatter.Analysis.Operator.SchwartzComponents1D
 import LeanCondensedMatter.Analysis.Operator.SchwartzKinetic1D
-import LeanCondensedMatter.Analysis.Operator.SchwartzTwoLevel1D
 import LeanCondensedMatter.Analysis.Operator.Spectral
 import LeanCondensedMatter.Analysis.Operator.SymmetrizedProduct
 import LeanCondensedMatter.Analysis.Operator.TraceClass

@@ -46,9 +46,9 @@ homomorphic normalization rules:
 - `coe_diagonalExpectationValue_right`
 - `coe_diagonalExpectationNNReal`
 - `diagonalExpectationValue_add`
-- `SchwartzTwoLevel1D.spatialLift_apply`
-- `SchwartzTwoLevel1D.internalOperator_apply`
-- `SchwartzTwoLevel1D.multiplicationOperator_apply`
+- `SchwartzComponents1D.spatialLift_apply`
+- `SchwartzComponents1D.internalOperator_apply`
+- `SchwartzComponents1D.multiplicationOperator_apply`
 - `nonrealShiftLinearEquiv_apply`
 - `nonrealShiftInverseDomain_apply`
 - `nonrealResolvent_apply`

@@ -107,10 +107,10 @@ def main():
     assert {row["name"].split(".")[-1] for row in rows} == expected
     assert all(row["kind"] == "def" for row in rows)
     assert all(row["dependencies"] for row in rows), "definitions must retain dependency edges"
-    rows = [row for row in declarations if row["sourceFile"].endswith("/SchwartzTwoLevel1D.lean")
+    rows = [row for row in declarations if row["sourceFile"].endswith("/SchwartzComponents1D.lean")
             and not row["generated"]]
-    assert any(row["kind"] == "theorem" for row in rows), "missing SchwartzTwoLevel1D theorems"
-    assert any(row["kind"] in {"def", "abbrev"} for row in rows), "missing SchwartzTwoLevel1D definitions"
+    assert any(row["kind"] == "theorem" for row in rows), "missing SchwartzComponents1D theorems"
+    assert any(row["kind"] in {"def", "abbrev"} for row in rows), "missing SchwartzComponents1D definitions"
     print(f"Validated {len(declarations)} declarations and {len(theorems)} theorem audit entries")
 
 

@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Analysis.InternalSpace.Pauli
-import LeanCondensedMatter.Analysis.Operator.SchwartzTwoLevel1D
+import LeanCondensedMatter.Analysis.Operator.SchwartzComponents1D
 import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.SchwartzSchrodinger1D
 import Mathlib.Algebra.Lie.OfAssociative
 
@@ -18,38 +18,38 @@ namespace SingleParticle
 namespace Continuum
 namespace SchwartzTwoLevelSchrodinger1D
 
-open SchwartzTwoLevel1D
+open SchwartzComponents1D
 attribute [local instance 100] LieRing.ofAssociativeRing
 
 noncomputable section
 
 /-- Componentwise Schwartz velocity operator. -/
-noncomputable def velocityOperator (ℏ κ : ℝ) : State →ₗ[ℂ] State :=
-  spatialLift (SchwartzSchrodinger1D.velocityOperator ℏ κ)
+noncomputable def velocityOperator (ℏ κ : ℝ) : State (Fin 2) →ₗ[ℂ] State (Fin 2) :=
+  spatialLift (ι := Fin 2) (SchwartzSchrodinger1D.velocityOperator ℏ κ)
 
 /-- Componentwise scalar Schrodinger Hamiltonian. -/
-noncomputable def spatialHamiltonian (κ : ℝ) (potential : Spatial) : State →ₗ[ℂ] State :=
-  spatialLift (SchwartzSchrodinger1D.schrodingerOperator κ potential)
+noncomputable def spatialHamiltonian (κ : ℝ) (potential : Spatial) : State (Fin 2) →ₗ[ℂ] State (Fin 2) :=
+  spatialLift (ι := Fin 2) (SchwartzSchrodinger1D.schrodingerOperator κ potential)
 
 /-- State Hamiltonian consisting of scalar spatial dynamics plus an arbitrary internal matrix.
 
 The internal term is an arbitrary two-level on-site coupling at this abstract level.
 It commutes with spatial localization; its physical interpretation belongs downstream. -/
 noncomputable def hamiltonian
-    (κ : ℝ) (potential : Spatial) (internalH : InternalSpace.PauliMatrix) : State →ₗ[ℂ] State :=
+    (κ : ℝ) (potential : Spatial) (internalH : InternalSpace.PauliMatrix) : State (Fin 2) →ₗ[ℂ] State (Fin 2) :=
   spatialHamiltonian κ potential + internalOperator internalH
 
 /-- The localization commutator of the two-level state Hamiltonian is unaffected by the internal matrix term. -/
 theorem lie_hamiltonian_localization_eq_spatial
     (κ : ℝ) (potential : Spatial) (internalH : InternalSpace.PauliMatrix) (f : Spatial) :
-    ⁅hamiltonian κ potential internalH, multiplicationOperator f⁆ =
-      ⁅spatialHamiltonian κ potential, multiplicationOperator f⁆ := by
+    ⁅hamiltonian κ potential internalH, multiplicationOperator (ι := Fin 2) f⁆ =
+      ⁅spatialHamiltonian κ potential, multiplicationOperator (ι := Fin 2) f⁆ := by
   rw [hamiltonian, add_lie]
   have h := lie_spatialLift_internalOperator_eq_zero
     (SchwartzKinetic1D.multiplicationOperator f) internalH
-  have hzero : ⁅internalOperator internalH, multiplicationOperator f⁆ = 0 := by
+  have hzero : ⁅internalOperator internalH, multiplicationOperator (ι := Fin 2) f⁆ = 0 := by
     change ⁅internalOperator internalH,
-      spatialLift (SchwartzKinetic1D.multiplicationOperator f)⁆ = 0
+      spatialLift (ι := Fin 2) (SchwartzKinetic1D.multiplicationOperator f)⁆ = 0
     simp only [LieRing.of_associative_ring_bracket, Module.End.mul_eq_comp,
       sub_eq_zero] at h ⊢
     exact h.symm
@@ -60,10 +60,10 @@ Schwartz model, independently of the internal Hamiltonian matrix. -/
 theorem heisenberg_localization_eq_symmetrized_velocity
     (ℏ κ : ℝ) (potential : Spatial) (internalH : InternalSpace.PauliMatrix) (f : Spatial) :
     (Complex.I / (ℏ : ℂ)) •
-        ⁅hamiltonian κ potential internalH, multiplicationOperator f⁆ =
+        ⁅hamiltonian κ potential internalH, multiplicationOperator (ι := Fin 2) f⁆ =
       (1 / 2 : ℂ) •
-        ((multiplicationOperator (SchwartzKinetic1D.derivative f)).comp (velocityOperator ℏ κ) +
-          (velocityOperator ℏ κ).comp (multiplicationOperator (SchwartzKinetic1D.derivative f))) := by
+        ((multiplicationOperator (ι := Fin 2) (SchwartzKinetic1D.derivative f)).comp (velocityOperator ℏ κ) +
+          (velocityOperator ℏ κ).comp (multiplicationOperator (ι := Fin 2) (SchwartzKinetic1D.derivative f))) := by
   rw [lie_hamiltonian_localization_eq_spatial]
   apply LinearMap.ext
   intro ψ
