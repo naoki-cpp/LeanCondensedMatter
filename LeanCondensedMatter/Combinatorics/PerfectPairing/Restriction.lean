@@ -1,3 +1,4 @@
+import Mathlib.Logic.Equiv.Basic
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Transport
 
 set_option linter.style.header false
@@ -94,19 +95,6 @@ theorem PairingOn.restrictAlongEquiv_change_coordinates
   intro x
   simp
 
-/-- Extract the fiber over a fixed index from a dependent sigma type.
-This is the canonical transport used when restricting a pairing which
-never connects different sigma fibers. -/
-def sigmaFiberEquiv {ι : Type*} {β : ι → Type*} (i : ι) :
-    {x : Σ j, β j // x.1 = i} ≃ β i where
-  toFun := fun x => x.2 ▸ x.1.2
-  invFun := fun x => ⟨⟨i, x⟩, rfl⟩
-  left_inv := by
-    rintro ⟨⟨j, x⟩, h⟩
-    cases h
-    rfl
-  right_inv := fun _ => rfl
-
 /-- Restrict a perfect pairing on a dependent disjoint union to one
 fiber when partners preserve the fiber index. -/
 noncomputable def PairingOn.sigmaFiberPairing
@@ -117,7 +105,7 @@ noncomputable def PairingOn.sigmaFiberPairing
   P.restrictAlongEquiv
     (fun x => x.1 = i)
     (fun x => by rw [h x])
-    (sigmaFiberEquiv i)
+    (Equiv.sigmaSubtype i)
 
 /-- The local partner, inserted back into its sigma fiber, equals
 the original global partner. -/
@@ -129,7 +117,7 @@ theorem PairingOn.sigmaFiberPairing_partner
   have hp := P.restrictAlongEquiv_partner_symm_val
     (fun z : Σ j, β j => z.1 = i)
     (fun z => by rw [h z])
-    (sigmaFiberEquiv i) x
+    (Equiv.sigmaSubtype i) x
   exact hp.symm
 
 /-- A pairing which preserves the indices of a dependent sum is precisely

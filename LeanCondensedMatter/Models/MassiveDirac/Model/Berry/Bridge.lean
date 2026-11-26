@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Analysis.Operator.BerryGeometry.Curvature
+import LeanCondensedMatter.Analysis.Operator.BerryGeometry
 import Mathlib.Tactic.FieldSimp
 import Mathlib.Tactic.Ring
 import LeanCondensedMatter.Models.MassiveDirac.Model.Interband

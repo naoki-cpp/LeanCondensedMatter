@@ -16,4 +16,4 @@ For a simple finite spectrum, construct the pointwise eigenvector derivatives al
 
 Keep parameter-dependent finite-dimensional Berry connection and curvature behind the dedicated `Analysis.Operator.BerryGeometry` route. `Analysis.Operator.Spectral` owns generic eigenvector-family and resolvent results and must not acquire Berry dependencies; the broader `Analysis.Operator` umbrella may expose both independent routes for convenience.
 
-Evidence: [Berry geometry umbrella](../../LeanCondensedMatter/Analysis/Operator/BerryGeometry.lean), [pointwise eigenbasis data and connection](../../LeanCondensedMatter/Analysis/Operator/BerryGeometry/Connection.lean), [curvature and force-matrix formula](../../LeanCondensedMatter/Analysis/Operator/BerryGeometry/Curvature.lean), and the [massive-Dirac consumer](../../LeanCondensedMatter/Models/MassiveDirac/Model/Berry/Bridge.lean).
+Evidence: [pointwise Berry geometry, connection, curvature and force-matrix formulas](../../LeanCondensedMatter/Analysis/Operator/BerryGeometry.lean), and the [massive-Dirac consumer](../../LeanCondensedMatter/Models/MassiveDirac/Model/Berry/Bridge.lean).

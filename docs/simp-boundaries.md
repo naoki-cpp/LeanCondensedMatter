@@ -60,6 +60,7 @@ homomorphic normalization rules:
 - `SchwartzKinetic1D.derivative_apply`
 - `SchwartzKinetic1D.multiplicationOperator_apply`
 - `ConservationLaw.localizedQuantityFunctional_apply`
+- `ConservationLaw.symmetrizedVelocityCurrentRepresentation_currentDensity`
 - `zetaCommutator_apply`
 - `orderedSimplexIntegral_zero`
 - `orderedSimplexIntegral_zero_fun`
@@ -166,11 +167,8 @@ The following declaration families are deliberate API normalization boundaries:
 - `coe_observableExpValue`
 - `gibbsState_op`
 - `ConservationLaw.heisenbergEvolution_apply`
-- `QuantumTheory.ConservationLaw.heisenbergLocalizationFunctional_apply`
 - `QuantumTheory.ConservationLaw.heisenbergTransportFunctional_apply`
 - `QuantumTheory.ConservationLaw.heisenbergSourceFunctional_apply`
-- `QuantumTheory.ConservationLaw.operatorLocalCurrentPairing_apply`
-- `QuantumTheory.ConservationLaw.symmetrizedVelocityCurrentRepresentation_currentDensity`
 - all current simp rules in `LinearResponse/KuboFormula`
 - `DensityOperator.spectralTrace_op_eq_one`
 - `DensityOperator.realTrace_op_eq_one`

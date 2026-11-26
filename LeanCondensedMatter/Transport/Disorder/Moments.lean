@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Analysis.Algebra.FiniteAverage
 import LeanCondensedMatter.Transport.Disorder.Finite
 import Mathlib.Algebra.Star.BigOperators
 import Mathlib.Analysis.Normed.Operator.Mul
@@ -56,7 +57,7 @@ theorem exactSecondMoment_eq_average
       ensemble.average (fun ω =>
         (ensemble.impurityPotential ω).1 * kernel *
           (ensemble.impurityPotential ω).1) := by
-  simp [exactSecondMoment, exactSecondMomentCLM, average]
+  simp [exactSecondMoment, exactSecondMomentCLM, average, LinearMap.finiteWeightedAverage]
 
 /-- If every impurity potential is scalar, `Vω = uω I`, the exact second-moment action is scalar
 multiplication by `E[uω²]`. -/
@@ -103,13 +104,9 @@ theorem exactSecondMoment_star
     ensemble.exactSecondMoment (star kernel) =
       star (ensemble.exactSecondMoment kernel) := by
   rw [exactSecondMoment_eq_average, exactSecondMoment_eq_average]
-  change (∑ ω, (ensemble.probability ω : ℂ) •
-      ((ensemble.impurityPotential ω).1 * star kernel * (ensemble.impurityPotential ω).1)) =
-    star (∑ ω, (ensemble.probability ω : ℂ) •
-      ((ensemble.impurityPotential ω).1 * kernel * (ensemble.impurityPotential ω).1))
-  rw [star_sum]
-  apply Finset.sum_congr rfl
-  intro ω _
+  rw [← ensemble.average_star]
+  apply congrArg ensemble.average
+  funext ω
   simp [star_mul, (ensemble.impurityPotential ω).2.star_eq, mul_assoc]
 
 /-- Right equivariance of the exact second moment. If every impurity potential commutes with a

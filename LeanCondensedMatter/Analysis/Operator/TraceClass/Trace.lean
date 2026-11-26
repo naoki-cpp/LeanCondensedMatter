@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Analysis.Operator.TraceClass.General
-import LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.Basic
+import LeanCondensedMatter.Analysis.Operator.HilbertSchmidt
 import LeanCondensedMatter.Analysis.Operator.Polar
 import Mathlib.Analysis.InnerProductSpace.Trace
 import Mathlib.Analysis.InnerProductSpace.l2Space
@@ -159,17 +159,7 @@ private theorem trace_tsum_eq {ι κ : Type*} (d : HilbertBasis ι ℂ H)
     (∑' i, inner ℂ (d i) (T (d i))) = ∑' j, inner ℂ (f j) (T (f j)) := by
   obtain ⟨A, B, hA, hB, hfactor⟩ :=
     (isTraceClass_iff_exists_hilbertSchmidt_factorization (T := T)).mp hT
-  have hd : (∑' i, inner ℂ (d i) (T (d i))) = innerHS d A B := by
-    unfold innerHS
-    apply tsum_congr
-    intro i
-    exact diagonal_eq_hilbertSchmidt_inner hfactor (d i)
-  have hf : (∑' j, inner ℂ (f j) (T (f j))) = innerHS f A B := by
-    unfold innerHS
-    apply tsum_congr
-    intro j
-    exact diagonal_eq_hilbertSchmidt_inner hfactor (f j)
-  rw [hd, hf]
+  simp_rw [diagonal_eq_hilbertSchmidt_inner hfactor]
   exact innerHS_eq_of_isHilbertSchmidt d f hA hB
 
 namespace IsTraceClass

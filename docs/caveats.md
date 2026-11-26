@@ -28,7 +28,7 @@ applies.
   left/right multiplication; completeness remains missing.
 
 - **Fredholm determinant support is diagonal, not general.**
-  `Analysis/Operator/Fredholm/Diagonal.lean` provides a genuinely infinite-dimensional determinant
+  `Analysis/Operator/Fredholm.lean` provides a genuinely infinite-dimensional determinant
   for explicit absolutely summable diagonal coefficients `coeff i`, using the convergent product
   `∏' i, (1 + coeff i)`. This does not define a determinant for arbitrary compact, normal, or
   trace-class operators. Reindexing invariance is proved, but independence from an unrelated

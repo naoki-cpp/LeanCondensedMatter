@@ -56,6 +56,21 @@ theorem DensityOperator.expectation_eq_finiteDimensionalOperatorTrace
   rw [ρ.expectation_eq_linearMap_trace, finiteDimensionalOperatorTrace_apply]
   rfl
 
+/-- A finite density operator fixed by a unitary conjugation has an invariant
+expectation functional for every bounded observable. -/
+theorem DensityOperator.expectation_conjStarAlgEquiv_of_fixed
+    (ρ : DensityOperator H) (W : H ≃ₗᵢ[ℂ] H)
+    (hρ : W.conjStarAlgEquiv ρ.op = ρ.op) (A : H →L[ℂ] H) :
+    ρ.expectation (W.conjStarAlgEquiv A) = ρ.expectation A := by
+  rw [ρ.expectation_eq_finiteDimensionalOperatorTrace,
+    ρ.expectation_eq_finiteDimensionalOperatorTrace]
+  calc
+    finiteDimensionalOperatorTrace (ρ.op * W.conjStarAlgEquiv A) =
+        finiteDimensionalOperatorTrace (W.conjStarAlgEquiv (ρ.op * A)) := by
+          rw [map_mul W.conjStarAlgEquiv, hρ]
+    _ = finiteDimensionalOperatorTrace (ρ.op * A) :=
+      finiteDimensionalOperatorTrace_conjStarAlgEquiv W (ρ.op * A)
+
 /-- The finite-dimensional density expectation respects operator adjoints. -/
 theorem DensityOperator.expectation_star (ρ : DensityOperator H) (A : H →L[ℂ] H) :
     ρ.expectation (star A) = star (ρ.expectation A) := by

@@ -346,8 +346,8 @@ Ordered vacuum legs and mixed pairing transport now belong to the general extern
 external arity, while `PairingOn.ofSplitNormalizedPairEquiv` and the general
 `componentMixedPairEquiv` provide normalized pair decomposition. Strict local order is only
 needed for orientation-sensitive embeddings and crossing comparisons, not for the split
-pairing identity itself. The two-point slot-split graph geometry remains available for
-two-point-specific consumers.
+pairing identity itself. The graph-sum geometry and vacuum-component correspondence are also owned by the general
+external-support connectivity layer; the two-point specialization uses the fixed-leg bridge.
 
 The two-point expansion has its own internal layer order:
 

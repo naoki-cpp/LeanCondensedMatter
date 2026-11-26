@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Analysis.Algebra.FiniteAverage
 import LeanCondensedMatter.Transport.Disorder.TwoParticleNormBound
 import LeanCondensedMatter.Transport.Disorder.Moments
 import Mathlib.Tactic.Abel
@@ -76,8 +77,9 @@ theorem norm_configurationGreen_fluctuation_sub_firstDyson_le
     ensemble.configurationGreenOfRegulator_eq_secondOrder_add_exactRemainder_left
       energy regulator hregulator ξ
   have hAavg : ensemble.average A = 0 := by
-    simpa [show ensemble.average V = 0 from hcentered] using
-      (ensemble.map_average
+    simpa [FiniteDisorderEnsemble.average,
+      show LinearMap.finiteWeightedAverage ensemble.probability V = 0 from hcentered] using
+      (LinearMap.map_finiteWeightedAverage ensemble.probability
         ((ContinuousLinearMap.mulLeftRight ℂ (H →L[ℂ] H)) G₀ G₀).toLinearMap V).symm
   have hGavg :
       ensemble.averagedGreenOfRegulator energy regulator =
@@ -93,7 +95,8 @@ theorem norm_configurationGreen_fluctuation_sub_firstDyson_le
         rw [map_add, map_add, ensemble.average_const, hAavg]
         simp
   have hRavg : ‖ensemble.average R‖ ≤ B ^ 3 * potentialBound ^ 2 :=
-    ensemble.norm_average_le_of_forall R _ hR
+    LinearMap.norm_finiteWeightedAverage_le_of_forall ensemble.probability
+      ensemble.probability_nonneg ensemble.probability_sum R _ hR
   have hdiff :
       (G ω - ensemble.averagedGreenOfRegulator energy regulator) - A ω =
         R ω - ensemble.average R := by

@@ -1,0 +1,213 @@
+name: Lean native diagnostics
+
+on:
+  workflow_dispatch:
+    inputs:
+      module:
+        description: "Project module (shake requires a module-system import closure)"
+        type: string
+        default: LeanCondensedMatter.Combinatorics.FiniteSumModEq
+  pull_request:
+    paths:
+      - '.github/workflows/native_lean_diagnostics.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: native-lean-diagnostics-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  diagnostics:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        case: ${{ fromJSON(github.event_name == 'workflow_dispatch' && '["manual"]' || '["module","legacy"]') }}
+    env:
+      TARGET_MODULE: ${{ matrix.case == 'legacy' && 'LeanCondensedMatter.Analysis.PowerSeries.Normalization' || inputs.module || 'LeanCondensedMatter.Combinatorics.FiniteSumModEq' }}
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          persist-credentials: false
+
+      - name: Validate target
+        id: target
+        shell: bash
+        run: |
+          set -euo pipefail
+          [[ "$TARGET_MODULE" =~ ^LeanCondensedMatter(\.[A-Za-z_][A-Za-z0-9_]*)+$ ]]
+          source_file="${TARGET_MODULE//./\/}.lean"
+          test -f "$source_file"
+          if grep -Eq '^module([[:space:]]|$)' "$source_file"; then
+            echo 'module_system=true' >> "$GITHUB_OUTPUT"
+          else
+            echo 'module_system=false' >> "$GITHUB_OUTPUT"
+          fi
+          echo "TARGET_FILE=$source_file" >> "$GITHUB_ENV"
+          mkdir -p native-diagnostics
+          printf 'Module: %s\n' "$TARGET_MODULE" > native-diagnostics/target.txt
+
+      - name: Enable resilient elan downloads
+        run: bash .github/scripts/enable_curl_retry.sh
+
+      - name: Set up Lean and dependency cache
+        uses: leanprover/lean-action@50fcf42d2e460296f1a34b402e990d1b24f8b596 # v1
+        with:
+          build: false
+          test: false
+          lint: false
+          use-github-cache: false
+          use-mathlib-cache: auto
+
+      - name: Build selected module and dependencies
+        id: build
+        shell: bash
+        run: |
+          set -euo pipefail
+          lean --version | tee native-diagnostics/toolchain.txt
+          lake build "$TARGET_MODULE" 2>&1 | tee native-diagnostics/build.log
+
+      - name: Analyze imports without modifying sources
+        id: shake
+        if: steps.target.outputs.module_system == 'true'
+        timeout-minutes: 5
+        shell: bash
+        run: |
+          set -euo pipefail
+          # Lake's default freshness check targets the whole package, not the
+          # selected module. The targeted build above supplies fresh oleans.
+          rc=0
+          lake shake --force --keep-public --explain "$TARGET_MODULE" > native-diagnostics/shake.log 2>&1 || rc=$?
+          cat native-diagnostics/shake.log
+          echo "shake_exit=$rc" >> "$GITHUB_OUTPUT"
+          git diff --exit-code
+          if [ "$rc" = 0 ]; then
+            echo 'status=clean' >> "$GITHUB_OUTPUT"
+          elif [ "$rc" = 1 ] && grep -Fq 'only works with `module`s currently' native-diagnostics/shake.log; then
+            echo 'status=unsupported import closure' >> "$GITHUB_OUTPUT"
+          elif [ "$rc" = 1 ] && grep -Eq '^  (add|remove) ' native-diagnostics/shake.log; then
+            echo 'status=edits suggested' >> "$GITHUB_OUTPUT"
+          else
+            echo 'status=tool error' >> "$GITHUB_OUTPUT"
+            exit 1
+          fi
+
+      - name: Record elaboration time (Firefox Profiler)
+        if: ${{ !cancelled() && steps.build.outcome == 'success' }}
+        id: time
+        timeout-minutes: 5
+        shell: bash
+        run: |
+          set -euo pipefail
+          lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -DElab.async=false \
+            -Dtrace.profiler=true -Dtrace.profiler.threshold=10 \
+            -Dtrace.profiler.output=native-diagnostics/time.json "$TARGET_FILE" \
+            2>&1 | tee native-diagnostics/time.log
+          jq -e '(.threads | type == "array" and length > 0)' native-diagnostics/time.json >/dev/null
+
+      - name: Record heartbeat traces (text)
+        if: ${{ !cancelled() && steps.build.outcome == 'success' }}
+        id: heartbeats
+        timeout-minutes: 5
+        shell: bash
+        run: |
+          set -euo pipefail
+          # Raw counter threshold: 100000 internal ticks = 100 user heartbeats.
+          # Do not export heartbeat counters as a time-based Firefox profile.
+          lake env lean -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -DElab.async=false \
+            -Dtrace.profiler=true -Dtrace.profiler.useHeartbeats=true \
+            -Dtrace.profiler.threshold=100000 "$TARGET_FILE" \
+            2>&1 | tee native-diagnostics/heartbeats.log
+
+      - name: Summarize diagnostics
+        if: always()
+        env:
+          SHAKE_EXIT: ${{ steps.shake.outputs.shake_exit }}
+          SHAKE_STATUS: ${{ steps.shake.outputs.status }}
+          MODULE_SYSTEM: ${{ steps.target.outputs.module_system }}
+          TIME_STATUS: ${{ steps.time.outcome }}
+          HEARTBEAT_STATUS: ${{ steps.heartbeats.outcome }}
+        shell: bash
+        run: |
+          {
+            echo '## Native Lean diagnostics'
+            printf 'Module: `%s`\n\n' "$TARGET_MODULE"
+            if [ "$MODULE_SYSTEM" = false ]; then
+              echo 'Shake skipped: selected file uses legacy syntax.'
+            else
+              printf 'Shake: %s (exit %s).\n' "${SHAKE_STATUS:-not run}" "${SHAKE_EXIT:-not run}"
+            fi
+            printf 'Time profile: %s; heartbeat trace: %s\n\n' "$TIME_STATUS" "$HEARTBEAT_STATUS"
+            echo 'Open time.json in Firefox Profiler. Profiles cover only the selected file, with asynchronous elaboration disabled.'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+          python3 - <<'PY'
+          import os
+          import re
+          from pathlib import Path
+
+          reports = Path("native-diagnostics")
+          with open(os.environ["GITHUB_STEP_SUMMARY"], "a", encoding="utf-8") as summary:
+              shake = reports / "shake.log"
+              if os.environ["SHAKE_STATUS"] == "edits suggested" and shake.is_file():
+                  public, ordinary = [], []
+                  module = ""
+                  for line in shake.read_text().splitlines():
+                      if line and not line[0].isspace() and line.endswith(":"):
+                          module = line
+                      match = re.fullmatch(r"  (add|remove) #\[(.*)\]", line)
+                      if match:
+                          for imp in match[2].split(", "):
+                              row = f"{module} {match[1]} {imp}"
+                              (public if imp.startswith("public ") else ordinary).append(row)
+                  for title, rows in (
+                      ("Public import suggestions (review API impact)", public),
+                      ("Other import suggestions", ordinary),
+                  ):
+                      summary.write(f"\n### {title}\n\n")
+                      if rows:
+                          summary.write("\x60\x60\x60text\n" + "\n".join(rows[:30]) + "\n\x60\x60\x60\n")
+                          if len(rows) > 30:
+                              summary.write(f"\n{len(rows) - 30} more; see shake.log.\n")
+                      else:
+                          summary.write("None parsed; see shake.log for the full report.\n")
+
+              heartbeat = reports / "heartbeats.log"
+              if os.environ["HEARTBEAT_STATUS"] == "success" and heartbeat.is_file():
+                  counts = {}
+                  for line in heartbeat.read_text().splitlines():
+                      match = re.fullmatch(
+                          r"\s*\[Elab\.definition\.value\]\s+\[(\d+(?:\.\d+)?)\]\s+✅️?\s+(\S+)",
+                          line,
+                      )
+                      if match:
+                          name = match[2]
+                          counts[name] = max(counts.get(name, 0), int(float(match[1])))
+                  ranked = sorted(counts.items(), key=lambda item: (-item[1], item[0]))
+                  with (reports / "heartbeat-ranking.tsv").open("w", encoding="utf-8") as table:
+                      table.write("declaration\\traw_ticks\\theartbeats\n".replace("\\t", "\t"))
+                      for name, ticks in ranked:
+                          table.write(f"{name}\t{ticks}\t{ticks / 1000:.3f}\n")
+                  summary.write("\n### Highest declaration-body heartbeat traces\n\n")
+                  summary.write("Successful Elab.definition.value spans only; max per name, not a sum. "
+                                "Thresholded at 100 user heartbeats; statements and unreported spans are excluded.\n\n")
+                  if ranked:
+                      summary.write("\x60\x60\x60text\n")
+                      for name, ticks in ranked[:20]:
+                          summary.write(f"{ticks / 1000:10.1f}  {name}\n")
+                      summary.write("\x60\x60\x60\n")
+                  else:
+                      summary.write("No matching spans; inspect heartbeats.log.\n")
+          PY
+
+      - name: Upload native diagnostics
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: native-lean-diagnostics-${{ matrix.case }}
+          path: native-diagnostics/
+          if-no-files-found: warn
+          retention-days: 7

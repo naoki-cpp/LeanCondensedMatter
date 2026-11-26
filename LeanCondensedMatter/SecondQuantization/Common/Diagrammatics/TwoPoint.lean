@@ -11,10 +11,6 @@ import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalComponents
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Components.ComponentRestriction
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.External.ExternalConnectivity
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotLegSplitting
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.External.ExternalSlotSplit
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitConnectivity
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumComponents
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.SlotCongr
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentPosition
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedOrderPairing
@@ -39,11 +35,9 @@ The subpackages separate the main combinatorial responsibilities:
   predicates for vacuum-free and externally connected diagrams.
 * `Components` restricts connected components; the canonical external component and vacuum
   classification use the shared graph-level component theory.
-* `External` isolates the external component and splits its interaction slots from the vacuum
-  remainder. Standalone component standardization and mixed-position embeddings are provided by
-  general external insertions.
-* `SlotSplit` compares the ambient two-point graph with its external/vacuum slot decomposition.
-  Ordered vacuum pairing and component-pair factorization belong to the general external-insertion theory.
+* `External` characterizes the connectivity of the canonical external component.
+  All external/vacuum slot splitting, reassembly and component standardization now belong to
+  the general external-insertion theory.
 * `Mixed` transports the fixed pairing to mixed imaginary-time order. Component-local normalized
   pair decomposition, exchange signs and chamber locality are owned by general external insertions.
 

@@ -102,12 +102,7 @@ theorem externalInsertionLegCongr_standardize
             ↥(Finset.univ : Finset (Fin T.card))) l).val =
         (Fin.cast rfl (externalInsertionInteractionLeg (E := E) v l)).val
       simp only [Fin.val_cast, externalInsertionInteractionLeg_val]
-      have huniv :
-          (((Finset.univ : Finset (Fin T.card)).orderIsoOfFin rfl).symm
-            (⟨vFin, Finset.mem_univ vFin⟩ :
-              ↥(Finset.univ : Finset (Fin T.card)))).val = vFin.val := by
-        rw [Finset.orderIsoOfFin_symm_apply, Fin.sort_univ, List.idxOf_finRange]
-      rw [huniv]
+      rw [Combinatorics.univ_orderIsoOfFin_symm_val]
 
 /-- The canonical consecutive-slot reindexing preserves the exact
 ordering of **all flattened fermion legs**, including the external legs

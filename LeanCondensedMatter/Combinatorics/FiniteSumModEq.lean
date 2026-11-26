@@ -1,10 +1,8 @@
 module
 
-public import Mathlib.Algebra.BigOperators.Group.Finset.Sigma
 public import Mathlib.Algebra.BigOperators.ModEq
 public import Mathlib.Data.Finset.Prod
-public import Mathlib.Data.ZMod.Basic
-import Mathlib.Tactic.Ring
+import Mathlib.Algebra.BigOperators.Group.Finset.Sigma
 
 -- Used only to rewrite casts of finite sums in proofs; not part of this module's public API.
 import Mathlib.Algebra.BigOperators.Ring.Finset
@@ -49,14 +47,7 @@ theorem finset_sum_offDiag_modEq_of_pair_add_modEq {α : Type*}
         (ZMod.natCast_eq_natCast_iff _ _ n).2
           (hpair a hp.1 b hp.2.1 hp.2.2)
       simp only [Prod.swap_prod_mk]
-      calc
-        (f a b : ZMod n) - (g a b : ZMod n) +
-            ((f b a : ZMod n) - (g b a : ZMod n)) =
-          ((f a b + f b a : ℕ) : ZMod n) -
-            ((g a b + g b a : ℕ) : ZMod n) := by
-              simp only [Nat.cast_add]
-              ring
-        _ = 0 := by rw [hz]; simp
+      rw [sub_add_sub_comm, ← Nat.cast_add, ← Nat.cast_add, hz, sub_self]
     · rintro ⟨a, b⟩ hp _
       simp only [Finset.mem_offDiag] at hp
       intro hswap
@@ -120,10 +111,7 @@ private theorem finset_sum_sum_modEq_diag_of_pair_add_modEq_zero {α : Type*}
     rw [← Finset.sum_product' s s f]
     rw [← Finset.sum_union (Finset.disjoint_diag_offDiag s)]
     rw [Finset.diag_union_offDiag]
-  have hdiag :
-      (∑ p ∈ s.diag, f p.1 p.2) = ∑ a ∈ s, f a a := by
-    simp [Finset.diag]
-  rw [hsplit, hdiag]
+  rw [hsplit, Finset.sum_diag]
   simpa using
     (Nat.ModEq.refl (n := n) (∑ a ∈ s, f a a)).add hoff
 
@@ -132,7 +120,7 @@ theorem fintype_sum_sum_modEq_diag_of_pair_add_modEq_zero {α : Type*}
     [Fintype α] (n : ℕ) (f : α → α → ℕ)
     (hpair : ∀ a b, a ≠ b → Nat.ModEq n (f a b + f b a) 0) :
     Nat.ModEq n (∑ a, ∑ b, f a b) (∑ a, f a a) := by
-  simpa using finset_sum_sum_modEq_diag_of_pair_add_modEq_zero
+  exact finset_sum_sum_modEq_diag_of_pair_add_modEq_zero
     n (Finset.univ : Finset α) f (fun a _ b _ hab => hpair a b hab)
 
 end Combinatorics

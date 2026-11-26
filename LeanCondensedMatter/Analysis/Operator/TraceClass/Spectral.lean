@@ -1,4 +1,3 @@
-import LeanCondensedMatter.Analysis.Operator.HilbertBasis
 import LeanCondensedMatter.Analysis.Operator.TraceClass.Trace
 import LeanCondensedMatter.Analysis.FunctionalCalculus.CFC
 import Mathlib.Analysis.InnerProductSpace.l2Space
@@ -123,7 +122,7 @@ private theorem cfcAbs_apply_eigenvector
 /-- A diagonal transform of a compact self-adjoint operator has a basis whose diagonal
 series agrees with the corresponding transformed nonzero eigenvalue series. The transform must
 vanish on the kernel; the sum equivalence does not require summability in advance. -/
-private theorem exists_diagonal_hilbertBasis_hasSum_iff
+theorem exists_diagonal_hilbertBasis_hasSum_iff
     (hcompact : IsCompactOperator T) (hself : IsSelfAdjoint T)
     {S : H →L[ℂ] H} (hS : IsSelfAdjoint S) (f : ℝ → ℝ) (hf0 : f 0 = 0)
     (happly : ∀ (v : H) (c : ℝ),
@@ -136,7 +135,8 @@ private theorem exists_diagonal_hilbertBasis_hasSum_iff
   let e : EigenvectorIndex T → H := eigenvectorFamily hcompact
   have he : Orthonormal ℂ e := by
     simpa [e] using orthonormal_eigenvectorFamily hcompact hsym
-  obtain ⟨u, b, j, hj, hb_j⟩ := he.exists_hilbertBasis_extension_injective
+  obtain ⟨u, b, j, hj, hb_j, hker⟩ :=
+    exists_hilbertBasis_extension_eigenvectorFamily hcompact hsym
   let g : u → ℝ := fun i => diagonalExpectationValue S hS (b i)
   have hpoint (a : EigenvectorIndex T) : g (j a) = f a.1.1 := by
     change diagonalExpectationValue S hS (b (j a)) = f a.1.1
@@ -147,8 +147,7 @@ private theorem exists_diagonal_hilbertBasis_hasSum_iff
     simp
   have hzero (x : u) (hx : x ∉ Set.range j) : g x = 0 := by
     change diagonalExpectationValue S hS (b x) = 0
-    have hxker := hilbertBasis_apply_eq_zero_of_not_mem_eigenvector_range
-      hcompact hsym b j (fun a => by simpa [e] using hb_j a) x hx
+    have hxker := hker x hx
     have hSzero : S (b x) = 0 := by
       simpa only [hf0, Complex.ofReal_zero, zero_smul] using
         happly (b x) 0 (by simpa using hxker)
@@ -186,6 +185,14 @@ theorem IsTraceClass.hasSummableRealEigenvalues
     HasSummableRealEigenvalues T :=
   (isTraceClass_iff_hasSummableRealEigenvalues hT.isCompact hself).1 hT
 
+/-- The lossless real trace of a self-adjoint trace-class operator equals its spectral sum. -/
+theorem IsTraceClass.realTrace_eq_spectralTrace
+    (hT : IsTraceClass T) (hself : IsSelfAdjoint T) :
+    hT.realTrace hself = spectralTrace T := by
+  obtain ⟨u, b, hb⟩ := exists_diagonal_hilbertBasis_hasSum_iff hT.isCompact hself
+    hself (fun c => c) rfl (fun _ _ hv => hv)
+  exact ((hb _).mp (hT.hasSum_realTrace hself b)).tsum_eq.symm
+
 /-- `spectralTrace` can be computed against any Hilbert basis using lossless diagonal expectation
 values. -/
 theorem hasSum_diagonalExpectationValue_eq_spectralTrace
@@ -194,11 +201,7 @@ theorem hasSum_diagonalExpectationValue_eq_spectralTrace
     HasSum (fun i => diagonalExpectationValue T hTself (d i)) (spectralTrace T) := by
   have htrace : IsTraceClass T :=
     (isTraceClass_iff_hasSummableRealEigenvalues hT hTself).mpr h
-  obtain ⟨u, b, hb⟩ := exists_diagonal_hilbertBasis_hasSum_iff hT hTself
-    hTself (fun c => c) rfl (fun _ _ hv => hv)
-  have heq : htrace.realTrace hTself = spectralTrace T :=
-    ((hb _).mp (htrace.hasSum_realTrace hTself b)).tsum_eq.symm
-  rw [← heq]
+  rw [← htrace.realTrace_eq_spectralTrace hTself]
   exact htrace.hasSum_realTrace hTself d
 
 /-- On self-adjoint trace-class operators, the general complex trace agrees with the real spectral
@@ -206,13 +209,7 @@ trace after coercion to `ℂ`. -/
 theorem IsTraceClass.trace_eq_spectralTrace
     (hT : IsTraceClass T) (hself : IsSelfAdjoint T) :
     hT.trace = (spectralTrace T : ℂ) := by
-  obtain ⟨w, d, -⟩ := exists_hilbertBasis (𝕜 := ℂ) (E := H)
-  have hcast :=
-    (hasSum_diagonalExpectationValue_eq_spectralTrace hT.isCompact hself
-      (hT.hasSummableRealEigenvalues hself) d).mapL Complex.ofRealCLM
-  simp only [Complex.ofRealCLM_apply] at hcast
-  exact (hT.hasSum_trace d).unique
-    (hcast.congr_fun fun i => (coe_diagonalExpectationValue_right T hself (d i)).symm)
+  rw [← hT.realTrace_eq_spectralTrace hself, hT.coe_realTrace hself]
 
 /-- On self-adjoint trace-class operators, the canonical trace norm is the absolute eigenvalue sum
 with multiplicity. -/
@@ -269,14 +266,8 @@ theorem ofCFC {f : ℝ → ℝ} (hself : IsSelfAdjoint T) (hcompact : IsCompactO
 real spectral trace. -/
 theorem traceNorm_eq_spectralTrace (h : SpectralTraceClass T) (hpos : T.IsPositive) :
     h.isTraceClass.traceNorm = spectralTrace T := by
-  calc
-    h.isTraceClass.traceNorm =
-        h.isTraceClass.realTrace h.isSelfAdjoint :=
-      h.isTraceClass.traceNorm_eq_realTrace hpos
-    _ = spectralTrace T := by
-      apply Complex.ofReal_injective
-      rw [h.isTraceClass.coe_realTrace h.isSelfAdjoint,
-        h.isTraceClass.trace_eq_spectralTrace h.isSelfAdjoint]
+  exact (h.isTraceClass.traceNorm_eq_realTrace hpos).trans
+    (h.isTraceClass.realTrace_eq_spectralTrace h.isSelfAdjoint)
 
 /-- A nonzero positive spectral-trace-class operator has strictly positive real spectral trace. -/
 theorem spectralTrace_pos (h : SpectralTraceClass T) (hpos : T.IsPositive) (hne : T ≠ 0) :
@@ -288,9 +279,9 @@ theorem spectralTrace_pos (h : SpectralTraceClass T) (hpos : T.IsPositive) (hne 
 values. -/
 theorem hasSum_diagonalExpectationValue (h : SpectralTraceClass T)
     {ι : Type*} (d : HilbertBasis ι ℂ H) :
-    HasSum (fun i => diagonalExpectationValue T h.isSelfAdjoint (d i)) (spectralTrace T) :=
-  ContinuousLinearMap.hasSum_diagonalExpectationValue_eq_spectralTrace
-    h.compact h.isSelfAdjoint h.summable d
+    HasSum (fun i => diagonalExpectationValue T h.isSelfAdjoint (d i)) (spectralTrace T) := by
+  rw [← h.isTraceClass.realTrace_eq_spectralTrace h.isSelfAdjoint]
+  exact h.isTraceClass.hasSum_realTrace h.isSelfAdjoint d
 
 /-- Bound the lossless diagonal-expectation sum over an orthonormal family by the real spectral
 trace. -/

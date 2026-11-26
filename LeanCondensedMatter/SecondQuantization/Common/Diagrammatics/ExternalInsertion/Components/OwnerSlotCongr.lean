@@ -1,5 +1,7 @@
+import LeanCondensedMatter.Combinatorics.Shuffle.SlotShuffle
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ConnectedAssembly
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Transport
+import Mathlib.Logic.Equiv.Set
 
 set_option linter.style.header false
 
@@ -44,30 +46,12 @@ noncomputable def ExternalInsertionBlockLayout.interactionBlockOwnerSlotCongrEqu
     (e : Fin N ≃ Fin N) (B : layout.partition.parts) :
     ↥(layout.interactionBlock (Finset.univ : Finset (Fin N)) B) ≃
       ↥((layout.ownerSlotCongr e).interactionBlock
-        (Finset.univ : Finset (Fin N)) B) where
-  toFun v := ⟨e v.1, by
-    classical
-    have hv : layout.interactionOwner v.1 = B := by
-      simpa only [ExternalInsertionBlockLayout.interactionBlock,
-        Finset.mem_filter, Finset.mem_univ, true_and] using v.2
-    simp only [ExternalInsertionBlockLayout.interactionBlock,
-      Finset.mem_filter, Finset.mem_univ, true_and]
-    simpa [ExternalInsertionBlockLayout.ownerSlotCongr] using hv⟩
-  invFun v := ⟨e.symm v.1, by
-    classical
-    have hv : (layout.ownerSlotCongr e).interactionOwner v.1 = B := by
-      simpa only [ExternalInsertionBlockLayout.interactionBlock,
-        Finset.mem_filter, Finset.mem_univ, true_and] using v.2
-    simp only [ExternalInsertionBlockLayout.interactionBlock,
-      Finset.mem_filter, Finset.mem_univ, true_and]
-    simpa [ExternalInsertionBlockLayout.ownerSlotCongr] using hv⟩
-  left_inv v := by
-    apply Subtype.ext
-    simp
-  right_inv v := by
-    apply Subtype.ext
-    simp
-
+        (Finset.univ : Finset (Fin N)) B) := by
+  classical
+  refine e.subtypeEquiv fun v => ?_
+  simp only [ExternalInsertionBlockLayout.interactionBlock, Finset.mem_filter,
+    Finset.mem_univ, true_and, ExternalInsertionBlockLayout.ownerSlotCongr_interactionOwner]
+  exact Iff.rfl
 
 /-- Relabeling interaction vertices leaves every external source leg at
 its exact original external insertion index. -/
@@ -235,11 +219,8 @@ noncomputable def ExternalInsertionBlockLayout.ofFamilyShuffleFixedSizeStandardi
 permutation of its corresponding full interaction slot subtype. -/
 def fullInteractionSlotEquiv (e : Fin N ≃ Fin N) :
     ↥(Finset.univ : Finset (Fin N)) ≃
-    ↥(Finset.univ : Finset (Fin N)) where
-  toFun v := ⟨e v.1, Finset.mem_univ _⟩
-  invFun v := ⟨e.symm v.1, Finset.mem_univ _⟩
-  left_inv v := by apply Subtype.ext; simp
-  right_inv v := by apply Subtype.ext; simp
+    ↥(Finset.univ : Finset (Fin N)) :=
+  e.subtypeEquiv (fun _ => by simp only [Finset.mem_univ])
 
 /-- The physical block and local vertex selected by the interaction
 equivalence commute with the global slot relabeling. All local labels
@@ -574,14 +555,7 @@ theorem ExternalInsertionBlockLayout.ofFamilyShuffle_ownerShuffleEquiv_reference
   have hcanon (v : Fin (Finset.univ : Finset (Fin N)).card) :
       (((Finset.univ : Finset (Fin N)).orderIsoOfFin rfl).toEquiv v).1 =
         Fin.cast ht.symm v := by
-    let S : Finset (Fin N) := Finset.univ
-    have huniq := Finset.orderEmbOfFin_unique
-      (s := S) (h := rfl)
-      (f := fun j : Fin S.card => Fin.cast ht.symm j)
-      (fun _ => Finset.mem_univ _)
-      ((Fin.castOrderIso ht.symm).strictMono)
-    change (S.orderIsoOfFin rfl v).1 = Fin.cast ht.symm v
-    simpa only [Finset.coe_orderIsoOfFin_apply] using (congrFun huniq v).symm
+    exact Combinatorics.univ_orderIsoOfFin_apply ht.symm v
   apply Combinatorics.FamilySlotShuffleTo.eq_of_same_owner
   intro v
   have hphysical := layout.interactionOrderDecomposition_owner
@@ -653,13 +627,7 @@ theorem ExternalInsertionBlockLayout.ofFamilyShuffle_ownerOrderedDysonOrder
   have ht : N = S.card := by simp [S]
   have hcanon (v : Fin S.card) :
       ((S.orderIsoOfFin rfl).toEquiv v).1 = Fin.cast ht.symm v := by
-    have huniq := Finset.orderEmbOfFin_unique
-      (s := S) (h := rfl)
-      (f := fun j : Fin S.card => Fin.cast ht.symm j)
-      (fun _ => Finset.mem_univ _)
-      ((Fin.castOrderIso ht.symm).strictMono)
-    change (S.orderIsoOfFin rfl v).1 = Fin.cast ht.symm v
-    simpa only [Finset.coe_orderIsoOfFin_apply] using (congrFun huniq v).symm
+    exact Combinatorics.univ_orderIsoOfFin_apply ht.symm v
   have hreference :=
     ExternalInsertionBlockLayout.ofFamilyShuffle_ownerShuffleEquiv_reference π heven σ
   have hperm :=

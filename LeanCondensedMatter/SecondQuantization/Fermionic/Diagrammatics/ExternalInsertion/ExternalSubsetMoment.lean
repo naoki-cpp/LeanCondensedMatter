@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Combinatorics.Shuffle.SlotShuffle
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalSubsetAssembly
 import Mathlib.Algebra.BigOperators.Group.Finset.Basic
 import Mathlib.Data.Finset.BooleanAlgebra
@@ -1781,8 +1782,7 @@ theorem grandCanonicalExternalSubsetConnectedDiagramSeries_univ
   let e := evenExternalSubsetOrderIso S heven
   have hidx (v : S) : (e.symm v).val = v.1.val := by
     change ((S.orderIsoOfFin _).symm v).val = v.1.val
-    rw [Finset.orderIsoOfFin_symm_apply]
-    simp only [S, Fin.sort_univ, List.idxOf_finRange]
+    exact Combinatorics.univ_orderIsoOfFin_symm_val _ v
   let localIndex (p : Fin (2 * (S.card / 2))) : Fin (2 * E) := (e p).1
   have horder (p : Fin (2 * (S.card / 2))) :
       localIndex p = id (Fin.cast (congrArg (2 * ·) hK) p) := by

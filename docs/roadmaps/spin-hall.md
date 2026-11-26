@@ -541,6 +541,72 @@ identification, regulator removal and thermodynamic/DC limits remain
 separate. No claim is made about the bulk spin Hall conductivity from
 this fixed-positive-rate finite-volume equality.
 
+## Finite open-rectangle numerical reference (partial R4)
+
+Run `python scripts/rashba_proper_spin_benchmark.py` with NumPy.
+The reference uses the actual Rashba nearest-neighbor bond formula on
+a centered open 2 × 3 rectangle with one electron in its nondegenerate
+lowest-energy orbital. In dimensionless benchmark units,
+ℏ = q = a = t = 1, spin scale = 1/2, onsite energy = 4,
+exchange = 1/2, Rashba bond coefficient = 1/2,
+V = 6 (unit area per site), ω = 0.7, η = 0.2.
+The origin is explicitly (1/2,1) relative to the uncentered rectangle;
+the displacement observable depends on that choice.
+
+The computed values are approximately
+
+| Component | Proper spin conductivity | Conventional retarded contribution | Torque retarded contribution |
+| --- | --- | --- | --- |
+| yx, z spin | 0.005769607 − 0.006146039 i | 0.006481242 − 0.006775255 i | −0.000711635 + 0.000629216 i |
+| xy, z spin | −0.009324397 + 0.010512987 i | −0.009317101 + 0.010542384 i | −0.000007297 − 0.000029397 i |
+
+The separate retarded contributions use the same electric-field
+normalization, not independent full conductivities. The contact expectation
+is numerically zero at this symmetric geometry and chosen state, but the
+contact operator is included in the direct calculation and checked by
+differentiating the actual Peierls family. The script also checks
+Hermiticity, conventional-plus-torque operator decomposition, the two
+conductivity routes, a nonzero antisymmetrized transverse component,
+and vanishing transverse response when Rashba coupling is set to zero.
+
+`AlgebraicFock.finiteHilbertOperator_dGamma_oneParticle` transports the
+existing algebraic one-particle action to the bounded exterior-Fock
+realization. This supports the singleton-sector restriction for a
+subsequent exact operator-to-spectral bridge. The script is a floating-point
+reference, not a Lean-certified evaluation of the concrete eigenbasis or
+a proof of nonvanishing for the actual Lean Rashba channel. That exact
+bridge and the bulk/DC limits remain open.
+
+## Exact one-particle sector bridge for the finite benchmark (partial R4)
+
+The degree-one embedding into finite occupation-Hilbert coordinates,
+`AlgebraicFock.finiteHilbertOneParticleEmbedding`, is isometric for every
+orthonormal one-particle basis. Its inner-product identity follows from the
+existing creation/annihilation adjoint and vacuum identities.
+`finiteHilbertOperator_dGamma_apply_embedding` transports the existing
+degree-one action of dΓ, preserving the original matrix elements.
+
+For the finite lattice realization,
+`Lattice.finiteSecondQuantization_apply_oneParticle` identifies the same
+embedding with the canonical algebraic lattice coordinates. The bounded
+one-body Lie-homomorphism property and the existing exponential
+conjugation theorem then give
+`inner_finiteSecondQuantization_exp_conjugate_lie_oneParticle`:
+for an arbitrary one-particle generator G and one-body operators A, B,
+
+```text
+⟨jv, [exp(t dΓ(G)) dΓ(A) exp(−t dΓ(G)), dΓ(B)] jw⟩
+  = ⟨v, [exp(t G) A exp(−t G), B] w⟩.
+```
+
+Here j is the isometric degree-one embedding. The equality is for the
+actual full-Fock operators, not a numerical approximation or a
+multiplicativity claim for dΓ. In particular, the single-electron
+commutator kernel may be computed in the original one-particle space.
+The concrete Rashba spectral data, normalized stationary state and
+nonzero finite-frequency conductivity still require exact certification;
+the existing numerical reference alone does not establish them in Lean.
+
 ## References
 
 See the annotated entries in [`../references.md`](../references.md) for full

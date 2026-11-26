@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Combinatorics.Shuffle.SlotShuffle
 import LeanCondensedMatter.Analysis.OrderedSimplex.Integral
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Ordered
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.SupportStandardization
@@ -88,8 +89,7 @@ theorem ExternalInsertionWickDiagram.orderedDysonAmplitude_canonicalOrder
   simp only [Fin.val_cast]
   change (((Finset.univ : Finset (Fin n)).orderIsoOfFin rfl).symm
     ⟨v, Finset.mem_univ v⟩).val = v.val
-  rw [Finset.orderIsoOfFin_symm_apply]
-  simp only [Fin.sort_univ, List.idxOf_finRange]
+  exact Combinatorics.univ_orderIsoOfFin_symm_val rfl _
 
 
 /-- Every strictly decreasing ordered-simplex time assignment remains

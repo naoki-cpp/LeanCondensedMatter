@@ -180,7 +180,7 @@ using a zero-consumer signal as grounds for changing its retention.
 - `ConservationLaw.localizationCorrectionCurrentFlux_smul_one` — independently useful
   charge-like specialization stating that the localization correction vanishes for a scalar
   multiple of the identity.
-- `QuantumTheory.ConservationLaw.correctedChargeCurrentFlux_eq` — physical charge-current
+- `ConservationLaw.correctedChargeCurrentFlux_eq` — physical charge-current
   specialization identifying the corrected current with the local pairing `q v`.
 - `Lorentzian.tendsto_spectralTailMass_zero` — model-independent analytic
   approximate-identity result for the vanishing difference of Lorentzian masses
@@ -214,12 +214,13 @@ using a zero-consumer signal as grounds for changing its retention.
   evaluation rule identifying the bundled retarded-advanced ladder action with the physical
   covariance insertion `C₂(Gᴿ Γ Gᴬ)`; it is the stable simplification boundary for the ladder API.
 - `ConservationLaw.localCurrentDensity_unique_of_separates` — Local current-density uniqueness when the paired differential-test map is injective; this is a physical identifiability criterion, not an unconditional locality or uniqueness claim.
-- `QuantumTheory.ConservationLaw.currentEquivalent_nestedSymmetrizedCurrentFlux` — canonical
-  corrected-current equivalence theorem: any full current representing the intrinsic transport is
-  equivalent on exact differentials to the canonical nested current flux.
-- `QuantumTheory.ConservationLaw.exists_current_eq_symmetrized_add_correction_add_invisible` —
+- `ConservationLaw.currentEquivalent_nestedSymmetrizedCurrentFlux` — canonical
+  corrected-current equivalence theorem for any transport represented by the nested flux;
+  no hypothesis on the origin of the transport is needed.
+- `ConservationLaw.exists_current_eq_symmetrized_add_correction_add_invisible` —
   physics-facing representation theorem `J = J_sym + J_corr + K` with `K` invisible on exact
-  differentials; it is the explicit extension-ambiguity endpoint of the corrected-current API.
+  differentials; it is the explicit extension-ambiguity endpoint of the corrected-current API,
+  following from the kernel of precomposition with the differential.
 - `QuantumMechanics.SingleParticle.lie_orbitalAngularMomentum_continuum_sign` — physics-facing
   directional continuum specialization fixing the derivative-localizer coefficient to `iℏ`;
   it records the orbital-localization commutator in an arbitrary oriented plane.
@@ -307,11 +308,8 @@ using a zero-consumer signal as grounds for changing its retention.
 - `SecondQuantization.Common.QuarticDiagram.restrictComponent_vertexGraph_adj_iff` — canonical graph
   transport characterization identifying adjacency in a restricted component with ambient adjacency
   through `blockVertex`.
-- `SecondQuantization.Common.TwoPointDiagram.externalVacuumSplit_fst_partner` — partner-map
-  compatibility for the public external-slot split. The private
-  `externalComponentLegEquiv_partner` proof uses it to establish the public
-  `externalComponentLegEquiv_symm_restrictedPartner` normalization rule; retaining the split-level
-  statement exposes the pairing invariant independently of that downstream equivalence.
+- `SecondQuantization.Common.ExternalInsertionDiagram.componentDiagramLeg_restrictComponent_pairing_partner` — Component-local pairing partners intertwine with ambient partners through the canonical leg inclusion.
+- `SecondQuantization.Common.ExternalInsertionDiagram.externalBearingDiagram_partner` — Partner-map compatibility of the canonical external-bearing restriction and ambient pairing, for arbitrary external arity and without mutual external connectivity.
 - `SecondQuantization.Common.orderedTwoPointTimedEvents_pairwise` — structural invariant that the
   canonical mixed-event list is pairwise ordered by the stable time precedence relation.
 - `SecondQuantization.Common.support_dysonCoeff_basisState_subset_reachableSupport` — finite-order
@@ -670,23 +668,21 @@ using a zero-consumer signal as grounds for changing its retention.
 - `SecondQuantization.Fermionic.AlgebraicFock.star_finiteHilbertOperator_create` — orthonormal-basis adjointness of the finite-Hilbert realizations of creation and annihilation, a substantive operator-theoretic endpoint used by the isometry construction.
 - `SecondQuantization.Common.twoPointLegDataCongr_inl` — canonical `@[simp]` evaluation of vertex relabeling on an external two-point leg; paired with the interaction-leg rule.
 - `SecondQuantization.Common.twoPointLegDataCongr_inr` — canonical `@[simp]` evaluation of vertex relabeling on an interaction leg, preserving its local slot while applying the vertex equivalence.
-- `SecondQuantization.Common.slotSplitVertexEquiv_inl` — canonical `@[simp]` evaluation of the slot-splitting vertex equivalence on the retained component, compatible with the public `slotSplitVertex` embedding.
+- `SecondQuantization.Common.supportSlotVertexEquiv_inl` — Canonical evaluation of the general slot-splitting vertex equivalence on the external-bearing side.
 
 - `SecondQuantization.Common.ExternalInsertionDiagram.ofSlotSplit_pairingInMixedOrder_eq_ofSplit_orderedVacuum` — Reassembled mixed pairing equals the split pairing of the external sector and the ordered vacuum sector for arbitrary external arity; this retains the pairing transport identity without a chamber restriction.
 - `SecondQuantization.Common.externalInsertionSlotLegSplitting_right_orderedMixedPosition` — Identifies the ambient mixed position of each ordered vacuum leg for arbitrary external arity.
 - `SecondQuantization.Common.ExternalInsertionDiagram.componentMixedPairEquiv_apply` — Canonical evaluation of the general component-local normalized-pair equivalence into the ambient mixed pairing.
-- `SecondQuantization.Common.TwoPointDiagram.externalComponentLegEquiv_symm_restrictedPartner` — canonical `@[simp]` transport of restricted pairing partners through the inverse external-component leg equivalence, expressing a stable external/vacuum split invariant.
 
-- `SecondQuantization.Common.TwoPointDiagram.ofSlotSplit_externalVacuumSplit` — Canonical round-trip for the two-point diagram's external-component/vacuum decomposition. Although it specializes the general split reconstruction, it states the geometric decomposition endpoint in terms of the diagram's own external component.
 - `SecondQuantization.Common.ExternalInsertionDiagram.externalBearing_vacuum_reconstruction` — Canonical reconstruction of an external-insertion diagram from all externally supported components and the vacuum complement; also used in the external-support connectivity argument without imposing connectivity among external insertions.
 - `SecondQuantization.Common.ExternalInsertionDiagram.ofSlotSplit_vertexWeight` — Statistics-independent, commutative-monoid factorization of interaction-vertex weights across an external-insertion slot split; the Dyson-sign identity builds on this more general result.
-- `SecondQuantization.Common.TwoPointDiagram.ofSlotSplit_externalLabel` — Canonical `@[simp]` computation rule identifying the external labels of a reassembled two-point diagram with those of its external piece.
-- `SecondQuantization.Common.TwoPointDiagram.externalVacuumSplit_fst_externalLabel` — Canonical `@[simp]` preservation law for the external labels of the component extracted by the external/vacuum decomposition.
+- `SecondQuantization.Common.ExternalInsertionDiagram.ofSlotSplit_externalLabel` — Reassembly preserves the external labels for arbitrary external arity.
+- `SecondQuantization.Common.ExternalInsertionDiagram.externalBearingDiagram_externalLabel` — Canonical external-bearing restriction preserves every external label.
 - `SecondQuantization.Common.ExternalInsertionDiagram.ofSlotSplit_pairing` — Canonical `@[simp]` computation rule exposing the binary pairing assembled by the external-insertion slot split, rather than a disposable proof-only forwarding lemma.
 
 - `SecondQuantization.Common.interactionSector_componentBlock_slotSplitVacuumVertex` — geometric identification of the interaction-vertex support of a reassembled vacuum component with its original quartic component. Used to establish component-map support preservation; it is a standalone graph-decomposition fact, not a throwaway proof cast.
 - `SecondQuantization.Common.componentBlock_slotSplitVacuumVertex_mem_vacuumComponentParts` — identifies any quartic-side vertex component as an ambient vacuum component. It supplies the well-typed vacuum-component embedding.
-- `SecondQuantization.Common.TwoPointDiagram.ofSlotSplit_vacuumLeg_mem_right` — geometric characterization that every leg in an ambient vacuum component of a reassembled two-point diagram lies in the quartic side when the left piece is externally connected. A graph/leg support invariant distinct from pairing-order identities.
+- `SecondQuantization.Common.ExternalInsertionDiagram.ofSlotSplit_vacuumLeg_mem_right` — geometric characterization that every leg in an ambient vacuum component of a reassembled external-insertion diagram lies in the quartic side when the left piece is vacuum-free. A graph/leg support invariant distinct from pairing-order identities.
 
 ## Other retained API contracts (outside theorem audit)
 

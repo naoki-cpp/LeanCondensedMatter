@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Analysis.ODE.RadialEnergyDecay
-import LeanCondensedMatter.Analysis.Fourier.PolarRadialKernels.HigherHarmonics
+import LeanCondensedMatter.Analysis.Fourier.PolarRadialKernels.Bessel
 import Mathlib.Analysis.Calculus.Deriv.MeanValue
 import LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.AnalyticWronskian
 
@@ -14,7 +14,7 @@ The normalized real-axis Wronskian then reduces the Wronskian-weighted radial
 moment to the same integral, with cutoff limit 1/π.
 
 The angular Fourier kernels and their differential identities come from
-`Analysis.Fourier.PolarRadialKernels.HigherHarmonics`; the Wronskian condition
+`Analysis.Fourier.PolarRadialKernels.Bessel`; the Wronskian condition
 comes from the analytic Bessel theory. All limits here concern finite interval
 integrals, independently of physical momentum normalization or regulators.
 -/

@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Analysis.Operator.BoundedUnitaryEvolution
+import LeanCondensedMatter.Analysis.Operator.Exponential
 import LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.Unitary
 import LeanCondensedMatter.QuantumTheory.Postulates
 import Mathlib.Analysis.SpecialFunctions.Exponential
