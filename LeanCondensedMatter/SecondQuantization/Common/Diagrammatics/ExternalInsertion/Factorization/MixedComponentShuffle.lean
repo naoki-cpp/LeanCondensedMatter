@@ -56,17 +56,10 @@ theorem ExternalInsertionDiagram.relativeComponentShuffle_sign_eq_mixedAtomic_mu
       (n := 2 * (2 * n + E)) (by simp) d.componentLegShuffle
   let globalPerm :=
     externalInsertionStandardToMixedAtomicPositionEquiv externalTime σ
-  let localPerm :
-      ∀ B : d.vertexGraph.componentPartition.parts,
-        Equiv.Perm
-          (Fin (2 * (2 * (interactionSector
-            (B : Finset (ExternalInsertionVertex E (Finset.univ : Finset (Fin n))))).card +
-              d.externalPairCount B))) :=
-    fun B =>
-      (externalInsertionMixedTimeAmbientPositionEquiv
-        (d.componentExternalTime externalTime B)
-        (d.componentInteractionTime σ B)).trans
-        (finCongr (by simp))
+  let localPerm := fun B : d.vertexGraph.componentPartition.parts =>
+    (externalInsertionStandardToMixedAtomicPositionEquiv
+      (d.componentExternalTime externalTime B)
+      (d.componentInteractionTime σ B)).symm
   have hmixed :
       (d.componentMixedPositionShuffle externalTime σ).slotEquiv =
         (Equiv.sigmaCongrRight localPerm).trans
@@ -110,19 +103,7 @@ theorem ExternalInsertionDiagram.relativeComponentShuffle_sign_eq_mixedAtomic_mu
       (∏ B : d.vertexGraph.componentPartition.parts,
         Equiv.Perm.sign (localPerm B)) =
     Equiv.Perm.sign globalPerm * _
-  congr 1
-  apply Finset.prod_congr rfl
-  intro B _
-  have hperm :
-      localPerm B =
-        (externalInsertionStandardToMixedAtomicPositionEquiv
-          (d.componentExternalTime externalTime B)
-          (d.componentInteractionTime σ B)).symm := by
-    apply Equiv.ext
-    intro p
-    apply Fin.ext
-    rfl
-  rw [hperm, Equiv.Perm.sign_symm]
+  simp only [localPerm, Equiv.Perm.sign_symm]
 
 
 end Common
