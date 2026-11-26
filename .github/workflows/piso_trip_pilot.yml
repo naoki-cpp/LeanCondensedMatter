@@ -11,7 +11,7 @@ permissions: {}
 jobs:
   artifact-probe:
     runs-on: ubuntu-24.04
-    timeout-minutes: 5
+    timeout-minutes: 8
     continue-on-error: true
     steps:
       - name: Check research artifact metadata
@@ -21,7 +21,7 @@ jobs:
           set -euo pipefail
           mkdir -p piso-trip-pilot
           echo 'Checking Zenodo record 23064352 (paper arXiv:2611.29603).' > piso-trip-pilot/status.txt
-          if ! curl --fail --silent --show-error --location --proto '=https' --proto-redir '=https' --connect-timeout 15 --max-time 60 --retry 2 --retry-max-time 120 --max-filesize 5000000 -o "$RUNNER_TEMP/piso-trip-record.json" 'https://zenodo.org/api/records/23064352' 2>>piso-trip-pilot/status.txt; then
+          if ! curl --fail --silent --show-error --location --proto '=https' --proto-redir '=https' --connect-timeout 15 --max-time 60 --retry 5 --retry-delay 15 --retry-max-time 240 --max-filesize 5000000 -o "$RUNNER_TEMP/piso-trip-record.json" 'https://zenodo.org/api/records/23064352' 2> >(tee -a piso-trip-pilot/status.txt >&2); then
             echo 'Artifact metadata unavailable; no code was downloaded or executed.' | tee -a piso-trip-pilot/status.txt
             exit 1
           fi
@@ -35,6 +35,11 @@ jobs:
           echo '## lean-piso-trip artifact pilot' >> "$GITHUB_STEP_SUMMARY"
           echo 'Metadata discovery only. No equivalence search or proof validation has been run.' >> "$GITHUB_STEP_SUMMARY"
           echo 'See the uploaded pilot artifact and metadata step for the access result.' >> "$GITHUB_STEP_SUMMARY"
+          if [ -f piso-trip-pilot/status.txt ]; then
+            printf '\n```text\n' >> "$GITHUB_STEP_SUMMARY"
+            cat piso-trip-pilot/status.txt >> "$GITHUB_STEP_SUMMARY"
+            printf '```\n' >> "$GITHUB_STEP_SUMMARY"
+          fi
 
       - name: Upload artifact discovery report
         if: always()
