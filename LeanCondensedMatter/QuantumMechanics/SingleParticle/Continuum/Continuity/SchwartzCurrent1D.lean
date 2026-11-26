@@ -71,7 +71,7 @@ noncomputable def schwartzOperatorProbabilityCurrentRepresentation1D
       (heisenbergTransportFunctional ℏ
         (SchwartzSchrodinger1D.schrodingerOperator κ potential)
         SchwartzKinetic1D.multiplicationLinear LinearMap.id)
-      (_root_.ConservationLaw.operatorLocalCurrentPairing
+      (_root_.ConservationLaw.localizedQuantityFunctional
         SchwartzKinetic1D.multiplicationLinear) :=
   _root_.ConservationLaw.symmetrizedVelocityCurrentRepresentation
     ((heisenbergEvolution ℏ (SchwartzSchrodinger1D.schrodingerOperator κ potential)).comp SchwartzKinetic1D.multiplicationLinear)
@@ -103,7 +103,7 @@ noncomputable def schwartzOperatorChargeCurrentRepresentation1D
       (heisenbergTransportFunctional ℏ
         (SchwartzSchrodinger1D.schrodingerOperator κ potential)
         SchwartzKinetic1D.multiplicationLinear (q • LinearMap.id))
-      (_root_.ConservationLaw.operatorLocalCurrentPairing
+      (_root_.ConservationLaw.localizedQuantityFunctional
         SchwartzKinetic1D.multiplicationLinear) :=
   _root_.ConservationLaw.symmetrizedVelocityCurrentRepresentation
     ((heisenbergEvolution ℏ (SchwartzSchrodinger1D.schrodingerOperator κ potential)).comp SchwartzKinetic1D.multiplicationLinear)

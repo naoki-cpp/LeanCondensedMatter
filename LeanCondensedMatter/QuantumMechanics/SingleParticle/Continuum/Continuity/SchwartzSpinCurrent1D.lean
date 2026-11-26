@@ -102,7 +102,7 @@ noncomputable def schwartzSpinCurrentRepresentation1D
         (SchwartzTwoLevelSchrodinger1D.hamiltonian κ potential internalH)
         SchwartzTwoLevel1D.multiplicationLinear
         (schwartzSpinOperatorLinear ℏ spinComponent))
-      (_root_.ConservationLaw.operatorLocalCurrentPairing
+      (_root_.ConservationLaw.localizedQuantityFunctional
         SchwartzTwoLevel1D.multiplicationLinear) :=
   _root_.ConservationLaw.symmetrizedVelocityCurrentRepresentation
     ((heisenbergEvolution ℏ (SchwartzTwoLevelSchrodinger1D.hamiltonian κ potential internalH)).comp SchwartzTwoLevel1D.multiplicationLinear)

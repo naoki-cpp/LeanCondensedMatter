@@ -79,7 +79,9 @@ The operator-level generalized current `1/2 {v,m}` uses `LinearMap.symmetrizedPr
 directly, independently of localization. `QuantumTheory.ConservationLaw.LocalizedTransport`
 supplies algebraic Heisenberg transport. The pairing, corrected current, and commuting-localizer
 current-density representation are supplied by `Analysis.ConservationLaw.SymmetricLocalizationAlgebra`
-for any linear localizer evolution independently of particle statistics.
+for any linear localizer evolution independently of particle statistics. The bundled
+`ConservationLaw.localizedQuantityFunctional` serves both as the localized-quantity map and,
+when its input localizer is on one-form data, the current-density pairing.
 
 Current semantics are layered rather than identified with one operator formula. The operator
 `1/2 {v,m}` exists before any weak-current representation is chosen.

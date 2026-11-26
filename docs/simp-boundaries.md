@@ -60,7 +60,6 @@ homomorphic normalization rules:
 - `SchwartzKinetic1D.derivative_apply`
 - `SchwartzKinetic1D.multiplicationOperator_apply`
 - `ConservationLaw.localizedQuantityFunctional_apply`
-- `ConservationLaw.operatorLocalCurrentPairing_apply`
 - `ConservationLaw.symmetrizedVelocityCurrentRepresentation_currentDensity`
 - `zetaCommutator_apply`
 - `orderedSimplexIntegral_zero`
