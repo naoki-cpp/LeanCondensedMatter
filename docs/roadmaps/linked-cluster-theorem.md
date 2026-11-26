@@ -1,10 +1,11 @@
 # Linked-cluster theorems
 
 The proved endpoints include finite-mode fermionic formal and analytic log-partition
-identities, the normalized two-point connected series, and a finite-mode bosonic
+identities, the finite-mode fermionic arbitrary-external signed moment and connected source
+cumulant series (including the normalized two-point specialization), and a finite-mode bosonic
 **coefficientwise formal** quartic Dyson linked-cluster theorem with explicit
-Gibbs-summability conditions. None establishes a thermodynamic limit or a general
-higher-point connected expansion.
+Gibbs-summability conditions. None establishes a thermodynamic limit or an analytic
+higher-point generating-functional identity.
 
 ## Formal log-partition theorem
 
@@ -177,7 +178,7 @@ moment identity and weighted moment reconstruction/injectivity to select diagram
 For precisely two external insertions, the general construction already proves
 `vacuumFreeExternalInsertionDysonSeries_eq_connected_two` and the corresponding
 source-cumulant identity without a sign restriction on `β`. The mature two-point
-`partitionFunctionNormalizedTwoPointDysonSeries_eq_connectedTwoPointDysonSeries` is
+`partitionFunctionNormalizedTwoPointDysonSeries_eq_connectedTwoPointDysonSeries`
 now follows from the general vacuum factorization for arbitrary real `μ`, `0 ≤ β` (#5287). The diagrammatic core uses
 `ξ = ε - μ`; the physical-H two-point amplitudes have the external factor
 `exp (μ (τ' - τ))`, while the number-conserving quartic interaction-picture
@@ -196,7 +197,9 @@ source-cumulant identity therefore hold at arbitrary real β and μ (#5287), ind
 of vacuum cancellation. The general external-insertion Cauchy factorization supplies the
 physical two-point linked-cluster theorem, without the duplicate two-point fiber/shuffle
 integral proof chain. The distinct two-point 1PI selection and self-energy problems
-remain separate.
+remain separate. The two-point-only fiber, amplitude factorization and slot-split proof chains
+have been retired in favor of general external-insertion theory; the distinct fixed-leg
+representation, physical series bridge and genuine 1PI/cut geometry remain.
 
 ## Higher-point diagram-selection boundary
 
