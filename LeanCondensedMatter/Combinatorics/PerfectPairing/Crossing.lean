@@ -6,7 +6,7 @@ set_option linter.style.header false
 # Crossings and crossing counts
 
 Two normalized pairs `(a, b)` and `(c, d)` cross when `a < c < b < d`. The canonical public
-crossing representation uses `Pairing.NormalizedPair`, but the crossing relation itself only
+crossing representation uses `PairingOn.NormalizedPair`, but the crossing relation itself only
 requires an order on the endpoint type.
 -/
 

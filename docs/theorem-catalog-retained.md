@@ -113,7 +113,7 @@ using a zero-consumer signal as grounds for changing its retention.
 - `QuantumTheory.Transport.spectralParameter_im` — canonical `[simp]` evaluation of the imaginary part of a side-indexed complex spectral parameter as its signed regulator; this is the physical-to-analytic boundary even with a single compiled private consumer.
 - `Combinatorics.PairingOn.transport_symm_transport` — retain public `[simp]`: canonical inverse law for transporting a pairing along an equivalence and then back along its inverse.
 - `Combinatorics.SumEquiv.leftSubtypeEquiv_val` — retain public `[simp]`: canonical evaluation rule for the equivalence from the left summand to its image subtype.
-- `Combinatorics.Pairing.pairEndpointEquiv_apply` — canonical `[simp]` evaluation rule exposing the semantic endpoint-selection map of `pairEndpointEquiv`.
+- `Combinatorics.PairingOn.pairEndpointEquiv_apply` — canonical `[simp]` evaluation rule exposing the semantic endpoint-selection map of `pairEndpointEquiv`.
 - `Combinatorics.Pairing.partner_sideMatching` — canonical `[simp]` characterization of the permutation extracted from a bipartite pairing: its image is exactly the right-side partner of each left position.
 - `Combinatorics.Pairing.prod_pairs_eq_firstPair_mul` — general multiplicative decomposition of a product over normalized pairs into the first-pair factor and the erased-pairing product.
 - `Combinatorics.Pairing.sum_eq_sum_sum_insertFirstPair` — general additive reindexing theorem decomposing a sum over larger pairings by the partner of zero and the erased smaller pairing.
@@ -242,7 +242,7 @@ using a zero-consumer signal as grounds for changing its retention.
   trace-class membership under bounded adjoint conjugation `T ↦ U T U†`.
 - `ContinuousLinearMap.IsTraceClass.trace_adjointConjugate` — canonical complex-trace invariance
   endpoint `Tr(U T U†) = Tr(T)` under `U†U = 1`, derived directly from general trace cyclicity.
-- `Combinatorics.Pairing.pairEndpoint_ne_of_normalizedPair_ne` — canonical indexed endpoint-separation
+- `Combinatorics.PairingOn.pairEndpoint_ne_of_normalizedPair_ne` — canonical indexed endpoint-separation
   theorem: distinct normalized pairs have distinct endpoints for arbitrary `Fin 2` endpoint choices.
   The coordinate four-inequality theorem is a downstream specialization used by crossing arguments.
 - `Combinatorics.BinaryShuffle.toSlotShuffle_injective` — injectivity of the public map from

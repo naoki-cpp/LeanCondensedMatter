@@ -129,7 +129,7 @@ private theorem Pairing.ofSplit_pairEndpointInversionCount_eq_sum_localEndpoints
   rcases Pairing.ofSplitNormalizedPairEquiv_pair_eq_or_swap
     e P Q (Sum.inr q) with hq | hq
   all_goals
-    simp only [hp, hq, Pairing.pairEndpointEquiv_apply]
+    simp only [hp, hq, PairingOn.pairEndpointEquiv_apply]
     simp only [Fin.sum_univ_two, pairEndpointAt_zero, pairEndpointAt_one,
       pairEndpointInversionCount]
     ac_rfl
