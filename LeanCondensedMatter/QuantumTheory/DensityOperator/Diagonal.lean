@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Analysis.Operator.HilbertBasis
+import LeanCondensedMatter.Analysis.Operator.Spectral.EigenvectorFamily
 import LeanCondensedMatter.Analysis.InfiniteSum.Normalization
 import LeanCondensedMatter.Analysis.Operator.TraceClass.Trace
 import LeanCondensedMatter.QuantumTheory.DensityOperator.Basic
@@ -55,11 +55,8 @@ theorem DensityOperator.exists_diagonal_hilbertBasis (ρ : DensityOperator H) :
       ∀ i, ρ.op (b i) = (w i : ℂ) • b i := by
   classical
   let hρcompact : IsCompactOperator ρ.op := ρ.spectralTraceClass.compact
-  let hρsym : ρ.op.IsSymmetric := ρ.isSymmetric
-  let e : EigenvectorIndex ρ.op → H := eigenvectorFamily hρcompact
-  have he : Orthonormal ℂ e := by
-    simpa [e] using orthonormal_eigenvectorFamily hρcompact hρsym
-  obtain ⟨u, b, j, -, hb_j⟩ := he.exists_hilbertBasis_extension_injective
+  obtain ⟨u, b, j, -, hb_j, hker⟩ :=
+    exists_hilbertBasis_extension_eigenvectorFamily hρcompact ρ.isSymmetric
   have heigen (x : u) : ∃ c : ℝ, ρ.op (b x) = (c : ℂ) • b x := by
     by_cases hx : x ∈ Set.range j
     · rcases hx with ⟨a, rfl⟩
@@ -67,9 +64,7 @@ theorem DensityOperator.exists_diagonal_hilbertBasis (ρ : DensityOperator H) :
       rw [hb_j]
       exact apply_eigenvectorFamily hρcompact a
     · refine ⟨0, ?_⟩
-      have hxker := hilbertBasis_apply_eq_zero_of_not_mem_eigenvector_range
-        hρcompact hρsym b j (fun a => by simpa [e] using hb_j a) x hx
-      simpa using hxker
+      simpa using hker x hx
   choose w hw using heigen
   exact ⟨u, b, w, hw⟩
 

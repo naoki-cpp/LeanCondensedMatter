@@ -5,6 +5,8 @@ public import Mathlib.Analysis.InnerProductSpace.PiL2
 public import Mathlib.Analysis.InnerProductSpace.l2Space
 public import Mathlib.Analysis.InnerProductSpace.Positive
 
+import LeanCondensedMatter.Analysis.Operator.HilbertBasis
+
 public section
 
 set_option linter.style.header false
@@ -379,6 +381,18 @@ theorem hilbertBasis_apply_eq_zero_of_not_mem_eigenvector_range
     exact hxorth
   have hxev := Module.End.mem_eigenspace_iff.mp hxker
   simpa using hxev
+
+/-- The canonical nonzero eigenvector family extends to a Hilbert basis, with every added
+basis vector in the kernel of the compact symmetric operator. -/
+theorem exists_hilbertBasis_extension_eigenvectorFamily
+    (hT : IsCompactOperator T) (hT' : T.IsSymmetric) :
+    ∃ (u : Set H) (b : HilbertBasis u ℂ H) (j : EigenvectorIndex T → u),
+      Function.Injective j ∧ (∀ a, b (j a) = eigenvectorFamily hT a) ∧
+        ∀ x, x ∉ Set.range j → T (b x) = 0 := by
+  obtain ⟨u, b, j, hj, hb⟩ :=
+    (orthonormal_eigenvectorFamily hT hT').exists_hilbertBasis_extension_injective
+  exact ⟨u, b, j, hj, hb,
+    hilbertBasis_apply_eq_zero_of_not_mem_eigenvector_range hT hT' b j hb⟩
 
 private noncomputable def eigenvectorFamilyInClosure (hT : IsCompactOperator T) :
     EigenvectorIndex T →

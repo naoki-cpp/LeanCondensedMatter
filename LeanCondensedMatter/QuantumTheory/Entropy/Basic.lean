@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Analysis.Operator.HilbertBasis
+import LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral
 import LeanCondensedMatter.QuantumTheory.DensityOperator.Basic
 import LeanCondensedMatter.Analysis.FunctionalCalculus.CFC
 import Mathlib.Analysis.SpecialFunctions.Log.NegMulLog
@@ -51,44 +51,10 @@ theorem hasSum_negMulLog_eigenvalues (ρ : DensityOperator H)
     (htrace : IsTraceClass (entropyOp ρ)) :
     HasSum (fun a : EigenvectorIndex ρ.op => Real.negMulLog a.1.1)
       (htrace.realTrace (entropyOp_isSelfAdjoint ρ)) := by
-  classical
-  let hρcompact : IsCompactOperator ρ.op := ρ.isTraceClass.isCompact
-  let hρsym : ρ.op.IsSymmetric := ρ.pos.isSelfAdjoint.isSymmetric
-  let e : EigenvectorIndex ρ.op → H := eigenvectorFamily hρcompact
-  have he : Orthonormal ℂ e := by
-    simpa [e] using orthonormal_eigenvectorFamily hρcompact hρsym
-  obtain ⟨w, b, j, hj, hb_j⟩ := he.exists_hilbertBasis_extension_injective
-  let g : w → ℝ := fun i =>
-    diagonalExpectationValue (entropyOp ρ) (entropyOp_isSelfAdjoint ρ) (b i)
-  have hfull : HasSum g (htrace.realTrace (entropyOp_isSelfAdjoint ρ)) := by
-    simpa [g] using htrace.hasSum_realTrace (entropyOp_isSelfAdjoint ρ) b
-  have hpoint (a : EigenvectorIndex ρ.op) :
-      g (j a) = Real.negMulLog a.1.1 := by
-    change diagonalExpectationValue (entropyOp ρ)
-      (entropyOp_isSelfAdjoint ρ) (b (j a)) =
-        Real.negMulLog a.1.1
-    apply Complex.ofReal_injective
-    rw [coe_diagonalExpectationValue_right, hb_j]
-    rw [entropyOp_apply_eigenvector ρ (apply_eigenvectorFamily hρcompact a)]
-    rw [inner_smul_right, inner_self_eq_norm_sq_to_K,
-      (orthonormal_eigenvectorFamily hρcompact hρsym).1 a]
-    simp
-  have hzero (x : w) (hx : x ∉ Set.range j) : g x = 0 := by
-    have hxker := hilbertBasis_apply_eq_zero_of_not_mem_eigenvector_range
-      hρcompact hρsym b j (fun a => by simpa [e] using hb_j a) x hx
-    have hentropy : entropyOp ρ (b x) = 0 := by
-      simpa using
-        (entropyOp_apply_eigenvector ρ (v := b x) (c := 0) (by simpa using hxker))
-    change diagonalExpectationValue (entropyOp ρ)
-      (entropyOp_isSelfAdjoint ρ) (b x) = 0
-    apply Complex.ofReal_injective
-    rw [coe_diagonalExpectationValue_right, hentropy]
-    simp
-  have hrestricted :
-      HasSum (g ∘ j) (htrace.realTrace (entropyOp_isSelfAdjoint ρ)) :=
-    (hj.hasSum_iff hzero).mpr hfull
-  simpa only [Function.comp_apply] using
-    HasSum.congr_fun hrestricted fun a => (hpoint a).symm
+  obtain ⟨u, b, hb⟩ := exists_diagonal_hilbertBasis_hasSum_iff
+    ρ.isTraceClass.isCompact ρ.isSelfAdjoint (entropyOp_isSelfAdjoint ρ)
+    Real.negMulLog (by simp) (fun _ _ hv => entropyOp_apply_eigenvector ρ hv)
+  exact (hb _).mp (htrace.hasSum_realTrace (entropyOp_isSelfAdjoint ρ) b)
 
 /-- The von Neumann entropy of a density operator, allowing the value `∞`. -/
 noncomputable def vonNeumannEntropy (ρ : DensityOperator H) : ENNReal :=

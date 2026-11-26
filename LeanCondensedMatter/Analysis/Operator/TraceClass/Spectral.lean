@@ -1,4 +1,3 @@
-import LeanCondensedMatter.Analysis.Operator.HilbertBasis
 import LeanCondensedMatter.Analysis.Operator.TraceClass.Trace
 import LeanCondensedMatter.Analysis.FunctionalCalculus.CFC
 import Mathlib.Analysis.InnerProductSpace.l2Space
@@ -123,7 +122,7 @@ private theorem cfcAbs_apply_eigenvector
 /-- A diagonal transform of a compact self-adjoint operator has a basis whose diagonal
 series agrees with the corresponding transformed nonzero eigenvalue series. The transform must
 vanish on the kernel; the sum equivalence does not require summability in advance. -/
-private theorem exists_diagonal_hilbertBasis_hasSum_iff
+theorem exists_diagonal_hilbertBasis_hasSum_iff
     (hcompact : IsCompactOperator T) (hself : IsSelfAdjoint T)
     {S : H →L[ℂ] H} (hS : IsSelfAdjoint S) (f : ℝ → ℝ) (hf0 : f 0 = 0)
     (happly : ∀ (v : H) (c : ℝ),
@@ -136,7 +135,8 @@ private theorem exists_diagonal_hilbertBasis_hasSum_iff
   let e : EigenvectorIndex T → H := eigenvectorFamily hcompact
   have he : Orthonormal ℂ e := by
     simpa [e] using orthonormal_eigenvectorFamily hcompact hsym
-  obtain ⟨u, b, j, hj, hb_j⟩ := he.exists_hilbertBasis_extension_injective
+  obtain ⟨u, b, j, hj, hb_j, hker⟩ :=
+    exists_hilbertBasis_extension_eigenvectorFamily hcompact hsym
   let g : u → ℝ := fun i => diagonalExpectationValue S hS (b i)
   have hpoint (a : EigenvectorIndex T) : g (j a) = f a.1.1 := by
     change diagonalExpectationValue S hS (b (j a)) = f a.1.1
@@ -147,8 +147,7 @@ private theorem exists_diagonal_hilbertBasis_hasSum_iff
     simp
   have hzero (x : u) (hx : x ∉ Set.range j) : g x = 0 := by
     change diagonalExpectationValue S hS (b x) = 0
-    have hxker := hilbertBasis_apply_eq_zero_of_not_mem_eigenvector_range
-      hcompact hsym b j (fun a => by simpa [e] using hb_j a) x hx
+    have hxker := hker x hx
     have hSzero : S (b x) = 0 := by
       simpa only [hf0, Complex.ofReal_zero, zero_smul] using
         happly (b x) 0 (by simpa using hxker)
