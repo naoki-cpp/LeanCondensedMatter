@@ -99,6 +99,11 @@ use that construction with the canonical component-local vertex orders and compo
 The equality of the assembled vertex order with the fixed order supplies the partner compatibility;
 component assignment remains in the Quartic adapter.
 
+The component decomposition uses arbitrary finite linearly ordered position fibers. Binary splitting
+and its inverse laws use arbitrary sum equivalences, without finiteness or order assumptions; only
+the normalized-pair and crossing-count layers require finite linear orders. The ordered block-shuffle
+and permutation-sign statements retain their explicit finite-index coordinates.
+
 ## Removing the first pair
 
 `PerfectPairing.Core` owns the first pair, namely the pair containing position zero.

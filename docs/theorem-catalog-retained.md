@@ -641,10 +641,10 @@ using a zero-consumer signal as grounds for changing its retention.
 - `Finpartition.mu_eq_prod_factorial` — closed integer-valued Möbius formula for any interval of the finite-partition lattice, as a product over coarser blocks.
 - `Finpartition.cumulantFromMoment_empty` — canonical empty-set evaluation of the Möbius-defined cumulant transform; it supplies normalization for the bundled moment–cumulant interface.
 - `Finpartition.sum_Iic_mu_partitionProduct_eq` — incidence-algebra convolution identity over a refinement interval, factoring its Möbius-weighted sum into blockwise cumulants.
-- `Combinatorics.Pairing.componentGeometricCrossingCount_comm` — symmetry of geometric crossing count under exchange of components, unlike its oriented counterpart.
+- `Combinatorics.PairingOn.componentGeometricCrossingCount_comm` — symmetry of geometric crossing count under exchange of components, unlike its oriented counterpart.
 - `Combinatorics.Pairing.interComponentCrossingCount_mod_two_eq_orderedBlockInversionCount` — parity identification of inter-component crossings with ordered family-shuffle block inversions, retaining explicit block order.
-- `Combinatorics.Pairing.crossingCount_eq_sum_localCrossingCount_add_inter` — additive crossing decomposition into local pairing counts and an inter-component residual, under strict local position monotonicity.
-- `Combinatorics.Pairing.prod_pairs_eq_prod_components` — generic product factorization over normalized pairing components, assuming kernel compatibility; independent of scalar evaluation weights.
+- `Combinatorics.PairingOn.crossingCount_eq_sum_localCrossingCount_add_inter` — additive crossing decomposition into local pairing counts and an inter-component residual, under strict local position monotonicity.
+- `Combinatorics.PairingOn.prod_pairs_eq_prod_components` — generic product factorization over normalized pairing components, assuming kernel compatibility; independent of scalar evaluation weights.
 - `Finpartition.assembleOrder_shuffleOfOrder` — reconstruction equation for a global order from its compatible local block orders and induced shuffle.
 - `Finpartition.sum_order_eq_mul_prod_sum_partOrders` — general finite-order sum factorization into a scalar, shuffle contribution, and block-local order sums under weight factorization.
 - `Combinatorics.PairingOn.ofSplitInterSectorCrossingCount_mod_two_eq_positionInversions` — terminal binary pairing-split parity formula reducing inter-sector crossing parity to position inversions; used by thermal pairing weights.
