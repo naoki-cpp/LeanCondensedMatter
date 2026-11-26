@@ -1,6 +1,8 @@
 import LeanCondensedMatter.Analysis.Operator.DiagonalExpectation
 import LeanCondensedMatter.Analysis.Operator.Compact
-import LeanCondensedMatter.Analysis.Operator.Positive
+import Mathlib.Analysis.CStarAlgebra.ContinuousLinearMap
+import Mathlib.Analysis.CStarAlgebra.ContinuousFunctionalCalculus.Order
+import Mathlib.Analysis.InnerProductSpace.StarOrder
 import Mathlib.Analysis.InnerProductSpace.l2Space
 import Mathlib.Analysis.InnerProductSpace.LinearMap
 import Mathlib.Analysis.InnerProductSpace.Positive
@@ -77,23 +79,16 @@ theorem diagonalOp_isCompact (b : HilbertBasis ι ℂ H) (a : ι → ℂ)
 theorem diagonalOp_isPositive (b : HilbertBasis ι ℂ H) (a : ι → ℝ)
     (ha : Summable fun i => ‖a i‖) (ha_nonneg : ∀ i, 0 ≤ a i) :
     (diagonalOp b (fun i => (a i : ℂ))).IsPositive := by
-  classical
-  let hac : Summable fun i => ‖(a i : ℂ)‖ := by simpa using ha
-  let F : Finset ι → H →L[ℂ] H := fun s =>
-    ∑ i ∈ s, diagonalTerm b (fun i => (a i : ℂ)) i
-  have hFpos (s : Finset ι) : (F s).IsPositive := by
-    unfold F
-    apply ContinuousLinearMap.isPositive_sum
-    intro i hi
-    have hcoeff : 0 ≤ (a i : ℂ) :=
-      (RCLike.ofReal_nonneg (K := ℂ)).mpr (ha_nonneg i)
-    simpa [diagonalTerm] using
-      (InnerProductSpace.isPositive_rankOne_self (𝕜 := ℂ) (b i)).smul_of_nonneg hcoeff
-  apply ContinuousLinearMap.isPositive_of_tendsto
-    (l := Filter.atTop)
-    (F := F) (T := diagonalOp b (fun i => (a i : ℂ)))
-  · exact hasSum_diagonalTerm b (fun i => (a i : ℂ)) hac
-  · exact Filter.Eventually.of_forall hFpos
+  apply ContinuousLinearMap.nonneg_iff_isPositive.mp
+  have hac : Summable fun i => ‖(a i : ℂ)‖ := by simpa using ha
+  refine hasSum_le (fun i => ?_)
+    (hasSum_zero : HasSum (fun _ : ι => (0 : H →L[ℂ] H)) 0)
+    (hasSum_diagonalTerm b (fun i => (a i : ℂ)) hac)
+  apply ContinuousLinearMap.nonneg_iff_isPositive.mpr
+  have hcoeff : 0 ≤ (a i : ℂ) :=
+    (RCLike.ofReal_nonneg (K := ℂ)).mpr (ha_nonneg i)
+  simpa [diagonalTerm] using
+    (InnerProductSpace.isPositive_rankOne_self (𝕜 := ℂ) (b i)).smul_of_nonneg hcoeff
 
 /-- The lossless diagonal expectation of a positive diagonal operator is its real coefficient. -/
 theorem diagonalExpectationValue_diagonalOp (b : HilbertBasis ι ℂ H) (a : ι → ℝ)
