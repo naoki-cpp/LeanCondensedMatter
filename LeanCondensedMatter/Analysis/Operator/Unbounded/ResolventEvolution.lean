@@ -125,13 +125,16 @@ private theorem resolventApproximationEvolutionAtScale_apply_domain_cauchySeq
   rw [cauchySeq_iff_tendsto_dist_atTop_0]
   have hgen := cauchySeq_iff_tendsto_dist_atTop_0.mp
     (tendsto_boundedSelfAdjointApproximationAtScale_apply A hA x).cauchySeq
-  refine squeeze_zero (fun _ => dist_nonneg) (fun p : ℝ × ℝ => ?_) ?_
-  · simpa only [dist_eq_norm, resolventApproximationEvolutionAtScale,
-      boundedSelfAdjointApproximationAtScale, resolventApproximationEvolution, sub_apply] using
-      norm_resolventApproximationEvolution_sub_le A hA (max 1 p.1) (max 1 p.2)
-        (zero_lt_one.trans_le (le_max_left 1 p.1))
-        (zero_lt_one.trans_le (le_max_left 1 p.2)) t (x : H)
-  · simpa only [zero_mul] using hgen.mul_const |t|
+  have hbound : Tendsto (fun p : ℝ × ℝ =>
+      dist (boundedSelfAdjointApproximationAtScale A hA p.1 (x : H))
+        (boundedSelfAdjointApproximationAtScale A hA p.2 (x : H)) * |t|) atTop (𝓝 0) := by
+    simpa only [zero_mul] using hgen.mul_const |t|
+  refine squeeze_zero (fun _ => dist_nonneg) (fun p => ?_) hbound
+  simpa only [dist_eq_norm, resolventApproximationEvolutionAtScale,
+    boundedSelfAdjointApproximationAtScale, resolventApproximationEvolution, _root_.sub_apply] using
+    norm_resolventApproximationEvolution_sub_le A hA (max 1 p.1) (max 1 p.2)
+      (zero_lt_one.trans_le (le_max_left 1 p.1))
+      (zero_lt_one.trans_le (le_max_left 1 p.2)) t (x : H)
 
 end
 
