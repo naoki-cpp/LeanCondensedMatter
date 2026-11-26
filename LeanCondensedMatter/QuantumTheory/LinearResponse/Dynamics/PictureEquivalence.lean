@@ -119,9 +119,11 @@ theorem expValue_evolveState_eq_heisenberg
     (A : Observable H) (ψ : StateVector H) (t : ℝ) :
     expValue A (evolveState system ψ t) =
       expValue (heisenbergObservable system A t) ψ := by
-  rw [← DensityOperator.expectation_pure_observable (evolveState system ψ t) A,
+  change inner ℂ (evolveState system ψ t).1 (A.1 (evolveState system ψ t).1) =
+    inner ℂ ψ.1 ((heisenbergObservable system A t).1 ψ.1)
+  rw [← DensityOperator.expectation_pure (evolveState system ψ t) A.1,
     ← evolveDensityOperator_pure, expectation_evolveDensityOperator_eq_heisenberg]
-  exact DensityOperator.expectation_pure_observable ψ (heisenbergObservable system A t)
+  exact DensityOperator.expectation_pure ψ (heisenbergObservable system A t).1
 
 /-- The lossless real observable expectation is identical in the Schrödinger and Heisenberg
 pictures. -/
