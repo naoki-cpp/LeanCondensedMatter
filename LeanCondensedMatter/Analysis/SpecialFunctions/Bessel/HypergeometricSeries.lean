@@ -36,12 +36,12 @@ private theorem regularizedHGFunCoeff_index_shift (k n : ℕ) :
       Complex.regularizedHGFunCoeff 0 {((k + 2 : ℕ) : ℂ)} n := by
   rw [regularizedHGFunCoeff_zero_singleton_nat_add_one k (n + 1),
     regularizedHGFunCoeff_zero_singleton_nat_add_one (k + 1) n,
-    Nat.add_right_comm n 1 k, Nat.factorial_succ n]
+    show n + 1 + k = n + (k + 1) by ac_rfl, Nat.factorial_succ n]
   push_cast
   have hn : (n : ℂ) + 1 ≠ 0 := by exact_mod_cast Nat.succ_ne_zero n
   have hf : (n.factorial : ℂ) ≠ 0 := by exact_mod_cast Nat.factorial_ne_zero n
-  have hg : ((n + k + 1).factorial : ℂ) ≠ 0 := by exact_mod_cast Nat.factorial_ne_zero _
-  field_simp <;> ring
+  have hg : ((n + (k + 1)).factorial : ℂ) ≠ 0 := by exact_mod_cast Nat.factorial_ne_zero _
+  field_simp [hn, hf, hg]
 
 /-- Shifting the lower parameter multiplies the coefficient by the corresponding factorial step. -/
 private theorem regularizedHGFunCoeff_parameter_shift (k n : ℕ) :
@@ -56,7 +56,7 @@ private theorem regularizedHGFunCoeff_parameter_shift (k n : ℕ) :
   have hn : (n : ℂ) + (k : ℂ) + 1 ≠ 0 := by exact_mod_cast Nat.succ_ne_zero (n + k)
   have hf : (n.factorial : ℂ) ≠ 0 := by exact_mod_cast Nat.factorial_ne_zero n
   have hg : ((n + k).factorial : ℂ) ≠ 0 := by exact_mod_cast Nat.factorial_ne_zero _
-  field_simp <;> ring
+  field_simp
 
 private theorem regularizedHGFun_zero_eq_tsum (b : Multiset ℂ) (w : ℂ) :
     Complex.regularizedHGFun 0 b w =
