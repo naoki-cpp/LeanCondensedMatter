@@ -1,9 +1,10 @@
-import LeanCondensedMatter.Analysis.PowerSeries.CoefficientSum
-import LeanCondensedMatter.Analysis.PowerSeries.Normalization
-import LeanCondensedMatter.Analysis.PowerSeries.Moment
-import LeanCondensedMatter.Analysis.PowerSeries.Replica
-import LeanCondensedMatter.Analysis.PowerSeries.Cumulant
 import LeanCondensedMatter.Analysis.PowerSeries.AnalyticLog
+import LeanCondensedMatter.Analysis.PowerSeries.CoefficientSum
+import LeanCondensedMatter.Analysis.PowerSeries.Cumulant
+import LeanCondensedMatter.Analysis.PowerSeries.FrobeniusWronskian
+import LeanCondensedMatter.Analysis.PowerSeries.Moment
+import LeanCondensedMatter.Analysis.PowerSeries.Normalization
+import LeanCondensedMatter.Analysis.PowerSeries.Replica
 
 set_option linter.style.header false
 
@@ -13,7 +14,8 @@ set_option linter.style.header false
 Public package boundary for the reusable formal power-series workflow used by
 linked-cluster and thermal consumers. It exports constant-coefficient normalization,
 factorial-normalized finite-set moments, formal-log derivative identities, and the finite-set cumulant
-bridge, together with coefficientwise complex sums and their convergence-sensitive algebraic laws.
+bridge, together with coefficientwise complex sums, their convergence-sensitive algebraic laws,
+and formal Frobenius and Wronskian identities.
 Specializing the generic moment–cumulant recurrence gives low-order logarithm formulas without
 requiring separate order-specific theorems.
 
