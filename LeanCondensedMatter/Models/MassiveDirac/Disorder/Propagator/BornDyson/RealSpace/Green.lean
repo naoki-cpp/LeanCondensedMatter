@@ -249,20 +249,6 @@ theorem finiteCutoffContinuumBornDysonRealSpaceGreenMatrix_radialAxis_eq
       sigmaX, sigmaY, sigmaZ, InternalSpace.pauliX, InternalSpace.pauliY,
       InternalSpace.pauliZ, sub_eq_add_neg]
 
-/-- Diagonal spinor conjugation commutes with entrywise interval integration.
-Every entry has only one nonzero summand, so scalar constant-factor integral
-rules suffice and no additional integrability assumptions are required. -/
-theorem intervalIntegralMatrix2_spinRotation_conjugate
-    (angle a b : ℝ) (f : ℝ → Matrix2) :
-    InternalSpace.intervalIntegralPauliMatrix a b
-        (fun p => inPlaneSpinRotation angle * f p *
-          inPlaneSpinRotationInverse angle) =
-      inPlaneSpinRotation angle * InternalSpace.intervalIntegralPauliMatrix a b f *
-        inPlaneSpinRotationInverse angle := by
-  ext i j
-  simp only [InternalSpace.intervalIntegralPauliMatrix, inPlaneSpinRotation_conjugate_apply,
-    intervalIntegral.integral_const_mul, intervalIntegral.integral_mul_const]
-
 /-- The finite-cutoff Born-Dyson Green matrix is the SO(2) spinor conjugate
 of its canonical one-dimensional radial Green matrix. This follows from
 the full-angle K0/K1 Fourier kernels without extra physical assumptions
@@ -302,22 +288,19 @@ theorem finiteCutoffContinuumBornDysonRealSpaceGreenMatrix_polarPoint2D_eq_radia
     fin_cases i <;> fin_cases j <;> simp [inPlaneSpinRotationInverse]
   have hpoint0 (p : ℝ) : angular 0 p = base p := by
     simpa only [hU0, hU0inv, one_mul, mul_one] using hpoint 0 p
-  let prefactor : ℂ := ((momentumMeasurePrefactor hbar : ℝ) : ℂ)
-  have hIntegral (θ : ℝ) :
-      finiteCutoffContinuumBornDysonRealSpaceGreenMatrix
-          side v m probeEnergy broadening disorderStrength hbar pMax
-          (polarPoint2D radius θ) =
-        prefactor • InternalSpace.intervalIntegralPauliMatrix 0 pMax (angular θ) := by
-    ext i j
-    exact finiteCutoffContinuumBornDysonRealSpaceGreenMatrix_polarPoint2D_eq_angularKernel_integral
-      side v m probeEnergy broadening disorderStrength hbar pMax radius θ i j
-  rw [hIntegral angle, hIntegral 0]
-  rw [show angular angle = fun p =>
-      inPlaneSpinRotation angle * base p * inPlaneSpinRotationInverse angle from
-        funext (hpoint angle),
-    intervalIntegralMatrix2_spinRotation_conjugate,
-    show angular 0 = base from funext hpoint0]
-  simp only [mul_smul_comm, smul_mul_assoc]
+  ext i j
+  rw [finiteCutoffContinuumBornDysonRealSpaceGreenMatrix_polarPoint2D_eq_angularKernel_integral,
+    inPlaneSpinRotation_conjugate_apply,
+    finiteCutoffContinuumBornDysonRealSpaceGreenMatrix_polarPoint2D_eq_angularKernel_integral]
+  change (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
+      (∫ p in (0 : ℝ)..pMax, angular angle p i j) =
+    inPlaneSpinRotation angle i i *
+      ((((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
+        ∫ p in (0 : ℝ)..pMax, angular 0 p i j) *
+      inPlaneSpinRotationInverse angle j j
+  simp_rw [hpoint angle, hpoint0, inPlaneSpinRotation_conjugate_apply,
+    intervalIntegral.integral_const_mul, intervalIntegral.integral_mul_const]
+  ring
 
 end
 
