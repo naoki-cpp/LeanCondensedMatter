@@ -341,12 +341,13 @@ residual `Pairing.interComponentCrossingCount` exchange weight when factoring in
 component contributions. A vacuum component has no external legs, so Common also reindexes its
 surviving legs as ordinary quartic legs and exposes the induced `QuarticDiagram`.
 
-For the two-point slot split, `SlotSplitVacuumLegOrder` owns the inherited fixed vacuum
-vertex order, the timeless leg inclusion, and the fixed-leg partner transport. The generic
-`Pairing.ofSplitNormalizedPairEquiv` already decomposes normalized Wick pairs without a
-time-order condition. `SlotSplitVacuumPairing` applies mixed-time ordering; its strict-anti-time
-hypothesis enters only when normalized endpoint orientation and crossings must be preserved.
-`SlotSplitVacuumPairImage` relates these pairs to graph vacuum components.
+Ordered vacuum legs and mixed pairing transport now belong to the general external-insertion
+`Pairing.SlotSplitMixedOrder` module. Its ordered-vacuum split identity handles arbitrary
+external arity, while `Pairing.ofSplitNormalizedPairEquiv` and the general
+`componentMixedPairEquiv` provide normalized pair decomposition. Strict local order is only
+needed for orientation-sensitive embeddings and crossing comparisons, not for the split
+pairing identity itself. The two-point slot-split graph geometry remains available for
+two-point-specific consumers.
 
 The two-point expansion has its own internal layer order:
 
