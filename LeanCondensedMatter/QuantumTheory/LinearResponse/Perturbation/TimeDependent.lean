@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Analysis.Dyson.FirstVariation
+import LeanCondensedMatter.Analysis.Dyson.Bounds
 import LeanCondensedMatter.Analysis.Dyson.Volterra
 import LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.Unitary
 import Mathlib.Analysis.Calculus.Deriv.Basic

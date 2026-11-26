@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Models.MassiveDirac.Propagator.RadialFourier.FinitePart
-import LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.Y0Series
+import LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.YSeries
 import Mathlib.Analysis.RCLike.Sqrt
 
 set_option linter.style.header false
