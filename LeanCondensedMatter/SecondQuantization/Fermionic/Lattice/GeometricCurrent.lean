@@ -139,6 +139,70 @@ theorem boundedMixedDirectionalContact_swap
   intro y _
   rw [mul_comm]
 
+
+/-- A weighted geometric bond sum is linear in its real direction. -/
+private def directionalBondSumLinearMap
+    (geometry : LatticeGeometry Site E)
+    (weight : Site → Site → (FiniteLatticeHilbertFock Site →L[ℂ] FiniteLatticeHilbertFock Site)) :
+    (E →ₗ[ℝ] ℝ) →ₗ[ℝ] (FiniteLatticeHilbertFock Site →L[ℂ] FiniteLatticeHilbertFock Site) :=
+  (2 : ℂ)⁻¹ • ∑ x : Site, ∑ y : Site,
+    { toFun := fun d => (geometry.bondCoordinate d x y : ℂ) • weight x y
+      map_add' := by
+        intro d e
+        simp only [LatticeGeometry.bondCoordinate, LinearMap.add_apply, Complex.ofReal_add, add_smul]
+      map_smul' := by
+        intro r d
+        simp only [LatticeGeometry.bondCoordinate, LinearMap.smul_apply, smul_eq_mul,
+          Complex.ofReal_mul, mul_smul, RingHom.id_apply,
+          RCLike.real_smul_eq_coe_smul (K := ℂ)] }
+
+/-- The spatial current transforms linearly under finite real direction mixing. -/
+theorem boundedDirectionalCurrent_sum
+    {I : Type*} [Fintype I]
+    (geometry : LatticeGeometry Site E) (direction : I → E →ₗ[ℝ] ℝ) (r : I → ℝ)
+    (ℏ q : ℂ) (K : LocallyFiniteHopping Site) :
+    boundedDirectionalCurrent geometry (∑ i, r i • direction i) ℏ q K =
+      ∑ i, (r i : ℂ) • boundedDirectionalCurrent geometry (direction i) ℏ q K := by
+  let D := directionalBondSumLinearMap geometry (boundedBondCurrent ℏ q K)
+  have h := D.map_sum (fun i => r i • direction i) Finset.univ
+  simp only [map_smul, RCLike.real_smul_eq_coe_smul (K := ℂ)] at h
+  simpa only [D, directionalBondSumLinearMap, LinearMap.smul_apply, LinearMap.sum_apply,
+    LinearMap.coe_mk, AddHom.coe_mk, boundedDirectionalCurrent] using h
+
+/-- The mixed contact is linear in its measured direction. -/
+theorem boundedMixedDirectionalContact_sum_left
+    {I : Type*} [Fintype I]
+    (geometry : LatticeGeometry Site E) (direction : I → E →ₗ[ℝ] ℝ) (r : I → ℝ)
+    (source : E →ₗ[ℝ] ℝ) (ℏ q : ℂ) (K : LocallyFiniteHopping Site) :
+    boundedMixedDirectionalContact geometry (∑ i, r i • direction i) source ℏ q K =
+      ∑ i, (r i : ℂ) • boundedMixedDirectionalContact geometry (direction i) source ℏ q K := by
+  let D := directionalBondSumLinearMap geometry (fun x y =>
+    (geometry.bondCoordinate source x y : ℂ) • boundedBondContact K ℏ q x y)
+  have h := D.map_sum (fun i => r i • direction i) Finset.univ
+  simp only [map_smul, RCLike.real_smul_eq_coe_smul (K := ℂ)] at h
+  simpa only [D, directionalBondSumLinearMap, LinearMap.smul_apply, LinearMap.sum_apply,
+    LinearMap.coe_mk, AddHom.coe_mk, boundedMixedDirectionalContact, mul_smul] using h
+
+/-- Both directions of the contact mix independently, with the product of the coefficients. -/
+theorem boundedMixedDirectionalContact_sum
+    {I J : Type*} [Fintype I] [Fintype J]
+    (geometry : LatticeGeometry Site E) (measured : I → E →ₗ[ℝ] ℝ)
+    (source : J → E →ₗ[ℝ] ℝ) (r : I → ℝ) (s : J → ℝ)
+    (ℏ q : ℂ) (K : LocallyFiniteHopping Site) :
+    boundedMixedDirectionalContact geometry (∑ i, r i • measured i)
+        (∑ j, s j • source j) ℏ q K =
+      ∑ i, ∑ j, ((r i : ℂ) * (s j : ℂ)) •
+        boundedMixedDirectionalContact geometry (measured i) (source j) ℏ q K := by
+  rw [boundedMixedDirectionalContact_sum_left]
+  apply Finset.sum_congr rfl
+  intro i _
+  rw [boundedMixedDirectionalContact_swap geometry (measured i),
+    boundedMixedDirectionalContact_sum_left]
+  simp only [Finset.smul_sum, smul_smul]
+  apply Finset.sum_congr rfl
+  intro j _
+  rw [boundedMixedDirectionalContact_swap geometry (source j) (measured i)]
+
 /-- A hopping-preserving affine permutation transports the physical directional
 current by the pullback of the measurement direction. The only operator-level
 assumption is the implementation of site relabeling on bounded matrix units. -/
