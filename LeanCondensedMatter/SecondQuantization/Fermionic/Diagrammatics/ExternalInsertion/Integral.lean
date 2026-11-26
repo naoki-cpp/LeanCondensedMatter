@@ -162,10 +162,11 @@ theorem ExternalInsertionWickDiagram.orderedDysonAmplitude_slotCongr
   apply d.orderedDysonAmplitude_congr_of_strictAnti
     (d.slotCongr e) ε β hβ g externalTime order (order.trans e)
   intro τ hτ _
-  exact (d.slotCongr_dysonFixedTimeAmplitude_eq_of_injective
-    e ε β g externalTime
-    (fun v => τ (order.symm ⟨v, Finset.mem_univ v⟩))
-    (quarticVertexOrderedTime_injective_of_strictAnti order τ hτ)).symm
+  simpa only [ExternalInsertionWickDiagram.dysonFixedTimeAmplitude] using
+    (congrArg (fun a : ℂ => (-1 : ℂ) ^ n * a)
+      (d.slotCongr_fixedTimeAmplitude_eq_of_injective e ε β g externalTime
+        (fun v => τ (order.symm ⟨v, Finset.mem_univ v⟩))
+        (quarticVertexOrderedTime_injective_of_strictAnti order τ hτ))).symm
 
 
 /-- A canonical Dyson integral of one **physical** diagram is the
@@ -479,97 +480,6 @@ private theorem sum_ownerSlotCongr_connectedDyson_eq_ordered_of_predicates
       (fullInteractionSlotEquiv e) ε β hβ g externalTime
   exact if_congr (hPQ F) hamplitude rfl
 
-
-open Classical in
-/-- The **entire finite sum over independently preconnected Wick-block
-families** at a physically relabeled owner assignment equals the sum of
-transported-order Dyson amplitudes over the original connected families.
-
-The summed diagrams retain every labelled pairing; unlike a
-diagram-by-diagram canonical-amplitude assertion, each relabeled
-canonical integral is evaluated with its corresponding global Dyson
-order. This bridges physical owner-family reindexing to integration. -/
-theorem ExternalInsertionBlockLayout.sum_ownerSlotCongr_connectedDyson_eq_ordered
-    {E n : ℕ}
-    (layout : ExternalInsertionBlockLayout E n) (e : Fin n ≃ Fin n)
-    (ε : Mode → ℝ) (β : ℝ) (hβ : 0 ≤ β)
-    (g : QuarticVertexLabel Mode → ℂ)
-    (externalTime : Fin (2 * E) → ℝ) :
-    (∑ G : (layout.ownerSlotCongr e).ConnectedBlockFamily
-        (ExternalLabel := ExternalFieldLabel Mode)
-        (InternalLabel := QuarticVertexLabel Mode),
-      ExternalInsertionWickDiagram.dysonAmplitude
-        ((layout.ownerSlotCongr e).assembleDiagram
-          (Finset.univ : Finset (Fin n)) G.1)
-        ε β g externalTime) =
-      ∑ F : layout.ConnectedBlockFamily
-          (ExternalLabel := ExternalFieldLabel Mode)
-          (InternalLabel := QuarticVertexLabel Mode),
-        ExternalInsertionWickDiagram.orderedDysonAmplitude
-          (layout.assembleDiagram (Finset.univ : Finset (Fin n)) F.1)
-          ε β g externalTime
-          (((Finset.univ : Finset (Fin n)).orderIsoOfFin rfl).toEquiv.trans
-            (fullInteractionSlotEquiv e).symm) := by
-  simpa only [ite_true] using
-    (sum_ownerSlotCongr_connectedDyson_eq_ordered_of_predicates layout e
-      (fun _ => True) (fun _ => True) (by intro F; rfl)
-      ε β hβ g externalTime)
-
-open Classical in
-/-- The physical connected-block Dyson sum with a prescribed **independent
-external source label on every block** is reindexed across any
-interaction-owner relabeling. Exact block source labels are unchanged;
-the global Dyson order is transported, not replaced by the canonical
-order of a different physical diagram.
-
-This label-aware version is the form needed for the fixed-external-
-partition coefficientwise signed moment identity. -/
-theorem ExternalInsertionBlockLayout.sum_ownerSlotCongr_connectedDyson_eq_ordered_localLabels
-    {E n : ℕ}
-    (layout : ExternalInsertionBlockLayout E n) (e : Fin n ≃ Fin n)
-    (localLabels : ∀ B : layout.partition.parts,
-      Fin (2 * ((B : Finset (Fin (2 * E))).card / 2)) →
-        ExternalFieldLabel Mode)
-    (ε : Mode → ℝ) (β : ℝ) (hβ : 0 ≤ β)
-    (g : QuarticVertexLabel Mode → ℂ)
-    (externalTime : Fin (2 * E) → ℝ) :
-    (∑ G : (layout.ownerSlotCongr e).ConnectedBlockFamily
-        (ExternalLabel := ExternalFieldLabel Mode)
-        (InternalLabel := QuarticVertexLabel Mode),
-      if ∀ B : (layout.ownerSlotCongr e).partition.parts,
-          (G.1 B).externalLabel = localLabels B then
-        ExternalInsertionWickDiagram.dysonAmplitude
-          ((layout.ownerSlotCongr e).assembleDiagram
-            (Finset.univ : Finset (Fin n)) G.1)
-          ε β g externalTime
-      else 0) =
-      ∑ F : layout.ConnectedBlockFamily
-          (ExternalLabel := ExternalFieldLabel Mode)
-          (InternalLabel := QuarticVertexLabel Mode),
-        if ∀ B : layout.partition.parts,
-            (F.1 B).externalLabel = localLabels B then
-          ExternalInsertionWickDiagram.orderedDysonAmplitude
-            (layout.assembleDiagram (Finset.univ : Finset (Fin n)) F.1)
-            ε β g externalTime
-            (((Finset.univ : Finset (Fin n)).orderIsoOfFin rfl).toEquiv.trans
-              (fullInteractionSlotEquiv e).symm)
-        else 0 := by
-  apply sum_ownerSlotCongr_connectedDyson_eq_ordered_of_predicates layout e
-    (fun F => ∀ B : layout.partition.parts, (F.1 B).externalLabel = localLabels B)
-    (fun G => ∀ B : (layout.ownerSlotCongr e).partition.parts,
-      (G.1 B).externalLabel = localLabels B)
-    ?_ ε β hβ g externalTime
-  intro F
-  have hlabel (B : layout.partition.parts) :
-      ((layout.ownerSlotCongrConnectedBlockFamilyEquiv e F).1 B).externalLabel =
-        (F.1 B).externalLabel := by
-    rw [layout.ownerSlotCongrConnectedBlockFamilyEquiv_apply e F B]
-    rfl
-  constructor
-  · intro h B
-    exact (hlabel B).symm.trans (h B)
-  · intro h B
-    exact (hlabel B).trans (h B)
 
 open Classical in
 /-- Reindex **all physically connected Wick-block families** while
