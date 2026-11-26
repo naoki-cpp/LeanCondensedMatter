@@ -122,7 +122,7 @@ complex trace; completeness remains a separate downstream result.
 
 ## Diagonal Fredholm determinant API
 
-`Analysis/Operator/Fredholm/Diagonal.lean` provides the project-specific interpretation of Mathlib's
+`Analysis/Operator/Fredholm.lean` provides the project-specific interpretation of Mathlib's
 infinite product as a Fredholm determinant for explicit diagonal data:
 
 ```lean
