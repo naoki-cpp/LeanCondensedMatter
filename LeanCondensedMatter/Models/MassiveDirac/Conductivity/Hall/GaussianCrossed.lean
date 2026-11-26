@@ -203,11 +203,7 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedOrderedXYConductivity_x_eq_
   rw [finiteCutoffContinuumBornDysonGaussianCrossedOrderedXYConductivity_x_eq_generator_radial_integral
     e v m probeEnergy broadening disorderStrength hbar pMax rMax
     hhbar hbroadening hdisorder hpMax]
-  congr 1
-  apply intervalIntegral.integral_congr
-  intro radius _
-  dsimp only
-  rw [finiteCutoffContinuumBornDysonGaussianCrossedXGeneratorRadialAmplitude_eq_retarded
+  simp_rw [fun radius => finiteCutoffContinuumBornDysonGaussianCrossedXGeneratorRadialAmplitude_eq_retarded
     v m probeEnergy broadening disorderStrength hbar pMax radius hbroadening]
 
 /-- The regulated physical X Hall radial integrand is expressed solely in the
@@ -231,13 +227,8 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedOrderedXYConductivity_x_eq_
   rw [finiteCutoffContinuumBornDysonGaussianCrossedOrderedXYConductivity_eq_radial_antisymmetric_trace
     .x e v m probeEnergy broadening disorderStrength hbar pMax rMax
     hbroadening hdisorder hpMax]
-  congr 1
-  apply intervalIntegral.integral_congr
-  intro radius _
-  dsimp only
-  rw [finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_x_antisymmetric_eq_explicit_k0_k1_k2_moments
-    v m probeEnergy broadening disorderStrength hbar pMax radius
-    hbroadening hdisorder hpMax]
+  simp_rw [fun radius => finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_x_antisymmetric_eq_explicit_k0_k1_k2_moments
+    v m probeEnergy broadening disorderStrength hbar pMax radius hbroadening hdisorder hpMax]
 
 /-- The regulated physical Psi Hall contribution is the finite-radius integral
 of its transverse-current-reduced antisymmetric Pauli amplitude and its
@@ -274,13 +265,8 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedOrderedXYConductivity_psi_e
   rw [finiteCutoffContinuumBornDysonGaussianCrossedOrderedXYConductivity_eq_radial_antisymmetric_trace
     .psi e v m probeEnergy broadening disorderStrength hbar pMax rMax
     hbroadening hdisorder hpMax]
-  congr 1
-  apply intervalIntegral.integral_congr
-  intro radius _
-  dsimp only
-  rw [finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_psi_antisymmetric_eq_transverse_minors
-    v m probeEnergy broadening disorderStrength hbar pMax radius
-    hbroadening hdisorder hpMax]
+  simp_rw [fun radius => finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_psi_antisymmetric_eq_transverse_minors
+    v m probeEnergy broadening disorderStrength hbar pMax radius hbroadening hdisorder hpMax]
 
 /-- The physically normalized regulated Psi crossed Hall conductivity is
 the radial integral of a *real-valued* minor kernel. In contrast to the
@@ -316,13 +302,8 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedOrderedXYConductivity_psi_e
   rw [finiteCutoffContinuumBornDysonGaussianCrossedOrderedXYConductivity_eq_radial_antisymmetric_trace
     .psi e v m probeEnergy broadening disorderStrength hbar pMax rMax
     hbroadening hdisorder hpMax]
-  congr 1
-  apply intervalIntegral.integral_congr
-  intro radius _
-  dsimp only
-  rw [finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_psi_antisymmetric_eq_real_minor
-    v m probeEnergy broadening disorderStrength hbar pMax radius
-    hbroadening hdisorder hpMax]
+  simp_rw [fun radius => finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_psi_antisymmetric_eq_real_minor
+    v m probeEnergy broadening disorderStrength hbar pMax radius hbroadening hdisorder hpMax]
 
 /-- The finite-regulator physical Psi Hall integrand now contains only explicit
 K0/K1/K2 radial momentum moments: the remaining retarded Green scalar/z
@@ -344,13 +325,8 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedOrderedXYConductivity_psi_e
   rw [finiteCutoffContinuumBornDysonGaussianCrossedOrderedXYConductivity_eq_radial_antisymmetric_trace
     .psi e v m probeEnergy broadening disorderStrength hbar pMax rMax
     hbroadening hdisorder hpMax]
-  congr 1
-  apply intervalIntegral.integral_congr
-  intro radius _
-  dsimp only
-  rw [finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_psi_antisymmetric_eq_explicit_k0_k1_k2_moments
-    v m probeEnergy broadening disorderStrength hbar pMax radius
-    hbroadening hdisorder hpMax]
+  simp_rw [fun radius => finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_psi_antisymmetric_eq_explicit_k0_k1_k2_moments
+    v m probeEnergy broadening disorderStrength hbar pMax radius hbroadening hdisorder hpMax]
 
 /-- The physically normalized finite-cutoff finite-broadening Gaussian crossed correction.
 
