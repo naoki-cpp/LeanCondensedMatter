@@ -438,11 +438,10 @@ using a zero-consumer signal as grounds for changing its retention.
   relabeling along the inverse.
 - `SecondQuantization.Fermionic.AlgebraicFock.create_comp_add_swap` — Two smeared creation operators
   satisfy the creation-creation CAR.
-- `SecondQuantization.Fermionic.FixedExternalTwoPointWickDiagram.dysonFixedTimeAmplitude_eq_external_mul_prod_vacuum` —
-  External/vacuum factorization of the signed pointwise fixed-time amplitude.
-- `SecondQuantization.Fermionic.FixedExternalTwoPointWickDiagram.mixedExternalDysonFixedTimeValue_eq_externalPiece` —
-  The Dyson-signed external factor is the standalone external piece's Dyson-signed fixed-time
-  amplitude at its inherited interaction times.
+- `SecondQuantization.Fermionic.ExternalInsertionWickDiagram.dysonFixedTimeAmplitude_eq_external_mul_prod_vacuum` —
+  At arbitrary time assignments, if all external vertices are in one component, the signed
+  amplitude factors into the standalone external component amplitude and the standalone vacuum
+  component amplitudes. Includes the two-external case without a strict-time assumption.
 - `SecondQuantization.Fermionic.FixedExternalTwoPointWickDiagram.mixedPairContractionValue_eq_orderedTwoPointLegPairContraction` —
   The contraction used by a normalized mixed pair is the density-state contraction of the two fixed
   standard legs represented by its endpoints.
