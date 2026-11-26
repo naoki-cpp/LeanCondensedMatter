@@ -100,7 +100,7 @@ theorem Pairing.weight_ofSplit_eq_positionInversions_mul (s : Statistics)
     (left : Pairing a) (right : Pairing b)
     (hleft : StrictMono (fun i : Fin (2 * a) => e (Sum.inl i)))
     (hright : StrictMono (fun j : Fin (2 * b) => e (Sum.inr j))) :
-    (PairingOn.ofSplit e left right).weight s =
+    Pairing.weight s (PairingOn.ofSplit e left right) =
       (s.zetaInt : ℂ) ^
         (∑ i : Fin (2 * a), ∑ j : Fin (2 * b),
           if e (Sum.inr j) < e (Sum.inl i) then 1 else 0) *
@@ -135,7 +135,7 @@ theorem Pairing.evaluation_ofSplit_eq_positionInversions_mul (s : Statistics)
         (PairingOn.ofSplitNormalizedPairEquiv e left right (Sum.inr pr)).1.2 =
       rightValue pr.1.1 pr.1.2) :
     (PairingOn.ofSplit e left right).evaluation
-        ((PairingOn.ofSplit e left right).weight s) value =
+        (Pairing.weight s (PairingOn.ofSplit e left right)) value =
       (s.zetaInt : ℂ) ^
         (∑ i : Fin (2 * a), ∑ j : Fin (2 * b),
           if e (Sum.inr j) < e (Sum.inl i) then 1 else 0) *
@@ -184,7 +184,9 @@ theorem four_position_pairings_and_weights (s : Statistics) :
       pairingNested.weight s = 1 := by
   constructor
   · decide
-  · simp [Pairing.weight]
+  · simp only [Pairing.weight]
+    rw [crossingCount_pairingAdjacent, crossingCount_pairingCrossing,
+      crossingCount_pairingNested] <;> simp
 
 end BlochDeDominicis
 end Common

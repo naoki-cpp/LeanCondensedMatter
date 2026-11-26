@@ -53,11 +53,8 @@ theorem externalInsertionSlotLegSplitting_right_orderedMixedPosition
   rw [hordered]
   apply (externalInsertionMixedTimeAmbientPositionEquiv externalTime σ).injective
   simp only [Equiv.apply_symm_apply]
-  rw [externalInsertionSlotLegSplitting_right_interaction]
-  apply (externalInsertionLegEquiv E (Finset.univ : Finset (Fin N))).injective
-  rw [externalInsertionLegEquiv_mixedTimeAmbientPositionEquiv,
-    externalInsertionMixedTimeOrderedAtomicLegEquiv_position,
-    Equiv.apply_symm_apply]
+  rw [externalInsertionSlotLegSplitting_right_interaction,
+    externalInsertionMixedTimeAmbientPositionEquiv_legPosition]
 
 /-- If the standalone vacuum-only mixed ordering preserves the flattened quartic-leg
 order, its embedding into the full mixed-time family also preserves that order.

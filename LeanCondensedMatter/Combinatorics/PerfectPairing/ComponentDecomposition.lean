@@ -25,6 +25,7 @@ private noncomputable def PairingOn.componentPairEndpointEquiv
   (Equiv.sigmaProdDistrib (fun B => (componentPairing B).NormalizedPair) (Fin 2)).trans
     (Equiv.sigmaCongrRight fun B => (componentPairing B).pairEndpointEquiv)
 
+omit [Fintype α] [LinearOrder α] in
 private theorem PairingOn.componentPairEndpointEquiv_partner
     (global : PairingOn α) (componentPairing : ∀ B, PairingOn (β B))
     (positionEquiv : (Σ B, β B) ≃ α)

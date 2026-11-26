@@ -38,7 +38,7 @@ using a zero-consumer signal as grounds for changing its retention.
 - `QuantumTheory.LinearResponse.fluxRetardedResponse_eq_symmetrized_of_commutes` — physical commuting-localizer limit of the corrected-current response.
 - `QuantumTheory.LinearResponse.fluxRetardedResponse_eq_symmetrized_smul_one` — scalar transported quantity has no localization-correction contribution to the retarded response.
 
-- `SecondQuantization.Fermionic.Field.dGamma_lie_manyBodyLocalizedQuantity` — physical many-body transport/source decomposition for a localized one-body quantity under the fermionic `dΓ` lift; uses preservation of the Lie bracket and linearity, not multiplicativity.
+- `LinearMap.lie_map_symmetrizedProduct` — general Lie-homomorphism transport/source decomposition; specializing to `AlgebraicFock.dGammaLieHom` and the localizer evaluation `M f` recovers the former fermionic many-body balance theorem without any multiplicativity assumption.
 
 - `Combinatorics.BinaryShuffle.leftSlot_consRight` — canonical `@[simp]` recursion for left-slot coordinates when a right slot is prepended; it completes the public constructor computation rules of `BinaryShuffle`.
 - `Combinatorics.BinaryShuffle.rightSlot_consRight_zero` — canonical `@[simp]` evaluation of the new right-slot head at ambient position zero in `consRight`.
@@ -410,9 +410,6 @@ using a zero-consumer signal as grounds for changing its retention.
   pair preserves the underlying standard atomic legs in normalized order.
 - `SecondQuantization.Common.TwoPointDiagram.mixedComponentWeight_eq_of_comparisons` —
   Component exchange-statistics weight is unchanged when every strict time-event comparison agrees.
-- `SecondQuantization.Common.TwoPointDiagram.prod_slotSplitVacuumComponents_eq_vacuumVertexProduct` —
-  The product of arbitrary vertex-local weights over all ambient vacuum components is exactly the
-  product over all vertices of the standalone quartic vacuum piece.
 - `SecondQuantization.Common.continuousDiagonalEvolution_comp_neg` — canonical right-inverse law for the transported finite-dimensional free evolution; it complements the used left-inverse rule and preserves the symmetric evolution API.
 - `SecondQuantization.Common.operatorIntervalIntegral_add` — additive linearity of coefficientwise finite-dimensional operator integration under the explicit matrix-coefficient integrability hypotheses; retain as a reusable integration law.
 - `SecondQuantization.Common.operatorIntervalIntegral_smul` — scalar-linearity of coefficientwise finite-dimensional operator integration, independent of the current call sites; retain as part of the integration API.
@@ -674,9 +671,9 @@ using a zero-consumer signal as grounds for changing its retention.
 - `SecondQuantization.Common.twoPointLegDataCongr_inr` — canonical `@[simp]` evaluation of vertex relabeling on an interaction leg, preserving its local slot while applying the vertex equivalence.
 - `SecondQuantization.Common.slotSplitVertexEquiv_inl` — canonical `@[simp]` evaluation of the slot-splitting vertex equivalence on the retained component, compatible with the public `slotSplitVertex` embedding.
 
-- `SecondQuantization.Common.TwoPointDiagram.ofSlotSplitVacuumNormalizedPairEmbedding_component` — identifies the connected-component block of an embedded normalized vacuum pair with the block of its vacuum-side vertex; a geometric endpoint used by the mixed-pair component decomposition.
-- `SecondQuantization.Common.TwoPointDiagram.ofSlotSplit_pairing_partner_vacuumOrderedLeg` — intertwines the vacuum pairing partner and the reassembled two-point diagram pairing on ordered vacuum legs, independently of imaginary-time ordering; reused by the mixed pairing embedding proofs.
-- `SecondQuantization.Common.TwoPointDiagram.slotSplitVacuumMixedPairEquiv_apply` — canonical `@[simp]` evaluation of the mixed-pair equivalence on a vacuum normalized pair; used when reindexing fermionic contraction products.
+- `SecondQuantization.Common.ExternalInsertionDiagram.ofSlotSplit_pairingInMixedOrder_eq_ofSplit_orderedVacuum` — Reassembled mixed pairing equals the split pairing of the external sector and the ordered vacuum sector for arbitrary external arity; this retains the pairing transport identity without a chamber restriction.
+- `SecondQuantization.Common.externalInsertionSlotLegSplitting_right_orderedMixedPosition` — Identifies the ambient mixed position of each ordered vacuum leg for arbitrary external arity.
+- `SecondQuantization.Common.ExternalInsertionDiagram.componentMixedPairEquiv_apply` — Canonical evaluation of the general component-local normalized-pair equivalence into the ambient mixed pairing.
 - `SecondQuantization.Common.TwoPointDiagram.externalComponentLegEquiv_symm_restrictedPartner` — canonical `@[simp]` transport of restricted pairing partners through the inverse external-component leg equivalence, expressing a stable external/vacuum split invariant.
 
 - `SecondQuantization.Common.TwoPointDiagram.ofSlotSplit_externalVacuumSplit` — Canonical round-trip for the two-point diagram's external-component/vacuum decomposition. Although it specializes the general split reconstruction, it states the geometric decomposition endpoint in terms of the diagram's own external component.
@@ -687,8 +684,8 @@ using a zero-consumer signal as grounds for changing its retention.
 - `SecondQuantization.Common.ExternalInsertionDiagram.ofSlotSplit_pairing` — Canonical `@[simp]` computation rule exposing the binary pairing assembled by the external-insertion slot split, rather than a disposable proof-only forwarding lemma.
 
 - `SecondQuantization.Common.interactionSector_componentBlock_slotSplitVacuumVertex` — geometric identification of the interaction-vertex support of a reassembled vacuum component with its original quartic component. Used to establish component-map support preservation; it is a standalone graph-decomposition fact, not a throwaway proof cast.
-- `SecondQuantization.Common.componentBlock_slotSplitVacuumVertex_mem_vacuumComponentParts` — identifies any quartic-side vertex component as an ambient vacuum component. It supplies the well-typed vacuum-component embedding and is also used by the mixed-pair image decomposition.
-- `SecondQuantization.Common.TwoPointDiagram.ofSlotSplit_vacuumLeg_mem_right` — geometric characterization that every leg in an ambient vacuum component of a reassembled two-point diagram lies in the quartic side when the left piece is externally connected. Used in the vacuum mixed-pair image proof; distinct from pairing-order identities.
+- `SecondQuantization.Common.componentBlock_slotSplitVacuumVertex_mem_vacuumComponentParts` — identifies any quartic-side vertex component as an ambient vacuum component. It supplies the well-typed vacuum-component embedding.
+- `SecondQuantization.Common.TwoPointDiagram.ofSlotSplit_vacuumLeg_mem_right` — geometric characterization that every leg in an ambient vacuum component of a reassembled two-point diagram lies in the quartic side when the left piece is externally connected. A graph/leg support invariant distinct from pairing-order identities.
 
 ## Other retained API contracts (outside theorem audit)
 

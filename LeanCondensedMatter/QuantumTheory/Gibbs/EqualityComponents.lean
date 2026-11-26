@@ -1,6 +1,6 @@
 import LeanCondensedMatter.Analysis.Inequalities.Gibbs
 import LeanCondensedMatter.QuantumTheory.Gibbs.FreeEnergy
-import LeanCondensedMatter.Analysis.Inequalities.PeierlsBogoliubovEquality
+import LeanCondensedMatter.Analysis.Inequalities.PeierlsBogoliubov
 
 /-!
 # Equality components of the Gibbs variational bound

@@ -71,7 +71,7 @@ noncomputable def Pairing.vertexGraphOfSplitIso
     (hright : ∀ i, vertexOfLeg (e (Sum.inr i)) =
       vertexEquiv (Sum.inr (rightVertex i))) :
     (P.vertexGraph leftVertex ⊕g Q.vertexGraph rightVertex) ≃g
-      (PairingOn.ofSplit e P Q).vertexGraph vertexOfLeg where
+      Pairing.vertexGraph (PairingOn.ofSplit e P Q) vertexOfLeg where
   toEquiv := vertexEquiv
   map_rel_iff' := by
     intro x y

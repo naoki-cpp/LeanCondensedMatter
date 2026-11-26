@@ -36,21 +36,13 @@ theorem ExternalInsertionDiagram.pairingInMixedOrder_partner_legPosition {E n : 
         (externalInsertionMixedTimeOrderedAtomicLegPosition externalTime σ leg) =
       externalInsertionMixedTimeOrderedAtomicLegPosition externalTime σ
         (d.atomicLegPartner leg) := by
-  have hpos :
-      externalInsertionMixedTimeAmbientPositionEquiv externalTime σ
-          (externalInsertionMixedTimeOrderedAtomicLegPosition externalTime σ leg) =
-        (externalInsertionLegEquiv E (Finset.univ : Finset (Fin n))).symm leg := by
-    apply (externalInsertionLegEquiv E (Finset.univ : Finset (Fin n))).injective
-    rw [externalInsertionLegEquiv_mixedTimeAmbientPositionEquiv,
-      externalInsertionMixedTimeOrderedAtomicLegEquiv_position,
-      Equiv.apply_symm_apply]
   apply (externalInsertionMixedTimeOrderedAtomicLegEquiv externalTime σ).injective
   rw [externalInsertionMixedTimeOrderedAtomicLegEquiv_position,
     ← externalInsertionLegEquiv_mixedTimeAmbientPositionEquiv,
     ExternalInsertionDiagram.pairingInMixedOrder,
     PairingOn.transport_partner,
     Equiv.apply_symm_apply,
-    hpos,
+    externalInsertionMixedTimeAmbientPositionEquiv_legPosition,
     ExternalInsertionDiagram.atomicLegPartner]
 
 

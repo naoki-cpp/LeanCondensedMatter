@@ -49,10 +49,8 @@ vectors. -/
 theorem adjointConjugate_rankOne (U : H →L[𝕜] H) (x y : H) :
     adjointConjugate U (InnerProductSpace.rankOne 𝕜 x y) =
       InnerProductSpace.rankOne 𝕜 (U x) (U y) := by
-  ext z
-  simp only [adjointConjugate, mul_apply_eq_comp, InnerProductSpace.rankOne_apply, map_smul,
-    ContinuousLinearMap.star_eq_adjoint]
-  exact congrArg (fun c : 𝕜 => c • U x)
-    (ContinuousLinearMap.adjoint_inner_right U y z)
+  change (U.comp (InnerProductSpace.rankOne 𝕜 x y)).comp (star U) = _
+  rw [InnerProductSpace.comp_rankOne, InnerProductSpace.rankOne_comp,
+    ContinuousLinearMap.star_eq_adjoint, ContinuousLinearMap.adjoint_adjoint]
 
 end ContinuousLinearMap
