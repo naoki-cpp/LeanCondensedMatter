@@ -1,5 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Core.SlotCongr
 import LeanCondensedMatter.Combinatorics.Shuffle.SlotShuffle
+import LeanCondensedMatter.Combinatorics.SetPartition.SubsetSplit
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentRestriction
 import LeanCondensedMatter.Combinatorics.Shuffle.FamilyOrderShuffle
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Ordered
@@ -58,13 +59,9 @@ noncomputable def ExternalInsertionBlockLayout.sourceEquiv
       Σ B : layout.partition.parts,
         Fin (2 * ((B : Finset (Fin (2 * E))).card / 2)) := by
   classical
-  let full : Fin (2 * E) ≃ ↥(Finset.univ : Finset (Fin (2 * E))) := {
-    toFun := fun e => ⟨e, Finset.mem_univ e⟩
-    invFun := Subtype.val
-    left_inv := fun _ => rfl
-    right_inv := fun _ => Subtype.ext rfl
-  }
-  refine (full.trans layout.partition.equivSigmaParts).trans ?_
+  refine ((Equiv.subtypeUnivEquiv
+    (fun e : Fin (2 * E) => Finset.mem_univ e)).symm.trans
+      layout.partition.equivSigmaParts).trans ?_
   exact Equiv.sigmaCongrRight (fun B =>
     ((B.1.orderIsoOfFin
       (Nat.two_mul_div_two_of_even (layout.evenBlocks B)).symm).symm).toEquiv)
@@ -87,26 +84,11 @@ noncomputable def ExternalInsertionBlockLayout.interactionEquiv
     (layout : ExternalInsertionBlockLayout E N) (S : Finset (Fin N)) :
     ↥S ≃ Σ B : layout.partition.parts, ↥(layout.interactionBlock S B) := by
   classical
-  let fiberEquiv : ∀ B : layout.partition.parts,
-      {v : ↥S // layout.interactionOwner v.1 = B} ≃
-        ↥(layout.interactionBlock S B) := fun B => {
-    toFun := fun v => ⟨v.1.1, Finset.mem_filter.mpr ⟨v.1.2, v.2⟩⟩
-    invFun := fun v =>
-      ⟨⟨v.1, (Finset.mem_filter.mp v.2).1⟩,
-        (Finset.mem_filter.mp v.2).2⟩
-    left_inv := by
-      intro v
-      apply Subtype.ext
-      apply Subtype.ext
-      rfl
-    right_inv := by
-      intro v
-      apply Subtype.ext
-      rfl
-  }
-  exact (Equiv.sigmaFiberEquiv
-    (fun v : ↥S => layout.interactionOwner v.1)).symm.trans
-      (Equiv.sigmaCongrRight fiberEquiv)
+  exact Combinatorics.equivSigmaSubfinsets S
+    (fun v => layout.interactionOwner v.1) (layout.interactionBlock S)
+    (fun _ _ hv => (Finset.mem_filter.mp hv).1)
+    (fun B v => by
+      simp only [ExternalInsertionBlockLayout.interactionBlock, Finset.mem_filter, v.2, true_and])
 
 /-- A **concrete** equivalence between the full flattened legs and the
 disjoint union of each independently specified external block's flattened
