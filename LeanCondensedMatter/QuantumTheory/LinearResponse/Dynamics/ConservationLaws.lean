@@ -1,6 +1,7 @@
 import LeanCondensedMatter.QuantumTheory.LinearResponse.Expectation.Density
 import LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.PictureEquivalence
 import LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.Stationarity
+import LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.Eigenstate
 
 set_option linter.style.header false
 
@@ -147,6 +148,17 @@ theorem isStationary_toNormalizedExpectation_of_commute_hamiltonian
     DensityOperator.toNormalizedExpectation_apply]
   rw [← expectation_evolveDensityOperator_eq_heisenberg system ρ A t]
   rw [evolveDensityOperator_eq_self_of_commute_hamiltonian system ρ hρ t]
+
+/-- A normalized real-energy eigenvector supplies a stationary physical
+rank-one density expectation, including on non-self-adjoint operators. -/
+theorem isStationary_pure_of_eigenvector
+    (ψ : StateVector H) (energy : ℝ)
+    (hψ : system.hamiltonian.1 ψ.1 = (energy : ℂ) • ψ.1) :
+    IsStationary (freePropagatorGroup system) (pure ψ).toNormalizedExpectation := by
+  intro t A
+  simp only [DensityOperator.toNormalizedExpectation_apply, DensityOperator.expectation_pure]
+  rw [inner_heisenbergEvolution_of_eigenvectors system ψ.1 ψ.1 energy energy hψ hψ A t]
+  simp
 
 end
 end LinearResponse
