@@ -100,7 +100,7 @@ theorem adjoint_denseDomain_of_isClosed
 
 /-- A densely defined closed operator equals its double adjoint. -/
 theorem adjoint_adjoint_eq_of_isClosed
-    (hDense : Dense (A.domain : Set H)) (hClosed : A.IsClosed) :
+    (hDense : Dense (A.domain : Set E)) (hClosed : A.IsClosed) :
     A.adjoint.adjoint = A := by
   have hAdjDense := A.adjoint_denseDomain_of_isClosed hDense hClosed
   apply LinearPMap.eq_of_eq_graph
