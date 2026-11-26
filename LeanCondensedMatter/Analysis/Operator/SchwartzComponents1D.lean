@@ -1,4 +1,5 @@
-import LeanCondensedMatter.Analysis.InternalSpace.Pauli
+import Mathlib.LinearAlgebra.Matrix.Notation
+import Mathlib.Algebra.Module.BigOperators
 import LeanCondensedMatter.Analysis.Operator.SchwartzKinetic1D
 import Mathlib.Algebra.Lie.OfAssociative
 import Mathlib.Tactic.Ring
@@ -6,15 +7,14 @@ import Mathlib.Tactic.Ring
 set_option linter.style.header false
 
 /-!
-# Two-component Schwartz operator algebra
+# Finite-component Schwartz operator algebra
 
-The state space `Fin 2 → SchwartzMap ℝ ℂ`, componentwise spatial lifts, internal matrix
-operators, and their commutation identities are independent of any physical Hamiltonian.
-The Schrödinger and velocity specializations live in
-`QuantumMechanics.SingleParticle.Continuum.SchwartzTwoLevelSchrodinger1D`.
+Componentwise spatial lifts and internal matrix operators on `ι → SchwartzMap ℝ ℂ`
+are independent of the choice of internal index type and physical Hamiltonian.
+The internal matrix action uses a finite index type.
 -/
 
-namespace SchwartzTwoLevel1D
+namespace SchwartzComponents1D
 
 attribute [local instance 100] LieRing.ofAssociativeRing
 
@@ -23,11 +23,13 @@ noncomputable section
 /-- Scalar complex Schwartz space used for each internal component. -/
 abbrev Spatial := SchwartzKinetic1D.Space
 
-/-- Two-component complex Schwartz two-level states. -/
-abbrev State := Fin 2 → Spatial
+/-- Complex Schwartz states indexed by internal components. -/
+abbrev State (ι : Type*) := ι → Spatial
 
-/-- Lift a scalar Schwartz operator componentwise to a two-component two-level state. -/
-noncomputable def spatialLift (A : Spatial →ₗ[ℂ] Spatial) : State →ₗ[ℂ] State where
+variable {ι : Type*}
+
+/-- Lift a scalar Schwartz operator componentwise to an indexed state. -/
+noncomputable def spatialLift (A : Spatial →ₗ[ℂ] Spatial) : State ι →ₗ[ℂ] State ι where
   toFun := fun ψ a => A (ψ a)
   map_add' := by
     intro ψ χ
@@ -39,13 +41,15 @@ noncomputable def spatialLift (A : Spatial →ₗ[ℂ] Spatial) : State →ₗ[�
     simp
 
 @[simp]
-theorem spatialLift_apply (A : Spatial →ₗ[ℂ] Spatial) (ψ : State) (a : Fin 2) :
+theorem spatialLift_apply (A : Spatial →ₗ[ℂ] Spatial) (ψ : State ι) (a : ι) :
     spatialLift A ψ a = A (ψ a) :=
   rfl
 
+variable [Fintype ι]
+
 /-- A finite internal matrix acting on the internal index and leaving the spatial wavefunction intact. -/
-noncomputable def internalOperator (S : InternalSpace.PauliMatrix) : State →ₗ[ℂ] State where
-  toFun := fun ψ a => ∑ b : Fin 2, S a b • ψ b
+noncomputable def internalOperator (S : Matrix ι ι ℂ) : State ι →ₗ[ℂ] State ι where
+  toFun := fun ψ a => ∑ b : ι, S a b • ψ b
   map_add' := by
     intro ψ χ
     funext a
@@ -56,13 +60,13 @@ noncomputable def internalOperator (S : InternalSpace.PauliMatrix) : State →�
     simp [smul_smul, mul_comm]
 
 @[simp]
-theorem internalOperator_apply (S : InternalSpace.PauliMatrix) (ψ : State) (a : Fin 2) :
-    internalOperator S ψ a = ∑ b : Fin 2, S a b • ψ b :=
+theorem internalOperator_apply (S : Matrix ι ι ℂ) (ψ : State ι) (a : ι) :
+    internalOperator S ψ a = ∑ b : ι, S a b • ψ b :=
   rfl
 
-/-- The internal-matrix action is complex-linear in the supplied two-level matrix. -/
+/-- The internal-matrix action is complex-linear in the supplied internal matrix. -/
 noncomputable def internalOperatorLinear :
-    InternalSpace.PauliMatrix →ₗ[ℂ] (State →ₗ[ℂ] State) where
+    Matrix ι ι ℂ →ₗ[ℂ] (State ι →ₗ[ℂ] State ι) where
   toFun := internalOperator
   map_add' := by
     intro S T
@@ -79,7 +83,7 @@ noncomputable def internalOperatorLinear :
 
 /-- Componentwise spatial operators Lie-commute with internal matrix operators. -/
 theorem lie_spatialLift_internalOperator_eq_zero
-    (A : Spatial →ₗ[ℂ] Spatial) (S : InternalSpace.PauliMatrix) :
+    (A : Spatial →ₗ[ℂ] Spatial) (S : Matrix ι ι ℂ) :
     ⁅spatialLift A, internalOperator S⁆ = 0 := by
   simp only [LieRing.of_associative_ring_bracket, Module.End.mul_eq_comp, sub_eq_zero]
   apply LinearMap.ext
@@ -87,18 +91,18 @@ theorem lie_spatialLift_internalOperator_eq_zero
   funext a
   simp [internalOperator]
 
-/-- Two-level multiplication by a scalar Schwartz localizer. -/
-noncomputable def multiplicationOperator (f : Spatial) : State →ₗ[ℂ] State :=
+/-- Componentwise multiplication by a scalar Schwartz localizer. -/
+noncomputable def multiplicationOperator (f : Spatial) : State ι →ₗ[ℂ] State ι :=
   spatialLift (SchwartzKinetic1D.multiplicationOperator f)
 
 @[simp]
 theorem multiplicationOperator_apply
-    (f : Spatial) (ψ : State) (a : Fin 2) (x : ℝ) :
+    (f : Spatial) (ψ : State ι) (a : ι) (x : ℝ) :
     multiplicationOperator f ψ a x = f x * ψ a x :=
   rfl
 
 /-- Multiplication localizers depend complex-linearly on the scalar Schwartz test function. -/
-noncomputable def multiplicationLinear : Spatial →ₗ[ℂ] (State →ₗ[ℂ] State) where
+noncomputable def multiplicationLinear : Spatial →ₗ[ℂ] (State ι →ₗ[ℂ] State ι) where
   toFun := multiplicationOperator
   map_add' := by
     intro f g
@@ -119,4 +123,4 @@ noncomputable def multiplicationLinear : Spatial →ₗ[ℂ] (State →ₗ[ℂ] 
 
 
 end
-end SchwartzTwoLevel1D
+end SchwartzComponents1D

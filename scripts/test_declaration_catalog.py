@@ -38,9 +38,9 @@ class CatalogTests(unittest.TestCase):
         imports = {line.removeprefix("import ") for line in expanded.splitlines()
                    if line.startswith("import ")}
         self.assertTrue(set(modules) <= imports)
-        self.assertIn("LeanCondensedMatter.Analysis.Operator.SchwartzTwoLevel1D", imports)
+        self.assertIn("LeanCondensedMatter.Analysis.Operator.SchwartzComponents1D", imports)
         # The legacy collector must retain its public-umbrella import boundary.
-        self.assertNotIn("import LeanCondensedMatter.Analysis.Operator.SchwartzTwoLevel1D\n", source)
+        self.assertNotIn("import LeanCondensedMatter.Analysis.Operator.SchwartzComponents1D\n", source)
 
     def test_full_collection_preserves_the_legacy_audit(self):
         with tempfile.TemporaryDirectory(dir=Path(__file__).resolve().parent) as directory:

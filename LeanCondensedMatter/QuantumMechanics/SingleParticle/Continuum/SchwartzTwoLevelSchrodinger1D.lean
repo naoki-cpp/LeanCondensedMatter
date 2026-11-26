@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Analysis.InternalSpace.Pauli
-import LeanCondensedMatter.Analysis.Operator.SchwartzTwoLevel1D
+import LeanCondensedMatter.Analysis.Operator.SchwartzComponents1D
 import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.SchwartzSchrodinger1D
 import Mathlib.Algebra.Lie.OfAssociative
 
@@ -18,17 +18,17 @@ namespace SingleParticle
 namespace Continuum
 namespace SchwartzTwoLevelSchrodinger1D
 
-open SchwartzTwoLevel1D
+open SchwartzComponents1D
 attribute [local instance 100] LieRing.ofAssociativeRing
 
 noncomputable section
 
 /-- Componentwise Schwartz velocity operator. -/
-noncomputable def velocityOperator (ℏ κ : ℝ) : State →ₗ[ℂ] State :=
+noncomputable def velocityOperator (ℏ κ : ℝ) : State (Fin 2) →ₗ[ℂ] State (Fin 2) :=
   spatialLift (SchwartzSchrodinger1D.velocityOperator ℏ κ)
 
 /-- Componentwise scalar Schrodinger Hamiltonian. -/
-noncomputable def spatialHamiltonian (κ : ℝ) (potential : Spatial) : State →ₗ[ℂ] State :=
+noncomputable def spatialHamiltonian (κ : ℝ) (potential : Spatial) : State (Fin 2) →ₗ[ℂ] State (Fin 2) :=
   spatialLift (SchwartzSchrodinger1D.schrodingerOperator κ potential)
 
 /-- State Hamiltonian consisting of scalar spatial dynamics plus an arbitrary internal matrix.
@@ -36,7 +36,7 @@ noncomputable def spatialHamiltonian (κ : ℝ) (potential : Spatial) : State �
 The internal term is an arbitrary two-level on-site coupling at this abstract level.
 It commutes with spatial localization; its physical interpretation belongs downstream. -/
 noncomputable def hamiltonian
-    (κ : ℝ) (potential : Spatial) (internalH : InternalSpace.PauliMatrix) : State →ₗ[ℂ] State :=
+    (κ : ℝ) (potential : Spatial) (internalH : InternalSpace.PauliMatrix) : State (Fin 2) →ₗ[ℂ] State (Fin 2) :=
   spatialHamiltonian κ potential + internalOperator internalH
 
 /-- The localization commutator of the two-level state Hamiltonian is unaffected by the internal matrix term. -/
