@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Analysis.Algebra.FiniteAverage
 import LeanCondensedMatter.Transport.Disorder.LinearizedFluctuation
 import LeanCondensedMatter.Transport.Disorder.Ladder
 import Mathlib.Tactic.NoncommRing
@@ -66,7 +67,8 @@ theorem firstBornTwoGreenRungOfRegulators_eq_average_firstDyson
   have hfactor :
       freeLeft * ensemble.average term * freeRight =
         ensemble.average (fun ω => freeLeft * term ω * freeRight) := by
-    simpa using (ensemble.map_average
+    simpa [FiniteDisorderEnsemble.average] using
+      (LinearMap.map_finiteWeightedAverage ensemble.probability
       ((ContinuousLinearMap.mulLeftRight ℂ (H →L[ℂ] H)) freeLeft freeRight).toLinearMap term)
   have hterm :
       ensemble.exactSecondMoment (freeLeft * vertex * freeRight) = ensemble.average term := by

@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Analysis.Algebra.FiniteAverage
 import LeanCondensedMatter.Transport.Disorder.TwoParticle
 import LeanCondensedMatter.Transport.Streda.RetardedAdvanced
 import Mathlib.Analysis.Normed.Operator.Mul
@@ -39,8 +40,9 @@ theorem average_twoGreenVertexTraceKernel_eq_trace_insertion
         twoGreenVertexTraceKernel measuredVertex (left ω) sourceVertex (right ω)) =
       ContinuousLinearMap.finiteDimensionalOperatorTrace
         (measuredVertex * ensemble.averagedOperatorInsertion left right sourceVertex) := by
-  simpa [twoGreenVertexTraceKernel, averagedOperatorInsertion, mul_assoc] using
-    (ensemble.map_average
+  simpa [twoGreenVertexTraceKernel, averagedOperatorInsertion, FiniteDisorderEnsemble.average,
+    mul_assoc] using
+    (LinearMap.map_finiteWeightedAverage ensemble.probability
       ((ContinuousLinearMap.finiteDimensionalOperatorTrace (H := H)).toLinearMap.comp
         ((ContinuousLinearMap.mulLeftRight ℂ (H →L[ℂ] H) measuredVertex 1).toLinearMap))
       (fun ω => left ω * sourceVertex * right ω)).symm

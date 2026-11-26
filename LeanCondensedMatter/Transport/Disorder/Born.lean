@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Analysis.Algebra.FiniteAverage
 import LeanCondensedMatter.Transport.Disorder.Moments
 import LeanCondensedMatter.Transport.Disorder.Resolvent
 import Mathlib.Tactic.NoncommRing
@@ -103,8 +104,8 @@ theorem averagedGreenOfRegulator_eq_born_add_exactRemainder_of_centered
   have hfactor (term : Ω → H →L[ℂ] H) :
       ensemble.average (fun ω => G₀ * term ω * G₀) =
         G₀ * ensemble.average term * G₀ := by
-    simpa using
-      (ensemble.map_average
+    simpa [FiniteDisorderEnsemble.average] using
+      (LinearMap.map_finiteWeightedAverage ensemble.probability
         ((ContinuousLinearMap.mulLeftRight ℂ (H →L[ℂ] H)) G₀ G₀).toLinearMap
         term).symm
   have hlinear : ensemble.average (fun ω => G₀ * V ω * G₀) = 0 := by

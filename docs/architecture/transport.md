@@ -232,10 +232,10 @@ configuration, and averaged Green operators at arbitrary signed regulator `γ`. 
 Dyson expansions are owned at arbitrary nonzero `γ`; physical consumers specialize the regulator
 locally when branch semantics are required.
 
-`FiniteDisorderEnsemble.average` is a complex linear map given by the normalized weighted finite
-sum for scalar observables and arbitrary complex-module-valued families, including bounded
-operators. Normalization fixes constant families, and every complex-linear map commutes with this
-average; trace and fixed-operator multiplication use this common law. Real ensemble weights also
+`FiniteDisorderEnsemble.average` specializes the mathematical weighted-sum map
+`LinearMap.finiteWeightedAverage` (`Analysis/Algebra/FiniteAverage.lean`) to the ensemble's
+normalized real weights. The general map and bilinear centering laws apply to arbitrary complex
+modules; trace and fixed-operator multiplication use the same linear-map law. Real ensemble weights also
 make operator adjunction commute with averaging. Averaging does not factor products of two
 configuration-dependent observables. The ensemble-independent connected two-point subtraction belongs to
 `QuantumTheory.LinearResponse.connectedCorrelation`. Its definition requires only a
