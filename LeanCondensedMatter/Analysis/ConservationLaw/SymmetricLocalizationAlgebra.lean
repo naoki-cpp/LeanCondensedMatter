@@ -142,46 +142,35 @@ theorem nestedSymmetrizedCurrentFlux_eq_comp
       (localizedQuantityFunctional N velocity).comp d) :
     localizedQuantityFunctional L m =
       (nestedSymmetrizedCurrentFlux velocity m N).comp d := by
-  calc
-    localizedQuantityFunctional L m =
-        localizedQuantityFunctional
-          ((localizedQuantityFunctional N velocity).comp d) m :=
-      congrArg (fun T : Test →ₗ[K] A => localizedQuantityFunctional T m) hvelocity
-    _ = _ := by
-      apply LinearMap.ext
-      intro f
-      rfl
+  subst L
+  rfl
 
-/-- Any other full current functional representing the same intrinsic transport is equivalent on
-exact differentials to the generic nested current flux. -/
+/-- Any representative of a transport already represented by the nested flux agrees with that
+flux on exact differentials, regardless of how the original transport was obtained. -/
 theorem currentEquivalent_nestedSymmetrizedCurrentFlux
-    (L : Test →ₗ[K] A)
+    (Φ : Test →ₗ[K] A)
     (m velocity : A)
     (d : Test →ₗ[K] OneForm)
     (N : OneForm →ₗ[K] A)
-    (hvelocity : L =
-      (localizedQuantityFunctional N velocity).comp d)
-    (R : DifferentialCurrentRepresentation d
-      (localizedQuantityFunctional L m)) :
+    (hΦ : Φ = (nestedSymmetrizedCurrentFlux velocity m N).comp d)
+    (R : DifferentialCurrentRepresentation d Φ) :
     R.val.comp d =
       (nestedSymmetrizedCurrentFlux velocity m N).comp d :=
-  R.property.symm.trans (nestedSymmetrizedCurrentFlux_eq_comp L m velocity d N hvelocity)
+  R.property.symm.trans hΦ
 
 /-- Any representative of the same intrinsic transport has the form
 
 `J = J_sym + J_corr + K`
 
-with `K (d f) = 0` for every test object `f`. Thus `K` is pure extension ambiguity invisible
-to the intrinsic flux. -/
+with `K (d f) = 0` for every test object `f`. This is the kernel ambiguity of
+precomposition with `d`; it requires no localizer-evolution or Heisenberg hypothesis. -/
 theorem exists_current_eq_symmetrized_add_correction_add_invisible
-    (L : Test →ₗ[K] A)
+    (Φ : Test →ₗ[K] A)
     (m velocity : A)
     (d : Test →ₗ[K] OneForm)
     (N : OneForm →ₗ[K] A)
-    (hvelocity : L =
-      (localizedQuantityFunctional N velocity).comp d)
-    (R : DifferentialCurrentRepresentation d
-      (localizedQuantityFunctional L m)) :
+    (hΦ : Φ = (nestedSymmetrizedCurrentFlux velocity m N).comp d)
+    (R : DifferentialCurrentRepresentation d Φ) :
     ∃ K : OneForm →ₗ[K] A,
       K.comp d = 0 ∧
         R.val =
@@ -190,7 +179,7 @@ theorem exists_current_eq_symmetrized_add_correction_add_invisible
   refine ⟨R.val - nestedSymmetrizedCurrentFlux velocity m N,
     ?_, ?_⟩
   · rw [LinearMap.sub_comp,
-      currentEquivalent_nestedSymmetrizedCurrentFlux L m velocity d N hvelocity R,
+      currentEquivalent_nestedSymmetrizedCurrentFlux Φ m velocity d N hΦ R,
       sub_self]
   · rw [← nestedSymmetrizedCurrentFlux_eq_symmetrized_add_correction,
       add_comm, sub_add_cancel]
