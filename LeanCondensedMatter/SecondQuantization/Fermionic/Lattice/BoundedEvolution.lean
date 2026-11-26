@@ -113,25 +113,5 @@ theorem finiteSecondQuantization_exp_conjugate
   intro x
   exact finiteSecondQuantization_lie generator x
 
-/-- The full-Fock commutator of an exponentially evolved one-body observable
-with another one-body observable has the exact one-particle matrix element.
-This is the operator/kernel reduction used by a singleton-sector Kubo
-calculation; no assumption about a full Fock eigenbasis is required. -/
-theorem inner_finiteSecondQuantization_exp_conjugate_lie_oneParticle
-    (generator A B : EuclideanSpace ℂ Site →L[ℂ] EuclideanSpace ℂ Site)
-    (t : ℝ) (v w : EuclideanSpace ℂ Site) :
-    let j := AlgebraicFock.finiteHilbertOneParticleEmbedding
-      (Common.finiteHilbertOrthonormalBasis (Config := Site))
-    inner ℂ (j v)
-      (⁅NormedSpace.exp (t • finiteSecondQuantization generator) *
-          finiteSecondQuantization A *
-          NormedSpace.exp (-(t • finiteSecondQuantization generator)),
-        finiteSecondQuantization B⁆ (j w)) =
-      inner ℂ v (⁅NormedSpace.exp (t • generator) * A *
-        NormedSpace.exp (-(t • generator)), B⁆ w) := by
-  dsimp only
-  rw [← finiteSecondQuantization_exp_conjugate, ← finiteSecondQuantization_lie]
-  exact inner_finiteSecondQuantization_oneParticle _ v w
-
 end
 end SecondQuantization.Fermionic.Lattice
