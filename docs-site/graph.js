@@ -366,7 +366,7 @@ function setBranchFocus(branch) {
     const baseOpacity = Number(item.getAttribute("data-base-opacity") ?? "1");
     item.style.opacity = !branch || ownBranch === branch || ownBranch === "root"
       ? String(baseOpacity)
-      : "0.1";
+      : "0.22";
     if (item.dataset.crossLink === "true") {
       item.setAttribute("stroke-opacity", branch && ownBranch === branch ? "0.55" : "0.07");
     }
@@ -376,7 +376,7 @@ function setBranchFocus(branch) {
 function setGraphViewBox(viewBox) {
   const rect = ui.viewport.getBoundingClientRect();
   const labelScale = rect.width && rect.height
-    ? Math.max(1, Math.min(1.8, Math.max(viewBox.width / rect.width, viewBox.height / rect.height)))
+    ? Math.max(1, Math.max(viewBox.width / rect.width, viewBox.height / rect.height))
     : 1;
   state.viewBox = viewBox;
   ui.graph.setAttribute("viewBox", `${viewBox.x} ${viewBox.y} ${viewBox.width} ${viewBox.height}`);
@@ -463,10 +463,10 @@ function appendNodeLabel(nodes, name, position, root, selected, showLeafLabel) {
     x: 0,
     y: 0,
     "text-anchor": anchor,
-    ...graphNodeLabelAttributes({ depth, root }),
+    ...graphNodeLabelAttributes({ depth, root, selected }),
   });
   lines.forEach((line, index) => {
-    const span = svg("tspan", { x: 0, y: index * 16 });
+    const span = svg("tspan", { x: 0, y: index * (root ? 19 : 17) });
     span.textContent = line;
     text.append(span);
   });
@@ -571,7 +571,6 @@ function renderGraph({ preserveView = false } = {}) {
     const depth = Math.abs(position.level);
     const sign = Math.sign(position.level);
     const branch = branchFor.get(name) ?? "root";
-    const color = branchColor.get(branch) ?? "#91a9ff";
     const highlight = highlightMatches(entry);
     const baseOpacity = highlight === false ? 0.25 : 1;
     const isLeaf = depth > 1 && sideChildren(name, children, levels, sign).length === 0;
@@ -583,6 +582,7 @@ function renderGraph({ preserveView = false } = {}) {
       tabindex: 0,
       role: "button",
       "aria-label": name,
+      "aria-pressed": String(isSelected),
       "data-branch": branch,
       "data-base-opacity": baseOpacity,
     });
@@ -600,7 +600,7 @@ function renderGraph({ preserveView = false } = {}) {
       "data-kind": entry.kind ?? "module",
       fill: isRoot ? ROOT_NODE_COLOR : definition ? "#a7cfbb" : entry.kind === "axiom" ? "#e5ca94"
         : ["inductive", "constructor", "recursor", "quotient"].includes(entry.kind) ? "#c9bbd9"
-        : color,
+        : "#4c7194",
     });
     group.append(hit, dot);
 

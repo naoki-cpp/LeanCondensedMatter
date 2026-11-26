@@ -1,6 +1,5 @@
 export const BRANCH_COLORS = [
-  "#387663", "#4c7194", "#9a753c", "#7c648f", "#95636a", "#527d88",
-  "#6d7c43", "#926e53", "#526d83", "#826877", "#5b8070", "#897a4c",
+  "#648875", "#7b9484", "#537968", "#8b9d8c",
 ];
 
 export const ROOT_NODE_COLOR = "#21664c";
@@ -11,12 +10,12 @@ export function graphNodeRadius({ depth = 1, root = false, selected = false } = 
   return root ? 12 : depth === 1 ? 6.5 : selected ? 6 : 4.2;
 }
 
-export function graphNodeLabelAttributes({ depth = 1, root = false } = {}) {
+export function graphNodeLabelAttributes({ depth = 1, root = false, selected = false } = {}) {
   return {
     fill: root ? ROOT_LABEL_COLOR : "#213e30",
     "font-family": "var(--ui-font)",
     "font-size": root ? 16 : depth === 1 ? 14 : 13,
-    "font-weight": root ? 600 : 400,
+    "font-weight": root || selected ? 600 : 400,
     "paint-order": "stroke",
     stroke: "#f7f9f6",
     "stroke-width": root ? 4 : 3,
