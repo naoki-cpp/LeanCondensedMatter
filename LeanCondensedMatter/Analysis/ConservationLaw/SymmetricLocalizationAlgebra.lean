@@ -139,14 +139,14 @@ noncomputable def operatorLocalCurrentPairing
       (Obs := A)
       (CurrentDensity := A) :=
   ((LinearMap.llcomp K OneForm A A).flip N).comp
-    (LinearMap.flip (LinearMapsymmetrizedProductBilinear (K := K) A))
+    (LinearMap.flip (LinearMap.symmetrizedProductBilinear (K := K) A))
 
 @[simp]
 theorem operatorLocalCurrentPairing_apply
     (N : OneForm →ₗ[K] A)
     (current : A) (α : OneForm) :
     operatorLocalCurrentPairing N current α =
-      LinearMapsymmetrizedProduct (K := K) (N α) current :=
+      LinearMap.symmetrizedProduct (K := K) (N α) current :=
   rfl
 
 section CorrectedCurrent
@@ -245,7 +245,7 @@ noncomputable def symmetrizedVelocityCurrentRepresentation
       d
       (localizedQuantityFunctional L m)
       (operatorLocalCurrentPairing N) where
-  val := LinearMapsymmetrizedProduct (K := K) velocity m
+  val := LinearMap.symmetrizedProduct (K := K) velocity m
   property := by
     change localizedQuantityFunctional L m =
       (symmetrizedCurrentFlux velocity m N).comp d
@@ -264,7 +264,7 @@ theorem symmetrizedVelocityCurrentRepresentation_currentDensity
       (localizedQuantityFunctional N velocity).comp d)
     (hcomm : ∀ α, ⁅N α, m⁆ = 0) :
     (symmetrizedVelocityCurrentRepresentation L m velocity d N hvelocity hcomm).val =
-      LinearMapsymmetrizedProduct (K := K) velocity m :=
+      LinearMap.symmetrizedProduct (K := K) velocity m :=
   rfl
 
 /-- The canonical corrected flux for a scalar quantity `q • 1` is the local pairing
@@ -278,7 +278,7 @@ theorem correctedChargeCurrentFlux_eq [NeZero (2 : K)]
   apply LinearMap.ext
   intro α
   rw [symmetrizedCurrentFlux_apply,
-    operatorLocalCurrentPairing_apply, LinearMapsymmetrizedProduct_smul_one]
+    operatorLocalCurrentPairing_apply, LinearMap.symmetrizedProduct_smul_one]
 
 end CorrectedCurrent
 
