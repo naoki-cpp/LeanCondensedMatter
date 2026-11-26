@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Analysis.Algebra.FiniteAverage
 import LeanCondensedMatter.Transport.Disorder.FirstRungNormBound
 import Mathlib.Analysis.SpecificLimits.Normed
 import Mathlib.Tactic.Linarith
@@ -98,7 +99,8 @@ theorem norm_exactSecondMoment_le_uniformPotential_sq
   have hbound : 0 ≤ potentialBound :=
     ensemble.uniformPotentialBound_nonneg potentialBound hpotential
   rw [ensemble.exactSecondMoment_eq_average]
-  apply ensemble.norm_average_le_of_forall _ _
+  apply LinearMap.norm_finiteWeightedAverage_le_of_forall ensemble.probability
+    ensemble.probability_nonneg ensemble.probability_sum _ _
   intro ω
   let impurity := (ensemble.impurityPotential ω).1
   have hp : ‖impurity‖ ≤ potentialBound := hpotential ω

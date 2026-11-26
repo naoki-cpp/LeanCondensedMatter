@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Analysis.Algebra.FiniteAverage
 import LeanCondensedMatter.Transport.Disorder.TwoParticle
 import LeanCondensedMatter.Transport.Disorder.BornNormBound
 import Mathlib.Tactic.Abel
@@ -97,7 +98,8 @@ theorem norm_averagedGreen_sub_free_le
       rw [← ensemble.average_const G₀, ← map_sub]
     rfl
   rw [hshift]
-  apply ensemble.norm_average_le_of_forall _ _
+  apply LinearMap.norm_finiteWeightedAverage_le_of_forall ensemble.probability
+    ensemble.probability_nonneg ensemble.probability_sum _ _
   intro ω
   exact ensemble.norm_configurationGreen_sub_free_le
     energy regulator hregulator ω potentialBound (hpotential ω)
@@ -175,7 +177,8 @@ theorem norm_connectedTwoGreenInsertion_le_uniformPotential_sq
         gcongr
   change ‖ensemble.average (fun ω => L ω * vertex * R ω)‖ ≤
     leftBound * ‖vertex‖ * rightBound
-  exact ensemble.norm_average_le_of_forall _ _ hpoint
+  exact LinearMap.norm_finiteWeightedAverage_le_of_forall ensemble.probability
+    ensemble.probability_nonneg ensemble.probability_sum _ _ hpoint
 
 end FiniteDisorderEnsemble
 

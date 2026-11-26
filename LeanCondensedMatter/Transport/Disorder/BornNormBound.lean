@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Analysis.Algebra.FiniteAverage
 import LeanCondensedMatter.Transport.Disorder.Born
 import Mathlib.Tactic.GCongr
 import Mathlib.Tactic.Ring
@@ -81,18 +82,9 @@ theorem norm_exactBornRemainder_le_thirdNormMoment
   change ‖ensemble.average remainder‖ ≤ B ^ 4 *
     (∑ ω, ensemble.probability ω * ‖V ω‖ ^ 3)
   calc
-    ‖ensemble.average remainder‖ =
-        ‖∑ ω, (ensemble.probability ω : ℂ) • remainder ω‖ := rfl
-    _ ≤ ∑ ω, ‖(ensemble.probability ω : ℂ) • remainder ω‖ := norm_sum_le _ _
-    _ = ∑ ω, ensemble.probability ω * ‖remainder ω‖ := by
-      apply Finset.sum_congr rfl
-      intro ω _
-      simp only [norm_smul, Complex.norm_real, Real.norm_eq_abs,
-        abs_of_nonneg (ensemble.probability_nonneg ω)]
-    _ ≤ ∑ ω, ensemble.probability ω * (B ^ 4 * ‖V ω‖ ^ 3) := by
-      apply Finset.sum_le_sum
-      intro ω _
-      exact mul_le_mul_of_nonneg_left (hpoint ω) (ensemble.probability_nonneg ω)
+    ‖ensemble.average remainder‖ ≤ ∑ ω, ensemble.probability ω * (B ^ 4 * ‖V ω‖ ^ 3) :=
+      LinearMap.norm_finiteWeightedAverage_le_sum_of_forall ensemble.probability
+        ensemble.probability_nonneg remainder _ hpoint
     _ = B ^ 4 * (∑ ω, ensemble.probability ω * ‖V ω‖ ^ 3) := by
       rw [Finset.mul_sum]
       apply Finset.sum_congr rfl
