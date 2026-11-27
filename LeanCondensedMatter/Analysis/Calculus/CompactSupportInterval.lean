@@ -50,11 +50,10 @@ theorem integral_pairing_eq_integral_of_tsupport_subset_Ioo
   apply intervalIntegral.integral_eq_integral_of_support_subset
   intro x hx
   have hfx : x ∈ Function.support f := by
-    by_contra hn
-    have hz : f x = 0 := by
-      by_contra hne
-      exact hn hne
-    exact hx (by rw [hz, hzero])
+    intro hz
+    apply hx
+    change B (f x) (g x) = 0
+    rw [hz, hzero]
   have h := hf (subset_closure hfx)
   exact ⟨h.1, h.2.le⟩
 
