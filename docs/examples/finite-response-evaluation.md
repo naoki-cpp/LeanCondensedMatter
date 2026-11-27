@@ -25,8 +25,9 @@ This path is appropriate for arbitrary measured/source observables. In particula
 response can use a spin-current matrix table for `A` and a charge-current matrix table for `B`
 without changing the Kubo derivation.
 
-If an operator-level finite pure-point model is already available, construct the scalar table with
-`finiteLehmannTableOfEigenbasis`. The theorem `finiteLehmannTableResponse_ofEigenbasis` states that
+If an operator-level finite pure-point model is already available, import
+[`Lehmann.Eigenbasis.Table`](../../LeanCondensedMatter/QuantumTheory/LinearResponse/Lehmann/Eigenbasis/Table.lean)
+and construct the scalar table with `finiteLehmannTableOfEigenbasis system data A B`. The theorem `finiteLehmannTableResponse_ofEigenbasis` states that
 the scalar evaluation is exactly the existing `eigenbasisLehmannSeries`.
 
 ## Electrical conductivity workflow
@@ -42,7 +43,9 @@ finiteConductivityTableValue volume ℏ ω η table
 ```
 
 The scalar table and evaluator are representation-independent. Given an energy eigenbasis and
-a response channel, `QuantumTheory.Transport.finiteConductivityTableOfEigenbasis` constructs
+a response channel, import
+[`Transport.FiniteConductivityTable.Eigenbasis`](../../LeanCondensedMatter/Transport/FiniteConductivityTable/Eigenbasis.lean).
+`QuantumTheory.Transport.finiteConductivityTableOfEigenbasis system data channel` constructs
 the measured/source Lehmann data and observable-variation expectation. The theorem
 `finiteConductivityTableValue_ofEigenbasis` identifies its evaluation with the aggregate eigenbasis
 response plus contact and the explicit conductivity normalization. This construction uses no
@@ -61,7 +64,11 @@ model operators H, A, B (or H, J, C)
 
 The two-site dimer validation is the first electrical example: its operator-derived energies,
 current matrix elements, and contact expectation feed the finite conductivity table, which evaluates
-exactly to `1/5` at `ℏ = 1`, `ω = 0`, `η = 1`, and unit volume.
+exactly to `1/5` at `ℏ = 1`, `ω = 0`, `η = 1`, and unit volume, as proved by
+[`twoSiteDimerGroundState_conductivity_zero_one`](../../LeanCondensedMatter/SecondQuantization/Fermionic/Validation/TwoSiteDimerLehmann.lean).
+The separate gapped benchmark has value `16/145` at the same response parameters,
+proved by [`twoSiteGappedBenchmark_conductivity_zero_one`](../../LeanCondensedMatter/SecondQuantization/Fermionic/Validation/GappedTwoSiteDimer.lean).
+These values use different Hamiltonians and spectral tables.
 
 ## Exact versus numerical layers
 

@@ -1,6 +1,6 @@
 # Low-order fermionic linked-cluster identities
 
-The finite-mode fermionic Linked Cluster Theorem is available for every nonzero perturbation order.
+The [formal finite-mode fermionic Linked Cluster Theorem](../../LeanCondensedMatter/SecondQuantization/Fermionic/Diagrammatics/LinkedCluster/Theorem.lean) is available for every nonzero perturbation order and real `β`.
 The orders `1`, `2`, and `3` make the factorial and disconnected-subtraction conventions readable
 without unfolding the general moment-cumulant machinery. The explicit identities below are low-order consequences of the generic moment–cumulant
 recurrence, not separate exported low-order or fermionic diagrammatic declarations.
@@ -34,11 +34,13 @@ dedicated Lean theorem declarations. The recurrence applies to the normalized fe
 `Common.constantCoeff_dysonTraceSeries_ne_zero`.
 
 Connected-diagram statements at orders `1`, `2`, and `3` are obtained by specializing the
-general fermionic linked-cluster theorem. Analytic low-order statements similarly follow by
+general fermionic linked-cluster theorem. Analytic low-order statements similarly follow for `0 ≤ β` by
 combining the analytic/formal bridge
 
 ```text
 (dⁿ/dλⁿ)|₀ log (Z(λ) / Z(0)) = n! [λⁿ] log Ẑ
 ```
 
-with these formal identities, so separate public wrappers are not maintained.
+with these formal identities; the [analytic linked-cluster theorem](../../LeanCondensedMatter/SecondQuantization/Fermionic/Diagrammatics/LinkedCluster/Analytic.lean)
+uses this bridge at every nonzero order. The logarithm here is the local analytic logarithm near
+zero coupling, not a claim of convergence of the connected series at unit coupling.

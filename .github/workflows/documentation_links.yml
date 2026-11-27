@@ -1,0 +1,27 @@
+name: Documentation links
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  local-links:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          persist-credentials: false
+      - name: Test local link checker
+        run: python3 -m unittest discover -s scripts -p 'test_documentation_links.py'
+      - name: Report missing local Markdown paths
+        run: python3 scripts/check_documentation_links.py --report-only
