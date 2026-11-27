@@ -434,6 +434,9 @@ one-body observable boundary.
 `SecondQuantization.Common.Algebra.AlgebraicFock` owns the reusable occupation-basis coordinate API.
 For fixed basis labels, `matrixCoeffLinear m n` is the canonical complex-linear functional on
 algebraic-Fock endomorphisms; composition formulas belong there rather than in the trace layer.
+The underlying finite-support coordinate expansion is the scalar-generic theorem in
+`Analysis.Algebra.FinsuppCoordinates`; basis expansion and extensionality use Mathlib's
+`Finsupp` and `Basis` APIs.
 Basis-diagonal operators are represented by the algebra homomorphism
 `diagonalOperator : (Config → ℂ) →ₐ[ℂ] End`.
 

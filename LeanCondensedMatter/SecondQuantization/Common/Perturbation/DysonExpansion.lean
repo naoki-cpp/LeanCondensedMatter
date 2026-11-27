@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Analysis.Algebra.FinsuppCoordinates
 import LeanCondensedMatter.SecondQuantization.Common.Perturbation.FiniteSupportIntegral
 import LeanCondensedMatter.SecondQuantization.Common.Perturbation.ReachableSupport
 
@@ -119,7 +120,7 @@ theorem continuous_matrixCoeff_dysonCoeff (energy : Config → ℝ)
               matrixCoeff (interactionPicture energy V σ) m k *
                 dysonCoeff energy V order σ (basisState n) k) := by
           funext σ
-          exact linearMap_apply_eq_finsetSum_of_support_subset
+          exact Finsupp.linearMap_apply_eq_finsetSum_of_support_subset
             (interactionPicture energy V σ)
             (dysonCoeff energy V order σ (basisState n)) S
             (support_dysonCoeff_basisState_subset_reachableSupport energy V order σ n) m
