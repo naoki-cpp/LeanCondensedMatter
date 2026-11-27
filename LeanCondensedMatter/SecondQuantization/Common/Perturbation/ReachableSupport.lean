@@ -44,21 +44,20 @@ theorem support_interactionPicture_apply_subset_reachableSupport_succ
     (τ : ℝ) (order : ℕ) (n : Config) (x : AlgebraicFock Config)
     (hx : x.support ⊆ reachableSupport V order n) :
     (interactionPicture energy V τ x).support ⊆ reachableSupport V (order + 1) n := by
-  have hxRep : x = ∑ k ∈ x.support, x k • basisState k :=
-    by simpa only [Finsupp.sum, Finsupp.smul_single_one, basisState] using
-      (Finsupp.sum_single x).symm
-  have hImage :
-      interactionPicture energy V τ x =
-        ∑ k ∈ x.support, x k • interactionPicture energy V τ (basisState k) := by
-    conv_lhs => rw [hxRep, map_sum]
-    simp only [map_smul]
   intro m hm
   rw [reachableSupport_succ, Finset.mem_biUnion]
-  rw [hImage] at hm
-  obtain ⟨k, hk, hmk⟩ := Finset.mem_biUnion.mp (Finsupp.support_finsetSum hm)
-  exact ⟨k, hx hk,
-    support_interactionPicture_basisState_subset energy V τ k
-      (Finsupp.support_smul hmk)⟩
+  by_contra hnot
+  apply (Finsupp.mem_support_iff.mp hm)
+  rw [Finsupp.linearMap_apply_eq_finsetSum_of_support_subset
+    (interactionPicture energy V τ) x x.support (Finset.Subset.rfl) m]
+  apply Finset.sum_eq_zero
+  intro k hk
+  have hz : interactionPicture energy V τ (basisState k) m = 0 := by
+    by_contra hne
+    exact hnot ⟨k, hx hk, support_interactionPicture_basisState_subset energy V τ k
+      (Finsupp.mem_support_iff.mpr hne)⟩
+  change interactionPicture energy V τ (basisState k) m * x k = 0
+  rw [hz, zero_mul]
 
 end Common
 end SecondQuantization
