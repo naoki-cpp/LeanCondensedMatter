@@ -38,7 +38,8 @@ E  transport/disorder      Kubo–Bastin/Středa, resolvents, disorder, Born/SCB
 | Cumulants vanish across independence | B | `proved` | [combinatorics](roadmaps/combinatorics.md) |
 | Formal-log coefficient / finite-set cumulant bridge | B | `proved` | `Analysis/PowerSeries/Cumulant.lean` |
 | Independent replica-method formal linked-cluster proof | B/C/D | `proved` | [linked-cluster theorem](roadmaps/linked-cluster-theorem.md#replica-method-proof-track) |
-| Higher-point source-functional generating identities | B/D | `idea` | [linked-cluster theorem](roadmaps/linked-cluster-theorem.md#open-work) |
+| Finite-mode fermionic arbitrary-external signed moments and connected source cumulants (formal Dyson series, `0 ≤ β`, arbitrary real `μ`) | B/D | `proved` | [linked-cluster theorem](roadmaps/linked-cluster-theorem.md#arbitrary-finite-external-insertions-and-source-cumulants) |
+| Analytic higher-point generating-functional realization beyond formal Dyson series | B/D | `idea` | [linked-cluster theorem](roadmaps/linked-cluster-theorem.md#open-work) |
 | Compact self-adjoint spectral decomposition | C | `proved` | [operator analysis](roadmaps/operator-algebra.md) |
 | Spectral trace-class theory and trace identities | C | `proved` | [operator analysis](roadmaps/operator-algebra.md) |
 | Hilbert–Schmidt basic, inner-product, and trace infrastructure | C | `proved` | [operator analysis](roadmaps/operator-algebra.md) |
@@ -61,4 +62,4 @@ E  transport/disorder      Kubo–Bastin/Středa, resolvents, disorder, Born/SCB
 | Bosonic finite-order quartic Dyson formal linked-cluster theorem | D | `proved` for finite mode sets with positive effective mode gaps; not an analytic interacting partition-function theorem | [second quantization](roadmaps/second-quantization.md#bosonic-line) |
 | Completed fermionic free Fock/domain and thermal theory | C/D | `proved` under explicit boundedness, domain, and summability hypotheses | [completed-space boundary](roadmaps/completed-space-and-infinite-mode.md) |
 | Bosonic interacting analytic Dyson theory, completed interacting-Hamiltonian control, and thermodynamic limits | C/D | `idea` | [completed-space boundary](roadmaps/completed-space-and-infinite-mode.md#open-work) |
-| Higher time-ordered correlation functions, general source insertions, and multi-leg connected expansions | D | `idea` | [second quantization](roadmaps/second-quantization.md) |
+| Analytic higher time-ordered correlation functions and source derivatives beyond the finite-mode formal external-insertion theory | D | `idea` | [second quantization](roadmaps/second-quantization.md#research-directions) |
