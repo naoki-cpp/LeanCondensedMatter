@@ -194,12 +194,9 @@ theorem pauliBasis_linearIndependent : LinearIndependent ℂ pauliBasis := by
   rw [Fintype.linearIndependent_iff]
   intro coefficients hzero axis
   change pauliCombination coefficients = 0 at hzero
-  have htrace := congrArg
-    (fun M : PauliMatrix => Matrix.trace (pauliBasis axis * M)) hzero
-  rw [trace_pauliBasis_mul_pauliCombination] at htrace
-  have hcoeff : (2 : ℂ) * coefficients axis = 0 := by
-    simpa using htrace
-  exact (mul_eq_zero.mp hcoeff).resolve_left (by norm_num)
+  have htrace := trace_pauliBasis_mul_pauliCombination axis coefficients
+  rw [hzero, mul_zero, Matrix.trace_zero] at htrace
+  exact (mul_eq_zero.mp htrace.symm).resolve_left (by norm_num)
 
 /-- Tracing a synthesized Pauli vector against one basis matrix selects that coefficient. -/
 theorem trace_pauliCombination_mul_pauliBasis (u : PauliAxis → ℂ) (axis : PauliAxis) :
@@ -611,23 +608,14 @@ theorem pauliShiftMatrix_mul_closedInverse
     (a • (1 : PauliMatrix) - (x • pauliX + y • pauliY + z • pauliZ)) *
       ((a ^ 2 - x ^ 2 - y ^ 2 - z ^ 2)⁻¹ •
         (a • (1 : PauliMatrix) + (x • pauliX + y • pauliY + z • pauliZ))) = 1 := by
-  let u : PauliAxis → ℂ
-    | .x => x
-    | .y => y
-    | .z => z
+  let u : PauliAxis → ℂ := fun axis => pauliAxisComponent axis x y z
   have hcombination :
       pauliCombination u = x • pauliX + y • pauliY + z • pauliZ := by
-    simp [pauliCombination_eq_components, u]
-  have hdot : dotProduct u u = x ^ 2 + y ^ 2 + z ^ 2 := by
-    rw [dotProduct_pauliAxis]
-    simp [u, pow_two]
-  have hquadratic := pauliShift_mul_companion a u
-  rw [hcombination, hdot] at hquadratic
-  have hdenEq :
-      a ^ 2 - (x ^ 2 + y ^ 2 + z ^ 2) = a ^ 2 - x ^ 2 - y ^ 2 - z ^ 2 := by
+    simp [pauliCombination_eq_components, u, pauliAxisComponent]
+  have hdenEq : a ^ 2 - dotProduct u u = a ^ 2 - x ^ 2 - y ^ 2 - z ^ 2 := by
+    simp [dotProduct_pauliAxis, u, pauliAxisComponent, pow_two]
     ring
-  rw [hdenEq] at hquadratic
-  rw [mul_smul_comm, hquadratic, smul_smul]
+  rw [← hcombination, mul_smul_comm, pauliShift_mul_companion, hdenEq, smul_smul]
   simp [hden]
 
 end InternalSpace
