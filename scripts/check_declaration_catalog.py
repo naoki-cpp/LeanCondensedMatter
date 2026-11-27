@@ -41,6 +41,32 @@ def validate(declarations, theorems):
 
 
 
+def validate_completed_catalog(document, declarations):
+    """Check completed table declaration names and their owning source files."""
+    declared = {row["name"]: row for row in declarations if not row["generated"]}
+    header = "| Target | Track | Lean declaration(s) | Source |"
+    assert document.count(header) == 1, "missing or duplicate completed table"
+    rows = document.split(header, 1)[1].splitlines()[2:]
+    count = 0
+    for line in rows:
+        if not line.startswith("|"):
+            break
+        columns = line.strip("|").split("|")
+        assert len(columns) == 4, ("invalid completed row", line)
+        names, sources = (re.findall(r"`([^`]+)`", column) for column in columns[2:])
+        assert names and sources, ("missing completed declarations or sources", line)
+        assert len(names) == len(set(names)) and len(sources) == len(set(sources)), (
+            "duplicate completed declaration or source", line)
+        unknown = sorted(set(names) - set(declared))
+        assert not unknown, ("stale completed declarations", unknown)
+        actual_sources = {declared[name]["sourceFile"] for name in names}
+        assert actual_sources == set(sources), (
+            "completed declaration source mismatch", names,
+            sorted(actual_sources), sorted(sources))
+        count += 1
+    assert count, "empty completed table"
+
+
 def validate_retained_catalog(document, declarations, theorems):
     """Check all retained names against compiled declarations, not source-text matches."""
     theorem_header = "## Retained declarations\n"
@@ -96,6 +122,8 @@ def main():
     declarations = json.loads((directory / "declarations.json").read_text(encoding="utf-8"))
     theorems = json.loads((directory / "theorems.json").read_text(encoding="utf-8"))
     validate(declarations, theorems)
+    completed = Path("docs/completed.md").read_text(encoding="utf-8")
+    validate_completed_catalog(completed, declarations)
     retained = Path("docs/theorem-catalog-retained.md").read_text(encoding="utf-8")
     validate_retained_catalog(retained, declarations, theorems)
     # Check the actual general mixed-component APIs after retiring the two-point-only module.
