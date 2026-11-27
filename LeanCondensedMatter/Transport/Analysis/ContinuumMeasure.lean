@@ -17,7 +17,7 @@ momentum rather than wave vector:
 d²p / (2πℏ)².
 ```
 
-The full-angle radial specialization also lives here now that multiple transport models consume it.
+The full-angle radial specialization includes the factor `2π` from angular integration.
 These declarations are continuum-measure conventions, not Euclidean kinematics, model Hamiltonian,
 disorder, response, or conductivity data.
 -/
