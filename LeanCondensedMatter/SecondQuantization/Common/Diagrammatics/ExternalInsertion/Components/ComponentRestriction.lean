@@ -1,6 +1,7 @@
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Core.Diagram
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ComponentLegData
-import LeanCondensedMatter.Combinatorics.PerfectPairing.Embedding
+import LeanCondensedMatter.Combinatorics.PerfectPairing.Core
+import LeanCondensedMatter.Combinatorics.PerfectPairing.Restriction
 import LeanCondensedMatter.Combinatorics.PerfectPairing.InvolutionCard
 import LeanCondensedMatter.Combinatorics.Shuffle.FamilySlotShuffleInversions
 import Mathlib.Data.Finset.Sort

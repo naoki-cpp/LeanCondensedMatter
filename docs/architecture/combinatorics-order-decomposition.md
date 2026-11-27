@@ -113,11 +113,10 @@ first-pair crossing, and the pairing core for scalar evaluation. The full `Perfe
 an aggregate entry point rather than a dependency of these foundational consumers.
 
 `PerfectPairing.Core` owns normalized pairs of `PairingOn` on finite linear orders, including
-membership preservation and reflection under partner-intertwining order embeddings. `PerfectPairing.Embedding` owns normalized-pair embeddings between finite linear orders induced by partner-intertwining order
-embeddings, including preservation and reflection of crossings. Quartic fixed-order component pairs
-use that construction with the canonical component-local vertex orders and component shuffle.
-The equality of the assembled vertex order with the fixed order supplies the partner compatibility;
-component assignment remains in the Quartic adapter.
+membership preservation and reflection under partner-intertwining order embeddings.
+`PerfectPairing.PairEndpoints` owns the induced embeddings of normalized pairs and their image
+characterization. `PerfectPairing.Crossing` owns preservation and reflection of crossings under
+these embeddings.
 
 The component decomposition uses arbitrary finite linearly ordered position fibers. Binary splitting
 and its inverse laws use arbitrary sum equivalences, without finiteness or order assumptions; only

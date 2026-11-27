@@ -172,4 +172,17 @@ theorem not_crosses_self {α : Type*} [Preorder α] (p : α × α) : ¬ Crosses 
   rintro ⟨h, -, -⟩
   exact absurd h (lt_irrefl _)
 
+/-- A partner-intertwining order embedding preserves and reflects crossings between normalized
+pairs. -/
+theorem PairingOn.normalizedPairEmbedding_crosses_iff {α β : Type*}
+    [Fintype α] [LinearOrder α] [Fintype β] [LinearOrder β]
+    (small : PairingOn α) (big : PairingOn β) (e : α ↪o β)
+    (hpartner : ∀ i, big.partner (e i) = e (small.partner i))
+    (p q : small.NormalizedPair) :
+    Crosses (small.normalizedPairEmbedding big e hpartner p).1
+        (small.normalizedPairEmbedding big e hpartner q).1 ↔
+      Crosses p.1 q.1 := by
+  change Crosses (e p.1.1, e p.1.2) (e q.1.1, e q.1.2) ↔ Crosses p.1 q.1
+  exact crosses_map_iff e e.strictMono p.1.1 p.1.2 q.1.1 q.1.2
+
 end Combinatorics

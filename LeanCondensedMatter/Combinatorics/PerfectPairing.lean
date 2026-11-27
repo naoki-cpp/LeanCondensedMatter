@@ -12,7 +12,6 @@ import LeanCondensedMatter.Combinatorics.PerfectPairing.VertexGraph
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Restriction
 import LeanCondensedMatter.Combinatorics.PerfectPairing.FirstPair
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Crossing
-import LeanCondensedMatter.Combinatorics.PerfectPairing.Embedding
 import LeanCondensedMatter.Combinatorics.PerfectPairing.CrossingParity
 import LeanCondensedMatter.Combinatorics.PerfectPairing.CrossingEraseZero
 import LeanCondensedMatter.Combinatorics.PerfectPairing.InvolutionCard
