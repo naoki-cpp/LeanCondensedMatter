@@ -1,5 +1,6 @@
 import Mathlib.Algebra.Module.LinearMap.Defs
 import Mathlib.Logic.Function.Basic
+import Mathlib.Tactic.Abel
 import Mathlib.Tactic.Module
 
 set_option linter.style.header false
@@ -78,19 +79,20 @@ theorem evolution_eq_zero_of_differential_eq_zero_of_source_eq_zero
     δ (Q f) = 0 := by
   rw [B.evolution_eq_source_of_differential_eq_zero hf, hsource]
 
-/-- Source-free transport flux is unique for fixed evolution, localized quantity, and differential. -/
+/-- Source-free transport is unique as a linear map for fixed evolution and localized quantity,
+even when the differential test spaces and maps differ. -/
 theorem sourceFreeFlux_unique
-    {δ : Obs →ₗ[𝕜] Obs}
-    {Q : Test →ₗ[𝕜] Obs}
-    {d : Test →ₗ[𝕜] OneForm}
-    (B₁ B₂ : FluxBalanceLaw δ Q d)
-    (hsource₁ : B₁.source = 0) (hsource₂ : B₂.source = 0) (f : Test) :
-    B₁.transport f = B₂.transport f := by
+    {OtherForm : Type*} [AddCommMonoid OtherForm] [Module 𝕜 OtherForm]
+    {δ : Obs →ₗ[𝕜] Obs} {Q : Test →ₗ[𝕜] Obs}
+    {d₁ : Test →ₗ[𝕜] OneForm} {d₂ : Test →ₗ[𝕜] OtherForm}
+    (B₁ : FluxBalanceLaw δ Q d₁) (B₂ : FluxBalanceLaw δ Q d₂)
+    (hsource₁ : B₁.source = 0) (hsource₂ : B₂.source = 0) :
+    B₁.transport = B₂.transport := by
   have h₁ : δ.comp Q = B₁.transport := by
     simpa only [hsource₁, add_zero] using B₁.balance
   have h₂ : δ.comp Q = B₂.transport := by
     simpa only [hsource₂, add_zero] using B₂.balance
-  exact congrArg (fun L : Test →ₗ[𝕜] Obs => L f) (h₁.symm.trans h₂)
+  exact h₁.symm.trans h₂
 
 /-- Scaling the evolution scales representation-independent transport and source. -/
 noncomputable def scaleEvolution
@@ -106,16 +108,17 @@ noncomputable def scaleEvolution
 
 section TransportSourceAmbiguity
 
-variable {R T F O : Type*} [CommRing R]
+variable {R T F O : Type*} [CommSemiring R]
 variable [AddCommMonoid T] [Module R T]
 variable [AddCommMonoid F] [Module R F]
-variable [AddCommMonoid O] [Module R O]
+variable [AddCommGroup O] [Module R O]
+variable {δ : O →ₗ[R] O} {Q : T →ₗ[R] O} {d : T →ₗ[R] F}
 
 /-- Redistribute a differential-dependent functional from source to transport without changing
 the localized evolution. A shift of a full current by `J` is the special case
-`K = J.comp d`; no full current extension is required. -/
+`K = J.comp d`; no full current extension is required. Subtraction in the observable
+module suffices; the scalar semiring need not have negatives. -/
 noncomputable def shiftTransportSource
-    {δ : O →ₗ[R] O} {Q : T →ₗ[R] O} {d : T →ₗ[R] F}
     (B : FluxBalanceLaw δ Q d) (K : T →ₗ[R] O)
     (hK : Function.FactorsThrough K d) : FluxBalanceLaw δ Q d where
   transport := B.transport + K
@@ -123,14 +126,13 @@ noncomputable def shiftTransportSource
     intro f g hfg
     simp only [LinearMap.add_apply]
     rw [B.transport_depends hfg, hK hfg]
-  source := B.source + (-1 : R) • K
+  source := B.source - K
   balance := by
     rw [B.balance]
-    module
+    abel
 
 @[simp]
 theorem shiftTransportSource_transport
-    {δ : O →ₗ[R] O} {Q : T →ₗ[R] O} {d : T →ₗ[R] F}
     (B : FluxBalanceLaw δ Q d) (K : T →ₗ[R] O)
     (hK : Function.FactorsThrough K d) :
     (B.shiftTransportSource K hK).transport = B.transport + K :=
@@ -138,16 +140,16 @@ theorem shiftTransportSource_transport
 
 @[simp]
 theorem shiftTransportSource_source
-    {δ : O →ₗ[R] O} {Q : T →ₗ[R] O} {d : T →ₗ[R] F}
     (B : FluxBalanceLaw δ Q d) (K : T →ₗ[R] O)
     (hK : Function.FactorsThrough K d) :
-    (B.shiftTransportSource K hK).source = B.source + (-1 : R) • K :=
+    (B.shiftTransportSource K hK).source = B.source - K :=
   rfl
 
 end TransportSourceAmbiguity
 
 /-- If the source itself depends only on differential data, it may be absorbed into transport.
-The resulting law is source-free without choosing any full current functional. -/
+The resulting law is source-free without choosing any full current functional. This construction
+only requires additive monoids, unlike an arbitrary signed redistribution. -/
 noncomputable def absorbSource
     {δ : Obs →ₗ[𝕜] Obs}
     {Q : Test →ₗ[𝕜] Obs}
