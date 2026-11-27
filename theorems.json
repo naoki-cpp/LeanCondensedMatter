@@ -8288,7 +8288,7 @@
       "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.sidePairing_presentsPairs"
     ],
     "dependencies": [
-      "Combinatorics.PairingOn.normalizedPairOfEndpointEquiv_pair_eq_or_swap"
+      "Combinatorics.PairingOn.normalizedPairEquivOfEndpointEquiv_pair_eq_or_swap"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -9641,53 +9641,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {α : Type u_1} {β : Type u_2} [inst : Fintype α] [inst_1 : LinearOrder α] [inst_2 : Fintype β]\n  [inst_3 : LinearOrder β] (source : Combinatorics.PairingOn α) (target : Combinatorics.PairingOn β) (e : α ≃ β)\n  (hpartner : ∀ (p : α), target.partner (e p) = e (source.partner p)),\n  StrictMono ⇑e →\n    ∀ (pr : source.NormalizedPair),\n      ↑((source.normalizedPairEquivOfPartnerEquiv target e hpartner) pr) = (e (↑pr).1, e (↑pr).2)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "Combinatorics.PairingOn.normalizedPairEquivOfPartnerEquiv_apply_of_strictMono",
-    "module": "LeanCondensedMatter.Combinatorics.PerfectPairing.PairEndpoints",
-    "externalAxioms": [],
-    "docString": "An order-preserving equivalence of paired positions transports each\n**normalized pair with its two endpoints in their original order**.\nUnlike a general partner-intertwining equivalence, no endpoint swap is\nneeded. This is the common bridge for crossing-sign and oriented-kernel\npreservation. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "Combinatorics.PairingOn.crossingCount_eq_of_partnerEquiv_strictMono"
-    ],
-    "dependencies": [
-      "Combinatorics.PairingOn.normalizedPairOfEndpointEquiv_pair_eq_of_lt",
-      "Combinatorics.PairingOn.pairs_normalized",
-      "Combinatorics.PairingOn.partner_map_normalizedPair"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "Combinatorics.PairingOn.crossingCount_eq_of_partnerEquiv_strictMono"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {A : Type u_1} {α : Type u_2} [inst : Fintype α] [inst_1 : LinearOrder α] (pairing : Combinatorics.PairingOn α)\n  (E : A × Fin 2 ≃ α),\n  (∀ (a : A), pairing.partner (E (a, 0)) = E (a, 1)) →\n    ∀ (a : A), E (a, 0) < E (a, 1) → ↑(pairing.normalizedPairOfEndpointEquiv E a) = (E (a, 0), E (a, 1))",
+    "statement": "∀ {A : Type u_1} {α : Type u_2} [inst : Fintype α] [inst_1 : LinearOrder α] (pairing : Combinatorics.PairingOn α)\n  (E : A × Fin 2 ≃ α) (hpartner : ∀ (a : A), pairing.partner (E (a, 0)) = E (a, 1)) (a : A),\n  E (a, 0) < E (a, 1) → ↑((pairing.normalizedPairEquivOfEndpointEquiv E hpartner) a) = (E (a, 0), E (a, 1))",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -9699,7 +9653,7 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "Combinatorics.PairingOn.normalizedPairOfEndpointEquiv_pair_eq_of_lt",
+    "name": "Combinatorics.PairingOn.normalizedPairEquivOfEndpointEquiv_pair_eq_of_lt",
     "module": "LeanCondensedMatter.Combinatorics.PerfectPairing.PairEndpoints",
     "externalAxioms": [],
     "docString": "If the transported endpoint order is already increasing, normalization does not swap the two\nendpoints. ",
@@ -9712,7 +9666,7 @@
       "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.sidePair_of_lt"
     ],
     "dependencies": [
-      "Combinatorics.PairingOn.normalizedPairOfEndpointEquiv_pair_eq_or_swap",
+      "Combinatorics.PairingOn.normalizedPairEquivOfEndpointEquiv_pair_eq_or_swap",
       "Combinatorics.PairingOn.pairs_normalized"
     ],
     "crossModuleDirectWrapper": false,
@@ -9738,7 +9692,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {A : Type u_1} {α : Type u_2} [inst : Fintype α] [inst_1 : LinearOrder α] (pairing : Combinatorics.PairingOn α)\n  (E : A × Fin 2 ≃ α),\n  (∀ (a : A), pairing.partner (E (a, 0)) = E (a, 1)) →\n    ∀ (a : A),\n      ↑(pairing.normalizedPairOfEndpointEquiv E a) = (E (a, 0), E (a, 1)) ∨\n        ↑(pairing.normalizedPairOfEndpointEquiv E a) = (E (a, 1), E (a, 0))",
+    "statement": "∀ {A : Type u_1} {α : Type u_2} [inst : Fintype α] [inst_1 : LinearOrder α] (pairing : Combinatorics.PairingOn α)\n  (E : A × Fin 2 ≃ α) (hpartner : ∀ (a : A), pairing.partner (E (a, 0)) = E (a, 1)) (a : A),\n  ↑((pairing.normalizedPairEquivOfEndpointEquiv E hpartner) a) = (E (a, 0), E (a, 1)) ∨\n    ↑((pairing.normalizedPairEquivOfEndpointEquiv E hpartner) a) = (E (a, 1), E (a, 0))",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -9750,28 +9704,76 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "Combinatorics.PairingOn.normalizedPairOfEndpointEquiv_pair_eq_or_swap",
+    "name": "Combinatorics.PairingOn.normalizedPairEquivOfEndpointEquiv_pair_eq_or_swap",
     "module": "LeanCondensedMatter.Combinatorics.PerfectPairing.PairEndpoints",
     "externalAxioms": [],
-    "docString": "Normalizing a transported endpoint-zero position preserves the two source endpoints up to the\nnormalized order chosen by the target pairing. ",
+    "docString": "The induced normalized-pair equivalence preserves transported endpoints up to their order. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
       "Combinatorics.Pairing.presentsPairs_of_partner_blockPair",
-      "Combinatorics.PairingOn.normalizedPairOfEndpointEquiv_pair_eq_of_lt",
+      "Combinatorics.PairingOn.normalizedPairEquivOfEndpointEquiv_pair_eq_of_lt",
       "Combinatorics.PairingOn.ofSplitNormalizedPairEquiv_pair_eq_or_swap",
       "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.sidePair_of_gt"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.PairEndpoints.0.Combinatorics.PairingOn.pairEndpointEquiv_symm_pair_eq_or_swap"
+    ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
       "Combinatorics.Pairing.presentsPairs_of_partner_blockPair",
-      "Combinatorics.PairingOn.normalizedPairOfEndpointEquiv_pair_eq_of_lt",
+      "Combinatorics.PairingOn.normalizedPairEquivOfEndpointEquiv_pair_eq_of_lt",
       "Combinatorics.PairingOn.ofSplitNormalizedPairEquiv_pair_eq_or_swap",
       "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.sidePair_of_gt"
     ],
     "compiledConsumerCount": 4,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {α : Type u_1} {β : Type u_2} [inst : Fintype α] [inst_1 : LinearOrder α] [inst_2 : Fintype β]\n  [inst_3 : LinearOrder β] (source : Combinatorics.PairingOn α) (target : Combinatorics.PairingOn β) (e : α ≃ β)\n  (hpartner : ∀ (p : α), target.partner (e p) = e (source.partner p)),\n  StrictMono ⇑e →\n    ∀ (pr : source.NormalizedPair),\n      ↑((source.normalizedPairEquivOfPartnerEquiv target e hpartner) pr) = (e (↑pr).1, e (↑pr).2)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "Combinatorics.PairingOn.normalizedPairEquivOfPartnerEquiv_apply_of_strictMono",
+    "module": "LeanCondensedMatter.Combinatorics.PerfectPairing.PairEndpoints",
+    "externalAxioms": [],
+    "docString": "An order-preserving equivalence of paired positions transports each\n**normalized pair with its two endpoints in their original order**.\nUnlike a general partner-intertwining equivalence, no endpoint swap is\nneeded. This is the common bridge for crossing-sign and oriented-kernel\npreservation. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "Combinatorics.PairingOn.crossingCount_eq_of_partnerEquiv_strictMono"
+    ],
+    "dependencies": [
+      "Combinatorics.PairingOn.normalizedPairEquivOfEndpointEquiv_pair_eq_of_lt",
+      "Combinatorics.PairingOn.pairs_normalized",
+      "Combinatorics.PairingOn.partner_map_normalizedPair"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "Combinatorics.PairingOn.crossingCount_eq_of_partnerEquiv_strictMono"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -9809,7 +9811,7 @@
       "SecondQuantization.Common.QuarticDiagram.componentPairEquiv_apply"
     ],
     "dependencies": [
-      "Combinatorics.PairingOn.normalizedPairOfEndpointEquiv_pair_eq_of_lt",
+      "Combinatorics.PairingOn.normalizedPairEquivOfEndpointEquiv_pair_eq_of_lt",
       "Combinatorics.PairingOn.pairs_normalized",
       "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.ComponentDecomposition.0.Combinatorics.PairingOn.componentPairEndpointEquiv_partner"
     ],
@@ -9991,7 +9993,7 @@
       "SecondQuantization.Fermionic.externalInsertionOfSlotSplit_mixedPairingEvaluation_eq_positionInversions_mul_of_strictAnti"
     ],
     "dependencies": [
-      "Combinatorics.PairingOn.normalizedPairOfEndpointEquiv_pair_eq_of_lt",
+      "Combinatorics.PairingOn.normalizedPairEquivOfEndpointEquiv_pair_eq_of_lt",
       "Combinatorics.pairEndpointAt_one",
       "Combinatorics.pairEndpointAt_zero",
       "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.SplitNormalizedPairs.0.Combinatorics.PairingOn.ofSplit_pairEndpointEquiv_partner"
@@ -10039,7 +10041,7 @@
       "Combinatorics.PairingOn.ofSplitInterSectorCrossingCount_mod_two_eq_positionInversions"
     ],
     "dependencies": [
-      "Combinatorics.PairingOn.normalizedPairOfEndpointEquiv_pair_eq_or_swap",
+      "Combinatorics.PairingOn.normalizedPairEquivOfEndpointEquiv_pair_eq_or_swap",
       "Combinatorics.pairEndpointAt_one",
       "Combinatorics.pairEndpointAt_zero",
       "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.SplitNormalizedPairs.0.Combinatorics.PairingOn.ofSplit_pairEndpointEquiv_partner"
@@ -10413,8 +10415,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "Combinatorics.PairingOn.normalizedPairEquivOfEndpointEquiv_pair_eq_of_lt",
       "Combinatorics.PairingOn.normalizedPairEquivOfPartnerEquiv_apply_of_strictMono",
-      "Combinatorics.PairingOn.normalizedPairOfEndpointEquiv_pair_eq_of_lt",
       "Combinatorics.PairingOn.normalizedPairSigmaEquiv_apply_of_strictMono",
       "Combinatorics.PairingOn.ofSplit_crossingCount_eq_left_add_right_add_inter",
       "Combinatorics.PairingOn.sum_geometricCrossings_mod_two_eq_positionInversions",
@@ -10426,8 +10428,8 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "Combinatorics.PairingOn.normalizedPairEquivOfEndpointEquiv_pair_eq_of_lt",
       "Combinatorics.PairingOn.normalizedPairEquivOfPartnerEquiv_apply_of_strictMono",
-      "Combinatorics.PairingOn.normalizedPairOfEndpointEquiv_pair_eq_of_lt",
       "Combinatorics.PairingOn.normalizedPairSigmaEquiv_apply_of_strictMono",
       "Combinatorics.PairingOn.ofSplit_crossingCount_eq_left_add_right_add_inter",
       "Combinatorics.PairingOn.sum_geometricCrossings_mod_two_eq_positionInversions",
@@ -184684,6 +184686,48 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {α : Type u_1} [inst : Fintype α] [inst_1 : LinearOrder α] (pairing : Combinatorics.PairingOn α) (x y : α),\n  pairing.partner x = y →\n    ↑(pairing.pairEndpointEquiv.symm x).1 = (x, y) ∨ ↑(pairing.pairEndpointEquiv.symm x).1 = (y, x)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.PairEndpoints.0.Combinatorics.PairingOn.pairEndpointEquiv_symm_pair_eq_or_swap",
+    "module": "LeanCondensedMatter.Combinatorics.PerfectPairing.PairEndpoints",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "Combinatorics.PairingOn.normalizedPairEquivOfEndpointEquiv_pair_eq_or_swap"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "Combinatorics.PairingOn.normalizedPairEquivOfEndpointEquiv_pair_eq_or_swap"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {n : ℕ} (τ : Equiv.Perm (Fin (2 * n))) {k l : Fin n}, l < k → Combinatorics.blockFactor✝ τ k l = 1",
     "standardAxioms": [
       "Classical.choice",
@@ -195413,7 +195457,7 @@
       "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.pow_sideReversedCount_mul_prod_sidePair"
     ],
     "dependencies": [
-      "Combinatorics.PairingOn.normalizedPairOfEndpointEquiv_pair_eq_or_swap",
+      "Combinatorics.PairingOn.normalizedPairEquivOfEndpointEquiv_pair_eq_or_swap",
       "Combinatorics.PairingOn.pairs_normalized",
       "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.sidePairing_partner_sideEndpoint"
     ],
@@ -195459,7 +195503,7 @@
       "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.pow_sideReversedCount_mul_prod_sidePair"
     ],
     "dependencies": [
-      "Combinatorics.PairingOn.normalizedPairOfEndpointEquiv_pair_eq_of_lt",
+      "Combinatorics.PairingOn.normalizedPairEquivOfEndpointEquiv_pair_eq_of_lt",
       "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.sidePairing_partner_sideEndpoint"
     ],
     "crossModuleDirectWrapper": false,
