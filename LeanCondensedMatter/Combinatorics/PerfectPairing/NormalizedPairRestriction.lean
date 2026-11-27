@@ -59,8 +59,9 @@ noncomputable def PairingOn.normalizedPairSubtypeEquivOfEndpointEquiv {α β : T
     pairing.NormalizedPairSubtype p ≃ localPairing.NormalizedPair := by
   classical
   exact localPairing.normalizedPairEquivOfEndpointEquiv
-    (pairing.normalizedPairSubtypeEndpointEquiv p hpartner) e
+    ((pairing.normalizedPairSubtypeEndpointEquiv p hpartner).trans e)
     (fun pr => by
+      simp only [Equiv.trans_apply]
       rw [hlocal]
       apply congrArg e
       apply Subtype.ext
@@ -80,7 +81,7 @@ noncomputable def PairingOn.normalizedPairSubtypeEquivOfPartnerEquiv
   (source.normalizedPairEquivOfPartnerEquiv target e hpartner).subtypeEquiv
     (fun pr => by
       have hends := target.normalizedPairOfEndpointEquiv_pair_eq_or_swap
-        source.pairEndpointEquiv e
+        (source.pairEndpointEquiv.trans e)
         (source.partner_map_normalizedPair target e hpartner)
         pr
       change (source.normalizedPairEquivOfPartnerEquiv target e hpartner pr).1 =

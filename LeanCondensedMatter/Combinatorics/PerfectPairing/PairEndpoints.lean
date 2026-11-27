@@ -112,26 +112,26 @@ theorem Pairing.card_normalizedPair {n : ℕ} (pairing : Pairing n) :
 
 /-- Normalize endpoint zero after transporting an abstract two-endpoint fiber into `pairing`. -/
 noncomputable def PairingOn.normalizedPairOfEndpointEquiv
-    {A P α : Type*} [Fintype α] [LinearOrder α] (pairing : PairingOn α)
-    (endpointEquiv : A × Fin 2 ≃ P) (e : P ≃ α) :
+    {A α : Type*} [Fintype α] [LinearOrder α] (pairing : PairingOn α)
+    (E : A × Fin 2 ≃ α) :
     A → pairing.NormalizedPair :=
-  fun a => (pairing.pairEndpointEquiv.symm (e (endpointEquiv (a, 0)))).1
+  fun a => (pairing.pairEndpointEquiv.symm (E (a, 0))).1
 
 /-- Normalizing a transported endpoint-zero position preserves the two source endpoints up to the
 normalized order chosen by the target pairing. -/
 theorem PairingOn.normalizedPairOfEndpointEquiv_pair_eq_or_swap
-    {A P α : Type*} [Fintype α] [LinearOrder α] (pairing : PairingOn α)
-    (endpointEquiv : A × Fin 2 ≃ P) (e : P ≃ α)
+    {A α : Type*} [Fintype α] [LinearOrder α] (pairing : PairingOn α)
+    (E : A × Fin 2 ≃ α)
     (hpartner : ∀ a : A,
-      pairing.partner (e (endpointEquiv (a, 0))) = e (endpointEquiv (a, 1)))
+      pairing.partner (E (a, 0)) = E (a, 1))
     (a : A) :
-    (pairing.normalizedPairOfEndpointEquiv endpointEquiv e a).1 =
-        (e (endpointEquiv (a, 0)), e (endpointEquiv (a, 1))) ∨
-      (pairing.normalizedPairOfEndpointEquiv endpointEquiv e a).1 =
-        (e (endpointEquiv (a, 1)), e (endpointEquiv (a, 0))) := by
+    (pairing.normalizedPairOfEndpointEquiv E a).1 =
+        (E (a, 0), E (a, 1)) ∨
+      (pairing.normalizedPairOfEndpointEquiv E a).1 =
+        (E (a, 1), E (a, 0)) := by
   classical
   unfold PairingOn.normalizedPairOfEndpointEquiv
-  by_cases horder : e (endpointEquiv (a, 0)) < e (endpointEquiv (a, 1))
+  by_cases horder : E (a, 0) < E (a, 1)
   · left
     simp [PairingOn.pairEndpointEquiv, hpartner a, horder]
   · right
@@ -139,34 +139,29 @@ theorem PairingOn.normalizedPairOfEndpointEquiv_pair_eq_or_swap
 
 /-- Transport an abstract family of paired endpoint fibers to the normalized pairs of `pairing`.
 
-The source type `A` need not itself be a `Pairing`. The endpoint equivalences exhaust the ambient
+The source type `A` need not itself be a `Pairing`. The endpoint equivalence exhausts the ambient
 positions, and the partner of transported endpoint zero is transported endpoint one. The inverse
 reads the source pair index of the first normalized endpoint. -/
 noncomputable def PairingOn.normalizedPairEquivOfEndpointEquiv
-    {A P α : Type*} [Fintype α] [LinearOrder α] (pairing : PairingOn α)
-    (endpointEquiv : A × Fin 2 ≃ P) (e : P ≃ α)
+    {A α : Type*} [Fintype α] [LinearOrder α] (pairing : PairingOn α)
+    (E : A × Fin 2 ≃ α)
     (hpartner : ∀ a : A,
-      pairing.partner (e (endpointEquiv (a, 0))) = e (endpointEquiv (a, 1))) :
+      pairing.partner (E (a, 0)) = E (a, 1)) :
     A ≃ pairing.NormalizedPair := by
-  let E := endpointEquiv.trans e
   refine {
-    toFun := pairing.normalizedPairOfEndpointEquiv endpointEquiv e
+    toFun := pairing.normalizedPairOfEndpointEquiv E
     invFun := fun pr => (E.symm pr.1.1).1
     left_inv := ?_
     right_inv := ?_ }
   · intro a
-    change (E.symm (pairing.normalizedPairOfEndpointEquiv endpointEquiv e a).1.1).1 = a
+    change (E.symm (pairing.normalizedPairOfEndpointEquiv E a).1.1).1 = a
     rcases pairing.normalizedPairOfEndpointEquiv_pair_eq_or_swap
-        endpointEquiv e hpartner a with h | h
-    · rw [congrArg Prod.fst h]
-      change (E.symm (E (a, 0))).1 = a
-      rw [Equiv.symm_apply_apply]
-    · rw [congrArg Prod.fst h]
-      change (E.symm (E (a, 1))).1 = a
-      rw [Equiv.symm_apply_apply]
+        E hpartner a with h | h
+    · rw [congrArg Prod.fst h, Equiv.symm_apply_apply]
+    · rw [congrArg Prod.fst h, Equiv.symm_apply_apply]
   · intro pr
     obtain ⟨⟨a, k⟩, hk⟩ := E.surjective pr.1.1
-    change pairing.normalizedPairOfEndpointEquiv endpointEquiv e (E.symm pr.1.1).1 = pr
+    change pairing.normalizedPairOfEndpointEquiv E (E.symm pr.1.1).1 = pr
     rw [← hk, Equiv.symm_apply_apply]
     change (pairing.pairEndpointEquiv.symm (E (a, 0))).1 = pr
     fin_cases k
@@ -198,25 +193,25 @@ noncomputable def PairingOn.normalizedPairEquivOfPartnerEquiv
     (source : PairingOn α) (target : PairingOn β) (e : α ≃ β)
     (hpartner : ∀ p, target.partner (e p) = e (source.partner p)) :
     source.NormalizedPair ≃ target.NormalizedPair :=
-  target.normalizedPairEquivOfEndpointEquiv source.pairEndpointEquiv e
+  target.normalizedPairEquivOfEndpointEquiv (source.pairEndpointEquiv.trans e)
     (source.partner_map_normalizedPair target e hpartner)
 
 /-- If the transported endpoint order is already increasing, normalization does not swap the two
 endpoints. -/
 theorem PairingOn.normalizedPairOfEndpointEquiv_pair_eq_of_lt
-    {A P α : Type*} [Fintype α] [LinearOrder α] (pairing : PairingOn α)
-    (endpointEquiv : A × Fin 2 ≃ P) (e : P ≃ α)
+    {A α : Type*} [Fintype α] [LinearOrder α] (pairing : PairingOn α)
+    (E : A × Fin 2 ≃ α)
     (hpartner : ∀ a : A,
-      pairing.partner (e (endpointEquiv (a, 0))) = e (endpointEquiv (a, 1)))
+      pairing.partner (E (a, 0)) = E (a, 1))
     (a : A)
-    (horder : e (endpointEquiv (a, 0)) < e (endpointEquiv (a, 1))) :
-    (pairing.normalizedPairOfEndpointEquiv endpointEquiv e a).1 =
-      (e (endpointEquiv (a, 0)), e (endpointEquiv (a, 1))) := by
+    (horder : E (a, 0) < E (a, 1)) :
+    (pairing.normalizedPairOfEndpointEquiv E a).1 =
+      (E (a, 0), E (a, 1)) := by
   rcases pairing.normalizedPairOfEndpointEquiv_pair_eq_or_swap
-      endpointEquiv e hpartner a with h | h
+      E hpartner a with h | h
   · exact h
   · have hnormalized := pairing.pairs_normalized
-      (pairing.normalizedPairOfEndpointEquiv endpointEquiv e a).2
+      (pairing.normalizedPairOfEndpointEquiv E a).2
     rw [h] at hnormalized
     exact (lt_asymm horder hnormalized).elim
 
@@ -233,10 +228,10 @@ theorem PairingOn.normalizedPairEquivOfPartnerEquiv_apply_of_strictMono
     (source.normalizedPairEquivOfPartnerEquiv target e hpartner pr).1 =
       (e pr.1.1, e pr.1.2) := by
   change
-    (target.normalizedPairOfEndpointEquiv source.pairEndpointEquiv e pr).1 =
+    (target.normalizedPairOfEndpointEquiv (source.pairEndpointEquiv.trans e) pr).1 =
       (e pr.1.1, e pr.1.2)
   exact target.normalizedPairOfEndpointEquiv_pair_eq_of_lt
-    source.pairEndpointEquiv e (source.partner_map_normalizedPair target e hpartner) pr
+    (source.pairEndpointEquiv.trans e) (source.partner_map_normalizedPair target e hpartner) pr
     (hmono (source.pairs_normalized pr.2))
 
 /-- Endpoints selected from distinct normalized pairs are distinct. -/

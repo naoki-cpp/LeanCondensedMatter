@@ -18,11 +18,11 @@ variable {α β γ : Type*}
   [Fintype α] [LinearOrder α] [Fintype β] [LinearOrder β] [Fintype γ] [LinearOrder γ]
 
 /-- Endpoint equivalence for the two local pair families of a binary splitting. -/
-private noncomputable def PairingOn.splitPairEndpointEquiv (P : PairingOn α) (Q : PairingOn β) :
-    (P.NormalizedPair ⊕ Q.NormalizedPair) × Fin 2 ≃
-      α ⊕ β :=
-  (Equiv.sumProdDistrib P.NormalizedPair Q.NormalizedPair (Fin 2)).trans
-    (Equiv.sumCongr P.pairEndpointEquiv Q.pairEndpointEquiv)
+private noncomputable def PairingOn.splitPairEndpointEquiv
+    (e : α ⊕ β ≃ γ) (P : PairingOn α) (Q : PairingOn β) :
+    (P.NormalizedPair ⊕ Q.NormalizedPair) × Fin 2 ≃ γ :=
+  ((Equiv.sumProdDistrib P.NormalizedPair Q.NormalizedPair (Fin 2)).trans
+    (Equiv.sumCongr P.pairEndpointEquiv Q.pairEndpointEquiv)).trans e
 
 omit [Fintype γ] [LinearOrder γ] in
 /-- Partner compatibility of the transported endpoints for a binary pairing split. -/
@@ -30,8 +30,8 @@ private theorem PairingOn.ofSplit_pairEndpointEquiv_partner
     (e : α ⊕ β ≃ γ) (P : PairingOn α) (Q : PairingOn β)
     (pr : P.NormalizedPair ⊕ Q.NormalizedPair) :
     (PairingOn.ofSplit e P Q).partner
-        (e (PairingOn.splitPairEndpointEquiv P Q (pr, 0))) =
-      e (PairingOn.splitPairEndpointEquiv P Q (pr, 1)) := by
+        (PairingOn.splitPairEndpointEquiv e P Q (pr, 0)) =
+      PairingOn.splitPairEndpointEquiv e P Q (pr, 1) := by
   cases pr with
   | inl p =>
       exact P.partner_map_normalizedPair (PairingOn.ofSplit e P Q)
@@ -50,7 +50,7 @@ noncomputable def PairingOn.ofSplitNormalizedPairEquiv
     (e : α ⊕ β ≃ γ) (P : PairingOn α) (Q : PairingOn β) :
     P.NormalizedPair ⊕ Q.NormalizedPair ≃ (PairingOn.ofSplit e P Q).NormalizedPair :=
   (PairingOn.ofSplit e P Q).normalizedPairEquivOfEndpointEquiv
-    (PairingOn.splitPairEndpointEquiv P Q) e
+    (PairingOn.splitPairEndpointEquiv e P Q)
     (PairingOn.ofSplit_pairEndpointEquiv_partner e P Q)
 
 /-- A normalized pair in an arbitrary binary position split has the two transported
@@ -69,12 +69,12 @@ theorem PairingOn.ofSplitNormalizedPairEquiv_pair_eq_or_swap
          | Sum.inr p => (e (Sum.inr p.1.2), e (Sum.inr p.1.1))) := by
   change
     ((PairingOn.ofSplit e P Q).normalizedPairOfEndpointEquiv
-      (PairingOn.splitPairEndpointEquiv P Q) e pr).1 = _ ∨
+      (PairingOn.splitPairEndpointEquiv e P Q) pr).1 = _ ∨
       ((PairingOn.ofSplit e P Q).normalizedPairOfEndpointEquiv
-        (PairingOn.splitPairEndpointEquiv P Q) e pr).1 = _
+        (PairingOn.splitPairEndpointEquiv e P Q) pr).1 = _
   have h :=
     (PairingOn.ofSplit e P Q).normalizedPairOfEndpointEquiv_pair_eq_or_swap
-      (PairingOn.splitPairEndpointEquiv P Q) e
+      (PairingOn.splitPairEndpointEquiv e P Q)
       (PairingOn.ofSplit_pairEndpointEquiv_partner e P Q) pr
   cases pr with
   | inl p => simpa [PairingOn.splitPairEndpointEquiv] using h
@@ -98,14 +98,14 @@ theorem PairingOn.ofSplitNormalizedPairEquiv_pair_eq_of_lt
       | Sum.inr p => (e (Sum.inr p.1.1), e (Sum.inr p.1.2)) := by
   have h :=
     (PairingOn.ofSplit e P Q).normalizedPairOfEndpointEquiv_pair_eq_of_lt
-      (PairingOn.splitPairEndpointEquiv P Q) e
+      (PairingOn.splitPairEndpointEquiv e P Q)
       (PairingOn.ofSplit_pairEndpointEquiv_partner e P Q) pr (by
         cases pr with
         | inl p => exact horder
         | inr p => exact horder)
   change
     ((PairingOn.ofSplit e P Q).normalizedPairOfEndpointEquiv
-      (PairingOn.splitPairEndpointEquiv P Q) e pr).1 = _
+      (PairingOn.splitPairEndpointEquiv e P Q) pr).1 = _
   cases pr with
   | inl p => simpa [PairingOn.splitPairEndpointEquiv] using h
   | inr p => simpa [PairingOn.splitPairEndpointEquiv] using h

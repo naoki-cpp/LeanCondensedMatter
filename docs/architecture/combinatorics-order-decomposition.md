@@ -59,7 +59,9 @@ while its integrand is attached to the ambient `SlotShuffle`.
 `PerfectPairing.Crossing` owns the crossing-sum reindexing law for strictly monotone endpoint
 maps, and the conversion from two oriented crossing sums to a single geometric crossing sum.
 Both binary and component decompositions use these laws. `PairEndpoints` owns the product
-conversion between a normalized-pair subtype and its underlying finite set.
+conversion between a normalized-pair subtype and its underlying finite set. It also constructs normalized-pair
+equivalences directly from a single equivalence `A × Fin 2 ≃ α` and partner compatibility;
+intermediate coordinate changes are composed at the caller.
 
 `PerfectPairing.CrossingParity` owns the common parity identity for two disjoint families of
 normalized pairs, allowing either local endpoint orientation. Binary splitting and component
