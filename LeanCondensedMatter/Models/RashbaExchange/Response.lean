@@ -20,9 +20,9 @@ the common static Bastin–Středa trace prefactor is attached only when constru
 `ConductivityTensor`. Its Hall response is then the canonical antisymmetric
 `ConductivityTensor.hallComponent` projection of that completed tensor.
 
-A separate supplied-Green Středa surface primitive `RA - (RR + AA)/2` is retained as the
-response/vertex seam for future disorder dressing and as a diagnostic object; it is not promoted to
-the physical Hall tensor by itself. No phenomenological broadening factor is attached to the Berry
+The supplied-Green Středa surface primitive `RA - (RR + AA)/2` is an independent
+response kernel with explicit Green operators; it does not by itself define the full physical
+Hall tensor. No phenomenological broadening factor is attached to the Berry
 curvature, which remains independent clean-band data in `Model`. No cutoff-removal,
 zero-broadening, weak-disorder, or universal-Hall-value statement is made here.
 -/
