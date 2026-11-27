@@ -31,7 +31,7 @@ theorem regularizedHGFunCoeff_zero_singleton_nat_add_one (k n : ℕ) :
   simp [Complex.regularizedHGFunCoeff, Nat.cast_add, hgamma]
 
 /-- Differentiating a regularized hypergeometric coefficient shifts its lower parameter. -/
-private theorem regularizedHGFunCoeff_index_shift (k n : ℕ) :
+theorem regularizedHGFunCoeff_index_shift (k n : ℕ) :
     ((n + 1 : ℕ) : ℂ) * Complex.regularizedHGFunCoeff 0 {((k + 1 : ℕ) : ℂ)} (n + 1) =
       Complex.regularizedHGFunCoeff 0 {((k + 2 : ℕ) : ℂ)} n := by
   rw [regularizedHGFunCoeff_zero_singleton_nat_add_one k (n + 1),
@@ -58,12 +58,20 @@ private theorem regularizedHGFunCoeff_parameter_shift (k n : ℕ) :
   have hg : ((n + k).factorial : ℂ) ≠ 0 := by exact_mod_cast Nat.factorial_ne_zero _
   field_simp
 
-private theorem regularizedHGFun_zero_eq_tsum (b : Multiset ℂ) (w : ℂ) :
+/-- The regularized hypergeometric function with empty upper parameters is its scalar series. -/
+theorem regularizedHGFun_zero_eq_tsum (b : Multiset ℂ) (w : ℂ) :
     Complex.regularizedHGFun 0 b w =
       ∑' n : ℕ, Complex.regularizedHGFunCoeff 0 b n * w ^ n := by
   rw [Complex.regularizedHGFun, Complex.regularizedHGFunSeries,
     ← FormalMultilinearSeries.ofScalarsSum, FormalMultilinearSeries.ofScalars_sum_eq]
   simp only [smul_eq_mul]
+
+/-- The scalar series with empty upper parameters is summable at every complex argument. -/
+theorem summable_regularizedHGFun_zero (b : Multiset ℂ) (w : ℂ) :
+    Summable (fun n : ℕ => Complex.regularizedHGFunCoeff 0 b n * w ^ n) := by
+  simpa only [Complex.regularizedHGFunSeries,
+    FormalMultilinearSeries.ofScalars_apply_eq, smul_eq_mul] using
+    (Complex.regularizedHGFunSeries 0 b).summable (by simp)
 
 /-- Mathlib's integer-order Bessel function has the expected coefficient expansion. -/
 theorem besselJZero_eq_regularizedHGTsum (z : ℂ) :
@@ -80,7 +88,7 @@ noncomputable section
 
 /-- At a natural-number order the complex Bessel function uses an ordinary
 natural power, so its representation is valid also at the origin. -/
-private theorem besselJ_nat_eq (k : ℕ) (z : ℂ) :
+theorem besselJ_nat_eq (k : ℕ) (z : ℂ) :
     Complex.besselJ (k : ℂ) z =
       (z / 2) ^ k * Complex.regularizedHGFun 0 {((k + 1 : ℕ) : ℂ)} (-(z / 2) ^ 2) := by
   simp only [Complex.besselJ_def, Complex.cpow_natCast, Nat.cast_add, Nat.cast_one]
@@ -106,14 +114,10 @@ private theorem regularizedHGFun_zero_singleton_nat_recurrence (k : ℕ) (w : �
     apply sub_eq_zero.mpr
     simpa only [c1, c2, Nat.zero_add] using
       (regularizedHGFunCoeff_parameter_shift k 0).symm
-  have hs1 : Summable (fun n : ℕ => c1 n * w ^ n) := by
-    simpa only [c1, Complex.regularizedHGFunSeries,
-      FormalMultilinearSeries.ofScalars_apply_eq, smul_eq_mul] using
-      (Complex.regularizedHGFunSeries 0 {((k + 1 : ℕ) : ℂ)}).summable (by simp)
-  have hs2 : Summable (fun n : ℕ => c2 n * w ^ n) := by
-    simpa only [c2, Complex.regularizedHGFunSeries,
-      FormalMultilinearSeries.ofScalars_apply_eq, smul_eq_mul] using
-      (Complex.regularizedHGFunSeries 0 {((k + 2 : ℕ) : ℂ)}).summable (by simp)
+  have hs1 : Summable (fun n : ℕ => c1 n * w ^ n) :=
+    summable_regularizedHGFun_zero {((k + 1 : ℕ) : ℂ)} w
+  have hs2 : Summable (fun n : ℕ => c2 n * w ^ n) :=
+    summable_regularizedHGFun_zero {((k + 2 : ℕ) : ℂ)} w
   rw [regularizedHGFun_zero_eq_tsum {((k + 1 : ℕ) : ℂ)},
     regularizedHGFun_zero_eq_tsum {((k + 2 : ℕ) : ℂ)},
     regularizedHGFun_zero_eq_tsum {((k + 3 : ℕ) : ℂ)}]
