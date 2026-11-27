@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Transport.Analysis.PolarFourierRadialDerivative
+import LeanCondensedMatter.Analysis.Fourier.PolarRadialKernels.Derivative
 import Mathlib.Tactic.FieldSimp
 import Mathlib.Tactic.Linarith
 import Mathlib.Tactic.Positivity
