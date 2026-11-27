@@ -9,10 +9,9 @@ set_option linter.style.header false
 # Orbital fourth-moment cubature and physical spherical averages
 
 Generic continuous spherical-coordinate integrals and fourth moments are proved in
-`Analysis.Geometry.SphericalMoments`. Here the physical double-commutator average is evaluated directly with the
-general even-quartic formula, without a finite-cubature comparison lemma.
-The orbital relaxation rate is then identified with that continuous average
-using the separately established finite cubature evaluation.
+`Analysis.Geometry.SphericalMoments`. The general even-quartic formula evaluates
+the continuous double-commutator average. The finite cubature evaluation gives
+the same orbital relaxation rate for this integrand.
 -/
 
 namespace QuantumTheory.Models.OrbitalRelaxation
