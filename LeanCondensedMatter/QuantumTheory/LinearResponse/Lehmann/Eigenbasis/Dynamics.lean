@@ -113,8 +113,9 @@ theorem eigenbasisNormalizedExpectation_eq_pure_of_single
     have hle := data.probability_hasSum.summable.sum_le_tsum
       ({i, occupied} : Finset ι) (fun j _ => data.probability_nonneg j)
     rw [data.probability_hasSum.tsum_eq] at hle
-    simp [hi, hoccupied] at hle
-    exact le_antisymm hle (data.probability_nonneg i)
+    have hnonpos : data.probability i ≤ 0 := by
+      simpa [hi, hoccupied] using hle
+    exact le_antisymm hnonpos (data.probability_nonneg i)
   have hext (p q : NormalizedExpectation H)
       (h : p.toContinuousLinearMap = q.toContinuousLinearMap) : p = q := by
     cases p
