@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Analysis.Calculus.CompactSupportInterval
 import LeanCondensedMatter.Analysis.Lorentzian.Kernel
 import LeanCondensedMatter.QuantumTheory.Occupation.ZeroTemperature
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic
@@ -35,24 +36,9 @@ theorem integral_zeroTemperatureOccupation_mul_lorentzian_of_fermi_mem
           Lorentzian.spectralKernel (energy - center) broadening) =
       ∫ energy in center - radius..fermiEnergy,
         Lorentzian.spectralKernel (energy - center) broadening := by
-  calc
-    (∫ energy in center - radius..center + radius,
-        zeroTemperatureOccupation fermiEnergy energy *
-          Lorentzian.spectralKernel (energy - center) broadening) =
-        ∫ energy in center - radius..center + radius,
-          Set.indicator {energy : ℝ | energy ≤ fermiEnergy}
-            (fun energy => Lorentzian.spectralKernel (energy - center) broadening) energy := by
-      apply intervalIntegral.integral_congr_ae
-      filter_upwards [(volume : Measure ℝ).ae_ne fermiEnergy] with energy hne
-      intro _
-      by_cases hlt : energy < fermiEnergy
-      · simp [zeroTemperatureOccupation, hlt, hlt.le]
-      · have hgt : fermiEnergy < energy :=
-          lt_of_le_of_ne (not_lt.mp hlt) (Ne.symm hne)
-        simp [zeroTemperatureOccupation, hlt, not_le.mpr hgt]
-    _ = ∫ energy in center - radius..fermiEnergy,
-        Lorentzian.spectralKernel (energy - center) broadening := by
-      exact intervalIntegral.integral_indicator ⟨hleft, hright⟩
+  simpa only [zeroTemperatureOccupation] using
+    (MeasureTheory.integral_strictThreshold_mul
+      (fun energy => Lorentzian.spectralKernel (energy - center) broadening) hleft hright)
 
 /-- Exact arctangent form of the Fermi-truncated finite-window integral. -/
 theorem integral_zeroTemperatureOccupation_mul_lorentzian_eq_arctan_of_fermi_mem
@@ -82,15 +68,6 @@ theorem integral_zeroTemperatureOccupation_mul_lorentzian_eq_arctan_of_fermi_mem
       rw [show (-radius) / broadening = -(radius / broadening) by ring,
         Real.arctan_neg]
       ring
-
-private theorem tendsto_arctan_neg_div_broadening
-    (distance : ℝ) (hdistance : distance < 0) :
-    Tendsto
-      (fun broadening : ℝ => Real.arctan (distance / broadening))
-      (nhdsWithin 0 (Set.Ioi 0))
-      (nhds (-Real.pi / 2)) := by
-  simpa only [neg_div, Real.arctan_neg, neg_neg] using
-    (Lorentzian.tendsto_arctan_pos_div_broadening (-distance) (neg_pos.mpr hdistance)).neg
 
 /-- Every fixed positive symmetric energy window around an occupied pole captures asymptotic
 zero-temperature Lorentzian weight `π`, whether or not the window crosses the Fermi level. -/
@@ -141,7 +118,7 @@ theorem tendsto_zeroTemperatureOccupation_lorentzian_unoccupied_finite_window
       (nhds 0) := by
   by_cases hleft : center - radius ≤ fermiEnergy
   · have hright : fermiEnergy ≤ center + radius := by linarith
-    have hfermi := tendsto_arctan_neg_div_broadening
+    have hfermi := Lorentzian.tendsto_arctan_neg_div_broadening
       (fermiEnergy - center) (by linarith)
     have hradius' := Lorentzian.tendsto_arctan_pos_div_broadening radius hradius
     have hsum := hfermi.add hradius'

@@ -140,6 +140,16 @@ theorem tendsto_arctan_pos_div_broadening
     (nhdsWithin 0 (Set.Ioi 0)) (nhds (Real.pi / 2)) at harctan
   simpa only [div_eq_mul_inv] using harctan
 
+/-- Negative distances give the negative half-mass arctangent limit. -/
+theorem tendsto_arctan_neg_div_broadening
+    (distance : ℝ) (hdistance : distance < 0) :
+    Tendsto
+      (fun broadening : ℝ => Real.arctan (distance / broadening))
+      (nhdsWithin 0 (Set.Ioi 0))
+      (nhds (-Real.pi / 2)) := by
+  simpa only [neg_div, Real.arctan_neg, neg_neg] using
+    (tendsto_arctan_pos_div_broadening (-distance) (neg_pos.mpr hdistance)).neg
+
 /-- Every symmetric Lorentzian mass is strictly smaller than `π`. -/
 theorem integral_spectralKernel_symmetric_lt_pi
     (radius broadening : ℝ) :
