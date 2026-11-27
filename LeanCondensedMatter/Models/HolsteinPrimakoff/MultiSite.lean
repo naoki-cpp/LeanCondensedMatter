@@ -1,6 +1,6 @@
 import LeanCondensedMatter.Models.HolsteinPrimakoff
 import LeanCondensedMatter.QuantumTheory.LocalizedSpin
-import LeanCondensedMatter.Analysis.Operator.AlgebraRestriction
+import LeanCondensedMatter.Analysis.Algebra.Restriction
 import Mathlib.LinearAlgebra.Finsupp.Supported
 import Mathlib.Algebra.Algebra.Subalgebra.Lattice
 
