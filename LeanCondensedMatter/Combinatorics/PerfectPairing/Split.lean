@@ -3,7 +3,7 @@ import LeanCondensedMatter.Combinatorics.PerfectPairing.Restriction
 set_option linter.style.header false
 
 /-!
-# Splitting a pairing along a decomposition of its positions
+# Binary position decompositions of perfect pairings
 
 A sum equivalence presents the ambient positions of a pairing as two labelled parts. A pairing is *split* by it when no pair crosses between the parts;
 such a pairing restricts to a pairing of each part through `PairingOn.restrictAlongEquiv`.
@@ -18,8 +18,10 @@ left position paired to a right one.
 Restricting and assembling are mutually inverse, so the pairings split by a given splitting are
 exactly the pairs of pairings of the parts (`PairingOn.splitEquiv`).
 
-Compare `Combinatorics.SideSplitting`, where the pairs all *do* cross between the two parts. The two
-are the extreme cases of the same presentation of the positions.
+A `Combinatorics.SideSplitting` gives the complementary bipartite case: every left position is
+paired with a right position. For equally sized finite sides, `Pairing.sideMatching` extracts
+the permutation matching the sides. Permutation weights and pairing-sum reduction remain in the
+exchange-sum backend.
 -/
 
 namespace Combinatorics
@@ -176,5 +178,48 @@ noncomputable def PairingOn.splitEquiv (e : α ⊕ β ≃ γ) :
     exact ⟨PairingOn.splitLeft_ofSplit e P Q, PairingOn.splitRight_ofSplit e P Q⟩
 
 end Inverse
+
+section Bipartite
+
+variable {m : ℕ}
+
+/-- A *side splitting* of the ambient positions is an identification of `Fin (2 * m)` with two
+labelled sides of size `m`. -/
+abbrev SideSplitting (m : ℕ) := Fin m ⊕ Fin m ≃ Fin (2 * m)
+
+/-- A pairing is *bipartite* for a side splitting when every left position is matched to a right
+position. -/
+def Pairing.IsBipartite (e : SideSplitting m) (P : Pairing m) : Prop :=
+  ∀ i : Fin m, ∃ j : Fin m, P.partner (e (Sum.inl i)) = e (Sum.inr j)
+
+private noncomputable def matchingTo (e : SideSplitting m) {P : Pairing m}
+    (h : P.IsBipartite e) (i : Fin m) : Fin m :=
+  Classical.choose (h i)
+
+private theorem matchingTo_spec (e : SideSplitting m) {P : Pairing m} (h : P.IsBipartite e)
+    (i : Fin m) : P.partner (e (Sum.inl i)) = e (Sum.inr (matchingTo e h i)) :=
+  Classical.choose_spec (h i)
+
+private theorem matchingTo_injective (e : SideSplitting m) {P : Pairing m}
+    (h : P.IsBipartite e) : Function.Injective (matchingTo e h) := by
+  intro i j hij
+  have hspec := matchingTo_spec e h i
+  rw [hij, ← matchingTo_spec e h j] at hspec
+  exact Sum.inl.inj (e.injective (P.partner.injective hspec))
+
+/-- The permutation matching the two sides of a bipartite pairing. -/
+noncomputable def Pairing.sideMatching (e : SideSplitting m) {P : Pairing m}
+    (h : P.IsBipartite e) : Equiv.Perm (Fin m) :=
+  Equiv.ofBijective (matchingTo e h) (matchingTo_injective e h).bijective_of_finite
+
+/-- Applying the extracted side matching gives exactly the right-side position paired to a left-side
+position. -/
+@[simp]
+theorem Pairing.partner_sideMatching (e : SideSplitting m) {P : Pairing m}
+    (h : P.IsBipartite e) (i : Fin m) :
+    P.partner (e (Sum.inl i)) = e (Sum.inr (P.sideMatching e h i)) :=
+  matchingTo_spec e h i
+
+end Bipartite
 
 end Combinatorics
