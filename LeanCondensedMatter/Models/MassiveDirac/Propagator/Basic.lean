@@ -18,7 +18,8 @@ G(z) = (z I - H₀)⁻¹
 Physical retarded/advanced branches specialize through the canonical `side.regulator η` boundary.
 The object identified below is the repository's existing resolvent; this file does not introduce a
 parallel Green-function formalism. No disorder data, momentum integration, angular average, Born
-closure, SCBA, or vertex resummation is introduced here.
+closure, SCBA, or vertex resummation is introduced here. The same algebraic core also supplies
+radial denominators for complex effective energy and mass.
 -/
 
 namespace QuantumTheory.Models.MassiveDirac
@@ -26,6 +27,23 @@ namespace QuantumTheory.Models.MassiveDirac
 noncomputable section
 
 open QuantumTheory.Transport
+
+/-- Radial massive-Dirac denominator for arbitrary complex effective energy and mass. -/
+def massiveDiracRadialDenominator
+    (v p : ℝ) (effectiveEnergy effectiveMass : ℂ) : ℂ :=
+  effectiveEnergy ^ 2 - effectiveMass ^ 2 - ((v ^ 2 * p ^ 2 : ℝ) : ℂ)
+
+/-- Retarded-advanced product of two radial massive-Dirac denominators. -/
+def massiveDiracRetardedAdvancedRadialDenominatorProduct
+    (v p : ℝ)
+    (retardedEnergy retardedMass advancedEnergy advancedMass : ℂ) : ℂ :=
+  massiveDiracRadialDenominator v p retardedEnergy retardedMass *
+    massiveDiracRadialDenominator v p advancedEnergy advancedMass
+
+/-- Polar Jacobian divided by one radial massive-Dirac denominator. -/
+def massiveDiracRadialDenominatorKernel
+    (v p : ℝ) (effectiveEnergy effectiveMass : ℂ) : ℂ :=
+  (p : ℂ) * (massiveDiracRadialDenominator v p effectiveEnergy effectiveMass)⁻¹
 
 /-- Common quadratic denominator `z² - E²` at an arbitrary signed regulator. -/
 def pauliGreenDenominatorOfRegulator

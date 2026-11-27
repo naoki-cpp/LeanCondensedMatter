@@ -1,5 +1,4 @@
 import LeanCondensedMatter.Models.MassiveDirac.Propagator.Basic
-import LeanCondensedMatter.Models.MassiveDirac.Propagator.RadialDenominator
 import Mathlib.Tactic.Positivity
 import Mathlib.Tactic.Ring
 

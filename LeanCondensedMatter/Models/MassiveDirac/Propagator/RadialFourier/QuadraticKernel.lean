@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Models.MassiveDirac.Propagator.RadialDenominator
+import LeanCondensedMatter.Models.MassiveDirac.Propagator.Basic
 import LeanCondensedMatter.Analysis.Fourier.PolarRadialKernels.ImproperLimit
 import Mathlib.Tactic.FunProp
 import Mathlib.Tactic.Ring
