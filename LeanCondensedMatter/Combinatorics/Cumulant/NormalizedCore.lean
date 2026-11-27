@@ -9,8 +9,7 @@ This module owns only the lightweight data structure of a finite-set function no
 on the empty set. Moment/cumulant transforms and their inversion theorems live downstream in
 `Combinatorics.Cumulant.Normalized`.
 
-Keeping this core independent of Möbius inversion lets proof tracks that intentionally avoid
-cumulant inversion still share the same normalized finite-set interface.
+The normalized finite-set interface does not require Möbius inversion.
 -/
 
 namespace Combinatorics
