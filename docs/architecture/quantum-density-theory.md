@@ -134,7 +134,7 @@ square-root/Hilbert--Schmidt bridge is part of the public API.
 These modules must remain free of accidental `[FiniteDimensional ...]` and `[Fintype ...]`
 assumptions. The density umbrella exports the canonical diagonal formula module.
 
-For a Hamiltonian, `Gibbs/DiagonalEnergy.lean` exposes the countable common-eigenbasis
+For a Hamiltonian, `Gibbs/EigenbasisExpectation.lean` exposes the countable common-eigenbasis
 `HilbertBasis`/`tsum` theorem as the generic foundation. Architecture CI requires that foundation to
 exist, but it does not inspect the proof strategy used by a finite corollary.
 

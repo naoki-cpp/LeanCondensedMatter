@@ -1,5 +1,6 @@
 import LeanCondensedMatter.QuantumTheory.Gibbs.Eigenbasis
-import LeanCondensedMatter.QuantumTheory.Gibbs.DiagonalEnergy
+import LeanCondensedMatter.QuantumTheory.DensityOperator.DiagonalFormula
+import LeanCondensedMatter.QuantumTheory.Gibbs.EnergyExpectation
 
 /-!
 # Gibbs energy expectations in an energy eigenbasis
@@ -7,12 +8,15 @@ import LeanCondensedMatter.QuantumTheory.Gibbs.DiagonalEnergy
 A pure-point Gibbs density state exists under summability of its Boltzmann weights. Potentially
 unbounded energy data require the stronger weighted summability condition
 `EigenbasisGibbsEnergyIntegrable`; their expectation is therefore represented directly as an
-absolutely convergent real series rather than through a parallel generic diagonal-observable API.
+absolutely convergent real series rather than through a parallel generic diagonal-observable API. Common-basis bounded energy
+expectations provide the bridge to density-operator expectations.
 -/
 
 noncomputable section
 
 namespace QuantumTheory
+
+open ContinuousLinearMap
 
 variable {ι : Type*}
 
@@ -28,6 +32,25 @@ theorem hasSum_eigenbasisGibbsEnergyExpectation
   exact (Summable.of_norm hint).hasSum
 
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
+
+/-- If `ρ` and `Hop` are diagonal in the same Hilbert basis, then
+`energyExpValue ρ Hop = ∑' i, w i * E i`. The series is absolutely convergent through the generic
+Hilbert–Schmidt diagonal-expectation theorem. -/
+theorem energyExpValue_eq_tsum_common_eigenbasis (ρ : DensityOperator H) (Hop : Observable H)
+    (b : HilbertBasis ι ℂ H) (w E : ι → ℝ)
+    (hρ : ∀ i, ρ.op (b i) = (w i : ℂ) • b i)
+    (hE : ∀ i, Hop.1 (b i) = (E i : ℂ) • b i) :
+    energyExpValue ρ Hop = ∑' i, w i * E i := by
+  change ρ.observableExpectation Hop = ∑' i, w i * E i
+  rw [ρ.observableExpectation_eq_tsum_diagonal Hop b w hρ]
+  apply tsum_congr
+  intro i
+  have hdiag : diagonalExpectationValue Hop.1 Hop.2 (b i) = E i := by
+    apply Complex.ofReal_injective
+    rw [coe_diagonalExpectationValue_right, hE i, inner_smul_right,
+      inner_self_eq_norm_sq_to_K, b.orthonormal.1 i]
+    simp
+  rw [hdiag]
 
 /-- If the same energy data are represented by a bounded observable, the spectral-series energy
 expectation agrees with the density-operator energy expectation. -/
