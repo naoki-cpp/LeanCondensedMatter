@@ -60,17 +60,22 @@ theorem inPlaneSpinRotation_mul_inverse (angle : ℝ) :
       Matrix.mul_apply, Fin.sum_univ_two] using
         inPlaneSpinRotation_phases_mul angle
 
+/-- Reversing the rotation angle exchanges the diagonal spinor and its inverse. -/
+private theorem inPlaneSpinRotation_neg (angle : ℝ) :
+    inPlaneSpinRotation (-angle) = inPlaneSpinRotationInverse angle := by
+  ext i j
+  fin_cases i <;> fin_cases j <;>
+    simp [inPlaneSpinRotation, inPlaneSpinRotationInverse, sub_eq_add_neg]
+
+private theorem inPlaneSpinRotationInverse_neg (angle : ℝ) :
+    inPlaneSpinRotationInverse (-angle) = inPlaneSpinRotation angle := by
+  simpa only [neg_neg] using (inPlaneSpinRotation_neg (-angle)).symm
+
 /-- The inverse spinor can also be placed on the left. -/
 theorem inPlaneSpinRotationInverse_mul (angle : ℝ) :
     inPlaneSpinRotationInverse angle * inPlaneSpinRotation angle = 1 := by
-  calc
-    inPlaneSpinRotationInverse angle * inPlaneSpinRotation angle =
-        inPlaneSpinRotation angle * inPlaneSpinRotationInverse angle := by
-      ext i j
-      fin_cases i <;> fin_cases j <;>
-        simp [inPlaneSpinRotation, inPlaneSpinRotationInverse,
-          Matrix.mul_apply, Fin.sum_univ_two, mul_comm]
-    _ = 1 := inPlaneSpinRotation_mul_inverse angle
+  simpa only [inPlaneSpinRotation_neg, inPlaneSpinRotationInverse_neg] using
+    inPlaneSpinRotation_mul_inverse (-angle)
 
 /-- Entrywise conjugation by the diagonal in-plane spinor multiplies each
 matrix entry by the corresponding left and right spinor phases.
@@ -139,19 +144,6 @@ theorem inPlaneSpinRotation_pauliZ (angle : ℝ) :
       simp [inPlaneSpinRotation, pauliZ,
         Matrix.mul_apply, Fin.sum_univ_two]
   rw [hcomm, mul_assoc, inPlaneSpinRotation_mul_inverse, mul_one]
-
-/-- Reversing the rotation angle exchanges the diagonal spinor and its inverse. -/
-private theorem inPlaneSpinRotation_neg (angle : ℝ) :
-    inPlaneSpinRotation (-angle) = inPlaneSpinRotationInverse angle := by
-  ext i j
-  fin_cases i <;> fin_cases j <;>
-    simp [inPlaneSpinRotation, inPlaneSpinRotationInverse, sub_eq_add_neg]
-
-private theorem inPlaneSpinRotationInverse_neg (angle : ℝ) :
-    inPlaneSpinRotationInverse (-angle) = inPlaneSpinRotation angle := by
-  ext i j
-  fin_cases i <;> fin_cases j <;>
-    simp [inPlaneSpinRotation, inPlaneSpinRotationInverse, sub_eq_add_neg]
 
 /-- The inverse spinor rotates the first Pauli basis matrix. -/
 theorem inPlaneSpinRotationInverse_pauliX (angle : ℝ) :
