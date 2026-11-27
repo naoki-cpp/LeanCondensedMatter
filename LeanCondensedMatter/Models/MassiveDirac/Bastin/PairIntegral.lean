@@ -78,7 +78,8 @@ theorem targetCenteredInterbandBastinPairIntegral_eq_neg_two_i_mul_poleIntegral
   unfold bastinBandPairContribution
   rw [scalarBastinBandPairContribution_targetCentered _ _ _ _ _ _ hbroadening,
     targetCenteredInterbandSpectatorCurrentFactor_eq_interbandPoleRegularFactor]
-  simp only [interbandEnergyGap] <;> ring
+  simp only [interbandEnergyGap]
+  ring
 
 /-- At nonzero broadening, the concrete massive-Dirac pair integral is the generic isolated
 interband Bastin pole integral. -/

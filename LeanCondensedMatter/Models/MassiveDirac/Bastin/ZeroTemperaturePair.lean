@@ -62,7 +62,8 @@ theorem targetCenteredZeroTemperatureInterbandBastinPairIntegral_eq_neg_two_i_mu
   unfold bastinBandPairContribution
   rw [scalarBastinBandPairContribution_targetCentered _ _ _ _ _ _ hbroadening,
     targetCenteredInterbandSpectatorCurrentFactor_eq_interbandPoleRegularFactor]
-  simp only [interbandEnergyGap] <;> ring
+  simp only [interbandEnergyGap]
+  ring
 
 /-- Inserting zero-temperature occupation does not enlarge the pointwise Lorentzian/spectator
 bound on the radial axis. -/
