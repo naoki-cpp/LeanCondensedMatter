@@ -1034,7 +1034,7 @@
         "LeanCondensedMatter.Combinatorics.PerfectPairing.Crossing",
         "LeanCondensedMatter.Combinatorics.PerfectPairing.PairEndpoints"
       ],
-      "externalImportCount": 1
+      "externalImportCount": 2
     },
     {
       "name": "LeanCondensedMatter.Combinatorics.PerfectPairing.Embedding",
@@ -1129,7 +1129,7 @@
         "LeanCondensedMatter.Combinatorics.FiniteIndex.Block",
         "LeanCondensedMatter.Combinatorics.PerfectPairing.CrossingParity"
       ],
-      "externalImportCount": 1
+      "externalImportCount": 0
     },
     {
       "name": "LeanCondensedMatter.Combinatorics.PerfectPairing.Split",

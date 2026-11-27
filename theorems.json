@@ -1997,7 +1997,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "BesselHypergeometric.besselJ_zero_hasDerivAt"
+      "QuantumTheory.Transport.polarFourierFirstCosineAngularKernel_eq_besselJ"
     ],
     "dependencies": [
       "BesselHypergeometric.regularizedHGFun_zero_singleton_nat_hasDerivAt",
@@ -2006,7 +2006,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "BesselHypergeometric.besselJ_zero_hasDerivAt"
+      "QuantumTheory.Transport.polarFourierFirstCosineAngularKernel_eq_besselJ"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -2030,7 +2030,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -2042,7 +2042,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "BesselHypergeometric.besselJ_zero_one_two_recurrence"
+      "BesselHypergeometric.besselJ_one_sq_div_eq_half_product",
+      "QuantumTheory.Transport.polarFourierSecondCosineAngularKernel_eq_besselJ"
     ],
     "dependencies": [
       "_private.LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.HypergeometricSeries.0.BesselHypergeometric.besselJ_nat_eq",
@@ -2051,9 +2052,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "BesselHypergeometric.besselJ_zero_one_two_recurrence"
+      "BesselHypergeometric.besselJ_one_sq_div_eq_half_product",
+      "QuantumTheory.Transport.polarFourierSecondCosineAngularKernel_eq_besselJ"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -2090,7 +2092,7 @@
       "BesselRadialMoments.integral_besselJ_one_sq_div"
     ],
     "dependencies": [
-      "BesselHypergeometric.besselJ_zero_one_two_recurrence"
+      "BesselHypergeometric.besselJ_nat_recurrence"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -2098,96 +2100,6 @@
       "BesselRadialMoments.integral_besselJ_one_sq_div"
     ],
     "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (w : ℂ), HasDerivAt (Complex.besselJ 0) (-Complex.besselJ 1 w) w",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "BesselHypergeometric.besselJ_zero_hasDerivAt",
-    "module": "LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.HypergeometricSeries",
-    "externalAxioms": [],
-    "docString": "Derivative of the zeroth complex Bessel function. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.polarFourierFirstCosineAngularKernel_eq_besselJ"
-    ],
-    "dependencies": [
-      "BesselHypergeometric.besselJ_nat_hasDerivAt"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.polarFourierFirstCosineAngularKernel_eq_besselJ"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (z : ℂ), 2 * Complex.besselJ 1 z = z * (Complex.besselJ 0 z + Complex.besselJ 2 z)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "BesselHypergeometric.besselJ_zero_one_two_recurrence",
-    "module": "LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.HypergeometricSeries",
-    "externalAxioms": [],
-    "docString": "The Bessel three-term recurrence at orders zero, one, and two. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "BesselHypergeometric.besselJ_one_sq_div_eq_half_product",
-      "QuantumTheory.Transport.polarFourierSecondCosineAngularKernel_eq_besselJ"
-    ],
-    "dependencies": [
-      "BesselHypergeometric.besselJ_nat_recurrence"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "BesselHypergeometric.besselJ_one_sq_div_eq_half_product",
-      "QuantumTheory.Transport.polarFourierSecondCosineAngularKernel_eq_besselJ"
-    ],
-    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -8377,9 +8289,9 @@
       "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.neg_one_pow_crossingCount_eq_of_sidePairing"
     ],
     "dependencies": [
+      "Combinatorics.PairingOn.sum_Ioi_pairEndpointInversionCount_mod_two_eq_crossingCount",
       "Combinatorics.pow_eq_of_mod_two_eq",
-      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Sign.0.Combinatorics.sign_eq_pow_blockInversions",
-      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Sign.0.Combinatorics.sum_Ioi_pairEndpointInversionCount_mod_two_eq_crossingCount"
+      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Sign.0.Combinatorics.sign_eq_pow_blockInversions"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -8963,7 +8875,7 @@
       "Combinatorics.PairingOn.crossingCount_eq_sum_componentCrossingCount",
       "Combinatorics.PairingOn.ofSplit_crossingCount_eq_left_add_right_add_inter",
       "Combinatorics.PairingOn.sum_sum_crosses_map_eq_crossingCount",
-      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Sign.0.Combinatorics.crossingCount_eq_sum_sum_crossIndicator"
+      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.CrossingParity.0.Combinatorics.crossingCount_eq_sum_sum_crossIndicator"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
@@ -8973,7 +8885,7 @@
       "Combinatorics.PairingOn.crossingCount_eq_sum_componentCrossingCount",
       "Combinatorics.PairingOn.ofSplit_crossingCount_eq_left_add_right_add_inter",
       "Combinatorics.PairingOn.sum_sum_crosses_map_eq_crossingCount",
-      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Sign.0.Combinatorics.crossingCount_eq_sum_sum_crossIndicator"
+      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.CrossingParity.0.Combinatorics.crossingCount_eq_sum_sum_crossIndicator"
     ],
     "compiledConsumerCount": 5,
     "axioms": [
@@ -9893,9 +9805,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "Combinatorics.PairingOn.sum_geometricCrossings_mod_two_eq_positionInversions",
-      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.EraseZero.0.Combinatorics.Pairing.mem_pairs_endpoints_mem_deletedPositions",
-      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Sign.0.Combinatorics.sum_Ioi_pairEndpointInversionCount_mod_two_eq_crossingCount"
+      "Combinatorics.PairingOn.pairEndpointInversionCount_modEq_crossesIndicator",
+      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.EraseZero.0.Combinatorics.Pairing.mem_pairs_endpoints_mem_deletedPositions"
     ],
     "dependencies": [
       "Combinatorics.PairingOn.pairEndpoint_ne_of_normalizedPair_ne",
@@ -9905,11 +9816,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "Combinatorics.PairingOn.sum_geometricCrossings_mod_two_eq_positionInversions",
-      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.EraseZero.0.Combinatorics.Pairing.mem_pairs_endpoints_mem_deletedPositions",
-      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Sign.0.Combinatorics.sum_Ioi_pairEndpointInversionCount_mod_two_eq_crossingCount"
+      "Combinatorics.PairingOn.pairEndpointInversionCount_modEq_crossesIndicator",
+      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.EraseZero.0.Combinatorics.Pairing.mem_pairs_endpoints_mem_deletedPositions"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -10354,6 +10264,54 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {α : Type u_1} [inst : Fintype α] [inst_1 : LinearOrder α] (pairing : Combinatorics.PairingOn α)\n  (p q : pairing.NormalizedPair),\n  p ≠ q →\n    Combinatorics.pairEndpointInversionCount ↑p ↑q ≡\n      if Combinatorics.Crosses ↑p ↑q ∨ Combinatorics.Crosses ↑q ↑p then 1 else 0 [MOD 2]",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "Combinatorics.PairingOn.pairEndpointInversionCount_modEq_crossesIndicator",
+    "module": "LeanCondensedMatter.Combinatorics.PerfectPairing.CrossingParity",
+    "externalAxioms": [],
+    "docString": "Distinct normalized pairs have inversion parity equal to their geometric crossing indicator. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "Combinatorics.PairingOn.sum_Ioi_pairEndpointInversionCount_mod_two_eq_crossingCount",
+      "Combinatorics.PairingOn.sum_geometricCrossings_mod_two_eq_positionInversions"
+    ],
+    "dependencies": [
+      "Combinatorics.PairingOn.normalizedPair_endpoints_ne_of_ne",
+      "Combinatorics.PairingOn.pairs_normalized",
+      "Combinatorics.pairEndpointInversionCount_mod_two_eq_crossesIndicator"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "Combinatorics.PairingOn.sum_Ioi_pairEndpointInversionCount_mod_two_eq_crossingCount",
+      "Combinatorics.PairingOn.sum_geometricCrossings_mod_two_eq_positionInversions"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {α : Type u_1} [inst : Fintype α] [inst_1 : LinearOrder α] (pairing : Combinatorics.PairingOn α)\n  (p q : pairing.NormalizedPair),\n  p ≠ q → ∀ (i j : Fin 2), Combinatorics.pairEndpointAt (↑p) i ≠ Combinatorics.pairEndpointAt (↑q) j",
     "standardAxioms": [
       "Classical.choice",
@@ -10419,9 +10377,8 @@
       "Combinatorics.PairingOn.normalizedPairEquivOfPartnerEquiv_apply_of_strictMono",
       "Combinatorics.PairingOn.normalizedPairSigmaEquiv_apply_of_strictMono",
       "Combinatorics.PairingOn.ofSplit_crossingCount_eq_left_add_right_add_inter",
-      "Combinatorics.PairingOn.sum_geometricCrossings_mod_two_eq_positionInversions",
+      "Combinatorics.PairingOn.pairEndpointInversionCount_modEq_crossesIndicator",
       "SecondQuantization.Fermionic.externalInsertionOfSlotSplit_mixedPairingEvaluation_eq_positionInversions_mul_of_strictAnti",
-      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Sign.0.Combinatorics.sum_Ioi_pairEndpointInversionCount_mod_two_eq_crossingCount",
       "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.sidePair_of_gt"
     ],
     "dependencies": [],
@@ -10432,12 +10389,11 @@
       "Combinatorics.PairingOn.normalizedPairEquivOfPartnerEquiv_apply_of_strictMono",
       "Combinatorics.PairingOn.normalizedPairSigmaEquiv_apply_of_strictMono",
       "Combinatorics.PairingOn.ofSplit_crossingCount_eq_left_add_right_add_inter",
-      "Combinatorics.PairingOn.sum_geometricCrossings_mod_two_eq_positionInversions",
+      "Combinatorics.PairingOn.pairEndpointInversionCount_modEq_crossesIndicator",
       "SecondQuantization.Fermionic.externalInsertionOfSlotSplit_mixedPairingEvaluation_eq_positionInversions_mul_of_strictAnti",
-      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Sign.0.Combinatorics.sum_Ioi_pairEndpointInversionCount_mod_two_eq_crossingCount",
       "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.sidePair_of_gt"
     ],
-    "compiledConsumerCount": 8,
+    "compiledConsumerCount": 7,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -11445,6 +11401,53 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {α : Type u_1} {ι : Type u_2} [inst : Fintype α] [inst_1 : LinearOrder α] [inst_2 : Fintype ι]\n  [inst_3 : LinearOrder ι] [inst_4 : LocallyFiniteOrderTop ι] [LocallyFiniteOrderBot ι]\n  (pairing : Combinatorics.PairingOn α) (e : ι ≃ pairing.NormalizedPair) (present : ι → α × α),\n  (∀ (k : ι), present k = ↑(e k) ∨ present k = (↑(e k)).swap) →\n    (∑ k, ∑ l > k, Combinatorics.pairEndpointInversionCount (present k) (present l)) % 2 = pairing.crossingCount % 2",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "Combinatorics.PairingOn.sum_Ioi_pairEndpointInversionCount_mod_two_eq_crossingCount",
+    "module": "LeanCondensedMatter.Combinatorics.PerfectPairing.CrossingParity",
+    "externalAxioms": [],
+    "docString": "The inversion sum over unordered pairs in any ordered presentation has the parity of\nthe pairing's crossing count, regardless of each pair's endpoint orientation. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "Combinatorics.Pairing.sign_eq_of_presentsPairs"
+    ],
+    "dependencies": [
+      "Combinatorics.PairingOn.pairEndpointInversionCount_modEq_crossesIndicator",
+      "Combinatorics.crossesIndicator_add",
+      "Combinatorics.pairEndpointInversionCount_eq_of_eq_or_swap",
+      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.CrossingParity.0.Combinatorics.crossingCount_eq_sum_Ioi_crossIndicator"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "Combinatorics.Pairing.sign_eq_of_presentsPairs"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {α : Type u_1} {A : Type u_2} {B : Type u_3} {L : Type u_4} {R : Type u_5} [inst : Fintype α] [inst_1 : LinearOrder α]\n  [inst_2 : Fintype A] [inst_3 : Fintype B] [inst_4 : Fintype L] [inst_5 : Fintype R]\n  (pairing : Combinatorics.PairingOn α) (left : A → pairing.NormalizedPair) (right : B → pairing.NormalizedPair),\n  (∀ (p : A) (q : B), left p ≠ right q) →\n    ∀ (leftEquiv : A × Fin 2 ≃ L) (rightEquiv : B × Fin 2 ≃ R) (leftPos : L → α) (rightPos : R → α),\n      (∀ (p : A),\n          ↑(left p) = (leftPos (leftEquiv (p, 0)), leftPos (leftEquiv (p, 1))) ∨\n            ↑(left p) = (leftPos (leftEquiv (p, 1)), leftPos (leftEquiv (p, 0)))) →\n        (∀ (q : B),\n            ↑(right q) = (rightPos (rightEquiv (q, 0)), rightPos (rightEquiv (q, 1))) ∨\n              ↑(right q) = (rightPos (rightEquiv (q, 1)), rightPos (rightEquiv (q, 0)))) →\n          (∑ x,\n                if Combinatorics.Crosses ↑(left x.1) ↑(right x.2) ∨ Combinatorics.Crosses ↑(right x.2) ↑(left x.1) then\n                  1\n                else 0) %\n              2 =\n            (∑ p, ∑ q, if rightPos q < leftPos p then 1 else 0) % 2",
     "standardAxioms": [
       "Classical.choice",
@@ -11468,9 +11471,8 @@
       "Combinatorics.PairingOn.ofSplitInterSectorCrossingCount_mod_two_eq_positionInversions"
     ],
     "dependencies": [
-      "Combinatorics.PairingOn.normalizedPair_endpoints_ne_of_ne",
-      "Combinatorics.PairingOn.pairs_normalized",
-      "Combinatorics.pairEndpointInversionCount_mod_two_eq_crossesIndicator"
+      "Combinatorics.PairingOn.pairEndpointInversionCount_modEq_crossesIndicator",
+      "Combinatorics.pairEndpointInversionCount_eq_of_eq_or_swap"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -13223,15 +13225,15 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "Combinatorics.sum_sum_crosses_oriented_add",
-      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Sign.0.Combinatorics.sum_Ioi_pairEndpointInversionCount_mod_two_eq_crossingCount"
+      "Combinatorics.PairingOn.sum_Ioi_pairEndpointInversionCount_mod_two_eq_crossingCount",
+      "Combinatorics.sum_sum_crosses_oriented_add"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "Combinatorics.sum_sum_crosses_oriented_add",
-      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Sign.0.Combinatorics.sum_Ioi_pairEndpointInversionCount_mod_two_eq_crossingCount"
+      "Combinatorics.PairingOn.sum_Ioi_pairEndpointInversionCount_mod_two_eq_crossingCount",
+      "Combinatorics.sum_sum_crosses_oriented_add"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -14032,13 +14034,13 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Sign.0.Combinatorics.crossingCount_eq_sum_Ioi_crossIndicator"
+      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.CrossingParity.0.Combinatorics.crossingCount_eq_sum_Ioi_crossIndicator"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Sign.0.Combinatorics.crossingCount_eq_sum_Ioi_crossIndicator"
+      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.CrossingParity.0.Combinatorics.crossingCount_eq_sum_Ioi_crossIndicator"
     ],
     "compiledConsumerCount": 1,
     "axioms": [],
@@ -14220,6 +14222,48 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
+    "terminal": false,
+    "statement": "∀ {α : Type u_1} [inst : LT α] [inst_1 : DecidableLT α] (left right left' right' : α × α),\n  left = left' ∨ left = left'.swap →\n    right = right' ∨ right = right'.swap →\n      Combinatorics.pairEndpointInversionCount left right = Combinatorics.pairEndpointInversionCount left' right'",
+    "standardAxioms": [
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "Combinatorics.pairEndpointInversionCount_eq_of_eq_or_swap",
+    "module": "LeanCondensedMatter.Combinatorics.PerfectPairing.CrossingParity",
+    "externalAxioms": [],
+    "docString": "Endpoint inversion counts are unchanged when either pair is independently reversed. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "Combinatorics.PairingOn.sum_Ioi_pairEndpointInversionCount_mod_two_eq_crossingCount",
+      "Combinatorics.PairingOn.sum_geometricCrossings_mod_two_eq_positionInversions"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "Combinatorics.PairingOn.sum_Ioi_pairEndpointInversionCount_mod_two_eq_crossingCount",
+      "Combinatorics.PairingOn.sum_geometricCrossings_mod_two_eq_positionInversions"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
     "terminal": true,
     "statement": "∀ {α : Type u_1} [inst : LT α] [inst_1 : DecidableLT α] (left right : α × α),\n  Combinatorics.pairEndpointInversionCount left right =\n    ∑ i, ∑ j, if Combinatorics.pairEndpointAt right j < Combinatorics.pairEndpointAt left i then 1 else 0",
     "standardAxioms": [
@@ -14267,7 +14311,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -14279,17 +14323,15 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "Combinatorics.PairingOn.sum_geometricCrossings_mod_two_eq_positionInversions",
-      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Sign.0.Combinatorics.sum_Ioi_pairEndpointInversionCount_mod_two_eq_crossingCount"
+      "Combinatorics.PairingOn.pairEndpointInversionCount_modEq_crossesIndicator"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "Combinatorics.PairingOn.sum_geometricCrossings_mod_two_eq_positionInversions",
-      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Sign.0.Combinatorics.sum_Ioi_pairEndpointInversionCount_mod_two_eq_crossingCount"
+      "Combinatorics.PairingOn.pairEndpointInversionCount_modEq_crossesIndicator"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 1,
     "axioms": [
       "propext"
     ],
@@ -17099,6 +17141,7 @@
     "directWrapperOf": null,
     "dependents": [
       "ContinuousLinearMap.IsTraceClass.adjointConjugate",
+      "ContinuousLinearMap.IsTraceClass.hasSum_real_trace_comp_right_eigenvector",
       "ContinuousLinearMap.IsTraceClass.hasSum_trace_comp_right_eigenvector",
       "ContinuousLinearMap.IsTraceClass.norm_trace_comp_right_le",
       "ContinuousLinearMap.IsTraceClass.traceNorm_comp_right_le",
@@ -17111,6 +17154,7 @@
       "QuantumTheory.DensityOperator.hasSum_expectation_diagonal",
       "QuantumTheory.DensityOperator.hasSum_expectation_term",
       "QuantumTheory.LinearResponse.expectation_evolveDensityOperator_eq_heisenberg",
+      "QuantumTheory.hasSum_eigenvalue_mul_energy",
       "_private.LeanCondensedMatter.QuantumTheory.DensityOperator.Expectation.0.QuantumTheory.trace_comp_right_norm_le"
     ],
     "dependencies": [
@@ -17121,6 +17165,7 @@
     "completedMention": false,
     "compiledConsumers": [
       "ContinuousLinearMap.IsTraceClass.adjointConjugate",
+      "ContinuousLinearMap.IsTraceClass.hasSum_real_trace_comp_right_eigenvector",
       "ContinuousLinearMap.IsTraceClass.hasSum_trace_comp_right_eigenvector",
       "ContinuousLinearMap.IsTraceClass.norm_trace_comp_right_le",
       "ContinuousLinearMap.IsTraceClass.traceNorm_comp_right_le",
@@ -17133,9 +17178,10 @@
       "QuantumTheory.DensityOperator.hasSum_expectation_diagonal",
       "QuantumTheory.DensityOperator.hasSum_expectation_term",
       "QuantumTheory.LinearResponse.expectation_evolveDensityOperator_eq_heisenberg",
+      "QuantumTheory.hasSum_eigenvalue_mul_energy",
       "_private.LeanCondensedMatter.QuantumTheory.DensityOperator.Expectation.0.QuantumTheory.trace_comp_right_norm_le"
     ],
-    "compiledConsumerCount": 14,
+    "compiledConsumerCount": 16,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -17363,6 +17409,55 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {H : Type u_3} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {T : H →L[ℂ] H} (hT : T.IsTraceClass),\n  IsSelfAdjoint T →\n    ∀ (A : H →L[ℂ] H) (hA : IsSelfAdjoint A) {r : ℝ},\n      ⋯.trace = ↑r →\n        HasSum (fun a => ↑a.fst * A.diagonalExpectationValue hA (ContinuousLinearMap.eigenvectorFamily ⋯ a)) r",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "ContinuousLinearMap.IsTraceClass.hasSum_real_trace_comp_right_eigenvector",
+    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral",
+    "externalAxioms": [],
+    "docString": "The spectral trace pairing with a self-adjoint bounded operator is a lossless real series.\nThe real sum value is identified by its exact complex embedding. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.hasSum_eigenvalue_mul_energy",
+      "_private.LeanCondensedMatter.QuantumTheory.POVM.Born.0.QuantumTheory.hasSum_probabilityKernel_eigenvector"
+    ],
+    "dependencies": [
+      "ContinuousLinearMap.IsTraceClass.comp_right",
+      "ContinuousLinearMap.IsTraceClass.hasSum_trace_comp_right_eigenvector",
+      "ContinuousLinearMap.IsTraceClass.isCompact",
+      "ContinuousLinearMap.coe_diagonalExpectationValue_right"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.hasSum_eigenvalue_mul_energy",
+      "_private.LeanCondensedMatter.QuantumTheory.POVM.Born.0.QuantumTheory.hasSum_probabilityKernel_eigenvector"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {T : H →L[ℂ] H} (hT : T.IsTraceClass) {ι : Type u_2} (d : HilbertBasis ι ℂ H),\n  HasSum (fun i => inner ℂ (d i) (T (d i))) hT.trace",
     "standardAxioms": [
       "Classical.choice",
@@ -17425,7 +17520,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -17437,6 +17532,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "ContinuousLinearMap.IsTraceClass.hasSum_real_trace_comp_right_eigenvector",
       "QuantumTheory.DensityOperator.hasSum_expectation_term"
     ],
     "dependencies": [
@@ -17451,9 +17547,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "ContinuousLinearMap.IsTraceClass.hasSum_real_trace_comp_right_eigenvector",
       "QuantumTheory.DensityOperator.hasSum_expectation_term"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -17534,6 +17631,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "ContinuousLinearMap.IsTraceClass.hasSum_real_trace_comp_right_eigenvector",
       "ContinuousLinearMap.IsTraceClass.hasSum_trace_comp_right_eigenvector",
       "ContinuousLinearMap.IsTraceClass.hasSummableRealEigenvalues",
       "ContinuousLinearMap.IsTraceClass.realTrace_eq_spectralTrace",
@@ -17551,6 +17649,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "ContinuousLinearMap.IsTraceClass.hasSum_real_trace_comp_right_eigenvector",
       "ContinuousLinearMap.IsTraceClass.hasSum_trace_comp_right_eigenvector",
       "ContinuousLinearMap.IsTraceClass.hasSummableRealEigenvalues",
       "ContinuousLinearMap.IsTraceClass.realTrace_eq_spectralTrace",
@@ -17561,7 +17660,7 @@
       "QuantumTheory.entropyOp_isCompact",
       "QuantumTheory.hasSum_negMulLog_eigenvalues"
     ],
-    "compiledConsumerCount": 9,
+    "compiledConsumerCount": 10,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -19311,13 +19410,11 @@
       "QuantumTheory.DensityOperator.expectation_op",
       "QuantumTheory.DensityOperator.expectation_re_nonneg_of_isPositive",
       "QuantumTheory.DensityOperator.hasSum_expectation_term",
-      "QuantumTheory.hasSum_eigenvalue_mul_energy",
       "QuantumTheory.hasSum_probNNReal",
       "QuantumTheory.helmholtzFreeEnergy_eq_components",
       "QuantumTheory.helmholtzFreeEnergy_eq_iff_eq_gibbsState",
       "QuantumTheory.helmholtzFreeEnergy_ge_and_entropy_ne_top",
       "QuantumTheory.isPureDensity_of_purity_eq_one",
-      "_private.LeanCondensedMatter.QuantumTheory.POVM.Born.0.QuantumTheory.hasSum_probabilityKernel_eigenvector",
       "_private.LeanCondensedMatter.QuantumTheory.POVM.Born.0.QuantumTheory.hasSum_probabilityKernel_outcome"
     ],
     "dependencies": [
@@ -19332,16 +19429,14 @@
       "QuantumTheory.DensityOperator.expectation_op",
       "QuantumTheory.DensityOperator.expectation_re_nonneg_of_isPositive",
       "QuantumTheory.DensityOperator.hasSum_expectation_term",
-      "QuantumTheory.hasSum_eigenvalue_mul_energy",
       "QuantumTheory.hasSum_probNNReal",
       "QuantumTheory.helmholtzFreeEnergy_eq_components",
       "QuantumTheory.helmholtzFreeEnergy_eq_iff_eq_gibbsState",
       "QuantumTheory.helmholtzFreeEnergy_ge_and_entropy_ne_top",
       "QuantumTheory.isPureDensity_of_purity_eq_one",
-      "_private.LeanCondensedMatter.QuantumTheory.POVM.Born.0.QuantumTheory.hasSum_probabilityKernel_eigenvector",
       "_private.LeanCondensedMatter.QuantumTheory.POVM.Born.0.QuantumTheory.hasSum_probabilityKernel_outcome"
     ],
-    "compiledConsumerCount": 14,
+    "compiledConsumerCount": 12,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -19969,6 +20064,7 @@
     "directWrapperOf": null,
     "dependents": [
       "ContinuousLinearMap.IsTraceClass.hasSum_realTrace",
+      "ContinuousLinearMap.IsTraceClass.hasSum_real_trace_comp_right_eigenvector",
       "ContinuousLinearMap.diagonalExpectationValue_abs_eq_norm_inner_left_of_polar",
       "ContinuousLinearMap.diagonalExpectationValue_abs_eq_norm_sq_sqrt_abs",
       "ContinuousLinearMap.diagonalExpectationValue_abs_smul",
@@ -19982,12 +20078,10 @@
       "QuantumTheory.DensityOperator.hasSum_diagonal_weights",
       "QuantumTheory.DensityOperator.hasSum_observableExpectation_diagonal",
       "QuantumTheory.energyExpValue_eq_tsum_common_eigenbasis",
-      "QuantumTheory.hasSum_eigenvalue_mul_energy",
       "QuantumTheory.hasSum_entropyOp_diagonal",
       "QuantumTheory.helmholtzFreeEnergy_eq_iff_eq_gibbsState",
       "_private.LeanCondensedMatter.QuantumTheory.Gibbs.MinimizerUniqueness.0.QuantumTheory.gibbsOp_inner_pos_of_norm_eq_one",
       "_private.LeanCondensedMatter.QuantumTheory.Gibbs.MinimizerUniqueness.0.QuantumTheory.gibbsOp_orthogonal_span_eq_bot_of_tsum_eq_spectralTrace",
-      "_private.LeanCondensedMatter.QuantumTheory.POVM.Born.0.QuantumTheory.hasSum_probabilityKernel_eigenvector",
       "_private.LeanCondensedMatter.QuantumTheory.POVM.Born.0.QuantumTheory.hasSum_probabilityKernel_outcome"
     ],
     "dependencies": [
@@ -19997,6 +20091,7 @@
     "completedMention": false,
     "compiledConsumers": [
       "ContinuousLinearMap.IsTraceClass.hasSum_realTrace",
+      "ContinuousLinearMap.IsTraceClass.hasSum_real_trace_comp_right_eigenvector",
       "ContinuousLinearMap.diagonalExpectationValue_abs_eq_norm_inner_left_of_polar",
       "ContinuousLinearMap.diagonalExpectationValue_abs_eq_norm_sq_sqrt_abs",
       "ContinuousLinearMap.diagonalExpectationValue_abs_smul",
@@ -20010,15 +20105,13 @@
       "QuantumTheory.DensityOperator.hasSum_diagonal_weights",
       "QuantumTheory.DensityOperator.hasSum_observableExpectation_diagonal",
       "QuantumTheory.energyExpValue_eq_tsum_common_eigenbasis",
-      "QuantumTheory.hasSum_eigenvalue_mul_energy",
       "QuantumTheory.hasSum_entropyOp_diagonal",
       "QuantumTheory.helmholtzFreeEnergy_eq_iff_eq_gibbsState",
       "_private.LeanCondensedMatter.QuantumTheory.Gibbs.MinimizerUniqueness.0.QuantumTheory.gibbsOp_inner_pos_of_norm_eq_one",
       "_private.LeanCondensedMatter.QuantumTheory.Gibbs.MinimizerUniqueness.0.QuantumTheory.gibbsOp_orthogonal_span_eq_bot_of_tsum_eq_spectralTrace",
-      "_private.LeanCondensedMatter.QuantumTheory.POVM.Born.0.QuantumTheory.hasSum_probabilityKernel_eigenvector",
       "_private.LeanCondensedMatter.QuantumTheory.POVM.Born.0.QuantumTheory.hasSum_probabilityKernel_outcome"
     ],
-    "compiledConsumerCount": 21,
+    "compiledConsumerCount": 20,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -41452,6 +41545,7 @@
       "LeanCondensedMatter.Crystal.AtomicConfiguration.pointGroup_crystallographic_restriction"
     ],
     "dependencies": [
+      "Matrix.sq_eq_one_of_trace_zero_det_neg_one",
       "Matrix.trace_eq_zero_of_mul_transpose_eq_one_det_neg_one"
     ],
     "crossModuleDirectWrapper": false,
@@ -41473,7 +41567,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ {R : Type u_1} [inst : CommRing R] [Nontrivial R] (M : Matrix (Fin 2) (Fin 2) R), M.trace = 0 → M.det = -1 → M ^ 2 = 1",
     "standardAxioms": [
       "Classical.choice",
@@ -41481,7 +41575,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -41492,12 +41586,16 @@
     "docString": "A two-by-two matrix with zero trace and determinant minus one is an involution. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "Matrix.sq_eq_one_of_mul_transpose_eq_one_det_neg_one"
+    ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "Matrix.sq_eq_one_of_mul_transpose_eq_one_det_neg_one"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -52880,9 +52978,7 @@
       "QuantumTheory.DensityOperator.expectation_eq_spectral_tsum",
       "QuantumTheory.DensityOperator.expectation_im_eq_zero_of_isSymmetric",
       "QuantumTheory.DensityOperator.expectation_op",
-      "QuantumTheory.DensityOperator.expectation_re_nonneg_of_isPositive",
-      "QuantumTheory.hasSum_eigenvalue_mul_energy",
-      "_private.LeanCondensedMatter.QuantumTheory.POVM.Born.0.QuantumTheory.hasSum_probabilityKernel_eigenvector"
+      "QuantumTheory.DensityOperator.expectation_re_nonneg_of_isPositive"
     ],
     "dependencies": [
       "ContinuousLinearMap.IsTraceClass.comp_right",
@@ -52898,11 +52994,9 @@
       "QuantumTheory.DensityOperator.expectation_eq_spectral_tsum",
       "QuantumTheory.DensityOperator.expectation_im_eq_zero_of_isSymmetric",
       "QuantumTheory.DensityOperator.expectation_op",
-      "QuantumTheory.DensityOperator.expectation_re_nonneg_of_isPositive",
-      "QuantumTheory.hasSum_eigenvalue_mul_energy",
-      "_private.LeanCondensedMatter.QuantumTheory.POVM.Born.0.QuantumTheory.hasSum_probabilityKernel_eigenvector"
+      "QuantumTheory.DensityOperator.expectation_re_nonneg_of_isPositive"
     ],
-    "compiledConsumerCount": 6,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -52990,8 +53084,10 @@
       "QuantumTheory.DensityOperator.realTrace_op_eq_one",
       "QuantumTheory.DensityOperator.spectralTrace_op_eq_one",
       "QuantumTheory.DensityOperator.traceNorm_eq_one",
+      "QuantumTheory.hasSum_eigenvalue_mul_energy",
       "QuantumTheory.hasSum_negMulLog_eigenvalues",
-      "QuantumTheory.purity_pure"
+      "QuantumTheory.purity_pure",
+      "_private.LeanCondensedMatter.QuantumTheory.POVM.Born.0.QuantumTheory.hasSum_probabilityKernel_eigenvector"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
@@ -53005,10 +53101,12 @@
       "QuantumTheory.DensityOperator.realTrace_op_eq_one",
       "QuantumTheory.DensityOperator.spectralTrace_op_eq_one",
       "QuantumTheory.DensityOperator.traceNorm_eq_one",
+      "QuantumTheory.hasSum_eigenvalue_mul_energy",
       "QuantumTheory.hasSum_negMulLog_eigenvalues",
-      "QuantumTheory.purity_pure"
+      "QuantumTheory.purity_pure",
+      "_private.LeanCondensedMatter.QuantumTheory.POVM.Born.0.QuantumTheory.hasSum_probabilityKernel_eigenvector"
     ],
-    "compiledConsumerCount": 10,
+    "compiledConsumerCount": 12,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -53439,13 +53537,11 @@
       "QuantumTheory.DensityOperator.expectation_op",
       "QuantumTheory.DensityOperator.expectation_re_nonneg_of_isPositive",
       "QuantumTheory.DensityOperator.hasSum_expectation_term",
-      "QuantumTheory.hasSum_eigenvalue_mul_energy",
       "QuantumTheory.hasSum_probNNReal",
       "QuantumTheory.helmholtzFreeEnergy_eq_components",
       "QuantumTheory.helmholtzFreeEnergy_eq_iff_eq_gibbsState",
       "QuantumTheory.helmholtzFreeEnergy_ge_and_entropy_ne_top",
       "QuantumTheory.isPureDensity_of_purity_eq_one",
-      "_private.LeanCondensedMatter.QuantumTheory.POVM.Born.0.QuantumTheory.hasSum_probabilityKernel_eigenvector",
       "_private.LeanCondensedMatter.QuantumTheory.POVM.Born.0.QuantumTheory.hasSum_probabilityKernel_outcome"
     ],
     "dependencies": [
@@ -53460,16 +53556,14 @@
       "QuantumTheory.DensityOperator.expectation_op",
       "QuantumTheory.DensityOperator.expectation_re_nonneg_of_isPositive",
       "QuantumTheory.DensityOperator.hasSum_expectation_term",
-      "QuantumTheory.hasSum_eigenvalue_mul_energy",
       "QuantumTheory.hasSum_probNNReal",
       "QuantumTheory.helmholtzFreeEnergy_eq_components",
       "QuantumTheory.helmholtzFreeEnergy_eq_iff_eq_gibbsState",
       "QuantumTheory.helmholtzFreeEnergy_ge_and_entropy_ne_top",
       "QuantumTheory.isPureDensity_of_purity_eq_one",
-      "_private.LeanCondensedMatter.QuantumTheory.POVM.Born.0.QuantumTheory.hasSum_probabilityKernel_eigenvector",
       "_private.LeanCondensedMatter.QuantumTheory.POVM.Born.0.QuantumTheory.hasSum_probabilityKernel_outcome"
     ],
-    "compiledConsumerCount": 14,
+    "compiledConsumerCount": 12,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -104459,7 +104553,7 @@
       "_private.LeanCondensedMatter.Analysis.SpecialFunctions.Bessel.RadialMoments.0.BesselRadialMoments.polarFourierHarmonicEnergy_eq_besselJ"
     ],
     "dependencies": [
-      "BesselHypergeometric.besselJ_zero_hasDerivAt",
+      "BesselHypergeometric.besselJ_nat_hasDerivAt",
       "QuantumTheory.Transport.polarFourierZerothAngularKernel_eq_besselJ",
       "QuantumTheory.Transport.polarFourierZerothAngularKernel_hasDerivAt"
     ],
@@ -105016,7 +105110,7 @@
       "QuantumTheory.Transport.polarFourierSecondCosineAngularKernel_neg"
     ],
     "dependencies": [
-      "BesselHypergeometric.besselJ_zero_one_two_recurrence",
+      "BesselHypergeometric.besselJ_nat_recurrence",
       "QuantumTheory.Transport.polarFourierFirstCosineAngularKernel_eq_besselJ",
       "QuantumTheory.Transport.polarFourierFirstCosineAngularKernel_two_mul_eq_zeroth_sub_second",
       "QuantumTheory.Transport.polarFourierSecondCosineAngularKernel_zero",
@@ -110572,11 +110666,10 @@
       "QuantumTheory.helmholtzFreeEnergy_ge_and_entropy_ne_top"
     ],
     "dependencies": [
-      "ContinuousLinearMap.SpectralTraceClass.compact",
-      "ContinuousLinearMap.coe_diagonalExpectationValue_right",
+      "ContinuousLinearMap.IsTraceClass.comp_right",
+      "ContinuousLinearMap.IsTraceClass.hasSum_real_trace_comp_right_eigenvector",
       "QuantumTheory.DensityOperator.expectation_observable",
-      "QuantumTheory.DensityOperator.hasSum_expectation_term",
-      "QuantumTheory.DensityOperator.spectralTraceClass"
+      "QuantumTheory.DensityOperator.isSelfAdjoint"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -184549,6 +184642,95 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {α : Type u_1} {ι : Type u_2} [inst : Fintype α] [inst_1 : LinearOrder α] [inst_2 : Fintype ι]\n  [inst_3 : LinearOrder ι] [inst_4 : LocallyFiniteOrderTop ι] [LocallyFiniteOrderBot ι]\n  (pairing : Combinatorics.PairingOn α) (e : ι ≃ pairing.NormalizedPair),\n  pairing.crossingCount =\n    ∑ k, ∑ l > k, (Combinatorics.crossIndicator✝ pairing e k l + Combinatorics.crossIndicator✝ pairing e l k)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.CrossingParity.0.Combinatorics.crossingCount_eq_sum_Ioi_crossIndicator",
+    "module": "LeanCondensedMatter.Combinatorics.PerfectPairing.CrossingParity",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "Combinatorics.PairingOn.sum_Ioi_pairEndpointInversionCount_mod_two_eq_crossingCount"
+    ],
+    "dependencies": [
+      "Combinatorics.not_crosses_self",
+      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.CrossingParity.0.Combinatorics.crossingCount_eq_sum_sum_crossIndicator"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "Combinatorics.PairingOn.sum_Ioi_pairEndpointInversionCount_mod_two_eq_crossingCount"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {α : Type u_1} {ι : Type u_2} [inst : Fintype α] [inst_1 : LinearOrder α] [inst_2 : Fintype ι]\n  (pairing : Combinatorics.PairingOn α) (e : ι ≃ pairing.NormalizedPair),\n  pairing.crossingCount = ∑ k, ∑ l, Combinatorics.crossIndicator✝ pairing e k l",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.CrossingParity.0.Combinatorics.crossingCount_eq_sum_sum_crossIndicator",
+    "module": "LeanCondensedMatter.Combinatorics.PerfectPairing.CrossingParity",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.CrossingParity.0.Combinatorics.crossingCount_eq_sum_Ioi_crossIndicator"
+    ],
+    "dependencies": [
+      "Combinatorics.PairingOn.crossingCount_eq_sum_crosses"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.CrossingParity.0.Combinatorics.crossingCount_eq_sum_Ioi_crossIndicator"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {n : ℕ} (pairing : Combinatorics.Pairing (n + 1)) (i k : Fin (2 * n)),\n  (i, k) ∈ Combinatorics.PairingOn.pairs pairing.eraseZeroPair ↔\n    (↑(pairing.eraseZeroOrderIso i), ↑(pairing.eraseZeroOrderIso k)) ∈ Combinatorics.PairingOn.pairs pairing",
     "standardAxioms": [
       "Classical.choice",
@@ -184908,95 +185090,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {n : ℕ} {α : Type u_1} [inst : Fintype α] [inst_1 : LinearOrder α] (pairing : Combinatorics.PairingOn α)\n  (e : Fin n ≃ pairing.NormalizedPair),\n  pairing.crossingCount =\n    ∑ k, ∑ l > k, (Combinatorics.crossIndicator✝ pairing e k l + Combinatorics.crossIndicator✝ pairing e l k)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Sign.0.Combinatorics.crossingCount_eq_sum_Ioi_crossIndicator",
-    "module": "LeanCondensedMatter.Combinatorics.PerfectPairing.Sign",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Sign.0.Combinatorics.sum_Ioi_pairEndpointInversionCount_mod_two_eq_crossingCount"
-    ],
-    "dependencies": [
-      "Combinatorics.not_crosses_self",
-      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Sign.0.Combinatorics.crossingCount_eq_sum_sum_crossIndicator"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Sign.0.Combinatorics.sum_Ioi_pairEndpointInversionCount_mod_two_eq_crossingCount"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {n : ℕ} {α : Type u_1} [inst : Fintype α] [inst_1 : LinearOrder α] (pairing : Combinatorics.PairingOn α)\n  (e : Fin n ≃ pairing.NormalizedPair), pairing.crossingCount = ∑ k, ∑ l, Combinatorics.crossIndicator✝ pairing e k l",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Sign.0.Combinatorics.crossingCount_eq_sum_sum_crossIndicator",
-    "module": "LeanCondensedMatter.Combinatorics.PerfectPairing.Sign",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Sign.0.Combinatorics.crossingCount_eq_sum_Ioi_crossIndicator"
-    ],
-    "dependencies": [
-      "Combinatorics.PairingOn.crossingCount_eq_sum_crosses"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Sign.0.Combinatorics.crossingCount_eq_sum_Ioi_crossIndicator"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ {α : Type u_1} [inst : LinearOrder α] (a b : α), a ≠ b → (if a < b then 1 else -1) = (-1) ^ if b < a then 1 else 0",
     "standardAxioms": [
       "propext"
@@ -185202,54 +185295,6 @@
     "completedMention": false,
     "compiledConsumers": [
       "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Sign.0.Combinatorics.sign_eq_prod_blockFactor"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {n : ℕ} {α : Type u_1} [inst : Fintype α] [inst_1 : LinearOrder α] (pairing : Combinatorics.PairingOn α)\n  (e : Fin n ≃ pairing.NormalizedPair),\n  (∑ k, ∑ l > k, Combinatorics.pairEndpointInversionCount ↑(e k) ↑(e l)) % 2 = pairing.crossingCount % 2",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Sign.0.Combinatorics.sum_Ioi_pairEndpointInversionCount_mod_two_eq_crossingCount",
-    "module": "LeanCondensedMatter.Combinatorics.PerfectPairing.Sign",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "Combinatorics.Pairing.sign_eq_of_presentsPairs"
-    ],
-    "dependencies": [
-      "Combinatorics.PairingOn.normalizedPair_endpoints_ne_of_ne",
-      "Combinatorics.PairingOn.pairs_normalized",
-      "Combinatorics.crossesIndicator_add",
-      "Combinatorics.pairEndpointInversionCount_mod_two_eq_crossesIndicator",
-      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Sign.0.Combinatorics.crossingCount_eq_sum_Ioi_crossIndicator"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "Combinatorics.Pairing.sign_eq_of_presentsPairs"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -197272,11 +197317,9 @@
       "QuantumTheory.hasSum_probNNReal"
     ],
     "dependencies": [
-      "ContinuousLinearMap.SpectralTraceClass.compact",
-      "ContinuousLinearMap.coe_diagonalExpectationValue_right",
+      "ContinuousLinearMap.IsTraceClass.hasSum_real_trace_comp_right_eigenvector",
       "QuantumTheory.DensityOperator.expectation_effect_eq_probNNReal",
-      "QuantumTheory.DensityOperator.hasSum_expectation_term",
-      "QuantumTheory.DensityOperator.spectralTraceClass"
+      "QuantumTheory.DensityOperator.isSelfAdjoint"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
