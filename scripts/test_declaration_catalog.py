@@ -4,7 +4,7 @@ import tempfile
 import unittest
 from unittest.mock import patch
 
-from check_declaration_catalog import validate, validate_retained_catalog
+from check_declaration_catalog import validate, validate_completed_catalog, validate_retained_catalog
 from generate_declaration_catalog import collector_source, generate
 from export_module_import_graph import export_modules
 
@@ -68,6 +68,29 @@ class CatalogTests(unittest.TestCase):
             self.assertEqual([mode for _, mode in calls], ["audit", None, "declarations"])
             self.assertEqual(calls[1][0], ["lake", "build", "+LeanCondensedMatter", "+LeanCondensedMatter.Unexported"])
             self.assertEqual(list((root / "scripts").iterdir()), [root / "scripts/TheoremCatalog.lean"])
+
+    def test_completed_catalog_checks_exact_names_and_owners(self):
+        document = (
+            "| Target | Track | Lean declaration(s) | Source |\n"
+            "|---|---|---|---|\n"
+            "| Result | A | `a`, `b` | `LeanCondensedMatter/Fixture.lean` |\n"
+        )
+        rows = fixture()
+        validate_completed_catalog(document, rows)
+        for bad in [
+            document.replace("`a`", "`missing`"),
+            document.replace("Fixture.lean", "Old.lean"),
+            document.replace("`a`, `b`", "`a`, `a`"),
+            document.replace("`a`, `b`", ""),
+            document.replace("`LeanCondensedMatter/Fixture.lean`", ""),
+            document.replace("`LeanCondensedMatter/Fixture.lean`",
+                             "`LeanCondensedMatter/Fixture.lean`, `Extra.lean`"),
+        ]:
+            with self.subTest(bad=bad), self.assertRaises(AssertionError):
+                validate_completed_catalog(bad, rows)
+        rows[0]["generated"] = True
+        with self.assertRaises(AssertionError):
+            validate_completed_catalog(document, rows)
 
     def test_retained_catalog_names_match_compiled_kind_and_mentions(self):
         document = (
