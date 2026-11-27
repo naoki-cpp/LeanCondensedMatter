@@ -1336,28 +1336,6 @@ theorem externalSubsetMomentSeries_eq_signedConnectedSum_localIndices
     ε β hβ g (evenExternalSubsetLabels labels S heven)
       (evenExternalSubsetTimes times S heven)
 
-/-- The source-subset moment is the vacuum-normalized *physical* vertex-Dyson
-correlator for every nonempty even external subset. Multiplication by the
-normalized vacuum partition series recovers the operator insertion series.
-This bridge uses the existing Gibbs/Wick and Cauchy factorization theorems;
-it does not assume the distinct external components are connected. -/
-theorem externalSubsetMomentSeries_mul_normalizedPartition_eq_vertexDysonSeries
-    (ε : Mode → ℝ) (β : ℝ) (hβ : 0 ≤ β)
-    (g : QuarticVertexLabel Mode → ℂ)
-    (labels : Fin (2 * E) → ExternalFieldLabel Mode)
-    (times : Fin (2 * E) → ℝ)
-    (S : Finset (Fin (2 * E))) (hS : S ≠ ∅) (heven : Even S.card) :
-    externalSubsetMomentSeries ε β g labels times S *
-        PowerSeries.normalizeByConstantCoeff
-          (Common.dysonTraceSeries (fermionEnergy ε) β (quarticInteraction g)) =
-      externalInsertionVertexDysonSeries ε β 0 g
-        (evenExternalSubsetLabels labels S heven)
-        (evenExternalSubsetTimes times S heven) := by
-  simpa [externalSubsetMomentSeries, hS, heven] using
-    (externalInsertionVertexDysonSeries_eq_vacuumFree_mul_normalizedDysonPartitionSeries
-      ε β hβ g (evenExternalSubsetLabels labels S heven)
-      (evenExternalSubsetTimes times S heven)).symm
-
 /-- A connected-diagram contribution for each external subset. Odd and empty
 subsets contribute zero. This is defined from the actual integrated diagrams,
 not by a formal inversion of the moment function. -/
