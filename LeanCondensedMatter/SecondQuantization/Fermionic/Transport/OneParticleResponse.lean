@@ -62,15 +62,7 @@ theorem finiteSecondQuantization_heisenbergEvolution
       finiteSecondQuantization (schrodingerGenerator one) := by
     simp only [schrodingerGenerator, hhbar, hH, map_smul]
   simp only [heisenbergEvolution_freePropagatorGroup_apply, freePropagator_eq_exp, hgen]
-  have hone (s : ℝ) : (s : ℂ) • schrodingerGenerator one =
-      s • schrodingerGenerator one :=
-    (RCLike.real_smul_eq_coe_smul (K := ℂ) s (schrodingerGenerator one)).symm
-  have hmany (s : ℝ) :
-      (s : ℂ) • finiteSecondQuantization (schrodingerGenerator one) =
-        s • finiteSecondQuantization (schrodingerGenerator one) :=
-    (RCLike.real_smul_eq_coe_smul (K := ℂ) s
-      (finiteSecondQuantization (schrodingerGenerator one))).symm
-  rw [hone (-t), hone t, hmany (-t), hmany t]
+  simp only [← RCLike.real_smul_eq_coe_smul (K := ℂ)]
   simpa only [neg_smul, neg_neg] using
     finiteSecondQuantization_exp_conjugate (schrodingerGenerator one) A (-t)
 
@@ -91,38 +83,18 @@ theorem adiabaticFrequencyDomainSusceptibility_oneParticleFock
       (finiteSecondQuantization A) (finiteSecondQuantization B) ω η =
       adiabaticFrequencyDomainSusceptibility (freePropagatorGroup one) one.hbar
         (QuantumTheory.pure ψ).toNormalizedExpectation A B ω η := by
-  let ρ := (QuantumTheory.pure (oneParticleFockState ψ)).toNormalizedExpectation
-  let U := freePropagatorGroup many
-  let u := freePropagatorGroup one
   have hkernel (t : ℝ) :
-      retardedTimeDifferenceKernel U many.hbar ρ
+      retardedTimeDifferenceKernel (freePropagatorGroup many) many.hbar
+        (QuantumTheory.pure (oneParticleFockState ψ)).toNormalizedExpectation
         (finiteSecondQuantization A) (finiteSecondQuantization B) t =
-      retardedTimeDifferenceKernel u one.hbar
+      retardedTimeDifferenceKernel (freePropagatorGroup one) one.hbar
         (QuantumTheory.pure ψ).toNormalizedExpectation A B t := by
-    by_cases ht : 0 ≤ t
-    · rw [retardedTimeDifferenceKernel_eq_commutatorSusceptibility_of_nonneg
-        U many.hbar ρ _ _ ht,
-        retardedTimeDifferenceKernel_eq_commutatorSusceptibility_of_nonneg
-          u one.hbar (QuantumTheory.pure ψ).toNormalizedExpectation A B ht]
-      simp only [commutatorSusceptibility, heisenbergEvolution_zero, hhbar]
-      rw [← finiteSecondQuantization_heisenbergEvolution one many hH hhbar A t,
-        ← finiteSecondQuantization_lie]
-      change (Complex.I / (one.hbar : ℂ)) *
-          (QuantumTheory.pure (oneParticleFockState ψ)).toNormalizedExpectation
-            (finiteSecondQuantization ⁅heisenbergEvolution u t A, B⁆) =
-        (Complex.I / (one.hbar : ℂ)) *
-          (QuantumTheory.pure ψ).toNormalizedExpectation ⁅heisenbergEvolution u t A, B⁆
-      simp only [DensityOperator.toNormalizedExpectation_apply, DensityOperator.expectation_pure]
-      exact congrArg (fun z : ℂ => (Complex.I / (one.hbar : ℂ)) * z)
-        (inner_finiteSecondQuantization_oneParticle
-          ⁅heisenbergEvolution u t A, B⁆ ψ.1 ψ.1)
-    · rw [retardedTimeDifferenceKernel_eq_zero_of_neg U many.hbar ρ _ _ (lt_of_not_ge ht),
-        retardedTimeDifferenceKernel_eq_zero_of_neg u one.hbar
-          (QuantumTheory.pure ψ).toNormalizedExpectation A B (lt_of_not_ge ht)]
-  change adiabaticFrequencyDomainSusceptibility U many.hbar ρ
-    (finiteSecondQuantization A) (finiteSecondQuantization B) ω η =
-    adiabaticFrequencyDomainSusceptibility u one.hbar
-      (QuantumTheory.pure ψ).toNormalizedExpectation A B ω η
+    simp only [retardedTimeDifferenceKernel, retardedSusceptibility,
+      commutatorSusceptibility, heisenbergEvolution_zero, hhbar]
+    rw [← finiteSecondQuantization_heisenbergEvolution one many hH hhbar A t,
+      ← finiteSecondQuantization_lie]
+    simp only [DensityOperator.toNormalizedExpectation_apply, DensityOperator.expectation_pure,
+      oneParticleFockState, inner_finiteSecondQuantization_oneParticle]
   unfold adiabaticFrequencyDomainSusceptibility adiabaticFrequencySusceptibilityIntegrand
   simp_rw [hkernel]
 
