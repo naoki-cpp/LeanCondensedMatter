@@ -1,4 +1,8 @@
 import LeanCondensedMatter.Transport.Core.ConductivityNormalization
+import LeanCondensedMatter.Transport.KuboSymmetry.FiniteTime
+import LeanCondensedMatter.QuantumTheory.Gibbs.State
+import LeanCondensedMatter.QuantumTheory.DensityOperator.Finite
+import LeanCondensedMatter.QuantumTheory.LinearResponse.Expectation.Density
 import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.ChargeCurrentChannel
 import LeanCondensedMatter.QuantumTheory.LinearResponse.Frequency.InfiniteTime
 
@@ -92,6 +96,95 @@ theorem hasInfiniteObservationTimeLimit_directionalConductivity_of_stationary_po
         (fun _ : ℝ => finiteVolumeConductivityNormalization volume ω η)
         Filter.atTop
         (nhds (finiteVolumeConductivityNormalization volume ω η)))
+
+/-- A finite affine site symmetry preserving the hopping amplitudes constrains
+the physically normalized Gibbs Kubo conductivity, including the mixed Peierls
+contact. The real matrix R describes pullback on the chosen directional
+functionals. Neither current covariance, state invariance, dynamical invariance,
+nor integrability is an independent hypothesis. The system's Hamiltonian must
+be the same hopping Hamiltonian used in the current. No infinite-time or DC
+limit is taken. -/
+theorem finiteTimeGeometricConductivity_linearMixing
+    {I : Type*} [Fintype I]
+    (volume : PositiveVolume)
+    (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
+    (geometry : LatticeGeometry Site E) (direction : I → E →ₗ[ℝ] ℝ)
+    (K : LocallyFiniteHopping Site) (q β ω η T : ℝ) (hT : 0 ≤ T)
+    (hHamiltonian : system.hamiltonian.1 = boundedHoppingHamiltonian K)
+    (p : Equiv.Perm Site) (L : E →ₗ[ℝ] E) (a : E)
+    (hposition : ∀ x, geometry.position (p x) = L (geometry.position x) + a)
+    (hK : ∀ x y, K.amplitude (p x) (p y) = K.amplitude x y)
+    (R : I → I → ℝ)
+    (hDirection : ∀ i, (direction i).comp L = ∑ k, R i k • direction k) :
+    let σ := finiteTimeVectorPotentialConductivityTensor (freePropagatorGroup system)
+      (fun i => boundedDirectionalCurrent geometry (direction i) (system.hbar : ℂ) (q : ℂ) K)
+      (fun j => boundedDirectionalCurrent geometry (direction j) (system.hbar : ℂ) (q : ℂ) K)
+      (fun i j => boundedMixedDirectionalContact geometry (direction i) (direction j)
+        (system.hbar : ℂ) (q : ℂ) K)
+      volume system.hbar ω η T
+      (QuantumTheory.gibbsState system.hamiltonian β).toNormalizedExpectation
+    ∀ i j, (∑ k, ∑ l, ((R i k : ℂ) * (R j l : ℂ)) * σ.component k l) =
+      σ.component i j := by
+  classical
+  obtain ⟨W, hUnit⟩ := exists_unitary_sitePermutation p
+  let Φ := W.conjStarAlgEquiv
+  let J := fun i => boundedDirectionalCurrent geometry (direction i)
+    (system.hbar : ℂ) (q : ℂ) K
+  let C := fun i j => boundedMixedDirectionalContact geometry (direction i) (direction j)
+    (system.hbar : ℂ) (q : ℂ) K
+  let ρ := QuantumTheory.gibbsState system.hamiltonian β
+  have hH : Φ system.hamiltonian.1 = system.hamiltonian.1 := by
+    rw [hHamiltonian]
+    exact boundedHoppingHamiltonian_siteCovariance K p Φ.toAlgEquiv.toLinearMap hK hUnit
+  have hHinv : Φ.symm system.hamiltonian.1 = system.hamiltonian.1 := by
+    calc
+      _ = Φ.symm (Φ system.hamiltonian.1) := congrArg Φ.symm hH.symm
+      _ = _ := Φ.symm_apply_apply _
+  have hU := freePropagatorGroup_fixed_of_hamiltonian_fixed system Φ.symm hHinv
+  have hρ : Φ.symm ρ.op = ρ.op :=
+    QuantumTheory.gibbsState_op_fixed_of_hamiltonian_fixed system.hamiltonian β Φ.symm hHinv
+  have hω (A : FiniteLatticeHilbertFock Site →L[ℂ] FiniteLatticeHilbertFock Site) :
+      ρ.toNormalizedExpectation (Φ.symm A) = ρ.toNormalizedExpectation A := by
+    have hρ' : W.symm.conjStarAlgEquiv ρ.op = ρ.op := by
+      simpa only [Φ, LinearIsometryEquiv.symm_conjStarAlgEquiv] using hρ
+    simpa only [QuantumTheory.DensityOperator.toNormalizedExpectation_apply,
+      Φ, LinearIsometryEquiv.symm_conjStarAlgEquiv] using
+      ρ.expectation_conjStarAlgEquiv_of_fixed W.symm hρ' A
+  have hJ (i : I) : Φ.symm (J i) = ∑ k, (R i k : ℂ) • J k := by
+    have hcov := boundedDirectionalCurrent_siteCovariance geometry (direction i)
+      (system.hbar : ℂ) (q : ℂ) K p L a hposition Φ.toAlgEquiv.toLinearMap hK hUnit
+    change Φ (boundedDirectionalCurrent geometry ((direction i).comp L)
+      (system.hbar : ℂ) (q : ℂ) K) = J i at hcov
+    calc
+      _ = boundedDirectionalCurrent geometry ((direction i).comp L)
+          (system.hbar : ℂ) (q : ℂ) K := by
+        rw [← hcov, Φ.symm_apply_apply]
+      _ = _ := by
+        rw [hDirection i]
+        exact boundedDirectionalCurrent_sum geometry direction (R i)
+          (system.hbar : ℂ) (q : ℂ) K
+  have hC (i j : I) : Φ.symm (C i j) =
+      ∑ k, ∑ l, ((R i k : ℂ) * (R j l : ℂ)) • C k l := by
+    have hcov := boundedMixedDirectionalContact_siteCovariance geometry (direction i) (direction j)
+      (system.hbar : ℂ) (q : ℂ) K p L a hposition Φ.toAlgEquiv.toLinearMap hK hUnit
+    change Φ (boundedMixedDirectionalContact geometry ((direction i).comp L)
+      ((direction j).comp L) (system.hbar : ℂ) (q : ℂ) K) = C i j at hcov
+    calc
+      _ = boundedMixedDirectionalContact geometry ((direction i).comp L)
+          ((direction j).comp L) (system.hbar : ℂ) (q : ℂ) K := by
+        rw [← hcov, Φ.symm_apply_apply]
+      _ = _ := by
+        rw [hDirection i, hDirection j]
+        exact boundedMixedDirectionalContact_sum geometry direction direction (R i) (R j)
+          (system.hbar : ℂ) (q : ℂ) K
+  intro σ i j
+  exact finiteTimeVectorPotentialConductivityTensor_linearMixing
+    (freePropagatorGroup system) Φ.symm J J C
+    (fun i k => (R i k : ℂ)) (fun j l => (R j l : ℂ)) hU volume
+    system.hbar ω η T ρ.toNormalizedExpectation hω hJ hJ hC
+    (fun k l => intervalIntegrable_finiteTimeRetardedIntegrand
+      system ρ.toNormalizedExpectation (J k) (J l) ω η T hT) i j
+
 end
 end Transport
 end Fermionic
