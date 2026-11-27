@@ -6,10 +6,9 @@ set_option linter.style.header false
 /-!
 # Product domains for completed fermionic operators
 
-This file starts the explicit product-domain layer for the completed fermionic representation.
-The free Hamiltonian is an unbounded diagonal `LinearPMap`, so compositions with bounded ladder
-operators are only formed after proving that the ladder operators preserve its maximal weighted
-`ℓ²` domain.
+The free Hamiltonian is an unbounded diagonal `LinearPMap`. This module proves invariance
+of its maximal weighted `ℓ²` domain under the bounded ladder operators and defines
+the corresponding operator products.
 
 For one fermionic mode `i`, creation and annihilation shift the occupation energy by the finite
 scalar `ε i`.  The generic stability of weighted diagonal domains under a finite scalar shift is
