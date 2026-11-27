@@ -165,60 +165,6 @@ noncomputable def ExternalInsertionBlockLayout.interactionOrderDecompositionEqui
     (fun B => by simp)
     (layout.interactionEquiv (Finset.univ : Finset (Fin N)))
 
-/-- The interaction vertex at each shuffled global slot is exactly
-the vertex identified by the corresponding local block order. The
-ambient order is arbitrary, so this applies to the actual ordered Dyson
-integrand, not just the canonical increasing vertex order. -/
-theorem ExternalInsertionBlockLayout.interactionOrderDecomposition_slotVertex
-    (layout : ExternalInsertionBlockLayout E N)
-    (order : QuarticVertexOrder (Finset.univ : Finset (Fin N)))
-    (B : layout.partition.parts)
-    (j : Fin (layout.interactionBlock (Finset.univ : Finset (Fin N)) B).card) :
-    order ((layout.interactionOrderDecompositionEquiv order).2.slotEquiv ⟨B, j⟩) =
-      (layout.interactionEquiv (Finset.univ : Finset (Fin N))).symm
-        ⟨B, (layout.interactionOrderDecompositionEquiv order).1 B j⟩ := by
-  classical
-  let e := layout.interactionOrderDecompositionEquiv
-  let data := e order
-  let family : layout.partition.parts → Type :=
-    fun C => ↥(layout.interactionBlock (Finset.univ : Finset (Fin N)) C)
-  let size : layout.partition.parts → ℕ :=
-    fun C => (layout.interactionBlock (Finset.univ : Finset (Fin N)) C).card
-  let ambient := layout.interactionEquiv (Finset.univ : Finset (Fin N))
-  have hassemble :
-      assembleFamilyOrderOfSize family size ambient data.1 data.2 = order :=
-    e.symm_apply_apply order
-  change order (data.2.slotEquiv ⟨B, j⟩) =
-    ambient.symm ⟨B, data.1 B j⟩
-  calc
-    order (data.2.slotEquiv ⟨B, j⟩) =
-      (assembleFamilyOrderOfSize family size ambient data.1 data.2)
-        (data.2.slotEquiv ⟨B, j⟩) := by rw [hassemble]
-    _ = ambient.symm ⟨B, data.1 B j⟩ :=
-      assembleFamilyOrderOfSize_slot family size ambient data.1 data.2 B j
-
-/-- Every shuffled slot in an arbitrary global interaction order belongs
-to its specified physical external-source block; interleavings cannot
-move quartic vertices across assigned blocks. -/
-theorem ExternalInsertionBlockLayout.interactionOrderDecomposition_slot_owner
-    (layout : ExternalInsertionBlockLayout E N)
-    (order : QuarticVertexOrder (Finset.univ : Finset (Fin N)))
-    (B : layout.partition.parts)
-    (j : Fin (layout.interactionBlock (Finset.univ : Finset (Fin N)) B).card) :
-    layout.interactionOwner
-      (order ((layout.interactionOrderDecompositionEquiv order).2.slotEquiv ⟨B, j⟩)).1 = B := by
-  classical
-  rw [layout.interactionOrderDecomposition_slotVertex order B j]
-  let v := (layout.interactionOrderDecompositionEquiv order).1 B j
-  have hfst :=
-    congrArg Sigma.fst
-      ((layout.interactionEquiv (Finset.univ : Finset (Fin N))).apply_symm_apply
-        (⟨B, v⟩ : Σ C : layout.partition.parts,
-          ↥(layout.interactionBlock (Finset.univ : Finset (Fin N)) C)))
-  change layout.interactionOwner
-    ((layout.interactionEquiv (Finset.univ : Finset (Fin N))).symm ⟨B, v⟩).1 = B at hfst
-  exact hfst
-
 /-- For an *arbitrary* global interaction-time order, the inverse
 order-preserving shuffle recovers the true physical owner of the vertex
 occupying each ordered-simplex slot. This is stronger than the canonical
@@ -231,17 +177,12 @@ theorem ExternalInsertionBlockLayout.interactionOrderDecomposition_owner
     ((layout.interactionOrderDecompositionEquiv order).2.slotEquiv.symm v).1 =
       layout.interactionOwner (order v).1 := by
   classical
-  let σ := (layout.interactionOrderDecompositionEquiv order).2
-  rcases hslot : σ.slotEquiv.symm v with ⟨B, j⟩
-  have hback : σ.slotEquiv ⟨B, j⟩ = v := by
-    calc
-      σ.slotEquiv ⟨B, j⟩ =
-          σ.slotEquiv (σ.slotEquiv.symm v) :=
-        congrArg σ.slotEquiv hslot.symm
-      _ = v := σ.slotEquiv.apply_symm_apply v
-  have howner := layout.interactionOrderDecomposition_slot_owner order B j
-  change layout.interactionOwner (order (σ.slotEquiv ⟨B, j⟩)).1 = B at howner
-  simpa only [hback] using howner.symm
+  exact familyOrderDecompositionEquivOfSize_owner
+    (fun B : layout.partition.parts =>
+      ↥(layout.interactionBlock (Finset.univ : Finset (Fin N)) B))
+    (fun B => (layout.interactionBlock (Finset.univ : Finset (Fin N)) B).card)
+    (fun B => by simp)
+    (layout.interactionEquiv (Finset.univ : Finset (Fin N))) order v
 
 /-- Extract the canonical interaction-slot shuffle of an independently
 assigned external-block layout from the already proved global-order
@@ -352,21 +293,6 @@ theorem ExternalInsertionBlockLayout.externalBlockLayout_assembleDiagram_eq
       (Finset.univ : Finset (Fin N)) F hconnected anchor
       ⟨v, Finset.mem_univ v⟩
 
-
-
-/-- The physical block layout depends only on the labelled diagram,
-not on which proof of absence of vacuum components is supplied. -/
-theorem ExternalInsertionDiagram.externalBlockLayout_congr
-    {ExternalLabel InternalLabel : Type*}
-    {d e : ExternalInsertionDiagram ExternalLabel InternalLabel E N
-      (Finset.univ : Finset (Fin N))}
-    (h : d = e)
-    (hVacD : HasNoVacuumComponent d.vertexGraph)
-    (hVacE : HasNoVacuumComponent e.vertexGraph)
-    (anchor : Fin (2 * E)) :
-    d.externalBlockLayout hVacD anchor = e.externalBlockLayout hVacE anchor := by
-  subst e
-  rfl
 
 
 end Common
