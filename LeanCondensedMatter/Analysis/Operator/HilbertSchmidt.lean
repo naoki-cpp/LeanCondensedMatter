@@ -111,9 +111,7 @@ theorem hasSum_norm_sq_adjoint_apply {ι κ : Type*} (d : HilbertBasis ι ℂ H)
     (hd : HasSum (fun i => ‖T (d i)‖ ^ 2) a) :
     HasSum (fun j => ‖(ContinuousLinearMap.adjoint T) (f j)‖ ^ 2) a := by
   have hself (x : H) : (inner ℂ x x : ℂ) = ((‖x‖ ^ 2 : ℝ) : ℂ) := by
-    calc
-      inner ℂ x x = (‖x‖ : ℂ) ^ 2 := inner_self_eq_norm_sq_to_K x
-      _ = ((‖x‖ ^ 2 : ℝ) : ℂ) := (Complex.ofReal_pow _ _).symm
+    rw [inner_self_eq_norm_sq_to_K, Complex.ofReal_pow]
   have hdiag : HasSum (fun i => (inner ℂ (T (d i)) (T (d i)) : ℂ)) (a : ℂ) := by
     simp_rw [hself]
     exact Complex.hasSum_ofReal.mpr hd
@@ -447,17 +445,13 @@ private theorem norm_sub_finiteRangeApprox_le {ι : Type*} (d : HilbertBasis ι 
   refine (T - finiteRangeApprox d T s).opNorm_le_bound (Real.sqrt_nonneg tail) fun x => ?_
   rw [← sq_le_sq₀ (norm_nonneg _) (mul_nonneg (Real.sqrt_nonneg tail) (norm_nonneg x)),
     mul_pow, Real.sq_sqrt htail_nonneg]
-  have hparse :
-      HasSum
-        (fun i : ι => ‖(inner ℂ (d i) ((T - finiteRangeApprox d T s) x) : ℂ)‖ ^ 2)
-        (‖(T - finiteRangeApprox d T s) x‖ ^ 2) := by
-    exact d.hasSum_norm_sq_inner ((T - finiteRangeApprox d T s) x)
   have hzero :
       ∑ i ∈ s, ‖(inner ℂ (d i) ((T - finiteRangeApprox d T s) x) : ℂ)‖ ^ 2 = 0 := by
     apply Finset.sum_eq_zero
     intro i hi
     simp [sub_apply, inner_sub_right, inner_finiteRangeApprox_apply, hi]
-  have htail := s.hasSum_iff_compl.mp hparse
+  have htail := s.hasSum_iff_compl.mp
+    (d.hasSum_norm_sq_inner ((T - finiteRangeApprox d T s) x))
   rw [hzero, sub_zero] at htail
   exact hasSum_le (fun i => by
     rw [sub_apply, inner_sub_right, inner_finiteRangeApprox_apply, ite_eq_right i.2, sub_zero,

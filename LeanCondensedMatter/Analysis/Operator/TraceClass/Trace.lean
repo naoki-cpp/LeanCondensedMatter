@@ -84,10 +84,8 @@ theorem exists_hilbertSchmidt_factorization_normSq_eq_traceNorm
     rw [← ContinuousLinearMap.star_eq_adjoint, norm_star]
     exact hUnorm
   have hAnorm_le : hA.normSq ≤ hT.traceNorm := by
-    calc
-      hA.normSq ≤ hS.normSq :=
-        hS.normSq_comp_right_le_of_norm_le_one (ContinuousLinearMap.adjoint U) hAdjUnorm
-      _ = hT.traceNorm := hSnorm
+    simpa only [hSnorm] using
+      hS.normSq_comp_right_le_of_norm_le_one (ContinuousLinearMap.adjoint U) hAdjUnorm
   have hlower := hT.traceNorm_le_sqrt_normSq_mul_of_factorization hA hS hfactor
   have hmean : Real.sqrt hA.normSq * Real.sqrt hS.normSq ≤
       (hA.normSq + hS.normSq) / 2 := by
@@ -293,9 +291,8 @@ theorem traceNorm_eq_realTrace {T : H →L[ℂ] H}
     (hT : IsTraceClass T) (hpos : T.IsPositive) :
     hT.traceNorm = hT.realTrace hpos.isSelfAdjoint := by
   obtain ⟨w, d, -⟩ := exists_hilbertBasis (𝕜 := ℂ) (E := H)
-  exact
-    (hT.hasSum_diagonalExpectationValue_eq_traceNorm hpos d).unique
-      (hT.hasSum_realTrace hpos.isSelfAdjoint d)
+  exact (hT.hasSum_diagonalExpectationValue_eq_traceNorm hpos d).unique
+    (hT.hasSum_realTrace hpos.isSelfAdjoint d)
 
 /-- A nonzero positive trace-class operator has strictly positive lossless real trace. -/
 theorem realTrace_pos {T : H →L[ℂ] H}
@@ -348,14 +345,8 @@ theorem diagonalOp_isTraceClass (b : HilbertBasis ι ℂ H) (a : ι → ℝ)
     IsTraceClass (diagonalOp b (fun i => (a i : ℂ))) := by
   let T : H →L[ℂ] H := diagonalOp b (fun i => (a i : ℂ))
   let hpos : T.IsPositive := diagonalOp_isPositive b a ha ha_nonneg
-  have hdiag :
-      Summable (fun i => diagonalExpectationValue T hpos.isSelfAdjoint (b i)) := by
-    have hpoint :
-        (fun i => diagonalExpectationValue T hpos.isSelfAdjoint (b i)) = a := by
-      funext i
-      simpa [T] using diagonalExpectationValue_diagonalOp b a ha ha_nonneg i
-    rw [hpoint]
-    exact Summable.of_norm ha
+  have hdiag : Summable (fun i => diagonalExpectationValue T hpos.isSelfAdjoint (b i)) :=
+    (Summable.of_norm ha).congr fun i => (diagonalExpectationValue_diagonalOp b a ha ha_nonneg i).symm
   apply (isTraceClass_iff_isTraceClassWrt b T).mpr
   have hnonneg : 0 ≤ T := nonneg_iff_isPositive.mpr hpos
   have habs : CFC.abs T = T := CFC.abs_of_nonneg T hnonneg
