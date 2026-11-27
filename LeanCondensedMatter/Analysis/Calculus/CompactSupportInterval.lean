@@ -38,27 +38,30 @@ theorem integral_strictThreshold_mul {a b c : ℝ} (f : ℝ → ℝ)
     _ = ∫ x in a..c, f x := intervalIntegral.integral_indicator ⟨ha, hb⟩
 
 
-/-- A product supported inside the interval has the same interval and full-line integrals.
-No integrability assertion is needed for this equality of total integrals. -/
-theorem integral_mul_eq_integral_of_tsupport_subset_Ioo
-    {a b : ℝ} {f g : ℝ → ℝ}
+/-- A pairing that vanishes when its first argument is zero has the same interval
+and full-line integrals if the first argument is supported inside the interval.
+No continuity or integrability assertion is needed for this equality of total integrals. -/
+theorem integral_pairing_eq_integral_of_tsupport_subset_Ioo
+    {E F G : Type*} [Zero E] [NormedAddCommGroup G] [NormedSpace ℝ G]
+    {a b : ℝ} {f : ℝ → E} {g : ℝ → F}
+    (B : E → F → G) (hzero : ∀ y, B 0 y = 0)
     (hf : tsupport f ⊆ Ioo a b) :
-    (∫ x in a..b, f x * g x) = ∫ x, f x * g x := by
+    (∫ x in a..b, B (f x) (g x)) = ∫ x, B (f x) (g x) := by
   apply intervalIntegral.integral_eq_integral_of_support_subset
-  exact (Function.support_mul_subset_left f g).trans
-    (subset_closure.trans (hf.trans fun _ hx => ⟨hx.1, hx.2.le⟩))
-
-/-- The derivative has topological support contained in that of the original function. -/
-theorem integral_deriv_mul_eq_integral_of_tsupport_subset_Ioo
-    {a b : ℝ} {f g : ℝ → ℝ}
-    (hf : tsupport f ⊆ Ioo a b) :
-    (∫ x in a..b, deriv f x * g x) = ∫ x, deriv f x * g x :=
-  integral_mul_eq_integral_of_tsupport_subset_Ioo (tsupport_deriv_subset.trans hf)
+  intro x hx
+  have hfx : x ∈ Function.support f := by
+    by_contra hn
+    have hz : f x = 0 := by
+      by_contra hne
+      exact hn hne
+    exact hx (by rw [hz, hzero])
+  have h := hf (subset_closure hfx)
+  exact ⟨h.1, h.2.le⟩
 
 /-- A function whose topological support is strictly inside an interval vanishes at both
 endpoints. -/
 theorem endpoint_values_eq_zero_of_tsupport_subset_Ioo
-    {a b : ℝ} {f : ℝ → ℝ}
+    {E : Type*} [Zero E] {a b : ℝ} {f : ℝ → E}
     (hf : tsupport f ⊆ Ioo a b) :
     f a = 0 ∧ f b = 0 := by
   constructor
