@@ -7,7 +7,8 @@ set_option linter.style.header false
 
 Every position of a perfect pairing occurs exactly once among the two endpoints of its normalized
 pairs. This file packages that fact as an explicit equivalence, used to reindex sums over
-pair-of-pair endpoint comparisons as sums over the ambient paired positions.
+pair-of-pair endpoint comparisons as sums over the ambient paired positions. Partner-preserving
+order embeddings also induce embeddings of normalized pairs, with an image characterization.
 -/
 
 namespace Combinatorics
@@ -245,5 +246,48 @@ theorem PairingOn.normalizedPair_endpoints_ne_of_ne {α : Type*} [Fintype α] [L
   · simpa using pairing.pairEndpoint_ne_of_normalizedPair_ne p q hpq (0 : Fin 2) (1 : Fin 2)
   · simpa using pairing.pairEndpoint_ne_of_normalizedPair_ne p q hpq (1 : Fin 2) (0 : Fin 2)
   · simpa using pairing.pairEndpoint_ne_of_normalizedPair_ne p q hpq (1 : Fin 2) (1 : Fin 2)
+
+/-- A partner-intertwining order embedding sends normalized pairs injectively to normalized pairs. -/
+noncomputable def PairingOn.normalizedPairEmbedding {α β : Type*}
+    [Fintype α] [LinearOrder α] [Fintype β] [LinearOrder β]
+    (small : PairingOn α) (big : PairingOn β) (e : α ↪o β)
+    (hpartner : ∀ i, big.partner (e i) = e (small.partner i)) :
+    small.NormalizedPair ↪ big.NormalizedPair where
+  toFun pr :=
+    ⟨(e pr.1.1, e pr.1.2),
+      (small.mem_pairs_map_iff big e hpartner pr.1.1 pr.1.2).2 pr.2⟩
+  inj' := by
+    intro p q hpq
+    apply Subtype.ext
+    apply Prod.ext
+    · apply e.injective
+      exact congrArg (fun z => z.1.1) hpq
+    · apply e.injective
+      exact congrArg (fun z => z.1.2) hpq
+
+/-- A normalized pair whose first endpoint lies in the range of a partner-preserving
+order embedding comes from a unique local normalized pair. This is the image
+characterization of the pairing restriction, without a cardinality argument. -/
+theorem PairingOn.exists_normalizedPairEmbedding_eq_of_firstEndpoint
+    {α β : Type*}
+    [Fintype α] [LinearOrder α] [Fintype β] [LinearOrder β]
+    (small : PairingOn α) (big : PairingOn β) (e : α ↪o β)
+    (hpartner : ∀ i, big.partner (e i) = e (small.partner i))
+    (pr : big.NormalizedPair)
+    (hfirst : ∃ i, e i = pr.1.1) :
+    ∃ q : small.NormalizedPair,
+      small.normalizedPairEmbedding big e hpartner q = pr := by
+  obtain ⟨a, ha⟩ := hfirst
+  have hpr := (big.mem_pairs_iff pr.1.1 pr.1.2).mp pr.2
+  have hb : e (small.partner a) = pr.1.2 := by
+    calc
+      e (small.partner a) = big.partner (e a) := (hpartner a).symm
+      _ = big.partner pr.1.1 := by rw [ha]
+      _ = pr.1.2 := hpr.2
+  have hab : a < small.partner a := e.lt_iff_lt.mp (by rw [ha, hb]; exact hpr.1)
+  refine ⟨⟨(a, small.partner a), (small.mem_pairs_iff a (small.partner a)).mpr
+    ⟨hab, rfl⟩⟩, ?_⟩
+  apply Subtype.ext
+  exact Prod.ext ha hb
 
 end Combinatorics
