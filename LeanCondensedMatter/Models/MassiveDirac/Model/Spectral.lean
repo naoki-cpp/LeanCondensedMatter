@@ -7,8 +7,8 @@ set_option linter.style.header false
 /-!
 # Spectral projectors for the two-dimensional massive Dirac model
 
-This file supplies the gauge-independent band-projector layer missing between the concrete
-massive-Dirac Hamiltonian and the generic Berry-geometry force-matrix API.
+The gauge-independent band projectors connect the massive-Dirac Hamiltonian to the
+generic spectral and Berry-geometry APIs.
 
 For band sign `s = ±1` and positive-energy magnitude `E`, the spectral projector candidate is
 
