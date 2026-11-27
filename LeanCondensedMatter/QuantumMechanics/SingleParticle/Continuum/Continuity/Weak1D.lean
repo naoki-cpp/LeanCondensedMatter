@@ -67,8 +67,14 @@ theorem schrodinger_weak_continuity_interval
           (fun x => probabilityCurrentValue1D ℏ κ (ψ x) (ψx x)) -
         weightedBoundaryCurrent1D a b test
           (fun x => probabilityCurrentValue1D ℏ κ (ψ x) (ψx x)) := by
+  have hcurrent : ∀ x ∈ [[a, b]],
+      HasDerivAt (fun y => probabilityCurrentValue1D ℏ κ (ψ y) (ψx y))
+        (probabilityCurrentDivergenceValue1D ℏ κ (ψ x) (ψxx x)) x := by
+    intro x hx
+    exact hasDerivAt_probabilityCurrentValue1D ℏ κ
+      (hψre x hx) (hψim x hx) (hψxre x hx) (hψxim x hx)
   have hweak := ConservationLaw.weak_continuity_interval_of_pointwise
-    (a := a) (b := b)
+    (ContinuousLinearMap.mul ℝ ℝ) (a := a) (b := b)
     (test := test) (testDerivative := testDerivative)
     (current := fun x => probabilityCurrentValue1D ℏ κ (ψ x) (ψx x))
     (currentDerivative := fun x =>
@@ -78,13 +84,11 @@ theorem schrodinger_weak_continuity_interval
     (by intro x
         exact probability_continuity_balance_of_schrodinger
           ℏ κ (potential x) (ψ x) (ψt x) (ψxx x) hℏ (hschrodinger x))
-    htest
-    (by intro x hx
-        exact hasDerivAt_probabilityCurrentValue1D ℏ κ
-          (hψre x hx) (hψim x hx) (hψxre x hx) (hψxim x hx))
-    htestIntegrable hcurrentIntegrable
+    htest hcurrent
+    (htestIntegrable.mul_continuousOn (HasDerivAt.continuousOn hcurrent))
+    (hcurrentIntegrable.continuousOn_mul (HasDerivAt.continuousOn htest))
   simpa [intervalSmearedDensityRate1D, intervalSmearedCurrentPairing1D,
-    weightedBoundaryCurrent1D] using hweak
+    weightedBoundaryCurrent1D, ContinuousLinearMap.mul_apply'] using hweak
 
 /-- Schrödinger weak continuity for test functions vanishing at the interval endpoints. -/
 theorem schrodinger_weak_continuity_interval_zero_boundary

@@ -1,5 +1,7 @@
 import LeanCondensedMatter.Analysis.Calculus.CompactSupportInterval
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.IntegrationByParts
+import Mathlib.Analysis.Calculus.Deriv.Mul
+import Mathlib.Tactic.Abel
 
 set_option linter.style.header false
 
@@ -18,35 +20,39 @@ noncomputable section
 open MeasureTheory Set
 open scoped Interval
 
-/-- A pointwise one-dimensional conservation equation implies the interval weak balance.
-
-The result is
-
-`∫ test * densityRate = ∫ test' * flux - (test(b) * flux(b) - test(a) * flux(a))`.
--/
+/-- A pointwise conservation equation implies a weak balance for any continuous bilinear
+pairing of test data with currents and density rates. Only the paired derivative terms need
+to be interval integrable; no multiplication on the spaces is required. -/
 theorem weak_continuity_interval_of_pointwise
-    {A : Type*} [NormedRing A] [NormedAlgebra ℝ A] [CompleteSpace A]
-    (a b : ℝ)
-    {test testDerivative current currentDerivative densityTimeDerivative : ℝ → A}
+    {E F G : Type*}
+    [NormedAddCommGroup E] [NormedSpace ℝ E]
+    [NormedAddCommGroup F] [NormedSpace ℝ F]
+    [NormedAddCommGroup G] [NormedSpace ℝ G] [CompleteSpace G]
+    (B : E →L[ℝ] F →L[ℝ] G) (a b : ℝ)
+    {test testDerivative : ℝ → E}
+    {current currentDerivative densityTimeDerivative : ℝ → F}
     (hcontinuity : ∀ x, densityTimeDerivative x + currentDerivative x = 0)
     (htest : ∀ x ∈ [[a, b]], HasDerivAt test (testDerivative x) x)
     (hcurrent : ∀ x ∈ [[a, b]], HasDerivAt current (currentDerivative x) x)
-    (htestIntegrable : IntervalIntegrable testDerivative volume a b)
-    (hcurrentIntegrable : IntervalIntegrable currentDerivative volume a b) :
-    (∫ x in a..b, test x * densityTimeDerivative x) =
-      (∫ x in a..b, testDerivative x * current x) -
-        (test b * current b - test a * current a) := by
+    (htestPair : IntervalIntegrable (fun x => B (testDerivative x) (current x)) volume a b)
+    (hcurrentPair : IntervalIntegrable (fun x => B (test x) (currentDerivative x)) volume a b) :
+    (∫ x in a..b, B (test x) (densityTimeDerivative x)) =
+      (∫ x in a..b, B (testDerivative x) (current x)) -
+        (B (test b) (current b) - B (test a) (current a)) := by
   have hdensity : densityTimeDerivative = fun x => -currentDerivative x := by
     funext x
     calc
-      densityTimeDerivative x =
-          densityTimeDerivative x + currentDerivative x - currentDerivative x :=
-        (add_sub_cancel_right _ _).symm
+      densityTimeDerivative x = densityTimeDerivative x + currentDerivative x -
+          currentDerivative x := (add_sub_cancel_right _ _).symm
       _ = -currentDerivative x := by rw [hcontinuity x, zero_sub]
+  have hsum := intervalIntegral.integral_eq_sub_of_hasDerivAt
+    (fun x hx => B.hasDerivAt_of_bilinear (fun _ => htest x hx) (fun _ => hcurrent x hx))
+    (hcurrentPair.add htestPair)
+  rw [intervalIntegral.integral_add hcurrentPair htestPair] at hsum
   rw [hdensity]
-  simp only [mul_neg, intervalIntegral.integral_neg,
-    intervalIntegral.integral_mul_deriv_eq_deriv_mul
-      htest hcurrent htestIntegrable hcurrentIntegrable, neg_sub]
+  simp only [map_neg, intervalIntegral.integral_neg]
+  rw [← hsum]
+  abel
 
 /-- A strict support window removes the boundary term and identifies the interval
 weak balance with the whole-space identity. -/
