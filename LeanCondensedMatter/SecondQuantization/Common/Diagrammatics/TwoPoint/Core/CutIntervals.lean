@@ -9,11 +9,9 @@ For two ordered external-separating cuts, the difference of their source-side
 component blocks is the finite region between those cuts. It is a nonempty
 region whenever the source-side inclusion is strict.
 
-Most importantly, all propagators other than the two boundary cuts preserve
-membership in this region. This establishes the closure needed to restrict
-the ambient pairing to each eventual 1PI block, once the boundary lines have
-been turned into external legs. The present module does not yet perform that
-relabeling or claim the resulting diagram is 1PI.
+All propagators other than the two boundary cuts preserve membership in this region.
+This closure supports restriction of the ambient pairing with the boundary cuts as
+external legs; the relabeling and the 1PI property require separate results.
 -/
 
 namespace SecondQuantization
@@ -631,7 +629,7 @@ theorem TwoPointDiagram.earlierCut_endpoints_opposite_interval_sides
 
 /-- Choose the interval-facing leg of a paired cut by membership in the
 canonical intermediate vertex region, rather than by a path orientation.
-For a boundary cut, the previous lemmas show that the choice is unique. -/
+For a boundary cut, the interval-facing leg is unique. -/
 noncomputable def TwoPointDiagram.intervalFacingLeg
     (d : TwoPointDiagram ExternalLabel InternalLabel N S)
     (earlier later cut : Fin (2 * (2 * S.card + 1))) :
