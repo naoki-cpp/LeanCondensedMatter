@@ -212,22 +212,6 @@ theorem externalInsertionVertexDysonSeries_eq_externalInsertionDysonSeries
   exact externalInsertionVertexDysonCoefficient_eq_externalInsertionDysonCoefficient
     ε β g externalLabel externalTime n
 
-/-- At μ = 0, the interaction-picture vertex Dyson formal series contains precisely the
-vacuum-free external contribution times the normalized vacuum partition
-series. Externally supported but mutually disconnected components remain. -/
-theorem externalInsertionVertexDysonSeries_eq_vacuumFree_mul_normalizedDysonPartitionSeries
-    {E : ℕ} (ε : Mode → ℝ) (β : ℝ) (hβ : 0 ≤ β)
-    (g : QuarticVertexLabel Mode → ℂ)
-    (externalLabel : Fin (2 * E) → ExternalFieldLabel Mode)
-    (externalTime : Fin (2 * E) → ℝ) :
-    externalInsertionVertexDysonSeries ε β 0 g externalLabel externalTime =
-      vacuumFreeExternalInsertionDysonSeries ε β g externalLabel externalTime *
-        PowerSeries.normalizeByConstantCoeff
-          (Common.dysonTraceSeries (fermionEnergy ε) β (quarticInteraction g)) := by
-  rw [externalInsertionVertexDysonSeries_eq_externalInsertionDysonSeries]
-  exact externalInsertionDysonSeries_eq_vacuumFree_mul_normalizedDysonPartitionSeries
-    ε β hβ g externalLabel externalTime
-
 /-- The physical-H vertex series at arbitrary μ factors into its effective-dispersion
 vacuum-free diagram series (with the physical external-field scalar) and normalized
 grand-canonical vacuum series. No new Wick or shuffle expansion is required. -/
@@ -244,7 +228,8 @@ theorem externalInsertionVertexDysonSeries_eq_shiftedVacuumFree_mul_normalizedDy
           (Common.dysonTraceSeries (fermionEnergy (fun k => ε k - μ)) β
             (quarticInteraction g)) := by
   rw [externalInsertionVertexDysonSeries_eq_shiftedDispersion,
-    externalInsertionVertexDysonSeries_eq_vacuumFree_mul_normalizedDysonPartitionSeries
+    externalInsertionVertexDysonSeries_eq_externalInsertionDysonSeries,
+    externalInsertionDysonSeries_eq_vacuumFree_mul_normalizedDysonPartitionSeries
       (fun k => ε k - μ) β hβ, mul_assoc]
 
 end Fermionic
