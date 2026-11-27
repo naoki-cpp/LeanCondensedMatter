@@ -55,9 +55,9 @@ theorem bandProjector_eq_pauliCombination
 algebraic `E = 0` value of the definition. -/
 theorem sum_bandProjector_eq_one (v m px py : ℝ) :
     ∑ band : TwoBand, bandProjector band v m px py = 1 := by
-  simp only [sum_band, bandProjector, bandSign_lower, bandSign_upper]
-  push_cast
-  module
+  simpa only [sum_band, bandProjector, bandSign_lower, bandSign_upper, Complex.ofReal_div,
+    Complex.ofReal_neg, Complex.ofReal_one, neg_neg] using
+    (Algebra.quadratic_projector_add_neg (hamiltonian v m px py) (energy v m px py : ℂ) (-1 : ℂ))
 
 /-- Either band projector and its opposite-band partner resolve the identity. -/
 theorem bandProjector_add_oppositeBand (band : TwoBand) (v m px py : ℝ) :
@@ -80,7 +80,7 @@ theorem hamiltonian_mul_bandProjector (band : TwoBand) (v m px py : ℝ)
     (hamiltonian v m px py) (((energy v m px py : ℝ) : ℂ))
     0 (((bandSign band : ℝ) : ℂ)) (by exact_mod_cast hE)
     (by simpa only [← energy_sq, Complex.ofReal_pow] using hamiltonian_mul_self v m px py)
-    (by cases band <;> norm_num [bandSign])
+    (by exact_mod_cast bandSign_sq band)
   simpa [bandProjector, bandEnergy] using h
 
 /-- Away from the Dirac degeneracy, the matrix band projectors are a complete
@@ -97,7 +97,7 @@ theorem bandProjector_completeOrthogonalIdempotents
       (by exact_mod_cast hE)
       (by simpa only [← energy_sq, Complex.ofReal_pow] using
         hamiltonian_mul_self v m px py)
-      (by intro band; cases band <;> norm_num [bandSign])
+      (by intro band; exact_mod_cast bandSign_sq band)
       (by intro i j hij; cases i <;> cases j <;> simp_all [bandSign])
       (by simpa only [bandProjector, Complex.ofReal_div] using
         sum_bandProjector_eq_one v m px py))
