@@ -34,8 +34,10 @@ theorem numberOperator_basisState (i : Mode) (n : Occupation Mode) :
 theorem numberOperator_eq_diagonalOperator (i : Mode) :
     numberOperator i =
       Finsupp.diagonalOperator (fun n : Occupation Mode => (n i : ℂ)) := by
-  exact Common.eq_diagonalOperator_of_basisState _ _
-    (fun n => numberOperator_basisState i n)
+  apply Common.linearMap_ext_basisState
+  intro n
+  rw [Common.diagonalOperator_basisState]
+  exact numberOperator_basisState i n
 
 /-- The reordering identity `a_i a_i† = id + N_i`. -/
 theorem annihilate_comp_create_self (i : Mode) :

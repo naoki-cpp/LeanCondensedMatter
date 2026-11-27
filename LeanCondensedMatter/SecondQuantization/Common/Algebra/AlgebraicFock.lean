@@ -106,42 +106,18 @@ theorem matrixCoeff_ext {Config : Type*}
   intro m
   exact h m n
 
-/-- **`matrixCoeff` under composition, as a sum over `B`'s finite support**:
-`(AB)_{mn} = Σ_{k ∈ supp(B|n⟩)} A_{mk} B_{kn}`. This holds for arbitrary `Config`, because an
-`AlgebraicFock Config` vector is finitely supported even when `Config` itself is infinite. -/
-theorem matrixCoeff_comp_support {Config : Type*}
-    (A B : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (m n : Config) :
-    matrixCoeff (A.comp B) m n =
-      ∑ k ∈ (B (basisState n)).support, matrixCoeff A m k * matrixCoeff B k n := by
-  change A (B (basisState n)) m =
-    ∑ k ∈ (B (basisState n)).support, matrixCoeff A m k * (B (basisState n)) k
-  exact Finsupp.linearMap_apply_eq_finsetSum_of_support_subset A (B (basisState n))
-    (B (basisState n)).support (subset_refl _) m
-
 /-- **`matrixCoeff` under composition is ordinary matrix multiplication** on a finite
 configuration type: `(AB)_{mn} = Σₖ A_{mk} B_{kn}`. -/
 theorem matrixCoeff_comp {Config : Type*} [Fintype Config]
     (A B : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (m n : Config) :
     matrixCoeff (A.comp B) m n = ∑ k : Config, matrixCoeff A m k * matrixCoeff B k n := by
-  rw [matrixCoeff_comp_support]
-  apply Finset.sum_subset (Finset.subset_univ _)
-  intro k _ hk
-  have hz : matrixCoeff B k n = 0 := by
-    by_contra h
-    exact hk (Finsupp.mem_support_iff.mpr h)
-  rw [hz, mul_zero]
+  exact Finsupp.linearMap_apply_eq_finsetSum_of_support_subset A (B (basisState n))
+    Finset.univ (Finset.subset_univ _) m
 
 @[simp]
 theorem diagonalOperator_basisState {Config : Type*} (a : Config → ℂ) (c : Config) :
     Finsupp.diagonalOperator a (basisState c) = a c • basisState c :=
   Finsupp.diagonalOperator_single a c
-
-/-- An operator diagonal on occupation-basis states equals the corresponding diagonal operator. -/
-theorem eq_diagonalOperator_of_basisState {Config : Type*}
-    (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (w : Config → ℂ)
-    (h : ∀ n, A (basisState n) = w n • basisState n) :
-    A = Finsupp.diagonalOperator w :=
-  linearMap_ext_basisState fun n => (h n).trans (diagonalOperator_basisState w n).symm
 
 open scoped Classical in
 theorem matrixCoeff_diagonalOperator {Config : Type*} (a : Config → ℂ) (m n : Config) :

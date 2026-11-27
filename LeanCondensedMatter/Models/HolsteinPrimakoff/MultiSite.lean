@@ -130,8 +130,9 @@ private theorem spinZ_comm_spinZ (hbar : ℝ) (twiceSpin : ℕ) (i j : Mode) :
   let w (k : Mode) (n : Occupation Mode) : ℂ :=
     (hbar : ℂ) * ((twiceSpin : ℂ) / 2 - n k)
   have hd (k : Mode) : spinZ hbar twiceSpin k = Finsupp.diagonalOperator (w k) := by
-    apply Common.eq_diagonalOperator_of_basisState
+    apply Common.linearMap_ext_basisState
     intro n
+    rw [Common.diagonalOperator_basisState]
     exact spinZ_basisState hbar twiceSpin k n
   rw [hd i, hd j]
   exact (Commute.all (w i) (w j)).map Finsupp.diagonalOperator

@@ -49,8 +49,9 @@ basis-diagonal operator API. -/
 theorem numberOperator_eq_diagonalOperator (i : Mode) :
     numberOperator i =
       Finsupp.diagonalOperator (fun n : Occupation Mode => if i ∈ n then (1 : ℂ) else 0) := by
-  apply Common.eq_diagonalOperator_of_basisState
+  apply Common.linearMap_ext_basisState
   intro n
+  rw [Common.diagonalOperator_basisState]
   by_cases hi : i ∈ n <;>
     simpa [basisState, hi] using (numberOperator_basisState i n)
 
