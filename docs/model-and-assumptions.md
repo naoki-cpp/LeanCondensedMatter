@@ -136,9 +136,11 @@ thermal state is the vacuum.
 The statistics-independent normalized moment boundary is expressed by
 `Combinatorics.NormalizedSetFunction`, `Combinatorics.powerSeriesMomentSetFunction`, and
 `Combinatorics.MultiplicativeWeight`. The zero-source linked-cluster theorem uses these objects
-directly. A distinct source-functional representation is not currently part of the API;
-pre-normalized external insertions and arbitrary higher-point source expansions remain to be
-supplied and may introduce one when concrete source semantics require it.
+directly. Finite-mode fermionic external-subset moments and connected source cumulants
+are formal Dyson series, with Koszul-signed partition weights. The arbitrary-external
+physical-H connected identity assumes `0 ≤ β` and allows arbitrary real `μ`; see the
+[linked-cluster roadmap](roadmaps/linked-cluster-theorem.md#arbitrary-finite-external-insertions-and-source-cumulants).
+A distinct analytic source-functional representation and source derivatives remain open.
 
 The formal/combinatorial core does not assert convergence of an infinite-volume perturbation series
 or existence of a thermodynamic limit.
