@@ -225,6 +225,7 @@ noncomputable def pairedCurrentTimedEventOperator {n : ℕ}
   | .inr v => Common.interactionPicture (fermionEnergy ε)
       (quarticVertexOperator (q v)) (σ v)
 
+omit [Fintype Mode] in
 private theorem pairedCurrentTimedEventOperator_eq_blockProduct {n : ℕ}
     (ε : Mode → ℝ) (τ τ' : ℝ) (i j k l : Mode)
     (q : Fin n → QuarticVertexLabel Mode) (σ : Fin n → ℝ)
@@ -244,6 +245,7 @@ private theorem pairedCurrentTimedEventOperator_eq_blockProduct {n : ℕ}
       simp [Common.pairedExternalEventBlock, pairedCurrentTimedEventOperator,
         externalInsertionTimedEventOperator]
 
+omit [Fintype Mode] in
 /-- At every perturbative order, the signed four-field interaction-picture
 product is the ordinary stable time-ordered product of two even bilinear
 events and the full quartic interaction vertices. No fermionic sign is
