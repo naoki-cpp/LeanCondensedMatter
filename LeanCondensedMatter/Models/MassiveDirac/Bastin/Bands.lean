@@ -33,16 +33,10 @@ canonical direction-indexed object. -/
 noncomputable def bastinBandPairContribution
     (μ ν : Fin 2) (source target : TwoBand)
     (e v m px py probeEnergy broadening : ℝ) : ℂ :=
-  let r := scalarResolventCoefficient
-    (retardedSpectralParameter probeEnergy broadening)
-    (bandEnergy source v m px py)
-  let a := scalarResolventCoefficient
-    (advancedSpectralParameter probeEnergy broadening)
-    (bandEnergy source v m px py)
-  let d := scalarSpectralDifferenceCoefficient
+  scalarBastinBandPairContribution (bandEnergy source v m px py)
     (bandEnergy target v m px py) probeEnergy broadening
-  r ^ 2 * d * currentBandBlockTrace μ ν source target e v m px py -
-    a ^ 2 * d * currentBandBlockTrace ν μ source target e v m px py
+    (currentBandBlockTrace μ ν source target e v m px py)
+    (currentBandBlockTrace ν μ source target e v m px py)
 
 /-- Diagonal/intraband part of the finite-broadening projector Hall trace. -/
 noncomputable def diagonalBastinTraceContribution
@@ -67,7 +61,7 @@ theorem projectorBastinTraceIntegrand_eq_band_sum
   unfold projectorBastinTraceIntegrand
   dsimp only [projectorBastinOperatorIntegrand, bastinOperatorKernelFromPropagators]
   unfold projectorResolvent
-  simpa only [bastinBandPairContribution, currentBandBlockTrace,
+  simpa only [bastinBandPairContribution, scalarBastinBandPairContribution, currentBandBlockTrace,
     scalarSpectralDifferenceCoefficient] using
     (finiteProjectorBastinTrace_eq_band_sum
       (P := fun band : TwoBand => bandProjectorOperator band v m px py)

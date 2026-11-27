@@ -37,11 +37,8 @@ theorem projectorResolventCoefficient_targetOffset_oppositeBand
         (bandEnergy (oppositeBand band) v m px py) =
       ((((interbandEnergyGap band v m px py + offset : ℝ) : ℂ) +
           ((side.regulator broadening : ℝ) : ℂ) * Complex.I))⁻¹ := by
-  unfold scalarResolventCoefficient spectralParameter spectralParameterOfRegulator
-    interbandEnergyGap
-  congr 1
-  push_cast
-  ring
+  rw [← targetCenteredSourceCoefficient_eq]
+  exact scalarResolventCoefficient_targetCentered side _ _ _ _
 
 /-- The regular current factor multiplying the target-band Lorentzian pole in an interband Bastin
 pair for an ordered current-direction pair `(μ,ν)`. The source band is fixed to the opposite band. -/
@@ -68,7 +65,7 @@ theorem bastinBandPairContribution_opposite_source_eq_lorentzian
           (probeEnergy - bandEnergy band v m px py) broadening : ℂ) *
         interbandSpectatorCurrentFactor μ ν
           band e v m px py probeEnergy broadening := by
-  unfold bastinBandPairContribution interbandSpectatorCurrentFactor
+  unfold bastinBandPairContribution scalarBastinBandPairContribution interbandSpectatorCurrentFactor
   dsimp
   rw [scalarSpectralDifferenceCoefficient_eq_lorentzian
     (bandEnergy band v m px py) probeEnergy broadening hbroadening]
