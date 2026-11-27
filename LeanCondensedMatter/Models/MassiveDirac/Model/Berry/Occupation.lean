@@ -1,5 +1,6 @@
 import LeanCondensedMatter.Models.MassiveDirac.Model.Berry.Symmetry
 import LeanCondensedMatter.QuantumTheory.Occupation.BandFilling
+import LeanCondensedMatter.Analysis.Calculus.CompactSupportInterval
 import Mathlib.Analysis.SpecialFunctions.Integrals.Basic
 
 set_option linter.style.header false
@@ -124,24 +125,10 @@ theorem zeroTemperatureOccupiedBandBerryWeightCutoff_upper_eq
     zeroTemperatureOccupiedBandBerryWeightCutoff .upper m εF Λ =
       energyShellBerryWeight .upper m |m| εF := by
   unfold zeroTemperatureOccupiedBandBerryWeightCutoff energyShellBerryWeight
-  calc
-    (∫ ε in |m|..Λ,
-        zeroTemperatureOccupiedRadialBerryEnergyDensity .upper m εF ε) =
-        ∫ ε in |m|..Λ,
-          Set.indicator {ε : ℝ | ε ≤ εF}
-            (fun ε => radialBerryEnergyDensity .upper m ε) ε := by
-      apply intervalIntegral.integral_congr_ae
-      filter_upwards [(volume : Measure ℝ).ae_ne εF] with ε hne
-      intro _
-      unfold zeroTemperatureOccupiedRadialBerryEnergyDensity bandStateOccupation
-      simp only [bandSign, one_mul]
-      by_cases hlt : ε < εF
-      · simp [zeroTemperatureOccupation, hlt, hlt.le]
-      · have hgt : εF < ε :=
-          lt_of_le_of_ne (not_lt.mp hlt) (Ne.symm hne)
-        simp [zeroTemperatureOccupation, hlt, not_le.mpr hgt]
-    _ = ∫ ε in |m|..εF, radialBerryEnergyDensity .upper m ε := by
-      exact intervalIntegral.integral_indicator ⟨hmF, hFΛ⟩
+  simpa only [zeroTemperatureOccupiedRadialBerryEnergyDensity, bandStateOccupation,
+    bandSign, one_mul, zeroTemperatureOccupation] using
+    (MeasureTheory.integral_strictThreshold_mul
+      (fun ε => radialBerryEnergyDensity .upper m ε) hmF hFΛ)
 
 /-- The canonical occupation-derived finite-cutoff response keeps the single-cone regulator term
 explicit, including the massless endpoint where both sides vanish. -/
