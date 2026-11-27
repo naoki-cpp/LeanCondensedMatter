@@ -71,22 +71,9 @@ theorem exactSecondMoment_eq_scalarSecondMomentStrength_smul
       ensemble.scalarSecondMomentStrength amplitude • kernel := by
   rw [ensemble.exactSecondMoment_eq_average]
   unfold scalarSecondMomentStrength
-  change
-    (∑ ω, (ensemble.probability ω : ℂ) •
-      ((ensemble.impurityPotential ω).1 * kernel *
-        (ensemble.impurityPotential ω).1)) =
-      (∑ ω, (ensemble.probability ω : ℂ) * (amplitude ω : ℂ) ^ 2) • kernel
-  calc
-    (∑ ω, (ensemble.probability ω : ℂ) •
-      ((ensemble.impurityPotential ω).1 * kernel *
-        (ensemble.impurityPotential ω).1)) =
-        ∑ ω, ((ensemble.probability ω : ℂ) * (amplitude ω : ℂ) ^ 2) • kernel := by
-      apply Finset.sum_congr rfl
-      intro ω _
-      rw [hscalar ω]
-      simp only [smul_mul_assoc, mul_smul_comm, one_mul, mul_one, smul_smul, pow_two]
-    _ = (∑ ω, (ensemble.probability ω : ℂ) * (amplitude ω : ℂ) ^ 2) • kernel := by
-      rw [← Finset.sum_smul]
+  simp only [hscalar]
+  exact LinearMap.finiteWeightedAverage_sandwich_scalar ensemble.probability
+    (fun ω => (amplitude ω : ℂ)) kernel
 
 /-- The exact second-moment action preserves subtraction because its canonical realization is
 complex-linear. -/
@@ -116,20 +103,9 @@ theorem exactSecondMoment_mul_of_commutes
     (hcommute : ∀ ω, Commute (ensemble.impurityPotential ω).1 right) :
     ensemble.exactSecondMoment kernel * right =
       ensemble.exactSecondMoment (kernel * right) := by
-  rw [ensemble.exactSecondMoment_eq_average,
-    ensemble.exactSecondMoment_eq_average]
-  change (∑ ω, (ensemble.probability ω : ℂ) •
-      ((ensemble.impurityPotential ω).1 * kernel * (ensemble.impurityPotential ω).1)) * right =
-    ∑ ω, (ensemble.probability ω : ℂ) •
-      ((ensemble.impurityPotential ω).1 * (kernel * right) * (ensemble.impurityPotential ω).1)
-  rw [Finset.sum_mul]
-  apply Finset.sum_congr rfl
-  intro ω _
-  rw [smul_mul_assoc]
-  apply congrArg (fun operator : H →L[ℂ] H => (ensemble.probability ω : ℂ) • operator)
-  simpa only [mul_assoc] using
-    congrArg (fun operator : H →L[ℂ] H =>
-      (ensemble.impurityPotential ω).1 * kernel * operator) (hcommute ω).eq
+  rw [ensemble.exactSecondMoment_eq_average, ensemble.exactSecondMoment_eq_average]
+  exact LinearMap.finiteWeightedAverage_sandwich_mul ensemble.probability
+    (fun ω => (ensemble.impurityPotential ω).1) kernel right hcommute
 
 /-- Left equivariance of the exact second moment. If every impurity potential commutes with a
 bounded operator, that operator can be moved through the left side of the second-moment action. -/
@@ -138,20 +114,9 @@ theorem mul_exactSecondMoment_of_commutes
     (hcommute : ∀ ω, Commute (ensemble.impurityPotential ω).1 left) :
     left * ensemble.exactSecondMoment kernel =
       ensemble.exactSecondMoment (left * kernel) := by
-  rw [ensemble.exactSecondMoment_eq_average,
-    ensemble.exactSecondMoment_eq_average]
-  change left * (∑ ω, (ensemble.probability ω : ℂ) •
-      ((ensemble.impurityPotential ω).1 * kernel * (ensemble.impurityPotential ω).1)) =
-    ∑ ω, (ensemble.probability ω : ℂ) •
-      ((ensemble.impurityPotential ω).1 * (left * kernel) * (ensemble.impurityPotential ω).1)
-  rw [Finset.mul_sum]
-  apply Finset.sum_congr rfl
-  intro ω _
-  rw [mul_smul_comm]
-  apply congrArg (fun operator : H →L[ℂ] H => (ensemble.probability ω : ℂ) • operator)
-  simpa only [mul_assoc] using
-    congrArg (fun operator : H →L[ℂ] H =>
-      operator * kernel * (ensemble.impurityPotential ω).1) (hcommute ω).eq.symm
+  rw [ensemble.exactSecondMoment_eq_average, ensemble.exactSecondMoment_eq_average]
+  exact LinearMap.mul_finiteWeightedAverage_sandwich ensemble.probability
+    (fun ω => (ensemble.impurityPotential ω).1) kernel left hcommute
 
 /-- Exact centered-disorder property `E[Vω] = 0`. The second moment is computed canonically and is
 not stored as additional data. -/

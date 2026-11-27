@@ -257,7 +257,8 @@ must be supplied explicitly.
 The module needs neither a Fock-space realization nor spectral data or a conductivity definition;
 an eigenbasis density state can be supplied by a physical consumer.
 
-`Disorder.Moments` owns the exact second-moment action `C₂(X) = E[Vω X Vω]` and centered-disorder
+`Analysis.Algebra.FiniteAverage` owns the scalar and commuting-element identities for
+weighted algebra sandwiches. `Disorder.Moments` owns the exact second-moment action `C₂(X) = E[Vω X Vω]` and centered-disorder
 data.
 
 `Disorder.AveragedSelfEnergy` is exact: at arbitrary nonzero `γ` it proves invertibility of the exact
