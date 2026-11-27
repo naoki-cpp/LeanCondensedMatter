@@ -1157,7 +1157,8 @@ theorem orderedExternalInsertionTimedEvents_paired {n : ℕ}
                 externalInsertionTimedEventBeforeOrEqual, stableTimedEventBeforeOrEqual_iff,
                 externalInsertionTimedEventTime, externalInsertionTimedEventRank,
                 pairedExternalTimes] <;>
-              (first | omega | aesop (add safe tactic (by omega)))
+              (first | omega | exact Fin.le_def.mpr (by decide) |
+                aesop (add safe tactic (by omega)))
         | inr b =>
             fin_cases a <;>
               simp_all [block, pairedExternalEventBlock, r₁, r₂, times,
