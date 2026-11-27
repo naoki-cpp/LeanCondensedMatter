@@ -4,7 +4,7 @@
       "name": "LeanCondensedMatter.Analysis.Algebra.FiniteAverage",
       "sourceFile": "LeanCondensedMatter/Analysis/Algebra/FiniteAverage.lean",
       "imports": [],
-      "externalImportCount": 6
+      "externalImportCount": 7
     },
     {
       "name": "LeanCondensedMatter.Analysis.Algebra.FinsuppCoordinates",
@@ -27,6 +27,12 @@
       "externalImportCount": 4
     },
     {
+      "name": "LeanCondensedMatter.Analysis.Algebra.Restriction",
+      "sourceFile": "LeanCondensedMatter/Analysis/Algebra/Restriction.lean",
+      "imports": [],
+      "externalImportCount": 2
+    },
+    {
       "name": "LeanCondensedMatter.Analysis.Algebra.ScalarExchange",
       "sourceFile": "LeanCondensedMatter/Analysis/Algebra/ScalarExchange.lean",
       "imports": [],
@@ -44,6 +50,7 @@
       "imports": [
         "LeanCondensedMatter.Analysis.Algebra.FiniteAverage",
         "LeanCondensedMatter.Analysis.Algebra.QuadraticNormalization",
+        "LeanCondensedMatter.Analysis.Algebra.Restriction",
         "LeanCondensedMatter.Analysis.Algebra.ScalarExchange",
         "LeanCondensedMatter.Analysis.Algebra.SymmetrizedProduct"
       ],
@@ -98,7 +105,7 @@
       "imports": [
         "LeanCondensedMatter.Analysis.Calculus.CompactSupportInterval"
       ],
-      "externalImportCount": 1
+      "externalImportCount": 3
     },
     {
       "name": "LeanCondensedMatter.Analysis.ConservationLaw",
@@ -336,6 +343,14 @@
       "externalImportCount": 11
     },
     {
+      "name": "LeanCondensedMatter.Analysis.Matrix.PauliRotation",
+      "sourceFile": "LeanCondensedMatter/Analysis/Matrix/PauliRotation.lean",
+      "imports": [
+        "LeanCondensedMatter.Analysis.Matrix.Pauli"
+      ],
+      "externalImportCount": 2
+    },
+    {
       "name": "LeanCondensedMatter.Analysis.Matrix.PlanarGram",
       "sourceFile": "LeanCondensedMatter/Analysis/Matrix/PlanarGram.lean",
       "imports": [
@@ -350,6 +365,7 @@
         "LeanCondensedMatter.Analysis.Matrix.CartesianProjectors",
         "LeanCondensedMatter.Analysis.Matrix.FinTwoCharpoly",
         "LeanCondensedMatter.Analysis.Matrix.Pauli",
+        "LeanCondensedMatter.Analysis.Matrix.PauliRotation",
         "LeanCondensedMatter.Analysis.Matrix.PlanarGram"
       ],
       "externalImportCount": 0
@@ -361,16 +377,16 @@
       "externalImportCount": 8
     },
     {
+      "name": "LeanCondensedMatter.Analysis.ODE.ScalarDecay",
+      "sourceFile": "LeanCondensedMatter/Analysis/ODE/ScalarDecay.lean",
+      "imports": [],
+      "externalImportCount": 3
+    },
+    {
       "name": "LeanCondensedMatter.Analysis.Operator.AdjointConjugation",
       "sourceFile": "LeanCondensedMatter/Analysis/Operator/AdjointConjugation.lean",
       "imports": [],
       "externalImportCount": 4
-    },
-    {
-      "name": "LeanCondensedMatter.Analysis.Operator.AlgebraRestriction",
-      "sourceFile": "LeanCondensedMatter/Analysis/Operator/AlgebraRestriction.lean",
-      "imports": [],
-      "externalImportCount": 2
     },
     {
       "name": "LeanCondensedMatter.Analysis.Operator.Antiunitary",
@@ -606,7 +622,6 @@
       "sourceFile": "LeanCondensedMatter/Analysis/Operator.lean",
       "imports": [
         "LeanCondensedMatter.Analysis.Operator.AdjointConjugation",
-        "LeanCondensedMatter.Analysis.Operator.AlgebraRestriction",
         "LeanCondensedMatter.Analysis.Operator.Antiunitary",
         "LeanCondensedMatter.Analysis.Operator.BerryGeometry",
         "LeanCondensedMatter.Analysis.Operator.Compact",
@@ -1023,7 +1038,7 @@
       "sourceFile": "LeanCondensedMatter/Combinatorics/PerfectPairing/CrossingEraseZero.lean",
       "imports": [
         "LeanCondensedMatter.Combinatorics.PerfectPairing.Crossing",
-        "LeanCondensedMatter.Combinatorics.PerfectPairing.EraseZero"
+        "LeanCondensedMatter.Combinatorics.PerfectPairing.FirstPair"
       ],
       "externalImportCount": 3
     },
@@ -1037,27 +1052,6 @@
       "externalImportCount": 2
     },
     {
-      "name": "LeanCondensedMatter.Combinatorics.PerfectPairing.Embedding",
-      "sourceFile": "LeanCondensedMatter/Combinatorics/PerfectPairing/Embedding.lean",
-      "imports": [
-        "LeanCondensedMatter.Combinatorics.PerfectPairing.Core",
-        "LeanCondensedMatter.Combinatorics.PerfectPairing.Crossing",
-        "LeanCondensedMatter.Combinatorics.PerfectPairing.PairEndpoints"
-      ],
-      "externalImportCount": 0
-    },
-    {
-      "name": "LeanCondensedMatter.Combinatorics.PerfectPairing.EraseZero",
-      "sourceFile": "LeanCondensedMatter/Combinatorics/PerfectPairing/EraseZero.lean",
-      "imports": [
-        "LeanCondensedMatter.Combinatorics.FiniteIndex.DeletedPositions",
-        "LeanCondensedMatter.Combinatorics.PerfectPairing.Core",
-        "LeanCondensedMatter.Combinatorics.PerfectPairing.PairEndpoints",
-        "LeanCondensedMatter.Combinatorics.PerfectPairing.Restriction"
-      ],
-      "externalImportCount": 0
-    },
-    {
       "name": "LeanCondensedMatter.Combinatorics.PerfectPairing.Examples.Four",
       "sourceFile": "LeanCondensedMatter/Combinatorics/PerfectPairing/Examples/Four.lean",
       "imports": [
@@ -1066,27 +1060,26 @@
       "externalImportCount": 0
     },
     {
+      "name": "LeanCondensedMatter.Combinatorics.PerfectPairing.FirstPair",
+      "sourceFile": "LeanCondensedMatter/Combinatorics/PerfectPairing/FirstPair.lean",
+      "imports": [
+        "LeanCondensedMatter.Combinatorics.FiniteIndex.DeletedPositions",
+        "LeanCondensedMatter.Combinatorics.PerfectPairing.Core",
+        "LeanCondensedMatter.Combinatorics.PerfectPairing.PairEndpoints",
+        "LeanCondensedMatter.Combinatorics.PerfectPairing.Restriction"
+      ],
+      "externalImportCount": 1
+    },
+    {
       "name": "LeanCondensedMatter.Combinatorics.PerfectPairing.FirstPairRecursion",
       "sourceFile": "LeanCondensedMatter/Combinatorics/PerfectPairing/FirstPairRecursion.lean",
       "imports": [
         "LeanCondensedMatter.Combinatorics.ExchangeSign",
         "LeanCondensedMatter.Combinatorics.FiniteIndex.DeletedPositions",
         "LeanCondensedMatter.Combinatorics.PerfectPairing.CrossingEraseZero",
-        "LeanCondensedMatter.Combinatorics.PerfectPairing.EraseZero",
-        "LeanCondensedMatter.Combinatorics.PerfectPairing.InsertFirstPair"
+        "LeanCondensedMatter.Combinatorics.PerfectPairing.FirstPair"
       ],
       "externalImportCount": 0
-    },
-    {
-      "name": "LeanCondensedMatter.Combinatorics.PerfectPairing.InsertFirstPair",
-      "sourceFile": "LeanCondensedMatter/Combinatorics/PerfectPairing/InsertFirstPair.lean",
-      "imports": [
-        "LeanCondensedMatter.Combinatorics.FiniteIndex.DeletedPositions",
-        "LeanCondensedMatter.Combinatorics.PerfectPairing.Core",
-        "LeanCondensedMatter.Combinatorics.PerfectPairing.EraseZero",
-        "LeanCondensedMatter.Combinatorics.PerfectPairing.Transport"
-      ],
-      "externalImportCount": 1
     },
     {
       "name": "LeanCondensedMatter.Combinatorics.PerfectPairing.InvolutionCard",
@@ -1117,9 +1110,9 @@
       "name": "LeanCondensedMatter.Combinatorics.PerfectPairing.Restriction",
       "sourceFile": "LeanCondensedMatter/Combinatorics/PerfectPairing/Restriction.lean",
       "imports": [
-        "LeanCondensedMatter.Combinatorics.PerfectPairing.Transport"
+        "LeanCondensedMatter.Combinatorics.PerfectPairing.Core"
       ],
-      "externalImportCount": 1
+      "externalImportCount": 2
     },
     {
       "name": "LeanCondensedMatter.Combinatorics.PerfectPairing.Sign",
@@ -1137,7 +1130,7 @@
       "imports": [
         "LeanCondensedMatter.Combinatorics.PerfectPairing.Restriction"
       ],
-      "externalImportCount": 1
+      "externalImportCount": 0
     },
     {
       "name": "LeanCondensedMatter.Combinatorics.PerfectPairing.SplitCrossing",
@@ -1160,19 +1153,11 @@
       "externalImportCount": 0
     },
     {
-      "name": "LeanCondensedMatter.Combinatorics.PerfectPairing.Transport",
-      "sourceFile": "LeanCondensedMatter/Combinatorics/PerfectPairing/Transport.lean",
-      "imports": [
-        "LeanCondensedMatter.Combinatorics.PerfectPairing.Core"
-      ],
-      "externalImportCount": 0
-    },
-    {
       "name": "LeanCondensedMatter.Combinatorics.PerfectPairing.VertexGraph",
       "sourceFile": "LeanCondensedMatter/Combinatorics/PerfectPairing/VertexGraph.lean",
       "imports": [
+        "LeanCondensedMatter.Combinatorics.PerfectPairing.Core",
         "LeanCondensedMatter.Combinatorics.PerfectPairing.Split",
-        "LeanCondensedMatter.Combinatorics.PerfectPairing.Transport",
         "LeanCondensedMatter.Combinatorics.SetPartition.GraphComponents"
       ],
       "externalImportCount": 1
@@ -1188,9 +1173,7 @@
         "LeanCondensedMatter.Combinatorics.PerfectPairing.Crossing",
         "LeanCondensedMatter.Combinatorics.PerfectPairing.CrossingEraseZero",
         "LeanCondensedMatter.Combinatorics.PerfectPairing.CrossingParity",
-        "LeanCondensedMatter.Combinatorics.PerfectPairing.Embedding",
-        "LeanCondensedMatter.Combinatorics.PerfectPairing.EraseZero",
-        "LeanCondensedMatter.Combinatorics.PerfectPairing.InsertFirstPair",
+        "LeanCondensedMatter.Combinatorics.PerfectPairing.FirstPair",
         "LeanCondensedMatter.Combinatorics.PerfectPairing.InvolutionCard",
         "LeanCondensedMatter.Combinatorics.PerfectPairing.NormalizedPairRestriction",
         "LeanCondensedMatter.Combinatorics.PerfectPairing.PairEndpoints",
@@ -1199,7 +1182,6 @@
         "LeanCondensedMatter.Combinatorics.PerfectPairing.Split",
         "LeanCondensedMatter.Combinatorics.PerfectPairing.SplitCrossing",
         "LeanCondensedMatter.Combinatorics.PerfectPairing.SplitNormalizedPairs",
-        "LeanCondensedMatter.Combinatorics.PerfectPairing.Transport",
         "LeanCondensedMatter.Combinatorics.PerfectPairing.VertexGraph"
       ],
       "externalImportCount": 0
@@ -1544,7 +1526,7 @@
       "name": "LeanCondensedMatter.Models.HolsteinPrimakoff.MultiSite",
       "sourceFile": "LeanCondensedMatter/Models/HolsteinPrimakoff/MultiSite.lean",
       "imports": [
-        "LeanCondensedMatter.Analysis.Operator.AlgebraRestriction",
+        "LeanCondensedMatter.Analysis.Algebra.Restriction",
         "LeanCondensedMatter.Models.HolsteinPrimakoff",
         "LeanCondensedMatter.QuantumTheory.LocalizedSpin"
       ],
@@ -1863,7 +1845,8 @@
       "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Conductivity/Hall/NonCrossingMechanismClassification.lean",
       "imports": [
         "LeanCondensedMatter.Models.MassiveDirac.Conductivity.Hall.NonCrossingDecomposition",
-        "LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.HallZeroBroadeningProvenance"
+        "LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.HallZeroBroadeningProvenance",
+        "LeanCondensedMatter.Transport.Disorder.InPlaneLadder"
       ],
       "externalImportCount": 3
     },
@@ -2013,6 +1996,7 @@
       "name": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.BornDyson.Green.Basic",
       "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Disorder/Propagator/BornDyson/Green/Basic.lean",
       "imports": [
+        "LeanCondensedMatter.Analysis.Matrix.PauliRotation",
         "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.SelfEnergy.Core"
       ],
       "externalImportCount": 2
@@ -2078,8 +2062,8 @@
       "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Disorder/Propagator/BornDyson/RealSpace/Green.lean",
       "imports": [
         "LeanCondensedMatter.Analysis.Fourier.AngularHarmonics",
-        "LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.BornDyson.RealSpace.RadialGreen",
-        "LeanCondensedMatter.Models.MassiveDirac.Model.Rotation"
+        "LeanCondensedMatter.Analysis.Matrix.PauliRotation",
+        "LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.BornDyson.RealSpace.RadialGreen"
       ],
       "externalImportCount": 0
     },
@@ -2203,7 +2187,8 @@
       "imports": [
         "LeanCondensedMatter.Analysis.Lorentzian.Kernel",
         "LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.Born.WeakDisorder",
-        "LeanCondensedMatter.Models.MassiveDirac.Vertex.PauliRung"
+        "LeanCondensedMatter.Models.MassiveDirac.Vertex.PauliRung",
+        "LeanCondensedMatter.Transport.Disorder.InPlaneLadder"
       ],
       "externalImportCount": 4
     },
@@ -2223,7 +2208,8 @@
       "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Disorder/Vertex/BornDyson/CurrentVertex.lean",
       "imports": [
         "LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.BornDyson.Invertibility",
-        "LeanCondensedMatter.Models.MassiveDirac.Vertex.PauliRung"
+        "LeanCondensedMatter.Models.MassiveDirac.Vertex.PauliRung",
+        "LeanCondensedMatter.Transport.Disorder.InPlaneLadder"
       ],
       "externalImportCount": 1
     },
@@ -2232,7 +2218,8 @@
       "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Disorder/Vertex/BornDyson/DressedCurrent.lean",
       "imports": [
         "LeanCondensedMatter.Models.MassiveDirac.Disorder.Vertex.Ladder.RegulatorBoundary",
-        "LeanCondensedMatter.Models.MassiveDirac.Model.Operator"
+        "LeanCondensedMatter.Models.MassiveDirac.Model.Operator",
+        "LeanCondensedMatter.Transport.Disorder.InPlaneLadder"
       ],
       "externalImportCount": 0
     },
@@ -2242,7 +2229,8 @@
       "imports": [
         "LeanCondensedMatter.Models.MassiveDirac.Disorder.ContinuumMeasurePrefactor",
         "LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.BornDyson.RegulatorBoundary",
-        "LeanCondensedMatter.Models.MassiveDirac.Disorder.Vertex.BornDyson.CurrentVertex"
+        "LeanCondensedMatter.Models.MassiveDirac.Disorder.Vertex.BornDyson.CurrentVertex",
+        "LeanCondensedMatter.Transport.Disorder.InPlaneLadder"
       ],
       "externalImportCount": 2
     },
@@ -2251,7 +2239,8 @@
       "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Disorder/Vertex/BornDyson/RegulatorBoundaryIntegral.lean",
       "imports": [
         "LeanCondensedMatter.Models.MassiveDirac.Disorder.Vertex.BornDyson.RegulatorBoundary",
-        "LeanCondensedMatter.Models.MassiveDirac.TransportDomain"
+        "LeanCondensedMatter.Models.MassiveDirac.TransportDomain",
+        "LeanCondensedMatter.Transport.Disorder.InPlaneLadder"
       ],
       "externalImportCount": 5
     },
@@ -2259,7 +2248,8 @@
       "name": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Vertex.BornDyson.RegulatorBoundaryTransverseWeakDisorder",
       "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Disorder/Vertex/BornDyson/RegulatorBoundaryTransverseWeakDisorder.lean",
       "imports": [
-        "LeanCondensedMatter.Models.MassiveDirac.Disorder.Vertex.BornDyson.RegulatorBoundaryWeakDisorder"
+        "LeanCondensedMatter.Models.MassiveDirac.Disorder.Vertex.BornDyson.RegulatorBoundaryWeakDisorder",
+        "LeanCondensedMatter.Transport.Disorder.InPlaneLadder"
       ],
       "externalImportCount": 4
     },
@@ -2269,7 +2259,8 @@
       "imports": [
         "LeanCondensedMatter.Analysis.Lorentzian.Kernel",
         "LeanCondensedMatter.Models.MassiveDirac.Disorder.Vertex.Born.Rung",
-        "LeanCondensedMatter.Models.MassiveDirac.Disorder.Vertex.BornDyson.RegulatorBoundaryIntegral"
+        "LeanCondensedMatter.Models.MassiveDirac.Disorder.Vertex.BornDyson.RegulatorBoundaryIntegral",
+        "LeanCondensedMatter.Transport.Disorder.InPlaneLadder"
       ],
       "externalImportCount": 5
     },
@@ -2277,7 +2268,8 @@
       "name": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Vertex.Ladder.RegulatorBoundary",
       "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Disorder/Vertex/Ladder/RegulatorBoundary.lean",
       "imports": [
-        "LeanCondensedMatter.Models.MassiveDirac.Disorder.Vertex.BornDyson.RegulatorBoundaryIntegral"
+        "LeanCondensedMatter.Models.MassiveDirac.Disorder.Vertex.BornDyson.RegulatorBoundaryIntegral",
+        "LeanCondensedMatter.Transport.Disorder.InPlaneLadder"
       ],
       "externalImportCount": 0
     },
@@ -2286,7 +2278,8 @@
       "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Disorder/Vertex/Ladder/RegulatorBoundaryTransverseWeakDisorder.lean",
       "imports": [
         "LeanCondensedMatter.Models.MassiveDirac.Disorder.Vertex.BornDyson.RegulatorBoundaryTransverseWeakDisorder",
-        "LeanCondensedMatter.Models.MassiveDirac.Disorder.Vertex.Ladder.RegulatorBoundaryWeakDisorder"
+        "LeanCondensedMatter.Models.MassiveDirac.Disorder.Vertex.Ladder.RegulatorBoundaryWeakDisorder",
+        "LeanCondensedMatter.Transport.Disorder.InPlaneLadder"
       ],
       "externalImportCount": 4
     },
@@ -2296,7 +2289,8 @@
       "imports": [
         "LeanCondensedMatter.Models.MassiveDirac.Disorder.Vertex.Born.WeakDisorder",
         "LeanCondensedMatter.Models.MassiveDirac.Disorder.Vertex.BornDyson.RegulatorBoundaryWeakDisorder",
-        "LeanCondensedMatter.Models.MassiveDirac.Disorder.Vertex.Ladder.RegulatorBoundary"
+        "LeanCondensedMatter.Models.MassiveDirac.Disorder.Vertex.Ladder.RegulatorBoundary",
+        "LeanCondensedMatter.Transport.Disorder.InPlaneLadder"
       ],
       "externalImportCount": 0
     },
@@ -2365,6 +2359,7 @@
       "name": "LeanCondensedMatter.Models.MassiveDirac.Model.Berry.Occupation",
       "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Model/Berry/Occupation.lean",
       "imports": [
+        "LeanCondensedMatter.Analysis.Calculus.CompactSupportInterval",
         "LeanCondensedMatter.Models.MassiveDirac.Model.Berry.Symmetry",
         "LeanCondensedMatter.QuantumTheory.Occupation.BandFilling"
       ],
@@ -2434,6 +2429,7 @@
       "name": "LeanCondensedMatter.Models.MassiveDirac.Model.Operator",
       "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Model/Operator.lean",
       "imports": [
+        "LeanCondensedMatter.Analysis.Matrix.PauliRotation",
         "LeanCondensedMatter.Analysis.Operator.FiniteTrace",
         "LeanCondensedMatter.Models.MassiveDirac.Model.Basic"
       ],
@@ -2459,21 +2455,13 @@
       "externalImportCount": 1
     },
     {
-      "name": "LeanCondensedMatter.Models.MassiveDirac.Model.Rotation",
-      "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Model/Rotation.lean",
-      "imports": [
-        "LeanCondensedMatter.Models.MassiveDirac.Model.Operator"
-      ],
-      "externalImportCount": 1
-    },
-    {
       "name": "LeanCondensedMatter.Models.MassiveDirac.Model.Spectral",
       "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Model/Spectral.lean",
       "imports": [
         "LeanCondensedMatter.Analysis.Algebra.QuadraticNormalization",
         "LeanCondensedMatter.Models.MassiveDirac.Model.Basic"
       ],
-      "externalImportCount": 1
+      "externalImportCount": 0
     },
     {
       "name": "LeanCondensedMatter.Models.MassiveDirac.Model",
@@ -2488,7 +2476,6 @@
         "LeanCondensedMatter.Models.MassiveDirac.Model.Occupation",
         "LeanCondensedMatter.Models.MassiveDirac.Model.Operator",
         "LeanCondensedMatter.Models.MassiveDirac.Model.OperatorSpectral",
-        "LeanCondensedMatter.Models.MassiveDirac.Model.Rotation",
         "LeanCondensedMatter.Models.MassiveDirac.Model.Spectral"
       ],
       "externalImportCount": 0
@@ -2652,7 +2639,8 @@
       "name": "LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.HallZeroBroadeningIntegral",
       "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Streda/BornLadder/HallZeroBroadeningIntegral.lean",
       "imports": [
-        "LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.RadialDenominator"
+        "LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.RadialDenominator",
+        "LeanCondensedMatter.Transport.Disorder.InPlaneLadder"
       ],
       "externalImportCount": 3
     },
@@ -2660,7 +2648,8 @@
       "name": "LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.HallZeroBroadeningProvenance",
       "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Streda/BornLadder/HallZeroBroadeningProvenance.lean",
       "imports": [
-        "LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.HallZeroBroadeningWeakDisorder"
+        "LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.HallZeroBroadeningWeakDisorder",
+        "LeanCondensedMatter.Transport.Disorder.InPlaneLadder"
       ],
       "externalImportCount": 4
     },
@@ -2688,7 +2677,8 @@
       "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Streda/BornLadder/LongitudinalZeroBroadeningIntegral.lean",
       "imports": [
         "LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.LongitudinalSameSide",
-        "LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.RadialDenominator"
+        "LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.RadialDenominator",
+        "LeanCondensedMatter.Transport.Disorder.InPlaneLadder"
       ],
       "externalImportCount": 3
     },
@@ -2699,7 +2689,8 @@
         "LeanCondensedMatter.Models.MassiveDirac.Disorder.Vertex.Ladder.RegulatorBoundaryWeakDisorder",
         "LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.LongitudinalSameSide",
         "LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.LongitudinalZeroBroadeningIntegral",
-        "LeanCondensedMatter.Transport.Analysis.ContinuumMeasure"
+        "LeanCondensedMatter.Transport.Analysis.ContinuumMeasure",
+        "LeanCondensedMatter.Transport.Disorder.InPlaneLadder"
       ],
       "externalImportCount": 2
     },
@@ -2707,7 +2698,9 @@
       "name": "LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.Radial",
       "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Streda/BornLadder/Radial.lean",
       "imports": [
-        "LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.RadialIntegrand"
+        "LeanCondensedMatter.Analysis.Matrix.PauliRotation",
+        "LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.RadialIntegrand",
+        "LeanCondensedMatter.Transport.Disorder.InPlaneLadder"
       ],
       "externalImportCount": 2
     },
@@ -2716,7 +2709,8 @@
       "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Streda/BornLadder/RadialDenominator.lean",
       "imports": [
         "LeanCondensedMatter.Models.MassiveDirac.Disorder.Vertex.BornDyson.DressedCurrent",
-        "LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.Radial"
+        "LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.Radial",
+        "LeanCondensedMatter.Transport.Disorder.InPlaneLadder"
       ],
       "externalImportCount": 1
     },
@@ -2831,9 +2825,11 @@
       "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Streda/GaussianCrossed/RealSpace.lean",
       "imports": [
         "LeanCondensedMatter.Analysis.Fourier.AngularHarmonics",
+        "LeanCondensedMatter.Analysis.Matrix.PauliRotation",
         "LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.BornDyson.RealSpace.Green",
         "LeanCondensedMatter.Models.MassiveDirac.Disorder.Vertex.BornDyson.DressedCurrent",
-        "LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.Trace"
+        "LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.Trace",
+        "LeanCondensedMatter.Transport.Disorder.InPlaneLadder"
       ],
       "externalImportCount": 0
     },
@@ -2842,6 +2838,7 @@
       "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Streda/GaussianCrossed/RealSpaceIntegral.lean",
       "imports": [
         "LeanCondensedMatter.Analysis.Fourier.AngularHarmonics",
+        "LeanCondensedMatter.Analysis.Matrix.PauliRotation",
         "LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.RadialTrace"
       ],
       "externalImportCount": 1
@@ -2889,20 +2886,13 @@
       "externalImportCount": 1
     },
     {
-      "name": "LeanCondensedMatter.Models.MassiveDirac.Vertex.InPlaneLadder",
-      "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Vertex/InPlaneLadder.lean",
-      "imports": [
-        "LeanCondensedMatter.Transport.Disorder.Ladder"
-      ],
-      "externalImportCount": 5
-    },
-    {
       "name": "LeanCondensedMatter.Models.MassiveDirac.Vertex.PauliRung",
       "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Vertex/PauliRung.lean",
       "imports": [
         "LeanCondensedMatter.Analysis.Fourier.AngularHarmonics",
+        "LeanCondensedMatter.Analysis.Matrix.PauliRotation",
         "LeanCondensedMatter.Models.MassiveDirac.Model.Operator",
-        "LeanCondensedMatter.Models.MassiveDirac.Vertex.InPlaneLadder"
+        "LeanCondensedMatter.Transport.Disorder.InPlaneLadder"
       ],
       "externalImportCount": 1
     },
@@ -2943,6 +2933,7 @@
       "sourceFile": "LeanCondensedMatter/Models/OrbitalRelaxation/KineticClosure.lean",
       "imports": [
         "LeanCondensedMatter.Analysis.Geometry.FiniteAngularKernel",
+        "LeanCondensedMatter.Analysis.ODE.ScalarDecay",
         "LeanCondensedMatter.Models.OrbitalRelaxation.Finite"
       ],
       "externalImportCount": 3
@@ -3120,7 +3111,7 @@
         "LeanCondensedMatter.Analysis.Algebra.QuadraticNormalization",
         "LeanCondensedMatter.Models.RashbaExchange.Model"
       ],
-      "externalImportCount": 5
+      "externalImportCount": 4
     },
     {
       "name": "LeanCondensedMatter.Models.RashbaExchange.Model",
@@ -5301,7 +5292,7 @@
       "name": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.BlockConnectivity",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Diagrammatics/ExternalInsertion/Components/BlockConnectivity.lean",
       "imports": [
-        "LeanCondensedMatter.Combinatorics.PerfectPairing.Transport",
+        "LeanCondensedMatter.Combinatorics.PerfectPairing.Core",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.BlockLayout"
       ],
       "externalImportCount": 1
@@ -5332,8 +5323,9 @@
       "name": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentRestriction",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Diagrammatics/ExternalInsertion/Components/ComponentRestriction.lean",
       "imports": [
-        "LeanCondensedMatter.Combinatorics.PerfectPairing.Embedding",
+        "LeanCondensedMatter.Combinatorics.PerfectPairing.Core",
         "LeanCondensedMatter.Combinatorics.PerfectPairing.InvolutionCard",
+        "LeanCondensedMatter.Combinatorics.PerfectPairing.Restriction",
         "LeanCondensedMatter.Combinatorics.Shuffle.FamilySlotShuffleInversions",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ComponentLegData",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Core.Diagram"
@@ -5362,6 +5354,7 @@
       "name": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.MixedOrderData",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Diagrammatics/ExternalInsertion/Components/MixedOrderData.lean",
       "imports": [
+        "LeanCondensedMatter.Combinatorics.PerfectPairing.Crossing",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentRestriction",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Pairing.MixedOrder",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.SupportStandardization"
@@ -5372,7 +5365,7 @@
       "name": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.OwnerSlotCongr",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Diagrammatics/ExternalInsertion/Components/OwnerSlotCongr.lean",
       "imports": [
-        "LeanCondensedMatter.Combinatorics.PerfectPairing.Transport",
+        "LeanCondensedMatter.Combinatorics.PerfectPairing.Core",
         "LeanCondensedMatter.Combinatorics.Shuffle.SlotShuffle",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ConnectedAssembly"
       ],
@@ -5623,7 +5616,7 @@
       "name": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Diagrammatics/Quartic/Components/Reassemble.lean",
       "imports": [
-        "LeanCondensedMatter.Combinatorics.PerfectPairing.Transport",
+        "LeanCondensedMatter.Combinatorics.PerfectPairing.Core",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentConnected"
       ],
       "externalImportCount": 0
@@ -5658,7 +5651,7 @@
       "name": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Ordered",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Diagrammatics/Quartic/Core/Ordered.lean",
       "imports": [
-        "LeanCondensedMatter.Combinatorics.PerfectPairing.Transport",
+        "LeanCondensedMatter.Combinatorics.PerfectPairing.Core",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Diagram"
       ],
       "externalImportCount": 0
@@ -5816,7 +5809,7 @@
       "name": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.IntervalPairing",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Diagrammatics/TwoPoint/Core/IntervalPairing.lean",
       "imports": [
-        "LeanCondensedMatter.Combinatorics.PerfectPairing.Transport",
+        "LeanCondensedMatter.Combinatorics.PerfectPairing.Core",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.CutIntervals"
       ],
       "externalImportCount": 0
@@ -6940,7 +6933,7 @@
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Diagrammatics/ExternalInsertion/ExternalVacuumPairing.lean",
       "imports": [
         "LeanCondensedMatter.Combinatorics.PerfectPairing.Core",
-        "LeanCondensedMatter.Combinatorics.PerfectPairing.Embedding",
+        "LeanCondensedMatter.Combinatorics.PerfectPairing.PairEndpoints",
         "LeanCondensedMatter.Combinatorics.PerfectPairing.SplitNormalizedPairs",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Factorization.SlotSplitMixedSign",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Pairing",
@@ -7665,9 +7658,13 @@
       "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.ConductivityNormalization",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Transport/ConductivityNormalization.lean",
       "imports": [
+        "LeanCondensedMatter.QuantumTheory.DensityOperator.Finite",
+        "LeanCondensedMatter.QuantumTheory.Gibbs.State",
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.Expectation.Density",
         "LeanCondensedMatter.QuantumTheory.LinearResponse.Frequency.InfiniteTime",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.ChargeCurrentChannel",
-        "LeanCondensedMatter.Transport.Core.ConductivityNormalization"
+        "LeanCondensedMatter.Transport.Core.ConductivityNormalization",
+        "LeanCondensedMatter.Transport.KuboSymmetry.FiniteTime"
       ],
       "externalImportCount": 0
     },
@@ -7903,6 +7900,7 @@
       "name": "LeanCondensedMatter.Transport.Analysis.ZeroTemperatureLorentzian",
       "sourceFile": "LeanCondensedMatter/Transport/Analysis/ZeroTemperatureLorentzian.lean",
       "imports": [
+        "LeanCondensedMatter.Analysis.Calculus.CompactSupportInterval",
         "LeanCondensedMatter.Analysis.Lorentzian.Kernel",
         "LeanCondensedMatter.QuantumTheory.Occupation.ZeroTemperature"
       ],
@@ -8014,6 +8012,14 @@
         "LeanCondensedMatter.Transport.Disorder.LinearizedFluctuation"
       ],
       "externalImportCount": 3
+    },
+    {
+      "name": "LeanCondensedMatter.Transport.Disorder.InPlaneLadder",
+      "sourceFile": "LeanCondensedMatter/Transport/Disorder/InPlaneLadder.lean",
+      "imports": [
+        "LeanCondensedMatter.Transport.Disorder.Ladder"
+      ],
+      "externalImportCount": 5
     },
     {
       "name": "LeanCondensedMatter.Transport.Disorder.Ladder",
@@ -8145,6 +8151,7 @@
         "LeanCondensedMatter.Transport.Disorder.DressedTraceNormBound",
         "LeanCondensedMatter.Transport.Disorder.Finite",
         "LeanCondensedMatter.Transport.Disorder.FirstRungNormBound",
+        "LeanCondensedMatter.Transport.Disorder.InPlaneLadder",
         "LeanCondensedMatter.Transport.Disorder.Ladder",
         "LeanCondensedMatter.Transport.Disorder.LadderNormBound",
         "LeanCondensedMatter.Transport.Disorder.LinearizedFluctuation",
