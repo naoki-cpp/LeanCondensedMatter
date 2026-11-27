@@ -87,14 +87,10 @@ private theorem hasSum_probabilityKernel_outcome (P : POVM H M)
 private theorem hasSum_probabilityKernel_eigenvector (P : POVM H M)
     (ρ : DensityOperator H) (m : M) :
     HasSum (fun a => probabilityKernel P ρ a m) (probNNReal P ρ m : ℝ) := by
-  have hcomplex := ρ.hasSum_expectation_term (P.E m)
-  rw [ρ.expectation_effect_eq_probNNReal P m] at hcomplex
-  have hcomplex' :
-      HasSum (fun a : EigenvectorIndex ρ.op => ((probabilityKernel P ρ a m : ℝ) : ℂ))
-        (((probNNReal P ρ m : ℝ) : ℂ)) :=
-    HasSum.congr_fun hcomplex fun a => by
-      rw [probabilityKernel, Complex.ofReal_mul, coe_diagonalExpectationValue_right]
-  exact Complex.hasSum_ofReal.mp hcomplex'
+  exact ρ.isTraceClass.hasSum_real_trace_comp_right_eigenvector ρ.isSelfAdjoint
+    (P.E m) (P.pos m).isSelfAdjoint
+    (by simpa only [DensityOperator.expectation_apply] using
+      ρ.expectation_effect_eq_probNNReal P m)
 
 /-- The canonical nonnegative Born probabilities have sum one. -/
 theorem hasSum_probNNReal (P : POVM H M) (ρ : DensityOperator H) :

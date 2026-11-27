@@ -250,6 +250,18 @@ theorem IsTraceClass.hasSum_trace_comp_right_eigenvector
   simpa only [Function.comp_apply] using
     HasSum.congr_fun ((hj.hasSum_iff hzero).mpr hfull) fun a => (hpoint a).symm
 
+/-- The spectral trace pairing with a self-adjoint bounded operator is a lossless real series.
+The real sum value is identified by its exact complex embedding. -/
+theorem IsTraceClass.hasSum_real_trace_comp_right_eigenvector
+    (hT : IsTraceClass T) (hself : IsSelfAdjoint T) (A : H →L[ℂ] H)
+    (hA : IsSelfAdjoint A) {r : ℝ} (hr : (hT.comp_right A).trace = (r : ℂ)) :
+    HasSum (fun a : EigenvectorIndex T => a.1.1 *
+      diagonalExpectationValue A hA (eigenvectorFamily hT.isCompact a)) r := by
+  apply Complex.hasSum_ofReal.mp
+  rw [← hr]
+  simpa only [Complex.ofReal_mul, coe_diagonalExpectationValue_right] using
+    hT.hasSum_trace_comp_right_eigenvector hself A
+
 namespace SpectralTraceClass
 
 variable {T : H →L[ℂ] H}
