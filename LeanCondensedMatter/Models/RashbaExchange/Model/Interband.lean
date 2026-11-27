@@ -30,7 +30,7 @@ def interbandEnergyGap
 theorem interbandEnergyGap_eq
     (params : HamiltonianParameters) (band : TwoBand) (px py : ℝ) :
     interbandEnergyGap params band px py =
-      2 * bandSign band * spinOrbitEnergy params px py := by 
+      2 * bandSign band * spinOrbitEnergy params px py := by
   exact TwoBand.shiftedEnergy_sub_oppositeBand band
     (kineticEnergy params px py) (spinOrbitEnergy params px py)
 
