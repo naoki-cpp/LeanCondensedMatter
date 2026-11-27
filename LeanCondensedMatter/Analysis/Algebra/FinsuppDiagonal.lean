@@ -32,23 +32,38 @@ noncomputable def diagonalOperator :
     (Config → R) →ₐ[R] ((Config →₀ R) →ₗ[R] (Config →₀ R)) where
   toFun := diagonalOperatorLinear
   map_zero' := by
-    ext x i
+    apply LinearMap.ext
+    intro x
+    apply Finsupp.ext
+    intro i
     change (0 : R) * x i = 0
     exact zero_mul _
   map_one' := by
-    ext x i
+    apply LinearMap.ext
+    intro x
+    apply Finsupp.ext
+    intro i
     change (1 : R) * x i = x i
     exact one_mul _
   map_add' a b := by
-    ext x i
+    apply LinearMap.ext
+    intro x
+    apply Finsupp.ext
+    intro i
     change (a i + b i) * x i = a i * x i + b i * x i
     exact add_mul _ _ _
   map_mul' a b := by
-    ext x i
+    apply LinearMap.ext
+    intro x
+    apply Finsupp.ext
+    intro i
     change (a i * b i) * x i = a i * (b i * x i)
     exact mul_assoc _ _ _
   commutes' k := by
-    ext x i
+    apply LinearMap.ext
+    intro x
+    apply Finsupp.ext
+    intro i
     rfl
 
 /-- Diagonal endomorphisms multiply each coordinate by its specified scalar. -/
@@ -65,7 +80,7 @@ theorem diagonalOperator_single (a : Config → R) (c : Config) :
   by_cases h : c = i
   · subst i
     rfl
-  · rw [Finsupp.single_eq_of_ne h, mul_zero, mul_zero]
+  · rw [Finsupp.single_eq_of_ne h.symm, mul_zero, mul_zero]
 
 /-- Pointwise multiplication is represented by composition. -/
 theorem diagonalOperator_comp (a b : Config → R) :
