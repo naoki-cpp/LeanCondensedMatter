@@ -162,11 +162,11 @@ theorem ExternalInsertionWickDiagram.orderedDysonAmplitude_slotCongr
   apply d.orderedDysonAmplitude_congr_of_strictAnti
     (d.slotCongr e) ε β hβ g externalTime order (order.trans e)
   intro τ hτ _
-  simpa only [ExternalInsertionWickDiagram.dysonFixedTimeAmplitude] using
-    (congrArg (fun a : ℂ => (-1 : ℂ) ^ n * a)
-      (d.slotCongr_fixedTimeAmplitude_eq_of_injective e ε β g externalTime
-        (fun v => τ (order.symm ⟨v, Finset.mem_univ v⟩))
-        (quarticVertexOrderedTime_injective_of_strictAnti order τ hτ))).symm
+  unfold ExternalInsertionWickDiagram.dysonFixedTimeAmplitude
+  exact (congrArg (fun a : ℂ => (-1 : ℂ) ^ n * a)
+    (d.slotCongr_fixedTimeAmplitude_eq_of_injective e ε β g externalTime
+      (fun v => τ (order.symm ⟨v, Finset.mem_univ v⟩))
+      (quarticVertexOrderedTime_injective_of_strictAnti order τ hτ))).symm
 
 
 /-- A canonical Dyson integral of one **physical** diagram is the
