@@ -9,16 +9,18 @@ set_option linter.style.header false
 /-!
 # Shared polar Pauli rung algebra
 
-This file owns the model-specific `2 × 2` Pauli rung algebra common to the clean, Born-dressed, and
-finite-broadening Born-Dyson retarded-advanced current rungs. The shared polar Pauli matrix/operator
-representation itself is owned upstream by `Model.Operator`. For repository ordering `Gᴿ Γ Gᴬ`, the
-full-angle action on an arbitrary in-plane vertex `Γ = α σₓ + β σᵧ` closes as
+The polar Pauli sandwich supplies the angular rung coefficients common to the clean, Born-dressed,
+and finite-broadening Born-Dyson retarded-advanced current rungs. The Pauli rotation algebra is
+provided by `Analysis.Matrix.PauliRotation`; the corresponding bounded-operator realization uses
+`Model.Operator`. For the ordering `Gᴿ Γ Gᴬ`, the full-angle action on an arbitrary in-plane
+vertex `Γ = α σₓ + β σᵧ` closes as
 
 ```text
 (α, β) ↦ (X α - Y β, Y α + X β),
 ```
 
-where `X` and `Y` depend only on the scalar and `σ_z` radial coefficients. The pointwise Pauli
+where `X` and `Y` depend only on the scalar and `σ_z` radial coefficients.
+The resulting coefficient action is the generic `Transport.Disorder.InPlaneLadder` action. The pointwise Pauli
 sandwich supplies the generic `AngularHarmonicCoefficients Matrix2` representation shared by
 ordinary and Fourier-weighted angular reduction. Concrete propagators remain responsible for
 supplying the radial coefficients.
