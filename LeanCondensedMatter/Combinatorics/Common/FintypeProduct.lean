@@ -8,10 +8,12 @@ public section
 set_option linter.style.header false
 
 /-!
-# Finite-product reindexing and counting
+# Finite-type sums, products, and counting
 
 Generic finite-product identities used by combinatorial decompositions. In particular, an arbitrary
 finite type can be reindexed as a dependent sum and products can then be split fiberwise.
+Antisymmetric double sums vanish when the diagonal vanishes, including in additive groups
+with elements of order two.
 -/
 
 namespace Fintype
@@ -37,3 +39,25 @@ theorem dvd_sum_equiv_fst_of_dvd_card {α β γ : Type*}
   exact dvd_mul_of_dvd_left hcard _
 
 end Fintype
+
+namespace Combinatorics
+
+/-- An antisymmetric function with zero diagonal has vanishing double sum. -/
+theorem sum_antisymmetric_eq_zero {ι A : Type*} [Fintype ι] [AddCommGroup A]
+    (f : ι → ι → A) (hanti : ∀ x y, f x y = -f y x)
+    (hdiag : ∀ x, f x x = 0) :
+    (∑ x : ι, ∑ y : ι, f x y) = 0 := by
+  classical
+  rw [← Fintype.sum_prod_type']
+  refine Finset.sum_ninvolution Prod.swap ?_ ?_ (fun _ => Finset.mem_univ _) ?_
+  · rintro ⟨x, y⟩
+    change f x y + f y x = 0
+    rw [hanti x y, neg_add_cancel]
+  · rintro ⟨x, y⟩ hne hswap
+    have h : y = x := congrArg Prod.fst hswap
+    subst y
+    exact hne (hdiag x)
+  · rintro ⟨x, y⟩
+    rfl
+
+end Combinatorics

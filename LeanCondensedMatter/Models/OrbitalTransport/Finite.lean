@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Combinatorics.FiniteAntisymmetricSum
+import LeanCondensedMatter.Combinatorics.Common.FintypeProduct
 import LeanCondensedMatter.Analysis.Matrix.Pauli
 import Mathlib.Tactic.FinCases
 import Mathlib.Tactic.NormNum
