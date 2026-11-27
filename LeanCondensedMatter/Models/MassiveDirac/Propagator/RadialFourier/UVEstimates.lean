@@ -23,7 +23,6 @@ namespace QuantumTheory.Models.MassiveDirac
 
 noncomputable section
 
-open QuantumTheory.Transport
 open PolarRadialKernels
 
 /-- The reciprocal quadratic resolvent norm is bounded by the
@@ -144,7 +143,6 @@ namespace QuantumTheory.Models.MassiveDirac
 
 noncomputable section
 
-open QuantumTheory.Transport
 open PolarRadialKernels
 open MeasureTheory
 
