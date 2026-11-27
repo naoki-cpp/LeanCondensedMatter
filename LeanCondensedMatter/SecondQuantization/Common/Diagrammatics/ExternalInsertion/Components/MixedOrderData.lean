@@ -128,25 +128,12 @@ theorem ExternalInsertionDiagram.componentMixedPosition_strictMono {E n : ℕ}
   let T :=
     interactionSector
       (B : Finset (ExternalInsertionVertex E (Finset.univ : Finset (Fin n))))
-  have hExternal : StrictMono (fun e : Fin (2 * d.externalPairCount B) =>
-      (d.externalSectorOrderIso B e).1) := by
-    intro a b hab
-    exact (d.externalSectorOrderIso B).strictMono hab
-  have hInteraction : StrictMono (fun v : Fin T.card =>
-      (T.orderIsoOfFin rfl v).1) := by
-    intro a b hab
-    exact (T.orderIsoOfFin rfl).strictMono hab
-  change StrictMono (fun p =>
-    externalInsertionMixedTimeOrderedAtomicLegPosition externalTime σ
-      (orderedExternalInsertionLegMap
-        (fun e => (d.externalSectorOrderIso B e).1)
-        (fun v => (T.orderIsoOfFin rfl v).1)
-        (externalInsertionMixedTimeOrderedAtomicLegEquiv
-          (fun e => externalTime (d.externalSectorOrderIso B e).1)
-          (fun v => σ (T.orderIsoOfFin rfl v).1) p)))
-  exact
-    externalInsertionMixedTimeOrderedAtomicLegPosition_map_strictMono
-      hExternal hInteraction externalTime σ
+  exact externalInsertionMixedTimeOrderedAtomicLegPosition_map_strictMono
+    (fExternal := fun e => (d.externalSectorOrderIso B e).1)
+    (fInteraction := fun v : Fin T.card => (T.orderIsoOfFin rfl v).1)
+    (fun _ _ hab => (d.externalSectorOrderIso B).strictMono hab)
+    (fun _ _ hab => (T.orderIsoOfFin rfl).strictMono hab)
+    externalTime σ
 
 /-- Flattening a component-local canonical leg and then embedding it into the ambient diagram
 agrees with embedding the canonical leg directly. -/
@@ -298,17 +285,9 @@ theorem ExternalInsertionDiagram.componentMixedPositionEquiv_apply
     Equiv.trans_apply, Equiv.sigmaCongrRight_apply,
     ExternalInsertionDiagram.componentLegShuffle_slotEquiv_apply,
     Equiv.apply_symm_apply]
-  let localExternalTime := d.componentExternalTime externalTime B
-  let localInteractionTime := d.componentInteractionTime σ B
-  let localLeg :=
-    externalInsertionMixedTimeOrderedAtomicLegEquiv
-      localExternalTime localInteractionTime p
-  have hfixed :=
-    d.componentOrderedLeg_fixedPosition B localLeg
-  refine hfixed.symm.trans ?_
-  unfold ExternalInsertionDiagram.componentMixedPosition
+  refine (d.componentOrderedLeg_fixedPosition B _).symm.trans ?_
   exact (externalInsertionMixedTimeAmbientPositionEquiv_legPosition
-    externalTime σ (d.componentOrderedLeg B localLeg)).symm
+    externalTime σ _).symm
 
 /-- The canonical family shuffle from component-local mixed atomic positions to the ambient
 mixed-time atomic positions. -/
