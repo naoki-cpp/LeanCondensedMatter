@@ -8,8 +8,8 @@ set_option linter.style.header false
 # Factorial-normalized power-series moments
 
 This module packages factorial-normalized power-series coefficients as finite-set moment data.
-It is deliberately independent of cumulant inversion so both replica and Möbius-inversion proof
-tracks can share the same moment interface. The formal logarithm's factorial-normalized
+The moment interface is independent of set-partition inversion and applies to replica and
+Möbius-inversion constructions. The formal logarithm's factorial-normalized
 cumulant coefficients and their triangular recurrence are also defined here, without requiring
 set-partition inversion or analytic convergence.
 -/
