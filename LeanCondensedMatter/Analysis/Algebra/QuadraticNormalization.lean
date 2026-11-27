@@ -69,28 +69,21 @@ theorem quadratic_shift_mul_projector
     involution_mul_one_add Q hQ s hs]
   module
 
-/-- The half-sum of the identity and a signed involution is idempotent. -/
-private theorem involution_projector_mul_self (Q : A) (hQ : Q * Q = 1)
-    (s : K) (hs : s ^ 2 = 1) :
-    ((1 / 2 : K) • ((1 : A) + s • Q)) *
-        ((1 / 2 : K) • ((1 : A) + s • Q)) =
-      (1 / 2 : K) • ((1 : A) + s • Q) := by
-  rw [smul_mul_assoc, mul_smul_comm, smul_smul]
-  rw [add_mul, one_mul, smul_mul_assoc,
-    involution_mul_one_add Q hQ s hs, smul_smul]
-  rw [show s * s = 1 by simpa [pow_two] using hs, one_smul]
-  module
-
 /-- The signed projector of an element with `H² = E² • 1` is idempotent. -/
 theorem quadratic_projector_isIdempotent
     (H : A) (E s : K) (hE : E ≠ 0)
     (hquad : H * H = E ^ 2 • (1 : A))
     (hs : s ^ 2 = 1) :
     IsIdempotentElem ((1 / 2 : K) • ((1 : A) + (s / E) • H)) := by
-  have hQ : (E⁻¹ • H) * (E⁻¹ • H) = 1 :=
-    inv_smul_mul_self_eq_one H E hE hquad
-  simpa [IsIdempotentElem, div_eq_mul_inv, smul_smul] using
-    (involution_projector_mul_self (E⁻¹ • H) hQ s hs)
+  let P : A := (1 / 2 : K) • ((1 : A) + (s / E) • H)
+  have hHP : H * P = (s * E) • P := by
+    simpa only [P, zero_smul, zero_add] using
+      quadratic_shift_mul_projector H E 0 s hE hquad hs
+  have hc : (s / E) * (s * E) = 1 := by
+    rw [div_eq_mul_inv, mul_mul_mul_comm, inv_mul_cancel₀ hE, mul_one, ← pow_two, hs]
+  change ((1 / 2 : K) • ((1 : A) + (s / E) • H)) * P = P
+  rw [smul_mul_assoc, add_mul, one_mul, smul_mul_assoc, hHP, smul_smul, hc, one_smul]
+  module
 
 /-- Signed quadratic projectors with opposite signs add to the identity, even when
 the scalar normalization is zero (with totalized division). -/
