@@ -29,11 +29,9 @@ The statistics-independent thermal theory separates five layers:
 - the implementation-independent Bloch–de Dominicis expectation recursion and its finite Gibbs
   pairing specialization.
 
-The canonical Gibbs state is the generic pure-point density operator. `SecondQuantization.Common`
-adds only the finite Hilbert transport and expectation adapter needed for algebraic Fock operators.
-Occupation-basis formulas are proof infrastructure; the density operator remains the normalized-state
-owner. The finite Gibbs coordinate results establish the trace-ratio representation of that state,
-separately from the Bloch--de Dominicis recursion. The generic pairing recursion has no
-finite-configuration assumption; a future bosonic implementation must provide honest summability or
-domain hypotheses rather than a false finite occupation basis.
+The normalized Gibbs density is the generic pure-point density operator. The Common thermal
+layer supplies the Fock-space adapters, canonical and grand-canonical sector relations, and
+trace-ratio coordinate formulas. The Bloch–de Dominicis recursion is independent of finiteness
+of the configuration space. Its bosonic specialization uses explicit summability and
+operator-domain hypotheses.
 -/
