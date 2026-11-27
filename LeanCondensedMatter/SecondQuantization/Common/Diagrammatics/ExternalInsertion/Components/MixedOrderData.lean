@@ -51,13 +51,17 @@ theorem ExternalInsertionDiagram.componentOrderedDiagram_pairing_crossingCount
       (d.restrictComponent B).pairing.crossingCount := by
   let T := interactionSector
     (B : Finset (ExternalInsertionVertex E (Finset.univ : Finset (Fin n))))
+  let r := d.restrictComponent B
   let e := standardSlotEquiv T
-  exact (PairingOn.crossingCount_eq_of_partnerEquiv_strictMono
-    (d.restrictComponent B).pairing (d.componentOrderedDiagram B).pairing
-    (externalInsertionLegCongr (E := d.externalPairCount B) e)
-    ((d.restrictComponent B).slotCongr_pairing_partner e)
-    (fun a b hab =>
-      (externalInsertionLegCongr_standardize_lt_iff (E := d.externalPairCount B) T a b).2 hab)).symm
+  change (r.slotCongr e).pairing.crossingCount = r.pairing.crossingCount
+  symm
+  refine PairingOn.crossingCount_eq_of_partnerEquiv_strictMono
+    r.pairing (r.slotCongr e).pairing
+    (externalInsertionLegCongr (E := d.externalPairCount B) e) ?_ ?_
+  · intro p
+    exact r.slotCongr_pairing_partner e p
+  · intro a b hab
+    exact (externalInsertionLegCongr_standardize_lt_iff (E := d.externalPairCount B) T a b).2 hab
 
 /-- External times of one component in its canonical increasing external-slot order. -/
 noncomputable def ExternalInsertionDiagram.componentExternalTime {E n : ℕ}
