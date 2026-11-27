@@ -76,13 +76,15 @@ noncomputable def octahedralMoments (W : ℝ → ℝ)
   first_moment := by
     intro p i
     fin_cases p <;> fin_cases i <;>
+      simp [octahedralDirection, Fin.sum_univ_six] <;>
       simp [octahedralKernel, octahedralCosine, octahedralDirection,
-        Fin.sum_univ_six, Fin.sum_univ_three] <;> ring
+        Fin.sum_univ_three] <;> ring
   second_moment := by
     intro p i j
     fin_cases p <;> fin_cases i <;> fin_cases j <;>
+      simp [octahedralDirection, Fin.sum_univ_six] <;>
       simp [octahedralKernel, octahedralCosine, octahedralDirection,
-        Fin.sum_univ_six, Fin.sum_univ_three] <;> ring
+        Fin.sum_univ_three] <;> ring
 
 /-- The degree-one (momentum) collision eigenvalue, explicitly derived
 from the scattering kernel at backward and orthogonal scattering angles. -/
