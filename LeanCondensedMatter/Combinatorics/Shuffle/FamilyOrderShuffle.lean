@@ -291,6 +291,16 @@ noncomputable def familyOrderDecompositionEquivOfSize {total : ℕ} (size : ι �
     ext z
     simp [order, assembleFamilyOrderOfSize]
 
+/-- The inverse shuffle of a decomposed global order recovers the
+family index of the vertex occupying each ambient slot. -/
+theorem familyOrderDecompositionEquivOfSize_owner {total : ℕ} (size : ι → ℕ)
+    (hcard : ∀ i, Fintype.card (F i) = size i)
+    (ambientEquiv : α ≃ Σ i, F i)
+    (order : Fin total ≃ α) (v : Fin total) :
+    ((familyOrderDecompositionEquivOfSize F size hcard ambientEquiv order).2.slotEquiv.symm v).1 =
+      (ambientEquiv (order v)).1 := by
+  rfl
+
 omit [Fintype ι] [Fintype α] [∀ i, Fintype (F i)] in
 /-- Reassembling a family order places the prescribed block-local
 vertex at exactly its shuffled global slot. Unlike the inverse
@@ -418,16 +428,9 @@ theorem assignmentShuffleOfSize_symm_owner
     (v : Fin total) :
     ((assignmentShuffleOfSize owner hcard).slotEquiv.symm v).1 = owner v := by
   classical
-  let σ := assignmentShuffleOfSize owner hcard
-  rcases hslot : σ.slotEquiv.symm v with ⟨i, j⟩
-  have hback : σ.slotEquiv ⟨i, j⟩ = v := by
-    calc
-      σ.slotEquiv ⟨i, j⟩ =
-          σ.slotEquiv (σ.slotEquiv.symm v) :=
-        congrArg σ.slotEquiv hslot.symm
-      _ = v := σ.slotEquiv.apply_symm_apply v
-  simpa [σ, hback] using
-    (assignmentShuffleOfSize_apply_owner owner hcard i j).symm
+  exact familyOrderDecompositionEquivOfSize_owner
+    (fun i : ι => {v : Fin total // owner v = i}) size hcard
+    (Equiv.sigmaFiberEquiv owner).symm (Equiv.refl (Fin total)) v
 
 open Classical in
 /-- The canonically increasing shuffle determined by an assignment of
