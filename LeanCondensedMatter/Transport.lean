@@ -5,7 +5,6 @@ import LeanCondensedMatter.Transport.FiniteConductivityTable.Eigenbasis
 import LeanCondensedMatter.Transport.Reciprocity.Data
 import LeanCondensedMatter.Transport.Reciprocity.Kubo
 import LeanCondensedMatter.Transport.KuboSymmetry.FiniteTime
-import LeanCondensedMatter.Transport.Scattering.AngularCollision
 import LeanCondensedMatter.Transport.Scattering.IsotropicAngularWeights
 import LeanCondensedMatter.Transport.Resolvent
 import LeanCondensedMatter.Transport.KuboBastin
@@ -19,7 +18,7 @@ set_option linter.style.header false
 
 Model-independent transport theory: dimension-independent conductivity data, periodic topological
 Bloch data, finite Lehmann conductivity evaluation, retarded/advanced resolvents, Kubo–Bastin
-response, Středa response, finite angular-scattering modes, and finite-disorder transport.
+response, Středa response, and finite-disorder transport.
 
 Analytical utilities such as occupation functions, angular harmonics, polar reduction, and
 relaxation-time data live in `Transport.Analysis`. Concrete Hamiltonian benchmarks live in

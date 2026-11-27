@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Models.OrbitalRelaxation.Finite
-import LeanCondensedMatter.Transport.Scattering.AngularCollision
+import LeanCondensedMatter.Analysis.Geometry.FiniteAngularKernel
 import Mathlib.Analysis.Calculus.MeanValue
 import Mathlib.Analysis.SpecialFunctions.ExpDeriv
 import Mathlib.Tactic.Linarith
@@ -26,7 +26,7 @@ supplemental Sec. I.A.
 
 namespace QuantumTheory.Models.OrbitalRelaxation
 
-open QuantumTheory.Transport
+open QuantumTheory.Transport FiniteAngularKernel
 
 variable {Ω : Type*} [Fintype Ω]
 

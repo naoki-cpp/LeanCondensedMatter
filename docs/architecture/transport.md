@@ -31,6 +31,10 @@ generic spectral resolvent algebra, and Lorentzian analysis stays under `LeanCon
 transport, and differentiation laws. Transport consumers attach response meaning and normalization
 separately; the trace module has no disorder or conductivity semantics.
 
+The opt-in mathematical `Analysis.Geometry.FiniteAngularKernel` owns finite gain-minus-loss
+operators, supplied angular moments, and their mode eigenvalue identities. Physical kinetic
+closures remain model-owned.
+
 ## Generic owners
 
 ```text
@@ -41,7 +45,7 @@ Transport/
 ├── FiniteConductivityTable/Eigenbasis.lean
 │                  statistics-independent eigenbasis/channel-to-scalar adapter
 ├── Reciprocity/   operator time-reversal covariance and finite-time Kubo conductivity
-├── Scattering/    finite-state collision operators and angular-mode eigenvalue laws
+├── Scattering/    physical angular scattering weights
 ├── Resolvent/     signed spectral regulator, physical spectral sides, self-energy algebra
 ├── Spectral/      response-neutral adapters from supplied spectral data to resolvent algebra
 ├── Analysis/      occupations, 2D continuum measure, polar Fourier, relaxation time

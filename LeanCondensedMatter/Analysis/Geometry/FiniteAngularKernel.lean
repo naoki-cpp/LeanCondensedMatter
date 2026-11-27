@@ -8,17 +8,13 @@ set_option linter.style.header false
 /-!
 # Finite angular collision modes
 
-A finite set of momentum directions carries a scattering kernel. Its zeroth,
+A finite family of directions carries a weighted kernel. Its zeroth,
 first, and traceless second coordinate moments determine the action of the
 collision operator on the first two nonconstant angular modes. These moment
-identities are explicit hypotheses: deriving them from a rotationally invariant
-continuous kernel or a microscopic disorder ensemble is a separate step.
-
-This module is independent of any Hamiltonian, disorder ensemble, or orbital
-representation. Concrete direction grids and kinetic closures are downstream.
+identities are explicit hypotheses on the kernel and direction family.
 -/
 
-namespace QuantumTheory.Transport
+namespace FiniteAngularKernel
 
 open scoped BigOperators
 
@@ -43,6 +39,16 @@ theorem angularCollision_const_mul
   intro q _
   ring
 
+/-- If a finite kernel has constant row sum and the gain operator acts by a scalar,
+the gain-minus-loss operator acts by the difference of the two coefficients. -/
+theorem angularCollision_of_gain (kernel : Ω → Ω → ℝ) (f : Ω → ℝ)
+    (total gain : ℝ) (p : Ω)
+    (htotal : ∑ q, kernel p q = total)
+    (hgain : ∑ q, kernel p q * f q = gain * f p) :
+    angularCollision kernel f p = (gain - total) * f p := by
+  rw [angularCollision_eq, htotal, hgain]
+  ring
+
 /-- Coordinate direction mode, the finite analogue of a degree-one spherical harmonic. -/
 def coordinateMode (direction : Ω → Fin 3 → ℝ) (i : Fin 3) (p : Ω) : ℝ :=
   direction p i
@@ -56,7 +62,7 @@ noncomputable def quadrupoleMode
 is expected to produce these identities; they are assumed, not inferred from
 the kernel alone. `firstCoefficient` and `secondCoefficient` are gain moments. -/
 structure AngularKernelMoments (Ω : Type*) [Fintype Ω] where
-  /-- Unit momentum direction associated with each finite index. -/
+  /-- Unit direction associated with each finite index. -/
   direction : Ω → Fin 3 → ℝ
   /-- Every direction has unit Euclidean norm. -/
   unit_direction : ∀ p, ∑ i, direction p i ^ 2 = 1
@@ -92,8 +98,11 @@ def degreeTwoRate : ℝ := data.totalRate - data.secondCoefficient
 theorem collision_coordinate (p : Ω) (i : Fin 3) :
     angularCollision data.kernel (coordinateMode data.direction i) p =
       -data.momentumRate * coordinateMode data.direction i p := by
-  rw [angularCollision_eq]
-  simp only [coordinateMode, data.first_moment, data.total_moment, momentumRate]
+  have h := angularCollision_of_gain data.kernel (coordinateMode data.direction i)
+    data.totalRate data.firstCoefficient p (data.total_moment p)
+    (data.first_moment p i)
+  rw [h]
+  unfold momentumRate
   ring
 
 private theorem quadrupole_gain (p : Ω) (i j : Fin 3) :
@@ -107,10 +116,11 @@ private theorem quadrupole_gain (p : Ω) (i j : Fin 3) :
 theorem collision_quadrupole (p : Ω) (i j : Fin 3) :
     angularCollision data.kernel (quadrupoleMode data.direction i j) p =
       -data.degreeTwoRate * quadrupoleMode data.direction i j p := by
-  rw [angularCollision_eq, data.quadrupole_gain p i j, data.total_moment p]
+  rw [angularCollision_of_gain data.kernel _ data.totalRate data.secondCoefficient p
+    (data.total_moment p) (data.quadrupole_gain p i j)]
   unfold degreeTwoRate
   ring
 
 end AngularKernelMoments
 
-end QuantumTheory.Transport
+end FiniteAngularKernel
