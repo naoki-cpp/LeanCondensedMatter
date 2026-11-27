@@ -124,13 +124,18 @@ theorem eigenbasisNormalizedExpectation_eq_pure_of_single
   apply hext
   apply ContinuousLinearMap.ext
   intro A
-  change eigenbasisNormalizedExpectation system data A =
-    (pure ⟨data.basis occupied, data.basis.orthonormal.1 occupied⟩).toNormalizedExpectation A
-  rw [eigenbasisNormalizedExpectation_apply, DensityOperator.toNormalizedExpectation_apply,
-    DensityOperator.expectation_pure, tsum_eq_single occupied]
-  · simp [hoccupied]
-  · intro i hi
-    simp [hzero i hi]
+  let ψ : StateVector H := ⟨data.basis occupied, data.basis.orthonormal.1 occupied⟩
+  change eigenbasisNormalizedExpectation system data A = (pure ψ).toNormalizedExpectation A
+  calc
+    eigenbasisNormalizedExpectation system data A =
+        inner ℂ (data.basis occupied) (A (data.basis occupied)) := by
+      rw [eigenbasisNormalizedExpectation_apply, tsum_eq_single occupied]
+      · simp [hoccupied]
+      · intro i hi
+        simp [hzero i hi]
+    _ = (pure ψ).toNormalizedExpectation A := by
+      change inner ℂ ψ.1 (A ψ.1) = (pure ψ).expectation A
+      exact (DensityOperator.expectation_pure ψ A).symm
 
 /-- The relative phase carried by a Heisenberg-picture matrix element. -/
 noncomputable def eigenbasisTransitionPhase
