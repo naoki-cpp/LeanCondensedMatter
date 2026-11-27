@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Models.MassiveDirac.Conductivity.Hall.NonCrossingDecomposition
+import LeanCondensedMatter.Transport.Disorder.InPlaneLadder
 import LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.HallZeroBroadeningProvenance
 import Mathlib.Tactic.FieldSimp
 import Mathlib.Tactic.Linarith

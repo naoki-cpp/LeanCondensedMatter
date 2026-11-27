@@ -255,7 +255,7 @@ The following current simp boundaries are Green:
 - all current simp rules in `QuantumTheory/Occupation/ZeroTemperature`
 - all current simp rules in `QuantumTheory/Occupation/BandFilling`
 - all current simp rules in `Models/MassiveDirac/Propagator/Symmetry`
-- all current simp rules in `Models/MassiveDirac/Vertex/InPlaneLadder`
+- all current simp rules in `Transport/Disorder/InPlaneLadder`
 - `energySq_polar`
 - `energy_polar_eq_radial`
 - `finiteCutoffContinuumBornDysonGaussianCrossedOrderedXYConductivity_zero_disorder`

@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Analysis.Fourier.AngularHarmonics
+import LeanCondensedMatter.Transport.Disorder.InPlaneLadder
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.BornDyson.RealSpace.Green
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.Vertex.BornDyson.DressedCurrent
 import LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.Trace

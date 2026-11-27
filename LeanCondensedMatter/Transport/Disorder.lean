@@ -15,6 +15,7 @@ import LeanCondensedMatter.Transport.Disorder.Moments
 import LeanCondensedMatter.Transport.Disorder.Born
 import LeanCondensedMatter.Transport.Disorder.BornNormBound
 import LeanCondensedMatter.Transport.Disorder.Ladder
+import LeanCondensedMatter.Transport.Disorder.InPlaneLadder
 import LeanCondensedMatter.Transport.Disorder.SCBA
 import LeanCondensedMatter.Transport.Disorder.Ward
 

@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Analysis.Lorentzian.Kernel
+import LeanCondensedMatter.Transport.Disorder.InPlaneLadder
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.Born.WeakDisorder
 import LeanCondensedMatter.Models.MassiveDirac.Vertex.PauliRung
 import Mathlib.Tactic.FieldSimp

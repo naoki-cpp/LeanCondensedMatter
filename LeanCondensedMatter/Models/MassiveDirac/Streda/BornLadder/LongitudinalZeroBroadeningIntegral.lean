@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.LongitudinalSameSide
+import LeanCondensedMatter.Transport.Disorder.InPlaneLadder
 import LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.RadialDenominator
 import Mathlib.Tactic.FieldSimp
 import Mathlib.Tactic.NormNum
