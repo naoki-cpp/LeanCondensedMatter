@@ -54,18 +54,33 @@ theorem electromagnetic_schrodinger_weak_continuity_interval
         weightedBoundaryCurrent1D a b test
           (fun x => electromagneticProbabilityCurrentValue1D
             q ℏ mass (vectorPotential x) (ψ x) (ψx x)) := by
-  apply ConservationLaw.weak_continuity_interval_of_pointwise a b
-  · intro x
-    exact electromagnetic_probability_continuity_balance_of_schrodinger
-      q ℏ mass (vectorPotential x) (vectorPotentialDerivative x) (scalarPotential x)
-      (ψ x) (ψt x) (ψx x) (ψxx x) hℏ hmass (hschrodinger x)
-  · exact htest
-  · intro x hx
+  have hcurrent : ∀ x ∈ [[a, b]],
+      HasDerivAt (fun y => electromagneticProbabilityCurrentValue1D
+        q ℏ mass (vectorPotential y) (ψ y) (ψx y))
+        (electromagneticProbabilityCurrentDivergenceValue1D
+          q ℏ mass (vectorPotential x) (vectorPotentialDerivative x)
+          (ψ x) (ψx x) (ψxx x)) x := by
+    intro x hx
     exact hasDerivAt_electromagneticProbabilityCurrentValue1D
       q ℏ mass hℏ hmass (hA x hx) (hψre x hx) (hψim x hx)
       (hψxre x hx) (hψxim x hx)
-  · exact htestIntegrable
-  · exact hcurrentIntegrable
+  have hweak := ConservationLaw.weak_continuity_interval_of_pointwise
+    (ContinuousLinearMap.mul ℝ ℝ) (a := a) (b := b)
+    (test := test) (testDerivative := testDerivative)
+    (current := fun x => electromagneticProbabilityCurrentValue1D
+      q ℏ mass (vectorPotential x) (ψ x) (ψx x))
+    (currentDerivative := fun x => electromagneticProbabilityCurrentDivergenceValue1D
+      q ℏ mass (vectorPotential x) (vectorPotentialDerivative x)
+      (ψ x) (ψx x) (ψxx x))
+    (densityTimeDerivative := fun x => probabilityDensityTimeDerivativeValue (ψ x) (ψt x))
+    (fun x => electromagnetic_probability_continuity_balance_of_schrodinger
+      q ℏ mass (vectorPotential x) (vectorPotentialDerivative x) (scalarPotential x)
+      (ψ x) (ψt x) (ψx x) (ψxx x) hℏ hmass (hschrodinger x))
+    htest hcurrent
+    (htestIntegrable.mul_continuousOn (HasDerivAt.continuousOn hcurrent))
+    (hcurrentIntegrable.continuousOn_mul (HasDerivAt.continuousOn htest))
+  simpa [intervalSmearedDensityRate1D, intervalSmearedCurrentPairing1D,
+    weightedBoundaryCurrent1D, ContinuousLinearMap.mul_apply'] using hweak
 
 /-- Electromagnetic interval weak continuity when the test function vanishes at both endpoints. -/
 theorem electromagnetic_schrodinger_weak_continuity_interval_zero_boundary
