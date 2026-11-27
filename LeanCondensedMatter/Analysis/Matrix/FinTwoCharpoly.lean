@@ -75,18 +75,17 @@ theorem trace_eq_zero_of_mul_transpose_eq_one_det_neg_one
   change a + d = 0
   linear_combination -d * h00 + b * h01 + a * hd
 
-/-- A transpose-orthogonal `2 × 2` matrix with determinant `-1` is an involution. -/
-theorem sq_eq_one_of_mul_transpose_eq_one_det_neg_one
-    (M : Matrix (Fin 2) (Fin 2) R)
-    (horth : M * Mᵀ = 1) (hdet : M.det = -1) : M ^ 2 = 1 := by
-  have htrace := M.trace_eq_zero_of_mul_transpose_eq_one_det_neg_one horth hdet
-  simpa [Matrix.charpoly_fin_two, htrace, hdet, add_neg_eq_zero] using
-    M.aeval_self_charpoly
-
 /-- A two-by-two matrix with zero trace and determinant minus one is an involution. -/
 theorem sq_eq_one_of_trace_zero_det_neg_one (M : Matrix (Fin 2) (Fin 2) R)
     (htrace : M.trace = 0) (hdet : M.det = -1) : M ^ 2 = 1 := by
   simpa [Matrix.charpoly_fin_two, htrace, hdet, add_neg_eq_zero] using
     M.aeval_self_charpoly
+
+/-- A transpose-orthogonal `2 × 2` matrix with determinant `-1` is an involution. -/
+theorem sq_eq_one_of_mul_transpose_eq_one_det_neg_one
+    (M : Matrix (Fin 2) (Fin 2) R)
+    (horth : M * Mᵀ = 1) (hdet : M.det = -1) : M ^ 2 = 1 :=
+  M.sq_eq_one_of_trace_zero_det_neg_one
+    (M.trace_eq_zero_of_mul_transpose_eq_one_det_neg_one horth hdet) hdet
 
 end Matrix
