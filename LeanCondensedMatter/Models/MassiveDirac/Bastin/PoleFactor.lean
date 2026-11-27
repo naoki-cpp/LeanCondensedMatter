@@ -26,19 +26,7 @@ noncomputable section
 
 open QuantumTheory.Transport QuantumTheory.TwoBand
 
-open Filter QuantumTheory.Transport
-
-/-- In target-centered offset coordinates, the opposite-band spectator denominator on spectral side
-`s` is `gap + offset + i γˢ`. -/
-theorem projectorResolventCoefficient_targetOffset_oppositeBand
-    (side : SpectralSide) (band : TwoBand) (v m px py offset broadening : ℝ) :
-    scalarResolventCoefficient
-        (spectralParameter side (bandEnergy band v m px py + offset) broadening)
-        (bandEnergy (oppositeBand band) v m px py) =
-      ((((interbandEnergyGap band v m px py + offset : ℝ) : ℂ) +
-          ((side.regulator broadening : ℝ) : ℂ) * Complex.I))⁻¹ := by
-  rw [← targetCenteredSourceCoefficient_eq]
-  exact scalarResolventCoefficient_targetCentered side _ _ _ _
+open Filter
 
 /-- The regular current factor multiplying the target-band Lorentzian pole in an interband Bastin
 pair for an ordered current-direction pair `(μ,ν)`. The source band is fixed to the opposite band. -/
@@ -52,24 +40,6 @@ noncomputable def interbandSpectatorCurrentFactor
     (bandEnergy (oppositeBand band) v m px py)
   r ^ 2 * currentBandBlockTrace μ ν (oppositeBand band) band e v m px py -
     a ^ 2 * currentBandBlockTrace ν μ (oppositeBand band) band e v m px py
-
-/-- Exact factorization of one direction-indexed interband Bastin pair into its Lorentzian spectral
-pole and regular spectator/current factor. -/
-theorem bastinBandPairContribution_opposite_source_eq_lorentzian
-    (μ ν : Fin 2) (band : TwoBand) (e v m px py probeEnergy broadening : ℝ)
-    (hbroadening : broadening ≠ 0) :
-    bastinBandPairContribution μ ν (oppositeBand band) band
-        e v m px py probeEnergy broadening =
-      (-2 * Complex.I) *
-        (Lorentzian.spectralKernel
-          (probeEnergy - bandEnergy band v m px py) broadening : ℂ) *
-        interbandSpectatorCurrentFactor μ ν
-          band e v m px py probeEnergy broadening := by
-  unfold bastinBandPairContribution scalarBastinBandPairContribution interbandSpectatorCurrentFactor
-  dsimp
-  rw [scalarSpectralDifferenceCoefficient_eq_lorentzian
-    (bandEnergy band v m px py) probeEnergy broadening hbroadening]
-  ring
 
 /-- At the target-band pole, the regular direction-indexed spectator/current factor converges to the
 inverse squared interband gap multiplying the canonical antisymmetric current block. -/
