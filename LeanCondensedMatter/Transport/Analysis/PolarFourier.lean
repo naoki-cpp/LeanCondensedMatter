@@ -18,6 +18,8 @@ namespace QuantumTheory
 open AngularHarmonics
 namespace Transport
 
+open PolarRadialKernels
+
 noncomputable section
 
 open MeasureTheory

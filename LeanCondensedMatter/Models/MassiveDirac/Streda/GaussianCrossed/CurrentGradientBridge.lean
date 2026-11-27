@@ -31,6 +31,7 @@ namespace QuantumTheory.Models.MassiveDirac
 noncomputable section
 
 open QuantumTheory.Transport
+open PolarRadialKernels
 
 /-- The physical retarded/advanced Born-Dyson quadratic spectral gap.
 It is independent of the radial momentum, even though each Dyson

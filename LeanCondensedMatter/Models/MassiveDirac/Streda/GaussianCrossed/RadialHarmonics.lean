@@ -25,6 +25,7 @@ noncomputable section
 
 open MeasureTheory
 open QuantumTheory.Transport
+open PolarRadialKernels
 
 /-- Canonical regulated K0/K1/K2 Fourier moments of the Gaussian-crossed current.
 The momentum-measure factor occurs once in each moment. -/

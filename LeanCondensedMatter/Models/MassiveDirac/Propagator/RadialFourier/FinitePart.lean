@@ -34,6 +34,7 @@ noncomputable section
 
 open MeasureTheory
 open QuantumTheory.Transport
+open PolarRadialKernels
 open scoped Interval
 
 /-- The exact finite-part value obtained by integrating the oscillatory

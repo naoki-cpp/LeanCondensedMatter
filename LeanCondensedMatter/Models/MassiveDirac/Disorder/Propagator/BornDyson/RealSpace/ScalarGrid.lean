@@ -24,6 +24,7 @@ namespace QuantumTheory.Models.MassiveDirac
 noncomputable section
 
 open QuantumTheory.Transport
+open PolarRadialKernels
 
 /-- Midpoint of cell `index` in the `count`-cell partition of `[0, pMax]`.
 For zero cells the grid is empty; no evaluation of a point is required. -/

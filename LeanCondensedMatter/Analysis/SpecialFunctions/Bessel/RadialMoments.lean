@@ -21,7 +21,7 @@ integrals, independently of physical momentum normalization or regulators.
 
 namespace BesselRadialMoments
 
-open QuantumTheory.Transport
+open PolarRadialKernels
 
 noncomputable section
 

@@ -25,6 +25,7 @@ namespace QuantumTheory.Models.MassiveDirac
 noncomputable section
 
 open QuantumTheory.Transport
+open PolarRadialKernels
 open MeasureTheory
 open scoped Interval
 
@@ -136,6 +137,7 @@ namespace QuantumTheory.Models.MassiveDirac
 noncomputable section
 
 open QuantumTheory.Transport
+open PolarRadialKernels
 open scoped ComplexConjugate
 
 /-- Scaling the argument by a strictly positive real preserves the

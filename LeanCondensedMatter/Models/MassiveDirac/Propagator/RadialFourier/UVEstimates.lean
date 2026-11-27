@@ -24,6 +24,7 @@ namespace QuantumTheory.Models.MassiveDirac
 noncomputable section
 
 open QuantumTheory.Transport
+open PolarRadialKernels
 
 /-- The reciprocal quadratic resolvent norm is bounded by the
 inverse half-dispersion beyond the center-dependent UV threshold. -/
@@ -144,6 +145,7 @@ namespace QuantumTheory.Models.MassiveDirac
 noncomputable section
 
 open QuantumTheory.Transport
+open PolarRadialKernels
 open MeasureTheory
 
 /-- The differentiated massive-Dirac resolvent remainder is at most

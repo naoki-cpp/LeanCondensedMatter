@@ -15,8 +15,7 @@ continuous complex radial weight. The interval endpoint and the Fourier scale ar
 arbitrary real parameters; no improper integral is differentiated.
 -/
 
-namespace QuantumTheory
-namespace Transport
+namespace PolarRadialKernels
 
 noncomputable section
 
@@ -273,5 +272,4 @@ theorem hasDerivAt_integral_polarFourierFirstCosineAngularKernel
 
 end
 
-end Transport
-end QuantumTheory
+end PolarRadialKernels

@@ -24,6 +24,7 @@ namespace QuantumTheory.Models.MassiveDirac
 noncomputable section
 
 open QuantumTheory.Transport
+open PolarRadialKernels
 
 /-- The inverse finite-cutoff Born-Dyson denominator is continuous on the radial momentum axis. -/
 theorem continuous_finiteCutoffContinuumBornDysonDenominator_inv_radial

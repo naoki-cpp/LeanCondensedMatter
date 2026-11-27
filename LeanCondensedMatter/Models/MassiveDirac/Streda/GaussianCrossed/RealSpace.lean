@@ -37,6 +37,7 @@ open AngularHarmonics
 noncomputable section
 
 open QuantumTheory.Transport
+open PolarRadialKernels
 open MeasureTheory
 
 /-- Diagonal dressed-current factor used by the Gaussian crossed sector.

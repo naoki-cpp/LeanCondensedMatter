@@ -29,6 +29,7 @@ open AngularHarmonics
 noncomputable section
 
 open QuantumTheory.Transport
+open PolarRadialKernels
 
 /-- Finite-cutoff finite-`η` real-space Born-Dyson Green matrix. -/
 noncomputable def finiteCutoffContinuumBornDysonRealSpaceGreenMatrix
