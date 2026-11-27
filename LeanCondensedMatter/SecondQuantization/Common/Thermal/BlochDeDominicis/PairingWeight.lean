@@ -10,12 +10,11 @@ set_option linter.style.header false
 /-!
 # The exchange-statistics weight of a Bloch–de Dominicis pairing
 
-`Pairing.lean` is purely combinatorial — `crossingCount`, `eraseZeroPair`, `insertFirstPair`,
-`equivSigma` — with no `Statistics`/`ℂ` dependency. This file adds the one physics-facing quantity
-built on top of it: the exchange-statistics weight `ζ ^ crossingCount`, where `ζ = +1` for bosons
-and `ζ = -1` for fermions (`Statistics.zetaInt`). Splitting this out keeps the pairing
-combinatorics reusable independent of the exchange-statistics choice, and isolates the one place a
-future general/arbitrary-ring generalization of `Statistics` would need to touch.
+`Combinatorics.PerfectPairing` supplies the pairing structure, crossing count, and
+finite reindexing laws independently of statistics. The exchange-statistics weight is
+`ζ ^ crossingCount`, where `ζ = +1` for bosons and `ζ = -1` for fermions
+(`Statistics.zetaInt`). This module proves the corresponding weight and evaluation
+identities under pair deletion, order-preserving transport, and decomposition.
 
 At four positions the adjacent, crossing, and nested pairings have weights `1`, `ζ`, and `1`,
 respectively (`four_position_pairings_and_weights`) — the sign pattern the four-point Bloch–de

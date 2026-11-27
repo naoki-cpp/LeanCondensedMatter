@@ -9,7 +9,7 @@ set_option linter.style.header false
 /-!
 # Perfect pairings on arbitrary types and ordered finite positions
 
-`PairingOn α` bundles a fixed-point-free involution on an arbitrary type `α`. The traditional
+`PairingOn α` bundles a fixed-point-free involution on an arbitrary type `α`.
 `Pairing n` is its ordered finite specialization to `Fin (2 * n)`, where the linear order supports
 crossings and recursive finite combinatorics. Normalized pairs are available on any finite
 linear order.

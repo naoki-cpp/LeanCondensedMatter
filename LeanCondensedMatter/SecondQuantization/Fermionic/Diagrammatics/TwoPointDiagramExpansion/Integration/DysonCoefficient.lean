@@ -9,14 +9,14 @@ set_option linter.style.header false
 # Ordered-simplex two-point Dyson coefficients
 
 This module integrates the fixed-time external-leg Wick expansion over the ordered simplex and
-attaches the `(-1)^n` Dyson sign. The operator coefficient now uses the generic
-finite Gibbs expectation at explicit chemical potential μ, while imaginary-time operators
-continue to evolve under the physical free dispersion ε.
+attaches the `(-1)^n` Dyson sign. The operator coefficient uses the finite Gibbs
+expectation at explicit chemical potential μ, while imaginary-time operators evolve
+under the physical free dispersion ε.
 
 The unconditional public theorem integrates the pointwise finite sum over diagrams.  Commuting that
 finite diagram sum with the ordered-simplex integral is a separate analytic obligation, because
-mixed time ordering changes when an interaction time crosses an external time and no individual
-diagram amplitude is continuous.  It is discharged under measurable local boundedness in
+mixed time ordering can change when an interaction time crosses an external time, so
+continuity of individual diagram amplitudes is not assumed.  It is discharged under measurable local boundedness in
 `DiagramSumIntegral.lean` by `twoPointDiagramCoefficient_eq_sum_dysonAmplitude`.
 -/
 

@@ -12,6 +12,6 @@ set_option linter.style.header false
 Finite-mode imaginary-time two-point Wick diagrams with quartic interaction vertices: Common-owned
 mixed event/leg ordering, fermionic flattening and fixed-external amplitudes;
 exchange of the finite diagram sum with the ordered-simplex integral; and the perturbative
-two-point series. The physical Cauchy factorization now specializes the arbitrary-external
-insertion theory rather than maintaining a separate two-point fiber/shuffle proof chain.
+two-point series. The physical Cauchy factorization is the two-external-leg specialization
+of the arbitrary-external insertion theory.
 -/

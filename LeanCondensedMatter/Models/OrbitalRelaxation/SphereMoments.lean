@@ -49,9 +49,8 @@ theorem sphericalAverage_orbitalDoubleCommutator (axis : Fin 3)
     · ring
 
 
-/-- The previously defined finite-model rate equals the continuous
-spherical-coordinate average of its exact matrix double commutator.
-This replaces the cubature numerically on this quartic integrand only;
+/-- The finite-model rate equals the continuous spherical-coordinate average of its
+exact matrix double commutator. The finite cubature is exact for this quartic integrand;
 the second-order kinetic closure remains a separate physical assumption. -/
 theorem orbitalRate_eq_sphericalAverage (axis : Fin 3)
     (ℏ τ₂ c₁ c₂ r : ℝ) :

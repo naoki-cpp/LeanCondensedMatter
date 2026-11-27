@@ -29,11 +29,10 @@ differential equations
   d/dx (x A') = A
   d/dx (x B') = B + A'.
 
-This module works entirely in `ℂ⟦X⟧`, independently of transport or
-physical models. Identifying formal evaluation with convergent
-analytic Bessel functions and their harmonic `tsum` representations
-is established in the analytic sections below.
-The order-one harmonic correction is formalized in the second section below.
+The formal identities in `ℂ⟦X⟧` include the order-one harmonic correction.
+Absolutely convergent coefficient evaluations identify these series with the
+analytic J₀, J₁, Y₀ and Y₁ functions and give their Wronskian at nonzero complex
+arguments. No transport or physical-model assumptions are required.
 -/
 
 namespace BesselFormal
@@ -174,18 +173,16 @@ The harmonic recurrence gives a formal derivative relation
   x C = 2x B' - (A-1),
 
 where A(x)=Σ xⁿ/(n!)² and B(x)=Σ Hₙxⁿ/(n!)²
-are the concrete formal series defined in the preceding J₀/Y₀ coefficient section.
+are the factorial and harmonic formal series.
 
-Inserting this relation into the proved Frobenius invariant
+Inserting this relation into the Frobenius invariant
 A²+2x(A'B-AB')=1 yields
 
   A+2x A'B-x A C=1.
 
 After analytic evaluation at x=-z²/4, this yields the corresponding
-complex Bessel J/Y harmonic-series identity. The formal identity is unconditional;
-passing to analytic sums needs a separate justified
-evaluation/Cauchy product theorem, not an assertion. This module contains
-only generic formal Bessel series algebra, with no transport assumptions.
+complex Bessel J/Y harmonic-series identity through absolutely summable
+coefficient evaluation and the Cauchy-product theorem.
 -/
 
 namespace BesselFormal
@@ -248,10 +245,8 @@ theorem besselFormalH1_derivative_relation :
         simp only [Nat.cast_add, Nat.cast_one]
         ring
 
-/-- Formal version of the actual Wronskian-reducing identity,
-now **unconditionally proved** for the factorial/harmonic
-coefficient sequences defining J₀, Y₀ and Y₁.
-Analytic evaluation remains separate. -/
+/-- Formal Wronskian identity for the factorial and harmonic coefficient sequences
+of J₀, Y₀ and Y₁, independent of analytic evaluation. -/
 theorem besselFormalJ0H0H1_harmonicIdentity :
     besselFormalJ0 +
         PowerSeries.X *
@@ -400,17 +395,11 @@ end BesselFormal
 /-!
 # Formal-to-analytic bridge between formal and convergent Y harmonic series
 
-The formal coefficient calculations above are for
-power-series coefficients `A,B,C`. This module verifies that the
-realized DLMF harmonic corrections from merged PR #4529 are **exactly**
-the coefficientwise `tsum` evaluations of `B` and `C` at
-`x=-(z/2)²`. No change of analytic functions, no new hypothesis,
-and no shortcut using a topologically nilpotent formal-power-series
-evaluation at arbitrary complex arguments.
-
-The equivalence is a termwise identity with absolutely convergent sums.
-Polynomial products and formal Wronskian identities are transported
-through these evaluations in the analytic Wronskian results below.
+The DLMF harmonic corrections are coefficientwise `tsum` evaluations
+of the formal series `B` and `C` at `x=-(z/2)²`.
+Termwise identities and absolute summability justify evaluation of the
+formal Wronskian identity and its products at arbitrary complex arguments,
+without requiring topological nilpotence of the argument.
 -/
 
 namespace BesselSecondKind

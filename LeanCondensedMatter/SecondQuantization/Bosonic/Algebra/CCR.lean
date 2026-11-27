@@ -7,8 +7,8 @@ set_option linter.style.header false
 # Canonical commutation relations
 
 The bosonic creation and annihilation operators satisfy `[a_i,a_j]=0`, `[a_i†,a_j†]=0`, and
-`[a_i,a_j†]=δ_ij`. The representation-specific basis proofs remain here; generic commutator algebra
-is delegated to `Analysis.ScalarExchange`.
+`[a_i,a_j†]=δ_ij`. The occupation-basis proofs establish these relations using the generic
+commutator algebra in `Analysis.Algebra.ScalarExchange`.
 -/
 
 namespace SecondQuantization
