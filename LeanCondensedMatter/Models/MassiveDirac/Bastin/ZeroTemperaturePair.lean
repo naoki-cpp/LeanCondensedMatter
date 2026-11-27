@@ -8,13 +8,10 @@ set_option linter.style.header false
 /-!
 # Zero-temperature occupation-weighted interband Bastin pair
 
-The finite-radial dominated-convergence chain built so far concerns the target-centered interband
-pair before the physical occupation factor is applied.  This file starts the final occupation
-bridge by inserting the zero-temperature Fermi weight directly in that finite-broadening pair.
-
-Because the occupation takes only the values `0` and `1`, it does not enlarge the uniform radial
-bound already proved for the unweighted pair.  This gives the domination input needed for the later
-occupation-weighted momentum DCT while keeping the exact Fermi-edge limit separate.
+The target-centered finite-broadening interband pair is weighted by the zero-temperature
+Fermi occupation. Since the occupation takes values in `{0, 1}`, the weighted pair satisfies
+the same uniform radial bound as the unweighted pair. This provides a domination estimate
+for momentum integration; the exact Fermi-edge limit requires a separate theorem.
 -/
 
 namespace QuantumTheory.Models.MassiveDirac
