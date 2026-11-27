@@ -100,6 +100,15 @@ theorem PairingOn.crossingCount_eq_sum_crosses {α : Type*} [Fintype α] [Linear
     _ = _ := by
       simp only [Finset.attach_eq_univ, Fintype.sum_prod_type]
 
+/-- Any equivalence presenting the normalized pairs reindexes the crossing count. -/
+theorem PairingOn.crossingCount_eq_sum_sum_crosses_of_equiv
+    {α A : Type*} [Fintype α] [LinearOrder α] [Fintype A]
+    (pairing : PairingOn α) (e : A ≃ pairing.NormalizedPair) :
+    pairing.crossingCount =
+      ∑ p : A, ∑ q : A, if Crosses (e p).1 (e q).1 then 1 else 0 := by
+  rw [pairing.crossingCount_eq_sum_crosses, Fintype.sum_prod_type, ← Equiv.sum_comp e]
+  exact Finset.sum_congr rfl fun p _ => (Equiv.sum_comp e _).symm
+
 /-- Reindex the double crossing sum through a finite presentation of a pairing's normalized
 pairs whose endpoints are mapped by a strictly increasing position map. -/
 theorem PairingOn.sum_sum_crosses_map_eq_crossingCount

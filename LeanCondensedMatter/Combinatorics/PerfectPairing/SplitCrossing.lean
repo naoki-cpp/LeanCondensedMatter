@@ -79,17 +79,8 @@ theorem PairingOn.ofSplit_crossingCount_eq_left_add_right_add_inter
         PairingOn.ofSplitInterSectorCrossingCount e P Q := by
     classical
     let emb := PairingOn.ofSplitNormalizedPairEquiv e P Q
-    have hsum :
-        (PairingOn.ofSplit e P Q).crossingCount =
-          ∑ xy : (P.NormalizedPair ⊕ Q.NormalizedPair) ×
-              (P.NormalizedPair ⊕ Q.NormalizedPair),
-            if Crosses (emb xy.1).1 (emb xy.2).1 then 1 else 0 := by
-      rw [PairingOn.crossingCount_eq_sum_crosses]
-      exact (Equiv.sum_comp (Equiv.prodCongr emb emb)
-        (fun xy : (PairingOn.ofSplit e P Q).NormalizedPair ×
-            (PairingOn.ofSplit e P Q).NormalizedPair =>
-          if Crosses xy.1.1 xy.2.1 then (1 : ℕ) else 0)).symm
-    rw [hsum, Fintype.sum_prod_type, Fintype.sum_sum_type]
+    rw [(PairingOn.ofSplit e P Q).crossingCount_eq_sum_sum_crosses_of_equiv emb,
+      Fintype.sum_sum_type]
     simp_rw [Fintype.sum_sum_type, Finset.sum_add_distrib]
     unfold PairingOn.ofSplitInterSectorCrossingCount
     dsimp [emb]
