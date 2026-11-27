@@ -113,7 +113,7 @@ theorem pointwiseBerryCurvature_xy_eq_forceMatrixBerryCurvature
   rw [data.berryCurvature_eq_sum_hamiltonianDerivativeMatrixElements
     0 1 band hself hnondegenerate]
   rw [sum_band_eq_add_oppositeBand _ band]
-  simp only [if_pos rfl, if_neg (ne_oppositeBand band).symm, zero_add]
+  rw [if_pos (show band = band from rfl), if_neg (ne_oppositeBand band).symm, zero_add]
   rw [div_mul_div_comm, ← Complex.ofReal_mul, Complex.div_ofReal_im, ← pow_two, hgapEq]
   ring
 
