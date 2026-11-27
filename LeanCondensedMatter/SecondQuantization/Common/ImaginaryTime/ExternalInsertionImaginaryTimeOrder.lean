@@ -1122,19 +1122,11 @@ theorem orderedExternalInsertionTimedEvents_paired {n : ℕ}
   have hdisjoint (a b : ExternalInsertionTimedEvent 1 n) (hne : a ≠ b) :
       List.Disjoint (block a) (block b) := by
     intro x hx hy
-    cases a with
-    | inl a =>
-        cases b with
-        | inl b =>
-            fin_cases a <;> fin_cases b <;>
-              simp_all [block, pairedExternalEventBlock] <;> aesop
-        | inr b =>
-            fin_cases a <;> simp_all [block, pairedExternalEventBlock]
-    | inr a =>
-        cases b with
-        | inl b =>
-            fin_cases b <;> simp_all [block, pairedExternalEventBlock]
-        | inr b => simp_all [block, pairedExternalEventBlock]
+    cases a <;> cases b
+    case' inl.inl a b => fin_cases a <;> fin_cases b
+    case' inl.inr a b => fin_cases a
+    case' inr.inl a b => fin_cases b
+    all_goals simp_all [block, pairedExternalEventBlock] <;> aesop
   have hwithin (a : ExternalInsertionTimedEvent 1 n) :
       (block a).Pairwise r₂ := by
     cases a with
@@ -1147,42 +1139,22 @@ theorem orderedExternalInsertionTimedEvents_paired {n : ℕ}
   have hcross (a b : ExternalInsertionTimedEvent 1 n) (hne : a ≠ b)
       (hab : r₁ a b) (x y : ExternalInsertionTimedEvent 2 n)
       (hx : x ∈ block a) (hy : y ∈ block b) : r₂ x y := by
-    cases a with
-    | inl a =>
-        cases b with
-        | inl b =>
-            fin_cases a <;> fin_cases b <;>
-              simp_all [block, pairedExternalEventBlock, r₁, r₂, times,
-                externalInsertionTimedEventBeforeOrEqual, stableTimedEventBeforeOrEqual_iff,
-                externalInsertionTimedEventTime, externalInsertionTimedEventRank,
-                pairedExternalTimes] <;>
-              aesop (add safe tactic (by
-                first
-                | omega
-                | exact (Fin.strictMono_castAdd n).monotone (show (0 : Fin 4) ≤ 2 by decide)
-                | exact (Fin.strictMono_castAdd n).monotone (show (0 : Fin 4) ≤ 3 by decide)
-                | exact (Fin.strictMono_castAdd n).monotone (show (1 : Fin 4) ≤ 2 by decide)
-                | exact (Fin.strictMono_castAdd n).monotone (show (1 : Fin 4) ≤ 3 by decide)))
-        | inr b =>
-            fin_cases a <;>
-              simp_all [block, pairedExternalEventBlock, r₁, r₂, times,
-                externalInsertionTimedEventBeforeOrEqual, stableTimedEventBeforeOrEqual_iff,
-                externalInsertionTimedEventTime, externalInsertionTimedEventRank,
-                pairedExternalTimes] <;>
-              aesop (add safe tactic (by omega))
-    | inr a =>
-        cases b with
-        | inl b =>
-            fin_cases b <;>
-              simp_all [block, pairedExternalEventBlock, r₁, r₂, times,
-                externalInsertionTimedEventBeforeOrEqual, stableTimedEventBeforeOrEqual_iff,
-                externalInsertionTimedEventTime, externalInsertionTimedEventRank,
-                pairedExternalTimes] <;>
-              aesop (add safe tactic (by omega))
-        | inr b =>
-            simp_all [block, pairedExternalEventBlock, r₁, r₂,
-              externalInsertionTimedEventBeforeOrEqual, stableTimedEventBeforeOrEqual_iff,
-              externalInsertionTimedEventTime, externalInsertionTimedEventRank]
+    cases a <;> cases b
+    case' inl.inl a b => fin_cases a <;> fin_cases b
+    case' inl.inr a b => fin_cases a
+    case' inr.inl a b => fin_cases b
+    all_goals
+      simp_all [block, pairedExternalEventBlock, r₁, r₂, times,
+        externalInsertionTimedEventBeforeOrEqual, stableTimedEventBeforeOrEqual_iff,
+        externalInsertionTimedEventTime, externalInsertionTimedEventRank,
+        pairedExternalTimes] <;>
+        aesop (add safe tactic (by
+          first
+          | omega
+          | exact (Fin.strictMono_castAdd n).monotone (show (0 : Fin 4) ≤ 2 by decide)
+          | exact (Fin.strictMono_castAdd n).monotone (show (0 : Fin 4) ≤ 3 by decide)
+          | exact (Fin.strictMono_castAdd n).monotone (show (1 : Fin 4) ≤ 2 by decide)
+          | exact (Fin.strictMono_castAdd n).monotone (show (1 : Fin 4) ≤ 3 by decide)))
   have hsorted : (source.flatMap block).Pairwise r₂ :=
     List.pairwise_flatMap.mpr
       ⟨fun a _ => hwithin a,
