@@ -5,7 +5,6 @@ import LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.SelfEnergy.Core
 
 Factorization of the two isotropic Born self-energy channels through a common scalar radial
 denominator integral, with arbitrary-regulator and physical-side variants.
-All declarations in this module were moved unchanged from the original SelfEnergy module.
 -/
 
 set_option linter.style.header false
