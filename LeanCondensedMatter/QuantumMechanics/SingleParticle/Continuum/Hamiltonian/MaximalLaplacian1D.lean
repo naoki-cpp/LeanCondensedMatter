@@ -104,7 +104,7 @@ theorem l2ToTemperedDistribution1D_continuumMaximalLaplacian1D
   change l2ToTemperedDistribution1D (continuumMaximalLaplacianOnDomain1D ψ) = _
   exact l2ToTemperedDistribution1D_continuumMaximalLaplacianOnDomain1D ψ
 
-/-- The maximal Laplacian agrees with the previously constructed `H²` Laplacian on `H²`. -/
+/-- The maximal distributional Laplacian agrees with the `H²` Laplacian on `H²`. -/
 theorem continuumMaximalLaplacian1D_agrees_on_H2 (ψ : continuumH2Domain1D) :
     continuumMaximalLaplacian1D
         ⟨(ψ : ContinuumL2Wavefunction1D),
