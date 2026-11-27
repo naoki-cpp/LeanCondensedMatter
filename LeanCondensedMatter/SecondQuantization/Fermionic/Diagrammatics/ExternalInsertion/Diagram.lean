@@ -1,4 +1,3 @@
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Core.Ordered
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Pairing.MixedOrder
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.LocalLeg
 
