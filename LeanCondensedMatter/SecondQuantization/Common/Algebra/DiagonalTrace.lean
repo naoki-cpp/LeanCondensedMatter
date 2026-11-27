@@ -1,4 +1,5 @@
-import LeanCondensedMatter.SecondQuantization.Common.Algebra.SupportShift
+import LeanCondensedMatter.Analysis.Algebra.FinsuppSupportShift
+import LeanCondensedMatter.SecondQuantization.Common.Algebra.AlgebraicFock
 import Mathlib.Topology.Algebra.InfiniteSum.Constructions
 import Mathlib.Analysis.Complex.Basic
 
@@ -95,11 +96,11 @@ weight.  No positivity, trace-class condition, or countability hypothesis is nee
 theorem matrixCoeff_diagonalOperator_comp_self_eq_zero_of_carriesShift
     {G : Type*} [AddCommGroup G] {grading : Config → G}
     {A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config} {q : G}
-    (hA : CarriesShift grading A q) (hq : q ≠ 0)
+    (hA : Finsupp.CarriesShift grading A q) (hq : q ≠ 0)
     (w : Config → ℂ) (n : Config) :
     matrixCoeff ((diagonalOperator w).comp A) n n = 0 := by
   have hdiag : matrixCoeff A n n = 0 :=
-    diagonalCoeff_eq_zero_of_carriesShift hA hq n
+    hA.diagonal_eq_zero hq n
   calc
     matrixCoeff ((diagonalOperator w).comp A) n n =
         w n * matrixCoeff A n n := by
@@ -111,7 +112,7 @@ the numerator vanishes term by term, regardless of the weight. -/
 theorem summable_diagonalOperator_comp_of_carriesShift
     {G : Type*} [AddCommGroup G] {grading : Config → G}
     {A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config} {q : G}
-    (hA : CarriesShift grading A q) (hq : q ≠ 0) (w : Config → ℂ) :
+    (hA : Finsupp.CarriesShift grading A q) (hq : q ≠ 0) (w : Config → ℂ) :
     Summable (fun n => matrixCoeff ((diagonalOperator w).comp A) n n) := by
   have hzero : (fun n => matrixCoeff ((diagonalOperator w).comp A) n n) =
       (fun _ : Config => (0 : ℂ)) := by
@@ -124,7 +125,7 @@ theorem summable_diagonalOperator_comp_of_carriesShift
 theorem tsumTrace_diagonalOperator_comp_eq_zero_of_carriesShift
     {G : Type*} [AddCommGroup G] {grading : Config → G}
     {A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config} {q : G}
-    (hA : CarriesShift grading A q) (hq : q ≠ 0) (w : Config → ℂ) :
+    (hA : Finsupp.CarriesShift grading A q) (hq : q ≠ 0) (w : Config → ℂ) :
     tsumTrace ((diagonalOperator w).comp A) = 0 := by
   unfold tsumTrace
   simp only [matrixCoeff_diagonalOperator_comp_self_eq_zero_of_carriesShift hA hq w,
@@ -136,7 +137,7 @@ nonzero partition function hypothesis. -/
 theorem diagonalTraceRatio_eq_zero_of_carriesShift
     {G : Type*} [AddCommGroup G] {grading : Config → G}
     {A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config} {q : G}
-    (hA : CarriesShift grading A q) (hq : q ≠ 0) (w : Config → ℂ) :
+    (hA : Finsupp.CarriesShift grading A q) (hq : q ≠ 0) (w : Config → ℂ) :
     tsumTrace ((diagonalOperator w).comp A) / tsumTrace (diagonalOperator w) = 0 := by
   rw [tsumTrace_diagonalOperator_comp_eq_zero_of_carriesShift hA hq w]
   simp
@@ -146,7 +147,7 @@ The summability witness is supplied automatically by the selection rule. -/
 theorem summableDiagonalTraceRatioLinear_eq_zero_of_carriesShift
     {G : Type*} [AddCommGroup G] {grading : Config → G}
     {A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config} {q : G}
-    (hA : CarriesShift grading A q) (hq : q ≠ 0) (w : Config → ℂ) :
+    (hA : Finsupp.CarriesShift grading A q) (hq : q ≠ 0) (w : Config → ℂ) :
     summableDiagonalTraceRatioLinear (diagonalOperator w)
       ⟨A, summable_diagonalOperator_comp_of_carriesShift hA hq w⟩ = 0 := by
   change tsumTrace ((diagonalOperator w).comp A) / tsumTrace (diagonalOperator w) = 0

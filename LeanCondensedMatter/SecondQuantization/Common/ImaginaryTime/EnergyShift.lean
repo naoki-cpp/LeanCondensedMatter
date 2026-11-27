@@ -1,4 +1,4 @@
-import LeanCondensedMatter.SecondQuantization.Common.Algebra.SupportShift
+import LeanCondensedMatter.Analysis.Algebra.FinsuppSupportShift
 import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.DiagonalEvolution
 
 set_option linter.style.header false
@@ -6,7 +6,7 @@ set_option linter.style.header false
 /-!
 # Energy-shift eigenoperators of diagonal evolution
 
-A real-valued instance of `CarriesShift` records a fixed energy shift: every nonzero matrix
+A real-valued instance of `Finsupp.CarriesShift` records a fixed energy shift: every nonzero matrix
 coefficient connects basis states whose energies differ by the same amount. This support-level
 condition is independent of particle statistics and implies the usual imaginary-time eigenoperator
 law `A(τ) = exp(τ q) A` under diagonal Heisenberg evolution. The phase is exposed in its canonical
@@ -24,7 +24,7 @@ variable {Config : Type*}
 theorem heisenbergEvolve_eq_smul_of_carriesShift
     (energy : Config → ℝ) (q τ : ℝ)
     (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
-    (hA : CarriesShift energy A q) :
+    (hA : Finsupp.CarriesShift energy A q) :
     heisenbergEvolve energy τ A = Complex.exp ((τ : ℂ) * (q : ℂ)) • A := by
   apply matrixCoeff_ext
   intro m n
@@ -45,7 +45,7 @@ the diagonal evolution. -/
 theorem diagonalEvolution_comp_of_carriesShift
     (energy : Config → ℝ) (q τ : ℝ)
     (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
-    (hA : CarriesShift energy A q) :
+    (hA : Finsupp.CarriesShift energy A q) :
     (diagonalEvolution energy τ).comp A =
       Complex.exp ((τ : ℂ) * (q : ℂ)) • (A.comp (diagonalEvolution energy τ)) := by
   have hevol :
