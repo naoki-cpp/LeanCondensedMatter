@@ -6,8 +6,8 @@ set_option linter.style.header false
 /-!
 # Statistics-indexed exchange commutator
 
-The representation-independent bracket algebra lives in `Analysis.ScalarExchange`.
-This module only selects its scalar from `Statistics`.
+The representation-independent bracket algebra is defined in `Analysis.Algebra.ScalarExchange`.
+The statistics-indexed commutator specializes it at `Statistics.zetaInt`.
 -/
 
 namespace SecondQuantization
