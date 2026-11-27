@@ -14,7 +14,6 @@ import LeanCondensedMatter.Analysis.Operator.Polar
 import LeanCondensedMatter.Analysis.Operator.SchwartzComponents1D
 import LeanCondensedMatter.Analysis.Operator.SchwartzKinetic1D
 import LeanCondensedMatter.Analysis.Operator.Spectral
-import LeanCondensedMatter.Analysis.Operator.SymmetrizedProduct
 import LeanCondensedMatter.Analysis.Operator.TraceClass
 import LeanCondensedMatter.Analysis.Operator.Unbounded
 import LeanCondensedMatter.Analysis.Operator.Unitary

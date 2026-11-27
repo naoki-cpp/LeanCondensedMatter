@@ -63,7 +63,7 @@ themselves imply boundedness or domain properties on that completion.
 Particle-statistics-independent one-body balance and current semantics stay upstream:
 
 ```text
-Analysis.Operator.SymmetrizedProduct
+Analysis.Algebra.SymmetrizedProduct
         ↓
 Analysis.ConservationLaw (representation and balance)
         ↓

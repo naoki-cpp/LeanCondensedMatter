@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Analysis.OscillatoryIntegral
-import LeanCondensedMatter.Analysis.Algebra.QuadraticNormalization
+import LeanCondensedMatter.Analysis.Algebra
 import LeanCondensedMatter.Analysis.DiscreteLattice
 import LeanCondensedMatter.Analysis.Fourier.AngularHarmonics
 import LeanCondensedMatter.Analysis.Geometry.SphericalMoments
