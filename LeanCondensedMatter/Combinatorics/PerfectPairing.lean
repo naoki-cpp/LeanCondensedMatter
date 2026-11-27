@@ -15,7 +15,6 @@ import LeanCondensedMatter.Combinatorics.PerfectPairing.Crossing
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Embedding
 import LeanCondensedMatter.Combinatorics.PerfectPairing.CrossingParity
 import LeanCondensedMatter.Combinatorics.PerfectPairing.CrossingEraseZero
-import LeanCondensedMatter.Combinatorics.PerfectPairing.Transport
 import LeanCondensedMatter.Combinatorics.PerfectPairing.InvolutionCard
 
 set_option linter.style.header false

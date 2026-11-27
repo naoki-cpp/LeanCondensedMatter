@@ -126,7 +126,8 @@ and permutation-sign statements retain their explicit finite-index coordinates.
 
 ## Removing the first pair
 
-`PerfectPairing.Core` owns the first pair, namely the pair containing position zero.
+`PerfectPairing.Core` owns the pairing bundle, disjoint-sum assembly and transport along
+arbitrary position equivalences, as well as the first pair containing position zero.
 `PerfectPairing.FirstPair` owns the smaller pairing, its increasing position map, and the residual
 pair structure. `eraseZeroPairEmbedding` maps both endpoints back to ambient positions;
 `pairs_erase_firstPair_eq_image` identifies all ambient pairs other than the first pair with the
