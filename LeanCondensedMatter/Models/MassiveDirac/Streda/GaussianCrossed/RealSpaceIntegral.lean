@@ -454,7 +454,7 @@ finite-radius real-space integral is the radial integral of the antisymmetric
 `xy-yx` sector.
 
 The rotation-covariance hypothesis is explicit: it is not implied by the
-previously proved radial-axis Fourier identities and must be discharged from
+radial-axis Fourier identities alone and must be established from
 the model's Green/current rotation laws. This theorem performs the angular
 projection, not the remaining radial or regulator limits. -/
 theorem finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceIntegral_eq_radial_antisymmetric_trace
