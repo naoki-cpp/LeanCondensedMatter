@@ -13,7 +13,7 @@ Unlike a formal asymptotic series, this theorem gives a precise finite-cutoff
 limit formula, with analytic hypotheses explicit for an arbitrary differentiable weight.
 -/
 
-namespace QuantumTheory.Transport
+namespace PolarRadialKernels
 
 noncomputable section
 
@@ -84,4 +84,4 @@ theorem tendsto_integral_polarFourierZerothAngularKernel_of_by_parts
 
 end
 
-end QuantumTheory.Transport
+end PolarRadialKernels

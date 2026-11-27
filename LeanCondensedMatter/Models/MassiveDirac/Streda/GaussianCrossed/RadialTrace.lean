@@ -26,6 +26,7 @@ noncomputable section
 
 open MeasureTheory
 open QuantumTheory.Transport
+open PolarRadialKernels
 
 
 /-- Pointwise crossed trace kernel written only in terms of the one-dimensional radial Green and

@@ -15,8 +15,7 @@ the origin and continuity, without a Bessel-function representation, Fourier
 momentum measure, or transport assumption.
 -/
 
-namespace QuantumTheory
-namespace Transport
+namespace PolarRadialKernels
 
 open AngularHarmonics
 
@@ -151,8 +150,7 @@ theorem continuous_polarFourierSecondCosineAngularKernel :
 
 
 end
-end Transport
-end QuantumTheory
+end PolarRadialKernels
 
 /-!
 ## Differentiation of dimensionless polar Fourier kernels
@@ -164,8 +162,7 @@ the special-function representation nor physical momentum normalization
 is needed.
 -/
 
-namespace QuantumTheory
-namespace Transport
+namespace PolarRadialKernels
 
 noncomputable section
 
@@ -320,8 +317,7 @@ theorem polarFourierHarmonicEnergy_hasDerivAt (z : ℝ) :
   ring
 
 end
-end Transport
-end QuantumTheory
+end PolarRadialKernels
 
 /-!
 ## Polar Fourier angular harmonic reductions
@@ -332,9 +328,8 @@ polar-angle shifts. This layer depends only on the core kernels and
 model-independent harmonic coefficients.
 -/
 
-namespace QuantumTheory
+namespace PolarRadialKernels
 open AngularHarmonics
-namespace Transport
 
 noncomputable section
 
@@ -515,5 +510,4 @@ theorem integral_polarFourierRadialPhase_harmonicCoefficients_shifted
       coefficients.secondCosine coefficients.secondMixed)
 
 end
-end Transport
-end QuantumTheory
+end PolarRadialKernels

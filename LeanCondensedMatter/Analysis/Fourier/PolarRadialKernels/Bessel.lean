@@ -121,10 +121,9 @@ theorem fullAngleCosineMoment_norm_le (n : ℕ) :
 end
 end AngularHarmonics
 
-namespace QuantumTheory
+namespace PolarRadialKernels
 
 open AngularHarmonics
-namespace Transport
 
 open BesselHypergeometric
 
@@ -314,8 +313,7 @@ theorem polarFourierZerothAngularKernel_eq_besselJ (z : ℝ) :
       rw [besselJZero_eq_regularizedHGTsum]
 
 end
-end Transport
-end QuantumTheory
+end PolarRadialKernels
 
 /-!
 ## Higher polar Fourier harmonics and symmetry
@@ -325,9 +323,8 @@ recurrence, weighted radial moments, and parity/conjugation laws. This
 pure analysis layer has no physical-momentum normalization.
 -/
 
-namespace QuantumTheory
+namespace PolarRadialKernels
 open BesselHypergeometric
-namespace Transport
 
 noncomputable section
 
@@ -609,5 +606,4 @@ private theorem integral_polarFourier_conj (f : ℝ → ℂ) :
     _ = polarFourierSecondCosineAngularKernel z := polarFourierSecondCosineAngularKernel_neg z
 
 end
-end Transport
-end QuantumTheory
+end PolarRadialKernels

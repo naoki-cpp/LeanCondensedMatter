@@ -184,18 +184,18 @@ Finite-cutoff real-space Fourier reduction uses explicit full-angle zeroth, firs
 and second-cosine kernels as the canonical radial intermediate. Mathlib v4.35.0 introduces
 `Complex.besselJ` in `Mathlib.Analysis.SpecialFunctions.Bessel`, including integer-order
 analyticity and parity laws. The project now proves the normalized zeroth-kernel bridge
-`polarFourierZerothAngularKernel_eq_besselJ`: `K₀(z) = 2π J₀(z)` for real `z`,
+`PolarRadialKernels.polarFourierZerothAngularKernel_eq_besselJ`: `K₀(z) = 2π J₀(z)` for real `z`,
 using cosine moments and justified termwise integration. Consequently, the zeroth-kernel
 evenness theorem can be obtained from Mathlib's integer-order Bessel parity.
 
 The first-cosine bridge is also proved:
-`polarFourierFirstCosineAngularKernel_eq_besselJ` gives
+`PolarRadialKernels.polarFourierFirstCosineAngularKernel_eq_besselJ` gives
 `K₁(z) = 2π i J₁(z)` by comparing the derivative of the J₀ bridge with the
 existing derivative of the angular kernel. The needed special-function
 derivative is established from Mathlib's regularized hypergeometric series.
 
 The second-cosine bridge is also established:
-`polarFourierSecondCosineAngularKernel_eq_besselJ` gives
+`PolarRadialKernels.polarFourierSecondCosineAngularKernel_eq_besselJ` gives
 `K₂(z) = -2π J₂(z)`. Its proof connects the angular-integration-by-parts
 recurrence to the Bessel recurrence `2 J₁(z) = z (J₀(z) + J₂(z))`, derived
 from regularized hypergeometric coefficients; the origin is handled by the

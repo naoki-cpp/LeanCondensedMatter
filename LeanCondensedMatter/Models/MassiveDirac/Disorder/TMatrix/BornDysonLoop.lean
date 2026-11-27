@@ -20,6 +20,7 @@ namespace QuantumTheory.Models.MassiveDirac
 noncomputable section
 
 open QuantumTheory.Transport
+open PolarRadialKernels
 
 /-- Finite-cutoff Born-Dyson zero-field loop at the spatial origin. Each real-space Green block
 already contains the physical momentum measure, so downstream T-matrix data must not attach it

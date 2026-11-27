@@ -12,7 +12,7 @@ The exact first-harmonic recurrence and derivative identities imply
 identity for weighted radial Fourier integrals.
 -/
 
-namespace QuantumTheory.Transport
+namespace PolarRadialKernels
 
 noncomputable section
 
@@ -140,4 +140,4 @@ theorem integral_polarFourierZerothAngularKernel_mul_weight_by_parts
 
 end
 
-end QuantumTheory.Transport
+end PolarRadialKernels

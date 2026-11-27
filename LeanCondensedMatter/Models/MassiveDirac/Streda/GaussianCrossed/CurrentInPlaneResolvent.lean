@@ -38,6 +38,7 @@ namespace QuantumTheory.Models.MassiveDirac
 noncomputable section
 
 open QuantumTheory.Transport
+open PolarRadialKernels
 open MeasureTheory Filter
 open scoped Interval
 
