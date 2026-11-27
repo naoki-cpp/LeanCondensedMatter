@@ -14,9 +14,10 @@ Use the reciprocal pairing `(2π)⁻¹⟨G,R⟩` and Brillouin quotient for the 
 
 Lattice geometry and atomic-configuration classification have separate owners.
 [Gram matrices and lattice automorphisms](../../LeanCondensedMatter/Crystal/LatticePointGroup/Gram.lean),
-[planar basis reduction](../../LeanCondensedMatter/Crystal/LatticePointGroup/PlanarReduction.lean), and
-[planar Gram constraints](../../LeanCondensedMatter/Crystal/LatticePointGroup/PlanarGram.lean)
-describe the lattice itself. [Classification](../../LeanCondensedMatter/Crystal/Classification.lean)
+and [planar basis reduction](../../LeanCondensedMatter/Crystal/LatticePointGroup/PlanarReduction.lean)
+describe the lattice itself. The coordinate-only [planar Gram constraints](../../LeanCondensedMatter/Analysis/Matrix/PlanarGram.lean)
+belong to Analysis: they concern symmetric matrices and integral changes of coordinates independently
+of an atomic configuration or lattice point-group realization. [Classification](../../LeanCondensedMatter/Crystal/Classification.lean)
 owns the configuration point group's integral representation and crystallographic restriction.
 Import the owner needed by a consumer; the `Crystal` umbrella groups these related APIs.
 
