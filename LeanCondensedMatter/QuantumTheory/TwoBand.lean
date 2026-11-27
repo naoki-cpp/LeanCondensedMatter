@@ -45,7 +45,7 @@ def oppositeBand : TwoBand → TwoBand
   cases band <;> rfl
 
 /-- Sign of the energy relative to the common scalar shift. -/
-def bandSign : TwoBand → ℝ
+noncomputable def bandSign : TwoBand → ℝ
   | .lower => -1
   | .upper => 1
 
