@@ -26,7 +26,7 @@ supplemental Sec. I.A.
 
 namespace QuantumTheory.Models.OrbitalRelaxation
 
-open QuantumTheory.Transport FiniteAngularKernel
+open FiniteAngularKernel
 
 variable {Ω : Type*} [Fintype Ω]
 

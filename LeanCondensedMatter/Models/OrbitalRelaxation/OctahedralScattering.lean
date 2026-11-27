@@ -25,7 +25,7 @@ The stationary kinetic closure remains a separate physical hypothesis.
 
 namespace QuantumTheory.Models.OrbitalRelaxation
 
-open QuantumTheory.Transport FiniteAngularKernel
+open FiniteAngularKernel
 
 open scoped BigOperators
 
