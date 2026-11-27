@@ -291,6 +291,7 @@ noncomputable def familyOrderDecompositionEquivOfSize {total : ℕ} (size : ι �
     ext z
     simp [order, assembleFamilyOrderOfSize]
 
+omit [Fintype ι] [Fintype α] in
 /-- The inverse shuffle of a decomposed global order recovers the
 family index of the vertex occupying each ambient slot. -/
 theorem familyOrderDecompositionEquivOfSize_owner {total : ℕ} (size : ι → ℕ)
