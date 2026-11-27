@@ -1661,9 +1661,9 @@ theorem externalSubsetMomentSeries_eq_signedConnected_two
         (evenExternalSubsetTimes (E := 1) times S hEven)
     _ = _ :=
       (Finpartition.weightedMomentFromCumulant_eq_of_proper_zero
-        (fun _ π => PowerSeries.C (externalPartitionSourceSign π))
+        (fun _ π => PowerSeries.C (externalPartitionSourceSign (E := 1) π))
         (externalSubsetConnectedDiagramSeries (E := 1) ε β g labels times)
-        S hEmpty (by simp [externalPartitionSourceSign_top]) hproper).symm
+        S hEmpty (by rw [externalPartitionSourceSign_top (E := 1) S, map_one]) hproper).symm
 
 /-- The source cumulant of physical vacuum-normalized Dyson moments
 equals the fully externally connected diagram series for any finite
@@ -1698,8 +1698,10 @@ theorem externalSubsetSourceCumulantSeries_eq_connectedDiagramSeries_two
       externalSubsetConnectedDiagramSeries (E := 1) ε β g labels times := by
   unfold externalSubsetSourceCumulantSeries
   exact Finpartition.weightedCumulantFromMoment_eq_of_moment_eq
-    (fun _ π => PowerSeries.C (externalPartitionSourceSign π)) _ _
-    (fun S => by simp [externalPartitionSourceSign_top]) (by simp) (by simp)
+    (fun _ π => PowerSeries.C (externalPartitionSourceSign (E := 1) π)) _ _
+    (fun S => by rw [externalPartitionSourceSign_top (E := 1) S, map_one])
+    (externalSubsetMomentSeries_empty (E := 1) ε β g labels times)
+    (externalSubsetConnectedDiagramSeries_empty (E := 1) ε β g labels times)
     (externalSubsetMomentSeries_eq_signedConnected_two ε β g labels times)
 
 
