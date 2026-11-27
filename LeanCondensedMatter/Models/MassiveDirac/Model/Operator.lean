@@ -11,10 +11,10 @@ set_option linter.style.header false
 
 The clean massive-Dirac model is defined first by explicit `2 × 2` matrices. This module owns the
 model-level passage from those matrices to bounded operators on the canonical two-level Hilbert
-space. It supplies the bounded Hamiltonian, velocity and current vertices, the bounded realization of the shared polar Pauli
-representation used by rotationally symmetric propagators, their self-adjointness, the in-plane
-current-combination API. Generic
-finite-dimensional matrix/operator trace transport lives upstream in `Analysis.Operator.FiniteTrace`.
+space. It supplies the bounded Hamiltonian, velocity and current vertices, their self-adjointness,
+and the in-plane current-combination API. The polar Pauli matrices use the generic algebra in
+`Analysis.Matrix.PauliRotation`. The finite-dimensional matrix/operator trace transport is
+provided by `Analysis.Operator.FiniteTrace`.
 
 No Kubo–Bastin or Středa kernel is defined here. Response-specific trace identities and energy
 representations remain downstream of this model realization.
