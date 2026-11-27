@@ -139,6 +139,37 @@ theorem list_prod_map_smul {ι V : Type*} [AddCommGroup V] [Module R V]
         LinearMap.smul_comp, LinearMap.comp_smul, smul_smul]
       rw [mul_comm (l.map a).prod (a e)]
 
+
+/-- A weighted finite sum in one distinguished slot of a duplicate-free ordered
+product can be expanded without commuting any of the other factors. -/
+theorem list_prod_map_weighted_sum_at {ι Label A : Type*} [Fintype ι]
+    [Semiring A] [Algebra R A] (l : List Label) (a : Label)
+    (hm : a ∈ l) (hn : l.Nodup) (w : ι → R)
+    (F : Label → A) (f : ι → Label → A)
+    (hF : F a = ∑ i, w i • f i a)
+    (hother : ∀ i e, e ≠ a → F e = f i e) :
+    (l.map F).prod = ∑ i, w i • (l.map (f i)).prod := by
+  classical
+  induction l with
+  | nil => simp at hm
+  | cons b l ih =>
+      have hN := List.nodup_cons.mp hn
+      by_cases hb : b = a
+      · subst b
+        have ht (i : ι) : (l.map (f i)).prod = (l.map F).prod := by
+          apply congrArg List.prod
+          apply List.map_congr_left
+          intro e he
+          exact (hother i e (fun h => hN.1 (h ▸ he))).symm
+        simp only [List.map_cons, List.prod_cons, hF, Finset.sum_mul,
+          smul_mul_assoc, ht]
+      · have hm' : a ∈ l := (List.mem_cons.mp hm).resolve_left (Ne.symm hb)
+        simp only [List.map_cons, List.prod_cons, ih hm' hN.2,
+          Finset.mul_sum, mul_smul_comm]
+        apply Finset.sum_congr rfl
+        intro i _
+        rw [hother i b hb]
+
 end ScalarExchange
 
 /-! ## Finite-product peeling -/
