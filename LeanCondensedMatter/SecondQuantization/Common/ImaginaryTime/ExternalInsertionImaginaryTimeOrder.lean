@@ -1157,8 +1157,10 @@ theorem orderedExternalInsertionTimedEvents_paired {n : ℕ}
                 externalInsertionTimedEventBeforeOrEqual, stableTimedEventBeforeOrEqual_iff,
                 externalInsertionTimedEventTime, externalInsertionTimedEventRank,
                 pairedExternalTimes] <;>
-              (first | omega | (apply (Fin.strictMono_castAdd n).monotone; decide) |
-                aesop (add safe tactic (by omega)))
+              (first
+              | (simp only [Fin.le_def, Fin.val_castAdd]; decide)
+              | omega
+              | aesop (add safe tactic (by omega)))
         | inr b =>
             fin_cases a <;>
               simp_all [block, pairedExternalEventBlock, r₁, r₂, times,
@@ -1182,7 +1184,7 @@ theorem orderedExternalInsertionTimedEvents_paired {n : ℕ}
   have hsorted : (source.flatMap block).Pairwise r₂ :=
     List.pairwise_flatMap.mpr
       ⟨fun a _ => hwithin a,
-        List.Pairwise.imp₂ (fun a b hab hne => hcross a b hne hab) hs hn⟩
+        List.Pairwise.imp₂ (fun a b hab hne x hx y hy => hcross a b hne hab x y hx hy) hs hn⟩
   have hflatN : (source.flatMap block).Nodup := by
     rw [List.nodup_flatMap]
     exact ⟨fun a _ => hblock a,
