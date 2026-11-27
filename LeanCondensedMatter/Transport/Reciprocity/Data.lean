@@ -1,7 +1,7 @@
 import LeanCondensedMatter.Analysis.Operator.FiniteTrace
 import LeanCondensedMatter.QuantumTheory.DensityOperator.Finite
 import LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.ConservationLaws
-import LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.Antiunitary.Trace
+import LeanCondensedMatter.Analysis.Operator.Antiunitary
 
 set_option linter.style.header false
 
