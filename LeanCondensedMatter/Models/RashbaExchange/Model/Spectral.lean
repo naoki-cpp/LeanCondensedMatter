@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Analysis.Algebra.QuadraticNormalization
+import LeanCondensedMatter.QuantumTheory.TwoBand
 import LeanCondensedMatter.Models.RashbaExchange.Model
 import Mathlib.Tactic.Linarith
 import Mathlib.Tactic.NormNum
@@ -32,6 +33,8 @@ All projector identities that require separated bands are stated under `E ≠ 0`
 
 namespace QuantumTheory.Models.RashbaExchange
 
+
+open QuantumTheory.TwoBand
 noncomputable section
 
 /-- The traceless spin-orbit/exchange part `d·σ` of the Hamiltonian. -/
@@ -73,7 +76,7 @@ theorem spinHamiltonian_mul_self (params : HamiltonianParameters) (px py : ℝ) 
     rashbaPauliCoefficients_dot_self]
 
 /-- Gauge-independent projector onto one Rashba-exchange band. -/
-def bandProjector (params : HamiltonianParameters) (band : Band) (px py : ℝ) :
+def bandProjector (params : HamiltonianParameters) (band : TwoBand) (px py : ℝ) :
     InternalSpace.PauliMatrix :=
   (1 / 2 : ℂ) •
     ((1 : InternalSpace.PauliMatrix) +
@@ -82,7 +85,7 @@ def bandProjector (params : HamiltonianParameters) (band : Band) (px py : ℝ) :
 
 /-- Pauli/Bloch form of the band projector. -/
 theorem bandProjector_eq_pauliCombination
-    (params : HamiltonianParameters) (band : Band) (px py : ℝ) :
+    (params : HamiltonianParameters) (band : TwoBand) (px py : ℝ) :
     bandProjector params band px py =
       (1 / 2 : ℂ) •
         ((1 : InternalSpace.PauliMatrix) +
@@ -94,7 +97,7 @@ theorem bandProjector_eq_pauliCombination
 
 /-- Every band projector has trace one. -/
 @[simp] theorem trace_bandProjector
-    (params : HamiltonianParameters) (band : Band) (px py : ℝ) :
+    (params : HamiltonianParameters) (band : TwoBand) (px py : ℝ) :
     Matrix.trace (bandProjector params band px py) = 1 := by
   rw [bandProjector_eq_pauliCombination]
   exact InternalSpace.trace_half_one_add_pauliCombination _
@@ -102,14 +105,14 @@ theorem bandProjector_eq_pauliCombination
 /-- The two band projectors resolve the identity, including at the totalized `E = 0` value. -/
 theorem sum_bandProjector_eq_one
     (params : HamiltonianParameters) (px py : ℝ) :
-    ∑ band : Band, bandProjector params band px py = 1 := by
+    ∑ band : TwoBand, bandProjector params band px py = 1 := by
   simp only [sum_band, bandProjector, bandSign]
   push_cast
   module
 
 /-- Either projector plus its opposite-band partner resolves the identity. -/
 theorem bandProjector_add_oppositeBand
-    (params : HamiltonianParameters) (band : Band) (px py : ℝ) :
+    (params : HamiltonianParameters) (band : TwoBand) (px py : ℝ) :
     bandProjector params band px py +
         bandProjector params (oppositeBand band) px py = 1 := by
   cases band <;> simpa only [sum_band, oppositeBand_lower, oppositeBand_upper, add_comm] using
@@ -119,15 +122,14 @@ theorem bandProjector_add_oppositeBand
 theorem bandEnergy_injective
     (params : HamiltonianParameters) (px py : ℝ)
     (hE : spinOrbitEnergy params px py ≠ 0) :
-    Function.Injective (fun band : Band => bandEnergy params band px py) := by
-  intro a b hab
-  cases a <;> cases b <;> try rfl
-  all_goals exact (hE (by simp [bandEnergy, bandSign] at hab; linarith)).elim
+    Function.Injective (fun band : TwoBand => bandEnergy params band px py) := by
+  exact TwoBand.shiftedEnergy_injective
+    (kineticEnergy params px py) (spinOrbitEnergy params px py) hE
 
 /-- Away from the degeneracy, the Hamiltonian acts on `P_s` with the corresponding shifted band
 energy `ε₀+sE`. -/
 theorem hamiltonian_mul_bandProjector
-    (params : HamiltonianParameters) (band : Band) (px py : ℝ)
+    (params : HamiltonianParameters) (band : TwoBand) (px py : ℝ)
     (hE : spinOrbitEnergy params px py ≠ 0) :
     hamiltonian params px py * bandProjector params band px py =
       (((bandEnergy params band px py : ℝ) : ℂ)) •
@@ -147,11 +149,11 @@ theorem bandProjector_completeOrthogonalIdempotents
     (params : HamiltonianParameters) (px py : ℝ)
     (hE : spinOrbitEnergy params px py ≠ 0) :
     CompleteOrthogonalIdempotents
-      (fun band : Band => bandProjector params band px py) := by
+      (fun band : TwoBand => bandProjector params band px py) := by
   simpa only [bandProjector, Complex.ofReal_div] using
     (Algebra.quadratic_projectors_completeOrthogonalIdempotents
       (spinHamiltonian params px py) ((spinOrbitEnergy params px py : ℝ) : ℂ)
-      (fun band : Band => ((bandSign band : ℝ) : ℂ))
+      (fun band : TwoBand => ((bandSign band : ℝ) : ℂ))
       (by exact_mod_cast hE)
       (by simpa only [← spinOrbitEnergy_sq, Complex.ofReal_pow] using
         spinHamiltonian_mul_self params px py)

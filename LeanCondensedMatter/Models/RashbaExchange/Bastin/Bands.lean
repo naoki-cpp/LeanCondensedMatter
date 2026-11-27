@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Models.RashbaExchange.Bastin.Berry
+import LeanCondensedMatter.QuantumTheory.TwoBand
 import LeanCondensedMatter.Transport.Streda.InterbandPole
 
 set_option linter.style.header false
@@ -18,6 +19,8 @@ Finite-window integrals and Hall-response bridges are owned downstream by
 
 namespace QuantumTheory.Models.RashbaExchange
 
+
+open QuantumTheory.TwoBand
 noncomputable section
 
 open QuantumTheory.Transport
@@ -26,7 +29,7 @@ open ContinuousLinearMap
 /-- Contribution from one ordered source/target band pair and two current
 directions. The reversed current ordering remains part of the same block. -/
 noncomputable def bastinBandPairContribution
-    (params : Parameters) (μ ν : Fin 2) (source target : Band)
+    (params : Parameters) (μ ν : Fin 2) (source target : TwoBand)
     (px py probeEnergy broadening : ℝ) : ℂ :=
   let r := scalarResolventCoefficient
     (retardedSpectralParameter probeEnergy broadening)
@@ -42,13 +45,13 @@ noncomputable def bastinBandPairContribution
 /-- Both diagonal band pairs of the finite-broadening Hall trace. -/
 noncomputable def diagonalBastinTraceContribution
     (params : Parameters) (px py probeEnergy broadening : ℝ) : ℂ :=
-  ∑ band : Band,
+  ∑ band : TwoBand,
     bastinBandPairContribution params 0 1 band band px py probeEnergy broadening
 
 /-- Both ordered interband pairs of the finite-broadening Hall trace. -/
 noncomputable def interbandBastinTraceContribution
     (params : Parameters) (px py probeEnergy broadening : ℝ) : ℂ :=
-  ∑ band : Band,
+  ∑ band : TwoBand,
     bastinBandPairContribution params 0 1 band (oppositeBand band)
       px py probeEnergy broadening
 
@@ -69,7 +72,7 @@ theorem projectorBastinTraceIntegrandFor_eq_band_sum
     (params : Parameters) (μ ν : Fin 2) (px py probeEnergy broadening : ℝ)
     (hE : spinOrbitEnergy params px py ≠ 0) :
     projectorBastinTraceIntegrandFor params μ ν px py probeEnergy broadening =
-      ∑ source : Band, ∑ target : Band,
+      ∑ source : TwoBand, ∑ target : TwoBand,
         bastinBandPairContribution params μ ν source target
           px py probeEnergy broadening := by
   unfold projectorBastinTraceIntegrandFor bastinOperatorKernelFromPropagators
@@ -77,13 +80,13 @@ theorem projectorBastinTraceIntegrandFor_eq_band_sum
   simpa only [bastinBandPairContribution, currentBandBlockTrace,
     scalarSpectralDifferenceCoefficient] using
     (finiteProjectorBastinTrace_eq_band_sum
-      (P := fun band : Band => bandProjectorOperator params band px py)
+      (P := fun band : TwoBand => bandProjectorOperator params band px py)
       (bandProjectorOperator_completeOrthogonalIdempotents params px py hE).toOrthogonalIdempotents
-      (fun band : Band =>
+      (fun band : TwoBand =>
         scalarResolventCoefficient
           (retardedSpectralParameter probeEnergy broadening)
           (bandEnergy params band px py))
-      (fun band : Band =>
+      (fun band : TwoBand =>
         scalarResolventCoefficient
           (advancedSpectralParameter probeEnergy broadening)
           (bandEnergy params band px py))
@@ -95,7 +98,7 @@ theorem projectorBastinTraceIntegrand_eq_band_sum
     (params : Parameters) (px py probeEnergy broadening : ℝ)
     (hE : spinOrbitEnergy params px py ≠ 0) :
     projectorBastinTraceIntegrand params px py probeEnergy broadening =
-      ∑ source : Band, ∑ target : Band,
+      ∑ source : TwoBand, ∑ target : TwoBand,
         bastinBandPairContribution params 0 1 source target
           px py probeEnergy broadening := by
   change projectorBastinTraceIntegrandFor params 0 1 px py probeEnergy broadening = _
@@ -130,10 +133,10 @@ theorem regularizedBastinTraceIntegrand_eq_projectorBastinTraceIntegrandFor
     projectorResolvent] using
     (QuantumTheory.Transport.regularizedBastinTraceIntegrand_eq_projectorSum
       (hamiltonianOperator params px py) (hamiltonianOperator_isSelfAdjoint params px py)
-      (fun band : Band => bandProjectorOperator params band px py)
-      (fun band : Band => bandEnergy params band px py)
+      (fun band : TwoBand => bandProjectorOperator params band px py)
+      (fun band : TwoBand => bandEnergy params band px py)
       (bandProjectorOperator_completeOrthogonalIdempotents params px py hE).complete
-      (fun band : Band => hamiltonianOperator_mul_bandProjectorOperator params band px py hE)
+      (fun band : TwoBand => hamiltonianOperator_mul_bandProjectorOperator params band px py hE)
       (currentBoundedOperator params μ px py) (currentBoundedOperator params ν px py)
       probeEnergy broadening hbroadening)
 
@@ -147,7 +150,7 @@ theorem regularizedBastinTraceIntegrand_eq_band_sum
         (currentBoundedOperator params μ px py)
         (currentBoundedOperator params ν px py)
         probeEnergy broadening =
-      ∑ source : Band, ∑ target : Band,
+      ∑ source : TwoBand, ∑ target : TwoBand,
         bastinBandPairContribution params μ ν source target
           px py probeEnergy broadening := by
   rw [regularizedBastinTraceIntegrand_eq_projectorBastinTraceIntegrandFor
@@ -159,7 +162,7 @@ theorem regularizedBastinTraceIntegrand_eq_band_sum
 its two current directions at every energy and broadening. This is a
 finite-dimensional trace identity, not a clean-limit argument. -/
 theorem bastinBandPairContribution_diagonal_swap
-    (params : Parameters) (μ ν : Fin 2) (band : Band)
+    (params : Parameters) (μ ν : Fin 2) (band : TwoBand)
     (px py probeEnergy broadening : ℝ) :
     bastinBandPairContribution params μ ν band band
         px py probeEnergy broadening =
@@ -174,16 +177,16 @@ Hall kernel, even at finite broadening. No energy-integrability assumption is us
 theorem antisymmetricBastinBandPairSum_eq_interband
     (params : Parameters) (μ ν : Fin 2)
     (px py probeEnergy broadening : ℝ) :
-    (∑ source : Band, ∑ target : Band,
+    (∑ source : TwoBand, ∑ target : TwoBand,
         bastinBandPairContribution params μ ν source target
           px py probeEnergy broadening) -
-      (∑ source : Band, ∑ target : Band,
+      (∑ source : TwoBand, ∑ target : TwoBand,
         bastinBandPairContribution params ν μ source target
           px py probeEnergy broadening) =
-    (∑ band : Band,
+    (∑ band : TwoBand,
         bastinBandPairContribution params μ ν band (oppositeBand band)
           px py probeEnergy broadening) -
-      (∑ band : Band,
+      (∑ band : TwoBand,
         bastinBandPairContribution params ν μ band (oppositeBand band)
           px py probeEnergy broadening) := by
   simp only [sum_band, oppositeBand_lower, oppositeBand_upper]

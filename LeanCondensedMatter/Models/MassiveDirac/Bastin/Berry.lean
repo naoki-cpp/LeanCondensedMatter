@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Models.MassiveDirac.Model.Berry.Bridge
+import LeanCondensedMatter.QuantumTheory.TwoBand
 import LeanCondensedMatter.Transport.Streda.FiniteProjectorBastin
 import Mathlib.Tactic.Ring
 
@@ -28,6 +29,8 @@ downstream.
 
 namespace QuantumTheory.Models.MassiveDirac
 
+
+open QuantumTheory.TwoBand
 noncomputable section
 
 open QuantumTheory.Transport
@@ -38,7 +41,7 @@ open ContinuousLinearMap
 /-- An opposite-band ordered current block is exactly `e²` times the gauge-independent force-matrix
 numerator. -/
 theorem currentBandBlockTrace_interband_eq_chargeSq_forceMatrixTraceNumerator
-    (μ ν : Fin 2) (band : Band) (e v m px py : ℝ) :
+    (μ ν : Fin 2) (band : TwoBand) (e v m px py : ℝ) :
     currentBandBlockTrace μ ν band (oppositeBand band) e v m px py =
       (((e ^ 2 : ℝ) : ℂ)) * forceMatrixTraceNumerator μ ν band v m px py := by
   unfold currentBandBlockTrace bandProjectorOperator currentOperator matrixOperator current
@@ -52,7 +55,7 @@ theorem currentBandBlockTrace_interband_eq_chargeSq_forceMatrixTraceNumerator
 `e²` times the generic pointwise Berry curvature. This is the transport consumer of the canonical
 Massive-Dirac spectral bridge. -/
 theorem two_mul_currentBandBlockTrace_interband_im_div_gap_sq_eq_chargeSq_pointwiseBerryCurvature
-    (band : Band) (e v m px py : ℝ) (hE : energy v m px py ≠ 0) :
+    (band : TwoBand) (e v m px py : ℝ) (hE : energy v m px py ≠ 0) :
     2 * (currentBandBlockTrace 0 1 band (oppositeBand band) e v m px py).im /
         interbandEnergyGap band v m px py ^ 2 =
       e ^ 2 * (pointwiseEigenbasisData v m px py hE).berryCurvature 0 1 band := by
@@ -92,10 +95,10 @@ theorem regularizedBastinTraceIntegrand_eq_projectorBastinTraceIntegrand
     projectorResolvent] using
     (QuantumTheory.Transport.regularizedBastinTraceIntegrand_eq_projectorSum
       (hamiltonianOperator v m px py) (hamiltonianOperator_isSelfAdjoint v m px py)
-      (fun band : Band => bandProjectorOperator band v m px py)
-      (fun band : Band => bandEnergy band v m px py)
+      (fun band : TwoBand => bandProjectorOperator band v m px py)
+      (fun band : TwoBand => bandEnergy band v m px py)
       (bandProjectorOperator_completeOrthogonalIdempotents v m px py hE).complete
-      (fun band : Band => hamiltonianOperator_mul_bandProjectorOperator band v m px py hE)
+      (fun band : TwoBand => hamiltonianOperator_mul_bandProjectorOperator band v m px py hE)
       (currentOperator 0 e v) (currentOperator 1 e v)
       probeEnergy broadening hbroadening)
 

@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Models.MassiveDirac.Bastin.Bands
+import LeanCondensedMatter.QuantumTheory.TwoBand
 import Mathlib.Topology.Algebra.GroupWithZero
 
 set_option linter.style.header false
@@ -20,6 +21,8 @@ an energy integral with a limit and it does not introduce a delta-distribution i
 
 namespace QuantumTheory.Models.MassiveDirac
 
+
+open QuantumTheory.TwoBand
 noncomputable section
 
 open Filter QuantumTheory.Transport
@@ -27,7 +30,7 @@ open Filter QuantumTheory.Transport
 /-- A fixed direction-indexed ordered Bastin band-pair contribution tends to zero when the probe
 energy avoids both its source and target band energies. -/
 theorem tendsto_bastinBandPairContribution_zero
-    (μ ν : Fin 2) (source target : Band) (e v m px py probeEnergy : ℝ)
+    (μ ν : Fin 2) (source target : TwoBand) (e v m px py probeEnergy : ℝ)
     (hsource : probeEnergy ≠ bandEnergy source v m px py)
     (htarget : probeEnergy ≠ bandEnergy target v m px py) :
     Tendsto

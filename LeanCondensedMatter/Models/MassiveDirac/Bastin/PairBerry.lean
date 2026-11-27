@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Models.MassiveDirac.Bastin.PairIntegral
+import LeanCondensedMatter.QuantumTheory.TwoBand
 import Mathlib.Tactic.FieldSimp
 import Mathlib.Tactic.Ring
 
@@ -23,6 +24,8 @@ integral with the zero-broadening limit is performed here.
 
 namespace QuantumTheory.Models.MassiveDirac
 
+
+open QuantumTheory.TwoBand
 noncomputable section
 
 open QuantumTheory.Transport
@@ -32,7 +35,7 @@ open Filter
 /-- At the target pole, the imaginary part of the regular Bastin spectator/current factor is the
 negative physical-current Berry curvature weight. -/
 theorem targetCenteredInterbandSpectatorCurrentFactor_zero_im_eq_neg_chargeSq_berryCurvature
-    (band : Band) (e v m px py : ℝ) (hE : energy v m px py ≠ 0) :
+    (band : TwoBand) (e v m px py : ℝ) (hE : energy v m px py ≠ 0) :
     (targetCenteredInterbandSpectatorCurrentFactor band e v m px py (0, 0)).im =
       -(e ^ 2 * berryCurvature band v m px py) := by
   rw [targetCenteredInterbandSpectatorCurrentFactor_eq_interbandPoleRegularFactor,
@@ -49,7 +52,7 @@ theorem targetCenteredInterbandSpectatorCurrentFactor_zero_im_eq_neg_chargeSq_be
 `-2π e² Ω_n(p)`. The analytic real-part pole limit is generic; this specialization supplies only
 the massive-Dirac Berry-curvature identification. -/
 theorem tendsto_targetCenteredInterbandBastinPairIntegral_re_berryCurvature
-    (band : Band) (e v m px py radius : ℝ)
+    (band : TwoBand) (e v m px py radius : ℝ)
     (hE : energy v m px py ≠ 0)
     (hradiusPos : 0 < radius)
     (hradius : radius < |interbandEnergyGap band v m px py|) :

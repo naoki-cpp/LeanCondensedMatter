@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Models.RashbaExchange.Bastin.Bands
+import LeanCondensedMatter.QuantumTheory.TwoBand
 import LeanCondensedMatter.Models.RashbaExchange.Response
 
 set_option linter.style.header false
@@ -18,6 +19,8 @@ integration, or identify the value at zero broadening with a clean limit.
 
 namespace QuantumTheory.Models.RashbaExchange
 
+
+open QuantumTheory.TwoBand
 noncomputable section
 
 open QuantumTheory.Transport
@@ -33,7 +36,7 @@ theorem cleanBastinPointResponse_eq_integral_band_sum
     cleanBastinPointResponse params μ ν px py lowerEnergy upperEnergy occupation =
       ∫ probeEnergy in lowerEnergy..upperEnergy,
         occupation probeEnergy *
-          (∑ source : Band, ∑ target : Band,
+          (∑ source : TwoBand, ∑ target : TwoBand,
             bastinBandPairContribution params μ ν source target
               px py probeEnergy params.broadening) := by
   unfold cleanBastinPointResponse regularizedTracedBastinEnergyIntegral
@@ -53,10 +56,10 @@ theorem cleanBastinPointResponse_eq_integral_diagonal_add_interband
     cleanBastinPointResponse params μ ν px py lowerEnergy upperEnergy occupation =
       ∫ probeEnergy in lowerEnergy..upperEnergy,
         occupation probeEnergy *
-          ((∑ band : Band,
+          ((∑ band : TwoBand,
             bastinBandPairContribution params μ ν band band
               px py probeEnergy params.broadening) +
-           (∑ band : Band,
+           (∑ band : TwoBand,
             bastinBandPairContribution params μ ν band (oppositeBand band)
               px py probeEnergy params.broadening)) := by
   unfold cleanBastinPointResponse regularizedTracedBastinEnergyIntegral
@@ -80,12 +83,12 @@ theorem antisymmetricCleanBastinPointResponse_eq_integral_band_sum
       (1 / 2 : ℂ) *
         ((∫ probeEnergy in lowerEnergy..upperEnergy,
             occupation probeEnergy *
-              (∑ source : Band, ∑ target : Band,
+              (∑ source : TwoBand, ∑ target : TwoBand,
                 bastinBandPairContribution params μ ν source target
                   px py probeEnergy params.broadening)) -
          (∫ probeEnergy in lowerEnergy..upperEnergy,
             occupation probeEnergy *
-              (∑ source : Band, ∑ target : Band,
+              (∑ source : TwoBand, ∑ target : TwoBand,
                 bastinBandPairContribution params ν μ source target
                   px py probeEnergy params.broadening))) := by
   unfold antisymmetricCleanBastinPointResponse

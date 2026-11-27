@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Models.MassiveDirac.Bastin.RadialDominatedConvergence
+import LeanCondensedMatter.QuantumTheory.TwoBand
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.IntegrationByParts
 import Mathlib.Tactic.FieldSimp
 
@@ -24,6 +25,8 @@ radial integrals without hiding the `p dp = E dE / v²` step.
 
 namespace QuantumTheory.Models.MassiveDirac
 
+
+open QuantumTheory.TwoBand
 noncomputable section
 
 open QuantumTheory.Transport
@@ -33,7 +36,7 @@ open scoped Interval
 
 /-- The radial clean pair density is the energy-coordinate density times `dE/dp`. -/
 theorem radialCleanInterbandBastinPairLimitDensity_eq_energyDensity_mul_deriv
-    (band : Band) (e v m p : ℝ) (hm : m ≠ 0) :
+    (band : TwoBand) (e v m p : ℝ) (hm : m ≠ 0) :
     radialCleanInterbandBastinPairLimitDensity band e v m p =
       cleanInterbandBastinPairRadialEnergyDensity band e m (energy v m p 0) *
         radialEnergyDerivative v m p := by
@@ -50,7 +53,7 @@ theorem radialCleanInterbandBastinPairLimitDensity_eq_energyDensity_mul_deriv
 /-- The clean radial energy density is continuous on the positive-energy image of any radial
 momentum interval when the mass is nonzero. -/
 private theorem continuousOn_cleanInterbandBastinPairRadialEnergyDensity_image
-    (band : Band) (e v m pMax : ℝ) (hm : m ≠ 0) :
+    (band : TwoBand) (e v m pMax : ℝ) (hm : m ≠ 0) :
     ContinuousOn (cleanInterbandBastinPairRadialEnergyDensity band e m)
       ((fun p : ℝ => energy v m p 0) '' [[(0 : ℝ), pMax]]) := by
   unfold cleanInterbandBastinPairRadialEnergyDensity radialBerryEnergyDensity
@@ -63,7 +66,7 @@ private theorem continuousOn_cleanInterbandBastinPairRadialEnergyDensity_image
 /-- The clean radial momentum integral equals the corresponding positive-energy shell integral.
 This is the explicit formal version of `p dp = E dE / v²`. -/
 theorem finiteRadialCleanInterbandBastinPairIntegral_eq_energyShell
-    (band : Band) (e v m pMax : ℝ) (hm : m ≠ 0) (hpMax : 0 ≤ pMax) :
+    (band : TwoBand) (e v m pMax : ℝ) (hm : m ≠ 0) (hpMax : 0 ≤ pMax) :
     finiteRadialCleanInterbandBastinPairIntegral band e v m pMax =
       cleanInterbandBastinPairEnergyShellIntegral
         band e m |m| (energy v m pMax 0) := by

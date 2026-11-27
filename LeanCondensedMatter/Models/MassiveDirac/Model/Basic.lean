@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Analysis.Matrix.Pauli
+import LeanCondensedMatter.QuantumTheory.TwoBand
 import Mathlib.Tactic.Linarith
 import Mathlib.Tactic.Positivity
 import Mathlib.Tactic.Ring
@@ -42,6 +43,8 @@ separate downstream phases.
 
 namespace QuantumTheory.Models.MassiveDirac
 
+
+open QuantumTheory.TwoBand
 noncomputable section
 
 /-- Complex two-band matrices. -/
@@ -109,47 +112,12 @@ def energySq (v m px py : ℝ) : ℝ :=
 def energy (v m px py : ℝ) : ℝ :=
   Real.sqrt (energySq v m px py)
 
-/-- Two bands of the massive Dirac Hamiltonian. -/
-inductive Band where
-  | lower
-  | upper
-  deriving DecidableEq
-
-instance : Fintype Band where
-  elems := {.lower, .upper}
-  complete := by intro band; cases band <;> simp
-
-/-- A finite sum over the massive-Dirac bands is the lower-band term plus the upper-band term. -/
-theorem sum_band {M : Type*} [AddCommMonoid M] (f : Band → M) :
-    ∑ band : Band, f band = f .lower + f .upper := by
-  change ∑ band ∈ ({.lower, .upper} : Finset Band), f band = _
-  simp
-
-/-- The other band in the two-band massive-Dirac model. -/
-def oppositeBand : Band → Band
-  | .lower => .upper
-  | .upper => .lower
-
-@[simp] theorem oppositeBand_lower : oppositeBand .lower = .upper := rfl
-@[simp] theorem oppositeBand_upper : oppositeBand .upper = .lower := rfl
-@[simp] theorem oppositeBand_oppositeBand (band : Band) : oppositeBand (oppositeBand band) = band := by
-  cases band <;> rfl
-
-/-- Sign of the band energy: lower `↦ -1`, upper `↦ +1`. -/
-def bandSign : Band → ℝ
-  | .lower => -1
-  | .upper => 1
-
-@[simp] theorem bandSign_oppositeBand (band : Band) :
-    bandSign (oppositeBand band) = -bandSign band := by
-  cases band <;> simp [oppositeBand, bandSign]
-
 /-- Band energy `E_± = ±E`. -/
-def bandEnergy (band : Band) (v m px py : ℝ) : ℝ :=
+def bandEnergy (band : TwoBand) (v m px py : ℝ) : ℝ :=
   bandSign band * energy v m px py
 
 /-- Closed clean massive-Dirac Berry-curvature benchmark before occupation/integration. -/
-def berryCurvature (band : Band) (v m px py : ℝ) : ℝ :=
+def berryCurvature (band : TwoBand) (v m px py : ℝ) : ℝ :=
   -(bandSign band * m * v ^ 2) / (2 * energy v m px py ^ 3)
 
 /-- `E²` recovers the dispersion polynomial. -/
@@ -201,9 +169,6 @@ theorem hamiltonian_mul_self (v m px py : ℝ) :
     simp [diracPauliCoefficients, energySq]
     ring
   rw [hamiltonian_eq_pauliCombination, InternalSpace.pauliCombination_mul_self, hdot]
-
-@[simp] theorem bandSign_lower : bandSign .lower = -1 := rfl
-@[simp] theorem bandSign_upper : bandSign .upper = 1 := rfl
 
 @[simp] theorem bandEnergy_lower (v m px py : ℝ) :
     bandEnergy .lower v m px py = -energy v m px py := by

@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Models.MassiveDirac.Bastin.PoleHall
+import LeanCondensedMatter.QuantumTheory.TwoBand
 import LeanCondensedMatter.Models.MassiveDirac.Model.Kinematics
 import Mathlib.Tactic.Ring
 
@@ -18,13 +19,15 @@ controlled by the mass-magnitude gap and a fixed target window `radius < 2|m|`.
 
 namespace QuantumTheory.Models.MassiveDirac
 
+
+open QuantumTheory.TwoBand
 noncomputable section
 
 open QuantumTheory.Transport
 
 /-- The natural radial `x-y` Bastin block at a target-band pole is purely imaginary. -/
 theorem bastinXYBandBlockTrace_opposite_source_radial
-    (band : Band) (e v m p : ℝ) (hE : energy v m p 0 ≠ 0) :
+    (band : TwoBand) (e v m p : ℝ) (hE : energy v m p 0 ≠ 0) :
     currentBandBlockTrace 0 1 (oppositeBand band) band e v m p 0 =
       (((e ^ 2 : ℝ) : ℂ)) *
         (((bandSign band * m * v ^ 2 / energy v m p 0 : ℝ) : ℂ)) * Complex.I := by
@@ -38,14 +41,14 @@ theorem bastinXYBandBlockTrace_opposite_source_radial
 
 /-- Common purely-imaginary current amplitude in the radial interband Bastin blocks. -/
 def radialInterbandCurrentAmplitude
-    (band : Band) (e v m p : ℝ) : ℂ :=
+    (band : TwoBand) (e v m p : ℝ) : ℂ :=
   (((e ^ 2 : ℝ) : ℂ)) *
     (((bandSign band * m * v ^ 2 / energy v m p 0 : ℝ) : ℂ)) * Complex.I
 
 /-- The radial spectator/current factor is exactly the sum of the retarded and advanced squared
 opposite-band resolvents times the common radial current amplitude. -/
 theorem targetCenteredInterbandSpectatorCurrentFactor_radial_eq
-    (band : Band) (e v m p offset broadening : ℝ)
+    (band : TwoBand) (e v m p offset broadening : ℝ)
     (hE : energy v m p 0 ≠ 0) :
     targetCenteredInterbandSpectatorCurrentFactor
         band e v m p 0 (offset, broadening) =
@@ -76,7 +79,7 @@ theorem targetCenteredInterbandSpectatorCurrentFactor_radial_eq
 /-- The real coefficient of the radial current amplitude is bounded by `v²`; the mass-magnitude to
 energy ratio cannot exceed one. -/
 private theorem abs_radialInterbandCurrentCoefficient_le_velocity_sq
-    (band : Band) (v m p : ℝ) :
+    (band : TwoBand) (v m p : ℝ) :
     |bandSign band * m * v ^ 2 / energy v m p 0| ≤ v ^ 2 := by
   by_cases hm : m = 0
   · subst m
@@ -95,7 +98,7 @@ private theorem abs_radialInterbandCurrentCoefficient_le_velocity_sq
 /-- The norm of the common radial interband current amplitude is uniformly bounded in momentum by
 `e² v²`. -/
 theorem norm_radialInterbandCurrentAmplitude_le
-    (band : Band) (e v m p : ℝ) :
+    (band : TwoBand) (e v m p : ℝ) :
     ‖radialInterbandCurrentAmplitude band e v m p‖ ≤ e ^ 2 * v ^ 2 := by
   have hcoeff :=
     abs_radialInterbandCurrentCoefficient_le_velocity_sq band v m p

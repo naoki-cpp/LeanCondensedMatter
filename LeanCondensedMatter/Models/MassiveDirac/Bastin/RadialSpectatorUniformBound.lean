@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Models.MassiveDirac.Bastin.RadialSpectatorBound
+import LeanCondensedMatter.QuantumTheory.TwoBand
 import Mathlib.Tactic.Linarith
 import Mathlib.Tactic.Positivity
 import Mathlib.Tactic.Ring
@@ -19,6 +20,8 @@ broadening. It is the model-specific domination input used before integrating th
 
 namespace QuantumTheory.Models.MassiveDirac
 
+
+open QuantumTheory.TwoBand
 noncomputable section
 
 open QuantumTheory.Transport
@@ -30,7 +33,7 @@ def radialBastinMassWindowMargin (m radius : ℝ) : ℝ :=
 /-- The mass-window margin is a lower bound for the shifted real interband denominator at every
 radial momentum. -/
 theorem radialBastinMassWindowMargin_le_abs_gap_add_offset
-    (band : Band) (v m p offset radius : ℝ)
+    (band : TwoBand) (v m p offset radius : ℝ)
     (hoffset : |offset| ≤ radius) :
     radialBastinMassWindowMargin m radius ≤
       |interbandEnergyGap band v m p 0 + offset| := by
@@ -45,7 +48,7 @@ theorem radialBastinMassWindowMargin_le_abs_gap_add_offset
 /-- The real separation lower-bounds the norm of either physical spectral-side
 spectator denominator, for arbitrary broadening. -/
 private theorem radialBastinMassWindowMargin_le_norm_spectralDenominator
-    (side : SpectralSide) (band : Band) (v m p offset radius broadening : ℝ)
+    (side : SpectralSide) (band : TwoBand) (v m p offset radius broadening : ℝ)
     (hoffset : |offset| ≤ radius) :
     radialBastinMassWindowMargin m radius ≤
       ‖((interbandEnergyGap band v m p 0 + offset : ℝ) : ℂ) +
@@ -60,7 +63,7 @@ private theorem radialBastinMassWindowMargin_le_norm_spectralDenominator
 /-- Either physical spectral-side opposite-band resolvent is uniformly bounded by the
 inverse mass-window margin. -/
 theorem norm_radialSpectatorResolvent_le_inv_margin
-    (side : SpectralSide) (band : Band) (v m p offset radius broadening : ℝ)
+    (side : SpectralSide) (band : TwoBand) (v m p offset radius broadening : ℝ)
     (hradius : radius < 2 * |m|) (hoffset : |offset| ≤ radius) :
     ‖((((interbandEnergyGap band v m p 0 + offset : ℝ) : ℂ) +
         (((side.regulator broadening : ℝ) : ℂ) * Complex.I))⁻¹)‖ ≤
@@ -91,7 +94,7 @@ theorem radialInterbandSpectatorUniformBound_nonneg
 /-- The regular radial spectator/current factor is uniformly bounded throughout the fixed target
 window, independently of momentum and broadening. -/
 theorem norm_targetCenteredInterbandSpectatorCurrentFactor_radial_le
-    (band : Band) (e v m p offset radius broadening : ℝ)
+    (band : TwoBand) (e v m p offset radius broadening : ℝ)
     (hm : m ≠ 0) (hradius : radius < 2 * |m|) (hoffset : |offset| ≤ radius) :
     ‖targetCenteredInterbandSpectatorCurrentFactor
         band e v m p 0 (offset, broadening)‖ ≤

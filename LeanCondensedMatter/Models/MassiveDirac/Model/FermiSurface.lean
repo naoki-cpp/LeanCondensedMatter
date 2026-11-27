@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Models.MassiveDirac.Model.Kinematics
+import LeanCondensedMatter.QuantumTheory.TwoBand
 import Mathlib.Tactic.FieldSimp
 import Mathlib.Tactic.Linarith
 import Mathlib.Tactic.NormNum
@@ -18,11 +19,13 @@ in `Model.Occupation`.
 
 namespace QuantumTheory.Models.MassiveDirac
 
+
+open QuantumTheory.TwoBand
 noncomputable section
 
 /-- Massive-Dirac band energy on the radial momentum coordinate used by the isotropic transport
 reduction. Downstream Fermi-surface statements restrict this coordinate to the nonnegative axis. -/
-def radialBandEnergy (v m : ℝ) (band : Band) (p : ℝ) : ℝ :=
+def radialBandEnergy (v m : ℝ) (band : TwoBand) (p : ℝ) : ℝ :=
   bandEnergy band v m p 0
 
 /-- The positive massive-Dirac radial energy is injective on nonnegative momentum when `v ≠ 0`. -/

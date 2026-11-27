@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Models.MassiveDirac.Bastin.Limit
+import LeanCondensedMatter.QuantumTheory.TwoBand
 
 set_option linter.style.header false
 
@@ -16,6 +17,8 @@ square therefore converges to the inverse squared gap. No energy-limit interchan
 
 namespace QuantumTheory.Models.MassiveDirac
 
+
+open QuantumTheory.TwoBand
 noncomputable section
 
 open QuantumTheory.Transport
@@ -25,7 +28,7 @@ open Filter QuantumTheory.Transport
 /-- Evaluating the opposite-band scalar resolvent at the selected band pole gives the inverse
 interband energy gap exactly. -/
 theorem projectorResolventCoefficient_oppositeBand_at_bandEnergy
-    (band : Band) (v m px py : ℝ) :
+    (band : TwoBand) (v m px py : ℝ) :
     scalarResolventCoefficient
         ((bandEnergy band v m px py : ℝ) : ℂ)
         (bandEnergy (oppositeBand band) v m px py) =
@@ -35,7 +38,7 @@ theorem projectorResolventCoefficient_oppositeBand_at_bandEnergy
 /-- On either spectral side, the opposite-band coefficient is a regular spectator at the selected
 band pole and converges to the inverse interband gap. -/
 theorem tendsto_oppositeBandCoefficient_at_bandPole
-    (side : SpectralSide) (band : Band) (v m px py : ℝ) (hE : energy v m px py ≠ 0) :
+    (side : SpectralSide) (band : TwoBand) (v m px py : ℝ) (hE : energy v m px py ≠ 0) :
     Tendsto
       (fun broadening : ℝ =>
         scalarResolventCoefficient
@@ -51,7 +54,7 @@ theorem tendsto_oppositeBandCoefficient_at_bandPole
 /-- Squaring the spectator on either spectral side produces the inverse squared interband gap in the
 zero-broadening limit. -/
 theorem tendsto_oppositeBandCoefficient_sq_at_bandPole
-    (side : SpectralSide) (band : Band) (v m px py : ℝ) (hE : energy v m px py ≠ 0) :
+    (side : SpectralSide) (band : TwoBand) (v m px py : ℝ) (hE : energy v m px py ≠ 0) :
     Tendsto
       (fun broadening : ℝ =>
         scalarResolventCoefficient
