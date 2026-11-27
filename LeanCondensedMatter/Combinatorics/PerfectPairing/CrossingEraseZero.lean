@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Crossing
-import LeanCondensedMatter.Combinatorics.PerfectPairing.EraseZero
+import LeanCondensedMatter.Combinatorics.PerfectPairing.FirstPair
 import Mathlib.Data.Finset.Prod
 import Mathlib.Algebra.BigOperators.Group.Finset.Piecewise
 import Mathlib.Algebra.BigOperators.Group.Finset.Sigma

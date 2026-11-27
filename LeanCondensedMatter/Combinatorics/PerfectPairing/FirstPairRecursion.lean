@@ -1,8 +1,7 @@
 import LeanCondensedMatter.Combinatorics.FiniteIndex.DeletedPositions
 import LeanCondensedMatter.Combinatorics.ExchangeSign
-import LeanCondensedMatter.Combinatorics.PerfectPairing.EraseZero
+import LeanCondensedMatter.Combinatorics.PerfectPairing.FirstPair
 import LeanCondensedMatter.Combinatorics.PerfectPairing.CrossingEraseZero
-import LeanCondensedMatter.Combinatorics.PerfectPairing.InsertFirstPair
 
 set_option linter.style.header false
 
