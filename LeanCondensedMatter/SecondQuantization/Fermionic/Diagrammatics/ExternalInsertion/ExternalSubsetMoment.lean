@@ -1660,9 +1660,10 @@ theorem externalSubsetMomentSeries_eq_signedConnected_two
         (evenExternalSubsetLabels (E := 1) labels S hEven)
         (evenExternalSubsetTimes (E := 1) times S hEven)
     _ = _ :=
-      (externalPartitionWeightedMoment_eq_of_proper_zero (E := 1)
+      (Finpartition.weightedMomentFromCumulant_eq_of_proper_zero
+        (fun _ π => PowerSeries.C (externalPartitionSourceSign (E := 1) π))
         (externalSubsetConnectedDiagramSeries (E := 1) ε β g labels times)
-        S hEmpty hproper).symm
+        S hEmpty (by rw [externalPartitionSourceSign_top (E := 1) S, map_one]) hproper).symm
 
 /-- The source cumulant of physical vacuum-normalized Dyson moments
 equals the fully externally connected diagram series for any finite
@@ -1679,12 +1680,11 @@ theorem externalSubsetSourceCumulantSeries_eq_connectedDiagramSeries
     externalSubsetSourceCumulantSeries
         (externalSubsetMomentSeries ε β g labels times) =
       externalSubsetConnectedDiagramSeries ε β g labels times := by
-  apply externalPartitionWeightedMoment_injective
-  · simp
-  · intro S
-    exact (externalSubsetSourceCumulantSeries_reconstruct
-      (externalSubsetMomentSeries ε β g labels times) (by simp) S).trans
-      (externalSubsetMomentSeries_eq_signedConnected ε β hβ g labels times S)
+  unfold externalSubsetSourceCumulantSeries
+  exact Finpartition.weightedCumulantFromMoment_eq_of_moment_eq
+    (fun _ π => PowerSeries.C (externalPartitionSourceSign π)) _ _
+    (fun S => by simp [externalPartitionSourceSign_top]) (by simp) (by simp)
+    (externalSubsetMomentSeries_eq_signedConnected ε β hβ g labels times)
 
 
 /-- For two external insertions, the source cumulant equals the
@@ -1696,14 +1696,13 @@ theorem externalSubsetSourceCumulantSeries_eq_connectedDiagramSeries_two
     externalSubsetSourceCumulantSeries (E := 1)
         (externalSubsetMomentSeries (E := 1) ε β g labels times) =
       externalSubsetConnectedDiagramSeries (E := 1) ε β g labels times := by
-  apply externalPartitionWeightedMoment_injective (E := 1)
-  · simp only [externalSubsetSourceCumulantSeries_empty,
-      externalSubsetConnectedDiagramSeries_empty]
-  · intro S
-    exact (externalSubsetSourceCumulantSeries_reconstruct (E := 1)
-      (externalSubsetMomentSeries (E := 1) ε β g labels times)
-      (externalSubsetMomentSeries_empty (E := 1) ε β g labels times) S).trans
-      (externalSubsetMomentSeries_eq_signedConnected_two ε β g labels times S)
+  unfold externalSubsetSourceCumulantSeries
+  exact Finpartition.weightedCumulantFromMoment_eq_of_moment_eq
+    (fun _ π => PowerSeries.C (externalPartitionSourceSign (E := 1) π)) _ _
+    (fun S => by rw [externalPartitionSourceSign_top (E := 1) S, map_one])
+    (externalSubsetMomentSeries_empty (E := 1) ε β g labels times)
+    (externalSubsetConnectedDiagramSeries_empty (E := 1) ε β g labels times)
+    (externalSubsetMomentSeries_eq_signedConnected_two ε β g labels times)
 
 
 /-- Vacuum-normalized source moment at physical dispersion ε and chemical potential μ.
@@ -1866,14 +1865,14 @@ private theorem grandCanonicalExternalSubsetSourceCumulantSeries_eq_connected_of
     externalSubsetSourceCumulantSeries
         (grandCanonicalExternalSubsetMomentSeries ε β μ g labels times) =
       grandCanonicalExternalSubsetConnectedDiagramSeries ε β μ g labels times := by
-  apply externalPartitionWeightedMoment_injective
-  · simp [grandCanonicalExternalSubsetConnectedDiagramSeries]
-  · intro S
-    exact (externalSubsetSourceCumulantSeries_reconstruct
-      (grandCanonicalExternalSubsetMomentSeries ε β μ g labels times)
-      (by simp [grandCanonicalExternalSubsetMomentSeries]) S).trans
-      (grandCanonicalExternalSubsetMomentSeries_eq_signedConnected_of_shifted
-        ε β μ g labels times hshift S)
+  unfold externalSubsetSourceCumulantSeries
+  exact Finpartition.weightedCumulantFromMoment_eq_of_moment_eq
+    (fun _ π => PowerSeries.C (externalPartitionSourceSign π)) _ _
+    (fun S => by simp [externalPartitionSourceSign_top])
+    (by simp [grandCanonicalExternalSubsetMomentSeries])
+    (by simp [grandCanonicalExternalSubsetConnectedDiagramSeries])
+    (grandCanonicalExternalSubsetMomentSeries_eq_signedConnected_of_shifted
+      ε β μ g labels times hshift)
 
 /-- Finite-mode fermionic arbitrary-external linked-cluster theorem at explicit μ:
 the physical-H vacuum-normalized source cumulant equals the fully connected

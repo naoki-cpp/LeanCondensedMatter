@@ -213,4 +213,19 @@ theorem weightedMomentFromCumulant_weightedCumulantFromMoment
     rw [hrec]
     abel
 
+/-- A normalized moment identity uniquely identifies the recursive inverse
+with any proposed connected function vanishing at the empty set. -/
+theorem weightedCumulantFromMoment_eq_of_moment_eq
+    (w : ∀ S : Finset α, Finpartition S → R)
+    (M κ : Finset α → R)
+    (hTop : ∀ S : Finset α, w S ⊤ = 1)
+    (hEmpty : M ∅ = 1) (hκ : κ ∅ = 0)
+    (hMoments : ∀ S : Finset α, M S = weightedMomentFromCumulant w κ S) :
+    weightedCumulantFromMoment w M = κ := by
+  apply weightedMomentFromCumulant_injective w hTop
+  · rw [weightedCumulantFromMoment_empty, hκ]
+  · intro S
+    exact (weightedMomentFromCumulant_weightedCumulantFromMoment w M hTop hEmpty S).trans
+      (hMoments S)
+
 end Finpartition
