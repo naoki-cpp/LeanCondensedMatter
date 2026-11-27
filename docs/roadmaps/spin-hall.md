@@ -57,11 +57,13 @@ spin-diffusion fits should remain downstream validation tracks.
 The repository already provides a finite mixed response from an electric bond
 current to a spin current selected by a spin-space component vector `n ∈ ℝ³`, with a
 symmetrized spin current built from `1/2 {v, S(n)}`. The spin-1/2 realization is
-`S(n) = ℏ (n · σ) / 2`; Pauli axes are representation coordinates rather than polarization data. It deliberately does not claim a conductivity normalization,
+`S(n) = ℏ (n · σ) / 2`; Pauli axes are representation coordinates rather than polarization data. This generic channel alone does not claim a conductivity normalization,
 a Rashba Hamiltonian, or equality between spin and charge currents. The
 single-particle corrected-current layer provides an exact algebraic correction,
 and the one-dimensional Schwartz example proves a commuting-localizer special
-case. These are foundations, not an existing SHE theorem.
+case. The model-specific finite Rashba momentum-grid response and the finite real-space
+spin-displacement conductivity and Lehmann representation are also implemented, as detailed below.
+They do not prove a bulk spin Hall value or a locally conserved proper current.
 
 The transport roadmap already lists vertex-corrected Kubo--Bastin/Streda
 response, thermodynamic limits, DC limits, and crossed/side-jump/skew work.
@@ -87,16 +89,19 @@ calculation requested by R1. The point channel uses the fixed-observable
 convention (zero explicit contact variation); it does not identify the
 conventional current with the proper/torque-dipole current. A nontrivial
 transverse response away from the origin, finite grid assembly, source/contact
-identification, and R4 localization bridge remain outstanding.
+identification, and a local torque-divergence bridge remain outstanding for this momentum-sector construction.
+The distinct finite real-space spin-displacement bridge below does not require a supplied momentum-space position operator.
 
 ## Open targets
 
 ### Finite Rashba response
 
-Define a bounded finite two-dimensional spinful lattice or momentum-grid model
-with an explicit Rashba term, charge-driving source, velocity, and spin-space component vector. Prove the finite mixed Kubo response is well-typed and state the
-symmetry assumptions needed for a transverse component. Keep broadening,
-volume, and charge/sign conventions as named parameters.
+The bounded finite Rashba momentum-grid and arbitrary finite planar real-space hopping models
+are implemented. The momentum-grid channel has an explicit spin-space component, velocity,
+charge source and supplied observable variation; the real-space spin-displacement channel has a
+Peierls source and derived contact response. Remaining finite-model tasks are concrete stationary
+spectral data, exact nonzero transverse benchmarks, and momentum-grid source/contact identification.
+Keep broadening, volume, and charge/sign conventions as named parameters.
 
 Acceptance criteria:
 
@@ -125,12 +130,12 @@ approximation.
 
 ### Proper-current specialization
 
-Specialize the abstract corrected-current layer to a spin-orbit model and prove
-when the correction is the torque-dipole term of Shi et al. Record separately
-the symmetrized (conventional) current, the proper current, and any effective observable
-used by a contact calculation. The theorem must expose the localization and
-boundary assumptions rather than treating an exact commutator identity as a
-universal physical equivalence.
+The finite real-space spin-displacement current already decomposes into the conventional
+symmetrized current and torque dipole and has a normalized finite-volume response.
+The remaining physical identification is a local torque-divergence/source-free continuity
+law under explicit localization, boundary and gauge conditions. The abstract
+`ConservationLaw.localizationCorrectionCurrentFlux` is not identified with the torque dipole.
+Keep conventional, displacement-derived and other effective contact observables distinct.
 
 ### Extrinsic mechanisms
 
@@ -156,8 +161,8 @@ finite algebraic theorems.
 
 ## Priority
 
-Establish finite Rashba response and proper-current semantics first; then address
-clean intrinsic identities and disorder vertices. Extrinsic mechanisms, inverse
+Complete the finite Rashba spectral benchmark and the local proper-current identification;
+then address clean intrinsic continuum identities and disorder vertices. Extrinsic mechanisms, inverse
 reciprocity, and bulk/device limits require additional model-specific hypotheses.
 
 ## Finite momentum-grid full-Fock construction (partial R1)
@@ -190,7 +195,8 @@ assembled full-Fock Hamiltonian, with only positive `ℏ` required. A concrete
 stationary state, its physical
 Lehmann transition data, a verified *nonzero* transverse spin response, and an
 identified source/contact variation are still needed to complete R1.
-The proper-current/torque-dipole equivalence is deliberately left to R4.
+The momentum-grid proper-current/torque-dipole bridge has the additional position-velocity
+hypothesis described in R4; it is not inferred from the grid.
 
 ## Spin displacement and torque-dipole specialization (partial R4)
 
@@ -217,8 +223,9 @@ It does not introduce another Kubo stack.
 **Important limitation:** a finite set of sampled momenta alone does not
 instantiate the physical position operator `iℏ∂_p`, and a finite-dimensional
 commutator does not automatically equal the momentum derivative of a band
-Hamiltonian. A concrete spatial/position representation, its boundary and
-gauge conventions, and the compatibility condition are still open. The
+Hamiltonian. For this momentum-grid construction, the compatibility condition and a physical
+position/gauge identification remain open. A distinct finite real-space representation is
+implemented below. The
 identity is **conditional**, not an unconditional construction of a physical
 proper spin Hall conductivity. A local source-free continuity law additionally
 requires a justified torque-divergence representation; the generic

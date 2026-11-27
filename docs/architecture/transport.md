@@ -129,7 +129,8 @@ owns the reusable constant/first/second harmonic
 coefficient decomposition and ordinary full-angle cancellation laws. `Transport.Analysis.PolarFourier`
 consumes the same coefficient data for phase-weighted radial-axis reduction while keeping the
 zeroth, first-cosine, and second-cosine kernels explicit. Model layers supply coefficient values;
-Pauli algebra, propagator data, and radial physics remain model-owned. The opt-in mathematical
+Model-independent Pauli algebra belongs to `Analysis.Matrix.Pauli`; propagator data and
+physical radial normalizations remain model-owned. The opt-in mathematical
 modules `LeanCondensedMatter.Analysis.Fourier.PolarRadialKernels.Derivative`, `Primitive`, and
 `ImproperLimit` own uniform angular bounds, finite radial differentiation, integration by parts,
 and conditional improper limits without a physical momentum measure.
@@ -414,14 +415,15 @@ K0/K1/K2 momentum moments. Intermediate harmonic reductions stay private in that
 the explicit moments to attach physical current and trace prefactors. Ordered radial
 kernels remain distinct from the antisymmetric trace used for Hall conductivity.
 
-`Analysis.Matrix.Pauli` owns coefficient extraction through entrywise interval
-integrals with a complex prefactor. These laws use Mathlib's integral addition,
-subtraction, division, and constant-multiplication results; no additional linear-map
-representation is needed. `Disorder.Propagator.BornDyson.RealSpace.RadialGreen`
+`Analysis.Matrix.Pauli` owns the model-independent two-level matrix algebra and
+`pauliScalarCoefficient_prefactor_intervalIntegral` /
+`pauliVectorCoefficient_prefactor_intervalIntegral`, which extract Pauli coefficients through
+entrywise interval integrals with a complex prefactor. The identities use Mathlib's
+integral linearity with explicit integrability; physical spin normalization belongs downstream. `Disorder.Propagator.BornDyson.RealSpace.RadialGreen`
 owns the radial Green coefficient integration laws, while
 `Streda.GaussianCrossed.RealSpace` owns the crossed-current coefficient integration laws
-alongside their pointwise kernels. Both models use the same model-independent Pauli
-integration identities with explicit entrywise integrability.
+alongside their pointwise kernels. Both radial Green and crossed-current constructions consume the same model-independent
+Pauli integration identities with explicit entrywise integrability.
 
 Concrete models may consume generic Transport and Analysis results, but reusable mathematics or
 transport infrastructure should be moved upstream rather than duplicated in a concrete model.

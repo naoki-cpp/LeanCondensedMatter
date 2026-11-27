@@ -18,7 +18,7 @@ spin-1 `p`-orbital model. At a fixed momentum magnitude `k`, let `Lᵢ` be the
 dimensionless spin-1 orbital matrices and set
 
 ```text
-Hₒₘ(k) = c₁ ∑ᵢ kᵢ² Lᵢ² + c₂ ∑_{i ≠ j} kᵢ kⱼ {Lᵢ, Lⱼ}.
+Hₒₘ(k) = c₁ ∑ᵢ kᵢ² Lᵢ² + c₂ ∑_{i < j} kᵢ kⱼ {Lᵢ, Lⱼ}.
 ```
 
 The off-diagonal sum uses **one term per unordered pair**; an ordered
@@ -79,9 +79,12 @@ H(k) = t |k|² I + r (k · L)².
 Here `L` is dimensionless spin-1 orbital angular momentum. Reuse of the first
 model's matrix lemmas requires an explicit basis, units, and coefficient
 identification; the `p`-orbital and `t₂g` interpretations are not interchangeable
-by name alone. For `|k| > 0`, the radial and tangential spectral projectors are
-`Pᵣ = (k · L)² / |k|²` and `Pₜ = I - Pᵣ`. Their projector identities and the
-two-pole resolvent decomposition are exact finite-matrix targets.
+by name alone. For `|k| > 0`, in the supplied Cartesian spin-1 representation, the longitudinal
+and transverse projectors are `P∥ = kkᵀ/|k|²` and
+`P⊥ = I - P∥ = (k · L)²/|k|²`, with energies `t|k|²` and `(t+r)|k|²`, respectively.
+The unnormalized numerator identities and scaled Hamiltonian decomposition are proved.
+Normalized projector and two-pole resolvent endpoints remain separate finite-matrix targets.
+This Cartesian labeling does not identify the crystal orbital fiber or the paper's band labels.
 
 ### Missing orbital-to-band bridge
 
@@ -163,8 +166,10 @@ and transport-normalization assumptions.
    second-order kinetic closure**; they do not derive that closure from
    microscopic dynamics. A controlled closure derivation, Fermi-surface
    average, and finite-temperature extension remain open.
-5. **Multipolar finite benchmark.** Define the traceless quadrupole sector;
-   prove the `t₂g` projector and resolvent identities; identify invariant
+5. **Multipolar finite benchmark.** The Cartesian longitudinal/transverse numerator identities
+   and scaled `t₂g` Hamiltonian decomposition are proved. Define the physical traceless
+   quadrupole sector, complete the normalized projector and two-pole resolvent endpoints,
+   identify invariant
    dipole/quadrupole blocks of a specified kinetic generator; and prove the
    rational rate, both limiting scalings, and the three-dimensional rate ratio.
 6. **Disorder-to-kinetics bridge.** Specify the short-range impurity ensemble,
@@ -184,10 +189,17 @@ for the mechanism, not consequences of the finite kinetic benchmark.
 
 ## Existing repository boundary
 
-`Analysis.Matrix.CartesianProjectors` owns finite-dimensional rank-one outer products
-and their unnormalized transverse complements. The spherical `t₂g` realization
-under `Models.OrbitalRelaxation.T2gProjectors` supplies only the Hamiltonian
-identification and spectral-parameter specialization.
+`Analysis.Matrix.CartesianProjectors` owns finite-coordinate outer products
+and their unnormalized transverse complements over commutative rings, with scaled
+idempotence and mutual annihilation even at zero momentum. The spherical `t₂g` realization
+under `Models.OrbitalRelaxation.T2gProjectors` supplies `transverse_eq_orbitalHamiltonian`
+and `t2gHamiltonian_spectral_decomposition` for the assumed Cartesian matrix model.
+
+`Analysis.Geometry.FiniteAngularKernel` owns the gain-minus-loss collision action,
+`AngularKernelMoments`, and the conditional coordinate and traceless-quadratic eigenmode
+identities. The octahedral model proves the moment hypotheses for its six-direction kernel
+and consumes this general finite algebra; neither module proves the continuous all-directions
+Funk–Hecke theorem.
 
 The normalized continuous spherical-coordinate average and its Cartesian fourth moments
 live in `Analysis.Geometry.SphericalMoments`.
