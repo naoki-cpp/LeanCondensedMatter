@@ -157,6 +157,7 @@ private def directionalBondSumLinearMap
           RCLike.real_smul_eq_coe_smul (K := ℂ)]
         rfl }
 
+omit [LinearOrder Site] in
 private theorem directionalBondSumLinearMap_apply
     (geometry : LatticeGeometry Site E)
     (weight : Site → Site → (FiniteLatticeHilbertFock Site →L[ℂ] FiniteLatticeHilbertFock Site))
@@ -175,9 +176,17 @@ theorem boundedDirectionalCurrent_sum
     boundedDirectionalCurrent geometry (∑ i, r i • direction i) ℏ q K =
       ∑ i, (r i : ℂ) • boundedDirectionalCurrent geometry (direction i) ℏ q K := by
   let D := directionalBondSumLinearMap geometry (boundedBondCurrent ℏ q K)
-  have h := map_sum D (fun i => r i • direction i) Finset.univ
-  simp only [map_smul, RCLike.real_smul_eq_coe_smul (K := ℂ)] at h
-  simpa only [D, directionalBondSumLinearMap_apply, boundedDirectionalCurrent] using h
+  have hD (d : E →ₗ[ℝ] ℝ) :
+      D d = boundedDirectionalCurrent geometry d ℏ q K :=
+    directionalBondSumLinearMap_apply geometry (boundedBondCurrent ℏ q K) d
+  simp_rw [← hD]
+  rw [map_sum D]
+  apply Finset.sum_congr rfl
+  intro i _
+  calc
+    D (r i • direction i) = r i • D (direction i) := map_smul D _ _
+    _ = (r i : ℂ) • D (direction i) :=
+      RCLike.real_smul_eq_coe_smul (K := ℂ) _ _
 
 /-- The mixed contact is linear in its measured direction. -/
 theorem boundedMixedDirectionalContact_sum_left
@@ -188,9 +197,19 @@ theorem boundedMixedDirectionalContact_sum_left
       ∑ i, (r i : ℂ) • boundedMixedDirectionalContact geometry (direction i) source ℏ q K := by
   let D := directionalBondSumLinearMap geometry (fun x y =>
     (geometry.bondCoordinate source x y : ℂ) • boundedBondContact K ℏ q x y)
-  have h := map_sum D (fun i => r i • direction i) Finset.univ
-  simp only [map_smul, RCLike.real_smul_eq_coe_smul (K := ℂ)] at h
-  simpa only [D, directionalBondSumLinearMap_apply, boundedMixedDirectionalContact, mul_smul] using h
+  have hD (d : E →ₗ[ℝ] ℝ) :
+      D d = boundedMixedDirectionalContact geometry d source ℏ q K := by
+    dsimp only [D]
+    rw [directionalBondSumLinearMap_apply]
+    simp only [boundedMixedDirectionalContact, mul_smul]
+  simp_rw [← hD]
+  rw [map_sum D]
+  apply Finset.sum_congr rfl
+  intro i _
+  calc
+    D (r i • direction i) = r i • D (direction i) := map_smul D _ _
+    _ = (r i : ℂ) • D (direction i) :=
+      RCLike.real_smul_eq_coe_smul (K := ℂ) _ _
 
 /-- Both directions of the contact mix independently, with the product of the coefficients. -/
 theorem boundedMixedDirectionalContact_sum
