@@ -344,7 +344,9 @@ theorem polarFourierFirstCosineAngularKernel_eq_besselJ (z : ℝ) :
         Complex.besselJ 0 (t : ℂ)) = polarFourierZerothAngularKernel := by
     funext t
     exact (polarFourierZerothAngularKernel_eq_besselJ t).symm
-  have hJ := ((besselJ_zero_hasDerivAt (z : ℂ)).comp_ofReal).const_mul
+  have hderivJ : HasDerivAt (Complex.besselJ 0) (-Complex.besselJ 1 (z : ℂ)) (z : ℂ) := by
+    simpa using besselJ_nat_hasDerivAt 0 (z : ℂ)
+  have hJ := hderivJ.comp_ofReal.const_mul
     ((2 * Real.pi : ℝ) : ℂ)
   change HasDerivAt
     (fun t : ℝ => ((2 * Real.pi : ℝ) : ℂ) * Complex.besselJ 0 (t : ℂ))
@@ -470,7 +472,9 @@ theorem polarFourierSecondCosineAngularKernel_eq_besselJ (z : ℝ) :
     have hK := polarFourierFirstCosineAngularKernel_two_mul_eq_zeroth_sub_second z
     rw [polarFourierFirstCosineAngularKernel_eq_besselJ,
       polarFourierZerothAngularKernel_eq_besselJ] at hK
-    have hJ := besselJ_zero_one_two_recurrence (z : ℂ)
+    have hJ : 2 * Complex.besselJ 1 (z : ℂ) =
+        (z : ℂ) * (Complex.besselJ 0 (z : ℂ) + Complex.besselJ 2 (z : ℂ)) := by
+      simpa using besselJ_nat_recurrence 0 (z : ℂ)
     apply mul_left_cancel₀ (mul_ne_zero Complex.I_ne_zero hzc)
     linear_combination hK - (((2 * Real.pi : ℝ) : ℂ) * Complex.I) * hJ
 
