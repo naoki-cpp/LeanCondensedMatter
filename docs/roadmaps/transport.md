@@ -152,9 +152,10 @@ This controls **all finite-ensemble clean-ladder iterations** under an explicit
 microscopic smallness condition, without identifying the result with the
 continuum massive-Dirac Born–Dyson/SCBA ladder or a physical DC conductivity.
 
-This is the first explicit **cubic truncation bound** on a two-particle covariance;
-the comparison is to a **single Born rung**, not the resummed noncrossing ladder
-or a dressed continuum vertex. All bounds are at fixed nonzero regulators.
+The cubic truncation bound compares the covariance with a single Born rung.
+The additional geometric-tail estimate above controls its comparison with the resummed
+finite clean ladder under `q < 1`. Neither comparison is a bound against a dressed
+continuum vertex. All bounds are at fixed nonzero regulators.
 
 The exact two-Green Středa trace also admits an algebraic decomposition of its difference from a
 *supplied* dressed-vertex RA trace: left/right mean-Green mismatches plus a connected-vertex
@@ -229,7 +230,11 @@ L_RA(Γ) = C₂(Gᴿ Γ Gᴬ)
 
 together with finite iteration and conditional resummation/uniqueness under the canonical
 `IsUnit (1 - L_RA)` hypothesis. Separate inverse-data, one-rung, and residual-routing wrappers are
-not public APIs. Ladder convergence remains open. A **finite, conditional charge-vertex Ward-consistency identity** is already proved in `Disorder.Ward` from supplied SCBA inverse/fixed-point data, a charge symmetry of the common second-moment action, and `IsUnit (1 - L_RA)`; see the [impurity vertex-correction roadmap](impurity-vertex-correction.md#conservation-bridge). This is not a full electromagnetic Ward–Takahashi identity, a derivation of nonlinear SCBA existence, or a conductivity/DC-limit theorem.
+not public APIs. For the clean finite-ensemble ladder, `Disorder.LadderNormBound` proves
+Neumann invertibility under `q = M²/(|γL||γR|) < 1` and bounds the resummed tail;
+`Disorder.ConnectedLadderNormBound` controls the exact covariance comparison for centered disorder.
+General supplied dressed-ladder convergence and nonlinear SCBA existence/convergence remain open.
+A **finite, conditional charge-vertex Ward-consistency identity** is already proved in `Disorder.Ward` from supplied SCBA inverse/fixed-point data, a charge symmetry of the common second-moment action, and `IsUnit (1 - L_RA)`; see the [impurity vertex-correction roadmap](impurity-vertex-correction.md#conservation-bridge). This is not a full electromagnetic Ward–Takahashi identity, a derivation of nonlinear SCBA existence, or a conductivity/DC-limit theorem.
 
 ## Proved model-specific checkpoints
 
@@ -289,7 +294,8 @@ thermodynamic/DC limit.
 - vertex-corrected Kubo–Bastin/Středa conductivity with stated source/contact assumptions;
 - trace per unit volume and controlled thermodynamic limits;
 - justified DC and zero-broadening limits;
-- convergence-aware SCBA/ladder results where needed;
+- nonlinear SCBA existence/convergence and dressed-ladder convergence beyond the proved
+  fixed-regulator finite clean-ladder smallness regime;
 - controlled two-particle vertex and error-to-Hall-response estimates, including physical
   continuum-disorder matching and noncommuting regulator/DC limits;
 - exact two-Green connected insertion to diagrammatic non-crossing / diffuson and full Kubo
