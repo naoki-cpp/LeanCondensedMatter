@@ -41,7 +41,7 @@ private theorem besselEnergy_hasDerivAt (z : ℝ) :
       (-2 * (Complex.besselJ 1 (z : ℂ) ^ 2 / (z : ℂ))) z := by
   have h := ((besselJ_zero_hasDerivAt (z : ℂ)).comp_ofReal.pow 2).add
     ((besselJ_one_hasDerivAt (z : ℂ)).comp_ofReal.pow 2)
-  convert h using 1 <;> try rfl
+  convert h using 1
   rw [besselJ_one_sq_div_eq_half_product]
   ring
 
