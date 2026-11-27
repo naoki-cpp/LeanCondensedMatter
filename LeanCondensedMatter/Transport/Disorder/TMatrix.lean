@@ -1,6 +1,8 @@
 import Mathlib.Algebra.Algebra.Basic
 import Mathlib.Basic.Complex.Basic
 import Mathlib.Tactic.Abel
+import Mathlib.Analysis.Normed.Algebra.Exponential
+import Mathlib.Tactic.Ring
 
 set_option linter.style.header false
 
@@ -11,6 +13,7 @@ The impurity potential is a scalar multiple of the identity in an arbitrary (pos
 noncommutative) complex algebra. A supplied Green loop need not commute with other
 operators. Invertibility of `1 - v • G` is an explicit assumption; no Born approximation,
 geometric-series convergence, thermodynamic limit, or disorder ensemble is implied.
+In a complex normed algebra the exact correction also admits a quadratic norm bound.
 -/
 
 namespace QuantumTheory.Transport
@@ -62,3 +65,29 @@ theorem scalarImpurityTMatrix_sub_bare
 end
 end Transport
 end QuantumTheory
+
+namespace QuantumTheory.Transport
+
+noncomputable section
+
+variable {R : Type*} [NormedRing R] [NormedAlgebra ℂ R]
+
+/-- A scalar impurity with a unit shift has a quadratic bare-potential remainder.
+The bound keeps the full inverse-shift norm without a Born approximation. -/
+theorem norm_scalarImpurityTMatrix_sub_bare_le
+    (strength : ℂ) (greenLoop : R)
+    (hinvertible : IsUnit (1 - strength • greenLoop)) :
+    ‖scalarImpurityTMatrix strength greenLoop hinvertible - strength • (1 : R)‖ ≤
+      ‖strength‖ ^ 2 * ‖greenLoop‖ * ‖(↑(hinvertible.unit⁻¹) : R)‖ := by
+  rw [scalarImpurityTMatrix_sub_bare, norm_smul]
+  calc
+    ‖strength‖ * ‖greenLoop * scalarImpurityTMatrix strength greenLoop hinvertible‖ ≤
+        ‖strength‖ * (‖greenLoop‖ * ‖scalarImpurityTMatrix strength greenLoop hinvertible‖) :=
+      mul_le_mul_of_nonneg_left (norm_mul_le _ _) (norm_nonneg _)
+    _ = ‖strength‖ ^ 2 * ‖greenLoop‖ * ‖(↑(hinvertible.unit⁻¹) : R)‖ := by
+      rw [scalarImpurityTMatrix, norm_smul]
+      ring
+
+end
+
+end QuantumTheory.Transport
