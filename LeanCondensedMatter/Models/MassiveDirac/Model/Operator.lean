@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Models.MassiveDirac.Model.Basic
+import LeanCondensedMatter.Analysis.Matrix.PauliRotation
 import LeanCondensedMatter.Analysis.Operator.FiniteTrace
 import Mathlib.Analysis.CStarAlgebra.Matrix
 import Mathlib.Analysis.Matrix.Hermitian
@@ -10,7 +11,7 @@ set_option linter.style.header false
 
 The clean massive-Dirac model is defined first by explicit `2 × 2` matrices. This module owns the
 model-level passage from those matrices to bounded operators on the canonical two-level Hilbert
-space. It supplies the bounded Hamiltonian, velocity and current vertices, the shared polar Pauli
+space. It supplies the bounded Hamiltonian, velocity and current vertices, the bounded realization of the shared polar Pauli
 representation used by rotationally symmetric propagators, their self-adjointness, the in-plane
 current-combination API. Generic
 finite-dimensional matrix/operator trace transport lives upstream in `Analysis.Operator.FiniteTrace`.
@@ -20,6 +21,8 @@ representations remain downstream of this model realization.
 -/
 
 namespace QuantumTheory.Models.MassiveDirac
+
+open InternalSpace
 
 noncomputable section
 
@@ -31,13 +34,6 @@ abbrev DiracHilbert := EuclideanSpace ℂ (Fin 2)
 /-- A `2 × 2` complex matrix as a bounded operator on the canonical two-level Hilbert space. -/
 noncomputable def matrixOperator (M : Matrix2) : DiracHilbert →L[ℂ] DiracHilbert :=
   (Matrix.toEuclideanCLM : Matrix2 ≃⋆ₐ[ℂ] (DiracHilbert →L[ℂ] DiracHilbert)) M
-
-/-- Polar Pauli matrix with a single radial in-plane coefficient. -/
-def polarPauliMatrix (a b d : ℂ) (θ : ℝ) : Matrix2 :=
-  a • (1 : Matrix2) +
-    (((Real.cos θ : ℝ) : ℂ) * b) • sigmaX +
-    (((Real.sin θ : ℝ) : ℂ) * b) • sigmaY +
-    d • sigmaZ
 
 /-- Bounded-operator realization of `polarPauliMatrix`. -/
 noncomputable def polarPauliOperator (a b d : ℂ) (θ : ℝ) :

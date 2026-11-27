@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.SelfEnergy.Core
+import LeanCondensedMatter.Analysis.Matrix.PauliRotation
 import Mathlib.LinearAlgebra.Matrix.NonsingularInverse
 import Mathlib.Tactic.Ring
 
@@ -36,6 +37,8 @@ weak-disorder, SCBA/Ward, or conductivity-limit statement is made here.
 -/
 
 namespace QuantumTheory.Models.MassiveDirac
+
+open InternalSpace
 
 noncomputable section
 
