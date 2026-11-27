@@ -156,13 +156,6 @@ private noncomputable def crossIndicator (pairing : PairingOn α) (e : ι ≃ pa
     (k l : ι) : ℕ :=
   if Crosses (e k).1 (e l).1 then 1 else 0
 
-omit [LinearOrder ι] in
-private theorem crossingCount_eq_sum_sum_crossIndicator (pairing : PairingOn α)
-    (e : ι ≃ pairing.NormalizedPair) :
-    pairing.crossingCount = ∑ k : ι, ∑ l : ι, crossIndicator pairing e k l := by
-  rw [pairing.crossingCount_eq_sum_crosses, Fintype.sum_prod_type, ← Equiv.sum_comp e]
-  exact Finset.sum_congr rfl fun k _ => (Equiv.sum_comp e _).symm
-
 variable [LocallyFiniteOrderTop ι] [LocallyFiniteOrderBot ι]
 
 private theorem crossingCount_eq_sum_Ioi_crossIndicator (pairing : PairingOn α)
@@ -177,7 +170,7 @@ private theorem crossingCount_eq_sum_Ioi_crossIndicator (pairing : PairingOn α)
       (∑ k : ι, ∑ l ∈ Finset.Iio k, crossIndicator pairing e k l) =
         ∑ k : ι, ∑ l ∈ Finset.Ioi k, crossIndicator pairing e l k :=
     Finset.sum_comm' (fun x y => by simp)
-  rw [crossingCount_eq_sum_sum_crossIndicator pairing e]
+  rw [pairing.crossingCount_eq_sum_sum_crosses_of_equiv e]
   calc
     (∑ k : ι, ∑ l : ι, crossIndicator pairing e k l) =
         ∑ k : ι, (∑ l ∈ Finset.Ioi k, crossIndicator pairing e k l +
