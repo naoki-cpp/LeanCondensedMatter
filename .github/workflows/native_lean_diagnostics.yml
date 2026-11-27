@@ -3,6 +3,17 @@ name: Lean native diagnostics
 on:
   workflow_dispatch:
     inputs:
+      mode:
+        description: "Single module diagnosis or sharded heartbeat survey"
+        type: choice
+        default: single
+        options:
+          - single
+          - survey
+      scope:
+        description: "Survey scope (project module or namespace prefix)"
+        type: string
+        default: LeanCondensedMatter
       module:
         description: "Project module (shake requires a module-system import closure)"
         type: string
@@ -19,6 +30,7 @@ on:
   pull_request:
     paths:
       - '.github/workflows/native_lean_diagnostics.yml'
+      - 'scripts/profile_lean_modules.py'
 
 permissions:
   contents: read
@@ -29,6 +41,7 @@ concurrency:
 
 jobs:
   diagnostics:
+    if: github.event_name != 'workflow_dispatch' || inputs.mode == 'single'
     runs-on: ubuntu-24.04
     timeout-minutes: 30
     strategy:
@@ -227,3 +240,109 @@ jobs:
           path: native-diagnostics/
           if-no-files-found: warn
           retention-days: 7
+
+  survey-plan:
+    if: github.event_name != 'workflow_dispatch' || inputs.mode == 'survey'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    outputs:
+      matrix: ${{ steps.plan.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          persist-credentials: false
+      - name: Select tracked project modules
+        id: plan
+        env:
+          SURVEY_SCOPE: ${{ inputs.scope || 'LeanCondensedMatter' }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          args=(--scope "$SURVEY_SCOPE")
+          if [ "$GITHUB_EVENT_NAME" = pull_request ]; then
+            args+=(--smoke)
+          fi
+          matrix="$(python3 scripts/profile_lean_modules.py plan "${args[@]}")"
+          echo "matrix=$matrix" >> "$GITHUB_OUTPUT"
+          jq '{shards: (.include | length), modules: ([.include[].modules[]] | length)}' <<< "$matrix"
+
+  survey:
+    needs: survey-plan
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      max-parallel: 4
+      matrix: ${{ fromJSON(needs.survey-plan.outputs.matrix) }}
+    env:
+      SURVEY_MODULES: ${{ toJSON(matrix.modules) }}
+      HEARTBEAT_THRESHOLD: ${{ github.event_name == 'workflow_dispatch' && inputs.heartbeat_threshold || '1' }}
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          persist-credentials: false
+      - name: Restore project build cache
+        uses: actions/cache/restore@caa296126883cff596d87d8935842f9db880ef25 # v5
+        with:
+          path: .lake/build
+          key: project-build-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('lean-toolchain', 'lake-manifest.json', 'lakefile.toml') }}-${{ github.sha }}
+          restore-keys: |
+            project-build-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('lean-toolchain', 'lake-manifest.json', 'lakefile.toml') }}-
+      - name: Enable resilient elan downloads
+        run: bash .github/scripts/enable_curl_retry.sh
+      - name: Set up Lean and dependency cache
+        uses: leanprover/lean-action@50fcf42d2e460296f1a34b402e990d1b24f8b596 # v1
+        with:
+          build: false
+          test: false
+          lint: false
+          use-github-cache: false
+          use-mathlib-cache: auto
+      - name: Build selected modules and dependencies
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p survey-results
+          lean --version > survey-results/toolchain.txt
+          mapfile -t modules < <(jq -r '.[]' <<< "$SURVEY_MODULES")
+          test "${#modules[@]}" -gt 0
+          lake build "${modules[@]}" > survey-results/build.log 2>&1
+      - name: Profile declaration bodies
+        run: python3 scripts/profile_lean_modules.py profile --output survey-results
+      - name: Upload shard results
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: native-profiler-survey-shard-${{ matrix.shard }}
+          path: survey-results/
+          if-no-files-found: warn
+          retention-days: 7
+
+  survey-summary:
+    needs: [survey-plan, survey]
+    if: ${{ always() && !cancelled() && needs.survey-plan.result == 'success' }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    env:
+      SURVEY_MATRIX: ${{ needs.survey-plan.outputs.matrix }}
+      HEARTBEAT_THRESHOLD: ${{ github.event_name == 'workflow_dispatch' && inputs.heartbeat_threshold || '1' }}
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          persist-credentials: false
+      - name: Download shard results
+        uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0 # v5
+        with:
+          pattern: native-profiler-survey-shard-*
+          path: survey-artifacts
+      - name: Aggregate declaration rankings and coverage
+        if: always()
+        run: python3 scripts/profile_lean_modules.py merge --artifacts survey-artifacts --output survey-summary
+      - name: Upload project-wide ranking
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: native-profiler-survey-ranking
+          path: survey-summary/
+          if-no-files-found: warn
+          retention-days: 30
