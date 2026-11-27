@@ -15,8 +15,8 @@ The recursive coefficients use the sign convention
 
 `D₀(τ) = 1`, `Dₙ₊₁(τ) = -∫₀ᵗ V(σ) Dₙ(σ) dσ`.
 
-Continuity, factorial bounds, convergence, and the Volterra equation are added in later modules;
-this file fixes the generic owner and the scalar majorant used by those proofs.
+The coupling-weighted terms, total series, and factorial scalar majorant are defined here.
+Analytic estimates and the Volterra equation require separate hypotheses.
 -/
 
 namespace Dyson
