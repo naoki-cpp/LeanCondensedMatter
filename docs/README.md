@@ -63,6 +63,7 @@ and cross-track targets. Follow these topic documents for details.
 - [Retained theorem-audit candidates](theorem-catalog-retained.md).
 - [Analysis inventory against Mathlib](analysis-mathlib-audit.md).
 - [Architecture audit tooling](../scripts/architecture/README.md).
+- [Local Markdown link audit](../scripts/check_documentation_links.py) — run `python3 scripts/check_documentation_links.py` to check repository-relative paths in tracked Markdown. The dedicated workflow initially reports missing paths without gating the main Lean CI. It checks simple inline links and reference definitions, not external URLs, anchor validity, generated documentation, or arbitrary Markdown syntax.
 - [Canonical connected-expansion theorem names](migrations/canonical-theorem-names.md).
 - Agent guidance: [domain navigation](agents/domain.md), [issue tracker](agents/issue-tracker.md), and [triage labels](agents/triage-labels.md).
 
