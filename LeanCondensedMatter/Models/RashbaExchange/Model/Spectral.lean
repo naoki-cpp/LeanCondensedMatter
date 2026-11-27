@@ -1,4 +1,3 @@
-import Mathlib.RingTheory.Idempotents
 import LeanCondensedMatter.Analysis.Algebra.QuadraticNormalization
 import LeanCondensedMatter.Models.RashbaExchange.Model
 import Mathlib.Tactic.Linarith
@@ -97,9 +96,8 @@ theorem bandProjector_eq_pauliCombination
 @[simp] theorem trace_bandProjector
     (params : HamiltonianParameters) (band : Band) (px py : ℝ) :
     Matrix.trace (bandProjector params band px py) = 1 := by
-  rw [bandProjector_eq_pauliCombination, Matrix.trace_smul, Matrix.trace_add,
-    InternalSpace.trace_pauliCombination]
-  norm_num [Matrix.trace]
+  rw [bandProjector_eq_pauliCombination]
+  exact InternalSpace.trace_half_one_add_pauliCombination _
 
 /-- The two band projectors resolve the identity, including at the totalized `E = 0` value. -/
 theorem sum_bandProjector_eq_one
@@ -150,22 +148,18 @@ theorem bandProjector_completeOrthogonalIdempotents
     (hE : spinOrbitEnergy params px py ≠ 0) :
     CompleteOrthogonalIdempotents
       (fun band : Band => bandProjector params band px py) := by
-  have hLower : IsIdempotentElem (bandProjector params .lower px py) := by
-    simpa [bandProjector, Complex.ofReal_div] using
-      (Algebra.quadratic_projector_isIdempotent
-        (spinHamiltonian params px py) (((spinOrbitEnergy params px py : ℝ) : ℂ))
-        (((bandSign Band.lower : ℝ) : ℂ)) (by exact_mod_cast hE)
-        (by simpa only [← spinOrbitEnergy_sq, Complex.ofReal_pow] using
-          spinHamiltonian_mul_self params px py)
-        (by norm_num [bandSign]))
-  have hUpper : bandProjector params .upper px py =
-      1 - bandProjector params .lower px py :=
-    eq_sub_of_add_eq' (by simpa only [sum_band] using sum_bandProjector_eq_one params px py)
-  refine CompleteOrthogonalIdempotents.iff_ortho_complete.mpr
-    ⟨?_, sum_bandProjector_eq_one params px py⟩
-  intro i j hij
-  cases i <;> cases j <;>
-    simp_all [mul_sub, sub_mul, hLower.eq]
+  simpa only [bandProjector, Complex.ofReal_div] using
+    (Algebra.quadratic_projectors_completeOrthogonalIdempotents
+      (spinHamiltonian params px py) ((spinOrbitEnergy params px py : ℝ) : ℂ)
+      (fun band : Band => ((bandSign band : ℝ) : ℂ))
+      (by exact_mod_cast hE)
+      (by simpa only [← spinOrbitEnergy_sq, Complex.ofReal_pow] using
+        spinHamiltonian_mul_self params px py)
+      (by intro band; cases band <;> norm_num [bandSign])
+      (by intro i j hij; cases i <;> cases j <;> simp_all [bandSign])
+      (by simpa only [bandProjector, Complex.ofReal_div] using
+        sum_bandProjector_eq_one params px py))
+
 
 end
 
