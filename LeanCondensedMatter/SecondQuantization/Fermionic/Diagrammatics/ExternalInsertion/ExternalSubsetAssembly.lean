@@ -373,18 +373,14 @@ theorem ExternalInsertionBlockLayout.sum_preconnectedDysonBlock_eq_standardized
   let targetTimes :=
     evenExternalSubsetTimes times (B : Finset (Fin (2 * E)))
       (layout.evenBlocks B)
-  have h :=
-    ExternalInsertionDiagram.sum_preconnectedSlotCongr
-      (E := (B : Finset (Fin (2 * E))).card / 2)
-      (N := n) (M := T.card) (T := T)
-      (U := (Finset.univ : Finset (Fin T.card)))
-      (ExternalLabel := ExternalFieldLabel Mode)
-      (InternalLabel := QuarticVertexLabel Mode)
-      (Combinatorics.standardSlotEquiv T)
-      (fun d : ExternalInsertionWickDiagram Mode
-        ((B : Finset (Fin (2 * E))).card / 2) T.card =>
-        if d.externalLabel = targetLabels then
-          d.dysonAmplitude ε β g targetTimes else 0)
+  let φ := ExternalInsertionDiagram.preconnectedSlotCongrEquiv
+    (E := (B : Finset (Fin (2 * E))).card / 2)
+    (ExternalLabel := ExternalFieldLabel Mode)
+    (InternalLabel := QuarticVertexLabel Mode)
+    (Combinatorics.standardSlotEquiv T)
+  have h := Equiv.sum_comp φ (fun d =>
+    if d.1.externalLabel = targetLabels then
+      ExternalInsertionWickDiagram.dysonAmplitude d.1 ε β g targetTimes else 0)
   convert h using 1
   all_goals
     apply Finset.sum_congr
