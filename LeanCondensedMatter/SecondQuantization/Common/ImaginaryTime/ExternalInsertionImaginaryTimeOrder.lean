@@ -1157,10 +1157,13 @@ theorem orderedExternalInsertionTimedEvents_paired {n : ℕ}
                 externalInsertionTimedEventBeforeOrEqual, stableTimedEventBeforeOrEqual_iff,
                 externalInsertionTimedEventTime, externalInsertionTimedEventRank,
                 pairedExternalTimes] <;>
-              (first
-              | (simp only [Fin.le_def, Fin.val_castAdd]; decide)
-              | omega
-              | aesop (add safe tactic (by omega)))
+              (first | omega | aesop (config := { terminal := false }) (add safe tactic (by omega)))
+            all_goals
+              first
+              | exact (Fin.strictMono_castAdd n).monotone (show (0 : Fin 4) ≤ 2 by decide)
+              | exact (Fin.strictMono_castAdd n).monotone (show (0 : Fin 4) ≤ 3 by decide)
+              | exact (Fin.strictMono_castAdd n).monotone (show (1 : Fin 4) ≤ 2 by decide)
+              | exact (Fin.strictMono_castAdd n).monotone (show (1 : Fin 4) ≤ 3 by decide)
         | inr b =>
             fin_cases a <;>
               simp_all [block, pairedExternalEventBlock, r₁, r₂, times,
