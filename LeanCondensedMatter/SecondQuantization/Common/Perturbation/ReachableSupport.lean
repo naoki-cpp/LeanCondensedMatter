@@ -56,7 +56,8 @@ theorem support_interactionPicture_apply_subset_reachableSupport_succ
     by_contra hne
     exact hnot ⟨k, hx hk, support_interactionPicture_basisState_subset energy V τ k
       (Finsupp.mem_support_iff.mpr hne)⟩
-  simpa only [basisState, hz, zero_mul]
+  change interactionPicture energy V τ (basisState k) m * x k = 0
+  rw [hz, zero_mul]
 
 end Common
 end SecondQuantization
