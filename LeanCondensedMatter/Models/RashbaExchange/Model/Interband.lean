@@ -95,19 +95,11 @@ theorem forceMatrixTraceNumerator_xy_eq
   have hEc : (((spinOrbitEnergy params px py : ℝ) : ℂ)) ≠ 0 := by
     exact_mod_cast hE
   have hnorm : dotProduct u u = 1 := by
-    rw [InternalSpace.dotProduct_pauliAxis]
-    simp [u, rashbaPauliCoefficients]
-    have hsq := spinOrbitEnergy_sq params px py
-    unfold spinOrbitEnergySq at hsq
-    field_simp [hEc]
-    have hreal :
-        bandSign band ^ 2 *
-            (params.rashbaVelocity ^ 2 * (py ^ 2 + px ^ 2) +
-              params.exchangeSplitting ^ 2) =
-          spinOrbitEnergy params px py ^ 2 := by
-      rw [bandSign_sq, hsq]
-      ring
-    exact_mod_cast hreal
+    dsimp only [u]
+    rw [smul_dotProduct, dotProduct_smul, rashbaPauliCoefficients_dot_self,
+      ← spinOrbitEnergy_sq, Complex.ofReal_pow]
+    simp only [smul_eq_mul, Complex.ofReal_div]
+    cases band <;> simp [bandSign] <;> field_simp [hEc]
   unfold forceMatrixTraceNumerator
   rw [hOppositeProjector, hProjector]
   change Matrix.trace
