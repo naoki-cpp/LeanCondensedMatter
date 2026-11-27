@@ -67,13 +67,9 @@ theorem PairingOn.ofSplitNormalizedPairEquiv_pair_eq_or_swap
         (match pr with
          | Sum.inl p => (e (Sum.inl p.1.2), e (Sum.inl p.1.1))
          | Sum.inr p => (e (Sum.inr p.1.2), e (Sum.inr p.1.1))) := by
-  change
-    ((PairingOn.ofSplit e P Q).normalizedPairOfEndpointEquiv
-      (PairingOn.splitPairEndpointEquiv e P Q) pr).1 = _ ∨
-      ((PairingOn.ofSplit e P Q).normalizedPairOfEndpointEquiv
-        (PairingOn.splitPairEndpointEquiv e P Q) pr).1 = _
+  unfold PairingOn.ofSplitNormalizedPairEquiv
   have h :=
-    (PairingOn.ofSplit e P Q).normalizedPairOfEndpointEquiv_pair_eq_or_swap
+    (PairingOn.ofSplit e P Q).normalizedPairEquivOfEndpointEquiv_pair_eq_or_swap
       (PairingOn.splitPairEndpointEquiv e P Q)
       (PairingOn.ofSplit_pairEndpointEquiv_partner e P Q) pr
   cases pr with
@@ -97,15 +93,13 @@ theorem PairingOn.ofSplitNormalizedPairEquiv_pair_eq_of_lt
       | Sum.inl p => (e (Sum.inl p.1.1), e (Sum.inl p.1.2))
       | Sum.inr p => (e (Sum.inr p.1.1), e (Sum.inr p.1.2)) := by
   have h :=
-    (PairingOn.ofSplit e P Q).normalizedPairOfEndpointEquiv_pair_eq_of_lt
+    (PairingOn.ofSplit e P Q).normalizedPairEquivOfEndpointEquiv_pair_eq_of_lt
       (PairingOn.splitPairEndpointEquiv e P Q)
       (PairingOn.ofSplit_pairEndpointEquiv_partner e P Q) pr (by
         cases pr with
         | inl p => exact horder
         | inr p => exact horder)
-  change
-    ((PairingOn.ofSplit e P Q).normalizedPairOfEndpointEquiv
-      (PairingOn.splitPairEndpointEquiv e P Q) pr).1 = _
+  unfold PairingOn.ofSplitNormalizedPairEquiv
   cases pr with
   | inl p => simpa [PairingOn.splitPairEndpointEquiv] using h
   | inr p => simpa [PairingOn.splitPairEndpointEquiv] using h

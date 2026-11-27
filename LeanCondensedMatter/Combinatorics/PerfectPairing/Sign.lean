@@ -322,7 +322,7 @@ theorem Pairing.presentsPairs_of_partner_blockPair (pairing : Pairing n)
     ((pairSlotIndexEquiv n).symm.trans τ) hpartner
   refine ⟨e, fun k => ?_⟩
   have horient : (e k).1 = blockPair τ k ∨ (e k).1 = (blockPair τ k).swap :=
-    pairing.normalizedPairOfEndpointEquiv_pair_eq_or_swap
+    pairing.normalizedPairEquivOfEndpointEquiv_pair_eq_or_swap
       ((pairSlotIndexEquiv n).symm.trans τ) hpartner k
   rcases horient with hk | hk
   · exact Or.inl hk.symm

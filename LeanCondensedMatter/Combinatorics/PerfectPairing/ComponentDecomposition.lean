@@ -65,13 +65,10 @@ theorem PairingOn.normalizedPairSigmaEquiv_apply_of_strictMono
     (B : ι) (pr : (componentPairing B).NormalizedPair) :
     (global.normalizedPairSigmaEquiv componentPairing positionEquiv hpartner ⟨B, pr⟩).1 =
       (positionEquiv ⟨B, pr.1.1⟩, positionEquiv ⟨B, pr.1.2⟩) := by
-  change
-    (global.normalizedPairOfEndpointEquiv
-      (PairingOn.componentPairEndpointEquiv componentPairing positionEquiv) ⟨B, pr⟩).1 = _
-  apply global.normalizedPairOfEndpointEquiv_pair_eq_of_lt
+  exact global.normalizedPairEquivOfEndpointEquiv_pair_eq_of_lt
     (PairingOn.componentPairEndpointEquiv componentPairing positionEquiv)
     (global.componentPairEndpointEquiv_partner componentPairing positionEquiv hpartner)
-  exact hmono B ((componentPairing B).pairs_normalized pr.2)
+    ⟨B, pr⟩ (hmono B ((componentPairing B).pairs_normalized pr.2))
 
 
 /-- A product over the pairs of a global pairing factors over component pairings whenever a
