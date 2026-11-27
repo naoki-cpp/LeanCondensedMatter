@@ -66,15 +66,9 @@ private theorem pairing_heq_of_finCongr_transport
     (hpair : P.transport
       (finCongr (congrArg (fun k : ℕ => 2 * k) h)).symm = Q) :
     HEq P Q := by
+  rw [← Combinatorics.Pairing.cast_eq_transport h P] at hpair
   cases h
-  have hself : P.transport (Equiv.refl _) = P := by
-    apply Combinatorics.PairingOn.ext
-    apply Equiv.ext
-    intro i
-    simp only [Combinatorics.PairingOn.transport_partner, Equiv.refl_apply,
-      Equiv.refl_symm]
-  exact heq_of_eq (by
-    simpa only [finCongr_refl, Equiv.refl_symm, hself] using hpair)
+  exact heq_of_eq hpair
 
 /-- Two dependent external-insertion diagrams are the same diagram
 after equality of their external sizes and interaction supports, provided
