@@ -117,21 +117,15 @@ theorem norm_finiteDimensionalOperatorTrace_mul_le
       mul_le_mul_of_nonneg_left (norm_mul_le _ _) (Nat.cast_nonneg _)
     _ = _ := (mul_assoc _ _ _).symm
 
-/-- Ordinary finite-dimensional trace is invariant under unitary conjugation.
-Use the transported orthonormal basis rather than a separate matrix realization. -/
+/-- Ordinary finite-dimensional trace is invariant under unitary conjugation by the
+algebraic trace conjugation identity. -/
 theorem finiteDimensionalOperatorTrace_conjStarAlgEquiv
     (W : H ≃ₗᵢ[ℂ] H) (A : H →L[ℂ] H) :
     finiteDimensionalOperatorTrace (W.conjStarAlgEquiv A) =
       finiteDimensionalOperatorTrace A := by
-  let b := stdOrthonormalBasis ℂ H
-  rw [finiteDimensionalOperatorTrace_apply, finiteDimensionalOperatorTrace_apply,
-    LinearMap.trace_eq_sum_inner _ (b.map W), LinearMap.trace_eq_sum_inner _ b]
-  apply Finset.sum_congr rfl
-  intro i _
-  change inner ℂ (W (b i)) (W.conjStarAlgEquiv A (W (b i))) =
-    inner ℂ (b i) (A (b i))
-  rw [LinearIsometryEquiv.conjStarAlgEquiv_apply_apply, W.symm_apply_apply]
-  exact W.inner_map_map _ _
+  change LinearMap.trace ℂ H (W.toLinearEquiv.conj (A : H →ₗ[ℂ] H)) =
+    LinearMap.trace ℂ H (A : H →ₗ[ℂ] H)
+  exact LinearMap.trace_conj' _ _
 
 /-- Ordinary finite-dimensional trace intertwines the operator adjoint with complex conjugation. -/
 theorem finiteDimensionalOperatorTrace_star
