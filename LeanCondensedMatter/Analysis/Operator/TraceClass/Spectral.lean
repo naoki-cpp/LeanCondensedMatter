@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Analysis.Operator.TraceClass.Trace
+import LeanCondensedMatter.Analysis.Operator.TraceClass.Ops
 import LeanCondensedMatter.Analysis.FunctionalCalculus.CFC
 import Mathlib.Analysis.InnerProductSpace.l2Space
 import Mathlib.Topology.Algebra.InfiniteSum.Real
@@ -220,6 +221,34 @@ theorem IsTraceClass.traceNorm_eq_tsum_abs_eigenvalues
     (CFC.abs_nonneg T).isSelfAdjoint abs abs_zero
     (fun _ _ hv => cfcAbs_apply_eigenvector hself hv)
   exact ((hb _).mp (hT.hasSum_abs_diagonalExpectationValue b)).tsum_eq.symm
+
+/-- The trace pairing with any bounded operator is the convergent eigenvector-weighted
+diagonal series of a self-adjoint trace-class operator. Neither positivity nor normalization
+of the trace-class factor is required. -/
+theorem IsTraceClass.hasSum_trace_comp_right_eigenvector
+    (hT : IsTraceClass T) (hself : IsSelfAdjoint T) (A : H →L[ℂ] H) :
+    HasSum (fun a : EigenvectorIndex T => (a.1.1 : ℂ) *
+      (inner ℂ (eigenvectorFamily hT.isCompact a)
+        (A (eigenvectorFamily hT.isCompact a)) : ℂ)) (hT.comp_right A).trace := by
+  classical
+  rw [hT.trace_comp_comm A]
+  obtain ⟨u, b, j, hj, hb_j, hker⟩ :=
+    exists_hilbertBasis_extension_eigenvectorFamily hT.isCompact hself.isSymmetric
+  let g : u → ℂ := fun i => inner ℂ (b i) ((A * T) (b i))
+  have hpoint (a : EigenvectorIndex T) :
+      g (j a) = (a.1.1 : ℂ) *
+        inner ℂ (eigenvectorFamily hT.isCompact a) (A (eigenvectorFamily hT.isCompact a)) := by
+    change inner ℂ (b (j a)) ((A * T) (b (j a))) = _
+    have hev : T (eigenvectorFamily hT.isCompact a) =
+        (a.1.1 : ℂ) • eigenvectorFamily hT.isCompact a :=
+      apply_eigenvectorFamily hT.isCompact a
+    rw [hb_j, mul_apply_eq_comp, hev, map_smul, inner_smul_right]
+  have hzero (x : u) (hx : x ∉ Set.range j) : g x = 0 := by
+    change inner ℂ (b x) ((A * T) (b x)) = 0
+    simp [mul_apply_eq_comp, hker x hx]
+  have hfull : HasSum g (hT.comp_left A).trace := (hT.comp_left A).hasSum_trace b
+  simpa only [Function.comp_apply] using
+    HasSum.congr_fun ((hj.hasSum_iff hzero).mpr hfull) fun a => (hpoint a).symm
 
 namespace SpectralTraceClass
 

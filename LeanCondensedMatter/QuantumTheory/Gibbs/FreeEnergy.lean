@@ -51,8 +51,8 @@ theorem hasSum_eigenvalue_mul_energy (ρ : DensityOperator H) (Hop : Observable 
         ((a.1.1 * diagonalExpectationValue Hop.1 Hop.2
           (eigenvectorFamily ρ.spectralTraceClass.compact a) : ℝ) : ℂ))
       (energyExpValue ρ Hop : ℂ) := by
-    have hs := (ρ.summable_expectation_term Hop.1).hasSum
-    rw [← ρ.expectation_eq_spectral_tsum Hop.1, ρ.expectation_observable] at hs
+    have hs := ρ.hasSum_expectation_term Hop.1
+    rw [ρ.expectation_observable] at hs
     simpa only [Complex.ofReal_mul, coe_diagonalExpectationValue_right, energyExpValue] using hs
   exact_mod_cast hsComplex
 
