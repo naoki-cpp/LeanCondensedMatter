@@ -12,8 +12,8 @@ import Mathlib.Topology.MetricSpace.IsometricSMul
 # Translation symmetries of atomic configurations
 
 This file extracts the translation symmetries of an atomic configuration from its full geometric
-symmetry group. Translation vectors form an additive subgroup of the acting group; periodicity and
-lattice structure remain properties to be derived from this subgroup later.
+symmetry group. Translation vectors form an additive subgroup that determines the
+translation-periodicity and lattice conditions.
 -/
 
 namespace LeanCondensedMatter.Crystal

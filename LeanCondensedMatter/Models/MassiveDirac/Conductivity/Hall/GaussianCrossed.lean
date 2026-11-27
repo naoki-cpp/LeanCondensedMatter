@@ -305,10 +305,10 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedOrderedXYConductivity_psi_e
   simp_rw [fun radius => finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_psi_antisymmetric_eq_real_minor
     v m probeEnergy broadening disorderStrength hbar pMax radius hbroadening hdisorder hpMax]
 
-/-- The finite-regulator physical Psi Hall integrand now contains only explicit
-K0/K1/K2 radial momentum moments: the remaining retarded Green scalar/z
-coefficients and source-x transverse current coefficient are expanded as well.
-Each Fourier block retains its existing momentum measure. This is an exact
+/-- The finite-regulator physical Psi Hall integrand is expressed entirely in
+K0/K1/K2 radial momentum moments, including the retarded Green scalar/z
+coefficients and source-x transverse current coefficient.
+Each Fourier block retains its physical momentum measure. This is an exact
 reduction, not a real-space radial evaluation or any regulator limit. -/
 theorem finiteCutoffContinuumBornDysonGaussianCrossedOrderedXYConductivity_psi_eq_explicit_k0_k1_k2_moments_integral
     (e v m probeEnergy broadening disorderStrength hbar pMax rMax : ℝ)

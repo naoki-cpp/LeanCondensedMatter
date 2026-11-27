@@ -6,10 +6,8 @@ set_option linter.style.header false
 /-!
 # Massive-Dirac Bastin band-block decomposition
 
-The exact finite-broadening Bastin trace from `MassiveDiracBastinBerry` is already written with the
-gauge-free finite-band projector resolvent. The projector/resolvent algebra and ordered current band
-blocks are owned by `MassiveDirac/Model/OperatorSpectral`; this file starts from that spectral API and
-expands the Bastin expression as a finite sum over ordered band pairs.
+The finite-broadening Bastin trace is expanded as a finite sum over ordered band pairs using
+gauge-independent spectral projectors, their resolvents, and ordered current band blocks.
 
 The Bastin band-pair contributions remain direction-indexed. The concrete Hall trace specializes
 them to `(x,y)` only when assembling the diagonal and interband sectors. In particular, no

@@ -23,7 +23,8 @@ finite spectral Kubo–Bastin response
 boundary. Fermionic lattice currents, Peierls contacts, conductivity normalization, and directional
 charge-current specializations remain downstream.
 
-This is not yet a common full-energy Bastin kernel or a Středa surface/sea representation. No
+The occupation-resolved response is distinct from the full-energy Bastin kernel and
+Středa surface/sea representation. No
 zero-temperature distributional derivative, zero-broadening, DC, disorder, trace-per-volume, or
 thermodynamic-limit statement is made here.
 -/

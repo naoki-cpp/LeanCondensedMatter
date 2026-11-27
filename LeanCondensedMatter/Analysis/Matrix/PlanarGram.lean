@@ -431,9 +431,7 @@ theorem integer_fixedFirst_reflection_parity_normalform (k : ℤ) :
 
 /-- A trace-zero determinant-minus-one integral matrix has a nonzero
 integer vector fixed by its action. The eigenvector is constructed
-directly from the entries, without extending scalars to the reals.
-A later primitive-vector completion will turn this into a unimodular
-change of basis for arbitrary integral reflections. -/
+directly from the entries, without extending scalars to the reals. -/
 theorem integer_trace_zero_det_neg_one_fixed_vector
     (A : Matrix (Fin 2) (Fin 2) ℤ)
     (hTrace : A.trace = 0) (hDet : A.det = -1) :

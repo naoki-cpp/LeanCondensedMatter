@@ -10,14 +10,10 @@ set_option linter.style.header false
 
 The radial Fourier resolvent at general nonzero velocity reduces to
 the corresponding integral at unit velocity and spectral center
-`center / v²`. This file proves the exact finite-cutoff scaling and
-transports it to the already constructed ultraviolet limits.
-
-Unlike a bare change of notation, this factors the velocity out of the
-**original regulated Fourier integral** prior to the UV limit. The
-remaining upper-half-plane transform is a unit-velocity resolvent
-problem; no contour integral or special-function identity is assumed
-here.
+`center / v²`. The scaling holds for the regulated Fourier integral
+at finite cutoff and for its ultraviolet limit.
+The upper-half-plane transform reduces to a unit-velocity resolvent
+problem, without requiring a contour integral or special-function identity.
 -/
 
 namespace QuantumTheory.Models.MassiveDirac
@@ -120,16 +116,16 @@ set_option linter.style.header false
 /-!
 # Principal-branch velocity normalization of the Fourier–Hankel problem
 
-The previous UV Fourier scaling formula includes the real nonzero
-velocity. Here we match its exact `v²` normalization against the
-principal complex square root in the proposed outgoing Hankel function.
+The UV Fourier scaling at nonzero real velocity is compatible with the
+`v²` normalization of the principal complex square root in the outgoing
+Hankel expression.
 The logarithm cannot pick up a (2πi) shift because multiplication by a
 strictly positive real leaves the complex argument unchanged.
 
 As a consequence, the **unit-velocity** upper-half-plane transform
 implies the upper-half-plane transform at *every nonzero real velocity*.
-The difficult unit-velocity contour/Bessel transform remains a visible
-hypothesis; this is not a proof of that integral.
+The unit-velocity contour/Bessel transform is an explicit hypothesis of
+this scaling implication.
 -/
 
 namespace QuantumTheory.Models.MassiveDirac

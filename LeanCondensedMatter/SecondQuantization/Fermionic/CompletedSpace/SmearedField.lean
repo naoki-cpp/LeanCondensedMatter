@@ -11,8 +11,8 @@ set_option linter.style.header false
 Finite linear combinations of mode creation operators satisfy the CAR norm bound in the
 one-particle ℓ² norm. Mathlib's dense linear extension therefore supplies a bounded creation
 field for arbitrary square-summable mode coefficients, including vectors with infinite support.
-Annihilation is the Hilbert adjoint of this field. This is a prerequisite for lifting unitaries
-which mix infinitely many modes; it is not yet that Fock lift.
+Annihilation is the Hilbert adjoint of this field. The field construction itself does not
+require a Fock-space lift of one-particle unitaries.
 -/
 
 namespace SecondQuantization.Fermionic

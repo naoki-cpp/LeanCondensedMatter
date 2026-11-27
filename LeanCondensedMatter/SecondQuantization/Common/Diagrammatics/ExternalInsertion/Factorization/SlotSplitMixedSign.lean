@@ -76,8 +76,8 @@ private theorem externalInsertionMixedSplit_relativePerm_sign_eq_local_mul_globa
 
 /-- The relative fixed/mixed support split sign is determined by the two
 inter-sector inversion counts on strictly antitone vacuum time chambers.
-Both fixed-sector embeddings are now shown to preserve the canonical flattened
-order; the parity of the fixed inter-sector inversion count remains separate. -/
+Both fixed-sector embeddings preserve the canonical flattened order;
+the fixed inter-sector inversion parity enters separately. -/
 private theorem externalInsertionMixedSplit_relativePerm_sign_eq_inversionCounts
     {E n : ℕ} (T : Finset (Fin n))
     (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ) :
