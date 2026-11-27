@@ -1,6 +1,7 @@
 import LeanCondensedMatter.Combinatorics.PerfectPairing.PairEndpoints
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Crossing
 import Mathlib.Algebra.BigOperators.ModEq
+import Mathlib.Order.Interval.Finset.Basic
 
 set_option linter.style.header false
 
@@ -31,6 +32,15 @@ theorem pairEndpointInversionCount_eq_sum {α : Type*} [LT α] [DecidableLT α]
   simp only [pairEndpointInversionCount, Fin.sum_univ_two, pairEndpointAt_zero,
     pairEndpointAt_one]
   ac_rfl
+
+/-- Endpoint inversion counts are unchanged when either pair is independently reversed. -/
+theorem pairEndpointInversionCount_eq_of_eq_or_swap {α : Type*} [LT α] [DecidableLT α]
+    (left right left' right' : α × α)
+    (hl : left = left' ∨ left = left'.swap)
+    (hr : right = right' ∨ right = right'.swap) :
+    pairEndpointInversionCount left right = pairEndpointInversionCount left' right' := by
+  rcases hl with hl | hl <;> rcases hr with hr | hr <;>
+    simp only [hl, hr, pairEndpointInversionCount, Prod.swap] <;> ac_rfl
 
 /-- Indicator-valued form of crossing parity. -/
 theorem pairEndpointInversionCount_mod_two_eq_crossesIndicator {α : Type*} [LinearOrder α]
@@ -67,6 +77,17 @@ theorem pairEndpointInversionCount_mod_two_eq_crossesIndicator {α : Type*} [Lin
       have hdb : d < b := hda.trans hleft
       simp [pairEndpointInversionCount, Crosses, *]
 
+/-- Distinct normalized pairs have inversion parity equal to their geometric crossing indicator. -/
+theorem PairingOn.pairEndpointInversionCount_modEq_crossesIndicator
+    {α : Type*} [Fintype α] [LinearOrder α] (pairing : PairingOn α)
+    (p q : pairing.NormalizedPair) (hne : p ≠ q) :
+    Nat.ModEq 2 (pairEndpointInversionCount p.1 q.1)
+      (if Crosses p.1 q.1 ∨ Crosses q.1 p.1 then 1 else 0) := by
+  have hEnds := pairing.normalizedPair_endpoints_ne_of_ne p q hne
+  exact (pairEndpointInversionCount_mod_two_eq_crossesIndicator p.1 q.1
+    (pairing.pairs_normalized p.2) (pairing.pairs_normalized q.2)
+    hEnds.1 hEnds.2.1 hEnds.2.2.1 hEnds.2.2.2).trans (by split_ifs <;> decide)
+
 /-- Geometric crossings between disjoint families of normalized pairs have the parity of the
 inversions between their endpoint positions. Each local pair may be presented in either endpoint
 order: the inversion sum counts all four endpoint comparisons independently of that choice. -/
@@ -100,15 +121,8 @@ theorem PairingOn.sum_geometricCrossings_mod_two_eq_positionInversions
         (g := fun x =>
           if Crosses (left x.1).1 (right x.2).1 ∨
             Crosses (right x.2).1 (left x.1).1 then 1 else 0)
-        (fun x _ => by
-          have hEnds := pairing.normalizedPair_endpoints_ne_of_ne
-            (left x.1) (right x.2) (hdisjoint x.1 x.2)
-          exact (pairEndpointInversionCount_mod_two_eq_crossesIndicator
-            (left x.1).1 (right x.2).1
-            (pairing.pairs_normalized (left x.1).2)
-            (pairing.pairs_normalized (right x.2).2)
-            hEnds.1 hEnds.2.1 hEnds.2.2.1 hEnds.2.2.2).trans
-              (by split_ifs <;> decide)))
+        (fun x _ => pairing.pairEndpointInversionCount_modEq_crossesIndicator
+          (left x.1) (right x.2) (hdisjoint x.1 x.2)))
   have hsum :
       (∑ x : A × B, pairEndpointInversionCount (left x.1).1 (right x.2).1) =
         ∑ x : (A × B) × (Fin 2 × Fin 2),
@@ -116,10 +130,12 @@ theorem PairingOn.sum_geometricCrossings_mod_two_eq_positionInversions
             leftPos (leftEquiv (x.1.1, x.2.1)) then 1 else 0 := by
     simp only [Fintype.sum_prod_type]
     refine Finset.sum_congr rfl fun p _ => Finset.sum_congr rfl fun q _ => ?_
-    rcases hleft p with hp | hp <;> rcases hright q with hq | hq
-    all_goals
-      simp only [hp, hq, Fin.sum_univ_two, pairEndpointInversionCount]
-      ac_rfl
+    rw [pairEndpointInversionCount_eq_of_eq_or_swap _ _
+      (leftPos (leftEquiv (p, 0)), leftPos (leftEquiv (p, 1)))
+      (rightPos (rightEquiv (q, 0)), rightPos (rightEquiv (q, 1)))
+      (hleft p) (hright q)]
+    simp only [Fin.sum_univ_two, pairEndpointInversionCount]
+    ac_rfl
   have hreindex :
       (∑ x : (A × B) × (Fin 2 × Fin 2),
         if rightPos (rightEquiv (x.1.2, x.2.2)) <
@@ -131,5 +147,74 @@ theorem PairingOn.sum_geometricCrossings_mod_two_eq_positionInversions
     intro x
     rfl
   rw [hparity, hsum, hreindex, Fintype.sum_prod_type]
+
+section GeometricParity
+
+variable {α ι : Type*} [Fintype α] [LinearOrder α] [Fintype ι] [LinearOrder ι]
+
+private noncomputable def crossIndicator (pairing : PairingOn α) (e : ι ≃ pairing.NormalizedPair)
+    (k l : ι) : ℕ :=
+  if Crosses (e k).1 (e l).1 then 1 else 0
+
+omit [LinearOrder ι] in
+private theorem crossingCount_eq_sum_sum_crossIndicator (pairing : PairingOn α)
+    (e : ι ≃ pairing.NormalizedPair) :
+    pairing.crossingCount = ∑ k : ι, ∑ l : ι, crossIndicator pairing e k l := by
+  rw [pairing.crossingCount_eq_sum_crosses, Fintype.sum_prod_type, ← Equiv.sum_comp e]
+  exact Finset.sum_congr rfl fun k _ => (Equiv.sum_comp e _).symm
+
+variable [LocallyFiniteOrderTop ι] [LocallyFiniteOrderBot ι]
+
+private theorem crossingCount_eq_sum_Ioi_crossIndicator (pairing : PairingOn α)
+    (e : ι ≃ pairing.NormalizedPair) :
+    pairing.crossingCount =
+      ∑ k : ι, ∑ l ∈ Finset.Ioi k,
+        (crossIndicator pairing e k l + crossIndicator pairing e l k) := by
+  classical
+  have hdiag : ∀ k : ι, crossIndicator pairing e k k = 0 :=
+    fun k => ite_eq_right (not_crosses_self _)
+  have hswap :
+      (∑ k : ι, ∑ l ∈ Finset.Iio k, crossIndicator pairing e k l) =
+        ∑ k : ι, ∑ l ∈ Finset.Ioi k, crossIndicator pairing e l k :=
+    Finset.sum_comm' (fun x y => by simp)
+  rw [crossingCount_eq_sum_sum_crossIndicator pairing e]
+  calc
+    (∑ k : ι, ∑ l : ι, crossIndicator pairing e k l) =
+        ∑ k : ι, (∑ l ∈ Finset.Ioi k, crossIndicator pairing e k l +
+          ∑ l ∈ Finset.Iio k, crossIndicator pairing e k l) :=
+      Finset.sum_congr rfl fun k _ => by
+        rw [← Finset.sum_erase_add Finset.univ (crossIndicator pairing e k)
+          (Finset.mem_univ k), hdiag k, add_zero,
+          ← Finset.compl_singleton, ← Finset.Ioi_disjUnion_Iio, Finset.sum_disjUnion]
+    _ = (∑ k : ι, ∑ l ∈ Finset.Ioi k, crossIndicator pairing e k l) +
+          ∑ k : ι, ∑ l ∈ Finset.Iio k, crossIndicator pairing e k l :=
+      Finset.sum_add_distrib
+    _ = (∑ k : ι, ∑ l ∈ Finset.Ioi k, crossIndicator pairing e k l) +
+          ∑ k : ι, ∑ l ∈ Finset.Ioi k, crossIndicator pairing e l k := by
+      rw [hswap]
+    _ = ∑ k : ι, ∑ l ∈ Finset.Ioi k,
+          (crossIndicator pairing e k l + crossIndicator pairing e l k) := by
+      rw [← Finset.sum_add_distrib]
+      exact Finset.sum_congr rfl fun k _ => Finset.sum_add_distrib.symm
+
+/-- The inversion sum over unordered pairs in any ordered presentation has the parity of
+the pairing's crossing count, regardless of each pair's endpoint orientation. -/
+theorem PairingOn.sum_Ioi_pairEndpointInversionCount_mod_two_eq_crossingCount
+    (pairing : PairingOn α) (e : ι ≃ pairing.NormalizedPair) (present : ι → α × α)
+    (hpres : ∀ k, present k = (e k).1 ∨ present k = (e k).1.swap) :
+    (∑ k : ι, ∑ l ∈ Finset.Ioi k, pairEndpointInversionCount (present k) (present l)) % 2 =
+      pairing.crossingCount % 2 := by
+  classical
+  rw [crossingCount_eq_sum_Ioi_crossIndicator pairing e]
+  refine Nat.ModEq.sum (n := 2) fun k _ => ?_
+  refine Nat.ModEq.sum (n := 2) fun l hl => ?_
+  change pairEndpointInversionCount (present k) (present l) % 2 =
+    (crossIndicator pairing e k l + crossIndicator pairing e l k) % 2
+  rw [pairEndpointInversionCount_eq_of_eq_or_swap _ _ _ _ (hpres k) (hpres l),
+    crossIndicator, crossIndicator, crossesIndicator_add]
+  exact pairing.pairEndpointInversionCount_modEq_crossesIndicator (e k) (e l)
+    (fun h => (ne_of_lt (Finset.mem_Ioi.1 hl)) (e.injective h))
+
+end GeometricParity
 
 end Combinatorics
