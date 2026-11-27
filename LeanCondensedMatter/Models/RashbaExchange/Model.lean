@@ -15,7 +15,9 @@ v_i = ∂H/∂p_i.
 ```
 
 Thus `α_R` has velocity dimension. The clean Hamiltonian, spectrum, velocity and Berry
-curvature use only `HamiltonianParameters`. The signed carrier charge, chemical potential,
+curvature use only `HamiltonianParameters`. The lower and upper branches are represented by
+`QuantumTheory.TwoBand`; the scalar kinetic term shifts both energies equally.
+The signed carrier charge, chemical potential,
 finite broadening, momentum cutoff and continuum normalization are owned downstream by
 `ResponseParameters`; the current vertex is defined in `Operator`.
 
