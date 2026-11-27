@@ -92,12 +92,11 @@ theorem pauliCombination_eq_components (u : PauliAxis → ℂ) :
 /-- A Pauli synthesis with real axis coefficients is Hermitian. -/
 theorem pauliCombination_ofReal_isHermitian (u : PauliAxis → ℝ) :
     (pauliCombination (fun axis => (u axis : ℂ))).IsHermitian := by
-  have hself (r : ℝ) : IsSelfAdjoint ((r : ℂ)) := by
-    simp [isSelfAdjoint_iff]
-  simpa [pauliCombination, sum_pauliAxis] using
-    (((pauliBasis_isHermitian .x).smul (hself (u .x))).add
-      ((pauliBasis_isHermitian .y).smul (hself (u .y)))).add
-      ((pauliBasis_isHermitian .z).smul (hself (u .z)))
+  apply Matrix.isHermitian_iff_isSelfAdjoint.mpr
+  unfold pauliCombination
+  apply isSelfAdjoint_sum
+  intro axis _
+  exact ((pauliBasis_isHermitian axis).smul (by simp [isSelfAdjoint_iff])).isSelfAdjoint
 
 /-- Ordinary bilinear cross product on semantic Pauli-axis coefficient families, obtained by
 transporting Mathlib's three-dimensional cross product to the semantic axes. -/
@@ -126,14 +125,13 @@ private theorem pauliBasis_mul_pauliBasis (a b : PauliAxis) :
 
 /-- Pauli synthesis commutes with addition of indexed coefficient families. -/
 @[simp] theorem pauliCombination_add (u v : PauliAxis → ℂ) :
-    pauliCombination (u + v) = pauliCombination u + pauliCombination v := by
-  simp [pauliCombination, sum_pauliAxis, add_smul]
-  module
+    pauliCombination (u + v) = pauliCombination u + pauliCombination v :=
+  (Fintype.linearCombination ℂ pauliBasis).map_add u v
 
 /-- Pauli synthesis commutes with scalar multiplication of the indexed coefficient family. -/
 @[simp] theorem pauliCombination_smul (c : ℂ) (u : PauliAxis → ℂ) :
-    pauliCombination (c • u) = c • pauliCombination u := by
-  simp [pauliCombination, sum_pauliAxis, smul_add, smul_smul]
+    pauliCombination (c • u) = c • pauliCombination u :=
+  (Fintype.linearCombination ℂ pauliBasis).map_smul c u
 
 /-- Product of two synthesized Pauli vectors:
 `(u·σ)(v·σ) = (u·v) I + i (u×v)·σ`. -/
@@ -154,8 +152,7 @@ theorem pauliAffine_mul_pauliAffine (a b : ℂ) (u v : PauliAxis → ℂ) :
         pauliCombination (a • v + b • u + Complex.I • pauliCross u v) := by
   rw [add_mul, mul_add, mul_add, pauliCombination_mul_pauliCombination]
   simp only [smul_mul_assoc, mul_smul_comm, one_mul, mul_one, smul_smul]
-  rw [pauliCombination_add, pauliCombination_add,
-    pauliCombination_smul, pauliCombination_smul, pauliCombination_smul]
+  simp only [pauliCombination_add, pauliCombination_smul]
   module
 
 /-- Every matrix in the Pauli basis is traceless. -/
@@ -187,7 +184,8 @@ theorem trace_pauliCombination_mul_pauliCombination (u v : PauliAxis → ℂ) :
 theorem trace_pauliBasis_mul_pauliCombination (axis : PauliAxis) (u : PauliAxis → ℂ) :
     Matrix.trace (pauliBasis axis * pauliCombination u) = 2 * u axis := by
   have h : pauliCombination (Pi.single axis (1 : ℂ)) = pauliBasis axis := by
-    cases axis <;> simp [pauliCombination, Pi.single_apply, pauliBasis]
+    change Fintype.linearCombination ℂ pauliBasis (Pi.single axis 1) = pauliBasis axis
+    rw [Fintype.linearCombination_apply_single, one_smul]
   rw [← h, trace_pauliCombination_mul_pauliCombination]
   simp
 
@@ -280,15 +278,8 @@ def pauliZConjugateVector (u : PauliAxis → ℂ) : PauliAxis → ℂ
     pauliVectorCoefficient (pauliZ * M * pauliZ) =
       pauliZConjugateVector (pauliVectorCoefficient M) := by
   funext axis
-  cases axis
-  · simp [pauliVectorCoefficient, pauliZConjugateVector, pauliZ,
-      Matrix.mul_apply, Matrix.vecMul_apply_eq_sum, Fin.sum_univ_two]
-    ring
-  · simp [pauliVectorCoefficient, pauliZConjugateVector, pauliZ,
-      Matrix.mul_apply, Matrix.vecMul_apply_eq_sum, Fin.sum_univ_two]
-    ring
-  · simp [pauliVectorCoefficient, pauliZConjugateVector, pauliZ,
-      Matrix.mul_apply, Matrix.vecMul_apply_eq_sum, Fin.sum_univ_two]
+  cases axis <;> simp [pauliVectorCoefficient, pauliZConjugateVector, pauliZ,
+    Matrix.mul_apply, Matrix.vecMul_apply_eq_sum, Fin.sum_univ_two] <;> ring
 
 @[simp] theorem pauliScalarCoefficient_neg (M : PauliMatrix) :
     pauliScalarCoefficient (-M) = -pauliScalarCoefficient M := by
