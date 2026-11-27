@@ -146,7 +146,7 @@ algebras on both domains, including their linear combinations and products.
 The state correspondence is complex-linear; no completed Fock-space isometry or
 adjoint-compatibility theorem is claimed.
 
-[AlgebraRestriction](../../LeanCondensedMatter/Analysis/Operator/AlgebraRestriction.lean)
+[AlgebraRestriction](../../LeanCondensedMatter/Analysis/Algebra/Restriction.lean)
 restricts endomorphism subalgebras preserving the physical sector. Configuration
 and occupation coordinates use canonical equivalences, not a separate oscillator representation.
 

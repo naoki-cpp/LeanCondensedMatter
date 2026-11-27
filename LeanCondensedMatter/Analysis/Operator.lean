@@ -1,5 +1,4 @@
 import LeanCondensedMatter.Analysis.Operator.AdjointConjugation
-import LeanCondensedMatter.Analysis.Operator.AlgebraRestriction
 import LeanCondensedMatter.Analysis.Operator.Antiunitary
 import LeanCondensedMatter.Analysis.Operator.BerryGeometry
 import LeanCondensedMatter.Analysis.Operator.Compact
