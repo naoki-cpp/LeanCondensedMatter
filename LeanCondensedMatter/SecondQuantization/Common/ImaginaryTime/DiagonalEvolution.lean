@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Analysis.Algebra.FinsuppDiagonal
 import LeanCondensedMatter.SecondQuantization.Common.Algebra.AlgebraicFock
 import Mathlib.Algebra.Algebra.Equiv
 import Mathlib.Analysis.SpecialFunctions.Complex.Analytic
@@ -31,10 +32,10 @@ variable {Config : Type*}
 
 /-- **The algebraic, basis-diagonal realization of `e^{τH₀}`** for a free Hamiltonian diagonal in
 the `basisState` eigenbasis with eigenvalue `energy`. It is the specialization of the canonical
-`diagonalOperator` representation to eigenvalues `c ↦ exp (τ * energy c)`. -/
+`Finsupp.diagonalOperator` representation to eigenvalues `c ↦ exp (τ * energy c)`. -/
 noncomputable def diagonalEvolution (energy : Config → ℝ) (τ : ℝ) :
     AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config :=
-  diagonalOperator fun c => Complex.exp ((τ * energy c : ℝ) : ℂ)
+  Finsupp.diagonalOperator fun c => Complex.exp ((τ * energy c : ℝ) : ℂ)
 
 theorem diagonalEvolution_basisState (energy : Config → ℝ) (τ : ℝ) (c : Config) :
     diagonalEvolution energy τ (basisState c) =
@@ -53,7 +54,7 @@ theorem diagonalEvolution_zero (energy : Config → ℝ) :
 theorem diagonalEvolution_add (energy : Config → ℝ) (τ τ' : ℝ) :
     (diagonalEvolution energy τ).comp (diagonalEvolution energy τ') =
       diagonalEvolution energy (τ + τ') := by
-  rw [diagonalEvolution, diagonalEvolution, diagonalEvolution, diagonalOperator_comp]
+  rw [diagonalEvolution, diagonalEvolution, diagonalEvolution, Finsupp.diagonalOperator_comp]
   congr 1
   funext c
   rw [← Complex.exp_add]
@@ -128,7 +129,7 @@ theorem matrixCoeff_diagonalEvolution_comp
     (m n : Config) :
     matrixCoeff ((diagonalEvolution energy τ).comp A) m n =
       Complex.exp ((τ * energy m : ℝ) : ℂ) * matrixCoeff A m n := by
-  rw [matrixCoeff, LinearMap.comp_apply, diagonalEvolution, diagonalOperator_apply]
+  rw [matrixCoeff, LinearMap.comp_apply, diagonalEvolution, Finsupp.diagonalOperator_apply]
   rfl
 
 /-- **`heisenbergEvolve`'s matrix coefficients**: `A(τ)`'s `(m, n)` entry is `A`'s own `(m, n)`
@@ -140,7 +141,7 @@ theorem matrixCoeff_heisenbergEvolve (energy : Config → ℝ) (τ : ℝ)
       Complex.exp ((τ * (energy m - energy n) : ℝ) : ℂ) * matrixCoeff A m n := by
   rw [heisenbergEvolve_eq_comp, matrixCoeff, LinearMap.comp_apply,
     LinearMap.comp_apply, diagonalEvolution_basisState, map_smul, diagonalEvolution,
-    diagonalOperator_apply]
+    Finsupp.diagonalOperator_apply]
   simp only [Finsupp.smul_apply, smul_eq_mul]
   rw [← mul_assoc, ← Complex.exp_add]
   congr 2
@@ -149,7 +150,7 @@ theorem matrixCoeff_heisenbergEvolve (energy : Config → ℝ) (τ : ℝ)
 
 /-- Every basis-diagonal operator is fixed by diagonal Heisenberg evolution. -/
 theorem heisenbergEvolve_diagonalOperator (energy : Config → ℝ) (τ : ℝ) (a : Config → ℂ) :
-    heisenbergEvolve energy τ (diagonalOperator a) = diagonalOperator a := by
+    heisenbergEvolve energy τ (Finsupp.diagonalOperator a) = Finsupp.diagonalOperator a := by
   apply matrixCoeff_ext
   intro m n
   simp only [matrixCoeff_heisenbergEvolve, matrixCoeff_diagonalOperator]

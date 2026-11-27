@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Analysis.Algebra.FinsuppDiagonal
 import LeanCondensedMatter.Models.HolsteinPrimakoff
 import LeanCondensedMatter.QuantumTheory.LocalizedSpin
 import LeanCondensedMatter.Analysis.Algebra.Restriction
@@ -126,12 +127,12 @@ private theorem spinZ_comm_spinZ (hbar : ℝ) (twiceSpin : ℕ) (i j : Mode) :
     Commute (spinZ hbar twiceSpin i) (spinZ hbar twiceSpin j) := by
   let w (k : Mode) (n : Occupation Mode) : ℂ :=
     (hbar : ℂ) * ((twiceSpin : ℂ) / 2 - n k)
-  have hd (k : Mode) : spinZ hbar twiceSpin k = Common.diagonalOperator (w k) := by
+  have hd (k : Mode) : spinZ hbar twiceSpin k = Finsupp.diagonalOperator (w k) := by
     apply Common.eq_diagonalOperator_of_basisState
     intro n
     exact spinZ_basisState hbar twiceSpin k n
   rw [hd i, hd j]
-  exact (Commute.all (w i) (w j)).map Common.diagonalOperator
+  exact (Commute.all (w i) (w j)).map Finsupp.diagonalOperator
 
 /-- Distinct sites' local spin algebras commute, including all local spin polynomials.
 This holds on the ambient algebraic Fock space and hence on its physical sector. -/

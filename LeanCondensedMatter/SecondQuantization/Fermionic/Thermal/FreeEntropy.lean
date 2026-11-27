@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Analysis.Algebra.FinsuppDiagonal
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreePartitionFunction
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.OneBodyExpectation
 import LeanCondensedMatter.QuantumTheory.Gibbs.EigenbasisEntropy
@@ -66,7 +67,7 @@ theorem eigenbasisGibbsEnergyExpectation_fermionEnergy_eq_sum_fermiDirac
       ∑ i, ε i * fermiDiracOccupation ε β i := by
   letI : LinearOrder Mode :=
     LinearOrder.lift' (Fintype.equivFin Mode) (Fintype.equivFin Mode).injective
-  let D := Common.diagonalOperator (fun i => (ε i : ℂ))
+  let D := Finsupp.diagonalOperator (fun i => (ε i : ℂ))
   have h := finiteGrandCanonicalGibbsDensityOperator_expectation_finiteSecondQuantization ε β 0
     (Common.finiteHilbertOperatorAlgEquiv D)
   have hE : Common.grandCanonicalEnergy (Config := Occupation Mode) ε 0 =
@@ -89,7 +90,7 @@ theorem eigenbasisGibbsEnergyExpectation_fermionEnergy_eq_sum_fermiDirac
   apply Complex.ofReal_injective
   rw [eigenbasisGibbsEnergyExpectation, tsum_fintype]
   push_cast [fermiDiracOccupation, Complex.ofReal_exp]
-  simpa [D, Common.matrixCoeff_diagonalOperator, Common.diagonalOperator_apply,
+  simpa [D, Common.matrixCoeff_diagonalOperator, Finsupp.diagonalOperator_apply,
     latticeKet, Finsupp.single_apply, fermionEnergy_eq_sum, div_eq_mul_inv] using h
 
 omit [LinearOrder Mode] [Fintype Mode] in

@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Analysis.Algebra.FinsuppDiagonal
 import LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.Basic
 import Mathlib.Analysis.Normed.Lp.lpHolder
 import Mathlib.LinearAlgebra.LinearPMap
@@ -75,11 +76,11 @@ canonical continuous extension. No finite configuration hypothesis is needed. -/
 theorem completedBoundedDiagonalOperator_comp_algebraicToCompleted
     (w : Config → ℂ) {C : ℝ} (hC : 0 ≤ C) (hw : ∀ c, ‖w c‖ ≤ C) :
     (completedBoundedDiagonalOperator w hC hw).toLinearMap.comp algebraicToCompleted =
-      algebraicToCompleted.comp (diagonalOperator w) := by
+      algebraicToCompleted.comp (Finsupp.diagonalOperator w) := by
   apply linearMap_ext_basisState
   intro c
   change (completedBoundedDiagonalOperator w hC hw) (completedBasisState c) =
-    algebraicToCompleted (diagonalOperator w (basisState c))
+    algebraicToCompleted (Finsupp.diagonalOperator w (basisState c))
   rw [diagonalOperator_basisState, map_smul, algebraicToCompleted_basisState]
   exact completedBoundedDiagonalOperator_basisState w hC hw c
 
@@ -89,7 +90,7 @@ for diagonal operators, but not for arbitrary algebraic endomorphisms. -/
 theorem exists_bounded_diagonal_extension_iff (w : Config → ℂ) :
     (∃ A : CompletedFock Config →L[ℂ] CompletedFock Config,
       A.toLinearMap.comp algebraicToCompleted =
-        algebraicToCompleted.comp (diagonalOperator w)) ↔
+        algebraicToCompleted.comp (Finsupp.diagonalOperator w)) ↔
       ∃ C : ℝ, 0 ≤ C ∧ ∀ c, ‖w c‖ ≤ C := by
   constructor
   · rintro ⟨A, hA⟩
@@ -99,7 +100,7 @@ theorem exists_bounded_diagonal_extension_iff (w : Config → ℂ) :
       have hc := congrArg
         (fun f : AlgebraicFock Config →ₗ[ℂ] CompletedFock Config => f (basisState c)) hA
       change A (algebraicToCompleted (basisState c)) =
-        algebraicToCompleted (diagonalOperator w (basisState c)) at hc
+        algebraicToCompleted (Finsupp.diagonalOperator w (basisState c)) at hc
       simpa only [algebraicToCompleted_basisState,
         diagonalOperator_basisState, map_smul] using hc
     have hn : ‖completedBasisState c‖ = 1 := by
@@ -220,7 +221,7 @@ theorem completedDiagonalOperator_basisState (w : Config → ℂ) (c : Config) :
 configuration-diagonal operator. -/
 theorem completedDiagonalOperator_comp_algebraicCore (w : Config → ℂ) :
     (completedDiagonalOperator w).toFun.comp (algebraicToCompletedDiagonalDomain w) =
-      algebraicToCompleted.comp (diagonalOperator w) := by
+      algebraicToCompleted.comp (Finsupp.diagonalOperator w) := by
   apply linearMap_ext_basisState
   intro c
   simp only [LinearMap.comp_apply]
@@ -235,7 +236,7 @@ theorem completedDiagonalOperator_comp_algebraicCore (w : Config → ℂ) :
     rw [hdomain]
     exact completedDiagonalOperator_basisState w c
   have hright :
-      algebraicToCompleted (diagonalOperator w (basisState c)) =
+      algebraicToCompleted (Finsupp.diagonalOperator w (basisState c)) =
         w c • completedBasisState c := by
     rw [diagonalOperator_basisState, map_smul, algebraicToCompleted_basisState]
   exact hleft.trans hright.symm

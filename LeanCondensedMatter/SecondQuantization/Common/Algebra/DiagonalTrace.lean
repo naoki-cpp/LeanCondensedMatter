@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Analysis.Algebra.FinsuppDiagonal
 import LeanCondensedMatter.Analysis.Algebra.FinsuppSupportShift
 import LeanCondensedMatter.SecondQuantization.Common.Algebra.AlgebraicFock
 import Mathlib.Topology.Algebra.InfiniteSum.Constructions
@@ -98,13 +99,13 @@ theorem matrixCoeff_diagonalOperator_comp_self_eq_zero_of_carriesShift
     {A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config} {q : G}
     (hA : Finsupp.CarriesShift grading A q) (hq : q ≠ 0)
     (w : Config → ℂ) (n : Config) :
-    matrixCoeff ((diagonalOperator w).comp A) n n = 0 := by
+    matrixCoeff ((Finsupp.diagonalOperator w).comp A) n n = 0 := by
   have hdiag : matrixCoeff A n n = 0 :=
     hA.diagonal_eq_zero hq n
   calc
-    matrixCoeff ((diagonalOperator w).comp A) n n =
+    matrixCoeff ((Finsupp.diagonalOperator w).comp A) n n =
         w n * matrixCoeff A n n := by
-          simp only [matrixCoeff, LinearMap.comp_apply, diagonalOperator_apply]
+          simp only [matrixCoeff, LinearMap.comp_apply, Finsupp.diagonalOperator_apply]
     _ = 0 := by rw [hdiag, mul_zero]
 
 /-- Nonzero-charge observables belong to every diagonal-weighted trace domain:
@@ -113,8 +114,8 @@ theorem summable_diagonalOperator_comp_of_carriesShift
     {G : Type*} [AddCommGroup G] {grading : Config → G}
     {A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config} {q : G}
     (hA : Finsupp.CarriesShift grading A q) (hq : q ≠ 0) (w : Config → ℂ) :
-    Summable (fun n => matrixCoeff ((diagonalOperator w).comp A) n n) := by
-  have hzero : (fun n => matrixCoeff ((diagonalOperator w).comp A) n n) =
+    Summable (fun n => matrixCoeff ((Finsupp.diagonalOperator w).comp A) n n) := by
+  have hzero : (fun n => matrixCoeff ((Finsupp.diagonalOperator w).comp A) n n) =
       (fun _ : Config => (0 : ℂ)) := by
     funext n
     exact matrixCoeff_diagonalOperator_comp_self_eq_zero_of_carriesShift hA hq w n
@@ -126,7 +127,7 @@ theorem tsumTrace_diagonalOperator_comp_eq_zero_of_carriesShift
     {G : Type*} [AddCommGroup G] {grading : Config → G}
     {A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config} {q : G}
     (hA : Finsupp.CarriesShift grading A q) (hq : q ≠ 0) (w : Config → ℂ) :
-    tsumTrace ((diagonalOperator w).comp A) = 0 := by
+    tsumTrace ((Finsupp.diagonalOperator w).comp A) = 0 := by
   unfold tsumTrace
   simp only [matrixCoeff_diagonalOperator_comp_self_eq_zero_of_carriesShift hA hq w,
     tsum_zero]
@@ -138,7 +139,7 @@ theorem diagonalTraceRatio_eq_zero_of_carriesShift
     {G : Type*} [AddCommGroup G] {grading : Config → G}
     {A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config} {q : G}
     (hA : Finsupp.CarriesShift grading A q) (hq : q ≠ 0) (w : Config → ℂ) :
-    tsumTrace ((diagonalOperator w).comp A) / tsumTrace (diagonalOperator w) = 0 := by
+    tsumTrace ((Finsupp.diagonalOperator w).comp A) / tsumTrace (Finsupp.diagonalOperator w) = 0 := by
   rw [tsumTrace_diagonalOperator_comp_eq_zero_of_carriesShift hA hq w]
   simp
 
@@ -148,9 +149,9 @@ theorem summableDiagonalTraceRatioLinear_eq_zero_of_carriesShift
     {G : Type*} [AddCommGroup G] {grading : Config → G}
     {A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config} {q : G}
     (hA : Finsupp.CarriesShift grading A q) (hq : q ≠ 0) (w : Config → ℂ) :
-    summableDiagonalTraceRatioLinear (diagonalOperator w)
+    summableDiagonalTraceRatioLinear (Finsupp.diagonalOperator w)
       ⟨A, summable_diagonalOperator_comp_of_carriesShift hA hq w⟩ = 0 := by
-  change tsumTrace ((diagonalOperator w).comp A) / tsumTrace (diagonalOperator w) = 0
+  change tsumTrace ((Finsupp.diagonalOperator w).comp A) / tsumTrace (Finsupp.diagonalOperator w) = 0
   exact diagonalTraceRatio_eq_zero_of_carriesShift hA hq w
 
 /-- Sum the matrix coefficients of a composite over the finite support of its right factor. -/

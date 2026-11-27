@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Analysis.Algebra.FinsuppDiagonal
 import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.NumberOperator
 
 set_option linter.style.header false
@@ -6,7 +7,7 @@ set_option linter.style.header false
 # Fermionic Hamiltonians
 
 The total-number, free, and density-density interaction Hamiltonians are defined as
-`Common.diagonalOperator`s whose eigenvalues are occupation-dependent scalars. Since each
+`Finsupp.diagonalOperator`s whose eigenvalues are occupation-dependent scalars. Since each
 `n : Occupation Mode := Finset Mode` is finite regardless of whether `Mode` is, the defining sums
 run over `n` (or `n × n`), not over all of `Mode`; none of the three definitions therefore needs
 `[Fintype Mode]`.
@@ -24,10 +25,10 @@ variable {Mode : Type*} [LinearOrder Mode]
 /-! ## Free and interaction Hamiltonians -/
 
 omit [LinearOrder Mode] in
-/-- **The total number operator**, `N := Σᵢ Nᵢ` — the `Common.diagonalOperator` with eigenvalue
+/-- **The total number operator**, `N := Σᵢ Nᵢ` — the `Finsupp.diagonalOperator` with eigenvalue
 `n.card` (the total particle number) at each occupation state `n`. -/
 noncomputable def totalNumberOperator : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode :=
-  Common.diagonalOperator fun n : Occupation Mode => (particleNumber n : ℂ)
+  Finsupp.diagonalOperator fun n : Occupation Mode => (particleNumber n : ℂ)
 
 omit [LinearOrder Mode] in
 theorem totalNumberOperator_basisState (n : Occupation Mode) :
@@ -72,11 +73,11 @@ theorem fermionEnergy_removeOccupation_of_mem {ε : Mode → ℝ} {i : Mode}
 
 omit [LinearOrder Mode] in
 /-- **The free (non-interacting) Hamiltonian** for a dispersion `ε : Mode → ℝ`,
-`H₀ := Σᵢ ε(i) Nᵢ` — the `Common.diagonalOperator` with eigenvalue `fermionEnergy ε n` at each
+`H₀ := Σᵢ ε(i) Nᵢ` — the `Finsupp.diagonalOperator` with eigenvalue `fermionEnergy ε n` at each
 occupation state `n`. -/
 noncomputable def freeHamiltonian (ε : Mode → ℝ) :
     OccupationFock Mode →ₗ[ℂ] OccupationFock Mode :=
-  Common.diagonalOperator fun n : Occupation Mode => (fermionEnergy ε n : ℂ)
+  Finsupp.diagonalOperator fun n : Occupation Mode => (fermionEnergy ε n : ℂ)
 
 omit [LinearOrder Mode] in
 theorem freeHamiltonian_basisState (ε : Mode → ℝ) (n : Occupation Mode) :
@@ -85,7 +86,7 @@ theorem freeHamiltonian_basisState (ε : Mode → ℝ) (n : Occupation Mode) :
 
 omit [LinearOrder Mode] in
 /-- **A density-density interaction Hamiltonian** for a coupling `V : Mode → Mode → ℝ`,
-`H_int := Σᵢⱼ V(i,j) Nᵢ Nⱼ` — the `Common.diagonalOperator` with eigenvalue `Σᵢ∈n Σⱼ∈n V(i,j)` at
+`H_int := Σᵢⱼ V(i,j) Nᵢ Nⱼ` — the `Finsupp.diagonalOperator` with eigenvalue `Σᵢ∈n Σⱼ∈n V(i,j)` at
 each occupation state `n`, matching `Nᵢ Nⱼ`'s eigenvalue `[i ∈ n] · [j ∈ n]` on occupation numbers.
 
 **Summation convention, fixed explicitly since it is not forced by the physics alone:** the sum
@@ -103,7 +104,7 @@ restricted density-density interaction rather than a general quartic operator
 `Σᵢⱼₖₗ V(i,j,k,l) cᵢ† cⱼ† cₖ cₗ`. -/
 noncomputable def interactionHamiltonian (V : Mode → Mode → ℝ) :
     OccupationFock Mode →ₗ[ℂ] OccupationFock Mode :=
-  Common.diagonalOperator fun n : Occupation Mode => (∑ i ∈ n, ∑ j ∈ n, (V i j : ℂ))
+  Finsupp.diagonalOperator fun n : Occupation Mode => (∑ i ∈ n, ∑ j ∈ n, (V i j : ℂ))
 
 omit [LinearOrder Mode] in
 theorem interactionHamiltonian_basisState (V : Mode → Mode → ℝ) (n : Occupation Mode) :

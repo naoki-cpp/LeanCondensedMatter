@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Analysis.Algebra.FinsuppDiagonal
 import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.CanonicalAnticommutationRelations
 import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.ExchangeAlgebra
 import Mathlib.Tactic.Abel
@@ -47,7 +48,7 @@ mode `i`. This is the canonical bridge from the CAR definition `aᵢ† aᵢ` to
 basis-diagonal operator API. -/
 theorem numberOperator_eq_diagonalOperator (i : Mode) :
     numberOperator i =
-      Common.diagonalOperator (fun n : Occupation Mode => if i ∈ n then (1 : ℂ) else 0) := by
+      Finsupp.diagonalOperator (fun n : Occupation Mode => if i ∈ n then (1 : ℂ) else 0) := by
   apply Common.eq_diagonalOperator_of_basisState
   intro n
   by_cases hi : i ∈ n <;>
@@ -64,7 +65,7 @@ theorem annihilate_comp_create_self (i : Mode) :
 /-- **`Nᵢ` is idempotent**: its diagonal occupation eigenvalues are zero or one. -/
 theorem numberOperator_comp_self (i : Mode) :
     (numberOperator i).comp (numberOperator i) = numberOperator i := by
-  simp only [numberOperator_eq_diagonalOperator, Common.diagonalOperator_comp]
+  simp only [numberOperator_eq_diagonalOperator, Finsupp.diagonalOperator_comp]
   congr 1
   funext n
   by_cases hi : i ∈ n <;> simp [hi]

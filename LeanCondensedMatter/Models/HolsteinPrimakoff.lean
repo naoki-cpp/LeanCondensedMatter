@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Analysis.Algebra.FinsuppDiagonal
 import LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.NumberOperator
 import Mathlib.LinearAlgebra.Finsupp.Supported
 import Mathlib.LinearAlgebra.Span.Basic
@@ -32,7 +33,7 @@ def physicalSubspace (twiceSpin : ℕ) (i : Mode) : Submodule ℂ (FockSpace Mod
 /-- The square-root occupation factor sqrt(2s-N), diagonal in the occupation basis.
 Only its action on the capped physical sector is interpreted as a spin operator. -/
 def deviationFactor (twiceSpin : ℕ) (i : Mode) : FockSpace Mode →ₗ[ℂ] FockSpace Mode :=
-  Common.diagonalOperator (fun n : Occupation Mode => (Real.sqrt ((twiceSpin : ℝ) - n i) : ℂ))
+  Finsupp.diagonalOperator (fun n : Occupation Mode => (Real.sqrt ((twiceSpin : ℝ) - n i) : ℂ))
 
 /-- Exact spin raising: sqrt(2s-N) acts after bosonic annihilation.
 Stancil-Prabhakar, Section 2.7.1, equation (2.149). -/

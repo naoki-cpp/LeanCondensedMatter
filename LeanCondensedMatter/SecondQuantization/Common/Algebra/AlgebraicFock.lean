@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Analysis.Algebra.FinsuppDiagonal
 import LeanCondensedMatter.Analysis.Algebra.FinsuppCoordinates
 import Mathlib.Algebra.Algebra.Pi
 import Mathlib.Basic.Complex.Basic
@@ -130,107 +131,22 @@ theorem matrixCoeff_comp {Config : Type*} [Fintype Config]
     exact hk (Finsupp.mem_support_iff.mpr h)
   rw [hz, mul_zero]
 
-/-! ## Basis-diagonal operators
-
-A single generic constructor for operators that act as a scalar multiple of each basis vector —
-the common shape behind `Common.diagonalEvolution` (`e^{τ·energy}` eigenvalues),
-`Fermionic.totalNumberOperator`/`freeHamiltonian`/`interactionHamiltonian` (occupation-dependent
-eigenvalues), and `Fermionic.occupationProjector` (indicator eigenvalues). Extracting this once
-lets each of those be stated as a `diagonalOperator` specialization, sharing the same
-composition/matrix-coefficient/injectivity lemmas rather than re-proving them per call site. -/
-
-private noncomputable def diagonalOperatorLinear {Config : Type*} (a : Config → ℂ) :
-    AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config :=
-  Finsupp.lift (AlgebraicFock Config) ℂ Config fun c => a c • basisState c
-
-private theorem diagonalOperatorLinear_basisState {Config : Type*} (a : Config → ℂ) (c : Config) :
-    diagonalOperatorLinear a (basisState c) = a c • basisState c := by
-  change Finsupp.lift _ ℂ _ (fun c => a c • basisState c) (Finsupp.single c 1) = a c • basisState c
-  simp [Finsupp.lift_apply, Finsupp.sum_single_index]
-
-/-- Basis-diagonal operators form the canonical representation of the pointwise function algebra
-`Config → ℂ` on the algebraic Fock space. -/
-noncomputable def diagonalOperator {Config : Type*} :
-    (Config → ℂ) →ₐ[ℂ] (AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) where
-  toFun := diagonalOperatorLinear
-  map_zero' := by
-    apply linearMap_ext_basisState
-    intro c
-    simp [diagonalOperatorLinear_basisState]
-  map_one' := by
-    apply linearMap_ext_basisState
-    intro c
-    simp [diagonalOperatorLinear_basisState]
-  map_add' := by
-    intro a b
-    apply linearMap_ext_basisState
-    intro c
-    simp [diagonalOperatorLinear_basisState, add_smul]
-  map_mul' := by
-    intro a b
-    rw [Module.End.mul_eq_comp]
-    apply linearMap_ext_basisState
-    intro c
-    simp [diagonalOperatorLinear_basisState, smul_smul, mul_comm]
-  commutes' := by
-    intro k
-    apply linearMap_ext_basisState
-    intro c
-    simp [diagonalOperatorLinear_basisState]
-
 @[simp]
 theorem diagonalOperator_basisState {Config : Type*} (a : Config → ℂ) (c : Config) :
-    diagonalOperator a (basisState c) = a c • basisState c :=
-  diagonalOperatorLinear_basisState a c
+    Finsupp.diagonalOperator a (basisState c) = a c • basisState c :=
+  Finsupp.diagonalOperator_single a c
 
 /-- An operator diagonal on occupation-basis states equals the corresponding diagonal operator. -/
 theorem eq_diagonalOperator_of_basisState {Config : Type*}
     (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (w : Config → ℂ)
     (h : ∀ n, A (basisState n) = w n • basisState n) :
-    A = diagonalOperator w :=
+    A = Finsupp.diagonalOperator w :=
   linearMap_ext_basisState fun n => (h n).trans (diagonalOperator_basisState w n).symm
-
-/-- A basis-diagonal operator rescales each coordinate independently. -/
-theorem diagonalOperator_apply {Config : Type*} (a : Config → ℂ)
-    (x : AlgebraicFock Config) (c : Config) :
-    diagonalOperator a x c = a c * x c := by
-  let eval : AlgebraicFock Config →ₗ[ℂ] ℂ := Finsupp.lapply c
-  have hmap : eval.comp (diagonalOperator a) = a c • eval := by
-    apply linearMap_ext_basisState
-    intro i
-    simp only [LinearMap.comp_apply, diagonalOperator_basisState, map_smul,
-      LinearMap.smul_apply]
-    by_cases h : i = c
-    · subst i
-      simp [eval, basisState]
-    · simp [eval, basisState, h]
-  have hx := congrArg (fun L => L x) hmap
-  simpa only [eval, LinearMap.comp_apply, LinearMap.smul_apply, Finsupp.lapply_apply,
-    smul_eq_mul] using hx
-
-/-- **`diagonalOperator` turns pointwise multiplication into composition**: `[c•A, d•B]`-style
-constructions on diagonal operators reduce to plain scalar arithmetic on their eigenvalues. -/
-theorem diagonalOperator_comp {Config : Type*} (a b : Config → ℂ) :
-    (diagonalOperator a).comp (diagonalOperator b) = diagonalOperator (fun c => a c * b c) := by
-  have h := map_mul (diagonalOperator (Config := Config)) a b
-  rw [Module.End.mul_eq_comp] at h
-  exact h.symm
 
 open scoped Classical in
 theorem matrixCoeff_diagonalOperator {Config : Type*} (a : Config → ℂ) (m n : Config) :
-    matrixCoeff (diagonalOperator a) m n = if m = n then a n else 0 :=
+    matrixCoeff (Finsupp.diagonalOperator a) m n = if m = n then a n else 0 :=
   matrixCoeff_eq_ite_of_basisState_smul (m := m) (diagonalOperator_basisState a n)
-
-open scoped Classical in
-/-- **`diagonalOperator` is injective in its eigenvalue function** — two diagonal operators agree
-only if their eigenvalues agree everywhere, read off via `matrixCoeff_diagonalOperator` at the
-diagonal `m = n`. -/
-theorem diagonalOperator_injective {Config : Type*} :
-    Function.Injective (diagonalOperator (Config := Config)) := by
-  intro a b hab
-  funext c
-  have h := congrArg (fun A => matrixCoeff A c c) hab
-  simpa [matrixCoeff_diagonalOperator] using h
 
 end Common
 end SecondQuantization

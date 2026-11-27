@@ -124,7 +124,7 @@ as are [S+, S-] = 2 hbar Sz and [Sz, S±] = ± hbar S±. The first commutator is
 restricted to the physical sector. These are algebraic-domain statements, not
 Hilbert-space completion or truncated canonical bosonic commutators.
 
-The square-root factor uses `Common.diagonalOperator` and bosonic creation and
+The square-root factor uses `Finsupp.diagonalOperator` and bosonic creation and
 annihilation. The ordered factors implement the exact Holstein–Primakoff
 relations, not a low-occupation expansion.
 
