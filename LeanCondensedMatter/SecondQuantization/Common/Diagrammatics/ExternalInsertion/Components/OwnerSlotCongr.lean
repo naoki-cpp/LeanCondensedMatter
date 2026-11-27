@@ -1,6 +1,6 @@
 import LeanCondensedMatter.Combinatorics.Shuffle.SlotShuffle
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ConnectedAssembly
-import LeanCondensedMatter.Combinatorics.PerfectPairing.Transport
+import LeanCondensedMatter.Combinatorics.PerfectPairing.Core
 import Mathlib.Logic.Equiv.Set
 
 set_option linter.style.header false

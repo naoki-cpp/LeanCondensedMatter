@@ -1,6 +1,6 @@
 import Mathlib.Logic.Equiv.Basic
 import Mathlib.Logic.Equiv.Set
-import LeanCondensedMatter.Combinatorics.PerfectPairing.Transport
+import LeanCondensedMatter.Combinatorics.PerfectPairing.Core
 
 set_option linter.style.header false
 

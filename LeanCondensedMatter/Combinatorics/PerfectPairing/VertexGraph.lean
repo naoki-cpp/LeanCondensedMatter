@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Split
-import LeanCondensedMatter.Combinatorics.PerfectPairing.Transport
+import LeanCondensedMatter.Combinatorics.PerfectPairing.Core
 import Mathlib.Combinatorics.SimpleGraph.Sum
 import LeanCondensedMatter.Combinatorics.SetPartition.GraphComponents
 

@@ -2,7 +2,6 @@ import LeanCondensedMatter.Combinatorics.PerfectPairing.Core
 import LeanCondensedMatter.Combinatorics.PerfectPairing.PairEndpoints
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Restriction
 import LeanCondensedMatter.Combinatorics.FiniteIndex.DeletedPositions
-import LeanCondensedMatter.Combinatorics.PerfectPairing.Transport
 import Mathlib.Logic.Equiv.Fin.Basic
 
 set_option linter.style.header false

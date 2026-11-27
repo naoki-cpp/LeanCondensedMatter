@@ -1,6 +1,6 @@
 import Mathlib.Logic.Equiv.Basic
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.BlockLayout
-import LeanCondensedMatter.Combinatorics.PerfectPairing.Transport
+import LeanCondensedMatter.Combinatorics.PerfectPairing.Core
 
 set_option linter.style.header false
 
