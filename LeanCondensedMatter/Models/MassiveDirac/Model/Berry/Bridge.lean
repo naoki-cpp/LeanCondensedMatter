@@ -112,12 +112,10 @@ theorem pointwiseBerryCurvature_xy_eq_forceMatrixBerryCurvature
     rfl
   rw [data.berryCurvature_eq_sum_hamiltonianDerivativeMatrixElements
     0 1 band hself hnondegenerate]
-  rw [sum_band]
-  cases band <;>
-    simp only [reduceCtorEq, ↓reduceIte, oppositeBand_lower, oppositeBand_upper,
-      zero_add, add_zero] at hgapEq ⊢ <;>
-    rw [div_mul_div_comm, ← Complex.ofReal_mul, Complex.div_ofReal_im, ← pow_two, hgapEq] <;>
-    ring
+  rw [sum_band_eq_add_oppositeBand _ band]
+  rw [ite_eq_left (show band = band from rfl), ite_eq_right (ne_oppositeBand band).symm, zero_add]
+  rw [div_mul_div_comm, ← Complex.ofReal_mul, Complex.div_ofReal_im, ← pow_two, hgapEq]
+  ring
 
 /-- The projector/force-matrix expression equals the closed massive-Dirac Berry curvature away
 from the band degeneracy. -/
