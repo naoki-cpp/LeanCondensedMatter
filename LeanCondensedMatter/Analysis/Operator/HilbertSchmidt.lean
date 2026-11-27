@@ -1,6 +1,6 @@
 import Mathlib.Analysis.Normed.Ring.InfiniteSum
 import Mathlib.Analysis.MeanInequalities
-import Mathlib.Analysis.InnerProductSpace.l2Space
+import LeanCondensedMatter.Analysis.Operator.HilbertBasis
 import Mathlib.Analysis.InnerProductSpace.Adjoint
 import LeanCondensedMatter.Analysis.Operator.Compact
 import Mathlib.Analysis.Normed.Group.FunctionSeries
@@ -40,9 +40,8 @@ theorem hasSum_norm_sq_matrix_coeff {ι κ : Type*} (d : HilbertBasis ι ℂ H)
   set g : ι × κ → ℝ := fun p => ‖(inner ℂ (T (d p.1)) (f p.2) : ℂ)‖ ^ 2 with hg_def
   have hg_nonneg : ∀ p, 0 ≤ g p := fun p => sq_nonneg _
   have hrow : ∀ i, HasSum (fun j => g (i, j)) (‖T (d i)‖ ^ 2) := fun i => by
-    simpa only [show (2 : ENNReal).toReal = (2 : ℝ) by norm_num, Real.rpow_two,
-      f.repr_apply_apply, f.repr.norm_map, norm_inner_symm, hg_def] using
-      (lp.hasSum_norm (p := 2) (by norm_num) (f.repr (T (d i))))
+    simpa only [hg_def, norm_inner_symm (𝕜 := ℂ) (T (d i))] using
+      f.hasSum_norm_sq_inner (T (d i))
   have hg_summable : Summable g :=
     (summable_prod_of_nonneg hg_nonneg).mpr ⟨fun i => (hrow i).summable, by
       simpa only [fun i => (hrow i).tsum_eq] using hd.summable⟩
@@ -452,9 +451,7 @@ private theorem norm_sub_finiteRangeApprox_le {ι : Type*} (d : HilbertBasis ι 
       HasSum
         (fun i : ι => ‖(inner ℂ (d i) ((T - finiteRangeApprox d T s) x) : ℂ)‖ ^ 2)
         (‖(T - finiteRangeApprox d T s) x‖ ^ 2) := by
-    simpa only [show (2 : ENNReal).toReal = (2 : ℝ) by norm_num, Real.rpow_two,
-      d.repr_apply_apply, d.repr.norm_map] using
-      (lp.hasSum_norm (p := 2) (by norm_num) (d.repr ((T - finiteRangeApprox d T s) x)))
+    exact d.hasSum_norm_sq_inner ((T - finiteRangeApprox d T s) x)
   have hzero :
       ∑ i ∈ s, ‖(inner ℂ (d i) ((T - finiteRangeApprox d T s) x) : ℂ)‖ ^ 2 = 0 := by
     apply Finset.sum_eq_zero
