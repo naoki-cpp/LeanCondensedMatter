@@ -270,6 +270,103 @@ theorem externalInsertionMixedTimeOrderedVertexComp_eq_pairedCurrentProduct
   simp only [List.flatMap_def, List.prod_flatten, List.map_map, Function.comp_def,
     pairedCurrentTimedEventOperator_eq_blockProduct]
 
+
+/-- The two full current insertions and unchanged interaction-picture vertices
+in the stable composite-event ordering. -/
+noncomputable def bilinearCurrentTimedEventOperator {n : ℕ}
+    (ε : Mode → ℝ) (τ τ' : ℝ) (jx jy : Mode → Mode → ℂ)
+    (q : Fin n → QuarticVertexLabel Mode) (σ : Fin n → ℝ) :
+    Common.ExternalInsertionTimedEvent 1 n →
+      OccupationFock Mode →ₗ[ℂ] OccupationFock Mode
+  | .inl e => if e = 0 then bilinearCurrentInsertion ε τ jx
+      else bilinearCurrentInsertion ε τ' jy
+  | .inr v => Common.interactionPicture (fermionEnergy ε)
+      (quarticVertexOperator (q v)) (σ v)
+
+/-- At every perturbative order, the stable product of full currents and
+interaction vertices is the current-kernel-weighted sum of the canonical
+signed four-field products. Each composite current occurs exactly once.
+The equal-current-time convention is stable, not half-symmetrized. -/
+theorem bilinearCurrentTimedEventProduct_eq_four_fields {n : ℕ}
+    (ε : Mode → ℝ) (τ τ' : ℝ) (jx jy : Mode → Mode → ℂ)
+    (q : Fin n → QuarticVertexLabel Mode) (σ : Fin n → ℝ) :
+    ((Common.orderedExternalInsertionTimedEvents (E := 1)
+        (fun e => if e = 0 then τ else τ') σ).map
+      (bilinearCurrentTimedEventOperator ε τ τ' jx jy q σ)).prod =
+      ∑ i : Mode, ∑ j : Mode, ∑ k : Mode, ∑ l : Mode,
+        (jx i j * jy k l) • externalInsertionMixedTimeOrderedVertexComp (E := 2) ε
+          (pairedCurrentExternalLabels i j k l) (Common.pairedExternalTimes τ τ') q σ := by
+  classical
+  let times : Fin 2 → ℝ := fun e => if e = 0 then τ else τ'
+  let L := Common.orderedExternalInsertionTimedEvents (E := 1) times σ
+  let op (X Y : Module.End ℂ (OccupationFock Mode)) :
+      Common.ExternalInsertionTimedEvent 1 n → Module.End ℂ (OccupationFock Mode)
+    | .inl e => if e = 0 then X else Y
+    | .inr v => Common.interactionPicture (fermionEnergy ε)
+        (quarticVertexOperator (q v)) (σ v)
+  let x (p : Mode × Mode) := (externalFieldOperator ε τ (.creation p.1)).comp
+    (externalFieldOperator ε τ (.annihilation p.2))
+  let y (p : Mode × Mode) := (externalFieldOperator ε τ' (.creation p.1)).comp
+    (externalFieldOperator ε τ' (.annihilation p.2))
+  let wx (p : Mode × Mode) := jx p.1 p.2
+  let wy (p : Mode × Mode) := jy p.1 p.2
+  let X := bilinearCurrentInsertion ε τ jx
+  let Y := bilinearCurrentInsertion ε τ' jy
+  have hn : L.Nodup := Common.orderedExternalInsertionTimedEvents_nodup times σ
+  have hm (e : Common.ExternalInsertionTimedEvent 1 n) : e ∈ L :=
+    Common.orderedExternalInsertionTimedEvents_all_mem times σ e
+  have hx : X = ∑ p : Mode × Mode, wx p • x p := by
+    simp only [X, bilinearCurrentInsertion, Fintype.sum_prod_type, wx, x]
+  have hy : Y = ∑ p : Mode × Mode, wy p • y p := by
+    simp only [Y, bilinearCurrentInsertion, Fintype.sum_prod_type, wy, y]
+  have hfirst : (L.map (op X Y)).prod =
+      ∑ p : Mode × Mode, wx p • (L.map (op (x p) Y)).prod := by
+    refine ScalarExchange.list_prod_map_weighted_sum_at L (.inl 0) (hm _) hn wx
+      (op X Y) (fun p => op (x p) Y) ?_ ?_
+    · exact hx
+    · intro p e he
+      cases e with
+      | inl e =>
+          fin_cases e
+          · exact (he rfl).elim
+          · rfl
+      | inr v => rfl
+  have hsecond (p : Mode × Mode) : (L.map (op (x p) Y)).prod =
+      ∑ r : Mode × Mode, wy r • (L.map (op (x p) (y r))).prod := by
+    refine ScalarExchange.list_prod_map_weighted_sum_at L (.inl 1) (hm _) hn wy
+      (op (x p) Y) (fun r => op (x p) (y r)) ?_ ?_
+    · exact hy
+    · intro r e he
+      cases e with
+      | inl e =>
+          fin_cases e
+          · rfl
+          · exact (he rfl).elim
+      | inr v => rfl
+  have hexp : (L.map (op X Y)).prod =
+      ∑ p : Mode × Mode, ∑ r : Mode × Mode,
+        (wx p * wy r) • (L.map (op (x p) (y r))).prod := by
+    rw [hfirst]
+    simp_rw [hsecond, Finset.smul_sum, smul_smul]
+  simpa only [Fintype.sum_prod_type, externalInsertionMixedTimeOrderedVertexComp_eq_pairedCurrentProduct]
+    using hexp
+
+/-- The weighted four-field identity holds for every complex-linear expectation,
+in particular the free-Gibbs expectation in the vertex Dyson integrand. -/
+theorem bilinearCurrentTimedEventProduct_expectation_eq_four_fields {n : ℕ}
+    (ε : Mode → ℝ) (τ τ' : ℝ) (jx jy : Mode → Mode → ℂ)
+    (q : Fin n → QuarticVertexLabel Mode) (σ : Fin n → ℝ)
+    (expectation : (OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) →ₗ[ℂ] ℂ) :
+    expectation (((Common.orderedExternalInsertionTimedEvents (E := 1)
+        (fun e => if e = 0 then τ else τ') σ).map
+      (bilinearCurrentTimedEventOperator ε τ τ' jx jy q σ)).prod) =
+      ∑ i : Mode, ∑ j : Mode, ∑ k : Mode, ∑ l : Mode,
+        (jx i j * jy k l) * expectation
+          (externalInsertionMixedTimeOrderedVertexComp (E := 2) ε
+            (pairedCurrentExternalLabels i j k l) (Common.pairedExternalTimes τ τ') q σ) := by
+  rw [bilinearCurrentTimedEventProduct_eq_four_fields]
+  simp only [map_sum, map_smul, smul_eq_mul]
+
 end
 end Transport
 end Fermionic
