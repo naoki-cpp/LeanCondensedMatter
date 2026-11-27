@@ -1,6 +1,7 @@
 import LeanCondensedMatter.Analysis.OrderedSimplex.MeasurableRegularity
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.DiagramIntegral
-import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Analysis.DiagramRegularity
+import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Semantics.Amplitude
+import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.DiagramRegularity
 
 set_option linter.style.header false
 
@@ -9,7 +10,8 @@ set_option linter.style.header false
 
 This module owns the bridge from the public order-`n` coefficient, defined as an ordered-simplex
 integral of the pointwise diagram sum, to the finite sum of per-diagram integrated amplitudes.
-Regularity needed to exchange the finite sum and integral is owned by the Analysis layer.
+The required measurable local boundedness of individual amplitudes follows from the general
+external-insertion chamber theorem.
 -/
 
 namespace SecondQuantization
@@ -19,6 +21,25 @@ open Combinatorics
 open Common
 
 variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
+
+/-- The signed pointwise amplitude of one diagram is measurably locally bounded. -/
+theorem FixedExternalTwoPointWickDiagram.measurableLocallyBounded_dysonFixedTimeAmplitude
+    {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
+    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ) (τ τ' : ℝ) :
+    intervalIntegral.MeasurableLocallyBounded
+      (fun σ : Fin n → ℝ => d.dysonFixedTimeAmplitude ε β g τ τ' σ) := by
+  let D := twoPointDiagramExternalInsertionEquiv Finset.univ d.1
+  have heq : (fun σ : Fin n → ℝ => d.dysonFixedTimeAmplitude ε β g τ τ' σ) =
+      fun σ : Fin n → ℝ =>
+        ExternalInsertionWickDiagram.dysonFixedTimeAmplitude D ε β g
+          (twoPointExternalTimes τ τ') σ := by
+    funext σ
+    unfold FixedExternalTwoPointWickDiagram.dysonFixedTimeAmplitude
+      ExternalInsertionWickDiagram.dysonFixedTimeAmplitude
+    rw [d.fixedTimeAmplitude_eq_externalInsertion]
+  rw [heq]
+  exact ExternalInsertionWickDiagram.measurableLocallyBounded_dysonFixedTimeAmplitude
+    D ε β g (twoPointExternalTimes τ τ')
 
 /-- **The order-`n` two-point coefficient is the sum of the integrated diagram amplitudes.**
 
