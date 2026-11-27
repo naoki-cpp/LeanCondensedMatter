@@ -1,4 +1,4 @@
-import Mathlib.Basic.Real.Basic
+import Mathlib.Order.Basic
 import Mathlib.Logic.Equiv.Fin.Basic
 import Mathlib.Data.List.Sort
 import Mathlib.Order.Prod.Lex.Basic
@@ -6,17 +6,13 @@ import Mathlib.Order.Prod.Lex.Basic
 set_option linter.style.header false
 
 /-!
-# Shared stable order for timed events
+# Stable order with ranked ties
 
-This module provides the common order relation used to sort finite event families by decreasing
-time, with a natural-number rank breaking ties. The relation is the pullback of Mathlib's
-lexicographic order on `OrderDual ℝ ×ₗ ℕ`. It also records how the rank induced by
-`finSumFinEquiv` is preserved by strictly monotone reindexings of both summands. Event types and
-their rank definitions remain with their domain-specific ordering modules.
+Pullback of the lexicographic order on a reversed primary order and an ordinary
+secondary order, together with order preservation for finite-sum ranks.
 -/
 
-namespace SecondQuantization
-namespace Common
+namespace Combinatorics
 
 private def finSumRank {m n : ℕ} (event : Fin m ⊕ Fin n) : ℕ :=
   (finSumFinEquiv event : Fin (m + n)).val
@@ -57,17 +53,17 @@ theorem finSumFinEquiv_map_val_le_iff
           omega
 
 /-- Lexicographic key for stable event ordering: later times come first, then lower ranks. -/
-private def stableTimedEventKey {α : Type*} (time : α → ℝ) (rank : α → ℕ)
-    (a : α) : OrderDual ℝ ×ₗ ℕ :=
+private def stableTimedEventKey {α T K : Type*} [LinearOrder T] [LinearOrder K] (time : α → T) (rank : α → K)
+    (a : α) : OrderDual T ×ₗ K :=
   toLex (OrderDual.toDual (time a), rank a)
 
 /-- Stable non-strict precedence: later times come first, and rank breaks equal-time ties. -/
-def stableTimedEventBeforeOrEqual {α : Type*} (time : α → ℝ) (rank : α → ℕ)
+def stableTimedEventBeforeOrEqual {α T K : Type*} [LinearOrder T] [LinearOrder K] (time : α → T) (rank : α → K)
     (a b : α) : Prop :=
   stableTimedEventKey time rank a ≤ stableTimedEventKey time rank b
 
 /-- Explicit logical form of the lexicographic stable event order. -/
-theorem stableTimedEventBeforeOrEqual_iff {α : Type*} (time : α → ℝ) (rank : α → ℕ)
+theorem stableTimedEventBeforeOrEqual_iff {α T K : Type*} [LinearOrder T] [LinearOrder K] (time : α → T) (rank : α → K)
     (a b : α) :
     stableTimedEventBeforeOrEqual time rank a b ↔
       time b < time a ∨ (time a = time b ∧ rank a ≤ rank b) := by
@@ -75,42 +71,24 @@ theorem stableTimedEventBeforeOrEqual_iff {α : Type*} (time : α → ℝ) (rank
 
 /-- Preserving every strict time comparison preserves the stable event order,
 including equal-time ties resolved by the fixed rank. -/
-theorem stableTimedEventBeforeOrEqual_congr {α : Type*}
-    (t u : α → ℝ) (rank : α → ℕ)
+theorem stableTimedEventBeforeOrEqual_congr {α T K : Type*} [LinearOrder T] [LinearOrder K]
+    (t u : α → T) (rank : α → K)
     (h : ∀ a b, t a < t b ↔ u a < u b) (a b : α) :
     stableTimedEventBeforeOrEqual t rank a b ↔
       stableTimedEventBeforeOrEqual u rank a b := by
-  have heq : (t a = t b) ↔ (u a = u b) := by
-    constructor
-    · intro hab
-      by_contra huv
-      rcases lt_or_gt_of_ne huv with huv | huv
-      · have ht := (h a b).mpr huv
-        rw [hab] at ht
-        exact lt_irrefl _ ht
-      · have ht := (h b a).mpr huv
-        rw [hab] at ht
-        exact lt_irrefl _ ht
-    · intro hab
-      by_contra hne
-      rcases lt_or_gt_of_ne hne with hlt | hgt
-      · have hu := (h a b).mp hlt
-        rw [hab] at hu
-        exact lt_irrefl _ hu
-      · have hu := (h b a).mp hgt
-        rw [hab] at hu
-        exact lt_irrefl _ hu
+  have heq : (t a = t b) ↔ (u a = u b) :=
+    eq_iff_eq_of_lt_iff_lt_of_gt_iff_gt (h a b) (h b a)
   simp only [stableTimedEventBeforeOrEqual_iff]
   rw [h b a, heq]
 
-instance {α : Type*} (time : α → ℝ) (rank : α → ℕ) :
+instance {α T K : Type*} [LinearOrder T] [LinearOrder K] (time : α → T) (rank : α → K) :
     Std.Total (stableTimedEventBeforeOrEqual time rank) :=
   ⟨fun a b => by
     change stableTimedEventKey time rank a ≤ stableTimedEventKey time rank b ∨
       stableTimedEventKey time rank b ≤ stableTimedEventKey time rank a
     exact le_total _ _⟩
 
-instance {α : Type*} (time : α → ℝ) (rank : α → ℕ) :
+instance {α T K : Type*} [LinearOrder T] [LinearOrder K] (time : α → T) (rank : α → K) :
     IsTrans α (stableTimedEventBeforeOrEqual time rank) :=
   ⟨fun a b c hab hbc => by
     change stableTimedEventKey time rank a ≤ stableTimedEventKey time rank b at hab
@@ -118,8 +96,8 @@ instance {α : Type*} (time : α → ℝ) (rank : α → ℕ) :
     change stableTimedEventKey time rank a ≤ stableTimedEventKey time rank c
     exact hab.trans hbc⟩
 
-theorem stableTimedEventBeforeOrEqual_antisymm {α : Type*} (time : α → ℝ)
-    (rank : α → ℕ) (rank_injective : Function.Injective rank) {a b : α}
+theorem stableTimedEventBeforeOrEqual_antisymm {α T K : Type*} [LinearOrder T] [LinearOrder K] (time : α → T)
+    (rank : α → K) (rank_injective : Function.Injective rank) {a b : α}
     (hab : stableTimedEventBeforeOrEqual time rank a b)
     (hba : stableTimedEventBeforeOrEqual time rank b a) :
     a = b := by
@@ -129,8 +107,7 @@ theorem stableTimedEventBeforeOrEqual_antisymm {α : Type*} (time : α → ℝ)
     le_antisymm hab hba
   apply rank_injective
   have hrank :=
-    congrArg (fun x : OrderDual ℝ ×ₗ ℕ => (ofLex x).2) hkey
+    congrArg (fun x : OrderDual T ×ₗ K => (ofLex x).2) hkey
   simpa [stableTimedEventKey] using hrank
 
-end Common
-end SecondQuantization
+end Combinatorics

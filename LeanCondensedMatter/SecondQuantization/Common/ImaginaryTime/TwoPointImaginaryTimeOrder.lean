@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Combinatorics.Common.StableOrder
 import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionImaginaryTimeOrder
 import Mathlib.Data.Fintype.Basic
 import Mathlib.Data.List.NodupEquivFin
@@ -56,7 +57,7 @@ def twoPointTimedEventRank {n : ℕ} (event : TwoPointTimedEvent n) : ℕ :=
 breaking equal-time ties. -/
 def twoPointTimedEventBeforeOrEqual {n : ℕ} (τ τ' : ℝ) (σ : Fin n → ℝ)
     (a b : TwoPointTimedEvent n) : Prop :=
-  stableTimedEventBeforeOrEqual (twoPointTimedEventTime τ τ' σ) twoPointTimedEventRank a b
+  Combinatorics.stableTimedEventBeforeOrEqual (twoPointTimedEventTime τ τ' σ) twoPointTimedEventRank a b
 
 /-- Strict stable event precedence, obtained by excluding equality from
 `twoPointTimedEventBeforeOrEqual`. -/
@@ -96,9 +97,9 @@ theorem orderedTwoPointTimedEvents_pairwise {n : ℕ}
       (twoPointTimedEventBeforeOrEqual τ τ' σ) := by
   classical
   change (List.insertionSort
-      (stableTimedEventBeforeOrEqual (twoPointTimedEventTime τ τ' σ) twoPointTimedEventRank)
+      (Combinatorics.stableTimedEventBeforeOrEqual (twoPointTimedEventTime τ τ' σ) twoPointTimedEventRank)
       ([Sum.inl 0, Sum.inl 1] ++ twoPointInteractionEventList n)).Pairwise
-        (stableTimedEventBeforeOrEqual (twoPointTimedEventTime τ τ' σ) twoPointTimedEventRank)
+        (Combinatorics.stableTimedEventBeforeOrEqual (twoPointTimedEventTime τ τ' σ) twoPointTimedEventRank)
   exact List.pairwise_insertionSort _ _
 
 /-- The fully ordered mixed-event list contains no duplicate events. -/
@@ -142,7 +143,7 @@ theorem orderedTwoPointTimedEvents_eq_externalInsertion {n : ℕ}
         (E := 1) (twoPointExternalTimes τ τ') σ event)
   letI : Std.Antisymm rel :=
     ⟨fun _ _ hab hba =>
-      stableTimedEventBeforeOrEqual_antisymm
+      Combinatorics.stableTimedEventBeforeOrEqual_antisymm
         (twoPointTimedEventTime τ τ' σ) twoPointTimedEventRank
         (by
           intro a b h
@@ -155,7 +156,7 @@ theorem orderedTwoPointTimedEvents_eq_externalInsertion {n : ℕ}
     cases e <;> rfl
   have ht : target.Pairwise rel := by
     change (orderedExternalInsertionTimedEvents (E := 1) (twoPointExternalTimes τ τ') σ).Pairwise
-      (stableTimedEventBeforeOrEqual (twoPointTimedEventTime τ τ' σ)
+      (Combinatorics.stableTimedEventBeforeOrEqual (twoPointTimedEventTime τ τ' σ)
         (fun e : TwoPointTimedEvent n => (finSumFinEquiv e : Fin (2 + n)).val))
     rw [← htime]
     exact orderedExternalInsertionTimedEvents_pairwise
@@ -195,7 +196,7 @@ theorem orderedTwoPointTimedEventPosition_lt_iff {n : ℕ}
   · subst b
     simp [twoPointTimedEventBefore]
   · letI : Std.Antisymm (twoPointTimedEventBeforeOrEqual τ τ' σ) :=
-      ⟨fun _ _ h₁ h₂ => stableTimedEventBeforeOrEqual_antisymm
+      ⟨fun _ _ h₁ h₂ => Combinatorics.stableTimedEventBeforeOrEqual_antisymm
         (twoPointTimedEventTime τ τ' σ) twoPointTimedEventRank
         (by
           intro x y h
@@ -260,14 +261,14 @@ private theorem twoPointTimedEventBeforeOrEqual_map_iff
     twoPointTimedEventBeforeOrEqual τ τ' σ
         (twoPointTimedEventMap f a) (twoPointTimedEventMap f b) ↔
       twoPointTimedEventBeforeOrEqual τ τ' (σ ∘ f) a b := by
-  simp only [twoPointTimedEventBeforeOrEqual, stableTimedEventBeforeOrEqual_iff,
+  simp only [twoPointTimedEventBeforeOrEqual, Combinatorics.stableTimedEventBeforeOrEqual_iff,
     twoPointTimedEventTime_map]
   have hrank :
       twoPointTimedEventRank (twoPointTimedEventMap f a) ≤
         twoPointTimedEventRank (twoPointTimedEventMap f b) ↔
           twoPointTimedEventRank a ≤ twoPointTimedEventRank b := by
     simpa [twoPointTimedEventMap, twoPointTimedEventRank] using
-      (finSumFinEquiv_map_val_le_iff
+      (Combinatorics.finSumFinEquiv_map_val_le_iff
         (f := id) (g := f)
         (show StrictMono (id : Fin 2 → Fin 2) from fun _ _ h => h)
         hf a b)

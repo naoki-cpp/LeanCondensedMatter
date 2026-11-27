@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Combinatorics.Common.StableOrder
 import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointImaginaryTimeOrder
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.Diagram
 import LeanCondensedMatter.Combinatorics.Common.ListFlatMapOrder
@@ -396,7 +397,7 @@ theorem mixedTimeOrderedAtomicLegEquiv_eq_of_comparisons
       twoPointTimedEventBeforeOrEqual τ τ' υ := by
     funext a b
     apply propext
-    exact stableTimedEventBeforeOrEqual_congr
+    exact Combinatorics.stableTimedEventBeforeOrEqual_congr
       (twoPointTimedEventTime τ τ' σ)
       (twoPointTimedEventTime τ τ' υ) twoPointTimedEventRank h a b
   have hordered : orderedTwoPointTimedEvents τ τ' σ =
