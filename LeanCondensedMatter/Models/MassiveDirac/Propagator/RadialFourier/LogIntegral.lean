@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Models.MassiveDirac.Propagator.RadialDenominator
+import LeanCondensedMatter.Models.MassiveDirac.Propagator.Basic
 import Mathlib.Analysis.SpecificLimits.Basic
 import Mathlib.Analysis.SpecialFunctions.Complex.Arg
 import Mathlib.Analysis.SpecialFunctions.Complex.LogDeriv
