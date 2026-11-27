@@ -1,4 +1,5 @@
 import Mathlib.Analysis.Complex.Basic
+import Mathlib.Algebra.Algebra.Basic
 import Mathlib.Analysis.Normed.Module.Basic
 import Mathlib.Algebra.Module.BigOperators
 import Mathlib.Algebra.Module.Pi
@@ -105,6 +106,48 @@ theorem norm_finiteWeightedAverage_le_of_forall {E : Type*}
     _ ≤ ∑ ω, w ω * bound :=
       norm_finiteWeightedAverage_le_sum_of_forall w hw response (fun _ => bound) hpoint
     _ = bound := by rw [← Finset.sum_mul, hsum, one_mul]
+
+/-- A weighted sandwich by scalar multiples of the identity is scalar multiplication
+by the weighted square of those scalars. Neither normalized nor positive weights are needed. -/
+theorem finiteWeightedAverage_sandwich_scalar {A : Type*} [Ring A] [Algebra ℂ A]
+    (u : Ω → ℂ) (x : A) :
+    finiteWeightedAverage w (fun ω => (u ω • (1 : A)) * x * (u ω • (1 : A))) =
+      finiteWeightedAverage w (fun ω => u ω ^ 2) • x := by
+  change (∑ ω, (w ω : ℂ) • ((u ω • (1 : A)) * x * (u ω • (1 : A)))) =
+    (∑ ω, (w ω : ℂ) • (u ω ^ 2)) • x
+  rw [Finset.sum_smul]
+  apply Finset.sum_congr rfl
+  intro ω _
+  simp only [smul_mul_assoc, mul_smul_comm, one_mul, mul_one, smul_smul, pow_two,
+    smul_eq_mul]
+
+/-- Right multiplication by a commuting element passes through a weighted sandwich. -/
+theorem finiteWeightedAverage_sandwich_mul {A : Type*} [Ring A] [Algebra ℂ A]
+    (v : Ω → A) (x y : A) (h : ∀ ω, Commute (v ω) y) :
+    finiteWeightedAverage w (fun ω => v ω * x * v ω) * y =
+      finiteWeightedAverage w (fun ω => v ω * (x * y) * v ω) := by
+  change (∑ ω, (w ω : ℂ) • (v ω * x * v ω)) * y =
+    ∑ ω, (w ω : ℂ) • (v ω * (x * y) * v ω)
+  rw [Finset.sum_mul]
+  apply Finset.sum_congr rfl
+  intro ω _
+  rw [smul_mul_assoc]
+  apply congrArg (fun a : A => (w ω : ℂ) • a)
+  simpa only [mul_assoc] using congrArg (fun a : A => v ω * x * a) (h ω).eq
+
+/-- Left multiplication by a commuting element passes through a weighted sandwich. -/
+theorem mul_finiteWeightedAverage_sandwich {A : Type*} [Ring A] [Algebra ℂ A]
+    (v : Ω → A) (x y : A) (h : ∀ ω, Commute (v ω) y) :
+    y * finiteWeightedAverage w (fun ω => v ω * x * v ω) =
+      finiteWeightedAverage w (fun ω => v ω * (y * x) * v ω) := by
+  change y * (∑ ω, (w ω : ℂ) • (v ω * x * v ω)) =
+    ∑ ω, (w ω : ℂ) • (v ω * (y * x) * v ω)
+  rw [Finset.mul_sum]
+  apply Finset.sum_congr rfl
+  intro ω _
+  rw [mul_smul_comm]
+  apply congrArg (fun a : A => (w ω : ℂ) • a)
+  simpa only [mul_assoc] using congrArg (fun a : A => a * x * v ω) (h ω).eq.symm
 
 end
 
