@@ -12,12 +12,9 @@ fixed-external Wick diagrams. The mixed-order fermionic sign and the quartic
 vertex weights are kept explicit; the Dyson sign and time integration are
 separate downstream operations.
 
-The state is the normalized *free* finite Gibbs state at μ = 0, not the
-interacting Gibbs state. The expectation directly uses the generic finite Gibbs
-functional, without the legacy finite density-state adapter.
-This is a pointwise statement about the mixed-time atomic operator product,
-not yet an identification with a separately constructed time-ordered product
-of quartic interaction operators.
+The expectation uses the generic normalized free finite Gibbs functional at μ = 0.
+The pointwise identity concerns the mixed-time atomic operator product, rather than
+an interacting Gibbs state or a time-ordered product of composite quartic operators.
 -/
 
 namespace SecondQuantization
