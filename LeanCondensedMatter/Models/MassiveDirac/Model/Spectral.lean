@@ -1,4 +1,3 @@
-import Mathlib.RingTheory.Idempotents
 import LeanCondensedMatter.Analysis.Algebra.QuadraticNormalization
 import LeanCondensedMatter.Models.MassiveDirac.Model.Basic
 
@@ -46,9 +45,8 @@ theorem bandProjector_eq_pauliCombination
 /-- Each massive-Dirac band projector has trace one. -/
 @[simp] theorem trace_bandProjector (band : Band) (v m px py : ℝ) :
     Matrix.trace (bandProjector band v m px py) = 1 := by
-  rw [bandProjector_eq_pauliCombination, Matrix.trace_smul, Matrix.trace_add,
-    InternalSpace.trace_pauliCombination]
-  norm_num [Matrix.trace]
+  rw [bandProjector_eq_pauliCombination]
+  exact InternalSpace.trace_half_one_add_pauliCombination _
 
 /-- The finite sum of massive-Dirac band projectors resolves the identity, including at the
 algebraic `E = 0` value of the definition. -/
@@ -94,21 +92,18 @@ theorem bandProjector_completeOrthogonalIdempotents
     (v m px py : ℝ) (hE : energy v m px py ≠ 0) :
     CompleteOrthogonalIdempotents
       (fun band : Band => bandProjector band v m px py) := by
-  have hLower : IsIdempotentElem (bandProjector .lower v m px py) := by
-    simpa [bandProjector, Complex.ofReal_div] using
-      (Algebra.quadratic_projector_isIdempotent
-        (hamiltonian v m px py) (((energy v m px py : ℝ) : ℂ))
-        (((bandSign Band.lower : ℝ) : ℂ)) (by exact_mod_cast hE)
-        (by simpa only [← energy_sq, Complex.ofReal_pow] using hamiltonian_mul_self v m px py)
-        (by norm_num [bandSign]))
-  have hUpper : bandProjector .upper v m px py =
-      1 - bandProjector .lower v m px py :=
-    eq_sub_of_add_eq' (by simpa only [sum_band] using sum_bandProjector_eq_one v m px py)
-  refine CompleteOrthogonalIdempotents.iff_ortho_complete.mpr
-    ⟨?_, sum_bandProjector_eq_one v m px py⟩
-  intro i j hij
-  cases i <;> cases j <;>
-    simp_all [mul_sub, sub_mul, hLower.eq]
+  simpa only [bandProjector, Complex.ofReal_div] using
+    (Algebra.quadratic_projectors_completeOrthogonalIdempotents
+      (hamiltonian v m px py) ((energy v m px py : ℝ) : ℂ)
+      (fun band : Band => ((bandSign band : ℝ) : ℂ))
+      (by exact_mod_cast hE)
+      (by simpa only [← energy_sq, Complex.ofReal_pow] using
+        hamiltonian_mul_self v m px py)
+      (by intro band; cases band <;> norm_num [bandSign])
+      (by intro i j hij; cases i <;> cases j <;> simp_all [bandSign])
+      (by simpa only [bandProjector, Complex.ofReal_div] using
+        sum_bandProjector_eq_one v m px py))
+
 
 end
 

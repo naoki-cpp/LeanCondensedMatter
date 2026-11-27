@@ -169,6 +169,12 @@ theorem pauliAffine_mul_pauliAffine (a b : ℂ) (u v : PauliAxis → ℂ) :
     Matrix.trace (pauliCombination u) = 0 := by
   simp [pauliCombination]
 
+/-- A half-sum of the identity and any Pauli synthesis has trace one. -/
+theorem trace_half_one_add_pauliCombination (u : PauliAxis → ℂ) :
+    Matrix.trace ((1 / 2 : ℂ) • ((1 : PauliMatrix) + pauliCombination u)) = 1 := by
+  rw [Matrix.trace_smul, Matrix.trace_add, trace_pauliCombination]
+  norm_num [Matrix.trace]
+
 /-- The trace pairing of two Pauli syntheses is twice the ordinary bilinear dot product. -/
 theorem trace_pauliCombination_mul_pauliCombination (u v : PauliAxis → ℂ) :
     Matrix.trace (pauliCombination u * pauliCombination v) =

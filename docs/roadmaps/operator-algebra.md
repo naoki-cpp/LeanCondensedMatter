@@ -9,7 +9,8 @@ second quantization.
 `Algebra.inv_smul_mul_self_eq_one`: if `H * H = E ^ 2 • 1` and `E ≠ 0`,
 then `E⁻¹ • H` squares to the identity in a semiring algebra over a field.
 The same module owns `Algebra.quadratic_shift_mul_projector` and
-`Algebra.quadratic_projector_isIdempotent` for associative ring algebras over
+`Algebra.quadratic_projector_isIdempotent`, together with the complementary-projector
+identity and complete orthogonal family theorem, for associative ring algebras over
 characteristic-zero fields. Massive Dirac and Rashba-exchange models supply
 their respective quadratic-energy identities as hypotheses, without a Pauli-specific wrapper.
 
