@@ -42,6 +42,14 @@ complex linearity in the bare vertex are proved under that hypothesis. Separate 
 one-rung, and residual-routing declarations are not public APIs. No geometric-series convergence or
 Ward identity is inferred from the ladder algebra alone.
 
+For clean finite-ensemble propagators at independent nonzero signed regulators,
+`Disorder.LadderNormBound` derives `‖L‖ ≤ q = M²/(|γL||γR|)` from `‖Vω‖ ≤ M`.
+If `q < 1`, `isUnit_one_sub_freeGreenLadder_of_smallPotential` proves invertibility and
+`norm_resummedLadderVertex_tail_le` bounds the tail beyond the first rung.
+For centered disorder, `Disorder.ConnectedLadderNormBound.norm_connectedTwoGreen_sub_resummedFreeLadder_le`
+combines that tail with the cubic first-rung comparison. These results do not justify a
+supplied continuum/SCBA ladder or a zero-broadening limit.
+
 ## Conservation bridge
 
 `Transport.Disorder.Ward` packages the minimal bounded charge-symmetry data used by the proof:
@@ -71,7 +79,8 @@ Ward--Takahashi identity.
 ## Open work
 - connect a corrected vertex to Kubo--Bastin/Středa conductivity with source, contact, and tensor
   normalization assumptions stated explicitly;
-- justify SCBA or ladder convergence under useful analytic hypotheses;
+- justify nonlinear SCBA existence/convergence and dressed-ladder convergence beyond the
+  finite clean-ladder smallness regime;
 - crossed diagrams, weak localization, skew scattering, and side-jump decompositions;
 - trace-per-unit-volume, thermodynamic, DC, and zero-broadening limits;
 - infinite-dimensional nonlinear SCBA fixed-point analysis.
