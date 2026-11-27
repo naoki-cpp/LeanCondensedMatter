@@ -119,7 +119,7 @@ theorem finiteWeightedAverage_sandwich_scalar {A : Type*} [Ring A] [Algebra ℂ 
   apply Finset.sum_congr rfl
   intro ω _
   simp only [smul_mul_assoc, mul_smul_comm, one_mul, mul_one, smul_smul, pow_two,
-    smul_eq_mul, mul_assoc]
+    smul_eq_mul]
 
 /-- Right multiplication by a commuting element passes through a weighted sandwich. -/
 theorem finiteWeightedAverage_sandwich_mul {A : Type*} [Ring A] [Algebra ℂ A]
