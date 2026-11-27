@@ -160,7 +160,9 @@ theorem finiteTimeGeometricConductivity_linearMixing
           (system.hbar : ℂ) (q : ℂ) K := by
         rw [← hcov, Φ.symm_apply_apply]
       _ = _ := by
-        rw [hDirection i, boundedDirectionalCurrent_sum] <;> rfl
+        rw [hDirection i]
+        exact boundedDirectionalCurrent_sum geometry direction (R i)
+          (system.hbar : ℂ) (q : ℂ) K
   have hC (i j : I) : Φ.symm (C i j) =
       ∑ k, ∑ l, ((R i k : ℂ) * (R j l : ℂ)) • C k l := by
     have hcov := boundedMixedDirectionalContact_siteCovariance geometry (direction i) (direction j)
@@ -172,7 +174,9 @@ theorem finiteTimeGeometricConductivity_linearMixing
           ((direction j).comp L) (system.hbar : ℂ) (q : ℂ) K := by
         rw [← hcov, Φ.symm_apply_apply]
       _ = _ := by
-        rw [hDirection i, hDirection j, boundedMixedDirectionalContact_sum] <;> rfl
+        rw [hDirection i, hDirection j]
+        exact boundedMixedDirectionalContact_sum geometry direction direction (R i) (R j)
+          (system.hbar : ℂ) (q : ℂ) K
   intro σ i j
   exact finiteTimeVectorPotentialConductivityTensor_linearMixing
     (freePropagatorGroup system) Φ.symm J J C
