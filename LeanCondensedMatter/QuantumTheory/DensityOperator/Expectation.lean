@@ -133,10 +133,8 @@ theorem DensityOperator.expectation_pure
     (pure ψ).expectation A = inner ℂ ψ.1 (A ψ.1) := by
   have hproduct : (pure ψ).op * A =
       InnerProductSpace.rankOne ℂ ψ.1 (ContinuousLinearMap.adjoint A ψ.1) := by
-    ext x
-    change (inner ℂ ψ.1 (A x)) • ψ.1 =
-      (inner ℂ (ContinuousLinearMap.adjoint A ψ.1) x) • ψ.1
-    rw [ContinuousLinearMap.adjoint_inner_left]
+    change (InnerProductSpace.rankOne ℂ ψ.1 ψ.1).comp A = _
+    rw [InnerProductSpace.rankOne_comp]
   have htrace : IsTraceClass
       (InnerProductSpace.rankOne ℂ ψ.1 (ContinuousLinearMap.adjoint A ψ.1)) := by
     rw [← hproduct]
