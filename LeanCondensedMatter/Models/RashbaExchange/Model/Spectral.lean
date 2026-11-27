@@ -106,9 +106,9 @@ theorem bandProjector_eq_pauliCombination
 theorem sum_bandProjector_eq_one
     (params : HamiltonianParameters) (px py : ℝ) :
     ∑ band : TwoBand, bandProjector params band px py = 1 := by
-  simp only [sum_band, bandProjector, bandSign]
-  push_cast
-  module
+  simpa only [sum_band, bandProjector, bandSign_lower, bandSign_upper, Complex.ofReal_div,
+    Complex.ofReal_neg, Complex.ofReal_one, neg_neg] using
+    (Algebra.quadratic_projector_add_neg (spinHamiltonian params px py) (spinOrbitEnergy params px py : ℂ) (-1 : ℂ))
 
 /-- Either projector plus its opposite-band partner resolves the identity. -/
 theorem bandProjector_add_oppositeBand
@@ -140,7 +140,7 @@ theorem hamiltonian_mul_bandProjector
     (by exact_mod_cast hE)
     (by simpa only [← spinOrbitEnergy_sq, Complex.ofReal_pow] using
       spinHamiltonian_mul_self params px py)
-    (by cases band <;> norm_num [bandSign])
+    (by exact_mod_cast bandSign_sq band)
   simpa [hamiltonian_eq_kinetic_add_spinHamiltonian, bandProjector, bandEnergy] using h
 
 /-- Away from the spin-orbit degeneracy, the matrix band projectors are
@@ -157,7 +157,7 @@ theorem bandProjector_completeOrthogonalIdempotents
       (by exact_mod_cast hE)
       (by simpa only [← spinOrbitEnergy_sq, Complex.ofReal_pow] using
         spinHamiltonian_mul_self params px py)
-      (by intro band; cases band <;> norm_num [bandSign])
+      (by intro band; exact_mod_cast bandSign_sq band)
       (by intro i j hij; cases i <;> cases j <;> simp_all [bandSign])
       (by simpa only [bandProjector, Complex.ofReal_div] using
         sum_bandProjector_eq_one params px py))
