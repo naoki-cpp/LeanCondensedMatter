@@ -184,8 +184,8 @@ theorem trace_pauliCombination_mul_pauliCombination (u v : PauliAxis → ℂ) :
 theorem trace_pauliBasis_mul_pauliCombination (axis : PauliAxis) (u : PauliAxis → ℂ) :
     Matrix.trace (pauliBasis axis * pauliCombination u) = 2 * u axis := by
   have h : pauliCombination (Pi.single axis (1 : ℂ)) = pauliBasis axis := by
-    simpa only [one_smul] using
-      (Fintype.linearCombination_apply_single ℂ pauliBasis axis (1 : ℂ))
+    change Fintype.linearCombination ℂ pauliBasis (Pi.single axis 1) = pauliBasis axis
+    rw [Fintype.linearCombination_apply_single, one_smul]
   rw [← h, trace_pauliCombination_mul_pauliCombination]
   simp
 
