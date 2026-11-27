@@ -57,7 +57,8 @@ theorem exactSecondMoment_eq_average
       ensemble.average (fun ω =>
         (ensemble.impurityPotential ω).1 * kernel *
           (ensemble.impurityPotential ω).1) := by
-  simp [exactSecondMoment, exactSecondMomentCLM, average, LinearMap.finiteWeightedAverage]
+  simp [exactSecondMoment, exactSecondMomentCLM, average, LinearMap.finiteWeightedAverage,
+    LinearMap.finiteWeightedSum_apply]
 
 /-- If every impurity potential is scalar, `Vω = uω I`, the exact second-moment action is scalar
 multiplication by `E[uω²]`. -/
