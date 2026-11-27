@@ -29,8 +29,7 @@ noncomputable def orderedVacuumDysonIntegrand
     flatVertexLegPairingEvaluation ε β x.1 σ x.2
 
 /-- Summing the fixed-order Dyson contribution over ordered vacuum data gives the normalized vacuum
-Dyson coefficient.  This is the fixed-order vacuum theorem with the irrelevant ambient vertex set
-removed entirely. -/
+Dyson coefficient, independently of any ambient interaction vertex set. -/
 theorem sum_orderedVacuumDysonContribution_eq_normalizedDysonPartitionCoeff
     (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ) (k : ℕ) :
     (∑ x : Common.OrderedQuarticDiagramData (QuarticVertexLabel Mode) k,
