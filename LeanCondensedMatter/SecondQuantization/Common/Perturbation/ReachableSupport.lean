@@ -45,7 +45,8 @@ theorem support_interactionPicture_apply_subset_reachableSupport_succ
     (hx : x.support ⊆ reachableSupport V order n) :
     (interactionPicture energy V τ x).support ⊆ reachableSupport V (order + 1) n := by
   have hxRep : x = ∑ k ∈ x.support, x k • basisState k :=
-    eq_sum_smul_basisState x
+    by simpa only [Finsupp.sum, Finsupp.smul_single_one, basisState] using
+      (Finsupp.sum_single x).symm
   have hImage :
       interactionPicture energy V τ x =
         ∑ k ∈ x.support, x k • interactionPicture energy V τ (basisState k) := by
