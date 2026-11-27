@@ -8,7 +8,6 @@ import LeanCondensedMatter.QuantumTheory.Gibbs.DistributionVariational
 import LeanCondensedMatter.QuantumTheory.Gibbs.DistributionUniqueness
 import LeanCondensedMatter.QuantumTheory.Gibbs.EnergyExpectation
 import LeanCondensedMatter.QuantumTheory.Gibbs.FreeEnergy
-import LeanCondensedMatter.QuantumTheory.Gibbs.DiagonalEnergy
 import LeanCondensedMatter.QuantumTheory.Gibbs.Variational
 import LeanCondensedMatter.QuantumTheory.Gibbs.EqualityComponents
 import LeanCondensedMatter.QuantumTheory.Gibbs.MinimizerUniqueness

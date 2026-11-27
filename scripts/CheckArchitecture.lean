@@ -334,7 +334,7 @@ private def quantumCoreOwnerRequirements : Array OwnerRequirement :=
     { declaration := `QuantumTheory.probNNReal, moduleName := bornModule },
     { declaration := `QuantumTheory.bornPMF, moduleName := bornModule },
     { declaration := `QuantumTheory.energyExpValue_eq_tsum_common_eigenbasis,
-      moduleName := `LeanCondensedMatter.QuantumTheory.Gibbs.DiagonalEnergy },
+      moduleName := `LeanCondensedMatter.QuantumTheory.Gibbs.EigenbasisExpectation },
   ]
 
 private def semanticOwnerRequirements : Array OwnerRequirement :=
