@@ -186,7 +186,7 @@ A future genuinely narrower public thermal package should be driven by
 a documented consumer need, not by an import-count target.
 
 One-body generalized current work that does not use second quantization should instead import the
-appropriate `Analysis` or `QuantumTheory.ConservationLaw` leaf.
+appropriate `Analysis` leaf or `QuantumTheory.ConservationLaw` module.
 
 Leaf implementation files are not a compatibility surface. A routing module without reusable
 semantics should be removed in favor of the canonical declaration owner.

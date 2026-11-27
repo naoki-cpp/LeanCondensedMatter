@@ -24,8 +24,9 @@ the exchange scalar through `Statistics.zetaInt`.
 
 ## Infinite sums and spectral analysis
 
-`Analysis/InfiniteSum/` provides reusable reindexing, fiberwise sum, and justified countable-sum
-exchange tools.
+`Analysis/InfiniteSum/` provides finite-support product summation (`FinsuppProduct.lean`)
+and normalization of summable real weights (`Normalization.lean`). Reindexing, fiberwise sums,
+and justified countable-sum exchange use Mathlib directly.
 
 `Analysis/Operator/Spectral/` provides compact self-adjoint spectral decomposition with countable
 nonzero spectrum, finite multiplicities, eigenvector reconstruction, kernel completion, arbitrary
@@ -65,7 +66,7 @@ self-adjoint operators, with the real spectral trace after coercion to `ℂ`.
 
 ## Hilbert--Schmidt operators
 
-`Analysis/Operator/HilbertSchmidt/` provides basis-independent Hilbert--Schmidt membership, adjoint
+`Analysis/Operator/HilbertSchmidt.lean` provides basis-independent Hilbert--Schmidt membership, adjoint
 invariance, closure under bounded composition, compactness, the canonical squared norm with direct
 Hilbert-basis `Summable`/`HasSum` formulas, the pairing `innerHS`, and comparison with spectral trace
 on the compact self-adjoint overlap.
@@ -137,12 +138,11 @@ continuous unitary evolution from a self-adjoint `LinearPMap` without an unbound
 calculus, and it does not define `exp (-β H)`. In particular, the heat operator must not be
 introduced by formally analytically continuing Stone evolution or by a power series of unbounded
 operator products.
-Its consumer-facing endpoint is routed through
-`Analysis/Operator/Unbounded.lean`; the Stone approximation, convergence, domain transport, and
-generator proofs are consolidated in
-`Analysis/Operator/Unbounded/ResolventEvolution.lean`, where stage-specific declarations remain
-private. Generic resolvent and Cayley theorems remain available through their independent
-modules.
+The public package is `Analysis/Operator/Unbounded.lean`. `BoundedResolvent.lean` owns
+bounded nonreal resolvents and Cayley theory; `ResolventApproximation.lean` owns bounded
+resolvent approximations; `ResolventEvolution.lean` owns the construction of strongly continuous
+unitary evolution, its convergence, domain transport and generator proofs. The package also
+exports the adjoint and natural-domain composition modules.
 
 For genuine infinite-dimensional Gibbs theory, the first general equilibrium boundary is therefore
 **heat-operator first** rather than Hamiltonian first. The quantum layer may accept, at a fixed

@@ -46,7 +46,10 @@ The following remain because their statements match recurring project boundaries
 `Analysis/InfiniteSum/` owns:
 
 - finite products of summable series indexed by `Finsupp`;
-- geometric product specializations.
+- geometric product specializations (`FinsuppProduct.lean`);
+- normalization of summable real families (`Normalization.lean`), including
+  `Real.normalizedWeight`, absolute summability, unit mass under a nonzero total,
+  nonnegativity under nonnegative weights, and invariance under nonzero common scaling.
 
 Fiberwise sums use `Equiv.prodComm`, `Equiv.hasSum_iff`, and `HasSum.prod_fiberwise`
 directly. Strict comparison with a proper subseries uses Mathlib's subtype/complement sum
@@ -110,7 +113,7 @@ coercion of that spectral sum to `ℂ`.
 
 ## Hilbert–Schmidt API
 
-`Analysis/Operator/HilbertSchmidt/` contains the project-local Hilbert–Schmidt predicate,
+`Analysis/Operator/HilbertSchmidt.lean` contains the project-local Hilbert–Schmidt predicate,
 basis-independence results, adjoint and bounded-composition closure, compactness, inner product, and
 trace reconciliation used by current proofs. No pinned-Mathlib replacement covers the same package.
 
@@ -138,8 +141,8 @@ This is a genuine infinite-dimensional diagonal slice. It is not a determinant o
 normal, or trace-class operators and is not independent of unrelated diagonal presentations.
 
 `Mathlib.Topology.Algebra.Module.Determinant` provides `ContinuousLinearMap.det` as the determinant of
-the underlying linear endomorphism. It is appropriate only for future finite-dimensional
-compatibility results and is not used as the infinite-dimensional definition.
+the underlying linear endomorphism. It is used by `Fredholm.diagonalDet_eq_det_one_add_diagonalOp` to prove compatibility
+on finite Hilbert bases, not as the infinite-dimensional definition.
 
 A general Fredholm determinant still requires trace-class approximation/completeness and a
 convergent presentation-independent determinant construction. The scoped dependency graph is
@@ -153,7 +156,28 @@ modules.
 
 `Analysis/Dyson/` owns the generic Banach-algebra Dyson recursion, factorial estimates, convergence,
 Volterra equation, uniqueness, and constant-generator exponential theorem. Finite and quantum
-specializations reuse this layer.
+specializations reuse this layer. `Dyson.Volterra` also owns `Dyson.eq_one_sub_integral_of_hasDerivAt`,
+which converts the globally differentiable interaction-picture initial-value problem to its integral
+equation for either sign of the endpoint, independently of the nonnegative-interval majorant.
+
+## Special functions and formal Wronskians
+
+`Analysis/PowerSeries/FrobeniusWronskian.lean` owns the algebraic invariant of the paired
+formal Frobenius equations over a commutative rational algebra; no convergence hypothesis is
+needed. `Analysis/SpecialFunctions/Bessel.lean` exports the four special-function owners:
+
+- `HypergeometricSeries.lean`: Mathlib's `Complex.besselJ` and regularized hypergeometric
+  coefficients, with recurrence and derivative identities for natural-number orders.
+- `YSeries.lean`: explicit logarithmic second-kind series of orders zero and one, with
+  absolutely summable harmonic corrections.
+- `AnalyticWronskian.lean`: the Bessel-specific formal coefficient sequences, their convergent
+  evaluation bridges and the concrete J/Y Wronskian away from zero.
+- `RadialMoments.lean`: finite-interval Bessel-square moments and real radial cutoff limits,
+  using Fourier-angular kernels and the radial energy-decay estimates.
+
+These are analytic and algebraic results independent of physical momentum normalization or
+transport regulators. The Wronskian theorem does not itself establish a general second-kind
+Bessel differential equation or an outgoing Hankel transform.
 
 ## Continuous functional calculus applications
 
