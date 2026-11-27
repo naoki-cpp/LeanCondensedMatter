@@ -16,10 +16,11 @@ kernel. It explicitly assumes a quasistationary quadrupole balance and a
 polarization-to-quadrupole dynamical coupling; these assumptions constitute a
 second-order kinetic closure, not consequences of the matrix Hamiltonian.
 
-The resulting exponential law is for this specified finite-mode closure.
-No assertion is made that the finite cubature equals the full spherical integral,
-that the collision moments follow from an isotropic continuous kernel, or that
-the closure is a controlled microscopic approximation.
+The resulting exponential law follows from the scalar decay equation in
+`Analysis.ODE.ScalarDecay` and applies to the specified finite-mode closure.
+It does not derive the collision moments from a continuous kernel or establish
+a controlled microscopic approximation. The continuous spherical average of the
+quartic double commutator is a separate result in `OrbitalRelaxation.SphereMoments`.
 
 Physical motivation: Sohn, Lee, and Lee, Phys. Rev. Lett. 132, 246301 (2024),
 supplemental Sec. I.A.

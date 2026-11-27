@@ -22,7 +22,7 @@ noncomputable section
 open ContinuousLinearMap
 open QuantumTheory.Transport
 
-/-- TwoBand projector transported to the bounded-operator representation. -/
+/-- Spectral projector for the specified band in the bounded-operator representation. -/
 noncomputable def bandProjectorOperator
     (params : HamiltonianParameters) (band : TwoBand) (px py : ℝ) :
     EuclideanSpace ℂ (Fin 2) →L[ℂ] EuclideanSpace ℂ (Fin 2) :=

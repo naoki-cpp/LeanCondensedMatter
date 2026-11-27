@@ -23,9 +23,9 @@ specific consumers specialize those indices, while the ladder consumes the compl
 rung vector. The solved bare-`σₓ` ladder is owned here as one `Fin 2 → ℂ` coefficient vector;
 downstream consumers preserve that vector until a concrete measured coordinate is required. Radial
 integration attaches the polar Jacobian `p dp` and consumes the shared external scalar-disorder-line
-plus physical-momentum-measure prefactor exactly once. This module also owns the common RA
-denominator form and the determinant condition that licenses interpreting the algebraic vector as
-the actual ladder fixed point.
+plus physical-momentum-measure prefactor exactly once. The model supplies the RA denominator form and the radial rung vector.
+`Transport.Disorder.InPlaneLadder` supplies the algebraic ladder solution and the determinant
+condition under which it represents the fixed point.
 
 This module does not insert the vertex into Kubo/Středa, take broadening or disorder limits, or
 identify the Born-Dyson approximation with an exact disorder average.

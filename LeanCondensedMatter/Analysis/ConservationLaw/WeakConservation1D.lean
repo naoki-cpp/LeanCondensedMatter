@@ -8,8 +8,9 @@ set_option linter.style.header false
 /-!
 # Generic one-dimensional weak conservation laws
 
-This module derives weak balance identities from pointwise continuity equations.
-The physics-independent compact-support integration lemmas live in
+This module derives interval weak balance identities from pointwise continuity equations
+using continuous bilinear pairings, and whole-space identities from interval balances.
+The compact-support integration lemmas live in
 `Analysis.Calculus.CompactSupportInterval`.
 -/
 

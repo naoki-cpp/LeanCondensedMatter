@@ -11,8 +11,10 @@ set_option linter.style.header false
 
 Every site's occupation is bounded by 2s. For finitely many sites, the configuration
 Hilbert space is identified linearly with this sector of algebraic bosonic Fock space.
-The latter has no completed Hilbert-space structure here; no isometry is asserted.
-The bosonic mode labels here denote localized spin sites.
+This linear identification does not assert an isometry into a completed bosonic Fock space.
+The bosonic mode labels denote localized spin sites. The spin algebra preserves the simultaneous
+occupation sector, so the representation uses invariant-submodule restriction from
+`Analysis.Algebra.Restriction`.
 -/
 
 namespace Models.HolsteinPrimakoff
