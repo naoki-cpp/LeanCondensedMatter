@@ -64,6 +64,10 @@ equivalences directly from a single equivalence `A × Fin 2 ≃ α` and partner 
 intermediate coordinate changes are composed at the caller. Endpoint orientation laws are stated
 on the induced normalized-pair equivalence itself, rather than on a separate unbundled map.
 
+`PerfectPairing.CrossingParity` owns endpoint-swap invariance and the crossing parity of an
+arbitrary ordered normalized-pair presentation. `PerfectPairing.Sign` uses that parity theorem
+and owns the consecutive two-slot permutation sign calculation.
+
 `PerfectPairing.CrossingParity` owns the common parity identity for two disjoint families of
 normalized pairs, allowing either local endpoint orientation. Binary splitting and component
 crossing counts use this same identity to reindex endpoint inversions into position inversions.

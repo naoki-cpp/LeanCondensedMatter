@@ -1,7 +1,6 @@
 import LeanCondensedMatter.Combinatorics.ExchangeSign
 import LeanCondensedMatter.Combinatorics.FiniteIndex.Block
 import LeanCondensedMatter.Combinatorics.PerfectPairing.CrossingParity
-import Mathlib.Algebra.BigOperators.ModEq
 
 set_option linter.style.header false
 
@@ -211,74 +210,6 @@ private theorem sign_eq_pow_blockInversions (τ : Equiv.Perm (Fin (2 * n))) :
       rw [← Finset.prod_pow_eq_pow_sum]
       exact Finset.prod_congr rfl fun k _ => Finset.prod_pow_eq_pow_sum _ _ _
 
-section GeometricParity
-
-variable {α : Type*} [Fintype α] [LinearOrder α]
-
-private noncomputable def crossIndicator (pairing : PairingOn α) (e : Fin n ≃ pairing.NormalizedPair)
-    (k l : Fin n) : ℕ :=
-  if Crosses (e k).1 (e l).1 then 1 else 0
-
-private theorem crossingCount_eq_sum_sum_crossIndicator (pairing : PairingOn α)
-    (e : Fin n ≃ pairing.NormalizedPair) :
-    pairing.crossingCount = ∑ k : Fin n, ∑ l : Fin n, crossIndicator pairing e k l := by
-  rw [pairing.crossingCount_eq_sum_crosses, Fintype.sum_prod_type, ← Equiv.sum_comp e]
-  exact Finset.sum_congr rfl fun k _ => (Equiv.sum_comp e _).symm
-
-private theorem crossingCount_eq_sum_Ioi_crossIndicator (pairing : PairingOn α)
-    (e : Fin n ≃ pairing.NormalizedPair) :
-    pairing.crossingCount =
-      ∑ k : Fin n, ∑ l ∈ Finset.Ioi k,
-        (crossIndicator pairing e k l + crossIndicator pairing e l k) := by
-  classical
-  have hdiag : ∀ k : Fin n, crossIndicator pairing e k k = 0 :=
-    fun k => ite_eq_right (not_crosses_self _)
-  have hswap :
-      (∑ k : Fin n, ∑ l ∈ Finset.Iio k, crossIndicator pairing e k l) =
-        ∑ k : Fin n, ∑ l ∈ Finset.Ioi k, crossIndicator pairing e l k :=
-    Finset.sum_comm' (fun x y => by simp)
-  rw [crossingCount_eq_sum_sum_crossIndicator pairing e]
-  calc
-    (∑ k : Fin n, ∑ l : Fin n, crossIndicator pairing e k l) =
-        ∑ k : Fin n, (∑ l ∈ Finset.Ioi k, crossIndicator pairing e k l +
-          ∑ l ∈ Finset.Iio k, crossIndicator pairing e k l) :=
-      Finset.sum_congr rfl fun k _ => by
-        rw [← Finset.sum_erase_add Finset.univ (crossIndicator pairing e k)
-          (Finset.mem_univ k), hdiag k, add_zero,
-          ← Finset.compl_singleton, ← Finset.Ioi_disjUnion_Iio, Finset.sum_disjUnion]
-    _ = (∑ k : Fin n, ∑ l ∈ Finset.Ioi k, crossIndicator pairing e k l) +
-          ∑ k : Fin n, ∑ l ∈ Finset.Iio k, crossIndicator pairing e k l :=
-      Finset.sum_add_distrib
-    _ = (∑ k : Fin n, ∑ l ∈ Finset.Ioi k, crossIndicator pairing e k l) +
-          ∑ k : Fin n, ∑ l ∈ Finset.Ioi k, crossIndicator pairing e l k := by
-      rw [hswap]
-    _ = ∑ k : Fin n, ∑ l ∈ Finset.Ioi k,
-          (crossIndicator pairing e k l + crossIndicator pairing e l k) := by
-      rw [← Finset.sum_add_distrib]
-      exact Finset.sum_congr rfl fun k _ => Finset.sum_add_distrib.symm
-
-private theorem sum_Ioi_pairEndpointInversionCount_mod_two_eq_crossingCount (pairing : PairingOn α)
-    (e : Fin n ≃ pairing.NormalizedPair) :
-    (∑ k : Fin n, ∑ l ∈ Finset.Ioi k, pairEndpointInversionCount (e k).1 (e l).1) % 2 =
-      pairing.crossingCount % 2 := by
-  classical
-  rw [crossingCount_eq_sum_Ioi_crossIndicator pairing e]
-  refine Nat.ModEq.sum (n := 2) fun k _ => ?_
-  refine Nat.ModEq.sum (n := 2) fun l hl => ?_
-  change pairEndpointInversionCount (e k).1 (e l).1 % 2 =
-    (crossIndicator pairing e k l + crossIndicator pairing e l k) % 2
-  have hkl : k < l := Finset.mem_Ioi.1 hl
-  have hne : e k ≠ e l := fun h => (ne_of_lt hkl) (e.injective h)
-  have hEnds := pairing.normalizedPair_endpoints_ne_of_ne _ _ hne
-  have hmod := pairEndpointInversionCount_mod_two_eq_crossesIndicator
-    (e k).1 (e l).1
-    (pairing.pairs_normalized (e k).2) (pairing.pairs_normalized (e l).2)
-    hEnds.1 hEnds.2.1 hEnds.2.2.1 hEnds.2.2.2
-  rw [hmod, crossIndicator, crossIndicator, crossesIndicator_add]
-  split_ifs <;> decide
-
-end GeometricParity
-
 /-- A permutation of ambient positions **presents** a pairing when its two-element blocks are
 exactly the normalized pairs of `pairing`, each in either endpoint order. -/
 def Pairing.PresentsPairs (pairing : Pairing n) (τ : Equiv.Perm (Fin (2 * n))) : Prop :=
@@ -298,14 +229,7 @@ theorem Pairing.sign_eq_of_presentsPairs (pairing : Pairing n) (τ : Equiv.Perm 
   rw [sign_eq_pow_blockInversions τ]
   congr 1
   refine pow_eq_of_mod_two_eq (ζ := (-1 : ℤˣ)) (by decide) ?_
-  have heq : (∑ k : Fin n, ∑ l ∈ Finset.Ioi k,
-      pairEndpointInversionCount (blockPair τ k) (blockPair τ l)) =
-        ∑ k : Fin n, ∑ l ∈ Finset.Ioi k, pairEndpointInversionCount (e k).1 (e l).1 :=
-    Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => by
-      rcases hpres k with hk | hk <;> rcases hpres l with hl | hl <;>
-        simp only [hk, hl, pairEndpointInversionCount, Prod.swap] <;> ac_rfl
-  rw [heq]
-  exact sum_Ioi_pairEndpointInversionCount_mod_two_eq_crossingCount pairing e
+  exact pairing.sum_Ioi_pairEndpointInversionCount_mod_two_eq_crossingCount e (blockPair τ) hpres
 
 /-- **Criterion for presenting a pairing.** A permutation presents a pairing as soon as each of its
 two-element blocks carries a pair of partners. No enumeration has to be supplied: the blocks are
