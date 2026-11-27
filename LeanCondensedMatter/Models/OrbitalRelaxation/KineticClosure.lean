@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Analysis.ODE.ScalarDecay
 import LeanCondensedMatter.Models.OrbitalRelaxation.Finite
 import LeanCondensedMatter.Analysis.Geometry.FiniteAngularKernel
 import Mathlib.Analysis.Calculus.MeanValue
@@ -96,24 +97,6 @@ theorem hasDerivAt_polarization (t : ℝ) :
   simp only [orbitalRate, degreeTwoTime, momentumTime]
   ring
 
-private theorem scalar_decay_solution (rate : ℝ) (f : ℝ → ℝ)
-    (hderiv : ∀ t, HasDerivAt f (-(rate * f t)) t) (t : ℝ) :
-    f t = f 0 * Real.exp (-(rate * t)) := by
-  let g : ℝ → ℝ := fun s => f s * Real.exp (rate * s)
-  have hgzero (s : ℝ) : HasDerivAt g 0 s := by
-    have he : HasDerivAt (fun u : ℝ => Real.exp (rate * u))
-        (Real.exp (rate * s) * rate) s := by
-      simpa only [id_eq, mul_one] using
-        (((hasDerivAt_id s).const_mul rate).exp)
-    change HasDerivAt (fun u : ℝ => f u * Real.exp (rate * u)) 0 s
-    convert (hderiv s).mul he using 1
-    ring
-  have h := is_const_of_deriv_eq_zero
-    (fun s => (hgzero s).differentiableAt)
-    (fun s => (hgzero s).deriv) t 0
-  simpa [g, mul_assoc, ← Real.exp_add] using
-    congrArg (fun x : ℝ => x * Real.exp (-(rate * t))) h
-
 /-- The finite quasistationary closure has a unique global polarization
 trajectory determined by its value at time zero. This statement is conditional
 on the closure holding at every real time, not an unconditional material law. -/
@@ -121,7 +104,7 @@ theorem polarization_eq_exp (t : ℝ) :
     closure.polarization t =
       closure.polarization 0 *
         Real.exp (-(orbitalRate axis ℏ (degreeTwoTime data.degreeTwoRate) c₁ c₂ r * t)) :=
-  scalar_decay_solution
+  Real.eq_initial_mul_exp_neg_of_hasDerivAt
     (orbitalRate axis ℏ (degreeTwoTime data.degreeTwoRate) c₁ c₂ r)
     closure.polarization closure.hasDerivAt_polarization t
 
