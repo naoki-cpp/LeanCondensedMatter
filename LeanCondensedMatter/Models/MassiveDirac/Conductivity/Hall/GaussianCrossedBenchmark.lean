@@ -218,13 +218,13 @@ theorem adoCrossedXConcreteBesselReference_integral_eq_endpoints (R : ℝ) :
     realWronskianCondition_concreteSeries R
 
 /-- The Ado crossed-X **reference** Eq. (17) benchmark for Mathlib J
-and the *concrete* convergent Y₀/Y₁ series, now unconditional.
-The Y Wronskian is discharged by the analytic formal-to-entire bridge.
+and the concrete convergent Y₀/Y₁ series. Their analytic Wronskian supplies
+the required special-function identity.
 
-This is not yet a limit of
-`finiteCutoffContinuumBornDysonGaussianCrossedOrderedXYConductivity .x`:
-the physical Born-Dyson current block, the UV/real-space cutoffs and
-the broadening/disorder limits remain separate obligations. -/
+The benchmark is independent of the regulated physical crossed conductivity
+`finiteCutoffContinuumBornDysonGaussianCrossedOrderedXYConductivity .x`.
+Identifying the two requires a separate theorem on the current block and
+UV/real-space cutoff, broadening, and disorder limits. -/
 theorem adoCrossedXConcreteBesselReference_tendsto_benchmark
     (e hbar m probeEnergy : ℝ) :
     Filter.Tendsto
