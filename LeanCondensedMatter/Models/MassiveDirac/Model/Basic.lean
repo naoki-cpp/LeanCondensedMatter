@@ -28,8 +28,9 @@ The in-plane Cartesian direction is the standard finite index `Fin 2`, with coor
 and `1 = y`. The direction-indexed `velocity` and `current` definitions are the public model-level
 owners used throughout the transport stack. The Pauli-vector basis uses the model-independent
 `InternalSpace.PauliAxis`, since its `z` component is an internal mass/pseudospin channel rather than
-a third momentum direction. The closed Berry-curvature benchmark is recorded directly here; its
-agreement with the model-specific force-matrix expression is proved downstream.
+a third momentum direction. The spectrum uses `QuantumTheory.TwoBand` for the lower and upper branches and their signs.
+The closed Berry-curvature formula is identified with the force-matrix expression in the
+spectral geometry layer.
 
 The generic charge-like current theory is the authority for the canonical `q v` interpretation;
 this model file records only its concrete electron-current realization `j_μ = -e v_μ`.
@@ -37,8 +38,8 @@ this model file records only its concrete electron-current realization `j_μ = -
 With this convention the continuum measure is `d²p / (2πℏ)²`; its scalar normalization is owned by
 `Transport.Analysis.ContinuumMeasure`.
 
-Disorder, Fermi occupation, Kubo–Středa integration, and ultraviolet regularization remain
-separate downstream phases.
+The clean model does not assume disorder, occupation weights, response integration, or
+ultraviolet regularization.
 -/
 
 namespace QuantumTheory.Models.MassiveDirac
