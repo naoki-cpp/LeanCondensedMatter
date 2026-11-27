@@ -15,64 +15,57 @@ namespace Finsupp
 variable {R Config : Type*} [CommSemiring R]
 
 private noncomputable def diagonalOperatorLinear (a : Config → R) :
-    (Config →₀ R) →ₗ[R] (Config →₀ R) :=
-  Finsupp.basisSingleOne.constr R (fun c => a c • Finsupp.single c 1)
-
-private theorem diagonalOperatorLinear_single (a : Config → R) (c : Config) :
-    diagonalOperatorLinear a (Finsupp.single c 1) = a c • Finsupp.single c 1 := by
-  simpa only [Finsupp.coe_basisSingleOne] using
-    (Finsupp.basisSingleOne.constr_basis R (fun i : Config => a i • Finsupp.single i 1) c)
+    (Config →₀ R) →ₗ[R] (Config →₀ R) where
+  toFun x := Finsupp.onFinset x.support (fun i => a i * x i)
+    (fun i hi => Finsupp.mem_support_iff.mpr (fun h => hi (by rw [h, mul_zero])))
+  map_add' x y := by
+    ext i
+    change a i * (x i + y i) = a i * x i + a i * y i
+    exact mul_add _ _ _
+  map_smul' c x := by
+    ext i
+    change a i * (c * x i) = c * (a i * x i)
+    exact mul_left_comm _ _ _
 
 /-- Pointwise scalar multiplication defines an algebra representation on a free module. -/
 noncomputable def diagonalOperator :
     (Config → R) →ₐ[R] ((Config →₀ R) →ₗ[R] (Config →₀ R)) where
   toFun := diagonalOperatorLinear
   map_zero' := by
-    apply Finsupp.basisSingleOne.ext
-    intro c
-    simp [Finsupp.coe_basisSingleOne, diagonalOperatorLinear_single]
+    ext x i
+    change (0 : R) * x i = 0
+    exact zero_mul _
   map_one' := by
-    apply Finsupp.basisSingleOne.ext
-    intro c
-    simp [Finsupp.coe_basisSingleOne, diagonalOperatorLinear_single]
-  map_add' := by
-    intro a b
-    apply Finsupp.basisSingleOne.ext
-    intro c
-    simp [Finsupp.coe_basisSingleOne, diagonalOperatorLinear_single, add_smul]
-  map_mul' := by
-    intro a b
-    rw [Module.End.mul_eq_comp]
-    apply Finsupp.basisSingleOne.ext
-    intro c
-    simp [Finsupp.coe_basisSingleOne, diagonalOperatorLinear_single, smul_smul, mul_comm]
-  commutes' := by
-    intro k
-    apply Finsupp.basisSingleOne.ext
-    intro c
-    simp [Finsupp.coe_basisSingleOne, diagonalOperatorLinear_single]
-
-@[simp]
-theorem diagonalOperator_single (a : Config → R) (c : Config) :
-    diagonalOperator a (Finsupp.single c 1) = a c • Finsupp.single c 1 :=
-  diagonalOperatorLinear_single a c
+    ext x i
+    change (1 : R) * x i = x i
+    exact one_mul _
+  map_add' a b := by
+    ext x i
+    change (a i + b i) * x i = a i * x i + b i * x i
+    exact add_mul _ _ _
+  map_mul' a b := by
+    ext x i
+    change (a i * b i) * x i = a i * (b i * x i)
+    exact mul_assoc _ _ _
+  commutes' k := by
+    ext x i
+    rfl
 
 /-- Diagonal endomorphisms multiply each coordinate by its specified scalar. -/
 theorem diagonalOperator_apply (a : Config → R) (x : Config →₀ R) (c : Config) :
-    diagonalOperator a x c = a c * x c := by
-  let eval : (Config →₀ R) →ₗ[R] R := Finsupp.lapply c
-  have hmap : eval.comp (diagonalOperator a) = a c • eval := by
-    apply Finsupp.basisSingleOne.ext
-    intro i
-    simp only [Finsupp.coe_basisSingleOne, LinearMap.comp_apply, diagonalOperator_single,
-      map_smul, LinearMap.smul_apply]
-    by_cases h : i = c
-    · subst i
-      simp [eval]
-    · simp [eval, h]
-  have hx := congrArg (fun L => L x) hmap
-  simpa only [eval, LinearMap.comp_apply, LinearMap.smul_apply, Finsupp.lapply_apply,
-    smul_eq_mul] using hx
+    diagonalOperator a x c = a c * x c :=
+  rfl
+
+@[simp]
+theorem diagonalOperator_single (a : Config → R) (c : Config) :
+    diagonalOperator a (Finsupp.single c 1) = a c • Finsupp.single c 1 := by
+  classical
+  ext i
+  rw [diagonalOperator_apply, Finsupp.smul_apply, smul_eq_mul]
+  by_cases h : c = i
+  · subst i
+    rfl
+  · rw [Finsupp.single_eq_of_ne h, mul_zero, mul_zero]
 
 /-- Pointwise multiplication is represented by composition. -/
 theorem diagonalOperator_comp (a b : Config → R) :
