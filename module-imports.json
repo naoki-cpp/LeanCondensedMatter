@@ -13,6 +13,12 @@
       "externalImportCount": 3
     },
     {
+      "name": "LeanCondensedMatter.Analysis.Algebra.FinsuppDiagonal",
+      "sourceFile": "LeanCondensedMatter/Analysis/Algebra/FinsuppDiagonal.lean",
+      "imports": [],
+      "externalImportCount": 2
+    },
+    {
       "name": "LeanCondensedMatter.Analysis.Algebra.FinsuppSupportShift",
       "sourceFile": "LeanCondensedMatter/Analysis/Algebra/FinsuppSupportShift.lean",
       "imports": [
@@ -714,8 +720,8 @@
       "sourceFile": "LeanCondensedMatter/Analysis/PowerSeries/Cumulant.lean",
       "imports": [
         "LeanCondensedMatter.Analysis.PowerSeries.Moment",
-        "LeanCondensedMatter.Combinatorics.Cumulant.ConnectedDecompositionInversion",
         "LeanCondensedMatter.Combinatorics.Cumulant.Moment",
+        "LeanCondensedMatter.Combinatorics.Cumulant.Normalized",
         "LeanCondensedMatter.Combinatorics.SetPartition.DistinguishedBlock"
       ],
       "externalImportCount": 0
@@ -857,15 +863,6 @@
       "externalImportCount": 2
     },
     {
-      "name": "LeanCondensedMatter.Combinatorics.Cumulant.ConnectedDecompositionInversion",
-      "sourceFile": "LeanCondensedMatter/Combinatorics/Cumulant/ConnectedDecompositionInversion.lean",
-      "imports": [
-        "LeanCondensedMatter.Combinatorics.Cumulant.ConnectedDecomposition",
-        "LeanCondensedMatter.Combinatorics.Cumulant.Normalized"
-      ],
-      "externalImportCount": 0
-    },
-    {
       "name": "LeanCondensedMatter.Combinatorics.Cumulant.Independence",
       "sourceFile": "LeanCondensedMatter/Combinatorics/Cumulant/Independence.lean",
       "imports": [
@@ -896,6 +893,7 @@
       "name": "LeanCondensedMatter.Combinatorics.Cumulant.Normalized",
       "sourceFile": "LeanCondensedMatter/Combinatorics/Cumulant/Normalized.lean",
       "imports": [
+        "LeanCondensedMatter.Combinatorics.Cumulant.ConnectedDecomposition",
         "LeanCondensedMatter.Combinatorics.Cumulant.Inversion",
         "LeanCondensedMatter.Combinatorics.Cumulant.NormalizedCore"
       ],
@@ -929,7 +927,6 @@
       "sourceFile": "LeanCondensedMatter/Combinatorics/Cumulant.lean",
       "imports": [
         "LeanCondensedMatter.Combinatorics.Cumulant.ConnectedDecomposition",
-        "LeanCondensedMatter.Combinatorics.Cumulant.ConnectedDecompositionInversion",
         "LeanCondensedMatter.Combinatorics.Cumulant.Independence",
         "LeanCondensedMatter.Combinatorics.Cumulant.Inversion",
         "LeanCondensedMatter.Combinatorics.Cumulant.Moment",
@@ -944,12 +941,6 @@
       "sourceFile": "LeanCondensedMatter/Combinatorics/ExchangeSign.lean",
       "imports": [],
       "externalImportCount": 3
-    },
-    {
-      "name": "LeanCondensedMatter.Combinatorics.FiniteAntisymmetricSum",
-      "sourceFile": "LeanCondensedMatter/Combinatorics/FiniteAntisymmetricSum.lean",
-      "imports": [],
-      "externalImportCount": 1
     },
     {
       "name": "LeanCondensedMatter.Combinatorics.FiniteIndex.Block",
@@ -990,14 +981,6 @@
       "sourceFile": "LeanCondensedMatter/Combinatorics/IncidenceAlgebra/Mobius.lean",
       "imports": [],
       "externalImportCount": 4
-    },
-    {
-      "name": "LeanCondensedMatter.Combinatorics.PerfectPairing.Bipartite",
-      "sourceFile": "LeanCondensedMatter/Combinatorics/PerfectPairing/Bipartite.lean",
-      "imports": [
-        "LeanCondensedMatter.Combinatorics.PerfectPairing.Core"
-      ],
-      "externalImportCount": 1
     },
     {
       "name": "LeanCondensedMatter.Combinatorics.PerfectPairing.ComponentCrossing",
@@ -1166,7 +1149,6 @@
       "name": "LeanCondensedMatter.Combinatorics.PerfectPairing",
       "sourceFile": "LeanCondensedMatter/Combinatorics/PerfectPairing.lean",
       "imports": [
-        "LeanCondensedMatter.Combinatorics.PerfectPairing.Bipartite",
         "LeanCondensedMatter.Combinatorics.PerfectPairing.ComponentCrossing",
         "LeanCondensedMatter.Combinatorics.PerfectPairing.ComponentDecomposition",
         "LeanCondensedMatter.Combinatorics.PerfectPairing.Core",
@@ -1362,24 +1344,34 @@
       "externalImportCount": 5
     },
     {
-      "name": "LeanCondensedMatter.Combinatorics",
-      "sourceFile": "LeanCondensedMatter/Combinatorics.lean",
+      "name": "LeanCondensedMatter.Combinatorics.Shuffle",
+      "sourceFile": "LeanCondensedMatter/Combinatorics/Shuffle.lean",
       "imports": [
-        "LeanCondensedMatter.Combinatorics.Cumulant",
-        "LeanCondensedMatter.Combinatorics.FiniteAntisymmetricSum",
-        "LeanCondensedMatter.Combinatorics.FiniteIndex",
-        "LeanCondensedMatter.Combinatorics.FiniteSumModEq",
-        "LeanCondensedMatter.Combinatorics.IncidenceAlgebra.Mobius",
-        "LeanCondensedMatter.Combinatorics.PerfectPairing",
-        "LeanCondensedMatter.Combinatorics.SetPartition",
         "LeanCondensedMatter.Combinatorics.Shuffle.BinaryShuffle",
         "LeanCondensedMatter.Combinatorics.Shuffle.BinaryShuffleSlots",
+        "LeanCondensedMatter.Combinatorics.Shuffle.BinarySplitPermutationSign",
+        "LeanCondensedMatter.Combinatorics.Shuffle.FamilyOrderShuffle",
         "LeanCondensedMatter.Combinatorics.Shuffle.FamilySlotShuffle",
         "LeanCondensedMatter.Combinatorics.Shuffle.FamilySlotShuffleDecomposition",
         "LeanCondensedMatter.Combinatorics.Shuffle.FamilySlotShuffleInversions",
         "LeanCondensedMatter.Combinatorics.Shuffle.FamilySlotShuffleSign",
         "LeanCondensedMatter.Combinatorics.Shuffle.FinpartitionOrderShuffle",
         "LeanCondensedMatter.Combinatorics.Shuffle.SlotShuffle"
+      ],
+      "externalImportCount": 0
+    },
+    {
+      "name": "LeanCondensedMatter.Combinatorics",
+      "sourceFile": "LeanCondensedMatter/Combinatorics.lean",
+      "imports": [
+        "LeanCondensedMatter.Combinatorics.Common.FintypeProduct",
+        "LeanCondensedMatter.Combinatorics.Cumulant",
+        "LeanCondensedMatter.Combinatorics.FiniteIndex",
+        "LeanCondensedMatter.Combinatorics.FiniteSumModEq",
+        "LeanCondensedMatter.Combinatorics.IncidenceAlgebra.Mobius",
+        "LeanCondensedMatter.Combinatorics.PerfectPairing",
+        "LeanCondensedMatter.Combinatorics.SetPartition",
+        "LeanCondensedMatter.Combinatorics.Shuffle"
       ],
       "externalImportCount": 0
     },
@@ -1526,6 +1518,7 @@
       "name": "LeanCondensedMatter.Models.HolsteinPrimakoff.MultiSite",
       "sourceFile": "LeanCondensedMatter/Models/HolsteinPrimakoff/MultiSite.lean",
       "imports": [
+        "LeanCondensedMatter.Analysis.Algebra.FinsuppDiagonal",
         "LeanCondensedMatter.Analysis.Algebra.Restriction",
         "LeanCondensedMatter.Models.HolsteinPrimakoff",
         "LeanCondensedMatter.QuantumTheory.LocalizedSpin"
@@ -1536,6 +1529,7 @@
       "name": "LeanCondensedMatter.Models.HolsteinPrimakoff",
       "sourceFile": "LeanCondensedMatter/Models/HolsteinPrimakoff.lean",
       "imports": [
+        "LeanCondensedMatter.Analysis.Algebra.FinsuppDiagonal",
         "LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.NumberOperator"
       ],
       "externalImportCount": 2
@@ -1553,6 +1547,7 @@
       "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Bastin/Bands.lean",
       "imports": [
         "LeanCondensedMatter.Models.MassiveDirac.Bastin.Berry",
+        "LeanCondensedMatter.QuantumTheory.TwoBand",
         "LeanCondensedMatter.Transport.Streda.InterbandPole"
       ],
       "externalImportCount": 0
@@ -1562,6 +1557,7 @@
       "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Bastin/Berry.lean",
       "imports": [
         "LeanCondensedMatter.Models.MassiveDirac.Model.Berry.Bridge",
+        "LeanCondensedMatter.QuantumTheory.TwoBand",
         "LeanCondensedMatter.Transport.Streda.FiniteProjectorBastin"
       ],
       "externalImportCount": 1
@@ -1571,7 +1567,8 @@
       "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Bastin/CleanLimit.lean",
       "imports": [
         "LeanCondensedMatter.Models.MassiveDirac.ManyBody.PointwiseHall",
-        "LeanCondensedMatter.Models.MassiveDirac.Model.Berry.Occupation"
+        "LeanCondensedMatter.Models.MassiveDirac.Model.Berry.Occupation",
+        "LeanCondensedMatter.QuantumTheory.TwoBand"
       ],
       "externalImportCount": 2
     },
@@ -1580,7 +1577,8 @@
       "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Bastin/Interband.lean",
       "imports": [
         "LeanCondensedMatter.Models.MassiveDirac.Bastin.Spectator",
-        "LeanCondensedMatter.Models.MassiveDirac.Model.Berry.Symmetry"
+        "LeanCondensedMatter.Models.MassiveDirac.Model.Berry.Symmetry",
+        "LeanCondensedMatter.QuantumTheory.TwoBand"
       ],
       "externalImportCount": 3
     },
@@ -1588,7 +1586,8 @@
       "name": "LeanCondensedMatter.Models.MassiveDirac.Bastin.Limit",
       "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Bastin/Limit.lean",
       "imports": [
-        "LeanCondensedMatter.Models.MassiveDirac.Bastin.Bands"
+        "LeanCondensedMatter.Models.MassiveDirac.Bastin.Bands",
+        "LeanCondensedMatter.QuantumTheory.TwoBand"
       ],
       "externalImportCount": 1
     },
@@ -1596,7 +1595,8 @@
       "name": "LeanCondensedMatter.Models.MassiveDirac.Bastin.PairBerry",
       "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Bastin/PairBerry.lean",
       "imports": [
-        "LeanCondensedMatter.Models.MassiveDirac.Bastin.PairIntegral"
+        "LeanCondensedMatter.Models.MassiveDirac.Bastin.PairIntegral",
+        "LeanCondensedMatter.QuantumTheory.TwoBand"
       ],
       "externalImportCount": 2
     },
@@ -1604,7 +1604,9 @@
       "name": "LeanCondensedMatter.Models.MassiveDirac.Bastin.PairIntegral",
       "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Bastin/PairIntegral.lean",
       "imports": [
-        "LeanCondensedMatter.Models.MassiveDirac.Bastin.PoleHall"
+        "LeanCondensedMatter.Models.MassiveDirac.Bastin.PoleHall",
+        "LeanCondensedMatter.QuantumTheory.TwoBand",
+        "LeanCondensedMatter.Transport.Streda.InterbandPole"
       ],
       "externalImportCount": 1
     },
@@ -1612,7 +1614,8 @@
       "name": "LeanCondensedMatter.Models.MassiveDirac.Bastin.PoleFactor",
       "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Bastin/PoleFactor.lean",
       "imports": [
-        "LeanCondensedMatter.Models.MassiveDirac.Bastin.Interband"
+        "LeanCondensedMatter.Models.MassiveDirac.Bastin.Interband",
+        "LeanCondensedMatter.QuantumTheory.TwoBand"
       ],
       "externalImportCount": 1
     },
@@ -1620,7 +1623,9 @@
       "name": "LeanCondensedMatter.Models.MassiveDirac.Bastin.PoleHall",
       "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Bastin/PoleHall.lean",
       "imports": [
-        "LeanCondensedMatter.Models.MassiveDirac.Bastin.PoleFactor"
+        "LeanCondensedMatter.Models.MassiveDirac.Bastin.PoleFactor",
+        "LeanCondensedMatter.QuantumTheory.TwoBand",
+        "LeanCondensedMatter.Transport.Streda.InterbandPole"
       ],
       "externalImportCount": 0
     },
@@ -1630,7 +1635,8 @@
       "imports": [
         "LeanCondensedMatter.Models.MassiveDirac.Bastin.CleanLimit",
         "LeanCondensedMatter.Models.MassiveDirac.Bastin.PairBerry",
-        "LeanCondensedMatter.Models.MassiveDirac.Bastin.RadialPairUniformBound"
+        "LeanCondensedMatter.Models.MassiveDirac.Bastin.RadialPairUniformBound",
+        "LeanCondensedMatter.QuantumTheory.TwoBand"
       ],
       "externalImportCount": 4
     },
@@ -1638,7 +1644,8 @@
       "name": "LeanCondensedMatter.Models.MassiveDirac.Bastin.RadialEnergyBridge",
       "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Bastin/RadialEnergyBridge.lean",
       "imports": [
-        "LeanCondensedMatter.Models.MassiveDirac.Bastin.RadialDominatedConvergence"
+        "LeanCondensedMatter.Models.MassiveDirac.Bastin.RadialDominatedConvergence",
+        "LeanCondensedMatter.QuantumTheory.TwoBand"
       ],
       "externalImportCount": 2
     },
@@ -1647,7 +1654,8 @@
       "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Bastin/RadialPairUniformBound.lean",
       "imports": [
         "LeanCondensedMatter.Models.MassiveDirac.Bastin.PairIntegral",
-        "LeanCondensedMatter.Models.MassiveDirac.Bastin.RadialSpectatorUniformBound"
+        "LeanCondensedMatter.Models.MassiveDirac.Bastin.RadialSpectatorUniformBound",
+        "LeanCondensedMatter.QuantumTheory.TwoBand"
       ],
       "externalImportCount": 4
     },
@@ -1656,7 +1664,8 @@
       "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Bastin/RadialSpectatorBound.lean",
       "imports": [
         "LeanCondensedMatter.Models.MassiveDirac.Bastin.PoleHall",
-        "LeanCondensedMatter.Models.MassiveDirac.Model.Kinematics"
+        "LeanCondensedMatter.Models.MassiveDirac.Model.Kinematics",
+        "LeanCondensedMatter.QuantumTheory.TwoBand"
       ],
       "externalImportCount": 1
     },
@@ -1664,7 +1673,8 @@
       "name": "LeanCondensedMatter.Models.MassiveDirac.Bastin.RadialSpectatorUniformBound",
       "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Bastin/RadialSpectatorUniformBound.lean",
       "imports": [
-        "LeanCondensedMatter.Models.MassiveDirac.Bastin.RadialSpectatorBound"
+        "LeanCondensedMatter.Models.MassiveDirac.Bastin.RadialSpectatorBound",
+        "LeanCondensedMatter.QuantumTheory.TwoBand"
       ],
       "externalImportCount": 3
     },
@@ -1672,7 +1682,8 @@
       "name": "LeanCondensedMatter.Models.MassiveDirac.Bastin.Spectator",
       "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Bastin/Spectator.lean",
       "imports": [
-        "LeanCondensedMatter.Models.MassiveDirac.Bastin.Limit"
+        "LeanCondensedMatter.Models.MassiveDirac.Bastin.Limit",
+        "LeanCondensedMatter.QuantumTheory.TwoBand"
       ],
       "externalImportCount": 0
     },
@@ -1680,7 +1691,9 @@
       "name": "LeanCondensedMatter.Models.MassiveDirac.Bastin.ZeroTemperaturePair",
       "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Bastin/ZeroTemperaturePair.lean",
       "imports": [
-        "LeanCondensedMatter.Models.MassiveDirac.Bastin.RadialEnergyBridge"
+        "LeanCondensedMatter.Models.MassiveDirac.Bastin.RadialEnergyBridge",
+        "LeanCondensedMatter.QuantumTheory.TwoBand",
+        "LeanCondensedMatter.Transport.Streda.InterbandPole"
       ],
       "externalImportCount": 3
     },
@@ -1927,8 +1940,7 @@
       "name": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialKernel",
       "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Disorder/Born/RadialKernel.lean",
       "imports": [
-        "LeanCondensedMatter.Models.MassiveDirac.Propagator.Basic",
-        "LeanCondensedMatter.Models.MassiveDirac.Propagator.RadialDenominator"
+        "LeanCondensedMatter.Models.MassiveDirac.Propagator.Basic"
       ],
       "externalImportCount": 2
     },
@@ -2332,6 +2344,7 @@
       "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/ManyBody/PointwiseHall.lean",
       "imports": [
         "LeanCondensedMatter.Models.MassiveDirac.Bastin.Interband",
+        "LeanCondensedMatter.QuantumTheory.TwoBand",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreePartitionFunction",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.TwoModeResponse"
       ],
@@ -2341,7 +2354,8 @@
       "name": "LeanCondensedMatter.Models.MassiveDirac.Model.Basic",
       "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Model/Basic.lean",
       "imports": [
-        "LeanCondensedMatter.Analysis.Matrix.Pauli"
+        "LeanCondensedMatter.Analysis.Matrix.Pauli",
+        "LeanCondensedMatter.QuantumTheory.TwoBand"
       ],
       "externalImportCount": 3
     },
@@ -2351,7 +2365,8 @@
       "imports": [
         "LeanCondensedMatter.Analysis.Operator.BerryGeometry",
         "LeanCondensedMatter.Models.MassiveDirac.Model.Interband",
-        "LeanCondensedMatter.Models.MassiveDirac.Model.OperatorSpectral.BerryPointwise"
+        "LeanCondensedMatter.Models.MassiveDirac.Model.OperatorSpectral.BerryPointwise",
+        "LeanCondensedMatter.QuantumTheory.TwoBand"
       ],
       "externalImportCount": 2
     },
@@ -2361,7 +2376,8 @@
       "imports": [
         "LeanCondensedMatter.Analysis.Calculus.CompactSupportInterval",
         "LeanCondensedMatter.Models.MassiveDirac.Model.Berry.Symmetry",
-        "LeanCondensedMatter.QuantumTheory.Occupation.BandFilling"
+        "LeanCondensedMatter.QuantumTheory.Occupation.BandFilling",
+        "LeanCondensedMatter.QuantumTheory.TwoBand"
       ],
       "externalImportCount": 1
     },
@@ -2369,7 +2385,8 @@
       "name": "LeanCondensedMatter.Models.MassiveDirac.Model.Berry.Symmetry",
       "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Model/Berry/Symmetry.lean",
       "imports": [
-        "LeanCondensedMatter.Models.MassiveDirac.Model.Basic"
+        "LeanCondensedMatter.Models.MassiveDirac.Model.Basic",
+        "LeanCondensedMatter.QuantumTheory.TwoBand"
       ],
       "externalImportCount": 0
     },
@@ -2387,7 +2404,8 @@
       "name": "LeanCondensedMatter.Models.MassiveDirac.Model.FermiSurface",
       "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Model/FermiSurface.lean",
       "imports": [
-        "LeanCondensedMatter.Models.MassiveDirac.Model.Kinematics"
+        "LeanCondensedMatter.Models.MassiveDirac.Model.Kinematics",
+        "LeanCondensedMatter.QuantumTheory.TwoBand"
       ],
       "externalImportCount": 5
     },
@@ -2396,7 +2414,8 @@
       "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Model/FermiSurfaceOverlap.lean",
       "imports": [
         "LeanCondensedMatter.Models.MassiveDirac.Model.FermiSurface",
-        "LeanCondensedMatter.Models.MassiveDirac.Model.Spectral"
+        "LeanCondensedMatter.Models.MassiveDirac.Model.Spectral",
+        "LeanCondensedMatter.QuantumTheory.TwoBand"
       ],
       "externalImportCount": 2
     },
@@ -2404,7 +2423,8 @@
       "name": "LeanCondensedMatter.Models.MassiveDirac.Model.Interband",
       "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Model/Interband.lean",
       "imports": [
-        "LeanCondensedMatter.Models.MassiveDirac.Model.Spectral"
+        "LeanCondensedMatter.Models.MassiveDirac.Model.Spectral",
+        "LeanCondensedMatter.QuantumTheory.TwoBand"
       ],
       "externalImportCount": 0
     },
@@ -2421,7 +2441,8 @@
       "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Model/Occupation.lean",
       "imports": [
         "LeanCondensedMatter.Models.MassiveDirac.Model.FermiSurface",
-        "LeanCondensedMatter.QuantumTheory.Occupation.BandFilling"
+        "LeanCondensedMatter.QuantumTheory.Occupation.BandFilling",
+        "LeanCondensedMatter.QuantumTheory.TwoBand"
       ],
       "externalImportCount": 0
     },
@@ -2440,7 +2461,8 @@
       "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Model/OperatorSpectral/BerryPointwise.lean",
       "imports": [
         "LeanCondensedMatter.Analysis.Operator.BerryGeometry",
-        "LeanCondensedMatter.Models.MassiveDirac.Model.OperatorSpectral"
+        "LeanCondensedMatter.Models.MassiveDirac.Model.OperatorSpectral",
+        "LeanCondensedMatter.QuantumTheory.TwoBand"
       ],
       "externalImportCount": 1
     },
@@ -2450,6 +2472,7 @@
       "imports": [
         "LeanCondensedMatter.Models.MassiveDirac.Model.Operator",
         "LeanCondensedMatter.Models.MassiveDirac.Model.Spectral",
+        "LeanCondensedMatter.QuantumTheory.TwoBand",
         "LeanCondensedMatter.Transport.Resolvent.Spectral"
       ],
       "externalImportCount": 1
@@ -2459,7 +2482,8 @@
       "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Model/Spectral.lean",
       "imports": [
         "LeanCondensedMatter.Analysis.Algebra.QuadraticNormalization",
-        "LeanCondensedMatter.Models.MassiveDirac.Model.Basic"
+        "LeanCondensedMatter.Models.MassiveDirac.Model.Basic",
+        "LeanCondensedMatter.QuantumTheory.TwoBand"
       ],
       "externalImportCount": 0
     },
@@ -2496,14 +2520,6 @@
       "imports": [
         "LeanCondensedMatter.Models.MassiveDirac.Model.OperatorSpectral",
         "LeanCondensedMatter.Transport.Resolvent.Basic"
-      ],
-      "externalImportCount": 0
-    },
-    {
-      "name": "LeanCondensedMatter.Models.MassiveDirac.Propagator.RadialDenominator",
-      "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Propagator/RadialDenominator.lean",
-      "imports": [
-        "LeanCondensedMatter.Models.MassiveDirac.Propagator.Basic"
       ],
       "externalImportCount": 0
     },
@@ -2547,7 +2563,7 @@
       "name": "LeanCondensedMatter.Models.MassiveDirac.Propagator.RadialFourier.LogIntegral",
       "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Propagator/RadialFourier/LogIntegral.lean",
       "imports": [
-        "LeanCondensedMatter.Models.MassiveDirac.Propagator.RadialDenominator"
+        "LeanCondensedMatter.Models.MassiveDirac.Propagator.Basic"
       ],
       "externalImportCount": 9
     },
@@ -2556,7 +2572,7 @@
       "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Propagator/RadialFourier/QuadraticKernel.lean",
       "imports": [
         "LeanCondensedMatter.Analysis.Fourier.PolarRadialKernels.ImproperLimit",
-        "LeanCondensedMatter.Models.MassiveDirac.Propagator.RadialDenominator"
+        "LeanCondensedMatter.Models.MassiveDirac.Propagator.Basic"
       ],
       "externalImportCount": 2
     },
@@ -2591,7 +2607,6 @@
       "imports": [
         "LeanCondensedMatter.Models.MassiveDirac.Propagator.AngularReduction",
         "LeanCondensedMatter.Models.MassiveDirac.Propagator.Basic",
-        "LeanCondensedMatter.Models.MassiveDirac.Propagator.RadialDenominator",
         "LeanCondensedMatter.Models.MassiveDirac.Propagator.RadialFourier.HankelScaling",
         "LeanCondensedMatter.Models.MassiveDirac.Propagator.RadialFourier.ResolventDifference",
         "LeanCondensedMatter.Models.MassiveDirac.Propagator.Symmetry"
@@ -2970,7 +2985,7 @@
       "sourceFile": "LeanCondensedMatter/Models/OrbitalTransport/Finite.lean",
       "imports": [
         "LeanCondensedMatter.Analysis.Matrix.Pauli",
-        "LeanCondensedMatter.Combinatorics.FiniteAntisymmetricSum"
+        "LeanCondensedMatter.Combinatorics.Common.FintypeProduct"
       ],
       "externalImportCount": 3
     },
@@ -3032,6 +3047,7 @@
       "sourceFile": "LeanCondensedMatter/Models/RashbaExchange/Bastin/Bands.lean",
       "imports": [
         "LeanCondensedMatter.Models.RashbaExchange.Bastin.Berry",
+        "LeanCondensedMatter.QuantumTheory.TwoBand",
         "LeanCondensedMatter.Transport.Streda.InterbandPole"
       ],
       "externalImportCount": 0
@@ -3043,6 +3059,7 @@
         "LeanCondensedMatter.Models.RashbaExchange.Current",
         "LeanCondensedMatter.Models.RashbaExchange.Model.Interband",
         "LeanCondensedMatter.Models.RashbaExchange.Model.OperatorSpectral",
+        "LeanCondensedMatter.QuantumTheory.TwoBand",
         "LeanCondensedMatter.Transport.Streda.FiniteProjectorBastin"
       ],
       "externalImportCount": 2
@@ -3052,6 +3069,7 @@
       "sourceFile": "LeanCondensedMatter/Models/RashbaExchange/Bastin/Pole.lean",
       "imports": [
         "LeanCondensedMatter.Models.RashbaExchange.Bastin.Bands",
+        "LeanCondensedMatter.QuantumTheory.TwoBand",
         "LeanCondensedMatter.Transport.Streda.InterbandPole"
       ],
       "externalImportCount": 2
@@ -3061,7 +3079,8 @@
       "sourceFile": "LeanCondensedMatter/Models/RashbaExchange/Bastin/ResponseBridge.lean",
       "imports": [
         "LeanCondensedMatter.Models.RashbaExchange.Bastin.Bands",
-        "LeanCondensedMatter.Models.RashbaExchange.Response"
+        "LeanCondensedMatter.Models.RashbaExchange.Response",
+        "LeanCondensedMatter.QuantumTheory.TwoBand"
       ],
       "externalImportCount": 0
     },
@@ -3071,7 +3090,8 @@
       "imports": [
         "LeanCondensedMatter.Analysis.Operator.FiniteTrace",
         "LeanCondensedMatter.Models.RashbaExchange.Model.OperatorSpectral",
-        "LeanCondensedMatter.Models.RashbaExchange.ResponseParameters"
+        "LeanCondensedMatter.Models.RashbaExchange.ResponseParameters",
+        "LeanCondensedMatter.QuantumTheory.TwoBand"
       ],
       "externalImportCount": 0
     },
@@ -3090,7 +3110,8 @@
       "name": "LeanCondensedMatter.Models.RashbaExchange.Model.Interband",
       "sourceFile": "LeanCondensedMatter/Models/RashbaExchange/Model/Interband.lean",
       "imports": [
-        "LeanCondensedMatter.Models.RashbaExchange.Model.Spectral"
+        "LeanCondensedMatter.Models.RashbaExchange.Model.Spectral",
+        "LeanCondensedMatter.QuantumTheory.TwoBand"
       ],
       "externalImportCount": 2
     },
@@ -3100,6 +3121,7 @@
       "imports": [
         "LeanCondensedMatter.Models.RashbaExchange.Model.Spectral",
         "LeanCondensedMatter.Models.RashbaExchange.Operator",
+        "LeanCondensedMatter.QuantumTheory.TwoBand",
         "LeanCondensedMatter.Transport.Resolvent.Spectral"
       ],
       "externalImportCount": 1
@@ -3109,7 +3131,8 @@
       "sourceFile": "LeanCondensedMatter/Models/RashbaExchange/Model/Spectral.lean",
       "imports": [
         "LeanCondensedMatter.Analysis.Algebra.QuadraticNormalization",
-        "LeanCondensedMatter.Models.RashbaExchange.Model"
+        "LeanCondensedMatter.Models.RashbaExchange.Model",
+        "LeanCondensedMatter.QuantumTheory.TwoBand"
       ],
       "externalImportCount": 4
     },
@@ -3117,7 +3140,8 @@
       "name": "LeanCondensedMatter.Models.RashbaExchange.Model",
       "sourceFile": "LeanCondensedMatter/Models/RashbaExchange/Model.lean",
       "imports": [
-        "LeanCondensedMatter.Analysis.Matrix.Pauli"
+        "LeanCondensedMatter.Analysis.Matrix.Pauli",
+        "LeanCondensedMatter.QuantumTheory.TwoBand"
       ],
       "externalImportCount": 1
     },
@@ -3278,9 +3302,9 @@
       "sourceFile": "LeanCondensedMatter/Permutation/PairingBridge.lean",
       "imports": [
         "LeanCondensedMatter.Combinatorics.ExchangeSign",
-        "LeanCondensedMatter.Combinatorics.PerfectPairing.Bipartite",
         "LeanCondensedMatter.Combinatorics.PerfectPairing.Core",
         "LeanCondensedMatter.Combinatorics.PerfectPairing.Sign",
+        "LeanCondensedMatter.Combinatorics.PerfectPairing.Split",
         "LeanCondensedMatter.Permutation.ConnectedDecomposition"
       ],
       "externalImportCount": 1
@@ -3727,7 +3751,7 @@
       "imports": [
         "LeanCondensedMatter.Analysis.Operator.TraceClass.Ops",
         "LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral",
-        "LeanCondensedMatter.QuantumTheory.DensityOperator.Basic"
+        "LeanCondensedMatter.QuantumTheory.DensityOperator.Pure"
       ],
       "externalImportCount": 0
     },
@@ -3863,15 +3887,6 @@
       "externalImportCount": 1
     },
     {
-      "name": "LeanCondensedMatter.QuantumTheory.Gibbs.DiagonalEnergy",
-      "sourceFile": "LeanCondensedMatter/QuantumTheory/Gibbs/DiagonalEnergy.lean",
-      "imports": [
-        "LeanCondensedMatter.QuantumTheory.DensityOperator.DiagonalFormula",
-        "LeanCondensedMatter.QuantumTheory.Gibbs.EnergyExpectation"
-      ],
-      "externalImportCount": 0
-    },
-    {
       "name": "LeanCondensedMatter.QuantumTheory.Gibbs.DistributionUniqueness",
       "sourceFile": "LeanCondensedMatter/QuantumTheory/Gibbs/DistributionUniqueness.lean",
       "imports": [
@@ -3911,8 +3926,9 @@
       "name": "LeanCondensedMatter.QuantumTheory.Gibbs.EigenbasisExpectation",
       "sourceFile": "LeanCondensedMatter/QuantumTheory/Gibbs/EigenbasisExpectation.lean",
       "imports": [
-        "LeanCondensedMatter.QuantumTheory.Gibbs.DiagonalEnergy",
-        "LeanCondensedMatter.QuantumTheory.Gibbs.Eigenbasis"
+        "LeanCondensedMatter.QuantumTheory.DensityOperator.DiagonalFormula",
+        "LeanCondensedMatter.QuantumTheory.Gibbs.Eigenbasis",
+        "LeanCondensedMatter.QuantumTheory.Gibbs.EnergyExpectation"
       ],
       "externalImportCount": 0
     },
@@ -3991,7 +4007,6 @@
       "sourceFile": "LeanCondensedMatter/QuantumTheory/Gibbs.lean",
       "imports": [
         "LeanCondensedMatter.QuantumTheory.Gibbs.Boltzmann",
-        "LeanCondensedMatter.QuantumTheory.Gibbs.DiagonalEnergy",
         "LeanCondensedMatter.QuantumTheory.Gibbs.DistributionUniqueness",
         "LeanCondensedMatter.QuantumTheory.Gibbs.DistributionVariational",
         "LeanCondensedMatter.QuantumTheory.Gibbs.Eigenbasis",
@@ -4011,6 +4026,7 @@
       "name": "LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.ConservationLaws",
       "sourceFile": "LeanCondensedMatter/QuantumTheory/LinearResponse/Dynamics/ConservationLaws.lean",
       "imports": [
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.Eigenstate",
         "LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.PictureEquivalence",
         "LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.Stationarity",
         "LeanCondensedMatter.QuantumTheory.LinearResponse.Expectation.Density"
@@ -4536,6 +4552,12 @@
       "externalImportCount": 1
     },
     {
+      "name": "LeanCondensedMatter.QuantumTheory.TwoBand",
+      "sourceFile": "LeanCondensedMatter/QuantumTheory/TwoBand.lean",
+      "imports": [],
+      "externalImportCount": 4
+    },
+    {
       "name": "LeanCondensedMatter.QuantumTheory",
       "sourceFile": "LeanCondensedMatter/QuantumTheory.lean",
       "imports": [
@@ -4557,7 +4579,8 @@
         "LeanCondensedMatter.QuantumTheory.ScatteringRate",
         "LeanCondensedMatter.QuantumTheory.SpinHalf",
         "LeanCondensedMatter.QuantumTheory.SpinHalf.Finite",
-        "LeanCondensedMatter.QuantumTheory.SpinfulLattice"
+        "LeanCondensedMatter.QuantumTheory.SpinfulLattice",
+        "LeanCondensedMatter.QuantumTheory.TwoBand"
       ],
       "externalImportCount": 0
     },
@@ -4617,6 +4640,7 @@
       "name": "LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.NumberOperator",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Bosonic/Algebra/NumberOperator.lean",
       "imports": [
+        "LeanCondensedMatter.Analysis.Algebra.FinsuppDiagonal",
         "LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.ExchangeAlgebra"
       ],
       "externalImportCount": 0
@@ -4856,6 +4880,7 @@
       "name": "LeanCondensedMatter.SecondQuantization.Bosonic.ImaginaryTime.ImaginaryTimeEvolution",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Bosonic/ImaginaryTime/ImaginaryTimeEvolution.lean",
       "imports": [
+        "LeanCondensedMatter.Analysis.Algebra.FinsuppDiagonal",
         "LeanCondensedMatter.Analysis.Algebra.FinsuppSupportShift",
         "LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.CCR",
         "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.EnergyShift",
@@ -5120,7 +5145,8 @@
       "name": "LeanCondensedMatter.SecondQuantization.Common.Algebra.AlgebraicFock",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Algebra/AlgebraicFock.lean",
       "imports": [
-        "LeanCondensedMatter.Analysis.Algebra.FinsuppCoordinates"
+        "LeanCondensedMatter.Analysis.Algebra.FinsuppCoordinates",
+        "LeanCondensedMatter.Analysis.Algebra.FinsuppDiagonal"
       ],
       "externalImportCount": 5
     },
@@ -5128,6 +5154,7 @@
       "name": "LeanCondensedMatter.SecondQuantization.Common.Algebra.DiagonalTrace",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Algebra/DiagonalTrace.lean",
       "imports": [
+        "LeanCondensedMatter.Analysis.Algebra.FinsuppDiagonal",
         "LeanCondensedMatter.Analysis.Algebra.FinsuppSupportShift",
         "LeanCondensedMatter.SecondQuantization.Common.Algebra.AlgebraicFock"
       ],
@@ -5137,16 +5164,8 @@
       "name": "LeanCondensedMatter.SecondQuantization.Common.Algebra.ExchangeAlgebra",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Algebra/ExchangeAlgebra.lean",
       "imports": [
-        "LeanCondensedMatter.SecondQuantization.Common.Algebra.AlgebraicFock",
-        "LeanCondensedMatter.SecondQuantization.Common.Algebra.ExchangeCommutator"
-      ],
-      "externalImportCount": 0
-    },
-    {
-      "name": "LeanCondensedMatter.SecondQuantization.Common.Algebra.ExchangeCommutator",
-      "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Algebra/ExchangeCommutator.lean",
-      "imports": [
         "LeanCondensedMatter.Analysis.Algebra.ScalarExchange",
+        "LeanCondensedMatter.SecondQuantization.Common.Algebra.AlgebraicFock",
         "LeanCondensedMatter.SecondQuantization.Common.Algebra.Statistics"
       ],
       "externalImportCount": 0
@@ -5193,7 +5212,6 @@
       "imports": [
         "LeanCondensedMatter.SecondQuantization.Common.Algebra.AlgebraicFock",
         "LeanCondensedMatter.SecondQuantization.Common.Algebra.ExchangeAlgebra",
-        "LeanCondensedMatter.SecondQuantization.Common.Algebra.ExchangeCommutator",
         "LeanCondensedMatter.SecondQuantization.Common.Algebra.OccupationBasis",
         "LeanCondensedMatter.SecondQuantization.Common.Algebra.Statistics"
       ],
@@ -5228,6 +5246,7 @@
       "name": "LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.Diagonal",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/CompletedSpace/Diagonal.lean",
       "imports": [
+        "LeanCondensedMatter.Analysis.Algebra.FinsuppDiagonal",
         "LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.Basic"
       ],
       "externalImportCount": 2
@@ -5892,6 +5911,7 @@
       "name": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.DiagonalEvolution",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/ImaginaryTime/DiagonalEvolution.lean",
       "imports": [
+        "LeanCondensedMatter.Analysis.Algebra.FinsuppDiagonal",
         "LeanCondensedMatter.SecondQuantization.Common.Algebra.AlgebraicFock"
       ],
       "externalImportCount": 2
@@ -6036,6 +6056,7 @@
       "name": "LeanCondensedMatter.SecondQuantization.Common.Perturbation.ContinuousDyson",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Perturbation/ContinuousDyson.lean",
       "imports": [
+        "LeanCondensedMatter.Analysis.Algebra.FinsuppDiagonal",
         "LeanCondensedMatter.Analysis.Dyson.Basic",
         "LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExpansion",
         "LeanCondensedMatter.SecondQuantization.Common.Perturbation.FiniteAnalyticBridge"
@@ -6056,6 +6077,7 @@
       "name": "LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExponential",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Perturbation/DysonExponential.lean",
       "imports": [
+        "LeanCondensedMatter.Analysis.Algebra.FinsuppDiagonal",
         "LeanCondensedMatter.Analysis.Dyson.Volterra",
         "LeanCondensedMatter.Analysis.Operator.Exponential",
         "LeanCondensedMatter.SecondQuantization.Common.Perturbation.ContinuousDyson"
@@ -6158,7 +6180,7 @@
       "name": "LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.GibbsExpectation.TwoPoint",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Thermal/BlochDeDominicis/GibbsExpectation/TwoPoint.lean",
       "imports": [
-        "LeanCondensedMatter.SecondQuantization.Common.Algebra.ExchangeCommutator",
+        "LeanCondensedMatter.SecondQuantization.Common.Algebra.ExchangeAlgebra",
         "LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.NormalizedTwoPointTrace",
         "LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsCoordinate"
       ],
@@ -6531,6 +6553,7 @@
       "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.Hamiltonian",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Algebra/Hamiltonian.lean",
       "imports": [
+        "LeanCondensedMatter.Analysis.Algebra.FinsuppDiagonal",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.NumberOperator"
       ],
       "externalImportCount": 0
@@ -6539,6 +6562,7 @@
       "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.NumberOperator",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Algebra/NumberOperator.lean",
       "imports": [
+        "LeanCondensedMatter.Analysis.Algebra.FinsuppDiagonal",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.CanonicalAnticommutationRelations",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.ExchangeAlgebra"
       ],
@@ -7116,9 +7140,10 @@
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Diagrammatics/Quartic/Wick/Amplitude.lean",
       "imports": [
         "LeanCondensedMatter.Analysis.OrderedSimplex.Integral",
+        "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Connected",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Ordered",
+        "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.QuarticInteraction",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.LegFamily",
-        "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.Wick.Diagram",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.TimedFieldContraction"
       ],
       "externalImportCount": 0
@@ -7136,30 +7161,12 @@
       "externalImportCount": 0
     },
     {
-      "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.Wick.Diagram",
-      "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Diagrammatics/Quartic/Wick/Diagram.lean",
-      "imports": [
-        "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Connected",
-        "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.QuarticInteraction"
-      ],
-      "externalImportCount": 0
-    },
-    {
       "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Diagrammatics/Quartic.lean",
       "imports": [
         "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.LegFamily",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.LocalLeg",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.Wick.AmplitudeFactorization"
-      ],
-      "externalImportCount": 0
-    },
-    {
-      "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Analysis.DiagramRegularity",
-      "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Diagrammatics/TwoPointDiagramExpansion/Analysis/DiagramRegularity.lean",
-      "imports": [
-        "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.DiagramRegularity",
-        "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Semantics.Amplitude"
       ],
       "externalImportCount": 0
     },
@@ -7174,21 +7181,13 @@
       "externalImportCount": 0
     },
     {
-      "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.DiagramSelectionCoefficients",
-      "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Diagrammatics/TwoPointDiagramExpansion/Integration/DiagramSelectionCoefficients.lean",
-      "imports": [
-        "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.OneParticleIrreducible",
-        "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.DiagramIntegral"
-      ],
-      "externalImportCount": 0
-    },
-    {
       "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.DiagramSumIntegral",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Diagrammatics/TwoPointDiagramExpansion/Integration/DiagramSumIntegral.lean",
       "imports": [
         "LeanCondensedMatter.Analysis.OrderedSimplex.MeasurableRegularity",
-        "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Analysis.DiagramRegularity",
-        "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.DiagramIntegral"
+        "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.DiagramRegularity",
+        "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.DiagramIntegral",
+        "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Semantics.Amplitude"
       ],
       "externalImportCount": 0
     },
@@ -7265,9 +7264,10 @@
       "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Series.DysonSeries",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Diagrammatics/TwoPointDiagramExpansion/Series/DysonSeries.lean",
       "imports": [
+        "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.OneParticleIrreducible",
         "LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonTraceSeries",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.QuarticInteraction",
-        "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.DiagramSelectionCoefficients",
+        "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.DiagramIntegral",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.DysonCoefficient"
       ],
       "externalImportCount": 2
@@ -7475,6 +7475,7 @@
       "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.RankOneSecondQuantization",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Lattice/RankOneSecondQuantization.lean",
       "imports": [
+        "LeanCondensedMatter.Analysis.Algebra.FinsuppDiagonal",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.OccupationFieldEquivalence",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.RankOne",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.NumberOperator",
@@ -7573,6 +7574,7 @@
       "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeEntropy",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Thermal/FreeEntropy.lean",
       "imports": [
+        "LeanCondensedMatter.Analysis.Algebra.FinsuppDiagonal",
         "LeanCondensedMatter.QuantumTheory.Gibbs.EigenbasisEntropy",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreePartitionFunction",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.OneBodyExpectation"
@@ -7673,6 +7675,7 @@
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Transport/CurrentInsertions.lean",
       "imports": [
         "LeanCondensedMatter.QuantumTheory.LinearResponse.Expectation.Basic",
+        "LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTime.MixedTimeOrdering",
         "LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTime.TimedField"
       ],
       "externalImportCount": 0
@@ -7715,6 +7718,16 @@
       "externalImportCount": 0
     },
     {
+      "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.OneParticleResponse",
+      "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Transport/OneParticleResponse.lean",
+      "imports": [
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann.Eigenbasis.FrequencyDomain",
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann.Eigenbasis.Table",
+        "LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.BoundedEvolution"
+      ],
+      "externalImportCount": 0
+    },
+    {
       "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.SpinCurrentResponse",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Transport/SpinCurrentResponse.lean",
       "imports": [
@@ -7748,6 +7761,7 @@
         "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.KuboBastinOccupation",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.KuboBastinSpectral",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.KuboGreenwood",
+        "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.OneParticleResponse",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.SpinCurrentResponse"
       ],
       "externalImportCount": 0
@@ -8078,18 +8092,10 @@
       "externalImportCount": 0
     },
     {
-      "name": "LeanCondensedMatter.Transport.Disorder.TMatrix.NormBound",
-      "sourceFile": "LeanCondensedMatter/Transport/Disorder/TMatrix/NormBound.lean",
-      "imports": [
-        "LeanCondensedMatter.Transport.Disorder.TMatrix"
-      ],
-      "externalImportCount": 2
-    },
-    {
       "name": "LeanCondensedMatter.Transport.Disorder.TMatrix",
       "sourceFile": "LeanCondensedMatter/Transport/Disorder/TMatrix.lean",
       "imports": [],
-      "externalImportCount": 3
+      "externalImportCount": 5
     },
     {
       "name": "LeanCondensedMatter.Transport.Disorder.TraceBridge",
