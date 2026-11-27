@@ -1,6 +1,6 @@
 import LeanCondensedMatter.Combinatorics.ExchangeSign
 import LeanCondensedMatter.Permutation.ConnectedDecomposition
-import LeanCondensedMatter.Combinatorics.PerfectPairing.Bipartite
+import LeanCondensedMatter.Combinatorics.PerfectPairing.Split
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Core
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Sign
 import Mathlib.Data.Matrix.Basic

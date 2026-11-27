@@ -91,6 +91,10 @@ remain in generic combinatorics; time ordering and physical exchange weights rem
 
 ## Binary pairing splits
 
+`PerfectPairing.Split` also owns the bipartite side-matching interface for equal finite sides:
+all partners cross the side boundary, in contrast to a split pairing's invariant sides.
+The permutation-weighted reduction remains in `Permutation.PairingBridge`.
+
 `PerfectPairing.Restriction` owns restriction along an injective position map with partner-invariant
 image, including its partner compatibility and uniqueness. `PerfectPairing.Split` applies these
 laws to the two summand injections; assembly and the binary split equivalence remain there.
