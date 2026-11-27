@@ -9,8 +9,7 @@ import Mathlib.Topology.MetricSpace.MetricSeparated
 /-!
 # Atomic configurations
 
-This file introduces a deliberately weak starting point for crystal geometry. An atomic
-configuration consists only of occupied sites and a species label on each occupied site.
+An atomic configuration consists of occupied sites and a species label on each occupied site.
 Periodicity, lattice data, unit cells, and crystallographic groups are properties or derived
 structures rather than primitive fields.
 
@@ -39,8 +38,8 @@ abbrev Site (X : AtomicConfiguration E Species) := X.occupied
 
 /-- An unordered pair of distinct occupied sites.
 
-This is only the geometric two-site object. It does not assert that the two sites are physically
-bonded; a model-specific bond network can be represented later as a subset of this type. -/
+A bond here is a geometric pair of sites. Physical bonding requires a separate model-specific
+choice of a subset of these pairs. -/
 abbrev Bond (X : AtomicConfiguration E Species) :=
   {b : Sym2 X.Site // ¬ b.IsDiag}
 

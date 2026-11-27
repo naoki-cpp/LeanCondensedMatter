@@ -39,7 +39,6 @@ identified with a locally conserved bulk current without further hypotheses.
 The conventional/proper-current distinction is motivated by Shi, Zhang, Xiao,
 and Niu, *Phys. Rev. Lett.* **96**, 076604 (2006),
 [doi:10.1103/PhysRevLett.96.076604](https://doi.org/10.1103/PhysRevLett.96.076604).
-Follow-ups are tracked in `docs/roadmaps/spin-hall.md`.
 -/
 
 namespace SecondQuantization

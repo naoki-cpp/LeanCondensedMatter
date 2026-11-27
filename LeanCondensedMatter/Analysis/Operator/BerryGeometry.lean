@@ -17,8 +17,8 @@ consumers without choosing a global gauge of eigenvectors over parameter space.
 At one parameter point we store an orthonormal eigenbasis of a self-adjoint Hamiltonian together
 with directional derivatives of the Hamiltonian, eigenvectors, and eigenvalues indexed by a type
 `κ` of parameter directions. The differentiated eigenpair and orthonormality identities are
-explicit fields. They can later be supplied by a `HasFDerivAt`-based family, but that global analytic
-layer is not required for the algebraic identities proved here.
+explicit fields. A differentiable eigenbasis family is not required for the pointwise algebra;
+`ofSimpleSpectrum` constructs compatible derivative data for a simple spectrum.
 
 The convention in direction `μ` is
 

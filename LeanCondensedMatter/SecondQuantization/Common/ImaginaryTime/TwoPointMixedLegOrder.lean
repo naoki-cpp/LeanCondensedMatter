@@ -51,8 +51,8 @@ noncomputable def mixedTimeOrderedAtomicLegs {n : ℕ} (τ τ' : ℝ) (σ : Fin 
     List (OrderedTwoPointLeg n) :=
   (orderedTwoPointTimedEvents τ τ' σ).flatMap twoPointTimedEventAtomicLegs
 
-/-- The legacy mixed atomic-leg list is exactly the two-external specialization
-of the general mixed order, not just a permutation of it. -/
+/-- The two-point mixed atomic-leg list equals the two-external specialization of the
+general mixed order as a list. -/
 theorem mixedTimeOrderedAtomicLegs_eq_externalInsertion {n : ℕ}
     (τ τ' : ℝ) (σ : Fin n → ℝ) :
     mixedTimeOrderedAtomicLegs τ τ' σ =

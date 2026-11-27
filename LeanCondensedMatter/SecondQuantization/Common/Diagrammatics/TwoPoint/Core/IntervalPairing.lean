@@ -234,8 +234,7 @@ private def intervalBoundaryPairing : PairingOn (Fin 2 ⊕ Fin 2) :=
 
 /-- Reindex the two new external ports, the two boundary ends and the
 unchanged interior legs into the augmented two-point leg domain. This
-equivalence also specifies the conjugation used by the pairing.
-Detailed partner equations belong to a follow-up PR. -/
+equivalence also specifies the conjugation used by the pairing. -/
 noncomputable def TwoPointDiagram.intervalAugmentedLegEquiv
     (d : TwoPointDiagram ExternalLabel InternalLabel N S)
     (earlier later : Fin (2 * (2 * S.card + 1)))
