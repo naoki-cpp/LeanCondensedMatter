@@ -125,7 +125,10 @@ owns the reusable constant/first/second harmonic
 coefficient decomposition and ordinary full-angle cancellation laws. `Transport.Analysis.PolarFourier`
 consumes the same coefficient data for phase-weighted radial-axis reduction while keeping the
 zeroth, first-cosine, and second-cosine kernels explicit. Model layers supply coefficient values;
-Pauli algebra, propagator data, and radial physics remain model-owned.
+Pauli algebra, propagator data, and radial physics remain model-owned. The opt-in mathematical
+modules `LeanCondensedMatter.Analysis.Fourier.PolarRadialKernels.Derivative`, `Primitive`, and
+`ImproperLimit` own uniform angular bounds, finite radial differentiation, integration by parts,
+and conditional improper limits without a physical momentum measure.
 
 ## Resolvent and response boundary
 

@@ -1,5 +1,4 @@
 import LeanCondensedMatter.Analysis.Fourier.PolarRadialKernels.Core
-import LeanCondensedMatter.Transport.Analysis.PolarFourier
 import Mathlib.Analysis.Calculus.ParametricIntervalIntegral
 import Mathlib.Tactic.FunProp
 import Mathlib.Tactic.Ring
@@ -11,10 +10,9 @@ set_option linter.style.header false
 
 The first-harmonic angular kernel is uniformly bounded by the angular
 integration interval. This permits differentiation with respect to a signed
-real-space radius through a **finite** radial momentum integral for any
-continuous complex radial weight. The argument retains the momentum cutoff
-and the Fourier length scale; no infinite-radius, infinite-momentum,
-broadening, or disorder limit is involved.
+radial parameter through a **finite** radial integral for any
+continuous complex radial weight. The interval endpoint and the Fourier scale are
+arbitrary real parameters; no improper integral is differentiated.
 -/
 
 namespace QuantumTheory
@@ -35,7 +33,7 @@ theorem polarFourierZerothAngularKernel_norm_le (z : ℝ) :
     (a := (0 : ℝ)) (b := 2 * Real.pi) (C := (1 : ℝ))
     (f := fun θ : ℝ => polarFourierRadialPhase z θ) (by
       intro θ _
-      simp [polarFourierRadialPhase, Complex.norm_exp, Complex.mul_re])
+      exact le_of_eq (norm_polarFourierRadialPhase z θ))
   simpa only [polarFourierZerothAngularKernel, one_mul, sub_zero,
     abs_of_nonneg (mul_nonneg (by norm_num : (0 : ℝ) ≤ 2) Real.pi_pos.le)]
     using h
@@ -49,9 +47,8 @@ theorem polarFourierFirstCosineAngularKernel_norm_le (z : ℝ) :
     (f := fun θ : ℝ =>
       polarFourierRadialPhase z θ * ((Real.cos θ : ℝ) : ℂ)) (by
       intro θ _
-      have hphase : ‖polarFourierRadialPhase z θ‖ = 1 := by
-        simp [polarFourierRadialPhase, Complex.norm_exp, Complex.mul_re]
-      simp only [norm_mul, Complex.norm_real, Real.norm_eq_abs, hphase, one_mul]
+      simp only [norm_mul, Complex.norm_real, Real.norm_eq_abs,
+        norm_polarFourierRadialPhase, one_mul]
       exact Real.abs_cos_le_one θ)
   simpa only [polarFourierFirstCosineAngularKernel, one_mul, sub_zero,
     abs_of_nonneg (mul_nonneg (by norm_num : (0 : ℝ) ≤ 2) Real.pi_pos.le)]
@@ -59,47 +56,45 @@ theorem polarFourierFirstCosineAngularKernel_norm_le (z : ℝ) :
 
 /-- The finite-cutoff zeroth-harmonic integral is differentiable in the
 real-space radius. The derivative is exactly its first cosine harmonic,
-including the momentum-to-radius scale factor. In particular, this
+including the scale factor. In particular, this
 theorem does not interchange a derivative with an improper integral. -/
 theorem hasDerivAt_integral_polarFourierZerothAngularKernel
     (weight : ℝ → ℂ) (hweight : Continuous weight)
-    (pMax hbar radius : ℝ) :
+    (pMax scale radius : ℝ) :
     HasDerivAt
       (fun r : ℝ => ∫ p in (0 : ℝ)..pMax,
-        weight p * polarFourierZerothAngularKernel (p * r / hbar))
+        weight p * polarFourierZerothAngularKernel (p * r / scale))
       (∫ p in (0 : ℝ)..pMax,
-        weight p * (Complex.I * ((p / hbar : ℝ) : ℂ) *
-          polarFourierFirstCosineAngularKernel (p * radius / hbar)))
+        weight p * (Complex.I * ((p / scale : ℝ) : ℂ) *
+          polarFourierFirstCosineAngularKernel (p * radius / scale)))
       radius := by
   let F : ℝ → ℝ → ℂ := fun r p =>
-    weight p * polarFourierZerothAngularKernel (p * r / hbar)
+    weight p * polarFourierZerothAngularKernel (p * r / scale)
   let F' : ℝ → ℝ → ℂ := fun r p =>
-    weight p * (Complex.I * ((p / hbar : ℝ) : ℂ) *
-      polarFourierFirstCosineAngularKernel (p * r / hbar))
+    weight p * (Complex.I * ((p / scale : ℝ) : ℂ) *
+      polarFourierFirstCosineAngularKernel (p * r / scale))
   let bound : ℝ → ℝ := fun p =>
-    (‖weight p‖ * |p / hbar|) * (2 * Real.pi)
+    (‖weight p‖ * |p / scale|) * (2 * Real.pi)
   have hc0 : Continuous polarFourierZerothAngularKernel :=
-    continuous_iff_continuousAt.mpr fun z =>
-      (polarFourierZerothAngularKernel_hasDerivAt z).continuousAt
+    continuous_polarFourierZerothAngularKernel
   have hc1 : Continuous polarFourierFirstCosineAngularKernel :=
-    continuous_iff_continuousAt.mpr fun z =>
-      (polarFourierFirstCosineAngularKernel_hasDerivAt z).continuousAt
+    continuous_polarFourierFirstCosineAngularKernel
   have hderiv (r p : ℝ) :
       HasDerivAt (fun t : ℝ => F t p) (F' r p) r := by
-    have harg : HasDerivAt (fun t : ℝ => p * t / hbar) (p / hbar) r := by
-      convert (((hasDerivAt_id r).const_mul p).div_const hbar) using 1 <;>
+    have harg : HasDerivAt (fun t : ℝ => p * t / scale) (p / scale) r := by
+      convert (((hasDerivAt_id r).const_mul p).div_const scale) using 1 <;>
         first | rfl | ring
     have hk := ((polarFourierZerothAngularKernel_hasDerivAt
-      (p * r / hbar)).hasFDerivAt.comp r harg.hasFDerivAt).hasDerivAt
+      (p * r / scale)).hasFDerivAt.comp r harg.hasFDerivAt).hasDerivAt
     have h := hk.const_mul (weight p)
     convert h using 1
     · rfl
     · dsimp [F']
       push_cast
       ring
-  have hcontArg (r : ℝ) : Continuous (fun p : ℝ => p * r / hbar) := by
+  have hcontArg (r : ℝ) : Continuous (fun p : ℝ => p * r / scale) := by
     fun_prop
-  have hcontRatio : Continuous (fun p : ℝ => p / hbar) := by
+  have hcontRatio : Continuous (fun p : ℝ => p / scale) := by
     fun_prop
   have hcont (r : ℝ) : Continuous (F r) := by
     dsimp [F]
@@ -111,8 +106,8 @@ theorem hasDerivAt_integral_polarFourierZerothAngularKernel
         (hc1.comp (hcontArg r)))
   have hbound (r p : ℝ) : ‖F' r p‖ ≤ bound p := by
     have hn : ‖F' r p‖ =
-        (‖weight p‖ * |p / hbar|) *
-          ‖polarFourierFirstCosineAngularKernel (p * r / hbar)‖ := by
+        (‖weight p‖ * |p / scale|) *
+          ‖polarFourierFirstCosineAngularKernel (p * r / scale)‖ := by
       dsimp [F']
       simp only [norm_mul, Complex.norm_I, Complex.norm_real,
         Real.norm_eq_abs, one_mul]
@@ -174,25 +169,25 @@ traceless K2 angular harmonics. No improper-integral differentiation or
 nonzero-radius assumption is used. -/
 theorem hasDerivAt_integral_polarFourierFirstCosineAngularKernel
     (weight : ℝ → ℂ) (hweight : Continuous weight)
-    (pMax hbar radius : ℝ) :
+    (pMax scale radius : ℝ) :
     HasDerivAt
       (fun r : ℝ => ∫ p in (0 : ℝ)..pMax,
-        weight p * polarFourierFirstCosineAngularKernel (p * r / hbar))
+        weight p * polarFourierFirstCosineAngularKernel (p * r / scale))
       (∫ p in (0 : ℝ)..pMax,
-        weight p * (((p / hbar : ℝ) : ℂ) *
+        weight p * (((p / scale : ℝ) : ℂ) *
           ((Complex.I / 2) *
-            (polarFourierZerothAngularKernel (p * radius / hbar) +
-              polarFourierSecondCosineAngularKernel (p * radius / hbar)))))
+            (polarFourierZerothAngularKernel (p * radius / scale) +
+              polarFourierSecondCosineAngularKernel (p * radius / scale)))))
       radius := by
   let F : ℝ → ℝ → ℂ := fun r p =>
-    weight p * polarFourierFirstCosineAngularKernel (p * r / hbar)
+    weight p * polarFourierFirstCosineAngularKernel (p * r / scale)
   let F' : ℝ → ℝ → ℂ := fun r p =>
-    weight p * (((p / hbar : ℝ) : ℂ) *
+    weight p * (((p / scale : ℝ) : ℂ) *
       ((Complex.I / 2) *
-        (polarFourierZerothAngularKernel (p * r / hbar) +
-          polarFourierSecondCosineAngularKernel (p * r / hbar))))
+        (polarFourierZerothAngularKernel (p * r / scale) +
+          polarFourierSecondCosineAngularKernel (p * r / scale))))
   let bound : ℝ → ℝ := fun p =>
-    (‖weight p‖ * |p / hbar|) * (3 * Real.pi)
+    (‖weight p‖ * |p / scale|) * (3 * Real.pi)
   have hboundAngle (z : ℝ) :
       ‖(Complex.I / 2) *
           (polarFourierZerothAngularKernel z +
@@ -215,11 +210,11 @@ theorem hasDerivAt_integral_polarFourierFirstCosineAngularKernel
           nlinarith [Real.pi_pos]
   have hderiv (r p : ℝ) :
       HasDerivAt (fun t : ℝ => F t p) (F' r p) r := by
-    have harg : HasDerivAt (fun t : ℝ => p * t / hbar) (p / hbar) r := by
-      convert (((hasDerivAt_id r).const_mul p).div_const hbar) using 1 <;>
+    have harg : HasDerivAt (fun t : ℝ => p * t / scale) (p / scale) r := by
+      convert (((hasDerivAt_id r).const_mul p).div_const scale) using 1 <;>
         first | rfl | ring
     have hk := ((polarFourierFirstCosineAngularKernel_hasDerivAt
-      (p * r / hbar)).hasFDerivAt.comp r harg.hasFDerivAt).hasDerivAt
+      (p * r / scale)).hasFDerivAt.comp r harg.hasFDerivAt).hasDerivAt
     have h := hk.const_mul (weight p)
     convert h using 1
     · rfl
@@ -232,9 +227,9 @@ theorem hasDerivAt_integral_polarFourierFirstCosineAngularKernel
     continuous_polarFourierFirstCosineAngularKernel
   have hc2 : Continuous polarFourierSecondCosineAngularKernel :=
     continuous_polarFourierSecondCosineAngularKernel
-  have hcontArg (r : ℝ) : Continuous (fun p : ℝ => p * r / hbar) := by
+  have hcontArg (r : ℝ) : Continuous (fun p : ℝ => p * r / scale) := by
     fun_prop
-  have hcontRatio : Continuous (fun p : ℝ => p / hbar) := by fun_prop
+  have hcontRatio : Continuous (fun p : ℝ => p / scale) := by fun_prop
   have hcont (r : ℝ) : Continuous (F r) := by
     dsimp [F]
     exact hweight.mul (hc1.comp (hcontArg r))
@@ -246,10 +241,10 @@ theorem hasDerivAt_integral_polarFourierFirstCosineAngularKernel
           ((hc0.comp (hcontArg r)).add (hc2.comp (hcontArg r)))))
   have hbound (r p : ℝ) : ‖F' r p‖ ≤ bound p := by
     have hn : ‖F' r p‖ =
-        (‖weight p‖ * |p / hbar|) *
+        (‖weight p‖ * |p / scale|) *
           ‖(Complex.I / 2) *
-            (polarFourierZerothAngularKernel (p * r / hbar) +
-              polarFourierSecondCosineAngularKernel (p * r / hbar))‖ := by
+            (polarFourierZerothAngularKernel (p * r / scale) +
+              polarFourierSecondCosineAngularKernel (p * r / scale))‖ := by
       dsimp [F']
       simp only [norm_mul, Complex.norm_real, Real.norm_eq_abs]
       ring

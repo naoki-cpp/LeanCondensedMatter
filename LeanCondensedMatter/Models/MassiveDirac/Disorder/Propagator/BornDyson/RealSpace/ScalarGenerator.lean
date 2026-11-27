@@ -1,5 +1,6 @@
+import LeanCondensedMatter.Transport.Analysis.ContinuumMeasure
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.BornDyson.RealSpace.RadialGreen
-import LeanCondensedMatter.Transport.Analysis.PolarFourierRadialDerivative
+import LeanCondensedMatter.Analysis.Fourier.PolarRadialKernels.Derivative
 import Mathlib.Tactic.FieldSimp
 import Mathlib.Tactic.FunProp
 import Mathlib.Tactic.Ring

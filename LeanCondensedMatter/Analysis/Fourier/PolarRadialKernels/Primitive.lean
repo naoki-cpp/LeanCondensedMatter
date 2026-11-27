@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Analysis.Fourier.PolarRadialKernels.Bessel
-import LeanCondensedMatter.Transport.Analysis.PolarFourierRadialDerivative
+import Mathlib.MeasureTheory.Integral.IntervalIntegral.IntegrationByParts
 import Mathlib.Tactic.Ring
 
 set_option linter.style.header false
@@ -9,42 +9,12 @@ set_option linter.style.header false
 
 The exact first-harmonic recurrence and derivative identities imply
 `(z K₁(z))' = i z K₀(z)`. Its scaled version is the integration-by-parts
-identity needed to control the ultraviolet tail of a radial Green kernel
-without introducing an unproved Bessel Y/Hankel branch.
+identity for weighted radial Fourier integrals.
 -/
 
 namespace QuantumTheory.Transport
 
 noncomputable section
-
-/-- The first Fourier harmonic is a primitive of the radial zeroth
-harmonic: `(z K₁(z))' = i z K₀(z)` for all real `z`. -/
-theorem polarFourierFirstCosineAngularKernel_mul_argument_hasDerivAt
-    (z : ℝ) :
-    HasDerivAt (fun t : ℝ =>
-      (t : ℂ) * polarFourierFirstCosineAngularKernel t)
-      (Complex.I * (z : ℂ) * polarFourierZerothAngularKernel z) z := by
-  have h := ((hasDerivAt_id z).ofReal_comp).mul
-    (polarFourierFirstCosineAngularKernel_hasDerivAt z)
-  have hrec :=
-    polarFourierFirstCosineAngularKernel_two_mul_eq_zeroth_sub_second z
-  have hcoef :
-      polarFourierFirstCosineAngularKernel z +
-        (z : ℂ) * ((Complex.I / 2) *
-          (polarFourierZerothAngularKernel z +
-            polarFourierSecondCosineAngularKernel z)) =
-        Complex.I * (z : ℂ) * polarFourierZerothAngularKernel z := by
-    calc
-      _ = Complex.I * (z : ℂ) * polarFourierZerothAngularKernel z +
-          (1 / 2 : ℂ) *
-            (2 * polarFourierFirstCosineAngularKernel z -
-              Complex.I * (z : ℂ) *
-                (polarFourierZerothAngularKernel z -
-                  polarFourierSecondCosineAngularKernel z)) := by ring
-      _ = _ := by rw [hrec]; ring
-  convert h using 1
-  · rfl
-  · simpa [ContinuousLinearMap.toSpanSingleton, ContinuousLinearMap.compSL] using hcoef.symm
 
 /-- The scaled radial primitive. The Fourier scale `c` may have either
 sign, and the formula remains valid for `c = 0`. -/
@@ -108,7 +78,7 @@ theorem polarFourierFirstCosineAngularKernel_radialPrimitive_hasDerivAt
 restriction on the (possibly zero or negative) Fourier scale `c`.
 The first harmonic replaces the zeroth one at the cost of differentiating
 the radial weight. This is the exact finite-cutoff identity used before
-taking the ultraviolet limit of a massive-Dirac Green integral. -/
+taking an improper radial Fourier limit. -/
 theorem integral_polarFourierZerothAngularKernel_mul_weight_by_parts
     (c a b : ℝ) (weight weight' : ℝ → ℂ)
     (hweight : ∀ p : ℝ, HasDerivAt weight (weight' p) p)

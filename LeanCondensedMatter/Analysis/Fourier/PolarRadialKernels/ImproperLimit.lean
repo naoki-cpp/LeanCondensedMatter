@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Transport.Analysis.PolarFourierRadialPrimitive
+import LeanCondensedMatter.Analysis.Fourier.PolarRadialKernels.Primitive
 import Mathlib.MeasureTheory.Integral.IntegralEqImproper
 
 set_option linter.style.header false
@@ -6,11 +6,11 @@ set_option linter.style.header false
 /-!
 # Radial Fourier improper limit from the first-harmonic primitive
 
-The ultraviolet cutoff can be removed from a weighted zeroth-harmonic radial
+The upper cutoff can be removed from a weighted zeroth-harmonic radial
 integral when (1) the first-harmonic boundary term tends to zero and
 (2) its weighted derivative is integrable over a positive half-line.
 Unlike a formal asymptotic series, this theorem gives a precise finite-cutoff
-limit formula, with analytic hypotheses explicit for each physical weight.
+limit formula, with analytic hypotheses explicit for an arbitrary differentiable weight.
 -/
 
 namespace QuantumTheory.Transport
@@ -24,7 +24,7 @@ open scoped Interval
 /-- A convergence bridge for finite radial Fourier transforms. The first
 angular harmonic is a primitive of the zeroth angular harmonic and the
 infinite-cutoff limit is precisely the integral of the derivative term.
-The hypotheses concern only the ultraviolet boundary and its integrability;
+The hypotheses concern only the upper boundary and its integrability;
 they are not silently discharged by the finite-cutoff part-integration law. -/
 theorem tendsto_integral_polarFourierZerothAngularKernel_of_by_parts
     (c a : ℝ) (hc : c ≠ 0)

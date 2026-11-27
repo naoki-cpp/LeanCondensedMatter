@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Analysis.Fourier.PolarRadialKernels.Derivative
 import LeanCondensedMatter.Models.MassiveDirac.Propagator.RadialFourier.FinitePart
 import Mathlib.Tactic.FunProp
 import Mathlib.Tactic.FieldSimp
