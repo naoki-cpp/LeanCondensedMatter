@@ -5,7 +5,6 @@ import LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.SelfEnergy.Core
 
 The full angular Green integral produces exactly the expected factor `2π` and connects
 the physical disorder/measure prefactor to the finite-cutoff radial Green integral.
-All declarations in this module were moved unchanged from the original SelfEnergy module.
 -/
 
 set_option linter.style.header false
