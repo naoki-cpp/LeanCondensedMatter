@@ -83,8 +83,8 @@ The conclusion is
 
 `d/dt ∫ test * ρ = ∫ test' * j - (test(b)j(b) - test(a)j(a))`.
 
-Time differentiation under the integral uses the explicit dominated-derivative hypotheses above;
-the spatial current term is supplied by the previously proved interval weak continuity theorem. -/
+Time differentiation under the integral uses the explicit dominated-derivative hypotheses;
+the spatial current term follows from the interval weak continuity theorem. -/
 theorem hasDerivAt_intervalSmearedProbabilityDensity1D_of_schrodinger
     (a b t ℏ κ : ℝ) (hℏ : ℏ ≠ 0)
     {s : Set ℝ} {bound test testDerivative : ℝ → ℝ}
