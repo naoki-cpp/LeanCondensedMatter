@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Analysis.ScalarExchange.Basic
+import LeanCondensedMatter.Analysis.Algebra.ScalarExchange
 import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.OrderedProductSummable
 
 set_option linter.style.header false

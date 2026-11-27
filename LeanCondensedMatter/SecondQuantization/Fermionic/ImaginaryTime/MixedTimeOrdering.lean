@@ -3,7 +3,7 @@ import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.QuarticInteracti
 import LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTime.ExternalField
 import LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTime.TwoPoint
 import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.InteractionPicture
-import LeanCondensedMatter.Analysis.ScalarExchange.Basic
+import LeanCondensedMatter.Analysis.Algebra.ScalarExchange
 
 set_option linter.style.header false
 

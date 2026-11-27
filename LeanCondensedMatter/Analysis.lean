@@ -4,7 +4,6 @@ import LeanCondensedMatter.Analysis.DiscreteLattice
 import LeanCondensedMatter.Analysis.Fourier
 import LeanCondensedMatter.Analysis.Geometry.SphericalMoments
 import LeanCondensedMatter.Analysis.Matrix
-import LeanCondensedMatter.Analysis.ScalarExchange.Basic
 import LeanCondensedMatter.Analysis.InternalSpace.Pauli
 import LeanCondensedMatter.Analysis.PowerSeries
 import LeanCondensedMatter.Analysis.ODE.RadialEnergyDecay

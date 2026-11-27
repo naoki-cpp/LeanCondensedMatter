@@ -319,7 +319,7 @@ remain separate targets.
 ## Scalar exchange expansion
 
 The finite position-indexed expansion of a recursive exchange sum is owned by
-`Analysis/ScalarExchange/Basic.lean`. `ScalarExchange.peelSum_eq_sum` applies to labelled
+`Analysis/Algebra/ScalarExchange.lean`. `ScalarExchange.peelSum_eq_sum` applies to labelled
 factors; `ScalarExchange.peelSumWithCoefficients_eq_sum` applies to factors paired with their
 scalar coefficients. The coefficient-paired form specializes the labelled recursion instead
 of maintaining a second implementation. Both preserve ordered products after deleting one position
