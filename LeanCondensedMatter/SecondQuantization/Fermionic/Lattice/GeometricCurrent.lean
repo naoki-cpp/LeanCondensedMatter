@@ -154,7 +154,18 @@ private def directionalBondSumLinearMap
         intro r d
         simp only [LatticeGeometry.bondCoordinate, LinearMap.smul_apply, smul_eq_mul,
           Complex.ofReal_mul, mul_smul, RingHom.id_apply,
-          RCLike.real_smul_eq_coe_smul (K := ℂ)] <;> rfl }
+          RCLike.real_smul_eq_coe_smul (K := ℂ)]
+        rfl }
+
+private theorem directionalBondSumLinearMap_apply
+    (geometry : LatticeGeometry Site E)
+    (weight : Site → Site → (FiniteLatticeHilbertFock Site →L[ℂ] FiniteLatticeHilbertFock Site))
+    (d : E →ₗ[ℝ] ℝ) :
+    directionalBondSumLinearMap geometry weight d =
+      (2 : ℂ)⁻¹ • ∑ x : Site, ∑ y : Site,
+        (geometry.bondCoordinate d x y : ℂ) • weight x y := by
+  simp only [directionalBondSumLinearMap, LinearMap.smul_apply, LinearMap.sum_apply]
+  rfl
 
 /-- The spatial current transforms linearly under finite real direction mixing. -/
 theorem boundedDirectionalCurrent_sum
@@ -166,8 +177,7 @@ theorem boundedDirectionalCurrent_sum
   let D := directionalBondSumLinearMap geometry (boundedBondCurrent ℏ q K)
   have h := map_sum D (fun i => r i • direction i) Finset.univ
   simp only [map_smul, RCLike.real_smul_eq_coe_smul (K := ℂ)] at h
-  simpa only [D, directionalBondSumLinearMap, LinearMap.smul_apply, LinearMap.sum_apply,
-    LinearMap.coe_mk, AddHom.coe_mk, boundedDirectionalCurrent] using h
+  simpa only [D, directionalBondSumLinearMap_apply, boundedDirectionalCurrent] using h
 
 /-- The mixed contact is linear in its measured direction. -/
 theorem boundedMixedDirectionalContact_sum_left
@@ -180,8 +190,7 @@ theorem boundedMixedDirectionalContact_sum_left
     (geometry.bondCoordinate source x y : ℂ) • boundedBondContact K ℏ q x y)
   have h := map_sum D (fun i => r i • direction i) Finset.univ
   simp only [map_smul, RCLike.real_smul_eq_coe_smul (K := ℂ)] at h
-  simpa only [D, directionalBondSumLinearMap, LinearMap.smul_apply, LinearMap.sum_apply,
-    LinearMap.coe_mk, AddHom.coe_mk, boundedMixedDirectionalContact, mul_smul] using h
+  simpa only [D, directionalBondSumLinearMap_apply, boundedMixedDirectionalContact, mul_smul] using h
 
 /-- Both directions of the contact mix independently, with the product of the coefficients. -/
 theorem boundedMixedDirectionalContact_sum
