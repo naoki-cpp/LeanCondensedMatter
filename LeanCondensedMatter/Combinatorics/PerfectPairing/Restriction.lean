@@ -1,4 +1,5 @@
 import Mathlib.Logic.Equiv.Basic
+import Mathlib.Logic.Equiv.Set
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Transport
 
 set_option linter.style.header false
@@ -76,6 +77,39 @@ theorem PairingOn.restrictAlongEquiv_partner_symm_val {α β : Type*} (pairing :
   simpa [j] using h'
 
 
+
+private theorem range_partner_invariant {α γ : Type*} (P : PairingOn γ) (f : α → γ)
+    (h : ∀ i, ∃ j, P.partner (f i) = f j) (i : γ) :
+    i ∈ Set.range f ↔ P.partner i ∈ Set.range f := by
+  have hclosed : ∀ x, x ∈ Set.range f → P.partner x ∈ Set.range f := by
+    rintro _ ⟨k, rfl⟩
+    obtain ⟨l, hl⟩ := h k
+    exact ⟨l, hl.symm⟩
+  exact ⟨hclosed i, fun hi => by simpa only [P.partner_partner] using hclosed (P.partner i) hi⟩
+
+/-- Restrict a pairing to the invariant image of an injective map, in the coordinates of
+the map's domain. -/
+noncomputable def PairingOn.restrictAlongInjection {α β : Type*} (P : PairingOn β)
+    (f : α → β) (hf : Function.Injective f)
+    (h : ∀ i, ∃ j, P.partner (f i) = f j) : PairingOn α :=
+  P.restrictAlongEquiv _ (range_partner_invariant P f h) (Equiv.ofInjective f hf).symm
+
+/-- The induced pairing intertwines the ambient partner map through the injection. -/
+theorem PairingOn.restrictAlongInjection_partner {α β : Type*} (P : PairingOn β)
+    (f : α → β) (hf : Function.Injective f)
+    (h : ∀ i, ∃ j, P.partner (f i) = f j) (i : α) :
+    P.partner (f i) = f ((P.restrictAlongInjection f hf h).partner i) :=
+  (P.restrictAlongEquiv_partner_symm_val _ (range_partner_invariant P f h)
+    (Equiv.ofInjective f hf).symm i).symm
+
+/-- The induced pairing is the unique pairing whose partner map intertwines the injection. -/
+theorem PairingOn.restrictAlongInjection_eq {α β : Type*} (P : PairingOn β)
+    (f : α → β) (hf : Function.Injective f)
+    (h : ∀ i, ∃ j, P.partner (f i) = f j) (Q : PairingOn α)
+    (hpartner : ∀ i, P.partner (f i) = f (Q.partner i)) :
+    P.restrictAlongInjection f hf h = Q := by
+  refine PairingOn.ext (Equiv.ext fun i => hf ?_)
+  exact (P.restrictAlongInjection_partner f hf h i).symm.trans (hpartner i)
 
 /-- Restricting a perfect pairing to an invariant subtype is
 independent of which local coordinate equivalence is chosen: the two

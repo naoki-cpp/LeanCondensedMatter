@@ -91,6 +91,10 @@ remain in generic combinatorics; time ordering and physical exchange weights rem
 
 ## Binary pairing splits
 
+`PerfectPairing.Restriction` owns restriction along an injective position map with partner-invariant
+image, including its partner compatibility and uniqueness. `PerfectPairing.Split` applies these
+laws to the two summand injections; assembly and the binary split equivalence remain there.
+
 `PerfectPairing.SplitNormalizedPairs` owns the normalized-pair equivalence, endpoint orientation,
 and product factorization for an arbitrary binary position splitting. It does not import crossing
 geometry. `PerfectPairing.SplitCrossing` uses that equivalence to decompose crossing counts and

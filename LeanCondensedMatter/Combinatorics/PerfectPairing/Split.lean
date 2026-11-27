@@ -1,5 +1,4 @@
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Restriction
-import Mathlib.Logic.Equiv.Set
 
 set_option linter.style.header false
 
@@ -35,15 +34,6 @@ variable {α β γ : Type*}
 def PairingOn.IsSplit (e : α ⊕ β ≃ γ) (P : PairingOn γ) : Prop :=
   ∀ i : α, ∃ j : α, P.partner (e (Sum.inl i)) = e (Sum.inl j)
 
-private theorem range_partner_invariant (P : PairingOn γ) (f : α → γ)
-    (h : ∀ i, ∃ j, P.partner (f i) = f j) (i : γ) :
-    i ∈ Set.range f ↔ P.partner i ∈ Set.range f := by
-  have hclosed : ∀ x, x ∈ Set.range f → P.partner x ∈ Set.range f := by
-    rintro _ ⟨k, rfl⟩
-    obtain ⟨l, hl⟩ := h k
-    exact ⟨l, hl.symm⟩
-  exact ⟨hclosed i, fun hi => by simpa only [P.partner_partner] using hclosed (P.partner i) hi⟩
-
 /-- The right part is closed automatically by involutivity and disjointness of the summands. -/
 theorem PairingOn.isSplit_inr (e : α ⊕ β ≃ γ) {P : PairingOn γ} (h : P.IsSplit e)
     (i : β) : ∃ j : β, P.partner (e (Sum.inr i)) = e (Sum.inr j) := by
@@ -56,28 +46,20 @@ theorem PairingOn.isSplit_inr (e : α ⊕ β ≃ γ) {P : PairingOn γ} (h : P.I
     cases he'
   · exact ⟨j, hz.symm⟩
 
-private noncomputable def splitLeftRangeEquiv (e : α ⊕ β ≃ γ) :
-    α ≃ Set.range (fun i : α => e (Sum.inl i)) :=
-  Equiv.ofInjective _ (fun _ _ h => Sum.inl.inj (e.injective h))
-
-private noncomputable def splitRightRangeEquiv (e : α ⊕ β ≃ γ) :
-    β ≃ Set.range (fun i : β => e (Sum.inr i)) :=
-  Equiv.ofInjective _ (fun _ _ h => Sum.inr.inj (e.injective h))
-
 section Left
 
 variable (e : α ⊕ β ≃ γ) {P : PairingOn γ} (h : P.IsSplit e)
 
 /-- The pairing induced on the left part by restricting to its invariant range. -/
 noncomputable def PairingOn.splitLeft : PairingOn α :=
-  P.restrictAlongEquiv _ (range_partner_invariant P _ h) (splitLeftRangeEquiv e).symm
+  P.restrictAlongInjection (fun i => e (Sum.inl i))
+    (fun _ _ he => Sum.inl.inj (e.injective he)) h
 
 /-- The induced left pairing is read off the ambient partner map. -/
 @[simp]
 theorem PairingOn.partner_splitLeft (i : α) :
     P.partner (e (Sum.inl i)) = e (Sum.inl ((P.splitLeft e h).partner i)) :=
-  (P.restrictAlongEquiv_partner_symm_val _ (range_partner_invariant P _ h)
-    (splitLeftRangeEquiv e).symm i).symm
+  P.restrictAlongInjection_partner _ _ h i
 
 end Left
 
@@ -87,15 +69,14 @@ variable (e : α ⊕ β ≃ γ) {P : PairingOn γ} (h : P.IsSplit e)
 
 /-- The pairing induced on the right part by restricting to its invariant range. -/
 noncomputable def PairingOn.splitRight : PairingOn β :=
-  P.restrictAlongEquiv _ (range_partner_invariant P _ (PairingOn.isSplit_inr e h))
-    (splitRightRangeEquiv e).symm
+  P.restrictAlongInjection (fun i => e (Sum.inr i))
+    (fun _ _ he => Sum.inr.inj (e.injective he)) (PairingOn.isSplit_inr e h)
 
 /-- The induced right pairing is read off the ambient partner map. -/
 @[simp]
 theorem PairingOn.partner_splitRight (i : β) :
     P.partner (e (Sum.inr i)) = e (Sum.inr ((P.splitRight e h).partner i)) :=
-  (P.restrictAlongEquiv_partner_symm_val _ (range_partner_invariant P _ (PairingOn.isSplit_inr e h))
-    (splitRightRangeEquiv e).symm i).symm
+  P.restrictAlongInjection_partner _ _ (PairingOn.isSplit_inr e h) i
 
 end Right
 
@@ -120,11 +101,11 @@ theorem PairingOn.ofSplit_partner_inr (e : α ⊕ β ≃ γ) (P : PairingOn α) 
   simp [PairingOn.ofSplit]
 
 /-- Reindexing the two local pairings and the corresponding sides of the position
-splitting leaves the assembled ambient pairing unchanged. Local permutations need not
+splitting leaves the assembled ambient pairing unchanged. Local equivalences need not
 preserve either endpoint order. -/
 theorem PairingOn.ofSplit_reindex
     (e : α ⊕ β ≃ γ) (P : PairingOn α) (Q : PairingOn β)
-    (left : Equiv.Perm α) (right : Equiv.Perm β) :
+    {α' β' : Type*} (left : α' ≃ α) (right : β' ≃ β) :
     PairingOn.ofSplit ((Equiv.sumCongr left right).trans e)
         (P.transport left) (Q.transport right) =
       PairingOn.ofSplit e P Q := by
@@ -157,19 +138,15 @@ section Inverse
 @[simp]
 theorem PairingOn.splitLeft_ofSplit (e : α ⊕ β ≃ γ) (P : PairingOn α) (Q : PairingOn β) :
     (PairingOn.ofSplit e P Q).splitLeft e (PairingOn.isSplit_ofSplit e P Q) = P := by
-  refine PairingOn.ext (Equiv.ext fun i => ?_)
-  have h := PairingOn.partner_splitLeft e (PairingOn.isSplit_ofSplit e P Q) i
-  rw [PairingOn.ofSplit_partner_inl] at h
-  exact (Sum.inl.inj (e.injective h)).symm
+  exact (PairingOn.ofSplit e P Q).restrictAlongInjection_eq _ _ _ P
+    (PairingOn.ofSplit_partner_inl e P Q)
 
 /-- Assembling and then restricting to the right part returns the right pairing. -/
 @[simp]
 theorem PairingOn.splitRight_ofSplit (e : α ⊕ β ≃ γ) (P : PairingOn α) (Q : PairingOn β) :
     (PairingOn.ofSplit e P Q).splitRight e (PairingOn.isSplit_ofSplit e P Q) = Q := by
-  refine PairingOn.ext (Equiv.ext fun i => ?_)
-  have h := PairingOn.partner_splitRight e (PairingOn.isSplit_ofSplit e P Q) i
-  rw [PairingOn.ofSplit_partner_inr] at h
-  exact (Sum.inr.inj (e.injective h)).symm
+  exact (PairingOn.ofSplit e P Q).restrictAlongInjection_eq _ _ _ Q
+    (PairingOn.ofSplit_partner_inr e P Q)
 
 /-- **A split pairing is assembled from its two restrictions.** Nothing is lost by taking a split
 pairing apart: every position lies in one of the parts, and its partner lies in the same part. -/
