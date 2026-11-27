@@ -5,14 +5,13 @@ set_option linter.style.header false
 /-!
 # Separating propagators lie on every external path
 
-The existing cut graph removes one *paired propagator*, retaining parallel lines. For a cut
+The cut graph removes one *paired propagator*, retaining parallel lines. For a cut
 separating the two external vertices in an externally connected two-point diagram, the cut
 propagator is a bridge: there can be no surviving parallel line between its endpoints.
 
 Consequently the cut graph equals Mathlib's `SimpleGraph.deleteEdges` of the underlying
-undirected edge. This lets the existing graph-walk theorems establish that the edge occurs
-in every walk between the two external vertices. The resulting path theorem is the first
-step toward ordering all separating propagators into a chain of 1PI components.
+undirected edge, which occurs in every walk between the two external vertices.
+An external path enumerates the separating propagators without repetition.
 -/
 
 namespace SecondQuantization
@@ -170,8 +169,8 @@ theorem TwoPointDiagram.walkSeparatingInternalEdges_nodup
 /-- An externally connected two-point diagram admits an external path whose ordered
 separating-edge list contains each separating internal edge exactly once.
 
-This gives a finite linear enumeration, but not yet a proof that *its order* is
-independent of the chosen external path. -/
+This existence statement does not assert independence of the enumeration order
+from the chosen path. -/
 theorem TwoPointDiagram.exists_path_enumerating_separatingInternalEdges
     (d : TwoPointDiagram ExternalLabel InternalLabel N S)
     (hconnected : d.IsExternallyConnected) :
