@@ -5,7 +5,6 @@ import LeanCondensedMatter.Combinatorics.Cumulant.NormalizedCore
 import LeanCondensedMatter.Combinatorics.Cumulant.Normalized
 import LeanCondensedMatter.Combinatorics.Cumulant.Independence
 import LeanCondensedMatter.Combinatorics.Cumulant.ConnectedDecomposition
-import LeanCondensedMatter.Combinatorics.Cumulant.ConnectedDecompositionInversion
 
 set_option linter.style.header false
 

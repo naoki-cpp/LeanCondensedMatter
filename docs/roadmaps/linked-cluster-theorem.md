@@ -157,7 +157,7 @@ is proved through this replica endpoint while retaining its existing public API.
 The import boundaries are enforced in both directions by source-topology rules.
 `replicaLinkedClusterIndependence` prevents the generic replica bridge and canonical fermionic
 specialization from reaching `Combinatorics.Cumulant.Inversion`,
-`ConnectedDecompositionInversion`, or `Analysis.PowerSeries.Cumulant`.
+`Combinatorics.Cumulant.Normalized`, or `Analysis.PowerSeries.Cumulant`.
 `inversionLinkedClusterIndependence` prevents the concrete inversion specialization from reaching
 the power-series or finite-set replica modules. Thus neither concrete proof route can silently
 depend on the other.

@@ -97,7 +97,6 @@ rules, or empty/zero cases. In particular this covers the current simp API in:
 - `Cumulant/Normalized`
 - `Cumulant/Moment`
 - `Cumulant/Inversion`
-- `Cumulant/ConnectedDecompositionInversion`
 - `PerfectPairing/Core`
 - `PerfectPairing/Transport`
 - `PerfectPairing/Restriction`
