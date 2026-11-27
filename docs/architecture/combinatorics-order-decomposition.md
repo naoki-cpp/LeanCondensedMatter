@@ -127,7 +127,7 @@ and permutation-sign statements retain their explicit finite-index coordinates.
 ## Removing the first pair
 
 `PerfectPairing.Core` owns the first pair, namely the pair containing position zero.
-`PerfectPairing.EraseZero` owns the smaller pairing, its increasing position map, and the residual
+`PerfectPairing.FirstPair` owns the smaller pairing, its increasing position map, and the residual
 pair structure. `eraseZeroPairEmbedding` maps both endpoints back to ambient positions;
 `pairs_erase_firstPair_eq_image` identifies all ambient pairs other than the first pair with the
 image of the smaller pairing's pairs. Its membership proofs reuse the core order-embedding law
@@ -135,7 +135,7 @@ and endpoint separation from `PerfectPairing.PairEndpoints`. Inverse-coordinate 
 private to that owner.
 
 `FiniteIndex.DeletedPositions` also supplies the sum equivalence separating the two removed
-positions from the remaining ordered positions. `PerfectPairing.InsertFirstPair` transports
+positions from the remaining ordered positions. `PerfectPairing.FirstPair` transports
 the disjoint sum of a two-element pairing and the smaller pairing along that equivalence.
 It owns both the product decomposition of the normalized
 pair set and the additive reindexing of sums through `Pairing.equivSigma`. These structural laws
