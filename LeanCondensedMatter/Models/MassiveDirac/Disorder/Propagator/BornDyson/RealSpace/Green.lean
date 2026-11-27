@@ -1,6 +1,6 @@
 import LeanCondensedMatter.Analysis.Fourier.AngularHarmonics
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.BornDyson.RealSpace.RadialGreen
-import LeanCondensedMatter.Models.MassiveDirac.Model.Rotation
+import LeanCondensedMatter.Analysis.Matrix.PauliRotation
 
 set_option linter.style.header false
 
@@ -23,6 +23,8 @@ conductivity normalization is introduced here.
 -/
 
 namespace QuantumTheory.Models.MassiveDirac
+
+open InternalSpace
 
 open AngularHarmonics
 

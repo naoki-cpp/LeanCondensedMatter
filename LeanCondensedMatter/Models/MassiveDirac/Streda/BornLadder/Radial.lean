@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.RadialIntegrand
+import LeanCondensedMatter.Analysis.Matrix.PauliRotation
 import LeanCondensedMatter.Transport.Disorder.InPlaneLadder
 import Mathlib.Tactic.FunProp
 import Mathlib.Tactic.Ring
@@ -23,6 +24,8 @@ removal, mechanism label, or exact-disorder-average claim is introduced here.
 -/
 
 namespace QuantumTheory.Models.MassiveDirac
+
+open InternalSpace
 
 noncomputable section
 

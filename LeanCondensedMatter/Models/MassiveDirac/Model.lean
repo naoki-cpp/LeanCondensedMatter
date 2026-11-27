@@ -1,6 +1,5 @@
 import LeanCondensedMatter.Models.MassiveDirac.Model.Basic
 import LeanCondensedMatter.Models.MassiveDirac.Model.Operator
-import LeanCondensedMatter.Models.MassiveDirac.Model.Rotation
 import LeanCondensedMatter.Models.MassiveDirac.Model.Kinematics
 import LeanCondensedMatter.Models.MassiveDirac.Model.FermiSurface
 import LeanCondensedMatter.Models.MassiveDirac.Model.Occupation
