@@ -1,5 +1,6 @@
 import LeanCondensedMatter.Analysis.Operator.AdjointConjugation
 import LeanCondensedMatter.Analysis.Operator.AlgebraRestriction
+import LeanCondensedMatter.Analysis.Operator.Antiunitary
 import LeanCondensedMatter.Analysis.Operator.BerryGeometry
 import LeanCondensedMatter.Analysis.Operator.Compact
 import LeanCondensedMatter.Analysis.Operator.Diagonal
@@ -23,7 +24,7 @@ set_option linter.style.header false
 /-!
 # Operator analysis
 
-General operator-theoretic infrastructure: bounded and unbounded operators, Hilbert bases,
+General operator-theoretic infrastructure: bounded and unbounded operators, antiunitary maps, Hilbert bases,
 spectral and resolvent theory, Berry geometry, finite traces, Hilbert–Schmidt and trace-class
 operators, Fredholm determinants for diagonal data, and multiplication and Schwartz operator algebra.
 
