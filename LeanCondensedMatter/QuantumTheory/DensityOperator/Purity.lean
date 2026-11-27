@@ -76,7 +76,7 @@ theorem DensityOperator.expectation_op (ρ : DensityOperator H) :
 theorem purity_pure (ψ : StateVector H) : purity (pure ψ) = 1 := by
   apply Complex.ofReal_injective
   rw [← (pure ψ).expectation_op,
-    DensityOperator.expectation_pure_observable ψ ⟨(pure ψ).op, (pure ψ).isSelfAdjoint⟩]
+    DensityOperator.expectation_pure ψ (pure ψ).op]
   change inner ℂ ψ.1 ((InnerProductSpace.rankOne ℂ ψ.1 ψ.1) ψ.1) = 1
   simp [InnerProductSpace.rankOne_apply, inner_self_eq_norm_sq_to_K, ψ.2]
 
