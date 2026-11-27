@@ -55,21 +55,29 @@ theorem weak_continuity_interval_of_pointwise
   rw [← hsum]
   abel
 
-/-- A strict support window removes the boundary term and identifies the interval
-weak balance with the whole-space identity. -/
+/-- A strict support window removes the boundary term and identifies a weak interval
+balance for any continuous bilinear pairing with the corresponding full-line identity. -/
 theorem weak_continuity_wholeSpace_of_interval
-    (a b : ℝ) {test current densityTimeDerivative : ℝ → ℝ}
+    {E F G : Type*}
+    [NormedAddCommGroup E] [NormedSpace ℝ E]
+    [NormedAddCommGroup F] [NormedSpace ℝ F]
+    [NormedAddCommGroup G] [NormedSpace ℝ G]
+    (B : E →L[ℝ] F →L[ℝ] G) (a b : ℝ)
+    {test : ℝ → E} {current densityTimeDerivative : ℝ → F}
     (htestSupport : tsupport test ⊆ Ioo a b)
     (hInterval :
-      (∫ x in a..b, test x * densityTimeDerivative x) =
-        (∫ x in a..b, deriv test x * current x) -
-          (test b * current b - test a * current a)) :
-    (∫ x, test x * densityTimeDerivative x) =
-      ∫ x, deriv test x * current x := by
+      (∫ x in a..b, B (test x) (densityTimeDerivative x)) =
+        (∫ x in a..b, B (deriv test x) (current x)) -
+          (B (test b) (current b) - B (test a) (current a))) :
+    (∫ x, B (test x) (densityTimeDerivative x)) =
+      ∫ x, B (deriv test x) (current x) := by
   rcases MeasureTheory.endpoint_values_eq_zero_of_tsupport_subset_Ioo htestSupport with ⟨ha, hb⟩
-  rw [MeasureTheory.integral_mul_eq_integral_of_tsupport_subset_Ioo htestSupport,
-    MeasureTheory.integral_deriv_mul_eq_integral_of_tsupport_subset_Ioo htestSupport] at hInterval
-  simpa [ha, hb] using hInterval
+  have hzero (y : F) : B 0 y = 0 := by simp
+  rw [MeasureTheory.integral_pairing_eq_integral_of_tsupport_subset_Ioo
+        (fun x y => B x y) hzero htestSupport,
+      MeasureTheory.integral_pairing_eq_integral_of_tsupport_subset_Ioo
+        (fun x y => B x y) hzero (tsupport_deriv_subset.trans htestSupport)] at hInterval
+  simpa [ha, hb, hzero] using hInterval
 
 end
 end ConservationLaw
