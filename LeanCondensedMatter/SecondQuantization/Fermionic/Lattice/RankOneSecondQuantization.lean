@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Analysis.Algebra.FinsuppDiagonal
 import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.RankOne
 import LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.DiscreteLattice
 import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.OccupationFieldEquivalence
@@ -66,19 +67,19 @@ occupied modes. Real coefficients give the occupation-energy free Hamiltonian. -
 theorem occupationConjugate_dGamma_diagonalOperator [Finite Site] (a : Site → ℂ) :
     AlgebraicFock.occupationConjugate
         (Finsupp.basisSingleOne : Module.Basis Site ℂ (Site →₀ ℂ))
-        (AlgebraicFock.dGamma ((Site →₀ ℂ)) (Common.diagonalOperator a)) =
-      Common.diagonalOperator (fun n : Occupation Site => ∑ i ∈ n, a i) := by
+        (AlgebraicFock.dGamma ((Site →₀ ℂ)) (Finsupp.diagonalOperator a)) =
+      Finsupp.diagonalOperator (fun n : Occupation Site => ∑ i ∈ n, a i) := by
   classical
   letI : Fintype Site := Fintype.ofFinite Site
-  have hdiag : Common.diagonalOperator a = ∑ i, a i • matrixUnit i i := by
+  have hdiag : Finsupp.diagonalOperator a = ∑ i, a i • matrixUnit i i := by
     apply Common.linearMap_ext_basisState
     intro j
     ext i
     by_cases hij : i = j
     · subst i
-      simp [Common.diagonalOperator_apply, Common.basisState, LinearMap.sum_apply,
+      simp [Common.basisState, LinearMap.sum_apply,
         Finsupp.finsetSum_apply, matrixUnit_apply, Finsupp.single_apply]
-    · simp [Common.diagonalOperator_apply, Common.basisState, LinearMap.sum_apply,
+    · simp [Common.basisState, LinearMap.sum_apply,
         Finsupp.finsetSum_apply, matrixUnit_apply, Finsupp.single_apply, hij, Ne.symm hij]
   rw [hdiag]
   change AlgebraicFock.occupationConjugate _

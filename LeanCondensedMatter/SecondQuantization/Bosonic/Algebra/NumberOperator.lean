@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Analysis.Algebra.FinsuppDiagonal
 import LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.ExchangeAlgebra
 
 set_option linter.style.header false
@@ -32,7 +33,7 @@ theorem numberOperator_basisState (i : Mode) (n : Occupation Mode) :
 `n ↦ n i`. This is the canonical bridge from `aᵢ† aᵢ` to the common diagonal-operator API. -/
 theorem numberOperator_eq_diagonalOperator (i : Mode) :
     numberOperator i =
-      Common.diagonalOperator (fun n : Occupation Mode => (n i : ℂ)) := by
+      Finsupp.diagonalOperator (fun n : Occupation Mode => (n i : ℂ)) := by
   exact Common.eq_diagonalOperator_of_basisState _ _
     (fun n => numberOperator_basisState i n)
 

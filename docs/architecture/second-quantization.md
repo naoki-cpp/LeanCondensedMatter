@@ -440,7 +440,7 @@ The underlying finite-support coordinate expansion is the scalar-generic theorem
 `Analysis.Algebra.FinsuppCoordinates`; basis expansion and extensionality use Mathlib's
 `Finsupp` and `Basis` APIs.
 Basis-diagonal operators are represented by the algebra homomorphism
-`diagonalOperator : (Config → ℂ) →ₐ[ℂ] End`.
+`Finsupp.diagonalOperator : (Config → ℂ) →ₐ[ℂ] End`.
 
 Imaginary-time diagonal evolution specializes that algebra representation. Its invertible form is
 `diagonalEvolutionEquiv`, and operator Heisenberg evolution is the conjugation algebra equivalence

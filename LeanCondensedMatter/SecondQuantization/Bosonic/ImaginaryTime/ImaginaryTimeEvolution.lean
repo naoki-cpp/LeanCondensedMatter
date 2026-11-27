@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Analysis.Algebra.FinsuppDiagonal
 import LeanCondensedMatter.Analysis.Algebra.FinsuppSupportShift
 import LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.CCR
 import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.EnergyShift
@@ -80,7 +81,7 @@ theorem freeEigenvalue_removeOccupation_of_pos {ε : Mode → ℝ} {i : Mode} {n
 /-- The free bosonic Hamiltonian, diagonal in the occupation basis. -/
 noncomputable def freeHamiltonian (ε : Mode → ℝ) :
     FockSpace Mode →ₗ[ℂ] FockSpace Mode :=
-  Common.diagonalOperator fun n : Occupation Mode => (freeEigenvalue ε n : ℂ)
+  Finsupp.diagonalOperator fun n : Occupation Mode => (freeEigenvalue ε n : ℂ)
 
 theorem freeHamiltonian_basisState (ε : Mode → ℝ) (n : Occupation Mode) :
     freeHamiltonian ε (basisState n) = (freeEigenvalue ε n : ℂ) • basisState n :=

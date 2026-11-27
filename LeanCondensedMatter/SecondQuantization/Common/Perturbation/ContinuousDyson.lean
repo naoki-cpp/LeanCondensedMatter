@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Analysis.Algebra.FinsuppDiagonal
 import LeanCondensedMatter.Analysis.Dyson.Basic
 import LeanCondensedMatter.SecondQuantization.Common.Perturbation.FiniteAnalyticBridge
 import LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExpansion
@@ -33,7 +34,7 @@ noncomputable def continuousDiagonalEvolution (energy : Config → ℝ) (τ : �
 /-- The continuous realization of the basis-diagonal free Hamiltonian. -/
 noncomputable def continuousDiagonalHamiltonian (energy : Config → ℝ) :
     FiniteContinuousOperator Config :=
-  finiteContinuousOperatorAlgEquiv (diagonalOperator fun c => (energy c : ℂ))
+  finiteContinuousOperatorAlgEquiv (Finsupp.diagonalOperator fun c => (energy c : ℂ))
 
 /-- The interacting Hamiltonian `H₀ + λV` in the finite continuous-operator algebra. -/
 noncomputable def continuousInteractingHamiltonian (energy : Config → ℝ)

@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Analysis.Algebra.FinsuppDiagonal
 import LeanCondensedMatter.Analysis.Dyson.Volterra
 import LeanCondensedMatter.SecondQuantization.Common.Perturbation.ContinuousDyson
 import LeanCondensedMatter.Analysis.Operator.Exponential
@@ -30,7 +31,7 @@ private theorem continuousDiagonalHamiltonian_basis_apply (energy : Config → �
   calc
     continuousDiagonalHamiltonian energy (finiteAnalyticBasis c) =
         finiteAnalyticFockEquiv
-          (diagonalOperator (fun c => (energy c : ℂ)) (basisState c)) := by
+          (Finsupp.diagonalOperator (fun c => (energy c : ℂ)) (basisState c)) := by
       rw [continuousDiagonalHamiltonian, ← finiteAnalyticFockEquiv_basisState,
         finiteContinuousOperator_equiv_apply]
     _ = (energy c : ℂ) • finiteAnalyticBasis c := by
