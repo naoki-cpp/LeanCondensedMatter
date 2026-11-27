@@ -1,5 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Ordered
-import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.Wick.Diagram
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Connected
+import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.QuarticInteraction
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.LegFamily
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.TimedFieldContraction
 import LeanCondensedMatter.Analysis.OrderedSimplex.Integral
@@ -9,6 +10,7 @@ set_option linter.style.header false
 /-!
 # Ordered-simplex quartic Wick-diagram amplitudes
 
+Fermionic diagrams specialize the common quartic data to fermionic vertex labels.
 This module assembles vertex-order transport and scalar ordered-simplex integration into the
 quartic Wick-diagram amplitude. Pair contractions use the canonical time-labelled-field free-Gibbs
 kernel; finite Gibbs coordinate formulas remain downstream evaluation tools.
@@ -19,6 +21,14 @@ namespace Fermionic
 
 open Combinatorics
 open Common
+
+/-- A quartic diagram whose vertex labels describe fermionic interaction vertices. -/
+abbrev QuarticWickDiagram (Mode : Type*) (N : ℕ) (S : Finset (Fin N)) :=
+  Common.QuarticDiagram (QuarticVertexLabel Mode) N S
+
+/-- A connected fermionic quartic diagram. -/
+abbrev ConnectedQuarticWickDiagram (Mode : Type*) (N : ℕ) (S : Finset (Fin N)) :=
+  Common.ConnectedQuarticDiagram (QuarticVertexLabel Mode) N S
 
 variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode] {N : ℕ}
 
