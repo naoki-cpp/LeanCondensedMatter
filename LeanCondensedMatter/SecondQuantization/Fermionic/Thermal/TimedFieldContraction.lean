@@ -1,5 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTime.TimedField
-import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeBoltzmannCore
+import LeanCondensedMatter.QuantumTheory.Gibbs.Boltzmann
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.GibbsExpectation.Recursion
 
 set_option linter.style.header false
@@ -62,8 +62,10 @@ theorem grandCanonicalGibbsExpectation_prod_timedFieldOperator_eq_sum_pairing
       (fun a b => timedFieldCommutatorCoeff ε (fields a) (fields b))
       (fun p => heisenbergEvolve_timedFieldOperator ε (fun i => ε i - μ) β (fields p))
       (fun a b _ => zetaCommutator_timedFieldOperator ε (fields a) (fields b))
-      (fun p => one_sub_zetaInt_fermion_mul_exp_ne_zero
-        (externalFieldLabelEnergyShift (fun i => ε i - μ) (fields p).label) β)
+      (fun p => by
+        simpa [Common.Statistics.zetaInt_fermion] using
+          Complex.one_add_exp_ofReal_ne_zero
+            (externalFieldLabelEnergyShift (fun i => ε i - μ) (fields p).label * β))
   simpa only [Combinatorics.PairingOn.evaluation] using hgen
 
 end Fermionic

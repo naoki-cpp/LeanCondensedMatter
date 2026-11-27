@@ -1,5 +1,6 @@
 import LeanCondensedMatter.Analysis.InfiniteSum.Normalization
 import Mathlib.Analysis.SpecialFunctions.Exp
+import Mathlib.Analysis.Complex.Exponential
 
 /-!
 # Gibbs–Boltzmann weights and partition function
@@ -13,6 +14,20 @@ energy-weighted probabilities is a separate condition for finite mean energy.
 -/
 
 noncomputable section
+
+namespace Complex
+
+/-- A complex exponential of a real number has positive real value, so its
+sum with one never vanishes. No condition on the sign of the exponent is needed. -/
+theorem one_add_exp_ofReal_ne_zero (x : ℝ) :
+    (1 : ℂ) + Complex.exp (x : ℂ) ≠ 0 := by
+  have hr : (1 : ℝ) + Real.exp x ≠ 0 :=
+    ne_of_gt (add_pos (by norm_num) (Real.exp_pos x))
+  have hc : (((1 : ℝ) + Real.exp x : ℝ) : ℂ) ≠ 0 := by
+    exact_mod_cast hr
+  simpa only [Complex.ofReal_add, Complex.ofReal_one, Complex.ofReal_exp] using hc
+
+end Complex
 
 namespace QuantumTheory
 
