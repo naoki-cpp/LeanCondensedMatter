@@ -47,6 +47,15 @@ noncomputable def scalarSpectralDifferenceCoefficient
     scalarResolventCoefficient
       (advancedSpectralParameter probeEnergy broadening) targetEnergy
 
+/-- Ordered finite-broadening Bastin pair for arbitrary source and target energies
+and the two current-trace orderings. -/
+noncomputable def scalarBastinBandPairContribution
+    (sourceEnergy targetEnergy probeEnergy broadening : ℝ) (forward reverse : ℂ) : ℂ :=
+  let r := scalarResolventCoefficient (retardedSpectralParameter probeEnergy broadening) sourceEnergy
+  let a := scalarResolventCoefficient (advancedSpectralParameter probeEnergy broadening) sourceEnergy
+  let d := scalarSpectralDifferenceCoefficient targetEnergy probeEnergy broadening
+  r ^ 2 * d * forward - a ^ 2 * d * reverse
+
 /-- Pointwise retarded-minus-advanced spectral coefficient vanishes away from a
 real spectral pole. This is a scalar statement; taking a limit before energy integration
 does not represent the distributional Hall response. -/
@@ -99,6 +108,18 @@ theorem targetCenteredSourceCoefficient_eq
   push_cast
   ring
 
+/-- Shifting the energy origin to the target pole leaves only the target-source gap. -/
+theorem scalarResolventCoefficient_targetCentered
+    (side : SpectralSide) (sourceEnergy targetEnergy offset broadening : ℝ) :
+    scalarResolventCoefficient
+        (spectralParameter side (targetEnergy + offset) broadening) sourceEnergy =
+      targetCenteredSourceCoefficient side (targetEnergy - sourceEnergy) offset broadening := by
+  unfold targetCenteredSourceCoefficient scalarResolventCoefficient
+    spectralParameter spectralParameterOfRegulator
+  congr 1
+  push_cast
+  ring
+
 /-- If `|offset| ≤ radius`, a real shifted gap stays at least `|gap| - radius` away from zero. -/
 theorem abs_gap_sub_radius_le_abs_gap_add_offset
     (gap offset radius : ℝ) (hoffset : |offset| ≤ radius) :
@@ -120,6 +141,26 @@ noncomputable def interbandPoleRegularFactor
   let a := targetCenteredSourceCoefficient
     .advanced gap offsetBroadening.1 offsetBroadening.2
   r ^ 2 * forward - a ^ 2 * reverse
+
+/-- At nonzero broadening the ordered Bastin pair at target-centered energy
+is the Lorentzian pole times the regular source factor. -/
+theorem scalarBastinBandPairContribution_targetCentered
+    (sourceEnergy targetEnergy offset broadening : ℝ) (forward reverse : ℂ)
+    (hbroadening : broadening ≠ 0) :
+    scalarBastinBandPairContribution sourceEnergy targetEnergy
+        (targetEnergy + offset) broadening forward reverse =
+      (-2 * Complex.I) * (Lorentzian.spectralKernel offset broadening : ℂ) *
+        interbandPoleRegularFactor (targetEnergy - sourceEnergy) forward reverse
+          (offset, broadening) := by
+  unfold scalarBastinBandPairContribution interbandPoleRegularFactor
+  dsimp
+  rw [scalarSpectralDifferenceCoefficient_eq_lorentzian
+    targetEnergy (targetEnergy + offset) broadening hbroadening]
+  simp only [retardedSpectralParameter, advancedSpectralParameter]
+  rw [scalarResolventCoefficient_targetCentered .retarded,
+    scalarResolventCoefficient_targetCentered .advanced]
+  rw [show targetEnergy + offset - targetEnergy = offset by ring]
+  ring
 
 /-- At the target pole the regular factor is the inverse-gap-squared antisymmetric current block. -/
 theorem interbandPoleRegularFactor_zero

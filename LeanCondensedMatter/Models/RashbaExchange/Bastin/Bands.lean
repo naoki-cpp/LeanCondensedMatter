@@ -29,16 +29,10 @@ directions. The reversed current ordering remains part of the same block. -/
 noncomputable def bastinBandPairContribution
     (params : Parameters) (μ ν : Fin 2) (source target : TwoBand)
     (px py probeEnergy broadening : ℝ) : ℂ :=
-  let r := scalarResolventCoefficient
-    (retardedSpectralParameter probeEnergy broadening)
-    (bandEnergy params source px py)
-  let a := scalarResolventCoefficient
-    (advancedSpectralParameter probeEnergy broadening)
-    (bandEnergy params source px py)
-  let d := scalarSpectralDifferenceCoefficient
+  scalarBastinBandPairContribution (bandEnergy params source px py)
     (bandEnergy params target px py) probeEnergy broadening
-  r ^ 2 * d * currentBandBlockTrace params μ ν source target px py -
-    a ^ 2 * d * currentBandBlockTrace params ν μ source target px py
+    (currentBandBlockTrace params μ ν source target px py)
+    (currentBandBlockTrace params ν μ source target px py)
 
 /-- Both diagonal band pairs of the finite-broadening Hall trace. -/
 noncomputable def diagonalBastinTraceContribution
@@ -75,7 +69,7 @@ theorem projectorBastinTraceIntegrandFor_eq_band_sum
           px py probeEnergy broadening := by
   unfold projectorBastinTraceIntegrandFor bastinOperatorKernelFromPropagators
     projectorResolvent
-  simpa only [bastinBandPairContribution, currentBandBlockTrace,
+  simpa only [bastinBandPairContribution, scalarBastinBandPairContribution, currentBandBlockTrace,
     scalarSpectralDifferenceCoefficient] using
     (finiteProjectorBastinTrace_eq_band_sum
       (P := fun band : TwoBand => bandProjectorOperator params band px py)
@@ -164,7 +158,7 @@ theorem bastinBandPairContribution_diagonal_swap
         px py probeEnergy broadening =
       bastinBandPairContribution params ν μ band band
         px py probeEnergy broadening := by
-  unfold bastinBandPairContribution
+  unfold bastinBandPairContribution scalarBastinBandPairContribution
   dsimp
   rw [currentBandBlockTrace_swap params μ ν band band px py]
 

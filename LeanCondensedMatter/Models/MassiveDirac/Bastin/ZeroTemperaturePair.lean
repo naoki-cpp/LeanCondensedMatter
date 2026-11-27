@@ -1,5 +1,6 @@
 import LeanCondensedMatter.Models.MassiveDirac.Bastin.RadialEnergyBridge
 import LeanCondensedMatter.QuantumTheory.TwoBand
+import LeanCondensedMatter.Transport.Streda.InterbandPole
 import Mathlib.Tactic.Linarith
 import Mathlib.Tactic.NormNum
 import Mathlib.Tactic.Ring
@@ -57,21 +58,11 @@ theorem targetCenteredZeroTemperatureInterbandBastinPairIntegral_eq_neg_two_i_mu
   rw [← intervalIntegral.integral_const_mul]
   apply intervalIntegral.integral_congr
   intro offset _
-  change
-    ((zeroTemperatureOccupation fermiEnergy
-        (bandEnergy band v m px py + offset) : ℝ) : ℂ) *
-        bastinBandPairContribution 0 1 (oppositeBand band) band e v m px py
-          (bandEnergy band v m px py + offset) broadening =
-      (-2 * Complex.I) *
-        (((zeroTemperatureOccupation fermiEnergy
-            (bandEnergy band v m px py + offset) : ℝ) : ℂ) *
-          ((Lorentzian.spectralKernel offset broadening : ℂ) *
-            targetCenteredInterbandSpectatorCurrentFactor
-              band e v m px py (offset, broadening)))
-  rw [bastinBandPairContribution_opposite_source_eq_lorentzian
-    0 1 band e v m px py (bandEnergy band v m px py + offset) broadening hbroadening]
-  unfold targetCenteredInterbandSpectatorCurrentFactor
-  rw [show bandEnergy band v m px py + offset - bandEnergy band v m px py = offset by ring]
+  dsimp only
+  unfold bastinBandPairContribution
+  rw [scalarBastinBandPairContribution_targetCentered _ _ _ _ _ _ hbroadening,
+    targetCenteredInterbandSpectatorCurrentFactor_eq_interbandPoleRegularFactor]
+  simp only [interbandEnergyGap]
   ring
 
 /-- Inserting zero-temperature occupation does not enlarge the pointwise Lorentzian/spectator

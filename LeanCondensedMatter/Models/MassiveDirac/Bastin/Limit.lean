@@ -51,7 +51,7 @@ theorem tendsto_bastinBandPairContribution_zero
     (tendsto_const_nhds : Tendsto
       (fun _ : ℝ => currentBandBlockTrace ν μ source target e v m px py)
       (nhds 0) (nhds (currentBandBlockTrace ν μ source target e v m px py))))
-  simpa only [bastinBandPairContribution, pow_two, retardedSpectralParameter,
+  simpa only [bastinBandPairContribution, scalarBastinBandPairContribution, pow_two, retardedSpectralParameter,
     advancedSpectralParameter, spectralParameter_retarded_ofRegulator,
     spectralParameter_advanced_ofRegulator, mul_zero, zero_mul, sub_self] using
     hretTerm.sub hadvTerm

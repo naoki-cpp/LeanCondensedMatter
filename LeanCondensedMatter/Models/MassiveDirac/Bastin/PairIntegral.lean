@@ -1,5 +1,6 @@
 import LeanCondensedMatter.Models.MassiveDirac.Bastin.PoleHall
 import LeanCondensedMatter.QuantumTheory.TwoBand
+import LeanCondensedMatter.Transport.Streda.InterbandPole
 import Mathlib.Tactic.Ring
 
 set_option linter.style.header false
@@ -73,17 +74,11 @@ theorem targetCenteredInterbandBastinPairIntegral_eq_neg_two_i_mul_poleIntegral
   rw [← intervalIntegral.integral_const_mul]
   apply intervalIntegral.integral_congr
   intro offset _
-  change
-    bastinBandPairContribution 0 1 (oppositeBand band) band e v m px py
-        (bandEnergy band v m px py + offset) broadening =
-      (-2 * Complex.I) *
-        ((Lorentzian.spectralKernel offset broadening : ℂ) *
-          targetCenteredInterbandSpectatorCurrentFactor
-            band e v m px py (offset, broadening))
-  rw [bastinBandPairContribution_opposite_source_eq_lorentzian
-    0 1 band e v m px py (bandEnergy band v m px py + offset) broadening hbroadening]
-  unfold targetCenteredInterbandSpectatorCurrentFactor
-  rw [show bandEnergy band v m px py + offset - bandEnergy band v m px py = offset by ring]
+  dsimp only
+  unfold bastinBandPairContribution
+  rw [scalarBastinBandPairContribution_targetCentered _ _ _ _ _ _ hbroadening,
+    targetCenteredInterbandSpectatorCurrentFactor_eq_interbandPoleRegularFactor]
+  simp only [interbandEnergyGap]
   ring
 
 /-- At nonzero broadening, the concrete massive-Dirac pair integral is the generic isolated

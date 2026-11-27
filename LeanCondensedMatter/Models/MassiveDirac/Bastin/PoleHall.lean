@@ -1,5 +1,6 @@
 import LeanCondensedMatter.Models.MassiveDirac.Bastin.PoleFactor
 import LeanCondensedMatter.QuantumTheory.TwoBand
+import LeanCondensedMatter.Transport.Streda.InterbandPole
 
 set_option linter.style.header false
 
@@ -40,15 +41,8 @@ theorem targetCenteredInterbandSpectatorCurrentFactor_eq_interbandPoleRegularFac
   unfold targetCenteredInterbandSpectatorCurrentFactor
     interbandSpectatorCurrentFactor interbandPoleRegularFactor
   dsimp
-  simp only [retardedSpectralParameter, advancedSpectralParameter]
-  rw [projectorResolventCoefficient_targetOffset_oppositeBand
-      .retarded band v m px py p.1 p.2,
-    projectorResolventCoefficient_targetOffset_oppositeBand
-      .advanced band v m px py p.1 p.2,
-    targetCenteredSourceCoefficient_eq
-      .retarded (interbandEnergyGap band v m px py) p.1 p.2,
-    targetCenteredSourceCoefficient_eq
-      .advanced (interbandEnergyGap band v m px py) p.1 p.2]
+  simp only [retardedSpectralParameter, advancedSpectralParameter,
+    scalarResolventCoefficient_targetCentered, interbandEnergyGap]
 
 end
 

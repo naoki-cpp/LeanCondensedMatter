@@ -30,23 +30,6 @@ open QuantumTheory.Transport QuantumTheory.TwoBand
 open ContinuousLinearMap
 open Filter
 
-/-- The source-band scalar coefficient at energy `E_target + offset` is
-the generic target-centered source resolvent, with the full Rashba band
-energies and their common kinetic shift cancelling only in the gap. -/
-theorem sourceCoefficient_targetCentered
-    (side : SpectralSide) (params : Parameters) (band : TwoBand)
-    (px py offset broadening : ℝ) :
-    scalarResolventCoefficient
-        (spectralParameter side (bandEnergy params band px py + offset) broadening)
-        (bandEnergy params (oppositeBand band) px py) =
-      targetCenteredSourceCoefficient side
-        (interbandEnergyGap params band px py) offset broadening := by
-  unfold targetCenteredSourceCoefficient scalarResolventCoefficient
-    spectralParameter spectralParameterOfRegulator interbandEnergyGap
-  congr 1
-  push_cast
-  ring
-
 /-- At nonzero broadening the opposite-source contribution factorizes
 exactly into the target-band Lorentzian and the generic regular spectator. -/
 theorem bastinBandPairContribution_opposite_source_eq_lorentzian
@@ -61,17 +44,7 @@ theorem bastinBandPairContribution_opposite_source_eq_lorentzian
           (currentBandBlockTrace params μ ν (oppositeBand band) band px py)
           (currentBandBlockTrace params ν μ (oppositeBand band) band px py)
           (offset, broadening) := by
-  unfold bastinBandPairContribution interbandPoleRegularFactor
-  dsimp
-  rw [scalarSpectralDifferenceCoefficient_eq_lorentzian
-      (bandEnergy params band px py)
-      (bandEnergy params band px py + offset) broadening hbroadening]
-  simp only [retardedSpectralParameter, advancedSpectralParameter]
-  rw [sourceCoefficient_targetCentered .retarded params band px py offset broadening,
-    sourceCoefficient_targetCentered .advanced params band px py offset broadening]
-  rw [show bandEnergy params band px py + offset -
-      bandEnergy params band px py = offset by ring]
-  ring
+  exact scalarBastinBandPairContribution_targetCentered _ _ _ _ _ _ hbroadening
 
 /-- Isolated opposite-source Bastin pair integrated over a fixed,
 target-centered energy window. This is not the full Hall response. -/
