@@ -432,6 +432,8 @@ one-body observable boundary.
 ## Algebraic Fock operator coordinates
 
 `SecondQuantization.Common.Algebra.AlgebraicFock` owns the reusable occupation-basis coordinate API.
+The scalar-generic support selection rule `Finsupp.CarriesShift` is owned by
+`Analysis.Algebra.FinsuppSupportShift`; particle-number and energy shifts specialize it.
 For fixed basis labels, `matrixCoeffLinear m n` is the canonical complex-linear functional on
 algebraic-Fock endomorphisms; composition formulas belong there rather than in the trace layer.
 The underlying finite-support coordinate expansion is the scalar-generic theorem in

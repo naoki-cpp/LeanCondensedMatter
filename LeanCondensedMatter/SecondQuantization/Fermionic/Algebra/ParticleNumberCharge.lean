@@ -1,5 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.CreationAnnihilation
-import LeanCondensedMatter.SecondQuantization.Common.Algebra.SupportShift
+import LeanCondensedMatter.Analysis.Algebra.FinsuppSupportShift
 import Mathlib.Data.ZMod.Basic
 
 set_option linter.style.header false
@@ -7,7 +7,7 @@ set_option linter.style.header false
 /-!
 # Fermionic particle-number charge
 
-This module instantiates `Common.CarriesShift` for fermionic creation and annihilation operators,
+This module instantiates `Finsupp.CarriesShift` for fermionic creation and annihilation operators,
 with the occupation particle number as an integer-valued grading. An annihilation operator carries
 shift `-1`, while a creation operator carries shift `+1`.
 
@@ -25,9 +25,9 @@ variable {Mode : Type*} [LinearOrder Mode]
 `m` to a basis state `n` with one fewer particle, `particleNumber m = particleNumber
 n - 1`. -/
 theorem carriesParticleNumberCharge_annihilate (i : Mode) :
-    Common.CarriesShift
+    Finsupp.CarriesShift
       (fun n : Occupation Mode => (particleNumber n : ℤ)) (annihilate i) (-1) := by
-  refine Common.CarriesShift.of_basisState_smul
+  refine Finsupp.CarriesShift.of_single_smul
     (target := removeOccupation i)
     (coeff := fun n : Occupation Mode =>
       if i ∈ n then (fermionSign i n : ℂ) else 0)
@@ -44,9 +44,9 @@ theorem carriesParticleNumberCharge_annihilate (i : Mode) :
 a basis state `n` with one more particle, `particleNumber m = particleNumber n +
 1`. -/
 theorem carriesParticleNumberCharge_create (i : Mode) :
-    Common.CarriesShift
+    Finsupp.CarriesShift
       (fun n : Occupation Mode => (particleNumber n : ℤ)) (create i) 1 := by
-  refine Common.CarriesShift.of_basisState_smul
+  refine Finsupp.CarriesShift.of_single_smul
     (target := insertOccupation i)
     (coeff := fun n : Occupation Mode =>
       if i ∈ n then 0 else (fermionSign i n : ℂ))
@@ -64,15 +64,15 @@ theorem carriesParticleNumberCharge_create (i : Mode) :
 /-- A sum of one creation and one annihilation operator has fermion parity one,
 although its two summands carry opposite integer particle-number shifts. -/
 theorem carriesFermionParity_create_add_annihilate (i : Mode) :
-    Common.CarriesShift
+    Finsupp.CarriesShift
       (fun n : Occupation Mode => ((particleNumber n : ℤ) : ZMod 2))
       (create i + annihilate i) 1 := by
-  have hcreate : Common.CarriesShift
+  have hcreate : Finsupp.CarriesShift
       (fun n : Occupation Mode => ((particleNumber n : ℤ) : ZMod 2))
       (create i) 1 := by
     simpa [Function.comp_def] using
       (carriesParticleNumberCharge_create i).map (Int.castAddHom (ZMod 2))
-  have hannihilate : Common.CarriesShift
+  have hannihilate : Finsupp.CarriesShift
       (fun n : Occupation Mode => ((particleNumber n : ℤ) : ZMod 2))
       (annihilate i) 1 := by
     have hneg : ((-1 : ℤ) : ZMod 2) = 1 := by decide

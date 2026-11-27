@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Analysis.Algebra.FinsuppSupportShift
 import LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.ParticleNumberCharge
 import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.ConcreteMixedTwoPoint
 import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.FreeThermalField
@@ -35,7 +36,7 @@ omit [Fintype Mode] in
 private theorem grandCanonicalGibbsExpectation_eq_zero_of_charge
     (ε : Mode → ℝ) (β μ : ℝ)
     {A : FockSpace Mode →ₗ[ℂ] FockSpace Mode} {q : ℤ}
-    (hA : Common.CarriesShift
+    (hA : Finsupp.CarriesShift
       (fun n : Occupation Mode => (particleNumber n : ℤ)) A q)
     (hq : q ≠ 0) :
     grandCanonicalGibbsExpectation ε β μ A = 0 := by

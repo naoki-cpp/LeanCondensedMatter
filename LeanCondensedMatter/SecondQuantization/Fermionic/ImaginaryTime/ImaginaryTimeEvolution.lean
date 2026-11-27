@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Analysis.Algebra.FinsuppSupportShift
 import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.Hamiltonian
 import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.EnergyShift
 import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.Quartic
@@ -53,8 +54,8 @@ noncomputable def imaginaryTimeEvolve (ε : Mode → ℝ) (τ : ℝ)
 
 /-- Annihilation at mode `i` carries free-energy shift `-ε i`. -/
 theorem carriesEnergyShift_annihilate (ε : Mode → ℝ) (i : Mode) :
-    Common.CarriesShift (fermionEnergy ε) (annihilate i) (-ε i) := by
-  refine Common.CarriesShift.of_basisState_smul
+    Finsupp.CarriesShift (fermionEnergy ε) (annihilate i) (-ε i) := by
+  refine Finsupp.CarriesShift.of_single_smul
     (target := removeOccupation i)
     (coeff := fun n : Occupation Mode =>
       if i ∈ n then (fermionSign i n : ℂ) else 0)
@@ -67,8 +68,8 @@ theorem carriesEnergyShift_annihilate (ε : Mode → ℝ) (i : Mode) :
 
 /-- Creation at mode `i` carries free-energy shift `+ε i`. -/
 theorem carriesEnergyShift_create (ε : Mode → ℝ) (i : Mode) :
-    Common.CarriesShift (fermionEnergy ε) (create i) (ε i) := by
-  refine Common.CarriesShift.of_basisState_smul
+    Finsupp.CarriesShift (fermionEnergy ε) (create i) (ε i) := by
+  refine Finsupp.CarriesShift.of_single_smul
     (target := insertOccupation i)
     (coeff := fun n : Occupation Mode =>
       if i ∈ n then 0 else (fermionSign i n : ℂ))

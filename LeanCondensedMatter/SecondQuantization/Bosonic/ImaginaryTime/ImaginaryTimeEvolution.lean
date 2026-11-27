@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Analysis.Algebra.FinsuppSupportShift
 import LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.CCR
 import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.EnergyShift
 import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.InteractionPicture
@@ -106,8 +107,8 @@ noncomputable def imaginaryTimeEvolve (ε : Mode → ℝ) (τ : ℝ)
 
 /-- Annihilation at mode `i` carries free-energy shift `-ε i`. -/
 theorem carriesEnergyShift_annihilate (ε : Mode → ℝ) (i : Mode) :
-    Common.CarriesShift (freeEigenvalue ε) (annihilate i) (-ε i) := by
-  refine Common.CarriesShift.of_basisState_smul
+    Finsupp.CarriesShift (freeEigenvalue ε) (annihilate i) (-ε i) := by
+  refine Finsupp.CarriesShift.of_single_smul
     (target := removeOccupation i)
     (coeff := fun n : Occupation Mode => (Real.sqrt (n i : ℝ) : ℂ))
     (annihilate_basisState_eq i) ?_
@@ -120,8 +121,8 @@ theorem carriesEnergyShift_annihilate (ε : Mode → ℝ) (i : Mode) :
 
 /-- Creation at mode `i` carries free-energy shift `+ε i`. -/
 theorem carriesEnergyShift_create (ε : Mode → ℝ) (i : Mode) :
-    Common.CarriesShift (freeEigenvalue ε) (create i) (ε i) := by
-  refine Common.CarriesShift.of_basisState_smul
+    Finsupp.CarriesShift (freeEigenvalue ε) (create i) (ε i) := by
+  refine Finsupp.CarriesShift.of_single_smul
     (target := createOccupation i)
     (coeff := fun n : Occupation Mode => (Real.sqrt (n i + 1 : ℝ) : ℂ))
     (create_basisState_eq i) ?_
