@@ -98,10 +98,12 @@ theorem besselJ_zero_sq_add_one_sq_tendsto_zero :
     rw [hcoef] at hc
     have h := (Complex.reCLM.hasFDerivAt.comp r hc.hasFDerivAt).hasDerivAt
     convert h using 1 <;> try rfl
-    change X r - Y r / r =
-      (Complex.besselJ 0 (r : ℂ) - Complex.besselJ 1 (r : ℂ) / (r : ℂ)).re
-    rw [← hXc r, ← hYc r, ← Complex.ofReal_div, ← Complex.ofReal_sub]
-    simp
+    have hre : X r - Y r / r =
+        (Complex.besselJ 0 (r : ℂ) - Complex.besselJ 1 (r : ℂ) / (r : ℂ)).re := by
+      rw [← hXc r, ← hYc r, ← Complex.ofReal_div, ← Complex.ofReal_sub]
+      simp
+    simpa [Complex.reCLM, ContinuousLinearMap.toSpanSingleton,
+      ContinuousLinearMap.compSL] using hre
   have henergy : Filter.Tendsto (fun r : ℝ => X r ^ 2 + Y r ^ 2)
       Filter.atTop (nhds 0) := by
     apply RadialODE.energy_tendsto_zero_of_firstOrderSystem X Y
