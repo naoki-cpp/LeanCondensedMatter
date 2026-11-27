@@ -19,6 +19,25 @@ noncomputable section
 open Set
 open scoped Interval
 
+/-- A strict threshold truncates the integral at an interior cut. The value at the
+cut itself does not matter for Lebesgue integration. -/
+theorem integral_strictThreshold_mul {a b c : ℝ} (f : ℝ → ℝ)
+    (ha : a ≤ c) (hb : c ≤ b) :
+    (∫ x in a..b, (if x < c then 1 else 0) * f x) =
+      ∫ x in a..c, f x := by
+  calc
+    (∫ x in a..b, (if x < c then 1 else 0) * f x) =
+        ∫ x in a..b, Set.indicator {x : ℝ | x ≤ c} f x := by
+      apply intervalIntegral.integral_congr_ae
+      filter_upwards [(volume : Measure ℝ).ae_ne c] with x hne
+      intro _
+      by_cases hlt : x < c
+      · simp [hlt, hlt.le]
+      · have hgt : c < x := lt_of_le_of_ne (not_lt.mp hlt) (Ne.symm hne)
+        simp [hlt, not_le.mpr hgt]
+    _ = ∫ x in a..c, f x := intervalIntegral.integral_indicator ⟨ha, hb⟩
+
+
 /-- A product supported inside the interval has the same interval and full-line integrals.
 No integrability assertion is needed for this equality of total integrals. -/
 theorem integral_mul_eq_integral_of_tsupport_subset_Ioo
