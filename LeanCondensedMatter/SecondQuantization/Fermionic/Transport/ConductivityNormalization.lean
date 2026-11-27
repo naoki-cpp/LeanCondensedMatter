@@ -242,9 +242,9 @@ theorem finiteTimeCrystalConductivity_pointGroup
     simp only [LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul]
     have hcoord (j : I) : direction j (b.toBasis k) = if k = j then 1 else 0 := by
       simp [direction, Module.Basis.coord_apply, Finsupp.single_apply]
-    simp only [hcoord, mul_ite, mul_one, mul_zero]
-    rw [Finset.sum_ite_eq' Finset.univ k (fun j => R i j), if_pos (Finset.mem_univ k)]
-    rfl
+    change R i k = ∑ j, R i j * direction j (b.toBasis k)
+    simp only [hcoord, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq',
+      Finset.mem_univ, if_true]
   exact finiteTimeGeometricConductivity_linearMixing volume system geometry direction
     K q β ω η T hT hHamiltonian p L (e 0) hposition hK R hDirection
 
@@ -279,6 +279,7 @@ theorem finiteTimeCrystalConductivity_isPlanarIsotropic_of_quarterTurn
   classical
   intro geometry direction
   apply (ConductivityTensor.isQuarterTurnInvariant_iff_isPlanarIsotropic _).mp
+  dsimp only [ConductivityTensor.IsQuarterTurnInvariant]
   intro i j
   have h := finiteTimeCrystalConductivity_pointGroup X g b volume system K q β ω η T
     hT hHamiltonian hLift i j
@@ -289,7 +290,7 @@ theorem finiteTimeCrystalConductivity_isPlanarIsotropic_of_quarterTurn
         (!![0, -1; 1, 0] : Matrix (Fin 2) (Fin 2) ℂ) i k := by
     fin_cases i <;> fin_cases k <;> simp
   simp only [hcast] at h
-  simpa only [ConductivityTensor.IsQuarterTurnInvariant, mul_right_comm] using h
+  simpa only [mul_right_comm] using h
 
 end
 end Transport
