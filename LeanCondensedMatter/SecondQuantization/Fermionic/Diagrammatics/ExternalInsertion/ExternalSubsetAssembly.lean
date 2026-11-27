@@ -380,7 +380,7 @@ theorem ExternalInsertionBlockLayout.sum_preconnectedDysonBlock_eq_standardized
     (Combinatorics.standardSlotEquiv T)
   have h := Equiv.sum_comp φ (fun d =>
     if d.1.externalLabel = targetLabels then
-      d.1.dysonAmplitude ε β g targetTimes else 0)
+      ExternalInsertionWickDiagram.dysonAmplitude d.1 ε β g targetTimes else 0)
   convert h using 1
   all_goals
     apply Finset.sum_congr
