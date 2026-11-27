@@ -135,7 +135,7 @@ theorem finiteTimeGeometricConductivity_linearMixing
   let ρ := QuantumTheory.gibbsState system.hamiltonian β
   have hH : Φ system.hamiltonian.1 = system.hamiltonian.1 := by
     rw [hHamiltonian]
-    exact boundedHoppingHamiltonian_siteCovariance K p Φ.toLinearEquiv.toLinearMap hK hUnit
+    exact boundedHoppingHamiltonian_siteCovariance K p Φ.toAlgEquiv.toLinearMap hK hUnit
   have hHinv : Φ.symm system.hamiltonian.1 = system.hamiltonian.1 := by
     calc
       _ = Φ.symm (Φ system.hamiltonian.1) := congrArg Φ.symm hH.symm
@@ -152,7 +152,7 @@ theorem finiteTimeGeometricConductivity_linearMixing
       ρ.expectation_conjStarAlgEquiv_of_fixed W.symm hρ' A
   have hJ (i : I) : Φ.symm (J i) = ∑ k, (R i k : ℂ) • J k := by
     have hcov := boundedDirectionalCurrent_siteCovariance geometry (direction i)
-      (system.hbar : ℂ) (q : ℂ) K p L a hposition Φ.toLinearEquiv.toLinearMap hK hUnit
+      (system.hbar : ℂ) (q : ℂ) K p L a hposition Φ.toAlgEquiv.toLinearMap hK hUnit
     change Φ (boundedDirectionalCurrent geometry ((direction i).comp L)
       (system.hbar : ℂ) (q : ℂ) K) = J i at hcov
     calc
@@ -166,7 +166,7 @@ theorem finiteTimeGeometricConductivity_linearMixing
   have hC (i j : I) : Φ.symm (C i j) =
       ∑ k, ∑ l, ((R i k : ℂ) * (R j l : ℂ)) • C k l := by
     have hcov := boundedMixedDirectionalContact_siteCovariance geometry (direction i) (direction j)
-      (system.hbar : ℂ) (q : ℂ) K p L a hposition Φ.toLinearEquiv.toLinearMap hK hUnit
+      (system.hbar : ℂ) (q : ℂ) K p L a hposition Φ.toAlgEquiv.toLinearMap hK hUnit
     change Φ (boundedMixedDirectionalContact geometry ((direction i).comp L)
       ((direction j).comp L) (system.hbar : ℂ) (q : ℂ) K) = C i j at hcov
     calc
