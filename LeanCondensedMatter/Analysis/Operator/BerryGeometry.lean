@@ -299,16 +299,8 @@ theorem bornFock_inner (μ : κ) {m n : ι} (hmn : m ≠ n)
     exact_mod_cast sub_ne_zero.mpr henergy.symm
   apply (eq_div_iff hgap).2
   unfold hamiltonianDerivativeMatrixElement
-  have hF :
-      inner ℂ (data.eigenbasis m) (data.hamiltonianDerivative μ (data.eigenbasis n)) =
-        ((data.energy n : ℝ) : ℂ) *
-            inner ℂ (data.eigenbasis m) (data.eigenvectorDerivative μ n) -
-          ((data.energy m : ℝ) : ℂ) *
-            inner ℂ (data.eigenbasis m) (data.eigenvectorDerivative μ n) :=
-    (eq_sub_iff_add_eq).2 h
-  rw [hF]
   push_cast
-  ring
+  linear_combination -h
 
 /-- Born--Fock formula in Berry-connection form. -/
 theorem bornFock_berryConnection (μ : κ) {m n : ι} (hmn : m ≠ n)
@@ -383,40 +375,30 @@ noncomputable def berryCurvature (μ ν : κ) (n : ι) : ℝ :=
 theorem berryCurvature_swap (μ ν : κ) (n : ι) :
     data.berryCurvature ν μ n = -data.berryCurvature μ ν n := by
   unfold berryCurvature
-  have him :
-      -(inner ℂ (data.eigenvectorDerivative ν n) (data.eigenvectorDerivative μ n)).im =
-        (inner ℂ (data.eigenvectorDerivative μ n) (data.eigenvectorDerivative ν n)).im := by
-    have h := congrArg Complex.im
-      (inner_conj_symm (𝕜 := ℂ)
-        (data.eigenvectorDerivative μ n) (data.eigenvectorDerivative ν n))
-    simpa only [Complex.conj_im] using h
-  linarith
+  have him := inner_im_symm (𝕜 := ℂ)
+    (data.eigenvectorDerivative ν n) (data.eigenvectorDerivative μ n)
+  change (inner ℂ (data.eigenvectorDerivative ν n) (data.eigenvectorDerivative μ n)).im =
+    -(inner ℂ (data.eigenvectorDerivative μ n) (data.eigenvectorDerivative ν n)).im at him
+  rw [him]
+  ring
 
 /-- The band-diagonal completeness term has zero imaginary part. It therefore does not contribute
 to Berry curvature. -/
 private theorem diagonal_innerProduct_im_eq_zero (μ ν : κ) (n : ι) :
     (inner ℂ (data.eigenvectorDerivative μ n) (data.eigenbasis n) *
       inner ℂ (data.eigenbasis n) (data.eigenvectorDerivative ν n)).im = 0 := by
-  have hμ := congrArg Complex.re (data.differentiatedOrthonormality μ n n)
-  have hν := congrArg Complex.re (data.differentiatedOrthonormality ν n n)
-  simp only [Complex.add_re, Complex.zero_re] at hμ hν
-  have hμsym :
-      (inner ℂ (data.eigenbasis n) (data.eigenvectorDerivative μ n)).re =
-        (inner ℂ (data.eigenvectorDerivative μ n) (data.eigenbasis n)).re := by
-    have h := congrArg Complex.re
-      (inner_conj_symm (𝕜 := ℂ) (data.eigenvectorDerivative μ n) (data.eigenbasis n))
-    simpa only [Complex.conj_re] using h
-  have hνsym :
-      (inner ℂ (data.eigenbasis n) (data.eigenvectorDerivative ν n)).re =
-        (inner ℂ (data.eigenvectorDerivative ν n) (data.eigenbasis n)).re := by
-    have h := congrArg Complex.re
-      (inner_conj_symm (𝕜 := ℂ) (data.eigenvectorDerivative ν n) (data.eigenbasis n))
-    simpa only [Complex.conj_re] using h
-  have hμre : (inner ℂ (data.eigenvectorDerivative μ n) (data.eigenbasis n)).re = 0 := by
+  have hre (ρ : κ) :
+      (inner ℂ (data.eigenbasis n) (data.eigenvectorDerivative ρ n)).re = 0 := by
+    have h := congrArg Complex.re (data.differentiatedOrthonormality ρ n n)
+    simp only [Complex.add_re, Complex.zero_re] at h
+    have hsym := inner_re_symm (𝕜 := ℂ) (data.eigenvectorDerivative ρ n) (data.eigenbasis n)
+    change (inner ℂ (data.eigenvectorDerivative ρ n) (data.eigenbasis n)).re =
+      (inner ℂ (data.eigenbasis n) (data.eigenvectorDerivative ρ n)).re at hsym
+    rw [hsym] at h
     linarith
-  have hνre : (inner ℂ (data.eigenbasis n) (data.eigenvectorDerivative ν n)).re = 0 := by
-    linarith
-  simp [Complex.mul_im, hμre, hνre]
+  have hμ : (inner ℂ (data.eigenvectorDerivative μ n) (data.eigenbasis n)).re = 0 := by
+    exact (inner_re_symm (𝕜 := ℂ) (data.eigenvectorDerivative μ n) (data.eigenbasis n)).trans (hre μ)
+  simp [Complex.mul_im, hμ, hre ν]
 
 /-- The left derivative-state matrix element is the Hermitian-conjugate Born--Fock term. -/
 private theorem innerDerivative_basis_eq_hamiltonianDerivativeMatrixElement_div
@@ -470,25 +452,10 @@ private theorem curvatureInnerTerm_eq_hamiltonianDerivativeMatrixElements
     dsimp [z]
     simp [data.star_hamiltonianDerivativeMatrixElement μ hselfμ,
       data.star_hamiltonianDerivativeMatrixElement ν hselfν]
-  have him :
-      -z.im =
-        ((data.hamiltonianDerivativeMatrixElement μ m n /
-          (((data.energy n - data.energy m : ℝ) : ℂ))) *
-        (data.hamiltonianDerivativeMatrixElement ν n m /
-          (((data.energy n - data.energy m : ℝ) : ℂ)))).im := by
-    have h := congrArg Complex.im hstar
-    simpa only [Complex.conj_im] using h
-  change -2 * z.im =
-    2 * ((data.hamiltonianDerivativeMatrixElement μ m n /
-      (((data.energy n - data.energy m : ℝ) : ℂ))) *
-      (data.hamiltonianDerivativeMatrixElement ν n m /
-        (((data.energy n - data.energy m : ℝ) : ℂ)))).im
-  calc
-    -2 * z.im = 2 * (-z.im) := by ring
-    _ = 2 * ((data.hamiltonianDerivativeMatrixElement μ m n /
-      (((data.energy n - data.energy m : ℝ) : ℂ))) *
-      (data.hamiltonianDerivativeMatrixElement ν n m /
-        (((data.energy n - data.energy m : ℝ) : ℂ)))).im := by rw [him]
+  have him := congrArg Complex.im hstar
+  simp only [Complex.conj_im] at him
+  change -2 * z.im = _
+  linarith
 
 /-- Force/Hamiltonian-derivative matrix-element representation of Berry curvature for a
 nondegenerate band.
