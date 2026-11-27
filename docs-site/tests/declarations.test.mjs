@@ -34,11 +34,12 @@ test("MixedOrderData overview counts and opens both definitions", async () => {
   const overview = new Element("div");
   const names = ["componentMixedPosition", "componentMixedPositionEquiv"];
   let opened;
-  let browsed;
   const explorer = createModuleOverview({
     catalog: names.map((name) => ({ name, module: "LeanCondensedMatter.MixedOrderData",
-      kind: "def", generated: false, statement: "Nat" })), overview,
-    onBrowse(name) { browsed = name; }, onOpenDeclaration(name) { opened = name; },
+      kind: "def", generated: false, statement: "Nat", dependencies: [],
+      dependents: name === names[1] ? [names[0]] : [] })), overview,
+    onBrowse() { assert.fail("The map should open a declaration directly"); },
+    onOpenDeclaration(name) { opened = name; },
   });
   await explorer.render("MixedOrderData");
   assert.match(overview.text(), /Definitions 2/);
@@ -55,7 +56,11 @@ test("MixedOrderData overview counts and opens both definitions", async () => {
   const region = overview.find("button").find((button) => button.className === "research-map-region");
   assert.match(region.text(), /2 declarations/);
   region.click();
-  assert.equal(browsed, "LeanCondensedMatter.MixedOrderData");
+  assert.equal(opened, names[1]);
+  const picker = overview.find("select")[0];
+  picker.value = names[0];
+  picker.change();
+  assert.equal(opened, names[0]);
   assert.match(overview.text(), /Definitions 2/);
   assert.match(overview.text(), /Theorems 0/);
   assert.match(overview.text(), /Total 2/);

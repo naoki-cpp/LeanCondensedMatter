@@ -37,7 +37,7 @@ function drawCluster(canvas, counts, largest) {
   }
 }
 
-export function renderResearchMap(children, onBrowse) {
+export function renderResearchMap(children, entriesFor, onOpenDeclaration) {
   const section = document.createElement("section");
   section.className = "research-map";
   section.setAttribute("aria-labelledby", "research-map-title");
@@ -60,12 +60,36 @@ export function renderResearchMap(children, onBrowse) {
 
   const grid = document.createElement("div");
   grid.className = "research-map-grid";
+  const picker = document.createElement("label");
+  picker.className = "research-map-picker";
+  picker.hidden = true;
+  const caption = document.createElement("span");
+  const select = document.createElement("select");
+  picker.append(caption, select);
+  select.addEventListener("change", () => onOpenDeclaration(select.value));
   const largest = children.reduce((max, child) => Math.max(max, child.counts.total), 1);
   for (const child of children) {
     const button = document.createElement("button");
     button.type = "button";
     button.className = "research-map-region";
-    button.addEventListener("click", () => onBrowse(child.fullName));
+    button.setAttribute("aria-pressed", "false");
+    button.disabled = child.counts.total === 0;
+    button.addEventListener("click", () => {
+      for (const region of grid.children) region.setAttribute("aria-pressed", String(region === button));
+      const entries = entriesFor(child);
+      caption.textContent = `Declaration in ${name.textContent}`;
+      select.replaceChildren(...entries.map((entry) => {
+        const option = document.createElement("option");
+        option.value = entry.name;
+        option.textContent = entry.name;
+        return option;
+      }));
+      picker.hidden = false;
+      const connections = (entry) => entry.dependencies.length + entry.dependents.length;
+      const initial = entries.reduce((best, entry) => connections(entry) > connections(best) ? entry : best);
+      select.value = initial.name;
+      onOpenDeclaration(initial.name);
+    });
     const canvas = document.createElement("canvas");
     canvas.setAttribute("aria-hidden", "true");
     drawCluster(canvas, child.counts, largest);
@@ -77,6 +101,6 @@ export function renderResearchMap(children, onBrowse) {
     button.append(canvas, name, detail);
     grid.append(button);
   }
-  section.append(grid);
+  section.append(grid, picker);
   return section;
 }

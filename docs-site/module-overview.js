@@ -115,7 +115,7 @@ function summaryChip(text) {
 }
 
 export function createModuleOverview({ catalog, modules = [], overview, onBrowse, onOpenDeclaration,
-  allowed = (entry) => declarationAllowed(entry) }) {
+  onMapDeclaration = onOpenDeclaration, allowed = (entry) => declarationAllowed(entry) }) {
   const moduleDescriptionPromises = new Map();
   let hierarchyRenderVersion = 0;
 
@@ -219,7 +219,11 @@ export function createModuleOverview({ catalog, modules = [], overview, onBrowse
     overview.append(header);
 
     if (children.length > 0 && parts.length === 0) {
-      overview.append(renderResearchMap(children, onBrowse));
+      overview.append(renderResearchMap(children, (child) => catalog.filter((entry) => {
+        const name = shortModule(entry.module);
+        const area = shortModule(child.fullName);
+        return !entry.generated && (name === area || name.startsWith(`${area}.`));
+      }).sort((a, b) => a.name.localeCompare(b.name)), onMapDeclaration));
     } else if (children.length > 0) {
       const section = element("section", "overview-section");
       section.append(element("h3", "", "Direct submodules"));
