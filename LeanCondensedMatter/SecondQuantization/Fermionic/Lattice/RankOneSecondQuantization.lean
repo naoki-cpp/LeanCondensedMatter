@@ -77,9 +77,9 @@ theorem occupationConjugate_dGamma_diagonalOperator [Finite Site] (a : Site → 
     ext i
     by_cases hij : i = j
     · subst i
-      simp [Finsupp.diagonalOperator_apply, Common.basisState, LinearMap.sum_apply,
+      simp [Common.basisState, LinearMap.sum_apply,
         Finsupp.finsetSum_apply, matrixUnit_apply, Finsupp.single_apply]
-    · simp [Finsupp.diagonalOperator_apply, Common.basisState, LinearMap.sum_apply,
+    · simp [Common.basisState, LinearMap.sum_apply,
         Finsupp.finsetSum_apply, matrixUnit_apply, Finsupp.single_apply, hij, Ne.symm hij]
   rw [hdiag]
   change AlgebraicFock.occupationConjugate _
