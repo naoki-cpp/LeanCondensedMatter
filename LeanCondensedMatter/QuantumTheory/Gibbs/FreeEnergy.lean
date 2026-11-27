@@ -46,15 +46,9 @@ theorem hasSum_eigenvalue_mul_energy (ρ : DensityOperator H) (Hop : Observable 
       a.1.1 * diagonalExpectationValue Hop.1 Hop.2
         (eigenvectorFamily ρ.spectralTraceClass.compact a))
       (energyExpValue ρ Hop) := by
-  have hsComplex : HasSum
-      (fun a : EigenvectorIndex ρ.op =>
-        ((a.1.1 * diagonalExpectationValue Hop.1 Hop.2
-          (eigenvectorFamily ρ.spectralTraceClass.compact a) : ℝ) : ℂ))
-      (energyExpValue ρ Hop : ℂ) := by
-    have hs := ρ.hasSum_expectation_term Hop.1
-    rw [ρ.expectation_observable] at hs
-    simpa only [Complex.ofReal_mul, coe_diagonalExpectationValue_right, energyExpValue] using hs
-  exact_mod_cast hsComplex
+  exact ρ.isTraceClass.hasSum_real_trace_comp_right_eigenvector ρ.isSelfAdjoint Hop.1 Hop.2
+    (by simpa only [DensityOperator.expectation_apply, energyExpValue] using
+      ρ.expectation_observable Hop)
 
 /-- The Gibbs–Klein / Helmholtz free-energy inequality. -/
 theorem helmholtzFreeEnergy_ge_and_entropy_ne_top [Nontrivial H] [FiniteDimensional ℂ H]
