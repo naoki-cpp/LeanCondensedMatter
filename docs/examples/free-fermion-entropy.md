@@ -15,7 +15,7 @@ remains `H`; `K = H - μN` determines the equilibrium weights, not the real-time
 The theorem uses the existing
 `QuantumTheory.eigenbasisGibbsDensityOperator`, specialized to
 `Common.finiteHilbertBasis` and `Common.grandCanonicalEnergy ε μ`. There is no
-additional finite fermionic density-state constructor. The generic entropy identity gives
+additional finite fermionic density-state constructor. The generic entropy identity, for the dimensionless entropy in this finite Gibbs state, gives
 
 ```text
 S = β ⟨K⟩ + log Ξ.
@@ -41,5 +41,8 @@ SecondQuantization.Fermionic.
   vonNeumannEntropy_finiteGrandCanonicalGibbs_toReal_eq_sum_fermiDirac
 ```
 
+The theorem is defined in [`Fermionic.Thermal.FreeEntropy`](../../LeanCondensedMatter/SecondQuantization/Fermionic/Thermal/FreeEntropy.lean)
+for real `β` and `μ`; the physical positive-temperature interpretation selects positive `β`.
+The left-hand side is the `toReal` of the finite von Neumann entropy, with no `k_B` factor.
 The result is finite-mode and finite-dimensional. It does not claim
 factorization for a single fixed-`N` sector or the thermodynamic limit.
