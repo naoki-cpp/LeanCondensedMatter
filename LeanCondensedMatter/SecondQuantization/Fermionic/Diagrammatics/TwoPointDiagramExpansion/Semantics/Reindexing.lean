@@ -1,5 +1,7 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Semantics.Pairing
-import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointWickDiagram
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.Diagram
+import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.FieldLabel
+import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.QuarticInteraction
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedOrderPairing
 
 set_option linter.style.header false
@@ -17,6 +19,11 @@ namespace Fermionic
 
 open Combinatorics
 open Common
+
+/-- A fermionic two-point diagram with one annihilation leg, one creation leg, and quartic
+interaction vertices. -/
+abbrev TwoPointWickDiagram (Mode : Type*) (N : ℕ) (S : Finset (Fin N)) :=
+  Common.TwoPointDiagram (ExternalFieldLabel Mode) (QuarticVertexLabel Mode) N S
 
 variable {Mode : Type*}
 
