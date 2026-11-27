@@ -4,6 +4,7 @@ const PROJECT_PREFIX = "LeanCondensedMatter.";
 const SOURCE_ROOT_URL = `${REPOSITORY_ROOT_URL}/${PROJECT_NAME}`;
 
 import { declarationAllowed, declarationCounts } from "./declaration-model.js";
+import { renderResearchMap } from "./research-map.js";
 
 function element(tag, className = "", text = "") {
   const node = document.createElement(tag);
@@ -217,7 +218,9 @@ export function createModuleOverview({ catalog, modules = [], overview, onBrowse
     header.append(summary);
     overview.append(header);
 
-    if (children.length > 0) {
+    if (children.length > 0 && parts.length === 0) {
+      overview.append(renderResearchMap(children, onBrowse));
+    } else if (children.length > 0) {
       const section = element("section", "overview-section");
       section.append(element("h3", "", "Direct submodules"));
       const grid = element("div", "module-tree-grid");

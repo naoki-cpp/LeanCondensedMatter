@@ -16,7 +16,8 @@ test("definition filter and generated declarations", () => {
 });
 
 class Element {
-  constructor(tag) { this.tag = tag; this.children = []; this.textContent = ""; }
+  constructor(tag) { this.tag = tag; this.children = []; this.textContent = ""; this.style = {}; }
+  getContext() { return null; }
   append(...children) { this.children.push(...children); }
   replaceChildren(...children) { this.children = children; }
   setAttribute() {}
@@ -27,15 +28,17 @@ class Element {
 }
 
 test("MixedOrderData overview counts and opens both definitions", async () => {
-  globalThis.document = { createElement: (tag) => new Element(tag) };
+  globalThis.document = { createElement: (tag) => new Element(tag), createTextNode: (text) => text };
+  globalThis.window = { devicePixelRatio: 1 };
   globalThis.fetch = async () => ({ ok: true, text: async () => "/-! # Mixed order data -/" });
   const overview = new Element("div");
   const names = ["componentMixedPosition", "componentMixedPositionEquiv"];
   let opened;
+  let browsed;
   const explorer = createModuleOverview({
     catalog: names.map((name) => ({ name, module: "LeanCondensedMatter.MixedOrderData",
       kind: "def", generated: false, statement: "Nat" })), overview,
-    onBrowse() {}, onOpenDeclaration(name) { opened = name; },
+    onBrowse(name) { browsed = name; }, onOpenDeclaration(name) { opened = name; },
   });
   await explorer.render("MixedOrderData");
   assert.match(overview.text(), /Definitions 2/);
@@ -48,6 +51,11 @@ test("MixedOrderData overview counts and opens both definitions", async () => {
     assert.equal(opened, name);
   }
   await explorer.render("LeanCondensedMatter");
+  assert.match(overview.text(), /Research map/);
+  const region = overview.find("button").find((button) => button.className === "research-map-region");
+  assert.match(region.text(), /2 declarations/);
+  region.click();
+  assert.equal(browsed, "LeanCondensedMatter.MixedOrderData");
   assert.match(overview.text(), /Definitions 2/);
   assert.match(overview.text(), /Theorems 0/);
   assert.match(overview.text(), /Total 2/);
