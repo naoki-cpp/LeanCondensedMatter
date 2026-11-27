@@ -231,10 +231,10 @@ proof-routing wrappers.
 lets the existing ordered `Pairing` API carry fermionic crossing data without a separate parity
 witness. At `E = 1` it has the same external/interaction shape as the established two-point
 diagram data, but the mature two-point representation remains independent so its definitional
-normal forms are preserved. A bridge is introduced only when a concrete higher-point consumer needs
-semantic transport between the two representations. Odd external sectors are outside this
-paired-diagram representation and should be handled by a separate vanishing statement when a
-physical consumer requires them. Flattened leg order is explicit: external insertions come first,
+normal forms are preserved. The fixed-leg equivalence transports the diagram data and vertex graph; the fermionic bridge
+also identifies the mixed-time pairings, field families and Dyson amplitudes. Odd external
+sectors are outside this paired-diagram representation and their subset moments and connected
+series vanish by fermion parity. Flattened leg order is explicit: external insertions come first,
 followed by interaction vertices in increasing ambient index and local legs in `0,1,2,3` order.
 This fixed enumeration, rather than an arbitrary finite-type equivalence, is the ordering boundary
 used by later fermionic crossing/sign transport.
@@ -365,8 +365,10 @@ leg product reaches the sequence through the Common row-major product theorem an
 
 The finite-mode fermionic formal and analytic partition-function endpoints belong to
 `Fermionic.Diagrammatics.LinkedCluster`; the two-point endpoint belongs to
-`Fermionic.Diagrammatics.TwoPointDiagramExpansion`. Their declarations,
-hypotheses, and higher-point limitations are documented in the
+`Fermionic.Diagrammatics.TwoPointDiagramExpansion`. The arbitrary-external signed subset
+moment and connected source-cumulant endpoints belong to
+`Fermionic.Diagrammatics.ExternalInsertion.ExternalSubsetMoment`. Their declarations,
+hypotheses, and analytic limitations are documented in the
 [linked-cluster roadmap](../roadmaps/linked-cluster-theorem.md) and
 [completed theorem index](../completed.md).
 
@@ -378,9 +380,12 @@ The statistics-independent algebraic boundary is owned by `Combinatorics`.
 power series into that representation, and `MultiplicativeWeight` expresses factorization over
 connected components. The formal linked-cluster bridge consumes these objects directly.
 
-There is no separate source-functional wrapper in the current API. Pre-normalized external-insertion
-moments, Grassmann variables, and arbitrary higher-point source semantics remain downstream research
-targets and should introduce a source abstraction only when concrete consumers require one.
+There is no separate analytic source-functional wrapper in the current API. Finite-mode
+external-insertion subset moments and their Koszul-weighted source cumulants are implemented
+as formal power series; the physical-H normalization and arbitrary-`μ` connected identity
+are proved for `0 ≤ β`. Analytic generating functionals, Grassmann source variables, and
+source derivatives remain downstream research targets and should introduce a source abstraction
+only when concrete consumers require one.
 
 ## Fermionic field/current boundary
 
