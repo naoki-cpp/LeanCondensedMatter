@@ -20,10 +20,10 @@ variable {ι α : Type*} {β : ι → Type*}
   [Fintype α] [LinearOrder α] [∀ B, Fintype (β B)] [∀ B, LinearOrder (β B)]
 
 private noncomputable def PairingOn.componentPairEndpointEquiv
-    (componentPairing : ∀ B, PairingOn (β B)) :
-    (Σ B, (componentPairing B).NormalizedPair) × Fin 2 ≃ Σ B, β B :=
-  (Equiv.sigmaProdDistrib (fun B => (componentPairing B).NormalizedPair) (Fin 2)).trans
-    (Equiv.sigmaCongrRight fun B => (componentPairing B).pairEndpointEquiv)
+    (componentPairing : ∀ B, PairingOn (β B)) (positionEquiv : (Σ B, β B) ≃ α) :
+    (Σ B, (componentPairing B).NormalizedPair) × Fin 2 ≃ α :=
+  ((Equiv.sigmaProdDistrib (fun B => (componentPairing B).NormalizedPair) (Fin 2)).trans
+    (Equiv.sigmaCongrRight fun B => (componentPairing B).pairEndpointEquiv)).trans positionEquiv
 
 omit [Fintype α] [LinearOrder α] in
 private theorem PairingOn.componentPairEndpointEquiv_partner
@@ -34,8 +34,8 @@ private theorem PairingOn.componentPairEndpointEquiv_partner
         positionEquiv ⟨B, (componentPairing B).partner p⟩)
     (x : Σ B, (componentPairing B).NormalizedPair) :
     global.partner
-        (positionEquiv (PairingOn.componentPairEndpointEquiv componentPairing (x, 0))) =
-      positionEquiv (PairingOn.componentPairEndpointEquiv componentPairing (x, 1)) := by
+        (PairingOn.componentPairEndpointEquiv componentPairing positionEquiv (x, 0)) =
+      PairingOn.componentPairEndpointEquiv componentPairing positionEquiv (x, 1) := by
   rcases x with ⟨B, pr⟩
   exact (componentPairing B).partner_map_normalizedPair global
     (fun p => positionEquiv ⟨B, p⟩) (hpartner B) pr
@@ -50,7 +50,7 @@ noncomputable def PairingOn.normalizedPairSigmaEquiv
         positionEquiv ⟨B, (componentPairing B).partner p⟩) :
     (Σ B, (componentPairing B).NormalizedPair) ≃ global.NormalizedPair :=
   global.normalizedPairEquivOfEndpointEquiv
-    (PairingOn.componentPairEndpointEquiv componentPairing) positionEquiv
+    (PairingOn.componentPairEndpointEquiv componentPairing positionEquiv)
     (global.componentPairEndpointEquiv_partner componentPairing positionEquiv hpartner)
 
 /-- If each component position map is strictly monotone, the component-pair equivalence preserves
@@ -67,9 +67,9 @@ theorem PairingOn.normalizedPairSigmaEquiv_apply_of_strictMono
       (positionEquiv ⟨B, pr.1.1⟩, positionEquiv ⟨B, pr.1.2⟩) := by
   change
     (global.normalizedPairOfEndpointEquiv
-      (PairingOn.componentPairEndpointEquiv componentPairing) positionEquiv ⟨B, pr⟩).1 = _
+      (PairingOn.componentPairEndpointEquiv componentPairing positionEquiv) ⟨B, pr⟩).1 = _
   apply global.normalizedPairOfEndpointEquiv_pair_eq_of_lt
-    (PairingOn.componentPairEndpointEquiv componentPairing) positionEquiv
+    (PairingOn.componentPairEndpointEquiv componentPairing positionEquiv)
     (global.componentPairEndpointEquiv_partner componentPairing positionEquiv hpartner)
   exact hmono B ((componentPairing B).pairs_normalized pr.2)
 
