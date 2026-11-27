@@ -363,7 +363,7 @@ at the result boundaries that consume them; the regime package is not a replacem
 domain or for generic denominator APIs.
 
 The Hall and longitudinal Středa radial integrals use the shared integration law for
-`inPlaneLadderAction` from `Vertex.InPlaneLadder`. Their fixed-disorder zero-broadening proofs use
+`inPlaneLadderAction` from `Transport.Disorder.InPlaneLadder`. Their fixed-disorder zero-broadening proofs use
 the existing full-vector convergence law for the same action. The ordered Hall sign and the
 longitudinal bare RR/AA remainder remain with their respective response constructions.
 
@@ -385,8 +385,8 @@ Středa remainder merely to obtain a radial logarithmic primitive. The RR/AA
 same-side remainder stays in its own response-specific module.
 
 `Disorder.Vertex.BornDyson.DressedCurrent` owns the source-indexed dressed current,
-its source evaluations, and its fixed-disorder zero-broadening insertion. Continuity of the
-in-plane rotation and current realization belongs to `Vertex.InPlaneLadder` and `Model.Operator`.
+its source evaluations, and its fixed-disorder zero-broadening insertion. Continuity of the in-plane coefficient action belongs to `Transport.Disorder.InPlaneLadder`;
+the Pauli current realization belongs to `Model.Operator`.
 Středa trace adapters consume these results; the same-side remainder and conductivity normalization
 remain separate.
 

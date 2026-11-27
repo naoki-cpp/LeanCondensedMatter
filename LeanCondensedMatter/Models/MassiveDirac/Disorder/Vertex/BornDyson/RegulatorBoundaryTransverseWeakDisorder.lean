@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.Vertex.BornDyson.RegulatorBoundaryWeakDisorder
+import LeanCondensedMatter.Transport.Disorder.InPlaneLadder
 import Mathlib.Tactic.FieldSimp
 import Mathlib.Tactic.FunProp
 import Mathlib.Tactic.Linarith

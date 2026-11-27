@@ -8,29 +8,18 @@ import Mathlib.Tactic.Ring
 set_option linter.style.header false
 
 /-!
-# In-plane massive-Dirac ladder coefficient algebra
+# Isotropic in-plane ladder coefficient algebra
 
-This module owns the exact two-component algebra needed once a massive-Dirac retarded-advanced
-current rung has been reduced to the in-plane Pauli span. For the repository orientation
-`Gᴿ Γ Gᴬ`, a rung vector `r = (X,Y)` acts through the matrix
-
-```text
-[[X, -Y], [Y, X]].
-```
-
-The rung, bare-`σₓ` source, and solved fixed point are standard `Fin 2 → ℂ` vectors. Coordinate
-projections remain available where downstream physics needs a concrete `x` or `y` component, but
-the canonical action, determinant, generic resummation bridge, and convergence statements consume
-the complete vector. This file does not define the Born-Dyson momentum integrals that supply the
-rung, take any broadening/disorder limit, identify a transport lifetime, or insert the result into
-conductivity.
+A two-component rung `r = (X,Y)` acts through the matrix
+`[[X, -Y], [Y, X]]`. The canonical action, determinant, generic
+resummation bridge, and convergence statements use the full coefficient
+vector. The fixed-point solution for the first Cartesian basis vector is
+explicit when the shifted determinant is nonzero.
 -/
 
-namespace QuantumTheory.Models.MassiveDirac
+namespace QuantumTheory.Transport
 
 noncomputable section
-
-open QuantumTheory.Transport
 
 open Filter
 open scoped Interval
@@ -41,7 +30,7 @@ abbrev InPlaneCoefficientVector := Fin 2 → ℂ
 /-- In-plane coefficient vector with components `(x,y)`. -/
 def inPlaneCoefficientVector (x y : ℂ) : InPlaneCoefficientVector := ![x, y]
 
-/-- Repository-oriented isotropic in-plane matrix derived from a rung vector `(X,Y)`. -/
+/-- Isotropic in-plane matrix derived from a rung vector `(X,Y)`. -/
 def inPlaneRotationMatrix (rung : InPlaneCoefficientVector) : Matrix (Fin 2) (Fin 2) ℂ :=
   !![rung 0, -(rung 1); rung 1, rung 0]
 
@@ -61,12 +50,12 @@ def inPlaneRotationMatrix (rung : InPlaneCoefficientVector) : Matrix (Fin 2) (Fi
     inPlaneRotationMatrix rung 1 1 = rung 0 := by
   simp [inPlaneRotationMatrix]
 
-/-- Repository-oriented in-plane ladder action on the complete coefficient vector. -/
+/-- In-plane ladder action on the complete coefficient vector. -/
 def inPlaneLadderAction
     (rung coefficients : InPlaneCoefficientVector) : InPlaneCoefficientVector :=
   (inPlaneRotationMatrix rung).mulVec coefficients
 
-/-- The two-component massive-Dirac ladder as a bounded complex-linear endomorphism, suitable for
+/-- The two-component ladder as a bounded complex-linear endomorphism, suitable for
 the generic ladder resummation API. -/
 noncomputable def inPlaneLadderCLM
     (rung : InPlaneCoefficientVector) :
@@ -159,7 +148,7 @@ def inPlaneShiftMatrix (rung : InPlaneCoefficientVector) : Matrix (Fin 2) (Fin 2
   simp [inPlaneShiftMatrix, inPlaneRotationMatrix, inPlaneLadderDeterminant]
   ring
 
-/-- The model determinant condition is exactly sufficient for the generic shifted-ladder
+/-- The determinant condition is exactly sufficient for the generic shifted-ladder
 endomorphism to be a unit on the represented in-plane coefficient space. -/
 theorem inPlaneLadderShift_isUnit
     (rung : InPlaneCoefficientVector) (hdet : inPlaneLadderDeterminant rung ≠ 0) :
@@ -187,11 +176,11 @@ theorem tendsto_inPlaneLadderDeterminant
     (((tendsto_const_nhds : Tendsto (fun _ : ι => (1 : ℂ)) l (nhds 1)).sub
       (hcoord 0)).pow 2).add ((hcoord 1).pow 2)
 
-/-- Bare `σₓ` source represented as one in-plane coefficient vector. -/
+/-- First Cartesian basis vector as the bare source. -/
 def inPlaneLadderBareXSource : InPlaneCoefficientVector :=
   inPlaneCoefficientVector 1 0
 
-/-- Exact coefficient vector of the bare-`σₓ` ladder fixed point. -/
+/-- Exact coefficient vector of the ladder fixed point for the first Cartesian basis vector. -/
 def inPlaneLadderSolvedVector (rung : InPlaneCoefficientVector) : InPlaneCoefficientVector :=
   inPlaneCoefficientVector
     ((1 - rung 0) / inPlaneLadderDeterminant rung)
@@ -268,4 +257,4 @@ theorem inPlaneLadderSolvedVector_zero_transverse
 
 end
 
-end QuantumTheory.Models.MassiveDirac
+end QuantumTheory.Transport

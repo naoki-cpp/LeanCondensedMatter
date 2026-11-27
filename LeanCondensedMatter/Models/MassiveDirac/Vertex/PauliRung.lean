@@ -1,6 +1,6 @@
 import LeanCondensedMatter.Analysis.Fourier.AngularHarmonics
 import LeanCondensedMatter.Models.MassiveDirac.Model.Operator
-import LeanCondensedMatter.Models.MassiveDirac.Vertex.InPlaneLadder
+import LeanCondensedMatter.Transport.Disorder.InPlaneLadder
 import Mathlib.Tactic.Ring
 
 set_option linter.style.header false
