@@ -6,7 +6,7 @@ import LeanCondensedMatter.Crystal.Lattice
 import LeanCondensedMatter.Crystal.PointGroup
 import LeanCondensedMatter.Crystal.LatticePointGroup.Gram
 import LeanCondensedMatter.Crystal.LatticePointGroup.PlanarReduction
-import LeanCondensedMatter.Crystal.LatticePointGroup.PlanarGram
+import LeanCondensedMatter.Analysis.Matrix.PlanarGram
 import LeanCondensedMatter.Crystal.Classification
 import LeanCondensedMatter.Crystal.Brillouin
 
