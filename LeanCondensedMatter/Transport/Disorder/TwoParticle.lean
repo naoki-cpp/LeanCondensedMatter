@@ -60,8 +60,8 @@ theorem averagedOperatorInsertion_eq_mean_add_connected
   let B : (H →L[ℂ] H) →ₗ[ℂ] (H →L[ℂ] H) →ₗ[ℂ] (H →L[ℂ] H) :=
     (LinearMap.mul ℂ (H →L[ℂ] H)).comp
       ((LinearMap.mul ℂ (H →L[ℂ] H)).flip vertex)
-  exact LinearMap.finiteWeightedAverage_bilinear_eq_mean_add_centered
-    ensemble.probability ensemble.probability_sum B left right
+  exact LinearMap.finiteWeightedSum_bilinear_eq_mean_add_centered
+    (fun ω => (ensemble.probability ω : ℂ)) ensemble.probability_sum_complex B left right
 
 /-- Exact two-Green insertion at independently supplied energies and signed regulators. -/
 noncomputable def averagedTwoGreenInsertionOfRegulators

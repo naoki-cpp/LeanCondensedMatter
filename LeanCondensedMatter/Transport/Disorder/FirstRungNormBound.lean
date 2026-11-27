@@ -67,8 +67,8 @@ theorem firstBornTwoGreenRungOfRegulators_eq_average_firstDyson
   have hfactor :
       freeLeft * ensemble.average term * freeRight =
         ensemble.average (fun ω => freeLeft * term ω * freeRight) := by
-    simpa [FiniteDisorderEnsemble.average] using
-      (LinearMap.map_finiteWeightedAverage ensemble.probability
+    simpa [FiniteDisorderEnsemble.average, LinearMap.finiteWeightedAverage] using
+      (LinearMap.map_finiteWeightedSum (fun ω => (ensemble.probability ω : ℂ))
       ((ContinuousLinearMap.mulLeftRight ℂ (H →L[ℂ] H)) freeLeft freeRight).toLinearMap term)
   have hterm :
       ensemble.exactSecondMoment (freeLeft * vertex * freeRight) = ensemble.average term := by

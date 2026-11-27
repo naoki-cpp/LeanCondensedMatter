@@ -57,6 +57,10 @@ noncomputable def configurationSystem
   hbar := hbar
   hbar_pos := hbar_pos
 
+/-- The normalized real probabilities also sum to one after complex scalar extension. -/
+theorem probability_sum_complex : (∑ ω, (ensemble.probability ω : ℂ)) = 1 := by
+  simpa using congrArg (fun x : ℝ => (x : ℂ)) ensemble.probability_sum
+
 /-- Exact normalized finite disorder averaging for any complex module. -/
 noncomputable def average {E : Type*} [AddCommMonoid E] [Module ℂ E] :
     (Ω → E) →ₗ[ℂ] E :=
@@ -66,7 +70,8 @@ noncomputable def average {E : Type*} [AddCommMonoid E] [Module ℂ E] :
 @[simp]
 theorem average_const {E : Type*} [AddCommMonoid E] [Module ℂ E] (value : E) :
     ensemble.average (fun _ => value) = value :=
-  LinearMap.finiteWeightedAverage_const ensemble.probability ensemble.probability_sum value
+  LinearMap.finiteWeightedSum_const (fun ω => (ensemble.probability ω : ℂ))
+    ensemble.probability_sum_complex value
 
 /-- A uniform impurity-norm upper bound is automatically nonnegative in a
 normalized finite disorder ensemble. -/
