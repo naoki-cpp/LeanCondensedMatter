@@ -1126,7 +1126,8 @@ theorem orderedExternalInsertionTimedEvents_paired {n : ℕ}
     case' inl.inl a b => fin_cases a <;> fin_cases b
     case' inl.inr a b => fin_cases a
     case' inr.inl a b => fin_cases b
-    all_goals simp_all [block, pairedExternalEventBlock] <;> aesop
+    all_goals simp_all [block, pairedExternalEventBlock]
+    all_goals aesop
   have hwithin (a : ExternalInsertionTimedEvent 1 n) :
       (block a).Pairwise r₂ := by
     cases a with
@@ -1147,8 +1148,9 @@ theorem orderedExternalInsertionTimedEvents_paired {n : ℕ}
       simp_all [block, pairedExternalEventBlock, r₁, r₂, times,
         externalInsertionTimedEventBeforeOrEqual, stableTimedEventBeforeOrEqual_iff,
         externalInsertionTimedEventTime, externalInsertionTimedEventRank,
-        pairedExternalTimes] <;>
-        aesop (add safe tactic (by
+        pairedExternalTimes]
+    all_goals
+      aesop (add safe tactic (by
           first
           | omega
           | exact (Fin.strictMono_castAdd n).monotone (show (0 : Fin 4) ≤ 2 by decide)
