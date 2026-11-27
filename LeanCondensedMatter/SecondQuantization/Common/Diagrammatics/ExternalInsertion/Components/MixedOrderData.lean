@@ -49,19 +49,15 @@ theorem ExternalInsertionDiagram.componentOrderedDiagram_pairing_crossingCount
     (B : d.vertexGraph.componentPartition.parts) :
     (d.componentOrderedDiagram B).pairing.crossingCount =
       (d.restrictComponent B).pairing.crossingCount := by
-  classical
   let T := interactionSector
     (B : Finset (ExternalInsertionVertex E (Finset.univ : Finset (Fin n))))
-  let r := d.restrictComponent B
-  have h : 2 * T.card + d.externalPairCount B =
-      2 * (Finset.univ : Finset (Fin T.card)).card + d.externalPairCount B := by simp
-  change PairingOn.crossingCount (r.pairing.transport
-      (externalInsertionLegCongr (E := d.externalPairCount B)
-        (standardSlotEquiv T)).symm) = r.pairing.crossingCount
-  rw [externalInsertionLegCongr_standardize (E := d.externalPairCount B) T]
-  have hcast := Pairing.cast_eq_transport h r.pairing
-  rw [← hcast]
-  exact Pairing.cast_crossingCount h r.pairing
+  let e := standardSlotEquiv T
+  exact (PairingOn.crossingCount_eq_of_partnerEquiv_strictMono
+    (d.restrictComponent B).pairing (d.componentOrderedDiagram B).pairing
+    (externalInsertionLegCongr (E := d.externalPairCount B) e)
+    ((d.restrictComponent B).slotCongr_pairing_partner e)
+    (fun a b hab =>
+      (externalInsertionLegCongr_standardize_lt_iff (E := d.externalPairCount B) T a b).2 hab)).symm
 
 /-- External times of one component in its canonical increasing external-slot order. -/
 noncomputable def ExternalInsertionDiagram.componentExternalTime {E n : ℕ}
@@ -162,20 +158,18 @@ private theorem ExternalInsertionDiagram.componentOrderedLeg_fixedPosition {E n 
   rw [← externalInsertionLegCongr_symm]
   cases leg with
   | inl e =>
-      simp only [externalInsertionLegCongr, Equiv.trans_apply, Equiv.apply_symm_apply,
-        Equiv.sumCongr_apply, Sum.map_inl, Equiv.refl_apply]
       change _ = d.componentDiagramLeg B
-        (externalInsertionExternalLeg (d.externalPairCount B) T e)
-      rw [d.componentDiagramLeg_external B]
+        (externalInsertionLegCongr (Combinatorics.standardSlotEquiv T).symm
+          (externalInsertionExternalLeg (d.externalPairCount B) _ e))
+      rw [externalInsertionLegCongr_externalLeg, d.componentDiagramLeg_external B]
       rfl
   | inr vl =>
       rcases vl with ⟨v, l⟩
-      simp only [externalInsertionLegCongr, Equiv.trans_apply, Equiv.apply_symm_apply,
-        Equiv.sumCongr_apply, Sum.map_inr, Equiv.prodCongr_apply]
       change _ = d.componentDiagramLeg B
-        (externalInsertionInteractionLeg (E := d.externalPairCount B)
-          (T.orderIsoOfFin rfl v.1) l)
-      rw [d.componentDiagramLeg_interaction B]
+        (externalInsertionLegCongr (E := d.externalPairCount B)
+          (Combinatorics.standardSlotEquiv T).symm
+          (externalInsertionInteractionLeg v l))
+      rw [externalInsertionLegCongr_interactionLeg, d.componentDiagramLeg_interaction B]
       rfl
 
 /-- The diagram partner map on canonical legs commutes with the canonical component-leg embedding. -/
