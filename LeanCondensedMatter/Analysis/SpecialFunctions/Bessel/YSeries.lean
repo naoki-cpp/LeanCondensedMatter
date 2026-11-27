@@ -97,9 +97,14 @@ theorem norm_besselY0HarmonicTerm_le_expTerm (z : ℂ) (n : ℕ) :
   have hH := harmonic_real_nonneg_le n
   have hHfac : (harmonic n : ℝ) ≤ (n.factorial : ℝ) :=
     hH.2.trans (by exact_mod_cast Nat.self_le_factorial n)
-  simpa only [besselY0HarmonicTerm, pow_two, norm_neg, norm_mul, one_mul] using
-    norm_factorial_normalized_term_le (harmonic n : ℝ) 1 (-(z / 2) ^ 2) n n
-      hH.1 (by simpa only [one_mul] using hHfac)
+  have hb : (harmonic n : ℝ) ≤ 1 * (n.factorial : ℝ) := by
+    rw [one_mul]
+    exact hHfac
+  have h := norm_factorial_normalized_term_le (harmonic n : ℝ) 1 (-(z / 2) ^ 2) n n hH.1 hb
+  rw [norm_neg, norm_pow, one_mul] at h
+  unfold besselY0HarmonicTerm
+  rw [pow_two (n.factorial : ℂ)]
+  exact h
 
 /-- The DLMF harmonic-number correction is absolutely summable for
 **every** complex argument, including the origin. No informal
@@ -192,10 +197,11 @@ theorem norm_besselY1HarmonicTerm_le_two_expTerm (z : ℂ) (n : ℕ) :
     ‖besselY1HarmonicTerm z n‖ ≤
       2 * ((‖z / 2‖ ^ 2) ^ n / (n.factorial : ℝ)) := by
   have hH := besselY1Harmonic_nonneg_le_factorial n
-  simpa only [besselY1HarmonicTerm, Complex.ofReal_add, norm_neg, norm_pow] using
-    norm_factorial_normalized_term_le
-      ((harmonic n : ℝ) + (harmonic (n + 1) : ℝ)) 2 (-(z / 2) ^ 2) n (n + 1)
-      hH.1 hH.2
+  have h := norm_factorial_normalized_term_le
+    ((harmonic n : ℝ) + (harmonic (n + 1) : ℝ)) 2 (-(z / 2) ^ 2) n (n + 1)
+    hH.1 hH.2
+  rw [norm_neg, norm_pow] at h
+  exact h
 
 /-- The order-one second-kind Bessel harmonic correction converges
 absolutely everywhere in the complex plane. -/
