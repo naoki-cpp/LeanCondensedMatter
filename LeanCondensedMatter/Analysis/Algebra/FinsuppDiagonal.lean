@@ -77,10 +77,10 @@ theorem diagonalOperator_single (a : Config → R) (c : Config) :
   classical
   ext i
   rw [diagonalOperator_apply, Finsupp.smul_apply, smul_eq_mul]
-  by_cases h : c = i
+  by_cases h : i = c
   · subst i
     rfl
-  · rw [Finsupp.single_eq_of_ne h.symm, mul_zero, mul_zero]
+  · rw [Finsupp.single_eq_of_ne h, mul_zero, mul_zero]
 
 /-- Pointwise multiplication is represented by composition. -/
 theorem diagonalOperator_comp (a b : Config → R) :
