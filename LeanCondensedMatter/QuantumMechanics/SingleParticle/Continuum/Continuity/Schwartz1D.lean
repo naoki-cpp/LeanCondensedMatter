@@ -9,9 +9,9 @@ set_option linter.style.header false
 # Schrödinger continuity for Schwartz spatial wavefunctions
 
 This module specializes the one-dimensional continuum continuity kernel to spatial Schwartz
-wavefunctions. The first and second spatial derivatives remain in Schwartz space, so the pointwise
-and interval-weak continuity theorems no longer need coordinatewise spatial differentiability
-hypotheses supplied by callers.
+wavefunctions. The first and second spatial derivatives remain in Schwartz space, which
+supplies the spatial differentiability hypotheses of the pointwise and interval-weak continuity
+theorems.
 
 Time differentiability and the pointwise Schrödinger equation remain explicit. This keeps the
 continuity argument independent of any self-adjoint unbounded-Hamiltonian construction on `L²`.
