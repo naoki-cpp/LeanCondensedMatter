@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Models.MassiveDirac.Bastin.RadialEnergyBridge
+import LeanCondensedMatter.QuantumTheory.TwoBand
 import Mathlib.Tactic.Linarith
 import Mathlib.Tactic.NormNum
 import Mathlib.Tactic.Ring
@@ -18,13 +19,13 @@ namespace QuantumTheory.Models.MassiveDirac
 
 noncomputable section
 
-open QuantumTheory.Transport
+open QuantumTheory.Transport QuantumTheory.TwoBand
 
 open MeasureTheory QuantumTheory.Transport
 
 /-- Target-centered regular pole integral with the physical zero-temperature occupation inserted. -/
 noncomputable def targetCenteredZeroTemperatureInterbandSpectatorCurrentPoleIntegral
-    (band : Band) (e v m px py fermiEnergy radius broadening : ℝ) : ℂ :=
+    (band : TwoBand) (e v m px py fermiEnergy radius broadening : ℝ) : ℂ :=
   ∫ offset in -radius..radius,
     ((zeroTemperatureOccupation fermiEnergy
         (bandEnergy band v m px py + offset) : ℝ) : ℂ) *
@@ -35,7 +36,7 @@ noncomputable def targetCenteredZeroTemperatureInterbandSpectatorCurrentPoleInte
 /-- Target-centered interband Bastin Hall pair with the physical zero-temperature occupation
 inserted before the energy integration. -/
 noncomputable def targetCenteredZeroTemperatureInterbandBastinPairIntegral
-    (band : Band) (e v m px py fermiEnergy radius broadening : ℝ) : ℂ :=
+    (band : TwoBand) (e v m px py fermiEnergy radius broadening : ℝ) : ℂ :=
   ∫ offset in -radius..radius,
     ((zeroTemperatureOccupation fermiEnergy
         (bandEnergy band v m px py + offset) : ℝ) : ℂ) *
@@ -44,7 +45,7 @@ noncomputable def targetCenteredZeroTemperatureInterbandBastinPairIntegral
 
 /-- For nonzero broadening, occupation weighting preserves the exact `-2 i` pole factorization. -/
 theorem targetCenteredZeroTemperatureInterbandBastinPairIntegral_eq_neg_two_i_mul_poleIntegral
-    (band : Band) (e v m px py fermiEnergy radius broadening : ℝ)
+    (band : TwoBand) (e v m px py fermiEnergy radius broadening : ℝ)
     (hbroadening : broadening ≠ 0) :
     targetCenteredZeroTemperatureInterbandBastinPairIntegral
         band e v m px py fermiEnergy radius broadening =
@@ -76,7 +77,7 @@ theorem targetCenteredZeroTemperatureInterbandBastinPairIntegral_eq_neg_two_i_mu
 /-- Inserting zero-temperature occupation does not enlarge the pointwise Lorentzian/spectator
 bound on the radial axis. -/
 theorem norm_zeroTemperatureOccupation_mul_lorentzian_mul_spectator_radial_le
-    (band : Band) (e v m p fermiEnergy offset radius broadening : ℝ)
+    (band : TwoBand) (e v m p fermiEnergy offset radius broadening : ℝ)
     (hm : m ≠ 0) (hradius : radius < 2 * |m|) (hoffset : |offset| ≤ radius)
     (hbroadening : 0 ≤ broadening) :
     ‖((zeroTemperatureOccupation fermiEnergy
@@ -110,7 +111,7 @@ theorem norm_zeroTemperatureOccupation_mul_lorentzian_mul_spectator_radial_le
 /-- The occupation-weighted regular pole integral inherits exactly the same uniform Lorentzian-mass
 bound as the unweighted one. -/
 theorem norm_targetCenteredZeroTemperatureInterbandSpectatorCurrentPoleIntegral_radial_le
-    (band : Band) (e v m p fermiEnergy radius broadening : ℝ)
+    (band : TwoBand) (e v m p fermiEnergy radius broadening : ℝ)
     (hm : m ≠ 0) (hradiusPos : 0 < radius) (hradius : radius < 2 * |m|)
     (hbroadening : 0 < broadening) :
     ‖targetCenteredZeroTemperatureInterbandSpectatorCurrentPoleIntegral
@@ -146,7 +147,7 @@ theorem norm_targetCenteredZeroTemperatureInterbandSpectatorCurrentPoleIntegral_
 /-- The complete occupation-weighted target-centered pair is uniformly bounded in radial momentum
 and positive broadening by the same constant as the unweighted pair. -/
 theorem norm_targetCenteredZeroTemperatureInterbandBastinPairIntegral_radial_le
-    (band : Band) (e v m p fermiEnergy radius broadening : ℝ)
+    (band : TwoBand) (e v m p fermiEnergy radius broadening : ℝ)
     (hm : m ≠ 0) (hradiusPos : 0 < radius) (hradius : radius < 2 * |m|)
     (hbroadening : 0 < broadening) :
     ‖targetCenteredZeroTemperatureInterbandBastinPairIntegral

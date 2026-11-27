@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Models.MassiveDirac.Bastin.RadialSpectatorUniformBound
+import LeanCondensedMatter.QuantumTheory.TwoBand
 import LeanCondensedMatter.Models.MassiveDirac.Bastin.PairIntegral
 import Mathlib.Tactic.Linarith
 import Mathlib.Tactic.NormNum
@@ -26,7 +27,7 @@ open MeasureTheory
 
 /-- The Lorentzian-weighted radial spectator integrand inherits the uniform spectator bound. -/
 theorem norm_lorentzian_mul_targetCenteredInterbandSpectatorCurrentFactor_radial_le
-    (band : Band) (e v m p offset radius broadening : ℝ)
+    (band : TwoBand) (e v m p offset radius broadening : ℝ)
     (hm : m ≠ 0) (hradius : radius < 2 * |m|) (hoffset : |offset| ≤ radius)
     (hbroadening : 0 ≤ broadening) :
     ‖(Lorentzian.spectralKernel offset broadening : ℂ) *
@@ -56,7 +57,7 @@ theorem norm_lorentzian_mul_targetCenteredInterbandSpectatorCurrentFactor_radial
 /-- Integrating over the fixed target window preserves the Lorentzian mass exactly in the upper
 bound. -/
 theorem norm_targetCenteredInterbandSpectatorCurrentPoleIntegral_radial_le
-    (band : Band) (e v m p radius broadening : ℝ)
+    (band : TwoBand) (e v m p radius broadening : ℝ)
     (hm : m ≠ 0) (hradiusPos : 0 < radius) (hradius : radius < 2 * |m|)
     (hbroadening : 0 < broadening) :
     ‖targetCenteredInterbandSpectatorCurrentPoleIntegral
@@ -103,7 +104,7 @@ theorem radialInterbandBastinPairUniformBound_nonneg
 
 /-- Uniform norm bound for the complete target-centered interband Bastin pair on the radial axis. -/
 theorem norm_targetCenteredInterbandBastinPairIntegral_radial_le
-    (band : Band) (e v m p radius broadening : ℝ)
+    (band : TwoBand) (e v m p radius broadening : ℝ)
     (hm : m ≠ 0) (hradiusPos : 0 < radius) (hradius : radius < 2 * |m|)
     (hbroadening : 0 < broadening) :
     ‖targetCenteredInterbandBastinPairIntegral

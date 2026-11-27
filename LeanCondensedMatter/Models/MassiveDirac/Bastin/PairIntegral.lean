@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Models.MassiveDirac.Bastin.PoleHall
+import LeanCondensedMatter.QuantumTheory.TwoBand
 import Mathlib.Tactic.Ring
 
 set_option linter.style.header false
@@ -18,13 +19,13 @@ namespace QuantumTheory.Models.MassiveDirac
 
 noncomputable section
 
-open QuantumTheory.Transport
+open QuantumTheory.Transport QuantumTheory.TwoBand
 
 open Filter QuantumTheory.Transport
 
 /-- Lorentzian-weighted target-centered integral of the regular interband spectator/current factor. -/
 noncomputable def targetCenteredInterbandSpectatorCurrentPoleIntegral
-    (band : Band) (e v m px py radius broadening : ℝ) : ℂ :=
+    (band : TwoBand) (e v m px py radius broadening : ℝ) : ℂ :=
   ∫ offset in -radius..radius,
     (Lorentzian.spectralKernel offset broadening : ℂ) *
       targetCenteredInterbandSpectatorCurrentFactor
@@ -32,7 +33,7 @@ noncomputable def targetCenteredInterbandSpectatorCurrentPoleIntegral
 
 /-- The model-specific pole integral is the generic isolated-interband regular-factor integral. -/
 private theorem targetCenteredInterbandSpectatorCurrentPoleIntegral_eq_interbandPoleRegularFactorIntegral
-    (band : Band) (e v m px py radius broadening : ℝ) :
+    (band : TwoBand) (e v m px py radius broadening : ℝ) :
     targetCenteredInterbandSpectatorCurrentPoleIntegral
         band e v m px py radius broadening =
       interbandPoleRegularFactorIntegral
@@ -52,7 +53,7 @@ private theorem targetCenteredInterbandSpectatorCurrentPoleIntegral_eq_interband
 /-- Fixed target-centered energy-window integral of the interband Bastin Hall pair whose source is
 the opposite band and whose target is `band`. -/
 noncomputable def targetCenteredInterbandBastinPairIntegral
-    (band : Band) (e v m px py radius broadening : ℝ) : ℂ :=
+    (band : TwoBand) (e v m px py radius broadening : ℝ) : ℂ :=
   ∫ offset in -radius..radius,
     bastinBandPairContribution 0 1 (oppositeBand band) band e v m px py
       (bandEnergy band v m px py + offset) broadening
@@ -60,7 +61,7 @@ noncomputable def targetCenteredInterbandBastinPairIntegral
 /-- For nonzero broadening, the integrated opposite-source Bastin pair is exactly `-2 i` times the
 regular-factor pole integral. -/
 theorem targetCenteredInterbandBastinPairIntegral_eq_neg_two_i_mul_poleIntegral
-    (band : Band) (e v m px py radius broadening : ℝ)
+    (band : TwoBand) (e v m px py radius broadening : ℝ)
     (hbroadening : broadening ≠ 0) :
     targetCenteredInterbandBastinPairIntegral
         band e v m px py radius broadening =
@@ -88,7 +89,7 @@ theorem targetCenteredInterbandBastinPairIntegral_eq_neg_two_i_mul_poleIntegral
 /-- At nonzero broadening, the concrete massive-Dirac pair integral is the generic isolated
 interband Bastin pole integral. -/
 theorem targetCenteredInterbandBastinPairIntegral_eq_interbandBastinPoleIntegral
-    (band : Band) (e v m px py radius broadening : ℝ)
+    (band : TwoBand) (e v m px py radius broadening : ℝ)
     (hbroadening : broadening ≠ 0) :
     targetCenteredInterbandBastinPairIntegral
         band e v m px py radius broadening =

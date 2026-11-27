@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Models.MassiveDirac.Model.Basic
+import LeanCondensedMatter.QuantumTheory.TwoBand
 
 set_option linter.style.header false
 
@@ -17,6 +18,8 @@ division is total. The algebraic massless identity therefore needs no nondegener
 
 namespace QuantumTheory.Models.MassiveDirac
 
+open QuantumTheory.TwoBand
+
 noncomputable section
 
 /-- Reversing the Dirac mass leaves the positive dispersion unchanged. -/
@@ -27,21 +30,21 @@ theorem energy_neg_mass (v m px py : ℝ) :
   ring
 
 /-- The upper- and lower-band Berry curvatures are opposite. -/
-theorem berryCurvature_oppositeBand (band : Band) (v m px py : ℝ) :
+theorem berryCurvature_oppositeBand (band : TwoBand) (v m px py : ℝ) :
     berryCurvature (oppositeBand band) v m px py =
       -berryCurvature band v m px py := by
   simp only [berryCurvature, bandSign_oppositeBand]
   ring
 
 /-- Reversing the time-reversal-breaking mass reverses the Berry curvature. -/
-theorem berryCurvature_neg_mass (band : Band) (v m px py : ℝ) :
+theorem berryCurvature_neg_mass (band : TwoBand) (v m px py : ℝ) :
     berryCurvature band v (-m) px py =
       -berryCurvature band v m px py := by
   simp only [berryCurvature, energy_neg_mass]
   ring
 
 /-- Removing the mass gives zero algebraic Berry curvature. -/
-theorem berryCurvature_massless (band : Band) (v px py : ℝ) :
+theorem berryCurvature_massless (band : TwoBand) (v px py : ℝ) :
     berryCurvature band v 0 px py = 0 := by
   simp [berryCurvature]
 

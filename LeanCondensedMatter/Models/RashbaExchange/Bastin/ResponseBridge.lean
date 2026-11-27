@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Models.RashbaExchange.Bastin.Bands
+import LeanCondensedMatter.QuantumTheory.TwoBand
 import LeanCondensedMatter.Models.RashbaExchange.Response
 
 set_option linter.style.header false
@@ -20,7 +21,7 @@ namespace QuantumTheory.Models.RashbaExchange
 
 noncomputable section
 
-open QuantumTheory.Transport
+open QuantumTheory.Transport QuantumTheory.TwoBand
 open ContinuousLinearMap
 
 /-- The physical clean ordered Bastin energy integral equals the weighted
@@ -33,7 +34,7 @@ theorem cleanBastinPointResponse_eq_integral_band_sum
     cleanBastinPointResponse params μ ν px py lowerEnergy upperEnergy occupation =
       ∫ probeEnergy in lowerEnergy..upperEnergy,
         occupation probeEnergy *
-          (∑ source : Band, ∑ target : Band,
+          (∑ source : TwoBand, ∑ target : TwoBand,
             bastinBandPairContribution params μ ν source target
               px py probeEnergy params.broadening) := by
   unfold cleanBastinPointResponse regularizedTracedBastinEnergyIntegral
@@ -53,10 +54,10 @@ theorem cleanBastinPointResponse_eq_integral_diagonal_add_interband
     cleanBastinPointResponse params μ ν px py lowerEnergy upperEnergy occupation =
       ∫ probeEnergy in lowerEnergy..upperEnergy,
         occupation probeEnergy *
-          ((∑ band : Band,
+          ((∑ band : TwoBand,
             bastinBandPairContribution params μ ν band band
               px py probeEnergy params.broadening) +
-           (∑ band : Band,
+           (∑ band : TwoBand,
             bastinBandPairContribution params μ ν band (oppositeBand band)
               px py probeEnergy params.broadening)) := by
   unfold cleanBastinPointResponse regularizedTracedBastinEnergyIntegral
@@ -65,8 +66,7 @@ theorem cleanBastinPointResponse_eq_integral_diagonal_add_interband
   dsimp only
   rw [regularizedBastinTraceIntegrand_eq_band_sum
     params μ ν px py probeEnergy params.broadening hE hbroadening]
-  simp only [sum_band, oppositeBand_lower, oppositeBand_upper]
-  ring
+  rw [sum_band_pair_eq_diagonal_add_opposite]
 
 /-- The antisymmetric clean Bastin response is exactly the difference of
 the two direction-ordered finite-window band-pair integrals. -/
@@ -80,12 +80,12 @@ theorem antisymmetricCleanBastinPointResponse_eq_integral_band_sum
       (1 / 2 : ℂ) *
         ((∫ probeEnergy in lowerEnergy..upperEnergy,
             occupation probeEnergy *
-              (∑ source : Band, ∑ target : Band,
+              (∑ source : TwoBand, ∑ target : TwoBand,
                 bastinBandPairContribution params μ ν source target
                   px py probeEnergy params.broadening)) -
          (∫ probeEnergy in lowerEnergy..upperEnergy,
             occupation probeEnergy *
-              (∑ source : Band, ∑ target : Band,
+              (∑ source : TwoBand, ∑ target : TwoBand,
                 bastinBandPairContribution params ν μ source target
                   px py probeEnergy params.broadening))) := by
   unfold antisymmetricCleanBastinPointResponse

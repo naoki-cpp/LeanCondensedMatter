@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Models.MassiveDirac.Model.FermiSurface
+import LeanCondensedMatter.QuantumTheory.TwoBand
 import LeanCondensedMatter.Models.MassiveDirac.Model.Spectral
 import Mathlib.Tactic.FieldSimp
 import Mathlib.Tactic.Ring
@@ -18,6 +19,8 @@ in `Disorder.TransportRate`; transport relaxation factors remain owned by that m
 
 namespace QuantumTheory.Models.MassiveDirac
 
+open QuantumTheory.TwoBand
+
 noncomputable section
 
 open MeasureTheory
@@ -35,8 +38,8 @@ private theorem upperBandProjectorOverlap_eq
     smul_mul_assoc, mul_smul_comm, smul_smul, Matrix.trace_smul]
   have htrace := InternalSpace.trace_pauliAffine_mul_pauliAffine
     (1 : ℂ) (1 : ℂ)
-    ((((bandSign Band.upper / energy v m px py : ℝ) : ℂ)) • diracPauliCoefficients v m px py)
-    ((((bandSign Band.upper / energy v m qx qy : ℝ) : ℂ)) • diracPauliCoefficients v m qx qy)
+    ((((bandSign TwoBand.upper / energy v m px py : ℝ) : ℂ)) • diracPauliCoefficients v m px py)
+    ((((bandSign TwoBand.upper / energy v m qx qy : ℝ) : ℂ)) • diracPauliCoefficients v m qx qy)
   simp only [one_smul, one_mul] at htrace
   rw [htrace]
   rw [InternalSpace.dotProduct_pauliAxis]

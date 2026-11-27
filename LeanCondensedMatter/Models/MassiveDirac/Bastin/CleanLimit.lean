@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Models.MassiveDirac.Model.Berry.Occupation
+import LeanCondensedMatter.QuantumTheory.TwoBand
 import LeanCondensedMatter.Models.MassiveDirac.ManyBody.PointwiseHall
 import Mathlib.Tactic.Ring
 import Mathlib.Tactic.FieldSimp
@@ -25,16 +26,18 @@ measure belongs downstream under `MassiveDirac/Conductivity/Hall`.
 
 namespace QuantumTheory.Models.MassiveDirac
 
+open QuantumTheory.TwoBand
+
 noncomputable section
 
 /-- Named real clean-limit profile extracted from the opposite-source interband Bastin pair. -/
 def cleanInterbandBastinPairLimitDensity
-    (band : Band) (e v m px py : ℝ) : ℝ :=
+    (band : TwoBand) (e v m px py : ℝ) : ℝ :=
   2 * Real.pi * cleanBandFockHallDensity band e v m px py
 
 /-- The full-Fock clean Hall density reproduces the local Bastin pole coefficient. -/
 theorem cleanInterbandBastinPairLimitDensity_eq
-    (band : Band) (e v m px py : ℝ) :
+    (band : TwoBand) (e v m px py : ℝ) :
     cleanInterbandBastinPairLimitDensity band e v m px py =
       -2 * Real.pi * (e ^ 2 * berryCurvature band v m px py) := by
   rw [cleanInterbandBastinPairLimitDensity,
@@ -52,7 +55,7 @@ theorem tendsto_zeroTemperaturePointwiseFockHallResponse_re
         (Finset.univ.filter (fun band => bandEnergy band v m px py < fermiEnergy))
         e v m px py hbar hhbar eta hE).re)
       (nhdsWithin 0 (Set.Ioi 0))
-      (nhds (∑ band : Band, zeroTemperatureOccupation fermiEnergy (bandEnergy band v m px py) *
+      (nhds (∑ band : TwoBand, zeroTemperatureOccupation fermiEnergy (bandEnergy band v m px py) *
         cleanInterbandBastinPairLimitDensity band e v m px py)) := by
   classical
   have h := tendsto_pointwiseFockHallResponse_re
@@ -74,7 +77,7 @@ theorem tendsto_grandCanonicalPointwiseFockHallResponse_re
     Filter.Tendsto (fun eta => (2 * Real.pi / hbar) *
       (pointwiseGrandCanonicalFockHallResponse beta mu e v m px py hbar hhbar eta hE).re)
       (nhdsWithin 0 (Set.Ioi 0))
-      (nhds (∑ band : Band,
+      (nhds (∑ band : TwoBand,
         (Real.exp (beta * (bandEnergy band v m px py - mu)) + 1)⁻¹ *
           cleanInterbandBastinPairLimitDensity band e v m px py)) := by
   have h := tendsto_pointwiseGrandCanonicalFockHallResponse_re beta mu e v m px py hbar hhbar hE
@@ -88,19 +91,19 @@ theorem tendsto_grandCanonicalPointwiseFockHallResponse_re
 The Berry part is exactly `radialBerryEnergyDensity`; the factor `-2π e²` is the local pair limit
 proved upstream. -/
 def cleanInterbandBastinPairRadialEnergyDensity
-    (band : Band) (e m energy : ℝ) : ℝ :=
+    (band : TwoBand) (e m energy : ℝ) : ℝ :=
   (-2 * Real.pi * e ^ 2) * radialBerryEnergyDensity band m energy
 
 /-- Clean interband Bastin-pair weight accumulated over one finite radial energy shell. -/
 def cleanInterbandBastinPairEnergyShellIntegral
-    (band : Band) (e m energy₀ energy₁ : ℝ) : ℝ :=
+    (band : TwoBand) (e m energy₀ energy₁ : ℝ) : ℝ :=
   ∫ energy in energy₀..energy₁,
     cleanInterbandBastinPairRadialEnergyDensity band e m energy
 
 /-- Radial integration of the clean pair profile factors into `-2π e²` times the corresponding
 Berry shell weight. -/
 theorem cleanInterbandBastinPairEnergyShellIntegral_eq
-    (band : Band) (e m energy₀ energy₁ : ℝ) :
+    (band : TwoBand) (e m energy₀ energy₁ : ℝ) :
     cleanInterbandBastinPairEnergyShellIntegral band e m energy₀ energy₁ =
       (-2 * Real.pi * e ^ 2) * energyShellBerryWeight band m energy₀ energy₁ := by
   unfold cleanInterbandBastinPairEnergyShellIntegral
@@ -110,7 +113,7 @@ theorem cleanInterbandBastinPairEnergyShellIntegral_eq
 /-- Zero-temperature occupation-weighted radial clean Bastin-pair density. The generic spectral
 occupation acts directly on the clean Bastin profile at the signed band energy. -/
 def zeroTemperatureOccupiedCleanInterbandBastinPairRadialEnergyDensity
-    (band : Band) (e m fermiEnergy energy : ℝ) : ℝ :=
+    (band : TwoBand) (e m fermiEnergy energy : ℝ) : ℝ :=
   bandStateOccupation (zeroTemperatureOccupation fermiEnergy)
       (fun band energy => bandSign band * energy) band energy *
     cleanInterbandBastinPairRadialEnergyDensity band e m energy
@@ -118,7 +121,7 @@ def zeroTemperatureOccupiedCleanInterbandBastinPairRadialEnergyDensity
 /-- The occupation-weighted clean Bastin density is `-2π e²` times the corresponding
 occupation-weighted Berry density. -/
 theorem zeroTemperatureOccupiedCleanInterbandBastinPairRadialEnergyDensity_eq
-    (band : Band) (e m fermiEnergy energy : ℝ) :
+    (band : TwoBand) (e m fermiEnergy energy : ℝ) :
     zeroTemperatureOccupiedCleanInterbandBastinPairRadialEnergyDensity
         band e m fermiEnergy energy =
       (-2 * Real.pi * e ^ 2) *
@@ -131,7 +134,7 @@ theorem zeroTemperatureOccupiedCleanInterbandBastinPairRadialEnergyDensity_eq
 /-- Occupied clean Bastin-pair weight of one band inside the common positive-energy cutoff interval
 `[|m|, Λ]`. -/
 def zeroTemperatureOccupiedCleanInterbandBastinPairBandCutoff
-    (band : Band) (e m fermiEnergy Λ : ℝ) : ℝ :=
+    (band : TwoBand) (e m fermiEnergy Λ : ℝ) : ℝ :=
   ∫ energy in |m|..Λ,
     zeroTemperatureOccupiedCleanInterbandBastinPairRadialEnergyDensity
       band e m fermiEnergy energy
@@ -139,7 +142,7 @@ def zeroTemperatureOccupiedCleanInterbandBastinPairBandCutoff
 /-- The occupation-weighted clean Bastin-pair integral of one band factors into `-2π e²` times the
 canonical occupation-weighted Berry integral. -/
 theorem zeroTemperatureOccupiedCleanInterbandBastinPairBandCutoff_eq
-    (band : Band) (e m fermiEnergy Λ : ℝ) :
+    (band : TwoBand) (e m fermiEnergy Λ : ℝ) :
     zeroTemperatureOccupiedCleanInterbandBastinPairBandCutoff band e m fermiEnergy Λ =
       (-2 * Real.pi * e ^ 2) *
         zeroTemperatureOccupiedBandBerryWeightCutoff band m fermiEnergy Λ := by
@@ -155,7 +158,7 @@ theorem zeroTemperatureOccupiedCleanInterbandBastinPairBandCutoff_eq
 bands use the same cutoff interval and occupation selects their contributing states. -/
 def zeroTemperatureOccupiedCleanInterbandBastinPairCutoff
     (e m fermiEnergy Λ : ℝ) : ℝ :=
-  ∑ band : Band,
+  ∑ band : TwoBand,
     zeroTemperatureOccupiedCleanInterbandBastinPairBandCutoff band e m fermiEnergy Λ
 
 /-- The canonical occupied clean Bastin-pair radial weight is `-2π e²` times the canonical

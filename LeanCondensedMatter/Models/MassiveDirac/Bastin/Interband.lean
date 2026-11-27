@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Models.MassiveDirac.Bastin.Spectator
+import LeanCondensedMatter.QuantumTheory.TwoBand
 import LeanCondensedMatter.Models.MassiveDirac.Model.Berry.Symmetry
 import Mathlib.Tactic.FieldSimp
 import Mathlib.Tactic.Linarith
@@ -26,18 +27,18 @@ namespace QuantumTheory.Models.MassiveDirac
 
 noncomputable section
 
-open QuantumTheory.Transport
+open QuantumTheory.Transport QuantumTheory.TwoBand
 
 /-- Antisymmetric direction exchange of the interband Bastin block at a selected target band. -/
 noncomputable def bastinInterbandBlockDifference
-    (μ ν : Fin 2) (band : Band) (e v m px py : ℝ) : ℂ :=
+    (μ ν : Fin 2) (band : TwoBand) (e v m px py : ℝ) : ℂ :=
   currentBandBlockTrace μ ν (oppositeBand band) band e v m px py -
     currentBandBlockTrace ν μ (oppositeBand band) band e v m px py
 
 /-- Exchanging the two current directions reverses the sign of the interband Bastin block
 difference. -/
 theorem bastinInterbandBlockDifference_swap
-    (μ ν : Fin 2) (band : Band) (e v m px py : ℝ) :
+    (μ ν : Fin 2) (band : TwoBand) (e v m px py : ℝ) :
     bastinInterbandBlockDifference ν μ band e v m px py =
       -bastinInterbandBlockDifference μ ν band e v m px py := by
   unfold bastinInterbandBlockDifference
@@ -45,14 +46,14 @@ theorem bastinInterbandBlockDifference_swap
 
 /-- The antisymmetric interband Bastin block vanishes on equal current directions. -/
 theorem bastinInterbandBlockDifference_self
-    (μ : Fin 2) (band : Band) (e v m px py : ℝ) :
+    (μ : Fin 2) (band : TwoBand) (e v m px py : ℝ) :
     bastinInterbandBlockDifference μ μ band e v m px py = 0 := by
   simp [bastinInterbandBlockDifference]
 
 /-- The normalized Hall antisymmetric Bastin block is the negative of `e²` times the clean Berry
 curvature. -/
 theorem bastinInterbandBlockDifference_im_div_gap_sq_eq_neg_chargeSq_berryCurvature
-    (band : Band) (e v m px py : ℝ) (hE : energy v m px py ≠ 0) :
+    (band : TwoBand) (e v m px py : ℝ) (hE : energy v m px py ≠ 0) :
     (bastinInterbandBlockDifference 0 1 band e v m px py).im /
         interbandEnergyGap band v m px py ^ 2 =
       -(e ^ 2 * berryCurvature band v m px py) := by

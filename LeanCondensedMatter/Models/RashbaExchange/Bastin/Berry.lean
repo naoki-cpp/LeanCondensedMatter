@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Models.RashbaExchange.Model.OperatorSpectral
+import LeanCondensedMatter.QuantumTheory.TwoBand
 import LeanCondensedMatter.Models.RashbaExchange.Current
 import LeanCondensedMatter.Models.RashbaExchange.Model.Interband
 import LeanCondensedMatter.Transport.Streda.FiniteProjectorBastin
@@ -20,12 +21,12 @@ namespace QuantumTheory.Models.RashbaExchange
 noncomputable section
 
 open ContinuousLinearMap
-open QuantumTheory.Transport
+open QuantumTheory.Transport QuantumTheory.TwoBand
 
 /-- An opposite-band ordered current block is `q²` times the gauge-independent velocity
 force-matrix numerator. -/
 theorem currentBandBlockTrace_interband_eq_chargeSq_forceMatrixTraceNumerator
-    (params : Parameters) (μ ν : Fin 2) (band : Band) (px py : ℝ) :
+    (params : Parameters) (μ ν : Fin 2) (band : TwoBand) (px py : ℝ) :
     currentBandBlockTrace params μ ν band (oppositeBand band) px py =
       (((params.signedCharge ^ 2 : ℝ) : ℂ)) *
         forceMatrixTraceNumerator params μ ν band px py := by
@@ -38,7 +39,7 @@ theorem currentBandBlockTrace_interband_eq_chargeSq_forceMatrixTraceNumerator
 /-- Normalizing the interband current block by the squared energy gap reproduces `q²` times the
 closed Rashba-exchange Berry curvature. -/
 theorem two_mul_currentBandBlockTrace_interband_im_div_gap_sq_eq_chargeSq_berryCurvature
-    (params : Parameters) (band : Band) (px py : ℝ)
+    (params : Parameters) (band : TwoBand) (px py : ℝ)
     (hE : spinOrbitEnergy params px py ≠ 0) :
     2 * (currentBandBlockTrace params 0 1 band (oppositeBand band) px py).im /
         interbandEnergyGap params band px py ^ 2 =
@@ -53,7 +54,7 @@ theorem two_mul_currentBandBlockTrace_interband_im_div_gap_sq_eq_chargeSq_berryC
 /-- The antisymmetric imaginary current block for a target band, normalized
 by its squared interband gap, is minus signed-charge-squared Berry curvature. -/
 theorem interbandBlockDifference_im_div_gap_sq_eq_neg_chargeSq_berryCurvature
-    (params : Parameters) (band : Band) (px py : ℝ)
+    (params : Parameters) (band : TwoBand) (px py : ℝ)
     (hE : spinOrbitEnergy params px py ≠ 0) :
     (currentBandBlockTrace params 0 1 (oppositeBand band) band px py -
       currentBandBlockTrace params 1 0 (oppositeBand band) band px py).im /
@@ -108,10 +109,10 @@ theorem regularizedBastinTraceIntegrand_eq_projectorBastinTraceIntegrand
     projectorResolvent] using
     (QuantumTheory.Transport.regularizedBastinTraceIntegrand_eq_projectorSum
       (hamiltonianOperator params px py) (hamiltonianOperator_isSelfAdjoint params px py)
-      (fun band : Band => bandProjectorOperator params band px py)
-      (fun band : Band => bandEnergy params band px py)
+      (fun band : TwoBand => bandProjectorOperator params band px py)
+      (fun band : TwoBand => bandEnergy params band px py)
       (bandProjectorOperator_completeOrthogonalIdempotents params px py hE).complete
-      (fun band : Band => hamiltonianOperator_mul_bandProjectorOperator params band px py hE)
+      (fun band : TwoBand => hamiltonianOperator_mul_bandProjectorOperator params band px py hE)
       (currentBoundedOperator params 0 px py) (currentBoundedOperator params 1 px py)
       probeEnergy broadening hbroadening)
 

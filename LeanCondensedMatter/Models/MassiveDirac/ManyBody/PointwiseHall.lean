@@ -1,4 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.TwoModeResponse
+import LeanCondensedMatter.QuantumTheory.TwoBand
 import LeanCondensedMatter.Models.MassiveDirac.Bastin.Interband
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreePartitionFunction
 import Mathlib.Tactic.FinCases
@@ -18,15 +19,17 @@ infinite-volume density operator or interchange the pointwise limit with momentu
 
 namespace QuantumTheory.Models.MassiveDirac
 
+
+open QuantumTheory.TwoBand
 open SecondQuantization.Fermionic.Transport
 open ContinuousLinearMap
 open scoped BigOperators
 
 noncomputable section
 
-private def modeBand (i : Fin 2) : Band := if i = 0 then .lower else .upper
+private def modeBand (i : Fin 2) : TwoBand := if i = 0 then .lower else .upper
 
-private def bandMode : Band → Fin 2
+private def bandMode : TwoBand → Fin 2
   | .lower => 0
   | .upper => 1
 
@@ -50,7 +53,7 @@ def pointwiseDiagonalFockHallResponse (probability : Finset (Fin 2) → ℝ)
     hpos hsum eta
 
 /-- Response of one occupied-band configuration, including the vacuum and double occupation. -/
-def pointwiseFockHallResponse (occupied : Finset Band) (e v m px py hbar : ℝ)
+def pointwiseFockHallResponse (occupied : Finset TwoBand) (e v m px py hbar : ℝ)
     (hhbar : 0 < hbar) (eta : ℝ) (hE : energy v m px py ≠ 0) : ℂ :=
   let modes := Finset.univ.filter (fun i => modeBand i ∈ occupied)
   pointwiseDiagonalFockHallResponse (fun n => if n = modes then 1 else 0)
@@ -76,7 +79,7 @@ def pointwiseGrandCanonicalFockHallResponse (beta mu e v m px py hbar : ℝ)
 /-- Clean Hall coefficient per unit reduced Planck constant for a singly occupied band,
 evaluated through the full-Fock transition coefficient. At the Dirac degeneracy the totalized
 density is set to zero. The physical response limit carries an explicit factor `hbar`. -/
-def cleanBandFockHallDensity (band : Band) (e v m px py : ℝ) : ℝ :=
+def cleanBandFockHallDensity (band : TwoBand) (e v m px py : ℝ) : ℝ :=
   if hE : energy v m px py ≠ 0 then
     twoModeFockHallCleanResponse (fun i => bandEnergy (modeBand i) v m px py)
       (fun n => if n = {bandMode band} then 1 else 0)
@@ -93,13 +96,13 @@ theorem tendsto_pointwiseDiagonalFockHallResponse_re
     Filter.Tendsto (fun eta =>
       (pointwiseDiagonalFockHallResponse probability hpos hsum e v m px py hbar hhbar eta hE).re)
       (nhdsWithin 0 (Set.Ioi 0))
-      (nhds (hbar * ∑ band : Band,
+      (nhds (hbar * ∑ band : TwoBand,
         (probability {if band = .lower then 0 else 1} + probability {0, 1}) *
           cleanBandFockHallDensity band e v m px py)) := by
   classical
   have hgap : bandEnergy (modeBand 0) v m px py - bandEnergy (modeBand 1) v m px py ≠ 0 := by
     simpa [modeBand, interbandEnergyGap, bandEnergy] using
-      interbandEnergyGap_ne_zero_of_energy_ne_zero Band.lower v m px py hE
+      interbandEnergyGap_ne_zero_of_energy_ne_zero TwoBand.lower v m px py hE
   have h := tendsto_twoModeFockHallKuboResponse_re
     (fun i => bandEnergy (modeBand i) v m px py)
     probability
@@ -110,7 +113,7 @@ theorem tendsto_pointwiseDiagonalFockHallResponse_re
       (fun i => bandEnergy (modeBand i) v m px py) probability
       (pointwiseFockCurrentMatrix 0 e v m px py hE)
       (pointwiseFockCurrentMatrix 1 e v m px py hE) hbar =
-        hbar * ∑ band : Band,
+        hbar * ∑ band : TwoBand,
           (probability {if band = .lower then 0 else 1} + probability {0, 1}) *
             cleanBandFockHallDensity band e v m px py := by
     simp [sum_band, modeBand, bandMode, cleanBandFockHallDensity, hE,
@@ -126,7 +129,7 @@ theorem tendsto_pointwiseGrandCanonicalFockHallResponse_re
     Filter.Tendsto (fun eta =>
       (pointwiseGrandCanonicalFockHallResponse beta mu e v m px py hbar hhbar eta hE).re)
       (nhdsWithin 0 (Set.Ioi 0))
-      (nhds (hbar * ∑ band : Band,
+      (nhds (hbar * ∑ band : TwoBand,
         (Real.exp (beta * (bandEnergy band v m px py - mu)) + 1)⁻¹ *
           cleanBandFockHallDensity band e v m px py)) := by
   classical
@@ -173,7 +176,7 @@ theorem tendsto_pointwiseGrandCanonicalFockHallResponse_re
 
 /-- A filled configuration is a special case of the normalized diagonal-state response. -/
 theorem tendsto_pointwiseFockHallResponse_re
-    (occupied : Finset Band) (e v m px py hbar : ℝ) (hhbar : 0 < hbar)
+    (occupied : Finset TwoBand) (e v m px py hbar : ℝ) (hhbar : 0 < hbar)
     (hE : energy v m px py ≠ 0) :
     Filter.Tendsto (fun eta => (pointwiseFockHallResponse occupied e v m px py hbar hhbar eta hE).re)
       (nhdsWithin 0 (Set.Ioi 0))
@@ -186,11 +189,11 @@ theorem tendsto_pointwiseFockHallResponse_re
     have hp : Summable p := Summable.of_finite
     simpa [p, tsum_fintype] using hp.hasSum
   have h := tendsto_pointwiseDiagonalFockHallResponse_re p hpos hsum e v m px py hbar hhbar hE
-  have hvalue : (∑ band : Band,
+  have hvalue : (∑ band : TwoBand,
       (p {if band = .lower then 0 else 1} + p {0, 1}) *
         cleanBandFockHallDensity band e v m px py) =
       ∑ band ∈ occupied, cleanBandFockHallDensity band e v m px py := by
-    have hstates : (Finset.univ : Finset (Finset Band)) =
+    have hstates : (Finset.univ : Finset (Finset TwoBand)) =
         {∅, {.lower}, {.upper}, {.lower, .upper}} := by decide
     have hmem := Finset.mem_univ occupied
     rw [hstates] at hmem
@@ -207,13 +210,13 @@ theorem tendsto_pointwiseFockHallResponse_re
 /-- The current-matrix coefficient extracted from the full-Fock Kubo limit equals the
 canonical negative charge-squared Berry curvature for the occupied band. -/
 theorem cleanBandFockHallDensity_eq_neg_chargeSq_berryCurvature
-    (band : Band) (e v m px py : ℝ) :
+    (band : TwoBand) (e v m px py : ℝ) :
     cleanBandFockHallDensity band e v m px py = -(e ^ 2 * berryCurvature band v m px py) := by
   by_cases hE : energy v m px py ≠ 0
   swap
   · simp [cleanBandFockHallDensity, berryCurvature, not_ne_iff.mp hE]
   let data := pointwiseEigenbasisData v m px py hE
-  have hblock (mu nu : Fin 2) (source target : Band) :
+  have hblock (mu nu : Fin 2) (source target : TwoBand) :
       currentBandBlockTrace mu nu source target e v m px py =
         inner ℂ (data.eigenbasis target) (currentOperator mu e v (data.eigenbasis source)) *
           inner ℂ (data.eigenbasis source) (currentOperator nu e v (data.eigenbasis target)) := by

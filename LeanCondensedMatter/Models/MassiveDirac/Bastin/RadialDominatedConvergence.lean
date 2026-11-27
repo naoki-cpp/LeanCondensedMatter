@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Models.MassiveDirac.Bastin.PairBerry
+import LeanCondensedMatter.QuantumTheory.TwoBand
 import LeanCondensedMatter.Models.MassiveDirac.Bastin.CleanLimit
 import LeanCondensedMatter.Models.MassiveDirac.Bastin.RadialPairUniformBound
 import Mathlib.MeasureTheory.Integral.Bochner.Basic
@@ -33,19 +34,19 @@ open Filter MeasureTheory Set
 factor `p` is the two-dimensional radial Jacobian; the angular factor remains outside this density.
 -/
 def radialInterbandBastinPairDensity
-    (band : Band) (e v m radius p broadening : ℝ) : ℝ :=
+    (band : TwoBand) (e v m radius p broadening : ℝ) : ℝ :=
   p * (targetCenteredInterbandBastinPairIntegral
     band e v m p 0 radius broadening).re
 
 /-- Radial momentum density of the already-extracted clean interband Bastin-pair limit. -/
 def radialCleanInterbandBastinPairLimitDensity
-    (band : Band) (e v m p : ℝ) : ℝ :=
+    (band : TwoBand) (e v m p : ℝ) : ℝ :=
   p * cleanInterbandBastinPairLimitDensity band e v m p 0
 
 /-- Nonzero mass makes the fixed-window pointwise Bastin-pair limit uniform whenever one radius
 satisfies `radius < 2|m|` at every radial momentum. -/
 private theorem tendsto_radialInterbandBastinPairDensity
-    (band : Band) (e v m radius p : ℝ)
+    (band : TwoBand) (e v m radius p : ℝ)
     (hm : m ≠ 0) (hradiusPos : 0 < radius) (hradius : radius < 2 * |m|) :
     Tendsto
       (fun broadening : ℝ =>
@@ -66,13 +67,13 @@ private theorem tendsto_radialInterbandBastinPairDensity
 
 /-- Finite radial momentum integral of the finite-broadening interband Bastin-pair density. -/
 def finiteRadialInterbandBastinPairIntegral
-    (band : Band) (e v m radius pMax broadening : ℝ) : ℝ :=
+    (band : TwoBand) (e v m radius pMax broadening : ℝ) : ℝ :=
   ∫ p in Set.Icc 0 pMax,
     radialInterbandBastinPairDensity band e v m radius p broadening
 
 /-- Finite radial momentum integral of the clean interband Bastin-pair limit density. -/
 def finiteRadialCleanInterbandBastinPairIntegral
-    (band : Band) (e v m pMax : ℝ) : ℝ :=
+    (band : TwoBand) (e v m pMax : ℝ) : ℝ :=
   ∫ p in Set.Icc 0 pMax,
     radialCleanInterbandBastinPairLimitDensity band e v m p
 
@@ -84,7 +85,7 @@ private def radialInterbandBastinDominatingConstant
 /-- Joint strong measurability of the Lorentzian-weighted radial spectator integrand for every
 strictly positive broadening. -/
 private theorem stronglyMeasurable_radialInterbandPoleIntegrand
-    (band : Band) (e v m broadening : ℝ) (hm : m ≠ 0) :
+    (band : TwoBand) (e v m broadening : ℝ) (hm : m ≠ 0) :
     StronglyMeasurable
       (fun z : ℝ × ℝ =>
         (Lorentzian.spectralKernel z.2 broadening : ℂ) *
@@ -116,7 +117,7 @@ private theorem stronglyMeasurable_radialInterbandPoleIntegrand
 /-- For positive broadening the radial target-centered Bastin pair is strongly measurable as a
 function of radial momentum. -/
 private theorem stronglyMeasurable_targetCenteredInterbandBastinPairIntegral_radial
-    (band : Band) (e v m radius broadening : ℝ)
+    (band : TwoBand) (e v m radius broadening : ℝ)
     (hm : m ≠ 0) (hradiusPos : 0 < radius) (hbroadening : 0 < broadening) :
     StronglyMeasurable
       (fun p : ℝ =>
@@ -140,7 +141,7 @@ private theorem stronglyMeasurable_targetCenteredInterbandBastinPairIntegral_rad
 
 /-- The real radial Bastin density is strongly measurable for positive broadening. -/
 private theorem stronglyMeasurable_radialInterbandBastinPairDensity
-    (band : Band) (e v m radius broadening : ℝ)
+    (band : TwoBand) (e v m radius broadening : ℝ)
     (hm : m ≠ 0) (hradiusPos : 0 < radius) (hbroadening : 0 < broadening) :
     StronglyMeasurable
       (fun p : ℝ =>
@@ -155,7 +156,7 @@ private theorem stronglyMeasurable_radialInterbandBastinPairDensity
 /-- The explicit radial constant dominates the finite-broadening radial Bastin density pointwise on
 `0 ≤ p ≤ pMax`. -/
 private theorem norm_radialInterbandBastinPairDensity_le_dominatingConstant
-    (band : Band) (e v m radius pMax p broadening : ℝ)
+    (band : TwoBand) (e v m radius pMax p broadening : ℝ)
     (hm : m ≠ 0) (hradiusPos : 0 < radius) (hradius : radius < 2 * |m|)
     (hp : p ∈ Set.Icc (0 : ℝ) pMax) (hbroadening : 0 < broadening) :
     ‖radialInterbandBastinPairDensity
@@ -186,7 +187,7 @@ private theorem norm_radialInterbandBastinPairDensity_le_dominatingConstant
 convergence. Thus the finite-broadening radial momentum integral converges to the integral of the
 clean local limit profile as `η → 0⁺`. -/
 theorem tendsto_finiteRadialInterbandBastinPairIntegral
-    (band : Band) (e v m radius pMax : ℝ)
+    (band : TwoBand) (e v m radius pMax : ℝ)
     (hm : m ≠ 0) (hpMax : 0 ≤ pMax)
     (hradiusPos : 0 < radius) (hradius : radius < 2 * |m|) :
     Tendsto

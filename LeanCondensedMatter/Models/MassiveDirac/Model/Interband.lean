@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Models.MassiveDirac.Model.Spectral
+import LeanCondensedMatter.QuantumTheory.TwoBand
 
 set_option linter.style.header false
 
@@ -7,35 +8,36 @@ set_option linter.style.header false
 
 This file owns model-level interband relations shared by intrinsic and response calculations:
 the interband energy gap and the gauge-independent projector/velocity trace. The two-band
-`oppositeBand` involution itself is basic model data and is owned by `Model.Basic`.
+`oppositeBand` involution belongs to `QuantumTheory.TwoBand`.
 -/
 
 namespace QuantumTheory.Models.MassiveDirac
+
+open QuantumTheory.TwoBand
 
 noncomputable section
 
 
 /-- Energy denominator `E_n - E_m` with `m` the opposite band. -/
-def interbandEnergyGap (band : Band) (v m px py : ℝ) : ℝ :=
+def interbandEnergyGap (band : TwoBand) (v m px py : ℝ) : ℝ :=
   bandEnergy band v m px py - bandEnergy (oppositeBand band) v m px py
 
 /-- In a two-band Dirac spectrum, the interband denominator is `2 s E`. -/
-theorem interbandEnergyGap_eq (band : Band) (v m px py : ℝ) :
+theorem interbandEnergyGap_eq (band : TwoBand) (v m px py : ℝ) :
     interbandEnergyGap band v m px py = 2 * bandSign band * energy v m px py := by
-  unfold interbandEnergyGap bandEnergy
-  rw [bandSign_oppositeBand]
-  ring
+  simpa only [interbandEnergyGap, bandEnergy, zero_add] using
+    TwoBand.shiftedEnergy_sub_oppositeBand band 0 (energy v m px py)
 
 /-- Exchanging the two bands reverses the interband energy denominator. -/
 @[simp] theorem interbandEnergyGap_oppositeBand
-    (band : Band) (v m px py : ℝ) :
+    (band : TwoBand) (v m px py : ℝ) :
     interbandEnergyGap (oppositeBand band) v m px py =
       -interbandEnergyGap band v m px py := by
   simp only [interbandEnergyGap, oppositeBand_oppositeBand, neg_sub]
 
 /-- The absolute interband gap is bounded below by `2|m|`, uniformly in momentum. -/
 theorem two_mul_abs_mass_le_abs_interbandEnergyGap
-    (band : Band) (v m px py : ℝ) :
+    (band : TwoBand) (v m px py : ℝ) :
     2 * |m| ≤ |interbandEnergyGap band v m px py| := by
   rw [interbandEnergyGap_eq]
   have hE := energy_nonneg v m px py
@@ -44,7 +46,7 @@ theorem two_mul_abs_mass_le_abs_interbandEnergyGap
 
 /-- A pole window narrower than the mass gap is valid simultaneously at every momentum. -/
 theorem radius_lt_abs_interbandEnergyGap_of_lt_two_mul_abs_mass
-    (band : Band) (v m px py radius : ℝ)
+    (band : TwoBand) (v m px py radius : ℝ)
     (hradius : radius < 2 * |m|) :
     radius < |interbandEnergyGap band v m px py| := by
   exact lt_of_lt_of_le hradius
@@ -52,31 +54,31 @@ theorem radius_lt_abs_interbandEnergyGap_of_lt_two_mul_abs_mass
 
 /-- Away from the Dirac degeneracy, the interband energy gap is nonzero. -/
 theorem interbandEnergyGap_ne_zero_of_energy_ne_zero
-    (band : Band) (v m px py : ℝ) (hE : energy v m px py ≠ 0) :
+    (band : TwoBand) (v m px py : ℝ) (hE : energy v m px py ≠ 0) :
     interbandEnergyGap band v m px py ≠ 0 := by
   rw [interbandEnergyGap_eq]
   cases band <;> simp [hE]
 
 /-- Away from the Dirac degeneracy, the two band energies are distinct. -/
 theorem bandEnergy_ne_oppositeBandEnergy
-    (band : Band) (v m px py : ℝ) (hE : energy v m px py ≠ 0) :
+    (band : TwoBand) (v m px py : ℝ) (hE : energy v m px py ≠ 0) :
     bandEnergy band v m px py ≠ bandEnergy (oppositeBand band) v m px py := by
   apply (bandEnergy_injective v m px py hE).ne
-  cases band <;> decide
+  exact TwoBand.ne_oppositeBand band
 
 /-- Gauge-independent direction-indexed interband force-matrix numerator.
 
 For rank-one spectral projectors this trace equals
 `⟨m|v_μ|n⟩ ⟨n|v_ν|m⟩`, with `m = oppositeBand n`. -/
 def forceMatrixTraceNumerator
-    (μ ν : Fin 2) (band : Band) (v m px py : ℝ) : ℂ :=
+    (μ ν : Fin 2) (band : TwoBand) (v m px py : ℝ) : ℂ :=
   Matrix.trace
     (bandProjector (oppositeBand band) v m px py * velocity μ v *
       bandProjector band v m px py * velocity ν v)
 
 /-- Exact complex `x-y` interband force numerator. The symmetric term is the in-plane product,
 while the antisymmetric imaginary term is the mass component of the normalized Pauli vector. -/
-theorem forceMatrixTraceNumerator_xy_eq (band : Band) (v m px py : ℝ)
+theorem forceMatrixTraceNumerator_xy_eq (band : TwoBand) (v m px py : ℝ)
     (hE : energy v m px py ≠ 0) :
     forceMatrixTraceNumerator 0 1 band v m px py =
       -(((v ^ 4 * px * py / energy v m px py ^ 2 : ℝ) : ℂ)) -

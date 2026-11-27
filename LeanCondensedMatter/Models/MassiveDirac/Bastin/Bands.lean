@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Models.MassiveDirac.Bastin.Berry
+import LeanCondensedMatter.QuantumTheory.TwoBand
 import LeanCondensedMatter.Transport.Streda.InterbandPole
 
 set_option linter.style.header false
@@ -22,7 +23,7 @@ namespace QuantumTheory.Models.MassiveDirac
 
 noncomputable section
 
-open QuantumTheory.Transport
+open QuantumTheory.Transport QuantumTheory.TwoBand
 
 open ContinuousLinearMap
 
@@ -30,7 +31,7 @@ open ContinuousLinearMap
 one ordered current-direction pair `(μ,ν)`. The reversed current ordering is kept in the same
 canonical direction-indexed object. -/
 noncomputable def bastinBandPairContribution
-    (μ ν : Fin 2) (source target : Band)
+    (μ ν : Fin 2) (source target : TwoBand)
     (e v m px py probeEnergy broadening : ℝ) : ℂ :=
   let r := scalarResolventCoefficient
     (retardedSpectralParameter probeEnergy broadening)
@@ -46,13 +47,13 @@ noncomputable def bastinBandPairContribution
 /-- Diagonal/intraband part of the finite-broadening projector Hall trace. -/
 noncomputable def diagonalBastinTraceContribution
     (e v m px py probeEnergy broadening : ℝ) : ℂ :=
-  ∑ band : Band,
+  ∑ band : TwoBand,
     bastinBandPairContribution 0 1 band band e v m px py probeEnergy broadening
 
 /-- Interband part of the finite-broadening projector Hall trace. -/
 noncomputable def interbandBastinTraceContribution
     (e v m px py probeEnergy broadening : ℝ) : ℂ :=
-  ∑ band : Band,
+  ∑ band : TwoBand,
     bastinBandPairContribution 0 1 band (oppositeBand band)
       e v m px py probeEnergy broadening
 
@@ -61,7 +62,7 @@ theorem projectorBastinTraceIntegrand_eq_band_sum
     (e v m px py probeEnergy broadening : ℝ)
     (hE : energy v m px py ≠ 0) :
     projectorBastinTraceIntegrand e v m px py probeEnergy broadening =
-      ∑ source : Band, ∑ target : Band,
+      ∑ source : TwoBand, ∑ target : TwoBand,
         bastinBandPairContribution 0 1 source target e v m px py probeEnergy broadening := by
   unfold projectorBastinTraceIntegrand
   dsimp only [projectorBastinOperatorIntegrand, bastinOperatorKernelFromPropagators]
@@ -69,13 +70,13 @@ theorem projectorBastinTraceIntegrand_eq_band_sum
   simpa only [bastinBandPairContribution, currentBandBlockTrace,
     scalarSpectralDifferenceCoefficient] using
     (finiteProjectorBastinTrace_eq_band_sum
-      (P := fun band : Band => bandProjectorOperator band v m px py)
+      (P := fun band : TwoBand => bandProjectorOperator band v m px py)
       (bandProjectorOperator_completeOrthogonalIdempotents v m px py hE).toOrthogonalIdempotents
-      (fun band : Band =>
+      (fun band : TwoBand =>
         scalarResolventCoefficient
           (retardedSpectralParameter probeEnergy broadening)
           (bandEnergy band v m px py))
-      (fun band : Band =>
+      (fun band : TwoBand =>
         scalarResolventCoefficient
           (advancedSpectralParameter probeEnergy broadening)
           (bandEnergy band v m px py))
@@ -89,9 +90,7 @@ theorem projectorBastinTraceIntegrand_eq_diagonal_add_interband
       diagonalBastinTraceContribution e v m px py probeEnergy broadening +
         interbandBastinTraceContribution e v m px py probeEnergy broadening := by
   rw [projectorBastinTraceIntegrand_eq_band_sum e v m px py probeEnergy broadening hE]
-  simp only [sum_band, diagonalBastinTraceContribution, interbandBastinTraceContribution,
-    oppositeBand_lower, oppositeBand_upper]
-  ring
+  exact sum_band_pair_eq_diagonal_add_opposite _
 
 /-- Combining the generic Bastin bridge with the band decomposition gives the same diagonal plus
 interband split directly for the repository's regularized Bastin Hall trace. -/

@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Analysis.Operator.BerryGeometry
+import LeanCondensedMatter.QuantumTheory.TwoBand
 import LeanCondensedMatter.Models.MassiveDirac.Model.OperatorSpectral
 import Mathlib.Analysis.InnerProductSpace.Spectrum
 
@@ -12,7 +13,7 @@ eigenbasis API. The construction uses Mathlib's finite-dimensional spectral theo
 relabels its sorted eigenbasis by the physical two-band index.
 
 At a fixed momentum with `E ≠ 0`, the sorted eigenvalues are `+E` then `-E`, so the resulting
-basis is indexed by `Band.upper` and `Band.lower`. The Hamiltonian derivatives supplied to the
+basis is indexed by `TwoBand.upper` and `TwoBand.lower`. The Hamiltonian derivatives supplied to the
 generic adapter are exactly the two model velocity operators.
 
 This is pointwise spectral data only. No global eigenvector gauge, Brillouin-zone patching, or
@@ -23,7 +24,7 @@ namespace QuantumTheory.Models.MassiveDirac
 
 noncomputable section
 
-open QuantumTheory.Transport
+open QuantumTheory.Transport QuantumTheory.TwoBand
 
 open BerryGeometry
 
@@ -39,7 +40,7 @@ private noncomputable def sortedEigenbasis (v m px py : ℝ) :
     diracHilbert_finrank
 
 private theorem bandEnergy_hasEigenvalue
-    (band : Band) (v m px py : ℝ) (hE : energy v m px py ≠ 0) :
+    (band : TwoBand) (v m px py : ℝ) (hE : energy v m px py ≠ 0) :
     Module.End.HasEigenvalue
       (hamiltonianOperator v m px py : DiracHilbert →ₗ[ℂ] DiracHilbert)
       ((bandEnergy band v m px py : ℝ) : ℂ) := by
@@ -104,7 +105,7 @@ private theorem sortedEigenvalues_eq_bandEnergy
   · exfalso
     exact (ne_of_gt hgap) (hiuR.symm.trans hilR)
 
-private def finTwoEquivBand : Fin 2 ≃ Band where
+private def finTwoEquivBand : Fin 2 ≃ TwoBand where
   toFun := Fin.cases .upper (fun _ => .lower)
   invFun
     | .upper => 0
@@ -115,11 +116,11 @@ private def finTwoEquivBand : Fin 2 ≃ Band where
     cases band <;> rfl
 
 private noncomputable def bandEigenbasis (v m px py : ℝ) :
-    OrthonormalBasis Band ℂ DiracHilbert :=
+    OrthonormalBasis TwoBand ℂ DiracHilbert :=
   (sortedEigenbasis v m px py).reindex finTwoEquivBand
 
 private theorem hamiltonianOperator_bandEigenbasis
-    (v m px py : ℝ) (hE : energy v m px py ≠ 0) (band : Band) :
+    (v m px py : ℝ) (hE : energy v m px py ≠ 0) (band : TwoBand) :
     hamiltonianOperator v m px py (bandEigenbasis v m px py band) =
       ((bandEnergy band v m px py : ℝ) : ℂ) • bandEigenbasis v m px py band := by
   have hspectral := sortedEigenvalues_eq_bandEnergy v m px py hE
@@ -134,11 +135,11 @@ private theorem hamiltonianOperator_bandEigenbasis
 
 /-- Generic pointwise Berry eigenbasis data for the nondegenerate massive-Dirac Hamiltonian.
 
-The band index is the physical `Band` type, the energy field is `bandEnergy`, and the two
+The band index is the physical `TwoBand` type, the energy field is `bandEnergy`, and the two
 Hamiltonian-derivative directions are exactly the bounded velocity operators. -/
 noncomputable def pointwiseEigenbasisData
     (v m px py : ℝ) (hE : energy v m px py ≠ 0) :
-    PointwiseEigenbasisData (Fin 2) Band DiracHilbert :=
+    PointwiseEigenbasisData (Fin 2) TwoBand DiracHilbert :=
   PointwiseEigenbasisData.ofSimpleSpectrum
     (hamiltonianOperator v m px py)
     (hamiltonianOperator_isSelfAdjoint v m px py)
@@ -150,7 +151,7 @@ noncomputable def pointwiseEigenbasisData
     (bandEnergy_injective v m px py hE)
 
 @[simp] theorem pointwiseEigenbasisData_energy
-    (v m px py : ℝ) (hE : energy v m px py ≠ 0) (band : Band) :
+    (v m px py : ℝ) (hE : energy v m px py ≠ 0) (band : TwoBand) :
     (pointwiseEigenbasisData v m px py hE).energy band =
       bandEnergy band v m px py := rfl
 
@@ -161,7 +162,7 @@ noncomputable def pointwiseEigenbasisData
 
 
 private theorem bandProjectorOperator_eq_spectralExpression
-    (band : Band) (v m px py : ℝ) :
+    (band : TwoBand) (v m px py : ℝ) :
     bandProjectorOperator band v m px py =
       (1 / 2 : ℂ) •
         ((1 : DiracHilbert →L[ℂ] DiracHilbert) +
@@ -171,7 +172,7 @@ private theorem bandProjectorOperator_eq_spectralExpression
   rw [map_smul, map_add, map_one, map_smul]
 
 private theorem bandProjectorOperator_apply_pointwiseEigenbasis
-    (target source : Band) (v m px py : ℝ) (hE : energy v m px py ≠ 0) :
+    (target source : TwoBand) (v m px py : ℝ) (hE : energy v m px py ≠ 0) :
     bandProjectorOperator target v m px py
         ((pointwiseEigenbasisData v m px py hE).eigenbasis source) =
       if source = target then
@@ -202,7 +203,7 @@ private theorem bandProjectorOperator_apply_pointwiseEigenbasis
 /-- Away from the Dirac degeneracy, the gauge-independent band projector is the rank-one
 projector onto the corresponding vector of the generic pointwise Berry eigenbasis. -/
 theorem bandProjectorOperator_eq_rankOne_pointwiseEigenbasis
-    (band : Band) (v m px py : ℝ) (hE : energy v m px py ≠ 0) :
+    (band : TwoBand) (v m px py : ℝ) (hE : energy v m px py ≠ 0) :
     bandProjectorOperator band v m px py =
       InnerProductSpace.rankOne ℂ
         ((pointwiseEigenbasisData v m px py hE).eigenbasis band)

@@ -1,4 +1,5 @@
 import Mathlib.RingTheory.Idempotents
+import LeanCondensedMatter.QuantumTheory.TwoBand
 import LeanCondensedMatter.Models.MassiveDirac.Model.Operator
 import LeanCondensedMatter.Models.MassiveDirac.Model.Spectral
 import LeanCondensedMatter.Transport.Resolvent.Spectral
@@ -33,12 +34,12 @@ open ContinuousLinearMap
 
 /-- A massive-Dirac band projector transported to the bounded-operator representation used by the
 transport stack. -/
-noncomputable def bandProjectorOperator (band : Band) (v m px py : ℝ) :
+noncomputable def bandProjectorOperator (band : TwoBand) (v m px py : ℝ) :
     DiracHilbert →L[ℂ] DiracHilbert :=
   matrixOperator (bandProjector band v m px py)
 
 /-- Every band projector is a nonzero bounded operator. -/
-theorem bandProjectorOperator_ne_zero (band : Band) (v m px py : ℝ) :
+theorem bandProjectorOperator_ne_zero (band : TwoBand) (v m px py : ℝ) :
     bandProjectorOperator band v m px py ≠ 0 := by
   intro hzero
   have htrace := congrArg (finiteDimensionalOperatorTrace (H := DiracHilbert)) hzero
@@ -48,14 +49,14 @@ theorem bandProjectorOperator_ne_zero (band : Band) (v m px py : ℝ) :
 
 /-- Ordered current band block `Tr(P_target j_μ P_source j_ν)` in the bounded-operator model. -/
 noncomputable def currentBandBlockTrace
-    (μ ν : Fin 2) (source target : Band) (e v m px py : ℝ) : ℂ :=
+    (μ ν : Fin 2) (source target : TwoBand) (e v m px py : ℝ) : ℂ :=
   finiteDimensionalOperatorTrace
     (bandProjectorOperator target v m px py * currentOperator μ e v *
       bandProjectorOperator source v m px py * currentOperator ν e v)
 
 /-- Reversing the current order exchanges the source and target band labels. -/
 theorem currentBandBlockTrace_swap
-    (μ ν : Fin 2) (source target : Band) (e v m px py : ℝ) :
+    (μ ν : Fin 2) (source target : TwoBand) (e v m px py : ℝ) :
     currentBandBlockTrace ν μ source target e v m px py =
       currentBandBlockTrace μ ν target source e v m px py := by
   simpa only [currentBandBlockTrace, mul_assoc] using
@@ -68,18 +69,18 @@ from the matrix realization under the algebra equivalence. -/
 theorem bandProjectorOperator_completeOrthogonalIdempotents
     (v m px py : ℝ) (hE : energy v m px py ≠ 0) :
     CompleteOrthogonalIdempotents
-      (fun band : Band => bandProjectorOperator band v m px py) := by
+      (fun band : TwoBand => bandProjectorOperator band v m px py) := by
   let φ : Matrix2 ≃⋆ₐ[ℂ] (DiracHilbert →L[ℂ] DiracHilbert) :=
     Matrix.toEuclideanCLM
   change CompleteOrthogonalIdempotents
     ((φ.toRingEquiv.toRingHom) ∘
-      (fun band : Band => bandProjector band v m px py))
+      (fun band : TwoBand => bandProjector band v m px py))
   exact (bandProjector_completeOrthogonalIdempotents v m px py hE).map
     φ.toRingEquiv.toRingHom
 
 /-- The Hamiltonian acts on each operator projector with its band energy. -/
 theorem hamiltonianOperator_mul_bandProjectorOperator
-    (band : Band) (v m px py : ℝ) (hE : energy v m px py ≠ 0) :
+    (band : TwoBand) (v m px py : ℝ) (hE : energy v m px py ≠ 0) :
     hamiltonianOperator v m px py * bandProjectorOperator band v m px py =
       (((bandEnergy band v m px py : ℝ) : ℂ)) •
         bandProjectorOperator band v m px py := by
@@ -89,7 +90,7 @@ theorem hamiltonianOperator_mul_bandProjectorOperator
 /-- Gauge-free finite-band spectral candidate for the resolvent of the massive-Dirac Hamiltonian. -/
 noncomputable def projectorResolvent
     (z : ℂ) (v m px py : ℝ) : DiracHilbert →L[ℂ] DiracHilbert :=
-  ∑ band : Band,
+  ∑ band : TwoBand,
     scalarResolventCoefficient z (bandEnergy band v m px py) •
       bandProjectorOperator band v m px py
 

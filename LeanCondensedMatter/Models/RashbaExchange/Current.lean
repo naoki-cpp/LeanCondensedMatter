@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Models.RashbaExchange.Model.OperatorSpectral
+import LeanCondensedMatter.QuantumTheory.TwoBand
 import LeanCondensedMatter.Models.RashbaExchange.ResponseParameters
 import LeanCondensedMatter.Analysis.Operator.FiniteTrace
 
@@ -53,7 +54,7 @@ theorem currentBoundedOperator_rashba_zero
 
 /-- Ordered current band block `Tr(P_target j_μ P_source j_ν)`. -/
 noncomputable def currentBandBlockTrace
-    (params : Parameters) (μ ν : Fin 2) (source target : Band) (px py : ℝ) : ℂ :=
+    (params : Parameters) (μ ν : Fin 2) (source target : TwoBand) (px py : ℝ) : ℂ :=
   finiteDimensionalOperatorTrace
     (bandProjectorOperator params target px py *
       currentBoundedOperator params μ px py *
@@ -63,7 +64,7 @@ noncomputable def currentBandBlockTrace
 /-- Cyclicity of finite-dimensional trace exchanges the current directions
 and swaps the ordered band projectors, without complex conjugation. -/
 theorem currentBandBlockTrace_swap
-    (params : Parameters) (μ ν : Fin 2) (source target : Band)
+    (params : Parameters) (μ ν : Fin 2) (source target : TwoBand)
     (px py : ℝ) :
     currentBandBlockTrace params ν μ source target px py =
       currentBandBlockTrace params μ ν target source px py := by

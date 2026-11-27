@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Models.MassiveDirac.Model.Berry.Symmetry
+import LeanCondensedMatter.QuantumTheory.TwoBand
 import LeanCondensedMatter.QuantumTheory.Occupation.BandFilling
 import LeanCondensedMatter.Analysis.Calculus.CompactSupportInterval
 import Mathlib.Analysis.SpecialFunctions.Integrals.Basic
@@ -31,6 +32,8 @@ massless cone. No infinite-cutoff limit and no `e²/h` transport prefactor are c
 
 namespace QuantumTheory.Models.MassiveDirac
 
+open QuantumTheory.TwoBand
+
 noncomputable section
 
 open MeasureTheory Set
@@ -41,18 +44,18 @@ open scoped Interval
 This is the result of combining `Ω_s(p) = -s m v²/(2E³)` with the radial Jacobian
 `p dp = E dE / v²`; hence the velocity cancels before the energy integration. Integer power
 `ε⁻²` is used so the finite-shell integral is handled directly by Mathlib's `integral_zpow`. -/
-def radialBerryEnergyDensity (band : Band) (m ε : ℝ) : ℝ :=
+def radialBerryEnergyDensity (band : TwoBand) (m ε : ℝ) : ℝ :=
   -(bandSign band * m / 2) * ε ^ (-2 : ℤ)
 
 /-- Berry weight accumulated over a finite positive-energy shell. -/
-def energyShellBerryWeight (band : Band) (m ε₀ ε₁ : ℝ) : ℝ :=
+def energyShellBerryWeight (band : TwoBand) (m ε₀ ε₁ : ℝ) : ℝ :=
   ∫ ε in ε₀..ε₁, radialBerryEnergyDensity band m ε
 
 /-- Exact finite-shell Berry-weight integral for `0 < ε₀ ≤ ε₁`.
 
 The shell avoids the singularity at zero, so the `zpow` integral at exponent `-2` applies
 without introducing a derivative/NormedSpace instance into the model layer. -/
-theorem energyShellBerryWeight_eq (band : Band) (m ε₀ ε₁ : ℝ)
+theorem energyShellBerryWeight_eq (band : TwoBand) (m ε₀ ε₁ : ℝ)
     (hε₀ : 0 < ε₀) (hord : ε₀ ≤ ε₁) :
     energyShellBerryWeight band m ε₀ ε₁ =
       (bandSign band * m / 2) * (ε₁⁻¹ - ε₀⁻¹) := by
@@ -74,7 +77,7 @@ theorem energyShellBerryWeight_eq (band : Band) (m ε₀ ε₁ : ℝ)
 actual signed band energy `s ε`, while `ε` itself remains the positive energy coordinate used by the
 radial reduction. -/
 def zeroTemperatureOccupiedRadialBerryEnergyDensity
-    (band : Band) (m fermiEnergy ε : ℝ) : ℝ :=
+    (band : TwoBand) (m fermiEnergy ε : ℝ) : ℝ :=
   bandStateOccupation (zeroTemperatureOccupation fermiEnergy)
       (fun band ε => bandSign band * ε) band ε *
     radialBerryEnergyDensity band m ε
@@ -82,7 +85,7 @@ def zeroTemperatureOccupiedRadialBerryEnergyDensity
 /-- Zero-temperature occupied Berry weight of one band inside the common positive-energy cutoff
 interval `[|m|, Λ]`. -/
 def zeroTemperatureOccupiedBandBerryWeightCutoff
-    (band : Band) (m fermiEnergy Λ : ℝ) : ℝ :=
+    (band : TwoBand) (m fermiEnergy Λ : ℝ) : ℝ :=
   ∫ ε in |m|..Λ,
     zeroTemperatureOccupiedRadialBerryEnergyDensity band m fermiEnergy ε
 
@@ -91,7 +94,7 @@ bands are integrated over the same cutoff interval; the generic spectral occupat
 filled lower band and the occupied part of the upper band. -/
 def zeroTemperatureOccupiedBerryWeightCutoff
     (m fermiEnergy Λ : ℝ) : ℝ :=
-  ∑ band : Band, zeroTemperatureOccupiedBandBerryWeightCutoff band m fermiEnergy Λ
+  ∑ band : TwoBand, zeroTemperatureOccupiedBandBerryWeightCutoff band m fermiEnergy Λ
 
 /-- If `|m| ≤ εF ≤ Λ`, zero-temperature occupation leaves the lower-band Berry density unchanged
 throughout the finite cutoff interval, with the massless endpoint handled by the vanishing density. -/

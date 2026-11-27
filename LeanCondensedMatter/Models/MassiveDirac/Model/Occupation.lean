@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Models.MassiveDirac.Model.FermiSurface
+import LeanCondensedMatter.QuantumTheory.TwoBand
 import LeanCondensedMatter.QuantumTheory.Occupation.BandFilling
 
 set_option linter.style.header false
@@ -16,7 +17,7 @@ namespace QuantumTheory.Models.MassiveDirac
 noncomputable section
 
 /-- Massive-Dirac band energy regarded as a function on two-dimensional physical momentum. -/
-def bandEnergyOnMomentum (v m : ℝ) (band : Band) (p : ℝ × ℝ) : ℝ :=
+def bandEnergyOnMomentum (v m : ℝ) (band : TwoBand) (p : ℝ × ℝ) : ℝ :=
   bandEnergy band v m p.1 p.2
 
 /-- Any massive-Dirac lower band is filled when the Fermi energy is positive. -/

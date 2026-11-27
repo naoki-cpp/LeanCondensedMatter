@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Models.MassiveDirac.Bastin.PoleFactor
+import LeanCondensedMatter.QuantumTheory.TwoBand
 
 set_option linter.style.header false
 
@@ -17,19 +18,19 @@ namespace QuantumTheory.Models.MassiveDirac
 
 noncomputable section
 
-open QuantumTheory.Transport
+open QuantumTheory.Transport QuantumTheory.TwoBand
 
 /-- The regular Hall interband spectator/current factor written in target-centered coordinates
 `(offset, broadening)`. -/
 noncomputable def targetCenteredInterbandSpectatorCurrentFactor
-    (band : Band) (e v m px py : ℝ) (offsetBroadening : ℝ × ℝ) : ℂ :=
+    (band : TwoBand) (e v m px py : ℝ) (offsetBroadening : ℝ × ℝ) : ℂ :=
   interbandSpectatorCurrentFactor 0 1 band e v m px py
     (bandEnergy band v m px py + offsetBroadening.1) offsetBroadening.2
 
 /-- The model-specific target-centered spectator is exactly the generic isolated interband-pole
 regular factor with the massive-Dirac gap and ordered Hall current blocks supplied. -/
 theorem targetCenteredInterbandSpectatorCurrentFactor_eq_interbandPoleRegularFactor
-    (band : Band) (e v m px py : ℝ) (p : ℝ × ℝ) :
+    (band : TwoBand) (e v m px py : ℝ) (p : ℝ × ℝ) :
     targetCenteredInterbandSpectatorCurrentFactor band e v m px py p =
       interbandPoleRegularFactor
         (interbandEnergyGap band v m px py)

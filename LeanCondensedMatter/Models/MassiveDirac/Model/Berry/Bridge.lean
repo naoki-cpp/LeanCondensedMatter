@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Analysis.Operator.BerryGeometry
+import LeanCondensedMatter.QuantumTheory.TwoBand
 import Mathlib.Tactic.FieldSimp
 import Mathlib.Tactic.Ring
 import LeanCondensedMatter.Models.MassiveDirac.Model.Interband
@@ -25,7 +26,7 @@ namespace QuantumTheory.Models.MassiveDirac
 
 noncomputable section
 
-open QuantumTheory.Transport
+open QuantumTheory.Transport QuantumTheory.TwoBand
 
 open BerryGeometry
 open ContinuousLinearMap
@@ -33,7 +34,7 @@ open ContinuousLinearMap
 /-- The gauge-independent interband force numerator is exactly the product of the corresponding
 generic Hamiltonian-derivative matrix elements. -/
 theorem forceMatrixTraceNumerator_eq_hamiltonianDerivativeMatrixElements
-    (μ ν : Fin 2) (band : Band) (v m px py : ℝ) (hE : energy v m px py ≠ 0) :
+    (μ ν : Fin 2) (band : TwoBand) (v m px py : ℝ) (hE : energy v m px py ≠ 0) :
     forceMatrixTraceNumerator μ ν band v m px py =
       (pointwiseEigenbasisData v m px py hE).hamiltonianDerivativeMatrixElement
           μ (oppositeBand band) band *
@@ -75,14 +76,14 @@ theorem forceMatrixTraceNumerator_eq_hamiltonianDerivativeMatrixElements
 
 /-- The real two-band force-matrix Berry-curvature expression obtained from the Hall component of
 the generic formula `2 Im(Fˣ_mn Fʸ_nm)/(E_n-E_m)²` after using that the energy denominator is real. -/
-def forceMatrixBerryCurvature (band : Band) (v m px py : ℝ) : ℝ :=
+def forceMatrixBerryCurvature (band : TwoBand) (v m px py : ℝ) : ℝ :=
   2 * (forceMatrixTraceNumerator 0 1 band v m px py).im /
     interbandEnergyGap band v m px py ^ 2
 
 /-- The generic pointwise Berry curvature in the physical x-y directions is exactly the
 model projector/force-matrix curvature away from the Dirac degeneracy. -/
 theorem pointwiseBerryCurvature_xy_eq_forceMatrixBerryCurvature
-    (band : Band) (v m px py : ℝ) (hE : energy v m px py ≠ 0) :
+    (band : TwoBand) (v m px py : ℝ) (hE : energy v m px py ≠ 0) :
     (pointwiseEigenbasisData v m px py hE).berryCurvature 0 1 band =
       forceMatrixBerryCurvature band v m px py := by
   classical
@@ -120,7 +121,7 @@ theorem pointwiseBerryCurvature_xy_eq_forceMatrixBerryCurvature
 
 /-- The projector/force-matrix expression equals the closed massive-Dirac Berry curvature away
 from the band degeneracy. -/
-theorem forceMatrixBerryCurvature_eq_berryCurvature (band : Band) (v m px py : ℝ)
+theorem forceMatrixBerryCurvature_eq_berryCurvature (band : TwoBand) (v m px py : ℝ)
     (hE : energy v m px py ≠ 0) :
     forceMatrixBerryCurvature band v m px py = berryCurvature band v m px py := by
   rw [forceMatrixBerryCurvature, forceMatrixTraceNumerator_xy_eq band v m px py hE,
@@ -134,7 +135,7 @@ theorem forceMatrixBerryCurvature_eq_berryCurvature (band : Band) (v m px py : �
 /-- Canonical specialization from the generic pointwise Berry curvature to the closed
 massive-Dirac formula. -/
 theorem pointwiseBerryCurvature_xy_eq_berryCurvature
-    (band : Band) (v m px py : ℝ) (hE : energy v m px py ≠ 0) :
+    (band : TwoBand) (v m px py : ℝ) (hE : energy v m px py ≠ 0) :
     (pointwiseEigenbasisData v m px py hE).berryCurvature 0 1 band =
       berryCurvature band v m px py := by
   rw [pointwiseBerryCurvature_xy_eq_forceMatrixBerryCurvature band v m px py hE,
