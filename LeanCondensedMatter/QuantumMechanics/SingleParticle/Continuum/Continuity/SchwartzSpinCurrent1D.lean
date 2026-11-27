@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Analysis.InternalSpace.Pauli
+import LeanCondensedMatter.Analysis.Matrix.Pauli
 import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.SchwartzTwoLevelSchrodinger1D
 import LeanCondensedMatter.QuantumTheory.SpinHalf
 import LeanCondensedMatter.QuantumTheory.ConservationLaw

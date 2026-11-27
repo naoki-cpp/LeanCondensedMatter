@@ -414,7 +414,7 @@ K0/K1/K2 momentum moments. Intermediate harmonic reductions stay private in that
 the explicit moments to attach physical current and trace prefactors. Ordered radial
 kernels remain distinct from the antisymmetric trace used for Hall conductivity.
 
-`Analysis.InternalSpace.Pauli` owns coefficient extraction through entrywise interval
+`Analysis.Matrix.Pauli` owns coefficient extraction through entrywise interval
 integrals with a complex prefactor. These laws use Mathlib's integral addition,
 subtraction, division, and constant-multiplication results; no additional linear-map
 representation is needed. `Disorder.Propagator.BornDyson.RealSpace.RadialGreen`

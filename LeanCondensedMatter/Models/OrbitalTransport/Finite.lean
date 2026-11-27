@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Combinatorics.FiniteAntisymmetricSum
-import LeanCondensedMatter.Analysis.InternalSpace.Pauli
+import LeanCondensedMatter.Analysis.Matrix.Pauli
 import Mathlib.Tactic.FinCases
 import Mathlib.Tactic.NormNum
 import Mathlib.Tactic.Ring

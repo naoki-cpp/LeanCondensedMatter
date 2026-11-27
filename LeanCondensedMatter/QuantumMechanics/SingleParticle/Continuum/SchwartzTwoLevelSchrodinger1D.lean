@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Analysis.InternalSpace.Pauli
+import LeanCondensedMatter.Analysis.Matrix.Pauli
 import LeanCondensedMatter.Analysis.Operator.SchwartzComponents1D
 import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.SchwartzSchrodinger1D
 import Mathlib.Algebra.Lie.OfAssociative
