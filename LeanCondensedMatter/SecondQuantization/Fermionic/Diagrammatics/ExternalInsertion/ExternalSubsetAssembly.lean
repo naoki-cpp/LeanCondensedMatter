@@ -397,10 +397,9 @@ open Classical in
 /-- For one physical external-component layout, the complete integrated
 interaction-shuffle orbit summed over independent connected Wick
 families equals the signed product of *standardized consecutive-slot*
-local Dyson sums. All interactions are now referred to their blockwise
-cardinalities, enabling comparison across distinct physical owner
-assignments. This still does not equate a single canonical Dyson
-integral with its full shuffle orbit. -/
+local Dyson sums indexed by their blockwise interaction cardinalities.
+The equality concerns the full shuffle orbit, not an individual canonical
+Dyson integral. -/
 theorem ExternalInsertionBlockLayout.sum_signedDysonShuffleOrbits_eq_prod_standardized
     {n : ℕ} (layout : ExternalInsertionBlockLayout E n)
     (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
