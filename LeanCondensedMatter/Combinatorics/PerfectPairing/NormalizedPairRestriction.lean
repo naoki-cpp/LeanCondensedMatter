@@ -80,7 +80,7 @@ noncomputable def PairingOn.normalizedPairSubtypeEquivOfPartnerEquiv
     source.NormalizedPairSubtype p ≃ target.NormalizedPairSubtype q :=
   (source.normalizedPairEquivOfPartnerEquiv target e hpartner).subtypeEquiv
     (fun pr => by
-      have hends := target.normalizedPairOfEndpointEquiv_pair_eq_or_swap
+      have hends := target.normalizedPairEquivOfEndpointEquiv_pair_eq_or_swap
         (source.pairEndpointEquiv.trans e)
         (source.partner_map_normalizedPair target e hpartner)
         pr

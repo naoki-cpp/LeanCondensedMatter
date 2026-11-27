@@ -61,7 +61,8 @@ maps, and the conversion from two oriented crossing sums to a single geometric c
 Both binary and component decompositions use these laws. `PairEndpoints` owns the product
 conversion between a normalized-pair subtype and its underlying finite set. It also constructs normalized-pair
 equivalences directly from a single equivalence `A × Fin 2 ≃ α` and partner compatibility;
-intermediate coordinate changes are composed at the caller.
+intermediate coordinate changes are composed at the caller. Endpoint orientation laws are stated
+on the induced normalized-pair equivalence itself, rather than on a separate unbundled map.
 
 `PerfectPairing.CrossingParity` owns the common parity identity for two disjoint families of
 normalized pairs, allowing either local endpoint orientation. Binary splitting and component
