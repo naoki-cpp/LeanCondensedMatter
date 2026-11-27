@@ -1127,8 +1127,7 @@ theorem orderedExternalInsertionTimedEvents_paired {n : ℕ}
         cases b with
         | inl b =>
             fin_cases a <;> fin_cases b <;>
-              simp_all [block, pairedExternalEventBlock] <;>
-              (rcases hx with rfl | rfl) <;> simp_all
+              simp_all [block, pairedExternalEventBlock] <;> aesop
         | inr b =>
             fin_cases a <;> simp_all [block, pairedExternalEventBlock]
     | inr a =>
@@ -1157,20 +1156,20 @@ theorem orderedExternalInsertionTimedEvents_paired {n : ℕ}
                 externalInsertionTimedEventBeforeOrEqual, stableTimedEventBeforeOrEqual_iff,
                 externalInsertionTimedEventTime, externalInsertionTimedEventRank,
                 pairedExternalTimes] <;>
-              (first | omega | aesop (config := { terminal := false }) (add safe tactic (by omega)))
-            all_goals
-              first
-              | exact (Fin.strictMono_castAdd n).monotone (show (0 : Fin 4) ≤ 2 by decide)
-              | exact (Fin.strictMono_castAdd n).monotone (show (0 : Fin 4) ≤ 3 by decide)
-              | exact (Fin.strictMono_castAdd n).monotone (show (1 : Fin 4) ≤ 2 by decide)
-              | exact (Fin.strictMono_castAdd n).monotone (show (1 : Fin 4) ≤ 3 by decide)
+              aesop (add safe tactic (by
+                first
+                | omega
+                | exact (Fin.strictMono_castAdd n).monotone (show (0 : Fin 4) ≤ 2 by decide)
+                | exact (Fin.strictMono_castAdd n).monotone (show (0 : Fin 4) ≤ 3 by decide)
+                | exact (Fin.strictMono_castAdd n).monotone (show (1 : Fin 4) ≤ 2 by decide)
+                | exact (Fin.strictMono_castAdd n).monotone (show (1 : Fin 4) ≤ 3 by decide)))
         | inr b =>
             fin_cases a <;>
               simp_all [block, pairedExternalEventBlock, r₁, r₂, times,
                 externalInsertionTimedEventBeforeOrEqual, stableTimedEventBeforeOrEqual_iff,
                 externalInsertionTimedEventTime, externalInsertionTimedEventRank,
                 pairedExternalTimes] <;>
-              (first | omega | aesop (add safe tactic (by omega)))
+              aesop (add safe tactic (by omega))
     | inr a =>
         cases b with
         | inl b =>
@@ -1179,7 +1178,7 @@ theorem orderedExternalInsertionTimedEvents_paired {n : ℕ}
                 externalInsertionTimedEventBeforeOrEqual, stableTimedEventBeforeOrEqual_iff,
                 externalInsertionTimedEventTime, externalInsertionTimedEventRank,
                 pairedExternalTimes] <;>
-              (first | omega | aesop (add safe tactic (by omega)))
+              aesop (add safe tactic (by omega))
         | inr b =>
             simp_all [block, pairedExternalEventBlock, r₁, r₂,
               externalInsertionTimedEventBeforeOrEqual, stableTimedEventBeforeOrEqual_iff,
