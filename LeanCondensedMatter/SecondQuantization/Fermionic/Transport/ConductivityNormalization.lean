@@ -8,6 +8,8 @@ import LeanCondensedMatter.QuantumTheory.LinearResponse.Frequency.InfiniteTime
 
 set_option linter.style.header false
 
+open scoped Matrix
+
 /-!
 # Fermionic finite-volume directional conductivity
 
@@ -184,6 +186,110 @@ theorem finiteTimeGeometricConductivity_linearMixing
     system.hbar ω η T ρ.toNormalizedExpectation hω hJ hJ hC
     (fun k l => intervalIntegrable_finiteTimeRetardedIntegrand
       system ρ.toNormalizedExpectation (J k) (J l) ω η T hT) i j
+
+
+/-- The actual species-labeled configuration point group constrains the Gibbs
+Kubo conductivity when a representative configuration symmetry also preserves
+the hopping amplitudes. Its site permutation comes from the existing canonical
+action on occupied sites; neither an independent permutation nor a direction
+transformation law is assumed. The real orthonormal coordinate matrix is that
+of the linear part, including for affine representatives with translations.
+The finite sample itself must be preserved, not just its ambient bulk lattice. -/
+theorem finiteTimeCrystalConductivity_pointGroup
+    {V Species I : Type*}
+    [NormedAddCommGroup V] [InnerProductSpace ℝ V] [Fintype I]
+    (X : LeanCondensedMatter.Crystal.AtomicConfiguration V Species)
+    [LinearOrder X.Site] [Fintype X.Site]
+    (g : X.pointGroup (V := V)) (b : OrthonormalBasis I ℝ V)
+    (volume : PositiveVolume)
+    (system : BoundedFreeSystem (FiniteLatticeHilbertFock X.Site))
+    (K : LocallyFiniteHopping X.Site) (q β ω η T : ℝ) (hT : 0 ≤ T)
+    (hHamiltonian : system.hamiltonian.1 = boundedHoppingHamiltonian K)
+    (hLift : ∃ s : X.symmetryGroup,
+      X.symmetryLinearPartHom (V := V) s = (g : V ≃ₗᵢ[ℝ] V) ∧
+      ∀ x y : X.Site, K.amplitude (s • x) (s • y) = K.amplitude x y) :
+    let geometry : LatticeGeometry X.Site V := ⟨Subtype.val⟩
+    let direction := b.toBasis.coord
+    let R : Matrix I I ℝ := fun i k => direction i ((g : V ≃ₗᵢ[ℝ] V) (b k))
+    let σ := finiteTimeVectorPotentialConductivityTensor (freePropagatorGroup system)
+      (fun i => boundedDirectionalCurrent geometry (direction i) (system.hbar : ℂ) (q : ℂ) K)
+      (fun j => boundedDirectionalCurrent geometry (direction j) (system.hbar : ℂ) (q : ℂ) K)
+      (fun i j => boundedMixedDirectionalContact geometry (direction i) (direction j)
+        (system.hbar : ℂ) (q : ℂ) K)
+      volume system.hbar ω η T
+      (QuantumTheory.gibbsState system.hamiltonian β).toNormalizedExpectation
+    ∀ i j, (∑ k, ∑ l, ((R i k : ℂ) * (R j l : ℂ)) * σ.component k l) =
+      σ.component i j := by
+  classical
+  obtain ⟨s, hs, hK⟩ := hLift
+  intro geometry direction R σ
+  let p := MulAction.toPermHom X.symmetryGroup X.Site s
+  let L := (g : V ≃ₗᵢ[ℝ] V).toLinearEquiv.toLinearMap
+  let e : V ≃ᵃⁱ[ℝ] V := (s : V ≃ᵢ V).toRealAffineIsometryEquiv
+  have hL : e.linearIsometryEquiv = (g : V ≃ₗᵢ[ℝ] V) := hs
+  have hposition (x : X.Site) : geometry.position (p x) =
+      L (geometry.position x) + e 0 := by
+    change e (x : V) = L (x : V) + e 0
+    have hx := e.map_vadd (0 : V) (x : V)
+    change e ((x : V) + 0) = e.linearIsometryEquiv (x : V) + e 0 at hx
+    rw [add_zero, hL] at hx
+    exact hx
+  have hDirection (i : I) : (direction i).comp L = ∑ k, R i k • direction k := by
+    apply b.toBasis.ext
+    intro k
+    change direction i (L (b k)) =
+      (∑ j, R i j • direction j) (b.toBasis k)
+    simp only [LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul]
+    have hcoord (j : I) : direction j (b.toBasis k) = if k = j then 1 else 0 := by
+      simp [direction, Module.Basis.coord_apply, Finsupp.single_apply]
+    simp only [hcoord, mul_ite, mul_one, mul_zero]
+    rw [Finset.sum_ite_eq' Finset.univ k (fun j => R i j), if_pos (Finset.mem_univ k)]
+    rfl
+  exact finiteTimeGeometricConductivity_linearMixing volume system geometry direction
+    K q β ω η T hT hHamiltonian p L (e 0) hposition hK R hDirection
+
+/-- An actual quarter-turn symmetry of the finite species-labeled configuration,
+preserving the microscopic hopping Hamiltonian, forces equal longitudinal and
+opposite off-diagonal Gibbs Kubo conductivities. A proper rotation does not
+force the Hall response to vanish. -/
+theorem finiteTimeCrystalConductivity_isPlanarIsotropic_of_quarterTurn
+    {V Species : Type*}
+    [NormedAddCommGroup V] [InnerProductSpace ℝ V]
+    (X : LeanCondensedMatter.Crystal.AtomicConfiguration V Species)
+    [LinearOrder X.Site] [Fintype X.Site]
+    (g : X.pointGroup (V := V)) (b : OrthonormalBasis (Fin 2) ℝ V)
+    (volume : PositiveVolume)
+    (system : BoundedFreeSystem (FiniteLatticeHilbertFock X.Site))
+    (K : LocallyFiniteHopping X.Site) (q β ω η T : ℝ) (hT : 0 ≤ T)
+    (hHamiltonian : system.hamiltonian.1 = boundedHoppingHamiltonian K)
+    (hLift : ∃ s : X.symmetryGroup,
+      X.symmetryLinearPartHom (V := V) s = (g : V ≃ₗᵢ[ℝ] V) ∧
+      ∀ x y : X.Site, K.amplitude (s • x) (s • y) = K.amplitude x y)
+    (hQuarter : (fun i k => b.toBasis.coord i ((g : V ≃ₗᵢ[ℝ] V) (b k)) :
+        Matrix (Fin 2) (Fin 2) ℝ) = !![0, -1; 1, 0]) :
+    let geometry : LatticeGeometry X.Site V := ⟨Subtype.val⟩
+    let direction := b.toBasis.coord
+    (finiteTimeVectorPotentialConductivityTensor (freePropagatorGroup system)
+      (fun i => boundedDirectionalCurrent geometry (direction i) (system.hbar : ℂ) (q : ℂ) K)
+      (fun j => boundedDirectionalCurrent geometry (direction j) (system.hbar : ℂ) (q : ℂ) K)
+      (fun i j => boundedMixedDirectionalContact geometry (direction i) (direction j)
+        (system.hbar : ℂ) (q : ℂ) K)
+      volume system.hbar ω η T
+      (QuantumTheory.gibbsState system.hamiltonian β).toNormalizedExpectation).IsPlanarIsotropic := by
+  classical
+  intro geometry direction
+  apply (ConductivityTensor.isQuarterTurnInvariant_iff_isPlanarIsotropic _).mp
+  intro i j
+  have h := finiteTimeCrystalConductivity_pointGroup X g b volume system K q β ω η T
+    hT hHamiltonian hLift i j
+  dsimp only at h
+  rw [hQuarter] at h
+  have hcast (i k : Fin 2) :
+      (((!![0, -1; 1, 0] : Matrix (Fin 2) (Fin 2) ℝ) i k : ℝ) : ℂ) =
+        (!![0, -1; 1, 0] : Matrix (Fin 2) (Fin 2) ℂ) i k := by
+    fin_cases i <;> fin_cases k <;> simp
+  simp only [hcast] at h
+  simpa only [ConductivityTensor.IsQuarterTurnInvariant, mul_right_comm] using h
 
 end
 end Transport
