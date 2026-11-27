@@ -41,8 +41,8 @@ theorem average_twoGreenVertexTraceKernel_eq_trace_insertion
       ContinuousLinearMap.finiteDimensionalOperatorTrace
         (measuredVertex * ensemble.averagedOperatorInsertion left right sourceVertex) := by
   simpa [twoGreenVertexTraceKernel, averagedOperatorInsertion, FiniteDisorderEnsemble.average,
-    mul_assoc] using
-    (LinearMap.map_finiteWeightedAverage ensemble.probability
+    LinearMap.finiteWeightedAverage, mul_assoc] using
+    (LinearMap.map_finiteWeightedSum (fun ω => (ensemble.probability ω : ℂ))
       ((ContinuousLinearMap.finiteDimensionalOperatorTrace (H := H)).toLinearMap.comp
         ((ContinuousLinearMap.mulLeftRight ℂ (H →L[ℂ] H) measuredVertex 1).toLinearMap))
       (fun ω => left ω * sourceVertex * right ω)).symm

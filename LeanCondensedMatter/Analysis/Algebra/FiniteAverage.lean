@@ -90,33 +90,6 @@ noncomputable def finiteWeightedAverage {E : Type*} [AddCommMonoid E] [Module �
     (Ω → E) →ₗ[ℂ] E :=
   finiteWeightedSum (fun ω => (w ω : ℂ))
 
-/-- Every complex-linear map commutes with a finite weighted average. -/
-theorem map_finiteWeightedAverage {E F : Type*}
-    [AddCommMonoid E] [Module ℂ E] [AddCommMonoid F] [Module ℂ F]
-    (f : E →ₗ[ℂ] F) (response : Ω → E) :
-    f (finiteWeightedAverage w response) = finiteWeightedAverage w (fun ω => f (response ω)) :=
-  map_finiteWeightedSum (fun ω => (w ω : ℂ)) f response
-
-/-- Normalization makes the finite weighted average fix constant families. -/
-theorem finiteWeightedAverage_const {E : Type*} [AddCommMonoid E] [Module ℂ E]
-    (hweight : ∑ ω, w ω = 1) (value : E) :
-    finiteWeightedAverage w (fun _ => value) = value :=
-  finiteWeightedSum_const (fun ω => (w ω : ℂ))
-    (by simpa using congrArg (fun x : ℝ => (x : ℂ)) hweight) value
-
-/-- Real-weighted complex bilinear averages obey the scalar-generic centered decomposition. -/
-theorem finiteWeightedAverage_bilinear_eq_mean_add_centered {E F G : Type*}
-    [AddCommGroup E] [Module ℂ E] [AddCommGroup F] [Module ℂ F]
-    [AddCommGroup G] [Module ℂ G]
-    (hweight : ∑ ω, w ω = 1)
-    (B : E →ₗ[ℂ] F →ₗ[ℂ] G) (left : Ω → E) (right : Ω → F) :
-    finiteWeightedAverage w (fun ω => B (left ω) (right ω)) =
-      B (finiteWeightedAverage w left) (finiteWeightedAverage w right) +
-        finiteWeightedAverage w (fun ω =>
-          B (left ω - finiteWeightedAverage w left) (right ω - finiteWeightedAverage w right)) :=
-  finiteWeightedSum_bilinear_eq_mean_add_centered (fun ω => (w ω : ℂ))
-    (by simpa using congrArg (fun x : ℝ => (x : ℂ)) hweight) B left right
-
 /-- A pointwise norm bound passes to a nonnegative weighted finite sum.
 Normalization of the weights is not needed. -/
 theorem norm_finiteWeightedAverage_le_sum_of_forall {E : Type*}

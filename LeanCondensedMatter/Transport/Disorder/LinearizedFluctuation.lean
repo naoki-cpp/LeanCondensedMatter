@@ -77,10 +77,11 @@ theorem norm_configurationGreen_fluctuation_sub_firstDyson_le
     ensemble.configurationGreenOfRegulator_eq_secondOrder_add_exactRemainder_left
       energy regulator hregulator ξ
   have hAavg : ensemble.average A = 0 := by
-    simpa [FiniteDisorderEnsemble.average,
-      show LinearMap.finiteWeightedAverage ensemble.probability V = 0 from hcentered] using
-      (LinearMap.map_finiteWeightedAverage ensemble.probability
-        ((ContinuousLinearMap.mulLeftRight ℂ (H →L[ℂ] H)) G₀ G₀).toLinearMap V).symm
+    have h := (LinearMap.map_finiteWeightedSum (fun ω => (ensemble.probability ω : ℂ))
+      ((ContinuousLinearMap.mulLeftRight ℂ (H →L[ℂ] H)) G₀ G₀).toLinearMap V).symm
+    change ensemble.average A = G₀ * ensemble.average V * G₀ at h
+    rw [show ensemble.average V = 0 from hcentered, mul_zero, zero_mul] at h
+    exact h
   have hGavg :
       ensemble.averagedGreenOfRegulator energy regulator =
         G₀ + ensemble.average R := by
