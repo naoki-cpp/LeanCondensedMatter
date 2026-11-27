@@ -34,17 +34,11 @@ private theorem PairingOn.ofSplit_pairEndpointEquiv_partner
       e (PairingOn.splitPairEndpointEquiv P Q (pr, 1)) := by
   cases pr with
   | inl p =>
-      change (PairingOn.ofSplit e P Q).partner (e (Sum.inl p.1.1)) =
-        e (Sum.inl p.1.2)
-      rw [PairingOn.ofSplit_partner_inl]
-      exact congrArg (fun x => e (Sum.inl x))
-        ((P.mem_pairs_iff p.1.1 p.1.2).mp p.2).2
+      exact P.partner_map_normalizedPair (PairingOn.ofSplit e P Q)
+        (fun i => e (Sum.inl i)) (PairingOn.ofSplit_partner_inl e P Q) p
   | inr p =>
-      change (PairingOn.ofSplit e P Q).partner (e (Sum.inr p.1.1)) =
-        e (Sum.inr p.1.2)
-      rw [PairingOn.ofSplit_partner_inr]
-      exact congrArg (fun x => e (Sum.inr x))
-        ((Q.mem_pairs_iff p.1.1 p.1.2).mp p.2).2
+      exact Q.partner_map_normalizedPair (PairingOn.ofSplit e P Q)
+        (fun i => e (Sum.inr i)) (PairingOn.ofSplit_partner_inr e P Q) p
 
 /-- Normalized pairs of a pairing assembled from two independent parts are precisely
 the normalized pairs of those parts, tagged by their side.

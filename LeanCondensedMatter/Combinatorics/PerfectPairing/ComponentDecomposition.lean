@@ -37,10 +37,8 @@ private theorem PairingOn.componentPairEndpointEquiv_partner
         (positionEquiv (PairingOn.componentPairEndpointEquiv componentPairing (x, 0))) =
       positionEquiv (PairingOn.componentPairEndpointEquiv componentPairing (x, 1)) := by
   rcases x with ⟨B, pr⟩
-  have hpr := ((componentPairing B).mem_pairs_iff pr.1.1 pr.1.2).1 pr.2
-  simpa [PairingOn.componentPairEndpointEquiv] using
-    (hpartner B pr.1.1).trans
-      (congrArg (fun p => positionEquiv ⟨B, p⟩) hpr.2)
+  exact (componentPairing B).partner_map_normalizedPair global
+    (fun p => positionEquiv ⟨B, p⟩) (hpartner B) pr
 
 /-- Component-local normalized pairs are equivalent to the normalized pairs of a global pairing
 when the component position fibers partition the ambient positions and intertwine partner maps. -/
@@ -73,7 +71,7 @@ theorem PairingOn.normalizedPairSigmaEquiv_apply_of_strictMono
   apply global.normalizedPairOfEndpointEquiv_pair_eq_of_lt
     (PairingOn.componentPairEndpointEquiv componentPairing) positionEquiv
     (global.componentPairEndpointEquiv_partner componentPairing positionEquiv hpartner)
-  exact hmono B (((componentPairing B).mem_pairs_iff pr.1.1 pr.1.2).1 pr.2).1
+  exact hmono B ((componentPairing B).pairs_normalized pr.2)
 
 
 /-- A product over the pairs of a global pairing factors over component pairings whenever a

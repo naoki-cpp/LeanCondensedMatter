@@ -184,6 +184,13 @@ noncomputable def PairingOn.normalizedPairEquivOfEndpointEquiv
       rw [hfirst]
       exact congrArg Prod.fst (pairing.pairEndpointEquiv.left_inv (pr, 1))
 
+/-- A partner-intertwining map sends the endpoints of a normalized pair to partnered positions. -/
+theorem PairingOn.partner_map_normalizedPair {α β : Type*} [Fintype α] [LinearOrder α]
+    (source : PairingOn α) (target : PairingOn β) (f : α → β)
+    (hpartner : ∀ i, target.partner (f i) = f (source.partner i))
+    (pr : source.NormalizedPair) : target.partner (f pr.1.1) = f pr.1.2 := by
+  rw [hpartner, ((source.mem_pairs_iff pr.1.1 pr.1.2).1 pr.2).2]
+
 /-- A partner-intertwining equivalence of positions induces an equivalence of normalized pairs.
 The order of pair endpoints may be reversed by the position map. -/
 noncomputable def PairingOn.normalizedPairEquivOfPartnerEquiv
@@ -192,10 +199,7 @@ noncomputable def PairingOn.normalizedPairEquivOfPartnerEquiv
     (hpartner : ∀ p, target.partner (e p) = e (source.partner p)) :
     source.NormalizedPair ≃ target.NormalizedPair :=
   target.normalizedPairEquivOfEndpointEquiv source.pairEndpointEquiv e
-    (fun pr => by
-      change target.partner (e pr.1.1) = e pr.1.2
-      rw [hpartner]
-      exact congrArg e (((source.mem_pairs_iff pr.1.1 pr.1.2).1 pr.2).2))
+    (source.partner_map_normalizedPair target e hpartner)
 
 /-- If the transported endpoint order is already increasing, normalization does not swap the two
 endpoints. -/
@@ -228,18 +232,12 @@ theorem PairingOn.normalizedPairEquivOfPartnerEquiv_apply_of_strictMono
     (hmono : StrictMono e) (pr : source.NormalizedPair) :
     (source.normalizedPairEquivOfPartnerEquiv target e hpartner pr).1 =
       (e pr.1.1, e pr.1.2) := by
-  have hpartner0 (q : source.NormalizedPair) :
-      target.partner (e (source.pairEndpointEquiv (q, 0))) =
-        e (source.pairEndpointEquiv (q, 1)) := by
-    change target.partner (e q.1.1) = e q.1.2
-    rw [hpartner]
-    exact congrArg e (((source.mem_pairs_iff q.1.1 q.1.2).1 q.2).2)
   change
     (target.normalizedPairOfEndpointEquiv source.pairEndpointEquiv e pr).1 =
       (e pr.1.1, e pr.1.2)
   exact target.normalizedPairOfEndpointEquiv_pair_eq_of_lt
-    source.pairEndpointEquiv e hpartner0 pr
-    (hmono (((source.mem_pairs_iff pr.1.1 pr.1.2).1 pr.2).1))
+    source.pairEndpointEquiv e (source.partner_map_normalizedPair target e hpartner) pr
+    (hmono (source.pairs_normalized pr.2))
 
 /-- Endpoints selected from distinct normalized pairs are distinct. -/
 theorem PairingOn.pairEndpoint_ne_of_normalizedPair_ne {α : Type*} [Fintype α] [LinearOrder α] (pairing : PairingOn α)
