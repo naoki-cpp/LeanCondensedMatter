@@ -62,7 +62,15 @@ theorem finiteSecondQuantization_heisenbergEvolution
       finiteSecondQuantization (schrodingerGenerator one) := by
     simp only [schrodingerGenerator, hhbar, hH, map_smul]
   simp only [heisenbergEvolution_freePropagatorGroup_apply, freePropagator_eq_exp, hgen]
-  simp only [← RCLike.real_smul_eq_coe_smul (K := ℂ)]
+  have hone (s : ℝ) : (s : ℂ) • schrodingerGenerator one =
+      s • schrodingerGenerator one :=
+    (RCLike.real_smul_eq_coe_smul (K := ℂ) s (schrodingerGenerator one)).symm
+  have hmany (s : ℝ) :
+      (s : ℂ) • finiteSecondQuantization (schrodingerGenerator one) =
+        s • finiteSecondQuantization (schrodingerGenerator one) :=
+    (RCLike.real_smul_eq_coe_smul (K := ℂ) s
+      (finiteSecondQuantization (schrodingerGenerator one))).symm
+  rw [hone (-t), hone t, hmany (-t), hmany t]
   simpa only [neg_smul, neg_neg] using
     finiteSecondQuantization_exp_conjugate (schrodingerGenerator one) A (-t)
 
@@ -83,6 +91,12 @@ theorem adiabaticFrequencyDomainSusceptibility_oneParticleFock
       (finiteSecondQuantization A) (finiteSecondQuantization B) ω η =
       adiabaticFrequencyDomainSusceptibility (freePropagatorGroup one) one.hbar
         (QuantumTheory.pure ψ).toNormalizedExpectation A B ω η := by
+  have hexpect (C : EuclideanSpace ℂ Site →L[ℂ] EuclideanSpace ℂ Site) :
+      (QuantumTheory.pure (oneParticleFockState ψ)).toNormalizedExpectation
+        (finiteSecondQuantization C) =
+      (QuantumTheory.pure ψ).toNormalizedExpectation C := by
+    simp only [DensityOperator.toNormalizedExpectation_apply, DensityOperator.expectation_pure]
+    exact inner_finiteSecondQuantization_oneParticle C ψ.1 ψ.1
   have hkernel (t : ℝ) :
       retardedTimeDifferenceKernel (freePropagatorGroup many) many.hbar
         (QuantumTheory.pure (oneParticleFockState ψ)).toNormalizedExpectation
@@ -93,8 +107,7 @@ theorem adiabaticFrequencyDomainSusceptibility_oneParticleFock
       commutatorSusceptibility, heisenbergEvolution_zero, hhbar]
     rw [← finiteSecondQuantization_heisenbergEvolution one many hH hhbar A t,
       ← finiteSecondQuantization_lie]
-    simp only [DensityOperator.toNormalizedExpectation_apply, DensityOperator.expectation_pure,
-      oneParticleFockState, inner_finiteSecondQuantization_oneParticle]
+    rw [hexpect]
   unfold adiabaticFrequencyDomainSusceptibility adiabaticFrequencySusceptibilityIntegrand
   simp_rw [hkernel]
 
