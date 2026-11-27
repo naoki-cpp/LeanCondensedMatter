@@ -144,12 +144,6 @@ theorem besselJ_nat_recurrence (k : ℕ) (z : ℂ) :
   simp only [pow_succ] at h ⊢
   linear_combination -z * (z / 2) ^ k * h
 
-/-- The Bessel three-term recurrence at orders zero, one, and two. -/
-theorem besselJ_zero_one_two_recurrence (z : ℂ) :
-    2 * Complex.besselJ 1 z =
-      z * (Complex.besselJ 0 z + Complex.besselJ 2 z) := by
-  simpa using besselJ_nat_recurrence 0 z
-
 /-- The Bessel recurrence eliminates the apparent singularity of J₁(z)²/z
 at the origin, with the convention that division by zero is zero. -/
 theorem besselJ_one_sq_div_eq_half_product (z : ℝ) :
@@ -161,7 +155,9 @@ theorem besselJ_one_sq_div_eq_half_product (z : ℝ) :
     simp [Complex.besselJ_zero]
   · have hzc : (z : ℂ) ≠ 0 := by exact_mod_cast hz
     apply (div_eq_iff hzc).2
-    have hrec := besselJ_zero_one_two_recurrence (z : ℂ)
+    have hrec : 2 * Complex.besselJ 1 (z : ℂ) =
+        (z : ℂ) * (Complex.besselJ 0 (z : ℂ) + Complex.besselJ 2 (z : ℂ)) := by
+      simpa using besselJ_nat_recurrence 0 (z : ℂ)
     linear_combination (Complex.besselJ 1 (z : ℂ) / 2) * hrec
 
 /-! ## Analytic derivatives at natural-number orders -/
@@ -235,10 +231,6 @@ theorem besselJ_nat_hasDerivAt (k : ℕ) (w : ℂ) :
   · rw [besselJ_nat_eq (k + 1) w, pow_succ]
     ring
 
-/-- Derivative of the zeroth complex Bessel function. -/
-theorem besselJ_zero_hasDerivAt (w : ℂ) :
-    HasDerivAt (Complex.besselJ 0) (-Complex.besselJ 1 w) w := by
-  simpa using besselJ_nat_hasDerivAt 0 w
 
 end
 end BesselHypergeometric
