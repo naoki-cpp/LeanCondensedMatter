@@ -32,7 +32,7 @@ noncomputable def finiteWeightedSum {E : Type*} [AddCommMonoid E] [Module R E] :
   map_add' left right := by simp [smul_add, Finset.sum_add_distrib]
   map_smul' c response := by simp [Finset.smul_sum, smul_smul, mul_comm]
 
-@[simp] theorem finiteWeightedSum_apply {E : Type*} [AddCommMonoid E] [Module R E]
+theorem finiteWeightedSum_apply {E : Type*} [AddCommMonoid E] [Module R E]
     (response : Ω → E) : finiteWeightedSum w response = ∑ ω, w ω • response ω := rfl
 
 /-- Every linear map commutes with a finite weighted sum. -/
