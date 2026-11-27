@@ -24,8 +24,11 @@ Canonical layer direction and import rules are documented in the
 
 Fermionic CAR/Fock and free Gibbs/KMS machinery supports the finite-temperature
 Bloch–de Dominicis theorem. The finite-mode diagrammatic line proves formal and analytic
-log-partition linked-cluster identities and the normalized two-point series identity;
-the physical higher-point/source-insertion theorem remains open.
+log-partition linked-cluster identities, the normalized two-point series identity, and
+arbitrary-external vacuum-normalized signed moments and connected source cumulants as
+formal Dyson series (`0 ≤ β`, arbitrary real `μ`). The direct two-external cumulant theorem
+requires no sign restriction on `β`. Analytic higher-point generating-functional realization
+remains open.
 
 The theorem statements and exact hypotheses belong to the
 [linked-cluster roadmap](linked-cluster-theorem.md). Completed free-fermion fields,
@@ -66,7 +69,8 @@ and [linked-cluster roadmap](linked-cluster-theorem.md#statistics-independent-mo
 
 ## Research directions
 
-- pre-normalized time-ordered insertions, higher Green functions, and source derivatives;
+- analytic higher time-ordered Green functions and source derivatives beyond the proved
+  finite-mode formal external-insertion moment and cumulant identities;
 - bosonic interacting Dyson convergence and analytic linked-cluster theory;
 - explicit bosonic mixed-mode/quartic weighted domains and interacting-Hamiltonian control;
 - interacting completed-space fermionic perturbation theory;

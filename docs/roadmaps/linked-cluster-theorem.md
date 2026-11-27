@@ -170,10 +170,11 @@ times fixed. Vacuum normalization removes components with **no** external vertic
 force all external vertices into the same component. The physical signed partition identity
 (`externalSubsetMomentSeries_eq_signedConnected`) expresses these vacuum-free moments as a
 Koszul-signed partition sum of connected Dyson series, including the empty and odd source subsets.
-The unrestricted cumulant endpoint
+The arbitrary-external cumulant endpoint
 (`externalSubsetSourceCumulantSeries_eq_connectedDiagramSeries`) uses the physical signed
 moment identity and weighted moment reconstruction/injectivity to select diagrams in which
-**all** external insertions are connected. Both are kernel-checked on `main` (#5074, #5095).
+**all** external insertions are connected. Both assume `0 ≤ β` and are kernel-checked on
+`main` (#5074, #5095).
 
 For precisely two external insertions, the general construction already proves
 `vacuumFreeExternalInsertionDysonSeries_eq_connected_two` and the corresponding
@@ -183,7 +184,8 @@ now follows from the general vacuum factorization for arbitrary real `μ`, `0 �
 `ξ = ε - μ`; the physical-H two-point amplitudes have the external factor
 `exp (μ (τ' - τ))`, while the number-conserving quartic interaction-picture
 vertices are invariant under the uniform shift. The vacuum series uses `ξ`.
-The arbitrary-external physical-H source-cumulant endpoint also accepts arbitrary real `μ`:
+The arbitrary-external physical-H source-cumulant endpoint assumes `0 ≤ β` and also
+accepts arbitrary real `μ`:
 `grandCanonicalExternalSubsetSourceCumulantSeries_eq_connectedDiagramSeries` reuses the
 effective-dispersion theorem by multiplying each block by the product of its external-field
 factors. The independent operator normalization bridge identifies the physical subset moments.
