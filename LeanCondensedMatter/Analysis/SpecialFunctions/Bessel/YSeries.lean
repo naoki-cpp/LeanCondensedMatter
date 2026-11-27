@@ -71,6 +71,24 @@ noncomputable def besselY0HarmonicTerm (z : ℂ) (n : ℕ) : ℂ :=
   ((harmonic n : ℝ) : ℂ) * (-(z / 2) ^ 2) ^ n /
     ((n.factorial : ℂ) ^ 2)
 
+/-- A factorial bound on a nonnegative real coefficient gives an exponential-series
+majorant for its normalized complex power term. -/
+private theorem norm_factorial_normalized_term_le (h C : ℝ) (x : ℂ) (n m : ℕ)
+    (hh : 0 ≤ h) (hC : h ≤ C * (m.factorial : ℝ)) :
+    ‖(h : ℂ) * x ^ n / ((n.factorial : ℂ) * (m.factorial : ℂ))‖ ≤
+      C * (‖x‖ ^ n / (n.factorial : ℝ)) := by
+  have hn : (0 : ℝ) < (n.factorial : ℝ) := by exact_mod_cast Nat.factorial_pos n
+  have hm : (0 : ℝ) < (m.factorial : ℝ) := by exact_mod_cast Nat.factorial_pos m
+  calc
+    _ = h * ‖x‖ ^ n / ((n.factorial : ℝ) * (m.factorial : ℝ)) := by
+      simp only [norm_div, norm_mul, norm_pow, Complex.norm_real,
+        Complex.norm_natCast, Real.norm_eq_abs, abs_of_nonneg hh]
+    _ ≤ (C * (m.factorial : ℝ)) * ‖x‖ ^ n /
+          ((n.factorial : ℝ) * (m.factorial : ℝ)) :=
+      div_le_div_of_nonneg_right (mul_le_mul_of_nonneg_right hC (pow_nonneg (norm_nonneg x) n))
+        (mul_nonneg hn.le hm.le)
+    _ = _ := by field_simp
+
 /-- The absolute value of each harmonic correction term is dominated
 by the factorial exponential term of argument `‖z/2‖²`. -/
 theorem norm_besselY0HarmonicTerm_le_expTerm (z : ℂ) (n : ℕ) :
@@ -79,22 +97,9 @@ theorem norm_besselY0HarmonicTerm_le_expTerm (z : ℂ) (n : ℕ) :
   have hH := harmonic_real_nonneg_le n
   have hHfac : (harmonic n : ℝ) ≤ (n.factorial : ℝ) :=
     hH.2.trans (by exact_mod_cast Nat.self_le_factorial n)
-  have hfpos : (0 : ℝ) < (n.factorial : ℝ) := by
-    exact_mod_cast Nat.factorial_pos n
-  have hx : 0 ≤ (‖z / 2‖ ^ 2) ^ n := by positivity
-  calc
-    ‖besselY0HarmonicTerm z n‖ =
-        (harmonic n : ℝ) * (‖z / 2‖ ^ 2) ^ n /
-          (n.factorial : ℝ) ^ 2 := by
-      simp only [besselY0HarmonicTerm, norm_div, norm_mul,
-        norm_pow, norm_neg, Complex.norm_real,
-        Complex.norm_natCast, Real.norm_eq_abs,
-        abs_of_nonneg hH.1]
-    _ ≤ (n.factorial : ℝ) * (‖z / 2‖ ^ 2) ^ n /
-          (n.factorial : ℝ) ^ 2 := by
-      gcongr
-    _ = (‖z / 2‖ ^ 2) ^ n / (n.factorial : ℝ) := by
-      field_simp
+  simpa only [besselY0HarmonicTerm, pow_two, norm_neg, norm_mul, one_mul] using
+    norm_factorial_normalized_term_le (harmonic n : ℝ) 1 (-(z / 2) ^ 2) n n
+      hH.1 (by simpa only [one_mul] using hHfac)
 
 /-- The DLMF harmonic-number correction is absolutely summable for
 **every** complex argument, including the origin. No informal
@@ -187,37 +192,10 @@ theorem norm_besselY1HarmonicTerm_le_two_expTerm (z : ℂ) (n : ℕ) :
     ‖besselY1HarmonicTerm z n‖ ≤
       2 * ((‖z / 2‖ ^ 2) ^ n / (n.factorial : ℝ)) := by
   have hH := besselY1Harmonic_nonneg_le_factorial n
-  have hf : (0 : ℝ) < (n.factorial : ℝ) := by
-    exact_mod_cast Nat.factorial_pos n
-  have hfs : (0 : ℝ) < ((n + 1).factorial : ℝ) := by
-    exact_mod_cast Nat.factorial_pos (n + 1)
-  have hx : 0 ≤ (‖z / 2‖ ^ 2) ^ n := by positivity
-  calc
-    ‖besselY1HarmonicTerm z n‖ =
-        ((harmonic n : ℝ) + (harmonic (n + 1) : ℝ)) *
-          (‖z / 2‖ ^ 2) ^ n /
-          ((n.factorial : ℝ) * ((n + 1).factorial : ℝ)) := by
-      have hnorm :
-          ‖((((harmonic n : ℝ) + (harmonic (n + 1) : ℝ)) : ℂ))‖ =
-            ((harmonic n : ℝ) + (harmonic (n + 1) : ℝ)) := by
-        calc
-          ‖((((harmonic n : ℝ) + (harmonic (n + 1) : ℝ)) : ℂ))‖ =
-              ‖(harmonic n : ℝ) + (harmonic (n + 1) : ℝ)‖ := by
-                simpa only [Complex.ofReal_add] using
-                  (Complex.norm_real
-                    ((harmonic n : ℝ) + (harmonic (n + 1) : ℝ)))
-          _ = |(harmonic n : ℝ) + (harmonic (n + 1) : ℝ)| :=
-            Real.norm_eq_abs _
-          _ = _ := abs_of_nonneg hH.1
-      simp only [besselY1HarmonicTerm, norm_div, norm_mul,
-        norm_pow, norm_neg, hnorm, Complex.norm_natCast]
-    _ ≤ (2 * ((n + 1).factorial : ℝ)) *
-          (‖z / 2‖ ^ 2) ^ n /
-          ((n.factorial : ℝ) * ((n + 1).factorial : ℝ)) := by
-      gcongr
-      exact hH.2
-    _ = 2 * ((‖z / 2‖ ^ 2) ^ n / (n.factorial : ℝ)) := by
-      field_simp
+  simpa only [besselY1HarmonicTerm, Complex.ofReal_add, norm_neg, norm_pow] using
+    norm_factorial_normalized_term_le
+      ((harmonic n : ℝ) + (harmonic (n + 1) : ℝ)) 2 (-(z / 2) ^ 2) n (n + 1)
+      hH.1 hH.2
 
 /-- The order-one second-kind Bessel harmonic correction converges
 absolutely everywhere in the complex plane. -/
