@@ -201,7 +201,7 @@ theorem norm_besselY1HarmonicTerm_le_two_expTerm (z : ℂ) (n : ℕ) :
     ((harmonic n : ℝ) + (harmonic (n + 1) : ℝ)) 2 (-(z / 2) ^ 2) n (n + 1)
     hH.1 hH.2
   rw [norm_neg, norm_pow] at h
-  exact h
+  simpa only [besselY1HarmonicTerm, Complex.ofReal_add] using h
 
 /-- The order-one second-kind Bessel harmonic correction converges
 absolutely everywhere in the complex plane. -/
