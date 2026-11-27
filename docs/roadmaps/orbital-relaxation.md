@@ -211,7 +211,7 @@ incoming directions, or a microscopic kinetic closure.
 
 `QuantumTheory.DensityOperator` and finite-dimensional expectations provide
 state-level foundations. `QuantumTheory.SpinHalf.spinMatrix` provides the
-physical spin-1/2 normalization, while `Analysis.InternalSpace.Pauli` provides
+physical spin-1/2 normalization, while `Analysis.Matrix.Pauli` provides
 dimensionless representation matrices. The existing
 `Analysis.Fourier.AngularHarmonics` API concerns a two-dimensional polar
 angle; it does not supply the three-dimensional sphere moments needed here.

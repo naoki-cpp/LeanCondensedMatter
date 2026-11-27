@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Analysis.InternalSpace.Pauli
+import LeanCondensedMatter.Analysis.Matrix.Pauli
 import Mathlib.Analysis.InnerProductSpace.PiL2
 
 set_option linter.style.header false

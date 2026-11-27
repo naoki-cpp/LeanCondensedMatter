@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Analysis.DiscreteLattice
-import LeanCondensedMatter.Analysis.InternalSpace.Pauli
+import LeanCondensedMatter.Analysis.Matrix.Pauli
 import LeanCondensedMatter.QuantumTheory.SpinHalf
 import Mathlib.Order.Prod.Lex.Basic
 
