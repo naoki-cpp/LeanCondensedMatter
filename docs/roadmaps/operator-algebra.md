@@ -17,7 +17,7 @@ their respective quadratic-energy identities as hypotheses, without a Pauli-spec
 
 The ordinary associative commutator is available through Mathlib's
 Lie bracket `⁅A, B⁆ = A * B - B * A`. The project-specific
-`ScalarExchange.zetaCommutator` in `Analysis/ScalarExchange/Basic.lean`
+`ScalarExchange.zetaCommutator` in `Analysis/Algebra/ScalarExchange.lean`
 expresses `A * B - ζ • (B * A)` for complex algebras, with the ordinary
 bracket recovered at `ζ = 1`. Second-quantization consumers select
 the exchange scalar through `Statistics.zetaInt`.

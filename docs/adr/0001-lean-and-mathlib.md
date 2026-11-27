@@ -15,7 +15,7 @@ Evidence: [dependency configuration](../../lakefile.toml), [pinned dependencies]
 ## Scope of project-owned infrastructure
 
 The project owns the fixed-scalar exchange bracket `[A,B]ζ = AB − ζ BA` in
-[Analysis/ScalarExchange/Basic](../../LeanCondensedMatter/Analysis/ScalarExchange/Basic.lean).
+[Analysis/Algebra/ScalarExchange](../../LeanCondensedMatter/Analysis/Algebra/ScalarExchange.lean).
 Reuse this general algebraic interface across exchange-algebra consumers rather than copying
 the bracket into each physical domain.
 
