@@ -1157,7 +1157,7 @@ theorem orderedExternalInsertionTimedEvents_paired {n : ℕ}
                 externalInsertionTimedEventBeforeOrEqual, stableTimedEventBeforeOrEqual_iff,
                 externalInsertionTimedEventTime, externalInsertionTimedEventRank,
                 pairedExternalTimes] <;>
-              (first | omega | exact Fin.le_def.mpr (by decide) |
+              (first | omega | (apply (Fin.strictMono_castAdd n).monotone; decide) |
                 aesop (add safe tactic (by omega)))
         | inr b =>
             fin_cases a <;>
@@ -1179,17 +1179,10 @@ theorem orderedExternalInsertionTimedEvents_paired {n : ℕ}
             simp_all [block, pairedExternalEventBlock, r₁, r₂,
               externalInsertionTimedEventBeforeOrEqual, stableTimedEventBeforeOrEqual_iff,
               externalInsertionTimedEventTime, externalInsertionTimedEventRank]
-  have hsorted (L : List (ExternalInsertionTimedEvent 1 n))
-      (hL : L.Pairwise r₁) (hN : L.Nodup) : (L.flatMap block).Pairwise r₂ := by
-    induction L with
-    | nil => simp
-    | cons a L ih =>
-        rw [List.flatMap_cons, List.pairwise_append]
-        refine ⟨hwithin a, ih (List.pairwise_cons.mp hL).2 (List.nodup_cons.mp hN).2, ?_⟩
-        intro x hx y hy
-        obtain ⟨b, hb, hyb⟩ := List.mem_flatMap.mp hy
-        exact hcross a b (fun he => (List.nodup_cons.mp hN).1 (by simpa [he] using hb))
-          ((List.pairwise_cons.mp hL).1 b hb) x y hx hyb
+  have hsorted : (source.flatMap block).Pairwise r₂ :=
+    List.pairwise_flatMap.mpr
+      ⟨fun a _ => hwithin a,
+        List.Pairwise.imp₂ (fun a b hab hne => hcross a b hne hab) hs hn⟩
   have hflatN : (source.flatMap block).Nodup := by
     rw [List.nodup_flatMap]
     exact ⟨fun a _ => hblock a,
@@ -1221,9 +1214,7 @@ theorem orderedExternalInsertionTimedEvents_paired {n : ℕ}
   have hrev : List.Subperm (source.flatMap block) target :=
     hflatN.subperm (fun x _ =>
       orderedExternalInsertionTimedEvents_all_mem (E := 2) (pairedExternalTimes τ τ') σ x)
-  have hlist := List.sublist_of_subperm_of_pairwise (r := r₂)
-    hsub ht (hsorted source hs hn)
-  exact hlist.eq_of_length (le_antisymm hlist.length_le hrev.length_le)
+  exact List.Perm.eq_of_pairwise' ht hsorted (hsub.antisymm hrev)
 
 /-- Exchanging two bilinear blocks has four odd-leg inversions and therefore
 no fermionic exchange sign, including at equal times. -/
