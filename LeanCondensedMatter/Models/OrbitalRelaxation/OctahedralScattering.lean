@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Analysis.Geometry.FiniteAngularKernel
 import LeanCondensedMatter.Models.OrbitalRelaxation.KineticClosure
 import Mathlib.Tactic.FinCases
 import Mathlib.Tactic.Positivity
@@ -24,7 +25,7 @@ The stationary kinetic closure remains a separate physical hypothesis.
 
 namespace QuantumTheory.Models.OrbitalRelaxation
 
-open QuantumTheory.Transport
+open FiniteAngularKernel
 
 open scoped BigOperators
 
