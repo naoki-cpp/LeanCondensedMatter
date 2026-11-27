@@ -10,13 +10,13 @@ set_option linter.style.header false
 # Exact finite disorder versus the massive-Dirac Born-Dyson RA surface candidate
 
 This comparison uses an *arbitrary* exact finite disorder ensemble on the Dirac Hilbert space
-and the existing pointwise finite-cutoff Born-Dyson propagators and RA ladder vertex.
+and the pointwise finite-cutoff Born-Dyson propagators and RA ladder vertex.
 
 It exposes the difference between the exact ensemble-averaged two-Green RA trace and the
 model's RA-dressed/bare-same-side surface trace. There are three independent residuals:
 left/right mean-Green mismatch, connected two-Green vertex mismatch, and the bare same-side
-RR/AA remainder. The finite ensemble is NOT claimed to realize the model's continuum scalar
-impurity law or self-consistent Born closure; controlling these residuals is further work.
+RR/AA remainder. No smallness of these residuals is assumed. The finite ensemble is not
+identified with the continuum scalar impurity law or a self-consistent Born closure.
 
 This is pointwise in momentum and regulated energy. No conductivity, Fermi-sea, contact,
 momentum integration, or weak-disorder/zero-broadening limit is identified.
