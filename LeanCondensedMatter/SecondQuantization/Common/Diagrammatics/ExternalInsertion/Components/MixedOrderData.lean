@@ -162,20 +162,18 @@ private theorem ExternalInsertionDiagram.componentOrderedLeg_fixedPosition {E n 
   rw [← externalInsertionLegCongr_symm]
   cases leg with
   | inl e =>
-      simp only [externalInsertionLegCongr, Equiv.trans_apply, Equiv.apply_symm_apply,
-        Equiv.sumCongr_apply, Sum.map_inl, Equiv.refl_apply]
       change _ = d.componentDiagramLeg B
-        (externalInsertionExternalLeg (d.externalPairCount B) T e)
-      rw [d.componentDiagramLeg_external B]
+        (externalInsertionLegCongr (Combinatorics.standardSlotEquiv T).symm
+          (externalInsertionExternalLeg (d.externalPairCount B) _ e))
+      rw [externalInsertionLegCongr_externalLeg, d.componentDiagramLeg_external B]
       rfl
   | inr vl =>
       rcases vl with ⟨v, l⟩
-      simp only [externalInsertionLegCongr, Equiv.trans_apply, Equiv.apply_symm_apply,
-        Equiv.sumCongr_apply, Sum.map_inr, Equiv.prodCongr_apply]
       change _ = d.componentDiagramLeg B
-        (externalInsertionInteractionLeg (E := d.externalPairCount B)
-          (T.orderIsoOfFin rfl v.1) l)
-      rw [d.componentDiagramLeg_interaction B]
+        (externalInsertionLegCongr (E := d.externalPairCount B)
+          (Combinatorics.standardSlotEquiv T).symm
+          (externalInsertionInteractionLeg v l))
+      rw [externalInsertionLegCongr_interactionLeg, d.componentDiagramLeg_interaction B]
       rfl
 
 /-- The diagram partner map on canonical legs commutes with the canonical component-leg embedding. -/
