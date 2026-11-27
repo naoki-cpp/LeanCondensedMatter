@@ -14,8 +14,6 @@ owned by `Model.FermiSurface`, independently of occupation or temperature.
 
 namespace QuantumTheory.Models.MassiveDirac
 
-
-open QuantumTheory.TwoBand
 noncomputable section
 
 /-- Massive-Dirac band energy regarded as a function on two-dimensional physical momentum. -/

@@ -22,11 +22,9 @@ topological claim is made here.
 
 namespace QuantumTheory.Models.MassiveDirac
 
-
-open QuantumTheory.TwoBand
 noncomputable section
 
-open QuantumTheory.Transport
+open QuantumTheory.Transport QuantumTheory.TwoBand
 
 open BerryGeometry
 

@@ -59,6 +59,19 @@ noncomputable def bandSign : TwoBand → ℝ
 @[simp] theorem bandSign_sq (band : TwoBand) : bandSign band ^ 2 = 1 := by
   cases band <;> simp [bandSign]
 
+/-- Sum over a branch and its opposite, independently of the chosen branch. -/
+theorem sum_band_eq_add_oppositeBand {M : Type*} [AddCommMonoid M]
+    (f : TwoBand → M) (band : TwoBand) :
+    (∑ b, f b) = f band + f (oppositeBand band) := by
+  cases band <;> simp only [sum_band, oppositeBand_lower, oppositeBand_upper, add_comm]
+
+/-- Ordered two-band pairs split into diagonal and opposite-branch pairs. -/
+theorem sum_band_pair_eq_diagonal_add_opposite {M : Type*} [AddCommMonoid M]
+    (f : TwoBand → TwoBand → M) :
+    (∑ i, ∑ j, f i j) = (∑ b, f b b) + ∑ b, f b (oppositeBand b) := by
+  simp only [sum_band, oppositeBand_lower, oppositeBand_upper]
+  ac_rfl
+
 /-- The opposite branch is distinct. -/
 theorem ne_oppositeBand (band : TwoBand) : band ≠ oppositeBand band := by
   cases band <;> decide

@@ -18,8 +18,8 @@ division is total. The algebraic massless identity therefore needs no nondegener
 
 namespace QuantumTheory.Models.MassiveDirac
 
-
 open QuantumTheory.TwoBand
+
 noncomputable section
 
 /-- Reversing the Dirac mass leaves the positive dispersion unchanged. -/

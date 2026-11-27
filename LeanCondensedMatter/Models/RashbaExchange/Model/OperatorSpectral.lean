@@ -17,8 +17,6 @@ resolvent at every nonzero signed imaginary regulator.
 
 namespace QuantumTheory.Models.RashbaExchange
 
-
-open QuantumTheory.TwoBand
 noncomputable section
 
 open ContinuousLinearMap

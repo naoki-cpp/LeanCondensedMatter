@@ -20,8 +20,6 @@ broadening. It is the model-specific domination input used before integrating th
 
 namespace QuantumTheory.Models.MassiveDirac
 
-
-open QuantumTheory.TwoBand
 noncomputable section
 
 open QuantumTheory.Transport

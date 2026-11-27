@@ -25,11 +25,9 @@ performed here.
 
 namespace QuantumTheory.Models.MassiveDirac
 
-
-open QuantumTheory.TwoBand
 noncomputable section
 
-open QuantumTheory.Transport
+open QuantumTheory.Transport QuantumTheory.TwoBand
 
 /-- Antisymmetric direction exchange of the interband Bastin block at a selected target band. -/
 noncomputable def bastinInterbandBlockDifference

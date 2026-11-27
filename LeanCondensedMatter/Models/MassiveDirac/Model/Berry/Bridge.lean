@@ -24,11 +24,9 @@ so the two-band force-matrix curvature reduces to `-s m v² / (2 E³)`.
 
 namespace QuantumTheory.Models.MassiveDirac
 
-
-open QuantumTheory.TwoBand
 noncomputable section
 
-open QuantumTheory.Transport
+open QuantumTheory.Transport QuantumTheory.TwoBand
 
 open BerryGeometry
 open ContinuousLinearMap

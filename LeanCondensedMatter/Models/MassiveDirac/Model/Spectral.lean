@@ -22,8 +22,8 @@ eigenvector gauge is introduced.
 
 namespace QuantumTheory.Models.MassiveDirac
 
-
 open QuantumTheory.TwoBand
+
 noncomputable section
 
 /-- Gauge-independent spectral projector candidate
@@ -62,8 +62,8 @@ theorem sum_bandProjector_eq_one (v m px py : ℝ) :
 /-- Either band projector and its opposite-band partner resolve the identity. -/
 theorem bandProjector_add_oppositeBand (band : TwoBand) (v m px py : ℝ) :
     bandProjector band v m px py + bandProjector (oppositeBand band) v m px py = 1 := by
-  cases band <;> simpa only [sum_band, oppositeBand_lower, oppositeBand_upper, add_comm] using
-    sum_bandProjector_eq_one v m px py
+  rw [← sum_band_eq_add_oppositeBand (fun b => bandProjector b v m px py) band]
+  exact sum_bandProjector_eq_one v m px py
 
 /-- Away from the band degeneracy, the two band energies are distinct. -/
 theorem bandEnergy_injective (v m px py : ℝ) (hE : energy v m px py ≠ 0) :
@@ -101,7 +101,6 @@ theorem bandProjector_completeOrthogonalIdempotents
       (by intro i j hij; cases i <;> cases j <;> simp_all [bandSign])
       (by simpa only [bandProjector, Complex.ofReal_div] using
         sum_bandProjector_eq_one v m px py))
-
 
 end
 

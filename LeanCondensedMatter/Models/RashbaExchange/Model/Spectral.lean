@@ -33,8 +33,8 @@ All projector identities that require separated bands are stated under `E ≠ 0`
 
 namespace QuantumTheory.Models.RashbaExchange
 
-
 open QuantumTheory.TwoBand
+
 noncomputable section
 
 /-- The traceless spin-orbit/exchange part `d·σ` of the Hamiltonian. -/
@@ -115,8 +115,8 @@ theorem bandProjector_add_oppositeBand
     (params : HamiltonianParameters) (band : TwoBand) (px py : ℝ) :
     bandProjector params band px py +
         bandProjector params (oppositeBand band) px py = 1 := by
-  cases band <;> simpa only [sum_band, oppositeBand_lower, oppositeBand_upper, add_comm] using
-    sum_bandProjector_eq_one params px py
+  rw [← sum_band_eq_add_oppositeBand (fun b => bandProjector params b px py) band]
+  exact sum_bandProjector_eq_one params px py
 
 /-- Away from the degeneracy, the two band energies are distinct. -/
 theorem bandEnergy_injective
@@ -161,7 +161,6 @@ theorem bandProjector_completeOrthogonalIdempotents
       (by intro i j hij; cases i <;> cases j <;> simp_all [bandSign])
       (by simpa only [bandProjector, Complex.ofReal_div] using
         sum_bandProjector_eq_one params px py))
-
 
 end
 

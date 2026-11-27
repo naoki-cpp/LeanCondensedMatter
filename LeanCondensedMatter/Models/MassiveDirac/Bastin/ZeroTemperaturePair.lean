@@ -20,11 +20,9 @@ occupation-weighted momentum DCT while keeping the exact Fermi-edge limit separa
 
 namespace QuantumTheory.Models.MassiveDirac
 
-
-open QuantumTheory.TwoBand
 noncomputable section
 
-open QuantumTheory.Transport
+open QuantumTheory.Transport QuantumTheory.TwoBand
 
 open MeasureTheory QuantumTheory.Transport
 

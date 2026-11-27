@@ -16,8 +16,8 @@ velocities; the exact interband trace below proves that those pieces cancel from
 
 namespace QuantumTheory.Models.RashbaExchange
 
-
 open QuantumTheory.TwoBand
+
 noncomputable section
 
 /-- Energy denominator between one band and its opposite partner. -/

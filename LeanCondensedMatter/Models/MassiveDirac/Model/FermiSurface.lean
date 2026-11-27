@@ -19,8 +19,6 @@ in `Model.Occupation`.
 
 namespace QuantumTheory.Models.MassiveDirac
 
-
-open QuantumTheory.TwoBand
 noncomputable section
 
 /-- Massive-Dirac band energy on the radial momentum coordinate used by the isotropic transport

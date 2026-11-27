@@ -26,8 +26,8 @@ measure belongs downstream under `MassiveDirac/Conductivity/Hall`.
 
 namespace QuantumTheory.Models.MassiveDirac
 
-
 open QuantumTheory.TwoBand
+
 noncomputable section
 
 /-- Named real clean-limit profile extracted from the opposite-source interband Bastin pair. -/

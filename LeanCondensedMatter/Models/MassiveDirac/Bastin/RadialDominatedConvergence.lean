@@ -24,8 +24,6 @@ fixed throughout; no `pMax → ∞` limit is mixed with `η → 0⁺`.
 
 namespace QuantumTheory.Models.MassiveDirac
 
-
-open QuantumTheory.TwoBand
 noncomputable section
 
 open QuantumTheory.Transport

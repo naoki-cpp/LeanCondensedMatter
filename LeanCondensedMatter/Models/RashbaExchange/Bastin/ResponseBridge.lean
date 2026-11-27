@@ -19,11 +19,9 @@ integration, or identify the value at zero broadening with a clean limit.
 
 namespace QuantumTheory.Models.RashbaExchange
 
-
-open QuantumTheory.TwoBand
 noncomputable section
 
-open QuantumTheory.Transport
+open QuantumTheory.Transport QuantumTheory.TwoBand
 open ContinuousLinearMap
 
 /-- The physical clean ordered Bastin energy integral equals the weighted
@@ -68,8 +66,7 @@ theorem cleanBastinPointResponse_eq_integral_diagonal_add_interband
   dsimp only
   rw [regularizedBastinTraceIntegrand_eq_band_sum
     params μ ν px py probeEnergy params.broadening hE hbroadening]
-  simp only [sum_band, oppositeBand_lower, oppositeBand_upper]
-  ring
+  rw [sum_band_pair_eq_diagonal_add_opposite]
 
 /-- The antisymmetric clean Bastin response is exactly the difference of
 the two direction-ordered finite-window band-pair integrals. -/

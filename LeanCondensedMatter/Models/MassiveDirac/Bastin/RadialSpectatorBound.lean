@@ -19,11 +19,9 @@ controlled by the mass-magnitude gap and a fixed target window `radius < 2|m|`.
 
 namespace QuantumTheory.Models.MassiveDirac
 
-
-open QuantumTheory.TwoBand
 noncomputable section
 
-open QuantumTheory.Transport
+open QuantumTheory.Transport QuantumTheory.TwoBand
 
 /-- The natural radial `x-y` Bastin block at a target-band pole is purely imaginary. -/
 theorem bastinXYBandBlockTrace_opposite_source_radial

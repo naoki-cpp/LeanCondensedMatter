@@ -19,11 +19,9 @@ Finite-window integrals and Hall-response bridges are owned downstream by
 
 namespace QuantumTheory.Models.RashbaExchange
 
-
-open QuantumTheory.TwoBand
 noncomputable section
 
-open QuantumTheory.Transport
+open QuantumTheory.Transport QuantumTheory.TwoBand
 open ContinuousLinearMap
 
 /-- Contribution from one ordered source/target band pair and two current
@@ -113,9 +111,7 @@ theorem projectorBastinTraceIntegrand_eq_diagonal_add_interband
       diagonalBastinTraceContribution params px py probeEnergy broadening +
         interbandBastinTraceContribution params px py probeEnergy broadening := by
   rw [projectorBastinTraceIntegrand_eq_band_sum params px py probeEnergy broadening hE]
-  simp only [sum_band, diagonalBastinTraceContribution, interbandBastinTraceContribution,
-    oppositeBand_lower, oppositeBand_upper]
-  ring
+  exact sum_band_pair_eq_diagonal_add_opposite _
 
 /-- The canonical regularized Bastin trace agrees with the direction-indexed
 projector trace away from spectral degeneracy and at nonzero broadening. -/

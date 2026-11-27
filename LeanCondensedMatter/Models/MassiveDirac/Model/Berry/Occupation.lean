@@ -31,8 +31,8 @@ massless cone. No infinite-cutoff limit and no `e²/h` transport prefactor are c
 
 namespace QuantumTheory.Models.MassiveDirac
 
-
 open QuantumTheory.TwoBand
+
 noncomputable section
 
 open MeasureTheory Set

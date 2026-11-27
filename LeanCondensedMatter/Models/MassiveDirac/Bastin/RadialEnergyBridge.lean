@@ -25,11 +25,9 @@ radial integrals without hiding the `p dp = E dE / v²` step.
 
 namespace QuantumTheory.Models.MassiveDirac
 
-
-open QuantumTheory.TwoBand
 noncomputable section
 
-open QuantumTheory.Transport
+open QuantumTheory.Transport QuantumTheory.TwoBand
 
 open MeasureTheory Set
 open scoped Interval

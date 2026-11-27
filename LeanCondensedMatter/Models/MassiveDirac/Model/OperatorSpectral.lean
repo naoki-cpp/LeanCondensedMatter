@@ -26,8 +26,6 @@ Kubo–Bastin, Středa, propagator, and disorder consumers remain downstream.
 
 namespace QuantumTheory.Models.MassiveDirac
 
-
-open QuantumTheory.TwoBand
 noncomputable section
 
 open QuantumTheory.Transport

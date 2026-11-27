@@ -43,8 +43,8 @@ separate downstream phases.
 
 namespace QuantumTheory.Models.MassiveDirac
 
-
 open QuantumTheory.TwoBand
+
 noncomputable section
 
 /-- Complex two-band matrices. -/

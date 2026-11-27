@@ -13,8 +13,8 @@ the interband energy gap and the gauge-independent projector/velocity trace. The
 
 namespace QuantumTheory.Models.MassiveDirac
 
-
 open QuantumTheory.TwoBand
+
 noncomputable section
 
 

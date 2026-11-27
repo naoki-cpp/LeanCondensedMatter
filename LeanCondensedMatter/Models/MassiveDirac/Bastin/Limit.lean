@@ -21,8 +21,8 @@ an energy integral with a limit and it does not introduce a delta-distribution i
 
 namespace QuantumTheory.Models.MassiveDirac
 
-
 open QuantumTheory.TwoBand
+
 noncomputable section
 
 open Filter QuantumTheory.Transport

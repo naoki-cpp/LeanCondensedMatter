@@ -25,8 +25,8 @@ No disorder or limiting procedure is assumed in this clean model.
 
 namespace QuantumTheory.Models.RashbaExchange
 
-
 open QuantumTheory.TwoBand
+
 noncomputable section
 
 /-- The three parameters determining the clean Rashba-exchange Hamiltonian and spectrum. -/

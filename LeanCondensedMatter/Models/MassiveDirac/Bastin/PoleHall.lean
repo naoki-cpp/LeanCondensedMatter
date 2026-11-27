@@ -16,11 +16,9 @@ Regularity of the generic factor away from the shifted interband gap is already 
 
 namespace QuantumTheory.Models.MassiveDirac
 
-
-open QuantumTheory.TwoBand
 noncomputable section
 
-open QuantumTheory.Transport
+open QuantumTheory.Transport QuantumTheory.TwoBand
 
 /-- The regular Hall interband spectator/current factor written in target-centered coordinates
 `(offset, broadening)`. -/

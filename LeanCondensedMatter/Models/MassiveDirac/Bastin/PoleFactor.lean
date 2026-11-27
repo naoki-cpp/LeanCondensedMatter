@@ -22,11 +22,9 @@ No energy integration or momentum integration is performed here.
 
 namespace QuantumTheory.Models.MassiveDirac
 
-
-open QuantumTheory.TwoBand
 noncomputable section
 
-open QuantumTheory.Transport
+open QuantumTheory.Transport QuantumTheory.TwoBand
 
 open Filter QuantumTheory.Transport
 

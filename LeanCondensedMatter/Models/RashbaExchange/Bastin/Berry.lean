@@ -18,12 +18,10 @@ current block carries the explicit factor `q²`.
 
 namespace QuantumTheory.Models.RashbaExchange
 
-
-open QuantumTheory.TwoBand
 noncomputable section
 
 open ContinuousLinearMap
-open QuantumTheory.Transport
+open QuantumTheory.Transport QuantumTheory.TwoBand
 
 /-- An opposite-band ordered current block is `q²` times the gauge-independent velocity
 force-matrix numerator. -/

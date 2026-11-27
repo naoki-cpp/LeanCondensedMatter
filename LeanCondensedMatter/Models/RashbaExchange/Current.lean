@@ -16,8 +16,6 @@ current-projector trace used by the Bastin/Berry response.
 
 namespace QuantumTheory.Models.RashbaExchange
 
-
-open QuantumTheory.TwoBand
 noncomputable section
 
 open ContinuousLinearMap

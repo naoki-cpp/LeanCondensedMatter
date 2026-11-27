@@ -17,11 +17,9 @@ square therefore converges to the inverse squared gap. No energy-limit interchan
 
 namespace QuantumTheory.Models.MassiveDirac
 
-
-open QuantumTheory.TwoBand
 noncomputable section
 
-open QuantumTheory.Transport
+open QuantumTheory.Transport QuantumTheory.TwoBand
 
 open Filter QuantumTheory.Transport
 

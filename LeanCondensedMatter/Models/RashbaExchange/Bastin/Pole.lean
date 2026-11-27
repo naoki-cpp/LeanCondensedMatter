@@ -24,11 +24,9 @@ integration, or limit interchange is claimed.
 
 namespace QuantumTheory.Models.RashbaExchange
 
-
-open QuantumTheory.TwoBand
 noncomputable section
 
-open QuantumTheory.Transport
+open QuantumTheory.Transport QuantumTheory.TwoBand
 open ContinuousLinearMap
 open Filter
 

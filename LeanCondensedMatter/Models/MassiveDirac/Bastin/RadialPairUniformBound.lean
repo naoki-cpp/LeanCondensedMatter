@@ -19,8 +19,6 @@ by the spectator constant times the exact symmetric Lorentzian mass.  Since that
 
 namespace QuantumTheory.Models.MassiveDirac
 
-
-open QuantumTheory.TwoBand
 noncomputable section
 
 open QuantumTheory.Transport

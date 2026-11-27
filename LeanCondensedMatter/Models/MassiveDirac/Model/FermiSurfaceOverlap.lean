@@ -19,8 +19,8 @@ in `Disorder.TransportRate`; transport relaxation factors remain owned by that m
 
 namespace QuantumTheory.Models.MassiveDirac
 
-
 open QuantumTheory.TwoBand
+
 noncomputable section
 
 open MeasureTheory
