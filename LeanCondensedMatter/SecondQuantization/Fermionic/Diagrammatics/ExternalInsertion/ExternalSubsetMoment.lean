@@ -767,7 +767,8 @@ theorem vacuumFreeExternalInsertionDysonCoefficient_eq_sum_evenPartitionConnecte
 /-- With exactly two external fermion insertions, every physical Wick pairing
 connects both external vertices. Removing vacuum components therefore already
 selects the fully externally connected diagrams, coefficient by coefficient.
-This does not identify the independent legacy two-point diagram model. -/
+This identity concerns the arbitrary-external-insertion representation specialized to two
+external legs; transport to the separate two-point representation is a distinct statement. -/
 theorem vacuumFreeExternalInsertionDysonCoefficient_eq_connected_two
     (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
     (labels : Fin 2 → ExternalFieldLabel Mode)
