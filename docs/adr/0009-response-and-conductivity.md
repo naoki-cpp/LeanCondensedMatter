@@ -8,7 +8,7 @@ Keep Transport generic and model-independent: response kernels and channels stat
 
 Keep finite response identities and generic disorder/ladder algebra upstream of model-specific constructions. Exact disorder averages, Born and SCBA approximations, and algebraic ladder solutions have distinct meanings; interpreting a total algebraic solution as a physical fixed point requires its own hypotheses.
 
-Each physical model owns its Hamiltonian, current semantics, spectral and radial/angular reductions, measure, regulator, broadening, and normalization. Model adapters consume common Kubo–Bastin, Středa, and ResponseChannel boundaries and attach physical factors exactly once.
+Each physical model owns its Hamiltonian, current semantics, model-specific spectral and radial/angular identifications, and its choice of physical measure, regulator, broadening, and normalization. Reusable matrix algebra, Fourier kernels, integration identities, and operator symmetries belong in Analysis; generic transport conventions belong in Transport or their mathematical owners. Model adapters consume these results and common Kubo–Bastin, Středa, and ResponseChannel boundaries, attaching physical factors exactly once.
 
 Keep measured, source, bare, and dressed current roles explicit. A conventional symmetrized spin current is not a proper current without a proved model-specific bridge, and finite or regulated results imply no universal, thermodynamic, or zero-broadening limit without a separate theorem.
 
