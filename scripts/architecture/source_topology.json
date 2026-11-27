@@ -165,7 +165,7 @@
       ],
       "forbiddenPrefixes": [
         "LeanCondensedMatter.Combinatorics.Cumulant.Inversion",
-        "LeanCondensedMatter.Combinatorics.Cumulant.ConnectedDecompositionInversion",
+        "LeanCondensedMatter.Combinatorics.Cumulant.Normalized",
         "LeanCondensedMatter.Combinatorics.SetPartition.Mobius",
         "Mathlib.Data.Complex",
         "Mathlib.LinearAlgebra.Matrix.Determinant",
@@ -180,7 +180,7 @@
       ],
       "forbiddenPrefixes": [
         "LeanCondensedMatter.Combinatorics.Cumulant.Inversion",
-        "LeanCondensedMatter.Combinatorics.Cumulant.ConnectedDecompositionInversion",
+        "LeanCondensedMatter.Combinatorics.Cumulant.Normalized",
         "LeanCondensedMatter.Analysis.PowerSeries.Cumulant"
       ]
     },

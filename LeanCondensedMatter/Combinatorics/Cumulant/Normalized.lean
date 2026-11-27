@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Combinatorics.Cumulant.Inversion
+import LeanCondensedMatter.Combinatorics.Cumulant.ConnectedDecomposition
 import LeanCondensedMatter.Combinatorics.Cumulant.NormalizedCore
 
 set_option linter.style.header false
@@ -8,7 +9,8 @@ set_option linter.style.header false
 
 A normalized finite-set function takes the value `1` on the empty set. On this natural domain the
 moment and cumulant transforms are genuine mutually inverse endomorphisms, so public users do not
-need to carry a nonemptiness side condition at every evaluation.
+need to carry a nonemptiness side condition at every evaluation. The connected-decomposition
+inversion theorem identifies normalized object cumulants with connected contributions.
 -/
 
 namespace Combinatorics
@@ -62,4 +64,25 @@ noncomputable def momentCumulantEquiv :
   right_inv := moment_cumulant
 
 end NormalizedSetFunction
+end Combinatorics
+
+namespace Combinatorics
+
+namespace MultiplicativeWeight
+
+variable {α R : Type*} [DecidableEq α] [CommRing R]
+variable {D : ConnectedDecomposition α} (W : MultiplicativeWeight D R)
+
+/-- On a nonempty set, the cumulant of the normalized object moment is the connected-object
+contribution. -/
+theorem normalizedObjectMoment_cumulant_eq_connectedContribution
+    {S : Finset α} (hS : S ≠ ∅) :
+    W.normalizedObjectMoment.cumulant S = W.connectedContribution S := by
+  change Finpartition.cumulantFromMoment W.objectMoment S = W.connectedContribution S
+  rw [show W.objectMoment = Finpartition.momentFromCumulant W.connectedContribution from
+    funext fun T => W.objectMoment_eq_momentFromCumulant T]
+  exact Finpartition.cumulantFromMoment_momentFromCumulant W.connectedContribution
+    (S := S) hS
+
+end MultiplicativeWeight
 end Combinatorics

@@ -16,7 +16,7 @@ The finite-sum factorization retains an arbitrary partition-dependent coefficien
 weights specialize that coefficient to one, giving the ordinary moment identity.
 
 This module stops at the moment transform and therefore only requires a commutative semiring.
-Möbius-inversion consequences live in `ConnectedDecompositionInversion.lean`.
+Möbius-inversion consequences live in `Normalized.lean`.
 -/
 
 namespace Combinatorics

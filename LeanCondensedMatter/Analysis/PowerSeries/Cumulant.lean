@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Analysis.PowerSeries.Moment
-import LeanCondensedMatter.Combinatorics.Cumulant.ConnectedDecompositionInversion
+import LeanCondensedMatter.Combinatorics.Cumulant.Normalized
 import LeanCondensedMatter.Combinatorics.Cumulant.Moment
 import LeanCondensedMatter.Combinatorics.SetPartition.DistinguishedBlock
 

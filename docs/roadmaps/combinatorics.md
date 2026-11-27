@@ -71,7 +71,7 @@ Physics-specific notions of state or operator independence belong downstream.
 Status: `proved`.
 
 `Combinatorics/Cumulant/ConnectedDecomposition.lean` and
-`Combinatorics/Cumulant/ConnectedDecompositionInversion.lean` package multiplicative
+`Combinatorics/Cumulant/Normalized.lean` package multiplicative
 connected-component decompositions and identify their connected contributions with finite-set
 cumulants. These are the combinatorial APIs consumed by linked-cluster developments.
 
