@@ -81,41 +81,27 @@ theorem negMulLog_eq_iff_of_neg_log_le {p q Z u : ℝ}
     Real.negMulLog p = p * u + p * Real.log Z - p + q / Z ↔
       p = q / Z ∧ -Real.log q = u := by
   have hqZpos : 0 < q / Z := div_pos hq hZ
-  have hgibbs := Real.gibbs_scalar_ineq p (q / Z) hp hqZpos
-  have hlogdiv : Real.log (q / Z) = Real.log q - Real.log Z :=
-    Real.log_div hq.ne' hZ.ne'
-  have hAB :
-      Real.negMulLog p ≤ -p * Real.log q + p * Real.log Z - p + q / Z := by
-    nlinarith [hgibbs, hlogdiv]
-  have hmul : -p * Real.log q ≤ p * u := by
-    have := mul_le_mul_of_nonneg_left hlog hp
-    nlinarith
-  have hBC :
-      -p * Real.log q + p * Real.log Z - p + q / Z ≤
-        p * u + p * Real.log Z - p + q / Z := by
-    linarith
+  have hlogdiv := Real.log_div hq.ne' hZ.ne'
+  have hgibbs := gibbs_scalar_ineq p (q / Z) hp hqZpos
+  simp only [hlogdiv, mul_sub, neg_mul, sub_neg_eq_add] at hgibbs
+  have hmul := mul_le_mul_of_nonneg_left hlog hp
+  rw [mul_neg] at hmul
   constructor
   · intro hAC
-    have hBCeq :
-        -p * Real.log q + p * Real.log Z - p + q / Z =
-          p * u + p * Real.log Z - p + q / Z := by
-      apply le_antisymm hBC
-      rw [← hAC]
-      exact hAB
-    have hscalar :
-        Real.negMulLog p + p - q / Z = -p * Real.log (q / Z) := by
-      rw [hlogdiv]
-      nlinarith
-    have hpq := (Real.gibbs_scalar_ineq_eq_iff p (q / Z) hp hqZpos).mp hscalar
+    have heq : -(p * Real.log q) = p * u := by
+      linarith only [hgibbs, hmul, hAC]
+    have hscalar : Real.negMulLog p + p - q / Z = -p * Real.log (q / Z) := by
+      simp only [hlogdiv, mul_sub, neg_mul, sub_neg_eq_add]
+      linarith only [hAC, heq]
+    have hpq := (gibbs_scalar_ineq_eq_iff p (q / Z) hp hqZpos).mp hscalar
     have hppos : 0 < p := hpq.symm ▸ hqZpos
-    have hlogeq : -Real.log q = u := by
-      nlinarith [hBCeq, hppos]
-    exact ⟨hpq, hlogeq⟩
+    rw [← mul_neg] at heq
+    exact ⟨hpq, mul_left_cancel₀ hppos.ne' heq⟩
   · rintro ⟨hpq, hlogeq⟩
-    have hscalar :=
-      (Real.gibbs_scalar_ineq_eq_iff p (q / Z) hp hqZpos).mpr hpq
-    rw [hlogdiv] at hscalar
-    nlinarith
+    have hscalar := (gibbs_scalar_ineq_eq_iff p (q / Z) hp hqZpos).mpr hpq
+    simp only [hlogdiv, mul_sub, neg_mul, sub_neg_eq_add] at hscalar
+    rw [← hlogeq, mul_neg]
+    linarith only [hscalar]
 
 /-- The Gibbs comparison series is summable whenever the normalized probability family,
 energy term, and comparison weights are summable. Its total separates into energy, normalization,
