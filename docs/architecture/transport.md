@@ -303,7 +303,7 @@ The remaining steps are recorded in [the scattering-theory roadmap](../roadmaps/
 MassiveDirac.Disorder.TMatrix.ScalarImpurity owns the scalar-impurity parameters, unit-guarded
 T-matrix and self-energy algebra, and the quadratic small-strength remainder for a supplied
 2×2 Green loop. The dimension-independent T-matrix norm bound lives in
-Transport.Disorder.TMatrix.NormBound.
+Transport.Disorder.TMatrix.
 
 MassiveDirac.Disorder.TMatrix.BornDysonLoop owns the finite-cutoff Born-Dyson loop at the
 spatial origin, its zero-disorder clean-loop identity, and the Born self-energy coefficient
