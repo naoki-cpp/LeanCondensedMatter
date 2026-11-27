@@ -1,5 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Common.Algebra.AlgebraicFock
-import LeanCondensedMatter.SecondQuantization.Common.Algebra.ExchangeCommutator
+import LeanCondensedMatter.Analysis.Algebra.ScalarExchange
+import LeanCondensedMatter.SecondQuantization.Common.Algebra.Statistics
 
 set_option linter.style.header false
 
@@ -7,11 +8,17 @@ set_option linter.style.header false
 # Exchange-algebra interface
 
 `ExchangeAlgebra` packages the all-index CAR/CCR relations through the statistics-selected
-`exchangeCommutator`. Concrete fermionic and bosonic instances remain in their own layers.
+`exchangeCommutator`, which specializes the representation-independent scalar bracket in
+`Analysis.Algebra.ScalarExchange`. Concrete fermionic and bosonic instances remain in their own layers.
 -/
 
 namespace SecondQuantization
 namespace Common
+
+/-- The `ζ`-commutator with `ζ` selected by the exchange statistics `s`. -/
+noncomputable def exchangeCommutator {V : Type*} [AddCommGroup V] [Module ℂ V]
+    (s : Statistics) (A B : V →ₗ[ℂ] V) : V →ₗ[ℂ] V :=
+  ScalarExchange.zetaCommutator (s.zetaInt : ℂ) A B
 
 /-- Creation/annihilation operators satisfying the exchange statistics `s`. -/
 class ExchangeAlgebra (s : Statistics) (Mode Config : Type*) [DecidableEq Mode] where
