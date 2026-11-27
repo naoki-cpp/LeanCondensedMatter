@@ -1,6 +1,5 @@
 import Mathlib.Analysis.SpecialFunctions.Bessel
 import Mathlib.Analysis.Complex.Basic
-import Mathlib.Tactic.Linarith
 import Mathlib.Topology.Algebra.InfiniteSum.ContinuousEval
 import Mathlib.Tactic.FieldSimp
 import Mathlib.Tactic.LinearCombination
@@ -238,16 +237,15 @@ theorem besselJ_nat_hasDerivAt (k : ℕ) (w : ℂ) :
 theorem besselJ_nat_ofReal_re (k : ℕ) (r : ℝ) :
     ((Complex.besselJ (k : ℂ) (r : ℂ)).re : ℂ) =
       Complex.besselJ (k : ℂ) (r : ℂ) := by
-  have h : starRingEnd ℂ (Complex.besselJ (k : ℂ) (r : ℂ)) =
-      Complex.besselJ (k : ℂ) (r : ℂ) := by
-    rw [besselJ_nat_eq, regularizedHGFun_zero_eq_tsum]
-    simp [Complex.conj_tsum, regularizedHGFunCoeff_zero_singleton_nat_add_one]
-  have him := congrArg Complex.im h
-  simp only [Complex.conj_im] at him
-  apply Complex.ext
-  · simp
-  · simp only [Complex.ofReal_im]
-    linarith
+  apply Complex.conj_eq_iff_re.mp
+  have hcoeff (n : ℕ) :
+      starRingEnd ℂ (Complex.regularizedHGFunCoeff 0 {((k + 1 : ℕ) : ℂ)} n) =
+        Complex.regularizedHGFunCoeff 0 {((k + 1 : ℕ) : ℂ)} n := by
+    rw [regularizedHGFunCoeff_zero_singleton_nat_add_one]
+    simp only [map_div₀, map_one, map_mul, map_natCast]
+  rw [besselJ_nat_eq, regularizedHGFun_zero_eq_tsum]
+  simp only [map_mul, map_div₀, map_pow, map_neg, map_ofNat,
+    Complex.conj_ofReal, Complex.conj_tsum, hcoeff]
 
 /-- The derivative of the zeroth Bessel function. -/
 theorem besselJ_zero_hasDerivAt (z : ℂ) :
@@ -272,7 +270,7 @@ theorem besselJ_one_hasDerivAt (z : ℂ) :
   have h2 : Complex.besselJ 2 z =
       (z / 2) ^ 2 * Complex.regularizedHGFun 0 {(3 : ℂ)} (-(z / 2) ^ 2) := by
     simpa using besselJ_nat_eq 2 z
-  convert h using 1 <;> try rfl
+  convert h using 1
   rw [h0, h2]
   linear_combination hrec / 2
 
