@@ -55,10 +55,11 @@ def plan(scope, smoke):
         modules = [m for m in modules if m == scope or m.startswith(scope + ".")]
     if not modules:
         raise ValueError("No tracked Lean modules match scope")
+    shard_size = 1 if smoke else SHARD_SIZE
     matrix = {
         "include": [
-            {"shard": i // SHARD_SIZE + 1, "modules": modules[i:i + SHARD_SIZE]}
-            for i in range(0, len(modules), SHARD_SIZE)
+            {"shard": i // shard_size + 1, "modules": modules[i:i + shard_size]}
+            for i in range(0, len(modules), shard_size)
         ]
     }
     return matrix
@@ -139,7 +140,12 @@ def merge(matrix, threshold, artifacts, output, summary):
     output.mkdir(parents=True, exist_ok=True)
     write_tsv(output / "coverage.tsv", STATUS_FIELDS, [statuses[m] for m in sorted(expected)])
     write_tsv(output / "heartbeat-ranking.tsv", RANK_FIELDS, rows)
-    (output / "threshold.txt").write_text(threshold + "\n", encoding="utf-8")
+    (output / "metadata.json").write_text(json.dumps({
+        "commit": subprocess.check_output(["git", "rev-parse", "HEAD"], text=True).strip(),
+        "heartbeat_threshold": int(threshold),
+        "expected_modules": len(expected),
+        "profiled_modules": sum(row["status"] == "ok" for row in statuses.values()),
+    }, indent=2) + "\n", encoding="utf-8")
     ok = sum(row["status"] == "ok" for row in statuses.values())
     with summary.open("a", encoding="utf-8") as handle:
         handle.write(f"## Native Lean heartbeat survey\n\n"
