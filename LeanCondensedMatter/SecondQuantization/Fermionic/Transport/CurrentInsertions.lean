@@ -457,6 +457,83 @@ theorem bilinearCurrentDysonCoefficient_eq_four_fields
   simpa only [Fintype.sum_prod_type, w, F, externalInsertionVertexDysonCoefficient]
 
 
+
+omit [LinearOrder Mode] [Fintype Mode] in
+/-- The two number-conserving current blocks carry no net chemical-potential
+factor: each creation and annihilation share the same time. -/
+theorem externalFieldFamilyChemicalPotentialFactor_pairedCurrent
+    (μ τ τ' : ℝ) (i j k l : Mode) :
+    externalFieldFamilyChemicalPotentialFactor μ (pairedCurrentExternalLabels i j k l)
+      (Common.pairedExternalTimes τ τ') = 1 := by
+  simp [externalFieldFamilyChemicalPotentialFactor, Fin.prod_univ_four,
+    pairedCurrentExternalLabels, Common.pairedExternalTimes,
+    externalFieldChemicalPotentialFactor, ← Complex.exp_add]
+
+/-- Formal series of the independently integrated stable two-current coefficients. -/
+noncomputable def bilinearCurrentDysonSeries
+    (ε : Mode → ℝ) (β μ τ τ' : ℝ)
+    (g : QuarticVertexLabel Mode → ℂ) (jx jy : Mode → Mode → ℂ) : PowerSeries ℂ :=
+  PowerSeries.mk (bilinearCurrentDysonCoefficient ε β μ τ τ' g jx jy)
+
+/-- The series-level weighted sum follows coefficientwise from the integrated
+four-field identity, without an analytic convergence assumption. -/
+theorem bilinearCurrentDysonSeries_eq_four_fields
+    (ε : Mode → ℝ) (β μ τ τ' : ℝ)
+    (g : QuarticVertexLabel Mode → ℂ) (jx jy : Mode → Mode → ℂ) :
+    bilinearCurrentDysonSeries ε β μ τ τ' g jx jy =
+      ∑ i : Mode, ∑ j : Mode, ∑ k : Mode, ∑ l : Mode,
+        PowerSeries.C (jx i j * jy k l) *
+          externalInsertionVertexDysonSeries (E := 2) ε β μ g
+            (pairedCurrentExternalLabels i j k l) (Common.pairedExternalTimes τ τ') := by
+  ext n
+  simp only [bilinearCurrentDysonSeries, map_sum, PowerSeries.coeff_mk,
+    PowerSeries.coeff_C_mul, externalInsertionVertexDysonSeries]
+  exact bilinearCurrentDysonCoefficient_eq_four_fields ε β μ τ τ' g jx jy n
+
+/-- Vacuum normalization uses the same free-state-normalized partition series
+as the canonical arbitrary-external insertion expansion. -/
+noncomputable def partitionFunctionNormalizedBilinearCurrentDysonSeries
+    (ε : Mode → ℝ) (β μ τ τ' : ℝ)
+    (g : QuarticVertexLabel Mode → ℂ) (jx jy : Mode → Mode → ℂ) : PowerSeries ℂ :=
+  bilinearCurrentDysonSeries ε β μ τ τ' g jx jy *
+    (PowerSeries.normalizeByConstantCoeff
+      (Common.dysonTraceSeries (fermionEnergy (fun k => ε k - μ)) β
+        (quarticInteraction g)))⁻¹
+
+/-- The existing arbitrary-external linked-cluster factorization removes
+exactly the pure-vacuum components from the weighted two-current series.
+The remaining diagrams may have distinct externally supported components;
+this is not yet the connected composite-current cumulant. -/
+theorem partitionFunctionNormalizedBilinearCurrentDysonSeries_eq_vacuumFree
+    (ε : Mode → ℝ) (β μ τ τ' : ℝ) (hβ : 0 ≤ β)
+    (g : QuarticVertexLabel Mode → ℂ) (jx jy : Mode → Mode → ℂ) :
+    partitionFunctionNormalizedBilinearCurrentDysonSeries ε β μ τ τ' g jx jy =
+      ∑ i : Mode, ∑ j : Mode, ∑ k : Mode, ∑ l : Mode,
+        PowerSeries.C (jx i j * jy k l) *
+          vacuumFreeExternalInsertionDysonSeries (E := 2) (fun m => ε m - μ) β g
+            (pairedCurrentExternalLabels i j k l) (Common.pairedExternalTimes τ τ') := by
+  rw [partitionFunctionNormalizedBilinearCurrentDysonSeries]
+  apply PowerSeries.mul_inv_eq_of_eq_mul_of_constantCoeff_ne_zero
+  · rw [PowerSeries.constantCoeff_normalizeByConstantCoeff
+      (Common.constantCoeff_dysonTraceSeries_ne_zero
+        (fermionEnergy (fun k => ε k - μ)) β (quarticInteraction g))]
+    exact one_ne_zero
+  · rw [bilinearCurrentDysonSeries_eq_four_fields]
+    simp only [Finset.sum_mul]
+    apply Finset.sum_congr rfl
+    intro i _
+    apply Finset.sum_congr rfl
+    intro j _
+    apply Finset.sum_congr rfl
+    intro k _
+    apply Finset.sum_congr rfl
+    intro l _
+    rw [externalInsertionVertexDysonSeries_eq_shiftedVacuumFree_mul_normalizedDysonPartitionSeries
+      (E := 2) ε β μ hβ g (pairedCurrentExternalLabels i j k l)
+      (Common.pairedExternalTimes τ τ')]
+    simp only [externalFieldFamilyChemicalPotentialFactor_pairedCurrent μ τ τ' i j k l,
+      map_one, one_mul, mul_assoc]
+
 end
 end Transport
 end Fermionic
