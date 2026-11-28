@@ -85,7 +85,14 @@ noncomputable def octahedralMoments (W : ℝ → ℝ)
     rw [← Equiv.sum_comp octahedralIndex (fun q =>
       W (signedAxisCosine (octahedralIndex p) q) *
         (signedAxisDirection q i * signedAxisDirection q j))] at h
-    convert h using 1 <;> ring
+    change (∑ q : Fin 6, W (signedAxisCosine (octahedralIndex p) (octahedralIndex q)) *
+      (signedAxisDirection (octahedralIndex q) i * signedAxisDirection (octahedralIndex q) j)) =
+      (W 1 + W (-1) + 4 * W 0 - (W 1 + W (-1) - 2 * W 0)) / 3 *
+        (if i = j then 1 else 0) +
+      (W 1 + W (-1) - 2 * W 0) *
+        (signedAxisDirection (octahedralIndex p) i * signedAxisDirection (octahedralIndex p) j)
+    rw [h]
+    ring
 
 /-- The degree-one (momentum) collision eigenvalue, explicitly derived
 from the scattering kernel at backward and orthogonal scattering angles. -/
@@ -120,8 +127,11 @@ theorem octahedral_degreeTwoRate_eq_legendre (W : ℝ → ℝ)
   rw [← Equiv.sum_comp octahedralIndex
     (fun q => W (signedAxisCosine (octahedralIndex p) q) *
       (1 - legendreP2 (signedAxisCosine (octahedralIndex p) q)))] at h
-  norm_num [legendreP2] at h
-  convert h.symm using 1 <;> ring
+  change 6 * W 0 = ∑ q : Fin 6,
+    W (signedAxisCosine (octahedralIndex p) (octahedralIndex q)) *
+      (1 - legendreP2 (signedAxisCosine (octahedralIndex p) (octahedralIndex q)))
+  rw [h]
+  norm_num [legendreP2] <;> ring
 
 /-- The analogous finite transport-weighted sum equals the linear
 angular-mode relaxation eigenvalue. -/
@@ -135,8 +145,11 @@ theorem octahedral_momentumRate_eq_transport (W : ℝ → ℝ)
   rw [← Equiv.sum_comp octahedralIndex
     (fun q => W (signedAxisCosine (octahedralIndex p) q) *
       (1 - signedAxisCosine (octahedralIndex p) q))] at h
-  norm_num at h
-  convert h.symm using 1 <;> ring
+  change 2 * W (-1) + 4 * W 0 = ∑ q : Fin 6,
+    W (signedAxisCosine (octahedralIndex p) (octahedralIndex q)) *
+      (1 - signedAxisCosine (octahedralIndex p) (octahedralIndex q))
+  rw [h]
+  norm_num <;> ring
 
 /-- A diagonal degree-two mode is nonzero on the octahedral grid. -/
 theorem octahedral_quadrupole_nonzero :
