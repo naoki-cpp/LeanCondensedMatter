@@ -137,6 +137,15 @@
   margin: 0 0 8px;
   font: 500 1.6rem/1.2 var(--heading-font);
 }
+.research-map-overview { margin-top: 20px; padding-top: 14px; border-top: 1px solid #42605a; }
+.research-map .module-breadcrumb { margin: 0 0 10px; color: #c0d3c9; }
+.research-map .module-crumb { color: #edf5ee; border-color: #617a71; }
+.research-map .module-crumb:hover:not(:disabled),
+.research-map .module-crumb:disabled { color: #edf5ee; background: #203630; }
+.research-map .module-overview-header { margin-bottom: 0; }
+.research-map .module-overview-header h2 { color: inherit; font-size: 1.25rem; }
+.research-map .module-overview-header p { color: #d8e6df; }
+.research-map .summary-chip { color: #edf5ee; background: #203630; border-color: #617a71; }
 .research-map-legend {
   display: flex;
   flex-wrap: wrap;

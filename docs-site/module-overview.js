@@ -204,7 +204,6 @@ export function createModuleOverview({ catalog, modules = [], overview, onBrowse
     overview.replaceChildren();
     const breadcrumb = element("div", "");
     breadcrumb.append(renderBreadcrumb(parts));
-    overview.append(breadcrumb);
 
     const header = element("div", "overview-header module-overview-header");
     const heading = element("h2", "", node.name);
@@ -224,8 +223,6 @@ export function createModuleOverview({ catalog, modules = [], overview, onBrowse
     }
     showSummary(node);
     header.append(summary);
-    overview.append(header);
-
     if (children.length > 0 && parts.length === 0) {
       let descriptionRequest = 0;
       function updateMapHeader(moduleName, browseMap) {
@@ -248,8 +245,11 @@ export function createModuleOverview({ catalog, modules = [], overview, onBrowse
         const name = shortModule(entry.module);
         const area = shortModule(child.fullName);
         return !entry.generated && (name === area || name.startsWith(`${area}.`));
-      }).sort((a, b) => a.name.localeCompare(b.name)), onOpenDeclaration, updateMapHeader));
-    } else if (children.length > 0) {
+      }).sort((a, b) => a.name.localeCompare(b.name)), onOpenDeclaration, updateMapHeader, [breadcrumb, header]));
+    } else {
+      overview.append(breadcrumb, header);
+    }
+    if (children.length > 0 && parts.length > 0) {
       const section = element("section", "overview-section");
       section.append(element("h3", "", "Direct submodules"));
       const grid = element("div", "module-tree-grid");

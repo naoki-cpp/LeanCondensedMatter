@@ -24,7 +24,7 @@ function button(text, action, className = "") {
   return control;
 }
 
-export function renderResearchMap(children, entriesFor, onOpenDeclaration, onRegionChange) {
+export function renderResearchMap(children, entriesFor, onOpenDeclaration, onRegionChange, overviewHeader) {
   const section = element("section", "research-map");
   const heading = element("h3", "", "Research map");
   heading.id = "research-map-title";
@@ -562,7 +562,9 @@ export function renderResearchMap(children, entriesFor, onOpenDeclaration, onReg
   controls.append(parentControl, button("Zoom out", () => zoomBy(1 / 1.5)), button("Zoom in", () => zoomBy(1.5)), button("Whole map", reset));
   stage.append(canvas, ...allRegions.map((region) => region.label));
   const emptyBundles = [];
-  section.append(heading, legend, controls, stage, preview, picker, detail, connectionDetails);
+  const overviewFooter = element("div", "research-map-overview");
+  overviewFooter.append(...overviewHeader);
+  section.append(heading, legend, controls, stage, preview, picker, detail, connectionDetails, overviewFooter);
   reset();
   // This section is returned before it is mounted, so measure again after attachment.
   if (typeof requestAnimationFrame === "function") requestAnimationFrame(draw);
