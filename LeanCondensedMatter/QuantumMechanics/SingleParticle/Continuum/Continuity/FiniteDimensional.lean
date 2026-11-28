@@ -83,9 +83,9 @@ theorem finiteDimensional_schrodinger_continuity
     (hsame : ∀ i, ψSpace i (x i) = ψTime t)
     (htime : HasDerivAt ψTime ψt t)
     (hspace : ∀ i,
-      HasDerivAt ψSpace i (ψx i (x i)) (x i))
+      HasDerivAt (ψSpace i) (ψx i (x i)) (x i))
     (hspaceDerivative : ∀ i,
-      HasDerivAt ψx i (secondDerivatives i) (x i))
+      HasDerivAt (ψx i) (secondDerivatives i) (x i))
     (hschrodinger :
       Complex.I * (ℏ : ℂ) * ψt =
         -(κ : ℂ) * (∑ i, secondDerivatives i) +

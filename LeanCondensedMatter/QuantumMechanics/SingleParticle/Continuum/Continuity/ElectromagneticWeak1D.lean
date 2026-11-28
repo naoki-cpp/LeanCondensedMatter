@@ -100,7 +100,7 @@ theorem hasDerivAt_intervalSmearedProbabilityDensity1D_of_electromagnetic_schrod
     (htest : ∀ x ∈ [[a, b]], HasDerivAt test (testDerivative x) x)
     (hA : ∀ x ∈ [[a, b]],
       HasDerivAt vectorPotential (vectorPotentialDerivative x) x)
-    (hψ : ∀ x ∈ [[a, b]], HasDerivAt ψ t (ψx x) x)
+    (hψ : ∀ x ∈ [[a, b]], HasDerivAt (ψ t) (ψx x) x)
     (hψx : ∀ x ∈ [[a, b]], HasDerivAt ψx (ψxx x) x)
     (hschrodinger : ∀ x,
       Complex.I * (ℏ : ℂ) * ψt t x =
@@ -184,7 +184,7 @@ theorem hasDerivAt_wholeSpaceSmearedProbabilityDensity1D_of_electromagnetic_schr
       HasDerivAt (fun u => ψ u x) (ψt τ x) τ)
     (hA : ∀ x ∈ [[a, b]],
       HasDerivAt vectorPotential (vectorPotentialDerivative x) x)
-    (hψ : ∀ x ∈ [[a, b]], HasDerivAt ψ t (ψx x) x)
+    (hψ : ∀ x ∈ [[a, b]], HasDerivAt (ψ t) (ψx x) x)
     (hψx : ∀ x ∈ [[a, b]], HasDerivAt ψx (ψxx x) x)
     (hschrodinger : ∀ x,
       Complex.I * (ℏ : ℂ) * ψt t x =

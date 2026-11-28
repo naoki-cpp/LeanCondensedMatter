@@ -119,7 +119,7 @@ theorem hasDerivAt_wholeSpaceSmearedProbabilityDensity1D_of_schrodinger
     (hBoundIntegrable : IntervalIntegrable bound volume a b)
     (htime : ∀ x ∈ uIoc a b, ∀ τ ∈ s,
       HasDerivAt (fun u => ψ u x) (ψt τ x) τ)
-    (hψ : ∀ x ∈ [[a, b]], HasDerivAt ψ t (ψx x) x)
+    (hψ : ∀ x ∈ [[a, b]], HasDerivAt (ψ t) (ψx x) x)
     (hψx : ∀ x ∈ [[a, b]], HasDerivAt ψx (ψxx x) x)
     (hschrodinger : ∀ x,
       Complex.I * (ℏ : ℂ) * ψt t x =
