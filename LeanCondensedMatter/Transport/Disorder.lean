@@ -24,11 +24,7 @@ set_option linter.style.header false
 /-!
 # Finite disorder transport
 
-Finite disorder ensembles and their transport algebra: connected correlations, exact two-Green
-insertions, fixed-regulator covariance and controlled first-rung and norm-convergent resummed-ladder bounds, and their finite-dimensional Středa trace bridge and quantitative exact-vs-dressed trace bounds,
-disorder covariance and moments,
-disorder resolvents and averaged Green functions
-and self-energy, first-Born self-energy and fixed-regulator cubic-remainder estimates,
-retarded–advanced covariance ladders,
-self-consistent Born approximation, and the finite bounded charge-vertex Ward identity.
+Exact finite-ensemble Green functions, moments, connected two-Green correlations and trace
+identities; Born and ladder approximations with fixed-regulator error bounds; isotropic
+in-plane ladder algebra, self-consistent Born equations, and the charge-vertex Ward identity.
 -/
