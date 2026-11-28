@@ -1,6 +1,5 @@
 import LeanCondensedMatter.Transport.KuboBastin.Eigenbasis
 import LeanCondensedMatter.Transport.KuboBastin.Finite
-import LeanCondensedMatter.Transport.KuboBastin.OccupationInterpolation
 import LeanCondensedMatter.Transport.KuboBastin.Occupation
 import LeanCondensedMatter.Transport.KuboBastin.CommonEnergy
 
