@@ -109,3 +109,42 @@ test("detail rendering includes fields, unsupported field source, and the comple
     assert.ok(text.includes(expected), expected);
   }
 });
+
+
+test("recognized operator applications use mathematical notation without reordering arguments", () => {
+  const x = variable("x");
+  const y = variable("y");
+  const G = variable("G");
+  const tex = (name, ...args) => expressionToTex(app(name, ...args));
+  assert.equal(tex("Matrix.trace", G), String.raw`\operatorname{Tr}\left(\mathrm{G}\right)`);
+  assert.equal(tex("ContinuousLinearMap.adjoint", G), String.raw`\left(\mathrm{G}\right)^{\dagger}`);
+  assert.equal(tex("Star.star", G), String.raw`\left(\mathrm{G}\right)^{\star}`);
+  assert.equal(tex("Norm.norm", x), String.raw`\left\lVert \mathrm{x}\right\rVert`);
+  assert.equal(tex("NormedSpace.exp", G), String.raw`\exp\left(\mathrm{G}\right)`);
+  assert.equal(expressionToTex({ ...app("Inner.inner", x, y), resultType: "Complex" }),
+    String.raw`\left\langle \mathrm{x}, \mathrm{y}\right\rangle_{\mathbb{C}}`);
+  assert.equal(tex("Function.comp", x, y), String.raw`\left(\mathrm{x}\right)\circ \left(\mathrm{y}\right)`);
+  assert.match(tex("HSMul.hSMul", x, G), /\\bullet/);
+});
+
+test("finite sums, products, and total infinite sums retain the function and domain", () => {
+  const S = variable("S");
+  const f = variable("f");
+  const i = String.raw`\mathsf{i}_{0}`;
+  const sum = expressionToTex(app("Finset.sum", S, f));
+  assert.equal(sum, "\\sum_{" + i + "\\in \\mathrm{S}}\\left(\\left(\\mathrm{f}\\right)\\left(" + i + "\\right)\\right)");
+  assert.equal(expressionToTex(app("Finset.prod", S, f)), sum.replace("\\sum", "\\prod"));
+  assert.equal(expressionToTex(app("tsum", f)), sum.replace("\\in \\mathrm{S}", ""));
+  const nested = expressionToTex(app("Finset.sum", S, app("Finset.prod", S, f)));
+  assert.ok(nested.includes(String.raw`\mathsf{i}_{1}`));
+});
+
+test("unknown names, mismatched arities and unsupported operands do not receive special notation", () => {
+  const x = variable("x");
+  const y = variable("y");
+  assert.doesNotMatch(expressionToTex(app("Custom.trace", x)), /\\operatorname\{Tr\}/);
+  assert.doesNotMatch(expressionToTex(app("Matrix.trace", x, y)), /\\operatorname\{Tr\}/);
+  assert.doesNotMatch(expressionToTex(app("Custom.sum", x, y)), /\\sum_/);
+  assert.doesNotMatch(expressionToTex({ kind: "app", fn: variable("f", "Matrix.trace"), args: [x] }), /\\operatorname\{Tr\}/);
+  assert.equal(expressionToTex(app("Finset.sum", x, { kind: "text", text: "match x with | _ => 1" })), null);
+});
