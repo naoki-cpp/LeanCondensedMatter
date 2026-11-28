@@ -113,9 +113,9 @@ belong to that transition data; concrete validation and conductivity adapters co
 The diagonal-weight vanishing theorem remains a canonical simplification rule, independently of
 any response or physical conductivity prefactor.
 
-`QuantumTheory.Occupation.Band` owns arbitrary occupation-law composition with band energies, while
+Energy-based occupation laws are evaluated directly at band energies.
 `QuantumTheory.Occupation.ZeroTemperature` owns the strict scalar Fermi step and its pointwise
-properties. Neither requires transport theory.
+properties. The scalar law does not require transport theory.
 `QuantumTheory.Occupation.BandFilling` owns zero-temperature occupied regions, Fermi surfaces,
 filled/empty/partially-filled band predicates, and their correspondence to the spectral occupation
 law. These are independent of response theory. `Analysis.ZeroTemperatureLorentzian` owns the

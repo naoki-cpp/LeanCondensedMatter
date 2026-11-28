@@ -78,8 +78,7 @@ actual signed band energy `s ε`, while `ε` itself remains the positive energy 
 radial reduction. -/
 def zeroTemperatureOccupiedRadialBerryEnergyDensity
     (band : TwoBand) (m fermiEnergy ε : ℝ) : ℝ :=
-  bandStateOccupation (zeroTemperatureOccupation fermiEnergy)
-      (fun band ε => bandSign band * ε) band ε *
+  zeroTemperatureOccupation fermiEnergy (bandSign band * ε) *
     radialBerryEnergyDensity band m ε
 
 /-- Zero-temperature occupied Berry weight of one band inside the common positive-energy cutoff
@@ -113,9 +112,8 @@ theorem zeroTemperatureOccupiedBandBerryWeightCutoff_lower_eq
     intro ε hε
     rw [uIcc_of_le hmΛ] at hε
     have hocc :
-        bandStateOccupation (zeroTemperatureOccupation εF)
-            (fun band ε => bandSign band * ε) .lower ε = 1 := by
-      apply bandStateOccupation_zeroTemperature_eq_one_of_lt
+        zeroTemperatureOccupation εF (bandSign .lower * ε) = 1 := by
+      apply zeroTemperatureOccupation_eq_one
       simp only [bandSign]
       linarith [hmAbsPos, hmF, hε.1]
     simp [zeroTemperatureOccupiedRadialBerryEnergyDensity, hocc]
@@ -128,7 +126,7 @@ theorem zeroTemperatureOccupiedBandBerryWeightCutoff_upper_eq
     zeroTemperatureOccupiedBandBerryWeightCutoff .upper m εF Λ =
       energyShellBerryWeight .upper m |m| εF := by
   unfold zeroTemperatureOccupiedBandBerryWeightCutoff energyShellBerryWeight
-  simpa only [zeroTemperatureOccupiedRadialBerryEnergyDensity, bandStateOccupation,
+  simpa only [zeroTemperatureOccupiedRadialBerryEnergyDensity,
     bandSign, one_mul, zeroTemperatureOccupation] using
     (MeasureTheory.integral_strictThreshold_mul
       (fun ε => radialBerryEnergyDensity .upper m ε) hmF hFΛ)
