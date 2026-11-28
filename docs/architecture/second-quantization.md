@@ -448,7 +448,7 @@ Imaginary-time diagonal evolution specializes that algebra representation. Its i
 interface rather than operation-specific forwarding lemmas.
 
 This algebraic coordinate layer is dimension-independent. Ordinary `LinearMap.trace` is only used
-for finite configuration types; possibly infinite occupation bases use `tsumTrace` together with
+for finite configuration types; possibly infinite occupation bases use `Finsupp.tsumTrace` together with
 explicit summability hypotheses.
 
 Normalized two-point trace algebra is owned by

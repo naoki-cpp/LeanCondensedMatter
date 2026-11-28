@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Analysis.Algebra.FinsuppTrace
 import Mathlib.Analysis.SpecialFunctions.Complex.Log
 import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.FreeKMSRotation
 import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.OperatorPeel
@@ -81,7 +82,7 @@ theorem grandCanonicalGibbsExpectation_operatorPeelSum_eq_sum
       apply Finset.sum_congr rfl
       intro j _
       simp only [grandCanonicalGibbsExpectation, LinearMap.comp_smul,
-        Common.tsumTrace_smul, mul_div_assoc]
+        Finsupp.tsumTrace_smul, mul_div_assoc]
 
 end FreeThermalField
 
@@ -120,7 +121,7 @@ theorem grandCanonicalGibbsExpectation_cons_eq_kmsRatio_mul_operatorPeelSum
       _ = P + R := by
         dsimp [P, R]
         unfold grandCanonicalGibbsExpectation
-        rw [LinearMap.comp_add, Common.tsumTrace_add hPmem hRmem, add_div]
+        rw [LinearMap.comp_add, Finsupp.tsumTrace_add hPmem hRmem, add_div]
   have hkms : E = C.kmsFactor (fun i => ε i - μ) β * R := by
     change grandCanonicalGibbsExpectation ε β μ (C.operator.comp (orderedProduct l)) =
       C.kmsFactor (fun i => ε i - μ) β *

@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Analysis.Algebra.FinsuppTrace
 import LeanCondensedMatter.SecondQuantization.Common.Algebra.FiniteTrace
 import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.DiagonalEvolution
 import LeanCondensedMatter.SecondQuantization.Common.Perturbation.FiniteOperatorIntegral
@@ -101,11 +102,11 @@ theorem finiteGibbsExpectation_eq_summableDiagonalTraceRatioLinear
     (energy : Config → ℝ) (β : ℝ)
     (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
     finiteGibbsExpectation energy β A =
-      summableDiagonalTraceRatioLinear (diagonalEvolution energy (-β))
+      Finsupp.summableDiagonalTraceRatioLinear (diagonalEvolution energy (-β))
         ⟨A, Summable.of_finite⟩ := by
   change finiteGibbsExpectation energy β A =
-    tsumTrace ((diagonalEvolution energy (-β)).comp A) /
-      tsumTrace (diagonalEvolution energy (-β))
+    Finsupp.tsumTrace ((diagonalEvolution energy (-β)).comp A) /
+      Finsupp.tsumTrace (diagonalEvolution energy (-β))
   rw [tsumTrace_eq_traceFock, tsumTrace_eq_traceFock]
   exact finiteGibbsExpectation_eq_trace_div energy β A
 

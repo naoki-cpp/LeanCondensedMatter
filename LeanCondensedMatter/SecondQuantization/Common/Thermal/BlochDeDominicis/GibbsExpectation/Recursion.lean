@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Analysis.Algebra.FinsuppTrace
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.ExpectationRecursion
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsCoordinate
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.NormalizedTwoPointTrace
@@ -46,10 +47,10 @@ theorem finiteGibbsExpectation_comp_eq_div_of_zetaCommutator (energy : Config �
       c1j / (1 - ζ * Complex.exp ((q1 * β : ℝ) : ℂ)) := by
   classical
   rw [finiteGibbsExpectation_eq_trace_div]
-  have hZ : tsumTrace (diagonalEvolution energy (-β)) ≠ 0 := by
-    simpa only [tsumTrace, tsum_fintype, traceFock_eq_sum_matrixCoeff] using
+  have hZ : Finsupp.tsumTrace (diagonalEvolution energy (-β)) ≠ 0 := by
+    simpa only [tsumTrace_eq_traceFock] using
       traceFock_diagonalEvolution_ne_zero energy β
-  simpa only [tsumTrace, tsum_fintype, traceFock_eq_sum_matrixCoeff] using
+  simpa only [tsumTrace_eq_traceFock] using
     normalizedTsumTrace_comp_eq_div_of_zetaCommutator energy β q1 ζ c1j C1 Cj
       hC1 hcomm Summable.of_finite Summable.of_finite hZ hne
 
@@ -71,7 +72,7 @@ theorem finiteGibbsExpectation_peel_indexed (energy : Config → ℝ) (β q1 : �
           (1 - ζ ^ l.length * Complex.exp ((q1 * β : ℝ) : ℂ)) := by
     have h := tsumTrace_diagonalEvolution_comp_peel energy β q1 ζ C1 l hC1 hcomm
       Summable.of_finite Summable.of_finite
-    simp only [tsumTrace, tsum_fintype, ← traceFock_eq_sum_matrixCoeff] at h
+    simp only [tsumTrace_eq_traceFock] at h
     have hZ := traceFock_diagonalEvolution_ne_zero energy β
     have hne' : (1 : ℂ) - ζ ^ l.length * Complex.exp ((β * q1 : ℝ) : ℂ) ≠ 0 := by
       rwa [mul_comm β q1]

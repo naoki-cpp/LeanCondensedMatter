@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Analysis.Algebra.FinsuppTrace
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.Unnormalized.PeelFirstTrace
 
 set_option linter.style.header false
@@ -27,10 +28,10 @@ theorem normalizedTsumTrace_comp_eq_div_of_zetaCommutator
       matrixCoeff (diagonalEvolution energy (-β)) n n))
     (hrotate : Summable (Function.uncurry (fun n k =>
       matrixCoeff ((diagonalEvolution energy (-β)).comp C₂) n k * matrixCoeff C₁ k n)))
-    (hZ : tsumTrace (diagonalEvolution energy (-β)) ≠ 0)
+    (hZ : Finsupp.tsumTrace (diagonalEvolution energy (-β)) ≠ 0)
     (hden : (1 : ℂ) - ζ * Complex.exp ((q * β : ℝ) : ℂ) ≠ 0) :
-    tsumTrace ((diagonalEvolution energy (-β)).comp (C₁.comp C₂)) /
-        tsumTrace (diagonalEvolution energy (-β)) =
+    Finsupp.tsumTrace ((diagonalEvolution energy (-β)).comp (C₁.comp C₂)) /
+        Finsupp.tsumTrace (diagonalEvolution energy (-β)) =
       c / (1 - ζ * Complex.exp ((q * β : ℝ) : ℂ)) := by
   have hpeel := hpartition.mul_left c
   have h := tsumTrace_diagonalEvolution_comp_peel energy β q ζ C₁ [(C₂, c)] hC₁
@@ -43,7 +44,7 @@ theorem normalizedTsumTrace_comp_eq_div_of_zetaCommutator
   simp only [List.length_cons, List.length_nil, List.map_cons, List.map_nil,
     List.prod_cons, List.prod_nil,
     ScalarExchange.peelSumWithCoefficients_cons, ScalarExchange.peelSumWithCoefficients_nil, mul_zero, smul_zero, add_zero,
-    Module.End.one_eq_id, LinearMap.comp_smul, LinearMap.comp_id, tsumTrace_smul] at h
+    Module.End.one_eq_id, LinearMap.comp_smul, LinearMap.comp_id, Finsupp.tsumTrace_smul] at h
   apply (div_eq_div_iff hZ hden).2
   linear_combination h
 

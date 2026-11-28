@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Analysis.Algebra.FinsuppTrace
 import Mathlib.Analysis.SpecialFunctions.Complex.Log
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.NormalizedTwoPointTrace
 import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.FreeKMSRotation
@@ -63,7 +64,7 @@ theorem grandCanonicalGibbsExpectation_annihilate_comp_create_concrete
     have hSummD := summable_imaginaryTimeEvolveFree_self ξ β hpos
     have hRotate :=
       summable_imaginaryTimeEvolveFree_comp_create_mul_annihilate ξ β hpos i j
-    have hpartition : Common.tsumTrace
+    have hpartition : Finsupp.tsumTrace
         (Common.diagonalEvolution (freeEigenvalue ξ) (-β)) ≠ 0 := by
       have hZ := grandCanonicalAlgebraicPartition_ne_zero ε β μ hpos
       simpa only [grandCanonicalAlgebraicPartition, imaginaryTimeEvolveFree] using hZ

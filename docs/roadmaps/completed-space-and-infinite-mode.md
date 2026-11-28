@@ -111,7 +111,7 @@ The completed free-fermion route includes:
 The last item is weak convergence against bounded observables, not a thermodynamic limit or a general
 trace-norm convergence theorem. For finite fermionic mode sets, the completed grand-canonical density
 is intertwined with the finite Gibbs density under `Common.completedFiniteHilbertEquiv`;
-the finite density expectation is the `Common.summableDiagonalTraceRatioLinear` of #4074.
+the finite density expectation is the `Finsupp.summableDiagonalTraceRatioLinear`.
 This finite bridge does not extend to a trace-ratio identification for arbitrary completed operators.
 
 The finite second-quantization expectation in `Thermal.OneBodyExpectation` consumes the same

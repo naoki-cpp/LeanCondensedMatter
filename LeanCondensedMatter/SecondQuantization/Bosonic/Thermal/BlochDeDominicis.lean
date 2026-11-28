@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Analysis.Algebra.FinsuppTrace
 import LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.LadderTraceCyclicity
 import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.TwoPoint
 import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.ConcreteMixedTwoPoint
@@ -14,6 +15,6 @@ set_option linter.style.header false
 /-!
 # Bosonic Bloch–de Dominicis theory
 
-Free-boson Bloch–de Dominicis theory: ladder `tsumTrace` cyclicity, the Gibbs/KMS adapter,
+Free-boson Bloch–de Dominicis theory: ladder `Finsupp.tsumTrace` cyclicity, the Gibbs/KMS adapter,
 first-pair recurrence, and the resulting thermal pairing expansion.
 -/

@@ -1,4 +1,5 @@
-import LeanCondensedMatter.SecondQuantization.Common.Algebra.DiagonalTrace
+import LeanCondensedMatter.Analysis.Algebra.FinsuppTrace
+import LeanCondensedMatter.SecondQuantization.Common.Algebra.AlgebraicFock
 import Mathlib.LinearAlgebra.Trace
 
 set_option linter.style.header false
@@ -41,8 +42,9 @@ theorem traceFock_eq_sum_matrixCoeff [Fintype Config]
 canonical finite-dimensional trace. -/
 theorem tsumTrace_eq_traceFock [Fintype Config]
     (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
-    tsumTrace A = traceFock A := by
-  rw [tsumTrace, tsum_fintype, traceFock_eq_sum_matrixCoeff]
+    Finsupp.tsumTrace A = traceFock A := by
+  change (∑' n, matrixCoeff A n n) = traceFock A
+  rw [tsum_fintype, traceFock_eq_sum_matrixCoeff]
 
 /-! ## Finite scalar weight sums -/
 

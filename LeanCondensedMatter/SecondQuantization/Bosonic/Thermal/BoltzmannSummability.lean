@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Analysis.Algebra.FinsuppTrace
 import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.ConvergenceAwareGibbs
 import LeanCondensedMatter.QuantumTheory.Gibbs.Boltzmann
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.GrandCanonical
@@ -35,7 +36,7 @@ theorem grandCanonicalAlgebraicPartition_eq_coe_grandCanonicalPartitionFunction
     grandCanonicalAlgebraicPartition ε β μ =
       (Common.grandCanonicalPartitionFunction
         (Config := Occupation Mode) ε β μ : ℂ) := by
-  unfold grandCanonicalAlgebraicPartition Common.tsumTrace
+  change (∑' n, Common.matrixCoeff (imaginaryTimeEvolveFree (fun i => ε i - μ) (-β)) n n) = _
   rw [Common.grandCanonicalPartitionFunction_eq_shifted]
   unfold eigenbasisPartitionFunction
   rw [Complex.ofReal_tsum]

@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Analysis.Algebra.FinsuppTrace
 import LeanCondensedMatter.Analysis.Algebra.FinsuppSupportShift
 import LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.ParticleNumberCharge
 import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.ConcreteMixedTwoPoint
@@ -42,7 +43,7 @@ private theorem grandCanonicalGibbsExpectation_eq_zero_of_charge
     grandCanonicalGibbsExpectation ε β μ A = 0 := by
   simpa only [grandCanonicalGibbsExpectation, grandCanonicalAlgebraicPartition,
     imaginaryTimeEvolveFree, Common.diagonalEvolution] using
-    (Common.diagonalTraceRatio_eq_zero_of_carriesShift hA hq
+    (Finsupp.diagonalTraceRatio_eq_zero_of_carriesShift hA hq
       (fun n : Occupation Mode =>
         Complex.exp (((-β) *
           freeEigenvalue (fun k => ε k - μ) n : ℝ) : ℂ)))
