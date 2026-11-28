@@ -264,10 +264,10 @@ private def mentionedInCompleted (completed declName : String) : Bool :=
     containsSubstring completed s!"`{declarationBaseName declName}`"
 
 private def mentionedInRetained
-    (retained : String) (allDeclarationNames : Array String) (declName : String) : Bool :=
+    (retained : String) (baseNameCounts : Std.HashMap String Nat) (declName : String) : Bool :=
   let baseName := declarationBaseName declName
   containsSubstring retained s!"- `{declName}`" ||
-    ((allDeclarationNames.filter fun name => declarationBaseName name == baseName).size == 1 &&
+    ((baseNameCounts[baseName]?).getD 0 == 1 &&
       containsSubstring retained s!"- `{baseName}`")
 
 private def retainedDeclarationNames (retained : String) : Array String :=
@@ -288,7 +288,9 @@ private def annotateEntries
     (entries : Array Entry)
     (theoremDependents compiledConsumers : NameMap (Array String))
     (completed retained : String) : Array CatalogEntry :=
-  let allDeclarationNames := entries.map fun entry => entry.name
+  let baseNameCounts := entries.foldl (init := ({} : Std.HashMap String Nat)) fun counts entry =>
+    let baseName := declarationBaseName entry.name
+    counts.insert baseName ((counts[baseName]?).getD 0 + 1)
   entries.map fun entry =>
     let dependents := sortedConsumers theoremDependents entry.declName
     let compiledConsumers := sortedConsumers compiledConsumers entry.declName
@@ -299,7 +301,7 @@ private def annotateEntries
       | [consumer] => privateDeclarationString? consumer
       | _ => false
     let terminal := dependents.isEmpty
-    let retainedMention := mentionedInRetained retained allDeclarationNames entry.name
+    let retainedMention := mentionedInRetained retained baseNameCounts entry.name
     let retainedNeedsReview :=
       retainedMention && (terminal || compiledConsumers.isEmpty || singleCompiledConsumer ||
         entry.directWrapperOf.isSome)
