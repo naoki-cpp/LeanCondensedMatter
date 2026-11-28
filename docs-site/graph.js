@@ -294,6 +294,7 @@ function setGraphModeChrome() {
     ui.graphToolbar.prepend(ui.graphStatus);
   }
   const controlsSlot = modules ? ui.importMapControls : ui.controlsHome;
+  ui.controlsHome.hidden = overview || modules;
   if (ui.controls.parentElement !== controlsSlot) controlsSlot.append(ui.controls);
   document.getElementById("graph-fit").textContent = modules ? "Whole graph" : "Fit";
   ui.overviewLink.textContent = "Declarations";
@@ -791,6 +792,7 @@ function renderOverviewContent(focusFilter = null) {
     if (rendered && state.page === "overview" && state.browse === requestedBrowse) {
       const controlsSlot = ui.overview.querySelector(".map-controls-slot");
       if (controlsSlot && ui.controls.parentElement !== controlsSlot) controlsSlot.append(ui.controls);
+      ui.controlsHome.hidden = Boolean(controlsSlot);
       if (focusFilter && document.activeElement === document.body) {
         focusFilter.focus({ preventScroll: true });
       }
