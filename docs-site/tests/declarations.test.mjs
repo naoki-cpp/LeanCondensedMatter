@@ -22,10 +22,12 @@ class Element {
     this.children = [];
     this.textContent = "";
     this.style = {};
+    this.dataset = {};
     this.classList = { add() {} };
   }
   getContext() { return null; }
   append(...children) { this.children.push(...children); }
+  prepend(...children) { this.children.unshift(...children); }
   replaceChildren(...children) { this.children = children; }
   setAttribute() {}
   addEventListener(event, callback) { this[event] = callback; }
@@ -51,11 +53,12 @@ test("MixedOrderData overview counts and opens both definitions", async () => {
   const overview = new Element("div");
   const names = ["componentMixedPosition", "componentMixedPositionEquiv"];
   let opened;
+  let browsed;
   const explorer = createModuleOverview({
     catalog: names.map((name) => ({ name, module: "LeanCondensedMatter.MixedOrderData",
       kind: "def", generated: false, statement: "Nat", dependencies: [],
       dependents: name === names[1] ? [names[0]] : [] })),
-    onBrowse() { assert.fail("The map should open a declaration directly"); },
+    onBrowse(name) { browsed = name; },
     onOpenDeclaration(name) { opened = name; },
   });
   overview.replaceChildren(...(await explorer.prepare("MixedOrderData"))());
@@ -75,6 +78,10 @@ test("MixedOrderData overview counts and opens both definitions", async () => {
   assert.equal(region.text(), "Mixed Order Data");
   assert.equal(overview.find("p").find((item) => item.className === "research-map-declaration-count")?.text(), "2 definitions · 0 proved theorems");
   region.click();
+  const moduleDetails = overview.find("a").find((link) => link.className.includes("module-details-link"));
+  assert.equal(moduleDetails.href, "?browse=MixedOrderData");
+  moduleDetails.click({ preventDefault() {} });
+  assert.equal(browsed, "MixedOrderData");
   assert.equal(mapTitle?.text(), "Mixed Order Data");
   assert.equal(overview.find("canvas").length, 1);
   const canvas = overview.find("canvas")[0];

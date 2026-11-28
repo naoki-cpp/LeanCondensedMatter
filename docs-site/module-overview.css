@@ -143,6 +143,8 @@
 .research-map .module-overview-header h2 { color: inherit; font-size: 1.25rem; }
 .research-map .module-overview-header p { color: #d8e6df; }
 .research-map .summary-chip { color: #edf5ee; background: #203630; border-color: #617a71; }
+.research-map .module-details-link { display: inline-block; margin-block-end: 12px; text-decoration: none; }
+.research-map .module-details-link[hidden] { display: none; }
 .research-map-legend {
   display: flex;
   flex-wrap: wrap;

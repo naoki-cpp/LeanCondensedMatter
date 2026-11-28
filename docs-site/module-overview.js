@@ -134,7 +134,11 @@ export function createModuleOverview({ catalog, modules = [], onBrowse, onOpenDe
 
     const header = element("div", "overview-header module-overview-header");
     const isMap = children.length > 0 && parts.length === 0;
-    if (!isMap) header.append(element("h2", "", node.name));
+    if (!isMap) {
+      const heading = element("h2", "", node.name);
+      heading.tabIndex = -1;
+      header.append(heading);
+    }
     const descriptionField = element("p", "module-description module-header-description", description);
     descriptionField.hidden = !description;
     header.append(descriptionField);
@@ -154,12 +158,26 @@ export function createModuleOverview({ catalog, modules = [], onBrowse, onOpenDe
     showSummary(node, isMap ? mapCounts : undefined);
     header.append(summary);
     if (isMap) {
+      const moduleDetails = element("a", "module-crumb module-details-link", "Module details");
+      moduleDetails.hidden = true;
+      moduleDetails.addEventListener("click", (event) => {
+        if (event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
+        event.preventDefault();
+        onBrowse(moduleDetails.dataset.module);
+      });
+      header.prepend(moduleDetails);
       let descriptionRequest = 0;
       function updateMapHeader(moduleName, browseMap) {
         const request = ++descriptionRequest;
         const path = moduleName ? modulePath(moduleName) : [];
         const current = (moduleName && tree.find(moduleName)) || node;
         breadcrumb.replaceChildren(renderBreadcrumb(path, browseMap));
+        moduleDetails.hidden = !moduleName;
+        if (moduleName) {
+          moduleDetails.dataset.module = moduleName;
+          moduleDetails.href = `?${new URLSearchParams({ browse: moduleName })}`;
+          moduleDetails.setAttribute("aria-label", `Module details for ${moduleName}`);
+        }
         showSummary(current, moduleName ? visibleTree.find(moduleName)?.visibleCounts : mapCounts);
         descriptionField.textContent = moduleName ? "" : description;
         descriptionField.hidden = !descriptionField.textContent;
