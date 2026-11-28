@@ -2,8 +2,8 @@ import { DEFINITION_KINDS } from "./declaration-model.js";
 import { MAP_NODE_COLORS } from "./graph-style.js";
 import { createMapNavigation } from "./map-navigation.js";
 import { createMapHeader } from "./map-header.js";
-import { ZOOM_STEP, canAnimateCamera, zoomFactorForKey, zoomFactorForWheel } from "./map-zoom.js";
-import { renderStatement } from "./statement-view.js";
+import { ZOOM_STEP, canAnimateCamera, createCameraFrames, zoomFactorForKey, zoomFactorForWheel } from "./map-zoom.js";
+import { declarationRelations, declarationSourceLink, declarationStatement } from "./declaration-details.js";
 
 const width = 960;
 const height = 670;
@@ -163,19 +163,21 @@ export function renderResearchMap(children, onOpenDeclaration, onRegionChange, o
   hoverLabel.hidden = true;
   hoverLabel.setAttribute("aria-hidden", "true");
   let drag = null;
-  let cameraFrame = null;
+  const camera = createCameraFrames();
 
   function animateCamera() {
-    if (cameraFrame !== null) cancelAnimationFrame(cameraFrame);
-    cameraFrame = navigation.animating ? requestAnimationFrame(stepCamera) : null;
+    if (navigation.animating) camera.start(stepCamera);
+    else camera.stop();
   }
 
   function stepCamera(now) {
-    cameraFrame = null;
-    if (!section.isConnected) { navigation.stop(); return; }
+    if (!section.isConnected || section.closest("[hidden]")) {
+      navigation.stop();
+      return false;
+    }
     navigation.step(now);
     draw();
-    animateCamera();
+    return navigation.animating;
   }
 
   function stopCamera() {
@@ -389,14 +391,14 @@ export function renderResearchMap(children, onOpenDeclaration, onRegionChange, o
 
   function relation(title, names) {
     const block = element("ul", "research-map-relations");
-    const related = [...new Set(names ?? [])];
-    const available = related.filter((name) => byName.has(name));
-    const count = available.length === related.length ? String(related.length) : `${related.length} total, ${available.length} on map`;
+    const { entries, availableCount } = declarationRelations(names, (name) => byName.has(name));
+    const count = availableCount === entries.length ? String(entries.length) : `${entries.length} total, ${availableCount} on map`;
     const summary = element("summary", "", `${title} (${count})`);
     const list = element("details", "research-map-relation");
-    list.open = available.length > 0 && available.length <= 5;
+    list.open = availableCount > 0 && availableCount <= 5;
     list.append(summary, block);
-    for (const name of available) {
+    for (const { name, available } of entries) {
+      if (!available) continue;
       const item = element("li", "");
       const link = button(name.split(".").at(-1), () => openPoint(byName.get(name), true), "research-map-related");
       link.title = name;
@@ -406,7 +408,7 @@ export function renderResearchMap(children, onOpenDeclaration, onRegionChange, o
       item.append(link);
       block.append(item);
     }
-    if (related.length && !available.length) list.append(element("p", "muted", "No related declarations match this map."));
+    if (entries.length && !availableCount) list.append(element("p", "muted", "No related declarations match this map."));
     return list;
   }
 
@@ -424,9 +426,9 @@ export function renderResearchMap(children, onOpenDeclaration, onRegionChange, o
     const graph = button("View dependency graph", () => onOpenDeclaration(point.entry.name, { fromMap: true }),
       "focus-button research-map-open-graph");
     head.append(title, graph);
-    const statement = element("div", "math-presentation");
-    renderStatement(statement, point.entry);
-    detail.replaceChildren(head, statement,
+    const source = declarationSourceLink(point.entry);
+    if (source) head.append(source);
+    detail.replaceChildren(head, ...declarationStatement(point.entry),
       relation("Depends on", point.entry.dependencies),
       relation("Used by", point.entry.dependents));
     detail.hidden = false;
@@ -483,7 +485,7 @@ export function renderResearchMap(children, onOpenDeclaration, onRegionChange, o
       drag.moved = true;
       navigation.pan(-dx, -dy, drag.view);
       draw();
-    } else if (event.pointerType !== "touch" && cameraFrame === null) {
+    } else if (event.pointerType !== "touch" && !camera.running) {
       const point = hit(x, y);
       if (point !== hovered) {
         hovered = point;

@@ -3,7 +3,35 @@ import assert from "node:assert/strict";
 import { buildDeclarationHierarchy } from "../declaration-hierarchy.js";
 import { declarationAllowed } from "../declaration-model.js";
 import { createMapNavigation } from "../map-navigation.js";
-import { ZOOM_STEP, zoomFactorForKey, zoomFactorForWheel } from "../map-zoom.js";
+import { ZOOM_STEP, createCameraFrames, zoomFactorForKey, zoomFactorForWheel } from "../map-zoom.js";
+
+test("camera scheduling ignores repeat starts and cancels pending frames", (t) => {
+  const callbacks = new Map();
+  let id = 0;
+  const schedule = (step) => {
+    callbacks.set(++id, step);
+    return id;
+  };
+  const raf = globalThis.requestAnimationFrame;
+  const cancel = globalThis.cancelAnimationFrame;
+  globalThis.requestAnimationFrame = schedule;
+  globalThis.cancelAnimationFrame = (frame) => callbacks.delete(frame);
+  t.after(() => {
+    globalThis.requestAnimationFrame = raf;
+    globalThis.cancelAnimationFrame = cancel;
+  });
+  const frames = createCameraFrames();
+  frames.start(() => true);
+  frames.start(() => assert.fail("Existing frame was replaced"));
+  assert.equal(callbacks.size, 1);
+  const first = callbacks.get(1);
+  callbacks.delete(1);
+  first(100);
+  assert.equal(frames.running, true);
+  frames.stop();
+  assert.equal(frames.running, false);
+  assert.equal(callbacks.size, 0);
+});
 
 test("shared zoom input matches reciprocal steps and leaves ordinary scrolling alone", () => {
   assert.equal(zoomFactorForKey("+"), ZOOM_STEP);
@@ -82,6 +110,9 @@ test("reset animates from the current camera back to the whole map", () => {
   navigation.step(100);
   navigation.step(310);
   assert.ok(navigation.view.zoom > 1 && navigation.view.zoom < start.zoom);
+  const midway = { ...navigation.view };
+  navigation.reset(true);
+  assert.deepEqual(navigation.view, midway);
   navigation.step(520);
   assert.equal(navigation.animating, false);
   assert.deepEqual(navigation.view, { x: 480, y: 335, zoom: 1 });

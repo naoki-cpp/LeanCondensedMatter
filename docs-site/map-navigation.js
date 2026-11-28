@@ -60,6 +60,7 @@ export function createMapNavigation(width, height) {
   }
 
   function reset(animate = false) {
+    if (animate && transition?.target === home) return;
     stop();
     setRegion(null);
     moveTo(home, animate);

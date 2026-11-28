@@ -1,14 +1,14 @@
 import { buildGraphScene } from "./graph-layout.js";
 import { createGraphPresentation } from "./graph-presentation.js";
+import { readExplorerLocation, writeExplorerLocation } from "./explorer-location.js";
 import { createExplorerComposition } from "./explorer-composition.js";
 import { createMapHeader } from "./map-header.js";
-import { ZOOM_STEP, cameraProgress, canAnimateCamera, zoomFactorForKey, zoomFactorForWheel } from "./map-zoom.js";
+import { ZOOM_STEP, cameraProgress, canAnimateCamera, createCameraFrames, zoomFactorForKey, zoomFactorForWheel } from "./map-zoom.js";
 import { createModuleOverview } from "./module-overview.js";
 import { declarationAllowed } from "./declaration-model.js";
 import { curvedEdgePath } from "./graph-edge.js";
 import { buildModuleGraphCatalog } from "./module-import-map.js";
-import { renderLeanMath, renderLeanSourceFallback } from "./lean-math.js";
-import { renderStatement } from "./statement-view.js";
+import { declarationRelations, declarationSourceLink, declarationStatement } from "./declaration-details.js";
 import {
   graphNodeLabelAttributes,
   graphLabelLines,
@@ -19,9 +19,7 @@ const SVG_NS = "http://www.w3.org/2000/svg";
 const SEARCH_LIMIT = 10;
 const CATALOG_URL = "https://raw.githubusercontent.com/naoki-cpp/LeanCondensedMatter/graph-data/declarations.json";
 const MODULES_URL = "https://raw.githubusercontent.com/naoki-cpp/LeanCondensedMatter/graph-data/module-imports.json";
-const SOURCE_BASE_URL = "https://raw.githubusercontent.com/naoki-cpp/LeanCondensedMatter/main/";
-const definitionSourceRequests = new Map();
-let graphCameraFrame = null;
+const graphCamera = createCameraFrames();
 
 const state = {
   catalog: [],
@@ -234,13 +232,11 @@ function fitGraph() {
 }
 
 function stopGraphCamera() {
-  if (graphCameraFrame !== null) cancelAnimationFrame(graphCameraFrame);
-  graphCameraFrame = null;
+  graphCamera.stop();
 }
 
 function resetGraphCamera() {
-  stopGraphCamera();
-  if (!state.graphBounds || !state.viewBox) return;
+  if (graphCamera.running || !state.graphBounds || !state.viewBox) return;
   const start = state.viewBox;
   const target = state.graphBounds;
   const keys = ["x", "y", "width", "height"];
@@ -255,9 +251,9 @@ function resetGraphCamera() {
     const progress = cameraProgress(now - startedAt);
     setGraphViewBox(progress === 1 ? { ...target } : Object.fromEntries(keys.map((key) =>
       [key, start[key] + (target[key] - start[key]) * progress])));
-    graphCameraFrame = progress < 1 ? requestAnimationFrame(step) : null;
+    return progress < 1;
   }
-  graphCameraFrame = requestAnimationFrame(step);
+  graphCamera.start(step);
 }
 
 function zoomGraph(factor, clientX = null, clientY = null) {
@@ -505,33 +501,26 @@ function badge(text, kind = "") {
 function relationSection(title, names) {
   const section = document.createElement("section");
   section.className = "relation-section";
-  section.append(element("h3", "", `${title} (${names.length})`));
-  if (names.length === 0) {
+  const { entries } = declarationRelations(names, (name) => state.byName.has(name));
+  section.append(element("h3", "", `${title} (${entries.length})`));
+  if (entries.length === 0) {
     section.append(element("p", "muted", "None"));
     return section;
   }
   const list = element("div", "relation-list");
-  for (const name of names.slice(0, 40)) {
+  for (const { name, available } of entries.slice(0, 40)) {
     const button = element("button", "", name);
     button.type = "button";
-    if (state.byName.has(name)) button.addEventListener("click", () => focusRoot(name));
+    if (available) button.addEventListener("click", () => focusRoot(name));
     else {
       button.disabled = true;
       button.title = "This consumer is not available in the declaration catalog";
     }
     list.append(button);
   }
-  if (names.length > 40) list.append(element("p", "muted", `+ ${names.length - 40} more`));
+  if (entries.length > 40) list.append(element("p", "muted", `+ ${entries.length - 40} more`));
   section.append(list);
   return section;
-}
-
-function sourceHref(entry) {
-  if (entry.sourceUrl) return entry.sourceUrl;
-  if (!entry.sourceFile) return null;
-  const path = entry.sourceFile.split("/").map(encodeURIComponent).join("/");
-  const line = entry.sourceLine ? `#L${entry.sourceLine}` : "";
-  return `https://github.com/naoki-cpp/LeanCondensedMatter/blob/main/${path}${line}`;
 }
 
 function renderModuleDetails(entry) {
@@ -553,131 +542,11 @@ function renderModuleDetails(entry) {
     focus.addEventListener("click", () => focusRoot(entry.name));
     actions.append(focus);
   }
-  const href = sourceHref(entry);
-  if (href) {
-    const source = element("a", "source-link", "View source");
-    source.href = href;
-    source.target = "_blank";
-    source.rel = "noreferrer";
-    actions.append(source);
-  }
+  const source = declarationSourceLink(entry);
+  if (source) actions.append(source);
   if (actions.childElementCount > 0) ui.detail.append(actions);
   ui.detail.append(relationSection("Imports", entry.dependencies));
   ui.detail.append(relationSection("Imported by", entry.dependents));
-}
-
-function loadDefinitionSource(sourceFile) {
-  if (!definitionSourceRequests.has(sourceFile)) {
-    const path = sourceFile.split("/").map(encodeURIComponent).join("/");
-    const request = fetch(SOURCE_BASE_URL + path, { cache: "no-store" })
-      .then((response) => {
-        if (!response.ok) throw new Error("failed to load Lean source: " + response.status);
-        return response.text();
-      })
-      .catch((error) => {
-        definitionSourceRequests.delete(sourceFile);
-        throw error;
-      });
-    definitionSourceRequests.set(sourceFile, request);
-  }
-  return definitionSourceRequests.get(sourceFile);
-}
-
-function findDefinitionAssignment(source) {
-  let blockCommentDepth = 0;
-  let inString = false;
-  let escaped = false;
-  let nesting = 0;
-  for (let index = 0; index < source.length; index += 1) {
-    const pair = source.slice(index, index + 2);
-    const character = source[index];
-
-    if (blockCommentDepth > 0) {
-      if (pair === "/-") {
-        blockCommentDepth += 1;
-        index += 1;
-      } else if (pair === "-/") {
-        blockCommentDepth -= 1;
-        index += 1;
-      }
-      continue;
-    }
-    if (inString) {
-      if (escaped) escaped = false;
-      else if (character === "\\") escaped = true;
-      else if (character === '"') inString = false;
-      continue;
-    }
-    if (pair === "--") {
-      const lineEnd = source.indexOf("\n", index + 2);
-      if (lineEnd < 0) return -1;
-      index = lineEnd;
-      continue;
-    }
-    if (pair === "/-") {
-      blockCommentDepth = 1;
-      index += 1;
-      continue;
-    }
-    if (character === '"') {
-      inString = true;
-      continue;
-    }
-    if (character === "(" || character === "[" || character === "{") nesting += 1;
-    else if (character === ")" || character === "]" || character === "}") nesting = Math.max(0, nesting - 1);
-    else if (nesting === 0 && pair === ":=") return index + 2;
-  }
-  return -1;
-}
-
-function extractDefinitionBody(source) {
-  const assignmentEnd = findDefinitionAssignment(source);
-  if (assignmentEnd < 0) return null;
-  if (/^\s*\|/mu.test(source.slice(0, assignmentEnd))) return null;
-  const body = source.slice(assignmentEnd).trim();
-  return body || null;
-}
-
-function declarationSourceRange(entry, source) {
-  const firstLine = entry.declarationStartLine ?? entry.sourceLine;
-  const lastLine = entry.sourceEndLine ?? firstLine;
-  if (!Number.isInteger(firstLine) || firstLine < 1 || !Number.isInteger(lastLine) || lastLine < firstLine) return null;
-  const lines = source.split(/\r?\n/u);
-  return lines.slice(firstLine - 1, lastLine).join("\n");
-}
-
-function appendDefinitionBody(entry) {
-  if (entry.kind !== "def" && entry.kind !== "abbrev") return;
-  const firstSourceLine = entry.declarationStartLine ?? entry.sourceLine;
-  if (!entry.sourceFile || !Number.isInteger(firstSourceLine) || !Number.isInteger(entry.sourceEndLine)) return;
-
-  const disclosure = element("details", "definition-body");
-  const summary = element("summary", "", "Definition body");
-  const content = element("div", "definition-body-content");
-  content.setAttribute("aria-live", "polite");
-  disclosure.append(summary, content);
-  disclosure.addEventListener("toggle", async () => {
-    if (!disclosure.open || disclosure.dataset.state === "loading" || disclosure.dataset.state === "loaded") return;
-    disclosure.dataset.state = "loading";
-    content.textContent = "Loading definition body…";
-    try {
-      const source = await loadDefinitionSource(entry.sourceFile);
-      const sourceRange = declarationSourceRange(entry, source);
-      if (!sourceRange) throw new Error("definition source range is unavailable");
-      const body = extractDefinitionBody(sourceRange);
-      if (!content.isConnected) return;
-      disclosure.dataset.state = "loaded";
-      content.replaceChildren();
-      if (body) renderLeanMath(content, body);
-      else renderLeanSourceFallback(content, sourceRange, "This definition uses Lean syntax that cannot be isolated as a formula.");
-    } catch (error) {
-      if (!content.isConnected) return;
-      disclosure.dataset.state = "";
-      content.replaceChildren(element("p", "error-message", "Definition source could not be loaded."));
-      console.error(error);
-    }
-  });
-  ui.detail.append(disclosure);
 }
 
 function renderDetails(name) {
@@ -709,21 +578,12 @@ function renderDetails(name) {
     focus.addEventListener("click", () => focusRoot(name));
     actions.append(focus);
   }
-  const href = sourceHref(entry);
-  if (href) {
-    const source = element("a", "source-link", "View source");
-    source.href = href;
-    source.target = "_blank";
-    source.rel = "noreferrer";
-    actions.append(source);
-  }
+  const source = declarationSourceLink(entry);
+  if (source) actions.append(source);
   if (actions.childElementCount > 0) ui.detail.append(actions);
 
   ui.detail.append(element("h3", "", "Statement"));
-  const statement = element("div", "math-presentation");
-  renderStatement(statement, entry);
-  ui.detail.append(statement);
-  appendDefinitionBody(entry);
+  ui.detail.append(...declarationStatement(entry));
 
   if (entry.docString) {
     ui.detail.append(element("h3", "", "Documentation"));
@@ -744,48 +604,21 @@ function renderDetails(name) {
 }
 
 function writeLocation(push, mapSelection = null) {
-  const url = new URL(window.location.href);
-  if (state.page === "imports") {
-    url.searchParams.delete("depth");
-    url.searchParams.delete("module");
-    url.searchParams.delete("browse");
-    url.searchParams.set("view", "imports");
-    url.searchParams.set("import-module", state.root);
-    if (state.direction === "both") url.searchParams.delete("direction");
-    else url.searchParams.set("direction", state.direction);
-    if (state.depth === 1) url.searchParams.delete("import-depth");
-    else url.searchParams.set("import-depth", String(state.depth));
-    url.hash = "";
-  } else {
-    url.searchParams.delete("view");
-    url.searchParams.delete("import-module");
-    url.searchParams.delete("import-depth");
-    if (state.direction === "both") url.searchParams.delete("direction");
-    else url.searchParams.set("direction", state.direction);
-    if (state.depth === 2) url.searchParams.delete("depth");
-    else url.searchParams.set("depth", String(state.depth));
-    if (state.module === "*") url.searchParams.delete("module");
-    else url.searchParams.set("module", state.module);
-    if (!state.root && state.browse && state.browse !== "LeanCondensedMatter") url.searchParams.set("browse", state.browse);
-    else url.searchParams.delete("browse");
-    url.hash = state.root ?? "";
-  }
-  const next = `${url.pathname}${url.search}${url.hash}`;
-  const navigation = state.page === "theorem" && state.returnMap ? { returnMap: state.returnMap }
-    : state.page === "overview" && mapSelection ? { mapSelection } : null;
-  if (push) history.pushState(navigation, "", next);
-  else history.replaceState(navigation, "", next);
+  const { path, navigation } = writeExplorerLocation(location.href, state, mapSelection);
+  if (push) history.pushState(navigation, "", path);
+  else history.replaceState(navigation, "", path);
 }
 
-function focusRoot(name, { historyEntry = true, fromMap = false, returnMap = null } = {}) {
+function focusRoot(name, { historyEntry = true, fromMap = false, returnMap = null, returnBrowse = null } = {}) {
   if (!state.byName.has(name)) return;
   if (state.graphKind === "theorems") {
-    if (state.page === "overview") {
-      state.returnBrowse = state.browse;
-      state.returnMap = fromMap ? name : returnMap;
-      if (fromMap) writeLocation(false, name);
-    } else if (!historyEntry) {
+    if (!historyEntry) {
+      state.returnBrowse = returnBrowse;
       state.returnMap = returnMap;
+    } else if (state.page === "overview") {
+      state.returnBrowse = state.browse;
+      state.returnMap = fromMap ? name : null;
+      if (fromMap) writeLocation(false, name);
     }
     state.page = "theorem";
   } else {
@@ -989,54 +822,30 @@ function openActiveSearchResult() {
 }
 
 function restoreLocation() {
-  const params = new URLSearchParams(location.search);
-  if (params.get("view") === "imports" && state.moduleCatalog.length > 0) {
-    state.direction = ["both", "dependencies", "consumers"].includes(params.get("direction"))
-      ? params.get("direction")
-      : "both";
-    const importDepth = Number(params.get("import-depth") ?? params.get("depth"));
-    showModuleImports({
-      historyEntry: false,
-      moduleName: params.get("import-module"),
-      depth: [1, 2, 3, 4].includes(importDepth) ? importDepth : 1,
-    });
-    if (!state.moduleByName.has(params.get("import-module"))) writeLocation(false);
-    return;
+  const route = readExplorerLocation(location, history.state, {
+    hasImports: state.moduleCatalog.length > 0,
+    hasImport: (name) => state.moduleByName.has(name),
+    hasDeclaration: (name) => state.theoremByName.has(name),
+    hasModule: (name) => moduleOverview?.hasModule(name),
+    hasGraphModule: (name) => state.theoremCatalog.some((entry) => entry.module === name),
+  });
+  state.direction = route.direction;
+  state.depth = route.depth;
+  if (route.page === "imports") {
+    showModuleImports({ historyEntry: false, moduleName: route.root, depth: route.depth });
+  } else if (route.page === "theorem") {
+    state.graphKind = "theorems";
+    state.catalog = state.theoremCatalog;
+    state.byName = state.theoremByName;
+    state.module = route.module;
+    ui.direction.value = state.direction;
+    ui.depth.value = String(state.depth);
+    ui.module.value = state.module;
+    focusRoot(route.root, { historyEntry: false, returnMap: route.returnMap, returnBrowse: route.returnBrowse });
+  } else {
+    showOverview({ historyEntry: false, browse: route.browse, mapSelection: route.mapSelection });
   }
-
-  state.graphKind = "theorems";
-  state.catalog = state.theoremCatalog;
-  state.byName = state.theoremByName;
-  const direction = params.get("direction");
-  state.direction = ["both", "dependencies", "consumers"].includes(direction) ? direction : "both";
-  const depth = Number(params.get("depth"));
-  state.depth = [1, 2, 3, 4].includes(depth) ? depth : 2;
-  const requestedModule = params.get("module");
-  const graphModule = requestedModule && state.catalog.some((entry) => entry.module === requestedModule)
-    ? requestedModule
-    : "*";
-  state.module = graphModule;
-  ui.direction.value = state.direction;
-  ui.depth.value = String(state.depth);
-  ui.module.value = state.module;
-
-  let requested = "";
-  try { requested = decodeURIComponent(location.hash.slice(1)); }
-  catch { requested = location.hash.slice(1); }
-  if (requested && state.byName.has(requested)) {
-    focusRoot(requested, { historyEntry: false, returnMap: history.state?.returnMap });
-    return;
-  }
-
-  const requestedBrowse = params.get("browse");
-  const browse = requestedBrowse && moduleOverview?.hasModule(requestedBrowse)
-    ? shortModule(requestedBrowse)
-    : graphModule !== "*" && moduleOverview?.hasModule(graphModule)
-      ? shortModule(graphModule)
-      : "LeanCondensedMatter";
-  const legacyModuleRoute = !requestedBrowse && graphModule !== "*";
-  showOverview({ historyEntry: false, browse, mapSelection: history.state?.mapSelection });
-  if (legacyModuleRoute || (requestedBrowse && !moduleOverview?.hasModule(requestedBrowse))) writeLocation(false);
+  if (route.canonicalize) writeLocation(false, route.mapSelection);
 }
 
 function bindGraphNavigation() {

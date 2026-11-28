@@ -12,6 +12,12 @@ The browser explorer uses the same graph rendering flow for declarations and mod
 
 `docs-site/explorer-composition.js` moves the shared tablist and controls between the overview, declaration graph, and imports graph. It applies asynchronously prepared overview content only while its request is current.
 
+`docs-site/explorer-location.js` translates between explorer views and URL/history entries, including the declaration graph's return destination.
+
+`docs-site/map-zoom.js` owns shared zoom input, timing, and animation frame scheduling. Canvas and SVG retain their own coordinate transforms.
+
+`docs-site/declaration-details.js` supplies statement and definition body display, source links, and relation counts to both declaration views. Each view resolves the relations it can open.
+
 `docs-site/graph.js` owns browser state, data loading, navigation, DOM rendering, selection, and viewport interaction. It supplies the filter predicate and renders the results from the layout and presentation modules.
 
 Tests exercise the same presentation and layout interfaces as the browser. Presentation tests check that declaration and import legends match drawing rules. Layout tests cover cyclic references, missing neighbors, filtering, direction, determinism, and truncation.

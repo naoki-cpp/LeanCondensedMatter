@@ -11,6 +11,24 @@ export function cameraProgress(elapsed) {
   return t * t * (3 - 2 * t);
 }
 
+export function createCameraFrames() {
+  let frame = null;
+  return {
+    get running() { return frame !== null; },
+    start(step) {
+      if (frame !== null) return;
+      function tick(now) {
+        frame = step(now) ? requestAnimationFrame(tick) : null;
+      }
+      frame = requestAnimationFrame(tick);
+    },
+    stop() {
+      if (frame !== null) cancelAnimationFrame(frame);
+      frame = null;
+    },
+  };
+}
+
 export function zoomFactorForKey(key) {
   if (key === "+" || key === "=") return ZOOM_STEP;
   if (key === "-" || key === "−") return 1 / ZOOM_STEP;

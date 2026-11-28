@@ -2,6 +2,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { declarationAllowed, declarationCounts } from "../declaration-model.js";
 import { createModuleOverview } from "../module-overview.js";
+import { declarationRelations, declarationStatement } from "../declaration-details.js";
 
 test("definition filter and generated declarations", () => {
   for (const kind of ["def", "abbrev", "opaque"]) {
@@ -32,6 +33,16 @@ class Element {
   find(tag) { return this.children.flatMap((child) => typeof child === "object"
     ? [...(child.tag === tag ? [child] : []), ...child.find(tag)] : []); }
 }
+
+test("shared declaration detail counts distinct relations and keeps opaque bodies hidden", () => {
+  globalThis.document = { createElement: (tag) => new Element(tag), createTextNode: (text) => text };
+  const entry = { name: "example", sourceFile: "Example.lean", sourceLine: 1, sourceEndLine: 2, statement: "Nat" };
+  assert.deepEqual(declarationRelations(["a", "b", "a"], (name) => name === "a"), {
+    entries: [{ name: "a", available: true }, { name: "b", available: false }], availableCount: 1,
+  });
+  assert.equal(declarationStatement({ ...entry, kind: "opaque" }).length, 1);
+  assert.equal(declarationStatement({ ...entry, kind: "def" }).at(-1).tag, "details");
+});
 
 test("MixedOrderData overview counts and opens both definitions", async () => {
   globalThis.document = { createElement: (tag) => new Element(tag), createTextNode: (text) => text };
