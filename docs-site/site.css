@@ -79,13 +79,29 @@ p { text-wrap: pretty; }
 .brand small { color: var(--muted); font-size: 12px; }
 
 .site-header nav { display: flex; gap: 18px; align-items: center; font-size: 13px; color: var(--muted); }
-.site-header nav a:hover, .nav-button:hover { color: var(--cyan); text-decoration: underline; text-underline-offset: 5px; }
-.nav-button {
-  padding: 0;
-  color: inherit;
-  background: none;
-  border: 0;
+.site-header nav a:hover { color: var(--cyan); text-decoration: underline; text-underline-offset: 5px; }
+.explorer-tabs {
+  display: flex;
+  gap: 4px;
+  padding: 4px clamp(12px, 3vw, 28px) 0;
+  border-bottom: 1px solid var(--line);
+  background: var(--surface);
 }
+.explorer-tabs button {
+  min-height: 44px;
+  padding: 0 14px;
+  border: 0;
+  border-bottom: 3px solid transparent;
+  background: transparent;
+  color: var(--muted);
+}
+.explorer-tabs button:hover:not(:disabled) { background: var(--hover); }
+.explorer-tabs [aria-selected="true"] {
+  border-bottom-color: var(--cyan);
+  color: var(--text);
+  font-weight: 600;
+}
+.explorer-tabs button:disabled { opacity: .55; cursor: default; }
 
 .app-shell {
   display: grid;

@@ -50,14 +50,18 @@
       </span>
     </a>
     <nav aria-label="Project links">
-      <button id="overview-link" class="nav-button" type="button">Declarations</button>
-      <button id="module-imports-link" class="nav-button" type="button">Imports</button>
       <a href="https://github.com/naoki-cpp/LeanCondensedMatter">GitHub</a>
       <a href="https://github.com/naoki-cpp/LeanCondensedMatter/blob/main/docs/roadmap.md">Roadmap</a>
     </nav>
   </header>
 
-  <main class="app-shell">
+  <main>
+    <div class="explorer-tabs" role="tablist" aria-label="Explorer view">
+      <button id="overview-link" type="button" role="tab" aria-selected="true" aria-controls="declarations-panel">Declarations</button>
+      <button id="module-imports-link" type="button" role="tab" aria-selected="false" aria-controls="imports-panel" tabindex="-1">Imports</button>
+    </div>
+    <div id="declarations-panel" role="tabpanel" aria-labelledby="overview-link">
+      <div class="app-shell">
     <section id="explorer-content" class="graph-panel" tabindex="-1" aria-label="Declaration and module exploration panel">
       <div id="graph-controls-home" hidden>
         <div class="graph-controls" role="group" aria-label="Graph controls">
@@ -146,6 +150,9 @@
     </section>
 
     <aside id="detail" class="detail-panel" aria-live="polite"></aside>
+      </div>
+    </div>
+    <div id="imports-panel" role="tabpanel" aria-labelledby="module-imports-link" hidden></div>
   </main>
 
   <script type="module" src="./graph.js"></script>

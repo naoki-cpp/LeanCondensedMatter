@@ -48,6 +48,9 @@ const state = {
 const ui = {
   overviewLink: document.querySelector("#overview-link"),
   moduleImportsLink: document.querySelector("#module-imports-link"),
+  declarationsPanel: document.querySelector("#declarations-panel"),
+  importsPanel: document.querySelector("#imports-panel"),
+  appShell: document.querySelector(".app-shell"),
   searchForm: document.querySelector("#search-form"),
   controls: document.querySelector(".graph-controls"),
   controlsHome: document.querySelector("#graph-controls-home"),
@@ -275,6 +278,14 @@ function appendNodeLabel(nodes, name, position, root, selected, showLeafLabel) {
 function setGraphModeChrome() {
   const modules = state.graphKind === "modules";
   const overview = state.page === "overview";
+  for (const [tab, selected] of [[ui.overviewLink, !modules], [ui.moduleImportsLink, modules]]) {
+    tab.setAttribute("aria-selected", String(selected));
+    tab.tabIndex = selected ? 0 : -1;
+  }
+  const panel = modules ? ui.importsPanel : ui.declarationsPanel;
+  if (ui.appShell.parentElement !== panel) panel.append(ui.appShell);
+  ui.declarationsPanel.hidden = modules;
+  ui.importsPanel.hidden = !modules;
   ui.graph.closest(".graph-panel").classList.toggle("import-map-panel", modules);
   ui.graph.closest(".graph-panel").classList.toggle("explorer-map-theme", modules);
   ui.graph.closest(".graph-panel").classList.toggle("explorer-map-frame", modules);
@@ -290,7 +301,6 @@ function setGraphModeChrome() {
   ui.controlsHome.hidden = overview || modules;
   if (ui.controls.parentElement !== controlsSlot) controlsSlot.append(ui.controls);
   document.getElementById("graph-fit").textContent = modules ? "Whole graph" : "Fit";
-  ui.overviewLink.textContent = "Declarations";
   ui.kindFilter.closest("label").hidden = modules;
   ui.generatedFilter.closest("label").hidden = modules;
   ui.searchLabel.textContent = modules ? "Module" : "Declaration";
@@ -1087,6 +1097,17 @@ function bindEvents() {
     else showOverview();
   });
   ui.moduleImportsLink.addEventListener("click", () => showModuleImports());
+  ui.overviewLink.parentElement.addEventListener("keydown", (event) => {
+    if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key)) return;
+    const tabs = [ui.overviewLink, ui.moduleImportsLink].filter((tab) => !tab.disabled);
+    const index = tabs.indexOf(event.target);
+    if (index < 0) return;
+    event.preventDefault();
+    const next = event.key === "Home" ? tabs[0] : event.key === "End" ? tabs.at(-1)
+      : tabs[(index + (event.key === "ArrowRight" ? 1 : -1) + tabs.length) % tabs.length];
+    if (next !== event.target) next.click();
+    next.focus();
+  });
   ui.search.addEventListener("input", renderSearchResults);
   ui.search.addEventListener("focus", () => { if (ui.search.value.trim()) renderSearchResults(); });
   ui.search.addEventListener("keydown", (event) => {
