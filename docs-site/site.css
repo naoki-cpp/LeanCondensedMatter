@@ -241,13 +241,6 @@ select:disabled {
   padding: 16px;
   border-bottom: 1px solid var(--line);
 }
-.declaration-graph-header { margin-block-end: 12px; }
-.declaration-graph-header h2 {
-  margin: 10px 0 0;
-  font: 600 clamp(1.2rem, 3vw, 1.65rem)/1.25 var(--heading-font);
-  overflow-wrap: anywhere;
-}
-.declaration-graph-header .focus-button { padding: 6px 12px; }
 .graph-filter-row, .control-grid {
   display: flex;
   flex-wrap: wrap;
@@ -387,12 +380,12 @@ select:disabled {
 .map-search-slot .search-form .search-result { color: var(--map-ink); }
 .map-search-slot .search-form .search-result small { color: var(--map-muted); }
 .map-search-slot .search-form .search-result:is(:hover, [aria-selected="true"]) { background: var(--map-surface); }
-.app-shell:has(.import-map-panel) { grid-template-columns: minmax(0, 1fr); }
-.app-shell:has(.import-map-panel) > .detail-panel { border-left: 0; border-top: 1px solid var(--line); }
-.import-map-panel {
+.app-shell:has(.svg-map-panel) { grid-template-columns: minmax(0, 1fr); }
+.app-shell:has(.svg-map-panel) > .detail-panel { border-left: 0; border-top: 1px solid var(--line); }
+.svg-map-panel {
   align-self: start;
 }
-.import-map-panel,
+.svg-map-panel,
 .overview-panel:has(> .research-map) { margin: clamp(12px, 3vw, 34px); }
 .explorer-map-theme .graph-controls :is(label, legend, .control-help, .legend) { color: var(--map-muted); }
 .explorer-map-theme .graph-controls :is(select, .highlight-controls) { border-color: var(--map-border); }
@@ -402,15 +395,16 @@ select:disabled {
   background: var(--map-control-surface);
 }
 .explorer-map-theme .graph-controls select:focus-visible { outline: 2px solid var(--map-ink); outline-offset: 2px; }
-.import-map-panel .graph-toolbar { justify-content: flex-end; min-height: 0; padding: 0; border: 0; }
+.svg-map-panel .graph-toolbar { justify-content: flex-end; min-height: 0; padding: 0; border: 0; }
 .explorer-map-stage { aspect-ratio: 960 / 670; }
-.import-map-panel .graph-scroll { height: auto; min-height: 0; }
-.explorer-map-theme .graph-view-controls button {
+.svg-map-panel .graph-back { margin-inline-end: auto; min-height: 34px; padding: 2px 9px; }
+.svg-map-panel .graph-scroll { height: auto; min-height: 0; }
+.explorer-map-theme :is(.graph-view-controls button, .graph-back) {
   color: var(--map-ink);
   background: var(--map-control-surface);
   border-color: var(--map-border);
 }
-.explorer-map-theme .graph-view-controls button:hover { border-color: var(--map-ink); }
+.explorer-map-theme :is(.graph-view-controls button, .graph-back):hover { border-color: var(--map-ink); }
 .explorer-map-theme .graph-toolbar,
 .explorer-map-theme .graph-directions { color: var(--map-muted); border-color: var(--map-border); }
 .explorer-map-theme .node:is(:hover, :focus, .node-selected) .node-dot { stroke: var(--map-ink); }

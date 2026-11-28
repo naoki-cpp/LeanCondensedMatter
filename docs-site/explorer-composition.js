@@ -26,7 +26,7 @@ export function createExplorerComposition(ui) {
   }
 
   return {
-    show(nextPage, importTitle, focusTarget) {
+    show(nextPage, graphTitle, focusTarget) {
       revision += 1;
       const initial = page === undefined;
       page = nextPage;
@@ -42,25 +42,22 @@ export function createExplorerComposition(ui) {
       if (ui.appShell.parentElement !== panel) panel.append(ui.appShell);
       ui.declarationsPanel.hidden = imports;
       ui.importsPanel.hidden = !imports;
-      for (const className of ["import-map-panel", "explorer-map-theme", "explorer-map-frame"]) {
-        graphPanel.classList.toggle(className, imports);
+      for (const className of ["svg-map-panel", "explorer-map-theme", "explorer-map-frame"]) {
+        graphPanel.classList.toggle(className, !overview);
       }
-      const { header, heading, status, tabs, search } = ui.importMapHeader;
-      header.hidden = !imports;
-      ui.importMapControls.hidden = !imports;
-      if (imports) {
-        heading.textContent = importTitle;
+      const { header, heading, status, tabs, search } = ui.graphMapHeader;
+      header.hidden = overview;
+      ui.graphMapControls.hidden = overview;
+      ui.backToMap.hidden = overview || imports;
+      if (!overview) {
+        heading.textContent = graphTitle;
         if (ui.graphStatus.parentElement !== status) status.append(ui.graphStatus);
-        mount(tabs, ui.importMapControls, search);
-      } else {
-        ui.graphToolbar.prepend(ui.graphStatus);
-        if (overview) {
-          if (!initial) mountOverview();
-        } else mount(ui.controlsHome, ui.controlsHome);
+        mount(tabs, ui.graphMapControls, search);
+      } else if (!initial) {
+        mountOverview();
       }
       ui.overview.hidden = !overview;
       ui.viewport.hidden = overview;
-      ui.viewport.classList.toggle("explorer-map-stage", imports);
       ui.graphToolbar.hidden = overview;
       if (focused && document.activeElement === document.body) focused.focus({ preventScroll: true });
     },

@@ -60,10 +60,6 @@
       <div class="app-shell">
     <section id="explorer-content" class="graph-panel" tabindex="-1" aria-label="Declaration and module exploration panel">
       <div id="graph-controls-home" hidden>
-        <header id="declaration-graph-header" class="declaration-graph-header" hidden>
-          <button type="button" class="focus-button" id="back-to-map">Back to declaration map</button>
-          <h2 tabindex="-1" id="declaration-graph-title"></h2>
-        </header>
         <div class="explorer-tabs" role="tablist" aria-label="Explorer view">
           <button id="overview-link" type="button" role="tab" aria-selected="true" aria-controls="declarations-panel">Declarations</button>
           <button id="module-imports-link" type="button" role="tab" aria-selected="false" aria-controls="imports-panel" tabindex="-1">Imports</button>
@@ -134,21 +130,22 @@
         </div>
       </div>
       <div id="overview" class="overview-panel" aria-live="polite"></div>
-      <header id="import-map-header" hidden></header>
+      <header id="graph-map-header" hidden></header>
       <div class="graph-toolbar" hidden>
         <span id="graph-status" role="status">Loading theorem catalog…</span>
+        <button type="button" class="graph-back focus-button" id="back-to-map" hidden>Back to declaration map</button>
         <div class="graph-view-controls" role="group" aria-label="Graph view">
           <button id="graph-zoom-out" type="button">Zoom out</button>
           <button id="graph-zoom-in" type="button">Zoom in</button>
-          <button id="graph-fit" type="button">Fit</button>
+          <button id="graph-fit" type="button">Whole map</button>
         </div>
       </div>
 
-      <div id="graph-viewport" class="graph-scroll" tabindex="0" aria-label="Graph viewport. Use arrow keys to pan, plus or minus to zoom, and zero to fit." hidden>
+      <div id="graph-viewport" class="graph-scroll explorer-map-stage" tabindex="0" aria-label="Graph viewport. Use arrow keys to pan, plus or minus to zoom, and zero to fit." hidden>
         <div class="graph-directions" aria-hidden="true"><span id="graph-direction-left"></span><span id="graph-direction-right"></span></div>
         <svg id="graph" role="group" aria-label="Interactive theorem dependency graph"></svg>
       </div>
-      <div class="import-map-controls map-controls-slot" hidden></div>
+      <div id="graph-map-controls" class="map-controls-slot" hidden></div>
     </section>
 
     <aside id="detail" class="detail-panel" aria-live="polite"></aside>

@@ -58,8 +58,6 @@ const ui = {
   searchForm: document.querySelector("#search-form"),
   controls: document.querySelector(".graph-controls"),
   controlsHome: document.querySelector("#graph-controls-home"),
-  declarationGraphHeader: document.querySelector("#declaration-graph-header"),
-  declarationGraphTitle: document.querySelector("#declaration-graph-title"),
   backToMap: document.querySelector("#back-to-map"),
   kindFilter: document.querySelector("#kind-filter"),
   generatedFilter: document.querySelector("#generated-filter"),
@@ -73,8 +71,8 @@ const ui = {
   moduleFilterLabel: document.querySelector("#module-filter").closest("label"),
   wrapperHighlightLabel: document.querySelector('[data-highlight="wrapper"]').closest("label"),
   graphLegend: document.querySelector(".legend"),
-  importMapHeader: createMapHeader("", document.querySelector("#import-map-header")),
-  importMapControls: document.querySelector(".import-map-controls"),
+  graphMapHeader: createMapHeader("", document.querySelector("#graph-map-header")),
+  graphMapControls: document.querySelector("#graph-map-controls"),
   graph: document.querySelector("#graph"),
   viewport: document.querySelector("#graph-viewport"),
   overview: document.querySelector("#overview"),
@@ -286,10 +284,8 @@ function appendNodeLabel(nodes, name, position, root, selected, showLeafLabel) {
 function setGraphModeChrome(focusTarget) {
   const modules = state.graphKind === "modules";
   const overview = state.page === "overview";
-  composition.show(state.page, modules ? shortModule(state.root) : null, focusTarget);
-  ui.declarationGraphHeader.hidden = state.page !== "theorem";
-  if (state.page === "theorem") ui.declarationGraphTitle.textContent = `Dependency graph for ${state.root}`;
-  document.getElementById("graph-fit").textContent = modules ? "Whole map" : "Fit";
+  const title = overview ? null : modules ? shortModule(state.root) : `Dependency graph for ${state.root}`;
+  composition.show(state.page, title, focusTarget);
   ui.kindFilter.closest("label").hidden = modules;
   ui.generatedFilter.closest("label").hidden = modules;
   ui.searchLabel.textContent = modules ? "Module" : "Declaration";
@@ -771,7 +767,7 @@ function focusRoot(name, { historyEntry = true, fromMap = false, returnMap = nul
   renderDetails(name);
   renderGraph();
   if (historyEntry) writeLocation(true);
-  if (fromMap) ui.declarationGraphTitle.focus();
+  if (fromMap) ui.graphMapHeader.heading.focus();
 }
 
 function summaryChip(text) {

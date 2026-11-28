@@ -28,11 +28,11 @@ test("only the current overview mounts shared controls after asynchronous prepar
   globalThis.document = { body: {}, activeElement: {} };
   const ui = Object.fromEntries([
     "tabs", "controls", "controlsHome", "overviewLink", "moduleImportsLink", "importsPanel",
-    "declarationsPanel", "appShell", "importMapControls",
-    "graphStatus", "graphToolbar", "overview", "viewport", "searchForm",
+    "declarationsPanel", "appShell", "graphMapControls",
+    "graphStatus", "graphToolbar", "backToMap", "overview", "viewport", "searchForm",
   ].map((key) => [key, container()]));
   ui.graph = { closest: () => container() };
-  ui.importMapHeader = Object.fromEntries(["header", "heading", "status", "tabs", "search"]
+  ui.graphMapHeader = Object.fromEntries(["header", "heading", "status", "tabs", "search"]
     .map((key) => [key, container()]));
   const composition = createExplorerComposition(ui);
   const unavailable = () => assert.fail("Unexpected unavailable overview");
@@ -43,9 +43,16 @@ test("only the current overview mounts shared controls after asynchronous prepar
     render: () => new Promise((resolve) => { resolveOld = resolve; }), unavailable, failed,
   });
   composition.show("imports", "Example");
-  assert.equal(ui.tabs.parentElement, ui.importMapHeader.tabs);
-  assert.equal(ui.controls.parentElement, ui.importMapControls);
-  assert.equal(ui.searchForm.parentElement, ui.importMapHeader.search);
+  assert.equal(ui.tabs.parentElement, ui.graphMapHeader.tabs);
+  assert.equal(ui.controls.parentElement, ui.graphMapControls);
+  assert.equal(ui.searchForm.parentElement, ui.graphMapHeader.search);
+  assert.equal(ui.backToMap.hidden, true);
+  composition.show("theorem", "Dependency graph for Example");
+  assert.equal(ui.tabs.parentElement, ui.graphMapHeader.tabs);
+  assert.equal(ui.controls.parentElement, ui.graphMapControls);
+  assert.equal(ui.searchForm.parentElement, ui.graphMapHeader.search);
+  assert.equal(ui.graphMapHeader.heading.textContent, "Dependency graph for Example");
+  assert.equal(ui.backToMap.hidden, false);
   composition.show("overview");
   const tabSlot = { ...container(), selector: ".map-tabs-slot" };
   const controlSlot = { ...container(), selector: ".map-controls-slot" };

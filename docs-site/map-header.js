@@ -3,6 +3,7 @@ export function createMapHeader(title = "", header = document.createElement("hea
   row.className = "map-heading-row";
   const heading = document.createElement("h2");
   heading.className = "research-map-title";
+  heading.tabIndex = -1;
   heading.textContent = title;
   const tabs = document.createElement("div");
   tabs.className = "map-tabs-slot";
