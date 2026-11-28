@@ -17,6 +17,44 @@ function identifier(name) {
 function head(node) { return node?.kind === "app" ? node.fn?.name : node?.name; }
 function argumentsOf(node) { return node?.kind === "app" && Array.isArray(node.args) ? node.args : []; }
 function isVar(node, id) { return node?.kind === "var" && node.id === id; }
+function constantHead(node) {
+  const fn = node?.kind === "app" ? node.fn : node;
+  return fn?.kind === "const" ? fn.name : undefined;
+}
+
+// A semilinear self-map is not necessarily a complex-linear operator.
+// Require the actual RingHom.id Complex and the same Hilbert-space variable.
+function variableRoles(bindings, hilbertSpaces) {
+  const roles = new Map();
+  for (const binder of bindings) {
+    if (binder.role !== "variable") continue;
+    const name = constantHead(binder.type);
+    const args = argumentsOf(binder.type);
+    if (args.length === 0 && (name === "Real" || name === "Complex")) {
+      roles.set(binder.id, { kind: "scalar", field: name });
+    } else if (args.length === 1 && ["QuantumTheory.Observable", "QuantumTheory.DensityOperator", "QuantumTheory.StateVector"].includes(name)) {
+      roles.set(binder.id, { kind: name === "QuantumTheory.StateVector" ? "ket" : "operator-wrapper" });
+    } else if (["LinearMap", "ContinuousLinearMap"].includes(name) && args.length === 3 &&
+        constantHead(args[0]) === "RingHom.id" && argumentsOf(args[0]).length === 1 &&
+        constantHead(argumentsOf(args[0])[0]) === "Complex" &&
+        args[1]?.kind === "var" && isVar(args[2], args[1].id) &&
+        hilbertSpaces.has(args[1].id)) {
+      roles.set(binder.id, { kind: "operator", space: args[1].id, map: name });
+    }
+  }
+  return roles;
+}
+
+function roleOf(node, roles) { return node?.kind === "var" ? roles.get(node.id) : undefined; }
+
+function styledVariable(node, roles) {
+  const tex = identifier(node.name);
+  if (tex === null) return null;
+  const kind = roleOf(node, roles)?.kind;
+  if (kind === "operator" || kind === "operator-wrapper") return "\\hat{" + tex + "}";
+  if (kind === "ket") return "\\left|" + tex + "\\right\\rangle";
+  return tex;
+}
 
 // Full identifiers remain available in the symbol key. Colliding short names stay qualified.
 function constantLabels(presentation) {
@@ -47,7 +85,7 @@ function constantLabels(presentation) {
 // Render only known fully qualified constants with the expected explicit arity.
 // The synthetic index is a display-only bound variable, distinct from Lean identifiers
 // (which use \mathrm). Depth distinguishes nested summation indices.
-function operatorNotation(node, args, depth) {
+function operatorNotation(node, args, depth, roles) {
   if (node.fn?.kind !== "const") return null;
   const name = node.fn.name;
   const group = (value) => "\\left(" + value + "\\right)";
@@ -73,13 +111,26 @@ function operatorNotation(node, args, depth) {
   }
   if (args.length === 2) {
     const [x, y] = args;
+    const left = roleOf(node.args[0], roles);
+    const right = roleOf(node.args[1], roles);
+    const sameOperators = left?.kind === "operator" && right?.kind === "operator" &&
+      left.space === right.space && left.map === right.map;
+    if (name === "HMul.hMul" && sameOperators && node.resultType === left.map) {
+      return x + "\\," + y;
+    }
+    if ((name === "HSMul.hSMul" || name === "SMul.smul") && left?.kind === "scalar" &&
+        left.field === "Complex" && right?.kind === "operator" && node.resultType === right.map) {
+      return x + "\\," + y;
+    }
     switch (name) {
       case "Inner.inner":
         return "\\left\\langle " + x + ", " + y + "\\right\\rangle" +
           (SYMBOLS.has(node.resultType) ? "_{" + SYMBOLS.get(node.resultType) + "}" : "");
       case "HSMul.hSMul":
       case "SMul.smul": return group(x) + "\\,\\bullet\\," + group(y);
-      case "Function.comp": return group(x) + "\\circ " + group(y);
+      case "Function.comp":
+      case "LinearMap.comp":
+      case "ContinuousLinearMap.comp": return group(x) + "\\circ " + group(y);
       case "Finset.sum":
       case "Finset.prod": {
         const index = "\\mathsf{i}_{" + depth + "}";
@@ -98,52 +149,52 @@ function operatorNotation(node, args, depth) {
 
 // A lambda binder is identified by its elaborated free-variable ID, not its name.
 // Synthetic names cannot capture Lean identifiers or enclosing synthetic binders.
-function lambdaParts(node, labels, depth, bound, prefix = "v") {
+function lambdaParts(node, labels, depth, bound, roles, prefix = "v") {
   if (node?.kind !== "lambda" || typeof node.binder?.id !== "string" ||
       !node.binder.type || !node.body || bound.has(node.binder.id) || depth > 32) return null;
   const index = "\\mathsf{" + prefix + "}_{" + depth + "}";
-  const type = expressionToTex(node.binder.type, labels, depth + 1, bound);
+  const type = expressionToTex(node.binder.type, labels, depth + 1, bound, roles);
   const scoped = new Map(bound);
   scoped.set(node.binder.id, index);
-  const body = expressionToTex(node.body, labels, depth + 1, scoped);
+  const body = expressionToTex(node.body, labels, depth + 1, scoped, roles);
   return type === null || body === null ? null : { index, type, body };
 }
 
-function binderNotation(node, labels, depth, bound) {
+function binderNotation(node, labels, depth, bound, roles) {
   if (node.fn?.kind !== "const") return null;
   const name = node.fn.name;
   const finite = name === "Finset.sum" || name === "Finset.prod";
   if (!finite && name !== "tsum") return null;
   if (node.args.length !== (finite ? 2 : 1)) return null;
   const lambda = node.args[finite ? 1 : 0];
-  const parts = lambdaParts(lambda, labels, depth, bound, "i");
+  const parts = lambdaParts(lambda, labels, depth, bound, roles, "i");
   if (!parts) return null;
-  const domain = finite ? expressionToTex(node.args[0], labels, depth + 1, bound) : parts.type;
+  const domain = finite ? expressionToTex(node.args[0], labels, depth + 1, bound, roles) : parts.type;
   if (domain === null) return null;
   const op = name === "Finset.prod" ? "\\prod" : "\\sum";
   return op + "_{" + parts.index + "\\in " + domain +
     "}\\left(" + parts.body + "\\right)";
 }
 
-export function expressionToTex(node, labels = new Map(), depth = 0, bound = new Map()) {
+export function expressionToTex(node, labels = new Map(), depth = 0, bound = new Map(), roles = new Map()) {
   if (!node || depth > 32) return null;
   if (node.kind === "const") return SYMBOLS.get(node.name) ?? identifier(labels.get(node.name) ?? node.name);
-  if (node.kind === "var") return bound.get(node.id) ?? identifier(node.name);
+  if (node.kind === "var") return bound.get(node.id) ?? styledVariable(node, roles);
   if (node.kind === "sort") return node.isProp ? "\\mathrm{Prop}" : "\\mathrm{Type}";
   // A pretty-printed fallback may mention a binder whose name was replaced.
   // Under a renamed binder, do not silently display such text as a free variable.
   if (node.kind === "text") return bound.size && !/^\d+(?:\.\d+)?$/u.test(node.text)
     ? null : leanPrettyToTex(node.text);
   if (node.kind === "lambda") {
-    const parts = lambdaParts(node, labels, depth, bound);
+    const parts = lambdaParts(node, labels, depth, bound, roles);
     return parts ? "\\lambda " + parts.index + "\\mathrel{:}" + parts.type + ".\\," + parts.body : null;
   }
   if (node.kind !== "app" || !Array.isArray(node.args)) return null;
-  const binderTex = binderNotation(node, labels, depth, bound);
+  const binderTex = binderNotation(node, labels, depth, bound, roles);
   if (binderTex !== null) return binderTex;
-  const args = node.args.map((arg) => expressionToTex(arg, labels, depth + 1, bound));
+  const args = node.args.map((arg) => expressionToTex(arg, labels, depth + 1, bound, roles));
   if (args.some((arg) => arg === null)) return null;
-  const notation = operatorNotation(node, args, depth);
+  const notation = operatorNotation(node, args, depth, roles);
   if (notation !== null) return notation;
   const name = head(node);
   if (INFIX.has(name) && args.length === 2) {
@@ -154,7 +205,7 @@ export function expressionToTex(node, labels = new Map(), depth = 0, bound = new
   if (COERCIONS.has(name) && args.length === 1 && node.argumentType === "Real" && node.resultType === "Complex") {
     return "\\iota_{\\mathbb{R}\\hookrightarrow\\mathbb{C}}\\left(" + args[0] + "\\right)";
   }
-  const fn = expressionToTex(node.fn, labels, depth + 1, bound);
+  const fn = expressionToTex(node.fn, labels, depth + 1, bound, roles);
   if (fn === null) return null;
   const appliedFn = node.fn.kind === "lambda" ? "\\left(" + fn + "\\right)" : fn;
   return args.length ? appliedFn + "\\left(" + args.join(",\\,") + "\\right)" : fn;
@@ -169,6 +220,7 @@ export function buildStatementModel(presentation) {
   const bindings = presentation.binders;
   const covered = new Set();
   const settings = [];
+  const hilbertSpaces = new Set();
   for (const type of bindings.filter((binder) => binder.role === "type")) {
     const norm = bindings.find((binder) => binder.role === "instance" && head(binder.type) === "NormedAddCommGroup" &&
       argumentsOf(binder.type).length === 1 && isVar(argumentsOf(binder.type)[0], type.id));
@@ -180,18 +232,21 @@ export function buildStatementModel(presentation) {
       binder.instanceRoots?.includes(norm?.id));
     if (norm && inner && complete) {
       settings.push({ name: type.name, text: "complex Hilbert space", evidence: [norm, inner, complete] });
+      hilbertSpaces.add(type.id);
       for (const binder of [type, norm, inner, complete]) covered.add(binder.id);
     }
   }
-  const row = (binder) => ({ ...binder, tex: expressionToTex(binder.type, labels) });
+  const roles = variableRoles(bindings, hilbertSpaces);
+  const render = (node) => expressionToTex(node, labels, 0, new Map(), roles);
+  const row = (binder) => ({ ...binder, tex: render(binder.type) });
   return {
     settings,
     variables: bindings.filter((binder) => !covered.has(binder.id) && ["type", "variable"].includes(binder.role)).map(row),
     assumptions: bindings.filter((binder) => !covered.has(binder.id) && !["type", "variable"].includes(binder.role)).map(row),
-    conclusion: { ...presentation.conclusion, tex: expressionToTex(presentation.conclusion, labels) },
+    conclusion: { ...presentation.conclusion, tex: render(presentation.conclusion) },
     fields: (Array.isArray(presentation.fields) ? presentation.fields : []).map(row),
     definitionBody: typeof presentation.definitionBody?.text === "string"
-      ? { text: presentation.definitionBody.text, tex: expressionToTex(presentation.definitionBody, labels) }
+      ? { text: presentation.definitionBody.text, tex: render(presentation.definitionBody) }
       : null,
     symbols: [...labels].filter(([name]) => !SYMBOLS.has(name) && !INFIX.has(name)),
   };
