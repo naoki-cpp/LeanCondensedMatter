@@ -203,7 +203,7 @@ select:disabled {
   gap: 12px;
   min-width: 0;
 }
-#graph-controls-home:not(:empty) {
+#graph-controls-home:has(> .graph-controls) {
   padding: 16px;
   border-bottom: 1px solid var(--line);
 }
