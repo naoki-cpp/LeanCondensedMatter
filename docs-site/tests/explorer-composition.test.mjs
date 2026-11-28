@@ -28,11 +28,12 @@ test("only the current overview mounts shared controls after asynchronous prepar
   globalThis.document = { body: {}, activeElement: {} };
   const ui = Object.fromEntries([
     "tabs", "controls", "controlsHome", "overviewLink", "moduleImportsLink", "importsPanel",
-    "declarationsPanel", "appShell", "importMapHeader", "importMapControls", "importMapTabs",
-    "graphStatus", "graphToolbar", "overview", "viewport", "searchForm", "importMapSearch",
+    "declarationsPanel", "appShell", "importMapControls",
+    "graphStatus", "graphToolbar", "overview", "viewport", "searchForm",
   ].map((key) => [key, container()]));
   ui.graph = { closest: () => container() };
-  ui.importMapHeader.append({ selector: ".research-map-title" });
+  ui.importMapHeader = Object.fromEntries(["header", "heading", "status", "tabs", "search"]
+    .map((key) => [key, container()]));
   const composition = createExplorerComposition(ui);
   const unavailable = () => assert.fail("Unexpected unavailable overview");
   const failed = (error) => assert.fail(error);
@@ -42,9 +43,9 @@ test("only the current overview mounts shared controls after asynchronous prepar
     render: () => new Promise((resolve) => { resolveOld = resolve; }), unavailable, failed,
   });
   composition.show("imports", "Example");
-  assert.equal(ui.tabs.parentElement, ui.importMapTabs);
+  assert.equal(ui.tabs.parentElement, ui.importMapHeader.tabs);
   assert.equal(ui.controls.parentElement, ui.importMapControls);
-  assert.equal(ui.searchForm.parentElement, ui.importMapSearch);
+  assert.equal(ui.searchForm.parentElement, ui.importMapHeader.search);
   composition.show("overview");
   const tabSlot = { ...container(), selector: ".map-tabs-slot" };
   const controlSlot = { ...container(), selector: ".map-controls-slot" };

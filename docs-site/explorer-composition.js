@@ -45,13 +45,13 @@ export function createExplorerComposition(ui) {
       for (const className of ["import-map-panel", "explorer-map-theme", "explorer-map-frame"]) {
         graphPanel.classList.toggle(className, imports);
       }
-      ui.importMapHeader.hidden = !imports;
+      const { header, heading, status, tabs, search } = ui.importMapHeader;
+      header.hidden = !imports;
       ui.importMapControls.hidden = !imports;
-      ui.graphStatus.classList.toggle("research-map-declaration-count", imports);
       if (imports) {
-        ui.importMapHeader.querySelector(".research-map-title").textContent = importTitle;
-        ui.importMapSearch.before(ui.graphStatus);
-        mount(ui.importMapTabs, ui.importMapControls, ui.importMapSearch);
+        heading.textContent = importTitle;
+        if (ui.graphStatus.parentElement !== status) status.append(ui.graphStatus);
+        mount(tabs, ui.importMapControls, search);
       } else {
         ui.graphToolbar.prepend(ui.graphStatus);
         if (overview) {

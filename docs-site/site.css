@@ -387,7 +387,6 @@ select:disabled {
 }
 .import-map-panel,
 .overview-panel:has(> .research-map) { margin: clamp(12px, 3vw, 34px); }
-.import-map-header .research-map-declaration-count { display: block; }
 .explorer-map-theme .graph-controls :is(label, legend, .control-help, .legend) { color: var(--map-muted); }
 .explorer-map-theme .graph-controls :is(select, .highlight-controls) { border-color: var(--map-border); }
 .explorer-map-theme .graph-controls select {

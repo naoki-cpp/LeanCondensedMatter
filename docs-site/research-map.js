@@ -1,6 +1,7 @@
 import { DEFINITION_KINDS } from "./declaration-model.js";
 import { MAP_NODE_COLORS } from "./graph-style.js";
 import { createMapNavigation } from "./map-navigation.js";
+import { createMapHeader } from "./map-header.js";
 import { renderStatement } from "./statement-view.js";
 
 const width = 960;
@@ -28,10 +29,8 @@ function button(text, action, className = "") {
 
 export function renderResearchMap(children, onOpenDeclaration, onRegionChange, overviewHeader, rootName, hierarchy, mapCounts) {
   const section = element("section", "research-map explorer-map-theme explorer-map-frame");
-  const heading = element("h2", "research-map-title", rootName);
+  const { header, heading, status: declarationCount } = createMapHeader(rootName);
   const controlsSlot = element("div", "map-controls-slot");
-  const searchSlot = element("div", "map-search-slot");
-  const declarationCount = element("p", "research-map-declaration-count");
   heading.id = "research-map-title";
   section.setAttribute("aria-labelledby", heading.id);
   const legend = element("ul", "research-map-legend");
@@ -540,9 +539,7 @@ export function renderResearchMap(children, onOpenDeclaration, onRegionChange, o
   const emptyBundles = [];
   const overviewFooter = element("div", "research-map-overview");
   overviewFooter.append(...overviewHeader);
-  const headingRow = element("div", "map-heading-row");
-  headingRow.append(heading, element("div", "map-tabs-slot"));
-  section.append(headingRow, declarationCount, searchSlot, controls, stage, controlsSlot, legend, preview, picker, detail, connectionDetails, overviewFooter);
+  section.append(header, controls, stage, controlsSlot, legend, preview, picker, detail, connectionDetails, overviewFooter);
   const sortedPoints = [...points].sort((a, b) => a.entry.name.localeCompare(b.entry.name));
   populatePicker(null);
   reset();

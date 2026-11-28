@@ -1,6 +1,7 @@
 import { buildGraphScene } from "./graph-layout.js";
 import { createGraphPresentation } from "./graph-presentation.js";
 import { createExplorerComposition } from "./explorer-composition.js";
+import { createMapHeader } from "./map-header.js";
 import { createModuleOverview } from "./module-overview.js";
 import { declarationAllowed } from "./declaration-model.js";
 import { curvedEdgePath } from "./graph-edge.js";
@@ -68,9 +69,7 @@ const ui = {
   moduleFilterLabel: document.querySelector("#module-filter").closest("label"),
   wrapperHighlightLabel: document.querySelector('[data-highlight="wrapper"]').closest("label"),
   graphLegend: document.querySelector(".legend"),
-  importMapHeader: document.querySelector(".import-map-header"),
-  importMapTabs: document.querySelector(".import-map-header .map-tabs-slot"),
-  importMapSearch: document.querySelector(".import-map-header .map-search-slot"),
+  importMapHeader: createMapHeader("", document.querySelector("#import-map-header")),
   importMapControls: document.querySelector(".import-map-controls"),
   graph: document.querySelector("#graph"),
   viewport: document.querySelector("#graph-viewport"),
