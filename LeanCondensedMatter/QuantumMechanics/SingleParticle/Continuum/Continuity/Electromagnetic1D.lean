@@ -54,8 +54,9 @@ theorem hasDerivAt_electromagneticProbabilityCurrentValue1D
       HasDerivAt
         (fun y => (ℏ / mass) * ((ψ y).re * (ψx y).im - (ψ y).im * (ψx y).re))
         ((ℏ / mass) * ((ψ x).re * ψxx.im - (ψ x).im * ψxx.re)) x := by
+    rw [hcoeff]
     simpa only [probabilityCurrentValue1D_eq_coordinates,
-      probabilityCurrentDivergenceValue1D_eq_coordinates, ← hcoeff] using
+      probabilityCurrentDivergenceValue1D_eq_coordinates] using
       (hasDerivAt_probabilityCurrentValue1D ℏ (ℏ ^ 2 / (2 * mass)) hψ hψx)
   have hdensity := hasDerivAt_probabilityDensityValue hψ
   have hdiamagnetic := (HasDerivAt.mul hA hdensity).const_mul (q / mass)
