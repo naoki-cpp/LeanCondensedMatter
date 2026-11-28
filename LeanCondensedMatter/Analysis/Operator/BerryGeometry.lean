@@ -314,43 +314,37 @@ theorem bornFock_berryConnection (μ : κ) {m n : ι} (hmn : m ≠ n)
 
 end PointwiseEigenbasisData
 
-/-- Converting the imaginary force numerator of a signed two-level spectrum
-to Berry weight uses only the squared sign and the nonzero level splitting. -/
+/-- The real part of an interband numerator does not contribute to Berry
+curvature; the signed gap reduces using `s² = 1`. -/
 theorem signedInterbandBerryWeight_eq
-    (s E t : ℝ) (hs : s ^ 2 = 1) (hE : E ≠ 0) :
-    2 * (-(s * t / E)) / (2 * s * E) ^ 2 =
+    (r s E t : ℝ) (hs : s ^ 2 = 1) (hE : E ≠ 0) :
+    2 * ((r : ℂ) - ((s * t / E : ℝ) : ℂ) * Complex.I).im / (2 * s * E) ^ 2 =
       -(s * t) / (2 * E ^ 3) := by
-  have hgap : (2 * s * E) ^ 2 = 4 * E ^ 2 := by
-    rw [mul_pow, mul_pow, hs]
-    ring
-  rw [hgap]
+  simp only [Complex.sub_im, Complex.mul_im, Complex.ofReal_re, Complex.ofReal_im,
+    Complex.I_re, Complex.I_im, mul_one, mul_zero, add_zero, zero_sub]
+  rw [mul_pow, mul_pow, hs]
   field_simp [hE]; ring
 
-/-- Pointwise two-level force-matrix Berry weight for arbitrary real Pauli
-coefficients of the Hamiltonian and its two directional derivatives.
-The scalar derivative insertions cancel from the imaginary trace. The
-physical spectral specialization uses `E = |h|` and `s = ±1`. -/
+/-- Pointwise two-level Berry weight for real Pauli coefficients. The scalar
+derivative terms drop out. The spectral specialization has `E = |h|` and `s = ±1`. -/
 theorem pauliInterbandBerryWeight_eq
     (h v w : InternalSpace.PauliAxis → ℝ) (s E c d : ℝ)
     (hs : s ^ 2 = 1) (hE : E ≠ 0) :
+    let u := InternalSpace.pauliCombination (fun a => ((s / E * h a : ℝ) : ℂ))
+    let V := (c : ℂ) • (1 : InternalSpace.PauliMatrix) +
+      InternalSpace.pauliCombination (fun a => (v a : ℂ))
+    let W := (d : ℂ) • (1 : InternalSpace.PauliMatrix) +
+      InternalSpace.pauliCombination (fun a => (w a : ℂ))
     2 * (Matrix.trace
-        (((1 / 2 : ℂ) • ((1 : InternalSpace.PauliMatrix) -
-          InternalSpace.pauliCombination (fun a => ((s / E * h a : ℝ) : ℂ)))) *
-          ((c : ℂ) • (1 : InternalSpace.PauliMatrix) +
-            InternalSpace.pauliCombination (fun a => (v a : ℂ))) *
-          ((1 / 2 : ℂ) • ((1 : InternalSpace.PauliMatrix) +
-            InternalSpace.pauliCombination (fun a => ((s / E * h a : ℝ) : ℂ)))) *
-          ((d : ℂ) • (1 : InternalSpace.PauliMatrix) +
-            InternalSpace.pauliCombination (fun a => (w a : ℂ))))).im /
+        (((1 / 2 : ℂ) • ((1 : InternalSpace.PauliMatrix) - u)) * V *
+          ((1 / 2 : ℂ) • ((1 : InternalSpace.PauliMatrix) + u)) * W)).im /
       (2 * s * E) ^ 2 =
       -(s * (h .x * (v .y * w .z - v .z * w .y) +
         h .y * (v .z * w .x - v .x * w .z) +
         h .z * (v .x * w .y - v .y * w .x))) / (2 * E ^ 3) := by
+  dsimp only
   rw [InternalSpace.trace_oppositePauliProjectors,
-    ← signedInterbandBerryWeight_eq s E
-      (h .x * (v .y * w .z - v .z * w .y) +
-        h .y * (v .z * w .x - v .x * w .z) +
-        h .z * (v .x * w .y - v .y * w .x)) hs hE]
+    ← signedInterbandBerryWeight_eq 0 s E _ hs hE]
   simp [InternalSpace.dotProduct_pauliAxis, InternalSpace.pauliCross, cross_apply,
     InternalSpace.pauliAxisComponent, Complex.mul_im, Complex.mul_re,
     Complex.div_im, Complex.normSq]

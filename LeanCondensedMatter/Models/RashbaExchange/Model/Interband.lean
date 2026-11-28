@@ -148,12 +148,11 @@ theorem forceMatrixBerryCurvature_eq_berryCurvature
   rw [forceMatrixBerryCurvature,
     forceMatrixTraceNumerator_xy_eq params band px py hE,
     interbandEnergyGap_eq]
-  simpa only [berryCurvature, Complex.sub_im, Complex.neg_im, Complex.mul_im,
-    Complex.ofReal_re, Complex.ofReal_im, Complex.I_re, Complex.I_im,
-    mul_zero, zero_mul, add_zero, zero_add, neg_zero, zero_sub, sub_zero, mul_one, mul_assoc] using
-    (BerryGeometry.signedInterbandBerryWeight_eq (bandSign band)
-      (spinOrbitEnergy params px py) (params.exchangeSplitting * params.rashbaVelocity ^ 2)
-      (bandSign_sq band) hE)
+  simpa only [berryCurvature, Complex.ofReal_neg, mul_assoc] using
+    (BerryGeometry.signedInterbandBerryWeight_eq
+      (-(params.rashbaVelocity ^ 4 * px * py / spinOrbitEnergy params px py ^ 2))
+      (bandSign band) (spinOrbitEnergy params px py)
+      (params.exchangeSplitting * params.rashbaVelocity ^ 2) (bandSign_sq band) hE)
 
 end
 
