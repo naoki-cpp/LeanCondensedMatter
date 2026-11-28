@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Combinatorics.Common.FiniteOrder
 import LeanCondensedMatter.Combinatorics.SetPartition.SumEquivPartition
 import LeanCondensedMatter.Combinatorics.SetPartition.SubsetSplit
 import Mathlib.Data.Finset.Powerset
@@ -202,33 +203,16 @@ theorem SlotShuffle.eq_of_leftSlots_eq {m n : ℕ} {σ τ : SlotShuffle m n}
   intro x
   cases x with
   | inl i =>
-      have hσ := Finset.orderEmbOfFin_unique
-        (s := σ.leftSlots) (h := σ.card_leftSlots)
-        (f := fun k => σ.slotEquiv (Sum.inl k))
-        (fun k => (σ.mem_leftSlots_iff _).2 ⟨k, rfl⟩) σ.strictMonoLeft
-      have hτ := Finset.orderEmbOfFin_unique
-        (s := σ.leftSlots) (h := σ.card_leftSlots)
-        (f := fun k => τ.slotEquiv (Sum.inl k))
-        (fun k => by
+      exact congrFun (σ.strictMonoLeft.eq_of_fin_range_subset τ.strictMonoLeft
+        (fun k => (σ.mem_leftSlots_iff _).1 (by
           rw [hslots]
-          exact (τ.mem_leftSlots_iff _).2 ⟨k, rfl⟩) τ.strictMonoLeft
-      exact congrFun (hσ.trans hτ.symm) i
+          exact (τ.mem_leftSlots_iff _).2 ⟨k, rfl⟩))) i
   | inr j =>
-      have hright : σ.rightSlots = τ.rightSlots := by
-        ext x
-        rw [σ.mem_rightSlots_iff_not_mem_leftSlots,
-          τ.mem_rightSlots_iff_not_mem_leftSlots, hslots]
-      have hσ := Finset.orderEmbOfFin_unique
-        (s := σ.rightSlots) (h := σ.card_rightSlots)
-        (f := fun k => σ.slotEquiv (Sum.inr k))
-        (fun k => (σ.mem_rightSlots_iff _).2 ⟨k, rfl⟩) σ.strictMonoRight
-      have hτ := Finset.orderEmbOfFin_unique
-        (s := σ.rightSlots) (h := σ.card_rightSlots)
-        (f := fun k => τ.slotEquiv (Sum.inr k))
-        (fun k => by
-          rw [hright]
-          exact (τ.mem_rightSlots_iff _).2 ⟨k, rfl⟩) τ.strictMonoRight
-      exact congrFun (hσ.trans hτ.symm) j
+      exact congrFun (σ.strictMonoRight.eq_of_fin_range_subset τ.strictMonoRight
+        (fun k => (σ.mem_rightSlots_iff _).1 (by
+          rw [σ.mem_rightSlots_iff_not_mem_leftSlots, hslots,
+            ← τ.mem_rightSlots_iff_not_mem_leftSlots]
+          exact (τ.mem_rightSlots_iff _).2 ⟨k, rfl⟩))) j
 
 /-- The type of possible ambient left-slot sets. -/
 abbrev LeftSlotSet (m n : ℕ) :=

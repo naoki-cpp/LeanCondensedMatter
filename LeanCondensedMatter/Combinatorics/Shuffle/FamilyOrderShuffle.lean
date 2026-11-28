@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Combinatorics.Common.FiniteOrder
 import Mathlib.Logic.Equiv.Basic
 import LeanCondensedMatter.Combinatorics.Shuffle.FamilySlotShuffle
 import Mathlib.Data.Finset.Sort
@@ -342,37 +343,20 @@ theorem FamilySlotShuffleTo.eq_of_same_owner
   apply FamilySlotShuffleTo.ext
   apply Equiv.ext
   rintro ⟨i, j⟩
-  let s : Finset (Fin total) :=
-    Finset.univ.image (fun k : Fin (size i) => σ.slotEquiv ⟨i, k⟩)
-  have hsize : s.card = size i := by
-    dsimp [s]
-    rw [Finset.card_image_of_injective _
-      (fun a b hab => (σ.strictMono i).injective hab)]
-    simp
-  have hσmem (k : Fin (size i)) : σ.slotEquiv ⟨i, k⟩ ∈ s :=
-    Finset.mem_image.mpr ⟨k, Finset.mem_univ _, rfl⟩
-  have hτmem (k : Fin (size i)) : τ.slotEquiv ⟨i, k⟩ ∈ s := by
+  have hsubset (k : Fin (size i)) :
+      ∃ q : Fin (size i), σ.slotEquiv ⟨i, q⟩ = τ.slotEquiv ⟨i, k⟩ := by
     have hi : (σ.slotEquiv.symm (τ.slotEquiv ⟨i, k⟩)).1 = i := by
       simpa using howner (τ.slotEquiv ⟨i, k⟩)
     rcases heq : σ.slotEquiv.symm (τ.slotEquiv ⟨i, k⟩) with ⟨i', q⟩
     have hii : i' = i := by simpa [heq] using hi
     subst i'
-    have hback : σ.slotEquiv ⟨i, q⟩ = τ.slotEquiv ⟨i, k⟩ := by
-      calc
-        σ.slotEquiv ⟨i, q⟩ =
-            σ.slotEquiv (σ.slotEquiv.symm (τ.slotEquiv ⟨i, k⟩)) :=
-          congrArg σ.slotEquiv heq.symm
-        _ = _ := σ.slotEquiv.apply_symm_apply _
-    exact Finset.mem_image.mpr ⟨q, Finset.mem_univ _, hback⟩
-  have hσ := Finset.orderEmbOfFin_unique
-    (s := s) (h := hsize)
-    (f := fun k : Fin (size i) => σ.slotEquiv ⟨i, k⟩)
-    hσmem (σ.strictMono i)
-  have hτ := Finset.orderEmbOfFin_unique
-    (s := s) (h := hsize)
-    (f := fun k : Fin (size i) => τ.slotEquiv ⟨i, k⟩)
-    hτmem (τ.strictMono i)
-  exact congrFun (hσ.trans hτ.symm) j
+    refine ⟨q, ?_⟩
+    calc
+      σ.slotEquiv ⟨i, q⟩ =
+          σ.slotEquiv (σ.slotEquiv.symm (τ.slotEquiv ⟨i, k⟩)) :=
+        congrArg σ.slotEquiv heq.symm
+      _ = _ := σ.slotEquiv.apply_symm_apply _
+  exact congrFun ((σ.strictMono i).eq_of_fin_range_subset (τ.strictMono i) hsubset) j
 
 open Classical in
 /-- Every shuffle has exactly the prescribed number of ambient slots
