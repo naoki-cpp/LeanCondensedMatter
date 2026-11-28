@@ -52,9 +52,11 @@ noncomputable def EnergyEigenbasisLehmannData.ofSingleOccupied
     intro i
     split <;> norm_num
   probability_hasSum := by
-    have h := (Summable.of_finite
-      (f := fun i : Fin (Module.finrank ℂ H) => if i = occupied then (1 : ℝ) else 0)).hasSum
-    simpa [tsum_fintype] using h
+    have h : HasSum
+        (fun i : Fin (Module.finrank ℂ H) => if i = occupied then (1 : ℝ) else 0)
+        (if occupied = occupied then (1 : ℝ) else 0) :=
+      hasSum_single occupied (fun i hi => if_neg hi)
+    simpa only [if_pos rfl] using h
 
 variable {ι : Type*} (system : BoundedFreeSystem H)
 
