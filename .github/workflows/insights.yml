@@ -189,10 +189,15 @@ jobs:
           cp docs/generated/theorems.json "$graph_data_dir/theorems.json"
           cp docs/generated/declarations.json "$graph_data_dir/declarations.json"
           cp docs/generated/module-imports.json "$graph_data_dir/module-imports.json"
+          # Replace the previous shard set; unchanged content-addressed files retain their names.
+          git -C "$graph_data_dir" rm -r --ignore-unmatch -- declaration-details
+          python3 scripts/generate_declaration_catalog.py --export-explorer "$graph_data_dir"
+          echo "### Explorer index size" >> "$GITHUB_STEP_SUMMARY"
+          echo "Compact index: $(wc -c < "$graph_data_dir/declaration-index.json") bytes" >> "$GITHUB_STEP_SUMMARY"
 
           git -C "$graph_data_dir" config user.name "github-actions[bot]"
           git -C "$graph_data_dir" config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git -C "$graph_data_dir" add theorems.json declarations.json module-imports.json
+          git -C "$graph_data_dir" add theorems.json declarations.json module-imports.json declaration-index.json declaration-details/
 
           if git -C "$graph_data_dir" diff --cached --quiet; then
             echo "Graph data is unchanged."
