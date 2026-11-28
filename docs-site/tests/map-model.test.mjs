@@ -67,8 +67,23 @@ test("camera selection, parent transitions, and reset keep the visible scope con
   assert.equal(navigation.animating, true);
   navigation.pan(30, 0);
   assert.equal(navigation.animating, false);
-  navigation.zoom(0.01);
+  navigation.zoom(0.01, undefined, undefined, false);
   assert.equal(navigation.active, null);
+  assert.deepEqual(navigation.view, { x: 480, y: 335, zoom: 1 });
+});
+
+test("reset animates from the current camera back to the whole map", () => {
+  const navigation = createMapNavigation(960, 670);
+  navigation.open({ x: 100, y: 120, radius: 20, children: [] }, false);
+  const start = { ...navigation.view };
+  navigation.reset(true);
+  assert.equal(navigation.active, null);
+  assert.deepEqual(navigation.view, start);
+  navigation.step(100);
+  navigation.step(310);
+  assert.ok(navigation.view.zoom > 1 && navigation.view.zoom < start.zoom);
+  navigation.step(520);
+  assert.equal(navigation.animating, false);
   assert.deepEqual(navigation.view, { x: 480, y: 335, zoom: 1 });
 });
 

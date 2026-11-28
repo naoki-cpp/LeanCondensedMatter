@@ -2,7 +2,7 @@ import { DEFINITION_KINDS } from "./declaration-model.js";
 import { MAP_NODE_COLORS } from "./graph-style.js";
 import { createMapNavigation } from "./map-navigation.js";
 import { createMapHeader } from "./map-header.js";
-import { ZOOM_STEP, zoomFactorForKey, zoomFactorForWheel } from "./map-zoom.js";
+import { ZOOM_STEP, canAnimateCamera, zoomFactorForKey, zoomFactorForWheel } from "./map-zoom.js";
 import { renderStatement } from "./statement-view.js";
 
 const width = 960;
@@ -183,11 +183,6 @@ export function renderResearchMap(children, onOpenDeclaration, onRegionChange, o
     animateCamera();
   }
 
-  function canAnimate() {
-    return typeof requestAnimationFrame === "function" &&
-      !window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
-  }
-
   function line(from, to, color) {
     const [x, y] = pointOnScreen(from);
     const [tx, ty] = pointOnScreen(to);
@@ -351,10 +346,10 @@ export function renderResearchMap(children, onOpenDeclaration, onRegionChange, o
     populatePicker(region);
   }
 
-  function reset() {
+  function reset(animate = canAnimateCamera()) {
     hovered = null;
     const previous = navigation.active;
-    navigation.reset();
+    navigation.reset(animate);
     animateCamera();
     updateRegion(previous);
     detail.hidden = true;
@@ -384,7 +379,7 @@ export function renderResearchMap(children, onOpenDeclaration, onRegionChange, o
     if (!region.points.length) return;
     hovered = null;
     const previous = navigation.active;
-    navigation.open(region, canAnimate());
+    navigation.open(region, canAnimateCamera());
     updateRegion(previous);
     clearSelection();
     animateCamera();
@@ -444,7 +439,7 @@ export function renderResearchMap(children, onOpenDeclaration, onRegionChange, o
 
   function zoomBy(factor, x, y) {
     const previous = navigation.active;
-    if (!navigation.zoom(factor, x, y, canAnimate())) return;
+    if (!navigation.zoom(factor, x, y, canAnimateCamera())) return;
     hovered = null;
     updateRegion(previous);
     if (navigation.active !== previous) clearSelection();
@@ -554,7 +549,7 @@ export function renderResearchMap(children, onOpenDeclaration, onRegionChange, o
   zoomOut.setAttribute("aria-label", "Zoom out");
   const zoomIn = button("+", () => zoomBy(ZOOM_STEP), "map-zoom-button");
   zoomIn.setAttribute("aria-label", "Zoom in");
-  controls.append(parentControl, zoomOut, zoomIn, button("Whole map", reset));
+  controls.append(parentControl, zoomOut, zoomIn, button("Whole map", () => reset()));
   stage.append(canvas, ...allRegions.map((region) => region.label), hoverLabel);
   const emptyBundles = [];
   const overviewFooter = element("div", "research-map-overview");
@@ -562,7 +557,7 @@ export function renderResearchMap(children, onOpenDeclaration, onRegionChange, o
   section.append(header, controls, stage, controlsSlot, legend, preview, picker, detail, connectionDetails, overviewFooter);
   const sortedPoints = [...points].sort((a, b) => a.entry.name.localeCompare(b.entry.name));
   populatePicker(null);
-  reset();
+  reset(false);
   if (selectedName) openPoint(byName.get(selectedName));
   // This section is returned before it is mounted, so measure again after attachment.
   if (typeof requestAnimationFrame === "function") requestAnimationFrame(draw);

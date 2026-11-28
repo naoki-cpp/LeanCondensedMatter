@@ -1,3 +1,5 @@
+import { cameraProgress } from "./map-zoom.js";
+
 export function createMapNavigation(width, height) {
   const home = { x: width / 2, y: height / 2, zoom: 1 };
   let view = { ...home };
@@ -47,14 +49,20 @@ export function createMapNavigation(width, height) {
     stop();
     setRegion(region);
     const target = regionView(region);
-    if (animate) transition = { start: { ...view }, target, toParent };
-    else view = target;
+    moveTo(target, animate, toParent);
   }
 
-  function reset() {
+  function moveTo(target, animate, toParent = false) {
+    if (animate && (view.x !== target.x || view.y !== target.y || view.zoom !== target.zoom)) {
+      blend = 0;
+      transition = { start: { ...view }, target, toParent };
+    } else view = { ...target };
+  }
+
+  function reset(animate = false) {
     stop();
     setRegion(null);
-    view = { ...home };
+    moveTo(home, animate);
   }
 
   return {
@@ -84,15 +92,14 @@ export function createMapNavigation(width, height) {
       if (!transition) return;
       transition.startedAt ??= now;
       const { start, target, startedAt } = transition;
-      const progress = Math.min(1, (now - startedAt) / 420);
-      const eased = progress * progress * (3 - 2 * progress);
+      const eased = cameraProgress(now - startedAt);
       blend = eased;
       view = {
         x: start.x + (target.x - start.x) * eased,
         y: start.y + (target.y - start.y) * eased,
         zoom: start.zoom * (target.zoom / start.zoom) ** eased,
       };
-      if (progress === 1) stop();
+      if (eased === 1) stop();
     },
     pan(dx, dy, origin = view) {
       stop();
@@ -110,7 +117,7 @@ export function createMapNavigation(width, height) {
           return true;
         }
       } else if (factor < 1 && active && next <= 1.5) {
-        reset();
+        reset(animate);
         return true;
       }
       view = {

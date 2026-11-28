@@ -2,7 +2,7 @@ import { buildGraphScene } from "./graph-layout.js";
 import { createGraphPresentation } from "./graph-presentation.js";
 import { createExplorerComposition } from "./explorer-composition.js";
 import { createMapHeader } from "./map-header.js";
-import { ZOOM_STEP, zoomFactorForKey, zoomFactorForWheel } from "./map-zoom.js";
+import { ZOOM_STEP, cameraProgress, canAnimateCamera, zoomFactorForKey, zoomFactorForWheel } from "./map-zoom.js";
 import { createModuleOverview } from "./module-overview.js";
 import { declarationAllowed } from "./declaration-model.js";
 import { curvedEdgePath } from "./graph-edge.js";
@@ -21,6 +21,7 @@ const CATALOG_URL = "https://raw.githubusercontent.com/naoki-cpp/LeanCondensedMa
 const MODULES_URL = "https://raw.githubusercontent.com/naoki-cpp/LeanCondensedMatter/graph-data/module-imports.json";
 const SOURCE_BASE_URL = "https://raw.githubusercontent.com/naoki-cpp/LeanCondensedMatter/main/";
 const definitionSourceRequests = new Map();
+let graphCameraFrame = null;
 
 const state = {
   catalog: [],
@@ -232,8 +233,36 @@ function fitGraph() {
   }
 }
 
+function stopGraphCamera() {
+  if (graphCameraFrame !== null) cancelAnimationFrame(graphCameraFrame);
+  graphCameraFrame = null;
+}
+
+function resetGraphCamera() {
+  stopGraphCamera();
+  if (!state.graphBounds || !state.viewBox) return;
+  const start = state.viewBox;
+  const target = state.graphBounds;
+  const keys = ["x", "y", "width", "height"];
+  if (keys.every((key) => start[key] === target[key])) return;
+  if (!canAnimateCamera()) {
+    setGraphViewBox({ ...target });
+    return;
+  }
+  let startedAt;
+  function step(now) {
+    startedAt ??= now;
+    const progress = cameraProgress(now - startedAt);
+    setGraphViewBox(progress === 1 ? { ...target } : Object.fromEntries(keys.map((key) =>
+      [key, start[key] + (target[key] - start[key]) * progress])));
+    graphCameraFrame = progress < 1 ? requestAnimationFrame(step) : null;
+  }
+  graphCameraFrame = requestAnimationFrame(step);
+}
+
 function zoomGraph(factor, clientX = null, clientY = null) {
   if (!state.viewBox || !state.graphBounds) return;
+  stopGraphCamera();
   const transform = clientX === null ? null : ui.graph.getScreenCTM();
   const point = transform ? new DOMPoint(clientX, clientY).matrixTransform(transform.inverse()) : null;
   const px = point ? (point.x - state.viewBox.x) / state.viewBox.width : 0.5;
@@ -321,6 +350,7 @@ function setGraphModeChrome(focusTarget) {
 
 function renderGraph({ preserveView = false } = {}) {
   if (!state.root || !state.byName.has(state.root)) return;
+  stopGraphCamera();
 
   const previousView = preserveView ? state.viewBox : null;
   const { levels, truncated, positions, parents, children, branchFor, width, height, cx, cy } = buildGraphScene(state.byName, {
@@ -802,6 +832,7 @@ function renderOverviewContent(mapSelection) {
 }
 
 function showOverview({ historyEntry = true, browse = null, focusFilter = null, mapSelection = null } = {}) {
+  stopGraphCamera();
   state.graphKind = "theorems";
   state.catalog = state.theoremCatalog;
   state.byName = state.theoremByName;
@@ -1014,17 +1045,18 @@ function bindGraphNavigation() {
   }).observe(ui.viewport);
   document.getElementById("graph-zoom-in").addEventListener("click", () => zoomGraph(ZOOM_STEP));
   document.getElementById("graph-zoom-out").addEventListener("click", () => zoomGraph(1 / ZOOM_STEP));
-  document.getElementById("graph-fit").addEventListener("click", fitGraph);
+  document.getElementById("graph-fit").addEventListener("click", resetGraphCamera);
   ui.viewport.addEventListener("keydown", (event) => {
     if (event.target !== ui.viewport || !state.viewBox) return;
     const shifts = { ArrowLeft: [-0.1, 0], ArrowRight: [0.1, 0], ArrowUp: [0, -0.1], ArrowDown: [0, 0.1] };
     if (shifts[event.key]) {
       event.preventDefault();
+      stopGraphCamera();
       const [dx, dy] = shifts[event.key];
       setGraphViewBox({ ...state.viewBox, x: state.viewBox.x + dx * state.viewBox.width, y: state.viewBox.y + dy * state.viewBox.height });
     } else if (event.key === "0" || event.key === "Escape") {
       event.preventDefault();
-      fitGraph();
+      resetGraphCamera();
     } else {
       const factor = zoomFactorForKey(event.key);
       if (!factor) return;
@@ -1041,6 +1073,7 @@ function bindGraphNavigation() {
 
   ui.viewport.addEventListener("pointerdown", (event) => {
     if (!state.viewBox || event.target.closest?.(".node")) return;
+    stopGraphCamera();
     ui.viewport.setPointerCapture(event.pointerId);
     state.drag = { pointerId: event.pointerId, x: event.clientX, y: event.clientY, viewBox: { ...state.viewBox } };
     ui.viewport.classList.add("dragging");

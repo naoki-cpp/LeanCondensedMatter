@@ -1,4 +1,15 @@
 export const ZOOM_STEP = 1.25;
+const CAMERA_DURATION = 420;
+
+export function canAnimateCamera() {
+  return typeof requestAnimationFrame === "function" &&
+    !window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+}
+
+export function cameraProgress(elapsed) {
+  const t = Math.min(1, elapsed / CAMERA_DURATION);
+  return t * t * (3 - 2 * t);
+}
 
 export function zoomFactorForKey(key) {
   if (key === "+" || key === "=") return ZOOM_STEP;
