@@ -1,5 +1,6 @@
 import { buildGraphScene } from "./graph-layout.js";
 import { createGraphPresentation } from "./graph-presentation.js";
+import { createExplorerComposition } from "./explorer-composition.js";
 import { createModuleOverview } from "./module-overview.js";
 import { declarationAllowed } from "./declaration-model.js";
 import { curvedEdgePath } from "./graph-edge.js";
@@ -79,6 +80,7 @@ const ui = {
   highlightInputs: [...document.querySelectorAll("[data-highlight]")],
 };
 
+const composition = createExplorerComposition(ui);
 let moduleOverview = null;
 
 function svg(tag, attributes = {}) {
@@ -277,35 +279,10 @@ function appendNodeLabel(nodes, name, position, root, selected, showLeafLabel) {
   nodes.append(label);
 }
 
-function setGraphModeChrome() {
+function setGraphModeChrome(focusTarget) {
   const modules = state.graphKind === "modules";
   const overview = state.page === "overview";
-  const tabsHadFocus = ui.tabs.contains(document.activeElement);
-  for (const [tab, selected] of [[ui.overviewLink, !modules], [ui.moduleImportsLink, modules]]) {
-    tab.setAttribute("aria-selected", String(selected));
-    tab.tabIndex = selected ? 0 : -1;
-  }
-  const panel = modules ? ui.importsPanel : ui.declarationsPanel;
-  if (ui.appShell.parentElement !== panel) panel.append(ui.appShell);
-  ui.declarationsPanel.hidden = modules;
-  ui.importsPanel.hidden = !modules;
-  ui.graph.closest(".graph-panel").classList.toggle("import-map-panel", modules);
-  ui.graph.closest(".graph-panel").classList.toggle("explorer-map-theme", modules);
-  ui.graph.closest(".graph-panel").classList.toggle("explorer-map-frame", modules);
-  ui.importMapHeader.hidden = !modules;
-  ui.graphStatus.classList.toggle("research-map-declaration-count", modules);
-  if (modules) {
-    ui.importMapHeader.querySelector(".research-map-title").textContent = shortModule(state.root);
-    ui.importMapControls.before(ui.graphStatus);
-  } else {
-    ui.graphToolbar.prepend(ui.graphStatus);
-  }
-  const controlsSlot = modules ? ui.importMapControls : ui.controlsHome;
-  ui.controlsHome.hidden = overview || modules;
-  if (ui.controls.parentElement !== controlsSlot) controlsSlot.append(ui.controls);
-  const tabSlot = modules ? ui.importMapTabs : ui.controlsHome;
-  if (ui.tabs.parentElement !== tabSlot) tabSlot.prepend(ui.tabs);
-  if (tabsHadFocus && !overview) (modules ? ui.moduleImportsLink : ui.overviewLink).focus({ preventScroll: true });
+  composition.show(state.page, modules ? shortModule(state.root) : null, focusTarget);
   document.getElementById("graph-fit").textContent = modules ? "Whole graph" : "Fit";
   ui.kindFilter.closest("label").hidden = modules;
   ui.generatedFilter.closest("label").hidden = modules;
@@ -339,9 +316,6 @@ function setGraphModeChrome() {
 
 function renderGraph({ preserveView = false } = {}) {
   if (!state.root || !state.byName.has(state.root)) return;
-  ui.overview.hidden = true;
-  ui.viewport.hidden = false;
-  ui.graphToolbar.hidden = false;
 
   const previousView = preserveView ? state.viewBox : null;
   const { levels, truncated, positions, parents, children, branchFor, width, height, cx, cy } = buildGraphScene(state.byName, {
@@ -770,7 +744,6 @@ function focusRoot(name, { historyEntry = true } = {}) {
   if (!state.byName.has(name)) return;
   if (state.graphKind === "theorems") {
     if (state.page === "overview") state.returnBrowse = state.browse;
-    moduleOverview?.cancel();
     state.page = "theorem";
   } else {
     state.page = "imports";
@@ -781,8 +754,6 @@ function focusRoot(name, { historyEntry = true } = {}) {
   ui.search.value = name;
   hideSearchResults();
   setGraphModeChrome();
-  ui.viewport.hidden = false;
-  ui.overview.hidden = true;
   renderDetails(name);
   renderGraph();
   if (historyEntry) writeLocation(true);
@@ -792,39 +763,28 @@ function summaryChip(text) {
   return element("span", "summary-chip", text);
 }
 
-function renderOverviewContent(focusFilter = null) {
+function renderOverviewContent() {
   const requestedBrowse = state.browse ?? "LeanCondensedMatter";
   state.browse = requestedBrowse;
-  moduleOverview?.render(requestedBrowse).then((rendered) => {
-    if (rendered && state.page === "overview" && state.browse === requestedBrowse) {
-      const controlsSlot = ui.overview.querySelector(".map-controls-slot");
-      if (controlsSlot && ui.controls.parentElement !== controlsSlot) controlsSlot.append(ui.controls);
-      const tabSlot = ui.overview.querySelector(".map-tabs-slot");
-      if (tabSlot && ui.tabs.parentElement !== tabSlot) tabSlot.append(ui.tabs);
-      ui.controlsHome.hidden = Boolean(controlsSlot);
-      if (focusFilter && document.activeElement === document.body) {
-        focusFilter.focus({ preventScroll: true });
-      }
-    }
-    if (!rendered && state.browse === requestedBrowse) {
+  composition.renderOverview({
+    render: () => moduleOverview?.prepare(requestedBrowse),
+    unavailable() {
       if (requestedBrowse !== "LeanCondensedMatter" && moduleOverview?.hasModule("LeanCondensedMatter")) {
         state.browse = "LeanCondensedMatter";
         writeLocation(false);
         renderOverviewContent();
         return;
       }
-      ui.overview.replaceChildren(element("p", "error-message", "The project module hierarchy is unavailable."));
-    }
-  }).catch((error) => {
-    if (state.browse !== requestedBrowse) return;
-    console.error(error);
-    ui.overview.replaceChildren(element("p", "error-message", error instanceof Error ? error.message : String(error)));
+      composition.replaceOverview(element("p", "error-message", "The project module hierarchy is unavailable."));
+    },
+    failed(error) {
+      console.error(error);
+      composition.replaceOverview(element("p", "error-message", error instanceof Error ? error.message : String(error)));
+    },
   });
 }
 
 function showOverview({ historyEntry = true, browse = null, focusFilter = null } = {}) {
-  const restoreFocus = focusFilter ?? (ui.tabs.contains(document.activeElement) ? ui.overviewLink : null);
-  moduleOverview?.cancel();
   state.graphKind = "theorems";
   state.catalog = state.theoremCatalog;
   state.byName = state.theoremByName;
@@ -844,19 +804,15 @@ function showOverview({ historyEntry = true, browse = null, focusFilter = null }
     : "LeanCondensedMatter";
   ui.search.value = "";
   hideSearchResults();
-  ui.viewport.hidden = true;
-  ui.overview.hidden = false;
-  ui.graphToolbar.hidden = true;
-  setGraphModeChrome();
+  setGraphModeChrome(focusFilter);
   ui.graphStatus.textContent = "";
   ui.detail.replaceChildren();
-  renderOverviewContent(restoreFocus);
+  renderOverviewContent();
   if (historyEntry) writeLocation(true);
 }
 
 function showModuleImports({ historyEntry = true, moduleName = null, depth = state.depth } = {}) {
   if (state.moduleCatalog.length === 0) return;
-  moduleOverview?.cancel();
   const selectedModule = moduleName && state.moduleByName.has(moduleName)
     ? moduleName
     : state.moduleByName.has("LeanCondensedMatter") ? "LeanCondensedMatter" : state.moduleCatalog[0].name;
@@ -877,8 +833,6 @@ function showModuleImports({ historyEntry = true, moduleName = null, depth = sta
   ui.search.value = "";
   hideSearchResults();
   setGraphModeChrome();
-  ui.viewport.hidden = false;
-  ui.overview.hidden = true;
   renderDetails(selectedModule);
   renderGraph();
   if (historyEntry) writeLocation(true);
@@ -1193,7 +1147,6 @@ async function main() {
     catalog: state.theoremCatalog,
     allowed: (entry) => declarationAllowed(entry, state.kind, state.generated),
     modules: ["LeanCondensedMatter", ...state.moduleCatalog.map((entry) => entry.name)],
-    overview: ui.overview,
     onBrowse: (moduleName) => showOverview({ browse: moduleName }),
     onOpenDeclaration: (name) => focusRoot(name),
   });
@@ -1204,7 +1157,6 @@ async function main() {
 
 main().catch((error) => {
   console.error(error);
-  ui.graphToolbar.hidden = false;
   ui.graphStatus.textContent = "Failed to load declaration graph.";
   const message = element("p", "error-message", error instanceof Error ? error.message : String(error));
   ui.detail.replaceChildren(message);

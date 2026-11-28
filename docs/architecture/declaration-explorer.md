@@ -6,6 +6,12 @@ The browser explorer uses the same graph rendering flow for declarations and mod
 
 `docs-site/graph-layout.js` owns neighborhood traversal, tree-parent selection, density spacing, and radial placement. Its `buildGraphScene(catalog, options)` interface takes the catalog, root, direction, depth, filter predicate, and optional node cap. It returns scene geometry and truncation information without accessing browser state or mutating the catalog. Missing references are ignored, filters prune traversal, and the root remains visible.
 
+`docs-site/declaration-hierarchy.js` indexes module paths, direct and descendant declarations, and counts. The overview uses the full hierarchy for module navigation and a filtered hierarchy for map points and directional dependency counts between sibling regions.
+
+`docs-site/map-navigation.js` owns the map camera, active scope, selected declaration, and transitions to parent regions. `docs-site/research-map.js` draws the canvas, handles input, and supplies animation timestamps.
+
+`docs-site/explorer-composition.js` moves the shared tablist and controls between the overview, declaration graph, and imports graph. It applies asynchronously prepared overview content only while its request is current.
+
 `docs-site/graph.js` owns browser state, data loading, navigation, DOM rendering, selection, and viewport interaction. It supplies the filter predicate and renders the results from the layout and presentation modules.
 
 Tests exercise the same presentation and layout interfaces as the browser. Presentation tests check that declaration and import legends match drawing rules. Layout tests cover cyclic references, missing neighbors, filtering, direction, determinism, and truncation.

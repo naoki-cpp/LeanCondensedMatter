@@ -12,7 +12,7 @@ test("definition filter and generated declarations", () => {
   assert.equal(declarationAllowed({ kind: "def", generated: true }, "*", true), true);
   assert.deepEqual(declarationCounts([
     { kind: "def" }, { kind: "def" }, { kind: "theorem", generated: true },
-  ]), { definitions: 2, theorems: 0, total: 2, generated: 1 });
+  ]), { definitions: 2, theorems: 0, proved: 0, total: 2, generated: 1 });
 });
 
 class Element {
@@ -43,11 +43,11 @@ test("MixedOrderData overview counts and opens both definitions", async () => {
   const explorer = createModuleOverview({
     catalog: names.map((name) => ({ name, module: "LeanCondensedMatter.MixedOrderData",
       kind: "def", generated: false, statement: "Nat", dependencies: [],
-      dependents: name === names[1] ? [names[0]] : [] })), overview,
+      dependents: name === names[1] ? [names[0]] : [] })),
     onBrowse() { assert.fail("The map should open a declaration directly"); },
     onOpenDeclaration(name) { opened = name; },
   });
-  await explorer.render("MixedOrderData");
+  overview.replaceChildren(...(await explorer.prepare("MixedOrderData"))());
   assert.match(overview.text(), /Definitions 2/);
   assert.match(overview.text(), /Theorems 0/);
   assert.match(overview.text(), /Total 2/);
@@ -57,7 +57,7 @@ test("MixedOrderData overview counts and opens both definitions", async () => {
     card.click();
     assert.equal(opened, name);
   }
-  await explorer.render("LeanCondensedMatter");
+  overview.replaceChildren(...(await explorer.prepare("LeanCondensedMatter"))());
   const mapTitle = overview.find("h2").find((heading) => heading.id === "research-map-title");
   assert.equal(mapTitle?.text(), "LeanCondensedMatter");
   const region = overview.find("button").find((button) => button.className === "research-map-region");
@@ -102,9 +102,9 @@ test("map filters points and picker while preserving the total dependency count"
     { name: "generated", kind: "theorem", generated: true, axioms: ["sorryAx"], dependencies: [] },
   ].map((entry) => ({ module, statement: "Nat", dependents: [], ...entry }));
   let generated = false;
-  const explorer = createModuleOverview({ catalog, overview,
+  const explorer = createModuleOverview({ catalog,
     allowed: (entry) => declarationAllowed(entry, "theorem", generated) });
-  await explorer.render("LeanCondensedMatter");
+  overview.replaceChildren(...(await explorer.prepare("LeanCondensedMatter"))());
   let picker = overview.find("select")[0];
   assert.deepEqual(picker.find("option").map(({ value }) => value), ["", "result"]);
   assert.match(overview.text(), /Definitions 0.*Theorems 1.*Total 1/);
@@ -112,7 +112,7 @@ test("map filters points and picker while preserving the total dependency count"
   picker.change();
   assert.match(overview.text(), /Depends on \(2 total, 0 on map\)/);
   generated = true;
-  await explorer.render("LeanCondensedMatter");
+  overview.replaceChildren(...(await explorer.prepare("LeanCondensedMatter"))());
   picker = overview.find("select")[0];
   assert.deepEqual(picker.find("option").map(({ value }) => value), ["", "generated", "result"]);
   assert.match(overview.text(), /Theorems 2.*Total 2.*Generated 1/);
