@@ -2,6 +2,7 @@ import LeanCondensedMatter.Combinatorics.PerfectPairing.PairEndpoints
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Crossing
 import Mathlib.Algebra.BigOperators.ModEq
 import Mathlib.Algebra.Order.BigOperators.Group.LocallyFinite
+import Mathlib.Tactic.Order
 
 set_option linter.style.header false
 
@@ -53,29 +54,16 @@ theorem pairEndpointInversionCount_mod_two_eq_crossesIndicator {α : Type*} [Lin
   rcases left with ⟨a, b⟩
   rcases right with ⟨c, d⟩
   simp only at hleft hright h11 h12 h21 h22 ⊢
-  rcases lt_or_gt_of_ne h11 with hac | hca
-  · have hca : ¬ c < a := not_lt_of_gt hac
-    have hda : ¬ d < a := not_lt_of_gt (hac.trans hright)
-    rcases lt_or_gt_of_ne h21 with hbc | hcb
-    · have hcb : ¬ c < b := not_lt_of_gt hbc
-      have hdb : ¬ d < b := not_lt_of_gt (hbc.trans hright)
-      simp [pairEndpointInversionCount, Crosses, *]
-    · rcases lt_or_gt_of_ne h22 with hbd | hdb
-      · have hdb : ¬ d < b := not_lt_of_gt hbd
-        simp [pairEndpointInversionCount, Crosses, *]
-      · have hbd : ¬ b < d := not_lt_of_gt hdb
-        simp [pairEndpointInversionCount, Crosses, *]
-  · have hac : ¬ a < c := not_lt_of_gt hca
-    have hcb : c < b := hca.trans hleft
-    rcases lt_or_gt_of_ne h12 with had | hda
-    · have hda : ¬ d < a := not_lt_of_gt had
-      rcases lt_or_gt_of_ne h22 with hbd | hdb
-      · have hdb : ¬ d < b := not_lt_of_gt hbd
-        simp [pairEndpointInversionCount, Crosses, *]
-      · simp [pairEndpointInversionCount, Crosses, *]
-    · have had : ¬ a < d := not_lt_of_gt hda
-      have hdb : d < b := hda.trans hleft
-      simp [pairEndpointInversionCount, Crosses, *]
+  have hac : a < c ↔ ¬ c < a := by
+    constructor <;> intro h <;> order
+  have had : a < d ↔ ¬ d < a := by
+    constructor <;> intro h <;> order
+  have hbd : b < d ↔ ¬ d < b := by
+    constructor <;> intro h <;> order
+  by_cases hca : c < a <;> by_cases hda : d < a <;>
+    by_cases hcb : c < b <;> by_cases hdb : d < b <;>
+    simp [pairEndpointInversionCount, Crosses, hac, had, hbd, hca, hda, hcb, hdb] <;>
+    order
 
 /-- Distinct normalized pairs have inversion parity equal to their geometric crossing indicator. -/
 theorem PairingOn.pairEndpointInversionCount_modEq_crossesIndicator
