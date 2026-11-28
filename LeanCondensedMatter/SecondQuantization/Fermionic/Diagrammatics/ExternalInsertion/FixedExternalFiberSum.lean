@@ -2,6 +2,7 @@ import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInser
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.SupportStandardizationSum
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.DysonSeries
 import Mathlib.Algebra.BigOperators.Group.Finset.Powerset
+import Mathlib.Data.Set.PowersetCard
 
 set_option linter.style.header false
 
@@ -164,6 +165,8 @@ theorem externalInsertionDysonCoefficient_powersetCard_eq_sum_standardizedSuppor
             d.dysonAmplitude ε β g externalTime
           else 0 := by
   classical
+  letI : Fintype {T : Finset (Fin (m + k)) // T.card = m} :=
+    inferInstanceAs (Fintype (Set.powersetCard (Fin (m + k)) m))
   rw [Finset.sum_subtype
     (p := fun T : Finset (Fin (m + k)) => T.card = m)
     (Finset.powersetCard m (Finset.univ : Finset (Fin (m + k))))

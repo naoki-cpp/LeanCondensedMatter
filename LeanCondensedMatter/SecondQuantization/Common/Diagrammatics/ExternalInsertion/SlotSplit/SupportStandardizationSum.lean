@@ -1,5 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.SupportStandardization
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.ExternalSupportFiber
+import Mathlib.Data.Set.PowersetCard
 
 set_option linter.style.header false
 
@@ -29,7 +30,7 @@ theorem ExternalInsertionDiagram.sum_leftSlotSet_standardizedSupportFiber
     {E m k : ℕ} {R : Type*} [AddCommMonoid R]
     (F : ExternalInsertionDiagram ExternalLabel InternalLabel E (m + k)
       (Finset.univ : Finset (Fin (m + k))) → R) :
-    (∑ T : LeftSlotSet m k,
+    (∑ T : Set.powersetCard (Fin (m + k)) m,
       ∑ p : {ext : ExternalInsertionDiagram ExternalLabel InternalLabel E (m + k)
           T.1 // HasNoVacuumComponent ext.vertexGraph} ×
         QuarticDiagram InternalLabel (m + k)
