@@ -1,5 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTime.TimedField
 import LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTime.MixedTimeOrdering
+import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.InteractionPictureVertexDyson
 import LeanCondensedMatter.QuantumTheory.LinearResponse.Expectation.Basic
 
 set_option linter.style.header false
@@ -377,6 +378,84 @@ theorem bilinearCurrentTimedEventProduct_expectation_eq_four_fields {n : ℕ}
             (pairedCurrentExternalLabels i j k l) (Common.pairedExternalTimes τ τ') q σ) := by
   rw [bilinearCurrentTimedEventProduct_eq_four_fields]
   simp only [map_sum, map_smul, smul_eq_mul]
+
+
+/-- The stable two-current Dyson coefficient at finite perturbative order,
+with physical time evolution at ε and free Gibbs weight at ε − μ. Equal
+current times use stable block order rather than symmetric time ordering. -/
+noncomputable def bilinearCurrentDysonCoefficient
+    (ε : Mode → ℝ) (β μ τ τ' : ℝ)
+    (g : QuarticVertexLabel Mode → ℂ) (jx jy : Mode → Mode → ℂ) (n : ℕ) : ℂ :=
+  intervalIntegral.orderedSimplexIntegral n β
+    (fun σ => (-1 : ℂ) ^ n *
+      ∑ q : Fin n → QuarticVertexLabel Mode,
+        (∏ i : Fin n, g (q i)) *
+          Common.finiteGibbsExpectation (fermionEnergy (fun i => ε i - μ)) β
+            (((Common.orderedExternalInsertionTimedEvents (E := 1)
+                (fun e => if e = 0 then τ else τ') σ).map
+              (bilinearCurrentTimedEventOperator ε τ τ' jx jy q σ)).prod))
+
+/-- Integrating the composite-current product gives a finite weighted sum of
+the canonical four-external-field Dyson coefficients. The sum/integral
+exchange is justified by measurable local boundedness, including at time
+crossings; no convergence of a perturbation series is assumed. -/
+theorem bilinearCurrentDysonCoefficient_eq_four_fields
+    (ε : Mode → ℝ) (β μ τ τ' : ℝ)
+    (g : QuarticVertexLabel Mode → ℂ) (jx jy : Mode → Mode → ℂ) (n : ℕ) :
+    bilinearCurrentDysonCoefficient ε β μ τ τ' g jx jy n =
+      ∑ i : Mode, ∑ j : Mode, ∑ k : Mode, ∑ l : Mode,
+        (jx i j * jy k l) *
+          externalInsertionVertexDysonCoefficient (E := 2) ε β μ g
+            (pairedCurrentExternalLabels i j k l) (Common.pairedExternalTimes τ τ') n := by
+  classical
+  let F (p : (Mode × Mode) × (Mode × Mode)) (σ : Fin n → ℝ) :=
+    (-1 : ℂ) ^ n *
+      ∑ q : Fin n → QuarticVertexLabel Mode,
+        (∏ i : Fin n, g (q i)) *
+          Common.finiteGibbsExpectation (fermionEnergy (fun i => ε i - μ)) β
+            (externalInsertionMixedTimeOrderedVertexComp (E := 2) ε
+              (pairedCurrentExternalLabels p.1.1 p.1.2 p.2.1 p.2.2)
+              (Common.pairedExternalTimes τ τ') q σ)
+  let w (p : (Mode × Mode) × (Mode × Mode)) := jx p.1.1 p.1.2 * jy p.2.1 p.2.2
+  have hpoint (σ : Fin n → ℝ) :
+      (-1 : ℂ) ^ n *
+        (∑ q : Fin n → QuarticVertexLabel Mode,
+          (∏ i : Fin n, g (q i)) *
+            Common.finiteGibbsExpectation (fermionEnergy (fun i => ε i - μ)) β
+              (((Common.orderedExternalInsertionTimedEvents (E := 1)
+                  (fun e => if e = 0 then τ else τ') σ).map
+                (bilinearCurrentTimedEventOperator ε τ τ' jx jy q σ)).prod)) =
+        ∑ p, w p * F p σ := by
+    simp only [Common.finiteGibbsExpectation,
+      bilinearCurrentTimedEventProduct_expectation_eq_four_fields, F, w, Fintype.sum_prod_type]
+    simp_rw [Finset.mul_sum]
+    rw [Finset.sum_comm]
+    apply Finset.sum_congr rfl
+    intro i _
+    rw [Finset.sum_comm]
+    apply Finset.sum_congr rfl
+    intro j _
+    rw [Finset.sum_comm]
+    apply Finset.sum_congr rfl
+    intro k _
+    rw [Finset.sum_comm]
+    apply Finset.sum_congr rfl
+    intro l _
+    apply Finset.sum_congr rfl
+    intro q _
+    ring
+  unfold bilinearCurrentDysonCoefficient
+  rw [intervalIntegral.orderedSimplexIntegral_congr hpoint]
+  rw [intervalIntegral.orderedSimplexIntegral_finsetSum_of_measurableLocallyBounded
+    Finset.univ n β (fun p σ => w p * F p σ) (by
+      intro p _
+      exact (intervalIntegral.measurableLocallyBounded_const (w p)).mul
+        (measurableLocallyBounded_externalInsertionVertexDysonIntegrand (E := 2) ε β μ g
+          (pairedCurrentExternalLabels p.1.1 p.1.2 p.2.1 p.2.2)
+          (Common.pairedExternalTimes τ τ')))]
+  simp_rw [intervalIntegral.orderedSimplexIntegral_smul]
+  simpa only [Fintype.sum_prod_type, w, F, externalInsertionVertexDysonCoefficient]
+
 
 end
 end Transport
