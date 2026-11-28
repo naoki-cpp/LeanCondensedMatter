@@ -16,7 +16,8 @@ set_option linter.style.header false
 /-!
 # Completed fermionic Fock space
 
-Occupation `ℓ²` space and its algebraic core, bounded mode and smeared ladder operators,
+Occupation `ℓ²` space and its algebraic core, bounded mode-number and ladder operators,
+smeared ladder operators,
 CAR, one-particle unitary lifts and generators, maximal diagonal operators, free-Hamiltonian
 product domains, and finite-mode compatibility and truncations.
 Thermal constructions are provided by `Fermionic.Thermal`.
