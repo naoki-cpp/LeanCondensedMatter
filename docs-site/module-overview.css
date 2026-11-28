@@ -137,6 +137,7 @@
   margin: 0 0 8px;
   font: 500 1.6rem/1.2 var(--heading-font);
 }
+.research-map-declaration-count { margin: -4px 0 12px; color: #c0d3c9; font: 400 .9rem/1.4 var(--ui-font); }
 .research-map-overview { margin-top: 20px; padding-top: 14px; border-top: 1px solid #42605a; }
 .research-map .module-breadcrumb { margin: 0 0 10px; color: #c0d3c9; }
 .research-map .module-crumb { color: #edf5ee; border-color: #617a71; }
@@ -204,7 +205,6 @@
 .research-map-picker[hidden] { display: none; }
 .research-map-picker select { width: 100%; min-width: 0; }
 .research-map-region:focus-visible { outline: 2px solid #90bed2; outline-offset: 0; }
-.research-map-region small { color: #c0d3c9; font: 400 .68rem/1.25 var(--ui-font); }
 .research-map-detail {
   margin-top: 18px;
   padding: 16px;
@@ -220,7 +220,4 @@
   margin-top: 12px;
   color: #c0d3c9;
   font: 400 .85rem/1.5 var(--ui-font);
-}
-@container (max-width: 420px) {
-  .research-map-region small { display: none; }
 }

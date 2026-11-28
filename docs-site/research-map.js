@@ -27,6 +27,7 @@ function button(text, action, className = "") {
 export function renderResearchMap(children, onOpenDeclaration, onRegionChange, overviewHeader, rootName) {
   const section = element("section", "research-map");
   const heading = element("h2", "research-map-title", rootName);
+  const declarationCount = element("p", "research-map-declaration-count");
   heading.id = "research-map-title";
   section.setAttribute("aria-labelledby", heading.id);
   const legend = element("ul", "research-map-legend");
@@ -124,10 +125,13 @@ export function renderResearchMap(children, onOpenDeclaration, onRegionChange, o
     const label = button(name, () => openRegion(region), "research-map-region");
     label.disabled = region.points.length === 0;
     label.setAttribute("aria-label", `${name}, ${region.points.length} declarations`);
-    label.append(element("small", "", `${region.points.length.toLocaleString("en")} declaration${region.points.length === 1 ? "" : "s"}`));
     return label;
   }
   const points = [...byName.values()];
+  function showDeclarationCount(count) {
+    declarationCount.textContent = `${count.toLocaleString("en")} declaration${count === 1 ? "" : "s"}`;
+  }
+  showDeclarationCount(points.length);
   function collectBundles(clusters, records, clusterOf) {
     const order = new Map(clusters.map((region, index) => [region, index]));
     const connections = new Map();
@@ -251,32 +255,30 @@ export function renderResearchMap(children, onOpenDeclaration, onRegionChange, o
   function placeLabels() {
     const visible = [];
     for (const region of allRegions) {
-      const focused = view.zoom > 1.5 && region === active;
       region.label.hidden = view.zoom > 1.5 && active
-        ? !focused && region.parent !== active
+        ? region.parent !== active
         : Boolean(region.parent);
-      if (!region.label.hidden) visible.push({ region, focused });
+      if (!region.label.hidden) visible.push(region);
     }
     const stageWidth = stage.clientWidth;
     const stageHeight = stage.clientHeight;
-    const measured = visible.map(({ region, focused }) => ({
-      region, focused, w: region.label.offsetWidth, h: region.label.offsetHeight,
-    })).sort((a, b) => Number(b.focused) - Number(a.focused));
+    const measured = visible.map((region) => ({
+      region, w: region.label.offsetWidth, h: region.label.offsetHeight,
+    }));
     const placed = [];
-    for (const { region, focused, w, h } of measured) {
+    for (const { region, w, h } of measured) {
       const [x, y] = screen(region.x, region.y + region.radius);
       if (!stageWidth || !stageHeight) continue;
-      const pinned = focused && region.children.length > 0;
-      const anchorX = pinned ? stageWidth / 2 : x / width * stageWidth;
+      const anchorX = x / width * stageWidth;
       const anchorY = y / height * stageHeight;
       const [, above] = screen(region.x, region.y - region.radius);
-      const candidates = pinned ? [4] : [anchorY + 6, above / height * stageHeight - h - 6, anchorY + h + 10];
+      const candidates = [anchorY + 6, above / height * stageHeight - h - 6, anchorY + h + 10];
       const center = Math.max(w / 2 + 4, Math.min(stageWidth - w / 2 - 4, anchorX));
       const left = center - w / 2;
       const top = candidates.map((value) => Math.max(4, Math.min(stageHeight - h - 4, value)))
         .find((value) => placed.every((box) => left >= box.right + 4 || left + w + 4 <= box.left ||
           value >= box.bottom + 4 || value + h + 4 <= box.top));
-      region.label.hidden = !focused && top === undefined;
+      region.label.hidden = top === undefined;
       if (top === undefined) continue;
       region.label.style.left = `${center}px`;
       region.label.style.top = `${top}px`;
@@ -375,6 +377,7 @@ export function renderResearchMap(children, onOpenDeclaration, onRegionChange, o
     previousScope = active;
     active = region;
     heading.textContent = region?.name ?? rootName;
+    showDeclarationCount(region?.points.length ?? points.length);
     onRegionChange(region?.moduleName ?? null, browseMap);
     parentControl.hidden = !region?.parent;
     populatePicker(region);
@@ -570,7 +573,7 @@ export function renderResearchMap(children, onOpenDeclaration, onRegionChange, o
   const emptyBundles = [];
   const overviewFooter = element("div", "research-map-overview");
   overviewFooter.append(...overviewHeader);
-  section.append(heading, legend, controls, stage, preview, picker, detail, connectionDetails, overviewFooter);
+  section.append(heading, declarationCount, legend, controls, stage, preview, picker, detail, connectionDetails, overviewFooter);
   const sortedPoints = [...points].sort((a, b) => a.entry.name.localeCompare(b.entry.name));
   populatePicker(null);
   reset();

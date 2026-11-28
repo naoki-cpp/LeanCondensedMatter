@@ -61,7 +61,8 @@ test("MixedOrderData overview counts and opens both definitions", async () => {
   const mapTitle = overview.find("h2").find((heading) => heading.id === "research-map-title");
   assert.equal(mapTitle?.text(), "LeanCondensedMatter");
   const region = overview.find("button").find((button) => button.className === "research-map-region");
-  assert.match(region.text(), /2 declarations/);
+  assert.equal(region.text(), "Mixed Order Data");
+  assert.equal(overview.find("p").find((item) => item.className === "research-map-declaration-count")?.text(), "2 declarations");
   region.click();
   assert.equal(mapTitle?.text(), "Mixed Order Data");
   assert.equal(overview.find("canvas").length, 1);
