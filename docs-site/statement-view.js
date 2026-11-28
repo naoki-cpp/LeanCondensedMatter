@@ -15,7 +15,9 @@ function leanDetails(title, text) {
 }
 
 export function renderStatement(container, entry) {
-  const model = buildStatementModel(entry.structuredStatement);
+  const presentation = entry.structuredStatement;
+  const exposesBody = entry.kind === "def" || entry.kind === "abbrev";
+  const model = buildStatementModel(exposesBody || !presentation ? presentation : { ...presentation, definitionBody: undefined });
   if (!model) {
     renderLeanMath(container, entry.statement);
     return;
