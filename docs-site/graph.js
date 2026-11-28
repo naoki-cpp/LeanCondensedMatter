@@ -640,14 +640,13 @@ function summaryChip(text) {
   return element("span", "summary-chip", text);
 }
 
-function renderOverviewContent(mapSelection, focusModule) {
+function renderOverviewContent(mapSelection) {
   const requestedBrowse = state.browse ?? "LeanCondensedMatter";
   state.browse = requestedBrowse;
   composition.renderOverview({
     render: () => moduleOverview?.prepare(requestedBrowse, mapSelection),
     mounted() {
       if (mapSelection) ui.overview.querySelector(".research-map-detail-title")?.focus();
-      if (focusModule) ui.overview.querySelector(".module-overview-header h2")?.focus();
     },
     unavailable() {
       if (requestedBrowse !== "LeanCondensedMatter" && moduleOverview?.hasModule("LeanCondensedMatter")) {
@@ -665,7 +664,7 @@ function renderOverviewContent(mapSelection, focusModule) {
   });
 }
 
-function showOverview({ historyEntry = true, browse = null, focusFilter = null, mapSelection = null, focusModule = false } = {}) {
+function showOverview({ historyEntry = true, browse = null, focusFilter = null, mapSelection = null } = {}) {
   stopGraphCamera();
   state.graphKind = "theorems";
   state.catalog = state.theoremCatalog;
@@ -690,7 +689,7 @@ function showOverview({ historyEntry = true, browse = null, focusFilter = null, 
   setGraphModeChrome(focusFilter);
   ui.graphStatus.textContent = "";
   ui.detail.replaceChildren();
-  renderOverviewContent(mapSelection, focusModule);
+  renderOverviewContent(mapSelection);
   if (historyEntry) writeLocation(true, mapSelection);
 }
 
@@ -1014,7 +1013,6 @@ async function main() {
     catalog: state.theoremCatalog,
     allowed: (entry) => declarationAllowed(entry, state.kind, state.generated),
     modules: ["LeanCondensedMatter", ...state.moduleCatalog.map((entry) => entry.name)],
-    onBrowse: (moduleName) => showOverview({ browse: moduleName, focusModule: true }),
     onOpenDeclaration: (name, options) => focusRoot(name, options),
   });
   populateControls();

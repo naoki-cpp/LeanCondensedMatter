@@ -28,7 +28,7 @@ function button(text, action, className = "") {
   return control;
 }
 
-export function renderResearchMap(children, onOpenDeclaration, onRegionChange, overviewHeader, rootName, hierarchy, mapCounts, selectedName) {
+export function renderResearchMap(children, onOpenDeclaration, onRegionChange, overviewHeader, rootName, hierarchy, mapCounts, selectedName, initialModule) {
   const section = element("section", "research-map explorer-map-theme explorer-map-frame");
   const { header, heading, status: declarationCount } = createMapHeader(rootName);
   const controlsSlot = element("div", "map-controls-slot");
@@ -377,16 +377,16 @@ export function renderResearchMap(children, onOpenDeclaration, onRegionChange, o
       ? "Choose a submodule or select a declaration." : "Select a dot or choose a declaration.";
   }
 
-  function openRegion(region) {
+  function openRegion(region, initial = false) {
     if (!region.points.length) return;
     hovered = null;
     const previous = navigation.active;
-    navigation.open(region, canAnimateCamera());
+    navigation.open(region, !initial && canAnimateCamera());
     updateRegion(previous);
     clearSelection();
     animateCamera();
     draw();
-    canvas.focus?.({ preventScroll: true });
+    if (!initial) canvas.focus?.({ preventScroll: true });
   }
 
   function relation(title, names) {
@@ -560,6 +560,9 @@ export function renderResearchMap(children, onOpenDeclaration, onRegionChange, o
   const sortedPoints = [...points].sort((a, b) => a.entry.name.localeCompare(b.entry.name));
   populatePicker(null);
   reset(false);
+  onRegionChange(null, browseMap);
+  const initialRegion = initialModule && regionByModule.get(hierarchy.find(initialModule));
+  if (initialRegion) openRegion(initialRegion, true);
   if (selectedName) openPoint(byName.get(selectedName));
   // This section is returned before it is mounted, so measure again after attachment.
   if (typeof requestAnimationFrame === "function") requestAnimationFrame(draw);

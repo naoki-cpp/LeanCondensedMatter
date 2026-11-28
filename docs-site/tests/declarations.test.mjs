@@ -53,24 +53,19 @@ test("MixedOrderData overview counts and opens both definitions", async () => {
   const overview = new Element("div");
   const names = ["componentMixedPosition", "componentMixedPositionEquiv"];
   let opened;
-  let browsed;
   const explorer = createModuleOverview({
     catalog: names.map((name) => ({ name, module: "LeanCondensedMatter.MixedOrderData",
       kind: "def", generated: false, statement: "Nat", dependencies: [],
       dependents: name === names[1] ? [names[0]] : [] })),
-    onBrowse(name) { browsed = name; },
     onOpenDeclaration(name) { opened = name; },
   });
   overview.replaceChildren(...(await explorer.prepare("MixedOrderData"))());
   assert.match(overview.text(), /Definitions 2/);
   assert.match(overview.text(), /Theorems 0/);
   assert.match(overview.text(), /Total 2/);
-  for (const name of names) {
-    const card = overview.find("button").find((button) => button.text().includes(name));
-    assert.match(card.text(), /def/);
-    card.click();
-    assert.equal(opened, name);
-  }
+  assert.equal(overview.find("h2").find((heading) => heading.id === "research-map-title")?.text(), "Mixed Order Data");
+  assert.equal(overview.find("canvas").length, 1);
+  assert.doesNotMatch(overview.text(), /Direct submodules|Module details/);
   overview.replaceChildren(...(await explorer.prepare("LeanCondensedMatter"))());
   const mapTitle = overview.find("h2").find((heading) => heading.id === "research-map-title");
   assert.equal(mapTitle?.text(), "LeanCondensedMatter");
@@ -78,10 +73,6 @@ test("MixedOrderData overview counts and opens both definitions", async () => {
   assert.equal(region.text(), "Mixed Order Data");
   assert.equal(overview.find("p").find((item) => item.className === "research-map-declaration-count")?.text(), "2 definitions · 0 proved theorems");
   region.click();
-  const moduleDetails = overview.find("a").find((link) => link.className.includes("module-details-link"));
-  assert.equal(moduleDetails.href, "?browse=MixedOrderData");
-  moduleDetails.click({ preventDefault() {} });
-  assert.equal(browsed, "MixedOrderData");
   assert.equal(mapTitle?.text(), "Mixed Order Data");
   assert.equal(overview.find("canvas").length, 1);
   const canvas = overview.find("canvas")[0];

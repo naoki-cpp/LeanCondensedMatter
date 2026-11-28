@@ -45,58 +45,6 @@
 }
 .module-header-description[hidden] { display: none; }
 
-.module-tree-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(220px, 100%), 1fr));
-  gap: 12px;
-  margin-top: 12px;
-}
-
-.module-tree-card {
-  width: 100%;
-  min-height: 92px;
-  padding: 16px;
-  color: var(--text);
-  text-align: left;
-  background: var(--surface);
-  border: 1px solid var(--line);
-  border-radius: 5px;
-}
-
-.module-tree-card:hover,
-.module-tree-card:focus-visible {
-  border-color: var(--line-strong);
-  background: var(--hover);
-}
-
-.module-tree-card-heading {
-  display: flex;
-  gap: 10px;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.module-tree-card strong {
-  overflow-wrap: anywhere;
-  font-size: 14px;
-  font-weight: 600;
-  line-height: 1.5;
-}
-
-.module-tree-card small {
-  display: block;
-  margin-top: 9px;
-  color: var(--muted);
-  font-size: 11px;
-  line-height: 1.45;
-}
-
-.module-tree-chevron {
-  color: var(--cyan);
-  font-size: 20px;
-  line-height: 1;
-}
-
 .module-direct-count {
   font-variant-numeric: tabular-nums;
   min-width: 28px;
@@ -122,7 +70,6 @@
 }
 
 @media (max-width: 700px) {
-  .module-tree-grid { grid-template-columns: 1fr; }
   .module-breadcrumb { gap: 5px; }
 }
 .research-map {
@@ -143,8 +90,6 @@
 .research-map .module-overview-header h2 { color: inherit; font-size: 1.25rem; }
 .research-map .module-overview-header p { color: #d8e6df; }
 .research-map .summary-chip { color: #edf5ee; background: #203630; border-color: #617a71; }
-.research-map .module-details-link { display: inline-block; margin-block-end: 12px; text-decoration: none; }
-.research-map .module-details-link[hidden] { display: none; }
 .research-map-legend {
   display: flex;
   flex-wrap: wrap;
