@@ -85,10 +85,7 @@ theorem externalInsertionLegCongr_standardize
         (externalInsertionExternalLeg E T e) = _
       rw [externalInsertionLegCongr_externalLeg]
       apply Fin.ext
-      change (externalInsertionExternalLeg E
-          (Finset.univ : Finset (Fin T.card)) e).val =
-        (Fin.cast rfl (externalInsertionExternalLeg E T e)).val
-      simp only [Fin.val_cast, externalInsertionExternalLeg_val]
+      simp only [finCongr_apply, Fin.val_cast, externalInsertionExternalLeg_val]
   | inr vl =>
       rcases vl with ⟨v, l⟩
       change externalInsertionLegCongr (E := E) (standardSlotEquiv T)
@@ -102,19 +99,6 @@ theorem externalInsertionLegCongr_standardize
         (Fin.cast rfl (externalInsertionInteractionLeg (E := E) v l)).val
       simp only [Fin.val_cast, externalInsertionInteractionLeg_val]
       rw [Combinatorics.univ_orderIsoOfFin_symm_val]
-
-/-- The canonical consecutive-slot reindexing preserves the exact
-ordering of **all flattened fermion legs**, including the external legs
-and each quartic four-leg group. It therefore introduces no additional
-crossings merely from standardizing interaction slots. -/
-theorem externalInsertionLegCongr_standardize_lt_iff
-    (T : Finset (Fin N)) (a b : Fin (2 * (2 * T.card + E))) :
-    externalInsertionLegCongr (E := E) (standardSlotEquiv T) a <
-      externalInsertionLegCongr (E := E) (standardSlotEquiv T) b ↔
-        a < b := by
-  rw [externalInsertionLegCongr_standardize (E := E) T]
-  change a.val < b.val ↔ a.val < b.val
-  rfl
 
 /-- Standardize both halves of a shuffle fiber: vacuum-free external insertions and
 ordered quartic vacuum data. The vacuum complement uses the canonical quartic API. -/
