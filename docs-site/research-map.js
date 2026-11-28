@@ -48,7 +48,7 @@ export function renderResearchMap(children, entriesFor, onOpenDeclaration) {
   const ctx = canvas.getContext("2d");
   const detail = element("section", "research-map-detail");
   detail.hidden = true;
-  const hint = "Choose a region to zoom in, then select a dot.";
+  const hint = "Choose a region to zoom in.";
   const preview = element("p", "research-map-preview", hint);
   preview.setAttribute("aria-live", "off");
   const picker = element("label", "research-map-picker");
@@ -65,31 +65,63 @@ export function renderResearchMap(children, entriesFor, onOpenDeclaration) {
     const name = child.name.replace(/([a-z])([A-Z])/g, "$1 $2");
     const x = ((index % columns) + 0.5) * width / columns + (Math.floor(index / columns) % 2 ? 20 : -20);
     const y = (Math.floor(index / columns) + 0.44) * height / rows;
-    const region = { name, x, y, radius: spacing * Math.sqrt(child.counts.total / largest) };
-    region.points = entriesFor(child).map((entry, i) => {
-      const distance = spacing * Math.sqrt(i / largest);
-      const angle = goldenAngle * i;
-      const point = { entry, region, x: x + distance * Math.cos(angle), y: y + distance * Math.sin(angle),
-        color: categories.find(([, , matches]) => matches(entry))[1] };
-      byName.set(entry.name, point);
-      return point;
+    const region = { name, x, y, radius: spacing * Math.sqrt(child.counts.total / largest), children: [] };
+    const entries = entriesFor(child);
+    const prefix = child.fullName.replace(/^LeanCondensedMatter\./, "") + ".";
+    const groups = new Map();
+    for (const entry of entries) {
+      const moduleName = entry.module.replace(/^LeanCondensedMatter\./, "");
+      const key = moduleName.startsWith(prefix) ? moduleName.slice(prefix.length).split(".")[0] : "";
+      if (!groups.has(key)) groups.set(key, []);
+      groups.get(key).push(entry);
+    }
+    const ordered = [...groups].sort(([a], [b]) => a.localeCompare(b));
+    const cellColumns = Math.max(1, Math.ceil(Math.sqrt(ordered.length)));
+    const cellRows = Math.ceil(ordered.length / cellColumns);
+    const cell = region.radius * Math.SQRT2 / Math.max(cellColumns, cellRows);
+    region.points = ordered.flatMap(([key, records], i) => {
+      const grouped = ordered.length > 1;
+      const gx = grouped ? x + ((i % cellColumns) - (cellColumns - 1) / 2) * cell : x;
+      const gy = grouped ? y + (Math.floor(i / cellColumns) - (cellRows - 1) / 2) * cell : y;
+      const radius = grouped ? cell * .34 : region.radius * .75;
+      const subregion = key ? { name: key, x: gx, y: gy, radius, parent: region, children: [] } : region;
+      const points = records.map((entry, j) => {
+        const distance = radius * Math.sqrt(j / records.length);
+        const angle = goldenAngle * j;
+        const point = { entry, region: subregion, topRegion: region, x: gx + distance * Math.cos(angle), y: gy + distance * Math.sin(angle),
+          color: categories.find(([, , matches]) => matches(entry))[1] };
+        byName.set(entry.name, point);
+        return point;
+      });
+      if (key) {
+        subregion.points = points;
+        subregion.label = makeLabel(subregion);
+        region.children.push(subregion);
+      }
+      return points;
     });
+    region.label = makeLabel(region);
+    return region;
+  });
+  const allRegions = regions.flatMap((region) => [region, ...region.children]);
+
+  function makeLabel(region) {
+    const { name } = region;
     const label = button(name, () => openRegion(region), "research-map-region");
     label.disabled = region.points.length === 0;
     label.setAttribute("aria-label", `${name}, ${region.points.length} declarations`);
     label.append(element("small", "", `${region.points.length.toLocaleString("en")} declaration${region.points.length === 1 ? "" : "s"}`));
-    region.label = label;
-    return region;
-  });
+    return label;
+  }
   const points = [...byName.values()];
   const regionOrder = new Map(regions.map((region, index) => [region, index]));
   const connections = new Map();
   for (const point of points) {
-    const source = regionOrder.get(point.region);
+    const source = regionOrder.get(point.topRegion);
     for (const name of new Set(point.entry.dependencies ?? [])) {
       const targetPoint = byName.get(name);
-      if (!targetPoint || targetPoint.region === point.region) continue;
-      const target = regionOrder.get(targetPoint.region);
+      if (!targetPoint || targetPoint.topRegion === point.topRegion) continue;
+      const target = regionOrder.get(targetPoint.topRegion);
       const a = Math.min(source, target);
       const b = Math.max(source, target);
       const key = `${a}:${b}`;
@@ -113,6 +145,8 @@ export function renderResearchMap(children, entriesFor, onOpenDeclaration) {
   }
   let view = { x: width / 2, y: height / 2, zoom: 1 };
   let active = null;
+  const parentControl = button("Parent region", () => { if (active?.parent) openRegion(active.parent); });
+  parentControl.hidden = true;
   let selected = null;
   let drag = null;
   let cameraFrame = null;
@@ -166,12 +200,16 @@ export function renderResearchMap(children, entriesFor, onOpenDeclaration) {
 
   function draw() {
     canvas.style.touchAction = view.zoom > 1.5 ? "none" : "pan-y";
-    for (const region of regions) {
+    for (const region of allRegions) {
       const focused = view.zoom > 1.5 && region === active;
-      region.label.hidden = view.zoom > 1.5 && !focused;
-      const [x, y] = screen(region.x, region.y + region.radius + 11);
-      region.label.style.left = `${focused ? Math.max(16, Math.min(84, x / width * 100)) : x / width * 100}%`;
-      region.label.style.top = `${focused ? Math.max(4, Math.min(82, y / height * 100)) : y / height * 100}%`;
+      region.label.hidden = region.parent
+        ? !focused && !(view.zoom > 1.5 && region.parent === active)
+        : view.zoom > 1.5 && !focused;
+      const [x, y] = screen(region.x, region.y + region.radius);
+      const left = x / width * 100;
+      const top = (y + 11) / height * 100;
+      region.label.style.left = `${focused ? Math.max(16, Math.min(84, left)) : left}%`;
+      region.label.style.top = `${focused ? Math.max(4, Math.min(82, top)) : top}%`;
     }
     if (!ctx) return;
     ctx.setTransform(2, 0, 0, 2, 0, 0);
@@ -192,7 +230,8 @@ export function renderResearchMap(children, entriesFor, onOpenDeclaration) {
       ctx.lineCap = "butt";
       ctx.lineWidth = 1;
     }
-    for (const region of regions) {
+    for (const region of allRegions) {
+      if (region.parent && (view.zoom <= 1.5 || (active !== region && active !== region.parent))) continue;
       ctx.strokeStyle = "#42605a";
       ctx.beginPath();
       ctx.arc(...screen(region.x, region.y), (region.radius + 5) * view.zoom, 0, 2 * Math.PI);
@@ -238,6 +277,7 @@ export function renderResearchMap(children, entriesFor, onOpenDeclaration) {
   function setRegion(region) {
     if (active === region) return;
     active = region;
+    parentControl.hidden = !region?.parent;
     picker.hidden = !region;
     if (!region) return;
     caption.textContent = `Declaration in ${region.name}`;
@@ -268,8 +308,8 @@ export function renderResearchMap(children, entriesFor, onOpenDeclaration) {
     selected = null;
     detail.hidden = true;
     select.value = "";
-    preview.textContent = "Select a dot or choose a declaration.";
-    glideTo({ x: region.x, y: region.y, zoom: Math.min(12, height / (3 * (region.radius + 5))) });
+    preview.textContent = region.children.length ? "Choose a submodule or select a declaration." : "Select a dot or choose a declaration.";
+    glideTo({ x: region.x, y: region.y, zoom: Math.min(24, height / (3 * (region.radius + 5))) });
     canvas.focus?.({ preventScroll: true });
   }
 
@@ -362,6 +402,11 @@ export function renderResearchMap(children, entriesFor, onOpenDeclaration) {
     drag = null;
     const [x, y] = coords(event);
     if (view.zoom > 1.5) {
+      const child = active?.children.find((region) => {
+        const [px, py] = screen(region.x, region.y);
+        return Math.hypot(x - px, y - py) <= region.radius * view.zoom + 5;
+      });
+      if (child) { openRegion(child); return; }
       const point = hit(x, y);
       if (point) openPoint(point);
       return;
@@ -391,8 +436,8 @@ export function renderResearchMap(children, entriesFor, onOpenDeclaration) {
     event.preventDefault();
   });
   select.addEventListener("change", () => openPoint(byName.get(select.value)));
-  controls.append(button("Zoom out", () => zoomBy(1 / 1.5)), button("Zoom in", () => zoomBy(1.5)), button("Whole map", reset));
-  stage.append(canvas, ...regions.map((region) => region.label));
+  controls.append(parentControl, button("Zoom out", () => zoomBy(1 / 1.5)), button("Zoom in", () => zoomBy(1.5)), button("Whole map", reset));
+  stage.append(canvas, ...allRegions.map((region) => region.label));
   section.append(heading, legend, controls, stage, preview, picker, detail);
   if (bundles.length) section.append(connectionDetails);
   reset();

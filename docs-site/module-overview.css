@@ -157,7 +157,7 @@
 .research-map-stage canvas { display: block; width: 100%; height: auto; cursor: grab; touch-action: pan-y; }
 .research-map-stage canvas:active { cursor: grabbing; }
 .research-map-stage canvas:focus-visible { outline-offset: -3px; }
-.research-map-controls { display: flex; gap: 6px; justify-content: flex-end; }
+.research-map-controls { display: flex; flex-wrap: wrap; gap: 6px; justify-content: flex-end; }
 .research-map-controls button {
   min-width: 36px;
   min-height: 34px;
