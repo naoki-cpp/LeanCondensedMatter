@@ -19,7 +19,7 @@ The displayed map `ι : ℝ ↪ ℂ` for `Complex.ofReal` when its elaborated ar
 Structured records become available after the declaration catalog is regenerated and published to the `graph-data` branch. Existing catalog data continues to display Lean expressions until then.
 
 **Math view**:
-A best-effort display of a Lean pretty-printed expression as a mathematical formula. The rendering maps a supported set of Lean notation to mathematical symbols without changing the stored Lean expression. Unsupported syntax, or an unavailable formula renderer, is shown in Lean notation instead.
+A best-effort display of an elaborated Lean expression (or its pretty-printed text when structured data is unavailable). Recognized fully qualified constants with matching explicit arity render as mathematical notation: sums, products, adjoints, traces, norms, exponentials, inner products and scalar actions. Finite sum and product notation retains the domain and applies the supplied function to a fresh display index; `tsum` notation does not assert summability. Generic `Star.star` is distinct from an operator adjoint. Unsupported syntax or an unavailable formula renderer is shown in Lean notation instead. The original Lean statement remains authoritative.
 
 **Lean notation**:
 The Lean text kept with a formula. Statements use Lean's pretty-printed type; definition bodies retain the original source expression.
