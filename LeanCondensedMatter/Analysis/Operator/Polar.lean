@@ -43,6 +43,8 @@ theorem exists_leftPolarFactor (T : H →L[ℂ] H) :
   let R : Submodule ℂ H := LinearMap.range A.toLinearMap
   let C : Submodule ℂ H := R.topologicalClosure
   let j : R →ₗ[ℂ] C := Submodule.inclusion R.le_topologicalClosure
+  have hAxC (x : H) : A x ∈ C :=
+    R.le_topologicalClosure (LinearMap.mem_range_self A.toLinearMap x)
   have hj_dense : DenseRange j := by
     change DenseRange (Set.inclusion (show (R : Set H) ⊆ (C : Set H) from R.le_topologicalClosure))
     rw [denseRange_inclusion_iff]
@@ -69,27 +71,20 @@ theorem exists_leftPolarFactor (T : H →L[ℂ] H) :
     intro x
     rw [mul_apply_eq_comp]
     change V (C.orthogonalProjectionOnto (A x)) = T x
-    have hAxR : A x ∈ R := LinearMap.mem_range_self A.toLinearMap x
-    have hAxC : A x ∈ C := R.le_topologicalClosure hAxR
-    let y : R := ⟨A x, hAxR⟩
-    rw [show C.orthogonalProjectionOnto (A x) = (⟨A x, hAxC⟩ : C) by
-      exact C.orthogonalProjectionOnto_mem_subspace_eq_self ⟨A x, hAxC⟩]
+    let y : R := ⟨A x, LinearMap.mem_range_self A.toLinearMap x⟩
+    rw [show C.orthogonalProjectionOnto (A x) = (⟨A x, hAxC x⟩ : C) from
+      C.orthogonalProjectionOnto_mem_subspace_eq_self ⟨A x, hAxC x⟩]
     change V (j y) = T x
     rw [LinearMap.extendOfIsometry_eq f.toLinearMap hj_dense hf_norm y]
     simpa [f, y] using
       LinearMap.compLeftInverse_apply_of_bdd T.toLinearMap A.toLinearMap hbound x (A x) rfl
   have hUU : ContinuousLinearMap.adjoint U * U = C.starProjection := by
-    have hAdjU :
-        ContinuousLinearMap.adjoint U =
-          C.subtypeL.comp (ContinuousLinearMap.adjoint V.toContinuousLinearMap) := by
-      dsimp [U]
-      rw [ContinuousLinearMap.adjoint_comp, Submodule.adjoint_orthogonalProjectionOnto]
-    rw [hAdjU]
     change
-      (C.subtypeL.comp (ContinuousLinearMap.adjoint V.toContinuousLinearMap)).comp
+      (ContinuousLinearMap.adjoint (V.toContinuousLinearMap.comp C.orthogonalProjectionOnto)).comp
           (V.toContinuousLinearMap.comp C.orthogonalProjectionOnto) =
         C.subtypeL.comp C.orthogonalProjectionOnto
-    rw [← ContinuousLinearMap.comp_assoc]
+    rw [ContinuousLinearMap.adjoint_comp, Submodule.adjoint_orthogonalProjectionOnto,
+      ← ContinuousLinearMap.comp_assoc]
     rw [ContinuousLinearMap.comp_assoc C.subtypeL
       (ContinuousLinearMap.adjoint V.toContinuousLinearMap) V.toContinuousLinearMap]
     rw [LinearIsometry.adjoint_comp_self V]
@@ -101,14 +96,12 @@ theorem exists_leftPolarFactor (T : H →L[ℂ] H) :
     apply ContinuousLinearMap.ext
     intro x
     rw [mul_apply_eq_comp]
-    have hAxR : A x ∈ R := LinearMap.mem_range_self A.toLinearMap x
-    have hAxC : A x ∈ C := R.le_topologicalClosure hAxR
-    simpa using C.starProjection_mem_subspace_eq_self ⟨A x, hAxC⟩
+    exact C.starProjection_eq_self_iff.mpr (hAxC x)
   have hcontract : ‖U‖ ≤ 1 := by
-    refine U.opNorm_le_bound zero_le_one fun x => ?_
-    change ‖V (C.orthogonalProjectionOnto x)‖ ≤ 1 * ‖x‖
-    rw [V.norm_map, one_mul]
-    exact C.norm_orthogonalProjectionOnto_apply_le x
+    refine (V.toContinuousLinearMap.opNorm_comp_le C.orthogonalProjectionOnto).trans ?_
+    simpa only [one_mul] using
+      mul_le_mul V.norm_toContinuousLinearMap_le C.orthogonalProjectionOnto_norm_le
+        (norm_nonneg _) zero_le_one
   exact ⟨U, hleft, hright, hcontract⟩
 
 end ContinuousLinearMap
