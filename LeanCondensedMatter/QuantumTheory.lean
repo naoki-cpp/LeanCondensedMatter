@@ -24,10 +24,7 @@ set_option linter.style.header false
 /-!
 # Quantum theory
 
-Particle-number-independent quantum theory: postulates, density operators and entropy, Gibbs states,
-abstract conservation-law evolution, general spectral occupation laws, Peierls phases and
-one-particle link response, and linear response.
-
-Concrete first-quantized realizations are developed in QuantumMechanics, while statistics-specific
-many-body constructions are developed in SecondQuantization.
+Particle-statistics-independent quantum theory: postulates, quantum states, measurements,
+entropy, Gibbs states, spectral occupations, spins and two-band spectra, Peierls lattice
+coupling, conservation laws, scattering rates, and linear response.
 -/
