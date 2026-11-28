@@ -1,7 +1,7 @@
 import LeanCondensedMatter.Combinatorics.Shuffle.SlotShuffle
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Core.Diagram
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Leg
-import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.StableTimedEventOrder
+import LeanCondensedMatter.Combinatorics.Common.StableOrder
 import LeanCondensedMatter.Combinatorics.Shuffle.FamilySlotShuffleSign
 import LeanCondensedMatter.Combinatorics.Common.ListFlatMapOrder
 import Mathlib.Tactic.FinCases
@@ -49,7 +49,7 @@ private def externalInsertionTimedEventRank {E n : ℕ}
 private def externalInsertionTimedEventBeforeOrEqual {E n : ℕ}
     (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ)
     (a b : ExternalInsertionTimedEvent E n) : Prop :=
-  stableTimedEventBeforeOrEqual
+  Combinatorics.stableTimedEventBeforeOrEqual
     (externalInsertionTimedEventTime externalTime σ) externalInsertionTimedEventRank a b
 
 private def canonicalExternalInsertionTimedEvents (E n : ℕ) :
@@ -124,16 +124,16 @@ theorem orderedExternalInsertionTimedEvents_all_mem {E n : ℕ}
 theorem orderedExternalInsertionTimedEvents_pairwise {E n : ℕ}
     (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ) :
     (orderedExternalInsertionTimedEvents externalTime σ).Pairwise
-      (stableTimedEventBeforeOrEqual (externalInsertionTimedEventTime externalTime σ)
+      (Combinatorics.stableTimedEventBeforeOrEqual (externalInsertionTimedEventTime externalTime σ)
         (fun e => (finSumFinEquiv e : Fin (2 * E + n)).val)) := by
   classical
   change
     (List.insertionSort
-      (stableTimedEventBeforeOrEqual
+      (Combinatorics.stableTimedEventBeforeOrEqual
         (externalInsertionTimedEventTime externalTime σ)
         externalInsertionTimedEventRank)
       (canonicalExternalInsertionTimedEvents E n)).Pairwise
-        (stableTimedEventBeforeOrEqual
+        (Combinatorics.stableTimedEventBeforeOrEqual
           (externalInsertionTimedEventTime externalTime σ)
           externalInsertionTimedEventRank)
   exact List.pairwise_insertionSort _ _
@@ -169,7 +169,7 @@ private theorem orderedExternalInsertionTimedEvents_zero_eq_canonical_of_strictA
         simpa using h
       have hij : i < j := Fin.lt_def.mpr (by omega)
       simp only [externalInsertionTimedEventBeforeOrEqual,
-        stableTimedEventBeforeOrEqual_iff]
+        Combinatorics.stableTimedEventBeforeOrEqual_iff]
       left
       simpa only [ha, hb, externalInsertionTimedEventTime] using hσ hij
 
@@ -196,9 +196,9 @@ private theorem externalInsertionTimedEventBeforeOrEqual_map_iff
         (Sum.map fExternal fInteraction b) ↔
       externalInsertionTimedEventBeforeOrEqual
         (externalTime ∘ fExternal) (σ ∘ fInteraction) a b := by
-  simp only [externalInsertionTimedEventBeforeOrEqual, stableTimedEventBeforeOrEqual_iff,
+  simp only [externalInsertionTimedEventBeforeOrEqual, Combinatorics.stableTimedEventBeforeOrEqual_iff,
     externalInsertionTimedEventTime_map, externalInsertionTimedEventRank]
-  rw [finSumFinEquiv_map_val_le_iff hExternal hInteraction a b]
+  rw [Combinatorics.finSumFinEquiv_map_val_le_iff hExternal hInteraction a b]
 
 /-- Increasing external/interaction slot reindexings embed the locally ordered mixed events as a
 sublist of the ambient mixed-event order. -/
@@ -250,7 +250,7 @@ private theorem orderedExternalInsertionTimedEvents_map_sublist
       orderedExternalInsertionTimedEvents_all_mem externalTime σ event
   letI : Std.Antisymm ambientRel :=
     ⟨fun _ _ hab hba =>
-      stableTimedEventBeforeOrEqual_antisymm
+      Combinatorics.stableTimedEventBeforeOrEqual_antisymm
         (externalInsertionTimedEventTime externalTime σ) externalInsertionTimedEventRank
         (by
           intro a b h
@@ -828,9 +828,9 @@ theorem externalInsertionStandardToMixedAtomicPositionEquiv_sign
   · have hne : (Sum.inl b : ExternalInsertionTimedEvent E n) ≠ Sum.inl a :=
       fun h => (ne_of_lt hab) (congrArg Fin.val (Sum.inl.inj h).symm)
     letI : Std.Antisymm
-        (stableTimedEventBeforeOrEqual (externalInsertionTimedEventTime externalTime σ)
+        (Combinatorics.stableTimedEventBeforeOrEqual (externalInsertionTimedEventTime externalTime σ)
           (fun e => (finSumFinEquiv e : Fin (2 * E + n)).val)) :=
-      ⟨fun _ _ h₁ h₂ => stableTimedEventBeforeOrEqual_antisymm _ _
+      ⟨fun _ _ h₁ h₂ => Combinatorics.stableTimedEventBeforeOrEqual_antisymm _ _
         (fun _ _ h => finSumFinEquiv.injective (Fin.ext h)) h₁ h₂⟩
     have hidx := (orderedExternalInsertionTimedEvents_pairwise externalTime σ).idxOf_lt_iff_of_ne
       (orderedExternalInsertionTimedEvents_all_mem externalTime σ (.inl b))
@@ -840,7 +840,7 @@ theorem externalInsertionStandardToMixedAtomicPositionEquiv_sign
         (orderedExternalInsertionTimedEvents externalTime σ).idxOf (.inl b) <
           (orderedExternalInsertionTimedEvents externalTime σ).idxOf (.inl a) ↔
           externalTime a < externalTime b := by
-      rw [hidx, stableTimedEventBeforeOrEqual_iff]
+      rw [hidx, Combinatorics.stableTimedEventBeforeOrEqual_iff]
       simp [externalInsertionTimedEventTime, hnot]
     simp [externalInsertionTimedEventRank, hab, htime]
   · simp [externalInsertionTimedEventRank, hab]
@@ -900,7 +900,7 @@ theorem externalInsertionMixedTimeOrderedAtomicLegEquiv_eq_of_comparisons
         externalInsertionTimedEventBeforeOrEqual externalTime υ := by
     funext a b
     apply propext
-    exact stableTimedEventBeforeOrEqual_congr
+    exact Combinatorics.stableTimedEventBeforeOrEqual_congr
       (externalInsertionTimedEventTime externalTime σ)
       (externalInsertionTimedEventTime externalTime υ)
       externalInsertionTimedEventRank h a b
@@ -970,7 +970,7 @@ theorem externalInsertionTimedEventBeforeOrEqual_perm_iff
             subst j
             simp
   simp only [externalInsertionTimedEventBeforeOrEqual,
-    stableTimedEventBeforeOrEqual_iff, htime]
+    Combinatorics.stableTimedEventBeforeOrEqual_iff, htime]
   constructor
   · rintro (h | ⟨ht, hr⟩)
     · exact Or.inl h
@@ -1012,7 +1012,7 @@ theorem orderedExternalInsertionTimedEvents_perm_slots
       orderedExternalInsertionTimedEvents_all_mem externalTime (σ ∘ p.symm) event)
   letI : Std.Antisymm rel :=
     ⟨fun _ _ hab hba =>
-      stableTimedEventBeforeOrEqual_antisymm
+      Combinatorics.stableTimedEventBeforeOrEqual_antisymm
         (externalInsertionTimedEventTime externalTime (σ ∘ p.symm))
         externalInsertionTimedEventRank
         (by
@@ -1134,7 +1134,7 @@ theorem orderedExternalInsertionTimedEvents_paired {n : ℕ}
     | inl e =>
         fin_cases e <;>
           simp [block, pairedExternalEventBlock, r₂,
-            externalInsertionTimedEventBeforeOrEqual, stableTimedEventBeforeOrEqual_iff,
+            externalInsertionTimedEventBeforeOrEqual, Combinatorics.stableTimedEventBeforeOrEqual_iff,
             externalInsertionTimedEventTime, externalInsertionTimedEventRank, pairedExternalTimes]
     | inr v => simp [block, pairedExternalEventBlock]
   have hcross (a b : ExternalInsertionTimedEvent 1 n) (hne : a ≠ b)
@@ -1146,7 +1146,7 @@ theorem orderedExternalInsertionTimedEvents_paired {n : ℕ}
     case' inr.inl a b => fin_cases b
     all_goals
       simp_all [block, pairedExternalEventBlock, r₁, r₂, times,
-        externalInsertionTimedEventBeforeOrEqual, stableTimedEventBeforeOrEqual_iff,
+        externalInsertionTimedEventBeforeOrEqual, Combinatorics.stableTimedEventBeforeOrEqual_iff,
         externalInsertionTimedEventTime, externalInsertionTimedEventRank,
         pairedExternalTimes]
     all_goals
@@ -1178,7 +1178,7 @@ theorem orderedExternalInsertionTimedEvents_paired {n : ℕ}
         exact ⟨.inr v, orderedExternalInsertionTimedEvents_all_mem (E := 1) times σ _, by simp [block, pairedExternalEventBlock]⟩
   letI : Std.Antisymm r₂ :=
     ⟨fun _ _ hab hba =>
-      stableTimedEventBeforeOrEqual_antisymm
+      Combinatorics.stableTimedEventBeforeOrEqual_antisymm
         (externalInsertionTimedEventTime (E := 2) (pairedExternalTimes τ τ') σ)
         externalInsertionTimedEventRank
         (by
