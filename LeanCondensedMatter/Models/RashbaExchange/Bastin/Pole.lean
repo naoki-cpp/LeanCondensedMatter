@@ -30,22 +30,6 @@ open QuantumTheory.Transport QuantumTheory.TwoBand
 open ContinuousLinearMap
 open Filter
 
-/-- At nonzero broadening the opposite-source contribution factorizes
-exactly into the target-band Lorentzian and the generic regular spectator. -/
-theorem bastinBandPairContribution_opposite_source_eq_lorentzian
-    (params : Parameters) (μ ν : Fin 2) (band : TwoBand)
-    (px py offset broadening : ℝ) (hbroadening : broadening ≠ 0) :
-    bastinBandPairContribution params μ ν (oppositeBand band) band
-        px py (bandEnergy params band px py + offset) broadening =
-      (-2 * Complex.I) *
-        (Lorentzian.spectralKernel offset broadening : ℂ) *
-        interbandPoleRegularFactor
-          (interbandEnergyGap params band px py)
-          (currentBandBlockTrace params μ ν (oppositeBand band) band px py)
-          (currentBandBlockTrace params ν μ (oppositeBand band) band px py)
-          (offset, broadening) := by
-  exact scalarBastinBandPairContribution_targetCentered _ _ _ _ _ _ hbroadening
-
 /-- Isolated opposite-source Bastin pair integrated over a fixed,
 target-centered energy window. This is not the full Hall response. -/
 noncomputable def targetCenteredInterbandBastinPairIntegral
@@ -72,9 +56,7 @@ theorem targetCenteredInterbandBastinPairIntegral_eq_interbandBastinPoleIntegral
   apply intervalIntegral.integral_congr
   intro offset _
   dsimp only
-  rw [bastinBandPairContribution_opposite_source_eq_lorentzian
-    params 0 1 band px py offset broadening hbroadening]
-  ring
+  exact scalarBastinBandPairContribution_targetCentered _ _ _ _ _ _ hbroadening
 
 /-- The regular target-pole coefficient gives precisely the Berry weight. -/
 theorem interbandPoleRegularFactor_zero_im_eq_neg_chargeSq_berryCurvature
