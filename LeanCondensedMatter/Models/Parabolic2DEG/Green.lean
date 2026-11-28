@@ -1,4 +1,5 @@
-import LeanCondensedMatter.Models.Parabolic2DEG.ResponseParameters
+import LeanCondensedMatter.Models.Parabolic2DEG.Model
+import LeanCondensedMatter.Transport.Core.FiniteResponseParameters
 import LeanCondensedMatter.Transport.Resolvent.Spectral
 import Mathlib.Tactic.FunProp
 
@@ -8,7 +9,7 @@ set_option linter.style.header false
 # Finite-broadening Green functions for the parabolic 2DEG
 
 The clean one-band Hamiltonian and velocity are owned by `Model`; the shared finite-response
-parameter bundle lives in `ResponseParameters`, while charge-current vertices live in `Response`.
+parameter bundle is defined here, while charge-current vertices live in `Response`.
 This module supplies the model-specific scalar and bounded-operator Green functions through the
 generic signed spectral resolvent. Finite positive broadening and probe energy remain explicit.
 -/
@@ -18,6 +19,18 @@ namespace QuantumTheory.Models.Parabolic2DEG
 noncomputable section
 
 open QuantumTheory.Transport
+
+/-- Clean Hamiltonian parameters together with the common finite continuum response data. -/
+structure Parameters extends HamiltonianParameters, QuantumTheory.Transport.FiniteResponseParameters
+
+/-- Retain only the clean Hamiltonian data. -/
+instance : Coe Parameters HamiltonianParameters where
+  coe params := params.toHamiltonianParameters
+
+/-- Regular finite-response parameters, including positive effective mass. -/
+structure Parameters.IsRegular (params : Parameters) : Prop
+    extends QuantumTheory.Transport.FiniteResponseParameters.IsRegular params.toFiniteResponseParameters where
+  effectiveMass_pos : 0 < params.effectiveMass
 
 /-- Scalar denominator of the side-indexed one-band Green function. -/
 def greenDenominator
