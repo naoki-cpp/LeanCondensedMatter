@@ -53,35 +53,23 @@ theorem tendsto_interbandSpectatorCurrentFactor_at_bandPole
       (nhds
         (((((interbandEnergyGap band v m px py : ℝ) : ℂ))⁻¹) ^ 2 *
           bastinInterbandBlockDifference μ ν band e v m px py)) := by
-  have hret : Tendsto
-      (fun broadening : ℝ =>
-        scalarResolventCoefficient
-          (retardedSpectralParameter (bandEnergy band v m px py) broadening)
-          (bandEnergy (oppositeBand band) v m px py) ^ 2)
-      (nhds 0)
-      (nhds (((((interbandEnergyGap band v m px py : ℝ) : ℂ))⁻¹) ^ 2)) := by
-    simpa only [retardedSpectralParameter] using
-      tendsto_oppositeBandCoefficient_sq_at_bandPole .retarded band v m px py hE
-  have hadv : Tendsto
-      (fun broadening : ℝ =>
-        scalarResolventCoefficient
-          (advancedSpectralParameter (bandEnergy band v m px py) broadening)
-          (bandEnergy (oppositeBand band) v m px py) ^ 2)
-      (nhds 0)
-      (nhds (((((interbandEnergyGap band v m px py : ℝ) : ℂ))⁻¹) ^ 2)) := by
-    simpa only [advancedSpectralParameter] using
-      tendsto_oppositeBandCoefficient_sq_at_bandPole .advanced band v m px py hE
-  have hμν := hret.mul
+  have hside (side : SpectralSide) :=
+    tendsto_scalarResolventCoefficient_spectralParameter_zero
+      side (bandEnergy band v m px py) (bandEnergy (oppositeBand band) v m px py)
+      ((bandEnergy_injective v m px py hE).ne (ne_oppositeBand band))
+  have hμν := ((hside .retarded).pow 2).mul
     (tendsto_const_nhds : Tendsto
       (fun _ : ℝ => currentBandBlockTrace μ ν (oppositeBand band) band e v m px py)
       (nhds 0)
       (nhds (currentBandBlockTrace μ ν (oppositeBand band) band e v m px py)))
-  have hνμ := hadv.mul
+  have hνμ := ((hside .advanced).pow 2).mul
     (tendsto_const_nhds : Tendsto
       (fun _ : ℝ => currentBandBlockTrace ν μ (oppositeBand band) band e v m px py)
       (nhds 0)
       (nhds (currentBandBlockTrace ν μ (oppositeBand band) band e v m px py)))
-  simpa [interbandSpectatorCurrentFactor, bastinInterbandBlockDifference, mul_sub] using
+  simpa [interbandSpectatorCurrentFactor, bastinInterbandBlockDifference, mul_sub,
+    scalarResolventCoefficient, interbandEnergyGap, retardedSpectralParameter,
+    advancedSpectralParameter] using
     hμν.sub hνμ
 
 end
