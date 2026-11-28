@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Transport.Analysis.ContinuumMeasure
 import LeanCondensedMatter.Analysis.Lorentzian.Kernel
 import LeanCondensedMatter.Transport.Disorder.InPlaneLadder
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.Vertex.Born.Rung
@@ -103,17 +104,17 @@ private theorem currentRungBoundary_eq_lorentzianIntegral
         output 0 v m probeEnergy disorderStrength hbar pMax =
       finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumeratorZeroBroadeningBoundary
           output 0 v m probeEnergy disorderStrength hbar pMax *
-        (((2 * Real.pi * continuumBornDisorderMeasurePrefactor disorderStrength hbar) *
+        (((2 * Real.pi * weightedMomentumMeasurePrefactor disorderStrength hbar) *
           (∫ p in (0 : ℝ)..pMax,
             p / ((boundaryRACenter v m probeEnergy disorderStrength hbar pMax - v ^ 2 * p ^ 2) ^ 2 +
               boundaryRAWidth v m probeEnergy disorderStrength hbar pMax ^ 2)) : ℝ) : ℂ) := by
   let A := boundaryRACenter v m probeEnergy disorderStrength hbar pMax
   let B := boundaryRAWidth v m probeEnergy disorderStrength hbar pMax
-  let scale := 2 * Real.pi * continuumBornDisorderMeasurePrefactor disorderStrength hbar
+  let scale := 2 * Real.pi * weightedMomentumMeasurePrefactor disorderStrength hbar
   rw [finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficientZeroBroadeningBoundary_eq_angularNumerator_mul_integral]
   congr 1
   have hintegrand (p : ℝ) :
-      (continuumBornDisorderMeasurePrefactor disorderStrength hbar : ℂ) * (p : ℂ) *
+      (weightedMomentumMeasurePrefactor disorderStrength hbar : ℂ) * (p : ℂ) *
           ((2 * Real.pi : ℝ) : ℂ) *
           (finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProductZeroBroadeningBoundary
             v m p probeEnergy disorderStrength hbar pMax)⁻¹ =
@@ -268,7 +269,7 @@ theorem tendsto_finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBou
   let width := fun disorderStrength : ℝ =>
     boundaryRAWidth v m probeEnergy disorderStrength hbar pMax
   let scale := fun disorderStrength : ℝ =>
-    2 * Real.pi * continuumBornDisorderMeasurePrefactor disorderStrength hbar
+    2 * Real.pi * weightedMomentumMeasurePrefactor disorderStrength hbar
   have hl : l ≤ nhds 0 := by
     dsimp [l, nhdsWithin]
     exact inf_le_left

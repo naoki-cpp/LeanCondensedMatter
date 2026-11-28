@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Transport.Analysis.ContinuumMeasure
 import LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.HallZeroBroadeningWeakDisorder
 import LeanCondensedMatter.Transport.Disorder.InPlaneLadder
 import Mathlib.Tactic.FieldSimp
@@ -40,7 +41,7 @@ theorem finiteCutoffContinuumBornDysonOrderedXYRetardedAdvancedDressedSurfaceMom
     (e v m probeEnergy disorderStrength hbar pMax : ℝ) :
     let q : ℂ := (((-e : ℝ) : ℂ)) * (((v : ℝ) : ℂ))
     let pref : ℂ :=
-      (continuumBornDisorderMeasurePrefactor disorderStrength hbar : ℂ)
+      (weightedMomentumMeasurePrefactor disorderStrength hbar : ℂ)
     let solved := finiteCutoffContinuumBornDysonLadderSolvedVectorZeroBroadeningBoundary
       v m probeEnergy disorderStrength hbar pMax
     let rung := finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary
@@ -62,7 +63,7 @@ private theorem tendsto_orderedXYProvenance_rungYSolvedX_disorder_zero
       (fun disorderStrength : ℝ =>
         let q : ℂ := (((-e : ℝ) : ℂ)) * (((v : ℝ) : ℂ))
         let pref : ℂ :=
-          (continuumBornDisorderMeasurePrefactor disorderStrength hbar : ℂ)
+          (weightedMomentumMeasurePrefactor disorderStrength hbar : ℂ)
         let solved := finiteCutoffContinuumBornDysonLadderSolvedVectorZeroBroadeningBoundary
           v m probeEnergy disorderStrength hbar pMax
         let rung := finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary
@@ -111,7 +112,7 @@ private theorem tendsto_orderedXYProvenance_rungYSolvedX_disorder_zero
   filter_upwards [self_mem_nhdsWithin] with disorderStrength hdisorder
   have hdisorderC : (disorderStrength : ℂ) ≠ 0 := by
     exact_mod_cast ne_of_gt hdisorder
-  dsimp [q, measure, continuumBornDisorderMeasurePrefactor]
+  dsimp [q, measure, weightedMomentumMeasurePrefactor]
   push_cast
   field_simp [hdisorderC, hmeasure]
 
@@ -124,7 +125,7 @@ private theorem tendsto_orderedXYProvenance_rungXSolvedY_disorder_zero
       (fun disorderStrength : ℝ =>
         let q : ℂ := (((-e : ℝ) : ℂ)) * (((v : ℝ) : ℂ))
         let pref : ℂ :=
-          (continuumBornDisorderMeasurePrefactor disorderStrength hbar : ℂ)
+          (weightedMomentumMeasurePrefactor disorderStrength hbar : ℂ)
         let solved := finiteCutoffContinuumBornDysonLadderSolvedVectorZeroBroadeningBoundary
           v m probeEnergy disorderStrength hbar pMax
         let rung := finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary
@@ -177,7 +178,7 @@ private theorem tendsto_orderedXYProvenance_rungXSolvedY_disorder_zero
   filter_upwards [self_mem_nhdsWithin] with disorderStrength hdisorder
   have hdisorderC : (disorderStrength : ℂ) ≠ 0 := by
     exact_mod_cast ne_of_gt hdisorder
-  dsimp [q, measure, continuumBornDisorderMeasurePrefactor]
+  dsimp [q, measure, weightedMomentumMeasurePrefactor]
   push_cast
   field_simp [hdisorderC, hmeasure]
 
@@ -193,7 +194,7 @@ theorem tendsto_finiteCutoffContinuumBornDysonOrderedXYRungSolvedProvenance_diso
       (fun disorderStrength : ℝ =>
         let q : ℂ := (((-e : ℝ) : ℂ)) * (((v : ℝ) : ℂ))
         let pref : ℂ :=
-          (continuumBornDisorderMeasurePrefactor disorderStrength hbar : ℂ)
+          (weightedMomentumMeasurePrefactor disorderStrength hbar : ℂ)
         let solved := finiteCutoffContinuumBornDysonLadderSolvedVectorZeroBroadeningBoundary
           v m probeEnergy disorderStrength hbar pMax
         let rung := finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary

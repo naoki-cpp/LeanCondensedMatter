@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Transport.Analysis.ContinuumMeasure
 import LeanCondensedMatter.Models.MassiveDirac.Conductivity.Hall.NonCrossingDecomposition
 import LeanCondensedMatter.Transport.Disorder.InPlaneLadder
 import LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.HallZeroBroadeningProvenance
@@ -60,7 +61,7 @@ theorem tendsto_finiteCutoffContinuumBornDysonOrderedXYRungSolvedProvenanceCondu
       (fun disorderStrength : ℝ =>
         let q : ℂ := (((-e : ℝ) : ℂ)) * (((v : ℝ) : ℂ))
         let pref : ℂ :=
-          (continuumBornDisorderMeasurePrefactor disorderStrength hbar : ℂ)
+          (weightedMomentumMeasurePrefactor disorderStrength hbar : ℂ)
         let solved := finiteCutoffContinuumBornDysonLadderSolvedVectorZeroBroadeningBoundary
           v m probeEnergy disorderStrength hbar pMax
         let rung := finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary

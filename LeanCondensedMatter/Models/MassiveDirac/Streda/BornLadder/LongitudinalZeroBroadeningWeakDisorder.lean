@@ -67,7 +67,7 @@ theorem tendsto_disorder_mul_momentum_integral
   unfold finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceMomentumIntegralZeroBroadeningBoundary
   simp only [inPlaneLadderAction_apply_x,
     finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary,
-    continuumBornDisorderMeasurePrefactor]
+    weightedMomentumMeasurePrefactor]
   push_cast
   field_simp [hdisorderC, hmeasure]
 

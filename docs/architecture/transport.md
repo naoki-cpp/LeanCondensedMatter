@@ -398,7 +398,7 @@ and assumptions local.
 
 The massive-Dirac continuum normalization keeps each physical factor at the narrowest owner.
 `Analysis.ContinuumMeasure` owns both the bare physical-momentum measure and its exact full-angle
-radial prefactor. `Disorder.ContinuumMeasurePrefactor` owns one external scalar-disorder line times
+radial prefactor. Its `weightedMomentumMeasurePrefactor` specializes to one external scalar-disorder line times
 one bare physical-momentum measure independently of where angular reduction is performed, while
 `Streda.ConductivityNormalization` owns the model-independent Bastin/Středa trace prefactor and its
 composition with continuum normalization. Momentum-space non-crossing
