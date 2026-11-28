@@ -217,8 +217,15 @@ theorem ExternalInsertionBlockLayout.assembleConnectedBlockFamily_injective
             (Finset.univ : Finset (Fin N)) FX hX) anchor =
         (layoutY.assembleDiagram (Finset.univ : Finset (Fin N)) FY).externalBlockLayout
           (layoutY.hasNoVacuumComponent_assembleDiagram
-            (Finset.univ : Finset (Fin N)) FY hY) anchor :=
-    ExternalInsertionDiagram.externalBlockLayout_congr hdiagram _ _ anchor
+            (Finset.univ : Finset (Fin N)) FY hY) anchor := by
+      have transport {d e : ExternalInsertionDiagram ExternalLabel InternalLabel E N
+          (Finset.univ : Finset (Fin N))} (hde : d = e)
+          (hd : HasNoVacuumComponent d.vertexGraph)
+          (he : HasNoVacuumComponent e.vertexGraph) :
+          d.externalBlockLayout hd anchor = e.externalBlockLayout he anchor := by
+        subst e
+        rfl
+      exact transport hdiagram _ _
   have hlayout : layoutX = layoutY := by
     calc
       layoutX =

@@ -221,13 +221,6 @@ theorem ExternalInsertionBlockLayout.ownerSlotCongr_interactionEquiv
   exact (Subtype.heq_iff_coe_eq (fun _ => by simp [hfst])).2 rfl
 
 
-/-- Interaction-owner relabeling does not modify the canonical external
-insertion order or its source-block equivalence. -/
-theorem ExternalInsertionBlockLayout.ownerSlotCongr_sourceEquiv
-    (layout : ExternalInsertionBlockLayout E N) (e : Fin N ≃ Fin N) :
-    (layout.ownerSlotCongr e).sourceEquiv = layout.sourceEquiv := by
-  rfl
-
 /-- The independent local leg families are transported componentwise
 along the actual ambient owner-fiber permutation. -/
 noncomputable def ExternalInsertionBlockLayout.ownerSlotCongrLocalLegEquiv
@@ -271,7 +264,6 @@ theorem ExternalInsertionBlockLayout.ownerSlotCongr_legEquiv
             (externalInsertionExternalLeg E (Finset.univ : Finset (Fin N)) x))
     simp only [externalInsertionLegCongr_externalLeg,
       ExternalInsertionBlockLayout.legEquiv_externalLeg]
-    rw [layout.ownerSlotCongr_sourceEquiv e]
     change
       (⟨(layout.sourceEquiv x).1,
         externalInsertionExternalLeg
