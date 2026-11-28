@@ -58,35 +58,31 @@ private def declarationModule? (env : Environment) (declName : Name) : Option Na
   let moduleIdx ← env.const2ModIdx.get? declName
   env.header.moduleNames[moduleIdx]?
 
-private def collectCandidates : CommandElabM (Array Candidate × NameSet) := do
+/-- Collect source-backed audit inputs in one environment scan. Theorem-valued
+projections are consumers, not independently proved audit targets. -/
+private def collectInputs :
+    CommandElabM (Array Candidate × NameSet × NameSet × Array (Name × Expr)) := do
   let env ← getEnv
   let mut candidates := #[]
   let mut theoremNames := NameSet.empty
-  for (declName, info) in env.constants.toList do
-    let .thmInfo theoremInfo := info | continue
-    let some moduleName := declarationModule? env declName | continue
-    unless projectModule? moduleName do continue
-    -- Prop-valued structure fields elaborate to theorem-valued projection functions.
-    -- They have source ranges, but they are assumptions of the structure rather than
-    -- independently proved theorems to review, privatize, or remove.
-    if env.isProjectionFn declName then continue
-    -- Other generated declarations, such as structure extensionality and injectivity
-    -- theorems, do not have their own source declaration range.
-    unless (← findDeclarationRanges? declName).isSome do continue
-    candidates := candidates.push { name := declName, moduleName, theoremInfo }
-    theoremNames := theoremNames.insert declName
-  return (candidates, theoremNames)
-
-private def collectProjectAxioms : CommandElabM NameSet := do
-  let env ← getEnv
   let mut projectAxioms := NameSet.empty
+  let mut otherConsumers := #[]
   for (declName, info) in env.constants.toList do
-    let .axiomInfo _ := info | continue
     let some moduleName := declarationModule? env declName | continue
     unless projectModule? moduleName do continue
     unless (← findDeclarationRanges? declName).isSome do continue
-    projectAxioms := projectAxioms.insert declName
-  return projectAxioms
+    match info with
+    | .thmInfo theoremInfo =>
+      if env.isProjectionFn declName then
+        otherConsumers := otherConsumers.push (declName, theoremInfo.value)
+      else
+        candidates := candidates.push { name := declName, moduleName, theoremInfo }
+        theoremNames := theoremNames.insert declName
+    | .axiomInfo _ => projectAxioms := projectAxioms.insert declName
+    | .defnInfo info => otherConsumers := otherConsumers.push (declName, info.value)
+    | .opaqueInfo info => otherConsumers := otherConsumers.push (declName, info.value)
+    | _ => pure ()
+  return (candidates, theoremNames, projectAxioms, otherConsumers)
 
 private def directProjectTheoremDependencyNames
     (projectTheorems : NameSet) (declName : Name) (value : Expr) : Array Name :=
@@ -187,11 +183,10 @@ private def addConsumer
   consumers.insert dependency updated
 
 private def collectEntries
-    (projectAxioms : NameSet) :
-    CommandElabM (Array Entry × NameSet × NameMap (Array String)) := do
+    (candidates : Array Candidate) (projectTheorems projectAxioms : NameSet) :
+    CommandElabM (Array Entry × NameMap (Array String)) := do
   let env ← getEnv
   let simpTheorems := simpExtension.getState env
-  let (candidates, projectTheorems) ← collectCandidates
   let mut entries := #[]
   let mut theoremDependents : NameMap (Array String) := {}
   for candidate in candidates do
@@ -231,26 +226,15 @@ private def collectEntries
       directWrapperTargetModule
       crossModuleDirectWrapper
     }
-  return (
-    entries.qsort fun left right => left.name < right.name,
-    projectTheorems,
-    theoremDependents)
+  return (entries.qsort (fun left right => left.name < right.name), theoremDependents)
 
+/-- Reuse the edges already collected from audited theorem proofs and extend
+them with references from the remaining source-backed consumers. -/
 private def collectCompiledConsumers
-    (projectTheorems : NameSet) : CommandElabM (NameMap (Array String)) := do
-  let env ← getEnv
-  let mut consumers : NameMap (Array String) := {}
-  for (declName, info) in env.constants.toList do
-    let some moduleName := declarationModule? env declName | continue
-    unless projectModule? moduleName do continue
-    unless (← findDeclarationRanges? declName).isSome do continue
-    let value? :=
-      match info with
-      | .thmInfo theoremInfo => some theoremInfo.value
-      | .defnInfo definitionInfo => some definitionInfo.value
-      | .opaqueInfo opaqueInfo => some opaqueInfo.value
-      | _ => none
-    let some value := value? | continue
+    (projectTheorems : NameSet) (theoremDependents : NameMap (Array String))
+    (otherConsumers : Array (Name × Expr)) : NameMap (Array String) := Id.run do
+  let mut consumers := theoremDependents
+  for (declName, value) in otherConsumers do
     let dependencyNames := directProjectTheoremDependencyNames projectTheorems declName value
     for dependency in dependencyNames do
       consumers := addConsumer consumers dependency declName.toString
@@ -264,10 +248,10 @@ private def mentionedInCompleted (completed declName : String) : Bool :=
     containsSubstring completed s!"`{declarationBaseName declName}`"
 
 private def mentionedInRetained
-    (retained : String) (allDeclarationNames : Array String) (declName : String) : Bool :=
+    (retained : String) (baseNameCounts : Std.HashMap String Nat) (declName : String) : Bool :=
   let baseName := declarationBaseName declName
   containsSubstring retained s!"- `{declName}`" ||
-    ((allDeclarationNames.filter fun name => declarationBaseName name == baseName).size == 1 &&
+    ((baseNameCounts[baseName]?).getD 0 == 1 &&
       containsSubstring retained s!"- `{baseName}`")
 
 private def retainedDeclarationNames (retained : String) : Array String :=
@@ -288,7 +272,9 @@ private def annotateEntries
     (entries : Array Entry)
     (theoremDependents compiledConsumers : NameMap (Array String))
     (completed retained : String) : Array CatalogEntry :=
-  let allDeclarationNames := entries.map fun entry => entry.name
+  let baseNameCounts := entries.foldl (init := ({} : Std.HashMap String Nat)) fun counts entry =>
+    let baseName := declarationBaseName entry.name
+    counts.insert baseName ((counts[baseName]?).getD 0 + 1)
   entries.map fun entry =>
     let dependents := sortedConsumers theoremDependents entry.declName
     let compiledConsumers := sortedConsumers compiledConsumers entry.declName
@@ -299,7 +285,7 @@ private def annotateEntries
       | [consumer] => privateDeclarationString? consumer
       | _ => false
     let terminal := dependents.isEmpty
-    let retainedMention := mentionedInRetained retained allDeclarationNames entry.name
+    let retainedMention := mentionedInRetained retained baseNameCounts entry.name
     let retainedNeedsReview :=
       retainedMention && (terminal || compiledConsumers.isEmpty || singleCompiledConsumer ||
         entry.directWrapperOf.isSome)
@@ -811,9 +797,9 @@ run_cmd do
     liftIO <| IO.FS.writeFile (outputDir / "declarations.json") declarations.pretty
     logInfo m!"Generated declaration graph with {(declarations.getArr?.toOption.getD #[]).size} declarations"
     return
-  let projectAxioms ← collectProjectAxioms
-  let (entries, projectTheorems, theoremDependents) ← collectEntries projectAxioms
-  let compiledConsumers ← collectCompiledConsumers projectTheorems
+  let (candidates, projectTheorems, projectAxioms, otherConsumers) ← collectInputs
+  let (entries, theoremDependents) ← collectEntries candidates projectTheorems projectAxioms
+  let compiledConsumers := collectCompiledConsumers projectTheorems theoremDependents otherConsumers
   let completed ← liftIO <| IO.FS.readFile ("docs" / "completed.md")
   let retained ← liftIO <| IO.FS.readFile ("docs" / "theorem-catalog-retained.md")
   let catalog := annotateEntries entries theoremDependents compiledConsumers completed retained

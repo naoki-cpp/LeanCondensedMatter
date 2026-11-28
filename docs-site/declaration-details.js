@@ -1,5 +1,5 @@
 import { renderLeanMath, renderLeanSourceFallback } from "./lean-math.js";
-import { renderStatement } from "./statement-view.js";
+import { renderStatement, renderStructuredDefinition } from "./statement-view.js";
 
 const SOURCE_BASE_URL = "https://raw.githubusercontent.com/naoki-cpp/LeanCondensedMatter/main/";
 const definitionSourceRequests = new Map();
@@ -102,7 +102,9 @@ function declarationSourceRange(entry, source) {
 function definitionBody(entry) {
   if (entry.kind !== "def" && entry.kind !== "abbrev") return;
   const firstSourceLine = entry.declarationStartLine ?? entry.sourceLine;
-  if (!entry.sourceFile || !Number.isInteger(firstSourceLine) || !Number.isInteger(entry.sourceEndLine)) return;
+  const hasStructuredBody = typeof entry.structuredStatement?.definitionBody?.text === "string";
+  const hasSourceRange = entry.sourceFile && Number.isInteger(firstSourceLine) && Number.isInteger(entry.sourceEndLine);
+  if (!hasStructuredBody && !hasSourceRange) return;
 
   const disclosure = element("details", "definition-body");
   const summary = element("summary", "", "Definition body");
@@ -114,6 +116,13 @@ function definitionBody(entry) {
     disclosure.dataset.state = "loading";
     content.textContent = "Loading definition body…";
     try {
+      content.replaceChildren();
+      if (renderStructuredDefinition(content, entry)) {
+        disclosure.dataset.state = "loaded";
+        return;
+      }
+      if (!hasSourceRange) throw new Error("definition source range is unavailable");
+      content.textContent = "Loading definition body…";
       const source = await loadDefinitionSource(entry.sourceFile);
       const sourceRange = declarationSourceRange(entry, source);
       if (!sourceRange) throw new Error("definition source range is unavailable");

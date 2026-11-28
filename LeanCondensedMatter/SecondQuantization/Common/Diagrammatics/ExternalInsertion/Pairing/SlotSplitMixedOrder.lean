@@ -73,27 +73,17 @@ theorem externalInsertionSlotLegSplitting_right_strictMono_of_localOrder
     StrictMono localPosition →
       StrictMono (fun q : Fin (2 * (2 * S.card)) => splitting (Sum.inr q)) := by
   intro S order f splitting localPosition hlocal
-  have hembed : StrictMono (fun p : Fin (2 * (2 * S.card)) =>
-      externalInsertionMixedTimeOrderedAtomicLegPosition externalTime σ
-        (orderedExternalInsertionLegMap
-          (Fin.elim0 : Fin 0 → Fin (2 * E)) f
-          (externalInsertionMixedTimeOrderedAtomicLegEquiv (E := 0)
-            (Fin.elim0 : Fin 0 → ℝ) (σ ∘ f) p))) := by
-    have hmap :=
-      externalInsertionMixedTimeOrderedAtomicLegPosition_map_strictMono
-        (E₁ := 0) (E₂ := E) (m := S.card) (n := N)
-        (fExternal := (Fin.elim0 : Fin 0 → Fin (2 * E)))
-        (fInteraction := f)
-        (by
-          intro a b _
-          exact a.elim0)
-        (S.orderIsoOfFin rfl).strictMono externalTime σ
-    have hzero :
-        externalTime ∘ (Fin.elim0 : Fin 0 → Fin (2 * E)) =
-          (Fin.elim0 : Fin 0 → ℝ) := by
-      funext a
-      exact a.elim0
-    simpa only [hzero, Nat.add_zero] using hmap
+  have hzero :
+      externalTime ∘ (Fin.elim0 : Fin 0 → Fin (2 * E)) =
+        (Fin.elim0 : Fin 0 → ℝ) := Subsingleton.elim _ _
+  have hembed :=
+    externalInsertionMixedTimeOrderedAtomicLegPosition_map_strictMono
+      (E₁ := 0) (E₂ := E) (m := S.card) (n := N)
+      (fExternal := (Fin.elim0 : Fin 0 → Fin (2 * E)))
+      (fInteraction := f)
+      (fun a _ _ => a.elim0)
+      (S.orderIsoOfFin rfl).strictMono externalTime σ
+  simp only [hzero, Nat.add_zero] at hembed
   have hposition (q : Fin (2 * (2 * S.card))) :
       splitting (Sum.inr q) =
         externalInsertionMixedTimeOrderedAtomicLegPosition externalTime σ
@@ -145,35 +135,6 @@ theorem ExternalInsertionDiagram.ofSlotSplit_pairingInMixedOrder_eq_ofSplit_orde
       (PairingOn.ofSplit_reindex ambient ext.pairing vac.pairing
         (Equiv.refl (Fin (2 * (2 * T.card + E)))) leg).symm
 
-/-- In increasing support-slot coordinates, the external sector's mixed-to-fixed
-position map is the inverse of the standard standalone mixed-time permutation. -/
-private theorem externalInsertionSupportMixedPosition_eq_standard
-    {E n : ℕ} (T : Finset (Fin n))
-    (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ) :
-    ((externalInsertionMixedTimeOrderedAtomicLegEquiv
-    externalTime (σ ∘ fun i : Fin T.card => (T.orderIsoOfFin rfl i).1)).trans
-    ((Equiv.sumCongr
-      (Equiv.refl (Fin (2 * E)))
-      (((Equiv.subtypeUnivEquiv
-        (fun i : Fin T.card => Finset.mem_univ i)).trans
-        (T.orderIsoOfFin rfl).toEquiv).prodCongr (Equiv.refl (Fin 4)))).trans
-      (externalInsertionLegEquiv E T).symm)) =
-      (externalInsertionStandardToMixedAtomicPositionEquiv externalTime
-        (σ ∘ fun i : Fin T.card => (T.orderIsoOfFin rfl i).1)).symm := by
-  apply Equiv.ext
-  intro p
-  let leg := externalInsertionMixedTimeOrderedAtomicLegEquiv externalTime
-    (σ ∘ fun i : Fin T.card => (T.orderIsoOfFin rfl i).1) p
-  have hleg := congrArg Equiv.symm (externalInsertionLegCongr_standardize (E := E) T)
-  rw [← externalInsertionLegCongr_symm] at hleg
-  have h := congrArg
-    (fun e => e ((externalInsertionLegEquiv E
-      (Finset.univ : Finset (Fin T.card))).symm leg)) hleg
-  simp only [externalInsertionLegCongr, Equiv.trans_apply, Equiv.apply_symm_apply] at h
-  exact h
-
-
-
 /-- The external-half mixed-position embedding preserves mixed time order, because
 the support slots have been enumerated increasingly. -/
 theorem externalInsertionLeftMixedPosition_strictMono
@@ -204,10 +165,17 @@ theorem externalInsertionLeftMixedPosition_fixed
       externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T)
         (Sum.inl ((externalInsertionStandardToMixedAtomicPositionEquiv externalTime
         (σ ∘ fun i : Fin T.card => (T.orderIsoOfFin rfl i).1)).symm p)) := by
-  rw [← externalInsertionSupportMixedPosition_eq_standard T externalTime σ]
   intro f
   let leg := externalInsertionMixedTimeOrderedAtomicLegEquiv externalTime (σ ∘ f) p
-  rw [externalInsertionMixedTimeAmbientPositionEquiv_legPosition]
+  have hcast := congrArg Equiv.symm (externalInsertionLegCongr_standardize (E := E) T)
+  have hfixed := congrArg
+    (fun e => e ((externalInsertionLegEquiv E
+      (Finset.univ : Finset (Fin T.card))).symm leg)) hcast
+  change _ = (externalInsertionStandardToMixedAtomicPositionEquiv
+    externalTime (σ ∘ f)).symm p at hfixed
+  rw [← hfixed, ← externalInsertionLegCongr_symm,
+    externalInsertionMixedTimeAmbientPositionEquiv_legPosition]
+  simp only [externalInsertionLegCongr, Equiv.trans_apply, Equiv.apply_symm_apply]
   change (externalInsertionLegEquiv E (Finset.univ : Finset (Fin n))).symm
       (orderedExternalInsertionLegMap (fun e => e) f leg) =
     externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T)
@@ -286,11 +254,7 @@ theorem externalInsertionLeftMixedPosition_split_strictMono
       Sum.map_inl, Equiv.refl_apply, Equiv.apply_symm_apply] using
         (externalInsertionLeftMixedPosition_fixed T externalTime σ p).symm
   intro a b hab
-  change
-    ((Equiv.sumCongr localFixed (Equiv.refl (Fin (2 * (2 * S.card))))).trans split)
-        (Sum.inl a) <
-      ((Equiv.sumCongr localFixed (Equiv.refl (Fin (2 * (2 * S.card))))).trans split)
-        (Sum.inl b)
+  dsimp only
   rw [hposition a, hposition b]
   exact (externalInsertionLeftMixedPosition_strictMono T externalTime σ) hab
 

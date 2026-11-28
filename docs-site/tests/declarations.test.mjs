@@ -48,6 +48,9 @@ test("shared declaration detail counts distinct relations and keeps opaque bodie
   });
   assert.equal(declarationStatement({ ...entry, kind: "opaque" }).length, 1);
   assert.equal(declarationStatement({ ...entry, kind: "def" }).at(-1).tag, "details");
+  const structuredOnly = { kind: "def", statement: "Nat", structuredStatement: { definitionBody: { text: "1" } } };
+  assert.equal(declarationStatement(structuredOnly).at(-1).tag, "details");
+  assert.equal(declarationStatement({ ...structuredOnly, kind: "opaque" }).length, 1);
 });
 
 test("MixedOrderData overview counts and opens both definitions", async () => {
