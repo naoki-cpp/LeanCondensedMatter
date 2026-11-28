@@ -22,10 +22,13 @@ Structured records become available after the declaration catalog is regenerated
 A best-effort display of an elaborated Lean expression (or its pretty-printed text when structured data is unavailable). Recognized fully qualified constants with matching explicit arity render as mathematical notation: sums, products, adjoints, traces, norms, exponentials, inner products and scalar actions. Finite sum and product notation retains the domain and applies the supplied function to a fresh display index; `tsum` notation does not assert summability. Generic `Star.star` is distinct from an operator adjoint. Unsupported syntax or an unavailable formula renderer is shown in Lean notation instead. The original Lean statement remains authoritative.
 
 **Lean notation**:
-The Lean text kept with a formula. Statements use Lean's pretty-printed type; definition bodies retain the original source expression.
+The Lean text kept with a formula. Statements use Lean's pretty-printed type. A structured definition body retains the pretty-printed elaborated expression in the statement telescope; a source-backed body retains the original source expression.
 
 **Definition body**:
-The source body of a source-backed definition or abbreviation. The Explorer reads it from the public Lean source only when its collapsed disclosure is opened, then applies the same math view and Lean-notation fallback as for statements. Equation-style declarations that cannot be isolated are shown as Lean source.
+The body of a definition or abbreviation. When supplied, the optional `structuredStatement.definitionBody` expression tree (with a `text` field) shares the statement telescope and symbol names. The Explorer prefers that record and falls back to loading the public Lean source on demand when it is absent. Only `def` and `abbrev` bodies are eligible. The catalog producer does not yet emit this optional record; the reader is ready for it. Equation-style declarations that cannot be isolated are shown as Lean source.
+
+**Lambda binder**:
+An expression node with `kind: "lambda"`, a `binder` containing its elaborated variable `id` and `type` expression, and a `body` expression in that scope. The renderer identifies bound occurrences by ID and gives them fresh display names. Finite sums, products, and total sums of explicit lambdas use the bound expression directly. Opaque text within a renamed scope falls back rather than guessing its bindings. Total sums do not assert summability.
 
 **Opaque declaration**:
 A declaration whose value is intentionally not exposed by the Explorer. Its type is shown as a statement; no body is read or published.
