@@ -53,7 +53,7 @@ theorem finSumFinEquiv_map_val_le_iff
           omega
 
 /-- Lexicographic key for stable event ordering: later times come first, then lower ranks. -/
-private def stableTimedEventKey {α T K : Type*} [LinearOrder T] [LinearOrder K] (time : α → T) (rank : α → K)
+private def stableTimedEventKey {α T K : Type*} (time : α → T) (rank : α → K)
     (a : α) : OrderDual T ×ₗ K :=
   toLex (OrderDual.toDual (time a), rank a)
 
