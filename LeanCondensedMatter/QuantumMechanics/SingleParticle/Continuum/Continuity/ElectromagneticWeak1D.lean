@@ -45,10 +45,8 @@ theorem electromagnetic_schrodinger_weak_continuity_interval
       (fun x => electromagneticProbabilityCurrentDivergenceValue1D
         q ℏ mass (vectorPotential x) (vectorPotentialDerivative x)
         (ψ x) (ψx x) (ψxx x)) volume a b) :
-    intervalSmearedDensityRate1D a b test
-        (fun x => probabilityDensityTimeDerivativeValue (ψ x) (ψt x)) =
-      intervalSmearedCurrentPairing1D a b testDerivative
-          (fun x => electromagneticProbabilityCurrentValue1D
+    (∫ x in a..b, test x * probabilityDensityTimeDerivativeValue (ψ x) (ψt x)) =
+      (∫ x in a..b, testDerivative x * electromagneticProbabilityCurrentValue1D
             q ℏ mass (vectorPotential x) (ψ x) (ψx x)) -
         weightedBoundaryCurrent1D a b test
           (fun x => electromagneticProbabilityCurrentValue1D
@@ -78,8 +76,7 @@ theorem electromagnetic_schrodinger_weak_continuity_interval
     htest hcurrent
     (htestIntegrable.mul_continuousOn (HasDerivAt.continuousOn hcurrent))
     (hcurrentIntegrable.continuousOn_mul (HasDerivAt.continuousOn htest))
-  simpa [intervalSmearedDensityRate1D, intervalSmearedCurrentPairing1D,
-    weightedBoundaryCurrent1D, ContinuousLinearMap.mul_apply'] using hweak
+  simpa only [weightedBoundaryCurrent1D, ContinuousLinearMap.mul_apply'] using hweak
 
 /-- Under explicit dominated time-differentiation hypotheses, the electromagnetic Schrödinger
  equation gives the derivative of an interval-smeared probability density. -/
@@ -123,8 +120,7 @@ theorem hasDerivAt_intervalSmearedProbabilityDensity1D_of_electromagnetic_schrod
         (ψ t x) (ψx x) (ψxx x)) volume a b) :
     HasDerivAt
       (fun τ => intervalSmearedProbabilityDensity1D a b test (ψ τ))
-      (intervalSmearedCurrentPairing1D a b testDerivative
-          (fun x => electromagneticProbabilityCurrentValue1D
+      ((∫ x in a..b, testDerivative x * electromagneticProbabilityCurrentValue1D
             q ℏ mass (vectorPotential x) (ψ t x) (ψx x)) -
         weightedBoundaryCurrent1D a b test
           (fun x => electromagneticProbabilityCurrentValue1D
@@ -162,10 +158,8 @@ theorem electromagnetic_schrodinger_weak_continuity_wholeSpace
       (fun x => electromagneticProbabilityCurrentDivergenceValue1D
         q ℏ mass (vectorPotential x) (vectorPotentialDerivative x)
         (ψ x) (ψx x) (ψxx x)) volume a b) :
-    wholeSpaceSmearedDensityRate1D test
-        (fun x => probabilityDensityTimeDerivativeValue (ψ x) (ψt x)) =
-    wholeSpaceSmearedCurrentPairing1D (deriv test)
-        (fun x => electromagneticProbabilityCurrentValue1D
+    (∫ x, test x * probabilityDensityTimeDerivativeValue (ψ x) (ψt x)) =
+    (∫ x, deriv test x * electromagneticProbabilityCurrentValue1D
           q ℏ mass (vectorPotential x) (ψ x) (ψx x)) := by
   have hInterval := electromagnetic_schrodinger_weak_continuity_interval
     a b q ℏ mass hℏ hmass (fun x _ => (htestDifferentiable x).hasDerivAt)
@@ -216,8 +210,7 @@ theorem hasDerivAt_wholeSpaceSmearedProbabilityDensity1D_of_electromagnetic_schr
         (ψ t x) (ψx x) (ψxx x)) volume a b) :
     HasDerivAt
       (fun τ => wholeSpaceSmearedProbabilityDensity1D test (ψ τ))
-      (wholeSpaceSmearedCurrentPairing1D (deriv test)
-        (fun x => electromagneticProbabilityCurrentValue1D
+      ((∫ x, deriv test x * electromagneticProbabilityCurrentValue1D
           q ℏ mass (vectorPotential x) (ψ t x) (ψx x))) t := by
   have hInterval :=
     hasDerivAt_intervalSmearedProbabilityDensity1D_of_electromagnetic_schrodinger

@@ -24,6 +24,7 @@ namespace Continuum
 noncomputable section
 
 open MeasureTheory
+open scoped Interval
 
 /-- The first spatial derivative of a complex Schwartz wavefunction, still in Schwartz space. -/
 def schwartzSpatialDerivative1D (ψ : SchwartzMap ℝ ℂ) : SchwartzMap ℝ ℂ :=
@@ -133,10 +134,8 @@ theorem schrodinger_weak_continuity_interval_of_schwartz
     (hcurrentIntegrable : IntervalIntegrable
       (fun x => probabilityCurrentDivergenceValue1D ℏ κ (ψ x)
         (schwartzSpatialSecondDerivative1D ψ x)) volume a b) :
-    intervalSmearedDensityRate1D a b test
-        (fun x => probabilityDensityTimeDerivativeValue (ψ x) (ψt x)) =
-      intervalSmearedCurrentPairing1D a b testDerivative
-          (fun x => probabilityCurrentValue1D ℏ κ (ψ x)
+    (∫ x in a..b, test x * probabilityDensityTimeDerivativeValue (ψ x) (ψt x)) =
+      (∫ x in a..b, testDerivative x * probabilityCurrentValue1D ℏ κ (ψ x)
             (schwartzSpatialDerivative1D ψ x)) -
         weightedBoundaryCurrent1D a b test
           (fun x => probabilityCurrentValue1D ℏ κ (ψ x)

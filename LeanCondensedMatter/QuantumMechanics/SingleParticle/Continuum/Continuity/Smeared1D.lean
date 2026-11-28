@@ -52,8 +52,7 @@ theorem hasDerivAt_intervalSmearedProbabilityDensity1D
       HasDerivAt (fun u => (ψ u x).im) (ψt τ x).im τ) :
     HasDerivAt
       (fun τ => intervalSmearedProbabilityDensity1D a b test (ψ τ))
-      (intervalSmearedDensityRate1D a b test
-        (fun x => probabilityDensityTimeDerivativeValue (ψ t x) (ψt t x))) t := by
+      ((∫ x in a..b, test x * probabilityDensityTimeDerivativeValue (ψ t x) (ψt t x))) t := by
   have hFMeas : ∀ᶠ τ in nhds t,
       AEStronglyMeasurable
         (fun x => test x * probabilityDensityValue (ψ τ x))
@@ -74,7 +73,7 @@ theorem hasDerivAt_intervalSmearedProbabilityDensity1D
     (F := fun τ x => test x * probabilityDensityValue (ψ τ x))
     (F' := fun τ x => test x * probabilityDensityTimeDerivativeValue (ψ τ x) (ψt τ x))
     hs hFMeas hDensityIntegrable hDensityRateMeas hBoundAE hBoundIntegrable hDiff
-  simpa [intervalSmearedProbabilityDensity1D, intervalSmearedDensityRate1D] using h.2
+  simpa only [intervalSmearedProbabilityDensity1D] using h.2
 
 /-- The scalar-potential Schrödinger equation gives the time derivative of the spatially smeared
 probability density.
@@ -119,8 +118,7 @@ theorem hasDerivAt_intervalSmearedProbabilityDensity1D_of_schrodinger
       (fun x => probabilityCurrentDivergenceValue1D ℏ κ (ψ t x) (ψxx x)) volume a b) :
     HasDerivAt
       (fun τ => intervalSmearedProbabilityDensity1D a b test (ψ τ))
-      (intervalSmearedCurrentPairing1D a b testDerivative
-          (fun x => probabilityCurrentValue1D ℏ κ (ψ t x) (ψx x)) -
+      ((∫ x in a..b, testDerivative x * probabilityCurrentValue1D ℏ κ (ψ t x) (ψx x)) -
         weightedBoundaryCurrent1D a b test
           (fun x => probabilityCurrentValue1D ℏ κ (ψ t x) (ψx x))) t := by
   have hdensity := hasDerivAt_intervalSmearedProbabilityDensity1D
