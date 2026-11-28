@@ -26,28 +26,25 @@ namespace Combinatorics
 
 variable {ι : Type*} [Fintype ι]
 
-private noncomputable def connectedCycleCoeff
-    (ζ : ℂ) (K : Matrix ι ι ℂ) (m : ℕ) : ℂ :=
-  if m = 0 then 0
-  else
-    (∑ x : Fin m → ι,
-      singleCycleContribution ζ (fun a b : Fin m => K (x a) (x b)) Finset.univ) /
-        (Nat.factorial m : ℂ)
-
 /-- The formal connected-cycle series associated with exchange weight `ζ` and finite kernel `K`.
 
 Its constant coefficient is zero. At positive order `m`, its coefficient is the EGF-normalized
 assignment-summed one-cycle contribution. -/
 noncomputable def permutationConnectedCycleSeries
     (ζ : ℂ) (K : Matrix ι ι ℂ) : PowerSeries ℂ :=
-  PowerSeries.mk (connectedCycleCoeff ζ K)
+  PowerSeries.mk fun m =>
+    if m = 0 then 0
+    else
+      (∑ x : Fin m → ι,
+        singleCycleContribution ζ (fun a b : Fin m => K (x a) (x b)) Finset.univ) /
+          (Nat.factorial m : ℂ)
 
 @[simp]
 theorem constantCoeff_permutationConnectedCycleSeries
     (ζ : ℂ) (K : Matrix ι ι ℂ) :
     PowerSeries.constantCoeff (permutationConnectedCycleSeries ζ K) = 0 := by
   rw [← PowerSeries.coeff_zero_eq_constantCoeff]
-  simp [permutationConnectedCycleSeries, connectedCycleCoeff]
+  simp [permutationConnectedCycleSeries]
 
 /-- Positive coefficients of the formal connected-cycle series are the universal cyclic trace
 coefficients `ζ^(m-1) tr(K^m) / m`. -/
@@ -56,34 +53,18 @@ theorem coeff_permutationConnectedCycleSeries_of_pos
     PowerSeries.coeff m (permutationConnectedCycleSeries ζ K) =
       ζ ^ (m - 1) * Matrix.trace (K ^ m) / (m : ℂ) := by
   rw [permutationConnectedCycleSeries, PowerSeries.coeff_mk]
-  rw [connectedCycleCoeff, ite_eq_right (Nat.ne_of_gt hm)]
+  rw [ite_eq_right (Nat.ne_of_gt hm)]
   rw [sum_singleCycleContribution_assignments_eq_factorial_mul_trace ζ K m hm]
-  calc
-    ζ ^ (m - 1) * ((Nat.factorial (m - 1) : ℂ) * Matrix.trace (K ^ m)) /
-          (Nat.factorial m : ℂ) =
-        ζ ^ (m - 1) * Matrix.trace (K ^ m) *
-          ((Nat.factorial (m - 1) : ℂ) / (Nat.factorial m : ℂ)) := by
-      ring
-    _ = ζ ^ (m - 1) * Matrix.trace (K ^ m) * (1 / (m : ℂ)) := by
-      rw [← Nat.mul_factorial_pred (Nat.ne_of_gt hm)]
-      push_cast
-      have hm0 : (m : ℂ) ≠ 0 := by
-        exact_mod_cast Nat.ne_of_gt hm
-      have hfac0 : (Nat.factorial (m - 1) : ℂ) ≠ 0 := by
-        exact_mod_cast Nat.factorial_ne_zero (m - 1)
-      field_simp [hm0, hfac0]
-    _ = ζ ^ (m - 1) * Matrix.trace (K ^ m) / (m : ℂ) := by
-      simp [div_eq_mul_inv]
+  rw [← Nat.mul_factorial_pred (Nat.ne_of_gt hm)]
+  push_cast
+  have hm0 : (m : ℂ) ≠ 0 := by
+    exact_mod_cast Nat.ne_of_gt hm
+  have hfac0 : (Nat.factorial (m - 1) : ℂ) ≠ 0 := by
+    exact_mod_cast Nat.factorial_ne_zero (m - 1)
+  field_simp [hm0, hfac0]
+
 
 variable [DecidableEq ι]
-
-/-- Apply scalar power-series coefficients to the power traces of a finite matrix.
-
-This is coefficientwise rather than an algebra homomorphism: it deliberately does not pretend that
-`Matrix ι ι ℂ` is a commutative coefficient ring. -/
-private noncomputable def tracePowerTransform
-    (K : Matrix ι ι ℂ) (f : PowerSeries ℂ) : PowerSeries ℂ :=
-  PowerSeries.mk fun m => PowerSeries.coeff m f * Matrix.trace (K ^ m)
 
 /-- The formal scalar series representing `tr log(1 - ζ t K)` through matrix power traces.
 
@@ -91,14 +72,15 @@ private noncomputable def tracePowerTransform
 Mathlib's `log(1 + X)` directly rather than reimplementing logarithm coefficients. -/
 noncomputable def formalTraceLogOneSubSeries
     (ζ : ℂ) (K : Matrix ι ι ℂ) : PowerSeries ℂ :=
-  tracePowerTransform K (PowerSeries.rescale (-ζ) (PowerSeries.log ℂ))
+  PowerSeries.mk fun m =>
+    PowerSeries.coeff m (PowerSeries.rescale (-ζ) (PowerSeries.log ℂ)) * Matrix.trace (K ^ m)
 
 @[simp]
 theorem coeff_formalTraceLogOneSubSeries
     (ζ : ℂ) (K : Matrix ι ι ℂ) (m : ℕ) :
     PowerSeries.coeff m (formalTraceLogOneSubSeries ζ K) =
       (-ζ) ^ m * PowerSeries.coeff m (PowerSeries.log ℂ) * Matrix.trace (K ^ m) := by
-  simp [formalTraceLogOneSubSeries, tracePowerTransform]
+  simp [formalTraceLogOneSubSeries]
 
 @[simp]
 theorem constantCoeff_formalTraceLogOneSubSeries
