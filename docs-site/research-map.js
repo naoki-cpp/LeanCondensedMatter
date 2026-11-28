@@ -26,7 +26,7 @@ function button(text, action, className = "") {
 
 export function renderResearchMap(children, entriesFor, onOpenDeclaration, onRegionChange, overviewHeader) {
   const section = element("section", "research-map");
-  const heading = element("h3", "", "Declaration dependency map");
+  const heading = element("h3", "", "Map");
   heading.id = "research-map-title";
   section.setAttribute("aria-labelledby", heading.id);
   const legend = element("ul", "research-map-legend");
