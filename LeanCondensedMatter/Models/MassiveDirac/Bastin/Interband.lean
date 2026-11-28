@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Models.MassiveDirac.Bastin.Spectator
+import LeanCondensedMatter.Models.MassiveDirac.Bastin.Limit
 import LeanCondensedMatter.QuantumTheory.TwoBand
 import LeanCondensedMatter.Models.MassiveDirac.Model.Berry.Symmetry
 import Mathlib.Tactic.FieldSimp
