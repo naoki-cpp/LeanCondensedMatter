@@ -34,31 +34,21 @@ private theorem inPlaneSpinRotation_phases_mul (angle : ℝ) :
       (((Real.cos angle : ℝ) : ℂ) ^ 2) +
         (((Real.sin angle : ℝ) : ℂ) ^ 2) = 1 := by
     exact_mod_cast Real.cos_sq_add_sin_sq angle
-  have hI : Complex.I ^ 2 = (-1 : ℂ) := by
-    simpa [pow_two] using Complex.I_mul_I
   calc
+    _ = (((Real.cos angle : ℝ) : ℂ) ^ 2) -
+        Complex.I ^ 2 * (((Real.sin angle : ℝ) : ℂ) ^ 2) := by ring
     _ = (((Real.cos angle : ℝ) : ℂ) ^ 2) +
-        (((Real.sin angle : ℝ) : ℂ) ^ 2) := by
-      calc
-        _ = (((Real.cos angle : ℝ) : ℂ) ^ 2) -
-            Complex.I ^ 2 * (((Real.sin angle : ℝ) : ℂ) ^ 2) := by ring
-        _ = _ := by rw [hI]; ring
+        (((Real.sin angle : ℝ) : ℂ) ^ 2) := by rw [Complex.I_sq]; ring
     _ = 1 := htrig
 
 /-- The spinor rotations are mutual inverses. -/
 theorem inPlaneSpinRotation_mul_inverse (angle : ℝ) :
     inPlaneSpinRotation angle * inPlaneSpinRotationInverse angle = 1 := by
   ext i j
-  fin_cases i <;> fin_cases j
-  · simp [inPlaneSpinRotation, inPlaneSpinRotationInverse,
+  fin_cases i <;> fin_cases j <;>
+    simp [inPlaneSpinRotation, inPlaneSpinRotationInverse,
       Matrix.mul_apply, Fin.sum_univ_two]
-  · simp [inPlaneSpinRotation, inPlaneSpinRotationInverse,
-      Matrix.mul_apply, Fin.sum_univ_two]
-  · simp [inPlaneSpinRotation, inPlaneSpinRotationInverse,
-      Matrix.mul_apply, Fin.sum_univ_two]
-  · simpa [inPlaneSpinRotation, inPlaneSpinRotationInverse,
-      Matrix.mul_apply, Fin.sum_univ_two] using
-        inPlaneSpinRotation_phases_mul angle
+  simpa using inPlaneSpinRotation_phases_mul angle
 
 /-- Reversing the rotation angle exchanges the diagonal spinor and its inverse. -/
 private theorem inPlaneSpinRotation_neg (angle : ℝ) :
@@ -101,12 +91,7 @@ theorem inPlaneSpinRotation_conjugate_diagonal
           M 1 1 *
           ((((Real.cos angle : ℝ) : ℂ) - Complex.I * ((Real.sin angle : ℝ) : ℂ))) =
         M 1 1
-    calc
-      _ = M 1 1 *
-          (((((Real.cos angle : ℝ) : ℂ) + Complex.I * ((Real.sin angle : ℝ) : ℂ))) *
-            ((((Real.cos angle : ℝ) : ℂ) - Complex.I * ((Real.sin angle : ℝ) : ℂ)))) := by
-            ring
-      _ = M 1 1 := by rw [inPlaneSpinRotation_phases_mul]; simp
+    rw [mul_right_comm, inPlaneSpinRotation_phases_mul, one_mul]
 
 /-- Rotating the Pauli-x axis produces the polar in-plane Pauli direction. -/
 theorem inPlaneSpinRotation_pauliX (angle : ℝ) :
@@ -124,14 +109,12 @@ theorem inPlaneSpinRotation_pauliY (angle : ℝ) :
     inPlaneSpinRotation angle * pauliY * inPlaneSpinRotationInverse angle =
       -(((Real.sin angle : ℝ) : ℂ)) • pauliX +
         (((Real.cos angle : ℝ) : ℂ)) • pauliY := by
-  have hI : Complex.I ^ 2 = (-1 : ℂ) := by
-    simpa [pow_two] using Complex.I_mul_I
   ext i j
   fin_cases i <;> fin_cases j <;>
     simp [inPlaneSpinRotation, inPlaneSpinRotationInverse, pauliX, pauliY, Matrix.mul_apply,
       Fin.sum_univ_two, smul_eq_mul]
   all_goals ring_nf
-  all_goals simp only [hI]
+  all_goals simp only [Complex.I_sq]
   all_goals ring
 
 /-- The third Pauli axis is invariant under in-plane spinor rotation. -/
@@ -145,24 +128,6 @@ theorem inPlaneSpinRotation_pauliZ (angle : ℝ) :
         Matrix.mul_apply, Fin.sum_univ_two]
   rw [hcomm, mul_assoc, inPlaneSpinRotation_mul_inverse, mul_one]
 
-/-- The inverse spinor rotates the first Pauli basis matrix. -/
-theorem inPlaneSpinRotationInverse_pauliX (angle : ℝ) :
-    inPlaneSpinRotationInverse angle * pauliX * inPlaneSpinRotation angle =
-      (((Real.cos angle : ℝ) : ℂ)) • pauliX -
-        (((Real.sin angle : ℝ) : ℂ)) • pauliY := by
-  simpa [inPlaneSpinRotation_neg, inPlaneSpinRotationInverse_neg,
-    Real.cos_neg, Real.sin_neg, sub_eq_add_neg] using
-    (inPlaneSpinRotation_pauliX (-angle))
-
-/-- The inverse spinor rotates the second Pauli basis matrix. -/
-theorem inPlaneSpinRotationInverse_pauliY (angle : ℝ) :
-    inPlaneSpinRotationInverse angle * pauliY * inPlaneSpinRotation angle =
-      (((Real.sin angle : ℝ) : ℂ)) • pauliX +
-        (((Real.cos angle : ℝ) : ℂ)) • pauliY := by
-  simpa [inPlaneSpinRotation_neg, inPlaneSpinRotationInverse_neg,
-    Real.cos_neg, Real.sin_neg] using
-    (inPlaneSpinRotation_pauliY (-angle))
-
 /-- Inverse rotation on the semantic Pauli axes, including the invariant z axis. -/
 theorem inPlaneSpinRotationInverse_pauliBasis (axis : PauliAxis) (angle : ℝ) :
     inPlaneSpinRotationInverse angle * pauliBasis axis * inPlaneSpinRotation angle =
@@ -173,8 +138,12 @@ theorem inPlaneSpinRotationInverse_pauliBasis (axis : PauliAxis) (angle : ℝ) :
           (((Real.cos angle : ℝ) : ℂ)) • pauliY)
         pauliZ := by
   cases axis
-  · simpa [pauliBasis, pauliAxisComponent] using inPlaneSpinRotationInverse_pauliX angle
-  · simpa [pauliBasis, pauliAxisComponent] using inPlaneSpinRotationInverse_pauliY angle
+  · simpa [pauliBasis, pauliAxisComponent, inPlaneSpinRotation_neg,
+      inPlaneSpinRotationInverse_neg, Real.cos_neg, Real.sin_neg, sub_eq_add_neg] using
+      (inPlaneSpinRotation_pauliX (-angle))
+  · simpa [pauliBasis, pauliAxisComponent, inPlaneSpinRotation_neg,
+      inPlaneSpinRotationInverse_neg, Real.cos_neg, Real.sin_neg] using
+      (inPlaneSpinRotation_pauliY (-angle))
   · simpa [pauliBasis, pauliAxisComponent, inPlaneSpinRotation_neg,
       inPlaneSpinRotationInverse_neg] using inPlaneSpinRotation_pauliZ (-angle)
 
@@ -196,26 +165,11 @@ theorem polarPauliMatrix_eq_spinRotation (a b d : ℂ) (angle : ℝ) :
         a • (1 : PauliMatrix) + b • pauliX + d • pauliZ := by
     simp [polarPauliMatrix]
   rw [hP0]
-  calc
-    polarPauliMatrix a b d angle =
-        a • (1 : PauliMatrix) +
-          b • ((((Real.cos angle : ℝ) : ℂ)) • pauliX +
-            (((Real.sin angle : ℝ) : ℂ)) • pauliY) +
-          d • pauliZ := by
-            unfold polarPauliMatrix
-            module
-    _ = a • (inPlaneSpinRotation angle * (1 : PauliMatrix) *
-              inPlaneSpinRotationInverse angle) +
-          b • (inPlaneSpinRotation angle * pauliX *
-              inPlaneSpinRotationInverse angle) +
-          d • (inPlaneSpinRotation angle * pauliZ *
-              inPlaneSpinRotationInverse angle) := by
-            rw [inPlaneSpinRotation_pauliX, inPlaneSpinRotation_pauliZ]
-            simp [inPlaneSpinRotation_mul_inverse]
-    _ = inPlaneSpinRotation angle *
-        (a • (1 : PauliMatrix) + b • pauliX + d • pauliZ) *
-          inPlaneSpinRotationInverse angle := by
-            simp only [mul_add, add_mul, mul_smul_comm, smul_mul_assoc]
+  simp only [mul_add, add_mul, mul_smul_comm, smul_mul_assoc]
+  rw [mul_one, inPlaneSpinRotation_mul_inverse, inPlaneSpinRotation_pauliX,
+    inPlaneSpinRotation_pauliZ]
+  unfold polarPauliMatrix
+  module
 
 /-- A matrix sandwiched between two polar Pauli matrices transports to the radial axis
 by inverse spinor conjugation of the middle matrix. -/
