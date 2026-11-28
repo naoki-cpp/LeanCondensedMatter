@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Analysis.Algebra.FinsuppCoordinates
-import LeanCondensedMatter.SecondQuantization.Common.Perturbation.FiniteSupportIntegral
+import LeanCondensedMatter.Analysis.Calculus.FinsuppIntegral
 import LeanCondensedMatter.SecondQuantization.Common.Perturbation.ReachableSupport
 
 set_option linter.style.header false
@@ -31,7 +31,7 @@ private noncomputable def dysonBasis (energy : Config → ℝ)
     ℕ → ℝ → Config → AlgebraicFock Config
   | 0, _, n => basisState n
   | order + 1, τ, n =>
-      - finiteSupportIntervalIntegral (reachableSupport V (order + 1) n)
+      - Finsupp.finiteSupportIntervalIntegral (reachableSupport V (order + 1) n)
           (fun σ => interactionPicture energy V σ (dysonBasis energy V order σ n)) 0 τ
 
 private theorem support_dysonBasis_subset_reachableSupport (energy : Config → ℝ)
@@ -45,7 +45,7 @@ private theorem support_dysonBasis_subset_reachableSupport (energy : Config → 
   | succ order ih =>
       intro τ n
       simp only [dysonBasis]
-      simpa using support_finiteSupportIntervalIntegral_subset
+      simpa using Finsupp.support_finiteSupportIntervalIntegral_subset
         (reachableSupport V (order + 1) n)
         (fun σ => interactionPicture energy V σ (dysonBasis energy V order σ n))
         0 τ
@@ -81,10 +81,10 @@ theorem dysonCoeff_succ_basisState_apply (energy : Config → ℝ)
             (dysonCoeff energy V order σ (basisState n)) m := by
   simp only [dysonCoeff_basisState]
   simp only [dysonBasis]
-  change - finiteSupportIntervalIntegral (reachableSupport V (order + 1) n)
+  change - Finsupp.finiteSupportIntervalIntegral (reachableSupport V (order + 1) n)
       (fun σ => interactionPicture energy V σ (dysonBasis energy V order σ n))
       0 τ m = _
-  rw [finiteSupportIntervalIntegral_apply]
+  rw [Finsupp.finiteSupportIntervalIntegral_apply]
   intro σ
   exact support_interactionPicture_apply_subset_reachableSupport_succ energy V σ order n
     (dysonBasis energy V order σ n)
