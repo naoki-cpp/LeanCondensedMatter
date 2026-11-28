@@ -290,14 +290,13 @@ theorem normSq_nonneg {T : H →L[ℂ] H} (hT : IsHilbertSchmidt T) :
 theorem normSq_pos {T : H →L[ℂ] H} (hT : IsHilbertSchmidt T) (hne : T ≠ 0) :
     0 < hT.normSq := by
   by_contra! hle
-  have hzero : hT.normSq = 0 := le_antisymm hle hT.normSq_nonneg
   obtain ⟨w, b, -⟩ := exists_hilbertBasis (𝕜 := ℂ) (E := H)
   have hb (i : w) : T (b i) = 0 := by
-    have hterm := (hT.summable_norm_sq_apply b).le_tsum i
-      (fun j _ => sq_nonneg ‖T (b j)‖)
-    rw [← hT.normSq_eq_tsum_norm_sq_apply b, hzero] at hterm
     by_contra hi
-    exact (not_lt_of_ge hterm) (pow_pos (norm_pos_iff.mpr hi) 2)
+    apply (not_lt_of_ge hle)
+    rw [hT.normSq_eq_tsum_norm_sq_apply b]
+    exact (hT.summable_norm_sq_apply b).tsum_pos (fun _ => sq_nonneg _) i
+      (pow_pos (norm_pos_iff.mpr hi) 2)
   apply hne
   ext x
   have hsum := (b.hasSum_repr x).mapL T
@@ -425,10 +424,9 @@ private theorem norm_sub_finiteRangeApprox_le {ι : Type*} (d : HilbertBasis ι 
   rw [← sq_le_sq₀ (norm_nonneg _) (mul_nonneg (Real.sqrt_nonneg tail) (norm_nonneg x)),
     mul_pow, Real.sq_sqrt htail_nonneg]
   have hzero :
-      ∑ i ∈ s, ‖(inner ℂ (d i) ((T - finiteRangeApprox d T s) x) : ℂ)‖ ^ 2 = 0 := by
-    apply Finset.sum_eq_zero
-    intro i hi
-    simp [sub_apply, inner_sub_right, inner_finiteRangeApprox_apply, hi]
+      ∑ i ∈ s, ‖(inner ℂ (d i) ((T - finiteRangeApprox d T s) x) : ℂ)‖ ^ 2 = 0 :=
+    Finset.sum_eq_zero fun i hi => by
+      simp [sub_apply, inner_sub_right, inner_finiteRangeApprox_apply, hi]
   have htail := s.hasSum_iff_compl.mp
     (d.hasSum_norm_sq_inner ((T - finiteRangeApprox d T s) x))
   rw [hzero, sub_zero] at htail
@@ -450,11 +448,10 @@ theorem isCompact {T : H →L[ℂ] H} (hT : IsHilbertSchmidt T) :
     simpa [tail] using
       (tendsto_tsum_compl_atTop_zero
         (fun i : ι => ‖(ContinuousLinearMap.adjoint T) (d i)‖ ^ 2))
-  have hsqrt : Tendsto (fun s => Real.sqrt (tail s)) atTop (𝓝 0) := by
-    simpa using htail.sqrt
   have happ : Tendsto (finiteRangeApprox d T) atTop (𝓝 T) := by
     apply tendsto_iff_norm_sub_tendsto_zero.2
-    refine squeeze_zero (fun s => norm_nonneg _) (fun s => ?_) hsqrt
+    refine squeeze_zero (fun s => norm_nonneg _)
+      (fun s => ?_) (by simpa using htail.sqrt)
     simpa [norm_sub_rev, tail] using norm_sub_finiteRangeApprox_le d hd s
   exact isCompactOperator_of_tendsto happ
     (Filter.Eventually.of_forall (finiteRangeApprox_isCompact d T))
