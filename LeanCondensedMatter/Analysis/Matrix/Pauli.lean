@@ -570,55 +570,6 @@ theorem trace_oppositePauliProjectors
   simp only [hI]
   ring
 
-/-- Model-independent interband x-y trace between complementary Pauli projectors.
-No Bloch-vector normalization is needed for currents with no scalar component. -/
-theorem trace_oppositePauliProjectors_xy
-    (u : PauliAxis → ℂ) (a b : ℂ) :
-    Matrix.trace
-        (((1 / 2 : ℂ) •
-            ((1 : PauliMatrix) - pauliCombination u)) *
-          (a • pauliX) *
-          ((1 / 2 : ℂ) •
-            ((1 : PauliMatrix) + pauliCombination u)) *
-          (b • pauliY)) =
-      a * b * (-(u .x * u .y) - Complex.I * u .z) := by
-  let v : PauliAxis → ℂ := fun axis => pauliAxisComponent axis a 0 0
-  let w : PauliAxis → ℂ := fun axis => pauliAxisComponent axis 0 b 0
-  have hv : pauliCombination v = a • pauliX := by
-    simp [v, pauliCombination_eq_components, pauliAxisComponent]
-  have hw : pauliCombination w = b • pauliY := by
-    simp [w, pauliCombination_eq_components, pauliAxisComponent]
-  have h := trace_oppositePauliProjectors u v w 0 0
-  simp only [hv, hw, zero_smul, zero_add] at h
-  rw [h]
-  simp [v, w, dotProduct_pauliAxis, pauliCross, cross_apply, pauliAxisComponent]
-  ring
-
-/-- Scalar velocity shifts cancel from a normalized complementary-projector
-trace with transverse Pauli currents, independently of the physical model. -/
-theorem trace_oppositePauliProjectors_shiftedYX
-    (u : PauliAxis → ℂ) (cx cy a : ℂ)
-    (hnorm : dotProduct u u = 1) :
-    Matrix.trace
-        (((1 / 2 : ℂ) •
-            ((1 : PauliMatrix) - pauliCombination u)) *
-          (cx • (1 : PauliMatrix) - a • pauliY) *
-          ((1 / 2 : ℂ) •
-            ((1 : PauliMatrix) + pauliCombination u)) *
-          (cy • (1 : PauliMatrix) + a • pauliX)) =
-      a ^ 2 * (u .x * u .y) - Complex.I * a ^ 2 * u .z := by
-  let v : PauliAxis → ℂ := fun axis => pauliAxisComponent axis 0 (-a) 0
-  let w : PauliAxis → ℂ := fun axis => pauliAxisComponent axis a 0 0
-  have hv : pauliCombination v = -(a • pauliY) := by
-    simp [v, pauliCombination_eq_components, pauliAxisComponent]
-  have hw : pauliCombination w = a • pauliX := by
-    simp [w, pauliCombination_eq_components, pauliAxisComponent]
-  have h := trace_oppositePauliProjectors u v w cx cy
-  simp only [hv, hw, ← sub_eq_add_neg] at h
-  rw [h, hnorm]
-  simp [v, w, dotProduct_pauliAxis, pauliCross, cross_apply, pauliAxisComponent]
-  ring
-
 /-- The square of a Pauli synthesis is its bilinear coefficient square times the identity. -/
 theorem pauliCombination_mul_self (u : PauliAxis → ℂ) :
     pauliCombination u * pauliCombination u =

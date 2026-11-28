@@ -113,13 +113,23 @@ theorem forceMatrixTraceNumerator_xy_eq
         ((((py / params.effectiveMass : ℝ) : ℂ)) •
           (1 : InternalSpace.PauliMatrix) +
           ((params.rashbaVelocity : ℝ) : ℂ) • InternalSpace.pauliX)) = _
-  rw [InternalSpace.trace_oppositePauliProjectors_shiftedYX u
-    (((px / params.effectiveMass : ℝ) : ℂ))
-    (((py / params.effectiveMass : ℝ) : ℂ))
-    (((params.rashbaVelocity : ℝ) : ℂ)) hnorm]
-  cases band <;>
-    simp [u, rashbaPauliCoefficients, bandSign] <;>
-    field_simp [hEc]
+  let x : InternalSpace.PauliAxis → ℂ := fun axis =>
+    InternalSpace.pauliAxisComponent axis 0 (-(params.rashbaVelocity : ℂ)) 0
+  let y : InternalSpace.PauliAxis → ℂ := fun axis =>
+    InternalSpace.pauliAxisComponent axis (params.rashbaVelocity : ℂ) 0 0
+  have hx : InternalSpace.pauliCombination x = -((params.rashbaVelocity : ℂ) •
+      InternalSpace.pauliY) := by
+    simp [x, InternalSpace.pauliCombination_eq_components, InternalSpace.pauliAxisComponent]
+  have hy : InternalSpace.pauliCombination y = (params.rashbaVelocity : ℂ) •
+      InternalSpace.pauliX := by
+    simp [y, InternalSpace.pauliCombination_eq_components, InternalSpace.pauliAxisComponent]
+  have h := InternalSpace.trace_oppositePauliProjectors u x y
+    ((px / params.effectiveMass : ℝ) : ℂ) ((py / params.effectiveMass : ℝ) : ℂ)
+  simp only [hx, hy, ← sub_eq_add_neg] at h
+  rw [h, hnorm]
+  simp [x, y, InternalSpace.dotProduct_pauliAxis, InternalSpace.pauliCross,
+    cross_apply, InternalSpace.pauliAxisComponent, u, rashbaPauliCoefficients]
+  cases band <;> simp [bandSign] <;> field_simp [hEc]
 
 /-- The force-matrix expression for the x-y Berry curvature. -/
 def forceMatrixBerryCurvature
