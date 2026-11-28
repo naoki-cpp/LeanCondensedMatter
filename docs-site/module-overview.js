@@ -212,8 +212,21 @@ export function createModuleOverview({ catalog, modules = [], overview, onBrowse
     descriptionField.hidden = !description;
     header.append(descriptionField);
     const summary = element("div", "overview-summary");
-    function showSummary(current) {
-      const counts = current.counts;
+    const isMap = children.length > 0 && parts.length === 0;
+    const visibleEntries = isMap ? catalog.filter(allowed).sort((a, b) => a.name.localeCompare(b.name)) : [];
+    function entriesIn(moduleName) {
+      const area = shortModule(moduleName);
+      return visibleEntries.filter((entry) => {
+        const name = shortModule(entry.module);
+        return name === area || name.startsWith(`${area}.`);
+      });
+    }
+    const mapRegions = children.map((child) => ({
+      fullName: child.fullName, entries: entriesIn(child.fullName),
+    })).filter((child) => child.entries.length > 0);
+    const mapEntries = mapRegions.flatMap((child) => child.entries);
+    function showSummary(current, entries) {
+      const counts = entries ? declarationCounts(entries, { includeGenerated: true }) : current.counts;
       const chips = [summaryChip(`Definitions ${counts.definitions}`),
         summaryChip(`Theorems ${counts.theorems}`), summaryChip(`Total ${counts.total}`)];
       if (counts.generated) chips.push(summaryChip(`Generated ${counts.generated}`));
@@ -221,9 +234,9 @@ export function createModuleOverview({ catalog, modules = [], overview, onBrowse
         summaryChip(`${current.children.size} direct submodule${current.children.size === 1 ? "" : "s"}`));
       summary.replaceChildren(...chips);
     }
-    showSummary(node);
+    showSummary(node, isMap ? mapEntries : undefined);
     header.append(summary);
-    if (children.length > 0 && parts.length === 0) {
+    if (isMap) {
       let descriptionRequest = 0;
       function updateMapHeader(moduleName, browseMap) {
         const request = ++descriptionRequest;
@@ -231,7 +244,7 @@ export function createModuleOverview({ catalog, modules = [], overview, onBrowse
         const current = resolveNode(tree, path) ?? node;
         breadcrumb.replaceChildren(renderBreadcrumb(path, browseMap));
         heading.textContent = current.name;
-        showSummary(current);
+        showSummary(current, moduleName ? entriesIn(moduleName) : mapEntries);
         descriptionField.textContent = moduleName ? "" : description;
         descriptionField.hidden = !descriptionField.textContent;
         if (!moduleName) return;
@@ -241,11 +254,7 @@ export function createModuleOverview({ catalog, modules = [], overview, onBrowse
           descriptionField.hidden = !text;
         });
       }
-      overview.append(renderResearchMap(children, (child) => catalog.filter((entry) => {
-        const name = shortModule(entry.module);
-        const area = shortModule(child.fullName);
-        return !entry.generated && (name === area || name.startsWith(`${area}.`));
-      }).sort((a, b) => a.name.localeCompare(b.name)), onOpenDeclaration, updateMapHeader, [breadcrumb, header]));
+      overview.append(renderResearchMap(mapRegions, onOpenDeclaration, updateMapHeader, [breadcrumb, header]));
     } else {
       overview.append(breadcrumb, header);
     }

@@ -24,7 +24,7 @@ function button(text, action, className = "") {
   return control;
 }
 
-export function renderResearchMap(children, entriesFor, onOpenDeclaration, onRegionChange, overviewHeader) {
+export function renderResearchMap(children, onOpenDeclaration, onRegionChange, overviewHeader) {
   const section = element("section", "research-map");
   const heading = element("h3", "", "Map");
   heading.id = "research-map-title";
@@ -52,12 +52,11 @@ export function renderResearchMap(children, entriesFor, onOpenDeclaration, onReg
   const preview = element("p", "research-map-preview", hint);
   preview.setAttribute("aria-live", "off");
   const picker = element("label", "research-map-picker");
-  picker.hidden = true;
   const caption = element("span", "", "Declaration");
   const select = element("select", "");
   picker.append(caption, select);
   const byName = new Map();
-  const largest = Math.max(1, ...children.map((child) => child.counts.total));
+  const largest = Math.max(1, ...children.map((child) => child.entries.length));
   const columns = Math.min(3, Math.max(1, children.length));
   const rows = Math.max(1, Math.ceil(children.length / columns));
   const spacing = Math.min(91, (height / rows - 46) / 2);
@@ -113,8 +112,8 @@ export function renderResearchMap(children, entriesFor, onOpenDeclaration, onReg
   const regions = children.map((child, index) => {
     const x = ((index % columns) + .5) * width / columns + (Math.floor(index / columns) % 2 ? 20 : -20);
     const y = (Math.floor(index / columns) + .44) * height / rows;
-    const radius = spacing * Math.sqrt(child.counts.total / largest);
-    const region = buildRegion(shortModule(child.fullName), x, y, radius, entriesFor(child));
+    const radius = spacing * Math.sqrt(child.entries.length / largest);
+    const region = buildRegion(shortModule(child.fullName), x, y, radius, child.entries);
     for (const point of region.points) point.topRegion = region;
     placeCloud(region.points, null, x, y, radius);
     return region;
@@ -356,24 +355,28 @@ export function renderResearchMap(children, entriesFor, onOpenDeclaration, onReg
     }
   }
 
+  function populatePicker(region) {
+    const candidates = region?.points ?? sortedPoints;
+    caption.textContent = region ? `Declaration in ${region.name}` : "Declaration across all regions";
+    select.disabled = candidates.length === 0;
+    const placeholder = element("option", "", candidates.length ? "Choose a declaration" : "No matching declarations");
+    placeholder.value = "";
+    placeholder.disabled = true;
+    select.replaceChildren(placeholder, ...candidates.map(({ entry }) => {
+      const option = element("option", "", entry.name);
+      option.value = entry.name;
+      return option;
+    }));
+    select.value = "";
+  }
+
   function setRegion(region) {
     if (active === region) return;
     previousScope = active;
     active = region;
     onRegionChange(region?.moduleName ?? null, browseMap);
     parentControl.hidden = !region?.parent;
-    picker.hidden = !region;
-    if (!region) return;
-    caption.textContent = `Declaration in ${region.name}`;
-    const placeholder = element("option", "", "Choose a declaration");
-    placeholder.value = "";
-    placeholder.disabled = true;
-    select.replaceChildren(placeholder, ...region.points.map(({ entry }) => {
-      const option = element("option", "", entry.name);
-      option.value = entry.name;
-      return option;
-    }));
-    select.value = "";
+    populatePicker(region);
   }
 
   function reset() {
@@ -422,8 +425,10 @@ export function renderResearchMap(children, entriesFor, onOpenDeclaration, onReg
 
   function relation(title, names) {
     const block = element("div", "research-map-relations");
-    const available = (names ?? []).filter((name) => byName.has(name));
-    const summary = element("summary", "", `${title} (${available.length})`);
+    const related = [...new Set(names ?? [])];
+    const available = related.filter((name) => byName.has(name));
+    const count = available.length === related.length ? String(related.length) : `${related.length} total, ${available.length} on map`;
+    const summary = element("summary", "", `${title} (${count})`);
     const list = element("details", "");
     list.open = available.length > 0 && available.length <= 12;
     list.append(summary, block);
@@ -565,6 +570,8 @@ export function renderResearchMap(children, entriesFor, onOpenDeclaration, onReg
   const overviewFooter = element("div", "research-map-overview");
   overviewFooter.append(...overviewHeader);
   section.append(heading, legend, controls, stage, preview, picker, detail, connectionDetails, overviewFooter);
+  const sortedPoints = [...points].sort((a, b) => a.entry.name.localeCompare(b.entry.name));
+  populatePicker(null);
   reset();
   // This section is returned before it is mounted, so measure again after attachment.
   if (typeof requestAnimationFrame === "function") requestAnimationFrame(draw);

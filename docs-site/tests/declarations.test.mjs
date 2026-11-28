@@ -78,3 +78,31 @@ test("MixedOrderData overview counts and opens both definitions", async () => {
   assert.match(overview.text(), /Theorems 0/);
   assert.match(overview.text(), /Total 2/);
 });
+
+test("map filters points and picker while preserving the total dependency count", async () => {
+  globalThis.document = { createElement: (tag) => new Element(tag), createTextNode: (text) => text };
+  globalThis.window = { devicePixelRatio: 1 };
+  globalThis.fetch = async () => ({ ok: false });
+  const overview = new Element("div");
+  const module = "LeanCondensedMatter.Example";
+  const catalog = [
+    { name: "result", kind: "theorem", dependencies: ["definition", "generated"] },
+    { name: "definition", kind: "def", dependencies: [] },
+    { name: "generated", kind: "theorem", generated: true, dependencies: [] },
+  ].map((entry) => ({ module, statement: "Nat", dependents: [], ...entry }));
+  let generated = false;
+  const explorer = createModuleOverview({ catalog, overview,
+    allowed: (entry) => declarationAllowed(entry, "theorem", generated) });
+  await explorer.render("LeanCondensedMatter");
+  let picker = overview.find("select")[0];
+  assert.deepEqual(picker.find("option").map(({ value }) => value), ["", "result"]);
+  assert.match(overview.text(), /Definitions 0.*Theorems 1.*Total 1/);
+  picker.value = "result";
+  picker.change();
+  assert.match(overview.text(), /Depends on \(2 total, 0 on map\)/);
+  generated = true;
+  await explorer.render("LeanCondensedMatter");
+  picker = overview.find("select")[0];
+  assert.deepEqual(picker.find("option").map(({ value }) => value), ["", "generated", "result"]);
+  assert.match(overview.text(), /Theorems 2.*Total 2.*Generated 1/);
+});
