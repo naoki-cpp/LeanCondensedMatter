@@ -27,12 +27,8 @@ set_option linter.style.header false
 /-!
 # Fermionic external-insertion diagrammatics
 
-Fermionic semantics for arbitrary even families of external insertions: component-shuffle signs
-and the concrete timed-field pair kernel in mixed imaginary-time order. Statistics-independent
-diagrams, component restrictions, and ordering remain owned by `SecondQuantization.Common`.
-`FreeGibbsWickExpansion` proves the atomic free-Gibbs pairing identity;
-`MixedAtomicDysonIntegral` integrates that identity; and `InteractionPictureVertexDyson`
-expands quartic vertices into atomic legs and identifies the resulting free-Gibbs
-Dyson coefficients with diagrammatic coefficients.
-These are formal perturbative identities, not interacting-state convergence claims.
+Timed-field Wick amplitudes for arbitrary even external insertions, component signs and
+shuffle integrals, external/vacuum Cauchy factorization, and signed source moments and cumulants.
+Free-Gibbs Wick expansion and interaction-picture Dyson identities hold coefficientwise;
+they do not establish convergence to an interacting Gibbs state.
 -/
