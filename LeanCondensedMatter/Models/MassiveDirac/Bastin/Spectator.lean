@@ -46,7 +46,7 @@ theorem tendsto_oppositeBandCoefficient_at_bandPole
       (nhds ((((interbandEnergyGap band v m px py : ℝ) : ℂ))⁻¹)) := by
   have h := tendsto_scalarResolventCoefficient_spectralParameter_zero
     side (bandEnergy band v m px py) (bandEnergy (oppositeBand band) v m px py)
-    (bandEnergy_ne_oppositeBandEnergy band v m px py hE)
+    ((bandEnergy_injective v m px py hE).ne (ne_oppositeBand band))
   simpa [scalarResolventCoefficient, interbandEnergyGap] using h
 
 /-- Squaring the spectator on either spectral side produces the inverse squared interband gap in the

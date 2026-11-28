@@ -56,15 +56,7 @@ theorem radius_lt_abs_interbandEnergyGap_of_lt_two_mul_abs_mass
 theorem interbandEnergyGap_ne_zero_of_energy_ne_zero
     (band : TwoBand) (v m px py : ℝ) (hE : energy v m px py ≠ 0) :
     interbandEnergyGap band v m px py ≠ 0 := by
-  rw [interbandEnergyGap_eq]
-  cases band <;> simp [hE]
-
-/-- Away from the Dirac degeneracy, the two band energies are distinct. -/
-theorem bandEnergy_ne_oppositeBandEnergy
-    (band : TwoBand) (v m px py : ℝ) (hE : energy v m px py ≠ 0) :
-    bandEnergy band v m px py ≠ bandEnergy (oppositeBand band) v m px py := by
-  apply (bandEnergy_injective v m px py hE).ne
-  exact TwoBand.ne_oppositeBand band
+  exact sub_ne_zero.mpr ((bandEnergy_injective v m px py hE).ne (ne_oppositeBand band))
 
 /-- Gauge-independent direction-indexed interband force-matrix numerator.
 
