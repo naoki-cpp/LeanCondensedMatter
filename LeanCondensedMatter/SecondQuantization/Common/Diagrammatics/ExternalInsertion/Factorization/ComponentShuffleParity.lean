@@ -112,23 +112,6 @@ private theorem ExternalInsertionDiagram.componentExternal_lt_interaction
   have he := (d.externalSectorOrderIso C e).1.isLt
   omega
 
-private theorem ExternalInsertionDiagram.componentInteraction_not_lt_external
-    {S : Finset (Fin N)}
-    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
-    (B C : d.vertexGraph.componentPartition.parts)
-    (v : ↥(interactionSector
-      (C : Finset (ExternalInsertionVertex E S)))) (l : Fin 4)
-    (e : Fin (2 * d.externalPairCount B)) :
-    ¬ d.componentLegPosition C (Sum.inr (v, l)) <
-      d.componentLegPosition B (Sum.inl e) := by
-  rw [d.componentLegPosition_interaction, d.componentLegPosition_external]
-  change
-    ¬ (externalInsertionInteractionLeg (E := E) (d.ambientInteractionVertex C v) l).val <
-      (externalInsertionExternalLeg E S (d.externalSectorOrderIso B e).1).val
-  rw [externalInsertionExternalLeg_val, externalInsertionInteractionLeg_val]
-  have he := (d.externalSectorOrderIso B e).1.isLt
-  omega
-
 private noncomputable def ExternalInsertionDiagram.componentLegInversionInner
     {S : Finset (Fin N)}
     (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
@@ -168,36 +151,7 @@ private theorem ExternalInsertionDiagram.componentLegInversionInner_external
     apply Finset.sum_congr rfl
     intro f _
     rw [d.componentLegPosition_external, d.componentLegPosition_external]
-    by_cases hlt :
-        (d.externalSectorOrderIso C f).1 < (d.externalSectorOrderIso B e).1
-    · have hltVal :
-          (d.externalSectorOrderIso C f).1.val <
-            (d.externalSectorOrderIso B e).1.val := by
-        exact hlt
-      have hleg :
-          externalInsertionExternalLeg E S (d.externalSectorOrderIso C f).1 <
-            externalInsertionExternalLeg E S (d.externalSectorOrderIso B e).1 := by
-        change
-          (externalInsertionExternalLeg E S (d.externalSectorOrderIso C f).1).val <
-            (externalInsertionExternalLeg E S (d.externalSectorOrderIso B e).1).val
-        exact hltVal
-      rw [ite_eq_left hleg, ite_eq_left hlt]
-    · have hltVal :
-          ¬ (d.externalSectorOrderIso C f).1.val <
-            (d.externalSectorOrderIso B e).1.val := by
-        intro h
-        apply hlt
-        exact h
-      have hleg :
-          ¬ externalInsertionExternalLeg E S (d.externalSectorOrderIso C f).1 <
-            externalInsertionExternalLeg E S (d.externalSectorOrderIso B e).1 := by
-        intro h
-        apply hltVal
-        change
-          (externalInsertionExternalLeg E S (d.externalSectorOrderIso C f).1).val <
-            (externalInsertionExternalLeg E S (d.externalSectorOrderIso B e).1).val at h
-        exact h
-      rw [ite_eq_right hleg, ite_eq_right hlt]
+    simp only [Fin.lt_def, externalInsertionExternalLeg_val]
   have hzero :
       (∑ q : ↥(interactionSector
           (C : Finset (ExternalInsertionVertex E S))) × Fin 4,
@@ -205,7 +159,8 @@ private theorem ExternalInsertionDiagram.componentLegInversionInner_external
           d.componentLegPosition B (Sum.inl e) then 1 else 0) = 0 := by
     apply Finset.sum_eq_zero
     intro q _
-    rw [ite_eq_right (d.componentInteraction_not_lt_external B C q.1 q.2 e)]
+    rw [ite_eq_right (not_lt_of_ge (le_of_lt
+      (d.componentExternal_lt_interaction C B e q.1 q.2)))]
   rw [hext, hzero, add_zero]
 
 private theorem ExternalInsertionDiagram.componentLegInversionInner_interaction_mod_two
@@ -296,36 +251,25 @@ theorem ExternalInsertionDiagram.componentLegShuffle_orderedBlockInversionCount_
           classical
           rw [d.componentLegShuffle_blockInversionCount_eq_sum B C hBC,
             d.componentExternalShuffle_blockInversionCount_eq_sum B C hBC]
-          let g : ExternalInsertionLeg (d.externalPairCount B)
-              (interactionSector (B : Finset (ExternalInsertionVertex E S))) → ℕ
-            | Sum.inl e => d.componentExternalInversionInner B C e
-            | Sum.inr _ => 0
-          have hmod :
-              Nat.ModEq 2
-                (∑ p : ExternalInsertionLeg (d.externalPairCount B)
-                  (interactionSector (B : Finset (ExternalInsertionVertex E S))),
-                  d.componentLegInversionInner B C p)
-                (∑ p : ExternalInsertionLeg (d.externalPairCount B)
-                  (interactionSector (B : Finset (ExternalInsertionVertex E S))), g p) := by
-            refine Nat.ModEq.sum (n := 2) ?_
-            intro p _
-            cases p with
-            | inl e =>
-                simp only [g]
-                rw [d.componentLegInversionInner_external B C e]
-            | inr p =>
-                rcases p with ⟨v, l⟩
-                simpa [Nat.ModEq, g] using
-                  d.componentLegInversionInner_interaction_mod_two B C hBC v l
-          have hg :
-              (∑ p : ExternalInsertionLeg (d.externalPairCount B)
-                (interactionSector (B : Finset (ExternalInsertionVertex E S))), g p) =
+          rw [Fintype.sum_sum_type]
+          have hext :
+              (∑ e : Fin (2 * d.externalPairCount B),
+                d.componentLegInversionInner B C (Sum.inl e)) =
                 ∑ e : Fin (2 * d.externalPairCount B),
-                  d.componentExternalInversionInner B C e := by
-            rw [Fintype.sum_sum_type]
-            simp [g]
-          rw [← hg]
-          exact hmod)
+                  d.componentExternalInversionInner B C e :=
+            Finset.sum_congr rfl (fun e _ =>
+              d.componentLegInversionInner_external B C e)
+          have hint :
+              (∑ p : ↥(interactionSector
+                  (B : Finset (ExternalInsertionVertex E S))) × Fin 4,
+                d.componentLegInversionInner B C (Sum.inr p)) % 2 = 0 := by
+            apply Nat.mod_eq_zero_of_dvd
+            refine Finset.dvd_sum fun p _ => ?_
+            exact Nat.dvd_of_mod_eq_zero
+              (d.componentLegInversionInner_interaction_mod_two B C hBC p.1 p.2)
+          rw [hext]
+          unfold Nat.ModEq
+          rw [Nat.add_mod, hint, add_zero, Nat.mod_mod])
   simpa [Nat.ModEq] using h
 
 end Common
