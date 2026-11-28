@@ -744,8 +744,13 @@ private def structuredStatement (name : Name) (info : ConstantInfo) : MetaM Json
     let result := Json.mkObj [("version", .num 1), ("binders", .arr binders),
       ("conclusion", (← presentationTree conclusion).setObjVal! "text" (.str (← presentationText conclusion))),
       ("fields", .arr fields)]
-    let body ← try definitionBodyPresentation name info parameters catch _ => pure Json.null
-    return if body == Json.null then result else result.setObjVal! "definitionBody" body
+    let body ← try
+      definitionBodyPresentation name info parameters
+    catch _ =>
+      pure Json.null
+    return match body with
+    | .null => result
+    | _ => result.setObjVal! "definitionBody" body
 
 /-- The declaration graph includes every compiled project constant. Source ranges are queried
 directly: Lean's convenience range lookup inherits ranges for generated recursors. -/
