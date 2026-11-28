@@ -198,19 +198,44 @@ export function renderResearchMap(children, entriesFor, onOpenDeclaration) {
     ctx.stroke();
   }
 
-  function draw() {
-    canvas.style.touchAction = view.zoom > 1.5 ? "none" : "pan-y";
+  function placeLabels() {
+    const visible = [];
     for (const region of allRegions) {
       const focused = view.zoom > 1.5 && region === active;
       region.label.hidden = region.parent
         ? !focused && !(view.zoom > 1.5 && region.parent === active)
         : view.zoom > 1.5 && !focused;
-      const [x, y] = screen(region.x, region.y + region.radius);
-      const left = x / width * 100;
-      const top = (y + 11) / height * 100;
-      region.label.style.left = `${focused ? Math.max(16, Math.min(84, left)) : left}%`;
-      region.label.style.top = `${focused ? Math.max(4, Math.min(82, top)) : top}%`;
+      if (!region.label.hidden) visible.push({ region, focused });
     }
+    const stageWidth = stage.clientWidth;
+    const stageHeight = stage.clientHeight;
+    const measured = visible.map(({ region, focused }) => ({
+      region, focused, w: region.label.offsetWidth, h: region.label.offsetHeight,
+    })).sort((a, b) => Number(b.focused) - Number(a.focused));
+    const placed = [];
+    for (const { region, focused, w, h } of measured) {
+      const [x, y] = screen(region.x, region.y + region.radius);
+      if (!stageWidth || !stageHeight) continue;
+      const anchorX = x / width * stageWidth;
+      const anchorY = y / height * stageHeight;
+      const [, above] = screen(region.x, region.y - region.radius);
+      const candidates = [anchorY + 6, above / height * stageHeight - h - 6, anchorY + h + 10];
+      const center = Math.max(w / 2 + 4, Math.min(stageWidth - w / 2 - 4, anchorX));
+      const left = center - w / 2;
+      const top = candidates.map((value) => Math.max(4, Math.min(stageHeight - h - 4, value)))
+        .find((value) => placed.every((box) => left >= box.right + 4 || left + w + 4 <= box.left ||
+          value >= box.bottom + 4 || value + h + 4 <= box.top));
+      region.label.hidden = !focused && top === undefined;
+      if (top === undefined) continue;
+      region.label.style.left = `${center}px`;
+      region.label.style.top = `${top}px`;
+      placed.push({ left, right: left + w, top, bottom: top + h });
+    }
+  }
+
+  function draw() {
+    canvas.style.touchAction = view.zoom > 1.5 ? "none" : "pan-y";
+    placeLabels();
     if (!ctx) return;
     ctx.setTransform(2, 0, 0, 2, 0, 0);
     ctx.clearRect(0, 0, width, height);
@@ -441,5 +466,13 @@ export function renderResearchMap(children, entriesFor, onOpenDeclaration) {
   section.append(heading, legend, controls, stage, preview, picker, detail);
   if (bundles.length) section.append(connectionDetails);
   reset();
+  // This section is returned before it is mounted, so measure again after attachment.
+  if (typeof requestAnimationFrame === "function") requestAnimationFrame(draw);
+  window.addEventListener?.("resize", onResize);
   return section;
+
+  function onResize() {
+    if (section.isConnected) draw();
+    else window.removeEventListener("resize", onResize);
+  }
 }
