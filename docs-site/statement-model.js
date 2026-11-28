@@ -48,7 +48,61 @@ function variableRoles(bindings, hilbertSpaces) {
   return roles;
 }
 
-function roleOf(node, roles) { return node?.kind === "var" ? roles.get(node.id) : undefined; }
+const MAP_APPLICATIONS = new Set(["DFunLike.coe", "FunLike.coe", "LinearMap.toFun", "ContinuousLinearMap.toFun"]);
+const OPERATOR_BINARY = new Set(["HAdd.hAdd", "HSub.hSub", "HMul.hMul", "LinearMap.comp", "ContinuousLinearMap.comp"]);
+
+function sameOperator(left, right) {
+  return left?.kind === "operator" && right?.kind === "operator" &&
+    left.space === right.space && left.map === right.map;
+}
+
+// Infer only the small closed algebra of operations on already recognized
+// endomorphisms. A result head by itself does not establish the domain.
+function roleOf(node, roles, depth = 0) {
+  if (!node || depth > 32) return undefined;
+  if (node.kind === "var") return roles.get(node.id);
+  if (node.kind !== "app" || node.fn?.kind !== "const" || !Array.isArray(node.args)) return undefined;
+  const name = node.fn.name;
+  const [a, b] = node.args;
+  if (node.args.length === 1) {
+    const operand = roleOf(a, roles, depth + 1);
+    if (operand?.kind === "operator" && node.resultType === operand.map &&
+        (name === "Neg.neg" || (name === "ContinuousLinearMap.adjoint" && operand.map === "ContinuousLinearMap"))) return operand;
+  }
+  if (node.args.length === 2) {
+    const left = roleOf(a, roles, depth + 1);
+    const right = roleOf(b, roles, depth + 1);
+    if (OPERATOR_BINARY.has(name) && sameOperator(left, right) && node.resultType === left.map &&
+        (!name.endsWith(".comp") || name === left.map + ".comp")) return left;
+    if ((name === "HSMul.hSMul" || name === "SMul.smul") && left?.kind === "scalar" &&
+        left.field === "Complex" && right?.kind === "operator" && node.resultType === right.map) return right;
+    if (MAP_APPLICATIONS.has(name) && left?.kind === "operator" &&
+        right?.kind === "hilbert-vector" && left.space === right.space &&
+        (!name.endsWith(".toFun") || name === left.map + ".toFun")) {
+      return { kind: "hilbert-vector", space: left.space };
+    }
+  }
+  return undefined;
+}
+
+function parenthesized(tex) { return "\\left(" + tex + "\\right)"; }
+
+function operatorFactor(node, tex) {
+  // Juxtaposition is associative, but sums, scalar actions and other compound
+  // expressions need explicit grouping when used as factors.
+  return node.kind === "var" || constantHead(node) === "HMul.hMul" ? tex : parenthesized(tex);
+}
+
+// A matrix element uses the actual recognized application, not an arbitrary
+// expression that merely happens to have the same result type.
+function matrixElement(left, right, roles) {
+  if (left?.kind !== "var" || right?.kind !== "app" || !MAP_APPLICATIONS.has(constantHead(right)) ||
+      right.args.length !== 2 || right.args[1]?.kind !== "var") return null;
+  const bra = roleOf(left, roles);
+  const result = roleOf(right, roles);
+  if (bra?.kind !== "hilbert-vector" || result?.kind !== "hilbert-vector" || bra.space !== result.space) return null;
+  return { bra: left, operator: right.args[0], ket: right.args[1] };
+}
 
 function styledVariable(node, roles) {
   const tex = identifier(node.name);
@@ -88,7 +142,7 @@ function constantLabels(presentation) {
 // Render only known fully qualified constants with the expected explicit arity.
 // The synthetic index is a display-only bound variable, distinct from Lean identifiers
 // (which use \mathrm). Depth distinguishes nested summation indices.
-function operatorNotation(node, args, depth, roles) {
+function operatorNotation(node, args, depth, roles, renderOperand) {
   if (node.fn?.kind !== "const") return null;
   const name = node.fn.name;
   const group = (value) => "\\left(" + value + "\\right)";
@@ -116,14 +170,12 @@ function operatorNotation(node, args, depth, roles) {
     const [x, y] = args;
     const left = roleOf(node.args[0], roles);
     const right = roleOf(node.args[1], roles);
-    const sameOperators = left?.kind === "operator" && right?.kind === "operator" &&
-      left.space === right.space && left.map === right.map;
-    if (name === "HMul.hMul" && sameOperators && node.resultType === left.map) {
-      return x + "\\," + y;
+    if (name === "HMul.hMul" && sameOperator(left, right) && node.resultType === left.map) {
+      return operatorFactor(node.args[0], x) + "\\," + operatorFactor(node.args[1], y);
     }
     if ((name === "HSMul.hSMul" || name === "SMul.smul") && left?.kind === "scalar" &&
         left.field === "Complex" && right?.kind === "operator" && node.resultType === right.map) {
-      return x + "\\," + y;
+      return x + "\\," + operatorFactor(node.args[1], y);
     }
     if (name === "QuantumTheory.expValue") {
       if (left?.wrapper === "QuantumTheory.Observable" && right?.kind === "ket" &&
@@ -134,14 +186,22 @@ function operatorNotation(node, args, depth, roles) {
     }
     // Both operands must be known from the statement telescope. A wrapped
     // normalized state is not interchangeable with an unwrapped Hilbert vector.
-    if (["DFunLike.coe", "FunLike.coe", "LinearMap.toFun", "ContinuousLinearMap.toFun"].includes(name) &&
-        left?.kind === "operator" && right?.kind === "hilbert-vector" && left.space === right.space) {
-      return x + "\\," + y;
+    if (MAP_APPLICATIONS.has(name) && roleOf(node, roles)?.kind === "hilbert-vector") {
+      return operatorFactor(node.args[0], x) + "\\," +
+        (node.args[1].kind === "var" ? y : parenthesized(y));
     }
-    if (name === "Inner.inner" && node.resultType === "Complex" &&
-        left?.kind === "hilbert-vector" && right?.kind === "hilbert-vector" && left.space === right.space) {
-      return "\\left\\langle " + identifier(node.args[0].name) + "\\middle|" +
-        identifier(node.args[1].name) + "\\right\\rangle";
+    if (name === "Inner.inner" && node.resultType === "Complex") {
+      const element = matrixElement(node.args[0], node.args[1], roles);
+      if (element) {
+        const op = renderOperand(element.operator);
+        if (op !== null) return "\\left\\langle " + identifier(element.bra.name) + "\\middle|" +
+          op + "\\middle|" + identifier(element.ket.name) + "\\right\\rangle";
+      }
+      if (node.args.every((arg) => arg.kind === "var") &&
+          left?.kind === "hilbert-vector" && right?.kind === "hilbert-vector" && left.space === right.space) {
+        return "\\left\\langle " + identifier(node.args[0].name) + "\\middle|" +
+          identifier(node.args[1].name) + "\\right\\rangle";
+      }
     }
     switch (name) {
       case "Bracket.bracket": return "\\left[" + x + ", " + y + "\\right]";
@@ -173,6 +233,7 @@ function operatorNotation(node, args, depth, roles) {
     return "\\left[" + args[1] + ", " + args[2] + "\\right]_{" + args[0] + "}";
   }
   if (name === "InnerProductSpace.rankOne" && args.length === 3 && constantHead(node.args[0]) === "Complex" &&
+      node.args[1]?.kind === "var" && node.args[2]?.kind === "var" &&
       roleOf(node.args[1], roles)?.kind === "hilbert-vector" &&
       roleOf(node.args[2], roles)?.kind === "hilbert-vector") {
     return args[1] + "\\left\\langle " + identifier(node.args[2].name) + "\\right|";
@@ -181,7 +242,16 @@ function operatorNotation(node, args, depth, roles) {
   if (name === "inner" && args.length === 3) {
     const left = roleOf(node.args[1], roles);
     const right = roleOf(node.args[2], roles);
-    if (constantHead(node.args[0]) === "Complex" && left?.kind === "hilbert-vector" &&
+    if (constantHead(node.args[0]) === "Complex") {
+      const element = matrixElement(node.args[1], node.args[2], roles);
+      if (element) {
+        const op = renderOperand(element.operator);
+        if (op !== null) return "\\left\\langle " + identifier(element.bra.name) + "\\middle|" +
+          op + "\\middle|" + identifier(element.ket.name) + "\\right\\rangle";
+      }
+    }
+    if (constantHead(node.args[0]) === "Complex" && node.args[1]?.kind === "var" &&
+        node.args[2]?.kind === "var" && left?.kind === "hilbert-vector" &&
         right?.kind === "hilbert-vector" && left.space === right.space) {
       return "\\left\\langle " + identifier(node.args[1].name) + "\\middle|" +
         identifier(node.args[2].name) + "\\right\\rangle";
@@ -238,7 +308,8 @@ export function expressionToTex(node, labels = new Map(), depth = 0, bound = new
   if (binderTex !== null) return binderTex;
   const args = node.args.map((arg) => expressionToTex(arg, labels, depth + 1, bound, roles));
   if (args.some((arg) => arg === null)) return null;
-  const notation = operatorNotation(node, args, depth, roles);
+  const notation = operatorNotation(node, args, depth, roles,
+    (operand) => expressionToTex(operand, labels, depth + 1, bound, roles));
   if (notation !== null) return notation;
   const name = head(node);
   if (INFIX.has(name) && args.length === 2) {
