@@ -4,12 +4,8 @@ import LeanCondensedMatter.SecondQuantization.Fermionic.Field.L2ChargeDensity
 set_option linter.style.header false
 
 /-!
-# Fermionic field interfaces
+# Fermionic density interfaces
 
-This narrow layer owns basis-independent fermionic density interfaces. The general symmetric-product
-commutator balance applies to the existing fermionic `dΓ` Lie homomorphism without a field-specific
-adapter. One-body balance/current semantics live upstream under
-`Analysis` and `QuantumTheory`; lattice and Peierls constructions live under `Fermionic.Lattice`,
-response/conductivity specializations under `Fermionic.Transport`, and finite toy models under
-`Fermionic.Validation`.
+Basis-independent charge density and its `L²` realization, with one-body balance laws
+transported through fermionic second quantization.
 -/
