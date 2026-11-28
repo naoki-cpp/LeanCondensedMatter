@@ -24,24 +24,15 @@ theorem linearMap_apply_eq_finsetSum_of_support_subset
     A x m = ∑ k ∈ S, A (Finsupp.single k 1) m * x k := by
   classical
   calc
-    A x m = A (∑ k ∈ x.support, x k • Finsupp.single k 1) m := by
-      have hrep : x = ∑ k ∈ x.support, x k • Finsupp.single k 1 := by
-        simpa only [Finsupp.sum, Finsupp.smul_single_one] using (Finsupp.sum_single x).symm
-      rw [← hrep]
-    _ = ∑ k ∈ x.support, A (Finsupp.single k 1) m * x k := by
-      rw [map_sum, Finsupp.finsetSum_apply]
-      apply Finset.sum_congr rfl
-      intro k _
-      rw [map_smul, Finsupp.smul_apply]
-      change x k * A (Finsupp.single k 1) m = A (Finsupp.single k 1) m * x k
-      exact mul_comm _ _
+    A x m = ∑ k ∈ x.support, A (Finsupp.single k 1) m * x k := by
+      have h := congrArg (fun T : (ι →₀ R) →ₗ[R] (κ →₀ R) => T x m)
+        ((Finsupp.lift (κ →₀ R) R ι).apply_symm_apply A).symm
+      simpa only [Finsupp.lift_apply, Finsupp.lift_symm_apply, Finsupp.sum,
+        Finsupp.finsetSum_apply, Finsupp.smul_apply, smul_eq_mul, mul_comm] using h
     _ = ∑ k ∈ S, A (Finsupp.single k 1) m * x k := by
       apply Finset.sum_subset hx
       intro k _ hk
-      have hz : x k = 0 := by
-        by_contra hn
-        exact hk (Finsupp.mem_support_iff.mpr hn)
-      rw [hz, mul_zero]
+      rw [Finsupp.notMem_support_iff.mp hk, mul_zero]
 
 
 section
@@ -74,16 +65,13 @@ theorem support_apply_subset_reachableSupport_succ
     (hx : x.support ⊆ reachableSupport B order n) :
     (A x).support ⊆ reachableSupport B (order + 1) n := by
   intro m hm
+  rw [Finsupp.mem_support_iff,
+    linearMap_apply_eq_finsetSum_of_support_subset A x x.support (subset_refl _) m] at hm
+  obtain ⟨k, hk, hne⟩ := Finset.exists_ne_zero_of_sum_ne_zero hm
   rw [reachableSupport_succ, Finset.mem_biUnion]
-  by_contra hnot
-  apply (Finsupp.mem_support_iff.mp hm)
-  rw [linearMap_apply_eq_finsetSum_of_support_subset A x x.support (Finset.Subset.rfl) m]
-  apply Finset.sum_eq_zero
-  intro k hk
-  have hz : A (Finsupp.single k 1) m = 0 := by
-    by_contra hne
-    exact hnot ⟨k, hx hk, hAB k (Finsupp.mem_support_iff.mpr hne)⟩
-  rw [hz, zero_mul]
+  refine ⟨k, hx hk, hAB k (Finsupp.mem_support_iff.mpr ?_)⟩
+  intro hz
+  exact hne (by rw [hz, zero_mul])
 
 end
 
