@@ -1,4 +1,7 @@
 import LeanCondensedMatter.Combinatorics.Shuffle.SlotShuffle
+import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalSourceSign
+import LeanCondensedMatter.Combinatorics.Cumulant.WeightedInversion
+import Mathlib.RingTheory.PowerSeries.Basic
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalSubsetAssembly
 import Mathlib.Algebra.BigOperators.Group.Finset.Basic
 import Mathlib.Data.Finset.BooleanAlgebra
@@ -19,6 +22,28 @@ namespace Fermionic
 
 open Common
 open scoped BigOperators
+
+section
+
+variable {E : ℕ}
+
+/-- Fermionic source cumulants, recursively reconstructed from the complete
+subset moment function using the canonical fermionic partition signs.
+The empty connected contribution is zero. -/
+noncomputable def externalSubsetSourceCumulantSeries
+    (M : Finset (Fin (2 * E)) → PowerSeries ℂ) :
+    Finset (Fin (2 * E)) → PowerSeries ℂ :=
+  Finpartition.weightedCumulantFromMoment
+    (fun _ π => PowerSeries.C (externalPartitionSourceSign π)) M
+
+@[simp]
+theorem externalSubsetSourceCumulantSeries_empty
+    (M : Finset (Fin (2 * E)) → PowerSeries ℂ) :
+    externalSubsetSourceCumulantSeries M ∅ = 0 := by
+  exact Finpartition.weightedCumulantFromMoment_empty
+    (fun _ π => PowerSeries.C (externalPartitionSourceSign π)) M
+
+end
 
 variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode] {E : ℕ}
 
