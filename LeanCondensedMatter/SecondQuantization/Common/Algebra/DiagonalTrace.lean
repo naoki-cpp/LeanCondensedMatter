@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Analysis.Algebra.FinsuppCoordinates
 import LeanCondensedMatter.Analysis.Algebra.FinsuppDiagonal
 import LeanCondensedMatter.Analysis.Algebra.FinsuppSupportShift
 import LeanCondensedMatter.SecondQuantization.Common.Algebra.AlgebraicFock
@@ -158,14 +159,13 @@ theorem summableDiagonalTraceRatioLinear_eq_zero_of_carriesShift
 private theorem matrixCoeff_comp_eq_tsum
     (A B : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (m n : Config) :
     matrixCoeff (A.comp B) m n = ∑' k, matrixCoeff A m k * matrixCoeff B k n := by
-  rw [matrixCoeff_comp_support]
+  change A (B (basisState n)) m = ∑' k, matrixCoeff A m k * matrixCoeff B k n
+  rw [Finsupp.linearMap_apply_eq_finsetSum_of_support_subset A (B (basisState n))
+    (B (basisState n)).support (subset_refl _) m]
   exact ((hasSum_sum_of_ne_finset_zero
     (s := (B (basisState n)).support)
     (fun k hk => by
-      have hz : matrixCoeff B k n = 0 := by
-        by_contra hcon
-        exact hk (Finsupp.mem_support_iff.mpr hcon)
-      rw [hz, mul_zero])).tsum_eq).symm
+      rw [Finsupp.notMem_support_iff.mp hk, mul_zero])).tsum_eq).symm
 
 /-- **Cyclicity under a two-operator swap**, assuming absolute double summability:
 `Tr'[AB] = Tr'[BA]`. -/
