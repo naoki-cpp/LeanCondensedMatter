@@ -33,6 +33,16 @@ open scoped PowerSeries
 
 variable {R : Type*} [CommRing R]
 
+/-- Coefficients of the formal Frobenius differential operator. -/
+theorem coeff_derivative_X_mul_derivative (A : R⟦X⟧) (n : ℕ) :
+    PowerSeries.coeff n (PowerSeries.derivative
+      (PowerSeries.X * PowerSeries.derivative A)) =
+        ((n + 1 : ℕ) : R) ^ 2 * PowerSeries.coeff (n + 1) A := by
+  rw [PowerSeries.coeff_derivative, PowerSeries.coeff_succ_X_mul,
+    PowerSeries.coeff_derivative]
+  simp only [Nat.cast_add, Nat.cast_one]
+  ring
+
 /-- The algebraic first integral for the paired homogeneous/inhomogeneous
 Frobenius equations. -/
 noncomputable def invariant

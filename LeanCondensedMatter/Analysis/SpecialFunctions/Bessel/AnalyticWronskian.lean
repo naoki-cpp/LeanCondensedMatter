@@ -65,6 +65,13 @@ theorem besselFormalJ0_coeff_succ (n : ℕ) :
   push_cast
   field_simp [hn, hf]
 
+private theorem harmonic_succ_complex (n : ℕ) :
+    (harmonic (n + 1) : ℂ) =
+      (harmonic n : ℂ) + (((n + 1 : ℕ) : ℂ))⁻¹ := by
+  rw [harmonic_succ]
+  push_cast
+  rfl
+
 /-- The harmonic-number recurrence produces the inhomogeneous
 Frobenius equation for the Y₀ entire correction. -/
 theorem besselFormalH0_coeff_succ (n : ℕ) :
@@ -78,12 +85,7 @@ theorem besselFormalH0_coeff_succ (n : ℕ) :
     exact_mod_cast Nat.succ_ne_zero n
   have hf : (n.factorial : ℂ) ≠ 0 := by
     exact_mod_cast Nat.factorial_ne_zero n
-  have hH : (harmonic (n + 1) : ℂ) =
-      (harmonic n : ℂ) + (((n + 1 : ℕ) : ℂ))⁻¹ := by
-    rw [harmonic_succ]
-    push_cast
-    rfl
-  rw [hH, Nat.factorial_succ]
+  rw [harmonic_succ_complex, Nat.factorial_succ]
   push_cast
   field_simp [hn, hf]
 
@@ -95,15 +97,8 @@ theorem besselFormalJ0_frobenius :
       besselFormalJ0 := by
   apply PowerSeries.ext
   intro n
-  rw [PowerSeries.coeff_derivative,
-    PowerSeries.coeff_succ_X_mul,
-    PowerSeries.coeff_derivative]
-  calc
-    _ = ((n + 1 : ℕ) : ℂ) ^ 2 *
-          PowerSeries.coeff (n + 1) besselFormalJ0 := by
-      simp only [Nat.cast_add, Nat.cast_one]
-      ring
-    _ = _ := besselFormalJ0_coeff_succ n
+  rw [FrobeniusWronskian.coeff_derivative_X_mul_derivative]
+  exact besselFormalJ0_coeff_succ n
 
 /-- The concrete harmonic series solves the inhomogeneous
 order-zero Frobenius equation in the formal power-series ring. -/
@@ -113,23 +108,10 @@ theorem besselFormalH0_frobenius :
       besselFormalH0 + PowerSeries.derivative besselFormalJ0 := by
   apply PowerSeries.ext
   intro n
-  rw [PowerSeries.coeff_derivative,
-    PowerSeries.coeff_succ_X_mul,
-    PowerSeries.coeff_derivative]
-  have h := besselFormalH0_coeff_succ n
-  calc
-    _ = ((n + 1 : ℕ) : ℂ) ^ 2 *
-        PowerSeries.coeff (n + 1) besselFormalH0 := by
-      simp only [Nat.cast_add, Nat.cast_one]
-      ring
-    _ = PowerSeries.coeff n besselFormalH0 +
-        ((n + 1 : ℕ) : ℂ) *
-          PowerSeries.coeff (n + 1) besselFormalJ0 := h
-    _ = PowerSeries.coeff n
-        (besselFormalH0 + PowerSeries.derivative besselFormalJ0) := by
-      simp only [map_add, PowerSeries.coeff_derivative]
-      simp only [Nat.cast_add, Nat.cast_one]
-      ring
+  rw [FrobeniusWronskian.coeff_derivative_X_mul_derivative,
+    besselFormalH0_coeff_succ, map_add, PowerSeries.coeff_derivative]
+  simp only [Nat.cast_add, Nat.cast_one]
+  ring
 
 /-- Formal Bessel J₀ and the harmonic correction have exactly
 the Frobenius initial coefficients; in particular no singular
@@ -211,12 +193,7 @@ theorem besselFormalH1_coeff (n : ℕ) :
     exact_mod_cast Nat.succ_ne_zero n
   have hf : (n.factorial : ℂ) ≠ 0 := by
     exact_mod_cast Nat.factorial_ne_zero n
-  have hH : (harmonic (n + 1) : ℂ) =
-      (harmonic n : ℂ) + (((n + 1 : ℕ) : ℂ))⁻¹ := by
-    rw [harmonic_succ]
-    push_cast
-    rfl
-  rw [hH, Nat.factorial_succ]
+  rw [harmonic_succ_complex, Nat.factorial_succ]
   push_cast
   field_simp [hn, hf]; ring
 
