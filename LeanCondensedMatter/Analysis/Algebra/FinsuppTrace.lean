@@ -1,5 +1,6 @@
 import LeanCondensedMatter.Analysis.Algebra.FinsuppCoordinates
 import Mathlib.Analysis.Normed.Field.Basic
+import Mathlib.Analysis.Normed.Group.Uniform
 import Mathlib.Topology.Algebra.InfiniteSum.Constructions
 
 set_option linter.style.header false
