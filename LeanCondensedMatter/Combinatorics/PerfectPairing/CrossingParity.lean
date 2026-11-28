@@ -1,7 +1,7 @@
 import LeanCondensedMatter.Combinatorics.PerfectPairing.PairEndpoints
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Crossing
 import Mathlib.Algebra.BigOperators.ModEq
-import Mathlib.Order.Interval.Finset.Basic
+import Mathlib.Algebra.Order.BigOperators.Group.LocallyFinite
 
 set_option linter.style.header false
 
@@ -166,29 +166,16 @@ private theorem crossingCount_eq_sum_Ioi_crossIndicator (pairing : PairingOn α)
   classical
   have hdiag : ∀ k : ι, crossIndicator pairing e k k = 0 :=
     fun k => ite_eq_right (not_crosses_self _)
-  have hswap :
-      (∑ k : ι, ∑ l ∈ Finset.Iio k, crossIndicator pairing e k l) =
-        ∑ k : ι, ∑ l ∈ Finset.Ioi k, crossIndicator pairing e l k :=
-    Finset.sum_comm' (fun x y => by simp)
   rw [pairing.crossingCount_eq_sum_sum_crosses_of_equiv e]
   calc
     (∑ k : ι, ∑ l : ι, crossIndicator pairing e k l) =
-        ∑ k : ι, (∑ l ∈ Finset.Ioi k, crossIndicator pairing e k l +
-          ∑ l ∈ Finset.Iio k, crossIndicator pairing e k l) :=
+        ∑ k : ι, ∑ l ∈ ({k} : Finset ι)ᶜ, crossIndicator pairing e k l :=
       Finset.sum_congr rfl fun k _ => by
         rw [← Finset.sum_erase_add Finset.univ (crossIndicator pairing e k)
-          (Finset.mem_univ k), hdiag k, add_zero,
-          ← Finset.compl_singleton, ← Finset.Ioi_disjUnion_Iio, Finset.sum_disjUnion]
-    _ = (∑ k : ι, ∑ l ∈ Finset.Ioi k, crossIndicator pairing e k l) +
-          ∑ k : ι, ∑ l ∈ Finset.Iio k, crossIndicator pairing e k l :=
-      Finset.sum_add_distrib
-    _ = (∑ k : ι, ∑ l ∈ Finset.Ioi k, crossIndicator pairing e k l) +
-          ∑ k : ι, ∑ l ∈ Finset.Ioi k, crossIndicator pairing e l k := by
-      rw [hswap]
-    _ = ∑ k : ι, ∑ l ∈ Finset.Ioi k,
-          (crossIndicator pairing e k l + crossIndicator pairing e l k) := by
-      rw [← Finset.sum_add_distrib]
-      exact Finset.sum_congr rfl fun k _ => Finset.sum_add_distrib.symm
+          (Finset.mem_univ k), hdiag k, add_zero, ← Finset.compl_singleton]
+    _ = _ :=
+      (Finset.sum_sum_Ioi_add_eq_sum_sum_off_diag
+        (fun k l => crossIndicator pairing e l k)).symm
 
 /-- The inversion sum over unordered pairs in any ordered presentation has the parity of
 the pairing's crossing count, regardless of each pair's endpoint orientation. -/
