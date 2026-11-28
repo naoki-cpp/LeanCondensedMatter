@@ -105,20 +105,13 @@ theorem probability_continuity_balance_of_schrodinger
       Complex.I * (ℏ : ℂ) * ψt = -(κ : ℂ) * ψxx + (potential : ℂ) * ψ) :
     probabilityDensityTimeDerivativeValue ψ ψt +
       probabilityCurrentDivergenceValue1D ℏ κ ψ ψxx = 0 := by
-  have hcomponents :
-      ℏ * ψt.im = κ * ψxx.re - potential * ψ.re ∧
-        ℏ * ψt.re = -κ * ψxx.im + potential * ψ.im := by
-    have hre := congrArg Complex.re hschrodinger
-    have him := congrArg Complex.im hschrodinger
-    simp at hre him
-    constructor
-    · linear_combination -hre
-    · linear_combination him
-  rcases hcomponents with ⟨hreal, himag⟩
+  have him := congrArg (fun z : ℂ => (star ψ * z).im) hschrodinger
+  simp at him
   unfold probabilityDensityTimeDerivativeValue probabilityCurrentDivergenceValue1D
   rw [probabilityCurrentPairingValue_eq_coordinates]
+  linear_combination (norm := skip) (2 / ℏ) * him
   field_simp [hℏ]
-  linear_combination 2 * ψ.re * himag + 2 * ψ.im * hreal
+  ring
 
 /-- One-dimensional pointwise continuity equation for real-differentiable complex time and space
 slices of a wavefunction.

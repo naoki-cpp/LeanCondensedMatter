@@ -77,93 +77,6 @@ theorem hasDerivAt_electromagneticProbabilityCurrentValue1D
   simpa [electromagneticProbabilityCurrentDivergenceValue1D,
     Pi.mul_apply, Pi.sub_apply, Pi.add_apply] using hraw
 
-/-- Real and imaginary component equations of the minimally coupled Schrödinger equation, written
-without denominators after multiplication by `2m`. -/
-private theorem electromagnetic_schrodinger_component_equations
-    (q ℏ mass vectorPotential vectorPotentialDerivative scalarPotential : ℝ)
-    (ψ ψt ψx ψxx : ℂ) (hmass : mass ≠ 0)
-    (hschrodinger :
-      Complex.I * (ℏ : ℂ) * ψt =
-        minimallyCoupledSchrodingerRhsValue1D
-          q ℏ mass vectorPotential vectorPotentialDerivative scalarPotential ψ ψx ψxx) :
-    2 * mass * ℏ * ψt.im =
-        ℏ ^ 2 * ψxx.re + 2 * q * ℏ * vectorPotential * ψx.im +
-          q * ℏ * vectorPotentialDerivative * ψ.im -
-          (q ^ 2 * vectorPotential ^ 2 + 2 * mass * q * scalarPotential) * ψ.re ∧
-      2 * mass * ℏ * ψt.re =
-        -(ℏ ^ 2 * ψxx.im) + 2 * q * ℏ * vectorPotential * ψx.re +
-          q * ℏ * vectorPotentialDerivative * ψ.re +
-          (q ^ 2 * vectorPotential ^ 2 + 2 * mass * q * scalarPotential) * ψ.im := by
-  let kineticCoefficient : ℝ := ℏ ^ 2 / (2 * mass)
-  let vectorPotentialCoefficient : ℝ := q * ℏ * vectorPotential / mass
-  let vectorPotentialDerivativeCoefficient : ℝ :=
-    q * ℏ * vectorPotentialDerivative / (2 * mass)
-  let scalarCoefficient : ℝ :=
-    q ^ 2 * vectorPotential ^ 2 / (2 * mass) + q * scalarPotential
-  have hexpanded :
-      minimallyCoupledSchrodingerRhsValue1D
-          q ℏ mass vectorPotential vectorPotentialDerivative scalarPotential ψ ψx ψxx =
-        -((kineticCoefficient : ℝ) : ℂ) * ψxx +
-          Complex.I * ((vectorPotentialCoefficient : ℝ) : ℂ) * ψx +
-          Complex.I * ((vectorPotentialDerivativeCoefficient : ℝ) : ℂ) * ψ +
-          ((scalarCoefficient : ℝ) : ℂ) * ψ := by
-    simpa [kineticCoefficient, vectorPotentialCoefficient,
-      vectorPotentialDerivativeCoefficient, scalarCoefficient] using
-      (minimallyCoupledSchrodingerRhsValue1D_eq_expanded
-        q ℏ mass vectorPotential vectorPotentialDerivative scalarPotential ψ ψx ψxx hmass)
-  rw [hexpanded] at hschrodinger
-  have hreRaw := congrArg Complex.re hschrodinger
-  have himRaw := congrArg Complex.im hschrodinger
-  have hre :
-      -(ℏ * ψt.im) =
-        -kineticCoefficient * ψxx.re -
-          vectorPotentialCoefficient * ψx.im -
-          vectorPotentialDerivativeCoefficient * ψ.im +
-          scalarCoefficient * ψ.re := by
-    simpa [sub_eq_add_neg] using hreRaw
-  have him :
-      ℏ * ψt.re =
-        -kineticCoefficient * ψxx.im +
-          vectorPotentialCoefficient * ψx.re +
-          vectorPotentialDerivativeCoefficient * ψ.re +
-          scalarCoefficient * ψ.im := by
-    simpa using himRaw
-  dsimp [kineticCoefficient, vectorPotentialCoefficient,
-    vectorPotentialDerivativeCoefficient, scalarCoefficient] at hre him
-  field_simp [hmass] at hre him
-  constructor
-  · linear_combination -hre
-  · linear_combination him
-
-/-- The local probability balance from the electromagnetic component equations. -/
-private theorem electromagnetic_probability_continuity_balance_of_components
-    (q ℏ mass vectorPotential vectorPotentialDerivative scalarPotential : ℝ)
-    (ψ ψt ψx ψxx : ℂ) (hℏ : ℏ ≠ 0) (hmass : mass ≠ 0)
-    (hreal :
-      2 * mass * ℏ * ψt.im =
-        ℏ ^ 2 * ψxx.re + 2 * q * ℏ * vectorPotential * ψx.im +
-          q * ℏ * vectorPotentialDerivative * ψ.im -
-          (q ^ 2 * vectorPotential ^ 2 + 2 * mass * q * scalarPotential) * ψ.re)
-    (himag :
-      2 * mass * ℏ * ψt.re =
-        -(ℏ ^ 2 * ψxx.im) + 2 * q * ℏ * vectorPotential * ψx.re +
-          q * ℏ * vectorPotentialDerivative * ψ.re +
-          (q ^ 2 * vectorPotential ^ 2 + 2 * mass * q * scalarPotential) * ψ.im) :
-    probabilityDensityTimeDerivativeValue ψ ψt +
-      electromagneticProbabilityCurrentDivergenceValue1D
-        q ℏ mass vectorPotential vectorPotentialDerivative ψ ψx ψxx = 0 := by
-  have hscaled :
-      ℏ * (probabilityDensityTimeDerivativeValue ψ ψt +
-        electromagneticProbabilityCurrentDivergenceValue1D
-          q ℏ mass vectorPotential vectorPotentialDerivative ψ ψx ψxx) = 0 := by
-    unfold electromagneticProbabilityCurrentDivergenceValue1D
-    rw [probabilityDensityTimeDerivativeValue_eq_coordinates,
-      probabilityDensityTimeDerivativeValue_eq_coordinates,
-      probabilityDensityValue, Complex.normSq_apply]
-    field_simp [hmass]
-    linear_combination ψ.re * himag + ψ.im * hreal
-  exact (mul_eq_zero.mp hscaled).resolve_left hℏ
-
 /-- Pointwise probability balance derived directly from the minimally coupled Schrödinger equation.
 The real scalar-potential contribution cancels, while the `A` and `Aₓ` terms assemble into the
 covariant current divergence. -/
@@ -177,12 +90,16 @@ theorem electromagnetic_probability_continuity_balance_of_schrodinger
     probabilityDensityTimeDerivativeValue ψ ψt +
       electromagneticProbabilityCurrentDivergenceValue1D
         q ℏ mass vectorPotential vectorPotentialDerivative ψ ψx ψxx = 0 := by
-  rcases electromagnetic_schrodinger_component_equations
-      q ℏ mass vectorPotential vectorPotentialDerivative scalarPotential
-      ψ ψt ψx ψxx hmass hschrodinger with ⟨hreal, himag⟩
-  exact electromagnetic_probability_continuity_balance_of_components
-    q ℏ mass vectorPotential vectorPotentialDerivative scalarPotential
-    ψ ψt ψx ψxx hℏ hmass hreal himag
+  rw [minimallyCoupledSchrodingerRhsValue1D_eq_expanded
+    q ℏ mass vectorPotential vectorPotentialDerivative scalarPotential ψ ψx ψxx hmass]
+    at hschrodinger
+  have him := congrArg (fun z : ℂ => (star ψ * z).im) hschrodinger
+  simp at him
+  simp only [electromagneticProbabilityCurrentDivergenceValue1D,
+    probabilityDensityTimeDerivativeValue, probabilityDensityValue, Complex.normSq_apply]
+  linear_combination (norm := skip) (2 / ℏ) * him
+  field_simp [hℏ, hmass]
+  ring
 
 /-- One-dimensional pointwise electromagnetic Schrödinger continuity equation. All time, space,
 and vector-potential derivatives used in the proof are explicit hypotheses. -/
