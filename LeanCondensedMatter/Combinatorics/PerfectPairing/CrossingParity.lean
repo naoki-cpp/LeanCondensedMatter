@@ -98,45 +98,26 @@ theorem PairingOn.sum_geometricCrossings_mod_two_eq_positionInversions
         Crosses (right x.2).1 (left x.1).1 then 1 else 0) % 2 =
       (∑ p : L, ∑ q : R, if rightPos q < leftPos p then 1 else 0) % 2 := by
   classical
-  have hparity :
-      (∑ x : A × B, if Crosses (left x.1).1 (right x.2).1 ∨
-        Crosses (right x.2).1 (left x.1).1 then 1 else 0) % 2 =
-      (∑ x : A × B, pairEndpointInversionCount (left x.1).1 (right x.2).1) % 2 := by
-    symm
-    simpa [Nat.ModEq] using
-      (Nat.ModEq.sum
-        (n := 2)
-        (s := (Finset.univ : Finset (A × B)))
-        (f := fun x => pairEndpointInversionCount (left x.1).1 (right x.2).1)
-        (g := fun x =>
-          if Crosses (left x.1).1 (right x.2).1 ∨
-            Crosses (right x.2).1 (left x.1).1 then 1 else 0)
-        (fun x _ => pairing.pairEndpointInversionCount_modEq_crossesIndicator
-          (left x.1) (right x.2) (hdisjoint x.1 x.2)))
-  have hsum :
-      (∑ x : A × B, pairEndpointInversionCount (left x.1).1 (right x.2).1) =
-        ∑ x : (A × B) × (Fin 2 × Fin 2),
-          if rightPos (rightEquiv (x.1.2, x.2.2)) <
-            leftPos (leftEquiv (x.1.1, x.2.1)) then 1 else 0 := by
-    simp only [Fintype.sum_prod_type]
-    refine Finset.sum_congr rfl fun p _ => Finset.sum_congr rfl fun q _ => ?_
-    rw [pairEndpointInversionCount_eq_of_eq_or_swap _ _
-      (leftPos (leftEquiv (p, 0)), leftPos (leftEquiv (p, 1)))
-      (rightPos (rightEquiv (q, 0)), rightPos (rightEquiv (q, 1)))
-      (hleft p) (hright q)]
-    simp only [Fin.sum_univ_two, pairEndpointInversionCount]
-    ac_rfl
-  have hreindex :
-      (∑ x : (A × B) × (Fin 2 × Fin 2),
-        if rightPos (rightEquiv (x.1.2, x.2.2)) <
-          leftPos (leftEquiv (x.1.1, x.2.1)) then 1 else 0) =
-        ∑ x : L × R, if rightPos x.2 < leftPos x.1 then 1 else 0 := by
-    refine Fintype.sum_equiv
-      ((Equiv.prodProdProdComm _ _ _ _).trans (Equiv.prodCongr leftEquiv rightEquiv))
-      _ _ ?_
-    intro x
-    rfl
-  rw [hparity, hsum, hreindex, Fintype.sum_prod_type]
+  rw [← Fintype.sum_prod_type]
+  rw [← Equiv.sum_comp
+    ((Equiv.prodProdProdComm A B (Fin 2) (Fin 2)).trans
+      (Equiv.prodCongr leftEquiv rightEquiv))
+    (fun x : L × R => if rightPos x.2 < leftPos x.1 then (1 : ℕ) else 0)]
+  simp only [Fintype.sum_prod_type]
+  refine Nat.ModEq.sum (n := 2) fun p _ => ?_
+  refine Nat.ModEq.sum (n := 2) fun q _ => ?_
+  refine (pairing.pairEndpointInversionCount_modEq_crossesIndicator
+    (left p) (right q) (hdisjoint p q)).symm.trans ?_
+  change pairEndpointInversionCount (left p).1 (right q).1 % 2 =
+    (∑ i : Fin 2, ∑ j : Fin 2,
+      if rightPos (rightEquiv (q, j)) < leftPos (leftEquiv (p, i)) then 1 else 0) % 2
+  apply congrArg (fun n : ℕ => n % 2)
+  rw [pairEndpointInversionCount_eq_of_eq_or_swap _ _
+    (leftPos (leftEquiv (p, 0)), leftPos (leftEquiv (p, 1)))
+    (rightPos (rightEquiv (q, 0)), rightPos (rightEquiv (q, 1)))
+    (hleft p) (hright q)]
+  simp only [Fin.sum_univ_two, pairEndpointInversionCount]
+  ac_rfl
 
 section GeometricParity
 
