@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Transport.Streda.ResponseMatrix
+import Mathlib.Basic.Complex.Basic
 import LeanCondensedMatter.Transport.Streda.TraceRepresentation
 import Mathlib.Tactic.Ring
 
@@ -7,7 +7,8 @@ set_option linter.style.header false
 /-!
 # Shared-provenance traced Středa response matrices
 
-A response matrix should not be assembled from unrelated scalar Středa representations. This module
+Static response data carry Fermi-sea antisymmetry as an invariant. The traced representation
+constructs all entries from a single analytic setup, rather than unrelated scalar representations. This module
 keeps one `TracedStredaKernelFacts` value for the Hamiltonian, broadening, energy interval,
 occupation, and occupation derivative shared by every matrix component. Pair-specific data is
 restricted to the integration-by-parts boundary condition; the canonical trace-kernel derivative,
@@ -25,6 +26,39 @@ namespace Transport
 open MeasureTheory
 
 noncomputable section
+
+/-- Coordinate-indexed static Středa response data. The sea contribution carries its defining
+antisymmetry as an invariant rather than as a convention on off-diagonal entries. -/
+structure StaticStredaResponseMatrix (ι : Type*) where
+  /-- Fermi-surface response contribution. -/
+  fermiSurface : ι → ι → ℂ
+  /-- Fermi-sea response contribution. -/
+  fermiSea : ι → ι → ℂ
+  /-- The Středa sea contribution is antisymmetric in its current/source indices. -/
+  fermiSea_swap : ∀ i j, fermiSea i j = -fermiSea j i
+
+namespace StaticStredaResponseMatrix
+
+variable {ι : Type*}
+
+/-- Complete static Středa response matrix. -/
+noncomputable def total (response : StaticStredaResponseMatrix ι) : ι → ι → ℂ :=
+  fun i j => response.fermiSurface i j + response.fermiSea i j
+
+/-- The Fermi-sea contribution vanishes on the diagonal. -/
+@[simp]
+theorem fermiSea_self
+    (response : StaticStredaResponseMatrix ι) (i : ι) :
+    response.fermiSea i i = 0 :=
+  CharZero.eq_neg_self_iff.mp (response.fermiSea_swap i i)
+
+/-- A diagonal total response is entirely the diagonal Fermi-surface contribution. -/
+theorem total_self_eq_fermiSurface
+    (response : StaticStredaResponseMatrix ι) (i : ι) :
+    response.total i i = response.fermiSurface i i := by
+  simp [total]
+
+end StaticStredaResponseMatrix
 
 variable {H ι : Type*}
 variable [NormedAddCommGroup H] [InnerProductSpace ℂ H]
