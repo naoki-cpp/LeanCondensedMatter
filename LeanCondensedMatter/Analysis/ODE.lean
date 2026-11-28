@@ -1,5 +1,6 @@
 import Mathlib.Analysis.Calculus.Deriv.Inv
 import Mathlib.Analysis.Calculus.Deriv.MeanValue
+import Mathlib.Analysis.Calculus.Deriv.Pow
 import Mathlib.Analysis.Calculus.MeanValue
 import Mathlib.Analysis.Real.Sqrt
 import Mathlib.Analysis.SpecialFunctions.ExpDeriv
@@ -130,7 +131,7 @@ theorem energy_tendsto_zero_of_firstOrderSystem
       Filter.atTop (nhds 0) := by
     convert (tendsto_const_nhds.mul hroot) using 1
     norm_num
-  apply squeeze_zero'
+  refine squeeze_zero' ?_ ?_ hDouble
   · filter_upwards [Filter.eventually_ge_atTop (2 : ℝ)] with r hr
     exact hE_nonneg r
   · filter_upwards [Filter.eventually_ge_atTop (2 : ℝ)] with r hr
@@ -139,6 +140,5 @@ theorem energy_tendsto_zero_of_firstOrderSystem
     calc
       E r ≤ 2 * F r := hE_le_two_F r hr
       _ ≤ 2 * Real.sqrt (H 2 / r) := by linarith
-  · exact hDouble
 
 end RadialODE
