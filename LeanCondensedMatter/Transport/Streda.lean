@@ -18,8 +18,7 @@ set_option linter.style.header false
 /-!
 # Středa transport
 
-Finite regularized Středa transport theory: operator and trace kernels, retarded–advanced algebra,
-energy integration, generalized static response, response matrices, spectral representations,
-spectral energy integrals, conditional identification of a complete static channel response with a
-traced integral, isolated interband pole algebra, and representation-level conductivity normalization.
+Regularized operator and trace kernels, retarded–advanced algebra, spectral and energy-integral
+representations, generalized static response and conductivity tensors, conditional static-channel
+identification, and isolated interband pole limits.
 -/
