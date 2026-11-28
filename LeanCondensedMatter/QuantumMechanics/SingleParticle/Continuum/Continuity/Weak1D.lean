@@ -28,8 +28,7 @@ def weightedBoundaryCurrent1D
 
 /-- The scalar-potential Schrödinger equation gives the one-dimensional interval weak balance.
 
-The wavefunction derivative hypotheses are stated coordinatewise, as in the pointwise continuity
-kernel. `hcurrentIntegrable` is the remaining spatial integrability assumption needed for
+The wavefunction derivative hypotheses are stated for complex-valued functions of a real variable. `hcurrentIntegrable` is the remaining spatial integrability assumption needed for
 integration by parts.
 -/
 theorem schrodinger_weak_continuity_interval
@@ -37,14 +36,10 @@ theorem schrodinger_weak_continuity_interval
     {test testDerivative : ℝ → ℝ}
     {ψ ψt ψx ψxx : ℝ → ℂ} {potential : ℝ → ℝ}
     (htest : ∀ x ∈ [[a, b]], HasDerivAt test (testDerivative x) x)
-    (hψre : ∀ x ∈ [[a, b]],
-      HasDerivAt (fun y => (ψ y).re) (ψx x).re x)
-    (hψim : ∀ x ∈ [[a, b]],
-      HasDerivAt (fun y => (ψ y).im) (ψx x).im x)
-    (hψxre : ∀ x ∈ [[a, b]],
-      HasDerivAt (fun y => (ψx y).re) (ψxx x).re x)
-    (hψxim : ∀ x ∈ [[a, b]],
-      HasDerivAt (fun y => (ψx y).im) (ψxx x).im x)
+    (hψ : ∀ x ∈ [[a, b]],
+      HasDerivAt ψ (ψx x) x)
+    (hψx : ∀ x ∈ [[a, b]],
+      HasDerivAt ψx (ψxx x) x)
     (hschrodinger : ∀ x,
       Complex.I * (ℏ : ℂ) * ψt x =
         -(κ : ℂ) * ψxx x + (potential x : ℂ) * ψ x)
@@ -60,7 +55,7 @@ theorem schrodinger_weak_continuity_interval
         (probabilityCurrentDivergenceValue1D ℏ κ (ψ x) (ψxx x)) x := by
     intro x hx
     exact hasDerivAt_probabilityCurrentValue1D ℏ κ
-      (hψre x hx) (hψim x hx) (hψxre x hx) (hψxim x hx)
+      (hψ x hx) (hψx x hx)
   have hweak := ConservationLaw.weak_continuity_interval_of_pointwise
     (ContinuousLinearMap.mul ℝ ℝ) (a := a) (b := b)
     (test := test) (testDerivative := testDerivative)

@@ -57,44 +57,6 @@ theorem hasDerivAt_schwartzSpatialSecondDerivative1D (ψ : SchwartzMap ℝ ℂ) 
     (deriv (schwartzSpatialDerivative1D ψ) x) x
   exact SchwartzMap.hasDerivAt (schwartzSpatialDerivative1D ψ) x
 
-private theorem hasDerivAt_realPart_of_complex
-    {f : ℝ → ℂ} {f' : ℂ} {x : ℝ} (h : HasDerivAt f f' x) :
-    HasDerivAt (fun y => (f y).re) f'.re x := by
-  have hderiv := (Complex.reCLM.hasFDerivAt.comp x h.hasFDerivAt).hasDerivAt
-  rw [hasDerivAt_iff_tendsto]
-  rw [hasDerivAt_iff_tendsto] at hderiv
-  simpa using hderiv
-
-private theorem hasDerivAt_imaginaryPart_of_complex
-    {f : ℝ → ℂ} {f' : ℂ} {x : ℝ} (h : HasDerivAt f f' x) :
-    HasDerivAt (fun y => (f y).im) f'.im x := by
-  have hderiv := (Complex.imCLM.hasFDerivAt.comp x h.hasFDerivAt).hasDerivAt
-  rw [hasDerivAt_iff_tendsto]
-  rw [hasDerivAt_iff_tendsto] at hderiv
-  simpa using hderiv
-
-/-- Real-coordinate derivative data for a Schwartz wavefunction is automatic. -/
-theorem hasDerivAt_schwartzSpatialDerivative1D_re (ψ : SchwartzMap ℝ ℂ) (x : ℝ) :
-    HasDerivAt (fun y => (ψ y).re) (schwartzSpatialDerivative1D ψ x).re x :=
-  hasDerivAt_realPart_of_complex (hasDerivAt_schwartzSpatialDerivative1D ψ x)
-
-/-- Imaginary-coordinate derivative data for a Schwartz wavefunction is automatic. -/
-theorem hasDerivAt_schwartzSpatialDerivative1D_im (ψ : SchwartzMap ℝ ℂ) (x : ℝ) :
-    HasDerivAt (fun y => (ψ y).im) (schwartzSpatialDerivative1D ψ x).im x :=
-  hasDerivAt_imaginaryPart_of_complex (hasDerivAt_schwartzSpatialDerivative1D ψ x)
-
-/-- Real-coordinate second derivative data for a Schwartz wavefunction is automatic. -/
-theorem hasDerivAt_schwartzSpatialSecondDerivative1D_re (ψ : SchwartzMap ℝ ℂ) (x : ℝ) :
-    HasDerivAt (fun y => (schwartzSpatialDerivative1D ψ y).re)
-      (schwartzSpatialSecondDerivative1D ψ x).re x :=
-  hasDerivAt_realPart_of_complex (hasDerivAt_schwartzSpatialSecondDerivative1D ψ x)
-
-/-- Imaginary-coordinate second derivative data for a Schwartz wavefunction is automatic. -/
-theorem hasDerivAt_schwartzSpatialSecondDerivative1D_im (ψ : SchwartzMap ℝ ℂ) (x : ℝ) :
-    HasDerivAt (fun y => (schwartzSpatialDerivative1D ψ y).im)
-      (schwartzSpatialSecondDerivative1D ψ x).im x :=
-  hasDerivAt_imaginaryPart_of_complex (hasDerivAt_schwartzSpatialSecondDerivative1D ψ x)
-
 /-- Pointwise Schrödinger continuity with all spatial differentiability supplied by a Schwartz
 wavefunction. Only the time-slice differentiability and pointwise equation of motion remain
 explicit. -/
@@ -102,8 +64,7 @@ theorem oneDimensional_schrodinger_continuity_of_schwartz
     (ℏ κ potential : ℝ) (hℏ : ℏ ≠ 0)
     {ψTime : ℝ → ℂ} (ψSpace : SchwartzMap ℝ ℂ) {ψt : ℂ} {t x : ℝ}
     (hsame : ψTime t = ψSpace x)
-    (htimeRe : HasDerivAt (fun s => (ψTime s).re) ψt.re t)
-    (htimeIm : HasDerivAt (fun s => (ψTime s).im) ψt.im t)
+    (htime : HasDerivAt ψTime ψt t)
     (hschrodinger :
       Complex.I * (ℏ : ℂ) * ψt =
         -(κ : ℂ) * schwartzSpatialSecondDerivative1D ψSpace x +
@@ -112,11 +73,9 @@ theorem oneDimensional_schrodinger_continuity_of_schwartz
       deriv (fun y => probabilityCurrentValue1D ℏ κ (ψSpace y)
         (schwartzSpatialDerivative1D ψSpace y)) x = 0 := by
   exact oneDimensional_schrodinger_continuity ℏ κ potential hℏ hsame
-    htimeRe htimeIm
-    (hasDerivAt_schwartzSpatialDerivative1D_re ψSpace x)
-    (hasDerivAt_schwartzSpatialDerivative1D_im ψSpace x)
-    (hasDerivAt_schwartzSpatialSecondDerivative1D_re ψSpace x)
-    (hasDerivAt_schwartzSpatialSecondDerivative1D_im ψSpace x)
+    htime
+    (hasDerivAt_schwartzSpatialDerivative1D ψSpace x)
+    (hasDerivAt_schwartzSpatialSecondDerivative1D ψSpace x)
     hschrodinger
 
 /-- Interval weak Schrödinger continuity with all spatial differentiability supplied by a Schwartz
@@ -142,13 +101,9 @@ theorem schrodinger_weak_continuity_interval_of_schwartz
             (schwartzSpatialDerivative1D ψ x)) := by
   apply schrodinger_weak_continuity_interval a b ℏ κ hℏ htest
   · intro x _
-    exact hasDerivAt_schwartzSpatialDerivative1D_re ψ x
+    exact hasDerivAt_schwartzSpatialDerivative1D ψ x
   · intro x _
-    exact hasDerivAt_schwartzSpatialDerivative1D_im ψ x
-  · intro x _
-    exact hasDerivAt_schwartzSpatialSecondDerivative1D_re ψ x
-  · intro x _
-    exact hasDerivAt_schwartzSpatialSecondDerivative1D_im ψ x
+    exact hasDerivAt_schwartzSpatialSecondDerivative1D ψ x
   · exact hschrodinger
   · exact htestIntegrable
   · exact hcurrentIntegrable

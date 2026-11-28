@@ -45,12 +45,9 @@ structure ContinuumSchwartzEvolutionRepresentative1D
   represents_propagator : ∀ t,
     (wavefunction t).toLp 2 (volume : Measure ℝ) =
       evolution.propagator t ((wavefunction 0).toLp 2 (volume : Measure ℝ))
-  /-- Pointwise real-part time differentiability. -/
-  hasDerivAt_re : ∀ t x,
-    HasDerivAt (fun τ : ℝ => (wavefunction τ x).re) (timeDerivative t x).re t
-  /-- Pointwise imaginary-part time differentiability. -/
-  hasDerivAt_im : ∀ t x,
-    HasDerivAt (fun τ : ℝ => (wavefunction τ x).im) (timeDerivative t x).im t
+  /-- Pointwise time differentiability of the complex representative. -/
+  hasDerivAt_wavefunction : ∀ t x,
+    HasDerivAt (fun τ : ℝ => wavefunction τ x) (timeDerivative t x) t
   /-- The chosen representative and time derivative satisfy the pointwise Schrödinger equation. -/
   schrodinger : ∀ t x,
     Complex.I * (evolution.hbar : ℂ) * timeDerivative t x =
@@ -74,8 +71,7 @@ theorem ContinuumSchwartzEvolutionRepresentative1D.pointwise_continuity
     (ψt := representative.timeDerivative t x)
     (t := t) (x := x)
   · rfl
-  · exact representative.hasDerivAt_re t x
-  · exact representative.hasDerivAt_im t x
+  · exact representative.hasDerivAt_wavefunction t x
   · exact representative.schrodinger t x
 
 /-- Interval-weak continuity for an operator-generated Schwartz representative. The test-function

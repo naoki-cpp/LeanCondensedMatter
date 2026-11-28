@@ -184,10 +184,8 @@ theorem deriv_schwartzProbabilityCurrent1D
       probabilityCurrentDivergenceValue1D ℏ κ (ψ x)
         (schwartzSpatialSecondDerivative1D ψ x) := by
   have hcurrent := hasDerivAt_probabilityCurrentValue1D ℏ κ
-    (hasDerivAt_schwartzSpatialDerivative1D_re ψ x)
-    (hasDerivAt_schwartzSpatialDerivative1D_im ψ x)
-    (hasDerivAt_schwartzSpatialSecondDerivative1D_re ψ x)
-    (hasDerivAt_schwartzSpatialSecondDerivative1D_im ψ x)
+    (hasDerivAt_schwartzSpatialDerivative1D ψ x)
+    (hasDerivAt_schwartzSpatialSecondDerivative1D ψ x)
   calc
     deriv (schwartzProbabilityCurrent1D ℏ κ ψ) x =
         deriv (fun y => probabilityCurrentValue1D ℏ κ (ψ y)
