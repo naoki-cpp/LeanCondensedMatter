@@ -81,13 +81,9 @@ private theorem Pairing.mem_pairs_endpoints_mem_deletedPositions {n : ℕ} (pair
 /-- Map a pair of remaining positions to its original ambient positions. -/
 noncomputable def Pairing.eraseZeroPairEmbedding {n : ℕ} (pairing : Pairing (n + 1)) :
     (Fin (2 * n) × Fin (2 * n)) ↪
-      (Fin (2 * (n + 1)) × Fin (2 * (n + 1))) where
-  toFun pr := (pairing.eraseZeroOrderIso pr.1, pairing.eraseZeroOrderIso pr.2)
-  inj' := by
-    intro p q h
-    exact Prod.ext
-      (pairing.eraseZeroOrderIso.injective (Subtype.ext (congrArg Prod.fst h)))
-      (pairing.eraseZeroOrderIso.injective (Subtype.ext (congrArg Prod.snd h)))
+      (Fin (2 * (n + 1)) × Fin (2 * (n + 1))) :=
+  let e := pairing.eraseZeroOrderIso.toEquiv.toEmbedding.trans (Function.Embedding.subtype _)
+  e.prodMap e
 
 /-- The ambient pairs other than the first pair are exactly the embedded smaller pairing's pairs. -/
 theorem Pairing.pairs_erase_firstPair_eq_image {n : ℕ} (pairing : Pairing (n + 1)) :
