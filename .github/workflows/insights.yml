@@ -187,13 +187,7 @@ jobs:
           git fetch origin graph-data
           git worktree add "$graph_data_dir" origin/graph-data
           cp docs/generated/theorems.json "$graph_data_dir/theorems.json"
-          # Keep the rollout fallback until a complete split snapshot has been published.
-          if [ -f "$graph_data_dir/declaration-index.json" ]; then
-            git -C "$graph_data_dir" rm --ignore-unmatch -- declarations.json
-          else
-            cp docs/generated/declarations.json "$graph_data_dir/declarations.json"
-            git -C "$graph_data_dir" add declarations.json
-          fi
+          git -C "$graph_data_dir" rm --ignore-unmatch -- declarations.json
           cp docs/generated/module-imports.json "$graph_data_dir/module-imports.json"
           # Replace the previous shard set; unchanged content-addressed files retain their names.
           git -C "$graph_data_dir" rm -r --ignore-unmatch -- declaration-details
