@@ -81,16 +81,11 @@ theorem finiteDimensional_schrodinger_continuity
     {ψt : ℂ} {secondDerivatives : Fin d → ℂ}
     {t : ℝ} {x : Fin d → ℝ}
     (hsame : ∀ i, ψSpace i (x i) = ψTime t)
-    (htimeRe : HasDerivAt (fun s => (ψTime s).re) ψt.re t)
-    (htimeIm : HasDerivAt (fun s => (ψTime s).im) ψt.im t)
-    (hspaceRe : ∀ i,
-      HasDerivAt (fun y => (ψSpace i y).re) (ψx i (x i)).re (x i))
-    (hspaceIm : ∀ i,
-      HasDerivAt (fun y => (ψSpace i y).im) (ψx i (x i)).im (x i))
-    (hspaceDerivativeRe : ∀ i,
-      HasDerivAt (fun y => (ψx i y).re) (secondDerivatives i).re (x i))
-    (hspaceDerivativeIm : ∀ i,
-      HasDerivAt (fun y => (ψx i y).im) (secondDerivatives i).im (x i))
+    (htime : HasDerivAt ψTime ψt t)
+    (hspace : ∀ i,
+      HasDerivAt (ψSpace i) (ψx i (x i)) (x i))
+    (hspaceDerivative : ∀ i,
+      HasDerivAt (ψx i) (secondDerivatives i) (x i))
     (hschrodinger :
       Complex.I * (ℏ : ℂ) * ψt =
         -(κ : ℂ) * (∑ i, secondDerivatives i) +
@@ -98,12 +93,12 @@ theorem finiteDimensional_schrodinger_continuity
     deriv (fun s => probabilityDensityValue (ψTime s)) t +
       ∑ i, deriv
         (fun y => probabilityCurrentValue1D ℏ κ (ψSpace i y) (ψx i y)) (x i) = 0 := by
-  rw [(hasDerivAt_probabilityDensityValue htimeRe htimeIm).deriv]
+  rw [(hasDerivAt_probabilityDensityValue htime).deriv]
   have hcurrent (i : Fin d) :
       deriv (fun y => probabilityCurrentValue1D ℏ κ (ψSpace i y) (ψx i y)) (x i) =
         probabilityCurrentDivergenceValue1D ℏ κ (ψTime t) (secondDerivatives i) := by
     rw [(hasDerivAt_probabilityCurrentValue1D ℏ κ
-      (hspaceRe i) (hspaceIm i) (hspaceDerivativeRe i) (hspaceDerivativeIm i)).deriv]
+      (hspace i) (hspaceDerivative i)).deriv]
     rw [hsame i]
   rw [Finset.sum_congr rfl (fun i _ => hcurrent i)]
   exact finiteDimensional_probability_continuity_balance_of_schrodinger

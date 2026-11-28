@@ -31,7 +31,8 @@ private theorem deriv_schwartzRealPart1D (ψ : SchwartzMap ℝ ℂ) (x : ℝ) :
       (schwartzSpatialDerivative1D ψ x).re x := by
     change HasDerivAt (fun y : ℝ => (ψ y).re)
       (schwartzSpatialDerivative1D ψ x).re x
-    exact hasDerivAt_schwartzSpatialDerivative1D_re ψ x
+    exact Complex.reCLM.hasFDerivAt.comp_hasDerivAt x
+      (hasDerivAt_schwartzSpatialDerivative1D ψ x)
   exact h.deriv
 
 private theorem deriv_schwartzImaginaryPart1D (ψ : SchwartzMap ℝ ℂ) (x : ℝ) :
@@ -40,7 +41,8 @@ private theorem deriv_schwartzImaginaryPart1D (ψ : SchwartzMap ℝ ℂ) (x : �
       (schwartzSpatialDerivative1D ψ x).im x := by
     change HasDerivAt (fun y : ℝ => (ψ y).im)
       (schwartzSpatialDerivative1D ψ x).im x
-    exact hasDerivAt_schwartzSpatialDerivative1D_im ψ x
+    exact Complex.imCLM.hasFDerivAt.comp_hasDerivAt x
+      (hasDerivAt_schwartzSpatialDerivative1D ψ x)
   exact h.deriv
 
 private theorem integrable_mul_schwartz1D (f g : SchwartzMap ℝ ℝ) :

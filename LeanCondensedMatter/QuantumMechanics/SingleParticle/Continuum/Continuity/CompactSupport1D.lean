@@ -75,10 +75,8 @@ theorem schrodinger_weak_continuity_wholeSpace
     {test : ℝ → ℝ} {ψ ψx ψt ψxx : ℝ → ℂ} {potential : ℝ → ℝ}
     (htestSupport : tsupport test ⊆ Ioo a b)
     (htestDifferentiable : Differentiable ℝ test)
-    (hψre : ∀ x ∈ [[a, b]], HasDerivAt (fun y => (ψ y).re) (ψx x).re x)
-    (hψim : ∀ x ∈ [[a, b]], HasDerivAt (fun y => (ψ y).im) (ψx x).im x)
-    (hψxre : ∀ x ∈ [[a, b]], HasDerivAt (fun y => (ψx y).re) (ψxx x).re x)
-    (hψxim : ∀ x ∈ [[a, b]], HasDerivAt (fun y => (ψx y).im) (ψxx x).im x)
+    (hψ : ∀ x ∈ [[a, b]], HasDerivAt ψ (ψx x) x)
+    (hψx : ∀ x ∈ [[a, b]], HasDerivAt ψx (ψxx x) x)
     (hschrodinger : ∀ x,
       Complex.I * (ℏ : ℂ) * ψt x =
         -(κ : ℂ) * ψxx x + (potential x : ℂ) * ψ x)
@@ -89,7 +87,7 @@ theorem schrodinger_weak_continuity_wholeSpace
       (∫ x, deriv test x * probabilityCurrentValue1D ℏ κ (ψ x) (ψx x)) := by
   have hInterval := schrodinger_weak_continuity_interval
     a b ℏ κ hℏ (fun x _ => (htestDifferentiable x).hasDerivAt)
-      hψre hψim hψxre hψxim hschrodinger htestDerivIntegrable hcurrentIntegrable
+      hψ hψx hschrodinger htestDerivIntegrable hcurrentIntegrable
   exact ConservationLaw.weak_continuity_wholeSpace_of_interval
     (ContinuousLinearMap.mul ℝ ℝ) a b htestSupport hInterval
 
@@ -119,14 +117,10 @@ theorem hasDerivAt_wholeSpaceSmearedProbabilityDensity1D_of_schrodinger
     (hBound : ∀ x ∈ uIoc a b, ∀ τ ∈ s,
       ‖test x * probabilityDensityTimeDerivativeValue (ψ τ x) (ψt τ x)‖ ≤ bound x)
     (hBoundIntegrable : IntervalIntegrable bound volume a b)
-    (htimeRe : ∀ x ∈ uIoc a b, ∀ τ ∈ s,
-      HasDerivAt (fun u => (ψ u x).re) (ψt τ x).re τ)
-    (htimeIm : ∀ x ∈ uIoc a b, ∀ τ ∈ s,
-      HasDerivAt (fun u => (ψ u x).im) (ψt τ x).im τ)
-    (hψre : ∀ x ∈ [[a, b]], HasDerivAt (fun y => (ψ t y).re) (ψx x).re x)
-    (hψim : ∀ x ∈ [[a, b]], HasDerivAt (fun y => (ψ t y).im) (ψx x).im x)
-    (hψxre : ∀ x ∈ [[a, b]], HasDerivAt (fun y => (ψx y).re) (ψxx x).re x)
-    (hψxim : ∀ x ∈ [[a, b]], HasDerivAt (fun y => (ψx y).im) (ψxx x).im x)
+    (htime : ∀ x ∈ uIoc a b, ∀ τ ∈ s,
+      HasDerivAt (fun u => ψ u x) (ψt τ x) τ)
+    (hψ : ∀ x ∈ [[a, b]], HasDerivAt (ψ t) (ψx x) x)
+    (hψx : ∀ x ∈ [[a, b]], HasDerivAt ψx (ψxx x) x)
     (hschrodinger : ∀ x,
       Complex.I * (ℏ : ℂ) * ψt t x =
         -(κ : ℂ) * ψxx x + (potential x : ℂ) * ψ t x)
@@ -138,8 +132,8 @@ theorem hasDerivAt_wholeSpaceSmearedProbabilityDensity1D_of_schrodinger
       ((∫ x, deriv test x * probabilityCurrentValue1D ℏ κ (ψ t x) (ψx x))) t := by
   have hInterval := hasDerivAt_intervalSmearedProbabilityDensity1D_of_schrodinger
     a b t ℏ κ hℏ hs hDensityMeas hDensityIntegrable hDensityRateMeas hBound
-      hBoundIntegrable htimeRe htimeIm (fun x _ => (htestDifferentiable x).hasDerivAt)
-      hψre hψim hψxre hψxim hschrodinger htestDerivIntegrable hcurrentIntegrable
+      hBoundIntegrable htime (fun x _ => (htestDifferentiable x).hasDerivAt)
+      hψ hψx hschrodinger htestDerivIntegrable hcurrentIntegrable
   exact hasDerivAt_wholeSpaceSmearedProbabilityDensity1D_of_interval
     a b t htestSupport hInterval
 

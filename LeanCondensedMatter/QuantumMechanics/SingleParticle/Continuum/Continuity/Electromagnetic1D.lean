@@ -35,21 +35,27 @@ def electromagneticProbabilityCurrentDivergenceValue1D
         vectorPotential * probabilityDensityTimeDerivativeValue ψ ψx)
 
 /-- Differentiating the gauge-covariant current uses the product rule for the vector potential and
-for the wavefunction coordinates explicitly. -/
+for the wavefunction. -/
 theorem hasDerivAt_electromagneticProbabilityCurrentValue1D
     (q ℏ mass : ℝ) (hℏ : ℏ ≠ 0) (hmass : mass ≠ 0)
     {vectorPotential : ℝ → ℝ} {vectorPotentialDerivative : ℝ}
     {ψ ψx : ℝ → ℂ} {ψxx : ℂ} {x : ℝ}
     (hA : HasDerivAt vectorPotential vectorPotentialDerivative x)
-    (hψre : HasDerivAt (fun y => (ψ y).re) (ψx x).re x)
-    (hψim : HasDerivAt (fun y => (ψ y).im) (ψx x).im x)
-    (hψxre : HasDerivAt (fun y => (ψx y).re) ψxx.re x)
-    (hψxim : HasDerivAt (fun y => (ψx y).im) ψxx.im x) :
+    (hψ : HasDerivAt ψ (ψx x) x)
+    (hψx : HasDerivAt ψx ψxx x) :
     HasDerivAt
       (fun y => electromagneticProbabilityCurrentValue1D
         q ℏ mass (vectorPotential y) (ψ y) (ψx y))
       (electromagneticProbabilityCurrentDivergenceValue1D
         q ℏ mass (vectorPotential x) vectorPotentialDerivative (ψ x) (ψx x) ψxx) x := by
+  have hψre : HasDerivAt (fun y => (ψ y).re) (ψx x).re x :=
+    Complex.reCLM.hasFDerivAt.comp_hasDerivAt x hψ
+  have hψim : HasDerivAt (fun y => (ψ y).im) (ψx x).im x :=
+    Complex.imCLM.hasFDerivAt.comp_hasDerivAt x hψ
+  have hψxre : HasDerivAt (fun y => (ψx y).re) ψxx.re x :=
+    Complex.reCLM.hasFDerivAt.comp_hasDerivAt x hψx
+  have hψxim : HasDerivAt (fun y => (ψx y).im) ψxx.im x :=
+    Complex.imCLM.hasFDerivAt.comp_hasDerivAt x hψx
   have hpairRaw := HasDerivAt.sub
     (HasDerivAt.mul hψre hψxim) (HasDerivAt.mul hψim hψxre)
   have hderiv :
@@ -66,7 +72,7 @@ theorem hasDerivAt_electromagneticProbabilityCurrentValue1D
     rw [hasDerivAt_iff_tendsto] at hpairRaw
     simpa [Pi.mul_apply, Pi.sub_apply] using hpairRaw
   have hparamagnetic := hpair.const_mul (ℏ / mass)
-  have hdensity := hasDerivAt_probabilityDensityValue hψre hψim
+  have hdensity := hasDerivAt_probabilityDensityValue hψ
   have hdiamagnetic := (HasDerivAt.mul hA hdensity).const_mul (q / mass)
   have hraw := HasDerivAt.sub hparamagnetic hdiamagnetic
   have hfun :
@@ -199,12 +205,9 @@ theorem oneDimensional_electromagnetic_schrodinger_continuity
     {ψTime ψSpace ψx : ℝ → ℂ} {vectorPotential : ℝ → ℝ}
     {ψt ψxx : ℂ} {vectorPotentialDerivative : ℝ} {t x : ℝ}
     (hsame : ψTime t = ψSpace x)
-    (htimeRe : HasDerivAt (fun s => (ψTime s).re) ψt.re t)
-    (htimeIm : HasDerivAt (fun s => (ψTime s).im) ψt.im t)
-    (hspaceRe : HasDerivAt (fun y => (ψSpace y).re) (ψx x).re x)
-    (hspaceIm : HasDerivAt (fun y => (ψSpace y).im) (ψx x).im x)
-    (hspaceDerivativeRe : HasDerivAt (fun y => (ψx y).re) ψxx.re x)
-    (hspaceDerivativeIm : HasDerivAt (fun y => (ψx y).im) ψxx.im x)
+    (htime : HasDerivAt ψTime ψt t)
+    (hspace : HasDerivAt ψSpace (ψx x) x)
+    (hspaceDerivative : HasDerivAt ψx ψxx x)
     (hvectorPotential : HasDerivAt vectorPotential vectorPotentialDerivative x)
     (hschrodinger :
       Complex.I * (ℏ : ℂ) * ψt =
@@ -214,10 +217,10 @@ theorem oneDimensional_electromagnetic_schrodinger_continuity
     deriv (fun s => probabilityDensityValue (ψTime s)) t +
       deriv (fun y => electromagneticProbabilityCurrentValue1D
         q ℏ mass (vectorPotential y) (ψSpace y) (ψx y)) x = 0 := by
-  rw [(hasDerivAt_probabilityDensityValue htimeRe htimeIm).deriv,
+  rw [(hasDerivAt_probabilityDensityValue htime).deriv,
     (hasDerivAt_electromagneticProbabilityCurrentValue1D
-      q ℏ mass hℏ hmass hvectorPotential hspaceRe hspaceIm
-      hspaceDerivativeRe hspaceDerivativeIm).deriv]
+      q ℏ mass hℏ hmass hvectorPotential hspace
+      hspaceDerivative).deriv]
   rw [hsame]
   exact electromagnetic_probability_continuity_balance_of_schrodinger
     q ℏ mass (vectorPotential x) vectorPotentialDerivative scalarPotential
@@ -230,12 +233,9 @@ theorem oneDimensional_electromagnetic_charge_continuity
     {ψTime ψSpace ψx : ℝ → ℂ} {vectorPotential : ℝ → ℝ}
     {ψt ψxx : ℂ} {vectorPotentialDerivative : ℝ} {t x : ℝ}
     (hsame : ψTime t = ψSpace x)
-    (htimeRe : HasDerivAt (fun s => (ψTime s).re) ψt.re t)
-    (htimeIm : HasDerivAt (fun s => (ψTime s).im) ψt.im t)
-    (hspaceRe : HasDerivAt (fun y => (ψSpace y).re) (ψx x).re x)
-    (hspaceIm : HasDerivAt (fun y => (ψSpace y).im) (ψx x).im x)
-    (hspaceDerivativeRe : HasDerivAt (fun y => (ψx y).re) ψxx.re x)
-    (hspaceDerivativeIm : HasDerivAt (fun y => (ψx y).im) ψxx.im x)
+    (htime : HasDerivAt ψTime ψt t)
+    (hspace : HasDerivAt ψSpace (ψx x) x)
+    (hspaceDerivative : HasDerivAt ψx ψxx x)
     (hvectorPotential : HasDerivAt vectorPotential vectorPotentialDerivative x)
     (hschrodinger :
       Complex.I * (ℏ : ℂ) * ψt =
@@ -245,10 +245,10 @@ theorem oneDimensional_electromagnetic_charge_continuity
     deriv (fun s => chargeDensityValue q (ψTime s)) t +
       deriv (fun y => electromagneticChargeCurrentValue1D
         q ℏ mass (vectorPotential y) (ψSpace y) (ψx y)) x = 0 := by
-  have hdensity := hasDerivAt_probabilityDensityValue htimeRe htimeIm
+  have hdensity := hasDerivAt_probabilityDensityValue htime
   have hcurrent := hasDerivAt_electromagneticProbabilityCurrentValue1D
-    q ℏ mass hℏ hmass hvectorPotential hspaceRe hspaceIm
-    hspaceDerivativeRe hspaceDerivativeIm
+    q ℏ mass hℏ hmass hvectorPotential hspace
+    hspaceDerivative
   have hchargeDensity :
       HasDerivAt (fun s => chargeDensityValue q (ψTime s))
         (q * probabilityDensityTimeDerivativeValue (ψTime t) ψt) t := by

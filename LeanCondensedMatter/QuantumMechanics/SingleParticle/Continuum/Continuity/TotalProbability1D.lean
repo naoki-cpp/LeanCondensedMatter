@@ -41,10 +41,8 @@ theorem hasDerivAt_totalProbability1D
     (hBound : ∀ x, ∀ τ ∈ s,
       ‖probabilityDensityTimeDerivativeValue (ψ τ x) (ψt τ x)‖ ≤ bound x)
     (hBoundIntegrable : Integrable bound volume)
-    (htimeRe : ∀ x, ∀ τ ∈ s,
-      HasDerivAt (fun u => (ψ u x).re) (ψt τ x).re τ)
-    (htimeIm : ∀ x, ∀ τ ∈ s,
-      HasDerivAt (fun u => (ψ u x).im) (ψt τ x).im τ) :
+    (htime : ∀ x, ∀ τ ∈ s,
+      HasDerivAt (fun u => ψ u x) (ψt τ x) τ) :
     HasDerivAt
       (fun τ => totalProbability1D (ψ τ))
       (∫ x, probabilityDensityTimeDerivativeValue (ψ t x) (ψt t x)) t := by
@@ -60,7 +58,7 @@ theorem hasDerivAt_totalProbability1D
         (fun u => probabilityDensityValue (ψ u x))
         (probabilityDensityTimeDerivativeValue (ψ τ x) (ψt τ x)) τ :=
     Filter.Eventually.of_forall fun x τ hτ =>
-      hasDerivAt_probabilityDensityValue (htimeRe x τ hτ) (htimeIm x τ hτ)
+      hasDerivAt_probabilityDensityValue (htime x τ hτ)
   have h := hasDerivAt_integral_of_dominated_loc_of_deriv_le
     (F := fun τ x => probabilityDensityValue (ψ τ x))
     (F' := fun τ x => probabilityDensityTimeDerivativeValue (ψ τ x) (ψt τ x))
@@ -83,10 +81,8 @@ theorem hasDerivAt_totalProbability1D_of_schrodinger_schwartz
     (hBound : ∀ x, ∀ τ ∈ s,
       ‖probabilityDensityTimeDerivativeValue (ψ τ x) (ψt τ x)‖ ≤ bound x)
     (hBoundIntegrable : Integrable bound volume)
-    (htimeRe : ∀ x, ∀ τ ∈ s,
-      HasDerivAt (fun u => (ψ u x).re) (ψt τ x).re τ)
-    (htimeIm : ∀ x, ∀ τ ∈ s,
-      HasDerivAt (fun u => (ψ u x).im) (ψt τ x).im τ)
+    (htime : ∀ x, ∀ τ ∈ s,
+      HasDerivAt (fun u => ψ u x) (ψt τ x) τ)
     (hschrodinger : ∀ x,
       Complex.I * (ℏ : ℂ) * ψt t x =
         -(κ : ℂ) * schwartzSpatialSecondDerivative1D (ψ t) x +
@@ -94,7 +90,7 @@ theorem hasDerivAt_totalProbability1D_of_schrodinger_schwartz
     HasDerivAt (fun τ => totalProbability1D (ψ τ)) 0 t := by
   have hdensity := hasDerivAt_totalProbability1D
     (ψ := fun τ x => ψ τ x) (ψt := ψt) t hs hDensityMeas hDensityIntegrable
-      hDensityRateMeas hBound hBoundIntegrable htimeRe htimeIm
+      hDensityRateMeas hBound hBoundIntegrable htime
   have hzero :=
     integral_probabilityDensityTimeDerivativeValue_of_schrodinger_schwartz_eq_zero
       ℏ κ hℏ (ψ t) (ψt := ψt t) hschrodinger
@@ -116,10 +112,8 @@ theorem deriv_totalProbability1D_of_schrodinger_schwartz_eq_zero
     (hBound : ∀ x, ∀ τ ∈ s,
       ‖probabilityDensityTimeDerivativeValue (ψ τ x) (ψt τ x)‖ ≤ bound x)
     (hBoundIntegrable : Integrable bound volume)
-    (htimeRe : ∀ x, ∀ τ ∈ s,
-      HasDerivAt (fun u => (ψ u x).re) (ψt τ x).re τ)
-    (htimeIm : ∀ x, ∀ τ ∈ s,
-      HasDerivAt (fun u => (ψ u x).im) (ψt τ x).im τ)
+    (htime : ∀ x, ∀ τ ∈ s,
+      HasDerivAt (fun u => ψ u x) (ψt τ x) τ)
     (hschrodinger : ∀ x,
       Complex.I * (ℏ : ℂ) * ψt t x =
         -(κ : ℂ) * schwartzSpatialSecondDerivative1D (ψ t) x +
@@ -127,7 +121,7 @@ theorem deriv_totalProbability1D_of_schrodinger_schwartz_eq_zero
     deriv (fun τ => totalProbability1D (ψ τ)) t = 0 :=
   (hasDerivAt_totalProbability1D_of_schrodinger_schwartz
     t ℏ κ hℏ ψ hs hDensityMeas hDensityIntegrable hDensityRateMeas hBound
-      hBoundIntegrable htimeRe htimeIm hschrodinger).deriv
+      hBoundIntegrable htime hschrodinger).deriv
 
 end
 end Continuum
