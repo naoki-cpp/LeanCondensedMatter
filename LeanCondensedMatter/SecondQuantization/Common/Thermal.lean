@@ -17,21 +17,10 @@ import LeanCondensedMatter.QuantumTheory.Gibbs.Eigenbasis
 set_option linter.style.header false
 
 /-!
-# Statistics-independent thermal states, occupation-basis formulas, and pairing expansions
+# Statistics-independent thermal theory
 
-The statistics-independent thermal theory separates five layers:
-
-- algebraic diagonal traces and finite unnormalized weight sums;
-- finite Hilbert realization of algebraic Fock operators and compatibility of completed-space
-  Gibbs densities with their finite-Hilbert counterparts;
-- the generic `QuantumTheory.Gibbs.Eigenbasis` density state and sharp-number canonical sector specialization;
-- finite Gibbs trace-ratio and Boltzmann-coordinate formulas;
-- the implementation-independent Bloch–de Dominicis expectation recursion and its finite Gibbs
-  pairing specialization.
-
-The normalized Gibbs density is the generic pure-point density operator. The Common thermal
-layer supplies the Fock-space adapters, canonical and grand-canonical sector relations, and
-trace-ratio coordinate formulas. The Bloch–de Dominicis recursion is independent of finiteness
-of the configuration space. Its bosonic specialization uses explicit summability and
-operator-domain hypotheses.
+Occupation-basis trace and Gibbs expectation adapters, canonical and grand-canonical sector
+relations, completed-space Gibbs compatibility, and Bloch–de Dominicis pairing recursion.
+The recursion does not require a finite configuration space; concrete expectations require
+appropriate summability and domain hypotheses.
 -/
