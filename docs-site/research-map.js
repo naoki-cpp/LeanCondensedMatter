@@ -182,19 +182,28 @@ export function renderResearchMap(children, entriesFor, onOpenDeclaration) {
   let selected = null;
   let drag = null;
   let cameraFrame = null;
+  let zoomingToParent = false;
   let previousScope = null;
   let layoutBlend = 1;
   const screen = (x, y) => [(x - view.x) * view.zoom + width / 2, (y - view.y) * view.zoom + height / 2];
+  function positionInScope(point, scope) {
+    for (let candidate = scope; candidate; candidate = candidate.parent) {
+      const position = point.positions.get(candidate);
+      if (position) return position;
+    }
+    return point.positions.get(null);
+  }
   function pointOnScreen(point) {
     const scope = view.zoom > 1.5 || cameraFrame !== null ? active : null;
-    const from = point.positions.get(previousScope) ?? point.positions.get(null);
-    const to = point.positions.get(scope) ?? point.positions.get(null);
+    const from = positionInScope(point, previousScope);
+    const to = positionInScope(point, scope);
     return screen(from.x + (to.x - from.x) * layoutBlend, from.y + (to.y - from.y) * layoutBlend);
   }
 
   function stopCamera() {
     if (cameraFrame !== null) cancelAnimationFrame(cameraFrame);
     cameraFrame = null;
+    zoomingToParent = false;
     layoutBlend = 1;
   }
 
@@ -376,13 +385,7 @@ export function renderResearchMap(children, entriesFor, onOpenDeclaration) {
     draw();
   }
 
-  function openRegion(region) {
-    if (!region.points.length) return;
-    setRegion(region);
-    selected = null;
-    detail.hidden = true;
-    select.value = "";
-    preview.textContent = region.children.length ? "Choose a submodule or select a declaration." : "Select a dot or choose a declaration.";
+  function regionView(region) {
     if (region.children.length) {
       const extents = [...region.children, ...region.points.filter((point) => point.region === region)];
       const left = Math.min(...extents.map(({ x, radius = 0 }) => x - radius));
@@ -391,11 +394,20 @@ export function renderResearchMap(children, entriesFor, onOpenDeclaration) {
       const bottom = Math.max(...extents.map(({ y, radius = 0 }) => y + radius));
       // Leave room for the parent title at the top and the child labels at the bottom.
       const zoom = Math.min((width - 104) / (right - left), (height - 140) / (bottom - top));
-      glideTo({ x: (left + right) / 2, y: (top + bottom) / 2, zoom });
-    } else {
-      glideTo({ x: region.x, y: region.y, zoom: height / (3 * region.radius) });
+      return { x: (left + right) / 2, y: (top + bottom) / 2, zoom };
     }
-    canvas.focus?.({ preventScroll: true });
+    return { x: region.x, y: region.y, zoom: height / (3 * region.radius) };
+  }
+
+  function openRegion(region, { focus = true } = {}) {
+    if (!region.points.length) return;
+    setRegion(region);
+    selected = null;
+    detail.hidden = true;
+    select.value = "";
+    preview.textContent = region.children.length ? "Choose a submodule or select a declaration." : "Select a dot or choose a declaration.";
+    glideTo(regionView(region));
+    if (focus) canvas.focus?.({ preventScroll: true });
   }
 
   function relation(title, names) {
@@ -434,9 +446,24 @@ export function renderResearchMap(children, entriesFor, onOpenDeclaration) {
   }
 
   function zoomBy(factor, x = width / 2, y = height / 2) {
+    if (factor < 1 && zoomingToParent && cameraFrame !== null) return;
     stopCamera();
     const limit = Math.max(24, active ? height / active.radius : 24, view.zoom);
     const next = Math.max(1, Math.min(limit, view.zoom * factor));
+    if (factor < 1 && active) {
+      const parent = active.parent;
+      if (parent) {
+        const threshold = Math.max(regionView(parent).zoom, regionView(active).zoom / 1.5);
+        if (next <= threshold * (1 + Number.EPSILON)) {
+          openRegion(parent, { focus: false });
+          zoomingToParent = true;
+          return;
+        }
+      } else if (next <= 1.5) {
+        reset();
+        return;
+      }
+    }
     view.x += (x - width / 2) * (1 / view.zoom - 1 / next);
     view.y += (y - height / 2) * (1 / view.zoom - 1 / next);
     view.zoom = next;
