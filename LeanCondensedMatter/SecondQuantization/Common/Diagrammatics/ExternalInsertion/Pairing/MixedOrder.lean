@@ -150,13 +150,10 @@ theorem ExternalInsertionDiagram.slotCongr_pairingInMixedOrder_partner
         (externalInsertionMixedPositionSlotCongr e externalTime σ p) =
       externalInsertionMixedPositionSlotCongr e externalTime σ
         ((d.pairingInMixedOrder externalTime σ).partner p) := by
-  let leg := externalInsertionMixedTimeOrderedAtomicLegEquiv externalTime σ p
-  have hp :
-      externalInsertionMixedTimeOrderedAtomicLegPosition externalTime σ leg = p :=
-    (externalInsertionMixedTimeOrderedAtomicLegEquiv externalTime σ).symm_apply_apply p
-  have hpos := externalInsertionMixedPositionSlotCongr_legPosition
-    e externalTime σ leg
-  rw [← hp, hpos,
+  obtain ⟨leg, rfl⟩ :=
+    (show Function.Surjective (externalInsertionMixedTimeOrderedAtomicLegPosition externalTime σ)
+      from (externalInsertionMixedTimeOrderedAtomicLegEquiv externalTime σ).symm.surjective) p
+  rw [externalInsertionMixedPositionSlotCongr_legPosition,
     (d.slotCongr e).pairingInMixedOrder_partner_legPosition,
     d.slotCongr_atomicLegPartner,
     d.pairingInMixedOrder_partner_legPosition,
@@ -169,11 +166,9 @@ equivalence of the full interaction slot set. -/
 def externalInsertionInteractionSlotPerm
     {n : ℕ}
     (e : ↥(Finset.univ : Finset (Fin n)) ≃
-      ↥(Finset.univ : Finset (Fin n))) : Equiv.Perm (Fin n) where
-  toFun v := (e ⟨v, Finset.mem_univ v⟩).1
-  invFun v := (e.symm ⟨v, Finset.mem_univ v⟩).1
-  left_inv v := congrArg Subtype.val (e.symm_apply_apply ⟨v, Finset.mem_univ v⟩)
-  right_inv v := congrArg Subtype.val (e.apply_symm_apply ⟨v, Finset.mem_univ v⟩)
+      ↥(Finset.univ : Finset (Fin n))) : Equiv.Perm (Fin n) :=
+  let u := Equiv.subtypeUnivEquiv (fun v : Fin n => Finset.mem_univ v)
+  u.symm.trans (e.trans u)
 
 /-- The canonical-leg transport is precisely the interaction-slot
 permutation, extended by the identity on all external legs and the
