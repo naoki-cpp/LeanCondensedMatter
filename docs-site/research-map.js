@@ -61,17 +61,24 @@ export function renderResearchMap(children, entriesFor, onOpenDeclaration) {
   const columns = Math.min(3, Math.max(1, children.length));
   const rows = Math.max(1, Math.ceil(children.length / columns));
   const spacing = Math.min(91, (height / rows - 46) / 2);
-  const regions = children.map((child, index) => {
-    const name = child.name.replace(/([a-z])([A-Z])/g, "$1 $2");
-    const x = ((index % columns) + 0.5) * width / columns + (Math.floor(index / columns) % 2 ? 20 : -20);
-    const y = (Math.floor(index / columns) + 0.44) * height / rows;
-    const region = { name, x, y, radius: spacing * Math.sqrt(child.counts.total / largest), children: [] };
-    const entries = entriesFor(child);
-    const prefix = child.fullName.replace(/^LeanCondensedMatter\./, "") + ".";
+  const allRegions = [];
+  const shortModule = (name) => name.replace(/^LeanCondensedMatter\./, "");
+  function placeCloud(points, scope, x, y, radius) {
+    points.forEach((point, i) => {
+      const distance = radius * .94 * Math.sqrt(i / points.length);
+      const angle = goldenAngle * i;
+      point.positions.set(scope, { x: x + distance * Math.cos(angle), y: y + distance * Math.sin(angle) });
+    });
+  }
+  function buildRegion(moduleName, x, y, radius, entries, parent = null) {
+    const name = moduleName.split(".").at(-1).replace(/([a-z])([A-Z])/g, "$1 $2");
+    const region = { name, x, y, radius, parent, children: [] };
+    allRegions.push(region);
+    const prefix = moduleName + ".";
     const groups = new Map();
     for (const entry of entries) {
-      const moduleName = entry.module.replace(/^LeanCondensedMatter\./, "");
-      const key = moduleName.startsWith(prefix) ? moduleName.slice(prefix.length).split(".")[0] : "";
+      const path = shortModule(entry.module);
+      const key = path.startsWith(prefix) ? path.slice(prefix.length).split(".")[0] : "";
       if (!groups.has(key)) groups.set(key, []);
       groups.get(key).push(entry);
     }
@@ -83,33 +90,35 @@ export function renderResearchMap(children, entriesFor, onOpenDeclaration) {
       const grouped = ordered.length > 1;
       const gx = grouped ? x + ((i % cellColumns) - (cellColumns - 1) / 2) * cell : x;
       const gy = grouped ? y + (Math.floor(i / cellColumns) - (cellRows - 1) / 2) * cell : y;
-      const radius = grouped ? cell * .34 : region.radius * .75;
-      const subregion = key ? { name: key, x: gx, y: gy, radius, parent: region, children: [] } : region;
-      const points = records.map((entry, j) => {
-        const distance = radius * Math.sqrt(j / records.length);
-        const angle = goldenAngle * j;
-        const point = { entry, region: subregion, topRegion: region, x: gx + distance * Math.cos(angle), y: gy + distance * Math.sin(angle),
-          color: categories.find(([, , matches]) => matches(entry))[1] };
-        byName.set(entry.name, point);
-        return point;
-      });
+      const groupRadius = grouped ? cell * .34 : region.radius * .75;
+      let points;
       if (key) {
-        subregion.points = points;
-        subregion.label = makeLabel(subregion);
-        region.children.push(subregion);
+        const child = buildRegion(prefix + key, gx, gy, groupRadius, records, region);
+        region.children.push(child);
+        points = child.points;
+      } else {
+        points = records.map((entry) => {
+          const point = { entry, region, positions: new Map(), color: categories.find(([, , matches]) => matches(entry))[1] };
+          byName.set(entry.name, point);
+          return point;
+        });
       }
+      placeCloud(points, region, gx, gy, groupRadius);
+      if (!key) for (const point of points) Object.assign(point, point.positions.get(region));
       return points;
-    });
-    region.points.forEach((point, i) => {
-      const distance = region.radius * .94 * Math.sqrt(i / region.points.length);
-      const angle = goldenAngle * i;
-      point.overviewX = x + distance * Math.cos(angle);
-      point.overviewY = y + distance * Math.sin(angle);
     });
     region.label = makeLabel(region);
     return region;
+  }
+  const regions = children.map((child, index) => {
+    const x = ((index % columns) + .5) * width / columns + (Math.floor(index / columns) % 2 ? 20 : -20);
+    const y = (Math.floor(index / columns) + .44) * height / rows;
+    const radius = spacing * Math.sqrt(child.counts.total / largest);
+    const region = buildRegion(shortModule(child.fullName), x, y, radius, entriesFor(child));
+    for (const point of region.points) point.topRegion = region;
+    placeCloud(region.points, null, x, y, radius);
+    return region;
   });
-  const allRegions = regions.flatMap((region) => [region, ...region.children]);
 
   function makeLabel(region) {
     const { name } = region;
@@ -142,8 +151,15 @@ export function renderResearchMap(children, entriesFor, onOpenDeclaration) {
     return [...connections.values()].sort((a, b) => b.ab + b.ba - a.ab - a.ba);
   }
   const bundles = collectBundles(regions, points, (point) => point.topRegion);
-  const submoduleBundles = new Map(regions.map((region) =>
-    [region, collectBundles(region.children, region.points, (point) => point.region)]));
+  const submoduleBundles = new Map();
+  function bundlesFor(region) {
+    if (!region?.children.length) return emptyBundles;
+    if (!submoduleBundles.has(region)) {
+      const childOf = new Map(region.children.flatMap((child) => child.points.map((point) => [point, child])));
+      submoduleBundles.set(region, collectBundles(region.children, region.points, (point) => childOf.get(point)));
+    }
+    return submoduleBundles.get(region);
+  }
   const connectionDetails = element("details", "research-map-connections");
   let shownBundles;
   function showConnectionCounts(connections, title) {
@@ -166,17 +182,20 @@ export function renderResearchMap(children, entriesFor, onOpenDeclaration) {
   let selected = null;
   let drag = null;
   let cameraFrame = null;
+  let previousScope = null;
+  let layoutBlend = 1;
   const screen = (x, y) => [(x - view.x) * view.zoom + width / 2, (y - view.y) * view.zoom + height / 2];
   function pointOnScreen(point) {
-    const progress = Math.max(0, Math.min(1, (view.zoom - 1.25) / .75));
-    const blend = progress * progress * (3 - 2 * progress);
-    return screen(point.overviewX + (point.x - point.overviewX) * blend,
-      point.overviewY + (point.y - point.overviewY) * blend);
+    const scope = view.zoom > 1.5 || cameraFrame !== null ? active : null;
+    const from = point.positions.get(previousScope) ?? point.positions.get(null);
+    const to = point.positions.get(scope) ?? point.positions.get(null);
+    return screen(from.x + (to.x - from.x) * layoutBlend, from.y + (to.y - from.y) * layoutBlend);
   }
 
   function stopCamera() {
     if (cameraFrame !== null) cancelAnimationFrame(cameraFrame);
     cameraFrame = null;
+    layoutBlend = 1;
   }
 
   function glideTo(target) {
@@ -193,6 +212,7 @@ export function renderResearchMap(children, entriesFor, onOpenDeclaration) {
       startedAt ??= now;
       const progress = Math.min(1, (now - startedAt) / 420);
       const eased = progress * progress * (3 - 2 * progress);
+      layoutBlend = eased;
       view = {
         x: start.x + (target.x - start.x) * eased,
         y: start.y + (target.y - start.y) * eased,
@@ -224,9 +244,9 @@ export function renderResearchMap(children, entriesFor, onOpenDeclaration) {
     const visible = [];
     for (const region of allRegions) {
       const focused = view.zoom > 1.5 && region === active;
-      region.label.hidden = region.parent
-        ? !focused && !(view.zoom > 1.5 && region.parent === active)
-        : view.zoom > 1.5 && !focused;
+      region.label.hidden = view.zoom > 1.5 && active
+        ? !focused && region.parent !== active
+        : Boolean(region.parent);
       if (!region.label.hidden) visible.push({ region, focused });
     }
     const stageWidth = stage.clientWidth;
@@ -260,7 +280,7 @@ export function renderResearchMap(children, entriesFor, onOpenDeclaration) {
     canvas.style.touchAction = view.zoom > 1.5 ? "none" : "pan-y";
     placeLabels();
     const overview = view.zoom <= 1.5;
-    const visibleBundles = overview ? bundles : submoduleBundles.get(active) ?? emptyBundles;
+    const visibleBundles = overview ? bundles : bundlesFor(active);
     showConnectionCounts(visibleBundles, overview ? "Dependencies between regions" : "Dependencies between submodules");
     if (!ctx) return;
     ctx.setTransform(2, 0, 0, 2, 0, 0);
@@ -274,7 +294,7 @@ export function renderResearchMap(children, entriesFor, onOpenDeclaration) {
         const dy = Math.sin(angle);
         ctx.lineWidth = 1 + Math.log10(ab + ba + 1) * 2;
         ctx.beginPath();
-        const gap = overview ? 6 : 3;
+        const gap = 6 / view.zoom;
         ctx.moveTo(...screen(a.x + dx * (a.radius + gap), a.y + dy * (a.radius + gap)));
         ctx.lineTo(...screen(b.x - dx * (b.radius + gap), b.y - dy * (b.radius + gap)));
         ctx.stroke();
@@ -287,7 +307,7 @@ export function renderResearchMap(children, entriesFor, onOpenDeclaration) {
       if (view.zoom > 1.5 && region === active && region.children.length) continue;
       ctx.strokeStyle = "#42605a";
       ctx.beginPath();
-      ctx.arc(...screen(region.x, region.y), (region.radius + 5) * view.zoom, 0, 2 * Math.PI);
+      ctx.arc(...screen(region.x, region.y), region.radius * view.zoom + 5, 0, 2 * Math.PI);
       ctx.stroke();
     }
     const nearby = new Set();
@@ -329,6 +349,7 @@ export function renderResearchMap(children, entriesFor, onOpenDeclaration) {
 
   function setRegion(region) {
     if (active === region) return;
+    previousScope = active;
     active = region;
     parentControl.hidden = !region?.parent;
     picker.hidden = !region;
@@ -369,11 +390,10 @@ export function renderResearchMap(children, entriesFor, onOpenDeclaration) {
       const top = Math.min(...extents.map(({ y, radius = 0 }) => y - radius));
       const bottom = Math.max(...extents.map(({ y, radius = 0 }) => y + radius));
       // Leave room for the parent title at the top and the child labels at the bottom.
-      const zoom = Math.min(24, (width - 104) / Math.max(1, right - left),
-        (height - 140) / Math.max(1, bottom - top));
+      const zoom = Math.min((width - 104) / (right - left), (height - 140) / (bottom - top));
       glideTo({ x: (left + right) / 2, y: (top + bottom) / 2, zoom });
     } else {
-      glideTo({ x: region.x, y: region.y, zoom: Math.min(24, height / (3 * (region.radius + 5))) });
+      glideTo({ x: region.x, y: region.y, zoom: height / (3 * region.radius) });
     }
     canvas.focus?.({ preventScroll: true });
   }
@@ -400,7 +420,7 @@ export function renderResearchMap(children, entriesFor, onOpenDeclaration) {
     setRegion(point.region);
     selected = point;
     select.value = point.entry.name;
-    view = { x: point.x, y: point.y, zoom: Math.max(5, view.zoom) };
+    view = { x: point.x, y: point.y, zoom: Math.max(height / (3 * point.region.radius), view.zoom) };
     const title = element("h4", "", point.entry.name);
     title.tabIndex = -1;
     const statement = element("div", "math-presentation");
@@ -415,7 +435,8 @@ export function renderResearchMap(children, entriesFor, onOpenDeclaration) {
 
   function zoomBy(factor, x = width / 2, y = height / 2) {
     stopCamera();
-    const next = Math.max(1, Math.min(24, view.zoom * factor));
+    const limit = Math.max(24, active ? height / active.radius : 24, view.zoom);
+    const next = Math.max(1, Math.min(limit, view.zoom * factor));
     view.x += (x - width / 2) * (1 / view.zoom - 1 / next);
     view.y += (y - height / 2) * (1 / view.zoom - 1 / next);
     view.zoom = next;
