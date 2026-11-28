@@ -83,22 +83,15 @@ theorem PairingOn.crossingCount_eq_sum_crosses {α : Type*} [Fintype α] [Linear
           if Crosses p q then 1 else 0 := by
       exact Finset.sum_product' pairing.pairs pairing.pairs
         (fun p q => if Crosses p q then (1 : ℕ) else 0)
-    _ = ∑ p ∈ pairing.pairs.attach, ∑ q ∈ pairing.pairs.attach,
-          if Crosses p.1 q.1 then 1 else 0 := by
-      calc
-        (∑ p ∈ pairing.pairs, ∑ q ∈ pairing.pairs,
-          if Crosses p q then 1 else 0) =
-            ∑ p ∈ pairing.pairs.attach, ∑ q ∈ pairing.pairs,
-              if Crosses p.1 q then 1 else 0 :=
-          (Finset.sum_attach pairing.pairs
-            (fun p => ∑ q ∈ pairing.pairs, if Crosses p q then (1 : ℕ) else 0)).symm
-        _ = _ := by
-          apply Finset.sum_congr rfl
-          intro p _
-          exact (Finset.sum_attach pairing.pairs
-            (fun q => if Crosses p.1 q then (1 : ℕ) else 0)).symm
+    _ = ∑ p : pairing.NormalizedPair, ∑ q ∈ pairing.pairs,
+          if Crosses p.1 q then 1 else 0 :=
+      Finset.sum_subtype pairing.pairs (fun _ => Iff.rfl)
+        (fun p => ∑ q ∈ pairing.pairs, if Crosses p q then (1 : ℕ) else 0)
     _ = _ := by
-      simp only [Finset.attach_eq_univ, Fintype.sum_prod_type]
+      rw [Fintype.sum_prod_type]
+      refine Finset.sum_congr rfl fun p _ => ?_
+      exact Finset.sum_subtype pairing.pairs (fun _ => Iff.rfl)
+        (fun q => if Crosses p.1 q then (1 : ℕ) else 0)
 
 /-- Any equivalence presenting the normalized pairs reindexes the crossing count. -/
 theorem PairingOn.crossingCount_eq_sum_sum_crosses_of_equiv
