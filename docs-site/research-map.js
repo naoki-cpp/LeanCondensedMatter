@@ -28,6 +28,7 @@ function button(text, action, className = "") {
 export function renderResearchMap(children, onOpenDeclaration, onRegionChange, overviewHeader, rootName) {
   const section = element("section", "research-map explorer-map-theme explorer-map-frame");
   const heading = element("h2", "research-map-title", rootName);
+  const searchSlot = element("div", "map-search-slot");
   const declarationCount = element("p", "research-map-declaration-count");
   heading.id = "research-map-title";
   section.setAttribute("aria-labelledby", heading.id);
@@ -581,7 +582,7 @@ export function renderResearchMap(children, onOpenDeclaration, onRegionChange, o
   const emptyBundles = [];
   const overviewFooter = element("div", "research-map-overview");
   overviewFooter.append(...overviewHeader);
-  section.append(heading, declarationCount, legend, controls, stage, preview, picker, detail, connectionDetails, overviewFooter);
+  section.append(heading, declarationCount, searchSlot, legend, controls, stage, preview, picker, detail, connectionDetails, overviewFooter);
   const sortedPoints = [...points].sort((a, b) => a.entry.name.localeCompare(b.entry.name));
   populatePicker(null);
   reset();

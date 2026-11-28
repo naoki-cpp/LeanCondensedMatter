@@ -282,6 +282,18 @@ select:disabled {
   padding: clamp(16px, 4vw, 34px);
   border-radius: 8px;
 }
+.map-search-slot { margin: 12px 0; max-width: 38rem; }
+.map-search-slot label,
+.map-search-slot .control-help { color: var(--map-muted); }
+.map-search-slot :is(input, .search-row button, .search-results) {
+  color: var(--map-ink);
+  background: var(--map-control-surface);
+  border-color: var(--map-border);
+}
+.map-search-slot input::placeholder { color: var(--map-muted); }
+.map-search-slot .search-result { color: var(--map-ink); }
+.map-search-slot .search-result small { color: var(--map-muted); }
+.map-search-slot .search-result:is(:hover, [aria-selected="true"]) { background: var(--map-surface); }
 .import-map-panel {
   align-self: start;
   margin: clamp(12px, 3vw, 34px);

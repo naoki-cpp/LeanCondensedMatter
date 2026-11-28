@@ -49,6 +49,7 @@ const ui = {
   overviewLink: document.querySelector("#overview-link"),
   moduleImportsLink: document.querySelector("#module-imports-link"),
   searchForm: document.querySelector("#search-form"),
+  searchHome: document.querySelector(".controls"),
   searchLabel: document.querySelector("#search-form > label"),
   search: document.querySelector("#theorem-search"),
   searchResults: document.querySelector("#search-results"),
@@ -61,6 +62,7 @@ const ui = {
   graphLegend: document.querySelector(".legend"),
   graphLegendHome: document.querySelector("#graph-legend-home"),
   importMapHeader: document.querySelector(".import-map-header"),
+  importMapSearch: document.querySelector(".import-map-header .map-search-slot"),
   graph: document.querySelector("#graph"),
   viewport: document.querySelector("#graph-viewport"),
   overview: document.querySelector("#overview"),
@@ -285,10 +287,13 @@ function setGraphModeChrome() {
   ui.graphStatus.classList.toggle("research-map-declaration-count", modules);
   if (modules) {
     ui.importMapHeader.firstElementChild.textContent = shortModule(state.root);
-    ui.importMapHeader.append(ui.graphStatus, ui.graphLegend);
+    ui.importMapSearch.before(ui.graphStatus);
+    ui.importMapHeader.append(ui.graphLegend);
+    if (ui.searchForm.parentElement !== ui.importMapSearch) ui.importMapSearch.append(ui.searchForm);
   } else {
     ui.graphToolbar.prepend(ui.graphStatus);
     ui.graphLegendHome.append(ui.graphLegend);
+    if (ui.searchForm.parentElement !== ui.searchHome) ui.searchHome.prepend(ui.searchForm);
   }
   document.getElementById("graph-fit").textContent = modules ? "Whole graph" : "Fit";
   ui.overviewLink.textContent = "Declarations";
@@ -783,6 +788,10 @@ function renderOverviewContent() {
   const requestedBrowse = state.browse ?? "LeanCondensedMatter";
   state.browse = requestedBrowse;
   moduleOverview?.render(requestedBrowse).then((rendered) => {
+    if (rendered && state.page === "overview" && state.browse === requestedBrowse) {
+      const searchSlot = ui.overview.querySelector(".map-search-slot");
+      if (searchSlot) searchSlot.append(ui.searchForm);
+    }
     if (!rendered && state.browse === requestedBrowse) {
       if (requestedBrowse !== "LeanCondensedMatter" && moduleOverview?.hasModule("LeanCondensedMatter")) {
         state.browse = "LeanCondensedMatter";
