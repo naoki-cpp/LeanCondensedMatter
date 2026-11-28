@@ -1,6 +1,5 @@
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.BornDyson.Green.RadialPauli
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.ScalarCovariance
-import LeanCondensedMatter.Models.MassiveDirac.Disorder.ScalarAngularWeights
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.SingleParticleRate
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.TransportRate
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.UltravioletSelfEnergy
