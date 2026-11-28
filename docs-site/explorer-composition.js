@@ -1,6 +1,7 @@
 export function createExplorerComposition(ui) {
   let page;
   let revision = 0;
+  let overviewView;
   const graphPanel = ui.graph.closest(".graph-panel");
 
   function mount(tabSlot, controlsSlot, searchSlot = ui.controls) {
@@ -11,12 +12,18 @@ export function createExplorerComposition(ui) {
   }
 
   function replaceOverview(...content) {
+    disposeOverview();
     const focused = document.activeElement;
     ui.overview.replaceChildren(...content);
     mountOverview();
     if (focused?.isConnected && document.activeElement === document.body) {
       focused.focus({ preventScroll: true });
     }
+  }
+
+  function disposeOverview() {
+    overviewView?.dispose();
+    overviewView = null;
   }
 
   function mountOverview() {
@@ -32,6 +39,7 @@ export function createExplorerComposition(ui) {
       page = nextPage;
       const imports = page === "imports";
       const overview = page === "overview";
+      if (!overview) disposeOverview();
       const selectedTab = imports ? ui.moduleImportsLink : ui.overviewLink;
       const focused = focusTarget ?? (ui.tabs.contains(document.activeElement) ? selectedTab : null);
       for (const tab of [ui.overviewLink, ui.moduleImportsLink]) {
@@ -68,7 +76,10 @@ export function createExplorerComposition(ui) {
         if (request !== revision || page !== "overview") return;
         if (!build) unavailable();
         else {
-          replaceOverview(...build());
+          const view = build();
+          replaceOverview(...view.nodes);
+          overviewView = view;
+          view.mount();
           mounted?.();
         }
       } catch (error) {

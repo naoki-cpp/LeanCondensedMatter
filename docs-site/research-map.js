@@ -1,13 +1,13 @@
 import { DEFINITION_KINDS } from "./declaration-model.js";
 import { MAP_NODE_COLORS } from "./graph-style.js";
 import { createMapNavigation } from "./map-navigation.js";
+import { createMapScene } from "./map-scene.js";
 import { createMapHeader } from "./map-header.js";
 import { ZOOM_STEP, canAnimateCamera, createCameraFrames, zoomFactorForKey, zoomFactorForWheel } from "./map-zoom.js";
 import { declarationRelations, declarationSourceLink, declarationStatement } from "./declaration-details.js";
 
 const width = 960;
 const height = 670;
-const goldenAngle = Math.PI * (3 - Math.sqrt(5));
 const categories = [
   ["Theorems", MAP_NODE_COLORS.blue, (entry) => entry.kind === "theorem"],
   ["Definitions", MAP_NODE_COLORS.green, (entry) => DEFINITION_KINDS.has(entry.kind)],
@@ -28,7 +28,7 @@ function button(text, action, className = "") {
   return control;
 }
 
-export function renderResearchMap(children, onOpenDeclaration, onRegionChange, overviewHeader, rootName, hierarchy, mapCounts, selectedName, initialModule) {
+export function renderResearchMap(children, onOpenDeclaration, onRegionChange, overviewHeader, rootName, hierarchy, mapCounts, selectedName, initialModule, onMapStateChange) {
   const section = element("section", "research-map explorer-map-theme explorer-map-frame");
   const { header, heading, status: declarationCount } = createMapHeader(rootName);
   const controlsSlot = element("div", "map-controls-slot");
@@ -60,62 +60,10 @@ export function renderResearchMap(children, onOpenDeclaration, onRegionChange, o
   const caption = element("span", "", "Declaration");
   const select = element("select", "");
   picker.append(caption, select);
-  const byName = new Map();
-  const largest = Math.max(1, ...children.map((child) => child.entries.length));
-  const columns = Math.min(3, Math.max(1, children.length));
-  const rows = Math.max(1, Math.ceil(children.length / columns));
-  const spacing = Math.min(91, (height / rows - 46) / 2);
-  const allRegions = [];
-  const regionByModule = new Map();
-  function placeCloud(points, scope, x, y, radius) {
-    points.forEach((point, i) => {
-      const distance = radius * .94 * Math.sqrt(i / points.length);
-      const angle = goldenAngle * i;
-      point.positions.set(scope, { x: x + distance * Math.cos(angle), y: y + distance * Math.sin(angle) });
-    });
-  }
-  function buildRegion(module, x, y, radius, parent = null) {
-    const name = module.name.replace(/([a-z])([A-Z])/g, "$1 $2");
-    const region = { name, moduleName: module.path, module, x, y, radius, parent, children: [] };
-    allRegions.push(region);
-    regionByModule.set(module, region);
-    const ordered = [...module.children].sort(([a], [b]) => a.localeCompare(b));
-    if (module.declarations.length) ordered.unshift(["", null]);
-    const cellColumns = Math.max(1, Math.ceil(Math.sqrt(ordered.length)));
-    const cellRows = Math.ceil(ordered.length / cellColumns);
-    const cell = region.radius * Math.SQRT2 / Math.max(cellColumns, cellRows);
-    region.points = ordered.flatMap(([key, childModule], i) => {
-      const grouped = ordered.length > 1;
-      const gx = grouped ? x + ((i % cellColumns) - (cellColumns - 1) / 2) * cell : x;
-      const gy = grouped ? y + (Math.floor(i / cellColumns) - (cellRows - 1) / 2) * cell : y;
-      const groupRadius = grouped ? cell * .34 : region.radius * .75;
-      let points;
-      if (key) {
-        const child = buildRegion(childModule, gx, gy, groupRadius, region);
-        region.children.push(child);
-        points = child.points;
-      } else {
-        points = module.declarations.map((entry) => {
-          const point = { entry, region, positions: new Map(), color: categories.find(([, , matches]) => matches(entry))[1] };
-          byName.set(entry.name, point);
-          return point;
-        });
-      }
-      placeCloud(points, region, gx, gy, groupRadius);
-      if (!key) for (const point of points) Object.assign(point, point.positions.get(region));
-      return points;
-    });
-    region.label = makeLabel(region);
-    return region;
-  }
-  const regions = children.map((child, index) => {
-    const x = ((index % columns) + .5) * width / columns + (Math.floor(index / columns) % 2 ? 20 : -20);
-    const y = (Math.floor(index / columns) + .44) * height / rows;
-    const radius = spacing * Math.sqrt(child.entries.length / largest);
-    const region = buildRegion(child, x, y, radius);
-    placeCloud(region.points, null, x, y, radius);
-    return region;
-  });
+  const scene = createMapScene(children, hierarchy, width, height);
+  const { allRegions, points } = scene;
+  const labels = new Map(allRegions.map((region) => [region, makeLabel(region)]));
+  const colors = new Map(points.map((point) => [point, categories.find(([, , matches]) => matches(point.entry))[1]]));
 
   function makeLabel(region) {
     const { name } = region;
@@ -124,21 +72,10 @@ export function renderResearchMap(children, onOpenDeclaration, onRegionChange, o
     label.setAttribute("aria-label", `${name}, ${region.points.length} declarations`);
     return label;
   }
-  const points = [...byName.values()];
   function showDeclarationCount({ definitions, proved }) {
     declarationCount.textContent = `${definitions.toLocaleString("en")} definition${definitions === 1 ? "" : "s"} · ${proved.toLocaleString("en")} proved theorem${proved === 1 ? "" : "s"}`;
   }
   showDeclarationCount(mapCounts);
-  const bundleCache = new Map();
-  function bundlesFor(module) {
-    if (!module) return emptyBundles;
-    if (!bundleCache.has(module)) {
-      bundleCache.set(module, hierarchy.bundles(module).map(({ a, b, ab, ba }) => ({
-        a: regionByModule.get(a), b: regionByModule.get(b), ab, ba,
-      })));
-    }
-    return bundleCache.get(module);
-  }
   const connectionDetails = element("details", "research-map-connections");
   let shownBundles;
   function showConnectionCounts(connections, title) {
@@ -201,22 +138,17 @@ export function renderResearchMap(children, onOpenDeclaration, onRegionChange, o
     ctx.stroke();
   }
 
-  function placeLabels() {
-    const { active, overview } = navigation;
-    const visible = [];
-    for (const region of allRegions) {
-      region.label.hidden = !overview && active
-        ? region.parent !== active
-        : Boolean(region.parent);
-      if (!region.label.hidden) visible.push(region);
-    }
+  function placeLabels(frame) {
+    const visible = new Set(frame.labels);
+    for (const [region, label] of labels) label.hidden = !visible.has(region);
     const stageWidth = stage.clientWidth;
     const stageHeight = stage.clientHeight;
-    const measured = visible.map((region) => ({
-      region, w: region.label.offsetWidth, h: region.label.offsetHeight,
-    }));
+    const measured = frame.labels.map((region) => {
+      const label = labels.get(region);
+      return { region, label, w: label.offsetWidth, h: label.offsetHeight };
+    });
     const placed = [];
-    for (const { region, w, h } of measured) {
+    for (const { region, label, w, h } of measured) {
       const [x, y] = screen(region.x, region.y + region.radius);
       if (!stageWidth || !stageHeight) continue;
       const anchorX = x / width * stageWidth;
@@ -228,16 +160,17 @@ export function renderResearchMap(children, onOpenDeclaration, onRegionChange, o
       const top = candidates.map((value) => Math.max(4, Math.min(stageHeight - h - 4, value)))
         .find((value) => placed.every((box) => left >= box.right + 4 || left + w + 4 <= box.left ||
           value >= box.bottom + 4 || value + h + 4 <= box.top));
-      region.label.hidden = top === undefined;
+      label.hidden = top === undefined;
       if (top === undefined) continue;
-      region.label.style.left = `${center}px`;
-      region.label.style.top = `${top}px`;
+      label.style.left = `${center}px`;
+      label.style.top = `${top}px`;
       placed.push({ left, right: left + w, top, bottom: top + h });
     }
   }
 
   function draw() {
-    const { active, selected, view, overview } = navigation;
+    const { selected, view, overview } = navigation;
+    const frame = scene.frame(navigation);
     hoverLabel.hidden = !hovered;
     if (hovered) {
       const [x, y] = pointOnScreen(hovered);
@@ -249,8 +182,8 @@ export function renderResearchMap(children, onOpenDeclaration, onRegionChange, o
       hoverLabel.style.top = `${Math.max(4, Math.min(stage.clientHeight - hoverLabel.offsetHeight - 4, top))}px`;
     }
     canvas.style.touchAction = view.zoom > 1.5 ? "none" : "pan-y";
-    placeLabels();
-    const visibleBundles = bundlesFor(overview ? hierarchy.root : active?.module);
+    placeLabels(frame);
+    const visibleBundles = frame.bundles;
     showConnectionCounts(visibleBundles, overview ? "Dependencies between regions" : "Dependencies between submodules");
     if (!ctx) return;
     ctx.setTransform(2, 0, 0, 2, 0, 0);
@@ -272,9 +205,7 @@ export function renderResearchMap(children, onOpenDeclaration, onRegionChange, o
       ctx.lineCap = "butt";
       ctx.lineWidth = 1;
     }
-    for (const region of allRegions) {
-      if (region.parent && (view.zoom <= 1.5 || (active !== region && active !== region.parent))) continue;
-      if (view.zoom > 1.5 && region === active && region.children.length) continue;
+    for (const region of frame.outlines) {
       ctx.strokeStyle = "#42605a";
       ctx.beginPath();
       ctx.arc(...screen(region.x, region.y), region.radius * view.zoom + 5, 0, 2 * Math.PI);
@@ -287,7 +218,7 @@ export function renderResearchMap(children, onOpenDeclaration, onRegionChange, o
         [selected.entry.dependents, true, "#90bed2"],
       ]) {
         for (const name of names ?? []) {
-          const point = byName.get(name);
+          const point = scene.point(name);
           if (!point || point === selected) continue;
           nearby.add(point);
           line(incoming ? point : selected, incoming ? selected : point, color);
@@ -298,7 +229,7 @@ export function renderResearchMap(children, onOpenDeclaration, onRegionChange, o
       ctx.fillStyle = color;
       ctx.beginPath();
       for (const point of points) {
-        if (point.color !== color || (selected && point === selected)) continue;
+        if (colors.get(point) !== color || (selected && point === selected)) continue;
         const [x, y] = pointOnScreen(point);
         if (x < -8 || x > width + 8 || y < -8 || y > height + 8) continue;
         const r = nearby.has(point) ? 4 : Math.min(3, 1.35 + view.zoom * .15);
@@ -348,6 +279,13 @@ export function renderResearchMap(children, onOpenDeclaration, onRegionChange, o
     populatePicker(region);
   }
 
+  function publishSelection() {
+    onMapStateChange?.({
+      moduleName: navigation.active?.moduleName ?? null,
+      selectedName: navigation.selected?.entry.name ?? null,
+    });
+  }
+
   function reset(animate = canAnimateCamera()) {
     hovered = null;
     const previous = navigation.active;
@@ -363,9 +301,10 @@ export function renderResearchMap(children, onOpenDeclaration, onRegionChange, o
   function browseMap(moduleName) {
     if (moduleName === "LeanCondensedMatter") {
       reset();
+      publishSelection();
       return;
     }
-    const region = regionByModule.get(hierarchy.find(moduleName));
+    const region = scene.region(moduleName);
     if (region) openRegion(region);
   }
 
@@ -387,11 +326,12 @@ export function renderResearchMap(children, onOpenDeclaration, onRegionChange, o
     animateCamera();
     draw();
     if (!initial) canvas.focus?.({ preventScroll: true });
+    if (!initial) publishSelection();
   }
 
   function relation(title, names) {
     const block = element("ul", "research-map-relations");
-    const { entries, availableCount } = declarationRelations(names, (name) => byName.has(name));
+    const { entries, availableCount } = declarationRelations(names, (name) => Boolean(scene.point(name)));
     const count = availableCount === entries.length ? String(entries.length) : `${entries.length} total, ${availableCount} on map`;
     const summary = element("summary", "", `${title} (${count})`);
     const list = element("details", "research-map-relation");
@@ -400,7 +340,7 @@ export function renderResearchMap(children, onOpenDeclaration, onRegionChange, o
     for (const { name, available } of entries) {
       if (!available) continue;
       const item = element("li", "");
-      const link = button(name.split(".").at(-1), () => openPoint(byName.get(name), true), "research-map-related");
+      const link = button(name.split(".").at(-1), () => openPoint(scene.point(name), true), "research-map-related");
       link.title = name;
       link.setAttribute("aria-label", `Show ${name} on the map`);
       const namespace = element("small", "", name.split(".").slice(0, -1).join("."));
@@ -434,6 +374,7 @@ export function renderResearchMap(children, onOpenDeclaration, onRegionChange, o
     detail.hidden = false;
     draw();
     if (focusDetail) {
+      publishSelection();
       title.focus?.({ preventScroll: true });
       title.scrollIntoView?.({ block: "start" });
     }
@@ -444,7 +385,10 @@ export function renderResearchMap(children, onOpenDeclaration, onRegionChange, o
     if (!navigation.zoom(factor, x, y, canAnimateCamera())) return;
     hovered = null;
     updateRegion(previous);
-    if (navigation.active !== previous) clearSelection();
+    if (navigation.active !== previous) {
+      clearSelection();
+      publishSelection();
+    }
     animateCamera();
     draw();
   }
@@ -452,17 +396,6 @@ export function renderResearchMap(children, onOpenDeclaration, onRegionChange, o
   function coords(event) {
     const rect = canvas.getBoundingClientRect();
     return [(event.clientX - rect.left) * width / rect.width, (event.clientY - rect.top) * height / rect.height];
-  }
-
-  function hit(x, y) {
-    let nearest = null;
-    let best = 10;
-    for (const point of points) {
-      const [px, py] = pointOnScreen(point);
-      const distance = Math.hypot(x - px, y - py);
-      if (distance < best) { best = distance; nearest = point; }
-    }
-    return nearest;
   }
 
   canvas.addEventListener("pointerdown", (event) => {
@@ -486,7 +419,7 @@ export function renderResearchMap(children, onOpenDeclaration, onRegionChange, o
       navigation.pan(-dx, -dy, drag.view);
       draw();
     } else if (event.pointerType !== "touch" && !camera.running) {
-      const point = hit(x, y);
+      const point = scene.frame(navigation).hoverPoint(x, y);
       if (point !== hovered) {
         hovered = point;
         draw();
@@ -509,21 +442,9 @@ export function renderResearchMap(children, onOpenDeclaration, onRegionChange, o
     if (drag?.moved) { drag = null; return; }
     drag = null;
     const [x, y] = coords(event);
-    if (!navigation.overview) {
-      const child = navigation.active?.children.find((region) => {
-        const [px, py] = screen(region.x, region.y);
-        return Math.hypot(x - px, y - py) <= region.radius * navigation.view.zoom + 5;
-      });
-      if (child) { openRegion(child); return; }
-      const point = hit(x, y);
-      if (point) openPoint(point, true);
-      return;
-    }
-    const region = regions.find((item) => {
-      const [px, py] = screen(item.x, item.y);
-      return Math.hypot(x - px, y - py) < item.radius + 14;
-    });
-    if (region) openRegion(region);
+    const target = scene.frame(navigation).target(x, y);
+    if (target?.region) openRegion(target.region);
+    else if (target?.point) openPoint(target.point, true);
   });
   canvas.addEventListener("wheel", (event) => {
     const factor = zoomFactorForWheel(event);
@@ -538,7 +459,10 @@ export function renderResearchMap(children, onOpenDeclaration, onRegionChange, o
       hovered = null;
       navigation.pan(shift[0] * 70, shift[1] * 70);
       draw();
-    } else if (event.key === "0" || event.key === "Escape") reset();
+    } else if (event.key === "0" || event.key === "Escape") {
+      reset();
+      publishSelection();
+    }
     else {
       const factor = zoomFactorForKey(event.key);
       if (!factor) return;
@@ -546,14 +470,16 @@ export function renderResearchMap(children, onOpenDeclaration, onRegionChange, o
     }
     event.preventDefault();
   });
-  select.addEventListener("change", () => openPoint(byName.get(select.value), true));
+  select.addEventListener("change", () => openPoint(scene.point(select.value), true));
   const zoomOut = button("−", () => zoomBy(1 / ZOOM_STEP), "map-zoom-button");
   zoomOut.setAttribute("aria-label", "Zoom out");
   const zoomIn = button("+", () => zoomBy(ZOOM_STEP), "map-zoom-button");
   zoomIn.setAttribute("aria-label", "Zoom in");
-  controls.append(parentControl, zoomOut, zoomIn, button("Whole map", () => reset()));
-  stage.append(canvas, ...allRegions.map((region) => region.label), hoverLabel);
-  const emptyBundles = [];
+  controls.append(parentControl, zoomOut, zoomIn, button("Whole map", () => {
+    reset();
+    publishSelection();
+  }));
+  stage.append(canvas, ...labels.values(), hoverLabel);
   const overviewFooter = element("div", "research-map-overview");
   overviewFooter.append(...overviewHeader);
   section.append(header, controls, stage, controlsSlot, legend, preview, picker, detail, connectionDetails, overviewFooter);
@@ -561,16 +487,26 @@ export function renderResearchMap(children, onOpenDeclaration, onRegionChange, o
   populatePicker(null);
   reset(false);
   onRegionChange(null, browseMap);
-  const initialRegion = initialModule && regionByModule.get(hierarchy.find(initialModule));
+  const initialRegion = initialModule && scene.region(initialModule);
   if (initialRegion) openRegion(initialRegion, true);
-  if (selectedName) openPoint(byName.get(selectedName));
-  // This section is returned before it is mounted, so measure again after attachment.
-  if (typeof requestAnimationFrame === "function") requestAnimationFrame(draw);
-  window.addEventListener?.("resize", onResize);
-  return section;
-
-  function onResize() {
-    if (section.isConnected) draw();
-    else window.removeEventListener("resize", onResize);
+  else if (initialModule && initialModule !== rootName) {
+    preview.textContent = `No declarations in ${initialModule} match the current filters. Showing the whole map.`;
   }
+  if (selectedName) openPoint(scene.point(selectedName));
+  let resizeObserver;
+  return {
+    element: section,
+    mount() {
+      draw();
+      if (typeof ResizeObserver === "function") {
+        resizeObserver = new ResizeObserver(draw);
+        resizeObserver.observe(stage);
+      } else window.addEventListener?.("resize", draw);
+    },
+    dispose() {
+      stopCamera();
+      resizeObserver?.disconnect();
+      window.removeEventListener?.("resize", draw);
+    },
+  };
 }

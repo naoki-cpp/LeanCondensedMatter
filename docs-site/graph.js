@@ -5,7 +5,7 @@ import { createExplorerComposition } from "./explorer-composition.js";
 import { createMapHeader } from "./map-header.js";
 import { ZOOM_STEP, cameraProgress, canAnimateCamera, createCameraFrames, zoomFactorForKey, zoomFactorForWheel } from "./map-zoom.js";
 import { createModuleOverview } from "./module-overview.js";
-import { declarationAllowed } from "./declaration-model.js";
+import { createDeclarationVisibility } from "./declaration-visibility.js";
 import { curvedEdgePath } from "./graph-edge.js";
 import { buildModuleGraphCatalog } from "./module-import-map.js";
 import { declarationRelations, declarationSourceLink, declarationStatement } from "./declaration-details.js";
@@ -32,6 +32,7 @@ const state = {
   root: null,
   selected: null,
   browse: null,
+  mapSelection: null,
   returnBrowse: null,
   returnMap: null,
   page: "overview",
@@ -84,6 +85,17 @@ const ui = {
 
 const composition = createExplorerComposition(ui);
 let moduleOverview = null;
+let visibility;
+let visibilityKey;
+
+function visibleDeclarations() {
+  const key = `${state.kind}:${state.generated}`;
+  if (visibilityKey !== key) {
+    visibility = createDeclarationVisibility(state.theoremCatalog, state.kind, state.generated);
+    visibilityKey = key;
+  }
+  return visibility;
+}
 
 function svg(tag, attributes = {}) {
   const node = document.createElementNS(SVG_NS, tag);
@@ -135,10 +147,7 @@ function displayName(name) {
 }
 
 function moduleAllowed(name) {
-  if (state.graphKind !== "modules" &&
-      !declarationAllowed(state.byName.get(name), state.kind, state.generated)) return false;
-  if (state.module === "*") return true;
-  return state.byName.get(name)?.module === state.module;
+  return state.graphKind === "modules" || visibleDeclarations().allows(name, state.module);
 }
 
 function highlightMatches(entry) {
@@ -603,8 +612,8 @@ function renderDetails(name) {
   }
 }
 
-function writeLocation(push, mapSelection = null) {
-  const { path, navigation } = writeExplorerLocation(location.href, state, mapSelection);
+function writeLocation(push) {
+  const { path, navigation } = writeExplorerLocation(location.href, state, state.mapSelection);
   if (push) history.pushState(navigation, "", path);
   else history.replaceState(navigation, "", path);
 }
@@ -617,8 +626,7 @@ function focusRoot(name, { historyEntry = true, fromMap = false, returnMap = nul
       state.returnMap = returnMap;
     } else if (state.page === "overview") {
       state.returnBrowse = state.browse;
-      state.returnMap = fromMap ? name : null;
-      if (fromMap) writeLocation(false, name);
+      state.returnMap = state.mapSelection ?? (fromMap ? name : null);
     }
     state.page = "theorem";
   } else {
@@ -626,7 +634,7 @@ function focusRoot(name, { historyEntry = true, fromMap = false, returnMap = nul
   }
   state.root = name;
   state.selected = name;
-  state.browse = null;
+  if (state.page === "theorem") state.browse = null;
   ui.search.value = name;
   hideSearchResults();
   setGraphModeChrome();
@@ -640,13 +648,13 @@ function summaryChip(text) {
   return element("span", "summary-chip", text);
 }
 
-function renderOverviewContent(mapSelection) {
+function renderOverviewContent(focusSelection) {
   const requestedBrowse = state.browse ?? "LeanCondensedMatter";
-  state.browse = requestedBrowse;
+  const mapSelection = state.mapSelection;
   composition.renderOverview({
     render: () => moduleOverview?.prepare(requestedBrowse, mapSelection),
     mounted() {
-      if (mapSelection) ui.overview.querySelector(".research-map-detail-title")?.focus();
+      if (focusSelection) ui.overview.querySelector(".research-map-detail-title")?.focus();
     },
     unavailable() {
       if (requestedBrowse !== "LeanCondensedMatter" && moduleOverview?.hasModule("LeanCondensedMatter")) {
@@ -674,6 +682,7 @@ function showOverview({ historyEntry = true, browse = null, focusFilter = null, 
   state.selected = null;
   state.returnBrowse = null;
   state.returnMap = null;
+  state.mapSelection = mapSelection;
   state.viewBox = null;
   state.graphBounds = null;
   state.module = "*";
@@ -689,12 +698,16 @@ function showOverview({ historyEntry = true, browse = null, focusFilter = null, 
   setGraphModeChrome(focusFilter);
   ui.graphStatus.textContent = "";
   ui.detail.replaceChildren();
-  renderOverviewContent(mapSelection);
-  if (historyEntry) writeLocation(true, mapSelection);
+  renderOverviewContent(mapSelection && !focusFilter);
+  if (historyEntry) writeLocation(true);
 }
 
 function showModuleImports({ historyEntry = true, moduleName = null, depth = state.depth } = {}) {
   if (state.moduleCatalog.length === 0) return;
+  if (state.page === "theorem") {
+    state.browse = state.returnBrowse;
+    state.mapSelection = state.returnMap;
+  }
   const selectedModule = moduleName && state.moduleByName.has(moduleName)
     ? moduleName
     : state.moduleByName.has("LeanCondensedMatter") ? "LeanCondensedMatter" : state.moduleCatalog[0].name;
@@ -705,7 +718,6 @@ function showModuleImports({ historyEntry = true, moduleName = null, depth = sta
   state.depth = [1, 2, 3, 4].includes(Number(depth)) ? Number(depth) : 1;
   state.root = selectedModule;
   state.selected = selectedModule;
-  state.browse = null;
   state.module = "*";
   state.viewBox = null;
   state.graphBounds = null;
@@ -753,9 +765,8 @@ function searchScore(entry, query) {
 
 function findSearchResults(query) {
   const ranked = [];
-  for (const entry of state.catalog) {
-    if (state.graphKind !== "modules" &&
-        !declarationAllowed(entry, state.kind, state.generated)) continue;
+  const entries = state.graphKind === "modules" ? state.catalog : visibleDeclarations().entries;
+  for (const entry of entries) {
     const score = searchScore(entry, query);
     if (score !== null) ranked.push({ entry, score });
   }
@@ -845,7 +856,7 @@ function restoreLocation() {
   } else {
     showOverview({ historyEntry: false, browse: route.browse, mapSelection: route.mapSelection });
   }
-  if (route.canonicalize) writeLocation(false, route.mapSelection);
+  if (route.canonicalize) writeLocation(false);
 }
 
 function bindGraphNavigation() {
@@ -913,7 +924,7 @@ function bindEvents() {
       state.kind = ui.kindFilter.value;
       state.generated = ui.generatedFilter.checked;
       if (state.page === "overview") showOverview({
-        historyEntry: false, browse: state.browse,
+        historyEntry: false, browse: state.browse, mapSelection: state.mapSelection,
         focusFilter: document.activeElement === filter ? filter : null,
       });
       else if (state.root) renderGraph();
@@ -922,7 +933,7 @@ function bindEvents() {
   }
   ui.overviewLink.addEventListener("click", () => {
     if (state.page === "theorem") showOverview({ browse: state.returnBrowse, mapSelection: state.returnMap });
-    else showOverview();
+    else showOverview({ browse: state.browse, mapSelection: state.mapSelection });
   });
   ui.backToMap.addEventListener("click", () => ui.overviewLink.click());
   ui.moduleImportsLink.addEventListener("click", () => showModuleImports());
@@ -1011,9 +1022,15 @@ async function main() {
   }
   moduleOverview = createModuleOverview({
     catalog: state.theoremCatalog,
-    allowed: (entry) => declarationAllowed(entry, state.kind, state.generated),
+    visibleDeclarations,
     modules: ["LeanCondensedMatter", ...state.moduleCatalog.map((entry) => entry.name)],
     onOpenDeclaration: (name, options) => focusRoot(name, options),
+    onMapStateChange({ moduleName, selectedName }) {
+      if (state.page !== "overview") return;
+      state.browse = moduleName ?? "LeanCondensedMatter";
+      state.mapSelection = selectedName;
+      writeLocation(false);
+    },
   });
   populateControls();
   bindEvents();

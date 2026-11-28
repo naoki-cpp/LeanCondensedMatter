@@ -3,6 +3,7 @@ import assert from "node:assert/strict";
 import { declarationAllowed, declarationCounts } from "../declaration-model.js";
 import { createModuleOverview } from "../module-overview.js";
 import { declarationRelations, declarationStatement } from "../declaration-details.js";
+import { createDeclarationVisibility } from "../declaration-visibility.js";
 
 test("definition filter and generated declarations", () => {
   for (const kind of ["def", "abbrev", "opaque"]) {
@@ -59,14 +60,14 @@ test("MixedOrderData overview counts and opens both definitions", async () => {
       dependents: name === names[1] ? [names[0]] : [] })),
     onOpenDeclaration(name) { opened = name; },
   });
-  overview.replaceChildren(...(await explorer.prepare("MixedOrderData"))());
+  overview.replaceChildren(...(await explorer.prepare("MixedOrderData"))().nodes);
   assert.match(overview.text(), /Definitions 2/);
   assert.match(overview.text(), /Theorems 0/);
   assert.match(overview.text(), /Total 2/);
   assert.equal(overview.find("h2").find((heading) => heading.id === "research-map-title")?.text(), "Mixed Order Data");
   assert.equal(overview.find("canvas").length, 1);
   assert.doesNotMatch(overview.text(), /Direct submodules|Module details/);
-  overview.replaceChildren(...(await explorer.prepare("LeanCondensedMatter"))());
+  overview.replaceChildren(...(await explorer.prepare("LeanCondensedMatter"))().nodes);
   const mapTitle = overview.find("h2").find((heading) => heading.id === "research-map-title");
   assert.equal(mapTitle?.text(), "LeanCondensedMatter");
   const region = overview.find("button").find((button) => button.className === "research-map-region");
@@ -97,7 +98,7 @@ test("MixedOrderData overview counts and opens both definitions", async () => {
   assert.match(overview.text(), /Definitions 2/);
   assert.match(overview.text(), /Theorems 0/);
   assert.match(overview.text(), /Total 2/);
-  overview.replaceChildren(...(await explorer.prepare("LeanCondensedMatter", names[1]))());
+  overview.replaceChildren(...(await explorer.prepare("LeanCondensedMatter", names[1]))().nodes);
   assert.equal(overview.find("select")[0].value, names[1]);
   assert.equal(overview.find("h3").find((item) => item.className === "research-map-detail-title").text(), names[1]);
 });
@@ -115,8 +116,8 @@ test("map filters points and picker while preserving the total dependency count"
   ].map((entry) => ({ module, statement: "Nat", dependents: [], ...entry }));
   let generated = false;
   const explorer = createModuleOverview({ catalog,
-    allowed: (entry) => declarationAllowed(entry, "theorem", generated) });
-  overview.replaceChildren(...(await explorer.prepare("LeanCondensedMatter"))());
+    visibleDeclarations: () => createDeclarationVisibility(catalog, "theorem", generated) });
+  overview.replaceChildren(...(await explorer.prepare("LeanCondensedMatter"))().nodes);
   let picker = overview.find("select")[0];
   assert.deepEqual(picker.find("option").map(({ value }) => value), ["", "result"]);
   assert.match(overview.text(), /Definitions 0.*Theorems 1.*Total 1/);
@@ -124,7 +125,7 @@ test("map filters points and picker while preserving the total dependency count"
   picker.change();
   assert.match(overview.text(), /Depends on \(2 total, 0 on map\)/);
   generated = true;
-  overview.replaceChildren(...(await explorer.prepare("LeanCondensedMatter"))());
+  overview.replaceChildren(...(await explorer.prepare("LeanCondensedMatter"))().nodes);
   picker = overview.find("select")[0];
   assert.deepEqual(picker.find("option").map(({ value }) => value), ["", "generated", "result"]);
   assert.match(overview.text(), /Theorems 2.*Total 2.*Generated 1/);

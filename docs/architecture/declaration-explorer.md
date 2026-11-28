@@ -8,11 +8,17 @@ The browser explorer uses the same graph rendering flow for declarations and mod
 
 `docs-site/declaration-hierarchy.js` indexes module paths, direct and descendant declarations, and counts. The overview uses the full hierarchy for module navigation and a filtered hierarchy for map points and directional dependency counts between sibling regions.
 
+`docs-site/declaration-visibility.js` supplies the filtered declaration set to search, map hierarchy construction, and graph traversal. The dependency graph keeps its selected root even when traversal excludes that declaration.
+
 `docs-site/map-navigation.js` owns the map camera, active scope, selected declaration, and transitions to parent regions. `docs-site/research-map.js` draws the canvas, handles input, and supplies animation timestamps.
 
+`docs-site/map-scene.js` lays out regions and points and resolves visible labels and pointer targets against the same camera projection.
+
 `docs-site/explorer-composition.js` moves the shared tablist and controls between the overview, declaration graph, and imports graph. It applies asynchronously prepared overview content only while its request is current.
+It mounts and disposes the map as views change so resize observation and camera work are scoped to the active map.
 
 `docs-site/explorer-location.js` translates between explorer views and URL/history entries, including the declaration graph's return destination.
+Map region changes update the current history entry, which also stores the selected declaration.
 
 `docs-site/map-zoom.js` owns shared zoom input, timing, and animation frame scheduling. Canvas and SVG retain their own coordinate transforms.
 

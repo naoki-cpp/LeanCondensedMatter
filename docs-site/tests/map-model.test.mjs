@@ -3,6 +3,42 @@ import assert from "node:assert/strict";
 import { buildDeclarationHierarchy } from "../declaration-hierarchy.js";
 import { declarationAllowed } from "../declaration-model.js";
 import { createMapNavigation } from "../map-navigation.js";
+import { createMapScene } from "../map-scene.js";
+import { createDeclarationVisibility } from "../declaration-visibility.js";
+
+test("map labels and hit tests use the same visible child regions", () => {
+  const hierarchy = buildDeclarationHierarchy([
+    { name: "left", module: "Example.Left", kind: "def" },
+    { name: "right", module: "Example.Right", kind: "theorem" },
+  ]);
+  const scene = createMapScene([...hierarchy.root.children.values()], hierarchy, 960, 670);
+  const navigation = createMapNavigation(960, 670);
+  const example = scene.region("Example");
+  const left = scene.region("Example.Left");
+  navigation.open(example, false);
+  const frame = scene.frame(navigation);
+  assert.ok(frame.labels.includes(left));
+  const [x, y] = frame.screen(left.x, left.y);
+  assert.equal(frame.target(x, y).region, left);
+  assert.equal(frame.hoverPoint(x, y), null);
+  navigation.open(left, false);
+  const leaf = scene.frame(navigation);
+  assert.equal(leaf.target(...leaf.pointOnScreen(scene.point("left"))).point.entry.name, "left");
+});
+
+test("catalog visibility agrees across search, module filtering, and map hierarchy", () => {
+  const catalog = [
+    { name: "a", module: "A", kind: "theorem" },
+    { name: "b", module: "B", kind: "def", generated: true },
+    { name: "c", module: "A", kind: "abbrev" },
+  ];
+  const visibility = createDeclarationVisibility(catalog, "definition", false);
+  assert.deepEqual(visibility.entries.map(({ name }) => name), ["c"]);
+  assert.equal(visibility.allows("c", "A"), true);
+  assert.equal(visibility.allows("c", "B"), false);
+  assert.equal(visibility.mapHierarchy().find("B"), null);
+  assert.equal(createDeclarationVisibility(catalog, "definition", true).allows("b", "B"), true);
+});
 import { ZOOM_STEP, createCameraFrames, zoomFactorForKey, zoomFactorForWheel } from "../map-zoom.js";
 
 test("camera scheduling ignores repeat starts and cancels pending frames", (t) => {

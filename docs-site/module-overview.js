@@ -2,7 +2,8 @@ const REPOSITORY_ROOT_URL = "https://raw.githubusercontent.com/naoki-cpp/LeanCon
 const SOURCE_ROOT_URL = `${REPOSITORY_ROOT_URL}/${PROJECT_NAME}`;
 
 import { buildDeclarationHierarchy, modulePath, PROJECT_NAME } from "./declaration-hierarchy.js";
-import { declarationAllowed, declarationCounts } from "./declaration-model.js";
+import { declarationCounts } from "./declaration-model.js";
+import { createDeclarationVisibility } from "./declaration-visibility.js";
 import { renderResearchMap } from "./research-map.js";
 
 function element(tag, className = "", text = "") {
@@ -44,8 +45,8 @@ function summaryChip(text) {
   return element("span", "summary-chip", text);
 }
 
-export function createModuleOverview({ catalog, modules = [], onOpenDeclaration,
-  allowed = (entry) => declarationAllowed(entry) }) {
+export function createModuleOverview({ catalog, modules = [], onOpenDeclaration, onMapStateChange,
+  visibleDeclarations = () => createDeclarationVisibility(catalog) }) {
   const moduleDescriptionPromises = new Map();
 
   const tree = buildDeclarationHierarchy(catalog, modules);
@@ -115,7 +116,8 @@ export function createModuleOverview({ catalog, modules = [], onOpenDeclaration,
     descriptionField.hidden = !description;
     header.append(descriptionField);
     const summary = element("div", "overview-summary");
-    const visibleTree = buildDeclarationHierarchy(catalog.filter(allowed));
+    const visibility = visibleDeclarations();
+    const visibleTree = visibility.mapHierarchy();
     const mapRegions = children.map((child) => visibleTree.find(child.fullName)).filter(Boolean);
     const mapEntries = mapRegions.flatMap((child) => child.entries);
     const mapCounts = declarationCounts(mapEntries, { includeGenerated: true });
@@ -145,11 +147,11 @@ export function createModuleOverview({ catalog, modules = [], onOpenDeclaration,
       });
     }
     const map = renderResearchMap(mapRegions, onOpenDeclaration, updateMapHeader,
-      [breadcrumb, header], node.name, visibleTree, mapCounts, selectedName, moduleName);
-    content.push(map);
+      [breadcrumb, header], node.name, visibleTree, mapCounts, selectedName, moduleName, onMapStateChange);
+    content.push(map.element);
 
     if (node.declarations.length > 0) {
-      const direct = node.declarations.filter(allowed);
+      const direct = node.declarations.filter((entry) => visibility.allows(entry.name));
       const section = element("section", "overview-section");
       const head = element("div", "overview-section-head");
       head.append(element("h3", "", "Declarations in this module"));
@@ -160,7 +162,14 @@ export function createModuleOverview({ catalog, modules = [], onOpenDeclaration,
       section.append(list);
       content.push(section);
     }
-    return content;
+    return {
+      nodes: content,
+      mount: map.mount,
+      dispose() {
+        descriptionRequest += 1;
+        map.dispose();
+      },
+    };
   }
 
   return {

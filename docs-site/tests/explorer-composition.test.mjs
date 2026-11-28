@@ -57,8 +57,14 @@ test("only the current overview mounts shared controls after asynchronous prepar
   const tabSlot = { ...container(), selector: ".map-tabs-slot" };
   const controlSlot = { ...container(), selector: ".map-controls-slot" };
   const searchSlot = { ...container(), selector: ".map-search-slot" };
+  let mounts = 0;
+  let disposals = 0;
   await composition.renderOverview({
-    render: () => () => [tabSlot, controlSlot, searchSlot], unavailable, failed,
+    render: () => () => ({
+      nodes: [tabSlot, controlSlot, searchSlot],
+      mount() { mounts += 1; },
+      dispose() { disposals += 1; },
+    }), unavailable, failed,
   });
   resolveOld(() => assert.fail("Superseded content was built"));
   await old;
@@ -67,4 +73,8 @@ test("only the current overview mounts shared controls after asynchronous prepar
   assert.equal(ui.searchForm.parentElement, searchSlot);
   assert.equal(ui.controlsHome.hidden, true);
   assert.equal(ui.overviewLink.tabIndex, 0);
+  assert.equal(mounts, 1);
+  composition.show("imports", "Example");
+  composition.show("imports", "Another module");
+  assert.equal(disposals, 1);
 });
