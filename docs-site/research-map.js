@@ -226,10 +226,11 @@ export function renderResearchMap(children, entriesFor, onOpenDeclaration) {
     for (const { region, focused, w, h } of measured) {
       const [x, y] = screen(region.x, region.y + region.radius);
       if (!stageWidth || !stageHeight) continue;
-      const anchorX = x / width * stageWidth;
+      const pinned = focused && region.children.length > 0;
+      const anchorX = pinned ? stageWidth / 2 : x / width * stageWidth;
       const anchorY = y / height * stageHeight;
       const [, above] = screen(region.x, region.y - region.radius);
-      const candidates = [anchorY + 6, above / height * stageHeight - h - 6, anchorY + h + 10];
+      const candidates = pinned ? [4] : [anchorY + 6, above / height * stageHeight - h - 6, anchorY + h + 10];
       const center = Math.max(w / 2 + 4, Math.min(stageWidth - w / 2 - 4, anchorX));
       const left = center - w / 2;
       const top = candidates.map((value) => Math.max(4, Math.min(stageHeight - h - 4, value)))
@@ -271,6 +272,7 @@ export function renderResearchMap(children, entriesFor, onOpenDeclaration) {
     }
     for (const region of allRegions) {
       if (region.parent && (view.zoom <= 1.5 || (active !== region && active !== region.parent))) continue;
+      if (view.zoom > 1.5 && region === active && region.children.length) continue;
       ctx.strokeStyle = "#42605a";
       ctx.beginPath();
       ctx.arc(...screen(region.x, region.y), (region.radius + 5) * view.zoom, 0, 2 * Math.PI);
@@ -348,7 +350,19 @@ export function renderResearchMap(children, entriesFor, onOpenDeclaration) {
     detail.hidden = true;
     select.value = "";
     preview.textContent = region.children.length ? "Choose a submodule or select a declaration." : "Select a dot or choose a declaration.";
-    glideTo({ x: region.x, y: region.y, zoom: Math.min(24, height / (3 * (region.radius + 5))) });
+    if (region.children.length) {
+      const extents = [...region.children, ...region.points.filter((point) => point.region === region)];
+      const left = Math.min(...extents.map(({ x, radius = 0 }) => x - radius));
+      const right = Math.max(...extents.map(({ x, radius = 0 }) => x + radius));
+      const top = Math.min(...extents.map(({ y, radius = 0 }) => y - radius));
+      const bottom = Math.max(...extents.map(({ y, radius = 0 }) => y + radius));
+      // Leave room for the parent title at the top and the child labels at the bottom.
+      const zoom = Math.min(24, (width - 104) / Math.max(1, right - left),
+        (height - 140) / Math.max(1, bottom - top));
+      glideTo({ x: (left + right) / 2, y: (top + bottom) / 2, zoom });
+    } else {
+      glideTo({ x: region.x, y: region.y, zoom: Math.min(24, height / (3 * (region.radius + 5))) });
+    }
     canvas.focus?.({ preventScroll: true });
   }
 
