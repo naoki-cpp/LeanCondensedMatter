@@ -24,7 +24,7 @@ function button(text, action, className = "") {
   return control;
 }
 
-export function renderResearchMap(children, entriesFor, onOpenDeclaration) {
+export function renderResearchMap(children, entriesFor, onOpenDeclaration, onRegionChange) {
   const section = element("section", "research-map");
   const heading = element("h3", "", "Research map");
   heading.id = "research-map-title";
@@ -72,7 +72,7 @@ export function renderResearchMap(children, entriesFor, onOpenDeclaration) {
   }
   function buildRegion(moduleName, x, y, radius, entries, parent = null) {
     const name = moduleName.split(".").at(-1).replace(/([a-z])([A-Z])/g, "$1 $2");
-    const region = { name, x, y, radius, parent, children: [] };
+    const region = { name, moduleName, x, y, radius, parent, children: [] };
     allRegions.push(region);
     const prefix = moduleName + ".";
     const groups = new Map();
@@ -360,6 +360,7 @@ export function renderResearchMap(children, entriesFor, onOpenDeclaration) {
     if (active === region) return;
     previousScope = active;
     active = region;
+    onRegionChange(region?.moduleName ?? null);
     parentControl.hidden = !region?.parent;
     picker.hidden = !region;
     if (!region) return;

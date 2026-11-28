@@ -206,7 +206,9 @@ export function createModuleOverview({ catalog, modules = [], overview, onBrowse
 
     const header = element("div", "overview-header module-overview-header");
     header.append(element("h2", "", node.name));
-    if (description) header.append(element("p", "module-description module-header-description", description));
+    const descriptionField = element("p", "module-description module-header-description", description);
+    descriptionField.hidden = !description;
+    header.append(descriptionField);
     const summary = element("div", "overview-summary");
     const counts = node.counts;
     summary.append(summaryChip(`Definitions ${counts.definitions}`));
@@ -219,11 +221,23 @@ export function createModuleOverview({ catalog, modules = [], overview, onBrowse
     overview.append(header);
 
     if (children.length > 0 && parts.length === 0) {
+      let descriptionRequest = 0;
+      function updateMapDescription(moduleName) {
+        const request = ++descriptionRequest;
+        descriptionField.textContent = moduleName ? "" : description;
+        descriptionField.hidden = !descriptionField.textContent;
+        if (!moduleName) return;
+        loadModuleDescription(moduleName).then((text) => {
+          if (request !== descriptionRequest || renderVersion !== hierarchyRenderVersion) return;
+          descriptionField.textContent = text;
+          descriptionField.hidden = !text;
+        });
+      }
       overview.append(renderResearchMap(children, (child) => catalog.filter((entry) => {
         const name = shortModule(entry.module);
         const area = shortModule(child.fullName);
         return !entry.generated && (name === area || name.startsWith(`${area}.`));
-      }).sort((a, b) => a.name.localeCompare(b.name)), onOpenDeclaration));
+      }).sort((a, b) => a.name.localeCompare(b.name)), onOpenDeclaration, updateMapDescription));
     } else if (children.length > 0) {
       const section = element("section", "overview-section");
       section.append(element("h3", "", "Direct submodules"));
