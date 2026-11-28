@@ -11,5 +11,6 @@ set_option linter.style.header false
 /-!
 # Common second-quantization infrastructure
 
-Statistics-independent algebra, completed spaces, imaginary-time theory, perturbation theory, thermal theory, and diagrammatics.
+Statistics-independent Fock algebra and completed spaces, quartic interactions, imaginary-time
+evolution, thermal states, perturbation theory, and diagrammatics.
 -/
