@@ -310,7 +310,10 @@ theorem polarFourierZerothAngularKernel_eq_besselJ (z : ℝ) :
           (-((z : ℂ) / 2) ^ 2) ^ n) := by
       rw [tsum_mul_left]
     _ = ((2 * Real.pi : ℝ) : ℂ) * Complex.besselJ 0 (z : ℂ) := by
-      rw [besselJZero_eq_regularizedHGTsum]
+      congr 1
+      symm
+      simpa only [Nat.cast_zero, Nat.zero_add, Nat.cast_one, pow_zero, one_mul] using
+        besselJ_nat_eq_tsum 0 (z : ℂ)
 
 end
 end PolarRadialKernels
