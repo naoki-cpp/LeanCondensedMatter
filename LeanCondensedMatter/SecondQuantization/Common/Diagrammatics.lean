@@ -9,5 +9,5 @@ set_option linter.style.header false
 
 Quartic vacuum, two-point, and arbitrary even-external-insertion diagrams, with component
 restriction and reassembly, pairing transport, crossing parity, and component factorization.
-The three diagram representations are related by explicit equivalences rather than definitional equality.
+Explicit transports and equivalences connect compatible diagram representations.
 -/
