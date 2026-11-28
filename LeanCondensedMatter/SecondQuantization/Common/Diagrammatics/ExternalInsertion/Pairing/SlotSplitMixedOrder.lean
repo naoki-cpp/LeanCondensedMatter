@@ -218,7 +218,7 @@ theorem externalInsertionLeftMixedPosition_fixed
         (Sum.inl ((externalInsertionStandardToMixedAtomicPositionEquiv externalTime
         (σ ∘ fun i : Fin T.card => (T.orderIsoOfFin rfl i).1)).symm p)) := by
   rw [← externalInsertionSupportMixedPosition_eq_standard T externalTime σ]
-  let f : Fin T.card → Fin n := fun i => (T.orderIsoOfFin rfl i).1
+  intro f
   let leg := externalInsertionMixedTimeOrderedAtomicLegEquiv externalTime (σ ∘ f) p
   rw [externalInsertionMixedTimeAmbientPositionEquiv_legPosition]
   change (externalInsertionLegEquiv E (Finset.univ : Finset (Fin n))).symm
