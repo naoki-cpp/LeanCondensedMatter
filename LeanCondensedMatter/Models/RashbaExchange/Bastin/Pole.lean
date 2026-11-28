@@ -56,7 +56,11 @@ theorem targetCenteredInterbandBastinPairIntegral_eq_interbandBastinPoleIntegral
   apply intervalIntegral.integral_congr
   intro offset _
   dsimp only
-  exact scalarBastinBandPairContribution_targetCentered _ _ _ _ _ _ hbroadening
+  simpa only [bastinBandPairContribution, interbandEnergyGap, mul_assoc] using
+    (scalarBastinBandPairContribution_targetCentered
+      (bandEnergy params (oppositeBand band) px py) (bandEnergy params band px py)
+      offset broadening (currentBandBlockTrace params 0 1 (oppositeBand band) band px py)
+      (currentBandBlockTrace params 1 0 (oppositeBand band) band px py) hbroadening)
 
 /-- The regular target-pole coefficient gives precisely the Berry weight. -/
 theorem interbandPoleRegularFactor_zero_im_eq_neg_chargeSq_berryCurvature
