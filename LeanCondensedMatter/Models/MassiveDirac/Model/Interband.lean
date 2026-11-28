@@ -106,12 +106,18 @@ theorem forceMatrixTraceNumerator_xy_eq (band : TwoBand) (v m px py : ℝ)
         (((v : ℝ) : ℂ) • sigmaX) *
         ((1 / 2 : ℂ) • ((1 : Matrix2) + InternalSpace.pauliCombination u)) *
         (((v : ℝ) : ℂ) • sigmaY)) = _
-  rw [show sigmaX = InternalSpace.pauliX by rfl,
-    show sigmaY = InternalSpace.pauliY by rfl,
-    InternalSpace.trace_oppositePauliProjectors_xy]
-  cases band <;>
-    simp [u, diracPauliCoefficients, bandSign] <;>
-    field_simp [hEc]
+  let x : PauliAxis → ℂ := fun axis => InternalSpace.pauliAxisComponent axis (v : ℂ) 0 0
+  let y : PauliAxis → ℂ := fun axis => InternalSpace.pauliAxisComponent axis 0 (v : ℂ) 0
+  have hx : InternalSpace.pauliCombination x = (v : ℂ) • sigmaX := by
+    simp [x, InternalSpace.pauliCombination_eq_components, InternalSpace.pauliAxisComponent]
+  have hy : InternalSpace.pauliCombination y = (v : ℂ) • sigmaY := by
+    simp [y, InternalSpace.pauliCombination_eq_components, InternalSpace.pauliAxisComponent]
+  have h := InternalSpace.trace_oppositePauliProjectors u x y 0 0
+  simp only [hx, hy, zero_smul, zero_add] at h
+  rw [h]
+  simp [x, y, InternalSpace.dotProduct_pauliAxis, InternalSpace.pauliCross,
+    cross_apply, InternalSpace.pauliAxisComponent, u, diracPauliCoefficients]
+  cases band <;> simp [bandSign] <;> field_simp [hEc]
 
 end
 
