@@ -39,10 +39,6 @@ export function renderResearchMap(children, entriesFor, onOpenDeclaration) {
     legend.append(item);
   }
   const controls = element("div", "research-map-controls");
-  const toolbar = element("div", "research-map-toolbar");
-  const regionStatus = element("p", "research-map-current", "All regions");
-  regionStatus.setAttribute("role", "status");
-  toolbar.append(regionStatus, controls);
   const stage = element("div", "research-map-stage");
   const canvas = element("canvas", "");
   canvas.width = width * 2;
@@ -171,10 +167,11 @@ export function renderResearchMap(children, entriesFor, onOpenDeclaration) {
   function draw() {
     canvas.style.touchAction = view.zoom > 1.5 ? "none" : "pan-y";
     for (const region of regions) {
-      region.label.hidden = view.zoom > 1.5;
+      const focused = view.zoom > 1.5 && region === active;
+      region.label.hidden = view.zoom > 1.5 && !focused;
       const [x, y] = screen(region.x, region.y + region.radius + 11);
-      region.label.style.left = `${x / width * 100}%`;
-      region.label.style.top = `${y / height * 100}%`;
+      region.label.style.left = `${focused ? Math.max(16, Math.min(84, x / width * 100)) : x / width * 100}%`;
+      region.label.style.top = `${focused ? Math.max(4, Math.min(82, y / height * 100)) : y / height * 100}%`;
     }
     if (!ctx) return;
     ctx.setTransform(2, 0, 0, 2, 0, 0);
@@ -242,7 +239,6 @@ export function renderResearchMap(children, entriesFor, onOpenDeclaration) {
     if (active === region) return;
     active = region;
     picker.hidden = !region;
-    regionStatus.textContent = region?.name ?? "All regions";
     if (!region) return;
     caption.textContent = `Declaration in ${region.name}`;
     const placeholder = element("option", "", "Choose a declaration");
@@ -397,7 +393,7 @@ export function renderResearchMap(children, entriesFor, onOpenDeclaration) {
   select.addEventListener("change", () => openPoint(byName.get(select.value)));
   controls.append(button("Zoom out", () => zoomBy(1 / 1.5)), button("Zoom in", () => zoomBy(1.5)), button("Whole map", reset));
   stage.append(canvas, ...regions.map((region) => region.label));
-  section.append(heading, legend, toolbar, stage, preview, picker, detail);
+  section.append(heading, legend, controls, stage, preview, picker, detail);
   if (bundles.length) section.append(connectionDetails);
   reset();
   return section;
