@@ -126,7 +126,7 @@ theorem forceMatrixBerryCurvature_eq_berryCurvature (band : TwoBand) (v m px py 
     interbandEnergyGap_eq]
   simpa only [berryCurvature, Complex.sub_im, Complex.neg_im, Complex.mul_im,
     Complex.ofReal_re, Complex.ofReal_im, Complex.I_re, Complex.I_im,
-    mul_zero, zero_mul, add_zero, zero_add, zero_sub, sub_zero, mul_one, mul_assoc] using
+    mul_zero, zero_mul, add_zero, zero_add, neg_zero, zero_sub, sub_zero, mul_one, mul_assoc] using
     (BerryGeometry.signedInterbandBerryWeight_eq (bandSign band) (energy v m px py)
       (m * v ^ 2) (bandSign_sq band) hE)
 
