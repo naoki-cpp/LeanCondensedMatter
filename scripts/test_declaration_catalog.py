@@ -1,11 +1,13 @@
 import copy
+from hashlib import sha256
+import json
 from pathlib import Path
 import tempfile
 import unittest
 from unittest.mock import patch
 
 from check_declaration_catalog import validate, validate_completed_catalog, validate_retained_catalog
-from generate_declaration_catalog import collector_source, generate
+from generate_declaration_catalog import collector_source, export_explorer_data, generate
 from export_module_import_graph import export_modules
 
 
@@ -68,6 +70,34 @@ class CatalogTests(unittest.TestCase):
             self.assertEqual([mode for _, mode in calls], ["audit", None, "declarations"])
             self.assertEqual(calls[1][0], ["lake", "build", "+LeanCondensedMatter", "+LeanCondensedMatter.Unexported"])
             self.assertEqual(list((root / "scripts").iterdir()), [root / "scripts/TheoremCatalog.lean"])
+
+    def test_explorer_index_and_shards_round_trip(self):
+        rows = fixture()
+        rows[0]["structuredStatement"] = {"version": 1, "text": "∀ x, x = x"}
+        rows[1]["structuredStatement"] = None
+        rows[2]["module"] = "LeanCondensedMatter.Other"
+        rows[2]["structuredStatement"] = {"version": 1, "text": "ℂ"}
+        rows[3]["structuredStatement"] = None
+        with tempfile.TemporaryDirectory() as directory:
+            destination = Path(directory)
+            export_explorer_data(rows, destination)
+            index_path = destination / "declaration-index.json"
+            original = index_path.read_bytes()
+            index = json.loads(original)
+            self.assertEqual(index["version"], 1)
+            self.assertEqual(len(index["modules"]), 2)
+            self.assertTrue(all("structuredStatement" not in row
+                                for row in index["declarations"]))
+            shards = {}
+            for module, path in index["modules"].items():
+                payload = (destination / path).read_bytes()
+                self.assertEqual(Path(path).stem, sha256(payload).hexdigest())
+                shards[module] = json.loads(payload)
+            rebuilt = [dict(row, structuredStatement=shards.get(row["module"], {}).get(row["name"]))
+                       for row in index["declarations"]]
+            self.assertEqual(rebuilt, rows)
+            export_explorer_data(rows, destination)
+            self.assertEqual(index_path.read_bytes(), original)
 
     def test_completed_catalog_checks_exact_names_and_owners(self):
         document = (
