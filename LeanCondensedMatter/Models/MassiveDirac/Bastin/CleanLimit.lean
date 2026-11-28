@@ -114,8 +114,7 @@ theorem cleanInterbandBastinPairEnergyShellIntegral_eq
 occupation acts directly on the clean Bastin profile at the signed band energy. -/
 def zeroTemperatureOccupiedCleanInterbandBastinPairRadialEnergyDensity
     (band : TwoBand) (e m fermiEnergy energy : ℝ) : ℝ :=
-  bandStateOccupation (zeroTemperatureOccupation fermiEnergy)
-      (fun band energy => bandSign band * energy) band energy *
+  zeroTemperatureOccupation fermiEnergy (bandSign band * energy) *
     cleanInterbandBastinPairRadialEnergyDensity band e m energy
 
 /-- The occupation-weighted clean Bastin density is `-2π e²` times the corresponding

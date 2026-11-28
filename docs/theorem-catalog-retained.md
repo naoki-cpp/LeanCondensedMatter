@@ -262,9 +262,8 @@ using a zero-consumer signal as grounds for changing its retention.
 - `QuantumMechanics.SingleParticle.Continuum.realLInfMultiplier1D_coeFn` — continuum-vocabulary
   normalization theorem exposing the almost-everywhere representative of a bounded real multiplier;
   it is the bridge used by the probability-density layer.
-- `QuantumTheory.bandStateOccupation_zeroTemperature_eq_one_of_isFilledBand` — canonical
-  physical endpoint that every state of a filled band has unit zero-temperature occupation, paired
-  with the retained empty-band theorem.
+- `QuantumTheory.zeroTemperatureOccupation_eq_one_of_isFilledBand` — canonical
+  physical endpoint that every state of a filled band has unit zero-temperature occupation.
 - `SecondQuantization.Common.ExternalInsertionDiagram.legInComponent_iff_vertex_mem` — semantic normalization
   rule for the named flattened-leg component predicate, identifying it with membership of the
   incident vertex in the corresponding component part.

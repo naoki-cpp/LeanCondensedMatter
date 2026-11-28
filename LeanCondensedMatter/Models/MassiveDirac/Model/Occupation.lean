@@ -32,19 +32,17 @@ theorem lowerBand_isFilled_of_pos_fermiEnergy
 /-- Every lower-band state has unit zero-temperature occupation at positive Fermi energy. -/
 theorem lowerBand_zeroTemperatureOccupation_eq_one
     (v m fermiEnergy : ℝ) (p : ℝ × ℝ) (hfermi : 0 < fermiEnergy) :
-    bandStateOccupation (zeroTemperatureOccupation fermiEnergy)
-        (bandEnergyOnMomentum v m) .lower p = 1 :=
-  bandStateOccupation_zeroTemperature_eq_one_of_isFilledBand
+    zeroTemperatureOccupation fermiEnergy (bandEnergyOnMomentum v m .lower p) = 1 :=
+  zeroTemperatureOccupation_eq_one_of_isFilledBand
     (bandEnergyOnMomentum v m) fermiEnergy .lower
     (lowerBand_isFilled_of_pos_fermiEnergy v m fermiEnergy hfermi) p
 
 /-- Upper-band zero-temperature occupation is one exactly below the positive-energy Fermi surface. -/
 theorem upperBand_zeroTemperatureOccupation_eq_one_iff
     (v m fermiEnergy : ℝ) (p : ℝ × ℝ) :
-    bandStateOccupation (zeroTemperatureOccupation fermiEnergy)
-        (bandEnergyOnMomentum v m) .upper p = 1 ↔
+    zeroTemperatureOccupation fermiEnergy (bandEnergyOnMomentum v m .upper p) = 1 ↔
       energy v m p.1 p.2 < fermiEnergy := by
-  rw [bandStateOccupation_zeroTemperature_eq_one_iff]
+  rw [zeroTemperatureOccupation_eq_one_iff]
   simp [bandEnergyOnMomentum]
 
 /-- On the nonnegative radial axis in `|m| ≤ ε_F`, generic upper-band occupation is exactly
