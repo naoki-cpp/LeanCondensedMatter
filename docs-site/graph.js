@@ -48,6 +48,7 @@ const state = {
 const ui = {
   overviewLink: document.querySelector("#overview-link"),
   moduleImportsLink: document.querySelector("#module-imports-link"),
+  tabs: document.querySelector(".explorer-tabs"),
   declarationsPanel: document.querySelector("#declarations-panel"),
   importsPanel: document.querySelector("#imports-panel"),
   appShell: document.querySelector(".app-shell"),
@@ -67,6 +68,7 @@ const ui = {
   wrapperHighlightLabel: document.querySelector('[data-highlight="wrapper"]').closest("label"),
   graphLegend: document.querySelector(".legend"),
   importMapHeader: document.querySelector(".import-map-header"),
+  importMapTabs: document.querySelector(".import-map-header .map-tabs-slot"),
   importMapControls: document.querySelector(".import-map-header .map-controls-slot"),
   graph: document.querySelector("#graph"),
   viewport: document.querySelector("#graph-viewport"),
@@ -278,6 +280,7 @@ function appendNodeLabel(nodes, name, position, root, selected, showLeafLabel) {
 function setGraphModeChrome() {
   const modules = state.graphKind === "modules";
   const overview = state.page === "overview";
+  const tabsHadFocus = ui.tabs.contains(document.activeElement);
   for (const [tab, selected] of [[ui.overviewLink, !modules], [ui.moduleImportsLink, modules]]) {
     tab.setAttribute("aria-selected", String(selected));
     tab.tabIndex = selected ? 0 : -1;
@@ -292,7 +295,7 @@ function setGraphModeChrome() {
   ui.importMapHeader.hidden = !modules;
   ui.graphStatus.classList.toggle("research-map-declaration-count", modules);
   if (modules) {
-    ui.importMapHeader.firstElementChild.textContent = shortModule(state.root);
+    ui.importMapHeader.querySelector(".research-map-title").textContent = shortModule(state.root);
     ui.importMapControls.before(ui.graphStatus);
   } else {
     ui.graphToolbar.prepend(ui.graphStatus);
@@ -300,6 +303,9 @@ function setGraphModeChrome() {
   const controlsSlot = modules ? ui.importMapControls : ui.controlsHome;
   ui.controlsHome.hidden = overview || modules;
   if (ui.controls.parentElement !== controlsSlot) controlsSlot.append(ui.controls);
+  const tabSlot = modules ? ui.importMapTabs : ui.controlsHome;
+  if (ui.tabs.parentElement !== tabSlot) tabSlot.prepend(ui.tabs);
+  if (tabsHadFocus && !overview) (modules ? ui.moduleImportsLink : ui.overviewLink).focus({ preventScroll: true });
   document.getElementById("graph-fit").textContent = modules ? "Whole graph" : "Fit";
   ui.kindFilter.closest("label").hidden = modules;
   ui.generatedFilter.closest("label").hidden = modules;
@@ -793,6 +799,8 @@ function renderOverviewContent(focusFilter = null) {
     if (rendered && state.page === "overview" && state.browse === requestedBrowse) {
       const controlsSlot = ui.overview.querySelector(".map-controls-slot");
       if (controlsSlot && ui.controls.parentElement !== controlsSlot) controlsSlot.append(ui.controls);
+      const tabSlot = ui.overview.querySelector(".map-tabs-slot");
+      if (tabSlot && ui.tabs.parentElement !== tabSlot) tabSlot.append(ui.tabs);
       ui.controlsHome.hidden = Boolean(controlsSlot);
       if (focusFilter && document.activeElement === document.body) {
         focusFilter.focus({ preventScroll: true });
@@ -815,6 +823,7 @@ function renderOverviewContent(focusFilter = null) {
 }
 
 function showOverview({ historyEntry = true, browse = null, focusFilter = null } = {}) {
+  const restoreFocus = focusFilter ?? (ui.tabs.contains(document.activeElement) ? ui.overviewLink : null);
   moduleOverview?.cancel();
   state.graphKind = "theorems";
   state.catalog = state.theoremCatalog;
@@ -841,7 +850,7 @@ function showOverview({ historyEntry = true, browse = null, focusFilter = null }
   setGraphModeChrome();
   ui.graphStatus.textContent = "";
   ui.detail.replaceChildren();
-  renderOverviewContent(focusFilter);
+  renderOverviewContent(restoreFocus);
   if (historyEntry) writeLocation(true);
 }
 

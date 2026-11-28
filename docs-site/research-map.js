@@ -624,7 +624,9 @@ export function renderResearchMap(children, onOpenDeclaration, onRegionChange, o
   const emptyBundles = [];
   const overviewFooter = element("div", "research-map-overview");
   overviewFooter.append(...overviewHeader);
-  section.append(heading, declarationCount, controlsSlot, legend, controls, stage, preview, picker, detail, connectionDetails, overviewFooter);
+  const headingRow = element("div", "map-heading-row");
+  headingRow.append(heading, element("div", "map-tabs-slot"));
+  section.append(headingRow, declarationCount, controlsSlot, legend, controls, stage, preview, picker, detail, connectionDetails, overviewFooter);
   const sortedPoints = [...points].sort((a, b) => a.entry.name.localeCompare(b.entry.name));
   populatePicker(null);
   reset();

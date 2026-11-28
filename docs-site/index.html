@@ -56,14 +56,14 @@
   </header>
 
   <main>
-    <div class="explorer-tabs" role="tablist" aria-label="Explorer view">
-      <button id="overview-link" type="button" role="tab" aria-selected="true" aria-controls="declarations-panel">Declarations</button>
-      <button id="module-imports-link" type="button" role="tab" aria-selected="false" aria-controls="imports-panel" tabindex="-1">Imports</button>
-    </div>
     <div id="declarations-panel" role="tabpanel" aria-labelledby="overview-link">
       <div class="app-shell">
     <section id="explorer-content" class="graph-panel" tabindex="-1" aria-label="Declaration and module exploration panel">
       <div id="graph-controls-home" hidden>
+        <div class="explorer-tabs" role="tablist" aria-label="Explorer view">
+          <button id="overview-link" type="button" role="tab" aria-selected="true" aria-controls="declarations-panel">Declarations</button>
+          <button id="module-imports-link" type="button" role="tab" aria-selected="false" aria-controls="imports-panel" tabindex="-1">Imports</button>
+        </div>
         <div class="graph-controls" role="group" aria-label="Graph controls">
           <form id="search-form" class="search-form" role="search">
             <label for="theorem-search">Declaration</label>
@@ -131,7 +131,10 @@
       </div>
       <div id="overview" class="overview-panel" aria-live="polite"></div>
       <header class="import-map-header" hidden>
-        <h2 class="research-map-title"></h2>
+        <div class="map-heading-row">
+          <h2 class="research-map-title"></h2>
+          <div class="map-tabs-slot"></div>
+        </div>
         <div class="map-controls-slot"></div>
       </header>
       <div class="graph-toolbar" hidden>

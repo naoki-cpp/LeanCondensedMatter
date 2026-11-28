@@ -102,6 +102,24 @@ p { text-wrap: pretty; }
   font-weight: 600;
 }
 .explorer-tabs button:disabled { opacity: .55; cursor: default; }
+.map-heading-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: start;
+  justify-content: space-between;
+  gap: 4px 12px;
+}
+.map-heading-row h2 { flex: 1 1 12rem; min-width: 0; }
+.map-tabs-slot { margin-inline-start: auto; }
+.map-tabs-slot .explorer-tabs {
+  padding: 0;
+  border: 1px solid var(--map-border);
+  border-radius: 6px;
+  background: var(--map-control-surface);
+}
+.map-tabs-slot .explorer-tabs button { color: var(--map-muted); padding: 0 10px; }
+.map-tabs-slot .explorer-tabs button:hover:not(:disabled) { background: var(--map-surface); }
+.map-tabs-slot .explorer-tabs [aria-selected="true"] { color: var(--map-ink); border-bottom-color: var(--map-ink); }
 
 .app-shell {
   display: grid;
