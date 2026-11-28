@@ -1,6 +1,6 @@
 import Mathlib.Analysis.Normed.Ring.InfiniteSum
 import Mathlib.Analysis.MeanInequalities
-import Mathlib.Analysis.InnerProductSpace.l2Space
+import LeanCondensedMatter.Analysis.Operator.HilbertBasis
 import Mathlib.Analysis.InnerProductSpace.Adjoint
 import LeanCondensedMatter.Analysis.Operator.Compact
 import Mathlib.Analysis.Normed.Group.FunctionSeries
@@ -40,9 +40,8 @@ theorem hasSum_norm_sq_matrix_coeff {ι κ : Type*} (d : HilbertBasis ι ℂ H)
   set g : ι × κ → ℝ := fun p => ‖(inner ℂ (T (d p.1)) (f p.2) : ℂ)‖ ^ 2 with hg_def
   have hg_nonneg : ∀ p, 0 ≤ g p := fun p => sq_nonneg _
   have hrow : ∀ i, HasSum (fun j => g (i, j)) (‖T (d i)‖ ^ 2) := fun i => by
-    simpa only [show (2 : ENNReal).toReal = (2 : ℝ) by norm_num, Real.rpow_two,
-      f.repr_apply_apply, f.repr.norm_map, norm_inner_symm, hg_def] using
-      (lp.hasSum_norm (p := 2) (by norm_num) (f.repr (T (d i))))
+    simpa only [hg_def, norm_inner_symm (𝕜 := ℂ) (T (d i))] using
+      f.hasSum_norm_sq_inner (T (d i))
   have hg_summable : Summable g :=
     (summable_prod_of_nonneg hg_nonneg).mpr ⟨fun i => (hrow i).summable, by
       simpa only [fun i => (hrow i).tsum_eq] using hd.summable⟩
@@ -112,9 +111,7 @@ theorem hasSum_norm_sq_adjoint_apply {ι κ : Type*} (d : HilbertBasis ι ℂ H)
     (hd : HasSum (fun i => ‖T (d i)‖ ^ 2) a) :
     HasSum (fun j => ‖(ContinuousLinearMap.adjoint T) (f j)‖ ^ 2) a := by
   have hself (x : H) : (inner ℂ x x : ℂ) = ((‖x‖ ^ 2 : ℝ) : ℂ) := by
-    calc
-      inner ℂ x x = (‖x‖ : ℂ) ^ 2 := inner_self_eq_norm_sq_to_K x
-      _ = ((‖x‖ ^ 2 : ℝ) : ℂ) := (Complex.ofReal_pow _ _).symm
+    exact (inner_self_eq_norm_sq_to_K x).trans (Complex.ofReal_pow _ _).symm
   have hdiag : HasSum (fun i => (inner ℂ (T (d i)) (T (d i)) : ℂ)) (a : ℂ) := by
     simp_rw [hself]
     exact Complex.hasSum_ofReal.mpr hd
@@ -448,19 +445,13 @@ private theorem norm_sub_finiteRangeApprox_le {ι : Type*} (d : HilbertBasis ι 
   refine (T - finiteRangeApprox d T s).opNorm_le_bound (Real.sqrt_nonneg tail) fun x => ?_
   rw [← sq_le_sq₀ (norm_nonneg _) (mul_nonneg (Real.sqrt_nonneg tail) (norm_nonneg x)),
     mul_pow, Real.sq_sqrt htail_nonneg]
-  have hparse :
-      HasSum
-        (fun i : ι => ‖(inner ℂ (d i) ((T - finiteRangeApprox d T s) x) : ℂ)‖ ^ 2)
-        (‖(T - finiteRangeApprox d T s) x‖ ^ 2) := by
-    simpa only [show (2 : ENNReal).toReal = (2 : ℝ) by norm_num, Real.rpow_two,
-      d.repr_apply_apply, d.repr.norm_map] using
-      (lp.hasSum_norm (p := 2) (by norm_num) (d.repr ((T - finiteRangeApprox d T s) x)))
   have hzero :
       ∑ i ∈ s, ‖(inner ℂ (d i) ((T - finiteRangeApprox d T s) x) : ℂ)‖ ^ 2 = 0 := by
     apply Finset.sum_eq_zero
     intro i hi
     simp [sub_apply, inner_sub_right, inner_finiteRangeApprox_apply, hi]
-  have htail := s.hasSum_iff_compl.mp hparse
+  have htail := s.hasSum_iff_compl.mp
+    (d.hasSum_norm_sq_inner ((T - finiteRangeApprox d T s) x))
   rw [hzero, sub_zero] at htail
   exact hasSum_le (fun i => by
     rw [sub_apply, inner_sub_right, inner_finiteRangeApprox_apply, ite_eq_right i.2, sub_zero,
