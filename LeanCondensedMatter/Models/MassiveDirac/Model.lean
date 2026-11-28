@@ -14,7 +14,6 @@ set_option linter.style.header false
 /-!
 # Massive-Dirac model
 
-The two-dimensional massive-Dirac model: matrix and bounded-operator realizations, in-plane current,
-radial kinematics, Fermi-surface geometry, spectral occupation, projectors, and Fermi-circle overlap, interband algebra, operator spectral data,
-and Berry geometry with occupation-weighted response.
+Two-dimensional massive-Dirac Hamiltonians and currents, radial and Fermi-surface geometry,
+spectral occupation and projectors, interband matrix elements, and occupation-weighted Berry geometry.
 -/

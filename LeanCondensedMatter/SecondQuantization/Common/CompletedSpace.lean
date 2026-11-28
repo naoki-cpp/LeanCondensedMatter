@@ -11,5 +11,6 @@ set_option linter.style.header false
 /-!
 # Completed Fock-space infrastructure
 
-Statistics-independent completed-space, coordinate-isometry, diagonal, and finite-compatibility infrastructure.
+Statistics-independent completed occupation spaces, coordinate isometries and projections,
+maximal diagonal operators and their analytic properties, heat operators, and finite-space compatibility.
 -/
