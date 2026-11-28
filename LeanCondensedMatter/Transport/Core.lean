@@ -7,6 +7,6 @@ set_option linter.style.header false
 /-!
 # Transport core
 
-Dimension-independent transport data: positive physical volume, conductivity normalization, and
-conductivity tensors, and common finite continuum response parameters.
+Dimension-independent conductivity normalization and tensors, positive physical volume,
+and common finite continuum response parameters.
 -/
