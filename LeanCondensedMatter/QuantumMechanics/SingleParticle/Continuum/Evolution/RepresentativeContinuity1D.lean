@@ -24,7 +24,7 @@ namespace Continuum
 noncomputable section
 
 open MeasureTheory
-open scoped ENNReal MeasureTheory InnerProductSpace SchwartzMap
+open scoped ENNReal MeasureTheory InnerProductSpace SchwartzMap Interval
 
 variable {κ : ℝ} {potential : ℝ → ℝ}
 variable {hpotential : MemLp (fun x => (potential x : ℂ)) ∞ (volume : Measure ℝ)}
@@ -89,11 +89,9 @@ theorem ContinuumSchwartzEvolutionRepresentative1D.weak_continuity_interval
       (fun x => probabilityCurrentDivergenceValue1D evolution.hbar κ
         (representative.wavefunction t x)
         (schwartzSpatialSecondDerivative1D (representative.wavefunction t) x)) volume a b) :
-    intervalSmearedDensityRate1D a b test
-        (fun x => probabilityDensityTimeDerivativeValue
+    (∫ x in a..b, test x * probabilityDensityTimeDerivativeValue
           (representative.wavefunction t x) (representative.timeDerivative t x)) =
-      intervalSmearedCurrentPairing1D a b testDerivative
-          (fun x => probabilityCurrentValue1D evolution.hbar κ
+      (∫ x in a..b, testDerivative x * probabilityCurrentValue1D evolution.hbar κ
             (representative.wavefunction t x)
             (schwartzSpatialDerivative1D (representative.wavefunction t) x)) -
         weightedBoundaryCurrent1D a b test

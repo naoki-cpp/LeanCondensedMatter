@@ -21,16 +21,6 @@ noncomputable section
 open MeasureTheory Set
 open scoped Interval
 
-/-- Spatially smeared value of the pointwise density time derivative. -/
-def intervalSmearedDensityRate1D
-    (a b : ℝ) (test densityTimeDerivative : ℝ → ℝ) : ℝ :=
-  ∫ x in a..b, test x * densityTimeDerivative x
-
-/-- Pairing of the spatial derivative of a test function with the probability current. -/
-def intervalSmearedCurrentPairing1D
-    (a b : ℝ) (testDerivative current : ℝ → ℝ) : ℝ :=
-  intervalSmearedDensityRate1D a b testDerivative current
-
 /-- Weighted probability-current contribution at the two endpoints of an interval. -/
 def weightedBoundaryCurrent1D
     (a b : ℝ) (test current : ℝ → ℝ) : ℝ :=
@@ -61,10 +51,8 @@ theorem schrodinger_weak_continuity_interval
     (htestIntegrable : IntervalIntegrable testDerivative volume a b)
     (hcurrentIntegrable : IntervalIntegrable
       (fun x => probabilityCurrentDivergenceValue1D ℏ κ (ψ x) (ψxx x)) volume a b) :
-    intervalSmearedDensityRate1D a b test
-        (fun x => probabilityDensityTimeDerivativeValue (ψ x) (ψt x)) =
-      intervalSmearedCurrentPairing1D a b testDerivative
-          (fun x => probabilityCurrentValue1D ℏ κ (ψ x) (ψx x)) -
+    (∫ x in a..b, test x * probabilityDensityTimeDerivativeValue (ψ x) (ψt x)) =
+      (∫ x in a..b, testDerivative x * probabilityCurrentValue1D ℏ κ (ψ x) (ψx x)) -
         weightedBoundaryCurrent1D a b test
           (fun x => probabilityCurrentValue1D ℏ κ (ψ x) (ψx x)) := by
   have hcurrent : ∀ x ∈ [[a, b]],
@@ -87,8 +75,7 @@ theorem schrodinger_weak_continuity_interval
     htest hcurrent
     (htestIntegrable.mul_continuousOn (HasDerivAt.continuousOn hcurrent))
     (hcurrentIntegrable.continuousOn_mul (HasDerivAt.continuousOn htest))
-  simpa [intervalSmearedDensityRate1D, intervalSmearedCurrentPairing1D,
-    weightedBoundaryCurrent1D, ContinuousLinearMap.mul_apply'] using hweak
+  simpa only [weightedBoundaryCurrent1D, ContinuousLinearMap.mul_apply'] using hweak
 
 end
 end Continuum
