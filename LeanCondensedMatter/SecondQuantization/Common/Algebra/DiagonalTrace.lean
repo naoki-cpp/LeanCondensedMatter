@@ -165,8 +165,7 @@ private theorem matrixCoeff_comp_eq_tsum
   exact ((hasSum_sum_of_ne_finset_zero
     (s := (B (basisState n)).support)
     (fun k hk => by
-      have hz : matrixCoeff B k n = 0 := Finsupp.notMem_support_iff.mp hk
-      rw [hz, mul_zero])).tsum_eq).symm
+      rw [Finsupp.notMem_support_iff.mp hk, mul_zero])).tsum_eq).symm
 
 /-- **Cyclicity under a two-operator swap**, assuming absolute double summability:
 `Tr'[AB] = Tr'[BA]`. -/
