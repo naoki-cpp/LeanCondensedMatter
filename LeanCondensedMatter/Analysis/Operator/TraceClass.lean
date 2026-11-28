@@ -8,6 +8,6 @@ set_option linter.style.header false
 /-!
 # Trace-class operators
 
-General trace-class membership, compactness, trace norm, and complex trace together with the
-self-adjoint spectral specialization.
+Trace-class membership, compactness, complex trace and trace norm, algebraic operations,
+bounded-composition estimates, and self-adjoint spectral formulas.
 -/
