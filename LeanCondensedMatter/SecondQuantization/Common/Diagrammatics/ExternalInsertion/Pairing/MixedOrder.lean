@@ -74,30 +74,6 @@ noncomputable def externalInsertionOrderedLegSlotCongr
   (Equiv.refl (Fin (2 * E))).sumCongr
     (e.prodCongr (Equiv.refl (Fin 4)))
 
-/-- The canonical-leg Wick pairing partner is equivariant under any
-interaction-vertex permutation. This follows from the *actual*
-flattened-leg transport in `slotCongr`, not an abstract, new pairing. -/
-theorem ExternalInsertionDiagram.slotCongr_atomicLegPartner
-    {E n : ℕ}
-    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E n
-      (Finset.univ : Finset (Fin n)))
-    (e : ↥(Finset.univ : Finset (Fin n)) ≃
-      ↥(Finset.univ : Finset (Fin n)))
-    (leg : OrderedExternalInsertionLeg E n) :
-    (d.slotCongr e).atomicLegPartner
-        (externalInsertionOrderedLegSlotCongr e leg) =
-      externalInsertionOrderedLegSlotCongr e (d.atomicLegPartner leg) := by
-  let L := externalInsertionLegEquiv E (Finset.univ : Finset (Fin n))
-  let C := externalInsertionOrderedLegSlotCongr (E := E) e
-  have h := congrArg L (d.slotCongr_pairing_partner e (L.symm leg))
-  change L ((d.slotCongr e).pairing.partner
-      ((L.trans (C.trans L.symm)) (L.symm leg))) =
-    L ((L.trans (C.trans L.symm)) (d.pairing.partner (L.symm leg))) at h
-  change L ((d.slotCongr e).pairing.partner (L.symm (C leg))) =
-    C (L (d.pairing.partner (L.symm leg)))
-  simpa only [Equiv.trans_apply, Equiv.apply_symm_apply] using h
-
-
 /-- The actual permutation of mixed-time atomic *positions* induced by
 relabeling the interaction vertices and pulling the interaction times
 back along the inverse permutation. Equal-time tie breakers may change
@@ -113,53 +89,40 @@ noncomputable def externalInsertionMixedPositionSlotCongr
       (externalInsertionMixedTimeOrderedAtomicLegEquiv externalTime
         (σ ∘ fun v => (e.symm ⟨v, Finset.mem_univ v⟩).1)).symm)
 
-/-- A canonical atomic leg is sent to its *actual* mixed-time position
-after relabeling the interaction slots. -/
-theorem externalInsertionMixedPositionSlotCongr_legPosition
-    {E n : ℕ}
-    (e : ↥(Finset.univ : Finset (Fin n)) ≃
-      ↥(Finset.univ : Finset (Fin n)))
-    (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ)
-    (leg : OrderedExternalInsertionLeg E n) :
-    externalInsertionMixedPositionSlotCongr e externalTime σ
-        (externalInsertionMixedTimeOrderedAtomicLegPosition externalTime σ leg) =
-      externalInsertionMixedTimeOrderedAtomicLegPosition externalTime
-        (σ ∘ fun v => (e.symm ⟨v, Finset.mem_univ v⟩).1)
-        (externalInsertionOrderedLegSlotCongr e leg) := by
-  simp [externalInsertionMixedPositionSlotCongr,
-    externalInsertionMixedTimeOrderedAtomicLegPosition]
-
-/-- The physical mixed-time Wick pairing partner, at *every* time
-assignment (including coincident times), is intertwined by the actual
-mixed-time position permutation induced from `slotCongr`.
-
-This preserves the pairing as an involution, but it does not claim
-that normalized pair endpoints maintain their increasing order; that
-is the additional sign/orientation lemma needed for the integrated
-fermionic amplitude. -/
-theorem ExternalInsertionDiagram.slotCongr_pairingInMixedOrder_partner
+/-- At arbitrary time assignments, relabeling interaction vertices transports
+the full mixed-time pairing along the induced position equivalence. -/
+theorem ExternalInsertionDiagram.slotCongr_pairingInMixedOrder_eq_transport
     {E n : ℕ}
     (d : ExternalInsertionDiagram ExternalLabel InternalLabel E n
       (Finset.univ : Finset (Fin n)))
     (e : ↥(Finset.univ : Finset (Fin n)) ≃
       ↥(Finset.univ : Finset (Fin n)))
-    (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ)
-    (p : Fin (2 * (2 * n + E))) :
-    ((d.slotCongr e).pairingInMixedOrder externalTime
-        (σ ∘ fun v => (e.symm ⟨v, Finset.mem_univ v⟩).1)).partner
-        (externalInsertionMixedPositionSlotCongr e externalTime σ p) =
-      externalInsertionMixedPositionSlotCongr e externalTime σ
-        ((d.pairingInMixedOrder externalTime σ).partner p) := by
-  obtain ⟨leg, rfl⟩ :=
-    (show Function.Surjective (externalInsertionMixedTimeOrderedAtomicLegPosition externalTime σ)
-      from (externalInsertionMixedTimeOrderedAtomicLegEquiv externalTime σ).symm.surjective) p
-  rw [externalInsertionMixedPositionSlotCongr_legPosition,
-    (d.slotCongr e).pairingInMixedOrder_partner_legPosition,
-    d.slotCongr_atomicLegPartner,
-    d.pairingInMixedOrder_partner_legPosition,
-    ← externalInsertionMixedPositionSlotCongr_legPosition]
-
-
+    (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ) :
+    (d.slotCongr e).pairingInMixedOrder externalTime
+        (σ ∘ fun v => (e.symm ⟨v, Finset.mem_univ v⟩).1) =
+      (d.pairingInMixedOrder externalTime σ).transport
+        (externalInsertionMixedPositionSlotCongr e externalTime σ).symm := by
+  let σ' := σ ∘ fun v => (e.symm ⟨v, Finset.mem_univ v⟩).1
+  let L := externalInsertionLegEquiv E (Finset.univ : Finset (Fin n))
+  let C := externalInsertionOrderedLegSlotCongr (E := E) e
+  let A := externalInsertionMixedTimeAmbientPositionEquiv externalTime σ
+  let B := externalInsertionMixedTimeAmbientPositionEquiv externalTime σ'
+  let O := externalInsertionMixedTimeOrderedAtomicLegEquiv externalTime σ
+  let O' := externalInsertionMixedTimeOrderedAtomicLegEquiv externalTime σ'
+  change (d.pairing.transport (L.trans (C.trans L.symm)).symm).transport B =
+    (d.pairing.transport A).transport (O.trans (C.trans O'.symm)).symm
+  rw [PairingOn.transport_trans, PairingOn.transport_trans]
+  apply congrArg (fun p => d.pairing.transport p)
+  apply Equiv.ext
+  intro i
+  apply L.injective
+  change L (L.symm (C.symm (L (B i)))) =
+    L (A (O.symm (C.symm (O' i))))
+  have hA (p : Fin (2 * (2 * n + E))) : L (A p) = O p :=
+    externalInsertionLegEquiv_mixedTimeAmbientPositionEquiv externalTime σ p
+  have hB (p : Fin (2 * (2 * n + E))) : L (B p) = O' p :=
+    externalInsertionLegEquiv_mixedTimeAmbientPositionEquiv externalTime σ' p
+  simp only [Equiv.apply_symm_apply, hA, hB]
 
 /-- The vertex permutation on the concrete `Fin n` index induced by an
 equivalence of the full interaction slot set. -/
@@ -227,13 +190,12 @@ theorem ExternalInsertionDiagram.slotCongr_pairingInMixedOrder_eq_of_injective
     (d.slotCongr e).pairingInMixedOrder externalTime
         (σ ∘ fun v => (e.symm ⟨v, Finset.mem_univ v⟩).1) =
       d.pairingInMixedOrder externalTime σ := by
+  rw [d.slotCongr_pairingInMixedOrder_eq_transport,
+    externalInsertionMixedPositionSlotCongr_eq_refl_of_injective e externalTime σ hσ]
   apply PairingOn.ext
   apply Equiv.ext
   intro i
-  have hPartner := d.slotCongr_pairingInMixedOrder_partner e externalTime σ i
-  rw [externalInsertionMixedPositionSlotCongr_eq_refl_of_injective
-      e externalTime σ hσ] at hPartner
-  simpa using hPartner
+  simp only [PairingOn.transport_partner, Equiv.refl_symm, Equiv.refl_apply]
 
 end Common
 end SecondQuantization
