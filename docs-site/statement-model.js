@@ -125,11 +125,9 @@ function operatorNotation(node, args, depth, roles) {
         left.field === "Complex" && right?.kind === "operator" && node.resultType === right.map) {
       return x + "\\," + y;
     }
-    if (name === "QuantumTheory.expValue" && args.length === 2) {
-      const observable = roleOf(node.args[0], roles);
-      const state = roleOf(node.args[1], roles);
-      if (observable?.wrapper === "QuantumTheory.Observable" && state?.kind === "ket" &&
-          observable.space !== undefined && observable.space === state.space) {
+    if (name === "QuantumTheory.expValue") {
+      if (left?.wrapper === "QuantumTheory.Observable" && right?.kind === "ket" &&
+          left.space !== undefined && left.space === right.space) {
         const psi = identifier(node.args[1].name);
         return "\\left\\langle " + psi + "\\middle|" + args[0] + "\\middle|" + psi + "\\right\\rangle";
       }
@@ -167,6 +165,11 @@ function operatorNotation(node, args, depth, roles) {
   // The project uses one fixed-sign bracket for both CAR and CCR. Keep
   // the sign visible unless its identity can be established from the tree.
   if (name === "ScalarExchange.zetaCommutator" && args.length === 3) {
+    const sign = node.args[0];
+    // Do not guess a numeral from a bare OfNat.ofNat node: the old
+    // presentation schema may have omitted its implicit Nat index.
+    if (sign.kind === "text" && sign.text === "1") return "\\left[" + args[1] + ", " + args[2] + "\\right]";
+    if (sign.kind === "text" && sign.text === "-1") return "\\left\\{" + args[1] + ", " + args[2] + "\\right\\}";
     return "\\left[" + args[1] + ", " + args[2] + "\\right]_{" + args[0] + "}";
   }
   if (name === "InnerProductSpace.rankOne" && args.length === 3 && constantHead(node.args[0]) === "Complex" &&
@@ -176,6 +179,13 @@ function operatorNotation(node, args, depth, roles) {
   }
   // Mathlib's explicit scalar inner-product notation may retain the scalar argument.
   if (name === "inner" && args.length === 3) {
+    const left = roleOf(node.args[1], roles);
+    const right = roleOf(node.args[2], roles);
+    if (constantHead(node.args[0]) === "Complex" && left?.kind === "hilbert-vector" &&
+        right?.kind === "hilbert-vector" && left.space === right.space) {
+      return "\\left\\langle " + identifier(node.args[1].name) + "\\middle|" +
+        identifier(node.args[2].name) + "\\right\\rangle";
+    }
     return "\\left\\langle " + args[1] + ", " + args[2] + "\\right\\rangle_{" + args[0] + "}";
   }
   return null;
