@@ -640,20 +640,20 @@ private def presentationTypeName (value : Expr) : MetaM String := do
 /-- Serialize presentation expressions, including reviewed definition bodies but never theorem
 proofs or opaque values. Implicit application arguments are omitted; each tree has a fixed node
 budget. Scoped lambda export is opt-in for the reviewed bodies. -/
-private partial def presentationExpression (value : Expr) (scoped : Bool := false) : StateT Nat MetaM Json := do
+private partial def presentationExpression (value : Expr) (includeLambdas : Bool := false) : StateT Nat MetaM Json := do
   let fallback : MetaM Json := do
     return Json.mkObj [("kind", .str "text"), ("text", .str (← presentationText value))]
   let remaining ← get
   if remaining == 0 then return ← liftM fallback
   set (remaining - 1)
   match value with
-  | .mdata _ body => presentationExpression body scoped
+  | .mdata _ body => presentationExpression body includeLambdas
   | .lam binderName domain body binderInfo =>
-      if !scoped then return ← liftM fallback
-      let domainTree ← presentationExpression domain scoped
+      if !includeLambdas then return ← liftM fallback
+      let domainTree ← presentationExpression domain includeLambdas
       let budget ← get
       let (node, rest) ← liftM <| withLocalDecl binderName binderInfo domain fun parameter => do
-        let (bodyTree, rest) ← (presentationExpression (body.instantiate1 parameter) scoped).run budget
+        let (bodyTree, rest) ← (presentationExpression (body.instantiate1 parameter) includeLambdas).run budget
         let binder := Json.mkObj [("id", .str parameter.fvarId!.name.toString),
           ("name", .str (← presentationText parameter)), ("type", domainTree)]
         return (Json.mkObj [("kind", .str "lambda"), ("binder", binder), ("body", bodyTree)], rest)
@@ -674,9 +674,9 @@ private partial def presentationExpression (value : Expr) (scoped : Bool := fals
         let .forallE _ _ body binderInfo ← liftM <| whnf fnType
           | return ← liftM fallback
         if binderInfo == .default then
-          arguments := arguments.push (← presentationExpression argument scoped)
+          arguments := arguments.push (← presentationExpression argument includeLambdas)
         fnType := body.instantiate1 argument
-      return .mkObj [("kind", .str "app"), ("fn", ← presentationExpression fn scoped),
+      return .mkObj [("kind", .str "app"), ("fn", ← presentationExpression fn includeLambdas),
         ("args", .arr arguments),
         ("argumentType", .str (← liftM <| presentationTypeName (value.getAppArgs.back!))),
         ("resultType", .str (← liftM <| presentationTypeName value))]
