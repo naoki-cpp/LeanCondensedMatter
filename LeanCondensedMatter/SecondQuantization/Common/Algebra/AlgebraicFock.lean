@@ -16,7 +16,7 @@ by finitely supported complex linear combinations of basis states. The construct
 of the particular fermionic or bosonic occupation type used as `Config`.
 
 This module provides canonical basis states, basis extensionality for linear maps, and
-`matrixCoeff`/`diagonalCoeff` as coordinate evaluations. These coefficients are not inner
+`matrixCoeff` as coordinate evaluation. These coefficients are not inner
 products: the algebraic Fock space in this module has no Hilbert-space completion or inner-product
 structure.
 -/
@@ -68,11 +68,6 @@ theorem matrixCoeffLinear_apply {Config : Type*} (m n : Config)
     (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
     matrixCoeffLinear m n A = matrixCoeff A m n :=
   rfl
-
-/-- **The diagonal coefficient of `A (basisState n)`**, `matrixCoeff A n n`. -/
-noncomputable def diagonalCoeff {Config : Type*}
-    (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (n : Config) : ℂ :=
-  matrixCoeff A n n
 
 open scoped Classical in
 /-- **Matrix coefficients of a one-basis-state image.** If `A` sends `basisState n` to
