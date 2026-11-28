@@ -88,19 +88,13 @@ private theorem hasSum_inner_adjoint_apply {ι κ : Type*} (d : HilbertBasis ι 
   have hrow : ∀ i, HasSum (fun j => g (i, j)) ((inner ℂ (S (d i)) (T (d i)) : ℂ)) := fun i =>
     f.hasSum_inner_mul_inner (S (d i)) (T (d i))
   -- Column sums of `g`: rewrite via the adjoint, then the resolution of the identity along `d`.
-  have hcol_point : ∀ i j, g (i, j) =
-      (inner ℂ (ContinuousLinearMap.adjoint T (f j)) (d i) : ℂ) *
-        (inner ℂ (d i) (ContinuousLinearMap.adjoint S (f j)) : ℂ) := fun i j => by
-    rw [hg_def]
-    simp only
-    rw [← ContinuousLinearMap.adjoint_inner_right S (d i) (f j),
-      ← ContinuousLinearMap.adjoint_inner_left T (d i) (f j), mul_comm]
   have hcol : ∀ j, HasSum (fun i => g (i, j))
       ((inner ℂ (ContinuousLinearMap.adjoint T (f j)) (ContinuousLinearMap.adjoint S (f j)) :
         ℂ)) := fun j => by
-    simp_rw [hcol_point]
-    exact d.hasSum_inner_mul_inner (ContinuousLinearMap.adjoint T (f j))
-      (ContinuousLinearMap.adjoint S (f j))
+    simpa only [hg_def, ContinuousLinearMap.adjoint_inner_left,
+      ContinuousLinearMap.adjoint_inner_right, mul_comm] using
+      d.hasSum_inner_mul_inner (ContinuousLinearMap.adjoint T (f j))
+        (ContinuousLinearMap.adjoint S (f j))
   have hcolSum := ((Equiv.prodComm κ ι).hasSum_iff.mpr hg_summable.hasSum).prod_fiberwise hcol
   rwa [← (hg_summable.hasSum.prod_fiberwise hrow).tsum_eq] at hcolSum
 
@@ -358,22 +352,21 @@ theorem summable_norm_inner_apply_and_tsum_le {S T : H →L[ℂ] H}
     Summable (fun i => ‖inner ℂ (S (d i)) (T (d i))‖) ∧
       ∑' i, ‖inner ℂ (S (d i)) (T (d i))‖ ≤
         Real.sqrt hS.normSq * Real.sqrt hT.normSq := by
-  obtain ⟨C, -, hC, hsum⟩ :=
-    Real.inner_le_Lp_mul_Lq_hasSum_of_nonneg (p := 2) (q := 2)
+  obtain ⟨hsum, hC⟩ :=
+    Real.summable_and_inner_le_Lp_mul_Lq_tsum_of_nonneg (p := 2) (q := 2)
       (f := fun i => ‖S (d i)‖) (g := fun i => ‖T (d i)‖)
-      (A := Real.sqrt hS.normSq) (B := Real.sqrt hT.normSq)
       (by rw [Real.holderConjugate_iff]; norm_num)
-      (Real.sqrt_nonneg _) (Real.sqrt_nonneg _)
       (fun _ => norm_nonneg _) (fun _ => norm_nonneg _)
-      (by simpa only [Real.rpow_two, Real.sq_sqrt hS.normSq_nonneg] using hS.hasSum_norm_sq_apply d)
-      (by simpa only [Real.rpow_two, Real.sq_sqrt hT.normSq_nonneg] using hT.hasSum_norm_sq_apply d)
+      (by simpa only [Real.rpow_two] using hS.summable_norm_sq_apply d)
+      (by simpa only [Real.rpow_two] using hT.summable_norm_sq_apply d)
   have hle (i : ι) : ‖inner ℂ (S (d i)) (T (d i))‖ ≤
       ‖S (d i)‖ * ‖T (d i)‖ :=
     norm_inner_le_norm (S (d i)) (T (d i))
   have hinner : Summable (fun i => ‖inner ℂ (S (d i)) (T (d i))‖) :=
-    Summable.of_nonneg_of_le (fun i => norm_nonneg _) hle hsum.summable
-  rw [← hsum.tsum_eq] at hC
-  exact ⟨hinner, (hinner.tsum_le_tsum hle hsum.summable).trans hC⟩
+    Summable.of_nonneg_of_le (fun i => norm_nonneg _) hle hsum
+  refine ⟨hinner, (hinner.tsum_le_tsum hle hsum).trans ?_⟩
+  simpa only [Real.rpow_two, (hS.hasSum_norm_sq_apply d).tsum_eq,
+    (hT.hasSum_norm_sq_apply d).tsum_eq, ← Real.sqrt_eq_rpow] using hC
 
 /-- The Hilbert--Schmidt diagonal pairing is summable in every Hilbert basis. -/
 theorem summable_inner_apply {S T : H →L[ℂ] H} (hS : IsHilbertSchmidt S)
