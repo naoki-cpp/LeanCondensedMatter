@@ -1,6 +1,7 @@
 import LeanCondensedMatter.Analysis.InfiniteSum.FinsuppProduct
 import LeanCondensedMatter.SecondQuantization.Bosonic.ImaginaryTime.ImaginaryTimeEvolution
 import Mathlib.Analysis.SpecificLimits.Normed
+import Mathlib.Analysis.SpecialFunctions.Exp
 import Mathlib.Analysis.SpecialFunctions.Complex.Analytic
 
 set_option linter.style.header false
@@ -40,13 +41,9 @@ theorem hasSum_oneModeBoltzmannWeight {β ε : ℝ} (h : 0 < β * ε) :
 /-- The one-mode Boltzmann series is summable exactly when `0 < βε`. -/
 theorem summable_oneModeBoltzmannWeight_iff {β ε : ℝ} :
     Summable (oneModeBoltzmannWeight β ε) ↔ 0 < β * ε := by
-  unfold oneModeBoltzmannWeight
-  simp_rw [Real.exp_nat_mul]
-  rw [summable_geometric_iff_norm_lt_one, Real.norm_eq_abs,
-    abs_of_nonneg (Real.exp_nonneg _), Real.exp_lt_one_iff]
-  constructor
-  · intro h; linarith
-  · intro h; linarith
+  change Summable (fun n : ℕ => Real.exp ((n : ℝ) * (-β * ε))) ↔ 0 < β * ε
+  simpa only [neg_mul, neg_lt_zero] using
+    (Real.summable_exp_nat_mul_iff (a := -β * ε))
 
 variable {Mode : Type*}
 
