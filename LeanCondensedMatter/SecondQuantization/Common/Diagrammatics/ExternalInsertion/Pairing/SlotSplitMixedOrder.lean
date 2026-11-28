@@ -173,50 +173,17 @@ private theorem externalInsertionSupportMixedPosition_eq_standard
       (externalInsertionLegEquiv E T).symm)) =
       (externalInsertionStandardToMixedAtomicPositionEquiv externalTime
         (σ ∘ fun i : Fin T.card => (T.orderIsoOfFin rfl i).1)).symm := by
-  classical
-  let supportFixed :
-      OrderedExternalInsertionLeg E T.card ≃ Fin (2 * (2 * T.card + E)) :=
-    ((Equiv.sumCongr (Equiv.refl (Fin (2 * E)))
-      (((Equiv.subtypeUnivEquiv (fun i : Fin T.card => Finset.mem_univ i)).trans
-        (T.orderIsoOfFin rfl).toEquiv).prodCongr (Equiv.refl (Fin 4)))).trans
-      (externalInsertionLegEquiv E T).symm)
-  let standardFixed :
-      OrderedExternalInsertionLeg E T.card ≃ Fin (2 * (2 * T.card + E)) :=
-    (externalInsertionLegEquiv E (Finset.univ : Finset (Fin T.card))).symm.trans
-      (finCongr (by simp))
-  have hfixed : supportFixed = standardFixed := by
-    have hleg := congrArg Equiv.symm (externalInsertionLegCongr_standardize (E := E) T)
-    rw [← externalInsertionLegCongr_symm] at hleg
-    apply Equiv.ext
-    intro leg
-    have h := congrArg
-      (fun e => e ((externalInsertionLegEquiv E
-        (Finset.univ : Finset (Fin T.card))).symm leg)) hleg
-    have hslot : (standardSlotEquiv T).symm =
-        (Equiv.subtypeUnivEquiv
-          (fun i : Fin T.card => Finset.mem_univ i)).trans
-          (T.orderIsoOfFin rfl).toEquiv := by
-      rfl
-    have hcast : (finCongr (by simp :
-        2 * (2 * T.card + E) =
-          2 * (2 * (Finset.univ : Finset (Fin T.card)).card + E))).symm =
-        (finCongr (by simp) :
-          Fin (2 * (2 * (Finset.univ : Finset (Fin T.card)).card + E)) ≃
-            Fin (2 * (2 * T.card + E))) := by
-      apply Equiv.ext
-      intro p
-      rfl
-    simpa only [supportFixed, standardFixed, externalInsertionLegCongr,
-      Equiv.trans_apply, Equiv.apply_symm_apply, hslot, hcast] using h
   apply Equiv.ext
   intro p
-  change supportFixed
-      (externalInsertionMixedTimeOrderedAtomicLegEquiv externalTime
-        (σ ∘ fun i : Fin T.card => (T.orderIsoOfFin rfl i).1) p) =
-    standardFixed
-      (externalInsertionMixedTimeOrderedAtomicLegEquiv externalTime
-        (σ ∘ fun i : Fin T.card => (T.orderIsoOfFin rfl i).1) p)
-  rw [hfixed]
+  let leg := externalInsertionMixedTimeOrderedAtomicLegEquiv externalTime
+    (σ ∘ fun i : Fin T.card => (T.orderIsoOfFin rfl i).1) p
+  have hleg := congrArg Equiv.symm (externalInsertionLegCongr_standardize (E := E) T)
+  rw [← externalInsertionLegCongr_symm] at hleg
+  have h := congrArg
+    (fun e => e ((externalInsertionLegEquiv E
+      (Finset.univ : Finset (Fin T.card))).symm leg)) hleg
+  simp only [externalInsertionLegCongr, Equiv.trans_apply, Equiv.apply_symm_apply] at h
+  exact h
 
 
 
