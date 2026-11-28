@@ -39,7 +39,8 @@ directly without importing the permutation-sign theorem.
 and right position sets, complement enumeration, and uniqueness from the left position set.
 `slotShuffleLeftSlotSetEquiv` constructs its inverse by increasing enumeration of the left set
 and its complement, independently of recursive binary shuffles and their cardinality.
-The ambient binomial-cardinality theorem follows from this direct equivalence.
+The left-slot subsets use Mathlib's `Set.powersetCard`; the ambient binomial-cardinality theorem
+follows from this direct equivalence and `Set.powersetCard.card`.
 
 The construction reuses Mathlib's `Finset.orderIsoOfFin` and the generic
 `Combinatorics.SetPartition.SubsetSplit` equivalence `subsetSumSdiffEquiv`, which is backed

@@ -6,6 +6,7 @@ import Mathlib.Data.Finset.Sort
 import Mathlib.Data.Fintype.Perm
 import Mathlib.Data.Fintype.Powerset
 import Mathlib.Data.Fintype.Sum
+import Mathlib.Data.Set.PowersetCard
 
 set_option linter.style.header false
 
@@ -214,32 +215,16 @@ theorem SlotShuffle.eq_of_leftSlots_eq {m n : ℕ} {σ τ : SlotShuffle m n}
             ← τ.mem_rightSlots_iff_not_mem_leftSlots]
           exact (τ.mem_rightSlots_iff _).2 ⟨k, rfl⟩))) j
 
-/-- The type of possible ambient left-slot sets. -/
-abbrev LeftSlotSet (m n : ℕ) :=
-  {s : Finset (Fin (m + n)) // s.card = m}
-
 /-- Record only the ambient set occupied by the left family. -/
-def SlotShuffle.toLeftSlotSet {m n : ℕ} (σ : SlotShuffle m n) : LeftSlotSet m n :=
+def SlotShuffle.toLeftSlotSet {m n : ℕ} (σ : SlotShuffle m n) : Set.powersetCard (Fin (m + n)) m :=
   ⟨σ.leftSlots, σ.card_leftSlots⟩
 
-/-- The possible left-slot sets are counted by a binomial coefficient. -/
-theorem card_leftSlotSet (m n : ℕ) :
-    Fintype.card (LeftSlotSet m n) = Nat.choose (m + n) m := by
-  classical
-  change Fintype.card {s : Finset (Fin (m + n)) // s.card = m} = Nat.choose (m + n) m
-  let e : {s : Finset (Fin (m + n)) // s.card = m} ≃
-      ↥((Finset.univ : Finset (Fin (m + n))).powersetCard m) :=
-    Equiv.subtypeEquivRight fun s => by
-      simp [Finset.mem_powersetCard]
-  rw [Fintype.card_congr e]
-  simp
-
-private theorem card_leftSlotSet_complement {m n : ℕ} (s : LeftSlotSet m n) :
+private theorem card_leftSlotSet_complement {m n : ℕ} (s : Set.powersetCard (Fin (m + n)) m) :
     ((Finset.univ : Finset (Fin (m + n))) \ s.1).card = n := by
-  simp [Finset.card_sdiff, s.2]
+  simp [Finset.card_sdiff]
 
 /-- Enumerate a left-slot set and its complement increasingly. -/
-private noncomputable def SlotShuffle.ofLeftSlotSet {m n : ℕ} (s : LeftSlotSet m n) :
+private noncomputable def SlotShuffle.ofLeftSlotSet {m n : ℕ} (s : Set.powersetCard (Fin (m + n)) m) :
     SlotShuffle m n where
   slotEquiv :=
     (Equiv.sumCongr (s.1.orderIsoOfFin s.2).toEquiv
@@ -255,7 +240,7 @@ private noncomputable def SlotShuffle.ofLeftSlotSet {m n : ℕ} (s : LeftSlotSet
     exact (((Finset.univ : Finset (Fin (m + n))) \ s.1).orderIsoOfFin
       (card_leftSlotSet_complement s)).strictMono hij
 
-private theorem SlotShuffle.ofLeftSlotSet_leftSlots {m n : ℕ} (s : LeftSlotSet m n) :
+private theorem SlotShuffle.ofLeftSlotSet_leftSlots {m n : ℕ} (s : Set.powersetCard (Fin (m + n)) m) :
     (SlotShuffle.ofLeftSlotSet s).leftSlots = s.1 := by
   ext x
   rw [(SlotShuffle.ofLeftSlotSet s).mem_leftSlots_iff]
@@ -270,7 +255,7 @@ private theorem SlotShuffle.ofLeftSlotSet_leftSlots {m n : ℕ} (s : LeftSlotSet
 
 /-- Ambient slot shuffles are equivalent to their ambient left-slot sets. -/
 noncomputable def slotShuffleLeftSlotSetEquiv (m n : ℕ) :
-    SlotShuffle m n ≃ LeftSlotSet m n where
+    SlotShuffle m n ≃ Set.powersetCard (Fin (m + n)) m where
   toFun := SlotShuffle.toLeftSlotSet
   invFun := SlotShuffle.ofLeftSlotSet
   left_inv σ := SlotShuffle.eq_of_leftSlots_eq (SlotShuffle.ofLeftSlotSet_leftSlots σ.toLeftSlotSet)
@@ -283,11 +268,13 @@ theorem slotShuffleLeftSlotSetEquiv_apply {m n : ℕ} (σ : SlotShuffle m n) :
 /-- Ambient slot shuffles have the binomial cardinality of their left-slot sets. -/
 theorem SlotShuffle.card_eq_choose (m n : ℕ) :
     Fintype.card (SlotShuffle m n) = Nat.choose (m + n) m := by
-  rw [Fintype.card_congr (slotShuffleLeftSlotSetEquiv m n), card_leftSlotSet]
+  rw [Fintype.card_congr (slotShuffleLeftSlotSetEquiv m n)]
+  simpa only [Nat.card_eq_fintype_card, Fintype.card_fin] using
+    (Set.powersetCard.card (α := Fin (m + n)) (n := m))
 
 /-- Reindex a finite sum over left-slot sets by ambient slot shuffles. -/
-theorem sum_leftSlotSet [AddCommMonoid M] (m n : ℕ) (F : LeftSlotSet m n → M) :
-    ∑ s : LeftSlotSet m n, F s =
+theorem sum_leftSlotSet [AddCommMonoid M] (m n : ℕ) (F : Set.powersetCard (Fin (m + n)) m → M) :
+    ∑ s : Set.powersetCard (Fin (m + n)) m, F s =
       ∑ σ : SlotShuffle m n, F σ.toLeftSlotSet := by
   simpa using (Equiv.sum_comp (slotShuffleLeftSlotSetEquiv m n) F).symm
 
