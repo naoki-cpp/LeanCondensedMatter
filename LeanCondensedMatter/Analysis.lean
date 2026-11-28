@@ -5,7 +5,7 @@ import LeanCondensedMatter.Analysis.Fourier
 import LeanCondensedMatter.Analysis.Geometry.SphericalMoments
 import LeanCondensedMatter.Analysis.Matrix
 import LeanCondensedMatter.Analysis.PowerSeries
-import LeanCondensedMatter.Analysis.ODE.RadialEnergyDecay
+import LeanCondensedMatter.Analysis.ODE
 import LeanCondensedMatter.Analysis.SpecialFunctions.Bessel
 import LeanCondensedMatter.Analysis.Dyson
 import LeanCondensedMatter.Analysis.OrderedSimplex
