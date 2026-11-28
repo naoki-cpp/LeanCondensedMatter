@@ -1,4 +1,5 @@
 import { buildGraphScene } from "./graph-layout.js";
+import { catalogData } from "./catalog-data.js";
 import { createGraphPresentation } from "./graph-presentation.js";
 import { readExplorerLocation, writeExplorerLocation } from "./explorer-location.js";
 import { createExplorerComposition } from "./explorer-composition.js";
@@ -17,7 +18,6 @@ import {
 
 const SVG_NS = "http://www.w3.org/2000/svg";
 const SEARCH_LIMIT = 10;
-const CATALOG_URL = "https://raw.githubusercontent.com/naoki-cpp/LeanCondensedMatter/graph-data/declarations.json";
 const MODULES_URL = "https://raw.githubusercontent.com/naoki-cpp/LeanCondensedMatter/graph-data/module-imports.json";
 const graphCamera = createCameraFrames();
 
@@ -1002,9 +1002,7 @@ function bindEvents() {
 }
 
 async function main() {
-  const response = await fetch(CATALOG_URL, { cache: "no-store" });
-  if (!response.ok) throw new Error(`failed to load declaration catalog: ${response.status}`);
-  state.theoremCatalog = (await response.json()).map(normalizeEntry).sort((a, b) => a.name.localeCompare(b.name));
+  state.theoremCatalog = (await catalogData.load()).map(normalizeEntry).sort((a, b) => a.name.localeCompare(b.name));
   state.theoremByName = new Map(state.theoremCatalog.map((entry) => [entry.name, entry]));
   state.catalog = state.theoremCatalog;
   state.byName = state.theoremByName;

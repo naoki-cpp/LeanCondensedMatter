@@ -1,4 +1,5 @@
 import { renderLeanMath, renderLeanSourceFallback } from "./lean-math.js";
+import { catalogData } from "./catalog-data.js";
 import { renderStatement, renderStructuredDefinition } from "./statement-view.js";
 
 const SOURCE_BASE_URL = "https://raw.githubusercontent.com/naoki-cpp/LeanCondensedMatter/main/";
@@ -153,10 +154,29 @@ export function declarationSourceLink(entry) {
 }
 
 export function declarationStatement(entry) {
-  const statement = element("div", "math-presentation");
-  renderStatement(statement, entry);
-  const body = definitionBody(entry);
-  return body ? [statement, body] : [statement];
+  function render(resolved) {
+    const statement = element("div", "math-presentation");
+    renderStatement(statement, resolved);
+    const body = definitionBody(resolved);
+    return body ? [statement, body] : [statement];
+  }
+  if (!catalogData.hasDeferredStatement(entry)) return render(entry);
+
+  // Both maps use this isolated container. A late response can update only its
+  // original selection, never the details of a subsequently selected declaration.
+  const container = element("div", "declaration-statement");
+  container.setAttribute("aria-busy", "true");
+  container.append(element("p", "muted", "Loading structured statement…"));
+  catalogData.statement(entry).then((structuredStatement) => {
+    container.replaceChildren(...render({ ...entry, structuredStatement }));
+  }).catch((error) => {
+    console.error(error);
+    container.replaceChildren(
+      element("p", "math-fallback-note",
+        "Structured statement unavailable. Showing the original statement; reload the page to refresh catalog data."),
+      ...render(entry));
+  }).finally(() => container.removeAttribute("aria-busy"));
+  return [container];
 }
 
 export function declarationRelations(names, isAvailable) {
