@@ -1,5 +1,6 @@
 import LeanCondensedMatter.Models.RashbaExchange.FiniteMomentumSpinResponse
 import LeanCondensedMatter.Models.RashbaExchange.RealSpaceHopping
+import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.OneParticleResponse
 import LeanCondensedMatter.QuantumTheory.ConservationLaw
 import LeanCondensedMatter.QuantumTheory.LinearResponse.Frequency.InfiniteTime
 import LeanCondensedMatter.Transport.Core.ConductivityNormalization
@@ -504,6 +505,125 @@ theorem realSpaceRashbaSpinDisplacement_conductivity_eq_finiteLehmannTable
       system data D channel.source ω η hη
       (QuantumTheory.LinearResponse.eigenbasisTimeDomainSummable_of_finite
         system data D channel.source)]
+
+
+/-! ## Single-electron spectral reduction in real space -/
+
+open QuantumTheory.LinearResponse
+open SecondQuantization.Fermionic.Transport
+
+/-- The actual finite real-space hopping Hamiltonian in the one-particle
+Hilbert space. Self-adjointness follows by restricting the already proved
+self-adjoint Fock Hamiltonian to its invariant degree-one subspace. -/
+noncomputable def realSpaceRashbaOneParticleFreeSystem
+    {Site : Type*} [LinearOrder Site] [Fintype Site]
+    (geometry : LatticeGeometry Site (ℝ × ℝ))
+    (bond : Site → Site → Option (ℝ × ℝ))
+    (onsite exchange : Site → ℝ) (hbar : ℝ) (hhbar : 0 < hbar) :
+    BoundedFreeSystem (EuclideanSpace ℂ (SpinfulSite Site)) where
+  hamiltonian := ⟨SecondQuantization.Common.finiteHilbertOperatorAlgEquiv
+    (realSpaceRashbaHopping geometry bond onsite exchange).operator, by
+    let K := realSpaceRashbaHopping geometry bond onsite exchange
+    let A := SecondQuantization.Common.finiteHilbertOperatorAlgEquiv K.operator
+    change IsSelfAdjoint A
+    have hA : IsSelfAdjoint (finiteSecondQuantization A) := by
+      rw [show finiteSecondQuantization A = boundedHoppingHamiltonian K from
+        finiteSecondQuantization_ofAlgebraic K.operator]
+      exact realSpaceRashbaHamiltonian_isSelfAdjoint geometry bond onsite exchange
+    apply ContinuousLinearMap.isSelfAdjoint_iff_isSymmetric.mpr
+    intro x y
+    let j := SecondQuantization.Fermionic.AlgebraicFock.finiteHilbertOneParticleEmbedding
+      (SecondQuantization.Common.finiteHilbertOrthonormalBasis (Config := SpinfulSite Site))
+    have h := (ContinuousLinearMap.isSelfAdjoint_iff_isSymmetric.mp hA) (j x) (j y)
+    change inner ℂ (finiteSecondQuantization A (j x)) (j y) =
+      inner ℂ (j x) (finiteSecondQuantization A (j y)) at h
+    change inner ℂ (A x) y = inner ℂ x (A y)
+    simpa only [finiteSecondQuantization_apply_oneParticle, LinearIsometry.inner_map_map] using h⟩
+  hbar := hbar
+  hbar_pos := hhbar
+
+/-- The proper spin conductivity of a selected one-electron energy
+eigenstate of the real-space Rashba lattice is evaluated by the existing
+finite Lehmann table on the one-particle Hilbert space. Both vertices are
+the actual displacement and geometric Peierls source; the Fock state,
+stationarity, and energy eigenbasis are constructed, not supplied as
+hypotheses. No nondegeneracy, ground-state choice, or nonvanishing is assumed. -/
+theorem realSpaceRashbaSpinDisplacement_oneElectron_conductivity_eq_finiteLehmannTable
+    {Site : Type*} [LinearOrder Site] [Fintype Site]
+    (volume : QuantumTheory.Transport.PositiveVolume)
+    (geometry : LatticeGeometry Site (ℝ × ℝ))
+    (bond : Site → Site → Option (ℝ × ℝ))
+    (onsite exchange : Site → ℝ)
+    (measured source : (ℝ × ℝ) →ₗ[ℝ] ℝ)
+    (hbar q spinScale : ℝ) (hhbar : 0 < hbar)
+    (component : QuantumTheory.SpinHalf.SpinSpace)
+    (occupied : Fin (Module.finrank ℂ (EuclideanSpace ℂ (SpinfulSite Site))))
+    (ω η : ℝ) (hη : 0 < η) :
+    let one := realSpaceRashbaOneParticleFreeSystem geometry bond onsite exchange hbar hhbar
+    let many := realSpaceRashbaFreeSystem geometry bond onsite exchange hbar hhbar
+    let data := EnergyEigenbasisLehmannData.ofSingleOccupied one occupied
+    let ψ : StateVector (EuclideanSpace ℂ (SpinfulSite Site)) :=
+      ⟨data.basis occupied, data.basis.orthonormal.1 occupied⟩
+    let channel := realSpaceRashbaSpinDisplacementResponseChannel
+      geometry bond onsite exchange measured source hbar q spinScale component 1
+    let K := realSpaceRashbaHopping geometry bond onsite exchange
+    let D := SecondQuantization.Common.finiteHilbertOperatorAlgEquiv
+      (LinearMap.symmetrizedProduct (K := ℂ)
+        ((spinfulGeometry geometry).directionalPosition measured)
+        (spinOneBodyLinear (Site := Site) spinScale component))
+    let B := SecondQuantization.Common.finiteHilbertOperatorAlgEquiv
+      (QuantumTheory.PeierlsPhase.peierlsCoupling (hbar : ℂ) (q : ℂ) •
+        ⁅K.operator, (spinfulGeometry geometry).directionalPosition source⁆)
+    QuantumTheory.Transport.finiteVolumeConductivityFromVectorPotential volume ω η
+      (channel.infiniteTimeAdiabaticResponse (freePropagatorGroup many) hbar
+        (QuantumTheory.pure (oneParticleFockState ψ)).toNormalizedExpectation ω η) =
+      -finiteLehmannTableResponse hbar ω η (finiteLehmannTableOfEigenbasis one data D B) /
+        (volume.volume : ℂ) := by
+  let one := realSpaceRashbaOneParticleFreeSystem geometry bond onsite exchange hbar hhbar
+  let many := realSpaceRashbaFreeSystem geometry bond onsite exchange hbar hhbar
+  let data := EnergyEigenbasisLehmannData.ofSingleOccupied one occupied
+  let ψ : StateVector (EuclideanSpace ℂ (SpinfulSite Site)) :=
+    ⟨data.basis occupied, data.basis.orthonormal.1 occupied⟩
+  let channel := realSpaceRashbaSpinDisplacementResponseChannel
+    geometry bond onsite exchange measured source hbar q spinScale component 1
+  let K := realSpaceRashbaHopping geometry bond onsite exchange
+  let D₀ := LinearMap.symmetrizedProduct (K := ℂ)
+    ((spinfulGeometry geometry).directionalPosition measured)
+    (spinOneBodyLinear (Site := Site) spinScale component)
+  let B₀ := QuantumTheory.PeierlsPhase.peierlsCoupling (hbar : ℂ) (q : ℂ) •
+    ⁅K.operator, (spinfulGeometry geometry).directionalPosition source⁆
+  let D := SecondQuantization.Common.finiteHilbertOperatorAlgEquiv D₀
+  let B := SecondQuantization.Common.finiteHilbertOperatorAlgEquiv B₀
+  let ρ := (QuantumTheory.pure (oneParticleFockState ψ)).toNormalizedExpectation
+  have hH : many.hamiltonian.1 = finiteSecondQuantization one.hamiltonian.1 :=
+    (finiteSecondQuantization_ofAlgebraic K.operator).symm
+  have hbarEq : many.hbar = one.hbar := rfl
+  have hstationary : IsStationary (freePropagatorGroup many) ρ :=
+    isStationary_oneParticleFockState one many hH ψ (data.energy occupied)
+      (data.hamiltonian_apply_basis occupied)
+  have hD : boundedOneBodyOperator D₀ = finiteSecondQuantization D :=
+    (finiteSecondQuantization_ofAlgebraic D₀).symm
+  have hB : channel.source = finiteSecondQuantization B := by
+    change boundedDirectionalCurrent (spinfulGeometry geometry) source
+      (hbar : ℂ) (q : ℂ) K = finiteSecondQuantization B
+    rw [boundedDirectionalCurrent_eq_positionCommutator]
+    exact ((finiteSecondQuantization_ofAlgebraic B₀).trans
+      (map_smul (boundedOneBodyOperator (Site := SpinfulSite Site)) _ _)).symm
+  have hoccupied : data.probability occupied = 1 := by
+    simp [data, EnergyEigenbasisLehmannData.ofSingleOccupied]
+  change QuantumTheory.Transport.finiteVolumeConductivityFromVectorPotential volume ω η
+      (channel.infiniteTimeAdiabaticResponse (freePropagatorGroup many) hbar ρ ω η) =
+    -finiteLehmannTableResponse hbar ω η (finiteLehmannTableOfEigenbasis one data D B) /
+      (volume.volume : ℂ)
+  rw [realSpaceRashbaSpinDisplacement_conductivity_eq volume geometry bond onsite exchange
+    measured source hbar q spinScale hhbar component ρ hstationary ω η hη]
+  change -adiabaticFrequencyDomainSusceptibility (freePropagatorGroup many) many.hbar
+      ρ (boundedOneBodyOperator D₀) channel.source ω η / (volume.volume : ℂ) = _
+  rw [hD, hB]
+  have hresponse :=
+    adiabaticFrequencyDomainSusceptibility_oneParticleFock_eq_finiteLehmannTable
+      one many hH hbarEq data occupied hoccupied D B ω η hη
+  exact congrArg (fun z : ℂ => -z / (volume.volume : ℂ)) hresponse
 
 end
 end QuantumTheory.Models.RashbaExchange
