@@ -152,7 +152,7 @@ theorem imaginaryTimeEvolve_create (ε : Mode → ℝ) (τ : ℝ) (i : Mode) :
 This is an algebraic coordinate evaluation, not a thermal expectation or operator trace. -/
 theorem diagonalCoeff_evolve_annihilate_comp_create
     (ε : Mode → ℝ) (τ : ℝ) (i j : Mode) (n : Occupation Mode) :
-    Common.diagonalCoeff ((imaginaryTimeEvolve ε τ (annihilate i)).comp (create j)) n =
+    Common.matrixCoeff ((imaginaryTimeEvolve ε τ (annihilate i)).comp (create j)) n n =
       if i = j then Complex.exp (-(τ : ℂ) * (ε i : ℂ)) * ((n i : ℂ) + 1) else 0 := by
   by_cases hij : i = j
   · subst j
