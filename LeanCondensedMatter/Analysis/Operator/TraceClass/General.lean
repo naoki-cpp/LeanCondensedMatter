@@ -51,20 +51,15 @@ theorem diagonalExpectationValue_abs_eq_norm_sq_sqrt_abs
     (T : H →L[ℂ] H) (x : H) :
     diagonalExpectationValue (CFC.abs T) (CFC.abs_nonneg T).isSelfAdjoint x =
       ‖CFC.sqrt (CFC.abs T) x‖ ^ 2 := by
-  apply Complex.ofReal_injective
-  rw [coe_diagonalExpectationValue_right]
   let S : H →L[ℂ] H := CFC.sqrt (CFC.abs T)
-  have hS : IsSelfAdjoint S := (CFC.sqrt_nonneg (CFC.abs T)).isSelfAdjoint
-  have hsq : S * S = CFC.abs T := by
+  have hsq : (ContinuousLinearMap.adjoint S).comp S = CFC.abs T := by
+    change ContinuousLinearMap.adjoint S * S = CFC.abs T
+    rw [(CFC.sqrt_nonneg (CFC.abs T)).isSelfAdjoint.adjoint_eq]
     exact CFC.sqrt_mul_sqrt_self (CFC.abs T) (CFC.abs_nonneg T)
-  have hinner : inner ℂ x ((CFC.abs T) x) = inner ℂ (S x) (S x) := by
-    rw [← hsq, mul_apply_eq_comp]
-    calc
-      inner ℂ x (S (S x)) =
-          inner ℂ x ((ContinuousLinearMap.adjoint S) (S x)) := by rw [hS.adjoint_eq]
-      _ = inner ℂ (S x) (S x) := ContinuousLinearMap.adjoint_inner_right S x (S x)
-  rw [hinner, inner_self_eq_norm_sq_to_K]
-  norm_cast
+  have h := apply_norm_sq_eq_inner_adjoint_right S x
+  rw [hsq, ← coe_diagonalExpectationValue_right (CFC.abs T)
+    (CFC.abs_nonneg T).isSelfAdjoint x] at h
+  exact h.symm
 
 /-- A bounded operator is trace class when `sqrt(|T|)` is Hilbert--Schmidt. The equivalent
 Hilbert-basis diagonal criterion is `isTraceClass_iff_isTraceClassWrt`. -/
