@@ -38,12 +38,8 @@ theorem ExternalInsertionDiagram.supportSlotCongr_pairingInMixedOrder
       d.pairing.transport
         (externalInsertionStandardToMixedAtomicPositionEquiv externalTime σT).symm
   rw [PairingOn.transport_trans]
-  have hleg := externalInsertionLegCongr_standardize (E := E) T
-  change externalInsertionLegCongr (E := E) e =
-    (finCongr (by simp) :
-      Fin (2 * (2 * T.card + E)) ≃
-        Fin (2 * (2 * (Finset.univ : Finset (Fin T.card)).card + E))) at hleg
-  rw [hleg]
+  rw [show e = standardSlotEquiv T from rfl,
+    externalInsertionLegCongr_standardize (E := E) T]
   congr 1
 
 end Common
