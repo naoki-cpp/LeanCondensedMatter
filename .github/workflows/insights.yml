@@ -18,8 +18,8 @@ permissions:
   contents: read
   actions: read
 
-# Only the newest automatic main advisory run can publish useful graph data. Manual branch
-# validation uses a separate cancellation group.
+# Only the newest automatic main run can publish useful graph data. Scheduled audits
+# and manual validation use separate cancellation groups.
 concurrency:
   group: lean-insights-${{ github.event_name == 'workflow_run' && 'main' || github.event_name == 'schedule' && 'scheduled-audit' || github.ref }}
   cancel-in-progress: true
@@ -95,6 +95,7 @@ jobs:
           key: project-build-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('lean-toolchain', 'lake-manifest.json', 'lakefile.toml') }}-${{ needs.detect.outputs.sha }}
 
       - name: Set up Lean and dependency cache
+        id: setup-lean
         uses: leanprover/lean-action@50fcf42d2e460296f1a34b402e990d1b24f8b596 # v1
         with:
           build: ${{ steps.project-cache.outputs.cache-hit != 'true' }}
@@ -214,7 +215,7 @@ jobs:
           retention-days: 30
 
       - name: Audit potentially unused theorem hypotheses
-        if: '!cancelled() && (github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.deep_audit))'
+        if: ${{ !cancelled() && steps.setup-lean.outcome == 'success' && (github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.deep_audit)) }}
         run: |
           /usr/bin/time -f 'unused hypotheses: %e s, peak RSS %M KiB' lake env lean scripts/CheckUnusedHypotheses.lean
 
