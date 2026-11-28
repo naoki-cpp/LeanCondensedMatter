@@ -2,6 +2,7 @@ import { buildGraphScene } from "./graph-layout.js";
 import { createGraphPresentation } from "./graph-presentation.js";
 import { createExplorerComposition } from "./explorer-composition.js";
 import { createMapHeader } from "./map-header.js";
+import { ZOOM_STEP, zoomFactorForKey, zoomFactorForWheel } from "./map-zoom.js";
 import { createModuleOverview } from "./module-overview.js";
 import { declarationAllowed } from "./declaration-model.js";
 import { curvedEdgePath } from "./graph-edge.js";
@@ -233,14 +234,16 @@ function fitGraph() {
 
 function zoomGraph(factor, clientX = null, clientY = null) {
   if (!state.viewBox || !state.graphBounds) return;
-  const rect = ui.viewport.getBoundingClientRect();
-  const px = clientX === null ? 0.5 : Math.min(1, Math.max(0, (clientX - rect.left) / rect.width));
-  const py = clientY === null ? 0.5 : Math.min(1, Math.max(0, (clientY - rect.top) / rect.height));
+  const transform = clientX === null ? null : ui.graph.getScreenCTM();
+  const point = transform ? new DOMPoint(clientX, clientY).matrixTransform(transform.inverse()) : null;
+  const px = point ? (point.x - state.viewBox.x) / state.viewBox.width : 0.5;
+  const py = point ? (point.y - state.viewBox.y) / state.viewBox.height : 0.5;
   const anchorX = state.viewBox.x + state.viewBox.width * px;
   const anchorY = state.viewBox.y + state.viewBox.height * py;
   const minWidth = Math.min(220, state.graphBounds.width);
   const maxWidth = state.graphBounds.width * 3;
-  const width = Math.min(maxWidth, Math.max(minWidth, state.viewBox.width * factor));
+  const width = Math.min(maxWidth, Math.max(minWidth, state.viewBox.width / factor));
+  if (width === state.viewBox.width) return;
   const aspect = state.viewBox.height / state.viewBox.width;
   const height = width * aspect;
   setGraphViewBox({
@@ -1009,8 +1012,8 @@ function bindGraphNavigation() {
   new ResizeObserver(() => {
     if (state.viewBox && !ui.viewport.hidden) setGraphViewBox({ ...state.viewBox });
   }).observe(ui.viewport);
-  document.getElementById("graph-zoom-in").addEventListener("click", () => zoomGraph(0.8));
-  document.getElementById("graph-zoom-out").addEventListener("click", () => zoomGraph(1.25));
+  document.getElementById("graph-zoom-in").addEventListener("click", () => zoomGraph(ZOOM_STEP));
+  document.getElementById("graph-zoom-out").addEventListener("click", () => zoomGraph(1 / ZOOM_STEP));
   document.getElementById("graph-fit").addEventListener("click", fitGraph);
   ui.viewport.addEventListener("keydown", (event) => {
     if (event.target !== ui.viewport || !state.viewBox) return;
@@ -1019,16 +1022,21 @@ function bindGraphNavigation() {
       event.preventDefault();
       const [dx, dy] = shifts[event.key];
       setGraphViewBox({ ...state.viewBox, x: state.viewBox.x + dx * state.viewBox.width, y: state.viewBox.y + dy * state.viewBox.height });
-    } else if (["+", "=", "-", "0"].includes(event.key)) {
+    } else if (event.key === "0" || event.key === "Escape") {
       event.preventDefault();
-      if (event.key === "0") fitGraph();
-      else zoomGraph(event.key === "-" ? 1.25 : 0.8);
+      fitGraph();
+    } else {
+      const factor = zoomFactorForKey(event.key);
+      if (!factor) return;
+      event.preventDefault();
+      zoomGraph(factor);
     }
   });
   ui.viewport.addEventListener("wheel", (event) => {
-    if (!state.root) return;
+    const factor = zoomFactorForWheel(event);
+    if (!state.root || !factor) return;
     event.preventDefault();
-    zoomGraph(event.deltaY < 0 ? 0.88 : 1.14, event.clientX, event.clientY);
+    zoomGraph(factor, event.clientX, event.clientY);
   }, { passive: false });
 
   ui.viewport.addEventListener("pointerdown", (event) => {

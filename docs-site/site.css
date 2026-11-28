@@ -315,6 +315,7 @@ select:disabled {
   border-radius: 5px;
 }
 .graph-view-controls button:hover { background: var(--hover); border-color: var(--cyan); }
+.graph-view-controls .map-zoom-button { min-width: 44px; min-height: 44px; font: 500 1.25rem/1 var(--ui-font); }
 
 .explorer-map-theme {
   --map-surface: #142421;

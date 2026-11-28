@@ -2,6 +2,7 @@ import { DEFINITION_KINDS } from "./declaration-model.js";
 import { MAP_NODE_COLORS } from "./graph-style.js";
 import { createMapNavigation } from "./map-navigation.js";
 import { createMapHeader } from "./map-header.js";
+import { ZOOM_STEP, zoomFactorForKey, zoomFactorForWheel } from "./map-zoom.js";
 import { renderStatement } from "./statement-view.js";
 
 const width = 960;
@@ -528,9 +529,10 @@ export function renderResearchMap(children, onOpenDeclaration, onRegionChange, o
     if (region) openRegion(region);
   });
   canvas.addEventListener("wheel", (event) => {
-    if (!event.ctrlKey && !event.metaKey) return;
+    const factor = zoomFactorForWheel(event);
+    if (!factor) return;
     event.preventDefault();
-    zoomBy(Math.exp(-Math.max(-80, Math.min(80, event.deltaY)) * .008), ...coords(event));
+    zoomBy(factor, ...coords(event));
   }, { passive: false });
   canvas.addEventListener("keydown", (event) => {
     const shift = { ArrowLeft: [-1, 0], ArrowRight: [1, 0], ArrowUp: [0, -1], ArrowDown: [0, 1] }[event.key];
@@ -539,14 +541,20 @@ export function renderResearchMap(children, onOpenDeclaration, onRegionChange, o
       hovered = null;
       navigation.pan(shift[0] * 70, shift[1] * 70);
       draw();
-    } else if (event.key === "+" || event.key === "=") zoomBy(1.5);
-    else if (event.key === "-") zoomBy(1 / 1.5);
-    else if (event.key === "0" || event.key === "Escape") reset();
-    else return;
+    } else if (event.key === "0" || event.key === "Escape") reset();
+    else {
+      const factor = zoomFactorForKey(event.key);
+      if (!factor) return;
+      zoomBy(factor);
+    }
     event.preventDefault();
   });
   select.addEventListener("change", () => openPoint(byName.get(select.value), true));
-  controls.append(parentControl, button("Zoom out", () => zoomBy(1 / 1.5)), button("Zoom in", () => zoomBy(1.5)), button("Whole map", reset));
+  const zoomOut = button("−", () => zoomBy(1 / ZOOM_STEP), "map-zoom-button");
+  zoomOut.setAttribute("aria-label", "Zoom out");
+  const zoomIn = button("+", () => zoomBy(ZOOM_STEP), "map-zoom-button");
+  zoomIn.setAttribute("aria-label", "Zoom in");
+  controls.append(parentControl, zoomOut, zoomIn, button("Whole map", reset));
   stage.append(canvas, ...allRegions.map((region) => region.label), hoverLabel);
   const emptyBundles = [];
   const overviewFooter = element("div", "research-map-overview");

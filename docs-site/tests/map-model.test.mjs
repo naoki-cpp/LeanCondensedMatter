@@ -3,6 +3,18 @@ import assert from "node:assert/strict";
 import { buildDeclarationHierarchy } from "../declaration-hierarchy.js";
 import { declarationAllowed } from "../declaration-model.js";
 import { createMapNavigation } from "../map-navigation.js";
+import { ZOOM_STEP, zoomFactorForKey, zoomFactorForWheel } from "../map-zoom.js";
+
+test("shared zoom input matches reciprocal steps and leaves ordinary scrolling alone", () => {
+  assert.equal(zoomFactorForKey("+"), ZOOM_STEP);
+  assert.equal(zoomFactorForKey("-"), 1 / ZOOM_STEP);
+  assert.equal(zoomFactorForWheel({ deltaY: -40 }), null);
+  assert.equal(zoomFactorForWheel({ ctrlKey: true, deltaY: 0 }), null);
+  const wheelIn = zoomFactorForWheel({ ctrlKey: true, deltaY: -2, deltaMode: 1 });
+  const wheelOut = zoomFactorForWheel({ metaKey: true, deltaY: 32, deltaMode: 0 });
+  assert.ok(wheelIn > 1 && wheelOut < 1);
+  assert.ok(Math.abs(wheelIn * wheelOut - 1) < Number.EPSILON);
+});
 
 test("module paths, subtree counts, and directional sibling dependencies share one hierarchy", () => {
   const entries = [
