@@ -1,5 +1,5 @@
 import LeanCondensedMatter.QuantumTheory.DensityOperator.Normalize
-import LeanCondensedMatter.Analysis.FunctionalCalculus.CFC
+import LeanCondensedMatter.Analysis.Operator.Spectral.FunctionalCalculus
 import Mathlib.Analysis.CStarAlgebra.ContinuousLinearMap
 import Mathlib.Analysis.CStarAlgebra.Hom
 import Mathlib.Analysis.CStarAlgebra.ContinuousFunctionalCalculus.Basic

@@ -5,7 +5,7 @@ import Mathlib.Analysis.CStarAlgebra.ContinuousFunctionalCalculus.Instances
 import Mathlib.Analysis.CStarAlgebra.ContinuousFunctionalCalculus.Order
 import Mathlib.Analysis.InnerProductSpace.StarOrder
 import Mathlib.Analysis.InnerProductSpace.Positive
-import LeanCondensedMatter.Analysis.FunctionalCalculus.CFC
+import LeanCondensedMatter.Analysis.Operator.Spectral.FunctionalCalculus
 import Mathlib.Analysis.InnerProductSpace.Spectrum
 
 set_option linter.style.header false
