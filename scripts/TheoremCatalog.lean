@@ -637,17 +637,28 @@ private def presentationText (value : Expr) : MetaM String := do
 private def presentationTypeName (value : Expr) : MetaM String := do
   return ((← inferType value).getAppFn.constName?).map Name.toString |>.getD ""
 
-/-- Serialize only type expressions, never declaration values or proof bodies. Implicit
-application arguments are omitted from the display tree; their projection roots are recorded
-separately for checking setting summaries. Each tree has a fixed node budget. -/
-private partial def presentationExpression (value : Expr) : StateT Nat MetaM Json := do
+/-- Serialize presentation expressions, including reviewed definition bodies but never theorem
+proofs or opaque values. Implicit application arguments are omitted; each tree has a fixed node
+budget. Scoped lambda export is opt-in for the reviewed bodies. -/
+private partial def presentationExpression (value : Expr) (scoped : Bool := false) : StateT Nat MetaM Json := do
   let fallback : MetaM Json := do
     return Json.mkObj [("kind", .str "text"), ("text", .str (← presentationText value))]
   let remaining ← get
   if remaining == 0 then return ← liftM fallback
   set (remaining - 1)
   match value with
-  | .mdata _ body => presentationExpression body
+  | .mdata _ body => presentationExpression body scoped
+  | .lam binderName domain body binderInfo =>
+      if !scoped then return ← liftM fallback
+      let domainTree ← presentationExpression domain scoped
+      let budget ← get
+      let (node, rest) ← liftM <| withLocalDecl binderName binderInfo domain fun parameter => do
+        let (bodyTree, rest) ← (presentationExpression (body.instantiate1 parameter) scoped).run budget
+        let binder := Json.mkObj [("id", .str parameter.fvarId!.name.toString),
+          ("name", .str (← presentationText parameter)), ("type", domainTree)]
+        return (Json.mkObj [("kind", .str "lambda"), ("binder", binder), ("body", bodyTree)], rest)
+      set rest
+      return node
   | .fvar id =>
       return .mkObj [("kind", .str "var"), ("id", .str id.name.toString),
         ("name", .str (← liftM <| presentationText value))]
@@ -663,9 +674,9 @@ private partial def presentationExpression (value : Expr) : StateT Nat MetaM Jso
         let .forallE _ _ body binderInfo ← liftM <| whnf fnType
           | return ← liftM fallback
         if binderInfo == .default then
-          arguments := arguments.push (← presentationExpression argument)
+          arguments := arguments.push (← presentationExpression argument scoped)
         fnType := body.instantiate1 argument
-      return .mkObj [("kind", .str "app"), ("fn", ← presentationExpression fn),
+      return .mkObj [("kind", .str "app"), ("fn", ← presentationExpression fn scoped),
         ("args", .arr arguments),
         ("argumentType", .str (← liftM <| presentationTypeName (value.getAppArgs.back!))),
         ("resultType", .str (← liftM <| presentationTypeName value))]
@@ -673,6 +684,29 @@ private partial def presentationExpression (value : Expr) : StateT Nat MetaM Jso
 
 private def presentationTree (value : Expr) : MetaM Json :=
   (presentationExpression value).run' 128
+
+/-- A small reviewed presentation selection, independent of theorem retention and audit policy.
+Use exact names; a new body needs semantic review before joining this list. -/
+private def reviewedDefinitionBody (name : Name) : Bool :=
+  name == `QuantumTheory.Transport.IsSelfEnergy ||
+  name == `QuantumTheory.Transport.spectralParameterOfRegulator ||
+  name == `QuantumTheory.ConservationLaw.heisenbergScale ||
+  name == `Finpartition.partitionProduct ||
+  name == `Finpartition.weightedMomentFromCumulant
+
+/-- Open the definition's leading lambdas using the very same local variables as its type.
+Do not unfold called definitions or expose theorem/opaque values. A nonmatching telescope
+falls back to the existing source-backed presentation. -/
+private def definitionBodyPresentation (name : Name) (info : ConstantInfo)
+    (parameters : Array Expr) : MetaM Json := do
+  if !reviewedDefinitionBody name then return Json.null
+  let .defnInfo definition := info | return Json.null
+  let mut body := definition.value
+  for parameter in parameters do
+    let .lam _ _ rest _ := body | return Json.null
+    body := rest.instantiate1 parameter
+  let tree ← (presentationExpression body true).run' 128
+  return tree.setObjVal! "text" (.str (← presentationText body))
 
 private def structuredStatement (name : Name) (info : ConstantInfo) : MetaM Json := do
   forallTelescope info.type fun parameters conclusion => do
@@ -707,9 +741,11 @@ private def structuredStatement (name : Name) (info : ConstantInfo) : MetaM Json
             ("type", ← presentationTree fieldType),
             ("typeText", .str (← presentationText fieldType))]
         return result
-    return .mkObj [("version", .num 1), ("binders", .arr binders),
+    let result := Json.mkObj [("version", .num 1), ("binders", .arr binders),
       ("conclusion", (← presentationTree conclusion).setObjVal! "text" (.str (← presentationText conclusion))),
       ("fields", .arr fields)]
+    let body ← try definitionBodyPresentation name info parameters catch _ => pure Json.null
+    return if body == Json.null then result else result.setObjVal! "definitionBody" body
 
 /-- The declaration graph includes every compiled project constant. Source ranges are queried
 directly: Lean's convenience range lookup inherits ranges for generated recursors. -/
