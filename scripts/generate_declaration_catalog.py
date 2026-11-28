@@ -4,6 +4,9 @@ Run in CI with Lean/Lake installed. The public umbrella remains the audit bounda
 the Explorer imports all source modules in a temporary copy of the collector.
 """
 
+import argparse
+from hashlib import sha256
+import json
 import os
 from pathlib import Path
 import subprocess
@@ -39,9 +42,48 @@ def generate():
                        cwd=ROOT, env=environment, check=True)
 
 
+def compact_json(value):
+    return json.dumps(value, ensure_ascii=False, separators=(",", ":")).encode("utf-8")
+
+
+def export_explorer_data(declarations, destination):
+    """Keep searchable metadata in the index and structured statements in module shards."""
+    details = {}
+    index = []
+    for declaration in declarations:
+        row = dict(declaration)
+        statement = row.pop("structuredStatement", None)
+        if statement is not None:
+            details.setdefault(row["module"], {})[row["name"]] = statement
+        index.append(row)
+
+    directory = destination / "declaration-details"
+    directory.mkdir(parents=True, exist_ok=True)
+    modules = {}
+    for module, statements in sorted(details.items()):
+        payload = compact_json(statements)
+        filename = sha256(payload).hexdigest() + ".json"
+        (directory / filename).write_bytes(payload)
+        modules[module] = "declaration-details/" + filename
+
+    # Content-addressed shard names let clients detect a publication change
+    # instead of accidentally combining incompatible declaration snapshots.
+    (destination / "declaration-index.json").write_bytes(compact_json({
+        "version": 1, "modules": modules, "declarations": index,
+    }))
+
+
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--export-explorer", type=Path, metavar="DESTINATION")
+    args = parser.parse_args()
     try:
-        generate()
+        if args.export_explorer is None:
+            generate()
+        else:
+            declarations = json.loads((ROOT / "docs/generated/declarations.json").read_text(
+                encoding="utf-8"))
+            export_explorer_data(declarations, args.export_explorer)
     except subprocess.CalledProcessError as error:
         # The child already prints its diagnostics; avoid repeating every module argument.
         raise SystemExit(error.returncode) from None
