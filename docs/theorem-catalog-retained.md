@@ -416,15 +416,15 @@ using a zero-consumer signal as grounds for changing its retention.
   every matrix coefficient `F` contributes.
 - `SecondQuantization.Common.finiteGibbsExpectation_operatorIntervalIntegral` — The canonical finite
   Gibbs expectation commutes with coefficientwise finite operator integration.
-- `SecondQuantization.Common.finiteSupportIntervalIntegral_apply` — If every vector in the family is
+- `Finsupp.finiteSupportIntervalIntegral_apply` — If every vector in the family is
   supported in `S`, the finite reconstruction agrees with the coordinatewise interval integral at
-  every configuration.
+  every index.
 - `SecondQuantization.Common.measurableSet_twoPointOrderSignatureFiber` — canonical measurability
   theorem for a mixed two-point order-signature chamber, used as an analytic boundary for
   chamberwise integration.
 - `SecondQuantization.Common.mixedTimeOrderedAtomicLegPosition_lt_uniform` — Legs in one mixed-time
   event block have identical comparison with every leg outside that block.
-- `SecondQuantization.Common.support_finiteSupportIntervalIntegral_subset` — Coordinatewise
+- `Finsupp.support_finiteSupportIntervalIntegral_subset` — Coordinatewise
   reconstruction cannot create support outside the supplied finite set.
 - `SecondQuantization.Common.support_interactionPicture_apply_subset_reachableSupport_succ` —
   Applying an interaction-picture insertion to a vector supported at one reachable order produces

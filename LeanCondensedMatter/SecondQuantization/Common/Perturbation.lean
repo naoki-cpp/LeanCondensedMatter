@@ -1,4 +1,3 @@
-import LeanCondensedMatter.SecondQuantization.Common.Perturbation.FiniteSupportIntegral
 import LeanCondensedMatter.SecondQuantization.Common.Perturbation.ReachableSupport
 import LeanCondensedMatter.SecondQuantization.Common.Perturbation.FiniteOperatorIntegral
 import LeanCondensedMatter.SecondQuantization.Common.Perturbation.FiniteAnalyticBridge
