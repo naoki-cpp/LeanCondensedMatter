@@ -32,25 +32,6 @@ noncomputable def targetCenteredInterbandSpectatorCurrentPoleIntegral
       targetCenteredInterbandSpectatorCurrentFactor
         band e v m px py (offset, broadening)
 
-/-- The model-specific pole integral is the generic isolated-interband regular-factor integral. -/
-private theorem targetCenteredInterbandSpectatorCurrentPoleIntegral_eq_interbandPoleRegularFactorIntegral
-    (band : TwoBand) (e v m px py radius broadening : ℝ) :
-    targetCenteredInterbandSpectatorCurrentPoleIntegral
-        band e v m px py radius broadening =
-      interbandPoleRegularFactorIntegral
-        (interbandEnergyGap band v m px py)
-        (currentBandBlockTrace 0 1 (oppositeBand band) band e v m px py)
-        (currentBandBlockTrace 1 0 (oppositeBand band) band e v m px py)
-        radius broadening := by
-  unfold targetCenteredInterbandSpectatorCurrentPoleIntegral
-    interbandPoleRegularFactorIntegral
-  apply intervalIntegral.integral_congr
-  intro offset _
-  simpa only using congrArg
-    (fun z : ℂ => (Lorentzian.spectralKernel offset broadening : ℂ) * z)
-    (targetCenteredInterbandSpectatorCurrentFactor_eq_interbandPoleRegularFactor
-      band e v m px py (offset, broadening))
-
 /-- Fixed target-centered energy-window integral of the interband Bastin Hall pair whose source is
 the opposite band and whose target is `band`. -/
 noncomputable def targetCenteredInterbandBastinPairIntegral
@@ -95,8 +76,9 @@ theorem targetCenteredInterbandBastinPairIntegral_eq_interbandBastinPoleIntegral
         radius broadening := by
   rw [targetCenteredInterbandBastinPairIntegral_eq_neg_two_i_mul_poleIntegral
     band e v m px py radius broadening hbroadening]
-  unfold interbandBastinPoleIntegral
-  rw [targetCenteredInterbandSpectatorCurrentPoleIntegral_eq_interbandPoleRegularFactorIntegral]
+  simp only [interbandBastinPoleIntegral, targetCenteredInterbandSpectatorCurrentPoleIntegral,
+    interbandPoleRegularFactorIntegral,
+    targetCenteredInterbandSpectatorCurrentFactor_eq_interbandPoleRegularFactor]
 
 end
 
