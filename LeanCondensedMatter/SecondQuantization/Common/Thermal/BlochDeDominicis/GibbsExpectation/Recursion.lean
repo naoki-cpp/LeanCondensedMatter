@@ -1,5 +1,7 @@
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.ExpectationRecursion
-import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.GibbsExpectation.TwoPoint
+import LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsCoordinate
+import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.NormalizedTwoPointTrace
+import LeanCondensedMatter.SecondQuantization.Common.Algebra.ExchangeAlgebra
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.Unnormalized.PeelFirstTrace
 
 set_option linter.style.header false
@@ -7,7 +9,7 @@ set_option linter.style.header false
 /-!
 # Finite Gibbs peeling and expectation pairing recursion
 
-This module records the normalized four-point specialization and discharges the abstract
+This module records the normalized two- and four-point specializations and discharges the abstract
 `ExpectationPairingRecursion` contract for the canonical finite Gibbs density-state expectation.  All finite-configuration, diagonal-evolution, and trace-ratio
 facts are confined to this implementation; the arbitrary-length pairing induction itself is
 independent of them.
@@ -28,6 +30,28 @@ statistics-indexed arbitrary-length recursion below.
 section
 
 variable {Config : Type*} [Fintype Config] [Nonempty Config]
+
+/-- **The genuine normalized 2-point Bloch–de Dominicis value**: `⟨C₁Cⱼ⟩ = c₁ⱼ/(1 - ζw₁)`,
+dividing the singleton-tail peel identity `(1 - ζw₁) Tr[e^{-βH₀}(C₁Cⱼ)] = c₁ⱼ Tr[e^{-βH₀}]` through
+by the genuine (nonzero) partition function and by the (assumed nonzero) `1 - ζw₁` factor —
+matching the physics reference notes' `⟨Ĉ₁Ĉⱼ⟩ = C_{1,j}/(1 - ζw₁)` letter-for-letter rather than
+leaving it as an un-divided trace equation. -/
+theorem finiteGibbsExpectation_comp_eq_div_of_zetaCommutator (energy : Config → ℝ) (β q1 : ℝ)
+    (ζ c1j : ℂ) (C1 Cj : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
+    (hC1 : heisenbergEvolve energy (-β) C1 = Complex.exp ((q1 * (-β) : ℝ) : ℂ) • C1)
+    (hcomm : ScalarExchange.zetaCommutator ζ C1 Cj =
+      c1j • (LinearMap.id : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config))
+    (hne : (1 : ℂ) - ζ * Complex.exp ((q1 * β : ℝ) : ℂ) ≠ 0) :
+    finiteGibbsExpectation energy β (C1.comp Cj) =
+      c1j / (1 - ζ * Complex.exp ((q1 * β : ℝ) : ℂ)) := by
+  classical
+  rw [finiteGibbsExpectation_eq_trace_div]
+  have hZ : tsumTrace (diagonalEvolution energy (-β)) ≠ 0 := by
+    simpa only [tsumTrace, tsum_fintype, traceFock_eq_sum_matrixCoeff] using
+      traceFock_diagonalEvolution_ne_zero energy β
+  simpa only [tsumTrace, tsum_fintype, traceFock_eq_sum_matrixCoeff] using
+    normalizedTsumTrace_comp_eq_div_of_zetaCommutator energy β q1 ζ c1j C1 Cj
+      hC1 hcomm Summable.of_finite Summable.of_finite hZ hne
 
 /-- The normalized peel identity, as an indexed `Finset.sum`. -/
 theorem finiteGibbsExpectation_peel_indexed (energy : Config → ℝ) (β q1 : ℝ) (ζ : ℂ)
