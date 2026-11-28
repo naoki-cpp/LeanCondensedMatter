@@ -1,4 +1,7 @@
-import LeanCondensedMatter.Permutation.ConnectedCycleSeries
+import LeanCondensedMatter.Permutation.AssignmentCycleTrace
+import Mathlib.Basic.Complex.Basic
+import Mathlib.RingTheory.PowerSeries.Basic
+import Mathlib.Tactic.FieldSimp
 import Mathlib.Data.Rat.Cast.Lemmas
 import Mathlib.RingTheory.PowerSeries.Log
 
@@ -7,8 +10,9 @@ set_option linter.style.header false
 /-!
 # Formal trace-log interpretation of connected permutation cycles
 
-This file completes the formal-log layer of W3 without constructing a power series over the
-noncommutative matrix algebra. Mathlib's scalar `PowerSeries.log` and `PowerSeries.rescale` remain
+The connected-cycle series packages the EGF-normalized assignment-summed single-cycle
+contributions and identifies them with scalar matrix power traces. No power series over the
+noncommutative matrix algebra is constructed. Mathlib's scalar `PowerSeries.log` and `PowerSeries.rescale` remain
 the sole logarithm and scalar-substitution implementations. The rescaled scalar logarithm is then
 paired coefficientwise with the matrix power trace `tr(K^m)`.
 
@@ -20,7 +24,58 @@ nonzero-weight specializations.
 
 namespace Combinatorics
 
-variable {ι : Type*} [Fintype ι] [DecidableEq ι]
+variable {ι : Type*} [Fintype ι]
+
+private noncomputable def connectedCycleCoeff
+    (ζ : ℂ) (K : Matrix ι ι ℂ) (m : ℕ) : ℂ :=
+  if m = 0 then 0
+  else
+    (∑ x : Fin m → ι,
+      singleCycleContribution ζ (fun a b : Fin m => K (x a) (x b)) Finset.univ) /
+        (Nat.factorial m : ℂ)
+
+/-- The formal connected-cycle series associated with exchange weight `ζ` and finite kernel `K`.
+
+Its constant coefficient is zero. At positive order `m`, its coefficient is the EGF-normalized
+assignment-summed one-cycle contribution. -/
+noncomputable def permutationConnectedCycleSeries
+    (ζ : ℂ) (K : Matrix ι ι ℂ) : PowerSeries ℂ :=
+  PowerSeries.mk (connectedCycleCoeff ζ K)
+
+@[simp]
+theorem constantCoeff_permutationConnectedCycleSeries
+    (ζ : ℂ) (K : Matrix ι ι ℂ) :
+    PowerSeries.constantCoeff (permutationConnectedCycleSeries ζ K) = 0 := by
+  rw [← PowerSeries.coeff_zero_eq_constantCoeff]
+  simp [permutationConnectedCycleSeries, connectedCycleCoeff]
+
+/-- Positive coefficients of the formal connected-cycle series are the universal cyclic trace
+coefficients `ζ^(m-1) tr(K^m) / m`. -/
+theorem coeff_permutationConnectedCycleSeries_of_pos
+    [DecidableEq ι] (ζ : ℂ) (K : Matrix ι ι ℂ) (m : ℕ) (hm : 0 < m) :
+    PowerSeries.coeff m (permutationConnectedCycleSeries ζ K) =
+      ζ ^ (m - 1) * Matrix.trace (K ^ m) / (m : ℂ) := by
+  rw [permutationConnectedCycleSeries, PowerSeries.coeff_mk]
+  rw [connectedCycleCoeff, ite_eq_right (Nat.ne_of_gt hm)]
+  rw [sum_singleCycleContribution_assignments_eq_factorial_mul_trace ζ K m hm]
+  calc
+    ζ ^ (m - 1) * ((Nat.factorial (m - 1) : ℂ) * Matrix.trace (K ^ m)) /
+          (Nat.factorial m : ℂ) =
+        ζ ^ (m - 1) * Matrix.trace (K ^ m) *
+          ((Nat.factorial (m - 1) : ℂ) / (Nat.factorial m : ℂ)) := by
+      ring
+    _ = ζ ^ (m - 1) * Matrix.trace (K ^ m) * (1 / (m : ℂ)) := by
+      rw [← Nat.mul_factorial_pred (Nat.ne_of_gt hm)]
+      push_cast
+      have hm0 : (m : ℂ) ≠ 0 := by
+        exact_mod_cast Nat.ne_of_gt hm
+      have hfac0 : (Nat.factorial (m - 1) : ℂ) ≠ 0 := by
+        exact_mod_cast Nat.factorial_ne_zero (m - 1)
+      field_simp [hm0, hfac0]
+    _ = ζ ^ (m - 1) * Matrix.trace (K ^ m) / (m : ℂ) := by
+      simp [div_eq_mul_inv]
+
+variable [DecidableEq ι]
 
 /-- Apply scalar power-series coefficients to the power traces of a finite matrix.
 
