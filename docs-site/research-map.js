@@ -30,6 +30,7 @@ export function renderResearchMap(children, onOpenDeclaration, onRegionChange, o
   const section = element("section", "research-map explorer-map-theme explorer-map-frame");
   const heading = element("h2", "research-map-title", rootName);
   const controlsSlot = element("div", "map-controls-slot");
+  const searchSlot = element("div", "map-search-slot");
   const declarationCount = element("p", "research-map-declaration-count");
   heading.id = "research-map-title";
   section.setAttribute("aria-labelledby", heading.id);
@@ -43,7 +44,7 @@ export function renderResearchMap(children, onOpenDeclaration, onRegionChange, o
     legend.append(item);
   }
   const controls = element("div", "research-map-controls graph-view-controls");
-  const stage = element("div", "research-map-stage");
+  const stage = element("div", "research-map-stage explorer-map-stage");
   const canvas = element("canvas", "");
   canvas.width = width * 2;
   canvas.height = height * 2;
@@ -541,7 +542,7 @@ export function renderResearchMap(children, onOpenDeclaration, onRegionChange, o
   overviewFooter.append(...overviewHeader);
   const headingRow = element("div", "map-heading-row");
   headingRow.append(heading, element("div", "map-tabs-slot"));
-  section.append(headingRow, declarationCount, controlsSlot, legend, controls, stage, preview, picker, detail, connectionDetails, overviewFooter);
+  section.append(headingRow, declarationCount, searchSlot, controls, stage, controlsSlot, legend, preview, picker, detail, connectionDetails, overviewFooter);
   const sortedPoints = [...points].sort((a, b) => a.entry.name.localeCompare(b.entry.name));
   populatePicker(null);
   reset();

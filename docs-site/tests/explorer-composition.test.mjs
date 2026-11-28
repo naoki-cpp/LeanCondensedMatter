@@ -29,7 +29,7 @@ test("only the current overview mounts shared controls after asynchronous prepar
   const ui = Object.fromEntries([
     "tabs", "controls", "controlsHome", "overviewLink", "moduleImportsLink", "importsPanel",
     "declarationsPanel", "appShell", "importMapHeader", "importMapControls", "importMapTabs",
-    "graphStatus", "graphToolbar", "overview", "viewport",
+    "graphStatus", "graphToolbar", "overview", "viewport", "searchForm", "importMapSearch",
   ].map((key) => [key, container()]));
   ui.graph = { closest: () => container() };
   ui.importMapHeader.append({ selector: ".research-map-title" });
@@ -44,16 +44,19 @@ test("only the current overview mounts shared controls after asynchronous prepar
   composition.show("imports", "Example");
   assert.equal(ui.tabs.parentElement, ui.importMapTabs);
   assert.equal(ui.controls.parentElement, ui.importMapControls);
+  assert.equal(ui.searchForm.parentElement, ui.importMapSearch);
   composition.show("overview");
   const tabSlot = { ...container(), selector: ".map-tabs-slot" };
   const controlSlot = { ...container(), selector: ".map-controls-slot" };
+  const searchSlot = { ...container(), selector: ".map-search-slot" };
   await composition.renderOverview({
-    render: () => () => [tabSlot, controlSlot], unavailable, failed,
+    render: () => () => [tabSlot, controlSlot, searchSlot], unavailable, failed,
   });
   resolveOld(() => assert.fail("Superseded content was built"));
   await old;
   assert.equal(ui.tabs.parentElement, tabSlot);
   assert.equal(ui.controls.parentElement, controlSlot);
+  assert.equal(ui.searchForm.parentElement, searchSlot);
   assert.equal(ui.controlsHome.hidden, true);
   assert.equal(ui.overviewLink.tabIndex, 0);
 });

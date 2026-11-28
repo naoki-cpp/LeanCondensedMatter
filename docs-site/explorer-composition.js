@@ -3,9 +3,10 @@ export function createExplorerComposition(ui) {
   let revision = 0;
   const graphPanel = ui.graph.closest(".graph-panel");
 
-  function mount(tabSlot, controlsSlot) {
+  function mount(tabSlot, controlsSlot, searchSlot = ui.controls) {
     if (ui.tabs.parentElement !== tabSlot) tabSlot.prepend(ui.tabs);
     if (ui.controls.parentElement !== controlsSlot) controlsSlot.append(ui.controls);
+    if (ui.searchForm.parentElement !== searchSlot) searchSlot.prepend(ui.searchForm);
     ui.controlsHome.hidden = controlsSlot !== ui.controlsHome;
   }
 
@@ -20,7 +21,8 @@ export function createExplorerComposition(ui) {
 
   function mountOverview() {
     mount(ui.overview.querySelector(".map-tabs-slot") ?? ui.controlsHome,
-      ui.overview.querySelector(".map-controls-slot") ?? ui.controlsHome);
+      ui.overview.querySelector(".map-controls-slot") ?? ui.controlsHome,
+      ui.overview.querySelector(".map-search-slot") ?? ui.controls);
   }
 
   return {
@@ -44,11 +46,12 @@ export function createExplorerComposition(ui) {
         graphPanel.classList.toggle(className, imports);
       }
       ui.importMapHeader.hidden = !imports;
+      ui.importMapControls.hidden = !imports;
       ui.graphStatus.classList.toggle("research-map-declaration-count", imports);
       if (imports) {
         ui.importMapHeader.querySelector(".research-map-title").textContent = importTitle;
-        ui.importMapControls.before(ui.graphStatus);
-        mount(ui.importMapTabs, ui.importMapControls);
+        ui.importMapSearch.before(ui.graphStatus);
+        mount(ui.importMapTabs, ui.importMapControls, ui.importMapSearch);
       } else {
         ui.graphToolbar.prepend(ui.graphStatus);
         if (overview) {
@@ -57,6 +60,7 @@ export function createExplorerComposition(ui) {
       }
       ui.overview.hidden = !overview;
       ui.viewport.hidden = overview;
+      ui.viewport.classList.toggle("explorer-map-stage", imports);
       ui.graphToolbar.hidden = overview;
       if (focused && document.activeElement === document.body) focused.focus({ preventScroll: true });
     },

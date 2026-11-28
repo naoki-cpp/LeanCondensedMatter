@@ -135,13 +135,13 @@
           <h2 class="research-map-title"></h2>
           <div class="map-tabs-slot"></div>
         </div>
-        <div class="map-controls-slot"></div>
+        <div class="map-search-slot"></div>
       </header>
       <div class="graph-toolbar" hidden>
         <span id="graph-status" role="status">Loading theorem catalog…</span>
         <div class="graph-view-controls" role="group" aria-label="Graph view">
-          <button id="graph-zoom-out" type="button" aria-label="Zoom out">−</button>
-          <button id="graph-zoom-in" type="button" aria-label="Zoom in">+</button>
+          <button id="graph-zoom-out" type="button">Zoom out</button>
+          <button id="graph-zoom-in" type="button">Zoom in</button>
           <button id="graph-fit" type="button">Fit</button>
         </div>
       </div>
@@ -150,6 +150,7 @@
         <div class="graph-directions" aria-hidden="true"><span id="graph-direction-left"></span><span id="graph-direction-right"></span></div>
         <svg id="graph" role="group" aria-label="Interactive theorem dependency graph"></svg>
       </div>
+      <div class="import-map-controls map-controls-slot" hidden></div>
     </section>
 
     <aside id="detail" class="detail-panel" aria-live="polite"></aside>

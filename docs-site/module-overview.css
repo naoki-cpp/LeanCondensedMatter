@@ -127,7 +127,6 @@
 }
 .research-map {
   container-type: inline-size;
-  margin-top: 28px;
 }
 .research-map-title {
   margin: 0 0 8px;
@@ -180,7 +179,7 @@
   overflow-wrap: anywhere;
   pointer-events: none;
 }
-.research-map-controls { display: flex; flex-wrap: wrap; gap: 6px; justify-content: flex-end; }
+.research-map-controls { flex-wrap: wrap; justify-content: flex-end; }
 .research-map-controls button {
   min-width: 36px;
   min-height: 34px;

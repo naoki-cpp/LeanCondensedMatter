@@ -70,7 +70,8 @@ const ui = {
   graphLegend: document.querySelector(".legend"),
   importMapHeader: document.querySelector(".import-map-header"),
   importMapTabs: document.querySelector(".import-map-header .map-tabs-slot"),
-  importMapControls: document.querySelector(".import-map-header .map-controls-slot"),
+  importMapSearch: document.querySelector(".import-map-header .map-search-slot"),
+  importMapControls: document.querySelector(".import-map-controls"),
   graph: document.querySelector("#graph"),
   viewport: document.querySelector("#graph-viewport"),
   overview: document.querySelector("#overview"),
@@ -283,7 +284,7 @@ function setGraphModeChrome(focusTarget) {
   const modules = state.graphKind === "modules";
   const overview = state.page === "overview";
   composition.show(state.page, modules ? shortModule(state.root) : null, focusTarget);
-  document.getElementById("graph-fit").textContent = modules ? "Whole graph" : "Fit";
+  document.getElementById("graph-fit").textContent = modules ? "Whole map" : "Fit";
   ui.kindFilter.closest("label").hidden = modules;
   ui.generatedFilter.closest("label").hidden = modules;
   ui.searchLabel.textContent = modules ? "Module" : "Declaration";
