@@ -206,6 +206,11 @@
 .research-map-detail h4 { margin: 0 0 12px; }
 .research-map-relations { display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0; }
 .research-map-detail button { max-width: 100%; overflow-wrap: anywhere; }
+.research-map-connections {
+  margin-top: 12px;
+  color: #c0d3c9;
+  font: 400 .85rem/1.5 var(--ui-font);
+}
 @container (max-width: 420px) {
   .research-map-region small { display: none; }
 }

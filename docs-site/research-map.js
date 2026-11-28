@@ -82,6 +82,35 @@ export function renderResearchMap(children, entriesFor, onOpenDeclaration) {
     return region;
   });
   const points = [...byName.values()];
+  const regionOrder = new Map(regions.map((region, index) => [region, index]));
+  const connections = new Map();
+  for (const point of points) {
+    const source = regionOrder.get(point.region);
+    for (const name of new Set(point.entry.dependencies ?? [])) {
+      const targetPoint = byName.get(name);
+      if (!targetPoint || targetPoint.region === point.region) continue;
+      const target = regionOrder.get(targetPoint.region);
+      const a = Math.min(source, target);
+      const b = Math.max(source, target);
+      const key = `${a}:${b}`;
+      if (!connections.has(key)) connections.set(key, { a: regions[a], b: regions[b], ab: 0, ba: 0 });
+      const connection = connections.get(key);
+      if (source === a) connection.ab += 1;
+      else connection.ba += 1;
+    }
+  }
+  const bundles = [...connections.values()].sort((a, b) => b.ab + b.ba - a.ab - a.ba);
+  const connectionDetails = element("details", "research-map-connections");
+  if (bundles.length) {
+    const list = element("ul", "");
+    for (const { a, b, ab, ba } of bundles) {
+      const directions = [];
+      if (ab) directions.push(`${a.name} → ${b.name}: ${ab.toLocaleString("en")}`);
+      if (ba) directions.push(`${b.name} → ${a.name}: ${ba.toLocaleString("en")}`);
+      list.append(element("li", "", directions.join(" · ")));
+    }
+    connectionDetails.append(element("summary", "", "Dependencies between regions"), list);
+  }
   let view = { x: width / 2, y: height / 2, zoom: 1 };
   let active = null;
   let selected = null;
@@ -115,6 +144,22 @@ export function renderResearchMap(children, entriesFor, onOpenDeclaration) {
     if (!ctx) return;
     ctx.setTransform(2, 0, 0, 2, 0, 0);
     ctx.clearRect(0, 0, width, height);
+    if (view.zoom <= 1.5) {
+      ctx.strokeStyle = "rgba(170, 199, 188, .33)";
+      ctx.lineCap = "round";
+      for (const { a, b, ab, ba } of bundles) {
+        const angle = Math.atan2(b.y - a.y, b.x - a.x);
+        const dx = Math.cos(angle);
+        const dy = Math.sin(angle);
+        ctx.lineWidth = 1 + Math.log10(ab + ba + 1) * 2;
+        ctx.beginPath();
+        ctx.moveTo(...screen(a.x + dx * (a.radius + 6), a.y + dy * (a.radius + 6)));
+        ctx.lineTo(...screen(b.x - dx * (b.radius + 6), b.y - dy * (b.radius + 6)));
+        ctx.stroke();
+      }
+      ctx.lineCap = "butt";
+      ctx.lineWidth = 1;
+    }
     for (const region of regions) {
       ctx.strokeStyle = "#42605a";
       ctx.beginPath();
@@ -313,6 +358,7 @@ export function renderResearchMap(children, entriesFor, onOpenDeclaration) {
   controls.append(button("Zoom out", () => zoomBy(1 / 1.5)), button("Zoom in", () => zoomBy(1.5)), button("Whole map", reset));
   stage.append(canvas, ...regions.map((region) => region.label));
   section.append(heading, legend, controls, stage, preview, picker, detail);
+  if (bundles.length) section.append(connectionDetails);
   reset();
   return section;
 }
