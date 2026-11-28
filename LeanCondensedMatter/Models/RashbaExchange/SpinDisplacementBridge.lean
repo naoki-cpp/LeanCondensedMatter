@@ -538,7 +538,8 @@ noncomputable def realSpaceRashbaOneParticleFreeSystem
     change inner ℂ (finiteSecondQuantization A (j x)) (j y) =
       inner ℂ (j x) (finiteSecondQuantization A (j y)) at h
     change inner ℂ (A x) y = inner ℂ x (A y)
-    simpa only [finiteSecondQuantization_apply_oneParticle, LinearIsometry.inner_map_map] using h⟩
+    simpa only [j, finiteSecondQuantization_apply_oneParticle,
+      LinearIsometry.inner_map_map] using h⟩
   hbar := hbar
   hbar_pos := hhbar
 
