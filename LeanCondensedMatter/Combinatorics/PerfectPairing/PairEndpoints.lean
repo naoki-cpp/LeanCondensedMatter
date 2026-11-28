@@ -86,9 +86,7 @@ noncomputable def PairingOn.pairEndpointEquiv {α : Type*} [Fintype α] [LinearO
     · have hba : ¬ b < a := not_lt_of_ge (le_of_lt hablt)
       simp [inverse, pairEndpointAt, hba, hpartnerb]
   · intro i
-    by_cases h : i < pairing.partner i
-    · simp [inverse, pairEndpointAt, h]
-    · simp [inverse, pairEndpointAt, h]
+    by_cases h : i < pairing.partner i <;> simp [inverse, pairEndpointAt, h]
 
 @[simp]
 theorem PairingOn.pairEndpointEquiv_apply {α : Type*} [Fintype α] [LinearOrder α]
@@ -117,10 +115,7 @@ private theorem PairingOn.pairEndpointEquiv_symm_pair_eq_or_swap
     (pairing.pairEndpointEquiv.symm x).1.1 = (x, y) ∨
       (pairing.pairEndpointEquiv.symm x).1.1 = (y, x) := by
   classical
-  by_cases horder : x < y
-  · left
-    simp [PairingOn.pairEndpointEquiv, hpartner, horder]
-  · right
+  by_cases horder : x < y <;>
     simp [PairingOn.pairEndpointEquiv, hpartner, horder]
 
 /-- Transport an abstract family of paired endpoint fibers to the normalized pairs of `pairing`.
@@ -153,13 +148,10 @@ noncomputable def PairingOn.normalizedPairEquivOfEndpointEquiv
       rw [hk]
       exact congrArg Prod.fst (pairing.pairEndpointEquiv.left_inv (pr, 0))
     · change E (a, 1) = pr.1.1 at hk
-      have hp : pairing.partner (E (a, 0)) = E (a, 1) := hpartner a
       have hfirst : E (a, 0) = pr.1.2 := by
-        calc
-          E (a, 0) = pairing.partner (E (a, 1)) := by rw [← hp, pairing.partner_partner]
-          _ = pr.1.2 := by
-            rw [hk]
-            exact ((pairing.mem_pairs_iff pr.1.1 pr.1.2).1 pr.2).2
+        simpa only [pairing.partner_partner, hk,
+          ((pairing.mem_pairs_iff pr.1.1 pr.1.2).1 pr.2).2] using
+          congrArg pairing.partner (hpartner a)
       rw [hfirst]
       exact congrArg Prod.fst (pairing.pairEndpointEquiv.left_inv (pr, 1))
 
