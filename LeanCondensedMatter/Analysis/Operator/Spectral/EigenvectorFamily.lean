@@ -265,21 +265,14 @@ theorem span_eigenvectorFamily_le_kernel_orthogonal (hT : IsCompactOperator T)
     (hT' : T.IsSymmetric) :
     Submodule.span ℂ (Set.range (eigenvectorFamily hT)) ≤
       (Module.End.eigenspace (T : H →ₗ[ℂ] H) (0 : ℂ))ᗮ := by
-  have hOrth : OrthogonalFamily ℂ (fun μ : ℝ => Module.End.eigenspace (T : H →ₗ[ℂ] H) (μ : ℂ))
-      (fun μ => (Module.End.eigenspace (T : H →ₗ[ℂ] H) (μ : ℂ)).subtypeₗᵢ) :=
-    hT'.orthogonalFamily_eigenspaces.comp (f := fun μ : ℝ => (μ : ℂ)) Complex.ofReal_injective
-  rw [Submodule.span_le]
-  rintro x ⟨a, rfl⟩
-  rw [SetLike.mem_coe, Submodule.mem_orthogonal']
+  rw [span_eigenvectorFamily hT]
+  refine iSup_le fun μ x hx => ?_
+  rw [Submodule.mem_orthogonal']
   intro u hu
-  haveI := finiteDimensional_eigenspace_ne_zero hT a.1
-  have hxmem : eigenvectorFamily hT a ∈ Module.End.eigenspace (T : H →ₗ[ℂ] H) (a.1.1 : ℂ) :=
-    Submodule.coe_mem _
-  have hne : a.1.1 ≠ (0 : ℝ) := a.1.2
-  have := hOrth hne (⟨eigenvectorFamily hT a, hxmem⟩ :
-      Module.End.eigenspace (T : H →ₗ[ℂ] H) (a.1.1 : ℂ))
+  have hne : (μ.1 : ℂ) ≠ 0 := by exact_mod_cast μ.2
+  exact hT'.orthogonalFamily_eigenspaces hne
+    (⟨x, hx⟩ : Module.End.eigenspace (T : H →ₗ[ℂ] H) (μ.1 : ℂ))
     (⟨u, hu⟩ : Module.End.eigenspace (T : H →ₗ[ℂ] H) (0 : ℂ))
-  simpa using this
 
 /-- **The kernel and `eigenvectorFamily`'s span together are dense.** Their (algebraic) sum
 equals the sum of *all* eigenspaces of `T` (over `ℂ`), which is dense by
@@ -305,26 +298,21 @@ theorem orthogonal_closure_span_eigenvectorFamily (hT : IsCompactOperator T)
     (hT' : T.IsSymmetric) :
     (Submodule.span ℂ (Set.range (eigenvectorFamily hT))).topologicalClosureᗮ =
       Module.End.eigenspace (T : H →ₗ[ℂ] H) (0 : ℂ) := by
-  set E' := Submodule.span ℂ (Set.range (eigenvectorFamily hT)) with hE'_def
-  set F := E'.topologicalClosure with hF_def
+  rw [Submodule.orthogonal_closure]
+  set E' := Submodule.span ℂ (Set.range (eigenvectorFamily hT))
   set G := Module.End.eigenspace (T : H →ₗ[ℂ] H) (0 : ℂ) with hG_def
-  have hE'G : E' ≤ Gᗮ := span_eigenvectorFamily_le_kernel_orthogonal hT hT'
-  -- `G` is closed (it's the kernel of the continuous map `T`), hence complete.
   have hGclosed : IsClosed (G : Set H) := by
     rw [hG_def, Module.End.eigenspace_zero]
     exact T.isClosed_ker
   haveI : CompleteSpace G := hGclosed.completeSpace_coe
-  -- `F ⊆ Gᗮ`, hence `G ⊆ Fᗮ`.
-  have hFG : F ≤ Gᗮ := hF_def ▸ E'.topologicalClosure_minimal hE'G G.isClosed_orthogonal
-  have hGF : G ≤ Fᗮ := Submodule.le_orthogonal_iff_le_orthogonal.mpr hFG
-  have hdense : (G ⊔ E').topologicalClosure = ⊤ := kernel_sup_span_eigenvectorFamily_dense hT hT'
-  have hFGbot : Fᗮ ⊓ Gᗮ = ⊥ := by
-    rw [hF_def, Submodule.orthogonal_closure, Submodule.inf_orthogonal, sup_comm,
-      ← Submodule.orthogonal_closure, hdense, Submodule.top_orthogonal_eq_bot]
+  have hGE : G ≤ E'ᗮ := Submodule.le_orthogonal_iff_le_orthogonal.mpr
+    (span_eigenvectorFamily_le_kernel_orthogonal hT hT')
+  have hbot : Gᗮ ⊓ E'ᗮ = ⊥ := by
+    rw [Submodule.inf_orthogonal, ← Submodule.orthogonal_closure,
+      kernel_sup_span_eigenvectorFamily_dense hT hT', Submodule.top_orthogonal_eq_bot]
   calc
-    Fᗮ = G ⊔ Gᗮ ⊓ Fᗮ :=
-      (Submodule.sup_orthogonal_inf_of_hasOrthogonalProjection hGF).symm
-    _ = G := by rw [inf_comm, hFGbot, sup_bot_eq]
+    E'ᗮ = G ⊔ Gᗮ ⊓ E'ᗮ := (Submodule.sup_orthogonal_inf_of_hasOrthogonalProjection hGE).symm
+    _ = G := by rw [hbot, sup_bot_eq]
 
 /-- A Hilbert-basis vector outside the embedded canonical nonzero-eigenvector family lies in the
 kernel of a compact symmetric operator. -/
@@ -425,8 +413,7 @@ theorem hasSum_eigenvectorFamily (hT : IsCompactOperator T) (hT' : T.IsSymmetric
   have hstep1 : HasSum (fun a : EigenvectorIndex T => (inner ℂ (b a : H) x : ℂ) • (b a : H))
       (F.subtypeₗᵢ (F.orthogonalProjectionOnto x)) :=
     (b.hasSum_orthogonalProjectionOnto x).mapL F.subtypeₗᵢ.toContinuousLinearMap
-  have hstarProj : F.subtypeₗᵢ (F.orthogonalProjectionOnto x) = F.starProjection x := rfl
-  rw [hstarProj] at hstep1
+  change HasSum _ (F.starProjection x) at hstep1
   have hTproj : T (F.starProjection x) = T x := by
     have hmem : x - F.starProjection x ∈ Fᗮ := F.sub_starProjection_mem_orthogonal x
     have hFG : Fᗮ = G := orthogonal_closure_span_eigenvectorFamily hT hT'
