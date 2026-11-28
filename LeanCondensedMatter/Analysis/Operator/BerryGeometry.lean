@@ -346,14 +346,15 @@ theorem pauliInterbandBerryWeight_eq
       -(s * (h .x * (v .y * w .z - v .z * w .y) +
         h .y * (v .z * w .x - v .x * w .z) +
         h .z * (v .x * w .y - v .y * w .x))) / (2 * E ^ 3) := by
-  rw [InternalSpace.trace_oppositePauliProjectors]
+  rw [InternalSpace.trace_oppositePauliProjectors,
+    ← signedInterbandBerryWeight_eq s E
+      (h .x * (v .y * w .z - v .z * w .y) +
+        h .y * (v .z * w .x - v .x * w .z) +
+        h .z * (v .x * w .y - v .y * w .x)) hs hE]
   simp [InternalSpace.dotProduct_pauliAxis, InternalSpace.pauliCross, cross_apply,
     InternalSpace.pauliAxisComponent, Complex.mul_im, Complex.mul_re,
     Complex.div_im, Complex.normSq]
-  convert signedInterbandBerryWeight_eq s E
-    (h .x * (v .y * w .z - v .z * w .y) +
-      h .y * (v .z * w .x - v .x * w .z) +
-      h .z * (v .x * w .y - v .y * w .x)) hs hE using 1 <;> ring
+  ring
 
 end
 end BerryGeometry
