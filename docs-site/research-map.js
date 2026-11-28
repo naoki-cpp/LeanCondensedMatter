@@ -115,7 +115,38 @@ export function renderResearchMap(children, entriesFor, onOpenDeclaration) {
   let active = null;
   let selected = null;
   let drag = null;
+  let cameraFrame = null;
   const screen = (x, y) => [(x - view.x) * view.zoom + width / 2, (y - view.y) * view.zoom + height / 2];
+
+  function stopCamera() {
+    if (cameraFrame !== null) cancelAnimationFrame(cameraFrame);
+    cameraFrame = null;
+  }
+
+  function glideTo(target) {
+    stopCamera();
+    if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ||
+        typeof requestAnimationFrame !== "function") {
+      view = target;
+      draw();
+      return;
+    }
+    const start = { ...view };
+    let startedAt;
+    function step(now) {
+      startedAt ??= now;
+      const progress = Math.min(1, (now - startedAt) / 420);
+      const eased = progress * progress * (3 - 2 * progress);
+      view = {
+        x: start.x + (target.x - start.x) * eased,
+        y: start.y + (target.y - start.y) * eased,
+        zoom: start.zoom * (target.zoom / start.zoom) ** eased,
+      };
+      draw();
+      cameraFrame = progress < 1 && section.isConnected ? requestAnimationFrame(step) : null;
+    }
+    cameraFrame = requestAnimationFrame(step);
+  }
 
   function line(from, to, color) {
     const [x, y] = screen(from.x, from.y);
@@ -221,6 +252,7 @@ export function renderResearchMap(children, entriesFor, onOpenDeclaration) {
   }
 
   function reset() {
+    stopCamera();
     view = { x: width / 2, y: height / 2, zoom: 1 };
     selected = null;
     detail.hidden = true;
@@ -235,10 +267,9 @@ export function renderResearchMap(children, entriesFor, onOpenDeclaration) {
     selected = null;
     detail.hidden = true;
     select.value = "";
-    view = { x: region.x, y: region.y, zoom: Math.min(12, height / (3 * (region.radius + 5))) };
     preview.textContent = "Select a dot or choose a declaration.";
-    draw();
-    canvas.focus?.();
+    glideTo({ x: region.x, y: region.y, zoom: Math.min(12, height / (3 * (region.radius + 5))) });
+    canvas.focus?.({ preventScroll: true });
   }
 
   function relation(title, names) {
@@ -259,6 +290,7 @@ export function renderResearchMap(children, entriesFor, onOpenDeclaration) {
 
   function openPoint(point) {
     if (!point) return;
+    stopCamera();
     setRegion(point.region);
     selected = point;
     select.value = point.entry.name;
@@ -276,6 +308,7 @@ export function renderResearchMap(children, entriesFor, onOpenDeclaration) {
   }
 
   function zoomBy(factor, x = width / 2, y = height / 2) {
+    stopCamera();
     const next = Math.max(1, Math.min(24, view.zoom * factor));
     view.x += (x - width / 2) * (1 / view.zoom - 1 / next);
     view.y += (y - height / 2) * (1 / view.zoom - 1 / next);
@@ -301,6 +334,7 @@ export function renderResearchMap(children, entriesFor, onOpenDeclaration) {
 
   canvas.addEventListener("pointerdown", (event) => {
     if (!event.isPrimary || event.button !== 0 || (event.pointerType === "touch" && view.zoom <= 1.5)) return;
+    stopCamera();
     drag = { id: event.pointerId, start: coords(event), view: { ...view }, moved: false };
     canvas.setPointerCapture(event.pointerId);
   });
@@ -345,6 +379,7 @@ export function renderResearchMap(children, entriesFor, onOpenDeclaration) {
   canvas.addEventListener("keydown", (event) => {
     const shift = { ArrowLeft: [-1, 0], ArrowRight: [1, 0], ArrowUp: [0, -1], ArrowDown: [0, 1] }[event.key];
     if (shift) {
+      stopCamera();
       view.x += shift[0] * 70 / view.zoom;
       view.y += shift[1] * 70 / view.zoom;
       draw();
