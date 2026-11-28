@@ -1,6 +1,5 @@
 import LeanCondensedMatter.Analysis.Algebra.FinsuppTrace
 import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.DiagonalEvolution
-import LeanCondensedMatter.SecondQuantization.Common.Algebra.DiagonalTrace
 
 set_option linter.style.header false
 
@@ -40,21 +39,18 @@ theorem tsumTrace_diagonalEvolution_comp_rotate
     (hC : heisenbergEvolve energy (-β) C = Complex.exp ((q * (-β) : ℝ) : ℂ) • C)
     (h : Summable (Function.uncurry (fun n k =>
       matrixCoeff ((diagonalEvolution energy (-β)).comp A) n k * matrixCoeff C k n))) :
-    tsumTrace ((diagonalEvolution energy (-β)).comp (A.comp C)) =
+    Finsupp.tsumTrace ((diagonalEvolution energy (-β)).comp (A.comp C)) =
       Complex.exp ((q * β : ℝ) : ℂ) •
-        tsumTrace ((diagonalEvolution energy (-β)).comp (C.comp A)) := by
+        Finsupp.tsumTrace ((diagonalEvolution energy (-β)).comp (C.comp A)) := by
   have hKMS := diagonalEvolution_comp_eq_smul_comp_diagonalEvolution energy (-β) q C hC
   have hKMS' : C.comp (diagonalEvolution energy (-β)) =
       Complex.exp ((q * β : ℝ) : ℂ) • ((diagonalEvolution energy (-β)).comp C) := by
     rw [show ((q * β : ℝ) : ℂ) = -((q * -β : ℝ) : ℂ) by push_cast; ring,
       Complex.exp_neg]
     exact (eq_inv_smul_iff₀ (Complex.exp_ne_zero _)).2 hKMS.symm
-  have hcyclic : tsumTrace (((diagonalEvolution energy (-β)).comp A).comp C) =
-      tsumTrace (C.comp ((diagonalEvolution energy (-β)).comp A)) :=
-    Finsupp.tsum_diagonal_comp_comm _ _ h
-  rw [← LinearMap.comp_assoc, hcyclic,
+  rw [← LinearMap.comp_assoc, Finsupp.tsum_diagonal_comp_comm _ _ h,
     ← LinearMap.comp_assoc, hKMS', LinearMap.smul_comp,
-    tsumTrace_smul, LinearMap.comp_assoc, smul_eq_mul]
+    Finsupp.tsumTrace_smul, LinearMap.comp_assoc, smul_eq_mul]
 
 end Common
 end SecondQuantization

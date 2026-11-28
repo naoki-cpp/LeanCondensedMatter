@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Analysis.Algebra.FinsuppTrace
 import LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.LadderTraceCyclicity
 import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.FreeThermalField
 import LeanCondensedMatter.SecondQuantization.Bosonic.ImaginaryTime.ImaginaryTimeEvolution
@@ -10,7 +11,7 @@ set_option linter.unusedFintypeInType false
 # Free-boson Gibbs KMS rotation
 
 This module is the Bosonic Gibbs/KMS adapter. It combines the algebraic imaginary-time shift of a
-creation or annihilation operator with the lower-level ladder `tsumTrace` cyclicity proved in
+creation or annihilation operator with the lower-level ladder `Finsupp.tsumTrace` cyclicity proved in
 `Bosonic.Algebra.LadderTraceCyclicity`, then exposes normalized rotation and the uniform
 `FreeThermalField` KMS factor used by the Bloch–de Dominicis recursion.
 
@@ -54,14 +55,14 @@ theorem FreeThermalField.grandCanonicalGibbsExpectation_operator_comp_rotate
         simpa only [FreeThermalField.operator, FreeThermalField.kmsFactor,
           Complex.ofReal_neg] using imaginaryTimeEvolveFree_comp_create (fun i => ε i - μ) (-β) i
   have hcyclic :
-      Common.tsumTrace (C.operator.comp ((imaginaryTimeEvolveFree (fun i => ε i - μ) (-β)).comp A)) =
-        Common.tsumTrace (((imaginaryTimeEvolveFree (fun i => ε i - μ) (-β)).comp A).comp C.operator) := by
+      Finsupp.tsumTrace (C.operator.comp ((imaginaryTimeEvolveFree (fun i => ε i - μ) (-β)).comp A)) =
+        Finsupp.tsumTrace (((imaginaryTimeEvolveFree (fun i => ε i - μ) (-β)).comp A).comp C.operator) := by
     cases C with
     | annihilate i => exact tsumTrace_annihilate_comp i _
     | create i => exact tsumTrace_create_comp i _
   unfold grandCanonicalGibbsExpectation
   rw [← LinearMap.comp_assoc, hmove, LinearMap.smul_comp,
-    Common.tsumTrace_smul, LinearMap.comp_assoc, hcyclic,
+    Finsupp.tsumTrace_smul, LinearMap.comp_assoc, hcyclic,
     LinearMap.comp_assoc, mul_div_assoc]
 
 end

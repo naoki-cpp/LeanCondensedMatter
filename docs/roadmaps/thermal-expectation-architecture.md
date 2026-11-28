@@ -62,7 +62,7 @@ The reusable finite coordinate layer is split by responsibility:
 | `Common/Thermal/GibbsExpectation.lean` | Summability-aware Gibbs expectation on bounded completed operators, independent of finite configuration types. |
 | `Common/Thermal/FiniteGibbsExpectationBridge.lean` | Finite algebraic Gibbs adapter and finite probability formula. |
 | `Common/Thermal/FiniteGibbsCoordinate.lean` | Complex Boltzmann weights, diagonal-evolution traces, and trace-ratio formulas. |
-| `Common/Algebra/DiagonalTrace.lean` | Summability-aware diagonal trace infrastructure. |
+| `Analysis/Algebra/FinsuppTrace.lean` | Summability-aware diagonal trace infrastructure. |
 | `Common/Algebra/FiniteTrace.lean` | Canonical finite algebraic Fock trace and unnormalized scalar weight sums. |
 | `Common/Thermal/BlochDeDominicis/NormalizedTwoPointTrace.lean` | Statistics-independent normalized two-point diagonal trace identity with explicit summability and nonzero denominators. |
 | `Common/Thermal/BlochDeDominicis/GibbsExpectation/` | Finite Gibbs-state specializations: two-point, peel, four-point, recursion, and its finite Gibbs pairing theorem. |

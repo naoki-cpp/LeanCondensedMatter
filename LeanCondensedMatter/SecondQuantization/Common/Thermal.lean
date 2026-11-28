@@ -1,4 +1,3 @@
-import LeanCondensedMatter.SecondQuantization.Common.Algebra.DiagonalTrace
 import LeanCondensedMatter.SecondQuantization.Common.Algebra.FiniteTrace
 import LeanCondensedMatter.SecondQuantization.Common.Algebra.FiniteHilbertOperator
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.GibbsExpectation

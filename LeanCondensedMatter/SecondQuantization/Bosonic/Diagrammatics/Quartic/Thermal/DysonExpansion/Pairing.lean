@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Analysis.Algebra.FinsuppTrace
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Core
 import LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion.DysonAmplitude
 import LeanCondensedMatter.SecondQuantization.Bosonic.Perturbation.DysonGibbsSeries
@@ -79,7 +80,7 @@ theorem grandCanonicalGibbsDysonCoeff_quarticInteractionOn_eq_sum_pairingEvaluat
   rw [grandCanonicalGibbsExpectation_sum_of_summable ε β μ _ hsumm]
   refine Finset.sum_congr rfl fun q _ => ?_
   simp only [grandCanonicalGibbsExpectation, LinearMap.comp_smul,
-    Common.tsumTrace_smul, mul_div_assoc]
+    Finsupp.tsumTrace_smul, mul_div_assoc]
   rw [← quarticFreeThermalOrderedProduct_eq_quarticVertexSequenceOperator,
     quarticFreeThermalOrderedProduct]
   have hwick := grandCanonicalGibbsExpectation_eq_sum_pairing_concrete ε β μ hpos

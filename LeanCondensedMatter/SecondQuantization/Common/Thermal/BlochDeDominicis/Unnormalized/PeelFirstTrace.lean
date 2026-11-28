@@ -15,7 +15,7 @@ the front contributes `w₁ = exp(q₁ β)`, while the exchange algebra contribu
 `(1 - ζ^{l.length} w₁) Tr[e^{-βH₀}(C₁ B₁⋯Bₖ)]
   = Tr[e^{-βH₀} ScalarExchange.peelSumWithCoefficients ζ [(B₁,c₁),…,(Bₖ,cₖ)]]`.
 
-The identity is expressed through `tsumTrace` with explicit summability hypotheses, independently
+The identity is expressed through `Finsupp.tsumTrace` with explicit summability hypotheses, independently
 of configuration cardinality. Finite Gibbs expectations specialize it through automatic summability
 and the finite trace-coordinate bridge; infinite bosonic occupation spaces provide convergence proofs.
 Summability of the rotated diagonal tail follows from the corresponding double-series hypothesis.
@@ -47,9 +47,9 @@ theorem tsumTrace_diagonalEvolution_comp_peel
       matrixCoeff ((diagonalEvolution energy (-β)).comp (List.prod (l.map Prod.fst))) n k *
         matrixCoeff C1 k n))) :
     (1 - ζ ^ l.length * Complex.exp ((q1 * β : ℝ) : ℂ)) *
-        tsumTrace ((diagonalEvolution energy (-β)).comp
+        Finsupp.tsumTrace ((diagonalEvolution energy (-β)).comp
           (C1.comp (List.prod (l.map Prod.fst)))) =
-      tsumTrace ((diagonalEvolution energy (-β)).comp (ScalarExchange.peelSumWithCoefficients ζ l)) := by
+      Finsupp.tsumTrace ((diagonalEvolution energy (-β)).comp (ScalarExchange.peelSumWithCoefficients ζ l)) := by
   have hExchange : ∀ p ∈ l,
       C1 * p.1 = p.2 • (1 : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) +
         ζ • (p.1 * C1) := by
@@ -77,13 +77,13 @@ theorem tsumTrace_diagonalEvolution_comp_peel
         ((List.prod (l.map Prod.fst)).comp C1))) n n) := by
     simpa only [← matrixCoeffLinear_apply, map_smul, smul_eq_mul] using
       hSummDCjC1.mul_left (ζ ^ l.length)
-  have hstep : tsumTrace ((diagonalEvolution energy (-β)).comp
+  have hstep : Finsupp.tsumTrace ((diagonalEvolution energy (-β)).comp
       (C1.comp (List.prod (l.map Prod.fst)))) =
-      tsumTrace ((diagonalEvolution energy (-β)).comp (ScalarExchange.peelSumWithCoefficients ζ l)) +
-        ζ ^ l.length * tsumTrace ((diagonalEvolution energy (-β)).comp
+      Finsupp.tsumTrace ((diagonalEvolution energy (-β)).comp (ScalarExchange.peelSumWithCoefficients ζ l)) +
+        ζ ^ l.length * Finsupp.tsumTrace ((diagonalEvolution energy (-β)).comp
           ((List.prod (l.map Prod.fst)).comp C1)) := by
     rw [hopeq, LinearMap.comp_add, LinearMap.comp_smul,
-      tsumTrace_add hPeel hscaled, tsumTrace_smul]
+      Finsupp.tsumTrace_add hPeel hscaled, Finsupp.tsumTrace_smul]
   rw [hrot, smul_eq_mul] at hstep
   linear_combination hstep
 

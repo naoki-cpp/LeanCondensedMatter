@@ -1,5 +1,5 @@
+import LeanCondensedMatter.Analysis.Algebra.FinsuppTrace
 import LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.CreationAnnihilation
-import LeanCondensedMatter.SecondQuantization.Common.Algebra.DiagonalTrace
 import Mathlib.Topology.Algebra.InfiniteSum.Basic
 
 set_option linter.style.header false
@@ -8,7 +8,7 @@ set_option linter.style.header false
 # Bosonic ladder-operator diagonal-trace cyclicity
 
 This file owns the occupation-basis reindexing needed to move one bosonic creation or annihilation
-operator across `Common.tsumTrace`. The coordinate formulas and positive-occupation equivalence are
+operator across `Finsupp.tsumTrace`. The coordinate formulas and positive-occupation equivalence are
 implementation details and remain private; the reusable public surface is only the two ladder
 cyclicity theorems.
 
@@ -116,11 +116,11 @@ private theorem create_apply_coord (i : Mode) (x : FockSpace Mode) (n : Occupati
   simpa only [evalN, evalR, LinearMap.comp_apply, LinearMap.smul_apply,
     Finsupp.lapply_apply, smul_eq_mul] using hx
 
-/-- Diagonal `tsumTrace` cyclicity for one annihilation operator, proved by occupation reindexing. -/
+/-- Diagonal `Finsupp.tsumTrace` cyclicity for one annihilation operator, proved by occupation reindexing. -/
 theorem tsumTrace_annihilate_comp (i : Mode)
     (A : FockSpace Mode →ₗ[ℂ] FockSpace Mode) :
-    Common.tsumTrace ((annihilate i).comp A) =
-      Common.tsumTrace (A.comp (annihilate i)) := by
+    Finsupp.tsumTrace ((annihilate i).comp A) =
+      Finsupp.tsumTrace (A.comp (annihilate i)) := by
   let f : Occupation Mode → ℂ := fun n =>
     Common.matrixCoeff (A.comp (annihilate i)) n n
   have hpoint : ∀ n : Occupation Mode,
@@ -143,7 +143,7 @@ theorem tsumTrace_annihilate_comp (i : Mode)
     change (A (annihilate i (basisState n))) n = 0
     rw [annihilate_basisState_of_zero hi, map_zero]
     rfl
-  unfold Common.tsumTrace
+  unfold Finsupp.tsumTrace
   calc
     (∑' n, Common.matrixCoeff ((annihilate i).comp A) n n) =
         ∑' n, f (createOccupation i n) := tsum_congr hpoint
@@ -152,11 +152,11 @@ theorem tsumTrace_annihilate_comp (i : Mode)
     _ = ∑' n, f n := tsum_subtype_eq_of_support_subset hsupport
     _ = ∑' n, Common.matrixCoeff (A.comp (annihilate i)) n n := rfl
 
-/-- Diagonal `tsumTrace` cyclicity for one creation operator, proved by occupation reindexing. -/
+/-- Diagonal `Finsupp.tsumTrace` cyclicity for one creation operator, proved by occupation reindexing. -/
 theorem tsumTrace_create_comp (i : Mode)
     (A : FockSpace Mode →ₗ[ℂ] FockSpace Mode) :
-    Common.tsumTrace ((create i).comp A) =
-      Common.tsumTrace (A.comp (create i)) := by
+    Finsupp.tsumTrace ((create i).comp A) =
+      Finsupp.tsumTrace (A.comp (create i)) := by
   let f : Occupation Mode → ℂ := fun n =>
     Common.matrixCoeff ((create i).comp A) n n
   have hpoint : ∀ n : Occupation Mode,
@@ -177,7 +177,7 @@ theorem tsumTrace_create_comp (i : Mode)
     change create i (A (basisState n)) n = 0
     rw [create_apply_coord, hi]
     simp
-  unfold Common.tsumTrace
+  unfold Finsupp.tsumTrace
   calc
     (∑' n, Common.matrixCoeff ((create i).comp A) n n) = ∑' n, f n := rfl
     _ = ∑' p : positiveOccupationSet i, f p.1 :=
