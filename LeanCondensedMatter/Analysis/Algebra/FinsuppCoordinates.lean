@@ -49,9 +49,9 @@ section
 variable {R ι : Type*} [CommSemiring R]
 
 /-- Classical decidable equality used only to construct finite reachable supports. -/
-noncomputable local instance configDecidableEq : DecidableEq ι := Classical.decEq ι
+noncomputable local instance indexDecidableEq : DecidableEq ι := Classical.decEq ι
 
-/-- ιurations reachable from `n` after exactly `order` applications of the linear operator
+/-- Indices reachable from `n` after exactly `order` applications of the linear operator
 `V`, with possible cancellation deliberately ignored. -/
 noncomputable def reachableSupport
     (V : (ι →₀ R) →ₗ[R] (ι →₀ R)) : ℕ → ι → Finset ι
