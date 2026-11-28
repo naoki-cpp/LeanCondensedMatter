@@ -22,6 +22,13 @@ force a library build, while advisory theorem-catalog tooling remains outside th
 On `main`, advisory-tooling changes may request a build cache so the separate Lean Insights workflow
 can run against the merged commit.
 
+Lean Insights publishes the structural theorem catalog and Explorer graph after a successful
+compiled main build. Proof-guided replacements and unused-hypothesis audits run on the weekly
+schedule or a manual dispatch with `deep_audit` enabled. Their results are review artifacts
+(`theorem-audit` and `unused-hypotheses`), not prerequisites for graph publication.
+The `theorem-catalog` artifact and published `graph-data/theorems.json` contain structural
+inventory data; download `theorem-audit` for replacement-enriched theorem rows.
+
 Run the source audit with:
 
 ```bash
