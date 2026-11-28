@@ -49,7 +49,8 @@ const ui = {
   overviewLink: document.querySelector("#overview-link"),
   moduleImportsLink: document.querySelector("#module-imports-link"),
   searchForm: document.querySelector("#search-form"),
-  searchHome: document.querySelector(".controls"),
+  controls: document.querySelector(".graph-controls"),
+  controlsHome: document.querySelector("#graph-controls-home"),
   kindFilter: document.querySelector("#kind-filter"),
   generatedFilter: document.querySelector("#generated-filter"),
   searchLabel: document.querySelector("#search-form > label"),
@@ -62,9 +63,8 @@ const ui = {
   moduleFilterLabel: document.querySelector("#module-filter").closest("label"),
   wrapperHighlightLabel: document.querySelector('[data-highlight="wrapper"]').closest("label"),
   graphLegend: document.querySelector(".legend"),
-  graphLegendHome: document.querySelector("#graph-legend-home"),
   importMapHeader: document.querySelector(".import-map-header"),
-  importMapSearch: document.querySelector(".import-map-header .map-search-slot"),
+  importMapControls: document.querySelector(".import-map-header .map-controls-slot"),
   graph: document.querySelector("#graph"),
   viewport: document.querySelector("#graph-viewport"),
   overview: document.querySelector("#overview"),
@@ -289,22 +289,16 @@ function setGraphModeChrome() {
   ui.graphStatus.classList.toggle("research-map-declaration-count", modules);
   if (modules) {
     ui.importMapHeader.firstElementChild.textContent = shortModule(state.root);
-    ui.importMapSearch.before(ui.graphStatus);
-    ui.importMapHeader.append(ui.graphLegend);
-    if (ui.searchForm.parentElement !== ui.importMapSearch) ui.importMapSearch.append(ui.searchForm);
+    ui.importMapControls.before(ui.graphStatus);
   } else {
     ui.graphToolbar.prepend(ui.graphStatus);
-    ui.graphLegendHome.append(ui.graphLegend);
-    if (ui.searchForm.parentElement !== ui.searchHome) ui.searchHome.prepend(ui.searchForm);
   }
+  const controlsSlot = modules ? ui.importMapControls : ui.controlsHome;
+  if (ui.controls.parentElement !== controlsSlot) controlsSlot.append(ui.controls);
   document.getElementById("graph-fit").textContent = modules ? "Whole graph" : "Fit";
   ui.overviewLink.textContent = "Declarations";
-  ui.searchHome.hidden = false;
-  for (const filter of [ui.kindFilter, ui.generatedFilter]) {
-    const label = filter.closest("label");
-    if (label.parentElement !== ui.searchHome) ui.graphLegendHome.before(label);
-    label.hidden = modules;
-  }
+  ui.kindFilter.closest("label").hidden = modules;
+  ui.generatedFilter.closest("label").hidden = modules;
   ui.searchLabel.textContent = modules ? "Module" : "Declaration";
   ui.search.placeholder = modules ? "Module name…" : "Declaration, module, or documentation…";
   ui.direction.closest(".control-grid").hidden = overview;
@@ -795,13 +789,8 @@ function renderOverviewContent(focusFilter = null) {
   state.browse = requestedBrowse;
   moduleOverview?.render(requestedBrowse).then((rendered) => {
     if (rendered && state.page === "overview" && state.browse === requestedBrowse) {
-      const searchSlot = ui.overview.querySelector(".map-search-slot");
-      const filterSlot = ui.overview.querySelector(".research-map-filters");
-      if (searchSlot && filterSlot) {
-        searchSlot.append(ui.searchForm);
-        filterSlot.append(ui.kindFilter.closest("label"), ui.generatedFilter.closest("label"));
-        ui.searchHome.hidden = true;
-      }
+      const controlsSlot = ui.overview.querySelector(".map-controls-slot");
+      if (controlsSlot && ui.controls.parentElement !== controlsSlot) controlsSlot.append(ui.controls);
       if (focusFilter && document.activeElement === document.body) {
         focusFilter.focus({ preventScroll: true });
       }
