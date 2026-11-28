@@ -117,11 +117,55 @@ def validate_retained_catalog(document, declarations, theorems):
     )
 
 
+
+def validate_reviewed_definition_bodies(declarations):
+    """Check the compiled pilot selection and lexical scope of structured body nodes."""
+    expected = {
+        "QuantumTheory.Transport.IsSelfEnergy",
+        "QuantumTheory.Transport.spectralParameterOfRegulator",
+        "QuantumTheory.ConservationLaw.heisenbergScale",
+        "Finpartition.partitionProduct",
+        "Finpartition.weightedMomentFromCumulant",
+    }
+    bodies = {
+        row["name"]: row for row in declarations
+        if (row.get("structuredStatement") or {}).get("definitionBody") is not None
+    }
+    assert set(bodies) == expected, ("reviewed body selection mismatch",
+                                     sorted(expected - set(bodies)),
+                                     sorted(set(bodies) - expected))
+
+    def visit(node, scope):
+        assert isinstance(node, dict), ("invalid presentation node", node)
+        kind = node["kind"]
+        if kind == "var":
+            assert node["id"] in scope, ("unbound variable in definition body", node)
+        elif kind == "lambda":
+            binder = node["binder"]
+            assert binder["id"] not in scope, ("duplicate lambda ID", binder)
+            visit(binder["type"], scope)
+            visit(node["body"], scope | {binder["id"]})
+        elif kind == "app":
+            visit(node["fn"], scope)
+            for argument in node["args"]:
+                visit(argument, scope)
+        else:
+            assert kind in {"const", "sort", "text"}, ("unknown presentation node", kind)
+
+    for name, row in bodies.items():
+        assert row["kind"] in {"def", "abbrev"} and not row["generated"], name
+        presentation = row["structuredStatement"]
+        body = presentation["definitionBody"]
+        assert isinstance(body.get("text"), str) and body["text"].strip(), name
+        visit(body, {binder["id"] for binder in presentation["binders"]})
+    print(f"Validated {len(bodies)} reviewed definition bodies")
+
 def main():
     directory = Path(sys.argv[1]) if len(sys.argv) > 1 else Path("docs/generated")
     declarations = json.loads((directory / "declarations.json").read_text(encoding="utf-8"))
     theorems = json.loads((directory / "theorems.json").read_text(encoding="utf-8"))
     validate(declarations, theorems)
+    validate_reviewed_definition_bodies(declarations)
     completed = Path("docs/completed.md").read_text(encoding="utf-8")
     validate_completed_catalog(completed, declarations)
     retained = Path("docs/theorem-catalog-retained.md").read_text(encoding="utf-8")
