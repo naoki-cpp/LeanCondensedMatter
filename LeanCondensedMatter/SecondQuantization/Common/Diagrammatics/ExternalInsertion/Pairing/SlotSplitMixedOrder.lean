@@ -218,35 +218,22 @@ theorem externalInsertionLeftMixedPosition_fixed
         (Sum.inl ((externalInsertionStandardToMixedAtomicPositionEquiv externalTime
         (σ ∘ fun i : Fin T.card => (T.orderIsoOfFin rfl i).1)).symm p)) := by
   rw [← externalInsertionSupportMixedPosition_eq_standard T externalTime σ]
-  let f : Fin T.card → Fin n := fun i => (T.orderIsoOfFin rfl i).1
+  intro f
   let leg := externalInsertionMixedTimeOrderedAtomicLegEquiv externalTime (σ ∘ f) p
-  apply (externalInsertionLegEquiv E (Finset.univ : Finset (Fin n))).injective
-  rw [externalInsertionLegEquiv_mixedTimeAmbientPositionEquiv,
-    externalInsertionMixedTimeOrderedAtomicLegEquiv_position]
-  change orderedExternalInsertionLegMap (fun e => e) f leg =
-    externalInsertionLegEquiv E (Finset.univ : Finset (Fin n))
-      (externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T)
-        (Sum.inl ((externalInsertionLegEquiv E T).symm
-          ((Equiv.sumCongr (Equiv.refl (Fin (2 * E)))
-            (((Equiv.subtypeUnivEquiv
-              (fun i : Fin T.card => Finset.mem_univ i)).trans
-              (T.orderIsoOfFin rfl).toEquiv).prodCongr
-                (Equiv.refl (Fin 4)))) leg))))
+  rw [externalInsertionMixedTimeAmbientPositionEquiv_legPosition]
+  change (externalInsertionLegEquiv E (Finset.univ : Finset (Fin n))).symm
+      (orderedExternalInsertionLegMap (fun e => e) f leg) =
+    externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T)
+      (Sum.inl ((externalInsertionLegEquiv E T).symm
+        ((Equiv.sumCongr (Equiv.refl (Fin (2 * E)))
+          ((standardSlotEquiv T).symm.prodCongr (Equiv.refl (Fin 4)))) leg)))
   cases leg with
   | inl e =>
-      change Sum.inl e =
-        (externalInsertionLegEquiv E (Finset.univ : Finset (Fin n)))
-          (externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T)
-            (Sum.inl ((externalInsertionLegEquiv E T).symm (Sum.inl e))))
-      rw [externalInsertionSlotLegSplitting_external, Equiv.apply_symm_apply]
+      exact (externalInsertionSlotLegSplitting_external (Finset.subset_univ T) e).symm
   | inr v =>
       rcases v with ⟨v, l⟩
-      change Sum.inr (⟨f v.1, Finset.mem_univ _⟩, l) =
-        (externalInsertionLegEquiv E (Finset.univ : Finset (Fin n)))
-          (externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T)
-            (Sum.inl ((externalInsertionLegEquiv E T).symm
-              (Sum.inr ((T.orderIsoOfFin rfl v.1), l)))))
-      rw [externalInsertionSlotLegSplitting_left_interaction, Equiv.apply_symm_apply]
+      exact (externalInsertionSlotLegSplitting_left_interaction (E := E)
+        (Finset.subset_univ T) (T.orderIsoOfFin rfl v.1) l).symm
 
 /-- Express the assembled mixed-time pairing using the external half's own
 mixed-time positions. The local pairing and its position splitting are reindexed together. -/
