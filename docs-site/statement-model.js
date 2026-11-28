@@ -41,6 +41,58 @@ function constantLabels(presentation) {
     counts.get(name.split(".").at(-1)) === 1 && !variables.has(name.split(".").at(-1)) ? name.split(".").at(-1) : name]));
 }
 
+// Render only known fully qualified constants with the expected explicit arity.
+// The synthetic index is a display-only bound variable, distinct from Lean identifiers
+// (which use \mathrm). Depth distinguishes nested summation indices.
+function operatorNotation(node, args, depth) {
+  if (node.fn?.kind !== "const") return null;
+  const name = node.fn.name;
+  const group = (value) => "\\left(" + value + "\\right)";
+  if (args.length === 1) {
+    const x = args[0];
+    switch (name) {
+      case "Neg.neg": return "-" + group(x);
+      case "Inv.inv": return group(x) + "^{-1}";
+      case "Norm.norm": return "\\left\\lVert " + x + "\\right\\rVert";
+      case "Star.star": return group(x) + "^{\\star}";
+      case "ContinuousLinearMap.adjoint":
+      case "Matrix.conjTranspose": return group(x) + "^{\\dagger}";
+      case "Matrix.trace": return "\\operatorname{Tr}" + group(x);
+      case "NormedSpace.exp":
+      case "Real.exp":
+      case "Complex.exp": return "\\exp" + group(x);
+      case "tsum": {
+        const index = "\\mathsf{i}_{" + depth + "}";
+        return "\\sum_{" + index + "}" + group(group(x) + group(index));
+      }
+      default: return null;
+    }
+  }
+  if (args.length === 2) {
+    const [x, y] = args;
+    switch (name) {
+      case "Inner.inner":
+        return "\\left\\langle " + x + ", " + y + "\\right\\rangle" +
+          (SYMBOLS.has(node.resultType) ? "_{" + SYMBOLS.get(node.resultType) + "}" : "");
+      case "HSMul.hSMul":
+      case "SMul.smul": return group(x) + "\\,\\bullet\\," + group(y);
+      case "Function.comp": return group(x) + "\\circ " + group(y);
+      case "Finset.sum":
+      case "Finset.prod": {
+        const index = "\\mathsf{i}_{" + depth + "}";
+        const symbol = name === "Finset.sum" ? "\\sum" : "\\prod";
+        return symbol + "_{" + index + "\\in " + x + "}" + group(group(y) + group(index));
+      }
+      default: return null;
+    }
+  }
+  // Mathlib's explicit scalar inner-product notation may retain the scalar argument.
+  if (name === "inner" && args.length === 3) {
+    return "\\left\\langle " + args[1] + ", " + args[2] + "\\right\\rangle_{" + args[0] + "}";
+  }
+  return null;
+}
+
 export function expressionToTex(node, labels = new Map(), depth = 0) {
   if (!node || depth > 32) return null;
   if (node.kind === "const") return SYMBOLS.get(node.name) ?? identifier(labels.get(node.name) ?? node.name);
@@ -50,6 +102,8 @@ export function expressionToTex(node, labels = new Map(), depth = 0) {
   if (node.kind !== "app" || !Array.isArray(node.args)) return null;
   const args = node.args.map((arg) => expressionToTex(arg, labels, depth + 1));
   if (args.some((arg) => arg === null)) return null;
+  const notation = operatorNotation(node, args, depth);
+  if (notation !== null) return notation;
   const name = head(node);
   if (INFIX.has(name) && args.length === 2) {
     return "\\left(" + args[0] + "\\right) " + INFIX.get(name) + " \\left(" + args[1] + "\\right)";
