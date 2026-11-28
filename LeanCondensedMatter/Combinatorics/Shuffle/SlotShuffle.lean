@@ -221,7 +221,7 @@ def SlotShuffle.toLeftSlotSet {m n : ℕ} (σ : SlotShuffle m n) : Set.powersetC
 
 private theorem card_leftSlotSet_complement {m n : ℕ} (s : Set.powersetCard (Fin (m + n)) m) :
     ((Finset.univ : Finset (Fin (m + n))) \ s.1).card = n := by
-  simp [Finset.card_sdiff, s.2]
+  simp [Finset.card_sdiff]
 
 /-- Enumerate a left-slot set and its complement increasingly. -/
 private noncomputable def SlotShuffle.ofLeftSlotSet {m n : ℕ} (s : Set.powersetCard (Fin (m + n)) m) :
