@@ -1,6 +1,8 @@
 import LeanCondensedMatter.Analysis.Geometry.FiniteAngularKernel
+import LeanCondensedMatter.Analysis.Geometry.SignedAxisMoments
 import LeanCondensedMatter.Models.OrbitalRelaxation.KineticClosure
-import Mathlib.Tactic.FinCases
+import Mathlib.Logic.Equiv.Fin.Basic
+import Mathlib.Tactic.NormNum
 import Mathlib.Tactic.Positivity
 import Mathlib.Tactic.Ring
 
@@ -29,17 +31,16 @@ open FiniteAngularKernel
 
 open scoped BigOperators
 
+private abbrev octahedralIndex : Fin 6 ≃ Fin 3 × Fin 2 :=
+  (finProdFinEquiv : Fin 3 × Fin 2 ≃ Fin 6).symm
+
 /-- The six signed Cartesian unit vectors in three dimensions. -/
 def octahedralDirection (p : Fin 6) : Fin 3 → ℝ :=
-  ![
-    ![1, 0, 0], ![-1, 0, 0],
-    ![0, 1, 0], ![0, -1, 0],
-    ![0, 0, 1], ![0, 0, -1]
-  ] p
+  signedAxisDirection (octahedralIndex p)
 
 /-- The cosine of the scattering angle between two of the six directions. -/
 def octahedralCosine (p q : Fin 6) : ℝ :=
-  ∑ i : Fin 3, octahedralDirection p i * octahedralDirection q i
+  signedAxisCosine (octahedralIndex p) (octahedralIndex q)
 
 /-- An isotropic (dot-product) kernel restricted to the six-direction grid.
 No smoothness of the sampled function `W` is required. -/
@@ -56,35 +57,35 @@ noncomputable def octahedralMoments (W : ℝ → ℝ)
     (hplus : 0 ≤ W 1) (hminus : 0 ≤ W (-1)) (horth : 0 ≤ W 0) :
     AngularKernelMoments (Fin 6) where
   direction := octahedralDirection
-  unit_direction := by
-    intro p
-    fin_cases p <;> norm_num [octahedralDirection, Fin.sum_univ_three]
+  unit_direction p := signedAxis_unit (octahedralIndex p)
   kernel := octahedralKernel W
   kernel_nonneg := by
     intro p q
-    fin_cases p <;> fin_cases q <;>
-      simp [octahedralKernel, octahedralCosine, octahedralDirection,
-        Fin.sum_univ_three, hplus, hminus, horth]
+    simp only [octahedralKernel, octahedralCosine, signedAxisCosine_eq]
+    split_ifs <;> assumption
   totalRate := W 1 + W (-1) + 4 * W 0
   firstCoefficient := W 1 - W (-1)
   secondCoefficient := W 1 + W (-1) - 2 * W 0
   total_moment := by
     intro p
-    fin_cases p <;>
-      simp [octahedralKernel, octahedralCosine, octahedralDirection,
-        Fin.sum_univ_six, Fin.sum_univ_three] <;> ring
+    have h := signedAxis_total_moment W (octahedralIndex p)
+    rw [← Equiv.sum_comp octahedralIndex
+      (fun q => W (signedAxisCosine (octahedralIndex p) q))] at h
+    norm_num at h
+    exact h
   first_moment := by
     intro p i
-    fin_cases p <;> fin_cases i <;>
-      simp [octahedralDirection, Fin.sum_univ_six] <;>
-      simp [octahedralKernel, octahedralCosine, octahedralDirection,
-        Fin.sum_univ_three] <;> ring
+    have h := signedAxis_first_moment W (octahedralIndex p) i
+    rw [← Equiv.sum_comp octahedralIndex
+      (fun q => W (signedAxisCosine (octahedralIndex p) q) * signedAxisDirection q i)] at h
+    exact h
   second_moment := by
     intro p i j
-    fin_cases p <;> fin_cases i <;> fin_cases j <;>
-      simp [octahedralDirection, Fin.sum_univ_six] <;>
-      simp [octahedralKernel, octahedralCosine, octahedralDirection,
-        Fin.sum_univ_three] <;> ring
+    have h := signedAxis_second_moment W (octahedralIndex p) i j
+    rw [← Equiv.sum_comp octahedralIndex (fun q =>
+      W (signedAxisCosine (octahedralIndex p) q) *
+        (signedAxisDirection q i * signedAxisDirection q j))] at h
+    convert h using 1 <;> ring
 
 /-- The degree-one (momentum) collision eigenvalue, explicitly derived
 from the scattering kernel at backward and orthogonal scattering angles. -/
@@ -114,9 +115,13 @@ theorem octahedral_degreeTwoRate_eq_legendre (W : ℝ → ℝ)
       ∑ q : Fin 6, octahedralKernel W p q *
         (1 - legendreP2 (octahedralCosine p q)) := by
   rw [octahedral_degreeTwoRate]
-  fin_cases p <;>
-    simp [octahedralKernel, octahedralCosine, octahedralDirection, legendreP2,
-      Fin.sum_univ_six, Fin.sum_univ_three] <;> ring
+  have h := signedAxis_total_moment (fun μ => W μ * (1 - legendreP2 μ))
+    (octahedralIndex p)
+  rw [← Equiv.sum_comp octahedralIndex
+    (fun q => W (signedAxisCosine (octahedralIndex p) q) *
+      (1 - legendreP2 (signedAxisCosine (octahedralIndex p) q)))] at h
+  norm_num [legendreP2] at h
+  convert h.symm using 1 <;> ring
 
 /-- The analogous finite transport-weighted sum equals the linear
 angular-mode relaxation eigenvalue. -/
@@ -126,15 +131,19 @@ theorem octahedral_momentumRate_eq_transport (W : ℝ → ℝ)
     (octahedralMoments W hplus hminus horth).momentumRate =
       ∑ q : Fin 6, octahedralKernel W p q * (1 - octahedralCosine p q) := by
   rw [octahedral_momentumRate]
-  fin_cases p <;>
-    simp [octahedralKernel, octahedralCosine, octahedralDirection,
-      Fin.sum_univ_six, Fin.sum_univ_three] <;> ring
+  have h := signedAxis_total_moment (fun μ => W μ * (1 - μ)) (octahedralIndex p)
+  rw [← Equiv.sum_comp octahedralIndex
+    (fun q => W (signedAxisCosine (octahedralIndex p) q) *
+      (1 - signedAxisCosine (octahedralIndex p) q))] at h
+  norm_num at h
+  convert h.symm using 1 <;> ring
 
 /-- A diagonal degree-two mode is nonzero on the octahedral grid. -/
 theorem octahedral_quadrupole_nonzero :
     ∃ p : Fin 6, quadrupoleMode octahedralDirection 0 0 p ≠ 0 := by
   refine ⟨0, ?_⟩
-  norm_num [quadrupoleMode, octahedralDirection]
+  change (1 : ℝ) * 1 - (if (0 : Fin 3) = 0 then 1 / 3 else 0) ≠ 0
+  norm_num
 
 /-- Strictly positive orthogonal scattering gives a positive quadrupole
 relaxation rate, hence a finite positive `τ₂ = (6 W(0))⁻¹`. -/
