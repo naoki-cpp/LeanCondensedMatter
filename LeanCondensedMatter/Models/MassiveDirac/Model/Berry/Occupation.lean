@@ -116,7 +116,7 @@ theorem zeroTemperatureOccupiedBandBerryWeightCutoff_lower_eq
       apply zeroTemperatureOccupation_eq_one
       simp only [bandSign]
       linarith [hmAbsPos, hmF, hε.1]
-    simp [zeroTemperatureOccupiedRadialBerryEnergyDensity, hocc]
+    simp only [zeroTemperatureOccupiedRadialBerryEnergyDensity, hocc, one_mul]
 
 /-- If `|m| ≤ εF ≤ Λ`, zero-temperature occupation truncates the upper-band Berry integral at
 `εF`. The strict endpoint convention differs only at the singleton `{εF}`, which is invisible to
