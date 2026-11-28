@@ -58,7 +58,7 @@ test("MixedOrderData overview counts and opens both definitions", async () => {
     assert.equal(opened, name);
   }
   await explorer.render("LeanCondensedMatter");
-  assert.match(overview.text(), /Research map/);
+  assert.match(overview.text(), /Declaration dependency map/);
   const region = overview.find("button").find((button) => button.className === "research-map-region");
   assert.match(region.text(), /2 declarations/);
   region.click();
