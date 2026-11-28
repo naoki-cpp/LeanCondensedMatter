@@ -2,7 +2,6 @@ module
 
 public import Mathlib.Analysis.Distribution.SchwartzSpace.Deriv
 import Mathlib.Tactic.Module
-import Mathlib.Tactic.Ring
 
 public section
 
@@ -34,16 +33,8 @@ theorem derivative_apply (f : Space) (x : ℝ) :
   rfl
 
 /-- Multiplication by a fixed complex Schwartz function. -/
-@[expose] noncomputable def multiplicationOperator (f : Space) : Space →ₗ[ℂ] Space where
-  toFun := fun ψ => SchwartzMap.pairing (ContinuousLinearMap.mul ℂ ℂ) f ψ
-  map_add' := by
-    intro ψ χ
-    ext x
-    simp
-  map_smul' := by
-    intro c ψ
-    ext x
-    simp
+@[expose] noncomputable def multiplicationOperator (f : Space) : Space →ₗ[ℂ] Space :=
+  (SchwartzMap.pairing (ContinuousLinearMap.mul ℂ ℂ) f).toLinearMap
 
 @[simp]
 theorem multiplicationOperator_apply (f ψ : Space) (x : ℝ) :
@@ -51,18 +42,9 @@ theorem multiplicationOperator_apply (f ψ : Space) (x : ℝ) :
   rfl
 
 /-- The multiplication operator depends complex-linearly on its Schwartz multiplier. -/
-noncomputable def multiplicationLinear : Space →ₗ[ℂ] (Space →ₗ[ℂ] Space) where
-  toFun := multiplicationOperator
-  map_add' := by
-    intro f g
-    ext ψ x
-    change (f x + g x) * ψ x = f x * ψ x + g x * ψ x
-    ring
-  map_smul' := by
-    intro c f
-    ext ψ x
-    change c * f x * ψ x = c * (f x * ψ x)
-    ring
+noncomputable def multiplicationLinear : Space →ₗ[ℂ] (Space →ₗ[ℂ] Space) :=
+  (ContinuousLinearMap.coeLM ℂ).comp
+    (SchwartzMap.pairing (ContinuousLinearMap.mul ℂ ℂ))
 
 /-- Differentiation obeys the product rule on Schwartz multiplication. -/
 theorem derivative_multiplication_apply (f ψ : Space) :
