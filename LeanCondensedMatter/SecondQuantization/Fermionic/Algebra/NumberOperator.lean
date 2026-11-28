@@ -1,6 +1,6 @@
 import LeanCondensedMatter.Analysis.Algebra.FinsuppDiagonal
 import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.CanonicalAnticommutationRelations
-import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.ExchangeAlgebra
+import LeanCondensedMatter.SecondQuantization.Common.Algebra.ExchangeAlgebra
 import Mathlib.Tactic.Abel
 
 set_option linter.style.header false
@@ -8,18 +8,29 @@ set_option linter.style.header false
 /-!
 # The fermionic number operator, and the reordering identity `c_i c_i† = id - N_i`
 
-The fermionic counterpart of `Bosonic/Algebra/NumberOperator.lean`: `numberOperator i := create i ∘
-annihilate i`, its eigenvalue equation on basis states, and the reordering identity `c_i c_i† =
-id - N_i` (from CAR's `{c_i, c_i†} = id`, via the unified `ζ`-commutator
-`Common.exchangeCommutator`). Split out from `Hamiltonian.lean` (which still holds
-`totalNumberOperator`/`freeHamiltonian`/`interactionHamiltonian`, all built on top of this) so
-both statistics' number-operator layers expose the same physical endpoints, up to the sign of `ζ`.
+The single-mode number operator is `Nᵢ = cᵢ† cᵢ`; its eigenvalues are zero or one.
+The concrete exchange-algebra instance supplies the reordering identity `cᵢ cᵢ† = id - Nᵢ`.
 -/
 
 namespace SecondQuantization
 namespace Fermionic
 
 variable {Mode : Type*} [LinearOrder Mode]
+
+/-- The fermionic exchange algebra. -/
+noncomputable instance exchangeAlgebra :
+    Common.ExchangeAlgebra Common.Statistics.fermion Mode (Occupation Mode) where
+  annihilate := annihilate
+  create := create
+  annihilate_create i j := by
+    simpa [Common.exchangeCommutator, Common.Statistics.zetaInt_fermion] using
+      anticomm_annihilate_create i j
+  annihilate_annihilate i j := by
+    simpa [Common.exchangeCommutator, Common.Statistics.zetaInt_fermion] using
+      anticomm_annihilate_annihilate i j
+  create_create i j := by
+    simpa [Common.exchangeCommutator, Common.Statistics.zetaInt_fermion] using
+      anticomm_create_create i j
 
 /-- **The single-mode number operator** `Nᵢ := aᵢ† aᵢ`. -/
 noncomputable def numberOperator (i : Mode) :

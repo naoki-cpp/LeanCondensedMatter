@@ -118,7 +118,6 @@
       "id": "transportStredaUmbrella",
       "path": "LeanCondensedMatter/Transport/Streda.lean",
       "modules": [
-        "LeanCondensedMatter.Transport.Streda.ResponseMatrix",
         "LeanCondensedMatter.Transport.Streda.ResponseMatrixRepresentation",
         "LeanCondensedMatter.Transport.Streda.ConductivityNormalization"
       ]
@@ -218,11 +217,6 @@
       "id": "transportKuboBastinEigenbasisBoundary",
       "path": "LeanCondensedMatter/Transport/KuboBastin/Eigenbasis.lean",
       "modules": ["LeanCondensedMatter.Transport.KuboBastin.Finite"]
-    },
-    {
-      "id": "transportStredaResponseMatrixBoundary",
-      "path": "LeanCondensedMatter/Transport/Streda/ResponseMatrix.lean",
-      "modules": ["LeanCondensedMatter.Transport.Core.ConductivityTensor"]
     },
     {
       "id": "transportStredaResponseMatrixRepresentationBoundary",

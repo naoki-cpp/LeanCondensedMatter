@@ -18,18 +18,11 @@ import LeanCondensedMatter.Combinatorics.PerfectPairing.InvolutionCard
 set_option linter.style.header false
 
 /-!
-# Perfect pairings of ordered finite positions
+# Perfect pairings
 
-Importing this module provides the core pairing type, normalized endpoints, pairing presentations,
-the minimal bipartite matching API, scalar pairing evaluation, pairing-induced vertex graphs,
-partner-invariant restriction and reindexing, order-preserving pairing embeddings, component
-pair decompositions, transport, crossing statistics, fixed-point-free involution cardinalities,
-erase/insert infrastructure, and the
-first-pair product/sum decompositions used by the Bloch--de Dominicis development. The
-four-position enumeration, abstract first-pair recursion, and exchange-weighted sum backend remain
-separate modules and must be imported explicitly when needed.
-
-This entry point stays purely at the pairing-structure level. The separate `Permutation.PairingBridge`
-module owns only the crossing-weighted pairing sum and its parity-sensitive bridge to the generic
-`ζ`-weighted permutation backend.
+Fixed-point-free involutions on arbitrary types, normalized pairs on finite ordered types,
+matching and pairing evaluation, restriction and reindexing, component decompositions,
+crossing parity, and first-pair deletion and insertion.
+For abstract first-pair recursion, import `Combinatorics.PerfectPairing.FirstPairRecursion`;
+for crossing-weighted permutation sums, import `Permutation.PairingBridge`.
 -/

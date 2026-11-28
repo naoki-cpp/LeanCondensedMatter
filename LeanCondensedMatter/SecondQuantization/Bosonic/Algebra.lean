@@ -8,12 +8,6 @@ set_option linter.style.header false
 /-!
 # Bosonic algebra
 
-The algebraic bosonic layer consists of:
-
-- occupation-number states and the algebraic Fock space;
-- creation and annihilation operators;
-- canonical commutation and exchange-algebra instances;
-- particle-number grading and number operators.
-- finite-vector fields, number-conserving second quantization, and the one-particle embedding.
-
+Occupation-number Fock space, creation and annihilation operators, CCR and exchange algebra,
+particle-number grading, finite-vector fields, second quantization, and one-particle embedding.
 -/

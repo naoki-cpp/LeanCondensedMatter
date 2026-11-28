@@ -9,8 +9,7 @@ The clean Hamiltonian, spectrum, and Berry curvature are owned by `Model` and de
 on `HamiltonianParameters`. This module owns the additional finite-response parameters,
 their regularity conditions, and the finite momentum disk. The signed charge convention is
 `j = q v` (with negative `q` for electrons); its current operator is defined downstream
-in `Operator`. Occupation laws can be supplied through the generic
-`QuantumTheory.bandStateOccupation` interface.
+in `Operator`. Energy-based occupation laws are evaluated directly at the band energy.
 -/
 
 namespace QuantumTheory.Models.RashbaExchange

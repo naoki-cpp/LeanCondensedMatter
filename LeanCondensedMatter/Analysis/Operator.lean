@@ -23,10 +23,8 @@ set_option linter.style.header false
 /-!
 # Operator analysis
 
-General operator-theoretic infrastructure: bounded and unbounded operators, antiunitary maps, Hilbert bases,
-spectral and resolvent theory, Berry geometry, finite traces, Hilbert–Schmidt and trace-class
-operators, Fredholm determinants for diagonal data, and multiplication and Schwartz operator algebra.
-
-The spectral, unbounded, and trace-class subpackages own their respective exports. Concrete
-physical realizations of these abstractions live in the quantum-mechanical or transport layers.
+Hilbert-space operator theory: adjoints and conjugation, unitary and antiunitary maps,
+compactness and spectral theory, bounded resolvents and unbounded operators, finite traces,
+Hilbert–Schmidt and trace-class operators, diagonal Fredholm determinants, Berry geometry,
+and multiplication and Schwartz-space operators.
 -/

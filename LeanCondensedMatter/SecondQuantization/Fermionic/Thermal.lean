@@ -10,15 +10,9 @@ import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed
 set_option linter.style.header false
 
 /-!
-# Fermionic free thermal theory
+# Free fermionic thermal theory
 
-Finite-basis and completed-Hilbert free-fermion thermal theory, including generic pure-point
-Gibbs expectations, the shared explicit-μ grand-canonical partition function and its finite-mode
-product formula, Fermi--Dirac observables, entropy, and Green functions and contractions. Completed
-thermal theory includes grand-canonical number expectation, ladder/KMS/pairing, and finite-mode
-Gibbs convergence. Finite full-occupation Gibbs expectations and density operators specialize
-the shared explicit-μ grand-canonical and generic pure-point APIs.
-
-Completed thermal modules depend on the representation and operator infrastructure in
-`Fermionic.CompletedSpace`; the representation umbrella does not own the thermal stack.
+Finite and completed free Gibbs states and expectations, grand-canonical partition functions,
+Fermi–Dirac occupation and entropy, Green functions and contractions, KMS and Wick identities,
+and finite-mode Gibbs convergence.
 -/

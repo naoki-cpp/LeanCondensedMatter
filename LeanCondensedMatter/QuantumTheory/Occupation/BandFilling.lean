@@ -1,4 +1,3 @@
-import LeanCondensedMatter.QuantumTheory.Occupation.Band
 import LeanCondensedMatter.QuantumTheory.Occupation.ZeroTemperature
 import Mathlib.Data.Set.Basic
 
@@ -9,7 +8,7 @@ set_option linter.style.header false
 
 This module owns model-independent zero-temperature occupied regions, Fermi surfaces, and filled,
 empty, and partially filled band predicates under the repository's strict `energy < fermiEnergy`
-convention. It also connects those predicates to the generic `bandStateOccupation` composition.
+convention. It also connects those predicates to the scalar zero-temperature occupation law.
 
 These definitions belong to the spectral occupation layer; transport-specific Lorentzian Fermi-edge
 integrals and broadening limits remain downstream in `Transport.Analysis.ZeroTemperatureLorentzian`.
@@ -57,54 +56,12 @@ def IsPartiallyFilledBand
     k ∈ fermiSurface energy fermiEnergy band ↔ energy band k = fermiEnergy :=
   Iff.rfl
 
-/-- Below the Fermi energy, the generic state occupation specialized to the zero-temperature step is
-exactly one. -/
-theorem bandStateOccupation_zeroTemperature_eq_one_of_lt
-    (energy : Band → K → ℝ) (fermiEnergy : ℝ) (band : Band) (k : K)
-    (h : energy band k < fermiEnergy) :
-    bandStateOccupation (zeroTemperatureOccupation fermiEnergy) energy band k = 1 := by
-  simpa [bandStateOccupation] using
-    zeroTemperatureOccupation_eq_one (fermiEnergy := fermiEnergy)
-      (energy := energy band k) h
-
-/-- At or above the Fermi energy, the generic state occupation specialized to the zero-temperature
-step is exactly zero. -/
-theorem bandStateOccupation_zeroTemperature_eq_zero_of_le
-    (energy : Band → K → ℝ) (fermiEnergy : ℝ) (band : Band) (k : K)
-    (h : fermiEnergy ≤ energy band k) :
-    bandStateOccupation (zeroTemperatureOccupation fermiEnergy) energy band k = 0 := by
-  simpa [bandStateOccupation] using
-    zeroTemperatureOccupation_eq_zero (fermiEnergy := fermiEnergy)
-      (energy := energy band k) h
-
 /-- Every state of a filled band has unit occupation under the strict zero-temperature Fermi step. -/
-theorem bandStateOccupation_zeroTemperature_eq_one_of_isFilledBand
+theorem zeroTemperatureOccupation_eq_one_of_isFilledBand
     (energy : Band → K → ℝ) (fermiEnergy : ℝ) (band : Band)
     (hfilled : IsFilledBand energy fermiEnergy band) (k : K) :
-    bandStateOccupation (zeroTemperatureOccupation fermiEnergy) energy band k = 1 :=
-  bandStateOccupation_zeroTemperature_eq_one_of_lt
-    energy fermiEnergy band k (hfilled k)
-
-
-/-- A zero-temperature state has occupation one exactly when it lies in the strict occupied region. -/
-@[simp] theorem bandStateOccupation_zeroTemperature_eq_one_iff
-    (energy : Band → K → ℝ) (fermiEnergy : ℝ) (band : Band) (k : K) :
-    bandStateOccupation (zeroTemperatureOccupation fermiEnergy) energy band k = 1 ↔
-      energy band k < fermiEnergy := by
-  unfold bandStateOccupation zeroTemperatureOccupation
-  by_cases h : energy band k < fermiEnergy <;> simp [h]
-
-/-- A zero-temperature state has occupation zero exactly when it lies at or above the Fermi energy. -/
-@[simp] theorem bandStateOccupation_zeroTemperature_eq_zero_iff
-    (energy : Band → K → ℝ) (fermiEnergy : ℝ) (band : Band) (k : K) :
-    bandStateOccupation (zeroTemperatureOccupation fermiEnergy) energy band k = 0 ↔
-      fermiEnergy ≤ energy band k := by
-  unfold bandStateOccupation zeroTemperatureOccupation
-  by_cases h : energy band k < fermiEnergy
-  · have hnot : ¬ fermiEnergy ≤ energy band k := not_le_of_gt h
-    simp [h, hnot]
-  · have hle : fermiEnergy ≤ energy band k := le_of_not_gt h
-    simp [h, hle]
+    zeroTemperatureOccupation fermiEnergy (energy band k) = 1 :=
+  zeroTemperatureOccupation_eq_one (hfilled k)
 
 end
 end QuantumTheory

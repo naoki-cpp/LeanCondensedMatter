@@ -98,19 +98,11 @@ theorem conjugateOperator_trace (A : H →L[ℂ] H) :
     intro i j
     rw [Θ.inner_map, (orthonormal_iff_ite).1 b.orthonormal i j]
     split_ifs <;> simp
-  have horth' :
-      Orthonormal ℂ
-        ((Set.univ : Set (Fin (Module.finrank ℂ H))).domRestrict
-          (fun i => Θ.equiv (b i))) := by
-    change Orthonormal ℂ
-      (fun i : (Set.univ : Set (Fin (Module.finrank ℂ H))) => Θ.equiv (b i))
-    exact horth.comp
-      (fun i : (Set.univ : Set (Fin (Module.finrank ℂ H))) => (i : Fin (Module.finrank ℂ H)))
-      Subtype.val_injective
-  obtain ⟨b', hb'⟩ :=
-    horth'.exists_orthonormalBasis_extension_of_card_eq
-      (Module.finrank_eq_card_basis b.toBasis)
-  have hb' (i) : b' i = Θ.equiv (b i) := hb' i (Set.mem_univ i)
+  have hsp : ⊤ ≤ Submodule.span ℂ (Set.range (fun i => Θ.equiv (b i))) := by
+    rw [horth.linearIndependent.span_eq_top_of_card_eq_finrank' (by simp)]
+  let b' := OrthonormalBasis.mk horth hsp
+  have hb' (i) : b' i = Θ.equiv (b i) :=
+    congrFun (OrthonormalBasis.coe_mk horth hsp) i
   rw [finiteDimensionalOperatorTrace_apply, finiteDimensionalOperatorTrace_apply,
     LinearMap.trace_eq_sum_inner _ b', LinearMap.trace_eq_sum_inner _ b, star_sum]
   apply Finset.sum_congr rfl

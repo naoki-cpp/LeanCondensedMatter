@@ -19,9 +19,9 @@ import LeanCondensedMatter.Models.RashbaExchange.RealSpaceHopping
 set_option linter.style.header false
 
 /-!
-# Finite Rashba-exchange anomalous-Hall benchmark
+# Finite Rashba-exchange transport model
 
-Public route for the finite-cutoff, finite-broadening two-band Rashba-exchange model, its spectral
-projectors, and the interband current-block/Berry-curvature bridge. Fixed-window clean-limit pole
-extraction remains downstream.
+Two-band Rashba-exchange Hamiltonians, spectral projectors and Berry curvature, finite-cutoff
+Kubo–Bastin charge response and interband pole identities, and finite momentum-grid and
+real-space spin-current and displacement response.
 -/
