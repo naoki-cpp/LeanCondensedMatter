@@ -43,7 +43,7 @@ theorem signedAxisCosine_eq (p q : ι × Fin 2) :
     · intro i _ hi
       simp [signedAxisDirection, Ne.symm hi]
     · simp
-  · rw [signedAxisCosine, if_neg hab]
+  · rw [signedAxisCosine, ite_eq_right hab]
     apply Finset.sum_eq_zero
     intro i _
     by_cases hi : a = i
@@ -55,6 +55,7 @@ theorem signedAxis_unit (p : ι × Fin 2) :
     ∑ i, signedAxisDirection p i ^ 2 = 1 := by
   simpa [signedAxisCosine, pow_two] using signedAxisCosine_eq p p
 
+omit [Fintype ι] in
 theorem signedAxisDirection_rev (p : ι × Fin 2) (i : ι) :
     signedAxisDirection (p.1, p.2.rev) i = -signedAxisDirection p i := by
   rcases p with ⟨a, s⟩
@@ -94,7 +95,7 @@ theorem signedAxis_sum_direction_mul (i j : ι) :
   rw [Fintype.sum_prod_type]
   by_cases hij : i = j
   · subst j
-    rw [if_pos rfl]
+    rw [ite_eq_left rfl]
     calc
       _ = ∑ a : ι, if a = i then (2 : ℝ) else 0 := by
         apply Finset.sum_congr rfl
@@ -102,20 +103,21 @@ theorem signedAxis_sum_direction_mul (i j : ι) :
         by_cases h : a = i <;>
           norm_num [Fin.sum_univ_two, signedAxisDirection, h]
       _ = 2 := by simp
-  · rw [if_neg hij]
+  · rw [ite_eq_right hij]
     apply Finset.sum_eq_zero
     intro a _
     by_cases hi : a = i
-    · have hj : a ≠ j := fun h => hij (hi.symm.trans h)
-      simp [Fin.sum_univ_two, signedAxisDirection, hi, hj]
-    · simp [Fin.sum_univ_two, signedAxisDirection, hi]
+    · subst a
+      simp [signedAxisDirection, hij]
+    · simp [signedAxisDirection, hi]
 
 /-- The total gain rate in any finite dimension. -/
 theorem signedAxis_total_moment (W : ℝ → ℝ) (p : ι × Fin 2) :
     ∑ q, W (signedAxisCosine p q) =
       W 1 + W (-1) + (2 * (Fintype.card ι : ℝ) - 2) * W 0 := by
   have h := signedAxis_sum_weighted W p (fun _ => (1 : ℝ))
-  simp [Fintype.card_prod] at h
+  simp only [mul_one, Finset.sum_const, Finset.card_univ, nsmul_eq_mul,
+    Fintype.card_prod, Fintype.card_fin, Nat.cast_mul, Nat.cast_ofNat] at h
   rw [h]
   ring
 
