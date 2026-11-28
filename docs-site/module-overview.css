@@ -165,6 +165,21 @@
 .research-map-stage canvas { display: block; width: 100%; height: auto; cursor: grab; touch-action: pan-y; }
 .research-map-stage canvas:active { cursor: grabbing; }
 .research-map-stage canvas:focus-visible { outline-offset: -3px; }
+.research-map-hover {
+  position: absolute;
+  z-index: 2;
+  transform: translateX(-50%);
+  width: max-content;
+  max-width: min(75%, 32rem);
+  padding: 6px 10px;
+  border: 1px solid var(--map-border);
+  border-radius: 5px;
+  background: var(--map-surface);
+  color: var(--map-ink);
+  font: 500 .82rem/1.35 var(--ui-font);
+  overflow-wrap: anywhere;
+  pointer-events: none;
+}
 .research-map-controls { display: flex; flex-wrap: wrap; gap: 6px; justify-content: flex-end; }
 .research-map-controls button {
   min-width: 36px;

@@ -192,6 +192,10 @@ export function renderResearchMap(children, onOpenDeclaration, onRegionChange, o
   const parentControl = button("Parent region", () => { if (active?.parent) openRegion(active.parent); });
   parentControl.hidden = true;
   let selected = null;
+  let hovered = null;
+  const hoverLabel = element("div", "research-map-hover");
+  hoverLabel.hidden = true;
+  hoverLabel.setAttribute("aria-hidden", "true");
   let drag = null;
   let cameraFrame = null;
   let zoomingToParent = false;
@@ -296,6 +300,16 @@ export function renderResearchMap(children, onOpenDeclaration, onRegionChange, o
   }
 
   function draw() {
+    hoverLabel.hidden = !hovered;
+    if (hovered) {
+      const [x, y] = pointOnScreen(hovered);
+      hoverLabel.textContent = hovered.entry.name;
+      const halfLabel = hoverLabel.offsetWidth / 2 + 6;
+      const left = x / width * stage.clientWidth;
+      const top = y / height * stage.clientHeight + 12;
+      hoverLabel.style.left = `${Math.max(halfLabel, Math.min(stage.clientWidth - halfLabel, left))}px`;
+      hoverLabel.style.top = `${Math.max(4, Math.min(stage.clientHeight - hoverLabel.offsetHeight - 4, top))}px`;
+    }
     canvas.style.touchAction = view.zoom > 1.5 ? "none" : "pan-y";
     placeLabels();
     const overview = view.zoom <= 1.5;
@@ -364,6 +378,12 @@ export function renderResearchMap(children, onOpenDeclaration, onRegionChange, o
       ctx.arc(...pointOnScreen(selected), 5, 0, 2 * Math.PI);
       ctx.fill();
     }
+    if (hovered) {
+      ctx.strokeStyle = "#edf5ee";
+      ctx.beginPath();
+      ctx.arc(...pointOnScreen(hovered), 7, 0, 2 * Math.PI);
+      ctx.stroke();
+    }
   }
 
   function populatePicker(region) {
@@ -393,6 +413,7 @@ export function renderResearchMap(children, onOpenDeclaration, onRegionChange, o
   }
 
   function reset() {
+    hovered = null;
     stopCamera();
     view = { x: width / 2, y: height / 2, zoom: 1 };
     selected = null;
@@ -427,6 +448,7 @@ export function renderResearchMap(children, onOpenDeclaration, onRegionChange, o
 
   function openRegion(region, { focus = true } = {}) {
     if (!region.points.length) return;
+    hovered = null;
     setRegion(region);
     selected = null;
     detail.hidden = true;
@@ -456,6 +478,7 @@ export function renderResearchMap(children, onOpenDeclaration, onRegionChange, o
 
   function openPoint(point) {
     if (!point) return;
+    hovered = null;
     stopCamera();
     setRegion(point.region);
     selected = point;
@@ -476,6 +499,7 @@ export function renderResearchMap(children, onOpenDeclaration, onRegionChange, o
   function zoomBy(factor, x = width / 2, y = height / 2) {
     if (factor < 1 && zoomingToParent && cameraFrame !== null) return;
     stopCamera();
+    hovered = null;
     const limit = Math.max(24, active ? height / active.radius : 24, view.zoom);
     const next = Math.max(1, Math.min(limit, view.zoom * factor));
     if (factor < 1 && active) {
@@ -517,6 +541,10 @@ export function renderResearchMap(children, onOpenDeclaration, onRegionChange, o
   canvas.addEventListener("pointerdown", (event) => {
     if (!event.isPrimary || event.button !== 0 || (event.pointerType === "touch" && view.zoom <= 1.5)) return;
     stopCamera();
+    if (hovered) {
+      hovered = null;
+      draw();
+    }
     drag = { id: event.pointerId, start: coords(event), view: { ...view }, moved: false };
     canvas.setPointerCapture(event.pointerId);
   });
@@ -530,10 +558,18 @@ export function renderResearchMap(children, onOpenDeclaration, onRegionChange, o
       view.x = drag.view.x - dx / view.zoom;
       view.y = drag.view.y - dy / view.zoom;
       draw();
-    } else if (view.zoom > 1.5) {
-      const name = hit(x, y)?.entry.name ?? "Select a dot or choose a declaration.";
-      if (preview.textContent !== name) preview.textContent = name;
+    } else if (event.pointerType !== "touch" && cameraFrame === null) {
+      const point = hit(x, y);
+      if (point !== hovered) {
+        hovered = point;
+        draw();
+      }
     }
+  });
+  canvas.addEventListener("pointerleave", () => {
+    if (!hovered) return;
+    hovered = null;
+    draw();
   });
   canvas.addEventListener("pointercancel", (event) => {
     if (drag?.id === event.pointerId) drag = null;
@@ -567,6 +603,7 @@ export function renderResearchMap(children, onOpenDeclaration, onRegionChange, o
     const shift = { ArrowLeft: [-1, 0], ArrowRight: [1, 0], ArrowUp: [0, -1], ArrowDown: [0, 1] }[event.key];
     if (shift) {
       stopCamera();
+      hovered = null;
       view.x += shift[0] * 70 / view.zoom;
       view.y += shift[1] * 70 / view.zoom;
       draw();
@@ -578,7 +615,7 @@ export function renderResearchMap(children, onOpenDeclaration, onRegionChange, o
   });
   select.addEventListener("change", () => openPoint(byName.get(select.value)));
   controls.append(parentControl, button("Zoom out", () => zoomBy(1 / 1.5)), button("Zoom in", () => zoomBy(1.5)), button("Whole map", reset));
-  stage.append(canvas, ...allRegions.map((region) => region.label));
+  stage.append(canvas, ...allRegions.map((region) => region.label), hoverLabel);
   const emptyBundles = [];
   const overviewFooter = element("div", "research-map-overview");
   overviewFooter.append(...overviewHeader);

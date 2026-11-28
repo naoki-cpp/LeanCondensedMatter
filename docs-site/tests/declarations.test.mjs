@@ -66,6 +66,14 @@ test("MixedOrderData overview counts and opens both definitions", async () => {
   region.click();
   assert.equal(mapTitle?.text(), "Mixed Order Data");
   assert.equal(overview.find("canvas").length, 1);
+  const canvas = overview.find("canvas")[0];
+  const hover = overview.find("div").find((item) => item.className === "research-map-hover");
+  canvas.getBoundingClientRect = () => ({ left: 0, top: 0, width: 960, height: 670 });
+  canvas.pointermove({ clientX: 480, clientY: 335, pointerType: "mouse", pointerId: 1 });
+  assert.equal(hover.hidden, false);
+  assert.equal(hover.text(), names[0]);
+  canvas.pointerleave();
+  assert.equal(hover.hidden, true);
   const picker = overview.find("select")[0];
   picker.value = names[0];
   picker.change();
