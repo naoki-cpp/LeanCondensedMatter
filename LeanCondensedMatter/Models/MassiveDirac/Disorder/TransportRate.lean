@@ -1,7 +1,8 @@
 import LeanCondensedMatter.QuantumTheory.ScatteringRate
 import LeanCondensedMatter.Transport.Analysis.RelaxationTime
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.SingleParticleRate
-import LeanCondensedMatter.Models.MassiveDirac.Disorder.ScalarAngularWeights
+import LeanCondensedMatter.Transport.Scattering.IsotropicAngularWeights
+import LeanCondensedMatter.Models.MassiveDirac.Model.FermiSurfaceOverlap
 import Mathlib.Tactic.FieldSimp
 import Mathlib.Tactic.NormNum
 import Mathlib.Tactic.Positivity
@@ -23,7 +24,7 @@ For `|m| < ε_F`, the gauge-independent upper-band projector overlap reduces to
 W(θ) = [1 + m²/ε_F² + (1 - m²/ε_F²) cos θ] / 2,
 ```
 
-so the unweighted and transport-weighted angular means (derived in `ScalarAngularWeights`)
+so the unweighted and transport-weighted angular means
 give the relation between `τ_sp` and `τ_tr`.
 No Kubo ladder equation, Ward identity, crossed diagram, or identification with the exact disorder-
 averaged conductivity is claimed here.
@@ -36,6 +37,48 @@ noncomputable section
 open MeasureTheory
 open QuantumTheory.Transport
 open scoped Interval
+
+/-- Write the model-specific projector overlap as an affine first cosine harmonic. -/
+private theorem upperBandFermiSurfaceScalarOverlapWeight_eq_affineCosine
+    (v m fermiEnergy : ℝ) :
+    upperBandFermiSurfaceScalarOverlapWeight v m fermiEnergy =
+      (fun θ : ℝ =>
+        (1 + m ^ 2 / fermiEnergy ^ 2) / 2 +
+          ((1 - m ^ 2 / fermiEnergy ^ 2) / 2) * Real.cos θ) := by
+  funext θ
+  unfold upperBandFermiSurfaceScalarOverlapWeight
+  ring
+
+/-- Upper-band overlap factor in the single-particle Born rate. -/
+def isotropicUpperBandSingleParticleAngularWeight
+    (v m fermiEnergy : ℝ) : ℝ :=
+  isotropicSingleParticleAngularMean
+    (upperBandFermiSurfaceScalarOverlapWeight v m fermiEnergy)
+
+/-- The unweighted scalar-disorder overlap average is `(1 + m²/ε_F²)/2`. -/
+theorem isotropicUpperBandSingleParticleAngularWeight_eq
+    (v m fermiEnergy : ℝ) :
+    isotropicUpperBandSingleParticleAngularWeight v m fermiEnergy =
+      (1 + m ^ 2 / fermiEnergy ^ 2) / 2 := by
+  unfold isotropicUpperBandSingleParticleAngularWeight
+  rw [upperBandFermiSurfaceScalarOverlapWeight_eq_affineCosine,
+    isotropicSingleParticleAngularMean_affineCosine]
+
+/-- Upper-band transport mean, weighted by `1 - cos θ`. -/
+def isotropicUpperBandTransportAngularWeight
+    (v m fermiEnergy : ℝ) : ℝ :=
+  isotropicTransportAngularMean
+    (upperBandFermiSurfaceScalarOverlapWeight v m fermiEnergy)
+
+/-- The scalar-disorder transport angular weight is `(1 + 3 m²/ε_F²)/4`. -/
+theorem isotropicUpperBandTransportAngularWeight_eq
+    (v m fermiEnergy : ℝ) :
+    isotropicUpperBandTransportAngularWeight v m fermiEnergy =
+      (1 + 3 * (m ^ 2 / fermiEnergy ^ 2)) / 4 := by
+  unfold isotropicUpperBandTransportAngularWeight
+  rw [upperBandFermiSurfaceScalarOverlapWeight_eq_affineCosine,
+    isotropicTransportAngularMean_affineCosine]
+  ring
 
 /-- Common continuum Born Fermi-circle rate prefactor after isolating the dimensionless projector
 angular weight. Its normalization is checked below against the already-derived self-energy rate. -/
