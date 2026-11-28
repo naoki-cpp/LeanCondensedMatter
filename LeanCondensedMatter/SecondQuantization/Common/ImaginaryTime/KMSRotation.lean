@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Analysis.Algebra.FinsuppTrace
 import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.DiagonalEvolution
 import LeanCondensedMatter.SecondQuantization.Common.Algebra.DiagonalTrace
 
@@ -9,7 +10,7 @@ set_option linter.style.header false
 The common Bloch–de Dominicis induction uses trace cyclicity together with the KMS-type relation to
 move a ladder operator from the end of an operator product to its front while picking up an
 eigenvalue-dependent weight. This file packages that statistics-independent step by combining
-`Common.tsumTrace_comp_comm` with
+`Finsupp.tsum_diagonal_comp_comm` with
 `Common.diagonalEvolution_comp_eq_smul_comp_diagonalEvolution`:
 
 `Tr[e^{-βH₀} (A C)] = e^{qβ} Tr[e^{-βH₀} (C A)]`.
@@ -31,7 +32,7 @@ namespace Common
 variable {Config : Type*}
 
 /-- The KMS-type trace rotation on any configuration type, obtained from
-`Common.tsumTrace_comp_comm`. The double-series summability hypothesis `h` is explicit; finite
+`Finsupp.tsum_diagonal_comp_comm`. The double-series summability hypothesis `h` is explicit; finite
 configuration spaces discharge it automatically, while infinite bosonic occupation spaces require
 analytic estimates. -/
 theorem tsumTrace_diagonalEvolution_comp_rotate
@@ -48,7 +49,10 @@ theorem tsumTrace_diagonalEvolution_comp_rotate
     rw [show ((q * β : ℝ) : ℂ) = -((q * -β : ℝ) : ℂ) by push_cast; ring,
       Complex.exp_neg]
     exact (eq_inv_smul_iff₀ (Complex.exp_ne_zero _)).2 hKMS.symm
-  rw [← LinearMap.comp_assoc, tsumTrace_comp_comm _ _ h,
+  have hcyclic : tsumTrace (((diagonalEvolution energy (-β)).comp A).comp C) =
+      tsumTrace (C.comp ((diagonalEvolution energy (-β)).comp A)) :=
+    Finsupp.tsum_diagonal_comp_comm _ _ h
+  rw [← LinearMap.comp_assoc, hcyclic,
     ← LinearMap.comp_assoc, hKMS', LinearMap.smul_comp,
     tsumTrace_smul, LinearMap.comp_assoc, smul_eq_mul]
 

@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Analysis.Algebra.FinsuppTrace
 import LeanCondensedMatter.Analysis.Algebra.ScalarExchange
 import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.KMSRotation
 
@@ -32,7 +33,7 @@ variable {Config : Type*}
 relations and the imaginary-time eigenvalue-shift equation, together with explicit summability
 of the peeled diagonal (`hPeel`) and the rotated double series (`hRotate`). Summability of the
 rotated tail's diagonal is derived from `hRotate` by
-`summable_matrixCoeff_diag_comp_of_summable_uncurry`. -/
+`Finsupp.summable_diagonal_comp_of_summable_uncurry`. -/
 theorem tsumTrace_diagonalEvolution_comp_peel
     (energy : Config → ℝ) (β q1 : ℝ) (ζ : ℂ)
     (C1 : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
@@ -67,9 +68,10 @@ theorem tsumTrace_diagonalEvolution_comp_peel
     (List.prod (l.map Prod.fst)) C1 hC1 hRotate
   have hSummDCjC1 : Summable (fun n => matrixCoeff
       ((diagonalEvolution energy (-β)).comp ((List.prod (l.map Prod.fst)).comp C1)) n n) := by
-    have := summable_matrixCoeff_diag_comp_of_summable_uncurry
-      ((diagonalEvolution energy (-β)).comp (List.prod (l.map Prod.fst))) C1 hRotate
-    rwa [LinearMap.comp_assoc] at this
+    have hdiag : Summable (fun n => matrixCoeff
+        (((diagonalEvolution energy (-β)).comp (List.prod (l.map Prod.fst))).comp C1) n n) :=
+      Finsupp.summable_diagonal_comp_of_summable_uncurry _ _ hRotate
+    simpa only [LinearMap.comp_assoc] using hdiag
   have hscaled : Summable (fun n =>
       matrixCoeff (ζ ^ l.length • ((diagonalEvolution energy (-β)).comp
         ((List.prod (l.map Prod.fst)).comp C1))) n n) := by

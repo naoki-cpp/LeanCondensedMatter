@@ -1,4 +1,3 @@
-import LeanCondensedMatter.Analysis.Algebra.FinsuppCoordinates
 import LeanCondensedMatter.Analysis.Algebra.FinsuppDiagonal
 import LeanCondensedMatter.Analysis.Algebra.FinsuppSupportShift
 import LeanCondensedMatter.SecondQuantization.Common.Algebra.AlgebraicFock
@@ -101,13 +100,8 @@ theorem matrixCoeff_diagonalOperator_comp_self_eq_zero_of_carriesShift
     (hA : Finsupp.CarriesShift grading A q) (hq : q ≠ 0)
     (w : Config → ℂ) (n : Config) :
     matrixCoeff ((Finsupp.diagonalOperator w).comp A) n n = 0 := by
-  have hdiag : matrixCoeff A n n = 0 :=
-    hA.diagonal_eq_zero hq n
-  calc
-    matrixCoeff ((Finsupp.diagonalOperator w).comp A) n n =
-        w n * matrixCoeff A n n := by
-          simp only [matrixCoeff, LinearMap.comp_apply, Finsupp.diagonalOperator_apply]
-    _ = 0 := by rw [hdiag, mul_zero]
+  change Finsupp.diagonalOperator w (A (Finsupp.single n 1)) n = 0
+  rw [Finsupp.diagonalOperator_apply, hA.diagonal_eq_zero hq n, mul_zero]
 
 /-- Nonzero-charge observables belong to every diagonal-weighted trace domain:
 the numerator vanishes term by term, regardless of the weight. -/
@@ -116,12 +110,8 @@ theorem summable_diagonalOperator_comp_of_carriesShift
     {A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config} {q : G}
     (hA : Finsupp.CarriesShift grading A q) (hq : q ≠ 0) (w : Config → ℂ) :
     Summable (fun n => matrixCoeff ((Finsupp.diagonalOperator w).comp A) n n) := by
-  have hzero : (fun n => matrixCoeff ((Finsupp.diagonalOperator w).comp A) n n) =
-      (fun _ : Config => (0 : ℂ)) := by
-    funext n
-    exact matrixCoeff_diagonalOperator_comp_self_eq_zero_of_carriesShift hA hq w n
-  rw [hzero]
-  exact summable_zero
+  simpa only [matrixCoeff_diagonalOperator_comp_self_eq_zero_of_carriesShift hA hq w] using
+    (summable_zero : Summable (fun _ : Config => (0 : ℂ)))
 
 /-- Every diagonal weighting annihilates the trace of a nonzero-charge observable. -/
 theorem tsumTrace_diagonalOperator_comp_eq_zero_of_carriesShift
@@ -154,44 +144,6 @@ theorem summableDiagonalTraceRatioLinear_eq_zero_of_carriesShift
       ⟨A, summable_diagonalOperator_comp_of_carriesShift hA hq w⟩ = 0 := by
   change tsumTrace ((Finsupp.diagonalOperator w).comp A) / tsumTrace (Finsupp.diagonalOperator w) = 0
   exact diagonalTraceRatio_eq_zero_of_carriesShift hA hq w
-
-/-- Sum the matrix coefficients of a composite over the finite support of its right factor. -/
-private theorem matrixCoeff_comp_eq_tsum
-    (A B : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (m n : Config) :
-    matrixCoeff (A.comp B) m n = ∑' k, matrixCoeff A m k * matrixCoeff B k n := by
-  change A (B (basisState n)) m = ∑' k, matrixCoeff A m k * matrixCoeff B k n
-  rw [Finsupp.linearMap_apply_eq_finsetSum_of_support_subset A (B (basisState n))
-    (B (basisState n)).support (subset_refl _) m]
-  exact ((hasSum_sum_of_ne_finset_zero
-    (s := (B (basisState n)).support)
-    (fun k hk => by
-      rw [Finsupp.notMem_support_iff.mp hk, mul_zero])).tsum_eq).symm
-
-/-- **Cyclicity under a two-operator swap**, assuming absolute double summability:
-`Tr'[AB] = Tr'[BA]`. -/
-theorem tsumTrace_comp_comm (A B : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
-    (h : Summable (Function.uncurry (fun n k => matrixCoeff A n k * matrixCoeff B k n))) :
-    tsumTrace (A.comp B) = tsumTrace (B.comp A) := by
-  rw [tsumTrace, tsumTrace]
-  calc
-    ∑' n, matrixCoeff (A.comp B) n n
-        = ∑' n, ∑' k, matrixCoeff A n k * matrixCoeff B k n :=
-          tsum_congr fun n => matrixCoeff_comp_eq_tsum A B n n
-    _ = ∑' k, ∑' n, matrixCoeff A n k * matrixCoeff B k n := h.tsum_comm.symm
-    _ = ∑' n, matrixCoeff (B.comp A) n n := tsum_congr fun k => by
-      rw [matrixCoeff_comp_eq_tsum]
-      exact tsum_congr fun n => mul_comm _ _
-
-/-- A composite's diagonal series is summable whenever the underlying bivariate family is. -/
-theorem summable_matrixCoeff_diag_comp_of_summable_uncurry
-    (A B : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
-    (h : Summable (Function.uncurry (fun n k => matrixCoeff A n k * matrixCoeff B k n))) :
-    Summable (fun n => matrixCoeff (A.comp B) n n) := by
-  have hrow : (fun n => matrixCoeff (A.comp B) n n) =
-      fun n => ∑' k, matrixCoeff A n k * matrixCoeff B k n :=
-    funext fun n => matrixCoeff_comp_eq_tsum A B n n
-  rw [hrow]
-  exact h.prod
 
 end Common
 end SecondQuantization
