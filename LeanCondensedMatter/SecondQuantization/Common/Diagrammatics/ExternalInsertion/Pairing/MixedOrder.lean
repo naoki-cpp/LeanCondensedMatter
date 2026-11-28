@@ -1,4 +1,4 @@
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Core.Ordered
+import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionImaginaryTimeOrder
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Core.SlotCongr
 
 set_option linter.style.header false
@@ -9,6 +9,7 @@ set_option linter.style.header false
 The pairing of any diagram whose internal slots are the full finite slot family can be transported
 from fixed flattened-leg positions to mixed-time atomic positions. This construction and its partner
 coherence depend only on the diagram pairing and the generic mixed-order position equivalence.
+The same module provides full-slot interaction labels and the partner on canonical leg identities.
 -/
 
 namespace SecondQuantization
@@ -17,6 +18,22 @@ namespace Common
 open Combinatorics
 
 variable {ExternalLabel InternalLabel : Type*}
+
+/-- Slot-indexed interaction labels of an external-insertion diagram. -/
+def ExternalInsertionDiagram.vertexLabelSequence {E n : ℕ}
+    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E n
+      (Finset.univ : Finset (Fin n))) :
+    Fin n → InternalLabel :=
+  fun v => d.vertexLabel ⟨v, Finset.mem_univ v⟩
+
+/-- The diagram pairing as a map on canonical external/interaction leg identities. -/
+noncomputable def ExternalInsertionDiagram.atomicLegPartner {E n : ℕ}
+    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E n
+      (Finset.univ : Finset (Fin n)))
+    (leg : OrderedExternalInsertionLeg E n) : OrderedExternalInsertionLeg E n :=
+  externalInsertionLegEquiv E (Finset.univ : Finset (Fin n))
+    (d.pairing.partner
+      ((externalInsertionLegEquiv E (Finset.univ : Finset (Fin n))).symm leg))
 
 /-- Transport a diagram pairing from fixed flattened-leg order to mixed-time atomic order. -/
 noncomputable def ExternalInsertionDiagram.pairingInMixedOrder {E n : ℕ}
