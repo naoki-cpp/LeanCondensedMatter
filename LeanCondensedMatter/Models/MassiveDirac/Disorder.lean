@@ -29,16 +29,9 @@ set_option linter.style.header false
 /-!
 # Massive-Dirac scalar disorder
 
-Umbrella for finite-ensemble scalar covariance; continuum Born self-energy,
-damping and scattering times; finite-regulator Born-Dyson propagators and
-current-vertex ladders; scalar-impurity T-matrices; and real-space Fourier
-analysis. Definitions and proofs reside in the imported modules.
-
-Fixed-cutoff zero-broadening boundaries, weak-disorder limits, and ultraviolet
-limits are distinct. In particular, removing the outer Fourier cutoff at a
-fixed Born self-energy cutoff does not establish a joint-cutoff UV limit.
-
-Kubo/Středa conductivity and crossed-diagram assembly are downstream. No exact
-disorder average, SCBA/Ward closure, unconditional outgoing Hankel identity,
-or interchange of regulator, disorder, UV, and thermodynamic limits is claimed.
+Scalar covariance, Born self-energy and scattering rates, Born-Dyson propagators, current ladders,
+scalar T-matrices, and real-space Fourier representations.
+Fixed-cutoff zero-broadening and weak-disorder limits are distinct from ultraviolet limits;
+removing the Fourier cutoff at fixed self-energy cutoff does not prove a joint UV limit.
+Neither exact disorder averaging nor an unconditional Hankel transform is asserted.
 -/

@@ -16,9 +16,6 @@ set_option linter.style.header false
 /-!
 # Basis-independent fermionic algebraic Fock space
 
-The exterior-algebra Fock representation, smeared creation and annihilation operators, CAR,
-occupation-representation equivalences, algebraic second quantization, and
-the rank-one factorization `dΓ(|f⟩⟨d|) = a†(f) a(d)`.
-The declarations belong to `SecondQuantization.Fermionic.AlgebraicFock`.
-This layer does not depend on lattice, transport, finite-volume, or validation modules.
+Exterior-algebra Fock space, smeared ladder operators and CAR, occupation-space equivalences,
+algebraic second quantization, rank-one factorization, and finite-dimensional Hilbert realizations.
 -/

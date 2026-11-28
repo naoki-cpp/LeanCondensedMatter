@@ -19,11 +19,6 @@ set_option linter.style.header false
 /-!
 # Quartic diagram infrastructure
 
-Statistics-independent quartic leg indexing, labelled diagram syntax, vertex ordering, connectivity,
-connected-component restriction, reassembly and its inverse laws, component-decomposition equivalence
-and generic connected-decomposition adapter, component-local orders and pairing compatibility,
-component-pair equivalence, fixed-global-order component-pair embeddings, mixed two-point leg
-embeddings, Statistics-generic crossing-parity/pairing-weight factorization, and the corresponding
-scalar `PairingOn.evaluation` factorization endpoint. Ordered-simplex shuffle analysis is consumed
-directly from `Analysis/OrderedSimplex` by the fermionic amplitude layer.
+Labelled quartic diagrams, leg and vertex orders, connected-component restriction and reassembly,
+component pairing equivalences, crossing parity, and scalar amplitude factorization.
 -/

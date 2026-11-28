@@ -12,7 +12,7 @@ set_option linter.style.header false
 /-!
 # Fermionic validation models
 
-Finite toy models and explicit checks for the fermionic transport stack. This is a terminal consumer
-of the public algebra, lattice, and transport construction layers, not part of their ownership;
-upstream fermionic modules must not import this validation tree.
+Explicit finite benchmarks for fermionic lattice operators and transport, including two-level
+systems, two-site dimers, Lehmann and frequency response, and orbital response.
+This is a terminal validation layer, not an upstream dependency.
 -/
