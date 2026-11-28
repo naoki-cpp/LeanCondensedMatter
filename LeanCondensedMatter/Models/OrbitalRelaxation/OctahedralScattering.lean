@@ -50,6 +50,14 @@ def octahedralKernel (W : ℝ → ℝ) (p q : Fin 6) : ℝ :=
 /-- Degree-two Legendre polynomial on the cosine of the scattering angle. -/
 noncomputable def legendreP2 (μ : ℝ) : ℝ := (3 * μ ^ 2 - 1) / 2
 
+private theorem octahedral_sum_kernel (W : ℝ → ℝ) (p : Fin 6) :
+    ∑ q, octahedralKernel W p q = W 1 + W (-1) + 4 * W 0 := by
+  have h := signedAxis_total_moment W (octahedralIndex p)
+  rw [← Equiv.sum_comp octahedralIndex
+    (fun q => W (signedAxisCosine (octahedralIndex p) q))] at h
+  norm_num at h
+  exact h
+
 /-- The octahedral dot-product kernel automatically satisfies the moments
 needed for first and diagonal second angular modes. Only the three sampled
 values of `W` need to be nonnegative. -/
@@ -66,13 +74,7 @@ noncomputable def octahedralMoments (W : ℝ → ℝ)
   totalRate := W 1 + W (-1) + 4 * W 0
   firstCoefficient := W 1 - W (-1)
   secondCoefficient := W 1 + W (-1) - 2 * W 0
-  total_moment := by
-    intro p
-    have h := signedAxis_total_moment W (octahedralIndex p)
-    rw [← Equiv.sum_comp octahedralIndex
-      (fun q => W (signedAxisCosine (octahedralIndex p) q))] at h
-    norm_num at h
-    exact h
+  total_moment := octahedral_sum_kernel W
   first_moment := by
     intro p i
     have h := signedAxis_first_moment W (octahedralIndex p) i
@@ -85,12 +87,7 @@ noncomputable def octahedralMoments (W : ℝ → ℝ)
     rw [← Equiv.sum_comp octahedralIndex (fun q =>
       W (signedAxisCosine (octahedralIndex p) q) *
         (signedAxisDirection q i * signedAxisDirection q j))] at h
-    change (∑ q : Fin 6, W (signedAxisCosine (octahedralIndex p) (octahedralIndex q)) *
-      (signedAxisDirection (octahedralIndex q) i * signedAxisDirection (octahedralIndex q) j)) =
-      (W 1 + W (-1) + 4 * W 0 - (W 1 + W (-1) - 2 * W 0)) / 3 *
-        (if i = j then 1 else 0) +
-      (W 1 + W (-1) - 2 * W 0) *
-        (signedAxisDirection (octahedralIndex p) i * signedAxisDirection (octahedralIndex p) j)
+    unfold octahedralKernel octahedralCosine octahedralDirection
     rw [h]
     ring
 
@@ -122,15 +119,8 @@ theorem octahedral_degreeTwoRate_eq_legendre (W : ℝ → ℝ)
       ∑ q : Fin 6, octahedralKernel W p q *
         (1 - legendreP2 (octahedralCosine p q)) := by
   rw [octahedral_degreeTwoRate]
-  have h := signedAxis_total_moment (fun μ => W μ * (1 - legendreP2 μ))
-    (octahedralIndex p)
-  rw [← Equiv.sum_comp octahedralIndex
-    (fun q => W (signedAxisCosine (octahedralIndex p) q) *
-      (1 - legendreP2 (signedAxisCosine (octahedralIndex p) q)))] at h
-  change 6 * W 0 = ∑ q : Fin 6,
-    W (signedAxisCosine (octahedralIndex p) (octahedralIndex q)) *
-      (1 - legendreP2 (signedAxisCosine (octahedralIndex p) (octahedralIndex q)))
-  rw [h]
+  change 6 * W 0 = ∑ q, octahedralKernel (fun μ => W μ * (1 - legendreP2 μ)) p q
+  rw [octahedral_sum_kernel]
   norm_num [legendreP2]
   ring
 
@@ -142,14 +132,8 @@ theorem octahedral_momentumRate_eq_transport (W : ℝ → ℝ)
     (octahedralMoments W hplus hminus horth).momentumRate =
       ∑ q : Fin 6, octahedralKernel W p q * (1 - octahedralCosine p q) := by
   rw [octahedral_momentumRate]
-  have h := signedAxis_total_moment (fun μ => W μ * (1 - μ)) (octahedralIndex p)
-  rw [← Equiv.sum_comp octahedralIndex
-    (fun q => W (signedAxisCosine (octahedralIndex p) q) *
-      (1 - signedAxisCosine (octahedralIndex p) q))] at h
-  change 2 * W (-1) + 4 * W 0 = ∑ q : Fin 6,
-    W (signedAxisCosine (octahedralIndex p) (octahedralIndex q)) *
-      (1 - signedAxisCosine (octahedralIndex p) (octahedralIndex q))
-  rw [h]
+  change 2 * W (-1) + 4 * W 0 = ∑ q, octahedralKernel (fun μ => W μ * (1 - μ)) p q
+  rw [octahedral_sum_kernel]
   norm_num
   ring
 
