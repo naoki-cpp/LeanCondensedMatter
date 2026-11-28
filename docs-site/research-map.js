@@ -554,6 +554,7 @@ export function renderResearchMap(children, onOpenDeclaration, onRegionChange, o
       const dx = x - drag.start[0];
       const dy = y - drag.start[1];
       if (!drag.moved && Math.hypot(dx, dy) < 7) return;
+      if (!drag.moved) canvas.classList.add("is-dragging");
       drag.moved = true;
       view.x = drag.view.x - dx / view.zoom;
       view.y = drag.view.y - dy / view.zoom;
@@ -571,9 +572,13 @@ export function renderResearchMap(children, onOpenDeclaration, onRegionChange, o
     hovered = null;
     draw();
   });
-  canvas.addEventListener("pointercancel", (event) => {
-    if (drag?.id === event.pointerId) drag = null;
-  });
+  for (const type of ["pointerup", "pointercancel", "lostpointercapture"]) {
+    canvas.addEventListener(type, (event) => {
+      if (drag?.id !== event.pointerId) return;
+      canvas.classList.remove("is-dragging");
+      if (type === "pointercancel") drag = null;
+    });
+  }
   canvas.addEventListener("click", (event) => {
     if (drag?.moved) { drag = null; return; }
     drag = null;

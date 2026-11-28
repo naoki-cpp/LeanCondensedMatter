@@ -162,8 +162,8 @@
   border-radius: 50%;
 }
 .research-map-stage { position: relative; overflow: hidden; background: var(--graph-bg); }
-.research-map-stage canvas { display: block; width: 100%; height: auto; cursor: grab; touch-action: pan-y; }
-.research-map-stage canvas:active { cursor: grabbing; }
+.research-map-stage canvas { display: block; width: 100%; height: auto; cursor: default; touch-action: pan-y; }
+.research-map-stage canvas.is-dragging { cursor: grabbing; }
 .research-map-stage canvas:focus-visible { outline-offset: -3px; }
 .research-map-hover {
   position: absolute;
