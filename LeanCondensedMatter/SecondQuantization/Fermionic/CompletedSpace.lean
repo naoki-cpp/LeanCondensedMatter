@@ -14,18 +14,11 @@ import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.ModeTrunc
 set_option linter.style.header false
 
 /-!
-# Completed fermionic Fock-space analysis
+# Completed fermionic Fock space
 
-The completed fermionic representation includes the `ℓ²` occupation space, dense
-algebraic core, bounded number/creation/annihilation operators and CAR, maximal diagonal operators
-and their analytic properties, free-Hamiltonian domains and ladder relations, finite-dimensional
-compatibility, and finite-mode representation truncations.
-
-Thermal states, Gibbs summability and expectations, finite-mode Gibbs convergence, Gibbs
-intertwining, thermal ladder packaging, peel/KMS identities, and the completed Bloch--de Dominicis
-recursion are owned by `SecondQuantization.Fermionic.Thermal` (with completed-representation
-specializations under `SecondQuantization.Fermionic.Thermal.Completed`).
-
-No unbounded operator is coerced into `ContinuousLinearMap`; products involving the completed free
-Hamiltonian are stated on its explicit maximal domain.
+Occupation `ℓ²` space and its algebraic core, bounded mode-number and ladder operators,
+smeared ladder operators,
+CAR, one-particle unitary lifts and generators, maximal diagonal operators, free-Hamiltonian
+product domains, and finite-mode compatibility and truncations.
+Thermal constructions are provided by `Fermionic.Thermal`.
 -/

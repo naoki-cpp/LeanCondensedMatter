@@ -14,9 +14,7 @@ set_option linter.style.header false
 /-!
 # Massive-Dirac transport benchmark
 
-Public entry point for the two-dimensional massive-Dirac transport benchmark. It exposes the clean
-model, propagator and its momentum-inversion symmetry, intrinsic Hall benchmark, Středa and Bastin
-representations, disorder specialization, physically normalized longitudinal/Hall conductivity
-results. The model-specific Born disorder stage attaches its scalar disorder line to the
-shared physical-momentum continuum measure; generic trace/current normalization stays upstream.
+Two-dimensional massive-Dirac spectral and Berry geometry, propagators, Kubo–Bastin
+and Středa representations, Born and ladder disorder approximations, longitudinal and Hall
+conductivity benchmarks, and scaling relations.
 -/

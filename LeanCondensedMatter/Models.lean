@@ -20,6 +20,7 @@ set_option linter.style.header false
 /-!
 # Concrete physical models
 
-Concrete Hamiltonian families and their model-specific calculations. Generic physical
-theories, including transport response, remain in their own upstream modules.
+Kronig–Penney, Holstein–Primakoff and Heisenberg spin-wave models, massive Dirac,
+parabolic two-dimensional electron gas, Rashba exchange, and finite orbital relaxation
+and transport models.
 -/

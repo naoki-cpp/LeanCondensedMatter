@@ -32,9 +32,7 @@ set_option linter.style.header false
 /-!
 # Linear response
 
-Generic linear-response theory from time-dependent perturbations to physical response formulas:
-expectation dynamics, first variations, Kubo response, source coupling, retarded susceptibility,
-linearity in the measured observable, frequency-domain and adiabatic limits, Lehmann
-representations, and energy-eigenbasis realizations. Files are grouped by expectation interfaces,
-free dynamics, perturbations, response formulas, frequency transforms, and Lehmann data.
+Expectation dynamics and time-dependent perturbations, first variations and Kubo response,
+source coupling and retarded susceptibility, finite- and infinite-time Fourier transforms,
+adiabatic switching and limit order, and Lehmann representations with finite spectral tables.
 -/

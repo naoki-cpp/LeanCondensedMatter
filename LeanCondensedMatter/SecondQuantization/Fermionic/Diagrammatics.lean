@@ -9,12 +9,7 @@ set_option linter.style.header false
 /-!
 # Fermionic diagrammatics
 
-Quartic interaction vertices, local-leg semantics, ordered Wick diagrams and amplitudes, and their
-connected-component factorization; the two-point external-leg foundation and perturbative diagram
-expansion; the Dyson diagram expansion, connected-diagram formula for Dyson vertex cumulants, the
-general algebraic Dyson Linked Cluster Theorem. Low-order coefficient identities are consequences of the generic
-`Combinatorics.powerSeriesMomentCoeff_succ_recurrence` and do not require
-order-specific fermionic diagrammatic wrappers.
-Statistics-independent quartic and two-point diagram structure is owned by
-`SecondQuantization.Common`.
+Quartic, two-point and arbitrary even-external Wick amplitudes, connected-component
+factorization, Dyson expansions, and formal and analytic linked-cluster identities.
+Statistics-independent diagram structures are provided by `SecondQuantization.Common`.
 -/

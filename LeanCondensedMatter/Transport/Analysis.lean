@@ -7,14 +7,9 @@ import LeanCondensedMatter.Transport.Analysis.ZeroTemperatureLorentzian
 set_option linter.style.header false
 
 /-!
-# Generic transport analysis
+# Transport analysis
 
-Model-independent analytical tools used in transport calculations: angular harmonics,
-Fermi-edge formulas, finite-dimensional Fourier geometry,
-continuum momentum measures, physical polar Fourier reduction, and positive relaxation-time data.
-Radial Fourier differentiation, primitives, and improper limits are opt-in mathematical APIs under
-`LeanCondensedMatter.Analysis.Fourier.PolarRadialKernels`.
-
-These results make no choice of Hamiltonian, disorder model, response approximation, or
-conductivity benchmark.
+Physical momentum measures and polar Fourier transforms, Fourier geometry,
+zero-temperature Lorentzian identities, and positive relaxation-time data.
+Dimensionless radial Fourier kernels are provided by `Analysis.Fourier.PolarRadialKernels`.
 -/

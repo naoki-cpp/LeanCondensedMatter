@@ -12,11 +12,9 @@ import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointMixed
 set_option linter.style.header false
 
 /-!
-# Statistics-independent imaginary-time infrastructure
+# Statistics-independent imaginary-time theory
 
-Statistics-aware pair time ordering, basis-diagonal free evolution, fixed energy-shift eigenoperators,
-algebraic Heisenberg evolution, interaction-picture operators, KMS rotation identities, generic
-quartic-interaction evolution, the arbitrary-external and two-point imaginary-time event/atomic-leg orderings,
-with monotone slot transport and measurable finite order signatures.
-These are ordering coordinates; fermionic exchange signs are supplied separately.
+Diagonal free and interaction-picture evolution, energy-shift and KMS identities,
+statistics-indexed time ordering, and measurable two-point and arbitrary-external event and leg
+orders. Exchange signs for the mixed leg orders are supplied by the statistics-specific layer.
 -/
