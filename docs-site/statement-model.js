@@ -33,7 +33,10 @@ function variableRoles(bindings, hilbertSpaces) {
     if (args.length === 0 && (name === "Real" || name === "Complex")) {
       roles.set(binder.id, { kind: "scalar", field: name });
     } else if (args.length === 1 && ["QuantumTheory.Observable", "QuantumTheory.DensityOperator", "QuantumTheory.StateVector"].includes(name)) {
-      roles.set(binder.id, { kind: name === "QuantumTheory.StateVector" ? "ket" : "operator-wrapper" });
+      roles.set(binder.id, { kind: name === "QuantumTheory.StateVector" ? "ket" : "operator-wrapper",
+        wrapper: name, space: args[0]?.kind === "var" ? args[0].id : undefined });
+    } else if (binder.type.kind === "var" && hilbertSpaces.has(binder.type.id)) {
+      roles.set(binder.id, { kind: "hilbert-vector", space: binder.type.id });
     } else if (["LinearMap", "ContinuousLinearMap"].includes(name) && args.length === 3 &&
         constantHead(args[0]) === "RingHom.id" && argumentsOf(args[0]).length === 1 &&
         constantHead(argumentsOf(args[0])[0]) === "Complex" &&
@@ -52,7 +55,7 @@ function styledVariable(node, roles) {
   if (tex === null) return null;
   const kind = roleOf(node, roles)?.kind;
   if (kind === "operator" || kind === "operator-wrapper") return "\\hat{" + tex + "}";
-  if (kind === "ket") return "\\left|" + tex + "\\right\\rangle";
+  if (kind === "ket" || kind === "hilbert-vector") return "\\left|" + tex + "\\right\\rangle";
   return tex;
 }
 
@@ -122,7 +125,26 @@ function operatorNotation(node, args, depth, roles) {
         left.field === "Complex" && right?.kind === "operator" && node.resultType === right.map) {
       return x + "\\," + y;
     }
+    if (name === "QuantumTheory.expValue") {
+      if (left?.wrapper === "QuantumTheory.Observable" && right?.kind === "ket" &&
+          left.space !== undefined && left.space === right.space) {
+        const psi = identifier(node.args[1].name);
+        return "\\left\\langle " + psi + "\\middle|" + args[0] + "\\middle|" + psi + "\\right\\rangle";
+      }
+    }
+    // Both operands must be known from the statement telescope. A wrapped
+    // normalized state is not interchangeable with an unwrapped Hilbert vector.
+    if (["DFunLike.coe", "FunLike.coe", "LinearMap.toFun", "ContinuousLinearMap.toFun"].includes(name) &&
+        left?.kind === "operator" && right?.kind === "hilbert-vector" && left.space === right.space) {
+      return x + "\\," + y;
+    }
+    if (name === "Inner.inner" && node.resultType === "Complex" &&
+        left?.kind === "hilbert-vector" && right?.kind === "hilbert-vector" && left.space === right.space) {
+      return "\\left\\langle " + identifier(node.args[0].name) + "\\middle|" +
+        identifier(node.args[1].name) + "\\right\\rangle";
+    }
     switch (name) {
+      case "Bracket.bracket": return "\\left[" + x + ", " + y + "\\right]";
       case "Inner.inner":
         return "\\left\\langle " + x + ", " + y + "\\right\\rangle" +
           (SYMBOLS.has(node.resultType) ? "_{" + SYMBOLS.get(node.resultType) + "}" : "");
@@ -140,8 +162,30 @@ function operatorNotation(node, args, depth, roles) {
       default: return null;
     }
   }
+  // The project uses one fixed-sign bracket for both CAR and CCR. Keep
+  // the sign visible unless its identity can be established from the tree.
+  if (name === "ScalarExchange.zetaCommutator" && args.length === 3) {
+    const sign = node.args[0];
+    // Do not guess a numeral from a bare OfNat.ofNat node: the old
+    // presentation schema may have omitted its implicit Nat index.
+    if (sign.kind === "text" && sign.text === "1") return "\\left[" + args[1] + ", " + args[2] + "\\right]";
+    if (sign.kind === "text" && sign.text === "-1") return "\\left\\{" + args[1] + ", " + args[2] + "\\right\\}";
+    return "\\left[" + args[1] + ", " + args[2] + "\\right]_{" + args[0] + "}";
+  }
+  if (name === "InnerProductSpace.rankOne" && args.length === 3 && constantHead(node.args[0]) === "Complex" &&
+      roleOf(node.args[1], roles)?.kind === "hilbert-vector" &&
+      roleOf(node.args[2], roles)?.kind === "hilbert-vector") {
+    return args[1] + "\\left\\langle " + identifier(node.args[2].name) + "\\right|";
+  }
   // Mathlib's explicit scalar inner-product notation may retain the scalar argument.
   if (name === "inner" && args.length === 3) {
+    const left = roleOf(node.args[1], roles);
+    const right = roleOf(node.args[2], roles);
+    if (constantHead(node.args[0]) === "Complex" && left?.kind === "hilbert-vector" &&
+        right?.kind === "hilbert-vector" && left.space === right.space) {
+      return "\\left\\langle " + identifier(node.args[1].name) + "\\middle|" +
+        identifier(node.args[2].name) + "\\right\\rangle";
+    }
     return "\\left\\langle " + args[1] + ", " + args[2] + "\\right\\rangle_{" + args[0] + "}";
   }
   return null;
