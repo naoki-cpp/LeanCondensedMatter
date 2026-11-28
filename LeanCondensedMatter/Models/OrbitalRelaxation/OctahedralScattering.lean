@@ -131,7 +131,8 @@ theorem octahedral_degreeTwoRate_eq_legendre (W : ℝ → ℝ)
     W (signedAxisCosine (octahedralIndex p) (octahedralIndex q)) *
       (1 - legendreP2 (signedAxisCosine (octahedralIndex p) (octahedralIndex q)))
   rw [h]
-  norm_num [legendreP2] <;> ring
+  norm_num [legendreP2]
+  ring
 
 /-- The analogous finite transport-weighted sum equals the linear
 angular-mode relaxation eigenvalue. -/
@@ -149,7 +150,8 @@ theorem octahedral_momentumRate_eq_transport (W : ℝ → ℝ)
     W (signedAxisCosine (octahedralIndex p) (octahedralIndex q)) *
       (1 - signedAxisCosine (octahedralIndex p) (octahedralIndex q))
   rw [h]
-  norm_num <;> ring
+  norm_num
+  ring
 
 /-- A diagonal degree-two mode is nonzero on the octahedral grid. -/
 theorem octahedral_quadrupole_nonzero :
