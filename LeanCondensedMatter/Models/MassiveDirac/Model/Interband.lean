@@ -85,10 +85,8 @@ theorem forceMatrixTraceNumerator_xy_eq (band : TwoBand) (v m px py : ℝ)
   have hOppositeProjector :
       bandProjector (oppositeBand band) v m px py =
         (1 / 2 : ℂ) • ((1 : Matrix2) - InternalSpace.pauliCombination u) := by
-    calc
-      _ = 1 - bandProjector band v m px py :=
-        eq_sub_of_add_eq' (bandProjector_add_oppositeBand band v m px py)
-      _ = _ := by rw [hProjector]; module
+    rw [eq_sub_of_add_eq' (bandProjector_add_oppositeBand band v m px py), hProjector]
+    module
   have hEc : (((energy v m px py : ℝ) : ℂ)) ≠ 0 := by
     exact_mod_cast hE
   unfold forceMatrixTraceNumerator

@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Models.RashbaExchange.Model.Spectral
+import LeanCondensedMatter.Analysis.Operator.BerryGeometry
 import LeanCondensedMatter.QuantumTheory.TwoBand
 import Mathlib.Tactic.FieldSimp
 import Mathlib.Tactic.Ring
@@ -80,10 +81,8 @@ theorem forceMatrixTraceNumerator_xy_eq
       bandProjector params (oppositeBand band) px py =
         (1 / 2 : ℂ) •
           ((1 : InternalSpace.PauliMatrix) - InternalSpace.pauliCombination u) := by
-    calc
-      _ = 1 - bandProjector params band px py :=
-        eq_sub_of_add_eq' (bandProjector_add_oppositeBand params band px py)
-      _ = _ := by rw [hProjector]; module
+    rw [eq_sub_of_add_eq' (bandProjector_add_oppositeBand params band px py), hProjector]
+    module
   have hEc : (((spinOrbitEnergy params px py : ℝ) : ℂ)) ≠ 0 := by
     exact_mod_cast hE
   have hnorm : dotProduct u u = 1 := by
@@ -139,11 +138,11 @@ theorem forceMatrixBerryCurvature_eq_berryCurvature
   rw [forceMatrixBerryCurvature,
     forceMatrixTraceNumerator_xy_eq params band px py hE,
     interbandEnergyGap_eq]
-  simp only [Complex.sub_im, Complex.neg_im, Complex.mul_im,
-    Complex.ofReal_re, Complex.ofReal_im]
-  cases band <;>
-    simp [berryCurvature, bandSign] <;>
-    field_simp [hE]
+  simpa only [berryCurvature, Complex.ofReal_neg, mul_assoc] using
+    (BerryGeometry.signedInterbandBerryWeight_eq
+      (-(params.rashbaVelocity ^ 4 * px * py / spinOrbitEnergy params px py ^ 2))
+      (bandSign band) (spinOrbitEnergy params px py)
+      (params.exchangeSplitting * params.rashbaVelocity ^ 2) (bandSign_sq band) hE)
 
 end
 
