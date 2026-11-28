@@ -72,20 +72,10 @@ noncomputable def vacuumComponentLegDataEquiv
     {S : Finset Vertex} (B : Finset (External ⊕ ↥S))
     (hVac : ComponentIsVacuum B) :
     {leg : External ⊕ (↥S × Local) // componentLegVertex leg ∈ B} ≃
-      ↥(interactionSector B) × Local :=
-  (componentLegDataEquiv B).trans
-    { toFun := fun leg => by
-        cases leg with
-        | inl e =>
-            exact False.elim (hVac ⟨e.1, Finset.mem_toLeft.1 e.2⟩)
-        | inr p => exact p
-      invFun := Sum.inr
-      left_inv := fun leg => by
-        cases leg with
-        | inl e =>
-            exact False.elim (hVac ⟨e.1, Finset.mem_toLeft.1 e.2⟩)
-        | inr p => rfl
-      right_inv := fun _ => rfl }
+      ↥(interactionSector B) × Local := by
+  letI : IsEmpty ↥(Finset.toLeft B) :=
+    ⟨fun e => hVac ⟨e.1, Finset.mem_toLeft.1 e.2⟩⟩
+  exact (componentLegDataEquiv B).trans (Equiv.emptySum _ _)
 
 end
 
