@@ -429,18 +429,10 @@ theorem besselY0Y1_harmonicIdentity (z : ℂ) :
         (z ^ 2 / 4) * Complex.besselJ 0 z *
           besselY1HarmonicCorrection z = 1 := by
   let x : ℂ := -(z / 2) ^ 2
-  have hA : Summable (fun n : ℕ =>
-      PowerSeries.coeff n besselFormalJ0 * x ^ n) :=
-    summable_besselFormalJ0_eval z
-  have hD : Summable (fun n : ℕ =>
-      PowerSeries.coeff n (PowerSeries.derivative besselFormalJ0) * x ^ n) :=
-    summable_besselFormalJ0_derivative_eval z
-  have hB : Summable (fun n : ℕ =>
-      PowerSeries.coeff n besselFormalH0 * x ^ n) :=
-    summable_besselFormalH0_eval z
-  have hC : Summable (fun n : ℕ =>
-      PowerSeries.coeff n besselFormalH1 * x ^ n) :=
-    summable_besselFormalH1_eval z
+  have hA := summable_besselFormalJ0_eval z
+  have hD := summable_besselFormalJ0_derivative_eval z
+  have hB := summable_besselFormalH0_eval z
+  have hC := summable_besselFormalH1_eval z
   have htwo : PowerSeries.C (2 : ℂ) = (2 : ℂ⟦X⟧) :=
     map_natCast (PowerSeries.C : ℂ →+* ℂ⟦X⟧) 2
   have h2D := PowerSeries.hasSum_coefficientSum_C_mul
@@ -458,37 +450,21 @@ theorem besselY0Y1_harmonicIdentity (z : ℂ) :
   rw [besselFormalJ0H0H1_harmonicIdentity] at hFormal
   have hEval : PowerSeries.coefficientSum (1 : ℂ⟦X⟧) x = _ := hFormal.tsum_eq
   rw [PowerSeries.coefficientSum_one] at hEval
-  have hJ0 :
-      PowerSeries.coefficientSum besselFormalJ0 x =
-        Complex.besselJ 0 z :=
-    (besselJZero_eq_formalTsum z).symm
-  have hJ1 :
-      (z / 2) *
-          PowerSeries.coefficientSum
-            (PowerSeries.derivative besselFormalJ0) x =
-        Complex.besselJ 1 z :=
-    (besselJOne_eq_formalDerivativeTsum z).symm
-  have hY0 :
-      PowerSeries.coefficientSum besselFormalH0 x =
-        besselY0HarmonicCorrection z :=
-    (besselY0HarmonicCorrection_eq_formalTsum z).symm
-  have hY1 :
-      PowerSeries.coefficientSum besselFormalH1 x =
-        besselY1HarmonicCorrection z :=
-    (besselY1HarmonicCorrection_eq_formalTsum z).symm
+  simp only [besselJZero_eq_formalTsum, besselJOne_eq_formalDerivativeTsum,
+    besselY0HarmonicCorrection_eq_formalTsum, besselY1HarmonicCorrection_eq_formalTsum]
+  change PowerSeries.coefficientSum besselFormalJ0 x -
+      z * ((z / 2) * PowerSeries.coefficientSum (PowerSeries.derivative besselFormalJ0) x) *
+        PowerSeries.coefficientSum besselFormalH0 x +
+      (z ^ 2 / 4) * PowerSeries.coefficientSum besselFormalJ0 x *
+        PowerSeries.coefficientSum besselFormalH1 x = 1
   calc
-    Complex.besselJ 0 z -
-        z * Complex.besselJ 1 z * besselY0HarmonicCorrection z +
-        (z ^ 2 / 4) * Complex.besselJ 0 z * besselY1HarmonicCorrection z =
-      PowerSeries.coefficientSum besselFormalJ0 x +
-        x * (2 * PowerSeries.coefficientSum
-          (PowerSeries.derivative besselFormalJ0) x *
+    _ = PowerSeries.coefficientSum besselFormalJ0 x +
+        x * (2 * PowerSeries.coefficientSum (PowerSeries.derivative besselFormalJ0) x *
           PowerSeries.coefficientSum besselFormalH0 x) -
         x * (PowerSeries.coefficientSum besselFormalJ0 x *
           PowerSeries.coefficientSum besselFormalH1 x) := by
-        rw [← hJ0, ← hJ1, ← hY0, ← hY1]
-        dsimp [x]
-        ring
+      dsimp only [x]
+      ring
     _ = 1 := hEval.symm
 
 /-- The actual convergent DLMF Y₀/Y₁ series satisfy the standard
