@@ -48,30 +48,15 @@ theorem hasDerivAt_electromagneticProbabilityCurrentValue1D
         q ℏ mass (vectorPotential y) (ψ y) (ψx y))
       (electromagneticProbabilityCurrentDivergenceValue1D
         q ℏ mass (vectorPotential x) vectorPotentialDerivative (ψ x) (ψx x) ψxx) x := by
-  have hψre : HasDerivAt (fun y => (ψ y).re) (ψx x).re x :=
-    Complex.reCLM.hasFDerivAt.comp_hasDerivAt x hψ
-  have hψim : HasDerivAt (fun y => (ψ y).im) (ψx x).im x :=
-    Complex.imCLM.hasFDerivAt.comp_hasDerivAt x hψ
-  have hψxre : HasDerivAt (fun y => (ψx y).re) ψxx.re x :=
-    Complex.reCLM.hasFDerivAt.comp_hasDerivAt x hψx
-  have hψxim : HasDerivAt (fun y => (ψx y).im) ψxx.im x :=
-    Complex.imCLM.hasFDerivAt.comp_hasDerivAt x hψx
-  have hpairRaw := HasDerivAt.sub
-    (HasDerivAt.mul hψre hψxim) (HasDerivAt.mul hψim hψxre)
-  have hderiv :
-      ((ψx x).re * (ψx x).im + (ψ x).re * ψxx.im) -
-          ((ψx x).im * (ψx x).re + (ψ x).im * ψxx.re) =
-        (ψ x).re * ψxx.im - (ψ x).im * ψxx.re := by
-    ring
-  rw [hderiv] at hpairRaw
-  have hpair :
+  have hcoeff : ℏ / mass = 2 * (ℏ ^ 2 / (2 * mass)) / ℏ := by
+    field_simp [hℏ, hmass]
+  have hparamagnetic :
       HasDerivAt
-        (fun y => (ψ y).re * (ψx y).im - (ψ y).im * (ψx y).re)
-        ((ψ x).re * ψxx.im - (ψ x).im * ψxx.re) x := by
-    rw [hasDerivAt_iff_tendsto]
-    rw [hasDerivAt_iff_tendsto] at hpairRaw
-    simpa [Pi.mul_apply, Pi.sub_apply] using hpairRaw
-  have hparamagnetic := hpair.const_mul (ℏ / mass)
+        (fun y => (ℏ / mass) * ((ψ y).re * (ψx y).im - (ψ y).im * (ψx y).re))
+        ((ℏ / mass) * ((ψ x).re * ψxx.im - (ψ x).im * ψxx.re)) x := by
+    simpa only [probabilityCurrentValue1D_eq_coordinates,
+      probabilityCurrentDivergenceValue1D_eq_coordinates, ← hcoeff] using
+      (hasDerivAt_probabilityCurrentValue1D ℏ (ℏ ^ 2 / (2 * mass)) hψ hψx)
   have hdensity := hasDerivAt_probabilityDensityValue hψ
   have hdiamagnetic := (HasDerivAt.mul hA hdensity).const_mul (q / mass)
   have hraw := HasDerivAt.sub hparamagnetic hdiamagnetic
