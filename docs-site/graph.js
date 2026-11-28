@@ -272,13 +272,6 @@ function appendNodeLabel(nodes, name, position, root, selected, showLeafLabel) {
   nodes.append(label);
 }
 
-function setModuleFilterEnabled(enabled) {
-  ui.module.disabled = !enabled;
-  ui.module.title = enabled
-    ? "Filter the current dependency graph by exact module."
-    : "Browse modules through the module hierarchy.";
-}
-
 function setGraphModeChrome() {
   const modules = state.graphKind === "modules";
   const overview = state.page === "overview";
@@ -333,7 +326,6 @@ function renderGraph({ preserveView = false } = {}) {
   ui.overview.hidden = true;
   ui.viewport.hidden = false;
   ui.graphToolbar.hidden = false;
-  setModuleFilterEnabled(state.graphKind === "theorems");
 
   const previousView = preserveView ? state.viewBox : null;
   const { levels, truncated, positions, parents, children, branchFor, width, height, cx, cy } = buildGraphScene(state.byName, {
@@ -775,7 +767,6 @@ function focusRoot(name, { historyEntry = true } = {}) {
   setGraphModeChrome();
   ui.viewport.hidden = false;
   ui.overview.hidden = true;
-  setModuleFilterEnabled(state.graphKind === "theorems");
   renderDetails(name);
   renderGraph();
   if (historyEntry) writeLocation(true);
@@ -837,7 +828,6 @@ function showOverview({ historyEntry = true, browse = null, focusFilter = null }
   ui.viewport.hidden = true;
   ui.overview.hidden = false;
   ui.graphToolbar.hidden = true;
-  setModuleFilterEnabled(false);
   setGraphModeChrome();
   ui.graphStatus.textContent = "";
   ui.detail.replaceChildren();
@@ -870,7 +860,6 @@ function showModuleImports({ historyEntry = true, moduleName = null, depth = sta
   setGraphModeChrome();
   ui.viewport.hidden = false;
   ui.overview.hidden = true;
-  setModuleFilterEnabled(false);
   renderDetails(selectedModule);
   renderGraph();
   if (historyEntry) writeLocation(true);
