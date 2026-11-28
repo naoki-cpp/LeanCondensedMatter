@@ -101,7 +101,7 @@ This does not yet define a Fredholm determinant for arbitrary trace-class operat
 
 ## Functional calculus and bounded Dyson theory
 
-`Analysis/FunctionalCalculus/` owns reusable bounded self-adjoint functional-calculus facts used by
+`Analysis/Operator/Spectral/FunctionalCalculus.lean` owns reusable bounded self-adjoint functional-calculus facts used by
 Gibbs and entropy constructions.
 
 `Analysis/Dyson/` owns generic Banach-algebra Dyson coefficients, factorial bounds, summability,

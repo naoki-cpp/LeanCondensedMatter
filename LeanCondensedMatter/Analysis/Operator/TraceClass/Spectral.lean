@@ -1,6 +1,6 @@
 import LeanCondensedMatter.Analysis.Operator.TraceClass.Trace
 import LeanCondensedMatter.Analysis.Operator.TraceClass.Ops
-import LeanCondensedMatter.Analysis.FunctionalCalculus.CFC
+import LeanCondensedMatter.Analysis.Operator.Spectral.FunctionalCalculus
 import Mathlib.Analysis.InnerProductSpace.l2Space
 import Mathlib.Topology.Algebra.InfiniteSum.Real
 import LeanCondensedMatter.Analysis.Operator.Spectral.EigenvectorFamily

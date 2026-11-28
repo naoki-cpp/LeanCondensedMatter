@@ -9,7 +9,6 @@ import LeanCondensedMatter.Analysis.ODE.RadialEnergyDecay
 import LeanCondensedMatter.Analysis.SpecialFunctions.Bessel
 import LeanCondensedMatter.Analysis.Dyson
 import LeanCondensedMatter.Analysis.OrderedSimplex
-import LeanCondensedMatter.Analysis.FunctionalCalculus.CFC
 import LeanCondensedMatter.Analysis.Lorentzian
 import LeanCondensedMatter.Analysis.Operator
 import LeanCondensedMatter.Analysis.InfiniteSum
@@ -24,7 +23,7 @@ set_option linter.style.header false
 
 General mathematical infrastructure: algebra, matrices, Fourier analysis, lattice and spherical
 geometry, special functions, formal power series, differential equations, Dyson expansions,
-ordered-simplex integration, functional calculus, operator theory, infinite sums, calculus,
+ordered-simplex integration, operator theory (including functional calculus), infinite sums, calculus,
 conservation laws, and inequalities.
 
 For the separate one-dimensional weak conservation API, import

@@ -1,6 +1,6 @@
 import LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral
 import LeanCondensedMatter.QuantumTheory.DensityOperator.Basic
-import LeanCondensedMatter.Analysis.FunctionalCalculus.CFC
+import LeanCondensedMatter.Analysis.Operator.Spectral.FunctionalCalculus
 import Mathlib.Analysis.SpecialFunctions.Log.NegMulLog
 
 attribute [local instance] IsStarNormal.instContinuousFunctionalCalculus
