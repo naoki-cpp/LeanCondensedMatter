@@ -97,7 +97,7 @@ jobs:
           use-mathlib-cache: auto
 
       - name: Audit potentially unused theorem hypotheses
-        run: lake env lean scripts/CheckUnusedHypotheses.lean
+        run: /usr/bin/time -f 'unused hypotheses: %e s, peak RSS %M KiB' lake env lean scripts/CheckUnusedHypotheses.lean
 
       - name: Add unused hypothesis audit summary
         if: always()
@@ -111,7 +111,7 @@ jobs:
         shell: bash
         run: |
           set -o pipefail
-          python3 scripts/generate_declaration_catalog.py 2>&1 | tee theorem-catalog.log
+          /usr/bin/time -f 'catalog generation: %e s, peak RSS %M KiB' python3 scripts/generate_declaration_catalog.py 2>&1 | tee theorem-catalog.log
 
       - name: Generate module import graph
         run: python3 scripts/export_module_import_graph.py
@@ -123,7 +123,7 @@ jobs:
         shell: bash
         run: |
           set -o pipefail
-          lake env lean scripts/TheoremReplacementAudit.lean 2>&1 | tee theorem-replacement-audit.log
+          /usr/bin/time -f 'replacement audit: %e s, peak RSS %M KiB' lake env lean scripts/TheoremReplacementAudit.lean 2>&1 | tee theorem-replacement-audit.log
 
       - name: Merge theorem replacement findings
         run: python3 scripts/merge_theorem_replacements.py
@@ -136,6 +136,12 @@ jobs:
           grep -E '^(Theorems|Retained audit declarations|Retained re-audit queue|Priority terminal review queue with no compiled project consumers|Single-consumer theorem review queue|Direct-wrapper review queue|Cross-module direct-wrapper review queue|Definitionally equivalent proof-dependency targets|Replacement-candidate targets|Mathlib definitionally equivalent proof-dependency targets|Mathlib replacement-candidate targets):' docs/generated/theorems.md >> "$GITHUB_STEP_SUMMARY"
           echo "" >> "$GITHUB_STEP_SUMMARY"
           echo "The complete theorem catalog and module import graph are attached as workflow artifacts." >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "### Catalog generation cost" >> "$GITHUB_STEP_SUMMARY"
+          echo '~~~text' >> "$GITHUB_STEP_SUMMARY"
+          grep -E '^(catalog generation|replacement audit):' theorem-catalog.log theorem-replacement-audit.log | cut -d: -f2- >> "$GITHUB_STEP_SUMMARY" || true
+          wc -c docs/generated/theorems.md docs/generated/theorems.json docs/generated/declarations.json docs/generated/module-imports.json >> "$GITHUB_STEP_SUMMARY"
+          echo '~~~' >> "$GITHUB_STEP_SUMMARY"
 
       - name: Upload theorem catalog
         if: success()
