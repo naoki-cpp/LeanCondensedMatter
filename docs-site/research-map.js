@@ -360,7 +360,7 @@ export function renderResearchMap(children, entriesFor, onOpenDeclaration, onReg
     if (active === region) return;
     previousScope = active;
     active = region;
-    onRegionChange(region?.moduleName ?? null);
+    onRegionChange(region?.moduleName ?? null, browseMap);
     parentControl.hidden = !region?.parent;
     picker.hidden = !region;
     if (!region) return;
@@ -384,6 +384,15 @@ export function renderResearchMap(children, entriesFor, onOpenDeclaration, onReg
     setRegion(null);
     preview.textContent = hint;
     draw();
+  }
+
+  function browseMap(moduleName) {
+    if (moduleName === "LeanCondensedMatter") {
+      reset();
+      return;
+    }
+    const region = allRegions.find((item) => item.moduleName === moduleName);
+    if (region) openRegion(region);
   }
 
   function regionView(region) {
