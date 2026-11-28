@@ -60,6 +60,10 @@
       <div class="app-shell">
     <section id="explorer-content" class="graph-panel" tabindex="-1" aria-label="Declaration and module exploration panel">
       <div id="graph-controls-home" hidden>
+        <header id="declaration-graph-header" class="declaration-graph-header" hidden>
+          <button type="button" class="focus-button" id="back-to-map">Back to declaration map</button>
+          <h2 tabindex="-1" id="declaration-graph-title"></h2>
+        </header>
         <div class="explorer-tabs" role="tablist" aria-label="Explorer view">
           <button id="overview-link" type="button" role="tab" aria-selected="true" aria-controls="declarations-panel">Declarations</button>
           <button id="module-imports-link" type="button" role="tab" aria-selected="false" aria-controls="imports-panel" tabindex="-1">Imports</button>

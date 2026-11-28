@@ -114,7 +114,7 @@ export function createModuleOverview({ catalog, modules = [], onBrowse, onOpenDe
     return button;
   }
 
-  async function prepare(moduleName) {
+  async function prepare(moduleName, selectedName) {
     const parts = modulePath(moduleName);
     const node = tree.find(moduleName);
     if (!node) return null;
@@ -124,10 +124,10 @@ export function createModuleOverview({ catalog, modules = [], onBrowse, onOpenDe
     );
     const description = await loadModuleDescription(node.fullName);
 
-    return () => buildContent(node, parts, children, description);
+    return () => buildContent(node, parts, children, description, selectedName);
   }
 
-  function buildContent(node, parts, children, description) {
+  function buildContent(node, parts, children, description, selectedName) {
     const content = [];
     const breadcrumb = element("div", "");
     breadcrumb.append(renderBreadcrumb(parts));
@@ -170,7 +170,7 @@ export function createModuleOverview({ catalog, modules = [], onBrowse, onOpenDe
           descriptionField.hidden = !text;
         });
       }
-      content.push(renderResearchMap(mapRegions, onOpenDeclaration, updateMapHeader, [breadcrumb, header], node.name, visibleTree, mapCounts));
+      content.push(renderResearchMap(mapRegions, onOpenDeclaration, updateMapHeader, [breadcrumb, header], node.name, visibleTree, mapCounts, selectedName));
     } else {
       content.push(breadcrumb, header);
     }

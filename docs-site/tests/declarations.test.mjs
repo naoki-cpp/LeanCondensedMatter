@@ -78,16 +78,19 @@ test("MixedOrderData overview counts and opens both definitions", async () => {
   picker.value = names[0];
   picker.change();
   assert.match(overview.text(), /Depends on \(0\)/);
-  overview.find("button").find((item) => item.text() === "Open full dependency graph").click();
+  overview.find("button").find((item) => item.text() === "View dependency graph").click();
   assert.equal(opened, names[0]);
   picker.value = names[1];
   picker.change();
   assert.match(overview.text(), /Used by \(1\)/);
   overview.find("button").find((item) => item.text() === names[0]).click();
-  assert.equal(overview.find("h4").at(-1).text(), names[0]);
+  assert.equal(overview.find("h3").find((item) => item.className === "research-map-detail-title").text(), names[0]);
   assert.match(overview.text(), /Definitions 2/);
   assert.match(overview.text(), /Theorems 0/);
   assert.match(overview.text(), /Total 2/);
+  overview.replaceChildren(...(await explorer.prepare("LeanCondensedMatter", names[1]))());
+  assert.equal(overview.find("select")[0].value, names[1]);
+  assert.equal(overview.find("h3").find((item) => item.className === "research-map-detail-title").text(), names[1]);
 });
 
 test("map filters points and picker while preserving the total dependency count", async () => {

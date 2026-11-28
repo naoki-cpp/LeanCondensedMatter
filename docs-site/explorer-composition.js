@@ -64,13 +64,16 @@ export function createExplorerComposition(ui) {
       ui.graphToolbar.hidden = overview;
       if (focused && document.activeElement === document.body) focused.focus({ preventScroll: true });
     },
-    async renderOverview({ render, unavailable, failed }) {
+    async renderOverview({ render, unavailable, failed, mounted }) {
       const request = ++revision;
       try {
         const build = await render();
         if (request !== revision || page !== "overview") return;
-        if (build) replaceOverview(...build());
-        else unavailable();
+        if (!build) unavailable();
+        else {
+          replaceOverview(...build());
+          mounted?.();
+        }
       } catch (error) {
         if (request !== revision || page !== "overview") return;
         failed(error);

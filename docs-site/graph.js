@@ -33,6 +33,7 @@ const state = {
   selected: null,
   browse: null,
   returnBrowse: null,
+  returnMap: null,
   page: "overview",
   direction: "both",
   depth: 2,
@@ -57,6 +58,9 @@ const ui = {
   searchForm: document.querySelector("#search-form"),
   controls: document.querySelector(".graph-controls"),
   controlsHome: document.querySelector("#graph-controls-home"),
+  declarationGraphHeader: document.querySelector("#declaration-graph-header"),
+  declarationGraphTitle: document.querySelector("#declaration-graph-title"),
+  backToMap: document.querySelector("#back-to-map"),
   kindFilter: document.querySelector("#kind-filter"),
   generatedFilter: document.querySelector("#generated-filter"),
   searchLabel: document.querySelector("#search-form > label"),
@@ -283,6 +287,8 @@ function setGraphModeChrome(focusTarget) {
   const modules = state.graphKind === "modules";
   const overview = state.page === "overview";
   composition.show(state.page, modules ? shortModule(state.root) : null, focusTarget);
+  ui.declarationGraphHeader.hidden = state.page !== "theorem";
+  if (state.page === "theorem") ui.declarationGraphTitle.textContent = `Dependency graph for ${state.root}`;
   document.getElementById("graph-fit").textContent = modules ? "Whole map" : "Fit";
   ui.kindFilter.closest("label").hidden = modules;
   ui.generatedFilter.closest("label").hidden = modules;
@@ -708,7 +714,7 @@ function renderDetails(name) {
   }
 }
 
-function writeLocation(push) {
+function writeLocation(push, mapSelection = null) {
   const url = new URL(window.location.href);
   if (state.page === "imports") {
     url.searchParams.delete("depth");
@@ -736,14 +742,22 @@ function writeLocation(push) {
     url.hash = state.root ?? "";
   }
   const next = `${url.pathname}${url.search}${url.hash}`;
-  if (push) history.pushState(null, "", next);
-  else history.replaceState(null, "", next);
+  const navigation = state.page === "theorem" && state.returnMap ? { returnMap: state.returnMap }
+    : state.page === "overview" && mapSelection ? { mapSelection } : null;
+  if (push) history.pushState(navigation, "", next);
+  else history.replaceState(navigation, "", next);
 }
 
-function focusRoot(name, { historyEntry = true } = {}) {
+function focusRoot(name, { historyEntry = true, fromMap = false, returnMap = null } = {}) {
   if (!state.byName.has(name)) return;
   if (state.graphKind === "theorems") {
-    if (state.page === "overview") state.returnBrowse = state.browse;
+    if (state.page === "overview") {
+      state.returnBrowse = state.browse;
+      state.returnMap = fromMap ? name : returnMap;
+      if (fromMap) writeLocation(false, name);
+    } else if (!historyEntry) {
+      state.returnMap = returnMap;
+    }
     state.page = "theorem";
   } else {
     state.page = "imports";
@@ -757,17 +771,21 @@ function focusRoot(name, { historyEntry = true } = {}) {
   renderDetails(name);
   renderGraph();
   if (historyEntry) writeLocation(true);
+  if (fromMap) ui.declarationGraphTitle.focus();
 }
 
 function summaryChip(text) {
   return element("span", "summary-chip", text);
 }
 
-function renderOverviewContent() {
+function renderOverviewContent(mapSelection) {
   const requestedBrowse = state.browse ?? "LeanCondensedMatter";
   state.browse = requestedBrowse;
   composition.renderOverview({
-    render: () => moduleOverview?.prepare(requestedBrowse),
+    render: () => moduleOverview?.prepare(requestedBrowse, mapSelection),
+    mounted() {
+      if (mapSelection) ui.overview.querySelector(".research-map-detail-title")?.focus();
+    },
     unavailable() {
       if (requestedBrowse !== "LeanCondensedMatter" && moduleOverview?.hasModule("LeanCondensedMatter")) {
         state.browse = "LeanCondensedMatter";
@@ -784,7 +802,7 @@ function renderOverviewContent() {
   });
 }
 
-function showOverview({ historyEntry = true, browse = null, focusFilter = null } = {}) {
+function showOverview({ historyEntry = true, browse = null, focusFilter = null, mapSelection = null } = {}) {
   state.graphKind = "theorems";
   state.catalog = state.theoremCatalog;
   state.byName = state.theoremByName;
@@ -792,6 +810,7 @@ function showOverview({ historyEntry = true, browse = null, focusFilter = null }
   state.root = null;
   state.selected = null;
   state.returnBrowse = null;
+  state.returnMap = null;
   state.viewBox = null;
   state.graphBounds = null;
   state.module = "*";
@@ -807,8 +826,8 @@ function showOverview({ historyEntry = true, browse = null, focusFilter = null }
   setGraphModeChrome(focusFilter);
   ui.graphStatus.textContent = "";
   ui.detail.replaceChildren();
-  renderOverviewContent();
-  if (historyEntry) writeLocation(true);
+  renderOverviewContent(mapSelection);
+  if (historyEntry) writeLocation(true, mapSelection);
 }
 
 function showModuleImports({ historyEntry = true, moduleName = null, depth = state.depth } = {}) {
@@ -975,7 +994,7 @@ function restoreLocation() {
   try { requested = decodeURIComponent(location.hash.slice(1)); }
   catch { requested = location.hash.slice(1); }
   if (requested && state.byName.has(requested)) {
-    focusRoot(requested, { historyEntry: false });
+    focusRoot(requested, { historyEntry: false, returnMap: history.state?.returnMap });
     return;
   }
 
@@ -986,7 +1005,7 @@ function restoreLocation() {
       ? shortModule(graphModule)
       : "LeanCondensedMatter";
   const legacyModuleRoute = !requestedBrowse && graphModule !== "*";
-  showOverview({ historyEntry: false, browse });
+  showOverview({ historyEntry: false, browse, mapSelection: history.state?.mapSelection });
   if (legacyModuleRoute || (requestedBrowse && !moduleOverview?.hasModule(requestedBrowse))) writeLocation(false);
 }
 
@@ -1056,9 +1075,10 @@ function bindEvents() {
     });
   }
   ui.overviewLink.addEventListener("click", () => {
-    if (state.page === "theorem") showOverview({ browse: state.returnBrowse });
+    if (state.page === "theorem") showOverview({ browse: state.returnBrowse, mapSelection: state.returnMap });
     else showOverview();
   });
+  ui.backToMap.addEventListener("click", () => ui.overviewLink.click());
   ui.moduleImportsLink.addEventListener("click", () => showModuleImports());
   ui.overviewLink.parentElement.addEventListener("keydown", (event) => {
     if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key)) return;
@@ -1148,7 +1168,7 @@ async function main() {
     allowed: (entry) => declarationAllowed(entry, state.kind, state.generated),
     modules: ["LeanCondensedMatter", ...state.moduleCatalog.map((entry) => entry.name)],
     onBrowse: (moduleName) => showOverview({ browse: moduleName }),
-    onOpenDeclaration: (name) => focusRoot(name),
+    onOpenDeclaration: (name, options) => focusRoot(name, options),
   });
   populateControls();
   bindEvents();

@@ -27,7 +27,7 @@ function button(text, action, className = "") {
   return control;
 }
 
-export function renderResearchMap(children, onOpenDeclaration, onRegionChange, overviewHeader, rootName, hierarchy, mapCounts) {
+export function renderResearchMap(children, onOpenDeclaration, onRegionChange, overviewHeader, rootName, hierarchy, mapCounts, selectedName) {
   const section = element("section", "research-map explorer-map-theme explorer-map-frame");
   const { header, heading, status: declarationCount } = createMapHeader(rootName);
   const controlsSlot = element("div", "map-controls-slot");
@@ -392,24 +392,29 @@ export function renderResearchMap(children, onOpenDeclaration, onRegionChange, o
   }
 
   function relation(title, names) {
-    const block = element("div", "research-map-relations");
+    const block = element("ul", "research-map-relations");
     const related = [...new Set(names ?? [])];
     const available = related.filter((name) => byName.has(name));
     const count = available.length === related.length ? String(related.length) : `${related.length} total, ${available.length} on map`;
     const summary = element("summary", "", `${title} (${count})`);
-    const list = element("details", "");
-    list.open = available.length > 0 && available.length <= 12;
+    const list = element("details", "research-map-relation");
+    list.open = available.length > 0 && available.length <= 5;
     list.append(summary, block);
     for (const name of available) {
-      block.append(button(name.split(".").at(-1), (event) => {
-        openPoint(byName.get(name));
-        if (event?.detail === 0) detail.querySelector("h4")?.focus();
-      }));
+      const item = element("li", "");
+      const link = button(name.split(".").at(-1), () => openPoint(byName.get(name), true), "research-map-related");
+      link.title = name;
+      link.setAttribute("aria-label", `Show ${name} on the map`);
+      const namespace = element("small", "", name.split(".").slice(0, -1).join("."));
+      if (namespace.textContent) link.append(namespace);
+      item.append(link);
+      block.append(item);
     }
+    if (related.length && !available.length) list.append(element("p", "muted", "No related declarations match this map."));
     return list;
   }
 
-  function openPoint(point) {
+  function openPoint(point, focusDetail = false) {
     if (!point) return;
     hovered = null;
     const previous = navigation.active;
@@ -417,16 +422,23 @@ export function renderResearchMap(children, onOpenDeclaration, onRegionChange, o
     animateCamera();
     updateRegion(previous);
     select.value = point.entry.name;
-    const title = element("h4", "", point.entry.name);
+    const head = element("header", "research-map-detail-header");
+    const title = element("h3", "research-map-detail-title", point.entry.name);
     title.tabIndex = -1;
+    const graph = button("View dependency graph", () => onOpenDeclaration(point.entry.name, { fromMap: true }),
+      "focus-button research-map-open-graph");
+    head.append(title, graph);
     const statement = element("div", "math-presentation");
     renderStatement(statement, point.entry);
-    detail.replaceChildren(title, statement,
+    detail.replaceChildren(head, statement,
       relation("Depends on", point.entry.dependencies),
-      relation("Used by", point.entry.dependents),
-      button("Open full dependency graph", () => onOpenDeclaration(point.entry.name)));
+      relation("Used by", point.entry.dependents));
     detail.hidden = false;
     draw();
+    if (focusDetail) {
+      title.focus?.({ preventScroll: true });
+      title.scrollIntoView?.({ block: "start" });
+    }
   }
 
   function zoomBy(factor, x, y) {
@@ -506,7 +518,7 @@ export function renderResearchMap(children, onOpenDeclaration, onRegionChange, o
       });
       if (child) { openRegion(child); return; }
       const point = hit(x, y);
-      if (point) openPoint(point);
+      if (point) openPoint(point, true);
       return;
     }
     const region = regions.find((item) => {
@@ -533,7 +545,7 @@ export function renderResearchMap(children, onOpenDeclaration, onRegionChange, o
     else return;
     event.preventDefault();
   });
-  select.addEventListener("change", () => openPoint(byName.get(select.value)));
+  select.addEventListener("change", () => openPoint(byName.get(select.value), true));
   controls.append(parentControl, button("Zoom out", () => zoomBy(1 / 1.5)), button("Zoom in", () => zoomBy(1.5)), button("Whole map", reset));
   stage.append(canvas, ...allRegions.map((region) => region.label), hoverLabel);
   const emptyBundles = [];
@@ -543,6 +555,7 @@ export function renderResearchMap(children, onOpenDeclaration, onRegionChange, o
   const sortedPoints = [...points].sort((a, b) => a.entry.name.localeCompare(b.entry.name));
   populatePicker(null);
   reset();
+  if (selectedName) openPoint(byName.get(selectedName));
   // This section is returned before it is mounted, so measure again after attachment.
   if (typeof requestAnimationFrame === "function") requestAnimationFrame(draw);
   window.addEventListener?.("resize", onResize);

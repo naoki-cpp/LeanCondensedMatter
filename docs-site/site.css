@@ -241,6 +241,13 @@ select:disabled {
   padding: 16px;
   border-bottom: 1px solid var(--line);
 }
+.declaration-graph-header { margin-block-end: 12px; }
+.declaration-graph-header h2 {
+  margin: 10px 0 0;
+  font: 600 clamp(1.2rem, 3vw, 1.65rem)/1.25 var(--heading-font);
+  overflow-wrap: anywhere;
+}
+.declaration-graph-header .focus-button { padding: 6px 12px; }
 .graph-filter-row, .control-grid {
   display: flex;
   flex-wrap: wrap;
