@@ -142,9 +142,8 @@ noncomputable def PairingOn.normalizedPairEquivOfEndpointEquiv
   · intro a
     change (E.symm (pairing.pairEndpointEquiv.symm (E (a, 0))).1.1.1).1 = a
     rcases pairing.pairEndpointEquiv_symm_pair_eq_or_swap
-        (E (a, 0)) (E (a, 1)) (hpartner a) with h | h
-    · rw [congrArg Prod.fst h, Equiv.symm_apply_apply]
-    · rw [congrArg Prod.fst h, Equiv.symm_apply_apply]
+        (E (a, 0)) (E (a, 1)) (hpartner a) with h | h <;>
+      rw [congrArg Prod.fst h, Equiv.symm_apply_apply]
   · intro pr
     obtain ⟨⟨a, k⟩, hk⟩ := E.surjective pr.1.1
     change (pairing.pairEndpointEquiv.symm (E ((E.symm pr.1.1).1, 0))).1 = pr
@@ -252,18 +251,9 @@ noncomputable def PairingOn.normalizedPairEmbedding {α β : Type*}
     [Fintype α] [LinearOrder α] [Fintype β] [LinearOrder β]
     (small : PairingOn α) (big : PairingOn β) (e : α ↪o β)
     (hpartner : ∀ i, big.partner (e i) = e (small.partner i)) :
-    small.NormalizedPair ↪ big.NormalizedPair where
-  toFun pr :=
-    ⟨(e pr.1.1, e pr.1.2),
-      (small.mem_pairs_map_iff big e hpartner pr.1.1 pr.1.2).2 pr.2⟩
-  inj' := by
-    intro p q hpq
-    apply Subtype.ext
-    apply Prod.ext
-    · apply e.injective
-      exact congrArg (fun z => z.1.1) hpq
-    · apply e.injective
-      exact congrArg (fun z => z.1.2) hpq
+    small.NormalizedPair ↪ big.NormalizedPair :=
+  (e.toEmbedding.prodMap e.toEmbedding).subtypeMap
+    (fun {pr} hpr => (small.mem_pairs_map_iff big e hpartner pr.1 pr.2).2 hpr)
 
 /-- A normalized pair whose first endpoint lies in the range of a partner-preserving
 order embedding comes from a unique local normalized pair. This is the image
