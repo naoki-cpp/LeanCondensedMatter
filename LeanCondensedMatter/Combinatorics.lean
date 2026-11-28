@@ -12,10 +12,6 @@ set_option linter.style.header false
 /-!
 # Combinatorics
 
-Finite combinatorics used throughout the project: finite-index operations, shuffles, finite and
-graph-component partitions, incidence algebra, cumulants, perfect pairings, subset decompositions,
-and
-involution-cardinality results.
-
-Exchange-weighted permutation theory is developed separately in `LeanCondensedMatter.Permutation`.
+Finite-index operations, shuffles and their signs, incidence algebra, set partitions, cumulants,
+and perfect pairings. Exchange-weighted permutation theory is exposed separately by `Permutation`.
 -/
