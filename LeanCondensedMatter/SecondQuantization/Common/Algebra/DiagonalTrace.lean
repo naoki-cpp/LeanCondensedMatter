@@ -92,17 +92,6 @@ noncomputable def summableDiagonalTraceRatioLinear
 
 /-! ## Selection rules for diagonal traces -/
 
-/-- A nonzero grading shift remains off-diagonal after multiplication by any diagonal
-weight.  No positivity, trace-class condition, or countability hypothesis is needed. -/
-theorem matrixCoeff_diagonalOperator_comp_self_eq_zero_of_carriesShift
-    {G : Type*} [AddCommGroup G] {grading : Config → G}
-    {A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config} {q : G}
-    (hA : Finsupp.CarriesShift grading A q) (hq : q ≠ 0)
-    (w : Config → ℂ) (n : Config) :
-    matrixCoeff ((Finsupp.diagonalOperator w).comp A) n n = 0 := by
-  change Finsupp.diagonalOperator w (A (Finsupp.single n 1)) n = 0
-  rw [Finsupp.diagonalOperator_apply, hA.diagonal_eq_zero hq n, mul_zero]
-
 /-- Nonzero-charge observables belong to every diagonal-weighted trace domain:
 the numerator vanishes term by term, regardless of the weight. -/
 theorem summable_diagonalOperator_comp_of_carriesShift
@@ -110,7 +99,8 @@ theorem summable_diagonalOperator_comp_of_carriesShift
     {A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config} {q : G}
     (hA : Finsupp.CarriesShift grading A q) (hq : q ≠ 0) (w : Config → ℂ) :
     Summable (fun n => matrixCoeff ((Finsupp.diagonalOperator w).comp A) n n) := by
-  simpa only [matrixCoeff_diagonalOperator_comp_self_eq_zero_of_carriesShift hA hq w] using
+  simpa only [matrixCoeff, basisState, LinearMap.comp_apply, Finsupp.diagonalOperator_apply,
+    hA.diagonal_eq_zero hq, mul_zero] using
     (summable_zero : Summable (fun _ : Config => (0 : ℂ)))
 
 /-- Every diagonal weighting annihilates the trace of a nonzero-charge observable. -/
@@ -120,8 +110,8 @@ theorem tsumTrace_diagonalOperator_comp_eq_zero_of_carriesShift
     (hA : Finsupp.CarriesShift grading A q) (hq : q ≠ 0) (w : Config → ℂ) :
     tsumTrace ((Finsupp.diagonalOperator w).comp A) = 0 := by
   unfold tsumTrace
-  simp only [matrixCoeff_diagonalOperator_comp_self_eq_zero_of_carriesShift hA hq w,
-    tsum_zero]
+  simp only [matrixCoeff, basisState, LinearMap.comp_apply, Finsupp.diagonalOperator_apply,
+    hA.diagonal_eq_zero hq, mul_zero, tsum_zero]
 
 /-- The ratio of diagonal traces vanishes for nonzero-charge observables even when
 the denominator is zero.  Physical state normalization still requires a separate
