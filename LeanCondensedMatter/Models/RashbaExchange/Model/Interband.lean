@@ -44,16 +44,8 @@ theorem interbandEnergyGap_ne_zero_of_spinOrbitEnergy_ne_zero
     (params : HamiltonianParameters) (band : TwoBand) (px py : ℝ)
     (hE : spinOrbitEnergy params px py ≠ 0) :
     interbandEnergyGap params band px py ≠ 0 := by
-  rw [interbandEnergyGap_eq]
-  cases band <;> simp [bandSign, hE]
-
-theorem bandEnergy_ne_oppositeBandEnergy
-    (params : HamiltonianParameters) (band : TwoBand) (px py : ℝ)
-    (hE : spinOrbitEnergy params px py ≠ 0) :
-    bandEnergy params band px py ≠
-      bandEnergy params (oppositeBand band) px py := by
-  apply (bandEnergy_injective params px py hE).ne
-  exact TwoBand.ne_oppositeBand band
+  exact sub_ne_zero.mpr
+    ((bandEnergy_injective params px py hE).ne (ne_oppositeBand band))
 
 /-- Gauge-independent interband velocity numerator
 `Tr(P_op v_μ P_band v_ν)`. -/
