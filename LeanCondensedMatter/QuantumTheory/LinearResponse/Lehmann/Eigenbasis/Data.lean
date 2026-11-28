@@ -55,8 +55,8 @@ noncomputable def EnergyEigenbasisLehmannData.ofSingleOccupied
     have h : HasSum
         (fun i : Fin (Module.finrank ℂ H) => if i = occupied then (1 : ℝ) else 0)
         (if occupied = occupied then (1 : ℝ) else 0) :=
-      hasSum_single occupied (fun i hi => if_neg hi)
-    simpa only [if_pos rfl] using h
+      hasSum_single occupied (fun i hi => ite_eq_right hi)
+    simpa using h
 
 variable {ι : Type*} (system : BoundedFreeSystem H)
 
