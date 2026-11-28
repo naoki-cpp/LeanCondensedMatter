@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Analysis.Algebra.ScalarExchange
+import LeanCondensedMatter.QuantumTheory.Gibbs.Boltzmann
 import LeanCondensedMatter.Analysis.Operator.TraceClass.Ops
 import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.CanonicalAnticommutationRelations
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.Gibbs
@@ -78,16 +79,6 @@ theorem gibbsFactor_annihilate (ε : Mode → ℝ) (β : ℝ) (i : Mode) :
     gibbsFactor ε β (CompletedThermalLadder.annihilate i) =
       Complex.exp ((β : ℂ) * (ε i : ℂ)) := rfl
 
-/-- A complex exponential of a real number has positive real value, so its
-sum with one never vanishes. No condition on the sign of the exponent is needed. -/
-private theorem one_add_exp_ofReal_ne_zero (x : ℝ) :
-    (1 : ℂ) + Complex.exp (x : ℂ) ≠ 0 := by
-  have hr : (1 : ℝ) + Real.exp x ≠ 0 :=
-    ne_of_gt (add_pos (by norm_num) (Real.exp_pos x))
-  have hc : (((1 : ℝ) + Real.exp x : ℝ) : ℂ) ≠ 0 := by
-    exact_mod_cast hr
-  simpa only [Complex.ofReal_add, Complex.ofReal_one, Complex.ofReal_exp] using hc
-
 omit [LinearOrder Mode] in
 /-- The fermionic KMS denominator is nonzero for every ladder, temperature,
 chemical potential, and real one-particle energy. -/
@@ -98,10 +89,10 @@ theorem one_add_gibbsFactor_ne_zero
   | create i =>
       change (1 : ℂ) + Complex.exp (-(β : ℂ) * (ε i : ℂ)) ≠ 0
       simpa only [Complex.ofReal_mul, Complex.ofReal_neg] using
-        one_add_exp_ofReal_ne_zero (-β * ε i)
+        Complex.one_add_exp_ofReal_ne_zero (-β * ε i)
   | annihilate i =>
       change (1 : ℂ) + Complex.exp ((β : ℂ) * (ε i : ℂ)) ≠ 0
-      simpa only [Complex.ofReal_mul] using one_add_exp_ofReal_ne_zero (β * ε i)
+      simpa only [Complex.ofReal_mul] using Complex.one_add_exp_ofReal_ne_zero (β * ε i)
 
 /-- Uniform completed free-Gibbs intertwining for a creation or annihilation operator. -/
 theorem grandCanonicalGibbsDensityOperator_comp_operator

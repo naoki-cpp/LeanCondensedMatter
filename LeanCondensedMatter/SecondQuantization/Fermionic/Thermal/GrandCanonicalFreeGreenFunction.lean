@@ -1,5 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsContraction
-import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeBoltzmannCore
+import LeanCondensedMatter.QuantumTheory.Gibbs.Boltzmann
 import LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTime.TwoPoint
 
 set_option linter.style.header false
@@ -99,8 +99,8 @@ theorem grandCanonicalFreeGreenFunction_self_time_self (ε : Mode → ℝ) (β �
   rw [hAC, hCA]
   simp only [smul_eq_mul, one_mul, neg_mul]
   have hE : Complex.exp ((β : ℂ) * ((ε i - μ : ℝ) : ℂ)) + 1 ≠ 0 := by
-    simpa [Common.Statistics.zetaInt_fermion, add_comm] using
-      (one_sub_zetaInt_fermion_mul_exp_ne_zero β (ε i - μ))
+    simpa [Complex.ofReal_mul, add_comm] using
+      (Complex.one_add_exp_ofReal_ne_zero (β * (ε i - μ)))
   simp only [ite_true]
   field_simp
   ring
