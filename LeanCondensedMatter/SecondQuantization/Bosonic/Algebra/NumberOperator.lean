@@ -1,5 +1,6 @@
 import LeanCondensedMatter.Analysis.Algebra.FinsuppDiagonal
-import LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.ExchangeAlgebra
+import LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.CCR
+import LeanCondensedMatter.SecondQuantization.Common.Algebra.ExchangeAlgebra
 
 set_option linter.style.header false
 
@@ -7,7 +8,7 @@ set_option linter.style.header false
 # Bosonic number operator
 
 The single-mode number operator is `N_i = a_i† a_i`. Its basis states have eigenvalue `n_i`, and
-the exchange-algebra interface gives the reordering identity `a_i a_i† = id + N_i`.
+the concrete exchange-algebra instance below gives the reordering identity `a_i a_i† = id + N_i`.
 -/
 
 namespace SecondQuantization
@@ -19,6 +20,20 @@ variable {Mode : Type*}
 
 /-- File-local classical decidable equality, kept out of public theorem signatures. -/
 local instance instDecidableEqNumberOperator : DecidableEq Mode := Classical.decEq Mode
+
+noncomputable instance exchangeAlgebra :
+    Common.ExchangeAlgebra Common.Statistics.boson Mode (Occupation Mode) where
+  annihilate := annihilate
+  create := create
+  annihilate_create i j := by
+    simpa [Common.exchangeCommutator, Common.Statistics.zetaInt_boson] using
+      comm_annihilate_create i j
+  annihilate_annihilate i j := by
+    simpa [Common.exchangeCommutator, Common.Statistics.zetaInt_boson] using
+      comm_annihilate_annihilate i j
+  create_create i j := by
+    simpa [Common.exchangeCommutator, Common.Statistics.zetaInt_boson] using
+      comm_create_create i j
 
 /-- The single-mode number operator `N_i = a_i† a_i`. -/
 noncomputable def numberOperator (i : Mode) : FockSpace Mode →ₗ[ℂ] FockSpace Mode :=

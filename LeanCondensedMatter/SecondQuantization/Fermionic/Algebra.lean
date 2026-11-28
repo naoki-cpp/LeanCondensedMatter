@@ -6,7 +6,6 @@ import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.CreationAnnihila
 import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.QuarticInteraction
 import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.ParticleNumberCharge
 import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.CanonicalAnticommutationRelations
-import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.ExchangeAlgebra
 import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.NumberOperator
 import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.Hamiltonian
 
