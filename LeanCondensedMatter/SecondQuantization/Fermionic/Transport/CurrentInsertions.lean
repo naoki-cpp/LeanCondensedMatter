@@ -312,9 +312,9 @@ theorem bilinearCurrentTimedEventProduct_eq_four_fields {n : ℕ}
   let wy (p : Mode × Mode) := jy p.1 p.2
   let X := bilinearCurrentInsertion ε τ jx
   let Y := bilinearCurrentInsertion ε τ' jy
-  have hn : L.Nodup := Common.orderedExternalInsertionTimedEvents_nodup times σ
+  have hn : L.Nodup := Common.orderedExternalInsertionTimedEvents_nodup (E := 1) times σ
   have hm (e : Common.ExternalInsertionTimedEvent 1 n) : e ∈ L :=
-    Common.orderedExternalInsertionTimedEvents_all_mem times σ e
+    Common.orderedExternalInsertionTimedEvents_all_mem (E := 1) times σ e
   have hx : X = ∑ p : Mode × Mode, wx p • x p := by
     simp only [X, bilinearCurrentInsertion, Fintype.sum_prod_type, wx, x]
   have hy : Y = ∑ p : Mode × Mode, wy p • y p := by
