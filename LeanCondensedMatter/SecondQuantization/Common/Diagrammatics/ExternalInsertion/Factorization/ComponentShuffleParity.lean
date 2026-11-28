@@ -95,23 +95,6 @@ private theorem ExternalInsertionDiagram.componentInteractionLeg_lt_iff
   rw [externalInsertionInteractionLeg_lt_iff]
   simp [hvw.symm]
 
-private theorem ExternalInsertionDiagram.componentExternal_lt_interaction
-    {S : Finset (Fin N)}
-    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
-    (B C : d.vertexGraph.componentPartition.parts)
-    (e : Fin (2 * d.externalPairCount C))
-    (v : ↥(interactionSector
-      (B : Finset (ExternalInsertionVertex E S)))) (l : Fin 4) :
-    d.componentLegPosition C (Sum.inl e) <
-      d.componentLegPosition B (Sum.inr (v, l)) := by
-  rw [d.componentLegPosition_external, d.componentLegPosition_interaction]
-  change
-    (externalInsertionExternalLeg E S (d.externalSectorOrderIso C e).1).val <
-      (externalInsertionInteractionLeg (E := E) (d.ambientInteractionVertex B v) l).val
-  rw [externalInsertionExternalLeg_val, externalInsertionInteractionLeg_val]
-  have he := (d.externalSectorOrderIso C e).1.isLt
-  omega
-
 private noncomputable def ExternalInsertionDiagram.componentLegInversionInner
     {S : Finset (Fin N)}
     (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
@@ -159,8 +142,10 @@ private theorem ExternalInsertionDiagram.componentLegInversionInner_external
           d.componentLegPosition B (Sum.inl e) then 1 else 0) = 0 := by
     apply Finset.sum_eq_zero
     intro q _
-    rw [ite_eq_right (not_lt_of_ge (le_of_lt
-      (d.componentExternal_lt_interaction C B e q.1 q.2)))]
+    rw [d.componentLegPosition_interaction, d.componentLegPosition_external,
+      ite_eq_right (not_lt_of_ge (le_of_lt
+        (externalInsertionExternalLeg_lt_interactionLeg
+          (d.externalSectorOrderIso B e).1 (d.ambientInteractionVertex C q.1) q.2)))]
   rw [hext, hzero, add_zero]
 
 private theorem ExternalInsertionDiagram.componentLegInversionInner_interaction_mod_two
@@ -184,7 +169,9 @@ private theorem ExternalInsertionDiagram.componentLegInversionInner_interaction_
         _ = ∑ _e : Fin (2 * d.externalPairCount C), 1 := by
           apply Finset.sum_congr rfl
           intro e _
-          rw [ite_eq_left (d.componentExternal_lt_interaction B C e v l)]
+          rw [d.componentLegPosition_external, d.componentLegPosition_interaction,
+            ite_eq_left (externalInsertionExternalLeg_lt_interactionLeg
+              (d.externalSectorOrderIso C e).1 (d.ambientInteractionVertex B v) l)]
         _ = 2 * d.externalPairCount C := by simp
     rw [hext]
     exact ⟨d.externalPairCount C, by omega⟩

@@ -75,6 +75,14 @@ theorem externalInsertionInteractionLeg_val {E : ℕ} {S : Finset (Fin N)}
     externalInsertionInteractionLegEquiv, finProdFinEquiv]
   omega
 
+/-- Every external leg precedes every interaction leg in the canonical order. -/
+theorem externalInsertionExternalLeg_lt_interactionLeg {S : Finset (Fin N)}
+    (e : Fin (2 * E)) (v : ↥S) (l : Fin 4) :
+    externalInsertionExternalLeg E S e < externalInsertionInteractionLeg (E := E) v l := by
+  simp only [Fin.lt_def, externalInsertionExternalLeg_val, externalInsertionInteractionLeg_val]
+  have h := e.isLt
+  omega
+
 /-- The fixed interaction leg order is lexicographic in vertex and local leg. -/
 theorem externalInsertionInteractionLeg_lt_iff {S : Finset (Fin N)}
     (v w : ↥S) (l k : Fin 4) :
@@ -134,14 +142,11 @@ theorem externalInsertionLegMap_strictMono
   · change f (externalInsertionExternalLeg E T e) <
       f (externalInsertionInteractionLeg (E := E) w k)
     rw [hext, hint]
-    simp only [Fin.lt_def, externalInsertionExternalLeg_val, externalInsertionInteractionLeg_val]
-    have hbound := (g e).isLt
-    omega
-  · change (externalInsertionInteractionLeg (E := E) v l).val <
-      (externalInsertionExternalLeg E T e').val at hab
-    simp only [externalInsertionInteractionLeg_val, externalInsertionExternalLeg_val] at hab
-    have hbound := e'.isLt
-    omega
+    exact externalInsertionExternalLeg_lt_interactionLeg (g e) _ k
+  · change externalInsertionInteractionLeg (E := E) v l <
+      externalInsertionExternalLeg E T e' at hab
+    exact (not_lt_of_ge (le_of_lt
+      (externalInsertionExternalLeg_lt_interactionLeg e' v l)) hab).elim
   · change f (externalInsertionInteractionLeg (E := E) v l) <
       f (externalInsertionInteractionLeg (E := E) w k)
     rw [hint, hint]

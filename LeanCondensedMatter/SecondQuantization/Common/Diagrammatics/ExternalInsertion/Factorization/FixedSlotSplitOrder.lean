@@ -138,30 +138,6 @@ private theorem externalInsertionSlotLegSplitting_fixedRight_lt_leftInteraction_
   simp only [hne', false_and, or_false]
   rfl
 
-/-- A vacuum interaction leg never precedes an external leg in fixed flattened order. -/
-private theorem externalInsertionSlotLegSplitting_fixedRight_not_lt_leftExternal
-    {E N : ℕ} (T : Finset (Fin N))
-    (e : Fin (2 * E))
-    (w : Fin ((Finset.univ : Finset (Fin N)) \ T).card) (k : Fin 4) :
-    let S := (Finset.univ : Finset (Fin N)) \ T
-    let order : QuarticVertexOrder S := (S.orderIsoOfFin rfl).toEquiv
-    ¬ externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T)
-        (Sum.inr (orderedLegToDiagramLeg S order
-          ((orderedQuarticLegEquiv S.card).symm (w, k)))) <
-      externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T)
-        (Sum.inl (externalInsertionExternalLeg E T e)) := by
-  intro S order
-  rw [externalInsertionSlotLegSplitting_fixedRight_apply]
-  unfold externalInsertionExternalLeg
-  rw [externalInsertionSlotLegSplitting_external]
-  change ¬ (externalInsertionInteractionLeg (E := E)
-      (⟨(order w).1, Finset.mem_univ _⟩ :
-        ↥(Finset.univ : Finset (Fin N))) k).val <
-      (externalInsertionExternalLeg E (Finset.univ : Finset (Fin N)) e).val
-  simp only [externalInsertionExternalLeg_val, externalInsertionInteractionLeg_val]
-  have he := e.isLt
-  omega
-
 /-- The canonical support/vacuum split has an even fixed-order inter-sector
 inversion count: each vacuum vertex contributes four indistinguishable comparisons
 against any given support leg, and vacuum legs never precede external legs. -/
@@ -196,10 +172,14 @@ theorem externalInsertionSlotLegSplitting_fixedInversionCount_mod_two_eq_zero
                   ((orderedQuarticLegEquiv S.card).symm vl))) <
               externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T)
                 (Sum.inl ((externalInsertionLegEquiv E T).symm (Sum.inl e)))
-            then (1 : ℕ) else 0) = 0 :=
-        ite_eq_right
-          (externalInsertionSlotLegSplitting_fixedRight_not_lt_leftExternal
-            (E := E) T e vl.1 vl.2)
+            then (1 : ℕ) else 0) = 0 := by
+        apply ite_eq_right
+        rw [externalInsertionSlotLegSplitting_fixedRight_apply,
+          externalInsertionSlotLegSplitting_external]
+        exact not_lt_of_ge (le_of_lt
+          (externalInsertionExternalLeg_lt_interactionLeg e
+            (⟨(order vl.1).1, Finset.mem_univ _⟩ :
+              ↥(Finset.univ : Finset (Fin N))) vl.2))
       rw [hzero]
       exact dvd_zero 2
   | inr vl =>
