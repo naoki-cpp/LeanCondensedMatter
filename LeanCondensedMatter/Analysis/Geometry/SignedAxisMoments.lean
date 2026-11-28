@@ -35,21 +35,14 @@ theorem signedAxisCosine_eq (p q : ι × Fin 2) :
       (if p.2 = q.2 then 1 else -1) else 0 := by
   rcases p with ⟨a, s⟩
   rcases q with ⟨b, t⟩
-  by_cases hab : a = b
-  · subst b
-    rw [signedAxisCosine]
-    rw [Finset.sum_eq_single a]
-    · fin_cases s <;> fin_cases t <;> simp [signedAxisDirection]
-    · intro i _ hi
-      simp [signedAxisDirection, Ne.symm hi]
-    · simp
-  · rw [signedAxisCosine, ite_eq_right hab]
-    apply Finset.sum_eq_zero
-    intro i _
-    by_cases hi : a = i
-    · have hj : b ≠ i := fun h => hab (hi.trans h.symm)
-      simp [signedAxisDirection, hi, hj]
-    · simp [signedAxisDirection, hi]
+  rw [signedAxisCosine, Finset.sum_eq_single a]
+  · by_cases hab : a = b
+    · subst b
+      fin_cases s <;> fin_cases t <;> simp [signedAxisDirection]
+    · simp [signedAxisDirection, hab, Ne.symm hab]
+  · intro i _ hi
+    simp [signedAxisDirection, Ne.symm hi]
+  · simp
 
 theorem signedAxis_unit (p : ι × Fin 2) :
     ∑ i, signedAxisDirection p i ^ 2 = 1 := by
@@ -92,24 +85,12 @@ theorem signedAxis_sum_direction (i : ι) :
 theorem signedAxis_sum_direction_mul (i j : ι) :
     ∑ q : ι × Fin 2, signedAxisDirection q i * signedAxisDirection q j =
       if i = j then 2 else 0 := by
-  rw [Fintype.sum_prod_type]
-  by_cases hij : i = j
-  · subst j
-    rw [ite_eq_left rfl]
-    calc
-      _ = ∑ a : ι, if a = i then (2 : ℝ) else 0 := by
-        apply Finset.sum_congr rfl
-        intro a _
-        by_cases h : a = i <;>
-          norm_num [Fin.sum_univ_two, signedAxisDirection, h]
-      _ = 2 := by simp
-  · rw [ite_eq_right hij]
-    apply Finset.sum_eq_zero
-    intro a _
-    by_cases hi : a = i
-    · subst a
-      simp [signedAxisDirection, hij]
-    · simp [signedAxisDirection, hi]
+  rw [Fintype.sum_prod_type, Finset.sum_eq_single i]
+  · by_cases hij : i = j <;>
+      norm_num [Fin.sum_univ_two, signedAxisDirection, hij]
+  · intro a _ ha
+    simp [signedAxisDirection, ha]
+  · simp
 
 /-- The total gain rate in any finite dimension. -/
 theorem signedAxis_total_moment (W : ℝ → ℝ) (p : ι × Fin 2) :
