@@ -7,7 +7,6 @@ set_option linter.style.header false
 /-!
 # Fermionic quartic diagrammatics
 
-Fermionic local-leg semantics, flattened leg families, and ordered Wick-diagram amplitudes, together with their
-connected-component factorization. Statistics-independent diagram, pairing, ordering, and
-factorization structure is owned by `SecondQuantization.Common`.
+Fermionic local-leg operators and flattened leg families, ordered Wick amplitudes, and
+connected-component factorization.
 -/
