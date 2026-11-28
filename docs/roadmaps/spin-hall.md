@@ -645,6 +645,27 @@ full Fock Hamiltonian. Concrete Rashba one-body spectral data and the
 nonzero exact conductivity evaluation remain to be certified, as do
 regulator removal and bulk/DC limits.
 
+## Real-space single-electron spectral construction (partial R4)
+
+`EnergyEigenbasisLehmannData.ofSingleOccupied` constructs finite eigenbasis
+data from the bounded self-adjoint Hamiltonian using Mathlib's spectral
+theorem, placing unit probability on a selected eigenvector.
+`realSpaceRashbaOneParticleFreeSystem` transports the actual real-space
+hopping Hamiltonian to the one-particle Hilbert space and derives
+self-adjointness by restricting the invariant one-particle sector.
+
+`realSpaceRashbaSpinDisplacement_oneElectron_conductivity_eq_finiteLehmannTable`
+reduces the actual finite-Fock proper spin conductivity of that occupied
+state to the existing one-particle Lehmann table. The vertices are the
+transported spin displacement and geometric Peierls charge source.
+The contact cancellation and stationarity are inherited from the
+existing theorems; no independent Fock eigenbasis is required.
+
+This is a spectral construction, not an explicit diagonalization of the
+centered open 2 × 3 benchmark. Selecting and certifying its ground state,
+evaluating its nonzero transverse conductivity exactly, and taking the
+bulk or DC limits remain separate steps.
+
 ## References
 
 See the annotated entries in [`../references.md`](../references.md) for full

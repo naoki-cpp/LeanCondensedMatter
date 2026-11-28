@@ -26,6 +26,17 @@ def finiteSecondQuantization :
   ((boundedOneBodyOperator (Site := Site)).toLinearMap.comp
     (Common.finiteHilbertOperatorAlgEquiv (Config := Site)).symm.toLinearMap).toContinuousLinearMap
 
+/-- The continuous second quantization agrees with the existing algebraic
+one-body lift after canonical finite-Hilbert transport. -/
+theorem finiteSecondQuantization_ofAlgebraic
+    (A : (Site →₀ ℂ) →ₗ[ℂ] (Site →₀ ℂ)) :
+    finiteSecondQuantization (Common.finiteHilbertOperatorAlgEquiv A) =
+      boundedOneBodyOperator A := by
+  change boundedOneBodyOperator
+    ((Common.finiteHilbertOperatorAlgEquiv (Config := Site)).symm
+      (Common.finiteHilbertOperatorAlgEquiv A)) = _
+  rw [AlgEquiv.symm_apply_apply]
+
 /-- Second quantization of bounded one-body operators preserves the commutator,
 although it does not in general preserve operator products. -/
 theorem finiteSecondQuantization_lie
