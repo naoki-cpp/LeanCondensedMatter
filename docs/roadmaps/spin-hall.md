@@ -554,7 +554,7 @@ Run `python scripts/rashba_proper_spin_benchmark.py` with NumPy.
 The reference uses the actual Rashba nearest-neighbor bond formula on
 a centered open 2 × 3 rectangle with one electron in its nondegenerate
 lowest-energy orbital. In dimensionless benchmark units,
-ℏ = q = a = t = 1, spin scale = 1/2, onsite energy = 4,
+ℏ = q = a = t = 1, physical spin = σ_z/2 (Lean spinScale = 1), onsite energy = 4,
 exchange = 1/2, Rashba bond coefficient = 1/2,
 V = 6 (unit area per site), ω = 0.7, η = 0.2.
 The origin is explicitly (1/2,1) relative to the uncentered rectangle;
@@ -665,6 +665,40 @@ This is a spectral construction, not an explicit diagonalization of the
 centered open 2 × 3 benchmark. Selecting and certifying its ground state,
 evaluating its nonzero transverse conductivity exactly, and taking the
 bulk or DC limits remain separate steps.
+
+## Centered 2 × 3 ground-state benchmark and exact matrix certificate (partial R4)
+
+`RectangleBenchmark.occupied_energy_min` selects the last eigenvector of
+Mathlib's descending spectral ordering and proves its energy is minimal.
+`RectangleBenchmark.conductivityYX_eq_finiteLehmannTable` specializes the
+actual Fock conductivity and its one-particle Lehmann reduction at
+ω = 7/10, η = 1/5, V = 6. The geometry is centered at (1/2, 1) and
+the Lean spinScale parameter is 1, giving the physical spin σ_z/2.
+
+Run `python scripts/rashba_proper_spin_certificate.py` with SymPy for
+an independent exact certificate on the explicit 12 × 12 Gaussian-rational
+reference matrix. Let M = 2H, f(t) = det(t I − M), C(t) = adj(t I − M),
+and s = 2(ω + iη). The numerator of the response at a simple eigenvalue λ
+of M, up to the nonzero prefactor 2/(V f'(λ)), is
+
+```text
+tr(C(λ) D C(λ+s) B) f(λ−s)
++ tr(C(λ) B C(λ−s) D) f(λ+s).
+```
+
+The certificate reduces these polynomials modulo 101, sending i to 10
+(10² = −1 modulo 101). The gcd of f with its derivative, the shifted
+denominator product, and the response numerator is 1 in each case.
+As f is monic, these modular certificates imply coprimality over the
+Gaussian rationals, establishing a simple spectrum and nonzero yx
+response for every singly occupied energy eigenstate of the explicit
+reference matrix, in particular its ground state.
+
+The matrix certificate is independent of the Lean implementation: the
+entrywise identification with the Lean Hamiltonian and vertices, and
+formalization of the adjugate/resolvent and coprimality argument, remain
+open. No Lean theorem of nonvanishing or ground-state uniqueness is
+claimed yet, and no floating-point result is used as a proof assumption.
 
 ## References
 
