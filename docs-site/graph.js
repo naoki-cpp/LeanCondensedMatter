@@ -50,6 +50,8 @@ const ui = {
   moduleImportsLink: document.querySelector("#module-imports-link"),
   searchForm: document.querySelector("#search-form"),
   searchHome: document.querySelector(".controls"),
+  kindFilter: document.querySelector("#kind-filter"),
+  generatedFilter: document.querySelector("#generated-filter"),
   searchLabel: document.querySelector("#search-form > label"),
   search: document.querySelector("#theorem-search"),
   searchResults: document.querySelector("#search-results"),
@@ -297,8 +299,12 @@ function setGraphModeChrome() {
   }
   document.getElementById("graph-fit").textContent = modules ? "Whole graph" : "Fit";
   ui.overviewLink.textContent = "Declarations";
-  document.getElementById("kind-filter").closest("label").hidden = modules;
-  document.getElementById("generated-filter").closest("label").hidden = modules;
+  ui.searchHome.hidden = false;
+  for (const filter of [ui.kindFilter, ui.generatedFilter]) {
+    const label = filter.closest("label");
+    if (label.parentElement !== ui.searchHome) ui.graphLegendHome.before(label);
+    label.hidden = modules;
+  }
   ui.searchLabel.textContent = modules ? "Module" : "Declaration";
   ui.search.placeholder = modules ? "Module name…" : "Declaration, module, or documentation…";
   ui.direction.closest(".control-grid").hidden = overview;
@@ -784,13 +790,21 @@ function summaryChip(text) {
   return element("span", "summary-chip", text);
 }
 
-function renderOverviewContent() {
+function renderOverviewContent(focusFilter = null) {
   const requestedBrowse = state.browse ?? "LeanCondensedMatter";
   state.browse = requestedBrowse;
   moduleOverview?.render(requestedBrowse).then((rendered) => {
     if (rendered && state.page === "overview" && state.browse === requestedBrowse) {
       const searchSlot = ui.overview.querySelector(".map-search-slot");
-      if (searchSlot) searchSlot.append(ui.searchForm);
+      const filterSlot = ui.overview.querySelector(".research-map-filters");
+      if (searchSlot && filterSlot) {
+        searchSlot.append(ui.searchForm);
+        filterSlot.append(ui.kindFilter.closest("label"), ui.generatedFilter.closest("label"));
+        ui.searchHome.hidden = true;
+      }
+      if (focusFilter && document.activeElement === document.body) {
+        focusFilter.focus({ preventScroll: true });
+      }
     }
     if (!rendered && state.browse === requestedBrowse) {
       if (requestedBrowse !== "LeanCondensedMatter" && moduleOverview?.hasModule("LeanCondensedMatter")) {
@@ -808,7 +822,7 @@ function renderOverviewContent() {
   });
 }
 
-function showOverview({ historyEntry = true, browse = null } = {}) {
+function showOverview({ historyEntry = true, browse = null, focusFilter = null } = {}) {
   moduleOverview?.cancel();
   state.graphKind = "theorems";
   state.catalog = state.theoremCatalog;
@@ -836,7 +850,7 @@ function showOverview({ historyEntry = true, browse = null } = {}) {
   setGraphModeChrome();
   ui.graphStatus.textContent = "";
   ui.detail.replaceChildren();
-  renderOverviewContent();
+  renderOverviewContent(focusFilter);
   if (historyEntry) writeLocation(true);
 }
 
@@ -1076,11 +1090,14 @@ function bindEvents() {
     event.preventDefault();
     document.getElementById("explorer-content").focus();
   });
-  for (const id of ["kind-filter", "generated-filter"]) {
-    document.getElementById(id).addEventListener("change", () => {
-      state.kind = document.getElementById("kind-filter").value;
-      state.generated = document.getElementById("generated-filter").checked;
-      if (state.page === "overview") showOverview({ browse: state.browse });
+  for (const filter of [ui.kindFilter, ui.generatedFilter]) {
+    filter.addEventListener("change", () => {
+      state.kind = ui.kindFilter.value;
+      state.generated = ui.generatedFilter.checked;
+      if (state.page === "overview") showOverview({
+        historyEntry: false, browse: state.browse,
+        focusFilter: document.activeElement === filter ? filter : null,
+      });
       else if (state.root) renderGraph();
       renderSearchResults();
     });
