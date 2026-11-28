@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Analysis.Algebra.FinsuppCoordinates
+import LeanCondensedMatter.Analysis.Algebra.FinsuppTrace
 import LeanCondensedMatter.Analysis.Algebra.FinsuppDiagonal
 import LeanCondensedMatter.Analysis.Algebra.FinsuppSupportShift
 import LeanCondensedMatter.SecondQuantization.Common.Algebra.AlgebraicFock
@@ -155,43 +155,18 @@ theorem summableDiagonalTraceRatioLinear_eq_zero_of_carriesShift
   change tsumTrace ((Finsupp.diagonalOperator w).comp A) / tsumTrace (Finsupp.diagonalOperator w) = 0
   exact diagonalTraceRatio_eq_zero_of_carriesShift hA hq w
 
-/-- Sum the matrix coefficients of a composite over the finite support of its right factor. -/
-private theorem matrixCoeff_comp_eq_tsum
-    (A B : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (m n : Config) :
-    matrixCoeff (A.comp B) m n = ∑' k, matrixCoeff A m k * matrixCoeff B k n := by
-  change A (B (basisState n)) m = ∑' k, matrixCoeff A m k * matrixCoeff B k n
-  rw [Finsupp.linearMap_apply_eq_finsetSum_of_support_subset A (B (basisState n))
-    (B (basisState n)).support (subset_refl _) m]
-  exact ((hasSum_sum_of_ne_finset_zero
-    (s := (B (basisState n)).support)
-    (fun k hk => by
-      rw [Finsupp.notMem_support_iff.mp hk, mul_zero])).tsum_eq).symm
-
-/-- **Cyclicity under a two-operator swap**, assuming absolute double summability:
-`Tr'[AB] = Tr'[BA]`. -/
+/-- Cyclicity of the Fock diagonal trace under absolute double summability. -/
 theorem tsumTrace_comp_comm (A B : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
     (h : Summable (Function.uncurry (fun n k => matrixCoeff A n k * matrixCoeff B k n))) :
-    tsumTrace (A.comp B) = tsumTrace (B.comp A) := by
-  rw [tsumTrace, tsumTrace]
-  calc
-    ∑' n, matrixCoeff (A.comp B) n n
-        = ∑' n, ∑' k, matrixCoeff A n k * matrixCoeff B k n :=
-          tsum_congr fun n => matrixCoeff_comp_eq_tsum A B n n
-    _ = ∑' k, ∑' n, matrixCoeff A n k * matrixCoeff B k n := h.tsum_comm.symm
-    _ = ∑' n, matrixCoeff (B.comp A) n n := tsum_congr fun k => by
-      rw [matrixCoeff_comp_eq_tsum]
-      exact tsum_congr fun n => mul_comm _ _
+    tsumTrace (A.comp B) = tsumTrace (B.comp A) :=
+  Finsupp.tsum_diagonal_comp_comm A B h
 
 /-- A composite's diagonal series is summable whenever the underlying bivariate family is. -/
 theorem summable_matrixCoeff_diag_comp_of_summable_uncurry
     (A B : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
     (h : Summable (Function.uncurry (fun n k => matrixCoeff A n k * matrixCoeff B k n))) :
-    Summable (fun n => matrixCoeff (A.comp B) n n) := by
-  have hrow : (fun n => matrixCoeff (A.comp B) n n) =
-      fun n => ∑' k, matrixCoeff A n k * matrixCoeff B k n :=
-    funext fun n => matrixCoeff_comp_eq_tsum A B n n
-  rw [hrow]
-  exact h.prod
+    Summable (fun n => matrixCoeff (A.comp B) n n) :=
+  Finsupp.summable_diagonal_comp_of_summable_uncurry A B h
 
 end Common
 end SecondQuantization
