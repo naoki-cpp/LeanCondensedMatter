@@ -136,7 +136,9 @@ theorem energy_tendsto_zero_of_firstOrderSystem
   · filter_upwards [Filter.eventually_ge_atTop (2 : ℝ)] with r hr
     have h := Real.sqrt_le_sqrt (hSqBound r hr)
     rw [Real.sqrt_sq_eq_abs, abs_of_nonneg (hF_nonneg r hr)] at h
-    exact (hE_le_two_F r hr).trans (by linarith)
+    calc
+      E r ≤ 2 * F r := hE_le_two_F r hr
+      _ ≤ 2 * Real.sqrt (H 2 / r) := by linarith
   · exact hDouble
 
 end RadialODE
