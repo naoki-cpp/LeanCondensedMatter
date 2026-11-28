@@ -192,3 +192,54 @@ test("definition body shares the statement symbol labels and retains its exact L
   assert.equal(renderStructuredDefinition(new Element("div"), { kind: "def", structuredStatement: data }), false);
   assert.equal(renderStructuredDefinition(new Element("div"), { kind: "abbrev", structuredStatement: { ...data, version: 2 } }), false);
 });
+
+
+test("operator hats require a complex-linear endomorphism on the recognized Hilbert space", () => {
+  const data = expectationStatement();
+  const H = variable("H");
+  const K = variable("K");
+  const id = app("RingHom.id", constant("Complex"));
+  const operator = app("ContinuousLinearMap", id, H, H);
+  data.binders.push(
+    binder("B", "variable", operator),
+    binder("C", "variable", operator),
+    binder("L", "variable", app("LinearMap", id, H, H)),
+    binder("F", "variable", app("ContinuousLinearMap", id, H, K)),
+    binder("T", "variable", app("ContinuousLinearMap", constant("Complex.conjAe"), H, H)),
+    binder("R", "variable", app("ContinuousLinearMap", app("RingHom.id", constant("Real")), H, H)),
+    binder("M", "variable", app("Matrix", H, H, constant("Complex"))),
+    binder("G", "variable", H),
+  );
+  const render = (node) => buildStatementModel({ ...data, conclusion: node }).conclusion.tex;
+  for (const name of ["B", "C", "L", "A"]) assert.match(render(variable(name)), /\\hat\{/);
+  for (const name of ["F", "T", "R", "M", "G"]) assert.doesNotMatch(render(variable(name)), /\\hat\{/);
+  assert.match(render(variable("psi", "ψ")), /\\left\|\\psi\\right\\rangle/);
+  const product = { ...app("HMul.hMul", variable("B"), variable("C")), resultType: "ContinuousLinearMap" };
+  assert.equal(render(product), "\\hat{\\mathrm{B}}\\,\\hat{\\mathrm{C}}");
+  assert.match(render({ ...product, resultType: "Complex" }), /\\cdot/);
+  assert.match(render(app("HMul.hMul", variable("F"), variable("C"))), /\\cdot/);
+  data.binders = data.binders.filter((item) => item.id !== "complete");
+  assert.doesNotMatch(render(variable("B")), /\\hat\{/);
+});
+
+test("typed scalar action and quantum wrappers preserve conservative notation", () => {
+  const data = expectationStatement();
+  const H = variable("H");
+  data.binders.push(
+    binder("B", "variable", app("LinearMap", app("RingHom.id", constant("Complex")), H, H)),
+    binder("z", "variable", constant("Complex")),
+    binder("r", "variable", constant("Real")),
+    binder("rho", "variable", app("QuantumTheory.DensityOperator", H)),
+    binder("fake", "variable", { kind: "app", fn: variable("custom", "QuantumTheory.Observable"), args: [H] }),
+  );
+  const render = (node) => buildStatementModel({ ...data, conclusion: node }).conclusion.tex;
+  const scale = (id) => ({ ...app("HSMul.hSMul", variable(id), variable("B")), resultType: "LinearMap" });
+  assert.equal(render(scale("z")), "\\mathrm{z}\\,\\hat{\\mathrm{B}}");
+  assert.match(render(scale("r")), /\\bullet/);
+  assert.match(render({ ...scale("z"), resultType: "Real" }), /\\bullet/);
+  assert.match(render(variable("rho")), /\\hat\{/);
+  assert.doesNotMatch(render(variable("fake")), /\\hat\{/);
+  assert.match(render(app("Star.star", variable("B"))), /\^\{\\star\}/);
+  assert.match(render(app("ContinuousLinearMap.adjoint", variable("B"))), /\^\{\\dagger\}/);
+  assert.doesNotMatch(expressionToTex(variable("B")), /\\hat\{/);
+});
