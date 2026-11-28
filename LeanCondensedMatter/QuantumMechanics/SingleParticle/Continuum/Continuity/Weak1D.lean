@@ -90,35 +90,6 @@ theorem schrodinger_weak_continuity_interval
   simpa [intervalSmearedDensityRate1D, intervalSmearedCurrentPairing1D,
     weightedBoundaryCurrent1D, ContinuousLinearMap.mul_apply'] using hweak
 
-/-- Schrödinger weak continuity for test functions vanishing at the interval endpoints. -/
-theorem schrodinger_weak_continuity_interval_zero_boundary
-    (a b ℏ κ : ℝ) (hℏ : ℏ ≠ 0)
-    {test testDerivative : ℝ → ℝ}
-    {ψ ψt ψx ψxx : ℝ → ℂ} {potential : ℝ → ℝ}
-    (htest : ∀ x ∈ [[a, b]], HasDerivAt test (testDerivative x) x)
-    (hψre : ∀ x ∈ [[a, b]],
-      HasDerivAt (fun y => (ψ y).re) (ψx x).re x)
-    (hψim : ∀ x ∈ [[a, b]],
-      HasDerivAt (fun y => (ψ y).im) (ψx x).im x)
-    (hψxre : ∀ x ∈ [[a, b]],
-      HasDerivAt (fun y => (ψx y).re) (ψxx x).re x)
-    (hψxim : ∀ x ∈ [[a, b]],
-      HasDerivAt (fun y => (ψx y).im) (ψxx x).im x)
-    (hschrodinger : ∀ x,
-      Complex.I * (ℏ : ℂ) * ψt x =
-        -(κ : ℂ) * ψxx x + (potential x : ℂ) * ψ x)
-    (htestIntegrable : IntervalIntegrable testDerivative volume a b)
-    (hcurrentIntegrable : IntervalIntegrable
-      (fun x => probabilityCurrentDivergenceValue1D ℏ κ (ψ x) (ψxx x)) volume a b)
-    (ha : test a = 0) (hb : test b = 0) :
-    intervalSmearedDensityRate1D a b test
-        (fun x => probabilityDensityTimeDerivativeValue (ψ x) (ψt x)) =
-      intervalSmearedCurrentPairing1D a b testDerivative
-        (fun x => probabilityCurrentValue1D ℏ κ (ψ x) (ψx x)) := by
-  rw [schrodinger_weak_continuity_interval a b ℏ κ hℏ htest hψre hψim hψxre hψxim
-    hschrodinger htestIntegrable hcurrentIntegrable]
-  simp [weightedBoundaryCurrent1D, ha, hb]
-
 end
 end Continuum
 end SingleParticle

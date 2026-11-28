@@ -1,6 +1,5 @@
 import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Continuity.Electromagnetic1D
 import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Continuity.CompactSupport1D
-import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Continuity.Schwartz1D
 import LeanCondensedMatter.Analysis.ConservationLaw.WeakConservation1D
 import Mathlib.Tactic.Module
 
@@ -81,39 +80,6 @@ theorem electromagnetic_schrodinger_weak_continuity_interval
     (hcurrentIntegrable.continuousOn_mul (HasDerivAt.continuousOn htest))
   simpa [intervalSmearedDensityRate1D, intervalSmearedCurrentPairing1D,
     weightedBoundaryCurrent1D, ContinuousLinearMap.mul_apply'] using hweak
-
-/-- Electromagnetic interval weak continuity when the test function vanishes at both endpoints. -/
-theorem electromagnetic_schrodinger_weak_continuity_interval_zero_boundary
-    (a b q ℏ mass : ℝ) (hℏ : ℏ ≠ 0) (hmass : mass ≠ 0)
-    {test testDerivative vectorPotential vectorPotentialDerivative : ℝ → ℝ}
-    {ψ ψx ψt ψxx : ℝ → ℂ} {scalarPotential : ℝ → ℝ}
-    (htest : ∀ x ∈ [[a, b]], HasDerivAt test (testDerivative x) x)
-    (hA : ∀ x ∈ [[a, b]],
-      HasDerivAt vectorPotential (vectorPotentialDerivative x) x)
-    (hψre : ∀ x ∈ [[a, b]], HasDerivAt (fun y => (ψ y).re) (ψx x).re x)
-    (hψim : ∀ x ∈ [[a, b]], HasDerivAt (fun y => (ψ y).im) (ψx x).im x)
-    (hψxre : ∀ x ∈ [[a, b]], HasDerivAt (fun y => (ψx y).re) (ψxx x).re x)
-    (hψxim : ∀ x ∈ [[a, b]], HasDerivAt (fun y => (ψx y).im) (ψxx x).im x)
-    (hschrodinger : ∀ x,
-      Complex.I * (ℏ : ℂ) * ψt x =
-        minimallyCoupledSchrodingerRhsValue1D
-          q ℏ mass (vectorPotential x) (vectorPotentialDerivative x) (scalarPotential x)
-          (ψ x) (ψx x) (ψxx x))
-    (htestIntegrable : IntervalIntegrable testDerivative volume a b)
-    (hcurrentIntegrable : IntervalIntegrable
-      (fun x => electromagneticProbabilityCurrentDivergenceValue1D
-        q ℏ mass (vectorPotential x) (vectorPotentialDerivative x)
-        (ψ x) (ψx x) (ψxx x)) volume a b)
-    (ha : test a = 0) (hb : test b = 0) :
-    intervalSmearedDensityRate1D a b test
-        (fun x => probabilityDensityTimeDerivativeValue (ψ x) (ψt x)) =
-      intervalSmearedCurrentPairing1D a b testDerivative
-        (fun x => electromagneticProbabilityCurrentValue1D
-          q ℏ mass (vectorPotential x) (ψ x) (ψx x)) := by
-  rw [electromagnetic_schrodinger_weak_continuity_interval
-    a b q ℏ mass hℏ hmass htest hA hψre hψim hψxre hψxim hschrodinger
-    htestIntegrable hcurrentIntegrable]
-  simp [weightedBoundaryCurrent1D, ha, hb]
 
 /-- Under explicit dominated time-differentiation hypotheses, the electromagnetic Schrödinger
  equation gives the derivative of an interval-smeared probability density. -/
@@ -261,79 +227,6 @@ theorem hasDerivAt_wholeSpaceSmearedProbabilityDensity1D_of_electromagnetic_schr
       hA hψre hψim hψxre hψxim hschrodinger htestDerivIntegrable hcurrentIntegrable
   exact hasDerivAt_wholeSpaceSmearedProbabilityDensity1D_of_interval
     a b t htestSupport hInterval
-
-/-- For a Schwartz spatial wavefunction, all wavefunction spatial differentiability hypotheses in
-the electromagnetic interval weak theorem are automatic. -/
-theorem electromagnetic_schrodinger_weak_continuity_interval_of_schwartz
-    (a b q ℏ mass : ℝ) (hℏ : ℏ ≠ 0) (hmass : mass ≠ 0)
-    {test testDerivative vectorPotential vectorPotentialDerivative : ℝ → ℝ}
-    (ψ : SchwartzMap ℝ ℂ) {ψt : ℝ → ℂ} {scalarPotential : ℝ → ℝ}
-    (htest : ∀ x ∈ [[a, b]], HasDerivAt test (testDerivative x) x)
-    (hA : ∀ x ∈ [[a, b]],
-      HasDerivAt vectorPotential (vectorPotentialDerivative x) x)
-    (hschrodinger : ∀ x,
-      Complex.I * (ℏ : ℂ) * ψt x =
-        minimallyCoupledSchrodingerRhsValue1D
-          q ℏ mass (vectorPotential x) (vectorPotentialDerivative x) (scalarPotential x)
-          (ψ x) (schwartzSpatialDerivative1D ψ x) (schwartzSpatialSecondDerivative1D ψ x))
-    (htestIntegrable : IntervalIntegrable testDerivative volume a b)
-    (hcurrentIntegrable : IntervalIntegrable
-      (fun x => electromagneticProbabilityCurrentDivergenceValue1D
-        q ℏ mass (vectorPotential x) (vectorPotentialDerivative x)
-        (ψ x) (schwartzSpatialDerivative1D ψ x) (schwartzSpatialSecondDerivative1D ψ x))
-      volume a b) :
-    intervalSmearedDensityRate1D a b test
-        (fun x => probabilityDensityTimeDerivativeValue (ψ x) (ψt x)) =
-      intervalSmearedCurrentPairing1D a b testDerivative
-          (fun x => electromagneticProbabilityCurrentValue1D
-            q ℏ mass (vectorPotential x) (ψ x) (schwartzSpatialDerivative1D ψ x)) -
-        weightedBoundaryCurrent1D a b test
-          (fun x => electromagneticProbabilityCurrentValue1D
-            q ℏ mass (vectorPotential x) (ψ x) (schwartzSpatialDerivative1D ψ x)) := by
-  apply electromagnetic_schrodinger_weak_continuity_interval
-    a b q ℏ mass hℏ hmass htest hA
-  · intro x _
-    exact hasDerivAt_schwartzSpatialDerivative1D_re ψ x
-  · intro x _
-    exact hasDerivAt_schwartzSpatialDerivative1D_im ψ x
-  · intro x _
-    exact hasDerivAt_schwartzSpatialSecondDerivative1D_re ψ x
-  · intro x _
-    exact hasDerivAt_schwartzSpatialSecondDerivative1D_im ψ x
-  · exact hschrodinger
-  · exact htestIntegrable
-  · exact hcurrentIntegrable
-
-/-- Compact-support whole-space weak electromagnetic continuity for a Schwartz spatial wavefunction. -/
-theorem electromagnetic_schrodinger_weak_continuity_wholeSpace_of_schwartz
-    (a b q ℏ mass : ℝ) (hℏ : ℏ ≠ 0) (hmass : mass ≠ 0)
-    {test vectorPotential vectorPotentialDerivative : ℝ → ℝ}
-    (ψ : SchwartzMap ℝ ℂ) {ψt : ℝ → ℂ} {scalarPotential : ℝ → ℝ}
-    (htestSupport : tsupport test ⊆ Ioo a b)
-    (htestDifferentiable : Differentiable ℝ test)
-    (hA : ∀ x ∈ [[a, b]],
-      HasDerivAt vectorPotential (vectorPotentialDerivative x) x)
-    (hschrodinger : ∀ x,
-      Complex.I * (ℏ : ℂ) * ψt x =
-        minimallyCoupledSchrodingerRhsValue1D
-          q ℏ mass (vectorPotential x) (vectorPotentialDerivative x) (scalarPotential x)
-          (ψ x) (schwartzSpatialDerivative1D ψ x) (schwartzSpatialSecondDerivative1D ψ x))
-    (htestDerivIntegrable : IntervalIntegrable (deriv test) volume a b)
-    (hcurrentIntegrable : IntervalIntegrable
-      (fun x => electromagneticProbabilityCurrentDivergenceValue1D
-        q ℏ mass (vectorPotential x) (vectorPotentialDerivative x)
-        (ψ x) (schwartzSpatialDerivative1D ψ x) (schwartzSpatialSecondDerivative1D ψ x))
-      volume a b) :
-    wholeSpaceSmearedDensityRate1D test
-        (fun x => probabilityDensityTimeDerivativeValue (ψ x) (ψt x)) =
-      wholeSpaceSmearedCurrentPairing1D (deriv test)
-        (fun x => electromagneticProbabilityCurrentValue1D
-          q ℏ mass (vectorPotential x) (ψ x) (schwartzSpatialDerivative1D ψ x)) := by
-  have hInterval := electromagnetic_schrodinger_weak_continuity_interval_of_schwartz
-    a b q ℏ mass hℏ hmass ψ (fun x _ => (htestDifferentiable x).hasDerivAt)
-      hA hschrodinger htestDerivIntegrable hcurrentIntegrable
-  exact ConservationLaw.weak_continuity_wholeSpace_of_interval
-    (ContinuousLinearMap.mul ℝ ℝ) a b htestSupport hInterval
 
 end
 end Continuum
