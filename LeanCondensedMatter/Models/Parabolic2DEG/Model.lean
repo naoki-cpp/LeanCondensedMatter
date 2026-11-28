@@ -15,7 +15,7 @@ electron gas,
 
 The band, Hamiltonian and velocity depend only on `HamiltonianParameters`, carrying the
 effective mass. The finite-response parameter bundle and cutoff domain live in
-`ResponseParameters`; model-specific Green functions live in `Green`, and charge-current
+`Green`, together with model-specific Green functions; charge-current
 vertices and conductivity calculations live in `Response`. No infinite-volume,
 cutoff-removal, or zero-broadening limit is assumed in this clean model.
 -/

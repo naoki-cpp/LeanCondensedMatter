@@ -314,7 +314,7 @@ imports BornDysonLoop directly.
 
 The `Models.RashbaExchange` family owns its clean Rashba-exchange Hamiltonian and spectral
 identities in `Model`, `Model/Spectral`, and `Model/Interband`. The finite-response bundle
-and momentum disk live in `ResponseParameters`. The clean bounded Hamiltonian and velocity are defined in `Operator`; their band-projector
+and momentum disk live in `Current`, using `Transport.Core.FiniteResponseParameters`. The clean bounded Hamiltonian and velocity are defined in `Operator`; their band-projector
 spectral identities are in `Model/OperatorSpectral`. The signed charge and bounded current
 vertices, including ordered projector-current traces, live in `Current`; retarded/advanced
 resolvents are in `Green`. Berry/force-matrix bridges and finite Bastin/Středa response stay
@@ -325,8 +325,8 @@ under `Transport`.
 normalization benchmark. It keeps effective mass, chemical potential, radial cutoff, positive
 spectral broadening, signed charge/current convention, reduced Planck constant, and momentum-measure
 normalization explicit. `Model` owns only the clean Hamiltonian and velocity;
-`ResponseParameters` owns the finite-response parameter bundle and cutoff domain;
-`Green` owns finite-broadening scalar/operator resolvents; and `Response` owns
+`Green` owns the finite-response parameter bundle (using `Transport.Core.FiniteResponseParameters`),
+cutoff data, and finite-broadening scalar/operator resolvents; and `Response` owns
 charge-current vertices together with the finite conductivity calculation. The pointwise response consumes the
 common finite-broadening Středa surface kernel `RA - (RR + AA)/2` through these operators. The reduced
 finite-cutoff response remains a response-level object until the named `ℏ/(2π)` Kubo trace

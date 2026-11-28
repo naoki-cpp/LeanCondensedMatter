@@ -52,7 +52,6 @@
       "path": "LeanCondensedMatter/Models/Parabolic2DEG.lean",
       "modules": [
         "LeanCondensedMatter.Models.Parabolic2DEG.Model",
-        "LeanCondensedMatter.Models.Parabolic2DEG.ResponseParameters",
         "LeanCondensedMatter.Models.Parabolic2DEG.Green",
         "LeanCondensedMatter.Models.Parabolic2DEG.Response"
       ]
@@ -62,7 +61,6 @@
       "path": "LeanCondensedMatter/Models/RashbaExchange.lean",
       "modules": [
         "LeanCondensedMatter.Models.RashbaExchange.Model",
-        "LeanCondensedMatter.Models.RashbaExchange.ResponseParameters",
         "LeanCondensedMatter.Models.RashbaExchange.Model.Spectral",
         "LeanCondensedMatter.Models.RashbaExchange.Model.Interband",
         "LeanCondensedMatter.Models.RashbaExchange.Model.OperatorSpectral",

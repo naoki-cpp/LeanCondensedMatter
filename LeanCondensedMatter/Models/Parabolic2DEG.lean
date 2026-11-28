@@ -1,5 +1,4 @@
 import LeanCondensedMatter.Models.Parabolic2DEG.Model
-import LeanCondensedMatter.Models.Parabolic2DEG.ResponseParameters
 import LeanCondensedMatter.Models.Parabolic2DEG.Green
 import LeanCondensedMatter.Models.Parabolic2DEG.Response
 

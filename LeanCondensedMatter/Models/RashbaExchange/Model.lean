@@ -19,7 +19,7 @@ curvature use only `HamiltonianParameters`. The lower and upper branches are rep
 `QuantumTheory.TwoBand`; the scalar kinetic term shifts both energies equally.
 The signed carrier charge, chemical potential,
 finite broadening, momentum cutoff and continuum normalization are owned downstream by
-`ResponseParameters`; the current vertex is defined in `Operator`.
+`Current`, together with the charge-current vertex.
 
 The finite momentum disk and all response or device-level Hall observables are downstream.
 No disorder or limiting procedure is assumed in this clean model.
