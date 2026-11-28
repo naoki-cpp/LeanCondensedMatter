@@ -5,7 +5,14 @@ on:
     workflows: [Lean Action CI]
     types: [completed]
     branches: [main]
+  schedule:
+    - cron: '0 19 * * 0'
   workflow_dispatch:
+    inputs:
+      deep_audit:
+        description: Run theorem replacement and unused hypothesis audits
+        type: boolean
+        default: true
 
 permissions:
   contents: read
@@ -14,7 +21,7 @@ permissions:
 # Only the newest automatic main advisory run can publish useful graph data. Manual branch
 # validation uses a separate cancellation group.
 concurrency:
-  group: lean-insights-${{ github.event_name == 'workflow_run' && 'main' || github.ref }}
+  group: lean-insights-${{ github.event_name == 'workflow_run' && 'main' || github.event_name == 'schedule' && 'scheduled-audit' || github.ref }}
   cancel-in-progress: true
 
 jobs:
@@ -39,7 +46,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          if [ "$EVENT_NAME" = workflow_dispatch ]; then
+          if [ "$EVENT_NAME" != workflow_run ]; then
             echo "run=true" >> "$GITHUB_OUTPUT"
             echo "sha=$DISPATCH_SHA" >> "$GITHUB_OUTPUT"
             exit 0
@@ -96,18 +103,6 @@ jobs:
           use-github-cache: false
           use-mathlib-cache: auto
 
-      - name: Audit potentially unused theorem hypotheses
-        run: |
-          /usr/bin/time -f 'unused hypotheses: %e s, peak RSS %M KiB' lake env lean scripts/CheckUnusedHypotheses.lean
-
-      - name: Add unused hypothesis audit summary
-        if: always()
-        shell: bash
-        run: |
-          if [ -f unused-hypotheses.md ]; then
-            cat unused-hypotheses.md >> "$GITHUB_STEP_SUMMARY"
-          fi
-
       - name: Generate theorem catalog
         shell: bash
         run: |
@@ -120,27 +115,18 @@ jobs:
       - name: Validate declaration graph
         run: python3 scripts/check_declaration_catalog.py
 
-      - name: Audit proof-guided theorem replacements
-        shell: bash
-        run: |
-          set -o pipefail
-          /usr/bin/time -f 'replacement audit: %e s, peak RSS %M KiB' lake env lean scripts/TheoremReplacementAudit.lean 2>&1 | tee theorem-replacement-audit.log
-
-      - name: Merge theorem replacement findings
-        run: python3 scripts/merge_theorem_replacements.py
-
       - name: Add theorem catalog summary
         if: success()
         shell: bash
         run: |
           echo "## Theorem catalog" >> "$GITHUB_STEP_SUMMARY"
-          grep -E '^(Theorems|Retained audit declarations|Retained re-audit queue|Priority terminal review queue with no compiled project consumers|Single-consumer theorem review queue|Direct-wrapper review queue|Cross-module direct-wrapper review queue|Definitionally equivalent proof-dependency targets|Replacement-candidate targets|Mathlib definitionally equivalent proof-dependency targets|Mathlib replacement-candidate targets):' docs/generated/theorems.md >> "$GITHUB_STEP_SUMMARY"
+          grep -E '^(Theorems|Retained audit declarations|Retained re-audit queue|Priority terminal review queue with no compiled project consumers|Single-consumer theorem review queue|Direct-wrapper review queue|Cross-module direct-wrapper review queue):' docs/generated/theorems.md >> "$GITHUB_STEP_SUMMARY"
           echo "" >> "$GITHUB_STEP_SUMMARY"
           echo "The complete theorem catalog and module import graph are attached as workflow artifacts." >> "$GITHUB_STEP_SUMMARY"
           echo "" >> "$GITHUB_STEP_SUMMARY"
           echo "### Catalog generation cost" >> "$GITHUB_STEP_SUMMARY"
           echo '~~~text' >> "$GITHUB_STEP_SUMMARY"
-          grep -hE '^(catalog generation|replacement audit):' theorem-catalog.log theorem-replacement-audit.log >> "$GITHUB_STEP_SUMMARY"
+          grep -E '^catalog generation:' theorem-catalog.log >> "$GITHUB_STEP_SUMMARY"
           wc -c docs/generated/theorems.md docs/generated/theorems.json docs/generated/declarations.json docs/generated/module-imports.json >> "$GITHUB_STEP_SUMMARY"
           echo '~~~' >> "$GITHUB_STEP_SUMMARY"
 
@@ -157,19 +143,8 @@ jobs:
           if-no-files-found: error
           retention-days: 30
 
-      - name: Upload theorem catalog logs
-        if: always()
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
-        with:
-          name: theorem-catalog-log
-          path: |
-            theorem-catalog.log
-            theorem-replacement-audit.log
-          if-no-files-found: warn
-          retention-days: 7
-
       - name: Publish declaration and module graph data
-        if: success()
+        if: success() && github.event_name != 'schedule'
         env:
           GH_TOKEN: ${{ github.token }}
           TARGET_SHA: ${{ needs.detect.outputs.sha }}
@@ -206,3 +181,66 @@ jobs:
 
           git -C "$graph_data_dir" commit -m "chore(graph-data): update theorem and module graphs"
           git -C "$graph_data_dir" push origin HEAD:graph-data
+
+      - name: Audit proof-guided theorem replacements
+        if: github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.deep_audit)
+        shell: bash
+        run: |
+          set -o pipefail
+          /usr/bin/time -f 'replacement audit: %e s, peak RSS %M KiB' lake env lean scripts/TheoremReplacementAudit.lean 2>&1 | tee theorem-replacement-audit.log
+
+      - name: Merge theorem replacement findings
+        if: github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.deep_audit)
+        run: python3 scripts/merge_theorem_replacements.py
+
+      - name: Add replacement audit summary
+        if: github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.deep_audit)
+        shell: bash
+        run: |
+          echo "## Proof-guided theorem replacements" >> "$GITHUB_STEP_SUMMARY"
+          grep -E '^(Definitionally equivalent proof-dependency targets|Replacement-candidate targets|Mathlib definitionally equivalent proof-dependency targets|Mathlib replacement-candidate targets):' docs/generated/theorems.md >> "$GITHUB_STEP_SUMMARY"
+          grep -E '^replacement audit:' theorem-replacement-audit.log >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload deep theorem audit
+        if: github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.deep_audit)
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: theorem-audit
+          path: |
+            docs/generated/theorems.md
+            docs/generated/theorems.json
+            docs/generated/theorem-replacements.json
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Audit potentially unused theorem hypotheses
+        if: '!cancelled() && (github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.deep_audit))'
+        run: |
+          /usr/bin/time -f 'unused hypotheses: %e s, peak RSS %M KiB' lake env lean scripts/CheckUnusedHypotheses.lean
+
+      - name: Add unused hypothesis audit summary
+        if: always() && (github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.deep_audit))
+        shell: bash
+        run: |
+          if [ -f unused-hypotheses.md ]; then
+            cat unused-hypotheses.md >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - name: Upload unused hypothesis audit
+        if: always() && (github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.deep_audit)) && hashFiles('unused-hypotheses.md') != ''
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: unused-hypotheses
+          path: unused-hypotheses.md
+          retention-days: 30
+
+      - name: Upload theorem catalog logs
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: theorem-catalog-log
+          path: |
+            theorem-catalog.log
+            theorem-replacement-audit.log
+          if-no-files-found: warn
+          retention-days: 7
