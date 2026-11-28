@@ -341,9 +341,7 @@ theorem polarFourierFirstCosineAngularKernel_eq_besselJ (z : ℝ) :
         Complex.besselJ 0 (t : ℂ)) = polarFourierZerothAngularKernel := by
     funext t
     exact (polarFourierZerothAngularKernel_eq_besselJ t).symm
-  have hderivJ : HasDerivAt (Complex.besselJ 0) (-Complex.besselJ 1 (z : ℂ)) (z : ℂ) := by
-    simpa using besselJ_nat_hasDerivAt 0 (z : ℂ)
-  have hJ := hderivJ.comp_ofReal.const_mul
+  have hJ := (besselJ_zero_hasDerivAt (z : ℂ)).comp_ofReal.const_mul
     ((2 * Real.pi : ℝ) : ℂ)
   change HasDerivAt
     (fun t : ℝ => ((2 * Real.pi : ℝ) : ℂ) * Complex.besselJ 0 (t : ℂ))
