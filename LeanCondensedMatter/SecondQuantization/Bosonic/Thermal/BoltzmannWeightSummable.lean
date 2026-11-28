@@ -41,7 +41,8 @@ theorem hasSum_oneModeBoltzmannWeight {β ε : ℝ} (h : 0 < β * ε) :
 /-- The one-mode Boltzmann series is summable exactly when `0 < βε`. -/
 theorem summable_oneModeBoltzmannWeight_iff {β ε : ℝ} :
     Summable (oneModeBoltzmannWeight β ε) ↔ 0 < β * ε := by
-  simpa only [oneModeBoltzmannWeight, neg_mul, neg_lt_zero] using
+  change Summable (fun n : ℕ => Real.exp ((n : ℝ) * (-β * ε))) ↔ 0 < β * ε
+  simpa only [neg_mul, neg_lt_zero] using
     (Real.summable_exp_nat_mul_iff (a := -β * ε))
 
 variable {Mode : Type*}
