@@ -23,5 +23,6 @@ set_option linter.style.header false
 Fixed-point-free involutions on arbitrary types, normalized pairs on finite ordered types,
 matching and pairing evaluation, restriction and reindexing, component decompositions,
 crossing parity, and first-pair deletion and insertion.
-For crossing-weighted permutation sums, import `Permutation.PairingBridge`.
+For abstract first-pair recursion, import `Combinatorics.PerfectPairing.FirstPairRecursion`;
+for crossing-weighted permutation sums, import `Permutation.PairingBridge`.
 -/
