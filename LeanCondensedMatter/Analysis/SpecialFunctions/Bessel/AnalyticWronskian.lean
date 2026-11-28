@@ -110,6 +110,7 @@ theorem besselFormalH0_frobenius :
   intro n
   rw [FrobeniusWronskian.coeff_derivative_X_mul_derivative,
     besselFormalH0_coeff_succ, map_add, PowerSeries.coeff_derivative]
+  simp only [Nat.cast_add, Nat.cast_one]
   ring
 
 /-- Formal Bessel J₀ and the harmonic correction have exactly
