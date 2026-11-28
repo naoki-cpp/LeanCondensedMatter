@@ -27,10 +27,13 @@ function constantLabels(presentation) {
     if (node.kind === "const" && typeof node.name === "string") names.add(node.name);
     if (node.kind === "var") variables.add(node.name);
     visit(node.fn, depth + 1);
+    visit(node.binder?.type, depth + 1);
+    visit(node.body, depth + 1);
     for (const argument of argumentsOf(node)) visit(argument, depth + 1);
   }
   for (const binder of presentation.binders) visit(binder.type);
   visit(presentation.conclusion);
+  visit(presentation.definitionBody);
   for (const field of presentation.fields ?? []) visit(field.type);
   const counts = new Map();
   for (const name of names) {
@@ -93,14 +96,52 @@ function operatorNotation(node, args, depth) {
   return null;
 }
 
-export function expressionToTex(node, labels = new Map(), depth = 0) {
+// A lambda binder is identified by its elaborated free-variable ID, not its name.
+// Synthetic names cannot capture Lean identifiers or enclosing synthetic binders.
+function lambdaParts(node, labels, depth, bound, prefix = "v") {
+  if (node?.kind !== "lambda" || typeof node.binder?.id !== "string" ||
+      !node.binder.type || !node.body || bound.has(node.binder.id) || depth > 32) return null;
+  const index = "\\mathsf{" + prefix + "}_{" + depth + "}";
+  const type = expressionToTex(node.binder.type, labels, depth + 1, bound);
+  const scoped = new Map(bound);
+  scoped.set(node.binder.id, index);
+  const body = expressionToTex(node.body, labels, depth + 1, scoped);
+  return type === null || body === null ? null : { index, type, body };
+}
+
+function binderNotation(node, labels, depth, bound) {
+  if (node.fn?.kind !== "const") return null;
+  const name = node.fn.name;
+  const finite = name === "Finset.sum" || name === "Finset.prod";
+  if (!finite && name !== "tsum") return null;
+  if (node.args.length !== (finite ? 2 : 1)) return null;
+  const lambda = node.args[finite ? 1 : 0];
+  const parts = lambdaParts(lambda, labels, depth, bound, "i");
+  if (!parts) return null;
+  const domain = finite ? expressionToTex(node.args[0], labels, depth + 1, bound) : parts.type;
+  if (domain === null) return null;
+  const op = name === "Finset.prod" ? "\\prod" : "\\sum";
+  return op + "_{" + parts.index + "\\in " + domain +
+    "}\\left(" + parts.body + "\\right)";
+}
+
+export function expressionToTex(node, labels = new Map(), depth = 0, bound = new Map()) {
   if (!node || depth > 32) return null;
   if (node.kind === "const") return SYMBOLS.get(node.name) ?? identifier(labels.get(node.name) ?? node.name);
-  if (node.kind === "var") return identifier(node.name);
+  if (node.kind === "var") return bound.get(node.id) ?? identifier(node.name);
   if (node.kind === "sort") return node.isProp ? "\\mathrm{Prop}" : "\\mathrm{Type}";
-  if (node.kind === "text") return leanPrettyToTex(node.text);
+  // A pretty-printed fallback may mention a binder whose name was replaced.
+  // Under a renamed binder, do not silently display such text as a free variable.
+  if (node.kind === "text") return bound.size && !/^\d+(?:\.\d+)?$/u.test(node.text)
+    ? null : leanPrettyToTex(node.text);
+  if (node.kind === "lambda") {
+    const parts = lambdaParts(node, labels, depth, bound);
+    return parts ? "\\lambda " + parts.index + "\\mathrel{:}" + parts.type + ".\\," + parts.body : null;
+  }
   if (node.kind !== "app" || !Array.isArray(node.args)) return null;
-  const args = node.args.map((arg) => expressionToTex(arg, labels, depth + 1));
+  const binderTex = binderNotation(node, labels, depth, bound);
+  if (binderTex !== null) return binderTex;
+  const args = node.args.map((arg) => expressionToTex(arg, labels, depth + 1, bound));
   if (args.some((arg) => arg === null)) return null;
   const notation = operatorNotation(node, args, depth);
   if (notation !== null) return notation;
@@ -113,9 +154,10 @@ export function expressionToTex(node, labels = new Map(), depth = 0) {
   if (COERCIONS.has(name) && args.length === 1 && node.argumentType === "Real" && node.resultType === "Complex") {
     return "\\iota_{\\mathbb{R}\\hookrightarrow\\mathbb{C}}\\left(" + args[0] + "\\right)";
   }
-  const fn = expressionToTex(node.fn, labels, depth + 1);
+  const fn = expressionToTex(node.fn, labels, depth + 1, bound);
   if (fn === null) return null;
-  return args.length ? fn + "\\left(" + args.join(",\\,") + "\\right)" : fn;
+  const appliedFn = node.fn.kind === "lambda" ? "\\left(" + fn + "\\right)" : fn;
+  return args.length ? appliedFn + "\\left(" + args.join(",\\,") + "\\right)" : fn;
 }
 
 export function buildStatementModel(presentation) {
@@ -148,6 +190,9 @@ export function buildStatementModel(presentation) {
     assumptions: bindings.filter((binder) => !covered.has(binder.id) && !["type", "variable"].includes(binder.role)).map(row),
     conclusion: { ...presentation.conclusion, tex: expressionToTex(presentation.conclusion, labels) },
     fields: (Array.isArray(presentation.fields) ? presentation.fields : []).map(row),
+    definitionBody: typeof presentation.definitionBody?.text === "string"
+      ? { text: presentation.definitionBody.text, tex: expressionToTex(presentation.definitionBody, labels) }
+      : null,
     symbols: [...labels].filter(([name]) => !SYMBOLS.has(name) && !INFIX.has(name)),
   };
 }

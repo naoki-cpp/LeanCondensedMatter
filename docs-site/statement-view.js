@@ -15,7 +15,9 @@ function leanDetails(title, text) {
 }
 
 export function renderStatement(container, entry) {
-  const model = buildStatementModel(entry.structuredStatement);
+  const presentation = entry.structuredStatement;
+  const exposesBody = entry.kind === "def" || entry.kind === "abbrev";
+  const model = buildStatementModel(exposesBody || !presentation ? presentation : { ...presentation, definitionBody: undefined });
   if (!model) {
     renderLeanMath(container, entry.statement);
     return;
@@ -64,4 +66,14 @@ export function renderStatement(container, entry) {
     container.append(key);
   }
   container.append(leanDetails("Original Lean statement", entry.statement));
+}
+
+// The definition body shares the statement telescope and symbol key. Never expose
+// theorem proofs or opaque values, even if a catalog contains unexpected fields.
+export function renderStructuredDefinition(container, entry) {
+  if (entry.kind !== "def" && entry.kind !== "abbrev") return false;
+  const body = buildStatementModel(entry.structuredStatement)?.definitionBody;
+  if (!body) return false;
+  renderTexMath(container, body.tex, body.text);
+  return true;
 }

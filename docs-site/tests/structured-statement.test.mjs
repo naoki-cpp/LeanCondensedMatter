@@ -1,7 +1,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { buildStatementModel, expressionToTex } from "../statement-model.js";
-import { renderStatement } from "../statement-view.js";
+import { renderStatement, renderStructuredDefinition } from "../statement-view.js";
 
 const constant = (name) => ({ kind: "const", name });
 const variable = (id, name = id) => ({ kind: "var", id, name });
@@ -147,4 +147,48 @@ test("unknown names, mismatched arities and unsupported operands do not receive 
   assert.doesNotMatch(expressionToTex(app("Custom.sum", x, y)), /\\sum_/);
   assert.doesNotMatch(expressionToTex({ kind: "app", fn: variable("f", "Matrix.trace"), args: [x] }), /\\operatorname\{Tr\}/);
   assert.equal(expressionToTex(app("Finset.sum", x, { kind: "text", text: "match x with | _ => 1" })), null);
+});
+
+const lambda = (id, type, body) => ({ kind: "lambda", binder: { id, name: id, type }, body });
+
+test("structured lambda and sum binders use variable identity rather than printed names", () => {
+  const outer = variable("outer", "x");
+  const inner = variable("inner", "x");
+  const body = app("HAdd.hAdd", outer, inner);
+  const sum = app("Finset.sum", variable("S"), lambda("inner", constant("Nat"), body));
+  const tex = expressionToTex(sum);
+  assert.match(tex, /\\sum_\{\\mathsf\{i\}_\{0\}\\in \\mathrm\{S\}\}/);
+  assert.match(tex, /\\left\(\\mathrm\{x\}\\right\) \+ \\left\(\\mathsf\{i\}_\{0\}\\right\)/);
+  const nested = app("tsum", lambda("outer", constant("Nat"), sum));
+  const nestedTex = expressionToTex(nested);
+  assert.match(nestedTex, /\\mathsf\{i\}_\{0\}\\in \\mathbb\{N\}/);
+  assert.match(nestedTex, /\\mathsf\{i\}_\{1\}/);
+  assert.match(nestedTex, /\\left\(\\mathsf\{i\}_\{0\}\\right\) \+ \\left\(\\mathsf\{i\}_\{1\}\\right\)/);
+  assert.match(expressionToTex(lambda("inner", constant("Nat"), inner)), /\\lambda \\mathsf\{v\}_\{0\}/);
+});
+
+test("opaque text beneath renamed binders falls back rather than capturing variables", () => {
+  assert.equal(expressionToTex(app("tsum", lambda("i", constant("Nat"), { kind: "text", text: "f i" }))), null);
+  assert.equal(expressionToTex({ kind: "lambda", binder: { id: "i" }, body: variable("i") }), null);
+  assert.match(expressionToTex(app("tsum", lambda("i", constant("Nat"), { kind: "text", text: "1" }))), /1/);
+});
+
+test("definition body shares the statement symbol labels and retains its exact Lean text", async () => {
+  const data = expectationStatement();
+  data.definitionBody = { ...app("Second.observableExpValue", variable("A")), text: "Second.observableExpValue A" };
+  const model = buildStatementModel(data);
+  assert.match(model.definitionBody.tex, /Second\.observableExpValue/);
+  assert.match(model.conclusion.tex, /QuantumTheory\.observableExpValue/);
+  assert.equal(model.definitionBody.text, "Second.observableExpValue A");
+  globalThis.document = { createElement: (tag) => new Element(tag) };
+  const container = new Element("div");
+  assert.equal(renderStructuredDefinition(container, { kind: "def", structuredStatement: data }), true);
+  await Promise.resolve();
+  assert.ok(container.text().includes(data.definitionBody.text));
+  for (const kind of ["opaque", "theorem", "axiom", "inductive"]) {
+    assert.equal(renderStructuredDefinition(new Element("div"), { kind, structuredStatement: data }), false);
+  }
+  delete data.definitionBody;
+  assert.equal(renderStructuredDefinition(new Element("div"), { kind: "def", structuredStatement: data }), false);
+  assert.equal(renderStructuredDefinition(new Element("div"), { kind: "abbrev", structuredStatement: { ...data, version: 2 } }), false);
 });
