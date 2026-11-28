@@ -18,26 +18,8 @@ set_option linter.style.header false
 /-!
 # Statistics-independent two-point diagrammatics
 
-This package contains the combinatorial infrastructure for paired diagrams with two distinguished
-one-legged external vertices and quartic interaction vertices. It does not attach operator
-amplitudes or choose bosonic or fermionic statistics.
-
-A special feature of the two-point family is that the two external vertices are automatically in
-the same connected component: a component containing exactly one external leg would have an odd
-number of legs and therefore could not carry a perfect pairing. Hence, for two-point diagrams,
-external connectedness is equivalent to the absence of vacuum components.
-
-The subpackages separate the main combinatorial responsibilities:
-
-* `Core` defines the diagram syntax, flattened leg enumeration, vertex graph, and the semantic
-  predicates for vacuum-free and externally connected diagrams.
-* `External` characterizes the connectivity of the canonical external component.
-  Component restriction, external/vacuum slot splitting, reassembly and standardization belong to
-  the general external-insertion theory.
-* `Mixed` transports the fixed pairing to mixed imaginary-time order. Component-local normalized
-  pair decomposition, exchange signs and chamber locality are owned by general external insertions.
-
-The representation is intentionally kept distinct from `ExternalInsertionDiagram`. The two
-families share lower-level component and leg-data machinery, while the mature two-point API keeps
-its own canonical normal forms for the downstream two-point expansion.
+Paired diagrams with two external legs and quartic vertices: connectivity, separating propagators,
+cut order, interval pairings, 1PI criteria, and mixed-order pairing transport.
+The two external vertices belong to the same component by even leg parity. General external/vacuum
+factorization is provided by `Common.Diagrammatics.ExternalInsertion`.
 -/
