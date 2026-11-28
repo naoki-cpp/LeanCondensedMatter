@@ -342,13 +342,11 @@ theorem trace_four_pauliAffine_antisymmetric
           b * dotProduct u (pauliCross w x) +
           c * dotProduct (pauliCross u v) x +
           d * dotProduct (pauliCross u v) w) := by
-  have hI : Complex.I ^ 2 = (-1 : ℂ) := by
-    simpa [pow_two] using Complex.I_mul_I
   rw [trace_four_pauliAffine, trace_four_pauliAffine]
   simp [dotProduct_pauliAxis, pauliCross, cross_apply, pauliAxisComponent,
     smul_eq_mul]
   ring_nf
-  simp only [hI]
+  simp only [Complex.I_sq]
   ring
 
 /-- The antisymmetric four-factor trace of arbitrary complex two-level
@@ -435,25 +433,6 @@ theorem trace_four_antisymmetric_eq_xz_plane_transverse_minors
   rw [htrans]
   ring
 
-/-- For an xz-plane two-level matrix, the antisymmetric trace with the
-parity-conjugated final insertion reduces to an entrywise two-current minor.
-The identity is purely algebraic and does not assume Hermiticity. -/
-theorem trace_parity_antisymmetric_xz_entries
-    (A C : PauliMatrix) (b gx gz : ℂ) :
-    let B : PauliMatrix := !![b + gz, gx; gx, b - gz]
-    Matrix.trace
-        (A * (pauliZ * B * pauliZ) * B * (-(pauliZ * C * pauliZ))) -
-      Matrix.trace
-        (C * (pauliZ * B * pauliZ) * B * (-(pauliZ * A * pauliZ))) =
-      -2 * gz *
-        (gx * ((A 0 0 + A 1 1) * (C 0 1 - C 1 0) -
-          (A 0 1 - A 1 0) * (C 0 0 + C 1 1)) +
-          2 * b * (A 0 1 * C 1 0 - A 1 0 * C 0 1)) := by
-  dsimp only
-  simp [Matrix.trace, Matrix.mul_apply, Matrix.vecMul_apply_eq_sum,
-    Fin.sum_univ_two, pauliZ]
-  ring
-
 /-- The xz-plane parity-antisymmetric trace in canonical Pauli coefficients.
 Only two scalar bilinears survive, with no Hermiticity assumption. -/
 theorem trace_parity_antisymmetric_xz_pauliCoefficients
@@ -468,13 +447,11 @@ theorem trace_parity_antisymmetric_xz_pauliCoefficients
           pauliScalarCoefficient C * pauliVectorCoefficient A .y) +
         b * (pauliVectorCoefficient A .y * pauliVectorCoefficient C .x -
           pauliVectorCoefficient A .x * pauliVectorCoefficient C .y)) := by
-  have hI : Complex.I ^ 2 = (-1 : ℂ) := by
-    simpa [pow_two] using Complex.I_mul_I
   dsimp only
-  rw [trace_parity_antisymmetric_xz_entries]
-  simp only [pauliScalarCoefficient, pauliVectorCoefficient]
+  simp [Matrix.trace, Matrix.mul_apply, Matrix.vecMul_apply_eq_sum,
+    Fin.sum_univ_two, pauliZ, pauliScalarCoefficient, pauliVectorCoefficient]
   ring_nf
-  simp only [hI]
+  simp only [Complex.I_sq]
   ring
 
 /-- Parity-antisymmetric trace for a symmetric middle matrix and the transverse
@@ -551,8 +528,6 @@ theorem trace_oppositePauliProjectors
         (1 + dotProduct u u) / 2 * dotProduct v w -
         dotProduct u v * dotProduct u w -
         Complex.I * dotProduct u (pauliCross v w) := by
-  have hI : Complex.I ^ 2 = (-1 : ℂ) := by
-    simpa [pow_two] using Complex.I_mul_I
   have hminus : (1 : PauliMatrix) - pauliCombination u =
       (1 : ℂ) • (1 : PauliMatrix) + pauliCombination ((-1 : ℂ) • u) := by
     rw [pauliCombination_smul, neg_one_smul, one_smul, sub_eq_add_neg]
@@ -564,7 +539,7 @@ theorem trace_oppositePauliProjectors
   rw [trace_four_pauliAffine]
   simp [dotProduct_pauliAxis, pauliCross, cross_apply, pauliAxisComponent, smul_eq_mul]
   ring_nf
-  simp only [hI]
+  simp only [Complex.I_sq]
   ring
 
 /-- The square of a Pauli synthesis is its bilinear coefficient square times the identity. -/
