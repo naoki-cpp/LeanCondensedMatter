@@ -558,7 +558,7 @@ theorem trace_oppositePauliProjectors
     simpa [pow_two] using Complex.I_mul_I
   have hminus : (1 : PauliMatrix) - pauliCombination u =
       (1 : ℂ) • (1 : PauliMatrix) + pauliCombination ((-1 : ℂ) • u) := by
-    simp [sub_eq_add_neg]
+    rw [pauliCombination_smul, neg_one_smul, one_smul, sub_eq_add_neg]
   have hplus : (1 : PauliMatrix) + pauliCombination u =
       (1 : ℂ) • (1 : PauliMatrix) + pauliCombination u := by
     simp
