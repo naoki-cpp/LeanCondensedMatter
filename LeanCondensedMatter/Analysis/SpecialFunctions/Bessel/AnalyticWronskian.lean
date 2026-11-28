@@ -313,10 +313,8 @@ theorem besselJZero_eq_formalTsum (z : ℂ) :
     Complex.besselJ 0 z =
       ∑' n : ℕ, PowerSeries.coeff n besselFormalJ0 *
         (-(z / 2) ^ 2) ^ n := by
-  rw [besselJZero_eq_regularizedHGTsum]
-  apply tsum_congr
-  intro n
-  rw [besselFormalJ0_coeff_eq_regularizedHGFun]
+  simpa only [Nat.cast_zero, Nat.zero_add, Nat.cast_one, pow_zero, one_mul,
+    besselFormalJ0_coeff_eq_regularizedHGFun] using besselJ_nat_eq_tsum 0 z
 
 /-- Analytic J₁ is the complex evaluation of the *formal derivative*
 of the normalized J₀ factorial series, multiplied by z/2. No analytic
@@ -326,11 +324,7 @@ theorem besselJOne_eq_formalDerivativeTsum (z : ℂ) :
       (z / 2) * (∑' n : ℕ,
         PowerSeries.coeff n (PowerSeries.derivative besselFormalJ0) *
           (-(z / 2) ^ 2) ^ n) := by
-  have h : Complex.besselJ 1 z =
-      (z / 2) * Complex.regularizedHGFun 0 {(2 : ℂ)} (-(z / 2) ^ 2) := by
-    simpa using besselJ_nat_eq 1 z
-  rw [h, regularizedHGFun_zero_eq_tsum]
-  simp only [besselFormalJ0_derivative_coeff_eq_regularizedHGFun]
+  simpa [besselFormalJ0_derivative_coeff_eq_regularizedHGFun] using besselJ_nat_eq_tsum 1 z
 
 end
 

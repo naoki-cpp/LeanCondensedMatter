@@ -74,15 +74,6 @@ theorem summable_regularizedHGFun_zero (b : Multiset ℂ) (w : ℂ) :
     FormalMultilinearSeries.ofScalars_apply_eq, smul_eq_mul] using
     (Complex.regularizedHGFunSeries 0 b).summable (by simp)
 
-/-- Mathlib's integer-order Bessel function has the expected coefficient expansion. -/
-theorem besselJZero_eq_regularizedHGTsum (z : ℂ) :
-    Complex.besselJ 0 z =
-      ∑' n : ℕ, Complex.regularizedHGFunCoeff 0 {(1 : ℂ)} n *
-        (-(z / 2) ^ 2) ^ n := by
-  rw [Complex.besselJ_def]
-  simp only [Complex.cpow_zero, one_mul, zero_add]
-  exact regularizedHGFun_zero_eq_tsum {(1 : ℂ)} (-(z / 2) ^ 2)
-
 /-! ## Three-term recurrence -/
 
 noncomputable section
@@ -93,6 +84,13 @@ theorem besselJ_nat_eq (k : ℕ) (z : ℂ) :
     Complex.besselJ (k : ℂ) z =
       (z / 2) ^ k * Complex.regularizedHGFun 0 {((k + 1 : ℕ) : ℂ)} (-(z / 2) ^ 2) := by
   simp only [Complex.besselJ_def, Complex.cpow_natCast, Nat.cast_add, Nat.cast_one]
+
+/-- Scalar-series expansion of the complex Bessel function at natural-number orders. -/
+theorem besselJ_nat_eq_tsum (k : ℕ) (z : ℂ) :
+    Complex.besselJ (k : ℂ) z =
+      (z / 2) ^ k * ∑' n : ℕ, Complex.regularizedHGFunCoeff 0 {((k + 1 : ℕ) : ℂ)} n *
+        (-(z / 2) ^ 2) ^ n := by
+  rw [besselJ_nat_eq, regularizedHGFun_zero_eq_tsum]
 
 /-- Adjacent positive integer lower parameters satisfy the contiguous relation
 behind the natural-order Bessel recurrence. -/
@@ -247,7 +245,7 @@ theorem besselJ_nat_ofReal_re (k : ℕ) (r : ℝ) :
         Complex.regularizedHGFunCoeff 0 {((k + 1 : ℕ) : ℂ)} n := by
     rw [regularizedHGFunCoeff_zero_singleton_nat_add_one]
     simp only [map_div₀, map_one, map_mul, map_natCast]
-  rw [besselJ_nat_eq, regularizedHGFun_zero_eq_tsum]
+  rw [besselJ_nat_eq_tsum]
   simp only [map_mul, map_div₀, map_pow, map_neg, map_ofNat,
     Complex.conj_ofReal, Complex.conj_tsum, hcoeff]
 
