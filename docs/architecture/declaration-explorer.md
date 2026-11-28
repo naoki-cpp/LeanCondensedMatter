@@ -1,6 +1,6 @@
 # Declaration and import explorer
 
-The browser explorer uses the same graph rendering flow for declarations and module imports.
+The Declaration map is a Canvas view that groups declarations by module. Declaration dependency graphs and module import graphs share SVG rendering.
 
 `docs-site/graph-presentation.js` owns mode-specific node colors, edge styles, and legend entries. Its `createGraphPresentation(mode)` interface returns `node`, `edge`, and `legend`. Legend entries use the same rules as graph marks; HTML and CSS do not maintain separate category lists or palettes. Legend samples increase line opacity for readability at their small size.
 
@@ -9,6 +9,8 @@ The browser explorer uses the same graph rendering flow for declarations and mod
 `docs-site/declaration-hierarchy.js` indexes module paths, direct and descendant declarations, and counts. The overview uses the full hierarchy for module navigation and a filtered hierarchy for map points and directional dependency counts between sibling regions.
 
 `docs-site/declaration-visibility.js` supplies the filtered declaration set to search, map hierarchy construction, and graph traversal. The dependency graph keeps its selected root even when traversal excludes that declaration.
+
+In the map summary, “proved theorems” means visible theorem records whose catalog axiom list exists and contains no `sorryAx`. The summary reports records without axiom data separately.
 
 `docs-site/map-navigation.js` owns the map camera, active scope, selected declaration, and transitions to parent regions. `docs-site/research-map.js` draws the canvas, handles input, and supplies animation timestamps.
 

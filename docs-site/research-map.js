@@ -72,8 +72,15 @@ export function renderResearchMap(children, onOpenDeclaration, onRegionChange, o
     label.setAttribute("aria-label", `${name}, ${region.points.length} declarations`);
     return label;
   }
-  function showDeclarationCount({ definitions, proved }) {
-    declarationCount.textContent = `${definitions.toLocaleString("en")} definition${definitions === 1 ? "" : "s"} · ${proved.toLocaleString("en")} proved theorem${proved === 1 ? "" : "s"}`;
+  function showDeclarationCount({ definitions, proved, missingAxiomData }) {
+    const totals = [
+      `${definitions.toLocaleString("en")} definition${definitions === 1 ? "" : "s"}`,
+      `${proved.toLocaleString("en")} proved theorem${proved === 1 ? "" : "s"}`,
+    ];
+    if (missingAxiomData) {
+      totals.push(`${missingAxiomData.toLocaleString("en")} theorem${missingAxiomData === 1 ? "" : "s"} without axiom data`);
+    }
+    declarationCount.textContent = totals.join(" · ");
   }
   showDeclarationCount(mapCounts);
   const connectionDetails = element("details", "research-map-connections");

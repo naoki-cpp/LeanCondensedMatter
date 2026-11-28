@@ -96,7 +96,7 @@ test("module paths, subtree counts, and directional sibling dependencies share o
   assert.equal(hierarchy.find("A.Empty").entries.length, 0);
   assert.deepEqual(a.declarations.map(({ name }) => name), ["outer"]);
   assert.deepEqual(a.entries.map(({ name }) => name), ["outer", "left", "generated", "right"]);
-  assert.deepEqual(a.counts, { definitions: 1, theorems: 2, proved: 1, total: 3, generated: 1 });
+  assert.deepEqual(a.counts, { definitions: 1, theorems: 2, proved: 0, missingAxiomData: 1, total: 3, generated: 1 });
   assert.equal(a.visibleCounts.definitions, 2);
   const directions = (parent) => hierarchy.bundles(parent).map(({ a, b, ab, ba }) => [a.path, b.path, ab, ba]);
   assert.deepEqual(directions(a), [["A.Left", "A.Right", 1, 1]]);

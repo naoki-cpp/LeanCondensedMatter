@@ -14,7 +14,10 @@ test("definition filter and generated declarations", () => {
   assert.equal(declarationAllowed({ kind: "def", generated: true }, "*", true), true);
   assert.deepEqual(declarationCounts([
     { kind: "def" }, { kind: "def" }, { kind: "theorem", generated: true },
-  ]), { definitions: 2, theorems: 0, proved: 0, total: 2, generated: 1 });
+  ]), { definitions: 2, theorems: 0, proved: 0, missingAxiomData: 0, total: 2, generated: 1 });
+  assert.deepEqual(declarationCounts([
+    { kind: "theorem" }, { kind: "theorem", axioms: [] }, { kind: "theorem", axioms: ["sorryAx"] },
+  ]), { definitions: 0, theorems: 3, proved: 1, missingAxiomData: 1, total: 3, generated: 0 });
 });
 
 class Element {
@@ -129,5 +132,5 @@ test("map filters points and picker while preserving the total dependency count"
   picker = overview.find("select")[0];
   assert.deepEqual(picker.find("option").map(({ value }) => value), ["", "generated", "result"]);
   assert.match(overview.text(), /Theorems 2.*Total 2.*Generated 1/);
-  assert.match(overview.text(), /0 definitions · 1 proved theorem/);
+  assert.match(overview.text(), /0 definitions · 0 proved theorems · 1 theorem without axiom data/);
 });
