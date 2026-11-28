@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Transport.Analysis.ContinuumMeasure
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.Vertex.BornDyson.RegulatorBoundary
 import LeanCondensedMatter.Transport.Disorder.InPlaneLadder
 import LeanCondensedMatter.Models.MassiveDirac.TransportDomain
@@ -49,7 +50,7 @@ theorem finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficientZero
       finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumeratorZeroBroadeningBoundary
           i j v m probeEnergy disorderStrength hbar pMax *
         ∫ p in (0 : ℝ)..pMax,
-          (continuumBornDisorderMeasurePrefactor disorderStrength hbar : ℂ) * (p : ℂ) *
+          (weightedMomentumMeasurePrefactor disorderStrength hbar : ℂ) * (p : ℂ) *
             ((2 * Real.pi : ℝ) : ℂ) *
             (finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProductZeroBroadeningBoundary
               v m p probeEnergy disorderStrength hbar pMax)⁻¹ := by
@@ -280,7 +281,7 @@ theorem tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoeffic
     simpa [numeratorBoundary] using (Metric.tendsto_nhds.1 hnum) 1 zero_lt_one
   let cDen : ℝ := cR * cA
   let boundValue : ℝ :=
-    ‖((continuumBornDisorderMeasurePrefactor disorderStrength hbar : ℝ) : ℂ)‖ * pMax *
+    ‖((weightedMomentumMeasurePrefactor disorderStrength hbar : ℝ) : ℂ)‖ * pMax *
       ‖(((2 * Real.pi : ℝ) : ℂ))‖ * cDen⁻¹ * (‖numeratorBoundary‖ + 1)
   have hcDen : 0 < cDen := mul_pos hcR hcA
   have hMeasurable :

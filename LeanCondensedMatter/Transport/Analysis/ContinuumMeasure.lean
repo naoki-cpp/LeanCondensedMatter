@@ -18,8 +18,8 @@ d²p / (2πℏ)².
 ```
 
 The full-angle radial specialization includes the factor `2π` from angular integration.
-These declarations are continuum-measure conventions, not Euclidean kinematics, model Hamiltonian,
-disorder, response, or conductivity data.
+These declarations are continuum-measure conventions, including constant scalar weighting, not
+Euclidean kinematics, model Hamiltonian, disorder models, response, or conductivity data.
 -/
 
 namespace QuantumTheory
@@ -29,6 +29,11 @@ namespace Transport
 `d²p / (2πℏ)²`. This is a continuum convention rather than a generic transport invariant. -/
 @[expose] noncomputable def momentumMeasurePrefactor (hbar : ℝ) : ℝ :=
   1 / (2 * Real.pi * hbar) ^ 2
+
+/-- The two-dimensional momentum measure weighted by a constant scalar, independently of
+angular reduction. -/
+@[expose] noncomputable def weightedMomentumMeasurePrefactor (weight hbar : ℝ) : ℝ :=
+  weight * momentumMeasurePrefactor hbar
 
 /-- The physical-momentum measure prefactor after an exact full-angle reduction,
 `2π /(2πℏ)²`. The radial Jacobian `p` remains part of the radial integrand. -/

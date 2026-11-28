@@ -1,7 +1,6 @@
 import LeanCondensedMatter.Transport.Analysis.ContinuumMeasure
 import LeanCondensedMatter.Models.MassiveDirac.Propagator.AngularReduction
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialKernel
-import LeanCondensedMatter.Models.MassiveDirac.Disorder.ContinuumMeasurePrefactor
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic
 import Mathlib.Topology.Algebra.Module.Star
 import Mathlib.Tactic.Ring

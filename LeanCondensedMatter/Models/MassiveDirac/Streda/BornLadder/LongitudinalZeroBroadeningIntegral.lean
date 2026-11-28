@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Transport.Analysis.ContinuumMeasure
 import LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.LongitudinalSameSide
 import LeanCondensedMatter.Transport.Disorder.InPlaneLadder
 import LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.RadialDenominator
@@ -26,7 +27,7 @@ private def finiteBroadeningLongitudinalMomentumEndpointForm
     (e v m probeEnergy broadening disorderStrength hbar pMax : ℝ) : ℂ :=
   let q : ℂ := (((-e : ℝ) : ℂ)) * (((v : ℝ) : ℂ))
   let pref : ℂ :=
-    (continuumBornDisorderMeasurePrefactor disorderStrength hbar : ℂ)
+    (weightedMomentumMeasurePrefactor disorderStrength hbar : ℂ)
   let solved := finiteCutoffContinuumBornDysonLadderSolvedVector
     v m probeEnergy broadening disorderStrength hbar pMax
   let rung := finiteCutoffContinuumBornDysonCurrentRungVector
@@ -43,7 +44,7 @@ def finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceMome
     (e v m probeEnergy disorderStrength hbar pMax : ℝ) : ℂ :=
   let q : ℂ := (((-e : ℝ) : ℂ)) * (((v : ℝ) : ℂ))
   let pref : ℂ :=
-    (continuumBornDisorderMeasurePrefactor disorderStrength hbar : ℂ)
+    (weightedMomentumMeasurePrefactor disorderStrength hbar : ℂ)
   let solved := finiteCutoffContinuumBornDysonLadderSolvedVectorZeroBroadeningBoundary
     v m probeEnergy disorderStrength hbar pMax
   let rung := finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary
@@ -65,7 +66,7 @@ private theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMome
         e v m probeEnergy broadening disorderStrength hbar pMax := by
   let q : ℂ := (((-e : ℝ) : ℂ)) * (((v : ℝ) : ℂ))
   let pref : ℂ :=
-    (continuumBornDisorderMeasurePrefactor disorderStrength hbar : ℂ)
+    (weightedMomentumMeasurePrefactor disorderStrength hbar : ℂ)
   let solved := finiteCutoffContinuumBornDysonLadderSolvedVector
     v m probeEnergy broadening disorderStrength hbar pMax
   let radialRung : ℝ → InPlaneCoefficientVector := fun p output =>
@@ -79,7 +80,7 @@ private theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMome
         finiteCutoffContinuumBornEffectiveMass
           side v m probeEnergy broadening disorderStrength hbar pMax ^ 2)
   have hpref : pref ≠ 0 := by
-    dsimp [pref, continuumBornDisorderMeasurePrefactor]
+    dsimp [pref, weightedMomentumMeasurePrefactor]
     exact_mod_cast mul_ne_zero (ne_of_gt hdisorder)
       (momentumMeasurePrefactor_pos hbar hhbar).ne'
   have hpointwise : ∀ p : ℝ,
@@ -181,7 +182,7 @@ theorem tendsto_finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDresse
   have htotal :=
     ((tendsto_pi_nhds.mp hAction 0).const_mul
       (2 * ((((-e : ℝ) : ℂ)) * (((v : ℝ) : ℂ))) ^ 2 *
-        (continuumBornDisorderMeasurePrefactor disorderStrength hbar : ℂ)⁻¹)).sub
+        (weightedMomentumMeasurePrefactor disorderStrength hbar : ℂ)⁻¹)).sub
     ((hRR.add hAA).const_mul
       ((((2 * Real.pi : ℝ) : ℂ)) * ((((-e : ℝ) : ℂ)) * (((v : ℝ) : ℂ))) ^ 2))
   apply Tendsto.congr' ?_ (by

@@ -3,7 +3,6 @@ import LeanCondensedMatter.Models.MassiveDirac.Disorder.ScalarCovariance
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.ScalarAngularWeights
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.SingleParticleRate
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.TransportRate
-import LeanCondensedMatter.Models.MassiveDirac.Disorder.ContinuumMeasurePrefactor
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.UltravioletSelfEnergy
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.BornDyson.DysonShift
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.BornDyson.RadialMoments

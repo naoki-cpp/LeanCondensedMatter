@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Transport.Analysis.ContinuumMeasure
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.Propagator.BornDyson.Invertibility
 import LeanCondensedMatter.Transport.Disorder.InPlaneLadder
 import LeanCondensedMatter.Models.MassiveDirac.Vertex.PauliRung
@@ -167,7 +168,7 @@ upstream, so the shared external prefactor attaches one scalar-disorder line and
 def finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungRadialIntegrand
     (i j : Fin 2)
     (v m p probeEnergy broadening disorderStrength hbar pMax : ℝ) : ℂ :=
-  (continuumBornDisorderMeasurePrefactor disorderStrength hbar : ℂ) * (p : ℂ) *
+  (weightedMomentumMeasurePrefactor disorderStrength hbar : ℂ) * (p : ℂ) *
     finiteCutoffContinuumBornDysonRetardedAdvancedAngularCoefficient
       i j v m p probeEnergy broadening disorderStrength hbar pMax
 
@@ -185,7 +186,7 @@ noncomputable def finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoeff
       i j v m probeEnergy broadening 0 hbar pMax = 0 := by
   simp [finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficient,
     finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungRadialIntegrand,
-    continuumBornDisorderMeasurePrefactor]
+    weightedMomentumMeasurePrefactor]
 
 /-- Canonical finite-`η` source-`σₓ` current rung as one in-plane coefficient vector. -/
 noncomputable def finiteCutoffContinuumBornDysonCurrentRungVector
