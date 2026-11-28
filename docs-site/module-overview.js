@@ -4,6 +4,7 @@ const PROJECT_PREFIX = "LeanCondensedMatter.";
 const SOURCE_ROOT_URL = `${REPOSITORY_ROOT_URL}/${PROJECT_NAME}`;
 
 import { declarationAllowed, declarationCounts } from "./declaration-model.js";
+import { renderResearchMap } from "./research-map.js";
 
 function element(tag, className = "", text = "") {
   const node = document.createElement(tag);
@@ -132,14 +133,14 @@ export function createModuleOverview({ catalog, modules = [], overview, onBrowse
     return moduleDescriptionPromises.get(canonicalName);
   }
 
-  function renderBreadcrumb(path) {
+  function renderBreadcrumb(path, browse = onBrowse) {
     const breadcrumb = element("nav", "module-breadcrumb");
     breadcrumb.setAttribute("aria-label", "Module hierarchy");
 
     const project = element("button", "module-crumb", PROJECT_NAME);
     project.type = "button";
     project.disabled = path.length === 0;
-    project.addEventListener("click", () => onBrowse(PROJECT_NAME));
+    project.addEventListener("click", () => browse(PROJECT_NAME));
     breadcrumb.append(project);
 
     path.forEach((segment, index) => {
@@ -148,7 +149,7 @@ export function createModuleOverview({ catalog, modules = [], overview, onBrowse
       crumb.type = "button";
       crumb.disabled = index === path.length - 1;
       const target = path.slice(0, index + 1).join(".");
-      crumb.addEventListener("click", () => onBrowse(target));
+      crumb.addEventListener("click", () => browse(target));
       breadcrumb.append(crumb);
     });
     return breadcrumb;
@@ -201,23 +202,61 @@ export function createModuleOverview({ catalog, modules = [], overview, onBrowse
     if (renderVersion !== hierarchyRenderVersion) return true;
 
     overview.replaceChildren();
-    overview.append(renderBreadcrumb(parts));
+    const breadcrumb = element("div", "");
+    breadcrumb.append(renderBreadcrumb(parts));
 
     const header = element("div", "overview-header module-overview-header");
-    header.append(element("h2", "", node.name));
-    if (description) header.append(element("p", "module-description module-header-description", description));
+    const isMap = children.length > 0 && parts.length === 0;
+    if (!isMap) header.append(element("h2", "", node.name));
+    const descriptionField = element("p", "module-description module-header-description", description);
+    descriptionField.hidden = !description;
+    header.append(descriptionField);
     const summary = element("div", "overview-summary");
-    const counts = node.counts;
-    summary.append(summaryChip(`Definitions ${counts.definitions}`));
-    summary.append(summaryChip(`Theorems ${counts.theorems}`));
-    summary.append(summaryChip(`Total ${counts.total}`));
-    if (counts.generated) summary.append(summaryChip(`Generated ${counts.generated}`));
-    summary.append(summaryChip(`${node.moduleCount} module${node.moduleCount === 1 ? "" : "s"}`));
-    summary.append(summaryChip(`${node.children.size} direct submodule${node.children.size === 1 ? "" : "s"}`));
+    const visibleEntries = isMap ? catalog.filter(allowed).sort((a, b) => a.name.localeCompare(b.name)) : [];
+    function entriesIn(moduleName) {
+      const area = shortModule(moduleName);
+      return visibleEntries.filter((entry) => {
+        const name = shortModule(entry.module);
+        return name === area || name.startsWith(`${area}.`);
+      });
+    }
+    const mapRegions = children.map((child) => ({
+      fullName: child.fullName, entries: entriesIn(child.fullName),
+    })).filter((child) => child.entries.length > 0);
+    const mapEntries = mapRegions.flatMap((child) => child.entries);
+    function showSummary(current, entries) {
+      const counts = entries ? declarationCounts(entries, { includeGenerated: true }) : current.counts;
+      const chips = [summaryChip(`Definitions ${counts.definitions}`),
+        summaryChip(`Theorems ${counts.theorems}`), summaryChip(`Total ${counts.total}`)];
+      if (counts.generated) chips.push(summaryChip(`Generated ${counts.generated}`));
+      chips.push(summaryChip(`${current.moduleCount} module${current.moduleCount === 1 ? "" : "s"}`),
+        summaryChip(`${current.children.size} direct submodule${current.children.size === 1 ? "" : "s"}`));
+      summary.replaceChildren(...chips);
+    }
+    showSummary(node, isMap ? mapEntries : undefined);
     header.append(summary);
-    overview.append(header);
-
-    if (children.length > 0) {
+    if (isMap) {
+      let descriptionRequest = 0;
+      function updateMapHeader(moduleName, browseMap) {
+        const request = ++descriptionRequest;
+        const path = moduleName ? relativeModuleParts(moduleName) : [];
+        const current = resolveNode(tree, path) ?? node;
+        breadcrumb.replaceChildren(renderBreadcrumb(path, browseMap));
+        showSummary(current, moduleName ? entriesIn(moduleName) : mapEntries);
+        descriptionField.textContent = moduleName ? "" : description;
+        descriptionField.hidden = !descriptionField.textContent;
+        if (!moduleName) return;
+        loadModuleDescription(moduleName).then((text) => {
+          if (request !== descriptionRequest || renderVersion !== hierarchyRenderVersion) return;
+          descriptionField.textContent = text;
+          descriptionField.hidden = !text;
+        });
+      }
+      overview.append(renderResearchMap(mapRegions, onOpenDeclaration, updateMapHeader, [breadcrumb, header], node.name));
+    } else {
+      overview.append(breadcrumb, header);
+    }
+    if (children.length > 0 && parts.length > 0) {
       const section = element("section", "overview-section");
       section.append(element("h3", "", "Direct submodules"));
       const grid = element("div", "module-tree-grid");

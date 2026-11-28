@@ -16,7 +16,14 @@ test("definition filter and generated declarations", () => {
 });
 
 class Element {
-  constructor(tag) { this.tag = tag; this.children = []; this.textContent = ""; }
+  constructor(tag) {
+    this.tag = tag;
+    this.children = [];
+    this.textContent = "";
+    this.style = {};
+    this.classList = { add() {} };
+  }
+  getContext() { return null; }
   append(...children) { this.children.push(...children); }
   replaceChildren(...children) { this.children = children; }
   setAttribute() {}
@@ -27,15 +34,18 @@ class Element {
 }
 
 test("MixedOrderData overview counts and opens both definitions", async () => {
-  globalThis.document = { createElement: (tag) => new Element(tag) };
+  globalThis.document = { createElement: (tag) => new Element(tag), createTextNode: (text) => text };
+  globalThis.window = { devicePixelRatio: 1 };
   globalThis.fetch = async () => ({ ok: true, text: async () => "/-! # Mixed order data -/" });
   const overview = new Element("div");
   const names = ["componentMixedPosition", "componentMixedPositionEquiv"];
   let opened;
   const explorer = createModuleOverview({
     catalog: names.map((name) => ({ name, module: "LeanCondensedMatter.MixedOrderData",
-      kind: "def", generated: false, statement: "Nat" })), overview,
-    onBrowse() {}, onOpenDeclaration(name) { opened = name; },
+      kind: "def", generated: false, statement: "Nat", dependencies: [],
+      dependents: name === names[1] ? [names[0]] : [] })), overview,
+    onBrowse() { assert.fail("The map should open a declaration directly"); },
+    onOpenDeclaration(name) { opened = name; },
   });
   await explorer.render("MixedOrderData");
   assert.match(overview.text(), /Definitions 2/);
@@ -48,7 +58,55 @@ test("MixedOrderData overview counts and opens both definitions", async () => {
     assert.equal(opened, name);
   }
   await explorer.render("LeanCondensedMatter");
+  const mapTitle = overview.find("h2").find((heading) => heading.id === "research-map-title");
+  assert.equal(mapTitle?.text(), "LeanCondensedMatter");
+  const region = overview.find("button").find((button) => button.className === "research-map-region");
+  assert.equal(region.text(), "Mixed Order Data");
+  assert.equal(overview.find("p").find((item) => item.className === "research-map-declaration-count")?.text(), "2 definitions · 0 proved theorems");
+  region.click();
+  assert.equal(mapTitle?.text(), "Mixed Order Data");
+  assert.equal(overview.find("canvas").length, 1);
+  const picker = overview.find("select")[0];
+  picker.value = names[0];
+  picker.change();
+  assert.match(overview.text(), /Depends on \(0\)/);
+  overview.find("button").find((item) => item.text() === "Open full dependency graph").click();
+  assert.equal(opened, names[0]);
+  picker.value = names[1];
+  picker.change();
+  assert.match(overview.text(), /Used by \(1\)/);
+  overview.find("button").find((item) => item.text() === names[0]).click();
+  assert.equal(overview.find("h4").at(-1).text(), names[0]);
   assert.match(overview.text(), /Definitions 2/);
   assert.match(overview.text(), /Theorems 0/);
   assert.match(overview.text(), /Total 2/);
+});
+
+test("map filters points and picker while preserving the total dependency count", async () => {
+  globalThis.document = { createElement: (tag) => new Element(tag), createTextNode: (text) => text };
+  globalThis.window = { devicePixelRatio: 1 };
+  globalThis.fetch = async () => ({ ok: false });
+  const overview = new Element("div");
+  const module = "LeanCondensedMatter.Example";
+  const catalog = [
+    { name: "result", kind: "theorem", dependencies: ["definition", "generated"] },
+    { name: "definition", kind: "def", dependencies: [] },
+    { name: "generated", kind: "theorem", generated: true, axioms: ["sorryAx"], dependencies: [] },
+  ].map((entry) => ({ module, statement: "Nat", dependents: [], ...entry }));
+  let generated = false;
+  const explorer = createModuleOverview({ catalog, overview,
+    allowed: (entry) => declarationAllowed(entry, "theorem", generated) });
+  await explorer.render("LeanCondensedMatter");
+  let picker = overview.find("select")[0];
+  assert.deepEqual(picker.find("option").map(({ value }) => value), ["", "result"]);
+  assert.match(overview.text(), /Definitions 0.*Theorems 1.*Total 1/);
+  picker.value = "result";
+  picker.change();
+  assert.match(overview.text(), /Depends on \(2 total, 0 on map\)/);
+  generated = true;
+  await explorer.render("LeanCondensedMatter");
+  picker = overview.find("select")[0];
+  assert.deepEqual(picker.find("option").map(({ value }) => value), ["", "generated", "result"]);
+  assert.match(overview.text(), /Theorems 2.*Total 2.*Generated 1/);
+  assert.match(overview.text(), /0 definitions · 1 proved theorem/);
 });

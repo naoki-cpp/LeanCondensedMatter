@@ -49,6 +49,7 @@ const ui = {
   overviewLink: document.querySelector("#overview-link"),
   moduleImportsLink: document.querySelector("#module-imports-link"),
   searchForm: document.querySelector("#search-form"),
+  searchHome: document.querySelector(".controls"),
   searchLabel: document.querySelector("#search-form > label"),
   search: document.querySelector("#theorem-search"),
   searchResults: document.querySelector("#search-results"),
@@ -59,6 +60,9 @@ const ui = {
   moduleFilterLabel: document.querySelector("#module-filter").closest("label"),
   wrapperHighlightLabel: document.querySelector('[data-highlight="wrapper"]').closest("label"),
   graphLegend: document.querySelector(".legend"),
+  graphLegendHome: document.querySelector("#graph-legend-home"),
+  importMapHeader: document.querySelector(".import-map-header"),
+  importMapSearch: document.querySelector(".import-map-header .map-search-slot"),
   graph: document.querySelector("#graph"),
   viewport: document.querySelector("#graph-viewport"),
   overview: document.querySelector("#overview"),
@@ -275,12 +279,32 @@ function setModuleFilterEnabled(enabled) {
 
 function setGraphModeChrome() {
   const modules = state.graphKind === "modules";
+  const overview = state.page === "overview";
+  ui.graph.closest(".graph-panel").classList.toggle("import-map-panel", modules);
+  ui.graph.closest(".graph-panel").classList.toggle("explorer-map-theme", modules);
+  ui.graph.closest(".graph-panel").classList.toggle("explorer-map-frame", modules);
+  ui.importMapHeader.hidden = !modules;
+  ui.graphStatus.classList.toggle("research-map-declaration-count", modules);
+  if (modules) {
+    ui.importMapHeader.firstElementChild.textContent = shortModule(state.root);
+    ui.importMapSearch.before(ui.graphStatus);
+    ui.importMapHeader.append(ui.graphLegend);
+    if (ui.searchForm.parentElement !== ui.importMapSearch) ui.importMapSearch.append(ui.searchForm);
+  } else {
+    ui.graphToolbar.prepend(ui.graphStatus);
+    ui.graphLegendHome.append(ui.graphLegend);
+    if (ui.searchForm.parentElement !== ui.searchHome) ui.searchHome.prepend(ui.searchForm);
+  }
+  document.getElementById("graph-fit").textContent = modules ? "Whole graph" : "Fit";
   ui.overviewLink.textContent = "Declarations";
   document.getElementById("kind-filter").closest("label").hidden = modules;
   document.getElementById("generated-filter").closest("label").hidden = modules;
   ui.searchLabel.textContent = modules ? "Module" : "Declaration";
   ui.search.placeholder = modules ? "Module name…" : "Declaration, module, or documentation…";
-  ui.moduleFilterLabel.hidden = modules;
+  ui.direction.closest(".control-grid").hidden = overview;
+  ui.moduleFilterLabel.hidden = modules || overview;
+  ui.highlightInputs[0].closest(".highlight-controls").hidden = overview;
+  ui.graphLegend.hidden = overview;
   ui.wrapperHighlightLabel.hidden = modules;
   ui.graph.setAttribute("aria-label", modules
     ? "Interactive Lean module import graph"
@@ -450,7 +474,7 @@ function renderGraph({ preserveView = false } = {}) {
   const graphCounts = state.graphKind === "modules"
     ? `${levels.size} modules · ${edgeCount} imports`
     : `${levels.size} nodes · ${edgeCount} edges`;
-  ui.graphStatus.textContent = `${graphCounts}${truncated ? ` · capped at ${MAX_NODES} nodes` : ""}`;
+  ui.graphStatus.textContent = `${graphCounts}${truncated ? ` · capped at ${levels.size} nodes` : ""}`;
 }
 
 function badge(text, kind = "") {
@@ -764,6 +788,10 @@ function renderOverviewContent() {
   const requestedBrowse = state.browse ?? "LeanCondensedMatter";
   state.browse = requestedBrowse;
   moduleOverview?.render(requestedBrowse).then((rendered) => {
+    if (rendered && state.page === "overview" && state.browse === requestedBrowse) {
+      const searchSlot = ui.overview.querySelector(".map-search-slot");
+      if (searchSlot) searchSlot.append(ui.searchForm);
+    }
     if (!rendered && state.browse === requestedBrowse) {
       if (requestedBrowse !== "LeanCondensedMatter" && moduleOverview?.hasModule("LeanCondensedMatter")) {
         state.browse = "LeanCondensedMatter";

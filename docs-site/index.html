@@ -36,6 +36,9 @@
       <marker id="dependency-arrow-muted" viewBox="0 0 10 10" refX="19" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto" overflow="visible">
         <path d="M 0 1 L 8 5 L 0 9 Z" fill="#819287" fill-opacity="0.3"></path>
       </marker>
+      <marker id="import-arrow" viewBox="0 0 10 10" refX="19" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto" overflow="visible">
+        <path d="M 0 1 L 8 5 L 0 9 Z" fill="context-stroke"></path>
+      </marker>
     </defs>
   </svg>
 
@@ -66,7 +69,7 @@
         <p id="search-status" class="control-help" role="status"></p>
       </form>
 
-      <div class="control-grid">
+      <div class="control-grid" hidden>
         <label>
           Direction
           <select id="direction">
@@ -107,7 +110,7 @@
       </label>
       <label class="checkbox-control"><input id="generated-filter" type="checkbox"> Include generated declarations</label>
 
-      <fieldset class="highlight-controls">
+      <fieldset class="highlight-controls" hidden>
         <legend>Highlight</legend>
         <label><input type="checkbox" data-highlight="terminal"> terminal</label>
         <label><input type="checkbox" data-highlight="zero"> zero consumer</label>
@@ -115,11 +118,18 @@
         <label><input type="checkbox" data-highlight="wrapper"> direct wrapper</label>
       </fieldset>
 
-      <div class="legend" aria-label="Graph legend"></div>
+      <div id="graph-legend-home">
+        <div class="legend" aria-label="Graph legend" hidden></div>
+      </div>
 
     </aside>
 
     <section id="explorer-content" class="graph-panel" tabindex="-1" aria-label="Declaration and module exploration panel">
+      <div id="overview" class="overview-panel" aria-live="polite"></div>
+      <header class="import-map-header" hidden>
+        <h2 class="research-map-title"></h2>
+        <div class="map-search-slot"></div>
+      </header>
       <div class="graph-toolbar" hidden>
         <span id="graph-status" role="status">Loading theorem catalog…</span>
         <div class="graph-view-controls" role="group" aria-label="Graph view">
@@ -129,7 +139,6 @@
         </div>
       </div>
 
-      <div id="overview" class="overview-panel" aria-live="polite"></div>
       <div id="graph-viewport" class="graph-scroll" tabindex="0" aria-label="Graph viewport. Use arrow keys to pan, plus or minus to zoom, and zero to fit." hidden>
         <div class="graph-directions" aria-hidden="true"><span id="graph-direction-left"></span><span id="graph-direction-right"></span></div>
         <svg id="graph" role="group" aria-label="Interactive theorem dependency graph"></svg>
