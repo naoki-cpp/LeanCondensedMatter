@@ -13,5 +13,6 @@ set_option linter.style.header false
 /-!
 # Fermionic second quantization
 
-Fermionic algebra, fields, thermal and perturbative theory, diagrammatics, transport, and validation models.
+Fermionic algebra and completed Fock spaces, density fields, lattice operators, imaginary-time
+and thermal theory, perturbative diagrammatics, transport, and finite validation models.
 -/
