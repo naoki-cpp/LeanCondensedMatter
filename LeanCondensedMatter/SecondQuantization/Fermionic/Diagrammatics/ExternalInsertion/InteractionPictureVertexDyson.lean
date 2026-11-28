@@ -144,6 +144,52 @@ end VertexProduct
 
 variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
 
+/-- The physical vertex Dyson integrand is measurable and locally bounded,
+also at nonzero chemical potential. This follows from the existing signed
+Wick diagram amplitudes at the shifted dispersion, not from continuity
+across time-ordering chambers. -/
+theorem measurableLocallyBounded_externalInsertionVertexDysonIntegrand
+    {E n : ℕ} (ε : Mode → ℝ) (β μ : ℝ)
+    (g : QuarticVertexLabel Mode → ℂ)
+    (externalLabel : Fin (2 * E) → ExternalFieldLabel Mode)
+    (externalTime : Fin (2 * E) → ℝ) :
+    intervalIntegral.MeasurableLocallyBounded (fun σ : Fin n → ℝ =>
+      (-1 : ℂ) ^ n *
+        ∑ q : Fin n → QuarticVertexLabel Mode,
+          (∏ i : Fin n, g (q i)) *
+            Common.finiteGibbsExpectation (fermionEnergy (fun i => ε i - μ)) β
+              (externalInsertionMixedTimeOrderedVertexComp ε externalLabel externalTime q σ)) := by
+  classical
+  let δ : Mode → ℝ := fun k => ε k - μ
+  let c := externalFieldFamilyChemicalPotentialFactor μ externalLabel externalTime
+  have hpoint (σ : Fin n → ℝ) :
+      (-1 : ℂ) ^ n *
+        (∑ q : Fin n → QuarticVertexLabel Mode,
+          (∏ i : Fin n, g (q i)) *
+            Common.finiteGibbsExpectation (fermionEnergy δ) β
+              (externalInsertionMixedTimeOrderedVertexComp ε externalLabel externalTime q σ)) =
+        c * ∑ d : FixedExternalInsertionWickDiagram Mode E n externalLabel,
+          d.1.dysonFixedTimeAmplitude δ β g externalTime σ := by
+    simp only [ExternalInsertionWickDiagram.dysonFixedTimeAmplitude, ← Finset.mul_sum,
+      sum_fixedExternalInsertionWickDiagram_fixedTimeAmplitude_eq_mixedAtomicExpectation]
+    rw [mul_left_comm c ((-1 : ℂ) ^ n)]
+    apply congrArg (fun z : ℂ => (-1 : ℂ) ^ n * z)
+    rw [← mul_assoc, Finset.mul_sum]
+    apply Finset.sum_congr rfl
+    intro q _
+    rw [externalInsertionMixedTimeOrderedVertexComp_eq_shiftedDispersion ε μ]
+    change _ * Common.finiteGibbsExpectation (fermionEnergy δ) β
+        (c • externalInsertionMixedTimeOrderedVertexComp δ externalLabel externalTime q σ) = _
+    rw [externalInsertionMixedTimeOrderedVertexComp_eq_atomicProduct]
+    simp only [Common.finiteGibbsExpectation, map_smul, smul_eq_mul]
+    ring
+  rw [funext hpoint]
+  exact (intervalIntegral.measurableLocallyBounded_const c).mul
+    (intervalIntegral.MeasurableLocallyBounded.finsetSum Finset.univ
+      (fun d : FixedExternalInsertionWickDiagram Mode E n externalLabel =>
+        fun σ => d.1.dysonFixedTimeAmplitude δ β g externalTime σ)
+      (fun d _ => d.1.measurableLocallyBounded_dysonFixedTimeAmplitude δ β g externalTime))
+
 /-- At μ = 0, the interaction-picture vertex Dyson coefficient equals the
 integrated Wick-diagram coefficient at each finite perturbative order. -/
 theorem externalInsertionVertexDysonCoefficient_eq_externalInsertionDysonCoefficient
