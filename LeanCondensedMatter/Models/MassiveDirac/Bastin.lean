@@ -1,7 +1,6 @@
 import LeanCondensedMatter.Models.MassiveDirac.Bastin.Berry
 import LeanCondensedMatter.Models.MassiveDirac.Bastin.Bands
 import LeanCondensedMatter.Models.MassiveDirac.Bastin.Limit
-import LeanCondensedMatter.Models.MassiveDirac.Bastin.Spectator
 import LeanCondensedMatter.Models.MassiveDirac.Bastin.Interband
 import LeanCondensedMatter.Models.MassiveDirac.Bastin.PoleFactor
 import LeanCondensedMatter.Models.MassiveDirac.Bastin.PoleHall
