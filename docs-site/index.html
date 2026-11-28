@@ -69,7 +69,7 @@
         <p id="search-status" class="control-help" role="status"></p>
       </form>
 
-      <div class="control-grid">
+      <div class="control-grid" hidden>
         <label>
           Direction
           <select id="direction">
@@ -110,7 +110,7 @@
       </label>
       <label class="checkbox-control"><input id="generated-filter" type="checkbox"> Include generated declarations</label>
 
-      <fieldset class="highlight-controls">
+      <fieldset class="highlight-controls" hidden>
         <legend>Highlight</legend>
         <label><input type="checkbox" data-highlight="terminal"> terminal</label>
         <label><input type="checkbox" data-highlight="zero"> zero consumer</label>
@@ -118,7 +118,7 @@
         <label><input type="checkbox" data-highlight="wrapper"> direct wrapper</label>
       </fieldset>
 
-      <div class="legend" aria-label="Graph legend"></div>
+      <div class="legend" aria-label="Graph legend" hidden></div>
 
     </aside>
 

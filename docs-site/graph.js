@@ -275,13 +275,17 @@ function setModuleFilterEnabled(enabled) {
 
 function setGraphModeChrome() {
   const modules = state.graphKind === "modules";
+  const overview = state.page === "overview";
   ui.graph.closest(".graph-panel").classList.toggle("explorer-map-theme", modules);
   ui.overviewLink.textContent = "Declarations";
   document.getElementById("kind-filter").closest("label").hidden = modules;
   document.getElementById("generated-filter").closest("label").hidden = modules;
   ui.searchLabel.textContent = modules ? "Module" : "Declaration";
   ui.search.placeholder = modules ? "Module name…" : "Declaration, module, or documentation…";
-  ui.moduleFilterLabel.hidden = modules;
+  ui.direction.closest(".control-grid").hidden = overview;
+  ui.moduleFilterLabel.hidden = modules || overview;
+  ui.highlightInputs[0].closest(".highlight-controls").hidden = overview;
+  ui.graphLegend.hidden = overview;
   ui.wrapperHighlightLabel.hidden = modules;
   ui.graph.setAttribute("aria-label", modules
     ? "Interactive Lean module import graph"
