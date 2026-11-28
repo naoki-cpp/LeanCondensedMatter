@@ -16,7 +16,13 @@ test("definition filter and generated declarations", () => {
 });
 
 class Element {
-  constructor(tag) { this.tag = tag; this.children = []; this.textContent = ""; this.style = {}; }
+  constructor(tag) {
+    this.tag = tag;
+    this.children = [];
+    this.textContent = "";
+    this.style = {};
+    this.classList = { add() {} };
+  }
   getContext() { return null; }
   append(...children) { this.children.push(...children); }
   replaceChildren(...children) { this.children = children; }
@@ -56,11 +62,18 @@ test("MixedOrderData overview counts and opens both definitions", async () => {
   const region = overview.find("button").find((button) => button.className === "research-map-region");
   assert.match(region.text(), /2 declarations/);
   region.click();
-  assert.equal(opened, names[1]);
+  assert.equal(overview.find("canvas").length, 1);
   const picker = overview.find("select")[0];
   picker.value = names[0];
   picker.change();
+  assert.match(overview.text(), /Depends on \(0\)/);
+  overview.find("button").find((item) => item.text() === "Open full dependency graph").click();
   assert.equal(opened, names[0]);
+  picker.value = names[1];
+  picker.change();
+  assert.match(overview.text(), /Used by \(1\)/);
+  overview.find("button").find((item) => item.text() === names[0]).click();
+  assert.equal(overview.find("h4").at(-1).text(), names[0]);
   assert.match(overview.text(), /Definitions 2/);
   assert.match(overview.text(), /Theorems 0/);
   assert.match(overview.text(), /Total 2/);

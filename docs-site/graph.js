@@ -305,7 +305,7 @@ function setGraphModeChrome() {
 
 function renderGraph({ preserveView = false } = {}) {
   if (!state.root || !state.byName.has(state.root)) return;
-  ui.overview.hidden = state.page !== "map";
+  ui.overview.hidden = true;
   ui.viewport.hidden = false;
   ui.graphToolbar.hidden = false;
   setModuleFilterEnabled(state.graphKind === "theorems");
@@ -733,12 +733,12 @@ function writeLocation(push) {
   else history.replaceState(null, "", next);
 }
 
-function focusRoot(name, { historyEntry = true, fromMap = state.page === "map" } = {}) {
+function focusRoot(name, { historyEntry = true } = {}) {
   if (!state.byName.has(name)) return;
   if (state.graphKind === "theorems") {
     if (state.page === "overview") state.returnBrowse = state.browse;
     moduleOverview?.cancel();
-    state.page = fromMap ? "map" : "theorem";
+    state.page = "theorem";
   } else {
     state.page = "imports";
   }
@@ -749,8 +749,7 @@ function focusRoot(name, { historyEntry = true, fromMap = state.page === "map" }
   hideSearchResults();
   setGraphModeChrome();
   ui.viewport.hidden = false;
-  ui.overview.hidden = !fromMap;
-  ui.overview.classList.toggle("with-map-graph", fromMap);
+  ui.overview.hidden = true;
   setModuleFilterEnabled(state.graphKind === "theorems");
   renderDetails(name);
   renderGraph();
@@ -804,7 +803,6 @@ function showOverview({ historyEntry = true, browse = null } = {}) {
   hideSearchResults();
   ui.viewport.hidden = true;
   ui.overview.hidden = false;
-  ui.overview.classList.remove("with-map-graph");
   ui.graphToolbar.hidden = true;
   setModuleFilterEnabled(false);
   setGraphModeChrome();
@@ -982,7 +980,7 @@ function restoreLocation() {
   try { requested = decodeURIComponent(location.hash.slice(1)); }
   catch { requested = location.hash.slice(1); }
   if (requested && state.byName.has(requested)) {
-    focusRoot(requested, { historyEntry: false, fromMap: false });
+    focusRoot(requested, { historyEntry: false });
     return;
   }
 
@@ -1060,7 +1058,7 @@ function bindEvents() {
     });
   }
   ui.overviewLink.addEventListener("click", () => {
-    if (state.page === "theorem" || state.page === "map") showOverview({ browse: state.returnBrowse });
+    if (state.page === "theorem") showOverview({ browse: state.returnBrowse });
     else showOverview();
   });
   ui.moduleImportsLink.addEventListener("click", () => showModuleImports());
@@ -1143,10 +1141,6 @@ async function main() {
     overview: ui.overview,
     onBrowse: (moduleName) => showOverview({ browse: moduleName }),
     onOpenDeclaration: (name) => focusRoot(name),
-    onMapDeclaration: (name) => {
-      focusRoot(name, { fromMap: true });
-      ui.graphToolbar.scrollIntoView({ block: "start" });
-    },
   });
   populateControls();
   bindEvents();
