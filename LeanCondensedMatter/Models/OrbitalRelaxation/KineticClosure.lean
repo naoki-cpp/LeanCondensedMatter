@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Analysis.ODE.ScalarDecay
+import LeanCondensedMatter.Analysis.ODE
 import LeanCondensedMatter.Models.OrbitalRelaxation.Finite
 import LeanCondensedMatter.Analysis.Geometry.FiniteAngularKernel
 import Mathlib.Analysis.Calculus.MeanValue
@@ -17,7 +17,7 @@ polarization-to-quadrupole dynamical coupling; these assumptions constitute a
 second-order kinetic closure, not consequences of the matrix Hamiltonian.
 
 The resulting exponential law follows from the scalar decay equation in
-`Analysis.ODE.ScalarDecay` and applies to the specified finite-mode closure.
+`Analysis.ODE` and applies to the specified finite-mode closure.
 It does not derive the collision moments from a continuous kernel or establish
 a controlled microscopic approximation. The continuous spherical average of the
 quartic double commutator is a separate result in `OrbitalRelaxation.SphereMoments`.

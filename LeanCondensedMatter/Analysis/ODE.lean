@@ -1,22 +1,47 @@
 import Mathlib.Analysis.Calculus.Deriv.Inv
 import Mathlib.Analysis.Calculus.Deriv.MeanValue
+import Mathlib.Analysis.Calculus.Deriv.Pow
+import Mathlib.Analysis.Calculus.MeanValue
+import Mathlib.Analysis.Real.Sqrt
+import Mathlib.Analysis.SpecialFunctions.ExpDeriv
 import Mathlib.Analysis.SpecificLimits.Normed
-import Mathlib.Analysis.SpecialFunctions.Sqrt
+import Mathlib.Tactic.FieldSimp
 import Mathlib.Tactic.Linarith
 import Mathlib.Tactic.NormNum
-import Mathlib.Tactic.FieldSimp
 import Mathlib.Tactic.Ring
 
 set_option linter.style.header false
 
 /-!
-# Decay from a two-component radial first-order differential system
+# Ordinary differential equations
 
-An elementary Lyapunov energy estimate for real solutions of
-`x' = -y`, `y' = x - y/r` on `r ≥ 2`.
-The decay follows from the corrected energy without invoking
-Bessel asymptotics, Fourier analysis, or any physical model.
+Explicit solutions of scalar linear equations and a Lyapunov energy estimate
+for the two-component radial first-order system.
 -/
+
+namespace Real
+
+/-- A globally differentiable real function satisfying the scalar decay equation
+is determined by its initial value. The coefficient need not be positive. -/
+theorem eq_initial_mul_exp_neg_of_hasDerivAt (rate : ℝ) (f : ℝ → ℝ)
+    (hderiv : ∀ t, HasDerivAt f (-(rate * f t)) t) (t : ℝ) :
+    f t = f 0 * Real.exp (-(rate * t)) := by
+  let g : ℝ → ℝ := fun s => f s * Real.exp (rate * s)
+  have hgzero (s : ℝ) : HasDerivAt g 0 s := by
+    have he : HasDerivAt (fun u : ℝ => Real.exp (rate * u))
+        (Real.exp (rate * s) * rate) s := by
+      simpa only [id_eq, mul_one] using
+        (((hasDerivAt_id s).const_mul rate).exp)
+    change HasDerivAt (fun u : ℝ => f u * Real.exp (rate * u)) 0 s
+    convert (hderiv s).mul he using 1
+    ring
+  have h := is_const_of_deriv_eq_zero
+    (fun s => (hgzero s).differentiableAt)
+    (fun s => (hgzero s).deriv) t 0
+  simpa [g, mul_assoc, ← Real.exp_add] using
+    congrArg (fun x : ℝ => x * Real.exp (-(rate * t))) h
+
+end Real
 
 namespace RadialODE
 
@@ -37,14 +62,14 @@ theorem energy_tendsto_zero_of_firstOrderSystem
   have hE_nonneg (r : ℝ) : 0 ≤ E r := by
     dsimp [E]
     positivity
+  have hxy (r : ℝ) : 2 * (x r * y r) ≤ E r := by
+    dsimp [E]
+    nlinarith [sq_nonneg (x r - y r)]
   have hE_le_two_F (r : ℝ) (hr : 2 ≤ r) : E r ≤ 2 * F r := by
-    have hxy : 2 * (x r * y r) ≤ E r := by
-      dsimp [E]
-      nlinarith [sq_nonneg (x r - y r)]
     have hrE : 0 ≤ (r - 1) * E r :=
       mul_nonneg (by linarith) (hE_nonneg r)
     have hxy' : 2 * (x r * y r) ≤ r * E r := by
-      nlinarith [hxy, hrE]
+      nlinarith [hxy r, hrE]
     have hdiv : 2 * (x r * y r) / r ≤ E r :=
       (div_le_iff₀ (by linarith : 0 < r)).2 (by nlinarith [hxy'])
     have hrewrite : 2 * (x r * y r / r) = 2 * (x r * y r) / r := by ring
@@ -70,33 +95,24 @@ theorem energy_tendsto_zero_of_firstOrderSystem
       ring
   have hH_deriv_nonpos (r : ℝ) (hr : 2 ≤ r) :
       F r * (-E r + 3 * (x r * y r) / r) ≤ 0 := by
-    have hxy : 2 * (x r * y r) ≤ E r := by
-      dsimp [E]
-      nlinarith [sq_nonneg (x r - y r)]
     have hrE : 0 ≤ (r - 2) * E r :=
       mul_nonneg (by linarith) (hE_nonneg r)
     have hxy' : 3 * (x r * y r) ≤ r * E r := by
-      nlinarith [hxy, hrE, hE_nonneg r]
+      nlinarith [hxy r, hrE, hE_nonneg r]
     have hdiv : 3 * (x r * y r) / r ≤ E r :=
       (div_le_iff₀ (by linarith : 0 < r)).2 (by nlinarith [hxy'])
     exact mul_nonpos_of_nonneg_of_nonpos (hF_nonneg r hr) (by linarith)
+  have hinterior (r : ℝ) (hr : r ∈ interior (Set.Ici (2 : ℝ))) : 2 ≤ r :=
+    le_of_lt (by simpa only [interior_Ici, Set.mem_Ioi] using hr)
   have hanti : AntitoneOn H (Set.Ici (2 : ℝ)) := by
-    apply antitoneOn_of_deriv_nonpos (convex_Ici (2 : ℝ))
+    apply antitoneOn_of_hasDerivWithinAt_nonpos (convex_Ici (2 : ℝ))
+      (f' := fun r => F r * (-E r + 3 * (x r * y r) / r))
     · intro r hr
       exact (hH_hasDerivAt r hr).continuousAt.continuousWithinAt
     · intro r hr
-      have hr' : 2 ≤ r := by
-        have hgt : 2 < r := by
-          simpa only [interior_Ici, Set.mem_Ioi] using hr
-        linarith
-      exact (hH_hasDerivAt r hr').differentiableAt.differentiableWithinAt
+      exact (hH_hasDerivAt r (hinterior r hr)).hasDerivWithinAt
     · intro r hr
-      have hr' : 2 ≤ r := by
-        have hgt : 2 < r := by
-          simpa only [interior_Ici, Set.mem_Ioi] using hr
-        linarith
-      rw [(hH_hasDerivAt r hr').deriv]
-      exact hH_deriv_nonpos r hr'
+      exact hH_deriv_nonpos r (hinterior r hr)
   have hSqBound (r : ℝ) (hr : 2 ≤ r) :
       F r ^ 2 ≤ H 2 / r := by
     have hupper := hanti (show (2 : ℝ) ∈ Set.Ici 2 by norm_num)
@@ -108,33 +124,21 @@ theorem energy_tendsto_zero_of_firstOrderSystem
     simpa only [id_eq] using
       (Filter.tendsto_id : Filter.Tendsto (fun r : ℝ => r)
         Filter.atTop Filter.atTop).const_div_atTop (H 2)
-  have hSqLim : Filter.Tendsto (fun r : ℝ => F r ^ 2)
+  have hroot : Filter.Tendsto (fun r : ℝ => Real.sqrt (H 2 / r))
       Filter.atTop (nhds 0) := by
-    apply squeeze_zero'
-    · filter_upwards [Filter.eventually_ge_atTop (2 : ℝ)] with r hr
-      exact sq_nonneg (F r)
-    · filter_upwards [Filter.eventually_ge_atTop (2 : ℝ)] with r hr
-      exact hSqBound r hr
-    · exact hUpperLim
-  have hFLim : Filter.Tendsto F Filter.atTop (nhds 0) := by
-    have hroot : Filter.Tendsto (fun r : ℝ => Real.sqrt (F r ^ 2))
-        Filter.atTop (nhds 0) := by
-      simpa only [Function.comp_def, Real.sqrt_zero] using
-        (Real.continuous_sqrt.tendsto 0).comp hSqLim
-    apply hroot.congr'
-    filter_upwards [Filter.eventually_ge_atTop (2 : ℝ)] with r hr
-    rw [Real.sqrt_sq_eq_abs, abs_of_nonneg (hF_nonneg r hr)]
-  have hDouble : Filter.Tendsto (fun r : ℝ => 2 * F r)
+    simpa only [Real.sqrt_zero] using hUpperLim.sqrt
+  have hDouble : Filter.Tendsto (fun r : ℝ => 2 * Real.sqrt (H 2 / r))
       Filter.atTop (nhds 0) := by
-    convert (tendsto_const_nhds.mul hFLim) using 1
+    convert (tendsto_const_nhds.mul hroot) using 1
     norm_num
-  have hELim : Filter.Tendsto E Filter.atTop (nhds 0) := by
-    apply squeeze_zero'
-    · filter_upwards [Filter.eventually_ge_atTop (2 : ℝ)] with r hr
-      exact hE_nonneg r
-    · filter_upwards [Filter.eventually_ge_atTop (2 : ℝ)] with r hr
-      exact hE_le_two_F r hr
-    · exact hDouble
-  exact hELim
+  refine squeeze_zero' ?_ ?_ hDouble
+  · filter_upwards [Filter.eventually_ge_atTop (2 : ℝ)] with r hr
+    exact hE_nonneg r
+  · filter_upwards [Filter.eventually_ge_atTop (2 : ℝ)] with r hr
+    have h := Real.sqrt_le_sqrt (hSqBound r hr)
+    rw [Real.sqrt_sq_eq_abs, abs_of_nonneg (hF_nonneg r hr)] at h
+    calc
+      E r ≤ 2 * F r := hE_le_two_F r hr
+      _ ≤ 2 * Real.sqrt (H 2 / r) := by linarith
 
 end RadialODE
