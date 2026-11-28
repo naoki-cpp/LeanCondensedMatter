@@ -2,6 +2,7 @@ import LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann.Transition
 import LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.Free
 import Mathlib.Analysis.InnerProductSpace.PiL2
 import Mathlib.Analysis.InnerProductSpace.l2Space
+import Mathlib.Analysis.InnerProductSpace.Spectrum
 
 set_option linter.style.header false
 
@@ -32,6 +33,28 @@ structure EnergyEigenbasisLehmannData
   probability : ι → ℝ
   probability_nonneg : ∀ i, 0 ≤ probability i
   probability_hasSum : HasSum probability 1
+
+/-- In finite dimension the spectral theorem supplies an actual normalized
+eigenbasis state with all probability on a selected eigenvector. No
+nondegeneracy or supplied eigenbasis is required. -/
+noncomputable def EnergyEigenbasisLehmannData.ofSingleOccupied
+    [FiniteDimensional ℂ H] (system : BoundedFreeSystem H)
+    (occupied : Fin (Module.finrank ℂ H)) :
+    EnergyEigenbasisLehmannData system (Fin (Module.finrank ℂ H)) where
+  basis := (system.hamiltonian.2.isSymmetric.eigenvectorBasis rfl).toHilbertBasis
+  energy := system.hamiltonian.2.isSymmetric.eigenvalues rfl
+  hamiltonian_apply_basis := by
+    intro i
+    simp only [OrthonormalBasis.coe_toHilbertBasis]
+    exact system.hamiltonian.2.isSymmetric.apply_eigenvectorBasis rfl i
+  probability := fun i => if i = occupied then 1 else 0
+  probability_nonneg := by
+    intro i
+    split <;> norm_num
+  probability_hasSum := by
+    have h := (Summable.of_finite
+      (f := fun i : Fin (Module.finrank ℂ H) => if i = occupied then (1 : ℝ) else 0)).hasSum
+    simpa [tsum_fintype] using h
 
 variable {ι : Type*} (system : BoundedFreeSystem H)
 
