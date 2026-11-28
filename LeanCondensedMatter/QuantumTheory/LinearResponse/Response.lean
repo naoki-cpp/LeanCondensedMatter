@@ -10,12 +10,9 @@ import LeanCondensedMatter.QuantumTheory.LinearResponse.Response.Symmetry
 set_option linter.style.header false
 
 /-!
-# Public response-formula package
+# Bounded response formulas
 
-Focused entry point for the bounded Kubo formula, source-coupled and retarded
-susceptibilities, density response, observable variation, and channel response.
-The declaration owners are the individual `Response/*` modules.
-
-For the complete bounded response framework (including dynamics, frequency
-transforms, and Lehmann representations), import `QuantumTheory.LinearResponse`.
+Kubo response, source coupling, retarded and density susceptibilities, observable variation,
+response channels, corrected-current response, and symmetry identities.
+Dynamics, frequency and Lehmann APIs are included in `QuantumTheory.LinearResponse`.
 -/
