@@ -100,6 +100,12 @@ export function renderResearchMap(children, entriesFor, onOpenDeclaration) {
       }
       return points;
     });
+    region.points.forEach((point, i) => {
+      const distance = region.radius * .94 * Math.sqrt(i / region.points.length);
+      const angle = goldenAngle * i;
+      point.overviewX = x + distance * Math.cos(angle);
+      point.overviewY = y + distance * Math.sin(angle);
+    });
     region.label = makeLabel(region);
     return region;
   });
@@ -161,6 +167,12 @@ export function renderResearchMap(children, entriesFor, onOpenDeclaration) {
   let drag = null;
   let cameraFrame = null;
   const screen = (x, y) => [(x - view.x) * view.zoom + width / 2, (y - view.y) * view.zoom + height / 2];
+  function pointOnScreen(point) {
+    const progress = Math.max(0, Math.min(1, (view.zoom - 1.25) / .75));
+    const blend = progress * progress * (3 - 2 * progress);
+    return screen(point.overviewX + (point.x - point.overviewX) * blend,
+      point.overviewY + (point.y - point.overviewY) * blend);
+  }
 
   function stopCamera() {
     if (cameraFrame !== null) cancelAnimationFrame(cameraFrame);
@@ -193,8 +205,8 @@ export function renderResearchMap(children, entriesFor, onOpenDeclaration) {
   }
 
   function line(from, to, color) {
-    const [x, y] = screen(from.x, from.y);
-    const [tx, ty] = screen(to.x, to.y);
+    const [x, y] = pointOnScreen(from);
+    const [tx, ty] = pointOnScreen(to);
     const angle = Math.atan2(ty - y, tx - x);
     const endX = tx - 7 * Math.cos(angle);
     const endY = ty - 7 * Math.sin(angle);
@@ -297,7 +309,7 @@ export function renderResearchMap(children, entriesFor, onOpenDeclaration) {
       ctx.beginPath();
       for (const point of points) {
         if (point.color !== color || (selected && point === selected)) continue;
-        const [x, y] = screen(point.x, point.y);
+        const [x, y] = pointOnScreen(point);
         if (x < -8 || x > width + 8 || y < -8 || y > height + 8) continue;
         const r = nearby.has(point) ? 4 : Math.min(3, 1.35 + view.zoom * .15);
         ctx.moveTo(x + r, y);
@@ -310,7 +322,7 @@ export function renderResearchMap(children, entriesFor, onOpenDeclaration) {
     if (selected) {
       ctx.fillStyle = "#ffffff";
       ctx.beginPath();
-      ctx.arc(...screen(selected.x, selected.y), 5, 0, 2 * Math.PI);
+      ctx.arc(...pointOnScreen(selected), 5, 0, 2 * Math.PI);
       ctx.fill();
     }
   }
@@ -419,7 +431,7 @@ export function renderResearchMap(children, entriesFor, onOpenDeclaration) {
     let nearest = null;
     let best = 10;
     for (const point of points) {
-      const [px, py] = screen(point.x, point.y);
+      const [px, py] = pointOnScreen(point);
       const distance = Math.hypot(x - px, y - py);
       if (distance < best) { best = distance; nearest = point; }
     }
