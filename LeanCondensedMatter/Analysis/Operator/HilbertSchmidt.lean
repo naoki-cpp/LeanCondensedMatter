@@ -111,7 +111,7 @@ theorem hasSum_norm_sq_adjoint_apply {ι κ : Type*} (d : HilbertBasis ι ℂ H)
     (hd : HasSum (fun i => ‖T (d i)‖ ^ 2) a) :
     HasSum (fun j => ‖(ContinuousLinearMap.adjoint T) (f j)‖ ^ 2) a := by
   have hself (x : H) : (inner ℂ x x : ℂ) = ((‖x‖ ^ 2 : ℝ) : ℂ) := by
-    rw [inner_self_eq_norm_sq_to_K, Complex.ofReal_pow]
+    exact (inner_self_eq_norm_sq_to_K x).trans (Complex.ofReal_pow _ _).symm
   have hdiag : HasSum (fun i => (inner ℂ (T (d i)) (T (d i)) : ℂ)) (a : ℂ) := by
     simp_rw [hself]
     exact Complex.hasSum_ofReal.mpr hd
