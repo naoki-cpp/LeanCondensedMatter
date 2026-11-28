@@ -458,7 +458,7 @@ theorem bilinearCurrentDysonCoefficient_eq_four_fields
 
 
 
-omit [Fintype Mode] in
+omit [LinearOrder Mode] [Fintype Mode] in
 /-- The two number-conserving current blocks carry no net chemical-potential
 factor: each creation and annihilation share the same time. -/
 theorem externalFieldFamilyChemicalPotentialFactor_pairedCurrent
@@ -519,9 +519,20 @@ theorem partitionFunctionNormalizedBilinearCurrentDysonSeries_eq_vacuumFree
         (fermionEnergy (fun k => ε k - μ)) β (quarticInteraction g))]
     exact one_ne_zero
   · rw [bilinearCurrentDysonSeries_eq_four_fields]
-    simp_rw [externalInsertionVertexDysonSeries_eq_shiftedVacuumFree_mul_normalizedDysonPartitionSeries
-      ε β μ hβ, externalFieldFamilyChemicalPotentialFactor_pairedCurrent,
-      map_one, one_mul, Finset.sum_mul, mul_assoc]
+    simp only [Finset.sum_mul]
+    apply Finset.sum_congr rfl
+    intro i _
+    apply Finset.sum_congr rfl
+    intro j _
+    apply Finset.sum_congr rfl
+    intro k _
+    apply Finset.sum_congr rfl
+    intro l _
+    rw [externalInsertionVertexDysonSeries_eq_shiftedVacuumFree_mul_normalizedDysonPartitionSeries
+      (E := 2) ε β μ hβ g (pairedCurrentExternalLabels i j k l)
+      (Common.pairedExternalTimes τ τ')]
+    simp only [externalFieldFamilyChemicalPotentialFactor_pairedCurrent μ τ τ' i j k l,
+      map_one, one_mul, mul_assoc]
 
 end
 end Transport
