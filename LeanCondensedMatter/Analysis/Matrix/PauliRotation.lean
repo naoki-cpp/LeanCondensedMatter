@@ -37,7 +37,9 @@ private theorem inPlaneSpinRotation_phases_mul (angle : ℝ) :
   calc
     _ = (((Real.cos angle : ℝ) : ℂ) ^ 2) -
         Complex.I ^ 2 * (((Real.sin angle : ℝ) : ℂ) ^ 2) := by ring
-    _ = 1 := by rw [Complex.I_sq, ← htrig]; ring
+    _ = (((Real.cos angle : ℝ) : ℂ) ^ 2) +
+        (((Real.sin angle : ℝ) : ℂ) ^ 2) := by rw [Complex.I_sq]; ring
+    _ = 1 := htrig
 
 /-- The spinor rotations are mutual inverses. -/
 theorem inPlaneSpinRotation_mul_inverse (angle : ℝ) :
@@ -46,7 +48,7 @@ theorem inPlaneSpinRotation_mul_inverse (angle : ℝ) :
   fin_cases i <;> fin_cases j <;>
     simp [inPlaneSpinRotation, inPlaneSpinRotationInverse,
       Matrix.mul_apply, Fin.sum_univ_two]
-  exact inPlaneSpinRotation_phases_mul angle
+  simpa using inPlaneSpinRotation_phases_mul angle
 
 /-- Reversing the rotation angle exchanges the diagonal spinor and its inverse. -/
 private theorem inPlaneSpinRotation_neg (angle : ℝ) :
