@@ -50,102 +50,108 @@
       </span>
     </a>
     <nav aria-label="Project links">
-      <button id="overview-link" class="nav-button" type="button">Declarations</button>
-      <button id="module-imports-link" class="nav-button" type="button">Imports</button>
       <a href="https://github.com/naoki-cpp/LeanCondensedMatter">GitHub</a>
       <a href="https://github.com/naoki-cpp/LeanCondensedMatter/blob/main/docs/roadmap.md">Roadmap</a>
     </nav>
   </header>
 
-  <main class="app-shell">
-    <aside class="controls" aria-label="Graph controls">
-      <form id="search-form" class="search-form" role="search">
-        <label for="theorem-search">Declaration</label>
-        <div class="search-row">
-          <input id="theorem-search" name="query" type="search" role="combobox" aria-autocomplete="list" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Try a declaration or module…" aria-controls="search-results" aria-expanded="false" aria-describedby="search-status">
-          <button type="submit">Go</button>
-        </div>
-        <div id="search-results" class="search-results" role="listbox" aria-label="Search matches" hidden></div>
-        <p id="search-status" class="control-help" role="status"></p>
-      </form>
-
-      <div class="control-grid" hidden>
-        <label>
-          Direction
-          <select id="direction">
-            <option value="both">Dependencies + consumers</option>
-            <option value="dependencies">Dependencies (outgoing)</option>
-            <option value="consumers">Consumers (incoming)</option>
-          </select>
-        </label>
-        <label>
-          Depth
-          <select id="depth">
-            <option value="1">1</option>
-            <option value="2" selected>2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-          </select>
-        </label>
-      </div>
-
-      <label>
-        Graph module filter
-        <select id="module-filter" aria-describedby="module-filter-hint" disabled>
-          <option value="*">All modules</option>
-        </select>
-        <span id="module-filter-hint" class="control-help">Available after opening a declaration.</span>
-      </label>
-
-      <label>Declaration kind
-        <select id="kind-filter">
-          <option value="*">All declarations</option>
-          <option value="theorem">Theorems</option>
-          <option value="definition">Definitions (def / abbrev / opaque)</option>
-          <option value="axiom">Axioms</option>
-          <option value="inductive">Inductive types / structures</option>
-          <option value="constructor">Constructors</option>
-          <option value="recursor">Recursors</option>
-        </select>
-      </label>
-      <label class="checkbox-control"><input id="generated-filter" type="checkbox"> Include generated declarations</label>
-
-      <fieldset class="highlight-controls" hidden>
-        <legend>Highlight</legend>
-        <label><input type="checkbox" data-highlight="terminal"> terminal</label>
-        <label><input type="checkbox" data-highlight="zero"> zero consumer</label>
-        <label><input type="checkbox" data-highlight="single"> single consumer</label>
-        <label><input type="checkbox" data-highlight="wrapper"> direct wrapper</label>
-      </fieldset>
-
-      <div id="graph-legend-home">
-        <div class="legend" aria-label="Graph legend" hidden></div>
-      </div>
-
-    </aside>
-
+  <main>
+    <div id="declarations-panel" role="tabpanel" aria-labelledby="overview-link">
+      <div class="app-shell">
     <section id="explorer-content" class="graph-panel" tabindex="-1" aria-label="Declaration and module exploration panel">
+      <div id="graph-controls-home" hidden>
+        <div class="explorer-tabs" role="tablist" aria-label="Explorer view">
+          <button id="overview-link" type="button" role="tab" aria-selected="true" aria-controls="declarations-panel">Declarations</button>
+          <button id="module-imports-link" type="button" role="tab" aria-selected="false" aria-controls="imports-panel" tabindex="-1">Imports</button>
+        </div>
+        <div class="graph-controls" role="group" aria-label="Graph controls">
+          <form id="search-form" class="search-form" role="search">
+            <label for="theorem-search">Declaration</label>
+            <div class="search-row">
+              <input id="theorem-search" name="query" type="search" role="combobox" aria-autocomplete="list" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Try a declaration or module…" aria-controls="search-results" aria-expanded="false" aria-describedby="search-status">
+              <button type="submit">Go</button>
+            </div>
+            <div id="search-results" class="search-results" role="listbox" aria-label="Search matches" hidden></div>
+            <p id="search-status" class="control-help" role="status"></p>
+          </form>
+
+          <div class="graph-filter-row">
+            <div class="control-grid" hidden>
+              <label>
+                Direction
+                <select id="direction">
+                  <option value="both">Dependencies + consumers</option>
+                  <option value="dependencies">Dependencies (outgoing)</option>
+                  <option value="consumers">Consumers (incoming)</option>
+                </select>
+              </label>
+              <label>
+                Depth
+                <select id="depth">
+                  <option value="1">1</option>
+                  <option value="2" selected>2</option>
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+                </select>
+              </label>
+            </div>
+
+            <label>
+              Graph module filter
+              <select id="module-filter">
+                <option value="*">All modules</option>
+              </select>
+            </label>
+
+            <label>Declaration kind
+              <select id="kind-filter">
+                <option value="*">All declarations</option>
+                <option value="theorem">Theorems</option>
+                <option value="definition">Definitions (def / abbrev / opaque)</option>
+                <option value="axiom">Axioms</option>
+                <option value="inductive">Inductive types / structures</option>
+                <option value="constructor">Constructors</option>
+                <option value="recursor">Recursors</option>
+              </select>
+            </label>
+            <label class="checkbox-control"><input id="generated-filter" type="checkbox"> Include generated declarations</label>
+
+          </div>
+
+          <fieldset class="highlight-controls" hidden>
+            <legend>Highlight</legend>
+            <label><input type="checkbox" data-highlight="terminal"> terminal</label>
+            <label><input type="checkbox" data-highlight="zero"> zero consumer</label>
+            <label><input type="checkbox" data-highlight="single"> single consumer</label>
+            <label><input type="checkbox" data-highlight="wrapper"> direct wrapper</label>
+          </fieldset>
+
+          <div class="legend" aria-label="Graph legend" hidden></div>
+        </div>
+      </div>
       <div id="overview" class="overview-panel" aria-live="polite"></div>
-      <header class="import-map-header" hidden>
-        <h2 class="research-map-title"></h2>
-        <div class="map-search-slot"></div>
-      </header>
+      <header id="graph-map-header" hidden></header>
       <div class="graph-toolbar" hidden>
         <span id="graph-status" role="status">Loading theorem catalog…</span>
+        <button type="button" class="graph-back focus-button" id="back-to-map" hidden>Back to declaration map</button>
         <div class="graph-view-controls" role="group" aria-label="Graph view">
-          <button id="graph-zoom-out" type="button" aria-label="Zoom out">−</button>
-          <button id="graph-zoom-in" type="button" aria-label="Zoom in">+</button>
-          <button id="graph-fit" type="button">Fit</button>
+          <button id="graph-zoom-out" class="map-zoom-button" type="button" aria-label="Zoom out">−</button>
+          <button id="graph-zoom-in" class="map-zoom-button" type="button" aria-label="Zoom in">+</button>
+          <button id="graph-fit" type="button">Fit graph</button>
         </div>
       </div>
 
-      <div id="graph-viewport" class="graph-scroll" tabindex="0" aria-label="Graph viewport. Use arrow keys to pan, plus or minus to zoom, and zero to fit." hidden>
+      <div id="graph-viewport" class="graph-scroll explorer-map-stage" tabindex="0" aria-label="Graph viewport. Use arrow keys to pan, plus or minus to zoom, and zero to fit." hidden>
         <div class="graph-directions" aria-hidden="true"><span id="graph-direction-left"></span><span id="graph-direction-right"></span></div>
         <svg id="graph" role="group" aria-label="Interactive theorem dependency graph"></svg>
       </div>
+      <div id="graph-map-controls" class="map-controls-slot" hidden></div>
     </section>
 
     <aside id="detail" class="detail-panel" aria-live="polite"></aside>
+      </div>
+    </div>
+    <div id="imports-panel" role="tabpanel" aria-labelledby="module-imports-link" hidden></div>
   </main>
 
   <script type="module" src="./graph.js"></script>

@@ -1,11 +1,14 @@
 import { buildGraphScene } from "./graph-layout.js";
 import { createGraphPresentation } from "./graph-presentation.js";
+import { readExplorerLocation, writeExplorerLocation } from "./explorer-location.js";
+import { createExplorerComposition } from "./explorer-composition.js";
+import { createMapHeader } from "./map-header.js";
+import { ZOOM_STEP, cameraProgress, canAnimateCamera, createCameraFrames, zoomFactorForKey, zoomFactorForWheel } from "./map-zoom.js";
 import { createModuleOverview } from "./module-overview.js";
-import { declarationAllowed } from "./declaration-model.js";
+import { createDeclarationVisibility } from "./declaration-visibility.js";
 import { curvedEdgePath } from "./graph-edge.js";
 import { buildModuleGraphCatalog } from "./module-import-map.js";
-import { renderLeanMath, renderLeanSourceFallback } from "./lean-math.js";
-import { renderStatement, renderStructuredDefinition } from "./statement-view.js";
+import { declarationRelations, declarationSourceLink, declarationStatement } from "./declaration-details.js";
 import {
   graphNodeLabelAttributes,
   graphLabelLines,
@@ -16,8 +19,7 @@ const SVG_NS = "http://www.w3.org/2000/svg";
 const SEARCH_LIMIT = 10;
 const CATALOG_URL = "https://raw.githubusercontent.com/naoki-cpp/LeanCondensedMatter/graph-data/declarations.json";
 const MODULES_URL = "https://raw.githubusercontent.com/naoki-cpp/LeanCondensedMatter/graph-data/module-imports.json";
-const SOURCE_BASE_URL = "https://raw.githubusercontent.com/naoki-cpp/LeanCondensedMatter/main/";
-const definitionSourceRequests = new Map();
+const graphCamera = createCameraFrames();
 
 const state = {
   catalog: [],
@@ -30,7 +32,9 @@ const state = {
   root: null,
   selected: null,
   browse: null,
+  mapSelection: null,
   returnBrowse: null,
+  returnMap: null,
   page: "overview",
   direction: "both",
   depth: 2,
@@ -48,8 +52,16 @@ const state = {
 const ui = {
   overviewLink: document.querySelector("#overview-link"),
   moduleImportsLink: document.querySelector("#module-imports-link"),
+  tabs: document.querySelector(".explorer-tabs"),
+  declarationsPanel: document.querySelector("#declarations-panel"),
+  importsPanel: document.querySelector("#imports-panel"),
+  appShell: document.querySelector(".app-shell"),
   searchForm: document.querySelector("#search-form"),
-  searchHome: document.querySelector(".controls"),
+  controls: document.querySelector(".graph-controls"),
+  controlsHome: document.querySelector("#graph-controls-home"),
+  backToMap: document.querySelector("#back-to-map"),
+  kindFilter: document.querySelector("#kind-filter"),
+  generatedFilter: document.querySelector("#generated-filter"),
   searchLabel: document.querySelector("#search-form > label"),
   search: document.querySelector("#theorem-search"),
   searchResults: document.querySelector("#search-results"),
@@ -60,9 +72,8 @@ const ui = {
   moduleFilterLabel: document.querySelector("#module-filter").closest("label"),
   wrapperHighlightLabel: document.querySelector('[data-highlight="wrapper"]').closest("label"),
   graphLegend: document.querySelector(".legend"),
-  graphLegendHome: document.querySelector("#graph-legend-home"),
-  importMapHeader: document.querySelector(".import-map-header"),
-  importMapSearch: document.querySelector(".import-map-header .map-search-slot"),
+  graphMapHeader: createMapHeader("", document.querySelector("#graph-map-header")),
+  graphMapControls: document.querySelector("#graph-map-controls"),
   graph: document.querySelector("#graph"),
   viewport: document.querySelector("#graph-viewport"),
   overview: document.querySelector("#overview"),
@@ -72,7 +83,19 @@ const ui = {
   highlightInputs: [...document.querySelectorAll("[data-highlight]")],
 };
 
+const composition = createExplorerComposition(ui);
 let moduleOverview = null;
+let visibility;
+let visibilityKey;
+
+function visibleDeclarations() {
+  const key = `${state.kind}:${state.generated}`;
+  if (visibilityKey !== key) {
+    visibility = createDeclarationVisibility(state.theoremCatalog, state.kind, state.generated);
+    visibilityKey = key;
+  }
+  return visibility;
+}
 
 function svg(tag, attributes = {}) {
   const node = document.createElementNS(SVG_NS, tag);
@@ -124,10 +147,7 @@ function displayName(name) {
 }
 
 function moduleAllowed(name) {
-  if (state.graphKind !== "modules" &&
-      !declarationAllowed(state.byName.get(name), state.kind, state.generated)) return false;
-  if (state.module === "*") return true;
-  return state.byName.get(name)?.module === state.module;
+  return state.graphKind === "modules" || visibleDeclarations().allows(name, state.module);
 }
 
 function highlightMatches(entry) {
@@ -220,16 +240,44 @@ function fitGraph() {
   }
 }
 
+function stopGraphCamera() {
+  graphCamera.stop();
+}
+
+function resetGraphCamera() {
+  if (graphCamera.running || !state.graphBounds || !state.viewBox) return;
+  const start = state.viewBox;
+  const target = state.graphBounds;
+  const keys = ["x", "y", "width", "height"];
+  if (keys.every((key) => start[key] === target[key])) return;
+  if (!canAnimateCamera()) {
+    setGraphViewBox({ ...target });
+    return;
+  }
+  let startedAt;
+  function step(now) {
+    startedAt ??= now;
+    const progress = cameraProgress(now - startedAt);
+    setGraphViewBox(progress === 1 ? { ...target } : Object.fromEntries(keys.map((key) =>
+      [key, start[key] + (target[key] - start[key]) * progress])));
+    return progress < 1;
+  }
+  graphCamera.start(step);
+}
+
 function zoomGraph(factor, clientX = null, clientY = null) {
   if (!state.viewBox || !state.graphBounds) return;
-  const rect = ui.viewport.getBoundingClientRect();
-  const px = clientX === null ? 0.5 : Math.min(1, Math.max(0, (clientX - rect.left) / rect.width));
-  const py = clientY === null ? 0.5 : Math.min(1, Math.max(0, (clientY - rect.top) / rect.height));
+  stopGraphCamera();
+  const transform = clientX === null ? null : ui.graph.getScreenCTM();
+  const point = transform ? new DOMPoint(clientX, clientY).matrixTransform(transform.inverse()) : null;
+  const px = point ? (point.x - state.viewBox.x) / state.viewBox.width : 0.5;
+  const py = point ? (point.y - state.viewBox.y) / state.viewBox.height : 0.5;
   const anchorX = state.viewBox.x + state.viewBox.width * px;
   const anchorY = state.viewBox.y + state.viewBox.height * py;
   const minWidth = Math.min(220, state.graphBounds.width);
   const maxWidth = state.graphBounds.width * 3;
-  const width = Math.min(maxWidth, Math.max(minWidth, state.viewBox.width * factor));
+  const width = Math.min(maxWidth, Math.max(minWidth, state.viewBox.width / factor));
+  if (width === state.viewBox.width) return;
   const aspect = state.viewBox.height / state.viewBox.width;
   const height = width * aspect;
   setGraphViewBox({
@@ -270,35 +318,13 @@ function appendNodeLabel(nodes, name, position, root, selected, showLeafLabel) {
   nodes.append(label);
 }
 
-function setModuleFilterEnabled(enabled) {
-  ui.module.disabled = !enabled;
-  ui.module.title = enabled
-    ? "Filter the current dependency graph by exact module."
-    : "Browse modules through the module hierarchy.";
-}
-
-function setGraphModeChrome() {
+function setGraphModeChrome(focusTarget) {
   const modules = state.graphKind === "modules";
   const overview = state.page === "overview";
-  ui.graph.closest(".graph-panel").classList.toggle("import-map-panel", modules);
-  ui.graph.closest(".graph-panel").classList.toggle("explorer-map-theme", modules);
-  ui.graph.closest(".graph-panel").classList.toggle("explorer-map-frame", modules);
-  ui.importMapHeader.hidden = !modules;
-  ui.graphStatus.classList.toggle("research-map-declaration-count", modules);
-  if (modules) {
-    ui.importMapHeader.firstElementChild.textContent = shortModule(state.root);
-    ui.importMapSearch.before(ui.graphStatus);
-    ui.importMapHeader.append(ui.graphLegend);
-    if (ui.searchForm.parentElement !== ui.importMapSearch) ui.importMapSearch.append(ui.searchForm);
-  } else {
-    ui.graphToolbar.prepend(ui.graphStatus);
-    ui.graphLegendHome.append(ui.graphLegend);
-    if (ui.searchForm.parentElement !== ui.searchHome) ui.searchHome.prepend(ui.searchForm);
-  }
-  document.getElementById("graph-fit").textContent = modules ? "Whole graph" : "Fit";
-  ui.overviewLink.textContent = "Declarations";
-  document.getElementById("kind-filter").closest("label").hidden = modules;
-  document.getElementById("generated-filter").closest("label").hidden = modules;
+  const title = overview ? null : modules ? shortModule(state.root) : `Dependency graph for ${state.root}`;
+  composition.show(state.page, title, focusTarget);
+  ui.kindFilter.closest("label").hidden = modules;
+  ui.generatedFilter.closest("label").hidden = modules;
   ui.searchLabel.textContent = modules ? "Module" : "Declaration";
   ui.search.placeholder = modules ? "Module name…" : "Declaration, module, or documentation…";
   ui.direction.closest(".control-grid").hidden = overview;
@@ -329,10 +355,7 @@ function setGraphModeChrome() {
 
 function renderGraph({ preserveView = false } = {}) {
   if (!state.root || !state.byName.has(state.root)) return;
-  ui.overview.hidden = true;
-  ui.viewport.hidden = false;
-  ui.graphToolbar.hidden = false;
-  setModuleFilterEnabled(state.graphKind === "theorems");
+  stopGraphCamera();
 
   const previousView = preserveView ? state.viewBox : null;
   const { levels, truncated, positions, parents, children, branchFor, width, height, cx, cy } = buildGraphScene(state.byName, {
@@ -487,33 +510,26 @@ function badge(text, kind = "") {
 function relationSection(title, names) {
   const section = document.createElement("section");
   section.className = "relation-section";
-  section.append(element("h3", "", `${title} (${names.length})`));
-  if (names.length === 0) {
+  const { entries } = declarationRelations(names, (name) => state.byName.has(name));
+  section.append(element("h3", "", `${title} (${entries.length})`));
+  if (entries.length === 0) {
     section.append(element("p", "muted", "None"));
     return section;
   }
   const list = element("div", "relation-list");
-  for (const name of names.slice(0, 40)) {
+  for (const { name, available } of entries.slice(0, 40)) {
     const button = element("button", "", name);
     button.type = "button";
-    if (state.byName.has(name)) button.addEventListener("click", () => focusRoot(name));
+    if (available) button.addEventListener("click", () => focusRoot(name));
     else {
       button.disabled = true;
       button.title = "This consumer is not available in the declaration catalog";
     }
     list.append(button);
   }
-  if (names.length > 40) list.append(element("p", "muted", `+ ${names.length - 40} more`));
+  if (entries.length > 40) list.append(element("p", "muted", `+ ${entries.length - 40} more`));
   section.append(list);
   return section;
-}
-
-function sourceHref(entry) {
-  if (entry.sourceUrl) return entry.sourceUrl;
-  if (!entry.sourceFile) return null;
-  const path = entry.sourceFile.split("/").map(encodeURIComponent).join("/");
-  const line = entry.sourceLine ? `#L${entry.sourceLine}` : "";
-  return `https://github.com/naoki-cpp/LeanCondensedMatter/blob/main/${path}${line}`;
 }
 
 function renderModuleDetails(entry) {
@@ -535,140 +551,11 @@ function renderModuleDetails(entry) {
     focus.addEventListener("click", () => focusRoot(entry.name));
     actions.append(focus);
   }
-  const href = sourceHref(entry);
-  if (href) {
-    const source = element("a", "source-link", "View source");
-    source.href = href;
-    source.target = "_blank";
-    source.rel = "noreferrer";
-    actions.append(source);
-  }
+  const source = declarationSourceLink(entry);
+  if (source) actions.append(source);
   if (actions.childElementCount > 0) ui.detail.append(actions);
   ui.detail.append(relationSection("Imports", entry.dependencies));
   ui.detail.append(relationSection("Imported by", entry.dependents));
-}
-
-function loadDefinitionSource(sourceFile) {
-  if (!definitionSourceRequests.has(sourceFile)) {
-    const path = sourceFile.split("/").map(encodeURIComponent).join("/");
-    const request = fetch(SOURCE_BASE_URL + path, { cache: "no-store" })
-      .then((response) => {
-        if (!response.ok) throw new Error("failed to load Lean source: " + response.status);
-        return response.text();
-      })
-      .catch((error) => {
-        definitionSourceRequests.delete(sourceFile);
-        throw error;
-      });
-    definitionSourceRequests.set(sourceFile, request);
-  }
-  return definitionSourceRequests.get(sourceFile);
-}
-
-function findDefinitionAssignment(source) {
-  let blockCommentDepth = 0;
-  let inString = false;
-  let escaped = false;
-  let nesting = 0;
-  for (let index = 0; index < source.length; index += 1) {
-    const pair = source.slice(index, index + 2);
-    const character = source[index];
-
-    if (blockCommentDepth > 0) {
-      if (pair === "/-") {
-        blockCommentDepth += 1;
-        index += 1;
-      } else if (pair === "-/") {
-        blockCommentDepth -= 1;
-        index += 1;
-      }
-      continue;
-    }
-    if (inString) {
-      if (escaped) escaped = false;
-      else if (character === "\\") escaped = true;
-      else if (character === '"') inString = false;
-      continue;
-    }
-    if (pair === "--") {
-      const lineEnd = source.indexOf("\n", index + 2);
-      if (lineEnd < 0) return -1;
-      index = lineEnd;
-      continue;
-    }
-    if (pair === "/-") {
-      blockCommentDepth = 1;
-      index += 1;
-      continue;
-    }
-    if (character === '"') {
-      inString = true;
-      continue;
-    }
-    if (character === "(" || character === "[" || character === "{") nesting += 1;
-    else if (character === ")" || character === "]" || character === "}") nesting = Math.max(0, nesting - 1);
-    else if (nesting === 0 && pair === ":=") return index + 2;
-  }
-  return -1;
-}
-
-function extractDefinitionBody(source) {
-  const assignmentEnd = findDefinitionAssignment(source);
-  if (assignmentEnd < 0) return null;
-  if (/^\s*\|/mu.test(source.slice(0, assignmentEnd))) return null;
-  const body = source.slice(assignmentEnd).trim();
-  return body || null;
-}
-
-function declarationSourceRange(entry, source) {
-  const firstLine = entry.declarationStartLine ?? entry.sourceLine;
-  const lastLine = entry.sourceEndLine ?? firstLine;
-  if (!Number.isInteger(firstLine) || firstLine < 1 || !Number.isInteger(lastLine) || lastLine < firstLine) return null;
-  const lines = source.split(/\r?\n/u);
-  return lines.slice(firstLine - 1, lastLine).join("\n");
-}
-
-function appendDefinitionBody(entry) {
-  if (entry.kind !== "def" && entry.kind !== "abbrev") return;
-  const firstSourceLine = entry.declarationStartLine ?? entry.sourceLine;
-  const hasStructuredBody = typeof entry.structuredStatement?.definitionBody?.text === "string";
-  const hasSourceRange = entry.sourceFile && Number.isInteger(firstSourceLine) && Number.isInteger(entry.sourceEndLine);
-  if (!hasStructuredBody && !hasSourceRange) return;
-
-  const disclosure = element("details", "definition-body");
-  const summary = element("summary", "", "Definition body");
-  const content = element("div", "definition-body-content");
-  content.setAttribute("aria-live", "polite");
-  disclosure.append(summary, content);
-  disclosure.addEventListener("toggle", async () => {
-    if (!disclosure.open || disclosure.dataset.state === "loading" || disclosure.dataset.state === "loaded") return;
-    disclosure.dataset.state = "loading";
-    content.textContent = "Loading definition body…";
-    try {
-      content.replaceChildren();
-      if (renderStructuredDefinition(content, entry)) {
-        disclosure.dataset.state = "loaded";
-        return;
-      }
-      if (!hasSourceRange) throw new Error("definition source range is unavailable");
-      content.textContent = "Loading definition body…";
-      const source = await loadDefinitionSource(entry.sourceFile);
-      const sourceRange = declarationSourceRange(entry, source);
-      if (!sourceRange) throw new Error("definition source range is unavailable");
-      const body = extractDefinitionBody(sourceRange);
-      if (!content.isConnected) return;
-      disclosure.dataset.state = "loaded";
-      content.replaceChildren();
-      if (body) renderLeanMath(content, body);
-      else renderLeanSourceFallback(content, sourceRange, "This definition uses Lean syntax that cannot be isolated as a formula.");
-    } catch (error) {
-      if (!content.isConnected) return;
-      disclosure.dataset.state = "";
-      content.replaceChildren(element("p", "error-message", "Definition source could not be loaded."));
-      console.error(error);
-    }
-  });
-  ui.detail.append(disclosure);
 }
 
 function renderDetails(name) {
@@ -700,21 +587,12 @@ function renderDetails(name) {
     focus.addEventListener("click", () => focusRoot(name));
     actions.append(focus);
   }
-  const href = sourceHref(entry);
-  if (href) {
-    const source = element("a", "source-link", "View source");
-    source.href = href;
-    source.target = "_blank";
-    source.rel = "noreferrer";
-    actions.append(source);
-  }
+  const source = declarationSourceLink(entry);
+  if (source) actions.append(source);
   if (actions.childElementCount > 0) ui.detail.append(actions);
 
   ui.detail.append(element("h3", "", "Statement"));
-  const statement = element("div", "math-presentation");
-  renderStatement(statement, entry);
-  ui.detail.append(statement);
-  appendDefinitionBody(entry);
+  ui.detail.append(...declarationStatement(entry));
 
   if (entry.docString) {
     ui.detail.append(element("h3", "", "Documentation"));
@@ -735,90 +613,67 @@ function renderDetails(name) {
 }
 
 function writeLocation(push) {
-  const url = new URL(window.location.href);
-  if (state.page === "imports") {
-    url.searchParams.delete("depth");
-    url.searchParams.delete("module");
-    url.searchParams.delete("browse");
-    url.searchParams.set("view", "imports");
-    url.searchParams.set("import-module", state.root);
-    if (state.direction === "both") url.searchParams.delete("direction");
-    else url.searchParams.set("direction", state.direction);
-    if (state.depth === 1) url.searchParams.delete("import-depth");
-    else url.searchParams.set("import-depth", String(state.depth));
-    url.hash = "";
-  } else {
-    url.searchParams.delete("view");
-    url.searchParams.delete("import-module");
-    url.searchParams.delete("import-depth");
-    if (state.direction === "both") url.searchParams.delete("direction");
-    else url.searchParams.set("direction", state.direction);
-    if (state.depth === 2) url.searchParams.delete("depth");
-    else url.searchParams.set("depth", String(state.depth));
-    if (state.module === "*") url.searchParams.delete("module");
-    else url.searchParams.set("module", state.module);
-    if (!state.root && state.browse && state.browse !== "LeanCondensedMatter") url.searchParams.set("browse", state.browse);
-    else url.searchParams.delete("browse");
-    url.hash = state.root ?? "";
-  }
-  const next = `${url.pathname}${url.search}${url.hash}`;
-  if (push) history.pushState(null, "", next);
-  else history.replaceState(null, "", next);
+  const { path, navigation } = writeExplorerLocation(location.href, state, state.mapSelection);
+  if (push) history.pushState(navigation, "", path);
+  else history.replaceState(navigation, "", path);
 }
 
-function focusRoot(name, { historyEntry = true } = {}) {
+function focusRoot(name, { historyEntry = true, fromMap = false, returnMap = null, returnBrowse = null } = {}) {
   if (!state.byName.has(name)) return;
   if (state.graphKind === "theorems") {
-    if (state.page === "overview") state.returnBrowse = state.browse;
-    moduleOverview?.cancel();
+    if (!historyEntry) {
+      state.returnBrowse = returnBrowse;
+      state.returnMap = returnMap;
+    } else if (state.page === "overview") {
+      state.returnBrowse = state.browse;
+      state.returnMap = state.mapSelection ?? (fromMap ? name : null);
+    }
     state.page = "theorem";
   } else {
     state.page = "imports";
   }
   state.root = name;
   state.selected = name;
-  state.browse = null;
+  if (state.page === "theorem") state.browse = null;
   ui.search.value = name;
   hideSearchResults();
   setGraphModeChrome();
-  ui.viewport.hidden = false;
-  ui.overview.hidden = true;
-  setModuleFilterEnabled(state.graphKind === "theorems");
   renderDetails(name);
   renderGraph();
   if (historyEntry) writeLocation(true);
+  if (fromMap) ui.graphMapHeader.heading.focus();
 }
 
 function summaryChip(text) {
   return element("span", "summary-chip", text);
 }
 
-function renderOverviewContent() {
+function renderOverviewContent(focusSelection) {
   const requestedBrowse = state.browse ?? "LeanCondensedMatter";
-  state.browse = requestedBrowse;
-  moduleOverview?.render(requestedBrowse).then((rendered) => {
-    if (rendered && state.page === "overview" && state.browse === requestedBrowse) {
-      const searchSlot = ui.overview.querySelector(".map-search-slot");
-      if (searchSlot) searchSlot.append(ui.searchForm);
-    }
-    if (!rendered && state.browse === requestedBrowse) {
+  const mapSelection = state.mapSelection;
+  composition.renderOverview({
+    render: () => moduleOverview?.prepare(requestedBrowse, mapSelection),
+    mounted() {
+      if (focusSelection) ui.overview.querySelector(".research-map-detail-title")?.focus();
+    },
+    unavailable() {
       if (requestedBrowse !== "LeanCondensedMatter" && moduleOverview?.hasModule("LeanCondensedMatter")) {
         state.browse = "LeanCondensedMatter";
         writeLocation(false);
         renderOverviewContent();
         return;
       }
-      ui.overview.replaceChildren(element("p", "error-message", "The project module hierarchy is unavailable."));
-    }
-  }).catch((error) => {
-    if (state.browse !== requestedBrowse) return;
-    console.error(error);
-    ui.overview.replaceChildren(element("p", "error-message", error instanceof Error ? error.message : String(error)));
+      composition.replaceOverview(element("p", "error-message", "The project module hierarchy is unavailable."));
+    },
+    failed(error) {
+      console.error(error);
+      composition.replaceOverview(element("p", "error-message", error instanceof Error ? error.message : String(error)));
+    },
   });
 }
 
-function showOverview({ historyEntry = true, browse = null } = {}) {
-  moduleOverview?.cancel();
+function showOverview({ historyEntry = true, browse = null, focusFilter = null, mapSelection = null } = {}) {
+  stopGraphCamera();
   state.graphKind = "theorems";
   state.catalog = state.theoremCatalog;
   state.byName = state.theoremByName;
@@ -826,6 +681,8 @@ function showOverview({ historyEntry = true, browse = null } = {}) {
   state.root = null;
   state.selected = null;
   state.returnBrowse = null;
+  state.returnMap = null;
+  state.mapSelection = mapSelection;
   state.viewBox = null;
   state.graphBounds = null;
   state.module = "*";
@@ -838,20 +695,19 @@ function showOverview({ historyEntry = true, browse = null } = {}) {
     : "LeanCondensedMatter";
   ui.search.value = "";
   hideSearchResults();
-  ui.viewport.hidden = true;
-  ui.overview.hidden = false;
-  ui.graphToolbar.hidden = true;
-  setModuleFilterEnabled(false);
-  setGraphModeChrome();
+  setGraphModeChrome(focusFilter);
   ui.graphStatus.textContent = "";
   ui.detail.replaceChildren();
-  renderOverviewContent();
+  renderOverviewContent(mapSelection && !focusFilter);
   if (historyEntry) writeLocation(true);
 }
 
 function showModuleImports({ historyEntry = true, moduleName = null, depth = state.depth } = {}) {
   if (state.moduleCatalog.length === 0) return;
-  moduleOverview?.cancel();
+  if (state.page === "theorem") {
+    state.browse = state.returnBrowse;
+    state.mapSelection = state.returnMap;
+  }
   const selectedModule = moduleName && state.moduleByName.has(moduleName)
     ? moduleName
     : state.moduleByName.has("LeanCondensedMatter") ? "LeanCondensedMatter" : state.moduleCatalog[0].name;
@@ -862,7 +718,6 @@ function showModuleImports({ historyEntry = true, moduleName = null, depth = sta
   state.depth = [1, 2, 3, 4].includes(Number(depth)) ? Number(depth) : 1;
   state.root = selectedModule;
   state.selected = selectedModule;
-  state.browse = null;
   state.module = "*";
   state.viewBox = null;
   state.graphBounds = null;
@@ -872,9 +727,6 @@ function showModuleImports({ historyEntry = true, moduleName = null, depth = sta
   ui.search.value = "";
   hideSearchResults();
   setGraphModeChrome();
-  ui.viewport.hidden = false;
-  ui.overview.hidden = true;
-  setModuleFilterEnabled(false);
   renderDetails(selectedModule);
   renderGraph();
   if (historyEntry) writeLocation(true);
@@ -913,9 +765,8 @@ function searchScore(entry, query) {
 
 function findSearchResults(query) {
   const ranked = [];
-  for (const entry of state.catalog) {
-    if (state.graphKind !== "modules" &&
-        !declarationAllowed(entry, state.kind, state.generated)) continue;
+  const entries = state.graphKind === "modules" ? state.catalog : visibleDeclarations().entries;
+  for (const entry of entries) {
     const score = searchScore(entry, query);
     if (score !== null) ranked.push({ entry, score });
   }
@@ -982,84 +833,67 @@ function openActiveSearchResult() {
 }
 
 function restoreLocation() {
-  const params = new URLSearchParams(location.search);
-  if (params.get("view") === "imports" && state.moduleCatalog.length > 0) {
-    state.direction = ["both", "dependencies", "consumers"].includes(params.get("direction"))
-      ? params.get("direction")
-      : "both";
-    const importDepth = Number(params.get("import-depth") ?? params.get("depth"));
-    showModuleImports({
-      historyEntry: false,
-      moduleName: params.get("import-module"),
-      depth: [1, 2, 3, 4].includes(importDepth) ? importDepth : 1,
-    });
-    if (!state.moduleByName.has(params.get("import-module"))) writeLocation(false);
-    return;
+  const route = readExplorerLocation(location, history.state, {
+    hasImports: state.moduleCatalog.length > 0,
+    hasImport: (name) => state.moduleByName.has(name),
+    hasDeclaration: (name) => state.theoremByName.has(name),
+    hasModule: (name) => moduleOverview?.hasModule(name),
+    hasGraphModule: (name) => state.theoremCatalog.some((entry) => entry.module === name),
+  });
+  state.direction = route.direction;
+  state.depth = route.depth;
+  if (route.page === "imports") {
+    showModuleImports({ historyEntry: false, moduleName: route.root, depth: route.depth });
+  } else if (route.page === "theorem") {
+    state.graphKind = "theorems";
+    state.catalog = state.theoremCatalog;
+    state.byName = state.theoremByName;
+    state.module = route.module;
+    ui.direction.value = state.direction;
+    ui.depth.value = String(state.depth);
+    ui.module.value = state.module;
+    focusRoot(route.root, { historyEntry: false, returnMap: route.returnMap, returnBrowse: route.returnBrowse });
+  } else {
+    showOverview({ historyEntry: false, browse: route.browse, mapSelection: route.mapSelection });
   }
-
-  state.graphKind = "theorems";
-  state.catalog = state.theoremCatalog;
-  state.byName = state.theoremByName;
-  const direction = params.get("direction");
-  state.direction = ["both", "dependencies", "consumers"].includes(direction) ? direction : "both";
-  const depth = Number(params.get("depth"));
-  state.depth = [1, 2, 3, 4].includes(depth) ? depth : 2;
-  const requestedModule = params.get("module");
-  const graphModule = requestedModule && state.catalog.some((entry) => entry.module === requestedModule)
-    ? requestedModule
-    : "*";
-  state.module = graphModule;
-  ui.direction.value = state.direction;
-  ui.depth.value = String(state.depth);
-  ui.module.value = state.module;
-
-  let requested = "";
-  try { requested = decodeURIComponent(location.hash.slice(1)); }
-  catch { requested = location.hash.slice(1); }
-  if (requested && state.byName.has(requested)) {
-    focusRoot(requested, { historyEntry: false });
-    return;
-  }
-
-  const requestedBrowse = params.get("browse");
-  const browse = requestedBrowse && moduleOverview?.hasModule(requestedBrowse)
-    ? shortModule(requestedBrowse)
-    : graphModule !== "*" && moduleOverview?.hasModule(graphModule)
-      ? shortModule(graphModule)
-      : "LeanCondensedMatter";
-  const legacyModuleRoute = !requestedBrowse && graphModule !== "*";
-  showOverview({ historyEntry: false, browse });
-  if (legacyModuleRoute || (requestedBrowse && !moduleOverview?.hasModule(requestedBrowse))) writeLocation(false);
+  if (route.canonicalize) writeLocation(false);
 }
 
 function bindGraphNavigation() {
   new ResizeObserver(() => {
     if (state.viewBox && !ui.viewport.hidden) setGraphViewBox({ ...state.viewBox });
   }).observe(ui.viewport);
-  document.getElementById("graph-zoom-in").addEventListener("click", () => zoomGraph(0.8));
-  document.getElementById("graph-zoom-out").addEventListener("click", () => zoomGraph(1.25));
-  document.getElementById("graph-fit").addEventListener("click", fitGraph);
+  document.getElementById("graph-zoom-in").addEventListener("click", () => zoomGraph(ZOOM_STEP));
+  document.getElementById("graph-zoom-out").addEventListener("click", () => zoomGraph(1 / ZOOM_STEP));
+  document.getElementById("graph-fit").addEventListener("click", resetGraphCamera);
   ui.viewport.addEventListener("keydown", (event) => {
     if (event.target !== ui.viewport || !state.viewBox) return;
     const shifts = { ArrowLeft: [-0.1, 0], ArrowRight: [0.1, 0], ArrowUp: [0, -0.1], ArrowDown: [0, 0.1] };
     if (shifts[event.key]) {
       event.preventDefault();
+      stopGraphCamera();
       const [dx, dy] = shifts[event.key];
       setGraphViewBox({ ...state.viewBox, x: state.viewBox.x + dx * state.viewBox.width, y: state.viewBox.y + dy * state.viewBox.height });
-    } else if (["+", "=", "-", "0"].includes(event.key)) {
+    } else if (event.key === "0" || event.key === "Escape") {
       event.preventDefault();
-      if (event.key === "0") fitGraph();
-      else zoomGraph(event.key === "-" ? 1.25 : 0.8);
+      resetGraphCamera();
+    } else {
+      const factor = zoomFactorForKey(event.key);
+      if (!factor) return;
+      event.preventDefault();
+      zoomGraph(factor);
     }
   });
   ui.viewport.addEventListener("wheel", (event) => {
-    if (!state.root) return;
+    const factor = zoomFactorForWheel(event);
+    if (!state.root || !factor) return;
     event.preventDefault();
-    zoomGraph(event.deltaY < 0 ? 0.88 : 1.14, event.clientX, event.clientY);
+    zoomGraph(factor, event.clientX, event.clientY);
   }, { passive: false });
 
   ui.viewport.addEventListener("pointerdown", (event) => {
     if (!state.viewBox || event.target.closest?.(".node")) return;
+    stopGraphCamera();
     ui.viewport.setPointerCapture(event.pointerId);
     state.drag = { pointerId: event.pointerId, x: event.clientX, y: event.clientY, viewBox: { ...state.viewBox } };
     ui.viewport.classList.add("dragging");
@@ -1085,20 +919,35 @@ function bindEvents() {
     event.preventDefault();
     document.getElementById("explorer-content").focus();
   });
-  for (const id of ["kind-filter", "generated-filter"]) {
-    document.getElementById(id).addEventListener("change", () => {
-      state.kind = document.getElementById("kind-filter").value;
-      state.generated = document.getElementById("generated-filter").checked;
-      if (state.page === "overview") showOverview({ browse: state.browse });
+  for (const filter of [ui.kindFilter, ui.generatedFilter]) {
+    filter.addEventListener("change", () => {
+      state.kind = ui.kindFilter.value;
+      state.generated = ui.generatedFilter.checked;
+      if (state.page === "overview") showOverview({
+        historyEntry: false, browse: state.browse, mapSelection: state.mapSelection,
+        focusFilter: document.activeElement === filter ? filter : null,
+      });
       else if (state.root) renderGraph();
       renderSearchResults();
     });
   }
   ui.overviewLink.addEventListener("click", () => {
-    if (state.page === "theorem") showOverview({ browse: state.returnBrowse });
-    else showOverview();
+    if (state.page === "theorem") showOverview({ browse: state.returnBrowse, mapSelection: state.returnMap });
+    else showOverview({ browse: state.browse, mapSelection: state.mapSelection });
   });
+  ui.backToMap.addEventListener("click", () => ui.overviewLink.click());
   ui.moduleImportsLink.addEventListener("click", () => showModuleImports());
+  ui.overviewLink.parentElement.addEventListener("keydown", (event) => {
+    if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key)) return;
+    const tabs = [ui.overviewLink, ui.moduleImportsLink].filter((tab) => !tab.disabled);
+    const index = tabs.indexOf(event.target);
+    if (index < 0) return;
+    event.preventDefault();
+    const next = event.key === "Home" ? tabs[0] : event.key === "End" ? tabs.at(-1)
+      : tabs[(index + (event.key === "ArrowRight" ? 1 : -1) + tabs.length) % tabs.length];
+    if (next !== event.target) next.click();
+    next.focus();
+  });
   ui.search.addEventListener("input", renderSearchResults);
   ui.search.addEventListener("focus", () => { if (ui.search.value.trim()) renderSearchResults(); });
   ui.search.addEventListener("keydown", (event) => {
@@ -1173,11 +1022,15 @@ async function main() {
   }
   moduleOverview = createModuleOverview({
     catalog: state.theoremCatalog,
-    allowed: (entry) => declarationAllowed(entry, state.kind, state.generated),
+    visibleDeclarations,
     modules: ["LeanCondensedMatter", ...state.moduleCatalog.map((entry) => entry.name)],
-    overview: ui.overview,
-    onBrowse: (moduleName) => showOverview({ browse: moduleName }),
-    onOpenDeclaration: (name) => focusRoot(name),
+    onOpenDeclaration: (name, options) => focusRoot(name, options),
+    onMapStateChange({ moduleName, selectedName }) {
+      if (state.page !== "overview") return;
+      state.browse = moduleName ?? "LeanCondensedMatter";
+      state.mapSelection = selectedName;
+      writeLocation(false);
+    },
   });
   populateControls();
   bindEvents();
@@ -1186,7 +1039,6 @@ async function main() {
 
 main().catch((error) => {
   console.error(error);
-  ui.graphToolbar.hidden = false;
   ui.graphStatus.textContent = "Failed to load declaration graph.";
   const message = element("p", "error-message", error instanceof Error ? error.message : String(error));
   ui.detail.replaceChildren(message);
