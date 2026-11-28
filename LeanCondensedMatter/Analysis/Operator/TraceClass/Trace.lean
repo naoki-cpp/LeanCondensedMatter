@@ -33,11 +33,7 @@ theorem summable_norm_inner_left_and_tsum_le_of_factorization
       ∑' i, ‖inner ℂ (W (d i)) (T (d i))‖ ≤
         Real.sqrt hA.normSq * Real.sqrt hB.normSq := by
   have hAW : IsHilbertSchmidt (A * W) := isHilbertSchmidt_comp_right hA W
-  have hpoint (x : H) :
-      inner ℂ (W x) (T x) = inner ℂ ((A * W) x) (B x) := by
-    rw [← hfactor, mul_apply_eq_comp, mul_apply_eq_comp]
-    exact ContinuousLinearMap.adjoint_inner_right A (W x) (B x)
-  simp_rw [hpoint]
+  simp_rw [← hfactor, mul_apply_eq_comp, ContinuousLinearMap.adjoint_inner_right]
   have hpair := hAW.summable_norm_inner_apply_and_tsum_le hB d
   exact ⟨hpair.1, hpair.2.trans
     (mul_le_mul_of_nonneg_right
@@ -134,13 +130,6 @@ end IsTraceClass
 
 /-! ## Basis-independent trace -/
 
-private theorem diagonal_eq_hilbertSchmidt_inner
-    {T A B : H →L[ℂ] H} (hfactor : ContinuousLinearMap.adjoint A * B = T)
-    (x : H) :
-    inner ℂ x (T x) = inner ℂ (A x) (B x) := by
-  rw [← hfactor, mul_apply_eq_comp]
-  exact ContinuousLinearMap.adjoint_inner_right A x (B x)
-
 /-- The complex diagonal series of a trace-class operator is absolutely summable in every Hilbert
 basis. -/
 theorem IsTraceClass.summable_trace_diagonal {T : H →L[ℂ] H}
@@ -148,8 +137,8 @@ theorem IsTraceClass.summable_trace_diagonal {T : H →L[ℂ] H}
     Summable (fun i => inner ℂ (d i) (T (d i))) := by
   obtain ⟨A, B, hA, hB, hfactor⟩ :=
     (isTraceClass_iff_exists_hilbertSchmidt_factorization (T := T)).mp hT
-  have hsum := hA.summable_inner_apply hB d
-  exact hsum.congr fun i => (diagonal_eq_hilbertSchmidt_inner hfactor (d i)).symm
+  simpa only [← hfactor, mul_apply_eq_comp, ContinuousLinearMap.adjoint_inner_right] using
+    hA.summable_inner_apply hB d
 
 /-- The diagonal `tsum` of a trace-class operator is independent of the Hilbert basis. -/
 private theorem trace_tsum_eq {ι κ : Type*} (d : HilbertBasis ι ℂ H)
@@ -157,7 +146,7 @@ private theorem trace_tsum_eq {ι κ : Type*} (d : HilbertBasis ι ℂ H)
     (∑' i, inner ℂ (d i) (T (d i))) = ∑' j, inner ℂ (f j) (T (f j)) := by
   obtain ⟨A, B, hA, hB, hfactor⟩ :=
     (isTraceClass_iff_exists_hilbertSchmidt_factorization (T := T)).mp hT
-  simp_rw [diagonal_eq_hilbertSchmidt_inner hfactor]
+  simp_rw [← hfactor, mul_apply_eq_comp, ContinuousLinearMap.adjoint_inner_right]
   exact innerHS_eq_of_isHilbertSchmidt d f hA hB
 
 namespace IsTraceClass
@@ -194,8 +183,7 @@ theorem trace_eq_innerHS_of_factorization
     {ι : Type*} (d : HilbertBasis ι ℂ H) :
     hT.trace = innerHS d A B := by
   rw [hT.trace_eq_tsum_inner d]
-  unfold innerHS
-  exact tsum_congr fun i => diagonal_eq_hilbertSchmidt_inner hfactor (d i)
+  simp only [innerHS, ← hfactor, mul_apply_eq_comp, ContinuousLinearMap.adjoint_inner_right]
 
 /-- The canonical trace depends only on the underlying operator, not on the supplied
 trace-class witnesses. -/
