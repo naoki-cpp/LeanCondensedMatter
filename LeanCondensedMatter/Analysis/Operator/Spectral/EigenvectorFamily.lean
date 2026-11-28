@@ -135,22 +135,16 @@ noncomputable def eigenvectorFamily (hT : IsCompactOperator T) :
 
 theorem orthonormal_eigenvectorFamily (hT : IsCompactOperator T) (hT' : T.IsSymmetric) :
     Orthonormal ℂ (eigenvectorFamily hT) := by
-  have hOrth : OrthogonalFamily ℂ (fun μ : ℝ => Module.End.eigenspace (T : H →ₗ[ℂ] H) (μ : ℂ))
-      (fun μ => (Module.End.eigenspace (T : H →ₗ[ℂ] H) (μ : ℂ)).subtypeₗᵢ) :=
-    hT'.orthogonalFamily_eigenspaces.comp
-      (f := fun μ : ℝ => (μ : ℂ)) (Complex.ofReal_injective)
-  have hOrth' : OrthogonalFamily ℂ
-      (fun μ : { μ : ℝ // μ ≠ 0 } => Module.End.eigenspace (T : H →ₗ[ℂ] H) (μ.1 : ℂ))
-      (fun μ => (Module.End.eigenspace (T : H →ₗ[ℂ] H) (μ.1 : ℂ)).subtypeₗᵢ) :=
-    hOrth.comp (f := fun μ : { μ : ℝ // μ ≠ 0 } => μ.1) Subtype.val_injective
-  have := hOrth'.orthonormal_sigma_orthonormal
+  have hOrth := hT'.orthogonalFamily_eigenspaces.comp
+    (f := fun μ : { μ : ℝ // μ ≠ 0 } => (μ.1 : ℂ))
+    (Complex.ofReal_injective.comp Subtype.val_injective)
+  exact hOrth.orthonormal_sigma_orthonormal
     (v_family := fun μ : { μ : ℝ // μ ≠ 0 } =>
       haveI := finiteDimensional_eigenspace_ne_zero hT μ
       (stdOrthonormalBasis ℂ (Module.End.eigenspace (T : H →ₗ[ℂ] H) (μ.1 : ℂ)) : _ → _))
     (fun μ =>
       haveI := finiteDimensional_eigenspace_ne_zero hT μ
       (stdOrthonormalBasis ℂ (Module.End.eigenspace (T : H →ₗ[ℂ] H) (μ.1 : ℂ))).orthonormal)
-  exact this
 
 /-- Each vector of `eigenvectorFamily` is an eigenvector with the eigenvalue stored in its
 index. -/
@@ -297,29 +291,10 @@ theorem kernel_sup_span_eigenvectorFamily_dense (hT : IsCompactOperator T)
     (hT' : T.IsSymmetric) :
     ((Module.End.eigenspace (T : H →ₗ[ℂ] H) (0 : ℂ)) ⊔
       Submodule.span ℂ (Set.range (eigenvectorFamily hT))).topologicalClosure = ⊤ := by
-  set E' := Submodule.span ℂ (Set.range (eigenvectorFamily hT)) with hE'_def
-  set C := Submodule.span ℂ (Set.range (complexEigenvectorFamily hT)) with hC_def
-  set G := Module.End.eigenspace (T : H →ₗ[ℂ] H) (0 : ℂ) with hG_def
-  have hCE : C = E' := by
-    simpa [hC_def, hE'_def] using
-      span_complexEigenvectorFamily_eq_span_eigenvectorFamily hT hT'
-  have hsup : (⨆ z : ℂ, Module.End.eigenspace (T : H →ₗ[ℂ] H) z) = G ⊔ C := by
-    apply le_antisymm
-    · apply iSup_le
-      intro z
-      rcases eq_or_ne z 0 with rfl | hz
-      · exact le_sup_left
-      · refine le_trans ?_ le_sup_right
-        rw [hC_def, span_complexEigenvectorFamily hT]
-        exact le_iSup
-          (fun w : { w : ℂ // w ≠ 0 } =>
-            Module.End.eigenspace (T : H →ₗ[ℂ] H) w.1) ⟨z, hz⟩
-    · refine sup_le (le_iSup (fun z : ℂ => Module.End.eigenspace (T : H →ₗ[ℂ] H) z) 0) ?_
-      rw [hC_def, span_complexEigenvectorFamily hT]
-      exact iSup_le fun z =>
-        le_iSup (fun w : ℂ => Module.End.eigenspace (T : H →ₗ[ℂ] H) w) z.1
-  rw [hCE] at hsup
-  rw [← hsup, ← Submodule.orthogonal_orthogonal_eq_closure,
+  rw [← span_complexEigenvectorFamily_eq_span_eigenvectorFamily hT hT',
+    span_complexEigenvectorFamily hT, iSup_subtype,
+    ← iSup_split_single (fun z : ℂ => Module.End.eigenspace (T : H →ₗ[ℂ] H) z) 0,
+    ← Submodule.orthogonal_orthogonal_eq_closure,
     orthogonalComplement_iSup_eigenspaces_eq_bot hT hT', Submodule.bot_orthogonal_eq_top]
 
 /-- **The closure of the nonzero-eigenspace part and the kernel are exactly each other's
