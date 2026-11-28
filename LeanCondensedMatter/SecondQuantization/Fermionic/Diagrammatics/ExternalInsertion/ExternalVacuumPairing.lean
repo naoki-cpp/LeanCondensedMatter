@@ -34,23 +34,21 @@ private theorem externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_lef
     (vac : QuarticDiagram (QuarticVertexLabel Mode) n
       ((Finset.univ : Finset (Fin n)) \ T))
     (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ)
-    (a b : OrderedExternalInsertionLeg E T.card) :
+    (a b : Fin (2 * (2 * T.card + E))) :
     let f : Fin T.card → Fin n := fun i => (T.orderIsoOfFin rfl i).1
     let d : ExternalInsertionWickDiagram Mode E n :=
       ExternalInsertionDiagram.ofSlotSplit (Finset.subset_univ T) ext vac
+    let leg := externalInsertionMixedTimeOrderedAtomicLegEquiv externalTime (σ ∘ f)
     externalInsertionMixedTimeOrderedAtomicPairValue ε β
         d.externalLabel externalTime d.vertexLabelSequence σ
         (externalInsertionMixedTimeOrderedAtomicLegPosition externalTime σ
-          (orderedExternalInsertionLegMap (fun e => e) f a))
+          (orderedExternalInsertionLegMap (fun e => e) f (leg a)))
         (externalInsertionMixedTimeOrderedAtomicLegPosition externalTime σ
-          (orderedExternalInsertionLegMap (fun e => e) f b)) =
+          (orderedExternalInsertionLegMap (fun e => e) f (leg b))) =
       externalInsertionMixedTimeOrderedAtomicPairValue ε β
         ext.externalLabel externalTime
         (fun v => ext.vertexLabel (T.orderIsoOfFin rfl v)) (σ ∘ f)
-        (externalInsertionMixedTimeOrderedAtomicLegPosition
-          externalTime (σ ∘ f) a)
-        (externalInsertionMixedTimeOrderedAtomicLegPosition
-          externalTime (σ ∘ f) b) := by
+        a b := by
   let f : Fin T.card → Fin n := fun i => (T.orderIsoOfFin rfl i).1
   let d : ExternalInsertionWickDiagram Mode E n :=
     ExternalInsertionDiagram.ofSlotSplit (Finset.subset_univ T) ext vac
@@ -67,11 +65,16 @@ private theorem externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_lef
       d.externalLabel ∘ (fun e : Fin (2 * E) => e) = ext.externalLabel := rfl
   have hTimeComp :
       externalTime ∘ (fun e : Fin (2 * E) => e) = externalTime := rfl
+  let leg := externalInsertionMixedTimeOrderedAtomicLegEquiv externalTime (σ ∘ f)
   have hmap :=
     externalInsertionMixedTimeOrderedAtomicPairValue_map
       ε β (fun e : Fin (2 * E) => e) f
-      d.externalLabel externalTime d.vertexLabelSequence σ a b
+      d.externalLabel externalTime d.vertexLabelSequence σ (leg a) (leg b)
   rw [hLabelComp, hTimeComp, hvertices, hlabel] at hmap
+  have hpos (p : Fin (2 * (2 * T.card + E))) :
+      externalInsertionMixedTimeOrderedAtomicLegPosition externalTime (σ ∘ f) (leg p) = p :=
+    leg.symm_apply_apply p
+  rw [hpos, hpos] at hmap
   exact hmap
 
 
@@ -221,14 +224,8 @@ theorem externalInsertionOfSlotSplit_mixedPairingEvaluation_eq_positionInversion
     change kernel (mixedSplit (Sum.inl pr.1.1))
         (mixedSplit (Sum.inl pr.1.2)) = leftKernel pr.1.1 pr.1.2
     rw [hposLeft, hposLeft]
-    have hvalue :=
-      externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_left
-        ε β T ext vac externalTime σ
-        (externalInsertionMixedTimeOrderedAtomicLegEquiv externalTime (σ ∘ fT) pr.1.1)
-        (externalInsertionMixedTimeOrderedAtomicLegEquiv externalTime (σ ∘ fT) pr.1.2)
-    dsimp only at hvalue
-    simpa only [externalInsertionMixedTimeOrderedAtomicLegPosition,
-      Equiv.symm_apply_apply] using hvalue
+    exact externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_left
+      ε β T ext vac externalTime σ pr.1.1 pr.1.2
   have hright : ∀ pr : (vac.pairingInOrder order).NormalizedPair,
       kernel (pairEquiv (Sum.inr pr)).1.1
         (pairEquiv (Sum.inr pr)).1.2 =
