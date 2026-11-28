@@ -73,27 +73,17 @@ theorem externalInsertionSlotLegSplitting_right_strictMono_of_localOrder
     StrictMono localPosition →
       StrictMono (fun q : Fin (2 * (2 * S.card)) => splitting (Sum.inr q)) := by
   intro S order f splitting localPosition hlocal
-  have hembed : StrictMono (fun p : Fin (2 * (2 * S.card)) =>
-      externalInsertionMixedTimeOrderedAtomicLegPosition externalTime σ
-        (orderedExternalInsertionLegMap
-          (Fin.elim0 : Fin 0 → Fin (2 * E)) f
-          (externalInsertionMixedTimeOrderedAtomicLegEquiv (E := 0)
-            (Fin.elim0 : Fin 0 → ℝ) (σ ∘ f) p))) := by
-    have hmap :=
-      externalInsertionMixedTimeOrderedAtomicLegPosition_map_strictMono
-        (E₁ := 0) (E₂ := E) (m := S.card) (n := N)
-        (fExternal := (Fin.elim0 : Fin 0 → Fin (2 * E)))
-        (fInteraction := f)
-        (by
-          intro a b _
-          exact a.elim0)
-        (S.orderIsoOfFin rfl).strictMono externalTime σ
-    have hzero :
-        externalTime ∘ (Fin.elim0 : Fin 0 → Fin (2 * E)) =
-          (Fin.elim0 : Fin 0 → ℝ) := by
-      funext a
-      exact a.elim0
-    simpa only [hzero, Nat.add_zero] using hmap
+  have hzero :
+      externalTime ∘ (Fin.elim0 : Fin 0 → Fin (2 * E)) =
+        (Fin.elim0 : Fin 0 → ℝ) := Subsingleton.elim _ _
+  have hembed :=
+    externalInsertionMixedTimeOrderedAtomicLegPosition_map_strictMono
+      (E₁ := 0) (E₂ := E) (m := S.card) (n := N)
+      (fExternal := (Fin.elim0 : Fin 0 → Fin (2 * E)))
+      (fInteraction := f)
+      (fun a _ _ => a.elim0)
+      (S.orderIsoOfFin rfl).strictMono externalTime σ
+  simp only [hzero, Nat.add_zero] at hembed
   have hposition (q : Fin (2 * (2 * S.card))) :
       splitting (Sum.inr q) =
         externalInsertionMixedTimeOrderedAtomicLegPosition externalTime σ
@@ -286,11 +276,6 @@ theorem externalInsertionLeftMixedPosition_split_strictMono
       Sum.map_inl, Equiv.refl_apply, Equiv.apply_symm_apply] using
         (externalInsertionLeftMixedPosition_fixed T externalTime σ p).symm
   intro a b hab
-  change
-    ((Equiv.sumCongr localFixed (Equiv.refl (Fin (2 * (2 * S.card))))).trans split)
-        (Sum.inl a) <
-      ((Equiv.sumCongr localFixed (Equiv.refl (Fin (2 * (2 * S.card))))).trans split)
-        (Sum.inl b)
   rw [hposition a, hposition b]
   exact (externalInsertionLeftMixedPosition_strictMono T externalTime σ) hab
 
