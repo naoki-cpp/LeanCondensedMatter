@@ -26,7 +26,7 @@ function button(text, action, className = "") {
 }
 
 export function renderResearchMap(children, onOpenDeclaration, onRegionChange, overviewHeader, rootName) {
-  const section = element("section", "research-map explorer-map-theme");
+  const section = element("section", "research-map explorer-map-theme explorer-map-frame");
   const heading = element("h2", "research-map-title", rootName);
   const declarationCount = element("p", "research-map-declaration-count");
   heading.id = "research-map-title";

@@ -128,12 +128,11 @@
 .research-map {
   container-type: inline-size;
   margin-top: 28px;
-  padding: clamp(16px, 4vw, 34px);
-  border-radius: 8px;
 }
 .research-map-title {
   margin: 0 0 8px;
   font: 500 1.6rem/1.2 var(--heading-font);
+  overflow-wrap: anywhere;
 }
 .research-map-declaration-count { margin: -4px 0 12px; color: #c0d3c9; font: 400 .9rem/1.4 var(--ui-font); }
 .research-map-overview { margin-top: 20px; padding-top: 14px; border-top: 1px solid #42605a; }

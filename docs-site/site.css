@@ -278,6 +278,24 @@ select:disabled {
   background: var(--map-surface);
   color: var(--map-ink);
 }
+.explorer-map-frame {
+  padding: clamp(16px, 4vw, 34px);
+  border-radius: 8px;
+}
+.import-map-panel {
+  align-self: start;
+  margin: clamp(12px, 3vw, 34px);
+}
+.import-map-header .research-map-declaration-count { display: block; }
+.import-map-header .legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px 16px;
+  color: var(--map-muted);
+  font: 400 .8rem/1.5 var(--ui-font);
+}
+.import-map-panel .graph-toolbar { justify-content: flex-end; padding: 0; border: 0; }
+.import-map-panel .graph-scroll { height: clamp(300px, 58vh, 650px); min-height: 0; }
 .explorer-map-theme .graph-view-controls button {
   color: var(--map-ink);
   background: var(--map-control-surface);

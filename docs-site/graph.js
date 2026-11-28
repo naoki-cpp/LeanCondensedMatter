@@ -59,6 +59,8 @@ const ui = {
   moduleFilterLabel: document.querySelector("#module-filter").closest("label"),
   wrapperHighlightLabel: document.querySelector('[data-highlight="wrapper"]').closest("label"),
   graphLegend: document.querySelector(".legend"),
+  graphLegendHome: document.querySelector("#graph-legend-home"),
+  importMapHeader: document.querySelector(".import-map-header"),
   graph: document.querySelector("#graph"),
   viewport: document.querySelector("#graph-viewport"),
   overview: document.querySelector("#overview"),
@@ -276,7 +278,19 @@ function setModuleFilterEnabled(enabled) {
 function setGraphModeChrome() {
   const modules = state.graphKind === "modules";
   const overview = state.page === "overview";
+  ui.graph.closest(".graph-panel").classList.toggle("import-map-panel", modules);
   ui.graph.closest(".graph-panel").classList.toggle("explorer-map-theme", modules);
+  ui.graph.closest(".graph-panel").classList.toggle("explorer-map-frame", modules);
+  ui.importMapHeader.hidden = !modules;
+  ui.graphStatus.classList.toggle("research-map-declaration-count", modules);
+  if (modules) {
+    ui.importMapHeader.firstElementChild.textContent = shortModule(state.root);
+    ui.importMapHeader.append(ui.graphStatus, ui.graphLegend);
+  } else {
+    ui.graphToolbar.prepend(ui.graphStatus);
+    ui.graphLegendHome.append(ui.graphLegend);
+  }
+  document.getElementById("graph-fit").textContent = modules ? "Whole graph" : "Fit";
   ui.overviewLink.textContent = "Declarations";
   document.getElementById("kind-filter").closest("label").hidden = modules;
   document.getElementById("generated-filter").closest("label").hidden = modules;
@@ -455,7 +469,7 @@ function renderGraph({ preserveView = false } = {}) {
   const graphCounts = state.graphKind === "modules"
     ? `${levels.size} modules · ${edgeCount} imports`
     : `${levels.size} nodes · ${edgeCount} edges`;
-  ui.graphStatus.textContent = `${graphCounts}${truncated ? ` · capped at ${MAX_NODES} nodes` : ""}`;
+  ui.graphStatus.textContent = `${graphCounts}${truncated ? ` · capped at ${levels.size} nodes` : ""}`;
 }
 
 function badge(text, kind = "") {

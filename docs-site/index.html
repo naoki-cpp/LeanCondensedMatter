@@ -118,12 +118,17 @@
         <label><input type="checkbox" data-highlight="wrapper"> direct wrapper</label>
       </fieldset>
 
-      <div class="legend" aria-label="Graph legend" hidden></div>
+      <div id="graph-legend-home">
+        <div class="legend" aria-label="Graph legend" hidden></div>
+      </div>
 
     </aside>
 
     <section id="explorer-content" class="graph-panel" tabindex="-1" aria-label="Declaration and module exploration panel">
       <div id="overview" class="overview-panel" aria-live="polite"></div>
+      <header class="import-map-header" hidden>
+        <h2 class="research-map-title"></h2>
+      </header>
       <div class="graph-toolbar" hidden>
         <span id="graph-status" role="status">Loading theorem catalog…</span>
         <div class="graph-view-controls" role="group" aria-label="Graph view">
