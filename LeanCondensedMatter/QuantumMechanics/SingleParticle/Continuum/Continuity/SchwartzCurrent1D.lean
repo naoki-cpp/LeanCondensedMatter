@@ -58,7 +58,8 @@ theorem schwartzVelocityLocalizationFlux_eq_comp1D
   have h := congrArg
     (fun T : SchwartzOneParticle1D →ₗ[ℂ] SchwartzOneParticle1D => T ψ)
     (SchwartzSchrodinger1D.heisenberg_localization_eq_symmetrized_velocity ℏ κ potential f)
-  simpa [SchwartzKinetic1D.multiplicationLinear, heisenbergScale,
+  simpa [SchwartzKinetic1D.multiplicationLinear,
+    SchwartzKinetic1D.multiplicationOperator, heisenbergScale,
     LieRing.of_associative_ring_bracket, Module.End.mul_eq_comp,
     _root_.LinearMap.symmetrizedProduct_apply] using h
 
