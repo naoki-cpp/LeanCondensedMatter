@@ -276,6 +276,7 @@ theorem externalInsertionLeftMixedPosition_split_strictMono
       Sum.map_inl, Equiv.refl_apply, Equiv.apply_symm_apply] using
         (externalInsertionLeftMixedPosition_fixed T externalTime σ p).symm
   intro a b hab
+  dsimp only
   rw [hposition a, hposition b]
   exact (externalInsertionLeftMixedPosition_strictMono T externalTime σ) hab
 
