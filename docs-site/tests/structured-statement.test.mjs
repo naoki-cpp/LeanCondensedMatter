@@ -284,3 +284,38 @@ test("exchange brackets preserve sign, order and distinction from general bracke
   assert.equal(expressionToTex(app("Bracket.bracket", a, b)), "\\left[\\mathrm{A}, \\mathrm{B}\\right]");
   assert.match(expressionToTex(app("Custom.zetaCommutator", text("-1"), a, b)), /zetaCommutator/);
 });
+
+
+test("compound endomorphisms preserve grouping, order and the common Hilbert space", () => {
+  const data = expectationStatement();
+  const H = variable("H");
+  const K = variable("K");
+  const type = (space, map = "ContinuousLinearMap") => app(map, app("RingHom.id", constant("Complex")), space, space);
+  data.binders.push(...["B", "C", "D"].map((id) => binder(id, "variable", type(H))),
+    binder("L", "variable", type(H, "LinearMap")),
+    binder("F", "variable", type(K)), binder("u", "variable", H), binder("v", "variable", H),
+    binder("z", "variable", constant("Complex")));
+  const [B, C, D, L, F, u, v, z] = ["B", "C", "D", "L", "F", "u", "v", "z"].map((id) => variable(id));
+  const op = (name, ...args) => ({ ...app(name, ...args), resultType: "ContinuousLinearMap" });
+  const mul = (a, b) => op("HMul.hMul", a, b);
+  const add = (a, b) => op("HAdd.hAdd", a, b);
+  const apply = (a, b) => app("DFunLike.coe", a, b);
+  const render = (node) => buildStatementModel({ ...data, conclusion: node }).conclusion.tex;
+  const hat = (s) => "\\hat{\\mathrm{" + s + "}}";
+  assert.equal(render(mul(mul(B, C), D)), [B, C, D].map((x) => hat(x.name)).join("\\,"));
+  assert.equal(render(mul(B, mul(D, C))), [B, D, C].map((x) => hat(x.name)).join("\\,"));
+  assert.match(render(mul(add(B, C), D)), /\\right\)\\,\\hat\{\\mathrm\{D\}\}/);
+  assert.match(render(apply(add(B, C), v)), /\\right\)\\,\\left\|\\mathrm\{v\}/);
+  assert.match(render(apply(op("ContinuousLinearMap.adjoint", B), v)), /\^\{\\dagger\}/);
+  assert.match(render(apply(op("HSMul.hSMul", z, B), v)), /\\mathrm\{z\}/);
+  assert.match(render(mul(mul(B, L), C)), /\\cdot/);
+  assert.match(render(mul(mul(B, F), C)), /\\cdot/);
+  assert.match(render(mul({ ...mul(B, C), resultType: "Complex" }, D)), /\\cdot/);
+  assert.match(render(apply(app("Custom.operator", B), v)), /coe/);
+  assert.match(render(app("LinearMap.toFun", B, v)), /toFun/);
+  const element = "\\left\\langle \\mathrm{u}\\middle|" + hat("B") + "\\," + hat("C") + "\\middle|\\mathrm{v}\\right\\rangle";
+  assert.equal(render({ ...app("Inner.inner", u, apply(mul(B, C), v)), resultType: "Complex" }), element);
+  assert.equal(render(app("inner", constant("Complex"), u, apply(mul(B, C), v))), element);
+  assert.match(render({ ...app("Inner.inner", apply(B, u), apply(C, v)), resultType: "Complex" }), /\\right\\rangle/);
+  assert.doesNotMatch(render({ ...app("Inner.inner", u, apply(F, v)), resultType: "Complex" }), /\\middle\|/);
+});
