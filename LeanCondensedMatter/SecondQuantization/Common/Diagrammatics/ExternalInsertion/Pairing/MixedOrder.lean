@@ -88,22 +88,14 @@ theorem ExternalInsertionDiagram.slotCongr_atomicLegPartner
         (externalInsertionOrderedLegSlotCongr e leg) =
       externalInsertionOrderedLegSlotCongr e (d.atomicLegPartner leg) := by
   let L := externalInsertionLegEquiv E (Finset.univ : Finset (Fin n))
-  let P := externalInsertionLegCongr (E := E) e
   let C := externalInsertionOrderedLegSlotCongr (E := E) e
-  have hC (p : Fin (2 * (2 *
-      (Finset.univ : Finset (Fin n)).card + E))) :
-      L (P p) = C (L p) := by
-    change L ((L.trans (C.trans L.symm)) p) = C (L p)
-    simp only [Equiv.trans_apply, Equiv.apply_symm_apply]
-  have hCI (a : OrderedExternalInsertionLeg E n) :
-      L.symm (C a) = P (L.symm a) := by
-    apply L.injective
-    rw [L.apply_symm_apply, hC, L.apply_symm_apply]
+  have h := congrArg L (d.slotCongr_pairing_partner e (L.symm leg))
   change L ((d.slotCongr e).pairing.partner
-      (L.symm (C leg))) =
+      ((L.trans (C.trans L.symm)) (L.symm leg))) =
+    L ((L.trans (C.trans L.symm)) (d.pairing.partner (L.symm leg))) at h
+  change L ((d.slotCongr e).pairing.partner (L.symm (C leg))) =
     C (L (d.pairing.partner (L.symm leg)))
-  rw [hCI, d.slotCongr_pairing_partner e (L.symm leg),
-    hC (d.pairing.partner (L.symm leg))]
+  simpa only [Equiv.trans_apply, Equiv.apply_symm_apply] using h
 
 
 /-- The actual permutation of mixed-time atomic *positions* induced by
@@ -212,10 +204,6 @@ theorem externalInsertionMixedPositionSlotCongr_eq_refl_of_injective
     externalInsertionMixedPositionSlotCongr e externalTime σ =
       Equiv.refl (Fin (2 * (2 * n + E))) := by
   let p := externalInsertionInteractionSlotPerm e
-  have htime :
-      (σ ∘ fun v : Fin n => (e.symm ⟨v, Finset.mem_univ v⟩).1) =
-        σ ∘ p.symm := by
-    rfl
   apply Equiv.ext
   intro i
   change (externalInsertionMixedTimeOrderedAtomicLegEquiv externalTime
