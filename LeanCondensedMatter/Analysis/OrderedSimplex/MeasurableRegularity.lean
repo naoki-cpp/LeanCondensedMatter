@@ -123,6 +123,25 @@ theorem MeasurableLocallyBounded.mul {n : ℕ} {f g : (Fin n → ℝ) → ℂ}
     ‖f x * g x‖ = ‖f x‖ * ‖g x‖ := norm_mul _ _
     _ ≤ C * D := mul_le_mul (hC x hx) (hD x hx) (norm_nonneg _) hC0
 
+/-- Measurable local boundedness is preserved by addition. -/
+theorem MeasurableLocallyBounded.add {n : ℕ} {f g : (Fin n → ℝ) → ℂ}
+    (hf : MeasurableLocallyBounded f) (hg : MeasurableLocallyBounded g) :
+    MeasurableLocallyBounded (fun x => f x + g x) := by
+  refine ⟨hf.1.add hg.1, ?_⟩
+  intro R hR
+  obtain ⟨C, hC0, hC⟩ := hf.2 R hR
+  obtain ⟨D, hD0, hD⟩ := hg.2 R hR
+  exact ⟨C + D, add_nonneg hC0 hD0, fun x hx =>
+    (norm_add_le _ _).trans (add_le_add (hC x hx) (hD x hx))⟩
+
+/-- Finite sums preserve measurable local boundedness. -/
+theorem MeasurableLocallyBounded.finsetSum {ι : Type*} {n : ℕ} (s : Finset ι)
+    (f : ι → (Fin n → ℝ) → ℂ) (hf : ∀ i ∈ s, MeasurableLocallyBounded (f i)) :
+    MeasurableLocallyBounded (fun x => ∑ i ∈ s, f i x) := by
+  simp_rw [← Finset.sum_apply]
+  exact Finset.sum_induction f MeasurableLocallyBounded
+    (fun _ _ ha hb => ha.add hb) (measurableLocallyBounded_const (n := n) 0) hf
+
 /-- A finite product of measurably locally bounded integrands is measurably locally bounded. -/
 theorem MeasurableLocallyBounded.finsetProd {ι : Type*} {n : ℕ} (s : Finset ι)
     (f : ι → (Fin n → ℝ) → ℂ) (hf : ∀ i ∈ s, MeasurableLocallyBounded (f i)) :
