@@ -40,20 +40,10 @@ private theorem gram_matrix_congruence
     Matrix.gram ℝ (fun j => ∑ i, A i j • v i) =
       A.transpose * Matrix.gram ℝ v * A := by
   ext i j
-  simp only [Matrix.gram_apply, Matrix.mul_apply, Matrix.transpose_apply]
-  calc
-    inner ℝ (∑ k, A k i • v k) (∑ l, A l j • v l) =
-        ∑ k, ∑ l, A k i * inner ℝ (v k) (v l) * A l j := by
-      suffices h :
-          (∑ l, A l j * ∑ k, A k i * inner ℝ (v k) (v l)) =
-            ∑ k, ∑ l, A k i * (A l j * inner ℝ (v k) (v l)) by
-        simpa [inner_sum, sum_inner, inner_smul_left, inner_smul_right,
-          mul_comm, mul_left_comm] using h
-      rw [Finset.sum_comm]
-      simp only [Finset.mul_sum, mul_left_comm]
-    _ = ∑ l, (∑ k, A k i * inner ℝ (v k) (v l)) * A l j := by
-      rw [Finset.sum_comm]
-      simp only [Finset.sum_mul]
+  rw [Matrix.mul_assoc]
+  simpa [Matrix.gram_apply, Matrix.mul_apply, Matrix.transpose_apply,
+    Matrix.mulVec, dotProduct] using
+    (Matrix.star_dotProduct_gram_mulVec v (fun k => A k i) (fun k => A k j)).symm
 
 /-- A full-rank integral lattice's intrinsic point group preserves the Gram metric
 in every integral lattice basis. Each column of the integral matrix contains
