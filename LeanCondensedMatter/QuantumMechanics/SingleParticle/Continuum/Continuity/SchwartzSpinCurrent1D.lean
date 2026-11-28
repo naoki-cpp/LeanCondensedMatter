@@ -119,7 +119,7 @@ noncomputable def schwartzSpinCurrentRepresentation1D
     (fun α => by
       change
         ⁅(SchwartzKinetic1D.multiplicationOperator α).compLeft (Fin 2),
-          FiniteComponents.internalOperator
+          FiniteComponents.internalOperator (M := SchwartzComponents1D.Spatial)
             (QuantumTheory.SpinHalf.spinMatrix ℏ spinComponent)⁆ = 0
       exact FiniteComponents.lie_compLeft_internalOperator_eq_zero
         (SchwartzKinetic1D.multiplicationOperator α)
@@ -144,7 +144,7 @@ theorem symmetrizedSpinCurrent_eq_velocity_comp_spin
   apply _root_.LinearMap.symmetrizedProduct_eq_comp_of_commutes
   change
     ⁅(SchwartzSchrodinger1D.velocityOperator ℏ κ).compLeft (Fin 2),
-      FiniteComponents.internalOperator
+      FiniteComponents.internalOperator (M := SchwartzComponents1D.Spatial)
         (QuantumTheory.SpinHalf.spinMatrix ℏ spinComponent)⁆ = 0
   exact FiniteComponents.lie_compLeft_internalOperator_eq_zero
     (SchwartzSchrodinger1D.velocityOperator ℏ κ)
@@ -173,18 +173,18 @@ theorem schwartzSpin_sourceCommutator_eq_internal
           schwartzSpinOperatorLinear ℏ spinComponent⁆ =
       _root_.LinearMap.symmetrizedProduct (K := ℂ)
         (SchwartzComponents1D.multiplicationOperator (ι := Fin 2) f)
-        ⁅FiniteComponents.internalOperator internalH,
+        ⁅FiniteComponents.internalOperator (M := SchwartzComponents1D.Spatial) internalH,
           schwartzSpinOperatorLinear ℏ spinComponent⁆ := by
   change
     _root_.LinearMap.symmetrizedProduct (K := ℂ)
         (SchwartzComponents1D.multiplicationOperator (ι := Fin 2) f)
         ⁅SchwartzTwoLevelSchrodinger1D.hamiltonian κ potential internalH,
-          FiniteComponents.internalOperator
+          FiniteComponents.internalOperator (M := SchwartzComponents1D.Spatial)
             (QuantumTheory.SpinHalf.spinMatrix ℏ spinComponent)⁆ =
       _root_.LinearMap.symmetrizedProduct (K := ℂ)
         (SchwartzComponents1D.multiplicationOperator (ι := Fin 2) f)
-        ⁅FiniteComponents.internalOperator internalH,
-          FiniteComponents.internalOperator
+        ⁅FiniteComponents.internalOperator (M := SchwartzComponents1D.Spatial) internalH,
+          FiniteComponents.internalOperator (M := SchwartzComponents1D.Spatial)
             (QuantumTheory.SpinHalf.spinMatrix ℏ spinComponent)⁆
   rw [SchwartzTwoLevelSchrodinger1D.lie_hamiltonian_internalOperator_eq_internal]
 
@@ -194,7 +194,7 @@ theorem schwartzSpin_sourceCommutator_eq_zero_of_internal_commutes
     (κ : ℝ) (potential : SchwartzComponents1D.Spatial)
     (internalH : InternalSpace.PauliMatrix)
     (ℏ : ℝ) (spinComponent : QuantumTheory.SpinHalf.SpinSpace) (f : SchwartzComponents1D.Spatial)
-    (hcomm : ⁅FiniteComponents.internalOperator internalH,
+    (hcomm : ⁅FiniteComponents.internalOperator (M := SchwartzComponents1D.Spatial) internalH,
       schwartzSpinOperatorLinear ℏ spinComponent⁆ = 0) :
     _root_.LinearMap.symmetrizedProduct (K := ℂ)
         (SchwartzComponents1D.multiplicationOperator (ι := Fin 2) f)

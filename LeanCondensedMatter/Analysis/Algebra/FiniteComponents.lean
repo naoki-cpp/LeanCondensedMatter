@@ -77,7 +77,7 @@ attribute [local instance 100] LieRing.ofAssociativeRing
 /-- Componentwise endomorphisms Lie-commute with internal matrix operators. -/
 theorem lie_compLeft_internalOperator_eq_zero
     (A : M →ₗ[K] M) (S : Matrix ι ι K) :
-    ⁅A.compLeft ι, internalOperator S⁆ = 0 := by
+    ⁅A.compLeft ι, internalOperator (M := M) S⁆ = 0 := by
   simp only [LieRing.of_associative_ring_bracket, Module.End.mul_eq_comp, sub_eq_zero]
   apply LinearMap.ext
   intro ψ
