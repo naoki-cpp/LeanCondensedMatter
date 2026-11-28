@@ -97,7 +97,8 @@ jobs:
           use-mathlib-cache: auto
 
       - name: Audit potentially unused theorem hypotheses
-        run: /usr/bin/time -f 'unused hypotheses: %e s, peak RSS %M KiB' lake env lean scripts/CheckUnusedHypotheses.lean
+        run: |
+          /usr/bin/time -f 'unused hypotheses: %e s, peak RSS %M KiB' lake env lean scripts/CheckUnusedHypotheses.lean
 
       - name: Add unused hypothesis audit summary
         if: always()
@@ -139,7 +140,7 @@ jobs:
           echo "" >> "$GITHUB_STEP_SUMMARY"
           echo "### Catalog generation cost" >> "$GITHUB_STEP_SUMMARY"
           echo '~~~text' >> "$GITHUB_STEP_SUMMARY"
-          grep -E '^(catalog generation|replacement audit):' theorem-catalog.log theorem-replacement-audit.log | cut -d: -f2- >> "$GITHUB_STEP_SUMMARY" || true
+          grep -hE '^(catalog generation|replacement audit):' theorem-catalog.log theorem-replacement-audit.log >> "$GITHUB_STEP_SUMMARY"
           wc -c docs/generated/theorems.md docs/generated/theorems.json docs/generated/declarations.json docs/generated/module-imports.json >> "$GITHUB_STEP_SUMMARY"
           echo '~~~' >> "$GITHUB_STEP_SUMMARY"
 
