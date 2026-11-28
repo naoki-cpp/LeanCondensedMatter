@@ -156,7 +156,8 @@ export function expressionToTex(node, labels = new Map(), depth = 0, bound = new
   }
   const fn = expressionToTex(node.fn, labels, depth + 1, bound);
   if (fn === null) return null;
-  return args.length ? fn + "\\left(" + args.join(",\\,") + "\\right)" : fn;
+  const appliedFn = node.fn.kind === "lambda" ? "\\left(" + fn + "\\right)" : fn;
+  return args.length ? appliedFn + "\\left(" + args.join(",\\,") + "\\right)" : fn;
 }
 
 export function buildStatementModel(presentation) {
