@@ -243,3 +243,44 @@ test("typed scalar action and quantum wrappers preserve conservative notation", 
   assert.match(render(app("ContinuousLinearMap.adjoint", variable("B"))), /\^\{\\dagger\}/);
   assert.doesNotMatch(expressionToTex(variable("B")), /\\hat\{/);
 });
+
+
+test("operator application and Dirac notation require matching typed operands", () => {
+  const data = expectationStatement();
+  const H = variable("H");
+  data.binders.push(
+    binder("B", "variable", app("ContinuousLinearMap", app("RingHom.id", constant("Complex")), H, H)),
+    binder("u", "variable", H),
+    binder("v", "variable", H),
+    binder("f", "variable", { kind: "text", text: "H → H" }),
+  );
+  const render = (node) => buildStatementModel({ ...data, conclusion: node }).conclusion.tex;
+  const B = variable("B");
+  const u = variable("u");
+  const v = variable("v");
+  assert.equal(render(app("DFunLike.coe", B, v)), "\\hat{\\mathrm{B}}\\,\\left|\\mathrm{v}\\right\\rangle");
+  assert.match(render(app("DFunLike.coe", B, variable("psi", "ψ"))), /coe/);
+  assert.match(render(app("DFunLike.coe", variable("f"), v)), /coe/);
+  assert.match(render(app("Custom.coe", B, v)), /coe/);
+  assert.equal(render({ ...app("Inner.inner", u, v), resultType: "Complex" }),
+    "\\left\\langle \\mathrm{u}\\middle|\\mathrm{v}\\right\\rangle");
+  assert.equal(render(app("InnerProductSpace.rankOne", constant("Complex"), u, v)),
+    "\\left|\\mathrm{u}\\right\\rangle\\left\\langle \\mathrm{v}\\right|");
+  assert.match(render(app("InnerProductSpace.rankOne", constant("Real"), u, v)), /rankOne/);
+  assert.equal(render(app("QuantumTheory.expValue", variable("A"), variable("psi", "ψ"))),
+    "\\left\\langle \\psi\\middle|\\hat{\\mathrm{A}}\\middle|\\psi\\right\\rangle");
+  assert.match(render(app("QuantumTheory.observableExpValue", variable("A"), variable("psi", "ψ"))), /observableExpValue/);
+});
+
+test("exchange brackets preserve sign, order and distinction from general brackets", () => {
+  const a = variable("A");
+  const b = variable("B");
+  const text = (text) => ({ kind: "text", text });
+  const render = (sign) => expressionToTex(app("ScalarExchange.zetaCommutator", sign, a, b));
+  assert.equal(render(text("1")), "\\left[\\mathrm{A}, \\mathrm{B}\\right]");
+  assert.equal(render(text("-1")), "\\left\\{\\mathrm{A}, \\mathrm{B}\\right\\}");
+  assert.equal(render(variable("ζ")), "\\left[\\mathrm{A}, \\mathrm{B}\\right]_{\\zeta}");
+  assert.match(render(app("OfNat.ofNat")), /ofNat/);
+  assert.equal(expressionToTex(app("Bracket.bracket", a, b)), "\\left[\\mathrm{A}, \\mathrm{B}\\right]");
+  assert.match(expressionToTex(app("Custom.zetaCommutator", text("-1"), a, b)), /zetaCommutator/);
+});
