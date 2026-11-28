@@ -61,7 +61,7 @@ theorem coeff_permutationConnectedCycleSeries_of_pos
     exact_mod_cast Nat.ne_of_gt hm
   have hfac0 : (Nat.factorial (m - 1) : ℂ) ≠ 0 := by
     exact_mod_cast Nat.factorial_ne_zero (m - 1)
-  field_simp [hm0, hfac0] <;> ring
+  field_simp [hm0, hfac0]
 
 
 variable [DecidableEq ι]
