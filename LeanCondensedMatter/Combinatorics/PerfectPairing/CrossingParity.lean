@@ -98,7 +98,7 @@ theorem PairingOn.sum_geometricCrossings_mod_two_eq_positionInversions
         Crosses (right x.2).1 (left x.1).1 then 1 else 0) % 2 =
       (∑ p : L, ∑ q : R, if rightPos q < leftPos p then 1 else 0) % 2 := by
   classical
-  rw [← Fintype.sum_prod_type]
+  rw [← Fintype.sum_prod_type']
   rw [← Equiv.sum_comp
     ((Equiv.prodProdProdComm A B (Fin 2) (Fin 2)).trans
       (Equiv.prodCongr leftEquiv rightEquiv))
