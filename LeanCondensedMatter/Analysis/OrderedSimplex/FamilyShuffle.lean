@@ -246,18 +246,20 @@ private theorem FamilySlotShuffle.sum_integral_eq_prod
   let e : Fin (Fintype.card ι) ≃ ι := (Fintype.equivFin ι).symm
   let sizeFin : Fin (Fintype.card ι) → ℕ := fun j => size (e j)
   let localFin : ∀ j, (Fin (sizeFin j) → ℝ) → ℂ := fun j => localIntegrand (e j)
+  let hsum : (∑ j, sizeFin j) = ∑ i, size i := Equiv.sum_comp e size
+  let reindex : FamilySlotShuffle size ≃ FamilySlotShuffle sizeFin :=
+    (FamilySlotShuffleTo.reindexEquiv e size).trans
+      (FamilySlotShuffleTo.castTotalEquiv hsum.symm)
   calc
     (∑ shuffle : FamilySlotShuffle size,
         orderedSimplexIntegral (∑ i, size i) β (shuffle.ambientIntegrand localIntegrand)) =
       ∑ shuffle : FamilySlotShuffle size,
         orderedSimplexIntegral (∑ j, sizeFin j) β
-          ((FamilySlotShuffle.reindexEquiv e size shuffle).ambientIntegrand localFin) := by
+          ((reindex shuffle).ambientIntegrand localFin) := by
             apply Fintype.sum_congr
             intro shuffle
             symm
             dsimp [sizeFin, localFin]
-            let hsum : (∑ i : Fin (Fintype.card ι), size (e i)) = ∑ j : ι, size j :=
-              Equiv.sum_comp e size
             rw [intervalIntegral.orderedSimplexIntegral_cast hsum]
             apply orderedSimplexIntegral_congr
             intro τ
@@ -265,18 +267,19 @@ private theorem FamilySlotShuffle.sum_integral_eq_prod
             have hterm : ∀ i : Fin (Fintype.card ι),
                 localIntegrand (e i) (fun a =>
                   (fun z => τ (Fin.cast hsum z))
-                    ((FamilySlotShuffle.reindexEquiv e size shuffle).slotEquiv ⟨i, a⟩)) =
+                    ((reindex shuffle).slotEquiv ⟨i, a⟩)) =
                   localIntegrand (e i) (fun a => τ (shuffle.slotEquiv ⟨e i, a⟩)) := by
               intro i
               apply congrArg (localIntegrand (e i))
               funext a
-              simp [FamilySlotShuffle.reindexEquiv]
+              simp [reindex, FamilySlotShuffleTo.reindexEquiv,
+                FamilySlotShuffleTo.castTotalEquiv, Equiv.sigmaCongrLeft]
             simp_rw [hterm]
             exact Equiv.prod_comp e
               (fun j => localIntegrand j (fun a => τ (shuffle.slotEquiv ⟨j, a⟩)))
     _ = ∑ shuffle : FamilySlotShuffle sizeFin,
         orderedSimplexIntegral (∑ j, sizeFin j) β (shuffle.ambientIntegrand localFin) :=
-      Equiv.sum_comp (FamilySlotShuffle.reindexEquiv e size)
+      Equiv.sum_comp reindex
         (fun shuffle => orderedSimplexIntegral (∑ j, sizeFin j) β
           (shuffle.ambientIntegrand localFin))
     _ = ∏ j, orderedSimplexIntegral (sizeFin j) β (localFin j) :=
