@@ -1,6 +1,6 @@
 import LeanCondensedMatter.Transport.KuboBastin.Eigenbasis
 import LeanCondensedMatter.Transport.KuboBastin.Finite
-import LeanCondensedMatter.Transport.KuboBastin.OccupationInterpolation
+import LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann.Eigenbasis.Data
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.FundThmCalculus
 
 set_option linter.style.header false
@@ -39,6 +39,41 @@ noncomputable section
 variable {H ι : Type*}
 variable [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
 variable (system : BoundedFreeSystem H)
+/-- A differentiable complex occupation function reproducing the discrete eigenbasis probabilities
+on every supplied energy eigenvalue. -/
+structure EigenbasisOccupationInterpolation
+    (data : EnergyEigenbasisLehmannData system ι) where
+  /-- The continuous-energy occupation used by the later Bastin integral. -/
+  occupation : ℝ → ℂ
+  /-- The energy derivative of the occupation. -/
+  occupationDerivative : ℝ → ℂ
+  /-- The continuous occupation reproduces every discrete spectral probability. -/
+  occupation_matches_probability :
+    ∀ i, occupation (data.energy i) = (data.probability i : ℂ)
+  /-- Pointwise differentiability, kept stronger than necessary for the first finite bridge. -/
+  occupation_hasDerivAt :
+    ∀ energy, HasDerivAt occupation (occupationDerivative energy) energy
+  /-- The derivative is integrable on every oriented transition-energy interval. -/
+  occupationDerivative_intervalIntegrable :
+    ∀ m n, IntervalIntegrable occupationDerivative volume
+      (data.energy n) (data.energy m)
+
+/-- The occupation difference of two energy eigenstates is the oriented integral of the
+occupation derivative between their energies. -/
+theorem EigenbasisOccupationInterpolation.probability_sub_eq_integral
+    {data : EnergyEigenbasisLehmannData system ι}
+    (interpolation : EigenbasisOccupationInterpolation system data)
+    (m n : ι) :
+    (data.probability m : ℂ) - (data.probability n : ℂ) =
+      ∫ energy in data.energy n..data.energy m,
+        interpolation.occupationDerivative energy := by
+  rw [← interpolation.occupation_matches_probability m,
+    ← interpolation.occupation_matches_probability n]
+  symm
+  exact intervalIntegral.integral_eq_sub_of_hasDerivAt
+    (fun energy _ => interpolation.occupation_hasDerivAt energy)
+    (interpolation.occupationDerivative_intervalIntegrable m n)
+
 variable (data : EnergyEigenbasisLehmannData system ι)
 
 /-- One generalized eigenbasis Kubo–Bastin transition with its discrete occupation difference
