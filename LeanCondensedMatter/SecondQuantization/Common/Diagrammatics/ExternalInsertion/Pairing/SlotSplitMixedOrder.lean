@@ -39,22 +39,14 @@ theorem externalInsertionSlotLegSplitting_right_orderedMixedPosition
           (⟨(order (orderedQuarticLegEquiv S.card p).1).1, Finset.mem_univ _⟩,
             (orderedQuarticLegEquiv S.card p).2)) := by
   intro S order splitting
-  have hordered :
-      orderedLegToDiagramLeg S order p =
-        (quarticLegEquiv S).symm
-          (order (orderedQuarticLegEquiv S.card p).1,
-            (orderedQuarticLegEquiv S.card p).2) := by
-    simp only [orderedLegToDiagramLeg, Equiv.trans_apply, Equiv.prodCongr_apply]
-    cases orderedQuarticLegEquiv S.card p with
-    | mk v l => rfl
-  change
-    (externalInsertionMixedTimeAmbientPositionEquiv externalTime σ).symm
-      (externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T)
-        (Sum.inr (orderedLegToDiagramLeg S order p))) = _
-  rw [hordered]
   apply (externalInsertionMixedTimeAmbientPositionEquiv externalTime σ).injective
-  simp only [Equiv.apply_symm_apply]
-  rw [externalInsertionSlotLegSplitting_right_interaction,
+  change (externalInsertionMixedTimeAmbientPositionEquiv externalTime σ)
+      ((externalInsertionMixedTimeAmbientPositionEquiv externalTime σ).symm
+        (externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T)
+          (Sum.inr ((quarticLegEquiv S).symm
+            (order (orderedQuarticLegEquiv S.card p).1,
+              (orderedQuarticLegEquiv S.card p).2))))) = _
+  rw [Equiv.apply_symm_apply, externalInsertionSlotLegSplitting_right_interaction,
     externalInsertionMixedTimeAmbientPositionEquiv_legPosition]
 
 /-- If the standalone vacuum-only mixed ordering preserves the flattened quartic-leg
@@ -110,11 +102,6 @@ theorem externalInsertionSlotLegSplitting_right_strictMono_of_localOrder
             (externalInsertionMixedTimeOrderedAtomicLegEquiv (E := 0)
               (Fin.elim0 : Fin 0 → ℝ) (σ ∘ f) (localPosition q))) := by
     rw [externalInsertionMixedTimeOrderedAtomicLegEquiv_position]
-    change splitting (Sum.inr q) =
-      externalInsertionMixedTimeOrderedAtomicLegPosition externalTime σ
-        (Sum.inr
-          (⟨(order (orderedQuarticLegEquiv S.card q).1).1, Finset.mem_univ _⟩,
-            (orderedQuarticLegEquiv S.card q).2))
     exact externalInsertionSlotLegSplitting_right_orderedMixedPosition
       T externalTime σ q
   intro p q hpq
