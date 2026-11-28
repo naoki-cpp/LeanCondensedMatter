@@ -64,22 +64,19 @@ theorem hasDerivAt_probabilityDensityValue
     (hψ : HasDerivAt ψ ψt t) :
     HasDerivAt (fun s => probabilityDensityValue (ψ s))
       (probabilityDensityTimeDerivativeValue (ψ t) ψt) t := by
-  have hre : HasDerivAt (fun s => (ψ s).re) ψt.re t :=
-    Complex.reCLM.hasFDerivAt.comp_hasDerivAt t hψ
-  have him : HasDerivAt (fun s => (ψ s).im) ψt.im t :=
-    Complex.imCLM.hasFDerivAt.comp_hasDerivAt t hψ
-  have hraw := HasDerivAt.add (HasDerivAt.mul hre hre) (HasDerivAt.mul him him)
-  have hderiv :
-      (ψt.re * (ψ t).re + (ψ t).re * ψt.re) +
-          (ψt.im * (ψ t).im + (ψ t).im * ψt.im) =
-        probabilityDensityTimeDerivativeValue (ψ t) ψt := by
-    simp [probabilityDensityTimeDerivativeValue]
+  have hconj : HasDerivAt (fun s => star (ψ s)) (star ψt) t :=
+    (Complex.conjCLE : ℂ →L[ℝ] ℂ).hasFDerivAt.comp_hasDerivAt t hψ
+  have hraw : HasDerivAt (fun s => (ψ s * star (ψ s)).re)
+      (ψt * star (ψ t) + ψ t * star ψt).re t :=
+    Complex.reCLM.hasFDerivAt.comp_hasDerivAt t (hψ.mul hconj)
+  have hvalue : (ψt * star (ψ t) + ψ t * star ψt).re =
+      probabilityDensityTimeDerivativeValue (ψ t) ψt := by
+    simp only [Complex.star_def, Complex.add_re, Complex.mul_re, Complex.conj_re,
+      Complex.conj_im, probabilityDensityTimeDerivativeValue]
     ring
-  rw [hderiv] at hraw
-  rw [hasDerivAt_iff_tendsto]
-  rw [hasDerivAt_iff_tendsto] at hraw
-  simpa [probabilityDensityValue, Complex.normSq_apply, pow_two, Pi.mul_apply, Pi.add_apply]
-    using hraw
+  rw [hvalue] at hraw
+  simpa only [Complex.star_def, Complex.mul_conj, Complex.ofReal_re,
+    probabilityDensityValue] using hraw
 
 /-- Differentiating the standard one-dimensional current cancels the two mixed first-derivative
 terms, leaving only the second spatial derivative. -/
@@ -89,27 +86,16 @@ theorem hasDerivAt_probabilityCurrentValue1D
     (hψx : HasDerivAt ψx ψxx x) :
     HasDerivAt (fun y => probabilityCurrentValue1D ℏ κ (ψ y) (ψx y))
       (probabilityCurrentDivergenceValue1D ℏ κ (ψ x) ψxx) x := by
-  have hψre : HasDerivAt (fun y => (ψ y).re) (ψx x).re x :=
-    Complex.reCLM.hasFDerivAt.comp_hasDerivAt x hψ
-  have hψim : HasDerivAt (fun y => (ψ y).im) (ψx x).im x :=
-    Complex.imCLM.hasFDerivAt.comp_hasDerivAt x hψ
-  have hψxre : HasDerivAt (fun y => (ψx y).re) ψxx.re x :=
-    Complex.reCLM.hasFDerivAt.comp_hasDerivAt x hψx
-  have hψxim : HasDerivAt (fun y => (ψx y).im) ψxx.im x :=
-    Complex.imCLM.hasFDerivAt.comp_hasDerivAt x hψx
-  have hraw := HasDerivAt.sub
-    (HasDerivAt.mul hψre hψxim) (HasDerivAt.mul hψim hψxre)
-  have hderiv :
-      ((ψx x).re * (ψx x).im + (ψ x).re * ψxx.im) -
-          ((ψx x).im * (ψx x).re + (ψ x).im * ψxx.re) =
-        (ψ x).re * ψxx.im - (ψ x).im * ψxx.re := by
-    ring
-  rw [hderiv] at hraw
-  have hscaled := hraw.const_mul (2 * κ / ℏ)
-  rw [hasDerivAt_iff_tendsto]
-  rw [hasDerivAt_iff_tendsto] at hscaled
-  simpa [probabilityCurrentValue1D_eq_coordinates,
-    probabilityCurrentDivergenceValue1D_eq_coordinates, Pi.mul_apply, Pi.sub_apply] using hscaled
+  have hconj : HasDerivAt (fun y => star (ψ y)) (star (ψx x)) x :=
+    (Complex.conjCLE : ℂ →L[ℝ] ℂ).hasFDerivAt.comp_hasDerivAt x hψ
+  have hpair : HasDerivAt (fun y => (star (ψ y) * ψx y).im)
+      (star (ψx x) * ψx x + star (ψ x) * ψxx).im x :=
+    Complex.imCLM.hasFDerivAt.comp_hasDerivAt x (hconj.mul hψx)
+  have hzero : (star (ψx x) * ψx x).im = 0 := by
+    rw [mul_comm, Complex.star_def, Complex.mul_conj, Complex.ofReal_im]
+  rw [Complex.add_im, hzero, zero_add] at hpair
+  simpa only [probabilityCurrentValue1D, probabilityCurrentDivergenceValue1D,
+    probabilityCurrentPairingValue] using hpair.const_mul (2 * κ / ℏ)
 
 /-- Pointwise continuity balance derived directly from the nonrelativistic Schrödinger equation with
 a real scalar potential. -/
