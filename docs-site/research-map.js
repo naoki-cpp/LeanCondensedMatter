@@ -128,10 +128,17 @@ export function renderResearchMap(children, onOpenDeclaration, onRegionChange, o
     return label;
   }
   const points = [...byName.values()];
-  function showDeclarationCount(count) {
-    declarationCount.textContent = `${count.toLocaleString("en")} declaration${count === 1 ? "" : "s"}`;
+  function showDeclarationCount(visiblePoints) {
+    let definitions = 0;
+    let proved = 0;
+    for (const { entry } of visiblePoints) {
+      if (DEFINITION_KINDS.has(entry.kind)) definitions += 1;
+      // Main's Lean CI checks for sorryAx; some catalog rows also expose axiom provenance.
+      if (entry.kind === "theorem" && !entry.axioms?.includes("sorryAx")) proved += 1;
+    }
+    declarationCount.textContent = `${definitions.toLocaleString("en")} definition${definitions === 1 ? "" : "s"} · ${proved.toLocaleString("en")} proved theorem${proved === 1 ? "" : "s"}`;
   }
-  showDeclarationCount(points.length);
+  showDeclarationCount(points);
   function collectBundles(clusters, records, clusterOf) {
     const order = new Map(clusters.map((region, index) => [region, index]));
     const connections = new Map();
@@ -377,7 +384,7 @@ export function renderResearchMap(children, onOpenDeclaration, onRegionChange, o
     previousScope = active;
     active = region;
     heading.textContent = region?.name ?? rootName;
-    showDeclarationCount(region?.points.length ?? points.length);
+    showDeclarationCount(region?.points ?? points);
     onRegionChange(region?.moduleName ?? null, browseMap);
     parentControl.hidden = !region?.parent;
     populatePicker(region);

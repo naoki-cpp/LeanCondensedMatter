@@ -62,7 +62,7 @@ test("MixedOrderData overview counts and opens both definitions", async () => {
   assert.equal(mapTitle?.text(), "LeanCondensedMatter");
   const region = overview.find("button").find((button) => button.className === "research-map-region");
   assert.equal(region.text(), "Mixed Order Data");
-  assert.equal(overview.find("p").find((item) => item.className === "research-map-declaration-count")?.text(), "2 declarations");
+  assert.equal(overview.find("p").find((item) => item.className === "research-map-declaration-count")?.text(), "2 definitions · 0 proved theorems");
   region.click();
   assert.equal(mapTitle?.text(), "Mixed Order Data");
   assert.equal(overview.find("canvas").length, 1);
@@ -91,7 +91,7 @@ test("map filters points and picker while preserving the total dependency count"
   const catalog = [
     { name: "result", kind: "theorem", dependencies: ["definition", "generated"] },
     { name: "definition", kind: "def", dependencies: [] },
-    { name: "generated", kind: "theorem", generated: true, dependencies: [] },
+    { name: "generated", kind: "theorem", generated: true, axioms: ["sorryAx"], dependencies: [] },
   ].map((entry) => ({ module, statement: "Nat", dependents: [], ...entry }));
   let generated = false;
   const explorer = createModuleOverview({ catalog, overview,
@@ -108,4 +108,5 @@ test("map filters points and picker while preserving the total dependency count"
   picker = overview.find("select")[0];
   assert.deepEqual(picker.find("option").map(({ value }) => value), ["", "generated", "result"]);
   assert.match(overview.text(), /Theorems 2.*Total 2.*Generated 1/);
+  assert.match(overview.text(), /0 definitions · 1 proved theorem/);
 });
