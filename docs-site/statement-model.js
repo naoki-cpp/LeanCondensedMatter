@@ -238,8 +238,7 @@ export function buildStatementModel(presentation) {
   }
   const roles = variableRoles(bindings, hilbertSpaces);
   const render = (node) => expressionToTex(node, labels, 0, new Map(), roles);
-  const row = (binder) => ({ ...binder, tex: render(binder.type),
-    symbolTex: roles.has(binder.id) ? styledVariable(binder, roles) : null });
+  const row = (binder) => ({ ...binder, tex: render(binder.type) });
   return {
     settings,
     variables: bindings.filter((binder) => !covered.has(binder.id) && ["type", "variable"].includes(binder.role)).map(row),
