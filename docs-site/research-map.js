@@ -24,9 +24,9 @@ function button(text, action, className = "") {
   return control;
 }
 
-export function renderResearchMap(children, onOpenDeclaration, onRegionChange, overviewHeader) {
+export function renderResearchMap(children, onOpenDeclaration, onRegionChange, overviewHeader, rootName) {
   const section = element("section", "research-map");
-  const heading = element("h3", "", "Map");
+  const heading = element("h2", "research-map-title", rootName);
   heading.id = "research-map-title";
   section.setAttribute("aria-labelledby", heading.id);
   const legend = element("ul", "research-map-legend");
@@ -374,6 +374,7 @@ export function renderResearchMap(children, onOpenDeclaration, onRegionChange, o
     if (active === region) return;
     previousScope = active;
     active = region;
+    heading.textContent = region?.name ?? rootName;
     onRegionChange(region?.moduleName ?? null, browseMap);
     parentControl.hidden = !region?.parent;
     populatePicker(region);

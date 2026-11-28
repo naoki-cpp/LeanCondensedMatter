@@ -206,13 +206,12 @@ export function createModuleOverview({ catalog, modules = [], overview, onBrowse
     breadcrumb.append(renderBreadcrumb(parts));
 
     const header = element("div", "overview-header module-overview-header");
-    const heading = element("h2", "", node.name);
-    header.append(heading);
+    const isMap = children.length > 0 && parts.length === 0;
+    if (!isMap) header.append(element("h2", "", node.name));
     const descriptionField = element("p", "module-description module-header-description", description);
     descriptionField.hidden = !description;
     header.append(descriptionField);
     const summary = element("div", "overview-summary");
-    const isMap = children.length > 0 && parts.length === 0;
     const visibleEntries = isMap ? catalog.filter(allowed).sort((a, b) => a.name.localeCompare(b.name)) : [];
     function entriesIn(moduleName) {
       const area = shortModule(moduleName);
@@ -243,7 +242,6 @@ export function createModuleOverview({ catalog, modules = [], overview, onBrowse
         const path = moduleName ? relativeModuleParts(moduleName) : [];
         const current = resolveNode(tree, path) ?? node;
         breadcrumb.replaceChildren(renderBreadcrumb(path, browseMap));
-        heading.textContent = current.name;
         showSummary(current, moduleName ? entriesIn(moduleName) : mapEntries);
         descriptionField.textContent = moduleName ? "" : description;
         descriptionField.hidden = !descriptionField.textContent;
@@ -254,7 +252,7 @@ export function createModuleOverview({ catalog, modules = [], overview, onBrowse
           descriptionField.hidden = !text;
         });
       }
-      overview.append(renderResearchMap(mapRegions, onOpenDeclaration, updateMapHeader, [breadcrumb, header]));
+      overview.append(renderResearchMap(mapRegions, onOpenDeclaration, updateMapHeader, [breadcrumb, header], node.name));
     } else {
       overview.append(breadcrumb, header);
     }

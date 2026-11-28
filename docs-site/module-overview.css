@@ -133,7 +133,7 @@
   color: #edf5ee;
   border-radius: 8px;
 }
-.research-map h3 {
+.research-map-title {
   margin: 0 0 8px;
   font: 500 1.6rem/1.2 var(--heading-font);
 }
