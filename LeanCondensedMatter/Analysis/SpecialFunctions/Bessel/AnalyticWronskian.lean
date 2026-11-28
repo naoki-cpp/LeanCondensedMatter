@@ -472,9 +472,24 @@ normalized J/Y Wronskian for every nonzero complex argument. -/
 theorem besselY0Y1Series_wronskian (z : ℂ) (hz : z ≠ 0) :
     Complex.besselJ 1 z * besselY0Series z -
       Complex.besselJ 0 z * besselY1Series z =
-        (((2 / Real.pi : ℝ) : ℂ)) * z⁻¹ :=
-  besselY0Y1Wronskian_of_harmonicIdentity z hz
-    (besselY0Y1_harmonicIdentity z)
+        (((2 / Real.pi : ℝ) : ℂ)) * z⁻¹ := by
+  calc
+    _ = (((2 / Real.pi : ℝ) : ℂ)) *
+        (Complex.besselJ 0 z * z⁻¹ -
+          Complex.besselJ 1 z * besselY0HarmonicCorrection z +
+          (z / 4) * Complex.besselJ 0 z * besselY1HarmonicCorrection z) := by
+      unfold besselY0Series besselY1Series
+      ring
+    _ = _ := by
+      congr 1
+      apply (mul_left_cancel₀ hz)
+      calc
+        _ = Complex.besselJ 0 z -
+              z * Complex.besselJ 1 z * besselY0HarmonicCorrection z +
+              (z ^ 2 / 4) * Complex.besselJ 0 z * besselY1HarmonicCorrection z := by
+          field_simp [hz]
+        _ = 1 := besselY0Y1_harmonicIdentity z
+        _ = z * z⁻¹ := by field_simp [hz]
 
 /-- The first/second-kind Wronskian condition at nonzero real arguments.
 The normalization is independent of any particular transport integral.
