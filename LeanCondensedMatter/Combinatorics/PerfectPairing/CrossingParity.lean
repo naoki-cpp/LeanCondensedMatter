@@ -61,9 +61,11 @@ theorem pairEndpointInversionCount_mod_two_eq_crossesIndicator {α : Type*} [Lin
   have hbd : b < d ↔ ¬ d < b := by
     constructor <;> intro h <;> order
   by_cases hca : c < a <;> by_cases hda : d < a <;>
-    by_cases hcb : c < b <;> by_cases hdb : d < b <;>
-    simp [pairEndpointInversionCount, Crosses, hac, had, hbd, hca, hda, hcb, hdb] <;>
-    order
+    by_cases hcb : c < b <;> by_cases hdb : d < b
+  all_goals
+    first
+    | exfalso; order
+    | simp [pairEndpointInversionCount, Crosses, hac, had, hbd, hca, hda, hcb, hdb]
 
 /-- Distinct normalized pairs have inversion parity equal to their geometric crossing indicator. -/
 theorem PairingOn.pairEndpointInversionCount_modEq_crossesIndicator
