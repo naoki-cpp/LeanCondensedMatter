@@ -38,40 +38,14 @@ theorem eigenbasisBoltzmannWeight_fermionEnergy_eq_prod
     (ε : Mode → ℝ) (β : ℝ) (n : Occupation Mode) :
     eigenbasisBoltzmannWeight (fermionEnergy ε) β n =
       ∏ i ∈ n, eigenbasisBoltzmannWeight ε β i := by
-  calc
-    eigenbasisBoltzmannWeight (fermionEnergy ε) β n =
-        Real.exp (-β * ∑ i ∈ n, ε i) := by
-      simp only [eigenbasisBoltzmannWeight, fermionEnergy_eq_sum]
-    _ = Real.exp (∑ i ∈ n, (-β * ε i)) := by
-      congr 1
-      rw [Finset.mul_sum]
-    _ = ∏ i ∈ n, Real.exp (-β * ε i) := by
-      exact Real.exp_sum n (fun i => -β * ε i)
-    _ = ∏ i ∈ n, eigenbasisBoltzmannWeight ε β i := by
-      rfl
+  simp only [eigenbasisBoltzmannWeight, fermionEnergy_eq_sum, Finset.mul_sum, Real.exp_sum]
 
-/-- Under one-particle pure-point Gibbs summability, the free fermion partition function is the
-infinite product `∏ᵢ (1 + exp (-β εᵢ))`. -/
-private theorem eigenbasisPartitionFunction_fermionEnergy_eq_tprod_one_add
+private theorem summable_occupationWeightProduct
     (ε : Mode → ℝ) (β : ℝ) (hmode : EigenbasisGibbsSummable ε β) :
-    eigenbasisPartitionFunction (fermionEnergy ε) β =
-      ∏' i : Mode, (1 + eigenbasisBoltzmannWeight ε β i) := by
-  have hprod :
-      Summable fun n : Finset Mode =>
-        ∏ i ∈ n, eigenbasisBoltzmannWeight ε β i :=
-    summable_finsetProd_of_summable_nonneg
-      (eigenbasisBoltzmannWeight_nonneg ε β)
-      (eigenbasisBoltzmannWeight_summable ε β hmode)
-  rw [eigenbasisPartitionFunction]
-  calc
-    (∑' n : Occupation Mode, eigenbasisBoltzmannWeight (fermionEnergy ε) β n) =
-        ∑' n : Finset Mode, ∏ i ∈ n, eigenbasisBoltzmannWeight ε β i := by
-      apply tsum_congr
-      intro n
-      exact eigenbasisBoltzmannWeight_fermionEnergy_eq_prod ε β n
-    _ = ∏' i : Mode, (1 + eigenbasisBoltzmannWeight ε β i) :=
-      (tprod_one_add hprod).symm
-
+    Summable (fun n : Finset Mode => ∏ i ∈ n, eigenbasisBoltzmannWeight ε β i) :=
+  summable_finsetProd_of_summable_nonneg
+    (eigenbasisBoltzmannWeight_nonneg ε β)
+    (eigenbasisBoltzmannWeight_summable ε β hmode)
 
 /-- For any (possibly infinite) mode type, summability of the one-particle weights
 `exp (-β * (ε i - μ))` ensures existence of the full-Fock grand-canonical
@@ -84,21 +58,9 @@ theorem grandCanonicalGibbsSummable_of_mode
   apply (Common.grandCanonicalGibbsSummable_iff_shifted
     (Config := Occupation Mode) ε β μ).2
   change EigenbasisGibbsSummable (fermionEnergy (fun i => ε i - μ)) β
-  unfold EigenbasisGibbsSummable
-  have hprod :
-      Summable fun n : Finset Mode =>
-        ∏ i ∈ n, eigenbasisBoltzmannWeight (fun i => ε i - μ) β i :=
-    summable_finsetProd_of_summable_nonneg
-      (eigenbasisBoltzmannWeight_nonneg (fun i => ε i - μ) β)
-      (eigenbasisBoltzmannWeight_summable (fun i => ε i - μ) β hmode)
-  have hweights :
-      eigenbasisBoltzmannWeight (fermionEnergy (fun i => ε i - μ)) β =
-        fun n : Occupation Mode =>
-          ∏ i ∈ n, eigenbasisBoltzmannWeight (fun i => ε i - μ) β i := by
-    funext n
-    exact eigenbasisBoltzmannWeight_fermionEnergy_eq_prod (fun i => ε i - μ) β n
-  rw [hweights]
-  exact hprod.norm
+  simp only [EigenbasisGibbsSummable, eigenbasisBoltzmannWeight_fermionEnergy_eq_prod]
+  exact (summable_occupationWeightProduct (fun i => ε i - μ) β hmode).norm
+
 
 /-- The full-Fock grand partition function of free fermions on arbitrary modes
 factorizes into the infinite product of one-mode contributions at explicit `μ`.
@@ -110,8 +72,10 @@ theorem grandCanonicalPartitionFunction_eq_tprod_one_add
       ∏' i : Mode,
         (1 + eigenbasisBoltzmannWeight (fun j => ε j - μ) β i) := by
   rw [Common.grandCanonicalPartitionFunction_eq_shifted]
-  exact eigenbasisPartitionFunction_fermionEnergy_eq_tprod_one_add
-    (fun i => ε i - μ) β hmode
+  change eigenbasisPartitionFunction (fermionEnergy (fun i => ε i - μ)) β = _
+  simp only [eigenbasisPartitionFunction, eigenbasisBoltzmannWeight_fermionEnergy_eq_prod]
+  exact (tprod_one_add
+    (summable_occupationWeightProduct (fun i => ε i - μ) β hmode)).symm
 
 end
 end Fermionic
