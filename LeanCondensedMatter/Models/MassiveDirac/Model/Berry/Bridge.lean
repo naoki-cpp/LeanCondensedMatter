@@ -124,11 +124,9 @@ theorem forceMatrixBerryCurvature_eq_berryCurvature (band : TwoBand) (v m px py 
     forceMatrixBerryCurvature band v m px py = berryCurvature band v m px py := by
   rw [forceMatrixBerryCurvature, forceMatrixTraceNumerator_xy_eq band v m px py hE,
     interbandEnergyGap_eq]
-  simp only [Complex.sub_im, Complex.neg_im, Complex.mul_im,
-    Complex.ofReal_re, Complex.ofReal_im]
-  cases band <;>
-    simp [berryCurvature_upper, berryCurvature_lower] <;>
-    field_simp [hE]
+  simpa [berryCurvature, Complex.mul_im, mul_assoc] using
+    (BerryGeometry.signedInterbandBerryWeight_eq (bandSign band) (energy v m px py)
+      (m * v ^ 2) (bandSign_sq band) hE)
 
 /-- Canonical specialization from the generic pointwise Berry curvature to the closed
 massive-Dirac formula. -/

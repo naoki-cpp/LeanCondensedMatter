@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Analysis.Operator.DiagonalExpectation
+import LeanCondensedMatter.Analysis.Matrix.Pauli
 import Mathlib.Analysis.InnerProductSpace.Adjoint
 import Mathlib.Analysis.InnerProductSpace.PiL2
 import Mathlib.Tactic.FieldSimp
@@ -312,6 +313,47 @@ theorem bornFock_berryConnection (μ : κ) {m n : ι} (hmn : m ≠ n)
   ring
 
 end PointwiseEigenbasisData
+
+/-- Converting the imaginary force numerator of a signed two-level spectrum
+to Berry weight uses only the squared sign and the nonzero level splitting. -/
+theorem signedInterbandBerryWeight_eq
+    (s E t : ℝ) (hs : s ^ 2 = 1) (hE : E ≠ 0) :
+    2 * (-(s * t / E)) / (2 * s * E) ^ 2 =
+      -(s * t) / (2 * E ^ 3) := by
+  have hgap : (2 * s * E) ^ 2 = 4 * E ^ 2 := by
+    rw [mul_pow, mul_pow, hs]
+    ring
+  rw [hgap]
+  field_simp [hE]; ring
+
+/-- Pointwise two-level force-matrix Berry weight for arbitrary real Pauli
+coefficients of the Hamiltonian and its two directional derivatives.
+The scalar derivative insertions cancel from the imaginary trace. The
+physical spectral specialization uses `E = |h|` and `s = ±1`. -/
+theorem pauliInterbandBerryWeight_eq
+    (h v w : InternalSpace.PauliAxis → ℝ) (s E c d : ℝ)
+    (hs : s ^ 2 = 1) (hE : E ≠ 0) :
+    2 * (Matrix.trace
+        (((1 / 2 : ℂ) • ((1 : InternalSpace.PauliMatrix) -
+          InternalSpace.pauliCombination (fun a => ((s / E * h a : ℝ) : ℂ)))) *
+          ((c : ℂ) • (1 : InternalSpace.PauliMatrix) +
+            InternalSpace.pauliCombination (fun a => (v a : ℂ))) *
+          ((1 / 2 : ℂ) • ((1 : InternalSpace.PauliMatrix) +
+            InternalSpace.pauliCombination (fun a => ((s / E * h a : ℝ) : ℂ)))) *
+          ((d : ℂ) • (1 : InternalSpace.PauliMatrix) +
+            InternalSpace.pauliCombination (fun a => (w a : ℂ))))).im /
+      (2 * s * E) ^ 2 =
+      -(s * (h .x * (v .y * w .z - v .z * w .y) +
+        h .y * (v .z * w .x - v .x * w .z) +
+        h .z * (v .x * w .y - v .y * w .x))) / (2 * E ^ 3) := by
+  rw [InternalSpace.trace_oppositePauliProjectors]
+  simp [InternalSpace.dotProduct_pauliAxis, InternalSpace.pauliCross, cross_apply,
+    InternalSpace.pauliAxisComponent, Complex.mul_im, Complex.mul_re,
+    Complex.div_im, Complex.normSq]
+  convert signedInterbandBerryWeight_eq s E
+    (h .x * (v .y * w .z - v .z * w .y) +
+      h .y * (v .z * w .x - v .x * w .z) +
+      h .z * (v .x * w .y - v .y * w .x)) hs hE using 1 <;> ring
 
 end
 end BerryGeometry

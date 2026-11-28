@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Models.RashbaExchange.Model.Spectral
+import LeanCondensedMatter.Analysis.Operator.BerryGeometry
 import LeanCondensedMatter.QuantumTheory.TwoBand
 import Mathlib.Tactic.FieldSimp
 import Mathlib.Tactic.Ring
@@ -147,11 +148,10 @@ theorem forceMatrixBerryCurvature_eq_berryCurvature
   rw [forceMatrixBerryCurvature,
     forceMatrixTraceNumerator_xy_eq params band px py hE,
     interbandEnergyGap_eq]
-  simp only [Complex.sub_im, Complex.neg_im, Complex.mul_im,
-    Complex.ofReal_re, Complex.ofReal_im]
-  cases band <;>
-    simp [berryCurvature, bandSign] <;>
-    field_simp [hE]
+  simpa [berryCurvature, Complex.mul_im, mul_assoc] using
+    (BerryGeometry.signedInterbandBerryWeight_eq (bandSign band)
+      (spinOrbitEnergy params px py) (params.exchangeSplitting * params.rashbaVelocity ^ 2)
+      (bandSign_sq band) hE)
 
 end
 
