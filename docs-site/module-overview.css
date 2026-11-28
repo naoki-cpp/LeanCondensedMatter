@@ -129,8 +129,6 @@
   container-type: inline-size;
   margin-top: 28px;
   padding: clamp(16px, 4vw, 34px);
-  background: #142421;
-  color: #edf5ee;
   border-radius: 8px;
 }
 .research-map-title {
@@ -164,7 +162,7 @@
   margin-right: 6px;
   border-radius: 50%;
 }
-.research-map-stage { position: relative; overflow: hidden; background: #101c1b; }
+.research-map-stage { position: relative; overflow: hidden; background: var(--graph-bg); }
 .research-map-stage canvas { display: block; width: 100%; height: auto; cursor: grab; touch-action: pan-y; }
 .research-map-stage canvas:active { cursor: grabbing; }
 .research-map-stage canvas:focus-visible { outline-offset: -3px; }
@@ -172,10 +170,6 @@
 .research-map-controls button {
   min-width: 36px;
   min-height: 34px;
-  background: #203630;
-  border: 1px solid #617a71;
-  border-radius: 5px;
-  color: inherit;
 }
 .research-map-preview {
   min-height: 1.5em;

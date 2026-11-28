@@ -1,12 +1,13 @@
 import { DEFINITION_KINDS } from "./declaration-model.js";
+import { MAP_NODE_COLORS } from "./graph-style.js";
 import { renderStatement } from "./statement-view.js";
 
 const width = 960;
 const height = 670;
 const goldenAngle = Math.PI * (3 - Math.sqrt(5));
 const categories = [
-  ["Theorems", "#90bed2", (entry) => entry.kind === "theorem"],
-  ["Definitions", "#8dceb1", (entry) => DEFINITION_KINDS.has(entry.kind)],
+  ["Theorems", MAP_NODE_COLORS.blue, (entry) => entry.kind === "theorem"],
+  ["Definitions", MAP_NODE_COLORS.green, (entry) => DEFINITION_KINDS.has(entry.kind)],
   ["Other declarations", "#dfbd86", () => true],
 ];
 
@@ -25,7 +26,7 @@ function button(text, action, className = "") {
 }
 
 export function renderResearchMap(children, onOpenDeclaration, onRegionChange, overviewHeader, rootName) {
-  const section = element("section", "research-map");
+  const section = element("section", "research-map explorer-map-theme");
   const heading = element("h2", "research-map-title", rootName);
   const declarationCount = element("p", "research-map-declaration-count");
   heading.id = "research-map-title";
@@ -39,7 +40,7 @@ export function renderResearchMap(children, onOpenDeclaration, onRegionChange, o
     item.append(dot, document.createTextNode(label));
     legend.append(item);
   }
-  const controls = element("div", "research-map-controls");
+  const controls = element("div", "research-map-controls graph-view-controls");
   const stage = element("div", "research-map-stage");
   const canvas = element("canvas", "");
   canvas.width = width * 2;

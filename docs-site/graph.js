@@ -275,6 +275,7 @@ function setModuleFilterEnabled(enabled) {
 
 function setGraphModeChrome() {
   const modules = state.graphKind === "modules";
+  ui.graph.closest(".graph-panel").classList.toggle("explorer-map-theme", modules);
   ui.overviewLink.textContent = "Declarations";
   document.getElementById("kind-filter").closest("label").hidden = modules;
   document.getElementById("generated-filter").closest("label").hidden = modules;

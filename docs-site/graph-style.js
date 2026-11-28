@@ -1,6 +1,7 @@
 export const ROOT_NODE_COLOR = "#21664c";
 export const ROOT_NODE_STROKE = "#d3e3d8";
 export const ROOT_LABEL_COLOR = "#173d2c";
+export const MAP_NODE_COLORS = { blue: "#90bed2", green: "#8dceb1" };
 
 export function graphNodeRadius({ depth = 1, root = false, selected = false } = {}) {
   return root ? 12 : depth === 1 ? 6.5 : selected ? 6 : 4.2;
@@ -8,12 +9,12 @@ export function graphNodeRadius({ depth = 1, root = false, selected = false } = 
 
 export function graphNodeLabelAttributes({ depth = 1, root = false, selected = false } = {}) {
   return {
-    fill: root ? ROOT_LABEL_COLOR : "#213e30",
+    fill: root ? `var(--graph-root-label, ${ROOT_LABEL_COLOR})` : "var(--graph-label, #213e30)",
     "font-family": "var(--ui-font)",
     "font-size": root ? 16 : depth === 1 ? 14 : 13,
     "font-weight": root || selected ? 600 : 400,
     "paint-order": "stroke",
-    stroke: "#f7f9f6",
+    stroke: "var(--graph-bg, #f7f9f6)",
     "stroke-width": root ? 4 : 3,
     "stroke-linejoin": "round",
     "dominant-baseline": "middle",

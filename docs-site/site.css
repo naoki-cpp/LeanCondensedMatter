@@ -266,6 +266,29 @@ select:disabled {
 }
 .graph-view-controls button:hover { background: var(--hover); border-color: var(--cyan); }
 
+.explorer-map-theme {
+  --map-surface: #142421;
+  --map-control-surface: #203630;
+  --map-border: #617a71;
+  --map-ink: #edf5ee;
+  --map-muted: #c0d3c9;
+  --graph-bg: #101c1b;
+  --graph-label: var(--map-ink);
+  --graph-root-label: #d0efdf;
+  background: var(--map-surface);
+  color: var(--map-ink);
+}
+.explorer-map-theme .graph-view-controls button {
+  color: var(--map-ink);
+  background: var(--map-control-surface);
+  border-color: var(--map-border);
+}
+.explorer-map-theme .graph-view-controls button:hover { border-color: var(--map-ink); }
+.explorer-map-theme .graph-toolbar,
+.explorer-map-theme .graph-directions { color: var(--map-muted); border-color: var(--map-border); }
+.explorer-map-theme .node:is(:hover, :focus, .node-selected) .node-dot { stroke: var(--map-ink); }
+.explorer-map-theme .node:is(:hover, :focus) .node-label { fill: var(--map-ink); }
+
 .overview-panel {
   min-height: calc(100vh - 122px);
   padding: clamp(22px, 4vw, 56px);
