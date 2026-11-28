@@ -348,8 +348,19 @@ theorem bilinearCurrentTimedEventProduct_eq_four_fields {n : ℕ}
         (wx p * wy r) • (L.map (op (x p) (y r))).prod := by
     rw [hfirst]
     simp_rw [hsecond, Finset.smul_sum, smul_smul]
-  simpa only [Fintype.sum_prod_type, externalInsertionMixedTimeOrderedVertexComp_eq_pairedCurrentProduct]
-    using hexp
+  have hfull : op X Y = bilinearCurrentTimedEventOperator ε τ τ' jx jy q σ := by
+    funext e
+    cases e with
+    | inl e => fin_cases e <;> rfl
+    | inr v => rfl
+  have hfixed (p r : Mode × Mode) : op (x p) (y r) =
+      pairedCurrentTimedEventOperator ε τ τ' p.1 p.2 r.1 r.2 q σ := by
+    funext e
+    cases e with
+    | inl e => fin_cases e <;> rfl
+    | inr v => rfl
+  simpa only [hfull, hfixed, wx, wy, Fintype.sum_prod_type,
+    externalInsertionMixedTimeOrderedVertexComp_eq_pairedCurrentProduct] using hexp
 
 /-- The weighted four-field identity holds for every complex-linear expectation,
 in particular the free-Gibbs expectation in the vertex Dyson integrand. -/
