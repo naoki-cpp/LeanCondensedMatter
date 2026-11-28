@@ -26,5 +26,6 @@ set_option linter.style.header false
 
 Exact finite-ensemble Green functions, moments, connected two-Green correlations and trace
 identities; Born and ladder approximations with fixed-regulator error bounds; isotropic
-in-plane ladder algebra, self-consistent Born equations, and the charge-vertex Ward identity.
+in-plane ladder algebra, supplied self-consistent Born solutions, and the charge-vertex Ward identity.
+No nonlinear SCBA existence theorem or continuum disorder limit is asserted.
 -/
