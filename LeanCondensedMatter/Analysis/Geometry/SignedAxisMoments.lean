@@ -37,8 +37,12 @@ theorem signedAxisCosine_eq (p q : ι × Fin 2) :
   rcases q with ⟨b, t⟩
   by_cases hab : a = b
   · subst b
-    fin_cases s <;> fin_cases t <;>
-      simp [signedAxisCosine, signedAxisDirection, ← ite_mul, ← mul_ite]
+    rw [signedAxisCosine]
+    rw [Finset.sum_eq_single a]
+    · fin_cases s <;> fin_cases t <;> simp [signedAxisDirection]
+    · intro i _ hi
+      simp [signedAxisDirection, Ne.symm hi]
+    · simp
   · rw [signedAxisCosine, if_neg hab]
     apply Finset.sum_eq_zero
     intro i _
